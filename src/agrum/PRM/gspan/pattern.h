@@ -87,7 +87,7 @@ namespace gum {
            * @brief Insert a node with the given LabelData.
            * @returns The NodeId assigned to the inserted node.
            */
-          GUM_DEPRECATED(NodeId insertNode ( LabelData& l ));
+          GUM_DEPRECATED ( NodeId insertNode ( LabelData& l ) );
           NodeId addNode ( LabelData& l );
 
           /// Returns the LabelData assigned to node.
@@ -158,9 +158,6 @@ namespace gum {
 
           const ArcSet& arcs() const;
 
-          /// Returns an iterator at the beginning of the set of neighbors of node
-          /// in this Pattern.
-          NeighborIterator beginNeighbors ( NodeId node ) const;
           /// @}
           // =========================================================================
           /// @name DFSCode related methods.
@@ -233,50 +230,9 @@ namespace gum {
           using DiGraph::addNode;
           using DiGraph::addArc;
           using DiGraph::toDot;
+          using DiGraph::parents;
+          using DiGraph::children;
       };
-
-      /**
-       * @class NeighborIterator pattern.h <agrum/PRM/patter.h>
-       * This inner class is used to iterator over the neighbors of node
-       * in this Pattern.
-       */
-      class NeighborIterator {
-        public:
-          /// Constructor.
-          NeighborIterator ( const NodeSet& parents, const NodeSet& children );
-          /// Copy constructor.
-          NeighborIterator ( const NeighborIterator& from );
-          /// Destructor.
-          ~NeighborIterator();
-          /// Points to the next neighbor.
-          NeighborIterator& operator++();
-          /// Returns true if the iterator is pointed to the end of the neighbors set.
-          bool isEnd() const;
-          /// Returns true if this differs of from.
-          bool operator!= ( const NeighborIterator& from ) const;
-          /// Returns true if this equals of from.
-          bool operator== ( const NeighborIterator& from ) const;
-          /// Copy operator.
-          NeighborIterator& operator= ( const NeighborIterator& from );
-          /// Returns a reference over the arc currently pointed by this.
-          NodeId operator*() const;
-        private:
-          /// The set of parents of the node.
-          const NodeSet* __parents;
-          /// The set of children of the node.
-          const NodeSet* __children;
-
-          /// Iterator over the set of parents.
-          NodeSetIterator __parent_iterator;
-          /// Iterator iver the set of children.
-          NodeSetIterator __children_iterator;
-
-          /// The iterator used for iteration.
-          NodeSetIterator* __iterator;
-          /// The end iterator if the current __iterator.
-          const NodeSetIterator* __end_iterator;
-      };
-
     } /* namespace gspan */
   } /* namespace prm */
 } /* namespace gum */

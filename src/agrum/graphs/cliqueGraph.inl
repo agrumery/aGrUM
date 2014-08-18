@@ -44,7 +44,7 @@ namespace gum {
   }
 
   INLINE void CliqueGraph::insertEdge ( const NodeId first, const NodeId second ) {
-    addEdge ( first,second );
+    addEdge ( first, second );
   }
   INLINE void CliqueGraph::addEdge ( const NodeId first, const NodeId second ) {
     Edge edge ( first, second );
@@ -93,7 +93,7 @@ namespace gum {
   /// adds a new clique to the graph
 
   INLINE void CliqueGraph::insertNode ( const NodeId id,  const NodeSet& clique ) {
-    addNode ( id,clique );
+    addNode ( id, clique );
   }
   INLINE void CliqueGraph::addNode ( const NodeId id,  const NodeSet& clique ) {
     // create the new node in the graph
@@ -117,11 +117,9 @@ namespace gum {
     if ( !exists ( id ) ) return;
 
     // remove the separators
-    const NodeSet& set = neighbours ( id );
-
-    for ( NodeSetIterator iter = set.beginSafe(); iter != set.endSafe(); ++iter ) {
+    auto nei=neighbours(id);
+    for ( auto iter =nei.beginSafe();iter != nei.endSafe();++iter)// safe iterator needed here
       eraseEdge ( Edge ( *iter, id ) );
-    }
 
     // erase the clique set
     __cliques.erase ( id );
@@ -143,9 +141,8 @@ namespace gum {
 
   INLINE NodeId
   CliqueGraph::container ( const NodeId id ) const  {
-    for ( NodeProperty<NodeSet>::const_iterator_safe iter = __cliques.beginSafe();
-          iter != __cliques.endSafe(); ++iter )
-      if ( iter.val().contains ( id ) ) return iter.key();
+    for ( const auto & elt : __cliques )
+      if ( elt.second.contains ( id ) ) return elt.first;
 
     GUM_ERROR ( NotFound, "This node belongs to no clique" );
   }
@@ -155,11 +152,8 @@ namespace gum {
 
   INLINE void
   CliqueGraph::__updateSeparators ( const NodeId id1 ) {
-    const NodeSet& nei = neighbours ( id1 );
-
-    for ( NodeSetIterator ite = nei.beginSafe(); ite != nei.endSafe(); ++ite ) {
-      __separators[Edge ( *ite, id1 )] = __cliques[id1] * __cliques[*ite];
-    }
+    for ( const auto nei : neighbours ( id1 ) )
+      __separators[Edge ( nei, id1 )] = __cliques[id1] * __cliques[nei];
   }
 
 

@@ -87,7 +87,7 @@ namespace gum {
             // Children existing in the instance type's DAG
             const NodeSet& chldrn = ( **inst ).type().dag().children ( ( * ( attr.val() ) ).id() );
 
-            for ( NodeSetIterator chld = chldrn.beginSafe(); chld != chldrn.endSafe(); ++chld ) {
+            for ( auto chld = chldrn.beginSafe(); chld != chldrn.endSafe(); ++chld ) {
               data.graph.addEdge ( node,
                                    data.node2attr.first ( __str ( *inst, ( **inst ).get ( *chld ) ) ) );
             }

@@ -422,7 +422,7 @@ namespace gum {
 
         const NodeSet& children = cdg.dag().children ( l.front() );
 
-        for ( NodeSetIterator child = children.beginSafe();
+        for ( auto child = children.beginSafe();
               child != children.endSafe(); ++child )
           if ( not visited_node.contains ( *child ) ) l.push_back ( *child );
 

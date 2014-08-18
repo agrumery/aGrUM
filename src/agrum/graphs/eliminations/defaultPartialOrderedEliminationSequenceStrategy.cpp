@@ -117,23 +117,19 @@ namespace gum {
 
     if ( subsets ) ++nb;
 
-    if ( nb && ( nb != 3 ) ) {
+    if ( nb && ( nb != 3 ) )
       GUM_ERROR ( GraphError,
-                  "DefaultPartialOrderedEliminationSequenceStrategy needs valid "
-                  "graphs, domain sizes and partial ordering" );
-    }
+                  "DefaultPartialOrderedEliminationSequenceStrategy needs valid graphs, domain sizes and partial ordering" );
 
     // check that each node has a domain size
-    for ( auto iter_node = graph->nodes().beginSafe(); iter_node != graph->nodes().endSafe(); ++iter_node ) {
-      if ( ! modal->exists ( *iter_node ) ) {
+    for ( const auto node : graph->nodes() )
+      if ( ! modal->exists ( node ) )
         GUM_ERROR ( GraphError,
-                    "DefaultPartialOrderedEliminationSequenceStrategy needs  "
-                    "domain sizes" );
-      }
-    }
+                    "DefaultPartialOrderedEliminationSequenceStrategy needs  domain sizes" );
 
     // avoid empty modifications
-    if ( ( graph != __graph ) || ( modal != __modalities ) ||
+    if ( ( graph != __graph ) ||
+         ( modal != __modalities ) ||
          ( subsets != __subsets ) ) {
       // remove, if any, the current graph and its simplicial set
       clear();
@@ -147,19 +143,20 @@ namespace gum {
         // compute the log of the modalities
         __log_modalities.resize ( __graph->sizeNodes() / 2 );
 
-        for ( auto iter_node = graph->nodes().beginSafe(); iter_node != graph->nodes().endSafe(); ++iter_node ) {
-          __log_modalities.insert ( *iter_node, log ( ( *modal ) [*iter_node] ) );
-        }
+        for ( const auto node : graph->nodes() )
+          __log_modalities.insert ( node, log ( ( *modal ) [node] ) );
 
         // creation du simplicial set
-        __simplicial_set = new
-        SimplicialSet ( __graph, &__log_modalities, &__log_weights,
-                        __simplicial_ratio, __simplicial_threshold );
+        __simplicial_set = new SimplicialSet ( __graph,
+                                               &__log_modalities,
+                                               &__log_weights,
+                                               __simplicial_ratio,
+                                               __simplicial_threshold );
 
         __simplicial_set->setFillIns ( __provide_fill_ins );
 
         // initialize properly the set of nodes that can be currently eliminated
-        __subset_iter = __subsets->cbeginSafe();
+        __subset_iter = __subsets->cbegin();
 
         __nodeset = *__subset_iter;
       }
@@ -190,18 +187,16 @@ namespace gum {
     float min_score = 0;
     NodeId best_node = 0;
 
-    for ( NodeSetIterator iter = __nodeset.beginSafe();
-          iter != __nodeset.endSafe(); ++iter ) {
+    for ( const auto node : __nodeset)
       try {
-        float score = possibleNodes.priority ( *iter );
+        float score = possibleNodes.priority ( node);
 
         if ( ! found || ( score < min_score ) ) {
           found = true;
           min_score = score;
-          best_node = *iter;
+          best_node = node;
         }
       } catch ( NotFound& ) { }
-    }
 
     if ( ! found ) {
       GUM_ERROR ( NotFound, "no possible node to eliminate" );
@@ -237,13 +232,11 @@ namespace gum {
     } catch ( NotFound& ) { }
 
     // here: select the node through Kjaerulff's heuristic
-    NodeSetIterator iter = __nodeset.beginSafe();
-
+    auto iter = __nodeset.begin();
     float min_score = __log_weights[ *iter ];
-
     NodeId best_node = *iter;
 
-    for ( ++iter; iter != __nodeset.endSafe(); ++iter ) {
+    for ( ++iter; iter != __nodeset.end(); ++iter ) {
       float score = __log_weights[ *iter ];
 
       if ( score < min_score ) {
@@ -298,7 +291,7 @@ namespace gum {
       if ( __nodeset.empty() ) {
         ++__subset_iter;
 
-        if ( __subset_iter != __subsets->cendSafe() )
+        if ( __subset_iter != __subsets->cend() )
           __nodeset = *__subset_iter;
       }
     }

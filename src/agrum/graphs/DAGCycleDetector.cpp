@@ -121,10 +121,10 @@ namespace gum {
     // a deletion + an insertion) and we check that no insertion also exists
     // as a deletion (if so, we remove both operations). In addition, if
     // we try to add an arc (X,X) we return that it induces a cycle
-    HashTable<Arc,unsigned int> deletions ( modifs.size () );
-    HashTable<Arc,unsigned int> additions ( modifs.size () );
+    HashTable<Arc, unsigned int> deletions ( modifs.size () );
+    HashTable<Arc, unsigned int> additions ( modifs.size () );
 
-    for ( const auto& modif : modifs ) {
+    for ( const auto & modif : modifs ) {
       Arc arc ( modif.tail (), modif.head () );
 
       switch ( modif.type () ) {
@@ -158,7 +158,7 @@ namespace gum {
       }
     }
 
-    for ( auto iter = additions.beginSafe();
+    for ( auto iter = additions.beginSafe(); // safe iterator needed here
           iter != additions.endSafe (); ++iter ) {
       if ( deletions.exists ( iter.key () ) ) {
         unsigned int& nb_del = deletions[iter.key()];
@@ -180,7 +180,7 @@ namespace gum {
     // get the set of nodes involved in the modifications
     NodeSet extremities;
 
-    for ( const auto& modif : modifs ) {
+    for ( const auto & modif : modifs ) {
       extremities.insert ( modif.tail () );
       extremities.insert ( modif.head () );
     }
@@ -190,7 +190,7 @@ namespace gum {
     // keep track of all the children and parents of these nodes
     NodeProperty< NodeProperty<unsigned int> > ancestors, descendants;
 
-    for ( const auto& modif : modifs ) {
+    for ( const auto & modif : modifs ) {
       if ( ! ancestors.exists ( modif.tail () ) ) {
         NodeProperty<unsigned int>& anc =
           ancestors.insert ( modif.tail (),
@@ -303,7 +303,7 @@ namespace gum {
 
   /// adds a new arc to the current DAG
   void DAGCycleDetector::insertArc ( NodeId tail, NodeId head ) {
-    addArc ( tail,head );
+    addArc ( tail, head );
   }
   /// adds a new arc to the current DAG
   void DAGCycleDetector::addArc ( NodeId tail, NodeId head ) {

@@ -86,17 +86,17 @@ namespace gum {
 
   //deprecated
   INLINE ArcGraphPart::ArcIterator ArcGraphPart::beginArcs() const {
-    return __arcs.beginSafe();
+    return __arcs.begin();
   }
 
   //deprecated
   INLINE const ArcGraphPart::ArcIterator& ArcGraphPart::endArcs() const {
-    return __arcs.endSafe();
+    return __arcs.end();
   }
 
 
   INLINE void ArcGraphPart::insertArc ( const NodeId tail, const NodeId head ) {
-    addArc ( tail,head );
+    addArc ( tail, head );
   }
   INLINE void ArcGraphPart::addArc ( const NodeId tail, const NodeId head ) {
     Arc arc ( tail, head );
@@ -125,8 +125,8 @@ namespace gum {
 
 
   INLINE void ArcGraphPart::_eraseSetOfArcs ( const ArcSet& set ) {
-    for ( ArcSetIterator iter = set.beginSafe(); iter != set.endSafe(); ++iter )
-      eraseArc ( *iter );
+    for ( const auto arc : set )
+      eraseArc ( arc );
   }
 
 
@@ -134,7 +134,7 @@ namespace gum {
     if ( __parents.exists ( id ) ) {
       NodeSet& parents = * ( __parents[id] );
 
-      for ( NodeSetIterator iter = parents.beginSafe();
+      for ( auto iter = parents.beginSafe();// safe iterator needed here
             iter != parents.endSafe(); ++iter ) {
         // warning: use this erase so that you actually use the virtualized
         // arc removal function
@@ -148,7 +148,7 @@ namespace gum {
     if ( __children.exists ( id ) ) {
       NodeSet& children = * ( __children[id] );
 
-      for ( NodeSetIterator iter = children.beginSafe();
+      for ( auto iter = children.beginSafe();// safe iterator needed here
             iter != children.endSafe(); ++iter ) {
         // warning: use this erase so that you actually use the vritualized
         // arc removal function
@@ -159,8 +159,8 @@ namespace gum {
 
 
   INLINE void ArcGraphPart::_unvirtualizedEraseSetOfArcs ( const ArcSet& set ) {
-    for ( ArcSetIterator iter = set.beginSafe(); iter != set.endSafe(); ++iter )
-      ArcGraphPart::eraseArc ( *iter );
+    for ( const auto & arc : set )
+      ArcGraphPart::eraseArc ( arc );
   }
 
 
@@ -168,7 +168,7 @@ namespace gum {
     if ( __parents.exists ( id ) ) {
       NodeSet& parents = * ( __parents[id] );
 
-      for ( NodeSetIterator iter = parents.beginSafe();
+      for ( auto iter = parents.beginSafe();// safe iterator needed here
             iter != parents.endSafe(); ++iter ) {
         ArcGraphPart::eraseArc ( Arc ( *iter, id ) );
       }
@@ -180,7 +180,7 @@ namespace gum {
     if ( __children.exists ( id ) ) {
       NodeSet& children = * ( __children[id] );
 
-      for ( NodeSetIterator iter = children.beginSafe();
+      for ( auto iter = children.beginSafe();// safe iterator needed here
             iter != children.endSafe(); ++iter ) {
         ArcGraphPart::eraseArc ( Arc ( id, *iter ) );
       }
@@ -201,3 +201,5 @@ namespace gum {
 
 } /* namespace gum */
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
+
+

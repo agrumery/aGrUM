@@ -268,11 +268,9 @@ namespace gum_tests {
     private:
 
       void createClique ( gum::UndiGraph& graph, const gum::NodeSet& clique ) {
-        gum::NodeSetIterator iter2;
-
-        for ( gum::NodeSetIterator iter = clique.beginSafe();
+        for ( auto iter = clique.beginSafe();
               iter != clique.endSafe(); ++iter ) {
-          iter2 = iter;
+          auto iter2 = iter;
 
           for ( ++iter2; iter2 != clique.endSafe(); ++iter2 ) {
             if ( ! graph.existsEdge ( *iter, *iter2 ) )

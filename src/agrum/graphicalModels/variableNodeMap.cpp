@@ -69,10 +69,8 @@ namespace gum {
   }
 
   void VariableNodeMap::clear ( void ) {
-    for ( Bijection<NodeId, const DiscreteVariable*>::iterator_safe iter =
-            __nodes2vars.beginSafe(); iter != __nodes2vars.endSafe(); ++iter ) {
+    for ( auto iter = __nodes2vars.begin(); iter != __nodes2vars.end(); ++iter )
       delete iter.second();
-    }
 
     __nodes2vars.clear();
     __names2nodes.clear();
@@ -92,19 +90,16 @@ namespace gum {
 
   /// do the copy
   void VariableNodeMap::__copy ( const VariableNodeMap& source ) {
-    for ( Bijection<NodeId, const DiscreteVariable*>::iterator_safe iter =
-            source.__nodes2vars.beginSafe();
-          iter != source.__nodes2vars.endSafe(); ++iter ) {
+    for ( auto iter = source.__nodes2vars.begin(); iter != source.__nodes2vars.end(); ++iter )
       __nodes2vars.insert ( iter.first(), iter.second()->clone() );
-      // copy factory is used inside insert
-    }
+
+    // copy factory is used inside insert
 
     __names2nodes = source.__names2nodes;
   }
 
 
   /// for friendly displaying the content of clique graphs
-
   std::ostream& operator<< ( std::ostream& stream, const VariableNodeMap& v ) {
     stream << v.toString();
     return stream;

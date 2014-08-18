@@ -127,7 +127,7 @@ namespace gum {
             __getMark ( marks, i, n ).second = true;
             const NodeSet& children = i->type().dag().children ( n );
 
-            for ( NodeSetIterator child = children.beginSafe(); child != children.endSafe(); ++child )
+            for ( auto child = children.beginSafe(); child != children.endSafe(); ++child )
               __fromParent ( i, *child, marks );
           }
 
@@ -142,7 +142,7 @@ namespace gum {
             if ( not __isHardEvidence ( i, n ) ) {
               const NodeSet& parents = i->type().dag().parents ( n );
 
-              for ( NodeSetIterator prnt = parents.beginSafe(); prnt != parents.endSafe(); ++prnt )
+              for ( auto prnt = parents.beginSafe(); prnt != parents.endSafe(); ++prnt )
                 __fromChild ( i, *prnt, marks );
             }
           }
@@ -152,7 +152,7 @@ namespace gum {
             // In i.
             const NodeSet& children = i->type().dag().children ( n );
 
-            for ( NodeSetIterator child = children.beginSafe(); child != children.endSafe(); ++child )
+            for ( auto child = children.beginSafe(); child != children.endSafe(); ++child )
               __fromParent ( i, *child, marks );
 
             // Out of i.
@@ -200,14 +200,14 @@ namespace gum {
         __getMark ( marks, i, n ).first = true;
         const NodeSet& parents = i->type().dag().parents ( n );
 
-        for ( NodeSetIterator iter = parents.beginSafe(); iter != parents.endSafe(); ++iter )
+        for ( auto iter = parents.beginSafe(); iter != parents.endSafe(); ++iter )
           __fromChild ( i, *iter, marks );
       } else if ( not __getMark ( marks, i, n ).second ) {
         __getMark ( marks, i, n ).second = true;
         // In i.
         const NodeSet& children = i->type().dag().children ( n );
 
-        for ( NodeSetIterator iter = children.beginSafe(); iter != children.endSafe(); ++iter )
+        for ( auto iter = children.beginSafe(); iter != children.endSafe(); ++iter )
           __fromParent ( i, *iter, marks );
 
         // Out of i.

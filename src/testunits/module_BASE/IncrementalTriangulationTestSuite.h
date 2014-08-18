@@ -355,11 +355,9 @@ namespace gum_tests {
 
       void createClique ( gum::IncrementalTriangulation& triang,
                           const gum::NodeSet& clique ) {
-        gum::NodeSetIterator iter2;
-
-        for ( gum::NodeSetIterator iter = clique.beginSafe();
+        for ( auto iter = clique.beginSafe();
               iter != clique.endSafe(); ++iter ) {
-          iter2 = iter;
+          auto iter2 = iter;
 
           for ( ++iter2; iter2 != clique.endSafe(); ++iter2 ) {
             try {

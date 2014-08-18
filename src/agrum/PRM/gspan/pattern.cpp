@@ -52,51 +52,34 @@ namespace gum {
 
       bool
       Pattern::isMinimal() {
-        for ( auto node = nodes().beginSafe(); node != nodes().endSafe(); ++node ) {
-          const NodeSet& parents = DiGraph::parents ( *node );
-
-          for ( NodeSetIterator next = parents.beginSafe(); next != parents.endSafe(); ++next ) {
-            Size u = label ( *node ).id;
-            Size v = label ( *next ).id;
-            EdgeCode edge_code ( 1, 2, u, label ( *next, *node ).id, v );
+        for ( const auto node : nodes() ) {
+          for ( const auto next : parents ( node ) ) {
+            Size u = label ( node ).id;
+            Size v = label ( next ).id;
+            EdgeCode edge_code ( 1, 2, u, label ( next, node ).id, v );
 
             if ( edge_code < * ( code().codes.front() ) ) {
               return false;
             } else if ( edge_code == ( *code().codes.front() ) ) {
-              if ( __expandCodeIsMinimal ( *node, *next ) ) {
+              if ( __expandCodeIsMinimal ( node, next ) ) {
                 return false;
               }
             }
           }
 
-          const NodeSet& children = DiGraph::children ( *node );
-
-          for ( NodeSetIterator next = children.beginSafe(); next != children.endSafe(); ++next ) {
-            Size u = label ( *node ).id;
-            Size v = label ( *next ).id;
-            EdgeCode edge_code ( 1, 2, u, label ( *node, *next ).id, v );
+          for ( const auto next : children ( node ) ) {
+            Size u = label ( node ).id;
+            Size v = label ( next ).id;
+            EdgeCode edge_code ( 1, 2, u, label ( node, next ).id, v );
 
             if ( edge_code < * ( code().codes.front() ) ) {
               return false;
             } else if ( edge_code == ( *code().codes.front() ) ) {
-              if ( __expandCodeIsMinimal ( *node, *next ) ) {
+              if ( __expandCodeIsMinimal ( node, next ) ) {
                 return false;
               }
             }
           }
-
-//     for (NeighborIterator next = beginNeighbors(*node); not next.isEnd(); ++next) {
-//       Size u = label(*node).id;
-//       Size v = label(*next).id;
-//       EdgeCode edge_code(1, 2, u, label(next->tail(), next->head()).id, v);
-//       if (edge_code < *(code().codes.front())) {
-//         return false;
-//       } else if ( edge_code == (*code().codes.front())) {
-//         if (__expandCodeIsMinimal(*node, next->other(*node))) {
-//           return false;
-//         }
-//       }
-//     }
         }
 
         return true;
@@ -107,9 +90,9 @@ namespace gum {
         std::stringstream sBuff;
         sBuff << "digraph " << name << " {\n";
 
-        for ( auto arc = arcs().beginSafe(); arc != arcs().endSafe(); ++arc ) {
-          sBuff << label ( arc->tail() ).id << " -> ";
-          sBuff << label ( arc->head() ).id << ";\n";
+        for ( const auto arc : arcs() ) {
+          sBuff << label ( arc.tail() ).id << " -> ";
+          sBuff << label ( arc.head() ).id << ";\n";
         }
 
         sBuff << "}\n";
@@ -129,21 +112,25 @@ namespace gum {
           p.addArc ( 1, 2, label ( v, u ) );
         }
 
-        for ( NeighborIterator iter = beginNeighbors ( u ); not iter.isEnd(); ++iter ) {
-          if ( *iter != v ) {
-            if ( __rec ( p, node_map, u, *iter ) ) {
+        for ( const auto nei : children ( u ) )
+          if ( nei != v )
+            if ( __rec ( p, node_map, u, nei ) )
               return true;
-            }
-          }
-        }
 
-        for ( NeighborIterator iter = beginNeighbors ( v ); not iter.isEnd(); ++iter ) {
-          if ( *iter != u ) {
-            if ( __rec ( p, node_map, v, *iter ) ) {
+        for ( const auto nei : parents ( u ) )
+          if ( nei != v )
+            if ( __rec ( p, node_map, u, nei ) )
               return true;
-            }
-          }
-        }
+
+        for ( const auto nei : children ( v ) )
+          if ( nei != u )
+            if ( __rec ( p, node_map, v, nei ) )
+              return true;
+
+        for ( const auto nei : parents ( v ) )
+          if ( nei != u )
+            if ( __rec ( p, node_map, v, nei ) )
+              return true;
 
         return false;
       }
@@ -194,18 +181,19 @@ namespace gum {
           std::list<NodeId> r_path;
           p.rightmostPath ( r_path );
 
-          for ( std::list<NodeId>::iterator iter = r_path.begin(); iter != r_path.end(); ++iter ) {
-            for ( NeighborIterator jter = beginNeighbors ( node_map.first ( *iter ) ); not jter.isEnd(); ++jter ) {
-              if ( __rec ( p, node_map, node_map.first ( *iter ), *jter ) ) {
+          for ( const auto node : r_path ) {
+            for ( const auto nei : children ( node_map.first ( node ) ) )
+              if ( __rec ( p, node_map, node_map.first ( node ), nei ) )
                 return true;
-              }
-            }
+
+            for ( const auto nei : parents ( node_map.first ( node ) ) )
+              if ( __rec ( p, node_map, node_map.first ( node ), nei ) )
+                return true;
           }
         }
 
-        if ( p.code().codes.back()->isForward() ) {
+        if ( p.code().codes.back()->isForward() )
           node_map.eraseFirst ( v );
-        }
 
         p.pop_back();
         return false;
@@ -235,9 +223,8 @@ namespace gum {
           GUM_TRACE_VAR ( node_map.size() );
           std::stringstream sBuff;
 
-          for ( Bijection<NodeId, NodeId>::iterator_safe iter = node_map.beginSafe(); iter != node_map.endSafe(); ++iter ) {
+          for ( auto iter = node_map.begin() ; iter != node_map.end(); ++iter )
             sBuff << "(" << iter.first() << ", " << iter.second() << ") ";
-          }
 
           GUM_TRACE ( sBuff.str() );
           GUM_TRACE_VAR ( stack.back().first );
@@ -298,17 +285,22 @@ namespace gum {
                   p.rightmostPath ( r_path );
                   stack.push_back ( std::make_pair ( ( NodeId ) 0, ( NodeId ) 0 ) );
 
-                  for ( std::list<NodeId>::iterator iter = r_path.begin(); iter != r_path.end(); ++iter ) {
-                    for ( NeighborIterator jter = beginNeighbors ( node_map.first ( *iter ) ); not jter.isEnd(); ++jter ) {
-                      stack.push_back ( std::make_pair ( node_map.first ( *iter ), *jter ) );
+                  for ( const auto node : r_path ) {
+                    for ( const auto nei : children ( node ) ) {
+                      stack.push_back ( std::make_pair ( node_map.first ( node ), nei ) );
+                      ++ ( rec_call.back() );
+                    }
+
+                    for ( const auto nei : parents ( node ) ) {
+                      stack.push_back ( std::make_pair ( node_map.first ( node ), nei ) );
                       ++ ( rec_call.back() );
                     }
                   }
                 }
 
-                if ( p.code().codes.back()->isForward() ) {
+                if ( p.code().codes.back()->isForward() )
                   node_map.eraseFirst ( v );
-                }
+
               }
             }
           }
@@ -320,4 +312,3 @@ namespace gum {
     } /* namespace gspan */
   } /* namespace prm */
 } /* namespace gum */
-

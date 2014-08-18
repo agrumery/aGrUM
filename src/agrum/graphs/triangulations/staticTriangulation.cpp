@@ -187,7 +187,7 @@ namespace gum {
           // find T' (it is equal to the edges (v,w) of T such that
           // the intersection of adj(v,G) and adj(w,G) is complete and such that
           // v and/or w belongs to an extremal node in R
-          for ( EdgeSetIterator iter_edge = T.beginSafe(); iter_edge != T.endSafe();
+          for ( auto iter_edge = T.beginSafe(); iter_edge != T.endSafe();
                 ++iter_edge ) {
             node1 = iter_edge->first();
             node2 = iter_edge->second();
@@ -210,7 +210,7 @@ namespace gum {
             // and adj(w,G)
             const NodeSet& nei = __triangulated_graph.neighbours ( node1 );
 
-            for ( NodeSetIterator iter_adj = nei.beginSafe();
+            for ( auto iter_adj = nei.beginSafe();
                   iter_adj != nei.endSafe(); ++iter_adj ) {
               if ( __triangulated_graph.existsEdge ( node2, *iter_adj ) )
                 adj.push_back ( *iter_adj );
@@ -237,7 +237,7 @@ namespace gum {
 
           // compute the new value of T (i.e. T\T') and update the
           // triangulated graph
-          for ( EdgeSetIterator iter_delete = T_prime.beginSafe();
+          for ( auto iter_delete = T_prime.beginSafe();
                 iter_delete != T_prime.endSafe(); ++iter_delete ) {
             T.erase ( *iter_delete );
             __triangulated_graph.eraseEdge ( *iter_delete );
@@ -276,7 +276,7 @@ namespace gum {
 
       const NodeSet& nei = __triangulated_graph.neighbours ( node );
 
-      for ( NodeSetIterator iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) {
+      for ( auto iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) {
         NodeId neighbour = *iter;
 
         try {
@@ -293,7 +293,7 @@ namespace gum {
 
       const NodeSet& nei = __triangulated_graph.neighbours ( __elim_order[i] );
 
-      for ( NodeSetIterator iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) {
+      for ( auto iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) {
         NodeId neighbour = *iter;
 
         if ( __reverse_elim_order[neighbour] > i ) {
@@ -327,7 +327,7 @@ namespace gum {
       const NodeSet& list_of_nodes = __elim_cliques[clique_i_creator];
       unsigned int child = __original_graph->bound() + 1;
 
-      for ( NodeSetIterator it = list_of_nodes.beginSafe();
+      for ( auto it = list_of_nodes.beginSafe();
             it != list_of_nodes.endSafe(); ++it ) {
         unsigned int it_elim_step = __reverse_elim_order[*it];
 
@@ -355,10 +355,9 @@ namespace gum {
     NodeSet& mark ) const {
     mark << node;
 
-    NodeSetIterator iter_sep2;
     const NodeSet& nei = __junction_tree->neighbours ( node );
 
-    for ( NodeSetIterator iter_sep = nei.beginSafe();
+    for ( auto iter_sep = nei.beginSafe();
           iter_sep != nei.endSafe(); ++iter_sep ) {
       NodeId other_node = *iter_sep;
 
@@ -367,9 +366,9 @@ namespace gum {
         // check that the separator between node and other_node is complete
         bool complete = true;
 
-        for ( NodeSetIterator iter_sep1 = separator.beginSafe();
+        for ( auto iter_sep1 = separator.beginSafe();
               iter_sep1 != separator.endSafe() && complete; ++iter_sep1 ) {
-          iter_sep2 = iter_sep1;
+          auto iter_sep2 = iter_sep1;
 
           for ( ++iter_sep2; iter_sep2 != separator.endSafe(); ++iter_sep2 ) {
             if ( !__original_graph->existsEdge ( *iter_sep1, *iter_sep2 ) ) {
@@ -444,7 +443,7 @@ namespace gum {
       if ( iter.key() != iter.val () ) {
         const NodeSet& new_clique = __junction_tree->clique ( iter.key() );
 
-        for ( NodeSetIterator iter_node = new_clique.beginSafe();
+        for ( auto iter_node = new_clique.beginSafe();
               iter_node != new_clique.endSafe(); ++iter_node ) {
           try {
             __max_prime_junction_tree.addToClique ( iter.val (), *iter_node );
@@ -496,9 +495,6 @@ namespace gum {
       // copy the original graph
       __triangulated_graph = *__original_graph;
 
-      // parse all the cliques of the junction tree
-      NodeSetIterator iter_clique2;
-
       for ( auto iter_node = __junction_tree->nodes().beginSafe();
             iter_node != __junction_tree->nodes().endSafe(); ++iter_node ) {
         // for each clique, add the edges necessary to make it complete
@@ -506,7 +502,7 @@ namespace gum {
         std::vector<NodeId> clique_nodes ( clique.size() );
         unsigned int i = 0;
 
-        for ( NodeSetIterator iter_clique = clique.beginSafe();
+        for ( auto iter_clique = clique.beginSafe();
               iter_clique != clique.endSafe(); ++iter_clique, ++i )
           clique_nodes[i] = *iter_clique;
 
@@ -596,7 +592,7 @@ namespace gum {
         cliques.resize ( nei.size() / 2 );
         cliques << removable_node;
 
-        for ( NodeSetIterator iter_edges = nei.beginSafe();
+        for ( auto iter_edges = nei.beginSafe();
               iter_edges != nei.endSafe(); ++iter_edges ) {
           cliques << *iter_edges;
         }
@@ -604,15 +600,14 @@ namespace gum {
         // here recursive thinning will be applied, hence we need store the
         // fill-ins added by the current node removal
         EdgeSet& current_fill = __added_fill_ins[nb_elim];
-        NodeSetIterator iter_edges2;
         NodeId node1, node2;
 
         const NodeSet& nei = tmp_graph.neighbours ( removable_node );
 
-        for ( NodeSetIterator iter_edges1 = nei.beginSafe();
+        for ( auto iter_edges1 = nei.beginSafe();
               iter_edges1 != nei.endSafe(); ++iter_edges1 ) {
           node1 = *iter_edges1;
-          iter_edges2 = iter_edges1;
+          auto iter_edges2 = iter_edges1;
 
           for ( ++iter_edges2; iter_edges2 != nei.endSafe(); ++iter_edges2 ) {
             node2 = *iter_edges2;
@@ -630,17 +625,16 @@ namespace gum {
       // compute them, we shall compute them here
       if ( __we_want_fill_ins &&
            ! _elimination_sequence_strategy->providesFillIns() ) {
-        NodeSetIterator iter_edges2;
         NodeId node1, node2;
 
         // add edges between removable_node's neighbours in order to create
         // a clique
         const NodeSet& nei = tmp_graph.neighbours ( removable_node );
 
-        for ( NodeSetIterator iter_edges1 = nei.beginSafe();
+        for ( auto iter_edges1 = nei.beginSafe();
               iter_edges1 != nei.endSafe(); ++iter_edges1 ) {
           node1 = *iter_edges1;
-          iter_edges2 = iter_edges1;
+          auto iter_edges2 = iter_edges1;
 
           for ( ++iter_edges2; iter_edges2 != nei.endSafe(); ++iter_edges2 ) {
             node2 = *iter_edges2;
@@ -662,15 +656,14 @@ namespace gum {
       _elimination_sequence_strategy->eliminationUpdate ( removable_node );
 
       if ( ! _elimination_sequence_strategy->providesGraphUpdate() ) {
-        NodeSetIterator iter_edges2;
         NodeId node1, node2;
 
         const NodeSet& nei = tmp_graph.neighbours ( removable_node );
 
-        for ( NodeSetIterator iter_edges1 = nei.beginSafe();
+        for ( auto iter_edges1 = nei.beginSafe();
               iter_edges1 != nei.endSafe(); ++iter_edges1 ) {
           node1 = *iter_edges1;
-          iter_edges2 = iter_edges1;
+          auto iter_edges2 = iter_edges1;
 
           for ( ++iter_edges2; iter_edges2 != nei.endSafe(); ++iter_edges2 ) {
             node2 = *iter_edges2;
@@ -739,7 +732,7 @@ namespace gum {
         std::vector<NodeId> clique_nodes ( clique.size() );
         unsigned int i = 0;
 
-        for ( NodeSetIterator iter_clique = clique.beginSafe();
+        for ( auto iter_clique = clique.beginSafe();
               iter_clique != clique.endSafe(); ++iter_clique, ++i )
           clique_nodes[i] = *iter_clique;
 

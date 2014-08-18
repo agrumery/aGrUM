@@ -174,9 +174,8 @@
   while ( ! nodeFIFO.empty() ) {
     current=nodeFIFO.front();nodeFIFO.popFront();
 
-    const gum::NodeSet& set=g.children( current );
-    for ( gum::NodeSet::const_iterator_safe ite=set.beginSafe();ite!=set.endSafe();++ite ) {
-        gum::NodeId new_one=*ite;
+    const gum::NodeSet& set=;
+    for ( const auto new_one : g.children( current )) {
         if ( mark[new_one]!=0 ) continue; // if this node is already marked, continue
         mark[new_one]=current;
         if ( new_one==n2 ) break; // if we reach n2, stop.
@@ -539,9 +538,9 @@ namespace gum {
   typedef Set<Edge> EdgeSet;
   typedef Set<Arc> ArcSet;
 
-  typedef ArcSet::const_iterator_safe  ArcSetIterator;
-  typedef EdgeSet::const_iterator_safe EdgeSetIterator;
-  typedef NodeSet::const_iterator_safe NodeSetIterator;
+  typedef ArcSet::const_iterator  ArcSetIterator;
+  typedef EdgeSet::const_iterator EdgeSetIterator;
+  typedef NodeSet::const_iterator NodeSetIterator;
   /** @} */
 
   /** \ingroup graph_group

@@ -83,7 +83,7 @@ namespace gum {
           // check the neighbours
           const NodeSet& set = neighbours ( current );
 
-          for ( NodeSetIterator iter_neigh = set.beginSafe(); iter_neigh != set.endSafe(); ++iter_neigh ) {
+          for ( auto iter_neigh = set.beginSafe(); iter_neigh != set.endSafe(); ++iter_neigh ) {
             new_node = *iter_neigh;
 
             // avoid to check the node we are coming from
@@ -144,7 +144,7 @@ namespace gum {
   UndiGraph UndiGraph::partialUndiGraph ( NodeSet nodesSet ) {
     UndiGraph partialGraph;
 
-    for ( NodeSetIterator nodeIter = nodesSet.beginSafe(); nodeIter != nodesSet.endSafe(); ++nodeIter ) {
+    for ( auto nodeIter = nodesSet.beginSafe(); nodeIter != nodesSet.endSafe(); ++nodeIter ) {
       partialGraph.addNode ( *nodeIter );
       const NodeSet& nodeNeighbours = neighbours ( *nodeIter );
 

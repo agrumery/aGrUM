@@ -94,23 +94,19 @@ namespace gum {
 
   /// sets a new graph to be triangulated
   void DefaultEliminationSequenceStrategy::setGraph ( UndiGraph* graph,
-      const NodeProperty<Size>* modal ) {
+                                                      const NodeProperty<Size>* modal ) {
     // check that both the graph and the modalities are different from 0
     // or else that both are equal to 0
     if ( ( ! graph && modal ) || ( graph && ! modal ) ) {
       GUM_ERROR ( GraphError,
-                  "DefaultEliminationSequenceStrategy needs valid graphs and "
-                  "domain sizes" );
+                  "DefaultEliminationSequenceStrategy needs valid graphs and domain sizes" );
     }
 
     // check that each node has a domain size
-    for ( auto iter_node = graph->nodes().beginSafe(); iter_node != graph->nodes().endSafe(); ++iter_node ) {
-      if ( ! modal->exists ( *iter_node ) ) {
+    for ( const auto node : graph->nodes() )
+      if ( ! modal->exists ( node ) )
         GUM_ERROR ( GraphError,
-                    "DefaultEliminationSequenceStrategy needs  "
-                    "domain sizes" );
-      }
-    }
+                    "DefaultEliminationSequenceStrategy needs domain sizes" );
 
     // avoid empty modifications
     if ( ( graph != __graph ) || ( modal != __modalities ) ) {
@@ -125,14 +121,15 @@ namespace gum {
         // compute the log of the modalities
         __log_modalities.resize ( __graph->sizeNodes() / 2 );
 
-        for ( auto iter_node = graph->nodes().beginSafe(); iter_node != graph->nodes().endSafe(); ++iter_node ) {
-          __log_modalities.insert ( *iter_node, log ( ( *modal ) [*iter_node] ) );
-        }
+        for ( const auto node : graph->nodes() )
+          __log_modalities.insert ( node, log ( ( *modal ) [node] ) );
 
         // creation du simplicial set
-        __simplicial_set = new
-        SimplicialSet ( __graph, &__log_modalities, &__log_weights,
-                        __simplicial_ratio, __simplicial_threshold );
+        __simplicial_set = new SimplicialSet ( __graph,
+                                               &__log_modalities,
+                                               &__log_weights,
+                                               __simplicial_ratio,
+                                               __simplicial_threshold );
 
         __simplicial_set->setFillIns ( __provide_fill_ins );
       }
@@ -171,19 +168,15 @@ namespace gum {
       return __simplicial_set->bestQuasiSimplicialNode();
     else {
       // here: select the node through Kjaerulff's heuristic
-      NodeProperty< float >::const_iterator_safe iter_heuristic =
-        __log_weights.beginSafe();
+      auto iter_heuristic = __log_weights.begin();
 
-      if ( iter_heuristic == __log_weights.endSafe() ) {
+      if ( iter_heuristic == __log_weights.end() )
         GUM_ERROR ( NotFound, "there exists no more node to eliminate" );
-      }
 
       float min_weight = iter_heuristic.val ();
-
       NodeId removable_node = iter_heuristic.key();
 
-      for ( ++iter_heuristic; iter_heuristic != __log_weights.endSafe();
-            ++iter_heuristic )
+      for ( ++iter_heuristic; iter_heuristic != __log_weights.end(); ++iter_heuristic )
         if ( iter_heuristic.val () < min_weight ) {
           removable_node = iter_heuristic.key();
           min_weight = iter_heuristic.val ();
@@ -243,7 +236,7 @@ namespace gum {
   DefaultEliminationSequenceStrategy*
   DefaultEliminationSequenceStrategy::newFactory() const {
     return new DefaultEliminationSequenceStrategy ( __simplicial_ratio,
-           __simplicial_threshold );
+                                                    __simplicial_threshold );
   }
 
 

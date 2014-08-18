@@ -132,7 +132,7 @@ namespace gum {
     // means that C_j contains C_i. Hence, we should remove C_i, and link all of
     // its neighbours to C_j. These links will be marked to true as no such
     // neighbour can be included in C_j (and conversely).
-    NodeSetIterator iter;
+    //NodeSetIterator iter;
 
     for ( unsigned int i = elim_order.size() - 1; i < elim_order.size(); --i ) {
       NodeId C_i = i;
@@ -141,11 +141,7 @@ namespace gum {
       // search for C_j such that |C_j| = [C_i| + 1
       NodeId C_j = C_i;
 
-      const NodeSet& nei = __junction_tree.neighbours ( C_i );
-
-      for ( iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) {
-        NodeId C_jj = *iter;
-
+      for ( const auto C_jj : __junction_tree.neighbours ( C_i ) )
         if ( ( i > C_jj ) && ! mark[Edge ( C_i, C_jj )] &&
              ( __junction_tree.clique ( C_jj ).size() == card_C_i + 1 ) ) {
           // ok, here we found a parent such that |C_jj| = [C_i| + 1
@@ -153,15 +149,13 @@ namespace gum {
           __junction_tree.eraseEdge ( Edge ( C_i, C_j ) );
           break;
         }
-      }
+
 
       // if we found a C_j, link the neighbours of C_i to C_j
       if ( C_j != C_i ) {
-        const NodeSet& nei = __junction_tree.neighbours ( C_i );
-
-        for ( iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) {
-          __junction_tree.addEdge ( C_j, *iter );
-          mark.insert ( Edge ( C_j, *iter ), true );
+        for ( const auto nei : __junction_tree.neighbours ( C_i ) ) {
+          __junction_tree.addEdge ( C_j, nei );
+          mark.insert ( Edge ( C_j, nei ), true );
         }
 
         substitution[i] = C_j;

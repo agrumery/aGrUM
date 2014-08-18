@@ -58,10 +58,9 @@ namespace gum {
           ISignaler ( s ) {
           GUM_CONS_CPY ( MAKE_NAME ( BasicSignaler ) );
 
-          for ( ConnectorIterator it = _connectors.beginSafe ();
-                it != _connectors.endSafe (); ++it ) {
-            ( *it )->target()->attachSignal__ ( this );
-            _connectors.pushBack ( ( *it )->clone() );
+          for ( const auto & connector :  _connectors ) {
+            connector->target()->attachSignal__ ( this );
+            _connectors.pushBack ( connector->clone() );
           }
         }
 
@@ -70,10 +69,9 @@ namespace gum {
         virtual ~MAKE_NAME ( BasicSignaler ) () {
           GUM_DESTRUCTOR ( MAKE_NAME ( BasicSignaler ) );
 
-          for ( ConnectorIterator it = _connectors.rbeginSafe ();
-                it != _connectors.rendSafe(); --it ) {
-            ( *it )->target()->detachSignal__ ( this );
-            delete *it;
+          for ( const auto & connector : _connectors ) {
+            connector->target()->detachSignal__ ( this );
+            delete connector;
           }
 
           _connectors.clear();
@@ -85,7 +83,7 @@ namespace gum {
 
 
         void detach ( Listener* target ) {
-          for ( ConnectorIterator it = _connectors.rbeginSafe ();
+          for ( ConnectorIterator it = _connectors.reginSafe (); // safe iterator needed here
                 it != _connectors.rendSafe (); --it ) {
             if ( ( *it )->target() == target ) {
               delete *it;
@@ -102,18 +100,16 @@ namespace gum {
         friend class Listener;
 
         void duplicateTarget ( const Listener* oldtarget, Listener* newtarget ) {
-          for ( ConnectorIterator it = _connectors.beginSafe ();
-                it != _connectors.endSafe (); ++it ) {
-            if ( ( *it )->target() == oldtarget ) {
-              _connectors.pushBack ( ( *it )->duplicate ( newtarget ) );
+          for ( const auto & connector : _connectors )
+            if ( connector->target() == oldtarget ) {
+              _connectors.pushBack ( connector->duplicate ( newtarget ) );
             }
-          }
         }
 
         void detachFromTarget ( Listener* target ) {
           ConnectorIterator itprev;
 
-          for ( ConnectorIterator it = _connectors.rbeginSafe ();
+          for ( ConnectorIterator it = _connectors.rbeginSafe (); // safe iterator needed here
                 it != _connectors.rendSafe (); ) {
             itprev = it; --it;
 
@@ -229,9 +225,8 @@ namespace gum {
 
 
       INLINE void operator() ( const void* src , LIST_DECL_ARGS ) {
-        for ( ConnectorIterator it = this->_connectors.beginSafe ();
-              it != this->_connectors.endSafe (); ++it ) {
-          ( *it )->notify ( src, LIST_ARGS );
+        for ( const auto & connector : this->_connectors ) {
+          connector->notify ( src, LIST_ARGS );
         }
       }
 

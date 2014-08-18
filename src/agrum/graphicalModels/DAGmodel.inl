@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief  Interface-like class for representing basic functionalities for a IBayesNet.
+ * @brief  Interface-like class encapsulating basic functionalities for a IBayesNet.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -70,27 +70,27 @@ namespace gum {
 
 
   INLINE
-  const DAG::NodeIteratorSafe
-  DAGmodel::beginNodesSafe() const {
-    return dag().beginSafe();
+  const DAG::NodeIterator
+  DAGmodel::beginNodes() const { // deprecated
+    return dag().begin();
   }
 
   INLINE
-  const DAG::NodeIteratorSafe
-  DAGmodel::endNodesSafe () const {
-    return dag().endSafe();
+  const DAG::NodeIterator
+  DAGmodel::endNodes () const {// deprecated
+    return dag().end();
   }
 
   INLINE
   const DAG::ArcIterator
-  DAGmodel::beginArcs() const {
-    return dag().arcs().beginSafe();
+  DAGmodel::beginArcs() const {// deprecated
+    return dag().arcs().begin();
   }
 
   INLINE
   const DAG::ArcIterator&
-  DAGmodel::endArcs() const {
-    return dag().arcs().endSafe();
+  DAGmodel::endArcs() const {// deprecated
+    return dag().arcs().end();
   }
 
 
@@ -110,8 +110,8 @@ namespace gum {
   DAGmodel::log10DomainSize ( void ) const {
     double dSize = 0.0;
 
-    for ( auto iter_node = nodes().beginSafe(); iter_node != nodes().endSafe (); ++iter_node ) {
-      dSize += log10 ( variable ( *iter_node ).domainSize() );
+    for ( const auto node : nodes() ) {
+      dSize += log10 ( variable ( node ).domainSize() );
     }
 
     return dSize;
@@ -122,8 +122,8 @@ namespace gum {
   DAGmodel::completeInstantiation ( Instantiation& I ) const {
     I.clear();
 
-    for ( DAG::NodeIteratorSafe node_iter = dag().beginSafe(); node_iter != dag().endSafe(); ++node_iter )
-      I << variable ( *node_iter );
+    for ( const auto node : dag() )
+      I << variable ( node );
   }
 
   INLINE

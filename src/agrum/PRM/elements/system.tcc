@@ -215,7 +215,7 @@ namespace gum {
         factory.startParentsDeclaration ( elt_name.str() );
         const NodeSet& parents = instance.type().dag().parents ( ( * ( iter.val() ) ).id() );
 
-        for ( NodeSetIterator arc = parents.beginSafe(); arc != parents.endSafe(); ++arc ) {
+        for ( auto arc = parents.beginSafe(); arc != parents.endSafe(); ++arc ) {
           switch ( instance.type().get ( *arc ).elt_type() ) {
             case ClassElement<GUM_SCALAR>::prm_aggregate:
             case ClassElement<GUM_SCALAR>::prm_attribute: {
@@ -265,7 +265,7 @@ namespace gum {
       const DAG& dag = instance.type().dag();
       const NodeSet& parents = dag.parents ( attr.id() );
 
-      for ( NodeSetIterator parent = parents.beginSafe(); parent != parents.endSafe(); ++parent ) {
+      for ( auto parent = parents.beginSafe(); parent != parents.endSafe(); ++parent ) {
         switch ( instance.type().get ( *parent ).elt_type() ) {
           case ClassElement<GUM_SCALAR>::prm_aggregate:
           case ClassElement<GUM_SCALAR>::prm_attribute: {
