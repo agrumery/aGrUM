@@ -68,7 +68,7 @@ namespace gum {
         GUM_CONSTRUCTOR ( O3prmReader );
         __parseDone = false;
         __prmTake = false;
-        __parser = 0;
+        __parser = nullptr;
       }
 
 
@@ -77,7 +77,8 @@ namespace gum {
         GUM_DESTRUCTOR ( O3prmReader );
 
         if ( __parseDone )
-          delete __parser;
+          if (__parser !=nullptr)
+            delete __parser;
 
         if ( ! __prmTake )
           delete __factory.prm();

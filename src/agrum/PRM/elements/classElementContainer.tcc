@@ -108,8 +108,6 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     void
     ClassElementContainer<GUM_SCALAR>::setOutputNode( const ClassElement<GUM_SCALAR>& elt, bool b ) {
-      GUM_TRACE_VAR( name() );
-
       if( not exists( elt.safeName() ) ) {
         GUM_ERROR( NotFound, "<" + elt.safeName() + "> is not in <" + name() + ">" );
       } else if( ClassElement<GUM_SCALAR>::isAttribute( elt ) or ClassElement<GUM_SCALAR>::isAggregate( elt ) ) {

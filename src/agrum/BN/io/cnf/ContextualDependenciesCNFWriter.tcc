@@ -197,11 +197,11 @@ namespace gum {
             while ( ! ( orderStruct.begin().val() )->empty() ) {
               delete orderStruct.begin().val()->begin().val()->first;
               delete orderStruct.begin().val()->begin().val()->second;
-              ( orderStruct.begin().val () )->erase ( ( orderStruct.begin().val() )->beginSafe() ); // safe iterator needed here
+              ( orderStruct.begin().val () )->erase ( ( orderStruct.begin().val() )->beginSafe() );// safe iterator needed here
             }
 
             delete orderStruct.begin().val();
-            orderStruct.erase ( orderStruct.beginSafe() ); // safe iterator needed here
+            orderStruct.erase ( orderStruct.beginSafe() );// safe iterator needed here
           }
         }
 
@@ -234,11 +234,11 @@ namespace gum {
         }
 
         delete ( itpvall.val() );
-        ( itvar.val() )->erase ( itvar.val()->beginSafe() ); // safe iterator needed here
+        ( itvar.val() )->erase ( itvar.val()->beginSafe() );// safe iterator needed here
       }
 
       delete ( itvar.val() );
-      cptparamval.erase ( cptparamval.beginSafe() ); // safe iterator needed here
+      cptparamval.erase ( cptparamval.beginSafe() );// safe iterator needed here
     }
 
     clausstr << str2.str();
@@ -428,7 +428,7 @@ namespace gum {
             while ( ! ( orderStruct.begin().val() )->empty() ) {
               delete orderStruct.begin().val()->begin().val()->first;
               delete orderStruct.begin().val()->begin().val()->second;
-              ( orderStruct.begin().val() )->erase ( orderStruct.begin().val()->beginSafe() ); // safe iterator needed here
+              ( orderStruct.begin().val() )->erase ( orderStruct.begin().val()->beginSafe() );// safe iterator needed here
             }
 
             delete orderStruct.begin().val();
@@ -458,19 +458,19 @@ namespace gum {
 
             str2  << " 0\n"; clause++;
             delete ( *itseqv );
-            ( *itpv )->erase ( ( *itpv )->beginSafe() ); // safe iterator needed here
+            ( *itpv )->erase ( ( *itpv )->beginSafe() );// safe iterator needed here
           }
 
           delete ( *itpv );
-          ( itpvall.val() )->erase ( itpvall.val()->beginSafe() ); // safe iterator needed here
+          ( itpvall.val() )->erase ( itpvall.val()->beginSafe() );// safe iterator needed here
         }
 
         delete ( itpvall.val() );
-        ( itvar.val() )->erase ( itvar.val()->beginSafe() ); // safe iterator needed here
+        ( itvar.val() )->erase ( itvar.val()->beginSafe() );// safe iterator needed here
       }
 
       delete ( itvar.val() );
-      cptparamval.erase ( cptparamval.beginSafe() ); // safe iterator needed here
+      cptparamval.erase ( cptparamval.beginSafe() );// safe iterator needed here
     }
 
 

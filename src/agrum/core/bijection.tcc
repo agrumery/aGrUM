@@ -20,7 +20,7 @@
 /** @file
  * @brief Class providing generic double hash tables
  *
- * @author Jean-Philippe DUBUS
+ * @author Jean-Philippe DUBUS, Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 
@@ -29,7 +29,7 @@
 
 namespace gum {
 
-  
+
   /* =========================================================================== */
   /* ===                      BIJECTION SAFE ITERATORS                       === */
   /* =========================================================================== */
@@ -51,7 +51,7 @@ namespace gum {
     GUM_CONSTRUCTOR( BijectionIteratorSafe );
   }
 
-  
+
   /// Constructor
   template <typename T1, typename T2>
   template <typename Alloc> INLINE
@@ -61,7 +61,7 @@ namespace gum {
     GUM_CONSTRUCTOR( BijectionIteratorSafe );
   }
 
-  
+
   /// Copy constructor
   template <typename T1, typename T2> INLINE
   BijectionIteratorSafe<T1,T2>::BijectionIteratorSafe
@@ -70,7 +70,7 @@ namespace gum {
     GUM_CONS_CPY( BijectionIteratorSafe );
   }
 
-  
+
   /// move constructor
   template <typename T1, typename T2> INLINE
   BijectionIteratorSafe<T1,T2>::BijectionIteratorSafe
@@ -78,7 +78,7 @@ namespace gum {
     __iter { std::move ( from.__iter ) } {
     GUM_CONS_MOV( BijectionIteratorSafe );
   }
-  
+
 
   /// Destructor
   template <typename T1, typename T2> INLINE
@@ -96,7 +96,7 @@ namespace gum {
     return *this;
   }
 
-  
+
   /// move operator
   template <typename T1, typename T2> INLINE
   BijectionIteratorSafe<T1,T2>&
@@ -106,7 +106,7 @@ namespace gum {
     return *this;
   }
 
-  
+
   /// Go to the next association (if exists)
   template <typename T1, typename T2> INLINE
   BijectionIteratorSafe<T1,T2>&
@@ -115,8 +115,8 @@ namespace gum {
     return *this;
   }
 
-  
-  /// moves the iterator by nb elements 
+
+  /// moves the iterator by nb elements
   template <typename T1, typename T2> INLINE
   BijectionIteratorSafe<T1,T2>&
   BijectionIteratorSafe<T1,T2>::operator+=( unsigned int nb ) noexcept {
@@ -124,7 +124,7 @@ namespace gum {
     return *this;
   }
 
-  
+
   /// returns a new iterator
   template <typename T1, typename T2> INLINE
   BijectionIteratorSafe<T1,T2>
@@ -132,7 +132,7 @@ namespace gum {
     return BijectionIteratorSafe<T1,T2> { *this } += nb;
   }
 
-  
+
   /// Comparison of iterators
   template <typename T1, typename T2> INLINE
   bool BijectionIteratorSafe<T1,T2>::operator!=
@@ -187,7 +187,7 @@ namespace gum {
     GUM_CONSTRUCTOR( BijectionIterator );
   }
 
-  
+
   /// Constructor
   template <typename T1, typename T2>
   template <typename Alloc> INLINE
@@ -197,7 +197,7 @@ namespace gum {
     GUM_CONSTRUCTOR( BijectionIterator );
   }
 
-  
+
   /// Copy constructor
   template <typename T1, typename T2> INLINE
   BijectionIterator<T1,T2>::BijectionIterator
@@ -206,7 +206,7 @@ namespace gum {
     GUM_CONS_CPY( BijectionIterator );
   }
 
-  
+
   /// move constructor
   template <typename T1, typename T2> INLINE
   BijectionIterator<T1,T2>::BijectionIterator
@@ -214,7 +214,7 @@ namespace gum {
     __iter { std::move ( from.__iter ) } {
     GUM_CONS_MOV( BijectionIterator );
   }
-  
+
 
   /// Destructor
   template <typename T1, typename T2> INLINE
@@ -232,7 +232,7 @@ namespace gum {
     return *this;
   }
 
-  
+
   /// move operator
   template <typename T1, typename T2> INLINE
   BijectionIterator<T1,T2>&
@@ -242,7 +242,7 @@ namespace gum {
     return *this;
   }
 
-  
+
   /// Go to the next association (if exists)
   template <typename T1, typename T2> INLINE
   BijectionIterator<T1,T2>&
@@ -251,8 +251,8 @@ namespace gum {
     return *this;
   }
 
-  
-  /// moves the iterator by nb elements 
+
+  /// moves the iterator by nb elements
   template <typename T1, typename T2> INLINE
   BijectionIterator<T1,T2>&
   BijectionIterator<T1,T2>::operator+=( unsigned int nb ) noexcept {
@@ -260,7 +260,7 @@ namespace gum {
     return *this;
   }
 
-  
+
   /// returns a new iterator
   template <typename T1, typename T2> INLINE
   BijectionIterator<T1,T2>
@@ -268,7 +268,7 @@ namespace gum {
     return BijectionIterator<T1,T2> { *this } += nb;
   }
 
-  
+
   /// Comparison of iterators
   template <typename T1, typename T2> INLINE
   bool BijectionIterator<T1,T2>::operator!=
@@ -300,7 +300,7 @@ namespace gum {
   }
 
 
-  
+
 
 
   /* =========================================================================== */
@@ -315,7 +315,7 @@ namespace gum {
               ( BijectionIteratorStaticEnd::endSafe4Statics() ) );
   }
 
-  
+
   // returns the end iterator for other classes' statics
   template <typename T1, typename T2, typename Alloc, bool Gen>
   const BijectionIterator<T1,T2>&
@@ -324,7 +324,7 @@ namespace gum {
               ( BijectionIteratorStaticEnd::end4Statics() ) );
   }
 
-  
+
   /// a function that performs a complete copy of another bijection
   template <typename T1, typename T2, typename Alloc, bool Gen>
   template <typename OtherAlloc> INLINE
@@ -366,11 +366,11 @@ namespace gum {
     endSafe4Statics();
   }
 
-  
+
   /// initializer list constructor
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
   BijectionImplementation<T1,T2,Alloc,Gen>::BijectionImplementation
-  ( std::initializer_list< std::pair<T1,T2> > list ) :  
+  ( std::initializer_list< std::pair<T1,T2> > list ) :
     __firstToSecond ( list.size () / 2, true, false ),
     __secondToFirst ( list.size () / 2, true, false ) {
     GUM_CONSTRUCTOR( BijectionImplementation );
@@ -383,8 +383,8 @@ namespace gum {
     end4Statics();
     endSafe4Statics();
   }
-  
-    
+
+
   /// Copy constructor
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
   BijectionImplementation<T1,T2,Alloc,Gen>::BijectionImplementation
@@ -394,7 +394,7 @@ namespace gum {
     GUM_CONS_CPY( BijectionImplementation );
     __copy( toCopy.__firstToSecond );
   }
-  
+
 
   /// Generalized copy constructor
   template <typename T1, typename T2, typename Alloc, bool Gen>
@@ -416,7 +416,7 @@ namespace gum {
     __secondToFirst ( std::move ( from.__secondToFirst ) ) {
     GUM_CONS_MOV( BijectionImplementation );
   }
-  
+
 
   /// destructor
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
@@ -424,7 +424,7 @@ namespace gum {
     GUM_DESTRUCTOR( BijectionImplementation );
   }
 
-  
+
   /// removes all the associations from the bijection
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
   void BijectionImplementation<T1,T2,Alloc,Gen>::clear () {
@@ -453,7 +453,7 @@ namespace gum {
     return *this;
   }
 
-  
+
   /// Generalized copy operator
   template <typename T1, typename T2, typename Alloc, bool Gen>
   template <typename OtherAlloc> INLINE
@@ -469,7 +469,7 @@ namespace gum {
     return *this;
   }
 
-  
+
   /// move operator
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
   BijectionImplementation<T1,T2,Alloc,Gen>&
@@ -496,7 +496,7 @@ namespace gum {
     return BijectionIterator<T1,T2> { *this };
   }
 
-  
+
   /// returns the iterator at the beginning of the bijection
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
   typename BijectionImplementation<T1,T2,Alloc,Gen>::const_iterator
@@ -512,7 +512,7 @@ namespace gum {
     return *( reinterpret_cast<const BijectionIterator<T1,T2>*>
               ( BijectionIteratorStaticEnd::__BijectionIterEnd ) );
   }
-  
+
 
   /// returns the iterator to the end of the bijection
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
@@ -530,7 +530,7 @@ namespace gum {
     return BijectionIteratorSafe<T1,T2> { *this };
   }
 
-  
+
   /// returns the iterator at the beginning of the bijection
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
   typename BijectionImplementation<T1,T2,Alloc,Gen>::const_iterator_safe
@@ -546,7 +546,7 @@ namespace gum {
     return *( reinterpret_cast<const BijectionIteratorSafe<T1,T2>*>
               ( BijectionIteratorStaticEnd::__BijectionIterEndSafe ) );
   }
-  
+
 
   /// returns the iterator to the end of the bijection
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
@@ -555,7 +555,7 @@ namespace gum {
     return *( reinterpret_cast<const BijectionIteratorSafe<T1,T2>*>
               ( BijectionIteratorStaticEnd::__BijectionIterEndSafe ) );
   }
-  
+
 
   /// returns the value associated to the element passed in argument
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
@@ -564,7 +564,7 @@ namespace gum {
     return *( __secondToFirst[second] );
   }
 
-  
+
   /// returns the value associated to the element passed in argument
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
   const T2&
@@ -614,7 +614,7 @@ namespace gum {
     return val1;
   }
 
-  
+
   /// inserts a new association in the bijection
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
   typename BijectionImplementation<T1,T2,Alloc,Gen>::HashTable12::value_type*
@@ -640,7 +640,7 @@ namespace gum {
     return val1;
   }
 
-  
+
   /** @brief Same method as first, but if the value is not found, a default
    * value is inserted into the bijection */
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
@@ -678,7 +678,7 @@ namespace gum {
     __insert( std::move ( first ), std::move ( second ) );
   }
 
-  
+
   /// emplace a new element in the bijection
   template <typename T1, typename T2, typename Alloc, bool Gen>
   template <typename... Args> INLINE
@@ -777,7 +777,7 @@ namespace gum {
 
 
 
-  
+
 
   /* =========================================================================== */
   /* ===                  SCALAR BIJECTION IMPLEMENTATION                    === */
@@ -791,7 +791,7 @@ namespace gum {
               ( BijectionIteratorStaticEnd::endSafe4Statics() ) );
   }
 
-  
+
   // returns the end iterator for other classes' statics
   template <typename T1, typename T2, typename Alloc>
   const BijectionIterator<T1,T2>&
@@ -818,11 +818,11 @@ namespace gum {
     endSafe4Statics();
   }
 
-  
+
   /// initializer list constructor
   template <typename T1, typename T2, typename Alloc> INLINE
   BijectionImplementation<T1,T2,Alloc,true>::BijectionImplementation
-  ( std::initializer_list< std::pair<T1,T2> > list ) :  
+  ( std::initializer_list< std::pair<T1,T2> > list ) :
     __firstToSecond ( list.size () / 2, true, false ),
     __secondToFirst ( list.size () / 2, true, false ) {
     GUM_CONSTRUCTOR( BijectionImplementation );
@@ -835,7 +835,7 @@ namespace gum {
     end4Statics();
     endSafe4Statics();
   }
-  
+
 
   /// a function that performs a complete copy of another bijection
   template <typename T1, typename T2, typename Alloc>
@@ -1001,7 +1001,7 @@ namespace gum {
   ( const BijectionImplementation<T1,T2,OtherAlloc,true>& toCopy ) {
     clear();
     __copy( toCopy.__firstToSecond );
- 
+
     // note that __iter_end is actually a constant, whatever we add/remove
     // to/from __firstToSecond. As a consequence, it need not be updated
     // after __copy
@@ -1080,7 +1080,7 @@ namespace gum {
   void BijectionImplementation<T1,T2,Alloc,true>::insert( T1 first, T2 second ) {
     __insert( first,second );
   }
-  
+
 
   /// emplace a new element in the bijection
   template <typename T1, typename T2, typename Alloc>
@@ -1215,7 +1215,7 @@ namespace gum {
   // ============================================================================
 
   /// Default constructor: creates a bijection without any association
-  template <typename T1, typename T2, typename Alloc> INLINE 
+  template <typename T1, typename T2, typename Alloc> INLINE
   Bijection<T1,T2,Alloc>::Bijection ( Size size,
                                       bool resize_policy ) :
   BijectionImplementation<T1,T2,Alloc,
@@ -1226,7 +1226,7 @@ namespace gum {
 
 
   /// initializer list constructor
-  template <typename T1, typename T2, typename Alloc> INLINE 
+  template <typename T1, typename T2, typename Alloc> INLINE
   Bijection<T1,T2,Alloc>::Bijection
   ( std::initializer_list< std::pair<T1,T2> > list ) :
   BijectionImplementation<T1,T2,Alloc,
@@ -1235,9 +1235,9 @@ namespace gum {
     GUM_CONSTRUCTOR ( Bijection );
   }
 
-    
+
   /// Copy constructor
-  template <typename T1, typename T2, typename Alloc> INLINE 
+  template <typename T1, typename T2, typename Alloc> INLINE
   Bijection<T1,T2,Alloc>::Bijection ( const Bijection<T1,T2,Alloc>& toCopy ) :
   BijectionImplementation<T1,T2,Alloc,
                           std::is_scalar<T1>::value &&
@@ -1248,7 +1248,7 @@ namespace gum {
 
   /// Generalized copy constructor
   template <typename T1, typename T2, typename Alloc>
-  template <typename OtherAlloc> INLINE 
+  template <typename OtherAlloc> INLINE
   Bijection<T1,T2,Alloc>::Bijection ( const Bijection<T1,T2,OtherAlloc>& toCopy ) :
   BijectionImplementation<T1,T2,Alloc,
                           std::is_scalar<T1>::value &&
@@ -1258,7 +1258,7 @@ namespace gum {
 
 
   /// move constructor
-  template <typename T1, typename T2, typename Alloc> INLINE 
+  template <typename T1, typename T2, typename Alloc> INLINE
   Bijection<T1,T2,Alloc>::Bijection( Bijection<T1,T2,Alloc>&& from ) noexcept :
   BijectionImplementation<T1,T2,Alloc,
                           std::is_scalar<T1>::value &&
@@ -1268,14 +1268,14 @@ namespace gum {
 
 
   /// destructor
-  template <typename T1, typename T2, typename Alloc> INLINE 
+  template <typename T1, typename T2, typename Alloc> INLINE
   Bijection<T1,T2,Alloc>::~Bijection () {
     GUM_DESTRUCTOR ( Bijection );
   }
-    
+
 
   /// copy operator
-  template <typename T1, typename T2, typename Alloc> INLINE 
+  template <typename T1, typename T2, typename Alloc> INLINE
   Bijection<T1,T2,Alloc>&
   Bijection<T1,T2,Alloc>::operator= ( const Bijection<T1,T2,Alloc>& toCopy ) {
     Implementation::operator= ( toCopy );
@@ -1285,21 +1285,21 @@ namespace gum {
 
   /// generalized copy operator
   template <typename T1, typename T2, typename Alloc>
-  template <typename OtherAlloc> INLINE 
+  template <typename OtherAlloc> INLINE
   Bijection<T1,T2,Alloc>&
   Bijection<T1,T2,Alloc>::operator= ( const Bijection<T1,T2,OtherAlloc>& toCopy ) {
     Implementation::operator= ( toCopy );
     return *this;
   }
-    
+
   /// move operator
-  template <typename T1, typename T2, typename Alloc> INLINE 
+  template <typename T1, typename T2, typename Alloc> INLINE
   Bijection<T1,T2,Alloc>&
   Bijection<T1,T2,Alloc>::operator= ( Bijection<T1,T2,Alloc>&& bij ) {
     Implementation::operator= ( std::move ( bij ) );
     return *this;
   }
-    
+
 
   /// for friendly displaying the content of bijections
   template <typename T1, typename T2, typename Alloc>

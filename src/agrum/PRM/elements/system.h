@@ -212,7 +212,7 @@ namespace gum {
         /// @{
 
         /// Iterator over the Instance of this System.
-        typedef typename NodeProperty<Instance<GUM_SCALAR>*>::iterator_safe iterator;
+        typedef typename NodeProperty<Instance<GUM_SCALAR>*>::iterator iterator;
 
         /// Returns an iterator over the instances in this system.
         iterator begin();
@@ -222,7 +222,7 @@ namespace gum {
         const iterator& end();
 
         /// Constant Iterator over the Instance of this System.
-        typedef typename NodeProperty<Instance<GUM_SCALAR>*>::const_iterator_safe const_iterator;
+        typedef typename NodeProperty<Instance<GUM_SCALAR>*>::const_iterator const_iterator;
 
         /// Returns a constant iterator over the instances in this system.
         const_iterator begin() const;
@@ -232,7 +232,7 @@ namespace gum {
         const const_iterator& end() const;
 
         /// Iterator over the Instance in an array in this System.
-        typedef typename Sequence<Instance<GUM_SCALAR>*>::iterator_safe array_iterator;
+        typedef typename Sequence<Instance<GUM_SCALAR>*>::iterator array_iterator;
 
         /// Returns an iterator at the beginning of the Sequence of Instance
         /// in the array named a;
@@ -245,7 +245,7 @@ namespace gum {
         const array_iterator& end ( const std::string& a );
 
         /// Iterator over the Instance in an array in this System.
-        typedef typename Sequence<Instance<GUM_SCALAR>*>::const_iterator_safe const_array_iterator;
+        typedef typename Sequence<Instance<GUM_SCALAR>*>::const_iterator const_array_iterator;
 
         /// Returns an iterator at the beginning of the Sequence of Instance
         /// in the array named a;
