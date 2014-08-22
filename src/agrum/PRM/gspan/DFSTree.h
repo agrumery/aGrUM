@@ -39,7 +39,7 @@
 
 #include <agrum/graphs/diGraph.h>
 
-#include <agrum/graphs/partialOrderedTriangulation.h>
+#include <agrum/graphs/triangulations/partialOrderedTriangulation.h>
 
 #include <agrum/PRM/gspan/interfaceGraph.h>
 #include <agrum/PRM/gspan/pattern.h>

@@ -370,19 +370,19 @@ namespace gum {
 
       if ( lvl ) {
         for ( std::vector<std::string>::iterator g = l[lvl].g.begin(); g != l[lvl].g.end(); ++g ) {
-          id = dag.insertNode();
+          id = dag.addNode();
           names.insert ( *g, id );
           nodes.push_back ( id );
         }
       }
 
       for ( std::vector<std::string>::iterator a = l[lvl].a.begin(); a != l[lvl].a.end(); ++a ) {
-        id = dag.insertNode();
+        id = dag.addNode();
         names.insert ( *a, id );
 
         for ( std::vector<NodeId>::iterator prnt = nodes.begin(); prnt != nodes.end(); ++prnt )
           if ( std::rand() < density )
-            dag.insertArc ( *prnt, names.second ( *a ) );
+            dag.addArc ( *prnt, names.second ( *a ) );
 
         nodes.push_back ( id );
       }

@@ -28,7 +28,7 @@ namespace gum {
 
 
   /// returns log2 ( gamma (x) ) for x >= 0
-  INLINE float GammaLog2::gammaLog2 ( float x ) const {
+  ALWAYS_INLINE float GammaLog2::gammaLog2 ( float x ) const {
     if ( x <= 0 )
       GUM_ERROR ( OutOfBounds,
                   "log2(gamma()) should be called with a positive argument" );
@@ -54,7 +54,7 @@ namespace gum {
 
   
   /// returns log2 ( gamma (x) ) for x >= 0
-  INLINE float GammaLog2::operator() ( float x ) const {
+  ALWAYS_INLINE float GammaLog2::operator() ( float x ) const {
     return gammaLog2 ( x );
   }
 

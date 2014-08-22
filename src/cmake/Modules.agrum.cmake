@@ -9,23 +9,23 @@ foreach(MODULE ${LIST_OF_MODULES})
   set(AGRUM_${MODULE}_TEMPLATES "")
   set(AGRUM_${MODULE}_C_SOURCES "")
   foreach(DIR ${${MODULE}_DIRS})
-    file(GLOB_RECURSE LOOP_SRC RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/${DIR}/*.cpp)
+    file(GLOB_RECURSE LOOP_SRC ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/${DIR}/*.cpp)
     set(AGRUM_${MODULE}_SOURCES ${AGRUM_${MODULE}_SOURCES} ${LOOP_SRC})
 
-    file(GLOB_RECURSE LOOP_HEADER RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/${DIR}/*.h)
+    file(GLOB_RECURSE LOOP_HEADER ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/${DIR}/*.h)
     set(AGRUM_${MODULE}_INCLUDES ${AGRUM_${MODULE}_INCLUDES} ${LOOP_HEADER})
 
-    file(GLOB_RECURSE LOOP_INLINE RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/${DIR}/*.inl)
+    file(GLOB_RECURSE LOOP_INLINE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/${DIR}/*.inl)
     set(AGRUM_${MODULE}_INLINES ${AGRUM_${MODULE}_INLINES} ${LOOP_INLINE})
 
-    file(GLOB_RECURSE LOOP_TPL RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/${DIR}/*.tpl)
+    file(GLOB_RECURSE LOOP_TPL ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/${DIR}/*.tpl)
     set(AGRUM_${MODULE}_TEMPLATES ${AGRUM_${MODULE}_TEMPLATES} ${LOOP_TPL})
   endforeach()
 endforeach()
 
 #credal networks has a special case for C files
 if (BUILD_CN OR BUILD_ALL)
-  file(GLOB_RECURSE AGRUM_CN_C_SOURCES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrsmp.c)
+  file(GLOB_RECURSE AGRUM_CN_C_SOURCES ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrsmp.c)
 endif()
 
 # we always add the BASE module

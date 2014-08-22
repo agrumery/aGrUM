@@ -35,7 +35,7 @@ namespace gum {
     _p ( P ), _q ( Q ),
     _klPQ ( 0.0 ), _klQP ( 0.0 ), _errorPQ ( 0 ), _errorQP ( 0 ),
     __difficulty ( Complexity::Heavy ), __done ( false ) {
-    __checkCompatibility(); //may throw OperationNotAlloxed
+    __checkCompatibility(); //may throw OperationNotAllowed
     GUM_CONSTRUCTOR ( KL );
 
     double diff = _p.log10DomainSize();
@@ -93,14 +93,14 @@ namespace gum {
   }
 
   template<typename GUM_SCALAR> INLINE
-  unsigned int
+  Size
   KL<GUM_SCALAR>::errorPQ() {
     _process();
     return _errorPQ;
   }
 
   template<typename GUM_SCALAR> INLINE
-  unsigned int
+  Size
   KL<GUM_SCALAR>::errorQP() {
     _process();
     return _errorQP;

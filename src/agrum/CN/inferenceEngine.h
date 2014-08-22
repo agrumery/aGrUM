@@ -29,7 +29,7 @@
 
 /// @todo virtual for all functions that MAY be one day redefined in any derived class
 
-#include <agrum/BN/algorithms/approximationScheme.h>
+#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
 #include <agrum/CN/varMod2BNsMap.h>
 #include <agrum/core/exceptions.h>
 #include <map>

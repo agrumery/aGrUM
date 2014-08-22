@@ -225,14 +225,21 @@ namespace gum {
           return false;
         }
 
-        default:
-        { GUM_ERROR ( FatalError, "unknown ClassElementContainer<GUM_SCALAR>" ); }
+        default: {
+          GUM_ERROR ( FatalError, "unknown ClassElementContainer<GUM_SCALAR>" );
+        }
       }
     }
 
     template<typename GUM_SCALAR>
     void
     Class<GUM_SCALAR>::insertArc ( const std::string& tail_name, const std::string& head_name ) {
+      addArc ( tail_name,head_name );
+    }
+
+    template<typename GUM_SCALAR>
+    void
+    Class<GUM_SCALAR>::addArc ( const std::string& tail_name, const std::string& head_name ) {
       ClassElement<GUM_SCALAR>* tail = 0;
       ClassElement<GUM_SCALAR>* head = 0;
 
@@ -254,7 +261,7 @@ namespace gum {
       }
 
       if ( not __dag.existsArc ( Arc ( tail->id(), head->id() ) ) ) {
-        __dag.insertArc ( tail->id(), head->id() );
+        __dag.addArc ( tail->id(), head->id() );
       } else {
         GUM_ERROR ( DuplicateElement, "duplicate arc" );
       }
@@ -277,7 +284,7 @@ namespace gum {
         GUM_ERROR ( DuplicateElement, "name already used by another ClassElement<GUM_SCALAR>" );
       }
 
-      elt->setId ( __dag.insertNode() );
+      elt->setId ( __dag.addNode() );
       __nodeIdMap.insert ( elt->id(), elt );
       __nameMap.insert ( elt->name(), elt );
 
@@ -329,13 +336,13 @@ namespace gum {
 
       while ( parent->type().isSubType() ) {
         child = parent->getCastDescendant();
-        child->setId ( __dag.insertNode() );
+        child->setId ( __dag.addNode() );
         __nodeIdMap.insert ( child->id(), child );
         // Only use child's safe name when adding to the name map!
         __nameMap.insert ( child->safeName(), child );
         __attributes.insert ( child );
         // Do not use Class<GUM_SCALAR>::insertArc(), child's CPF is already initialized properly
-        __dag.insertArc ( parent->id(), child->id() );
+        __dag.addArc ( parent->id(), child->id() );
         parent = child;
       }
     }
@@ -395,7 +402,7 @@ namespace gum {
 
       // Checking if we have to add cast descendant
       if ( overloader->type() != overloaded->type() ) {
-        overloader->setId ( __dag.insertNode() );
+        overloader->setId ( __dag.addNode() );
         __nodeIdMap.insert ( overloader->id(), overloader );
         __nameMap[overloader->name()] = overloader;
         __nameMap.insert ( overloader->safeName(), overloader );
@@ -449,7 +456,9 @@ namespace gum {
             seq.insert ( & ( static_cast<ReferenceSlot<GUM_SCALAR>*> ( seq.back() )->slotType().get ( ( **iter ).lastElt().safeName() ) ) );
             std::string sc_name; std::string dot = ".";
 
-            for ( Size i = 0; i < seq.size() - 1; ++i ) { sc_name += seq.atPos ( i )->name() + dot; }
+            for ( Size i = 0; i < seq.size() - 1; ++i ) {
+              sc_name += seq.atPos ( i )->name() + dot;
+            }
 
             sc_name += seq.back()->safeName();
             sc = new SlotChain<GUM_SCALAR> ( sc_name, seq );
@@ -534,19 +543,19 @@ namespace gum {
 
       while ( parent->type().super() != end->type() ) {
         child = parent->getCastDescendant();
-        child->setId ( __dag.insertNode() );
+        child->setId ( __dag.addNode() );
         __nodeIdMap.insert ( child->id(), child );
         // Only use child's safe name when adding to the name map!
         __nameMap.insert ( child->safeName(), child );
         __attributes.insert ( child );
         __addIOInterfaceFlags ( child );
         // Do not use Class<GUM_SCALAR>::insertArc(), child's CPF is already initialized properly
-        __dag.insertArc ( parent->id(), child->id() );
+        __dag.addArc ( parent->id(), child->id() );
         parent = child;
       }
 
       parent->setAsCastDescendant ( end );
-      __dag.insertArc ( parent->id(), end->id() );
+      __dag.addArc ( parent->id(), end->id() );
     }
 
     template<typename GUM_SCALAR>
@@ -794,7 +803,9 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     const Set<Class<GUM_SCALAR>*>&
-    Class<GUM_SCALAR>::extensions() const { return __extensions; }
+    Class<GUM_SCALAR>::extensions() const {
+      return __extensions;
+    }
 
     template<typename GUM_SCALAR> INLINE
     void
@@ -809,7 +820,7 @@ namespace gum {
         GUM_ERROR ( DuplicateElement, "name already used by another ClassElement<GUM_SCALAR>" );
       }
 
-      param->setId ( __dag.insertNode() );
+      param->setId ( __dag.addNode() );
       __nodeIdMap.insert ( param->id(), param );
       __nameMap.insert ( param->name(), param );
       __nameMap.insert ( param->safeName(), param );

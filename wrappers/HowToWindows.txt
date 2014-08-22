@@ -1,23 +1,25 @@
 
-- install mingw (http://sourceforge.net/projects/mingwbuilds=
-- install pythonxy (2.7.5.2)
-- install CMAKE
+- install mingw (http://sourceforge.net/projects/mingw-w64/ 4.8.x/i686/posix/dwarf/0)
+- install make (from http://sourceforge.net/projects/mingw for instance)
+- install pythonxy (last version)
+- install CMAKE (last version)
 
-- change PATH properly (a bit complex)
+- change PATH properly (a bit complex : PathEditor helps a lot)
 
-mkdir wrappers\pyAgrum
-cd wrappers\pyAgrum
-cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/pyAgrum/ -DCMAKE_VERBOSE_MAKEFILE=OFF  -DPYTHON_INCLUDE_DIR="c:\Python27\include" -DPYTHON_LIBRARY="c:\Python27\libs\python27.lib"
-make -j
+- COMPILAITON 
+python act test pyAgrum -p windows
 
-Si souci de linkage, qqchose comme
-C:\PROGRA~2\MINGW-~1\X32-48~1.1-P\mingw32\bin\G__~1.EXE   -lgomp   -shared -o _pyAgrum.pyd -Wl,--out-implib,lib_pyAgrum.dll.a -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\_pyAgrum.dir/objects.a -Wl,--no-whole-archive c:\Python27\libs\python27.lib -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -fopenmp  -Lc:\Python27\libs -lpython27
- 
- 
-==================================================================
-install pyAgrum and gumLib folder in C:\Python27\Lib\site-packages
-pip install pyparsing # (forgotten in pythonxy)
+- INSTALLATION
+python act install pyAgrum -d C:\Python27 #(or wherever python is installed)
+
+
+# if needed : maybe forgotten in some pythonxy
+pip install pyparsing 
 pip install pydot
 
+# certainly needed
 install graphviz for windows
+
+ipython notebook 
+#and go to app/pyAgrum/notebooks for some sample
 

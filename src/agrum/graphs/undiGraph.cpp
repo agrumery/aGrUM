@@ -145,12 +145,12 @@ namespace gum {
     UndiGraph partialGraph;
 
     for ( NodeSetIterator nodeIter = nodesSet.beginSafe(); nodeIter != nodesSet.endSafe(); ++nodeIter ) {
-      partialGraph.insertNode ( *nodeIter );
+      partialGraph.addNode ( *nodeIter );
       const NodeSet& nodeNeighbours = neighbours ( *nodeIter );
 
       for ( NodeSet::const_iterator_safe neighboursIter = nodeNeighbours.beginSafe(); neighboursIter != nodeNeighbours.endSafe() ; ++neighboursIter )
         if ( nodesSet.contains ( *neighboursIter ) && partialGraph.existsNode ( *neighboursIter ) )
-          partialGraph.insertEdge ( *nodeIter , *neighboursIter );
+          partialGraph.addEdge ( *nodeIter , *neighboursIter );
     }
 
     return partialGraph;
@@ -164,5 +164,3 @@ namespace gum {
 
 
 } /* namespace gum */
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

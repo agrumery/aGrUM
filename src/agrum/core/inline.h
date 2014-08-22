@@ -75,7 +75,7 @@
 #else
 #define INLINE
 #define STRONG_INLINE
-#define ALWAYS_INLINE inline
+#define ALWAYS_INLINE
 #define NEVER_INLINE
 #endif /* GUM_NO_INLINE */
 

@@ -87,7 +87,8 @@ namespace gum {
            * @brief Insert a node with the given LabelData.
            * @returns The NodeId assigned to the inserted node.
            */
-          NodeId insertNode ( LabelData& l );
+          GUM_DEPRECATED(NodeId insertNode ( LabelData& l ));
+          NodeId addNode ( LabelData& l );
 
           /// Returns the LabelData assigned to node.
           LabelData& label ( NodeId node );
@@ -126,7 +127,8 @@ namespace gum {
            * @throw OperationNotAllowed Raised if the neighborhood restriction
            *                            is not respected.
            */
-          void insertArc ( NodeId i, NodeId j, LabelData& l );
+          GUM_DEPRECATED ( void insertArc ( NodeId i, NodeId j, LabelData& l ) );
+          void addArc ( NodeId i, NodeId j, LabelData& l );
 
           /// Returns true if id is a node in this Pattern.
           bool exists ( NodeId id ) const;
@@ -225,12 +227,12 @@ namespace gum {
 
           /// A non recursive bugged version of __rec.
           bool __not_rec ( Pattern& p, Bijection<NodeId, NodeId>& node_map, NodeId u, NodeId v );
-	  
-	  
-	  // to avoid clang++ warnings
-	  using DiGraph::insertNode;
-	  using DiGraph::insertArc;
-	  using DiGraph::toDot;
+
+
+          // to avoid clang++ warnings
+          using DiGraph::addNode;
+          using DiGraph::addArc;
+          using DiGraph::toDot;
       };
 
       /**

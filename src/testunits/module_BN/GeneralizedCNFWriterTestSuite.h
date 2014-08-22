@@ -26,7 +26,7 @@
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/cnf/GeneralizedCNFWriter.h>
-#include <agrum/core/approximationPolicy/linearApproximationPolicy.h>
+#include <agrum/core/algorithms/approximationPolicy/linearApproximationPolicy.h>
 #include <testsuite_utils.h>
 
 // The graph used for the tests:

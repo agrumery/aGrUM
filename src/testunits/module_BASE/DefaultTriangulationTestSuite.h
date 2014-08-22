@@ -26,7 +26,7 @@
 #include <testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/graphs/defaultTriangulation.h>
+#include <agrum/graphs/triangulations/defaultTriangulation.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/graphs/undiGraph.h>
@@ -174,7 +174,7 @@ namespace gum_tests {
         gum::UndiGraph graph;
 
         for ( unsigned int i = 1; i <= 8; ++i )
-          graph.insertNode ( i );
+          graph.addNode ( i );
 
         createClique ( graph, c1 );
         createClique ( graph, c2 );
@@ -229,12 +229,12 @@ namespace gum_tests {
         gum::UndiGraph graph;
 
         for ( unsigned int i = 1; i <= 8; ++i )
-          graph.insertNode ( i );
+          graph.addNode ( i );
 
         for ( unsigned int i = 1; i <= 7; ++i )
-          graph.insertEdge ( i, i + 1 );
+          graph.addEdge ( i, i + 1 );
 
-        graph.insertEdge ( 8, 1 );
+        graph.addEdge ( 8, 1 );
 
         gum::NodeProperty<gum::Size> dom;
 
@@ -276,7 +276,7 @@ namespace gum_tests {
 
           for ( ++iter2; iter2 != clique.endSafe(); ++iter2 ) {
             if ( ! graph.existsEdge ( *iter, *iter2 ) )
-              graph.insertEdge ( *iter, *iter2 );
+              graph.addEdge ( *iter, *iter2 );
           }
         }
       }
@@ -313,21 +313,21 @@ namespace gum_tests {
         gum::UndiGraph graph;
         /*
           idList.clear();
-          idList.insert(graph.insertNode());
-          idList.insert(graph.insertNode());
-          idList.insert(graph.insertNode());
-          idList.insert(graph.insertNode());
-          idList.insert(graph.insertNode());*/
+          idList.insert(graph.addNode());
+          idList.insert(graph.addNode());
+          idList.insert(graph.addNode());
+          idList.insert(graph.addNode());
+          idList.insert(graph.addNode());*/
 
-        graph.insertEdge ( idList[0], idList[2] );
-        graph.insertEdge ( idList[0], idList[3] );
-        graph.insertEdge ( idList[0], idList[1] );
-        graph.insertEdge ( idList[2], idList[4] );
-        graph.insertEdge ( idList[3], idList[4] );
-        graph.insertEdge ( idList[2], idList[3] );
-        graph.insertEdge ( idList[1], idList[3] );
-        graph.insertEdge ( idList[1], idList[4] );
-        graph.insertEdge ( idList[1], idList[2] );
+        graph.addEdge ( idList[0], idList[2] );
+        graph.addEdge ( idList[0], idList[3] );
+        graph.addEdge ( idList[0], idList[1] );
+        graph.addEdge ( idList[2], idList[4] );
+        graph.addEdge ( idList[3], idList[4] );
+        graph.addEdge ( idList[2], idList[3] );
+        graph.addEdge ( idList[1], idList[3] );
+        graph.addEdge ( idList[1], idList[4] );
+        graph.addEdge ( idList[1], idList[2] );
 
         return graph;
       }

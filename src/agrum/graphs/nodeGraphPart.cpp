@@ -136,6 +136,9 @@ namespace gum {
   }
 
   void NodeGraphPart::insertNode ( const NodeId id ) {
+    addNode ( id );
+  }
+  void NodeGraphPart::addNode ( const NodeId id ) {
     if ( id >= __bound ) {
       if ( id > __bound ) { // we have to add holes
         if ( ! __holes )

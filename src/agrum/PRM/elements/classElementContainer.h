@@ -159,7 +159,8 @@ namespace gum {
         /**
          * Add an arc between two ClassElement<GUM_SCALAR>.
          */
-        virtual void insertArc ( const std::string& tail, const std::string& head ) = 0;
+        GUM_DEPRECATED ( virtual void insertArc ( const std::string& tail, const std::string& head ) ) = 0 ;
+        virtual void addArc ( const std::string& tail, const std::string& head ) =0;
 
 
         /**

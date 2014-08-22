@@ -109,7 +109,7 @@ namespace gum {
         __nameMap.insert ( attr->name(), attr );
 
         while ( true ) {
-          attr->setId ( __dag.insertNode() );
+          attr->setId ( __dag.addNode() );
           __nodeIdMap.insert ( attr->id(), attr );
           __nameMap.insert ( attr->safeName(), attr );
           __attributes.insert ( attr );
@@ -121,7 +121,7 @@ namespace gum {
           }
         }
       } else if ( ClassElement<GUM_SCALAR>::isReferenceSlot ( *elt ) ) {
-        elt->setId ( __dag.insertNode() );
+        elt->setId ( __dag.addNode() );
         __nodeIdMap.insert ( elt->id(), elt );
         __referenceSlots.insert ( static_cast<ReferenceSlot<GUM_SCALAR>*> ( elt ) );
         __nameMap.insert ( elt->name(), elt );
@@ -173,8 +173,9 @@ namespace gum {
           break;
         }
 
-        default:
-        { GUM_ERROR ( FatalError, "unknown ClassElement<GUM_SCALAR> type" ); }
+        default: {
+          GUM_ERROR ( FatalError, "unknown ClassElement<GUM_SCALAR> type" );
+        }
       }
 
       return overloader->id();
@@ -184,7 +185,7 @@ namespace gum {
     void
     Interface<GUM_SCALAR>::__overloadAttribute ( Attribute<GUM_SCALAR>* overloader, Attribute<GUM_SCALAR>* overloaded ) {
       if ( overloader->type() != overloaded->type() ) {
-        overloader->setId ( __dag.insertNode() );
+        overloader->setId ( __dag.addNode() );
         __nodeIdMap.insert ( overloader->id(), overloader );
         __nameMap[overloader->name()] = overloader;
         __nameMap.insert ( overloader->safeName(), overloader );
@@ -210,7 +211,7 @@ namespace gum {
 
       while ( parent->type().super() != end->type() ) {
         child = parent->getCastDescendant();
-        child->setId ( __dag.insertNode() );
+        child->setId ( __dag.addNode() );
         __nodeIdMap.insert ( child->id(), child );
         // Only use child's safe name when adding to the name map!
         __nameMap.insert ( child->safeName(), child );
@@ -269,8 +270,9 @@ namespace gum {
           return false;
         }
 
-        default:
-        { GUM_ERROR ( FatalError, "unknown ClassElementContainer<GUM_SCALAR>" ); }
+        default: {
+          GUM_ERROR ( FatalError, "unknown ClassElementContainer<GUM_SCALAR>" );
+        }
       }
     }
 
@@ -322,6 +324,11 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     void
     Interface<GUM_SCALAR>::insertArc ( const std::string& tail, const std::string& head ) {
+      addArc ( tail,head );
+    }
+    template<typename GUM_SCALAR> INLINE
+    void
+    Interface<GUM_SCALAR>::addArc ( const std::string& tail, const std::string& head ) {
       GUM_ERROR ( OperationNotAllowed, "an Interface does not have arcs" );
     }
 
@@ -387,11 +394,15 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     const DAG&
-    Interface<GUM_SCALAR>::_dag() const { return __dag; }
+    Interface<GUM_SCALAR>::_dag() const {
+      return __dag;
+    }
 
     template<typename GUM_SCALAR> INLINE
     DAG&
-    Interface<GUM_SCALAR>::_dag() { return __dag; }
+    Interface<GUM_SCALAR>::_dag() {
+      return __dag;
+    }
 
     template<typename GUM_SCALAR> INLINE
     ClassElement<GUM_SCALAR>&

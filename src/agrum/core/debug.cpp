@@ -107,19 +107,19 @@ namespace gum {
       int widthColSizeOf = 5;
       int widthColItemsNumber = 8;
 
-      std::cerr << std::setfill ( '=' )
+      std::cout << std::setfill ( '=' )
                 << "|" << std::setw ( widthColLibelle + 2 ) << ""
                 << "|" << std::setw ( widthColSizeOf + 4 ) << ""
                 << "|" << std::setw ( widthColItemsNumber + 2 )  << ""
                 << "|" << std::setw ( widthColItemsNumber + 2 ) << ""
                 << "|" << std::endl;
-      std::cerr << std::setfill ( ' ' )
+      std::cout << std::setfill ( ' ' )
                 << "| " << std::left << std::setw ( widthColLibelle ) << "Class Name" << std::right
                 << " |   " << std::setw ( widthColSizeOf ) << "Size"
                 << " | " << std::setw ( widthColItemsNumber ) << "#Const"
                 << " | " << std::setw ( widthColItemsNumber ) << "#Dest"
                 << " |" << std::endl;
-      std::cerr << std::setfill ( '-' )
+      std::cout << std::setfill ( '-' )
                 << "|" << std::setw ( widthColLibelle + 2 ) << ""
                 << "|" << std::setw ( widthColSizeOf + 4 ) << ""
                 << "|" << std::setw ( widthColItemsNumber + 2 )  << ""
@@ -180,34 +180,34 @@ namespace gum {
       }
 
       for ( const auto iter : res ) {
-        std::cerr << iter.second << std::endl;
+        std::cout << iter.second << std::endl;
       }
 
-      std::cerr << std::setfill ( '-' );
+      std::cout << std::setfill ( '-' );
 
-      std::cerr << "|-"  << std::setw ( widthColLibelle ) << ""
+      std::cout << "|-"  << std::setw ( widthColLibelle ) << ""
                 << "-|-" << std::setw ( widthColSizeOf + 2 ) << ""
                 << "-|-" << std::setw ( widthColItemsNumber ) << ""
                 << "-|-" << std::setw ( widthColItemsNumber ) << "" << "-|"
                 << std::endl;
 
-      std::cerr << std::setfill ( ' ' );
+      std::cout << std::setfill ( ' ' );
 
       if ( nb_err == 0 ) {
-        std::cerr << "| " << std::setw ( widthColLibelle ) << "NO MEMORY LEAK !"
+        std::cout << "| " << std::setw ( widthColLibelle ) << "NO MEMORY LEAK !"
                   << " | " << std::setw ( widthColSizeOf + widthColItemsNumber * 2 + 9 ) << ""
                   << "|" << std::endl;
       } else {
-        std::cerr << "| " << std::setw ( widthColLibelle ) << "Memory leaks found " << ""
+        std::cout << "| " << std::setw ( widthColLibelle ) << "Memory leaks found " << ""
                   << " | " << std::setw ( widthColSizeOf + widthColItemsNumber * 2 - 6 ) << nb_err << " object(s)     "
                   << "|" << std::endl;
       }
 
-      std::cerr << "| " << std::setw ( widthColLibelle ) << "total "
+      std::cout << "| " << std::setw ( widthColLibelle ) << "total "
                 << " | " << std::setw ( widthColSizeOf + widthColItemsNumber * 2 - 4 ) << total_size << " octet(s)    "
                 << "|" << std::endl;
 
-      std::cerr << std::setfill ( '=' )
+      std::cout << std::setfill ( '=' )
                 << "|" << std::setw ( widthColLibelle + 2 ) << ""
                 << "|" << std::setw ( widthColSizeOf + widthColItemsNumber * 2 + 10 ) << ""
                 << "|" << std::endl;
@@ -231,6 +231,11 @@ namespace gum {
 
       __dec_creation ( "Set", "__empty_edge_set", 0, "static variable correction", 0 );
       __dec_creation ( "HashTable"  , "__empty_edge_set", 0, "static variable correction", 0 );
+
+      __dec_creation ( "Bijection", "__strings", 0, "BCell string bijection", 0 );
+      __dec_creation ( "BijectionImplementation", "__strings", 0, "BCell string bijection", 0 );
+      __dec_creation ( "HashTable", "__strings", 0, "BCell string bijection", 0 );
+      __dec_creation ( "HashTable", "__strings", 0, "BCell string bijection", 0 );
     }
 
     void __atexit ( void ) {

@@ -70,10 +70,10 @@ namespace gum {
             roots_edges.insert ( p, new Sequence<EdgeData<GUM_SCALAR>*>() );
             roots_edges[p]->insert ( *iter );
             DFSTree<GUM_SCALAR>::PatternData* data = new DFSTree<GUM_SCALAR>::PatternData ( p );
-            NodeId u = p->insertNode ( ( u_first ) ? * ( ( *iter )->l_u ) : * ( ( *iter )->l_v ) );
-            NodeId v = p->insertNode ( ( not u_first ) ? * ( ( *iter )->l_u ) : * ( ( *iter )->l_v ) );
-            p->insertArc ( u, v, label );
-            __node_map.insert ( DiGraph::insertNode(), p );
+            NodeId u = p->addNode ( ( u_first ) ? * ( ( *iter )->l_u ) : * ( ( *iter )->l_v ) );
+            NodeId v = p->addNode ( ( not u_first ) ? * ( ( *iter )->l_u ) : * ( ( *iter )->l_v ) );
+            p->addArc ( u, v, label );
+            __node_map.insert ( DiGraph::addNode(), p );
             __data.insert ( p, data );
             __roots.push_back ( __node_map.first ( p ) );
           }
@@ -99,7 +99,7 @@ namespace gum {
           // Creating the multiset of instances matching p
           seq->insert ( ( u_first ) ? ( *edge )->u : ( *edge )->v );
           seq->insert ( ( not u_first ) ? ( *edge )->u : ( *edge )->v );
-          NodeId an_id = data->iso_graph.insertNode();
+          NodeId an_id = data->iso_graph.addNode();
           data->iso_map.insert ( an_id, seq );
           degree_list.push_back ( an_id );
 
@@ -108,7 +108,7 @@ namespace gum {
             if ( iso.key() != an_id ) {
               for ( auto inst = ( iso.val() )->beginSafe(); inst != ( iso.val() )->endSafe(); ++inst ) {
                 if ( seq->exists ( *inst ) ) {
-                  data->iso_graph.insertEdge ( an_id, iso.key() );
+                  data->iso_graph.addEdge ( an_id, iso.key() );
                   break;
                 }
               }
@@ -162,7 +162,7 @@ namespace gum {
       void
       DFSTree<GUM_SCALAR>::__addChild ( Pattern& p, Pattern* child, EdgeGrowth<GUM_SCALAR>& edge_growth ) {
         // Adding child to the tree
-        NodeId node = DiGraph::insertNode();
+        NodeId node = DiGraph::addNode();
         __node_map.insert ( node, child );
         // Adding child in p's children list
         std::list<NodeId>& children = __data[&p]->children;
@@ -192,10 +192,10 @@ namespace gum {
 
         // First we check if the edge is legal
         if ( v == 0 ) {
-          v = child->insertNode ( * ( edge_growth.l_v ) );
+          v = child->addNode ( * ( edge_growth.l_v ) );
         }
 
-        child->insertArc ( edge_growth.u, v, * ( edge_growth.edge ) );
+        child->addArc ( edge_growth.u, v, * ( edge_growth.edge ) );
         // Neighborhood restriction is checked by the Pattern class
         EdgeCode& edge = child->edgeCode ( edge_growth.u, v );
 
@@ -252,7 +252,7 @@ namespace gum {
                 new_seq->insert ( match.val().second );
 
                 if ( __is_new_seq ( *new_seq, data->iso_map ) ) {
-                  id = data->iso_graph.insertNode();
+                  id = data->iso_graph.addNode();
                   data->iso_map.insert ( id, new_seq );
                 } else {
                   delete new_seq;
@@ -265,7 +265,7 @@ namespace gum {
                 Sequence<Instance<GUM_SCALAR>*>* new_seq = new Sequence<Instance<GUM_SCALAR>*> ( * ( seq.val() ) );
 
                 if ( __is_new_seq ( *new_seq, data->iso_map ) ) {
-                  id = data->iso_graph.insertNode();
+                  id = data->iso_graph.addNode();
                   data->iso_map.insert ( id, new_seq );
                 } else {
                   delete new_seq;
@@ -282,7 +282,7 @@ namespace gum {
               if ( ( *node ) != id ) {
                 for ( auto m = ( * ( data->iso_map[id] ) ).beginSafe(); m != ( * ( data->iso_map[id] ) ).endSafe(); ++m ) {
                   if ( data->iso_map[*node]->exists ( *m ) ) {
-                    data->iso_graph.insertEdge ( *node, id );
+                    data->iso_graph.addEdge ( *node, id );
                     break;
                   }
                 }
@@ -433,11 +433,15 @@ namespace gum {
 
       template<typename GUM_SCALAR> INLINE
       std::list<NodeId>&
-      DFSTree<GUM_SCALAR>::roots() { return __roots; }
+      DFSTree<GUM_SCALAR>::roots() {
+        return __roots;
+      }
 
       template<typename GUM_SCALAR> INLINE
       const std::list<NodeId>&
-      DFSTree<GUM_SCALAR>::roots() const { return __roots; }
+      DFSTree<GUM_SCALAR>::roots() const {
+        return __roots;
+      }
 
       template<typename GUM_SCALAR> INLINE
       Pattern&
@@ -594,11 +598,15 @@ namespace gum {
 
       template<typename GUM_SCALAR> INLINE
       SearchStrategy<GUM_SCALAR>&
-      DFSTree<GUM_SCALAR>::strategy() { return *__strategy; }
+      DFSTree<GUM_SCALAR>::strategy() {
+        return *__strategy;
+      }
 
       template<typename GUM_SCALAR> INLINE
       const SearchStrategy<GUM_SCALAR>&
-      DFSTree<GUM_SCALAR>::strategy() const { return *__strategy; }
+      DFSTree<GUM_SCALAR>::strategy() const {
+        return *__strategy;
+      }
 
 
 // NeighborDegreeSort

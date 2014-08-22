@@ -98,7 +98,8 @@ namespace gum {
          * @param head The head of the added arc.
          * @throw OperationNotAllowed Systematically throws an OperationNotAllowed.
          */
-        void insertArc ( const std::string& tail, const std::string& head );
+        GUM_DEPRECATED ( void insertArc ( const std::string& tail, const std::string& head ) );
+        void addArc ( const std::string& tail, const std::string& head );
 
         /// @}
         // ========================================================================

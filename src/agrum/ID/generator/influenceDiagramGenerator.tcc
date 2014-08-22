@@ -89,7 +89,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   InfluenceDiagram<GUM_SCALAR>*
   InfluenceDiagramGenerator<GUM_SCALAR>::generateID ( Size nbrNodes, float arcDensity, float chanceNodeDensity, float utilityNodeDensity, int max_modality ) {
-    InfluenceDiagram<GUM_SCALAR>* influenceDiagram = new InfluenceDiagram<GUM_SCALAR>(); //TODO to templitize
+    InfluenceDiagram<GUM_SCALAR>* influenceDiagram = new InfluenceDiagram<GUM_SCALAR>();
     // First we add nodes
     HashTable<Size, NodeId> map;
     std::stringstream strBuff;

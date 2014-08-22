@@ -135,7 +135,8 @@ namespace gum {
        * @param head the id of the head of the new arc to be inserted
        * @warning if the arc already exists, nothing is done. In particular, no
        * exception is raised. */
-      virtual void insertArc ( const NodeId tail, const NodeId head );
+      GUM_DEPRECATED ( virtual void insertArc ( const NodeId tail, const NodeId head ) );
+      virtual void addArc ( const NodeId tail, const NodeId head );
 
       /// removes an arc from the ArcGraphPart
       /** @param arc the arc to be removed

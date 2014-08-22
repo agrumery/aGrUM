@@ -21,19 +21,23 @@
 
 namespace gum {
 
-// we do not use INLINE but inline instead
+  // we do not use INLINE but inline instead
   INLINE
   double randomProba() {
     return ( ( double ) rand() ) / ( ( double ) RAND_MAX );
   }
 
-// we do not use INLINE but inline instead
+  
+  // we do not use INLINE but inline instead
   INLINE
   void initRandom ( unsigned int init ) {
-    if ( init )
+    if ( init ) {
       srand ( init );
-    else
-      srand ( rand() + ( unsigned int ) std::time ( nullptr ) );
+      randomGeneratorSeed ( init );
+    }
+    else {
+      srand ( randomGeneratorSeed () );
+    }
   }
 
 } /* namespace gum */

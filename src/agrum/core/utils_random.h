@@ -25,6 +25,7 @@
 #include <utility>
 #include <vector>
 #include <cstdlib>
+#include <chrono>
 
 namespace gum {
 
@@ -38,6 +39,11 @@ namespace gum {
 
   /// initialize random generator seed
   void initRandom ( unsigned int init = 0 );
+
+
+  /// returns the aGrUM's seed used by the std::generators
+  unsigned int& randomGeneratorSeed ( unsigned int seed = 0 );
+  
 
 } /* namespace gum */
 

@@ -53,13 +53,6 @@
 
 #include <agrum/CN/LrsWrapper.h>
 
-// lrs stuff
-//we force MP (not long or GMP)
-#undef LONG
-#undef GMP
-#define MP
-#include <agrum/core/math/lrslib/lrslib.h>
-
 #include <agrum/core/OMPThreads.h>
 
 namespace gum {

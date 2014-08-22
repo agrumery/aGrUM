@@ -1,19 +1,21 @@
 # -*- coding: utf-8 -*-
 # -*- encoding: UTF-8 -*-
 
+# tests use the compiled version of pyAgrum and not the packaged one. So we directly call the __init__.py file
+import __init__ as gum # read "import pyAgrum as gum"
+
 import unittest
-from pyAgrum import BayesNet, LabelizedVar, InvalidNode, InvalidDirectedCycle
 from pyAgrumTestSuite import pyAgrumTestCase
 
 
 class BayesNetTestCase(pyAgrumTestCase):
 
     def setUp(self):
-        self.var1 = LabelizedVar("var1", "1", 2)
-        self.var2 = LabelizedVar( "var2", "2", 2 )
-        self.var3 = LabelizedVar( "var3", "3", 2 )
-        self.var4 = LabelizedVar( "var4", "4", 2 )
-        self.var5 = LabelizedVar( "var5", "(gum::Size) 5", 3 )
+        self.var1 = gum.LabelizedVariable("var1", "1", 2)
+        self.var2 = gum.LabelizedVariable( "var2", "2", 2 )
+        self.var3 = gum.LabelizedVariable( "var3", "3", 2 )
+        self.var4 = gum.LabelizedVariable( "var4", "4", 2 )
+        self.var5 = gum.LabelizedVariable( "var5", "(gum::Size) 5", 3 )
         self.bufferlisten = ""
         self.bufferecoute = ""
 
@@ -37,20 +39,20 @@ class BayesNetTestCase(pyAgrumTestCase):
 class TestConstructors(BayesNetTestCase):
 
     def testConstructor(self):
-        bn = BayesNet()
-        bn = BayesNet('French Touch Network')
+        bn = gum.BayesNet()
+        bn = gum.BayesNet('French Touch Network')
 
 
     def testCopyConstructor(self):
-        bn1 = BayesNet()
-        bn2 = BayesNet(bn1)
+        bn1 = gum.BayesNet()
+        bn2 = gum.BayesNet(bn1)
 
 
 
 class TestInsertions(BayesNetTestCase):
 
     def testVariables(self):
-        bn = BayesNet()
+        bn = gum.BayesNet()
         idList = []
 
         idList.append(bn.add(self.var1))
@@ -78,7 +80,7 @@ class TestInsertions(BayesNetTestCase):
 
 
     def testArcs(self):
-        bn = BayesNet()
+        bn = gum.BayesNet()
         idList = []
 
         idList.append(bn.add(self.var1))
@@ -94,12 +96,12 @@ class TestInsertions(BayesNetTestCase):
         bn.addArc(idList[3], idList[4])
         bn.addArc(idList[1], idList[4])
 
-        self.assertRaises(InvalidDirectedCycle, bn.addArc,idList[4],idList[0])
-        self.assertRaises(InvalidNode, bn.addArc,42,666)
+        self.assertRaises(gum.InvalidDirectedCycle, bn.addArc,idList[4],idList[0])
+        self.assertRaises(gum.InvalidNode, bn.addArc,42,666)
 
 
     def testEraseArcs(self):
-        bn = BayesNet()
+        bn = gum.BayesNet()
         idList = []
 
         self.assertTrue(bn.empty())
@@ -123,7 +125,7 @@ class TestInsertions(BayesNetTestCase):
 class TestFeatures(BayesNetTestCase):
 
     def testMoralGraph(self):
-        bn = BayesNet()
+        bn = gum.BayesNet()
         idList = []
 
         self.fillTopo(bn, idList)
@@ -131,7 +133,7 @@ class TestFeatures(BayesNetTestCase):
 
 
     def testTopologicalOrder(self):
-        bn = BayesNet()
+        bn = gum.BayesNet()
         idList = []
 
         self.fillTopo(bn, idList)
@@ -156,7 +158,7 @@ class TestBIF(BayesNetTestCase):
     def testSimpleBIFLoad(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadBIF('../../../src/testunits/ressources/alarm.bif', self.listen)
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "")
@@ -170,7 +172,7 @@ class TestBIF(BayesNetTestCase):
     def testSimpleBIFLoadWithoutListener(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadBIF('../../../src/testunits/ressources/alarm.bif')
         self.assertEqual(self.bufferlisten, "")
         self.assertEqual(self.bufferecoute, "")
@@ -184,7 +186,7 @@ class TestBIF(BayesNetTestCase):
     def testListBIFLoad(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadBIF('../../../src/testunits/ressources/alarm.bif', [self.listen, self.ecoute])
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
@@ -198,7 +200,7 @@ class TestBIF(BayesNetTestCase):
     def testTupleBIFLoad(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadBIF('../../../src/testunits/ressources/alarm.bif', (self.ecoute, self.listen))
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
@@ -212,7 +214,7 @@ class TestBIF(BayesNetTestCase):
     def testSimpleNETLoad(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadDSL('../../../src/testunits/ressources/test1.net', self.listen)
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "")
@@ -221,7 +223,7 @@ class TestBIF(BayesNetTestCase):
     def testSimpleDSLLoad(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadDSL('../../../src/testunits/ressources/DSL/alarm.dsl', self.listen)
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "")
@@ -235,7 +237,7 @@ class TestBIF(BayesNetTestCase):
     def testSimpleDSLLoadWithoutListener(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadDSL('../../../src/testunits/ressources/DSL/alarm.dsl')
         self.assertEqual(self.bufferlisten, "")
         self.assertEqual(self.bufferecoute, "")
@@ -249,7 +251,7 @@ class TestBIF(BayesNetTestCase):
     def testListDSLLoad(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadDSL('../../../src/testunits/ressources/DSL/alarm.dsl', [self.listen, self.ecoute])
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
@@ -264,7 +266,7 @@ class TestBIF(BayesNetTestCase):
     def testTupleDSLLoad(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadDSL('../../../src/testunits/ressources/DSL/alarm.dsl', (self.ecoute, self.listen))
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")

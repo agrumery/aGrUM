@@ -20,17 +20,20 @@
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
+from __future__ import print_function
 
-
-import sys,os,re,glob,math
+import sys,os,re,glob,math,io
 
 import shelve
 from optparse import OptionParser
 from datetime import datetime
 from distutils import sysconfig
+from sys import argv
+from subprocess import Popen, PIPE, call
+from threading import Thread
 
-numversion="1.6"
-modulestxt="src/modules.txt" # the file to parse to find the modules
+numversion="1.7"
+modulesFile="src/modules.txt" # the file to parse to find the modules
 
 nbr_tests_for_stats=40
 
@@ -39,15 +42,17 @@ nbr_tests_for_stats=40
 
 def is_tool(prog):
     for dir in os.environ['PATH'].split(os.pathsep):
-        if os.path.exists(os.path.join(dir, prog)):            
+        if os.path.exists(os.path.join(dir, prog)):
             return True
     return False
 
 MAKE=""
 if is_tool("make"):
-  MAKE="make"
+  MAKE='make '
+  CMAKE='cmake '
 elif is_tool("mingw32-make.exe"):
-  MAKE="mingw32-make.exe"
+  MAKE='mingw32-make.exe '
+  CMAKE='cmake -G "MinGW Makefiles" '
 
 if MAKE=="":
   print("No <make> utility found. Exit")
@@ -86,69 +91,158 @@ def enqueue_output(out, queue):
     for line in iter(out.readline, b''):
         queue.put(line)
     out.close()
-    
-def threaded_execution(cde,verbose):
-    proc=Popen(cde,shell=True,stdout=PIPE, stderr=STDOUT, bufsize=1)
-    q = Queue()
-    t = Thread(target=enqueue_output, args=(proc.stdout, q))
-    t.daemon = True # thread dies with the program
-    t.start() 
-    while True:
-      try:
-        line = q.get_nowait()
-        
-        #prettifying the line
-        res=""
-        
-        # prettifying compilation
-        s=line.split("%]")
-        if len(s)>=2:
-          res+=OKGREEN+"%]".join(s[:-1])+"%]"+ENDC+" "
-          line=s[-1].strip()
-        
-        remove_dirs=lambda s : s[:s.find("/")-1]
-        
-        # prettifying (compacting) path
-        if line[0]!="/": # we keep message beginning with full path
-          s=line.split("/agrum/")
-          if len(s)==2:            
-            res+=remove_dirs(s[0])+WARNING+" agrum/"+s[1].rstrip()+ENDC
-            line=""
-          else:
-            s=line.split("/generated-files/")
-            if len(s)==2:
-              line=""
-              res+=remove_dirs(s[0])+WARNING+" generated-files/"+s[1].rstrip()+ENDC
-        
-        #prettifying test execution
-        if line!="":
-          s=line.split(". [")
+
+def prettifying(line):
+  #prettifying the line
+  res=""
+
+  if line=="":
+    return ""
+
+  # prettifying compilation
+  s=line.split("%]")
+
+  if len(s)>=2:
+    res+=OKGREEN+"%]".join(s[:-1])+"%]"+ENDC+" "
+    line=s[-1].strip()
+
+  if line=="":
+    return res.rstrip()
+
+  remove_dirs=lambda s : s[:s.find("/")-1]
+
+  # prettifying (compacting) path
+  if line[0]!="/": # we keep message beginning with full path
+    s=line.split("/agrum/")
+    if len(s)==2:
+      res+=remove_dirs(s[0])+WARNING+" agrum/"+s[1].rstrip()+ENDC
+      line=""
+    else:
+      s=line.split("/generated-files/")
+      if len(s)==2:
+        line=""
+        res+=remove_dirs(s[0])+WARNING+" generated-files/"+s[1].rstrip()+ENDC
+
+  if line=="":
+    return res.rstrip()
+
+  #prettifying test execution
+  s=line.split(". [")
+  if len(s)==2:
+    res+=s[0]+". "+OKGREEN+"["+s[1].rstrip()+ENDC
+  else:
+    s=line.split("# [")
+    if len(s)==2:
+      res+=s[0]+"# "+OKGREEN+"["+s[1].rstrip()+ENDC
+    else: # test pyAgrum
+      s=line.split(" ... ")
+      if len(s)==2:
+        res+=OKGREEN+s[0]+ENDC+" ... "+WARNING+"OK   "+ENDC
+      else: # end of test execution
+        s=line.split("##")
+        if len(s)==3:
+          res+=WARNING+"##"+ENDC+s[1]+WARNING+"##"+ENDC
+        elif line[0:6]=="Failed":
+          res+="Failed "+WARNING+line[7:]+ENDC
+        elif line[0:6]=="Succes":
+          res+="Success rate: "+WARNING+line[14:]+ENDC
+        elif line[-11:]=="<--- failed":
+          res=line[0:-11]+ERROR+"<--- failed"+ENDC
+        else:
+          s=line.split("Memory leaks found")
           if len(s)==2:
-            res+=s[0]+". "+OKGREEN+"["+s[1].rstrip()+ENDC
+            res=s[0]+ERROR+"Memory leaks found"+ENDC+s[1]
           else:
-            s=line.split("# [")
-            if len(s)==2:
-              res+=s[0]+"# "+OKGREEN+"["+s[1].rstrip()+ENDC
-            else:
-              s=line.split(" ... ")
-              if len(s)==2:
-                res+=OKGREEN+s[0]+ENDC+" ... "+WARNING+"OK"+ENDC
+            res=line
+
+  return res.rstrip()
+
+
+def threaded_execution(cde,verbose):
+  os.environ["PYTHONUNBUFFERED"]="1"
+  p = Popen(cde,shell=True,bufsize=1,stdout=PIPE, stderr=PIPE )
+
+  inp = Queue()
+  sout = io.open(p.stdout.fileno(), 'rb', closefd=False)
+  serr = io.open(p.stderr.fileno(), 'rb', closefd=False)
+
+  def Pump(stream, category):
+      queue = Queue()
+      def rdr():
+          while True:
+              buf = stream.read1(8192)
+              if len(buf)>0:
+                  queue.put( buf )
               else:
-                res=line
-        
-        res=res.rstrip()
-          
-        if res!="":
-          sys.stdout.write(res.rstrip()+"\n")
-          sys.stdout.flush()
-      except Empty:
-        if proc.poll() is not None:
-          if verbose:
-            print(WARNING+"[end of subprocess]"+ENDC)
-          break
-        
-    return proc.returncode
-      
+                  queue.put( None )
+                  return
+      def clct():
+          active = True
+          while active:
+              r = queue.get()
+              try:
+                  while True:
+                      r1 = queue.get(timeout=0.005)
+                      if r1 is None:
+                          active = False
+                          break
+                      else:
+                          r += r1
+              except Empty:
+                  pass
+              inp.put( (category, r) )
+      for tgt in [rdr, clct]:
+          th = Thread(target=tgt)
+          th.setDaemon(True)
+          th.start()
+
+  Pump(sout, 'stdout')
+  Pump(serr, 'stderr')
+
+  waiter = "|/-\\"
+  w_pos=0
+  lastline = ""
+
+  def readerLoop(lastline):
+    chan,lines = inp.get( True,timeout = 0.1)
+    if chan=='stdout' and lines is not None:
+      lines=(lastline+lines).split("\n")
+      for i in range(len(lines)-1):
+        if lines[i]!="":
+          print("\r"+prettifying(lines[i]))
+      lastline=lines[-1]
+      if lastline!="":
+        print("\r"+prettifying(lastline),end="")
+      sys.stdout.flush()
+    elif chan=='stderr' and lines is not None:
+      lines=lines.split("\n")
+      for line in lines:
+        if line!="":
+          if line[0]=="/":
+            print(line)
+          else:
+            print(ERROR+line+ENDC)
+    return lastline
+
+  while p.poll() is None:
+    # App still working
+    try:
+      lastline=readerLoop(lastline)
+    except Empty:
+      print(waiter[w_pos]+"\b",end="")
+      sys.stdout.flush()
+      w_pos=(w_pos+1)%len(waiter)
+
+  # flushing the buffers
+  while True:
+    try:
+      lastline=readerLoop(lastline)
+    except Empty:
+      break
+    
+    
+  return p.returncode
+
 ##########################################################################################################################
 def parseModulesTxt(filename):
   modules={}
@@ -171,6 +265,11 @@ def initParser(current):
     us="%prog [options] ["+"|".join(list_rules)+"] ["+"|".join(list_options)+"] ["+"|".join(list_wrappers)+"]"
     parser=OptionParser(usage=us,description="Compilation tools for aGrUM/pyAgrum",
                         version="%prog v"+numversion)
+    parser.add_option("", "--no-fun",
+                                        help="No fancy output parser",
+                                        action="store_true",
+                                        dest="no_fun",
+                                        default=False)
     parser.add_option("-v", "--verbose",
                                         help="more message on what is happening",
                                         action="store_true",
@@ -233,16 +332,16 @@ def initParser(current):
 ##########################################################################################################################
 def moduleManagement(cde):
   global current,listOfModules
-  
+
   listM=[x.upper() for x in cde.split('+')]
   setM=set(listM)
-  
+
   if 'ALL' in setM:
     cde='ALL'
   else:
     if not setM.issubset(set(listOfModules)):
       cde='LIST'
-      
+
   if cde=="ALL":
       current['module']='+'.join(sorted(listOfModules))
   elif cde=='LIST':
@@ -253,7 +352,7 @@ def moduleManagement(cde):
     sys.exit(0)
   else:
     current['module']='+'.join(listM)
-    
+
 def testManagement(cde):
   global current
   if cde=="all":
@@ -277,8 +376,8 @@ def checkTestList(cde):
         name=tryfile
         break
     if name=="":
-      print ERROR+'Test "src/testunits/[module]/'+OKGREEN+ss+ERROR+'TestSuite.h" does not exists for the selected modules'+ENDC
-      print
+      print(ERROR+'Test "src/testunits/[module]/'+OKGREEN+ss+ERROR+'TestSuite.h" does not exists for the selected modules'+ENDC)
+      print()
       afficheTests()
       sys.exit(0)
     else:
@@ -307,21 +406,21 @@ def writeTestList(l):
 
 ##########################################################################################################################
 def CrossPlatformRelPath(x,y):
-  return os.path.relpath(x,"src/testunits").replace("\\","/") 
+  return os.path.relpath(x,"src/testunits").replace("\\","/")
 
 def allTests():
     global current
-    
+
     s=[]
-    
+
     if current['test_base']:
       s+=[CrossPlatformRelPath(x,"src/testunits")
           for x in glob.glob('src/testunits/module_BASE/*TestSuite.h')]
-      
+
     for x in current['module'].split('+'):
       s+=[CrossPlatformRelPath(x,"src/testunits")
           for x in glob.glob('src/testunits/module_'+x.upper()+'/*TestSuite.h')]
-    
+
     return sorted(s)
 
 ##########################################################################################################################
@@ -338,7 +437,7 @@ def checkTestListCmake():
         if line[0:2]=="  ":
           s=line.strip()
           if not os.path.exists('src/testunits/'+s):
-            print ERROR+'Test '+WARNING+s[:-11]+ERROR+' (src/testunits/'+s+') does not exist => removing it from tests list'+ENDC
+            print(ERROR+'Test '+WARNING+s[:-11]+ERROR+' (src/testunits/'+s+') does not exist => removing it from tests list'+ENDC)
             rewrite=True
           else:
             res.append(s)
@@ -351,7 +450,7 @@ def afficheTestsForModule(m):
   print("="*(2+len(m)))
   print(" "+m+" ")
   print("="*(2+len(m)))
-  
+
   l=allTests()
   prefix="module_"+m.upper()+"/"
   l=[s[len(prefix):-11] for s in l if s.startswith(prefix)]
@@ -359,14 +458,14 @@ def afficheTestsForModule(m):
   nbr=80/w
   i=0
   for s in l:
-      print " "+s.ljust(w),
+      print(s.ljust(w),end="\t")
       i+=1
       if i>nbr:
           i=0
-          print
+          print("")
   if i!=0:
-      print
-  print
+      print("")
+  print("")
 
 
 def afficheTests():
@@ -379,60 +478,63 @@ def afficheTests():
 ##########################################################################################################################
 def schedule(act,arg,exec_cde=False):
     global sh,sh_no_exec
-    
+
     sh.append({'action':act,'argument':arg})
     if not exec_cde:
       sh_no_exec.append({'action':act,'argument':arg})
-      
+
     # safe_cd =>  # cde="[ ! -d "+folder+" ] && mkdir "+folder+" ; cd "+folder
     # cd .. ou autre
     # autre
-   
-   
-def special_execute(action,argument):    
+
+
+def special_execute(action,argument):
   if action=="safe_cd":
     if not os.path.exists(argument):
       os.mkdir(argument)
     os.chdir(argument)
   elif action=="back":
-    os.chdir("..") 
+    os.chdir("..")
   elif action=="cd":
     os.chdir(argument)
   else:
     return False
-  
+
   return True
 
-def execute(actions,verbose=True):
+def execute(actions,options):
   nberr=0
   for k in actions:
-    if verbose:
-      print WARNING+k['action']+' '+OKGREEN+k['argument']+ENDC
-      
+    if options.verbose:
+      print(WARNING+k['action']+' '+OKGREEN+k['argument']+ENDC)
+
     action=k['action']
     argument=k['argument']
-    
+
     if not special_execute(action,argument):
       commande=action+" "+argument
-      rc=threaded_execution(commande,verbose)
+      if options.no_fun:
+        rc=call(commande,shell=True)
+      else:
+        rc=threaded_execution(commande,options.verbose)
 
       if rc>0:
         print("** exit code ="+str(rc))
         return
-      
+
       #for line in proc.stderr.readlines():
       #  sys.stdout.write(ERROR+line+ENDC)
-      
-def execute_test_with_stats(actions,i,nbr_tests_for_stats): 
+
+def execute_test_with_stats(actions,i,nbr_tests_for_stats):
   time_line=re.compile(r'## Profiling :\s+(.*?)\sms ##')
   stat_line=re.compile(r"Failed (.*?) of (.*?) test")
-  
-  tps=0  
+
+  tps=0
   for k in actions:
-      
+
     action=k['action']
     argument=k['argument']
-    
+
     if not special_execute(action,argument):
       commande=action+" "+argument
       proc=Popen(commande,shell=True,stdout=PIPE,stderr=STDOUT)
@@ -441,41 +543,42 @@ def execute_test_with_stats(actions,i,nbr_tests_for_stats):
       failed=0
       total=-1
       for line in out:
-        time_match = time_line.search(line) 
+        time_match = time_line.search(line)
         if time_match:
           tps=int(time_match.groups()[0])
           continue
-        
+
         stat_match = stat_line.search(line)
         if stat_match:
           failed=int(stat_match.groups()[0])
           total=int(stat_match.groups()[1])
-      
+
       if total>=0:
         print("Stats {5}{3}/{4}{6} : succes rate {7}{0}/{1}{6} in {8}{2}{6} ms".format(total-failed,total,tps,i+1,nbr_tests_for_stats,OKGREEN,ENDC,WARNING,ERROR))
-      
+
   return tps
 ##########################################################################################################################
 
 def cleanAll():
     import shutil
-    print WARNING+" cleaning"+ENDC+" ...",
-    #os.system("rm -rf build") # 
+    print(WARNING+" cleaning"+ENDC+" ... ",end="")
+    sys.stdout.flush()
+    #os.system("rm -rf build") #
     shutil.rmtree("build")
-    print OKGREEN+"done"+ENDC
-    print
+    print(OKGREEN+"done"+ENDC)
+    print()
 
 ##########################################################################################################################
 def showAll():
     global persistent
-    print "Actual options/args"
-    print "-------------------"
+    print("Actual options/args")
+    print("-------------------")
     for key in persistent:
         if key in ['cleanAll']: # keys we do not need to show
             continue
-        print "  "+key+" : "+persistent[key].__str__()
-    print "-------------------"
-    print
+        print("  "+key+" : "+persistent[key].__str__())
+    print("-------------------")
+    print()
 
 
 ##########################################################################################################################
@@ -492,6 +595,7 @@ def checkConstraints(parser,options,args):
     current['destination']=options.destination
     current['jobs']=options.jobs
     current['fixed_seed']=options.fixed_seed
+    current['no_fun']=options.no_fun
     current['stats']=options.stats
     current['test_base']=options.test_base
     current['testlist']=options.testlist
@@ -529,13 +633,13 @@ def checkConstraints(parser,options,args):
     if current['wrapper']!="":
         if (not current['rule'] in ["wrapper", "install","test","uninstall"]):
             parser.print_help()
-            parser.error("incompatibilty between options <rule>='"+current['rule'] +"' and <wrapper>='"+current['wrapper']+"'")
+            parser.error("incompatibilty ²between options <rule>='"+current['rule'] +"' and <wrapper>='"+current['wrapper']+"'")
         if current['option']!='release':
             parser.print_help()
             parser.error('no debug mode for wrappers compilation')
 
     if current['platform']=='windows':
-        if not current['rule'] in ["agrum","test","run","clean",'package']:
+        if not current['rule'] in ["agrum","test","run","clean",'package','install']:
             parser.print_help()
             parser.error("incompatibilty between options <platform>='"+current['platform']+"' and <rule>='"+current['rule']+"'")
         if not current['option']=='release':
@@ -546,9 +650,9 @@ def checkConstraints(parser,options,args):
 ##########################################################################################################################
 def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
     global listOfModules
-    
+
     folders=cmake_options=make_options=run_cde =""
-      
+
     if options['wrapper']!="": # we know rule in ["install","wrapper", "test"]
         # ensure creation of agrum/config.h (as a release version of agrum)
         folders=["build",options['platform'],'release']
@@ -558,7 +662,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
         else:
             cmake_options=cmake_options+"OFF"
         [safe_cd(s) for s in folders]
-        schedule("cmake ",cmake_options)
+        schedule(CMAKE,cmake_options)
         [schedule("back","") for s in folders]
 
         folders=['build','wrappers',options['wrapper']]
@@ -569,10 +673,10 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             make_options=""
         if options['rule']=='test':
             if options['wrapper']=='pyAgrum':
-                run_cde="PYTHONPATH=. python ../../../wrappers/pyAgrum/testunits/TestSuite.py"
+              run_cde="python ../../../wrappers/pyAgrum/testunits/TestSuite.py"
             else:
-                print ERROR+"No tests for "+options['wrapper']+ENDC
-                sys.exit(0)
+              print(ERROR+"No tests for "+options['wrapper']+ENDC)
+              sys.exit(0)
         else:
             run_cde=""
     else:
@@ -583,23 +687,24 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
         else:
             folders=["build",options['platform'],options['option']]
         cmake_options=" -DCMAKE_BUILD_TYPE="+options['option'].upper()+" ../../../src"
-        if (options['platform']=="windows"):
-            #cmake_options=cmake_options+" -DCMAKE_TOOLCHAIN_FILE=../../../src/cmake/Toolchain-mingw32.cmake -DCMAKE_INSTALL_PREFIX=_CPack_Packages/win32/TGZ/agrum-0.6.0-win32"
-            cmake_options=cmake_options+' -G "MinGW Makefiles" -DCMAKE_INSTALL_PREFIX=_CPack_Packages/TGZ/agrum-win'
         if (options['rule']=="test" or options['rule']=="run"):
-            make_options=options['rule']
-            if (options['platform'] != "windows"):
-			  run_cde="./"+options['rule']
+            if options['rule']=="test":
+              testcde="gumTest"
+              make_options="gumTest"
             else:
-              run_cde=".\\"+options['rule']+".exe"
+              testcde="run"
+              make_options="run"
+            if (options['platform'] != "windows"):
+              run_cde="./"+testcde
+            else:
+              run_cde=".\\"+testcde+".exe"
         else:
           if (options['rule']=="agrum" and options['option'].upper()=="DEBUG"):
             make_options="agrum-dbg"
           else:
             make_options=options['rule']
 
-    if (options['platform'] != "windows"):
-        cmake_options=cmake_options+" -DCMAKE_INSTALL_PREFIX="+options['destination']
+    cmake_options=cmake_options+" -DCMAKE_INSTALL_PREFIX="+options['destination']
 
     cmake_options=cmake_options+" -DCMAKE_VERBOSE_MAKEFILE="
     if (options['verbose']):
@@ -615,14 +720,14 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
     # MANAGING MODULES
     listM=[x.upper() for x in options['module'].split('+')]
     setM=set(listM)
-    
+
     create_build = lambda module: " -DBUILD_"+module+"="+ ("ON" if module in setM else "OFF")
     cmake_options = cmake_options+create_build("ALL")
     for module in listOfModules:
       cmake_options = cmake_options+create_build(module)
 
     [safe_cd(s) for s in folders]
-    schedule("cmake ",cmake_options)
+    schedule(CMAKE,cmake_options)
     if options['rule']!='config':
         schedule(MAKE,make_options)
     if (run_cde!=""):
@@ -634,11 +739,11 @@ def uninstall(options):
     if options['wrapper']!='':
         install_folder=options['destination'] #sysconfig.get_python_lib(1,0,prefix=install_folder)
 
-        print "suppresion récursive de "+ERROR+install_folder+"/pyAgrum"+ENDC
+        print("suppresion récursive de "+ERROR+install_folder+"/pyAgrum"+ENDC)
         os.system('cd '+install_folder+' && rm -rf pyAgrum')
-        print "suppresion récursive de "+ERROR+install_folder+"/gumLib"+ENDC
+        print("suppresion récursive de "+ERROR+install_folder+"/gumLib"+ENDC)
         os.system('cd '+install_folder+' && rm -rf gumLib')
-        print "suppresion de "+ERROR+install_folder+"/pyAgrum*.egg-info"+ENDC
+        print("suppresion de "+ERROR+install_folder+"/pyAgrum*.egg-info"+ENDC)
         os.system('rm -f '+install_folder+"/pyAgrum*.egg-info")
     else:
         folders=["build",options['platform'],options['option']]
@@ -659,31 +764,31 @@ def getValParam(name,val):
 def getCommand(name):
   return OKGREEN+name+" "
 
-def getInvocation(current):  
+def getInvocation(current):
     invocation=WARNING+"invocation"+ENDC+" : "+"act "
-    
+
     invocation+=getCommand(current['rule'])
-    
+
     if not current['rule'] in "show clean uninstall default".split():
       if current['rule']=='wrapper':
         invocation+=getCommand(current['wrapper'])
       else:
         invocation+=getCommand(current['option'])
-        
+
       invocation+=getValParam('module',current['module'])
-      
+
       if (current['rule']=='test'):
         invocation+=getValParam('testlist',current['testlist'])
         if current['test_base']:
           invocation+=getParam("with-test-base")
         else:
           invocation+=getParam("without-test-base")
-      
+
       if (current['rule']=='install'):
         invocation+=getValParam('dest',current['destination'])
-        
+
       invocation+=getValParam('platform',current['platform'])
-      
+
       if (current['verbose']):
         invocation+=getParam('verbose')
       else:
@@ -695,7 +800,10 @@ def getInvocation(current):
       if (current['fixed_seed']):
         invocation+=getParam('fixed_seed')
         
-        
+      if (current['no_fun']):
+        invocation+=getParam('no_fun')
+
+
       invocation+=getValParam('jobs',str(current['jobs']))
     else:
       if current['rule']=="uninstall":
@@ -703,9 +811,9 @@ def getInvocation(current):
 
     invocation+=ENDC
     return invocation
-  
+
 ##########################################################################################################################
-listOfModules=parseModulesTxt(modulestxt)
+listOfModules=parseModulesTxt(modulesFile)
 
 default={}
 current={}
@@ -724,6 +832,7 @@ default['jobs']="5"
 default['test_base']=True
 default['verbose']=False
 default['fixed_seed']=False
+default['no_fun']=False
 default['stats']=False
 default['module']='ALL'
 default['testlist']='all'
@@ -735,10 +844,6 @@ shlv=shelve.open(".options.mak.py",writeback=True)
 if shlv.has_key('persistent'):
     persistent=shlv['persistent']
 
-#shlv=shelve.open(".options.mak.py",writeback=True)
-#if shlv.has_key('persistent'):
-#    persistent=shlv['persistent']
-
 for key in default.iterkeys():
   if not key in not_persistent_options:
     if persistent.has_key(key):
@@ -746,15 +851,21 @@ for key in default.iterkeys():
     else:
         current[key]=default[key]
 
-print ENDC+ERROR+"aGrUM"+ENDC+" compilation tool "+ERROR+"v"+numversion+ENDC
-print "(c) 2010-13 "+OKGREEN+"aGrUM Team"+ENDC
-print
-
-
 parser=initParser(current)
 (options, args)=parser.parse_args()
 
 checkConstraints(parser,options,args)
+
+if options.no_fun:
+  OKGREEN = ''
+  WARNING = ''
+  ERROR = ''
+  ENDC = ''
+  
+
+print(ENDC+ERROR+"aGrUM"+ENDC+" compilation tool "+ERROR+"v"+numversion+ENDC)
+print("(c) 2010-13 "+OKGREEN+"aGrUM Team"+ENDC)
+print()
 
 moduleManagement(options.module)
 
@@ -763,12 +874,12 @@ print
 
 if options.testlist!="":
     testManagement(options.testlist)
-    
+
 checkTestListCmake()
 #needed for cmake
 if not os.path.exists('src/testunits/testList.cmake'):
     writeTestList(allTests())
-    
+
 global sh,sh_no_exec
 sh=[];
 sh_no_exec=[]
@@ -784,7 +895,7 @@ if current['rule']=='uninstall':
     uninstall(current)
     execute(sh)
     sys.exit(0)
-    
+
 if current['rule']=='default':
     current=default
     print(getInvocation(current))
@@ -799,10 +910,10 @@ shlv.close()
 proceed(current,RANDOMSEED_FOR_FIXED_SEED="10")
 
 if not(current['stats']):
-  execute(sh,options.verbose)
+  execute(sh,options)
 else:
-  execute(sh_no_exec,options.verbose)
-    
+  execute(sh_no_exec,options)
+
   print("###########################################")
   print("Processing profile for "+getInvocation(current))
   print("This will take a certain amount of time ...")
@@ -810,7 +921,7 @@ else:
   vals=list()
   for i in range(nbr_tests_for_stats):
     vals.append(execute_test_with_stats(sh,i,nbr_tests_for_stats))
-    
+
   s=0.0
   s2=0.0
   for v in vals:

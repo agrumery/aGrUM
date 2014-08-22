@@ -172,7 +172,7 @@ namespace gum {
        * @throw OutOfBound, OutOfLowerBound, OutOfUpperBound
        */
       Idx operator[] ( const T_TICKS& aTarget ) const;
-      Idx index(  const T_TICKS& aTarget) const;
+      Idx index ( const T_TICKS& aTarget ) const;
 
       /**
        *

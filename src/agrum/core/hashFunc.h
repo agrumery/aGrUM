@@ -150,7 +150,7 @@ namespace gum {
     /** @brief when you use this mask, you are guarranteed that hashed keys
      * belong to the set of indices of the hash table */
     Size _hash_mask {0};
-
+    
   };
 
 
@@ -209,7 +209,7 @@ namespace gum {
 
   };
 
-
+  
   /** generic hash functions for keys castable as unsigned longs and whose size
    * is precisely that of unsigned longs */
   template <typename Key> class HashFuncMediumCastKey :

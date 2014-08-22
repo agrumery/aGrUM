@@ -19,9 +19,9 @@
  ***************************************************************************/
 #include <Python.h>
 
-#include <agrum/BN/algorithms/divergence/GibbsKL.h>
-#include <agrum/BN/algorithms/approximationScheme.h>
-#include <agrum/BN/algorithms/approximationSchemeListener.h>
+#include <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
+#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+#include <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
 
 class PythonApproximationListener: public gum::ApproximationSchemeListener {
   private:
@@ -36,7 +36,7 @@ class PythonApproximationListener: public gum::ApproximationSchemeListener {
     };
 
   public:
-    PythonApproximationListener ( gum::ApproximationScheme& algo ) : gum::ApproximationSchemeListener ( algo ) {
+    PythonApproximationListener ( gum::IApproximationSchemeConfiguration& algo ) : gum::ApproximationSchemeListener ( algo ) {
       __pyWhenProgress = __pyWhenStop = ( PyObject* ) 0;
     };
 

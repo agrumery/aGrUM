@@ -36,13 +36,14 @@
 #include <vector>
 #include <unordered_set>
 #include <fstream>
+#include <chrono>
 
 #include <agrum/core/exceptions.h>
 #include <agrum/core/math/rational.h>
 
 
 // we force MP (not long or GMP)
-#undef long
+#undef LONG
 #undef GMP
 #define MP
 // lrs stuff

@@ -42,7 +42,13 @@ namespace gum {
       INLINE
       NodeId
       Pattern::insertNode ( LabelData& l ) {
-        DiGraph::insertNode ( size() + 1 );
+        return addNode ( l );
+      }
+
+      INLINE
+      NodeId
+      Pattern::addNode ( LabelData& l ) {
+        DiGraph::addNode ( size() + 1 );
         __node_map.insert ( size(), &l );
         __last = &l;
         return size();
@@ -129,6 +135,12 @@ namespace gum {
       INLINE
       void
       Pattern::insertArc ( NodeId i, NodeId j, LabelData& l ) {
+        addArc ( i,j,l );
+      }
+
+      INLINE
+      void
+      Pattern::addArc ( NodeId i, NodeId j, LabelData& l ) {
         if ( not ( DiGraph::exists ( i ) and DiGraph::exists ( j ) ) ) {
           GUM_ERROR ( NotFound, "node not found in this pattern" );
         }
@@ -137,7 +149,7 @@ namespace gum {
 
         if ( ( code().codes.size() == 0 ) or
              ( DFSCode::validNeighbors ( code().codes.back(), edge ) ) ) {
-          DiGraph::insertArc ( i, j );
+          DiGraph::addArc ( i, j );
           __arc_map.insert ( Arc ( i, j ), std::make_pair ( &l, edge ) );
           code().codes.push_back ( edge );
         } else {
@@ -160,11 +172,15 @@ namespace gum {
 
       INLINE
       Size
-      Pattern::size() const { return DiGraph::size(); }
+      Pattern::size() const {
+        return DiGraph::size();
+      }
 
       INLINE
       Size
-      Pattern::sizeArcs() const { return DiGraph::sizeArcs(); }
+      Pattern::sizeArcs() const {
+        return DiGraph::sizeArcs();
+      }
 
       INLINE
       void
@@ -201,11 +217,15 @@ namespace gum {
 
       INLINE
       DFSCode&
-      Pattern::code() { return __code; }
+      Pattern::code() {
+        return __code;
+      }
 
       INLINE
       const DFSCode&
-      Pattern::code() const { return __code; }
+      Pattern::code() const {
+        return __code;
+      }
 
       INLINE
       EdgeCode&
@@ -373,7 +393,9 @@ namespace gum {
 
       INLINE
       NodeId
-      NeighborIterator::operator*() const { return **__iterator; }
+      NeighborIterator::operator*() const {
+        return **__iterator;
+      }
 
     } /* namespace gspan */
   } /* namespace prm */

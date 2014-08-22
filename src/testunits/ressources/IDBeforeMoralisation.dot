@@ -1,4 +1,5 @@
 digraph "no_name" {
+  node [bgcolor="#AAAAAA", style=filled];
 node [shape = box];
   decisionVar1;  decisionVar2;  decisionVar3;  decisionVar4;
 node [shape = diamond];

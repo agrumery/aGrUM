@@ -36,7 +36,7 @@ namespace gum {
         try {
           // Adding the attribute
           const Attribute<GUM_SCALAR>& attr = i.get ( *node );
-          this->_dag.insertNode ( attr.id() );
+          this->_dag.addNode ( attr.id() );
           __varNodeMap.insert ( & ( attr.type().variable() ), &attr );
         } catch ( NotFound& ) {
           // Not an attribute
@@ -45,7 +45,7 @@ namespace gum {
 
       for ( auto arc = i.type().dag().arcs().beginSafe (); arc != i.type().dag().arcs().endSafe (); ++arc ) {
         try {
-          this->_dag.insertArc ( arc->tail(), arc->head() );
+          this->_dag.addArc ( arc->tail(), arc->head() );
         } catch ( InvalidNode& ) {
           // Not added means not an attribute
         }

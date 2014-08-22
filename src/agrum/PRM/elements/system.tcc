@@ -63,6 +63,12 @@ namespace gum {
     void
     System<GUM_SCALAR>::insertArc ( const std::string& u_name, const std::string& v_name,
                                     const std::string& ref_name ) {
+      addArc ( u_name,v_name,ref_name );
+    }
+    template<typename GUM_SCALAR>
+    void
+    System<GUM_SCALAR>::addArc ( const std::string& u_name, const std::string& v_name,
+                                 const std::string& ref_name ) {
       Instance<GUM_SCALAR>* u = nullptr;
       Instance<GUM_SCALAR>* v = nullptr;
       ReferenceSlot<GUM_SCALAR>* ref = nullptr;
@@ -87,7 +93,7 @@ namespace gum {
       }
 
       u->add ( ref->id(), *v );
-      __skeleton.insertArc ( __nodeIdMap.keyByVal ( u ), __nodeIdMap.keyByVal ( v ) );
+      __skeleton.addArc ( __nodeIdMap.keyByVal ( u ), __nodeIdMap.keyByVal ( v ) );
     }
 
     template<typename GUM_SCALAR>
@@ -97,7 +103,7 @@ namespace gum {
         GUM_ERROR ( DuplicateElement, "an Instance<GUM_SCALAR> with the same is already in this System" );
       }
 
-      NodeId id = __skeleton.insertNode();
+      NodeId id = __skeleton.addNode();
       __nodeIdMap.insert ( id, i );
       __nameMap.insert ( i->name(), i );
 
@@ -155,7 +161,9 @@ namespace gum {
             break;
           }
 
-          default: { /* Do nothing */; }
+          default: {
+            /* Do nothing */;
+          }
         }
       }
     }
@@ -231,7 +239,9 @@ namespace gum {
               break;
             }
 
-            default: { /* Do nothing */; }
+            default: {
+              /* Do nothing */;
+            }
           }
         }
 
@@ -296,7 +306,9 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     const DiGraph&
-    System<GUM_SCALAR>::skeleton() const { return __skeleton; }
+    System<GUM_SCALAR>::skeleton() const {
+      return __skeleton;
+    }
 
     template<typename GUM_SCALAR> INLINE
     Instance<GUM_SCALAR>&
@@ -320,11 +332,15 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     PRMObject::PRMType
-    System<GUM_SCALAR>::obj_type() const { return PRMObject::PRMType::SYSTEM; }
+    System<GUM_SCALAR>::obj_type() const {
+      return PRMObject::PRMType::SYSTEM;
+    }
 
     template<typename GUM_SCALAR> INLINE
     Size
-    System<GUM_SCALAR>::size() const { return __nodeIdMap.size(); }
+    System<GUM_SCALAR>::size() const {
+      return __nodeIdMap.size();
+    }
 
     template<typename GUM_SCALAR> INLINE
     bool
@@ -440,19 +456,27 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     typename System<GUM_SCALAR>::iterator
-    System<GUM_SCALAR>::begin() { return __nodeIdMap.beginSafe(); }
+    System<GUM_SCALAR>::begin() {
+      return __nodeIdMap.beginSafe();
+    }
 
     template<typename GUM_SCALAR> INLINE
     const typename System<GUM_SCALAR>::iterator&
-    System<GUM_SCALAR>::end() { return __nodeIdMap.endSafe(); }
+    System<GUM_SCALAR>::end() {
+      return __nodeIdMap.endSafe();
+    }
 
     template<typename GUM_SCALAR> INLINE
     typename System<GUM_SCALAR>::const_iterator
-    System<GUM_SCALAR>::begin() const { return __nodeIdMap.beginSafe(); }
+    System<GUM_SCALAR>::begin() const {
+      return __nodeIdMap.beginSafe();
+    }
 
     template<typename GUM_SCALAR> INLINE
     const typename System<GUM_SCALAR>::const_iterator&
-    System<GUM_SCALAR>::end() const { return __nodeIdMap.endSafe(); }
+    System<GUM_SCALAR>::end() const {
+      return __nodeIdMap.endSafe();
+    }
 
     template<typename GUM_SCALAR> INLINE
     typename System<GUM_SCALAR>::array_iterator

@@ -54,7 +54,7 @@ namespace gum {
 
     putOffNoVariableCheckMode();
 
-    _model.insertNode();
+    _model.addNode();
 
     _rootId = 0;
   }
@@ -303,7 +303,7 @@ namespace gum {
       return _valueMap.first ( approximate );
     }
 
-    NodeId node = _model.insertNode();
+    NodeId node = _model.addNode();
     _valueMap.insert ( node, approximate );
 
     return node;
@@ -372,8 +372,7 @@ namespace gum {
 
     if ( _valueMap.existsFirst ( from ) ) {
       GUM_ERROR ( InvalidNode, " Origin node " <<  from << " is a terminal Node. No arcs can start from a terminal node" );
-    } 
-    else if ( !_noVariableCheckMode && !_valueMap.existsFirst ( to ) ) {
+    } else if ( !_noVariableCheckMode && !_valueMap.existsFirst ( to ) ) {
       // GUM_TRACE( "From : " << _varMap[from]->toString() << " - To : " << _varMap[ to ]->toString() << std::endl );
       if ( _varsSeq.pos ( _varMap[ from ] ) >= _varsSeq.pos ( _varMap[ to ] ) ) {
         GUM_ERROR ( OperationNotAllowed, " This arc does not respect the variable order property. Variable " <<  _varMap[from]->name() << " tied to node " << from <<
@@ -573,11 +572,11 @@ namespace gum {
         _arcMap.insert ( *iter_node, new std::vector< NodeId > ( * ( source->unsafeNodeSons ( *iter_node ) ) ) );
 
         for ( std::vector<NodeId>::const_iterator sonIter = source->unsafeNodeSons ( *iter_node )->begin(); sonIter != source->unsafeNodeSons ( *iter_node )->end(); ++sonIter )
-          _model.insertArc ( *iter_node, *sonIter );
+          _model.addArc ( *iter_node, *sonIter );
 
         if ( source->unsafeHasNodeDefaultSon ( *iter_node ) ) {
           _defaultArcMap.insert ( *iter_node, source->unsafeNodeDefaultSon ( *iter_node ) );
-          _model.insertArc ( *iter_node, source->unsafeNodeDefaultSon ( *iter_node ) );
+          _model.addArc ( *iter_node, source->unsafeNodeDefaultSon ( *iter_node ) );
         }
       }
     }
@@ -676,13 +675,13 @@ namespace gum {
             sonId = sameSon;
             delete grandSonsMap;
           } else {
-            sonId = _model.insertNode();
+            sonId = _model.addNode();
             xNodes->insert ( sonId );
             _varMap.insert ( sonId, x );
             _arcMap.insert ( sonId, grandSonsMap );
 
             for ( std::vector<NodeId>::iterator grandSonsIter = grandSonsMap->begin(); grandSonsIter != grandSonsMap->end(); ++grandSonsIter )
-              _model.insertArc ( sonId, *grandSonsIter );
+              _model.addArc ( sonId, *grandSonsIter );
           }
         }
 
@@ -732,13 +731,13 @@ namespace gum {
           replacingNode = sameNode;
           delete sonsMap;
         } else {
-          replacingNode = _model.insertNode();
+          replacingNode = _model.addNode();
           yNodes->insert ( replacingNode );
           _varMap.insert ( replacingNode, y );
           _arcMap.insert ( replacingNode, sonsMap );
 
           for ( std::vector<NodeId>::iterator sonsIter = sonsMap->begin(); sonsIter != sonsMap->end(); ++sonsIter )
-            _model.insertArc ( replacingNode, *sonsIter );
+            _model.addArc ( replacingNode, *sonsIter );
         }
       }
 
@@ -748,7 +747,7 @@ namespace gum {
       _varMap.erase ( *nodeIter );
 
       for ( NodeSetIterator parentIter = _model.parents ( *nodeIter ).beginSafe(); parentIter != _model.parents ( *nodeIter ).endSafe(); ++parentIter ) {
-        _model.insertArc ( *parentIter, replacingNode );
+        _model.addArc ( *parentIter, replacingNode );
 
         std::vector<NodeId>* newSonMap = new std::vector<NodeId> ( _arcMap[*parentIter]->size(), 0 );
 
@@ -816,7 +815,7 @@ namespace gum {
     _valueMap.clear();
 
     _model.clear();
-    _model.insertNode();
+    _model.addNode();
 
     for ( HashTableIteratorSafe< const DiscreteVariable*, List<NodeId>* > iter = _var2NodeIdMap.beginSafe(); iter != _var2NodeIdMap.endSafe(); ++iter )
       delete iter.val();
@@ -959,7 +958,7 @@ namespace gum {
 
     // *******************************************************************************************
     // Part were we had the variable's new node
-    NodeId node = _model.insertNode();
+    NodeId node = _model.addNode();
 
     // We mention that new node to the list of node bound to that variable
     _varMap.insert ( node, var );
@@ -997,7 +996,7 @@ namespace gum {
     if ( _defaultArcMap.exists ( from ) && _defaultArcMap[from] == to )
       return;
 
-    _model.insertArc ( from, to );
+    _model.addArc ( from, to );
 
     ( *_arcMap[from] ) [value] =  to;
     ( *_varUsedModalitiesMap[ _varMap[from] ] ) [value]++;
@@ -1021,7 +1020,7 @@ namespace gum {
       }
 
     if ( !_defaultArcMap.exists ( from ) ) {
-      _model.insertArc ( from, to );
+      _model.addArc ( from, to );
       _defaultArcMap.insert ( from, to );
     }
   }

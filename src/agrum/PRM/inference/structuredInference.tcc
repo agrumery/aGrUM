@@ -337,7 +337,7 @@ namespace gum {
 
       for ( auto inst = match.beginSafe(); inst != match.endSafe(); ++inst ) {
         for ( auto attr = ( **inst ).begin(); attr != ( **inst ).end(); ++attr ) {
-          NodeId id = data.graph.insertNode();
+          NodeId id = data.graph.addNode();
           v = std::make_pair ( inst.pos(), ( * ( attr.val() ) ).safeName() );
           data.map.insert ( id, v );
           data.node2attr.insert ( id, __str ( *inst, attr.val() ) );
@@ -350,7 +350,7 @@ namespace gum {
                 var != pot->variablesSequence().endSafe(); ++var ) {
             try {
               if ( id != data.vars.first ( *var ) )
-                data.graph.insertEdge ( id, data.vars.first ( *var ) );
+                data.graph.addEdge ( id, data.vars.first ( *var ) );
             } catch ( DuplicateElement& ) { } catch ( NotFound& ) { }
           }
 
@@ -692,7 +692,7 @@ namespace gum {
           if ( data.var2node.existsFirst ( vars->atPos ( var_1 ) ) ) {
             id_1 = data.var2node.second ( vars->atPos ( var_1 ) );
           } else {
-            id_1 = data.reducedGraph.insertNode();
+            id_1 = data.reducedGraph.addNode();
             data.var2node.insert ( vars->atPos ( var_1 ), id_1 );
             data.mods.insert ( id_1, vars->atPos ( var_1 )->domainSize() );
             data.outputs().insert ( id_1 );
@@ -702,14 +702,14 @@ namespace gum {
             if ( data.var2node.existsFirst ( vars->atPos ( var_2 ) ) ) {
               id_2 = data.var2node.second ( vars->atPos ( var_2 ) );
             } else {
-              id_2 = data.reducedGraph.insertNode();
+              id_2 = data.reducedGraph.addNode();
               data.var2node.insert ( vars->atPos ( var_2 ), id_2 );
               data.mods.insert ( id_2, vars->atPos ( var_2 )->domainSize() );
               data.outputs().insert ( id_2 );
             }
 
             try {
-              data.reducedGraph.insertEdge ( id_1, id_2 );
+              data.reducedGraph.addEdge ( id_1, id_2 );
             } catch ( DuplicateElement& ) { }
           }
         }
@@ -730,7 +730,7 @@ namespace gum {
             if ( data.var2node.existsFirst ( vars->atPos ( var_1 ) ) ) {
               id_1 = data.var2node.second ( vars->atPos ( var_1 ) );
             } else {
-              id_1 = data.reducedGraph.insertNode();
+              id_1 = data.reducedGraph.addNode();
               data.var2node.insert ( vars->atPos ( var_1 ), id_1 );
               data.mods.insert ( id_1, vars->atPos ( var_1 )->domainSize() );
               data.outputs().insert ( id_1 );
@@ -740,14 +740,14 @@ namespace gum {
               if ( data.var2node.existsFirst ( vars->atPos ( var_2 ) ) ) {
                 id_2 = data.var2node.second ( vars->atPos ( var_2 ) );
               } else {
-                id_2 = data.reducedGraph.insertNode();
+                id_2 = data.reducedGraph.addNode();
                 data.var2node.insert ( vars->atPos ( var_2 ), id_2 );
                 data.mods.insert ( id_2, vars->atPos ( var_2 )->domainSize() );
                 data.outputs().insert ( id_2 );
               }
 
               try {
-                data.reducedGraph.insertEdge ( id_1, id_2 );
+                data.reducedGraph.addEdge ( id_1, id_2 );
               } catch ( DuplicateElement& ) { }
             }
           }
@@ -806,12 +806,14 @@ namespace gum {
           }
 
           case ClassElement<GUM_SCALAR>::prm_aggregate: {
-            moral_graph.insertNode ( *node );
+            moral_graph.addNode ( *node );
             mods.insert ( *node, c.get ( *node ).type()->domainSize() );
             break;
           }
 
-          default: { /* do nothing */ }
+          default: {
+            /* do nothing */
+          }
         }
       }
 
@@ -825,13 +827,13 @@ namespace gum {
         // Adding edges and marrying parents
         for ( NodeSet::const_iterator_safe tail = parents->beginSafe(); tail != parents->endSafe(); ++tail ) {
           if ( ClassElement<GUM_SCALAR>::isAttribute ( c.get ( *tail ) ) or ClassElement<GUM_SCALAR>::isAggregate ( c.get ( *tail ) ) ) {
-            moral_graph.insertEdge ( *tail, *node );
+            moral_graph.addEdge ( *tail, *node );
             NodeSet::const_iterator_safe marry = tail;
             ++marry;
 
             while ( marry != parents->endSafe() ) {
               if ( ClassElement<GUM_SCALAR>::isAttribute ( c.get ( *marry ) ) or ClassElement<GUM_SCALAR>::isAggregate ( c.get ( *marry ) ) )
-                moral_graph.insertEdge ( *tail, *marry );
+                moral_graph.addEdge ( *tail, *marry );
 
               ++marry;
             }
@@ -875,7 +877,9 @@ namespace gum {
             break;
           }
 
-          default: { /* Do nothing */ }
+          default: {
+            /* Do nothing */
+          }
         }
       }
 

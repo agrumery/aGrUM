@@ -9,10 +9,9 @@
 %feature("shadow") gum::BayesNetInference<double>::setEvidence %{
 def setEvidence(self, evidces):
     if not isinstance(evidces, dict):
-        raise TypeError("setEvidence parameter must be dict, not %s"
-                        %(type(evidces)))
+        raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
     bn = self.bn()
-    
+
 
     # set evidences
     self.list_pot = []
@@ -61,7 +60,7 @@ def setEvidence(self, evidces):
         else:
             raise TypeError('dict values must be number, string or sequence')
         self.list_pot.append(pot)
-        
+
     self.eraseAllEvidence()
     self._setEvidence(self.list_pot)
 %}
@@ -98,6 +97,10 @@ def setEvidence(self, evidces):
 
 
 %extend gum::LazyPropagation<double> {
+    const std::string junctionTreeToDot() {
+      return self->junctionTree()->toDot();
+    }
+
     Potential<double>*  joint(PyObject *seq_of_ids) {
       if (PySequence_Check(seq_of_ids)==0) {
         PyErr_SetString(PyExc_TypeError, "arg must be a sequence");

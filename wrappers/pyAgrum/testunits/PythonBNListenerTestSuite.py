@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
 # -*- encoding: UTF-8 -*-
 
+# tests use the compiled version of pyAgrum and not the packaged one. So we directly call the __init__.py file
+import __init__ as gum # read "import pyAgrum as gum"
+
 import unittest
-from pyAgrum import BayesNet, PythonBNListener, LabelizedVar, InvalidDirectedCycle
 from pyAgrumTestSuite import pyAgrumTestCase
 
 
 class PythonBNListenerTestCase(pyAgrumTestCase):
 
     def setUp(self):
-        self.bn = BayesNet()
+        self.bn = gum.BayesNet()
         self.buffer0 = ""
         self.buffer1 = ""
-        self.var1 = LabelizedVar("a", "le noeud a", 2)
-        self.var2 = LabelizedVar("b", "le noeud b", 2)
-        self.var3 = LabelizedVar("c", "le noeud c", 3)
+        self.var1 = gum.LabelizedVariable("a", "le noeud a", 2)
+        self.var2 = gum.LabelizedVariable("b", "le noeud b", 2)
+        self.var3 = gum.LabelizedVariable("c", "le noeud c", 3)
 
 
     def bufferize(self, str):
@@ -26,14 +28,14 @@ class PythonBNListenerTestCase(pyAgrumTestCase):
 class TestConstructors(PythonBNListenerTestCase):
 
     def testConstructor(self):
-        listen1 = PythonBNListener(self.bn.dag(), self.bn.variableNodeMap())
+        listen1 = gum.PythonBNListener(self.bn.dag(), self.bn.variableNodeMap())
 
 
 
 class TestMessagesSetting(PythonBNListenerTestCase):
 
     def testMessagesInsertion(self):
-        listen1 = PythonBNListener(self.bn.dag(), self.bn.variableNodeMap())
+        listen1 = gum.PythonBNListener(self.bn.dag(), self.bn.variableNodeMap())
         listen1.setWhenNodeAdded(
             lambda i,s: self.bufferize("ajout d'un noeud %s (%d)\n"%(s,i)))
         listen1.setWhenArcAdded(
@@ -46,7 +48,7 @@ class TestMessagesSetting(PythonBNListenerTestCase):
 
 
     def testMessagesChange(self):
-        listen1 = PythonBNListener(self.bn.dag(), self.bn.variableNodeMap())
+        listen1 = gum.PythonBNListener(self.bn.dag(), self.bn.variableNodeMap())
         listen1.setWhenNodeAdded(
             lambda i,s: self.bufferize("ajout d'un noeud %s (%d)\n"%(s,i)))
         listen1.setWhenNodeAdded(
@@ -57,7 +59,7 @@ class TestMessagesSetting(PythonBNListenerTestCase):
 class TestListeners(PythonBNListenerTestCase):
 
     def test1Listener(self):
-        listen1 = PythonBNListener(self.bn.dag(), self.bn.variableNodeMap())
+        listen1 = gum.PythonBNListener(self.bn.dag(), self.bn.variableNodeMap())
         listen1.setWhenNodeAdded(
             lambda i,s: self.bufferize("Noeud++ %s (%d)\n"%(s,i)))
         listen1.setWhenArcAdded(
@@ -79,7 +81,7 @@ class TestListeners(PythonBNListenerTestCase):
         self.bn.addArc(b, c)
         self.assertEqual(self.buffer0, "Arc++ (%d->%d)\n"%(b, c))
 
-        self.assertRaises(InvalidDirectedCycle, self.bn.addArc,c,a)
+        self.assertRaises(gum.InvalidDirectedCycle, self.bn.addArc,c,a)
 
         self.buffer1 = ""
         self.bn.erase(b)
@@ -88,8 +90,8 @@ class TestListeners(PythonBNListenerTestCase):
 
 
     def test2Listeners(self):
-        listen1 = PythonBNListener(self.bn.dag(), self.bn.variableNodeMap())
-        listen2 = PythonBNListener(self.bn.dag(), self.bn.variableNodeMap())
+        listen1 = gum.PythonBNListener(self.bn.dag(), self.bn.variableNodeMap())
+        listen2 = gum.PythonBNListener(self.bn.dag(), self.bn.variableNodeMap())
         listen1.setWhenNodeAdded(
             lambda i,s: self.bufferize("Node++ %s (%d)\n"%(s,i)))
         listen2.setWhenNodeAdded(

@@ -34,26 +34,48 @@ __project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
 # selection of imports extracted from dir(pyAgrum)
 from pyAgrum import GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION,GUM_VERSION
 
-from pyAgrum import Arc,Edge,BayesNet,DiGraph,Vector_double
-from pyAgrum import DiscreteVar,DiscretizedVar,Instantiation,LabelizedVar,RangeVar,Variable
-from pyAgrum import Potential
-from pyAgrum import BruteForceKL,GibbsInference,GibbsKL,LazyPropagation
+from pyAgrum import Arc,Edge,DiGraph,UndiGraph,MixedGraph,DAG,CliqueGraph
+
+from pyAgrum import BayesNet
+from pyAgrum import DiscretizedVariable,LabelizedVariable,RangeVariable,DiscreteVariable
+from pyAgrum import Potential,Instantiation,UtilityTable
+from pyAgrum import BruteForceKL,GibbsKL
+from pyAgrum import GibbsInference,LazyPropagation
 from pyAgrum import PythonApproximationListener,PythonBNListener,PythonLoadListener
-from pyAgrum import generateBN
+
+from pyAgrum import BNGenerator,IDGenerator
+from pyAgrum import BNLearner
+
+from pyAgrum import InfluenceDiagram,InfluenceDiagramInference
+
 from pyAgrum import initRandom,randomProba,randomDistribution
 
 from pyAgrum import isOMP,setNumberOfThreads,getNumberOfLogicalProcessors,getMaxNumberOfThreads
+
 from pyAgrum import CredalNet,CNMonteCarloSampling,CNLoopyPropagation
 
 from pyAgrum import DefaultInLabel,DuplicateElement,DuplicateLabel,EmptyBSTree,EmptySet,Exception,FatalError,FormatNotFound,GraphError,IOError,IdError,InvalidArc,InvalidArgument,InvalidArgumentsNumber,InvalidDirectedCycle,InvalidEdge,InvalidNode,NoChild,NoNeighbour,NoParent,NotFound,NullElement,OperationNotAllowed,OutOfBounds,OutOfLowerBound,OutOfUpperBound,ReferenceError,SizeError,SyntaxError,UndefinedElement,UndefinedIteratorKey,UndefinedIteratorValue
 
+#obsolete
+from pyAgrum import DiscretizedVar,LabelizedVar,RangeVar
 
+                    
+def about():
+  print("pyAgrum version {0}.{1}.{2}".format(GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION))
+  print("(c) Pierre-Henri Wuillemin and others")
+  print("    UPMC 2014")
+  print("""
+    This is free software; see the source code for copying conditions.
+    There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  For details, see 'pyAgrum.warranty'.
+    """)
+  
 def availableBNExts():
     """
     return the list of suffix for supported BN file formats.
     """
     return "bif|dsl|net|bifxml"
-
+    
 def loadBN(s,listeners=None):
     """
     returns a BN from a file using one of the availableBNExts() suffixes.
@@ -74,7 +96,7 @@ def loadBN(s,listeners=None):
 
     if not res:
       raise Exception("Error(s) in "+s)
-    
+
     bn.setProperty("name",s)
     return bn
 
@@ -93,3 +115,25 @@ def saveBN(bn,s):
         bn.saveNET(s)
     else:
         raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
+
+
+
+def loadID(s):
+  """
+  return an InfluenceDiagram from a bifxml file.
+  """
+  
+  extension=s.split('.')[-1].upper()
+  if extension!="BIFXML":
+    raise Exception("extension "+extension+" unknown. Please use bifxml.")
+  
+  diag=InfluenceDiagram()
+  res=diag.loadBIFXML(s)
+  
+  if not res:
+    raise Exception("Error(s) in "+s)
+
+  diag.setProperty("name",s)
+  return diag
+  
+  

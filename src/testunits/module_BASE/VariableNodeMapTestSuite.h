@@ -27,7 +27,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/graphs/defaultTriangulation.h>
+#include <agrum/graphs/triangulations/defaultTriangulation.h>
 
 
 // The graph used for the tests:
@@ -240,15 +240,15 @@ namespace gum_tests {
 
         graph.populateNodes ( topo.dag() );
 
-        graph.insertEdge ( idList[0], idList[2] );
-        graph.insertEdge ( idList[0], idList[3] );
-        graph.insertEdge ( idList[0], idList[1] );
-        graph.insertEdge ( idList[2], idList[4] );
-        graph.insertEdge ( idList[3], idList[4] );
-        graph.insertEdge ( idList[2], idList[3] );
-        graph.insertEdge ( idList[1], idList[3] );
-        graph.insertEdge ( idList[1], idList[4] );
-        graph.insertEdge ( idList[1], idList[2] );
+        graph.addEdge ( idList[0], idList[2] );
+        graph.addEdge ( idList[0], idList[3] );
+        graph.addEdge ( idList[0], idList[1] );
+        graph.addEdge ( idList[2], idList[4] );
+        graph.addEdge ( idList[3], idList[4] );
+        graph.addEdge ( idList[2], idList[3] );
+        graph.addEdge ( idList[1], idList[3] );
+        graph.addEdge ( idList[1], idList[4] );
+        graph.addEdge ( idList[1], idList[2] );
 
         return graph;
       }

@@ -105,7 +105,7 @@ namespace gum {
     NodeId MultiDimDecisionGraphManager<GUM_SCALAR>::addNonTerminalNode( const DiscreteVariable* var ){
         typename MultiDimDecisionGraph< GUM_SCALAR>::InternalNode* newNodeStruct =
                 new typename MultiDimDecisionGraph< GUM_SCALAR>::InternalNode( var );
-        NodeId nid = __decisionGraph->__model.insertNode();
+        NodeId nid = __decisionGraph->__model.addNode();
         __decisionGraph->__internalNodeMap.insert( nid, newNodeStruct );
         MultiDimDecisionGraph< GUM_SCALAR>::_addElemToNICL( &(__decisionGraph->__var2NodeIdMap[var]), nid );
 
@@ -117,7 +117,7 @@ namespace gum {
     NodeId MultiDimDecisionGraphManager<GUM_SCALAR>::addNonTerminalNode( const DiscreteVariable* var, NodeId* sons ){
         typename MultiDimDecisionGraph< GUM_SCALAR>::InternalNode* newNodeStruct =
                 new typename MultiDimDecisionGraph< GUM_SCALAR>::InternalNode( var, sons );
-        NodeId nid = __decisionGraph->__model.insertNode();
+        NodeId nid = __decisionGraph->__model.addNode();
         __decisionGraph->__internalNodeMap.insert( nid, newNodeStruct );
         MultiDimDecisionGraph< GUM_SCALAR>::_addElemToNICL( &(__decisionGraph->__var2NodeIdMap[var]), nid );
         for( Idx i = 0; i < newNodeStruct->nbSons(); i++ )
@@ -144,7 +144,7 @@ namespace gum {
       if( __decisionGraph->__valueMap.existsSecond( value ) )
         return __decisionGraph->__valueMap.first( value );
 
-      NodeId node = __decisionGraph->__model.insertNode();
+      NodeId node = __decisionGraph->__model.addNode();
       __decisionGraph->__valueMap.insert(node, value);
       return node;
     }
@@ -562,7 +562,7 @@ namespace gum {
 
 //        // Getting a new id for this node
 //        if( nid == 0 )
-//          nid = __decisionGraph->__model.insertNode();
+//          nid = __decisionGraph->__model.addNode();
 
 //        if( !__decisionGraph->__internalNodeMap.exists(nid) ){
 //           __decisionGraph->__internalNodeMap.insert( nid, newNodeStruct );

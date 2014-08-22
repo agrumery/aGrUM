@@ -28,7 +28,8 @@
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/ID/inference/defaultInfluenceDiagramInference.h>
+#include <agrum/ID/inference/influenceDiagramInference.h>
+#include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
 
 
 // The graph used for the tests:
@@ -48,7 +49,7 @@
 
 namespace gum_tests {
 
-  class DefaultInfluenceDiagramInferenceTestSuite: public CxxTest::TestSuite {
+  class InfluenceDiagramInferenceTestSuite: public CxxTest::TestSuite {
 
     private:
       void fillTopoOilWildcater ( gum::InfluenceDiagram<float>& id, gum::List<gum::NodeId>& idList ) {
@@ -370,8 +371,8 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( topology = new gum::InfluenceDiagram<float>() );
         TS_GUM_ASSERT_THROWS_NOTHING ( fillwithDecAsia ( *topology, idList ) );
 
-        gum::DefaultInfluenceDiagramInference<float>* dIDI = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING ( dIDI = new gum::DefaultInfluenceDiagramInference<float> ( *topology ) );
+        gum::InfluenceDiagramInference<float>* dIDI = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING ( dIDI = new gum::InfluenceDiagramInference<float> ( *topology ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( delete dIDI );
         delete topology;
       }
@@ -451,7 +452,7 @@ namespace gum_tests {
         id.addArc ( idList[15], idList[19] );
 
         gum::NullStream devnull;
-        gum::DefaultInfluenceDiagramInference<float> dIDI ( id );
+        gum::InfluenceDiagramInference<float> dIDI ( id );
         dIDI.displayStrongJunctionTree ( devnull );
       }
 
@@ -461,8 +462,8 @@ namespace gum_tests {
         topology = new gum::InfluenceDiagram<float>();
         fillwithOilWildcater ( *topology, idList );
 
-        gum::DefaultInfluenceDiagramInference<float>* dIDI = nullptr;
-        dIDI = new gum::DefaultInfluenceDiagramInference<float> ( *topology );
+        gum::InfluenceDiagramInference<float>* dIDI = nullptr;
+        dIDI = new gum::InfluenceDiagramInference<float> ( *topology );
 
         TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->makeInference() );
 
@@ -477,20 +478,20 @@ namespace gum_tests {
         fillwithDecAsia ( *topology, idList );
         gum::NullStream devnull;
 
-        gum::DefaultInfluenceDiagramInference<float>* dIDI = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING ( dIDI = new gum::DefaultInfluenceDiagramInference<float> ( *topology ) );
+        gum::InfluenceDiagramInference<float>* dIDI = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING ( dIDI = new gum::InfluenceDiagramInference<float> ( *topology ) );
 
         TS_ASSERT_THROWS ( dIDI->getMEU(), gum::OperationNotAllowed );
         TS_ASSERT_THROWS ( dIDI->getBestDecisionChoice ( idList[0] ), gum::OperationNotAllowed );
-        TS_ASSERT_THROWS ( dIDI->displayResult ( devnull ), gum::OperationNotAllowed );
+        TS_ASSERT_THROWS ( dIDI->displayResult (  ), gum::OperationNotAllowed );
         TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->makeInference() );
         TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->getMEU() );
         TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->getBestDecisionChoice ( idList[0] ) );
         TS_ASSERT_THROWS ( dIDI->getBestDecisionChoice ( idList[2] ), gum::InvalidNode );
-        TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->displayResult ( devnull ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->displayResult (  ) );
 
         TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->makeInference() );
-        TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->displayResult ( devnull ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->displayResult (  ) );
 
         delete dIDI;
         delete topology;
@@ -508,7 +509,7 @@ namespace gum_tests {
         e_list.insert ( evidence1 );
         e_list.insert ( evidence2 );
 
-        gum::DefaultInfluenceDiagramInference<float> inf ( *topology );
+        gum::InfluenceDiagramInference<float> inf ( *topology );
 
         evidence1->add ( topology->variable ( idList[2] ) );
         evidence1->add ( topology->variable ( idList[3] ) );

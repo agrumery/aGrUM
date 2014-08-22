@@ -44,11 +44,14 @@ namespace gum {
   }
 
   INLINE void CliqueGraph::insertEdge ( const NodeId first, const NodeId second ) {
+    addEdge ( first,second );
+  }
+  INLINE void CliqueGraph::addEdge ( const NodeId first, const NodeId second ) {
     Edge edge ( first, second );
 
     if ( ! existsEdge ( edge ) ) {
       // create the edge in the graph
-      UndiGraph::insertEdge ( first, second );
+      UndiGraph::addEdge ( first, second );
 
       // create the separator
       __separators.insert ( edge, __cliques[first] * __cliques[second] );
@@ -69,8 +72,11 @@ namespace gum {
   /// adds a new clique to the graph
 
   INLINE NodeId CliqueGraph::insertNode ( const NodeSet& clique ) {
+    return addNode ( clique );
+  }
+  INLINE NodeId CliqueGraph::addNode ( const NodeSet& clique ) {
     // create the new node in the graph
-    NodeId new_node = UndiGraph::insertNode();
+    NodeId new_node = UndiGraph::addNode();
 
     // update the set of nodes of the clique
     __cliques.insert ( new_node, clique );
@@ -78,22 +84,31 @@ namespace gum {
   }
 
   INLINE NodeId CliqueGraph::insertNode() {
-    return insertNode ( NodeSet () );
+    return addNode();
+  }
+  INLINE NodeId CliqueGraph::addNode() {
+    return addNode ( NodeSet () );
   }
 
   /// adds a new clique to the graph
 
   INLINE void CliqueGraph::insertNode ( const NodeId id,  const NodeSet& clique ) {
+    addNode ( id,clique );
+  }
+  INLINE void CliqueGraph::addNode ( const NodeId id,  const NodeSet& clique ) {
     // create the new node in the graph
-    UndiGraph::insertNode ( id );
+    UndiGraph::addNode ( id );
 
     // update the set of nodes of the clique
     __cliques.insert ( id, clique );
   }
 
-   INLINE void CliqueGraph::insertNode( const NodeId id ) {
-     insertNode ( id, NodeSet () );
-   }
+  INLINE void CliqueGraph::insertNode ( const NodeId id ) {
+    addNode ( id );
+  }
+  INLINE void CliqueGraph::addNode ( const NodeId id ) {
+    addNode ( id, NodeSet () );
+  }
 
   /// removes a given clique from the clique graph
 

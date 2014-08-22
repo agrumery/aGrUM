@@ -58,7 +58,7 @@ namespace gum {
       GUM_CONSTRUCTOR( MultiDimDecisionGraph );
       __manager = nullptr;
       // Pop up a first node so that id 0 is unavailable
-      __model.insertNode();
+      __model.addNode();
     }
 
     // ============================================================================
@@ -509,7 +509,7 @@ namespace gum {
 
       __model.clear();
       // Always discard the nodeId 0
-      __model.insertNode();
+      __model.addNode();
 
       __valueMap.clear();
 

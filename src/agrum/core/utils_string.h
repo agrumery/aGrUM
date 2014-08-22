@@ -33,29 +33,7 @@
 
 
 namespace gum {
-
-
-  /// splits a CSV-like string into a vector of fields
-  /** This function splits a given string representing a single line of a CSV
-   * file into a set of strings, each one corresponding to a field of the line
-   * (fields are separated by character field_separator). In addition, some fields
-   * may be enclosed within delimiters (usually ") and characters may be
-   * escaped using the escape_char character.
-   * @param str_to_split the string in CVS format to split
-   * @param field_separator the character to use to separate fileds in the CSV
-   * @param field_delimiter the character to use to encapsulate, for instance,
-   * strings within a field of the CVS
-   * @param escape_char the character to use to escape the next character in, say,
-   * a string field of the CSV
-   * @throws IOError is thrown if, in a field, a delimiter is opened
-   * but not closed. */
-
-  std::vector<std::string> SplitCSVLine ( const std::string& str_to_split,
-                                          char field_separator = ';',
-                                          char field_delimiter = '"',
-                                          char escape_char = '\\' );
-
-
+  std::string getUniqueFileName();
 } /* namespace gum */
 
 

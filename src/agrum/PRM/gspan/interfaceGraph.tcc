@@ -113,7 +113,7 @@ namespace gum {
           NodeData<GUM_SCALAR>* node = new NodeData<GUM_SCALAR>();
           node->n = iter.val ();
           __label ( node, label_map );
-          __graph.insertNode ( iter.key() );
+          __graph.addNode ( iter.key() );
           __idMap.insert ( node->n, iter.key() );
           __nodes.insert ( iter.key(), node );
         }
@@ -137,7 +137,7 @@ namespace gum {
                 edge->v = v->n;
                 edge->l_v = v->l;
                 __label ( edge, label_map );
-                __graph.insertEdge ( __idMap[u->n], __idMap[v->n] );
+                __graph.addEdge ( __idMap[u->n], __idMap[v->n] );
                 __edges.insert ( Edge ( __idMap[u->n], __idMap[v->n] ), edge );
               }
             }
@@ -281,19 +281,27 @@ namespace gum {
 
       template<typename GUM_SCALAR> INLINE
       UndiGraph&
-      InterfaceGraph<GUM_SCALAR>::graph() { return __graph; }
+      InterfaceGraph<GUM_SCALAR>::graph() {
+        return __graph;
+      }
 
       template<typename GUM_SCALAR> INLINE
       const UndiGraph&
-      InterfaceGraph<GUM_SCALAR>::graph() const { return __graph; }
+      InterfaceGraph<GUM_SCALAR>::graph() const {
+        return __graph;
+      }
 
       template<typename GUM_SCALAR> INLINE
       Bijection<Idx, LabelData*>&
-      InterfaceGraph<GUM_SCALAR>::labels() { return *__labels; }
+      InterfaceGraph<GUM_SCALAR>::labels() {
+        return *__labels;
+      }
 
       template<typename GUM_SCALAR> INLINE
       const Bijection<Idx, LabelData*>&
-      InterfaceGraph<GUM_SCALAR>::labels() const { return *__labels; }
+      InterfaceGraph<GUM_SCALAR>::labels() const {
+        return *__labels;
+      }
 
       template<typename GUM_SCALAR> INLINE
       Size

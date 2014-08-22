@@ -93,8 +93,8 @@ namespace gum {
        * exception is raised.
        * @throw InvalidNode if first and/or second do not belong to the
        * graph nodes */
-
-      virtual void insertEdge ( const NodeId first, const NodeId second );
+      GUM_DEPRECATED(virtual void insertEdge ( const NodeId first, const NodeId second ));
+      virtual void addEdge ( const NodeId first, const NodeId second );
 
 
       /// removes an edge (and its separator) from the clique graph
@@ -113,16 +113,20 @@ namespace gum {
       /// adds a new clique to the graph
       /** @return the id chosen for the new clique */
 
-      virtual NodeId insertNode( const NodeSet& clique );
-      virtual NodeId insertNode();
+      GUM_DEPRECATED(NodeId insertNode ( const NodeSet& clique ));
+      GUM_DEPRECATED(NodeId insertNode());
+      NodeId addNode ( const NodeSet& clique );
+      virtual NodeId addNode();
 
 
       /// try to add a new clique to the graph
       /** @throws DuplicateElement exception is thrown if the id of the clique
        * already exists within the clique graph */
 
-      virtual void insertNode( const NodeId id, const NodeSet& clique );
-      virtual void insertNode( const NodeId id );
+      GUM_DEPRECATED(virtual void insertNode ( const NodeId id, const NodeSet& clique ));
+      GUM_DEPRECATED(virtual void insertNode ( const NodeId id ));
+      virtual void addNode ( const NodeId id, const NodeSet& clique );
+      virtual void addNode ( const NodeId id );
 
 
       /// removes a given clique from the clique graph

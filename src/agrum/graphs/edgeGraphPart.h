@@ -45,9 +45,9 @@ namespace gum {
    * EdgeGraphPart edges1,edges2;
    *
    * // insert elements into edges1
-   * edges1.insertEdge( 2,3 );
+   * edges1.addEdge( 2,3 );
    * Edge edge( 5,3 );
-   * edges1.insertEdge( 5,3 );
+   * edges1.addEdge( 5,3 );
    *
    * // copy edges1 into edges2
    * edges2=edges1;

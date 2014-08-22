@@ -26,8 +26,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
-#include <agrum/graphs/incrementalTriangulation.h>
-#include <agrum/graphs/defaultTriangulation.h>
+#include <agrum/graphs/triangulations/incrementalTriangulation.h>
+#include <agrum/graphs/triangulations/defaultTriangulation.h>
 
 namespace gum_tests {
 
@@ -40,20 +40,20 @@ namespace gum_tests {
         triang.updateTriangulation();
         TS_ASSERT_EQUALS ( triang.__check(), true );
 
-        triang.insertNode ( 10, 10 );
+        triang.addNode ( 10, 10 );
         TS_ASSERT_EQUALS ( triang.__check(), true );
 
-        triang.insertNode ( 30, 10 );
+        triang.addNode ( 30, 10 );
         TS_ASSERT_EQUALS ( triang.__check(), true );
 
-        triang.insertNode ( 20, 10 );
-        triang.insertNode ( 40, 10 );
+        triang.addNode ( 20, 10 );
+        triang.addNode ( 40, 10 );
         TS_ASSERT_EQUALS ( triang.__check(), true );
         const gum::CliqueGraph& JT1 = triang.junctionTree();
         TS_ASSERT_EQUALS ( JT1.size() , 4U );
 
-        triang.insertEdge ( 10, 20 );
-        triang.insertEdge ( 10, 30 );
+        triang.addEdge ( 10, 20 );
+        triang.addEdge ( 10, 30 );
         TS_ASSERT_EQUALS ( triang.__check(), true );
         const gum::CliqueGraph& JT2 = triang.junctionTree();
         TS_ASSERT_EQUALS ( JT2.size() , 3U );
@@ -76,12 +76,12 @@ namespace gum_tests {
         triang.updateTriangulation();
         TS_ASSERT_EQUALS ( triang.__check(), true );
 
-        triang.insertEdge ( 10, 20 );
-        triang.insertEdge ( 10, 30 );
-        triang.insertNode ( 50, 10 );
-        triang.insertNode ( 80, 10 );
-        triang.insertNode ( 60, 10 );
-        triang.insertNode ( 70, 10 );
+        triang.addEdge ( 10, 20 );
+        triang.addEdge ( 10, 30 );
+        triang.addNode ( 50, 10 );
+        triang.addNode ( 80, 10 );
+        triang.addNode ( 60, 10 );
+        triang.addNode ( 70, 10 );
 
         gum::NodeSet c2, c3, c4, c5;
         c2 << 20 << 40 << 50;
@@ -105,7 +105,7 @@ namespace gum_tests {
         triang.updateTriangulation();
         TS_ASSERT_EQUALS ( triang.__check(), true );
 
-        triang.insertNode ( 40, 10 );
+        triang.addNode ( 40, 10 );
         createClique ( triang, c1 );
         createClique ( triang, c2 );
         createClique ( triang, c3 );
@@ -122,36 +122,36 @@ namespace gum_tests {
         gum::DefaultTriangulation tr;
         gum::IncrementalTriangulation triang ( tr );
 
-        triang.insertNode ( 0, 10 );
+        triang.addNode ( 0, 10 );
         triang.updateTriangulation();
 
         if ( ! triang.__check() ) return;
 
-        triang.insertNode ( 1, 10 );
-
-        triang.updateTriangulation();
-
-        if ( ! triang.__check() ) return;
-
-        triang.insertEdge ( 0, 1 );
+        triang.addNode ( 1, 10 );
 
         triang.updateTriangulation();
 
         if ( ! triang.__check() ) return;
 
-        triang.insertNode ( 2, 10 );
+        triang.addEdge ( 0, 1 );
 
         triang.updateTriangulation();
 
         if ( ! triang.__check() ) return;
 
-        triang.insertEdge ( 0, 2 );
+        triang.addNode ( 2, 10 );
 
         triang.updateTriangulation();
 
         if ( ! triang.__check() ) return;
 
-        triang.insertEdge ( 2, 1 );
+        triang.addEdge ( 0, 2 );
+
+        triang.updateTriangulation();
+
+        if ( ! triang.__check() ) return;
+
+        triang.addEdge ( 2, 1 );
 
         triang.eraseNode ( 0 );
 
@@ -185,7 +185,7 @@ namespace gum_tests {
             // add a new node
             else if ( nb < 30 ) {
               // std::cerr << "create node " << triang.graph().bound() << std::endl;
-              triang.insertNode ( triang.graph().bound(), 10 );
+              triang.addNode ( triang.graph().bound(), 10 );
             }
 
             // ===================================================
@@ -207,7 +207,7 @@ namespace gum_tests {
               unsigned int nb2 =
                 ( int ) ( ( ( float ) rand() / RAND_MAX ) * triang.graph().bound() );
               // std::cerr << "create edge (" << nb1 << "," << nb2 << ")" << std::endl;
-              triang.insertEdge ( nb1, nb2 );
+              triang.addEdge ( nb1, nb2 );
             }
 
             nb = ( int ) ( ( ( float ) rand() / RAND_MAX ) * 20 );
@@ -228,10 +228,10 @@ namespace gum_tests {
         gum::IncrementalTriangulation triang ( tr );
 
         triang.updateTriangulation();
-        triang.insertNode ( 10, 10 );
-        triang.insertNode ( 30, 10 );
-        triang.insertNode ( 20, 10 );
-        triang.insertNode ( 40, 10 );
+        triang.addNode ( 10, 10 );
+        triang.addNode ( 30, 10 );
+        triang.addNode ( 20, 10 );
+        triang.addNode ( 40, 10 );
 
         const std::vector<gum::NodeId>& elim1 = triang.eliminationOrder();
         TS_ASSERT_EQUALS ( elim1.size(), 4U );
@@ -243,8 +243,8 @@ namespace gum_tests {
         const gum::CliqueGraph& JT1 = triang.junctionTree();
         TS_ASSERT_EQUALS ( JT1.size() , 4U );
 
-        triang.insertEdge ( 10, 20 );
-        triang.insertEdge ( 10, 30 );
+        triang.addEdge ( 10, 20 );
+        triang.addEdge ( 10, 30 );
         triang.eraseEdge ( gum::Edge ( 10, 20 ) );
         triang.updateTriangulation();
         TS_ASSERT_EQUALS ( triang.__check(), true );
@@ -263,12 +263,12 @@ namespace gum_tests {
         triang.updateTriangulation();
         TS_ASSERT_EQUALS ( triang.__check(), true );
 
-        triang.insertEdge ( 10, 20 );
-        triang.insertEdge ( 10, 30 );
-        triang.insertNode ( 50, 10 );
-        triang.insertNode ( 80, 10 );
-        triang.insertNode ( 60, 10 );
-        triang.insertNode ( 70, 10 );
+        triang.addEdge ( 10, 20 );
+        triang.addEdge ( 10, 30 );
+        triang.addNode ( 50, 10 );
+        triang.addNode ( 80, 10 );
+        triang.addNode ( 60, 10 );
+        triang.addNode ( 70, 10 );
 
         gum::NodeSet c2, c3, c4, c5;
         c2 << 20 << 40 << 50;
@@ -310,7 +310,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( elim3[5], 20U );
         TS_ASSERT_EQUALS ( elim3[6], 10U );
 
-        triang.insertNode ( 40, 10 );
+        triang.addNode ( 40, 10 );
         createClique ( triang, c1 );
         createClique ( triang, c2 );
         createClique ( triang, c3 );
@@ -363,7 +363,7 @@ namespace gum_tests {
 
           for ( ++iter2; iter2 != clique.endSafe(); ++iter2 ) {
             try {
-              triang.insertEdge ( *iter, *iter2 );
+              triang.addEdge ( *iter, *iter2 );
             } catch ( gum::DuplicateElement& ) {}
           }
         }

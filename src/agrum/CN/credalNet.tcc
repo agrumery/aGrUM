@@ -1,5 +1,6 @@
 #include <agrum/CN/credalNet.h>
 #include <agrum/core/exceptions.h>
+#include <agrum/core/utils_string.h>
 
 namespace gum {
   namespace credal {
@@ -715,7 +716,7 @@ namespace gum {
 
       __credalNet_src_cpt.resize ( __src_bn.size() );
 
-      for ( auto node_idIt = __src_bn.nodes().beginSafe(); node_idIt != __src_bn.nodes().endSafe(); ++node_idIt) {
+      for ( auto node_idIt = __src_bn.nodes().beginSafe(); node_idIt != __src_bn.nodes().endSafe(); ++node_idIt ) {
         const Potential< GUM_SCALAR >* const potential_min ( &__src_bn_min.cpt ( *node_idIt ) );
         const Potential< GUM_SCALAR >* const potential_max ( &__src_bn_max.cpt ( *node_idIt ) );
 
@@ -1165,7 +1166,7 @@ namespace gum {
       __binCptMin.resize ( current_bn().size() );
       __binCptMax.resize ( current_bn().size() );
 
-      for ( auto node_idIt = current_bn().nodes().beginSafe(); node_idIt != current_bn().nodes().endSafe(); ++node_idIt  ) {
+      for ( auto node_idIt = current_bn().nodes().beginSafe(); node_idIt != current_bn().nodes().endSafe(); ++node_idIt ) {
         auto pConf = credalNet_currentCpt() [*node_idIt].size();
         std::vector< GUM_SCALAR > min ( pConf );
         std::vector< GUM_SCALAR > max ( pConf );
@@ -1374,7 +1375,7 @@ namespace gum {
 
       dest.beginTopologyTransformation();
 
-      for ( auto node_idIt = __current_bn->nodes().beginSafe(); node_idIt != __current_bn->nodes().endSafe(); ++node_idIt  ) {
+      for ( auto node_idIt = __current_bn->nodes().beginSafe(); node_idIt != __current_bn->nodes().endSafe(); ++node_idIt ) {
         for ( auto parent_idIt = __current_bn->cpt ( *node_idIt ).begin(), theEnd2 = __current_bn->cpt ( *node_idIt ).end(); parent_idIt != theEnd2; ++parent_idIt ) {
           if ( __current_bn->nodeId ( **parent_idIt ) != *node_idIt )
             dest.addArc ( __current_bn->nodeId ( **parent_idIt ), *node_idIt );
@@ -1440,14 +1441,13 @@ namespace gum {
       // write H rep file
       long int num, den;
 
-      char* inefile = tmpnam ( nullptr ); // generate unique file name, we need to add .ine or .ext for lrs to know which input it is (Hrep to Vrep or Vrep to Hrep)
-      std::string sinefile ( inefile );
+      std::string sinefile = getUniqueFileName (); // generate unique file name, we need to add .ine or .ext for lrs to know which input it is (Hrep to Vrep or Vrep to Hrep)
       sinefile += ".ine";
 
       std::ofstream h_file ( sinefile.c_str(), std::ios::out | std::ios::trunc );
 
       if ( ! h_file.good() )
-        GUM_ERROR ( IOError, "__H2Vlrs : could not open lrs input file : " << inefile );
+        GUM_ERROR ( IOError, "__H2Vlrs : could not open lrs input file : " << sinefile );
 
       h_file << "H - representation\n";
       h_file << "begin\n";
@@ -1474,7 +1474,7 @@ namespace gum {
       char* args[3];
 
       std::string soft_name = "lrs";
-      std::string extfile ( inefile );
+      std::string extfile ( sinefile );
       extfile += ".ext";
 
       args[0] = new char[soft_name.size()];

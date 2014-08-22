@@ -25,6 +25,15 @@
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__IdError ), err );
     SWIG_fail;
+  } catch ( gum::IOError& e ) {
+    gum::IOError* ecopy = new gum::IOError ( e );
+    PyObject* err = SWIG_NewPointerObj ( ecopy,
+    SWIGTYPE_p_gum__IOError,
+    1 );
+    PyErr_SetObject (
+      SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__IOError ),
+      err );
+    SWIG_fail;
   } catch ( gum::OperationNotAllowed& e ) {
     gum::OperationNotAllowed* ecopy = new gum::OperationNotAllowed ( e );
     PyObject* err = SWIG_NewPointerObj ( ecopy,

@@ -28,8 +28,8 @@
 #ifndef GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H
 #define GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H
 
-#include <agrum/core/approximationPolicy/approximationPolicy.h>
-#include <agrum/core/approximationPolicy/exactPolicy.h>
+#include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
+#include <agrum/core/algorithms/approximationPolicy/exactPolicy.h>
 
 #include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
 #include <agrum/multidim/multiDimDecisionDiagram.h>
