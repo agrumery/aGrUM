@@ -172,7 +172,7 @@ namespace gum {
       MultiDimDecisionGraph< GUM_SCALAR >* newVFunction = new MultiDimDecisionGraph< GUM_SCALAR >();
       newVFunction->copyAndReassign ( *__vFunction, __fmdp->mapMainPrime() );
 
-      std::cout << "QAction  computation" << std::endl;
+//      std::cout << "QAction  computation" << std::endl;
       // *****************************************************************************************
       // For each action
 //      std::vector<std::future<Multi>> workers;
@@ -240,7 +240,7 @@ namespace gum {
       // *****************************************************************************************
       // To evaluate action value function, we multiply old main value function by transition table
       // of each variable
-//    std::cout << "Thread " << actionId << " initiates var elemination." << std::endl;
+//    std::cout << "Thread " << actionId << " initiates var elemination. " << std::endl;
       for ( auto varIter = planer->beginVarElimination(); varIter != planer->endVarElemination(); --varIter ) {
 
 //        std::cout << "Thread " << planer->fmdp()->actionName(actionId) << " - Var : " << (*varIter)->name() << std::endl;
@@ -252,7 +252,7 @@ namespace gum {
 //        std::cout << RECAST( planer->fmdp()->transition( actionId, *varIter ) )->toDot();
         qAction = multiply2MultiDimDecisionGraphs ( qAction, RECAST( planer->fmdp()->transition( actionId, *varIter ) ) );
         delete vTemp;
-//        std::cout << qAction->toDot() << std::endl;
+//        std::cout << "New Root : " << qAction->root() << std::endl << qAction->toDot() << std::endl;
 
         // ***************************************************************************************
         // Projection of qAction on current var by summing on each of its modalities

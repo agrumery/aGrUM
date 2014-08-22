@@ -60,7 +60,7 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        FMDPLearner ( FactoredMarkovDecisionProcess<double>* target, double learningThreshold );
+        FMDPLearner ( FactoredMarkovDecisionProcess<double>* target, double learningThreshold, double similarityThreshold );
 
         // ###################################################################
         /// Default destructor
@@ -123,14 +123,13 @@ namespace gum {
       const DiscreteVariable* __rewardVar;
 
       const double __learningThreshold;
+      const double __similarityThreshold;
 
   };
 
 
 } /* namespace gum */
 
-
-#include <agrum/FMDP/learning/FMDPLearner.tcc>
 
 #endif // GUM_FMDP_LEARNER_H
 

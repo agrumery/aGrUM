@@ -124,7 +124,5 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/FMDP/learning/decisionGraph/nodeDatabase.tcc>
-
 #endif // GUM_NODE_DATABASE_H
 

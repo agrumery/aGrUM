@@ -29,6 +29,23 @@
 #include <agrum/core/smallobjectallocator/fixedAllocator.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // ============================================================================
+namespace gum {
+
+
+/*
+ * @variable The default size of chunck of memory.
+ * These chuncks are pre-allocated memory space which are
+ * then split in small memory space of the size of a small object
+ */
+const size_t SmallObjectAllocator::GUM_DEFAULT_CHUNK_SIZE = 8096;
+
+/*
+ * @variable The default maximal size under which an object is considered small.
+ * If an object size is over this limit, the normal new allocator is called.
+ */
+const size_t SmallObjectAllocator::GUM_DEFAULT_MAX_OBJECT_SIZE = 512;
+
+}/* End of Namespace */
 
 #ifdef GUM_NO_INLINE
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.inl>

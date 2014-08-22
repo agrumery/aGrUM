@@ -385,6 +385,8 @@ namespace gum {
           this->manager()->setSon( src2dest.second(currentSrcNodeId), index, src2dest.second(currentSrcNode->son(index)));
         }
       }
+
+      manager()->clean();
     }
 
     // ============================================================================
@@ -440,6 +442,8 @@ namespace gum {
           this->manager()->setSon( src2dest.second(currentSrcNodeId), index, src2dest.second(currentSrcNode->son(index)));
         }
       }
+
+      manager()->clean();
     }
 
     // ============================================================================
@@ -490,6 +494,8 @@ namespace gum {
           this->manager()->setSon( src2dest[currentSrcNodeId], index, src2dest[currentSrcNode->son(index)]);
         }
       }
+
+      manager()->clean();
     }
 
     // ============================================================================
@@ -552,7 +558,7 @@ namespace gum {
         if ( *nodeIter != 0 ) {
           if ( __valueMap.existsFirst ( *nodeIter ) )
             terminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - "
-                           << __valueMap.second ( *nodeIter ) << "\"]"<< ";" << std::endl;
+                           << std::setprecision(30) << __valueMap.second ( *nodeIter ) << "\"]"<< ";" << std::endl;
           else {
             InternalNode* currentNode = __internalNodeMap[ *nodeIter ];
             nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - "

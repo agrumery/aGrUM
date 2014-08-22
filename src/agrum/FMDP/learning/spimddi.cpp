@@ -41,23 +41,24 @@ namespace gum {
         // Default constructor
         // ###################################################################
 
-        SPIMDDI::SPIMDDI ( double discountFactor,
-                                       double epsilon,
-                                       double learningThreshold,
-                                       Idx observationPhaseLenght,
-                                       Idx nbValueIterationStep,
-                                       double exploThreshold ) : __observationPhaseLenght(observationPhaseLenght),
-                                                                 __nbValueIterationStep(nbValueIterationStep),
-                                                                 __exploThreshold(exploThreshold){
+        SPIMDDI::SPIMDDI (double discountFactor,
+                          double epsilon,
+                          double learningThreshold,
+                          double similarityThreshold,
+                          Idx observationPhaseLenght,
+                          Idx nbValueIterationStep,
+                          double exploThreshold ) : __observationPhaseLenght(observationPhaseLenght),
+                                                    __nbValueIterationStep(nbValueIterationStep),
+                                                    __exploThreshold(exploThreshold){
 
             GUM_CONSTRUCTOR(SPIMDDI)
 
             __fmdp = new FactoredMarkovDecisionProcess<double>();
             __fmdp->setDiscount(discountFactor);
 
-            __learner = new FMDPLearner(__fmdp, learningThreshold);
+            __learner = new FMDPLearner(__fmdp, learningThreshold, similarityThreshold );
 
-            __planer = new SPUMDD(__fmdp, epsilon);
+            __planer = new SPUMDD<double>(__fmdp, epsilon);
 
             __rewardVar = new LabelizedVariable("Reward", "");
             __rewardVar->eraseLabels();
@@ -161,6 +162,7 @@ namespace gum {
             if( __nbObservation%__observationPhaseLenght == 0) {
                 __learner->updateFMDP();
                 __planer->makePlanning(__nbValueIterationStep);
+//                exit(1);
             }
             __nbObservation++;
         }

@@ -45,17 +45,17 @@ namespace gum {
     // Default constructor.
     // ============================================================================
     IMDDI::IMDDI( MultiDimDecisionGraph<double>* target,
-                              double dependenceThreshold,
-                              double similarityThreshold,
-                              Set<const DiscreteVariable*> varList,
-                              const DiscreteVariable* value,
-                              bool rewardMode ) : __target(target),
-                                                  __setOfVars(varList),
-                                                  __value(value),
-                                                  __nbTotalObservation(0),
-                                                  __dependenceThreshold(dependenceThreshold),
-                                                  __similarityThreshold(similarityThreshold),
-                                                  __isReward(rewardMode)
+                  double dependenceThreshold,
+                  double similarityThreshold,
+                  Set<const DiscreteVariable*> varList,
+                  const DiscreteVariable* value,
+                  bool rewardMode ) : __target(target),
+                                      __setOfVars(varList),
+                                      __value(value),
+                                      __nbTotalObservation(0),
+                                      __dependenceThreshold(dependenceThreshold),
+                                      __similarityThreshold(similarityThreshold),
+                                      __isReward(rewardMode)
     {
       GUM_CONSTRUCTOR(IMDDI);
 
@@ -220,7 +220,7 @@ namespace gum {
             nodeSet << __nodeSonsMap[*nodeIter][modality];
 
             for( auto varIter = remainingVarsScore.allValues().cbeginSafe(); varIter != remainingVarsScore.allValues().cendSafe(); ++varIter ) {
-              if( __nodeId2Database[*nodeIter]->isPValueRelevant( rvarIter.key() ) ){
+              if( __nodeId2Database[*nodeIter]->isPValueRelevant( varIter.key() ) ){
                 double newPriority = remainingVarsScore.priority( varIter.key() )
                     + __score( varIter.key(), __nodeSonsMap[*nodeIter][modality] );
                 remainingVarsScore.setPriority(varIter.key(), newPriority);
@@ -378,7 +378,7 @@ namespace gum {
        __target->add(*__value);
 
        HashTable<NodeId, NodeId> toTarget;
-       __mergeLeaves(toTarget);
+       __mergeLeaves(toTarget, false);
 
 
 //       for( auto nodeIter = __var2Node[__value]->cbeginSafe(); nodeIter != __var2Node[__value]->cendSafe(); ++nodeIter ){
@@ -417,11 +417,11 @@ namespace gum {
          __target->add(*( main2prime.first(*varIter) ) );
 
        HashTable<NodeId, NodeId> toTarget;
-       __mergeLeaves(toTarget);
+       __mergeLeaves(toTarget, true);
 
 
-       for( auto nodeIter = __var2Node[__value]->cbeginSafe(); nodeIter != __var2Node[__value]->cendSafe(); ++nodeIter )
-         toTarget.insert(*nodeIter, __target->manager()->addTerminalNode(__nodeId2Database[*nodeIter]->rewardValue()));
+//       for( auto nodeIter = __var2Node[__value]->cbeginSafe(); nodeIter != __var2Node[__value]->cendSafe(); ++nodeIter )
+//         toTarget.insert(*nodeIter, __target->manager()->addTerminalNode(__nodeId2Database[*nodeIter]->rewardValue()));
 
        for( auto varIter = __varOrder.rbeginSafe(); varIter != __varOrder.rendSafe(); --varIter ) {
          const DiscreteVariable* mainy = main2prime.first(*varIter);
@@ -446,28 +446,45 @@ namespace gum {
     // ============================================================================
     void IMDDI::__mergeLeaves( HashTable<NodeId, NodeId>& toTarget, bool rewardLeaf ){
 
+//      std::cout << "******************============================================*******************" << std::endl;
+//      __showMap();
+
         MultiPriorityQueue<std::pair<NodeId,NodeId>, double, std::less<double>>* remainingPairs = new MultiPriorityQueue<std::pair<NodeId,NodeId>, double, std::less<double>>();
         HashTable<NodeId, double*> effectifTable;
         HashTable<NodeId, double> totalTable;
 
         HashTable<NodeId, NodeId> leafMap;
 
+//        std::cout << "============================================" << std::endl << "Initialising heap : " << std::endl;
+
         for( auto lNodeIter = __var2Node[__value]->beginSafe(); lNodeIter != __var2Node[__value]->endSafe(); ++lNodeIter){
-            effectifTable.insert( *lNodeIter, __nodeId2Database[*lNodeIter]->effectif() );
-            totalTable.insert( *lNodeIter, __nodeId2Database[*lNodeIter]->nbObservation() );
+//            std::cout << "lNodeIter : " << *lNodeIter << std::endl;
+            if( !effectifTable.exists(*lNodeIter) ){
+                effectifTable.insert( *lNodeIter, __nodeId2Database[*lNodeIter]->effectif() );
+                totalTable.insert( *lNodeIter, __nodeId2Database[*lNodeIter]->nbObservation() );
+            }
             for( auto rNodeIter = lNodeIter; ++rNodeIter != __var2Node[__value]->endSafe();){
-                effectifTable.insert( *rNodeIter, __nodeId2Database[*rNodeIter]->effectif() );
-                totalTable.insert( *rNodeIter, __nodeId2Database[*rNodeIter]->nbObservation() );
+//                std::cout << "rNodeIter : " << *rNodeIter << std::endl;
+                if( !effectifTable.exists(*rNodeIter) ){
+                    effectifTable.insert( *rNodeIter, __nodeId2Database[*rNodeIter]->effectif() );
+                    totalTable.insert( *rNodeIter, __nodeId2Database[*rNodeIter]->nbObservation() );
+                }
                 double d = __evalPair( effectifTable[*lNodeIter], totalTable[*lNodeIter], effectifTable[*rNodeIter], totalTable[*rNodeIter]);
-                if( d < __similarityThreshold )
+                if( d > __similarityThreshold )
                     remainingPairs->insert( std::pair<NodeId, NodeId>(*lNodeIter, *rNodeIter), d );
             }
+//            std::cout << "RemainingPairs : " << remainingPairs->toString() << std::endl;
         }
+
+
+//        std::cout << "============================================" << std::endl << "Seeking merging : " << std::endl;
 
         while(!remainingPairs->empty()){
 
             std::pair<NodeId,NodeId> p = remainingPairs->top();
             remainingPairs->eraseTop();
+
+//            std::cout << "Pair recupered" << std::endl;
 
             NodeId nlid = __model.insertNode();
             totalTable.insert( nlid, totalTable[p.first] + totalTable[p.second] );
@@ -475,6 +492,8 @@ namespace gum {
             for( Idx moda = 0; moda < __value->domainSize(); moda++ )
                 nls[moda] = effectifTable[p.first][moda] + effectifTable[p.second][moda];
             effectifTable.insert(nlid, nls);
+
+//            std::cout << "Recreating heap" << std::endl;
 
             MultiPriorityQueue<std::pair<NodeId,NodeId>, double, std::less<double>>* nextRemainingPairs = new MultiPriorityQueue<std::pair<NodeId,NodeId>, double, std::less<double>>();
             while( !remainingPairs->empty() ){
@@ -485,24 +504,36 @@ namespace gum {
 
                 if( op.first == p.first || op.first == p.second ){
                     double d = __evalPair( effectifTable[nlid], totalTable[nlid], effectifTable[op.second], totalTable[op.second] );
-                    if( d < __similarityThreshold )
-                        nextRemainingPairs->insert( std::pair<NodeId, NodeId>(nlid, op.second),  );
+                    if( d > __similarityThreshold )
+                        nextRemainingPairs->insert( std::pair<NodeId, NodeId>(nlid, op.second), d );
                 } else {
                     if( op.second == p.first || op.second == p.second ){
                         double d = __evalPair( effectifTable[nlid], totalTable[nlid], effectifTable[op.first], totalTable[op.first] );
-                        if( d < __similarityThreshold )
-                            nextRemainingPairs->insert( std::pair<NodeId, NodeId>(nlid, op.first),  );
+                        if( d > __similarityThreshold )
+                            nextRemainingPairs->insert( std::pair<NodeId, NodeId>(nlid, op.first), d );
                     } else {
                         nextRemainingPairs->insert( op, od );
                     }
                 }
             }
+
+//            std::cout << "Leafmap Maintenance" << std::endl;
+
             delete remainingPairs;
             remainingPairs = nextRemainingPairs;
 
-            leafMap.insert(p.first, nlid);
-            leafMap.insert(p.first, nlid);
+            if(!leafMap.exists(p.first))
+              leafMap.insert(p.first, nlid);
+            else
+              leafMap[p.first] = nlid;
+
+            if(!leafMap.exists(p.second))
+              leafMap.insert(p.second, nlid);
+            else
+              leafMap[p.second] = nlid;
         }
+
+//        std::cout << "============================================" << std::endl << "Now merging leaves " << leafMap << std::endl;
 
 
         for( auto nodeIter = __var2Node[__value]->beginSafe(); nodeIter != __var2Node[__value]->endSafe(); ++nodeIter){
@@ -516,18 +547,30 @@ namespace gum {
                 if(rewardLeaf){
                     double ret = 0.0;
                     for(Idx modality = 0; modality < __value->domainSize(); ++modality)
-                    ret += effectifTable[ti][modality] / totalTable[ti] * std::stod(__value->label(modality));
+                      ret += effectifTable[ti][modality] / totalTable[ti] * std::stod(__value->label(modality));
                     toTarget.insert( ti, __target->manager()->addTerminalNode(  ret ) );
                 }else{
+//                    std::cout << "Leaf : " << *nodeIter << " - Target : " << ti << " - HashTab : " << toTarget << std::endl;
                     NodeId* tts = static_cast<NodeId*>( MultiDimDecisionGraph<double>::soa.allocate( sizeof(NodeId)*__value->domainSize()) );
-                    for( Idx moda = 0; moda < __value->domainSize(); moda++)
+                    for( Idx moda = 0; moda < __value->domainSize(); moda++){
                         tts[moda] = __target->manager()->addTerminalNode( effectifTable[ti][moda] / totalTable[ti] );
+//                        std::cout << "\tModa : " << moda << " - DD Leaf : " << tts[moda] << std::endl;
+                      }
+//                    std::cout << "Installing Node" << toTarget << std::endl;
                     toTarget.insert( ti, __target->manager()->nodeRedundancyCheck(__value, tts ) );
+//                    std::cout << "Done" << toTarget << std::endl;
                 }
 
             }
-            toTarget.insert( *nodeIter, toTarget[ti] );
+
+            if( *nodeIter != ti )
+              toTarget.insert( *nodeIter, toTarget[ti] );
         }
+//        std::cout << "Yoh" << std::endl;
+
+        for(auto it = effectifTable.beginSafe(); it != effectifTable.endSafe(); ++it)
+          MultiDimDecisionGraph<double>::soa.deallocate( it.val(), sizeof(double)*__value->domainSize());
+        delete remainingPairs;
     }
 
 
@@ -542,6 +585,7 @@ namespace gum {
         double sScalingFactor = stotal / (ftotal + stotal);
 
         for( Idx moda = 0; moda < __value->domainSize(); moda++ ){
+//            std::cout << "Moda : " << moda << "\t- F : " << feffectif[moda] << "\t- Fe : " << ( ( feffectif[moda] + seffectif[moda] ) * fScalingFactor ) << "\t- S : " << seffectif[moda] << "\t- Se : " << ( ( feffectif[moda] + seffectif[moda] ) * sScalingFactor ) << std::endl;
             if( feffectif[moda] != 0 || seffectif[moda] != 0 ){
                 if( feffectif[moda] != 0 )
                     fg += feffectif[moda] * log( feffectif[moda] / ( ( feffectif[moda] + seffectif[moda] ) * fScalingFactor ) );
@@ -550,8 +594,10 @@ namespace gum {
             }
         }
 
+//        std::cout << " Fg : " << fg << "\t- Sg " << sg << std::endl;
         double fp = ChiSquare::probaChi2( fg, __value->domainSize() - 1 );
         double sp = ChiSquare::probaChi2( sg, __value->domainSize() - 1 );
+//        std::cout << " Fp : " << fp << "\t- Sp " << sp <<  "\t- ST " << __similarityThreshold << std::endl;
         return fp > sp ? sp : fp;
     }
 

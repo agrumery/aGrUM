@@ -21,6 +21,7 @@
 // ==============================================================================
 #include <iostream>
 #include <string>
+#include <cstdarg>
 // ==============================================================================
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
@@ -43,7 +44,7 @@ namespace gum_tests {
         // Chargement du fmdp servant de base
         // *********************************************************************************************
         gum::FactoredMarkovDecisionProcess<double> fmdp(true);
-        gum::FMDPDatReader<double> reader ( &fmdp, file );
+        gum::FMDPDatReader<double> reader ( &fmdp, GET_PATH_STR ( "FMDP/coffee/coffee.dat" ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( reader.trace ( false ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( reader.proceed( ) );
 
@@ -51,7 +52,7 @@ namespace gum_tests {
         // Initialisation des divers objets
         // *********************************************************************************************
         gum::Simulator sim(&fmdp);
-        gum::SPIMDDI<double> spim;
+        gum::SPIMDDI spim;
         gum::Instantiation initialState, endState;
 
         // Enregistrement des actions possibles auprès de SPIMDDI
@@ -101,7 +102,7 @@ namespace gum_tests {
 
 
 
-        for( gum::Idx nbRun = 0; nbRun < 1000; ++nbRun ){
+        for( gum::Idx nbRun = 0; nbRun < 10; ++nbRun ){
 
             TS_GUM_ASSERT_THROWS_NOTHING ( spim.setCurrentState(sim.currentState()) );
 
@@ -116,7 +117,7 @@ namespace gum_tests {
             }
             TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
         }
-
+        std::cout << spim.toString() << std::endl;
       }
 
     public:

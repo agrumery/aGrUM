@@ -133,9 +133,16 @@ namespace gum {
         // ###################################################################
         Size size(){ return __nodeVarMap.size(); }
 
-      /// @}
-
   private :
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        void __mergeLeaves( HashTable<NodeId, NodeId>& toTarget, bool rewardLeaf );
+
+        double __evalPair( double* feffectif, double ftotal, double* seffectif, double stotal );
+
+        /// @}
 
         void __showMap();
 
@@ -201,7 +208,6 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/FMDP/learning/decisionGraph/imddi.tcc>
 
 #endif // GUM_IMDDI_H
 

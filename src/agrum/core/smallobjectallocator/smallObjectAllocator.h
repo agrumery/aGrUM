@@ -58,13 +58,13 @@ namespace gum {
        * These chuncks are pre-allocated memory space which are
        * then split in small memory space of the size of a small object
        */
-      const static size_t GUM_DEFAULT_CHUNK_SIZE = 8096;
+      static const size_t GUM_DEFAULT_CHUNK_SIZE;
 
       /**
        * @variable The default maximal size under which an object is considered small.
        * If an object size is over this limit, the normal new allocator is called.
        */
-      const static size_t GUM_DEFAULT_MAX_OBJECT_SIZE = 512;
+      static const size_t GUM_DEFAULT_MAX_OBJECT_SIZE;
 
     public:
       // ############################################################################

@@ -38,8 +38,11 @@ namespace gum {
     // Default constructor
     // ###################################################################
 
-    FMDPLearner::FMDPLearner(FactoredMarkovDecisionProcess<double> *target, double lT ) : __fmdp(target),
-                                                                                                          __learningThreshold(lT){
+    FMDPLearner::FMDPLearner(FactoredMarkovDecisionProcess<double> *target,
+                             double lT ,
+                             double sT) : __fmdp(target),
+                                                           __learningThreshold(lT),
+                                                           __similarityThreshold(sT){
       GUM_CONSTRUCTOR(FMDPLearner);
     }
 
@@ -110,7 +113,7 @@ namespace gum {
             MultiDimDecisionGraph<double>* varTrans = new MultiDimDecisionGraph<double>();
             varTrans->setTableName("ACTION : " + __fmdp->actionName(*actionIter) + " - VARIABLE : " + (*varIter)->name());
             __fmdp->addTransitionForAction(__fmdp->actionName(*actionIter), *varIter, varTrans);
-            __actionLearners[*actionIter]->insert(new IMDDI(varTrans,__learningThreshold, 1 - __learningThreshold,__mainVariables,__fmdp->main2prime(*varIter)));
+            __actionLearners[*actionIter]->insert(new IMDDI(varTrans,__learningThreshold, __similarityThreshold, __mainVariables,__fmdp->main2prime(*varIter)));
         }
       }
 
@@ -119,7 +122,7 @@ namespace gum {
       for (auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter)
         primeVariables.insert(__fmdp->main2prime(*varIter));
       __fmdp->addReward(reward);
-      __rewardLearner = new IMDDI(reward,__learningThreshold, 1 - __learningThreshold,primeVariables,__rewardVar,true);
+      __rewardLearner = new IMDDI(reward,__learningThreshold, __similarityThreshold, primeVariables,__rewardVar,true);
     }
 
     // ###################################################################

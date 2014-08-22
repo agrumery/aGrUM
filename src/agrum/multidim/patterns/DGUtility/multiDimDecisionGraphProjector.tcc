@@ -68,7 +68,10 @@ namespace gum {
   MultiDimDecisionGraphProjector<GUM_SCALAR, FUNCTOR>::project(){
 
 
+
     __rd->copy( *__src );
+//    std::cout << "Root src : " << __src->root() << " - rd root : " << __rd->root() << std::endl << __rd->toDot() << std::endl;
+//    std::cout << "VS :" << __rd->variablesSequence().toString() << std::endl;
 
     for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter ){
 
@@ -80,6 +83,8 @@ namespace gum {
       if( __rd->variablesSequence().exists(curVar) )
         __rd->manager()->moveTo( curVar, __rd->variablesSequence().size() - 1 );
 
+//      std::cout << "Variable " << curVar->name() << " déplacée" << std::endl;
+//      std::cout << "rd root : " << __rd->root() << std::endl;
 
       // ******************************************************************************************************
       // 1er cas spécial : le diagramme est un un simple noeud terminal
@@ -97,12 +102,14 @@ namespace gum {
             __rd->erase( *curVar );
         continue;
       }
+//      std::cout << "Diagramme non réduit à un noeud terminal" << std::endl;
+//      std::cout << "rd root : " << __rd->root() << std::endl;
 
       // ******************************************************************************************************
       // 2ème cas spécial : la racine du diagramme est associée à la variable projetée
       // ******************************************************************************************************
       if( __rd->node(__rd->root())->nodeVar() == curVar ){
-
+//std::cout << "Heu ...." << std::endl;
           const typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* curVarNode = __rd->node( __rd->root() );
           GUM_SCALAR newVal = __neutral;
           for( Idx curVarModality = 0; curVarModality < curVar->domainSize(); ++curVarModality )
@@ -116,6 +123,7 @@ namespace gum {
               __rd->erase( *curVar );
           continue;
       }
+//      std::cout << "Variable racine : " << __rd->node(__rd->root())->nodeVar()->name() << " - Projection standard." << std::endl;
 
       // ******************************************************************************************************
       // Cas général

@@ -67,6 +67,7 @@ namespace gum {
         SPIMDDI (double discountFactor = 0.75,
                  double epsilon = 0.0001,
                  double learningThreshold = 0.95,
+                 double similarityThreshold = 0.75,
                  Idx observationPhaseLenght = 100,
                  Idx nbValueIterationStep = 10,
                  double exploThreshold = 0.1);
@@ -152,7 +153,7 @@ namespace gum {
       /// The model learner.
       /// It will handle by itself the different decision graph learners
       /// needed to learn the FMDP
-      FMDPLearner<double>* __learner;
+      FMDPLearner* __learner;
 
       LabelizedVariable* __rewardVar;
       Bijection<double,Idx> __rewardValue2Idx;
@@ -186,8 +187,6 @@ namespace gum {
 
 } /* namespace gum */
 
-
-#include <agrum/FMDP/learning/spimddi.tcc>
 
 #endif // GUM_SPIMDDI_H
 
