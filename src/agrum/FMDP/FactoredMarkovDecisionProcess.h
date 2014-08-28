@@ -209,9 +209,9 @@ namespace gum {
       /// @}
 
       /**
-       * Returns the map binding main variables and prime variables
+       * Displays the FMDP in a Dot format
        */
-      std::string show() const;
+      std::string toString() const;
 
       /**
        * Returns the map binding main variables and prime variables

@@ -314,7 +314,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     std::string
-    FactoredMarkovDecisionProcess<GUM_SCALAR>::show( ) const {
+    FactoredMarkovDecisionProcess<GUM_SCALAR>::toString( ) const {
         std::stringstream fmdpCore;
 
         for ( auto actionIter = __actionTransitionTable.beginSafe(); actionIter != __actionTransitionTable.endSafe(); ++actionIter ) {

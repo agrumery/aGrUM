@@ -59,8 +59,8 @@ namespace gum {
     {
       GUM_CONSTRUCTOR(IMDDI);
 
-      __model.insertNode();
-      __root = __model.insertNode();
+      __model.addNode();
+      __root = __model.addNode();
       __nodeId2Database.insert( __root, new NodeDatabase(&__setOfVars, __value));
       __nodeVarMap.insert( __root, __value );
 
@@ -255,7 +255,7 @@ namespace gum {
         NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<double>::soa.allocate(sizeof(NodeId)*desiredVar->domainSize()) );
 
         for( Idx modality = 0; modality < desiredVar->domainSize(); ++modality ){
-          NodeId newNodeId = __model.insertNode();
+          NodeId newNodeId = __model.addNode();
           __nodeVarMap.insert(newNodeId, __value);
           __nodeId2Database.insert(newNodeId, sonsNodeDatabase.atPos(modality));
           __var2Node[__value]->insert(newNodeId);
@@ -287,7 +287,7 @@ namespace gum {
             for(Idx currentVarModality = 0; currentVarModality < __nodeVarMap[currentNodeId]->domainSize(); ++currentVarModality )
               grandSonsMap[currentVarModality] = __nodeSonsMap[__nodeSonsMap[currentNodeId][currentVarModality]][desiredVarModality];
 
-            NodeId newNodeId = __model.insertNode();
+            NodeId newNodeId = __model.addNode();
             __nodeVarMap.insert(newNodeId, __nodeVarMap[currentNodeId]);
             __nodeSonsMap.insert(newNodeId, grandSonsMap);
             __var2Node[__nodeVarMap[currentNodeId]]->insert(newNodeId);
@@ -486,7 +486,7 @@ namespace gum {
 
 //            std::cout << "Pair recupered" << std::endl;
 
-            NodeId nlid = __model.insertNode();
+            NodeId nlid = __model.addNode();
             totalTable.insert( nlid, totalTable[p.first] + totalTable[p.second] );
             double* nls = static_cast<double*>( MultiDimDecisionGraph<double>::soa.allocate( sizeof(double)*__value->domainSize() ) );
             for( Idx moda = 0; moda < __value->domainSize(); moda++ )
