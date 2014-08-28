@@ -102,6 +102,12 @@ namespace gum {
 
       assert(objectSize > 0 && "Small Object Allocator called for an object of size equals to 0");
 
+      // If objectSize is greater than maxObjectSize, normal new is called
+      if( objectSize > __maxObjectSize ){
+          delete[] (unsigned char*)pDeallocatedObject;
+          return;
+      }
+
 //      std::cout << "Deallocating " << pDeallocatedObject << std::endl;
       __pool[objectSize]->deallocate(pDeallocatedObject);
       nbDeallocation++;
