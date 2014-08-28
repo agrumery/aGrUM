@@ -121,11 +121,13 @@ namespace gum {
         ///
         // ###################################################################
         void feedback(const Instantiation &, double );
+        void feedback(const Instantiation &, const Instantiation&, Idx, double );
 
         // ###################################################################
         ///
         // ###################################################################
         Idx takeAction();
+        Idx takeAction( const Instantiation& );
 
       /// @}        
 

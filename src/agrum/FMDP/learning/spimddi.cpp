@@ -170,7 +170,40 @@ namespace gum {
         // ###################################################################
         //
         // ###################################################################
+        void SPIMDDI::feedback( const Instantiation& newState, const Instantiation& lastState, Idx lastAction, double reward){
 
+            std::cout << "Begin Feedback - Observation n° " << __nbObservation << std::endl;
+            Observation* obs = new Observation();
+
+            for( auto varIter = lastState.variablesSequence().beginSafe(); varIter != lastState.variablesSequence().endSafe(); ++varIter)
+                obs->setModality(*varIter, lastState.val(**varIter));
+
+            for( auto varIter = newState.variablesSequence().beginSafe(); varIter != newState.variablesSequence().endSafe(); ++varIter)
+                obs->setModality(__fmdp->main2prime(*varIter), newState.val(**varIter));
+
+            obs->setModality( __rewardVar, __rewardValue2Idx.second(reward) );
+
+            std::cout << " Learning :  Adding observation ..." << std::endl;
+            __learner->addObservation( lastAction, obs );
+            std::cout << " Learning :  Done ..." << std::endl;
+            __bin.insert(obs);
+
+            setCurrentState( newState );
+
+            if( __nbObservation%__observationPhaseLenght == 0) {
+                std::cout << " Planning :  Reducing diagram ..." << std::endl;
+                __learner->updateFMDP();
+                std::cout << " Planning :  Applying SPUMDD ..." << std::endl;
+                __planer->makePlanning(__nbValueIterationStep);
+                std::cout << " Planning :  Done ..." << std::endl;
+//                exit(1);
+            }
+            __nbObservation++;
+        }
+
+        // ###################################################################
+        //
+        // ###################################################################
         Idx SPIMDDI::takeAction( ){
 
             double explo = (double)std::rand( ) / (double)RAND_MAX;
@@ -187,12 +220,27 @@ namespace gum {
         // ###################################################################
         //
         // ###################################################################
+        Idx SPIMDDI::takeAction( const Instantiation& lastState ){
 
+            double explo = (double)std::rand( ) / (double)RAND_MAX;
+            if( __planer->optimalPolicy()->realSize() && explo > __exploThreshold){
+                std::cout << "Exploitons!" << std::endl;
+                __lastAction = __planer->optimalPolicy()->get(lastState);
+            }else{
+                std::cout << "Explorons!" << std::endl;
+                __lastAction = __actionSeq[ (Idx)((double)std::rand( ) / (double)RAND_MAX * __actionSeq.size()) ] ;
+            }
+            return __lastAction;
+        }
+
+        // ###################################################################
+        //
+        // ###################################################################
         std::string SPIMDDI::toString( ){
 
             std::stringstream description;
 
-            description << __fmdp->show() << std::endl;
+            description << __fmdp->toString() << std::endl;
 
             if(__planer->optimalPolicy() )
                 description << __planer->optimalPolicy()->toDot() << std::endl;
