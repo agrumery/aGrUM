@@ -36,7 +36,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   ScheduleCombination<GUM_SCALAR>::ScheduleCombination() {
     /// for debugging purposes
-    GUM_CONSTRUCTOR ( ScheduleCombination );
+    GUM_CONSTRUCTOR( ScheduleCombination );
   }
 
 
@@ -45,7 +45,7 @@ namespace gum {
   ScheduleCombination<GUM_SCALAR>::ScheduleCombination
   ( const ScheduleCombination<GUM_SCALAR>& from ) {
     /// for debugging purposes
-    GUM_CONS_CPY ( ScheduleCombination );
+    GUM_CONS_CPY( ScheduleCombination );
   }
 
 
@@ -53,7 +53,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   ScheduleCombination<GUM_SCALAR>::~ScheduleCombination() {
     /// for debugging purposes
-    GUM_DESTRUCTOR ( ScheduleCombination );
+    GUM_DESTRUCTOR( ScheduleCombination );
   }
 
 
@@ -66,19 +66,15 @@ namespace gum {
     // first wrap the multidimimplementations into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
-    for ( typename Set<const MultiDimImplementation<GUM_SCALAR>*>::const_iterator_safe
-          iter = set.beginSafe(); iter != set.endSafe(); ++iter ) {
-      sched_set.insert ( new ScheduleMultiDim<GUM_SCALAR> ( **iter ) );
-    }
+    for( const auto pot :  set )
+      sched_set.insert( new ScheduleMultiDim<GUM_SCALAR> ( *pot ) );
 
     // perform the combination
-    const ScheduleMultiDim<GUM_SCALAR>& res = combine ( sched_set, schedule );
+    const ScheduleMultiDim<GUM_SCALAR>& res = combine( sched_set, schedule );
 
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
-          iter = sched_set.beginSafe(); iter != sched_set.endSafe(); ++iter ) {
-      delete *iter;
-    }
+    for( const auto sched : sched_set )
+      delete sched;
 
     return res;
   }
@@ -88,25 +84,20 @@ namespace gum {
   template <typename GUM_SCALAR>
   template <template<typename> class TABLE>
   ScheduleMultiDim<GUM_SCALAR>
-  ScheduleCombination<GUM_SCALAR>::combine ( const Set<const TABLE<GUM_SCALAR>*>& set,
-      Schedule<GUM_SCALAR>& schedule ) {
+  ScheduleCombination<GUM_SCALAR>::combine( const Set<const TABLE<GUM_SCALAR>*>& set,
+                                            Schedule<GUM_SCALAR>& schedule ) {
     // first wrap the TABLES into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
-    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter = set.beginSafe();
-          iter != set.endSafe(); ++iter ) {
-      sched_set.insert
-      ( new ScheduleMultiDim<GUM_SCALAR> ( * ( ( *iter )->content() ) ) );
-    }
+    for( const auto tab : set )
+      sched_set.insert( new ScheduleMultiDim<GUM_SCALAR> ( * tab->content() ) );
 
     // perform the combination
-    const ScheduleMultiDim<GUM_SCALAR>& res = combine ( sched_set, schedule );
+    const ScheduleMultiDim<GUM_SCALAR>& res = combine( sched_set, schedule );
 
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
-          iter = sched_set.beginSafe(); iter != sched_set.endSafe(); ++iter ) {
-      delete *iter;
-    }
+    for( const auto sched : sched_set )
+      delete sched;
 
     return res;
   }
@@ -121,19 +112,15 @@ namespace gum {
     // first wrap the multidimimplementations into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
-    for ( typename Set<const MultiDimImplementation<GUM_SCALAR>*>::const_iterator_safe
-          iter = set.beginSafe(); iter != set.endSafe(); ++iter ) {
-      sched_set.insert ( new ScheduleMultiDim<GUM_SCALAR> ( **iter ) );
-    }
+    for( const auto pot : set )
+      sched_set.insert( new ScheduleMultiDim<GUM_SCALAR> ( *pot ) );
 
     // perform the combination
-    float res = nbOperations ( sched_set, schedule );
+    float res = nbOperations( sched_set, schedule );
 
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
-          iter = sched_set.beginSafe(); iter != sched_set.endSafe(); ++iter ) {
-      delete *iter;
-    }
+    for( const auto sched : sched_set )
+      delete sched;
 
     return res;
   }
@@ -149,20 +136,15 @@ namespace gum {
     // first wrap the TABLES into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
-    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter = set.beginSafe();
-          iter != set.endSafe(); ++iter ) {
-      sched_set.insert
-      ( new ScheduleMultiDim<GUM_SCALAR> ( * ( ( *iter )->content() ) ) );
-    }
+    for( const auto tab : set )
+      sched_set.insert( new ScheduleMultiDim<GUM_SCALAR> ( * tab->content() ) );
 
     // perform the combination
-    float res = nbOperations ( sched_set, schedule );
+    float res = nbOperations( sched_set, schedule );
 
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
-          iter = sched_set.beginSafe(); iter != sched_set.endSafe(); ++iter ) {
-      delete *iter;
-    }
+    for( const auto sched : sched_set )
+      delete sched;
 
     return res;
   }
@@ -176,19 +158,15 @@ namespace gum {
     // first wrap the multidimimplementations into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
-    for ( typename Set<const MultiDimImplementation<GUM_SCALAR>*>::const_iterator_safe
-          iter = set.beginSafe(); iter != set.endSafe(); ++iter ) {
-      sched_set.insert ( new ScheduleMultiDim<GUM_SCALAR> ( **iter ) );
-    }
+    for( const auto pot : set )
+      sched_set.insert( new ScheduleMultiDim<GUM_SCALAR> ( *pot ) );
 
     // compute the memory consumption of the combination
-    std::pair<long, long> res = memoryUsage ( sched_set, schedule );
+    std::pair<long, long> res = memoryUsage( sched_set, schedule );
 
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
-          iter = sched_set.beginSafe(); iter != sched_set.endSafe(); ++iter ) {
-      delete *iter;
-    }
+    for( const auto sched : sched_set )
+      delete sched;
 
     return res;
   }
@@ -204,20 +182,15 @@ namespace gum {
     // first wrap the TABLES into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
-    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter = set.beginSafe();
-          iter != set.endSafe(); ++iter ) {
-      sched_set.insert
-      ( new ScheduleMultiDim<GUM_SCALAR> ( * ( ( *iter )->content() ) ) );
-    }
+    for( const auto tab : set )
+      sched_set.insert( new ScheduleMultiDim<GUM_SCALAR> ( * tab->content() ) );
 
     // compute the memory consumption of the combination
-    std::pair<long, long> res = memoryUsage ( sched_set, schedule );
+    std::pair<long, long> res = memoryUsage( sched_set, schedule );
 
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
-          iter = sched_set.beginSafe(); iter != sched_set.endSafe(); ++iter ) {
-      delete *iter;
-    }
+    for( const auto sched : sched_set )
+      delete sched;
 
     return res;
   }
