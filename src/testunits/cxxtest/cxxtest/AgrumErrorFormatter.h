@@ -142,7 +142,7 @@ namespace CxxTest {
       }
 
       void failedTest ( const char* file, unsigned line, const char* expression ) {
-        specialStop ( file, line ) << "Error: Test failed " <<
+        stop ( file, line ) << "Error: Test failed " <<
                             expression << endl;
       }
 

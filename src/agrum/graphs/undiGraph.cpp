@@ -58,18 +58,18 @@ namespace gum {
     List< std::pair<NodeId, NodeId> > open_nodes;
     NodeProperty<bool> examined_nodes = nodesProperty ( false );
     std::pair<NodeId, NodeId> thePair;
-    NodeId current, from_current, new_node;
+    NodeId current, from_current;
 
-    for ( auto iter_node = nodes().beginSafe(); iter_node != nodes().endSafe(); ++iter_node ) {
+    for ( const auto node : nodes() ) {
       // check if the node has already been examined (if this is not the case,
       // this means that we are on a new connected component)
-      if ( ! examined_nodes[*iter_node] ) {
+      if ( ! examined_nodes[node] ) {
         // indicates that we are examining a new node
-        examined_nodes[*iter_node] = true;
+        examined_nodes[node] = true;
 
         // check recursively all the nodes of node's connected component
-        thePair.first = *iter_node;
-        thePair.second = *iter_node;
+        thePair.first = node;
+        thePair.second = node;
         open_nodes.insert ( thePair );
 
         while ( ! open_nodes.empty() ) {
@@ -81,13 +81,9 @@ namespace gum {
           from_current = thePair.second;
 
           // check the neighbours
-          const NodeSet& set = neighbours ( current );
-
-          for ( auto iter_neigh = set.beginSafe(); iter_neigh != set.endSafe(); ++iter_neigh ) {
-            new_node = *iter_neigh;
+          for ( const auto new_node : neighbours ( current ) )
 
             // avoid to check the node we are coming from
-
             if ( new_node != from_current ) {
               if ( examined_nodes[new_node] )
                 return true;
@@ -98,7 +94,6 @@ namespace gum {
                 open_nodes.insert ( thePair );
               }
             }
-          }
         }
       }
     }
@@ -122,17 +117,15 @@ namespace gum {
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    for ( auto iter_node = nodes().beginSafe(); iter_node != nodes().endSafe(); ++iter_node ) {
-      nodeStream << tab << *iter_node << ";";
+    for ( const auto node : nodes() ) {
+      nodeStream << tab << node << ";";
 
-      if ( neighbours ( *iter_node ).size() > 0 ) {
-        const NodeSet& neighbs = neighbours ( *iter_node );
+      if ( neighbours ( node ).size() > 0 )
+        for ( const auto nei : neighbours ( node ) )
+          if ( !treatedNodes.exists ( nei ) )
+            edgeStream << tab <<  node << " -> " << nei << ";" << std::endl;
 
-        for ( NodeSet::const_iterator_safe edgeIter = neighbs.beginSafe(); edgeIter != neighbs.endSafe(); ++edgeIter )
-          if ( !treatedNodes.exists ( *edgeIter ) ) edgeStream << tab <<  *iter_node << " -> " <<  *edgeIter << ";" << std::endl;
-      }
-
-      treatedNodes.insert ( *iter_node );
+      treatedNodes.insert ( node );
     }
 
     output << nodeStream.str() << std::endl << edgeStream.str() << std::endl << "}" << std::endl;
@@ -144,13 +137,12 @@ namespace gum {
   UndiGraph UndiGraph::partialUndiGraph ( NodeSet nodesSet ) {
     UndiGraph partialGraph;
 
-    for ( auto nodeIter = nodesSet.beginSafe(); nodeIter != nodesSet.endSafe(); ++nodeIter ) {
-      partialGraph.addNode ( *nodeIter );
-      const NodeSet& nodeNeighbours = neighbours ( *nodeIter );
+    for ( const auto node : nodesSet ) {
+      partialGraph.addNode ( node );
 
-      for ( NodeSet::const_iterator_safe neighboursIter = nodeNeighbours.beginSafe(); neighboursIter != nodeNeighbours.endSafe() ; ++neighboursIter )
-        if ( nodesSet.contains ( *neighboursIter ) && partialGraph.existsNode ( *neighboursIter ) )
-          partialGraph.addEdge ( *nodeIter , *neighboursIter );
+      for ( const auto nei : neighbours ( node ) )
+        if ( nodesSet.contains ( nei ) && partialGraph.existsNode ( nei ) )
+          partialGraph.addEdge ( node , nei );
     }
 
     return partialGraph;
