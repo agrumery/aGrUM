@@ -184,9 +184,8 @@ namespace gum_tests {
         gum::Instantiation inst ( table );
         float result = 0;
 
-        for ( inst.setFirst(); ! inst.end(); ++inst ) {
+        for ( inst.setFirst(); ! inst.end(); ++inst )
           result += table[inst];
-        }
 
         return result;
       }
@@ -197,12 +196,9 @@ namespace gum_tests {
         const gum::Sequence< const gum::DiscreteVariable*>&
         vars = inst1.variablesSequence();
 
-        for ( gum::Sequence< const gum::DiscreteVariable*>::const_iterator_safe
-              iter = vars.beginSafe(); iter != vars.endSafe(); ++iter ) {
-          if ( inst1.val ( **iter ) != inst2.val ( **iter ) ) {
+        for ( const auto var : vars )
+          if ( inst1.val ( *var ) != inst2.val ( *var ) )
             return false;
-          }
-        }
 
         return true;
       }

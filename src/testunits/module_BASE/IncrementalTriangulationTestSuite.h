@@ -355,11 +355,10 @@ namespace gum_tests {
 
       void createClique ( gum::IncrementalTriangulation& triang,
                           const gum::NodeSet& clique ) {
-        for ( auto iter = clique.beginSafe();
-              iter != clique.endSafe(); ++iter ) {
+        for ( auto iter = clique.begin(); iter != clique.end(); ++iter ) {
           auto iter2 = iter;
 
-          for ( ++iter2; iter2 != clique.endSafe(); ++iter2 ) {
+          for ( ++iter2; iter2 != clique.end(); ++iter2 ) {
             try {
               triang.addEdge ( *iter, *iter2 );
             } catch ( gum::DuplicateElement& ) {}

@@ -166,7 +166,7 @@ namespace gum_tests {
           }
         }
 
-        for ( auto iter = additions.beginSafe();
+        for ( auto iter = additions.beginSafe();//safe iterator needed here
               iter != additions.endSafe (); ++iter ) {
           if ( deletions.exists ( iter.key () ) ) {
             unsigned int& nb_del = deletions[iter.key()];

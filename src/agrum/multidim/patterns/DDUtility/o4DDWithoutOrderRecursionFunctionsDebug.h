@@ -97,8 +97,8 @@ namespace gum {
 
         GUM_TRACE ( tabu << "Preneeded Variable : " );
 
-        for ( SetIteratorSafe< const DiscreteVariable* > iterS = ( *opData.retrogradeVarTable ) [ opData.conti.getDD2Node() ]->beginSafe(); iterS != ( *opData.retrogradeVarTable ) [ opData.conti.getDD2Node() ]->endSafe(); ++iterS )
-          GUM_TRACE ( tabu << ( *iterS )->toString() << " | " );
+        for ( const auto var : *( *opData.retrogradeVarTable ) [ opData.conti.getDD2Node() ])
+          GUM_TRACE ( tabu << var->toString() << " | " );
 
 
         Idx indexFin = opData.factory->variablesSequence().size();

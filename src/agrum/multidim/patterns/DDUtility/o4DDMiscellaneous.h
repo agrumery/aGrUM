@@ -165,32 +165,16 @@ namespace gum {
         retrogradeVarTable = new HashTable< NodeId, Set< const DiscreteVariable* >* > ( this->DD2->realSize(), true, false );
         this->DD2->findRetrogradeVariables ( & ( this->factory->variablesSequence() ), retrogradeVarTable );
 
-#ifdef O4DDDEBUG
-        GUM_TRACE ( "RETRO VAR TABLE : " );
-#endif
-
-        for ( HashTableIteratorSafe< NodeId, Set< const DiscreteVariable* >* > retroVarIter = retrogradeVarTable->beginSafe(); retroVarIter != retrogradeVarTable->endSafe(); ++retroVarIter )
-          if ( retroVarIter.val() != nullptr && ! ( retroVarIter.val() )->empty() ) {
-
-#ifdef O4DDDEBUG
-            GUM_TRACE ( "\tNode : " << retroVarIter.key() );
-#endif
-
-            for ( SetIteratorSafe< const DiscreteVariable* > iter = ( retroVarIter.val() )->beginSafe(); iter != ( retroVarIter.val() )->endSafe(); ++iter ) {
-
-#ifdef O4DDDEBUG
-              GUM_TRACE ( "\t\tVariable : " << ( *iter )->name() );
-#endif
-
-              if ( ! this->conti.isRetrogradeVar ( *iter ) )
-                this->conti.addRetrogradeVar ( *iter );
-            }
-          }
+        for ( const auto & elt : *retrogradeVarTable )
+          if ( elt.second != nullptr && ! elt.second->empty() )
+            for ( const auto var : *elt.second )
+              if ( ! this->conti.isRetrogradeVar ( var) )
+                this->conti.addRetrogradeVar ( var );
       }
 
       ~NonOrderedOperatorData() {
-        for ( HashTableIteratorSafe< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVarTable->beginSafe(); iterH != retrogradeVarTable->endSafe(); ++iterH )
-          delete iterH.val();
+        for ( const auto & elt : *retrogradeVarTable )
+          delete elt.second;
 
         delete retrogradeVarTable;
       };
@@ -233,16 +217,16 @@ namespace gum {
        ** ********************************************************************************************** **/
       void  __makeMergedVariableSequence ( const Sequence< const DiscreteVariable* >& dD1VarSeq, const Sequence< const DiscreteVariable* >& dD2VarSeq, Sequence< const DiscreteVariable* >& mergedVarSeq ) {
 
-        SequenceIteratorSafe< const DiscreteVariable* > iterS1 = dD1VarSeq.beginSafe();
-        SequenceIteratorSafe< const DiscreteVariable* > iterS2 = dD2VarSeq.beginSafe();
+        auto iterS1 = dD1VarSeq.begin();
+        auto iterS2 = dD2VarSeq.begin();
 
-        while ( iterS1 != dD1VarSeq.endSafe() || iterS2 != dD2VarSeq.endSafe() ) {
-          if ( iterS1 == dD1VarSeq.endSafe() ) {
-            for ( ; iterS2 != dD2VarSeq.endSafe(); ++iterS2 )
+        while ( iterS1 != dD1VarSeq.end() || iterS2 != dD2VarSeq.end() ) {
+          if ( iterS1 == dD1VarSeq.end() ) {
+            for ( ; iterS2 != dD2VarSeq.end(); ++iterS2 )
               if ( !mergedVarSeq.exists ( *iterS2 ) )
                 mergedVarSeq.insert ( *iterS2 );
-          } else if ( iterS2 == dD2VarSeq.endSafe() ) {
-            for ( ; iterS1 != dD1VarSeq.endSafe(); ++iterS1 )
+          } else if ( iterS2 == dD2VarSeq.end() ) {
+            for ( ; iterS1 != dD1VarSeq.end(); ++iterS1 )
               if ( !mergedVarSeq.exists ( *iterS1 ) )
                 mergedVarSeq.insert ( *iterS1 );
           } else {
@@ -280,14 +264,15 @@ namespace gum {
         ** ********************************************************************************************** **/
       Idx __evalRetrogradeVarSpaceSize ( const Sequence< const DiscreteVariable* >& leadingVarSeq, const Sequence< const DiscreteVariable* >& followingVarSeq ) {
 
-        SequenceIteratorSafe< const DiscreteVariable* > iterSfin = followingVarSeq.beginSafe(), iterSfol = followingVarSeq.beginSafe();
+        auto iterSfin = followingVarSeq.begin();
+        auto iterSfol = followingVarSeq.begin();
 
         // ******************************************************************************
         // Then we search in second diagram for possible preneeded variable
         Idx sizeRetro = 1;
 
-        for ( iterSfol = followingVarSeq.beginSafe(); iterSfol != followingVarSeq.endSafe(); ++iterSfol )
-          for ( iterSfin = iterSfol; iterSfin != followingVarSeq.rendSafe(); --iterSfin )
+        for ( iterSfol = followingVarSeq.begin(); iterSfol != followingVarSeq.end(); ++iterSfol )
+          for ( iterSfin = iterSfol; iterSfin != followingVarSeq.rend(); --iterSfin )
             if ( leadingVarSeq.pos ( *iterSfin ) > leadingVarSeq.pos ( *iterSfol ) )
               sizeRetro *= ( *iterSfol )->domainSize();
 
@@ -304,7 +289,7 @@ namespace gum {
   NodeId
   insertNonTerminalNode ( OperatorData<T>& opData, const DiscreteVariable* associatedVariable, std::vector< NodeId >& sonsMap, NodeId defaultSon , const HashTable< NodeId, Idx >& countTable ) {
 
-    HashTableConstIteratorSafe< NodeId, Idx > ctIter = countTable.beginSafe();
+    auto ctIter = countTable.begin();
 
     if ( countTable.size() == 1 && ( defaultSon == 0 || ctIter.key() == defaultSon ) )
       return  ctIter.key();
@@ -315,7 +300,7 @@ namespace gum {
       if ( defaultSon != 0 ) {
         Idx nbDefault = 0;
 
-        for ( std::vector<NodeId >::iterator iterArcMap = sonsMap.begin(); iterArcMap != sonsMap.end(); ++iterArcMap ) {
+        for ( auto iterArcMap = sonsMap.begin(); iterArcMap != sonsMap.end(); ++iterArcMap ) {
           if ( *iterArcMap == 0 )
             ++nbDefault;
 
@@ -326,7 +311,7 @@ namespace gum {
         }
 
         if ( nbDefault == 1 )
-          for ( std::vector<NodeId >::iterator iterArcMap = sonsMap.begin(); iterArcMap != sonsMap.end(); ++iterArcMap )
+          for ( auto iterArcMap = sonsMap.begin(); iterArcMap != sonsMap.end(); ++iterArcMap )
             if ( *iterArcMap == 0 ) {
               sonsMap[ std::distance ( sonsMap.begin(), iterArcMap ) ] = defaultSon;
               defaultSon = 0;
@@ -340,7 +325,7 @@ namespace gum {
       Idx max = 0;
       NodeId maxNode = 0;
 
-      while ( ctIter != countTable.endSafe() ) {
+      while ( ctIter != countTable.end() ) {
         if ( ctIter.val() > max ) {
           max = ctIter.val();
           maxNode = ctIter.key();
@@ -387,4 +372,5 @@ namespace gum {
 }/* end of namespace GUM */
 
 #endif /*GUM_DECISION_DIAGRAM_OPERATOR_DATA*/
+
 

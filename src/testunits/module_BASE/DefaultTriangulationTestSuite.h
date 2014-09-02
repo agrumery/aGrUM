@@ -75,8 +75,8 @@ namespace gum_tests {
         // Builds a hashTable where the keys are the id of the variable,
         // and the values the variable's domain size.
 
-        for ( auto iter = topo.nodes().beginSafe(); iter != topo.nodes().endSafe(); ++iter )
-          modalities.insert ( *iter, topo.variable ( *iter ).domainSize() );
+        for ( const auto node : topo.nodes() )
+          modalities.insert ( node, topo.variable ( node ).domainSize() );
 
         gum::DefaultTriangulation* triangle = nullptr;
 
@@ -102,16 +102,16 @@ namespace gum_tests {
 
         // Builds a hashTable where the keys are the id of the variable,
         // and the values the variable's domain size.
-        for ( auto iter = topo.nodes().beginSafe(); iter != topo.nodes().endSafe(); ++iter )
-          modalities.insert ( *iter, topo.variable ( *iter ).domainSize() );
+        for ( const auto node : topo.nodes() )
+          modalities.insert ( node, topo.variable ( node ).domainSize() );
 
         gum::DefaultTriangulation* triangle = nullptr;
 
         TS_GUM_ASSERT_THROWS_NOTHING ( triangle = new gum::DefaultTriangulation ( &undiGraph, &modalities ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( triangle->junctionTree() );
 
-        /// TODO : problem here !!
-        //      TS_ASSERT( triangle->junctionTree().hasRunningIntersection() );
+//TODO : problem here !!
+        TS_ASSERT ( triangle->junctionTree().hasRunningIntersection() );
 
         TS_GUM_ASSERT_THROWS_NOTHING ( if ( triangle ) delete triangle );
       };
@@ -221,7 +221,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS ( edges.size(), 1U );
 
-        TS_ASSERT_EQUALS ( * ( edges.beginSafe() ), gum::Edge ( 2, 5 ) );
+        TS_ASSERT_EQUALS ( * ( edges.begin() ), gum::Edge ( 2, 5 ) );
 
       }
 
@@ -268,11 +268,10 @@ namespace gum_tests {
     private:
 
       void createClique ( gum::UndiGraph& graph, const gum::NodeSet& clique ) {
-        for ( auto iter = clique.beginSafe();
-              iter != clique.endSafe(); ++iter ) {
+        for ( auto iter = clique.begin(); iter != clique.end(); ++iter ) {
           auto iter2 = iter;
 
-          for ( ++iter2; iter2 != clique.endSafe(); ++iter2 ) {
+          for ( ++iter2; iter2 != clique.end(); ++iter2 ) {
             if ( ! graph.existsEdge ( *iter, *iter2 ) )
               graph.addEdge ( *iter, *iter2 );
           }

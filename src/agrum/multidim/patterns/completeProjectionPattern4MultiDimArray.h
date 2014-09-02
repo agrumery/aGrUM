@@ -138,10 +138,8 @@ namespace gum {
                 const Sequence<const DiscreteVariable*>& table_vars =
                   table->variablesSequence();
 
-                for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
-                        table_vars.beginSafe(); iter != table_vars.endSafe(); ++iter ) {
-                  instantiation->add ( **iter );
-                }
+                for ( const auto var :table_vars)
+                  instantiation->add ( *var);
 
                 // return the result
                 table->fromOffset ( *instantiation, current_ptr - deb_ptr );

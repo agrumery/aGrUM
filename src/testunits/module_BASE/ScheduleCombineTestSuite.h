@@ -92,7 +92,7 @@ namespace gum_tests {
         TS_ASSERT ( result2.multiDim() == *pot5.content() );
 
         gum::Sequence<const gum::ScheduleMultiDim<float>*> seq = comb2.multiDimArgs();
-        gum::SequenceIteratorSafe<const gum::ScheduleMultiDim<float>*> iter = seq.beginSafe();
+        gum::SequenceIteratorSafe<const gum::ScheduleMultiDim<float>*> iter = seq.begin();
         TS_ASSERT ( **iter == result1 );
         ++iter;
         TS_ASSERT ( **iter == f3 );

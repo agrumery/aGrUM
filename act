@@ -239,8 +239,8 @@ def threaded_execution(cde,verbose):
       lastline=readerLoop(lastline)
     except Empty:
       break
-    
-    
+
+
   return p.returncode
 
 ##########################################################################################################################
@@ -799,7 +799,7 @@ def getInvocation(current):
 
       if (current['fixed_seed']):
         invocation+=getParam('fixed_seed')
-        
+
       if (current['no_fun']):
         invocation+=getParam('no_fun')
 
@@ -861,7 +861,7 @@ if options.no_fun:
   WARNING = ''
   ERROR = ''
   ENDC = ''
-  
+
 
 print(ENDC+ERROR+"aGrUM"+ENDC+" compilation tool "+ERROR+"v"+numversion+ENDC)
 print("(c) 2010-13 "+OKGREEN+"aGrUM Team"+ENDC)

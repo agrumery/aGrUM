@@ -84,20 +84,18 @@ namespace gum {
           {
             Idx current_offset = 1;
 
-            for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe iter =
-                    t1_vars.beginSafe(); iter != t1_vars.endSafe(); ++iter ) {
-              t1_offsets.insert ( *iter, current_offset );
-              current_offset *= ( *iter )->domainSize();
+            for ( const auto var : t1_vars ) {
+              t1_offsets.insert ( var, current_offset );
+              current_offset *= var->domainSize();
             }
           }
           HashTable<const DiscreteVariable*, Idx> t2_offsets;
           {
             Idx current_offset = 1;
 
-            for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe iter =
-                    t2_vars.beginSafe(); iter != t2_vars.endSafe(); ++iter ) {
-              t2_offsets.insert ( *iter, current_offset );
-              current_offset *= ( *iter )->domainSize();
+            for ( const auto var : t2_vars ) {
+              t2_offsets.insert ( var, current_offset );
+              current_offset *= var->domainSize();
             }
           }
 
@@ -124,27 +122,23 @@ namespace gum {
           Idx t1_and_t2_domain_size = 1;
 
           {
-            for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
-                    t1_vars.beginSafe(); iter != t1_vars.endSafe(); ++iter ) {
-              if ( t2_vars.exists ( *iter ) ) {
-                t1_and_t2_domain.push_back ( ( *iter )->domainSize() );
-                t1_and_t2_var.push_back ( *iter );
-                t1_and_t2_domain_size *= ( *iter )->domainSize();
+            for ( const auto var : t1_vars )
+              if ( t2_vars.exists ( var ) ) {
+                t1_and_t2_domain.push_back ( var->domainSize() );
+                t1_and_t2_var.push_back ( var );
+                t1_and_t2_domain_size *= var->domainSize();
               } else {
-                t1_alone_domain.push_back ( ( *iter )->domainSize() );
-                t1_alone_var.push_back ( *iter );
-                t1_alone_domain_size *= ( *iter )->domainSize();
+                t1_alone_domain.push_back ( var->domainSize() );
+                t1_alone_var.push_back ( var );
+                t1_alone_domain_size *= var->domainSize();
               }
-            }
 
-            for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
-                    t2_vars.beginSafe(); iter != t2_vars.endSafe(); ++iter ) {
-              if ( ! t1_vars.exists ( *iter ) ) {
-                t2_alone_domain.push_back ( ( *iter )->domainSize() );
-                t2_alone_var.push_back ( *iter );
-                t2_alone_domain_size *= ( *iter )->domainSize();
+            for ( const auto var : t2_vars )
+              if ( ! t1_vars.exists ( var ) ) {
+                t2_alone_domain.push_back ( var->domainSize() );
+                t2_alone_var.push_back ( var );
+                t2_alone_domain_size *= var->domainSize();
               }
-            }
           }
 
 
@@ -156,24 +150,20 @@ namespace gum {
           if ( t1_and_t2_var.size() ) {
             unsigned int nb_t1_t2_vars = 0;
 
-            for ( Sequence<const DiscreteVariable*>::const_iterator_safe
-                  iter = t1_vars.beginSafe(); nb_t1_t2_vars !=  t1_and_t2_var.size();
-                  ++iter, ++nb_t1_t2_vars ) {
-              if ( *iter != t1_and_t2_var[nb_t1_t2_vars] ) break;
+            for ( const auto var : t1_vars ) {
+              if ( var != t1_and_t2_var[nb_t1_t2_vars] )
+                break;
+              nb_t1_t2_vars+=1;
             }
 
             if ( nb_t1_t2_vars ==  t1_and_t2_var.size() ) {
               nb_t1_t2_vars = 0;
 
-              for ( Sequence<const DiscreteVariable*>::const_iterator_safe
-                    iter = t2_vars.beginSafe(); nb_t1_t2_vars !=  t1_and_t2_var.size();
-                    ++iter, ++nb_t1_t2_vars ) {
+              for ( auto iter = t2_vars.begin(); nb_t1_t2_vars !=  t1_and_t2_var.size();++iter, ++nb_t1_t2_vars )
                 if ( *iter != t1_and_t2_var[nb_t1_t2_vars] ) break;
-              }
 
-              if ( nb_t1_t2_vars ==  t1_and_t2_var.size() ) {
+              if ( nb_t1_t2_vars ==  t1_and_t2_var.size() )
                 t1_and_t2_begin_vars = true;
-              }
             }
           }
 
@@ -198,24 +188,17 @@ namespace gum {
             new MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>;
           result->beginMultipleChanges();
 
-          for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
-                  t1_vars.beginSafe(); iter != t1_vars.endSafe(); ++iter ) {
-            if ( t2_vars.exists ( *iter ) )
-              *result << **iter;
-          }
+          for ( const auto var : t1_vars )
+            if ( t2_vars.exists ( var ) )
+              *result << *var;
 
-          for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
-                  t2_vars.beginSafe(); iter != t2_vars.endSafe(); ++iter ) {
-            if ( ! t1_vars.exists ( *iter ) )
-              *result << **iter;
-          }
+          for ( const auto var : t2_vars )
+            if ( ! t1_vars.exists ( var ) )
+              *result << *var;
 
-          for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
-                  t1_vars.beginSafe(); iter != t1_vars.endSafe(); ++iter ) {
-            if ( ! t2_vars.exists ( *iter ) ) {
-              *result << **iter;
-            }
-          }
+          for ( const auto var : t1_vars )
+            if ( ! t2_vars.exists ( var ) )
+              *result << *var;
 
           result->endMultipleChanges();
 
@@ -244,7 +227,7 @@ namespace gum {
                 for ( Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
                   result->unsafeSet ( result_offset,
                                       GUM_MULTI_DIM_OPERATOR ( t1->get ( t1_inst ),
-                                          t2->get ( t2_inst ) ) );
+                                                               t2->get ( t2_inst ) ) );
 
                   ++result_offset;
 
@@ -265,7 +248,7 @@ namespace gum {
                 for ( Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
                   result->unsafeSet ( result_offset,
                                       GUM_MULTI_DIM_OPERATOR ( t1->get ( t1_inst ),
-                                          t2->get ( t2_inst ) ) );
+                                                               t2->get ( t2_inst ) ) );
 
                   ++result_offset;
 

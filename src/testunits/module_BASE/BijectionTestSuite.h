@@ -35,7 +35,7 @@ namespace gum_tests {
     public:
 
       void test_constructors1() {
-        gum::Bijection<int,int> bijection;
+        gum::Bijection<int, int> bijection;
 
         TS_GUM_ASSERT_THROWS_NOTHING ( bijection.insert ( 1, 2 ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( bijection.insert ( 3, 4 ) );
@@ -45,10 +45,10 @@ namespace gum_tests {
         TS_ASSERT_THROWS ( bijection.insert ( 5, 7 ), gum::DuplicateElement );
         TS_ASSERT_THROWS ( bijection.insert ( 7, 6 ), gum::DuplicateElement );
 
-        gum::Bijection<int,int> bijection2 ( bijection );
+        gum::Bijection<int, int> bijection2 ( bijection );
         TS_ASSERT ( bijection2.size() == 3 );
 
-        gum::Bijection< int,int,MyAlloc<int> > bij_bis ( bijection );
+        gum::Bijection< int, int, MyAlloc<int> > bij_bis ( bijection );
         bij_bis.insert ( 8, 10 );
         TS_ASSERT ( bij_bis.size() == 4 );
 
@@ -64,12 +64,12 @@ namespace gum_tests {
         TS_ASSERT ( bijection4.second ( 1 ) == 2 );
         TS_ASSERT ( bijection4.second ( 3 ) == 3 );
 
-        gum::Bijection< int,int,MyAlloc<int> > bij_ter ( std::move ( bij_bis ) );
+        gum::Bijection< int, int, MyAlloc<int> > bij_ter ( std::move ( bij_bis ) );
         TS_ASSERT ( bij_ter.size() == 4 );
 
         gum::Bijection<int, int> bij5 {
-          std::pair<int,int> ( 3,4 ),
-          std::pair<int,int> ( 5,6 )
+          std::pair<int, int> ( 3, 4 ),
+          std::pair<int, int> ( 5, 6 )
         };
         TS_ASSERT ( bij5.size() == 2 );
 
@@ -87,7 +87,7 @@ namespace gum_tests {
       }
 
       void test_constructors2() {
-        gum::Bijection<std::string,std::string> bijection;
+        gum::Bijection<std::string, std::string> bijection;
 
         TS_GUM_ASSERT_THROWS_NOTHING ( bijection.insert ( "a", "ba" ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( bijection.insert ( "b", "bb" ) );
@@ -97,20 +97,20 @@ namespace gum_tests {
         TS_ASSERT_THROWS ( bijection.insert ( "b", "bb" ), gum::DuplicateElement );
         TS_ASSERT_THROWS ( bijection.insert ( "e", "bc" ), gum::DuplicateElement );
 
-        gum::Bijection<std::string,std::string> bijection2 ( bijection );
+        gum::Bijection<std::string, std::string> bijection2 ( bijection );
         TS_ASSERT ( bijection2.size() == 3 );
 
-        gum::Bijection< std::string,std::string,MyAlloc<int> >
+        gum::Bijection< std::string, std::string, MyAlloc<int> >
         bij_bis ( bijection );
         bij_bis.insert ( "d", "bd" );
         TS_ASSERT ( bij_bis.size() == 4 );
 
-        gum::Bijection<std::string,std::string>* bijection3 =
-          new gum::Bijection<std::string,std::string>;
+        gum::Bijection<std::string, std::string>* bijection3 =
+          new gum::Bijection<std::string, std::string>;
         bijection3->insert ( "a", "b" );
         bijection3->insert ( "b", "a" );
 
-        gum::Bijection<std::string,std::string> bijection4 = bijection;
+        gum::Bijection<std::string, std::string> bijection4 = bijection;
         bijection4 = *bijection3;
         delete bijection3;
         TS_ASSERT ( bijection4.first ( "a" ) == "b" );
@@ -118,13 +118,13 @@ namespace gum_tests {
         TS_ASSERT ( bijection4.second ( "a" ) == "b" );
         TS_ASSERT ( bijection4.second ( "b" ) == "a" );
 
-        gum::Bijection< std::string,std::string,MyAlloc<int> >
+        gum::Bijection< std::string, std::string, MyAlloc<int> >
         bij_ter ( std::move ( bij_bis ) );
         TS_ASSERT ( bij_ter.size() == 4 );
 
-        gum::Bijection<std::string,std::string> bij5 {
-          std::pair<std::string,std::string> ( "3","4" ),
-          std::pair<std::string,std::string> ( "5","6" )
+        gum::Bijection<std::string, std::string> bij5 {
+          std::pair<std::string, std::string> ( "3", "4" ),
+          std::pair<std::string, std::string> ( "5", "6" )
         };
         TS_ASSERT ( bij5.size() == 2 );
 
@@ -142,17 +142,17 @@ namespace gum_tests {
       }
 
       void testMoves () {
-        gum::Bijection<int,int> bij1;
-        gum::Bijection<int,int> bij2;
-        gum::Bijection<int,int> bij3;
-        gum::Bijection<int,int> bij4;
+        gum::Bijection<int, int> bij1;
+        gum::Bijection<int, int> bij2;
+        gum::Bijection<int, int> bij3;
+        gum::Bijection<int, int> bij4;
 
         TS_GUM_ASSERT_THROWS_NOTHING ( bij1.insert ( 1, 2 ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( bij1.insert ( 3, 4 ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( bij1.insert ( 5, 6 ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( bij2.insert ( 7,8 ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( bij2.insert ( 9,10 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( bij2.insert ( 7, 8 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( bij2.insert ( 9, 10 ) );
 
         TS_GUM_ASSERT_THROWS_NOTHING ( bij3.insert ( 1, 2 ) );
 
@@ -202,7 +202,7 @@ namespace gum_tests {
       }
 
       void testAccess2 () {
-        gum::Bijection<std::string,std::string> bijection;
+        gum::Bijection<std::string, std::string> bijection;
 
         std::string x1 = "1", x2 = "2";
         TS_GUM_ASSERT_THROWS_NOTHING ( bijection.insert ( x1, x2 ) );
@@ -239,7 +239,7 @@ namespace gum_tests {
       }
 
       void testEmplace1 () {
-        gum::Bijection<std::string,std::string> bijection;
+        gum::Bijection<std::string, std::string> bijection;
 
         TS_GUM_ASSERT_THROWS_NOTHING ( bijection.emplace ( "3", "4" ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( bijection.emplace ( "5", "6" ) );
@@ -247,7 +247,7 @@ namespace gum_tests {
       }
 
       void testEmplace2 () {
-        gum::Bijection<int,int> bijection;
+        gum::Bijection<int, int> bijection;
 
         TS_GUM_ASSERT_THROWS_NOTHING ( bijection.emplace ( 3, 4 ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( bijection.emplace ( 5, 6 ) );
@@ -269,7 +269,7 @@ namespace gum_tests {
       }
 
       void testResize() {
-        gum::Bijection<std::string,std::string> bijection ( 2 );
+        gum::Bijection<std::string, std::string> bijection ( 2 );
 
         TS_GUM_ASSERT_THROWS_NOTHING ( bijection.insert ( "1", "2" ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( bijection.insert ( "3", "4" ) );
@@ -315,13 +315,12 @@ namespace gum_tests {
         bijection.insert ( 9, 7 );
         bijection.insert ( 2, 1 );
 
-        gum::Bijection<int, int>::iterator_safe iter1 = bijection.beginSafe();
-        gum::Bijection<int, int>::iterator_safe iter2 = bijection.endSafe();
+        auto iter1 = bijection.begin();
+        auto iter2 = bijection.end();
 
         unsigned int nb = 0;
 
-        for ( gum::Bijection<int, int>::iterator_safe iter = bijection.beginSafe();
-              iter != bijection.endSafe(); ++iter, ++nb ) { }
+        for ( auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb ) { }
 
         TS_ASSERT ( nb == 8 );
 
@@ -337,13 +336,13 @@ namespace gum_tests {
         TS_ASSERT ( nb == 4 );
 
         nb = 0;
-        gum::Bijection<int, int>::iterator_safe iter = iter2;
+        auto iter = iter2;
 
-        for ( iter = bijection.beginSafe(); iter != iter2; ++iter, ++nb ) { }
+        for ( iter = bijection.begin(); iter != iter2; ++iter, ++nb ) { }
 
         TS_ASSERT ( nb == 4 );
 
-        iter = bijection.beginSafe();
+        iter = bijection.begin();
         nb = iter.first();
         nb = iter.second();
 
@@ -398,7 +397,7 @@ namespace gum_tests {
 
 
       void testIterators3() {
-        gum::Bijection<std::string,std::string> bijection;
+        gum::Bijection<std::string, std::string> bijection;
 
         bijection.insert ( "1", "2" );
         bijection.insert ( "3", "4" );
@@ -409,16 +408,12 @@ namespace gum_tests {
         bijection.insert ( "9", "7" );
         bijection.insert ( "2", "1" );
 
-        gum::Bijection<std::string,std::string>::iterator_safe
-        iter1 = bijection.beginSafe();
-        gum::Bijection<std::string,std::string>::iterator_safe
-        iter2 = bijection.endSafe();
+        auto iter1 = bijection.begin();
+        auto iter2 = bijection.end();
 
         unsigned int nb = 0;
 
-        for ( gum::Bijection<std::string,std::string>::iterator_safe
-              iter = bijection.beginSafe();
-              iter != bijection.endSafe(); ++iter, ++nb ) { }
+        for ( auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb ) { }
 
         TS_ASSERT ( nb == 8 );
 
@@ -434,13 +429,13 @@ namespace gum_tests {
         TS_ASSERT ( nb == 4 );
 
         nb = 0;
-        gum::Bijection<std::string,std::string>::iterator_safe iter = iter2;
+        auto iter = iter2;
 
-        for ( iter = bijection.beginSafe(); iter != iter2; ++iter, ++nb ) { }
+        for ( iter = bijection.begin(); iter != iter2; ++iter, ++nb ) { }
 
         TS_ASSERT ( nb == 4 );
 
-        iter = bijection.beginSafe();
+        iter = bijection.begin();
         std::string str = iter.first();
         str = iter.second();
 
@@ -448,7 +443,7 @@ namespace gum_tests {
 
 
       void testIterators4() {
-        gum::Bijection<std::string,std::string> bijection;
+        gum::Bijection<std::string, std::string> bijection;
 
         bijection.insert ( "1", "2" );
         bijection.insert ( "3", "4" );
@@ -459,14 +454,14 @@ namespace gum_tests {
         bijection.insert ( "9", "7" );
         bijection.insert ( "2", "1" );
 
-        gum::Bijection<std::string,std::string>::iterator
+        gum::Bijection<std::string, std::string>::iterator
         iter1 = bijection.begin ();
-        gum::Bijection<std::string,std::string>::iterator
+        gum::Bijection<std::string, std::string>::iterator
         iter2 = bijection.end ();
 
         unsigned int nb = 0;
 
-        for ( gum::Bijection<std::string,std::string>::iterator
+        for ( gum::Bijection<std::string, std::string>::iterator
               iter = bijection.begin ();
               iter != bijection.end (); ++iter, ++nb ) { }
 
@@ -484,7 +479,7 @@ namespace gum_tests {
         TS_ASSERT ( nb == 4 );
 
         nb = 0;
-        gum::Bijection<std::string,std::string>::iterator iter = iter2;
+        gum::Bijection<std::string, std::string>::iterator iter = iter2;
 
         for ( iter = bijection.begin (); iter != iter2; ++iter, ++nb ) { }
 
@@ -603,13 +598,12 @@ namespace gum_tests {
         bijection.insert ( ( int* ) 9, ( int* ) 7 );
         bijection.insert ( ( int* ) 2, ( int* ) 1 );
 
-        gum::Bijection<int*, int*>::iterator_safe iter1 = bijection.beginSafe();
-        gum::Bijection<int*, int*>::iterator_safe iter2 = bijection.endSafe();
+        auto iter1 = bijection.begin();
+        auto iter2 = bijection.end();
 
         unsigned int nb = 0;
 
-        for ( gum::Bijection<int*, int*>::iterator_safe iter = bijection.beginSafe();
-              iter != bijection.endSafe(); ++iter, ++nb ) { }
+        for ( auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb ) { }
 
         TS_ASSERT ( nb == 8 );
 
@@ -625,13 +619,13 @@ namespace gum_tests {
         TS_ASSERT ( nb == 4 );
 
         nb = 0;
-        gum::Bijection<int*, int*>::iterator_safe iter = iter2;
+        auto iter = iter2;
 
-        for ( iter = bijection.beginSafe(); iter != iter2; ++iter, ++nb ) { }
+        for ( iter = bijection.begin(); iter != iter2; ++iter, ++nb ) { }
 
         TS_ASSERT ( nb == 4 );
 
-        iter = bijection.beginSafe();
+        iter = bijection.begin();
         iter.first();
         iter.second();
 
@@ -647,8 +641,7 @@ namespace gum_tests {
 
         gum::Bijection<gum::NodeId, const gum::LabelizedVariable*> copy ( b );
 
-        for ( gum::Bijection<gum::NodeId, const gum::LabelizedVariable*>::iterator_safe iter = b.beginSafe();
-              iter != b.endSafe(); ++iter ) {
+        for ( auto iter = b.begin(); iter != b.end(); ++iter ) {
           delete iter.second();
         }
       }

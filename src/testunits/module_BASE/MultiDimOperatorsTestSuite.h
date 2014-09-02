@@ -881,15 +881,9 @@ namespace gum_tests {
                    const gum::MultiDimImplementation<T*>& t2 ) {
         if ( ( t1.nbrDim() == t2.nbrDim() ) &&
              ( t1.domainSize() == t2.domainSize() ) ) {
-          typedef gum::Sequence< const gum::DiscreteVariable* >::const_iterator_safe
-          var_iterator;
-
-          for ( var_iterator iter = t1.variablesSequence().beginSafe();
-                iter != t1.variablesSequence().endSafe(); ++iter ) {
-            if ( ! t2.variablesSequence().exists ( *iter ) ) {
+          for ( const auto var : t1.variablesSequence() )
+            if ( ! t2.variablesSequence().exists ( var ) )
               return false;
-            }
-          }
 
           gum::Instantiation i ( t1 );
 
@@ -912,15 +906,9 @@ namespace gum_tests {
                    const gum::Potential<T*>& t2 ) {
         if ( ( t1.nbrDim() == t2.nbrDim() ) &&
              ( t1.domainSize() == t2.domainSize() ) ) {
-          typedef gum::Sequence< const gum::DiscreteVariable* >::const_iterator_safe
-          var_iterator;
-
-          for ( var_iterator iter = t1.variablesSequence().beginSafe();
-                iter != t1.variablesSequence().endSafe(); ++iter ) {
-            if ( ! t2.variablesSequence().exists ( *iter ) ) {
+          for ( const auto var : t1.variablesSequence() )
+            if ( ! t2.variablesSequence().exists ( var ) )
               return false;
-            }
-          }
 
           gum::Instantiation i ( t1 );
 
@@ -982,26 +970,22 @@ namespace gum_tests {
       // ==========================================================================
       // ==========================================================================
       gum::MultiDimArray<float>* add_test_arrays ( const gum::MultiDimArray<float>* t1,
-          const gum::MultiDimArray<float>* t2 ) {
+                                                   const gum::MultiDimArray<float>* t2 ) {
         // creation of the resulting variable list
         gum::Sequence<const gum::DiscreteVariable*> seq = t1->variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2->variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var : seq2 )
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::MultiDimArray<float>* result = new gum::MultiDimArray<float>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
 
         result->endMultipleChanges();
 
@@ -1019,26 +1003,22 @@ namespace gum_tests {
       // ==========================================================================
       // ==========================================================================
       gum::MultiDimArray<float>* sub_test_arrays ( const gum::MultiDimArray<float>* t1,
-          const gum::MultiDimArray<float>* t2 ) {
+                                                   const gum::MultiDimArray<float>* t2 ) {
         // creation of the resulting variable list
         gum::Sequence<const gum::DiscreteVariable*> seq = t1->variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2->variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var :seq2)
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::MultiDimArray<float>* result = new gum::MultiDimArray<float>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
 
         result->endMultipleChanges();
 
@@ -1056,26 +1036,22 @@ namespace gum_tests {
       // ==========================================================================
       // ==========================================================================
       gum::MultiDimArray<float>* mult_test_arrays ( const gum::MultiDimArray<float>* t1,
-          const gum::MultiDimArray<float>* t2 ) {
+                                                    const gum::MultiDimArray<float>* t2 ) {
         // creation of the resulting variable list
         gum::Sequence<const gum::DiscreteVariable*> seq = t1->variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2->variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var :seq2)
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::MultiDimArray<float>* result = new gum::MultiDimArray<float>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
 
         result->endMultipleChanges();
 
@@ -1093,26 +1069,22 @@ namespace gum_tests {
       // ==========================================================================
       // ==========================================================================
       gum::MultiDimArray<float>* div_test_arrays ( const gum::MultiDimArray<float>* t1,
-          const gum::MultiDimArray<float>* t2 ) {
+                                                   const gum::MultiDimArray<float>* t2 ) {
         // creation of the resulting variable list
         gum::Sequence<const gum::DiscreteVariable*> seq = t1->variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2->variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var :seq2)
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::MultiDimArray<float>* result = new gum::MultiDimArray<float>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
 
         result->endMultipleChanges();
 
@@ -1137,21 +1109,17 @@ namespace gum_tests {
         gum::Sequence<const gum::DiscreteVariable*> seq = t1->variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2->variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var :seq2)
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::MultiDimArray<float*>* result = new gum::MultiDimArray<float*>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
 
         result->endMultipleChanges();
 
@@ -1176,21 +1144,17 @@ namespace gum_tests {
         gum::Sequence<const gum::DiscreteVariable*> seq = t1->variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2->variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var :seq2)
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::MultiDimArray<float*>* result = new gum::MultiDimArray<float*>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
 
         result->endMultipleChanges();
 
@@ -1214,21 +1178,17 @@ namespace gum_tests {
         gum::Sequence<const gum::DiscreteVariable*> seq = t1->variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2->variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var :seq2)
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::MultiDimArray<float*>* result = new gum::MultiDimArray<float*>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
 
         result->endMultipleChanges();
 
@@ -1252,21 +1212,17 @@ namespace gum_tests {
         gum::Sequence<const gum::DiscreteVariable*> seq = t1->variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2->variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var :seq2)
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::MultiDimArray<float*>* result = new gum::MultiDimArray<float*>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
 
         result->endMultipleChanges();
 
@@ -1285,26 +1241,22 @@ namespace gum_tests {
       // ==========================================================================
       // ==========================================================================
       gum::Potential<double>* add_test_potentials ( const gum::Potential<double>& t1,
-          const gum::Potential<double>& t2 ) {
+                                                    const gum::Potential<double>& t2 ) {
         // creation of the resulting variable list
         gum::Sequence<const gum::DiscreteVariable*> seq = t1.variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2.variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var :seq2)
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::Potential<double>* result = new gum::Potential<double>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
 
         result->endMultipleChanges();
 
@@ -1322,26 +1274,22 @@ namespace gum_tests {
       // ==========================================================================
       // ==========================================================================
       gum::Potential<double>* sub_test_potentials ( const gum::Potential<double>& t1,
-          const gum::Potential<double>& t2 ) {
+                                                    const gum::Potential<double>& t2 ) {
         // creation of the resulting variable list
         gum::Sequence<const gum::DiscreteVariable*> seq = t1.variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2.variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var :seq2)
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::Potential<double>* result = new gum::Potential<double>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
 
         result->endMultipleChanges();
 
@@ -1359,26 +1307,23 @@ namespace gum_tests {
       // ==========================================================================
       // ==========================================================================
       gum::Potential<double>* mult_test_potentials ( const gum::Potential<double>& t1,
-          const gum::Potential<double>& t2 ) {
+                                                     const gum::Potential<double>& t2 ) {
         // creation of the resulting variable list
         gum::Sequence<const gum::DiscreteVariable*> seq = t1.variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2.variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var : seq2 )
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::Potential<double>* result = new gum::Potential<double>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
+
 
         result->endMultipleChanges();
 
@@ -1396,26 +1341,22 @@ namespace gum_tests {
       // ==========================================================================
       // ==========================================================================
       gum::Potential<double>* div_test_potentials ( const gum::Potential<double>& t1,
-          const gum::Potential<double>& t2 ) {
+                                                    const gum::Potential<double>& t2 ) {
         // creation of the resulting variable list
         gum::Sequence<const gum::DiscreteVariable*> seq = t1.variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2.variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var : seq2 )
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::Potential<double>* result = new gum::Potential<double>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
 
         result->endMultipleChanges();
 
@@ -1440,21 +1381,17 @@ namespace gum_tests {
         gum::Sequence<const gum::DiscreteVariable*> seq = t1.variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2.variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var : seq2 )
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::Potential<double*>* result = new gum::Potential<double*>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
 
         result->endMultipleChanges();
 
@@ -1478,21 +1415,18 @@ namespace gum_tests {
         gum::Sequence<const gum::DiscreteVariable*> seq = t1.variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2.variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var : seq2 )
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::Potential<double*>* result = new gum::Potential<double*>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
+
 
         result->endMultipleChanges();
 
@@ -1516,21 +1450,17 @@ namespace gum_tests {
         gum::Sequence<const gum::DiscreteVariable*> seq = t1.variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2.variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var : seq2 )
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::Potential<double*>* result = new gum::Potential<double*>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
 
         result->endMultipleChanges();
 
@@ -1554,21 +1484,17 @@ namespace gum_tests {
         gum::Sequence<const gum::DiscreteVariable*> seq = t1.variablesSequence();
         const gum::Sequence<const gum::DiscreteVariable*>& seq2 = t2.variablesSequence();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-          if ( ! seq.exists ( *iter ) )
-            seq << *iter;
-        }
+        for ( const auto var : seq2 )
+          if ( ! seq.exists ( var ) )
+            seq << var;
 
         // creation of the resulting table
         gum::Potential<double*>* result = new gum::Potential<double*>;
 
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
-          *result << **iter;
-        }
+        for ( const auto var : seq )
+          *result << *var;
 
         result->endMultipleChanges();
 

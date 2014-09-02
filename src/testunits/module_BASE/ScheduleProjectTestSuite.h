@@ -122,12 +122,9 @@ namespace gum_tests {
           table.variablesSequence();
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
-                vars.beginSafe(); iter != vars.endSafe(); ++iter ) {
-          if ( ! del_vars.exists ( *iter ) ) {
-            *result << **iter;
-          }
-        }
+        for ( const auto var : vars )
+          if ( ! del_vars.exists ( var ) )
+            *result << *var;
 
         result->endMultipleChanges();
         result->fill ( neutral_elt );

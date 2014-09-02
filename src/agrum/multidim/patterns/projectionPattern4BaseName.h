@@ -112,11 +112,10 @@ namespace gum {
               Idx tmp_before_incr = 1;
               bool has_before_incr = false;
 
-              for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
-                      table_vars.beginSafe(); iter != table_vars.endSafe(); ++iter ) {
-                table_domain_size *= ( *iter )->domainSize();
+              for ( const auto var : table_vars ) {
+                table_domain_size *= var->domainSize();
 
-                if ( ! del_vars.exists ( *iter ) ) {
+                if ( ! del_vars.exists ( var ) ) {
                   if ( has_before_incr ) {
                     before_incr.push_back ( tmp_before_incr - 1 );
                     has_before_incr = false;
@@ -125,15 +124,15 @@ namespace gum {
                     before_incr.push_back ( 0 );
                   }
 
-                  table_and_result_domain.push_back ( ( *iter )->domainSize() );
+                  table_and_result_domain.push_back ( var->domainSize() );
                   table_and_result_offset.push_back ( result_domain_size );
-                  result_domain_size *= ( *iter )->domainSize();
+                  result_domain_size *= var->domainSize();
                   tmp_before_incr = 1;
-                  result_varSeq << *iter;
+                  result_varSeq << var;
                 } else {
-                  tmp_before_incr *= ( *iter )->domainSize();
+                  tmp_before_incr *= var->domainSize();
                   has_before_incr = true;
-                  table_alone_domain_size *= ( *iter )->domainSize();
+                  table_alone_domain_size *= var->domainSize();
                 }
               }
             }
@@ -158,10 +157,8 @@ namespace gum {
 
             result->beginMultipleChanges();
 
-            for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
-                    result_varSeq.beginSafe(); iter != result_varSeq.endSafe(); ++iter ) {
-              *result << **iter;
-            }
+            for ( const auto var : result_varSeq )
+              *result << *var;
 
             result->endMultipleChanges();
 
@@ -273,16 +270,15 @@ namespace gum {
             Idx table_alone_domain_size = 1;
             HashTable<const DiscreteVariable*, Idx> var1offset ( table_vars.size() );
 
-            for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
-                    table_vars.beginSafe(); iter != table_vars.endSafe(); ++iter ) {
-              if ( del_vars.exists ( *iter ) ) {
-                table_alone_domain.push_back ( ( *iter )->domainSize() );
+            for ( const auto var : table_vars ) {
+              if ( del_vars.exists ( var ) ) {
+                table_alone_domain.push_back ( var->domainSize() );
                 table_alone_offset.push_back ( offset );
-                table_alone_domain_size *= ( *iter )->domainSize();
+                table_alone_domain_size *= var->domainSize();
               }
 
-              var1offset.insert ( *iter, offset );
-              offset *= ( *iter )->domainSize();
+              var1offset.insert ( var, offset );
+              offset *= var->domainSize();
             }
 
             std::vector<Idx> table_alone_value = table_alone_domain;
@@ -306,14 +302,13 @@ namespace gum {
             bool has_before_incr = false;
             bool found_proj_var = false;
 
-            for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
-                    table_vars.beginSafe(); iter != table_vars.endSafe(); ++iter ) {
-              if ( ! del_vars.exists ( *iter ) ) {
-                table_and_result_domain.push_back ( ( *iter )->domainSize() );
-                table_and_result_offset.push_back ( var1offset[*iter] );
+            for ( const auto var : table_vars ) {
+              if ( ! del_vars.exists ( var ) ) {
+                table_and_result_domain.push_back ( var->domainSize() );
+                table_and_result_offset.push_back ( var1offset[var] );
                 found_proj_var = true;
-                result_domain_size *= ( *iter )->domainSize();
-                result_varSeq << *iter;
+                result_domain_size *= var->domainSize();
+                result_varSeq << var;
               } else {
                 if ( found_proj_var ) has_before_incr = true;
               }
@@ -335,10 +330,8 @@ namespace gum {
               new MultiDimArray<GUM_MULTI_DIM_PROJECTION_TYPE>;
             result->beginMultipleChanges();
 
-            for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
-                    result_varSeq.beginSafe(); iter != result_varSeq.endSafe(); ++iter ) {
-              *result << **iter;
-            }
+            for ( const auto var : result_varSeq )
+              *result << *var;
 
             result->endMultipleChanges();
 

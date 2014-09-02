@@ -302,8 +302,8 @@ namespace gum {
     {
       const NodeSet& neighbours = __graph.neighbours ( X );
 
-      for ( auto neighbour_edge = neighbours.beginSafe();
-            neighbour_edge != neighbours.endSafe(); ++neighbour_edge ) {//safe iterator needed here
+      for ( auto neighbour_edge = neighbours.beginSafe();//safe iterator needed here
+            neighbour_edge != neighbours.endSafe(); ++neighbour_edge ) {
         eraseEdge ( Edge ( *neighbour_edge, X ) );
       }
     }

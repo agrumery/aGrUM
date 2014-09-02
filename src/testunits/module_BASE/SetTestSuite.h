@@ -43,7 +43,7 @@ namespace gum_tests {
         TS_ASSERT ( *set == set2 );
         delete set;
 
-        gum::Set< int,MyAlloc<int> > set3 {1, 2, 3 };
+        gum::Set< int, MyAlloc<int> > set3 {1, 2, 3 };
         set = new gum::Set<int> ( set3 );
         TS_ASSERT ( *set == set3 );
         delete set;
@@ -134,7 +134,7 @@ namespace gum_tests {
         TS_ASSERT ( t2 != t3 );
         TS_ASSERT ( t3 != t2 );
 
-        gum::Set< int,MyAlloc<int> > t4, t5;
+        gum::Set< int, MyAlloc<int> > t4, t5;
         fill ( t4 );
         TS_ASSERT ( t1 == t4 );
         TS_ASSERT ( t2 != t4 );
@@ -188,12 +188,12 @@ namespace gum_tests {
         TS_ASSERT ( iter1 != set.end () );
         TS_ASSERT ( iter2 != set.end () );
 
-        gum::Set< int, MyAlloc<int> >::iterator_safe iter3 = set.beginSafe ();
-        gum::SetIteratorSafe<int> iter4 = set.beginSafe ();
+        gum::Set< int, MyAlloc<int> >::iterator iter3 = set.begin ();
+        gum::SetIterator<int> iter4 = set.begin ();
         TS_ASSERT ( iter3 == iter4 );
         TS_ASSERT ( *iter3 == 3 );
-        TS_ASSERT ( iter3 != set.endSafe () );
-        TS_ASSERT ( iter4 != set.endSafe () );
+        TS_ASSERT ( iter3 != set.end () );
+        TS_ASSERT ( iter4 != set.end () );
 
         gum::Set< int, MyAlloc<int> >::const_iterator iter5 = set.cbegin ();
         gum::SetConstIterator<int> iter6 = set.cbegin ();
@@ -202,12 +202,12 @@ namespace gum_tests {
         TS_ASSERT ( iter5 != set.end () );
         TS_ASSERT ( iter6 != set.end () );
 
-        gum::Set< int, MyAlloc<int> >::const_iterator_safe iter7 = set.cbeginSafe ();
-        gum::SetConstIteratorSafe<int> iter8 = set.cbeginSafe ();
+        gum::Set< int, MyAlloc<int> >::const_iterator iter7 = set.cbegin ();
+        gum::SetConstIterator<int> iter8 = set.cbegin ();
         TS_ASSERT ( iter7 == iter8 );
         TS_ASSERT ( *iter8 == 3 );
-        TS_ASSERT ( iter7 != set.cendSafe () );
-        TS_ASSERT ( iter8 != set.cendSafe () );
+        TS_ASSERT ( iter7 != set.cend () );
+        TS_ASSERT ( iter8 != set.cend () );
 
       }
 
@@ -217,7 +217,7 @@ namespace gum_tests {
         fill ( set );
         TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 6 );
 
-        gum::Set<int>::iterator_safe iter = set.beginSafe();
+        auto iter = set.beginSafe();
         TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( iter ) );
         TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 5 );
 
@@ -225,11 +225,11 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( iter ) );
         TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 4 );
 
-        iter = set.beginSafe();
+        iter = set.begin();
         TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( iter ) );
         TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 3 );
 
-        iter = set.endSafe();
+        iter = set.end();
         TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( iter ) );
         TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 3 );
 
@@ -425,7 +425,7 @@ namespace gum_tests {
       void testMap1() {
         gum::Set<std::string> t1;
         t1 << "a" << "b" << "c" << "d";
-        gum::HashTable<std::string,std::string> map1, map4;
+        gum::HashTable<std::string, std::string> map1, map4;
 
         TS_GUM_ASSERT_THROWS_NOTHING ( map1 = t1.hashMap ( &mappingTestFunc_1 ) );
         std::string str = "Space, the final frontiere.";
@@ -441,8 +441,8 @@ namespace gum_tests {
 
         gum::Set<int> obtained;
 
-        for ( gum::Set<int>::iterator_safe iter = t1.beginSafe();
-              iter != t1.endSafe();
+        for ( gum::Set<int>::iterator iter = t1.begin();
+              iter != t1.end();
               ++ iter ) {
           obtained.insert ( *iter );
         }
@@ -461,8 +461,8 @@ namespace gum_tests {
         obtained.clear ();
         obtained2.clear ();
 
-        for ( gum::Set<int>::const_iterator_safe iter = t1.cbeginSafe();
-              iter != t1.cendSafe();
+        for ( gum::Set<int>::const_iterator iter = t1.cbegin();
+              iter != t1.cend();
               ++ iter ) {
           obtained.insert ( *iter );
         }
@@ -477,15 +477,15 @@ namespace gum_tests {
         TS_ASSERT ( t1 == obtained2 );
 
 
-        gum::Set<int>::iterator_safe iter1;
-        gum::Set<int>::iterator_safe iter2 ( t1 );
-        gum::Set<int>::const_iterator_safe iter3 ( iter1 );
-        gum::Set<int>::const_iterator_safe iter4 ( iter2 );
+        gum::Set<int>::iterator iter1;
+        gum::Set<int>::iterator iter2 ( t1 );
+        gum::Set<int>::const_iterator iter3 ( iter1 );
+        gum::Set<int>::const_iterator iter4 ( iter2 );
         TS_ASSERT ( iter4 == iter2 );
         gum::Set<int>::const_iterator iter5 = t1.begin ();
-        gum::Set<int>::const_iterator_safe iter6 ( iter5 );
+        gum::Set<int>::const_iterator iter6 ( iter5 );
         TS_ASSERT ( *iter5 == *iter6 );
-        gum::Set<int>::const_iterator_safe iter7 ( std::move ( iter6 ) );
+        gum::Set<int>::const_iterator iter7 ( std::move ( iter6 ) );
         TS_ASSERT ( *iter7 == * ( t1.begin() ) );
 
         iter7 = iter5;
@@ -495,12 +495,12 @@ namespace gum_tests {
         iter7 = iter3;
         TS_ASSERT ( iter7 == iter3 );
 
-        iter7 = t1.beginSafe ();
-        iter1 = t1.beginSafe ();
+        iter7 = t1.begin ();
+        iter1 = t1.begin ();
         iter7 += 3;
         ++iter1; ++iter1; ++iter1;
         TS_ASSERT ( *iter7 == *iter1 );
-        TS_ASSERT ( iter7 == t1.beginSafe () + 3 );
+        TS_ASSERT ( iter7 == t1.begin () + 3 );
       }
 
 
@@ -509,6 +509,12 @@ namespace gum_tests {
         fill ( t1 );
 
         gum::Set<int> obtained;
+
+        for ( const auto i : t1 )
+          obtained.insert ( i );
+
+        TS_ASSERT ( t1 == obtained );
+        obtained.clear ();
 
         for ( gum::Set<int>::iterator iter = t1.begin();
               iter != t1.end(); ++ iter ) {
@@ -556,7 +562,7 @@ namespace gum_tests {
 
     private:
       template <typename Alloc = std::allocator<int> >
-      void fill ( gum::Set<int,Alloc>& set ) {
+      void fill ( gum::Set<int, Alloc>& set ) {
         set.insert ( 1 );
         set.insert ( 2 );
         set.insert ( 3 );

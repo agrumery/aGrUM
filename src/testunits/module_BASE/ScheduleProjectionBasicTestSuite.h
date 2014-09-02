@@ -87,7 +87,7 @@ namespace gum_tests {
         const gum::NodeSet& available = schedule.availableOperations();
 
         while ( ! available.empty() ) {
-          for ( gum::NodeSet::const_iterator_safe iter = available.beginSafe();
+          for ( gum::NodeSet::const_iterator_safe iter = available.beginSafe();// safe iterator needed here
                 iter != available.endSafe(); ++iter ) {
             schedule.execute ( *iter );
           }
@@ -107,7 +107,7 @@ namespace gum_tests {
         tt2 = myproj.project ( t3, del_vars, schedule );
 
         while ( ! available.empty() ) {
-          for ( gum::NodeSet::const_iterator_safe iter = available.beginSafe();
+          for ( gum::NodeSet::const_iterator_safe iter = available.beginSafe();// safe iterator needed here
                 iter != available.endSafe(); ++iter ) {
             schedule.execute ( *iter );
           }
@@ -121,7 +121,7 @@ namespace gum_tests {
         tt2 = myproj.project ( * ( t1.content() ), del_vars, schedule );
 
         while ( ! available.empty() ) {
-          for ( gum::NodeSet::const_iterator_safe iter = available.beginSafe();
+          for ( gum::NodeSet::const_iterator_safe iter = available.beginSafe();// safe iterator needed here
                 iter != available.endSafe(); ++iter ) {
             schedule.execute ( *iter );
           }
@@ -154,7 +154,7 @@ namespace gum_tests {
         tt2 = yyy->project ( t3, del_vars, schedule );
 
         while ( ! available.empty() ) {
-          for ( gum::NodeSet::const_iterator_safe iter = available.beginSafe();
+          for ( gum::NodeSet::const_iterator_safe iter = available.beginSafe();// safe iterator needed here
                 iter != available.endSafe(); ++iter ) {
             schedule.execute ( *iter );
           }
