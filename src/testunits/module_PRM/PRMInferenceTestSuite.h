@@ -281,13 +281,13 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( g_vebb = new gum::prm::GroundedInference<double> ( *prm, prm->system ( "aSys" ) ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( g_vebb->setBNInference ( vebb ) );
 
-        for ( auto node = bn.nodes().beginSafe(); node != bn.nodes().endSafe(); ++node ) {
+        for ( const auto node : bn.nodes()) {
           gum::Potential<double> m_ve, m_ss, m_sve, m_sved, m_vebb, m_struct;
 
           try {
-            size_t pos = bn.variableNodeMap().name ( *node ).find_first_of ( '.' );
-            const gum::prm::Instance<double>& instance = prm->system ( "aSys" ).get ( bn.variableNodeMap().name ( *node ).substr ( 0, pos ) );
-            const gum::prm::Attribute<double>& attribute = instance.get ( bn.variableNodeMap().name ( *node ).substr ( pos + 1 ) );
+            size_t pos = bn.variableNodeMap().name ( node ).find_first_of ( '.' );
+            const gum::prm::Instance<double>& instance = prm->system ( "aSys" ).get ( bn.variableNodeMap().name ( node ).substr ( 0, pos ) );
+            const gum::prm::Attribute<double>& attribute = instance.get ( bn.variableNodeMap().name ( node ).substr ( pos + 1 ) );
             gum::prm::PRMInference<double>::Chain chain = std::make_pair ( &instance, &attribute );
             std::string dot = ".";
             g_ve->marginal ( chain, m_ve );
@@ -341,7 +341,7 @@ namespace gum_tests {
               GUM_TRACE ( foo );
             }
           } catch ( gum::Exception& e ) {
-            GUM_TRACE_VAR ( bn.variableNodeMap().name ( *node ) );
+            GUM_TRACE_VAR ( bn.variableNodeMap().name ( node ) );
             TS_GUM_ASSERT_THROWS_NOTHING ( throw e );
             break;
           }

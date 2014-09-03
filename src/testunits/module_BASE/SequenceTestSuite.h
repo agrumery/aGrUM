@@ -266,22 +266,25 @@ namespace gum_tests {
 
         n = 0;
 
-        for ( gum::Sequence<int>::iterator it = seq.begin();
-              it != seq.end(); ++it ) n++;
+        for ( auto it = seq.begin(); it != seq.end(); ++it )
+          n++;
 
         TS_ASSERT_EQUALS ( n, 0 );
 
 
         n = 0;
 
-        for ( gum::Sequence<int>::iterator it = seq.rbegin();
-              it != seq.rend(); --it ) n++;
+        for ( auto it = seq.rbegin(); it != seq.rend(); --it )
+          n++;
 
         TS_ASSERT_EQUALS ( n, 0 );
 
         n = 0;
 
-        for ( const auto i : seq ) n++;
+        for ( const auto i : seq ) {
+          GUM_UNUSED ( i );
+          n++;
+        }
 
         TS_ASSERT_EQUALS ( n, 0 );
 
@@ -289,8 +292,7 @@ namespace gum_tests {
 
         n = 0;
 
-       for ( gum::Sequence<int>::iterator it = seq.begin();
-              it != seq.end(); ++it ) {
+        for ( auto it = seq.begin(); it != seq.end(); ++it ) {
           n *= 10; n += *it;
         }
 
@@ -603,36 +605,43 @@ namespace gum_tests {
         gum::Sequence<gum::Idx> seq;
 
         seq << 1 << 3 << 5 << 2 << 4;
-
         int n = 0;
 
-        for ( gum::Sequence<gum::Idx>::iterator_safe it = seq.rbeginSafe();
-              it != seq.rendSafe(); --it ) {
+        for ( auto it = seq.rbeginSafe(); it != seq.rendSafe(); --it ) {
           n *= 10; n += *it;
         }
 
         TS_ASSERT_EQUALS ( n, 42531 );
+        n = 0;
 
-        gum::Sequence<gum::Idx> seq2;
-        TS_ASSERT_THROWS ( seq2.front(), gum::NotFound );
-      }
-
-
-      void testIntStarSeq() {
-        gum::Sequence<int*> seq;
-
-        int* a = 0, *b;
-        b = a + 3;
-
-        seq << a << b;
-
-        for ( gum::Sequence<int*>::iterator_safe it = seq.rbeginSafe();
-              it != seq.rendSafe(); --it ) {
-          *it; //TODO do not see the reason of this line ... ???
+        for ( auto it = seq.rbegin(); it != seq.rend(); --it ) {
+          n *= 10; n += *it;
         }
 
+        TS_ASSERT_EQUALS ( n, 42531 );
+        n = 0;
 
-        gum::Sequence<int*> seq2;
+        for ( auto it = seq.beginSafe(); it != seq.endSafe(); ++it ) {
+          n *= 10; n += *it;
+        }
+
+        TS_ASSERT_EQUALS ( n, 13524 );
+        n = 0;
+
+        for ( auto it = seq.begin(); it != seq.end(); ++it ) {
+          n *= 10; n += *it;
+        }
+
+        TS_ASSERT_EQUALS ( n, 13524 );
+        n = 0;
+
+        for ( const auto i : seq ) {
+          n *= 10; n += i;
+        }
+
+        TS_ASSERT_EQUALS ( n, 13524 );
+
+        gum::Sequence<gum::Idx> seq2;
         TS_ASSERT_THROWS ( seq2.front(), gum::NotFound );
       }
 

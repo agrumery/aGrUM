@@ -76,8 +76,8 @@ namespace gum_tests {
         gum::Set<gum::NodeId> passed;
         const gum::DAG& dag = bn->dag();
 
-        for ( auto iter = dag.nodes().beginSafe (); iter != dag.nodes().endSafe (); ++iter ) {
-          TS_ASSERT_THROWS ( dag.directedPath ( *iter, *iter ), gum::NotFound );
+        for ( const auto node : dag.nodes() ) {
+          TS_ASSERT_THROWS ( dag.directedPath ( node, node ), gum::NotFound );
         }
 
         if ( bn != 0 ) delete bn;
@@ -137,8 +137,8 @@ namespace gum_tests {
         gum::Set<gum::NodeId> passed;
         const gum::DAG& dag = bn->dag();
 
-        for ( auto iter = dag.nodes().beginSafe (); iter != dag.nodes().endSafe (); ++iter ) {
-          TS_ASSERT_THROWS ( dag.directedPath ( *iter, *iter ), gum::NotFound );
+        for ( const auto node : dag.nodes() ) {
+          TS_ASSERT_THROWS ( dag.directedPath ( node, node ), gum::NotFound );
         }
 
         if ( bn != 0 ) delete bn;

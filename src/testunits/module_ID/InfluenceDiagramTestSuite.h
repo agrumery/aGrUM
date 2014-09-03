@@ -285,14 +285,12 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS ( source.dag().size(), copy->dag().size() );
         TS_ASSERT_EQUALS ( source.dag().sizeArcs(), copy->dag().sizeArcs() );
-        //const gum::NodeSet& nodes=source.nodes();
-        const gum::DAG dag = source.dag();
 
-        for ( auto nodeIter = dag.nodes().beginSafe(); nodeIter != dag.nodes().endSafe(); ++nodeIter ) {
-          TS_ASSERT ( copy->dag().exists ( *nodeIter ) );
+        for ( const auto node : source.dag().nodes() ) {
+          TS_ASSERT ( copy->dag().exists ( node ) );
 
-          const gum::DiscreteVariable& srcVar = source.variable ( *nodeIter );
-          const gum::DiscreteVariable& cpVar = copy->variable ( *nodeIter );
+          const gum::DiscreteVariable& srcVar = source.variable ( node );
+          const gum::DiscreteVariable& cpVar = copy->variable ( node );
           TS_ASSERT_EQUALS ( srcVar.name(), cpVar.name() );
 
           if ( srcVar.domainSize() == cpVar.domainSize() ) {
@@ -301,18 +299,15 @@ namespace gum_tests {
           } else
             TS_ASSERT ( false );
 
-          const gum::NodeSet& parentList = source.dag().parents ( *nodeIter );
 
-          for ( gum::NodeSet::const_iterator_safe arcIter = parentList.beginSafe();
-                arcIter != parentList.endSafe();
-                ++arcIter ) {
-            TS_ASSERT ( copy->dag().existsArc ( *arcIter, *nodeIter ) );
+          for ( const auto parent : source.dag().parents(node)  ) {
+            TS_ASSERT ( copy->dag().existsArc ( parent, node ) );
           }
 
-          if ( source.isChanceNode ( *nodeIter ) ) {
-            const gum::Potential<float>& srcCPT = source.cpt ( *nodeIter );
+          if ( source.isChanceNode ( node ) ) {
+            const gum::Potential<float>& srcCPT = source.cpt ( node );
 
-            const gum::Potential<float>& cpCPT = copy->cpt ( *nodeIter );
+            const gum::Potential<float>& cpCPT = copy->cpt ( node );
 
             gum::Instantiation srcInst ( srcCPT );
 
@@ -327,13 +322,11 @@ namespace gum_tests {
               TS_ASSERT_EQUALS ( cpCPT[cpInst], srcCPT[srcInst] );
             }
 
-          } else if ( source.isUtilityNode ( *nodeIter ) ) {
-            const gum::UtilityTable<float>& srcUT = source.utility ( *nodeIter );
-
-            const gum::UtilityTable<float>& cpUT = copy->utility ( *nodeIter );
+          } else if ( source.isUtilityNode ( node ) ) {
+            const gum::UtilityTable<float>& srcUT = source.utility ( node );
+            const gum::UtilityTable<float>& cpUT = copy->utility ( node );
 
             gum::Instantiation srcInst ( srcUT );
-
             gum::Instantiation cpInst ( cpUT );
 
             for ( cpInst.setFirst(); !cpInst.end(); cpInst.inc() ) {
@@ -459,11 +452,8 @@ namespace gum_tests {
 
         id.erase ( idList[0] );
 
-        for ( gum::List<gum::NodeId>::iterator_safe iter = idList.beginSafe();
-              iter != idList.endSafe();
-              ++iter ) {
-          id.erase ( *iter );
-        }
+        for ( const auto node : idList )
+          id.erase ( node );
 
         TS_ASSERT ( id.empty() );
 
@@ -536,8 +526,8 @@ namespace gum_tests {
         gum::InfluenceDiagram<float> id;
         gum::List<gum::NodeId> idList;
 
-        for ( auto iter = id.nodes().beginSafe(); iter != id.nodes().endSafe(); ++iter ) {
-          TS_ASSERT ( idList.exists ( *iter ) );
+        for ( const auto node : id.nodes() ) {
+          TS_ASSERT ( idList.exists ( node ) );
         }
       }
 
@@ -694,9 +684,9 @@ namespace gum_tests {
 
         fill ( id, idList );
 
-        for ( auto iter = id.nodes().beginSafe(); iter != id.nodes().endSafe(); ++iter ) {
-          TS_ASSERT_EQUALS ( id.idFromName ( id.variable ( *iter ).name() ), *iter );
-          TS_ASSERT_EQUALS ( &id.variableFromName ( id.variable ( *iter ).name() ), &id.variable ( *iter ) );
+        for ( const auto node : id.nodes() ) {
+          TS_ASSERT_EQUALS ( id.idFromName ( id.variable ( node ).name() ), node );
+          TS_ASSERT_EQUALS ( &id.variableFromName ( id.variable ( node ).name() ), &id.variable ( node ) );
         }
 
         TS_ASSERT_THROWS ( id.idFromName ( "choucroute" ), gum::NotFound );
@@ -726,12 +716,15 @@ namespace gum_tests {
         gum::Size resultat[7][3] = {{8, 6, 4}, {3}, {7}, {1}, {2}, {5}, {0}};
         int i = 0;
 
-        for ( gum::List< gum::NodeSet >::iterator_safe seqIter = partialTemporalOrder.beginSafe(); seqIter != partialTemporalOrder.endSafe(); ++seqIter, ++i ) {
+        for ( const auto nodeset : partialTemporalOrder ) {
           int j = 0;
 
-          for ( gum::NodeSet::const_iterator_safe it = seqIter->beginSafe(); it != seqIter->endSafe(); ++it, ++j ) {
-            TS_ASSERT_EQUALS ( *it, resultat[i][j] );
+          for ( const auto node : nodeset ) {
+            TS_ASSERT_EQUALS ( node, resultat[i][j] );
+            j += 1;
           }
+
+          i += 1;
         }
       }
 

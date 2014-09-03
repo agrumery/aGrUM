@@ -166,9 +166,8 @@ namespace gum_tests {
         // modalities from map
         // from file with dynamic network, not 2U
         try {
-          for ( auto node_idIt = cn->current_bn().nodes().beginSafe(); node_idIt != cn->current_bn().nodes().endSafe(); ++node_idIt ) {
-            modals[ cn->current_bn().variable ( *node_idIt ).name() ] = binaryModal;
-          }
+          for ( const auto node : cn->current_bn().nodes() )
+            modals[ cn->current_bn().variable ( node ).name() ] = binaryModal;
         } catch ( gum::Exception& e ) {
           TS_ASSERT ( false );
         }
@@ -186,9 +185,9 @@ namespace gum_tests {
         }
 
         try {
-          for ( auto node_idIt = cn->current_bn().nodes().beginSafe(); node_idIt != cn->current_bn().nodes().endSafe(); ++node_idIt ) {
-            std::vector< double > inf ( lp.marginalMin ( *node_idIt ) );
-            std::vector< double > sup ( lp.marginalMax ( *node_idIt ) );
+          for ( const auto node : cn->current_bn().nodes() ) {
+            std::vector< double >  inf ( lp.marginalMin ( node ) );
+            std::vector< double >  sup ( lp.marginalMax ( node ) );
             //double e_inf = lp.expectationMin ( node_idIt );
             //double e_sup = lp.expectationMax ( node_idIt );
           }
@@ -208,7 +207,6 @@ namespace gum_tests {
       // dynamic (dynaCheese) - strong indep
       void testL2UInferenceD() {
         initDCNet();
-        typedef std::vector< double > exp;
 
         gum::credal::CNLoopyPropagation<double> lp = gum::credal::CNLoopyPropagation<double> ( *cn );
 
@@ -237,9 +235,9 @@ namespace gum_tests {
         }
 
         try {
-          for ( auto node_idIt = cn->current_bn().nodes().beginSafe(); node_idIt != cn->current_bn().nodes().endSafe(); ++node_idIt ) {
-            exp inf ( lp.marginalMin ( *node_idIt ) );
-            exp sup ( lp.marginalMax ( *node_idIt ) );
+          for ( const auto node : cn->current_bn().nodes() ) {
+            std::vector< double >  inf ( lp.marginalMin ( node ) );
+            std::vector< double >  sup ( lp.marginalMax ( node ) );
             //double e_inf = lp.expectationMin ( node_idIt );
             //double e_sup = lp.expectationMax ( node_idIt );
           }
@@ -255,12 +253,12 @@ namespace gum_tests {
         }*/
         /*
                 try {
-                  //exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
-                  //exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
-                  //exp elo_inf ( mcs.dynamicExpMin ( "lo" ) );
-                  //exp elo_sup ( mcs.dynamicExpMax ( "lo" ) );
-                  //exp etemp_inf ( lp.dynamicExpMin ( "temp" ) );
-                  //exp etemp_sup ( lp.dynamicExpMax ( "temp" ) );
+                  //std::vector< double >  ekm_inf ( mcs.dynamicExpMin ( "km" ) );
+                  //std::vector< double >  ekm_sup ( mcs.dynamicExpMax ( "km" ) );
+                  //std::vector< double >  elo_inf ( mcs.dynamicExpMin ( "lo" ) );
+                  //std::vector< double >  elo_sup ( mcs.dynamicExpMax ( "lo" ) );
+                  //std::vector< double >  etemp_inf ( lp.dynamicExpMin ( "temp" ) );
+                  //std::vector< double >  etemp_sup ( lp.dynamicExpMax ( "temp" ) );
                 } catch ( gum::Exception & e ) {
                   TS_ASSERT ( false );
                 }*/

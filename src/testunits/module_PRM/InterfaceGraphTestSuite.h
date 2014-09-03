@@ -238,7 +238,7 @@ namespace gum_tests {
         generator.setDomainSize ( 2 );
         generator.setMaxParents ( 5 );
         gum::prm::PRM<double>* prm = generator.generate();
-        gum::prm::System<double>& sys = prm->system ( ( ** ( prm->systems().beginSafe() ) ).name() );
+        gum::prm::System<double>& sys = prm->system ( ( ** ( prm->systems().begin() ) ).name() );
         gum::prm::gspan::InterfaceGraph<double>* g = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING ( g = new gum::prm::gspan::InterfaceGraph<double> ( sys ) );
 

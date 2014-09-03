@@ -217,7 +217,7 @@ namespace gum_tests {
         fill ( set );
         TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 6 );
 
-        auto iter = set.beginSafe();
+        auto iter = set.beginSafe();//safe iterator needed here
         TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( iter ) );
         TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 5 );
 
@@ -236,7 +236,7 @@ namespace gum_tests {
         gum::Set<int, MyAlloc<int> > set2;
         fill ( set2 );
         TS_ASSERT ( set2.size () == 6 );
-        iter = set2.beginSafe ();
+        iter = set2.beginSafe ();//safe iterator needed here
         TS_GUM_ASSERT_THROWS_NOTHING ( set2.erase ( iter ) );
         TS_ASSERT ( set2.size () == 5 );
       }
