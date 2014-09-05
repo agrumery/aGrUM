@@ -79,7 +79,7 @@ namespace gum_tests {
         gum::Size elts = c.attributes().size() + c.aggregates().size();
         TS_ASSERT_EQUALS ( bn->size(), elts );
 
-        for ( const auto attr :c.attributes()) {
+        for ( const auto attr : c.attributes() ) {
           gum::NodeId id = 0;
           TS_GUM_ASSERT_THROWS_NOTHING ( attr->cpf() );
           TS_GUM_ASSERT_THROWS_NOTHING ( id = bn->idFromName ( attr->safeName() ) );
@@ -126,7 +126,7 @@ namespace gum_tests {
 
         int wount = 0;
 
-        for ( const auto node : bn.nodes()) {
+        for ( const auto node : bn.nodes() ) {
           wount++;
           std::string var = bn.variable ( node ).name();
           size_t pos = var.find_first_of ( '.' );
@@ -141,14 +141,13 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS ( count, wount );
 
-        for ( const auto node : bn.nodes()) {
+        for ( const auto node : bn.nodes() ) {
           const gum::DiscreteVariable* var = & ( bn.variable ( node ) );
 
-          for ( auto mode = bn.nodes().beginSafe(); mode != bn.nodes().endSafe(); ++mode ) {
-            if ( node  !=  *mode ) {
-              TS_ASSERT_DIFFERS ( var, & ( bn.variable ( *mode ) ) );
+          for ( const auto node2 : bn.nodes() )
+            if ( node  != node2 ) {
+              TS_ASSERT_DIFFERS ( var, & ( bn.variable ( node2 ) ) );
             }
-          }
         }
       }
 
@@ -180,7 +179,7 @@ namespace gum_tests {
         gum::BayesNetFactory<double> bn_factory ( &bn );
         TS_GUM_ASSERT_THROWS_NOTHING ( sys.groundedBN ( bn_factory ) );
 
-        for ( const auto node : bn.nodes()) {
+        for ( const auto node : bn.nodes() ) {
           const gum::Potential<double>& cpt = bn.cpt ( node );
           gum::Instantiation i ( cpt ), j;
           j.add ( bn.variable ( node ) );

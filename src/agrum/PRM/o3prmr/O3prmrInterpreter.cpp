@@ -232,36 +232,31 @@ namespace gum {
         // For each session
         std::vector<O3prmrSession<double>*> sessions = c->sessions();
 
-        for ( auto i = sessions.begin() ; i < sessions.end() ; i++ ) {
-
-          // For each command
-          std::vector<O3prmrCommand*> commands = ( *i )->commands();
-
-          for ( auto j = commands.begin() ; j < commands.end() ; j++ ) {
-
+        for ( const auto session : sessions )
+          for ( auto command : session->commands() ) {
             // We process it.
             bool result = true;
 
             try {
-              switch ( ( *j )->type() ) {
+              switch ( command->type() ) {
                 case O3prmrCommand::RequestType::Observe :
-                  result = observe ( ( ObserveCommand<double>* ) ( *j ) );
+                  result = observe ( ( ObserveCommand<double>* ) command );
                   break;
 
                 case O3prmrCommand::RequestType::Unobserve :
-                  result = unobserve ( ( UnobserveCommand<double>* ) ( *j ) );
+                  result = unobserve ( ( UnobserveCommand<double>* ) command );
                   break;
 
                 case O3prmrCommand::RequestType::SetEngine :
-                  setEngine ( ( SetEngineCommand* ) ( *j ) );
+                  setEngine ( ( SetEngineCommand* ) command );
                   break;
 
                 case O3prmrCommand::RequestType::SetGndEngine :
-                  setGndEngine ( ( SetGndEngineCommand* ) ( *j ) );
+                  setGndEngine ( ( SetGndEngineCommand* ) command );
                   break;
 
                 case O3prmrCommand::RequestType::Query :
-                  query ( ( QueryCommand<double>* ) ( *j ) );
+                  query ( ( QueryCommand<double>* ) command );
                   break;
               }
             } catch ( Exception& err ) {
@@ -275,10 +270,7 @@ namespace gum {
 
               break;
             }
-
           }
-
-        }
 
         if ( isVerboseMode() ) m_log << "## End interpretation." << std::endl << std::flush;
 
@@ -302,71 +294,62 @@ namespace gum {
           return false;
 
         // On importe tous les systèmes.
-        std::vector<ImportCommand*> imports = context->imports();
-
-        for ( std::vector<ImportCommand*>::const_iterator i = imports.begin() ; i < imports.end() ; i++ ) {
-          m_current_line = ( *i )->line;
+        for ( const auto command :context->imports()) {
+          m_current_line = command->line;
           // if import doen't succed stop here unless syntax mode is activated.
-          bool succeed = import ( context, ( *i )->value );
+          bool succeed = import ( context, command->value );
 
           if ( ! succeed && ! isInSyntaxMode() )
             return false;
 
           // En cas de succès, on met à jour le contexte global
           if ( succeed )
-            m_context->addImport ( **i );
+            m_context->addImport ( *command );
         }
 
+        if ( m_verbose ) m_log << "## Check semantic for " <<  context->sessions().size() << " sessions" << std::endl;
+
         // On vérifie chaque session
-        std::vector<O3prmrSession<double>*> sessions = context->sessions();
-
-        if ( m_verbose ) m_log << "## Check semantic for " << sessions.size() << " sessions" << std::endl;
-
-        for ( std::vector<O3prmrSession<double>*>::const_iterator i = sessions.begin() ; i < sessions.end() ; i++ ) {
-
-          std::string sessionName = ( *i )->name();
-          O3prmrSession<double>* session = new O3prmrSession<double> ( sessionName );
+        for ( const auto session : context->sessions()) {
+          std::string sessionName = session->name();
+          O3prmrSession<double>* new_session = new O3prmrSession<double> ( sessionName );
 
           if ( m_verbose ) m_log << "## Start session '" << sessionName << "'..." << std::endl << std::endl;
 
-          // For each command
-          std::vector<O3prmrCommand*> commands = ( *i )->commands();
-
-          for ( std::vector<O3prmrCommand*>::const_iterator j = commands.begin() ; j < commands.end() ; j++ ) {
-
-            if ( m_verbose ) m_log << "# * Going to check command : " << ( *j )->toString() << std::endl;
+          for ( const auto command : session->commands()) {
+            if ( m_verbose ) m_log << "# * Going to check command : " << command->toString() << std::endl;
 
             // Update the current line (for warnings and errors)
-            m_current_line = ( *j )->line;
+            m_current_line = command->line;
 
             // We check it.
             bool result = true;
 
             try {
-              switch ( ( *j )->type() ) {
+              switch ( command->type() ) {
                 case O3prmrCommand::RequestType::SetEngine :
-                  result = checkSetEngine ( ( SetEngineCommand* ) ( *j ) );
+                  result = checkSetEngine ( ( SetEngineCommand* ) command );
                   break;
 
                 case O3prmrCommand::RequestType::SetGndEngine :
-                  result = checkSetGndEngine ( ( SetGndEngineCommand* ) ( *j ) );
+                  result = checkSetGndEngine ( ( SetGndEngineCommand* ) command );
                   break;
 
                 case O3prmrCommand::RequestType::Observe :
-                  result = checkObserve ( ( ObserveCommand<double>* ) ( *j ) );
+                  result = checkObserve ( ( ObserveCommand<double>* ) command );
                   break;
 
                 case O3prmrCommand::RequestType::Unobserve :
-                  result = checkUnobserve ( ( UnobserveCommand<double>* ) ( *j ) );
+                  result = checkUnobserve ( ( UnobserveCommand<double>* ) command );
                   break;
 
                 case O3prmrCommand::RequestType::Query :
-                  result = checkQuery ( ( QueryCommand<double>* ) ( *j ) );
+                  result = checkQuery ( ( QueryCommand<double>* ) command );
                   break;
 
                 default :
                   addError ( "Error : Unknow command : " +
-                             ( *j )->toString() + "\n -> Command not processed." );
+                             command->toString() + "\n -> Command not processed." );
                   result = false;
               }
             } catch ( Exception& err ) {
@@ -383,20 +366,20 @@ namespace gum {
 
             // On l'ajoute au contexte globale
             if ( result )
-              session->addCommand ( ( const O3prmrCommand* ) ( *j ) );
+              new_session->addCommand ( ( const O3prmrCommand* ) command );
           }
 
           // Ajoute la session au contexte global,
           // ou à la dernière session.
           if ( sessionName == "default" && m_context->sessions().size() > 0 )
-            * ( m_context->sessions().back() ) += *session;
+            * ( m_context->sessions().back() ) += *new_session;
           else
-            m_context->addSession ( *session );
+            m_context->addSession ( *new_session );
 
           if ( m_verbose ) m_log << std::endl << "## Session '" << sessionName << "' finished." << std::endl << std::endl << std::endl;
         }
 
-        if ( isVerboseMode() && errors() != 0 ) m_errors.elegantErrorsAndWarnings(m_log);
+        if ( isVerboseMode() && errors() != 0 ) m_errors.elegantErrorsAndWarnings ( m_log );
 
         return errors() == 0;
       }
@@ -576,8 +559,8 @@ namespace gum {
         }
 
         // Search import in all paths.
-        for ( std::vector<std::string>::iterator i = m_paths.begin(); ! found && i != m_paths.end(); i++ ) {
-          import_abs_filename = ( *i ) + import_name;
+        for ( const auto & path : m_paths) {
+          import_abs_filename = path + import_name;
 
           if ( m_verbose ) m_log << "# Search from classpath '" << import_abs_filename << "' ... " << std::flush;
 
@@ -588,6 +571,7 @@ namespace gum {
 
             file_test.close();
             found = true;
+            break;
           } else if ( m_verbose )
             m_log << " not found." << std::endl << std::flush;
         }
@@ -901,18 +885,18 @@ namespace gum {
       }
 
 ///
-      void O3prmrInterpreter::showElegantErrors(std::ostream& o) const {
-        m_errors.elegantErrors(o);
+      void O3prmrInterpreter::showElegantErrors ( std::ostream& o ) const {
+        m_errors.elegantErrors ( o );
       }
 
 ///
-      void O3prmrInterpreter::showElegantErrorsAndWarnings(std::ostream& o) const {
-        m_errors.elegantErrorsAndWarnings(o);
+      void O3prmrInterpreter::showElegantErrorsAndWarnings ( std::ostream& o ) const {
+        m_errors.elegantErrorsAndWarnings ( o );
       }
 
 ///
-      void O3prmrInterpreter::showErrorCounts(std::ostream& o) const {
-        m_errors.syntheticResults(o);
+      void O3prmrInterpreter::showErrorCounts ( std::ostream& o ) const {
+        m_errors.syntheticResults ( o );
       }
 
 

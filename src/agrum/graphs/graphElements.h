@@ -122,8 +122,8 @@
   g.addNode();
   g.addNode();
 
-  for ( auto i=g.nodes().begin(); i!=g.nodes().end(); ++i ) {
-    is_id_odd.set( *i, *i % 2 == 0 );
+  for ( auto nodeId : g.nodes()) {
+    is_id_odd.set( nodeId, nodeId % 2 == 0 );
   }
 
   std::cout<<is_id_odd<<std::cout<<std::endl;
@@ -147,10 +147,8 @@
 
   std::cout<<is_id_odd<<std::endl<<std::endl;
 
-  for (gum::NodeProperty<bool>::iterator_safe i=is_id_odd.begin();
-        i!=is_id_odd.end();
-        ++i ) {
-    std::cout<<i.key()<<" : "<<*i<<std::endl;
+  for (const auto & elt :is_id_odd) {
+    std::cout<<i.first<<" : "<<i.second<<std::endl;
   }
   @endcode
 

@@ -126,31 +126,6 @@ namespace gum {
   }
 
 
-  /// function is called by the master (if any) when changes arise in its vars list
-
-  /*
-    void Instantiation::changeDimCommand
-    (const Sequence<const DiscreteVariable *>& v) {
-    bool modif = false; // indicates whether we modified sequence vars
-    // first we remove all the variables belonging to this but not to v
-    for (Idx index = __vars.size() - 1; index < __vars.size(); --index)
-    if (! v.exists (__vars[index])) {
-    __erase (*(__vars[index]));
-    modif = true;
-    }
-    // next, add the missing dimensions
-    for (Sequence<const DiscreteVariable *>::iterator iter = v.begin();
-    iter != v.end(); ++iter)
-    if (! __vars.exists (v[iter])) {
-    __add (*v[iter]);
-    modif = true;
-    }
-    // if we are a slave of a master, then we should update in the latter the pointer
-    // to the array's valued pointed to by the Instantiation
-    if (isSlave() && modif)
-    __master->changeNotification(*this);
-    }
-  */
   ///Gives a string version of a Instantiation
   std::string Instantiation::toString() const  {
     std::stringstream sstr;

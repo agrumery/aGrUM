@@ -82,8 +82,8 @@ namespace gum {
 #ifdef O4DDDEBUG
         GUM_TRACE ( " Mixed Sequence variable : " );
 
-        for ( SequenceIteratorSafe< const DiscreteVariable* > iter = leadingOrder.begin(); iter != leadingOrder.end(); ++iter )
-          GUM_TRACE ( ( *iter )->toString() << " - " );
+        for ( cosnt auto var : leadingOrder )
+          GUM_TRACE ( var->toString() << " - " );
 
         GUM_TRACE ( std::endl );
 #endif
@@ -168,7 +168,7 @@ namespace gum {
         for ( const auto & elt : *retrogradeVarTable )
           if ( elt.second != nullptr && ! elt.second->empty() )
             for ( const auto var : *elt.second )
-              if ( ! this->conti.isRetrogradeVar ( var) )
+              if ( ! this->conti.isRetrogradeVar ( var ) )
                 this->conti.addRetrogradeVar ( var );
       }
 

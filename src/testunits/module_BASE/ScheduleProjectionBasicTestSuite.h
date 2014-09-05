@@ -138,7 +138,7 @@ namespace gum_tests {
         tt2 = xxx.project ( t3, del_vars, schedule );
 
         while ( ! available.empty() ) {
-          for ( gum::NodeSet::const_iterator_safe iter = available.beginSafe();
+          for ( gum::NodeSet::const_iterator_safe iter = available.beginSafe();// safe iterator needed here
                 iter != available.endSafe(); ++iter ) {
             schedule.execute ( *iter );
           }

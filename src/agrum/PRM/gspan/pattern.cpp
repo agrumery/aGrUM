@@ -43,11 +43,9 @@ namespace gum {
           node_map.insert ( node, addNode ( const_cast<LabelData&> ( source.label ( node ) ) ) );
         }
 
-        for ( std::vector<EdgeCode*>::const_iterator edge = source.code().codes.begin();
-              edge != source.code().codes.end(); ++edge ) {
-          addArc ( node_map[ ( **edge ).i], node_map[ ( **edge ).j],
-                   const_cast<LabelData&> ( source.label ( node_map[ ( **edge ).i], node_map[ ( **edge ).j] ) ) );
-        }
+        for ( const auto edge : source.code().codes )
+          addArc ( node_map[ edge->i], node_map[ edge->j],
+                   const_cast<LabelData&> ( source.label ( node_map[ edge->i], node_map[ edge->j] ) ) );
       }
 
       bool
@@ -223,7 +221,7 @@ namespace gum {
           GUM_TRACE_VAR ( node_map.size() );
           std::stringstream sBuff;
 
-          for ( auto iter = node_map.begin() ; iter != node_map.end(); ++iter )
+          for ( auto iter = node_map.begin(); iter != node_map.end(); ++iter )
             sBuff << "(" << iter.first() << ", " << iter.second() << ") ";
 
           GUM_TRACE ( sBuff.str() );
@@ -312,3 +310,4 @@ namespace gum {
     } /* namespace gspan */
   } /* namespace prm */
 } /* namespace gum */
+

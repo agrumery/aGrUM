@@ -118,7 +118,7 @@ class Parser {
     }
 
     // Return true if type is a class or an interface.
-    bool isClassOrInterface(std::string type) {      
+    bool isClassOrInterface(std::string type) {
       return factory().isClassOrInterface(type);
     }
 
@@ -154,11 +154,12 @@ class Parser {
 
         // Search filename in each path stored in __class_path
         if ( ! dirFound ) {
-          for (std::vector<std::string>::iterator path = __class_path.begin(); ! dirFound && path != __class_path.end(); ++path) {
+          for (const auto & path :__class_path) {
               // Construct complete filePath
-              dirpath = (*path) + dirname;
+              dirpath = path + dirname;
               dirFound = Directory::isDir(dirpath);
-              break;
+              if (dirFound)
+                break;
           }
         }
 
@@ -176,15 +177,14 @@ class Parser {
         Directory oldCurrentDirectory = __current_directory;
         __current_directory = Directory(dirpath);
 
-        const std::vector<std::string> & entries = __current_directory.entries();
-        for ( std::vector<std::string>::const_iterator i = entries.begin() ; i != entries.end() ; ++i ) {
-            if ((*i)[0]== '.') //"." or ".." or ".svn" or any hidden directories...
+        for ( const auto & entry : __current_directory.entries()) {
+            if (entry[0]== '.') //"." or ".." or ".svn" or any hidden directories...
                 continue;
 
-            if ( Directory::isDir(dirpath+(*i)) )
-                importDir( dirpath+(*i)+"/" );
-            else if ( (*i).substr( (*i).find_last_of('.') ) == ".o3prm" ) // if .o3prm
-                importFile( dirpath+(*i) );
+            if ( Directory::isDir(dirpath+entry) )
+                importDir( dirpath+entry+"/" );
+            else if ( entry.substr( entry.find_last_of('.') ) == ".o3prm" ) // if .o3prm
+                importFile( dirpath+entry );
         }
 
         // Reset previous current directory
@@ -210,10 +210,9 @@ class Parser {
         p.Parse();
 
         // We add file imported in p to file imported here.
-        gum::Set<std::string> parserImports = p.getImports();
-        for (gum::Set<std::string>::iterator iter = parserImports.begin(); iter != parserImports.end(); ++iter)
-            if (not __imports.exists(*iter))
-            __imports.insert(*iter);
+        for (const auto & import : p.getImports())
+            if (not __imports.exists(import))
+            __imports.insert(import);
 
         // We add warnings and errors to this
         __errors += p.__errors;
@@ -264,9 +263,9 @@ class Parser {
         }
 
         // Search filename in each path stored in __class_path
-        for (std::vector<std::string>::iterator path = __class_path.begin(); ! fileFound && path != __class_path.end(); ++path) {
+        for (const auto & path : __class_path) {
             // Construct complete filePath
-            filepath = (*path) + filename;
+            filepath = path + filename;
 
             // We try to open it
             file_test.open(filepath.c_str());
@@ -290,11 +289,9 @@ class Parser {
 
     // Add these import to this parser.
     void addImports(const gum::Set<std::string>& imports) {
-      for (gum::Set<std::string>::iterator iter = imports.begin(); iter != imports.end(); ++iter) {
-        if (not __imports.exists(*iter)) {
-          __imports.insert(*iter);
-        }
-      }
+      for (const auto & import :imports)
+        if (not __imports.exists(import))
+          __imports.insert(import);
     }
 
 public:

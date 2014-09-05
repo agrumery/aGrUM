@@ -375,8 +375,31 @@ namespace gum_tests {
 
         n = 0;
 
-        for ( gum::Sequence<std::string>::iterator_safe it = seq.rbeginSafe();
+        for ( gum::Sequence<std::string>::iterator_safe it = seq.rbeginSafe();// safe iterator needed here
               it != seq.rendSafe(); --it ) n++;
+
+        TS_ASSERT_EQUALS ( n, 0 );
+        n = 0;
+
+        for ( gum::Sequence<std::string>::iterator_safe it = seq.rbegin();
+              it != seq.rend(); --it ) n++;
+
+        TS_ASSERT_EQUALS ( n, 0 );
+        n = 0;
+
+        for ( gum::Sequence<std::string>::iterator_safe it = seq.beginSafe();// safe iterator needed here
+              it != seq.endSafe(); ++it ) n++;
+
+        TS_ASSERT_EQUALS ( n, 0 );
+        n = 0;
+
+        for ( gum::Sequence<std::string>::iterator_safe it = seq.begin();
+              it != seq.end(); ++it ) n++;
+
+        TS_ASSERT_EQUALS ( n, 0 );
+        n = 0;
+
+        for ( const auto i :seq) n++;
 
         TS_ASSERT_EQUALS ( n, 0 );
 
@@ -418,7 +441,6 @@ namespace gum_tests {
               it != seq.end(); ++it ) n++;
 
         TS_ASSERT_EQUALS ( n, 0 );
-
         n = 0;
 
         for ( gum::Sequence<std::string>::iterator it = seq.rbegin();
@@ -437,7 +459,6 @@ namespace gum_tests {
         }
 
         TS_ASSERT ( str == "bbddffccee" );
-
         str = "";
 
         for ( gum::Sequence<std::string>::iterator it = seq.rbegin();
@@ -465,7 +486,7 @@ namespace gum_tests {
 
         seq.erase ( 1 );
         TS_ASSERT ( seq.size () == 1 );
-        seq.erase ( seq.beginSafe () );
+        seq.erase ( seq.beginSafe () );// safe iterator needed here
         TS_ASSERT ( seq.size () == 0 );
       }
 
@@ -486,7 +507,7 @@ namespace gum_tests {
 
         seq.erase ( x );
         TS_ASSERT ( seq.size () == 1 );
-        seq.erase ( seq.beginSafe () );
+        seq.erase ( seq.beginSafe () );// safe iterator needed here
         TS_ASSERT ( seq.size () == 0 );
       }
 
@@ -501,7 +522,7 @@ namespace gum_tests {
 
         seq.erase ( x );
         TS_ASSERT ( seq.size () == 1 );
-        seq.erase ( seq.beginSafe () );
+        seq.erase ( seq.beginSafe () );// safe iterator needed here
         TS_ASSERT ( seq.size () == 0 );
       }
 
@@ -516,14 +537,14 @@ namespace gum_tests {
 
         seq.erase ( x );
         TS_ASSERT ( seq.size () == 1 );
-        seq.erase ( seq.beginSafe () );
+        seq.erase ( seq.beginSafe () );// safe iterator needed here
         TS_ASSERT ( seq.size () == 0 );
       }
 
       void testNewIterOp1 () {
         gum::Sequence< int, MyAlloc<int> > seq;
         seq << 1 << 2 << 3 << 4 << 5;
-        gum::SequenceIteratorSafe<int> iter = seq.beginSafe ();
+        gum::SequenceIteratorSafe<int> iter = seq.begin();
         TS_ASSERT ( *iter == 1 );
         ++iter;
         TS_ASSERT ( *iter == 2 );
@@ -547,7 +568,7 @@ namespace gum_tests {
 
         gum::Sequence< std::string, MyAlloc<std::string> > seq;
         seq << p[1] << p[2] << p[3] << p[4] << p[5];
-        gum::SequenceIteratorSafe<std::string> iter = seq.beginSafe ();
+        gum::SequenceIteratorSafe<std::string> iter = seq.begin();
         TS_ASSERT ( *iter == p[1] );
         ++iter;
         TS_ASSERT ( *iter == p[2] );
@@ -607,7 +628,7 @@ namespace gum_tests {
         seq << 1 << 3 << 5 << 2 << 4;
         int n = 0;
 
-        for ( auto it = seq.rbeginSafe(); it != seq.rendSafe(); --it ) {
+        for ( auto it = seq.rbeginSafe(); it != seq.rendSafe(); --it ) {// safe iterator needed here
           n *= 10; n += *it;
         }
 
@@ -621,7 +642,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( n, 42531 );
         n = 0;
 
-        for ( auto it = seq.beginSafe(); it != seq.endSafe(); ++it ) {
+        for ( auto it = seq.beginSafe(); it != seq.endSafe(); ++it ) {// safe iterator needed here
           n *= 10; n += *it;
         }
 
