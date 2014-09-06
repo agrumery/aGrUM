@@ -1,7 +1,6 @@
 
-network aGrUM_BN {
-   property version 1.0;
-   property author aGrUM;
+network WaterSprinkler{
+   property software aGrUM;
 }
 
 variable c {
