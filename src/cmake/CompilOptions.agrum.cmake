@@ -1,3 +1,4 @@
+option(BUILD_SHARED_LIBS "shared|static libs" ON)
 
 set(AGRUM_OPTIMIZATION "-O3")
 

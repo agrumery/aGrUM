@@ -49,7 +49,7 @@ set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INC
 ####################################################################
 ## target library
 
-add_library(${LIBAGRUM} SHARED ${AGRUM_FILES})
+add_library(${LIBAGRUM} ${AGRUM_FILES})
 if (OPENMP_FOUND)
   target_link_libraries(${LIBAGRUM} gomp)
 endif ()
