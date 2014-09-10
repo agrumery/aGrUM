@@ -18,7 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <iostream>
+#include <fstream>
+#include <stdio.h>
 #include <string>
+#include <string.h>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
@@ -39,6 +42,49 @@
 namespace gum_tests {
 
   class BIFWriterTestSuite: public CxxTest::TestSuite {
+    private:
+      bool __compareFile(std::string f1,std::string f2) {
+       std::ifstream file1,file2;
+       file1.open(f1,std::ios::binary);
+       file2.open(f2,std::ios::binary);
+
+       //---------- compare number of lines in both files ------------------//
+       int c1,c2;
+       c1 = 0; c2 = 0;
+       std::string str;
+       while(!file1.eof())
+       {
+         getline(file1,str);
+         c1++;
+       }
+       file1.clear();   //  set new value for error control state  //
+       file2.seekg(0,std::ios::beg);
+       while(!file2.eof())
+       {
+         getline(file2,str);
+         c2++;
+       }
+       file2.clear();
+       file2.seekg(0,std::ios::beg);
+
+       if(c1 != c2)
+         return false;
+
+       //---------- compare two files line by line ------------------//
+       char string1[256], string2[256];
+       int j = 0;
+       while(!file1.eof())
+       {
+         file1.getline(string1,256);
+         file2.getline(string2,256);
+         j++;
+         if(strcmp(string1,string2) != 0)
+           return false;
+       }
+
+       return true;
+     }
+
     public:
       gum::BayesNet<double>* bn;
       gum::Id i1, i2, i3, i4, i5;
@@ -86,14 +132,14 @@ namespace gum_tests {
         std::string file = GET_PATH_STR ( "BIFWriter_TestFile.txt" );
         TS_GUM_ASSERT_THROWS_NOTHING ( writer.write ( file, *bn ) );
 
-        file = GET_PATH_STR ( "BIFWriter_RO_TestFile.txt" );
-
         try {
           writer.write ( file, *bn );
-          // TS_ASSERT(false);
+          TS_ASSERT(true);
         } catch ( gum::IOError& e ) {
-          TS_ASSERT ( true );
+          TS_ASSERT ( false);
         }
+
+        TS_ASSERT(__compareFile(file,GET_PATH_STR ( "BIFWriter_Model.txt" )))
       }
 
     private:

@@ -1,6 +1,6 @@
 
 network unnamedBN{
-   property software aGrUM0.9.0;
+   property software aGrUM0.9.0+;
 }
 
 variable 1 {
