@@ -345,7 +345,7 @@ namespace gum_tests {
         inf_complete.insertEvidence ( l );
         inf_complete.makeInference();
         const gum::Potential<float>& p1 = inf_complete.posterior ( bn.idFromName ( "v6" ) );
-
+        
         // propagation in the fragment
         gum::BayesNetFragment<float> frag ( bn );
         frag.installAscendants ( bn.idFromName ( "v6" ) ); // 1->3->6
@@ -355,7 +355,7 @@ namespace gum_tests {
         frag.installMarginal ( frag.idFromName ( "v3" ), newV3 ); // 1   3->6
         TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 3 );
         TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 1 );
-
+        
         gum::LazyPropagation<float> inf_frag ( frag );
         inf_frag.makeInference();
         const gum::Potential<float>& p2 = inf_frag.posterior ( bn.idFromName ( "v6" ) );
@@ -363,7 +363,7 @@ namespace gum_tests {
         // comparison
         gum::Instantiation I ( p1 );
         gum::Instantiation J ( p2 );
-
+        
         for ( I.setFirst(), J.setFirst(); ! I.end(); ++I, ++J )
           TS_ASSERT_DELTA ( p1[I], p2[J], 1e-6 );
       }

@@ -180,20 +180,21 @@ namespace gum {
   template<typename GUM_SCALAR> void
   BayesNetFragment<GUM_SCALAR>::_installCPT ( NodeId id, const Potential<GUM_SCALAR>* pot ) noexcept {
     // topology
-    for ( auto node : dag().parents ( id ) )
-      _uninstallArc ( node, id );
-
+    const auto& parents=dag().parents(id);
+    for ( auto node_it = parents.beginSafe();node_it!=parents.endSafe();++node_it )//safe iterator needed here
+      _uninstallArc ( *node_it, id );
+    
     for ( Idx i = 1; i < pot->nbrDim(); i++ ) {
       NodeId parent = __bn.idFromName ( pot->variable ( i ).name() );
 
       if ( isInstalledNode ( parent ) )
         _installArc ( parent , id );
     }
-
+    
     //local cpt
     if ( __localCPTs.exists ( id ) )
       _uninstallCPT ( id );
-
+    
     __localCPTs.insert ( id, pot );
   }
 
@@ -259,7 +260,7 @@ namespace gum {
       GUM_ERROR ( OperationNotAllowed,
                   "The potential is not a marginal for __bn.variable <" << __bn.variable ( id ).name() << ">" );
     }
-
+    
     _installCPT ( id, pot );
   }
 
