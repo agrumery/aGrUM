@@ -38,7 +38,7 @@ namespace gum_tests {
       void tearDown() { }
 
       void testConstructors() {
-        gum::prm::LayerGenerator<double>* gen = 0;
+        gum::prm::LayerGenerator<double>* gen = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING ( gen = new gum::prm::LayerGenerator<double>() );
         TS_GUM_ASSERT_THROWS_NOTHING ( delete gen );
       }

@@ -63,14 +63,14 @@ namespace gum_tests {
         if( driver.prm() != nullptr ) delete driver.prm();
       }
 
-      void /*test*/InterfaceGraph() {
+      void testInterfaceGraph() {
         local__setUp();
         TS_ASSERT_EQUALS( ig->graph().size(), ( gum::Size ) 1 + 5 * 2 + 4 * 3 + 4 * 3 + 5 + 3 + 4 );
         TS_ASSERT_EQUALS( ig->graph().sizeEdges(), ( gum::Size )( 5 * 2 + 3 * 4 + 4 * 3 ) + 5 + 3 * 3 + 4 * 2 );
         local__tearDown();
       }
 
-      void /*test*/Tree() {
+      void testTree() {
         local__setUp();
         gum::prm::GSpan<double>* gspan = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( gspan = new gum::prm::GSpan<double> ( * ( __driver->prm() ), __driver->prm()->system( "m" ) ) );

@@ -118,7 +118,6 @@ namespace gum {
                                                             std::vector<ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l,
                                                             Size lvl,
                                                             Set<std::string>& i ) {
-      const Set<NodeId>* parents = 0;
       Size size = 0;
       GUM_SCALAR sum = 0.0;
       std::string first, second, third;
@@ -301,7 +300,6 @@ namespace gum {
                                                           std::vector<ClusteredLayerGenerator<GUM_SCALAR>::MyData>& l,
                                                           Size lvl,
                                                           Set<std::string>& i ) {
-      const Set<NodeId>* parents = 0;
       Size size = 0;
       GUM_SCALAR sum = 0.0;
       l[lvl].c.push_back( this->_name_gen.nextName( PRMObject::PRMType::CLASS ) );
