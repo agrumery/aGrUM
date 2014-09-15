@@ -45,6 +45,7 @@ const size_t SmallObjectAllocator::GUM_DEFAULT_CHUNK_SIZE = 8096;
  */
 const size_t SmallObjectAllocator::GUM_DEFAULT_MAX_OBJECT_SIZE = 512;
 
+
 }/* End of Namespace */
 
 #ifdef GUM_NO_INLINE

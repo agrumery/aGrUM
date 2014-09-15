@@ -20,7 +20,7 @@
 
 #include <cmath>
 
-#include <agrum/multidim/patterns/DGUtility/o4DGContext.h>
+#include <agrum/multidim/decisionGraphUtilities/o4DGContext.h>
 
 #ifndef O4DGCONTEXT_INL
 #define O4DGCONTEXT_INL

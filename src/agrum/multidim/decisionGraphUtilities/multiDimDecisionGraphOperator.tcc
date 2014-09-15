@@ -24,9 +24,13 @@
 * @author Jean-Christophe Magnan
 */
 
-// =======================================================
-#include <agrum/multidim/patterns/DGUtility/multiDimDecisionGraphOperator.h>
-// =======================================================
+// =======================================================================================
+#include <agrum/multidim/decisionGraphUtilities/multiDimDecisionGraphOperator.h>
+#include <agrum/multidim/decisionGraphUtilities/internalNode.h>
+// =======================================================================================
+
+#define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
+#define DEALLOCATE(x,y) SmallObjectAllocator::instance().deallocate(x,y)
 
 namespace gum {
 
@@ -58,13 +62,13 @@ namespace gum {
         GUM_DESTRUCTOR(MultiDimDecisionGraphOperator);
 
         if(__nbVar != 0)
-            MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( __default, sizeof(short int)*__nbVar);
+            DEALLOCATE( __default, sizeof(short int)*__nbVar);
 
         for(HashTableIteratorSafe<NodeId, short int*> instIter = __DG1InstantiationNeeded.beginSafe(); instIter != __DG1InstantiationNeeded.endSafe(); ++instIter )
-            MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( instIter.val(), sizeof(short int)*__nbVar);
+            DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
 
         for(HashTableIteratorSafe<NodeId, short int*> instIter = __DG2InstantiationNeeded.beginSafe(); instIter != __DG2InstantiationNeeded.endSafe(); ++instIter )
-            MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( instIter.val(), sizeof(short int)*__nbVar);
+            DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
 
     }
 
@@ -85,7 +89,7 @@ namespace gum {
         Idx* varInst = nullptr;
 //        std::cout << "MDGO 85" << std::endl;
         if(__nbVar != 0){
-            varInst = static_cast<Idx*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(Idx)*__nbVar ) );
+            varInst = static_cast<Idx*>( ALLOCATE( sizeof(Idx)*__nbVar ) );
             for( Idx i = 0; i < __nbVar; i++ )
                 varInst[i] = (Idx) 0;
         }
@@ -98,7 +102,7 @@ namespace gum {
         __rd->manager()->setRootNode( root );
 
         if(__nbVar != 0 )
-            MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( varInst, sizeof(Idx)*__nbVar );
+            DEALLOCATE( varInst, sizeof(Idx)*__nbVar );
 
         return __rd;
     }
@@ -193,7 +197,7 @@ namespace gum {
 
 //        std::cout << "MDGO 189" << std::endl;
         if(__nbVar != 0 ){
-            __default = static_cast<short int*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(short int)*__nbVar ) );
+            __default = static_cast<short int*>( ALLOCATE( sizeof(short int)*__nbVar ) );
             for( Idx i = 0; i < __nbVar; i++ )
                 __default[i] = (short int) 0;
         }
@@ -244,15 +248,15 @@ namespace gum {
 
             Idx varPos = __rd->variablesSequence().pos( *varIter );
 
-            const typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem * nodeIter = dg->varNodeListe(*varIter);
+            const Link<NodeId> * nodeIter = dg->varNodeListe(*varIter)->list();
             while( nodeIter != nullptr ){
 
 //                std::cout << "MDGO 244" << std::endl;
-                short int* instantiationNeeded = static_cast<short int*>(MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(tableSize));
-                dgInstNeed.insert( nodeIter->elemId, instantiationNeeded );
+                short int* instantiationNeeded = static_cast<short int*>(ALLOCATE(tableSize));
+                dgInstNeed.insert( nodeIter->element(), instantiationNeeded );
 //                std::cout << "MDGO 247" << std::endl;
-                short int* varDescendant = static_cast<short int*>(MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(tableSize));
-                nodesVarDescendant.insert( nodeIter->elemId, varDescendant );
+                short int* varDescendant = static_cast<short int*>(ALLOCATE(tableSize));
+                nodesVarDescendant.insert( nodeIter->element(), varDescendant );
                 for(Idx j = 0; j < __nbVar; j++ ){
                     instantiationNeeded[j] = (short int) 0;
                     varDescendant[j] = (short int) 0;
@@ -260,9 +264,9 @@ namespace gum {
 
 
                 varDescendant[ varPos ] = (short int) 1;
-                for(Idx modality = 0; modality < dg->node(nodeIter->elemId)->nbSons(); ++modality ){
-                    if( ! dg->isTerminalNode( dg->node( nodeIter->elemId )->son(modality) )) {
-                        short int* sonVarDescendant = nodesVarDescendant[ dg->node( nodeIter->elemId )->son(modality)];
+                for(Idx modality = 0; modality < dg->node(nodeIter->element())->nbSons(); ++modality ){
+                    if( ! dg->isTerminalNode( dg->node( nodeIter->element() )->son(modality) )) {
+                        short int* sonVarDescendant = nodesVarDescendant[ dg->node( nodeIter->element() )->son(modality)];
                         for(Idx varIdx = 0; varIdx < __nbVar; varIdx++ ){
                             varDescendant[varIdx] += sonVarDescendant[varIdx];
                             if( varDescendant[varIdx] && varIdx  < varPos )
@@ -270,32 +274,32 @@ namespace gum {
                         }
                     }
                 }
-                nodeIter = nodeIter->nextElem;
+                nodeIter = nodeIter->nextLink();
             }
         }
 
 
         for( SequenceIteratorSafe<const DiscreteVariable*> varIter = dg->variablesSequence().beginSafe(); varIter != dg->variablesSequence().endSafe(); ++varIter ) {
 
-            const typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem * nodeIter = dg->varNodeListe(*varIter);
+            const Link<NodeId> * nodeIter = dg->varNodeListe(*varIter)->list();
             while( nodeIter != nullptr ){
 
-                for(Idx modality = 0; modality < dg->node( nodeIter->elemId )->nbSons(); ++modality ){
-                    NodeId sonId = dg->node( nodeIter->elemId )->son(modality);
+                for(Idx modality = 0; modality < dg->node( nodeIter->element() )->nbSons(); ++modality ){
+                    NodeId sonId = dg->node( nodeIter->element() )->son(modality);
                     if( ! dg->isTerminalNode( sonId )) {
                         for(Idx varIdx = 0; varIdx < __nbVar; ++varIdx ){
-                            if( dgInstNeed[nodeIter->elemId][ varIdx ] && nodesVarDescendant[ sonId ][varIdx] ){
+                            if( dgInstNeed[nodeIter->element()][ varIdx ] && nodesVarDescendant[ sonId ][varIdx] ){
                                 dgInstNeed[ sonId ][ varIdx ] = (short int) 1;
                             }
                         }
                     }
                 }
-                nodeIter = nodeIter->nextElem;
+                nodeIter = nodeIter->nextLink();
             }
         }
         for(HashTableIterator<NodeId, short int*> it = nodesVarDescendant.begin(); it != nodesVarDescendant.end(); ++it ){
 
-            MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate(it.val(),tableSize);
+            DEALLOCATE(it.val(),tableSize);
         }
 
         nodesVarDescendant.clear();
@@ -352,7 +356,7 @@ namespace gum {
         Idx dg2CurrentVarPos = __DG2->isTerminalNode( currentSituation.DG2Node() )?__nbVar:__rd->variablesSequence().pos( __DG2->node( currentSituation.DG2Node() )->nodeVar() );
 
 //        std::cout << "MDGO 348" << std::endl;
-        short int* instNeeded = static_cast<short int*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(short int)*__nbVar ) );
+        short int* instNeeded = static_cast<short int*>( ALLOCATE( sizeof(short int)*__nbVar ) );
 
         for( Idx i = 0; i < __nbVar; i++ ){
 
@@ -362,7 +366,7 @@ namespace gum {
         double curSitKey = currentSituation.key( instNeeded );
 
         if ( __explorationTable.exists ( curSitKey ) ){
-            MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( instNeeded, sizeof(short int)*__nbVar);
+            DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
 
             return __explorationTable[ curSitKey ];
         }
@@ -389,7 +393,7 @@ namespace gum {
                 currentSituation.setDG1Node(origDG1);
                 currentSituation.setDG2Node(origDG2);
 
-                MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( instNeeded, sizeof(short int)*__nbVar);
+                DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
 
                 return newNode;
             }
@@ -411,7 +415,7 @@ namespace gum {
                 currentSituation.setDG1Node(origDG1);
                 currentSituation.setDG2Node(origDG2);
 
-                MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( instNeeded, sizeof(short int)*__nbVar);
+                DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
 
                 return newNode;
             }
@@ -437,7 +441,7 @@ namespace gum {
 
                 const DiscreteVariable* curVar = __rd->variablesSequence().atPos( varPos );
 //                std::cout << "MDGO 433" << std::endl;
-                NodeId* sonsIds = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(NodeId)*curVar->domainSize() ) );
+                NodeId* sonsIds = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*curVar->domainSize() ) );
 
                 for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
 
@@ -453,7 +457,7 @@ namespace gum {
                 currentSituation.setDG1Node(origDG1);
                 currentSituation.setDG2Node(origDG2);
 
-                MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( instNeeded, sizeof(short int)*__nbVar);
+                DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
 
                 return newNode;
             }
@@ -467,13 +471,13 @@ namespace gum {
 
             // If so - meaning it's the same variable - we have to go
             // down on both
-            const typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* dg1Node = __DG1->node( origDG1 );
-            const typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* dg2Node = __DG2->node( origDG2 );
+            const InternalNode* dg1Node = __DG1->node( origDG1 );
+            const InternalNode* dg2Node = __DG2->node( origDG2 );
 
             const DiscreteVariable* curVar = dg1Node->nodeVar();
             Idx varPos = __rd->variablesSequence().pos( curVar );
 //            std::cout << "MDGO 469" << std::endl;
-            NodeId* sonsIds = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(NodeId)*curVar->domainSize() ) );
+            NodeId* sonsIds = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*curVar->domainSize() ) );
 
             for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
 
@@ -491,7 +495,7 @@ namespace gum {
             currentSituation.setDG1Node(origDG1);
             currentSituation.setDG2Node(origDG2);
 
-            MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( instNeeded, sizeof(short int)*__nbVar);
+            DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
 
             return newNode;
         }
@@ -499,11 +503,11 @@ namespace gum {
         else {
 
 
-            const typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* leaddgNode = leaddg->node( leadNodeId );
+            const InternalNode* leaddgNode = leaddg->node( leadNodeId );
 
             const DiscreteVariable* curVar = leaddgNode->nodeVar();
 //            std::cout << "MDGO 499" << std::endl;
-            NodeId* sonsIds = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(NodeId)*curVar->domainSize() ) );
+            NodeId* sonsIds = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*curVar->domainSize() ) );
 
             for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
 
@@ -520,7 +524,7 @@ namespace gum {
             currentSituation.setDG1Node(origDG1);
             currentSituation.setDG2Node(origDG2);
 
-            MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( instNeeded, sizeof(short int)*__nbVar);
+            DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
 
             return newNode;
         }

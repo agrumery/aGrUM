@@ -47,8 +47,8 @@ namespace gum {
      * Greater object than maxObjectSize will be forwarded to op new.
      */
     // ============================================================================
-    INLINE SmallObjectAllocator::SmallObjectAllocator(const std::size_t& chunkSize, const std::size_t& maxObjectSize) :
-        __chunkSize(chunkSize), __maxObjectSize(maxObjectSize){
+    INLINE SmallObjectAllocator::SmallObjectAllocator() :
+        __chunkSize(GUM_DEFAULT_CHUNK_SIZE), __maxObjectSize(GUM_DEFAULT_MAX_OBJECT_SIZE){
       __pool.setKeyUniquenessPolicy(false);
 //      GUM_CONSTRUCTOR(SmallObjectAllocator);
       nbAllocation = 0;
@@ -62,6 +62,11 @@ namespace gum {
 //      GUM_DESTRUCTOR(SmallObjectAllocator)
       for(__Pool::iterator pit = __pool.begin(); pit != __pool.end(); ++pit)
         delete pit.val();
+    }
+
+    INLINE SmallObjectAllocator& SmallObjectAllocator::instance( ){
+      static SmallObjectAllocator soa;
+      return soa;
     }
 
   // ############################################################################

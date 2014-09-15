@@ -34,11 +34,12 @@
 #include <agrum/graphs/nodeGraphPart.h>
 // ============================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/decisionGraphUtilities/internalNode.h>
 // ============================================================================
 
 namespace gum{
 
-  template<typename GUM_SCALAR>
+  template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   class MultiDimDecisionGraph;
 
   /**
@@ -51,14 +52,14 @@ namespace gum{
    * At any time during the runtime, it exists only one instance of this class for a given MultiDimDecisionGraph.
    * To get such instance, use MultiDimDecisionGraph::getManager();
    * To do so :@code
-       MultiDimDecisionGraph<GUM_SCALAR>* dg = new MultiDimDecisionGraph<GUM_SCALAR>();
-       MultiDimDecisionGraphManager<GUM_SCALAR>* dgm = dg->manager();
+       MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* dg = new MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>();
+       MultiDimDecisionGraphManager<GUM_SCALAR, TerminalNodePolicy>* dgm = dg->manager();
        @endcode
    * This is the only way to get an instance of a MultiDimDecisionGraphManager since the constructor is private.
    *
    * @ingroup multidim_group
    */
-  template<typename GUM_SCALAR>
+  template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   class MultiDimDecisionGraphManager
   {
       // ############################################################################
@@ -70,7 +71,8 @@ namespace gum{
         /// This friend methods from is the only way to get an instance of a manager.
         /// See class description for more info.
         // ============================================================================
-        friend MultiDimDecisionGraphManager< GUM_SCALAR >* MultiDimDecisionGraph<GUM_SCALAR>::manager();
+        friend MultiDimDecisionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
+              MultiDimDecisionGraph<GUM_SCALAR,TerminalNodePolicy>::manager();
 
         // ============================================================================
         /**
@@ -80,7 +82,7 @@ namespace gum{
          * of MultiDimDecisionGraphManager bound to your decision graph.
          */
         // ============================================================================
-        MultiDimDecisionGraphManager( MultiDimDecisionGraph<GUM_SCALAR>* master);
+        MultiDimDecisionGraphManager( MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* master);
 
     public :
         // ============================================================================
@@ -149,8 +151,6 @@ namespace gum{
          */
         // ============================================================================
         NodeId addTerminalNode ( const GUM_SCALAR& value );
-
-//        typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* node(NodeId nid){ return __decisionGraph->__internalNodeMap[nid]; }
 
         // ============================================================================
         /**
@@ -249,7 +249,7 @@ namespace gum{
         // ============================================================================
         /// The multidimdecisiongraph supposed to be edited.
         // ============================================================================
-        MultiDimDecisionGraph<GUM_SCALAR>* __decisionGraph;
+        MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __decisionGraph;
 
   };
 } // namespace gum

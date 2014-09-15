@@ -39,11 +39,14 @@
 // ============================================================================
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimDecisionGraphManager.h>
+#include <agrum/multidim/decisionGraphUtilities/internalNode.h>
+#include <agrum/multidim/decisionGraphUtilities/link.h>
+#include <agrum/multidim/decisionGraphUtilities/ExactTerminalNodePolicy.h>
 // ============================================================================
 
 namespace gum {
 
-  template<typename GUM_SCALAR>
+  template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   class MultiDimDecisionGraphManager;
   /**
    * @class MultiDimDecisionGraph multiDimDecisionGraph.h <agrum/multidim/multiDimDecisionGraph.h>
@@ -52,187 +55,16 @@ namespace gum {
    *
    * @ingroup multidim_group
    */
-  template<typename GUM_SCALAR>
-  class MultiDimDecisionGraph : public MultiDimImplementation< GUM_SCALAR > {
+  template<typename GUM_SCALAR, template <class> class TerminalNodePolicy = ExactTerminalNodePolicy >
+  class MultiDimDecisionGraph : public MultiDimImplementation< GUM_SCALAR >, public TerminalNodePolicy<GUM_SCALAR> {
 
     public:
-      // ############################################################################
-      /// The small allocator object used by every decisionGraph to allocate table
-      // ############################################################################
-      static SmallObjectAllocator soa;
 
       // ############################################################################
       /// Only for proper initialization of a certain returned value
       // ############################################################################
       const static GUM_SCALAR defaultValue;
 
-    public:
-      // ############################################################################
-      /// NodeId chained list element
-      // ############################################################################
-      /// @{
-        struct NICLElem {
-
-          /// NodeId
-          NodeId elemId;
-
-          /// Pointer to next NICLElem
-          NICLElem* nextElem;
-        };
-
-    protected :
-        // ============================================================================
-        /// Since elem chain are handled with soa, here is the operation of adding a node
-        /// to the list.
-        // ============================================================================
-        static void _addElemToNICL( NICLElem** nodeChain, const NodeId& elemId);
-
-        // ============================================================================
-        /// And here the one to remove the elem
-        // ============================================================================
-        static void _removeElemFromNICL( NICLElem** nodeChain, const NodeId& elemId);
-
-        // ============================================================================
-        /// Delete completely the chain
-        // ============================================================================
-        static void _deleteNICL( NICLElem* nodeChain );
-      /// @}
-
-    public:
-      // ############################################################################
-      /// Parent Chained list element
-      // ############################################################################
-      /// @{
-        struct PICLElem {
-
-          /// NodeId
-          NodeId parentId;
-
-          /// Modality on which this parent is pointing to current node
-          Idx modality;
-
-          // Next elem
-          PICLElem* nextElem;
-        };
-
-    protected :
-        // ============================================================================
-        /// Since elem chain are handled with soa, here is the operation of adding a node
-        /// to the list.
-        // ============================================================================
-        static void _addElemToPICL( PICLElem** parentChain, const NodeId& elemId, const Idx& modality);
-
-        // ============================================================================
-        /// And here the one to remove the elem
-        // ============================================================================
-        static void _removeElemFromPICL( PICLElem** parentChain, const NodeId& elemId, const Idx& modality);
-
-        // ============================================================================
-        /// Delete completely the chain
-        // ============================================================================
-        static void _deletePICL( PICLElem* parentChain );
-      /// @}
-
-
-    public :
-      // ############################################################################
-      /// Structure used to represent a node internal structure
-      // ############################################################################
-      /// @{
-        class InternalNode {
-          // ============================================================================
-          /// Variable associated to such node
-          // ============================================================================
-          const DiscreteVariable* __nodeVar;
-
-          // ============================================================================
-          /**
-           * Table of sons of the node.
-           * Each son is bound to a modality of the variable.
-           * So those modalities are used has indexes for that table.
-           * _____________________________
-           * |      |      |      |      |
-           * | son1 | son2 | son3 | son4 |
-           * |______|______|______|______|
-           *    x1     x2     x3     x4
-           */
-          // ============================================================================
-          NodeId* __nodeSons;
-
-          PICLElem* __nodeParents;
-
-          public :
-            // ============================================================================
-            /// Constructors
-            // ============================================================================
-            InternalNode();
-            InternalNode(const DiscreteVariable* v);
-
-            /// You'd better known what you're doing if you're using this one.
-            /// sons must have the size of domainSize of v or the program will fail!
-            InternalNode(const DiscreteVariable* v, NodeId* sons);
-
-            // ============================================================================
-            /// Destructors
-            // ============================================================================
-            ~InternalNode();
-
-            // ============================================================================
-            /// Allocators and Deallocators redefinition
-            // ============================================================================
-            void* operator new(size_t);
-            void operator delete(void*);
-
-            // ============================================================================
-            /// Node handlers
-            // ============================================================================
-            /// You'd better known what you're doing if you're using this one.
-            /// sons must have the size of domainSize of v or the program will fail!
-            void setNode(const DiscreteVariable* v, NodeId* sons);
-
-            // ============================================================================
-            /// Var handlers
-            // ============================================================================
-            void setNodeVar(const DiscreteVariable* v);
-            void _setNodeVar(const DiscreteVariable* v);
-            const DiscreteVariable* nodeVar() const { return __nodeVar;}
-
-            // ============================================================================
-            /// Sons handlers
-            // ============================================================================
-            void setSon(Idx modality, NodeId son){__nodeSons[modality] = son;}
-            NodeId son(Idx modality) const {return __nodeSons[modality];}
-
-
-//            const NodeId* sons() const {return __nodeSons;}
-
-
-            Idx nbSons() const {return __nodeVar->domainSize();}
-//            void setSons(NodeId* sons);
-
-            // ============================================================================
-            /// Parent handlers
-            // ============================================================================
-            void addParent( NodeId parent, Idx modality);
-            void removeParent( NodeId parent, Idx modality);
-            PICLElem*& parents() {return __nodeParents;}
-            const PICLElem* parentsIter() const {return __nodeParents;}
-
-            // ============================================================================
-            /// Allocates a table of nodeid of the size given in parameter
-            // ============================================================================
-            static NodeId* allocateNodeSons(const DiscreteVariable* v);
-
-            // ============================================================================
-            /// Deallocates a NodeSons table
-            // ============================================================================
-            static void deallocateNodeSons(const DiscreteVariable* v, NodeId* s);
-
-        };
-
-      /// @}
-
-    public:
       // ############################################################################
       /// @name Constructors / Destructors
       // ############################################################################
@@ -245,12 +77,12 @@ namespace gum {
         // ============================================================================
         /// Copy constructor.
         // ============================================================================
-        MultiDimDecisionGraph( const MultiDimDecisionGraph<GUM_SCALAR>& from );
+        MultiDimDecisionGraph( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>& from );
 
         // ============================================================================
         /// Copy Operator.
         // ============================================================================
-        MultiDimDecisionGraph<GUM_SCALAR>& operator=(const MultiDimDecisionGraph<GUM_SCALAR>& from);
+        MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>& operator=(const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>& from);
 
         // ============================================================================
         /// Destructor.
@@ -425,7 +257,7 @@ namespace gum {
          * of src, variables included.
          */
         // ============================================================================
-        void copy ( const MultiDimDecisionGraph<GUM_SCALAR>& src );
+        void copy ( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>& src );
 
         // ============================================================================
         /**
@@ -438,7 +270,7 @@ namespace gum {
          * of variables of the old variable.
          */
         // ============================================================================
-        void copyAndReassign ( const MultiDimDecisionGraph<GUM_SCALAR> &src,
+        void copyAndReassign ( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> &src,
                                const Bijection<const DiscreteVariable*, const DiscreteVariable*>& reassign );
 
         // ============================================================================
@@ -446,7 +278,7 @@ namespace gum {
          * Copies src diagrams and multiply every value by the given scalar.
          */
         // ============================================================================
-        void copyAndMultiplyByScalar ( const MultiDimDecisionGraph<GUM_SCALAR>& src,
+        void copyAndMultiplyByScalar ( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>& src,
                                        GUM_SCALAR gamma );
 
         // ============================================================================
@@ -476,7 +308,7 @@ namespace gum {
         // ============================================================================
         /// Returns a const reference to the manager of this diagram
         // ============================================================================
-        MultiDimDecisionGraphManager<GUM_SCALAR>* manager();
+        MultiDimDecisionGraphManager<GUM_SCALAR, TerminalNodePolicy>* manager();
 
         // ============================================================================
         /// Returns the id of the root node from the diagram
@@ -486,13 +318,13 @@ namespace gum {
         // ============================================================================
         /// Indicates if given node is terminal or not
         // ============================================================================
-        bool isTerminalNode(const NodeId & node) const { return __valueMap.existsFirst(node); }
+        bool isTerminalNode(const NodeId & node) const { return !__internalNodeMap.exists(node); }
 
         // ============================================================================
         /// Returns value associated to given node
         /// @throw InvalidNode if node isn't terminal
         // ============================================================================
-        const GUM_SCALAR& nodeValue( NodeId n ) const { return this->__valueMap.second( n ); }
+        const GUM_SCALAR& nodeValue( NodeId n ) const { return this->nodeId2Value(n); }
 
         // ============================================================================
         /// Returns internalNode structure associated to that nodeId
@@ -503,12 +335,12 @@ namespace gum {
         // ============================================================================
         /// Returns the list of node associated to given variable
         // ============================================================================
-        const NICLElem* varNodeListe( const DiscreteVariable* var ) const { return __var2NodeIdMap[var]; }
+        const LinkedList<NodeId>* varNodeListe( const DiscreteVariable* var ) const { return __var2NodeIdMap[var]; }
 
         // ============================================================================
         /// Returns a const reference on the value map (for iteration purpose)
         // ============================================================================
-        const Bijection<NodeId, GUM_SCALAR>& values(  ) const{ return this->__valueMap; }
+        //const Bijection<NodeId, GUM_SCALAR>& values(  ) const{ return this->__valueMap; }
 
       /// @}
 
@@ -568,7 +400,7 @@ namespace gum {
       // ============================================================================
       /// A reference to the manager that edits this decision graph
       // ============================================================================
-      MultiDimDecisionGraphManager<GUM_SCALAR>* __manager;
+      MultiDimDecisionGraphManager<GUM_SCALAR, TerminalNodePolicy>* __manager;
 
       // ============================================================================
       /// The root node of the decision graph
@@ -578,8 +410,8 @@ namespace gum {
       // ============================================================================
       /// Associates each terminal node to a value
       // ============================================================================
-      Bijection< NodeId, GUM_SCALAR > __valueMap;
-      HashTable< NodeId, PICLElem* > __valueParents;
+//      Bijection< NodeId, GUM_SCALAR > __valueMap;
+//      HashTable< NodeId, LinkedList<Parent>* > __valueParents;
 
       // ============================================================================
       /// Associates each non-terminal node to a variable
@@ -589,7 +421,7 @@ namespace gum {
       // ============================================================================
       /// Mapping between var and node
       // ============================================================================
-      HashTable< const DiscreteVariable*, NICLElem* > __var2NodeIdMap;
+      HashTable< const DiscreteVariable*, LinkedList<NodeId>* > __var2NodeIdMap;
 
       // ============================================================================
       /// So to avoid any difficulites with get
@@ -597,22 +429,12 @@ namespace gum {
       mutable GUM_SCALAR __getRet;
 
 
-      static Idx aNICLE;
-      static Idx dNICLE;
-      static Idx aPICLE;
-      static Idx dPICLE;
-      static Idx aIN;
-      static Idx dIN;
-
-
       /// @}
 
-      friend class MultiDimDecisionGraphManager<GUM_SCALAR>;
+      friend class MultiDimDecisionGraphManager<GUM_SCALAR, TerminalNodePolicy>;
   };
 }
 
 #include <agrum/multidim/multiDimDecisionGraph.tcc>
-#include <agrum/multidim/multiDimDecisionGraph.Elem.tcc>
-#include <agrum/multidim/multiDimDecisionGraph.InternalNode.tcc>
 
 #endif // GUM_MULTI_DIM_DECISION_GRAPH_H

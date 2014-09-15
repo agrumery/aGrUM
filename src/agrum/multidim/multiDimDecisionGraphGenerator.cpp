@@ -33,6 +33,9 @@
 #include <agrum/core/priorityQueue.h>
 // ==========================================================================
 
+#define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
+#define DEALLOCATE(x,y) SmallObjectAllocator::instance().deallocate(x,y)
+
 namespace gum{
 
     Idx MultiDimDecisionGraphGenerator::__genSeed = 0;
@@ -94,11 +97,11 @@ namespace gum{
                 NodeId currentNodeId = filo.back();
                 filo.pop_back();
                 NodeId cvp = node2MinVar[ currentNodeId ];
-                const typename MultiDimDecisionGraph<double>::InternalNode* currentNode = generatedDecisionGraph->node( currentNodeId );
+                const InternalNode* currentNode = generatedDecisionGraph->node( currentNodeId );
 
 //                std::cout << std::endl << "New Node : " << currentNodeId << " - Associated Variable : " << currentNode->nodeVar()->name() << std::endl;
 
-                typename MultiDimDecisionGraph<double>::NICLElem* potentialSons = nullptr;
+                LinkedList<NodeId> potentialSons;
                 Idx nbPotentialSons = 0;
                 for( Idx varPos = 0; varPos < generatedDecisionGraph->variablesSequence().size(); varPos++ ){
                     const DiscreteVariable* var = generatedDecisionGraph->variablesSequence().atPos( varPos );
@@ -109,19 +112,11 @@ namespace gum{
 
 //                        std::cout << "Variable visitée" << std::endl;
 
-                        const typename MultiDimDecisionGraph<double>::NICLElem* nicleIter = generatedDecisionGraph->varNodeListe( var );
+                        const Link<NodeId>* nicleIter = generatedDecisionGraph->varNodeListe( var )->list();
                         while ( nicleIter ){
                             nbPotentialSons++;
-                            typename MultiDimDecisionGraph<double>::NICLElem* newnicle = static_cast<typename MultiDimDecisionGraph<double>::NICLElem*>(
-                                        MultiDimDecisionGraph<double>::soa.allocate( sizeof(typename MultiDimDecisionGraph<double>::NICLElem) ) );
-//                            std::cout << "No Problem MAN" << std::endl;
-                            newnicle->elemId = nicleIter->elemId;
-//                            std::cout << "No Problem MAN1" << std::endl;
-                            newnicle->nextElem = potentialSons;
-//                            std::cout << "No Problem MAN2" << std::endl;
-                            potentialSons = newnicle;
-//                            std::cout << "No Problem MAN3" << std::endl;
-                            nicleIter = nicleIter->nextElem;
+                            potentialSons.addLink( nicleIter->element() );
+                            nicleIter = nicleIter->nextLink();
 //                            std::cout << potentialSons << " - " << potentialSons->nextElem << std::endl;
                         }
                     }
@@ -132,7 +127,7 @@ namespace gum{
                 for(Idx modality = 0; modality < currentNode->nodeVar()->domainSize(); modality++ ){
 
 //                    std::cout << "Modality : " << modality << std::endl;
-                    if( ! potentialSons || (double)std::rand( ) / (double)RAND_MAX > ( 1.0 / ( 1.0 + 3.0 / nbPotentialSons ) ) ){
+                    if( ! potentialSons.list() || (double)std::rand( ) / (double)RAND_MAX > ( 1.0 / ( 1.0 + 3.0 / nbPotentialSons ) ) ){
 
                         if( __createLeaf( currentNodeId, node2MinVar ) ) {
 //                            std::cout << "Creating leaf ..." << std::endl;
@@ -152,27 +147,20 @@ namespace gum{
 //                        std::cout << "A" << std::endl;
                         sonPos = sonPos == nbPotentialSons ? nbPotentialSons - 1 : sonPos;
 //                        std::cout << "B" << std::endl;
-                        typename MultiDimDecisionGraph<double>::NICLElem* nicleIter = potentialSons;
+                        Link<NodeId>* nicleIter = potentialSons.list();
 //                        std::cout << "C - " << nbPotentialSons << " - " << sonPos << std::endl;
                         while( sonPos ){
 //                            std::cout << sonPos << " - " << nicleIter << " - " << nicleIter->nextElem << std::endl;
-                            nicleIter = nicleIter->nextElem;
+                            nicleIter = nicleIter->nextLink();
                             sonPos--;
                         }
 //                        std::cout << "D" << std::endl;
-                        generatedDecisionGraph->manager()->setSon( currentNodeId, modality, nicleIter->elemId );
+                        generatedDecisionGraph->manager()->setSon( currentNodeId, modality, nicleIter->element() );
 //                        std::cout << " | " << modality  << " - F | " << std::endl;
                     }
                 }
 
 //                std::cout << std::endl << "Removing potential child ..." << std::endl;
-
-                while(nbPotentialSons--){
-                    typename MultiDimDecisionGraph<double>::NICLElem* next = potentialSons->nextElem;
-                    MultiDimDecisionGraph<double>::soa.deallocate(potentialSons, sizeof(typename MultiDimDecisionGraph<double>::NICLElem) );
-                    potentialSons = next;
-                }
-
 
 //                std::cout << "Fin Iteration." << std::endl;
                 ++nbIter;

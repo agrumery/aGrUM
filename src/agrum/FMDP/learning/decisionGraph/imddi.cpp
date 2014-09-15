@@ -35,6 +35,9 @@
 #include <agrum/variables/discreteVariable.h>
 // =======================================================
 
+#define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
+#define DEALLOCATE(x,y) SmallObjectAllocator::instance().deallocate(x,y)
+
 namespace gum {
 
   // ############################################################################
@@ -82,7 +85,7 @@ namespace gum {
         delete nodeIter.val();
 
       for( auto nodeIter = __nodeSonsMap.beginSafe(); nodeIter != __nodeSonsMap.endSafe(); ++nodeIter )
-        MultiDimDecisionGraph<double>::soa.deallocate( nodeIter.val(), sizeof(NodeId)*__nodeVarMap[nodeIter.key()]->domainSize());
+        DEALLOCATE( nodeIter.val(), sizeof(NodeId)*__nodeVarMap[nodeIter.key()]->domainSize());
 
       for( auto varIter = __var2Node.beginSafe(); varIter != __var2Node.endSafe(); ++varIter )
           delete varIter.val();
@@ -252,7 +255,7 @@ namespace gum {
       if( __nodeVarMap[currentNodeId] == __value ){
 
         Sequence<NodeDatabase*> sonsNodeDatabase = __nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
-        NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<double>::soa.allocate(sizeof(NodeId)*desiredVar->domainSize()) );
+        NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*desiredVar->domainSize()) );
 
         for( Idx modality = 0; modality < desiredVar->domainSize(); ++modality ){
           NodeId newNodeId = __model.addNode();
@@ -279,11 +282,11 @@ namespace gum {
             __transpose( __nodeSonsMap[currentNodeId][modality], desiredVar );
 
           Sequence<NodeDatabase*> sonsNodeDatabase = __nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
-          NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<double>::soa.allocate(sizeof(NodeId)*desiredVar->domainSize()) );
+          NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*desiredVar->domainSize()) );
 
           // Then we create the new mapping
           for(Idx desiredVarModality = 0; desiredVarModality < desiredVar->domainSize(); ++desiredVarModality){
-            NodeId* grandSonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<double>::soa.allocate(sizeof(NodeId)*__nodeVarMap[currentNodeId]->domainSize()) );
+            NodeId* grandSonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*__nodeVarMap[currentNodeId]->domainSize()) );
             for(Idx currentVarModality = 0; currentVarModality < __nodeVarMap[currentNodeId]->domainSize(); ++currentVarModality )
               grandSonsMap[currentVarModality] = __nodeSonsMap[__nodeSonsMap[currentNodeId][currentVarModality]][desiredVarModality];
 
@@ -311,12 +314,12 @@ namespace gum {
             __nodeId2Database.erase(sonId);
 
             // Retrait du vecteur fils
-            MultiDimDecisionGraph<double>::soa.deallocate( __nodeSonsMap[sonId], sizeof(NodeId)*desiredVar->domainSize() );
+            DEALLOCATE( __nodeSonsMap[sonId], sizeof(NodeId)*desiredVar->domainSize() );
             __nodeSonsMap.erase(sonId);
           }
 
           // We suppress the old sons map and remap to the new one
-          MultiDimDecisionGraph<double>::soa.deallocate( __nodeSonsMap[currentNodeId], sizeof(NodeId)*__nodeVarMap[currentNodeId]->domainSize() );
+          DEALLOCATE( __nodeSonsMap[currentNodeId], sizeof(NodeId)*__nodeVarMap[currentNodeId]->domainSize() );
           __nodeSonsMap[currentNodeId] = sonsMap;
 
           __var2Node[__nodeVarMap[currentNodeId]]->eraseByVal(currentNodeId);
@@ -356,7 +359,7 @@ namespace gum {
         }
 
 
-        MultiDimDecisionGraph<double>::soa.deallocate( __nodeSonsMap[currentNodeId], sizeof(NodeId)*__nodeVarMap[currentNodeId]->domainSize() );
+        DEALLOCATE( __nodeSonsMap[currentNodeId], sizeof(NodeId)*__nodeVarMap[currentNodeId]->domainSize() );
         __nodeSonsMap.erase(currentNodeId);
 
         __var2Node[__nodeVarMap[currentNodeId]]->eraseByVal(currentNodeId);
@@ -393,7 +396,7 @@ namespace gum {
        for( auto varIter = __varOrder.rbeginSafe(); varIter != __varOrder.rendSafe(); --varIter ) {
 
          for( auto nodeIter = __var2Node[*varIter]->cbeginSafe(); nodeIter != __var2Node[*varIter]->cendSafe(); ++nodeIter ){
-           NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<double>::soa.allocate(sizeof(NodeId)*(*varIter)->domainSize()) );
+           NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*(*varIter)->domainSize()) );
            for(Idx modality = 0; modality < (*varIter)->domainSize(); ++modality ){
 
              sonsMap[modality] = toTarget[__nodeSonsMap[*nodeIter][modality]];
@@ -426,7 +429,7 @@ namespace gum {
        for( auto varIter = __varOrder.rbeginSafe(); varIter != __varOrder.rendSafe(); --varIter ) {
          const DiscreteVariable* mainy = main2prime.first(*varIter);
          for( auto nodeIter = __var2Node[*varIter]->cbeginSafe(); nodeIter != __var2Node[*varIter]->cendSafe(); ++nodeIter ){
-           NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<double>::soa.allocate(sizeof(NodeId)*mainy->domainSize()) );
+           NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*mainy->domainSize()) );
            for(Idx modality = 0; modality < mainy->domainSize(); ++modality ){
 
              sonsMap[modality] = toTarget[__nodeSonsMap[*nodeIter][modality]];
@@ -488,7 +491,7 @@ namespace gum {
 
             NodeId nlid = __model.addNode();
             totalTable.insert( nlid, totalTable[p.first] + totalTable[p.second] );
-            double* nls = static_cast<double*>( MultiDimDecisionGraph<double>::soa.allocate( sizeof(double)*__value->domainSize() ) );
+            double* nls = static_cast<double*>( ALLOCATE( sizeof(double)*__value->domainSize() ) );
             for( Idx moda = 0; moda < __value->domainSize(); moda++ )
                 nls[moda] = effectifTable[p.first][moda] + effectifTable[p.second][moda];
             effectifTable.insert(nlid, nls);
@@ -551,7 +554,7 @@ namespace gum {
                     toTarget.insert( ti, __target->manager()->addTerminalNode(  ret ) );
                 }else{
 //                    std::cout << "Leaf : " << *nodeIter << " - Target : " << ti << " - HashTab : " << toTarget << std::endl;
-                    NodeId* tts = static_cast<NodeId*>( MultiDimDecisionGraph<double>::soa.allocate( sizeof(NodeId)*__value->domainSize()) );
+                    NodeId* tts = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*__value->domainSize()) );
                     for( Idx moda = 0; moda < __value->domainSize(); moda++){
                         tts[moda] = __target->manager()->addTerminalNode( effectifTable[ti][moda] / totalTable[ti] );
 //                        std::cout << "\tModa : " << moda << " - DD Leaf : " << tts[moda] << std::endl;
@@ -569,7 +572,7 @@ namespace gum {
 //        std::cout << "Yoh" << std::endl;
 
         for(auto it = effectifTable.beginSafe(); it != effectifTable.endSafe(); ++it)
-          MultiDimDecisionGraph<double>::soa.deallocate( it.val(), sizeof(double)*__value->domainSize());
+          DEALLOCATE( it.val(), sizeof(double)*__value->domainSize());
         delete remainingPairs;
     }
 

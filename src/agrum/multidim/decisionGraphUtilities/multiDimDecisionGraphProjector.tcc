@@ -24,10 +24,12 @@
 * @author Jean-Christophe Magnan
 */
 
-// =======================================================
-#include <agrum/multidim/patterns/DGUtility/multiDimDecisionGraphProjector.h>
-// =======================================================
+// =========================================================================================
+#include <agrum/multidim/decisionGraphUtilities/multiDimDecisionGraphProjector.h>
+#include <agrum/multidim/decisionGraphUtilities/internalNode.h>
+// =========================================================================================
 #include <agrum/variables/labelizedVariable.h>
+// =========================================================================================
 
 namespace gum {
 
@@ -110,7 +112,7 @@ namespace gum {
       // ******************************************************************************************************
       if( __rd->node(__rd->root())->nodeVar() == curVar ){
 //std::cout << "Heu ...." << std::endl;
-          const typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* curVarNode = __rd->node( __rd->root() );
+          const InternalNode* curVarNode = __rd->node( __rd->root() );
           GUM_SCALAR newVal = __neutral;
           for( Idx curVarModality = 0; curVarModality < curVar->domainSize(); ++curVarModality )
             newVal = __function(newVal, __rd->nodeValue( curVarNode->son( curVarModality ) ) );
@@ -139,7 +141,7 @@ namespace gum {
 
 //        std::cout << " Cur Node : " << curNodeId << std::endl;
 
-        const typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* curNode = __rd->node( curNodeId );
+        const InternalNode* curNode = __rd->node( curNodeId );
 
         for(Idx modality = 0; modality < curNode->nodeVar()->domainSize(); ++modality ){
 
@@ -168,7 +170,7 @@ namespace gum {
 //                std::cout << "\t\t\tNode var projected" << std::endl;
 
 
-                const typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* curVarNode = __rd->node( oldSonId );
+                const InternalNode* curVarNode = __rd->node( oldSonId );
                 GUM_SCALAR newVal = __neutral;
                 for( Idx curVarModality = 0; curVarModality < curVar->domainSize(); ++curVarModality )
                   newVal = __function(newVal, __rd->nodeValue( curVarNode->son( curVarModality ) ) );
@@ -216,51 +218,11 @@ namespace gum {
 //      std::cout << "Projection done." << std::endl;
 
 
-//      std::cout << "Diagram After Projection : " << std::endl << __rd->toDot() << std::endl;
-
-//      for(SequenceIteratorSafe<const DiscreteVariable*> varIter = __rd->variablesSequence().beginSafe();
-//          varIter != __rd->variablesSequence().endSafe(); ++varIter){
-//        std::cout << "Variable : " << (*varIter)->name();
-//        const typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nodeIter = __rd->varNodeListe( *varIter );
-//        while( nodeIter ){
-//          std::cout << " | " << nodeIter->elemId << " - ";
-//          const typename MultiDimDecisionGraph<GUM_SCALAR>::PICLElem* parentIter = __rd->node(nodeIter->elemId)->parentsIter();
-//          while(parentIter){
-//              std::cout << " " << parentIter->parentId << " " << parentIter->modality << "   ";
-//              parentIter = parentIter->nextElem;
-//          }
-//          nodeIter = nodeIter->nextElem;
-//        }
-//        std::cout << std::endl;
-//      }
-//      std::cout << " " << std::endl << " " << std::endl;
-
-
 
       if( __rd->variablesSequence().exists(curVar) )
           __rd->erase( *curVar );
 
 //      std::cout << "Variable removed from sequence." << std::endl;
-
-
-//      std::cout << "Diagram After Var Removal : " << std::endl << __rd->toDot() << std::endl;
-
-//      for(SequenceIteratorSafe<const DiscreteVariable*> varIter = __rd->variablesSequence().beginSafe();
-//          varIter != __rd->variablesSequence().endSafe(); ++varIter){
-//        std::cout << "Variable : " << (*varIter)->name();
-//        const typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nodeIter = __rd->varNodeListe( *varIter );
-//        while( nodeIter ){
-//          std::cout << " | " << nodeIter->elemId << " - ";
-//          const typename MultiDimDecisionGraph<GUM_SCALAR>::PICLElem* parentIter = __rd->node(nodeIter->elemId)->parentsIter();
-//          while(parentIter){
-//              std::cout << " " << parentIter->parentId << " " << parentIter->modality << "   ";
-//              parentIter = parentIter->nextElem;
-//          }
-//          nodeIter = nodeIter->nextElem;
-//        }
-//        std::cout << std::endl;
-//      }
-//      std::cout << " " << std::endl << " " << std::endl;
 
     }
 

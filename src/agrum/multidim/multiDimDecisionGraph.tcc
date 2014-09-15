@@ -25,14 +25,12 @@
  * @author Jean-Christophe Magnan
  *
  */
+// ============================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
+// ============================================================================
+
 
 namespace gum {
-
-  template<typename GUM_SCALAR>
-  SmallObjectAllocator MultiDimDecisionGraph<GUM_SCALAR>::soa( SmallObjectAllocator::GUM_DEFAULT_CHUNK_SIZE,
-                                                               SmallObjectAllocator::GUM_DEFAULT_MAX_OBJECT_SIZE );
-
 
 
   // ############################################################################
@@ -42,16 +40,15 @@ namespace gum {
     // ============================================================================
     // Default constructor.
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    MultiDimDecisionGraph<GUM_SCALAR>::MultiDimDecisionGraph() :
+    MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::MultiDimDecisionGraph() :
         MultiDimImplementation<GUM_SCALAR>(),
         __name("MultiDimDecisionGraph"),
         __tableName("NO NAME"),
         __model( 500, true ),
         __manager(nullptr),
         __root(0),
-        __valueMap(125, true),
         __internalNodeMap(500,true,false),
         __var2NodeIdMap(500,true,false){
 
@@ -64,16 +61,15 @@ namespace gum {
     // ============================================================================
     // Copy constructor.
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    MultiDimDecisionGraph<GUM_SCALAR>::MultiDimDecisionGraph( const MultiDimDecisionGraph<GUM_SCALAR>& from ) :
+    MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::MultiDimDecisionGraph( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>& from ) :
         MultiDimImplementation<GUM_SCALAR>(),
         __name("MultiDimDecisionGraph"),
         __tableName("No NAME"),
         __model( 500, true ),
         __manager(nullptr),
         __root(0),
-        __valueMap(125, true),
         __internalNodeMap(500,true,false),
         __var2NodeIdMap(500,true,false){
 
@@ -84,9 +80,10 @@ namespace gum {
     // ============================================================================
     // Copy Operator.
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    MultiDimDecisionGraph<GUM_SCALAR>& MultiDimDecisionGraph<GUM_SCALAR>::operator=(const MultiDimDecisionGraph<GUM_SCALAR>& from){
+    MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>&
+    MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::operator=(const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>& from){
      copy(from);
      return *this;
     }
@@ -95,9 +92,9 @@ namespace gum {
     // Destructor.
     // @warning Won't destroy the variables. You have to do it on your own.
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    MultiDimDecisionGraph<GUM_SCALAR>::~MultiDimDecisionGraph(){
+    MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::~MultiDimDecisionGraph(){
       // Destruction du manager
       GUM_DESTRUCTOR( MultiDimDecisionGraph );
       if( __manager != nullptr )
@@ -121,10 +118,10 @@ namespace gum {
   // @return an empty clone of this object with the same type
   //
   // ============================================================================
-  template<typename GUM_SCALAR>
+  template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
   INLINE
-  MultiDimContainer<GUM_SCALAR>* MultiDimDecisionGraph<GUM_SCALAR>::newFactory() const{
-      return new MultiDimDecisionGraph<GUM_SCALAR>();
+  MultiDimContainer<GUM_SCALAR>* MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::newFactory() const{
+      return new MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>();
   }
 
 
@@ -135,9 +132,9 @@ namespace gum {
     // ============================================================================
     // see MultiDimImplementation
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    const std::string& MultiDimDecisionGraph<GUM_SCALAR>::name() const{
+    const std::string& MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::name() const{
         return __name;
     }
 
@@ -149,9 +146,9 @@ namespace gum {
     // MultiDimDecisionGraphManager provides the framework to editate a Decision Graph.
     //
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::set ( const Instantiation &i, const GUM_SCALAR &value ) const{
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::set ( const Instantiation &i, const GUM_SCALAR &value ) const{
       GUM_ERROR( OperationNotAllowed, "Decision Graph can't be edited so easily.\nMultiDimDecisionGraphManager provides the framework to editate a Decision Graph.")
     }
 
@@ -163,9 +160,9 @@ namespace gum {
     // MultiDimDecisionGraphManager provides the framework to editate a Decision Graph.
     //
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::fill( const GUM_SCALAR &d ) const{
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::fill( const GUM_SCALAR &d ) const{
       GUM_ERROR( OperationNotAllowed, "Decision Graph can't be edited so easily.\nMultiDimDecisionGraphManager provides the framework to editate a Decision Graph.")
     }
 
@@ -177,9 +174,9 @@ namespace gum {
     // MultiDimDecisionGraphManager provides the framework to editate a Decision Graph.
     ///
     // ==============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::fillWith ( const std::vector<GUM_SCALAR>& v ) const{
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::fillWith ( const std::vector<GUM_SCALAR>& v ) const{
       GUM_ERROR( OperationNotAllowed, "Decision Graph can't be edited so easily.\nMultiDimDecisionGraphManager provides the framework to editate a Decision Graph.")
     }
 
@@ -187,9 +184,9 @@ namespace gum {
   // ############################################################################
   // Implementation of MultiDimInterface
   // ############################################################################
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::add (const DiscreteVariable &v){
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::add (const DiscreteVariable &v){
       if( ! this->variablesSequence().exists(&v))
         MultiDimImplementation<GUM_SCALAR>::add(v);
 
@@ -200,14 +197,14 @@ namespace gum {
     // ============================================================================
     // See MultiDimInterface::erase(const DiscreteVariable& v)
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::erase( const DiscreteVariable& v ){
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::erase( const DiscreteVariable& v ){
       if( this->__var2NodeIdMap.exists(&v)){
-        while(__var2NodeIdMap[&v] != nullptr){
-          manager()->eraseNode(__var2NodeIdMap[&v]->elemId);
+        while(__var2NodeIdMap[&v]->list() != nullptr){
+          manager()->eraseNode(__var2NodeIdMap[&v]->list()->element());
         }
-        _deleteNICL(__var2NodeIdMap[&v]);
+        delete __var2NodeIdMap[&v];
         __var2NodeIdMap.erase(&v);
       }
 
@@ -218,9 +215,9 @@ namespace gum {
     // ============================================================================
     // see MultiDimImplementation::realSize()
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    Size MultiDimDecisionGraph<GUM_SCALAR>::realSize() const{
+    Size MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::realSize() const{
       return __internalNodeMap.size();// + __valueMap.size();
     }
 
@@ -234,9 +231,9 @@ namespace gum {
     //                                                       const Idx& oldval,const Idx& newval )
     ///
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::changeNotification( Instantiation& i,
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::changeNotification( Instantiation& i,
                                                                 const DiscreteVariable* const var,
                                                                    const Idx& oldval,const Idx& newval ){
 
@@ -245,54 +242,54 @@ namespace gum {
     // ============================================================================
     // see MultiDimImplementation::setFirstNotification( Instantiation& i )
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::setFirstNotification( Instantiation& i ){
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::setFirstNotification( Instantiation& i ){
 
     }
 
     // ============================================================================
     // see MultiDimImplementation::setLastNotification( Instantiation& i )
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::setLastNotification( Instantiation& i ){
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::setLastNotification( Instantiation& i ){
 
     }
 
     // ============================================================================
     // see MultiDimImplementation::setIncNotification( Instantiation& i )
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::setIncNotification( Instantiation& i ){
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::setIncNotification( Instantiation& i ){
 
     }
 
     // ============================================================================
     // see MultiDimImplementation::setDecNotification( Instantiation& i )
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::setDecNotification( Instantiation& i ){
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::setDecNotification( Instantiation& i ){
 
     }
 
     // ============================================================================
     // see MultiDimImplementation::setChangeNotification( Instantiation& i )
     // ===========================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::setChangeNotification( Instantiation& i ){
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::setChangeNotification( Instantiation& i ){
 
     }
 
     // ============================================================================
     // see MultiDimImplementation::toString( const Instantiation *i )
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    const std::string MultiDimDecisionGraph<GUM_SCALAR>::toString( const Instantiation *i ) const{
+    const std::string MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::toString( const Instantiation *i ) const{
       std::stringstream sBuff;
       sBuff << ( *i ) << " = " << this->get( *i );
       return sBuff.str();
@@ -318,9 +315,9 @@ namespace gum {
     //                            than this MultiDimContainer.
     //
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::copyFrom ( const MultiDimContainer<GUM_SCALAR>& src,
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::copyFrom ( const MultiDimContainer<GUM_SCALAR>& src,
                                                        Instantiation *p_i ) const {
       GUM_ERROR( OperationNotAllowed, "You cannot copy another type of multiDim into a MultiDimDecisionGraph.");
     }
@@ -331,9 +328,9 @@ namespace gum {
     // of src, variables included.
     //
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::copy ( const MultiDimContainer<GUM_SCALAR>& src ){
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::copy ( const MultiDimContainer<GUM_SCALAR>& src ){
       GUM_ERROR( OperationNotAllowed, "You cannot copy another type of multiDim into a MultiDimDecisionGraph.");
     }
 
@@ -343,9 +340,9 @@ namespace gum {
     // of src, variables included.
     //
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::copy ( const MultiDimDecisionGraph<GUM_SCALAR> &src ){
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::copy ( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> &src ){
 
       this->clear();
 
@@ -395,9 +392,9 @@ namespace gum {
     // However it also changes the variables.
     //
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::copyAndReassign (const MultiDimDecisionGraph<GUM_SCALAR> &src,
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::copyAndReassign (const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> &src,
                                                              const Bijection<const DiscreteVariable *, const DiscreteVariable *> &reassign ){
 
 
@@ -451,9 +448,9 @@ namespace gum {
      * Copies src diagrams and multiply every value by the given scalar.
      */
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::copyAndMultiplyByScalar ( const MultiDimDecisionGraph<GUM_SCALAR>& src,
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::copyAndMultiplyByScalar ( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>& src,
                                                                       GUM_SCALAR gamma ){
 
       this->clear();
@@ -503,15 +500,15 @@ namespace gum {
     // Clears the decision graph
     ///
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::clear( ){
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::clear( ){
 
       __model.clear();
       // Always discard the nodeId 0
       __model.addNode();
 
-      __valueMap.clear();
+      this->clearValueMap();
 
       // Nettoyage des noeuds
       for( HashTableIterator<NodeId, InternalNode*> nodeIter = __internalNodeMap.begin();
@@ -523,9 +520,9 @@ namespace gum {
       __internalNodeMap.clear();
 
       // Nettoyage des liste de noeuds par variables
-      for( HashTableIterator<const DiscreteVariable*, NICLElem*> varIter = __var2NodeIdMap.begin();
+      for( HashTableIterator<const DiscreteVariable*, LinkedList<NodeId>*> varIter = __var2NodeIdMap.begin();
             varIter != __var2NodeIdMap.end(); ++varIter ){
-        _deleteNICL(varIter.val());
+        delete varIter.val();
       }
       __var2NodeIdMap.clear();
 
@@ -539,9 +536,9 @@ namespace gum {
   // @name Graph Handlers.
   // ############################################################################
     // =============================================================================
-    template< typename GUM_SCALAR >
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    std::string MultiDimDecisionGraph< GUM_SCALAR >::toDot( bool withBackArcs ) const {
+    std::string MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::toDot( bool withBackArcs ) const {
 
       std::stringstream output;
       std::stringstream terminalStream;
@@ -556,9 +553,9 @@ namespace gum {
 
       for ( NodeGraphPart::NodeIterator nodeIter = __model.begin(); nodeIter != __model.end(); ++nodeIter )
         if ( *nodeIter != 0 ) {
-          if ( __valueMap.existsFirst ( *nodeIter ) )
+          if ( this->existsValue ( *nodeIter ) )
             terminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - "
-                           << std::setprecision(30) << __valueMap.second ( *nodeIter ) << "\"]"<< ";" << std::endl;
+                           << std::setprecision(30) << this->nodeId2Value ( *nodeIter ) << "\"]"<< ";" << std::endl;
           else {
             InternalNode* currentNode = __internalNodeMap[ *nodeIter ];
             nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - "
@@ -571,11 +568,11 @@ namespace gum {
                           << " [label=\"" << currentNode->nodeVar()->label ( sonIter ) << "\",color=\"#0000ff\"]"<< ";" << std::endl;
 
             if( withBackArcs ){
-                PICLElem* parentIter = currentNode->parents();
+                Link<Parent>* parentIter = currentNode->parents();
                 while( parentIter != nullptr ){
-                    arcstream << tab <<  *nodeIter << " -> " << parentIter->parentId
-                              << " [label=\"" << parentIter->modality << "\",color=\"#ff0000\"]"<< ";" << std::endl;
-                    parentIter = parentIter->nextElem;
+                    arcstream << tab <<  *nodeIter << " -> " << parentIter->element().parentId
+                              << " [label=\"" << parentIter->element().modality << "\",color=\"#ff0000\"]"<< ";" << std::endl;
+                    parentIter = parentIter->nextLink();
                 }
             }
 
@@ -590,20 +587,20 @@ namespace gum {
     // ============================================================================
     // Returns a const reference to the manager of this diagram
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    MultiDimDecisionGraphManager<GUM_SCALAR>* MultiDimDecisionGraph<GUM_SCALAR>::manager(){
+    MultiDimDecisionGraphManager<GUM_SCALAR, TerminalNodePolicy>* MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::manager(){
       if( __manager == nullptr )
-        __manager = new MultiDimDecisionGraphManager<GUM_SCALAR>(this);
+        __manager = new MultiDimDecisionGraphManager<GUM_SCALAR, TerminalNodePolicy>(this);
       return __manager;
     }
 
     // ============================================================================
     // Not implemented yet
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::_swap( const DiscreteVariable* x, const DiscreteVariable* y ){
+    void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::_swap( const DiscreteVariable* x, const DiscreteVariable* y ){
       GUM_ERROR( OperationNotAllowed, "Not Implemented Yet")
     }
 
@@ -621,16 +618,16 @@ namespace gum {
     // @param i The instantiation used to find the data.
     //
     // ============================================================================
-    template<typename GUM_SCALAR>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    GUM_SCALAR& MultiDimDecisionGraph<GUM_SCALAR>::_get ( const Instantiation &inst ) const{
+    GUM_SCALAR& MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::_get ( const Instantiation &inst ) const{
       NodeId currentNodeId = __root;
       InternalNode* currentNode = nullptr;
       while ( ! isTerminalNode( currentNodeId ) ){
         currentNode = __internalNodeMap[currentNodeId];
         currentNodeId = currentNode->son( inst.val( *(currentNode->nodeVar()) ) );
       }
-      __getRet = __valueMap.second( currentNodeId );
+      __getRet = this->nodeId2Value( currentNodeId );//__valueMap.second( currentNodeId );
       return __getRet;
     }
 

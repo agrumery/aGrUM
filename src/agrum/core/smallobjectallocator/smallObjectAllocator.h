@@ -66,12 +66,12 @@ namespace gum {
        */
       static const size_t GUM_DEFAULT_MAX_OBJECT_SIZE;
 
-    public:
+
       // ############################################################################
       /// @name Constructors / Destructors
       // ############################################################################
       /// @{
-
+    private :
         // ============================================================================
         /**
          * Constructor.
@@ -80,20 +80,33 @@ namespace gum {
          * Greater object than maxObjectSize will be forwarded to op new.
          */
         // ============================================================================
-        SmallObjectAllocator(const std::size_t& chunkSize, const std::size_t& maxObjectSize);
+        SmallObjectAllocator();
+
+        // ============================================================================
+        /// Copy Constructor (does nothing since we use a Singleton)
+        // ============================================================================
+        SmallObjectAllocator(const SmallObjectAllocator&){}
+
+        // ============================================================================
+        /// Operator = (does nothing since we use a Singleton)
+        // ============================================================================
+        SmallObjectAllocator& operator = (const SmallObjectAllocator&) { return instance(); }
+
+    public :
 
         // ============================================================================
         /// Destructor.
         // ============================================================================
-        ~SmallObjectAllocator();
+        virtual ~SmallObjectAllocator();
 
       /// @}
+
+      static SmallObjectAllocator& instance();
 
       // ############################################################################
       /// @name Allocator / Deallocator
       // ############################################################################
       /// @{
-
         // ============================================================================
         /// Allocates a block
         // ============================================================================
@@ -118,18 +131,7 @@ namespace gum {
       Idx nbAlloc(){ return nbAllocation; }
       Idx nbDealloc(){ return nbDeallocation; }
 
-
-    private:
-
-      // ============================================================================
-      /// Research in __pool for the FixedAllocator of objectSize
-      /// If no FixedAllocator exists for given object, one is created
-      /// @param start to accelerate the search
-      /// @param objectSize the one for which we search the FixedAllocator
-      // ============================================================================
-//      std::vector<FixedAllocator>::iterator __binarySearch(
-//              const std::vector<FixedAllocator>::iterator &beginning,
-//              const std::size_t& objectSize);
+    private :
 
       // ============================================================================
       /// The pool containing FixedAllocator

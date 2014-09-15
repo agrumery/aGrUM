@@ -29,7 +29,7 @@
 #define GUM_MULTI_DIM_DECISION_GRAPH_OPERATOR_H
 // =======================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
-#include <agrum/multidim/patterns/DGUtility/o4DGContext.h>
+#include <agrum/multidim/decisionGraphUtilities/o4DGContext.h>
 // =======================================================
 
 namespace gum {
@@ -150,6 +150,6 @@ namespace gum {
 
 } // namespace gum
 
-#include <agrum/multidim/patterns/DGUtility/multiDimDecisionGraphOperator.tcc>
+#include <agrum/multidim/decisionGraphUtilities/multiDimDecisionGraphOperator.tcc>
 
 #endif // GUM_MULTI_DIM_DECISION_GRAPH_OPERATOR_H

@@ -110,6 +110,6 @@ namespace gum {
 
 } // namespace gum
 
-#include <agrum/multidim/patterns/DGUtility/multiDimDecisionGraphProjector.tcc>
+#include <agrum/multidim/decisionGraphUtilities/multiDimDecisionGraphProjector.tcc>
 
 #endif // GUM_MULTI_DIM_DECISION_GRAPH_PROJECTOR_H

@@ -36,7 +36,7 @@
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimDecisionGraph.h>
 // =======================================================================================
-#include <agrum/multidim/patterns/DGUtility/multiDimDecisionGraphProjector.h>
+#include <agrum/multidim/decisionGraphUtilities/multiDimDecisionGraphProjector.h>
 // =======================================================================================
 
 namespace gum {

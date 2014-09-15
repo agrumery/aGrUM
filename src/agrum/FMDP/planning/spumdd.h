@@ -30,6 +30,8 @@
 // =========================================================================
 #include <thread>
 // =========================================================================
+#include <agrum/core/functors.h>
+// =========================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
 // =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
@@ -84,7 +86,7 @@ namespace gum {
         INLINE const MultiDimDecisionGraph<GUM_SCALAR>* vFunction() { return __vFunction; }
 
         /// Returns the best policy obtained so far
-        INLINE const MultiDimDecisionGraph<Idx>* optimalPolicy() { return __optimalPolicy; }
+        INLINE const MultiDimDecisionGraph<ArgMaxSet<Idx>>* optimalPolicy() { return __optimalPolicy; }
 
       /// @}
 
@@ -117,7 +119,7 @@ namespace gum {
 
         /// Add computed Qaction to table
         void addQaction( MultiDimDecisionGraph<GUM_SCALAR>* );
-        void addQaction( MultiDimDecisionGraph< std::pair< double, long > >* );
+        void addQaction( MultiDimDecisionGraph< ArgMaxSet<Idx> >* );
 
         /**
          * Returns an iterator reference to the beginning of the var eleminstation sequence
@@ -155,7 +157,7 @@ namespace gum {
         * Creates a copy of given in parameter decision diagram and replaces leaves of that diagram by a pair containing value of the leaf and
         * action to which is bind this diagram (given in parameter).
         */
-        MultiDimDecisionGraph< std::pair< double, long > >* __createArgMaxCopy ( const MultiDimDecisionGraph<GUM_SCALAR>* Vaction,
+        MultiDimDecisionGraph< ArgMaxSet<Idx> >* __createArgMaxCopy ( const MultiDimDecisionGraph<GUM_SCALAR>* Vaction,
                                                                                     Idx actionId );
 
        /**
@@ -163,7 +165,7 @@ namespace gum {
         * Since this function is a recursive one to ease the merge of all identic nodes to converge toward a cannonical policy, a factory and the current node are needed to build
         * resulting diagram. Also we need an exploration table to avoid exploration of already visited sub-graph part.
         */
-       void __extractOptimalPolicy ( const MultiDimDecisionGraph< std::pair< double, long > >* optimalValueFunction );
+       void __extractOptimalPolicy ( const MultiDimDecisionGraph< ArgMaxSet<Idx> >* optimalValueFunction );
 
 
       /// @}
@@ -178,11 +180,11 @@ namespace gum {
       /// The associated optimal policy
       /// @warning This decision graph has Idx as leaf.
       /// Indeed, its leaves are a match to the fmdp action ids
-      MultiDimDecisionGraph<Idx>* __optimalPolicy;
+      MultiDimDecisionGraph< ArgMaxSet<Idx> >* __optimalPolicy;
 
       /// A table giving for every action the associated Q function
       std::vector<MultiDimDecisionGraph<GUM_SCALAR>*> __qFunctionSet;
-      std::vector<MultiDimDecisionGraph< std::pair< double, long > >*> __argMaxQFunctionSet;
+      std::vector<MultiDimDecisionGraph< ArgMaxSet<Idx> >*> __argMaxQFunctionSet;
 
       /// A locker on the above table for multitreading purposes
       std::mutex __qSetMutex;

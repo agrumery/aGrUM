@@ -20,7 +20,7 @@
 
 #include <cmath>
 
-#include <agrum/multidim/patterns/DGUtility/o4DGContext.h>
+#include <agrum/multidim/decisionGraphUtilities/o4DGContext.h>
 
 
 namespace gum {
@@ -119,5 +119,5 @@ namespace gum {
 
 
 #ifdef GUM_NO_INLINE
-#include <agrum/multidim/patterns/DGUtility/o4DGContext.inl>
+#include <agrum/multidim/decisionGraphUtilities/o4DGContext.inl>
 #endif

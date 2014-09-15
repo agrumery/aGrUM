@@ -27,6 +27,9 @@
  */
 #include <agrum/multidim/multiDimDecisionGraph.h>
 
+#define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
+#define DEALLOCATE(x,y) SmallObjectAllocator::instance().deallocate(x,y)
+
 namespace gum {
 
 // ############################################################################
@@ -35,62 +38,36 @@ namespace gum {
     // ============================================================================
     /// Constructors
     // ============================================================================
-    template<typename GUM_SCALAR>
-    INLINE
-    MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::InternalNode(){
+    InternalNode::InternalNode(){
+      GUM_CONSTRUCTOR(InternalNode)
       __nodeVar = nullptr;
-      __nodeParents = nullptr;
     }
 
-    template<typename GUM_SCALAR>
-    INLINE
-    MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::InternalNode(const DiscreteVariable* v){
+    InternalNode::InternalNode(const DiscreteVariable* v){
+      GUM_CONSTRUCTOR(InternalNode)
       _setNodeVar(v);
-      __nodeParents = nullptr;
     }
 
-    template<typename GUM_SCALAR>
-    INLINE
-    MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::InternalNode(const DiscreteVariable* v, NodeId* sons){
-        __nodeVar = v;
-        __nodeSons = sons;
-        __nodeParents = nullptr;
+    InternalNode::InternalNode(const DiscreteVariable* v, NodeId* sons){
+      GUM_CONSTRUCTOR(InternalNode)
+      __nodeVar = v;
+      __nodeSons = sons;
     }
 
     // ============================================================================
     /// Destructors
     // ============================================================================
-    template<typename GUM_SCALAR>
-    INLINE
-    MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::~InternalNode(){
-        if( __nodeVar != nullptr )
-            deallocateNodeSons(__nodeVar, __nodeSons);
-        MultiDimDecisionGraph<GUM_SCALAR>::_deletePICL(__nodeParents);
-    }
-
-    // ============================================================================
-    /// Allocators and Deallocators redefinition
-    // ============================================================================
-    template<typename GUM_SCALAR>
-    INLINE
-    void* MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::operator new(size_t t){
-      return soa.allocate(sizeof(InternalNode));
-    }
-
-    template<typename GUM_SCALAR>
-    INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::operator delete(void* in){
-      soa.deallocate(in, sizeof(InternalNode));
+    InternalNode::~InternalNode(){
+      GUM_DESTRUCTOR(InternalNode)
+      if( __nodeVar != nullptr )
+        deallocateNodeSons(__nodeVar, __nodeSons);
     }
 
     // ============================================================================
     /// Allocates a table of nodeid of the size given in parameter
     // ============================================================================
-    template<typename GUM_SCALAR>
-    INLINE
-    NodeId* MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::allocateNodeSons( const DiscreteVariable* v ){
-//        std::cout << "Internal Node 92" << std::endl;
-      NodeId* sons = static_cast<NodeId*>( soa.allocate( sizeof(NodeId)*v->domainSize() ) );
+    NodeId* InternalNode::allocateNodeSons( const DiscreteVariable* v ){
+      NodeId* sons = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*v->domainSize() ) );
       for( gum::Idx i = 0; i < v->domainSize(); ++i)
         sons[i] = 0;
       return sons;
@@ -99,18 +76,14 @@ namespace gum {
     // ============================================================================
     /// Deallocates a NodeSons table
     // ============================================================================
-    template<typename GUM_SCALAR>
-    INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::deallocateNodeSons(const DiscreteVariable* v, NodeId* s){
-        soa.deallocate(s, sizeof(NodeId)*v->domainSize());
+    void InternalNode::deallocateNodeSons(const DiscreteVariable* v, NodeId* s){
+        DEALLOCATE(s, sizeof(NodeId)*v->domainSize());
     }
 
     // ============================================================================
     /// Node handlers
     // ============================================================================
-    template<typename GUM_SCALAR>
-    INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::setNode(const DiscreteVariable* v, NodeId* sons){
+    void InternalNode::setNode(const DiscreteVariable* v, NodeId* sons){
         if( __nodeVar != nullptr )
             deallocateNodeSons(__nodeVar, __nodeSons);
         __nodeVar = v;
@@ -120,44 +93,26 @@ namespace gum {
     // ============================================================================
     /// Var handlers
     // ============================================================================
-    template<typename GUM_SCALAR>
-    INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::setNodeVar(const DiscreteVariable* v){
+    void InternalNode::setNodeVar(const DiscreteVariable* v){
         if( __nodeVar != nullptr )
             deallocateNodeSons(__nodeVar, __nodeSons);
         _setNodeVar(v);
     }
 
-    template<typename GUM_SCALAR>
-    INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::_setNodeVar(const DiscreteVariable* v){
+    void InternalNode::_setNodeVar(const DiscreteVariable* v){
         __nodeVar = v;
         __nodeSons = allocateNodeSons( v );
     }
 
     // ============================================================================
-    /// Sons handlers
-    // ============================================================================
-//    template<typename GUM_SCALAR>
-//    INLINE
-//    void MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::setSons(NodeId* sons){
-
-//    }
-
-    // ============================================================================
     /// Parent handlers
     // ============================================================================
-    template<typename GUM_SCALAR>
-    INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::addParent( NodeId parent, Idx modality ){
-        MultiDimDecisionGraph::_addElemToPICL(&__nodeParents, parent, modality );
+    void InternalNode::addParent( NodeId parent, Idx modality ){
+      __nodeParents.addLink( Parent(parent, modality) );
     }
 
-    template<typename GUM_SCALAR>
-    INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::removeParent( NodeId parent, Idx modality ){
-        MultiDimDecisionGraph::_removeElemFromPICL(&__nodeParents, parent, modality );
+    void InternalNode::removeParent( NodeId parent, Idx modality ){
+      __nodeParents.searchAndRemoveLink( Parent(parent, modality) );
     }
 
-    //PICLElem*& parents() const {return __parentList;}
 } // namespace gum

@@ -36,13 +36,13 @@
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimDecisionGraph.h>
-#include <agrum/multidim/patterns/DGUtility/multiDimDecisionGraphOperator.h>
+#include <agrum/multidim/decisionGraphUtilities/multiDimDecisionGraphOperator.h>
 // =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/planning/spumdd.h>
 // =========================================================================
 
-/// For shorter line
+/// For shorter line and hence more comprehensive code only
 #define RECAST(x) reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*>(x)
 
 namespace gum {
@@ -106,7 +106,7 @@ namespace gum {
 
       // Initialisation of the value function
       __vFunction = new MultiDimDecisionGraph< GUM_SCALAR >();
-      __optimalPolicy = new MultiDimDecisionGraph< Idx >();
+      __optimalPolicy = new MultiDimDecisionGraph< std::pair< GUM_SCALAR, Idx > >();
       __firstTime = true;
     }
 
@@ -353,13 +353,13 @@ namespace gum {
       // *****************************************************************************************
       // Next to evaluate main value function, we take maximise over all action value, ...
 
-      MultiDimDecisionGraph< std::pair< double, long > >* argMaxVFunction = __argMaxQFunctionSet.back();
+      MultiDimDecisionGraph< std::pair< GUM_SCALAR, Idx > >* argMaxVFunction = __argMaxQFunctionSet.back();
       __argMaxQFunctionSet.pop_back();
-      MultiDimDecisionGraph< std::pair< double, long > >*argMaxvTemp = nullptr;
+      MultiDimDecisionGraph< std::pair< GUM_SCALAR, Idx > >*argMaxvTemp = nullptr;
 
       while ( !__argMaxQFunctionSet.empty() ) {
         argMaxvTemp = argMaxVFunction;
-        MultiDimDecisionGraphOperator<std::pair< double, long >, ArgumentMaximises > argmaxope( argMaxVFunction, __argMaxQFunctionSet.back() );
+        MultiDimDecisionGraphOperator< std::pair< GUM_SCALAR, Idx >, ArgumentMaximisesInSet > argmaxope( argMaxVFunction, __argMaxQFunctionSet.back() );
         argMaxVFunction = argmaxope.compute();
 
         delete argMaxvTemp;
@@ -377,7 +377,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     void
-    SPUMDD<GUM_SCALAR>::addQaction( MultiDimDecisionGraph< std::pair< double, long > >* qaction ) {
+    SPUMDD<GUM_SCALAR>::addQaction( MultiDimDecisionGraph< std::pair< GUM_SCALAR, Idx > >* qaction ) {
         __qSetMutex.lock();
         __argMaxQFunctionSet.push_back ( qaction );
         __qSetMutex.unlock();
@@ -390,49 +390,49 @@ namespace gum {
     // is bind this Graph (given in parameter).
     // ===========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph< std::pair< double, long > >*
+    MultiDimDecisionGraph< std::pair< GUM_SCALAR, Idx > >*
     SPUMDD<GUM_SCALAR>::__createArgMaxCopy ( const MultiDimDecisionGraph<GUM_SCALAR>* qAction, Idx actionId ) {
 
-      MultiDimDecisionGraph< std::pair< double, long > >* amcpy = new MultiDimDecisionGraph< std::pair< double, long > >();
+      MultiDimDecisionGraph< std::pair< GUM_SCALAR, Idx > >* amcpy = new MultiDimDecisionGraph< std::pair< GUM_SCALAR, Idx > >();
 
-      // Insertion des nouvelles variables
-      for( SequenceIteratorSafe<const DiscreteVariable*> varIter = qAction->variablesSequence().beginSafe(); varIter != qAction->variablesSequence().endSafe(); ++varIter)
-        amcpy->add(**varIter);
+//      // Insertion des nouvelles variables
+//      for( SequenceIteratorSafe<const DiscreteVariable*> varIter = qAction->variablesSequence().beginSafe(); varIter != qAction->variablesSequence().endSafe(); ++varIter)
+//        amcpy->add(**varIter);
 
-      std::vector<NodeId> lifo;
-      Bijection<NodeId, NodeId> src2dest;
+//      std::vector<NodeId> lifo;
+//      Bijection<NodeId, NodeId> src2dest;
 
-      if(qAction->isTerminalNode(qAction->root())){
-        std::pair< double, long > leaf(qAction->nodeValue(qAction->root()), actionId);
-        amcpy->manager()->setRootNode(amcpy->manager()->addTerminalNode(leaf));
-      } else {
-        amcpy->manager()->setRootNode(amcpy->manager()->addNonTerminalNode( qAction->node(qAction->root())->nodeVar() ));
-        src2dest.insert( qAction->root(), amcpy->root() );
-        lifo.push_back(qAction->root());
-      }
+//      if(qAction->isTerminalNode(qAction->root())){
+//        std::pair< GUM_SCALAR, Idx > leaf = std::pair< GUM_SCALAR, Idx >(actionId, qAction->nodeValue(qAction->root()) );
+//        amcpy->manager()->setRootNode(amcpy->manager()->addTerminalNode(leaf));
+//      } else {
+//        amcpy->manager()->setRootNode(amcpy->manager()->addNonTerminalNode( qAction->node(qAction->root())->nodeVar() ));
+//        src2dest.insert( qAction->root(), amcpy->root() );
+//        lifo.push_back(qAction->root());
+//      }
 
-      // Parcours en profondeur du diagramme source
-      while( !lifo.empty() ){
-        NodeId currentSrcNodeId = lifo.back();
-        lifo.pop_back();
+//      // Parcours en profondeur du diagramme source
+//      while( !lifo.empty() ){
+//        NodeId currentSrcNodeId = lifo.back();
+//        lifo.pop_back();
 
-        const typename MultiDimDecisionGraph< GUM_SCALAR >::InternalNode* currentSrcNode = qAction->node(currentSrcNodeId);
+//        const typename MultiDimDecisionGraph< GUM_SCALAR >::InternalNode* currentSrcNode = qAction->node(currentSrcNodeId);
 
-        for( Idx index = 0; index < currentSrcNode->nbSons(); ++index ){
-          if( !src2dest.existsFirst(currentSrcNode->son(index)) ){
-            NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
-            if( qAction->isTerminalNode(srcSonNodeId) ){
-              std::pair< double, long > leaf(qAction->nodeValue(srcSonNodeId), actionId);
-              destSonNodeId = amcpy->manager()->addTerminalNode(leaf);
-            } else {
-              destSonNodeId = amcpy->manager()->addNonTerminalNode(qAction->node(srcSonNodeId)->nodeVar());
-              lifo.push_back(srcSonNodeId);
-            }
-            src2dest.insert( srcSonNodeId, destSonNodeId );
-          }
-          amcpy->manager()->setSon( src2dest.second(currentSrcNodeId), index, src2dest.second(currentSrcNode->son(index)));
-        }
-      }
+//        for( Idx index = 0; index < currentSrcNode->nbSons(); ++index ){
+//          if( !src2dest.existsFirst(currentSrcNode->son(index)) ){
+//            NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
+//            if( qAction->isTerminalNode(srcSonNodeId) ){
+//              std::pair< double, std::pair< GUM_SCALAR, Idx > > leaf(qAction->nodeValue(srcSonNodeId), std::pair< GUM_SCALAR, Idx >(actionId) );
+//              destSonNodeId = amcpy->manager()->addTerminalNode(leaf);
+//            } else {
+//              destSonNodeId = amcpy->manager()->addNonTerminalNode(qAction->node(srcSonNodeId)->nodeVar());
+//              lifo.push_back(srcSonNodeId);
+//            }
+//            src2dest.insert( srcSonNodeId, destSonNodeId );
+//          }
+//          amcpy->manager()->setSon( src2dest.second(currentSrcNodeId), index, src2dest.second(currentSrcNode->son(index)));
+//        }
+//      }
 
       return amcpy;
     }
@@ -444,7 +444,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     void
-    SPUMDD<GUM_SCALAR>::__extractOptimalPolicy ( const MultiDimDecisionGraph< std::pair< double, long > >* argMaxOptimalPolicy ) {
+    SPUMDD<GUM_SCALAR>::__extractOptimalPolicy ( const MultiDimDecisionGraph< std::pair< double, std::pair< GUM_SCALAR, Idx > > >* argMaxOptimalPolicy ) {
 
       __optimalPolicy->clear();
 
@@ -468,7 +468,7 @@ namespace gum {
         NodeId currentSrcNodeId = lifo.back();
         lifo.pop_back();
 
-        const typename MultiDimDecisionGraph< std::pair< double, long > >::InternalNode* currentSrcNode = argMaxOptimalPolicy->node(currentSrcNodeId);
+        const typename MultiDimDecisionGraph< std::pair< double, std::pair< GUM_SCALAR, Idx > > >::InternalNode* currentSrcNode = argMaxOptimalPolicy->node(currentSrcNodeId);
 
         for( Idx index = 0; index < currentSrcNode->nbSons(); ++index ){
           if( !src2dest.exists(currentSrcNode->son(index)) ){
