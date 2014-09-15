@@ -221,7 +221,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     INLINE
     Size MultiDimDecisionGraph<GUM_SCALAR>::realSize() const{
-      return __internalNodeMap.size() + __valueMap.size();
+      return __internalNodeMap.size();// + __valueMap.size();
     }
 
 
