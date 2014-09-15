@@ -74,8 +74,10 @@ namespace gum {
     SPUMDD<GUM_SCALAR>::~SPUMDD() {
       GUM_DESTRUCTOR ( SPUMDD );
 
-      if(__vFunction)
+      if(__vFunction){
+        std::cout << __vFunction->toDot() << std::endl;
         delete __vFunction;
+        }
 
       if(__optimalPolicy)
         delete __optimalPolicy;
