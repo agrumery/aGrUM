@@ -43,7 +43,7 @@ namespace gum_tests {
         delete ( prm );
       }
 
-      void /*test*/Regression1() {
+      void /*test*/Regression1() { // error when attribute defined with interface as type
         gum::prm::o3prm::O3prmReader<double> reader;
         int res;
         TS_GUM_ASSERT_THROWS_NOTHING ( res = reader.readFile ( GET_PATH_STR ( "o3prm/withinterfaces.o3prm" ) ) );

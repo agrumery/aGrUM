@@ -84,13 +84,8 @@ namespace gum {
       current = nodeFIFO.front();
       nodeFIFO.popFront();
 
-      // check the neighbours //////////////////////////////////////////////
-      const NodeSet& set_neighbour = neighbours ( current );
-
-      for ( NodeSetIterator ite = set_neighbour.beginSafe ();
-            ite != set_neighbour.endSafe (); ++ite ) {
-        NodeId new_one = *ite;
-
+      // check the neighbours
+      for ( const auto new_one : neighbours ( current ) ) {
         if ( mark.exists ( new_one ) ) // if the node has already been visited
           continue;                    // do not check it again
 
@@ -110,12 +105,8 @@ namespace gum {
         nodeFIFO.pushBack ( new_one );
       }
 
-      // check the parents  //////////////////////////////////////////////
-      const NodeSet& set = parents ( current );
-
-      for ( NodeSetIterator ite = set.beginSafe (); ite != set.endSafe (); ++ite ) {
-        NodeId new_one = *ite;
-
+      // check the parents
+      for ( const auto new_one : parents ( current ) ) {
         if ( mark.exists ( new_one ) ) // if this node is already marked, do not
           continue;                 // check it again
 
@@ -155,13 +146,8 @@ namespace gum {
       current = nodeFIFO.front();
       nodeFIFO.popFront();
 
-      // check the neighbours //////////////////////////////////////////////
-      const NodeSet& set_neighbour = neighbours ( current );
-
-      for ( NodeSetIterator ite = set_neighbour.beginSafe ();
-            ite != set_neighbour.endSafe (); ++ite ) {
-        NodeId new_one = *ite;
-
+      // check the neighbours
+      for ( const auto new_one : neighbours ( current ) ) {
         if ( mark.exists ( new_one ) ) // if the node has already been visited
           continue;                    // do not check it again
 
@@ -181,12 +167,8 @@ namespace gum {
         nodeFIFO.pushBack ( new_one );
       }
 
-      // check the parents //////////////////////////////////////////////
-      const NodeSet& set_parent = parents ( current );
-
-      for ( NodeSetIterator ite = set_parent.beginSafe (); ite != set_parent.endSafe (); ++ite ) {
-        NodeId new_one = *ite;
-
+      // check the parents
+      for ( const auto new_one : parents ( current ) ) {
         if ( mark.exists ( new_one ) ) // the node has already been visited
           continue;
 
@@ -206,13 +188,8 @@ namespace gum {
         nodeFIFO.pushBack ( new_one );
       }
 
-      // check the children //////////////////////////////////////////////
-      const NodeSet& set_children = children ( current );
-
-      for ( NodeSetIterator ite = set_children.beginSafe ();
-            ite != set_children.endSafe (); ++ite ) {
-        NodeId new_one = *ite;
-
+      // check the children
+      for ( const auto new_one : children ( current ) ) {
         if ( mark.exists ( new_one ) ) // the node has already been visited
           continue;
 
@@ -225,13 +202,11 @@ namespace gum {
             v.push_back ( current );
 
           v.push_back ( n2 );
-
           return v;
         }
 
         nodeFIFO.pushBack ( new_one );
       }
-
     }
 
     GUM_ERROR ( NotFound, "no path found" );

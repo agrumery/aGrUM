@@ -47,21 +47,20 @@ namespace gum {
     class MultipleInferenceEngine : public InferenceEngine < GUM_SCALAR > {
       private :
         /** To easily access InferenceEngine< GUM_SCALAR > methods. */
-        typedef InferenceEngine<GUM_SCALAR> infE;
+        typedef InferenceEngine<GUM_SCALAR> __infE;
 
-        typedef NodeProperty< std::vector< NodeId > > cluster;
-        typedef NodeProperty< std::vector< std::vector< GUM_SCALAR > > > credalSet;
-        typedef NodeProperty< std::vector< GUM_SCALAR > > margi;
-        typedef NodeProperty< GUM_SCALAR > expe;
+        typedef NodeProperty< std::vector< NodeId > > __cluster;
+        typedef NodeProperty< std::vector< std::vector< GUM_SCALAR > > > __credalSet;
+        typedef NodeProperty< std::vector< GUM_SCALAR > > __margi;
+        typedef NodeProperty< GUM_SCALAR > __expe;
 
-        typedef IBayesNet< GUM_SCALAR > bnet;
-        typedef std::vector< margi > margis;
-        typedef std::vector< expe > expes;
-        typedef std::vector< credalSet > credalSets;
-        typedef std::vector< std::vector< cluster > > clusters;
+        typedef IBayesNet< GUM_SCALAR > __bnet;
+        typedef std::vector< __margi > __margis;
+        typedef std::vector< __expe > __expes;
+        typedef std::vector< __credalSet > __credalSets;
+        typedef std::vector< std::vector< __cluster > > __clusters;
 
-        //typedef typename std::vector< std::map< std::string, std::vector< GUM_SCALAR > > > modals;
-        typedef typename std::vector< HashTable< std::string, std::vector< GUM_SCALAR > > > modals;
+        typedef typename std::vector< HashTable< std::string, std::vector< GUM_SCALAR > > > __modals;
 
         /**
          * @brief Ask for redundancy elimination of a node credal set of a calling thread.
@@ -76,24 +75,24 @@ namespace gum {
 
       protected :
         /** Threads lower marginals, one per thread. */
-        margis _l_marginalMin;
+        __margis _l_marginalMin;
         /** Threads upper marginals, one per thread. */
-        margis _l_marginalMax;
+        __margis _l_marginalMax;
         /** Threads lower expectations, one per thread. */
-        expes _l_expectationMin;
+        __expes _l_expectationMin;
         /** Threads upper expectations, one per thread. */
-        expes _l_expectationMax;
+        __expes _l_expectationMax;
         /** Threads modalities. */
-        modals _l_modal;
+        __modals _l_modal;
         /** Threads vertices. */
-        credalSets _l_marginalSets;
+        __credalSets _l_marginalSets;
         /** Threads evidence. */
-        margis _l_evidence;
+        __margis _l_evidence;
         /** Threads clusters. */
-        clusters _l_clusters;
+        __clusters _l_clusters;
 
         /** Threads IBayesNet. */
-        typename std::vector< bnet* > _workingSet;
+        typename std::vector< __bnet* > _workingSet;
         /** Threads evidence. */
         typename std::vector< List< const Potential< GUM_SCALAR > * > * > _workingSetE;
 

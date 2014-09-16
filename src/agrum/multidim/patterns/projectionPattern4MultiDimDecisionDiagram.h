@@ -62,18 +62,18 @@ namespace gum {
       Sequence< const DiscreteVariable* > varSeq = table->variablesSequence();
 
 
-      SequenceIteratorSafe< const DiscreteVariable* > endSeqIter = varSeq.rbeginSafe();
+      auto endSeqIter = varSeq.rbegin();
       bool modified = true;
 
-      while ( modified && endSeqIter != varSeq.rendSafe() ) {
-        SequenceIteratorSafe< const DiscreteVariable* > varIter = varSeq.beginSafe();
-        SequenceIteratorSafe< const DiscreteVariable* > nextVarIter = varIter;
+      while ( modified && endSeqIter != varSeq.rend() ) {
+        auto varIter = varSeq.begin();
+        auto nextVarIter = varIter;
         modified = false;
 
         while ( varIter != endSeqIter ) {
           ++nextVarIter;
 
-          if ( nextVarIter != varSeq.endSafe() ) {
+          if ( nextVarIter != varSeq.end() ) {
             if ( delVars.exists ( *varIter ) && !delVars.exists ( *nextVarIter ) ) {
               factory->swap ( *varIter, *nextVarIter );
               varSeq.swap ( varSeq.pos ( *varIter ), varSeq.pos ( *nextVarIter ) );
@@ -91,15 +91,15 @@ namespace gum {
       MultiDimDecisionDiagramBase< GUM_MULTI_DIM_PROJECTION_TYPE >* ret = factory->getMultiDimDecisionDiagram();
       factory->clear();
 
-      for ( SetIteratorSafe< const DiscreteVariable* > delVarsIter = delVars.beginSafe(); delVarsIter != delVars.endSafe(); ++delVarsIter )
-        varSeq.erase ( *delVarsIter );
+      for ( const auto var : delVars )
+        varSeq.erase ( var );
 
       factory->setVariablesSequence ( varSeq );
       HashTable< NodeId, NodeId > explorationTable;
       Idx nbOperation = 1;
 
-      for ( SetIteratorSafe< const DiscreteVariable* > delVarsIter = delVars.beginSafe(); delVarsIter != delVars.endSafe(); ++delVarsIter )
-        nbOperation *= ( *delVarsIter )->domainSize();
+      for ( const auto var : delVars )
+        nbOperation *= var->domainSize();
 
 #ifdef P4DDDEBUG
       factory->setRootNode ( GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION ( ret, factory, ret->root(), false, explorationTable, delVars, nbOperation, "" ) );

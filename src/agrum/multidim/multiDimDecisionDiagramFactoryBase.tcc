@@ -331,7 +331,7 @@ namespace gum {
 
     const NodeSet& parents = _model.parents ( n );
 
-    for ( NodeSetIterator parentIter = parents.beginSafe(); parentIter != parents.endSafe(); ++parentIter ) {
+    for ( auto parentIter = parents.beginSafe(); parentIter != parents.endSafe(); ++parentIter ) {
       for ( std::vector< NodeId >::iterator iter = _arcMap[*parentIter]->begin(); iter != _arcMap[*parentIter]->end(); ++iter )
         if ( *iter == n )
           *iter = 0;
@@ -746,7 +746,7 @@ namespace gum {
       _defaultArcMap.erase ( *nodeIter );
       _varMap.erase ( *nodeIter );
 
-      for ( NodeSetIterator parentIter = _model.parents ( *nodeIter ).beginSafe(); parentIter != _model.parents ( *nodeIter ).endSafe(); ++parentIter ) {
+      for ( auto parentIter = _model.parents ( *nodeIter ).beginSafe(); parentIter != _model.parents ( *nodeIter ).endSafe(); ++parentIter ) {
         _model.addArc ( *parentIter, replacingNode );
 
         std::vector<NodeId>* newSonMap = new std::vector<NodeId> ( _arcMap[*parentIter]->size(), 0 );
@@ -889,7 +889,7 @@ namespace gum {
           // ***************************************************************
           // Pour chaque noeud lié à cette variable, on voit si la variable
           // associée au noeuds parents est déjà dans la liste
-          for ( NodeSetIterator parentIter = parents.beginSafe(); parentIter != parents.endSafe(); ++parentIter ) {
+          for ( auto parentIter = parents.beginSafe(); parentIter != parents.endSafe(); ++parentIter ) {
 
             // **********************************************************************
             // Si ce n'est pas le cas, cette variable ci ne sera pas ajoutée

@@ -183,7 +183,7 @@ namespace gum_tests {
             // else
             if ( !var2NodeIdMap[ ( *varList ) [ numVar ] ]->empty() ) {
               // for each node associated to that var
-              for ( gum::ListIteratorSafe<gum::NodeId> numNode  = var2NodeIdMap[ ( *varList ) [ numVar ] ]->beginSafe(); numNode != var2NodeIdMap[ ( *varList ) [ numVar ] ]->endSafe();  ++numNode ) {
+              for ( const auto node : *var2NodeIdMap[ ( *varList ) [ numVar ] ]) {
 
                 // we determine a random number of arc starting from that node
                 gum::Idx nbArc  = 1 + rand() % ( ( *varList ) [ numVar ]->domainSize() );
@@ -209,13 +209,13 @@ namespace gum_tests {
                     }
 
                     // then we add an arc between our current var associated node id and the considered var random node id
-                    f->unsafeAddArc ( *numNode, ( *var2NodeIdMap[ toVar ] ) [desiredNode], label );
+                    f->unsafeAddArc ( node, ( *var2NodeIdMap[ toVar ] ) [desiredNode], label );
 
                   } else {
 
                     // if we add
                     gum::NodeId toVal  = f->addTerminalNode ( tnList[ rand() % tnList.size()] );
-                    f->unsafeAddArc ( *numNode, toVal, label );
+                    f->unsafeAddArc ( node, toVal, label );
 
                   }
                 }
@@ -223,8 +223,8 @@ namespace gum_tests {
             }
           }
 
-          for ( gum::HashTableIteratorSafe< const gum::DiscreteVariable*, gum::List<gum::NodeId>* > ht  = var2NodeIdMap.beginSafe (); ht != var2NodeIdMap.endSafe(); ++ht )
-            delete ht.val();
+          for ( const auto & elt : var2NodeIdMap )
+            delete elt.second;
 
           ret  = f->getMultiDimDecisionDiagram();
         }
@@ -250,8 +250,8 @@ namespace gum_tests {
 
         output << std::endl;
 
-        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = a1->variablesSequence().beginSafe(); ite != a1->variablesSequence().endSafe(); ++ite )
-          output << ( *ite )->toString() << " - ";
+        for ( const auto var : a1->variablesSequence() )
+          output << var->toString() << " - ";
 
         output << std::endl;
 
@@ -260,8 +260,8 @@ namespace gum_tests {
         if ( a3 != nullptr ) {
           output << std::endl;
 
-          for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = a3->variablesSequence().beginSafe(); ite != a3->variablesSequence().endSafe(); ++ite )
-            output << ( *ite )->toString() << " - ";
+          for ( const auto var : a3->variablesSequence() )
+            output << var->toString() << " - ";
 
           output << std::endl;
 
@@ -270,8 +270,8 @@ namespace gum_tests {
 
         output << std::endl;
 
-        for ( gum::SetIteratorSafe< const gum::DiscreteVariable*> ite = delVars.beginSafe(); ite != delVars.endSafe(); ++ite )
-          output << ( *ite )->toString() << " - ";
+        for ( const auto var : delVars )
+          output << var->toString() << " - ";
 
         output << std::endl;
 
@@ -453,8 +453,8 @@ namespace gum_tests {
 
         del_vars.clear();
 
-        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite  = varList->beginSafe(); ite != varList->endSafe(); ++ite )
-          delete *ite;
+        for ( const auto var : *varList )
+          delete var;
 
         delete varList;
 
@@ -491,8 +491,8 @@ namespace gum_tests {
 
           del_vars.clear();
 
-          for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite  = varList->beginSafe(); ite != varList->endSafe(); ++ite )
-            delete *ite;
+          for ( const auto var : *varList )
+            delete var;
 
           delete varList;
 
@@ -702,8 +702,8 @@ namespace gum_tests {
         delete a1;
         del_vars.clear();
 
-        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite  = varList->beginSafe(); ite != varList->endSafe(); ++ite )
-          delete *ite;
+        for ( const auto var : *varList )
+          delete var;
 
         delete varList;
       }

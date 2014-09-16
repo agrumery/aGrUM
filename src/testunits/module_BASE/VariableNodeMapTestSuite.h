@@ -134,11 +134,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( topo.dag().size(), ( gum::Size ) 5 );
         TS_ASSERT_EQUALS ( topo.dag().sizeArcs(), ( gum::Size ) 6 );
 
-        for ( gum::List<gum::Id>::iterator_safe iter = idList.beginSafe();
-              iter != idList.endSafe();
-              ++iter ) {
-          topo.erase ( *iter );
-        }
+        for ( const auto i : idList )
+          topo.erase ( i );
 
         TS_ASSERT ( topo.empty() );
 
@@ -184,9 +181,8 @@ namespace gum_tests {
         gum::BayesNet<float> topo;
         gum::List<gum::Id> idList;
 
-        for ( auto iter = topo.nodes().beginSafe(); iter != topo.nodes().endSafe(); ++iter ) {
-          TS_ASSERT ( idList.exists ( *iter ) );
-        }
+        for ( const auto node : topo.nodes() )
+          TS_ASSERT ( idList.exists ( node ) );
       }
 
       void testMoralGraph() {

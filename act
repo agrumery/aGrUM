@@ -239,8 +239,8 @@ def threaded_execution(cde,verbose):
       lastline=readerLoop(lastline)
     except Empty:
       break
-    
-    
+
+
   return p.returncode
 
 ##########################################################################################################################
@@ -799,7 +799,7 @@ def getInvocation(current):
 
       if (current['fixed_seed']):
         invocation+=getParam('fixed_seed')
-        
+
       if (current['no_fun']):
         invocation+=getParam('no_fun')
 
@@ -839,8 +839,8 @@ default['testlist']='all'
 
 not_persistent_options=['fixed_seed','stats']
 
-
 shlv=shelve.open(".options.mak.py",writeback=True)
+
 if shlv.has_key('persistent'):
     persistent=shlv['persistent']
 
@@ -861,7 +861,7 @@ if options.no_fun:
   WARNING = ''
   ERROR = ''
   ENDC = ''
-  
+
 
 print(ENDC+ERROR+"aGrUM"+ENDC+" compilation tool "+ERROR+"v"+numversion+ENDC)
 print("(c) 2010-13 "+OKGREEN+"aGrUM Team"+ENDC)
@@ -904,6 +904,7 @@ for key in current:
   if not key in not_persistent_options:
     persistent[key]=current[key]
 shlv['persistent']=persistent
+shlv.sync()
 shlv.close()
 
 

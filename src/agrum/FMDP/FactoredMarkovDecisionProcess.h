@@ -150,6 +150,7 @@ namespace gum {
          */
         const std::string actionName ( Idx actionId ) const;
 
+
       /// @}
 
       // ===========================================================================
@@ -223,7 +224,7 @@ namespace gum {
       /**
         * Returns action id
         */
-      const Idx& __actionId ( const std::string& ) const;
+      const Idx& __actionId( const std::string& ) const;
 
       /// Sequence de variables and its iterator
       Sequence< const DiscreteVariable* > __varSeq;

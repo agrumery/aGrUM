@@ -28,6 +28,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+// to ease IDE parser
+#include <agrum/graphs/eliminations/defaultPartialOrderedEliminationSequenceStrategy.h>
 
 namespace gum {
 
@@ -93,7 +95,7 @@ namespace gum {
   INLINE
   void SimplicialSet::__updateAllNodes() {
     // check if a node can enter the simplicial list
-    for ( NodeSetIterator iter = __changed_status.beginSafe();
+    for ( auto iter = __changed_status.beginSafe(); //safe iterator needed here
           iter != __changed_status.endSafe(); ++iter ) {
       __updateList ( *iter );
     }
@@ -147,3 +149,5 @@ namespace gum {
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+

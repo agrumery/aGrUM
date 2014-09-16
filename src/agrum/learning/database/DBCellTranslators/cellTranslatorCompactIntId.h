@@ -135,6 +135,9 @@ namespace gum {
       /// returns the name of the variable(s) the translator has processed
       void variableNames ( const std::vector<std::string>& db_var,
                            std::vector<std::string>& output_vars ) const;
+
+      /// @}
+      
       
     private:
       /// the set of values found so far

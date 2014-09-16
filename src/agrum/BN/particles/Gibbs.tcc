@@ -46,30 +46,29 @@ namespace gum {
       const DAG& dag = this->bn().dag();
 //    const NodeSet& nodes = dag.nodes();
 
-      for ( auto iter_node = dag.nodes().beginSafe(); iter_node != dag.nodes().endSafe(); ++iter_node ) {
-        const DiscreteVariable& var = this->bn().variable ( *iter_node );
-        //         // feed the sample
-        //         __particle << var;
+      for ( auto node : dag.nodes() ) {
+        const DiscreteVariable& var = this->bn().variable ( node );
+
         // feed the __sampling
-        Potential<GUM_SCALAR>* tmp = new Potential<GUM_SCALAR>();
-        __sampling_posterior.insert ( *iter_node, tmp );
-        ( *tmp ) << var;
-        Instantiation* tmp_idx = new Instantiation ( *tmp );
-        __sampling_idx.insert ( *iter_node, tmp_idx );
+        Potential<GUM_SCALAR>* newPot = new Potential<GUM_SCALAR>();
+        __sampling_posterior.insert ( node, newPot );
+        ( *newPot ) << var;
+        Instantiation* new_idx = new Instantiation ( *newPot );
+        __sampling_idx.insert ( node, new_idx );
         // feed the children
-        std::vector<NodeId>* tmp3 = new std::vector<NodeId>();
+        std::vector<NodeId>* newChildren = new std::vector<NodeId>();
 
         //const NodeSet& arcs = dag.children ( node );
 
-        for ( auto node2 = dag.children ( *iter_node ).beginSafe(); node2 != dag.children ( *iter_node ).endSafe(); ++node2 ) {
-          tmp3->push_back ( *node2 );
+        for ( auto chil : dag.children ( node ) ) {
+          newChildren->push_back ( chil );
         }
 
-        __node_children.insert ( *iter_node, tmp3 );
+        __node_children.insert ( node, newChildren );
 
         // feed the instantiation for each cpt
-        Instantiation* tmp4 = new Instantiation ( this->bn().cpt ( *iter_node ) );
-        __cpt_idx.insert ( *iter_node, tmp4 );
+        Instantiation* newInst = new Instantiation ( this->bn().cpt ( node ) );
+        __cpt_idx.insert ( node, newInst );
       }
 
     }
@@ -78,23 +77,17 @@ namespace gum {
     Gibbs<GUM_SCALAR>::~Gibbs() {
       GUM_DESTRUCTOR ( Gibbs );
 
-      for ( HashTableIteratorSafe<NodeId, Instantiation*> iter = __sampling_idx.beginSafe();
-            iter != __sampling_idx.endSafe(); ++iter )
-        delete ( iter.val () );
+      for ( auto & elt : __sampling_idx )
+        delete ( elt.second );
 
-      for ( HashTableIteratorSafe<NodeId, Potential<GUM_SCALAR>*> iter =
-              __sampling_posterior.beginSafe();
-            iter != __sampling_posterior.endSafe(); ++iter )
-        delete ( iter.val() );
+      for ( auto & elt : __sampling_posterior )
+        delete ( elt.second );
 
-      for ( HashTableIteratorSafe<NodeId, std::vector<NodeId>*> iter =
-              __node_children.beginSafe();
-            iter != __node_children.endSafe(); ++iter )
-        delete ( iter.val() );
+      for ( auto & elt : __node_children )
+        delete ( elt.second );
 
-      for ( HashTableIteratorSafe<NodeId, Instantiation*> iter = __cpt_idx.beginSafe();
-            iter != __cpt_idx.endSafe(); ++iter )
-        delete ( iter.val () );
+      for ( auto & elt : __cpt_idx )
+        delete ( elt.second );
     }
 
     template <typename GUM_SCALAR> INLINE
@@ -301,11 +294,8 @@ namespace gum {
         // we have to build P(x \given instantiation_parent(x)) in proba
         Instantiation I ( cpt );
 
-        Sequence<const DiscreteVariable*> seq = I.variablesSequence();
-
-        for ( Sequence<const DiscreteVariable*>::iterator_safe it = seq.beginSafe();
-              it != seq.endSafe(); ++it ) {
-          I.chgVal ( it.pos() , __particle.valFromPtr ( *it ) );
+        for ( auto var : I.variablesSequence() ) {
+          I.chgVal ( I.pos ( *var ) , __particle.valFromPtr ( var ) );
         }
 
         Potential<GUM_SCALAR>& proba = *__sampling_posterior[id];
@@ -325,17 +315,15 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void Gibbs<GUM_SCALAR>::initParticle() {
-      const Sequence<NodeId>& topo = this->bn().topologicalOrder();
-
       __nodes_array.clear();
       // nodes to be drawn : not the ones with hard evidence
 
-      for ( Sequence<NodeId>::iterator_safe iter = topo.beginSafe() ; iter != topo.endSafe(); ++iter ) {
-        if ( ! __hard_evidences.exists ( *iter ) ) {
-          __nodes_array.push_back ( *iter );
+      for ( auto node : this->bn().topologicalOrder() ) {
+        if ( ! __hard_evidences.exists ( node ) ) {
+          __nodes_array.push_back ( node );
         } else {
           // put the right value for instantiated variables
-          __setValVar ( *iter, __hard_evidences[*iter] );
+          __setValVar ( node, __hard_evidences[node] );
         }
       }
 

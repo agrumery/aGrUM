@@ -29,6 +29,8 @@
 
 #include <vector>
 
+#include <agrum/config.h>
+
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/variableElimination.h>
@@ -108,10 +110,10 @@ namespace gum {
        * Returns the probability of the variable.
        *
        * @param id The variable's id.
-       * @param marginal the potential to fill
+       * @param posterior the potential to fill
        * @throw ElementNotFound Raised if no variable matches id.
        */
-      virtual void _fillMarginal ( NodeId id, Potential<GUM_SCALAR>& marginal );
+      virtual void _fillPosterior ( NodeId id, Potential<GUM_SCALAR>& posterior );
 
     private:
 

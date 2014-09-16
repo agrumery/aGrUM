@@ -35,7 +35,7 @@ namespace gum {
   INLINE
   MultiDimInterface::iterator
   MultiDimInterface::begin() const {
-    return variablesSequence().beginSafe();
+    return variablesSequence().begin();
   }
 
 
@@ -43,7 +43,7 @@ namespace gum {
   INLINE
   MultiDimInterface::iterator
   MultiDimInterface::rbegin() const {
-    return variablesSequence().rbeginSafe();
+    return variablesSequence().rbegin();
   }
 
   // Constant reference on the iterator pointing at the end of the Sequence
@@ -51,7 +51,7 @@ namespace gum {
   INLINE
   const MultiDimInterface::iterator&
   MultiDimInterface::end() const {
-    return variablesSequence().endSafe();
+    return variablesSequence().end();
   }
 
   // Constant reference on the iterator pointing at the rend of the Sequence
@@ -59,7 +59,7 @@ namespace gum {
   INLINE
   const MultiDimInterface::iterator&
   MultiDimInterface::rend() const {
-    return variablesSequence().rendSafe();
+    return variablesSequence().rend();
   }
 
   // Swap two variables in this multidim.

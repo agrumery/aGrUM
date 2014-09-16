@@ -108,7 +108,44 @@ namespace gum {
         __user_values = nullptr;
       }
     }
+
     
+    /// specify the set of possible values (to do before creating the row filter)
+    void CellTranslatorString::setUserValues ( const Sequence<std::string>& values,
+                                               bool check_database ) {
+      // clear all current data
+      __strings.clear ();
+      __max_value = 0;
+      if ( __user_values != nullptr ) {
+        delete __user_values;
+        __user_values = nullptr;
+      }
+
+      // set the internal structures according to the method's parameters
+      __check_database = check_database;
+      
+      if ( ! check_database ) {
+        if ( values.empty () ) {
+          __check_database = true;
+        }
+        else {
+          // if we do not want to parse the database, store all the values directly
+          DBCell cell;
+          for ( const auto& str : values ) {
+            cell.setStringSafe ( str );
+            __strings.insert ( cell.getStringIndex (), __max_value );
+            ++__max_value;
+          }
+        }
+      }
+      else {
+        // if we specified values, store them
+        if ( ! values.empty () ) {
+          __user_values = new Sequence<std::string> ( values );
+        }
+      }
+    }
+
 
   } /* namespace learning */
 

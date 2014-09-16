@@ -372,7 +372,7 @@ namespace gum {
       /**
        * Returns the list of children decision for a given nodeId
        */
-      Sequence<NodeId>* _getChildrenDecision ( NodeId parentDecision ) const;
+      Sequence<NodeId> _getChildrenDecision ( NodeId parentDecision ) const;
 
     private:
 

@@ -75,14 +75,13 @@ namespace gum {
       //std::cout<<new_one<<std::endl;
       nodeFIFO.popFront();
 
-      const NodeSet& set = children ( new_one );
 
-      for ( NodeSetIterator ite = set.beginSafe(); ite != set.endSafe(); ++ite ) {
-        if ( *ite == to ) return true;
+      for ( const auto chi : children ( new_one ) )  {
+        if ( chi == to ) return true;
 
-        if ( ! marked.contains ( *ite ) ) {
-          nodeFIFO.pushBack ( *ite );
-          marked.insert ( *ite );
+        if ( ! marked.contains ( chi ) ) {
+          nodeFIFO.pushBack ( chi );
+          marked.insert ( chi );
         }
       }
     }

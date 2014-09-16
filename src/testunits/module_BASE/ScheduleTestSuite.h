@@ -112,7 +112,7 @@ namespace gum_tests {
         const gum::NodeSet& ops2 = schedule.operationsInvolving ( result2.id() );
         gum::Set<const gum::ScheduleOperation<float>*> oops2;
 
-        for ( gum::NodeSet::const_iterator_safe iter = ops2.beginSafe();
+        for ( gum::NodeSet::const_iterator_safe iter = ops2.beginSafe();// safe iterator needed here
               iter != ops2.endSafe(); ++iter ) {
           oops2.insert ( & ( schedule.operation ( *iter ) ) );
         }
@@ -129,7 +129,7 @@ namespace gum_tests {
         const gum::NodeSet& available = schedule.availableOperations();
 
         while ( ! available.empty() ) {
-          for ( gum::NodeSet::const_iterator_safe iter = available.beginSafe();
+          for ( gum::NodeSet::const_iterator_safe iter = available.beginSafe();// safe iterator needed here
                 iter != available.endSafe(); ++iter ) {
             schedule.execute ( *iter );
           }
@@ -253,7 +253,7 @@ namespace gum_tests {
         const gum::NodeSet& available = schedule.availableOperations();
 
         while ( ! available.empty() ) {
-          for ( gum::NodeSet::const_iterator_safe iter = available.beginSafe();
+          for ( gum::NodeSet::const_iterator_safe iter = available.beginSafe();// safe iterator needed here
                 iter != available.endSafe(); ++iter ) {
             schedule.execute ( *iter );
           }

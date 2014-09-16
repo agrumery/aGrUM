@@ -105,15 +105,15 @@ namespace gum_tests {
           //bn.addArc ( bn.idFromName ( "v4" ), bn.idFromName ( "v5" ) );
 
           // copy the cpt except for var5
-          for ( auto node = bn.nodes().beginSafe(); node != bn.nodes().endSafe(); ++node )
-            if ( *node != bn.idFromName ( "v5" ) ) {
-              const gum::Potential<float>& pot = bn.cpt ( *node );
-              const gum::Potential<float>& src = source.cpt ( source.idFromName ( bn.variable ( *node ).name() ) );
+          for ( const auto node : bn.nodes() )
+            if ( node != bn.idFromName ( "v5" ) ) {
+              const gum::Potential<float>& pot = bn.cpt ( node );
+              const gum::Potential<float>& src = source.cpt ( source.idFromName ( bn.variable ( node ).name() ) );
               gum::Instantiation I ( pot );
               gum::Instantiation J ( src );
 
               for ( I.setFirst(), J.setFirst(); ! I.end() ; ++I, ++J ) {
-                bn.cpt ( *node ).set ( I, src[J] );
+                bn.cpt ( node ).set ( I, src[J] );
               }
             }
 
@@ -246,8 +246,8 @@ namespace gum_tests {
 
         gum::Size count = 0;
 
-        for ( auto node = frag.nodes().beginSafe(); node != frag.nodes().endSafe(); ++node ) {
-          GUM_UNUSED ( *node );
+        for ( const auto node : frag.nodes() ) {
+          GUM_UNUSED ( node );
           count++;
         }
 
@@ -255,7 +255,7 @@ namespace gum_tests {
 
         count = 0;
 
-        for ( auto arc = frag.arcs().beginSafe(); arc != frag.arcs().endSafe(); ++arc ) {
+        for ( const auto arc : frag.arcs() ) {
           GUM_UNUSED ( arc );
           count++;
         }
@@ -344,8 +344,8 @@ namespace gum_tests {
         gum::List<const gum::Potential<float>*> l {&ev};
         inf_complete.insertEvidence ( l );
         inf_complete.makeInference();
-        const gum::Potential<float>& p1 = inf_complete.marginal ( bn.idFromName ( "v6" ) );
-
+        const gum::Potential<float>& p1 = inf_complete.posterior ( bn.idFromName ( "v6" ) );
+        
         // propagation in the fragment
         gum::BayesNetFragment<float> frag ( bn );
         frag.installAscendants ( bn.idFromName ( "v6" ) ); // 1->3->6
@@ -355,15 +355,15 @@ namespace gum_tests {
         frag.installMarginal ( frag.idFromName ( "v3" ), newV3 ); // 1   3->6
         TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 3 );
         TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 1 );
-
+        
         gum::LazyPropagation<float> inf_frag ( frag );
         inf_frag.makeInference();
-        const gum::Potential<float>& p2 = inf_frag.marginal ( bn.idFromName ( "v6" ) );
+        const gum::Potential<float>& p2 = inf_frag.posterior ( bn.idFromName ( "v6" ) );
 
         // comparison
         gum::Instantiation I ( p1 );
         gum::Instantiation J ( p2 );
-
+        
         for ( I.setFirst(), J.setFirst(); ! I.end(); ++I, ++J )
           TS_ASSERT_DELTA ( p1[I], p2[J], 1e-6 );
       }
@@ -376,8 +376,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 3 );
         TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 2 );
 
-        for ( auto node = frag.nodes().beginSafe(); node != frag.nodes().endSafe(); ++node )
-          TS_ASSERT ( frag.checkConsistency ( *node ) );
+        for ( const auto node : frag.nodes() )
+          TS_ASSERT ( frag.checkConsistency ( node ) );
 
         TS_ASSERT ( frag.checkConsistency() );
 
@@ -386,8 +386,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 4 );
         TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 3 );
 
-        for ( auto node = frag.nodes().beginSafe(); node != frag.nodes().endSafe(); ++node )
-          TS_ASSERT ( *node == frag.idFromName ( "v5" ) || frag.checkConsistency ( *node ) );
+        for ( const auto node : frag.nodes() )
+          TS_ASSERT ( node == frag.idFromName ( "v5" ) || frag.checkConsistency ( node ) );
 
         TS_ASSERT ( ! frag.checkConsistency() );
 
@@ -435,8 +435,8 @@ namespace gum_tests {
 
         gum::BayesNetFragment<float> frag ( bn );
 
-        for ( auto node = bn.nodes().beginSafe(); node != bn.nodes().endSafe(); ++node )
-          frag.installNode ( *node );
+        for ( const auto node : bn.nodes() )
+          frag.installNode ( node );
 
         TS_ASSERT ( frag.checkConsistency() );
         TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 6 );
@@ -464,11 +464,11 @@ namespace gum_tests {
 
         gum::LazyPropagation<float> ie2 ( bn2 );
         ie2.makeInference();
-        const gum::Potential<float>& p2 = ie2.marginal ( bn2.idFromName ( "v5" ) ) ;
+        const gum::Potential<float>& p2 = ie2.posterior ( bn2.idFromName ( "v5" ) ) ;
 
         gum::LazyPropagation<float> ie ( frag );
         ie.makeInference();
-        const gum::Potential<float>& p1 = ie.marginal ( frag.idFromName ( "v5" ) ) ;
+        const gum::Potential<float>& p1 = ie.posterior ( frag.idFromName ( "v5" ) ) ;
 
         // comparison
         gum::Instantiation II ( p1 );

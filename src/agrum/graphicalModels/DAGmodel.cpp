@@ -67,16 +67,16 @@ namespace gum {
     DAG dag = this->dag();
     std::vector<NodeId> roots;
 
-    for ( auto iter = dag.nodes().beginSafe (); iter != dag.nodes().endSafe(); ++iter )
-      if ( dag.parents ( *iter ).empty() )
-        roots.push_back ( *iter );
+    for ( const auto node : dag.nodes() )
+      if ( dag.parents ( node ).empty() )
+        roots.push_back ( node );
 
     while ( roots.size() ) {
       __mutableTopologicalOrder->insert ( roots.back() );
       roots.pop_back();
 
       while ( dag.children ( __mutableTopologicalOrder->back() ).size() ) {
-        NodeId child = * ( dag.children ( __mutableTopologicalOrder->back() ).beginSafe() );
+        NodeId child = * ( dag.children ( __mutableTopologicalOrder->back() ).begin() );
         dag.eraseArc ( Arc ( __mutableTopologicalOrder->back(), child ) );
 
         if ( dag.parents ( child ).empty() )
@@ -94,19 +94,19 @@ namespace gum {
     __mutableMoralGraph->populateNodes ( dag() );
     // transform the arcs into edges
 
-    for ( auto iter = arcs().beginSafe (); iter != arcs().endSafe (); ++iter )
-      __mutableMoralGraph->addEdge ( iter->first(), iter->second() );
+    for ( const auto arc : arcs() )
+      __mutableMoralGraph->addEdge ( arc.first(), arc.second() );
 
     //}
 
     // marry the parents
-    for ( auto iter_node = nodes().beginSafe(); iter_node != nodes().endSafe(); ++iter_node ) {
-      const NodeSet& parents = dag().parents ( *iter_node );
+    for ( const auto node : nodes() ) {
+      const NodeSet& parents = dag().parents ( node);
 
-      for ( NodeSetIterator it1 = parents.beginSafe (); it1 != parents.endSafe (); ++it1 ) {
-        NodeSetIterator it2 = it1;
+      for ( auto it1 = parents.begin (); it1 != parents.end (); ++it1 ) {
+        auto it2 = it1;
 
-        for ( ++it2; it2 != parents.endSafe (); ++it2 ) {
+        for ( ++it2; it2 != parents.end (); ++it2 ) {
           // will automatically check if this edge already exists
           __mutableMoralGraph->addEdge ( *it1, *it2 );
         }

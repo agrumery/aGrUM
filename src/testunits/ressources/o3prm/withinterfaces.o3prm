@@ -16,6 +16,7 @@ interface pluggable {
   Boolean jack;
 }
 
+
 class home implements pluggable {
     Boolean usb {
       [0.244165, 0.755835]
@@ -37,6 +38,7 @@ class home implements pluggable {
 class hotel implements pluggable {
     pluggable appart1;
     pluggable appart2;
+
     Boolean usb dependson appart2.dvi {
       [0.0566187, 0.943381, 0.488784, 0.511216]
     };

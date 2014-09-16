@@ -168,6 +168,73 @@ namespace gum {
       /// returns the name of the variable(s) the translator has processed
       void variableNames ( const std::vector<std::string>& db_var,
                            std::vector<std::string>& output_vars ) const;
+
+      /// specify the set of possible values (to do before creating the row filter)
+      /** @param values The user can specify the values which the cell translator
+       * should expect. If none is specified, the cell translator will determine
+       * the values stored in the database by parsing it. If values are specified
+       * and check_database is set to false, then the translator will assume that
+       * the sequence of values specified is exactly what it shall translate and,
+       * therefore, it will not parse the database to initialize itself. However,
+       * if some value encountered during translations does not belong to sequence
+       * values, an exception will be raised during those translations. So,
+       * be sure to give exactly the values the translator should encounter. Also
+       * beware that the domain size of the variable the translator will process
+       * is usually determined by asking the translator how many values it
+       * encountered, so avoid providing values that do not exist in the database
+       * (else this will certainly make scorings/independence tests incorrect).
+       * If sequence "values" is specified and check_database is set to true, then
+       * the translator will initialize itself by parsing the database and will
+       * handle only those values it encountered in the database; sequence values
+       * will then only be used to specifiy the order in which the values
+       * encountered in the database will appear in the set of values of the
+       * variable at the end of the learning. This feature proves particularly
+       * useful for learning non-stationary Bayesian networks.
+       * @param check_database indicates whether we shall parse the database to
+       * initialize the translator.
+       * @warning this method should be used before the translator is copied into
+       * the DBRowFilter, i.e., before the latter is created (as the creation of
+       * the row filter induces the parsing of the database). */
+      void setUserValues ( const Sequence<float>& values,
+                           bool check_database = true );
+
+      /// specify the set of possible values (to do before creating the row filter)
+      /** @param values The user can specify the values which the cell translator
+       * should expect. If none is specified, the cell translator will determine
+       * the values stored in the database by parsing it. If values are specified
+       * and check_database is set to false, then the translator will assume that
+       * the sequence of values specified is exactly what it shall translate and,
+       * therefore, it will not parse the database to initialize itself. However,
+       * if some value encountered during translations does not belong to sequence
+       * values, an exception will be raised during those translations. So,
+       * be sure to give exactly the values the translator should encounter. Also
+       * beware that the domain size of the variable the translator will process
+       * is usually determined by asking the translator how many values it
+       * encountered, so avoid providing values that do not exist in the database
+       * (else this will certainly make scorings/independence tests incorrect).
+       * If sequence "values" is specified and check_database is set to true, then
+       * the translator will initialize itself by parsing the database and will
+       * handle only those values it encountered in the database; sequence values
+       * will then only be used to specifiy the order in which the values
+       * encountered in the database will appear in the set of values of the
+       * variable at the end of the learning. This feature proves particularly
+       * useful for learning non-stationary Bayesian networks.
+       * @param check_database indicates whether we shall parse the database to
+       * initialize the translator.
+       * @warning this method should be used before the translator is copied into
+       * the DBRowFilter, i.e., before the latter is created (as the creation of
+       * the row filter induces the parsing of the database). */
+      void setUserValues ( const Sequence<std::string>& values,
+                           bool check_database = true );
+
+      /// returns the set of translations for string values in the database
+      const Bijection<int,unsigned int>& stringTranslations () const noexcept;
+
+      /// returns the set of translations for number values in the database
+      const Bijection<float,unsigned int>& numberTranslations () const noexcept;
+
+      /// @}
+      
       
     private:
       /// the next max translated value

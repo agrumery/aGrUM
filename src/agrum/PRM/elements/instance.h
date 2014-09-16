@@ -330,7 +330,7 @@ namespace gum {
         /// @{
 
         /// Alias to iterate over the gum::prm::Attribute<GUM_SCALAR> in this Instance<GUM_SCALAR>.
-        typedef typename NodeProperty<Attribute<GUM_SCALAR>*>::iterator_safe iterator;
+        typedef typename NodeProperty<Attribute<GUM_SCALAR>*>::iterator iterator;
 
         /// Returns an iterator at the begining of the list of gum::prm::Attribute<GUM_SCALAR> in
         /// this Instance<GUM_SCALAR>.
@@ -341,7 +341,7 @@ namespace gum {
         const iterator& end();
 
         /// Alias to iterate over the gum::prm::Attribute<GUM_SCALAR> in this Instance<GUM_SCALAR>.
-        typedef typename NodeProperty<Attribute<GUM_SCALAR>*>::const_iterator_safe const_iterator;
+        typedef typename NodeProperty<Attribute<GUM_SCALAR>*>::const_iterator const_iterator;
 
         /// Returns an iterator at the beginning of the list of gum::prm::Attribute<GUM_SCALAR> in
         /// this Instance<GUM_SCALAR>.
@@ -379,7 +379,7 @@ namespace gum {
 
           private:
             Set<Instance<GUM_SCALAR>*>& __set;
-            typename Set<Instance<GUM_SCALAR>*>::iterator_safe __iter;
+            typename Set<Instance<GUM_SCALAR>*>::iterator __iter;
         };
 
         /**
@@ -423,7 +423,7 @@ namespace gum {
 
           private:
             const Set<Instance<GUM_SCALAR>*>& __set;
-            typename Set<Instance<GUM_SCALAR>*>::const_iterator_safe __iter;
+            typename Set<Instance<GUM_SCALAR>*>::const_iterator __iter;
         };
 
         /**
@@ -440,8 +440,8 @@ namespace gum {
          */
         RefConstIterator begin ( NodeId id ) const;
 
-        typedef typename NodeProperty< std::vector< std::pair< Instance<GUM_SCALAR>*, std::string > >* >::iterator_safe InvRefIterator;
-        typedef typename NodeProperty< std::vector< std::pair< Instance<GUM_SCALAR>*, std::string > >* >::const_iterator_safe InvRefConstIterator;
+        typedef typename NodeProperty< std::vector< std::pair< Instance<GUM_SCALAR>*, std::string > >* >::iterator InvRefIterator;
+        typedef typename NodeProperty< std::vector< std::pair< Instance<GUM_SCALAR>*, std::string > >* >::const_iterator InvRefConstIterator;
 
         InvRefIterator beginInvRef();
         const InvRefIterator& endInvRef();

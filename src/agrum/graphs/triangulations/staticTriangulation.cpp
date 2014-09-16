@@ -149,8 +149,7 @@ namespace gum {
 
 
 
-  /// removes redondant fill-ins and compute proper elimination cliques and order
-
+  // removes redondant fill-ins and compute proper elimination cliques and order
   void StaticTriangulation::__computeRecursiveThinning() {
     // apply recursive thinning (fmint, see Kjaerulff (90), "triangulation of
     // graphs - algorithms giving small total state space")
@@ -160,13 +159,11 @@ namespace gum {
     EdgeSet T_prime;
     NodeProperty<unsigned int> R ( __triangulated_graph.size() );
 
-    for ( auto iter_node = __triangulated_graph.nodes().beginSafe();
-          iter_node != __triangulated_graph.nodes().endSafe(); ++iter_node )
-      R.insert ( *iter_node, 0 );
+    for ( const auto node : __triangulated_graph.nodes() )
+      R.insert ( node, 0 );
 
     // the FMINT loop
-    for ( unsigned int i = __added_fill_ins.size() - 1;
-          i < __added_fill_ins.size(); --i ) {
+    for ( unsigned int i = __added_fill_ins.size() - 1; i < __added_fill_ins.size(); --i ) {
       if ( __added_fill_ins[i].size() ) {
         // here apply MINT to T_i = __added_fill_ins[i]
         EdgeSet& T = __added_fill_ins[i];
@@ -187,10 +184,9 @@ namespace gum {
           // find T' (it is equal to the edges (v,w) of T such that
           // the intersection of adj(v,G) and adj(w,G) is complete and such that
           // v and/or w belongs to an extremal node in R
-          for ( EdgeSetIterator iter_edge = T.beginSafe(); iter_edge != T.endSafe();
-                ++iter_edge ) {
-            node1 = iter_edge->first();
-            node2 = iter_edge->second();
+          for ( const auto edge : T ) {
+            node1 = edge.first();
+            node2 = edge.second();
 
             // check if at least one extremal node belongs to R
             if ( ( R[node1] < j ) && ( R[node2] < j ) ) continue;
@@ -208,13 +204,9 @@ namespace gum {
 
             // find the nodes belonging to the intersection of adj(v,G)
             // and adj(w,G)
-            const NodeSet& nei = __triangulated_graph.neighbours ( node1 );
-
-            for ( NodeSetIterator iter_adj = nei.beginSafe();
-                  iter_adj != nei.endSafe(); ++iter_adj ) {
-              if ( __triangulated_graph.existsEdge ( node2, *iter_adj ) )
-                adj.push_back ( *iter_adj );
-            }
+            for ( const auto adjnode : __triangulated_graph.neighbours ( node1 ) )
+              if ( __triangulated_graph.existsEdge ( node2, adjnode ) )
+                adj.push_back ( adjnode );
 
             // check if the intersection is complete
             for ( unsigned int k = 0; k < adj.size() && !incomplete; ++k ) {
@@ -229,7 +221,7 @@ namespace gum {
             adj.clear();
 
             if ( !incomplete ) {
-              T_prime.insert ( *iter_edge );
+              T_prime.insert ( edge );
               R[node1] = j + 1;
               R[node2] = j + 1;
             }
@@ -237,12 +229,11 @@ namespace gum {
 
           // compute the new value of T (i.e. T\T') and update the
           // triangulated graph
-          for ( EdgeSetIterator iter_delete = T_prime.beginSafe();
-                iter_delete != T_prime.endSafe(); ++iter_delete ) {
-            T.erase ( *iter_delete );
-            __triangulated_graph.eraseEdge ( *iter_delete );
+          for ( const auto edge : T_prime ) {
+            T.erase ( edge );
+            __triangulated_graph.eraseEdge ( edge );
 
-            if ( __has_fill_ins ) __fill_ins.erase ( *iter_delete );
+            if ( __has_fill_ins ) __fill_ins.erase ( edge );
           }
 
           if ( T_prime.size() == 0 ) require_mint = false;
@@ -268,17 +259,12 @@ namespace gum {
       numbered_neighbours.insert ( __elim_order[i], 0 );
 
     // perform the maximum cardinality search
-    for ( unsigned int i = __elim_order.size() - 1;
-          i < __elim_order.size(); --i ) {
+    for ( unsigned int i = __elim_order.size() - 1; i < __elim_order.size(); --i ) {
       NodeId node = numbered_neighbours.pop();
       __elim_order[i] = node;
       __reverse_elim_order[node] = i;
 
-      const NodeSet& nei = __triangulated_graph.neighbours ( node );
-
-      for ( NodeSetIterator iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) {
-        NodeId neighbour = *iter;
-
+      for ( const auto neighbour : __triangulated_graph.neighbours ( node ) ) {
         try {
           numbered_neighbours.setPriority
           ( neighbour, 1 + numbered_neighbours.priority ( neighbour ) );
@@ -291,15 +277,9 @@ namespace gum {
       NodeSet& cliques = __elim_cliques.insert ( __elim_order[i], NodeSet() ).second;
       cliques << __elim_order[i] ;
 
-      const NodeSet& nei = __triangulated_graph.neighbours ( __elim_order[i] );
-
-      for ( NodeSetIterator iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) {
-        NodeId neighbour = *iter;
-
-        if ( __reverse_elim_order[neighbour] > i ) {
+      for ( const auto neighbour : __triangulated_graph.neighbours ( __elim_order[i] ) )
+        if ( __reverse_elim_order[neighbour] > i )
           cliques << neighbour ;
-        }
-      }
     }
   }
 
@@ -327,11 +307,10 @@ namespace gum {
       const NodeSet& list_of_nodes = __elim_cliques[clique_i_creator];
       unsigned int child = __original_graph->bound() + 1;
 
-      for ( NodeSetIterator it = list_of_nodes.beginSafe();
-            it != list_of_nodes.endSafe(); ++it ) {
-        unsigned int it_elim_step = __reverse_elim_order[*it];
+      for ( const auto node : list_of_nodes ) {
+        unsigned int it_elim_step = __reverse_elim_order[node];
 
-        if ( ( *it != clique_i_creator ) && ( child > it_elim_step ) )
+        if ( ( node != clique_i_creator ) && ( child > it_elim_step ) )
           child = it_elim_step;
       }
 
@@ -349,29 +328,21 @@ namespace gum {
 
   /// used for computing the junction tree of the maximal prime subgraphs
 
-  void StaticTriangulation::__computeMaxPrimeMergings
-  ( const NodeId node, const NodeId from,
-    std::vector<Arc>& merged_cliques,
-    NodeSet& mark ) const {
+  void StaticTriangulation::__computeMaxPrimeMergings ( const NodeId node, const NodeId from,
+                                                        std::vector<Arc>& merged_cliques,
+                                                        NodeSet& mark ) const {
     mark << node;
 
-    NodeSetIterator iter_sep2;
-    const NodeSet& nei = __junction_tree->neighbours ( node );
-
-    for ( NodeSetIterator iter_sep = nei.beginSafe();
-          iter_sep != nei.endSafe(); ++iter_sep ) {
-      NodeId other_node = *iter_sep;
-
+    for ( const auto other_node : __junction_tree->neighbours ( node ) )
       if ( other_node != from ) {
         const NodeSet& separator = __junction_tree->separator ( node, other_node );
         // check that the separator between node and other_node is complete
         bool complete = true;
 
-        for ( NodeSetIterator iter_sep1 = separator.beginSafe();
-              iter_sep1 != separator.endSafe() && complete; ++iter_sep1 ) {
-          iter_sep2 = iter_sep1;
+        for ( auto iter_sep1 = separator.begin(); iter_sep1 != separator.end() && complete; ++iter_sep1 ) {
+          auto iter_sep2 = iter_sep1;
 
-          for ( ++iter_sep2; iter_sep2 != separator.endSafe(); ++iter_sep2 ) {
+          for ( ++iter_sep2; iter_sep2 != separator.end(); ++iter_sep2 ) {
             if ( !__original_graph->existsEdge ( *iter_sep1, *iter_sep2 ) ) {
               complete = false;
               break;
@@ -385,7 +356,6 @@ namespace gum {
 
         __computeMaxPrimeMergings ( other_node, node, merged_cliques, mark );
       }
-    }
   }
 
 
@@ -405,8 +375,8 @@ namespace gum {
     // clique.
     NodeProperty<NodeId> T_mpd_cliques ( __junction_tree->size() );
 
-    for ( auto iter_cliq = __junction_tree->nodes().beginSafe(); iter_cliq != __junction_tree->nodes().endSafe(); ++iter_cliq )
-      T_mpd_cliques.insert ( *iter_cliq, *iter_cliq );
+    for ( const auto clik : __junction_tree->nodes() )
+      T_mpd_cliques.insert ( clik, clik );
 
     // parse all the separators of the junction tree and test those that are not
     // complete in the orginal graph
@@ -414,10 +384,9 @@ namespace gum {
 
     NodeSet mark;
 
-    for ( auto iter_cliq = __junction_tree->nodes().beginSafe();
-          iter_cliq != __junction_tree->nodes().endSafe(); ++iter_cliq )
-      if ( ! mark.contains ( *iter_cliq ) )
-        __computeMaxPrimeMergings ( *iter_cliq, *iter_cliq, merged_cliques, mark );
+    for ( const auto clik : __junction_tree->nodes() )
+      if ( ! mark.contains ( clik ) )
+        __computeMaxPrimeMergings ( clik, clik, merged_cliques, mark );
 
     // compute the transitive closure of merged_cliques. This one will contain
     // pairs (X,Y) indicating that clique X must be merged with clique Y.
@@ -428,35 +397,25 @@ namespace gum {
     }
 
     // now we can create the max prime junction tree. First, create the cliques
-    for ( NodeProperty< NodeId >::const_iterator_safe iter_clique =
-            T_mpd_cliques.beginSafe();
-          iter_clique != T_mpd_cliques.endSafe(); ++iter_clique ) {
-      if ( iter_clique.key() == iter_clique.val () ) {
-        __max_prime_junction_tree.addNode ( iter_clique.val (),
-                                            __junction_tree->clique ( iter_clique.val () ) );
-      }
-    }
+    for ( const auto & elt : T_mpd_cliques )
+      if ( elt.first == elt.second )
+        __max_prime_junction_tree.addNode ( elt.second,
+                                            __junction_tree->clique ( elt.second ) );
 
     // add to the cliques previously created the nodes of the cliques that were
     // merged into them
-    for ( NodeProperty< NodeId >::const_iterator_safe  iter =
-            T_mpd_cliques.beginSafe(); iter != T_mpd_cliques.endSafe(); ++iter ) {
-      if ( iter.key() != iter.val () ) {
-        const NodeSet& new_clique = __junction_tree->clique ( iter.key() );
-
-        for ( NodeSetIterator iter_node = new_clique.beginSafe();
-              iter_node != new_clique.endSafe(); ++iter_node ) {
+    for ( const auto & elt : T_mpd_cliques )
+      if ( elt.first != elt.second )
+        for ( const auto node : __junction_tree->clique ( elt.first ) ) {
           try {
-            __max_prime_junction_tree.addToClique ( iter.val (), *iter_node );
+            __max_prime_junction_tree.addToClique ( elt.second, node );
           } catch ( DuplicateElement& ) { }
         }
-      }
-    }
 
     // add the edges to the graph
-    for ( auto edge = __junction_tree->edges().beginSafe(); edge != __junction_tree->edges().endSafe(); ++edge ) {
-      NodeId node1 = T_mpd_cliques[edge->first()];
-      NodeId node2 = T_mpd_cliques[edge->second()];
+    for ( const auto edge : __junction_tree->edges() ) {
+      NodeId node1 = T_mpd_cliques[edge.first()];
+      NodeId node2 = T_mpd_cliques[edge.second()];
 
       if ( node1 != node2 ) {
         try {
@@ -470,11 +429,8 @@ namespace gum {
     const NodeProperty<NodeId>& node_2_junction_clique =
       _junction_tree_strategy->createdCliques();
 
-    for ( NodeProperty< NodeId >::const_iterator_safe iter_junction =
-            node_2_junction_clique.beginSafe();
-          iter_junction != node_2_junction_clique.endSafe(); ++iter_junction )
-      __node_2_max_prime_clique.insert ( iter_junction.key(),
-                                         T_mpd_cliques[iter_junction.val()] );
+    for ( const auto & elt : node_2_junction_clique )
+      __node_2_max_prime_clique.insert ( elt.first, T_mpd_cliques[elt.second] );
 
     __has_max_prime_junction_tree = true;
   }
@@ -496,19 +452,16 @@ namespace gum {
       // copy the original graph
       __triangulated_graph = *__original_graph;
 
-      // parse all the cliques of the junction tree
-      NodeSetIterator iter_clique2;
-
-      for ( auto iter_node = __junction_tree->nodes().beginSafe();
-            iter_node != __junction_tree->nodes().endSafe(); ++iter_node ) {
+      for ( const auto clik_id : __junction_tree->nodes() ) {
         // for each clique, add the edges necessary to make it complete
-        const NodeSet& clique = __junction_tree->clique ( *iter_node );
+        const NodeSet& clique = __junction_tree->clique ( clik_id );
         std::vector<NodeId> clique_nodes ( clique.size() );
         unsigned int i = 0;
 
-        for ( NodeSetIterator iter_clique = clique.beginSafe();
-              iter_clique != clique.endSafe(); ++iter_clique, ++i )
-          clique_nodes[i] = *iter_clique;
+        for ( const auto node : clique ) {
+          clique_nodes[i] = node;
+          i += 1;
+        }
 
         for ( i = 0; i < clique_nodes.size(); ++i ) {
           for ( unsigned int j = i + 1; j < clique_nodes.size(); ++j ) {
@@ -591,30 +544,25 @@ namespace gum {
       // when minimality is not required, i.e., we won't apply recursive thinning,
       // the cliques sets can be computed
       if ( !__minimality_required ) {
-        const NodeSet& nei = tmp_graph.neighbours ( removable_node );
         NodeSet& cliques = __elim_cliques.insert ( removable_node, NodeSet() ).second;
-        cliques.resize ( nei.size() / 2 );
+        cliques.resize ( tmp_graph.neighbours ( removable_node ).size() / 2 );
         cliques << removable_node;
 
-        for ( NodeSetIterator iter_edges = nei.beginSafe();
-              iter_edges != nei.endSafe(); ++iter_edges ) {
-          cliques << *iter_edges;
-        }
+        for ( const auto clik : tmp_graph.neighbours ( removable_node ) )
+          cliques << clik;
       } else {
         // here recursive thinning will be applied, hence we need store the
         // fill-ins added by the current node removal
         EdgeSet& current_fill = __added_fill_ins[nb_elim];
-        NodeSetIterator iter_edges2;
         NodeId node1, node2;
 
         const NodeSet& nei = tmp_graph.neighbours ( removable_node );
 
-        for ( NodeSetIterator iter_edges1 = nei.beginSafe();
-              iter_edges1 != nei.endSafe(); ++iter_edges1 ) {
+        for ( auto iter_edges1 = nei.begin(); iter_edges1 != nei.end(); ++iter_edges1 ) {
           node1 = *iter_edges1;
-          iter_edges2 = iter_edges1;
+          auto iter_edges2 = iter_edges1;
 
-          for ( ++iter_edges2; iter_edges2 != nei.endSafe(); ++iter_edges2 ) {
+          for ( ++iter_edges2; iter_edges2 != nei.end(); ++iter_edges2 ) {
             node2 = *iter_edges2;
             Edge edge ( node1, node2 );
 
@@ -630,19 +578,17 @@ namespace gum {
       // compute them, we shall compute them here
       if ( __we_want_fill_ins &&
            ! _elimination_sequence_strategy->providesFillIns() ) {
-        NodeSetIterator iter_edges2;
         NodeId node1, node2;
 
         // add edges between removable_node's neighbours in order to create
         // a clique
         const NodeSet& nei = tmp_graph.neighbours ( removable_node );
 
-        for ( NodeSetIterator iter_edges1 = nei.beginSafe();
-              iter_edges1 != nei.endSafe(); ++iter_edges1 ) {
+        for ( auto iter_edges1 = nei.begin(); iter_edges1 != nei.end(); ++iter_edges1 ) {
           node1 = *iter_edges1;
-          iter_edges2 = iter_edges1;
+          auto iter_edges2 = iter_edges1;
 
-          for ( ++iter_edges2; iter_edges2 != nei.endSafe(); ++iter_edges2 ) {
+          for ( ++iter_edges2; iter_edges2 != nei.end(); ++iter_edges2 ) {
             node2 = *iter_edges2;
             Edge edge ( node1, node2 );
 
@@ -662,17 +608,15 @@ namespace gum {
       _elimination_sequence_strategy->eliminationUpdate ( removable_node );
 
       if ( ! _elimination_sequence_strategy->providesGraphUpdate() ) {
-        NodeSetIterator iter_edges2;
         NodeId node1, node2;
 
         const NodeSet& nei = tmp_graph.neighbours ( removable_node );
 
-        for ( NodeSetIterator iter_edges1 = nei.beginSafe();
-              iter_edges1 != nei.endSafe(); ++iter_edges1 ) {
+        for ( auto iter_edges1 = nei.begin(); iter_edges1 != nei.end(); ++iter_edges1 ) {
           node1 = *iter_edges1;
-          iter_edges2 = iter_edges1;
+          auto iter_edges2 = iter_edges1;
 
-          for ( ++iter_edges2; iter_edges2 != nei.endSafe(); ++iter_edges2 ) {
+          for ( ++iter_edges2; iter_edges2 != nei.end(); ++iter_edges2 ) {
             node2 = *iter_edges2;
             Edge edge ( node1, node2 );
 
@@ -729,19 +673,16 @@ namespace gum {
       // just in case, be sure that the junction tree has been constructed
       if ( ! __has_junction_tree )  junctionTree();
 
-      // parse all the cliques of the junction tree
-      NodeSetIterator iter_clique2;
-
-      for ( auto iter_node = __junction_tree->nodes().beginSafe();
-            iter_node != __junction_tree->nodes().endSafe(); ++iter_node ) {
+      for ( const auto clik_id : __junction_tree->nodes() ) {
         // for each clique, add the edges necessary to make it complete
-        const NodeSet& clique = __junction_tree->clique ( *iter_node );
+        const NodeSet& clique = __junction_tree->clique ( clik_id );
         std::vector<NodeId> clique_nodes ( clique.size() );
         unsigned int i = 0;
 
-        for ( NodeSetIterator iter_clique = clique.beginSafe();
-              iter_clique != clique.endSafe(); ++iter_clique, ++i )
-          clique_nodes[i] = *iter_clique;
+        for ( const auto node : clique ) {
+          clique_nodes[i] = node;
+          i += 1;
+        }
 
         for ( i = 0; i < clique_nodes.size(); ++i ) {
           for ( unsigned int j = i + 1; j < clique_nodes.size(); ++j ) {

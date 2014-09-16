@@ -1490,6 +1490,14 @@ ListIteratorSafe<Val>::ListIteratorSafe() noexcept :
   }
 
 
+  /// the iterator pointing to the end of the List
+  template <typename Val, typename Alloc> INLINE
+  const ListConstIterator<Val>& List<Val, Alloc>::end() const noexcept {
+    return * ( reinterpret_cast<const ListConstIterator<Val>* >
+               ( __list_end ) );
+  }
+
+
   /// the iterator pointing to the rend (just before the beginning) of the List
   template <typename Val, typename Alloc> INLINE
   const ListConstIteratorSafe<Val>& List<Val, Alloc>::crendSafe () const noexcept {
@@ -1522,6 +1530,14 @@ ListIteratorSafe<Val>::ListIteratorSafe() noexcept :
   }
 
 
+  /// the iterator pointing to the rend (just before the beginning) of the List
+  template <typename Val, typename Alloc> INLINE
+  const ListConstIterator<Val>& List<Val, Alloc>::rend() const noexcept {
+    return * ( reinterpret_cast<const ListConstIterator<Val>* >
+               ( __list_end ) );
+  }
+
+
   /// the iterator pointing to the beginning of the List
   template <typename Val, typename Alloc> INLINE
   ListConstIteratorSafe<Val> List<Val, Alloc>::cbeginSafe () const {
@@ -1547,6 +1563,13 @@ ListIteratorSafe<Val>::ListIteratorSafe() noexcept :
   template <typename Val, typename Alloc> INLINE
   ListIterator<Val> List<Val, Alloc>::begin() {
     return ListIterator<Val> { *this };
+  }
+
+
+  /// the iterator pointing to the beginning of the List
+  template <typename Val, typename Alloc> INLINE
+  ListConstIterator<Val> List<Val, Alloc>::begin() const {
+    return ListConstIterator<Val> { *this };
   }
 
 
@@ -1587,6 +1610,16 @@ ListIteratorSafe<Val>::ListIteratorSafe() noexcept :
       return ListIterator<Val> { *this, __nb_elements - 1 };
     else
       return ListIterator<Val> {};
+  }
+
+
+  /// the iterator pointing to the rbegin (the last element) of the List
+  template <typename Val, typename Alloc> INLINE
+  ListConstIterator<Val> List<Val, Alloc>::rbegin() const {
+    if ( __nb_elements )
+      return ListConstIterator<Val> { *this, __nb_elements - 1 };
+    else
+      return ListConstIterator<Val> {};
   }
 
 

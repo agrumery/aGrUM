@@ -36,14 +36,12 @@ namespace gum {
 
       std::ostream& operator<< ( std::ostream& out, const DFSCode& code ) {
         out << "[ ";
+        bool first = true;
 
-        for ( DFSCode::const_iterator iter = code.codes.begin();
-              iter != code.codes.end(); ++iter ) {
-          out << **iter;
-
-          if ( ( iter + 1 ) != code.codes.end() ) {
-            out << ", ";
-          }
+        for ( const auto item : code.codes ) {
+          if ( !first ) out << ", ";
+          out << *item;
+          first = false;
         }
 
         out << " ]";

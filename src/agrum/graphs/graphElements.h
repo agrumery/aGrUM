@@ -122,8 +122,8 @@
   g.addNode();
   g.addNode();
 
-  for ( auto i=g.nodes().begin(); i!=g.nodes().end(); ++i ) {
-    is_id_odd.set( *i, *i % 2 == 0 );
+  for ( auto nodeId : g.nodes()) {
+    is_id_odd.set( nodeId, nodeId % 2 == 0 );
   }
 
   std::cout<<is_id_odd<<std::cout<<std::endl;
@@ -147,10 +147,8 @@
 
   std::cout<<is_id_odd<<std::endl<<std::endl;
 
-  for (gum::NodeProperty<bool>::iterator_safe i=is_id_odd.begin();
-        i!=is_id_odd.end();
-        ++i ) {
-    std::cout<<i.key()<<" : "<<*i<<std::endl;
+  for (const auto & elt :is_id_odd) {
+    std::cout<<i.first<<" : "<<i.second<<std::endl;
   }
   @endcode
 
@@ -174,9 +172,8 @@
   while ( ! nodeFIFO.empty() ) {
     current=nodeFIFO.front();nodeFIFO.popFront();
 
-    const gum::NodeSet& set=g.children( current );
-    for ( gum::NodeSet::const_iterator_safe ite=set.beginSafe();ite!=set.endSafe();++ite ) {
-        gum::NodeId new_one=*ite;
+    const gum::NodeSet& set=;
+    for ( const auto new_one : g.children( current )) {
         if ( mark[new_one]!=0 ) continue; // if this node is already marked, continue
         mark[new_one]=current;
         if ( new_one==n2 ) break; // if we reach n2, stop.
@@ -539,9 +536,9 @@ namespace gum {
   typedef Set<Edge> EdgeSet;
   typedef Set<Arc> ArcSet;
 
-  typedef ArcSet::const_iterator_safe  ArcSetIterator;
-  typedef EdgeSet::const_iterator_safe EdgeSetIterator;
-  typedef NodeSet::const_iterator_safe NodeSetIterator;
+  typedef ArcSet::const_iterator  ArcSetIterator;
+  typedef EdgeSet::const_iterator EdgeSetIterator;
+  typedef NodeSet::const_iterator NodeSetIterator;
   /** @} */
 
   /** \ingroup graph_group

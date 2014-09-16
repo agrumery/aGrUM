@@ -40,7 +40,7 @@ namespace gum_tests {
       void run ( const std::string showSaveFile ) {
 
         gum::FactoredMarkovDecisionProcess<double> fmdp(true);
-        gum::SPUMDD<double> planer ( &fmdp);//, 10 ); // Epsilon is set high, indeed we just want ot check that the algorithm works fine.
+        gum::SPUMDD<double> planer ( &fmdp );//, 10 ); // Epsilon is set high, indeed we just want ot check that the algorithm works fine.
 
         gum::FMDPDatReader<double> reader ( &fmdp, file );
         TS_GUM_ASSERT_THROWS_NOTHING ( reader.trace ( false ) );
@@ -58,10 +58,10 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( planer.initialize() );
         TS_GUM_ASSERT_THROWS_NOTHING ( planer.makePlanning(10000) );
 
-        std::cout << fmdp.toString() << std::endl;
-        std::cout << planer.optimalPolicy()->toDot() << std::endl;
-        for(auto actionIter = fmdp.beginActions(); actionIter != fmdp.endActions(); ++actionIter )
-            std::cout << "Action Id : " << *actionIter << " - Name : " <<fmdp.actionName(*actionIter) << std::endl;
+//        std::cout << fmdp.toString() << std::endl;
+//        std::cout << planer.optimalPolicy()->toDot() << std::endl;
+//        for(auto actionIter = fmdp.beginActions(); actionIter != fmdp.endActions(); ++actionIter )
+//            std::cout << "Action Id : " << *actionIter << " - Name : " <<fmdp.actionName(*actionIter) << std::endl;
       }
 
     public:

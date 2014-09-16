@@ -26,7 +26,7 @@
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-
+#include <agrum/graphs/triangulations/incrementalTriangulation.h>
 
 namespace gum {
 

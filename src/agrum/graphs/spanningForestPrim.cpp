@@ -34,7 +34,7 @@ namespace gum {
 
   /// Default constructor
   SpanningForestPrim::SpanningForestPrim ( const UndiGraph* graph,
-      const EdgeProperty<float>* cost ) :
+                                           const EdgeProperty<float>* cost ) :
     SpanningForest(),
     __graph ( *graph ),
     __costTable ( *cost ),
@@ -97,9 +97,9 @@ namespace gum {
   /// compute the spanning forest
   void SpanningForestPrim::__compute() {
     // compute a spanning tree in every connected component
-    for ( auto iter_node = __graph.nodes().beginSafe(); iter_node != __graph.nodes().endSafe(); ++iter_node ) {
-      if ( ! __spanning_tree.existsNode ( *iter_node ) ) {
-        __computeInAComponent ( *iter_node );
+    for ( const auto node : __graph.nodes() ) {
+      if ( ! __spanning_tree.existsNode ( node ) ) {
+        __computeInAComponent ( node );
       }
     }
 
@@ -151,12 +151,9 @@ namespace gum {
   void SpanningForestPrim::__exploreNode ( const NodeId id ) {
     // add its neighbors __edgesToExplore to indicate that they are
     // potential next nodes to explore
-    const NodeSet& neighbours = __graph.neighbours ( id );
-
-    for ( NodeSet::const_iterator_safe iter = neighbours.beginSafe();
-          iter != neighbours.endSafe(); ++iter ) {
-      if ( ! __spanning_tree.existsNode ( *iter ) ) {
-        Edge edge ( *iter, id );
+    for ( const auto node : __graph.neighbours ( id ) ) {
+      if ( ! __spanning_tree.existsNode ( node ) ) {
+        Edge edge ( node, id );
         __edgesToExplore.insert ( edge, __costTable[edge] );
       }
     }

@@ -56,12 +56,12 @@ namespace gum {
 
     output << __header ( bn ) << std::endl;
 
-    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter ) {
-      output << __variableBloc ( bn.variable ( *iter ) ) << std::endl;
+    for ( auto node : bn.nodes() ) {
+      output << __variableBloc ( bn.variable ( node ) ) << std::endl;
     }
 
-    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter ) {
-      const Potential<GUM_SCALAR>& proba = bn.cpt ( *iter );
+    for ( auto node : bn.nodes() ) {
+      const Potential<GUM_SCALAR>& proba = bn.cpt ( node );
       output << __variableCPT ( proba );
     }
 
@@ -92,12 +92,12 @@ namespace gum {
 
     output << __header ( bn ) << std::endl;
 
-    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter ) {
-      output << __variableBloc ( bn.variable ( *iter ) ) << std::endl;
+    for ( auto node : bn.nodes() ) {
+      output << __variableBloc ( bn.variable ( node ) ) << std::endl;
     }
 
-    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter ) {
-      const Potential<GUM_SCALAR>& proba = bn.cpt ( *iter );
+    for ( auto node : bn.nodes() ) {
+      const Potential<GUM_SCALAR>& proba = bn.cpt ( node );
       output << __variableCPT ( proba );
     }
 
@@ -165,12 +165,11 @@ namespace gum {
   // Returns the header of the BIF file.
   template<typename GUM_SCALAR> INLINE
   std::string
-  BIFWriter<GUM_SCALAR>::__header ( const IBayesNet<GUM_SCALAR>& ) {
+  BIFWriter<GUM_SCALAR>::__header ( const IBayesNet<GUM_SCALAR>& bn ) {
     std::stringstream str;
     std::string tab = "   "; // poor tabulation
-    str << std::endl << "network aGrUM_BN {" << std::endl;
-    str << tab << "property" << " version 1.0;" << std::endl;
-    str << tab << "property" << " author aGrUM;" << std::endl;
+    str << std::endl << "network " << bn.propertyWithDefault ( "name", "unnamedBN" ) << "{" << std::endl;
+    str << tab << "property" << " software aGrUM" << GUM_VERSION << ";" << std::endl;
     str << "}" << std::endl;
     return str.str();
   }
@@ -218,4 +217,4 @@ namespace gum {
 
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

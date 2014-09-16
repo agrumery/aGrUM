@@ -34,9 +34,9 @@ namespace gum {
   gum::Size getMaxModality ( gum::BayesNet<GUM_SCALAR>& bayesNet ) {
     gum::Size maxMod = 0;
 
-    for ( auto iter_node = bayesNet.nodes().beginSafe (); iter_node != bayesNet.nodes().endSafe (); ++iter_node )
-      if ( maxMod < bayesNet.variable ( *iter_node ).domainSize() )
-        maxMod = bayesNet.variable ( *iter_node ).domainSize();
+    for ( auto node : bayesNet.nodes() )
+      if ( maxMod < bayesNet.variable ( node ).domainSize() )
+        maxMod = bayesNet.variable ( node ).domainSize();
 
     return maxMod;
   }
@@ -109,10 +109,10 @@ namespace gum {
       LazyPropagation<GUM_SCALAR> inf ( bayesNetinit );
       inf.makeInference();
 
-      for ( auto it = bayesNetinit.nodes().beginSafe(); it != bayesNetinit.nodes().endSafe(); ++it ) {
+      for ( auto node : bayesNetinit.nodes() ) {
         Potential<GUM_SCALAR>* pottemp = new Potential<GUM_SCALAR>();
-        pottemp->copy ( inf.marginal ( *it ) );
-        _hashMarginal.insert ( *it, pottemp );
+        pottemp->copy ( inf.posterior ( node ) );
+        _hashMarginal.insert ( node, pottemp );
 
       }
 
@@ -124,9 +124,8 @@ namespace gum {
       bayesNetinit = ( IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet );
 
       while ( _hashMarginal.size() ) {
-        delete ( _hashMarginal.beginSafe().val() );
-        _hashMarginal.erase ( _hashMarginal.beginSafe() );
-
+        delete ( _hashMarginal.begin().val() );
+        _hashMarginal.erase ( _hashMarginal.beginSafe() ); // safe iterator needed here.
       }
 
     } else {
@@ -279,24 +278,24 @@ namespace gum {
       }
 
 
-      for ( NodeSetIterator it = __dag.parents ( j ).beginSafe(); it != __dag.parents ( j ).endSafe(); ++it ) {
+      for ( auto node : __dag.parents ( j ) ) {
         NodeSet excluded;
         excluded.insert ( j );
 
-        if ( __connect ( *it, i, excluded ) ) {
-          std::string nameit = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.variable ( *it ).name();
-          IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.eraseArc ( *it, j ); //TODO reflect
+        if ( __connect ( node, i, excluded ) ) {
+          std::string nameit = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.variable ( node ).name();
+          IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.eraseArc ( node, j ); //TODO reflect
           IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addArc ( head, tail ); return;
         }
       }
 
-      for ( NodeSetIterator it = __dag.children ( j ).beginSafe(); it != __dag.children ( j ).endSafe(); ++it ) {
+      for ( auto node : __dag.children ( j ) ) {
         NodeSet excluded;
         excluded.insert ( j );
 
-        if ( __connect ( *it, i, excluded ) ) {
-          std::string nameit = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.variable ( *it ).name();
-          IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.eraseArc ( j, *it );
+        if ( __connect ( node, i, excluded ) ) {
+          std::string nameit = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.variable ( node ).name();
+          IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.eraseArc ( j, node );
           IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addArc ( head, tail ); return;
         }
       }
@@ -392,7 +391,7 @@ namespace gum {
 
     if ( IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().parents ( temp ).size() ) {
       j = temp;
-      NodeSetIterator it = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().parents ( j ).beginSafe();
+      auto it = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().parents ( j ).begin();
       co = rand() % IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().parents ( j ).size();
 
       while ( co-- ) {
@@ -402,7 +401,7 @@ namespace gum {
       i = *it;
     } else if ( IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().children ( temp ).size() ) {
       i = temp;
-      NodeSetIterator it = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().children ( i ).beginSafe();
+      auto it = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().children ( i ).begin();
       co = rand() % IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().children ( i ).size();
 
       while ( co-- ) {
@@ -487,17 +486,14 @@ namespace gum {
 
       NodeSet excluded;
       excluded.insert ( i );
-      const NodeSet set_parent = __dag.parents ( i );
 
-      for ( NodeSetIterator par = set_parent.beginSafe(); par != set_parent.endSafe(); ++par ) {
-        if ( !excluded.exists ( *par ) && __connect ( *par, j, excluded ) )
+      for ( auto par : __dag.parents ( i ) ) {
+        if ( !excluded.exists ( par ) && __connect ( par, j, excluded ) )
           return true;
       }
 
-      const NodeSet  set_children = __dag.children ( i );
-
-      for ( NodeSetIterator par = set_children.beginSafe(); par != set_children.endSafe(); ++par ) {
-        if ( !excluded.exists ( *par ) && __connect ( *par, j, excluded ) )
+      for ( auto chi : __dag.children ( i ) ) {
+        if ( !excluded.exists ( chi ) && __connect ( chi, j, excluded ) )
           return true;
       }
 
@@ -515,17 +511,14 @@ namespace gum {
       return true;
     else {
       excluded.insert ( i );
-      const NodeSet set_parent = __dag.parents ( i );
 
-      for ( NodeSetIterator par = set_parent.beginSafe(); par != set_parent.endSafe(); ++par ) {
-        if ( !excluded.exists ( *par ) && __connect ( *par, j, excluded ) )
+      for ( auto par : __dag.parents ( i ) ) {
+        if ( !excluded.exists ( par ) && __connect ( par, j, excluded ) )
           return true;
       }
 
-      const NodeSet  set_children = __dag.children ( i );
-
-      for ( NodeSetIterator par = set_children.beginSafe(); par != set_children.endSafe(); ++par ) {
-        if ( !excluded.exists ( *par ) && __connect ( *par, j, excluded ) )
+      for ( auto chi : __dag.children ( i ) ) {
+        if ( !excluded.exists ( chi ) && __connect ( chi, j, excluded ) )
           return true;
       }
 
@@ -543,10 +536,9 @@ namespace gum {
     else {
       NodeSet excluded;
       excluded.insert ( tail );
-      const NodeSet  set_children = __dag.children ( tail );
 
-      for ( NodeSetIterator node = set_children.beginSafe(); node != set_children.endSafe(); ++node ) {
-        if ( __directedPath ( *node, head, excluded ) )
+      for ( auto node :  __dag.children ( tail ) ) {
+        if ( __directedPath ( node, head, excluded ) )
           return true;
       }
 
@@ -562,11 +554,10 @@ namespace gum {
     if ( __dag.existsArc ( tail, head ) )
       return true;
     else {
-      const NodeSet  set_children = __dag.children ( tail );
       excluded.insert ( tail );
 
-      for ( NodeSetIterator node = set_children.beginSafe(); node != set_children.endSafe(); ++node ) {
-        if ( !excluded.exists ( *node ) && __directedPath ( *node, head, excluded ) )
+      for ( auto node : __dag.children ( tail ) ) {
+        if ( !excluded.exists ( node ) && __directedPath ( node, head, excluded ) )
           return true;
       }
 

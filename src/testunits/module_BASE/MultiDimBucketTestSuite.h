@@ -382,13 +382,11 @@ namespace gum_tests {
           gum::Size outBucket = 0;
 
           try {
-            for ( gum::Set<const gum::DiscreteVariable*>::iterator_safe iter = bucket->allVariables().beginSafe(); iter != bucket->allVariables().endSafe(); ++iter ) {
-              if ( bucket->contains ( **iter ) ) {
+            for ( const auto var : bucket->allVariables() )
+              if ( bucket->contains ( *var ) )
                 inBucket++;
-              } else {
+              else
                 outBucket++;
-              }
-            }
           } catch ( gum::Exception& e ) {
             std::cerr << std::endl << e.errorContent() << std::endl;
             TS_ASSERT ( false );

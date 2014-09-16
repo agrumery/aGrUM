@@ -171,11 +171,8 @@ namespace gum {
       unsigned int nb_almost = ( ( nb_adj - 1 ) * ( nb_adj - 2 ) ) / 2;
       NodeId node1 = 0;
 
-      for ( NodeSetIterator iterEdge = nei.beginSafe();
-            iterEdge != nei.endSafe(); ++iterEdge ) {
-        node1 = *iterEdge;
-
-        if ( nb_almost == nb - __nb_triangles[ Edge ( *iterEdge, id )] ) {
+      for ( const auto current_node : nei ) {
+        if ( nb_almost == nb - __nb_triangles[ Edge ( current_node, id )] ) {
           // we found the neighbour we were looking for: nb = the number of pairs
           // of neighbours of id that are adjacent. In other words, this is the
           // number of triangles involving node id. Now remove from it the
@@ -184,6 +181,7 @@ namespace gum {
           // then this number should be equal to the set of combinations of
           // all the possible pairs of neighbours of id except node1, hence
           // to nb_almost.
+          node1 = current_node;
           break;
         }
       }
@@ -201,9 +199,7 @@ namespace gum {
 
       // update the number of triangles of the edges and keep track of the
       // nodes involved.
-      for ( NodeSetIterator iter2 = nei.beginSafe(); iter2 != nei.endSafe(); ++iter2 ) {
-        NodeId node2 = *iter2;
-
+      for ( const auto node2 : nei ) {
         if ( ( node2 != node1 ) && !__graph->existsEdge ( node1, node2 ) ) {
           // add the edge
           Edge e1_2 ( node1, node2 );
@@ -228,15 +224,11 @@ namespace gum {
           // triangles as well as the number of adjacent neighbours
           if ( __graph->neighbours ( node1 ).size() <=
                __graph->neighbours ( node2 ).size() ) {
-            const NodeSet& nei1 = __graph->neighbours ( node1 );
-
-            for ( NodeSetIterator iterEdge = nei1.beginSafe();
-                  iterEdge != nei1.endSafe(); ++iterEdge )
-              if ( __graph->existsEdge ( *iterEdge, node2 ) ) {
+            for ( const auto neighbour : __graph->neighbours ( node1 ) )
+              if ( __graph->existsEdge ( neighbour, node2 ) ) {
                 // here iter->other (node1) is a neighbour of node1 and node2
                 // hence there is a new triangle to be taken into account:
                 // that between node1, node2 and iterEdge->other( node1 )
-                NodeId neighbour = *iterEdge;
                 ++nb_n1;
                 ++nb_n2;
                 ++__nb_adjacent_neighbours[neighbour];
@@ -247,15 +239,11 @@ namespace gum {
                   __changed_status.insert ( neighbour );
               }
           } else {
-            const NodeSet& nei2 = __graph->neighbours ( node2 );
-
-            for ( NodeSetIterator iterEdge = nei2.beginSafe();
-                  iterEdge != nei2.endSafe(); ++iterEdge )
-              if ( __graph->existsEdge ( *iterEdge, node1 ) ) {
+            for ( const auto neighbour : __graph->neighbours ( node2 ) )
+              if ( __graph->existsEdge ( neighbour, node1 ) ) {
                 // here iter->other (node2) is a neighbour of node1 and node2
                 // hence there is a new triangle to be taken into account:
                 // that between node1, node2 and iterEdge->other( node2 )
-                NodeId neighbour = *iterEdge;
                 ++nb_n1;
                 ++nb_n2;
                 ++__nb_adjacent_neighbours[neighbour];
@@ -281,19 +269,18 @@ namespace gum {
 
       // update the number of triangles of the edges and keep track of the
       // nodes involved.
-      NodeSetIterator iterEdge2;
       const NodeSet& nei = __graph->neighbours ( id );
 
-      for ( NodeSetIterator iter1 = nei.beginSafe(); iter1 != nei.endSafe(); ++iter1 ) {
+      for ( auto iter1 = nei.begin(); iter1 != nei.end(); ++iter1 ) {
         NodeId node1 = *iter1;
         float log_modal_node1 = ( *__log_modalities ) [node1];
         float& __log_weights_node1 = ( *__log_weights ) [node1];
         bool node1_status = false;
         unsigned int nb_n1 = 0;
 
-        iterEdge2 = iter1;
+        auto iterEdge2 = iter1;
 
-        for ( ++iterEdge2; iterEdge2 != nei.endSafe(); ++iterEdge2 ) {
+        for ( ++iterEdge2; iterEdge2 != nei.end(); ++iterEdge2 ) {
           NodeId node2 = *iterEdge2;
           Edge e1_2 ( node1, node2 );
 
@@ -318,14 +305,10 @@ namespace gum {
 
             if ( __graph->neighbours ( node1 ).size() <=
                  __graph->neighbours ( node2 ).size() ) {
-              const NodeSet& nei1 = __graph->neighbours ( node1 );
-
-              for ( NodeSetIterator iterEdge = nei1.beginSafe();
-                    iterEdge != nei1.endSafe(); ++iterEdge )
-                if ( __graph->existsEdge ( *iterEdge, node2 ) ) {
+              for ( const auto neighbour : __graph->neighbours ( node1 ) )
+                if ( __graph->existsEdge ( neighbour, node2 ) ) {
                   // here iterEdge->other (node1) is a neighbour of
                   // both node1 and node2
-                  NodeId neighbour = *iterEdge;
                   ++nb_n1;
                   ++nb_n2;
                   ++__nb_adjacent_neighbours[neighbour];
@@ -336,14 +319,10 @@ namespace gum {
                     __changed_status.insert ( neighbour );
                 }
             } else {
-              const NodeSet& nei2 = __graph->neighbours ( node2 );
-
-              for ( NodeSetIterator iterEdge = nei2.beginSafe();
-                    iterEdge != nei2.endSafe(); ++iterEdge ) {
-                if ( __graph->existsEdge ( *iterEdge, node1 ) ) {
+              for ( const auto neighbour : __graph->neighbours ( node2 ) ) {
+                if ( __graph->existsEdge ( neighbour, node1 ) ) {
                   // here iterEdge->other (node2) is a neighbour of
                   // both node1 and node2
-                  NodeId neighbour = *iterEdge;
                   ++nb_n1;
                   ++nb_n2;
                   ++__nb_adjacent_neighbours[neighbour];
@@ -416,9 +395,8 @@ namespace gum {
 
     // remove the node and its adjacent edges
     float log_modal_id = ( *__log_modalities ) [id];
-    NodeSetIterator iter2;
 
-    for ( NodeSetIterator iter1 = nei.beginSafe(); iter1 != nei.endSafe(); ++iter1 ) {
+    for ( auto iter1 = nei.begin(); iter1 != nei.end(); ++iter1 ) {
       NodeId node1 = *iter1;
       __nb_adjacent_neighbours[node1] -= nb_adj - 1;
       ( *__log_weights ) [node1] -= log_modal_id;
@@ -428,13 +406,10 @@ namespace gum {
 
       __nb_triangles.erase ( Edge ( node1, id ) );
 
-      iter2 = iter1;
+      auto iter2 = iter1;
 
-      for ( ++iter2; iter2 != nei.endSafe(); ++iter2 ) {
-        NodeId node2 = *iter2;
-        Edge e1_2 ( node1, node2 );
-        --__nb_triangles[e1_2];
-      }
+      for ( ++iter2; iter2 != nei.end(); ++iter2 )
+        --__nb_triangles[Edge ( node1, *iter2 )];
     }
 
     __log_tree_width = std::max ( __log_tree_width, ( *__log_weights ) [id] );
@@ -465,7 +440,7 @@ namespace gum {
 
 
 
-  /// removes a node and its adjacent edges from the underlying __graph
+/// removes a node and its adjacent edges from the underlying __graph
 
   void SimplicialSet::eraseNode ( const NodeId id ) {
     // check if the node we wish to remove actually belongs to the __graph
@@ -476,7 +451,7 @@ namespace gum {
     // remove the node and its adjacent edges
     const NodeSet& nei = __graph->neighbours ( id );
 
-    for ( NodeSetIterator iter = nei.beginSafe(); iter != nei.endSafe(); ++iter )
+    for ( auto iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) // safe iterator needed here
       eraseEdge ( Edge ( *iter, id ) );
 
     switch ( __containing_list[id] ) {
@@ -505,7 +480,7 @@ namespace gum {
 
 
 
-  /// removes a node and its adjacent edges from the underlying __graph
+/// removes a node and its adjacent edges from the underlying __graph
 
   void SimplicialSet::eraseEdge ( const Edge& edge ) {
     // check if the edge we wish to remove actually belongs to the __graph
@@ -527,11 +502,8 @@ namespace gum {
 
     // update the number of triangles and the adjacent neighbours
     unsigned int nb_neigh_n1_n2 = 0;
-    const NodeSet& nei1 = __graph->neighbours ( node1 );
 
-    for ( NodeSetIterator iter1 = nei1.beginSafe(); iter1 != nei1.endSafe(); ++iter1 ) {
-      NodeId othernode = *iter1;
-
+    for ( const auto othernode : __graph->neighbours ( node1 ) ) {
       if ( __graph->existsEdge ( node2, othernode ) ) {
         // udate the number of triangles passing through the egdes of the __graph
         --__nb_triangles[Edge ( node1, othernode )];
@@ -556,10 +528,10 @@ namespace gum {
   }
 
 
-  /// adds a new edge to the __graph and recomputes the simplicial set
+/// adds a new edge to the __graph and recomputes the simplicial set
 
   void SimplicialSet::insertEdge ( NodeId node1, NodeId node2 ) {
-    addEdge ( node1,node2 );
+    addEdge ( node1, node2 );
   }
   void SimplicialSet::addEdge ( NodeId node1, NodeId node2 ) {
     // if the edge already exists, do nothing
@@ -574,11 +546,7 @@ namespace gum {
     unsigned int nb_triangle_in_new_edge = 0;
     unsigned int nb_neigh_n1_n2 = 0;
 
-    const NodeSet& nei1 = __graph->neighbours ( node1 );
-
-    for ( NodeSetIterator iter1 = nei1.beginSafe(); iter1 != nei1.endSafe(); ++iter1 ) {
-      NodeId othernode = *iter1;
-
+    for ( const auto othernode : __graph->neighbours ( node1 ) ) {
       if ( __graph->existsEdge ( node2, othernode ) ) {
         // udate the number of triangles passing through the egdes of the __graph
         ++__nb_triangles[Edge ( node1, othernode )];
@@ -609,7 +577,7 @@ namespace gum {
   }
 
 
-  /// put node id in the correct simplicial/almost simplicial/quasi simplicial list
+/// put node id in the correct simplicial/almost simplicial/quasi simplicial list
 
   void SimplicialSet::__updateList ( const NodeId id ) {
     // check if the node belongs to the __graph
@@ -645,8 +613,8 @@ namespace gum {
     unsigned int nb_almost = ( ( nb_adj - 1 ) * ( nb_adj - 2 ) ) / 2;
     unsigned int nb = __nb_adjacent_neighbours[id];
 
-    for ( NodeSetIterator iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) {
-      if ( nb_almost == nb - __nb_triangles[Edge ( *iter, id )] ) {
+    for ( const auto cur : nei ) {
+      if ( nb_almost == nb - __nb_triangles[Edge ( cur, id )] ) {
         // the node is an almost simplicial node
         if ( belong != __Belong::ALMOST_SIMPLICIAL ) {
           if ( belong == __Belong::SIMPLICIAL )
@@ -694,7 +662,7 @@ namespace gum {
 
 
 
-  /// indicates whether there exists an almost simplicial node
+/// indicates whether there exists an almost simplicial node
 
   bool SimplicialSet::hasAlmostSimplicialNode() {
     // set the limit weight value
@@ -702,7 +670,7 @@ namespace gum {
 
     // update the elements currently in the almost simplicial list that may
     // now be contained in another list
-    for ( NodeSetIterator iter = __changed_status.beginSafe();
+    for ( auto iter = __changed_status.beginSafe();// safe iterator needed here
           iter != __changed_status.endSafe(); ++iter ) {
       if ( __almost_simplicial_nodes.contains ( *iter ) )
         __updateList ( *iter );
@@ -715,7 +683,7 @@ namespace gum {
 
     // if the almost simplicial list does not contain any node that has a low
     // weight, check if a node can enter the almost simplicial list
-    for ( NodeSetIterator iter = __changed_status.beginSafe();
+    for ( auto iter = __changed_status.beginSafe();// safe iterator needed here
           iter != __changed_status.endSafe(); ++iter ) {
       __updateList ( *iter );
 
@@ -728,12 +696,12 @@ namespace gum {
   }
 
 
-  /// indicates whether there exists an almost simplicial node
+/// indicates whether there exists an almost simplicial node
 
   bool SimplicialSet::hasSimplicialNode() {
     // update the elements currently in the simplicial list that may
     // now be contained in another list
-    for ( NodeSetIterator iter = __changed_status.beginSafe();
+    for ( auto iter = __changed_status.beginSafe();// safe iterator needed here
           iter != __changed_status.endSafe(); ++iter ) {
       if ( __simplicial_nodes.contains ( *iter ) )
         __updateList ( *iter );
@@ -745,7 +713,7 @@ namespace gum {
 
     // if the simplicial list does not contain any node, check if a
     // node can enter the simplicial list
-    for ( NodeSetIterator iter = __changed_status.beginSafe();
+    for ( auto iter = __changed_status.beginSafe();// safe iterator needed here
           iter != __changed_status.endSafe(); ++iter ) {
       __updateList ( *iter );
 
@@ -757,7 +725,7 @@ namespace gum {
   }
 
 
-  /// indicates whether there exists a quasi simplicial node
+/// indicates whether there exists a quasi simplicial node
 
   bool SimplicialSet::hasQuasiSimplicialNode() {
     // set the limit weight value
@@ -765,7 +733,7 @@ namespace gum {
 
     // update the elements currently in the quasi simplicial list that may
     // now be contained in another list
-    for ( NodeSetIterator iter = __changed_status.beginSafe();
+    for ( auto iter = __changed_status.beginSafe();// safe iterator needed here
           iter != __changed_status.endSafe(); ++iter ) {
       if ( __quasi_simplicial_nodes.contains ( *iter ) )
         __updateList ( *iter );
@@ -778,7 +746,7 @@ namespace gum {
 
     // if the quasi simplicial list does not contain any node that has a low
     // weight, check if a node can enter the quasi simplicial list
-    for ( NodeSetIterator iter = __changed_status.beginSafe();
+    for ( auto iter = __changed_status.beginSafe();// safe iterator needed here
           iter != __changed_status.endSafe(); ++iter ) {
       __updateList ( *iter );
 
@@ -803,15 +771,13 @@ namespace gum {
     __log_tree_width = std::numeric_limits<float>::max();
     __log_weights->clear();
 
-    for ( auto iter_nodeX = __graph->nodes().beginSafe(); iter_nodeX != __graph->nodes().endSafe(); ++iter_nodeX ) {
-      float log_weight = ( *__log_modalities ) [*iter_nodeX];
+    for ( const auto nodeX : __graph->nodes() ) {
+      float log_weight = ( *__log_modalities ) [nodeX];
 
-      const NodeSet& edges = __graph->neighbours ( *iter_nodeX );
+      for ( const auto & nei : __graph->neighbours ( nodeX ) )
+        log_weight += ( *__log_modalities ) [nei];
 
-      for ( NodeSetIterator iterY = edges.beginSafe() ; iterY != edges.endSafe(); ++iterY )
-        log_weight += ( *__log_modalities ) [*iterY];
-
-      __log_weights->insert ( *iter_nodeX, log_weight );
+      __log_weights->insert ( nodeX, log_weight );
 
       if ( __log_tree_width > log_weight )
         __log_tree_width = log_weight;
@@ -828,30 +794,27 @@ namespace gum {
     // update the __nb_triangles. To count the triangles only once, parse for each
     // node X the set of its neighbours Y,Z that are adjacent to each other and
     // such that the Id of Y and Z are greater than X.
-    NodeSetIterator iterZ;
+    for ( const auto nodeX : __graph->nodes() ) {
+      unsigned int& nb_adjacent_neighbours_idX = __nb_adjacent_neighbours[nodeX];
 
-    for ( auto iter_nodeX = __graph->nodes().beginSafe(); iter_nodeX != __graph->nodes().endSafe(); ++iter_nodeX ) {
-      unsigned int& nb_adjacent_neighbours_idX = __nb_adjacent_neighbours[*iter_nodeX];
+      const NodeSet& nei = __graph->neighbours ( nodeX );
 
-      const NodeSet& nei = __graph->neighbours ( *iter_nodeX );
-
-      for ( NodeSetIterator iterY = nei.beginSafe(); iterY != nei.endSafe(); ++iterY )
-        if ( *iterY > *iter_nodeX ) {
+      for ( auto iterY = nei.begin(); iterY != nei.end(); ++iterY )
+        if ( *iterY > nodeX ) {
           NodeId node_idY = *iterY;
-          unsigned int& nb_adjacent_neighbours_idY =
-            __nb_adjacent_neighbours[node_idY];
+          unsigned int& nb_adjacent_neighbours_idY = __nb_adjacent_neighbours[node_idY];
 
-          iterZ = iterY;
+          auto iterZ = iterY;
 
-          for ( ++iterZ; iterZ != nei.endSafe(); ++iterZ )
-            if ( ( *iterZ > *iter_nodeX ) &&
+          for ( ++iterZ; iterZ != nei.end(); ++iterZ )
+            if ( ( *iterZ > nodeX ) &&
                  __graph->existsEdge ( node_idY, *iterZ ) ) {
               NodeId node_idZ = *iterZ;
               ++nb_adjacent_neighbours_idX;
               ++nb_adjacent_neighbours_idY;
               ++__nb_adjacent_neighbours[node_idZ];
-              ++__nb_triangles[Edge ( *iter_nodeX, node_idY )];
-              ++__nb_triangles[Edge ( *iter_nodeX, node_idZ )];
+              ++__nb_triangles[Edge ( nodeX, node_idY )];
+              ++__nb_triangles[Edge ( nodeX, node_idZ )];
               ++__nb_triangles[Edge ( node_idZ, node_idY )];
             }
         }
@@ -860,7 +823,7 @@ namespace gum {
 
 
 
-  /// initialize the simplicial set w.r.t. a new graph
+/// initialize the simplicial set w.r.t. a new graph
 
   void SimplicialSet::setGraph ( UndiGraph* theGraph,
                                  const NodeProperty<float>* theModalities,
@@ -906,4 +869,6 @@ namespace gum {
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+
 

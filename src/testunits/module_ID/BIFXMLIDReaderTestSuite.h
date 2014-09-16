@@ -131,8 +131,8 @@ namespace gum_tests {
           gum::HashTable<std::string, gum::Id> idMap;
 
 
-          for ( auto iter = net->nodes().beginSafe(); iter != net->nodes().endSafe(); ++iter )
-            idMap.insert ( net->variable ( *iter ).name(), *iter );
+          for ( const auto node : net->nodes() )
+            idMap.insert ( net->variable ( node ).name(), node );
 
           gum::Id decisionVar1Id = idMap["decisionVar1"];
           TS_ASSERT ( net->isDecisionNode ( decisionVar1Id ) );

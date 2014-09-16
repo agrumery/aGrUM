@@ -568,10 +568,8 @@ namespace gum {
       static void assign_values ( Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
                                   const SetInst& i, SetInst& j ) {
         try {
-          for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter = i.variablesSequence().beginSafe();
-                iter != i.variablesSequence().endSafe(); ++iter ) {
-            j.chgVal ( bij.second ( *iter ), i.val ( *iter ) );
-          }
+          for ( const auto var : i.variablesSequence() )
+            j.chgVal ( bij.second ( var ), i.val ( var ) );
         } catch ( NotFound& ) {
           GUM_ERROR ( NotFound, "missing variable in bijection or SetInst" );
         }

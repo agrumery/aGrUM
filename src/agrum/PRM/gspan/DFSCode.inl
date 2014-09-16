@@ -37,32 +37,26 @@ namespace gum {
       DFSCode::DFSCode ( const DFSCode& source ) {
         GUM_CONS_CPY ( DFSCode );
 
-        for ( std::vector<EdgeCode*>::const_iterator iter = source.codes.begin();
-              iter != source.codes.end(); ++iter ) {
-          codes.push_back ( new EdgeCode ( **iter ) );
-        }
+        for ( const auto code :source.codes)
+          codes.push_back ( new EdgeCode ( *code ) );
       }
 
       INLINE
       DFSCode::~DFSCode() {
         GUM_DESTRUCTOR ( DFSCode );
 
-        for ( DFSCode::iterator iter = codes.begin(); iter != codes.end(); ++iter ) {
-          delete *iter;
-        }
+        for ( const auto item :codes)
+          delete item;
       }
 
       INLINE
       DFSCode&
       DFSCode::operator= ( const DFSCode& source ) {
-        for ( DFSCode::iterator iter = codes.begin(); iter != codes.end(); ++iter ) {
-          delete *iter;
-        }
+        for ( const auto item :codes)
+          delete item;
 
-        for ( DFSCode::const_iterator iter = source.codes.begin();
-              iter != source.codes.end(); ++iter ) {
-          codes.push_back ( new EdgeCode ( **iter ) );
-        }
+        for ( const auto srcitem :source.codes )
+          codes.push_back ( new EdgeCode ( *srcitem) );
 
         return *this;
       }

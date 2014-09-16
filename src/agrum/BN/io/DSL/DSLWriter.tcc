@@ -59,10 +59,12 @@ namespace gum {
       GUM_ERROR ( IOError, "Stream states flags are not all unset." );
     }
 
-    output << "net Unnamed\n{\n";
+    output << "net " << bn.propertyWithDefault ( "name", "unnamedBN" ) << std::endl << "{" << std::endl;
 
-    for ( SequenceIteratorSafe<NodeId> iter = bn.topologicalOrder().beginSafe(); iter != bn.topologicalOrder().endSafe(); ++iter ) {
-      output << __variableBloc ( bn, bn.variable ( *iter ) );
+    output << "// property softwar aGrUM " << GUM_VERSION << std::endl << std::endl;
+
+    for ( auto node : bn.topologicalOrder() ) {
+      output << __variableBloc ( bn, bn.variable ( node ) );
     }
 
     output << "};";
@@ -170,4 +172,4 @@ namespace gum {
 
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

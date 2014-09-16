@@ -135,7 +135,7 @@ namespace gum {
       INLINE
       void
       Pattern::insertArc ( NodeId i, NodeId j, LabelData& l ) {
-        addArc ( i,j,l );
+        addArc ( i, j, l );
       }
 
       INLINE
@@ -188,12 +188,9 @@ namespace gum {
         r_path.push_back ( size() );
 
         while ( r_path.front() != 1 ) {
-          const NodeSet& parents = DiGraph::parents ( r_path.front() );
-
-          for ( NodeSetIterator arc = parents.beginSafe();
-                arc != parents.endSafe(); ++arc ) {
-            if ( *arc < r_path.front() ) {
-              r_path.push_front ( *arc );
+          for ( const auto par : parents ( r_path.front() ) ) {
+            if ( par < r_path.front() ) {
+              r_path.push_front ( par );
               break;
             }
           }
@@ -206,13 +203,6 @@ namespace gum {
 
       INLINE const ArcSet& Pattern::arcs() const {
         return DiGraph::arcs();
-      }
-
-
-      INLINE
-      NeighborIterator
-      Pattern::beginNeighbors ( NodeId node ) const {
-        return NeighborIterator ( DiGraph::parents ( node ), DiGraph::children ( node ) );
       }
 
       INLINE
@@ -296,107 +286,6 @@ namespace gum {
           GUM_ERROR ( OperationNotAllowed, "the given node has neighbors" );
         }
       }
-
-
-// NeighborIterator
-
-
-      INLINE
-      NeighborIterator::NeighborIterator ( const NodeSet& parents,
-                                           const NodeSet& children ) :
-        __parents ( &parents ), __children ( &children ),
-        __parent_iterator ( __parents->beginSafe() ),
-        __children_iterator ( __children->beginSafe() ),
-        __iterator ( 0 ), __end_iterator ( 0 ) {
-        GUM_CONSTRUCTOR ( NeighborIterator );
-
-        if ( __parents->empty() ) {
-          __iterator = &__children_iterator;
-          __end_iterator = & ( __children->endSafe() );
-        } else {
-          __iterator = &__parent_iterator;
-          __end_iterator = & ( __parents->endSafe() );
-        }
-      }
-
-      INLINE
-      NeighborIterator::NeighborIterator ( const NeighborIterator& from ) :
-        __parents ( from.__parents ), __children ( from.__children ),
-        __parent_iterator ( from.__parent_iterator ),
-        __children_iterator ( from.__children_iterator ),
-        __iterator ( 0 ), __end_iterator ( from.__end_iterator ) {
-        GUM_CONS_CPY ( NeighborIterator );
-
-        if ( from.__iterator == & ( from.__parent_iterator ) ) {
-          __iterator = &__parent_iterator;
-        } else {
-          __iterator = &__children_iterator;
-        }
-      }
-
-      INLINE
-      NeighborIterator::~NeighborIterator() {
-        GUM_DESTRUCTOR ( NeighborIterator );
-      }
-
-      INLINE
-      NeighborIterator&
-      NeighborIterator::operator++() {
-        ++ ( *__iterator );
-
-        if ( ( __iterator == ( &__parent_iterator ) ) and
-             ( *__iterator ) == ( *__end_iterator ) ) {
-          __iterator = ( &__children_iterator );
-          __end_iterator = & ( __children->endSafe() );
-        }
-
-        return *this;
-      }
-
-      INLINE
-      bool
-      NeighborIterator::isEnd() const {
-        return ( __iterator == ( &__children_iterator ) ) and
-               ( __children_iterator == __children->endSafe() );
-      }
-
-      INLINE
-      bool
-      NeighborIterator::operator!= ( const NeighborIterator& from ) const {
-        return ( *__iterator ) != * ( from.__iterator );
-      }
-
-      INLINE
-      bool
-      NeighborIterator::operator== ( const NeighborIterator& from ) const {
-        return ( *__iterator ) == * ( from.__iterator );
-      }
-
-      INLINE
-      NeighborIterator&
-      NeighborIterator::operator= ( const NeighborIterator& from ) {
-        __parents = from.__parents;
-        __children = from.__children;
-        __parent_iterator = from.__parent_iterator;
-        __children_iterator = from.__children_iterator;
-
-        if ( from.__iterator == & ( from.__parent_iterator ) ) {
-          __iterator = &__parent_iterator;
-          __end_iterator = & ( __parents->endSafe() );
-        } else {
-          __iterator = &__children_iterator;
-          __end_iterator = & ( __children->endSafe() );
-        }
-
-        return *this;
-      }
-
-      INLINE
-      NodeId
-      NeighborIterator::operator*() const {
-        return **__iterator;
-      }
-
     } /* namespace gspan */
   } /* namespace prm */
 } /* namespace gum */

@@ -194,7 +194,7 @@ namespace gum {
       const List<NodeSet>* __subsets;
 
       /// the iterator indicating which is the current subset on which we work
-      List<NodeSet>::const_iterator_safe __subset_iter;
+      List<NodeSet>::const_iterator __subset_iter;
 
       /// the nodes which can be currently eliminated
       NodeSet __nodeset;

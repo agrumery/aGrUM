@@ -76,7 +76,7 @@ namespace gum_tests {
 
       void testWriter_ostream() {
         gum::DSLWriter<double> writer;
-        // Uncomment this to check the ouput
+        // Uncomment this to check the output
         // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
       }
 

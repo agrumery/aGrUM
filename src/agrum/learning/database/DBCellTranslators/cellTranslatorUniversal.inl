@@ -208,6 +208,20 @@ namespace gum {
     }
 
     
+    /// returns the set of translations for string values in the database
+    INLINE const Bijection<int,unsigned int>&
+    CellTranslatorUniversal::stringTranslations () const noexcept {
+      return __strings;
+    }
+    
+
+    /// returns the set of translations for number values in the database
+    INLINE const Bijection<float,unsigned int>&
+    CellTranslatorUniversal::numberTranslations () const noexcept {
+      return __numbers;
+    }
+
+    
   } /* namespace learning */
 
   

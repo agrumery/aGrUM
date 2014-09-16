@@ -31,11 +31,8 @@
 #include <set>
 
 #include <agrum/core/sequence.h>
-
 #include <agrum/core/bijection.h>
-
 #include <agrum/multidim/multiDimSparse.h>
-
 #include <agrum/PRM/elements/classElementContainer.h>
 
 namespace gum {
@@ -307,34 +304,6 @@ namespace gum {
 
         /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](const std::string&).
         const ClassElement<GUM_SCALAR>& operator[] ( const std::string& name ) const;
-
-        /// @}
-        // ========================================================================
-        /// @name Iterators
-        // ========================================================================
-        /// @{
-
-        /// Code alias for iterators over ClassElement<GUM_SCALAR> in this Class<GUM_SCALAR>.
-        typedef typename NodeProperty<ClassElement<GUM_SCALAR>*>::iterator_safe ClassEltIterator;
-
-        /// Returns an iterator at the begin of the node map of the ClassElement<GUM_SCALAR>
-        /// in this Class<GUM_SCALAR>
-        ClassEltIterator begin();
-
-        /// Returns an interator at the end of the node map of the ClassElement<GUM_SCALAR>
-        /// in this Class<GUM_SCALAR>
-        const ClassEltIterator& end();
-
-        /// Code alias for constant iterators over ClassElement<GUM_SCALAR> in this Class<GUM_SCALAR>.
-        typedef typename NodeProperty<ClassElement<GUM_SCALAR>*>::const_iterator_safe const_ClassEltIterator;
-
-        /// Returns a constant iterator at the begin of the node map of
-        /// ClassElement<GUM_SCALAR> in this Class<GUM_SCALAR>
-        const_ClassEltIterator begin() const;
-
-        /// Returns an interator at the end of the node map of the ClassElement<GUM_SCALAR>
-        /// in this Class<GUM_SCALAR>
-        const const_ClassEltIterator& end() const;
 
         /// @}
       protected:

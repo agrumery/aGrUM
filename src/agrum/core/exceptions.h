@@ -35,11 +35,11 @@
 #ifdef NDEBUG
 #define GUM_ERROR_IN_EXPR(type,msg) throw(type(msg))
 #define GUM_ERROR(type,msg) {std::ostringstream __error__str;__error__str<<msg;throw(type(__error__str.str()));}
-#define GUM_SHOWERROR(e) {std::cerr << __FILE__ << ":" << __LINE__ << " " << (e).errorType()<< " - "<< (e).errorContent() << std::endl;}
+#define GUM_SHOWERROR(e) {std::cerr << __FILE__ << ":" << __LINE__ << ": " << (e).errorType()<< " - "<< (e).errorContent() << std::endl;}
 #else
 #define GUM_ERROR_IN_EXPR(type,msg) throw(type(msg))
 #define GUM_ERROR(type,msg) {std::ostringstream __error__str;__error__str<<msg;throw(type(gum::__createMsg(__FILE__,__FUNCTION__,__LINE__,__error__str.str())));}
-#define GUM_SHOWERROR(e) {std::cerr << __FILE__ << ":" << __LINE__ << " " << (e).errorType()<< " - "<< (e).errorContent() << std::endl;std::cerr<<(e).errorCallStack()<<std::endl;}
+#define GUM_SHOWERROR(e) {std::cerr << __FILE__ << ":" << __LINE__ << ": " << (e).errorType()<< " - "<< (e).errorContent() << std::endl;std::cerr<<(e).errorCallStack()<<std::endl;}
 #endif //NDEBUG
 
 #define GUM_MAKE_ERROR(TYPE,SUPERCLASS,MSG)                             \
@@ -102,7 +102,7 @@ namespace gum {
 /// Exception : problem with the size of a HashTable
   GUM_MAKE_ERROR ( HashSize, Exception, "size not admissible in a HashTable" )
 /// Exception : problem with size
-  GUM_MAKE_ERROR ( SizeError, Exception, "size not admissible in a HashTable" )
+  GUM_MAKE_ERROR ( SizeError, Exception, "incorrect size" )
 /// Exception: an empty set is found, where it should not be
   GUM_MAKE_ERROR ( EmptySet, Exception, "an empty set has been found where it should not be" )
 
@@ -126,9 +126,9 @@ namespace gum {
 /// Exception : out of bound
   GUM_MAKE_ERROR ( OutOfBounds, ReferenceError , "Out of bound" )
 /// Exception : out of lower bound
-  GUM_MAKE_ERROR ( OutOfLowerBound, OutOfBounds , "Out of bound" )
+  GUM_MAKE_ERROR ( OutOfLowerBound, OutOfBounds , "Out of lower bound" )
 /// Exception : out of upper bound
-  GUM_MAKE_ERROR ( OutOfUpperBound, OutOfBounds , "Out of bound" )
+  GUM_MAKE_ERROR ( OutOfUpperBound, OutOfBounds , "Out of upper bound" )
 /// Exception : a similar element already exists
   GUM_MAKE_ERROR ( DuplicateElement, ReferenceError , "A similar element already exists" )
 /// Exception : a similar label already exists
@@ -176,7 +176,7 @@ namespace gum {
   GUM_MAKE_ERROR ( PossiblyIncompatibleScoreApriori, Exception,
                    "Due to its weight, the apriori is currently compatible with the score but if you change the weight, it will become incompatible" )
 
-  
+
   /// special exception for syntax errors in files
   class SyntaxError : public IOError {
     protected:

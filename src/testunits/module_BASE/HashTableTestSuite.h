@@ -39,17 +39,17 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( ( table = new gum::HashTable<int, int>() ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( delete table );
 
-        gum::HashTable<int,int> t2 { std::pair<int,int> ( 3,4 ) };
-        table = new gum::HashTable<int,int> ( t2 );
+        gum::HashTable<int, int> t2 { std::pair<int, int> ( 3, 4 ) };
+        table = new gum::HashTable<int, int> ( t2 );
         TS_ASSERT ( *table == t2 );
 
-        gum::HashTable< int,int,MyAlloc<std::pair<int,int> > > t3 ( t2 );
+        gum::HashTable< int, int, MyAlloc<std::pair<int, int> > > t3 ( t2 );
         TS_ASSERT ( t3 == t2 );
 
-        gum::HashTable<int,int> t4 ( t3 );
+        gum::HashTable<int, int> t4 ( t3 );
         TS_ASSERT ( t4 == t3 );
 
-        gum::HashTable<int,int> t5 ( std::move ( *table ) );
+        gum::HashTable<int, int> t5 ( std::move ( *table ) );
         delete table;
 
         t5 = t3;
@@ -63,18 +63,18 @@ namespace gum_tests {
 
       void testMoves () {
         gum::HashTable<int, int> t1 {
-          std::pair<int,int> ( 3,4 ),
-          std::pair<int,int> ( 5,6 )
+          std::pair<int, int> ( 3, 4 ),
+          std::pair<int, int> ( 5, 6 )
         };
 
         gum::HashTable<int, int> t2 {
-          std::pair<int,int> ( 1,4 ),
-          std::pair<int,int> ( 3,6 ),
-          std::pair<int,int> ( 2,7 )
+          std::pair<int, int> ( 1, 4 ),
+          std::pair<int, int> ( 3, 6 ),
+          std::pair<int, int> ( 2, 7 )
         };
 
         gum::HashTable<int, int> t3 {
-          std::pair<int,int> ( 2,7 )
+          std::pair<int, int> ( 2, 7 )
         };
 
         gum::HashTable<int, int> t4 = std::move ( t3 );
@@ -100,11 +100,11 @@ namespace gum_tests {
         TS_ASSERT ( table.exists ( 1 ) );
         TS_ASSERT ( table.exists ( 7 ) );
 
-        std::pair<int,std::string> p ( 8, "toto" );
+        std::pair<int, std::string> p ( 8, "toto" );
         TS_GUM_ASSERT_THROWS_NOTHING ( table.insert ( p ) );
         TS_ASSERT ( table.exists ( 8 ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( table.insert ( std::pair<int,std::string> ( 9,"l" ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( table.insert ( std::pair<int, std::string> ( 9, "l" ) ) );
         TS_ASSERT ( table.exists ( 9 ) );
 
         TS_GUM_ASSERT_THROWS_NOTHING ( table.emplace ( 10, "m" ) );
@@ -181,7 +181,7 @@ namespace gum_tests {
         fill ( table );
         TS_ASSERT_EQUALS ( table.size(), ( gum::Size ) 6 );
 
-        gum::HashTable<int, std::string>::iterator_safe iter = table.beginSafe();
+        gum::HashTable<int, std::string>::iterator_safe iter = table.beginSafe();//safe iterator needed here
 
         TS_GUM_ASSERT_THROWS_NOTHING ( table.erase ( iter ) );
         TS_ASSERT_EQUALS ( table.size(), ( gum::Size ) 5 );
@@ -191,7 +191,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( table.erase ( iter ) );
         TS_ASSERT_EQUALS ( table.size(), ( gum::Size ) 4 );
 
-        iter = table.beginSafe();
+        iter = table.beginSafe();//safe iterator needed here
         TS_GUM_ASSERT_THROWS_NOTHING ( table.erase ( iter ) );
         TS_ASSERT_EQUALS ( table.size(), ( gum::Size ) 3 );
 
@@ -368,7 +368,7 @@ namespace gum_tests {
 
 
       void testGenCopyOperator() {
-        gum::HashTable<int, std::string, MyAlloc<std::pair<int,std::string> > > t2;
+        gum::HashTable<int, std::string, MyAlloc<std::pair<int, std::string> > > t2;
         gum::HashTable<int, std::string> t1, t3;
         fill ( t1 );
 
@@ -513,11 +513,8 @@ namespace gum_tests {
           expected.insert ( t1[i] );
         }
 
-        for ( gum::HashTable<int, std::string>::iterator_safe iter = t1.beginSafe();
-              iter != t1.endSafe();
-              ++ iter ) {
-          obtained.insert ( iter.val() );
-        }
+        for ( const auto & elt : t1 )
+          obtained.insert ( elt.second );
 
         TS_ASSERT_EQUALS ( expected.size(), obtained.size() );
 
@@ -536,10 +533,8 @@ namespace gum_tests {
           expected.insert ( t1[i] );
         }
 
-        for ( gum::HashTable<int, std::string>::iterator_safe iter = t1.beginSafe();
-              iter != t1.endSafe(); ++iter ) {
-          obtained.insert ( iter.val() );
-        }
+        for ( const auto & elt : t1 )
+          obtained.insert ( elt.second );
 
         TS_ASSERT_EQUALS ( expected.size(), obtained.size() );
 
@@ -572,12 +567,12 @@ namespace gum_tests {
 
       void test_float_pair_hash() {
         unsigned int size = 20;
-        gum::HashTable<std::pair<float,float>, unsigned int> t1;
+        gum::HashTable<std::pair<float, float>, unsigned int> t1;
 
         for ( unsigned int i = 0; i < size; ++i ) {
           float nb1 = i + i * 0.01;
           float nb2 = i * 2;
-          t1.insert ( std::pair<float,float> ( nb1,nb2 ), i * 1000 + i );
+          t1.insert ( std::pair<float, float> ( nb1, nb2 ), i * 1000 + i );
         }
 
         std::vector<float> vect ( size + 1 );
@@ -587,7 +582,7 @@ namespace gum_tests {
         }
 
         for ( unsigned int i = 0; i < size; ++i ) {
-          std::pair<float,float> thepair ( vect[i],2.0*i );
+          std::pair<float, float> thepair ( vect[i], 2.0 * i );
           TS_ASSERT ( t1.exists ( thepair ) );
           TS_ASSERT ( t1[thepair] == i * 1000 + i );
         }
@@ -617,12 +612,12 @@ namespace gum_tests {
 
       void test_double_pair_hash() {
         unsigned int size = 20;
-        gum::HashTable<std::pair<double,double>, unsigned int> t1;
+        gum::HashTable<std::pair<double, double>, unsigned int> t1;
 
         for ( unsigned int i = 0; i < size; ++i ) {
           double nb1 = i + i * 0.01;
           double nb2 = i * 2;
-          t1.insert ( std::pair<double,double> ( nb1,nb2 ), i * 1000 + i );
+          t1.insert ( std::pair<double, double> ( nb1, nb2 ), i * 1000 + i );
         }
 
         std::vector<double> vect ( size + 1 );
@@ -632,7 +627,7 @@ namespace gum_tests {
         }
 
         for ( unsigned int i = 0; i < size; ++i ) {
-          std::pair<double,double> thepair ( vect[i],2.0*i );
+          std::pair<double, double> thepair ( vect[i], 2.0 * i );
           TS_ASSERT ( t1.exists ( thepair ) );
           TS_ASSERT ( t1[thepair] == i * 1000 + i );
         }
@@ -680,7 +675,7 @@ namespace gum_tests {
           std::string s;
           int k = 0;
 
-          for ( auto iter = table.cbeginSafe (); iter != table.cendSafe (); ++iter ) {
+          for ( auto iter = table.cbeginSafe (); iter != table.cendSafe (); ++iter ) {//safe iterator needed here
             s = iter.val ();
             k += iter.key ();
           }
@@ -689,7 +684,7 @@ namespace gum_tests {
 
           k = 0;
 
-          for ( auto iter = table.beginSafe (); iter != table.endSafe (); ++iter ) {
+          for ( auto iter = table.beginSafe (); iter != table.endSafe (); ++iter ) {//safe iterator needed here
             s = iter.val ();
             k += iter.key ();
           }
@@ -714,15 +709,23 @@ namespace gum_tests {
 
           TS_ASSERT ( k == 21 );
 
+          k = 0;
+
+          for ( const auto & elt : table ) {
+            s = elt.second;
+            k += elt.first;
+          }
+
+          TS_ASSERT ( k == 21 );
 
           gum::HashTableConstIterator<int, std::string>
           iter1 = table.cbegin ();
           gum::HashTableIterator<int, std::string>
           iter2 = table.begin ();
           gum::HashTableConstIteratorSafe<int, std::string>
-          iter3 = table.cbeginSafe ();
+          iter3 = table.cbeginSafe ();//safe iterator needed here
           gum::HashTableIteratorSafe<int, std::string>
-          iter4 = table.beginSafe ();
+          iter4 = table.beginSafe ();//safe iterator needed here
 
 
           //TS_ASSERT ( *iter1 == *iter2 );

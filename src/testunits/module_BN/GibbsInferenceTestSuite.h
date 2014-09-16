@@ -211,37 +211,37 @@ namespace gum_tests {
 
 
         try {
-          const gum::Potential<float>& marginal = inf.marginal ( i1 );
-          printPotential ( marginal );
+          const gum::Potential<float>& posterior = inf.posterior ( i1 );
+          printPotential ( posterior );
         } catch ( gum::Exception e ) {
           TS_ASSERT ( false );
         }
 
         try {
-          const gum::Potential<float>& marginal = inf.marginal ( i2 );
-          printPotential ( marginal );
+          const gum::Potential<float>& posterior = inf.posterior ( i2 );
+          printPotential ( posterior );
         } catch ( gum::Exception e ) {
           std::cerr << e.errorContent() << std::endl;
           TS_ASSERT ( false );
         }
 
         try {
-          const gum::Potential<float>& marginal = inf.marginal ( i3 );
-          printPotential ( marginal );
+          const gum::Potential<float>& posterior = inf.posterior ( i3 );
+          printPotential ( posterior );
         } catch ( gum::Exception e ) {
           TS_ASSERT ( false );
         }
 
         try {
-          const gum::Potential<float>& marginal = inf.marginal ( i4 );
-          printPotential ( marginal );
+          const gum::Potential<float>& posterior = inf.posterior ( i4 );
+          printPotential ( posterior );
         } catch ( gum::Exception e ) {
           TS_ASSERT ( false );
         }
 
         try {
-          const gum::Potential<float>& marginal = inf.marginal ( i5 );
-          printPotential ( marginal );
+          const gum::Potential<float>& posterior = inf.posterior ( i5 );
+          printPotential ( posterior );
         } catch ( gum::Exception e ) {
           TS_ASSERT ( false );
 
@@ -272,36 +272,36 @@ namespace gum_tests {
         }
 
         try {
-          const gum::Potential<float>& marginal = inf.marginal ( i1 );
-          printPotential ( marginal );
+          const gum::Potential<float>& posterior = inf.posterior ( i1 );
+          printPotential ( posterior );
         } catch ( gum::Exception e ) {
           TS_ASSERT ( false );
         }
 
         try {
-          const gum::Potential<float>& marginal = inf.marginal ( i2 );
-          printPotential ( marginal );
+          const gum::Potential<float>& posterior = inf.posterior ( i2 );
+          printPotential ( posterior );
         } catch ( gum::Exception e ) {
           TS_ASSERT ( false );
         }
 
         try {
-          const gum::Potential<float>& marginal = inf.marginal ( i3 );
-          printPotential ( marginal );
+          const gum::Potential<float>& posterior = inf.posterior ( i3 );
+          printPotential ( posterior );
         } catch ( gum::Exception e ) {
           TS_ASSERT ( false );
         }
 
         try {
-          const gum::Potential<float>& marginal = inf.marginal ( i4 );
-          printPotential ( marginal );
+          const gum::Potential<float>& posterior = inf.posterior ( i4 );
+          printPotential ( posterior );
         } catch ( gum::Exception e ) {
           TS_ASSERT ( false );
         }
 
         try {
-          const gum::Potential<float>& marginal = inf.marginal ( i5 );
-          printPotential ( marginal );
+          const gum::Potential<float>& posterior = inf.posterior ( i5 );
+          printPotential ( posterior );
         } catch ( gum::Exception e ) {
           TS_ASSERT ( false );
         }

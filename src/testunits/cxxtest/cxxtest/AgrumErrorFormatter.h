@@ -142,7 +142,7 @@ namespace CxxTest {
       }
 
       void failedTest ( const char* file, unsigned line, const char* expression ) {
-        stop ( file, line ) << "Error: Test failed: " <<
+        stop ( file, line ) << "Error: Test failed " <<
                             expression << endl;
       }
 
@@ -241,6 +241,12 @@ namespace CxxTest {
         newLine();
         reportTest();
         return ( *_o ) << file << _preLine << line << _postLine << ": ";
+      }
+
+      OutputStream& specialStop ( const char* file, unsigned line ) {
+        newLine();
+        reportTest();
+        return ( *_o ) << file << "<" << line << "> ";
       }
 
       void newLine ( void ) {

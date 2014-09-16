@@ -129,11 +129,6 @@ namespace gum {
           /// @}
 
           /**
-          * @brief Print the representation of a calling variable on std::cout.
-          */
-          void print() const;
-
-          /**
           * @brief Get the string representation of a calling variable.
           * @return The string representation of the calling variable.
           */
@@ -333,11 +328,6 @@ namespace gum {
           void clear();
 
           /**
-          * @brief Print the representation of a calling expression on std::cout.
-          */
-          void print() const;
-
-          /**
           * @brief Get the string representation of a calling expression.
           * @return The string representation of the calling expression.
           */
@@ -474,11 +464,6 @@ namespace gum {
           friend std::ostream& operator<< ( std::ostream& out, const LpRow& row );    // calls row.toString(), friend is useless but good for documentation purpose
 
           /**
-          * @brief Print the representation of a calling row on std::cout.
-          */
-          void print() const;
-
-          /**
           * @brief Get the string representation of a calling row.
           * @return The string representation of the calling row.
           */
@@ -606,11 +591,6 @@ namespace gum {
           * @return A copy of the variables as a vector of variables.
           */
           std::vector< LpCol > getCols() const;
-
-          /**
-          * @brief Print the representation of a calling linear program on std::cout.
-          */
-          void print() const;
 
           /**
           * @brief Get the string representation of a calling linear program.

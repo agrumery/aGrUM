@@ -55,8 +55,8 @@ namespace gum_tests {
         gum::Set<gum::NodeId> query, hardEvidence;
         gum::Sequence<gum::NodeId> nodes_seq;
 
-        for ( auto node = bn->nodes().beginSafe(); node != bn->nodes().endSafe(); ++node )
-          nodes_seq.insert ( *node );
+        for ( const auto node : bn->nodes())
+          nodes_seq.insert ( node );
 
         for ( gum::Idx i = 0; i < 5; ++i )
           hardEvidence.insert ( nodes_seq.atPos ( i ) );

@@ -55,11 +55,12 @@ namespace gum {
 
     output << __header ( bn ) << std::endl;
 
-    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter )
-      output << __variableBloc ( bn.variable ( *iter ) ) << std::endl;
+    for ( auto node : bn.nodes() )
+      output << __variableBloc ( bn.variable ( node ) ) << std::endl;
 
-    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter )
-      output << __variableCPT ( bn.cpt ( *iter ) );
+
+    for ( auto node : bn.nodes() )
+      output << __variableCPT ( bn.cpt ( node ) );
 
     output << std::endl;
 
@@ -88,11 +89,12 @@ namespace gum {
 
     output << __header ( bn ) << std::endl;
 
-    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter )
-      output << __variableBloc ( bn.variable ( *iter ) ) << std::endl;
 
-    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter )
-      output << __variableCPT ( bn.cpt ( *iter ) );
+    for ( auto node : bn.nodes() )
+      output << __variableBloc ( bn.variable ( node ) ) << std::endl;
+
+    for ( auto node : bn.nodes() )
+      output << __variableCPT ( bn.cpt ( node ) );
 
     output << std::endl;
 
@@ -173,11 +175,14 @@ namespace gum {
 // Returns the header of the BN file.
   template<typename GUM_SCALAR> INLINE
   std::string
-  NetWriter<GUM_SCALAR>::__header ( const IBayesNet<GUM_SCALAR>& ) {
+  NetWriter<GUM_SCALAR>::__header ( const IBayesNet<GUM_SCALAR>& bn ) {
     std::stringstream str;
     std::string tab = "   "; // poor tabulation
     str << std::endl << "net {" << std::endl;
-    str << "node_size = (50 50);" << std::endl << "}" << std::endl;
+    str << "  name = " << bn.propertyWithDefault ( "name", "unnamedBN" ) << ";" << std::endl;
+    str << "  software = \"aGrUM " << GUM_VERSION << "\";" << std::endl;
+    str << "  node_size = (50 50);" << std::endl;
+    str << "}" << std::endl;
     return str.str();
   }
 
@@ -195,18 +200,14 @@ namespace gum {
     }
 
     str << ");" << std::endl;
-    str << tab << "label = \"" << var.name()  << "\";";
-    str << tab << "ID = \"" << var.name()  << "\";";
+    str << tab << "label = \"" << var.name()  << "\";" << std::endl;
+    str << tab << "ID = \"" << var.name()  << "\";" << std::endl;
 
     str << "}" << std::endl;
+
     return str.str();
   }
-
-// Returns the modalities labels of the variables in varsSeq
-
 } /* namespace gum */
 
-
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
 

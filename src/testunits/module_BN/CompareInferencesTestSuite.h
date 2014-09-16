@@ -186,22 +186,19 @@ namespace gum_tests {
         inf_gibbs.setMinEpsilonRate ( 1e-5 );
         TS_GUM_ASSERT_THROWS_NOTHING ( inf_gibbs.makeInference() );
 
-        {
-          for ( auto it = bn->nodes().beginSafe(); it != bn->nodes().endSafe(); ++it ) {
-            gum::NodeId i = *it;
-            const gum::Potential<double>& marginal_gibbs = inf_gibbs.marginal ( i );
-            const gum::Potential<double>& marginal_ShaShe = inf_ShaShe.marginal ( i );
-            const gum::Potential<double>& marginal_LazyProp = inf_LazyProp.marginal ( i );
-            const gum::Potential<double>& marginal_ValElim = inf_ValElim.marginal ( i );
+        for ( const auto i : bn->nodes() ) {
+          const gum::Potential<double>& marginal_gibbs = inf_gibbs.posterior ( i );
+          const gum::Potential<double>& marginal_ShaShe = inf_ShaShe.posterior ( i );
+          const gum::Potential<double>& marginal_LazyProp = inf_LazyProp.posterior ( i );
+          const gum::Potential<double>& marginal_ValElim = inf_ValElim.posterior ( i );
 
-            gum::Instantiation I; I << bn->variable ( *it );
+          gum::Instantiation I; I << bn->variable ( i );
 
-            for ( I.setFirst() ; ! I.end() ; ++I ) {
-              TS_ASSERT_DELTA ( marginal_gibbs[I], marginal_ShaShe[I], 5e-3 ); // APPROX INFERENCE
-              TS_ASSERT_DELTA ( marginal_LazyProp[I], marginal_ShaShe[I], 1e-10 ); // EXACT INFERENCE
-              TS_ASSERT_DELTA ( marginal_LazyProp[I], marginal_ValElim[I], 1e-10 ); // EXACT INFERENCE
-              TS_ASSERT_DELTA ( marginal_ShaShe[I], marginal_ValElim[I], 1e-10 ); // EXACT INFERENCE
-            }
+          for ( I.setFirst() ; ! I.end() ; ++I ) {
+            TS_ASSERT_DELTA ( marginal_gibbs[I], marginal_ShaShe[I], 5e-3 ); // APPROX INFERENCE
+            TS_ASSERT_DELTA ( marginal_LazyProp[I], marginal_ShaShe[I], 1e-10 ); // EXACT INFERENCE
+            TS_ASSERT_DELTA ( marginal_LazyProp[I], marginal_ValElim[I], 1e-10 ); // EXACT INFERENCE
+            TS_ASSERT_DELTA ( marginal_ShaShe[I], marginal_ValElim[I], 1e-10 ); // EXACT INFERENCE
           }
         }
       }
@@ -289,7 +286,7 @@ namespace gum_tests {
           inf.setVerbosity ( false );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.3529, 3e-2 );
             ++I;
@@ -300,7 +297,7 @@ namespace gum_tests {
           inf.insertEvidence ( list_pot );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.082, 1e-2 );
             ++I;
@@ -312,7 +309,7 @@ namespace gum_tests {
           gum::LazyPropagation<float> inf ( *bn );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.3529, 1e-7 );
             ++I;
@@ -323,7 +320,7 @@ namespace gum_tests {
           inf.insertEvidence ( list_pot );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.082, 1e-7 );
             ++I;
@@ -335,7 +332,7 @@ namespace gum_tests {
           gum::ShaferShenoyInference<float> inf ( *bn );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.3529, 1e-5 );
             ++I;
@@ -346,7 +343,7 @@ namespace gum_tests {
           inf.insertEvidence ( list_pot );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.082, 1e-7 );
             ++I;
@@ -358,7 +355,7 @@ namespace gum_tests {
           gum::VariableElimination<float> inf ( *bn );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.3529, 1e-5 );
             ++I;
@@ -369,7 +366,7 @@ namespace gum_tests {
           inf.insertEvidence ( list_pot );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.082, 1e-7 );
             ++I;
@@ -377,9 +374,8 @@ namespace gum_tests {
           }
         }
 
-        for ( gum::List< gum::Potential< float > const* >::iterator_safe it = list_pot.beginSafe(); it != list_pot.endSafe(); ++it ) {
-          delete *it;
-        }
+        for ( const auto pot : list_pot )
+          delete pot;
 
         delete e_i1;
         delete e_i4;
@@ -414,12 +410,12 @@ namespace gum_tests {
           gum::LazyPropagation<float> infShaf ( *net );
           infShaf.makeInference();
 
-          for ( auto it = net->nodes().beginSafe(); it != net->nodes().endSafe(); ++it ) {
+          for ( const auto node : net->nodes() ) {
             gum::Instantiation I;
-            I << net->variable ( *it );
+            I << net->variable ( node );
 
             for ( I.setFirst(); ! I.end(); ++I ) {
-              TS_ASSERT_DELTA ( infLazy.marginal ( *it ) [I], infShaf.marginal ( *it ) [I], 1e-6 );
+              TS_ASSERT_DELTA ( infLazy.posterior ( node ) [I], infShaf.posterior ( node ) [I], 1e-6 );
             }
           }
         }

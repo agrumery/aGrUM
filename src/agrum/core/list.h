@@ -546,6 +546,15 @@ namespace gum {
      * element erased. */
     const iterator& end () noexcept;
 
+    /// returns an unsafe const iterator pointing to the end of the List
+    /** Unsafe const iterators are a little bit faster than safe const iterators
+     * and they consume less memory. However, if the element they point to is
+     * erased, their dereference or their increment/decrement will produce a mess,
+     * probably a segfault. You should use them only when performance is an
+     * issue and if you are sure that they will never point to an
+     * element erased. */
+    const const_iterator& end () const noexcept;
+
     /** @brief returns an unsafe const iterator pointing just before the
      * beginning of the List
      *
@@ -566,6 +575,17 @@ namespace gum {
      * element erased. */
     const iterator& rend () noexcept;
 
+    /** @brief returns an unsafe const iterator pointing just before the
+     * beginning of the List
+     *
+     * Unsafe const iterators are a little bit faster than safe const iterators
+     * and they consume less memory. However, if the element they point to is
+     * erased, their dereference or their increment/decrement will produce a mess,
+     * probably a segfault. You should use them only when performance is an
+     * issue and if you are sure that they will never point to an
+     * element erased. */
+    const const_iterator& rend () const noexcept;
+
     /// returns an unsafe const iterator pointing to the beginning of the List
     /** Unsafe const iterators are a little bit faster than safe const iterators
      * and they consume less memory. However, if the element they point to is
@@ -584,6 +604,15 @@ namespace gum {
      * element erased. */
     iterator begin ();
 
+    /// returns an unsafe const iterator pointing to the beginning of the List
+    /** Unsafe const iterators are a little bit faster than safe const iterators
+     * and they consume less memory. However, if the element they point to is
+     * erased, their dereference or their increment/decrement will produce a mess,
+     * probably a segfault. You should use them only when performance is an
+     * issue and if you are sure that they will never point to an
+     * element erased. */
+    const_iterator begin () const;
+
     /// returns an unsafe const iterator pointing to the last element of the List
     /** Unsafe iterators are a little bit faster than safe iterators and
      * they consume less memory. However, if the element they point to is
@@ -601,6 +630,15 @@ namespace gum {
      * issue and if you are sure that they will never point to an
      * element erased. */
     iterator rbegin ();
+
+    /// returns an unsafe const iterator pointing to the last element of the List
+    /** Unsafe iterators are a little bit faster than safe iterators and
+     * they consume less memory. However, if the element they point to is
+     * erased, their dereference or their increment/decrement will produce a mess,
+     * probably a segfault. You should use them only when performance is an
+     * issue and if you are sure that they will never point to an
+     * element erased. */
+    const_iterator rbegin () const;
 
     /// @}
 

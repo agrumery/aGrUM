@@ -115,13 +115,13 @@ namespace gum {
   }
 
 
-  /// @{
-  /// publishing Errors API
+  // @{
+  // publishing Errors API
   template<typename GUM_SCALAR> INLINE
   unsigned int NetReader<GUM_SCALAR>::errLine ( unsigned int i ) {
     if ( __parseDone ) return __parser->errors().line ( i );
     else {
-      GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+      GUM_ERROR ( OperationNotAllowed, "Net file not parsed yet" );
     }
   }
 
@@ -130,7 +130,7 @@ namespace gum {
   unsigned int NetReader<GUM_SCALAR>::errCol ( unsigned int i ) {
     if ( __parseDone ) return __parser->errors().col ( i );
     else {
-      GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+      GUM_ERROR ( OperationNotAllowed, "Net file not parsed yet" );
     }
   }
 
@@ -139,7 +139,7 @@ namespace gum {
   bool NetReader<GUM_SCALAR>::errIsError ( unsigned int i ) {
     if ( __parseDone ) return __parser->errors().is_error ( i );
     else {
-      GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+      GUM_ERROR ( OperationNotAllowed, "Net file not parsed yet" );
     }
   }
 
@@ -148,7 +148,7 @@ namespace gum {
   std::string NetReader<GUM_SCALAR>::errMsg ( unsigned int i ) {
     if ( __parseDone ) return std::string ( narrow ( __parser->errors().msg ( i ) ) );
     else {
-      GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+      GUM_ERROR ( OperationNotAllowed, "Net file not parsed yet" );
     }
   }
 
@@ -157,7 +157,7 @@ namespace gum {
   void NetReader<GUM_SCALAR>::showElegantErrors ( std::ostream& o ) {
     if ( __parseDone ) __parser->errors().elegantErrors ( o );
     else {
-      GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+      GUM_ERROR ( OperationNotAllowed, "Net file not parsed yet" );
     }
   }
 
@@ -166,7 +166,7 @@ namespace gum {
   void NetReader<GUM_SCALAR>::showElegantErrorsAndWarnings ( std::ostream& o ) {
     if ( __parseDone ) __parser->errors().elegantErrorsAndWarnings ( o );
     else {
-      GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+      GUM_ERROR ( OperationNotAllowed, "Net file not parsed yet" );
     }
   }
 
@@ -174,7 +174,7 @@ namespace gum {
   void NetReader<GUM_SCALAR>::showErrorsAndWarnings ( std::ostream& o ) {
     if ( __parseDone ) __parser->errors().simpleErrorsAndWarnings ( o );
     else {
-      GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+      GUM_ERROR ( OperationNotAllowed, "Net file not parsed yet" );
     }
   }
 
@@ -183,7 +183,7 @@ namespace gum {
   void NetReader<GUM_SCALAR>::showErrorCounts ( std::ostream& o ) {
     if ( __parseDone ) __parser->errors().syntheticResults ( o );
     else {
-      GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
+      GUM_ERROR ( OperationNotAllowed, "Net file not parsed yet" );
     }
   }
 
@@ -199,9 +199,7 @@ namespace gum {
     return ( ! __parseDone ) ? ( Size ) 0 : __parser->errors().warning_count;
   }
 
-  /// @}
+  // @}
 } // namespace
 
 #endif //DOXYGEN_SHOULD_SKIP_THIS
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

@@ -327,7 +327,7 @@ namespace gum {
 
     const NodeSet& parents = this->_model.parents ( from );
 
-    for ( NodeSetIterator parentIter = parents.beginSafe(); parentIter != parents.endSafe(); ++parentIter ) {
+    for ( auto parentIter = parents.beginSafe(); parentIter != parents.endSafe(); ++parentIter ) {
       for ( std::vector< NodeId >::iterator iter = this->_arcMap[*parentIter]->begin(); iter != this->_arcMap[*parentIter]->end(); ++iter )
         if ( *iter == from ) {
           Idx modality = std::distance ( this->_arcMap[*parentIter]->begin(), iter );

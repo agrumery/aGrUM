@@ -171,8 +171,8 @@ namespace gum_tests {
 
         gum::Instantiation Order;
 
-        for ( gum::Sequence<gum::NodeId>::iterator_safe it = bn->topologicalOrder().beginSafe(); it != bn->topologicalOrder().endSafe(); ++it )
-          Order.add ( bn->variable ( *it ) );
+        for ( const auto node : bn->topologicalOrder() )
+          Order.add ( bn->variable ( node ) );
 
 
         const gum::Potential<double>& pot = bn->cpt ( i5 );

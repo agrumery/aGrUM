@@ -203,7 +203,6 @@ namespace gum {
        * If this is not a slave, copies aI.
        * @throw OperationNotAllowed
        */
-
       Instantiation& operator= ( const Instantiation& aI );
 
 
@@ -223,7 +222,6 @@ namespace gum {
        *
        * @param aMD the array the variables of which are those of the Instantiation
        */
-
       Instantiation ( MultiDimAdressable& aMD );
 
 
@@ -243,7 +241,6 @@ namespace gum {
        *
        * @param aMD the array the variables of which are those of the Instantiation
        */
-
       Instantiation ( const MultiDimAdressable& aMD );
 
 
@@ -263,7 +260,6 @@ namespace gum {
        *
        * @param aMD the array the variables of which are those of the Instantiation
        */
-
       Instantiation ( MultiDimAdressable* aMD );
 
 
@@ -283,12 +279,9 @@ namespace gum {
        *
        * @param aMD the array the variables of which are those of the Instantiation
        */
-
       Instantiation ( const MultiDimAdressable* aMD );
 
-
       /// Destructor.
-
       ~Instantiation();
 
       /// @}
@@ -300,7 +293,6 @@ namespace gum {
 
 
       /// Returns the number of variables in the Instantiation.
-
       Idx nbrDim() const ;
 
 
@@ -323,7 +315,6 @@ namespace gum {
        * @throw DuplicateElement
        * @throw OperationNotAllowed
        */
-
       void add ( const DiscreteVariable& v );
 
 
@@ -340,7 +331,6 @@ namespace gum {
        * @throw NotFound
        * @throw OperationNotAllowed Raised if the instantiation is a slave.
        */
-
       void erase ( const DiscreteVariable& v );
 
       /**
@@ -351,7 +341,6 @@ namespace gum {
 
 
       /// Returns the product of the variable's domain size in the Instantiation.
-
       Size domainSize() const ;
 
 
@@ -359,7 +348,6 @@ namespace gum {
        * Returns the position of the variable v.
        * @throw NotFound Raised if v does not belong to the instantiation.
        */
-
       Idx pos ( const DiscreteVariable& v ) const;
 
 
@@ -374,7 +362,6 @@ namespace gum {
        * @param i The index of the variable.
        * @throw NotFound Raised if the element cannot be found.
        */
-
       Idx val ( Idx i ) const;
 
 
@@ -389,7 +376,6 @@ namespace gum {
        * @param var The variable the value of which we wish to know.
        * @throw NotFound Raised it var does not belong to the instantiation.
        */
-
       Idx val ( const DiscreteVariable& var ) const;
 
 
