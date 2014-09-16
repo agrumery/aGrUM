@@ -33,11 +33,11 @@
 
 #define xstrfy(s) strfy(s)
 #define strfy(x) #x
-#define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/run/ressources/FMDP/" #x
+#define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/run/ressources/" #x
 
 void run( const std::string sourceFilePath, const std::string traceFilePath, gum::Idx nbVar, ... ) {
 
-  for( gum::Idx nbTest = 0; nbTest < 50; ++nbTest) {
+//  for( gum::Idx nbTest = 0; nbTest < 50; ++nbTest) {
 
     gum::Idx nbIte = 0;
     double rDisc = 0.0;
@@ -50,13 +50,11 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
     reader.trace ( false );
     reader.proceed( );
 
-    std::cout << fmdp.size() << std::endl;
-    exit(0);
     // *********************************************************************************************
     // Initialisation des divers objets
     // *********************************************************************************************
     gum::Simulator sim(&fmdp);
-    gum::SPIMDDI spim;
+    gum::SPIMDDI spim(0.9,0.0001,0.9,0.9,100,10,0.1);
     gum::Instantiation initialState, endState;
 
     // Enregistrement des actions possibles auprès de SPIMDDI
@@ -145,13 +143,21 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
 
 
 
-    std::ofstream traceFile;
-    std::stringstream traceFileName;
-    traceFileName << traceFilePath << "." << nbTest << ".csv";
-    traceFile.open ( traceFileName.str(), std::ios::out | std::ios::trunc );
-    if ( !traceFile ) {
-      return;
-    }
+//    std::ofstream traceFile;
+//    std::stringstream traceFileName;
+//    traceFileName << traceFilePath << "." << nbTest << ".csv";
+//    traceFile.open ( traceFileName.str(), std::ios::out | std::ios::trunc );
+//    if ( !traceFile ) {
+//      return;
+//    }
+
+//    std::ofstream fmdpFile;
+//    std::stringstream fmdpFileName;
+//    fmdpFileName << traceFilePath << "." << nbTest << ".TOSTRING.dot";
+//    fmdpFile.open ( fmdpFileName.str(), std::ios::out | std::ios::trunc );
+//    if ( !fmdpFile ) {
+//      return;
+//    }
 
     for( gum::Idx nbRun = 0; nbRun < 1000; ++nbRun ){
 
@@ -165,7 +171,7 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
 
         spim.feedback(sim.currentState(), sim.reward());
 
-        rDisc = sim.reward() + 0.99*rDisc;
+        rDisc = sim.reward() + 0.9*rDisc;
 
         if(! visitedStatesCheck->get(sim.currentState())){
           nbVisitedState++;
@@ -194,14 +200,17 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
           visitedStatesCheck->manager()->setSon(parId, parModa, trueId);
         }
 
-        traceFile << nbTest << "\t" << nbIte << "\t" << nbRun << "\t" << nbVisitedState
-                  << "\t" << spim.learnerSize() << "\t" << spim.modelSize() << "\t" << spim.optimalPolicySize()
-                  << std::setprecision(15)  << "\t" << rDisc << std::endl;
+//        traceFile << nbTest << "\t" << nbIte << "\t" << nbRun << "\t" << nbVisitedState
+//                  << "\t" << spim.learnerSize() << "\t" << spim.modelSize() << "\t" << spim.optimalPolicySize()
+//                  << std::setprecision(15)  << "\t" << rDisc << std::endl;
+
+//        if(nbIte == 100 || nbIte == 1000)
+//          fmdpFile << spim.toString() << std::endl << "========================================================================================" << std::endl;
         nbIte++;
       }
       sim.setInitialStateRandomly();
     }
-    traceFile.close();
+//    traceFile.close();
 
 //    std::ofstream modelFile;
 //    std::stringstream modelFileName;
@@ -214,7 +223,8 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
 //    modelFile << spim.toString();
 
 //    modelFile.close();
- }
+//    fmdpFile << spim.toString() << std::endl;
+// }
 
   std::cout << "FIN EVALUATION" << std::endl;
 
@@ -227,7 +237,8 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
 void runCoffee(){
   std::string varName("huc");
   std::string varModa("yes");
-  run ( GET_PATH_STR ( coffee/coffee.dat ), GET_PATH_STR ( trace.Coffee ), 1, varName.c_str(), varModa.c_str() );
+  std::cout << "hello" << std::endl;
+  run ( GET_PATH_STR ( FMDP/coffee/coffee.dat ), GET_PATH_STR ( FMDP/trace.Coffee ), 1, varName.c_str(), varModa.c_str() );
 }
 
 
@@ -235,16 +246,141 @@ void runCoffee(){
 // Run the tests on a Factory FMDP
 // *******************************************************************************
 void runFactory(){
-  run ( GET_PATH_STR ( factory/factory.dat ), GET_PATH_STR ( trace.Factory ), 0 );
+  std::string varName("connected");
+  std::string varModa("yes");
+  std::cout << "hello" << std::endl;
+  run ( GET_PATH_STR ( FMDP/factory/factory.dat ), GET_PATH_STR ( FMDP/trace.Factory ), 0 );
 }
-
 
 // *******************************************************************************
 // The main function
 // *******************************************************************************
 int main ( int argc, char* argv[] ) {
 
-  runCoffee();
+//  runCoffee();
 //  runFactory();
+
+for(gum::Idx nbTest=1; nbTest < 27; nbTest++ ){
+  std::vector<std::string> vnv;
+  std::vector<gum::Idx> vmv;
+
+  std::stringstream inputFileName;
+  inputFileName << GET_PATH_STR(dataBNs/)  <<  nbTest << "-10000.csv";
+
+
+  // ############################################################################
+  // Informations Récupération
+  // ############################################################################
+  std::ifstream fichier(inputFileName.str(), std::ios::in);  // on ouvre le fichier en lecture
+
+  if(!fichier) { // si l'ouverture a réussi
+    std::cerr << "Impossible d'ouvrir le fichier : " << inputFileName.str() << "!" << std::endl;
+    return 1;
+  }
+
+  std::string ligne;
+  std::istringstream iss1;
+  std::string mot;
+
+  std::cout << "DEBUT CARACTERISATION VARIABLES" << std::endl;
+  std::getline(fichier, ligne);
+  iss1.str(ligne);
+  while( std::getline(iss1, mot, ',') ){
+    vnv.push_back( mot );
+    vmv.push_back( 1 );
+  }
+
+  while( std::getline(fichier, ligne) ){
+      std::istringstream iss2(ligne);
+      std::string moda;
+
+      int index = 0;
+      while( std::getline(iss2, moda, ',') ){
+//              std::cout << moda << " - " << std::stoi(moda) << std::endl;
+        gum::Idx value = std::stoi(moda);
+        if( value > vmv[index])
+          vmv[index] = value;
+        index++;
+      }
+  }
+
+  fichier.close();  // on ferme le fichier
+
+  std::cout << "FIN CARACTERISATION VARIABLES" << std::endl;
+
+
+  // REMBOBINAGE
+//  fichier.seekg(0, std::ios::beg);
+//  if(fichier.eof())
+//    std::cout << "Oh Dear we're in trouble!" << std::endl;
+//  std::getline(fichier,ligne);
+
+  // ############################################################################
+  // Learning phase :
+  // ############################################################################
+  gum::MultiDimDecisionGraph<double>* target = new gum::MultiDimDecisionGraph<double>();
+  gum::Set<const gum::DiscreteVariable*> varList;
+  std::vector<const gum::DiscreteVariable*> vv(vnv.size());
+  for(gum::Idx i = 0; i < vnv.size() - 1; i++ ){
+    vv[i] = new gum::LabelizedVariable(vnv[i],"",vmv[i]+1);
+    varList << vv[i];
+  }
+  gum::LabelizedVariable* value = new gum::LabelizedVariable(vnv[vnv.size()-1],"",vmv[vmv.size()-1]+1);
+  gum::IMDDI learner(target, 0.95, 0.95, varList, value);
+
+  fichier.open(inputFileName.str(), std::ios::in);  // on ouvre le fichier en lecture
+
+  if(!fichier) { // si l'ouverture a réussi
+    std::cerr << "Impossible d'ouvrir le fichier : " << inputFileName.str() << "!" << std::endl;
+    return 1;
+  }
+  std::getline(fichier, ligne);
+
+  std::ofstream traceFile;
+  std::stringstream traceFileName;
+  traceFileName << GET_PATH_STR(/) << nbTest << ".csv";
+  traceFile.open ( traceFileName.str(), std::ios::out | std::ios::trunc );
+  if ( !traceFile ) {
+    return 2;
+  }
+
+
+  gum::Idx nbIte = 0;
+  while( std::getline(fichier, ligne) ){
+    std::istringstream iss2(ligne);
+    std::string moda;
+
+    gum::Idx index = 0;
+    std::cout << "Taking new Observation into account : " << nbIte << std::endl;
+    gum::Observation* obs = new gum::Observation();
+    while( std::getline(iss2, moda, ',') ){
+//        std::cout << index << "-" << std::stoi(moda) << std::endl;
+      if( index < vv.size() - 1 ){
+//        std::cout << "attribut " << vv[index]->toString() << std::endl;
+        obs->setModality(vv[index],std::stoi(moda));
+      }else{
+//        std::cout << "value " << value->toString() << std::endl;
+        obs->setModality(value, std::stoi(moda));
+      }
+      index++;
+    }
+//    std::cout << obs->toString() << std::endl;
+    gum::Timer timy;
+    timy.reset();
+    learner.addObservation( obs );
+    double tempAdd = timy.step();
+    learner.updateOrderedTree();
+    double tempUp = timy.step();
+    learner.toDG();
+    double tempCon = timy.step();
+    traceFile << nbIte << ";" << tempAdd << ";" << tempUp << ";" << tempCon << std::endl;
+    nbIte++;
+  }
+
+  fichier.close();  // on ferme le fichier
+  traceFile.close();
+}
+
+//  return 0;
   return EXIT_SUCCESS;
 }
