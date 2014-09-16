@@ -1,6 +1,7 @@
+
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
- *   {prenom.nom}@lip6.fr                                                  *
+ *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,16 +18,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#include <agrum/FMDP/learning/observation.h>
-
-namespace gum {
-
-std::string Observation::toString(){
-    std::stringstream status;
-    for( auto varIter = __varInst.beginSafe(); varIter != __varInst.endSafe(); ++varIter )
-        status << "|" << varIter.key()->name() << "-" << varIter.val() << "|";
-    status << std::endl;
-    return status.str();
-}
-} // end of namespace gum
+/**
+ * @file
+ * @brief Sources of the Link and LinkedList classes.
+ *
+ * @author Jean-Christophe Magnan
+ *
+ */
+#include <agrum/multidim/decisionGraphUtilities/link.h>

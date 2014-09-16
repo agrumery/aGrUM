@@ -58,6 +58,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( planer.initialize() );
         TS_GUM_ASSERT_THROWS_NOTHING ( planer.makePlanning(10000) );
 
+        std::cout << fmdp.toString() << std::endl;
         std::cout << planer.optimalPolicy()->toDot() << std::endl;
         for(auto actionIter = fmdp.beginActions(); actionIter != fmdp.endActions(); ++actionIter )
             std::cout << "Action Id : " << *actionIter << " - Name : " <<fmdp.actionName(*actionIter) << std::endl;

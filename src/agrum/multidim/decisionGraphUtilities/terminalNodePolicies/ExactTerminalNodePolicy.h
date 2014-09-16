@@ -1,0 +1,68 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/**
+ * @file
+ * @brief Headers of the ExactTerminalNodePolicy
+ *
+ * @author Jean-Christophe Magnan
+ *
+ */
+#ifndef GUM_MULTI_DIM_DECISION_GRAPH_EXACT_TERMINAL_NODE_POLICY_H
+#define GUM_MULTI_DIM_DECISION_GRAPH_EXACT_TERMINAL_NODE_POLICY_H
+
+// ============================================================================
+#include <agrum/core/bijection.h>
+// ============================================================================
+#include <agrum/graphs/nodeGraphPart.h>
+// ============================================================================
+#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/ITerminalNodePolicy.h>
+// ============================================================================
+
+namespace gum {
+
+  /**
+   * @class ExactTerminalNodePolicy ExactTerminalNodePolicy.h <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
+   *
+   * @brief Implementation of a Terminal Node Policy that maps nodeid directly to value
+   *
+   * @ingroup multidim_group
+   */
+  template <typename GUM_SCALAR>
+  class ExactTerminalNodePolicy : public ITerminalNodePolicy<GUM_SCALAR> {
+
+    public:
+
+      void addValue( const NodeId& n, const GUM_SCALAR& v) { __map.insert(n,v); }
+      void eraseValue( const NodeId& n ) { __map.eraseFirst(n); }
+      void clearValueMap() { __map.clear(); }
+
+      bool existsNode( const NodeId& n ) const { return __map.existsFirst(n); }
+      bool existsValue( const GUM_SCALAR& v ) const { return __map.existsSecond(v); }
+
+      const GUM_SCALAR& nodeId2Value( const NodeId& n ) const { return __map.second(n); }
+      const NodeId& value2NodeId( const GUM_SCALAR& v ) const { return __map.first(v); }
+
+    private:
+      Bijection<NodeId, GUM_SCALAR> __map;
+  };
+
+} // End of namespace gum
+
+#endif /* GUM_MULTI_DIM_DECISION_GRAPH_INTERFACE_TERMINAL_NODE_POLICY_H */

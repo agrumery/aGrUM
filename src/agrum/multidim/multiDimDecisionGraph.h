@@ -41,7 +41,7 @@
 #include <agrum/multidim/multiDimDecisionGraphManager.h>
 #include <agrum/multidim/decisionGraphUtilities/internalNode.h>
 #include <agrum/multidim/decisionGraphUtilities/link.h>
-#include <agrum/multidim/decisionGraphUtilities/ExactTerminalNodePolicy.h>
+#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
 // ============================================================================
 
 namespace gum {

@@ -117,6 +117,8 @@ namespace gum {
       Idx __nbObservation;
       HashTable<Idx,Idx> __valueCount;
 
+      bool stale;
+
 
   };
 

@@ -150,7 +150,7 @@ namespace gum {
 
 //========================================================================
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/patterns/DGUtility/o4DGContext.inl>
+#include <agrum/multidim/decisionGraphUtilities/o4DGContext.inl>
 #endif /* GUM_NO_INLINE */
 //========================================================================
 

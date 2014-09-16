@@ -28,6 +28,8 @@
 // ============================================================================
 #include <agrum/multidim/multiDimDecisionGraphManager.h>
 // ============================================================================
+#include <agrum/multidim/decisionGraphUtilities/link.h>
+// ============================================================================
 
 #define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
 #define DEALLOCATE(x,y) SmallObjectAllocator::instance().deallocate(x,y)
