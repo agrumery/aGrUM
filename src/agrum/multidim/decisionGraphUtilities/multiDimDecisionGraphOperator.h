@@ -30,6 +30,7 @@
 // =======================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
 #include <agrum/multidim/decisionGraphUtilities/o4DGContext.h>
+#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
 // =======================================================
 
 namespace gum {
@@ -41,7 +42,9 @@ namespace gum {
  *
  */
 
-  template <typename GUM_SCALAR, template <typename> class FUNCTOR >
+  template <typename GUM_SCALAR,
+            template <typename> class FUNCTOR,
+            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy >
   class MultiDimDecisionGraphOperator
   {
     public:
@@ -53,7 +56,8 @@ namespace gum {
       // ============================================================================
       /// Default constructor.
       // ============================================================================
-      MultiDimDecisionGraphOperator( const MultiDimDecisionGraph<GUM_SCALAR>* DG1, const MultiDimDecisionGraph<GUM_SCALAR>* DG2 );
+      MultiDimDecisionGraphOperator( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* DG1,
+                                     const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* DG2 );
 
       // ============================================================================
       /// Default destructor.
@@ -70,7 +74,7 @@ namespace gum {
       // ============================================================================
       /// Computes and builds the Decision Graph that is the result of the operation
       // ============================================================================
-      MultiDimDecisionGraph<GUM_SCALAR> *compute();
+      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *compute();
 
     /// @}
 
@@ -85,13 +89,16 @@ namespace gum {
       // ============================================================================
       /// Heuristic methods to decide which of two retrograde variables should come first
       // ============================================================================
-      Idx __distance(const MultiDimDecisionGraph<GUM_SCALAR> *, const DiscreteVariable*, const DiscreteVariable*);
+      Idx __distance(const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *,
+                     const DiscreteVariable*,
+                     const DiscreteVariable*);
 
       // ============================================================================
       /// Establish for each node in both decision graph if it has retrograde variables
       /// beneath it
       // ============================================================================
-      void __findRetrogradeVariables( const MultiDimDecisionGraph<GUM_SCALAR>* dg, HashTable<NodeId, short int*>& dgInstNeed);
+      void __findRetrogradeVariables( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* dg,
+                                      HashTable<NodeId, short int*>& dgInstNeed);
 
       // ============================================================================
       /// The main recursion function
@@ -103,17 +110,17 @@ namespace gum {
       // ============================================================================
       /// One of the two decision graphs used for the operation
       // ============================================================================
-      const MultiDimDecisionGraph<GUM_SCALAR>* __DG1;
+      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG1;
 
       // ============================================================================
       /// The other one
       // ============================================================================
-      const MultiDimDecisionGraph<GUM_SCALAR>* __DG2;
+      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG2;
 
       // ============================================================================
       /// The resulting decision graph
       // ============================================================================
-      MultiDimDecisionGraph<GUM_SCALAR>* __rd;
+      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
 
       // ============================================================================
       /// The total number of variable implied in the operation

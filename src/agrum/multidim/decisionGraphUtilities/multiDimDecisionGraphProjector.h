@@ -29,6 +29,7 @@
 #define GUM_MULTI_DIM_DECISION_GRAPH_PROJECTOR_H
 // =======================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
 // =======================================================
 
 namespace gum {
@@ -40,7 +41,9 @@ namespace gum {
  *
  */
 
-  template <typename GUM_SCALAR, template <typename> class FUNCTOR >
+  template <typename GUM_SCALAR,
+            template <typename> class FUNCTOR,
+            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
   class MultiDimDecisionGraphProjector
   {
     public:
@@ -52,7 +55,7 @@ namespace gum {
       // ============================================================================
       /// Default constructor.
       // ============================================================================
-      MultiDimDecisionGraphProjector( const MultiDimDecisionGraph<GUM_SCALAR>* src,
+      MultiDimDecisionGraphProjector( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* src,
                                       const Set<const DiscreteVariable*>& delVars,
                                       const GUM_SCALAR neutral );
 
@@ -71,7 +74,7 @@ namespace gum {
       // ============================================================================
       /// Computes and builds the Decision Graph that is the result of the Projection
       // ============================================================================
-      MultiDimDecisionGraph<GUM_SCALAR>* project();
+      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* project();
 
 //      void __maker(Set<const DiscreteVariable*> remainingVar, Sequence<const DiscreteVariable*> seq, std::string tab);
 //      MultiDimDecisionGraph<GUM_SCALAR>* __project(Sequence<const DiscreteVariable*> seq);
@@ -84,7 +87,7 @@ namespace gum {
       // ============================================================================
       /// One of the two decision graphs used for the Projection
       // ============================================================================
-      const MultiDimDecisionGraph<GUM_SCALAR>* __src;
+      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __src;
 
       // ============================================================================
       /// The list of variables on which the projection is performed
@@ -94,7 +97,7 @@ namespace gum {
       // ============================================================================
       /// The resulting decision graph
       // ============================================================================
-      MultiDimDecisionGraph<GUM_SCALAR>* __rd;
+      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
 
       // ============================================================================
       /// The function to be performed on the leaves

@@ -36,14 +36,18 @@ namespace gum {
   /* ***************************************************************************************************************************** */
   /* CONSTRUCTOR                                                          */
   /* ***************************************************************************************************************************** */
-  template <typename GUM_SCALAR, template <typename> class FUNCTOR >
-  MultiDimDecisionGraphProjector<GUM_SCALAR, FUNCTOR>::MultiDimDecisionGraphProjector( const MultiDimDecisionGraph<GUM_SCALAR>* src,
-                                                                                       const Set<const DiscreteVariable*>& delVars,
-                                                                                       const GUM_SCALAR neutral ):
-                                                                                       __src( src ),
-                                                                                       __delVars( delVars ),
-                                                                                       __function(),
-                                                                                       __neutral( neutral ){
+  template <typename GUM_SCALAR,
+            template <typename> class FUNCTOR,
+            template <typename> class TerminalNodePolicy>
+  MultiDimDecisionGraphProjector<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::MultiDimDecisionGraphProjector(
+      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* src,
+      const Set<const DiscreteVariable*>& delVars,
+      const GUM_SCALAR neutral ):
+      __src( src ),
+      __delVars( delVars ),
+      __function(),
+      __neutral( neutral ){
+
     GUM_CONSTRUCTOR(MultiDimDecisionGraphProjector);
     __rd = new MultiDimDecisionGraph<GUM_SCALAR>();
   }
@@ -53,8 +57,10 @@ namespace gum {
   /* ***************************************************************************************************************************** */
   /* DESTRUCTOR                                                          */
   /* ***************************************************************************************************************************** */
-  template <typename GUM_SCALAR, template <typename> class FUNCTOR >
-  MultiDimDecisionGraphProjector<GUM_SCALAR, FUNCTOR>::~MultiDimDecisionGraphProjector( ){
+  template <typename GUM_SCALAR,
+            template <typename> class FUNCTOR,
+            template <typename> class TerminalNodePolicy>
+  MultiDimDecisionGraphProjector<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::~MultiDimDecisionGraphProjector( ){
     GUM_DESTRUCTOR(MultiDimDecisionGraphProjector);
   }
 
@@ -65,9 +71,11 @@ namespace gum {
   /*                                                                */
   /* This function is the main function. To be call every time an Projection between the two given Decision Graphs is required   */
   /* ***************************************************************************************************************************** */
-  template <typename GUM_SCALAR, template <typename> class FUNCTOR >
-  MultiDimDecisionGraph<GUM_SCALAR>*
-  MultiDimDecisionGraphProjector<GUM_SCALAR, FUNCTOR>::project(){
+  template <typename GUM_SCALAR,
+            template <typename> class FUNCTOR,
+            template <typename> class TerminalNodePolicy>
+  MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*
+  MultiDimDecisionGraphProjector<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::project(){
 
 
 

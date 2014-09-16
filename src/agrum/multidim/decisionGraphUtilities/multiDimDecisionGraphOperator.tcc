@@ -37,18 +37,20 @@ namespace gum {
     /* ***************************************************************************************************************************** */
     /* CONSTRUCTOR                                                                                                                   */
     /* ***************************************************************************************************************************** */
-    template <typename GUM_SCALAR, template <typename> class FUNCTOR >
-    MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR>::MultiDimDecisionGraphOperator( const MultiDimDecisionGraph<GUM_SCALAR>* DG1,
-                                                                                       const MultiDimDecisionGraph<GUM_SCALAR>* DG2 ):
-                                                                                       __DG1( DG1 ),
-                                                                                       __DG2( DG2 ),
-                                                                                       __function(),
-                                                                                       __DG1InstantiationNeeded(DG1->realSize(),true,false),
-                                                                                       __DG2InstantiationNeeded(DG2->realSize(),true,false){
-        GUM_CONSTRUCTOR(MultiDimDecisionGraphOperator);
-        __rd = new MultiDimDecisionGraph<GUM_SCALAR>();
-        __nbVar = 0;
-        __default = nullptr;
+    template <typename GUM_SCALAR,
+              template <typename> class FUNCTOR,
+              template <typename> class TerminalNodePolicy>
+    MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::MultiDimDecisionGraphOperator(
+        const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *DG1,
+        const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *DG2 ):__DG1( DG1 ),
+                                                                                     __DG2( DG2 ),
+                                                                                     __function(),
+                                                                                     __DG1InstantiationNeeded(DG1->realSize(),true,false),
+                                                                                     __DG2InstantiationNeeded(DG2->realSize(),true,false){
+      GUM_CONSTRUCTOR(MultiDimDecisionGraphOperator);
+      __rd = new MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>();
+      __nbVar = 0;
+      __default = nullptr;
     }
 
 
@@ -56,19 +58,21 @@ namespace gum {
     /* ***************************************************************************************************************************** */
     /* DESTRUCTOR                                                                                                                   */
     /* ***************************************************************************************************************************** */
-    template <typename GUM_SCALAR, template <typename> class FUNCTOR >
-    MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR>::~MultiDimDecisionGraphOperator( ){
+    template <typename GUM_SCALAR,
+              template <typename> class FUNCTOR,
+              template <typename> class TerminalNodePolicy>
+    MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::~MultiDimDecisionGraphOperator( ){
 
-        GUM_DESTRUCTOR(MultiDimDecisionGraphOperator);
+      GUM_DESTRUCTOR(MultiDimDecisionGraphOperator);
 
-        if(__nbVar != 0)
-            DEALLOCATE( __default, sizeof(short int)*__nbVar);
+      if(__nbVar != 0)
+        DEALLOCATE( __default, sizeof(short int)*__nbVar);
 
-        for(HashTableIteratorSafe<NodeId, short int*> instIter = __DG1InstantiationNeeded.beginSafe(); instIter != __DG1InstantiationNeeded.endSafe(); ++instIter )
-            DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
+      for(auto instIter = __DG1InstantiationNeeded.beginSafe(); instIter != __DG1InstantiationNeeded.endSafe(); ++instIter )
+        DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
 
-        for(HashTableIteratorSafe<NodeId, short int*> instIter = __DG2InstantiationNeeded.beginSafe(); instIter != __DG2InstantiationNeeded.endSafe(); ++instIter )
-            DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
+      for(auto instIter = __DG2InstantiationNeeded.beginSafe(); instIter != __DG2InstantiationNeeded.endSafe(); ++instIter )
+        DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
 
     }
 
@@ -79,32 +83,34 @@ namespace gum {
     /*                                                                                                                               */
     /* This function is the main function. To be call every time an operation between the two given Decision Graphs is required      */
     /* ***************************************************************************************************************************** */
-    template <typename GUM_SCALAR, template <typename> class FUNCTOR >
-    MultiDimDecisionGraph<GUM_SCALAR> *MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR>::compute(){
+    template <typename GUM_SCALAR,
+              template <typename> class FUNCTOR,
+              template <typename> class TerminalNodePolicy>
+    MultiDimDecisionGraph<GUM_SCALAR> * MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::compute(){
 
-        __establishVarOrder();
-        __findRetrogradeVariables( __DG1, __DG1InstantiationNeeded );
-        __findRetrogradeVariables( __DG2, __DG2InstantiationNeeded );
+      __establishVarOrder();
+      __findRetrogradeVariables( __DG1, __DG1InstantiationNeeded );
+      __findRetrogradeVariables( __DG2, __DG2InstantiationNeeded );
 
-        Idx* varInst = nullptr;
+      Idx* varInst = nullptr;
 //        std::cout << "MDGO 85" << std::endl;
-        if(__nbVar != 0){
-            varInst = static_cast<Idx*>( ALLOCATE( sizeof(Idx)*__nbVar ) );
-            for( Idx i = 0; i < __nbVar; i++ )
-                varInst[i] = (Idx) 0;
-        }
+      if(__nbVar != 0){
+        varInst = static_cast<Idx*>( ALLOCATE( sizeof(Idx)*__nbVar ) );
+        for( Idx i = 0; i < __nbVar; i++ )
+            varInst[i] = (Idx) 0;
+      }
 
-        O4DGContext conti( varInst, __nbVar );
-        conti.setDG1Node( __DG1->root() );
-        conti.setDG2Node( __DG2->root() );
+      O4DGContext conti( varInst, __nbVar );
+      conti.setDG1Node( __DG1->root() );
+      conti.setDG2Node( __DG2->root() );
 
-        NodeId root = __compute( conti, (Idx)0 - 1, "" );
-        __rd->manager()->setRootNode( root );
+      NodeId root = __compute( conti, (Idx)0 - 1, "" );
+      __rd->manager()->setRootNode( root );
 
-        if(__nbVar != 0 )
-            DEALLOCATE( varInst, sizeof(Idx)*__nbVar );
+      if(__nbVar != 0 )
+        DEALLOCATE( varInst, sizeof(Idx)*__nbVar );
 
-        return __rd;
+      return __rd;
     }
 
 
@@ -115,92 +121,94 @@ namespace gum {
     /* This function computes an efficient order for the final decision diagrams. Its main criterion to do so is the number of       */
     /* re-exploration to be done                                                                                                     */
     /* ***************************************************************************************************************************** */
-    template <typename GUM_SCALAR, template <typename> class FUNCTOR >
-    void MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR>::__establishVarOrder(){
+    template <typename GUM_SCALAR,
+              template <typename> class FUNCTOR,
+              template <typename> class TerminalNodePolicy>
+    void MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::__establishVarOrder(){
 
-        SequenceIteratorSafe<const DiscreteVariable*> fite = __DG1->variablesSequence().beginSafe();
-        SequenceIteratorSafe<const DiscreteVariable*> site = __DG2->variablesSequence().beginSafe();
+      SequenceIteratorSafe<const DiscreteVariable*> fite = __DG1->variablesSequence().beginSafe();
+      SequenceIteratorSafe<const DiscreteVariable*> site = __DG2->variablesSequence().beginSafe();
 
-        while ( fite != __DG1->variablesSequence().endSafe() && site != __DG2->variablesSequence().endSafe() ) {
+      while ( fite != __DG1->variablesSequence().endSafe() && site != __DG2->variablesSequence().endSafe() ) {
 
-            // Test : if var from first order is already in final order
-            // we move onto the next one
-            if( __rd->variablesSequence().exists( *fite ) ){
-                ++fite;
-                continue;
-            }
-
-            // Test : if var from second order is already in final order
-            // we move onto the next one
-            if( __rd->variablesSequence().exists( *site ) ){
-                ++site;
-                continue;
-            }
-
-            // Test : is current var of the first order present in the second order.
-            // if not we add it to final order
-            if( ! __DG2->variablesSequence().exists( *fite ) ){
-                __rd->add( **fite );
-                ++fite;
-                continue;
-            }
-
-            //            std::cout << "C" << std::endl;
-
-            // Test : is current var of the second order present in the first order.
-            // if not we add it to final order
-            if( ! __DG1->variablesSequence().exists( *site ) ){
-                __rd->add( **site );
-                ++site;
-                continue;
-            }
-
-            // Test : is current var of the second order present in the first order.
-            // if not we add it to final order
-            if( *fite == *site){
-                __rd->add(**fite);
-                ++fite;
-                ++site;
-                continue;
-            }
-
-            // Test : if chosing first order var cost less in terms or re exploration,
-            // we chose it
-            if( __distance( __DG1, *fite, *site) < __distance( __DG2, *site, *fite) ){
-                __rd->add( **fite );
-                ++fite;
-                continue;
-            } else {
-                __rd->add( **site );
-                ++site;
-                continue;
-            }
+        // Test : if var from first order is already in final order
+        // we move onto the next one
+        if( __rd->variablesSequence().exists( *fite ) ){
+          ++fite;
+          continue;
         }
 
-        // Whenever an iterator has finished its sequence,
-        // the other may still be in the middle of its one.
-        // Hence, this part ensures that any variables remaining
-        // will be added to the final sequence if needed.
-        if( fite == __DG1->variablesSequence().endSafe() ){
-            for(; site != __DG2->variablesSequence().endSafe(); ++site )
-                if( ! __rd->variablesSequence().exists(*site))
-                    __rd->add( **site );
+        // Test : if var from second order is already in final order
+        // we move onto the next one
+        if( __rd->variablesSequence().exists( *site ) ){
+          ++site;
+          continue;
+        }
+
+        // Test : is current var of the first order present in the second order.
+        // if not we add it to final order
+        if( ! __DG2->variablesSequence().exists( *fite ) ){
+          __rd->add( **fite );
+          ++fite;
+          continue;
+        }
+
+        //            std::cout << "C" << std::endl;
+
+        // Test : is current var of the second order present in the first order.
+        // if not we add it to final order
+        if( ! __DG1->variablesSequence().exists( *site ) ){
+          __rd->add( **site );
+          ++site;
+          continue;
+        }
+
+        // Test : is current var of the second order present in the first order.
+        // if not we add it to final order
+        if( *fite == *site){
+          __rd->add(**fite);
+          ++fite;
+          ++site;
+          continue;
+        }
+
+        // Test : if chosing first order var cost less in terms or re exploration,
+        // we chose it
+        if( __distance( __DG1, *fite, *site) < __distance( __DG2, *site, *fite) ){
+          __rd->add( **fite );
+          ++fite;
+          continue;
         } else {
-            for(; fite != __DG1->variablesSequence().endSafe(); ++fite )
-                if( ! __rd->variablesSequence().exists(*fite))
-                    __rd->add( **fite );
+          __rd->add( **site );
+          ++site;
+          continue;
         }
+      }
+
+      // Whenever an iterator has finished its sequence,
+      // the other may still be in the middle of its one.
+      // Hence, this part ensures that any variables remaining
+      // will be added to the final sequence if needed.
+      if( fite == __DG1->variablesSequence().endSafe() ){
+        for(; site != __DG2->variablesSequence().endSafe(); ++site )
+          if( ! __rd->variablesSequence().exists(*site))
+            __rd->add( **site );
+      } else {
+        for(; fite != __DG1->variablesSequence().endSafe(); ++fite )
+          if( ! __rd->variablesSequence().exists(*fite))
+            __rd->add( **fite );
+      }
 
 
-        // Various initialization needed now that we have a bigger picture
-        __nbVar = __rd->variablesSequence().size();
+      // Various initialization needed now that we have a bigger picture
+      __nbVar = __rd->variablesSequence().size();
 
 //        std::cout << "MDGO 189" << std::endl;
-        if(__nbVar != 0 ){
-            __default = static_cast<short int*>( ALLOCATE( sizeof(short int)*__nbVar ) );
-            for( Idx i = 0; i < __nbVar; i++ )
-                __default[i] = (short int) 0;
-        }
+      if(__nbVar != 0 ){
+        __default = static_cast<short int*>( ALLOCATE( sizeof(short int)*__nbVar ) );
+        for( Idx i = 0; i < __nbVar; i++ )
+          __default[i] = (short int) 0;
+      }
     }
 
 
@@ -210,21 +218,24 @@ namespace gum {
     /*                                                                                                                               */
     /* This function computes the number of re-exploration needed whenever to retrograde variables collides                          */
     /* ***************************************************************************************************************************** */
-    template <typename GUM_SCALAR, template <typename> class FUNCTOR >
+    template <typename GUM_SCALAR,
+              template <typename> class FUNCTOR,
+              template <typename> class TerminalNodePolicy>
     INLINE
-    Idx MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR>::__distance( const MultiDimDecisionGraph<GUM_SCALAR>* d,
-                                                                        const DiscreteVariable* from,
-                                                                        const DiscreteVariable* to){
+    Idx MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::__distance(
+        const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* d,
+        const DiscreteVariable* from,
+        const DiscreteVariable* to){
 
-        Idx posi = d->variablesSequence().pos(from);
-        Idx dist = 1;
+      Idx posi = d->variablesSequence().pos(from);
+      Idx dist = 1;
 
-        while( d->variablesSequence().atPos( posi ) != to ){
-            dist *= (*(d->variablesSequence().atPos( posi ))).domainSize();
-            posi++;
-        }
+      while( d->variablesSequence().atPos( posi ) != to ){
+        dist *= (*(d->variablesSequence().atPos( posi ))).domainSize();
+        posi++;
+      }
 
-        return dist;
+      return dist;
     }
 
 
@@ -234,75 +245,75 @@ namespace gum {
     /*                                                                                                                               */
     /* This function computes for every nodes if any retrograde variable is present below                                            */
     /* ***************************************************************************************************************************** */
-    template <typename GUM_SCALAR, template <typename> class FUNCTOR >
+    template <typename GUM_SCALAR,
+              template <typename> class FUNCTOR,
+              template <typename> class TerminalNodePolicy>
     INLINE
-    void MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR>::__findRetrogradeVariables( const MultiDimDecisionGraph<GUM_SCALAR> *dg,
-                                                                                        HashTable<NodeId, short int*>& dgInstNeed){
+    void MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::__findRetrogradeVariables(
+        const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *dg,
+        HashTable<NodeId, short int*>& dgInstNeed){
 
+      HashTable<NodeId, short int*> nodesVarDescendant;
+      std::size_t tableSize = __nbVar*sizeof(short int);
 
+      for( auto varIter = dg->variablesSequence().rbeginSafe(); varIter != dg->variablesSequence().rendSafe(); --varIter ) {
 
-        HashTable<NodeId, short int*> nodesVarDescendant;
-        std::size_t tableSize = __nbVar*sizeof(short int);
+        Idx varPos = __rd->variablesSequence().pos( *varIter );
 
-        for( SequenceIteratorSafe<const DiscreteVariable*> varIter = dg->variablesSequence().rbeginSafe(); varIter != dg->variablesSequence().rendSafe(); --varIter ) {
-
-            Idx varPos = __rd->variablesSequence().pos( *varIter );
-
-            const Link<NodeId> * nodeIter = dg->varNodeListe(*varIter)->list();
-            while( nodeIter != nullptr ){
+        const Link<NodeId> * nodeIter = dg->varNodeListe(*varIter)->list();
+        while( nodeIter != nullptr ){
 
 //                std::cout << "MDGO 244" << std::endl;
-                short int* instantiationNeeded = static_cast<short int*>(ALLOCATE(tableSize));
-                dgInstNeed.insert( nodeIter->element(), instantiationNeeded );
+          short int* instantiationNeeded = static_cast<short int*>(ALLOCATE(tableSize));
+          dgInstNeed.insert( nodeIter->element(), instantiationNeeded );
 //                std::cout << "MDGO 247" << std::endl;
-                short int* varDescendant = static_cast<short int*>(ALLOCATE(tableSize));
-                nodesVarDescendant.insert( nodeIter->element(), varDescendant );
-                for(Idx j = 0; j < __nbVar; j++ ){
-                    instantiationNeeded[j] = (short int) 0;
-                    varDescendant[j] = (short int) 0;
-                }
+          short int* varDescendant = static_cast<short int*>(ALLOCATE(tableSize));
+          nodesVarDescendant.insert( nodeIter->element(), varDescendant );
+          for(Idx j = 0; j < __nbVar; j++ ){
+            instantiationNeeded[j] = (short int) 0;
+            varDescendant[j] = (short int) 0;
+          }
 
 
-                varDescendant[ varPos ] = (short int) 1;
-                for(Idx modality = 0; modality < dg->node(nodeIter->element())->nbSons(); ++modality ){
-                    if( ! dg->isTerminalNode( dg->node( nodeIter->element() )->son(modality) )) {
-                        short int* sonVarDescendant = nodesVarDescendant[ dg->node( nodeIter->element() )->son(modality)];
-                        for(Idx varIdx = 0; varIdx < __nbVar; varIdx++ ){
-                            varDescendant[varIdx] += sonVarDescendant[varIdx];
-                            if( varDescendant[varIdx] && varIdx  < varPos )
-                                instantiationNeeded[varIdx] = (short int) 1;
-                        }
-                    }
-                }
-                nodeIter = nodeIter->nextLink();
+          varDescendant[ varPos ] = (short int) 1;
+          for(Idx modality = 0; modality < dg->node(nodeIter->element())->nbSons(); ++modality ){
+            if( ! dg->isTerminalNode( dg->node( nodeIter->element() )->son(modality) )) {
+              short int* sonVarDescendant = nodesVarDescendant[ dg->node( nodeIter->element() )->son(modality)];
+              for(Idx varIdx = 0; varIdx < __nbVar; varIdx++ ){
+                varDescendant[varIdx] += sonVarDescendant[varIdx];
+                if( varDescendant[varIdx] && varIdx  < varPos )
+                  instantiationNeeded[varIdx] = (short int) 1;
+              }
             }
+          }
+          nodeIter = nodeIter->nextLink();
         }
+      }
 
 
-        for( SequenceIteratorSafe<const DiscreteVariable*> varIter = dg->variablesSequence().beginSafe(); varIter != dg->variablesSequence().endSafe(); ++varIter ) {
+      for( auto varIter = dg->variablesSequence().beginSafe(); varIter != dg->variablesSequence().endSafe(); ++varIter ) {
 
-            const Link<NodeId> * nodeIter = dg->varNodeListe(*varIter)->list();
-            while( nodeIter != nullptr ){
+        const Link<NodeId> * nodeIter = dg->varNodeListe(*varIter)->list();
+        while( nodeIter != nullptr ){
 
-                for(Idx modality = 0; modality < dg->node( nodeIter->element() )->nbSons(); ++modality ){
-                    NodeId sonId = dg->node( nodeIter->element() )->son(modality);
-                    if( ! dg->isTerminalNode( sonId )) {
-                        for(Idx varIdx = 0; varIdx < __nbVar; ++varIdx ){
-                            if( dgInstNeed[nodeIter->element()][ varIdx ] && nodesVarDescendant[ sonId ][varIdx] ){
-                                dgInstNeed[ sonId ][ varIdx ] = (short int) 1;
-                            }
-                        }
-                    }
+          for(Idx modality = 0; modality < dg->node( nodeIter->element() )->nbSons(); ++modality ){
+            NodeId sonId = dg->node( nodeIter->element() )->son(modality);
+            if( ! dg->isTerminalNode( sonId )) {
+              for(Idx varIdx = 0; varIdx < __nbVar; ++varIdx ){
+                if( dgInstNeed[nodeIter->element()][ varIdx ] && nodesVarDescendant[ sonId ][varIdx] ){
+                  dgInstNeed[ sonId ][ varIdx ] = (short int) 1;
                 }
-                nodeIter = nodeIter->nextLink();
+              }
             }
+          }
+          nodeIter = nodeIter->nextLink();
         }
-        for(HashTableIterator<NodeId, short int*> it = nodesVarDescendant.begin(); it != nodesVarDescendant.end(); ++it ){
+      }
+      for(HashTableIterator<NodeId, short int*> it = nodesVarDescendant.begin(); it != nodesVarDescendant.end(); ++it ){
+        DEALLOCATE(it.val(),tableSize);
+      }
 
-            DEALLOCATE(it.val(),tableSize);
-        }
-
-        nodesVarDescendant.clear();
+      nodesVarDescendant.clear();
     }
 
 
@@ -321,213 +332,213 @@ namespace gum {
     // A key - node association is made each time we create a node in resulting diagram.
     // Since GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION is a corner step in algorithm ( meaning each time we explore a node we go trought
     // this function ), check only have to be at the beginning of that function.
-    template <typename GUM_SCALAR, template <typename> class FUNCTOR >
+    template <typename GUM_SCALAR,
+              template <typename> class FUNCTOR,
+              template <typename> class TerminalNodePolicy>
     NodeId
-    MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR>::__compute(  O4DGContext & currentSituation,
-                                                                    Idx lastInstVarPos,
-                                                                    std::string tab) {
+    MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::__compute(  O4DGContext & currentSituation,
+                                                                                        Idx lastInstVarPos,
+                                                                                        std::string tab) {
 
-        NodeId newNode = 0;
-
-
-        // ******************************************************************************************************
-        // If both current nodes are terminal,
-        // we only have to compute the resulting value
-        if ( __DG1->isTerminalNode ( currentSituation.DG1Node() ) && __DG2->isTerminalNode ( currentSituation.DG2Node() ) ) {
-
-            // We have to compute new valueand we insert a new node in diagram with this value, ...
-            return __rd->manager()->addTerminalNode( __function( __DG1->nodeValue(currentSituation.DG1Node()), __DG2->nodeValue(currentSituation.DG2Node())));
-        }
+      NodeId newNode = 0;
 
 
-        // ******************************************************************************************************
+      // ******************************************************************************************************
+      // If both current nodes are terminal,
+      // we only have to compute the resulting value
+      if ( __DG1->isTerminalNode ( currentSituation.DG1Node() ) && __DG2->isTerminalNode ( currentSituation.DG2Node() ) ) {
+
+        // We have to compute new valueand we insert a new node in diagram with this value, ...
+        return __rd->manager()->addTerminalNode( __function( __DG1->nodeValue(currentSituation.DG1Node()), __DG2->nodeValue(currentSituation.DG2Node())));
+      }
+
+
+      // ******************************************************************************************************
 
 
 
-        // ******************************************************************************************************
-        // If not,
-        // we'll have to do some exploration
+      // ******************************************************************************************************
+      // If not,
+      // we'll have to do some exploration
 
-        //First we ensure that we hadn't already visit this pair of node under hte same circumstances
+      //First we ensure that we hadn't already visit this pair of node under hte same circumstances
 
-        short int* dg1NeededVar = __DG1InstantiationNeeded.exists( currentSituation.DG1Node() )?__DG1InstantiationNeeded[ currentSituation.DG1Node() ]:__default;
-        Idx dg1CurrentVarPos = __DG1->isTerminalNode( currentSituation.DG1Node() )?__nbVar:__rd->variablesSequence().pos( __DG1->node( currentSituation.DG1Node() )->nodeVar() );
-        short int* dg2NeededVar = __DG2InstantiationNeeded.exists( currentSituation.DG2Node() )?__DG2InstantiationNeeded[ currentSituation.DG2Node() ]:__default;
-        Idx dg2CurrentVarPos = __DG2->isTerminalNode( currentSituation.DG2Node() )?__nbVar:__rd->variablesSequence().pos( __DG2->node( currentSituation.DG2Node() )->nodeVar() );
+      short int* dg1NeededVar = __DG1InstantiationNeeded.exists( currentSituation.DG1Node() )?__DG1InstantiationNeeded[ currentSituation.DG1Node() ]:__default;
+      Idx dg1CurrentVarPos = __DG1->isTerminalNode( currentSituation.DG1Node() )?__nbVar:__rd->variablesSequence().pos( __DG1->node( currentSituation.DG1Node() )->nodeVar() );
+      short int* dg2NeededVar = __DG2InstantiationNeeded.exists( currentSituation.DG2Node() )?__DG2InstantiationNeeded[ currentSituation.DG2Node() ]:__default;
+      Idx dg2CurrentVarPos = __DG2->isTerminalNode( currentSituation.DG2Node() )?__nbVar:__rd->variablesSequence().pos( __DG2->node( currentSituation.DG2Node() )->nodeVar() );
 
 //        std::cout << "MDGO 348" << std::endl;
-        short int* instNeeded = static_cast<short int*>( ALLOCATE( sizeof(short int)*__nbVar ) );
+      short int* instNeeded = static_cast<short int*>( ALLOCATE( sizeof(short int)*__nbVar ) );
 
-        for( Idx i = 0; i < __nbVar; i++ ){
+      for( Idx i = 0; i < __nbVar; i++ ){
 
-            instNeeded[i] = dg1NeededVar[i] + dg2NeededVar[i];
+        instNeeded[i] = dg1NeededVar[i] + dg2NeededVar[i];
+      }
+
+      double curSitKey = currentSituation.key( instNeeded );
+
+      if ( __explorationTable.exists ( curSitKey ) ){
+        DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
+
+        return __explorationTable[ curSitKey ];
+      }
+
+      // ====================================================
+
+      NodeId origDG1 = currentSituation.DG1Node(), origDG2 = currentSituation.DG2Node();
+
+      const MultiDimDecisionGraph<GUM_SCALAR>* leaddg = nullptr;
+      NodeId leadNodeId = 0;
+      Idx leadVarPos = __rd->variablesSequence().size();
+      typedef void (O4DGContext::*SetNodeFunction)(const NodeId&);
+      SetNodeFunction leadFunction = nullptr;
+
+      bool sameVar = false;
+
+      if ( ! __DG1->isTerminalNode ( currentSituation.DG1Node() ) ){
+
+        if( currentSituation.varModality( dg1CurrentVarPos ) != 0 ){
+          currentSituation.setDG1Node( __DG1->node( currentSituation.DG1Node() )->son( currentSituation.varModality( dg1CurrentVarPos ) - 1 ) );
+
+          newNode = __compute(currentSituation, lastInstVarPos, tab );
+          __explorationTable.insert( curSitKey, newNode);
+          currentSituation.setDG1Node(origDG1);
+          currentSituation.setDG2Node(origDG2);
+
+          DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
+
+          return newNode;
         }
 
-        double curSitKey = currentSituation.key( instNeeded );
+        leaddg = __DG1;
+        leadNodeId = currentSituation.DG1Node();
+        leadVarPos = dg1CurrentVarPos;
+        leadFunction = &O4DGContext::setDG1Node;
+      }
 
-        if ( __explorationTable.exists ( curSitKey ) ){
-            DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
+      if ( ! __DG2->isTerminalNode ( currentSituation.DG2Node() ) ){
 
-            return __explorationTable[ curSitKey ];
+        if( currentSituation.varModality( dg2CurrentVarPos ) != 0 ){
+          currentSituation.setDG2Node( __DG2->node( currentSituation.DG2Node() )->son( currentSituation.varModality( dg2CurrentVarPos ) - 1 ) );
+
+          newNode = __compute(currentSituation, lastInstVarPos, tab );
+          __explorationTable.insert( curSitKey, newNode);
+          currentSituation.setDG1Node(origDG1);
+          currentSituation.setDG2Node(origDG2);
+
+          DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
+
+          return newNode;
         }
 
-        // ====================================================
-
-        NodeId origDG1 = currentSituation.DG1Node(), origDG2 = currentSituation.DG2Node();
-
-        const MultiDimDecisionGraph<GUM_SCALAR>* leaddg = nullptr;
-        NodeId leadNodeId = 0;
-        Idx leadVarPos = __rd->variablesSequence().size();
-        typedef void (O4DGContext::*SetNodeFunction)(const NodeId&);
-        SetNodeFunction leadFunction = nullptr;
-
-        bool sameVar = false;
-
-        if ( ! __DG1->isTerminalNode ( currentSituation.DG1Node() ) ){
-
-            if( currentSituation.varModality( dg1CurrentVarPos ) != 0 ){
-                currentSituation.setDG1Node( __DG1->node( currentSituation.DG1Node() )->son( currentSituation.varModality( dg1CurrentVarPos ) - 1 ) );
-
-                newNode = __compute(currentSituation, lastInstVarPos, tab );
-                __explorationTable.insert( curSitKey, newNode);
-                currentSituation.setDG1Node(origDG1);
-                currentSituation.setDG2Node(origDG2);
-
-                DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
-
-                return newNode;
-            }
-
-            leaddg = __DG1;
-            leadNodeId = currentSituation.DG1Node();
-            leadVarPos = dg1CurrentVarPos;
-            leadFunction = &O4DGContext::setDG1Node;
+        if( leadVarPos == dg2CurrentVarPos ){
+          sameVar = true;
         }
 
-        if ( ! __DG2->isTerminalNode ( currentSituation.DG2Node() ) ){
-
-
-            if( currentSituation.varModality( dg2CurrentVarPos ) != 0 ){
-                currentSituation.setDG2Node( __DG2->node( currentSituation.DG2Node() )->son( currentSituation.varModality( dg2CurrentVarPos ) - 1 ) );
-
-                newNode = __compute(currentSituation, lastInstVarPos, tab );
-                __explorationTable.insert( curSitKey, newNode);
-                currentSituation.setDG1Node(origDG1);
-                currentSituation.setDG2Node(origDG2);
-
-                DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
-
-                return newNode;
-            }
-
-            if( leadVarPos == dg2CurrentVarPos ){
-                sameVar = true;
-            }
-
-            if( leadVarPos > dg2CurrentVarPos){
-                leaddg = __DG2;
-                leadNodeId = currentSituation.DG2Node();
-                leadVarPos = dg2CurrentVarPos;
-                leadFunction = &O4DGContext::setDG2Node;
-            }
+        if( leadVarPos > dg2CurrentVarPos){
+          leaddg = __DG2;
+          leadNodeId = currentSituation.DG2Node();
+          leadVarPos = dg2CurrentVarPos;
+          leadFunction = &O4DGContext::setDG2Node;
         }
+      }
 
-        // ====================================================
+      // ====================================================
 
-        // Before exploring nodes, we have to ensure that every anticipated exploration is done
-        for ( Idx varPos = lastInstVarPos + 1; varPos < leadVarPos; ++varPos ) {
+      // Before exploring nodes, we have to ensure that every anticipated exploration is done
+      for ( Idx varPos = lastInstVarPos + 1; varPos < leadVarPos; ++varPos ) {
 
-            if( instNeeded[ varPos ] ){
+        if( instNeeded[ varPos ] ){
 
-                const DiscreteVariable* curVar = __rd->variablesSequence().atPos( varPos );
+          const DiscreteVariable* curVar = __rd->variablesSequence().atPos( varPos );
 //                std::cout << "MDGO 433" << std::endl;
-                NodeId* sonsIds = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*curVar->domainSize() ) );
+          NodeId* sonsIds = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*curVar->domainSize() ) );
 
-                for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
+          for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
 
-                    currentSituation.chgVarModality ( varPos, modality + 1 );
+            currentSituation.chgVarModality ( varPos, modality + 1 );
 
-                    sonsIds[ modality ] = __compute( currentSituation, varPos, tab );
-                }
+            sonsIds[ modality ] = __compute( currentSituation, varPos, tab );
+          }
 
-                newNode = __rd->manager()->nodeRedundancyCheck( curVar, sonsIds );
+          newNode = __rd->manager()->nodeRedundancyCheck( curVar, sonsIds );
 
-                __explorationTable.insert ( curSitKey, newNode );
-                currentSituation.chgVarModality ( varPos, 0 );
-                currentSituation.setDG1Node(origDG1);
-                currentSituation.setDG2Node(origDG2);
+          __explorationTable.insert ( curSitKey, newNode );
+          currentSituation.chgVarModality ( varPos, 0 );
+          currentSituation.setDG1Node(origDG1);
+          currentSituation.setDG2Node(origDG2);
 
-                DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
+          DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
 
-                return newNode;
-            }
+          return newNode;
         }
+      }
 
-        // ====================================================
+      // ====================================================
 
-        // If only one of the current node is terminal,
-        // we have to pursue deeper on the other diagram
-        if( sameVar ){
+      // If only one of the current node is terminal,
+      // we have to pursue deeper on the other diagram
+      if( sameVar ){
 
-            // If so - meaning it's the same variable - we have to go
-            // down on both
-            const InternalNode* dg1Node = __DG1->node( origDG1 );
-            const InternalNode* dg2Node = __DG2->node( origDG2 );
+        // If so - meaning it's the same variable - we have to go
+        // down on both
+        const InternalNode* dg1Node = __DG1->node( origDG1 );
+        const InternalNode* dg2Node = __DG2->node( origDG2 );
 
-            const DiscreteVariable* curVar = dg1Node->nodeVar();
-            Idx varPos = __rd->variablesSequence().pos( curVar );
+        const DiscreteVariable* curVar = dg1Node->nodeVar();
+        Idx varPos = __rd->variablesSequence().pos( curVar );
 //            std::cout << "MDGO 469" << std::endl;
-            NodeId* sonsIds = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*curVar->domainSize() ) );
+        NodeId* sonsIds = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*curVar->domainSize() ) );
 
-            for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
+        for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
 
-                currentSituation.chgVarModality ( varPos, modality + 1 );
-                currentSituation.setDG1Node( dg1Node->son( modality ) );
-                currentSituation.setDG2Node( dg2Node->son( modality ) );
+          currentSituation.chgVarModality ( varPos, modality + 1 );
+          currentSituation.setDG1Node( dg1Node->son( modality ) );
+          currentSituation.setDG2Node( dg2Node->son( modality ) );
 
-                sonsIds[ modality ] = __compute( currentSituation, varPos, tab );
-            }
-
-            newNode = __rd->manager()->nodeRedundancyCheck( curVar, sonsIds );
-
-            __explorationTable.insert ( curSitKey, newNode );
-            currentSituation.chgVarModality ( varPos, 0 );
-            currentSituation.setDG1Node(origDG1);
-            currentSituation.setDG2Node(origDG2);
-
-            DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
-
-            return newNode;
+          sonsIds[ modality ] = __compute( currentSituation, varPos, tab );
         }
-        // ====================================================
-        else {
+
+        newNode = __rd->manager()->nodeRedundancyCheck( curVar, sonsIds );
+
+        __explorationTable.insert ( curSitKey, newNode );
+        currentSituation.chgVarModality ( varPos, 0 );
+        currentSituation.setDG1Node(origDG1);
+        currentSituation.setDG2Node(origDG2);
+
+        DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
+
+        return newNode;
+      }
+      // ====================================================
+      else {
 
 
-            const InternalNode* leaddgNode = leaddg->node( leadNodeId );
+        const InternalNode* leaddgNode = leaddg->node( leadNodeId );
 
-            const DiscreteVariable* curVar = leaddgNode->nodeVar();
+        const DiscreteVariable* curVar = leaddgNode->nodeVar();
 //            std::cout << "MDGO 499" << std::endl;
-            NodeId* sonsIds = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*curVar->domainSize() ) );
+        NodeId* sonsIds = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*curVar->domainSize() ) );
 
-            for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
+        for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
+          currentSituation.chgVarModality ( leadVarPos, modality + 1 );
+          (currentSituation.*leadFunction)( leaddgNode->son( modality ) );
 
-                currentSituation.chgVarModality ( leadVarPos, modality + 1 );
-                (currentSituation.*leadFunction)( leaddgNode->son( modality ) );
-
-                sonsIds[ modality ] = __compute( currentSituation, leadVarPos, tab );
-            }
-
-            newNode = __rd->manager()->nodeRedundancyCheck( curVar, sonsIds );
-
-            __explorationTable.insert ( curSitKey, newNode );
-            currentSituation.chgVarModality ( leadVarPos, 0 );
-            currentSituation.setDG1Node(origDG1);
-            currentSituation.setDG2Node(origDG2);
-
-            DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
-
-            return newNode;
+          sonsIds[ modality ] = __compute( currentSituation, leadVarPos, tab );
         }
+
+        newNode = __rd->manager()->nodeRedundancyCheck( curVar, sonsIds );
+
+        __explorationTable.insert ( curSitKey, newNode );
+        currentSituation.chgVarModality ( leadVarPos, 0 );
+        currentSituation.setDG1Node(origDG1);
+        currentSituation.setDG2Node(origDG2);
+
+        DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
+
+        return newNode;
+      }
     }
 
 } // namespace gum
