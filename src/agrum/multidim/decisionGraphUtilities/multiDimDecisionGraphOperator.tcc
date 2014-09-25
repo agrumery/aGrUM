@@ -86,7 +86,7 @@ namespace gum {
     template <typename GUM_SCALAR,
               template <typename> class FUNCTOR,
               template <typename> class TerminalNodePolicy>
-    MultiDimDecisionGraph<GUM_SCALAR> * MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::compute(){
+    MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> * MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::compute(){
 
       __establishVarOrder();
       __findRetrogradeVariables( __DG1, __DG1InstantiationNeeded );
@@ -349,7 +349,8 @@ namespace gum {
       if ( __DG1->isTerminalNode ( currentSituation.DG1Node() ) && __DG2->isTerminalNode ( currentSituation.DG2Node() ) ) {
 
         // We have to compute new valueand we insert a new node in diagram with this value, ...
-        return __rd->manager()->addTerminalNode( __function( __DG1->nodeValue(currentSituation.DG1Node()), __DG2->nodeValue(currentSituation.DG2Node())));
+        return __rd->manager()->addTerminalNode( __function( __DG1->terminalNodeValue(currentSituation.DG1Node()),
+                                                             __DG2->terminalNodeValue(currentSituation.DG2Node())));
       }
 
 
@@ -388,7 +389,7 @@ namespace gum {
 
       NodeId origDG1 = currentSituation.DG1Node(), origDG2 = currentSituation.DG2Node();
 
-      const MultiDimDecisionGraph<GUM_SCALAR>* leaddg = nullptr;
+      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* leaddg = nullptr;
       NodeId leadNodeId = 0;
       Idx leadVarPos = __rd->variablesSequence().size();
       typedef void (O4DGContext::*SetNodeFunction)(const NodeId&);

@@ -182,7 +182,7 @@ namespace gum {
         Idx SPIMDDI::takeAction( ){
 
             double explo = (double)std::rand( ) / (double)RAND_MAX;
-            ArgMaxSet actionSet;
+            ArgMaxSet<double, Idx> actionSet;
             if( __planer->optimalPolicy()->realSize() && explo > __exploThreshold){
                 std::cout << "Exploitons!" << std::endl;
                actionSet = __planer->optimalPolicy()->get(__lastState);
@@ -194,7 +194,7 @@ namespace gum {
             if( actionSet.size() == 1 )
               __lastAction = actionSet[0];
             else
-              __lastAction = actionSet[ (Idx)((double)std::rand( ) / (double)RAND_MAX * actionSeq.size()) ] ;
+              __lastAction = actionSet[ (Idx)((double)std::rand( ) / (double)RAND_MAX * actionSet.size()) ] ;
             return __lastAction;
         }
 

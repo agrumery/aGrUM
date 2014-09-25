@@ -29,8 +29,8 @@
 */
 
 // =========================================================================
-#ifndef FUNCTORS_H
-#define FUNCTORS_H
+#ifndef GUM_ARG_MAX_SET_H
+#define GUM_ARG_MAX_SET_H
 // =========================================================================
 #include <cstdlib>
 // =========================================================================
@@ -48,11 +48,8 @@ namespace gum {
    *
    */
 
-  template<typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ>
-  class ArgMaxSet; // forward declare to make function declaration possible
+  // forward declare to make function declaration possible
 
-  template<typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ>
-  std::ostream& operator << (std::ostream&, const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >&);
 
   /// Class to handle efficiently argMaxSet
   template <typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ>
@@ -158,7 +155,7 @@ namespace gum {
       Idx size() const { return __argMaxSeq->size(); }
 
       /// Returns the value on which comparison are made
-      const GUM_SCALAR_VAL& value() { return __val; }
+      const GUM_SCALAR_VAL& value() const { return __val; }
 
 //      bool exists( const GUM_SCALAR& val ) const { return __argMaxSeq->exists( val ); }
 
@@ -167,42 +164,12 @@ namespace gum {
       Sequence<GUM_SCALAR_SEQ>* __argMaxSeq;
       GUM_SCALAR_VAL __val;
 
+      friend std::ostream& operator << (std::ostream& streamy, const ArgMaxSet& objy ){
+        streamy << objy.__argMaxSeq->toString();
+        return streamy;
+      }
   };
 
-  template <typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ>
-  std::ostream& operator << (std::ostream& stream, const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& obj)
-  {
-      stream << obj.__argMaxSeq->toString();
-      return stream;
-  }
-
-//  template<typename GUM_SCALAR>
-//  struct ArgumentMaximisesAsSet {
-
-//      // ###########################################################################
-//      /// @name Operator()
-//      // ###########################################################################
-//      /// @{
-
-//        GUM_SCALAR operator() (const GUM_SCALAR& x, const GUM_SCALAR& y) const {
-//           ArgMaxSet* z = new ArgMaxSet();
-//           if( x.first > y.first ){
-//             z.first = x.first;
-//             z.second += x.second;
-//             return z;
-//           }
-//           if( x.first < y.first ){
-//             z.first = y.first;
-//             z.second += y.second;
-//             return z;
-//           }
-//           z.first = x.first;
-//           z.second += x.second;
-//           z.second += y.second;
-//           return z;
-//        }
-
-//      /// @}
-//  };
-
 } // End of namespace gum
+
+#endif /* GUM_ARG_MAX_SET_H */

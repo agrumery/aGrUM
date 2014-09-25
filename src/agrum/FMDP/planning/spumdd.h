@@ -31,13 +31,46 @@
 #include <thread>
 // =========================================================================
 #include <agrum/core/functors.h>
+#include <agrum/core/argMaxSet.h>
 // =========================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
 // =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 // =========================================================================
 
-namespace gum {
+namespace gum {  
+
+
+
+  template <typename GUM_SCALAR>
+  struct ArgumentMaximisesAction {
+
+  // ###########################################################################
+  /// @name Operator()
+  // ###########################################################################
+  /// @{
+
+    const GUM_SCALAR& operator() (
+        const GUM_SCALAR& x,
+        const GUM_SCALAR& y) const {
+
+       if( x > y ){
+         return x;
+       }
+       if( x < y ){
+         return y;
+       }
+
+       __temp = x;
+       __temp += y;
+       return __temp;
+    }
+
+  private :
+    mutable GUM_SCALAR __temp;
+  };
+
 
   /**
    * @class SPUMDD spumdd.h <agrum/FMDP/planning/spumdd.h>
@@ -86,7 +119,7 @@ namespace gum {
         INLINE const MultiDimDecisionGraph<GUM_SCALAR>* vFunction() { return __vFunction; }
 
         /// Returns the best policy obtained so far
-        INLINE const MultiDimDecisionGraph<ArgMaxSet<Idx>>* optimalPolicy() { return __optimalPolicy; }
+        INLINE const MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* optimalPolicy() { return __optimalPolicy; }
 
       /// @}
 
@@ -119,7 +152,7 @@ namespace gum {
 
         /// Add computed Qaction to table
         void addQaction( MultiDimDecisionGraph<GUM_SCALAR>* );
-        void addQaction( MultiDimDecisionGraph< ArgMaxSet<Idx> >* );
+        void addQaction( MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* );
 
         /**
          * Returns an iterator reference to the beginning of the var eleminstation sequence
@@ -157,15 +190,16 @@ namespace gum {
         * Creates a copy of given in parameter decision diagram and replaces leaves of that diagram by a pair containing value of the leaf and
         * action to which is bind this diagram (given in parameter).
         */
-        MultiDimDecisionGraph< ArgMaxSet<Idx> >* __createArgMaxCopy ( const MultiDimDecisionGraph<GUM_SCALAR>* Vaction,
-                                                                                    Idx actionId );
+        MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* __createArgMaxCopy (
+            const MultiDimDecisionGraph<GUM_SCALAR>* Vaction,
+            Idx actionId );
 
        /**
         * Once final V is computed upon arg max on last Vactions, this function creates a diagram where all leaves tied to the same action are merged together.
         * Since this function is a recursive one to ease the merge of all identic nodes to converge toward a cannonical policy, a factory and the current node are needed to build
         * resulting diagram. Also we need an exploration table to avoid exploration of already visited sub-graph part.
         */
-       void __extractOptimalPolicy ( const MultiDimDecisionGraph< ArgMaxSet<Idx> >* optimalValueFunction );
+       void __extractOptimalPolicy ( const MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* optimalValueFunction );
 
 
       /// @}
@@ -180,11 +214,11 @@ namespace gum {
       /// The associated optimal policy
       /// @warning This decision graph has Idx as leaf.
       /// Indeed, its leaves are a match to the fmdp action ids
-      MultiDimDecisionGraph< ArgMaxSet<Idx> >* __optimalPolicy;
+      MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* __optimalPolicy;
 
       /// A table giving for every action the associated Q function
       std::vector<MultiDimDecisionGraph<GUM_SCALAR>*> __qFunctionSet;
-      std::vector<MultiDimDecisionGraph< ArgMaxSet<Idx> >*> __argMaxQFunctionSet;
+      std::vector<MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >*> __argMaxQFunctionSet;
 
       /// A locker on the above table for multitreading purposes
       std::mutex __qSetMutex;

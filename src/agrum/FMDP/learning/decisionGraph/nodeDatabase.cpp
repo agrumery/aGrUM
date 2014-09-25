@@ -125,7 +125,7 @@ namespace gum {
     ///
     // ###################################################################
     double *NodeDatabase::effectif(){
-        double* ret = static_cast<double*>(MultiDimDecisionGraph<double>::soa.allocate(sizeof(double)*__value->domainSize()));
+        double* ret = static_cast<double*>( SmallObjectAllocator::instance().allocate(sizeof(double)*__value->domainSize()));
         for(Idx modality = 0; modality < __value->domainSize(); ++modality)
           ret[modality] = (double)__valueCount[modality];
         return ret;

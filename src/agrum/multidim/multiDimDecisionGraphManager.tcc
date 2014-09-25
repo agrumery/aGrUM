@@ -145,11 +145,11 @@ namespace gum {
     NodeId
     MultiDimDecisionGraphManager<GUM_SCALAR, TerminalNodePolicy>::addTerminalNode ( const GUM_SCALAR& value ){
 
-      if( __decisionGraph->existsValue( value ) )
-        return __decisionGraph->nodeId2Value( value );
+      if( __decisionGraph->existsTerminalNode( value ) )
+        return __decisionGraph->terminalNodeId( value );
 
       NodeId node = __decisionGraph->__model.addNode();
-      __decisionGraph->addValue(node, value);
+      __decisionGraph->addTerminalNode(node, value);
       return node;
     }
 
@@ -183,7 +183,7 @@ namespace gum {
 
                 }
             }
-            __decisionGraph->eraseValue( eraseId );
+            __decisionGraph->eraseTerminalNode( eraseId );
 
         } else {
 
@@ -263,9 +263,9 @@ namespace gum {
                                                                                        const DiscreteVariable* y ){
 
       LinkedList<NodeId>* oldxNodes = __decisionGraph->__var2NodeIdMap[ x ];
-      __decisionGraph->__var2NodeIdMap[ x ] = nullptr;
+      __decisionGraph->__var2NodeIdMap[ x ] = new LinkedList<NodeId>();
       LinkedList<NodeId>* oldyNodes = __decisionGraph->__var2NodeIdMap[ y ];
-      __decisionGraph->__var2NodeIdMap[ y ] = nullptr;
+      __decisionGraph->__var2NodeIdMap[ y ] = new LinkedList<NodeId>();
 
 
       InternalNode* currentOldXNode = nullptr;
@@ -335,6 +335,7 @@ namespace gum {
 
         oldxNodes->searchAndRemoveLink( oldxNodes->list()->element() );
       }
+      delete oldxNodes;
 
       while(oldyNodes->list()){
         NodeId curId = oldyNodes->list()->element();
@@ -351,6 +352,7 @@ namespace gum {
         }
         oldyNodes->searchAndRemoveLink(curId);
       }
+      delete oldyNodes;
     }
 
 

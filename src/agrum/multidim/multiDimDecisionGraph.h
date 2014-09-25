@@ -325,7 +325,7 @@ namespace gum {
         /// Returns value associated to given node
         /// @throw InvalidNode if node isn't terminal
         // ============================================================================
-        const GUM_SCALAR& nodeValue( NodeId n ) const { return this->nodeId2Value(n); }
+        const GUM_SCALAR& nodeValue( NodeId n ) const { return this->terminalNodeValue(n); }
 
         // ============================================================================
         /// Returns internalNode structure associated to that nodeId

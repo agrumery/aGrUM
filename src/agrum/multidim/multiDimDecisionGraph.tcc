@@ -187,11 +187,12 @@ namespace gum {
     template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
     void MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::add (const DiscreteVariable &v){
+
       if( ! this->variablesSequence().exists(&v))
         MultiDimImplementation<GUM_SCALAR>::add(v);
 
       if( ! this->__var2NodeIdMap.exists(&v))
-        __var2NodeIdMap.insert(&v,nullptr);
+        __var2NodeIdMap.insert(&v,new LinkedList<NodeId>());
     }
 
     // ============================================================================
@@ -508,7 +509,7 @@ namespace gum {
       // Always discard the nodeId 0
       __model.addNode();
 
-      this->clearValueMap();
+      this->clearAllTerminalNodes();
 
       // Nettoyage des noeuds
       for( HashTableIterator<NodeId, InternalNode*> nodeIter = __internalNodeMap.begin();
@@ -553,9 +554,9 @@ namespace gum {
 
       for ( NodeGraphPart::NodeIterator nodeIter = __model.begin(); nodeIter != __model.end(); ++nodeIter )
         if ( *nodeIter != 0 ) {
-          if ( this->existsValue ( *nodeIter ) )
+          if ( this->existsTerminalNode ( (NodeId) *nodeIter ) )
             terminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - "
-                           << std::setprecision(30) << this->nodeId2Value ( *nodeIter ) << "\"]"<< ";" << std::endl;
+                           << std::setprecision(30) << this->terminalNodeValue ( *nodeIter ) << "\"]"<< ";" << std::endl;
           else {
             InternalNode* currentNode = __internalNodeMap[ *nodeIter ];
             nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - "
@@ -627,7 +628,7 @@ namespace gum {
         currentNode = __internalNodeMap[currentNodeId];
         currentNodeId = currentNode->son( inst.val( *(currentNode->nodeVar()) ) );
       }
-      __getRet = this->nodeId2Value( currentNodeId );//__valueMap.second( currentNodeId );
+      __getRet = this->terminalNodeValue( currentNodeId );//__valueMap.second( currentNodeId );
       return __getRet;
     }
 

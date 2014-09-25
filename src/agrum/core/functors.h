@@ -29,11 +29,14 @@
 */
 
 // =========================================================================
-#ifndef FUNCTORS_H
-#define FUNCTORS_H
+#ifndef GUM_FUNCTORS_H
+#define GUM_FUNCTORS_H
 // =========================================================================
 #include <cstdlib>
 // =========================================================================
+#include <agrum/core/argMaxSet.h>
+// =========================================================================
+
 
 namespace gum {
 
@@ -101,21 +104,21 @@ namespace gum {
   template< class GUM_SCALAR >
   struct ArgumentMaximises {
 
-      // ###########################################################################
-      /// @name Operator()
-      // ###########################################################################
-      /// @{
+    // ###########################################################################
+    /// @name Operator()
+    // ###########################################################################
+    /// @{
 
-        GUM_SCALAR operator() (const GUM_SCALAR& x, const GUM_SCALAR& y) const {
-           return x.first >= y.first ? x : y;
-        }
+      GUM_SCALAR operator() (const GUM_SCALAR& x, const GUM_SCALAR& y) const {
+        return x.first >= y.first ? x : y;
+      }
 
-      /// @}
+    /// @}
 
-      typedef GUM_SCALAR first_argument_type;
-      typedef GUM_SCALAR second_argument_type;
-      typedef GUM_SCALAR result_type;
+    typedef GUM_SCALAR first_argument_type;
+    typedef GUM_SCALAR second_argument_type;
+    typedef GUM_SCALAR result_type;
   };
 } /* End of namespace GUM */
 
-#endif // FUNCTORS_H
+#endif // GUM_FUNCTORS_H
