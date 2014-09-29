@@ -32,6 +32,7 @@
 // =========================================================================
 #include <agrum/core/functors.h>
 #include <agrum/core/argMaxSet.h>
+#include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
 #include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
@@ -41,8 +42,13 @@
 
 namespace gum {  
 
-
-
+  /**
+   * @struct ArgumentMaximisesAction spumdd.h <agrum/FMDP/planning/spumdd.h>
+   * @brief Argument Maximization function object class
+   * @ingroup core
+   *
+   * Returns the set that has the maximal value between its two arguments sets
+   */
   template <typename GUM_SCALAR>
   struct ArgumentMaximisesAction {
 
@@ -73,6 +79,128 @@ namespace gum {
 
 
   /**
+   * @class ActionSet spumdd.h <agrum/FMDP/planning/spumdd.h>
+   * @brief A class to store the optimal actions.
+   * @ingroup fmdp_group
+   *
+   * Stores the ids of optimal actions. To be used as leaves on optimal policy tree or decision graph
+   *
+   */
+  class ActionSet {
+
+  public :
+
+    // ###########################################################################
+    /// @name CNL
+    // ###########################################################################
+    /// @{
+
+      // ============================================================================
+      /// Constructor
+      // ============================================================================
+      ActionSet( ){
+        GUM_CONSTRUCTOR(ActionSet)
+        __actionSeq = new Sequence<Idx>();
+      }
+
+      ActionSet( const ActionSet& src ){
+        GUM_CONSTRUCTOR(ActionSet)
+        __actionSeq = new Sequence<Idx>();
+        for( auto idi = src.beginSafe(); idi != src.endSafe(); ++idi )
+          __actionSeq->insert(*idi);
+      }
+
+      // ============================================================================
+      /// Destructor
+      // ============================================================================
+      ~ActionSet(){
+        GUM_DESTRUCTOR(ActionSet)
+        delete __actionSeq;
+      }
+
+      // ============================================================================
+      /// Allocators and Deallocators redefinition
+      // ============================================================================
+      void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
+      void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(ActionSet));}
+
+    /// @}
+
+    // ###########################################################################
+    /// @name Iterators
+    // ###########################################################################
+    /// @{
+
+      // ============================================================================
+      /// Iterator beginning
+      // ============================================================================
+      SequenceIteratorSafe<Idx> beginSafe() const { return __actionSeq->beginSafe(); }
+
+      // ============================================================================
+      /// Iterator end
+      // ============================================================================
+      SequenceIteratorSafe<Idx> endSafe() const { return __actionSeq->endSafe(); }
+
+    /// @}
+
+    // ###########################################################################
+    /// @name Operators
+    // ###########################################################################
+    /// @{
+
+      // ============================================================================
+      /// Ajout d'un élément
+      // ============================================================================
+      ActionSet& operator += ( const Idx& elem ) {
+        __actionSeq->insert(elem);
+        return *this;
+      }
+
+      // ============================================================================
+      /// Use to insert the content of another set inside this one
+      // ============================================================================
+      ActionSet& operator += ( const ActionSet& src) {
+        for( auto iter = src.beginSafe(); iter != src.endSafe(); ++iter )
+          if( ! __actionSeq->exists(*iter) )
+            __actionSeq->insert(*iter);
+        return *this;
+      }
+
+      // ============================================================================
+      /// Gives the ith element
+      // ============================================================================
+      const Idx& operator [] ( const Idx i ) const { return __actionSeq->atPos(i); }
+
+      // ============================================================================
+      /// Compares two ActionSet to check if they are equals
+      // ============================================================================
+      bool operator == ( const ActionSet& compared ) const {
+        for( auto iter = compared.beginSafe(); iter != compared.endSafe(); ++iter )
+          if( ! __actionSeq->exists(*iter) )
+            return false;
+        return true;
+      }
+      bool operator !=( const ActionSet& compared ) const {return !( *this == compared );}
+
+    /// @}
+
+      // ============================================================================
+      /// Gives the size
+      // ============================================================================
+      Idx size() const { return __actionSeq->size(); }
+
+    private :
+      /// The very bone of the ActionSet
+      Sequence<Idx>* __actionSeq;
+
+      friend std::ostream& operator << (std::ostream& streamy, const ActionSet& objy ){
+        streamy << objy.__actionSeq->toString();
+        return streamy;
+      }
+  };
+
+
+  /**
    * @class SPUMDD spumdd.h <agrum/FMDP/planning/spumdd.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
@@ -80,11 +208,6 @@ namespace gum {
    * Perform a SPUDD planning on given in parameter factored markov decision process
    *
    */
-
-
-//  template<typename GUM_SCALAR>
-//  using futureDG = std::future<MultiDimDecisionGraph<GUM_SCALAR>*>;
-
   template<typename GUM_SCALAR>
   class SPUMDD {
 
@@ -119,7 +242,7 @@ namespace gum {
         INLINE const MultiDimDecisionGraph<GUM_SCALAR>* vFunction() { return __vFunction; }
 
         /// Returns the best policy obtained so far
-        INLINE const MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* optimalPolicy() { return __optimalPolicy; }
+        INLINE const MultiDimDecisionGraph<ActionSet, SetTerminalNodePolicy>* optimalPolicy() { return __optimalPolicy; }
 
       /// @}
 
@@ -200,6 +323,7 @@ namespace gum {
         * resulting diagram. Also we need an exploration table to avoid exploration of already visited sub-graph part.
         */
        void __extractOptimalPolicy ( const MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* optimalValueFunction );
+       void __transferActionIds( const ArgMaxSet<GUM_SCALAR, Idx>&, ActionSet&);
 
 
       /// @}
@@ -214,7 +338,7 @@ namespace gum {
       /// The associated optimal policy
       /// @warning This decision graph has Idx as leaf.
       /// Indeed, its leaves are a match to the fmdp action ids
-      MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* __optimalPolicy;
+      MultiDimDecisionGraph< ActionSet, SetTerminalNodePolicy >* __optimalPolicy;
 
       /// A table giving for every action the associated Q function
       std::vector<MultiDimDecisionGraph<GUM_SCALAR>*> __qFunctionSet;
@@ -224,7 +348,7 @@ namespace gum {
       std::mutex __qSetMutex;
 
       /// The threshold value
-      /// Whenever | Vn - Vn+1 | < threshold, we consider that V <=> V*
+      /// Whenever | Vn - Vn+1 | < threshold, we consider that V ~ V*
       GUM_SCALAR __threshold;
 
       /// A sequence to eleminate primed variables

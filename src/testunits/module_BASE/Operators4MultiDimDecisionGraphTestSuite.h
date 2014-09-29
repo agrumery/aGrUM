@@ -31,9 +31,6 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 // =============================================================================
-#include <agrum/core/approximationPolicy/approximationPolicy.h>
-#include <agrum/core/approximationPolicy/linearApproximationPolicy.h>
-// =============================================================================
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimDecisionGraph.h>
@@ -395,7 +392,7 @@ namespace gum_tests {
 
         // Then we try with random structure
 //        gum::Idx i = 5;
-        for ( gum::Idx i = 0; i < 100; i++ ) {
+        for ( gum::Idx i = 0; i < 1; i++ ) {
 
           time.reset();
 

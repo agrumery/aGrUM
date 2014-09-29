@@ -106,7 +106,7 @@ namespace gum {
 
       // Initialisation of the value function
       __vFunction = new MultiDimDecisionGraph< GUM_SCALAR >();
-      __optimalPolicy = new MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >();
+      __optimalPolicy = new MultiDimDecisionGraph< ActionSet, SetTerminalNodePolicy >();
       __firstTime = true;
     }
 
@@ -397,44 +397,44 @@ namespace gum {
       MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* amcpy
           = new MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >();
 
-//      // Insertion des nouvelles variables
-//      for( SequenceIteratorSafe<const DiscreteVariable*> varIter = qAction->variablesSequence().beginSafe(); varIter != qAction->variablesSequence().endSafe(); ++varIter)
-//        amcpy->add(**varIter);
+      // Insertion des nouvelles variables
+      for( SequenceIteratorSafe<const DiscreteVariable*> varIter = qAction->variablesSequence().beginSafe(); varIter != qAction->variablesSequence().endSafe(); ++varIter)
+        amcpy->add(**varIter);
 
-//      std::vector<NodeId> lifo;
-//      Bijection<NodeId, NodeId> src2dest;
+      std::vector<NodeId> lifo;
+      Bijection<NodeId, NodeId> src2dest;
 
-//      if(qAction->isTerminalNode(qAction->root())){
-//        std::pair< GUM_SCALAR, Idx > leaf = std::pair< GUM_SCALAR, Idx >(actionId, qAction->nodeValue(qAction->root()) );
-//        amcpy->manager()->setRootNode(amcpy->manager()->addTerminalNode(leaf));
-//      } else {
-//        amcpy->manager()->setRootNode(amcpy->manager()->addNonTerminalNode( qAction->node(qAction->root())->nodeVar() ));
-//        src2dest.insert( qAction->root(), amcpy->root() );
-//        lifo.push_back(qAction->root());
-//      }
+      if(qAction->isTerminalNode(qAction->root())){
+        ArgMaxSet<GUM_SCALAR, Idx> leaf( qAction->nodeValue(qAction->root()), actionId );
+        amcpy->manager()->setRootNode(amcpy->manager()->addTerminalNode(leaf));
+      } else {
+        amcpy->manager()->setRootNode(amcpy->manager()->addNonTerminalNode( qAction->node(qAction->root())->nodeVar() ));
+        src2dest.insert( qAction->root(), amcpy->root() );
+        lifo.push_back(qAction->root());
+      }
 
-//      // Parcours en profondeur du diagramme source
-//      while( !lifo.empty() ){
-//        NodeId currentSrcNodeId = lifo.back();
-//        lifo.pop_back();
+      // Parcours en profondeur du diagramme source
+      while( !lifo.empty() ){
+        NodeId currentSrcNodeId = lifo.back();
+        lifo.pop_back();
 
-//        const typename MultiDimDecisionGraph< GUM_SCALAR >::InternalNode* currentSrcNode = qAction->node(currentSrcNodeId);
+        const InternalNode* currentSrcNode = qAction->node(currentSrcNodeId);
 
-//        for( Idx index = 0; index < currentSrcNode->nbSons(); ++index ){
-//          if( !src2dest.existsFirst(currentSrcNode->son(index)) ){
-//            NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
-//            if( qAction->isTerminalNode(srcSonNodeId) ){
-//              std::pair< double, std::pair< GUM_SCALAR, Idx > > leaf(qAction->nodeValue(srcSonNodeId), std::pair< GUM_SCALAR, Idx >(actionId) );
-//              destSonNodeId = amcpy->manager()->addTerminalNode(leaf);
-//            } else {
-//              destSonNodeId = amcpy->manager()->addNonTerminalNode(qAction->node(srcSonNodeId)->nodeVar());
-//              lifo.push_back(srcSonNodeId);
-//            }
-//            src2dest.insert( srcSonNodeId, destSonNodeId );
-//          }
-//          amcpy->manager()->setSon( src2dest.second(currentSrcNodeId), index, src2dest.second(currentSrcNode->son(index)));
-//        }
-//      }
+        for( Idx index = 0; index < currentSrcNode->nbSons(); ++index ){
+          if( !src2dest.existsFirst(currentSrcNode->son(index)) ){
+            NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
+            if( qAction->isTerminalNode(srcSonNodeId) ){
+              ArgMaxSet<GUM_SCALAR, Idx> leaf( qAction->nodeValue(srcSonNodeId), actionId );
+              destSonNodeId = amcpy->manager()->addTerminalNode(leaf);
+            } else {
+              destSonNodeId = amcpy->manager()->addNonTerminalNode(qAction->node(srcSonNodeId)->nodeVar());
+              lifo.push_back(srcSonNodeId);
+            }
+            src2dest.insert( srcSonNodeId, destSonNodeId );
+          }
+          amcpy->manager()->setSon( src2dest.second(currentSrcNodeId), index, src2dest.second(currentSrcNode->son(index)));
+        }
+      }
 
       return amcpy;
     }
@@ -449,46 +449,56 @@ namespace gum {
     SPUMDD<GUM_SCALAR>::__extractOptimalPolicy (
         const MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* argMaxOptimalPolicy ) {
 
-//      __optimalPolicy->clear();
+      __optimalPolicy->clear();
 
-//      // Insertion des nouvelles variables
-//      for( SequenceIteratorSafe<const DiscreteVariable*> varIter = argMaxOptimalPolicy->variablesSequence().beginSafe(); varIter != argMaxOptimalPolicy->variablesSequence().endSafe(); ++varIter)
-//        __optimalPolicy->add(**varIter);
+      // Insertion des nouvelles variables
+      for( SequenceIteratorSafe<const DiscreteVariable*> varIter = argMaxOptimalPolicy->variablesSequence().beginSafe(); varIter != argMaxOptimalPolicy->variablesSequence().endSafe(); ++varIter)
+        __optimalPolicy->add(**varIter);
 
-//      std::vector<NodeId> lifo;
-//      HashTable<NodeId, NodeId> src2dest;
+      std::vector<NodeId> lifo;
+      HashTable<NodeId, NodeId> src2dest;
 
-//      if(argMaxOptimalPolicy->isTerminalNode(argMaxOptimalPolicy->root()))
-//        __optimalPolicy->manager()->setRootNode(__optimalPolicy->manager()->addTerminalNode(argMaxOptimalPolicy->nodeValue(argMaxOptimalPolicy->root()).second));
-//      else {
-//        __optimalPolicy->manager()->setRootNode(__optimalPolicy->manager()->addNonTerminalNode( argMaxOptimalPolicy->node(argMaxOptimalPolicy->root())->nodeVar() ));
-//        src2dest.insert( argMaxOptimalPolicy->root(), __optimalPolicy->root() );
-//        lifo.push_back(argMaxOptimalPolicy->root());
-//      }
+      if(argMaxOptimalPolicy->isTerminalNode(argMaxOptimalPolicy->root())){
+        ActionSet leaf;
+        __transferActionIds( argMaxOptimalPolicy->nodeValue( argMaxOptimalPolicy->root() ), leaf );
+        __optimalPolicy->manager()->setRootNode(__optimalPolicy->manager()->addTerminalNode(leaf));
+      } else {
+        __optimalPolicy->manager()->setRootNode(__optimalPolicy->manager()->addNonTerminalNode( argMaxOptimalPolicy->node(argMaxOptimalPolicy->root())->nodeVar() ));
+        src2dest.insert( argMaxOptimalPolicy->root(), __optimalPolicy->root() );
+        lifo.push_back(argMaxOptimalPolicy->root());
+      }
 
-//      // Parcours en profondeur du diagramme source
-//      while( !lifo.empty() ){
-//        NodeId currentSrcNodeId = lifo.back();
-//        lifo.pop_back();
+      // Parcours en profondeur du diagramme source
+      while( !lifo.empty() ){
+        NodeId currentSrcNodeId = lifo.back();
+        lifo.pop_back();
 
-//        const typename MultiDimDecisionGraph< std::pair< double, std::pair< GUM_SCALAR, Idx > > >::InternalNode* currentSrcNode = argMaxOptimalPolicy->node(currentSrcNodeId);
+        const InternalNode* currentSrcNode = argMaxOptimalPolicy->node(currentSrcNodeId);
 
-//        for( Idx index = 0; index < currentSrcNode->nbSons(); ++index ){
-//          if( !src2dest.exists(currentSrcNode->son(index)) ){
-//            NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
-//            if( argMaxOptimalPolicy->isTerminalNode(srcSonNodeId) ){
-//              destSonNodeId = __optimalPolicy->manager()->addTerminalNode(argMaxOptimalPolicy->nodeValue(srcSonNodeId).second);
-//            } else {
-//              destSonNodeId = __optimalPolicy->manager()->addNonTerminalNode(argMaxOptimalPolicy->node(srcSonNodeId)->nodeVar());
-//              lifo.push_back(srcSonNodeId);
-//            }
-//            src2dest.insert( srcSonNodeId, destSonNodeId );
-//          }
-//          __optimalPolicy->manager()->setSon( src2dest[currentSrcNodeId], index, src2dest[currentSrcNode->son(index)] );
-//        }
-//      }
-//      __optimalPolicy->manager()->reduce();
-//      __optimalPolicy->manager()->clean();
+        for( Idx index = 0; index < currentSrcNode->nbSons(); ++index ){
+          if( !src2dest.exists(currentSrcNode->son(index)) ){
+            NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
+            if( argMaxOptimalPolicy->isTerminalNode(srcSonNodeId) ){
+              ActionSet leaf;
+              __transferActionIds( argMaxOptimalPolicy->nodeValue( argMaxOptimalPolicy->root() ), leaf );
+              destSonNodeId = __optimalPolicy->manager()->addTerminalNode(leaf);
+            } else {
+              destSonNodeId = __optimalPolicy->manager()->addNonTerminalNode(argMaxOptimalPolicy->node(srcSonNodeId)->nodeVar());
+              lifo.push_back(srcSonNodeId);
+            }
+            src2dest.insert( srcSonNodeId, destSonNodeId );
+          }
+          __optimalPolicy->manager()->setSon( src2dest[currentSrcNodeId], index, src2dest[currentSrcNode->son(index)] );
+        }
+      }
+      __optimalPolicy->manager()->reduce();
+      __optimalPolicy->manager()->clean();
+    }
+
+    template<typename GUM_SCALAR>
+    void __transferActionIds( const ArgMaxSet<GUM_SCALAR, Idx>& src, ActionSet& dest){
+      for( auto idi = src.beginSafe(); idi != src.endSafe(); ++idi )
+        dest += *idi;
     }
 
 

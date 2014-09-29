@@ -47,7 +47,6 @@ namespace gum {
    *
    * Returns the maximum of its two arguments
    */
-
   template< class GUM_SCALAR>
   struct Maximizes{
 

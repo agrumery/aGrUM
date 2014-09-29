@@ -20,15 +20,17 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Template methods of MultiDimDecisionGraph.
+ * @brief Methods of the MultiDimDecisionGraph InternalNode class.
  *
  * @author Jean-Christophe Magnan
  *
  */
-#include <agrum/multidim/multiDimDecisionGraph.h>
-
+// =======================================================================================
+#include <agrum/multidim/decisionGraphUtilities/internalNode.h>
+// =======================================================================================
 #define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
 #define DEALLOCATE(x,y) SmallObjectAllocator::instance().deallocate(x,y)
+// =======================================================================================
 
 namespace gum {
 
@@ -36,7 +38,7 @@ namespace gum {
 // Internal Nodes methods
 // ############################################################################
     // ============================================================================
-    /// Constructors
+    // Constructors
     // ============================================================================
     InternalNode::InternalNode(){
       GUM_CONSTRUCTOR(InternalNode)
@@ -55,7 +57,7 @@ namespace gum {
     }
 
     // ============================================================================
-    /// Destructors
+    // Destructors
     // ============================================================================
     InternalNode::~InternalNode(){
       GUM_DESTRUCTOR(InternalNode)
@@ -64,7 +66,7 @@ namespace gum {
     }
 
     // ============================================================================
-    /// Allocates a table of nodeid of the size given in parameter
+    // Allocates a table of nodeid of the size given in parameter
     // ============================================================================
     NodeId* InternalNode::allocateNodeSons( const DiscreteVariable* v ){
       NodeId* sons = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*v->domainSize() ) );
@@ -74,14 +76,14 @@ namespace gum {
     }
 
     // ============================================================================
-    /// Deallocates a NodeSons table
+    // Deallocates a NodeSons table
     // ============================================================================
     void InternalNode::deallocateNodeSons(const DiscreteVariable* v, NodeId* s){
         DEALLOCATE(s, sizeof(NodeId)*v->domainSize());
     }
 
     // ============================================================================
-    /// Node handlers
+    // Node handlers
     // ============================================================================
     void InternalNode::setNode(const DiscreteVariable* v, NodeId* sons){
         if( __nodeVar != nullptr )
@@ -91,7 +93,7 @@ namespace gum {
     }
 
     // ============================================================================
-    /// Var handlers
+    // Var handlers
     // ============================================================================
     void InternalNode::setNodeVar(const DiscreteVariable* v){
         if( __nodeVar != nullptr )
@@ -105,7 +107,7 @@ namespace gum {
     }
 
     // ============================================================================
-    /// Parent handlers
+    // Parent handlers
     // ============================================================================
     void InternalNode::addParent( NodeId parent, Idx modality ){
       __nodeParents.addLink( Parent(parent, modality) );

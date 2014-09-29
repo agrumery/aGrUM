@@ -695,7 +695,7 @@ namespace gum_tests {
 
       void test_Generator(){
 
-        for(gum::Idx i = 0; i < 10000; i++){
+        for(gum::Idx i = 0; i < 100; i++){
 
           gum::Sequence< const gum::DiscreteVariable* >* varList = new gum::Sequence< const gum::DiscreteVariable* >();
 

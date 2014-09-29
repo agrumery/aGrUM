@@ -29,7 +29,7 @@
 #define GUM_MULTI_DIM_DECISION_GRAPH_H
 
 // ============================================================================
-#include <agrum/core/inline.h>
+//#include <agrum/core/inline.h>
 #include <agrum/core/types.h>
 // ============================================================================
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
