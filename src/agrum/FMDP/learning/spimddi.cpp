@@ -162,6 +162,7 @@ namespace gum {
             if( __nbObservation%__observationPhaseLenght == 0) {
                 __learner->updateFMDP();
                 __planer->makePlanning(__nbValueIterationStep);
+//                std::cout << __planer->optimalPolicy()->toDot() << std::endl;
 //                exit(1);
             }
             __nbObservation++;

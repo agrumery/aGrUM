@@ -110,6 +110,13 @@ namespace gum {
           __actionSeq->insert(*idi);
       }
 
+      ActionSet& operator = ( const ActionSet& src){
+        __actionSeq = new Sequence<Idx>();
+        for( auto idi = src.beginSafe(); idi != src.endSafe(); ++idi )
+          __actionSeq->insert(*idi);
+        return *this;
+      }
+
       // ============================================================================
       /// Destructor
       // ============================================================================
@@ -169,7 +176,9 @@ namespace gum {
       // ============================================================================
       /// Gives the ith element
       // ============================================================================
-      const Idx& operator [] ( const Idx i ) const { return __actionSeq->atPos(i); }
+      const Idx& operator [] ( const Idx i ) const {
+        return __actionSeq->atPos(i);
+      }
 
       // ============================================================================
       /// Compares two ActionSet to check if they are equals
