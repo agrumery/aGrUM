@@ -44,6 +44,11 @@ namespace gum {
   class SetTerminalNodePolicy {
 
     public:
+
+    ~SetTerminalNodePolicy(){
+      clearAllTerminalNodes();
+    }
+
     // ############################################################################
     /// @name Terminal Node Creation and Destruction
     // ############################################################################
@@ -70,7 +75,7 @@ namespace gum {
       /// Erase all terminal nodes
       // ============================================================================
       void clearAllTerminalNodes() {
-        for( auto nodeIter = __map.beginSafe(); nodeIter != __map.beginSafe(); ++nodeIter )
+        for( auto nodeIter = __map.beginSafe(); nodeIter != __map.endSafe(); ++nodeIter )
           delete nodeIter.val();
         __map.clear();
       }
@@ -111,7 +116,7 @@ namespace gum {
       /// Returns the id of the terminal node that has the given value
       // ============================================================================
       const NodeId& terminalNodeId( const GUM_SCALAR& v ) const {
-        for( auto nodeIter = __map.beginSafe(); nodeIter != __map.beginSafe(); ++nodeIter )
+        for( auto nodeIter = __map.beginSafe(); nodeIter != __map.endSafe(); ++nodeIter )
           if( *(nodeIter.val()) == v )
             return nodeIter.key();
         return jocker;
@@ -162,4 +167,4 @@ namespace gum {
 
 } // End of namespace gum
 
-#endif /* GUM_MULTI_DIM_DECISION_GRAPH_INTERFACE_TERMINAL_NODE_POLICY_H */
+#endif /* GUM_MULTI_DIM_DECISION_GRAPH_SET_TERMINAL_NODE_POLICY_H */

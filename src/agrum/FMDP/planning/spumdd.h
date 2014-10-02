@@ -178,6 +178,9 @@ namespace gum {
         for( auto iter = compared.beginSafe(); iter != compared.endSafe(); ++iter )
           if( ! __actionSeq->exists(*iter) )
             return false;
+        for( auto iter = this->beginSafe(); iter != this->endSafe(); ++iter )
+          if( ! compared.exists(*iter) )
+            return false;
         return true;
       }
       bool operator !=( const ActionSet& compared ) const {return !( *this == compared );}
@@ -189,12 +192,14 @@ namespace gum {
       // ============================================================================
       Idx size() const { return __actionSeq->size(); }
 
+      bool exists( const Idx& elem ) const { return __actionSeq->exists( elem ); }
+
     private :
       /// The very bone of the ActionSet
       Sequence<Idx>* __actionSeq;
 
       friend std::ostream& operator << (std::ostream& streamy, const ActionSet& objy ){
-        streamy << objy.__actionSeq->toString();
+        streamy  << objy.__actionSeq->toString();
         return streamy;
       }
   };

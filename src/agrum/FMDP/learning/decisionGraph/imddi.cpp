@@ -30,7 +30,7 @@
 #include <agrum/core/multiPriorityQueue.h>
 // =======================================================
 #include <agrum/FMDP/learning/decisionGraph/imddi.h>
-#include <agrum/FMDP/learning/decisionGraph/chiSquare.h>
+#include <agrum/FMDP/learning/core/chiSquare.h>
 // =======================================================
 #include <agrum/variables/discreteVariable.h>
 // =======================================================

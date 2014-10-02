@@ -75,9 +75,8 @@ namespace gum {
       GUM_DESTRUCTOR ( SPUMDD );
 
       if(__vFunction){
-        std::cout << __vFunction->toDot() << std::endl;
         delete __vFunction;
-        }
+      }
 
       if(__optimalPolicy)
         delete __optimalPolicy;
@@ -449,6 +448,7 @@ namespace gum {
     SPUMDD<GUM_SCALAR>::__extractOptimalPolicy (
         const MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* argMaxOptimalPolicy ) {
 
+//      std::cout << argMaxOptimalPolicy->toDot() << std::endl;
       __optimalPolicy->clear();
 
       // Insertion des nouvelles variables
@@ -479,9 +479,11 @@ namespace gum {
           if( !src2dest.exists(currentSrcNode->son(index)) ){
             NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
             if( argMaxOptimalPolicy->isTerminalNode(srcSonNodeId) ){
+//                std::cout << "N : " << srcSonNodeId << std::endl;
               ActionSet leaf;
-              __transferActionIds( argMaxOptimalPolicy->nodeValue( argMaxOptimalPolicy->root() ), leaf );
+              __transferActionIds( argMaxOptimalPolicy->nodeValue( srcSonNodeId ), leaf );
               destSonNodeId = __optimalPolicy->manager()->addTerminalNode(leaf);
+//              std::cout << "Done" << std::endl;
             } else {
               destSonNodeId = __optimalPolicy->manager()->addNonTerminalNode(argMaxOptimalPolicy->node(srcSonNodeId)->nodeVar());
               lifo.push_back(srcSonNodeId);
@@ -493,10 +495,11 @@ namespace gum {
       }
       __optimalPolicy->manager()->reduce();
       __optimalPolicy->manager()->clean();
+//      std::cout << __optimalPolicy->toDot() << std::endl;
     }
 
     template<typename GUM_SCALAR>
-    void __transferActionIds( const ArgMaxSet<GUM_SCALAR, Idx>& src, ActionSet& dest){
+    void SPUMDD<GUM_SCALAR>::__transferActionIds( const ArgMaxSet<GUM_SCALAR, Idx>& src, ActionSet& dest){
       for( auto idi = src.beginSafe(); idi != src.endSafe(); ++idi )
         dest += *idi;
     }

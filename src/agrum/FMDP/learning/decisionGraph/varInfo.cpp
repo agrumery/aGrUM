@@ -27,7 +27,7 @@
 #include <cmath>
 // =========================================================================
 #include <agrum/FMDP/learning/decisionGraph/varInfo.h>
-#include <agrum/FMDP/learning/decisionGraph/chiSquare.h>
+#include <agrum/FMDP/learning/core/chiSquare.h>
 // =========================================================================
 
 

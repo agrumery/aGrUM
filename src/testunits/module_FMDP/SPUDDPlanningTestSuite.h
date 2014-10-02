@@ -66,12 +66,12 @@ namespace gum_tests {
 
     public:
 
-      void test_Coffee() {
+      void est_Coffee() {
         file = GET_PATH_STR ( "FMDP/coffee/coffee.dat" );
         run ( "Coffee" );
       }
 
-      void est_FactoryS() {
+      void test_FactoryS() {
         file = GET_PATH_STR ( "FMDP/factory/tiny-factory.dat" );
         run ( "TinyFactory" );
       }

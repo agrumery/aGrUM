@@ -1,0 +1,121 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/**
+ * @file
+ * @brief Headers of the GTestPolicy
+ *
+ * @author Jean-Christophe Magnan
+ *
+ */
+#ifndef GUM_MULTI_DIM_DECISION_GRAPH_G_TEST_POLICY_H
+#define GUM_MULTI_DIM_DECISION_GRAPH_G_TEST_POLICY_H
+
+// ============================================================================
+#include <agrum/FMDP/learning/core/contingencyTable.h>
+#include <agrum/FMDP/learning/core/testPolicy/ITestPolicy.h>
+// ============================================================================
+
+namespace gum {
+
+  /**
+   * @class GTestPolicy GTestPolicy.h <agrum/multidim/core/testPolicies/GTestPolicy.h>
+   *
+   * @brief G implements a test policy that follows the G statistic
+   *
+   * @ingroup fmdp_group
+   */
+  class GTestPolicy : public ITestPolicy<Idx> {
+
+    public:
+
+      GTestPolicy( const DiscreteVariable* attr, const DiscreteVariable* value ) : __conTab(attr, value),
+        __nbObs(0),
+        __degreeOfFreedom(attr->domainSize(), value->domainSize()){}
+
+      // ############################################################################
+      /// @name Observation insertion
+      // ############################################################################
+      /// @{
+
+        // ============================================================================
+        /// Comptabilizes the new observation
+        // ============================================================================
+        virtual void addObservation( Idx iattr, Idx ivalue ) {
+          __conTab.add( iattr, ivalue );
+
+          __nbObs++;
+        }
+
+      /// @}
+
+
+      // ############################################################################
+      /// @name Test relevance
+      // ############################################################################
+      /// @{
+
+        // ============================================================================
+        /// Returns true if enough observation were made so that the test can be relevant
+        // ============================================================================
+      virtual bool isTestRelevant(){ return ( __nbObs > 20 && __nbObs > __conTab.attrSize() * 5 ); }
+
+      /// @}
+
+
+      // ############################################################################
+      /// @name Test result
+      // ############################################################################
+      /// @{
+
+        // ============================================================================
+        /// Returns the performance of current variable according to the test
+        // ============================================================================
+      virtual double score(){
+        double GStat = 0;
+        for (Idx attrModa = 0; attrModa < __conTab.attrSize(); ++attrModa ){
+          double semiExpected = (double)__conTab.aMarginal(attrModa)/(double)__nbObs;
+          for (Idx valModa = 0; valModa < __conTab.valueSize(); ++valModa) {
+            double cell = (double)__conTab.joint(attrModa,valModa);
+            if( cell < 5 )
+              continue;
+            double expected = semiExpected*(double)__conTab.vMarginal(valModa);
+
+            GStat += 2*cell*log(ceil/expected);
+          }
+        }
+        return 1 - ChiSquare::probaChi2(GStat, __degreeOfFreedom);
+      }
+
+      /// @}
+
+    private :
+
+      /// The contingency table used to keeps records of all observation
+      ContingencyTable __conTab;
+
+      ///
+      Idx __nbObs;
+
+      Idx __degreeOfFreedom;
+  };
+
+} // End of namespace gum
+
+#endif /* GUM_MULTI_DIM_DECISION_GRAPH_G_TEST_POLICY_H */

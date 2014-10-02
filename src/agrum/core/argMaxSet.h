@@ -62,45 +62,24 @@ namespace gum {
         // ============================================================================
         /// Constructor
         // ============================================================================
-        ArgMaxSet( ){
-          GUM_CONSTRUCTOR(ArgMaxSet);
-          __argMaxSeq = new Sequence<GUM_SCALAR_SEQ>();
-        }
+        ArgMaxSet( );
 
         // ============================================================================
         /// Constructor
         // ============================================================================
-        ArgMaxSet( const GUM_SCALAR_VAL& val,  const GUM_SCALAR_SEQ& elem ){
-          GUM_CONSTRUCTOR(ArgMaxSet);
-          __argMaxSeq = new Sequence<GUM_SCALAR_SEQ>();
-          __argMaxSeq->insert( elem );
-          __val = val;
-        }
+        ArgMaxSet( const GUM_SCALAR_VAL& val,  const GUM_SCALAR_SEQ& elem );
 
         // ============================================================================
         /// Copy Constructor
         // ============================================================================
-        ArgMaxSet( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& src ){
-          GUM_CONS_CPY(ArgMaxSet);
-          __argMaxSeq = new Sequence<GUM_SCALAR_SEQ>();
-          this->operator +=(src);
-          __val = src.value();
-        }
+        ArgMaxSet( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& src );
 
-        ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& operator = ( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& src ){
-          this->__argMaxSeq->clear();
-          this->operator +=( src );
-          __val = src.value();
-          return *this;
-        }
+        ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& operator = ( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& src );
 
         // ============================================================================
         /// Destructor
         // ============================================================================
-        ~ArgMaxSet(){
-          GUM_DESTRUCTOR(ArgMaxSet)
-          delete __argMaxSeq;
-        }
+        ~ArgMaxSet();
 
         // ============================================================================
         /// Allocators and Deallocators redefinition
@@ -135,20 +114,12 @@ namespace gum {
         // ============================================================================
         /// Ajout d'un élément
         // ============================================================================
-        ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& operator += ( const GUM_SCALAR_SEQ& elem ) {
-          __argMaxSeq->insert(elem);
-          return *this;
-        }
+        ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& operator += ( const GUM_SCALAR_SEQ& elem );
 
         // ============================================================================
         /// Use to insert the content of another set inside this one
         // ============================================================================
-        ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& operator += ( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& src) {
-          for( auto iter = src.beginSafe(); iter != src.endSafe(); ++iter )
-            if( ! __argMaxSeq->exists(*iter) )
-              __argMaxSeq->insert(*iter);
-          return *this;
-        }
+        ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& operator += ( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& src) ;
 
         // ============================================================================
         /// Gives the ith element
@@ -158,14 +129,7 @@ namespace gum {
         // ============================================================================
         /// Compares two ArgMaxSet to check if they are equals
         // ============================================================================
-        bool operator == ( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const {
-          if( __val != compared.value() )
-            return false;
-          for( auto iter = compared.beginSafe(); iter != compared.endSafe(); ++iter )
-            if( ! __argMaxSeq->exists(*iter) )
-              return false;
-          return true;
-        }
+        bool operator == ( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const;
         bool operator !=( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const {return !( *this == compared );}
 
         // ============================================================================
@@ -190,7 +154,7 @@ namespace gum {
       // ============================================================================
       const GUM_SCALAR_VAL& value() const { return __val; }
 
-//      bool exists( const GUM_SCALAR& val ) const { return __argMaxSeq->exists( val ); }
+      bool exists( const GUM_SCALAR_SEQ& elem ) const { return __argMaxSeq->exists( elem ); }
 
     private :
       /// The very bone of the ArgMaxSet
@@ -199,11 +163,13 @@ namespace gum {
 
     public :
       friend std::ostream& operator << (std::ostream& streamy, const ArgMaxSet& objy ){
-        streamy << objy.__argMaxSeq->toString();
+        streamy << "Value : " << objy.value() << " - Set : " << objy.__argMaxSeq->toString();
         return streamy;
       }
   };
 
 } // End of namespace gum
+
+#include <agrum/core/argMaxSet.tcc>
 
 #endif /* GUM_ARG_MAX_SET_H */

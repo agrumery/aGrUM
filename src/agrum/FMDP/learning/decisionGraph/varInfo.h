@@ -34,6 +34,7 @@
 #include <agrum/core/set.h>
 // =========================================================================
 #include <agrum/FMDP/learning/observation.h>
+#include <agrum/FMDP/learning/core/contingencyTable.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
@@ -48,8 +49,8 @@ namespace gum {
    *
    *
    */
-
-  class VarInfo {
+//  template < class TestPolicy = GTestPolicy >
+  class VarInfo {//: public TestPolicy {
 
     public:
 

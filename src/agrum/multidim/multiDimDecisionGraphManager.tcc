@@ -541,7 +541,7 @@ namespace gum {
     MultiDimDecisionGraphManager<GUM_SCALAR, TerminalNodePolicy>::clean( ){
       Sequence< const DiscreteVariable* > oldSequence(__decisionGraph->variablesSequence());
       for ( SequenceIterator< const DiscreteVariable* > varIter = oldSequence.begin(); varIter != oldSequence.end(); ++varIter )
-        if( ! __decisionGraph->varNodeListe( *varIter ) )
+        if( ! __decisionGraph->varNodeListe( *varIter )->list() )
           __decisionGraph->erase(**varIter);
     }
 

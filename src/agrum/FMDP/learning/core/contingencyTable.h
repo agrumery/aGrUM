@@ -49,7 +49,7 @@ namespace gum {
    *
    */
 
-  class VarInfo {
+  class ContingencyTable {
 
     public:
 
@@ -61,12 +61,12 @@ namespace gum {
         // ==========================================================================
         /// Default constructor
         // ==========================================================================
-        VarInfo ( const DiscreteVariable*, const DiscreteVariable* );
+        ContingencyTable ( const DiscreteVariable*, const DiscreteVariable* );
 
         // ==========================================================================
         /// Default destructor
         // ==========================================================================
-        ~VarInfo();
+        ~ContingencyTable();
 
       /// @}
 
@@ -76,43 +76,44 @@ namespace gum {
       /// @{
 
         // ==========================================================================
-        /// Returns the pValue for this attribute
+        /// Increments the number of sample for case( iattr, ivalue )
         // ==========================================================================
-        void addObservation( const Observation* );
+        void add( Idx iattr, Idx ivalue);
 
         // ==========================================================================
-        /// Used to know if enough information are stored on this node
-        /// to make pvalue relevant
+        /// Returns the number of samples for case (iattr, ivalue)
         // ==========================================================================
-        INLINE bool isPValueRelevant() { return __isRelevant;}
+        Idx joint( Idx iattr, Idx ivalue){ return (*__contingencyTable[iattr])[ivalue]; }
 
         // ==========================================================================
-        /// Returns the pValue for this attribute
+        /// Returns the number of samples for line iattr
         // ==========================================================================
-        INLINE double pValue ( ) { return __pvalue;}
+        Idx aMarginal( Idx iattr ) { return __attrMarginalTable[iattr]; }
 
-        INLINE const Set<const Observation*>* observationSet(Idx modality){ return __modality2Observations[modality];}
+        // ==========================================================================
+        /// Returns the number of samples for column ivalue
+        // ==========================================================================
+        Idx vMarginal( Idx ivalue ) { return __valueMarginalTable[ivalue]; }
+
+        // ==========================================================================
+        /// Returns the number of samples for line iattr
+        // ==========================================================================
+        Idx attrSize() { return __attrDomainSize; }
+
+        // ==========================================================================
+        /// Returns the number of samples for column ivalue
+        // ==========================================================================
+        Idx valueSize() { return __valueDomainSize; }
 
       /// @}
 
   private :
 
-      void __checkRelevance();
-      void __computeG();
-
-
       /// The attribute using this class
-      const DiscreteVariable* __attr;
+      Idx __attrDomainSize;
 
       /// The value used to compute pValue
-      const DiscreteVariable* __value;
-
-      /// Table giving for every variables its instantiation
-      HashTable<Idx, Set<const Observation*>*> __modality2Observations;
-
-      /// The number of observation taken into account
-      /// Used for the GStat
-      Idx __nbObservation;
+      Idx __valueDomainSize;
 
       /**
        * The contingency table used to compute the GStat
@@ -127,16 +128,7 @@ namespace gum {
       HashTable<Idx, Idx> __attrMarginalTable;
       HashTable<Idx, Idx> __valueMarginalTable;
 
-      /// The Gstat,
-      /// the degree of freedom used for the computation of the p-value
-      /// andn the p-value
-      double __GStat;
-      Idx __degreeOfFreedom;
-      double __pvalue;
-
-      /// Boolean to indicates whether p-value is relevant or not
-      bool __isRelevant;
-//      std::vector<bool> __areRelevant;
+      Idx __nbObservation;
   };
 
 } /* namespace gum */

@@ -411,9 +411,9 @@ namespace gum {
       std::vector<NodeId> lifo;
       Bijection<NodeId, NodeId> src2dest;
 
-      if(src.isTerminalNode(src.root()))
+      if(src.isTerminalNode(src.root())){
         this->manager()->setRootNode(this->manager()->addTerminalNode(src.nodeValue(src.root())));
-      else {
+      } else {
         this->manager()->setRootNode(this->manager()->addNonTerminalNode( reassign.second(src.node(src.root())->nodeVar() )));
         src2dest.insert( src.root(), this->root() );
         lifo.push_back(src.root());
