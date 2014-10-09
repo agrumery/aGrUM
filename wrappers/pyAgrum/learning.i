@@ -8,10 +8,15 @@
 %ignore  gum::learning::BNLearner::addMandatoryArc(const Arc& arc);
 %ignore  gum::learning::BNLearner::eraseForbiddenArc(const Arc& arc);
 %ignore  gum::learning::BNLearner::eraseMandatoryArc(const Arc& arc);
+%ignore  gum::learning::BNLearner::learnParameters ( const DAG& dag,bool take_into_account_score);
 
 %extend gum::learning::BNLearner {
   gum::BayesNet<double> learnBN() {
     return self->learnBN<double>();
+  }
+  
+  gum::BayesNet<double> learnParameters(const DAG& dag) {
+    return self->learnParameters<double>(dag);
   }
 
   void setSliceOrder(PyObject *l) {
