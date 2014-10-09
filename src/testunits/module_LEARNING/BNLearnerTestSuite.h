@@ -122,6 +122,21 @@ namespace gum_tests {
       }
     }
 
+    void test_asia_param_from_bn () {
+      gum::learning::BNLearner learner(GET_PATH_STR( "asia3.csv" ) );
+
+      learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
+      gum::BayesNet<float> bn = learner.learnBN ();
+
+      try {
+        gum::BayesNet<float> bn2 = learner.learnParameters ( bn );
+        TS_ASSERT ( bn2.dag ().arcs().size () == bn.dag ().arcs().size () );
+      }
+      catch ( gum::Exception& e ) {
+        GUM_SHOWERROR ( e );
+      }
+    }
+
 
     void xtest_listener() {
       gum::learning::BNLearner learner( GET_PATH_STR( "asia.csv" ) );
