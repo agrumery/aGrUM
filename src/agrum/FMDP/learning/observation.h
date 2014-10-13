@@ -127,6 +127,9 @@ namespace gum {
 
       /// Table giving for every variables its instantiation
       HashTable<const DiscreteVariable*, Idx> __varInst;
+
+      /// The reward associated to this transition
+      double __reward;
   };
 
 } /* namespace gum */

@@ -26,7 +26,7 @@
 
 
 // =========================================================================
-#include <agrum/FMDP/learning/decisionGraph/nodeDatabase.h>
+#include <agrum/FMDP/learning/datastructure/nodeDatabase.h>
 // =========================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
 // =========================================================================

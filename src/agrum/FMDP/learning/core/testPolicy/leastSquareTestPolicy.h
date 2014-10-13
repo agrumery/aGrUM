@@ -19,45 +19,64 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the Chi2TestPolicy
+ * @brief Headers of the LeastSquareTestPolicy
  *
  * @author Jean-Christophe Magnan
  *
  */
-#ifndef GUM_MULTI_DIM_DECISION_GRAPH_CHI2_TEST_POLICY_H
-#define GUM_MULTI_DIM_DECISION_GRAPH_CHI2_TEST_POLICY_H
+#ifndef GUM_MULTI_DIM_DECISION_GRAPH_LEAST_SQUARE_TEST_POLICY_H
+#define GUM_MULTI_DIM_DECISION_GRAPH_LEAST_SQUARE_TEST_POLICY_H
 
 // ============================================================================
 #include <agrum/FMDP/learning/core/contingencyTable.h>
 #include <agrum/FMDP/learning/core/testPolicy/ITestPolicy.h>
 // ============================================================================
+#include <agrum/multidim/decisionGraphUtilities/link.h>
+// ============================================================================
 
 namespace gum {
 
   /**
-   * @class Chi2TestPolicy Chi2TestPolicy.h <agrum/multidim/core/testPolicy/Chi2TestPolicy.h>
+   * @class LeastSquareTestPolicy leastSquareTestPolicy.h <agrum/multidim/core/testPolicy/leastSquareTestPolicy.h>
    *
-   * @brief Chi2TestPolicy implements a test policy that follows the Chi2 statistic
+   * @brief LeastSquareTestPolicy implements a test policy that follows the Least Square statistic
    *
    * @ingroup fmdp_group
    */
-  class Chi2TestPolicy : public ITestPolicy { //<Idx> {
+  class LeastSquareTestPolicy : public ITestPolicy { //<Idx> {
 
     public:
 
-      Chi2TestPolicy( ) : __conTab(), __nbObs(0){}
+      LeastSquareTestPolicy( ) : __nbObs(0), __sumO(0.0){}
 
       // ############################################################################
       /// @name Observation insertion
       // ############################################################################
       /// @{
 
+//      HashTable<Idx,Idx> __nbObsTable;
+//      HashTable<Idx,LinkedList<double>*> __obsTable;
+
         // ============================================================================
         /// Comptabilizes the new observation
         // ============================================================================
         void addObservation( Idx attr, double value ) {
-          __conTab.add( attr, value );
+          __sumO += value;
           __nbObs++;
+
+          if(__sumAttrTable.exists(attr))
+            __sumAttrTable[attr] += value;
+          else
+            __sumAttrTable.insert(attr, value);
+
+          if(__nbObsTable.exists(attr))
+            __nbObsTable[attr]++;
+          else
+            __nbObsTable.insert(attr, 1);
+
+          if(!__obsTable.exists(attr))
+            __obsTable.insert(attr, new LinkedList<double>());
+          __obsTable[attr]->addLink(value);
         }
 
       /// @}
@@ -85,32 +104,39 @@ namespace gum {
         /// Returns the performance of current variable according to the test
         // ============================================================================
         double score(){
-          double Chi2Stat = 0;
-          for ( auto attrIter = __conTab.aBeginSafe(); attrIter != __conTab.aEndSafe(); ++attrIter ){
-            double semiExpected = (double)(attrIter.val())/(double)__nbObs;
-            for ( auto valIter = __conTab.vBeginSafe(); valIter != __conTab.vEndSafe(); ++valIter ) {
-              double cell = (double)__conTab.joint(attrIter.val(),valIter.val());
-              if( cell < 5 )
-                continue;
-              double expected = semiExpected*(double)(valIter.val());
+          double mean = __sumO / (double)__nbObs;
+          double errorO = 0.0;
+          double sumErrorAttr = 0.0;
+          for ( auto attrIter = __sumAttrTable.cbeginSafe(); attrIter != __sumAttrTable.cendSafe(); ++attrIter ){
+              Idx key = attrIter.key();
+              double meanAttr = __sumAttrTable[key] / (double)__nbObsTable[key];
+              double errorAttr = 0.0;
 
-              Chi2Stat += std::pow(cell - expected, 2.0)/expected;
-            }
+              const Link<double>* linky = __obsTable[key]->list();
+              while( linky ){
+                  errorAttr += std::pow( linky->element() - meanAttr, 2 );
+                  errorO += std::pow( linky->element() - mean, 2 );
+                  linky = linky->nextLink();
+              }
+
+              sumErrorAttr += ( (double)__nbObsTable[key] / (double)__nbObs ) * errorAttr;
           }
-          return 1 - ChiSquare::probaChi2(Chi2Stat, __conTab.attrSize()*__conTab.valueSize());
+          return errorO - sumErrorAttr;
         }
 
       /// @}
 
     private :
 
-      /// The contingency table used to keeps records of all observation
-      ContingencyTable __conTab;
-
       ///
       Idx __nbObs;
+      double __sumO;
+
+      HashTable<Idx,Idx> __nbObsTable;
+      HashTable<Idx, double> __sumAttrTable;
+      HashTable<Idx,LinkedList<double>*> __obsTable;
   };
 
 } // End of namespace gum
 
-#endif /* GUM_MULTI_DIM_DECISION_GRAPH_CHI2_TEST_POLICY_H */
+#endif /* GUM_MULTI_DIM_DECISION_GRAPH_LEAST_SQUARE_TEST_POLICY_H */

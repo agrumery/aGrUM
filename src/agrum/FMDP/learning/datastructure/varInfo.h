@@ -34,7 +34,8 @@
 #include <agrum/core/set.h>
 // =========================================================================
 #include <agrum/FMDP/learning/observation.h>
-#include <agrum/FMDP/learning/core/contingencyTable.h>
+#include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.h>
+//#include <agrum/FMDP/learning/core/contingencyTable.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
@@ -49,8 +50,8 @@ namespace gum {
    *
    *
    */
-//  template < class TestPolicy = GTestPolicy >
-  class VarInfo {//: public TestPolicy {
+  template < class TestPolicy = GTestPolicy >
+  class VarInfo : public TestPolicy {
 
     public:
 
@@ -62,8 +63,8 @@ namespace gum {
         // ==========================================================================
         /// Default constructor
         // ==========================================================================
-        VarInfo ( const DiscreteVariable*, const DiscreteVariable* );
-        VarInfo ( const DiscreteVariable*, const DiscreteVariable*, const Set<const Observation*>* );
+//        VarInfo ( const DiscreteVariable*, const DiscreteVariable* );
+//        VarInfo ( const DiscreteVariable*, const DiscreteVariable*, const Set<const Observation*>* );
 
         // ==========================================================================
         /// Default destructor
@@ -82,63 +83,18 @@ namespace gum {
         // ==========================================================================
         void addObservation( const Observation* );
 
-        // ==========================================================================
-        /// Used to know if enough information are stored on this node
-        /// to make pvalue relevant
-        // ==========================================================================
-        INLINE bool isPValueRelevant() { return __isRelevant;}
-
-        // ==========================================================================
-        /// Returns the pValue for this attribute
-        // ==========================================================================
-        INLINE double pValue ( ) { return __pvalue;}
-
-        INLINE const Set<const Observation*>* observationSet(Idx modality){ return __modality2Observations[modality];}
+        INLINE const Set<const Observation*>* observationSet( Idx modality ){ return __modality2Observations[modality];}
 
       /// @}
 
   private :
 
-      void __checkRelevance();
-      void __computeG();
-
 
       /// The attribute using this class
       const DiscreteVariable* __attr;
 
-      /// The value used to compute pValue
-      const DiscreteVariable* __value;
-
       /// Table giving for every variables its instantiation
       HashTable<Idx, Set<const Observation*>*> __modality2Observations;
-
-      /// The number of observation taken into account
-      /// Used for the GStat
-      Idx __nbObservation;
-
-      /**
-       * The contingency table used to compute the GStat
-       * Left Idx is for the attribute
-       * Right Idx for the value
-       *
-       * NB: This is a silly and in a hurry implementation of contingency table
-       * If someone ever use this class and has time to correctly implements
-       * a efficient contingency table, you're welcome
-       */
-      HashTable<Idx, HashTable<Idx, Idx>*> __contingencyTable;
-      HashTable<Idx, Idx> __attrMarginalTable;
-      HashTable<Idx, Idx> __valueMarginalTable;
-
-      /// The Gstat,
-      /// the degree of freedom used for the computation of the p-value
-      /// andn the p-value
-      double __GStat;
-      Idx __degreeOfFreedom;
-      double __pvalue;
-
-      /// Boolean to indicates whether p-value is relevant or not
-      bool __isRelevant;
-//      std::vector<bool> __areRelevant;
   };
 
 } /* namespace gum */

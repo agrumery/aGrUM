@@ -120,7 +120,7 @@ namespace gum {
       MultiDimDecisionGraph<double>* reward = new MultiDimDecisionGraph<double>();
       Set<const DiscreteVariable*> primeVariables;
       for (auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter)
-        primeVariables.insert(__fmdp->main2prime(*varIter));
+        primeVariables.insert(*varIter);//__fmdp->main2prime(*varIter));
       __fmdp->addReward(reward);
       __rewardLearner = new IMDDI(reward,__learningThreshold, __similarityThreshold, primeVariables,__rewardVar,true);
     }

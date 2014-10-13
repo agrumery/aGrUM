@@ -49,6 +49,7 @@ namespace gum {
    *
    */
 
+  template< typename GUM_SCALAR_A = Idx, typename GUM_SCALAR_B = double >
   class ContingencyTable {
 
     public:
@@ -61,7 +62,7 @@ namespace gum {
         // ==========================================================================
         /// Default constructor
         // ==========================================================================
-        ContingencyTable ( const DiscreteVariable*, const DiscreteVariable* );
+        ContingencyTable (  );
 
         // ==========================================================================
         /// Default destructor
@@ -78,42 +79,42 @@ namespace gum {
         // ==========================================================================
         /// Increments the number of sample for case( iattr, ivalue )
         // ==========================================================================
-        void add( Idx iattr, Idx ivalue);
+        void add(GUM_SCALAR_A iattr, GUM_SCALAR_B value );
 
         // ==========================================================================
         /// Returns the number of samples for case (iattr, ivalue)
         // ==========================================================================
-        Idx joint( Idx iattr, Idx ivalue){ return (*__contingencyTable[iattr])[ivalue]; }
+        Idx joint( GUM_SCALAR_A iattr, GUM_SCALAR_B ivalue ){
+          return __contingencyTable.getWithDefault(std::pair<GUM_SCALAR_A, GUM_SCALAR_B>(iattr, ivalue), 0 ); }
 
         // ==========================================================================
         /// Returns the number of samples for line iattr
         // ==========================================================================
-        Idx aMarginal( Idx iattr ) { return __attrMarginalTable[iattr]; }
+//        Idx aMarginal( GUM_SCALAR_A iattr ) { return __attrMarginalTable[iattr]; }
+        HashTableConstIteratorSafe<GUM_SCALAR_A, Idx> aBeginSafe(){ return __attrMarginalTable.cbeginSafe(); }
+        HashTableConstIteratorSafe<GUM_SCALAR_A, Idx> aEndSafe(){ return __attrMarginalTable.cendSafe(); }
+
 
         // ==========================================================================
         /// Returns the number of samples for column ivalue
         // ==========================================================================
-        Idx vMarginal( Idx ivalue ) { return __valueMarginalTable[ivalue]; }
+//        Idx vMarginal( GUM_SCALAR_B ivalue ) { return __valueMarginalTable[ivalue]; }
+        HashTableConstIteratorSafe<GUM_SCALAR_B, Idx> vBeginSafe(){ return __valueMarginalTable.cbeginSafe(); }
+        HashTableConstIteratorSafe<GUM_SCALAR_B, Idx> vEndSafe(){ return __valueMarginalTable.cendSafe(); }
 
         // ==========================================================================
         /// Returns the number of samples for line iattr
         // ==========================================================================
-        Idx attrSize() { return __attrDomainSize; }
+        Idx attrSize() { return __attrMarginalTable.size(); }
 
         // ==========================================================================
         /// Returns the number of samples for column ivalue
         // ==========================================================================
-        Idx valueSize() { return __valueDomainSize; }
+        Idx valueSize() { return __valueMarginalTable.size(); }
 
       /// @}
 
   private :
-
-      /// The attribute using this class
-      Idx __attrDomainSize;
-
-      /// The value used to compute pValue
-      Idx __valueDomainSize;
 
       /**
        * The contingency table used to compute the GStat
@@ -124,13 +125,12 @@ namespace gum {
        * If someone ever use this class and has time to correctly implements
        * a efficient contingency table, you're welcome
        */
-      HashTable<Idx, HashTable<Idx, Idx>*> __contingencyTable;
-      HashTable<Idx, Idx> __attrMarginalTable;
-      HashTable<Idx, Idx> __valueMarginalTable;
-
-      Idx __nbObservation;
+      HashTable< std::pair< GUM_SCALAR_A, GUM_SCALAR_B >, Idx > __contingencyTable;
+      HashTable< GUM_SCALAR_A, Idx> __attrMarginalTable;
+      HashTable< GUM_SCALAR_B , Idx> __valueMarginalTable;
   };
 
 } /* namespace gum */
 
+#include <agrum/FMDP/learning/core/contingencyTable.tcc>
 #endif // GUM_VARIABLE_INFORMATION_H

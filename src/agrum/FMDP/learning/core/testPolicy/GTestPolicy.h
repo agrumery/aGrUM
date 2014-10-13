@@ -45,9 +45,7 @@ namespace gum {
 
     public:
 
-      GTestPolicy( const DiscreteVariable* attr, const DiscreteVariable* value ) : __conTab(attr, value),
-        __nbObs(0),
-        __degreeOfFreedom(attr->domainSize(), value->domainSize()){}
+      GTestPolicy( ) : __conTab(), __nbObs(0){}
 
       // ############################################################################
       /// @name Observation insertion
@@ -57,9 +55,8 @@ namespace gum {
         // ============================================================================
         /// Comptabilizes the new observation
         // ============================================================================
-        virtual void addObservation( Idx iattr, Idx ivalue ) {
+        void addObservation( Idx iattr, Idx ivalue ) {
           __conTab.add( iattr, ivalue );
-
           __nbObs++;
         }
 
@@ -74,7 +71,7 @@ namespace gum {
         // ============================================================================
         /// Returns true if enough observation were made so that the test can be relevant
         // ============================================================================
-      virtual bool isTestRelevant(){ return ( __nbObs > 20 && __nbObs > __conTab.attrSize() * 5 ); }
+        bool isTestRelevant(){ return ( __nbObs > 20 && __nbObs > __conTab.attrSize() * 5 ); }
 
       /// @}
 
@@ -87,21 +84,21 @@ namespace gum {
         // ============================================================================
         /// Returns the performance of current variable according to the test
         // ============================================================================
-      virtual double score(){
-        double GStat = 0;
-        for (Idx attrModa = 0; attrModa < __conTab.attrSize(); ++attrModa ){
-          double semiExpected = (double)__conTab.aMarginal(attrModa)/(double)__nbObs;
-          for (Idx valModa = 0; valModa < __conTab.valueSize(); ++valModa) {
-            double cell = (double)__conTab.joint(attrModa,valModa);
-            if( cell < 5 )
-              continue;
-            double expected = semiExpected*(double)__conTab.vMarginal(valModa);
+        double score(){
+          double GStat = 0;
+          for ( auto attrIter = __conTab.aBeginSafe(); attrIter != __conTab.aEndSafe(); ++attrIter ){
+            double semiExpected = (double)(attrIter.val())/(double)__nbObs;
+            for ( auto valIter = __conTab.vBeginSafe(); valIter != __conTab.vEndSafe(); ++valIter ) {
+              double cell = (double)__conTab.joint(attrIter.val(),valIter.val());
+              if( cell < 5 )
+                continue;
+              double expected = semiExpected*(double)(valIter.val());
 
-            GStat += 2*cell*log(ceil/expected);
+              GStat += 2*cell*log(ceil/expected);
+            }
           }
+          return 1 - ChiSquare::probaChi2(GStat, __conTab.attrSize()*__conTab.valueSize());
         }
-        return 1 - ChiSquare::probaChi2(GStat, __degreeOfFreedom);
-      }
 
       /// @}
 
@@ -112,8 +109,6 @@ namespace gum {
 
       ///
       Idx __nbObs;
-
-      Idx __degreeOfFreedom;
   };
 
 } // End of namespace gum

@@ -40,7 +40,7 @@ namespace gum {
    *
    * @ingroup fmdp_group
    */
-  template < typename GUM_SCALAR >
+//  template < typename GUM_SCALAR >
   class ITestPolicy {
 
     public:
@@ -52,7 +52,7 @@ namespace gum {
         // ============================================================================
         /// Comptabilizes the new observation
         // ============================================================================
-        virtual void addObservation( Idx iattr, GUM_SCALAR ivalue ) = 0;
+        virtual void addObservation( Idx iattr, double ivalue ) = 0;
 
       /// @}
 
@@ -63,7 +63,7 @@ namespace gum {
       /// @{
 
         // ============================================================================
-        /// Returns true if enough observation were made so that the test can be relevant
+        /// Returns true if enough observation were added so that the test can be relevant
         // ============================================================================
         virtual bool isTestRelevant() = 0;
 

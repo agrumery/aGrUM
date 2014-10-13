@@ -83,13 +83,13 @@ namespace gum {
         // ###################################################################
         ///
         // ###################################################################
-        Sequence<NodeDatabase*> splitOnVar(const DiscreteVariable*);
+        HashTable<Idx, NodeDatabase*> splitOnVar(const DiscreteVariable*);
 
         // ###################################################################
         ///
         // ###################################################################
-        INLINE bool isPValueRelevant( const DiscreteVariable* var ) const { return __attrTable[var]->isPValueRelevant(); }
-        INLINE double pValue( const DiscreteVariable* var ) const { return __attrTable[var]->pValue(); }
+        INLINE bool isTestRelevant( const DiscreteVariable* var ) const { return __attrTable[var]->isTestRelevant(); }
+        INLINE double testValue( const DiscreteVariable* var ) const { return __attrTable[var]->testValue(); }
 
         // ###################################################################
         ///
@@ -116,10 +116,6 @@ namespace gum {
       ///
       Idx __nbObservation;
       HashTable<Idx,Idx> __valueCount;
-
-      bool stale;
-
-
   };
 
 

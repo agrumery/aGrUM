@@ -19,76 +19,12 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Template implementations for the ContingencyTable class.
+ * @brief Source implementations for the ContingencyTable class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
-// =========================================================================
-#include <cmath>
 // =========================================================================
 #include <agrum/FMDP/learning/core/contingencyTable.h>
 // =========================================================================
 
 
-// constants used by Gary Perlman for his code for computing chi2 critical values
-
-namespace gum {
-
-  // ##########################################################################
-  // Constructor & destructor.
-  // ##########################################################################
-
-    // ==========================================================================
-    // Default constructor
-    // ==========================================================================
-    ContingencyTable::ContingencyTable(const DiscreteVariable* attribute,
-                     const DiscreteVariable* value) : __attrDomainSize(attribute->domainSize()),
-                                                      __valueDomainSize(value->domainSize()){
-
-      GUM_CONSTRUCTOR(ContingencyTable);
-
-      // Initialisation
-      for(Idx attrMod = 0; attrMod < __attrDomainSize; ++attrMod ){
-
-        __contingencyTable.insert( attrMod, new HashTable<Idx, Idx>());
-        for( Idx valMod = 0; valMod < __valueDomainSize; ++valMod )
-          __contingencyTable[attrMod]->insert(valMod, 0);
-
-        __attrMarginalTable.insert( attrMod, 0);
-      }
-
-      for( Idx valMod = 0; valMod < __valueDomainSize; ++valMod )
-        __valueMarginalTable.insert(valMod, 0);
-
-    }
-
-
-    // ==========================================================================
-    // Default destructor
-    // ==========================================================================
-    ContingencyTable::~ContingencyTable(){
-      GUM_DESTRUCTOR(ContingencyTable);
-
-      for(Idx modality = 0; modality < __attrDomainSize; modality++){
-        delete __contingencyTable[modality];
-      }
-    }
-
-
-
-  // ##########################################################################
-  //
-  // ##########################################################################
-
-    // ==========================================================================
-    //
-    // ==========================================================================
-    void ContingencyTable::add( Idx iattr, Idx ivalue){
-
-      // Updating
-      __attrMarginalTable[iattr]++;
-      __valueMarginalTable[ivalue]++;
-      (*__contingencyTable[iattr])[ivalue]++;
-    }
-
-} // End of namespace gum
