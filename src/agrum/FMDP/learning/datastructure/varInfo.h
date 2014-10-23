@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of the VarInfo class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN
  */
 
 // =========================================================================
@@ -50,8 +50,8 @@ namespace gum {
    *
    *
    */
-  template < class TestPolicy = GTestPolicy >
-  class VarInfo : public TestPolicy {
+  template < typename GUM_SCALAR, template <class> class TestPolicy = GTestPolicy >
+  class VarInfo : public TestPolicy<GUM_SCALAR> {
 
     public:
 
@@ -63,8 +63,8 @@ namespace gum {
         // ==========================================================================
         /// Default constructor
         // ==========================================================================
-//        VarInfo ( const DiscreteVariable*, const DiscreteVariable* );
-//        VarInfo ( const DiscreteVariable*, const DiscreteVariable*, const Set<const Observation*>* );
+        VarInfo ( const DiscreteVariable* );
+        VarInfo ( const DiscreteVariable*, const Set<const Observation*>* );
 
         // ==========================================================================
         /// Default destructor
@@ -81,14 +81,18 @@ namespace gum {
         // ==========================================================================
         /// Returns the pValue for this attribute
         // ==========================================================================
-        void addObservation( const Observation* );
+        void addObservation( const Observation* newObs, Idx moda, GUM_SCALAR value );
 
-        INLINE const Set<const Observation*>* observationSet( Idx modality ){ return __modality2Observations[modality];}
+        INLINE const Set<const Observation*>* observationSet( Idx modality ){
+          if( !__modality2Observations.exists(modality) )
+            __modality2Observations.insert(modality, new Set<const Observation*>() );
+          return __modality2Observations[modality];
+
+        }
 
       /// @}
 
   private :
-
 
       /// The attribute using this class
       const DiscreteVariable* __attr;
@@ -98,5 +102,7 @@ namespace gum {
   };
 
 } /* namespace gum */
+
+#include <agrum/FMDP/learning/datastructure/varInfo.tcc>
 
 #endif // GUM_VARIABLE_INFORMATION_H

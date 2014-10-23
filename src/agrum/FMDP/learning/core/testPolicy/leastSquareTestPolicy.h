@@ -43,7 +43,7 @@ namespace gum {
    *
    * @ingroup fmdp_group
    */
-  class LeastSquareTestPolicy : public ITestPolicy { //<Idx> {
+  class LeastSquareTestPolicy : public ITestPolicy<double> {
 
     public:
 
@@ -90,7 +90,7 @@ namespace gum {
         // ============================================================================
         /// Returns true if enough observation were made so that the test can be relevant
         // ============================================================================
-        bool isTestRelevant(){ return ( __nbObs > 20 && __nbObs > __conTab.attrSize() * 5 ); }
+        bool isTestRelevant(){ return ( __nbObs > 20 ); }
 
       /// @}
 

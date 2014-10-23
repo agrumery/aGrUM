@@ -19,12 +19,46 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Source implementations for the ContingencyTable class.
+ * @brief Template trick for efficient development
  *
  * @author Jean-Christophe MAGNAN
  */
+
 // =========================================================================
-#include <agrum/FMDP/learning/core/contingencyTable.h>
+#ifndef GUM_TEMPLATE_STRATEGY_H
+#define GUM_TEMPLATE_STRATEGY_H
 // =========================================================================
 
+namespace gum {
 
+  template<int v>
+  struct Int2Type {
+    enum { value = v };
+  };
+
+  enum TESTNAME {GTEST=1, CHI2TEST=2, LEASTSQUARETEST=3};
+  template <TESTNAME, class A, class B, class C>
+  struct TestSelect {
+    typedef A type;
+  };
+  template <class A, class B, class C >
+  struct TestSelect<CHI2TEST, A, B, C > {
+    typedef B type;
+  };
+  template < class A, class B, class C >
+  struct TestSelect<LEASTSQUARETEST, A, B, C > {
+    typedef C type;
+  };
+
+  template< bool, class A, class B >
+  struct ValueSelect {
+    typedef A type;
+  };
+  template< class A, class B >
+  struct ValueSelect< false, A, B > {
+    typedef B type;
+  };
+
+} // end of namespace gum
+
+#endif // GUM_TEMPLATE_STRATEGY_H

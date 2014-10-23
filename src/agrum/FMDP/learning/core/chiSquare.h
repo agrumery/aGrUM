@@ -19,9 +19,9 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the VarInfo class.
+ * @brief Headers of the ChiSquare class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN
  */
 
 // =========================================================================
@@ -37,8 +37,6 @@ namespace gum {
    * @class ChiSquare ChiSquare.h <agrum/FMDP/learning/decisionGraph/chiSquare.h>
    * @brief
    * @ingroup fmdp_group
-   *
-   *
    *
    */
 

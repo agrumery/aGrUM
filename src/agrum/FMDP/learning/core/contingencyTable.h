@@ -25,8 +25,8 @@
  */
 
 // =========================================================================
-#ifndef GUM_VARIABLE_INFORMATION_H
-#define GUM_VARIABLE_INFORMATION_H
+#ifndef GUM_CONTINGENCY_TABLE_H
+#define GUM_CONTINGENCY_TABLE_H
 // =========================================================================
 #include <cmath>
 // =========================================================================
@@ -49,7 +49,7 @@ namespace gum {
    *
    */
 
-  template< typename GUM_SCALAR_A = Idx, typename GUM_SCALAR_B = double >
+  template< typename GUM_SCALAR_A, typename GUM_SCALAR_B >
   class ContingencyTable {
 
     public:
@@ -133,4 +133,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/FMDP/learning/core/contingencyTable.tcc>
-#endif // GUM_VARIABLE_INFORMATION_H
+#endif // GUM_CONTINGENCY_TABLE_H

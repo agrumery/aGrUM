@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of the NodeDatabase class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN
  */
 
 // =========================================================================
@@ -32,7 +32,10 @@
 #include <agrum/core/sequence.h>
 // =========================================================================
 #include <agrum/FMDP/learning/observation.h>
-#include <agrum/FMDP/learning/decisionGraph/varInfo.h>
+#include <agrum/FMDP/learning/core/templateStrategy.h>
+#include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy.h>
+#include <agrum/FMDP/learning/core/testPolicy/leastSquareTestPolicy.h>
+#include <agrum/FMDP/learning/datastructure/varInfo.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
@@ -44,11 +47,18 @@ namespace gum {
    * @brief
    * @ingroup fmdp_group
    *
-   *
-   *
    */
 
+
+  template<TESTNAME AttributeSelection, bool isScalar>
   class NodeDatabase {
+
+    typedef typename ValueSelect<isScalar, double, Idx>::type ValueType;
+
+    template < typename GUM_SCALAR >
+    using TestPolicy = typename TestSelect<AttributeSelection, GTestPolicy<GUM_SCALAR>,
+                                                               Chi2TestPolicy<GUM_SCALAR>,
+                                                               GTestPolicy<GUM_SCALAR> >::type ;
 
     public:
 
@@ -60,8 +70,11 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        NodeDatabase (const Set<const DiscreteVariable*>*, const DiscreteVariable*);
-        NodeDatabase (const Set<const DiscreteVariable*>*, const DiscreteVariable*, const Set<const Observation*>*);
+        NodeDatabase (const Set<const DiscreteVariable*>*, const DiscreteVariable* = nullptr);
+        NodeDatabase (const Set<const DiscreteVariable*>*, const Set<const Observation*>*, const DiscreteVariable* = nullptr);
+
+    public:
+
 
         // ###################################################################
         /// Default destructor
@@ -80,10 +93,16 @@ namespace gum {
         // ###################################################################
         void addObservation( const Observation* );
 
+    private:
+        void addObservation( const Observation*, Int2Type<true>);
+        void addObservation( const Observation*, Int2Type<false>);
+
+    public:
+
         // ###################################################################
         ///
         // ###################################################################
-        HashTable<Idx, NodeDatabase*> splitOnVar(const DiscreteVariable*);
+        Sequence<NodeDatabase*> splitOnVar(const DiscreteVariable*);
 
         // ###################################################################
         ///
@@ -106,7 +125,7 @@ namespace gum {
     private :
 
       /// Table giving for every variables its instantiation
-      HashTable<const DiscreteVariable*, VarInfo*> __attrTable;
+      HashTable<const DiscreteVariable*, VarInfo<ValueType, TestPolicy>*> __attrTable;
 
       /// A reference to this set of variable is only kept for fast and efficient split
       const Set<const DiscreteVariable*>* __attrSet;
@@ -115,12 +134,13 @@ namespace gum {
 
       ///
       Idx __nbObservation;
-      HashTable<Idx,Idx> __valueCount;
+      HashTable<ValueType,Idx> __valueCount;
   };
 
 
 } /* namespace gum */
 
+#include <agrum/FMDP/learning/datastructure/nodeDatabase.tcc>
 
 #endif // GUM_NODE_DATABASE_H
 

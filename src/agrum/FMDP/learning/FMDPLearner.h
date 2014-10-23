@@ -32,7 +32,7 @@
 // =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/learning/observation.h>
-#include <agrum/FMDP/learning/decisionGraph/imddi.h>
+#include <agrum/FMDP/learning/datastructure/imddi.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
@@ -118,9 +118,8 @@ namespace gum {
       Set<const DiscreteVariable*> __mainVariables;
 
 
-      HashTable<Idx, Set<IMDDI*>*> __actionLearners;
-      IMDDI* __rewardLearner;
-      const DiscreteVariable* __rewardVar;
+      HashTable<Idx, Set<IMDDI<GTEST, true>*>*> __actionLearners;
+      IMDDI<GTEST, true>* __rewardLearner;
 
       const double __learningThreshold;
       const double __similarityThreshold;

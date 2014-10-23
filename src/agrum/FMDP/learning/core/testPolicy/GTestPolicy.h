@@ -29,10 +29,14 @@
 
 // ============================================================================
 #include <agrum/FMDP/learning/core/contingencyTable.h>
+#include <agrum/FMDP/learning/core/chiSquare.h>
 #include <agrum/FMDP/learning/core/testPolicy/ITestPolicy.h>
 // ============================================================================
 
 namespace gum {
+
+//  template <typename GUM_SCALAR>
+//  using ConTab = ContingencyTable<Idx, GUM_SCALAR>;
 
   /**
    * @class GTestPolicy GTestPolicy.h <agrum/multidim/core/testPolicies/GTestPolicy.h>
@@ -41,7 +45,8 @@ namespace gum {
    *
    * @ingroup fmdp_group
    */
-  class GTestPolicy : public ITestPolicy<Idx> {
+  template < typename GUM_SCALAR >
+  class GTestPolicy : public ITestPolicy<GUM_SCALAR> {
 
     public:
 
@@ -55,7 +60,7 @@ namespace gum {
         // ============================================================================
         /// Comptabilizes the new observation
         // ============================================================================
-        void addObservation( Idx iattr, Idx ivalue ) {
+        void addObservation( Idx iattr, GUM_SCALAR ivalue ) {
           __conTab.add( iattr, ivalue );
           __nbObs++;
         }
@@ -94,7 +99,7 @@ namespace gum {
                 continue;
               double expected = semiExpected*(double)(valIter.val());
 
-              GStat += 2*cell*log(ceil/expected);
+              GStat += 2*cell*log(cell/expected);
             }
           }
           return 1 - ChiSquare::probaChi2(GStat, __conTab.attrSize()*__conTab.valueSize());
@@ -105,7 +110,7 @@ namespace gum {
     private :
 
       /// The contingency table used to keeps records of all observation
-      ContingencyTable __conTab;
+      ContingencyTable<Idx, GUM_SCALAR> __conTab;
 
       ///
       Idx __nbObs;

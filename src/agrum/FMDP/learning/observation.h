@@ -93,12 +93,12 @@ namespace gum {
         // ###################################################################
         // Returns the reward obtained during this observation
         // ###################################################################
-//        Idx reward( ) const { return __reward; }
+        double reward( ) const { return __reward; }
 
         // ###################################################################
         // Sets the reward obtained during this observation
         // ###################################################################
-//        void setReward( GUM_SCALAR reward ) { __reward = reward; }
+        void setReward( double reward ) { __reward = reward; }
 
       /// @}
       ///

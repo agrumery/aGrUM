@@ -19,9 +19,9 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Template implementations for the VarInfo class.
+ * @brief Sources for the ChiSquare class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN
  */
 // =========================================================================
 #include <cmath>

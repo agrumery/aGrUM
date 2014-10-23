@@ -19,95 +19,12 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Template implementations for the VarInfo class.
+ * @brief Source implementations for the VarInfo class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN
  */
 // =========================================================================
-#include <cmath>
-// =========================================================================
 #include <agrum/FMDP/learning/datastructure/varInfo.h>
-#include <agrum/FMDP/learning/core/chiSquare.h>
 // =========================================================================
 
 
-// constants used by Gary Perlman for his code for computing chi2 critical values
-
-namespace gum {
-
-  // ##########################################################################
-  // Constructor & destructor.
-  // ##########################################################################
-
-    // ==========================================================================
-    // Default constructor
-    // ==========================================================================
-//    template < class TestPolicy>
-    VarInfo<GTestPolicy>::VarInfo( const DiscreteVariable* attribute,
-                                   const DiscreteVariable* value ) : GTestPolicy( attribute, value ), __attr(attribute) {
-
-      GUM_CONSTRUCTOR(VarInfo);
-
-      // Initialisation
-      for(Idx modality = 0; modality < __attr->domainSize(); ++modality ){
-        __modality2Observations.insert(modality, new Set<const Observation*>);
-      }
-    }
-
-
-    // ==========================================================================
-    // Constructor with a list of Observation to iniialize
-    // ==========================================================================
-    VarInfo<GTestPolicy>::VarInfo( const DiscreteVariable* attribute,
-                                   const DiscreteVariable* value,
-                                   const Set<const Observation*>* obsSet) : GTestPolicy( attribute, value ), __attr(attribute) {
-
-      GUM_CONSTRUCTOR(VarInfo);
-
-      // Initialisation nécessaire avant la prise en compte des observations
-      for(Idx modality = 0; modality < __attr->domainSize(); modality++){
-        __modality2Observations.insert(modality, new Set<const Observation*>);
-      }
-
-
-      // Prise en compte des observations
-      for(SetIteratorSafe<const Observation*> obsIter = obsSet->cbeginSafe(); obsIter != obsSet->cendSafe(); ++obsIter){
-        this->addObservation();
-      }
-    }
-
-
-    // ==========================================================================
-    // Default destructor
-    // ==========================================================================
-    template < class TestPolicy >
-    VarInfo<TestPolicy>::~VarInfo(){
-
-      for(Idx modality = 0; modality < __attr->domainSize(); modality++){
-        delete __modality2Observations[modality];
-      }
-      GUM_DESTRUCTOR(VarInfo);
-    }
-
-
-
-  // ##########################################################################
-  //
-  // ##########################################################################
-
-    // ==========================================================================
-    //
-    // ==========================================================================
-    template < class TestPolicy >
-    void VarInfo<TestPolicy>::addObservation( const Observation* newObs ){
-
-      __modality2Observations[newObs->modality(__attr)]->insert( newObs );
-      TestPolicy::addObservation( newObs );
-    }
-
-    void VarInfo<GTestPolicy>::addObservation( const Observation * newObs ){
-      __modality2Observations[newObs->modality(__attr)]->insert( newObs );
-      GTestPolicy::addObservation( newObs );
-    }
-
-} // End of namespace gum

@@ -28,19 +28,16 @@
 #ifndef GUM_INCREMENTAL_GRAPH_LEARNER_H
 #define GUM_INCREMENTAL_GRAPH_LEARNER_H
 // =========================================================================
-#include <agrum/core/multiPriorityQueue.h>
 // =========================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
 // =========================================================================
+#include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/datastructure/nodeDatabase.h>
+// =========================================================================
+#include <agrum/multidim/decisionGraphUtilities/link.h>
 // =========================================================================
 
 namespace gum {
-
-  template < int v >
-  struct Int2Type {
-    enum { value = v };
-  };
 
   /**
    * @class IncrementalGraphLearner incrementalGraphLearner.h <agrum/FMDP/learning/datastructure/incrementalGraphLearner>
@@ -50,7 +47,7 @@ namespace gum {
    *
    *
    */
-  template < bool isScalar = false >
+  template <TESTNAME AttributeSelection, bool isScalar = false >
   class IncrementalGraphLearner {
 
     public:
@@ -64,14 +61,21 @@ namespace gum {
         /// Default constructor
         // ###################################################################
         IncrementalGraphLearner ( MultiDimDecisionGraph<double>* target,
-                             Set<const DiscreteVariable*> ,
-                             const DiscreteVariable*);
+                                  Set<const DiscreteVariable*>,
+                                  const DiscreteVariable* );
 
         // ###################################################################
         /// Default destructor
         // ###################################################################
-        ~IncrementalGraphLearner();
+        virtual ~IncrementalGraphLearner();
 
+    private :
+
+        void clearValue(){ clearValue( Int2Type<isScalar>() ); }
+        void clearValue(Int2Type<true>){ delete _value; }
+        void clearValue(Int2Type<false>) { }
+
+    public :
       /// @}
 
       // ==========================================================================
@@ -82,7 +86,7 @@ namespace gum {
         // ###################################################################
         /// Adds a new observation to the structure
         // ###################################################################
-        void addObservation ( const Observation* );
+        virtual void addObservation ( const Observation* );
 
         // ###################################################################
         /// Updates the tree after a new observation has been added
@@ -90,6 +94,8 @@ namespace gum {
         virtual void updateGraph() = 0;
 
       /// @}
+
+      void updateVar( const DiscreteVariable* );
 
   protected :
 
@@ -126,7 +132,7 @@ namespace gum {
     /// @}
 
         /// For debuggibg purposes only
-        void _showMap();
+        void _debugTree( );
 
       // ==========================================================================
       /// @name Model handling datastructures
@@ -158,13 +164,13 @@ namespace gum {
         /// Associates to any variable the list of all nodes associated to
         /// this variable
         // ###################################################################
-        HashTable<const DiscreteVariable*, List<NodeId>*> _var2Node;
+        HashTable<const DiscreteVariable*, LinkedList<NodeId>*> _var2Node;
 
         // ###################################################################
         /// This hashtable binds every node to an associated NodeDatabase
         /// which handles every observation that concerns that node
         // ###################################################################
-        HashTable<NodeId, NodeDatabase*> _nodeId2Database;
+        HashTable<NodeId, NodeDatabase<AttributeSelection, isScalar>*> _nodeId2Database;
 
       /// @}
 

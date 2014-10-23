@@ -29,6 +29,7 @@
 
 // ============================================================================
 #include <agrum/FMDP/learning/core/contingencyTable.h>
+#include <agrum/FMDP/learning/core/chiSquare.h>
 #include <agrum/FMDP/learning/core/testPolicy/ITestPolicy.h>
 // ============================================================================
 
@@ -41,7 +42,8 @@ namespace gum {
    *
    * @ingroup fmdp_group
    */
-  class Chi2TestPolicy : public ITestPolicy { //<Idx> {
+  template < typename GUM_SCALAR >
+  class Chi2TestPolicy : public ITestPolicy<GUM_SCALAR> {
 
     public:
 
@@ -55,7 +57,7 @@ namespace gum {
         // ============================================================================
         /// Comptabilizes the new observation
         // ============================================================================
-        void addObservation( Idx attr, double value ) {
+        void addObservation( Idx attr, GUM_SCALAR value ) {
           __conTab.add( attr, value );
           __nbObs++;
         }
@@ -105,7 +107,7 @@ namespace gum {
     private :
 
       /// The contingency table used to keeps records of all observation
-      ContingencyTable __conTab;
+      ContingencyTable<Idx, GUM_SCALAR> __conTab;
 
       ///
       Idx __nbObs;

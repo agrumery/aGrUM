@@ -40,7 +40,7 @@ namespace gum {
    *
    * @ingroup fmdp_group
    */
-//  template < typename GUM_SCALAR >
+  template < typename GUM_SCALAR >
   class ITestPolicy {
 
     public:
@@ -52,7 +52,7 @@ namespace gum {
         // ============================================================================
         /// Comptabilizes the new observation
         // ============================================================================
-        virtual void addObservation( Idx iattr, double ivalue ) = 0;
+        virtual void addObservation( Idx attr, GUM_SCALAR value ) = 0;
 
       /// @}
 

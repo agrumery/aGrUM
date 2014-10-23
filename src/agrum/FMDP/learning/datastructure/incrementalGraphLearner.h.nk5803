@@ -19,37 +19,34 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the IMDDI class.
+ * @brief Headers of the interface specifying functions to be implemented by any incremental learner.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN
  */
 
 // =========================================================================
-#ifndef GUM_IMDDI_H
-#define GUM_IMDDI_H
+#ifndef GUM_INCREMENTAL_GRAPH_LEARNER_H
+#define GUM_INCREMENTAL_GRAPH_LEARNER_H
 // =========================================================================
-#include <agrum/core/multiPriorityQueue.h>
 // =========================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
 // =========================================================================
-#include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
-// =========================================================================
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/FMDP/learning/core/templateStrategy.h>
+#include <agrum/FMDP/learning/datastructure/nodeDatabase.h>
 // =========================================================================
 
 namespace gum {
 
   /**
-   * @class IMDDI imddi.h <agrum/FMDP/planning/decisionGraph/imddi.h>
+   * @class IncrementalGraphLearner incrementalGraphLearner.h <agrum/FMDP/learning/datastructure/incrementalGraphLearner>
    * @brief
    * @ingroup fmdp_group
    *
    *
    *
    */
-
   template <TESTNAME AttributeSelection, bool isScalar = false >
-  class IMDDI : IncrementalGraphLearner<AttributeSelection, isScalar>{
+  class IncrementalGraphLearner {
 
     public:
 
@@ -61,16 +58,14 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        IMDDI ( MultiDimDecisionGraph<double>* ,
-                double,
-                double,
-                Set<const DiscreteVariable*>,
-                const DiscreteVariable* = new LabelizedVariable() );
+        IncrementalGraphLearner ( MultiDimDecisionGraph<double>* target,
+                                  Set<const DiscreteVariable*>,
+                                  const DiscreteVariable* );
 
         // ###################################################################
         /// Default destructor
         // ###################################################################
-        ~IMDDI();
+        ~IncrementalGraphLearner();
 
       /// @}
 
@@ -87,68 +82,101 @@ namespace gum {
         // ###################################################################
         /// Updates the tree after a new observation has been added
         // ###################################################################
-        void updateGraph();
+        virtual void updateGraph() = 0;
 
       /// @}
 
-  private :
+  protected :
 
       // ==========================================================================
-      /// @name Updating private methods
+      /// @name Update protected methods
       // ==========================================================================
       /// @{
 
         // ###################################################################
-        /// Computes the score of the given variables for the given node
+        /// Turn the given node into a leaf if not already so
         // ###################################################################
-        double __score( const DiscreteVariable*, NodeId );
+        void _convertNode2Leaf( NodeId );
 
         // ###################################################################
-        /// For each node in the given set, this methods checks whether or not
-        /// we should installed the given variable as a test.
-        /// If so, the node is updated
+        /// Install given variable to the given node, ensuring that the variable
+        /// is not present in its subtree
         // ###################################################################
-        void __updateNodeSet( Set<NodeId>&, const DiscreteVariable*,
-                              MultiPriorityQueue<const DiscreteVariable*,
-                              double,
-                              std::greater<double>>& );
+        void _transpose( NodeId, const DiscreteVariable* );
 
   public :
 
         // ###################################################################
         ///
         // ###################################################################
-        void toDG();
-
-  private :
+        virtual void toDG();
 
         // ###################################################################
         ///
         // ###################################################################
-        void __mergeLeaves( HashTable<NodeId, NodeId>& toTarget, bool rewardLeaf );
+        Size size(){ return _nodeVarMap.size(); }
 
-        double __evalPair( double* feffectif, double ftotal, double* seffectif, double stotal );
+  protected :
 
-        /// @}
+    /// @}
 
-      Sequence<const DiscreteVariable*> __varOrder;
+        /// For debuggibg purposes only
+        void _showMap();
 
-      /// The total number of observation added to this tree
-      Idx __nbTotalObservation;
+      // ==========================================================================
+      /// @name Model handling datastructures
+      // ==========================================================================
+      /// @{
 
-      /// The threshold above which we consider variables to be dependant
-      double __dependenceThreshold;
+        // ###################################################################
+        /// The source of nodeId
+        // ###################################################################
+        NodeGraphPart _model;
 
-      /// The threshold above which two leaves does not share the same probability distribution
-      double __similarityThreshold;
+        // ###################################################################
+        /// The root of the ordered tree
+        // ###################################################################
+        NodeId _root;
+
+        // ###################################################################
+        /// Gives for any node its associated variable
+        // ###################################################################
+        HashTable<NodeId, const DiscreteVariable*> _nodeVarMap;
+
+        // ###################################################################
+        /// A table giving for any node a table mapping to its son
+        /// idx is the modality of associated variable
+        // ###################################################################
+        HashTable<NodeId, NodeId*> _nodeSonsMap;
+
+        // ###################################################################
+        /// Associates to any variable the list of all nodes associated to
+        /// this variable
+        // ###################################################################
+        HashTable<const DiscreteVariable*, List<NodeId>*> _var2Node;
+
+        // ###################################################################
+        /// This hashtable binds every node to an associated NodeDatabase
+        /// which handles every observation that concerns that node
+        // ###################################################################
+        HashTable<NodeId, NodeDatabase*> _nodeId2Database;
+
+      /// @}
+
+
+      /// The final diagram we're building
+      MultiDimDecisionGraph<double>* _target;
+
+      Set<const DiscreteVariable*> _setOfVars;
+      const DiscreteVariable* _value;
   };
 
 
 } /* namespace gum */
 
+#include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.tcc>
 
-
-#endif // GUM_IMDDI_H
+#endif // GUM_INCREMENTAL_GRAPH_LEARNER_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

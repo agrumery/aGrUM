@@ -19,15 +19,19 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Template implementations for the ContingencyTable class.
+ * @brief Template implementations for the VarInfo class.
  *
  * @author Jean-Christophe MAGNAN
  */
 // =========================================================================
-#include <agrum/FMDP/learning/core/contingencyTable.h>
+#include <cmath>
+// =========================================================================
+#include <agrum/FMDP/learning/datastructure/varInfo.h>
+#include <agrum/FMDP/learning/core/chiSquare.h>
 // =========================================================================
 
 
+// constants used by Gary Perlman for his code for computing chi2 critical values
 
 namespace gum {
 
@@ -38,18 +42,50 @@ namespace gum {
     // ==========================================================================
     // Default constructor
     // ==========================================================================
-    template< typename GUM_SCALAR_A, typename GUM_SCALAR_B >
-    ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>::ContingencyTable() {
-      GUM_CONSTRUCTOR(ContingencyTable);
+    template < typename GUM_SCALAR, template <class> class TestPolicy >
+    VarInfo< GUM_SCALAR, TestPolicy>::VarInfo(const DiscreteVariable* attribute) : TestPolicy<GUM_SCALAR>( ), __attr(attribute) {
+
+      GUM_CONSTRUCTOR(VarInfo);
+
+      // Initialisation
+      for(Idx modality = 0; modality < __attr->domainSize(); ++modality ){
+        __modality2Observations.insert(modality, new Set<const Observation*>);
+      }
+    }
+
+
+    // ==========================================================================
+    // Constructor with a list of Observation to iniialize
+    // ==========================================================================
+    template < typename GUM_SCALAR, template <class> class TestPolicy >
+    VarInfo< GUM_SCALAR, TestPolicy >::VarInfo( const DiscreteVariable* attribute,
+                                   const Set<const Observation*>* obsSet) : TestPolicy<GUM_SCALAR>( ), __attr(attribute) {
+
+      GUM_CONSTRUCTOR(VarInfo);
+
+      // Initialisation nécessaire avant la prise en compte des observations
+      for(Idx modality = 0; modality < __attr->domainSize(); modality++){
+        __modality2Observations.insert(modality, new Set<const Observation*>);
+      }
+
+
+      // Prise en compte des observations
+      for(SetIteratorSafe<const Observation*> obsIter = obsSet->cbeginSafe(); obsIter != obsSet->cendSafe(); ++obsIter){
+        this->addObservation( *obsIter );
+      }
     }
 
 
     // ==========================================================================
     // Default destructor
     // ==========================================================================
-    template< typename GUM_SCALAR_A, typename GUM_SCALAR_B >
-    ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>::~ContingencyTable(){
-      GUM_DESTRUCTOR(ContingencyTable);
+    template < typename GUM_SCALAR, template <class> class TestPolicy >
+    VarInfo< GUM_SCALAR, TestPolicy >::~VarInfo(){
+
+      for(Idx modality = 0; modality < __attr->domainSize(); modality++){
+        delete __modality2Observations[modality];
+      }
+      GUM_DESTRUCTOR(VarInfo);
     }
 
 
@@ -61,25 +97,14 @@ namespace gum {
     // ==========================================================================
     //
     // ==========================================================================
-    template< typename GUM_SCALAR_A, typename GUM_SCALAR_B >
-    void ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>::add( GUM_SCALAR_A attr, GUM_SCALAR_B value){
+    template < typename GUM_SCALAR, template <class> class TestPolicy >
+    void VarInfo< GUM_SCALAR, TestPolicy >::addObservation( const Observation* newObs, Idx moda, GUM_SCALAR value ){
 
-      // Updating
-      if(__attrMarginalTable.exists(attr))
-        __attrMarginalTable[attr]++;
-      else
-        __attrMarginalTable.insert(attr,1);
+      if( !__modality2Observations.exists(moda) )
+        __modality2Observations.insert(moda, new Set<const Observation*>());
+      __modality2Observations[moda]->insert( newObs );
 
-      if(__valueMarginalTable.exists(value))
-        __valueMarginalTable[value]++;
-      else
-        __valueMarginalTable.insert(value,1);
-
-      std::pair<GUM_SCALAR_A, GUM_SCALAR_B> cell(attr, value);
-      if(__contingencyTable.exists(cell))
-        __contingencyTable[cell]++;
-      else
-        __contingencyTable.insert(cell, 1);
+      this->addObservation( moda, value );
     }
 
 } // End of namespace gum
