@@ -99,8 +99,9 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
 
     // Création de la variables récompenses (to be deprecated)
     const gum::MultiDimDecisionGraph<double>* reward = reinterpret_cast<const gum::MultiDimDecisionGraph<double>*>(fmdp.reward());
-    for( auto rewardIter = reward->values().beginSafe(); rewardIter != reward->values().endSafe(); ++rewardIter)
-      spim.addReward(rewardIter.second());
+//    for( auto rewardIter = reward->beginValues(); rewardIter != reward->endValues(); ++rewardIter)
+    for( reward->beginValues(); reward->hasValue(); reward->nextValue() )
+      spim.addReward(reward->value());
 
     spim.initialize();
 
@@ -257,129 +258,129 @@ void runFactory(){
 // *******************************************************************************
 int main ( int argc, char* argv[] ) {
 
-//  runCoffee();
+  runCoffee();
 //  runFactory();
 
-for(gum::Idx nbTest=1; nbTest < 27; nbTest++ ){
-  std::vector<std::string> vnv;
-  std::vector<gum::Idx> vmv;
+//for(gum::Idx nbTest=1; nbTest < 27; nbTest++ ){
+//  std::vector<std::string> vnv;
+//  std::vector<gum::Idx> vmv;
 
-  std::stringstream inputFileName;
-  inputFileName << GET_PATH_STR(dataBNs/)  <<  nbTest << "-10000.csv";
-
-
-  // ############################################################################
-  // Informations Récupération
-  // ############################################################################
-  std::ifstream fichier(inputFileName.str(), std::ios::in);  // on ouvre le fichier en lecture
-
-  if(!fichier) { // si l'ouverture a réussi
-    std::cerr << "Impossible d'ouvrir le fichier : " << inputFileName.str() << "!" << std::endl;
-    return 1;
-  }
-
-  std::string ligne;
-  std::istringstream iss1;
-  std::string mot;
-
-  std::cout << "DEBUT CARACTERISATION VARIABLES" << std::endl;
-  std::getline(fichier, ligne);
-  iss1.str(ligne);
-  while( std::getline(iss1, mot, ',') ){
-    vnv.push_back( mot );
-    vmv.push_back( 1 );
-  }
-
-  while( std::getline(fichier, ligne) ){
-      std::istringstream iss2(ligne);
-      std::string moda;
-
-      int index = 0;
-      while( std::getline(iss2, moda, ',') ){
-//              std::cout << moda << " - " << std::stoi(moda) << std::endl;
-        gum::Idx value = std::stoi(moda);
-        if( value > vmv[index])
-          vmv[index] = value;
-        index++;
-      }
-  }
-
-  fichier.close();  // on ferme le fichier
-
-  std::cout << "FIN CARACTERISATION VARIABLES" << std::endl;
+//  std::stringstream inputFileName;
+//  inputFileName << GET_PATH_STR(dataBNs/)  <<  nbTest << "-10000.csv";
 
 
-  // REMBOBINAGE
-//  fichier.seekg(0, std::ios::beg);
-//  if(fichier.eof())
-//    std::cout << "Oh Dear we're in trouble!" << std::endl;
-//  std::getline(fichier,ligne);
+//  // ############################################################################
+//  // Informations Récupération
+//  // ############################################################################
+//  std::ifstream fichier(inputFileName.str(), std::ios::in);  // on ouvre le fichier en lecture
 
-  // ############################################################################
-  // Learning phase :
-  // ############################################################################
-  gum::MultiDimDecisionGraph<double>* target = new gum::MultiDimDecisionGraph<double>();
-  gum::Set<const gum::DiscreteVariable*> varList;
-  std::vector<const gum::DiscreteVariable*> vv(vnv.size());
-  for(gum::Idx i = 0; i < vnv.size() - 1; i++ ){
-    vv[i] = new gum::LabelizedVariable(vnv[i],"",vmv[i]+1);
-    varList << vv[i];
-  }
-  gum::LabelizedVariable* value = new gum::LabelizedVariable(vnv[vnv.size()-1],"",vmv[vmv.size()-1]+1);
-  gum::IMDDI learner(target, 0.95, 0.95, varList, value);
+//  if(!fichier) { // si l'ouverture a réussi
+//    std::cerr << "Impossible d'ouvrir le fichier : " << inputFileName.str() << "!" << std::endl;
+//    return 1;
+//  }
 
-  fichier.open(inputFileName.str(), std::ios::in);  // on ouvre le fichier en lecture
+//  std::string ligne;
+//  std::istringstream iss1;
+//  std::string mot;
 
-  if(!fichier) { // si l'ouverture a réussi
-    std::cerr << "Impossible d'ouvrir le fichier : " << inputFileName.str() << "!" << std::endl;
-    return 1;
-  }
-  std::getline(fichier, ligne);
+//  std::cout << "DEBUT CARACTERISATION VARIABLES" << std::endl;
+//  std::getline(fichier, ligne);
+//  iss1.str(ligne);
+//  while( std::getline(iss1, mot, ',') ){
+//    vnv.push_back( mot );
+//    vmv.push_back( 1 );
+//  }
 
-  std::ofstream traceFile;
-  std::stringstream traceFileName;
-  traceFileName << GET_PATH_STR(/) << nbTest << ".csv";
-  traceFile.open ( traceFileName.str(), std::ios::out | std::ios::trunc );
-  if ( !traceFile ) {
-    return 2;
-  }
+//  while( std::getline(fichier, ligne) ){
+//      std::istringstream iss2(ligne);
+//      std::string moda;
+
+//      int index = 0;
+//      while( std::getline(iss2, moda, ',') ){
+////              std::cout << moda << " - " << std::stoi(moda) << std::endl;
+//        gum::Idx value = std::stoi(moda);
+//        if( value > vmv[index])
+//          vmv[index] = value;
+//        index++;
+//      }
+//  }
+
+//  fichier.close();  // on ferme le fichier
+
+//  std::cout << "FIN CARACTERISATION VARIABLES" << std::endl;
 
 
-  gum::Idx nbIte = 0;
-  while( std::getline(fichier, ligne) ){
-    std::istringstream iss2(ligne);
-    std::string moda;
+//  // REMBOBINAGE
+////  fichier.seekg(0, std::ios::beg);
+////  if(fichier.eof())
+////    std::cout << "Oh Dear we're in trouble!" << std::endl;
+////  std::getline(fichier,ligne);
 
-    gum::Idx index = 0;
-    std::cout << "Taking new Observation into account : " << nbIte << std::endl;
-    gum::Observation* obs = new gum::Observation();
-    while( std::getline(iss2, moda, ',') ){
-//        std::cout << index << "-" << std::stoi(moda) << std::endl;
-      if( index < vv.size() - 1 ){
-//        std::cout << "attribut " << vv[index]->toString() << std::endl;
-        obs->setModality(vv[index],std::stoi(moda));
-      }else{
-//        std::cout << "value " << value->toString() << std::endl;
-        obs->setModality(value, std::stoi(moda));
-      }
-      index++;
-    }
-//    std::cout << obs->toString() << std::endl;
-    gum::Timer timy;
-    timy.reset();
-    learner.addObservation( obs );
-    double tempAdd = timy.step();
-    learner.updateOrderedTree();
-    double tempUp = timy.step();
-    learner.toDG();
-    double tempCon = timy.step();
-    traceFile << nbIte << ";" << tempAdd << ";" << tempUp << ";" << tempCon << std::endl;
-    nbIte++;
-  }
+//  // ############################################################################
+//  // Learning phase :
+//  // ############################################################################
+//  gum::MultiDimDecisionGraph<double>* target = new gum::MultiDimDecisionGraph<double>();
+//  gum::Set<const gum::DiscreteVariable*> varList;
+//  std::vector<const gum::DiscreteVariable*> vv(vnv.size());
+//  for(gum::Idx i = 0; i < vnv.size() - 1; i++ ){
+//    vv[i] = new gum::LabelizedVariable(vnv[i],"",vmv[i]+1);
+//    varList << vv[i];
+//  }
+//  gum::LabelizedVariable* value = new gum::LabelizedVariable(vnv[vnv.size()-1],"",vmv[vmv.size()-1]+1);
+//  gum::IMDDI learner(target, 0.95, 0.95, varList, value);
 
-  fichier.close();  // on ferme le fichier
-  traceFile.close();
-}
+//  fichier.open(inputFileName.str(), std::ios::in);  // on ouvre le fichier en lecture
+
+//  if(!fichier) { // si l'ouverture a réussi
+//    std::cerr << "Impossible d'ouvrir le fichier : " << inputFileName.str() << "!" << std::endl;
+//    return 1;
+//  }
+//  std::getline(fichier, ligne);
+
+//  std::ofstream traceFile;
+//  std::stringstream traceFileName;
+//  traceFileName << GET_PATH_STR(/) << nbTest << ".csv";
+//  traceFile.open ( traceFileName.str(), std::ios::out | std::ios::trunc );
+//  if ( !traceFile ) {
+//    return 2;
+//  }
+
+
+//  gum::Idx nbIte = 0;
+//  while( std::getline(fichier, ligne) ){
+//    std::istringstream iss2(ligne);
+//    std::string moda;
+
+//    gum::Idx index = 0;
+//    std::cout << "Taking new Observation into account : " << nbIte << std::endl;
+//    gum::Observation* obs = new gum::Observation();
+//    while( std::getline(iss2, moda, ',') ){
+////        std::cout << index << "-" << std::stoi(moda) << std::endl;
+//      if( index < vv.size() - 1 ){
+////        std::cout << "attribut " << vv[index]->toString() << std::endl;
+//        obs->setModality(vv[index],std::stoi(moda));
+//      }else{
+////        std::cout << "value " << value->toString() << std::endl;
+//        obs->setModality(value, std::stoi(moda));
+//      }
+//      index++;
+//    }
+////    std::cout << obs->toString() << std::endl;
+//    gum::Timer timy;
+//    timy.reset();
+//    learner.addObservation( obs );
+//    double tempAdd = timy.step();
+//    learner.updateOrderedTree();
+//    double tempUp = timy.step();
+//    learner.toDG();
+//    double tempCon = timy.step();
+//    traceFile << nbIte << ";" << tempAdd << ";" << tempUp << ";" << tempCon << std::endl;
+//    nbIte++;
+//  }
+
+//  fichier.close();  // on ferme le fichier
+//  traceFile.close();
+//}
 
 //  return 0;
   return EXIT_SUCCESS;
