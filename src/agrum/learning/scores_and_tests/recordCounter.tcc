@@ -418,7 +418,15 @@ namespace gum {
       // start parallel ThreadCounters
       const unsigned long db_size = __thread_counters[0]->DBSize ();
 
-      #pragma omp parallel num_threads ( __max_threads_number )
+      // compute the max number of threads to use to parse the database, so that
+      // each thread has at least NB elements to parse. This proves useful for
+      // small databases and large numbers of processors
+      unsigned int max_nb_threads =
+        std::min ( ( db_size + __min_nb_rows_per_thread - 1 ) /
+                   __min_nb_rows_per_thread,
+                   (unsigned long) __max_threads_number );
+ 
+      #pragma omp parallel num_threads ( max_nb_threads )
       {
         // create ThreadCounters if needed
         const unsigned int num_threads = getNumberOfRunningThreads();

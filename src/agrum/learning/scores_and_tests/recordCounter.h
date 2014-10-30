@@ -402,6 +402,10 @@ namespace gum {
         unsigned int __max_threads_number { 1 };
       #endif /* NDEBUG */
 
+      /// the minimal number of rows to parse (on average) by thread
+      unsigned int __min_nb_rows_per_thread { 10 };
+      
+
       /// determine which sets are subsets
       void __computeSubsets ();
 

@@ -110,6 +110,10 @@ namespace gum {
         const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
                                      unsigned int>* >& conditioning_nodesets )
       final;
+
+
+      /// indicates whether the apriori is potentially informative
+      virtual bool isInformative () const final;
       
       /// @}
 

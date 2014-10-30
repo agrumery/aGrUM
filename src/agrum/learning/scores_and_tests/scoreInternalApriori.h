@@ -98,6 +98,16 @@ namespace gum {
                                      unsigned int>* >& target_nodesets,
         const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
                                      unsigned int>* >& conditioning_nodesets ) = 0;
+
+      /// indicates whether the apriori is potentially informative
+      /** Basically, only the NoApriori is uninformative. However, it may happen
+       * that, under some circonstances, an apriori, which is usually not equal to
+       * the NoApriori, becomes equal to it. In this case, if the apriori can
+       * detect this case, it shall informa the classes that use it that it is
+       * temporarily uninformative. These classes will then be able to speed-up
+       * their code by avoiding to take into account the apriori in their
+       * computations. */
+      virtual bool isInformative () const;
       
       /// @}
       
