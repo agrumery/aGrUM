@@ -30,11 +30,11 @@
 
 namespace gum_tests {
 
-  class LabelizedVariableTestSuite: public CxxTest::TestSuite {
+class LabelizedVariableTestSuite: public CxxTest::TestSuite {
 
-    public:
+public:
 
-      void testCopy() {
+    void testCopy() {
         gum::LabelizedVariable var1( "var1", "this is var1", 2 );
         gum::LabelizedVariable var2( "var2", "this is var2", 2 );
 
@@ -45,9 +45,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( var4, var2 );
         TS_ASSERT_EQUALS( var1, var3 );
         TS_ASSERT_DIFFERS( var4, var1 );
-      }
+    }
 
-      void testLabels() {
+    void testLabels() {
         gum::LabelizedVariable var1( "var1", "this is var1" , 0 );
         TS_ASSERT_EQUALS( var1.domainSize(), ( gum::Size ) 0 );
         TS_ASSERT( var1.empty() );
@@ -57,13 +57,35 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( var1.label( 1 ), "3" );
         TS_ASSERT_EQUALS( var1["3"], ( gum::Idx ) 1 );
 
+        TS_ASSERT_THROWS ( var1.addLabel("3"),gum::DuplicateElement)
+
         std::stringstream s;
         s << var1;
         TS_ASSERT_EQUALS( s.str(), "var1<4,3,2,1>" );
-        TS_ASSERT_EQUALS( var1.toString(), "var1<4,3,2,1>" );
-      }
 
-      void testNumerical() {
+        TS_ASSERT_EQUALS( var1.toString(), "var1<4,3,2,1>" );
+    }
+
+    void testChangeLabel() {
+        gum::LabelizedVariable var1( "var1", "this is var1" , 0 );
+        var1.addLabel( "4" ).addLabel( "3" ).addLabel( "2" ).addLabel( "1" );
+
+        TS_ASSERT_EQUALS( var1.toString(), "var1<4,3,2,1>" );
+
+        var1.changeLabel(1,"x");
+        TS_ASSERT_EQUALS( var1.toString(), "var1<4,x,2,1>" );
+
+        const gum::LabelizedVariable& var2=var1;
+        TS_ASSERT_EQUALS( var2.toString(), "var1<4,x,2,1>" );
+        var2.changeLabel(1,"y");
+        TS_ASSERT_EQUALS( var2.toString(), "var1<4,y,2,1>" );
+
+        TS_GUM_ASSERT_THROWS_NOTHING(var1.changeLabel(1,"x")); // should be OK since label 1 is already "x"
+        TS_ASSERT_THROWS(var1.changeLabel(0,"x"),gum::DuplicateElement);
+        TS_ASSERT_THROWS(var1.changeLabel(1000,"x"),gum::OutOfBounds);
+    }
+
+    void testNumerical() {
         gum::LabelizedVariable var1( "var1", "this is var1" , 0 );
         var1.addLabel( "4" ).addLabel( "3" ).addLabel( "2" ).addLabel( "1" );
 
@@ -71,6 +93,6 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( var1.numerical( 1 ), 1 );
         TS_ASSERT_EQUALS( var1.numerical( 2 ), 2 );
         TS_ASSERT_EQUALS( var1.numerical( 3 ), 3 );
-      }
-  };
+    }
+};
 }

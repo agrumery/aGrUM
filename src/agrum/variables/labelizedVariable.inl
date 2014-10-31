@@ -65,13 +65,21 @@ namespace gum {
 
 
   // add a label with a new index (we assume that we will NEVER remove a label)
-
   INLINE LabelizedVariable& LabelizedVariable::addLabel ( const std::string aLabel ) {
     __labels.insert ( aLabel );
 
     return *this;
   }
 
+  INLINE void LabelizedVariable::changeLabel( Idx pos,const std::string aLabel ) const {
+    if (__labels[pos]==aLabel)
+      return;
+
+    if (isLabel(aLabel))
+      GUM_ERROR(DuplicateElement,"Label '"<<aLabel<<"' already exists");
+
+    __labels.setAtPos(pos,aLabel);
+  }
 
   // Default constructor
 
@@ -154,7 +162,7 @@ namespace gum {
     try {
       return __labels.pos ( aLabel );
     } catch ( ... ) {
-      GUM_ERROR ( OutOfBounds, "label unknown : " << this->toString() << " with " << aLabel );
+      GUM_ERROR ( OutOfBounds, "label '"<<aLabel<<"' is unknown in " << this->toString());
     }
   }
 
