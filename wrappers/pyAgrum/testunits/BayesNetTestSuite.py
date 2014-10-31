@@ -139,6 +139,15 @@ class TestFeatures(BayesNetTestCase):
         self.fillTopo(bn, idList)
         topoOrder = bn.topologicalOrder()
         self.assertEqual(len(topoOrder), 5)
+        
+    def testChangeLabel(self):      
+        bn = gum.BayesNet()
+        res = bn.loadBIF('../../../src/testunits/ressources/alarm.bif')
+        
+        self.assertEqual(str(bn.variable(0)),"HISTORY<TRUE,FALSE>")
+        bn.variable(0).toLabelizedVar().changeLabel(0,"toto")
+        self.assertEqual(str(bn.variable(0)),"HISTORY<toto,FALSE>")
+
 
 
 
@@ -278,7 +287,6 @@ class TestBIF(BayesNetTestCase):
 																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
 
-
 ts = unittest.TestSuite()
 ts.addTest(TestConstructors('testConstructor'))
 ts.addTest(TestConstructors('testCopyConstructor'))
@@ -287,6 +295,7 @@ ts.addTest(TestInsertions('testArcs'))
 ts.addTest(TestInsertions('testEraseArcs'))
 ts.addTest(TestFeatures('testMoralGraph'))
 ts.addTest(TestFeatures('testTopologicalOrder'))
+ts.addTest(TestFeatures('testChangeLabel'))
 ts.addTest(TestBIF('testSimpleBIFLoad'))
 ts.addTest(TestBIF('testSimpleBIFLoadWithoutListener'))
 ts.addTest(TestBIF('testListBIFLoad'))
@@ -294,4 +303,5 @@ ts.addTest(TestBIF('testTupleBIFLoad'))
 ts.addTest(TestBIF('testSimpleDSLLoad'))
 ts.addTest(TestBIF('testSimpleDSLLoadWithoutListener'))
 ts.addTest(TestBIF('testListDSLLoad'))
+ts.addTest(TestBIF('testTupleDSLLoad'))
 ts.addTest(TestBIF('testTupleDSLLoad'))
