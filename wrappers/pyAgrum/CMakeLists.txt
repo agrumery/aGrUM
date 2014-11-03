@@ -180,6 +180,7 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/generated-files/pyAgrum.py DESTINATION
 
 if (WIN32)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/_pyAgrum.pyd DESTINATION ${PYTHON_INSTALL}/pyAgrum)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/lib_pyAgrum.dll.a DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 else (WIN32)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/_pyAgrum.so DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 endif (WIN32)
