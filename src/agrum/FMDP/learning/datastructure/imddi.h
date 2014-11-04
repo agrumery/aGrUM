@@ -49,7 +49,7 @@ namespace gum {
    */
 
   template <TESTNAME AttributeSelection, bool isScalar = false >
-  class IMDDI : IncrementalGraphLearner<AttributeSelection, isScalar>{
+  class IMDDI : public IncrementalGraphLearner<AttributeSelection, isScalar>{
 
     public:
 
@@ -59,18 +59,26 @@ namespace gum {
       /// @{
 
         // ###################################################################
-        /// Default constructor
+        /// Variable Learner constructor
         // ###################################################################
-        IMDDI ( MultiDimDecisionGraph<double>* ,
-                double,
-                double,
-                Set<const DiscreteVariable*>,
-                const DiscreteVariable* = new LabelizedVariable() );
+        IMDDI ( MultiDimDecisionGraph<double>* target,
+                double attributeSelectionThreshold,
+                double pairSelectionThreshold,
+                Set<const DiscreteVariable*> attributeListe,
+                const DiscreteVariable* learnedValue ) ;
+
+        // ###################################################################
+        /// Reward Learner constructor
+        // ###################################################################
+        IMDDI ( MultiDimDecisionGraph<double>* target,
+                double attributeSelectionThreshold,
+                double pairSelectionThreshold,
+                Set<const DiscreteVariable*> attributeListe );
 
         // ###################################################################
         /// Default destructor
         // ###################################################################
-        ~IMDDI();
+        ~IMDDI(){GUM_DESTRUCTOR(IMDDI);}
 
       /// @}
 
@@ -118,7 +126,7 @@ namespace gum {
         // ###################################################################
         ///
         // ###################################################################
-        void toDG();
+        void updateDecisionGraph();
 
   private :
 
@@ -137,10 +145,10 @@ namespace gum {
       Idx __nbTotalObservation;
 
       /// The threshold above which we consider variables to be dependant
-      double __dependenceThreshold;
+      double __attributeSelectionThreshold;
 
       /// The threshold above which two leaves does not share the same probability distribution
-      double __similarityThreshold;
+      double __pairSelectionThreshold;
   };
 
 

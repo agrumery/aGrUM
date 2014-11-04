@@ -34,6 +34,7 @@
 #include <agrum/FMDP/planning/spumdd.h>
 #include <agrum/FMDP/learning/FMDPLearner.h>
 #include <agrum/FMDP/learning/observation.h>
+#include <agrum/FMDP/learning/core/templateStrategy.h>
 // =========================================================================
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimDecisionGraph.h>
@@ -155,7 +156,7 @@ namespace gum {
       /// The model learner.
       /// It will handle by itself the different decision graph learners
       /// needed to learn the FMDP
-      FMDPLearner* __learner;
+      FMDPLearner<GTEST, GTEST, IMDDILEARNER>* __learner;
 
       LabelizedVariable* __rewardVar;
       Bijection<double,Idx> __rewardValue2Idx;

@@ -59,6 +59,16 @@ namespace gum {
     typedef B type;
   };
 
+  enum LEARNERNAME {IMDDILEARNER=1, ITILEARNER=2};
+  template< LEARNERNAME, class A, class B >
+  struct LearnerSelect {
+    typedef A type;
+  };
+  template< class A, class B >
+  struct LearnerSelect< ITILEARNER, A, B > {
+    typedef B type;
+  };
+
 } // end of namespace gum
 
 #endif // GUM_TEMPLATE_STRATEGY_H

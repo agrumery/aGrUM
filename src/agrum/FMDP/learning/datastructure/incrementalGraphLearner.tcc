@@ -108,28 +108,86 @@ namespace gum {
       while( _nodeSonsMap.exists(currentNodeId) ){
 
         // On each encountered node, we update the database
-        _nodeId2Database[currentNodeId]->addObservation( newObs );
+        _updateNodeWithObservation(newObs, currentNodeId);
 
         // The we select the next to go throught
         currentNodeId = _nodeSonsMap[currentNodeId][newObs->modality( _nodeVarMap[currentNodeId] )];
       }
 
       // On final insertion into the leave we reach
-      _nodeId2Database[currentNodeId]->addObservation( newObs );
+      _updateNodeWithObservation(newObs, currentNodeId);
 
     }
 
 
 
-
+    // ============================================================================
+    // If a new modality appears to exists for given variable,
+    // call this method to turn every associated node to this variable into leaf.
+    // Graph has then indeed to be revised
+    // ============================================================================
     template < TESTNAME AttributeSelection, bool isScalar >
     void IncrementalGraphLearner<AttributeSelection, isScalar>::updateVar( const DiscreteVariable* var ){
       Link<NodeId>* nodIter = _var2Node[var]->list();
       while(nodIter){
-        _convertNode2Leaf(nodIter);
-        nodIter = nodIter->nextLink();
+        _convertNode2Leaf(nodIter->element());
+        nodIter = _var2Node[var]->list();
       }
     }
+
+
+
+    // ============================================================================
+    // Insert a new node with given associated database, var and maybe sons
+    // ============================================================================
+    template < TESTNAME AttributeSelection, bool isScalar >
+    NodeId IncrementalGraphLearner<AttributeSelection, isScalar>::_insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB, const DiscreteVariable* boundVar, NodeId* sonsMap ){
+      NodeId newNodeId = _model.addNode();
+      _nodeVarMap.insert(newNodeId, boundVar);
+      _nodeId2Database.insert(newNodeId, nDB);
+      _var2Node[boundVar]->addLink(newNodeId);
+      if( sonsMap )
+        _nodeSonsMap.insert(newNodeId, sonsMap);
+      return newNodeId;
+    }
+
+
+
+    // ============================================================================
+    // Changes var associated to a node
+    // ============================================================================
+    template < TESTNAME AttributeSelection, bool isScalar >
+    void IncrementalGraphLearner<AttributeSelection, isScalar>::_chgNodeBoundVar( NodeId currentNodeId, const DiscreteVariable* desiredVar ){
+      _var2Node[_nodeVarMap[currentNodeId]]->searchAndRemoveLink(currentNodeId);
+      _var2Node[desiredVar]->addLink(currentNodeId);
+      _nodeVarMap[currentNodeId] = desiredVar;
+    }
+
+
+
+    // ============================================================================
+    // Remove node from graph
+    // ============================================================================
+    template < TESTNAME AttributeSelection, bool isScalar >
+    void IncrementalGraphLearner<AttributeSelection, isScalar>::_removeNode( NodeId currentNodeId ){
+      // Retriat de l'id
+      _model.eraseNode( currentNodeId );
+
+      // Retrait du vecteur fils
+      if( _nodeSonsMap.exists(currentNodeId)){
+        DEALLOCATE( _nodeSonsMap[currentNodeId], sizeof(NodeId)*_nodeVarMap[currentNodeId]->domainSize() );
+        _nodeSonsMap.erase(currentNodeId);
+      }
+
+      // Retrait de la variable
+      _var2Node[_nodeVarMap[currentNodeId]]->searchAndRemoveLink(currentNodeId);
+      _nodeVarMap.erase( currentNodeId );
+
+      // Retrait du NodeDatabase
+      delete _nodeId2Database[currentNodeId];
+      _nodeId2Database.erase(currentNodeId);
+    }
+
 
 
     // ============================================================================
@@ -151,20 +209,13 @@ namespace gum {
       if( _nodeVarMap[currentNodeId] == _value ){
 
         Sequence<NodeDatabase<AttributeSelection, isScalar>*> sonsNodeDatabase = _nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
+
         NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*desiredVar->domainSize()) );
+        for( Idx modality = 0; modality < desiredVar->domainSize(); ++modality )
+          sonsMap[modality] = _insertNode( sonsNodeDatabase.atPos(modality), _value );
 
-        for( Idx modality = 0; modality < desiredVar->domainSize(); ++modality ){
-          NodeId newNodeId = _model.addNode();
-          _nodeVarMap.insert(newNodeId, _value);
-          _nodeId2Database.insert(newNodeId, sonsNodeDatabase.atPos(modality));
-          _var2Node[_value]->addLink(newNodeId);
-          sonsMap[modality] = newNodeId;
-        }
+        _chgNodeBoundVar(currentNodeId, desiredVar);
 
-        _var2Node[desiredVar]->addLink(currentNodeId);
-        _var2Node[_value]->searchAndRemoveLink(currentNodeId);
-
-        _nodeVarMap[currentNodeId] = desiredVar;
         _nodeSonsMap.insert( currentNodeId, sonsMap);
 
         return;
@@ -173,58 +224,33 @@ namespace gum {
       // *************************************************************************************
       // Remains the general case where currentNodeId is an internal node.
 
-          // First we ensure that children node use desiredVar as variable
-          for(Idx modality = 0; modality < _nodeVarMap[currentNodeId]->domainSize(); ++modality )
-            _transpose( _nodeSonsMap[currentNodeId][modality], desiredVar );
+        // First we ensure that children node use desiredVar as variable
+        for(Idx modality = 0; modality < _nodeVarMap[currentNodeId]->domainSize(); ++modality )
+          _transpose( _nodeSonsMap[currentNodeId][modality], desiredVar );
 
-          Sequence<NodeDatabase<AttributeSelection, isScalar>*> sonsNodeDatabase = _nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
-          NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*desiredVar->domainSize()) );
+        Sequence<NodeDatabase<AttributeSelection, isScalar>*> sonsNodeDatabase = _nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
+        NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*desiredVar->domainSize()) );
 
-          // Then we create the new mapping
-          for(Idx desiredVarModality = 0; desiredVarModality < desiredVar->domainSize(); ++desiredVarModality){
-            NodeId* grandSonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*_nodeVarMap[currentNodeId]->domainSize()) );
-            for(Idx currentVarModality = 0; currentVarModality < _nodeVarMap[currentNodeId]->domainSize(); ++currentVarModality )
-              grandSonsMap[currentVarModality] = _nodeSonsMap[_nodeSonsMap[currentNodeId][currentVarModality]][desiredVarModality];
+        // Then we create the new mapping
+        for(Idx desiredVarModality = 0; desiredVarModality < desiredVar->domainSize(); ++desiredVarModality){
 
-            NodeId newNodeId = _model.addNode();
-            _nodeVarMap.insert(newNodeId, _nodeVarMap[currentNodeId]);
-            _nodeSonsMap.insert(newNodeId, grandSonsMap);
-            _var2Node[_nodeVarMap[currentNodeId]]->addLink(newNodeId);
-            _nodeId2Database.insert(newNodeId, sonsNodeDatabase.atPos(desiredVarModality));
-            sonsMap[desiredVarModality] = newNodeId;
-          }
+          NodeId* grandSonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*_nodeVarMap[currentNodeId]->domainSize()) );
+          for(Idx currentVarModality = 0; currentVarModality < _nodeVarMap[currentNodeId]->domainSize(); ++currentVarModality )
+            grandSonsMap[currentVarModality] = _nodeSonsMap[_nodeSonsMap[currentNodeId][currentVarModality]][desiredVarModality];
 
-          // Finally we clean the old remaining nodes
-          for(Idx currentVarModality = 0; currentVarModality < _nodeVarMap[currentNodeId]->domainSize(); ++currentVarModality ){
-            NodeId sonId = _nodeSonsMap[currentNodeId][currentVarModality];
+          sonsMap[desiredVarModality] = _insertNode( sonsNodeDatabase.atPos(desiredVarModality), _nodeVarMap[currentNodeId], grandSonsMap );
+        }
 
-            // Retriat de l'id
-            _model.eraseNode( sonId );
+        // Finally we clean the old remaining nodes
+        for(Idx currentVarModality = 0; currentVarModality < _nodeVarMap[currentNodeId]->domainSize(); ++currentVarModality ){
+          _removeNode( _nodeSonsMap[currentNodeId][currentVarModality] );
+        }
 
-            // Retrait de la variable
-            _var2Node[_nodeVarMap[sonId]]->searchAndRemoveLink(sonId);
-            _nodeVarMap.erase( sonId );
+        // We suppress the old sons map and remap to the new one
+        DEALLOCATE( _nodeSonsMap[currentNodeId], sizeof(NodeId)*_nodeVarMap[currentNodeId]->domainSize() );
+        _nodeSonsMap[currentNodeId] = sonsMap;
 
-            // Retrait du NodeDatabase
-            delete _nodeId2Database[sonId];
-            _nodeId2Database.erase(sonId);
-
-            // Turn given node into a leaf, recurssively destroying its children
-            // ============================================================================
-            // Retrait du vecteur fils
-            DEALLOCATE( _nodeSonsMap[sonId], sizeof(NodeId)*desiredVar->domainSize() );
-            _nodeSonsMap.erase(sonId);
-          }
-
-          // We suppress the old sons map and remap to the new one
-          DEALLOCATE( _nodeSonsMap[currentNodeId], sizeof(NodeId)*_nodeVarMap[currentNodeId]->domainSize() );
-          _nodeSonsMap[currentNodeId] = sonsMap;
-
-          _var2Node[_nodeVarMap[currentNodeId]]->searchAndRemoveLink(currentNodeId);
-          _var2Node[desiredVar]->addLink(currentNodeId);
-
-          _nodeVarMap[currentNodeId] = desiredVar;
-
+        _chgNodeBoundVar(currentNodeId, desiredVar);
     }
 
 
@@ -237,104 +263,51 @@ namespace gum {
 
       if(_nodeVarMap[currentNodeId] != _value ){
 
-        //
+        // Resolving potential sons issue
         for(Idx modality = 0; modality < _nodeVarMap[currentNodeId]->domainSize(); ++modality) {
           NodeId sonId = _nodeSonsMap[currentNodeId][modality];
-
           _convertNode2Leaf(sonId);
-
-          // Retriat de l'id
-          _model.eraseNode( sonId );
-
-          // Retrait du NodeDatabase
-          delete _nodeId2Database[sonId];
-          _nodeId2Database.erase(sonId);
-
-          // Retrait de la variable
-          _nodeVarMap.erase( sonId );
-
-          // Retrait du fils de la liste des noeuds terminaux
-          _var2Node[_value]->searchAndRemoveLink(sonId);
+          _removeNode(sonId);
         }
-
 
         DEALLOCATE( _nodeSonsMap[currentNodeId], sizeof(NodeId)*_nodeVarMap[currentNodeId]->domainSize() );
         _nodeSonsMap.erase(currentNodeId);
 
-        _var2Node[_nodeVarMap[currentNodeId]]->searchAndRemoveLink(currentNodeId);
-        _var2Node[_value]->addLink(currentNodeId);
-
-        _nodeVarMap[currentNodeId] = _value;
+        _chgNodeBoundVar(currentNodeId, _value);
       }
     }
 
 
+
     // ============================================================================
-    // Computes the Reduced and Ordered Decision Graph  associated to this ordered tree
+    // Display tree current structure in console
+    // For debugging purposes only.
     // ============================================================================
-//    template < TESTNAME AttributeSelection, bool isScalar >
-//    void IncrementalGraphLearner<AttributeSelection, isScalar>::toDG(){
-
-//       _target->clear();
-//       for( auto varIter = _varOrder.beginSafe(); varIter != _varOrder.endSafe(); ++varIter )
-//         _target->add(**varIter);
-//       _target->add(*_value);
-
-//       HashTable<NodeId, NodeId> toTarget;
-//       _mergeLeaves(toTarget, false);
-
-
-////       for( auto nodeIter = _var2Node[_value]->cbeginSafe(); nodeIter != _var2Node[_value]->cendSafe(); ++nodeIter ){
-////         GUM_SCALAR* probDist = _nodeId2Database[*nodeIter]->probDist();
-////         NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*_value->domainSize()) );
-////         for(Idx modality = 0; modality < _value->domainSize(); ++modality )
-////           sonsMap[modality] = _target->manager()->addTerminalNode( probDist[modality] );
-////         toTarget.insert(*nodeIter, _target->manager()->nodeRedundancyCheck( _value, sonsMap ) );
-////         MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( probDist, sizeof(GUM_SCALAR)*_value->domainSize());
-////       }
-
-//       for( auto varIter = _varOrder.rbeginSafe(); varIter != _varOrder.rendSafe(); --varIter ) {
-
-//         for( auto nodeIter = _var2Node[*varIter]->cbeginSafe(); nodeIter != _var2Node[*varIter]->cendSafe(); ++nodeIter ){
-//           NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*(*varIter)->domainSize()) );
-//           for(Idx modality = 0; modality < (*varIter)->domainSize(); ++modality ){
-
-//             sonsMap[modality] = toTarget[_nodeSonsMap[*nodeIter][modality]];
-//           }
-//           toTarget.insert(*nodeIter, _target->manager()->nodeRedundancyCheck( *varIter, sonsMap ) );
-//         }
-
-//       }
-//       _target->manager()->setRootNode( toTarget[_root] );
-//       _target->manager()->clean();
-//    }
-
-
     template < TESTNAME AttributeSelection, bool isScalar >
     void IncrementalGraphLearner<AttributeSelection, isScalar>::_debugTree( ){
 
         for( auto varIter = _nodeVarMap.beginSafe(); varIter != _nodeVarMap.endSafe(); ++varIter )
-            std::cout << varIter.key() << " - " << varIter.val()->name() << " | ";
+          std::cout << varIter.key() << " - " << varIter.val()->name() << " | ";
         std::cout << std::endl;
 
         for( auto nodeIter = _nodeSonsMap.beginSafe(); nodeIter != _nodeSonsMap.endSafe(); ++nodeIter ) {
-            std::cout << nodeIter.key() << " : ";
-            for( Idx i = 0; i < _nodeVarMap[nodeIter.key()]->domainSize(); ++i )
-              std::cout << i << " -> " << _nodeSonsMap[nodeIter.key()][i] << " . ";
-            std::cout << " | " << std::endl;
+          std::cout << nodeIter.key() << " : ";
+          for( Idx i = 0; i < _nodeVarMap[nodeIter.key()]->domainSize(); ++i )
+            std::cout << i << " -> " << _nodeSonsMap[nodeIter.key()][i] << " . ";
+          std::cout << " | " << std::endl;
         }
 
 
         for(auto varLiter = _var2Node.beginSafe(); varLiter != _var2Node.endSafe(); ++varLiter ){
-         std::cout << "Var " << varLiter.key()->name();
-         LinkedList<NodeId>* mojo = varLiter.val();
-         std::cout << " - Liste : ";
-         Link<NodeId> moter = mojo->list();
-         while(moter){
-             std::cout << moter.element() << " | ";
-             moter = moter.nextLink();
-         }
-         std::cout <<  std::endl;
+          std::cout << "Var " << varLiter.key()->name();
+          LinkedList<NodeId>* mojo = varLiter.val();
+          std::cout << " - Liste : ";
+          Link<NodeId> moter = mojo->list();
+          while(moter){
+            std::cout << moter.element() << " | ";
+            moter = moter.nextLink();
+          }
+          std::cout <<  std::endl;
         }
 
         std::cout << _target->toDot() << std::endl << "     " << std::endl;

@@ -19,45 +19,37 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the FMDPLearner class.
+ * @brief Headers of the ITI class.
  *
- * @author Jean-Christophe MAGNAN
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 // =========================================================================
-#ifndef GUM_FMDP_LEARNER_H
-#define GUM_FMDP_LEARNER_H
+#ifndef GUM_ITI_H
+#define GUM_ITI_H
 // =========================================================================
-#include <agrum/core/hashTable.h>
+#include <agrum/core/multiPriorityQueue.h>
 // =========================================================================
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
-#include <agrum/FMDP/learning/observation.h>
-#include <agrum/FMDP/learning/datastructure/imddi.h>
-#include <agrum/FMDP/learning/datastructure/iti.h>
+#include <agrum/multidim/multiDimDecisionGraph.h>
 // =========================================================================
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
+// =========================================================================
+#include <agrum/variables/labelizedVariable.h>
 // =========================================================================
 
 namespace gum {
 
   /**
-   * @class FMDPLearner FMDPLearner.h <agrum/FMDP/learning/FMDPLearner.h>
+   * @class ITI iti.h <agrum/FMDP/planning/decisionGraph/iti.h>
    * @brief
    * @ingroup fmdp_group
    *
    *
    *
    */
-  template <TESTNAME VariableAttributeSelection, TESTNAME RewardAttributeSelection, LEARNERNAME LearnerSelection>
-  class FMDPLearner {
 
-    template < bool isScalar >
-    using VariableLearnerType = typename LearnerSelect<LearnerSelection, IMDDI<VariableAttributeSelection, isScalar>,
-                                                               ITI<VariableAttributeSelection, isScalar> >::type ;
-    template < bool isScalar >
-    using RewardLearnerType = typename LearnerSelect<LearnerSelection, IMDDI<VariableAttributeSelection, isScalar>,
-                                                               ITI<VariableAttributeSelection, isScalar> >::type ;
-
+  template <TESTNAME AttributeSelection, bool isScalar = false >
+  class ITI : public IncrementalGraphLearner<AttributeSelection, isScalar>{
 
     public:
 
@@ -67,79 +59,81 @@ namespace gum {
       /// @{
 
         // ###################################################################
-        /// Default constructor
+        /// Variable Learner constructor
         // ###################################################################
-        FMDPLearner ( FactoredMarkovDecisionProcess<double>* target, double learningThreshold, double similarityThreshold );
+        ITI ( MultiDimDecisionGraph<double>* target,
+                double attributeSelectionThreshold,
+                Set<const DiscreteVariable*> attributeListe,
+                const DiscreteVariable* learnedValue );
+
+        // ###################################################################
+        /// Reward Learner constructor
+        // ###################################################################
+        ITI ( MultiDimDecisionGraph<double>* target,
+                double attributeSelectionThreshold,
+                Set<const DiscreteVariable*> attributeListe );
 
         // ###################################################################
         /// Default destructor
         // ###################################################################
-        ~FMDPLearner ();
+        ~ITI(){GUM_DESTRUCTOR(ITI);}
 
       /// @}
 
       // ==========================================================================
-      /// @name
+      /// @name Incrementals methods
       // ==========================================================================
       /// @{
 
         // ###################################################################
-        ///
+        /// Adds a new observation to the structure
         // ###################################################################
-        void addVariable(const DiscreteVariable*);
+        void addObservation ( const Observation* );
 
-        void addAction(const Idx actionId, const std::string &);
+    protected :
+        void __updateNodeWithObservation( const Observation* newObs, NodeId currentNodeId );
+
+
+    public :
+
+        // ###################################################################
+        /// Updates the tree after a new observation has been added
+        // ###################################################################
+        void updateGraph();
+
+    protected :
+        void _insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
+                                  const DiscreteVariable* boundVar,
+                                  NodeId* sonsMap );
+
+        void _chgNodeBoundVar( NodeId chgedNodeId, const DiscreteVariable* desiredVar );
+
+        void _removeNode( NodeId removedNodeId );
 
       /// @}
 
-      // ==========================================================================
-      /// @name
-      // ==========================================================================
-      /// @{
+    public :
 
         // ###################################################################
         ///
         // ###################################################################
-        void initialize();
+        void updateDecisionGraph();
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        void addObservation(Idx, const Observation*);
+      HashTable<NodeId, bool> __staleTable;
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        void updateFMDP();
+      /// The total number of observation added to this tree
+      Idx __nbTotalObservation;
 
-      /// @}
-
-      Size size();
-
-    private :
-
-
-      /// The FMDP to store the learned model
-      FactoredMarkovDecisionProcess<double>* __fmdp;
-
-      /// Set of main variables describing the system'rdfgll
-      Set<const DiscreteVariable*> __mainVariables;
-
-
-      HashTable<Idx, Set<IncrementalGraphLearner<VariableAttributeSelection, false>*>*> __actionLearners;
-      IncrementalGraphLearner<RewardAttributeSelection, true>* __rewardLearner;
-
-      const double __learningThreshold;
-      const double __similarityThreshold;
-
+      /// The threshold above which we consider variables to be dependant
+      double __attributeSelectionThreshold;
   };
 
 
 } /* namespace gum */
 
-#include <agrum/FMDP/learning/FMDPLearner.tcc>
 
-#endif // GUM_FMDP_LEARNER_H
+
+#endif // GUM_ITI_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

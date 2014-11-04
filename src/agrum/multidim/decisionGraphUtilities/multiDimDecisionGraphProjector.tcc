@@ -80,7 +80,7 @@ namespace gum {
 
 
     __rd->copy( *__src );
-//    std::cout << "Root src : " << __src->root() << " - rd root : " << __rd->root() << std::endl << __rd->toDot() << std::endl;
+    std::cout << "Root src : " << __src->root() << " - rd root : " << __rd->root() << std::endl << __rd->toDot() << std::endl;
 //    std::cout << "VS :" << __rd->variablesSequence().toString() << std::endl;
 
     for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter ){
@@ -234,7 +234,7 @@ namespace gum {
 
     }
 
-//    std::cout << "DONE" << std::endl;
+    std::cout << "DONE" << __rd->toDot() << std::endl;
     return __rd;
   }
 

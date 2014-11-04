@@ -382,6 +382,13 @@ namespace gum {
   template <> class HashFunc< std::pair<double, long unsigned int> > :
     public HashFuncCastKeyPair<double, long unsigned int>::type {};
 
+  /**
+   * @author Jean-Christophe Magnan
+   * @brief Pair Key needed for FMDP ContingencyTable
+   */
+  template <> class HashFunc< std::pair<long unsigned int, double> > :
+    public HashFuncCastKeyPair<long unsigned int, double>::type {};
+
   template <> class HashFunc< std::pair<double, long int> > :
     public HashFuncCastKeyPair<double, long int>::type {};
 

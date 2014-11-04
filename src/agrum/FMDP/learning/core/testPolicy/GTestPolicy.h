@@ -110,7 +110,7 @@ namespace gum {
     private :
 
       /// The contingency table used to keeps records of all observation
-      ContingencyTable<Idx, GUM_SCALAR> __conTab;
+      ContingencyTable<long unsigned int, GUM_SCALAR> __conTab;
 
       ///
       Idx __nbObs;

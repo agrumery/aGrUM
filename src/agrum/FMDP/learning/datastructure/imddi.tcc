@@ -41,35 +41,35 @@
 namespace gum {
 
   // ############################################################################
-  // Constructors / Destructors
+  // Constructor & destructor.
   // ############################################################################
 
     // ============================================================================
-    // Default constructor.
+    // Variable Learner constructor
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
-    IMDDI<AttributeSelection, isScalar>::IMDDI( MultiDimDecisionGraph<double>* target,
-                  double dependenceThreshold,
-                  double similarityThreshold,
-                  Set<const DiscreteVariable*> varList,
-                  const DiscreteVariable* value ) : IncrementalGraphLearner( target, varList, value),
-                                      __nbTotalObservation(0),
-                                      __dependenceThreshold(dependenceThreshold),
-                                      __similarityThreshold(similarityThreshold)
-    {
-      GUM_CONSTRUCTOR(IMDDI);
-
-    }
-
+    IMDDI<AttributeSelection, isScalar>::IMDDI ( MultiDimDecisionGraph<double>* target,
+            double attributeSelectionThreshold,
+            double pairSelectionThreshold,
+            Set<const DiscreteVariable*> attributeListe,
+            const DiscreteVariable* learnedValue ) : IncrementalGraphLearner( target, attributeListe, learnedValue),
+                                                     __nbTotalObservation(0),
+                                                     __attributeSelectionThreshold(attributeSelectionThreshold),
+                                                     __pairSelectionThreshold(pairSelectionThreshold)
+    {GUM_CONSTRUCTOR(IMDDI);}
 
     // ============================================================================
-    // Default destructor.
+    // Reward Learner constructor
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
-    IMDDI<AttributeSelection, isScalar>::~IMDDI(){
-
-      GUM_DESTRUCTOR(IMDDI);
-    }
+    IMDDI<AttributeSelection, isScalar>::IMDDI ( MultiDimDecisionGraph<double>* target,
+            double attributeSelectionThreshold,
+            double pairSelectionThreshold,
+            Set<const DiscreteVariable*> attributeListe ) : IncrementalGraphLearner( target, attributeListe ),
+                                                            __nbTotalObservation(0),
+                                                            __attributeSelectionThreshold(attributeSelectionThreshold),
+                                                            __pairSelectionThreshold(pairSelectionThreshold)
+    {GUM_CONSTRUCTOR(IMDDI);}
 
 
 
@@ -179,7 +179,7 @@ namespace gum {
       for( SetIteratorSafe<NodeId> nodeIter = oldNodeSet.beginSafe(); nodeIter != oldNodeSet.endSafe(); ++nodeIter ){
 
         if( __nodeId2Database[*nodeIter]->isPValueRelevant( selectedVar)
-                && __nodeId2Database[*nodeIter]->pValue( selectedVar) > __dependenceThreshold ){
+                && __nodeId2Database[*nodeIter]->pValue( selectedVar) > __attributeSelectionThreshold ){
 
           __transpose(*nodeIter, selectedVar);
 
@@ -317,7 +317,7 @@ namespace gum {
                     totalTable.insert( *rNodeIter, __nodeId2Database[*rNodeIter]->nbObservation() );
                 }
                 double d = __evalPair( effectifTable[*lNodeIter], totalTable[*lNodeIter], effectifTable[*rNodeIter], totalTable[*rNodeIter]);
-                if( d > __similarityThreshold )
+                if( d > __pairSelectionThreshold )
                     remainingPairs->insert( std::pair<NodeId, NodeId>(*lNodeIter, *rNodeIter), d );
             }
 //            std::cout << "RemainingPairs : " << remainingPairs->toString() << std::endl;
@@ -351,12 +351,12 @@ namespace gum {
 
                 if( op.first == p.first || op.first == p.second ){
                     double d = __evalPair( effectifTable[nlid], totalTable[nlid], effectifTable[op.second], totalTable[op.second] );
-                    if( d > __similarityThreshold )
+                    if( d > __pairSelectionThreshold )
                         nextRemainingPairs->insert( std::pair<NodeId, NodeId>(nlid, op.second), d );
                 } else {
                     if( op.second == p.first || op.second == p.second ){
                         double d = __evalPair( effectifTable[nlid], totalTable[nlid], effectifTable[op.first], totalTable[op.first] );
-                        if( d > __similarityThreshold )
+                        if( d > __pairSelectionThreshold )
                             nextRemainingPairs->insert( std::pair<NodeId, NodeId>(nlid, op.first), d );
                     } else {
                         nextRemainingPairs->insert( op, od );
@@ -445,7 +445,7 @@ namespace gum {
 //        std::cout << " Fg : " << fg << "\t- Sg " << sg << std::endl;
         double fp = ChiSquare::probaChi2( fg, __value->domainSize() - 1 );
         double sp = ChiSquare::probaChi2( sg, __value->domainSize() - 1 );
-//        std::cout << " Fp : " << fp << "\t- Sp " << sp <<  "\t- ST " << __similarityThreshold << std::endl;
+//        std::cout << " Fp : " << fp << "\t- Sp " << sp <<  "\t- ST " << __pairSelectionThreshold << std::endl;
         return fp > sp ? sp : fp;
     }
 } // end gum namespace

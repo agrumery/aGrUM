@@ -103,7 +103,7 @@ namespace gum {
     void NodeDatabase<AttributeSelection, isScalar>::addObservation( const Observation* newObs, Int2Type<true> ){
 
       for(auto varIter = __attrTable.cbeginSafe(); varIter != __attrTable.cendSafe(); ++varIter)
-        varIter.val()->addObservation( newObs, newObs->modality(*varIter), newObs->reward() );
+        varIter.val()->addObservation( newObs, newObs->modality(varIter.key()), newObs->reward() );
 
       if( __valueCount.exists(newObs->reward()) )
         __valueCount[newObs->reward()]++;
@@ -115,7 +115,7 @@ namespace gum {
     void NodeDatabase<AttributeSelection, isScalar>::addObservation( const Observation* newObs, Int2Type<false> ){
 
       for(auto varIter = __attrTable.cbeginSafe(); varIter != __attrTable.cendSafe(); ++varIter)
-        varIter.val()->addObservation( newObs, newObs->modality(*varIter), newObs->modality(__value) );
+        varIter.val()->addObservation( newObs, newObs->modality(varIter.key()), newObs->modality(__value) );
 
       if( __valueCount.exists(newObs->modality(__value)) )
         __valueCount[newObs->modality(__value)]++;
@@ -133,7 +133,7 @@ namespace gum {
       Sequence<NodeDatabase<AttributeSelection, isScalar>*> reseq;
 
       for(Idx modality = 0; modality < var->domainSize(); ++modality)
-        reseq.insert( new NodeDatabase<AttributeSelection, isScalar>( __attrSet, __value, __attrTable[var]->observationSet(modality)) );
+        reseq.insert( new NodeDatabase<AttributeSelection, isScalar>( __attrSet, __attrTable[var]->observationSet(modality), __value ));
 
       return reseq;
     }

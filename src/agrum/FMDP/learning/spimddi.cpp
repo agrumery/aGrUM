@@ -56,7 +56,7 @@ namespace gum {
             __fmdp = new FactoredMarkovDecisionProcess<double>();
             __fmdp->setDiscount(discountFactor);
 
-            __learner = new FMDPLearner(__fmdp, learningThreshold, similarityThreshold );
+            __learner = new FMDPLearner<GTEST, GTEST, IMDDILEARNER>(__fmdp, learningThreshold, similarityThreshold );
 
             __planer = new SPUMDD<double>(__fmdp, epsilon);
 
@@ -132,7 +132,7 @@ namespace gum {
 
         void SPIMDDI::initialize(  ){
 
-            __learner->addReward(__rewardVar);
+//            __learner->addReward(__rewardVar);
             __learner->initialize();
             __planer->initialize();
         }

@@ -104,7 +104,7 @@ namespace gum {
         __modality2Observations.insert(moda, new Set<const Observation*>());
       __modality2Observations[moda]->insert( newObs );
 
-      this->addObservation( moda, value );
+      TestPolicy<GUM_SCALAR>::addObservation( moda, value );
     }
 
 } // End of namespace gum

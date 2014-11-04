@@ -53,7 +53,7 @@ namespace gum {
   template<TESTNAME AttributeSelection, bool isScalar>
   class NodeDatabase {
 
-    typedef typename ValueSelect<isScalar, double, Idx>::type ValueType;
+    typedef typename ValueSelect<isScalar, double, long unsigned int>::type ValueType;
 
     template < typename GUM_SCALAR >
     using TestPolicy = typename TestSelect<AttributeSelection, GTestPolicy<GUM_SCALAR>,

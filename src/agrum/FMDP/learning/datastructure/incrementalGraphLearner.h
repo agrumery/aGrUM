@@ -75,7 +75,6 @@ namespace gum {
         void clearValue(Int2Type<true>){ delete _value; }
         void clearValue(Int2Type<false>) { }
 
-    public :
       /// @}
 
       // ==========================================================================
@@ -86,41 +85,61 @@ namespace gum {
         // ###################################################################
         /// Adds a new observation to the structure
         // ###################################################################
+    public :
         virtual void addObservation ( const Observation* );
+
+    protected :
+        virtual void _updateNodeWithObservation( const Observation* newObs, NodeId currentNodeId ){
+                   _nodeId2Database[currentNodeId]->addObservation( newObs ); }
+
 
         // ###################################################################
         /// Updates the tree after a new observation has been added
         // ###################################################################
+    public :
         virtual void updateGraph() = 0;
 
       /// @}
 
-      void updateVar( const DiscreteVariable* );
+      // ============================================================================
+      /// If a new modality appears to exists for given variable,
+      /// call this method to turn every associated node to this variable into leaf.
+      /// Graph has then indeed to be revised
+      // ============================================================================
+      virtual void updateVar( const DiscreteVariable* );
 
   protected :
 
-      // ==========================================================================
+      // ###################################################################
       /// @name Update protected methods
-      // ==========================================================================
+      // ###################################################################
       /// @{
 
         // ###################################################################
         /// Turn the given node into a leaf if not already so
         // ###################################################################
-        void _convertNode2Leaf( NodeId );
+        virtual void _convertNode2Leaf( NodeId );
 
         // ###################################################################
         /// Install given variable to the given node, ensuring that the variable
         /// is not present in its subtree
         // ###################################################################
-        void _transpose( NodeId, const DiscreteVariable* );
+        virtual void _transpose( NodeId, const DiscreteVariable* );
+
+        virtual NodeId _insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
+                                  const DiscreteVariable* boundVar,
+                                  NodeId* sonsMap = nullptr );
+
+        virtual void _chgNodeBoundVar( NodeId chgedNodeId, const DiscreteVariable* desiredVar );
+
+        virtual void _removeNode( NodeId removedNodeId );
 
   public :
 
         // ###################################################################
         ///
         // ###################################################################
-        virtual void toDG();
+        virtual void updateDecisionGraph() = 0;
 
         // ###################################################################
         ///
