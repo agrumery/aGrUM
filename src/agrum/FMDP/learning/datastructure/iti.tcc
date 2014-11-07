@@ -123,7 +123,7 @@ namespace gum {
     // Remove node from graph
     // ============================================================================
     template < TESTNAME AttributeSelection, bool isScalar >
-    void IncrementalGraphLearner<AttributeSelection, isScalar>::_removeNode( NodeId currentNodeId ){
+    void ITI<AttributeSelection, isScalar>::_removeNode( NodeId currentNodeId ){
       IncrementalGraphLearner<AttributeSelection, isScalar>::_removeNode( currentNodeId );
       __staleTable.erase(currentNodeId);
     }
@@ -141,37 +141,34 @@ namespace gum {
     template <TESTNAME AttributeSelection, bool isScalar >
     void ITI<AttributeSelection, isScalar>::updateDecisionGraph(){
 
-     __target->clear();
-     for( auto varIter = __varOrder.beginSafe(); varIter != __varOrder.endSafe(); ++varIter )
-       __target->add(**varIter);
-     __target->add(*__value);
+      __target->clear();
+      for( auto varIter = __varOrder.beginSafe(); varIter != __varOrder.endSafe(); ++varIter )
+        __target->add(**varIter);
+      __target->add(*__value);
 
-     HashTable<NodeId, NodeId> toTarget;
-     __mergeLeaves(toTarget, false);
+      HashTable<NodeId, NodeId> toTarget;
+      __mergeLeaves(toTarget, false);
 
+      for( auto nodeIter = __var2Node[__value]->cbeginSafe(); nodeIter != __var2Node[__value]->cendSafe(); ++nodeIter ){
+        GUM_SCALAR* probDist = __nodeId2Database[*nodeIter]->probDist();
+        NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*__value->domainSize()) );
+        for(Idx modality = 0; modality < __value->domainSize(); ++modality )
+          sonsMap[modality] = __target->manager()->addTerminalNode( probDist[modality] );
+        toTarget.insert(*nodeIter, __target->manager()->nodeRedundancyCheck( __value, sonsMap ) );
+        MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( probDist, sizeof(GUM_SCALAR)*__value->domainSize());
+      }
 
-     for( auto nodeIter = __var2Node[__value]->cbeginSafe(); nodeIter != __var2Node[__value]->cendSafe(); ++nodeIter ){
-       GUM_SCALAR* probDist = __nodeId2Database[*nodeIter]->probDist();
-       NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*__value->domainSize()) );
-       for(Idx modality = 0; modality < __value->domainSize(); ++modality )
-         sonsMap[modality] = __target->manager()->addTerminalNode( probDist[modality] );
-       toTarget.insert(*nodeIter, __target->manager()->nodeRedundancyCheck( __value, sonsMap ) );
-       MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( probDist, sizeof(GUM_SCALAR)*__value->domainSize());
-     }
+      for( auto varIter = __varOrder.rbeginSafe(); varIter != __varOrder.rendSafe(); --varIter ) {
 
-     for( auto varIter = __varOrder.rbeginSafe(); varIter != __varOrder.rendSafe(); --varIter ) {
+        for( auto nodeIter = __var2Node[*varIter]->cbeginSafe(); nodeIter != __var2Node[*varIter]->cendSafe(); ++nodeIter ){
+          NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*(*varIter)->domainSize()) );
+          for(Idx modality = 0; modality < (*varIter)->domainSize(); ++modality )
+            sonsMap[modality] = toTarget[__nodeSonsMap[*nodeIter][modality]];
+          toTarget.insert(*nodeIter, __target->manager()->nodeRedundancyCheck( *varIter, sonsMap ) );
+        }
 
-       for( auto nodeIter = __var2Node[*varIter]->cbeginSafe(); nodeIter != __var2Node[*varIter]->cendSafe(); ++nodeIter ){
-         NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*(*varIter)->domainSize()) );
-         for(Idx modality = 0; modality < (*varIter)->domainSize(); ++modality ){
-
-           sonsMap[modality] = toTarget[__nodeSonsMap[*nodeIter][modality]];
-         }
-         toTarget.insert(*nodeIter, __target->manager()->nodeRedundancyCheck( *varIter, sonsMap ) );
-       }
-
-     }
-     __target->manager()->setRootNode( toTarget[__root] );
-     __target->manager()->clean();
+      }
+      __target->manager()->setRootNode( toTarget[__root] );
+      __target->manager()->clean();
   }
 } // end gum namespace
