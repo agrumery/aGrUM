@@ -80,7 +80,7 @@ namespace gum {
     }
 
     template <TESTNAME AttributeSelection, bool isScalar >
-    void ITI<AttributeSelection, isScalar>::__updateNodeWithObservation( const Observation* newObs, NodeId currentNodeId ){
+    void ITI<AttributeSelection, isScalar>::_updateNodeWithObservation( const Observation* newObs, NodeId currentNodeId ){
        IncrementalGraphLearner<AttributeSelection, isScalar>::_updateNodeWithObservation( newObs, currentNodeId );
        __staleTable[currentNodeId] = true;
     }
@@ -92,6 +92,50 @@ namespace gum {
     template <TESTNAME AttributeSelection, bool isScalar >
     void ITI<AttributeSelection, isScalar>::updateGraph(){
 
+      std::vector<NodeId> filo;
+      filo.push_back( _root );
+      HashTable<NodeId, Set<const DiscreteVariable*>* > potentialVars;
+      potentialVars.insert( _root, new Set<const DiscreteVariable*>(_setOfVars));
+
+
+      while( !filo.empty() ){
+
+        NodeId currentNodeId = filo.back();
+        filo.pop_back();
+
+        // First we look for the best var to install on the node
+        double bestValue = __attributeSelectionThreshold;
+        Set<const DiscreteVariable*> bestVars;
+
+        for( auto varIter = potentialVars[currentNodeId]->cbeginSafe(); varIter != potentialVars[currentNodeId]->cendSafe(); ++varIter )
+          if( _nodeId2Database[currentNodeId]->isTestRelevant() ){
+            double varValue = _nodeId2Database[currentNodeId]->testValue();
+            if( varValue >= bestValue ) {
+              if( varValue > bestValue ){
+                bestValue = varValue;
+                bestVars.clear();
+              }
+              bestVars.insert( *varIter );
+            }
+          }
+
+        // Then We installed Variable a test on that node
+        _updateNode( currentNodeId, bestVars );
+
+        // The we move on the children if needed
+        if( _nodeVarMap.exists(currentNodeId)) {
+          Set<const DiscreteVariable* >* itsPotentialVars = new Set<const DiscreteVariable*>(potentialVars[currentNodeId]);
+          itsPotentialVars >> _nodeVarMap[currentNodeId];
+          for(Idx moda = 0; moda < _nodeVarMap[currentNodeId]->domainSize(); moda++ )
+            if( __staleTable[_nodeSonsMap[currentNodeId][moda]] ) {
+                filo.push_back( _nodeSonsMap[currentNodeId][moda] );
+                potentialVars.insert( _nodeSonsMap[currentNodeId][moda], itsPotentialVars);
+            }
+        }
+      }
+      for( auto nodeIter = potentialVars.beginSafe(); nodeIter != potentialVars.endSafe(); ++nodeIter )
+        if( nodeIter.val() )
+          delete nodeIter.val();
     }
 
 
@@ -100,9 +144,9 @@ namespace gum {
     // Insert a new node with given associated database, var and maybe sons
     // ============================================================================
     template < TESTNAME AttributeSelection, bool isScalar >
-    void ITI<AttributeSelection, isScalar>::_insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB, const DiscreteVariable* boundVar, NodeId* sonsMap ){
+    NodeId ITI<AttributeSelection, isScalar>::_insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB, const DiscreteVariable* boundVar, NodeId* sonsMap ){
       NodeId n = IncrementalGraphLearner<AttributeSelection, isScalar>::_insertNode(nDB, boundVar, sonsMap);
-      __staleTable.insert(n, true);
+      __staleTable.insert(n, true);      
       return n;
     }
 
@@ -141,34 +185,78 @@ namespace gum {
     template <TESTNAME AttributeSelection, bool isScalar >
     void ITI<AttributeSelection, isScalar>::updateDecisionGraph(){
 
-      __target->clear();
-      for( auto varIter = __varOrder.beginSafe(); varIter != __varOrder.endSafe(); ++varIter )
-        __target->add(**varIter);
-      __target->add(*__value);
+      _target->clear();
 
-      HashTable<NodeId, NodeId> toTarget;
-      __mergeLeaves(toTarget, false);
+      __insertNodeInDecisionGraph( _root );
 
-      for( auto nodeIter = __var2Node[__value]->cbeginSafe(); nodeIter != __var2Node[__value]->cendSafe(); ++nodeIter ){
-        GUM_SCALAR* probDist = __nodeId2Database[*nodeIter]->probDist();
-        NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*__value->domainSize()) );
-        for(Idx modality = 0; modality < __value->domainSize(); ++modality )
-          sonsMap[modality] = __target->manager()->addTerminalNode( probDist[modality] );
-        toTarget.insert(*nodeIter, __target->manager()->nodeRedundancyCheck( __value, sonsMap ) );
-        MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( probDist, sizeof(GUM_SCALAR)*__value->domainSize());
-      }
+      if( !_nodeVarMap.exists(_root))
+        return;
 
-      for( auto varIter = __varOrder.rbeginSafe(); varIter != __varOrder.rendSafe(); --varIter ) {
+      std::vector<NodeId> filo;
+      filo.push_back( _root );
 
-        for( auto nodeIter = __var2Node[*varIter]->cbeginSafe(); nodeIter != __var2Node[*varIter]->cendSafe(); ++nodeIter ){
-          NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*(*varIter)->domainSize()) );
-          for(Idx modality = 0; modality < (*varIter)->domainSize(); ++modality )
-            sonsMap[modality] = toTarget[__nodeSonsMap[*nodeIter][modality]];
-          toTarget.insert(*nodeIter, __target->manager()->nodeRedundancyCheck( *varIter, sonsMap ) );
+      while(!filo.empty()){
+
+        NodeId currentNode = filo.back();
+        filo.pop_back();
+
+        for(Idx moda = 0; moda < _nodeVarMap[currentNode]->domainSize(); moda++ ){
+          __insertNodeInDecisionGraph( _nodeSonsMap[currentNode][moda] );
+          _target->manager()->setSon(currentNode, moda, _nodeSonsMap[currentNode][moda] );
+          if( _nodeVarMap.exists(_nodeSonsMap[currentNode][moda]))
+            filo.push_back(_nodeSonsMap[currentNode][moda]);
         }
-
       }
-      __target->manager()->setRootNode( toTarget[__root] );
-      __target->manager()->clean();
-  }
+
+
+    }
+
+
+    // ============================================================================
+    // Computes the Reduced and Ordered Decision Graph  associated to this ordered tree
+    // ============================================================================
+    template <TESTNAME AttributeSelection, bool isScalar >
+    NodeId ITI<AttributeSelection, isScalar>::__insertNodeInDecisionGraph( NodeId currentNodeId ){
+
+      if( !_nodeVarMap.exists(currentNodeId))
+        return __insertTerminalNode(currentNodeId);
+      if( !_target->variablesSequence().exists(_nodeVarMap[currentNodeId]))
+        _target->add(*(_nodeVarMap[currentNodeId]));
+      return _target->manager()->addNonTerminalNode( _nodeVarMap[currentNodeId] );
+    }
+
+
+    // ============================================================================
+    // Computes the Reduced and Ordered Decision Graph  associated to this ordered tree
+    // ============================================================================
+    template <TESTNAME AttributeSelection, bool isScalar >
+    NodeId ITI<AttributeSelection, isScalar>::__insertTerminalNode( NodeId currentNodeId ){
+
+      insertTerminalNode(currentNodeId, Int2Type<isScalar>());
+    }
+
+
+    // ============================================================================
+    // Computes the Reduced and Ordered Decision Graph  associated to this ordered tree
+    // ============================================================================
+    template <TESTNAME AttributeSelection, bool isScalar >
+    NodeId ITI<AttributeSelection, isScalar>::__insertTerminalNode( NodeId currentNodeId, Int2Type<false> ){
+
+      double* probDist = __nodeId2Database[*nodeIter]->probDist();
+               NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*__value->domainSize()) );
+               for(Idx modality = 0; modality < __value->domainSize(); ++modality )
+                 sonsMap[modality] = __target->manager()->addTerminalNode( probDist[modality] );
+               toTarget.insert(*nodeIter, __target->manager()->nodeRedundancyCheck( __value, sonsMap ) );
+               MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( probDist, sizeof(GUM_SCALAR)*__value->domainSize());
+    }
+
+
+    // ============================================================================
+    // Computes the Reduced and Ordered Decision Graph  associated to this ordered tree
+    // ============================================================================
+    template <TESTNAME AttributeSelection, bool isScalar >
+    NodeId ITI<AttributeSelection, isScalar>::__insertTerminalNode( NodeId currentNodeId, Int2Type<true> ){
+
+      toTarget.insert(*nodeIter, __target->manager()->addTerminalNode(__nodeId2Database[*nodeIter]->rewardValue()));
+    }
 } // end gum namespace

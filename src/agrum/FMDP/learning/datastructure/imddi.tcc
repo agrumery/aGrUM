@@ -217,10 +217,10 @@ namespace gum {
     template <TESTNAME AttributeSelection, bool isScalar >
     void IMDDI<AttributeSelection, isScalar>::toDG(){
 
-       __target->clear();
+       _target->clear();
        for( auto varIter = __varOrder.beginSafe(); varIter != __varOrder.endSafe(); ++varIter )
-         __target->add(**varIter);
-       __target->add(*__value);
+         _target->add(**varIter);
+       _target->add(*__value);
 
        HashTable<NodeId, NodeId> toTarget;
        __mergeLeaves(toTarget, false);
@@ -230,8 +230,8 @@ namespace gum {
 //         GUM_SCALAR* probDist = __nodeId2Database[*nodeIter]->probDist();
 //         NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*__value->domainSize()) );
 //         for(Idx modality = 0; modality < __value->domainSize(); ++modality )
-//           sonsMap[modality] = __target->manager()->addTerminalNode( probDist[modality] );
-//         toTarget.insert(*nodeIter, __target->manager()->nodeRedundancyCheck( __value, sonsMap ) );
+//           sonsMap[modality] = _target->manager()->addTerminalNode( probDist[modality] );
+//         toTarget.insert(*nodeIter, _target->manager()->nodeRedundancyCheck( __value, sonsMap ) );
 //         MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( probDist, sizeof(GUM_SCALAR)*__value->domainSize());
 //       }
 
@@ -243,12 +243,12 @@ namespace gum {
 
              sonsMap[modality] = toTarget[__nodeSonsMap[*nodeIter][modality]];
            }
-           toTarget.insert(*nodeIter, __target->manager()->nodeRedundancyCheck( *varIter, sonsMap ) );
+           toTarget.insert(*nodeIter, _target->manager()->nodeRedundancyCheck( *varIter, sonsMap ) );
          }
 
        }
-       __target->manager()->setRootNode( toTarget[__root] );
-       __target->manager()->clean();
+       _target->manager()->setRootNode( toTarget[__root] );
+       _target->manager()->clean();
     }
 
 
@@ -257,17 +257,17 @@ namespace gum {
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
     void IMDDI<AttributeSelection, isScalar>::toDG(const Bijection<const DiscreteVariable*, const DiscreteVariable*>& main2prime){
-       __target->clear();
+       _target->clear();
 
        for( auto varIter = __varOrder.beginSafe(); varIter != __varOrder.endSafe(); ++varIter )
-         __target->add(*( main2prime.first(*varIter) ) );
+         _target->add(*( main2prime.first(*varIter) ) );
 
        HashTable<NodeId, NodeId> toTarget;
        __mergeLeaves(toTarget, true);
 
 
 //       for( auto nodeIter = __var2Node[__value]->cbeginSafe(); nodeIter != __var2Node[__value]->cendSafe(); ++nodeIter )
-//         toTarget.insert(*nodeIter, __target->manager()->addTerminalNode(__nodeId2Database[*nodeIter]->rewardValue()));
+//         toTarget.insert(*nodeIter, _target->manager()->addTerminalNode(__nodeId2Database[*nodeIter]->rewardValue()));
 
        for( auto varIter = __varOrder.rbeginSafe(); varIter != __varOrder.rendSafe(); --varIter ) {
          const DiscreteVariable* mainy = main2prime.first(*varIter);
@@ -277,13 +277,13 @@ namespace gum {
 
              sonsMap[modality] = toTarget[__nodeSonsMap[*nodeIter][modality]];
            }
-           toTarget.insert(*nodeIter, __target->manager()->nodeRedundancyCheck( mainy, sonsMap ) );
+           toTarget.insert(*nodeIter, _target->manager()->nodeRedundancyCheck( mainy, sonsMap ) );
          }
 
        }
-       __target->manager()->setRootNode( toTarget[__root] );
+       _target->manager()->setRootNode( toTarget[__root] );
 
-       __target->manager()->clean();
+       _target->manager()->clean();
     }
 
 
@@ -395,16 +395,16 @@ namespace gum {
                     double ret = 0.0;
                     for(Idx modality = 0; modality < __value->domainSize(); ++modality)
                       ret += effectifTable[ti][modality] / totalTable[ti] * std::stod(__value->label(modality));
-                    toTarget.insert( ti, __target->manager()->addTerminalNode(  ret ) );
+                    toTarget.insert( ti, _target->manager()->addTerminalNode(  ret ) );
                 }else{
 //                    std::cout << "Leaf : " << *nodeIter << " - Target : " << ti << " - HashTab : " << toTarget << std::endl;
                     NodeId* tts = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*__value->domainSize()) );
                     for( Idx moda = 0; moda < __value->domainSize(); moda++){
-                        tts[moda] = __target->manager()->addTerminalNode( effectifTable[ti][moda] / totalTable[ti] );
+                        tts[moda] = _target->manager()->addTerminalNode( effectifTable[ti][moda] / totalTable[ti] );
 //                        std::cout << "\tModa : " << moda << " - DD Leaf : " << tts[moda] << std::endl;
                       }
 //                    std::cout << "Installing Node" << toTarget << std::endl;
-                    toTarget.insert( ti, __target->manager()->nodeRedundancyCheck(__value, tts ) );
+                    toTarget.insert( ti, _target->manager()->nodeRedundancyCheck(__value, tts ) );
 //                    std::cout << "Done" << toTarget << std::endl;
                 }
 

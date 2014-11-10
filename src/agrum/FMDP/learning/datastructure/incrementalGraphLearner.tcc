@@ -138,10 +138,34 @@ namespace gum {
 
 
     // ============================================================================
+    // Install one of the best given
+    // ============================================================================
+    template < TESTNAME AttributeSelection, bool isScalar >
+    void IncrementalGraphLearner<AttributeSelection, isScalar>::_updateNode( NodeId updatedNode,
+                                                                             Set<const DiscreteVariable*>& varsOfInterest ){
+
+      // If this node has no interesting variable, we turn it into a leaf
+      if( varsOfInterest.empty() ) {
+        _convertNode2Leaf( updatedNode );
+        return;
+      }
+
+      // If this node has already one of the best variable intalled as test, we move on
+      if( _nodeVarMap.exists(updatedNode) && varsOfInterest.exists( _nodeVarMap[updatedNode] ) )
+        return;
+
+      // In any other case we have to install variable as best test
+      _transpose( updatedNode, );
+
+    }
+
+    // ============================================================================
     // Insert a new node with given associated database, var and maybe sons
     // ============================================================================
     template < TESTNAME AttributeSelection, bool isScalar >
-    NodeId IncrementalGraphLearner<AttributeSelection, isScalar>::_insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB, const DiscreteVariable* boundVar, NodeId* sonsMap ){
+    NodeId IncrementalGraphLearner<AttributeSelection, isScalar>::_insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
+                                                                               const DiscreteVariable* boundVar,
+                                                                               NodeId* sonsMap ){
       NodeId newNodeId = _model.addNode();
       _nodeVarMap.insert(newNodeId, boundVar);
       _nodeId2Database.insert(newNodeId, nDB);

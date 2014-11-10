@@ -32,6 +32,7 @@
 // =========================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
 // =========================================================================
+#include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
 // =========================================================================
 #include <agrum/variables/labelizedVariable.h>
@@ -91,7 +92,7 @@ namespace gum {
         void addObservation ( const Observation* );
 
     protected :
-        void __updateNodeWithObservation( const Observation* newObs, NodeId currentNodeId );
+        void _updateNodeWithObservation( const Observation* newObs, NodeId currentNodeId );
 
 
     public :
