@@ -422,10 +422,12 @@ namespace gum {
       // each thread has at least NB elements to parse. This proves useful for
       // small databases and large numbers of processors
       unsigned int max_nb_threads =
-        std::min ( ( db_size + __min_nb_rows_per_thread - 1 ) /
-                   __min_nb_rows_per_thread,
+        std::min ( db_size / __min_nb_rows_per_thread,
                    (unsigned long) __max_threads_number );
- 
+      const unsigned long
+        max_size_per_thread = ( db_size + max_nb_threads - 1 ) / max_nb_threads;
+      max_nb_threads = db_size / max_size_per_thread;
+      
       #pragma omp parallel num_threads ( max_nb_threads )
       {
         // create ThreadCounters if needed
@@ -454,15 +456,17 @@ namespace gum {
 
         // indicate to the filter which part of the database it must parse
         const unsigned long
-        size_per_thread = ( db_size + num_threads - 1 ) / num_threads;
+          size_per_thread = ( db_size + num_threads - 1 ) / num_threads;
         const unsigned long min_range = size_per_thread * this_thread;
         const unsigned long max_range = std::min ( min_range + size_per_thread,
                                                    db_size );
-        thread_counter.setRange ( min_range, max_range );
+        if ( min_range < max_range ) {
+          thread_counter.setRange ( min_range, max_range );
 
-        // compute the counts
-        thread_counter.count ();
-
+          // compute the counts
+          thread_counter.count ();
+        }
+        
       } // omp parallel
 
 
