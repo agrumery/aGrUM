@@ -155,7 +155,11 @@ namespace gum {
         return;
 
       // In any other case we have to install variable as best test
-      _transpose( updatedNode, );
+      Idx randy = (Idx)( std::rand() / RAND_MAX )*varsOfInterest.size(), basc = 0;
+      SetConstIteratorSafe<const DiscreteVariable*> varIter;
+      for(varIter = varsOfInterest.cbeginSafe(), basc = 0; varIter != varsOfInterest.cendSafe() && basc < randy; ++varIter, basc++ );
+
+      _transpose( updatedNode, *varIter);
 
     }
 
@@ -181,7 +185,8 @@ namespace gum {
     // Changes var associated to a node
     // ============================================================================
     template < TESTNAME AttributeSelection, bool isScalar >
-    void IncrementalGraphLearner<AttributeSelection, isScalar>::_chgNodeBoundVar( NodeId currentNodeId, const DiscreteVariable* desiredVar ){
+    void IncrementalGraphLearner<AttributeSelection, isScalar>::_chgNodeBoundVar( NodeId currentNodeId,
+                                                                                  const DiscreteVariable* desiredVar ){
       _var2Node[_nodeVarMap[currentNodeId]]->searchAndRemoveLink(currentNodeId);
       _var2Node[desiredVar]->addLink(currentNodeId);
       _nodeVarMap[currentNodeId] = desiredVar;
