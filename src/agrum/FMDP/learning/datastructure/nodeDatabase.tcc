@@ -151,4 +151,12 @@ namespace gum {
             ret[modality] = 0.0;
         return ret;
     }
+
+    template<TESTNAME AttributeSelection, bool isScalar>
+    double NodeDatabase<AttributeSelection, isScalar>::reward(){
+        double ret = 0.0;
+        for(auto valuTer = __valueCount.cbeginSafe(); valuTer != __valueCount.cendSafe(); ++valuTer)
+          ret += valuTer.key() * (double) valuTer.val();
+        return ret / __nbObservation;
+    }
 } // End of namespace gum

@@ -120,6 +120,8 @@ namespace gum {
         // ###################################################################
         double* effectif();
 
+        double reward();
+
       /// @}
 
     private :

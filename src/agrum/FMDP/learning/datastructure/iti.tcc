@@ -201,7 +201,7 @@ namespace gum {
         filo.pop_back();
 
         for(Idx moda = 0; moda < _nodeVarMap[currentNode]->domainSize(); moda++ ){
-          __insertNodeInDecisionGraph( _nodeSonsMap[currentNode][moda] );
+          toTarget.insert( _nodeSonsMap[currentNode][moda], __insertNodeInDecisionGraph( _nodeSonsMap[currentNode][moda]) );
           _target->manager()->setSon(currentNode, moda, _nodeSonsMap[currentNode][moda] );
           if( _nodeVarMap.exists(_nodeSonsMap[currentNode][moda]))
             filo.push_back(_nodeSonsMap[currentNode][moda]);
@@ -231,7 +231,6 @@ namespace gum {
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
     NodeId ITI<AttributeSelection, isScalar>::__insertTerminalNode( NodeId currentNodeId ){
-
       insertTerminalNode(currentNodeId, Int2Type<isScalar>());
     }
 
@@ -242,12 +241,13 @@ namespace gum {
     template <TESTNAME AttributeSelection, bool isScalar >
     NodeId ITI<AttributeSelection, isScalar>::__insertTerminalNode( NodeId currentNodeId, Int2Type<false> ){
 
-      double* probDist = __nodeId2Database[*nodeIter]->probDist();
-               NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*__value->domainSize()) );
-               for(Idx modality = 0; modality < __value->domainSize(); ++modality )
-                 sonsMap[modality] = __target->manager()->addTerminalNode( probDist[modality] );
-               toTarget.insert(*nodeIter, __target->manager()->nodeRedundancyCheck( __value, sonsMap ) );
-               MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( probDist, sizeof(GUM_SCALAR)*__value->domainSize());
+      double* probDist = _nodeId2Database[currentNodeId]->effectif();
+      double tot = _nodeId2Database[currentNodeId]->nbObservation();
+      NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*__value->domainSize()) );
+      for(Idx modality = 0; modality < _value->domainSize(); ++modality )
+        sonsMap[modality] = _target->manager()->addTerminalNode( probDist[modality]/tot );
+      MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( probDist, sizeof(GUM_SCALAR)*_value->domainSize());
+      return _target->manager()->addNonTerminalNode( _value, sonsMap );
     }
 
 
@@ -256,7 +256,6 @@ namespace gum {
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
     NodeId ITI<AttributeSelection, isScalar>::__insertTerminalNode( NodeId currentNodeId, Int2Type<true> ){
-
-      toTarget.insert(*nodeIter, __target->manager()->addTerminalNode(__nodeId2Database[*nodeIter]->rewardValue()));
+      return _target->manager()->addTerminalNode( _nodeId2Database[currentNodeId]->reward());
     }
 } // end gum namespace
