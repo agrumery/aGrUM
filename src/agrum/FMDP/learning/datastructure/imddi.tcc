@@ -62,7 +62,8 @@ namespace gum {
     // Reward Learner constructor
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
-    IMDDI<AttributeSelection, isScalar>::IMDDI ( MultiDimDecisionGraph<double>* target,
+    IMDDI<AttributeSelection, isScalar>::IMDDI (
+            MultiDimDecisionGraph<double>* target,
             double attributeSelectionThreshold,
             double pairSelectionThreshold,
             Set<const DiscreteVariable*> attributeListe ) : IncrementalGraphLearner<AttributeSelection, isScalar>( target, attributeListe, new LabelizedVariable() ),
