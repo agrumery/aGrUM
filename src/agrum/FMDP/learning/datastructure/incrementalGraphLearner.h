@@ -92,28 +92,20 @@ namespace gum {
         virtual void _updateNodeWithObservation( const Observation* newObs, NodeId currentNodeId ){
                    _nodeId2Database[currentNodeId]->addObservation( newObs ); }
 
+    public :
+        // ###################################################################
+        /// If a new modality appears to exists for given variable,
+        /// call this method to turn every associated node to this variable into leaf.
+        /// Graph has then indeed to be revised
+        // ###################################################################
+        virtual void updateVar( const DiscreteVariable* );
 
         // ###################################################################
         /// Updates the tree after a new observation has been added
         // ###################################################################
-    public :
         virtual void updateGraph() = 0;
 
-      /// @}
-
-      // ============================================================================
-      /// If a new modality appears to exists for given variable,
-      /// call this method to turn every associated node to this variable into leaf.
-      /// Graph has then indeed to be revised
-      // ============================================================================
-      virtual void updateVar( const DiscreteVariable* );
-
-  protected :
-
-      // ###################################################################
-      /// @name Update protected methods
-      // ###################################################################
-      /// @{
+    protected :
 
         void _updateNode( NodeId, Set<const DiscreteVariable*>& );
 
@@ -136,12 +128,22 @@ namespace gum {
 
         virtual void _removeNode( NodeId removedNodeId );
 
+      /// @}
+
+
   public :
+
+      // ==========================================================================
+      /// @name Decision Graph Updating methods
+      // ==========================================================================
+      /// @{
 
         // ###################################################################
         ///
         // ###################################################################
         virtual void updateDecisionGraph() = 0;
+
+      /// @}
 
         // ###################################################################
         ///

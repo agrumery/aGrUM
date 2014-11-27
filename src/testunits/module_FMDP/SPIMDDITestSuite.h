@@ -56,45 +56,47 @@ namespace gum_tests {
         gum::Instantiation initialState, endState;
 
         // Enregistrement des actions possibles auprès de SPIMDDI
-        for( auto actionIter = fmdp.beginActions(); actionIter != fmdp.endActions(); ++actionIter)
-            spim.addAction( *actionIter, fmdp.actionName(*actionIter));
+        for( auto actionIter = fmdp.beginActions(); actionIter != fmdp.endActions(); ++actionIter){
+          std::cout << "*actionIter : " << *actionIter << std::endl;
+          spim.addAction( *actionIter, fmdp.actionName(*actionIter));
+        }
 
         // Enregistrement des variables caractérisant les états auprès de SPIMDDI
         for(auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter){
-            spim.addVariable(*varIter);
-            initialState.add(**varIter);
+          spim.addVariable(*varIter);
+          initialState.add(**varIter);
         }
 
         // Récupération des caractéristiques d'états finaux
         va_list ap;
         va_start(ap, nbVar);
         for(gum::Idx nbArg = 0; nbArg < nbVar; ++nbArg){
-            std::string varName( va_arg(ap, char*) );
-            std::string varModa( va_arg(ap, char*) );
+          std::string varName( va_arg(ap, char*) );
+          std::string varModa( va_arg(ap, char*) );
 
-            const gum::DiscreteVariable* varPtr = nullptr;
-            for(auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter)
-                if(!varName.compare( (*varIter)->name())){
-                    varPtr= *varIter;
-                    break;
-                }
+          const gum::DiscreteVariable* varPtr = nullptr;
+          for(auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter)
+            if(!varName.compare( (*varIter)->name())){
+              varPtr= *varIter;
+              break;
+            }
 
-            endState.add(*varPtr);
+          endState.add(*varPtr);
 
-            gum::Idx varModaIdx = 0;
-            for(gum::Idx varm = 0; varm < varPtr->domainSize(); ++varm)
-                if(!varModa.compare( varPtr->label(varm))){
-                    varModaIdx = varm;
-                    break;
-                }
-            endState.chgVal(*varPtr, varModaIdx);
+          gum::Idx varModaIdx = 0;
+          for(gum::Idx varm = 0; varm < varPtr->domainSize(); ++varm)
+            if(!varModa.compare( varPtr->label(varm))){
+                varModaIdx = varm;
+                break;
+            }
+          endState.chgVal(*varPtr, varModaIdx);
         }
         va_end(ap);
 
         // Création de la variables récompenses (to be deprecated)
-        const gum::MultiDimDecisionGraph<double>* reward = reinterpret_cast<const gum::MultiDimDecisionGraph<double>*>(fmdp.reward());
-        for( auto rewardIter = reward->values().beginSafe(); rewardIter != reward->values().endSafe(); ++rewardIter)
-            spim.addReward(rewardIter.second());
+//        const gum::MultiDimDecisionGraph<double>* reward = reinterpret_cast<const gum::MultiDimDecisionGraph<double>*>(fmdp.reward());
+//        for( auto rewardIter = reward->values().beginSafe(); rewardIter != reward->values().endSafe(); ++rewardIter)
+//          spim.addReward(rewardIter.second());
 
         TS_GUM_ASSERT_THROWS_NOTHING ( sim.setEndState(endState) );
         TS_GUM_ASSERT_THROWS_NOTHING ( spim.initialize() );
@@ -104,18 +106,20 @@ namespace gum_tests {
 
         for( gum::Idx nbRun = 0; nbRun < 10; ++nbRun ){
 
-            TS_GUM_ASSERT_THROWS_NOTHING ( spim.setCurrentState(sim.currentState()) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( spim.setCurrentState(sim.currentState()) );
 
-            while(!sim.hasReachEnd()){
+          while(!sim.hasReachEnd()){
 
-                // Normal Iteration Part
-                gum::Idx actionChosenId = spim.takeAction();
-                sim.perform( actionChosenId );
+            // Normal Iteration Part
+            gum::Idx actionChosenId = spim.takeAction();
+            std::cout << "Yoh!" << std::endl;
+            sim.perform( actionChosenId );
+            std::cout << "Yoh!" << std::endl;
 
-                spim.feedback(sim.currentState(), sim.reward());
+            spim.feedback(sim.currentState(), sim.reward());
 
-            }
-            TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
+          }
+          TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
         }
         std::cout << spim.toString() << std::endl;
       }

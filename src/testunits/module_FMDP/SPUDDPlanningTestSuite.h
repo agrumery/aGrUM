@@ -52,7 +52,7 @@ namespace gum_tests {
 //          return;
 //        }
 //        TS_GUM_ASSERT_THROWS_NOTHING ( __traceAlgoSaveFile << fmdp.show() );
-//        std::cout << fmdp.show();
+//        std::cout << fmdp.toString();
 //        __traceAlgoSaveFile.close();
 
         TS_GUM_ASSERT_THROWS_NOTHING ( planer.initialize() );
@@ -71,7 +71,7 @@ namespace gum_tests {
         run ( "Coffee" );
       }
 
-      void test_FactoryS() {
+      void est_FactoryS() {
         file = GET_PATH_STR ( "FMDP/factory/tiny-factory.dat" );
         run ( "TinyFactory" );
       }
@@ -99,7 +99,7 @@ namespace gum_tests {
       }
 
 
-      void est_Factory0() {
+      void test_Factory0() {
         file = GET_PATH_STR ( "FMDP/factory/factory0.dat" );
         run ( "Factory0" );
       }

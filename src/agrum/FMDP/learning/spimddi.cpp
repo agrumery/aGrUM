@@ -51,21 +51,21 @@ namespace gum {
                                                     __nbValueIterationStep(nbValueIterationStep),
                                                     __exploThreshold(exploThreshold){
 
-            GUM_CONSTRUCTOR(SPIMDDI)
+          GUM_CONSTRUCTOR(SPIMDDI)
 
-            __fmdp = new FactoredMarkovDecisionProcess<double>();
-            __fmdp->setDiscount(discountFactor);
+          __fmdp = new FactoredMarkovDecisionProcess<double>();
+          __fmdp->setDiscount(discountFactor);
 
-            __learner = new FMDPLearner<GTEST, GTEST, IMDDILEARNER>(__fmdp, learningThreshold, similarityThreshold );
+          __learner = new FMDPLearner<GTEST, GTEST, IMDDILEARNER>(__fmdp, learningThreshold, similarityThreshold );
 
-            __planer = new SPUMDD<double>(__fmdp, epsilon);
+          __planer = new SPUMDD<double>(__fmdp, epsilon);
 
-            __rewardVar = new LabelizedVariable("Reward", "");
-            __rewardVar->eraseLabels();
+//          __rewardVar = new LabelizedVariable("Reward", "");
+//          __rewardVar->eraseLabels();
 
-            __nbObservation = 1;
+          __nbObservation = 1;
 
-            srand(time(NULL));
+          srand(time(NULL));
         }
 
         // ###################################################################
@@ -74,17 +74,17 @@ namespace gum {
 
         SPIMDDI::~SPIMDDI (){
 
-            delete __learner;
+          delete __learner;
 
-            for(auto obsIter = __bin.beginSafe(); obsIter != __bin.endSafe(); ++obsIter)
-                delete *obsIter;
+          for(auto obsIter = __bin.beginSafe(); obsIter != __bin.endSafe(); ++obsIter)
+              delete *obsIter;
 
-            delete __planer;
-            delete __fmdp;
+          delete __planer;
+          delete __fmdp;
 
-            delete __rewardVar;
+//          delete __rewardVar;
 
-            GUM_DESTRUCTOR(SPIMDDI)
+          GUM_DESTRUCTOR(SPIMDDI)
         }
 
     // ==========================================================================
@@ -96,22 +96,22 @@ namespace gum {
         // ###################################################################
 
         void SPIMDDI::addAction(const Idx actionId, const std::string &actionName ){
-            __learner->addAction(actionId, actionName);
-            __actionSeq.insert(actionId);
+          __learner->addAction(actionId, actionName);
+          __actionSeq.insert(actionId);
         }
 
 
         void SPIMDDI::addVariable( const DiscreteVariable* var ){
-            __learner->addVariable(var);
+          __learner->addVariable(var);
         }
 
 
-        void SPIMDDI::addReward( double r ){
-            std::ostringstream strs;
-            strs << r;
-            __rewardVar->addLabel( strs.str() );
-            __rewardValue2Idx.insert(r, __rewardVar->labels().pos(strs.str()));
-        }
+//        void SPIMDDI::addReward( double r ){
+////            std::ostringstream strs;
+////            strs << r;
+////            __rewardVar->addLabel( strs.str() );
+////            __rewardValue2Idx.insert(r, __rewardVar->labels().pos(strs.str()));
+//        }
 
     // ==========================================================================
     //
@@ -122,8 +122,8 @@ namespace gum {
         // ###################################################################
 
         void SPIMDDI::initialize( const Instantiation& initialState ){
-            initialize();
-            setCurrentState( initialState );
+          initialize();
+          setCurrentState( initialState );
         }
 
         // ###################################################################
@@ -131,10 +131,8 @@ namespace gum {
         // ###################################################################
 
         void SPIMDDI::initialize(  ){
-
-//            __learner->addReward(__rewardVar);
-            __learner->initialize();
-            __planer->initialize();
+          __learner->initialize();
+          __planer->initialize();
         }
 
         // ###################################################################
@@ -143,38 +141,38 @@ namespace gum {
 
         void SPIMDDI::feedback( const Instantiation& newState, double reward){
 
-            std::cout << "Begin Feedback - Observation n° " << __nbObservation << std::endl;
-            Observation* obs = new Observation();
+//            std::cout << "Begin Feedback - Observation n° " << __nbObservation << std::endl;
+//            Observation* obs = new Observation();
 
-            for( auto varIter = __lastState.variablesSequence().beginSafe(); varIter != __lastState.variablesSequence().endSafe(); ++varIter)
-                obs->setModality(*varIter, __lastState.val(**varIter));
+//            for( auto varIter = __lastState.variablesSequence().beginSafe(); varIter != __lastState.variablesSequence().endSafe(); ++varIter)
+//                obs->setModality(*varIter, __lastState.val(**varIter));
 
-            for( auto varIter = newState.variablesSequence().beginSafe(); varIter != newState.variablesSequence().endSafe(); ++varIter)
-                obs->setModality(__fmdp->main2prime(*varIter), newState.val(**varIter));
+//            for( auto varIter = newState.variablesSequence().beginSafe(); varIter != newState.variablesSequence().endSafe(); ++varIter)
+//                obs->setModality(__fmdp->main2prime(*varIter), newState.val(**varIter));
 
-            obs->setModality( __rewardVar, __rewardValue2Idx.second(reward) );
+//            obs->setModality( __rewardVar, __rewardValue2Idx.second(reward) );
 
-            __learner->addObservation( __lastAction, obs );
-            __bin.insert(obs);
+//            __learner->addObservation( __lastAction, obs );
+//            __bin.insert(obs);
 
-            setCurrentState( newState );
+//            setCurrentState( newState );
 
-            if( __nbObservation%__observationPhaseLenght == 0) {
-                __learner->updateFMDP();
-                __planer->makePlanning(__nbValueIterationStep);
-//                std::cout << __planer->optimalPolicy()->toDot() << std::endl;
-//                exit(1);
-            }
-            __nbObservation++;
+//            if( __nbObservation%__observationPhaseLenght == 0) {
+//                __learner->updateFMDP();
+//                __planer->makePlanning(__nbValueIterationStep);
+////                std::cout << __planer->optimalPolicy()->toDot() << std::endl;
+////                exit(1);
+//            }
+//            __nbObservation++;
         }
 
         // ###################################################################
         //
         // ###################################################################
         void SPIMDDI::feedback( const Instantiation& curState, const Instantiation& prevState, Idx lastAction, double reward){
-          __lastAction = lastAction;
-          __lastState = prevState;
-          feedback( curState, reward );
+//          __lastAction = lastAction;
+//          __lastState = prevState;
+//          feedback( curState, reward );
         }
 
         // ###################################################################
@@ -182,21 +180,22 @@ namespace gum {
         // ###################################################################
         Idx SPIMDDI::takeAction( ){
 
-            double explo = (double)std::rand( ) / (double)RAND_MAX;
-            ActionSet actionSet;
-            if( __planer->optimalPolicy()->realSize() && explo > __exploThreshold){
-                std::cout << "Exploitons!" << std::endl;
-               actionSet = __planer->optimalPolicy()->get(__lastState);
-            }else{
-                std::cout << "Explorons!" << std::endl;
-                for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter )
-                  actionSet += *actionIter;
-            }
-            if( actionSet.size() == 1 )
-              __lastAction = actionSet[0];
-            else
-              __lastAction = actionSet[ (Idx)((double)std::rand( ) / (double)RAND_MAX * actionSet.size()) ] ;
-            return __lastAction;
+//            double explo = (double)std::rand( ) / (double)RAND_MAX;
+//            ActionSet actionSet;
+//            if( __planer->optimalPolicy()->realSize() && explo > __exploThreshold){
+//                std::cout << "Exploitons!" << std::endl;
+//               actionSet = __planer->optimalPolicy()->get(__lastState);
+//            }else{
+//                std::cout << "Explorons!" << std::endl;
+//                for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter )
+//                  actionSet += *actionIter;
+//            }
+//            if( actionSet.size() == 1 )
+//              __lastAction = actionSet[0];
+//            else
+//              __lastAction = actionSet[ (Idx)((double)std::rand( ) / (double)RAND_MAX * actionSet.size()) ] ;
+//            return __lastAction;
+          return 0;
         }
 
         // ###################################################################
@@ -204,25 +203,27 @@ namespace gum {
         // ###################################################################
         Idx SPIMDDI::takeAction( const Instantiation& curState ){
 
-            __lastState = curState;
-            return takeAction();
+//            __lastState = curState;
+//            return takeAction();
+            return 0;
         }
 
         // ###################################################################
         //
         // ###################################################################
         std::string SPIMDDI::toString( ){
-            std::stringstream description;
+//            std::stringstream description;
 
-            description << __fmdp->toString() << std::endl;
+//            description << __fmdp->toString() << std::endl;
 
-            if(__planer->optimalPolicy() )
-                description << __planer->optimalPolicy()->toDot() << std::endl;
+//            if(__planer->optimalPolicy() )
+//                description << __planer->optimalPolicy()->toDot() << std::endl;
 
-            for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter)
-                description << *actionIter << " - " << __fmdp->actionName(*actionIter) <<std::endl;
+//            for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter)
+//                description << *actionIter << " - " << __fmdp->actionName(*actionIter) <<std::endl;
 
-            return description.str();
+//            return description.str();
+          return "";
         }
 
 } // End of namespace gum

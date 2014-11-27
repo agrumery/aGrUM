@@ -52,7 +52,7 @@ namespace gum {
     ITI<AttributeSelection, isScalar>::ITI ( MultiDimDecisionGraph<double>* target,
             double attributeSelectionThreshold,
             Set<const DiscreteVariable*> attributeListe,
-            const DiscreteVariable* learnedValue ) : IncrementalGraphLearner( target, attributeListe, learnedValue),
+            const DiscreteVariable* learnedValue ) : IncrementalGraphLearner<AttributeSelection, isScalar>( target, attributeListe, learnedValue),
                                                      __nbTotalObservation(0),
                                                      __attributeSelectionThreshold(attributeSelectionThreshold)
     {GUM_CONSTRUCTOR(ITI);}
@@ -63,7 +63,7 @@ namespace gum {
     template <TESTNAME AttributeSelection, bool isScalar >
     ITI<AttributeSelection, isScalar>::ITI ( MultiDimDecisionGraph<double>* target,
             double attributeSelectionThreshold,
-            Set<const DiscreteVariable*> attributeListe ) : IncrementalGraphLearner( target, attributeListe ),
+            Set<const DiscreteVariable*> attributeListe ) : IncrementalGraphLearner<AttributeSelection, isScalar>( target, attributeListe, new LabelizedVariable() ),
                                                             __nbTotalObservation(0),
                                                             __attributeSelectionThreshold(attributeSelectionThreshold)
     {GUM_CONSTRUCTOR(ITI);}
@@ -123,14 +123,16 @@ namespace gum {
         _updateNode( currentNodeId, bestVars );
 
         // The we move on the children if needed
-        if( _nodeVarMap.exists(currentNodeId)) {
+        if( _nodeVarMap[currentNodeId] != _value ) {
           Set<const DiscreteVariable* >* itsPotentialVars = new Set<const DiscreteVariable*>(potentialVars[currentNodeId]);
           itsPotentialVars >> _nodeVarMap[currentNodeId];
-          for(Idx moda = 0; moda < _nodeVarMap[currentNodeId]->domainSize(); moda++ )
-            if( __staleTable[_nodeSonsMap[currentNodeId][moda]] ) {
-                filo.push_back( _nodeSonsMap[currentNodeId][moda] );
-                potentialVars.insert( _nodeSonsMap[currentNodeId][moda], itsPotentialVars);
+          for(Idx moda = 0; moda < _nodeVarMap[currentNodeId]->domainSize(); moda++ ){
+            NodeId sonId = _nodeSonsMap[currentNodeId][moda];
+            if( __staleTable[sonId] ) {
+                filo.push_back( sonId );
+                potentialVars.insert( sonId, itsPotentialVars);
             }
+          }
         }
       }
       for( auto nodeIter = potentialVars.beginSafe(); nodeIter != potentialVars.endSafe(); ++nodeIter )
@@ -189,11 +191,12 @@ namespace gum {
 
       __insertNodeInDecisionGraph( _root );
 
-      if( !_nodeVarMap.exists(_root))
+      if( _nodeVarMap[_root] == value )
         return;
 
       std::vector<NodeId> filo;
       filo.push_back( _root );
+      HashTable<NodeId,NodeId> toTarget;
 
       while(!filo.empty()){
 
@@ -201,9 +204,10 @@ namespace gum {
         filo.pop_back();
 
         for(Idx moda = 0; moda < _nodeVarMap[currentNode]->domainSize(); moda++ ){
-          toTarget.insert( _nodeSonsMap[currentNode][moda], __insertNodeInDecisionGraph( _nodeSonsMap[currentNode][moda]) );
-          _target->manager()->setSon(currentNode, moda, _nodeSonsMap[currentNode][moda] );
-          if( _nodeVarMap.exists(_nodeSonsMap[currentNode][moda]))
+          NodeId sonId = _nodeSonsMap[currentNode][moda];
+          toTarget.insert( sonId, __insertNodeInDecisionGraph( sonId ) );
+          _target->manager()->setSon(toTarget(currentNode), moda, toTarget(sonId) );
+          if( _nodeVarMap[sonId] != _value )
             filo.push_back(_nodeSonsMap[currentNode][moda]);
         }
       }
@@ -218,8 +222,9 @@ namespace gum {
     template <TESTNAME AttributeSelection, bool isScalar >
     NodeId ITI<AttributeSelection, isScalar>::__insertNodeInDecisionGraph( NodeId currentNodeId ){
 
-      if( !_nodeVarMap.exists(currentNodeId))
+      if( _nodeVarMap[currentNodeId] == _value )
         return __insertTerminalNode(currentNodeId);
+
       if( !_target->variablesSequence().exists(_nodeVarMap[currentNodeId]))
         _target->add(*(_nodeVarMap[currentNodeId]));
       return _target->manager()->addNonTerminalNode( _nodeVarMap[currentNodeId] );
@@ -256,6 +261,6 @@ namespace gum {
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
     NodeId ITI<AttributeSelection, isScalar>::__insertTerminalNode( NodeId currentNodeId, Int2Type<true> ){
-      return _target->manager()->addTerminalNode( _nodeId2Database[currentNodeId]->reward());
+      return _target->manager()->addTerminalNode( _nodeId2Database[currentNodeId]->reward() );
     }
 } // end gum namespace

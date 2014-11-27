@@ -1,4 +1,4 @@
-(variables (ashaped t f) (bshaped t f) (typeneeded highq lowq) (glue t f) (apainted good poor f) (bpainted good poor f) (connected good bad f) (asmooth t f) (bsmooth t f) (bolts t f) (clamps t f) (drill t f) (spraygun t f) (skilledlab t f) (adrilled t f) (bdrilled t f) )
+(variables (typeneeded highq lowq) (spraygun t f) (connected good bad f) (glue t f) (clamps t f) (skilledlab t f) (asmooth t f) (bsmooth t f) (ashaped t f) (bshaped t f) (apainted good poor f) (bpainted good poor f) (bolts t f) (adrilled t f) (bdrilled t f) (drill t f) )
 
 
 

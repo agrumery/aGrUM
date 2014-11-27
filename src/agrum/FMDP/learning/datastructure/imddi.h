@@ -154,7 +154,7 @@ namespace gum {
 
 } /* namespace gum */
 
-
+#include <agrum/FMDP/learning/datastructure/imddi.tcc>
 
 #endif // GUM_IMDDI_H
 

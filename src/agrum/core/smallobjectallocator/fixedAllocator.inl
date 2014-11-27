@@ -118,7 +118,7 @@ namespace gum {
   // Releases the allocated memory
   // ============================================================================
   INLINE void FixedAllocator::__Chunk::__release(){
-      delete __pData;
+      delete[] __pData;
 //      GUM_DESTRUCTOR(__Chunk);
   }
 

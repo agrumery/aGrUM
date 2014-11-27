@@ -115,10 +115,23 @@ namespace gum {
 
     public :
 
+      // ==========================================================================
+      /// @name Decision Graph Updating methods
+      // ==========================================================================
+      /// @{
+
         // ###################################################################
         ///
         // ###################################################################
         void updateDecisionGraph();
+
+    private :
+        NodeId __insertNodeInDecisionGraph( NodeId );
+        NodeId __insertTerminalNode( NodeId );
+        NodeId __insertTerminalNode( NodeId, Int2Type<true> );
+        NodeId __insertTerminalNode( NodeId, Int2Type<false> );
+
+      /// @}
 
       HashTable<NodeId, bool> __staleTable;
 

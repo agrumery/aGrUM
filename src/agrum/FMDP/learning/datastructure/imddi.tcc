@@ -52,7 +52,7 @@ namespace gum {
             double attributeSelectionThreshold,
             double pairSelectionThreshold,
             Set<const DiscreteVariable*> attributeListe,
-            const DiscreteVariable* learnedValue ) : IncrementalGraphLearner( target, attributeListe, learnedValue),
+            const DiscreteVariable* learnedValue ) : IncrementalGraphLearner<AttributeSelection, isScalar>( target, attributeListe, learnedValue),
                                                      __nbTotalObservation(0),
                                                      __attributeSelectionThreshold(attributeSelectionThreshold),
                                                      __pairSelectionThreshold(pairSelectionThreshold)
@@ -65,7 +65,7 @@ namespace gum {
     IMDDI<AttributeSelection, isScalar>::IMDDI ( MultiDimDecisionGraph<double>* target,
             double attributeSelectionThreshold,
             double pairSelectionThreshold,
-            Set<const DiscreteVariable*> attributeListe ) : IncrementalGraphLearner( target, attributeListe ),
+            Set<const DiscreteVariable*> attributeListe ) : IncrementalGraphLearner<AttributeSelection, isScalar>( target, attributeListe, new LabelizedVariable() ),
                                                             __nbTotalObservation(0),
                                                             __attributeSelectionThreshold(attributeSelectionThreshold),
                                                             __pairSelectionThreshold(pairSelectionThreshold)

@@ -94,7 +94,7 @@ namespace gum {
         ///
         // ###################################################################
         void addVariable( const DiscreteVariable* var );
-        void addReward( double );
+//        void addReward( double );
 
       /// @}
 
@@ -139,7 +139,7 @@ namespace gum {
       // ###################################################################
       std::string toString();
 
-      Size learnerSize() { return __learner->size(); }
+      Size learnerSize() { return 0; }//__learner->size(); }
 
       Size modelSize() { return __fmdp->size(); }
 
@@ -158,8 +158,8 @@ namespace gum {
       /// needed to learn the FMDP
       FMDPLearner<GTEST, GTEST, IMDDILEARNER>* __learner;
 
-      LabelizedVariable* __rewardVar;
-      Bijection<double,Idx> __rewardValue2Idx;
+//      LabelizedVariable* __rewardVar;
+//      Bijection<double,Idx> __rewardValue2Idx;
 
       /// The planer we use to find the optimal policy
       SPUMDD<double>* __planer;

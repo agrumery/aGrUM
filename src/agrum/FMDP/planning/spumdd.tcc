@@ -40,6 +40,7 @@
 // =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/planning/spumdd.h>
+#include <agrum/FMDP/planning/regress.h>
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code only
@@ -101,7 +102,7 @@ namespace gum {
 
       // Establishement of sequence of variable elemination
       for ( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter )
-        __elVarSeq << *varIter;
+        __elVarSeq << __fmdp->main2prime(*varIter);
 
       // Initialisation of the value function
       __vFunction = new MultiDimDecisionGraph< GUM_SCALAR >();
@@ -192,7 +193,7 @@ namespace gum {
       // *****************************************************************************************
       // Next to evaluate main value function, we take maximise over all action value, ...
 
-//      std::cout << "Maximization" << std::endl;
+      std::cout << "Maximization" << std::endl;
       newVFunction = __qFunctionSet.back();
       __qFunctionSet.pop_back();
       MultiDimDecisionGraph< GUM_SCALAR >* vTemp = nullptr;
@@ -227,45 +228,45 @@ namespace gum {
     MultiDimDecisionGraph< GUM_SCALAR >*
     evalQaction( SPUMDD<GUM_SCALAR>* planer, const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Idx actionId ){
 
+      std::cout << "===========================================================================================" << std::endl;
 
-//    std::cout << "YOUHOU" << planer->fmdp()->show() << std::endl;
-//    std::cout << "#############################################################################################################################" << std::endl;
+//    std::cout << "Thread " << actionId << " initiates var elemination. " << std::endl;
 
-      // *****************************************************************************************
-      // Initialisation
+      std::cout << "Thread " << planer->fmdp()->actionName(actionId) << std::endl;
+
+      // ******************************************************************************
+      // Initialisation :
+      // Creating a copy of last Vfunction to deduce from the new Qaction
+      // And finding the first var to eleminate (the one at the end)
+
       MultiDimDecisionGraph< GUM_SCALAR >* qAction = new MultiDimDecisionGraph< GUM_SCALAR >();
       qAction->copy( *Vold );
       MultiDimDecisionGraph< GUM_SCALAR >* vTemp = nullptr;
-      Set< const DiscreteVariable* > varSet;
+//      std::cout << qAction->toDot() << std::endl;
 
-      // *****************************************************************************************
-      // To evaluate action value function, we multiply old main value function by transition table
-      // of each variable
-//    std::cout << "Thread " << actionId << " initiates var elemination. " << std::endl;
-      for ( auto varIter = planer->beginVarElimination(); varIter != planer->endVarElemination(); --varIter ) {
 
-//        std::cout << "Thread " << planer->fmdp()->actionName(actionId) << " - Var : " << (*varIter)->name() << std::endl;
-        // ***************************************************************************************
-        // Multiplication of qAction by current variable's CPT
-        vTemp = qAction;
-//        std::cout << "AQA root " << qAction->root() << " - " << RECAST( planer->fmdp()->transition( actionId, *varIter ) )->root() << std::endl;
-//        std::cout << qAction->toDot() << std::endl;
-//        std::cout << RECAST( planer->fmdp()->transition( actionId, *varIter ) )->toDot();
-        qAction = multiply2MultiDimDecisionGraphs ( qAction, RECAST( planer->fmdp()->transition( actionId, *varIter ) ) );
-        delete vTemp;
-//        std::cout << "New Root : " << qAction->root() << std::endl << qAction->toDot() << std::endl;
+      const DiscreteVariable* v = qAction->variablesSequence().atPos( qAction->variablesSequence().size() - 1 );
+//      for( auto varIter = planer->elVarSeq()->beginSafe(); varIter != planer->elVarSeq()->endSafe(); ++varIter )
+//      for( auto varIter = qAction->variablesSequence().beginSafe(); varIter != qAction->variablesSequence().endSafe(); ++varIter )
+//        std::cout << (*varIter)->toString() << " " ;
+//      std::cout << std::endl;
+      std::cout << v->toString() << " - " <<  planer->shouldEleminateVar(v) << std::endl;
 
-        // ***************************************************************************************
-        // Projection of qAction on current var by summing on each of its modalities
-        vTemp = qAction;
-        varSet << planer->fmdp()->main2prime(*varIter);
-        qAction = projectSumMultiDimDecisionGraph ( qAction, varSet );
-        varSet >> planer->fmdp()->main2prime(*varIter);
-        delete vTemp;
-//        std::cout << qAction->toDot() << std::endl;
-//        std::cout << "#############################################################################################################################" << std::endl;
+      while( planer->shouldEleminateVar(v) ){
+          vTemp = qAction;
+//          std::cout << RECAST( planer->fmdp()->transition( actionId, planer->fmdp()->mapMainPrime().first(v) ) )->toDot() << std::endl;
+          Regress<GUM_SCALAR, std::multiplies, std::plus> r(
+                qAction, RECAST( planer->fmdp()->transition( actionId, planer->fmdp()->mapMainPrime().first(v) ) ),
+                planer->elVarSeq(), v, (GUM_SCALAR)0);
+          qAction = r.compute();
+//          std::cout << qAction->toDot() << std::endl;
+          delete vTemp;
+          v = qAction->variablesSequence().atPos( qAction->variablesSequence().size() - 1 );
+          std::cout << v->toString() << " - " <<  planer->shouldEleminateVar(v) << std::endl;
       }
-//      std::cout << "FIN " << actionId << " - " << planer->fmdp()->actionName(actionId) << std::endl;
+//      std::cout << qAction->toDot() << std::endl;
+      std::cout << "FIN " << actionId << " - " << planer->fmdp()->actionName(actionId)  << std::endl;
+      std::cout << "===========================================================================================" << std::endl;
       return qAction;
     }
 

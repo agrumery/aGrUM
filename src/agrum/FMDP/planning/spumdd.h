@@ -30,8 +30,9 @@
 // =========================================================================
 #include <thread>
 // =========================================================================
-#include <agrum/core/functors.h>
 #include <agrum/core/argMaxSet.h>
+#include <agrum/core/functors.h>
+#include <agrum/core/inline.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
@@ -291,17 +292,25 @@ namespace gum {
         void addQaction( MultiDimDecisionGraph<GUM_SCALAR>* );
         void addQaction( MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* );
 
-        /**
-         * Returns an iterator reference to the beginning of the var eleminstation sequence
-         * @warning in reverse mode (from end to beginning)
-         */
-        INLINE SequenceIteratorSafe<const DiscreteVariable*> beginVarElimination() { return __elVarSeq.rbeginSafe(); }
+//        /**
+//         * Returns an iterator reference to the beginning of the var eleminstation Set
+//         * @warning in reverse mode (from end to beginning)
+//         */
+//        INLINE SetIteratorSafe<const DiscreteVariable*> beginVarElimination() { return __elVarSeq.rbeginSafe(); }
 
-        /**
-         * Returns an iterator to the end
-         * @warning in reverse mode (from end to beginning)
-         */
-        INLINE SequenceIteratorSafe<const DiscreteVariable*> endVarElemination() {return __elVarSeq.rendSafe();}
+//        /**
+//         * Returns an iterator to the end
+//         * @warning in reverse mode (from end to beginning)
+//         */
+//        INLINE SetIteratorSafe<const DiscreteVariable*> endVarElemination() {return __elVarSeq.rendSafe();}
+
+        INLINE bool shouldEleminateVar( const DiscreteVariable* v ){
+          return __fmdp->mapMainPrime().existsSecond(v);
+        }
+
+        INLINE const Set< const DiscreteVariable* >* elVarSeq(){
+          return &__elVarSeq;
+        }
 
   private:
 
@@ -365,8 +374,8 @@ namespace gum {
       /// Whenever | Vn - Vn+1 | < threshold, we consider that V ~ V*
       GUM_SCALAR __threshold;
 
-      /// A sequence to eleminate primed variables
-      Sequence< const DiscreteVariable* > __elVarSeq;
+      /// A Set to eleminate primed variables
+      Set< const DiscreteVariable* > __elVarSeq;
 
       bool __firstTime;
   };
