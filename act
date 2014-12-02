@@ -893,7 +893,7 @@ if current['rule']=='clean':
     sys.exit(0)
 if current['rule']=='uninstall':
     uninstall(current)
-    execute(sh)
+    execute(sh,options)
     sys.exit(0)
 
 if current['rule']=='default':
