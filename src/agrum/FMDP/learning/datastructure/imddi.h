@@ -133,7 +133,7 @@ namespace gum {
         // ###################################################################
         ///
         // ###################################################################
-        void __mergeLeaves( HashTable<NodeId, NodeId>& toTarget, bool rewardLeaf );
+        void __mergeLeaves(HashTable<NodeId, NodeId>& toTarget);
 
         double __evalPair( double* feffectif, double ftotal, double* seffectif, double stotal );
 

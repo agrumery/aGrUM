@@ -108,7 +108,7 @@ namespace gum {
         ///
         // ###################################################################
         INLINE bool isTestRelevant( const DiscreteVariable* var ) const { return __attrTable[var]->isTestRelevant(); }
-        INLINE double testValue( const DiscreteVariable* var ) const { return __attrTable[var]->testValue(); }
+        INLINE double testValue( const DiscreteVariable* var ) const { return __attrTable[var]->score(); }
 
         // ###################################################################
         ///

@@ -191,7 +191,7 @@ namespace gum {
 
       __insertNodeInDecisionGraph( _root );
 
-      if( _nodeVarMap[_root] == value )
+      if( _nodeVarMap[_root] == _value )
         return;
 
       std::vector<NodeId> filo;
@@ -236,7 +236,7 @@ namespace gum {
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
     NodeId ITI<AttributeSelection, isScalar>::__insertTerminalNode( NodeId currentNodeId ){
-      insertTerminalNode(currentNodeId, Int2Type<isScalar>());
+      __insertTerminalNode(currentNodeId, Int2Type<isScalar>());
     }
 
 

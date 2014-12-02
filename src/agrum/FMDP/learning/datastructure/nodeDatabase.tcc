@@ -44,7 +44,7 @@ namespace gum {
       GUM_CONSTRUCTOR(NodeDatabase);
 
       for(SetIteratorSafe<const DiscreteVariable*> varIter = __attrSet->cbeginSafe(); varIter != __attrSet->cendSafe(); ++varIter)
-        __attrTable.insert( *varIter, new VarInfo<ValueType, TestPolicy>(*varIter, value) );
+        __attrTable.insert( *varIter, new VarInfo<ValueType, TestPolicy>(*varIter) );
 
       __nbObservation = 0;
     }

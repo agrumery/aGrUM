@@ -112,7 +112,7 @@ namespace gum_tests {
 
             // Normal Iteration Part
             gum::Idx actionChosenId = spim.takeAction();
-            std::cout << "Yoh!" << std::endl;
+            std::cout << "Action Chosen : " << actionChosenId << std::endl;
             sim.perform( actionChosenId );
             std::cout << "Yoh!" << std::endl;
 

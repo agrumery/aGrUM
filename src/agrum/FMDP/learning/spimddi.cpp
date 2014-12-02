@@ -180,22 +180,21 @@ namespace gum {
         // ###################################################################
         Idx SPIMDDI::takeAction( ){
 
-//            double explo = (double)std::rand( ) / (double)RAND_MAX;
-//            ActionSet actionSet;
-//            if( __planer->optimalPolicy()->realSize() && explo > __exploThreshold){
-//                std::cout << "Exploitons!" << std::endl;
-//               actionSet = __planer->optimalPolicy()->get(__lastState);
-//            }else{
-//                std::cout << "Explorons!" << std::endl;
-//                for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter )
-//                  actionSet += *actionIter;
-//            }
-//            if( actionSet.size() == 1 )
-//              __lastAction = actionSet[0];
-//            else
-//              __lastAction = actionSet[ (Idx)((double)std::rand( ) / (double)RAND_MAX * actionSet.size()) ] ;
-//            return __lastAction;
-          return 0;
+          double explo = (double)std::rand( ) / (double)RAND_MAX;
+          ActionSet actionSet;
+          if( __planer->optimalPolicy()->realSize() && explo > __exploThreshold){
+            std::cout << "Exploitons!" << std::endl;
+            actionSet = __planer->optimalPolicy()->get(__lastState);
+          }else{
+            std::cout << "Explorons!" << std::endl;
+            for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter )
+              actionSet += *actionIter;
+          }
+          if( actionSet.size() == 1 )
+            __lastAction = actionSet[0];
+          else
+            __lastAction = actionSet[ (Idx)((double)std::rand( ) / (double)RAND_MAX * actionSet.size()) ] ;
+          return __lastAction;
         }
 
         // ###################################################################
@@ -203,9 +202,8 @@ namespace gum {
         // ###################################################################
         Idx SPIMDDI::takeAction( const Instantiation& curState ){
 
-//            __lastState = curState;
-//            return takeAction();
-            return 0;
+            __lastState = curState;
+            return takeAction();
         }
 
         // ###################################################################
