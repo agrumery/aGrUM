@@ -191,15 +191,15 @@ namespace gum {
 
     for( const auto node : _dag.nodes() ) {
       if( isChanceNode( node ) )
-        chanceNode << tab << variable( node ).name() << ";";
+        chanceNode << tab << "\"" << variable( node ).name() << "\"" << ";";
       else if( isUtilityNode( node ) )
-        utilityNode << tab << variable( node ).name() << ";";
+        utilityNode << tab << "\"" << variable( node ).name() << "\"" << ";";
       else
-        decisionNode << tab << variable( node ).name() << ";";
+        decisionNode << tab << "\"" << variable( node ).name() << "\"" << ";";
 
       if( _dag.children( node ).size() > 0 )
         for( const auto chi : _dag.children( node ) )
-          arcstream << tab <<  variable( node ).name() << " -> " << variable( chi ).name() << ";" << std::endl;
+          arcstream << tab <<  "\"" << variable( node ).name() << "\"" << " -> " << "\"" << variable( chi ).name() << "\"" << ";" << std::endl;
     }
 
     output << decisionNode.str() << std::endl << utilityNode.str() << std::endl << chanceNode.str() << std::endl << arcstream.str() << std::endl << "}" << std::endl;
@@ -635,7 +635,7 @@ namespace gum {
     ++orderIter;
 
     // Checking path between decisions nodes
-    while( orderIter != order.endSafe() ) {
+    while( orderIter != order.end() ) {
       if( isDecisionNode( *orderIter ) ) {
         if( ! existsPathBetween( parentDecision, *orderIter ) )
           return false;
@@ -781,10 +781,6 @@ namespace gum {
   InfluenceDiagram<GUM_SCALAR>::getPartialTemporalOrder( bool clear ) const {
     if( clear ) {
       __temporalOrder.clear();
-
-      if( !decisionOrderExists() ) {
-        GUM_ERROR( NotFound, "No decision path exists" );
-      }
 
       std::vector< NodeId >* decisionOrder = getDecisionOrder();
       NodeSet nodeList = _dag.asNodeSet();
