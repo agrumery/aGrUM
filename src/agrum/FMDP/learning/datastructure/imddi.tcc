@@ -128,6 +128,9 @@ namespace gum {
       for( SetIteratorSafe<NodeId> nodeIter = currentNodeSet.beginSafe(); nodeIter != currentNodeSet.endSafe(); ++nodeIter )
         this->_convertNode2Leaf(*nodeIter);
 
+
+      this->_debugTree();
+
     }
 
 

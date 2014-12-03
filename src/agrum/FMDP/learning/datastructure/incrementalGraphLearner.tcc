@@ -331,10 +331,10 @@ namespace gum {
           std::cout << "Var " << varLiter.key()->name();
           LinkedList<NodeId>* mojo = varLiter.val();
           std::cout << " - Liste : ";
-          Link<NodeId> moter = mojo->list();
+          Link<NodeId>* moter = mojo->list();
           while(moter){
-            std::cout << moter.element() << " | ";
-            moter = moter.nextLink();
+            std::cout << moter->element() << " | ";
+            moter = moter->nextLink();
           }
           std::cout <<  std::endl;
         }

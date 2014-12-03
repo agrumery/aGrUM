@@ -141,21 +141,21 @@ namespace gum {
 
         void SPIMDDI::feedback( const Instantiation& newState, double reward){
 
-//            std::cout << "Begin Feedback - Observation n° " << __nbObservation << std::endl;
-//            Observation* obs = new Observation();
+            std::cout << "Begin Feedback - Observation n° " << __nbObservation << std::endl;
+            Observation* obs = new Observation();
 
-//            for( auto varIter = __lastState.variablesSequence().beginSafe(); varIter != __lastState.variablesSequence().endSafe(); ++varIter)
-//                obs->setModality(*varIter, __lastState.val(**varIter));
+            for( auto varIter = __lastState.variablesSequence().beginSafe(); varIter != __lastState.variablesSequence().endSafe(); ++varIter)
+                obs->setModality(*varIter, __lastState.val(**varIter));
 
-//            for( auto varIter = newState.variablesSequence().beginSafe(); varIter != newState.variablesSequence().endSafe(); ++varIter)
-//                obs->setModality(__fmdp->main2prime(*varIter), newState.val(**varIter));
+            for( auto varIter = newState.variablesSequence().beginSafe(); varIter != newState.variablesSequence().endSafe(); ++varIter)
+                obs->setModality(__fmdp->main2prime(*varIter), newState.val(**varIter));
 
-//            obs->setModality( __rewardVar, __rewardValue2Idx.second(reward) );
+            obs->setReward(reward);
 
-//            __learner->addObservation( __lastAction, obs );
-//            __bin.insert(obs);
+            __learner->addObservation( __lastAction, obs );
+            __bin.insert(obs);
 
-//            setCurrentState( newState );
+            setCurrentState( newState );
 
 //            if( __nbObservation%__observationPhaseLenght == 0) {
 //                __learner->updateFMDP();
@@ -163,15 +163,15 @@ namespace gum {
 ////                std::cout << __planer->optimalPolicy()->toDot() << std::endl;
 ////                exit(1);
 //            }
-//            __nbObservation++;
+            __nbObservation++;
         }
 
         // ###################################################################
         //
         // ###################################################################
         void SPIMDDI::feedback( const Instantiation& curState, const Instantiation& prevState, Idx lastAction, double reward){
-//          __lastAction = lastAction;
-//          __lastState = prevState;
+          __lastAction = lastAction;
+          __lastState = prevState;
 //          feedback( curState, reward );
         }
 
@@ -179,7 +179,6 @@ namespace gum {
         //
         // ###################################################################
         Idx SPIMDDI::takeAction( ){
-
           double explo = (double)std::rand( ) / (double)RAND_MAX;
           ActionSet actionSet;
           if( __planer->optimalPolicy()->realSize() && explo > __exploThreshold){
@@ -190,10 +189,12 @@ namespace gum {
             for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter )
               actionSet += *actionIter;
           }
-          if( actionSet.size() == 1 )
+          if( actionSet.size() == 1 ) {
             __lastAction = actionSet[0];
-          else
-            __lastAction = actionSet[ (Idx)((double)std::rand( ) / (double)RAND_MAX * actionSet.size()) ] ;
+          } else {
+              Idx randy = (Idx)( (double)std::rand( ) / (double)RAND_MAX * actionSet.size() );
+              __lastAction = actionSet[ randy==actionSet.size()?0:randy ] ;
+          }
           return __lastAction;
         }
 
@@ -201,7 +202,6 @@ namespace gum {
         //
         // ###################################################################
         Idx SPIMDDI::takeAction( const Instantiation& curState ){
-
             __lastState = curState;
             return takeAction();
         }
