@@ -103,7 +103,7 @@ namespace gum {
       gum::Idx variableModality ( const gum::DiscreteVariable* var ) const { return __retrogradeVarInstantiation[ __varSeq.pos ( var ) ]; };
 
       /// Returns current o4DDContext key
-      const double contextKey() const;
+      double contextKey() const;
 
       /// @}
 

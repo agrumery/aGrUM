@@ -158,7 +158,7 @@ namespace gum {
       virtual const std::string label ( Idx i ) const;
 
       /// get a numerical representation of he indice-the value.
-      virtual const double numerical( Idx indice ) const;
+      virtual double numerical( Idx indice ) const;
 
       /// from the label to its index in var.
       /// @throws NotFound

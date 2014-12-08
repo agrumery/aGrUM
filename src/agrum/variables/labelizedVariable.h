@@ -148,7 +148,7 @@ public:
     virtual const std::string label ( Idx i ) const;
 
     /// get a numerical representation of he indice-the value.
-    virtual const double numerical ( Idx indice ) const;
+    virtual double numerical ( Idx indice ) const;
 
 
     /// returns the size of the random discrete variable domain

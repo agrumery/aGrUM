@@ -621,7 +621,7 @@ namespace gum {
   // @throw NotFound if node doesn't have a default son
 
   template< typename GUM_SCALAR > INLINE
-  const NodeId
+  NodeId
   MultiDimDecisionDiagramBase< GUM_SCALAR >::nodeDefaultSon ( NodeId n ) const {
 
     if ( isTerminalNode ( n ) ) {
@@ -637,7 +637,7 @@ namespace gum {
   }
 
   template< typename GUM_SCALAR > INLINE
-  const NodeId
+  NodeId
   MultiDimDecisionDiagramBase< GUM_SCALAR >::unsafeNodeDefaultSon ( NodeId n ) const {
 
     return __defaultArcMap[ n ];

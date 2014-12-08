@@ -147,7 +147,7 @@ namespace gum {
   }
 
   // get a numerical representation of the indice-th value.
-  INLINE const double LabelizedVariable::numerical ( Idx indice ) const {
+  INLINE double LabelizedVariable::numerical ( Idx indice ) const {
     return double ( indice );
   }
 

@@ -209,7 +209,7 @@ namespace gum {
 
   /// get a numerical representation of he indice-the value.
   template<typename T_TICKS> INLINE
-  const double DiscretizedVariable<T_TICKS>::numerical ( Idx indice ) const {
+  double DiscretizedVariable<T_TICKS>::numerical ( Idx indice ) const {
     if ( indice >= __ticks_size - 1 ) {
       GUM_ERROR ( OutOfBounds, "inexisting label index" );
     }

@@ -86,7 +86,7 @@ namespace gum {
   // Updates o4DDContextKey
 
   INLINE
-  const double
+  double
   O4DDContext::contextKey( ) const {
     double o4DDContextKey = __DD1ExploredNode * __DD1PrimeLog + __DD2ExploredNode * __DD2PrimeLog;
 
