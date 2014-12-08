@@ -67,7 +67,7 @@ else ()
 endif ()
 
 execute_process(
-  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}')"
+  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
   OUTPUT_VARIABLE PYTHON_INSTALL
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
