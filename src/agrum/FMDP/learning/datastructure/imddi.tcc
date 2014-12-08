@@ -102,6 +102,7 @@ namespace gum {
 
       MultiPriorityQueue<const DiscreteVariable*, double, std::greater<double>> remainingVarsScore;
       for( auto varIter = remainingVars.beginSafe(); varIter != remainingVars.endSafe(); ++varIter ) {
+        std::cout << "Var : " << (*varIter)->name() << std::endl;
         if( this->_nodeId2Database[this->_root]->isTestRelevant(*varIter) )
             remainingVarsScore.insert(*varIter, __score(*varIter, this->_root));
         else
@@ -111,7 +112,7 @@ namespace gum {
 
       // Then, until there's no node remaining
       while( !remainingVars.empty() ){
-
+std::cout << "***************************************************"<< std::endl;
         // We select the best var
         const DiscreteVariable* selectedVar = remainingVarsScore.pop();
         remainingVars >> selectedVar;

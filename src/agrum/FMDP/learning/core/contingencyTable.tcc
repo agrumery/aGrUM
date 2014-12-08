@@ -62,20 +62,20 @@ namespace gum {
     //
     // ==========================================================================
     template< typename GUM_SCALAR_A, typename GUM_SCALAR_B >
-    void ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>::add( GUM_SCALAR_A attr, GUM_SCALAR_B value){
+    void ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>::add(GUM_SCALAR_A valueA, GUM_SCALAR_B valueB){
 
       // Updating
-      if(__attrMarginalTable.exists(attr))
-        __attrMarginalTable[attr]++;
+      if(__attrAMarginalTable.exists(valueA))
+        __attrAMarginalTable[valueA]++;
       else
-        __attrMarginalTable.insert(attr,1);
+        __attrAMarginalTable.insert(valueA,1);
 
-      if(__valueMarginalTable.exists(value))
-        __valueMarginalTable[value]++;
+      if(__attrBMarginalTable.exists(valueB))
+        __attrBMarginalTable[valueB]++;
       else
-        __valueMarginalTable.insert(value,1);
+        __attrBMarginalTable.insert(valueB,1);
 
-      std::pair<GUM_SCALAR_A, GUM_SCALAR_B> cell(attr, value);
+      std::pair<GUM_SCALAR_A, GUM_SCALAR_B> cell(valueA, valueB);
       if(__contingencyTable.exists(cell))
         __contingencyTable[cell]++;
       else

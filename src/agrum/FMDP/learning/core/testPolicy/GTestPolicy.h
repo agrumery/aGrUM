@@ -50,7 +50,7 @@ namespace gum {
 
     public:
 
-      GTestPolicy( ) : __conTab(), __nbObs(0){}
+      GTestPolicy( ) : __conTab(), __nbObs(0), __GStat(0) {}
 
       // ############################################################################
       /// @name Observation insertion
@@ -60,10 +60,7 @@ namespace gum {
         // ============================================================================
         /// Comptabilizes the new observation
         // ============================================================================
-        void addObservation( Idx iattr, GUM_SCALAR ivalue ) {
-          __conTab.add( iattr, ivalue );
-          __nbObs++;
-        }
+        void addObservation( Idx iattr, GUM_SCALAR ivalue );
 
       /// @}
 
@@ -76,7 +73,7 @@ namespace gum {
         // ============================================================================
         /// Returns true if enough observation were made so that the test can be relevant
         // ============================================================================
-        bool isTestRelevant(){ return ( __nbObs > 20 && __nbObs > __conTab.attrSize() * 5 ); }
+        bool isTestRelevant(){ return ( __nbObs > 20 && __nbObs > __conTab.attrASize() * 5 ); }
 
       /// @}
 
@@ -87,22 +84,23 @@ namespace gum {
       /// @{
 
         // ============================================================================
+        /// Computes the GStat of current variable according to the test
+        // ============================================================================
+        void computeState();
+
+        // ============================================================================
         /// Returns the performance of current variable according to the test
         // ============================================================================
         double score(){
-          double GStat = 0;
-          for ( auto attrIter = __conTab.aBeginSafe(); attrIter != __conTab.aEndSafe(); ++attrIter ){
-            double semiExpected = (double)(attrIter.val())/(double)__nbObs;
-            for ( auto valIter = __conTab.vBeginSafe(); valIter != __conTab.vEndSafe(); ++valIter ) {
-              double cell = (double)__conTab.joint(attrIter.val(),valIter.val());
-              if( cell < 5 )
-                continue;
-              double expected = semiExpected*(double)(valIter.val());
-
-              GStat += 2*cell*log(cell/expected);
-            }
-          }
-          return 1 - ChiSquare::probaChi2(GStat, __conTab.attrSize()*__conTab.valueSize());
+         // if( __GStat < 0 ){
+            std::cout << __conTab.toString();
+//            std::cout << "Before : " << __GStat;
+            computeState();
+//            std::cout << " - After : " << __GStat << std::endl;
+//          }
+          double score = 1 - ChiSquare::probaChi2(__GStat, (__conTab.attrASize()-1)*(__conTab.attrBSize()-1));
+          std::cout << "Gtest.score : score - " << score << " | GStat - " << __GStat << std::endl;
+          return score;
         }
 
       /// @}
@@ -114,8 +112,12 @@ namespace gum {
 
       ///
       Idx __nbObs;
+
+      double __GStat;
   };
 
 } // End of namespace gum
+
+#include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.tcc>
 
 #endif /* GUM_MULTI_DIM_DECISION_GRAPH_G_TEST_POLICY_H */
