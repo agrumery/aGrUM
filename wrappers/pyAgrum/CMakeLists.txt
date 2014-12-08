@@ -50,7 +50,7 @@ if (APPLE) # let's assume that PYTHON is there
   set(PYTHON_INCLUDE_PATH ${PYTHON_LOCAL_PATH}/include/python2.7)
   #find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} REQUIRED)
 else()
-  find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} REQUIRED)
+  find_package(PythonLibs REQUIRED)
 endif()
 
 
