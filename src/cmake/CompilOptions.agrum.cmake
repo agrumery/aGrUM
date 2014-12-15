@@ -52,6 +52,9 @@ endif(WIN32)
 if(UNIX)
   set(LIBRARY_OUTPUT_PATH ${AGRUM_BINARY_DIR}/lib)
 endif(UNIX)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -lstdc++")
+endif()
 
 if ("${CMAKE_VERBOSE_MAKEFILE}" STREQUAL "ON")
 #trace is ON in DEBUG mode
