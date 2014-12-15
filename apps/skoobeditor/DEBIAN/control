@@ -1,9 +1,0 @@
-Package: skoobeditor
-Version: 1.0
-Section: base
-Priority: optional
-Architecture: all
-Depends: libqtgui4 (>= 4.7), libqtcore4 (>= 4.7)
-Maintainer: Mr Vincent Renaudineau <vincent.renaudineau@lip6.fr>
-Description: Text editor for skool and skoor files.
-
