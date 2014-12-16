@@ -42,7 +42,7 @@ if (SWIG_FOUND)
   include("cmake/GUM-UseSWIG.cmake")
 endif(SWIG_FOUND)
 
-find_package(PythonInterp)
+find_package(PythonInterp 2.7 REQUIRED)
 
 if (APPLE) # let's assume that PYTHON is there
   set(PYTHON_LOCAL_PATH /usr/local/Cellar/python/2.7.7_2/Frameworks/Python.framework/Versions/2.7)
@@ -50,7 +50,7 @@ if (APPLE) # let's assume that PYTHON is there
   set(PYTHON_INCLUDE_PATH ${PYTHON_LOCAL_PATH}/include/python2.7)
   #find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} REQUIRED)
 else()
-  find_package(PythonLibs REQUIRED)
+  find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} REQUIRED)
 endif()
 
 
