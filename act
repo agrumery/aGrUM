@@ -327,6 +327,11 @@ def initParser(current):
                                         metavar="MODULES-COMMAND",
                                         dest="module",
                                         default=current['module'])
+    parser.add_option("", "--static_lib",
+                                        help="build static library",
+                                        action="store_true",
+                                        dest="static_lib",
+                                        default=False)
     return parser
 
 ##########################################################################################################################
@@ -591,6 +596,7 @@ def checkConstraints(parser,options,args):
     global list_rules,list_options,list_wrappers
 
     current['verbose']=options.verbose
+    current['static_lib']=options.static_lib
     current['platform']=options.platform
     current['destination']=options.destination
     current['jobs']=options.jobs
@@ -661,6 +667,13 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             cmake_options=cmake_options+"ON"
         else:
             cmake_options=cmake_options+"OFF"
+
+        cmake_options+=" -DBUILD_SHARED_LIBS="
+        if (options['static_lib']):
+            cmake_options=cmake_options+"OFF"
+        else:
+            cmake_options=cmake_options+"ON"
+
         [safe_cd(s) for s in folders]
         schedule(CMAKE,cmake_options)
         [schedule("back","") for s in folders]
@@ -711,6 +724,12 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
         cmake_options=cmake_options+"ON"
     else:
         cmake_options=cmake_options+"OFF"
+
+    cmake_options+=" -DBUILD_SHARED_LIBS="
+    if (options['static_lib']):
+        cmake_options+="OFF"
+    else:
+        cmake_options+="ON"
 
     make_options=make_options+" -j "+options['jobs'].__str__()
 
@@ -794,6 +813,8 @@ def getInvocation(current):
       else:
         invocation+=getParam('quiet')
 
+      invocation+=getParam('static_lib')
+      
       if (current['stats']):
         invocation+=getParam('stats')
 
@@ -831,13 +852,14 @@ default['wrapper']=""
 default['jobs']="5"
 default['test_base']=True
 default['verbose']=False
+default['static_lib']=False
 default['fixed_seed']=False
 default['no_fun']=False
 default['stats']=False
 default['module']='ALL'
 default['testlist']='all'
 
-not_persistent_options=['fixed_seed','stats']
+not_persistent_options=['fixed_seed','stats','static_lib']
 
 shlv=shelve.open(".options.mak.py",writeback=True)
 
