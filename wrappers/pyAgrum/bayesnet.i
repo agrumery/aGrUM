@@ -23,6 +23,8 @@
   $result=q;
 }
 
+%ignore *::nodes;
+
 %include "extensions/BNGenerator.h"
 
 %{

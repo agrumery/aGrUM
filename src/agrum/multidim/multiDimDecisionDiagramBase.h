@@ -314,8 +314,8 @@ namespace gum {
        * @throw InvalidNode if node is terminal
         // @throw NotFound if node doesn't have a default son
        */
-      const NodeId nodeDefaultSon ( NodeId n ) const;
-      const NodeId unsafeNodeDefaultSon ( NodeId n ) const;
+      NodeId nodeDefaultSon ( NodeId n ) const;
+      NodeId unsafeNodeDefaultSon ( NodeId n ) const;
 
       /**
        * Returns associated nodes of the variable pointed by the given node

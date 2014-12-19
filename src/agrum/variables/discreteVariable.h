@@ -115,7 +115,7 @@ namespace gum {
       virtual const std::string label ( Idx indice ) const = 0;
 
       /// get a numerical representation of the indice-th value.
-      virtual const double numerical ( Idx indice ) const = 0;
+      virtual double numerical ( Idx indice ) const = 0;
 
       /// returns the varType of variable
 

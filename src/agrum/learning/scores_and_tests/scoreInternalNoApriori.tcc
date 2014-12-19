@@ -81,8 +81,15 @@ namespace gum {
       const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
                                    unsigned int>* >& conditioning_nodesets ) {
     }
-    
 
+    
+    /// indicates whether the apriori is potentially informative
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    bool ScoreInternalNoApriori<IdSetAlloc,CountAlloc>::isInformative () const {
+      return false;
+    }
+    
+    
   } /* namespace learning */
 
 

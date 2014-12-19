@@ -42,7 +42,7 @@ if (SWIG_FOUND)
   include("cmake/GUM-UseSWIG.cmake")
 endif(SWIG_FOUND)
 
-find_package(PythonInterp)
+find_package(PythonInterp 2.7 REQUIRED)
 
 if (APPLE) # let's assume that PYTHON is there
   set(PYTHON_LOCAL_PATH /usr/local/Cellar/python/2.7.7_2/Frameworks/Python.framework/Versions/2.7)
@@ -67,7 +67,7 @@ else ()
 endif ()
 
 execute_process(
-  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}')"
+  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
   OUTPUT_VARIABLE PYTHON_INSTALL
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
@@ -180,6 +180,7 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/generated-files/pyAgrum.py DESTINATION
 
 if (WIN32)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/_pyAgrum.pyd DESTINATION ${PYTHON_INSTALL}/pyAgrum)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/lib_pyAgrum.dll.a DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 else (WIN32)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/_pyAgrum.so DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 endif (WIN32)

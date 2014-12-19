@@ -218,7 +218,7 @@ namespace gum_tests {
         TS_ASSERT ( seq.exists ( "b" ) );
         TS_ASSERT ( ! seq.exists ( "bb" ) );
 
-        TS_ASSERT_THROWS ( seq[15], gum::NotFound );
+        TS_ASSERT_THROWS ( seq[15], gum::OutOfBounds );
         TS_ASSERT_THROWS ( seq.pos ( "aaaaaaa" ), gum::NotFound );
 
         TS_ASSERT_EQUALS ( seq.toString(), "[0:aaaa - 1:b - 2:cc - 3:ddd]" );
@@ -233,8 +233,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( seq.toString(), "[0:cc - 1:boom - 2:aaaa - 3:ddd]" );
         TS_GUM_ASSERT_THROWS_NOTHING ( seq.swap ( 0, 3 ) );
         TS_ASSERT_EQUALS ( seq.toString(), "[0:ddd - 1:boom - 2:aaaa - 3:cc]" );
-        TS_ASSERT_THROWS ( seq.swap ( 1, 10 ), gum::NotFound );
-        TS_ASSERT_THROWS ( seq.swap ( 10, 1 ), gum::NotFound );
+        TS_ASSERT_THROWS ( seq.swap ( 1, 10 ), gum::OutOfBounds);
+        TS_ASSERT_THROWS ( seq.swap ( 10, 1 ), gum::OutOfBounds );
 
         TS_ASSERT_EQUALS ( seq.toString(), "[0:ddd - 1:boom - 2:aaaa - 3:cc]" );
       }

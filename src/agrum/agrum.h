@@ -92,7 +92,7 @@ cmake_minimum_required(VERSION 2.8)
 
 # do not forget to change this line if needed ("act install -d...")
 set(AGRUM_INSTALLATION_DIRECTORY "installation_path")
-set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/aGrUM/")
+set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/cmake/aGrUM/")
 
 find_package(aGrUM)
 

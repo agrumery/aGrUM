@@ -567,22 +567,22 @@ namespace gum {
       // ##########################################################################
       /// @name redistribute signals AND implemenation of interface IApproximationSchemeConfiguration
       // ##########################################################################
-      // in order to not pollute the proper code of BNLearner, we directly implement thos
+      // in order to not pollute the proper code of BNLearner, we directly implement those
       // very simples methods here.
       /// {@    /// distribute signals
-      INLINE void setCurrentApproximationScheme ( const ApproximationScheme* as ) {
-        __current_algorithm = as;
+      INLINE void setCurrentApproximationScheme ( const ApproximationScheme* approximationScheme ) {
+        __current_algorithm = approximationScheme;
       }
 
-      INLINE void distributeProgress ( const ApproximationScheme* as, Size pourcent, double error, double time ) {
-        setCurrentApproximationScheme ( as );
+      INLINE void distributeProgress ( const ApproximationScheme* approximationScheme, Size pourcent, double error, double time ) {
+        setCurrentApproximationScheme ( approximationScheme );
 
         if ( onProgress.hasListener() ) GUM_EMIT3 ( onProgress, pourcent, error, time );
       };
 
       /// distribute signals
-      INLINE void distributeStop ( const ApproximationScheme* as, std::string message ) {
-        setCurrentApproximationScheme ( as );
+      INLINE void distributeStop ( const ApproximationScheme* approximationScheme, std::string message ) {
+        setCurrentApproximationScheme ( approximationScheme );
 
         if ( onStop.hasListener() ) GUM_EMIT1 ( onStop, message );
       };

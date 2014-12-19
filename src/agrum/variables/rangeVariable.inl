@@ -58,7 +58,7 @@ namespace gum {
   }
 
   INLINE
-  const double
+  double
   RangeVariable::numerical ( Idx indice ) const {
     return double ( __minBound + indice );
   }
