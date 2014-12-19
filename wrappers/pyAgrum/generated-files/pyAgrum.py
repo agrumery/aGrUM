@@ -5780,6 +5780,11 @@ class CNMonteCarloSampling_double(_object):
         """history(CNMonteCarloSampling_double self) -> Vector_double"""
         return _pyAgrum.CNMonteCarloSampling_double_history(self)
 
+
+    def setRepetitiveInd(self, repetitive):
+        """setRepetitiveInd(CNMonteCarloSampling_double self, bool const repetitive)"""
+        return _pyAgrum.CNMonteCarloSampling_double_setRepetitiveInd(self, repetitive)
+
 CNMonteCarloSampling_double_swigregister = _pyAgrum.CNMonteCarloSampling_double_swigregister
 CNMonteCarloSampling_double_swigregister(CNMonteCarloSampling_double)
 

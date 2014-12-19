@@ -331,6 +331,8 @@
 
   using gum::ApproximationScheme::messageApproximationScheme;
   using gum::ApproximationScheme::history;
+
+  using gum::credal::InferenceEngine::setRepetitiveInd;
 }
 
 %extend gum::credal::CNLoopyPropagation {
@@ -355,6 +357,7 @@
 
   using gum::ApproximationScheme::messageApproximationScheme;
   using gum::ApproximationScheme::history;
+
 }
 
 
