@@ -50,7 +50,9 @@ namespace gum {
 
     public:
 
-      GTestPolicy( ) : __conTab(), __nbObs(0), __GStat(0) {}
+      GTestPolicy( ) : ITestPolicy<GUM_SCALAR>(), __conTab(), __GStat(0) { GUM_CONSTRUCTOR(GTestPolicy) }
+
+      virtual ~GTestPolicy(){ GUM_DESTRUCTOR(GTestPolicy) }
 
       // ############################################################################
       /// @name Observation insertion
@@ -73,7 +75,7 @@ namespace gum {
         // ============================================================================
         /// Returns true if enough observation were made so that the test can be relevant
         // ============================================================================
-        bool isTestRelevant(){ return ( __nbObs > 20 && __nbObs > __conTab.attrASize() * 5 ); }
+        bool isTestRelevant(){ return ( this->nbObservation() > 20 && this->nbObservation() > __conTab.attrASize() * 5 ); }
 
       /// @}
 
@@ -86,32 +88,29 @@ namespace gum {
         // ============================================================================
         /// Computes the GStat of current variable according to the test
         // ============================================================================
-        void computeState();
+        void computeScore();
 
         // ============================================================================
         /// Returns the performance of current variable according to the test
         // ============================================================================
-        double score(){
-         // if( __GStat < 0 ){
-            std::cout << __conTab.toString();
-//            std::cout << "Before : " << __GStat;
-            computeState();
-//            std::cout << " - After : " << __GStat << std::endl;
-//          }
-          double score = 1 - ChiSquare::probaChi2(__GStat, (__conTab.attrASize()-1)*(__conTab.attrBSize()-1));
-          std::cout << "Gtest.score : score - " << score << " | GStat - " << __GStat << std::endl;
-          return score;
-        }
+        double score();
+
+        // ============================================================================
+        /// Returns a second criterion to severe ties
+        // ============================================================================
+        double secondaryscore();
+
 
       /// @}
+
+        const ContingencyTable<long unsigned int, GUM_SCALAR>& ct() const { return __conTab; }
+
+        void add(const GTestPolicy<GUM_SCALAR>& src);
 
     private :
 
       /// The contingency table used to keeps records of all observation
       ContingencyTable<long unsigned int, GUM_SCALAR> __conTab;
-
-      ///
-      Idx __nbObs;
 
       double __GStat;
   };

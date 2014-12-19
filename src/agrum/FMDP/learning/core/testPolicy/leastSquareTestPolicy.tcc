@@ -19,17 +19,25 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Template implementations for the GTestPolicy class.
+ * @brief Template implementations for the LeastSquareTestPolicy class.
  *
  * @author Jean-Christophe MAGNAN
  */
 // =========================================================================
-#include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.h>
+#include <agrum/FMDP/learning/core/testPolicy/leastSquareTestPolicy.h>
 // =========================================================================
 
 
 
 namespace gum {
+
+    template<typename GUM_SCALAR>
+    LeastSquareTestPolicy<GUM_SCALAR>::~LeastSquareTestPolicy(){
+      for( auto obsIter = this->__obsTable.cbeginSafe(); __obsTable.cendSafe() != obsIter; ++obsIter )
+        delete obsIter.val();
+
+      GUM_DESTRUCTOR(LeastSquareTestPolicy)
+    }
 
 
   // ##########################################################################
@@ -40,9 +48,23 @@ namespace gum {
     //
     // ==========================================================================
     template < typename GUM_SCALAR >
-    void GTestPolicy<GUM_SCALAR>::addObservation( Idx iattr, GUM_SCALAR ivalue ) {
-      ITestPolicy<GUM_SCALAR>::addObservation(iattr, ivalue);
-      __conTab.add( iattr, ivalue );
+    void LeastSquareTestPolicy<GUM_SCALAR>::addObservation( Idx attr, GUM_SCALAR value ) {
+      ITestPolicy<GUM_SCALAR>::addObservation();
+      __sumO += value;
+
+      if(__sumAttrTable.exists(attr))
+        __sumAttrTable[attr] += value;
+      else
+        __sumAttrTable.insert(attr, value);
+
+      if(__nbObsTable.exists(attr))
+        __nbObsTable[attr]++;
+      else
+        __nbObsTable.insert(attr, 1);
+
+      if(!__obsTable.exists(attr))
+        __obsTable.insert(attr, new LinkedList<double>());
+      __obsTable[attr]->addLink(value);
     }
 
 
@@ -54,47 +76,73 @@ namespace gum {
     // Computes the GStat of current variable according to the test
     // ============================================================================
     template < typename GUM_SCALAR >
-    void GTestPolicy<GUM_SCALAR>::computeScore(){
+    void LeastSquareTestPolicy<GUM_SCALAR>::computeScore(){
       ITestPolicy<GUM_SCALAR>::computeScore();
-      __GStat = 0;
-      for ( auto attrIter = __conTab.attrABeginSafe(); attrIter != __conTab.attrAEndSafe(); ++attrIter ){
-        double semiExpected = (double)(attrIter.val())/(double)this->nbObservation();
-        for ( auto valIter = __conTab.attrBBeginSafe(); valIter != __conTab.attrBEndSafe(); ++valIter ) {
-          double cell = (double)__conTab.joint(attrIter.key(),valIter.key());
-          if( cell < 5 )
-            continue;
-          double expected = semiExpected*(double)(valIter.val());
+      double mean = __sumO / (double)this->nbObservation();
+      double errorO = 0.0;
+      double sumErrorAttr = 0.0;
+      for ( auto attrIter = __sumAttrTable.cbeginSafe(); attrIter != __sumAttrTable.cendSafe(); ++attrIter ){
+          Idx key = attrIter.key();
+          double meanAttr = __sumAttrTable[key] / (double)__nbObsTable[key];
+          double errorAttr = 0.0;
 
-          __GStat += 2*cell*log(cell/expected);
-        }
+          const Link<double>* linky = __obsTable[key]->list();
+          while( linky ){
+              errorAttr += std::pow( linky->element() - meanAttr, 2 );
+              errorO += std::pow( linky->element() - mean, 2 );
+              linky = linky->nextLink();
+          }
+
+          sumErrorAttr += ( (double)__nbObsTable[key] / (double)this->nbObservation() ) * errorAttr;
       }
+      __score = errorO - sumErrorAttr;
     }
 
     // ============================================================================
     // Returns the performance of current variable according to the test
     // ============================================================================
     template < typename GUM_SCALAR >
-    double GTestPolicy<GUM_SCALAR>::score(){
+    double LeastSquareTestPolicy<GUM_SCALAR>::score(){
       if( this->isModified() )
         computeScore();
-      double score = 1 - ChiSquare::probaChi2(__GStat, (__conTab.attrASize()-1)*(__conTab.attrBSize()-1));
-      return score;
+      return __score;
     }
 
     // ============================================================================
     // Returns a second criterion to severe ties
     // ============================================================================
     template < typename GUM_SCALAR >
-    double GTestPolicy<GUM_SCALAR>::secondaryscore(){
+    double LeastSquareTestPolicy<GUM_SCALAR>::secondaryscore(){
       if( this->isModified() )
         computeScore();
-      return __GStat;
+      return __score;
     }
 
     template < typename GUM_SCALAR >
-    void GTestPolicy<GUM_SCALAR>::add(const GTestPolicy<GUM_SCALAR>& src){
+    void LeastSquareTestPolicy<GUM_SCALAR>::add( const LeastSquareTestPolicy& src){
       ITestPolicy<GUM_SCALAR>::add(src);
-      __conTab += src.ct();
+
+      for( auto obsIter = src.nbObsTable().cbeginSafe(); obsIter != src.nbObsTable().cendSafe(); ++obsIter )
+        if( __nbObsTable.exists(obsIter.key()) )
+          __nbObsTable[obsIter.key()] += obsIter.val();
+        else
+          __nbObsTable.insert( obsIter.key(), obsIter.val() );
+
+      for( auto attrIter = src.sumAttrTable().cbeginSafe(); attrIter != src.sumAttrTable().cendSafe(); ++attrIter )
+        if( __sumAttrTable.exists(attrIter.key()) )
+          __sumAttrTable[attrIter.key()] += attrIter.val();
+        else
+          __sumAttrTable.insert( attrIter.key(), attrIter.val() );
+
+      for( auto obsIter = src.obsTable().cbeginSafe(); obsIter != src.obsTable().cendSafe(); ++obsIter ){
+        if( !__obsTable.exists(obsIter.key()) )
+          __obsTable.insert( obsIter.key(), new LinkedList<double>() );
+        const Link<double> srcLink = obsIter.val()->link();
+        while( srcLink ){
+          __obsTable[obsIter.key()]->addLink(srcLink.element());
+          srcLink = srcLink.nextLink();
+        }
+      }
     }
 
 } // End of namespace gum

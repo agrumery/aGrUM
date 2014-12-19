@@ -67,6 +67,8 @@ namespace gum {
       _var2Node.insert( _value, new LinkedList<NodeId>());
       _var2Node[_value]->addLink(_root);
 
+      _leafDatabase.insert( _root, new Set<const Observation*>() );
+
     }
 
 
@@ -84,6 +86,9 @@ namespace gum {
 
       for( auto varIter = _var2Node.beginSafe(); varIter != _var2Node.endSafe(); ++varIter )
           delete varIter.val();
+
+      for( auto nodeIter = _leafDatabase.beginSafe(); nodeIter != _leafDatabase.endSafe(); ++nodeIter )
+        delete nodeIter.val();
 
       clearValue();
 
@@ -116,6 +121,7 @@ namespace gum {
 
       // On final insertion into the leave we reach
       _updateNodeWithObservation(newObs, currentNodeId);
+      _leafDatabase[currentNodeId]->insert(newObs);
 
     }
 
@@ -129,9 +135,11 @@ namespace gum {
     template < TESTNAME AttributeSelection, bool isScalar >
     void IncrementalGraphLearner<AttributeSelection, isScalar>::updateVar( const DiscreteVariable* var ){
       Link<NodeId>* nodIter = _var2Node[var]->list();
+      Link<NodeId>* nni = nullptr;
       while(nodIter){
+        nni = nodIter->nextLink();
         _convertNode2Leaf(nodIter->element());
-        nodIter = _var2Node[var]->list();
+        nodIter = nni;
       }
     }
 
@@ -176,6 +184,10 @@ namespace gum {
       _var2Node[boundVar]->addLink(newNodeId);
       if( sonsMap )
         _nodeSonsMap.insert(newNodeId, sonsMap);
+
+      if( boundVar == _value )
+        _leafDatabase.insert( newNodeId, new Set< const Observation*>() );
+
       return newNodeId;
     }
 
@@ -190,6 +202,11 @@ namespace gum {
       _var2Node[_nodeVarMap[currentNodeId]]->searchAndRemoveLink(currentNodeId);
       _var2Node[desiredVar]->addLink(currentNodeId);
       _nodeVarMap[currentNodeId] = desiredVar;
+
+//      if( _leafDatabase.exists(currentNodeId) ){
+//        delete _leafDatabase[currentNodeId];
+//        _leafDatabase.erase( currentNodeId );
+//      }
     }
 
 
@@ -208,6 +225,11 @@ namespace gum {
         _nodeSonsMap.erase(currentNodeId);
       }
 
+      if( _leafDatabase.exists(currentNodeId) ){
+        delete _leafDatabase[currentNodeId];
+        _leafDatabase.erase( currentNodeId );
+      }
+
       // Retrait de la variable
       _var2Node[_nodeVarMap[currentNodeId]]->searchAndRemoveLink(currentNodeId);
       _nodeVarMap.erase( currentNodeId );
@@ -215,6 +237,7 @@ namespace gum {
       // Retrait du NodeDatabase
       delete _nodeId2Database[currentNodeId];
       _nodeId2Database.erase(currentNodeId);
+
     }
 
 
@@ -237,16 +260,18 @@ namespace gum {
       // Il faut artificiellement insérer un noeud liant à la variable
       if( _nodeVarMap[currentNodeId] == _value ){
 
-        Sequence<NodeDatabase<AttributeSelection, isScalar>*> sonsNodeDatabase = _nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
+//        Sequence<NodeDatabase<AttributeSelection, isScalar>*> sonsNodeDatabase = _nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
 
         NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*desiredVar->domainSize()) );
         for( Idx modality = 0; modality < desiredVar->domainSize(); ++modality )
-          sonsMap[modality] = _insertNode( sonsNodeDatabase.atPos(modality), _value );
-
-        _chgNodeBoundVar(currentNodeId, desiredVar);
+          sonsMap[modality] = _insertNode( new NodeDatabase<AttributeSelection, isScalar>(&_setOfVars, _value), _value );
 
         _nodeSonsMap.insert( currentNodeId, sonsMap);
 
+        for( SetIteratorSafe<const Observation*> obsIter = _leafDatabase[currentNodeId]->beginSafe(); _leafDatabase[currentNodeId]->endSafe() != obsIter; ++obsIter )
+          _nodeId2Database[sonsMap[(*obsIter)->modality(desiredVar)]]->addObservation(*obsIter);
+
+        _chgNodeBoundVar(currentNodeId, desiredVar);
         return;
       }
 
@@ -257,7 +282,7 @@ namespace gum {
         for(Idx modality = 0; modality < _nodeVarMap[currentNodeId]->domainSize(); ++modality )
           _transpose( _nodeSonsMap[currentNodeId][modality], desiredVar );
 
-        Sequence<NodeDatabase<AttributeSelection, isScalar>*> sonsNodeDatabase = _nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
+//        Sequence<NodeDatabase<AttributeSelection, isScalar>*> sonsNodeDatabase = _nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
         NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*desiredVar->domainSize()) );
 
         // Then we create the new mapping
@@ -267,7 +292,7 @@ namespace gum {
           for(Idx currentVarModality = 0; currentVarModality < _nodeVarMap[currentNodeId]->domainSize(); ++currentVarModality )
             grandSonsMap[currentVarModality] = _nodeSonsMap[_nodeSonsMap[currentNodeId][currentVarModality]][desiredVarModality];
 
-          sonsMap[desiredVarModality] = _insertNode( sonsNodeDatabase.atPos(desiredVarModality), _nodeVarMap[currentNodeId], grandSonsMap );
+          sonsMap[desiredVarModality] = _insertNode( new NodeDatabase<AttributeSelection, isScalar>(&_setOfVars, _value), _nodeVarMap[currentNodeId], grandSonsMap );
         }
 
         // Finally we clean the old remaining nodes
@@ -292,10 +317,13 @@ namespace gum {
 
       if(_nodeVarMap[currentNodeId] != _value ){
 
+        _leafDatabase.insert(currentNodeId, new Set<const Observation*>() );
+
         // Resolving potential sons issue
         for(Idx modality = 0; modality < _nodeVarMap[currentNodeId]->domainSize(); ++modality) {
           NodeId sonId = _nodeSonsMap[currentNodeId][modality];
           _convertNode2Leaf(sonId);
+          _leafDatabase[currentNodeId]->operator +(*(_leafDatabase[sonId]));
           _removeNode(sonId);
         }
 

@@ -60,9 +60,6 @@ namespace gum {
 
           __planer = new SPUMDD<double>(__fmdp, epsilon);
 
-//          __rewardVar = new LabelizedVariable("Reward", "");
-//          __rewardVar->eraseLabels();
-
           __nbObservation = 1;
 
           srand(time(NULL));
@@ -105,14 +102,6 @@ namespace gum {
           __learner->addVariable(var);
         }
 
-
-//        void SPIMDDI::addReward( double r ){
-////            std::ostringstream strs;
-////            strs << r;
-////            __rewardVar->addLabel( strs.str() );
-////            __rewardValue2Idx.insert(r, __rewardVar->labels().pos(strs.str()));
-//        }
-
     // ==========================================================================
     //
     // ==========================================================================
@@ -120,7 +109,6 @@ namespace gum {
         // ###################################################################
         //
         // ###################################################################
-
         void SPIMDDI::initialize( const Instantiation& initialState ){
           initialize();
           setCurrentState( initialState );
@@ -129,7 +117,6 @@ namespace gum {
         // ###################################################################
         //
         // ###################################################################
-
         void SPIMDDI::initialize(  ){
           __learner->initialize();
           __planer->initialize();
@@ -138,7 +125,6 @@ namespace gum {
         // ###################################################################
         //
         // ###################################################################
-
         void SPIMDDI::feedback( const Instantiation& newState, double reward){
 
             std::cout << "Begin Feedback - Observation n° " << __nbObservation << std::endl;
@@ -163,6 +149,7 @@ namespace gum {
 ////                std::cout << __planer->optimalPolicy()->toDot() << std::endl;
 ////                exit(1);
 //            }
+
             __nbObservation++;
         }
 
@@ -172,7 +159,7 @@ namespace gum {
         void SPIMDDI::feedback( const Instantiation& curState, const Instantiation& prevState, Idx lastAction, double reward){
           __lastAction = lastAction;
           __lastState = prevState;
-//          feedback( curState, reward );
+          feedback( curState, reward );
         }
 
         // ###################################################################
@@ -210,18 +197,17 @@ namespace gum {
         //
         // ###################################################################
         std::string SPIMDDI::toString( ){
-//            std::stringstream description;
+          std::stringstream description;
 
-//            description << __fmdp->toString() << std::endl;
+          description << __fmdp->toString() << std::endl;
 
-//            if(__planer->optimalPolicy() )
-//                description << __planer->optimalPolicy()->toDot() << std::endl;
+          if(__planer->optimalPolicy() )
+              description << __planer->optimalPolicy()->toDot() << std::endl;
 
-//            for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter)
-//                description << *actionIter << " - " << __fmdp->actionName(*actionIter) <<std::endl;
+          for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter)
+              description << *actionIter << " - " << __fmdp->actionName(*actionIter) <<std::endl;
 
-//            return description.str();
-          return "";
+          return description.str();
         }
 
 } // End of namespace gum

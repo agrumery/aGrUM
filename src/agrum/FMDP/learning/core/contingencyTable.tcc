@@ -82,4 +82,29 @@ namespace gum {
         __contingencyTable.insert(cell, 1);
     }
 
+    template< typename GUM_SCALAR_A, typename GUM_SCALAR_B >
+    ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>&
+    ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>::operator+=(const ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>& src){
+      for( auto aTer = src.attrABeginSafe(); aTer != src.attrAEndSafe(); ++aTer )
+        for( auto bTer = src.attrBBeginSafe(); bTer != src.attrBEndSafe(); ++bTer ){
+
+          if(__attrAMarginalTable.exists(aTer.key()))
+            __attrAMarginalTable[aTer.key()]+=aTer.val();
+          else
+            __attrAMarginalTable.insert(aTer.key(),aTer.val());
+
+          if(__attrBMarginalTable.exists(bTer.key()))
+            __attrBMarginalTable[bTer.key()]+=bTer.val();
+          else
+            __attrBMarginalTable.insert(bTer.key(), bTer.val());
+
+          std::pair<GUM_SCALAR_A, GUM_SCALAR_B> cell(aTer.key(), bTer.key());
+          if(__contingencyTable.exists(cell))
+            __contingencyTable[cell]+=src.joint(aTer.key(), bTer.key());
+          else
+            __contingencyTable.insert(cell, src.joint(aTer.key(), bTer.key()));
+      }
+      return *this;
+    }
+
 } // End of namespace gum

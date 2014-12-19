@@ -21,18 +21,17 @@
  * @file
  * @brief Headers of the IMDDI class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN
  */
 
 // =========================================================================
 #ifndef GUM_IMDDI_H
 #define GUM_IMDDI_H
 // =========================================================================
-#include <agrum/core/multiPriorityQueue.h>
-// =========================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
+#include <agrum/FMDP/learning/datastructure/variableselector.h>
 // =========================================================================
 #include <agrum/variables/labelizedVariable.h>
 // =========================================================================
@@ -109,17 +108,16 @@ namespace gum {
         // ###################################################################
         /// Computes the score of the given variables for the given node
         // ###################################################################
-        double __score( const DiscreteVariable*, NodeId );
+        void __updateScore(const DiscreteVariable*, NodeId , VariableSelector& vs);
+        void __downdateScore(const DiscreteVariable*, NodeId , VariableSelector& vs);
 
         // ###################################################################
         /// For each node in the given set, this methods checks whether or not
         /// we should installed the given variable as a test.
         /// If so, the node is updated
         // ###################################################################
-        void __updateNodeSet( Set<NodeId>&, const DiscreteVariable*,
-                              MultiPriorityQueue<const DiscreteVariable*,
-                              double,
-                              std::greater<double>>& );
+        void __updateNodeSet(Set<NodeId>&, const DiscreteVariable*,
+                              VariableSelector & );
 
   public :
 

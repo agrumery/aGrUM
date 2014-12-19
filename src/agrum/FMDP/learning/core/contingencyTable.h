@@ -126,6 +126,8 @@ namespace gum {
 
       /// @}
 
+        ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>& operator+=(const ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>& src);
+
         std::string toString(){
           std::stringstream ss;
           ss << __attrAMarginalTable << std::endl << __attrBMarginalTable << std::endl << __contingencyTable << std::endl;

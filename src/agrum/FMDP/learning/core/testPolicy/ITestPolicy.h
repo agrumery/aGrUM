@@ -44,6 +44,12 @@ namespace gum {
   class ITestPolicy {
 
     public:
+
+      ITestPolicy() : __isModified(false), __nbObs(0){ GUM_CONSTRUCTOR(ITestPolicy) }
+
+      virtual ~ITestPolicy(){ GUM_DESTRUCTOR(ITestPolicy) }
+
+
       // ############################################################################
       /// @name Observation insertion
       // ############################################################################
@@ -52,7 +58,7 @@ namespace gum {
         // ============================================================================
         /// Comptabilizes the new observation
         // ============================================================================
-        virtual void addObservation( Idx attr, GUM_SCALAR value ) = 0;
+        virtual void addObservation( Idx attr, GUM_SCALAR value ){ __isModified = true; __nbObs++; }
 
       /// @}
 
@@ -78,14 +84,33 @@ namespace gum {
         // ============================================================================
         /// Recomputes the statistic from the beginning
         // ============================================================================
-        virtual void computeState() = 0;
+        virtual void computeScore(){ __isModified = false; }
 
         // ============================================================================
         /// Returns the performance of current variable according to the test
         // ============================================================================
         virtual double score() = 0;
 
+        // ============================================================================
+        /// Returns a second criterion to severe ties
+        // ============================================================================
+        virtual double secondaryscore() = 0;
+
       /// @}
+
+        void add( const ITestPolicy<GUM_SCALAR>& src){ __isModified = true; __nbObs += src.nbObservation(); }
+
+        Idx nbObservation(){ return __nbObs; }
+
+    protected :
+      bool isModified(){ return __isModified; }
+
+    private :
+
+      bool __isModified;
+
+      ///
+      Idx __nbObs;
   };
 
 } // End of namespace gum

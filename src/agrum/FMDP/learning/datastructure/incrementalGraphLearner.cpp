@@ -19,7 +19,7 @@
  *********************************************************************************/
 /**
 * @file
-* @brief
+* @brief Source fot the IncrementalGraphLearner class
 *
 * @author Jean-Christophe Magnan
 */

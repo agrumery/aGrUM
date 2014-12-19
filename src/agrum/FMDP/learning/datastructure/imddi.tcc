@@ -98,34 +98,26 @@ namespace gum {
       currentNodeSet.insert( this->_root );
 
       // Then we initialize the pool of variables to consider
-      Set<const DiscreteVariable*> remainingVars(this->_setOfVars);
-
-      MultiPriorityQueue<const DiscreteVariable*, double, std::greater<double>> remainingVarsScore;
-      for( auto varIter = remainingVars.beginSafe(); varIter != remainingVars.endSafe(); ++varIter ) {
-        std::cout << "Var : " << (*varIter)->name() << std::endl;
-        if( this->_nodeId2Database[this->_root]->isTestRelevant(*varIter) )
-            remainingVarsScore.insert(*varIter, __score(*varIter, this->_root));
-        else
-            remainingVarsScore.insert(*varIter, 0.0);
-
+      VariableSelector vs(this->_setOfVars);
+      for( vs.begin(); vs.hasNext(); vs.next() ) {
+        __updateScore(vs.current(), this->_root, vs);
       }
 
       // Then, until there's no node remaining
-      while( !remainingVars.empty() ){
-std::cout << "***************************************************"<< std::endl;
+      while( !vs.isEmpty() ){
+
+//        std::cout << "***************************************************"<< std::endl;
         // We select the best var
-        const DiscreteVariable* selectedVar = remainingVarsScore.pop();
-        remainingVars >> selectedVar;
+        const DiscreteVariable* selectedVar = vs.select();
         __varOrder.insert(selectedVar);
 
         // Then we decide if we update each node according to this var
-        __updateNodeSet( currentNodeSet, selectedVar, remainingVarsScore );
+        __updateNodeSet( currentNodeSet, selectedVar, vs );
 
       }
 
       // If there are remaining node that are not leaves after we establish the var order
       // these nodes are turned into leaf.
-
       for( SetIteratorSafe<NodeId> nodeIter = currentNodeSet.beginSafe(); nodeIter != currentNodeSet.endSafe(); ++nodeIter )
         this->_convertNode2Leaf(*nodeIter);
 
@@ -140,19 +132,31 @@ std::cout << "***************************************************"<< std::endl;
   // Updating methods
   // ############################################################################
 
-    // ============================================================================
+
+    // ###################################################################
     // Select the most relevant variable
     //
     // First parameter is the set of variables among which the most
     // relevant one is choosed
     // Second parameter is the set of node the will attribute a score
     // to each variable so that we choose the best.
-    // ============================================================================
+    // ###################################################################
     template <TESTNAME AttributeSelection, bool isScalar >
-    INLINE
-    double IMDDI<AttributeSelection, isScalar>::__score( const DiscreteVariable* var, NodeId nody){
+    void IMDDI<AttributeSelection, isScalar>::__updateScore( const DiscreteVariable* var, NodeId nody, VariableSelector& vs){
+      if( !this->_nodeId2Database[nody]->isTestRelevant(var) )
+        return;
       double weight = (double)this->_nodeId2Database[nody]->nbObservation() / (double) this->__nbTotalObservation;
-      return weight*this->_nodeId2Database[nody]->testValue( var );
+      vs.updateScore( var, weight*this->_nodeId2Database[nody]->testOtherCriterion( var ),
+                      weight*this->_nodeId2Database[nody]->testOtherCriterion( var ) );
+    }
+
+    template <TESTNAME AttributeSelection, bool isScalar >
+    void IMDDI<AttributeSelection, isScalar>::__downdateScore( const DiscreteVariable* var, NodeId nody, VariableSelector& vs){
+      if( !this->_nodeId2Database[nody]->isTestRelevant(var) )
+        return;
+      double weight = (double)this->_nodeId2Database[nody]->nbObservation() / (double) this->__nbTotalObservation;
+      vs.downdateScore( var, weight*this->_nodeId2Database[nody]->testOtherCriterion( var ),
+                        weight*this->_nodeId2Database[nody]->testOtherCriterion( var ) );
     }
 
 
@@ -164,7 +168,7 @@ std::cout << "***************************************************"<< std::endl;
     template <TESTNAME AttributeSelection, bool isScalar >
     void IMDDI<AttributeSelection, isScalar>::__updateNodeSet( Set<NodeId>& nodeSet,
                          const DiscreteVariable* selectedVar,
-                         MultiPriorityQueue<const DiscreteVariable*, double, std::greater<double>>& remainingVarsScore ){
+                         VariableSelector& vs ){
 
       Set<NodeId> oldNodeSet(nodeSet);
       nodeSet.clear();
@@ -176,24 +180,18 @@ std::cout << "***************************************************"<< std::endl;
           this->_transpose(*nodeIter, selectedVar);
 
           // Then we subtract the from the score given to each variables the quantity given by this node
-          for( auto varIter = remainingVarsScore.allValues().cbeginSafe(); varIter != remainingVarsScore.allValues().cendSafe(); ++varIter ) {
-            if( this->_nodeId2Database[*nodeIter]->isTestRelevant( varIter.key() ) ){
-              double newPriority = remainingVarsScore.priority( varIter.key() ) - __score( varIter.key(), *nodeIter );
-              remainingVarsScore.setPriority(varIter.key(), newPriority);
-            }
+          for( vs.begin(); vs.hasNext(); vs.next() ) {
+            __downdateScore(vs.current(), *nodeIter, vs);
           }
 
           // And finally we add all its child to the new set of nodes
           // and updates the remaining var's score
           for( Idx modality = 0; modality < this->_nodeVarMap[*nodeIter]->domainSize(); ++modality){
-            nodeSet << this->_nodeSonsMap[*nodeIter][modality];
+            NodeId sonId = this->_nodeSonsMap[*nodeIter][modality];
+            nodeSet << sonId;
 
-            for( auto varIter = remainingVarsScore.allValues().cbeginSafe(); varIter != remainingVarsScore.allValues().cendSafe(); ++varIter ) {
-              if( this->_nodeId2Database[*nodeIter]->isTestRelevant( varIter.key() ) ){
-                double newPriority = remainingVarsScore.priority( varIter.key() )
-                    + __score( varIter.key(), this->_nodeSonsMap[*nodeIter][modality] );
-                remainingVarsScore.setPriority(varIter.key(), newPriority);
-              }
+            for( vs.begin(); vs.hasNext(); vs.next() ) {
+              __updateScore(vs.current(), sonId, vs);
             }
           }
         } else {

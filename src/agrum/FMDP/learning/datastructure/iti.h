@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of the ITI class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN
  */
 
 // =========================================================================

@@ -195,6 +195,12 @@ namespace gum {
         // ###################################################################
         HashTable<NodeId, NodeDatabase<AttributeSelection, isScalar>*> _nodeId2Database;
 
+        // ###################################################################
+        /// This hashtable binds to every leaf an associated set of all
+        /// hte observations compatible with it
+        // ###################################################################
+        HashTable<NodeId, Set<const Observation*>*> _leafDatabase;
+
       /// @}
 
 

@@ -87,15 +87,16 @@ namespace gum {
   template<typename T>
   INLINE
   LinkedList<T>::~LinkedList(){
-    GUM_DESTRUCTOR(LinkedList)
     clear();
+    GUM_DESTRUCTOR(LinkedList)
   }
 
   template <typename T>
   void LinkedList<T>::clear(){
     Link<T>* curLink = __firstLink;
+    Link<T>* nl = nullptr;
     while( curLink ){
-        Link<T>* nl = curLink->nextLink();
+        nl = curLink->nextLink();
         delete curLink;
         curLink = nl;
     }

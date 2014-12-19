@@ -33,9 +33,9 @@
 // =========================================================================
 #include <agrum/FMDP/learning/observation.h>
 #include <agrum/FMDP/learning/core/templateStrategy.h>
+#include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.h>
 #include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy.h>
 #include <agrum/FMDP/learning/core/testPolicy/leastSquareTestPolicy.h>
-#include <agrum/FMDP/learning/datastructure/varInfo.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
@@ -58,7 +58,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     using TestPolicy = typename TestSelect<AttributeSelection, GTestPolicy<GUM_SCALAR>,
                                                                Chi2TestPolicy<GUM_SCALAR>,
-                                                               GTestPolicy<GUM_SCALAR> >::type ;
+                                                               LeastSquareTestPolicy<GUM_SCALAR> >::type ;
 
     public:
 
@@ -71,7 +71,6 @@ namespace gum {
         /// Default constructor
         // ###################################################################
         NodeDatabase (const Set<const DiscreteVariable*>*, const DiscreteVariable* = nullptr);
-        NodeDatabase (const Set<const DiscreteVariable*>*, const Set<const Observation*>*, const DiscreteVariable* = nullptr);
 
     public:
 
@@ -102,13 +101,9 @@ namespace gum {
         // ###################################################################
         ///
         // ###################################################################
-        Sequence<NodeDatabase*> splitOnVar(const DiscreteVariable*);
-
-        // ###################################################################
-        ///
-        // ###################################################################
         INLINE bool isTestRelevant( const DiscreteVariable* var ) const { return __attrTable[var]->isTestRelevant(); }
         INLINE double testValue( const DiscreteVariable* var ) const { return __attrTable[var]->score(); }
+        INLINE double testOtherCriterion( const DiscreteVariable* var ) const { return __attrTable[var]->secondaryscore(); }
 
         // ###################################################################
         ///
@@ -122,15 +117,17 @@ namespace gum {
 
         double reward();
 
+        NodeDatabase<AttributeSelection, isScalar>& operator+= ( const NodeDatabase<AttributeSelection, isScalar>& src );
+        const TestPolicy<ValueType>* testPolicy( const DiscreteVariable* var ) const { return __attrTable[var]; }
+        const HashTable<ValueType,Idx>& valueCount() const { return __valueCount; }
+
       /// @}
 
     private :
 
       /// Table giving for every variables its instantiation
-      HashTable<const DiscreteVariable*, VarInfo<ValueType, TestPolicy>*> __attrTable;
+      HashTable<const DiscreteVariable*, TestPolicy<ValueType>*> __attrTable;
 
-      /// A reference to this set of variable is only kept for fast and efficient split
-      const Set<const DiscreteVariable*>* __attrSet;
       /// So does this reference on the value observed
       const DiscreteVariable* __value;
 

@@ -19,12 +19,12 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Template implementations for the GTestPolicy class.
+ * @brief Template implementations for the Chi2TestPolicy class.
  *
  * @author Jean-Christophe MAGNAN
  */
 // =========================================================================
-#include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.h>
+#include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy.h>
 // =========================================================================
 
 
@@ -40,9 +40,9 @@ namespace gum {
     //
     // ==========================================================================
     template < typename GUM_SCALAR >
-    void GTestPolicy<GUM_SCALAR>::addObservation( Idx iattr, GUM_SCALAR ivalue ) {
+    void Chi2TestPolicy<GUM_SCALAR>::addObservation(Idx iattr, GUM_SCALAR ivalue) {
       ITestPolicy<GUM_SCALAR>::addObservation(iattr, ivalue);
-      __conTab.add( iattr, ivalue );
+      __conTab.add(iattr, ivalue);
     }
 
 
@@ -54,18 +54,18 @@ namespace gum {
     // Computes the GStat of current variable according to the test
     // ============================================================================
     template < typename GUM_SCALAR >
-    void GTestPolicy<GUM_SCALAR>::computeScore(){
+    void Chi2TestPolicy<GUM_SCALAR>::computeScore(){
       ITestPolicy<GUM_SCALAR>::computeScore();
-      __GStat = 0;
-      for ( auto attrIter = __conTab.attrABeginSafe(); attrIter != __conTab.attrAEndSafe(); ++attrIter ){
+      __chi2Score = 0;
+      for ( auto attrIter = __conTab.aBeginSafe(); attrIter != __conTab.aEndSafe(); ++attrIter ){
         double semiExpected = (double)(attrIter.val())/(double)this->nbObservation();
-        for ( auto valIter = __conTab.attrBBeginSafe(); valIter != __conTab.attrBEndSafe(); ++valIter ) {
-          double cell = (double)__conTab.joint(attrIter.key(),valIter.key());
+        for ( auto valIter = __conTab.vBeginSafe(); valIter != __conTab.vEndSafe(); ++valIter ) {
+          double cell = (double)__conTab.joint(attrIter.val(),valIter.val());
           if( cell < 5 )
             continue;
           double expected = semiExpected*(double)(valIter.val());
 
-          __GStat += 2*cell*log(cell/expected);
+          __chi2Score += std::pow(cell - expected, 2.0)/expected;
         }
       }
     }
@@ -74,10 +74,10 @@ namespace gum {
     // Returns the performance of current variable according to the test
     // ============================================================================
     template < typename GUM_SCALAR >
-    double GTestPolicy<GUM_SCALAR>::score(){
+    double Chi2TestPolicy<GUM_SCALAR>::score(){
       if( this->isModified() )
         computeScore();
-      double score = 1 - ChiSquare::probaChi2(__GStat, (__conTab.attrASize()-1)*(__conTab.attrBSize()-1));
+      double score = 1 - ChiSquare::probaChi2(__chi2Score, (__conTab.attrASize()-1)*(__conTab.attrBSize()-1));
       return score;
     }
 
@@ -85,14 +85,14 @@ namespace gum {
     // Returns a second criterion to severe ties
     // ============================================================================
     template < typename GUM_SCALAR >
-    double GTestPolicy<GUM_SCALAR>::secondaryscore(){
+    double Chi2TestPolicy<GUM_SCALAR>::secondaryscore(){
       if( this->isModified() )
         computeScore();
-      return __GStat;
+      return __chi2Score;
     }
 
     template < typename GUM_SCALAR >
-    void GTestPolicy<GUM_SCALAR>::add(const GTestPolicy<GUM_SCALAR>& src){
+    void Chi2TestPolicy<GUM_SCALAR>::add(const Chi2TestPolicy<GUM_SCALAR>& src){
       ITestPolicy<GUM_SCALAR>::add(src);
       __conTab += src.ct();
     }

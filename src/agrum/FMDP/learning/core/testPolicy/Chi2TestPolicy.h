@@ -47,7 +47,9 @@ namespace gum {
 
     public:
 
-      Chi2TestPolicy( ) : __conTab(), __nbObs(0){}
+      Chi2TestPolicy( ) : ITestPolicy<GUM_SCALAR>(), __conTab(), __chi2Score(0){ GUM_CONSTRUCTOR(Chi2TestPolicy) }
+
+      virtual ~Chi2TestPolicy(){ GUM_DESTRUCTOR(Chi2TestPolicy) }
 
       // ############################################################################
       /// @name Observation insertion
@@ -57,10 +59,7 @@ namespace gum {
         // ============================================================================
         /// Comptabilizes the new observation
         // ============================================================================
-        void addObservation( Idx attr, GUM_SCALAR value ) {
-          __conTab.add( attr, value );
-          __nbObs++;
-        }
+        void addObservation( Idx attr, GUM_SCALAR value ) ;
 
       /// @}
 
@@ -73,7 +72,7 @@ namespace gum {
         // ============================================================================
         /// Returns true if enough observation were made so that the test can be relevant
         // ============================================================================
-        bool isTestRelevant(){ return ( __nbObs > 20 && __nbObs > __conTab.attrSize() * 5 ); }
+        bool isTestRelevant(){ return ( this->nbObservation() > 20 && this->nbObservation() > __conTab.attrSize() * 5 ); }
 
       /// @}
 
@@ -84,35 +83,36 @@ namespace gum {
       /// @{
 
         // ============================================================================
+        /// Recomputes the statistic from the beginning
+        // ============================================================================
+        void computeScore();
+
+        // ============================================================================
         /// Returns the performance of current variable according to the test
         // ============================================================================
-        double score(){
-          double Chi2Stat = 0;
-          for ( auto attrIter = __conTab.aBeginSafe(); attrIter != __conTab.aEndSafe(); ++attrIter ){
-            double semiExpected = (double)(attrIter.val())/(double)__nbObs;
-            for ( auto valIter = __conTab.vBeginSafe(); valIter != __conTab.vEndSafe(); ++valIter ) {
-              double cell = (double)__conTab.joint(attrIter.val(),valIter.val());
-              if( cell < 5 )
-                continue;
-              double expected = semiExpected*(double)(valIter.val());
+        double score();
 
-              Chi2Stat += std::pow(cell - expected, 2.0)/expected;
-            }
-          }
-          return 1 - ChiSquare::probaChi2(Chi2Stat, __conTab.attrSize()*__conTab.valueSize());
-        }
+        // ============================================================================
+        /// Returns a second criterion to severe ties
+        // ============================================================================
+        virtual double secondaryscore();
 
       /// @}
+
+        const ContingencyTable<long unsigned int, GUM_SCALAR>& ct() const { return __conTab; }
+
+        void add(const Chi2TestPolicy<GUM_SCALAR>& src);
 
     private :
 
       /// The contingency table used to keeps records of all observation
       ContingencyTable<long unsigned int, GUM_SCALAR> __conTab;
 
-      ///
-      Idx __nbObs;
+      double __chi2Score;
   };
 
 } // End of namespace gum
+
+#include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy.tcc>
 
 #endif /* GUM_MULTI_DIM_DECISION_GRAPH_CHI2_TEST_POLICY_H */
