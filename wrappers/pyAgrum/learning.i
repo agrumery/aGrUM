@@ -11,6 +11,7 @@
 %ignore  gum::learning::BNLearner::learnParameters ( const DAG& dag,bool take_into_account_score);
 
 %extend gum::learning::BNLearner {
+
   gum::BayesNet<double> learnBN() {
     return self->learnBN<double>();
   }
@@ -19,8 +20,9 @@
     return self->learnParameters<double>(dag);
   }
 
+
   void setSliceOrder(PyObject *l) {
-    NodeProperty<unsigned int> ranks;
+    NodeProperty<unsigned int> ranks; // gum should be added by SED in cmake/GUM-UseSWIG.cmake
 
     if (PyList_Check(l)==0) {
       PyErr_SetString(PyExc_TypeError, "arg must be a sequence");

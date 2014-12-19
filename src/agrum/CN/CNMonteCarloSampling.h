@@ -109,6 +109,8 @@ namespace gum {
 
         ///unsigned int notOptDelete;
 
+
+        virtual void insertEvidenceFile ( const std::string& path ) { InferenceEngine<GUM_SCALAR>::insertEvidenceFile(path);};
       protected:
         bool _repetitiveInd;
     };

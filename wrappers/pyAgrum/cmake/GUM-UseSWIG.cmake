@@ -122,7 +122,7 @@ macro(GUM_SWIG_ADD_SOURCE_TO_MODULE name outfiles infile)
   endforeach()
 
   set(swig_special_flags)
-  # default is c, so add c++ flag if it is c++
+  # def ault is c, so add c++ flag if it is c++
   if(swig_source_file_cplusplus)
     set(swig_special_flags ${swig_special_flags} "-c++")
   endif()

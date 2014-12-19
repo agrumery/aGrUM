@@ -1,3 +1,4 @@
+
 /* INCLUDES */
 %{
 #include <iostream>
@@ -101,116 +102,6 @@
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
 %}
 
-
-%include "std_vector.i"
-%include "std_string.i"
-
-namespace std {
-  %template ( Vector_double) vector<double>;
-  %template ( Vector_string) vector<string>;
-}
-
-
-/* EXCEPTION HANDLING */
-%exceptionclass std::bad_cast;
-%exceptionclass gum::Exception;
-%exceptionclass gum::GraphError;
-%exceptionclass gum::IdError;
-%exceptionclass gum::OperationNotAllowed;
-%exceptionclass gum::ReferenceError;
-%exceptionclass gum::DefaultInLabel;
-%exceptionclass gum::Circuit;
-%exceptionclass gum::InvalidNode;
-%exceptionclass gum::InvalidEdge;
-%exceptionclass gum::DuplicateElement;
-%exceptionclass gum::OutOfBounds;
-%exceptionclass gum::OutOfLowerBound;
-%exceptionclass gum::OutOfUpperBound;
-%exceptionclass gum::IOError;
-%exceptionclass std::exception;
-
-
-
-/* WRAPPED HEADERS (pyAgrum API) */
-%include <agrum/config.h>
-%import <agrum/core/inline.h>
-
-%import <agrum/core/types.h>
-%include <agrum/core/exceptions.h>
-%include <agrum/core/sequence.h>
-//%include <agrum/core/set.h>
-%include <agrum/core/utils_random.h>
-
-%include <agrum/core/OMPThreads.h>
-
-%include <agrum/variables/variable.h>
-%include <agrum/variables/discreteVariable.h>
-%include <agrum/variables/labelizedVariable.h>
-%include <agrum/variables/rangeVariable.h>
-%include <agrum/variables/discretizedVariable.h>
-
-%include <agrum/graphs/graphElements.h>
-
-%import <agrum/graphs/edgeGraphPart.h>
-%import <agrum/graphs/arcGraphPart.h>
-%import <agrum/graphs/nodeGraphPart.h>
-
-%include <agrum/graphs/diGraph.h>
-%include <agrum/graphs/DAG.h>
-%include <agrum/graphs/undiGraph.h>
-%include <agrum/graphs/mixedGraph.h>
-%include <agrum/graphs/cliqueGraph.h>
-%import <agrum/graphs/triangulations/defaultTriangulation.h>
-
-%include <agrum/multidim/multiDimInterface.h>
-%import <agrum/multidim/multiDimAdressable.h>
-%include <agrum/multidim/instantiation.h>
-%include <agrum/multidim/multiDimContainer.h>
-%include <agrum/multidim/multiDimDecorator.h>
-%include <agrum/multidim/multiDimImplementation.h>
-%include <agrum/multidim/multiDimWithOffset.h>
-%import <agrum/multidim/multiDimReadOnly.h>
-%include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
-%include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
-%include <agrum/multidim/potential.h>
-%include <agrum/multidim/utilityTable.h>
-%include <agrum/multidim/multiDimArray.h>
-
-%import <agrum/core/refPtr.h>
-%include <agrum/core/list.h>
-
-%import <agrum/graphicalModels/variableNodeMap.h>
-%include <agrum/graphicalModels/DAGmodel.h>
-%include <agrum/BN/IBayesNet.h>
-%include <agrum/BN/BayesNet.h>
-
-%import <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
-%import <agrum/core/algorithms/approximationScheme/approximationScheme.h>
-
-%include <agrum/BN/inference/BayesNetInference.h>
-%include <agrum/BN/inference/lazyPropagation.h>
-%include <agrum/BN/inference/GibbsInference.h>
-
-%import <agrum/BN/algorithms/divergence/KL.h>
-%include <agrum/BN/algorithms/divergence/bruteForceKL.h>
-%include <agrum/BN/algorithms/divergence/GibbsKL.h>
-
-%import <agrum/core/signal/listener.h>
-%import <agrum/graphs/listeners/diGraphListener.h>
-%import <agrum/BN/io/BIF/BIFReader.h>
-
-%include <agrum/learning/BNLearner.h>
-
-%include <agrum/CN/credalNet.h>
-%include <agrum/CN/varMod2BNsMap.h>
-%include <agrum/CN/inferenceEngine.h>
-%include <agrum/CN/multipleInferenceEngine.h>
-%include <agrum/CN/CNMonteCarloSampling.h>
-%include <agrum/CN/CNLoopyPropagation.h>
-
-%include <agrum/ID/influenceDiagram.h>
-%include <agrum/ID/inference/influenceDiagramInference.h>
-
 /* CLASS EXTENSIONS */
 %extend gum::DiscreteVariable {
   gum::LabelizedVariable & toLabelizedVar() {
@@ -313,7 +204,112 @@ namespace std {
   using gum::ApproximationScheme::history;
 }
 
-%extend gum::credal::InferenceEngine<double> {
+
+%extend gum::DiGraph  {
+  using gum::NodeGraphPart::addNode;
+  using gum::NodeGraphPart::existsNode;
+  using gum::NodeGraphPart::size;
+  using gum::NodeGraphPart::empty;
+
+  using gum::ArcGraphPart::eraseArc;
+  using gum::ArcGraphPart::existsArc;
+  using gum::ArcGraphPart::eraseParents;
+  using gum::ArcGraphPart::eraseChildren;
+  using gum::ArcGraphPart::sizeArcs;
+  using gum::ArcGraphPart::emptyArcs;
+}
+
+%extend gum::DAG {
+  using gum::DiGraph::addNode;
+  using gum::DiGraph::existsNode;
+  using gum::DiGraph::size;
+  using gum::DiGraph::empty;
+
+  using gum::DiGraph::eraseArc;
+  using gum::DiGraph::existsArc;
+  using gum::DiGraph::eraseParents;
+  using gum::DiGraph::eraseChildren;
+  using gum::DiGraph::sizeArcs;
+  using gum::DiGraph::emptyArcs;
+}
+
+%extend gum::UndiGraph {
+  using gum::NodeGraphPart::addNode;
+  using gum::NodeGraphPart::existsNode;
+  using gum::NodeGraphPart::size;
+  using gum::NodeGraphPart::empty;
+
+  using gum::EdgeGraphPart::eraseEdge;
+  using gum::EdgeGraphPart::existsEdge;
+  using gum::EdgeGraphPart::eraseParents;
+  using gum::EdgeGraphPart::eraseChildren;
+  using gum::EdgeGraphPart::sizeEdges;
+  using gum::EdgeGraphPart::emptyEdges;
+}
+
+
+%extend gum::CliqueGraph {
+  using gum::UndiGraph::addNode;
+  using gum::UndiGraph::existsNode;
+  using gum::UndiGraph::size;
+  using gum::UndiGraph::empty;
+
+  using gum::UndiGraph::addEdge;
+  using gum::UndiGraph::existsEdge;
+  using gum::UndiGraph::eraseParents;
+  using gum::UndiGraph::eraseChildren;
+  using gum::UndiGraph::sizeEdges;
+  using gum::UndiGraph::emptyEdges;
+}
+
+%extend gum::MixedGraph {
+  using gum::NodeGraphPart::addNode;
+  using gum::NodeGraphPart::existsNode;
+  using gum::NodeGraphPart::size;
+  using gum::NodeGraphPart::empty;
+
+  using gum::UndiGraph::addEdge;
+  using gum::UndiGraph::eraseEdge;
+  using gum::UndiGraph::existsEdge;
+  using gum::UndiGraph::eraseParents;
+  using gum::UndiGraph::eraseChildren;
+  using gum::UndiGraph::sizeEdges;
+  using gum::UndiGraph::emptyEdges;
+
+  using gum::DiGraph::addArc;
+  using gum::DiGraph::eraseArc;
+  using gum::DiGraph::existsArc;
+  using gum::DiGraph::eraseParents;
+  using gum::DiGraph::eraseChildren;
+  using gum::DiGraph::sizeArcs;
+  using gum::DiGraph::emptyArcs;
+}
+
+%extend gum::learning::BNLearner {
+  using gum::IApproximationSchemeConfiguration::setVerbosity;
+  using gum::IApproximationSchemeConfiguration::setEpsilon;
+  using gum::IApproximationSchemeConfiguration::setMinEpsilonRate;
+  using gum::IApproximationSchemeConfiguration::setMaxIter;
+  using gum::IApproximationSchemeConfiguration::setMaxTime;
+  using gum::IApproximationSchemeConfiguration::setPeriodSize;
+  using gum::IApproximationSchemeConfiguration::setBurnIn;
+
+  using gum::IApproximationSchemeConfiguration::verbosity;
+  using gum::IApproximationSchemeConfiguration::epsilon;
+  using gum::IApproximationSchemeConfiguration::minEpsilonRate;
+  using gum::IApproximationSchemeConfiguration::maxIter;
+  using gum::IApproximationSchemeConfiguration::maxTime;
+  using gum::IApproximationSchemeConfiguration::periodSize;
+  using gum::IApproximationSchemeConfiguration::burnIn;
+
+  using gum::IApproximationSchemeConfiguration::nbrIterations;
+  using gum::IApproximationSchemeConfiguration::currentTime;
+
+  using gum::IApproximationSchemeConfiguration::messageApproximationScheme;
+  using gum::IApproximationSchemeConfiguration::history;
+}
+
+%extend gum::credal::CNMonteCarloSampling {
   using gum::ApproximationScheme::setVerbosity;
   using gum::ApproximationScheme::setEpsilon;
   using gum::ApproximationScheme::setMinEpsilonRate;
@@ -337,157 +333,142 @@ namespace std {
   using gum::ApproximationScheme::history;
 }
 
-%extend gum::learning::BNLearner {
-  using gum::credal::InferenceEngine<double>::setVerbosity;
-  using gum::credal::InferenceEngine<double>::setEpsilon;
-  using gum::credal::InferenceEngine<double>::setMinEpsilonRate;
-  using gum::credal::InferenceEngine<double>::setMaxIter;
-  using gum::credal::InferenceEngine<double>::setMaxTime;
-  using gum::credal::InferenceEngine<double>::setPeriodSize;
-  using gum::credal::InferenceEngine<double>::setBurnIn;
+%extend gum::credal::CNLoopyPropagation {
+  using gum::ApproximationScheme::setVerbosity;
+  using gum::ApproximationScheme::setEpsilon;
+  using gum::ApproximationScheme::setMinEpsilonRate;
+  using gum::ApproximationScheme::setMaxIter;
+  using gum::ApproximationScheme::setMaxTime;
+  using gum::ApproximationScheme::setPeriodSize;
+  using gum::ApproximationScheme::setBurnIn;
 
-  using gum::credal::InferenceEngine<double>::verbosity;
-  using gum::credal::InferenceEngine<double>::epsilon;
-  using gum::credal::InferenceEngine<double>::minEpsilonRate;
-  using gum::credal::InferenceEngine<double>::maxIter;
-  using gum::credal::InferenceEngine<double>::maxTime;
-  using gum::credal::InferenceEngine<double>::periodSize;
-  using gum::credal::InferenceEngine<double>::burnIn;
+  using gum::ApproximationScheme::verbosity;
+  using gum::ApproximationScheme::epsilon;
+  using gum::ApproximationScheme::minEpsilonRate;
+  using gum::ApproximationScheme::maxIter;
+  using gum::ApproximationScheme::maxTime;
+  using gum::ApproximationScheme::periodSize;
+  using gum::ApproximationScheme::burnIn;
 
-  using gum::credal::InferenceEngine<double>::nbrIterations;
-  using gum::credal::InferenceEngine<double>::currentTime;
+  using gum::ApproximationScheme::nbrIterations;
+  using gum::ApproximationScheme::currentTime;
 
-  using gum::credal::InferenceEngine<double>::messageApproximationScheme;
-  using gum::credal::InferenceEngine<double>::history;
+  using gum::ApproximationScheme::messageApproximationScheme;
+  using gum::ApproximationScheme::history;
 }
 
-%extend gum::credal::MultipleInferenceEngine<double> {
-  using gum::credal::InferenceEngine<double>::setVerbosity;
-  using gum::credal::InferenceEngine<double>::setEpsilon;
-  using gum::credal::InferenceEngine<double>::setMinEpsilonRate;
-  using gum::credal::InferenceEngine<double>::setMaxIter;
-  using gum::credal::InferenceEngine<double>::setMaxTime;
-  using gum::credal::InferenceEngine<double>::setPeriodSize;
-  using gum::credal::InferenceEngine<double>::setBurnIn;
 
-  using gum::credal::InferenceEngine<double>::verbosity;
-  using gum::credal::InferenceEngine<double>::epsilon;
-  using gum::credal::InferenceEngine<double>::minEpsilonRate;
-  using gum::credal::InferenceEngine<double>::maxIter;
-  using gum::credal::InferenceEngine<double>::maxTime;
-  using gum::credal::InferenceEngine<double>::periodSize;
-  using gum::credal::InferenceEngine<double>::burnIn;
+%include "std_vector.i"
+%include "std_string.i"
 
-  using gum::credal::InferenceEngine<double>::nbrIterations;
-  using gum::credal::InferenceEngine<double>::currentTime;
-
-  using gum::credal::InferenceEngine<double>::messageApproximationScheme;
-  using gum::credal::InferenceEngine<double>::history;
+namespace std {
+  %template ( Vector_double) vector<double>;
+  %template ( Vector_string) vector<string>;
 }
 
-%extend gum::credal::CNMonteCarloSampling<double> {
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::setVerbosity;
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::setEpsilon;
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::setMinEpsilonRate;
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::setMaxIter;
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::setMaxTime;
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::setPeriodSize;
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::setBurnIn;
 
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::verbosity;
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::epsilon;
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::minEpsilonRate;
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::maxIter;
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::maxTime;
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::periodSize;
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::InferenceEngine::burnIn;
+/* EXCEPTION HANDLING */
+%exceptionclass std::bad_cast;
+%exceptionclass gum::Exception;
+%exceptionclass gum::GraphError;
+%exceptionclass gum::IdError;
+%exceptionclass gum::OperationNotAllowed;
+%exceptionclass gum::ReferenceError;
+%exceptionclass gum::DefaultInLabel;
+%exceptionclass gum::Circuit;
+%exceptionclass gum::InvalidNode;
+%exceptionclass gum::InvalidEdge;
+%exceptionclass gum::DuplicateElement;
+%exceptionclass gum::OutOfBounds;
+%exceptionclass gum::OutOfLowerBound;
+%exceptionclass gum::OutOfUpperBound;
+%exceptionclass gum::IOError;
+%exceptionclass std::exception;
 
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::nbrIterations;
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::currentTime;
 
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::messageApproximationScheme;
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::history;
 
-  using gum::credal::MultipleInferenceEngine<double, BNInferenceEngine>::insertEvidenceFile;
-}
+/* WRAPPED HEADERS (pyAgrum API) */
+%include <agrum/config.h>
+%import <agrum/core/inline.h>
 
-%extend gum::credal::CNLoopyPropagation<double> {
-  using gum::credal::InferenceEngine<double>::setVerbosity;
-  using gum::credal::InferenceEngine<double>::setEpsilon;
-  using gum::credal::InferenceEngine<double>::setMinEpsilonRate;
-  using gum::credal::InferenceEngine<double>::setMaxIter;
-  using gum::credal::InferenceEngine<double>::setMaxTime;
-  using gum::credal::InferenceEngine<double>::setPeriodSize;
-  using gum::credal::InferenceEngine<double>::setBurnIn;
+%import <agrum/core/types.h>
+%include <agrum/core/exceptions.h>
+%include <agrum/core/sequence.h>
+/*
+%include <agrum/core/set.h>
+*/
+%include <agrum/core/utils_random.h>
 
-  using gum::credal::InferenceEngine<double>::verbosity;
-  using gum::credal::InferenceEngine<double>::epsilon;
-  using gum::credal::InferenceEngine<double>::minEpsilonRate;
-  using gum::credal::InferenceEngine<double>::maxIter;
-  using gum::credal::InferenceEngine<double>::maxTime;
-  using gum::credal::InferenceEngine<double>::periodSize;
-  using gum::credal::InferenceEngine<double>::burnIn;
+%include <agrum/core/OMPThreads.h>
 
-  using gum::credal::InferenceEngine<double>::nbrIterations;
-  using gum::credal::InferenceEngine<double>::currentTime;
+%include <agrum/variables/variable.h>
+%include <agrum/variables/discreteVariable.h>
+%include <agrum/variables/labelizedVariable.h>
+%include <agrum/variables/rangeVariable.h>
+%include <agrum/variables/discretizedVariable.h>
 
-  using gum::credal::InferenceEngine<double>::messageApproximationScheme;
-  using gum::credal::InferenceEngine<double>::history;
-}
+%include <agrum/graphs/graphElements.h>
 
-%extend gum::DiGraph {
-  using gum::NodeGraphPart::addNode;
-  using gum::NodeGraphPart::eraseNode;
-  using gum::NodeGraphPart::existsNode;
+%import <agrum/graphs/edgeGraphPart.h>
+%import <agrum/graphs/arcGraphPart.h>
+%import <agrum/graphs/nodeGraphPart.h>
 
-  using gum::ArcGraphPart::addArc;
-  using gum::ArcGraphPart::eraseArc;
-  using gum::ArcGraphPart::existsArc;
-  using gum::ArcGraphPart::eraseParents;
-  using gum::ArcGraphPart::eraseChildren;
-}
+%include <agrum/graphs/diGraph.h>
+%include <agrum/graphs/DAG.h>
+%include <agrum/graphs/undiGraph.h>
+%include <agrum/graphs/mixedGraph.h>
+%include <agrum/graphs/cliqueGraph.h>
+%import <agrum/graphs/triangulations/defaultTriangulation.h>
 
-%extend gum::DAG {
-  using gum::NodeGraphPart::addNode;
-  using gum::NodeGraphPart::eraseNode;
-  using gum::NodeGraphPart::existsNode;
+%include <agrum/multidim/multiDimInterface.h>
+%import <agrum/multidim/multiDimAdressable.h>
+%include <agrum/multidim/instantiation.h>
+%include <agrum/multidim/multiDimContainer.h>
+%include <agrum/multidim/multiDimDecorator.h>
+%include <agrum/multidim/multiDimImplementation.h>
+%include <agrum/multidim/multiDimWithOffset.h>
+%import <agrum/multidim/multiDimReadOnly.h>
+%include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
+%include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
+%include <agrum/multidim/potential.h>
+%include <agrum/multidim/utilityTable.h>
+%include <agrum/multidim/multiDimArray.h>
 
-  using gum::ArcGraphPart::addArc;
-  using gum::ArcGraphPart::eraseArc;
-  using gum::ArcGraphPart::existsArc;
-  using gum::ArcGraphPart::eraseParents;
-  using gum::ArcGraphPart::eraseChildren;
-}
+%import <agrum/core/refPtr.h>
+%include <agrum/core/list.h>
 
-%extend gum::UndiGraph {
-  using gum::NodeGraphPart::addNode;
-  using gum::NodeGraphPart::eraseNode;
-  using gum::NodeGraphPart::existsNode;
+%import <agrum/graphicalModels/variableNodeMap.h>
+%include <agrum/graphicalModels/DAGmodel.h>
+%include <agrum/BN/IBayesNet.h>
+%include <agrum/BN/BayesNet.h>
 
-  using gum::EdgeGraphPart::addEdge;
-  using gum::EdgeGraphPart::eraseEdge;
-  using gum::EdgeGraphPart::existsEdge;
-  using gum::EdgeGraphPart::eraseParents;
-  using gum::EdgeGraphPart::eraseChildren;
-}
+%import <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
+%import <agrum/core/algorithms/approximationScheme/approximationScheme.h>
 
-%extend gum::MixedGraph {
-  using gum::NodeGraphPart::addNode;
-  using gum::NodeGraphPart::eraseNode;
-  using gum::NodeGraphPart::existsNode;
+%include <agrum/BN/inference/BayesNetInference.h>
+%include <agrum/BN/inference/lazyPropagation.h>
+%include <agrum/BN/inference/GibbsInference.h>
 
-  using gum::EdgeGraphPart::addEdge;
-  using gum::EdgeGraphPart::eraseEdge;
-  using gum::EdgeGraphPart::existsEdge;
-  using gum::EdgeGraphPart::eraseParents;
-  using gum::EdgeGraphPart::eraseChildren;
+%import <agrum/BN/algorithms/divergence/KL.h>
+%include <agrum/BN/algorithms/divergence/bruteForceKL.h>
+%include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
-  using gum::ArcGraphPart::addArc;
-  using gum::ArcGraphPart::eraseArc;
-  using gum::ArcGraphPart::existsArc;
-  using gum::ArcGraphPart::eraseParents;
-  using gum::ArcGraphPart::eraseChildren;
-}
+%import <agrum/core/signal/listener.h>
+%import <agrum/graphs/listeners/diGraphListener.h>
+%import <agrum/BN/io/BIF/BIFReader.h>
+
+%include <agrum/learning/BNLearner.h>
+
+%include <agrum/CN/credalNet.h>
+%include <agrum/CN/varMod2BNsMap.h>
+%import <agrum/CN/inferenceEngine.h>
+%import <agrum/CN/multipleInferenceEngine.h>
+%include <agrum/CN/CNMonteCarloSampling.h>
+%include <agrum/CN/CNLoopyPropagation.h>
+
+%include <agrum/ID/influenceDiagram.h>
+%include <agrum/ID/inference/influenceDiagramInference.h>
+
 
 /* TEMPLATES INSTANTIATIONS */
 
@@ -514,8 +495,6 @@ namespace std {
 %template ( GibbsKL_double ) gum::GibbsKL<double>;
 
 %template ( CredalNet_double ) gum::credal::CredalNet<double>;
-%template ( CNInferenceEngine_double ) gum::credal::InferenceEngine<double>;
-%template ( CNMultipleInferenceEngine_double ) gum::credal::MultipleInferenceEngine<double, gum::LazyPropagation<double> >;
 %template ( CNMonteCarloSampling_double ) gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> >;
 %template ( CNLoopyPropagation_double ) gum::credal::CNLoopyPropagation<double>;
 

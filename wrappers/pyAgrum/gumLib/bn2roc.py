@@ -71,7 +71,7 @@ def computeAUC(points):
 def computeROCpoints(bn,csv_name,target,label,visible=False):
     idTarget=bn.idFromName(target)
     idLabel=-1
-    for i in range(len(bn.variable(idTarget))):
+    for i in range(bn.variable(idTarget).domainSize()):
       if bn.variable(idTarget).label(i)==label:
         idLabel=i
         break;

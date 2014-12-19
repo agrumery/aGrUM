@@ -66,6 +66,11 @@ namespace gum {
 
   INLINE void EdgeGraphPart::insertEdge ( const NodeId first,
                                           const NodeId second ) {
+    addEdge ( first,second );
+  }
+
+  INLINE void EdgeGraphPart::addEdge ( const NodeId first,
+                                       const NodeId second ) {
     Edge edge ( first, second );
     __edges.insert ( edge );
     __checkNeighbours ( first );

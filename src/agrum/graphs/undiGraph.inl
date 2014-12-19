@@ -42,7 +42,7 @@ namespace gum {
       GUM_ERROR ( InvalidNode, "second node" );
     }
 
-    EdgeGraphPart::insertEdge ( second, first );
+    EdgeGraphPart::addEdge ( second, first );
   }
 
   INLINE void UndiGraph::clear() {

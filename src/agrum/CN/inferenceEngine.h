@@ -296,7 +296,7 @@ namespace gum {
          * Insert evidence from file.
          * @param path The path to the evidence file.
          */
-        void insertEvidenceFile ( const std::string& path );
+        virtual void insertEvidenceFile ( const std::string& path );
 
         /**
          * Insert evidence from map.

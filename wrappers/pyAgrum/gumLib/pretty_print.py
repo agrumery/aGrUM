@@ -38,12 +38,12 @@ def module_help(exit_value=1):
 
 def max_length(v):
   m=len(v.name())
-  for i in range(len(v)):
+  for i in range(v.domainSize()):
     m=max(m,len(v.label(i)))
   return m
 
 def pretty_cpt(cpt):
-  size=(1+2+DECIMAL_LENGTH)*len(cpt.variable(0))-1
+  size=(1+2+DECIMAL_LENGTH)*cpt.variable(0).domainSize()-1
 
   width={}
   total_width=0
@@ -65,7 +65,7 @@ def pretty_cpt(cpt):
   if line=='':
     line='|'
   line+=BLANK
-  for j in range(len(cpt.variable(0))):
+  for j in range(cpt.variable(0).domainSize()):
     line+=("{0:^{1}}"+BLANK).format(cpt.variable(0).label(j)[0:DECIMAL_LENGTH+2],DECIMAL_LENGTH+2)
   line+='|'
   print (line)
@@ -80,7 +80,7 @@ def pretty_cpt(cpt):
       if line=='':
         line='|'
       line+=' '
-      for j in range(len(cpt.variable(0))):
+      for j in range(cpt.variable(0).domainSize()):
         line+=NUMBER_FORMAT.format(cpt.get(i))+' '
         i.inc()
       line+='|'
