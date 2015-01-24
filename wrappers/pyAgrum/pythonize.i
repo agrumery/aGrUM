@@ -13,7 +13,6 @@
 %rename ( remove ) gum::Sequence::erase ( const KEY& k );
 %rename ( __getitem__ ) gum::Sequence::atPos ( Idx i ) const ;
 
-%rename ( __len__ ) gum::DiscreteVariable::domainSize() const;
 
 %ignore gum::ListBase::insert;
 %ignore gum::ListBase::pushFront;
@@ -25,16 +24,4 @@
 %rename ( pop_front ) gum::List::popFront();
 %rename ( pop_back ) gum::List::popBack();
 
-
-/*
-%rename ( __str__ ) gum::Sequence::toString() const;
-%rename ( __str__ ) gum::DiscreteVariable::toString() const;
-%rename ( __str__ ) gum::ListBase::toString() const;
-%rename ( __str__ ) gum::DAGmodel::toString() const;
-%rename ( __str__ ) gum::Instantiation::toString() const;
-*/
 %rename ( __str__ ) *::toString() const;
-
-%rename ( __len__ ) gum::DAGmodel::size() const;
-
-%rename ( __len__ ) gum::Instantiation::nbrDim() const;

@@ -93,7 +93,7 @@ namespace gum {
      * LocalSearchWithTabuList
      * @ingroup learning_group
      */
-    class BNLearner: public IApproximationSchemeConfiguration {
+    class BNLearner: public gum::IApproximationSchemeConfiguration {
     private:
 
       /// an enumeration enabling to select easily the score we wish to use

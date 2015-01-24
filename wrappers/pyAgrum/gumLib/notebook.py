@@ -81,11 +81,11 @@ def showProba(p):
 
     """
     var=p.variable(0)
-    ra=np.arange(len(var))
+    ra=np.arange(var.domainSize())
     vx=["{0}:{1:1.4f}".format(var.label(int(i)),p[i]) for i in ra]
 
     fig=plt.figure()
-    fig.set_figheight(len(var)/4.0)
+    fig.set_figheight(var.domainSize()/4.0)
 
     ax=fig.add_subplot(111)
 
@@ -111,7 +111,7 @@ def animApproximationScheme(apsc,scale=np.log10):
   from IPython.display import clear_output,display
   f=plt.gcf()
 
-  h=gum.PythonApproximationListener(apsc)
+  h=gum.PythonApproximationListener(apsc.castAsASC())
   apsc.setVerbosity(True)
   apsc.listener=h
 
@@ -262,4 +262,4 @@ def getInfluenceDiagram(diag,size="4"):
 def showInfluenceDiagram(diag,size="4"):
   gr=getInfluenceDiagram(diag,size)
   IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
-  
+

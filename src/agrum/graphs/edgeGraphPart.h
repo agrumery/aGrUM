@@ -131,7 +131,14 @@ namespace gum {
        * @param n2 the id of the other extremity of the new edge to be inserted
        * @warning if the edge already exists, nothing is done. In particular, no
        * exception is raised. */
-      virtual void insertEdge ( const NodeId n1, const NodeId n2 );
+      GUM_DEPRECATED(virtual void insertEdge ( const NodeId n1, const NodeId n2 ));
+
+      /// insert a new edge into the EdgeGraphPart
+      /** @param n1 the id of one extremity of the new edge to be inserted
+       * @param n2 the id of the other extremity of the new edge to be inserted
+       * @warning if the edge already exists, nothing is done. In particular, no
+       * exception is raised. */
+      virtual void addEdge ( const NodeId n1, const NodeId n2 );
 
       /// removes an edge from the EdgeGraphPart
       /** @param edge the edge to be removed

@@ -43,17 +43,17 @@ class TestLabelizedVariable(VariablesTestCase):
         for var, name in zip([c, s, r, w], 'c s r w'.split()):
             self.assertEqual(var.name(), name)
             self.assertEqual(var.description(), name)
-            self.assertEqual(len(var), 2)
+            self.assertEqual(var.domainSize(), 2)
 
 
     def testLabels(self):
         gum.LabelizedVariable('a', '', 0).addLabel('a1').addLabel('a2')\
                                 .addLabel('a3').addLabel('a4')\
                                 .addLabel('a5').addLabel('a6')
-        self.assertEqual(len(self.varL2), 5)
+        self.assertEqual(self.varL2.domainSize(), 5)
         self.varL1.addLabel("coucou")
         self.varL1.addLabel("super")
-        self.assertEqual(len(self.varL1), 4)
+        self.assertEqual(self.varL1.domainSize(), 4)
         self.varL1.isLabel("coucou")
         self.assertEqual(self.varL1["super"], 3)
         self.assertEqual(self.varL1.label(3), "super")
@@ -61,7 +61,7 @@ class TestLabelizedVariable(VariablesTestCase):
 
     def testEraseLabels(self):
         self.varL2.eraseLabels()
-        self.assertEqual(len(self.varL2), 0)
+        self.assertEqual(self.varL2.domainSize(), 0)
 
 
 
@@ -79,7 +79,7 @@ class TestRangeVariable(VariablesTestCase):
 
     def testLabels(self):
         var1 = gum.RangeVariable("var 1", "this is var 1")
-        self.assertEqual(len(var1), 2)
+        self.assertEqual(var1.domainSize(), 2)
         self.assertFalse(var1.empty())
 
         var1.setMinVal(1)
@@ -88,7 +88,7 @@ class TestRangeVariable(VariablesTestCase):
 
         var1.setMaxVal(9)
         self.assertFalse(var1.empty())
-        self.assertEqual(len(var1), 9)
+        self.assertEqual(var1.domainSize(), 9)
         self.assertTrue(var1.belongs(3))
         self.assertFalse(var1.belongs(0))
         self.assertFalse(var1.belongs(10))
@@ -99,7 +99,7 @@ class TestRangeVariable(VariablesTestCase):
 
     def testEraseLabels(self):
         self.varL2.eraseLabels()
-        self.assertEqual(len(self.varL2), 0)
+        self.assertEqual(self.varL2.domainSize(), 0)
 
 
 
@@ -111,16 +111,16 @@ class TestDiscretizedVariable(VariablesTestCase):
         var = gum.DiscretizedVariable("var", "test var")
 
         self.assertTrue(var.empty())
-        self.assertEqual(len(var), 0)
+        self.assertEqual(var.domainSize(), 0)
         var.addTick(0.2)
         self.assertTrue(var.empty())
-        self.assertEqual(len(var), 0)
+        self.assertEqual(var.domainSize(), 0)
         var.addTick(3)
         self.assertTrue(var.empty())
-        self.assertEqual(len(var), 1)
+        self.assertEqual(var.domainSize(), 1)
         var.addTick(2)
         self.assertFalse(var.empty())
-        self.assertEqual(len(var), 2)
+        self.assertEqual(var.domainSize(), 2)
 
         self.assertRaises(gum.DefaultInLabel, var.addTick,2)
         self.assertEqual(str(var), "var<[0.2;2[,[2;3]>")
@@ -146,7 +146,7 @@ class TestDiscretizedVariable(VariablesTestCase):
     def toto(self, i, j, k, l, m, n):
         var = gum.DiscretizedVariable("var", "test var")
         var.addTick(i).addTick(j).addTick(k).addTick(l).addTick(m).addTick(n)
-        self.assertEqual(len(var), 5);
+        self.assertEqual(var.domainSize(), 5);
         self.assertEqual(str(var), "var<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>")
 
 
