@@ -1,6 +1,9 @@
 %ignore *::insertArc;
 %ignore *::insertEdge;
 %ignore *::insertNode;
+/*
+%ignore gum::CliqueGraph::addNode(const gum::NodeId,const gum::NodeSet&);
+*/
 
 %define ADD_IDS_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {
@@ -21,7 +24,7 @@ ADD_IDS_METHOD_TO_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (includin
 ADD_IDS_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
 
 %extend gum::DiGraph {
-  PyObject *arcs() {
+  PyObject *arcs() { // add for the sub-classes (including MixedGraph)
     PyObject* q=PyList_New(0);
 
     for ( auto arc_iter = self->arcs().begin();
@@ -35,7 +38,7 @@ ADD_IDS_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
 };
 
 %extend gum::UndiGraph {
-  PyObject *edges() {
+  PyObject *edges() { // add for the sub-classes (including MixedGraph)
     PyObject* q=PyList_New(0);
 
     for ( auto edge_iter = self->edges().begin();
@@ -48,10 +51,9 @@ ADD_IDS_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
   };
 };
 
-%ignore gum::CliqueGraph::addNode(const gum::NodeId,const gum::NodeSet&);
-%ignore gum::CliqueGraph::addNode(const gum::NodeId);
-%extend gum::CliqueGraph{
-  PyObject *clique(gum::NodeId clique) {
+
+%extend gum::CliqueGraph {
+  PyObject *clique(const gum::NodeId clique) const {
     PyObject* q=PySet_New(0);
     
     for(auto n_iter = self->clique(clique).begin();
@@ -62,4 +64,5 @@ ADD_IDS_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
         
     return q;
   };
-};
+}
+%ignore gum::CliqueGraph::clique;

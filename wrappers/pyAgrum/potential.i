@@ -19,51 +19,6 @@
 %}
 
 %extend gum::Potential<double> {
-/* wrapping the minimal interface from MultiDimDecorator */
-  double get(const gum::Instantiation& i) const {
-    return self->gum::MultiDimDecorator<double>::get(i);
-  }
-
-  void set ( const Instantiation& i, const double& value ) const {
-    self->gum::MultiDimDecorator<double>::set(i,value);
-  }
-
-  bool empty() const {
-    return self->gum::MultiDimDecorator<double>::empty();
-  }
-
-
-  gum::Idx pos ( const gum::DiscreteVariable& v) const {
-    return self->gum::MultiDimDecorator<double>::pos(v);
-  }
-
-  bool contains ( const gum::DiscreteVariable& v) const {
-    return self->gum::MultiDimDecorator<double>::contains(v);
-  }
-
-  gum::Idx nbrDim() const {
-    return self->gum::MultiDimDecorator<double>::nbrDim();
-  }
-
-  const gum::DiscreteVariable& variable ( Idx i) const {
-    return self->gum::MultiDimDecorator<double>::variable(i);
-  }
-
-  void fillWith ( const std::vector< double >& v ) const {
-    self->gum::MultiDimDecorator<double>::fillWith(v);
-  }
-
-  void fill ( const double& d ) const {
-    self->gum::MultiDimDecorator<double>::fill(d);
-  }
-
-  void remove(const gum::DiscreteVariable& var) {
-    self->erase(var);
-  }
-
-  void add ( const DiscreteVariable& v ) {
-    self->gum::MultiDimDecorator<double>::add(v);
-  }
 %pythoncode {
     def variablesSequence(self):
         varlist = []
@@ -96,7 +51,7 @@
             return q
         else:
             return self
-  }
+}
 }
 
 // copy: M indicates the modifications

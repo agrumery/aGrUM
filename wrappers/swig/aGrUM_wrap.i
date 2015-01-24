@@ -117,128 +117,33 @@
   }
 }
 
-%extend gum::List {
-  void append ( Val val ) {
-    self->insert ( val );
-  }
-
-  void push_front ( Val val ) {
-    self->push_front ( val );
-  }
-
-  void push_back ( Val val ) {
-    self->push_back ( val );
-  }
-
-  void remove ( Val val ) {
-    self->eraseByVal ( val );
-  }
-
-  void eradicate ( Val val ) {
-    self->eraseAllVal ( val );
-  }
-
-  const Val __getitem__ ( unsigned int i ) {
-    return ( * ( self ) ) [i];
-  }
-
-  bool exists ( Val val ) const
-  {
-    return self->exists ( val );
-  }
-}
-
 %extend gum::LazyPropagation<double> {
   void addHardEvidence(const gum::NodeId id,gum::Idx val) {
     return self->gum::BayesNetInference<double>::addHardEvidence(id,val);
   }
 }
+
 %extend gum::GibbsInference<double> {
   void addHardEvidence(const gum::NodeId id,gum::Idx val) {
     return self->gum::BayesNetInference<double>::addHardEvidence(id,val);
   }
-
-  using gum::ApproximationScheme::setVerbosity;
-  using gum::ApproximationScheme::setEpsilon;
-  using gum::ApproximationScheme::setMinEpsilonRate;
-  using gum::ApproximationScheme::setMaxIter;
-  using gum::ApproximationScheme::setMaxTime;
-  using gum::ApproximationScheme::setPeriodSize;
-  using gum::ApproximationScheme::setBurnIn;
-
-  using gum::ApproximationScheme::verbosity;
-  using gum::ApproximationScheme::epsilon;
-  using gum::ApproximationScheme::minEpsilonRate;
-  using gum::ApproximationScheme::maxIter;
-  using gum::ApproximationScheme::maxTime;
-  using gum::ApproximationScheme::periodSize;
-  using gum::ApproximationScheme::burnIn;
-
-  using gum::ApproximationScheme::nbrIterations;
-  using gum::ApproximationScheme::currentTime;
-
-  using gum::ApproximationScheme::messageApproximationScheme;
-  using gum::ApproximationScheme::history;
-}
-%extend gum::GibbsKL<double> {
-  using gum::ApproximationScheme::setVerbosity;
-  using gum::ApproximationScheme::setEpsilon;
-  using gum::ApproximationScheme::setMinEpsilonRate;
-  using gum::ApproximationScheme::setMaxIter;
-  using gum::ApproximationScheme::setMaxTime;
-  using gum::ApproximationScheme::setPeriodSize;
-  using gum::ApproximationScheme::setBurnIn;
-
-  using gum::ApproximationScheme::verbosity;
-  using gum::ApproximationScheme::epsilon;
-  using gum::ApproximationScheme::minEpsilonRate;
-  using gum::ApproximationScheme::maxIter;
-  using gum::ApproximationScheme::maxTime;
-  using gum::ApproximationScheme::periodSize;
-  using gum::ApproximationScheme::burnIn;
-
-  using gum::ApproximationScheme::nbrIterations;
-  using gum::ApproximationScheme::currentTime;
-
-  using gum::ApproximationScheme::messageApproximationScheme;
-  using gum::ApproximationScheme::history;
 }
 
 
-%extend gum::DiGraph  {
+%define ADD_NODEGRAPHPART_API(classname)
+%extend classname {
   using gum::NodeGraphPart::addNode;
   using gum::NodeGraphPart::existsNode;
   using gum::NodeGraphPart::size;
   using gum::NodeGraphPart::empty;
-
-  using gum::ArcGraphPart::eraseArc;
-  using gum::ArcGraphPart::existsArc;
-  using gum::ArcGraphPart::eraseParents;
-  using gum::ArcGraphPart::eraseChildren;
-  using gum::ArcGraphPart::sizeArcs;
-  using gum::ArcGraphPart::emptyArcs;
 }
+%enddef
+ADD_NODEGRAPHPART_API(DiGraph)
+ADD_NODEGRAPHPART_API(UndiGraph)
+ADD_NODEGRAPHPART_API(MixedGraph)
 
-%extend gum::DAG {
-  using gum::DiGraph::addNode;
-  using gum::DiGraph::existsNode;
-  using gum::DiGraph::size;
-  using gum::DiGraph::empty;
-
-  using gum::DiGraph::eraseArc;
-  using gum::DiGraph::existsArc;
-  using gum::DiGraph::eraseParents;
-  using gum::DiGraph::eraseChildren;
-  using gum::DiGraph::sizeArcs;
-  using gum::DiGraph::emptyArcs;
-}
-
-%extend gum::UndiGraph {
-  using gum::NodeGraphPart::addNode;
-  using gum::NodeGraphPart::existsNode;
-  using gum::NodeGraphPart::size;
-  using gum::NodeGraphPart::empty;
-
+%define ADD_EDGEGRAPHPART_API(classname)
+%extend classname {
   using gum::EdgeGraphPart::eraseEdge;
   using gum::EdgeGraphPart::existsEdge;
   using gum::EdgeGraphPart::eraseParents;
@@ -246,120 +151,60 @@
   using gum::EdgeGraphPart::sizeEdges;
   using gum::EdgeGraphPart::emptyEdges;
 }
+%enddef
+ADD_EDGEGRAPHPART_API(UndiGraph)
+ADD_EDGEGRAPHPART_API(MixedGraph)
 
-
-%extend gum::CliqueGraph {
-  using gum::UndiGraph::addNode;
-  using gum::UndiGraph::existsNode;
-  using gum::UndiGraph::size;
-  using gum::UndiGraph::empty;
-
-  using gum::UndiGraph::addEdge;
-  using gum::UndiGraph::existsEdge;
-  using gum::UndiGraph::eraseParents;
-  using gum::UndiGraph::eraseChildren;
-  using gum::UndiGraph::sizeEdges;
-  using gum::UndiGraph::emptyEdges;
+%define ADD_ARCGRAPHPART_API(classname) 
+%extend classname {
+  using gum::ArcGraphPart::eraseArc;
+  using gum::ArcGraphPart::existsArc;
+  using gum::ArcGraphPart::eraseParents;
+  using gum::ArcGraphPart::eraseChildren;
+  using gum::ArcGraphPart::sizeArcs;
+  using gum::ArcGraphPart::emptyArcs;
 }
+%enddef
+ADD_ARCGRAPHPART_API(DiGraph);
+ADD_ARCGRAPHPART_API(MixedGraph);
 
-%extend gum::MixedGraph {
-  using gum::NodeGraphPart::addNode;
-  using gum::NodeGraphPart::existsNode;
-  using gum::NodeGraphPart::size;
-  using gum::NodeGraphPart::empty;
 
-  using gum::UndiGraph::addEdge;
-  using gum::UndiGraph::eraseEdge;
-  using gum::UndiGraph::existsEdge;
-  using gum::UndiGraph::eraseParents;
-  using gum::UndiGraph::eraseChildren;
-  using gum::UndiGraph::sizeEdges;
-  using gum::UndiGraph::emptyEdges;
 
-  using gum::DiGraph::addArc;
-  using gum::DiGraph::eraseArc;
-  using gum::DiGraph::existsArc;
-  using gum::DiGraph::eraseParents;
-  using gum::DiGraph::eraseChildren;
-  using gum::DiGraph::sizeArcs;
-  using gum::DiGraph::emptyArcs;
+%define ADD_APPROXIMATIONSCHEME_API(classname)
+%extend classname {
+  using gum::ApproximationScheme::setVerbosity;
+  using gum::ApproximationScheme::setEpsilon;
+  using gum::ApproximationScheme::setMinEpsilonRate;
+  using gum::ApproximationScheme::setMaxIter;
+  using gum::ApproximationScheme::setMaxTime;
+  using gum::ApproximationScheme::setPeriodSize;
+  using gum::ApproximationScheme::setBurnIn;
+
+  using gum::ApproximationScheme::verbosity;
+  using gum::ApproximationScheme::epsilon;
+  using gum::ApproximationScheme::minEpsilonRate;
+  using gum::ApproximationScheme::maxIter;
+  using gum::ApproximationScheme::maxTime;
+  using gum::ApproximationScheme::periodSize;
+  using gum::ApproximationScheme::burnIn;
+
+  using gum::ApproximationScheme::nbrIterations;
+  using gum::ApproximationScheme::currentTime;
+
+  using gum::ApproximationScheme::messageApproximationScheme;
+  using gum::ApproximationScheme::history;
 }
+%enddef  
+ADD_APPROXIMATIONSCHEME_API(gum::GibbsInference<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::GibbsKL<double>)
+ADD_APPROXIMATIONSCHEME_API(%arg(gum::credal::CNMonteCarloSampling<double,gum::LazyPropagation<double> >))
+ADD_APPROXIMATIONSCHEME_API(gum::credal::CNLoopyPropagation<double>)
 
 %extend gum::learning::BNLearner {
-  using gum::IApproximationSchemeConfiguration::setVerbosity;
-  using gum::IApproximationSchemeConfiguration::setEpsilon;
-  using gum::IApproximationSchemeConfiguration::setMinEpsilonRate;
-  using gum::IApproximationSchemeConfiguration::setMaxIter;
-  using gum::IApproximationSchemeConfiguration::setMaxTime;
-  using gum::IApproximationSchemeConfiguration::setPeriodSize;
-  using gum::IApproximationSchemeConfiguration::setBurnIn;
-
-  using gum::IApproximationSchemeConfiguration::verbosity;
-  using gum::IApproximationSchemeConfiguration::epsilon;
-  using gum::IApproximationSchemeConfiguration::minEpsilonRate;
-  using gum::IApproximationSchemeConfiguration::maxIter;
-  using gum::IApproximationSchemeConfiguration::maxTime;
-  using gum::IApproximationSchemeConfiguration::periodSize;
-  using gum::IApproximationSchemeConfiguration::burnIn;
-
-  using gum::IApproximationSchemeConfiguration::nbrIterations;
-  using gum::IApproximationSchemeConfiguration::currentTime;
-
   using gum::IApproximationSchemeConfiguration::messageApproximationScheme;
-  using gum::IApproximationSchemeConfiguration::history;
 }
 
-%extend gum::credal::CNMonteCarloSampling {
-  using gum::ApproximationScheme::setVerbosity;
-  using gum::ApproximationScheme::setEpsilon;
-  using gum::ApproximationScheme::setMinEpsilonRate;
-  using gum::ApproximationScheme::setMaxIter;
-  using gum::ApproximationScheme::setMaxTime;
-  using gum::ApproximationScheme::setPeriodSize;
-  using gum::ApproximationScheme::setBurnIn;
-
-  using gum::ApproximationScheme::verbosity;
-  using gum::ApproximationScheme::epsilon;
-  using gum::ApproximationScheme::minEpsilonRate;
-  using gum::ApproximationScheme::maxIter;
-  using gum::ApproximationScheme::maxTime;
-  using gum::ApproximationScheme::periodSize;
-  using gum::ApproximationScheme::burnIn;
-
-  using gum::ApproximationScheme::nbrIterations;
-  using gum::ApproximationScheme::currentTime;
-
-  using gum::ApproximationScheme::messageApproximationScheme;
-  using gum::ApproximationScheme::history;
-
-  using gum::credal::InferenceEngine::setRepetitiveInd;
-}
-
-%extend gum::credal::CNLoopyPropagation {
-  using gum::ApproximationScheme::setVerbosity;
-  using gum::ApproximationScheme::setEpsilon;
-  using gum::ApproximationScheme::setMinEpsilonRate;
-  using gum::ApproximationScheme::setMaxIter;
-  using gum::ApproximationScheme::setMaxTime;
-  using gum::ApproximationScheme::setPeriodSize;
-  using gum::ApproximationScheme::setBurnIn;
-
-  using gum::ApproximationScheme::verbosity;
-  using gum::ApproximationScheme::epsilon;
-  using gum::ApproximationScheme::minEpsilonRate;
-  using gum::ApproximationScheme::maxIter;
-  using gum::ApproximationScheme::maxTime;
-  using gum::ApproximationScheme::periodSize;
-  using gum::ApproximationScheme::burnIn;
-
-  using gum::ApproximationScheme::nbrIterations;
-  using gum::ApproximationScheme::currentTime;
-
-  using gum::ApproximationScheme::messageApproximationScheme;
-  using gum::ApproximationScheme::history;
-
-}
-
+%include "forUsing.i"
 
 %include "std_vector.i"
 %include "std_string.i"
@@ -397,9 +242,6 @@ namespace std {
 %import <agrum/core/types.h>
 %include <agrum/core/exceptions.h>
 %include <agrum/core/sequence.h>
-/*
-%include <agrum/core/set.h>
-*/
 %include <agrum/core/utils_random.h>
 
 %include <agrum/core/OMPThreads.h>

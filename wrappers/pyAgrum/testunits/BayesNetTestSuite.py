@@ -61,7 +61,7 @@ class TestInsertions(BayesNetTestCase):
         idList.append(bn.add(self.var4))
         idList.append(bn.add(self.var5))
 
-        self.assertEqual(len(bn), 5)
+        self.assertEqual(bn.size(), 5)
 
         i = 1
         for id_a in idList[:-1]:
@@ -109,7 +109,7 @@ class TestInsertions(BayesNetTestCase):
         self.fillTopo(bn, idList)
 
         self.assertFalse(bn.empty())
-        self.assertEqual(len(bn), 5)
+        self.assertEqual(bn.size(), 5)
 
         bn.eraseArc(idList[0], idList[2])
         bn.eraseArc(idList[2], idList[4])
