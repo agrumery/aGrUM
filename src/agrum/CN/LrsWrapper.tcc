@@ -124,6 +124,8 @@ namespace gum {
       __insertedVertices.clear();
       __output.clear();
       __vertex.clear();
+      __vertex.resize(__card,0);
+
       __volume = 0;
       __vertices = 0;
 
