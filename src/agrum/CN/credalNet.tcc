@@ -1298,6 +1298,8 @@ namespace gum {
       __current_bn = nullptr;
       __credalNet_current_cpt =  nullptr;
       __current_nodeType = nullptr;
+
+      __hasComputedCPTMinMax = false;
     }
 
     template< typename GUM_SCALAR >

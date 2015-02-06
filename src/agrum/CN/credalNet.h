@@ -444,7 +444,7 @@ namespace gum {
         NodeProperty< NodeType >* __current_nodeType;// = nullptr;
 
         /** @brief Used by L2U, to know if lower and upper probabilities over the second modality has been stored in order to speed-up the algorithm. */
-        bool __hasComputedCPTMinMax = false;
+        bool __hasComputedCPTMinMax;
         /**
          * @brief Used with binary networks to speed-up L2U inference. Store the lower probabilities of each node X over the "true" modality, i.e. \f$ \underline{p}(X = 1 \mid pa(X) = j) \f$.
          */
