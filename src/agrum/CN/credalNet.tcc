@@ -1151,6 +1151,10 @@ namespace gum {
       return __separatelySpecified;
     }
 
+    template< typename GUM_SCALAR >
+    const bool CredalNet< GUM_SCALAR >::hasComputedCPTMinMax() const {
+        return __hasComputedCPTMinMax;
+    }
 
     // only if CN is binary !!
     template< typename GUM_SCALAR >
@@ -1180,6 +1184,8 @@ namespace gum {
         __binCptMin[node] = min;
         __binCptMax[node] = max;
       }
+
+      __hasComputedCPTMinMax = true;
     }
 
     template< typename GUM_SCALAR >

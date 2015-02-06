@@ -142,6 +142,7 @@ namespace gum {
         __input.clear();
         __state = __states::none;
         __card = 0;
+        __vertex.clear();
       }
     }
 
