@@ -114,10 +114,10 @@ def computeScores(bn_name,csv_name,visible=False,transforme_label=None):
     nbr_arcs=1.0*bn.sizeArcs()
     dim=1.0*bn.dim()
 
-    aic=-2*likelihood+2*dim
-    aicc=aic+2*dim*(dim+1)/(nbr_lines-dim+1)
-    bic=-2*likelihood+dim*math.log(nbr_lines,2)
-    mdl=-likelihood+nbr_arcs*math.log(nbr_lines,2)+32*dim #32=nbr bits for a params
+    aic=likelihood-dim
+    aicc=2*aic-2*dim*(dim+1)/(nbr_lines-dim+1) if (nbr_lines-dim+1>0) else "undefined"
+    bic=likelihood-dim*math.log(nbr_lines,2)
+    mdl=likelihood-nbr_arcs*math.log(nbr_lines,2)-32*dim #32=nbr bits for a params
 
     return ((nbr_lines-nbr_insignificant)*100.0/nbr_lines,
             {'likelihood':likelihood,'aic':aic,'aicc':aicc,'bic':bic,'mdl':mdl})
