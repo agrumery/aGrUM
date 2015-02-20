@@ -277,7 +277,7 @@ namespace gum {
         p = strtok ( nullptr, " " );
 
         while ( p != nullptr ) {
-          values.push_back ( atoi ( p ) );
+          values.push_back ( atof ( p ) );
           p = strtok ( nullptr, " " );
         } // end of : line
 

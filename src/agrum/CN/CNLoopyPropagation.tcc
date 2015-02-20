@@ -358,7 +358,6 @@ namespace gum {
       if ( taille == 0 ) {
         msg_p_min = __cn->get_CPT_min() [ id ][ 0 ];
         msg_p_max = __cn->get_CPT_max() [ id ][ 0 ];
-
         return;
       }
 
@@ -625,6 +624,10 @@ namespace gum {
 
         // accelerer init pour evidences
         if ( __infE::_evidence.exists ( node ) ) {
+            if ( __infE::_evidence[ node ][ 1 ] != 0. && __infE::_evidence[ node ][ 1 ] != 1. ) {
+                GUM_ERROR ( OperationNotAllowed, "CNLoopyPropagation can only handle HARD evidences" );
+            }
+
           active_nodes_set.insert ( node );
           _update_l.set ( node, true );
           _update_p.set ( node, true );
@@ -693,8 +696,9 @@ namespace gum {
         GUM_SCALAR msg_p_min = 1.;
         GUM_SCALAR msg_p_max = 0.;
 
-        if ( __cn->currentNodeType ( node ) != CredalNet<GUM_SCALAR>::NodeType::Indic )
+        if ( __cn->currentNodeType ( node ) != CredalNet<GUM_SCALAR>::NodeType::Indic ){
           _enum_combi ( msgs_p, node, msg_p_min, msg_p_max );
+        }
 
         if ( msg_p_min <= ( GUM_SCALAR ) 0. )
           msg_p_min = ( GUM_SCALAR ) 0.;
@@ -1487,6 +1491,10 @@ namespace gum {
       for ( auto node : cnet.current_bn().nodes() )
         if ( cnet.current_bn().variable ( node ).domainSize() != 2 )
           GUM_ERROR ( OperationNotAllowed, "CNLoopyPropagation is only available with binary credal networks" );
+
+      // test if compute CPTMinMax has been called
+      if ( ! cnet.hasComputedCPTMinMax() )
+          GUM_ERROR ( OperationNotAllowed, "CNLoopyPropagation only works when \"computeCPTMinMax()\" has been called for this credal net" );
 
       __cn = &cnet;
       __bnet = &cnet.current_bn();

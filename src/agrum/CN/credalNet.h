@@ -367,6 +367,11 @@ namespace gum {
         const bool isSeparatelySpecified() const;
 
         /**
+         * @return Returns \c TRUE if this CredalNet has called computeCPTMinMax() to speed-up inference with binary networks and L2U. This needs to be reworked as it is too easy to forget to call it and it can't be called within the inference engine (constness).
+         */
+        const bool hasComputedCPTMinMax() const;
+
+        /**
          * Used with binary networks to speed-up L2U inference.
          *
          * @return Returns a constant reference to the lower probabilities of each node X over the "true" modality, i.e. \f$ \underline{p}(X = 1 \mid pa(X) = j) \f$.
@@ -438,6 +443,8 @@ namespace gum {
         /** @brief The NodeType of each node from the up-to-date network. */
         NodeProperty< NodeType >* __current_nodeType;// = nullptr;
 
+        /** @brief Used by L2U, to know if lower and upper probabilities over the second modality has been stored in order to speed-up the algorithm. */
+        bool __hasComputedCPTMinMax;
         /**
          * @brief Used with binary networks to speed-up L2U inference. Store the lower probabilities of each node X over the "true" modality, i.e. \f$ \underline{p}(X = 1 \mid pa(X) = j) \f$.
          */
