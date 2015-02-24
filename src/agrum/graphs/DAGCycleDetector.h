@@ -65,6 +65,7 @@ namespace gum {
       ARC_REVERSAL
     };
 
+    #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
     /// the base class indicating the possible changes
     class Change {
@@ -226,7 +227,7 @@ namespace gum {
 
     };
 
-
+    #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 
     // ############################################################################
