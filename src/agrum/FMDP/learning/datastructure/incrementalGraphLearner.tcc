@@ -107,6 +107,8 @@ namespace gum {
     template < TESTNAME AttributeSelection, bool isScalar >
     void IncrementalGraphLearner<AttributeSelection, isScalar>::addObservation( const Observation *newObs ){
 
+      __assumeValue(newObs);
+
       // The we go across the tree
       NodeId currentNodeId = _root;
 
@@ -188,6 +190,8 @@ namespace gum {
       if( boundVar == _value )
         _leafDatabase.insert( newNodeId, new Set< const Observation*>() );
 
+      _needUpdate = true;
+
       return newNodeId;
     }
 
@@ -207,6 +211,8 @@ namespace gum {
 //        delete _leafDatabase[currentNodeId];
 //        _leafDatabase.erase( currentNodeId );
 //      }
+
+      _needUpdate = true;
     }
 
 
@@ -237,6 +243,8 @@ namespace gum {
       // Retrait du NodeDatabase
       delete _nodeId2Database[currentNodeId];
       _nodeId2Database.erase(currentNodeId);
+
+      _needUpdate = true;
 
     }
 

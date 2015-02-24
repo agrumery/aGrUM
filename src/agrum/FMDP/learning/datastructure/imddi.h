@@ -32,6 +32,9 @@
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
 #include <agrum/FMDP/learning/datastructure/variableselector.h>
+#include <agrum/FMDP/learning/datastructure/leaves/leafAggregator.h>
+#include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
+#include <agrum/FMDP/learning/datastructure/leaves/concreteLeaf.h>
 // =========================================================================
 #include <agrum/variables/labelizedVariable.h>
 // =========================================================================
@@ -91,10 +94,23 @@ namespace gum {
         // ###################################################################
         void addObservation ( const Observation* );
 
+    protected :
+      void _updateNodeWithObservation( const Observation* newObs, NodeId currentNodeId );
+
+    public:
         // ###################################################################
         /// Updates the tree after a new observation has been added
         // ###################################################################
         void updateGraph();
+
+    protected :
+        NodeId _insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
+                                  const DiscreteVariable* boundVar,
+                                  NodeId* sonsMap );
+
+        void _chgNodeBoundVar( NodeId chgedNodeId, const DiscreteVariable* desiredVar );
+
+        void _removeNode( NodeId removedNodeId );
 
       /// @}
 
@@ -120,24 +136,22 @@ namespace gum {
                               VariableSelector & );
 
   public :
-
         // ###################################################################
         ///
         // ###################################################################
         void updateDecisionGraph();
-
   private :
+        void __rebuildDecisionGraph();
+        NodeId __insertLeaf( AbstractLeaf*, Int2Type<true> );
+        NodeId __insertLeaf( AbstractLeaf*, Int2Type<false> );
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        void __mergeLeaves(HashTable<NodeId, NodeId>& toTarget);
-
-        double __evalPair( double* feffectif, double ftotal, double* seffectif, double stotal );
-
-        /// @}
+      /// @}
 
       Sequence<const DiscreteVariable*> __varOrder;
+
+      LeafAggregator __lg;
+
+      HashTable<NodeId, AbstractLeaf*> __leafMap;
 
       /// The total number of observation added to this tree
       Idx __nbTotalObservation;

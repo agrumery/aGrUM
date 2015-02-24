@@ -64,20 +64,25 @@ namespace gum {
 
 
   // ==========================================================================
-  //
+  // Observation handling methods
   // ==========================================================================
 
     // ###################################################################
-    //
+    /* Updates database with new observation
+     *
+     * Calls either @fn __addObservation( const Observation*, Int2Type<true>)
+     * or @fn __addObservation( const Observation*, Int2Type<false>)
+     * depending on if we're learning reward function or transition probability
+     */
     // ###################################################################
     template<TESTNAME AttributeSelection, bool isScalar>
     void NodeDatabase<AttributeSelection, isScalar>::addObservation( const Observation* newObs ){
       __nbObservation++;
-      this->addObservation( newObs, Int2Type<isScalar>() );
+      this->__addObservation( newObs, Int2Type<isScalar>() );
     }
 
     template<TESTNAME AttributeSelection, bool isScalar>
-    void NodeDatabase<AttributeSelection, isScalar>::addObservation( const Observation* newObs, Int2Type<true> ){
+    void NodeDatabase<AttributeSelection, isScalar>::__addObservation( const Observation* newObs, Int2Type<true> ){
 
       for(auto varIter = __attrTable.cbeginSafe(); varIter != __attrTable.cendSafe(); ++varIter)
         varIter.val()->addObservation( newObs->modality(varIter.key()), newObs->reward() );
@@ -89,7 +94,7 @@ namespace gum {
     }
 
     template<TESTNAME AttributeSelection, bool isScalar>
-    void NodeDatabase<AttributeSelection, isScalar>::addObservation( const Observation* newObs, Int2Type<false> ){
+    void NodeDatabase<AttributeSelection, isScalar>::__addObservation( const Observation* newObs, Int2Type<false> ){
 
       for(auto varIter = __attrTable.cbeginSafe(); varIter != __attrTable.cendSafe(); ++varIter)
         varIter.val()->addObservation( newObs->modality(varIter.key()), newObs->modality(__value) );
@@ -100,28 +105,16 @@ namespace gum {
         __valueCount.insert( newObs->modality(__value), 1 );
     }
 
-    // ###################################################################
-    ///
-    // ###################################################################
-    template<TESTNAME AttributeSelection, bool isScalar>
-    double *NodeDatabase<AttributeSelection, isScalar>::effectif(){
-      double* ret = static_cast<double*>( SmallObjectAllocator::instance().allocate(sizeof(double)*__value->domainSize()));
-      for(Idx modality = 0; modality < __value->domainSize(); ++modality)
-        if( __valueCount.exists(modality) )
-          ret[modality] = (double)__valueCount[modality];
-        else
-          ret[modality] = 0.0;
-      return ret;
-    }
 
-    template<TESTNAME AttributeSelection, bool isScalar>
-    double NodeDatabase<AttributeSelection, isScalar>::reward(){
-      double ret = 0.0;
-      for(auto valuTer = __valueCount.cbeginSafe(); valuTer != __valueCount.cendSafe(); ++valuTer)
-        ret += valuTer.key() * (double) valuTer.val();
-      return ret / __nbObservation;
-    }
 
+  // ==========================================================================
+  // Aggregation Methods
+  // ==========================================================================
+
+
+    // ###################################################################
+    // Merges given NodeDatabase informations into current nDB.
+    // ###################################################################
     template<TESTNAME AttributeSelection, bool isScalar>
     NodeDatabase<AttributeSelection, isScalar>& NodeDatabase<AttributeSelection, isScalar>::operator+= ( const NodeDatabase<AttributeSelection, isScalar>& src ){
       this->__nbObservation += src.nbObservation();
@@ -129,10 +122,33 @@ namespace gum {
       for( auto varIter = __attrTable.beginSafe(); varIter != __attrTable.endSafe(); ++varIter )
         varIter.val() += src.testPolicy( varIter.key() );
 
-      for( auto valIter = src.valueCount().cbeginSafe(); valIter != src.valueCount().cendSafe(); ++valIter )
+      for( auto valIter = src.cbeginValues(); valIter != src.cendValues(); ++valIter )
         if( __valueCount.exists( valIter.key() ) )
           __valueCount[valIter.key()] += valIter.val();
         else
           __valueCount.insert(valIter.key(), valIter.val());
     }
 } // End of namespace gum
+
+
+// LEFT HERE ON PURPOSE
+// NOT TO BE DELETED
+
+/*template<TESTNAME AttributeSelection, bool isScalar>
+double *NodeDatabase<AttributeSelection, isScalar>::effectif(){
+  double* ret = static_cast<double*>( SmallObjectAllocator::instance().allocate(sizeof(double)*__value->domainSize()));
+  for(Idx modality = 0; modality < __value->domainSize(); ++modality)
+    if( __valueCount.exists(modality) )
+      ret[modality] = (double)__valueCount[modality];
+    else
+      ret[modality] = 0.0;
+  return ret;
+}*/
+
+/*template<TESTNAME AttributeSelection, bool isScalar>
+double NodeDatabase<AttributeSelection, isScalar>::reward(){
+  double ret = 0.0;
+  for(auto valuTer = __valueCount.cbeginSafe(); valuTer != __valueCount.cendSafe(); ++valuTer)
+    ret += valuTer.key() * (double) valuTer.val();
+  return ret / __nbObservation;
+}*/

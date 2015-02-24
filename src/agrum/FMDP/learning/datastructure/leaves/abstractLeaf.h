@@ -1,0 +1,96 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/**
+ * @file
+ * @brief Headers of the abstract Leaf class.
+ *
+ * @author Jean-Christophe MAGNAN
+ */
+
+// =========================================================================
+#ifndef GUM_ABSTRACT_LEAF_H
+#define GUM_ABSTRACT_LEAF_H
+// =========================================================================
+#include <agrum/core/hashTable.h>
+#include <agrum/core/sequence.h>
+#include <agrum/core/multiPriorityQueue.h>
+// =========================================================================
+#include <agrum/graphs/graphElements.h>
+// =========================================================================
+
+namespace gum {
+
+  /**
+   * @class AbstractLeaf abstractLeaf.h <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
+   * @brief Abstract Class implementing a Leaf
+   * @ingroup fmdp_group
+   *
+   */
+
+
+  class AbstractLeaf {
+
+    public:
+
+      // ==========================================================================
+      /// @name Constructor & destructor.
+      // ==========================================================================
+      /// @{
+
+        // ###################################################################
+        /// Default constructor
+        // ###################################################################
+        AbstractLeaf ( NodeId leafId ) : __leafId(leafId) {
+          GUM_CONSTRUCTOR(AbstractLeaf)
+        }
+
+        // ###################################################################
+        /// Default destructor
+        // ###################################################################
+        virtual ~AbstractLeaf(){
+          GUM_DESTRUCTOR(AbstractLeaf)
+        }
+
+      /// @}
+
+        // ###################################################################
+        /// Gaves the leaf effectif for given modality
+        // ###################################################################
+        virtual Idx effectif(Idx) const = 0;
+        virtual Idx total() const = 0;
+
+        // ###################################################################
+        /// Returns true if abstractleaf has leaf in it
+        // ###################################################################
+        virtual bool contains( NodeId testedId ) const { return __leafId == testedId; }
+
+        NodeId id(){ return __leafId; }
+
+        virtual Idx nbModa() = 0;
+
+      private :
+        NodeId __leafId;
+  };
+
+
+} /* namespace gum */
+
+
+#endif // GUM_ABSTRACT_LEAF_H

@@ -48,7 +48,9 @@ namespace gum {
    *
    */
   template <TESTNAME AttributeSelection, bool isScalar = false >
-  class IncrementalGraphLearner {
+  class IncrementalGraphLearner {    
+
+    typedef typename ValueSelect<isScalar, double, long unsigned int>::type ValueType;
 
     public:
 
@@ -87,6 +89,16 @@ namespace gum {
         // ###################################################################
     public :
         virtual void addObservation ( const Observation* );
+
+    private:
+        // ###################################################################
+        ///
+        // ###################################################################
+        void __assumeValue( const Observation* obs ){ __assumeValue( obs, Int2Type<isScalar>() ); }
+        void __assumeValue( const Observation* obs, Int2Type<true>)
+                  { if( !_valueAssumed.exists(obs->reward())) _valueAssumed << obs->reward(); }
+        void __assumeValue( const Observation* obs, Int2Type<false>)
+                  { if( !_valueAssumed.exists(obs->modality(_value))) _valueAssumed << obs->modality(_value); }
 
     protected :
         virtual void _updateNodeWithObservation( const Observation* newObs, NodeId currentNodeId ){
@@ -208,7 +220,11 @@ namespace gum {
       MultiDimDecisionGraph<double>* _target;
 
       Set<const DiscreteVariable*> _setOfVars;
+
       const DiscreteVariable* _value;
+      Sequence<ValueType> _valueAssumed;
+
+      bool _needUpdate;
   };
 
 

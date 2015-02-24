@@ -19,38 +19,41 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the ITI class.
+ * @brief Headers of the Leaf Aggregator class.
  *
  * @author Jean-Christophe MAGNAN
  */
 
 // =========================================================================
-#ifndef GUM_ITI_H
-#define GUM_ITI_H
+#ifndef GUM_LEAF_AGGREGATOR_H
+#define GUM_LEAF_AGGREGATOR_H
 // =========================================================================
+#include <agrum/core/hashTable.h>
+#include <agrum/core/sequence.h>
 #include <agrum/core/multiPriorityQueue.h>
 // =========================================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/graphs/graphElements.h>
+#include <agrum/graphs/nodeGraphPart.h>
 // =========================================================================
-#include <agrum/FMDP/learning/core/templateStrategy.h>
-#include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
+#include <agrum/multidim/decisionGraphUtilities/link.h>
 // =========================================================================
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/FMDP/learning/datastructure/leaves/leafPair.h>
+#include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
+#include <agrum/FMDP/learning/datastructure/leaves/concreteLeaf.h>
+#include <agrum/FMDP/learning/datastructure/leaves/fusionContext.h>
 // =========================================================================
 
 namespace gum {
 
   /**
-   * @class ITI iti.h <agrum/FMDP/planning/decisionGraph/iti.h>
-   * @brief
+   * @class LeafAggregator leafAggregator.h <agrum/FMDP/learning/decisionGraph/leafAggregator.h>
+   * @brief Gather together leaves with similar distributions
    * @ingroup fmdp_group
-   *
-   *
    *
    */
 
-  template <TESTNAME AttributeSelection, bool isScalar = false >
-  class ITI : public IncrementalGraphLearner<AttributeSelection, isScalar>{
+
+  class LeafAggregator {
 
     public:
 
@@ -60,94 +63,90 @@ namespace gum {
       /// @{
 
         // ###################################################################
-        /// Variable Learner constructor
+        /// Default constructor
         // ###################################################################
-        ITI ( MultiDimDecisionGraph<double>* target,
-                double attributeSelectionThreshold,
-                Set<const DiscreteVariable*> attributeListe,
-                const DiscreteVariable* learnedValue );
-
-        // ###################################################################
-        /// Reward Learner constructor
-        // ###################################################################
-        ITI ( MultiDimDecisionGraph<double>* target,
-                double attributeSelectionThreshold,
-                Set<const DiscreteVariable*> attributeListe );
+        LeafAggregator ( NodeGraphPart* idSource, double similarityThreshold );
 
         // ###################################################################
         /// Default destructor
         // ###################################################################
-        ~ITI(){GUM_DESTRUCTOR(ITI);}
+        ~LeafAggregator();
 
       /// @}
 
       // ==========================================================================
-      /// @name Incrementals methods
-      // ==========================================================================
-      /// @{
-
-        // ###################################################################
-        /// Adds a new observation to the structure
-        // ###################################################################
-        void addObservation ( const Observation* );
-
-    protected :
-        void _updateNodeWithObservation( const Observation* newObs, NodeId currentNodeId );
-
-
-    public :
-
-        // ###################################################################
-        /// Updates the tree after a new observation has been added
-        // ###################################################################
-        void updateGraph();
-
-    protected :
-        NodeId _insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
-                                  const DiscreteVariable* boundVar,
-                                  NodeId* sonsMap );
-
-        void _chgNodeBoundVar( NodeId chgedNodeId, const DiscreteVariable* desiredVar );
-
-        void _removeNode( NodeId removedNodeId );
-
-      /// @}
-
-    public :
-
-      // ==========================================================================
-      /// @name Decision Graph Updating methods
+      /// @name Leaf Handling methods
       // ==========================================================================
       /// @{
 
         // ###################################################################
         ///
         // ###################################################################
-        void updateDecisionGraph();
+        void addLeaf( AbstractLeaf* );
 
-    private :
-        NodeId __insertNodeInDecisionGraph( NodeId );
-        NodeId __insertTerminalNode( NodeId );
-        NodeId __insertTerminalNode( NodeId, Int2Type<true> );
-        NodeId __insertTerminalNode( NodeId, Int2Type<false> );
+        // ###################################################################
+        ///
+        // ###################################################################
+        bool updateLeaf( AbstractLeaf* );
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        void removeLeaf( AbstractLeaf* );
 
       /// @}
 
-      HashTable<NodeId, bool> __staleTable;
+        // ==========================================================================
+        /// @name
+        // ==========================================================================
+        /// @{
 
-      /// The total number of observation added to this tree
-      Idx __nbTotalObservation;
+          // ###################################################################
+          ///
+          // ###################################################################
+          void begin();
 
-      /// The threshold above which we consider variables to be dependant
-      double __attributeSelectionThreshold;
+          // ###################################################################
+          ///
+          // ###################################################################
+          bool hasNext();
+
+          // ###################################################################
+          ///
+          // ###################################################################
+          double next();
+
+        /// @}
+
+        void update(  );
+
+        bool needsUpdate(){ return __needsUpdate; }
+
+        HashTable<NodeId,AbstractLeaf*> leavesMap();
+
+    private :
+
+
+        void __removeContext( Idx );
+        void __addInitialPair( LeafPair* ) ;
+        void __updateInitialPair( LeafPair* ) ;
+        void __removeInitialPair( LeafPair* ) ;
+
+        Sequence<FusionContext<false>*> __fusionSeq;
+
+        FusionContext<true>* __initialContext;
+
+        HashTable<AbstractLeaf*, Set<LeafPair*>* > __leaf2Pair;
+
+        NodeGraphPart* __leavesCpt;
+
+        double __similarityThreshold;
+        bool __needsUpdate;
   };
 
 
 } /* namespace gum */
 
 
-
-#endif // GUM_ITI_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
+#endif // GUM_LEAF_AGGREGATOR_H
 

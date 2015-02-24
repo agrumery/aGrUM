@@ -19,46 +19,38 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the NodeDatabase class.
+ * @brief Headers of the Fusion Context class.
  *
  * @author Jean-Christophe MAGNAN
  */
 
 // =========================================================================
-#ifndef GUM_NODE_DATABASE_H
-#define GUM_NODE_DATABASE_H
+#ifndef GUM_FUSION_CONTEXT_H
+#define GUM_FUSION_CONTEXT_H
 // =========================================================================
-#include <agrum/core/hashTable.h>
-#include <agrum/core/sequence.h>
+#include <agrum/core/multiPriorityQueue.h>
 // =========================================================================
-#include <agrum/FMDP/learning/observation.h>
+#include <agrum/graphs/graphElements.h>
+// =========================================================================
 #include <agrum/FMDP/learning/core/templateStrategy.h>
-#include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.h>
-#include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy.h>
-#include <agrum/FMDP/learning/core/testPolicy/leastSquareTestPolicy.h>
-// =========================================================================
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/FMDP/learning/datastructure/leaves/leafPair.h>
+#include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
 // =========================================================================
 
 namespace gum {
 
   /**
-   * @class NodeDatabase NodeDatabase.h <agrum/FMDP/learning/decisionGraph/nodeDatabase.h>
-   * @brief
+   * @class FusionContext FusionContext.h <agrum/FMDP/learning/decisionGraph/fusionContext.h>
+   * @brief Contains leaves situation after a merging have been made
    * @ingroup fmdp_group
    *
    */
 
+  typedef HashTableConstIteratorSafe<LeafPair*, std::vector<Size>> pair_iterator;
 
-  template<TESTNAME AttributeSelection, bool isScalar>
-  class NodeDatabase {
 
-    typedef typename ValueSelect<isScalar, double, long unsigned int>::type ValueType;
-
-    template < typename GUM_SCALAR >
-    using TestPolicy = typename TestSelect<AttributeSelection, GTestPolicy<GUM_SCALAR>,
-                                                               Chi2TestPolicy<GUM_SCALAR>,
-                                                               LeastSquareTestPolicy<GUM_SCALAR> >::type ;
+  template<bool isInitial=false>
+  class FusionContext {
 
     public:
 
@@ -70,118 +62,149 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        NodeDatabase (const Set<const DiscreteVariable*>*, const DiscreteVariable* = nullptr);
+        FusionContext ( AbstractLeaf* );
 
         // ###################################################################
         /// Default destructor
         // ###################################################################
-        ~NodeDatabase();
+        ~FusionContext();
 
       /// @}
 
       // ==========================================================================
-      /// @name Observation handling methods
+      /// @name Associated Leaves Handling methods
       // ==========================================================================
       /// @{
-
-        // ###################################################################
-        /** Updates database with new observation
-         *
-         * Calls either @fn __addObservation( const Observation*, Int2Type<true>)
-         * or @fn __addObservation( const Observation*, Int2Type<false>)
-         * depending on if we're learning reward function or transition probability
-         **/
-        // ###################################################################
-        void addObservation( const Observation* );
-
-    private:
-        void __addObservation( const Observation*, Int2Type<true>);
-        void __addObservation( const Observation*, Int2Type<false>);
-
-    public:
-
-        // ###################################################################
-        /// Nb observation taken into account by this instance
-        // ###################################################################
-        INLINE Idx nbObservation(){ return __nbObservation; }
-
-      /// @}
-
-      // ==========================================================================
-      /// @name Variable Test Methods
-      // ==========================================================================
-      /// @{
-
-        // ###################################################################
-        /// Indicates wether or not, node has sufficient observation so that
-        /// any statistic is relevant
-        // ###################################################################
-        INLINE bool isTestRelevant( const DiscreteVariable* var ) const { return __attrTable[var]->isTestRelevant(); }
-
-        // ###################################################################
-        /// Returns the performance of given variables according to selection
-        /// criterion
-        // ###################################################################
-        INLINE double testValue( const DiscreteVariable* var ) const { return __attrTable[var]->score(); }
-
-        // ###################################################################
-        /// Returns the performance of given variables according to selection
-        /// secondary criterion (to break ties)
-        // ###################################################################
-        INLINE double testOtherCriterion( const DiscreteVariable* var ) const { return __attrTable[var]->secondaryscore(); }
-
-      /// @}
-
-      // ==========================================================================
-      /// @name Aggregation Methods
-      // ==========================================================================
-      /// @{
-
-        // ###################################################################
-        /// Merges given NodeDatabase informations into current nDB.
-        // ###################################################################
-        NodeDatabase<AttributeSelection, isScalar>& operator+= ( const NodeDatabase<AttributeSelection, isScalar>& src );
-
-        // ###################################################################
-        /// Returns a reference to nDB test policy for given variable
-        /// (so that test policy information can be merged too)
-        // ###################################################################
-        const TestPolicy<ValueType>* testPolicy( const DiscreteVariable* var ) const { return __attrTable[var]; }
-
-        // ###################################################################
-        /// Iterators on value count to recopy correctly its content
-        // ###################################################################
-        HashTableConstIteratorSafe<ValueType,Idx>& cbeginValues() const { return __valueCount.cbeginSafe(); }
-        HashTableConstIteratorSafe<ValueType,Idx>& cendValues() const { return __valueCount.cendSafe(); }
-
-      /// @}
 
         // ###################################################################
         ///
         // ###################################################################
-        /*double* effectif();
+    public :
+        bool containsAssociatedLeaf( AbstractLeaf* l ){ return __containsAssociatedLeaf( l, Int2Type<isInitial>() ); }
+    private :
+        bool __containsAssociatedLeaf( AbstractLeaf* l, Int2Type<false> ){ return __leaf2Pair.exists(l); }
+        bool __containsAssociatedLeaf( AbstractLeaf*, Int2Type<true> ){ return false; }
 
-        double reward();*/
+        // ###################################################################
+        ///
+        // ###################################################################
+    public :
+        bool associateLeaf( AbstractLeaf* l ){ return __associateLeaf( l, Int2Type<isInitial>() ); }
+    private :
+        bool __associateLeaf( AbstractLeaf*, Int2Type<false> );
+        bool __associateLeaf( AbstractLeaf*, Int2Type<true> ){ return false; }
 
-        Idx effectif(Idx moda){ return __valueCount.getWithDefault(moda, 0 ); }
+
+        // ###################################################################
+        ///
+        // ###################################################################
+    public :
+        bool updateAssociatedLeaf( AbstractLeaf* l ){ return __updateAssociatedLeaf( l, Int2Type<isInitial>() ); }
+    private :
+        bool __updateAssociatedLeaf( AbstractLeaf*, Int2Type<false> );
+        bool __updateAssociatedLeaf( AbstractLeaf*, Int2Type<true> ){ return false; }
+
+    public :
+        bool updateAllAssociatedLeaves(){ return __updateAllAssociatedLeaves( Int2Type<isInitial>() ); }
+    private :
+        bool __updateAllAssociatedLeaves( Int2Type<false> );
+        bool __updateAllAssociatedLeaves( Int2Type<true> ){ return false; }
+
+
+        // ###################################################################
+        ///
+        /// @warning : won't delete Associated Pair created (because subsequent
+        /// fusioncontexts might be using it)
+        // ###################################################################
+    public :
+        bool deassociateLeaf( AbstractLeaf* l ){ return __deassociateLeaf( l, Int2Type<isInitial>() ); }
+    private :
+        bool __deassociateLeaf( AbstractLeaf*, Int2Type<false> );
+        bool __deassociateLeaf( AbstractLeaf*, Int2Type<true> ){ return false; }
+
+      /// @}
+
+    public :
+      // ==========================================================================
+      /// @name Pair handling methods
+      // ==========================================================================
+      /// @{
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        bool addPair( LeafPair* p );
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        bool updatePair( LeafPair* p );
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        bool removePair( LeafPair* p );
+
+
+        pair_iterator beginPairs(){ return __pairsHeap.allValues().beginSafe(); }
+        pair_iterator endPairs(){ return __pairsHeap.allValues().endSafe(); }
+
+      /// @}
+
+      // ==========================================================================
+      /// @name Best Pair access methods
+      // ==========================================================================
+      /// @{
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        LeafPair* top(){ return __pairsHeap.top(); }
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        double topLikelyhood(){ return __pairsHeap.topPriority(); }
+
+      /// @}
+
+      // ==========================================================================
+      /// @name FusionContext Leaf and associated pairs handling methods
+      // ==========================================================================
+      /// @{
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        AbstractLeaf* leaf(){ return __leaf; }
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        LeafPair* leafAssociatedPair( AbstractLeaf* l ){ return __leaf2Pair.getWithDefault(l, nullptr); }
+
+        // ###################################################################
+        ///
+        // ###################################################################
+    public :
+        Set<LeafPair*> associatedPairs(){ return __associatedPairs( Int2Type<isInitial>() ); }
+    private :
+        Set<LeafPair*> __associatedPairs( Int2Type<false> );
+        Set<LeafPair*> __associatedPairs( Int2Type<true> ){ return Set<LeafPair*>(); }
+      /// @}
 
     private :
 
-      /// Table giving for every variables its instantiation
-      HashTable<const DiscreteVariable*, TestPolicy<ValueType>*> __attrTable;
+        MultiPriorityQueue<LeafPair*, double, std::less<double>> __pairsHeap;
 
-      /// So does this reference on the value observed
-      const DiscreteVariable* __value;
+        HashTable<AbstractLeaf*, LeafPair*> __leaf2Pair;
 
-      ///
-      Idx __nbObservation;
-      HashTable<ValueType,Idx> __valueCount;
+        AbstractLeaf* __leaf;
   };
 
 
 } /* namespace gum */
 
-#include <agrum/FMDP/learning/datastructure/nodeDatabase.tcc>
 
-#endif // GUM_NODE_DATABASE_H
+#endif // GUM_FUSION_CONTEXT_H
 
