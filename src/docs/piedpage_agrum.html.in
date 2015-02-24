@@ -1,10 +1,9 @@
     <div class="footer">
-        <small>
+    <small>
      <table width="100%"><tr><td width="150">
         <A href="$projectname.lip6.fr">$projectname</A> <b>$projectnumber</b> <br/> $datetime <br/>
     </td><td>
-        &copy; CG&amp;PHW - LIP6 2005 <br/>
-        &copy; CG&amp;PHW&amp;JPD&amp;LT - LIP6 2007 <br/>
+        &copy; CG&amp;PHW&amp;others - LIP6 2005-2007-2012 <br/>
     </td><td align="right">
         <a href="http://www.doxygen.org/index.html">DoXyGeN $doxygenversion</a>
     </td></tr></table>

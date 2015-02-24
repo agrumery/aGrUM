@@ -20,6 +20,7 @@ using namespace std;
   import numpy
 %}
 
+
 //////////////////////////////////////////////////////////////////
 /* declaration of code modifiers for 'pythonification' of aGrUM */
 //////////////////////////////////////////////////////////////////
@@ -49,6 +50,22 @@ using namespace std;
 
 %include "influenceDiagram.i"
 %include "influenceDiagramInference.i"
+
+//////////////////////////////////////////////////////////////////
+/* extraction of the API for all wrappers */
+//////////////////////////////////////////////////////////////////
+%define ADD_CASTasAPPROXIMATIONSCHEMECONFIGURATION(classname)
+%extend classname {
+  const gum::IApproximationSchemeConfiguration& castAsASC(void) {
+    return dynamic_cast<gum::IApproximationSchemeConfiguration &>(*(self));
+  }
+}
+%enddef  
+ADD_CASTasAPPROXIMATIONSCHEMECONFIGURATION(gum::GibbsInference<double>)
+ADD_CASTasAPPROXIMATIONSCHEMECONFIGURATION(gum::GibbsKL<double>)
+ADD_CASTasAPPROXIMATIONSCHEMECONFIGURATION(%arg(gum::credal::CNMonteCarloSampling<double,gum::LazyPropagation<double> >))
+ADD_CASTasAPPROXIMATIONSCHEMECONFIGURATION(gum::credal::CNLoopyPropagation<double>)
+ADD_CASTasAPPROXIMATIONSCHEMECONFIGURATION(gum::learning::BNLearner)
 
 //////////////////////////////////////////////////////////////////
 /* extraction of the API for all wrappers */

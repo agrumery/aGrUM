@@ -279,7 +279,9 @@ namespace gum {
 
         //typedef const CredalNet< GUM_SCALAR > * (infE::*cnfunc) ();
         //cnfunc getCN = &infE::getCN;
+    public:
 
+        virtual void insertEvidenceFile ( const std::string& path ) { InferenceEngine<GUM_SCALAR>::insertEvidenceFile(path);};
 
     };
 

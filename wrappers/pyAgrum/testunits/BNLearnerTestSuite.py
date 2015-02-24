@@ -18,7 +18,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
         learner=gum.BNLearner("../../../src/testunits/ressources/asia.csv")
         learner.useGreedyHillClimbing()
         bn=learner.learnBN()
-        self.assertEqual(len(bn),8)
+        self.assertEqual(bn.size(),8)
 
         with self.assertRaises(gum.IOError):
           learner=gum.BNLearner("shouldNotExist.csv")

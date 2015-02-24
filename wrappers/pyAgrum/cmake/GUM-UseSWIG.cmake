@@ -72,7 +72,7 @@ macro(GUM_SWIG_ADD_SOURCE_TO_MODULE name outfiles infile)
     endif()
   endif()
 
-  
+
   ####################### THE CHANGE AGRUM HAS MADE ######################
   # if outdir is given, swig_generated_file_fullname takes it into account
   ########################################################################
@@ -122,7 +122,7 @@ macro(GUM_SWIG_ADD_SOURCE_TO_MODULE name outfiles infile)
   endforeach()
 
   set(swig_special_flags)
-  # default is c, so add c++ flag if it is c++
+  # def ault is c, so add c++ flag if it is c++
   if(swig_source_file_cplusplus)
     set(swig_special_flags ${swig_special_flags} "-c++")
   endif()
@@ -144,8 +144,8 @@ macro(GUM_SWIG_ADD_SOURCE_TO_MODULE name outfiles infile)
     ${swig_include_dirs}
     -o "${swig_generated_file_fullname}"
     "${swig_source_file_fullname}"
-    COMMAND sed 
-    ARGS -i 's/\\bNodeProperty\\b/gum::NodeProperty/g' 
+    COMMAND sed
+    ARGS -i 's/\\bNodeProperty\\b/gum::NodeProperty/g'
     ${swig_generated_file_fullname}
     MAIN_DEPENDENCY "${swig_source_file_fullname}"
     DEPENDS ${SWIG_MODULE_${name}_EXTRA_DEPS}
