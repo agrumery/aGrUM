@@ -966,93 +966,153 @@ namespace gum {
     template<typename GUM_SCALAR>
     Type<GUM_SCALAR>*
     PRMFactory<GUM_SCALAR>::__retrieveType( const std::string& name ) const {
-      try {
-        return __prm->__typeMap[name];
-      } catch( NotFound& ) {
-        try {
-          return  __prm->__typeMap[__addPrefix( name )];
-        } catch( NotFound& ) {
-          // Looking for the type using all declared namespaces
-          std::string prefix;
-          std::string dot = ".";
+      Type<GUM_SCALAR> *type = 0;
+      std::string full_name;
 
-          for( const auto & ns : __namespaces ) {
-            if( __prm->__typeMap.exists( ns + dot + name ) ) {
-              if( prefix != "" ) {
-                GUM_ERROR( NotFound, "Type name '" << name << "' is ambiguous. Specify full name" );
-              }
+      // Looking for the type using its name
+      if (__prm->__typeMap.exists(name)) {
+        type = __prm->__typeMap[name];
+        full_name = name;
+      }
 
-              prefix = ns;
-            }
-          }
-
-          return __prm->__typeMap[prefix + dot + name];
+      // Looking for the type in current package
+      std::string prefixed = __addPrefix(name);
+      if (__prm->__typeMap.exists(prefixed)) {
+        if (type == 0) {
+          type = __prm->__typeMap[prefixed];
+          full_name = prefixed;
+        } else if (full_name != prefixed) {
+          GUM_ERROR( DuplicateElement, "Type name '" << name << "' is ambiguous: specify full name." );
         }
       }
 
-      return 0;
+      // Looking for the type relatively to current package
+      std::string relatif_ns = currentPackage();
+      size_t last_dot = relatif_ns.find_last_of('.');
+      if (last_dot != std::string::npos) {
+        relatif_ns = relatif_ns.substr(0, last_dot) + '.' + name;
+
+        if (__prm->__typeMap.exists(relatif_ns)) {
+          if (type == 0) {
+            type = __prm->__typeMap[relatif_ns];
+            full_name = relatif_ns;
+          } else if (full_name != relatif_ns) {
+            GUM_ERROR( DuplicateElement, "Type name '" << name << "' is ambiguous: specify full name." );
+          }
+        }
+      }
+
+
+      // Looking for the type using all declared namespaces
+      if (not __namespaces.empty()) {
+        for( const auto & ns : *(__namespaces.top()) ) {
+          std::string ns_name = ns + "." + name;
+          if( __prm->__typeMap.exists( ns_name ) ) {
+            if (type == 0) {
+              type = __prm->__typeMap[ns_name];
+              full_name = ns_name;
+            } else if (full_name != ns_name) {
+              GUM_ERROR( DuplicateElement, "Type name '" << name << "' is ambiguous: specify full name." );
+            }
+          }
+        }
+      }
+
+      if (type == 0) {
+        GUM_ERROR( NotFound, "Type '" << name << "' not found, check imports." );
+      }
+
+      return type;
     }
 
     template<typename GUM_SCALAR>
     Class<GUM_SCALAR>*
     PRMFactory<GUM_SCALAR>::__retrieveClass( const std::string& name ) const {
-      try {
-        return __prm->__classMap[name];
-      } catch( NotFound& ) {
-        try {
-          return __prm->__classMap[__addPrefix( name )];
-        } catch( NotFound& ) {
-          // Looking for the class using all declared namespaces
-          std::string prefix;
-          std::string dot = ".";
+      Class<GUM_SCALAR> *a_class = 0;
+      std::string full_name;
 
-          for( const auto & ns : __namespaces ) {
-            if( __prm->__classMap.exists( ns + dot + name ) ) {
-              if( prefix != "" ) {
-                GUM_ERROR( NotFound, "Class name '" << name << "' is ambiguous. Specify full name" );
-              }
-
-              prefix = ns;
-            }
-          }
-
-          return __prm->__classMap[prefix + dot + name];
+      // Looking for the type using its name
+      if (__prm->__classMap.exists(name)) {
+        a_class = __prm->__classMap[name];
+        full_name = name;
+      }
+      
+      // Looking for the type using current package
+      std::string prefixed = __addPrefix(name);
+      if (__prm->__classMap.exists(prefixed)) {
+        if (a_class == 0) {
+          a_class = __prm->__classMap[prefixed];
+          full_name = prefixed;
+        } else if (full_name != prefixed) {
+          GUM_ERROR( DuplicateElement, "Class name '" << name << "' is ambiguous: specify full name." );
         }
       }
 
-      // Just for compilation warnings
-      return 0;
+      // Looking for the class using all declared namespaces
+      if (not __namespaces.empty()) {
+        for( const auto & ns : *(__namespaces.top()) ) {
+          std::string ns_name = ns + "." + name;
+          if( __prm->__classMap.exists( ns_name ) ) {
+            if (a_class == 0) {
+              a_class = __prm->__classMap[ns_name];
+              full_name = ns_name;
+            } else if (full_name != ns_name) {
+              GUM_ERROR( DuplicateElement, "Class name '" << name << "' is ambiguous: specify full name." );
+            }
+          }
+        }
+      }
+      
+      if (a_class == 0) {
+        GUM_ERROR( NotFound, "Class '" << name << "' not found, check imports." );
+      }
+
+      return a_class;
     }
 
     template<typename GUM_SCALAR>
     Interface<GUM_SCALAR>*
     PRMFactory<GUM_SCALAR>::__retrieveInterface( const std::string& name ) const {
-      try {
-        return __prm->__interfaceMap[name];
-      } catch( NotFound& ) {
-        try {
-          return __prm->__interfaceMap[__addPrefix( name )];
-        } catch( NotFound& ) {
-          // Looking for the interface using all declared namespaces
-          std::string prefix;
-          std::string dot = ".";
+      Interface<GUM_SCALAR> *interface = 0;
+      std::string full_name;
 
-          for( const auto & ns : __namespaces ) {
-            if( __prm->__interfaceMap.exists( ns + dot + name ) ) {
-              if( prefix != "" ) {
-                GUM_ERROR( NotFound, "Class name '" << name << "' is ambiguous. Specify full name" );
-              }
+      // Looking for the type using its name
+      if (__prm->__interfaceMap.exists(name)) {
+        interface = __prm->__interfaceMap[name];
+        full_name = name;
+      }
 
-              prefix = ns;
-            }
-          }
-
-          return __prm->__interfaceMap[prefix + dot + name];
+      // Looking for the type using current package
+      std::string prefixed = __addPrefix(name);
+      if (__prm->__interfaceMap.exists(prefixed)) {
+        if (interface == 0) {
+          interface = __prm->__interfaceMap[prefixed];
+          full_name = prefixed;
+        } else if (full_name != prefixed) {
+          GUM_ERROR( DuplicateElement, "Interface name '" << name << "' is ambiguous: specify full name." );
         }
       }
 
-      // Just for compilation warnings
-      return 0;
+      // Looking for the interface using all declared namespaces
+      if (not __namespaces.empty()) {
+        for( const auto & ns : *(__namespaces.top()) ) {
+          std::string ns_name = ns + "." + name;
+          if( __prm->__interfaceMap.exists( ns_name ) ) {
+            if (interface == 0) {
+              interface = __prm->__interfaceMap[ns_name];
+              full_name = ns_name;
+            } else if (full_name != ns_name) {
+              GUM_ERROR( DuplicateElement, "Interface name '" << name << "' is ambiguous: specify full name." );
+            }
+          }
+        }
+      }
+ 
+      if (interface == 0) {
+        GUM_ERROR( NotFound, "Inteface '" << name << "' not found, check imports." );
+      }
+
+      return interface;
     }
 
 
@@ -1328,15 +1388,21 @@ namespace gum {
     void
     PRMFactory<GUM_SCALAR>::pushPackage( const std::string& name ) {
       __packages.push_back( name );
-      __namespaces.insert( name );
+      __namespaces.insert(new List<std::string>());
     }
 
     template<typename GUM_SCALAR> INLINE
     std::string
     PRMFactory<GUM_SCALAR>::popPackage() {
+
       if( not __packages.empty() ) {
         std::string s = __packages.back();
         __packages.pop_back();
+
+        if (not __namespaces.empty()) {
+          delete __namespaces.top();
+          __namespaces.eraseTop();
+        }
         return s;
       }
 
@@ -1344,6 +1410,16 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> INLINE
+    void
+    PRMFactory<GUM_SCALAR>::addImport ( const std::string& name ) {
+      std::cout << "In addImport(" << name << ")" << std::endl;
+      if (name.length() == 0) {
+        GUM_ERROR(OperationNotAllowed, "illegal import name");
+      }
+      __namespaces.top()->push_back(name);
+  }
+
+  template<typename GUM_SCALAR> INLINE
     void
     PRMFactory<GUM_SCALAR>::setReferenceSlot( const std::string& l_i,
         const std::string& r_i ) {
@@ -1357,39 +1433,39 @@ namespace gum {
       }
     }
 
-    template<typename GUM_SCALAR> INLINE
+  template<typename GUM_SCALAR> INLINE
     Class<GUM_SCALAR>&
     PRMFactory<GUM_SCALAR>::retrieveClass( const std::string& name ) {
       return *__retrieveClass( name );
     }
 
-    template<typename GUM_SCALAR> INLINE
+  template<typename GUM_SCALAR> INLINE
     Type<GUM_SCALAR>&
     PRMFactory<GUM_SCALAR>::retrieveType( const std::string& name ) {
       return *__retrieveType( name );
     }
 
-    template<typename GUM_SCALAR> INLINE
+  template<typename GUM_SCALAR> INLINE
     Type<GUM_SCALAR>&
     PRMFactory<GUM_SCALAR>::retrieveCommonType( const std::vector<ClassElement<GUM_SCALAR>*>& elts ) {
       return * ( __retrieveCommonType( elts ) );
     }
 
 
-    template<typename GUM_SCALAR>
+  template<typename GUM_SCALAR>
     bool PRMFactory<GUM_SCALAR>::isClassOrInterface( const std::string& type ) const {
       std::string dot = ".";
       return prm()->isClass( type ) or
-             prm()->isClass( currentPackage() + dot + type ) or
-             prm()->isInterface( type ) or
-             prm()->isInterface( currentPackage() + dot + type ) ;
+        prm()->isClass( currentPackage() + dot + type ) or
+        prm()->isInterface( type ) or
+        prm()->isInterface( currentPackage() + dot + type ) ;
     }
 
-    template<typename GUM_SCALAR>
+  template<typename GUM_SCALAR>
     bool PRMFactory<GUM_SCALAR>::isArrayInCurrentSystem( const std::string& name ) const {
       const System<GUM_SCALAR>* system = static_cast<const System<GUM_SCALAR>*>( getCurrent() );
       return ( system && system->isArray( name ) );
     }
-  } /* namespace prm */
+} /* namespace prm */
 } /* namespace gum */
 

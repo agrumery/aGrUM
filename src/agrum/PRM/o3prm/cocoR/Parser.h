@@ -122,10 +122,15 @@ class Parser {
       return factory().isClassOrInterface(type);
     }
 
-    void importDirID( std::string dirID )
-    {
+    void importDirID( std::string dirID ) {
         std::string dirname = dirID, dirpath;
         bool dirFound = false;
+
+        // Retrieve package
+        std::string package = dirID;
+        if (package.back() == '.') {
+            package = package.substr(0, package.length() - 1);
+        }
 
         // Create filename
         replace(dirname.begin(), dirname.end(), '.', '/');
@@ -142,8 +147,9 @@ class Parser {
             int cpt = std::count(__package.begin(), __package.end(), '.');
             std::string cd = __current_directory.absolutePath();
             size_t index = cd.find_last_of('/', cd.size() - 2); // handle if cwd ends with a '/'
-            for ( int i = 0 ; index != std::string::npos && i < cpt ; i++ )
+            for ( int i = 0 ; index != std::string::npos && i < cpt ; i++ ) {
                 index = cd.find_last_of('/', index - 1);
+            }
 
             if ( index != std::string::npos ) {
                 std::string rootDir = cd.substr(0, index+1); // with '/' at end
@@ -158,45 +164,55 @@ class Parser {
               // Construct complete filePath
               dirpath = path + dirname;
               dirFound = Directory::isDir(dirpath);
-              if (dirFound)
+              if (dirFound) {
                 break;
+              }
           }
         }
 
         // If it is found, import all files in.
-        if (dirFound)
-            importDir( dirpath );
-        // If import filename has not been found, add an error.
-        else
+        if (dirFound) {
+            importDir( dirpath, package );
+        } else { // If import filename has not been found, add an error.
             SemErr("import not found");
+        }
     }
 
-    void importDir( std::string dirpath )
-    {
+    void importDir( std::string dirpath, std::string package="" ) {
         // Update current directory
         Directory oldCurrentDirectory = __current_directory;
         __current_directory = Directory(dirpath);
 
         for ( const auto & entry : __current_directory.entries()) {
-            if (entry[0]== '.') //"." or ".." or ".svn" or any hidden directories...
+            if (entry[0]== '.') { //"." or ".." or ".svn" or any hidden directories...
                 continue;
+            }
 
-            if ( Directory::isDir(dirpath+entry) )
-                importDir( dirpath+entry+"/" );
-            else if ( entry.substr( entry.find_last_of('.') ) == ".o3prm" ) // if .o3prm
-                importFile( dirpath+entry );
+            size_t last_dot = entry.find_last_of('.');
+
+            if ( Directory::isDir(dirpath+entry) ) {
+                importDir( dirpath + entry + "/", package + "." + entry );
+            } else if ( entry.substr( last_dot ) == ".o3prm" ) { // if .o3prm
+                if (package.length() > 0) {
+                  package.append(".");
+                }
+                package.append(entry.substr(0, last_dot));
+                factory().addImport(package);
+                importFile( dirpath + entry, package );
+            }
         }
 
         // Reset previous current directory
         __current_directory = oldCurrentDirectory;
     }
 
-    void importFile( std::string filepath )
-    {
+    void importFile( std::string filepath, std::string package="" ) {
         // If we have already import this file, skip it.
         // (like filepath is always absolute, there is no conflict)
-        if ( __imports.exists( filepath ) )
+        if ( __imports.exists( filepath ) ) {
             return;
+        }
+
         // Remember we have found it.
         __imports.insert(filepath);
 
@@ -207,130 +223,157 @@ class Parser {
         p.setClassPath(__class_path);
         p.setImports(__imports);
         p.setCurrentDirectory( filepath.substr(0, filepath.find_last_of('/')+1) );
-        p.Parse();
+
+        if (package.length() > 0) {
+            factory().pushPackage(package);
+            p.Parse();
+            factory().popPackage();
+        } else {
+            p.Parse();
+        }
 
         // We add file imported in p to file imported here.
-        for (const auto & import : p.getImports())
-            if (not __imports.exists(import))
-            __imports.insert(import);
+        for (const auto & import : p.getImports()) {
+            if (not __imports.exists(import)) {
+                __imports.insert(import);
+            }
+        }
 
         // We add warnings and errors to this
         __errors += p.__errors;
     }
 
-    void import( std::string fileID ) {
-        // Si on inclut un répertoire entier
-        size_t starIndex = fileID.find_last_of('*');
-        if ( starIndex != std::string::npos ) {
-            return importDirID(fileID.substr(0,starIndex-1));
-        }
+void import( std::string fileID ) {
+    std::cout << "in import(" << fileID << ")" << std::endl;
+    // If relatif import
+    if (fileID[0] == '.') {
+      std::string current_pck = factory().currentPackage();
+      size_t last_dot = current_pck.find_last_of('.');
+      fileID = current_pck.substr(0, last_dot) + fileID;
+    }
 
-        std::string filename = fileID, filepath;
+    // Si on inclut un répertoire entier
+    size_t starIndex = fileID.find_last_of('*');
+    if ( starIndex != std::string::npos ) {
+        return importDirID(fileID.substr(0,starIndex-1));
+    }
+
+    std::string package = fileID;
+
+    // Create filename
+    std::string filename = fileID;
+    replace(filename.begin(), filename.end(), '.', '/');
+    filename += ".o3prm";
+
+    // Search in current directory.
+    bool fileFound = false;
+    std::string filepath;
+    if ( __current_directory.isValid() ) {
+        filepath = __current_directory.absolutePath() + filename;
         std::ifstream file_test;
-        bool fileFound = false;
+        file_test.open(filepath.c_str());
+        if (file_test.is_open()) {
+            file_test.close();
+            fileFound = true;
+        }
+    }
 
-        // Create filename
-        replace(filename.begin(), filename.end(), '.', '/');
-        filename += ".o3prm";
+    // Search in root package directory.
+    if ( ! fileFound && ! __package.empty() ) {
+        int cpt = std::count(__package.begin(), __package.end(), '.');
+        std::string cd = __current_directory.absolutePath();
+        size_t index = cd.find_last_of('/', cd.size() - 2); // handle if cwd ends with a '/'
+        for ( int i = 0 ; index != std::string::npos && i < cpt ; i++ ) {
+            index = cd.find_last_of('/', index - 1);
+        }
 
-        // Search in current directory.
-        if ( __current_directory.isValid() ) {
-            filepath = __current_directory.absolutePath() + filename;
+        if ( index != std::string::npos ) {
+            std::string rootDir = cd.substr(0, index+1); // with '/' at end
+            filepath = rootDir + filename;
+            std::ifstream file_test;
             file_test.open(filepath.c_str());
             if (file_test.is_open()) {
                 file_test.close();
                 fileFound = true;
             }
         }
+    }
 
-        // Search in root package directory.
-        if ( ! fileFound && ! __package.empty() ) {
-            int cpt = std::count(__package.begin(), __package.end(), '.');
-            std::string cd = __current_directory.absolutePath();
-            size_t index = cd.find_last_of('/', cd.size() - 2); // handle if cwd ends with a '/'
-            for ( int i = 0 ; index != std::string::npos && i < cpt ; i++ )
-                index = cd.find_last_of('/', index - 1);
+    // Search filename in each path stored in __class_path
+    for (const auto & path : __class_path) {
+        // Construct complete filePath
+        filepath = path + filename;
 
-            if ( index != std::string::npos ) {
-                std::string rootDir = cd.substr(0, index+1); // with '/' at end
-                filepath = rootDir + filename;
-                file_test.open(filepath.c_str());
-                if (file_test.is_open()) {
-                    file_test.close();
-                    fileFound = true;
-                }
-            }
+        // We try to open it
+        std::ifstream file_test;
+        file_test.open(filepath.c_str());
+        if (file_test.is_open()) {
+            file_test.close();
+            fileFound = true;
         }
-
-        // Search filename in each path stored in __class_path
-        for (const auto & path : __class_path) {
-            // Construct complete filePath
-            filepath = path + filename;
-
-            // We try to open it
-            file_test.open(filepath.c_str());
-            if (file_test.is_open()) {
-                file_test.close();
-                fileFound = true;
-            }
-        }
-
-        // If it is found, import it.
-        if (fileFound)
-            importFile( filepath );
-        else
-            SemErr("import not found");
     }
 
-    // Set files already import in factory.
-    void setImports(const gum::Set<std::string>& imports) {
-      __imports = imports;
+    // If it is found, import it.
+    if (fileFound) {
+        importFile( filepath, package );
+        factory().addImport(package);
+    } else {
+        std::cout << "fileID: " << fileID << std::endl;
+        std::cout << "filepath: " << filepath << std::endl;
+        std::cout << "package: " << " " << package << std::endl;
+        SemErr("import not found");
     }
+}
 
-    // Add these import to this parser.
-    void addImports(const gum::Set<std::string>& imports) {
-      for (const auto & import :imports)
-        if (not __imports.exists(import))
-          __imports.insert(import);
-    }
+// Set files already import in factory.
+void setImports(const gum::Set<std::string>& imports) {
+    __imports = imports;
+}
+
+// Add these import to this parser.
+void addImports(const gum::Set<std::string>& imports) {
+  for (const auto & import :imports) {
+    addImport(import);
+  }
+}
 
 public:
-    // Set the parser factory.
-    void setFactory(gum::prm::IPRMFactory* f) {
-      __factory = f;
-    }
+// Set the parser factory.
+void setFactory(gum::prm::IPRMFactory* f) {
+    __factory = f;
+}
 
-    // Retrieve the factory.
-    gum::prm::IPRMFactory& factory() {
-      if (__factory) {
+// Retrieve the factory.
+gum::prm::IPRMFactory& factory() {
+    if (__factory) {
         return *__factory;
-      }
-      GUM_ERROR(OperationNotAllowed,"Please set a factory for scanning BIF file...");
     }
+    GUM_ERROR(OperationNotAllowed,"Please set a factory for scanning BIF file...");
+}
 
-    // Set the paths to search for imports. Must ended with a '/'.
-    void setClassPath(const std::vector<std::string>& class_path) {
-      __class_path = class_path;
-    }
+// Set the paths to search for imports. Must ended with a '/'.
+void setClassPath(const std::vector<std::string>& class_path) {
+    __class_path = class_path;
+}
 
-    // Must be an absolute path
-    void setCurrentDirectory( const std::string & cd ) {
-        __current_directory = Directory(cd);
-        if ( ! __current_directory.isValid() )
-          Warning( widen("gum::o3prm::Parser::setCurrentDirectory : " + cd + " is not a valid directory.").c_str() );
-    }
+// Must be an absolute path
+void setCurrentDirectory( const std::string & cd ) {
+    __current_directory = Directory(cd);
+    if ( ! __current_directory.isValid() )
+        Warning( widen("gum::o3prm::Parser::setCurrentDirectory : " + cd + " is not a valid directory.").c_str() );
+}
 
-    // Get files imports.
-    const gum::Set<std::string>& getImports() const {
-      return __imports;
-    }
+// Get files imports.
+const gum::Set<std::string>& getImports() const {
+    return __imports;
+}
 
-    // Add this import to this parser.
-    void addImport(const std::string& import) {
-        if (not __imports.exists(import)) {
-          __imports.insert(import);
-        }
+// Add this import to this parser.
+void addImport(std::string import) {
+    if (not __imports.exists(import)) {
+        __imports.insert(import);
     }
+}
 
 
 //##############################################################################
@@ -349,15 +392,14 @@ public:
     const ErrorsContainer& errors() const;
 
     	void O3PRM();
-	void Package();
 	void Import();
 	void Unit();
-	void Ident(std::string& s);
 	void ImportIdent(std::string& s);
 	void Type();
 	void Interface();
 	void Class();
 	void System();
+	void Ident(std::string& s);
 	void Label(std::string& s);
 	void Reference(std::string type, std::string name, bool array);
 	void RefOrParam(std::string type, std::string name, bool array);

@@ -22,8 +22,6 @@
 // Author: Lionel Torti.
 // ============================================================================
 
-package classes;
-
 import classes.Printer;
 
 class SafeComputer implements Equipment {

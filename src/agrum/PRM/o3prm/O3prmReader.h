@@ -49,7 +49,10 @@ namespace gum {
 
           ~O3prmReader();
 
-          int readFile ( const std::string& file );
+          /// Read file and load its content using a PRMFactory.
+          /// The package parameter set the file's content package.
+          int readFile ( const std::string& file, const std::string& package="" );
+
           /// With readString method, you must set the current path
           /// to search from import yourself, using addClassPath.
           int readString ( const std::string& string );

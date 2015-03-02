@@ -483,136 +483,169 @@ namespace gum {
 // Import the system o3prm file
 // Return false if any error.
 
-      bool O3prmrInterpreter::import ( O3prmrContext<double>* context, std::string import_name ) try {
+      bool O3prmrInterpreter::import ( O3prmrContext<double>* context, std::string import_name ) {
+          try {
 
-        if ( m_verbose ) m_log << "# Loading system '" << import_name << "' => '" << std::flush;
+              if ( m_verbose ) {
+                  m_log << "# Loading system '" << import_name << "' => '" << std::flush;
+              }
 
-        std::replace ( import_name.begin(), import_name.end(), '.', '/' );
-        import_name += ".o3prm";
+              size_t last_dot = import_name.find_last_of('.');
+              std::string import_package = import_name;
 
-        if ( m_verbose ) m_log << import_name << "' ... " << std::endl << std::flush;
+              std::replace ( import_name.begin(), import_name.end(), '.', '/' );
+              import_name += ".o3prm";
 
-        std::ifstream file_test;
-        bool found = false;
-        std::string import_abs_filename;
+              if ( m_verbose ) {
+                  m_log << import_name << "' ... " << std::endl << std::flush;
+              }
 
-        // Search in o3prmr file dir.
-        std::string o3prmrFilename = context->filename();
+              std::ifstream file_test;
+              bool found = false;
+              std::string import_abs_filename;
 
-        if ( ! o3prmrFilename.empty() ) {
-          size_t index = o3prmrFilename.find_last_of ( '/' );
+              // Search in o3prmr file dir.
+              std::string o3prmrFilename = context->filename();
 
-          if ( index != std::string::npos ) {
-            std::string dir = o3prmrFilename.substr ( 0, index + 1 );
-            import_abs_filename = dir + import_name;
+              if ( ! o3prmrFilename.empty() ) {
+                  size_t index = o3prmrFilename.find_last_of ( '/' );
 
-            if ( m_verbose ) m_log << "# Search from filedir '" << import_abs_filename << "' ... " << std::flush;
+                  if ( index != std::string::npos ) {
+                      std::string dir = o3prmrFilename.substr ( 0, index + 1 );
+                      import_abs_filename = dir + import_name;
 
-            file_test.open ( import_abs_filename.c_str() );
+                      if ( m_verbose ) {
+                          m_log << "# Search from filedir '" << import_abs_filename << "' ... " << std::flush;
+                      }
 
-            if ( file_test.is_open() ) {
-              if ( m_verbose ) m_log << "found !" << std::endl << std::flush;
+                      file_test.open ( import_abs_filename.c_str() );
 
-              file_test.close();
-              found = true;
-            } else if ( m_verbose )
-              m_log << "not found." << std::endl << std::flush;
+                      if ( file_test.is_open() ) {
+                          if ( m_verbose ) {
+                              m_log << "found !" << std::endl << std::flush;
+                          }
+
+                          file_test.close();
+                          found = true;
+                      } else if ( m_verbose ) {
+                          m_log << "not found." << std::endl << std::flush;
+                      }
+                  }
+              }
+
+              // Deduce root path from package name.
+              std::string package = context->package();
+
+              if ( ! found && ! package.empty() ) {
+                  std::string root;
+
+                  // if filename is not empty, start from it.
+                  std::string filename = context->filename();
+
+                  if ( ! filename.empty() ) {
+                      size_t size = filename.find_last_of ( '/' );
+
+                      if ( size != std::string::npos ) {
+                          root += filename.substr ( 0, size + 1 ); // take with the '/'
+                      }
+                  }
+
+                  //
+                  root += "../";
+                  int count = ( int ) std::count ( package.begin(), package.end(), '.' );
+
+                  for ( int i = 0 ; i < count ; i++ )
+                      root += "../";
+
+                  import_abs_filename = Directory ( root ).absolutePath() + import_name;
+
+                  if ( m_verbose ) {
+                      m_log << "# Search from package '" << package << "' => '" << import_abs_filename << "' ... " << std::flush;
+                  }
+
+                  file_test.open ( import_abs_filename.c_str() );
+
+                  if ( file_test.is_open() ) {
+                      if ( m_verbose ) {
+                          m_log << "found !" << std::endl << std::flush;
+                      }
+
+                      file_test.close();
+                      found = true;
+                  } else if ( m_verbose ) {
+                      m_log << "not found." << std::endl << std::flush;
+                  }
+              }
+
+              // Search import in all paths.
+              for ( const auto & path : m_paths) {
+                  import_abs_filename = path + import_name;
+
+                  if ( m_verbose ) {
+                      m_log << "# Search from classpath '" << import_abs_filename << "' ... " << std::flush;
+                  }
+
+                  file_test.open ( import_abs_filename.c_str() );
+
+                  if ( file_test.is_open() ) {
+                      if ( m_verbose ) {
+                          m_log << " found !" << std::endl << std::flush;
+                      }
+
+                      file_test.close();
+                      found = true;
+                      break;
+                  } else if ( m_verbose ) {
+                      m_log << " not found." << std::endl << std::flush;
+                  }
+              }
+
+              if ( not found ) {
+                  if ( m_verbose ) {
+                      m_log << "Finished with errors." << std::endl;
+                  }
+
+                  addError ( "import not found." );
+                  return false;
+              }
+
+              // May throw std::IOError if file does't exist
+              int previousO3prmError = m_reader->errors();
+              int previousO3prmrError = errors();
+
+              try {
+                  m_reader->readFile ( import_abs_filename, import_package );
+
+                  // Show errors and warning
+                  if ( m_verbose && ( m_reader->errors() > ( unsigned int ) previousO3prmError || errors() > previousO3prmrError ) ) {
+                      m_log << "Finished with errors." << std::endl;
+                  } else if ( m_verbose ) {
+                      m_log << "Finished." << std::endl;
+                  }
+
+              } catch ( const IOError& err ) {
+                  if ( m_verbose ) {
+                      m_log << "Finished with errors." << std::endl;
+                  }
+
+                  addError ( err.errorContent() );
+              }
+
+              // Add o3prm errors and warnings to o3prmr errors
+              for ( ; previousO3prmError < m_reader->errorsContainer().count() ; previousO3prmError++ ) {
+                  m_errors.add ( m_reader->errorsContainer().error ( previousO3prmError ) );
+              }
+
+              return errors() == previousO3prmrError;
+
+          } catch ( const Exception& err ) {
+              if ( m_verbose ) {
+                  m_log << "Finished with exceptions." << std::endl;
+              }
+
+              addError ( err.errorContent() );
+              return false;
           }
-        }
-
-        // Deduce root path from package name.
-        std::string package = context->package();
-
-        if ( ! found && ! package.empty() ) {
-          std::string root;
-
-          // if filename is not empty, start from it.
-          std::string filename = context->filename();
-
-          if ( ! filename.empty() ) {
-            size_t size = filename.find_last_of ( '/' );
-
-            if ( size != std::string::npos )
-              root += filename.substr ( 0, size + 1 ); // take with the '/'
-          }
-
-          //
-          root += "../";
-          int count = ( int ) std::count ( package.begin(), package.end(), '.' );
-
-          for ( int i = 0 ; i < count ; i++ )
-            root += "../";
-
-          import_abs_filename = Directory ( root ).absolutePath() + import_name;
-
-          if ( m_verbose ) m_log << "# Search from package '" << package << "' => '" << import_abs_filename << "' ... " << std::flush;
-
-          file_test.open ( import_abs_filename.c_str() );
-
-          if ( file_test.is_open() ) {
-            if ( m_verbose ) m_log << "found !" << std::endl << std::flush;
-
-            file_test.close();
-            found = true;
-          } else if ( m_verbose )
-            m_log << "not found." << std::endl << std::flush;
-        }
-
-        // Search import in all paths.
-        for ( const auto & path : m_paths) {
-          import_abs_filename = path + import_name;
-
-          if ( m_verbose ) m_log << "# Search from classpath '" << import_abs_filename << "' ... " << std::flush;
-
-          file_test.open ( import_abs_filename.c_str() );
-
-          if ( file_test.is_open() ) {
-            if ( m_verbose ) m_log << " found !" << std::endl << std::flush;
-
-            file_test.close();
-            found = true;
-            break;
-          } else if ( m_verbose )
-            m_log << " not found." << std::endl << std::flush;
-        }
-
-        if ( not found ) {
-          if ( m_verbose ) m_log << "Finished with errors." << std::endl;
-
-          addError ( "import not found." );
-          return false;
-        }
-
-        // May throw std::IOError if file does't exist
-        int previousO3prmError = m_reader->errors();
-        int previousO3prmrError = errors();
-
-        try {
-          m_reader->readFile ( import_abs_filename );
-
-          // Show errors and warning
-          if ( m_verbose && ( m_reader->errors() > ( unsigned int ) previousO3prmError || errors() > previousO3prmrError ) )
-            m_log << "Finished with errors." << std::endl;
-          else if ( m_verbose )
-            m_log << "Finished." << std::endl;
-
-        } catch ( const IOError& err ) {
-          if ( m_verbose ) m_log << "Finished with errors." << std::endl;
-
-          addError ( err.errorContent() );
-        }
-
-        // Add o3prm errors and warnings to o3prmr errors
-        for ( ; previousO3prmError < m_reader->errorsContainer().count() ; previousO3prmError++ )
-          m_errors.add ( m_reader->errorsContainer().error ( previousO3prmError ) );
-
-        return errors() == previousO3prmrError;
-
-      } catch ( const Exception& err ) {
-        if ( m_verbose ) m_log << "Finished with exceptions." << std::endl;
-
-        addError ( err.errorContent() );
-        return false;
       }
 
 

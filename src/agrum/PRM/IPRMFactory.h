@@ -64,6 +64,7 @@ namespace gum {
       //Type<GUM_SCALAR>& retrieveCommonType ( const std::vector<ClassElement<GUM_SCALAR>*>& elts )=0;
       virtual void pushPackage ( const std::string& name ) = 0;
       virtual std::string popPackage() = 0;
+      virtual void addImport ( const std::string& name ) = 0;
       virtual void startDiscreteType ( const std::string& name, std::string super = "" ) = 0;
       virtual void addLabel ( const std::string& l, std::string extends = "" ) = 0;
       virtual void endDiscreteType() = 0;

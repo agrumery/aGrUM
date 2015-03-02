@@ -21,7 +21,6 @@
 // Tis file contains basic PRM classes for testing purpose.
 // Author: Lionel Torti.
 // ============================================================================
-package fr.lip6.printers;
 
 type t_state extends boolean
 OK: true,

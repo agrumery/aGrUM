@@ -34,6 +34,8 @@
 #include <limits>
 
 #include <agrum/config.h>
+#include <agrum/core/heap.h>
+#include <agrum/core/list.h>
 
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/multidim/multiDimSparse.h>
@@ -194,6 +196,27 @@ namespace gum {
          *         nothing to pop.
          */
         virtual std::string popPackage() override;
+
+        /// @}
+        // ======================================================================
+        /// @name Package construction methods.
+        // ======================================================================
+        /// @{
+
+        /**
+         * @brief Add an import for namespace lookup.
+         *
+         * When loading a module, you should push all import declarations using
+         * this method. The order in which you add imports will impact name
+         * resolution (first found, first used).
+         *
+         * Imports are sync with packages: when you push a new package a new empty
+         * list of imports is added. When you pop a package the current list of
+         * imports is discarded and the previous one is restored.
+         *
+         * @param name The name of the package for all further objects.
+         */
+        virtual void addImport ( const std::string& name ) override;
 
         /// @}
         // ======================================================================
@@ -801,7 +824,7 @@ namespace gum {
         std::vector<std::string> __packages;
 
         /// Set of all declared namespaces.
-        Set<std::string> __namespaces;
+        Heap<List<std::string>*> __namespaces;
 
         /// The pointer on the PRM<GUM_SCALAR> built by this factory.
         PRM<GUM_SCALAR>* __prm;

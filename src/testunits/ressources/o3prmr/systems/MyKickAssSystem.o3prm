@@ -22,8 +22,6 @@
 // Author: Lionel Torti.
 // ============================================================================
 
-package systems;
-
 import classes.Computer;
 import classes.ParamClass;
 import classes.BWPrinter;

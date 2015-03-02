@@ -22,8 +22,6 @@
 // Author: Lionel Torti.
 // ============================================================================
 
-package classes;
-
 type t_state extends boolean
 OK: true,
     NOK: false;

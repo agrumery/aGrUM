@@ -86,7 +86,7 @@ namespace gum {
 
       template<typename GUM_SCALAR> INLINE
       int
-      O3prmReader<GUM_SCALAR>::readFile ( const std::string& file ) {
+      O3prmReader<GUM_SCALAR>::readFile ( const std::string& file, const std::string& package ) {
         size_t lastSlashIndex = file.find_last_of ( '/' );
         Directory dir ( file.substr ( 0, lastSlashIndex + 1 ) );
 
@@ -109,14 +109,20 @@ namespace gum {
             __parser = new Parser ( &s );
             __parser->setFactory ( &__factory );
             __parser->setClassPath ( __class_path );
-          } else
+          } else {
             __parser->scanner = &s;
+          }
 
           __parser->setCurrentDirectory ( dir.absolutePath() );
-
           __parser->addImport ( absFilename );
 
-          __parser->Parse();
+          if (package.length() > 0) {
+              __factory.pushPackage(package);
+              __parser->Parse();
+              __factory.popPackage();
+          }   else {
+              __parser->Parse();
+          }
 
           __parseDone = true;
 
