@@ -107,6 +107,13 @@ namespace gum {
 
         void add(const GTestPolicy<GUM_SCALAR>& src);
 
+        std::string toString(){ std::stringstream ss;
+                                ss << ITestPolicy<GUM_SCALAR>::toString()
+                                   << "Contingency Table : " <<std::endl
+                                   << __conTab.toString() << std::endl
+                                   << "GStat : " << __GStat << std::endl;
+                                return ss.str();}
+
     private :
 
       /// The contingency table used to keeps records of all observation

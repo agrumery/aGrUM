@@ -103,7 +103,7 @@ namespace gum {
         // ###################################################################
         /// Nb observation taken into account by this instance
         // ###################################################################
-        INLINE Idx nbObservation(){ return __nbObservation; }
+        INLINE Idx nbObservation() const { return __nbObservation; }
 
       /// @}
 
@@ -151,8 +151,8 @@ namespace gum {
         // ###################################################################
         /// Iterators on value count to recopy correctly its content
         // ###################################################################
-        HashTableConstIteratorSafe<ValueType,Idx>& cbeginValues() const { return __valueCount.cbeginSafe(); }
-        HashTableConstIteratorSafe<ValueType,Idx>& cendValues() const { return __valueCount.cendSafe(); }
+        const HashTableConstIteratorSafe<ValueType,Idx> cbeginValues() const { return __valueCount.cbeginSafe(); }
+        const HashTableConstIteratorSafe<ValueType,Idx> cendValues() const { return __valueCount.cendSafe(); }
 
       /// @}
 
@@ -163,7 +163,9 @@ namespace gum {
 
         double reward();*/
 
-        Idx effectif(Idx moda){ return __valueCount.getWithDefault(moda, 0 ); }
+        Idx effectif(Idx moda) const { return __valueCount.exists(moda)?__valueCount[moda]:0; }
+
+        std::string toString();
 
     private :
 

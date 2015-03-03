@@ -104,13 +104,19 @@ namespace gum {
         void updateGraph();
 
     protected :
-        NodeId _insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
-                                  const DiscreteVariable* boundVar,
-                                  NodeId* sonsMap );
+        NodeId _insertLeafNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
+                                const DiscreteVariable* boundVar,
+                                Set<const Observation*>* sonsMap );
 
         void _chgNodeBoundVar( NodeId chgedNodeId, const DiscreteVariable* desiredVar );
 
         void _removeNode( NodeId removedNodeId );
+
+    private :
+
+
+        void __addLeaf( NodeId );
+        void __removeLeaf( NodeId );
 
       /// @}
 
@@ -135,6 +141,7 @@ namespace gum {
         void __updateNodeSet(Set<NodeId>&, const DiscreteVariable*,
                               VariableSelector & );
 
+
   public :
         // ###################################################################
         ///
@@ -142,8 +149,8 @@ namespace gum {
         void updateDecisionGraph();
   private :
         void __rebuildDecisionGraph();
-        NodeId __insertLeaf( AbstractLeaf*, Int2Type<true> );
-        NodeId __insertLeaf( AbstractLeaf*, Int2Type<false> );
+        NodeId __insertLeafInDecisionGraph( AbstractLeaf*, Int2Type<true> );
+        NodeId __insertLeafInDecisionGraph( AbstractLeaf*, Int2Type<false> );
 
       /// @}
 
@@ -160,7 +167,7 @@ namespace gum {
       double __attributeSelectionThreshold;
 
       /// The threshold above which two leaves does not share the same probability distribution
-      double __pairSelectionThreshold;
+      // double __pairSelectionThreshold;
   };
 
 

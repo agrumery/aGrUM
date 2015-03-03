@@ -100,7 +100,9 @@ namespace gum {
 
         void add( const ITestPolicy<GUM_SCALAR>& src){ __isModified = true; __nbObs += src.nbObservation(); }
 
-        Idx nbObservation(){ return __nbObs; }
+        Idx nbObservation() const { return __nbObs; }
+
+        std::string toString(){ std::stringstream ss; ss << "Nb Obs : " <<__nbObs << std::endl; return ss.str(); }
 
     protected :
       bool isModified(){ return __isModified; }

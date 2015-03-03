@@ -85,8 +85,9 @@ namespace gum {
     // ###################################################################
     template <TESTNAME VariableAttributeSelection, TESTNAME RewardAttributeSelection, LEARNERNAME LearnerSelection>
     void FMDPLearner<VariableAttributeSelection, RewardAttributeSelection, LearnerSelection>::addAction(const Idx actionId, const std::string &actionName ){
+//      std::cout << "Action " << actionId << " " << actionName << std::endl;
         __fmdp->addAction(actionId, actionName);
-//        __actionLearners.insert( actionId, new Set<VariableLearnerType<false>*>());
+        __actionLearners.insert( actionId, new Set<IncrementalGraphLearner<VariableAttributeSelection, false>*>());
     }
 
     // ###################################################################
@@ -109,21 +110,23 @@ namespace gum {
     template <TESTNAME VariableAttributeSelection, TESTNAME RewardAttributeSelection, LEARNERNAME LearnerSelection>
     void FMDPLearner<VariableAttributeSelection, RewardAttributeSelection, LearnerSelection>::initialize(){
 
-//      for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter ){
-//        for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter ){
-//            MultiDimDecisionGraph<double>* varTrans = new MultiDimDecisionGraph<double>();
-//            varTrans->setTableName("ACTION : " + __fmdp->actionName(*actionIter) + " - VARIABLE : " + (*varIter)->name());
-//            __fmdp->addTransitionForAction(__fmdp->actionName(*actionIter), *varIter, varTrans);
-//            __actionLearners[*actionIter]->insert(new VariableLearnerType<false>(varTrans,__learningThreshold, __similarityThreshold, __mainVariables,__fmdp->main2prime(*varIter)));
-//        }
-//      }
+      std::cout << "DEBUT INITIALISATION " << std::endl;
+
+      for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter ){
+        for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter ){
+            MultiDimDecisionGraph<double>* varTrans = new MultiDimDecisionGraph<double>();
+            varTrans->setTableName("ACTION : " + __fmdp->actionName(*actionIter) + " - VARIABLE : " + (*varIter)->name());
+            __fmdp->addTransitionForAction(__fmdp->actionName(*actionIter), *varIter, varTrans);
+            __actionLearners[*actionIter]->insert(new VariableLearnerType<false>(varTrans,__learningThreshold, __similarityThreshold, __mainVariables,__fmdp->main2prime(*varIter)));
+        }
+      }
 
       MultiDimDecisionGraph<double>* reward = new MultiDimDecisionGraph<double>();
-//      Set<const DiscreteVariable*> primeVariables;
-//      for (auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter)
-//        primeVariables.insert(*varIter);//__fmdp->main2prime(*varIter));
+      reward->setTableName("REWARD");
       __fmdp->addReward(reward);
-      __rewardLearner = new RewardLearnerType<true>(reward,__learningThreshold, __similarityThreshold, __mainVariables);
+      __rewardLearner = new RewardLearnerType<true>(reward, __learningThreshold, __similarityThreshold, __mainVariables);
+
+      std::cout << "FIN INITIALISATION " << std::endl;
     }
 
     // ###################################################################
@@ -132,10 +135,10 @@ namespace gum {
     template <TESTNAME VariableAttributeSelection, TESTNAME RewardAttributeSelection, LEARNERNAME LearnerSelection>
     void FMDPLearner<VariableAttributeSelection, RewardAttributeSelection, LearnerSelection>::addObservation( Idx actionId, const Observation* newObs ){
 
-//        for(auto learnerIter = __actionLearners[actionId]->beginSafe(); learnerIter != __actionLearners[actionId]->endSafe(); ++learnerIter){
-//            (*learnerIter)->addObservation(newObs);
-//            (*learnerIter)->updateGraph();
-//        }
+        for(auto learnerIter = __actionLearners[actionId]->beginSafe(); learnerIter != __actionLearners[actionId]->endSafe(); ++learnerIter){
+            (*learnerIter)->addObservation(newObs);
+            (*learnerIter)->updateGraph();
+        }
 
         __rewardLearner->addObservation(newObs);
         __rewardLearner->updateGraph();
@@ -167,7 +170,7 @@ namespace gum {
 
 //      std::cout << "Beginning update"  << std::endl;
       for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter ){
-//        std::cout << "Update for action : " << *actionIter << std::endl;
+        std::cout << "Update for action : " << *actionIter << std::endl;
         for(auto learnerIter = __actionLearners[*actionIter]->beginSafe();
             learnerIter != __actionLearners[*actionIter]->endSafe(); ++learnerIter){
 //          std::cout << "Update " << std::endl;

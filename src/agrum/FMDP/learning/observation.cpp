@@ -22,7 +22,7 @@
 
 namespace gum {
 
-std::string Observation::toString(){
+std::string Observation::toString() const{
     std::stringstream status;
     for( auto varIter = __varInst.beginSafe(); varIter != __varInst.endSafe(); ++varIter )
         status << "|" << varIter.key()->name() << "-" << varIter.val() << "|";

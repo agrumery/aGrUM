@@ -23,7 +23,7 @@
 #include <string>
 #include <cstdarg>
 // ==============================================================================
-#include <agrum/agrum.h>
+//#include <agrum/agrum.h>
 // ==============================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
@@ -54,7 +54,7 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
     // Initialisation des divers objets
     // *********************************************************************************************
     gum::Simulator sim(&fmdp);
-    gum::SPIMDDI spim(0.9,0.0001,0.9,0.9,100,10,0.1);
+    gum::SPIMDDI spim(0.9,0.0001,0.9,0.1,100,10,0.1);
     gum::Instantiation initialState, endState;
 
     // Enregistrement des actions possibles auprès de SPIMDDI
@@ -98,49 +98,49 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
     sim.setInitialStateRandomly();
 
     // Création de la variables récompenses (to be deprecated)
-    const gum::MultiDimDecisionGraph<double>* reward = reinterpret_cast<const gum::MultiDimDecisionGraph<double>*>(fmdp.reward());
-//    for( auto rewardIter = reward->beginValues(); rewardIter != reward->endValues(); ++rewardIter)
-    for( reward->beginValues(); reward->hasValue(); reward->nextValue() )
-      spim.addReward(reward->value());
+    //const gum::MultiDimDecisionGraph<double>* reward = reinterpret_cast<const gum::MultiDimDecisionGraph<double>*>(fmdp.reward());
+    //for( auto rewardIter = reward->beginValues(); rewardIter != reward->endValues(); ++rewardIter)
+    //  for( reward->beginValues(); reward->hasValue(); reward->nextValue() )
+    //    spim.addReward(reward->value());
 
     spim.initialize();
 
     // ======================================================================================
     // Création du checker détat visité
     // ======================================================================================
-    gum::Idx nbVisitedState = 0;
-    gum::MultiDimDecisionGraph<bool>* visitedStatesCheck = new gum::MultiDimDecisionGraph<bool>();
-    gum::NodeId falseId = visitedStatesCheck->manager()->addTerminalNode(false);
-    gum::NodeId trueId = visitedStatesCheck->manager()->addTerminalNode(true);
-    gum::NodeId parId = 0;
-    gum::NodeId parModa = 0;
-    for( auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter ){
+    //gum::Idx nbVisitedState = 0;
+    //gum::MultiDimDecisionGraph<bool>* visitedStatesCheck = new gum::MultiDimDecisionGraph<bool>();
+    //gum::NodeId falseId = visitedStatesCheck->manager()->addTerminalNode(false);
+    //gum::NodeId trueId = visitedStatesCheck->manager()->addTerminalNode(true);
+    //gum::NodeId parId = 0;
+    //gum::NodeId parModa = 0;
+    //for( auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter ){
 
-  //    std::cout << "Nouvelle variable : " << (*varIter)->name() << std::endl;
+//      std::cout << "Nouvelle variable : " << (*varIter)->name() << std::endl;
 
-      visitedStatesCheck->add(**varIter);
+    //  visitedStatesCheck->add(**varIter);
 
-  //    std::cout << "\tAjout noeud" << std::endl;
-      gum::NodeId varId = visitedStatesCheck->manager()->addNonTerminalNode(*varIter);
+//      std::cout << "\tAjout noeud" << std::endl;
+    //  gum::NodeId varId = visitedStatesCheck->manager()->addNonTerminalNode(*varIter);
 
-  //    std::cout << "\tPar check" << std::endl;
-      if(parId)
-        visitedStatesCheck->manager()->setSon(parId, parModa, varId);
-      else
-        visitedStatesCheck->manager()->setRootNode(varId);
+//      std::cout << "\tPar check" << std::endl;
+    //  if(parId)
+    //    visitedStatesCheck->manager()->setSon(parId, parModa, varId);
+    //  else
+    //    visitedStatesCheck->manager()->setRootNode(varId);
 
-  //    std::cout << "\tBranching" << std::endl;
-      for ( gum::Idx moda = 0; moda < (*varIter)->domainSize(); ++moda ){
-  //      std::cout << "Moda : " << moda << " - State : " << sim.currentState().valFromPtr(*varIter) << std::endl;
-        if( moda == sim.currentState().valFromPtr(*varIter))
-          parModa = moda;
-        else
-          visitedStatesCheck->manager()->setSon(varId, moda, falseId);
-      }
-  //    std::cout << "TADA" << std::endl;
-      parId = varId;
-    }
-    visitedStatesCheck->manager()->setSon(parId, parModa, trueId);
+//      std::cout << "\tBranching" << std::endl;
+    //  for ( gum::Idx moda = 0; moda < (*varIter)->domainSize(); ++moda ){
+//        std::cout << "Moda : " << moda << " - State : " << sim.currentState().valFromPtr(*varIter) << std::endl;
+    //    if( moda == sim.currentState().valFromPtr(*varIter))
+    //      parModa = moda;
+    //    else
+    //      visitedStatesCheck->manager()->setSon(varId, moda, falseId);
+    //  }
+//      std::cout << "TADA" << std::endl;
+    //  parId = varId;
+    //}
+    //visitedStatesCheck->manager()->setSon(parId, parModa, trueId);
 
 
 
@@ -170,36 +170,41 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
         gum::Idx actionChosenId = spim.takeAction();
         sim.perform( actionChosenId );
 
-        spim.feedback(sim.currentState(), sim.reward());
+        try{
+          spim.feedback(sim.currentState(), sim.reward());
+        } catch(gum::Exception e){
+          std::cout << e.errorCallStack() << std::endl;
+          exit(1);
+        }
 
         rDisc = sim.reward() + 0.9*rDisc;
 
-        if(! visitedStatesCheck->get(sim.currentState())){
-          nbVisitedState++;
+//        if(! visitedStatesCheck->get(sim.currentState())){
+//          nbVisitedState++;
 
-          gum::NodeId parId = visitedStatesCheck->root();
-          gum::Idx parModa = sim.currentState().valFromPtr( visitedStatesCheck->node( parId )->nodeVar() );
-          while( visitedStatesCheck->node( parId )->son( parModa ) != falseId ){
-            parId = visitedStatesCheck->node( parId )->son( parModa );
-            parModa = sim.currentState().valFromPtr( visitedStatesCheck->node( parId )->nodeVar() );
-          }
-          for( auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter ){
-            visitedStatesCheck->add(**varIter);
-            gum::NodeId varId = visitedStatesCheck->manager()->addNonTerminalNode(*varIter);
-            if(parId)
-              visitedStatesCheck->manager()->setSon(parId, parModa, varId);
-            else
-              visitedStatesCheck->manager()->setRootNode(varId);
-            for ( gum::Idx moda = 0; moda < (*varIter)->domainSize(); ++moda ){
-              if( moda == sim.currentState().valFromPtr(*varIter))
-                parModa = moda;
-              else
-                visitedStatesCheck->manager()->setSon(varId, moda, falseId);
-            }
-            parId = varId;
-          }
-          visitedStatesCheck->manager()->setSon(parId, parModa, trueId);
-        }
+//          gum::NodeId parId = visitedStatesCheck->root();
+//          gum::Idx parModa = sim.currentState().valFromPtr( visitedStatesCheck->node( parId )->nodeVar() );
+//          while( visitedStatesCheck->node( parId )->son( parModa ) != falseId ){
+//            parId = visitedStatesCheck->node( parId )->son( parModa );
+//            parModa = sim.currentState().valFromPtr( visitedStatesCheck->node( parId )->nodeVar() );
+//          }
+//          for( auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter ){
+//            visitedStatesCheck->add(**varIter);
+//            gum::NodeId varId = visitedStatesCheck->manager()->addNonTerminalNode(*varIter);
+//            if(parId)
+//              visitedStatesCheck->manager()->setSon(parId, parModa, varId);
+//            else
+//              visitedStatesCheck->manager()->setRootNode(varId);
+//            for ( gum::Idx moda = 0; moda < (*varIter)->domainSize(); ++moda ){
+//              if( moda == sim.currentState().valFromPtr(*varIter))
+//                parModa = moda;
+//              else
+//                visitedStatesCheck->manager()->setSon(varId, moda, falseId);
+//            }
+//            parId = varId;
+//          }
+//          visitedStatesCheck->manager()->setSon(parId, parModa, trueId);
+//        }
 
 //        traceFile << nbTest << "\t" << nbIte << "\t" << nbRun << "\t" << nbVisitedState
 //                  << "\t" << spim.learnerSize() << "\t" << spim.modelSize() << "\t" << spim.optimalPolicySize()
@@ -257,6 +262,8 @@ void runFactory(){
 // The main function
 // *******************************************************************************
 int main ( int argc, char* argv[] ) {
+
+  srand(time(NULL));
 
   runCoffee();
 //  runFactory();

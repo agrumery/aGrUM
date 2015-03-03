@@ -132,9 +132,16 @@ namespace gum {
         // ###################################################################
         virtual void _transpose( NodeId, const DiscreteVariable* );
 
-        virtual NodeId _insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
-                                  const DiscreteVariable* boundVar,
-                                  NodeId* sonsMap = nullptr );
+        virtual NodeId _insertNode(NodeDatabase<AttributeSelection, isScalar>* nDB,
+                                  const DiscreteVariable* boundVar);
+
+        virtual NodeId _insertInternalNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
+                                            const DiscreteVariable* boundVar,
+                                            NodeId* sonsMap );
+
+        virtual NodeId _insertLeafNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
+                                        const DiscreteVariable* boundVar,
+                                        Set<const Observation*>* obsSet );
 
         virtual void _chgNodeBoundVar( NodeId chgedNodeId, const DiscreteVariable* desiredVar );
 

@@ -72,8 +72,8 @@ namespace gum {
         // ###################################################################
         /// Gaves the leaf effectif for given modality
         // ###################################################################
-        Idx effectif(Idx moda) const { return __l1->effectif(moda) + __l2->effectif(moda); }
-        Idx total() const { return __l1->total() + __l2->total(); }
+        double  effectif(Idx moda) const { return __l1->effectif(moda) + __l2->effectif(moda); }
+        double total() const { return __l1->total() + __l2->total(); }
 
         // ###################################################################
         /// Returns true if abstractleaf has leaf in it
@@ -81,6 +81,8 @@ namespace gum {
         bool contains( NodeId testedId ) const { return AbstractLeaf::contains(testedId) || __l1->contains(testedId) || __l2->contains(testedId); }
 
         Idx nbModa(){ return __l1->nbModa(); }
+
+        std::string toString();
 
       private :
 

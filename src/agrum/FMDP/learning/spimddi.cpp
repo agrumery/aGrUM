@@ -61,8 +61,6 @@ namespace gum {
           __planer = new SPUMDD<double>(__fmdp, epsilon);
 
           __nbObservation = 1;
-
-          srand(time(NULL));
         }
 
         // ###################################################################
@@ -78,8 +76,6 @@ namespace gum {
 
           delete __planer;
           delete __fmdp;
-
-//          delete __rewardVar;
 
           GUM_DESTRUCTOR(SPIMDDI)
         }
@@ -125,9 +121,10 @@ namespace gum {
         // ###################################################################
         //
         // ###################################################################
-        void SPIMDDI::feedback( const Instantiation& newState, double reward){
+        void SPIMDDI::feedback( const Instantiation& newState, double reward ){
 
-            std::cout << "Begin Feedback - Observation n° " << __nbObservation << std::endl;
+            std::cout << std::endl << "*********************************************\nBegin Feedback - Observation n°" << __nbObservation
+                      << "\n*********************************************\n" <<  std::endl;
             Observation* obs = new Observation();
 
             for( auto varIter = __lastState.variablesSequence().beginSafe(); varIter != __lastState.variablesSequence().endSafe(); ++varIter)
@@ -144,13 +141,15 @@ namespace gum {
             setCurrentState( newState );
 
 //            if( __nbObservation%__observationPhaseLenght == 0) {
-//                __learner->updateFMDP();
+                __learner->updateFMDP();
+                std::cout << __fmdp->toString() << std::endl;
 //                __planer->makePlanning(__nbValueIterationStep);
 ////                std::cout << __planer->optimalPolicy()->toDot() << std::endl;
 ////                exit(1);
 //            }
 
             __nbObservation++;
+            std::cout << "\n*********************************************\n" << " " << std::endl << " " << std::endl;
         }
 
         // ###################################################################

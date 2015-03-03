@@ -102,7 +102,7 @@ namespace gum {
 
       /// @}
       ///
-      std::string toString();
+      std::string toString() const;
 
       // ==========================================================================
       /// @name Iterators on Variables

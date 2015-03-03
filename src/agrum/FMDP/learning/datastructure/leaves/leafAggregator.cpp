@@ -43,6 +43,7 @@ namespace gum {
         __similarityThreshold(similarityThreshold){
       GUM_CONSTRUCTOR(LeafAggregator)
       __initialContext = new FusionContext<true>( nullptr );
+      __needsUpdate = false;
     }
 
     // ============================================================================
@@ -61,7 +62,14 @@ namespace gum {
     // ============================================================================
     void LeafAggregator::addLeaf( AbstractLeaf* l ){
 
-      bool altered = false;
+      std::cout << "\tLeafAggregator::addLeaf " << l->id() << " begin" << std::endl;
+//      std::cout << this->toString() << std::endl;
+
+//      bool want2leave = false;
+//      if( __fusionSeq.size() >= 2 ){
+//        want2leave = true;
+//      }
+
       Set<LeafPair*>* leafPairSet = new Set<LeafPair*>();
       Set<LeafPair*> bag;
 
@@ -81,6 +89,7 @@ namespace gum {
 
         bag.insert(p);
       }
+//      std::cout << __initialContext->toString() << std::endl;
 
       // ****************************************************************************************
       // Enregistrement de la nouvelle Feuille en tant que feuille de base
@@ -91,17 +100,13 @@ namespace gum {
 
       for( SequenceIteratorSafe<FusionContext<false>*> fusIter = __fusionSeq.beginSafe(); fusIter != __fusionSeq.endSafe(); ++fusIter ){
 
-        altered = (*fusIter)->associateLeaf( l );
-        if( altered){
+        if( (*fusIter)->associateLeaf( l ) )
           __removeContext( fusIter.pos() + 1 );
-          break;
-        }
 
         // Ajout de la nouvelle pair composée de la feuille de FusIter et de la nouvelle feuille aux FusionContext suivant
         for( SetIteratorSafe<LeafPair*> pairIter = bag.beginSafe(); pairIter != bag.endSafe(); ++pairIter )
           if( !(*fusIter)->leaf()->contains( (*pairIter)->secondLeaf()->id() ) ){
-            altered = (*fusIter)->addPair( *pairIter );
-            if( altered)
+            if( (*fusIter)->addPair( *pairIter ) )
               __removeContext( fusIter.pos() + 1 );
           } else {
             bag >> *pairIter;
@@ -109,6 +114,15 @@ namespace gum {
         (*fusIter)->leafAssociatedPair(l)->updateLikelyhood();
         bag << (*fusIter)->leafAssociatedPair(l);
       }
+
+      __needsUpdate = true;
+
+//      std::cout << this->toString() << std::endl;
+      std::cout << "\tLeafAggregator::addLeaf end - Update? : " << __needsUpdate << std::endl;
+
+//      if( want2leave ){
+//        exit(1);
+//      }
     }
 
 
@@ -117,7 +131,13 @@ namespace gum {
     // ============================================================================
     bool LeafAggregator::updateLeaf( AbstractLeaf* l ){
 
-      bool altered = false;
+      std::cout << "\tLeafAggregator::updateLeaf " << l->id() << " begin" << std::endl;
+//      std::cout << this->toString() << std::endl;
+
+//      bool want2leave = false;
+//      if( __fusionSeq.size() >= 2 ){
+//        want2leave = true;
+//      }
 
       // ***********************************************************************************
       // First we update every base pair linked to that leaf
@@ -127,32 +147,53 @@ namespace gum {
         __updateInitialPair( *pairIter );
       }
 
+//      std::cout << "\tFin Update Initial" << std::endl;
 
       // **********************************************************************************
       // The we have top update FusionContext pairs associated to that leaf
       AbstractLeaf* curLeaf = l;
       for( SequenceIteratorSafe<FusionContext<false>*> fusIter = __fusionSeq.beginSafe(); fusIter != __fusionSeq.endSafe(); ++fusIter ){
 
+//        std::cout << "\tUpdate Context " << fusIter.pos() << std::endl;
+//        std::cout << "----------------------- Rappel Context -----------------------" << std::endl;
+//        std::cout << (*fusIter)->toString() << std::endl;
+//        std::cout << "--------------------------------------------------------------" << std::endl;
+
         if( (*fusIter)->leaf()->contains( curLeaf->id() ) ){
           bag.clear();
-          altered = (*fusIter)->updateAllAssociatedLeaves();
+          __needsUpdate = __needsUpdate | (*fusIter)->updateAllAssociatedLeaves();
           bag = (*fusIter)->associatedPairs();
           curLeaf = (*fusIter)->leaf();
+//          std::cout << "Boucle" << std::endl;
+//          std::cout << "--------------------------------------------------------------" << std::endl;
           continue;
         }
 
-        for( SetIteratorSafe<LeafPair*> pairIter = bag.beginSafe(); pairIter != bag.endSafe(); ++ pairIter )
+        for( SetIteratorSafe<LeafPair*> pairIter = bag.beginSafe(); pairIter != bag.endSafe(); ++ pairIter ){
+
           if( !(*fusIter)->leaf()->contains( (*pairIter)->secondLeaf()->id() ) && !(*fusIter)->leaf()->contains( (*pairIter)->firstLeaf()->id() ) ){
-            altered = (*fusIter)->updatePair( *pairIter );
-            if( altered)
+            if( (*fusIter)->updatePair( *pairIter ) )
               __removeContext( fusIter.pos() + 1 );
           } else {
             bag >> *pairIter;
           }
-        (*fusIter)->leafAssociatedPair(l)->updateLikelyhood();
-        bag << (*fusIter)->leafAssociatedPair(l);
+        }
+//        std::cout << "Fin update bag" << std::endl;
+//        std::cout << "Update pair associée " << (*fusIter)->leafAssociatedPair(curLeaf)->toString() << std::endl;
+        (*fusIter)->leafAssociatedPair(curLeaf)->updateLikelyhood();
+//        std::cout << "Récup pair associée" << std::endl;
+        bag << (*fusIter)->leafAssociatedPair(curLeaf);
+//        std::cout << "Boucle" << std::endl;
+//        std::cout << "--------------------------------------------------------------" << std::endl;
 
       }
+
+//      std::cout << this->toString() << std::endl;
+      std::cout << "\tLeafAggregator::updateLeaf end - Update? : " << __needsUpdate << std::endl;
+
+//      if( want2leave ){
+//        exit(1);
+//      }
 
       return __needsUpdate;
     }
@@ -163,7 +204,13 @@ namespace gum {
     // ============================================================================
     void LeafAggregator::removeLeaf( AbstractLeaf* l ){
 
-      bool altered = false;
+      std::cout << "\tLeafAggregator::removeLeaf begin " << l->id() << std::endl;
+//      std::cout << this->toString() << std::endl;
+
+//      bool want2leave = false;
+//      if( __fusionSeq.size() >= 2 ){
+//        want2leave = true;
+//      }
 
       // ***********************************************************************************
       // First we update every base pair linked to that leaf
@@ -172,38 +219,60 @@ namespace gum {
         __removeInitialPair( *pairIter );
         (*__leaf2Pair[(*pairIter)->otherLeaf(l)]) >> *pairIter;
       }
+//      std::cout << "\t Fin Nettoyage Init" << std::endl;
 
+//      std::cout << "\t Début Nettoyage Seq" << std::endl;
       // **********************************************************************************
       // The we have top update FusionContext pairs associated to that leaf
       Set<LeafPair*> toBeDeleted;
       for( SequenceIteratorSafe<FusionContext<false>*> fusIter = __fusionSeq.beginSafe(); fusIter != __fusionSeq.endSafe(); ++ fusIter ){
 
+//        std::cout << "\tErase Context " << fusIter.pos() << std::endl;
+//        std::cout << "----------------------- Rappel Context -----------------------" << std::endl;
+//        std::cout << (*fusIter)->toString() << std::endl;
+//        std::cout << "--------------------------------------------------------------" << std::endl;
+
         for( SetIteratorSafe<LeafPair*> pairIter = bag.beginSafe(); pairIter != bag.endSafe(); ++ pairIter )
           if( !(*fusIter)->leaf()->contains( (*pairIter)->secondLeaf()->id() ) && !(*fusIter)->leaf()->contains( (*pairIter)->firstLeaf()->id() ) ){
-            altered = (*fusIter)->removePair( *pairIter );
-            if( altered)
+            if( (*fusIter)->removePair( *pairIter ) ){
+//              std::cout << "Nettoyage FusionContext sur ordre Associated Leaf" << std::endl;
               __removeContext( fusIter.pos() + 1 );
+            }
           } else {
             bag >> *pairIter;
           }
         bag << (*fusIter)->leafAssociatedPair(l);
         toBeDeleted << (*fusIter)->leafAssociatedPair(l);
 
-        altered = (*fusIter)->deassociateLeaf( l );
-        if( altered){
+        if( (*fusIter)->deassociateLeaf( l ) ){
+//            std::cout << "Nettoyage FusionContext sur ordre Associated Leaf" << std::endl;
           __removeContext( fusIter.pos() + 1 );
-          break;
         }
-        ++fusIter;
+//        std::cout << "Boucle" << std::endl;
+//        std::cout << "--------------------------------------------------------------" << std::endl;
       }
+//      std::cout << "\t Fin Nettoyage Seq" << std::endl;
 
       for( SetIteratorSafe<LeafPair*> pairIter = toBeDeleted.beginSafe(); pairIter != toBeDeleted.endSafe(); ++pairIter )
         delete *pairIter;
+//      std::cout << "Fin 2BeDel" << std::endl;
 
       for( SetIteratorSafe<LeafPair*> pairIter = __leaf2Pair[l]->beginSafe(); pairIter != __leaf2Pair[l]->endSafe(); ++pairIter )
         delete *pairIter;
+//      std::cout << "Fin del pair" << std::endl;
       delete __leaf2Pair[l];
+//      std::cout << "Leaf set deleted" << std::endl;
       __leaf2Pair.erase(l);
+//      std::cout << "Leaf removed" << std::endl;
+
+      __needsUpdate = true;
+
+//      std::cout << this->toString() << std::endl;
+      std::cout << "\tLeafAggregator::removeLeaf end - Update? : " << __needsUpdate << std::endl;
+
+//      if( want2leave ){
+//        exit(1);
+//      }
     }
 
 
@@ -211,52 +280,80 @@ namespace gum {
     //
     // ============================================================================
     void LeafAggregator::update(  ){
-      LeafPair* nextPair = __initialContext->top();
-      if( !__fusionSeq.empty() )
-        nextPair = __fusionSeq.back()->top();
 
+      std::cout << "\tLeafAggregator::update begin" << std::endl;
+//      std::cout << this->toString() << std::endl;
+
+      LeafPair* nextPair = __initialContext->top();
       pair_iterator pb = __initialContext->beginPairs();
       pair_iterator pe = __initialContext->endPairs();
+      if( !__fusionSeq.empty() ){
+        nextPair = __fusionSeq.back()->top();
+        pb = __fusionSeq.back()->beginPairs();
+        pe = __fusionSeq.back()->endPairs();
+      }
 
-      while ( nextPair->likelyhood() < __similarityThreshold ){
-        AbstractLeaf* newLeaf = nextPair->convert2Leaf( __leavesCpt->nextNodeId() );
+      if( nextPair ){
+//        std::cout << "NP Likely " << nextPair->likelyhood() << " - Threshold : " << __similarityThreshold << std::endl;
+//        std::cout << "Starting pairs : " << std::endl;
+//        for( pair_iterator pairIter = pb; pairIter != pe; ++pairIter )
+//          std::cout << "\t\t\t" << pairIter.key()->toString() << std::endl;
+
+      }
+
+
+      while ( nextPair && nextPair->likelyhood() < __similarityThreshold ){
+//        std::cout << "----------------------------------------------------------" << std::endl;
+//        std::cout << "Selected pair : " << nextPair->toString() << std::endl;
+        AbstractLeaf* newLeaf = nextPair->convert2Leaf( __leavesCpt->addNode() );
+//        std::cout << "Creating Context" << std::endl;
         FusionContext<false>* newContext = new FusionContext<false>( newLeaf );
 
-
+//        std::cout << "Adding Pairs ... " << std::endl;
         for( pair_iterator pairIter = pb; pairIter != pe; ++pairIter ){
-          if( !newLeaf->contains(pairIter.key()->firstLeaf()->id()) && !newLeaf->contains(pairIter.key()->secondLeaf()->id()) ){
+//          std::cout << "\t\t\t" << pairIter.key()->toString() << std::endl;
+          if( !newLeaf->contains(pairIter.key()->firstLeaf()->id()) && !newLeaf->contains(pairIter.key()->secondLeaf()->id()) )
             newContext->addPair(pairIter.key());
-            if( !newContext->containsAssociatedLeaf(pairIter.key()->firstLeaf())){
-              newContext->associateLeaf(pairIter.key()->firstLeaf());
-              //bag2 << newContext->leafAssociatedPair( pairIter.key()->firstLeaf() );
-            }
-            if( !newContext->containsAssociatedLeaf(pairIter.key()->secondLeaf())){
-              newContext->associateLeaf(pairIter.key()->secondLeaf());
-              //bag2 << newContext->leafAssociatedPair( pairIter.key()->firstLeaf() );
-            }
-          } // else
-            // bag1 >> pairIter.key();
+          if( !newLeaf->contains(pairIter.key()->firstLeaf()->id()) && !newContext->containsAssociatedLeaf(pairIter.key()->firstLeaf()))
+            newContext->associateLeaf(pairIter.key()->firstLeaf());
+          if( !newLeaf->contains(pairIter.key()->secondLeaf()->id()) && !newContext->containsAssociatedLeaf(pairIter.key()->secondLeaf()))
+            newContext->associateLeaf(pairIter.key()->secondLeaf());
         }
-        //bag1.operator +(bag2);
+//        std::cout << "Pushing context" << std::endl;
 
         __fusionSeq.insert( newContext );
         nextPair = __fusionSeq.back()->top();
         pb = __fusionSeq.back()->beginPairs();
         pe = __fusionSeq.back()->endPairs();
+//        std::cout << "Done" << std::endl;
       }
       __needsUpdate = false;
+
+//      std::cout << this->toString() << std::endl;
+      std::cout << "\tLeafAggregator::update end" << std::endl;
+      //exit(1);
     }
 
 
     HashTable<NodeId,AbstractLeaf*> LeafAggregator::leavesMap(){
 
+      std::cout << "\tLeafAggregator::leavesMap begin" << std::endl;
+      std::cout << this->toString() << std::endl;
+
       HashTable<NodeId, AbstractLeaf*> retMap;
+//      std::cout << "Recherche Feuille complexe" << std::endl;
       for( SequenceIteratorSafe<FusionContext<false>*> fusIter = __fusionSeq.rbeginSafe(); fusIter != __fusionSeq.rendSafe(); --fusIter ){
+        bool alreadyIn = false;
         for( HashTableIteratorSafe<NodeId, AbstractLeaf*> mapIter = retMap.beginSafe(); mapIter != retMap.endSafe(); ++mapIter )
-          if( mapIter.val()->contains( (*fusIter)->leaf()->id() ) )
+          if( mapIter.val()->contains( (*fusIter)->leaf()->id() ) ){
+            alreadyIn = true;
             break;
-        retMap.insert( (*fusIter)->leaf()->id(), (*fusIter)->leaf() );
+          }
+        if(!alreadyIn)
+          retMap.insert( (*fusIter)->leaf()->id(), (*fusIter)->leaf() );
       }
+//      std::cout << "Recherche Feuille complexe done" << std::endl;
+//      std::cout << "Mapping Fuille simple -> Feuille complexe" << std::endl;
 
       for( HashTableIteratorSafe<AbstractLeaf*, Set<LeafPair*>*> leafIter = __leaf2Pair.beginSafe(); leafIter != __leaf2Pair.endSafe(); ++leafIter ){
         for( HashTableIteratorSafe<NodeId, AbstractLeaf*> mapIter = retMap.beginSafe(); mapIter != retMap.endSafe(); ++mapIter )
@@ -264,9 +361,27 @@ namespace gum {
             retMap.insert( leafIter.key()->id(), mapIter.val() );
             break;
           }
-        retMap.insert( leafIter.key()->id(), leafIter.key());
+        if( !retMap.exists(leafIter.key()->id()) )
+          retMap.insert( leafIter.key()->id(), leafIter.key());
       }
+
+      std::cout << retMap << std::endl;
+//      std::cout << "\tLeafAggregator::leavesMap end" << std::endl;
+
       return retMap;
+    }
+
+
+    std::string LeafAggregator::toString(){
+
+      std::stringstream ss;
+      std::cout << "################\nTas Initial : " << std::endl << __initialContext->toString() << std::endl;
+
+      for( auto fusIter = __fusionSeq.beginSafe(); fusIter != __fusionSeq.endSafe(); ++fusIter ){
+        std::cout << "################\nTas " << fusIter.pos() << " : " << std::endl << (*fusIter)->toString();
+      }
+
+      return ss.str();
     }
 
   // ############################################################################
@@ -278,14 +393,19 @@ namespace gum {
     // ============================================================================
     void LeafAggregator::__removeContext( Idx startingPos ){
 
-      for(Idx i = __fusionSeq.size() - 1; i >= startingPos; --i ){
-        //__history.erase( __fusionSeq.atPos(i)->top() );
+      std::cout << "\tLeafAggregator::__removeContext begin" << std::endl;
+
+      for(Idx i = __fusionSeq.size() - 1; !__fusionSeq.empty() && i >= startingPos; --i ){
+        std::cout << "LOOP" << __fusionSeq.toString() << " - i " << i << std::endl;
         __leavesCpt->eraseNode( __fusionSeq.atPos(i)->leaf()->id() );
         delete __fusionSeq.atPos(i);
         __fusionSeq.erase( __fusionSeq.atPos(i) );
+        std::cout << "LEAP" << std::endl;
       }
 
       __needsUpdate = true;
+
+      std::cout << "\tLeafAggregator::__removeContext end" << std::endl;
     }
 
 
@@ -293,8 +413,13 @@ namespace gum {
     //
     // ============================================================================
     void LeafAggregator::__addInitialPair( LeafPair* p ){
-      if( __initialContext->addPair(p) )
+
+      std::cout << "\tLeafAggregator::__addInitialPair begin" << std::endl;
+      bool res = __initialContext->addPair(p);
+      if( res )
         __removeContext(0);
+
+      std::cout << "\tLeafAggregator::__addInitialPair end " << res << std::endl;
     }
 
 
@@ -302,16 +427,26 @@ namespace gum {
     //
     // ============================================================================
     void LeafAggregator::__updateInitialPair( LeafPair* p ){
-      if( __initialContext->updatePair(p) )
+
+      std::cout << "\tLeafAggregator::__updateInitialPair begin" << std::endl;
+      bool res = __initialContext->updatePair(p);
+      if( res )
         __removeContext(0);
+
+      std::cout << "\tLeafAggregator::__updateInitialPair end " << res << std::endl;
     }
 
     // ============================================================================
     //
     // ============================================================================
     void LeafAggregator::__removeInitialPair( LeafPair* p ){
-      if( __initialContext->removePair(p) )
+
+      std::cout << "\tLeafAggregator::__removeInitialPair begin" << std::endl;
+      bool res = __initialContext->removePair(p);
+      if( res )
         __removeContext(0);
+
+      std::cout << "\tLeafAggregator::__removeInitialPair end " << res << std::endl;
     }
 
 } // end gum namespace

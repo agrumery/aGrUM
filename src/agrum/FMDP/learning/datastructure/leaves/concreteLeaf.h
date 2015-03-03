@@ -82,10 +82,12 @@ namespace gum {
         // ###################################################################
         /// Gaves the leaf effectif for given modality
         // ###################################################################
-        virtual Idx effectif(Idx moda) const { return __n1->effectif(__valueDomain->atPos(moda)); }
-        virtual Idx total() const { return __n1->nbObservation(); }
+        virtual double effectif(Idx moda) const { return __n1->effectif(__valueDomain->atPos(moda)); }
+        virtual double total() const { return __n1->nbObservation(); }
 
         Idx nbModa() { return __valueDomain->size(); }
+
+        std::string toString(){ std::stringstream ss; ss << "{ Id : " << this->id() << "}"; return ss.str(); }
 
       private :
 

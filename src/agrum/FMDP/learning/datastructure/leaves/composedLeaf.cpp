@@ -26,3 +26,12 @@
 // =======================================================
 #include <agrum/FMDP/learning/datastructure/leaves/composedLeaf.h>
 // =======================================================
+
+
+namespace gum {
+  std::string ComposedLeaf::toString(){
+    std::stringstream ss;
+    ss << "{ Id : " << this->id() << " - Left : " << __l1->toString() << " - Right : " << __l2->toString() <<  "}";
+    return ss.str();
+  }
+} // end of gum namespace

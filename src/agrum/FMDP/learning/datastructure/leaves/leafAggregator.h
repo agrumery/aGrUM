@@ -124,6 +124,8 @@ namespace gum {
 
         HashTable<NodeId,AbstractLeaf*> leavesMap();
 
+        std::string toString();
+
     private :
 
 

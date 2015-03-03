@@ -73,8 +73,8 @@ namespace gum {
         // ###################################################################
         /// Gaves the leaf effectif for given modality
         // ###################################################################
-        virtual Idx effectif(Idx) const = 0;
-        virtual Idx total() const = 0;
+        virtual double effectif(Idx) const = 0;
+        virtual double total() const = 0;
 
         // ###################################################################
         /// Returns true if abstractleaf has leaf in it
@@ -84,6 +84,8 @@ namespace gum {
         NodeId id(){ return __leafId; }
 
         virtual Idx nbModa() = 0;
+
+        virtual std::string toString() = 0;
 
       private :
         NodeId __leafId;

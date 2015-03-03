@@ -159,12 +159,12 @@ namespace gum {
         // ###################################################################
         ///
         // ###################################################################
-        LeafPair* top(){ return __pairsHeap.top(); }
+        LeafPair* top(){ return !__pairsHeap.empty()?__pairsHeap.top():nullptr; }
 
         // ###################################################################
         ///
         // ###################################################################
-        double topLikelyhood(){ return __pairsHeap.topPriority(); }
+        double topLikelyhood(){ return !__pairsHeap.empty()?__pairsHeap.topPriority():1.0; }
 
       /// @}
 
@@ -193,6 +193,10 @@ namespace gum {
         Set<LeafPair*> __associatedPairs( Int2Type<true> ){ return Set<LeafPair*>(); }
       /// @}
 
+    public :
+
+        std::string toString();
+
     private :
 
         MultiPriorityQueue<LeafPair*, double, std::less<double>> __pairsHeap;
@@ -205,6 +209,7 @@ namespace gum {
 
 } /* namespace gum */
 
+#include <agrum/FMDP/learning/datastructure/leaves/fusionContext.tcc>
 
 #endif // GUM_FUSION_CONTEXT_H
 

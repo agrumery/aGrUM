@@ -39,23 +39,60 @@ namespace gum {
 
     void LeafPair::updateLikelyhood(){
 
+//      std::cout << "\t\t\tUPDATELIKELYHOOD" << std::endl;
+      std::stringstream ss;
+      ss << " " << std::endl << " " << std::endl;
       __likelyhood1 = 0.0;
       __likelyhood2 = 0.0;
 
+      if( !__l1->total() || !__l2->total() ){
+        __likelyhood1 = std::numeric_limits<double>::max();
+        __likelyhood2 = std::numeric_limits<double>::max();
+        return;
+      }
+
       double scaleFactor1 = __l1->total()/(__l1->total() + __l2->total());
       double scaleFactor2 = __l2->total()/(__l1->total() + __l2->total());
-
+      ss << "Scale Factor 1 : " << scaleFactor1 << " - Scale Factor 2 : " << scaleFactor2 << std::endl;
       for( Idx moda = 0; moda < __l1->nbModa(); ++moda ){
-        __likelyhood1 += __l1->effectif(moda) * std::log( __l1->effectif(moda) / ( scaleFactor1 * ( __l1->effectif(moda) + __l2->effectif(moda) ) ) );
-        __likelyhood2 += __l2->effectif(moda) * std::log( __l2->effectif(moda) / ( scaleFactor2 * ( __l1->effectif(moda) + __l2->effectif(moda) ) ) );
+        ss << "Moda : " << moda;
+        if( __l1->effectif(moda) ){
+          double add = __l1->effectif(moda) * std::log( __l1->effectif(moda) / ( scaleFactor1 * ( __l1->effectif(moda) + __l2->effectif(moda) ) ) );
+          __likelyhood1 += add;
+          ss << " - E 1 : " <<  __l1->effectif(moda) << " - Added 1 : " << add ;
+        }
+        if( __l2->effectif(moda) ){
+          double add = __l2->effectif(moda) * std::log( __l2->effectif(moda) / ( scaleFactor2 * ( __l1->effectif(moda) + __l2->effectif(moda) ) ) );
+          __likelyhood2 += add;
+          ss << " - E 2 : " <<  __l2->effectif(moda) << " - Added 2 : " << add;
+        }
+        ss << std::endl;
       }
+      ss << "L1 : " << __likelyhood1 << " - L2 : " << __likelyhood2 << std::endl;
 
       __likelyhood1 *= 2;
       __likelyhood2 *= 2;
+//      std::cout << "\t\t\tUPDATELIKELYHOOD" << std::endl;
+
+      if( std::isnan(__likelyhood1) || std::isnan(__likelyhood2) ){
+        std::cout << ss.str() << std::endl;
+        exit(0);
+      }
     }
 
     double LeafPair::likelyhood(){
-      return ChiSquare::probaChi2( __likelyhood1>__likelyhood2?__likelyhood1:__likelyhood2, 2*(__l1->nbModa()-1));
+//      updateLikelyhood();
+      return 1- ChiSquare::probaChi2( __likelyhood1>__likelyhood2?__likelyhood1:__likelyhood2, (__l1->nbModa()-1));
+    }
+
+    std::string LeafPair::toString(){
+      std::stringstream ss;
+      ss << "\t[  Leaf1 : " << __l1->toString() << " - Leaf2 : " << __l2->toString();
+//      ss << " - L1 Total : " << __l1->total() << " - L2 Total : " << __l2->total();
+//      for( Idx moda = 0; moda < __l1->nbModa(); ++moda )
+//        ss << "~ M=" << moda << ".L1=" << __l1->effectif(moda) << ".L2=" << __l2->effectif(moda) << " ~";
+      ss << " - GStat : " << this->likelyhood() << " ]";
+      return ss.str();
     }
 
 } // end gum namespace

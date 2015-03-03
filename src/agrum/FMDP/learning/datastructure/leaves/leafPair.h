@@ -104,6 +104,8 @@ namespace gum {
 
         AbstractLeaf* otherLeaf( AbstractLeaf* l ) const { return l==__l1?__l2:__l1; }
 
+        std::string toString();
+
       private :
         AbstractLeaf* __l1;
         AbstractLeaf* __l2;

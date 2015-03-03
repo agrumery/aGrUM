@@ -120,13 +120,29 @@ namespace gum {
       this->__nbObservation += src.nbObservation();
 
       for( auto varIter = __attrTable.beginSafe(); varIter != __attrTable.endSafe(); ++varIter )
-        varIter.val() += src.testPolicy( varIter.key() );
+        varIter.val()->add( *(src.testPolicy( varIter.key() )) );
 
       for( auto valIter = src.cbeginValues(); valIter != src.cendValues(); ++valIter )
         if( __valueCount.exists( valIter.key() ) )
           __valueCount[valIter.key()] += valIter.val();
         else
           __valueCount.insert(valIter.key(), valIter.val());
+
+      return *this;
+    }
+
+
+
+
+    template<TESTNAME AttributeSelection, bool isScalar>
+    std::string NodeDatabase<AttributeSelection, isScalar>::toString(){
+      std::stringstream ss;
+
+      ss << "NbObservation : " << this->nbObservation() << std::endl;
+      for( auto varIter = __attrTable.beginSafe(); varIter != __attrTable.endSafe(); ++varIter )
+        ss << "Variable : " << varIter.key()->name() << " - Associated Test : " << __attrTable[ varIter.key() ]->toString() << std::endl;
+
+      return ss.str();
     }
 } // End of namespace gum
 
