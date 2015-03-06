@@ -58,7 +58,7 @@
  *
  * // make the handler parse the 3rd record to the 5th records
  * auto handler = database.handler ();
- * handler.setRange ( 2, 5 ); // 2 = 3rd record; 5 = 6th record (not included) 
+ * handler.setRange ( 2, 5 ); // 2 = 3rd record; 5 = 6th record (not included)
  * while ( handler.hasRows () ) {
  *   std::cout << handler.row ();
  *   handler.nextRow ();
@@ -84,10 +84,10 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
-    
+
     /** @class DatabaseVectInRAM
      * @brief The class representing a tabular database as a vector of DBRows
      * stored in RAM
@@ -129,7 +129,7 @@ namespace gum {
      *
      * // make the handler parse the 3rd record to the 5th records
      * auto handler = database.handler ();
-     * handler.setRange ( 2, 5 ); // 2 = 3rd record; 5 = 6th record (not included) 
+     * handler.setRange ( 2, 5 ); // 2 = 3rd record; 5 = 6th record (not included)
      * while ( handler.hasRows () ) {
      *   std::cout << handler.row ();
      *   handler.nextRow ();
@@ -141,7 +141,7 @@ namespace gum {
      */
     class DatabaseVectInRAM {
     public:
-      
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
       /** @class DatabaseVectInRAM::Handler
        * @brief the handler of tabular databases represented as vectors of DBRows
        * @ingroup learning_group
@@ -167,7 +167,7 @@ namespace gum {
 
         /// @}
 
-        
+
         // ########################################################################
         /// @name Operators
         // ########################################################################
@@ -178,7 +178,7 @@ namespace gum {
 
         /// move operator
         Handler& operator= ( Handler&& );
-        
+
         /// @}
 
 
@@ -186,7 +186,7 @@ namespace gum {
         /// @name Accessors / Modifiers
         // ########################################################################
         /// @{
-       
+
         /// returns the number of rows managed by the handler
         /** A handler needs not necessarily handle all the rows of the database.
          * For instance, RecordCounters cut the database into several pieces and
@@ -200,25 +200,25 @@ namespace gum {
         /// returns the current row pointed to by the handler (safe version)
         /** @throws OutOfBounds if the handler points to the end of its area */
         const DBRow& rowSafe () const;
-        
+
         /// returns the current row pointed to by the handler (safe version)
         /** @throws OutOfBounds if the handler points to the end of its area */
         DBRow& rowSafe ();
-        
+
         /// returns the current row pointed to by the handler (unsafe version)
         /** @warning The method does not check whether the handler already points
          * to the end of its area. It is thus faster than method rowSafe () but,
          * when you call it, you must be sure that the row actually exists, i.e.,
          * that the handler has not reached its end. */
         const DBRow& row () const;
-        
+
         /// returns the current row pointed to by the handler (unsafe version)
         /** @warning The method does not check whether the handler already points
          * to the end of its area. It is thus faster than method rowSafe () but,
          * when you call it, you must be sure that the row actually exists, i.e.,
          * that the handler has not reached its end. */
         DBRow& row ();
-        
+
         /// makes the handler point to the next row
         void nextRow () noexcept;
 
@@ -242,13 +242,13 @@ namespace gum {
 
         /// returns the number of variables (columns) of the database
         unsigned int nbVariables () const noexcept;
-        
+
         /// @}
 
       private:
         /// a reference on the whole database, including variable names
         const DatabaseVectInRAM* __db;
-        
+
         /// a reference on the database
         const std::vector<DBRow>* __row;
 
@@ -261,7 +261,7 @@ namespace gum {
         /// the row just after the last one managed by the handler
         unsigned long __end_index   { 0 };
 
-        
+
         /// attach a new handler to the database
         void __attachHandler ();
 
@@ -269,11 +269,11 @@ namespace gum {
         void __detachHandler ();
 
         friend class DatabaseVectInRAM;
-        
+
       };
 
-      
 
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -294,12 +294,12 @@ namespace gum {
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
       /// @{
-        
+
       /// copy operator
       DatabaseVectInRAM& operator= ( const DatabaseVectInRAM& from );
 
@@ -308,7 +308,7 @@ namespace gum {
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -350,12 +350,12 @@ namespace gum {
       /** if the row does not exist, nothing is done. In particular, no
        * exception is raised. */
       void eraseFirstDBRow ();
-      
+
       /// erase the last row
       /** if the row does not exist, nothing is done. In particular, no
        * exception is raised. */
       void eraseLastDBRow ();
-      
+
       /// erase the k first rows
       /** if there are fewer than k rows in the database, the database is
        * completely emptied */
@@ -371,21 +371,21 @@ namespace gum {
 
       /// erase all the rows
       void eraseAllDBRows ();
-      
+
       /// erase the content of the database, including the names of the variables
       void clear ();
-      
+
       /// @}
-      
-      
-    protected:      
+
+
+    protected:
       /// returns the content of the database
       std::vector<DBRow>& _content () noexcept;
 
       /// returns the variable names for all the columns
       std::vector<std::string>& _variableNames () noexcept;
 
-      
+
     private:
       /// the vector of DBRows
       std::vector<DBRow> __data;
@@ -403,7 +403,7 @@ namespace gum {
 
       /// allow the handlers to access the database directly
       friend class Handler;
-      
+
     };
 
 
