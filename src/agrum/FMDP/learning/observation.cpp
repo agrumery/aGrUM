@@ -22,11 +22,12 @@
 
 namespace gum {
 
-std::string Observation::toString() const{
+  std::string Observation::toString() const{
     std::stringstream status;
     for( auto varIter = __varInst.beginSafe(); varIter != __varInst.endSafe(); ++varIter )
-        status << "|" << varIter.key()->name() << "-" << varIter.val() << "|";
+      if( __rInst.exists(varIter.key()))
+        status << "| " << varIter.key()->name() << " : " << varIter.val() << " -> " << __rInst[varIter.key()] << " |";
     status << std::endl;
     return status.str();
-}
+  }
 } // end of namespace gum

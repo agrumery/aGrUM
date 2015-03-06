@@ -168,18 +168,12 @@ namespace gum {
     template <TESTNAME VariableAttributeSelection, TESTNAME RewardAttributeSelection, LEARNERNAME LearnerSelection>
     void FMDPLearner<VariableAttributeSelection, RewardAttributeSelection, LearnerSelection>::updateFMDP(){
 
-//      std::cout << "Beginning update"  << std::endl;
       for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter ){
-        std::cout << "Update for action : " << *actionIter << std::endl;
-        for(auto learnerIter = __actionLearners[*actionIter]->beginSafe();
-            learnerIter != __actionLearners[*actionIter]->endSafe(); ++learnerIter){
-//          std::cout << "Update " << std::endl;
+//        std::cout << "Action : " << __fmdp->actionName(*actionIter) << std::endl;
+          for(auto learnerIter = __actionLearners[*actionIter]->beginSafe();
+            learnerIter != __actionLearners[*actionIter]->endSafe(); ++learnerIter)
           (*learnerIter)->updateDecisionGraph();
         }
-      }
-
-//      std::cout << "Reward update"  << std::endl;
       __rewardLearner->updateDecisionGraph();
-//      std::cout << "Fin"  << std::endl;
     }
 } // End of namespace gum

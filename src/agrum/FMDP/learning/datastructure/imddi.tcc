@@ -97,11 +97,11 @@ namespace gum {
     template <TESTNAME AttributeSelection, bool isScalar >
     void IMDDI<AttributeSelection, isScalar>::_updateNodeWithObservation( const Observation* newObs, NodeId currentNodeId ){
 
-      std::cout << "IMDDI::_updateNodeWithObservation begin" << std::endl;
+//      std::cout << "IMDDI::_updateNodeWithObservation begin" << std::endl;
       IncrementalGraphLearner<AttributeSelection, isScalar>::_updateNodeWithObservation( newObs, currentNodeId );
       if( this->_nodeVarMap[currentNodeId] == this->_value )
         __lg.updateLeaf(__leafMap[currentNodeId]);
-      std::cout << "IMDDI::_updateNodeWithObservation end" << std::endl;
+//      std::cout << "IMDDI::_updateNodeWithObservation end" << std::endl;
     }
 
 
@@ -276,7 +276,7 @@ namespace gum {
     template < TESTNAME AttributeSelection, bool isScalar >
     void IMDDI<AttributeSelection, isScalar>::__addLeaf( NodeId currentNodeId ){
 
-      std::cout << "IMDDI::__addLeaf begin" << std::endl;
+//      std::cout << "IMDDI::__addLeaf begin" << std::endl;
 //      std::cout << "NodeId : " << currentNodeId << std::endl;
 //      std::cout << this->_nodeId2Database[currentNodeId]->toString() << std::endl;
 
@@ -285,7 +285,7 @@ namespace gum {
           this->_nodeId2Database[currentNodeId], &(this->_valueAssumed) ));
       __lg.addLeaf( __leafMap[currentNodeId] );
 
-      std::cout << "IMDDI::__addLeaf end" << std::endl;
+//      std::cout << "IMDDI::__addLeaf end" << std::endl;
 
     }
 
@@ -296,13 +296,13 @@ namespace gum {
     template < TESTNAME AttributeSelection, bool isScalar >
     void IMDDI<AttributeSelection, isScalar>::__removeLeaf( NodeId currentNodeId ){
 
-      std::cout << "IMDDI::__removeLeaf begin" << std::endl;
+//      std::cout << "IMDDI::__removeLeaf begin" << std::endl;
 
       __lg.removeLeaf( __leafMap[currentNodeId] );
       delete __leafMap[currentNodeId];
       __leafMap.erase(currentNodeId);
 
-      std::cout << "IMDDI::__removeLeaf end" << std::endl;
+//      std::cout << "IMDDI::__removeLeaf end" << std::endl;
 
     }
 
@@ -313,14 +313,17 @@ namespace gum {
     template <TESTNAME AttributeSelection, bool isScalar >
     void IMDDI<AttributeSelection, isScalar>::updateDecisionGraph(){
 
-      std::cout << "IMDDI::updateDecisionGraph begin" << std::endl;
+//      std::cout << "IMDDI::updateDecisionGraph begin" << std::endl;
+//      std::cout << "Variable : " << this->_value->name() << std::endl;
+//      this->_debugTree();
 
-      if( __lg.needsUpdate() || this->_needUpdate ){
+//      if( __lg.needsUpdate() || this->_needUpdate ){
         __rebuildDecisionGraph();
         this->_needUpdate = false;
-      }
+//      }
 
-      std::cout << "IMDDI::updateDecisionGraph end" << std::endl;
+//      std::cout << this->_target->toDot() << std::endl;
+//      std::cout << "IMDDI::updateDecisionGraph end" << std::endl;
     }
 
 
@@ -329,7 +332,7 @@ namespace gum {
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
     void IMDDI<AttributeSelection, isScalar>::__rebuildDecisionGraph(){
-      std::cout << "IMDDI::__rebuildDecisionGraph begin" << std::endl;
+//      std::cout << "IMDDI::__rebuildDecisionGraph begin" << std::endl;
 
       // *******************************************************************************************************
       // Mise à jour de l'aggregateur de feuille
@@ -347,7 +350,7 @@ namespace gum {
       // *******************************************************************************************************
       // Insertion des feuilles
       HashTable<NodeId, AbstractLeaf*> treeNode2leaf = __lg.leavesMap();
-      std::cout << "Leaves Map Acknowledge" << std::endl;
+//      std::cout << "Leaves Map Acknowledge" << std::endl;
       HashTable<AbstractLeaf*, NodeId> leaf2DGNode;
       for( HashTableConstIteratorSafe<NodeId, AbstractLeaf*> treeNodeIter = treeNode2leaf.cbeginSafe();
            treeNodeIter != treeNode2leaf.cendSafe(); ++treeNodeIter ){
@@ -358,8 +361,8 @@ namespace gum {
         toTarget.insert( treeNodeIter.key(), leaf2DGNode[treeNodeIter.val()] );
       }
 
-      std::cout << this->_target->toDot() << std::endl;
-      std::cout << toTarget << std::endl;
+//      std::cout << this->_target->toDot() << std::endl;
+//      std::cout << toTarget << std::endl;
 
       // *******************************************************************************************************
       // Insertion des noeuds internes (avec vérification des possibilités de fusion)
@@ -377,7 +380,8 @@ namespace gum {
       // Polish
       this->_target->manager()->setRootNode( toTarget[this->_root] );
       this->_target->manager()->clean();
-      std::cout << "IMDDI::__rebuildDecisionGraph end" << std::endl;
+//      std::cout << this->_target->toDot() << std::endl;
+//      std::cout << "IMDDI::__rebuildDecisionGraph end" << std::endl;
 
     }
 
@@ -406,7 +410,7 @@ namespace gum {
     NodeId IMDDI<AttributeSelection, isScalar>::__insertLeafInDecisionGraph( AbstractLeaf* leaf, Int2Type<false> ){
 
       NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*this->_value->domainSize()) );
-      for(Idx modality = 0; modality <  leaf->nbModa(); ++modality ){
+      for(Idx modality = 0; modality <  this->_value->domainSize(); ++modality ){
         double newVal = 0.0;
         if(leaf->total())
           newVal = (double) leaf->effectif(modality) / (double) leaf->total();

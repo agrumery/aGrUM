@@ -165,7 +165,9 @@ namespace gum {
 
         Idx effectif(Idx moda) const { return __valueCount.exists(moda)?__valueCount[moda]:0; }
 
-        std::string toString();
+        Idx valueDomain() const { return __value->domainSize(); }
+
+        std::string toString() const;
 
     private :
 

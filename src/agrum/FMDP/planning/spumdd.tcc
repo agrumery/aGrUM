@@ -28,6 +28,7 @@
 #include <math.h>
 #include <thread>
 #include <vector>
+#include <queue>
 #include <algorithm>
 #include <utility>
 // =========================================================================
@@ -135,7 +136,6 @@ namespace gum {
 
         // *****************************************************************************************
         // Then we compare new value function and the old one
-//        std::cout << "Gap evaluation" << std::endl;
         MultiDimDecisionGraph< GUM_SCALAR >* deltaV = subtract2MultiDimDecisionGraphs ( newVFunction, __vFunction );
         gap = 0;
         GUM_SCALAR lol = 0;
@@ -146,6 +146,8 @@ namespace gum {
             lol = deltaV->value();
           }
         delete deltaV;
+
+//        std::cout << newVFunction->toDot() << std::endl;
 
         std::cout << " ------------------- Fin itération n° " << nbIte << std::endl << " Gap : " << lol <<  " - " << __threshold << std::endl;
 
@@ -174,7 +176,6 @@ namespace gum {
       MultiDimDecisionGraph< GUM_SCALAR >* newVFunction = new MultiDimDecisionGraph< GUM_SCALAR >();
       newVFunction->copyAndReassign ( *__vFunction, __fmdp->mapMainPrime() );
 
-//      std::cout << "QAction  computation" << std::endl;
       // *****************************************************************************************
       // For each action
 //      std::vector<std::future<Multi>> workers;
@@ -192,8 +193,6 @@ namespace gum {
 
       // *****************************************************************************************
       // Next to evaluate main value function, we take maximise over all action value, ...
-
-      std::cout << "Maximization" << std::endl;
       newVFunction = __qFunctionSet.back();
       __qFunctionSet.pop_back();
       MultiDimDecisionGraph< GUM_SCALAR >* vTemp = nullptr;
@@ -210,12 +209,9 @@ namespace gum {
 
       // *******************************************************************************************
       // Next, we eval the new function value
-//      std::cout << "Reward Addition" << std::endl;
       vTemp = newVFunction;
       newVFunction = __addReward ( newVFunction );
       delete vTemp;
-
-//      std::cout << "En Valu Tera" << std::endl;
 
       return newVFunction;
     }
@@ -228,11 +224,8 @@ namespace gum {
     MultiDimDecisionGraph< GUM_SCALAR >*
     evalQaction( SPUMDD<GUM_SCALAR>* planer, const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Idx actionId ){
 
-      std::cout << "===========================================================================================" << std::endl;
-
-//    std::cout << "Thread " << actionId << " initiates var elemination. " << std::endl;
-
-      std::cout << "Thread " << planer->fmdp()->actionName(actionId) << std::endl;
+//      std::cout << "===========================================================================================" << std::endl;
+//      std::cout << "Thread " << actionId << " - " << planer->fmdp()->actionName(actionId)  << std::endl;
 
       // ******************************************************************************
       // Initialisation :
@@ -241,32 +234,36 @@ namespace gum {
 
       MultiDimDecisionGraph< GUM_SCALAR >* qAction = new MultiDimDecisionGraph< GUM_SCALAR >();
       qAction->copy( *Vold );
-      MultiDimDecisionGraph< GUM_SCALAR >* vTemp = nullptr;
 //      std::cout << qAction->toDot() << std::endl;
-
-
-      const DiscreteVariable* v = qAction->variablesSequence().atPos( qAction->variablesSequence().size() - 1 );
-//      for( auto varIter = planer->elVarSeq()->beginSafe(); varIter != planer->elVarSeq()->endSafe(); ++varIter )
-//      for( auto varIter = qAction->variablesSequence().beginSafe(); varIter != qAction->variablesSequence().endSafe(); ++varIter )
-//        std::cout << (*varIter)->toString() << " " ;
-//      std::cout << std::endl;
-      std::cout << v->toString() << " - " <<  planer->shouldEleminateVar(v) << std::endl;
+      MultiDimDecisionGraph< GUM_SCALAR >* vTemp = nullptr;
+//      std::cout << "ping" << std::endl;
+      const DiscreteVariable* v = nullptr;
+      if( qAction->variablesSequence().size() > 0 )
+        v = qAction->variablesSequence().atPos( qAction->variablesSequence().size() - 1 );
+//      std::cout << "pong" << std::endl;
 
       while( planer->shouldEleminateVar(v) ){
+//          std::cout << "ping : Eliminating var " << v->toString() << std::endl;
           vTemp = qAction;
 //          std::cout << RECAST( planer->fmdp()->transition( actionId, planer->fmdp()->mapMainPrime().first(v) ) )->toDot() << std::endl;
+//          std::cout << "pong" << std::endl;
+
           Regress<GUM_SCALAR, std::multiplies, std::plus> r(
                 qAction, RECAST( planer->fmdp()->transition( actionId, planer->fmdp()->mapMainPrime().first(v) ) ),
                 planer->elVarSeq(), v, (GUM_SCALAR)0);
+//          std::cout << "ping" << std::endl;
           qAction = r.compute();
-//          std::cout << qAction->toDot() << std::endl;
+//          std::cout << "pong" << std::endl;
+
           delete vTemp;
-          v = qAction->variablesSequence().atPos( qAction->variablesSequence().size() - 1 );
-          std::cout << v->toString() << " - " <<  planer->shouldEleminateVar(v) << std::endl;
+          v=nullptr;
+          if(qAction->variablesSequence().size() > 0)
+            v = qAction->variablesSequence().atPos( qAction->variablesSequence().size() - 1 );
+//          std::cout << "ping : next var " << v->toString() << std::endl;
       }
 //      std::cout << qAction->toDot() << std::endl;
-      std::cout << "FIN " << actionId << " - " << planer->fmdp()->actionName(actionId)  << std::endl;
-      std::cout << "===========================================================================================" << std::endl;
+//      std::cout << "FIN " << actionId << " - " << planer->fmdp()->actionName(actionId)  << std::endl;
+//      std::cout << "===========================================================================================" << std::endl;
       return qAction;
     }
 
@@ -326,7 +323,6 @@ namespace gum {
       MultiDimDecisionGraph< GUM_SCALAR >* newVFunction = new MultiDimDecisionGraph< GUM_SCALAR >();
       newVFunction->copyAndReassign ( *__vFunction, __fmdp->mapMainPrime() );
 
-//      std::cout << "Hello" << std::endl;
       // *****************************************************************************************
       // For each action
 //      std::vector<std::future<Multi>> workers;
@@ -503,6 +499,58 @@ namespace gum {
     void SPUMDD<GUM_SCALAR>::__transferActionIds( const ArgMaxSet<GUM_SCALAR, Idx>& src, ActionSet& dest){
       for( auto idi = src.beginSafe(); idi != src.endSafe(); ++idi )
         dest += *idi;
+    }
+
+    template<typename GUM_SCALAR>
+    std::string SPUMDD<GUM_SCALAR>::optimalPolicy2String(){
+      if(!__optimalPolicy || __optimalPolicy->root() == 0 )
+        return "NO OPTIMAL POLICY CALCULATED YET";
+
+      std::stringstream output;
+      std::stringstream terminalStream;
+      std::stringstream nonTerminalStream;
+      std::stringstream arcstream;
+      output << std::endl << "digraph \" OPTIMAL POLICY \" {" << std::endl;
+
+      terminalStream << "node [shape = box];" << std::endl;
+      nonTerminalStream << "node [shape = ellipse];" << std::endl;
+      std::string tab = "  ";
+
+      Set<NodeId> visited;
+      std::queue<NodeId> fifo;
+      fifo.push(__optimalPolicy->root());
+      visited << __optimalPolicy->root();
+
+      while(!fifo.empty()){
+
+        NodeId currentNodeId = fifo.front();
+        fifo.pop();
+
+        if ( __optimalPolicy->isTerminalNode( currentNodeId ) ){
+          ActionSet ase = __optimalPolicy->nodeValue(currentNodeId);
+          terminalStream << tab << currentNodeId << ";" << tab << currentNodeId  << " [label=\""<< currentNodeId << " - ";
+          for( SequenceIteratorSafe<Idx> valIter = ase.beginSafe(); valIter != ase.endSafe(); ++valIter )
+            terminalStream << __fmdp->actionName(*valIter) << " ";
+          terminalStream << "\"];"<< std::endl;
+        } else {
+          const InternalNode* currentNode = __optimalPolicy->node(currentNodeId);
+          nonTerminalStream << tab << currentNodeId << ";" << tab << currentNodeId  << " [label=\""<< currentNodeId << " - "
+                            << currentNode->nodeVar()->name() << "\"];" << std::endl;
+
+          for ( Idx sonIter = 0; sonIter < currentNode->nbSons(); ++sonIter ){
+            arcstream << tab <<  currentNodeId << " -> " << currentNode->son(sonIter)
+                      << " [label=\"" << currentNode->nodeVar()->label ( sonIter ) << "\",color=\"#0000ff\"];" << std::endl;
+            if( !visited.exists(currentNode->son(sonIter)) ){
+              fifo.push(currentNode->son(sonIter));
+              visited << currentNode->son(sonIter);
+            }
+          }
+        }
+      }
+
+      output << terminalStream.str() << std::endl << nonTerminalStream.str() << std::endl <<  arcstream.str() << std::endl << "}" << std::endl;
+
+      return output.str();
     }
 
 

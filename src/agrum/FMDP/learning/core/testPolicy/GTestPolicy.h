@@ -75,7 +75,7 @@ namespace gum {
         // ============================================================================
         /// Returns true if enough observation were made so that the test can be relevant
         // ============================================================================
-        bool isTestRelevant(){ return ( this->nbObservation() > 20 && this->nbObservation() > __conTab.attrASize() * 5 ); }
+        bool isTestRelevant() const { return ( this->nbObservation() > 20 && this->nbObservation() > __conTab.attrASize() * 5 ); }
 
       /// @}
 
@@ -88,17 +88,17 @@ namespace gum {
         // ============================================================================
         /// Computes the GStat of current variable according to the test
         // ============================================================================
-        void computeScore();
+        void computeScore() const ;
 
         // ============================================================================
         /// Returns the performance of current variable according to the test
         // ============================================================================
-        double score();
+        double score() const;
 
         // ============================================================================
         /// Returns a second criterion to severe ties
         // ============================================================================
-        double secondaryscore();
+        double secondaryscore() const;
 
 
       /// @}
@@ -107,11 +107,12 @@ namespace gum {
 
         void add(const GTestPolicy<GUM_SCALAR>& src);
 
-        std::string toString(){ std::stringstream ss;
+        std::string toString() const { std::stringstream ss;
                                 ss << ITestPolicy<GUM_SCALAR>::toString()
-                                   << "Contingency Table : " <<std::endl
+                                   << "\t\t\tContingency Table : " <<std::endl
                                    << __conTab.toString() << std::endl
-                                   << "GStat : " << __GStat << std::endl;
+                                   << "\t\t\tGStat : " << this->score() << std::endl
+                                   << "\t\t\tGStat : " << this->secondaryscore() << std::endl;
                                 return ss.str();}
 
     private :
@@ -119,7 +120,7 @@ namespace gum {
       /// The contingency table used to keeps records of all observation
       ContingencyTable<long unsigned int, GUM_SCALAR> __conTab;
 
-      double __GStat;
+      mutable double __GStat;
   };
 
 } // End of namespace gum

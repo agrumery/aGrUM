@@ -258,6 +258,7 @@ namespace gum {
 
         /// Returns the best policy obtained so far
         INLINE const MultiDimDecisionGraph<ActionSet, SetTerminalNodePolicy>* optimalPolicy() { return __optimalPolicy; }
+        std::string optimalPolicy2String();
 
       /// @}
 
@@ -305,7 +306,7 @@ namespace gum {
 //        INLINE SetIteratorSafe<const DiscreteVariable*> endVarElemination() {return __elVarSeq.rendSafe();}
 
         INLINE bool shouldEleminateVar( const DiscreteVariable* v ){
-          return __fmdp->mapMainPrime().existsSecond(v);
+          return v==nullptr?false:__fmdp->mapMainPrime().existsSecond(v);
         }
 
         INLINE const Set< const DiscreteVariable* >* elVarSeq(){

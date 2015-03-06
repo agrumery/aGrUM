@@ -71,7 +71,7 @@ namespace gum {
         // ============================================================================
         /// Returns true if enough observation were added so that the test can be relevant
         // ============================================================================
-        virtual bool isTestRelevant() = 0;
+        virtual bool isTestRelevant() const = 0;
 
       /// @}
 
@@ -84,17 +84,17 @@ namespace gum {
         // ============================================================================
         /// Recomputes the statistic from the beginning
         // ============================================================================
-        virtual void computeScore(){ __isModified = false; }
+        virtual void computeScore() const { __isModified = false; }
 
         // ============================================================================
         /// Returns the performance of current variable according to the test
         // ============================================================================
-        virtual double score() = 0;
+        virtual double score() const = 0;
 
         // ============================================================================
         /// Returns a second criterion to severe ties
         // ============================================================================
-        virtual double secondaryscore() = 0;
+        virtual double secondaryscore() const = 0;
 
       /// @}
 
@@ -102,14 +102,14 @@ namespace gum {
 
         Idx nbObservation() const { return __nbObs; }
 
-        std::string toString(){ std::stringstream ss; ss << "Nb Obs : " <<__nbObs << std::endl; return ss.str(); }
+        std::string toString() const { std::stringstream ss; ss << "\t\t\tNb Obs : " <<__nbObs << std::endl; return ss.str(); }
 
     protected :
-      bool isModified(){ return __isModified; }
+      bool isModified() const { return __isModified; }
 
     private :
 
-      bool __isModified;
+      mutable bool __isModified;
 
       ///
       Idx __nbObs;

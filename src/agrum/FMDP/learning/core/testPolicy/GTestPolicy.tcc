@@ -54,7 +54,7 @@ namespace gum {
     // Computes the GStat of current variable according to the test
     // ============================================================================
     template < typename GUM_SCALAR >
-    void GTestPolicy<GUM_SCALAR>::computeScore(){
+    void GTestPolicy<GUM_SCALAR>::computeScore() const {
       ITestPolicy<GUM_SCALAR>::computeScore();
       __GStat = 0;
       for ( auto attrIter = __conTab.attrABeginSafe(); attrIter != __conTab.attrAEndSafe(); ++attrIter ){
@@ -74,7 +74,7 @@ namespace gum {
     // Returns the performance of current variable according to the test
     // ============================================================================
     template < typename GUM_SCALAR >
-    double GTestPolicy<GUM_SCALAR>::score(){
+    double GTestPolicy<GUM_SCALAR>::score() const {
       if( this->isModified() )
         computeScore();
       double score = 1 - ChiSquare::probaChi2(__GStat, (__conTab.attrASize()-1)*(__conTab.attrBSize()-1));
@@ -85,7 +85,7 @@ namespace gum {
     // Returns a second criterion to severe ties
     // ============================================================================
     template < typename GUM_SCALAR >
-    double GTestPolicy<GUM_SCALAR>::secondaryscore(){
+    double GTestPolicy<GUM_SCALAR>::secondaryscore() const{
       if( this->isModified() )
         computeScore();
       return __GStat;

@@ -79,6 +79,7 @@ namespace gum {
          */
         // ###################################################################
         INLINE Idx modality( const DiscreteVariable* var ) const { return __varInst[var]; }
+        INLINE Idx rModality( const DiscreteVariable* var ) const { return __rInst[var]; }
 
         // ###################################################################
         /**
@@ -89,6 +90,7 @@ namespace gum {
          */
         // ###################################################################
         INLINE void setModality( const DiscreteVariable* var, Idx modality ) { __varInst.insert(var, modality); }
+        INLINE void setRModality( const DiscreteVariable* var, Idx modality ) { __rInst.insert(var, modality); }
 
         // ###################################################################
         // Returns the reward obtained during this observation
@@ -127,6 +129,7 @@ namespace gum {
 
       /// Table giving for every variables its instantiation
       HashTable<const DiscreteVariable*, Idx> __varInst;
+      HashTable<const DiscreteVariable*, Idx> __rInst;
 
       /// The reward associated to this transition
       double __reward;

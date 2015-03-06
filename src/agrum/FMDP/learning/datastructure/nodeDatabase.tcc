@@ -85,7 +85,7 @@ namespace gum {
     void NodeDatabase<AttributeSelection, isScalar>::__addObservation( const Observation* newObs, Int2Type<true> ){
 
       for(auto varIter = __attrTable.cbeginSafe(); varIter != __attrTable.cendSafe(); ++varIter)
-        varIter.val()->addObservation( newObs->modality(varIter.key()), newObs->reward() );
+        varIter.val()->addObservation( newObs->rModality(varIter.key()), newObs->reward() );
 
       if( __valueCount.exists(newObs->reward()) )
         __valueCount[newObs->reward()]++;
@@ -135,12 +135,12 @@ namespace gum {
 
 
     template<TESTNAME AttributeSelection, bool isScalar>
-    std::string NodeDatabase<AttributeSelection, isScalar>::toString(){
+    std::string NodeDatabase<AttributeSelection, isScalar>::toString() const{
       std::stringstream ss;
 
       ss << "NbObservation : " << this->nbObservation() << std::endl;
       for( auto varIter = __attrTable.beginSafe(); varIter != __attrTable.endSafe(); ++varIter )
-        ss << "Variable : " << varIter.key()->name() << " - Associated Test : " << __attrTable[ varIter.key() ]->toString() << std::endl;
+        ss << "\t\tVariable : " << varIter.key()->name() << " - Associated Test : " << __attrTable[ varIter.key() ]->toString() << std::endl;
 
       return ss.str();
     }

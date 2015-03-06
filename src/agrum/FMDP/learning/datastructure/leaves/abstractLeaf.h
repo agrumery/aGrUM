@@ -83,7 +83,7 @@ namespace gum {
 
         NodeId id(){ return __leafId; }
 
-        virtual Idx nbModa() = 0;
+        virtual Idx nbModa() const = 0;
 
         virtual std::string toString() = 0;
 

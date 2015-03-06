@@ -80,7 +80,7 @@ namespace gum {
         // ###################################################################
         bool contains( NodeId testedId ) const { return AbstractLeaf::contains(testedId) || __l1->contains(testedId) || __l2->contains(testedId); }
 
-        Idx nbModa(){ return __l1->nbModa(); }
+        Idx nbModa() const { return __l1->nbModa(); }
 
         std::string toString();
 

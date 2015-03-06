@@ -34,6 +34,7 @@
 // =========================================================================
 #include <agrum/graphs/graphElements.h>
 // =========================================================================
+#include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
 #include <agrum/FMDP/learning/datastructure/nodeDatabase.h>
 // =========================================================================
@@ -82,11 +83,20 @@ namespace gum {
         // ###################################################################
         /// Gaves the leaf effectif for given modality
         // ###################################################################
-        virtual double effectif(Idx moda) const { return __n1->effectif(__valueDomain->atPos(moda)); }
+        virtual double effectif(Idx moda) const { return __effectif(moda, Int2Type<isScalar>() ); }
+    private :
+        double __effectif(Idx moda, Int2Type<true> ) const { return __n1->effectif(__valueDomain->atPos(moda)); }
+        double __effectif(Idx moda, Int2Type<false> ) const { return __n1->effectif(moda); }
+
+    public :
         virtual double total() const { return __n1->nbObservation(); }
 
-        Idx nbModa() { return __valueDomain->size(); }
+        Idx nbModa() const { return __nbModa(Int2Type<isScalar>()); }
+    private :
+        Idx __nbModa(Int2Type<true> ) const { return __valueDomain->size(); }
+        Idx __nbModa(Int2Type<false> ) const { return __n1->valueDomain(); }
 
+    public :
         std::string toString(){ std::stringstream ss; ss << "{ Id : " << this->id() << "}"; return ss.str(); }
 
       private :

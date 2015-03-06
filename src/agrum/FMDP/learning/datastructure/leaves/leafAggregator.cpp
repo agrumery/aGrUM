@@ -62,7 +62,7 @@ namespace gum {
     // ============================================================================
     void LeafAggregator::addLeaf( AbstractLeaf* l ){
 
-      std::cout << "\tLeafAggregator::addLeaf " << l->id() << " begin" << std::endl;
+//      std::cout << "\tLeafAggregator::addLeaf " << l->id() << " begin" << std::endl;
 //      std::cout << this->toString() << std::endl;
 
 //      bool want2leave = false;
@@ -118,7 +118,7 @@ namespace gum {
       __needsUpdate = true;
 
 //      std::cout << this->toString() << std::endl;
-      std::cout << "\tLeafAggregator::addLeaf end - Update? : " << __needsUpdate << std::endl;
+//      std::cout << "\tLeafAggregator::addLeaf end - Update? : " << __needsUpdate << std::endl;
 
 //      if( want2leave ){
 //        exit(1);
@@ -131,7 +131,7 @@ namespace gum {
     // ============================================================================
     bool LeafAggregator::updateLeaf( AbstractLeaf* l ){
 
-      std::cout << "\tLeafAggregator::updateLeaf " << l->id() << " begin" << std::endl;
+//      std::cout << "\tLeafAggregator::updateLeaf " << l->id() << " begin" << std::endl;
 //      std::cout << this->toString() << std::endl;
 
 //      bool want2leave = false;
@@ -189,7 +189,7 @@ namespace gum {
       }
 
 //      std::cout << this->toString() << std::endl;
-      std::cout << "\tLeafAggregator::updateLeaf end - Update? : " << __needsUpdate << std::endl;
+//      std::cout << "\tLeafAggregator::updateLeaf end - Update? : " << __needsUpdate << std::endl;
 
 //      if( want2leave ){
 //        exit(1);
@@ -204,7 +204,7 @@ namespace gum {
     // ============================================================================
     void LeafAggregator::removeLeaf( AbstractLeaf* l ){
 
-      std::cout << "\tLeafAggregator::removeLeaf begin " << l->id() << std::endl;
+//      std::cout << "\tLeafAggregator::removeLeaf begin " << l->id() << std::endl;
 //      std::cout << this->toString() << std::endl;
 
 //      bool want2leave = false;
@@ -268,7 +268,7 @@ namespace gum {
       __needsUpdate = true;
 
 //      std::cout << this->toString() << std::endl;
-      std::cout << "\tLeafAggregator::removeLeaf end - Update? : " << __needsUpdate << std::endl;
+//      std::cout << "\tLeafAggregator::removeLeaf end - Update? : " << __needsUpdate << std::endl;
 
 //      if( want2leave ){
 //        exit(1);
@@ -281,7 +281,7 @@ namespace gum {
     // ============================================================================
     void LeafAggregator::update(  ){
 
-      std::cout << "\tLeafAggregator::update begin" << std::endl;
+//      std::cout << "\tLeafAggregator::update begin" << std::endl;
 //      std::cout << this->toString() << std::endl;
 
       LeafPair* nextPair = __initialContext->top();
@@ -330,15 +330,15 @@ namespace gum {
       __needsUpdate = false;
 
 //      std::cout << this->toString() << std::endl;
-      std::cout << "\tLeafAggregator::update end" << std::endl;
+//      std::cout << "\tLeafAggregator::update end" << std::endl;
       //exit(1);
     }
 
 
     HashTable<NodeId,AbstractLeaf*> LeafAggregator::leavesMap(){
 
-      std::cout << "\tLeafAggregator::leavesMap begin" << std::endl;
-      std::cout << this->toString() << std::endl;
+//      std::cout << "\tLeafAggregator::leavesMap begin" << std::endl;
+//      std::cout << this->toString() << std::endl;
 
       HashTable<NodeId, AbstractLeaf*> retMap;
 //      std::cout << "Recherche Feuille complexe" << std::endl;
@@ -365,7 +365,7 @@ namespace gum {
           retMap.insert( leafIter.key()->id(), leafIter.key());
       }
 
-      std::cout << retMap << std::endl;
+//      std::cout << retMap << std::endl;
 //      std::cout << "\tLeafAggregator::leavesMap end" << std::endl;
 
       return retMap;
@@ -375,10 +375,10 @@ namespace gum {
     std::string LeafAggregator::toString(){
 
       std::stringstream ss;
-      std::cout << "################\nTas Initial : " << std::endl << __initialContext->toString() << std::endl;
+      ss << "################\nTas Initial : " << std::endl << __initialContext->toString() << std::endl;
 
       for( auto fusIter = __fusionSeq.beginSafe(); fusIter != __fusionSeq.endSafe(); ++fusIter ){
-        std::cout << "################\nTas " << fusIter.pos() << " : " << std::endl << (*fusIter)->toString();
+        ss << "################\nTas " << fusIter.pos() << " : " << std::endl << (*fusIter)->toString();
       }
 
       return ss.str();
@@ -393,19 +393,19 @@ namespace gum {
     // ============================================================================
     void LeafAggregator::__removeContext( Idx startingPos ){
 
-      std::cout << "\tLeafAggregator::__removeContext begin" << std::endl;
+//      std::cout << "\tLeafAggregator::__removeContext begin" << std::endl;
 
       for(Idx i = __fusionSeq.size() - 1; !__fusionSeq.empty() && i >= startingPos; --i ){
-        std::cout << "LOOP" << __fusionSeq.toString() << " - i " << i << std::endl;
+//        std::cout << "LOOP" << __fusionSeq.toString() << " - i " << i << std::endl;
         __leavesCpt->eraseNode( __fusionSeq.atPos(i)->leaf()->id() );
         delete __fusionSeq.atPos(i);
         __fusionSeq.erase( __fusionSeq.atPos(i) );
-        std::cout << "LEAP" << std::endl;
+//        std::cout << "LEAP" << std::endl;
       }
 
       __needsUpdate = true;
 
-      std::cout << "\tLeafAggregator::__removeContext end" << std::endl;
+//      std::cout << "\tLeafAggregator::__removeContext end" << std::endl;
     }
 
 
@@ -414,12 +414,12 @@ namespace gum {
     // ============================================================================
     void LeafAggregator::__addInitialPair( LeafPair* p ){
 
-      std::cout << "\tLeafAggregator::__addInitialPair begin" << std::endl;
+//      std::cout << "\tLeafAggregator::__addInitialPair begin" << std::endl;
       bool res = __initialContext->addPair(p);
       if( res )
         __removeContext(0);
 
-      std::cout << "\tLeafAggregator::__addInitialPair end " << res << std::endl;
+//      std::cout << "\tLeafAggregator::__addInitialPair end " << res << std::endl;
     }
 
 
@@ -428,12 +428,12 @@ namespace gum {
     // ============================================================================
     void LeafAggregator::__updateInitialPair( LeafPair* p ){
 
-      std::cout << "\tLeafAggregator::__updateInitialPair begin" << std::endl;
+//      std::cout << "\tLeafAggregator::__updateInitialPair begin" << std::endl;
       bool res = __initialContext->updatePair(p);
       if( res )
         __removeContext(0);
 
-      std::cout << "\tLeafAggregator::__updateInitialPair end " << res << std::endl;
+//      std::cout << "\tLeafAggregator::__updateInitialPair end " << res << std::endl;
     }
 
     // ============================================================================
@@ -441,12 +441,12 @@ namespace gum {
     // ============================================================================
     void LeafAggregator::__removeInitialPair( LeafPair* p ){
 
-      std::cout << "\tLeafAggregator::__removeInitialPair begin" << std::endl;
+//      std::cout << "\tLeafAggregator::__removeInitialPair begin" << std::endl;
       bool res = __initialContext->removePair(p);
       if( res )
         __removeContext(0);
 
-      std::cout << "\tLeafAggregator::__removeInitialPair end " << res << std::endl;
+//      std::cout << "\tLeafAggregator::__removeInitialPair end " << res << std::endl;
     }
 
 } // end gum namespace

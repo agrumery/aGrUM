@@ -85,8 +85,8 @@ namespace gum {
         /// Returns the number of samples for case (iattr, ivalue)
         // ==========================================================================
         Idx joint( GUM_SCALAR_A valueA, GUM_SCALAR_B valueB ) const {
-          return __contingencyTable.exists(std::pair<GUM_SCALAR_A, GUM_SCALAR_B>(valueA, valueB))?
-                __contingencyTable[std::pair<GUM_SCALAR_A, GUM_SCALAR_B>(valueA, valueB)]:0; }
+          return __jointTable.exists(std::pair<GUM_SCALAR_A, GUM_SCALAR_B>(valueA, valueB))?
+                __jointTable[std::pair<GUM_SCALAR_A, GUM_SCALAR_B>(valueA, valueB)]:0; }
 
         // ==========================================================================
         /// Returns the number of samples for case (iattr, ivalue)
@@ -129,9 +129,11 @@ namespace gum {
 
         ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>& operator+=(const ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>& src);
 
-        std::string toString(){
+        std::string toString() const {
           std::stringstream ss;
-          ss << __attrAMarginalTable << std::endl << __attrBMarginalTable << std::endl << __contingencyTable << std::endl;
+          ss << "\t\t\t\t" << __attrAMarginalTable << std::endl
+             << "\t\t\t\t" << __attrBMarginalTable << std::endl
+             << "\t\t\t\t" << __jointTable << std::endl;
           return ss.str();
         }
 
@@ -146,7 +148,7 @@ namespace gum {
        * If someone ever use this class and has time to correctly implements
        * a efficient contingency table, you're welcome
        */
-      HashTable< std::pair< GUM_SCALAR_A, GUM_SCALAR_B >, Idx > __contingencyTable;
+      HashTable< std::pair< GUM_SCALAR_A, GUM_SCALAR_B >, Idx > __jointTable;
       HashTable< GUM_SCALAR_A, Idx> __attrAMarginalTable;
       HashTable< GUM_SCALAR_B , Idx> __attrBMarginalTable;
   };

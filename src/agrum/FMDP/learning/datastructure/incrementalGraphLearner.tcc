@@ -25,6 +25,7 @@
 */
 // =======================================================
 #include <cmath>
+#include <queue>
 // =======================================================
 #include <agrum/core/types.h>
 #include <agrum/core/multiPriorityQueue.h>
@@ -62,6 +63,7 @@ namespace gum {
 
       _model.addNode();
       this->_root = _insertLeafNode(new NodeDatabase<AttributeSelection, isScalar>(&_setOfVars, _value),_value,new Set<const Observation*>());
+
     }
 
 
@@ -111,7 +113,7 @@ namespace gum {
         _updateNodeWithObservation(newObs, currentNodeId);
 
         // The we select the next to go throught
-        currentNodeId = _nodeSonsMap[currentNodeId][newObs->modality( _nodeVarMap[currentNodeId] )];
+        currentNodeId = _nodeSonsMap[currentNodeId][__branchObs(newObs, _nodeVarMap[currentNodeId] )];
       }
 
       // On final insertion into the leave we reach
@@ -295,8 +297,8 @@ namespace gum {
           obsetMap[modality] = new Set<const Observation*>();
         }
         for( SetIteratorSafe<const Observation*> obsIter = _leafDatabase[currentNodeId]->beginSafe(); _leafDatabase[currentNodeId]->endSafe() != obsIter; ++obsIter ){
-          dbMap[(*obsIter)->modality(desiredVar)]->addObservation(*obsIter);
-          obsetMap[(*obsIter)->modality(desiredVar)]->insert(*obsIter);
+          dbMap[__branchObs(*obsIter, desiredVar)]->addObservation(*obsIter);
+          obsetMap[__branchObs(*obsIter, desiredVar)]->insert(*obsIter);
         }
 
         // Then we can install each new leaves (and put in place the sonsMap)
@@ -366,7 +368,7 @@ namespace gum {
         for(Idx modality = 0; modality < _nodeVarMap[currentNodeId]->domainSize(); ++modality) {
           NodeId sonId = _nodeSonsMap[currentNodeId][modality];
           _convertNode2Leaf(sonId);
-          _leafDatabase[currentNodeId]->operator +(*(_leafDatabase[sonId]));
+          (*_leafDatabase[currentNodeId]) = (*_leafDatabase[currentNodeId]) + *(_leafDatabase[sonId]);
           _removeNode(sonId);
         }
 
@@ -378,6 +380,25 @@ namespace gum {
     }
 
 
+    template < TESTNAME AttributeSelection, bool isScalar >
+    Set<const Observation*> IncrementalGraphLearner<AttributeSelection, isScalar>::_getNodeDataBase( NodeId nody ){
+
+      Set<const Observation*> ret;
+      std::vector<NodeId> filo;
+      filo.push_back( nody );
+
+      while( !filo.empty() ){
+        NodeId curNody = filo.back();
+        filo.pop_back();
+        if( this->_nodeVarMap[curNody] == _value ){
+          ret = ret + *(this->_leafDatabase[curNody]);
+        } else {
+          for( Idx moda = 0; moda < this->_nodeVarMap[curNody]->domainSize(); ++moda )
+            filo.push_back( this->_nodeSonsMap[curNody][moda] );
+        }
+      }
+      return ret;
+    }
 
     // ============================================================================
     // Display tree current structure in console
@@ -386,30 +407,33 @@ namespace gum {
     template < TESTNAME AttributeSelection, bool isScalar >
     void IncrementalGraphLearner<AttributeSelection, isScalar>::_debugTree( ){
 
-        for( auto varIter = _nodeVarMap.beginSafe(); varIter != _nodeVarMap.endSafe(); ++varIter )
-          std::cout << varIter.key() << " - " << varIter.val()->name() << " | ";
-        std::cout << std::endl;
+      std::stringstream output;
 
-        for( auto nodeIter = _nodeSonsMap.beginSafe(); nodeIter != _nodeSonsMap.endSafe(); ++nodeIter ) {
-          std::cout << nodeIter.key() << " : ";
-          for( Idx i = 0; i < _nodeVarMap[nodeIter.key()]->domainSize(); ++i )
-            std::cout << i << " -> " << _nodeSonsMap[nodeIter.key()][i] << " . ";
-          std::cout << " | " << std::endl;
-        }
+      Set<NodeId> visited;
+      std::queue<NodeId> fifo;
+      fifo.push(this->_root);
+      visited << this->_root;
 
+      while(!fifo.empty()){
 
-        for(auto varLiter = _var2Node.beginSafe(); varLiter != _var2Node.endSafe(); ++varLiter ){
-          std::cout << "Var " << varLiter.key()->name();
-          LinkedList<NodeId>* mojo = varLiter.val();
-          std::cout << " - Liste : ";
-          Link<NodeId>* moter = mojo->list();
-          while(moter){
-            std::cout << moter->element() << " | ";
-            moter = moter->nextLink();
+        NodeId currentNodeId = fifo.front();
+        fifo.pop();
+
+        output << "##########\nNoeud : " << currentNodeId << " - Associated Var : " << this->_nodeVarMap[currentNodeId]->name() << std::endl;
+        output << "\tDATA : " << this->_nodeId2Database[currentNodeId]->toString();
+
+        if( this->_nodeVarMap[currentNodeId] != this->_value ){
+          for( Idx i = 0; i < this->_nodeVarMap[currentNodeId]->domainSize(); ++i ){
+            visited.insert(this->_nodeSonsMap[currentNodeId][i]);
+            fifo.push(this->_nodeSonsMap[currentNodeId][i]);
           }
-          std::cout <<  std::endl;
         }
 
-        std::cout << _target->toDot() << std::endl << "     " << std::endl;
+//        Set<const Observation*> ret = this->_getNodeDataBase(currentNodeId);
+//        for(SetIteratorSafe<const Observation*> obsIter = ret.beginSafe(); obsIter != ret.endSafe(); ++obsIter)
+//          output << "\t\t\t" << (*obsIter)->toString() << std::endl;
+      }
+
+      std::cout << output.str() << std::endl;
     }
 } // end gum namespace

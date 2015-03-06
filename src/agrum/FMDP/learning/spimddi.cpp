@@ -130,8 +130,10 @@ namespace gum {
             for( auto varIter = __lastState.variablesSequence().beginSafe(); varIter != __lastState.variablesSequence().endSafe(); ++varIter)
                 obs->setModality(*varIter, __lastState.val(**varIter));
 
-            for( auto varIter = newState.variablesSequence().beginSafe(); varIter != newState.variablesSequence().endSafe(); ++varIter)
-                obs->setModality(__fmdp->main2prime(*varIter), newState.val(**varIter));
+            for( auto varIter = newState.variablesSequence().beginSafe(); varIter != newState.variablesSequence().endSafe(); ++varIter){
+              obs->setModality(__fmdp->main2prime(*varIter), newState.val(**varIter));
+              obs->setRModality(*varIter, newState.val(**varIter));
+            }
 
             obs->setReward(reward);
 
@@ -140,13 +142,15 @@ namespace gum {
 
             setCurrentState( newState );
 
-//            if( __nbObservation%__observationPhaseLenght == 0) {
+            if( __nbObservation%__observationPhaseLenght == 0) {
                 __learner->updateFMDP();
-                std::cout << __fmdp->toString() << std::endl;
-//                __planer->makePlanning(__nbValueIterationStep);
-////                std::cout << __planer->optimalPolicy()->toDot() << std::endl;
+//                std::cout << __fmdp->toString() << std::endl;
+                __planer->makePlanning(__nbValueIterationStep);
+//                exit(0);
 ////                exit(1);
-//            }
+            }
+//            std::cout << reinterpret_cast<const MultiDimDecisionGraph<double,ExactTerminalNodePolicy>*>(__fmdp->reward())->toDot() << std::endl;
+//            std::cout << __planer->optimalPolicy2String() << std::endl;
 
             __nbObservation++;
             std::cout << "\n*********************************************\n" << " " << std::endl << " " << std::endl;

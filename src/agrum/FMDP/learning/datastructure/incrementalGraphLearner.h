@@ -100,7 +100,17 @@ namespace gum {
         void __assumeValue( const Observation* obs, Int2Type<false>)
                   { if( !_valueAssumed.exists(obs->modality(_value))) _valueAssumed << obs->modality(_value); }
 
+        // ###################################################################
+        ///
+        // ###################################################################
+        Idx __branchObs( const Observation* obs, const DiscreteVariable* var ){ return __branchObs( obs, var, Int2Type<isScalar>() ); }
+        Idx __branchObs( const Observation* obs, const DiscreteVariable* var, Int2Type<true>){ return obs->rModality(var); }
+        Idx __branchObs( const Observation* obs, const DiscreteVariable* var, Int2Type<false>){ return obs->modality(var); }
+
     protected :
+        // ###################################################################
+        ///
+        // ###################################################################
         virtual void _updateNodeWithObservation( const Observation* newObs, NodeId currentNodeId ){
                    _nodeId2Database[currentNodeId]->addObservation( newObs ); }
 
@@ -132,6 +142,9 @@ namespace gum {
         // ###################################################################
         virtual void _transpose( NodeId, const DiscreteVariable* );
 
+        // ###################################################################
+        ///
+        // ###################################################################
         virtual NodeId _insertNode(NodeDatabase<AttributeSelection, isScalar>* nDB,
                                   const DiscreteVariable* boundVar);
 
@@ -143,8 +156,14 @@ namespace gum {
                                         const DiscreteVariable* boundVar,
                                         Set<const Observation*>* obsSet );
 
+        // ###################################################################
+        ///
+        // ###################################################################
         virtual void _chgNodeBoundVar( NodeId chgedNodeId, const DiscreteVariable* desiredVar );
 
+        // ###################################################################
+        ///
+        // ###################################################################
         virtual void _removeNode( NodeId removedNodeId );
 
       /// @}
@@ -174,6 +193,7 @@ namespace gum {
     /// @}
 
         /// For debuggibg purposes only
+        Set<const Observation*> _getNodeDataBase(NodeId);
         void _debugTree( );
 
       // ==========================================================================
