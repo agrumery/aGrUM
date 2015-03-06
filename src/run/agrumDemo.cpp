@@ -28,6 +28,7 @@
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
 #include <agrum/FMDP/simulation/simulator.h>
+#include <agrum/FMDP/simulation/statesChecker.h>
 #include <agrum/FMDP/learning/spimddi.h>
 // ==============================================================================
 
@@ -37,7 +38,7 @@
 
 void run( const std::string sourceFilePath, const std::string traceFilePath, gum::Idx nbVar, ... ) {
 
-//  for( gum::Idx nbTest = 0; nbTest < 50; ++nbTest) {
+  for( gum::Idx nbTest = 0; nbTest < 50; ++nbTest) {
 
     gum::Idx nbIte = 0;
     double rDisc = 0.0;
@@ -96,61 +97,27 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
 
 
     sim.setInitialStateRandomly();
-
-    // Création de la variables récompenses (to be deprecated)
-    //const gum::MultiDimDecisionGraph<double>* reward = reinterpret_cast<const gum::MultiDimDecisionGraph<double>*>(fmdp.reward());
-    //for( auto rewardIter = reward->beginValues(); rewardIter != reward->endValues(); ++rewardIter)
-    //  for( reward->beginValues(); reward->hasValue(); reward->nextValue() )
-    //    spim.addReward(reward->value());
-
     spim.initialize();
 
     // ======================================================================================
     // Création du checker détat visité
     // ======================================================================================
-    //gum::Idx nbVisitedState = 0;
-    //gum::MultiDimDecisionGraph<bool>* visitedStatesCheck = new gum::MultiDimDecisionGraph<bool>();
-    //gum::NodeId falseId = visitedStatesCheck->manager()->addTerminalNode(false);
-    //gum::NodeId trueId = visitedStatesCheck->manager()->addTerminalNode(true);
-    //gum::NodeId parId = 0;
-    //gum::NodeId parModa = 0;
-    //for( auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter ){
-
-//      std::cout << "Nouvelle variable : " << (*varIter)->name() << std::endl;
-
-    //  visitedStatesCheck->add(**varIter);
-
-//      std::cout << "\tAjout noeud" << std::endl;
-    //  gum::NodeId varId = visitedStatesCheck->manager()->addNonTerminalNode(*varIter);
-
-//      std::cout << "\tPar check" << std::endl;
-    //  if(parId)
-    //    visitedStatesCheck->manager()->setSon(parId, parModa, varId);
-    //  else
-    //    visitedStatesCheck->manager()->setRootNode(varId);
-
-//      std::cout << "\tBranching" << std::endl;
-    //  for ( gum::Idx moda = 0; moda < (*varIter)->domainSize(); ++moda ){
-//        std::cout << "Moda : " << moda << " - State : " << sim.currentState().valFromPtr(*varIter) << std::endl;
-    //    if( moda == sim.currentState().valFromPtr(*varIter))
-    //      parModa = moda;
-    //    else
-    //      visitedStatesCheck->manager()->setSon(varId, moda, falseId);
-    //  }
-//      std::cout << "TADA" << std::endl;
-    //  parId = varId;
-    //}
-    //visitedStatesCheck->manager()->setSon(parId, parModa, trueId);
+    gum::StatesChecker sc;
+    sc.reset(sim.currentState());
 
 
 
-//    std::ofstream traceFile;
-//    std::stringstream traceFileName;
-//    traceFileName << traceFilePath << "." << nbTest << ".csv";
-//    traceFile.open ( traceFileName.str(), std::ios::out | std::ios::trunc );
-//    if ( !traceFile ) {
-//      return;
-//    }
+
+    // ======================================================================================
+    // Ouverture des fichiers de traces
+    // ======================================================================================
+    std::ofstream traceFile;
+    std::stringstream traceFileName;
+    traceFileName << traceFilePath << "." << nbTest << ".csv";
+    traceFile.open ( traceFileName.str(), std::ios::out | std::ios::trunc );
+    if ( !traceFile ) {
+      return;
+    }
 
 //    std::ofstream fmdpFile;
 //    std::stringstream fmdpFileName;
@@ -164,73 +131,53 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
 
       spim.setCurrentState(sim.currentState());
 
+      gum::Idx nbDec = 0;
       while(!sim.hasReachEnd()){
 
+        nbDec++;
         // Normal Iteration Part
+        std::cout << "\n*********************************************\n";
+        std::cout << "RUN n° " << nbRun << " - Status : " << sim.currentState().toString() << " - Decision n° " << nbDec << " : ";
         gum::Idx actionChosenId = spim.takeAction();
+        std::cout << "By doing " << fmdp.actionName(actionChosenId) << std::endl;
         sim.perform( actionChosenId );
 
-        try{
-          spim.feedback(sim.currentState(), sim.reward());
-        } catch(gum::Exception e){
-          std::cout << e.errorCallStack() << std::endl;
-          exit(1);
-        }
+        std::cout << "New State : " << sim.currentState() << " - Rew : " << sim.reward();
+        spim.feedback(sim.currentState(), sim.reward());
 
         rDisc = sim.reward() + 0.9*rDisc;
 
-//        if(! visitedStatesCheck->get(sim.currentState())){
-//          nbVisitedState++;
+        if( !sc.checkState(sim.currentState()) ) {
+            sc.addState(sim.currentState());
+          }
 
-//          gum::NodeId parId = visitedStatesCheck->root();
-//          gum::Idx parModa = sim.currentState().valFromPtr( visitedStatesCheck->node( parId )->nodeVar() );
-//          while( visitedStatesCheck->node( parId )->son( parModa ) != falseId ){
-//            parId = visitedStatesCheck->node( parId )->son( parModa );
-//            parModa = sim.currentState().valFromPtr( visitedStatesCheck->node( parId )->nodeVar() );
-//          }
-//          for( auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter ){
-//            visitedStatesCheck->add(**varIter);
-//            gum::NodeId varId = visitedStatesCheck->manager()->addNonTerminalNode(*varIter);
-//            if(parId)
-//              visitedStatesCheck->manager()->setSon(parId, parModa, varId);
-//            else
-//              visitedStatesCheck->manager()->setRootNode(varId);
-//            for ( gum::Idx moda = 0; moda < (*varIter)->domainSize(); ++moda ){
-//              if( moda == sim.currentState().valFromPtr(*varIter))
-//                parModa = moda;
-//              else
-//                visitedStatesCheck->manager()->setSon(varId, moda, falseId);
-//            }
-//            parId = varId;
-//          }
-//          visitedStatesCheck->manager()->setSon(parId, parModa, trueId);
-//        }
-
-//        traceFile << nbTest << "\t" << nbIte << "\t" << nbRun << "\t" << nbVisitedState
-//                  << "\t" << spim.learnerSize() << "\t" << spim.modelSize() << "\t" << spim.optimalPolicySize()
-//                  << std::setprecision(15)  << "\t" << rDisc << std::endl;
+        traceFile << nbTest << "\t" << nbIte << "\t" << nbRun << "\t" << nbDec << "\t" << sc.nbVisitedStates()
+                  << "\t" << spim.learnerSize() << "\t" << spim.modelSize() << "\t" << spim.optimalPolicySize()
+                  << std::setprecision(15)  << "\t" << rDisc << std::endl;
 
 //        if(nbIte == 100 || nbIte == 1000)
 //          fmdpFile << spim.toString() << std::endl << "========================================================================================" << std::endl;
         nbIte++;
+//        if(nbIte == 1000)
+//          exit(-1);
       }
       sim.setInitialStateRandomly();
     }
-//    traceFile.close();
+    traceFile.close();
 
-//    std::ofstream modelFile;
-//    std::stringstream modelFileName;
-//    modelFileName << GET_PATH_STR ( modelfactory ) << "." << nbTest << ".dot";
-//    modelFile.open ( modelFileName.str(), std::ios::out | std::ios::trunc );
-//    if ( !traceFile ) {
-//      return;
-//    }
+    std::ofstream modelFile;
+    std::stringstream modelFileName;
+    modelFileName << GET_PATH_STR ( modelfactory ) << "." << nbTest << ".dot";
+    modelFile.open ( modelFileName.str(), std::ios::out | std::ios::trunc );
+    if ( !modelFile ) {
+      return;
+    }
 
-//    modelFile << spim.toString();
+    modelFile << spim.toString();
 
-//    modelFile.close();
+    modelFile.close();
 //    fmdpFile << spim.toString() << std::endl;
-// }
+ }
 
   std::cout << "FIN EVALUATION" << std::endl;
 
@@ -243,7 +190,6 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
 void runCoffee(){
   std::string varName("huc");
   std::string varModa("yes");
-  std::cout << "hello" << std::endl;
   run ( GET_PATH_STR ( FMDP/coffee/coffee.dat ), GET_PATH_STR ( FMDP/trace.Coffee ), 1, varName.c_str(), varModa.c_str() );
 }
 
