@@ -32,5 +32,100 @@ namespace gum_tests {
         gum::prm::PRMFactory<double > f;
         delete f.prm();
       }
+
+      void testAddParameter() {
+        gum::prm::PRMFactory<double > f;
+        auto prm = f.prm();
+
+        f.startClass("MyClass");
+        f.addParameter(Parameter::REAL, "lambda", 0.001);
+        f.endClass();
+
+        auto c = prm->getClass("MyClass"); 
+        TS_ASSERT( 1 == c.paramters().size() );
+        auto elt = c.get("lamda");
+        TS_ASSERT( elt.type() == prm_parameter );
+        auto lambda = static_cast<const Parameter&>(elt);
+        TS_ASSERT( lambda.type() == Parameter::REAL );
+        TS_ASSERT( lambda.value == 0.0001 );
+
+        delete prm;
+      }
+
+      void testParameterSubClass() {
+        gum::prm::PRMFactory<double> f;
+        auto prm = f.prm();
+
+        f.startClass("MyClass");
+        f.addParameter(Parameter::REAL, "lambda", 0.001);
+        f.endClass();
+
+        TS_ASSERT( c->classes().size() == 2 );
+
+        auto super_c = prm->getClass("MyClass");
+        auto c = prm->getClass("MyClass<lambda=0.001>");
+
+        TS_ASSERT( c.isSubTypeOf(super_c) );
+
+        TS_ASSERT( 1 == c.paramters().size() );
+        auto elt = c.get("lamda");
+        TS_ASSERT( elt.type() == prm_parameter );
+        auto lambda = static_cast<const Parameter&>(elt);
+        TS_ASSERT( lambda.type() == Parameter::REAL );
+        TS_ASSERT( lambda.value == 0.0001 );
+
+        delete prm;
+      }
+
+      void testParameterInstantiation() {
+        gum::prm::PRMFactory<double> f;
+        auto prm = f.prm();
+
+        f.startClass("MyClass");
+        f.addParameter(Parameter::REAL, "lambda", 0.001);
+        f.endClass();
+
+        f.startSystem("MySystem");
+        f.addInstance("MyClass", "i");
+        f.endSystem();
+
+        auto s = prm->system("MySystem");
+
+        TS_ASSERT( s.exists("i") );
+        
+        auto i = s.get("i");
+
+        auto c = prm->getClass("MyClass<lambda=0.001>");
+        TS_ASSERT( c == i.type() );
+      }
+
+      void testParameterSpecificInstantiation() {
+        gum::prm::PRMFactory<double> f;
+        auto prm = f.prm();
+
+        f.startClass("MyClass");
+        f.addParameter(Parameter::REAL, "lambda", 0.001);
+        f.endClass();
+
+        TS_ASSERT( c->classes().size() == 3 );
+
+        f.startSystem("MySystem");
+        Hashtable<std::string, double> params;
+        params.insert("lambda", 0.009);
+        f.addInstance("MyClass", "i", params);
+        f.endSystem();
+
+        auto s = prm->system("MySystem");
+
+        TS_ASSERT( s.exists("i") );
+        
+        auto i = s.get("i");
+
+        auto super_c = prm->getClass("MyClass");
+        auto c = prm->getClass("MyClass<lambda=0.009>");
+
+        TS_ASSERT( c.isSubTypeOf(super_c) );
+        TS_ASSERT( c == i.type() );
+      }
   };
 }//gum_tests

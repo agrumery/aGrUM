@@ -82,9 +82,13 @@ namespace gum {
         // ========================================================================
         /// @{
 
-        enum ClassElementType { prm_attribute, prm_aggregate, prm_refslot,
-                                prm_slotchain
-                              };
+        enum ClassElementType {
+          prm_attribute,
+          prm_aggregate,
+          prm_refslot,
+          prm_slotchain,
+          prm_parameter
+        };
 
         static std::string enum2str ( ClassElementType type ) {
           switch ( type ) {
