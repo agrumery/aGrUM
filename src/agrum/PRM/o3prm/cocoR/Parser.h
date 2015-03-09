@@ -407,8 +407,8 @@ void addImport(std::string import) {
 	void Aggregate(std::string type, std::string name);
 	void Functions(std::string type, std::string name);
 	void Parameter(std::string type, std::string name);
-	void CastIdent(std::string& s);
 	void Number(float& val);
+	void CastIdent(std::string& s);
 	void CPTRule(bool &error);
 	void CPTRuleValue(std::string& s );
 	void AggChains(std::vector<std::string>& chains );

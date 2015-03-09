@@ -427,8 +427,8 @@ Reference<std::string type, std::string name, bool array> =
     ';' (. TRY2(factory().addReferenceSlot(type, name, array), "Can not add reference "+name) .) .
 
 Parameter<std::string type, std::string name> =
-                            (. std::string l; .)
-    [ default Label<l> ]    (. TRY2(factory().addParameter(type, name, l), "Can not add parameter "+name) .)
+                            (. float l = 0.0; .)
+    default Number<l>       (. TRY2(factory().addParameter(type, name, l), "Can not add parameter "+name) .)
     ';'.
 
 //________________________
@@ -532,17 +532,7 @@ System = system word    (. TRY(factory().startSystem(narrow(t->val))) .)
                                 TRY(factory().setReferenceSlot(l1, r1))
                             }
                         .)
-    | '='  Ident<r1>    (. TRY( try {
-                            factory().setReferenceSlot(l1, r1);
-                            } catch (gum::Exception& e) {
-                                size_t pos = l1.find_last_of('.');
-                                if (pos != std::string::npos) {
-                                    std::string i = l1.substr(0, pos);
-                                    std::string p = l1.substr(pos+1, std::string::npos);
-                                    factory().setParameter(i, p, r1);
-                                }
-                            } )
-                        .)
+    | '='  Ident<r1>    (. TRY( factory().setReferenceSlot(l1, r1) ) .)
     ) ';'
     }
     SYNC '}'            (. TRY(factory().endSystem()) .)
@@ -553,8 +543,7 @@ ArrayDecl<std::string l1> = (. std::string r1; std::stringstream sBuff; sBuff <<
     (   word                (. TRY(factory().addArray(l1, narrow(t->val), size)) .)
       | '.' word            (. std::string l2 = narrow(t->val); .)
         (   "+=" Ident<r1>  (. TRY(factory().setReferenceSlot(sBuff.str(), l2, r1)) .)
-          | '='  Ident<r1>  (. TRY( try { factory().setReferenceSlot(sBuff.str(), l2, r1); }
-                               catch ( gum::Exception& e ) { factory().setParameter(sBuff.str(), l2, r1); } ) .)
+          | '='  Ident<r1>  (. TRY( factory().setReferenceSlot(sBuff.str(), l2, r1) ) .)
         )
     ) .
 

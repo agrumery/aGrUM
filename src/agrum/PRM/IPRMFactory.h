@@ -83,7 +83,7 @@ namespace gum {
       virtual void endAttribute() = 0;
       virtual void addParameter ( const std::string& type,
                                   const std::string& name,
-                                  std::string value = "" ) = 0;
+                                  double value) = 0;
       virtual void addAggregator ( const std::string& name,
                                    const std::string& agg_type,
                                    const std::vector<std::string>& chains,
@@ -105,8 +105,6 @@ namespace gum {
                                       const std::string& left_reference,
                                       const std::string& right_instance ) = 0;
       virtual void setReferenceSlot ( const std::string& l_i, const std::string& r_i ) = 0;
-      virtual void setParameter ( const std::string& i, const std::string& p, const std::string& v ) = 0;
-
 
       virtual bool isClassOrInterface ( const std::string& type ) const = 0;
       virtual bool isArrayInCurrentSystem ( const std::string& name ) const = 0;

@@ -452,35 +452,22 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void
-    PRMFactory<GUM_SCALAR>::addParameter( const std::string& type, const std::string& name,
-                                          std::string value ) {
-      Class<GUM_SCALAR>* c = static_cast<Class<GUM_SCALAR>*>( __checkStack( 1, PRMObject::PRMType::CLASS ) );
+    PRMFactory<GUM_SCALAR>::addParameter( const std::string& type, const std::string& name, double value ) {
+      auto c = static_cast<Class<GUM_SCALAR>*>( __checkStack( 1, PRMObject::PRMType::CLASS ) );
 
-      if( value == "" ) {
-        MultiDimSparse<GUM_SCALAR>* impl =
-          new MultiDimSparse<GUM_SCALAR> ( std::numeric_limits<GUM_SCALAR>::signaling_NaN() );
-        Attribute<GUM_SCALAR>* a = new Attribute<GUM_SCALAR> ( name, *__retrieveType( type ), impl );
-        c->addParameter( a, false );
-      } else {
-        MultiDimSparse<GUM_SCALAR>* impl = new MultiDimSparse<GUM_SCALAR> ( 0 );
-        Attribute<GUM_SCALAR>* a = new Attribute<GUM_SCALAR> ( name, *__retrieveType( type ), impl );
-        Instantiation inst( a->cpf() );
-        bool found = false;
-
-        for( inst.setFirst(); not inst.end(); inst.inc() ) {
-          if( a->type()->label( inst.pos( * ( a->type() ) ) ) == value ) {
-            a->cpf().set( inst, 1 );
-            found = true;
-            break;
-          }
-        }
-
-        if( not found ) {
-          GUM_ERROR( NotFound, "illegal default value." );
-        }
-
-        c->addParameter( a, true );
+      Parameter<GUM_SCALAR>* p = 0;
+      if (type == "int") {
+        p = new Parameter<GUM_SCALAR>(name, Parameter<GUM_SCALAR>::ParameterType::INT, (GUM_SCALAR)value);
+      } else if (type == "real") {
+        p = new Parameter<GUM_SCALAR>(name, Parameter<GUM_SCALAR>::ParameterType::REAL, (GUM_SCALAR)value);
       }
+
+      try {
+        c->add( p );
+      } catch( DuplicateElement& ) {
+        c->overload( p );
+      }
+
     }
 
     template<typename GUM_SCALAR>
@@ -700,53 +687,6 @@ namespace gum {
           }
         }
       }
-    }
-
-    template<typename GUM_SCALAR>
-    void
-    PRMFactory<GUM_SCALAR>::setParameter( const std::string& instance, const std::string& param, const std::string& value ) {
-      System<GUM_SCALAR>* model = static_cast<System<GUM_SCALAR>*>( __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
-      Instance<GUM_SCALAR>* i = 0;
-
-      try {
-        i = & ( model->get( instance ) );
-      } catch( NotFound& ) {
-        GUM_ERROR( NotFound, "instance not found in current system" );
-      }
-
-      Attribute<GUM_SCALAR>* a = 0;
-
-      try {
-        a = & ( i->get( param ) );
-
-        if( not i->type().isParameter( *a ) ) {
-          GUM_ERROR( OperationNotAllowed, "given attribute is not a parameter" );
-        }
-      } catch( NotFound& ) {
-        GUM_ERROR( NotFound, "no such parameter in the given instance" );
-      }
-
-      Size label = a->type()->domainSize();
-
-      for( Size idx = 0; idx < a->type()->domainSize(); ++idx ) {
-        if( value == a->type()->label( idx ) ) {
-          label = idx;
-          break;
-        }
-      }
-
-      if( label == a->type()->domainSize() ) {
-        GUM_ERROR( NotFound, "no such label in the given parameter" );
-      }
-
-      Potential<GUM_SCALAR> pot;
-
-      pot.add( a->type().variable() );
-      pot.fill( ( GUM_SCALAR ) 0 );
-      Instantiation inst( pot );
-      inst.chgVal( a->type().variable(), label );
-      pot.set( inst, ( GUM_SCALAR ) 1 );
-      i->setParameterValue( a->safeName(), pot );
     }
 
     template<typename GUM_SCALAR>

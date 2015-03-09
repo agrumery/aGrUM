@@ -44,7 +44,6 @@
 #include <agrum/PRM/IPRMFactory.h>
 #include <agrum/PRM/PRM.h>
 
-
 namespace gum {
 
   namespace prm {
@@ -449,10 +448,9 @@ namespace gum {
          * @param name The name of this parameter.
          * @param value The label used as default value for this parameter.
          */
-        virtual void addParameter ( const std::string& type,
-                                    const std::string& name,
-                                    std::string value = "" ) override;
-
+        void addParameter(const std::string& type,
+                           const std::string& name,
+                           double value ) override;
         /// @}
         // ======================================================================
         /// @name Aggregator and function construction methods.
@@ -587,17 +585,6 @@ namespace gum {
          * @param r_i The name of an instance or an array of instances in the model.
          */
         virtual void setReferenceSlot ( const std::string& l_i, const std::string& r_i ) override;
-
-        /**
-         * @brief define the value of a parameter.
-         *
-         * @param i An instance defined in the current system.
-         * @param p A parameter of instance.
-         * @param v A label of p's type.
-         *
-         * @throw NotFound Raised if i, p or v is not found.
-         */
-        virtual void setParameter ( const std::string& i, const std::string& p, const std::string& v ) override;
 
         /// @}
 

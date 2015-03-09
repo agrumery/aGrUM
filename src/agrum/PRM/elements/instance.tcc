@@ -32,7 +32,7 @@ namespace gum {
   namespace prm {
     template<typename GUM_SCALAR>
     Instance<GUM_SCALAR>::Instance( const std::string& name, Class<GUM_SCALAR>& type ) :
-      PRMObject( name ), __type( &type ), __params( 0 ) {
+      PRMObject( name ), __type( &type ) {
       GUM_CONSTRUCTOR( Instance );
 
       // First we create attributes for each aggregate in type
@@ -42,27 +42,6 @@ namespace gum {
       // We add attributes in type by reference for inner ones and by copy for output ones
       for( const auto attr : __type->attributes() )
         __copyAttribute( attr );
-
-      // Then we instantiate each parameters in type
-      if( __type->parameters().size() )
-        __params = new Set<NodeId>();
-
-      for( const auto param : __type->parameters() )
-        __copyParameter( param );
-    }
-
-    template<typename GUM_SCALAR>
-    void
-    Instance<GUM_SCALAR>::__copyParameter( Attribute<GUM_SCALAR>* source ) {
-      Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR> ( source->name(), source->type() );
-      Instantiation i( attr->cpf() ), j( source->cpf() );
-
-      for( i.setFirst(), j.setFirst(); not( i.end() or j.end() ); i.inc(), j.inc() )
-        attr->cpf().set( i, source->cpf().get( j ) );
-
-      attr->setId( source->id() );
-      __nodeIdMap.insert( attr->id(), attr );
-      __bijection.insert( & ( source->type().variable() ), & ( attr->type().variable() ) );
     }
 
     template<typename GUM_SCALAR>
@@ -77,22 +56,21 @@ namespace gum {
 
       for( const auto & elt : __referingAttr )
         delete elt.second;
-
-      if( __params ) delete __params;
     }
 
     template<typename GUM_SCALAR>
     void
     Instance<GUM_SCALAR>::instantiate() {
       // First retrieving any referenced instance
-      for( const auto chain : type().slotChains() )
+      for( const auto chain : type().slotChains() ) {
         __instantiateSlotChain( chain );
+      }
 
       // Now we need to add referred instance to each input node
       // For Attributes we first add parents, then we initialize CPF
-      for( const auto attr : type().attributes() )
-        if( not type().isParameter( *attr ) )
-          __copyAttributeCPF( __nodeIdMap[( *attr ).id()] );
+      for( const auto attr : type().attributes() ) {
+        __copyAttributeCPF( __nodeIdMap[( *attr ).id()] );
+      }
 
       // For Aggregate<GUM_SCALAR> we add parents
       for( const auto agg : type().aggregates() ) {
@@ -252,7 +230,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     Instance<GUM_SCALAR>::Instance( const Instance<GUM_SCALAR>& source ) :
-      PRMObject( source ), __type( source.__type ), __params( 0 ) {
+      PRMObject( source ), __type( source.__type ) {
       GUM_CONS_CPY( Instance );
       GUM_ERROR( FatalError, "do not copy Instance" );
     }
@@ -325,45 +303,6 @@ namespace gum {
       } catch( NotFound& ) {
         GUM_ERROR( NotFound, "no Attribute<GUM_SCALAR> with the given name" );
       }
-    }
-
-    template<typename GUM_SCALAR> INLINE
-    bool
-    Instance<GUM_SCALAR>::isInitialised( NodeId id ) const {
-      return ( __params ) ? __params->exists( id ) : false;
-    }
-
-    template<typename GUM_SCALAR> INLINE
-    void
-    Instance<GUM_SCALAR>::setParameterValue( const std::string& name, const Potential<GUM_SCALAR>& value ) {
-      Attribute<GUM_SCALAR>* attr = 0;
-
-      try {
-        attr = & ( get( name ) );
-      } catch( NotFound& ) {
-        GUM_ERROR( NotFound, "the given ClassElement<GUM_SCALAR> is not in this Instance" );
-      }
-
-      if( not __type->isParameter( *attr ) ) {
-        GUM_ERROR( WrongClassElement, "the given NodeId is not a parameter" );
-      }
-
-      if( attr->cpf().nbrDim() > 1 ) {
-        GUM_ERROR( FatalError, "found a parameter's potential with more than one dimension" );
-      }
-
-      if( not value.contains( attr->type().variable() ) ) {
-        GUM_ERROR( OperationNotAllowed, "the given value is invalid for this parameter" );
-      }
-
-      // Assigning value
-      attr->cpf().copy( value );
-
-      if( not __params ) {
-        __params = new Set<NodeId>();
-      }
-
-      __params->insert( attr->id() );
     }
 
     template<typename GUM_SCALAR> INLINE

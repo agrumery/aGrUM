@@ -164,52 +164,6 @@ namespace gum {
 
         /// @}
         // ========================================================================
-        /// @name Parameter initialisation methods
-        // ========================================================================
-        /// @{
-
-        /**
-         * @brief Returns true if the given id is a parameter and is properly
-         *        initialized.
-         *
-         * This includes parameters with default value.
-         *
-         * @param id The id of a parameter in this Instance<GUM_SCALAR>.
-         * @return true If id is initialized.
-         *
-         * @throw NotFound Raised if no gum::prm::Attribute<GUM_SCALAR> matches id.
-         * @throw WrongClassElement Raised if id is not a parameter.
-         */
-        bool isInitialised ( NodeId id ) const;
-
-        /**
-         * @brief Set the value of a parameter.
-         *
-         * Parameters are gum::prm::Attribute<GUM_SCALAR> with no parents and for which a value
-         * (i.e. observation) must be assigned at instantiation if no default
-         * value is defined. Parameters are always instantiated so you do not need
-         * to instantiate them.
-         *
-         * Default values are assigned using the parameter's CPF. If there is
-         * no default values, it's CPF is filled with invasive nan (i.e. Not A
-         * Number).
-         *
-         * The Potential used to assign the value to id must contain one
-         * DiscreteVariable, which must be identical to get(id).type().variable().
-         * it must also contain k-1 0 and one 1, where k is the domain of id's
-         * DiscreteVariable.
-         *
-         * @param name The Attribute<GUM_SCALAR>'s name.
-         * @param value The MultiDim used to assign the value of the parameter.
-         *
-         * @throw NotFound Raised if no gum::prm::Attribute<GUM_SCALAR> matches id.
-         * @throw WrongClassElement Raised if id is not a parameter.
-         * @throw OperationNotAllowed Raised if value is invalid.
-         */
-        void setParameterValue ( const std::string& name, const Potential<GUM_SCALAR>& value );
-
-        /// @}
-        // ========================================================================
         /// @name Instantiation methods.
         // ========================================================================
         /// @{
@@ -469,10 +423,6 @@ namespace gum {
         /// @param source An attribute in __type.
         void __copyAttribute ( Attribute<GUM_SCALAR>* source );
 
-        /// Used at construction to instantiate parameters.
-        /// @param source A parameter in __type.
-        void __copyParameter ( Attribute<GUM_SCALAR>* source );
-
         /**
          * @brief Add i as the inverse instantiation of name.
          *
@@ -544,9 +494,6 @@ namespace gum {
         /// The set of pair (instance, attribute) referring an attribute of
         /// this instance.
         NodeProperty< std::vector<pair>* > __referingAttr;
-
-        /// The gum::Set of initialised parameters.
-        Set<NodeId>* __params;
 
         /// A bijection used for MultiDim handling.
         Bijection<const DiscreteVariable*, const DiscreteVariable*> __bijection;

@@ -34,6 +34,11 @@
 #include <agrum/core/bijection.h>
 #include <agrum/multidim/multiDimSparse.h>
 #include <agrum/PRM/elements/classElementContainer.h>
+#include <agrum/PRM/elements/attribute.h>
+#include <agrum/PRM/elements/aggregate.h>
+#include <agrum/PRM/elements/parameter.h>
+#include <agrum/PRM/elements/referenceSlot.h>
+#include <agrum/PRM/elements/slotChain.h>
 
 namespace gum {
   namespace prm {
@@ -112,37 +117,6 @@ namespace gum {
         // ========================================================================
         /// @{
 
-        // /**
-        //  * @brief returns the state of a parameter.
-        //  *
-        //  * Parameters are Attribute<GUM_SCALAR> without any dependencies and for which a value
-        //  * (i.e. observation) must be assigned at instantiation if no default
-        //  * value is defined.
-        //  *
-        //  * Default values are assigned using the parameter's CPF. If there is
-        //  * no default values, it's CPF is filled with invasive nan (i.e. Not A
-        //  * Number).
-        //  *
-        //  * @param elt A ClassElement<GUM_SCALAR>.
-        //  * @return Returns 0 if n is not a parameter, 1 if it is a
-        //  *         parameter and 2 if it haves a default value.
-        //  */
-        /**
-         * @brief returns the state of a parameter.
-         *
-         * Parameters are Attribute<GUM_SCALAR> without any dependencies and for which a value
-         * (i.e. observation) must be assigned at instantiation if no default
-         * value is defined.
-         *
-         * Default values are assigned using the parameter's CPF. If there is
-         * no default values, it's CPF is filled with invasive nan (i.e. Not A
-         * Number).
-         *
-         * @param elt A ClassElement<GUM_SCALAR>.
-         * @return true if elt is a parameter.
-         */
-        bool isParameter ( const ClassElement<GUM_SCALAR>& elt ) const;
-
         /**
          * @brief Return true if the attribute named safe_name is a cast descendant.
          * Cast descendant are automatically added Attribute<GUM_SCALAR> for type casting.
@@ -151,27 +125,6 @@ namespace gum {
          * @throw NotFound Raised if safe_name does not name an Attribute<GUM_SCALAR> in this Class<GUM_SCALAR>.
          */
         bool isCastDescendant ( const std::string& safe_name ) const;
-
-        /**
-         * @brief Add a parameter to this Class<GUM_SCALAR>.
-         *
-         * Parameters are Attribute<GUM_SCALAR> without any dependencies and for which a value
-         * (i.e. observation) must be assigned at instantiation if no default
-         * value is defined.
-         *
-         * Default values are assigned using the parameter's CPF. If there is
-         * no default values, it's CPF is filled with invasive nan (i.e. Not A
-         * Number).
-         *
-         * @param param The Attribute<GUM_SCALAR> added as a Parameter of this Class<GUM_SCALAR>.
-         * @param flag If true the initialization flag indicated that the given
-         *             parameter is already initialized and does not require
-         *             initialization at instantiation.
-         * @return Returns the NodeId assigned to the added parameter.
-         *
-         * @throw DuplicateElement Raised if elt's name is already used in this class.
-         */
-        NodeId addParameter ( Attribute<GUM_SCALAR>* param, bool flag );
 
         /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(const std::string&).
         ClassElement<GUM_SCALAR>& get ( const std::string& name );
@@ -199,7 +152,7 @@ namespace gum {
          * Returns the set of parameters of this Class<GUM_SCALAR>.
          * @return Returns the set of parameters of this Class<GUM_SCALAR>.
          */
-        const Set< Attribute<GUM_SCALAR>* >& parameters() const;
+        const Set< Parameter<GUM_SCALAR>* >& parameters() const;
 
         /**
          * Returns the set of Aggregate<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -226,27 +179,6 @@ namespace gum {
          *        at Instance level.
          */
         const Sequence<NodeId>& toInstantiate() const;
-
-//    /**
-//     * @brief Remove a ClassElement<GUM_SCALAR> from this Class<GUM_SCALAR>.
-//     *
-//     * When removing a ClassElement<GUM_SCALAR> it will not be deleted by this Class<GUM_SCALAR>, thus
-//     * you should delete it yourself.
-//     *
-//     * All dependencies among the removed ClassElement<GUM_SCALAR> and ClassElement<GUM_SCALAR> defined
-//     * in and outside of this class are deleted also. You must update the
-//     * corresponding CPF yourself.
-//     *
-//     * Futhermore if there exists Instance of this Class<GUM_SCALAR> you should be very
-//     * careful at what you are doing (for instance do not delete the
-//     * ClassElement<GUM_SCALAR> before deleting the concerned Instance).
-//     *
-//     * @param id The ClassElement<GUM_SCALAR>'s NodeId.
-//     * @return the pointer over the removed ClassElement<GUM_SCALAR>.
-//     *
-//     * @throw NotFound If no ClassElement<GUM_SCALAR> matches id.
-//     */
-//    ClassElement<GUM_SCALAR>* remove(NodeId id);
 
         /// @}
         // ========================================================================
@@ -362,6 +294,9 @@ namespace gum {
         /// The set of gum::SlotChain<GUM_SCALAR>s
         Set<SlotChain<GUM_SCALAR>*> __slotChains;
 
+        /// The Set of parameters in this Class<GUM_SCALAR>.
+        Set< Parameter<GUM_SCALAR>* > __parameters;
+
         /// Recursively adds cast descendant of attr in this Class<GUM_SCALAR>.
         void __addCastDescendants ( Attribute<GUM_SCALAR>* attr );
 
@@ -404,8 +339,8 @@ namespace gum {
         /// @throw DuplicateElement Raised if c is already a sub-Class<GUM_SCALAR> of this.
         void __addExtension ( Class<GUM_SCALAR>* c );
 
-        /// Throws something if overload is illegal.
-        void __checkOverloadLegality ( const ClassElement<GUM_SCALAR>* overloaded,
+        /// Return true of overloaded can be overload by overloader.
+        bool __checkOverloadLegality ( const ClassElement<GUM_SCALAR>* overloaded,
                                        const ClassElement<GUM_SCALAR>* overloader );
 
         /// Overloads an attribute.
@@ -416,6 +351,9 @@ namespace gum {
 
         /// Overloads a reference slot.
         void __overloadReference ( ReferenceSlot<GUM_SCALAR>* overloader, ReferenceSlot<GUM_SCALAR>* overloaded );
+
+        /// Overloads a parameter.
+        void __overloadParameter( Parameter<GUM_SCALAR>* overloader, Parameter<GUM_SCALAR>* overloaded );
 
         /// @}
         // ========================================================================
@@ -431,13 +369,6 @@ namespace gum {
         /// This is mutable because it does not modify the class, only updates
         /// information on it.
         Sequence<NodeId> __instantiations;
-
-        /// The Set of parameters in this Class<GUM_SCALAR>.
-        Set< Attribute<GUM_SCALAR>* > __parameters;
-
-        /// The HashTable of parameters in this.
-        /// The value correspond to the initialization flag.
-        HashTable<const Attribute<GUM_SCALAR>*, bool> __paramValueFlags;
 
         /// @}
     };

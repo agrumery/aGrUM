@@ -60,15 +60,6 @@ namespace gum {
          * @param type 
          * @param impl value 
          */
-        Parameter ( const std::string& name, ParameterType type, GUM_SCALAR default_value );
-
-        /**
-         * @brief Constructor used by gum::Instance.
-         *
-         * @param type 
-         * @param name 
-         * @param value 
-         */
         Parameter ( const std::string& name, ParameterType type, GUM_SCALAR value );
 
         /// Destructor.
@@ -101,14 +92,20 @@ namespace gum {
         /// See gum::ClassElement::cpf().
         virtual const Potential<GUM_SCALAR>& cpf() const;
 
+        /// See gum::ClassElement::addParent().
+        void addParent(const gum::prm::ClassElement<GUM_SCALAR>&);
+
+        /// See gum::ClassElement::addChild().
+        void addChild(const gum::prm::ClassElement<GUM_SCALAR>&);
+
         /// @}
       protected:
 
         /// Copy constructor. Don't use it.
-        Parameter ( const Attribute& source );
+        Parameter ( const Parameter<GUM_SCALAR>& source );
 
         /// Copy operator. Don't use it.
-        Parameter& operator= ( const Attribute& from );
+        Parameter& operator= ( const Parameter<GUM_SCALAR>& from );
 
       private:
         // ========================================================================

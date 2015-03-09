@@ -115,15 +115,21 @@ namespace gum {
         __nodeIdMap.insert( attr->id(), attr );
         __attributes.insert( attr );
 
-        if( c.__parameters.exists( const_cast<Attribute<GUM_SCALAR>*>( c_attr ) ) ) {
-          __parameters.insert( attr );
-          __paramValueFlags.insert( attr, c.__paramValueFlags[c_attr] );
-        }
-
         if( c.__nameMap[c_attr->name()] == c.__nameMap[c_attr->safeName()] )
           __nameMap.insert( attr->name(), attr );
 
         __nameMap.insert( attr->safeName(), attr );
+      }
+
+      // Copying parameters
+      for( const auto c_param : c.__parameters ) {
+        auto param = new Parameter<GUM_SCALAR>( c_param->name(), c_param->valueType(), c_param->value() );
+
+        __parameters.insert( param );
+
+        param->setId( c_param->id() );
+        __nodeIdMap.insert( param->id(), param );
+        __nameMap.insert(param->name(), param);
       }
 
       // Copying aggregates
@@ -325,6 +331,11 @@ namespace gum {
           break;
         }
 
+        case ClassElement<GUM_SCALAR>::prm_parameter: {
+          __parameters.insert( static_cast<Parameter<GUM_SCALAR>*>( elt ) );
+          break;
+        }
+
         default: {
           GUM_ERROR( FatalError, "unknown ClassElement<GUM_SCALAR> type" );
         }
@@ -365,7 +376,9 @@ namespace gum {
 
       ClassElement<GUM_SCALAR>* overloaded = __nameMap[overloader->name()];
       // Checking overload legality
-      __checkOverloadLegality( overloaded, overloader );
+      if ( not __checkOverloadLegality( overloaded, overloader ) ) {
+        GUM_ERROR( OperationNotAllowed, "illegal overload" );
+      }
 
       switch( overloader->elt_type() ) {
         case ClassElement<GUM_SCALAR>::prm_attribute: {
@@ -389,6 +402,13 @@ namespace gum {
 
         case ClassElement<GUM_SCALAR>::prm_slotchain: {
           GUM_ERROR( WrongClassElement, "SlotChain<GUM_SCALAR> can not be overloaded" );
+          break;
+        }
+
+        case ClassElement<GUM_SCALAR>::prm_parameter: {
+          auto overloaded_param = static_cast<Parameter<GUM_SCALAR>*>( overloaded );
+          auto overloader_param = static_cast<Parameter<GUM_SCALAR>*>( overloader );
+          __overloadParameter( overloader_param, overloaded_param );
           break;
         }
 
@@ -497,6 +517,17 @@ namespace gum {
       // Removing overloaded ReferenceSlot<GUM_SCALAR>
       __referenceSlots.erase( overloaded );
       delete overloaded;
+    }
+
+    template<typename GUM_SCALAR>
+    void
+    Class<GUM_SCALAR>::__overloadParameter( Parameter<GUM_SCALAR>* overloader, Parameter<GUM_SCALAR>* overloaded ) {
+        overloader->setId( overloaded->id() );
+        __nodeIdMap[overloader->id()] = overloader;
+        __nameMap[overloader->name()] = overloader;
+        __nameMap[overloader->safeName()] = overloader;
+        __parameters.erase( overloaded );
+        __parameters.insert( overloader );
     }
 
     template<typename GUM_SCALAR>
@@ -639,25 +670,6 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> INLINE
-    bool
-    Class<GUM_SCALAR>::isParameter( const ClassElement<GUM_SCALAR>& elt ) const {
-      const ClassElement<GUM_SCALAR>& mine = get( elt.safeName() );
-
-      if( ClassElement<GUM_SCALAR>::isAttribute( mine ) ) {
-        return __parameters.exists( static_cast<Attribute<GUM_SCALAR>*>( const_cast<ClassElement<GUM_SCALAR>*>( &mine ) ) );
-      }
-
-      return false;
-      // if (__nodeIdMap.exists(id) and (ClassElement<GUM_SCALAR>::isAttribute(get(id)))) {
-      //   return __parameters.exists(&(static_cast<Attribute<GUM_SCALAR>&>(const_cast<ClassElement<GUM_SCALAR>&>(get(id)))));
-      // } else if (not __nodeIdMap.exists(id)) {
-      //   GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId");
-      // } else {
-      //   GUM_ERROR(WrongClassElement, "given id is not a potential parameter");
-      // }
-    }
-
-    template<typename GUM_SCALAR> INLINE
     ClassElement<GUM_SCALAR>&
     Class<GUM_SCALAR>::get( const std::string& name ) {
       try {
@@ -684,7 +696,7 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> INLINE
-    const Set< Attribute<GUM_SCALAR>* >&
+    const Set< Parameter<GUM_SCALAR>* >&
     Class<GUM_SCALAR>::parameters() const {
       return __parameters;
     }
@@ -765,21 +777,53 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> INLINE
-    void
-    Class<GUM_SCALAR>::__checkOverloadLegality( const ClassElement<GUM_SCALAR>* overloaded, const ClassElement<GUM_SCALAR>* overloader ) {
-      if( overloaded->elt_type() != overloader->elt_type() )
-        GUM_ERROR( TypeError, "invalid overload" );
+    bool
+    Class<GUM_SCALAR>::__checkOverloadLegality( const ClassElement<GUM_SCALAR>* overloaded,
+                                                const ClassElement<GUM_SCALAR>* overloader ) {
 
-      if( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
-        if( not overloader->type().isSubTypeOf( overloaded->type() ) ) {
-          GUM_ERROR( TypeError, "the overloading ClassElement<GUM_SCALAR> Type<GUM_SCALAR> is illegal" );
-        }
-      } else if( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_refslot ) {
-        if( not static_cast<const ReferenceSlot<GUM_SCALAR>*>( overloader )->slotType().isSubTypeOf( static_cast<const ReferenceSlot<GUM_SCALAR>*>( overloaded )->slotType() ) )
-          GUM_ERROR( TypeError, "the overloading ReferenceSlot<GUM_SCALAR> slot type is illegal" );
-      } else {
-        GUM_ERROR( TypeError, "illegal type to overload" );
+      if( overloaded->elt_type() != overloader->elt_type() ) {
+        return false;
       }
+  
+      switch ( overloaded->elt_type() ) {
+
+        case ClassElement<GUM_SCALAR>::prm_attribute:
+          {
+            if( not overloader->type().isSubTypeOf( overloaded->type() ) ) {
+              return false;
+            }
+            break;
+          }
+
+        case ClassElement<GUM_SCALAR>::prm_refslot:
+          {
+
+            const auto & new_slot_type = static_cast<const ReferenceSlot<GUM_SCALAR>*>( overloader )->slotType();
+            const auto & old_slot_type = static_cast<const ReferenceSlot<GUM_SCALAR>*>( overloaded )->slotType();
+
+            if( not new_slot_type.isSubTypeOf( old_slot_type ) ) {
+              return false;
+            }
+
+            break;
+          }
+
+        case ClassElement<GUM_SCALAR>::prm_parameter:
+          {
+            auto overloaded_param = static_cast<const Parameter<GUM_SCALAR>*>(overloaded);
+            auto overloader_param = static_cast<const Parameter<GUM_SCALAR>*>(overloader);
+
+            return overloaded_param->valueType() == overloader_param->valueType();
+            break;
+          }
+
+        default:
+          {
+            return false;
+          }
+
+      }
+      return true;
     }
 
     template<typename GUM_SCALAR> INLINE
@@ -792,23 +836,6 @@ namespace gum {
     void
     Class<GUM_SCALAR>::__addExtension( Class<GUM_SCALAR>* c ) {
       __extensions.insert( c );
-    }
-
-    template<typename GUM_SCALAR> INLINE
-    NodeId
-    Class<GUM_SCALAR>::addParameter( Attribute<GUM_SCALAR>* param, bool flag ) {
-      if( __nameMap.exists( param->name() ) ) {
-        GUM_ERROR( DuplicateElement, "name already used by another ClassElement<GUM_SCALAR>" );
-      }
-
-      param->setId( __dag.addNode() );
-      __nodeIdMap.insert( param->id(), param );
-      __nameMap.insert( param->name(), param );
-      __nameMap.insert( param->safeName(), param );
-      __parameters.insert( param );
-      __paramValueFlags.insert( param, flag );
-      __addCastDescendants( param );
-      return param->id();
     }
 
     template<typename GUM_SCALAR> INLINE

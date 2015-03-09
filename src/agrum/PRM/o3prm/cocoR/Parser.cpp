@@ -304,17 +304,7 @@ void Parser::System() {
 			} else if (la->kind == 26 /* "=" */) {
 				Get();
 				Ident(r1);
-				TRY( try {
-				factory().setReferenceSlot(l1, r1);
-				} catch (gum::Exception& e) {
-				    size_t pos = l1.find_last_of('.');
-				    if (pos != std::string::npos) {
-				        std::string i = l1.substr(0, pos);
-				        std::string p = l1.substr(pos+1, std::string::npos);
-				        factory().setParameter(i, p, r1);
-				    }
-				} )
-				
+				TRY( factory().setReferenceSlot(l1, r1) ) 
 			} else SynErr(48);
 			Expect(_semicolon);
 		}
@@ -354,7 +344,7 @@ void Parser::Reference(std::string type, std::string name, bool array) {
 void Parser::RefOrParam(std::string type, std::string name, bool array) {
 		if (isClassOrInterface(type)) {
 			Reference(type, name, array);
-		} else if (la->kind == _semicolon || la->kind == _default) {
+		} else if (la->kind == _default) {
 			Parameter(type, name);
 		} else SynErr(51);
 }
@@ -435,13 +425,21 @@ void Parser::Functions(std::string type, std::string name) {
 }
 
 void Parser::Parameter(std::string type, std::string name) {
-		std::string l; 
-		if (la->kind == _default) {
-			Get();
-			Label(l);
-		}
+		float l = 0.0; 
+		Expect(_default);
+		Number(l);
 		TRY2(factory().addParameter(type, name, l), "Can not add parameter "+name) 
 		Expect(_semicolon);
+}
+
+void Parser::Number(float& val) {
+		if (la->kind == _integer) {
+			Get();
+			val=coco_atoi(t->val); 
+		} else if (la->kind == _float) {
+			Get();
+			val=coco_atof(t->val); 
+		} else SynErr(56);
 }
 
 void Parser::CastIdent(std::string& s) {
@@ -468,16 +466,6 @@ void Parser::CastIdent(std::string& s) {
 			sBuff << narrow(t->val); 
 		}
 		s = sBuff.str(); 
-}
-
-void Parser::Number(float& val) {
-		if (la->kind == _integer) {
-			Get();
-			val=coco_atoi(t->val); 
-		} else if (la->kind == _float) {
-			Get();
-			val=coco_atof(t->val); 
-		} else SynErr(56);
 }
 
 void Parser::CPTRule(bool &error) {
@@ -606,8 +594,7 @@ void Parser::ArrayDecl(std::string l1) {
 			} else if (la->kind == 26 /* "=" */) {
 				Get();
 				Ident(r1);
-				TRY( try { factory().setReferenceSlot(sBuff.str(), l2, r1); }
-				catch ( gum::Exception& e ) { factory().setParameter(sBuff.str(), l2, r1); } ) 
+				TRY( factory().setReferenceSlot(sBuff.str(), l2, r1) ) 
 			} else SynErr(64);
 		} else SynErr(65);
 }

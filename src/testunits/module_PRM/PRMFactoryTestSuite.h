@@ -42,7 +42,7 @@ namespace gum_tests {
         f.endClass();
 
         auto c = prm->getClass("MyClass"); 
-        TS_ASSERT( 1 == c.paramters().size() );
+        TS_ASSERT( 1 == c.parameters().size() );
         auto elt = c.get("lamda");
         TS_ASSERT( elt.type() == prm_parameter );
         auto lambda = static_cast<const Parameter&>(elt);
@@ -67,7 +67,7 @@ namespace gum_tests {
 
         TS_ASSERT( c.isSubTypeOf(super_c) );
 
-        TS_ASSERT( 1 == c.paramters().size() );
+        TS_ASSERT( 1 == c.parameters().size() );
         auto elt = c.get("lamda");
         TS_ASSERT( elt.type() == prm_parameter );
         auto lambda = static_cast<const Parameter&>(elt);
