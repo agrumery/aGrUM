@@ -22,6 +22,8 @@
 // Author: Lionel Torti.
 // ============================================================================
 
+import classes.Room;
+import classes.types;
 import classes.Printer;
 
 class BWPrinter implements Printer {

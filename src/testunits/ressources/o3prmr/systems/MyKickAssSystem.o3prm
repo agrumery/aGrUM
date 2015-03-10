@@ -22,26 +22,27 @@
 // Author: Lionel Torti.
 // ============================================================================
 
+import classes.PowerSupply;
+import classes.Room;
 import classes.Computer;
-import classes.ParamClass;
 import classes.BWPrinter;
 import classes.ColorPrinter;
 
 system MyKickAssSystem {
-  classes.PowerSupply pow;
-  classes.Room r;
+  PowerSupply pow;
+  Room r;
 
-  classes.BWPrinter[6] bw_printers;
+  BWPrinter[6] bw_printers;
 
-  classes.ColorPrinter[2] color_printers;
+  ColorPrinter[2] color_printers;
 
   bw_printers.room = r;
   color_printers.room = r;
 
   r.power = pow;
 
-  classes.Computer c1;
-  classes.Computer c2;
+  Computer c1;
+  Computer c2;
 
   c1.room = r;
   c2.room = r;
@@ -51,10 +52,6 @@ system MyKickAssSystem {
 
   c1.printers += color_printers;
   c2.printers += color_printers;
-
-  classes.ParamClass param;
-  param.aBoolParam = true;
-  param.aParameter = NOK;
 
 }
 

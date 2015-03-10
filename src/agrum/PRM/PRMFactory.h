@@ -821,7 +821,7 @@ namespace gum {
         std::vector<std::string> __packages;
 
         /// Set of all declared namespaces.
-        Heap<List<std::string>*> __namespaces;
+        std::vector<List<std::string>*> __namespaces;
 
         /// The pointer on the PRM<GUM_SCALAR> built by this factory.
         PRM<GUM_SCALAR>* __prm;

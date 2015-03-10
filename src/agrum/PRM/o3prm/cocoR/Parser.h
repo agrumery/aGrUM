@@ -82,7 +82,9 @@ class Parser {
 		_implements=16,
 		_noisyOr=17,
 		_LEFT_CAST=18,
-		_RIGHT_CAST=19
+		_RIGHT_CAST=19,
+		_int=20,
+		_real=21
 	};
 	int maxT;
 
@@ -244,7 +246,6 @@ class Parser {
     }
 
 void import( std::string fileID ) {
-    std::cout << "in import(" << fileID << ")" << std::endl;
     // If relatif import
     if (fileID[0] == '.') {
       std::string current_pck = factory().currentPackage();
@@ -318,9 +319,6 @@ void import( std::string fileID ) {
         importFile( filepath, package );
         factory().addImport(package);
     } else {
-        std::cout << "fileID: " << fileID << std::endl;
-        std::cout << "filepath: " << filepath << std::endl;
-        std::cout << "package: " << " " << package << std::endl;
         SemErr("import not found");
     }
 }
@@ -401,13 +399,18 @@ void addImport(std::string import) {
 	void System();
 	void Ident(std::string& s);
 	void Label(std::string& s);
-	void Reference(std::string type, std::string name, bool array);
-	void RefOrParam(std::string type, std::string name, bool array);
+	void AbstractAttributeOrReference(std::string type);
+	void Parameter();
+	void AttributeOrReference(std::string type);
+	void IntParameter();
+	void RealParameter();
+	void Number(float& val);
+	void Reference(std::string type);
+	void AttrAggOrFunc(std::string type);
+	void AbstractAttribute(std::string type);
 	void Attribute(std::string type, std::string name);
 	void Aggregate(std::string type, std::string name);
 	void Functions(std::string type, std::string name);
-	void Parameter(std::string type, std::string name);
-	void Number(float& val);
 	void CastIdent(std::string& s);
 	void CPTRule(bool &error);
 	void CPTRuleValue(std::string& s );

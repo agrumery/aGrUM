@@ -315,8 +315,8 @@ void Scanner::Init() {
   percent=-1;
   EOL    = '\n';
   eofSym = 0;
-  	maxT = 29;
-	noSym = 29;
+  	maxT = 31;
+	noSym = 31;
 	int i;
 	for (i = 48; i <= 57; ++i) start.set(i, 14);
 	for (i = 65; i <= 90; ++i) start.set(i, 6);
@@ -331,11 +331,11 @@ void Scanner::Init() {
 	start.set(40, 12);
 	start.set(41, 13);
 	start.set(123, 16);
-	start.set(91, 17);
-	start.set(93, 18);
-	start.set(125, 19);
-	start.set(42, 20);
-	start.set(61, 21);
+	start.set(125, 17);
+	start.set(61, 18);
+	start.set(91, 19);
+	start.set(93, 20);
+	start.set(42, 21);
 	start.set(126, 22);
 	start.set(43, 24);
 		start.set(Buffer::EoF, -1);
@@ -348,7 +348,9 @@ void Scanner::Init() {
 	keywords.set(L"default", 15);
 	keywords.set(L"implements", 16);
 	keywords.set(L"noisyOr", 17);
-	keywords.set(L"import", 20);
+	keywords.set(L"int", 20);
+	keywords.set(L"real", 21);
+	keywords.set(L"import", 22);
 
 
   tvalLength = 128;
@@ -612,22 +614,22 @@ case_0:
 			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_14;}
 			else {goto case_0;}
 		case 16:
-			{t->kind = 21; break;}
-		case 17:
-			{t->kind = 22; break;}
-		case 18:
 			{t->kind = 23; break;}
-		case 19:
+		case 17:
 			{t->kind = 24; break;}
-		case 20:
+		case 18:
 			{t->kind = 25; break;}
-		case 21:
+		case 19:
 			{t->kind = 26; break;}
-		case 22:
+		case 20:
 			{t->kind = 27; break;}
+		case 21:
+			{t->kind = 28; break;}
+		case 22:
+			{t->kind = 29; break;}
 		case 23:
 			case_23:
-			{t->kind = 28; break;}
+			{t->kind = 30; break;}
 		case 24:
 			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_14;}
 			else if (ch == L'=') {AddCh(); goto case_23;}

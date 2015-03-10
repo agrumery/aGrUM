@@ -167,7 +167,6 @@ private:
     }
 
 void import( std::string fileID ) {
-    std::cout << "in import(" << fileID << ")" << std::endl;
     // If relatif import
     if (fileID[0] == '.') {
       std::string current_pck = factory().currentPackage();
@@ -241,9 +240,6 @@ void import( std::string fileID ) {
         importFile( filepath, package );
         factory().addImport(package);
     } else {
-        std::cout << "fileID: " << fileID << std::endl;
-        std::cout << "filepath: " << filepath << std::endl;
-        std::cout << "package: " << " " << package << std::endl;
         SemErr("import not found");
     }
 }
@@ -332,6 +328,8 @@ implements = "implements".
 noisyOr    = "noisyOr".
 LEFT_CAST  = "(".
 RIGHT_CAST = ")".
+int        = "int".
+real       = "real".
 
 //________________________
 COMMENTS FROM "/*" TO "*/" NESTED
@@ -360,7 +358,8 @@ O3PRM = {SYNC Import} {SYNC Unit} . //(. factory().popPackage(); .) .
 //________________________
 Import  =                              (. std::string fileID; .)
     SYNC "import" ImportIdent<fileID>  (. TRY2(import(fileID), "Can not import " + fileID); .)
-    SYNC ';' .
+    SYNC ';'                           (. factory().addImport(fileID); .)
+    .
 //________________________
 Unit = Type | Interface | Class | System.
 
@@ -378,16 +377,9 @@ Type = SYNC type word                           (. std::string name, extends, l,
 Interface = SYNC interface word          (. std::string interface, extends; interface = narrow(t->val); .)
     [ extends Ident<extends> ]
     SYNC '{'                             (. TRY2(factory().startInterface(interface, extends), "Can not create interface "+interface) .)
-    {                                    (. std::string type, name; .)
-      Ident<type> (
-        '[' ']' word                     (. name = narrow(t->val); bool array = true; .)
-         Reference<type, name, array>
-      | word                             (. name = narrow(t->val); bool array = false; .)
-        ( IF(isClassOrInterface(type))
-          Reference<type, name, array>
-        | SYNC ';'                       (. TRY2(factory().addAttribute(type, name), "Can not add attribute "+name) .)
-        )
-      )
+    {                                    (. std::string type; .)
+      Ident<type>
+      AbstractAttributeOrReference<type> 
     }
     SYNC '}'                             (. TRY2(factory().endInterface(), "Can not create interface "+interface) .)
     .
@@ -402,36 +394,65 @@ Class = class word                             (. std::string c, super; c = narr
           }
         ]
         SYNC '{'                               (. TRY2(factory().startClass(c, super, (set.empty()?0:&set)), "Can not create class "+c) .)
-        {                                      (. std::string type, name; bool array = false; .)
-          Ident<type> ( '[' ']' word           (. name = narrow(t->val); array = true; .)
-             Reference<type, name, array>
-          | word                               (. name = narrow(t->val); array = false; .)
-            (
-              RefOrParam<type, name, array>
-            | Attribute<type, name>
-            | Aggregate<type, name>
-            | Functions<type, name>
-            )
-          )
+        {                                      
+           Parameter
+           |                                   (. std::string type; .)
+           Ident<type> AttributeOrReference<type>
         }
         SYNC '}'                               (. TRY2(factory().endClass(), "Can not create class "+c) .)
         .
 
 //________________________
-RefOrParam<std::string type, std::string name, bool array> =
-    IF(isClassOrInterface(type))
-        Reference<type, name, array>
-    |   Parameter<type, name> .
+Parameter = IntParameter | RealParameter.
 
-Reference<std::string type, std::string name, bool array> =
-    ';' (. TRY2(factory().addReferenceSlot(type, name, array), "Can not add reference "+name) .) .
+IntParameter =        (. std::string name; float val = 0.0; .)
+  int word            (. name = narrow(t->val); .) 
+  '=' Number<val> ';' (. TRY2(factory().addParameter("int", name, (double)val), "Can not add parameter " + name); .)
+  .
 
-Parameter<std::string type, std::string name> =
-                            (. float l = 0.0; .)
-    default Number<l>       (. TRY2(factory().addParameter(type, name, l), "Can not add parameter "+name) .)
-    ';'.
+RealParameter =        (. std::string name; float val = 0.0; .)
+  real word            (. name = narrow(t->val); .)
+  '=' Number<val> ';'  (. TRY2(factory().addParameter("real", name, (double)val), "Can not add parameter " + name); .)
+  .
 
 //________________________
+AttributeOrReference<std::string type> =
+  IF(isClassOrInterface(type))
+    Reference<type>
+  | AttrAggOrFunc<type>
+  .
+
+AbstractAttributeOrReference<std::string type> =
+  IF(isClassOrInterface(type))
+    Reference<type>
+  | AbstractAttribute<type>
+  .
+
+//________________________
+Reference<std::string type> =   (. std::string name; bool array = false; .)
+  [
+    '[' ']'         (. array = true; .)
+  ]
+  word              (. name = narrow(t->val); .)
+  ';'               (. TRY2(factory().addReferenceSlot(type, name, array), "Can not add reference "+name) .)
+  .
+
+//________________________
+AttrAggOrFunc<std::string type> = (. std::string name; .)
+  word                            (. name = narrow(t->val); .)
+  (
+    Attribute<type, name>
+    | Aggregate<type, name>
+    | Functions<type, name>
+  )
+  .
+
+AbstractAttribute<std::string type> = (. std::string name; .)
+  word (. name = narrow(t->val); .)
+  ';'  (. TRY2(factory().startAttribute(type, name), "Can not create attribute " + name); .)
+       (. TRY(factory().endAttribute()); .)
+  .
+
 Attribute<std::string type, std::string name> =
                                 (. std::string p; bool error = false; .)
                                 (. TRY3(factory().startAttribute(type, name), "Can not create attribute "+name,error) .)
@@ -448,7 +469,8 @@ Attribute<std::string type, std::string name> =
     | CPTRule<error>
       { CPTRule<error> }
     ) '}'                       (. TRY3(factory().endAttribute(), "Can not create attribute "+name,error) .)
-    SYNC ';' .
+    SYNC ';'
+    .
 
 CPTRule<bool &error> =          (. std::vector<std::string> labels; std::vector<float> values; .)
                                 (. std::string s; float f; .)
@@ -469,7 +491,8 @@ Aggregate<std::string type, std::string name> =
     '=' word        (. func = narrow(t->val); .)
     '(' AggChains<chains> WEAK ',' AggLabels<labels>
     ')'             (. TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) .)
-    SYNC ';' .
+    SYNC ';'
+    .
 
 AggChains<. std::vector<std::string>& chains .> =
                             (. std::string s; .)
