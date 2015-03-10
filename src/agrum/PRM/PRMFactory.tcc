@@ -897,24 +897,6 @@ namespace gum {
     template<typename GUM_SCALAR>
     Type<GUM_SCALAR>*
     PRMFactory<GUM_SCALAR>::__retrieveType( const std::string& name ) const {
-      //std::cout << "in __retrieveType(" << name << ")" << std::endl;
-      //std::cout << " Current package " << currentPackage() << std::endl;
-      //try {
-      //  std::cout << " Current type " << currentType() << std::endl;
-      //} catch (Exception&) {
-      //  std::cout << " No current type" << std::endl;
-      //}
-      //std::cout << " Prefix " << __addPrefix("") << std::endl;
-      //if (not __namespaces.empty()) {
-      //  std::cout << " Imports ";
-      //  for( const auto & ns : *(__namespaces.top()) ) {
-      //    std::cout << ns << " ";
-      //  }
-      //  std::cout << std::endl;
-      //} else {
-      //  std::cout << "No imports" << std::endl;
-      //}
-
 
       Type<GUM_SCALAR> *type = 0;
       std::string full_name;
@@ -980,23 +962,6 @@ namespace gum {
     template<typename GUM_SCALAR>
     Class<GUM_SCALAR>*
     PRMFactory<GUM_SCALAR>::__retrieveClass( const std::string& name ) const {
-      //if (currentPackage() == "classes.Computer") {
-      //  std::cout << std::endl;
-      //  std::cout << "in __retrieveClass(" << name << ")" << std::endl;
-      //  std::cout << " Prefix " << __addPrefix("") << std::endl;
-      //  if (not __namespaces.empty()) {
-      //    std::cout << " Import names" << std::endl;
-      //    auto ns_list = __namespaces.top();
-      //    for ( gum::Size i = 0; i < ns_list->size(); ++i) {
-      //      std::string ns = (*ns_list)[i];
-      //      std::string ns_name = ns + "." + name;
-      //      std::cout << " - " << ns_name << std::endl;
-      //    }
-      //  } else {
-      //    std::cout << "No imports" << std::endl;
-      //  }
-      //  std::cout << std::endl;
-      //}
 
       Class<GUM_SCALAR> *a_class = 0;
       std::string full_name;
@@ -1046,25 +1011,6 @@ namespace gum {
     template<typename GUM_SCALAR>
     Interface<GUM_SCALAR>*
     PRMFactory<GUM_SCALAR>::__retrieveInterface( const std::string& name ) const {
-
-      //std::cout << "in __retrieveInterface(" << name << ")" << std::endl;
-      //std::cout << " Current package " << currentPackage() << std::endl;
-      //try {
-      //  std::cout << " Current type " << currentType() << std::endl;
-      //} catch (Exception&) {
-      //  std::cout << " No current type" << std::endl;
-      //}
-      //std::cout << " Prefix " << __addPrefix("") << std::endl;
-      //if (not __namespaces.empty()) {
-      //  std::cout << " Imports ";
-      //  for( const auto & ns : *(__namespaces.top()) ) {
-      //    std::cout << ns << " ";
-      //  }
-      //  std::cout << std::endl;
-      //} else {
-      //  std::cout << "No imports" << std::endl;
-      //}
-      
 
       Interface<GUM_SCALAR> *interface = 0;
       std::string full_name;
@@ -1461,15 +1407,6 @@ namespace gum {
     std::string
     PRMFactory<GUM_SCALAR>::popPackage() {
       std::string plop = currentPackage();
-      if (not __namespaces.empty()) {
-        auto ns_list = __namespaces.back();
-        for ( gum::Size i = 0; i < ns_list->size(); ++i) {
-          std::cout << " - " << (*ns_list)[i] << std::endl;
-        }
-      } else {
-        std::cout << "No imports" << std::endl;
-      }
-      std::cout << "popPackage(" << plop << ")" << std::endl;
 
       if( not __packages.empty() ) {
         std::string s = __packages.back();
@@ -1482,15 +1419,13 @@ namespace gum {
         return s;
       }
 
-      return "";
+      return plop;
     }
 
     template<typename GUM_SCALAR> INLINE
     void
     PRMFactory<GUM_SCALAR>::addImport ( const std::string& name ) {
-      std::cout << "addImport(" << name << ")" << std::endl;
       if (name.length() == 0) {
-        std::cout << "WOOOPS" << std::endl;
         GUM_ERROR(OperationNotAllowed, "illegal import name");
       }
       __namespaces.back()->push_back(name);
@@ -1532,30 +1467,9 @@ namespace gum {
   template<typename GUM_SCALAR>
   bool
   PRMFactory<GUM_SCALAR>::isClassOrInterface( const std::string& type ) const {
-    //std::cout << "In isClassOrInterface(" << type << ")" << std::endl;
-    //std::cout << " Current Package " << currentPackage() << std::endl;
-    //std::cout << " Existing classes : " << std::endl;
-    //for (auto c : prm()->classes()) {
-    //  std::cout << "  - " << c->name() << std::endl;
-    //}
-    //std::cout << " Existing interfaces : " << std::endl;
-    //for (auto i : prm()->interfaces()) {
-    //  std::cout << "  - " << i->name() << std::endl;
-    //}
-    //if (not __namespaces.empty()) {
-    //  std::cout << " Import names" << std::endl;
-    //  auto ns_list = __namespaces.top();
-    //  for ( gum::Size i = 0; i < ns_list->size(); ++i) {
-    //    std::cout << "  - " << (*ns_list)[i] << std::endl;
-    //  }
-    //} else {
-    //  std::cout << "No imports" << std::endl;
-    //}
-
     try {
 
       __retrieveClass(type);
-      //std::cout << " FOUND" << std::endl;
       return true;
 
     } catch ( NotFound& ) { }
@@ -1564,13 +1478,11 @@ namespace gum {
     try {
 
       __retrieveInterface(type);
-      //std::cout << " FOUND" << std::endl;
       return true;
 
     } catch ( NotFound& ) { }
     catch ( DuplicateElement& ) { }
 
-    //std::cout << " NOT FOUND" << std::endl;
     return false;
   }
 
