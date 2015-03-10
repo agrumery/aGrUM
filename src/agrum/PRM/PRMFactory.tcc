@@ -935,9 +935,8 @@ namespace gum {
 
 
       // Looking for the type using all declared namespaces
-      if (__namespaces.size() > 0) {
+      if (not __namespaces.empty()) {
         auto ns_list = __namespaces.back();
-        //for( const auto & ns : *(__namespaces.top()) ) {
         for ( gum::Size i = 0; i < ns_list->size(); ++i) {
           std::string ns = (*ns_list)[i];
           std::string ns_name = ns + "." + name;
@@ -984,9 +983,8 @@ namespace gum {
       }
 
       // Looking for the class using all declared namespaces
-      if (__namespaces.size() > 0) {
+      if (not __namespaces.empty()) {
         auto ns_list = __namespaces.back();
-        //for( const auto & ns : *(__namespaces.top()) ) {
         for ( gum::Size i = 0; i < ns_list->size(); ++i) {
           std::string ns = (*ns_list)[i];
           std::string ns_name = ns + "." + name;
@@ -1033,7 +1031,7 @@ namespace gum {
       }
 
       // Looking for the interface using all declared namespaces
-      if (__namespaces.size() > 0) {
+      if (not __namespaces.empty()) {
         auto ns_list = __namespaces.back();
         //for( const auto & ns : *(__namespaces.top()) ) {
         for ( gum::Size i = 0; i < ns_list->size(); ++i) {
