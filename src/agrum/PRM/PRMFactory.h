@@ -542,6 +542,13 @@ namespace gum {
         virtual void addInstance ( const std::string& type, const std::string& name ) override;
 
         /**
+         * Add an instance with params as values of type's parameters.
+         */
+        void addInstance( const std::string& type,
+                          const std::string& name,
+                          const HashTable<std::string, double>& params ) override;
+
+        /**
          * Creates an array with the given number of instances of the given type.
          * Instance<GUM_SCALAR> are name using "name" as prefix and adding the suffix "[i]",
          * with "i" being the position of the instance in the array.
@@ -777,6 +784,9 @@ namespace gum {
         ///  @name Private methods handling System<GUM_SCALAR> and Instance<GUM_SCALAR> creation.
         // ======================================================================
         /// @{
+
+        /// Adds a instance to the current model.
+        void __addInstance(Class<GUM_SCALAR>* type, const std::string& name);
 
         /// Builds all SlotChain<GUM_SCALAR><Instance<GUM_SCALAR>> in the given model.
         /// @throw OperationNotAllowed If reference slots are left un affected

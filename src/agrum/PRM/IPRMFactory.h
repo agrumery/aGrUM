@@ -37,6 +37,7 @@
 
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/multidim/multiDimSparse.h>
+#include <agrum/core/hashTable.h>
 
 #include <agrum/PRM/utils_prm.h>
 #include <agrum/PRM/PRM.h>
@@ -99,6 +100,9 @@ namespace gum {
       virtual void startSystem ( const std::string& name ) = 0;
       virtual void endSystem() = 0;
       virtual void addInstance ( const std::string& type, const std::string& name ) = 0;
+      virtual void addInstance( const std::string& type,
+                                const std::string& name,
+                                const HashTable<std::string, double>& params ) = 0;
       virtual void addArray ( const std::string& type, const std::string& name, Size size ) = 0;
       virtual void incArray ( const std::string& l_i, const std::string& r_i ) = 0;
       virtual void setReferenceSlot ( const std::string& left_instance,

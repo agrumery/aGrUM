@@ -25,6 +25,8 @@
 
 #include <agrum/PRM/PRMFactory.h>
 
+#include <sstream>
+
 namespace gum {
 
   namespace prm {
@@ -1216,15 +1218,84 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     void
     PRMFactory<GUM_SCALAR>::addInstance( const std::string& type, const std::string& name ) {
-      System<GUM_SCALAR>* model = static_cast<System<GUM_SCALAR>*>( __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
-      Class<GUM_SCALAR>* c = __retrieveClass( type );
-      Instance<GUM_SCALAR>* inst = new Instance<GUM_SCALAR> ( name, *c );
 
+      auto c = __retrieveClass( type );
+
+      // If class contains parameters, calls the proper addIsntance method
+      if (c->parameters().size() > 0) {
+
+        HashTable<std::string, double> params;
+        addInstance( type, name, params );
+
+      } else { 
+
+        __addInstance(c, name);
+
+      }
+
+    }
+
+    template<typename GUM_SCALAR> INLINE
+    void
+    PRMFactory<GUM_SCALAR>::addInstance( const std::string& type,
+                                         const std::string& name,
+                                         const HashTable<std::string, double>& params ) 
+    {
+      auto c = __retrieveClass( type );
+
+      auto my_params = params;
+      // Adding all parameters to my_params
+      for (const auto& p: c->parameters()) {
+        
+        if ( not my_params.exists( p->name() ) ) {
+          my_params.insert( p->name(), p->value() );
+        }
+
+      }
+
+      // Building sub class name using my_params
+      std::stringstream sBuff;
+      sBuff << c->name() << "<";
+
+      for (const auto& p: my_params) {
+        sBuff << p.first << "=" << p.second << ","; 
+      }
+
+      // Removing last , and adding closing >
+      std::string sub_c = sBuff.str().substr(0, sBuff.str().size() - 1) + ">";
+
+      // Adding class in current package
       try {
-        model->add( inst );
+
+        startClass(sub_c, c->name());
+        endClass();
+
+      } catch (DuplicateElement& e) {
+        // Sub Class already exists in this system
+      }
+
+      c = __retrieveClass( sub_c );
+
+      __addInstance(c, name);
+    }
+
+    template<typename GUM_SCALAR> INLINE
+    void
+    PRMFactory<GUM_SCALAR>::__addInstance(Class<GUM_SCALAR>* type, const std::string& name) {
+      Instance<GUM_SCALAR>* i = 0;
+      try {
+
+        auto s = static_cast<System<GUM_SCALAR>*>( __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
+        i = new Instance<GUM_SCALAR> ( name, *type );
+        s->add( i );
+
       } catch( OperationNotAllowed& e ) {
-        delete inst;
+
+        if (i) {
+          delete i;
+        }
         throw ;
+
       }
     }
 
