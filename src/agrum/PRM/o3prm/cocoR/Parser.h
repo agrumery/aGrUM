@@ -41,6 +41,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <fstream>
 
 #include <agrum/core/utils_dir.h>
+#include <agrum/core/hashTable.h>
 #include <agrum/PRM/IPRMFactory.h>
 
 #undef TRY
@@ -418,6 +419,8 @@ void addImport(std::string import) {
 	void AggLabels(std::vector<std::string>& labels );
 	void NumberList(std::vector<float>& numbers );
 	void ArrayDecl(std::string l1);
+	void InstanceDecl(std::string l1);
+	void InstanceParameters(gum::HashTable<std::string, double> &hash );
 
     void Parse();
 

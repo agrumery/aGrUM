@@ -507,7 +507,9 @@ namespace gum {
         const auto& chains = source[idx]->type().slotChains();
 
         for( const auto sc : chains ) {
+#ifdef DEBUG
           GUM_ASSERT( not( sc->isMultiple() ) );
+#endif
 
           try {
             bij.insert( & ( source[idx]->getInstance( sc->id() ).get( sc->lastElt().safeName() ).type().variable() ),

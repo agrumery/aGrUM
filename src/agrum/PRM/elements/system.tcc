@@ -318,6 +318,16 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> INLINE
+    NodeId
+    System<GUM_SCALAR>::get(const Instance<GUM_SCALAR> &i ) const {
+      try {
+        return __nodeIdMap.keyByVal(const_cast<Instance<GUM_SCALAR>*>(&i));
+      } catch( NotFound& ) {
+        GUM_ERROR( NotFound, "found no Instance<GUM_SCALAR> matching the given id" );
+      }
+    }
+
+    template<typename GUM_SCALAR> INLINE
     PRMObject::PRMType
     System<GUM_SCALAR>::obj_type() const {
       return PRMObject::PRMType::SYSTEM;

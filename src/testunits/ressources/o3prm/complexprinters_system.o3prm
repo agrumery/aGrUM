@@ -119,6 +119,18 @@ class SafeComputer implements Equipment {
   };
 }
 
+class ParamClass {
+	real lambda default 0.4;
+
+	Room room;
+  t_ink hasInk { [0.8, 0.2] };
+  t_paper hasPaper { [0.7, 0.2, 0.1] };
+  t_degraded equipState dependson room.power.state, hasInk, hasPaper {
+    *, *, *:             0.0, 1.0, 0.0;
+    OK, NotEmpty, Ready: 1.0, 0.0, 0.0;
+  };
+}
+
 system aSys {
   PowerSupply pow;
   Room r;
@@ -143,5 +155,11 @@ system aSys {
 
   c1.printers += color_printers;
   c2.printers += color_printers;
+
+  ParamClass param;
+  param.room = r;
+  
+  ParamClass paramBis(lambda=0.001);
+  paramBis.room = r;
 }
 

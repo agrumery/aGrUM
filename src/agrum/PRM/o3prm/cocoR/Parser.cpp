@@ -152,7 +152,7 @@ void Parser::ImportIdent(std::string& s) {
 			Get();
 			if (la->kind == _word) {
 				Get();
-			} else if (la->kind == 28 /* "*" */) {
+			} else if (la->kind == 27 /* "*" */) {
 				Get();
 			} else SynErr(37);
 			sBuff << "." << narrow(t->val); 
@@ -258,11 +258,10 @@ void Parser::System() {
 		while (la->kind == _word) {
 			std::string l1, r1; 
 			Ident(l1);
-			if (la->kind == 26 /* "[" */) {
+			if (la->kind == 25 /* "[" */) {
 				ArrayDecl(l1);
 			} else if (la->kind == _word) {
-				Get();
-				TRY(factory().addInstance(l1, narrow(t->val))) 
+				InstanceDecl(l1);
 			} else if (la->kind == 30 /* "+=" */) {
 				Get();
 				Ident(r1);
@@ -272,7 +271,7 @@ void Parser::System() {
 				   TRY(factory().setReferenceSlot(l1, r1))
 				}
 				
-			} else if (la->kind == 25 /* "=" */) {
+			} else if (la->kind == 28 /* "=" */) {
 				Get();
 				Ident(r1);
 				TRY( factory().setReferenceSlot(l1, r1) ) 
@@ -336,10 +335,10 @@ void Parser::IntParameter() {
 		Expect(_int);
 		Expect(_word);
 		name = narrow(t->val); 
-		Expect(25 /* "=" */);
+		Expect(_default);
 		Number(val);
-		Expect(_semicolon);
 		TRY2(factory().addParameter("int", name, (double)val), "Can not add parameter " + name); 
+		Expect(_semicolon);
 }
 
 void Parser::RealParameter() {
@@ -347,10 +346,10 @@ void Parser::RealParameter() {
 		Expect(_real);
 		Expect(_word);
 		name = narrow(t->val); 
-		Expect(25 /* "=" */);
+		Expect(_default);
 		Number(val);
-		Expect(_semicolon);
 		TRY2(factory().addParameter("real", name, (double)val), "Can not add parameter " + name); 
+		Expect(_semicolon);
 }
 
 void Parser::Number(float& val) {
@@ -365,9 +364,9 @@ void Parser::Number(float& val) {
 
 void Parser::Reference(std::string type) {
 		std::string name; bool array = false; 
-		if (la->kind == 26 /* "[" */) {
+		if (la->kind == 25 /* "[" */) {
 			Get();
-			Expect(27 /* "]" */);
+			Expect(26 /* "]" */);
 			array = true; 
 		}
 		Expect(_word);
@@ -382,7 +381,7 @@ void Parser::AttrAggOrFunc(std::string type) {
 		name = narrow(t->val); 
 		if (la->kind == _dependson || la->kind == 23 /* "{" */) {
 			Attribute(type, name);
-		} else if (la->kind == 25 /* "=" */) {
+		} else if (la->kind == 28 /* "=" */) {
 			Aggregate(type, name);
 		} else if (la->kind == 29 /* "~" */) {
 			Functions(type, name);
@@ -412,7 +411,7 @@ void Parser::Attribute(std::string type, std::string name) {
 			}
 		}
 		Expect(23 /* "{" */);
-		if (la->kind == 26 /* "[" */) {
+		if (la->kind == 25 /* "[" */) {
 			Get();
 			std::vector<float> cpt; float f; 
 			Number(f);
@@ -421,11 +420,11 @@ void Parser::Attribute(std::string type, std::string name) {
 				Number(f);
 				cpt.push_back(f); 
 			}
-			Expect(27 /* "]" */);
+			Expect(26 /* "]" */);
 			TRY3(factory().setRawCPFByFloatColumns(cpt), "Problem with CPF of "+name,error) 
-		} else if (la->kind == _word || la->kind == 28 /* "*" */) {
+		} else if (la->kind == _word || la->kind == 27 /* "*" */) {
 			CPTRule(error);
-			while (la->kind == _word || la->kind == 28 /* "*" */) {
+			while (la->kind == _word || la->kind == 27 /* "*" */) {
 				CPTRule(error);
 			}
 		} else SynErr(53);
@@ -437,7 +436,7 @@ void Parser::Attribute(std::string type, std::string name) {
 
 void Parser::Aggregate(std::string type, std::string name) {
 		std::string func, s; std::vector<std::string> chains, labels; 
-		Expect(25 /* "=" */);
+		Expect(28 /* "=" */);
 		Expect(_word);
 		func = narrow(t->val); 
 		Expect(_LEFT_CAST);
@@ -524,7 +523,7 @@ void Parser::CPTRuleValue(std::string& s ) {
 		if (la->kind == _word) {
 			Get();
 			s = narrow(t->val); 
-		} else if (la->kind == 28 /* "*" */) {
+		} else if (la->kind == 27 /* "*" */) {
 			Get();
 			s = "*"; 
 		} else SynErr(58);
@@ -535,7 +534,7 @@ void Parser::AggChains(std::vector<std::string>& chains ) {
 			std::string s; 
 			CastIdent(s);
 			chains.push_back(s); 
-		} else if (la->kind == 26 /* "[" */) {
+		} else if (la->kind == 25 /* "[" */) {
 			Get();
 			std::string s; 
 			CastIdent(s);
@@ -544,7 +543,7 @@ void Parser::AggChains(std::vector<std::string>& chains ) {
 				CastIdent(s);
 				chains.push_back(s); 
 			}
-			Expect(27 /* "]" */);
+			Expect(26 /* "]" */);
 		} else if (la->kind == 23 /* "{" */) {
 			Get();
 			std::string s; 
@@ -563,7 +562,7 @@ void Parser::AggLabels(std::vector<std::string>& labels ) {
 		if (la->kind == _word) {
 			Get();
 			labels.push_back(narrow(t->val)); 
-		} else if (la->kind == 26 /* "[" */) {
+		} else if (la->kind == 25 /* "[" */) {
 			Get();
 			Expect(_word);
 			labels.push_back(narrow(t->val)); 
@@ -572,7 +571,7 @@ void Parser::AggLabels(std::vector<std::string>& labels ) {
 				Expect(_word);
 				labels.push_back(narrow(t->val)); 
 			}
-			Expect(27 /* "]" */);
+			Expect(26 /* "]" */);
 		} else if (la->kind == 23 /* "{" */) {
 			Get();
 			Expect(_word);
@@ -591,7 +590,7 @@ void Parser::NumberList(std::vector<float>& numbers ) {
 		if (la->kind == _integer || la->kind == _float) {
 			Number(f);
 			numbers.push_back(f); 
-		} else if (la->kind == 26 /* "[" */) {
+		} else if (la->kind == 25 /* "[" */) {
 			Get();
 			Number(f);
 			numbers.push_back(f); 
@@ -599,18 +598,18 @@ void Parser::NumberList(std::vector<float>& numbers ) {
 				Number(f);
 				numbers.push_back(f); 
 			}
-			Expect(27 /* "]" */);
+			Expect(26 /* "]" */);
 		} else SynErr(63);
 }
 
 void Parser::ArrayDecl(std::string l1) {
 		std::string r1; std::stringstream sBuff; sBuff << l1; int size = 0; 
-		Expect(26 /* "[" */);
+		Expect(25 /* "[" */);
 		if (la->kind == _integer) {
 			Get();
 			sBuff << '[' << narrow(t->val) << ']'; size=coco_atoi(t->val); 
 		}
-		Expect(27 /* "]" */);
+		Expect(26 /* "]" */);
 		if (la->kind == _word) {
 			Get();
 			TRY(factory().addArray(l1, narrow(t->val), size)) 
@@ -622,12 +621,35 @@ void Parser::ArrayDecl(std::string l1) {
 				Get();
 				Ident(r1);
 				TRY(factory().setReferenceSlot(sBuff.str(), l2, r1)) 
-			} else if (la->kind == 25 /* "=" */) {
+			} else if (la->kind == 28 /* "=" */) {
 				Get();
 				Ident(r1);
 				TRY( factory().setReferenceSlot(sBuff.str(), l2, r1) ) 
 			} else SynErr(64);
 		} else SynErr(65);
+}
+
+void Parser::InstanceDecl(std::string l1) {
+		Expect(_word);
+		std::string r1 = narrow(t->val); gum::HashTable<std::string, double> hash; 
+		if (la->kind == _LEFT_CAST) {
+			Get();
+			InstanceParameters(hash);
+			Expect(_RIGHT_CAST);
+		} else if (la->kind == _semicolon) {
+		} else SynErr(66);
+		TRY(factory().addInstance(l1, r1, hash)) 
+}
+
+void Parser::InstanceParameters(gum::HashTable<std::string, double> &hash ) {
+		while (la->kind == _word) {
+			std::string name; float val = 0.0; 
+			Get();
+			name = narrow(t->val); 
+			Expect(28 /* "=" */);
+			Number(val);
+			hash.insert(name, (double) val); 
+		}
 }
 
 
@@ -748,11 +770,11 @@ bool Parser::StartOf( int s ) {
 		{x,x,x,x, x,x,x,x, x,T,T,T, x,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
 		{T,x,x,x, x,x,x,x, x,T,T,T, x,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
 		{T,T,T,T, x,x,x,x, T,T,T,T, x,T,x,x, x,x,x,x, x,x,T,T, T,x,x,x, x,x,x,x, x},
-		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x},
+		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,x,x, x},
 		{x,T,T,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
-		{T,x,x,T, x,x,x,x, T,T,T,T, x,T,x,x, x,x,x,x, x,x,T,T, T,x,T,x, x,x,x,x, x},
+		{T,x,x,T, x,x,x,x, T,T,T,T, x,T,x,x, x,x,x,x, x,x,T,T, T,T,x,x, x,x,x,x, x},
 		{x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
-		{x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, T,x,x,x, x},
+		{x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x},
 		{x,x,x,x, x,x,x,x, T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
 		{x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
 		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, T,x,x,x, x,x,x,x, x},
@@ -807,10 +829,10 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 22: s = coco_string_create(L"\"import\" expected"); break;
 			case 23: s = coco_string_create(L"\"{\" expected"); break;
 			case 24: s = coco_string_create(L"\"}\" expected"); break;
-			case 25: s = coco_string_create(L"\"=\" expected"); break;
-			case 26: s = coco_string_create(L"\"[\" expected"); break;
-			case 27: s = coco_string_create(L"\"]\" expected"); break;
-			case 28: s = coco_string_create(L"\"*\" expected"); break;
+			case 25: s = coco_string_create(L"\"[\" expected"); break;
+			case 26: s = coco_string_create(L"\"]\" expected"); break;
+			case 27: s = coco_string_create(L"\"*\" expected"); break;
+			case 28: s = coco_string_create(L"\"=\" expected"); break;
 			case 29: s = coco_string_create(L"\"~\" expected"); break;
 			case 30: s = coco_string_create(L"\"+=\" expected"); break;
 			case 31: s = coco_string_create(L"??? expected"); break;
@@ -848,6 +870,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 63: s = coco_string_create(L"invalid NumberList"); break;
 			case 64: s = coco_string_create(L"invalid ArrayDecl"); break;
 			case 65: s = coco_string_create(L"invalid ArrayDecl"); break;
+			case 66: s = coco_string_create(L"invalid InstanceDecl"); break;
 
 
     default: {

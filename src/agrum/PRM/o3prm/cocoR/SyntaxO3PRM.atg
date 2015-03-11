@@ -12,6 +12,7 @@
 #include <fstream>
 
 #include <agrum/core/utils_dir.h>
+#include <agrum/core/hashTable.h>
 #include <agrum/PRM/IPRMFactory.h>
 
 #undef TRY
@@ -407,12 +408,14 @@ Parameter = IntParameter | RealParameter.
 
 IntParameter =        (. std::string name; float val = 0.0; .)
   int word            (. name = narrow(t->val); .) 
-  '=' Number<val> ';' (. TRY2(factory().addParameter("int", name, (double)val), "Can not add parameter " + name); .)
+  default Number<val> (. TRY2(factory().addParameter("int", name, (double)val), "Can not add parameter " + name); .)
+  ';' 
   .
 
 RealParameter =        (. std::string name; float val = 0.0; .)
   real word            (. name = narrow(t->val); .)
-  '=' Number<val> ';'  (. TRY2(factory().addParameter("real", name, (double)val), "Can not add parameter " + name); .)
+  default Number<val>  (. TRY2(factory().addParameter("real", name, (double)val), "Can not add parameter " + name); .)
+  ';'  
   .
 
 //________________________
@@ -545,30 +548,48 @@ NumberList<. std::vector<float>& numbers .> =
 System = system word    (. TRY(factory().startSystem(narrow(t->val))) .)
     '{'
     {                   (. std::string l1, r1; .)
-    Ident<l1>
-    ( ArrayDecl<l1>
-    | word              (. TRY(factory().addInstance(l1, narrow(t->val))) .)
-    | "+=" Ident<r1>    (.
-                            if ( factory().isArrayInCurrentSystem(l1) ) {
-                                TRY(factory().incArray(l1, r1))
-                            } else {
-                                TRY(factory().setReferenceSlot(l1, r1))
-                            }
-                        .)
-    | '='  Ident<r1>    (. TRY( factory().setReferenceSlot(l1, r1) ) .)
-    ) ';'
+      Ident<l1>
+      (
+        ArrayDecl<l1>
+        | InstanceDecl<l1>
+        | "+=" Ident<r1>    (.
+                              if ( factory().isArrayInCurrentSystem(l1) ) {
+                                  TRY(factory().incArray(l1, r1))
+                              } else {
+                                  TRY(factory().setReferenceSlot(l1, r1))
+                              }
+                          .)
+        | '='  Ident<r1>    (. TRY( factory().setReferenceSlot(l1, r1) ) .)
+      )
+      ';'
     }
     SYNC '}'            (. TRY(factory().endSystem()) .)
          .
 
 ArrayDecl<std::string l1> = (. std::string r1; std::stringstream sBuff; sBuff << l1; int size = 0; .)
-    '[' [ integer           (. sBuff << '[' << narrow(t->val) << ']'; size=coco_atoi(t->val); .) ] ']'
+    '[' [ integer           (. sBuff << '[' << narrow(t->val) << ']'; size=coco_atoi(t->val); .) 
+     ] ']'
     (   word                (. TRY(factory().addArray(l1, narrow(t->val), size)) .)
       | '.' word            (. std::string l2 = narrow(t->val); .)
         (   "+=" Ident<r1>  (. TRY(factory().setReferenceSlot(sBuff.str(), l2, r1)) .)
           | '='  Ident<r1>  (. TRY( factory().setReferenceSlot(sBuff.str(), l2, r1) ) .)
         )
     ) .
+
+InstanceDecl<std::string l1> =
+  word                                    (. std::string r1 = narrow(t->val); gum::HashTable<std::string, double> hash; .)
+  ( '(' InstanceParameters<hash> ')' | )
+                                          (. TRY(factory().addInstance(l1, r1, hash)) .)
+  .
+
+InstanceParameters<. gum::HashTable<std::string, double> &hash .> =
+  {                 (. std::string name; float val = 0.0; .)
+    word            (. name = narrow(t->val); .)
+    '='
+    Number<val>     (. hash.insert(name, (double) val); .)
+  }
+  .
+
 
 //________________________
 ImportIdent<std::string& s> =               (. std::stringstream sBuff; .)

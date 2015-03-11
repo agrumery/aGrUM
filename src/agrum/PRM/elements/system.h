@@ -86,6 +86,8 @@ namespace gum {
          */
         const Instance<GUM_SCALAR>& get ( NodeId id ) const;
 
+        NodeId get(const Instance<GUM_SCALAR> &i ) const;
+
         /**
          * @brief Insert an edge between between u and v using the ReferenceSlot
          *      ref of u.

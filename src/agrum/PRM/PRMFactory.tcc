@@ -1242,40 +1242,50 @@ namespace gum {
     {
       auto c = __retrieveClass( type );
 
-      auto my_params = params;
-      // Adding all parameters to my_params
-      for (const auto& p: c->parameters()) {
-        
-        if ( not my_params.exists( p->name() ) ) {
-          my_params.insert( p->name(), p->value() );
+      if (c->parameters().empty()) {
+        if (params.empty()) {
+          addInstance(type, name);
+        } else {
+          GUM_ERROR(OperationNotAllowed, "Class " + type + " does not have paramters");
+        }
+      } else {
+
+        auto my_params = params;
+        // Adding all parameters to my_params
+        for (const auto& p: c->parameters()) {
+
+          if ( not my_params.exists( p->name() ) ) {
+            my_params.insert( p->name(), p->value() );
+          }
+
         }
 
+        // Building sub class name using my_params
+        std::stringstream sBuff;
+        sBuff << c->name() << "<";
+
+        for (const auto& p: my_params) {
+          sBuff << p.first << "=" << p.second << ","; 
+        }
+
+        // Removing last , and adding closing >
+        std::string sub_c = sBuff.str().substr(0, sBuff.str().size() - 1) + ">";
+
+        // Adding class in current package
+        try {
+
+          startClass(sub_c, c->name());
+          endClass();
+
+        } catch (DuplicateElement& e) {
+          // Sub Class already exists in this system
+        }
+
+        c = __retrieveClass( sub_c );
+
+        __addInstance(c, name);
+
       }
-
-      // Building sub class name using my_params
-      std::stringstream sBuff;
-      sBuff << c->name() << "<";
-
-      for (const auto& p: my_params) {
-        sBuff << p.first << "=" << p.second << ","; 
-      }
-
-      // Removing last , and adding closing >
-      std::string sub_c = sBuff.str().substr(0, sBuff.str().size() - 1) + ">";
-
-      // Adding class in current package
-      try {
-
-        startClass(sub_c, c->name());
-        endClass();
-
-      } catch (DuplicateElement& e) {
-        // Sub Class already exists in this system
-      }
-
-      c = __retrieveClass( sub_c );
-
-      __addInstance(c, name);
     }
 
     template<typename GUM_SCALAR> INLINE
