@@ -34,7 +34,6 @@
 #include <limits>
 
 #include <agrum/config.h>
-#include <agrum/core/heap.h>
 #include <agrum/core/list.h>
 
 #include <agrum/variables/discreteVariable.h>

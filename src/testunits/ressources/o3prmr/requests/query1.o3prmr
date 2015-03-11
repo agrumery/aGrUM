@@ -1,13 +1,14 @@
-
-package requests;
-
-import systems.MyKickAssSystem as default;
+import systems.MyKickAssSystem;
 
 request MyQuerry {
   engine SVED;
-  //grd_engine VEBB;
-  c1.can_print = true;
-  ? c2.can_print;
-  unobserve systems.MyKickAssSystem.c1.can_print;
-  systems.MyKickAssSystem.c2.equipState = Dysfunctional;
+
+  systems.MyKickAssSystem.MyKickAssSystem.c1.can_print = true;
+  ? systems.MyKickAssSystem.MyKickAssSystem.c2.can_print;
+
+  unobserve systems.MyKickAssSystem.MyKickAssSystem.c1.can_print;
+
+  systems.MyKickAssSystem.MyKickAssSystem.c2.equipState = Dysfunctional;
+
+  ? systems.MyKickAssSystem.MyKickAssSystem.c2.can_print;
 }

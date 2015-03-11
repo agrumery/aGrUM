@@ -1,11 +1,8 @@
-
-package requests;
-
-import systems.MyKickAssSystem as default;
+import systems.MyKickAssSystem;
 
 request MyUbberQuerry {
   engine SVE;
-  c1.can_print = NOK;
-  ? c2.can_print;
+  systems.MyKickAssSystem.MyKickAssSystem.c1.can_print = NOK;
+  ? systems.MyKickAssSystem.MyKickAssSystem.c2.can_print;
 }
 
