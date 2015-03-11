@@ -32,6 +32,7 @@ namespace gum {
       ClassElement<GUM_SCALAR>(name), __type(type), __value(value)
     {
       GUM_CONSTRUCTOR( Parameter );
+      this->_safeName = name;
     }
 
     template<typename GUM_SCALAR>

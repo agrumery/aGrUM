@@ -635,6 +635,11 @@ void Parser::InstanceDecl(std::string l1) {
 		if (la->kind == _LEFT_CAST) {
 			Get();
 			InstanceParameters(hash);
+			if (la->kind == _comma || la->kind == _RIGHT_CAST) {
+				while (WeakSeparator(_comma,14,13) ) {
+					InstanceParameters(hash);
+				}
+			}
 			Expect(_RIGHT_CAST);
 		} else if (la->kind == _semicolon) {
 		} else SynErr(66);
@@ -765,7 +770,7 @@ bool Parser::StartOf( int s ) {
   const bool T = true;
   const bool x = false;
 
-  	static bool set[13][33] = {
+  	static bool set[15][33] = {
 		{T,x,x,x, x,x,x,x, T,T,T,T, x,T,x,x, x,x,x,x, x,x,T,T, T,x,x,x, x,x,x,x, x},
 		{x,x,x,x, x,x,x,x, x,T,T,T, x,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
 		{T,x,x,x, x,x,x,x, x,T,T,T, x,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
@@ -778,7 +783,9 @@ bool Parser::StartOf( int s ) {
 		{x,x,x,x, x,x,x,x, T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
 		{x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
 		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, T,x,x,x, x,x,x,x, x},
-		{x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x}
+		{x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
+		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x},
+		{x,x,x,T, x,x,T,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x}
 	};
 
 

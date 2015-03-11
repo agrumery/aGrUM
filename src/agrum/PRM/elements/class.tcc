@@ -302,8 +302,8 @@ namespace gum {
       try {
         __nameMap.insert( elt->safeName(), elt );
       } catch( DuplicateElement& ) {
-        // happens when elt is a slot chain
-        GUM_ASSERT( elt->elt_type() == ClassElement<GUM_SCALAR>::prm_slotchain );
+        GUM_ASSERT( elt->elt_type() == ClassElement<GUM_SCALAR>::prm_slotchain or 
+                    elt->elt_type() == ClassElement<GUM_SCALAR>::prm_parameter);
       }
 
       switch( elt->elt_type() ) {

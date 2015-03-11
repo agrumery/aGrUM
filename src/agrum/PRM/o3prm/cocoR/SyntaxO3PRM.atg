@@ -578,7 +578,9 @@ ArrayDecl<std::string l1> = (. std::string r1; std::stringstream sBuff; sBuff <<
 
 InstanceDecl<std::string l1> =
   word                                    (. std::string r1 = narrow(t->val); gum::HashTable<std::string, double> hash; .)
-  ( '(' InstanceParameters<hash> ')' | )
+  ( '(' InstanceParameters<hash> 
+    [ { WEAK ',' InstanceParameters<hash> } ]
+   ')' | )
                                           (. TRY(factory().addInstance(l1, r1, hash)) .)
   .
 
