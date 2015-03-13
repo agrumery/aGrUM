@@ -14,6 +14,7 @@
 #include <vector>
 
 #include <agrum/core/utils_dir.h>
+#include <agrum/multidim/eval/formula.h>
 
 //##############################################################################
 //
@@ -24,308 +25,11 @@
 COMPILER EVAL
 
 private:
-  enum token_type { NUMBER, OPERATOR, PARENTHESIS };
-
-  struct EvalToken {
-    token_type type;
-    double number;
-    char character;
-
-    EvalToken(token_type t, double n): type(t), number(n), character('\0') { };
-    EvalToken(token_type t, char c): type(t), number(NAN), character(c) { };
-
-    EvalToken(const EvalToken & source): type(source.type), number(source.number), character(source.character) { };
-    EvalToken& operator= (const EvalToken & source) {
-      type = source.type;
-      number = source.number;
-      character = source.character;
-      return *this;
-    }
-
-    std::string str() const {
-      std::ostringstream s;
-      switch (type) {
-        case token_type::NUMBER: {
-                                   s << number; 
-                                   break;
-                                 }
-        case token_type::PARENTHESIS:
-        case token_type::OPERATOR: {
-                                     s << character;
-                                     break;
-                                   }
-
-        default: { GUM_ERROR(OperationNotAllowed, "unknown type"); }
-      }
-      return s.str();
-    }
-
-    bool isLeftAssociative() const {
-      switch (character) {
-        case '+':
-        case '-':
-        case '*':
-        case '/': {
-          return true;
-        }
-
-        case '^': {
-          return false;
-        }
-
-        default : {
-          GUM_ERROR( OperationNotAllowed, "A - not an operator");
-        }
-      }
-    }
-
-    bool isRightAssociative() const {
-      return not isLeftAssociative();
-    }
-
-    int precedence() const {
-      switch (character) {
-        case '+':
-        case '-': {
-          return 2;
-        }
-
-        case '*':
-        case '/': {
-          return 3;
-        }
-
-        case '^': {
-          return 4;
-        }
-
-        default : {
-          GUM_ERROR( OperationNotAllowed, "B - not an operator");
-        }
-      }
-    }
-
-    size_t argc() const {
-      switch (character) {
-        case '-': {
-          return (size_t) 1;
-        }
-        case '+':
-        case '*':
-        case '/': 
-        case '^': {
-          return (size_t) 2;
-        }
-
-        default : {
-          GUM_ERROR( OperationNotAllowed, "C - not an operator");
-        }
-      }
-    }
-
-    /// Args are backwards !
-    double __eval(const std::vector<EvalToken>& args) const {
-      switch (character) {
-        case '+': {
-                    return args[1].number + args[0].number;
-                  }
-
-        case '-': {
-                    return args[1].number - args[0].number;
-                  }
-
-        case '*': {
-                    return args[1].number * args[0].number;
-                  }
-
-        case '/': {
-                    return args[1].number / args[0].number;
-                  }
-
-        case '^': {
-                    return std::pow(args[1].number, args[0].number);
-                  }
-
-        default : {
-                    GUM_ERROR( OperationNotAllowed, "D - not an operator");
-                  }
-      }
-    }
-
-    /// Args are backwards !
-    EvalToken eval(const std::vector<EvalToken>& args) const {
-      return EvalToken(token_type::NUMBER, __eval(args));
-    }
-
-  };
-
-  double __result;
-
-  std::vector<EvalToken> __output;
-  std::stack<EvalToken> __stack;
-
-  void __number(const double &v) {
-    std::cout << "number(" << v << ")" << std::endl;
-    __output.push_back(EvalToken(token_type::NUMBER, v));
-  }
-
-  bool __popOperator(EvalToken o) {
-    if (__stack.empty() or __stack.top().type != token_type::OPERATOR) {
-      return false;
-    }
-
-    if (o.isLeftAssociative() and o.precedence() <= __stack.top().precedence() ) {
-      return true;
-    }
-
-    if (o.isRightAssociative() and o.precedence() < __stack.top().precedence() ) {
-      return true;
-    }
-    
-    return false;
-  }
-
-  void __operator(char o) {
-    std::cout << "operator(" << o << ")" << std::endl;
-    EvalToken t(token_type::OPERATOR, o);
-
-    while ( __popOperator(t) ) {
-      __output.push_back(__stack.top());
-      __stack.pop();
-    }
-
-    __stack.push(t);
-  }
-
-  void __leftParenthesis() {
-    std::cout << "parenthesis( '(' )" << std::endl;
-    EvalToken t(token_type::PARENTHESIS, '(');
-    __stack.push(t);
-  }
-
-  void __rightParenthesis() {
-
-    while ( (not __stack.empty()) and ( __stack.top().character != '(' ) ) {
-
-      __output.push_back( __stack.top() );
-      __stack.pop();
-
-    }
-
-    if (__stack.empty()) {
-
-      GUM_ERROR(OperationNotAllowed, "expecting '('");
-
-    } else if (__stack.top().character != '(') {
-
-      GUM_ERROR(OperationNotAllowed, "expecting '('");
-
-    }
-
-    __stack.pop();
-
-  }
-
-  void __finished() {
-
-    while (not __stack.empty()) {
-      if (__stack.top().character == '(') {
-
-        GUM_ERROR(OperationNotAllowed, "expecting ')'");
-
-      }
-
-      __output.push_back( __stack.top() );
-      __stack.pop();
-
-    }
-
-  }
-
-  void __reduceOperator(EvalToken item, std::stack<EvalToken> &stack) const {
-
-    std::vector<EvalToken> args;
-
-    if (stack.size() < item.argc()) {
-      GUM_ERROR(OperationNotAllowed, "not enought inputs for " + item.character);
-    }
-
-    // We need to handle the minus vs negative case
-    if (item.character == '-') {
-
-      args.push_back(stack.top());
-      stack.pop();
-
-      if (not stack.empty()) {
-        if (stack.top().type == token_type::NUMBER) {
-          args.push_back(stack.top());
-          stack.pop();
-        }
-      }
-
-      // It is a negative sign 
-      if (args.size() == 1) {
-        args.push_back(EvalToken(token_type::NUMBER, 0.0));
-      }
-
-    } else  {
-
-      while (item.argc() > args.size()) {
-
-        args.push_back(stack.top());
-        stack.pop();
-
-      }
-    }
-
-    stack.push(item.eval(args));
-  }
-
-  public:
-    double result() const {
-      std::stack<EvalToken> stack;
-      if (__output.empty()) {
-        GUM_ERROR(OperationNotAllowed, "no output found");
-      }
-
-      
-      std::cout << "input: " << std::endl;
-      for ( auto item: __output ) {
-        std::cout << item.str() << " ";
-      }
-      std::cout << std::endl;
-
-      for ( auto item: __output ) {
-
-
-        switch (item.type) {
-          case token_type::NUMBER: {
-                                     stack.push(item);
-                                     break;
-                                   }
-
-          case token_type::OPERATOR: {
-                                       __reduceOperator(item, stack);
-                                       break;
-                                     }
-
-          default: {
-                     GUM_ERROR(OperationNotAllowed, "expecting numbers, operators or functions");
-                   }
-        }
-
-      }
-
-      if (stack.size() != 1) {
-
-        GUM_ERROR(OperationNotAllowed, "too many inputs");
-
-      } else if (stack.top().type != token_type::NUMBER) {
-
-        GUM_ERROR(OperationNotAllowed, "too many inputs");
-      }
-      return stack.top().number;
-    }
+  Formula __formula;
+
+public:
+  Formula& formula() { return __formula; }
+  const Formula& formula() const { return __formula; }
 
 //##############################################################################
 //
@@ -347,6 +51,41 @@ operator    = '+'|'-'|'*'|'/'|'^'.
 word        = letter {(letter | digit)}.
 eol         = '\n'.
 
+// Exponential and logarithmic functions
+exp = "exp".
+log = "log".
+ln  = "ln".
+
+// Power functions
+pow = "pow".
+sqrt = "sqrt".
+
+// Bernouilli distributions
+bernoulli = "bernoulli".
+binomial = "binomial".
+geometric = "geometric".
+negative_binomial = "negative_binomial".
+
+// Rate-based distributions
+poisson = "poisson".
+exponential = "exponential".
+gamma = "gamma".
+weibull = "weibull".
+extreme_value = "extreme_value".
+
+// Related to Normal distributions
+normal = "normal".
+lognormal = "lognormal".
+chi_squared = "chi_squared".
+cauchy = "cauchy".
+fisher_f = "fisher_f".
+student_t = "student_t".
+
+// Piecewise distribuntions
+discrete = "discrete".
+piecewise_constant = "piecewise_constant".
+piecewise_linear = "piecewise_linear".
+
 //________________________
 IGNORE '\r' + eol + '\t'
 
@@ -362,15 +101,51 @@ PRODUCTIONS
 
 //________________________
 EVAL =  
-  (expression { expression }) (. __finished(); .)
+  (expression { expression }) (. __formula.finalize(); .)
   .                           
 
 expression =
-    integer                   (. __number((double)coco_atoi(t->val)); .)
-    | float                   (. __number((double)coco_atof(t->val)); .)
-    | operator                (. __operator(narrow(t->val)[0]); .)
-    | '('                     (. __leftParenthesis(); .)
-    | ')'                     (. __rightParenthesis(); .)
+    integer              (. __formula.push_number((double)coco_atoi(t->val)); .)
+    | float              (. __formula.push_number((double)coco_atof(t->val)); .)
+    | operator           (. __formula.push_operator(narrow(t->val)[0]); .)
+    | '('                (. __formula.push_leftParenthesis(); .)
+    | ')'                (. __formula.push_rightParenthesis(); .)
+    //| function args
   .                           
+
+//function =
+//  exp                    (. __function(token_functions::exp); .)
+//  | log                  (. __function(token_functions::log); .)
+//  | ln                   (. __function(token_functions::ln); .)
+//  | pow                  (. __function(token_functions::pow); .)
+//  | sqrt                 (. __function(token_functions::sqrt); .)
+//  | bernoulli            (. __function(token_functions::bernoulli); .)
+//  | binomial             (. __function(token_functions::binomial); .)
+//  | geometric            (. __function(token_functions::geometric); .)
+//  | negative_binomial    (. __function(token_functions::negative_binomial ); .)
+//  | poisson              (. __function(token_functions::poisson); .)
+//  | exponential          (. __function(token_functions::exponential); .)
+//  | gamma                (. __function(token_functions::gamma); .)
+//  | weibull              (. __function(token_functions::weibull); .)
+//  | extreme_value        (. __function(token_functions::extreme_value); .)
+//  | normal               (. __function(token_functions::normal); .)
+//  | lognormal            (. __function(token_functions::lognormal); .)
+//  | chi_squared          (. __function(token_functions::chi_squared); .)
+//  | cauchy               (. __function(token_functions::cauchy); .)
+//  | fisher_f             (. __function(token_functions::fisher_f); .)
+//  | student_t            (. __function(token_functions::student_t); .)
+//  | discrete             (. __function(token_functions::discrete); .)
+//  | piecewise_constant   (. __function(token_functions::piecewise_constant); .)
+//  | piecewise_linear     (. __function(token_functions::piecewise_linear); .)
+//  .
+//
+//args =
+//  '('                             (. __leftParenthesis(); .)
+//  (
+//    expression { ',' expression } 
+//    |
+//  )
+//  ')'                             (. __rightParenthesis(); .)
+//  .
 
 END EVAL.

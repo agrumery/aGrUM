@@ -313,8 +313,8 @@ void Scanner::Init() {
   percent=-1;
   EOL    = '\n';
   eofSym = 0;
-  	maxT = 8;
-	noSym = 8;
+  	maxT = 31;
+	noSym = 31;
 	int i;
 	for (i = 48; i <= 57; ++i) start.set(i, 6);
 	for (i = 65; i <= 90; ++i) start.set(i, 4);
@@ -328,6 +328,29 @@ void Scanner::Init() {
 	start.set(40, 7);
 	start.set(41, 8);
 		start.set(Buffer::EoF, -1);
+	keywords.set(L"exp", 6);
+	keywords.set(L"log", 7);
+	keywords.set(L"ln", 8);
+	keywords.set(L"pow", 9);
+	keywords.set(L"sqrt", 10);
+	keywords.set(L"bernoulli", 11);
+	keywords.set(L"binomial", 12);
+	keywords.set(L"geometric", 13);
+	keywords.set(L"negative_binomial", 14);
+	keywords.set(L"poisson", 15);
+	keywords.set(L"exponential", 16);
+	keywords.set(L"gamma", 17);
+	keywords.set(L"weibull", 18);
+	keywords.set(L"extreme_value", 19);
+	keywords.set(L"normal", 20);
+	keywords.set(L"lognormal", 21);
+	keywords.set(L"chi_squared", 22);
+	keywords.set(L"cauchy", 23);
+	keywords.set(L"fisher_f", 24);
+	keywords.set(L"student_t", 25);
+	keywords.set(L"discrete", 26);
+	keywords.set(L"piecewise_constant", 27);
+	keywords.set(L"piecewise_linear", 28);
 
 
   tvalLength = 128;
@@ -507,7 +530,7 @@ case_0:
 			case_4:
 			recEnd = pos; recKind = 4;
 			if ((ch >= L'0' && ch <= L'9') || (ch >= L'A' && ch <= L'Z') || ch == L'_' || (ch >= L'a' && ch <= L'z')) {AddCh(); goto case_4;}
-			else {t->kind = 4; break;}
+			else {t->kind = 4; wchar_t *literal = coco_string_create(tval, 0, tlen); t->kind = keywords.get(literal, t->kind); coco_string_delete(literal); break;}
 		case 5:
 			{t->kind = 5; break;}
 		case 6:
@@ -517,9 +540,9 @@ case_0:
 			else if (ch == L'.') {AddCh(); goto case_1;}
 			else {t->kind = 1; break;}
 		case 7:
-			{t->kind = 6; break;}
+			{t->kind = 29; break;}
 		case 8:
-			{t->kind = 7; break;}
+			{t->kind = 30; break;}
 
   }
 

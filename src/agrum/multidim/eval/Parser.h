@@ -45,6 +45,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <vector>
 
 #include <agrum/core/utils_dir.h>
+#include <agrum/multidim/eval/formula.h>
 
 #include <iostream>
 #include <string>
@@ -63,7 +64,30 @@ class Parser {
 		_float=2,
 		_operator=3,
 		_word=4,
-		_eol=5
+		_eol=5,
+		_exp=6,
+		_log=7,
+		_ln=8,
+		_pow=9,
+		_sqrt=10,
+		_bernoulli=11,
+		_binomial=12,
+		_geometric=13,
+		_negative_binomial=14,
+		_poisson=15,
+		_exponential=16,
+		_gamma=17,
+		_weibull=18,
+		_extreme_value=19,
+		_normal=20,
+		_lognormal=21,
+		_chi_squared=22,
+		_cauchy=23,
+		_fisher_f=24,
+		_student_t=25,
+		_discrete=26,
+		_piecewise_constant=27,
+		_piecewise_linear=28
 	};
 	int maxT;
 
@@ -87,308 +111,11 @@ class Parser {
     Token* la;      // lookahead token
 
     private:
-  enum token_type { NUMBER, OPERATOR, PARENTHESIS };
-
-  struct EvalToken {
-    token_type type;
-    double number;
-    char character;
-
-    EvalToken(token_type t, double n): type(t), number(n), character('\0') { };
-    EvalToken(token_type t, char c): type(t), number(NAN), character(c) { };
-
-    EvalToken(const EvalToken & source): type(source.type), number(source.number), character(source.character) { };
-    EvalToken& operator= (const EvalToken & source) {
-      type = source.type;
-      number = source.number;
-      character = source.character;
-      return *this;
-    }
-
-    std::string str() const {
-      std::ostringstream s;
-      switch (type) {
-        case token_type::NUMBER: {
-                                   s << number; 
-                                   break;
-                                 }
-        case token_type::PARENTHESIS:
-        case token_type::OPERATOR: {
-                                     s << character;
-                                     break;
-                                   }
-
-        default: { GUM_ERROR(OperationNotAllowed, "unknown type"); }
-      }
-      return s.str();
-    }
-
-    bool isLeftAssociative() const {
-      switch (character) {
-        case '+':
-        case '-':
-        case '*':
-        case '/': {
-          return true;
-        }
-
-        case '^': {
-          return false;
-        }
-
-        default : {
-          GUM_ERROR( OperationNotAllowed, "A - not an operator");
-        }
-      }
-    }
-
-    bool isRightAssociative() const {
-      return not isLeftAssociative();
-    }
-
-    int precedence() const {
-      switch (character) {
-        case '+':
-        case '-': {
-          return 2;
-        }
-
-        case '*':
-        case '/': {
-          return 3;
-        }
-
-        case '^': {
-          return 4;
-        }
-
-        default : {
-          GUM_ERROR( OperationNotAllowed, "B - not an operator");
-        }
-      }
-    }
-
-    size_t argc() const {
-      switch (character) {
-        case '-': {
-          return (size_t) 1;
-        }
-        case '+':
-        case '*':
-        case '/': 
-        case '^': {
-          return (size_t) 2;
-        }
-
-        default : {
-          GUM_ERROR( OperationNotAllowed, "C - not an operator");
-        }
-      }
-    }
-
-    /// Args are backwards !
-    double __eval(const std::vector<EvalToken>& args) const {
-      switch (character) {
-        case '+': {
-                    return args[1].number + args[0].number;
-                  }
-
-        case '-': {
-                    return args[1].number - args[0].number;
-                  }
-
-        case '*': {
-                    return args[1].number * args[0].number;
-                  }
-
-        case '/': {
-                    return args[1].number / args[0].number;
-                  }
-
-        case '^': {
-                    return std::pow(args[1].number, args[0].number);
-                  }
-
-        default : {
-                    GUM_ERROR( OperationNotAllowed, "D - not an operator");
-                  }
-      }
-    }
-
-    /// Args are backwards !
-    EvalToken eval(const std::vector<EvalToken>& args) const {
-      return EvalToken(token_type::NUMBER, __eval(args));
-    }
-
-  };
-
-  double __result;
-
-  std::vector<EvalToken> __output;
-  std::stack<EvalToken> __stack;
-
-  void __number(const double &v) {
-    std::cout << "number(" << v << ")" << std::endl;
-    __output.push_back(EvalToken(token_type::NUMBER, v));
-  }
-
-  bool __popOperator(EvalToken o) {
-    if (__stack.empty() or __stack.top().type != token_type::OPERATOR) {
-      return false;
-    }
-
-    if (o.isLeftAssociative() and o.precedence() <= __stack.top().precedence() ) {
-      return true;
-    }
-
-    if (o.isRightAssociative() and o.precedence() < __stack.top().precedence() ) {
-      return true;
-    }
-    
-    return false;
-  }
-
-  void __operator(char o) {
-    std::cout << "operator(" << o << ")" << std::endl;
-    EvalToken t(token_type::OPERATOR, o);
-
-    while ( __popOperator(t) ) {
-      __output.push_back(__stack.top());
-      __stack.pop();
-    }
-
-    __stack.push(t);
-  }
-
-  void __leftParenthesis() {
-    std::cout << "parenthesis( '(' )" << std::endl;
-    EvalToken t(token_type::PARENTHESIS, '(');
-    __stack.push(t);
-  }
-
-  void __rightParenthesis() {
-
-    while ( (not __stack.empty()) and ( __stack.top().character != '(' ) ) {
-
-      __output.push_back( __stack.top() );
-      __stack.pop();
-
-    }
-
-    if (__stack.empty()) {
-
-      GUM_ERROR(OperationNotAllowed, "expecting '('");
-
-    } else if (__stack.top().character != '(') {
-
-      GUM_ERROR(OperationNotAllowed, "expecting '('");
-
-    }
-
-    __stack.pop();
-
-  }
-
-  void __finished() {
-
-    while (not __stack.empty()) {
-      if (__stack.top().character == '(') {
-
-        GUM_ERROR(OperationNotAllowed, "expecting ')'");
-
-      }
-
-      __output.push_back( __stack.top() );
-      __stack.pop();
-
-    }
-
-  }
-
-  void __reduceOperator(EvalToken item, std::stack<EvalToken> &stack) const {
-
-    std::vector<EvalToken> args;
-
-    if (stack.size() < item.argc()) {
-      GUM_ERROR(OperationNotAllowed, "not enought inputs for " + item.character);
-    }
-
-    // We need to handle the minus vs negative case
-    if (item.character == '-') {
-
-      args.push_back(stack.top());
-      stack.pop();
-
-      if (not stack.empty()) {
-        if (stack.top().type == token_type::NUMBER) {
-          args.push_back(stack.top());
-          stack.pop();
-        }
-      }
-
-      // It is a negative sign 
-      if (args.size() == 1) {
-        args.push_back(EvalToken(token_type::NUMBER, 0.0));
-      }
-
-    } else  {
-
-      while (item.argc() > args.size()) {
-
-        args.push_back(stack.top());
-        stack.pop();
-
-      }
-    }
-
-    stack.push(item.eval(args));
-  }
-
-  public:
-    double result() const {
-      std::stack<EvalToken> stack;
-      if (__output.empty()) {
-        GUM_ERROR(OperationNotAllowed, "no output found");
-      }
-
-      
-      std::cout << "input: " << std::endl;
-      for ( auto item: __output ) {
-        std::cout << item.str() << " ";
-      }
-      std::cout << std::endl;
-
-      for ( auto item: __output ) {
-
-
-        switch (item.type) {
-          case token_type::NUMBER: {
-                                     stack.push(item);
-                                     break;
-                                   }
-
-          case token_type::OPERATOR: {
-                                       __reduceOperator(item, stack);
-                                       break;
-                                     }
-
-          default: {
-                     GUM_ERROR(OperationNotAllowed, "expecting numbers, operators or functions");
-                   }
-        }
-
-      }
-
-      if (stack.size() != 1) {
-
-        GUM_ERROR(OperationNotAllowed, "too many inputs");
-
-      } else if (stack.top().type != token_type::NUMBER) {
-
-        GUM_ERROR(OperationNotAllowed, "too many inputs");
-      }
-      return stack.top().number;
-    }
+  Formula __formula;
+
+public:
+  Formula& formula() { return __formula; }
+  const Formula& formula() const { return __formula; }
 
 //##############################################################################
 //
