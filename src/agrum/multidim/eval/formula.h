@@ -35,7 +35,7 @@ namespace gum {
 
   class FormulaPart {
     public:
-      enum token_type { NUMBER, OPERATOR, PARENTHESIS };
+      enum token_type { NUMBER, OPERATOR, PARENTHESIS, NIL };
       enum token_functions { exp, log, ln, pow, sqrt, bernoulli, binomial,
         geometric, negative_binomial, poisson, exponential, gamma, weibull,
         extreme_value, normal, lognormal, chi_squared, cauchy, fisher_f, student_t,
@@ -45,6 +45,7 @@ namespace gum {
       double number;
       char character;
 
+      FormulaPart();
       FormulaPart(token_type t, double n);
       FormulaPart(token_type t, char c);
 
@@ -96,16 +97,15 @@ namespace gum {
 
       void push_rightParenthesis();
 
+      void push_function(FormulaPart::token_functions func);
+
       void finalize();
 
     private:
-      std::stack<Formula> __heap;
+      FormulaPart __last_token;
 
       std::vector<FormulaPart> __output;
       std::stack<FormulaPart> __stack;
-
-      std::stack<Formula>& heap();
-      const std::stack<Formula>& heap() const;
 
       std::vector<FormulaPart>& output();
       const std::vector<FormulaPart>& output() const;
@@ -115,9 +115,17 @@ namespace gum {
 
       bool __popOperator(FormulaPart o);
 
-
       void __reduceOperator(FormulaPart item, std::stack<FormulaPart> &stack) const;
 
+      void __push_unaryOperator(char o);
+
+      void __push_operator(FormulaPart t);
+
+      bool __isUnaryOperator(char o);
+
+      void __push_output(FormulaPart t);
+
+      void __push_stack(FormulaPart t);
 
   };
 

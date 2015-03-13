@@ -144,6 +144,7 @@ namespace gum_tests {
           // Act
           TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
           // Assert
+          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
           TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );

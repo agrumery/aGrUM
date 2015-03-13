@@ -20,6 +20,7 @@
 
 #include <agrum/multidim/eval/formula.h>
 
+#include <list>
 #include <agrum/config.h>
 
 namespace gum {
@@ -27,6 +28,37 @@ namespace gum {
 /***************************************************************************
  *                            Class FormulaPart                            *
  ***************************************************************************/
+
+  // Helper function for debuging
+  void print_stack(std::stack<FormulaPart> s) {
+    std::cout << std::endl;
+    std::list<FormulaPart> l;
+    while (not s.empty()) {
+      l.push_front(s.top());
+      s.pop();
+    }
+
+    std::cout << "Stack: ";
+    for (const auto & elt : l) {
+      std::cout << elt.str() << " ";
+    }
+    std::cout << std::endl;
+  }
+
+  // Helper function for debuging
+  void print_output(std::vector<FormulaPart> v) {
+    std::cout << "Output: ";
+    for (const auto & elt : v) {
+      std::cout << elt.str() << " ";
+    }
+    std::cout << std::endl;
+ }
+
+  FormulaPart::FormulaPart():
+    type(token_type::NIL), number(NAN), character('\0') 
+  {
+    GUM_CONSTRUCTOR( FormulaPart );
+  }
 
   FormulaPart::FormulaPart(token_type t, double n):
     type(t), number(n), character('\0') 
@@ -83,23 +115,39 @@ namespace gum {
       case '+':
       case '-':
       case '*':
-      case '/': {
-                  return true;
-                }
+      case '/':
+        {
+          return true;
+        }
 
-      case '^': {
-                  return false;
-                }
+      case '_':
+        {
+          return false;
+        }
+      case '^':
+        {
+          return false;
+        }
 
-      default : {
-                  GUM_ERROR( OperationNotAllowed, "A - not an operator");
-                }
+      default :
+        {
+          GUM_ERROR( OperationNotAllowed, "A - not an operator");
+        }
     }
   }
 
   bool 
   FormulaPart::isRightAssociative() const {
-    return not isLeftAssociative();
+    switch (character) {
+      case '_':
+        {
+          return false;
+        }
+      default:
+        {
+          return not isLeftAssociative();
+        }
+    }
   }
 
   int 
@@ -118,6 +166,10 @@ namespace gum {
       case '^': {
                   return 4;
                 }
+      
+      case '_': {
+                  return 5;
+                }
 
       default : {
                   GUM_ERROR( OperationNotAllowed, "B - not an operator");
@@ -128,10 +180,11 @@ namespace gum {
   size_t
   FormulaPart::argc() const {
     switch (character) {
-      case '-': {
+      case '_': {
                   return (size_t) 1;
                 }
       case '+':
+      case '-':
       case '*':
       case '/': 
       case '^': {
@@ -148,29 +201,40 @@ namespace gum {
   double
   FormulaPart::__eval(const std::vector<FormulaPart>& args) const {
     switch (character) {
-      case '+': {
-                  return args[1].number + args[0].number;
-                }
+      case '+':
+        {
+          return args[1].number + args[0].number;
+        }
 
-      case '-': {
-                  return args[1].number - args[0].number;
-                }
+      case '-':
+        {
+          return args[1].number - args[0].number;
+        }
 
-      case '*': {
-                  return args[1].number * args[0].number;
-                }
+      case '*':
+        {
+          return args[1].number * args[0].number;
+        }
 
-      case '/': {
-                  return args[1].number / args[0].number;
-                }
+      case '/':
+        {
+          return args[1].number / args[0].number;
+        }
 
-      case '^': {
-                  return std::pow(args[1].number, args[0].number);
-                }
+      case '^':
+        {
+          return std::pow(args[1].number, args[0].number);
+        }
 
-      default : {
-                  GUM_ERROR( OperationNotAllowed, "D - not an operator");
-                }
+      case '_':
+        {
+          return 0 - args[0].number;
+        }
+
+      default :
+        {
+          GUM_ERROR( OperationNotAllowed, "D - not an operator");
+        }
     }
   }
 
@@ -184,12 +248,15 @@ namespace gum {
  *                            Class Formula                                *
  ***************************************************************************/
 
-  Formula::Formula() {
+  Formula::Formula():
+    __last_token(FormulaPart())
+  {
     GUM_CONSTRUCTOR( Formula );
   }
 
   Formula::Formula(const Formula& source):
-    __heap(source.__heap), __output(source.__output), __stack(source.__stack)
+    __last_token(source.__last_token),
+    __output(source.__output), __stack(source.__stack)
   {
     GUM_CONS_CPY( Formula );
   }
@@ -200,7 +267,6 @@ namespace gum {
 
   Formula &
   Formula::operator=(const Formula & source) {
-    __heap = source.__heap;
     __output = source.__output;
     __stack =  source.__stack;
     return *this;
@@ -208,6 +274,7 @@ namespace gum {
 
   double 
   Formula::result() const {
+
     std::stack<FormulaPart> stack;
     if (output().empty()) {
       GUM_ERROR(OperationNotAllowed, "no output found");
@@ -247,11 +314,13 @@ namespace gum {
 
   void
   Formula::push_number(const double &v) {
-    output().push_back(FormulaPart(FormulaPart::token_type::NUMBER, v));
+    FormulaPart t(FormulaPart::token_type::NUMBER, v);
+    __push_output(t);
   }
 
   bool
   Formula::__popOperator(FormulaPart o) {
+
     if (stack().empty() or stack().top().type != FormulaPart::token_type::OPERATOR) {
       return false;
     }
@@ -269,30 +338,75 @@ namespace gum {
 
   void
   Formula::push_operator(char o) {
-    FormulaPart t(FormulaPart::token_type::OPERATOR, o);
+
+    if ( __isUnaryOperator(o) ) {
+
+      __push_unaryOperator(o);
+
+    } else {
+
+      FormulaPart t(FormulaPart::token_type::OPERATOR, o);
+      __push_operator(t);
+
+    }
+  }
+
+  bool
+  Formula::__isUnaryOperator(char o) {
+    switch (__last_token.type) {
+
+      case FormulaPart::token_type::OPERATOR:
+      case FormulaPart::token_type::NIL:
+        {
+          return o == '-';
+        }
+
+      case FormulaPart::token_type::PARENTHESIS:
+        {
+          return o == '-' and __last_token.character == '(';
+        }
+
+      default:
+        {
+          return false;
+        }
+
+    }
+
+  }
+
+  void
+  Formula::__push_unaryOperator(char o) {
+
+    // Only unary operator is the negative sign -
+    FormulaPart t(FormulaPart::token_type::OPERATOR, '_');
+    __push_operator(t);
+
+  }
+
+  void
+  Formula::__push_operator(FormulaPart t) {
 
     while ( __popOperator(t) ) {
-      output().push_back(stack().top());
+      __push_output(stack().top());
       stack().pop();
     }
 
-    stack().push(t);
+    __push_stack(t);
   }
 
   void
   Formula::push_leftParenthesis() {
     FormulaPart t(FormulaPart::token_type::PARENTHESIS, '(');
-    stack().push(t);
+    __push_stack(t);
   }
 
   void
   Formula::push_rightParenthesis() {
 
     while ( (not stack().empty()) and ( stack().top().character != '(' ) ) {
-
-      output().push_back( stack().top() );
+      __push_output(stack().top());
       stack().pop();
-
     }
 
     if (stack().empty()) {
@@ -306,6 +420,7 @@ namespace gum {
     }
 
     stack().pop();
+    __last_token = FormulaPart(FormulaPart::token_type::PARENTHESIS, ')');
 
   }
 
@@ -313,13 +428,14 @@ namespace gum {
   Formula::finalize() {
 
     while (not stack().empty()) {
+
       if (stack().top().character == '(') {
 
         GUM_ERROR(OperationNotAllowed, "expecting ')'");
 
       }
 
-      output().push_back( stack().top() );
+      __push_output(stack().top());
       stack().pop();
 
     }
@@ -335,45 +451,14 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed, "not enought inputs for " + item.character);
     }
 
-    // We need to handle the minus vs negative case
-    if (item.character == '-') {
+    while (item.argc() > args.size()) {
 
       args.push_back(stack.top());
       stack.pop();
 
-      if (not stack.empty()) {
-        if (stack.top().type == FormulaPart::token_type::NUMBER) {
-          args.push_back(stack.top());
-          stack.pop();
-        }
-      }
-
-      // It is a negative sign 
-      if (args.size() == 1) {
-        args.push_back(FormulaPart(FormulaPart::token_type::NUMBER, 0.0));
-      }
-
-    } else  {
-
-      while (item.argc() > args.size()) {
-
-        args.push_back(stack.top());
-        stack.pop();
-
-      }
     }
 
     stack.push(item.eval(args));
-  }
-
-  std::stack<Formula>&
-  Formula::heap() {
-    return __heap;
-  }
-
-  const std::stack<Formula>&
-  Formula::heap() const {
-    return __heap;
   }
 
   std::vector<FormulaPart>&
@@ -394,6 +479,22 @@ namespace gum {
   const std::stack<FormulaPart>&
   Formula::stack() const {
     return __stack;
+  }
+
+  void
+  Formula::push_function(FormulaPart::token_functions func) {
+  }
+
+  void
+  Formula::__push_output(FormulaPart t) {
+    __output.push_back(t);
+    __last_token = t;
+  }
+
+  void
+  Formula::__push_stack(FormulaPart t) {
+    __stack.push(t);
+    __last_token = t;
   }
 
 } // namespace gum
