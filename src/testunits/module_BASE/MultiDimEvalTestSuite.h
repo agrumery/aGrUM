@@ -23,7 +23,7 @@
 #include <testsuite_utils.h>
 
 #include <agrum/core/exceptions.h>
-#include <agrum/multidim/eval/Parser.h>
+#include <agrum/multidim/formula/Parser.h>
 
 namespace gum_tests {
 
@@ -167,6 +167,109 @@ namespace gum_tests {
           TS_ASSERT( false );
         }
       }
+
+      void testExp() {
+        try {
+          // Arrange
+          std::string eq = "exp(0.001)";
+          double expected = 1.0010005;
+          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
+          gum::Parser parser(&scanner);
+          // Act
+          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          // Assert
+          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
+          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+        } catch (gum::Exception& e) {
+          TS_ASSERT( false );
+        }
+      }
+
+      void testLog() {
+        try {
+          // Arrange
+          std::string eq = "1 + log(1)";
+          double expected = 1;
+          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
+          gum::Parser parser(&scanner);
+          // Act
+          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          // Assert
+          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
+          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+        } catch (gum::Exception& e) {
+          TS_ASSERT( false );
+        }
+      }
+
+      void testLn() {
+        try {
+          // Arrange
+          std::string eq = "2 + ln(1)";
+          double expected = 2;
+          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
+          gum::Parser parser(&scanner);
+          // Act
+          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          // Assert
+          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
+          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+        } catch (gum::Exception& e) {
+          TS_ASSERT( false );
+        }
+      }
+
+      void testSqrt() {
+        try {
+          // Arrange
+          std::string eq = "1 + sqrt(4)";
+          double expected = 3;
+          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
+          gum::Parser parser(&scanner);
+          // Act
+          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          // Assert
+          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
+          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+        } catch (gum::Exception& e) {
+          TS_ASSERT( false );
+        }
+      }
+
+      void testPow() {
+        try {
+          // Arrange
+          std::string eq = "1 + pow(2,2)";
+          double expected = 5;
+          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
+          gum::Parser parser(&scanner);
+          // Act
+          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          // Assert
+          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
+          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+        } catch (gum::Exception& e) {
+          TS_ASSERT( false );
+        }
+      }
+
+      void testGoal() {
+        try {
+          // Arrange
+          std::string eq = "1-exp(-0.001*2)";
+          double expected = 1 - std::exp(-0.001 * 2);
+          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
+          gum::Parser parser(&scanner);
+          // Act
+          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          // Assert
+          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
+          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+        } catch (gum::Exception& e) {
+          TS_ASSERT( false );
+        }
+      }
+
 
   };
 }

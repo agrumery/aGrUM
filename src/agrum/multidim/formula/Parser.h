@@ -45,7 +45,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <vector>
 
 #include <agrum/core/utils_dir.h>
-#include <agrum/multidim/eval/formula.h>
+#include <agrum/multidim/formula/formula.h>
 
 #include <iostream>
 #include <string>
@@ -63,31 +63,8 @@ class Parser {
 		_integer=1,
 		_float=2,
 		_operator=3,
-		_word=4,
-		_eol=5,
-		_exp=6,
-		_log=7,
-		_ln=8,
-		_pow=9,
-		_sqrt=10,
-		_bernoulli=11,
-		_binomial=12,
-		_geometric=13,
-		_negative_binomial=14,
-		_poisson=15,
-		_exponential=16,
-		_gamma=17,
-		_weibull=18,
-		_extreme_value=19,
-		_normal=20,
-		_lognormal=21,
-		_chi_squared=22,
-		_cauchy=23,
-		_fisher_f=24,
-		_student_t=25,
-		_discrete=26,
-		_piecewise_constant=27,
-		_piecewise_linear=28
+		_eol=4,
+		_function=5
 	};
 	int maxT;
 

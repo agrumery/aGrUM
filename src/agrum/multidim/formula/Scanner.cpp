@@ -313,44 +313,23 @@ void Scanner::Init() {
   percent=-1;
   EOL    = '\n';
   eofSym = 0;
-  	maxT = 31;
-	noSym = 31;
+  	maxT = 9;
+	noSym = 9;
 	int i;
-	for (i = 48; i <= 57; ++i) start.set(i, 6);
-	for (i = 65; i <= 90; ++i) start.set(i, 4);
-	for (i = 95; i <= 95; ++i) start.set(i, 4);
-	for (i = 97; i <= 122; ++i) start.set(i, 4);
+	for (i = 48; i <= 57; ++i) start.set(i, 14);
 	for (i = 42; i <= 43; ++i) start.set(i, 3);
 	for (i = 45; i <= 45; ++i) start.set(i, 3);
 	for (i = 47; i <= 47; ++i) start.set(i, 3);
 	for (i = 94; i <= 94; ++i) start.set(i, 3);
-	start.set(10, 5);
-	start.set(40, 7);
-	start.set(41, 8);
+	start.set(10, 4);
+	start.set(101, 5);
+	start.set(108, 15);
+	start.set(112, 8);
+	start.set(115, 10);
+	start.set(40, 16);
+	start.set(41, 17);
+	start.set(44, 18);
 		start.set(Buffer::EoF, -1);
-	keywords.set(L"exp", 6);
-	keywords.set(L"log", 7);
-	keywords.set(L"ln", 8);
-	keywords.set(L"pow", 9);
-	keywords.set(L"sqrt", 10);
-	keywords.set(L"bernoulli", 11);
-	keywords.set(L"binomial", 12);
-	keywords.set(L"geometric", 13);
-	keywords.set(L"negative_binomial", 14);
-	keywords.set(L"poisson", 15);
-	keywords.set(L"exponential", 16);
-	keywords.set(L"gamma", 17);
-	keywords.set(L"weibull", 18);
-	keywords.set(L"extreme_value", 19);
-	keywords.set(L"normal", 20);
-	keywords.set(L"lognormal", 21);
-	keywords.set(L"chi_squared", 22);
-	keywords.set(L"cauchy", 23);
-	keywords.set(L"fisher_f", 24);
-	keywords.set(L"student_t", 25);
-	keywords.set(L"discrete", 26);
-	keywords.set(L"piecewise_constant", 27);
-	keywords.set(L"piecewise_linear", 28);
 
 
   tvalLength = 128;
@@ -527,22 +506,55 @@ case_0:
 		case 3:
 			{t->kind = 3; break;}
 		case 4:
-			case_4:
-			recEnd = pos; recKind = 4;
-			if ((ch >= L'0' && ch <= L'9') || (ch >= L'A' && ch <= L'Z') || ch == L'_' || (ch >= L'a' && ch <= L'z')) {AddCh(); goto case_4;}
-			else {t->kind = 4; wchar_t *literal = coco_string_create(tval, 0, tlen); t->kind = keywords.get(literal, t->kind); coco_string_delete(literal); break;}
+			{t->kind = 4; break;}
 		case 5:
-			{t->kind = 5; break;}
+			if (ch == L'x') {AddCh(); goto case_6;}
+			else {goto case_0;}
 		case 6:
 			case_6:
+			if (ch == L'p') {AddCh(); goto case_13;}
+			else {goto case_0;}
+		case 7:
+			case_7:
+			if (ch == L'g') {AddCh(); goto case_13;}
+			else {goto case_0;}
+		case 8:
+			if (ch == L'o') {AddCh(); goto case_9;}
+			else {goto case_0;}
+		case 9:
+			case_9:
+			if (ch == L'w') {AddCh(); goto case_13;}
+			else {goto case_0;}
+		case 10:
+			if (ch == L'q') {AddCh(); goto case_11;}
+			else {goto case_0;}
+		case 11:
+			case_11:
+			if (ch == L'r') {AddCh(); goto case_12;}
+			else {goto case_0;}
+		case 12:
+			case_12:
+			if (ch == L't') {AddCh(); goto case_13;}
+			else {goto case_0;}
+		case 13:
+			case_13:
+			{t->kind = 5; break;}
+		case 14:
+			case_14:
 			recEnd = pos; recKind = 1;
-			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_6;}
+			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_14;}
 			else if (ch == L'.') {AddCh(); goto case_1;}
 			else {t->kind = 1; break;}
-		case 7:
-			{t->kind = 29; break;}
-		case 8:
-			{t->kind = 30; break;}
+		case 15:
+			if (ch == L'o') {AddCh(); goto case_7;}
+			else if (ch == L'n') {AddCh(); goto case_13;}
+			else {goto case_0;}
+		case 16:
+			{t->kind = 6; break;}
+		case 17:
+			{t->kind = 7; break;}
+		case 18:
+			{t->kind = 8; break;}
 
   }
 

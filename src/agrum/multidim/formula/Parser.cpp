@@ -113,22 +113,44 @@ void Parser::EVAL() {
 }
 
 void Parser::expression() {
-		if (la->kind == _integer) {
+		switch (la->kind) {
+		case _integer: {
 			Get();
 			__formula.push_number((double)coco_atoi(t->val)); 
-		} else if (la->kind == _float) {
+			break;
+		}
+		case _float: {
 			Get();
 			__formula.push_number((double)coco_atof(t->val)); 
-		} else if (la->kind == _operator) {
+			break;
+		}
+		case _operator: {
 			Get();
 			__formula.push_operator(narrow(t->val)[0]); 
-		} else if (la->kind == 29 /* "(" */) {
+			break;
+		}
+		case 6 /* "(" */: {
 			Get();
 			__formula.push_leftParenthesis(); 
-		} else if (la->kind == 30 /* ")" */) {
+			break;
+		}
+		case 7 /* ")" */: {
 			Get();
 			__formula.push_rightParenthesis(); 
-		} else SynErr(32);
+			break;
+		}
+		case _function: {
+			Get();
+			__formula.push_function(narrow(t->val)); 
+			break;
+		}
+		case 8 /* "," */: {
+			Get();
+			__formula.push_comma(); 
+			break;
+		}
+		default: SynErr(10); break;
+		}
 }
 
 
@@ -230,7 +252,7 @@ void Parser::Parse() {
 }
 
 Parser::Parser( Scanner* scanner ) {
-  	maxT = 31;
+  	maxT = 9;
 
   ParserInitCaller<Parser>::CallInit( this );
   dummyToken = NULL;
@@ -244,9 +266,9 @@ bool Parser::StartOf( int s ) {
   const bool T = true;
   const bool x = false;
 
-  	static bool set[2][33] = {
-		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
-		{x,T,T,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,T,T,x, x}
+  	static bool set[2][11] = {
+		{T,x,x,x, x,x,x,x, x,x,x},
+		{x,T,T,T, x,T,T,T, T,x,x}
 	};
 
 
@@ -276,35 +298,13 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 1: s = coco_string_create(L"integer expected"); break;
 			case 2: s = coco_string_create(L"float expected"); break;
 			case 3: s = coco_string_create(L"operator expected"); break;
-			case 4: s = coco_string_create(L"word expected"); break;
-			case 5: s = coco_string_create(L"eol expected"); break;
-			case 6: s = coco_string_create(L"exp expected"); break;
-			case 7: s = coco_string_create(L"log expected"); break;
-			case 8: s = coco_string_create(L"ln expected"); break;
-			case 9: s = coco_string_create(L"pow expected"); break;
-			case 10: s = coco_string_create(L"sqrt expected"); break;
-			case 11: s = coco_string_create(L"bernoulli expected"); break;
-			case 12: s = coco_string_create(L"binomial expected"); break;
-			case 13: s = coco_string_create(L"geometric expected"); break;
-			case 14: s = coco_string_create(L"negative_binomial expected"); break;
-			case 15: s = coco_string_create(L"poisson expected"); break;
-			case 16: s = coco_string_create(L"exponential expected"); break;
-			case 17: s = coco_string_create(L"gamma expected"); break;
-			case 18: s = coco_string_create(L"weibull expected"); break;
-			case 19: s = coco_string_create(L"extreme_value expected"); break;
-			case 20: s = coco_string_create(L"normal expected"); break;
-			case 21: s = coco_string_create(L"lognormal expected"); break;
-			case 22: s = coco_string_create(L"chi_squared expected"); break;
-			case 23: s = coco_string_create(L"cauchy expected"); break;
-			case 24: s = coco_string_create(L"fisher_f expected"); break;
-			case 25: s = coco_string_create(L"student_t expected"); break;
-			case 26: s = coco_string_create(L"discrete expected"); break;
-			case 27: s = coco_string_create(L"piecewise_constant expected"); break;
-			case 28: s = coco_string_create(L"piecewise_linear expected"); break;
-			case 29: s = coco_string_create(L"\"(\" expected"); break;
-			case 30: s = coco_string_create(L"\")\" expected"); break;
-			case 31: s = coco_string_create(L"??? expected"); break;
-			case 32: s = coco_string_create(L"invalid expression"); break;
+			case 4: s = coco_string_create(L"eol expected"); break;
+			case 5: s = coco_string_create(L"function expected"); break;
+			case 6: s = coco_string_create(L"\"(\" expected"); break;
+			case 7: s = coco_string_create(L"\")\" expected"); break;
+			case 8: s = coco_string_create(L"\",\" expected"); break;
+			case 9: s = coco_string_create(L"??? expected"); break;
+			case 10: s = coco_string_create(L"invalid expression"); break;
 
 
     default: {

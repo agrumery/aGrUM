@@ -14,7 +14,7 @@
 #include <vector>
 
 #include <agrum/core/utils_dir.h>
-#include <agrum/multidim/eval/formula.h>
+#include <agrum/multidim/formula/formula.h>
 
 //##############################################################################
 //
@@ -48,43 +48,44 @@ TOKENS
 integer     =  digit {digit}.
 float       =  digit {digit} '.' digit {digit}. // [ ('E'|'e') ['+'|'-'] digit {digit} ].
 operator    = '+'|'-'|'*'|'/'|'^'.
-word        = letter {(letter | digit)}.
+//word        = letter {(letter | digit)}.
 eol         = '\n'.
+function    = "exp"|"log"|"ln"|"pow"|"sqrt".
 
-// Exponential and logarithmic functions
-exp = "exp".
-log = "log".
-ln  = "ln".
-
-// Power functions
-pow = "pow".
-sqrt = "sqrt".
-
-// Bernouilli distributions
-bernoulli = "bernoulli".
-binomial = "binomial".
-geometric = "geometric".
-negative_binomial = "negative_binomial".
-
-// Rate-based distributions
-poisson = "poisson".
-exponential = "exponential".
-gamma = "gamma".
-weibull = "weibull".
-extreme_value = "extreme_value".
-
-// Related to Normal distributions
-normal = "normal".
-lognormal = "lognormal".
-chi_squared = "chi_squared".
-cauchy = "cauchy".
-fisher_f = "fisher_f".
-student_t = "student_t".
-
-// Piecewise distribuntions
-discrete = "discrete".
-piecewise_constant = "piecewise_constant".
-piecewise_linear = "piecewise_linear".
+// // Exponential and logarithmic functions
+// exp = "exp".
+// log = "log".
+// ln  = "ln".
+// 
+// // Power functions
+// pow = "pow".
+// sqrt = "sqrt".
+// 
+// // Bernouilli distributions
+// bernoulli = "bernoulli".
+// binomial = "binomial".
+// geometric = "geometric".
+// negative_binomial = "negative_binomial".
+// 
+// // Rate-based distributions
+// poisson = "poisson".
+// exponential = "exponential".
+// gamma = "gamma".
+// weibull = "weibull".
+// extreme_value = "extreme_value".
+// 
+// // Related to Normal distributions
+// normal = "normal".
+// lognormal = "lognormal".
+// chi_squared = "chi_squared".
+// cauchy = "cauchy".
+// fisher_f = "fisher_f".
+// student_t = "student_t".
+// 
+// // Piecewise distribuntions
+// discrete = "discrete".
+// piecewise_constant = "piecewise_constant".
+// piecewise_linear = "piecewise_linear".
 
 //________________________
 IGNORE '\r' + eol + '\t'
@@ -110,8 +111,10 @@ expression =
     | operator           (. __formula.push_operator(narrow(t->val)[0]); .)
     | '('                (. __formula.push_leftParenthesis(); .)
     | ')'                (. __formula.push_rightParenthesis(); .)
+    | function           (. __formula.push_function(narrow(t->val)); .)
+    | ','                (. __formula.push_comma(); .)
     //| function args
-  .                           
+  .
 
 //function =
 //  exp                    (. __function(token_functions::exp); .)
