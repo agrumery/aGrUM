@@ -28,189 +28,19 @@
 #ifndef GUM_PSPUMDD_H
 #define GUM_PSPUMDD_H
 // =========================================================================
-#include <agrum/core/argMaxSet.h>
+/*#include <agrum/core/argMaxSet.h>
 #include <agrum/core/functors.h>
 #include <agrum/core/inline.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
-#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
+#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>*/
 // =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/planning/spumdd.h>
 // =========================================================================
 
-namespace gum {  
-
-  /**
-   * @struct ArgumentMaximisesAction pspumdd.h <agrum/FMDP/planning/pspumdd.h>
-   * @brief Argument Maximization function object class
-   * @ingroup core
-   *
-   * Returns the set that has the maximal value between its two arguments sets
-   */
-  template <typename GUM_SCALAR>
-  struct ArgumentMaximisesAction {
-
-  // ###########################################################################
-  /// @name Operator()
-  // ###########################################################################
-  /// @{
-
-    const GUM_SCALAR& operator() (
-        const GUM_SCALAR& x,
-        const GUM_SCALAR& y) const {
-
-       if( x > y ){
-         return x;
-       }
-       if( x < y ){
-         return y;
-       }
-
-       __temp = x;
-       __temp += y;
-       return __temp;
-    }
-
-  private :
-    mutable GUM_SCALAR __temp;
-  };
-
-
-  /**
-   * @class ActionSet pspumdd.h <agrum/FMDP/planning/pspumdd.h>
-   * @brief A class to store the optimal actions.
-   * @ingroup fmdp_group
-   *
-   * Stores the ids of optimal actions. To be used as leaves on optimal policy tree or decision graph
-   *
-   */
-  class ActionSet {
-
-  public :
-
-    // ###########################################################################
-    /// @name CNL
-    // ###########################################################################
-    /// @{
-
-      // ============================================================================
-      /// Constructor
-      // ============================================================================
-      ActionSet( ){
-        GUM_CONSTRUCTOR(ActionSet)
-        __actionSeq = new Sequence<Idx>();
-      }
-
-      ActionSet( const ActionSet& src ){
-        GUM_CONSTRUCTOR(ActionSet)
-        __actionSeq = new Sequence<Idx>();
-        for( auto idi = src.beginSafe(); idi != src.endSafe(); ++idi )
-          __actionSeq->insert(*idi);
-      }
-
-      ActionSet& operator = ( const ActionSet& src){
-        __actionSeq = new Sequence<Idx>();
-        for( auto idi = src.beginSafe(); idi != src.endSafe(); ++idi )
-          __actionSeq->insert(*idi);
-        return *this;
-      }
-
-      // ============================================================================
-      /// Destructor
-      // ============================================================================
-      ~ActionSet(){
-        GUM_DESTRUCTOR(ActionSet)
-        delete __actionSeq;
-      }
-
-      // ============================================================================
-      /// Allocators and Deallocators redefinition
-      // ============================================================================
-      void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
-      void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(ActionSet));}
-
-    /// @}
-
-    // ###########################################################################
-    /// @name Iterators
-    // ###########################################################################
-    /// @{
-
-      // ============================================================================
-      /// Iterator beginning
-      // ============================================================================
-      SequenceIteratorSafe<Idx> beginSafe() const { return __actionSeq->beginSafe(); }
-
-      // ============================================================================
-      /// Iterator end
-      // ============================================================================
-      SequenceIteratorSafe<Idx> endSafe() const { return __actionSeq->endSafe(); }
-
-    /// @}
-
-    // ###########################################################################
-    /// @name Operators
-    // ###########################################################################
-    /// @{
-
-      // ============================================================================
-      /// Ajout d'un élément
-      // ============================================================================
-      ActionSet& operator += ( const Idx& elem ) {
-        __actionSeq->insert(elem);
-        return *this;
-      }
-
-      // ============================================================================
-      /// Use to insert the content of another set inside this one
-      // ============================================================================
-      ActionSet& operator += ( const ActionSet& src) {
-        for( auto iter = src.beginSafe(); iter != src.endSafe(); ++iter )
-          if( ! __actionSeq->exists(*iter) )
-            __actionSeq->insert(*iter);
-        return *this;
-      }
-
-      // ============================================================================
-      /// Gives the ith element
-      // ============================================================================
-      const Idx& operator [] ( const Idx i ) const {
-        return __actionSeq->atPos(i);
-      }
-
-      // ============================================================================
-      /// Compares two ActionSet to check if they are equals
-      // ============================================================================
-      bool operator == ( const ActionSet& compared ) const {
-        for( auto iter = compared.beginSafe(); iter != compared.endSafe(); ++iter )
-          if( ! __actionSeq->exists(*iter) )
-            return false;
-        for( auto iter = this->beginSafe(); iter != this->endSafe(); ++iter )
-          if( ! compared.exists(*iter) )
-            return false;
-        return true;
-      }
-      bool operator !=( const ActionSet& compared ) const {return !( *this == compared );}
-
-    /// @}
-
-      // ============================================================================
-      /// Gives the size
-      // ============================================================================
-      Idx size() const { return __actionSeq->size(); }
-
-      bool exists( const Idx& elem ) const { return __actionSeq->exists( elem ); }
-
-    private :
-      /// The very bone of the ActionSet
-      Sequence<Idx>* __actionSeq;
-
-      friend std::ostream& operator << (std::ostream& streamy, const ActionSet& objy ){
-        streamy  << objy.__actionSeq->toString();
-        return streamy;
-      }
-  };
+namespace gum {
 
 
   /**
@@ -219,10 +49,11 @@ namespace gum {
    * @ingroup fmdp_group
    *
    * Perform a SPUDD planning on given in parameter factored markov decision process
+   * Uses OpenMP to fully exploit modern processor capacity
    *
    */
   template<typename GUM_SCALAR>
-  class PSPUMDD {
+  class PSPUMDD : public SPUMDD<GUM_SCALAR> {
 
     public:
 
@@ -244,23 +75,6 @@ namespace gum {
       /// @}
 
       // ==========================================================================
-      /// @name Miscelleanous methods
-      // ==========================================================================
-      /// @{
-
-        /// Returns a const ptr on the Factored Markov Decision Process on which we're planning
-        INLINE const FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp() { return __fmdp; }
-
-        /// Returns a const ptr on the value function computed so far
-        INLINE const MultiDimDecisionGraph<GUM_SCALAR>* vFunction() { return __vFunction; }
-
-        /// Returns the best policy obtained so far
-        INLINE const MultiDimDecisionGraph<ActionSet, SetTerminalNodePolicy>* optimalPolicy() { return __optimalPolicy; }
-        std::string optimalPolicy2String();
-
-      /// @}
-
-      // ==========================================================================
       /// @name Planning Methods
       // ==========================================================================
       /// @{
@@ -272,119 +86,20 @@ namespace gum {
          */
         void initialize();
 
-        /**
-         * Performs a value iteration
-         *
-         * @param nbStep : enables you to specify how many value iterations you wish to do.
-         * makePlanning will then stop whether when optimal value function is reach or when nbStep have been performed
-         */
-        void makePlanning(Idx nbStep = 1000000);
+      /// @}
 
-  private:
+
+  protected:
 
         /// Performs a single step of value iteration
-        MultiDimDecisionGraph< GUM_SCALAR >* __valueIteration();
+        MultiDimDecisionGraph< GUM_SCALAR >* _valueIteration();
 
-  public:
+        MultiDimDecisionGraph<GUM_SCALAR>* _evalQaction( const MultiDimDecisionGraph<GUM_SCALAR>*, Idx );
 
-        /// Add computed Qaction to table
-        void addQaction( MultiDimDecisionGraph<GUM_SCALAR>* );
-        void addQaction( MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* );
-
-//        /**
-//         * Returns an iterator reference to the beginning of the var eleminstation Set
-//         * @warning in reverse mode (from end to beginning)
-//         */
-//        INLINE SetIteratorSafe<const DiscreteVariable*> beginVarElimination() { return __elVarSeq.rbeginSafe(); }
-
-//        /**
-//         * Returns an iterator to the end
-//         * @warning in reverse mode (from end to beginning)
-//         */
-//        INLINE SetIteratorSafe<const DiscreteVariable*> endVarElemination() {return __elVarSeq.rendSafe();}
-
-        INLINE bool shouldEleminateVar( const DiscreteVariable* v ){
-          return v==nullptr?false:__fmdp->mapMainPrime().existsSecond(v);
-        }
-
-        INLINE const Set< const DiscreteVariable* >* elVarSeq(){
-          return &__elVarSeq;
-        }
-
-  private:
-
-        /**
-         * Terminates a value iteration by multiplying by discount factor the so far computed value function.
-         * Then adds reward function
-         */
-        MultiDimDecisionGraph< GUM_SCALAR >* __addReward ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold );
-
-      /// @}
-
-      // ==========================================================================
-      /// @name Optimal policy evaluation methods
-      // ==========================================================================
-      /// @{
-
-        /**
-         * Once value ieration is over, this methods is call to find an associated optimal policy
-         */
-        void __evalPolicy ();
-
-       /**
-        * Creates a copy of given in parameter decision diagram and replaces leaves of that diagram by a pair containing value of the leaf and
-        * action to which is bind this diagram (given in parameter).
-        */
-        MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* __createArgMaxCopy (
-            const MultiDimDecisionGraph<GUM_SCALAR>* Vaction,
-            Idx actionId );
-
-       /**
-        * Once final V is computed upon arg max on last Vactions, this function creates a diagram where all leaves tied to the same action are merged together.
-        * Since this function is a recursive one to ease the merge of all identic nodes to converge toward a cannonical policy, a factory and the current node are needed to build
-        * resulting diagram. Also we need an exploration table to avoid exploration of already visited sub-graph part.
-        */
-       void __extractOptimalPolicy ( const MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* optimalValueFunction );
-       void __transferActionIds( const ArgMaxSet<GUM_SCALAR, Idx>&, ActionSet&);
-
-
-      /// @}
-
-      /// The Factored Markov Decision Process describing our planning situation
-      /// (NB : this one must have decision graph as transitions and reward functions )
-      const FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
-
-      /// The Value Function computed iteratively
-      MultiDimDecisionGraph<GUM_SCALAR>* __vFunction;
-
-      /// The associated optimal policy
-      /// @warning This decision graph has Idx as leaf.
-      /// Indeed, its leaves are a match to the fmdp action ids
-      MultiDimDecisionGraph< ActionSet, SetTerminalNodePolicy >* __optimalPolicy;
-
-      /// A table giving for every action the associated Q function
-      std::vector<MultiDimDecisionGraph<GUM_SCALAR>*> __qFunctionSet;
-      std::vector<MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >*> __argMaxQFunctionSet;
-
-      /// A locker on the above table for multitreading purposes
-      std::mutex __qSetMutex;
-
-      /// The threshold value
-      /// Whenever | Vn - Vn+1 | < threshold, we consider that V ~ V*
-      GUM_SCALAR __threshold;
-
-      /// A Set to eleminate primed variables
-      Set< const DiscreteVariable* > __elVarSeq;
-
-      bool __firstTime;
+  private :
+      /// A map to ensure all FMDP actions are correctly iterrated over during value iteration
+      Bijection<Idx,Idx> __actionCpt2actionId;
   };
-
-  template<typename GUM_SCALAR>
-  MultiDimDecisionGraph<GUM_SCALAR>*
-  evalQaction( PSPUMDD<GUM_SCALAR>* planer, const MultiDimDecisionGraph<GUM_SCALAR>* Vold, Idx actionId );
-
-//  template<typename GUM_SCALAR>
-//  void evalQactionForArgMax( PSPUMDD<GUM_SCALAR>* planer, const MultiDimDecisionGraph<GUM_SCALAR>* Vold, Idx actionId );
 
   extern template class PSPUMDD<float>;
   extern template class PSPUMDD<double>;
