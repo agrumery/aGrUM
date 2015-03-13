@@ -136,12 +136,21 @@ namespace gum {
     void FMDPLearner<VariableAttributeSelection, RewardAttributeSelection, LearnerSelection>::addObservation( Idx actionId, const Observation* newObs ){
 
         for(auto learnerIter = __actionLearners[actionId]->beginSafe(); learnerIter != __actionLearners[actionId]->endSafe(); ++learnerIter){
+//            std::cout << "Adding observation to a variable learner for action : " << __fmdp->actionName(actionId) << std::endl;
             (*learnerIter)->addObservation(newObs);
+//            std::cout << "\tObservation added" << std::endl;
+//            std::cout << "\tNow updating graph ..." << std::endl;
             (*learnerIter)->updateGraph();
+//            std::cout << "\tGraph updated" << std::endl;
+
         }
 
+//        std::cout << "Adding observation to Reward" << std::endl;
         __rewardLearner->addObservation(newObs);
+//        std::cout << "\tObservation added" << std::endl;
+//        std::cout << "\tNow updating graph ..." << std::endl;
         __rewardLearner->updateGraph();
+//        std::cout << "\tGraph updated" << std::endl;
     }
 
     // ###################################################################

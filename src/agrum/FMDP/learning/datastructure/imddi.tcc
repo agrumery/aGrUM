@@ -111,6 +111,8 @@ namespace gum {
     template <TESTNAME AttributeSelection, bool isScalar >
     void IMDDI<AttributeSelection, isScalar>::updateGraph(){
 
+//      std::cout << "IMDDI::updateGraph begin" << std::endl;
+
       __varOrder.clear();
 
       // First xe initialize the node set which will give us the scores
@@ -146,6 +148,7 @@ namespace gum {
 
 //      std::cout << __lg.toString() << std::endl;
 //      this->_debugTree();
+//      std::cout << "IMDDI::updateGraph end" << std::endl;
 
     }
 
@@ -192,7 +195,7 @@ namespace gum {
     void IMDDI<AttributeSelection, isScalar>::__updateNodeSet( Set<NodeId>& nodeSet,
                          const DiscreteVariable* selectedVar,
                          VariableSelector& vs ){
-
+//      std::cout << "IMDDI::__updateNodeSet begin" << std::endl;
       Set<NodeId> oldNodeSet(nodeSet);
       nodeSet.clear();
       for( SetIteratorSafe<NodeId> nodeIter = oldNodeSet.beginSafe(); nodeIter != oldNodeSet.endSafe(); ++nodeIter ){
@@ -221,6 +224,7 @@ namespace gum {
           nodeSet << *nodeIter;
         }
       }
+//      std::cout << "IMDDI::__updateNodeSet end" << std::endl;
     }
 
 
@@ -231,10 +235,12 @@ namespace gum {
     NodeId IMDDI<AttributeSelection, isScalar>::_insertLeafNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
                                                                  const DiscreteVariable* boundVar,
                                                                  Set<const Observation*>* obsSet ){
+//      std::cout << "IMDDI::__insertLeafNode begin" << std::endl;
 
       NodeId currentNodeId = IncrementalGraphLearner<AttributeSelection, isScalar>::_insertLeafNode(nDB, boundVar, obsSet);
 
       __addLeaf( currentNodeId );
+//      std::cout << "IMDDI::__insertLeafNode end" << std::endl;
 
       return currentNodeId;
     }
@@ -246,6 +252,8 @@ namespace gum {
     template < TESTNAME AttributeSelection, bool isScalar >
     void IMDDI<AttributeSelection, isScalar>::_chgNodeBoundVar( NodeId currentNodeId, const DiscreteVariable* desiredVar ){
 
+//      std::cout << "IMDDI::_chgNodeBoundVar begin " << currentNodeId << " - " << desiredVar->name() << std::endl;
+//      this->_debugTree();
       if(this->_nodeVarMap[currentNodeId] == this->_value)
         __removeLeaf(currentNodeId);
 
@@ -253,6 +261,7 @@ namespace gum {
 
       if(desiredVar == this->_value)
         __addLeaf( currentNodeId );
+//      std::cout << "IMDDI::_chgNodeBoundVar end" << std::endl;
 
     }
 
@@ -262,11 +271,22 @@ namespace gum {
     // ============================================================================
     template < TESTNAME AttributeSelection, bool isScalar >
     void IMDDI<AttributeSelection, isScalar>::_removeNode( NodeId currentNodeId ){
+//      std::cout << "IMDDI::_removeNode begin " << currentNodeId << std::endl;
+//      this->_debugTree();
 
-      if(this->_nodeVarMap[currentNodeId] == this->_value)
+//      std::cout << "Test si feuille" << std::endl;
+      if(this->_nodeVarMap[currentNodeId] == this->_value){
+//          std::cout << "Feuille"<< std::endl;
         __removeLeaf(currentNodeId);
+//        std::cout << "retirée"<< std::endl;
+        } else {
+//          std::cout << "Pas Feuille"<< std::endl;
 
+        }
+
+//      std::cout << "Appel Parent"<< std::endl;
       IncrementalGraphLearner<AttributeSelection, isScalar>::_removeNode( currentNodeId );
+//      std::cout << "IMDDI::_removeNode end" << std::endl;
     }
 
 
@@ -296,9 +316,12 @@ namespace gum {
     template < TESTNAME AttributeSelection, bool isScalar >
     void IMDDI<AttributeSelection, isScalar>::__removeLeaf( NodeId currentNodeId ){
 
-//      std::cout << "IMDDI::__removeLeaf begin" << std::endl;
+//      std::cout << "IMDDI::__removeLeaf begin " << currentNodeId << std::endl;
+//      std::cout << __leafMap[currentNodeId]->toString() << std::endl;
 
       __lg.removeLeaf( __leafMap[currentNodeId] );
+//      std::cout << "Removed from LG" << std::endl;
+//      std::cout << __leafMap << std::endl;
       delete __leafMap[currentNodeId];
       __leafMap.erase(currentNodeId);
 

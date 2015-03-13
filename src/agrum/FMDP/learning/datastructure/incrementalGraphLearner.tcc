@@ -270,12 +270,15 @@ namespace gum {
     template < TESTNAME AttributeSelection, bool isScalar >
     void IncrementalGraphLearner<AttributeSelection, isScalar>::_transpose( NodeId currentNodeId,
                                                                             const DiscreteVariable* desiredVar ){
+//      std::cout << "IncrementalGraphLearner::_transpose begin " << currentNodeId << " - " << desiredVar->name() << std::endl;
 
       // **************************************************************************************
       // Si le noeud courant contient déjà la variable qu'on souhaite lui amener
       // Il n'y a rien à faire
-      if( _nodeVarMap[currentNodeId] == desiredVar )
+      if( _nodeVarMap[currentNodeId] == desiredVar ){
+//          std::cout << " IncrementalGraphLearner::_convertNode2Leaf targeted var end " << std::endl;
         return;
+        }
 
       // **************************************************************************************
       // Si le noeud courant est terminal,
@@ -314,6 +317,8 @@ namespace gum {
         _chgNodeBoundVar(currentNodeId, desiredVar);
         _nodeSonsMap.insert( currentNodeId, sonsMap);
 
+//        std::cout << " IncrementalGraphLearner::_convertNode2Leaf leaf end" << std::endl;
+
         return;
       }
 
@@ -350,6 +355,7 @@ namespace gum {
         _nodeSonsMap[currentNodeId] = sonsMap;
 
         _chgNodeBoundVar(currentNodeId, desiredVar);
+//        std::cout << " IncrementalGraphLearner::_convertNode2Leaf end " << std::endl;
     }
 
 
@@ -359,6 +365,8 @@ namespace gum {
     // ============================================================================
     template < TESTNAME AttributeSelection, bool isScalar >
     void IncrementalGraphLearner<AttributeSelection, isScalar>::_convertNode2Leaf( NodeId currentNodeId ){
+
+//      std::cout << " IncrementalGraphLearner::_convertNode2Leaf begin " << currentNodeId << std::endl;
 
       if(_nodeVarMap[currentNodeId] != _value ){
 
@@ -377,6 +385,7 @@ namespace gum {
 
         _chgNodeBoundVar(currentNodeId, _value);
       }
+//      std::cout << " IncrementalGraphLearner::_convertNode2Leaf end" << std::endl;
     }
 
 
@@ -407,33 +416,44 @@ namespace gum {
     template < TESTNAME AttributeSelection, bool isScalar >
     void IncrementalGraphLearner<AttributeSelection, isScalar>::_debugTree( ){
 
-      std::stringstream output;
+      //std::stringstream output;
+      int cpt = 0;
 
-      Set<NodeId> visited;
       std::queue<NodeId> fifo;
       fifo.push(this->_root);
-      visited << this->_root;
+//      std::cout << this->_nodeId2Database.size() << " elements to visit." << std::endl;
 
       while(!fifo.empty()){
 
         NodeId currentNodeId = fifo.front();
         fifo.pop();
 
-        output << "##########\nNoeud : " << currentNodeId << " - Associated Var : " << this->_nodeVarMap[currentNodeId]->name() << std::endl;
-        output << "\tDATA : " << this->_nodeId2Database[currentNodeId]->toString();
+        if(!this->_nodeId2Database.exists(currentNodeId))
+          continue;
 
-        if( this->_nodeVarMap[currentNodeId] != this->_value ){
+//         std::cout << "##########" << std::endl;
+//         std::cout << "Noeud : " << currentNodeId;
+//         std::cout << " - Associated Var : " << this->_nodeVarMap[currentNodeId]->name() << " -> Dom:" << this->_nodeVarMap[currentNodeId]->domainSize() << std::endl;
+         //std::cout << "\tDATA : " << this->_nodeId2Database[currentNodeId]->toString();
+
+
+       if( this->_nodeSonsMap.exists(currentNodeId) ){
           for( Idx i = 0; i < this->_nodeVarMap[currentNodeId]->domainSize(); ++i ){
-            visited.insert(this->_nodeSonsMap[currentNodeId][i]);
+//            std::cout << "Pushing "  << this->_nodeSonsMap[currentNodeId][i] << std::endl;
             fifo.push(this->_nodeSonsMap[currentNodeId][i]);
           }
         }
+        cpt++;
+        if( cpt == 100 ){
+//          std::cout << "CPT > 100 BREAKING"<<std::endl;
+          exit(1);
+          }
 
 //        Set<const Observation*> ret = this->_getNodeDataBase(currentNodeId);
 //        for(SetIteratorSafe<const Observation*> obsIter = ret.beginSafe(); obsIter != ret.endSafe(); ++obsIter)
 //          output << "\t\t\t" << (*obsIter)->toString() << std::endl;
       }
 
-      std::cout << output.str() << std::endl;
+//      std::cout << output.str() << std::endl;
     }
 } // end gum namespace

@@ -231,10 +231,12 @@ namespace gum {
       if( __leaf )
         ss << "Associated Leaf : " << __leaf->toString() << std::endl << "Leaves Heap : " << std::endl;
 
-      for( HashTableConstIteratorSafe<LeafPair*, std::vector<Size>> leafIter = __pairsHeap.allValues().cbeginSafe();
-           leafIter != __pairsHeap.allValues().cendSafe(); ++leafIter ){
-          ss << leafIter.key()->toString() << std::endl;
-      }
+//      for( HashTableConstIteratorSafe<LeafPair*, std::vector<Size>> leafIter = __pairsHeap.allValues().cbeginSafe();
+//           leafIter != __pairsHeap.allValues().cendSafe(); ++leafIter ){
+//          ss << leafIter.key()->toString() << std::endl;
+//      }
+      if( !__pairsHeap.empty())
+        ss << "Top pair : " << __pairsHeap.top()->toString() << std::endl;
 
       return ss.str();
     }

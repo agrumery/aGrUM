@@ -137,15 +137,22 @@ namespace gum {
 
             obs->setReward(reward);
 
+            std::cout << "Taking observation into account ..." <<  std::endl;
             __learner->addObservation( __lastAction, obs );
+            std::cout << "Done" <<  std::endl;
             __bin.insert(obs);
 
             setCurrentState( newState );
 
             if( __nbObservation%__observationPhaseLenght == 0) {
+                std::cout << "Updating FMDP ..." <<  std::endl;
                 __learner->updateFMDP();
+                std::cout << "Done" <<  std::endl;
 //                std::cout << __fmdp->toString() << std::endl;
-                __planer->makePlanning(__nbValueIterationStep);
+
+                std::cout << "Performing planninfication ..." <<  std::endl;
+                //__planer->makePlanning(__nbValueIterationStep);
+                std::cout << "Done" <<  std::endl;
 //                exit(0);
 ////                exit(1);
             }
