@@ -84,6 +84,8 @@ namespace gum {
       Formula(const Formula & source);
       ~Formula();
 
+      Formula & operator=(const Formula & source);
+
       double result() const;
 
       void push_number(const double &v);
@@ -97,16 +99,19 @@ namespace gum {
       void finalize();
 
     private:
+      std::stack<Formula> __heap;
+
       std::vector<FormulaPart> __output;
       std::stack<FormulaPart> __stack;
+
+      std::stack<Formula>& heap();
+      const std::stack<Formula>& heap() const;
 
       std::vector<FormulaPart>& output();
       const std::vector<FormulaPart>& output() const;
 
       std::stack<FormulaPart>& stack();
       const std::stack<FormulaPart>& stack() const;
-
-
 
       bool __popOperator(FormulaPart o);
 

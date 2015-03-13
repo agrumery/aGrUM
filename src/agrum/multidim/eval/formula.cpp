@@ -189,7 +189,7 @@ namespace gum {
   }
 
   Formula::Formula(const Formula& source):
-    __output(source.__output), __stack(source.__stack)
+    __heap(source.__heap), __output(source.__output), __stack(source.__stack)
   {
     GUM_CONS_CPY( Formula );
   }
@@ -197,6 +197,14 @@ namespace gum {
   Formula::~Formula() {
     GUM_DESTRUCTOR( Formula );
   } 
+
+  Formula &
+  Formula::operator=(const Formula & source) {
+    __heap = source.__heap;
+    __output = source.__output;
+    __stack =  source.__stack;
+    return *this;
+  }
 
   double 
   Formula::result() const {
@@ -356,6 +364,16 @@ namespace gum {
     }
 
     stack.push(item.eval(args));
+  }
+
+  std::stack<Formula>&
+  Formula::heap() {
+    return __heap;
+  }
+
+  const std::stack<Formula>&
+  Formula::heap() const {
+    return __heap;
   }
 
   std::vector<FormulaPart>&
