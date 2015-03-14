@@ -33,7 +33,7 @@ import random
 
 def create_qmr(nD,nF,density):
     """
-    create qmt-dr BN using
+    create qmr BN using
 
     nD = number of disease
     nF = number of findings
@@ -42,29 +42,25 @@ def create_qmr(nD,nF,density):
     name="qmr%d-%d-%f"%(nD,nF,density)
     bn=gum.BayesNet(name)
 
-    lDis=[]
-    for i in range(nD):
-        nom="D%4d"%i
-        node=bn.add(gum.LabelizedVar(nom,nom,2))
-        lDis.append(node)
+    lDis=[bn.add(gum.LabelizedVariable("D%4d"%i,"D%4d"%i,2)) for i in range(nD)]
+    
+    # add noisyOR nodes with random leaks
+    lFind=[bn.addNoisyOR(gum.LabelizedVariable("F%d"%i,"F%d"%i,2),random.uniform(0.1,0.9)) for i in range(nF)]
+        
+    for node in lDis:
         prior=random.uniform(0.01,0.99)
         bn.cpt(node)[:]=[prior,1-prior]
 
-    lFind=[]
-    for i in range(nF):
-        nom="F%d"%i
-        node=bn.addNoisyOR(gum.LabelizedVar(nom,nom,2),random.uniform(0.1,0.9))
-        lFind.append(node)
-
-    for i in range(nD):
-        for j in range(nF):
+    for i in lDis:
+        for j in lFind:
             if random.random()<density:
-                bn.insertWeightedArc(lDis[i],lFind[j],random.uniform(0.1,0.9))
+                # add new cause i to noisyOR j with random weight
+                bn.addWeightedArc(i,j,random.uniform(0.1,0.9))
     return bn
 
 if __name__=="__main__":
     from gumLib.bn2graph import pdfize
     print("building qmr")
-    bn=create_qmr(60,200,0.01)
+    bn=create_qmr(60,60,0.1)
     print("generating pdf")
     pdfize(bn,bn.property('name'))
