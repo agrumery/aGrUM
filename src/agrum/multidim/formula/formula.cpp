@@ -21,6 +21,8 @@
 #include <agrum/multidim/formula/formula.h>
 
 #include <list>
+#include <random>
+
 #include <agrum/config.h>
 
 namespace gum {
@@ -61,24 +63,6 @@ namespace gum {
       case FormulaPart::token_function::ln: { return "ln"; } 
       case FormulaPart::token_function::pow: { return "pow"; } 
       case FormulaPart::token_function::sqrt: { return "sqrt"; } 
-      case FormulaPart::token_function::bernoulli: { return "bernoulli"; } 
-      case FormulaPart::token_function::binomial: { return "binomial"; }
-      case FormulaPart::token_function::geometric: { return "geometric"; } 
-      case FormulaPart::token_function::negative_binomial: { return "negative_binomial"; } 
-      case FormulaPart::token_function::poisson: { return "poisson"; } 
-      case FormulaPart::token_function::exponential: { return "exponential"; } 
-      case FormulaPart::token_function::gamma: { return "gamma"; } 
-      case FormulaPart::token_function::weibull: { return "weibull"; }
-      case FormulaPart::token_function::extreme_value: { return "extreme_value"; } 
-      case FormulaPart::token_function::normal: { return "normal"; } 
-      case FormulaPart::token_function::lognormal: { return "lognormal"; } 
-      case FormulaPart::token_function::chi_squared: { return "chi_squared"; } 
-      case FormulaPart::token_function::cauchy: { return "cauchy"; } 
-      case FormulaPart::token_function::fisher_f: { return "fisher_f"; } 
-      case FormulaPart::token_function::student_t: { return "student_t"; }
-      case FormulaPart::token_function::discrete: { return "discrete"; } 
-      case FormulaPart::token_function::piecewise_constant: { return "piecewise_constant"; } 
-      case FormulaPart::token_function::piecewise_linear: { return "piecewise_linear"; }
       case FormulaPart::token_function::nil: { return "nil"; }
       default: { GUM_ERROR( OperationNotAllowed, "unknown function" ); }
     }
@@ -277,25 +261,7 @@ namespace gum {
       case FormulaPart::token_function::ln: { return 1; } 
       case FormulaPart::token_function::pow: { return 2; } 
       case FormulaPart::token_function::sqrt: { return 1; } 
-      // case FormulaPart::token_function::bernoulli: { return "bernoulli"; } 
-      // case FormulaPart::token_function::binomial: { return "binomial"; }
-      // case FormulaPart::token_function::geometric: { return "geometric"; } 
-      // case FormulaPart::token_function::negative_binomial: { return "negative_binomial"; } 
-      // case FormulaPart::token_function::poisson: { return "poisson"; } 
-      // case FormulaPart::token_function::exponential: { return "exponential"; } 
-      // case FormulaPart::token_function::gamma: { return "gamma"; } 
-      // case FormulaPart::token_function::weibull: { return "weibull"; }
-      // case FormulaPart::token_function::extreme_value: { return "extreme_value"; } 
-      // case FormulaPart::token_function::normal: { return "normal"; } 
-      // case FormulaPart::token_function::lognormal: { return "lognormal"; } 
-      // case FormulaPart::token_function::chi_squared: { return "chi_squared"; } 
-      // case FormulaPart::token_function::cauchy: { return "cauchy"; } 
-      // case FormulaPart::token_function::fisher_f: { return "fisher_f"; } 
-      // case FormulaPart::token_function::student_t: { return "student_t"; }
-      // case FormulaPart::token_function::discrete: { return "discrete"; } 
-      // case FormulaPart::token_function::piecewise_constant: { return "piecewise_constant"; } 
-      // case FormulaPart::token_function::piecewise_linear: { return "piecewise_linear"; }
-      // case FormulaPart::token_function::nil: { return "nil"; }
+      //case FormulaPart::token_function::nil: { return "nil"; }
       default: { GUM_ERROR( OperationNotAllowed, "unknown function" ); }
     }
 
@@ -351,24 +317,6 @@ namespace gum {
       case FormulaPart::token_function::ln: { return std::log2(args[0].number); } 
       case FormulaPart::token_function::pow: { return std::pow(args[1].number, args[0].number); } 
       case FormulaPart::token_function::sqrt: { return std::sqrt(args[0].number); } 
-      // case FormulaPart::token_function::bernoulli: { return "bernoulli"; } 
-      // case FormulaPart::token_function::binomial: { return "binomial"; }
-      // case FormulaPart::token_function::geometric: { return "geometric"; } 
-      // case FormulaPart::token_function::negative_binomial: { return "negative_binomial"; } 
-      // case FormulaPart::token_function::poisson: { return "poisson"; } 
-      // case FormulaPart::token_function::exponential: { return "exponential"; } 
-      // case FormulaPart::token_function::gamma: { return "gamma"; } 
-      // case FormulaPart::token_function::weibull: { return "weibull"; }
-      // case FormulaPart::token_function::extreme_value: { return "extreme_value"; } 
-      // case FormulaPart::token_function::normal: { return "normal"; } 
-      // case FormulaPart::token_function::lognormal: { return "lognormal"; } 
-      // case FormulaPart::token_function::chi_squared: { return "chi_squared"; } 
-      // case FormulaPart::token_function::cauchy: { return "cauchy"; } 
-      // case FormulaPart::token_function::fisher_f: { return "fisher_f"; } 
-      // case FormulaPart::token_function::student_t: { return "student_t"; }
-      // case FormulaPart::token_function::discrete: { return "discrete"; } 
-      // case FormulaPart::token_function::piecewise_constant: { return "piecewise_constant"; } 
-      // case FormulaPart::token_function::piecewise_linear: { return "piecewise_linear"; }
       // case FormulaPart::token_function::nil: { return "nil"; }
       default: { GUM_ERROR( OperationNotAllowed, "unknown function" ); }
     }

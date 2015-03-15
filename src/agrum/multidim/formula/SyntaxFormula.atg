@@ -54,7 +54,6 @@ integer     =  digit {digit}.
 float       =  digit {digit} '.' digit {digit}. // [ ('E'|'e') ['+'|'-'] digit {digit} ].
 operator    = '+'|'-'|'*'|'/'|'^'.
 eol         = '\n'.
-//function    = "exp"|"log"|"ln"|"pow"|"sqrt".
 ident       = letter {letter | digit | '_'}.
 
 // // Bernouilli distributions
