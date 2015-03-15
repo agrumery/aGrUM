@@ -710,4 +710,50 @@ namespace gum {
     __last_token = FormulaPart(FormulaPart::token_type::ARG_SEP, ',');
   }
 
+  HashTable<std::string, double> &
+  Formula::variables() {
+    return __variables;
+  }
+
+  const HashTable<std::string, double> &
+  Formula::variables() const {
+    return __variables;
+  }
+
+  void 
+  Formula::push_variable(const std::string & var) {
+
+    if (__variables.exists(var)) {
+
+      push_number(__variables[var]);
+
+    } else {
+
+      GUM_ERROR( OperationNotAllowed, "unknonw variable" );
+
+    }
+
+  }
+
+  void
+  Formula::push_identifier(const std::string & ident) {
+    try {
+
+      push_function( ident );
+
+    } catch (OperationNotAllowed& error) {
+
+      try {
+
+        push_variable( ident );
+
+      } catch (OperationNotAllowed& error) {
+
+        GUM_ERROR( OperationNotAllowed, "unknown identifier" );
+
+      }
+    }
+
+  }
+
 } // namespace gum

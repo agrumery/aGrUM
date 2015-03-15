@@ -64,7 +64,7 @@ class Parser {
 		_float=2,
 		_operator=3,
 		_eol=4,
-		_function=5
+		_ident=5
 	};
 	int maxT;
 
@@ -91,8 +91,13 @@ class Parser {
   Formula __formula;
 
 public:
-  Formula& formula() { return __formula; }
-  const Formula& formula() const { return __formula; }
+  Formula& formula() { 
+    return __formula; 
+  }
+
+  const Formula& formula() const {
+    return __formula; 
+  }
 
 //##############################################################################
 //

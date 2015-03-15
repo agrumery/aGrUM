@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class MultiDimEvalTestSuite: public CxxTest::TestSuite {
+  class MultiDimFormulaTestSuite: public CxxTest::TestSuite {
 
     public:
       void setUp() {
@@ -263,6 +263,32 @@ namespace gum_tests {
           // Act
           TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
           // Assert
+          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
+          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+        } catch (gum::Exception& e) {
+          TS_ASSERT( false );
+        }
+      }
+
+      void testVariables() {
+        try {
+          // Arrange
+          double lambda = 0.001;
+          double t = 2;
+          double unused = 10;
+          std::string eq = "1-exp(-lambda*t)";
+          double expected = 1 - std::exp(-lambda* t);
+          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
+          gum::Parser parser(&scanner);
+          parser.formula().variables().insert("lambda", lambda);
+          parser.formula().variables().insert("t", t);
+          parser.formula().variables().insert("unused", unused);
+          // Act
+          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          // Assert
+          TS_ASSERT( parser.formula().variables().exists("lambda") );
+          TS_ASSERT( parser.formula().variables().exists("t") );
+          TS_ASSERT( parser.formula().variables().exists("unused") );
           TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
           TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
         } catch (gum::Exception& e) {

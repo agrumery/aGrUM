@@ -28,8 +28,13 @@ private:
   Formula __formula;
 
 public:
-  Formula& formula() { return __formula; }
-  const Formula& formula() const { return __formula; }
+  Formula& formula() { 
+    return __formula; 
+  }
+
+  const Formula& formula() const {
+    return __formula; 
+  }
 
 //##############################################################################
 //
@@ -48,19 +53,10 @@ TOKENS
 integer     =  digit {digit}.
 float       =  digit {digit} '.' digit {digit}. // [ ('E'|'e') ['+'|'-'] digit {digit} ].
 operator    = '+'|'-'|'*'|'/'|'^'.
-//word        = letter {(letter | digit)}.
 eol         = '\n'.
-function    = "exp"|"log"|"ln"|"pow"|"sqrt".
+//function    = "exp"|"log"|"ln"|"pow"|"sqrt".
+ident       = letter {letter | digit | '_'}.
 
-// // Exponential and logarithmic functions
-// exp = "exp".
-// log = "log".
-// ln  = "ln".
-// 
-// // Power functions
-// pow = "pow".
-// sqrt = "sqrt".
-// 
 // // Bernouilli distributions
 // bernoulli = "bernoulli".
 // binomial = "binomial".
@@ -111,44 +107,8 @@ expression =
     | operator           (. __formula.push_operator(narrow(t->val)[0]); .)
     | '('                (. __formula.push_leftParenthesis(); .)
     | ')'                (. __formula.push_rightParenthesis(); .)
-    | function           (. __formula.push_function(narrow(t->val)); .)
+    | ident              (. __formula.push_identifier(narrow(t->val)); .)
     | ','                (. __formula.push_comma(); .)
-    //| function args
   .
-
-//function =
-//  exp                    (. __function(token_functions::exp); .)
-//  | log                  (. __function(token_functions::log); .)
-//  | ln                   (. __function(token_functions::ln); .)
-//  | pow                  (. __function(token_functions::pow); .)
-//  | sqrt                 (. __function(token_functions::sqrt); .)
-//  | bernoulli            (. __function(token_functions::bernoulli); .)
-//  | binomial             (. __function(token_functions::binomial); .)
-//  | geometric            (. __function(token_functions::geometric); .)
-//  | negative_binomial    (. __function(token_functions::negative_binomial ); .)
-//  | poisson              (. __function(token_functions::poisson); .)
-//  | exponential          (. __function(token_functions::exponential); .)
-//  | gamma                (. __function(token_functions::gamma); .)
-//  | weibull              (. __function(token_functions::weibull); .)
-//  | extreme_value        (. __function(token_functions::extreme_value); .)
-//  | normal               (. __function(token_functions::normal); .)
-//  | lognormal            (. __function(token_functions::lognormal); .)
-//  | chi_squared          (. __function(token_functions::chi_squared); .)
-//  | cauchy               (. __function(token_functions::cauchy); .)
-//  | fisher_f             (. __function(token_functions::fisher_f); .)
-//  | student_t            (. __function(token_functions::student_t); .)
-//  | discrete             (. __function(token_functions::discrete); .)
-//  | piecewise_constant   (. __function(token_functions::piecewise_constant); .)
-//  | piecewise_linear     (. __function(token_functions::piecewise_linear); .)
-//  .
-//
-//args =
-//  '('                             (. __leftParenthesis(); .)
-//  (
-//    expression { ',' expression } 
-//    |
-//  )
-//  ')'                             (. __rightParenthesis(); .)
-//  .
 
 END EVAL.

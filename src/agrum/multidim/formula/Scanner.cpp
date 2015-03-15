@@ -316,19 +316,18 @@ void Scanner::Init() {
   	maxT = 9;
 	noSym = 9;
 	int i;
-	for (i = 48; i <= 57; ++i) start.set(i, 14);
+	for (i = 48; i <= 57; ++i) start.set(i, 6);
+	for (i = 65; i <= 90; ++i) start.set(i, 5);
+	for (i = 95; i <= 95; ++i) start.set(i, 5);
+	for (i = 97; i <= 122; ++i) start.set(i, 5);
 	for (i = 42; i <= 43; ++i) start.set(i, 3);
 	for (i = 45; i <= 45; ++i) start.set(i, 3);
 	for (i = 47; i <= 47; ++i) start.set(i, 3);
 	for (i = 94; i <= 94; ++i) start.set(i, 3);
 	start.set(10, 4);
-	start.set(101, 5);
-	start.set(108, 15);
-	start.set(112, 8);
-	start.set(115, 10);
-	start.set(40, 16);
-	start.set(41, 17);
-	start.set(44, 18);
+	start.set(40, 7);
+	start.set(41, 8);
+	start.set(44, 9);
 		start.set(Buffer::EoF, -1);
 
 
@@ -508,52 +507,21 @@ case_0:
 		case 4:
 			{t->kind = 4; break;}
 		case 5:
-			if (ch == L'x') {AddCh(); goto case_6;}
-			else {goto case_0;}
+			case_5:
+			recEnd = pos; recKind = 5;
+			if ((ch >= L'0' && ch <= L'9') || (ch >= L'A' && ch <= L'Z') || ch == L'_' || (ch >= L'a' && ch <= L'z')) {AddCh(); goto case_5;}
+			else {t->kind = 5; break;}
 		case 6:
 			case_6:
-			if (ch == L'p') {AddCh(); goto case_13;}
-			else {goto case_0;}
-		case 7:
-			case_7:
-			if (ch == L'g') {AddCh(); goto case_13;}
-			else {goto case_0;}
-		case 8:
-			if (ch == L'o') {AddCh(); goto case_9;}
-			else {goto case_0;}
-		case 9:
-			case_9:
-			if (ch == L'w') {AddCh(); goto case_13;}
-			else {goto case_0;}
-		case 10:
-			if (ch == L'q') {AddCh(); goto case_11;}
-			else {goto case_0;}
-		case 11:
-			case_11:
-			if (ch == L'r') {AddCh(); goto case_12;}
-			else {goto case_0;}
-		case 12:
-			case_12:
-			if (ch == L't') {AddCh(); goto case_13;}
-			else {goto case_0;}
-		case 13:
-			case_13:
-			{t->kind = 5; break;}
-		case 14:
-			case_14:
 			recEnd = pos; recKind = 1;
-			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_14;}
+			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_6;}
 			else if (ch == L'.') {AddCh(); goto case_1;}
 			else {t->kind = 1; break;}
-		case 15:
-			if (ch == L'o') {AddCh(); goto case_7;}
-			else if (ch == L'n') {AddCh(); goto case_13;}
-			else {goto case_0;}
-		case 16:
+		case 7:
 			{t->kind = 6; break;}
-		case 17:
+		case 8:
 			{t->kind = 7; break;}
-		case 18:
+		case 9:
 			{t->kind = 8; break;}
 
   }

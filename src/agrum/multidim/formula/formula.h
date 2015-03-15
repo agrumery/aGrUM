@@ -31,6 +31,8 @@
 #include <sstream>
 #include <iostream>
 
+#include <agrum/core/hashTable.h>
+
 namespace gum {
 
   class FormulaPart {
@@ -93,6 +95,10 @@ namespace gum {
 
       Formula & operator=(const Formula & source);
 
+      HashTable<std::string, double> & variables();
+
+      const HashTable<std::string, double> & variables() const;
+
       double result() const;
 
       void push_number(const double &v);
@@ -105,6 +111,11 @@ namespace gum {
 
       void push_function(const std::string & func);
 
+      void push_variable(const std::string & var);
+
+      /// Use this if you don't know is ident is a function or a variable.
+      void push_identifier(const std::string & ident);
+
       void push_comma();
 
       void finalize();
@@ -114,6 +125,8 @@ namespace gum {
 
       std::vector<FormulaPart> __output;
       std::stack<FormulaPart> __stack;
+
+      HashTable<std::string, double> __variables;
 
       std::vector<FormulaPart>& output();
       const std::vector<FormulaPart>& output() const;

@@ -139,9 +139,9 @@ void Parser::expression() {
 			__formula.push_rightParenthesis(); 
 			break;
 		}
-		case _function: {
+		case _ident: {
 			Get();
-			__formula.push_function(narrow(t->val)); 
+			__formula.push_identifier(narrow(t->val)); 
 			break;
 		}
 		case 8 /* "," */: {
@@ -299,7 +299,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 2: s = coco_string_create(L"float expected"); break;
 			case 3: s = coco_string_create(L"operator expected"); break;
 			case 4: s = coco_string_create(L"eol expected"); break;
-			case 5: s = coco_string_create(L"function expected"); break;
+			case 5: s = coco_string_create(L"ident expected"); break;
 			case 6: s = coco_string_create(L"\"(\" expected"); break;
 			case 7: s = coco_string_create(L"\")\" expected"); break;
 			case 8: s = coco_string_create(L"\",\" expected"); break;
