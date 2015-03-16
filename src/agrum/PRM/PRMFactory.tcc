@@ -1050,7 +1050,7 @@ namespace gum {
       }
  
       if (interface == 0) {
-        GUM_ERROR( NotFound, "Inteface '" << name << "' not found, check imports." );
+        GUM_ERROR( NotFound, "Interface '" << name << "' not found, check imports." );
       }
 
       return interface;

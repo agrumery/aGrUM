@@ -1,8 +1,8 @@
-import systems.MyKickAssSystem;
+import systems.MySystem;
 
 request MyUbberQuerry {
   engine SVE;
-  systems.MyKickAssSystem.MyKickAssSystem.c1.can_print = NOK;
-  ? systems.MyKickAssSystem.MyKickAssSystem.c2.can_print;
+  systems.MySystem.MySystem.c1.can_print = NOK;
+  ? systems.MySystem.MySystem.c2.can_print;
 }
 

@@ -27,8 +27,9 @@ import classes.Room;
 import classes.Computer;
 import classes.BWPrinter;
 import classes.ColorPrinter;
+import classes.ParamComputer;
 
-system MyKickAssSystem {
+system MySystem {
   PowerSupply pow;
   Room r;
 
@@ -53,5 +54,16 @@ system MyKickAssSystem {
   c1.printers += color_printers;
   c2.printers += color_printers;
 
+  ParamComputer pc1;
+  ParamComputer pc2(lambda=0.999,t=10);
+
+  pc1.room = r;
+  pc2.room = r;
+
+  pc1.printers += bw_printers;
+  pc2.printers += bw_printers;
+
+  pc1.printers += color_printers;
+  pc2.printers += color_printers;
 }
 

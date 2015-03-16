@@ -104,8 +104,8 @@ namespace gum_tests {
           TS_ASSERT_EQUALS ( si->warnings(), 0 );
 
           // Observe correctly
-          const auto& c1 = si->prm()->system ( "systems.MyKickAssSystem.MyKickAssSystem" ).get ( "c1" );
-          const auto& c2 = si->prm()->system ( "systems.MyKickAssSystem.MyKickAssSystem" ).get ( "c2" );
+          const auto& c1 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c1" );
+          const auto& c2 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c2" );
 
           TS_ASSERT ( si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c1, &c1.get ( "can_print" ) ) ) );
           TS_ASSERT ( si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c2, &c2.get ( "equipState" ) ) ) );
@@ -144,8 +144,8 @@ namespace gum_tests {
           TS_ASSERT_EQUALS ( si->warnings(), 0 );
 
           // Unobserve correctly
-          const gum::prm::Instance<double>& c1 = si->prm()->system ( "systems.MyKickAssSystem.MyKickAssSystem" ).get ( "c1" );
-          const gum::prm::Instance<double>& c2 = si->prm()->system ( "systems.MyKickAssSystem.MyKickAssSystem" ).get ( "c2" );
+          const gum::prm::Instance<double>& c1 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c1" );
+          const gum::prm::Instance<double>& c2 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c2" );
 
           TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c1, &c1.get ( "can_print" ) ) ) );
           TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c2, &c2.get ( "equipState" ) ) ) );
@@ -170,8 +170,8 @@ namespace gum_tests {
           TS_ASSERT_EQUALS ( si->errors(), 0 );
           TS_ASSERT_EQUALS ( si->warnings(), 0 );
 
-          const gum::prm::Instance<double>& c1 = si->prm()->system ( "systems.MyKickAssSystem.MyKickAssSystem" ).get ( "c1" );
-          const gum::prm::Instance<double>& c2 = si->prm()->system ( "systems.MyKickAssSystem.MyKickAssSystem" ).get ( "c2" );
+          const gum::prm::Instance<double>& c1 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c1" );
+          const gum::prm::Instance<double>& c2 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c2" );
 
           TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c1, &c1.get ( "can_print" ) ) ) );
           TS_ASSERT ( si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c2, &c2.get ( "equipState" ) ) ) );

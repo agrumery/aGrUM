@@ -1,10 +1,10 @@
-import systems.MyKickAssSystem;
+import systems.MySystem;
 
 request MyQuerry {
   engine SVED;
   
-  systems.MyKickAssSystem.MyKickAssSystem.c1.can_print = false;
-  systems.MyKickAssSystem.MyKickAssSystem.c2.equipState = Dysfunctional;
+  systems.MySystem.MySystem.c1.can_print = false;
+  systems.MySystem.MySystem.c2.equipState = Dysfunctional;
   
-  ? systems.MyKickAssSystem.MyKickAssSystem.c1.can_print;
+  ? systems.MySystem.MySystem.c1.can_print;
 }
