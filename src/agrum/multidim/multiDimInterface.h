@@ -27,27 +27,27 @@
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
-// ============================================================================
+
 /*!
   @ingroup multidim_group
   \page multidim_page How to use the MultiDim hierarchy.
 
   \section multidim_sec_1 Why the MultiDim hierarchy?
 */
-// ============================================================================
+
 #ifndef GUM_MULTIDIM_INTERFACE_H
 #define GUM_MULTIDIM_INTERFACE_H
-// ============================================================================
+
 #include <iostream>
 #include <vector>
-// ============================================================================
+
 #include <agrum/config.h>
 
 #include <agrum/core/list.h>
 #include <agrum/core/sequence.h>
-// ============================================================================
+
 #include <agrum/variables/discreteVariable.h>
-// ============================================================================
+
 
 namespace gum {
 
@@ -68,14 +68,13 @@ namespace gum {
 
   class MultiDimInterface {
     public:
-      // ============================================================================
+
       /// Alias for Sequence<DiscreteVariable*>::iterator.
-      // ============================================================================
       typedef Sequence<const DiscreteVariable*>::iterator iterator;
 
-      // ============================================================================
+
       /// No constructor : interface only.
-      // ============================================================================
+
       virtual ~MultiDimInterface() {};
 
       // ##############################################################################
@@ -83,20 +82,20 @@ namespace gum {
       // ##############################################################################
       /// @{
 
-      // ============================================================================
-      /// Returns the number of vars in the multidimensional container.
-      // ============================================================================
-      virtual Idx nbrDim() const =0;
 
-      // ============================================================================
+      /// Returns the number of vars in the multidimensional container.
+
+      virtual Idx nbrDim() const = 0;
+
+
       /**
        * @brief Returns the product of the size of the domains of the variables
        *        belonging to the matrix.
        */
-      // ============================================================================
-      virtual Size domainSize() const  =0;
 
-      // ============================================================================
+      virtual Size domainSize() const  = 0;
+
+
       /**
        * @brief Adds a new var to the variables of the multidimensional matrix.
        * @see operator<<(MultiDimInterface& c, const DiscreteVariable& v)
@@ -109,10 +108,10 @@ namespace gum {
        *                         sequence of variables.
        * @throw OperationNotAllowed if this object is non mutable.
        */
-      // ============================================================================
-      virtual void add( const DiscreteVariable& v )=0;
 
-      // ============================================================================
+      virtual void add ( const DiscreteVariable& v ) = 0;
+
+
       /**
        * @brief Removes a var from the variables of the multidimensional matrix.
        * @see operator>>(MultiDimInterface& c, const DiscreteVariable& v)
@@ -122,39 +121,39 @@ namespace gum {
        * @throw OperationNotAllowed if this object is non mutable.
        * @throw NotFound is v does not belong to this
        */
-      // ============================================================================
-      virtual void erase( const DiscreteVariable& v )=0;
 
-      // ============================================================================
+      virtual void erase ( const DiscreteVariable& v ) = 0;
+
+
       /// Returns a const ref to the sequence of DiscreteVariable*.
-      // ============================================================================
-      virtual const Sequence<const DiscreteVariable *>& variablesSequence() const =0;
 
-      // ============================================================================
+      virtual const Sequence<const DiscreteVariable*>& variablesSequence() const = 0;
+
+
       /**
        * Returns a const ref to the ith var.
        * @throw NotFound
        */
-      // ============================================================================
-      virtual const DiscreteVariable& variable( Idx i ) const =0;
 
-      // ============================================================================
+      virtual const DiscreteVariable& variable ( Idx i ) const = 0;
+
+
       /**
        * Returns the index of a var.
        * @throw NotFound
        */
-      // ============================================================================
-      virtual Idx pos( const DiscreteVariable& v ) const =0;
 
-      // ============================================================================
+      virtual Idx pos ( const DiscreteVariable& v ) const = 0;
+
+
       /// Returns true if var is in *this.
-      // ============================================================================
-      virtual bool contains( const DiscreteVariable& v ) const  =0;
 
-      // ============================================================================
+      virtual bool contains ( const DiscreteVariable& v ) const  = 0;
+
+
       /// Returns true if no var is in *this.
-      // ============================================================================
-      virtual bool empty( void ) const  =0;
+
+      virtual bool empty ( void ) const  = 0;
 
       /**
        * @brief Swap two variables in this multidim.
@@ -167,7 +166,7 @@ namespace gum {
        * @throw OperationNotAllowed If y and x are not interchangeable.
        * @throw DuplicateElement If y is already in this MultiDim.
        */
-      void swap( const DiscreteVariable& x, const DiscreteVariable& y );
+      void swap ( const DiscreteVariable& x, const DiscreteVariable& y );
 
       /// @}
 
@@ -176,26 +175,26 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// Iterator pointing at the beginning of the Sequence of variables.
-      // ============================================================================
+
       iterator begin() const;
 
-      // ============================================================================
+
       /// Iterator pointing at the rbeginning of the Sequence of variables.
-      // ============================================================================
+
       iterator rbegin() const;
 
-      // ============================================================================
+
       /// Constant reference on the iterator pointing at the end of the Sequence
       /// of variables.
-      // ============================================================================
+
       const iterator& end() const;
 
-      // ============================================================================
+
       /// Constant reference on the iterator pointing at the rend of the Sequence
       /// of variables.
-      // ============================================================================
+
       const iterator& rend() const;
 
       /// @}
@@ -206,10 +205,10 @@ namespace gum {
        *        swapping between x and y.
        * This is called only when everything have been checked.
        */
-      virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y ) =0;
+      virtual void _swap ( const DiscreteVariable* x, const DiscreteVariable* y ) = 0;
   };
 
-// ==============================================================================
+
   /**
    * @brief Adds a new var to the sequence of vars.
    *
@@ -229,10 +228,10 @@ namespace gum {
    *
    * @ingroup multidim_group
    */
-// ==============================================================================
+
   MultiDimInterface& operator<< ( MultiDimInterface& c, const DiscreteVariable& v );
 
-// ==============================================================================
+
   /**
    * @brief Removes a var from the variables of the MutliDimAdressing.
    *
@@ -241,15 +240,15 @@ namespace gum {
    *
    * @ingroup multidim_group
    */
-// ==============================================================================
+
   MultiDimInterface& operator>> ( MultiDimInterface& c, const DiscreteVariable& v );
 
 } /* namespace gum */
 
-// ============================================================================
+
 #ifndef GUM_NO_INLINE
 #include <agrum/multidim/multiDimInterface.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_MULTIDIM_INTERFACE_H */
-// ============================================================================
+

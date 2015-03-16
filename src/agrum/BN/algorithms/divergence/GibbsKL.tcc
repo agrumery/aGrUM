@@ -21,16 +21,18 @@
  * @file
  * @brief KL divergence between BNs brute force implementation
  *
- * @author Pierre-Henri Wuillemin
+ * @author Pierre-Henri WUILLEMIN
  */
-// ============================================================================
+
 #include <math.h>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/core/hashTable.h>
+#include <agrum/BN/IBayesNet.h>
+
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 #include <agrum/BN/particles/Gibbs.h>
-#include <agrum/BN/algorithms/approximationScheme.h>
+#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
 
 #define KL_DEFAULT_MAXITER 10000000
 #define KL_DEFAULT_EPSILON 1e-10
@@ -42,60 +44,67 @@
 namespace gum {
 
   template<typename GUM_SCALAR>
-  GibbsKL<GUM_SCALAR>::GibbsKL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q ) :
-    KL<GUM_SCALAR> ( P,Q ),
+  GibbsKL<GUM_SCALAR>::GibbsKL ( const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q ) :
+    KL<GUM_SCALAR> ( P, Q ),
     ApproximationScheme( ),
     particle::Gibbs<GUM_SCALAR> ( P ) {
-    GUM_CONSTRUCTOR( GibbsKL );
+    GUM_CONSTRUCTOR ( GibbsKL );
 
-    setEpsilon( KL_DEFAULT_EPSILON );
-    setMinEpsilonRate( KL_DEFAULT_MIN_EPSILON_RATE );
-    setMaxIter( KL_DEFAULT_MAXITER );
-    setVerbosity( KL_DEFAULT_VERBOSITY );
-    setBurnIn( KL_DEFAULT_BURNIN );
-    setPeriodSize( KL_DEFAULT_PERIOD_SIZE );
+    setEpsilon ( KL_DEFAULT_EPSILON );
+    setMinEpsilonRate ( KL_DEFAULT_MIN_EPSILON_RATE );
+    setMaxIter ( KL_DEFAULT_MAXITER );
+    setVerbosity ( KL_DEFAULT_VERBOSITY );
+    setBurnIn ( KL_DEFAULT_BURNIN );
+    setPeriodSize ( KL_DEFAULT_PERIOD_SIZE );
   }
 
   template<typename GUM_SCALAR>
-  GibbsKL<GUM_SCALAR>::GibbsKL( const KL< GUM_SCALAR >& kl ) :
+  GibbsKL<GUM_SCALAR>::GibbsKL ( const KL< GUM_SCALAR >& kl ) :
     KL<GUM_SCALAR> ( kl ),
     ApproximationScheme(),
     particle::Gibbs<GUM_SCALAR> ( kl.p() )  {
-    GUM_CONSTRUCTOR( GibbsKL );
+    GUM_CONSTRUCTOR ( GibbsKL );
 
-    setEpsilon( KL_DEFAULT_EPSILON );
-    setMinEpsilonRate( KL_DEFAULT_MIN_EPSILON_RATE );
-    setMaxIter( KL_DEFAULT_MAXITER );
-    setVerbosity( KL_DEFAULT_VERBOSITY );
-    setBurnIn( KL_DEFAULT_BURNIN );
-    setPeriodSize( KL_DEFAULT_PERIOD_SIZE );
+    setEpsilon ( KL_DEFAULT_EPSILON );
+    setMinEpsilonRate ( KL_DEFAULT_MIN_EPSILON_RATE );
+    setMaxIter ( KL_DEFAULT_MAXITER );
+    setVerbosity ( KL_DEFAULT_VERBOSITY );
+    setBurnIn ( KL_DEFAULT_BURNIN );
+    setPeriodSize ( KL_DEFAULT_PERIOD_SIZE );
   }
 
   template<typename GUM_SCALAR>
   GibbsKL<GUM_SCALAR>::~GibbsKL() {
-    GUM_DESTRUCTOR( GibbsKL );
+    GUM_DESTRUCTOR ( GibbsKL );
   }
 
   template<typename GUM_SCALAR>
   void GibbsKL<GUM_SCALAR>::_computeKL() {
 
-    gum::Instantiation Iq; _q.completeInstantiation( Iq );
-    gum::Instantiation Ip; _p.completeInstantiation( Ip );
+    gum::Instantiation Iq;
+    _q.completeInstantiation ( Iq );
 
     initParticle();
     initApproximationScheme();
 
+    // map between particle() variables and _q variables (using name of vars)
+    HashTable<const DiscreteVariable*, const DiscreteVariable*> map;
+
+    for ( Idx ite = 0; ite < particle().nbrDim(); ++ite ) {
+      map.insert ( &particle().variable ( ite ), &_q.variableFromName ( particle().variable ( ite ).name() ) );
+    }
+
     //BURN IN
-    for( Idx i = 0; i < burnIn(); i++ ) nextParticle( );
+    for ( Idx i = 0; i < burnIn(); i++ ) nextParticle( );
 
     // SAMPLING
-    _klPQ=_klQP=_hellinger=( GUM_SCALAR )0.0;
-    _errorPQ=_errorQP=0;
+    _klPQ = _klQP = _hellinger = ( GUM_SCALAR ) 0.0;
+    _errorPQ = _errorQP = 0;
     ///bool check_rate;
-    GUM_SCALAR delta,ratio,error;
-    delta=ratio=error=( GUM_SCALAR )-1;
-    GUM_SCALAR oldPQ=0.0;
-    GUM_SCALAR pp,pq;
+    GUM_SCALAR delta, ratio, error;
+    delta = ratio = error = ( GUM_SCALAR ) - 1;
+    GUM_SCALAR oldPQ = 0.0;
+    GUM_SCALAR pp, pq;
 
     do {
       ///check_rate=false;
@@ -104,49 +113,49 @@ namespace gum {
       updateApproximationScheme();
 
       //_p.synchroInstantiations( Ip,particle() );
-      _q.synchroInstantiations( Iq,particle() );
+      Iq.setValsFrom ( map, particle() );
 
-      pp=_p.jointProbability( particle() );
-      pq=_q.jointProbability( Iq );
+      pp = _p.jointProbability ( particle() );
+      pq = _q.jointProbability ( Iq );
 
-      if( pp!=( GUM_SCALAR )0.0 ) {
-        _hellinger+=pow( sqrt( pp )-sqrt( pq ),2 ) /pp;
+      if ( pp != ( GUM_SCALAR ) 0.0 ) {
+        _hellinger += pow ( sqrt ( pp ) - sqrt ( pq ), 2 ) / pp;
 
-        if( pq!=( GUM_SCALAR )0.0 ) {
-          _bhattacharya+=sqrt( pq/pp ); // sqrt(pp*pq)/pp
+        if ( pq != ( GUM_SCALAR ) 0.0 ) {
+          _bhattacharya += sqrt ( pq / pp ); // sqrt(pp*pq)/pp
           ///check_rate=true;
           this->enableMinEpsilonRate(); // replace check_rate=true;
-          ratio=pq/pp;
-          delta=( GUM_SCALAR ) log2( ratio );
-          _klPQ+=delta;
+          ratio = pq / pp;
+          delta = ( GUM_SCALAR ) log2 ( ratio );
+          _klPQ += delta;
         } else {
           _errorPQ++;
         }
       }
 
-      if( pq!=( GUM_SCALAR )0.0 ) {
-        if( pp!=( GUM_SCALAR )0.0 ) {
+      if ( pq != ( GUM_SCALAR ) 0.0 ) {
+        if ( pp != ( GUM_SCALAR ) 0.0 ) {
           // if we are here, it is certain that delta and ratio have been computed
           // further lines above. (for now #112-113)
-          _klQP+= ( GUM_SCALAR )( -delta*ratio );
+          _klQP += ( GUM_SCALAR ) ( -delta * ratio );
         } else {
           _errorQP++;
         }
       }
 
-      if( this->testMinEpsilonRate() /* replace check_rate */ ) {
+      if ( this->isEnabledMinEpsilonRate() /* replace check_rate */ ) {
         // delta is used as a temporary variable
-        delta=_klPQ/nbrIterations();
-        error=( double )fabs( delta-oldPQ );
-        oldPQ=delta;
+        delta = _klPQ / nbrIterations();
+        error = ( double ) fabs ( delta - oldPQ );
+        oldPQ = delta;
       }
-    } while( continueApproximationScheme( error /*,check_rate*/ ) );
+    } while ( continueApproximationScheme ( error /*,check_rate*/ ) );
 
-    _klPQ=-_klPQ/( nbrIterations() );
-    _klQP=-_klQP/( nbrIterations() );
-    _hellinger=sqrt( _hellinger/nbrIterations() );
-    _bhattacharya=-log( _bhattacharya );
+    _klPQ = -_klPQ / ( nbrIterations() );
+    _klQP = -_klQP / ( nbrIterations() );
+    _hellinger = sqrt ( _hellinger / nbrIterations() );
+    _bhattacharya = -log ( _bhattacharya );
   }
 
 } // namespace gum
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

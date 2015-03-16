@@ -30,6 +30,7 @@
 #endif //GUM_NOINLINE
 #include <cstdio>
 #include <iostream>
+#include "graphElements.h"
 
 
 namespace gum {
@@ -39,13 +40,13 @@ namespace gum {
                          bool nodes_resize_policy,
                          Size edges_size ,
                          bool edges_resize_policy ) :
-      NodeGraphPart ( nodes_size, nodes_resize_policy ),
-      EdgeGraphPart ( edges_size, edges_resize_policy ) {
+    NodeGraphPart ( nodes_size, nodes_resize_policy ),
+    EdgeGraphPart ( edges_size, edges_resize_policy ) {
     GUM_CONSTRUCTOR ( UndiGraph );
   }
 
   UndiGraph::UndiGraph ( const UndiGraph& g ) :
-      NodeGraphPart ( g ), EdgeGraphPart ( g ) {
+    NodeGraphPart ( g ), EdgeGraphPart ( g ) {
     GUM_CONS_CPY ( UndiGraph );
   }
 
@@ -55,21 +56,20 @@ namespace gum {
 
   bool UndiGraph::hasUndirectedCycle() const {
     List< std::pair<NodeId, NodeId> > open_nodes;
-    Property<bool>::onNodes examined_nodes = nodesProperty ( false );
+    NodeProperty<bool> examined_nodes = nodesProperty ( false );
     std::pair<NodeId, NodeId> thePair;
-    NodeId current, from_current, new_node;
+    NodeId current, from_current;
 
-    for ( UndiGraph::NodeIterator iter = beginNodes();
-          iter != endNodes(); ++iter ) {
+    for ( const auto node : nodes() ) {
       // check if the node has already been examined (if this is not the case,
       // this means that we are on a new connected component)
-      if ( ! examined_nodes[*iter] ) {
+      if ( ! examined_nodes[node] ) {
         // indicates that we are examining a new node
-        examined_nodes[*iter] = true;
+        examined_nodes[node] = true;
 
-        // check recursively all the nodes of *iter's connected component
-        thePair.first = *iter;
-        thePair.second = *iter;
+        // check recursively all the nodes of node's connected component
+        thePair.first = node;
+        thePair.second = node;
         open_nodes.insert ( thePair );
 
         while ( ! open_nodes.empty() ) {
@@ -81,14 +81,9 @@ namespace gum {
           from_current = thePair.second;
 
           // check the neighbours
-          const NodeSet& set = neighbours ( current );
-
-          for ( NodeSetIterator iter_neigh = set.begin();
-                iter_neigh != set.end(); ++iter_neigh ) {
-            new_node = *iter_neigh;
+          for ( const auto new_node : neighbours ( current ) )
 
             // avoid to check the node we are coming from
-
             if ( new_node != from_current ) {
               if ( examined_nodes[new_node] )
                 return true;
@@ -99,7 +94,6 @@ namespace gum {
                 open_nodes.insert ( thePair );
               }
             }
-          }
         }
       }
     }
@@ -123,16 +117,15 @@ namespace gum {
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    for ( NodeGraphPartIterator nodeIter = beginNodes(); nodeIter != endNodes(); ++nodeIter ) {
-      nodeStream << tab << *nodeIter << ";";
+    for ( const auto node : nodes() ) {
+      nodeStream << tab << node << ";";
 
-      if ( neighbours ( *nodeIter ).size() > 0 ){
-        const NodeSet& neighbs = neighbours ( *nodeIter );
-        for ( NodeSet::const_iterator edgeIter = neighbs.begin(); edgeIter != neighbs.end(); ++edgeIter )
-          if ( !treatedNodes.exists ( *edgeIter ) ) edgeStream << tab <<  *nodeIter << " -> " <<  *edgeIter << ";" << std::endl;
-      }
+      if ( neighbours ( node ).size() > 0 )
+        for ( const auto nei : neighbours ( node ) )
+          if ( !treatedNodes.exists ( nei ) )
+            edgeStream << tab <<  node << " -> " << nei << ";" << std::endl;
 
-      treatedNodes.insert ( *nodeIter );
+      treatedNodes.insert ( node );
     }
 
     output << nodeStream.str() << std::endl << edgeStream.str() << std::endl << "}" << std::endl;
@@ -144,13 +137,12 @@ namespace gum {
   UndiGraph UndiGraph::partialUndiGraph ( NodeSet nodesSet ) {
     UndiGraph partialGraph;
 
-    for ( NodeSetIterator nodeIter = nodesSet.begin(); nodeIter != nodesSet.end(); ++nodeIter ) {
-      partialGraph.insertNode ( *nodeIter );
-      const NodeSet& nodeNeighbours = neighbours ( *nodeIter );
+    for ( const auto node : nodesSet ) {
+      partialGraph.addNode ( node );
 
-      for ( NodeSet::const_iterator neighboursIter = nodeNeighbours.begin(); neighboursIter != nodeNeighbours.end() ; ++neighboursIter )
-        if ( nodesSet.contains ( *neighboursIter) && partialGraph.existsNode ( *neighboursIter) )
-          partialGraph.insertEdge ( *nodeIter , *neighboursIter);
+      for ( const auto nei : neighbours ( node ) )
+        if ( nodesSet.contains ( nei ) && partialGraph.existsNode ( nei ) )
+          partialGraph.addEdge ( node , nei );
     }
 
     return partialGraph;
@@ -164,5 +156,3 @@ namespace gum {
 
 
 } /* namespace gum */
-
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;

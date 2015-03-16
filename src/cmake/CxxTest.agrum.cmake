@@ -51,12 +51,14 @@ IF(PYTHONINTERP_FOUND)
   IF ( EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/testunits/testList.cmake )
     INCLUDE ( testunits/testList.cmake )
   ELSE ()
+# TODO : should be controlled using options (BUILD_...)
     FILE( GLOB AGRUM_TESTS
-          RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/testunits/ 
+          RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/testunits/
           ${CMAKE_CURRENT_SOURCE_DIR}/testunits/*TestSuite.h )
-  ENDIF ()   
-  add_agrum_test(test  ${AGRUM_TESTS})
-  target_link_libraries(test ${LIBAGRUM})
+  ENDIF ()
+  add_agrum_test(gumTest  ${AGRUM_TESTS})
+  set_target_properties(gumTest PROPERTIES COMPILE_FLAGS "-DGUM_RANDOMSEED=${GUM_RANDOMSEED}")
+  target_link_libraries(gumTest ${LIBAGRUM})
 ELSE(PYTHONINTERP_FOUND)
     message(WARNING "Python not found : you cannot generate tests !")
 ENDIF(PYTHONINTERP_FOUND)

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}@lip6.fr                                                  *
- *   test $Id: $                                                           *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -21,7 +21,7 @@
  * @file
  * @brief Outlined implementation VariableNodeMap
  *
- * @author Lionel Torti
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -69,10 +69,8 @@ namespace gum {
   }
 
   void VariableNodeMap::clear ( void ) {
-    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
-            __nodes2vars.begin(); iter != __nodes2vars.end(); ++iter ) {
+    for ( auto iter = __nodes2vars.begin(); iter != __nodes2vars.end(); ++iter )
       delete iter.second();
-    }
 
     __nodes2vars.clear();
     __names2nodes.clear();
@@ -92,19 +90,16 @@ namespace gum {
 
   /// do the copy
   void VariableNodeMap::__copy ( const VariableNodeMap& source ) {
-    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
-            source.__nodes2vars.begin();
-          iter != source.__nodes2vars.end(); ++iter ) {
-      __nodes2vars.insert ( iter.first(), iter.second()->copyFactory() );
-      // copy factory is used inside insert
-    }
+    for ( auto iter = source.__nodes2vars.begin(); iter != source.__nodes2vars.end(); ++iter )
+      __nodes2vars.insert ( iter.first(), iter.second()->clone() );
+
+    // copy factory is used inside insert
 
     __names2nodes = source.__names2nodes;
   }
 
-  // ============================================================================
+
   /// for friendly displaying the content of clique graphs
-  // ============================================================================
   std::ostream& operator<< ( std::ostream& stream, const VariableNodeMap& v ) {
     stream << v.toString();
     return stream;

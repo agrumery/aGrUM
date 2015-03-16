@@ -33,25 +33,25 @@ namespace gum {
 
   const std::string DiscreteVariable::toString() const {
     std::stringstream s;
-    s<<name()<<"<";
+    s << name() << "<";
 
-    if( domainSize()>0 ) {
-      s<<label( 0 );
+    if ( domainSize() > 0 ) {
+      s << label ( 0 );
 
-      for( Idx i=1; i<domainSize(); ++i ) {
-        s<<",";
-        s<<label( i );
+      for ( Idx i = 1; i < domainSize(); ++i ) {
+        s << ",";
+        s << label ( i );
       }
     }
 
-    s<<">";
+    s << ">";
 
     return s.str();
   }
 
-  // ===============================================================================
+
   /// for friendly displaying the content of the variable
-  // ===============================================================================
+
   std::ostream& operator<< ( std::ostream& s, const DiscreteVariable& DRV ) {
     s << DRV.toString();
     return s;

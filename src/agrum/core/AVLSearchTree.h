@@ -108,25 +108,25 @@ namespace gum {
       // constructors / destructors
       // ############################################################################
       /// @{
-      // ============================================================================
+
       /// basic constructor: a node without parent nor children
-      // ============================================================================
+
       BinTreeNode4AVL ( const Val& v );
 
-      // ============================================================================
+
       /** @brief copy constructor: creates a new disconnected node with the same
        * value and height as "from"
        *
        * @warning Although the new node contains the same value as "from", it has
        * no parent, nor any children, even when "from" has some. */
-      // ============================================================================
+
       BinTreeNode4AVL ( const BinTreeNode4AVL<Val>& from );
 
-      // ============================================================================
+
       /// destructor
       /** in addition to removing the node, this method updates appropriately
        * its parent and children */
-      // ============================================================================
+
       ~BinTreeNode4AVL();
 
       /// @}
@@ -137,15 +137,15 @@ namespace gum {
       // operators
       // ############################################################################
       /// @{
-      // ============================================================================
+
       /** @brief copy operator: copy the value of from into this. However, this
        * does not change the current connections (parents and children) of this. */
-      // ============================================================================
+
       BinTreeNode4AVL<Val>& operator= ( const BinTreeNode4AVL<Val>& from );
 
-      // ============================================================================
+
       /// alias for method value
-      // ============================================================================
+
       Val& operator*();
 
       /// @}
@@ -157,127 +157,127 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// returns the value stored in a node of the binary search tree
-      // ============================================================================
+
       Val& value();
 
-      // ============================================================================
+
       /// returns the given child of a node
       /** @warning if the child does not exists, the method returns a 0 pointer. */
-      // ============================================================================
+
       BinTreeNode4AVL<Val>* child ( BinTreeDir dir ) const;
 
-      // ============================================================================
+
       /// returns the given child of a node
       /** @warning if the child does not exists, the method returns a 0 pointer. */
-      // ============================================================================
+
       BinTreeNode4AVL<Val>* leftChild() const;
 
-      // ============================================================================
+
       /// returns the given child of a node
       /** @warning if the child does not exists, the method returns a 0 pointer. */
-      // ============================================================================
+
       BinTreeNode4AVL<Val>* rightChild() const;
 
-      // ============================================================================
+
       /// returns the parent of a node
       /** @warning if the parent does not exists, the method returns a 0 pointer. */
-      // ============================================================================
+
       BinTreeNode4AVL<Val>* parent() const;
 
-      // ============================================================================
+
       /// returns the direction of the edge parent->current node, if any
-      // ============================================================================
+
       BinTreeDir parentDir() const;
 
-      // ============================================================================
+
       /// adds a new left child to the current node
       /** @warning the new child is created on the C++ heap (i.e., using a
        * dynamic memory allocation)
        * @returns a pointer on the new created child
        * @throw DuplicateElement if the current node had already a left child */
-      // ============================================================================
+
       BinTreeNode4AVL<Val>* insertLeftChild ( const Val& );
 
-      // ============================================================================
+
       /// adds a new left child to the current node
       /** @throw DuplicateElement if the current node had already a left child or
        * if new_child already has a parent */
-      // ============================================================================
+
       void insertLeftChild ( BinTreeNode4AVL<Val>& new_child );
 
-      // ============================================================================
+
       /// adds a new right child to the current node
       /**  @returns a pointer on the new created child
        * @throw DuplicateElement if the current node had already a left child */
-      // ============================================================================
+
       BinTreeNode4AVL<Val>* insertRightChild ( const Val& );
 
-      // ============================================================================
+
       /// adds a new right child to the current node
       /** @throw DuplicateElement if the current node had already a left child or
        * if new_child already has a parent */
-      // ============================================================================
+
       void insertRightChild ( BinTreeNode4AVL<Val>& new_child );
 
-      // ============================================================================
+
       /// adds a new child to the current node
       /**  @returns a pointer on the new created child
        * @throw DuplicateElement if the current node had already a child in the
        * child_dir subtree */
-      // ============================================================================
+
       BinTreeNode4AVL<Val>* insertChild ( const Val&, BinTreeDir child_dir );
 
-      // ============================================================================
+
       /// adds a new child to the current node
       /** @throw DuplicateElement if the current node had already a child in the
        * child_dir direction or if new_child already has a parent */
-      // ============================================================================
+
       void insertChild ( BinTreeNode4AVL<Val>& new_child, BinTreeDir child_dir );
 
-      // ============================================================================
+
       /// remove the link between the current node and its left child
       /** Note that only the link is removed, i.e., the left child is not removed
        * itself nor, a fortiori, the left subtree of the current node. If there
        * is no left child, the method does nothing. In particular, it does not
        * raise any exception. */
-      // ============================================================================
+
       void eraseLeftLink();
 
-      // ============================================================================
+
       /// remove the link between the current node and its right child
       /** Note that only the link is removed, i.e., the right child is not removed
        * itself nor, a fortiori, the right subtree of the current node. If there
        * is no right child, the method does nothing. In particular, it does not
        * raise any exception. */
-      // ============================================================================
+
       void eraseRightLink();
 
-      // ============================================================================
+
       /// remove the link between the current node and one of its children
       /** Note that only the link is removed, i.e., the child is not removed
        * itself nor, a fortiori, its subtree. If the child does not exist, the
        * method does nothing. In particular, it does not raise any exception. */
-      // ============================================================================
+
       void eraseLink ( BinTreeDir tree_dir );
 
-      // ============================================================================
+
       /// returns the leftmost node of the current tree
       /** if there is no left child, the method returns this */
-      // ============================================================================
+
       BinTreeNode4AVL<Val>* leftmostNode() const;
 
-      // ============================================================================
+
       /// returns the rightmost node of the current tree
       /** if there is no right child, the method returns this */
-      // ============================================================================
+
       BinTreeNode4AVL<Val>* rightmostNode() const;
 
-      // ============================================================================
+
       /// returns the top ancestor of the current tree
       /** if the current node has no parent, the method returns this */
-      // ============================================================================
+
       BinTreeNode4AVL<Val>* root() const;
 
       /// @}
@@ -292,21 +292,21 @@ namespace gum {
 
       template <typename V, typename Cmp> friend class AVLSearchTree;
 
-      // ============================================================================
+
       /// right rotation
       /** the rotation is performed assuming that the current node is the root
        * of the tree to be rotated */
-      // ============================================================================
+
       BinTreeNode4AVL<Val>* __rightRotation();
 
-      // ============================================================================
+
       /// left rotation
       /** the rotation is performed assuming that the current node is the root
        * of the tree to be rotated */
-      // ============================================================================
+
       BinTreeNode4AVL<Val>* __leftRotation();
 
-      // ============================================================================
+
       /// balance the whole tree, starting from the current node
       /** the balance is performed the usual way in AVL trees starting from the
        * current node and iterating the balance up to the root of the tree.
@@ -319,7 +319,7 @@ namespace gum {
        * As such, these restrictions hold in binary search trees.
        * @return either the new root of the whole tree if this one may have changed
        * or 0 if we are certain that the new root equals the old root. */
-      // ============================================================================
+
       BinTreeNode4AVL<Val>* __balance();
 
   };
@@ -340,32 +340,32 @@ namespace gum {
 
   template <typename Val, class Cmp = std::less<Val> >
 
-  class AVLSearchTree : public BinSearchTree< Val,Cmp,BinTreeNode4AVL<Val> > {
+  class AVLSearchTree : public BinSearchTree< Val, Cmp, BinTreeNode4AVL<Val> > {
     public:
       typedef BinTreeNode4AVL<Val> Node;
-      typedef BinSearchTreeIterator< Val,Cmp,Node > iterator;
+      typedef BinSearchTreeIterator< Val, Cmp, Node > iterator;
 
 
       // ############################################################################
       /// @name constructors / destructors
       // ############################################################################
       ///@{
-      // ============================================================================
+
       /// basic constructor: returns an empty binary search tree
       /** @param uniqueness_policy allows (false) or disables (true) the possibility
        * for the binary tree to have multiple instances of the same value within
        * the tree. */
-      // ============================================================================
+
       explicit AVLSearchTree ( bool uniqueness_policy = false );
 
-      // ============================================================================
-      /// copy constructor
-      // ============================================================================
-      AVLSearchTree ( const AVLSearchTree<Val,Cmp>& from );
 
-      // ============================================================================
+      /// copy constructor
+
+      AVLSearchTree ( const AVLSearchTree<Val, Cmp>& from );
+
+
       /// destructor
-      // ============================================================================
+
       ~AVLSearchTree();
 
       ///@}
@@ -375,10 +375,10 @@ namespace gum {
       /// @name operators
       // ############################################################################
       ///@{
-      // ============================================================================
+
       /// copy operator
-      // ============================================================================
-      AVLSearchTree<Val,Cmp>& operator= ( const AVLSearchTree<Val,Cmp>& from );
+
+      AVLSearchTree<Val, Cmp>& operator= ( const AVLSearchTree<Val, Cmp>& from );
 
       ///@}
 
@@ -387,10 +387,10 @@ namespace gum {
       /// @name iterators
       // ############################################################################
       ///@{
-      using BinSearchTree<Val,Cmp,Node>::begin;
-      using BinSearchTree<Val,Cmp,Node>::rbegin;
-      using BinSearchTree<Val,Cmp,Node>::end;
-      using BinSearchTree<Val,Cmp,Node>::rend;
+      using BinSearchTree<Val, Cmp, Node>::begin;
+      using BinSearchTree<Val, Cmp, Node>::rbegin;
+      using BinSearchTree<Val, Cmp, Node>::end;
+      using BinSearchTree<Val, Cmp, Node>::rend;
       ///@}
 
 
@@ -399,20 +399,20 @@ namespace gum {
       /// @name Accessors / Modifiers
       // ############################################################################
       /// @{
-      using BinSearchTree<Val,Cmp,Node>::rootValue;
-      using BinSearchTree<Val,Cmp,Node>::minValue;
-      using BinSearchTree<Val,Cmp,Node>::maxValue;
-      using BinSearchTree<Val,Cmp,Node>::contains;
-      using BinSearchTree<Val,Cmp,Node>::clear;
-      using BinSearchTree<Val,Cmp,Node>::size;
-      using BinSearchTree<Val,Cmp,Node>::empty;
-      using BinSearchTree<Val,Cmp,Node>::toString;
-      using BinSearchTree<Val,Cmp,Node>::insert;
-      using BinSearchTree<Val,Cmp,Node>::erase;
+      using BinSearchTree<Val, Cmp, Node>::rootValue;
+      using BinSearchTree<Val, Cmp, Node>::minValue;
+      using BinSearchTree<Val, Cmp, Node>::maxValue;
+      using BinSearchTree<Val, Cmp, Node>::contains;
+      using BinSearchTree<Val, Cmp, Node>::empty;
+      using BinSearchTree<Val, Cmp, Node>::size;
+      using BinSearchTree<Val, Cmp, Node>::clear;
+      using BinSearchTree<Val, Cmp, Node>::toString;
+      using BinSearchTree<Val, Cmp, Node>::insert;
+      using BinSearchTree<Val, Cmp, Node>::erase;
 
-      // ============================================================================
+
       /// check the tree to determine whether it is actually AVL balanced
-      // ============================================================================
+
       bool checkAVLStructure() const;
 
       /// @}
@@ -422,22 +422,22 @@ namespace gum {
       /// @name Fine tuning
       // ############################################################################
       /// @{
-      using BinSearchTree<Val,Cmp,Node>::uniquenessPolicy;
-      using BinSearchTree<Val,Cmp,Node>::setUniquenessPolicy;
+      using BinSearchTree<Val, Cmp, Node>::uniquenessPolicy;
+      using BinSearchTree<Val, Cmp, Node>::setUniquenessPolicy;
       /// @}
 
-      // ============================================================================
+
       /// friendly displays the content of the CliqueGraph
-      // ============================================================================
+
       const std::string toString() const;
 
     protected:
-      // ============================================================================
-      /// erase the node passed in argument
-      // ============================================================================
-      void _erase ( Node *node );
 
-      // ============================================================================
+      /// erase the node passed in argument
+
+      void _erase ( Node* node );
+
+
       /** @brief creates a copy of the value, insert it in the tree and returns
        * the copy value
        *
@@ -448,16 +448,16 @@ namespace gum {
        * is used to speed-up insertions in terminal classes such as AVL trees.
        * @throw DuplicateElement exception is raised if the binary tree already
        * contains the value and the uniqueness property is set to true */
-      // ============================================================================
+
       Node* _insert ( const Val& val );
 
   };
 
 
-// ============================================================================
+
 /// for friendly displaying the content of AVLSearchTree
-// ============================================================================
-  template <typename Val, class Cmp> std::ostream& operator<< ( std::ostream&, const AVLSearchTree<Val,Cmp>& );
+
+  template <typename Val, class Cmp> std::ostream& operator<< ( std::ostream&, const AVLSearchTree<Val, Cmp>& );
 
 } /* namespace gum */
 

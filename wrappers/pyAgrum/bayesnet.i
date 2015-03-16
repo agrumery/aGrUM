@@ -1,16 +1,43 @@
 %ignore gum::BayesNet::addVariable;
 %ignore gum::BayesNet::eraseVariable;
+%ignore gum::BayesNet::insertArc;
+%ignore gum::BayesNet::insertWeightedArc;
+%ignore *::nbrArcs;
+
+%ignore *::beginNodes;
+%ignore *::endNodes;
+%ignore *::beginNodesSafe;
+%ignore *::endNodesSafe;
+%ignore *::beginArcs;
+%ignore *::endArcs;
 
 %pythonappend gum::BayesNet::cpt %{
         val.__fill_distrib__()
 %}
+
+%typemap(out) const gum::Sequence<gum::NodeId>& {
+  PyObject *q=PyList_New(0);
+  for(auto i : *$1) {
+    PyList_Append(q,PyInt_FromLong(i));
+  }
+  $result=q;
+}
+
+%ignore *::nodes;
+
+%include "extensions/BNGenerator.h"
+
+%{
+#include "extensions/BNGenerator.h"
+%}
+
 
 %extend gum::BayesNet {
     PyObject *names() const {
       PyObject* q=PyList_New(0);
 
       const gum::DAG& dag=self->dag();
-      for ( gum::NodeGraphPartIterator node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
+      for ( gum::NodeGraphPartIterator node_iter = dag.nodes().begin();node_iter != dag.nodes().end(); ++node_iter ) {
         PyList_Append(q,PyString_FromString(self->variable(*node_iter).name().c_str()));
       }
       return q;
@@ -20,7 +47,7 @@
       PyObject* q=PyList_New(0);
 
       const gum::DAG& dag=self->dag();
-      for ( gum::NodeGraphPartIterator  node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
+      for ( gum::NodeGraphPartIterator  node_iter = dag.nodes().begin();node_iter != dag.nodes().end(); ++node_iter ) {
         PyList_Append(q,PyInt_FromLong(*node_iter));
       }
 
@@ -31,7 +58,7 @@
       PyObject* q=PyList_New(0);
 
       const gum::DAG& dag=self->dag();
-      for ( gum::ArcGraphPart::ArcIterator  arc_iter = dag.beginArcs();arc_iter != dag.endArcs(); ++arc_iter ) {
+      for ( auto arc_iter = dag.arcs().begin();arc_iter != dag.arcs().end(); ++arc_iter ) {
         PyList_Append(q,Py_BuildValue("(i,i)", arc_iter->tail(), arc_iter->head()));
       }
 
@@ -60,10 +87,12 @@
 
     return q;
   };
-  
+
     bool loadBIF(std::string name, PyObject *l=(PyObject*)0)
     {
+        std::stringstream stream;
         std::vector<PythonLoadListener> py_listener;
+
         try {
             gum::BIFReader<GUM_SCALAR> reader(self,name);
             int l_size=__fillLoadListeners(py_listener,l);
@@ -72,15 +101,16 @@
             }
 
             if (reader.proceed()>0) {
-                reader.showElegantErrorsAndWarnings();
-                reader.showErrorCounts();
-                return false;
+                reader.showElegantErrorsAndWarnings(stream);
+                reader.showErrorCounts(stream);
             } else {
                 return true;
             }
         } catch (gum::IOError& e) {
           throw(e);
         }
+
+        GUM_ERROR(gum::IOError,stream.str());
         return false;
     }
 
@@ -91,7 +121,9 @@
 
     bool loadDSL(std::string name, PyObject *l=(PyObject*)0)
     {
-  std::vector<PythonLoadListener> py_listener;
+      std::vector<PythonLoadListener> py_listener;
+      std::stringstream stream;
+
         try {
             gum::DSLReader<GUM_SCALAR> reader(self,name);
             int l_size=__fillLoadListeners(py_listener,l);
@@ -100,13 +132,15 @@
             }
 
             if (reader.proceed()>0) {
-                reader.showElegantErrorsAndWarnings();
-                reader.showErrorCounts();
+                reader.showElegantErrorsAndWarnings(stream);
+                reader.showErrorCounts(stream);
                 return false;
             } else {
                 return true;
             }
         } catch (gum::IOError& e) {throw (e);}
+
+        GUM_ERROR(gum::IOError,stream.str());
         return false;
     }
 
@@ -118,6 +152,8 @@
     bool loadNET(std::string name, PyObject *l=(PyObject*)0)
     {
         std::vector<PythonLoadListener> py_listener;
+        std::stringstream stream;
+  
         try {
             gum::NetReader<GUM_SCALAR> reader(self,name);
             int l_size=__fillLoadListeners(py_listener,l);
@@ -126,13 +162,15 @@
             }
 
             if (reader.proceed()>0) {
-                reader.showElegantErrorsAndWarnings();
-                reader.showErrorCounts();
+                reader.showElegantErrorsAndWarnings(stream);
+                reader.showErrorCounts(stream);
                 return false;
             } else {
                 return true;
             }
         } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
+
+        GUM_ERROR(gum::IOError,stream.str());
         return false;
     }
 
@@ -168,18 +206,3 @@
     }
 }
 
-%inline %{
-#include <agrum/BN/generator/MCBayesNetGenerator.h>
-
-
-gum::BayesNet<double>& generateBN(gum::Size n_nodes=10,gum::Size n_arcs=15,gum::Size n_modmax=4) {
-    if (n_arcs>n_nodes*(n_nodes+1)/2) GUM_ERROR(gum::OperationNotAllowed,"Too many arcs for a BN");
-
-    gum::BayesNet<double>* bn=new gum::BayesNet<double>();
-    
-    gum::MCBayesNetGenerator<double> gen( n_nodes,n_arcs,n_modmax);
-    gen.generateBN(*bn);
-
-    return *bn;
-}
-%}

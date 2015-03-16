@@ -25,7 +25,7 @@
  * Every classe used to read a BN from a file, must inherit from
  * BNWriter or BNReader.
  *
- * @author Lionel Torti & Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_BN_READER_H
 #define GUM_BN_READER_H
@@ -47,31 +47,32 @@ namespace gum {
    * Every class used to read the content of a Bayesian Network from a stream,
    * or a file must be a subclass of BNReader.
    */
-	template<typename GUM_SCALAR>
+  template<typename GUM_SCALAR>
   class BNReader {
-  public:
-    /**
-     * Constructor
-		 * A reader is defined for reading a defined file. Hence the 2 args of the constructor.
-		 * Note that the BN has to be built outside the reader. There is no delegation to create/destroy
-		 * the BN from inside the reader.
-     */
-    BNReader(BayesNet<GUM_SCALAR>* bn,const std::string& filename );
+    public:
+      /**
+       * Constructor
+       * A reader is defined for reading a defined file. Hence the 2 args of the constructor.
+       * Note that the BN has to be built outside the reader. There is no delegation to create/destroy
+       * the BN from inside the reader.
+       */
+      BNReader ( BayesNet<GUM_SCALAR>* bn, const std::string& filename );
 
-    /**
-     * Default destructor.
-     */
-    virtual ~BNReader();
+      /**
+       * Default destructor.
+       */
+      virtual ~BNReader();
 
-    /**
-     * Reads a Bayesian Network from the file referenced by filePath into`
-     * parameter bayesNet.
-     * @return Returns the number of error during the parsing (0 if none).
-     */
-    virtual int proceed() =0;
+      /**
+       * Reads a Bayesian Network from the file referenced by filePath into`
+       * parameter bayesNet.
+       * @return Returns the number of error during the parsing (0 if none).
+       */
+      virtual int proceed() = 0;
   };
 
-
+  extern template class BNReader<float>;
+  extern template class BNReader<double>;
 } /* namespace gum */
 
 

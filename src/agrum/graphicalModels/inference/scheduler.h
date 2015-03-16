@@ -43,17 +43,17 @@ namespace gum {
       /// @{
 
       /// default constructor
-      Scheduler ();
+      Scheduler();
 
       /// copy constructor
       Scheduler ( const Scheduler<GUM_SCALAR>& );
 
       /// destructor
-      virtual ~Scheduler ();
+      virtual ~Scheduler();
 
       /// virtual constructor
       /** @return a new fresh Scheduler */
-      virtual Scheduler<GUM_SCALAR>* newFactory () const = 0;
+      virtual Scheduler<GUM_SCALAR>* newFactory() const = 0;
 
       /// @}
 
@@ -96,7 +96,7 @@ namespace gum {
        * amount of memory used during the execution of the Schedule and the second
        * one is the amount of memory still used at the end of the execution of
        * the schedule */
-      virtual std::pair<long,long>
+      virtual std::pair<long, long>
       memoryUsage ( const Schedule<GUM_SCALAR>& ) const = 0;
 
       /** @brief returns the memory consumption used during the execution of the
@@ -111,7 +111,7 @@ namespace gum {
        * amount of memory used during the execution of the Schedule and the second
        * one is the amount of memory still used at the end of the execution of
        * k first operations of the schedule */
-      virtual std::pair<long,long>
+      virtual std::pair<long, long>
       memoryUsage ( const Schedule<GUM_SCALAR>&, unsigned int k ) const = 0;
 
       /// @}

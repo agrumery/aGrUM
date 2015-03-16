@@ -23,7 +23,7 @@
  *
  * Writes an bayes net in XML files with BIF format
  *
- * @author Jean-Christophe Magnan & Pierre-Henri Wuillemin
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_BIF_XML_BN_WRITER_H
@@ -52,7 +52,6 @@ namespace gum {
    *
    */
   template<typename GUM_SCALAR>
-
   class BIFXMLBNWriter: public BNWriter<GUM_SCALAR> {
     public:
       // ==========================================================================
@@ -72,32 +71,32 @@ namespace gum {
 
       /// @}
 
-    /**
-     * Writes an bayes net in the given ouput stream.
-     *
-     * @param output The output stream.
-     * @param infdiag The bayes net writen in the stream.
-     * @throws IOError Raised if an I/O error occurs.
-     */
-    virtual void write( std::ostream &output, const BayesNet<GUM_SCALAR>& infdiag );
+      /**
+       * Writes an bayes net in the given ouput stream.
+       *
+       * @param output The output stream.
+       * @param infdiag The bayes net writen in the stream.
+       * @throws IOError Raised if an I/O error occurs.
+       */
+      virtual void write ( std::ostream& output, const IBayesNet<GUM_SCALAR>& infdiag );
 
-    /**
-     * Writes an bayes net in the file referenced by filePath.
-     * If the file doesn't exists, it is created.
-     * If the file exists, it's content will be erased.
-     *
-     * @param filePath The path to the file used to write the bayes net.
-     * @param infdiag The bayes net writen in the file.
-     * @throw IOError Raised if an I/O error occurs.
-     */
-    virtual void write( std::string filePath, const BayesNet<GUM_SCALAR>& infdiag );
-    
+      /**
+       * Writes an bayes net in the file referenced by filePath.
+       * If the file doesn't exists, it is created.
+       * If the file exists, it's content will be erased.
+       *
+       * @param filePath The path to the file used to write the bayes net.
+       * @param infdiag The bayes net writen in the file.
+       * @throw IOError Raised if an I/O error occurs.
+       */
+      virtual void write ( std::string filePath, const IBayesNet<GUM_SCALAR>& infdiag );
+
     private:
       /**
        * Returns the header of the BIF file.
        */
-      std::string __heading();
-      
+      std::string __heading(const IBayesNet<GUM_SCALAR>& bn);
+
       /**
        * Returns the end of the BIF file.
        */
@@ -106,15 +105,16 @@ namespace gum {
       /**
        * Returns a bloc defining a variable in the BIF format.
        */
-      std::string __variableBloc( const DiscreteVariable& var );
+      std::string __variableBloc ( const DiscreteVariable& var );
 
       /**
        * Returns a bloc defining a variable's table (if she has) in the BIF format.
        */
-      std::string __variableDefinition( const NodeId& varNodeId, const BayesNet<GUM_SCALAR>& infdiag  );
-      
-      
+      std::string __variableDefinition ( const NodeId& varNodeId, const IBayesNet<GUM_SCALAR>& infdiag );
   };
+
+  extern template class BIFXMLBNWriter<float>;
+  extern template class BIFXMLBNWriter<double>;
 } /* namespace gum */
 
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.tcc>

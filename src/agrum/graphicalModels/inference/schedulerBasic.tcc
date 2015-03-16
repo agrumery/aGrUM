@@ -36,18 +36,18 @@ namespace gum {
   /// default constructor
   template<typename GUM_SCALAR>
   SchedulerBasic<GUM_SCALAR>::SchedulerBasic() :
-      Scheduler<GUM_SCALAR> () {
+    Scheduler<GUM_SCALAR> () {
     // for debugging purposes
-    GUM_CONSTRUCTOR( SchedulerBasic );
+    GUM_CONSTRUCTOR ( SchedulerBasic );
   }
 
 
   /// copy constructor
   template<typename GUM_SCALAR>
-  SchedulerBasic<GUM_SCALAR>::SchedulerBasic( const SchedulerBasic<GUM_SCALAR>& from ) :
-      Scheduler<GUM_SCALAR> ( from ) {
+  SchedulerBasic<GUM_SCALAR>::SchedulerBasic ( const SchedulerBasic<GUM_SCALAR>& from ) :
+    Scheduler<GUM_SCALAR> ( from ) {
     // for debugging purposes
-    GUM_CONS_CPY( SchedulerBasic );
+    GUM_CONS_CPY ( SchedulerBasic );
   }
 
 
@@ -55,7 +55,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   SchedulerBasic<GUM_SCALAR>::~SchedulerBasic() {
     // for debugging purposes
-    GUM_DESTRUCTOR( SchedulerBasic );
+    GUM_DESTRUCTOR ( SchedulerBasic );
   }
 
 
@@ -68,12 +68,13 @@ namespace gum {
 
   /// execute all the operations of a given schedule
   template<typename GUM_SCALAR>
-  bool SchedulerBasic<GUM_SCALAR>::execute( Schedule<GUM_SCALAR>& schedule ) {
+  bool SchedulerBasic<GUM_SCALAR>::execute ( Schedule<GUM_SCALAR>& schedule ) {
     const NodeSet& available = schedule.availableOperations();
+
     while ( ! available.empty() ) {
-      for ( typename NodeSet::const_iterator iter = available.begin();
-            iter != available.end(); ++iter ) {
-        schedule.execute( *iter );
+      for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();
+            iter != available.endSafe(); ++iter ) {
+        schedule.execute ( *iter );
       }
     }
 
@@ -83,13 +84,14 @@ namespace gum {
 
   /// execute only k operations of a given schedule (default k = 1)
   template<typename GUM_SCALAR>
-  bool SchedulerBasic<GUM_SCALAR>::execute( Schedule<GUM_SCALAR>& schedule,
-                                        unsigned int k ) {
+  bool SchedulerBasic<GUM_SCALAR>::execute ( Schedule<GUM_SCALAR>& schedule,
+      unsigned int k ) {
     const NodeSet& available = schedule.availableOperations();
+
     while ( ! available.empty() && k ) {
-      for ( typename NodeSet::const_iterator iter = available.begin();
-            iter != available.end() && k; ++iter, --k ) {
-        schedule.execute( *iter );
+      for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();
+            iter != available.endSafe() && k; ++iter, --k ) {
+        schedule.execute ( *iter );
       }
     }
 
@@ -101,25 +103,27 @@ namespace gum {
    * to perform a given schedule */
   template<typename GUM_SCALAR>
   float
-  SchedulerBasic<GUM_SCALAR>::nbOperations( const Schedule<GUM_SCALAR>& schedule ) const {
+  SchedulerBasic<GUM_SCALAR>::nbOperations ( const Schedule<GUM_SCALAR>& schedule ) const {
     NodeSet available = schedule.availableOperations();
     DAG dag = schedule.dag();
     float nb_operations = 0;
 
     while ( ! available.empty() ) {
-      for ( typename NodeSet::const_iterator iter = available.begin();
-            iter != available.end(); ++iter ) {
+      for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();
+            iter != available.endSafe(); ++iter ) {
         NodeId id = *iter;
-        nb_operations += schedule.nbOperations( id );
-        const NodeSet& children = dag.children( id );
-        for ( typename NodeSet::const_iterator iter_children = children.begin();
-              iter_children != children.end(); ++iter_children ) {
-          if ( dag.parents( *iter_children ).size() == 1 ) {
-            available.insert( *iter_children );
+        nb_operations += schedule.nbOperations ( id );
+        const NodeSet& children = dag.children ( id );
+
+        for ( typename NodeSet::const_iterator_safe iter_children = children.beginSafe();
+              iter_children != children.endSafe(); ++iter_children ) {
+          if ( dag.parents ( *iter_children ).size() == 1 ) {
+            available.insert ( *iter_children );
           }
         }
-        dag.eraseNode( id );
-        available.erase( iter );
+
+        dag.eraseNode ( id );
+        available.erase ( iter );
       }
     }
 
@@ -137,19 +141,21 @@ namespace gum {
     float nb_operations = 0;
 
     while ( ! available.empty() && k ) {
-      for ( typename NodeSet::const_iterator iter = available.begin();
-            iter != available.end() && k; ++iter, --k ) {
+      for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();
+            iter != available.endSafe() && k; ++iter, --k ) {
         NodeId id = *iter;
-        nb_operations += schedule.nbOperations( id );
-        const NodeSet& children = dag.children( id );
-        for ( typename NodeSet::const_iterator iter_children = children.begin();
-              iter_children != children.end(); ++iter_children ) {
-          if ( dag.parents( *iter_children ).size() == 1 ) {
-            available.insert( *iter_children );
+        nb_operations += schedule.nbOperations ( id );
+        const NodeSet& children = dag.children ( id );
+
+        for ( typename NodeSet::const_iterator_safe iter_children = children.beginSafe();
+              iter_children != children.endSafe(); ++iter_children ) {
+          if ( dag.parents ( *iter_children ).size() == 1 ) {
+            available.insert ( *iter_children );
           }
         }
-        dag.eraseNode( id );
-        available.erase( iter );
+
+        dag.eraseNode ( id );
+        available.erase ( iter );
       }
     }
 
@@ -159,49 +165,54 @@ namespace gum {
 
   /// returns the memory consumption used during the execution of a schedule
   template<typename GUM_SCALAR>
-  std::pair<long,long>
-  SchedulerBasic<GUM_SCALAR>::memoryUsage( const Schedule<GUM_SCALAR>& schedule ) const {
+  std::pair<long, long>
+  SchedulerBasic<GUM_SCALAR>::memoryUsage ( const Schedule<GUM_SCALAR>& schedule ) const {
     NodeSet available = schedule.availableOperations();
     DAG dag = schedule.dag();
     long max_memory = 0;
     long current_memory = 0;
 
     while ( ! available.empty() ) {
-      for ( typename NodeSet::const_iterator iter = available.begin();
-            iter != available.end(); ++iter ) {
+      for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();
+            iter != available.endSafe(); ++iter ) {
         NodeId id = *iter;
 
-        std::pair<long,long> mem_op = schedule.memoryUsage( id );
-        if (( std::numeric_limits<long>::max() -
-              current_memory < mem_op.first ) ||
-            ( std::numeric_limits<long>::max() -
-              current_memory < mem_op.second ) ) {
-          GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
+        std::pair<long, long> mem_op = schedule.memoryUsage ( id );
+
+        if ( ( std::numeric_limits<long>::max() -
+               current_memory < mem_op.first ) ||
+             ( std::numeric_limits<long>::max() -
+               current_memory < mem_op.second ) ) {
+          GUM_ERROR ( OutOfBounds, "memory usage out of long int range" );
         }
+
         if ( current_memory + mem_op.first > max_memory )
           max_memory = current_memory + mem_op.first;
+
         current_memory += mem_op.second;
 
-        const NodeSet& children = dag.children( id );
-        for ( typename NodeSet::const_iterator iter_children = children.begin();
-              iter_children != children.end(); ++iter_children ) {
-          if ( dag.parents( *iter_children ).size() == 1 ) {
-            available.insert( *iter_children );
+        const NodeSet& children = dag.children ( id );
+
+        for ( typename NodeSet::const_iterator_safe iter_children = children.beginSafe();
+              iter_children != children.endSafe(); ++iter_children ) {
+          if ( dag.parents ( *iter_children ).size() == 1 ) {
+            available.insert ( *iter_children );
           }
         }
-        dag.eraseNode( id );
-        available.erase( iter );
+
+        dag.eraseNode ( id );
+        available.erase ( iter );
       }
     }
 
-    return std::pair<long,long> ( max_memory,current_memory );
+    return std::pair<long, long> ( max_memory, current_memory );
   }
 
 
   /** @brief returns the memory consumption used during the execution of the
    * k first ScheduleOperations of a given schedule */
   template<typename GUM_SCALAR>
-  std::pair<long,long> SchedulerBasic<GUM_SCALAR>::memoryUsage
+  std::pair<long, long> SchedulerBasic<GUM_SCALAR>::memoryUsage
   ( const Schedule<GUM_SCALAR>& schedule, unsigned int k ) const {
     NodeSet available = schedule.availableOperations();
     DAG dag = schedule.dag();
@@ -209,34 +220,39 @@ namespace gum {
     long current_memory = 0;
 
     while ( ! available.empty() && k ) {
-      for ( typename NodeSet::const_iterator iter = available.begin();
-            iter != available.end() && k ; ++iter, --k ) {
+      for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();
+            iter != available.endSafe() && k ; ++iter, --k ) {
         NodeId id = *iter;
 
-        std::pair<long,long> mem_op = schedule.memoryUsage( id );
-        if (( std::numeric_limits<long>::max() -
-              current_memory < mem_op.first ) ||
-            ( std::numeric_limits<long>::max() -
-              current_memory < mem_op.second ) ) {
-          GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
+        std::pair<long, long> mem_op = schedule.memoryUsage ( id );
+
+        if ( ( std::numeric_limits<long>::max() -
+               current_memory < mem_op.first ) ||
+             ( std::numeric_limits<long>::max() -
+               current_memory < mem_op.second ) ) {
+          GUM_ERROR ( OutOfBounds, "memory usage out of long int range" );
         }
+
         if ( current_memory + mem_op.first > max_memory )
           max_memory = current_memory + mem_op.first;
+
         current_memory += mem_op.second;
 
-        const NodeSet& children = dag.children( id );
-        for ( typename NodeSet::const_iterator iter_children = children.begin();
-              iter_children != children.end(); ++iter_children ) {
-          if ( dag.parents( *iter_children ).size() == 1 ) {
-            available.insert( *iter_children );
+        const NodeSet& children = dag.children ( id );
+
+        for ( typename NodeSet::const_iterator_safe iter_children = children.beginSafe();
+              iter_children != children.endSafe(); ++iter_children ) {
+          if ( dag.parents ( *iter_children ).size() == 1 ) {
+            available.insert ( *iter_children );
           }
         }
-        dag.eraseNode( id );
-        available.erase( iter );
+
+        dag.eraseNode ( id );
+        available.erase ( iter );
       }
     }
 
-    return std::pair<long,long> ( max_memory,current_memory );
+    return std::pair<long, long> ( max_memory, current_memory );
   }
 
 

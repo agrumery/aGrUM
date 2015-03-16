@@ -53,10 +53,10 @@ namespace gum {
       /** @warning the table is stored by copy into the ScheduleDeleteMultiDim.
        * This is actually compulsory for the appropriate use of
        * ScheduleCombination classes */
-      ScheduleDeleteMultiDim( const ScheduleMultiDim<GUM_SCALAR>& table );
+      ScheduleDeleteMultiDim ( const ScheduleMultiDim<GUM_SCALAR>& table );
 
       /// copy constructor
-      ScheduleDeleteMultiDim( const ScheduleDeleteMultiDim<GUM_SCALAR>& );
+      ScheduleDeleteMultiDim ( const ScheduleDeleteMultiDim<GUM_SCALAR>& );
 
       /// virtual copy constructor: creates a clone of the operation
       virtual ScheduleDeleteMultiDim<GUM_SCALAR>* newFactory() const;
@@ -109,7 +109,7 @@ namespace gum {
        * amount of memory used during the operation and the second one is the
        * amount of memory still used at the end of the function ( the memory used by
        * the resulting table ) */
-      std::pair<long,long> memoryUsage() const;
+      std::pair<long, long> memoryUsage() const;
 
       /// returns the set of multidims passed in argument to the operation
       const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimArgs() const;

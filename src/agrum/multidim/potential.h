@@ -59,32 +59,27 @@ namespace gum {
       /// @name Constructors / Destructors
       // ############################################################################
       /// @{
-      // ============================================================================
+
       /**
        * Default constructor: creates an empty null dimensional matrix
        * choose a MultiDimArray<> as decorated implementation.
        */
-      // ============================================================================
       Potential( );
 
-      // ============================================================================
+
       /**
-       * Creates an empty null dimensional matrix.
+       * Creates an potential around aContent.
        * @param aContent decorated implementation
        */
-      // ============================================================================
-      explicit Potential( MultiDimImplementation<GUM_SCALAR> *aContent );
+      explicit Potential ( MultiDimImplementation<GUM_SCALAR>* aContent );
 
-      // ============================================================================
+
       /**
        * Copy constructor.
-       * This copy should create a new decorator for the same content ...
-       * Too dangerous.
        */
-      // ============================================================================
-      explicit Potential( const Potential<GUM_SCALAR>& src );
+      explicit Potential ( const Potential<GUM_SCALAR>& src );
 
-      // ============================================================================
+
       /**
        * Copy constructor.
        *
@@ -93,18 +88,16 @@ namespace gum {
        * @param aContent decorated implementation
        * @param src the multidimensional matrix we copy into this
        */
-      // ============================================================================
-      explicit Potential( MultiDimImplementation<GUM_SCALAR> *aContent,
-                          const MultiDimContainer<GUM_SCALAR>& src );
+      explicit Potential ( MultiDimImplementation<GUM_SCALAR>* aContent,
+                           const MultiDimContainer<GUM_SCALAR>& src );
 
-      // ============================================================================
+
       /**
        * Destructor.
        *
        * Note that, when the multidimensional array is removed from memory, its
        * variables are not removed as well.
        */
-      // ============================================================================
       ~Potential();
 
       /// @}
@@ -134,14 +127,14 @@ namespace gum {
 
       /// marginalizing p over the vars on *this.
       /// @throw OperationNotAllowed if there is var in *this not in p.
-      Potential<GUM_SCALAR>& marginalize( const Potential<GUM_SCALAR>& p ) const;
+      Potential<GUM_SCALAR>& marginalize ( const Potential<GUM_SCALAR>& p ) const;
 
       /// Multiplication of args.
       /// @throw OperationNotAllowed if *this is not empty
-      void multiplicate( const Potential<GUM_SCALAR>& p1, const Potential<GUM_SCALAR>& p2 ) ;
+      void multiplicate ( const Potential<GUM_SCALAR>& p1, const Potential<GUM_SCALAR>& p2 ) ;
 
       /// Multiplication of this and arg (in this).
-      Potential<GUM_SCALAR>& multiplicateBy( const Potential<GUM_SCALAR>& p1 ) ;
+      Potential<GUM_SCALAR>& multiplicateBy ( const Potential<GUM_SCALAR>& p1 ) ;
 
       ///@}
 
@@ -150,18 +143,24 @@ namespace gum {
       /// sum of all elements in this
       const GUM_SCALAR sum() const ;
 
+      /**
+       * string representation of this.
+       */
+      virtual const std::string toString( ) const ;
     protected:
       /// perform the marginalization p over the vars on *this.
-      void _marginalize( const Potential& p,const Set<const DiscreteVariable *>& del_vars ) const;
+      void _marginalize ( const Potential& p, const Set<const DiscreteVariable*>& del_vars ) const;
 
       /// perform the multiplication of args.
-      void _multiplicate( const Potential& p1, const Potential& p2 ) ;
+      void _multiplicate ( const Potential& p1, const Potential& p2 ) ;
 
 
-      virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+      virtual void _swap ( const DiscreteVariable* x, const DiscreteVariable* y );
   };
 
 
+  extern template class Potential<float>;
+  extern template class Potential<double>;
 } /* namespace gum */
 
 
@@ -170,4 +169,4 @@ namespace gum {
 
 #endif /* GUM_POTENTIAL_H */
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

@@ -21,7 +21,7 @@
 /**
  * @file
  * @brief wrapper for OMP
- * @author Matthieu HOURBRACQ
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
 
 #ifndef __OMPTHREADS__H__
@@ -37,7 +37,7 @@ namespace gum {
    * Is OMP active ?
    * @return \c True if OMP has been set at compilation, \c False otherwise.
    */
-  inline bool isOMP () {
+  inline bool isOMP() {
 #ifdef _OPENMP
     return true;
 #else
@@ -66,9 +66,9 @@ namespace gum {
    *
    * @return The maximum number of threads at any time.
    */
-  inline unsigned int getMaxNumberOfThreads () {
+  inline unsigned int getMaxNumberOfThreads() {
 #ifdef _OPENMP
-    return omp_get_max_threads ();
+    return omp_get_max_threads();
 #else
     return 1;
 #endif
@@ -80,9 +80,9 @@ namespace gum {
    * Call this from a parallel region.
    * @return The calling thread id.
    */
-  inline unsigned int getThreadNumber () {
+  inline unsigned int getThreadNumber() {
 #ifdef _OPENMP
-    return omp_get_thread_num ();
+    return omp_get_thread_num();
 #else
     return 0;
 #endif
@@ -94,9 +94,9 @@ namespace gum {
    * Call this from a parallel region.
    * @return The current number of running threads.
    */
-  inline unsigned int getNumberOfRunningThreads () {
+  inline unsigned int getNumberOfRunningThreads() {
 #ifdef _OPENMP
-    return omp_get_num_threads ();
+    return omp_get_num_threads();
 #else
     return 1;
 #endif
@@ -106,9 +106,9 @@ namespace gum {
    * Get the number of logical processors.
    * @return The number of logical processors.
    */
-  inline unsigned int getNumberOfLogicalProcessors () {
+  inline unsigned int getNumberOfLogicalProcessors() {
 #ifdef _OPENMP
-    return omp_get_num_procs ();
+    return omp_get_num_procs();
 #else
     return 1;
 #endif
@@ -130,9 +130,9 @@ namespace gum {
    * Get nested parallelism status.
    * @return \c True if nested parallelism is enabled, \c False otherwise.
    */
-  inline bool getNestedParallelism () {
+  inline bool getNestedParallelism() {
 #ifdef _OPENMP
-    return ( ( omp_get_nested () == 0 ) ? false : true );
+    return ( ( omp_get_nested() == 0 ) ? false : true );
 #else
     return false;
 #endif
@@ -155,9 +155,9 @@ namespace gum {
    * Get the dynamic thread number adjustment status.
    * @return \c True if dynamic adjustment is enabled, \c False otherwise.
    */
-  inline bool getDynamicThreadsNumber () {
+  inline bool getDynamicThreadsNumber() {
 #ifdef _OPENMP
-    return ( ( omp_get_dynamic () == 0 ) ? false : true );
+    return ( ( omp_get_dynamic() == 0 ) ? false : true );
 #else
     return false;
 #endif

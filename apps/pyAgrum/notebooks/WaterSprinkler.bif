@@ -1,0 +1,39 @@
+
+network WaterSprinkler{
+   property software aGrUM;
+}
+
+variable c {
+   type discrete[2] {0, 1};
+}
+
+variable s {
+   type discrete[2] {0, 1};
+}
+
+variable r {
+   type discrete[2] {0, 1};
+}
+
+variable w {
+   type discrete[2] {0, 1};
+}
+
+probability (c) {
+   default 0.5 0.5;
+}
+probability (s | c) {
+   (0) 0.5 0.5;
+   (1) 0.9 0.1;
+}
+probability (r | c) {
+   (0) 0.8 0.2;
+   (1) 0.2 0.8;
+}
+probability (w | s, r) {
+   (0, 0) 1 0;
+   (1, 0) 0.1 0.9;
+   (0, 1) 0.1 0.9;
+   (1, 1) 0.01 0.99;
+}
+

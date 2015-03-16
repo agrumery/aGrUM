@@ -72,11 +72,11 @@ namespace gum {
 
     std::ostringstream s;
 
-    s << filename << ":" << line << ": "<< ( is_error ? "error" : "warning" ) <<"\n";
+    s << filename << ":" << line << ": " << ( is_error ? "error" : "warning" ) << "\n";
     s << code << "\n";
 
     if ( colomn > 0 )
-      s << std::string ( colomn - 1,' ' ) << "^";
+      s << std::string ( colomn - 1, ' ' ) << "^";
 
     s << msg << "\n";
 
@@ -108,7 +108,7 @@ namespace gum {
     warning_count = 0;
   }
 
-  ErrorsContainer::ErrorsContainer ( const ErrorsContainer & cont ) {
+  ErrorsContainer::ErrorsContainer ( const ErrorsContainer& cont ) {
 
     error_count = cont.error_count;
     warning_count = cont.warning_count;
@@ -116,7 +116,7 @@ namespace gum {
     errors = cont.errors;
   }
 
-  ErrorsContainer ErrorsContainer::operator+ ( const ErrorsContainer & cont ) const {
+  ErrorsContainer ErrorsContainer::operator+ ( const ErrorsContainer& cont ) const {
     ErrorsContainer newCont;
 
     newCont.error_count = this->error_count + cont.error_count;
@@ -127,7 +127,7 @@ namespace gum {
     return newCont;
   }
 
-  ErrorsContainer ErrorsContainer::operator= ( const ErrorsContainer & cont ) {
+  ErrorsContainer ErrorsContainer::operator= ( const ErrorsContainer& cont ) {
     error_count = cont.error_count;
     warning_count = cont.warning_count;
     errors.clear();
@@ -136,7 +136,7 @@ namespace gum {
     return *this;
   }
 
-  ErrorsContainer ErrorsContainer::operator+= ( const ErrorsContainer & cont ) {
+  ErrorsContainer ErrorsContainer::operator+= ( const ErrorsContainer& cont ) {
     error_count += cont.error_count;
     warning_count += cont.warning_count;
 
@@ -146,45 +146,45 @@ namespace gum {
     return *this;
   }
 
-  void ErrorsContainer::showErrors() const {
+  void ErrorsContainer::simpleErrors ( std::ostream& o ) const {
     if ( count() == 0 )
       return;
 
     for ( int i = 0 ; i < count() ; i++ ) {
       if ( error ( i ).is_error )
-        std::cerr << error ( i ).toString() << std::endl;
+        o << error ( i ).toString() << std::endl;
     }
   }
 
 
-  void ErrorsContainer::showErrorsAndWarnings() const {
+  void ErrorsContainer::simpleErrorsAndWarnings ( std::ostream& o ) const {
     if ( count() == 0 )
       return;
 
     for ( int i = 0 ; i < count() ; i++ )
-      std::cerr << error ( i ).toString() << std::endl;
+      o << error ( i ).toString() << std::endl;
   }
 
 
-  void ErrorsContainer::showElegantErrors() const {
+  void ErrorsContainer::elegantErrors ( std::ostream& o ) const {
     if ( count() == 0 )
       return;
 
     for ( int i = 0 ; i < count() ; i++ ) {
       if ( error ( i ).is_error ) {
-        std::cerr << error ( i ).toElegantString();
-        std::cerr << std::endl;
+        o << error ( i ).toElegantString();
+        o << std::endl;
       }
     }
   }
 
-  void ErrorsContainer::showElegantErrorsAndWarnings() const {
+  void ErrorsContainer::elegantErrorsAndWarnings ( std::ostream& o ) const {
     if ( count() == 0 )
       return;
 
     for ( int i = 0 ; i < count() ; i++ ) {
-      std::cerr << error ( i ).toElegantString();
-      std::cerr << std::endl;
+      o << error ( i ).toElegantString();
+      o << std::endl;
     }
   }
 

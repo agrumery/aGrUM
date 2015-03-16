@@ -40,7 +40,7 @@ namespace gum {
     try {
       __scanner = new DSL::Scanner ( __streamName.c_str() );
       __parser = new DSL::Parser ( __scanner );
-      __parser->setFactory ( ( AbstractBayesNetFactory* ) __factory );
+      __parser->setFactory ( ( IBayesNetFactory* ) __factory );
     } catch ( IOError e ) {
       __ioerror = true;
     }
@@ -94,7 +94,7 @@ namespace gum {
 
   template<typename GUM_SCALAR>
   int DSLReader<GUM_SCALAR>::proceed ( void ) {
-    FILE* tmpfile();
+    //FILE* tmpfile();
 
     if ( __ioerror ) {
       GUM_ERROR ( gum::IOError, "No such file " + streamName() );
@@ -103,7 +103,7 @@ namespace gum {
     if ( !__parseDone ) {
       try {
         __parser->Parse();
-      } catch ( gum::Exception &e ) {
+      } catch ( gum::Exception& e ) {
         GUM_SHOWERROR ( e );
         return 1 + __parser->errors().error_count;
       }
@@ -111,7 +111,7 @@ namespace gum {
       __parseDone = true;
     }
 
-    return ( __parser->errors().error_count);
+    return ( __parser->errors().error_count );
   }
 
 
@@ -154,8 +154,8 @@ namespace gum {
 
 
   template<typename GUM_SCALAR> INLINE
-  void DSLReader<GUM_SCALAR>::showElegantErrors() {
-    if ( __parseDone ) __parser->errors().showElegantErrors();
+  void DSLReader<GUM_SCALAR>::showElegantErrors ( std::ostream& o ) {
+    if ( __parseDone ) __parser->errors().elegantErrors ( o );
     else {
       GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
     }
@@ -163,16 +163,16 @@ namespace gum {
 
 
   template<typename GUM_SCALAR> INLINE
-  void DSLReader<GUM_SCALAR>::showElegantErrorsAndWarnings() {
-    if ( __parseDone ) __parser->errors().showElegantErrorsAndWarnings();
+  void DSLReader<GUM_SCALAR>::showElegantErrorsAndWarnings ( std::ostream& o ) {
+    if ( __parseDone ) __parser->errors().elegantErrorsAndWarnings ( o );
     else {
       GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
     }
   }
-  
+
   template<typename GUM_SCALAR> INLINE
-  void DSLReader<GUM_SCALAR>::showErrorsAndWarnings() {
-    if ( __parseDone ) __parser->errors().showErrorsAndWarnings();
+  void DSLReader<GUM_SCALAR>::showErrorsAndWarnings ( std::ostream& o ) {
+    if ( __parseDone ) __parser->errors().simpleErrorsAndWarnings ( o );
     else {
       GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
     }
@@ -180,8 +180,8 @@ namespace gum {
 
 
   template<typename GUM_SCALAR> INLINE
-  void DSLReader<GUM_SCALAR>::showErrorCounts() {
-    if ( __parseDone ) __parser->errors().showSyntheticResults();
+  void DSLReader<GUM_SCALAR>::showErrorCounts ( std::ostream& o ) {
+    if ( __parseDone ) __parser->errors().syntheticResults ( o );
     else {
       GUM_ERROR ( OperationNotAllowed, "DSL file not parsed yet" );
     }
@@ -204,4 +204,4 @@ namespace gum {
 
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

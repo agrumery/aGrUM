@@ -21,8 +21,12 @@
  * @file
  * @brief KL divergence between BNs with GIBBS implementation
  *
- * @author Pierre-Henri Wuillemin
+ * @author Pierre-Henri WUILLEMIN
  */
 
-#include <math.h>
+#include <cmath>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
+
+
+template class gum::GibbsKL<float>;
+template class gum::GibbsKL<double>;

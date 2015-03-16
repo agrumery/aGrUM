@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
- *   test $Id: $                                                           *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -31,36 +31,35 @@
 namespace gum {
 
   template <typename VAL> INLINE
-  typename Property<VAL>::onNodes
-  NodeGraphPart::nodesProperty( VAL( *f )( const NodeId& ), Size size ) const {
-    return nodes().hashMap( f, size );
+  NodeProperty<VAL>
+  NodeGraphPart::nodesProperty ( VAL ( *f ) ( const NodeId& ), Size size ) const {
+    return asNodeSet().hashMap ( f, size );
   }
 
   template <typename VAL> INLINE
-  typename Property<VAL>::onNodes
-  NodeGraphPart::nodesProperty( const VAL& val, Size size ) const {
-    return nodes().hashMap( val, size );
+  NodeProperty<VAL>
+  NodeGraphPart::nodesProperty ( const VAL& val, Size size ) const {
+    return asNodeSet().hashMap ( val, size );
   }
 
   template <typename VAL> INLINE
-  List<VAL> NodeGraphPart::listMapNodes( VAL( *f )( const NodeId& ) ) const {
-    return nodes().listMap( f );
+  List<VAL> NodeGraphPart::listMapNodes ( VAL ( *f ) ( const NodeId& ) ) const {
+    return asNodeSet().listMap ( f );
   }
 
   template<typename T> void
   NodeGraphPart::populateNodesFromProperty
-  ( const typename Property<T>::onNodes& h ) {
+  ( const NodeProperty<T>& h ) {
     clear();
 
-    for ( typename Property<T>::onNodes::const_iterator iter = h.begin();
-          iter != h.end(); ++iter ) {
+    for ( const auto iter = h.begin(); iter != h.end(); ++iter ) {
       NodeId new_one = iter.key();
 
-      if ( existsNode( new_one ) ) {
-        GUM_ERROR( DuplicateElement, new_one<<" already exists in the graph" );
+      if ( existsNode ( new_one ) ) {
+        GUM_ERROR ( DuplicateElement, new_one << " already exists in the graph" );
       }
 
-      insertNode( new_one );
+      addNode ( new_one );
     }
   }
 
@@ -69,4 +68,4 @@ namespace gum {
 
 
 #endif    // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

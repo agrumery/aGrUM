@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
- *   test $Id: $                                                           *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -32,42 +32,44 @@
 
 namespace gum {
 
-  // creates (if needed) and returns the iterator __BijectionIterEnd
-  const BijectionIterator<int,int>* BijectionIteratorStaticEnd::end4Statics () {
+  
+  // creates (if needed) and returns the safe iterator __BijectionIterEndSafe
+  const BijectionIteratorSafe<int,int>*
+  BijectionIteratorStaticEnd::endSafe4Statics() {
     static bool first_time = true;
+
+    if ( first_time ) {
+      first_time = false;
+      __BijectionIterEndSafe = new BijectionIteratorSafe<int,int>;
+    }
+
+    return __BijectionIterEndSafe;
+  }
+
+  // creates (if needed) and returns the unsafe iterator __BijectionIterEnd
+  const BijectionIterator<int,int>*
+  BijectionIteratorStaticEnd::end4Statics() {
+    static bool first_time = true;
+
     if ( first_time ) {
       first_time = false;
       __BijectionIterEnd = new BijectionIterator<int,int>;
     }
 
-    return __BijectionIterEnd; 
+    return __BijectionIterEnd;
   }
+
+
+  // create the end iterator for all Bijections
+  const BijectionIteratorSafe<int,int>*
+  BijectionIteratorStaticEnd::__BijectionIterEndSafe =
+    BijectionIteratorStaticEnd::endSafe4Statics();
 
 
   // create the end iterator for all Bijections
   const BijectionIterator<int,int>*
   BijectionIteratorStaticEnd::__BijectionIterEnd =
-    BijectionIteratorStaticEnd::end4Statics ();
-  
-
-  
-  // creates (if needed) and returns the iterator __BijectionStarIterEnd
-  const BijectionIterator<int*,int*>*
-  BijectionStarIteratorStaticEnd::end4Statics () {
-    static bool first_time = true;
-    if ( first_time ) {
-      first_time = false;
-      __BijectionStarIterEnd = new BijectionIterator<int*,int*>;
-    }
-
-    return __BijectionStarIterEnd;
-  }
-
-
-  // create the end iterator for all BijectionStars
-  const BijectionIterator<int*,int*>*
-  BijectionStarIteratorStaticEnd::__BijectionStarIterEnd =
-    BijectionStarIteratorStaticEnd::end4Statics ();
+    BijectionIteratorStaticEnd::end4Statics();
 
 
 } /* namespace gum */

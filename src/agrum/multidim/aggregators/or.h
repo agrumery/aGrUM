@@ -48,35 +48,37 @@ namespace gum {
 
     template<typename GUM_SCALAR> class Or : public MultiDimAggregator<GUM_SCALAR> {
       public:
-        Or(  );
-        Or( const Or<GUM_SCALAR>& from );
+        Or( );
+        Or ( const Or<GUM_SCALAR>& from );
         virtual ~Or();
 
-      /**
-       * This method creates a clone of this object, withouth its content
-       * (including variable), you must use this method if you want to ensure
-       * that the generated object has the same type than the object containing
-       * the called newFactory()
-       * For example :
-       *   MultiDimArray<double> y;
-       *   MultiDimContainer<double>* x = y.newFactory();
-       * Then x is a MultiDimArray<double>*
-       *
-       * @warning you must desallocate by yourself the memory
-       * @return an empty clone of this object with the same type
-       */
-      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
+        /**
+         * This method creates a clone of this object, withouth its content
+         * (including variable), you must use this method if you want to ensure
+         * that the generated object has the same type than the object containing
+         * the called newFactory()
+         * For example :
+         *   MultiDimArray<double> y;
+         *   MultiDimContainer<double>* x = y.newFactory();
+         * Then x is a MultiDimArray<double>*
+         *
+         * @warning you must desallocate by yourself the memory
+         * @return an empty clone of this object with the same type
+         */
+        virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
 
 
-        virtual std::string aggregatorName( void ) const;
+        virtual std::string aggregatorName ( void ) const;
       protected:
-        virtual Idx _neutralElt( void ) const ;
-        virtual Idx _folder( const DiscreteVariable& v,Idx i1,Idx i2,bool& stop_iteration ) const;
+        virtual Idx _neutralElt ( void ) const ;
+        virtual Idx _folder ( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const;
       private:
         Idx __value;
     };
 
+    extern template class Or<float>;
+    extern template class Or<double>;
   } // aggregator
 } //gum
 

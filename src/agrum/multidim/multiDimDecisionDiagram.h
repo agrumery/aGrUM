@@ -22,22 +22,22 @@
  * @file
  * @brief
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 #ifndef GUM_MULTI_DIM_DECISION_DIAGRAM_H
 #define GUM_MULTI_DIM_DECISION_DIAGRAM_H
-// ============================================================================
-#include <agrum/core/approximationPolicy/approximationPolicy.h>
-#include <agrum/core/approximationPolicy/exactPolicy.h>
-// ============================================================================
+
+#include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
+#include <agrum/core/algorithms/approximationPolicy/exactPolicy.h>
+
 #include <agrum/multidim/multiDimDecisionDiagramBase.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactory.h>
-// ============================================================================
+
 
 namespace gum {
 
-  template< typename T, template<class> class IApproximationPolicy>
+  template< typename GUM_SCALAR, template<class> class IApproximationPolicy>
   class MultiDimDecisionDiagramFactory;
 
   /**
@@ -46,7 +46,7 @@ namespace gum {
    * For description of general methods, please refer to multidimdecisiondiagrambase
    * For specific implementation and use of multidimdecisiondiagram this is the right place :
    * The idea is that approximation policy is given as a template class to this class ( please
-   * refer to agrum/core/approximationPolicy.h for more details on such classes ). MultiDimDecisionDiagram inherits from
+   * refer to agrum/core/algorithms/approximationPolicy.h for more details on such classes ). MultiDimDecisionDiagram inherits from
    * this class.
    * A default classe exists : Exact Policy whixh commit no approximation on value given. As a default
    * you just have to declare MultiDimDecisionDiagram<GUM_SCALAR> and play with.
@@ -55,7 +55,7 @@ namespace gum {
    * @ingroup multidim_group
    *
    */
-  template<typename GUM_SCALAR,template <class> class IApproximationPolicy  = ExactPolicy>
+  template<typename GUM_SCALAR, template <class> class IApproximationPolicy  = ExactPolicy>
 
   class MultiDimDecisionDiagram :  public MultiDimDecisionDiagramBase<GUM_SCALAR>, public IApproximationPolicy<GUM_SCALAR> {
 
@@ -139,12 +139,12 @@ namespace gum {
 
 } /* namespace gum */
 
-// ============================================================================
-#include <agrum/multidim/multiDimDecisionDiagram.tcc>
-// ============================================================================
-#endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_H */
-// ============================================================================
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+#include <agrum/multidim/multiDimDecisionDiagram.tcc>
+
+#endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_H */
+
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 
 

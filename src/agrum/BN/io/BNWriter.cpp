@@ -20,10 +20,9 @@
 /** @file
  * @brief Outlined implementation of gumBNWriter
  *
- * @author Lionel Torti & Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #include <agrum/BN/io/BNWriter.h>
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+template class gum::BNWriter<float>;
+template class gum::BNWriter<double>;

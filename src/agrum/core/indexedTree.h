@@ -47,115 +47,115 @@ namespace gum {
   /* ============================================================================ */
 
   template <typename Key, typename Data> class IndexedTree {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
-
-    // ============================================================================
-    /// creates a tree with one node without data
-    // ============================================================================
-    IndexedTree( Data *data = 0 );
-
-    // ============================================================================
-    /// creates a tree with one node (with or without data)
-    /** the parameters are inserted directly into the tree, i.e., no copy is
-     * performed. For copies of key and data to occur, use the constructor
-     * with const& parameters. */
-    // ============================================================================
-    IndexedTree( const Key& theKey, Data* data = 0 );
-
-    // ============================================================================
-    /// creates a tree with one node with data
-    /** the key and data are copied into the tree. If you do not want any copy,
-     * use the constructor with the pointers parameters. */
-    // ============================================================================
-    IndexedTree( const Key& theKey, const Data& data );
-
-    // ============================================================================
-    /// copy constructor
-    // ============================================================================
-    IndexedTree( const IndexedTree<Key,Data>& from );
-
-    // ============================================================================
-    /// copy operator
-    // ============================================================================
-    IndexedTree<Key,Data>& operator= ( const IndexedTree<Key,Data>& from );
-
-    // ============================================================================
-    /// destructor
-    // ============================================================================
-    ~IndexedTree();
-
-    /// @}
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
 
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-    /// @{
+      /// creates a tree with one node without data
 
-    // ============================================================================
-    /// adds a new node into the tree
-    /** @throw DuplicateElement exception is thrown if a node with an identical
-     * index has already been entered into the tree. If, in this case, you would like
-     * the value of the to be updated, use function setNode instead. */
-    // ============================================================================
-    void insertNode( const std::vector<Key>& index, const Data *data );
+      IndexedTree ( Data* data = 0 );
 
-    // ============================================================================
-    /// adds a new node into the tree
-    /** @throw DuplicateElement exception is thrown if a node with an identical
-     * index has already been entered into the tree. If, in this case, you would like
-     * the value of the to be updated, use function setNode instead. */
-    // ============================================================================
-    void insertNode( const std::vector<Key>& index, const Data& data );
 
-    // ============================================================================
-    /// updates the value of a node (or adds it if it does not already exist)
-    // ============================================================================
-    void setNode( const std::vector<Key>& index, Data* data );
+      /// creates a tree with one node (with or without data)
+      /** the parameters are inserted directly into the tree, i.e., no copy is
+       * performed. For copies of key and data to occur, use the constructor
+       * with const& parameters. */
 
-    // ============================================================================
-    /// updates the value of a node (or adds it if it does not already exist)
-    // ============================================================================
-    void setNode( const std::vector<Key>& index, const Data& data );
+      IndexedTree ( const Key& theKey, Data* data = 0 );
 
-    // ============================================================================
-    /// returns the value of a given node of the tree
-    /** @throw NotFound exception is thrown if the so-called value
-     * cannot be found in the tree. */
-    // ============================================================================
-    Data& getData( const std::vector<Key>& index ) const;
 
-    // ============================================================================
-    /// returns a given node of the tree
-    /** @throw NotFound exception is thrown if the node we look for cannot
-     * be found in the tree. */
-    // ============================================================================
-    IndexedTree<Key,Data>& getNode( const std::vector<Key>& index );
+      /// creates a tree with one node with data
+      /** the key and data are copied into the tree. If you do not want any copy,
+       * use the constructor with the pointers parameters. */
 
-    /// @}
+      IndexedTree ( const Key& theKey, const Data& data );
 
-  private:
-    /// the key of the current node
-    Key key;
 
-    /// the data stored into the node
-    Data* data;
+      /// copy constructor
 
-    /// the parent of the node
-    IndexedTree<Key,Data> *parent;
+      IndexedTree ( const IndexedTree<Key, Data>& from );
 
-    /// the list of children nodes of the current node
-    HashTable<Key,IndexedTree<Key,Data>*> children;
+
+      /// copy operator
+
+      IndexedTree<Key, Data>& operator= ( const IndexedTree<Key, Data>& from );
+
+
+      /// destructor
+
+      ~IndexedTree();
+
+      /// @}
+
+
+      // ############################################################################
+      /// @name Accessors / Modifiers
+      // ############################################################################
+      /// @{
+
+
+      /// adds a new node into the tree
+      /** @throw DuplicateElement exception is thrown if a node with an identical
+       * index has already been entered into the tree. If, in this case, you would like
+       * the value of the to be updated, use function setNode instead. */
+
+      void insertNode ( const std::vector<Key>& index, const Data* data );
+
+
+      /// adds a new node into the tree
+      /** @throw DuplicateElement exception is thrown if a node with an identical
+       * index has already been entered into the tree. If, in this case, you would like
+       * the value of the to be updated, use function setNode instead. */
+
+      void insertNode ( const std::vector<Key>& index, const Data& data );
+
+
+      /// updates the value of a node (or adds it if it does not already exist)
+
+      void setNode ( const std::vector<Key>& index, Data* data );
+
+
+      /// updates the value of a node (or adds it if it does not already exist)
+
+      void setNode ( const std::vector<Key>& index, const Data& data );
+
+
+      /// returns the value of a given node of the tree
+      /** @throw NotFound exception is thrown if the so-called value
+       * cannot be found in the tree. */
+
+      Data& getData ( const std::vector<Key>& index ) const;
+
+
+      /// returns a given node of the tree
+      /** @throw NotFound exception is thrown if the node we look for cannot
+       * be found in the tree. */
+
+      IndexedTree<Key, Data>& getNode ( const std::vector<Key>& index );
+
+      /// @}
+
+    private:
+      /// the key of the current node
+      Key key;
+
+      /// the data stored into the node
+      Data* data;
+
+      /// the parent of the node
+      IndexedTree<Key, Data>* parent;
+
+      /// the list of children nodes of the current node
+      HashTable<Key, IndexedTree<Key, Data>*> children;
   };
 
 
   /// necessary for the hashtable operator <<
   template <typename Key, typename Data>
-  std::ostream& operator<< ( std::ostream&, const IndexedTree<Key,Data>& );
+  std::ostream& operator<< ( std::ostream&, const IndexedTree<Key, Data>& );
 
 
 } /* namespace gum */

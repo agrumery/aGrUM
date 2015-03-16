@@ -1,0 +1,73 @@
+
+network aGrUM_BN {
+   property version 1.0;
+   property author aGrUM;
+}
+
+variable visit_to_Asia? {
+   type discrete[2] {0, 1};
+}
+
+variable tuberculosis? {
+   type discrete[2] {0, 1};
+}
+
+variable tuberculos_or_cancer? {
+   type discrete[2] {0, 1};
+}
+
+variable positive_XraY? {
+   type discrete[2] {0, 1};
+}
+
+variable lung_cancer? {
+   type discrete[2] {0, 1};
+}
+
+variable smoking? {
+   type discrete[2] {0, 1};
+}
+
+variable bronchitis? {
+   type discrete[2] {0, 1};
+}
+
+variable dyspnoea? {
+   type discrete[2] {0, 1};
+}
+
+probability (visit_to_Asia?) {
+   default 0.01 0.99;
+}
+probability (tuberculosis? | visit_to_Asia?) {
+   (0) 0.05 0.95;
+   (1) 0.01 0.99;
+}
+probability (tuberculos_or_cancer? | lung_cancer?, tuberculosis?) {
+   (0, 0) 1 0;
+   (1, 0) 1 0;
+   (0, 1) 1 0;
+   (1, 1) 0 1;
+}
+probability (positive_XraY? | tuberculos_or_cancer?) {
+   (0) 0.98 0.02;
+   (1) 0.05 0.95;
+}
+probability (lung_cancer? | smoking?) {
+   (0) 0.1 0.9;
+   (1) 0.01 0.99;
+}
+probability (smoking?) {
+   default 0.5 0.5;
+}
+probability (bronchitis? | smoking?) {
+   (0) 0.6 0.4;
+   (1) 0.3 0.7;
+}
+probability (dyspnoea? | bronchitis?, tuberculos_or_cancer?) {
+   (0, 0) 0.9 0.1;
+   (1, 0) 0.7 0.3;
+   (0, 1) 0.8 0.2;
+   (1, 1) 0.1 0.9;
+}
+

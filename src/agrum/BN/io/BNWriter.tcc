@@ -20,7 +20,7 @@
 /** @file
  * @brief Templates implementation of bns/io/gumBNWriter.h classes.
  *
- * @author Lionel Torti & Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -33,16 +33,16 @@ namespace gum {
   /* ============================================================================ */
   template<typename GUM_SCALAR> INLINE
   BNWriter<GUM_SCALAR>::BNWriter() {
-    GUM_CONSTRUCTOR( BNWriter );
+    GUM_CONSTRUCTOR ( BNWriter );
   }
 
   template<typename GUM_SCALAR> INLINE
   BNWriter<GUM_SCALAR>::~BNWriter() {
-    GUM_DESTRUCTOR( BNWriter );
+    GUM_DESTRUCTOR ( BNWriter );
   }
 
 
 } /* namespace gum */
 
-  
+
 #endif  // DOXYGEN_SHOULD_SKIP_THIS

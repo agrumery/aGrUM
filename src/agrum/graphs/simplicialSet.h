@@ -92,11 +92,11 @@ namespace gum {
        * the SimplicialSet, but rather it is only referenced within it.
        * @throws OperationNotAllowed exception is thrown if the graph, the
        * log_modalities or the log_weights are null pointers. */
-      explicit SimplicialSet( UndiGraph* graph,
-                              const Property<float>::onNodes* log_modalities,
-                              Property<float>::onNodes* log_weights,
-                              float theRatio = GUM_QUASI_RATIO,
-                              float theThreshold = GUM_WEIGHT_THRESHOLD );
+      explicit SimplicialSet ( UndiGraph* graph,
+                               const NodeProperty<float>* log_modalities,
+                               NodeProperty<float>* log_weights,
+                               float theRatio = GUM_QUASI_RATIO,
+                               float theThreshold = GUM_WEIGHT_THRESHOLD );
 
       /// copy constructor
       /** The constructor tries to make a copy of simplicial_from. In addition, it
@@ -130,11 +130,11 @@ namespace gum {
        * @throws OperationNotAllowed exception is thrown if the graph, the
        * log_modalities or the log_weights are null pointers, or if these data are
        * different from those stored into simplicial_from */
-      SimplicialSet( const SimplicialSet& simplicial_from,
-                     UndiGraph* graph,
-                     const Property<float>::onNodes* log_modalities,
-                     Property<float>::onNodes* log_weights,
-                     bool avoid_check = false );
+      SimplicialSet ( const SimplicialSet& simplicial_from,
+                      UndiGraph* graph,
+                      const NodeProperty<float>* log_modalities,
+                      NodeProperty<float>* log_weights,
+                      bool avoid_check = false );
 
       /// destructor
       ~SimplicialSet();
@@ -149,7 +149,7 @@ namespace gum {
 
       /// adds the necessary edges so that node 'id' and its neighbours form a clique
       /** @param id the node which will form, with its neighbours, a clique */
-      void makeClique( const NodeId id );
+      void makeClique ( const NodeId id );
 
       /// removes a node and its adjacent edges from the underlying graph
       /** The node should form a clique with its neighbours.
@@ -157,20 +157,20 @@ namespace gum {
        * clique that will be removed
        * @throw NotFound exception is thrown if the node cannot be found
        * in the graph or if it is not a clique. */
-      void eraseClique( const NodeId id );
+      void eraseClique ( const NodeId id );
 
       /// removes a node and its adjacent edges from the underlying graph
       /** @param id the id of the node which, along with its adjacent edges, will
        * be removed
        * @throw NotFound exception is thrown if the node cannot be found
        * in the graph. */
-      void eraseNode( const NodeId id );
+      void eraseNode ( const NodeId id );
 
       /// removes an edge from the graph and recomputes the simplicial set
       /** @param edge the edge to be removed
        * @warning if the edge does not exist, nothing is done. In particular, no
        * exception is thrown. */
-      void eraseEdge( const Edge& edge );
+      void eraseEdge ( const Edge& edge );
 
       /// adds a new edge to the graph and recomputes the simplicial set
       /** @param first the id of one extremal node of the new inserted edge
@@ -179,13 +179,14 @@ namespace gum {
        * exception is raised.
        * @throw InvalidNode if first and/or second do not belong to the
        * graph nodes */
-      void insertEdge( NodeId first, NodeId second );
+      GUM_DEPRECATED(void insertEdge ( NodeId first, NodeId second ));
+      void addEdge ( NodeId first, NodeId second );
 
       /// indicates whether a given node is a simplicial node
       /** A simplicial node is a node such that the latter and its neighbours form
        * a clique.
        * @param id the ID of the node the simpliciality of which we test */
-      bool isSimplicial( const NodeId id );
+      bool isSimplicial ( const NodeId id );
 
       /// indicates whether there exists a simplicial node
       /** A simplicial node is a node such that the latter and its neighbours form
@@ -206,7 +207,7 @@ namespace gum {
       /// returns all the simplicial nodes
       /** In the priority queue returned, the floats correspond to the weight of
        * the cliques the nodes belong to. */
-      const PriorityQueue<NodeId,float>& allSimplicialNodes();
+      const PriorityQueue<NodeId, float>& allSimplicialNodes();
 
       /// gets the almost simplicial node with the lowest clique weight
       NodeId bestAlmostSimplicialNode();
@@ -214,7 +215,7 @@ namespace gum {
       /// returns all the almost simplicial nodes
       /** In the priority queue returned, the floats correspond to the weight of
        * cliques formed by the nodes and their neighbours. */
-      const PriorityQueue<NodeId,float>& allAlmostSimplicialNodes();
+      const PriorityQueue<NodeId, float>& allAlmostSimplicialNodes();
 
       /// gets a quasi simplicial node with the lowest clique weight
       NodeId bestQuasiSimplicialNode();
@@ -222,14 +223,14 @@ namespace gum {
       /// returns all the quasi simplicial nodes
       /** In the priority queue returned, the floats correspond to the weight of
        * cliques formed by the nodes and their neighbours. */
-      const PriorityQueue<NodeId,float>& allQuasiSimplicialNodes();
+      const PriorityQueue<NodeId, float>& allQuasiSimplicialNodes();
 
       /// sets/unset the fill-ins storage in the standard triangulation procedure
       /** @param on_off when true means that the SimplicialSet will compute the
        * fill-ins added to the graph. When on_off is false, the fill-ins are not
        * computed. Note that, to produce a correct result, you should call
        * setFillIns before any modification to the graph. */
-      void setFillIns( bool on_off );
+      void setFillIns ( bool on_off );
 
       /// returns the set of all the fill-ins added to the graph so far
       const EdgeSet& fillIns() const;
@@ -257,11 +258,11 @@ namespace gum {
        * @warning  Note that, by the aGrUM's constructor parameter's rule, the fact
        * that an argument is passed as a pointer means that it is not copied within
        * the SimplicialSet, but rather it is only referenced within it. */
-      void setGraph( UndiGraph* graph,
-                     const Property<float>::onNodes* log_modalities,
-                     Property<float>::onNodes* log_weights,
-                     float theRatio = GUM_QUASI_RATIO,
-                     float theThreshold = GUM_WEIGHT_THRESHOLD );
+      void setGraph ( UndiGraph* graph,
+                      const NodeProperty<float>* log_modalities,
+                      NodeProperty<float>* log_weights,
+                      float theRatio = GUM_QUASI_RATIO,
+                      float theThreshold = GUM_WEIGHT_THRESHOLD );
 
       /// @}
 
@@ -271,36 +272,36 @@ namespace gum {
       UndiGraph* __graph;
 
       /// the weights of the nodes (i.e., weight of their clique)
-      Property<float>::onNodes* __log_weights;
+      NodeProperty<float>* __log_weights;
 
       /// the log of the modalities of the nodes
-      const Property<float>::onNodes* __log_modalities;
+      const NodeProperty<float>* __log_modalities;
 
       /// a queue of the simplicial nodes ordered by increasing node weight
-      PriorityQueue<NodeId,float> __simplicial_nodes;
+      PriorityQueue<NodeId, float> __simplicial_nodes;
 
       /// a queue of the almost simplicial nodes ordered by increasing node weight
-      PriorityQueue<NodeId,float> __almost_simplicial_nodes;
+      PriorityQueue<NodeId, float> __almost_simplicial_nodes;
 
       /// a queue of the quasi simplicial nodes ordered by increasing node weight
-      PriorityQueue<NodeId,float> __quasi_simplicial_nodes;
+      PriorityQueue<NodeId, float> __quasi_simplicial_nodes;
 
       /** @brief indicates for each node to which list (simplicial, almost
        * simplicial, quasi simplicial) it belongs */
-      enum __Belong {
-        GUM_SIMPLICIAL,
-        GUM_ALMOST_SIMPLICIAL,
-        GUM_QUASI_SIMPLICIAL,
-        GUM_NO_LIST
+      enum class __Belong : char {
+        SIMPLICIAL,
+        ALMOST_SIMPLICIAL,
+        QUASI_SIMPLICIAL,
+        NO_LIST
       };
-      Property<__Belong>::onNodes __containing_list;
+      NodeProperty<__Belong> __containing_list;
 
       /** @brief for each edge, keep track of the number of triangles passing
        * through this egde */
-      Property<unsigned int>::onEdges __nb_triangles;
+      EdgeProperty<unsigned int> __nb_triangles;
 
       /// for each node, the number of pairs of adjacent neighbours
-      Property<unsigned int>::onNodes __nb_adjacent_neighbours;
+      NodeProperty<unsigned int> __nb_adjacent_neighbours;
 
       /// the current (induced) tree width
       /** @warning Note that what we call tree width here is not the classical
@@ -334,7 +335,7 @@ namespace gum {
 
       /** @brief put node id in the correct simplicial/almost simplicial/quasi
        * simplicial list */
-      void __updateList( const NodeId id );
+      void __updateList ( const NodeId id );
 
       /// put all the nodes in their appropriate list
       void __updateAllNodes();
@@ -360,7 +361,7 @@ namespace gum {
        * since the graph, the modalities and the weights would be shared and updated
        * by several Simplicial sets whereas the number of triangles and the number
        * of joined neighbours would not be shared. */
-      SimplicialSet( const SimplicialSet& );
+      SimplicialSet ( const SimplicialSet& );
 
   };
 

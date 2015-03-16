@@ -21,7 +21,7 @@
  * @file
  * @brief Class for implementation of factored markov decision process.
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_FACTORED_MARKOV_DECISION_PROCESS_H
 #define GUM_FACTORED_MARKOV_DECISION_PROCESS_H
@@ -75,62 +75,62 @@ namespace gum {
       // ===========================================================================
       /// @{
 
-      void setProperty ( const std::string &propName, const std::string &propValue ) {};
+      void setProperty( const std::string& propName, const std::string& propValue ) {};
 
       /**
        * Adds a variable to FMDP description
        * @throw DuplicateElement if a similar variable already exists
        */
-      void addVariable ( const DiscreteVariable *var );
+      void addVariable( const DiscreteVariable* var );
 
       /**
        * Adds a primed variable to FMDP description
        * @throw DuplicateElement if a similar variable already exists
        */
-      void addPrimedVariable ( const DiscreteVariable *var, const DiscreteVariable *mainVar );
+      void addPrimedVariable( const DiscreteVariable* var, const DiscreteVariable* mainVar );
 
       /**
        * Adds an action to FMDP description
        * @throw DuplicateElement if an action with same name already exists
        */
-      void addAction ( const std::string &action );
+      void addAction( const std::string& action );
 
       /**
        * Adds a variable transition table to specified action
        * @throw NotFound if action or var does not exists
        * @throw DuplicateElement if variable already has a transition for this action
        */
-      void addTransitionForAction ( const DiscreteVariable *var, const MultiDimImplementation<GUM_SCALAR> *transition, const std::string &action );
+      void addTransitionForAction( const DiscreteVariable* var, const MultiDimImplementation<GUM_SCALAR>* transition, const std::string& action );
 
       /**
        * Adds a default variable transition
        * @throw NotFound if var does not exists
        * @throw DuplicateElement if variable already has a default transition
        */
-      void addTransition ( const DiscreteVariable *var, const MultiDimImplementation<GUM_SCALAR> *transition );
+      void addTransition( const DiscreteVariable* var, const MultiDimImplementation<GUM_SCALAR>* transition );
 
       /**
        * Adds a cost table to specified action
        * @throw NotFound if action does not exists
        */
-      void addCostForAction ( const MultiDimImplementation<GUM_SCALAR> *cost, const std::string &action );
+      void addCostForAction( const MultiDimImplementation<GUM_SCALAR>* cost, const std::string& action );
 
       /**
        * Adds a default variable cost
        * @throw DuplicateElement if a default cost exists already
        */
-      void addCost ( const MultiDimImplementation<GUM_SCALAR> *cost );
+      void addCost( const MultiDimImplementation<GUM_SCALAR>* cost );
 
       /**
        * Adds a default variable reward
        * @throw DuplicateElement if a default reward exists already
        */
-      void addReward ( const MultiDimImplementation<GUM_SCALAR> *reward );
+      void addReward( const MultiDimImplementation<GUM_SCALAR>* reward );
 
       /**
        * Precises the discount factor for that mdp
        */
-      void addDiscount ( GUM_SCALAR discount );
+      void addDiscount( GUM_SCALAR discount );
 
       /// @}
 
@@ -147,7 +147,7 @@ namespace gum {
       /**
        * Returns the reward table of mdp
        */
-      const MultiDimImplementation< GUM_SCALAR > *reward( ) const;
+      const MultiDimImplementation< GUM_SCALAR >* reward( ) const;
 
       /**
        * Resets the action iterator
@@ -172,7 +172,7 @@ namespace gum {
       /**
        * Returns name of action given in parameter
        */
-      const std::string actionName ( Idx actionId ) const;
+      const std::string actionName( Idx actionId ) const;
 
       /**
        * Resets the variable iterator
@@ -192,28 +192,28 @@ namespace gum {
       /**
        * Returns current primed variable pointed by variable iterator
        */
-      const DiscreteVariable *variable() const;
+      const DiscreteVariable* variable() const;
 
       /**
        * Returns transition associated to current variable pointed by variable iterator
        * and current action poinbted by action iterator
        */
-      const MultiDimImplementation< GUM_SCALAR > *transition() const;
+      const MultiDimImplementation< GUM_SCALAR >* transition() const;
 
       /**
        * Returns transition associated to given in parameter variable
        */
-      const MultiDimImplementation< GUM_SCALAR > *transition ( const DiscreteVariable *v ) const;
+      const MultiDimImplementation< GUM_SCALAR >* transition( const DiscreteVariable* v ) const;
 
       /**
        * Returns set of primed variable (variable at next instant )
        */
-      const Set< const DiscreteVariable * > &primedVariables() const;
+      const Set< const DiscreteVariable* >& primedVariables() const;
 
       /**
        * Returns the map on main variable and their primed version
        */
-      const Bijection< const DiscreteVariable *, const DiscreteVariable *> &main2prime() const;
+      const Bijection< const DiscreteVariable*, const DiscreteVariable*>& main2prime() const;
 
       /// @}
       std::string show() const;
@@ -223,32 +223,32 @@ namespace gum {
       /**
         * Returns action id
         */
-      const Idx &__actionId ( const std::string & ) const;
+      const Idx& __actionId( const std::string& ) const;
 
       /// Sequence de variables and its iterator
-      Sequence< const DiscreteVariable * > __varSeq;
-      SequenceIterator< const DiscreteVariable * > __varIter;
+      Sequence< const DiscreteVariable* > __varSeq;
+      SequenceIterator< const DiscreteVariable* > __varIter;
 
       /// Variable default transition cpt table
-      HashTable< const DiscreteVariable *, const MultiDimImplementation< GUM_SCALAR >* > __defaultTransitionTable;
+      HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > __defaultTransitionTable;
 
       /// Table which give for each action a table containing variables transition cpt
-      HashTable< Idx, HashTable< const DiscreteVariable *, const MultiDimImplementation< GUM_SCALAR >* >* > __actionTransitionTable;
+      HashTable< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > __actionTransitionTable;
 
       /// default cost table
-      const MultiDimImplementation< GUM_SCALAR > *__defaultCostTable;
+      const MultiDimImplementation< GUM_SCALAR >* __defaultCostTable;
 
       /// Table which give for each action cost table
       HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* > __actionCostTable;
 
       /// Bijection mapping an action name to its id
-      Bijection< Idx, const std::string * > __actionMap;
+      Bijection< Idx, const std::string* > __actionMap;
 
       /// default reward table
-      const MultiDimImplementation< GUM_SCALAR > *__defaultRewardTable;
+      const MultiDimImplementation< GUM_SCALAR >* __defaultRewardTable;
 
-      Set< const DiscreteVariable * > __primedVariablesSet;
-      Bijection< const DiscreteVariable *, const DiscreteVariable *> __main2primed;
+      Set< const DiscreteVariable* > __primedVariablesSet;
+      Bijection< const DiscreteVariable*, const DiscreteVariable*> __main2primed;
 
       /// FMDP discount factor
       GUM_SCALAR __discount;
@@ -257,15 +257,12 @@ namespace gum {
       Idx __nextActionId;
 
       /// Iterator on actions
-      HashTableConstIterator< Idx, HashTable< const DiscreteVariable *, const MultiDimImplementation< GUM_SCALAR >* >* > __actionIter;
-
-//       /// Iterator on variable
-//       HashTableConstIterator< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > __varIter;
+      HashTableConstIterator< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > __actionIter;
   };
 } /* namespace gum */
 
-// ============================================================================
+
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.tcc>
-// ============================================================================
+
 #endif // GUM_FACTORED_MARKOV_DECISION_PROCESS_H
-// ============================================================================
+

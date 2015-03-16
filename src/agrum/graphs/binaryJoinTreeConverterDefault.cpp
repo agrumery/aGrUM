@@ -36,13 +36,13 @@ namespace gum {
   /// default constructor
   BinaryJoinTreeConverterDefault::BinaryJoinTreeConverterDefault() {
     // for debugging purposes
-    GUM_CONSTRUCTOR( BinaryJoinTreeConverterDefault );
+    GUM_CONSTRUCTOR ( BinaryJoinTreeConverterDefault );
   }
 
 
   /// destructor
   BinaryJoinTreeConverterDefault::~BinaryJoinTreeConverterDefault() {
-    GUM_DESTRUCTOR( BinaryJoinTreeConverterDefault );
+    GUM_DESTRUCTOR ( BinaryJoinTreeConverterDefault );
   }
 
 
@@ -52,18 +52,18 @@ namespace gum {
   BinaryJoinTreeConverterDefault::__markConnectedComponent
   ( const CliqueGraph& JT,
     NodeId root,
-    Property<bool>::onNodes& mark ) const {
+    NodeProperty<bool>& mark ) const {
     // we mark the nodes in a depth first search manner. To avoid a recursive
     // algorithm, use a vector to simulate a stack of nodes to inspect.
     // stack => depth first search
     std::vector<NodeId> nodes_to_inspect;
-    nodes_to_inspect.reserve( JT.sizeNodes() );
+    nodes_to_inspect.reserve ( JT.sizeNodes() );
 
     // the idea to populate the marks is to use the stack: root is
     // put onto the stack. Then, while the stack is not empty, remove
     // the top of the stack and mark it and put into the stack its
     // adjacent nodes.
-    nodes_to_inspect.push_back( root );
+    nodes_to_inspect.push_back ( root );
 
     while ( ! nodes_to_inspect.empty() ) {
       // process the top of the stack
@@ -77,37 +77,26 @@ namespace gum {
         mark[ current_node ] = true;
 
         // put the neighbors onto the stack
-        const NodeSet& neighbors = JT.neighbours( current_node );
-
-        for ( NodeSet::const_iterator neigh = neighbors.begin();
-              neigh != neighbors.end(); ++ neigh ) {
-          if ( ! mark[ *neigh ] ) {
-            nodes_to_inspect.push_back( *neigh );
-          }
-        }
+        for ( const auto neigh : JT.neighbours ( current_node ) )
+          if ( ! mark[ neigh ] )
+            nodes_to_inspect.push_back ( neigh );
       }
     }
   }
 
 
   /// returns the domain size of the union of two cliques
-  float BinaryJoinTreeConverterDefault::__combinedSize
-  ( const NodeSet& nodes1,
-    const NodeSet& nodes2,
-    const Property<unsigned int>::onNodes& domain_sizes ) const {
+  float BinaryJoinTreeConverterDefault::__combinedSize ( const NodeSet& nodes1,
+                                                         const NodeSet& nodes2,
+                                                         const NodeProperty<Size>& domain_sizes ) const {
     float result = 1;
 
-    for ( NodeSet::const_iterator iter = nodes1.begin();
-          iter != nodes1.end(); ++iter ) {
-      result *= domain_sizes[*iter];
-    }
+    for ( const auto node : nodes1 )
+      result *= domain_sizes[node];
 
-    for ( NodeSet::const_iterator iter = nodes2.begin();
-          iter != nodes2.end(); ++iter ) {
-      if ( ! nodes1.exists( *iter ) ) {
-        result *= domain_sizes[*iter];
-      }
-    }
+    for ( const auto node : nodes2 )
+      if ( ! nodes1.exists ( node ) )
+        result *= domain_sizes[node];
 
     return result;
   }
@@ -121,57 +110,50 @@ namespace gum {
 
   /// convert a clique and its adjacent cliques into a binary join tree
   void
-  BinaryJoinTreeConverterDefault::__convertClique
-  ( CliqueGraph& JT,
-    NodeId clique,
-    NodeId from,
-    const Property<unsigned int>::onNodes& domain_sizes ) const {
+  BinaryJoinTreeConverterDefault::__convertClique ( CliqueGraph& JT,
+                                                    NodeId clique,
+                                                    NodeId from,
+                                                    const NodeProperty<Size>& domain_sizes ) const {
     // get the neighbors of clique. If there are fewer than 3 neighbors,
     // there is nothing to do
-    const NodeSet& neighbors = JT.neighbours( clique );
+    const NodeSet& neighbors = JT.neighbours ( clique );
 
     if ( neighbors.size() <= 2 ) return;
 
-    if (( neighbors.size() == 3 ) && ( clique != from ) ) return;
+    if ( ( neighbors.size() == 3 ) && ( clique != from ) ) return;
 
     // here we need to transform the neighbors into a binary tree
-
     // create a vector with all the ids of the cliques to combine
     std::vector<NodeId> cliques;
+    cliques.reserve ( neighbors.size() );
 
-    cliques.reserve( neighbors.size() );
+    for ( const auto nei : neighbors )
+      if ( nei != from )
+        cliques.push_back ( nei );
 
-    {
-      for ( NodeSet::const_iterator iter = neighbors.begin();
-            iter != neighbors.end(); ++iter ) {
-        if ( *iter != from ) {
-          cliques.push_back( *iter );
-        }
-      }
-    }
 
     // create a vector indicating wether the elements in cliques contain
     // relevant information or not (during the execution of the for
     // loop below, a cell of vector cliques may actually contain only
     // trash data)
-    std::vector<bool> is_cliques_relevant( cliques.size(), true );
+    std::vector<bool> is_cliques_relevant ( cliques.size(), true );
 
 
     // for each pair of cliques (i,j), compute the size of the clique that would
     // result from the combination of clique i with clique j and store the result
     // into a priorityQueue
-    std::pair<unsigned int,unsigned int> pair;
+    std::pair<unsigned int, unsigned int> pair;
 
-    PriorityQueue<std::pair<unsigned int,unsigned int>,float> queue;
+    PriorityQueue<std::pair<unsigned int, unsigned int>, float> queue;
 
     for ( unsigned int i = 0; i < cliques.size(); ++i ) {
       pair.first = i;
-      const NodeSet& nodes1 = JT.separator( cliques[i], clique );
+      const NodeSet& nodes1 = JT.separator ( cliques[i], clique );
 
-      for ( unsigned int j = i+1; j < cliques.size(); ++j ) {
+      for ( unsigned int j = i + 1; j < cliques.size(); ++j ) {
         pair.second = j;
-        queue.insert( __combinedSize( nodes1, JT.separator( cliques[j], clique ),
-                                      domain_sizes ), pair );
+        queue.insert ( pair, __combinedSize ( nodes1, JT.separator ( cliques[j], clique ),
+                                              domain_sizes ) );
       }
     }
 
@@ -187,14 +169,14 @@ namespace gum {
 
       // create a new clique that will become adjacent to ti and tj
       // and remove the edges between ti, tj and clique
-      const NodeSet& nodes1 = JT.separator( cliques[ti], clique );
-      const NodeSet& nodes2 = JT.separator( cliques[tj], clique );
-      NodeId new_node = JT.insertNode( nodes1 + nodes2 );
-      JT.insertEdge( cliques[ti], new_node );
-      JT.insertEdge( cliques[tj], new_node );
-      JT.insertEdge( clique, new_node );
-      JT.eraseEdge( Edge( cliques[ti], clique ) );
-      JT.eraseEdge( Edge( cliques[tj], clique ) );
+      const NodeSet& nodes1 = JT.separator ( cliques[ti], clique );
+      const NodeSet& nodes2 = JT.separator ( cliques[tj], clique );
+      NodeId new_node = JT.addNode ( nodes1 + nodes2 );
+      JT.addEdge ( cliques[ti], new_node );
+      JT.addEdge ( cliques[tj], new_node );
+      JT.addEdge ( clique, new_node );
+      JT.eraseEdge ( Edge ( cliques[ti], clique ) );
+      JT.eraseEdge ( Edge ( cliques[tj], clique ) );
 
       // substitute cliques[pair.first] by the result
       cliques[ti] = new_node;
@@ -205,44 +187,44 @@ namespace gum {
       for ( unsigned int ind = 0; ind < tj; ++ind ) {
         if ( is_cliques_relevant[ind] ) {
           pair.first = ind;
-          queue.eraseByVal( pair );
+          queue.erase ( pair );
         }
       }
 
       pair.first = tj;
 
-      for ( unsigned int ind = tj+1; ind < cliques.size(); ++ind ) {
+      for ( unsigned int ind = tj + 1; ind < cliques.size(); ++ind ) {
         if ( is_cliques_relevant[ind] ) {
           pair.second = ind;
-          queue.eraseByVal( pair );
+          queue.erase ( pair );
         }
       }
 
       // update the "combined" size of all the pairs involving "new_node"
       {
-        const NodeSet& nodes1 = JT.separator( cliques[ti], clique );
+        const NodeSet& nodes1 = JT.separator ( cliques[ti], clique );
         pair.second = ti;
         float newsize;
 
         for ( unsigned int ind = 0; ind < ti; ++ind ) {
           if ( is_cliques_relevant[ind] ) {
             pair.first = ind;
-            newsize = __combinedSize( nodes1,
-                                      JT.separator( cliques[ind], clique ),
-                                      domain_sizes );
-            queue.setPriorityByVal( pair, newsize );
+            newsize = __combinedSize ( nodes1,
+                                       JT.separator ( cliques[ind], clique ),
+                                       domain_sizes );
+            queue.setPriority ( pair, newsize );
           }
         }
 
         pair.first = ti;
 
-        for ( unsigned int ind = ti+1; ind < cliques.size(); ++ind ) {
+        for ( unsigned int ind = ti + 1; ind < cliques.size(); ++ind ) {
           if ( is_cliques_relevant[ind] ) {
             pair.second = ind;
-            newsize = __combinedSize( nodes1,
-                                      JT.separator( cliques[ind], clique ),
-                                      domain_sizes );
-            queue.setPriorityByVal( pair, newsize );
+            newsize = __combinedSize ( nodes1,
+                                       JT.separator ( cliques[ind], clique ),
+                                       domain_sizes );
+            queue.setPriority ( pair, newsize );
           }
         }
       }
@@ -251,40 +233,34 @@ namespace gum {
   }
 
 
-  /// convert a whole connected component into a binary join tree
+/// convert a whole connected component into a binary join tree
   void
-  BinaryJoinTreeConverterDefault::__convertConnectedComponent
-  ( CliqueGraph& JT,
-    NodeId current_node,
-    NodeId from,
-    const Property<unsigned int>::onNodes& domain_sizes,
-    Property<bool>::onNodes& mark ) const {
+  BinaryJoinTreeConverterDefault::__convertConnectedComponent ( CliqueGraph& JT,
+                                                                NodeId current_node,
+                                                                NodeId from,
+                                                                const NodeProperty<Size>& domain_sizes,
+                                                                NodeProperty<bool>& mark ) const {
     // first, indicate that the node has been marked (this avoids looping
     // if JT is not a tree
     mark [ current_node ] = true;
 
     // parse all the neighbors except nodes already converted and convert them
-    const NodeSet& neighbors = JT.neighbours( current_node );
-
-    for ( NodeSet::const_iterator neigh = neighbors.begin();
-          neigh != neighbors.end(); ++ neigh ) {
-      if ( ! mark [ *neigh ] ) {
-        __convertConnectedComponent( JT, *neigh, current_node,
-                                     domain_sizes, mark );
+    for ( const auto neigh : JT.neighbours ( current_node ) ) {
+      if ( ! mark [ neigh ] ) {
+        __convertConnectedComponent ( JT, neigh, current_node, domain_sizes, mark );
       }
     }
 
     // convert the current node
-    __convertClique( JT, current_node, from, domain_sizes );
+    __convertClique ( JT, current_node, from, domain_sizes );
   }
 
 
-  /// computes the binary join tree
+/// computes the binary join tree
   CliqueGraph
-  BinaryJoinTreeConverterDefault::convert
-  ( const CliqueGraph& JT,
-    const Property<unsigned int>::onNodes& domain_sizes,
-    const NodeSet& specified_roots ) {
+  BinaryJoinTreeConverterDefault::convert ( const CliqueGraph& JT,
+                                            const NodeProperty<Size>& domain_sizes,
+                                            const NodeSet& specified_roots ) {
     // first, we copy the current clique graph. By default, this is what we
     // will return
     CliqueGraph binJT = JT;
@@ -292,44 +268,37 @@ namespace gum {
     // check that there is no connected component without a root. In such a case,
     // assign an arbitrary root to it
     __roots = specified_roots;
-    {
-      Property<bool>::onNodes mark = JT.nodesProperty( false, JT.sizeNodes() );
-      // for each specified root, populate its connected component
 
-      for ( NodeSet::const_iterator iter = specified_roots.begin();
-            iter != specified_roots.end(); ++iter ) {
-        // check that the root has not already been marked
-        // in this case, this means that more than one root has been specified
-        // for a given connected component
-        if ( mark [ *iter ] ) {
-          GUM_ERROR( InvalidNode, "several roots have been specified for a "
-                     "given connected component" );
-        }
+    NodeProperty<bool> mark = JT.nodesProperty ( false, JT.sizeNodes() );
 
-        __markConnectedComponent( JT, *iter, mark );
-      }
+    // for each specified root, populate its connected component
+    for ( const auto root : specified_roots ) {
+      // check that the root has not already been marked
+      // in this case, this means that more than one root has been specified
+      // for a given connected component
+      if ( mark [ root ] )
+        GUM_ERROR ( InvalidNode,
+                    "several roots have been specified for a given connected component" );
 
-      // check that all nodes have been marked. If this is not the case, then
-      // this means that we need to add new roots
-      for ( Property<bool>::onNodes::iterator iter = mark.begin();
-            iter != mark.end(); ++iter ) {
-        if ( ! *iter ) {
-          __roots << iter.key();
-          __markConnectedComponent( JT, iter.key(), mark );
-        }
-      }
+      __markConnectedComponent ( JT, root, mark );
     }
+
+    // check that all nodes have been marked. If this is not the case, then
+    // this means that we need to add new roots
+    for ( const auto & elt : mark )
+      if ( ! elt.second ) {
+        __roots << elt.first;
+        __markConnectedComponent ( JT, elt.first, mark );
+      }
 
     // here, we know that each connected component has one and only one root.
     // Now we can apply a recursive collect algorithm starting from root
     // that transforms each clique with more than 3 neighbors into a set of
     // cliques having at most 3 neighbors.
-    Property<bool>::onNodes mark = JT.nodesProperty( false, JT.sizeNodes() );
+    NodeProperty<bool> mark2 = JT.nodesProperty ( false, JT.sizeNodes() );
 
-    for ( NodeSet::const_iterator iter = __roots.begin();
-          iter != __roots.end(); ++iter ) {
-      __convertConnectedComponent( binJT, *iter, *iter, domain_sizes, mark );
-    }
+    for ( const auto root : __roots )
+      __convertConnectedComponent ( binJT, root, root, domain_sizes, mark2 );
 
 
     // binJT is now a binary join tree, so we can return it

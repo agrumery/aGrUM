@@ -91,8 +91,8 @@ def computeScores(bn_name,csv_name,visible=False,transforme_label=None):
     likelihood=0.0
     for data in batchReader:
         num_ligne+=1
-        
-        for i in range(len(inst)):
+
+        for i in range(inst.nbrDim()):
             try:
                 inst.chgVal(i,getNumLabel(inst,i,data[positions[i]],transforme_label))
             except gum.OutOfBounds:
@@ -111,13 +111,13 @@ def computeScores(bn_name,csv_name,visible=False,transforme_label=None):
     if visible:
         print
 
-    nbr_arcs=1.0*bn.nbrArcs()
+    nbr_arcs=1.0*bn.sizeArcs()
     dim=1.0*bn.dim()
 
-    aic=-2*likelihood+2*dim
-    aicc=aic+2*dim*(dim+1)/(nbr_lines-dim+1)
-    bic=-2*likelihood+dim*math.log(nbr_lines,2)
-    mdl=-likelihood+nbr_arcs*math.log(nbr_lines,2)+32*dim #32=nbr bits for a params
+    aic=likelihood-dim
+    aicc=2*aic-2*dim*(dim+1)/(nbr_lines-dim+1) if (nbr_lines-dim+1>0) else "undefined"
+    bic=likelihood-dim*math.log(nbr_lines,2)
+    mdl=likelihood-nbr_arcs*math.log(nbr_lines,2)-32*dim #32=nbr bits for a params
 
     return ((nbr_lines-nbr_insignificant)*100.0/nbr_lines,
             {'likelihood':likelihood,'aic':aic,'aicc':aicc,'bic':bic,'mdl':mdl})
@@ -151,7 +151,7 @@ if __name__=="__main__":
         csv_name="alarm.csv"
     else:
         bn_name=sys.argv[1]
-    
+
         if len(sys.argv)<3:
             base,ext=os.path.splitext(bn_name)
             csv_name=base+'.csv'

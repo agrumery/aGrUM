@@ -1,28 +1,28 @@
 network Asia {
 }
 variable  visit_to_Asia? { 
-	type discrete[2] {  a1 , a2 };
+	type discrete[2] {  0 , 1 };
 }
 variable  tuberculosis? {
-	type discrete[2] {  b1, b2 };
+	type discrete[2] {  0, 1 };
 }
 variable  tuberculos_or_cancer? { 
-	type discrete[2] {  c1,  c2 };
+	type discrete[2] {  0,  1 };
 }
 variable  positive_XraY? {
-	type discrete[2] {  d1,  d2 };
+	type discrete[2] {  0,  1 };
 }
 variable  lung_cancer? { // 2 values
-	type discrete[2] {  e1,  e2 };
+	type discrete[2] {  0,  1 };
 }
 variable  smoking? {
-	type discrete[2] {  f1,  f2 };
+	type discrete[2] {  0,  1 };
 }
 variable  bronchitis? { // 2 values
-	type discrete[2] {  g1,  g2 };
+	type discrete[2] {  0,  1 };
 }
 variable  dyspnoea? { // 2 values
-	type discrete[2] {  h1 , h2 };
+	type discrete[2] {  0 , 1 };
 }
 probability (  visit_to_Asia? ) {
 	table 0.01 0.99 ;

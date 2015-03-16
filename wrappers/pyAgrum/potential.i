@@ -1,27 +1,31 @@
+%ignore gum::MultiDimWithOffset;
+%ignore gum::MultiDimImplementation;
+%ignore gum::MultiDimInterface;
+%ignore gum::MultiDimDecorator;
+%ignore gum::MultiDimArray;
 
-%rename(remove) gum::MultiDimDecorator::erase( const DiscreteVariable& var );
-
-%feature("shadow") gum::MultiDimDecorator::variablesSequence %{
-def variablesSequence(self):
-    varlist = []
-    for i in range(0, self.nbrDim()):
-        varlist.append(self.variable(i))
-    return varlist
-%}
-
-
-
+/* Synchronisation between gum::Potential and numpy array */
 %pythonappend gum::Potential::Potential %{
-        self.__fill_distrib__()
+        self._notSync=True
+%}
+%pythonappend gum::Potential::add %{
+        self._notSync=True
+%}
+%pythonappend gum::Potential::remove %{
+        self._notSync=True
+%}
+%pythonappend gum::Potential::set %{
+        self._notSync=True
 %}
 
-
-%pythonappend gum::MultiDimDecorator::add %{
-        self.__fill_distrib__()
-%}
-
-%extend gum::Potential {
+%extend gum::Potential<double> {
 %pythoncode {
+    def variablesSequence(self):
+        varlist = []
+        for i in range(0, self.nbrDim()):
+            varlist.append(self.variable(i))
+        return varlist
+
     def __mul__(self,p2):
         """
         return self * p2
@@ -50,32 +54,14 @@ def variablesSequence(self):
 }
 }
 
-%feature("shadow") gum::Potential<float>::__fill_distrib__ %{
-    def __fill_distrib__(self):
-        self._var_names = []
-        self._var_dims = []
-        content = []
-        if self.empty():
-            self.__distrib__ = numpy.array(content, dtype=float32)
-            return
-        i = Instantiation(self)
-        i.setFirst
-        while not i.end():
-            content.append(self.get(i))
-            i.inc()
-        self.__distrib__ = numpy.array(content, dtype=float32)
-        for var in self.variablesSequence():
-            self._var_names.append(var.name())
-            self._var_dims.append(len(var))
-        self._var_names.reverse()
-        self._var_dims.reverse()
-        self.__distrib__.shape = tuple(self._var_dims)
-%}
-
-
 // copy: M indicates the modifications
 %feature("shadow") gum::Potential<double>::__fill_distrib__ %{
     def __fill_distrib__(self):
+      if not hasattr(self,'_notSync'):
+        self._notSync=True
+
+      if self._notSync:
+        self._notSync=False
         self._var_names = []
         self._var_dims = []
         content = []
@@ -83,14 +69,14 @@ def variablesSequence(self):
             self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
             return
         i = Instantiation(self)
-        i.setFirst
+        i.setFirst()
         while not i.end():
             content.append(self.get(i))
             i.inc()
         self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
         for var in self.variablesSequence():
             self._var_names.append(var.name())
-            self._var_dims.append(len(var))
+            self._var_dims.append(var.domainSize())
         self._var_names.reverse()
         self._var_dims.reverse()
         self.__distrib__.shape = tuple(self._var_dims)
@@ -100,10 +86,6 @@ def variablesSequence(self):
 %feature("shadow") gum::Potential::__indexfromdict__ %{
     def __indexfromdict__(self, id_dict):
         index = []
-        #for id in id_dict:
-        #    if not id in self._var_names:
-        #        raise IndexError("\"%s\" is not a variable of this table !"
-        #                         %(id))
         for name, dim in zip(self._var_names, self._var_dims):
             if name in id_dict:
                 id_value = id_dict[name]
@@ -120,13 +102,13 @@ def variablesSequence(self):
         return tuple(index)
 %}
 
-
-%feature("shadow") gum::Potential::__str__ %{
-    def __str__(self):
-        self.__fill_distrib__()
-        return self.__distrib__.__str__()
-%}
-
+/*
+* %feature("shadow") gum::Potential::__str__ %{
+*     def __str__(self):
+*         self.__fill_distrib__()
+*         return self.__distrib__.__str__()
+* %}
+*/
 
 %feature("shadow") gum::Potential::tolist %{
     def tolist(self):
@@ -184,13 +166,10 @@ def variablesSequence(self):
 
 
 // these void class extensions are rewritten by "shadow" declarations
-%extend gum::Potential<float> {
-    void __fill_distrib__() {}
-}
 %extend gum::Potential<double> {
     void __fill_distrib__() {}
 }
-%extend gum::Potential {
+%extend gum::Potential<double> {
     PyObject * __indexfromdict__(PyObject *id_dict) { return NULL; }
     const char * __str__() { return NULL; }
     PyObject *tolist() { return NULL; }

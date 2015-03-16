@@ -106,7 +106,7 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   GUM_SCALAR
-  MultiDimBijArray<GUM_SCALAR>::get ( const Instantiation &i ) const {
+  MultiDimBijArray<GUM_SCALAR>::get ( const Instantiation& i ) const {
     if ( i.isMaster ( this ) ) {
       return __array._values[this->_offsets[&i]];
     } else {
@@ -116,19 +116,19 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  MultiDimBijArray<GUM_SCALAR>::set ( const Instantiation &i, const GUM_SCALAR &value ) const {
+  MultiDimBijArray<GUM_SCALAR>::set ( const Instantiation& i, const GUM_SCALAR& value ) const {
     GUM_ERROR ( OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only." );
   }
 
   template<typename GUM_SCALAR> INLINE
   void
-  MultiDimBijArray<GUM_SCALAR>::fillWith ( const std::vector< GUM_SCALAR > &v ) const {
+  MultiDimBijArray<GUM_SCALAR>::fillWith ( const std::vector< GUM_SCALAR >& v ) const {
     GUM_ERROR ( OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only." );
   }
 
   template<typename GUM_SCALAR> INLINE
   GUM_SCALAR&
-  MultiDimBijArray<GUM_SCALAR>::_get ( const Instantiation &i ) const {
+  MultiDimBijArray<GUM_SCALAR>::_get ( const Instantiation& i ) const {
     GUM_ERROR ( OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only." );
   }
 
@@ -136,8 +136,8 @@ namespace gum {
   void
   MultiDimBijArray<GUM_SCALAR>::_swap ( const DiscreteVariable* x,
                                         const DiscreteVariable* y ) {
-    MultiDimImplementation<GUM_SCALAR>::_swap ( x,y );
+    MultiDimImplementation<GUM_SCALAR>::_swap ( x, y );
   }
 
 } // namespace gum
-// ============================================================================
+

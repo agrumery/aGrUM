@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
- *   test $Id: $                                                           *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -31,20 +31,20 @@
 namespace gum {
 
   template <typename VAL> INLINE
-  typename Property< VAL >::onEdges
-  EdgeGraphPart::edgesProperty( VAL( *f )( const Edge& ), Size size ) const {
-    return __edges.hashMap( f, size );
+  EdgeProperty< VAL >
+  EdgeGraphPart::edgesProperty ( VAL ( *f ) ( const Edge& ), Size size ) const {
+    return __edges.hashMap ( f, size );
   }
 
   template <typename VAL> INLINE
-  typename Property< VAL >::onEdges
-  EdgeGraphPart::edgesProperty( const VAL& val, Size size ) const {
-    return __edges.hashMap( val, size );
+  EdgeProperty< VAL >
+  EdgeGraphPart::edgesProperty ( const VAL& val, Size size ) const {
+    return __edges.hashMap ( val, size );
   }
 
   template <typename VAL> INLINE
-  List<VAL> EdgeGraphPart::listMapEdges( VAL( *f )( const Edge& ) ) const {
-    return __edges.listMap( f );
+  List<VAL> EdgeGraphPart::listMapEdges ( VAL ( *f ) ( const Edge& ) ) const {
+    return __edges.listMap ( f );
   }
 
 
@@ -52,4 +52,4 @@ namespace gum {
 
 
 #endif    // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

@@ -18,35 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-// ============================================================================
+
 /**
  * @file
- * @brief Implementation of the Shafer-Shenoy alogorithm for inference in gum::BayesNet.
+ * @brief Implementation of the Shafer-Shenoy alogorithm for inference in gum::IBayesNet.
  */
-// ============================================================================
+
 #ifndef GUM_SHAFER_SHENOY_INFERENCE_H
 #define GUM_SHAFER_SHENOY_INFERENCE_H
-// ============================================================================
+
 #include <vector>
 #include <utility>
 #include <iostream>
 #include <string>
-// ============================================================================
+
 #include <agrum/config.h>
-// ============================================================================
-#include <agrum/graphs/defaultTriangulation.h>
-// ============================================================================
+
+#include <agrum/graphs/triangulations/defaultTriangulation.h>
+
 #include <agrum/multidim/multiDimBucket.h>
 #include <agrum/multidim/multiDimSparse.h>
-// ============================================================================
+
 #include <agrum/BN/inference/BayesNetInference.h>
-// ============================================================================
+
 
 namespace gum {
-// ============================================================================
+
 
   template <typename GUM_SCALAR> class CliqueProp;
-// ============================================================================
+
   /**
    * @class ShaferShenoyInference ShaferShenoyInference.h <agrum/BN/inference/ShaferShenoyInference.h>
    * @brief This class implements the Shafer-Shenoy alogorithm for inference
@@ -75,7 +75,7 @@ namespace gum {
        * Default constructor.
        * @param bayesNet The Bayesian Network used for the inference.
        */
-      ShaferShenoyInference( const AbstractBayesNet<GUM_SCALAR>& bayesNet );
+      ShaferShenoyInference( const IBayesNet<GUM_SCALAR>& bayesNet );
 
       /**
        * Destructor.
@@ -112,8 +112,8 @@ namespace gum {
 
     protected:
 
-      /// @see gum::BayesNetInference::_fillMarginal().
-      virtual void _fillMarginal( NodeId id , Potential<GUM_SCALAR>& marginal );
+      /// @see gum::BayesNetInference::_fillPosterior().
+      virtual void _fillPosterior( NodeId id , Potential<GUM_SCALAR>& posterior );
 
     private:
 
@@ -135,13 +135,13 @@ namespace gum {
       /// @{
 
       /// Mapping of the nodes with the clique used to put their CPT
-      typename Property<NodeId>::onNodes __node2CliqueMap;
+      NodeProperty<NodeId> __node2CliqueMap;
 
-      typename Property< CliqueProp<GUM_SCALAR>* >::onNodes __clique_prop;
+      NodeProperty< CliqueProp<GUM_SCALAR>* > __clique_prop;
 
       /// Mapping of an arc and the message which transited from pair.first to
       /// pair.second
-      typename Property< MultiDimBucket<GUM_SCALAR>* >::onArcs __messagesMap;
+      ArcProperty< MultiDimBucket<GUM_SCALAR>* > __messagesMap;
 
       /// @}
       // ====================================================================
@@ -156,7 +156,7 @@ namespace gum {
       const NodeSet& __getSeparator( NodeId clique_1, NodeId clique_2 );
 
       /// @return Returns the clique in which the node's cpt must be stored
-      NodeId __getClique( const std::vector<NodeId> &eliminationOrder, NodeId id );
+      NodeId __getClique( const std::vector<NodeId>& eliminationOrder, NodeId id );
 
       /// @}
       // ====================================================================
@@ -201,7 +201,7 @@ namespace gum {
       Potential<GUM_SCALAR>* __makeDummyPotential( NodeId cliqueId );
 
       /// @}
-    };
+  };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 /// @class CliqueProp
@@ -270,15 +270,14 @@ namespace gum {
       /// The name of the clique.
       std::string __name;
 
-    };
-
+  };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
-// ============================================================================
+
+  extern template class ShaferShenoyInference<float>;
+  extern template class ShaferShenoyInference<double>;
 } /* namespace gum */
 
-// ============================================================================
+
 #include <agrum/BN/inference/ShaferShenoyInference.tcc>
-// ============================================================================
+
 #endif /* GUM_SHAFER_SHENOY_INFERENCE_H */
-// ============================================================================
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;

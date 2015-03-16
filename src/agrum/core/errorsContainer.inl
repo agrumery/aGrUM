@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
- *   test $Id: $                                                           *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -74,9 +74,9 @@ namespace gum {
   }
 
   INLINE
-  void ErrorsContainer::showSyntheticResults() const {
-    std::cerr << "Errors : " << error_count << std::endl;
-    std::cerr << "Warnings : " << warning_count << std::endl;
+  void ErrorsContainer::syntheticResults ( std::ostream& o ) const {
+    o << "Errors : " << error_count << std::endl;
+    o << "Warnings : " << warning_count << std::endl;
   }
 
   INLINE

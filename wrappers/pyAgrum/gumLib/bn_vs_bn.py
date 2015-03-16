@@ -48,20 +48,20 @@ def nodeId(bn,n):
 DELTA_ERROR=1e-6
 
 def compareBNVariables(b1,b2):
-  for i in range(len(b1)):
+  for i in range(b1.size()):
     try:
       v1=b1.variable(i)
       v2=b2.variable(b2.idFromName(v1.name()))
-      if (len(v2)!=len(v1)):
+      if (v2.domainSize()!=v1.domainSize()):
         return v1.name() + " has not the same domain size in the two bns"
     except IndexError:
       return b1.variable(i).name()+" does not exist in "+b2.property('name')
 
-    for i in range(len(b2)):
+    for i in range(b2.size()):
       try:
         v2=b2.variable(i)
         v1=b1.variable(b1.idFromName(v2.name()))
-        if (len(v2)!=len(v1)):
+        if (v2.domainSize()!=v1.domainSize()):
           return v2.name() + " has not the same domain size in the two bns"
       except IndexError:
         return b2.variable(i).name()+" does not exist in "+b1.property('name')
@@ -69,7 +69,7 @@ def compareBNVariables(b1,b2):
   return "OK"
 
 def compareBNParents(b1,b2):
-  for i in range(len(b1)):
+  for i in range(b1.size()):
     id1=i
     id2=b2.idFromName(b1.variable(id1).name())
 
@@ -87,7 +87,7 @@ def compareCPT(b1,cpt1,b2,cpt2):
   I2=gum.Instantiation(cpt2)
   I1.setFirst()
   while not I1.end():
-    for i in range(len(I1)):
+    for i in range(I1.nbrDim()):
       I2.chgVal(dico2[I1.variable(i).name()],I1.val(i))
 
     if abs(cpt1.get(I1)-cpt2.get(I2))>DELTA_ERROR:
@@ -96,7 +96,7 @@ def compareCPT(b1,cpt1,b2,cpt2):
   return "OK"
 
 def compareBNCPT(b1,b2):
-  for i in range(len(b1)):
+  for i in range(b1.size()):
     res=compareCPT(b1,b1.cpt(i),b2,b2.cpt(b2.idFromName(b1.variable(i).name())))
     if res!="OK":
       return res

@@ -17,6 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-// ============================================================================
+
 #include <agrum/BN/particles/Gibbs.h>
-// ============================================================================
+
+template class gum::particle::Gibbs<float>;
+template class gum::particle::Gibbs<double>;
+

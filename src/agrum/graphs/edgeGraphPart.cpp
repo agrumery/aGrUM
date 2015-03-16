@@ -28,112 +28,100 @@
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/edgeGraphPart.inl>
 #endif //GUM_NOINLINE
+#include "graphElements.h"
 
 
 namespace gum {
 
 
   ///////////////////// EdgeGraphPart
-  EdgeGraphPart::EdgeGraphPart( Size edges_size ,
-                                bool edges_resize_policy ) :
-    __edges( edges_size , edges_resize_policy ) {
-    GUM_CONSTRUCTOR( EdgeGraphPart );
+  EdgeGraphPart::EdgeGraphPart ( Size edges_size ,
+                                 bool edges_resize_policy ) :
+    __edges ( edges_size , edges_resize_policy ) {
+    GUM_CONSTRUCTOR ( EdgeGraphPart );
   }
 
-  
-  EdgeGraphPart::EdgeGraphPart( const EdgeGraphPart& s ):
-    __edges( s.__edges ) {
-    GUM_CONS_CPY( EdgeGraphPart );
+
+  EdgeGraphPart::EdgeGraphPart ( const EdgeGraphPart& s ) :
+    __edges ( s.__edges ) {
+    GUM_CONS_CPY ( EdgeGraphPart );
 
     // copy the set of neighbours
-    const Property<NodeSet*>::onNodes& neigh = s.__neighbours;
-    __neighbours.resize ( neigh.capacity () );
-    for ( Property<NodeSet*>::onNodes::const_iterator iter = neigh.begin();
-          iter != neigh.end(); ++iter ) {
-      NodeSet* newneigh = new NodeSet ( **iter );
-      __neighbours.insert ( iter.key (), newneigh );
+    __neighbours.resize ( s.__neighbours.capacity() );
+
+    for ( const auto & elt : s.__neighbours ) {
+      NodeSet* newneigh = new NodeSet ( * elt.second );
+      __neighbours.insert ( elt.first, newneigh );
     }
 
     // send signals to indicate that there are new edges
-    if ( onEdgeAdded.hasListener() ) {
-      for ( EdgeSetIterator iter = __edges.begin();
-            iter != __edges.end(); ++iter ) {
-        GUM_EMIT2( onEdgeAdded, iter->first(), iter->second() );
-      }
-    }
+    if ( onEdgeAdded.hasListener() )
+      for ( const auto & edge : __edges )
+        GUM_EMIT2 ( onEdgeAdded, edge.first(), edge.second() );
   }
-  
+
 
   EdgeGraphPart::~EdgeGraphPart() {
-    GUM_DESTRUCTOR( EdgeGraphPart );
+    GUM_DESTRUCTOR ( EdgeGraphPart );
     // be sure to deallocate all the neighbours sets
-    clearEdges ();
+    clearEdges();
   }
 
-  
+
   void EdgeGraphPart::clearEdges() {
-    for ( Property<NodeSet*>::onNodes::const_iterator iter = __neighbours.begin();
-          iter != __neighbours.end(); ++iter ) {
-      delete *iter;
-    }
+    for ( const auto & elt : __neighbours )
+      delete elt.second;
+
     __neighbours.clear();
 
     if ( onEdgeDeleted.hasListener() ) {
       EdgeSet tmp = __edges;
-
       __edges.clear();
 
-      for ( EdgeSetIterator iter = tmp.begin();iter != tmp.end();++iter )
-        GUM_EMIT2( onEdgeDeleted, iter->first(), iter->second() );
-    }
-    else {
+      for ( const auto & edge : tmp )
+        GUM_EMIT2 ( onEdgeDeleted, edge.first(), edge.second() );
+    } else {
       __edges.clear();
     }
   }
-  
 
-  EdgeGraphPart& EdgeGraphPart::operator=( const EdgeGraphPart& s ) {
+
+  EdgeGraphPart& EdgeGraphPart::operator= ( const EdgeGraphPart& s ) {
     // avoid self assignment
     if ( this != &s ) {
-      clearEdges ();
-      
+      clearEdges();
+
       __edges = s.__edges;
-      
+
       // copy the set of neighbours
-      const Property<NodeSet*>::onNodes& neigh = s.__neighbours;
-      __neighbours.resize ( neigh.capacity () );
-      for ( Property<NodeSet*>::onNodes::const_iterator iter = neigh.begin();
-            iter != neigh.end(); ++iter ) {
-        NodeSet* newneigh = new NodeSet ( **iter );
-        __neighbours.insert ( iter.key (), newneigh );
+      __neighbours.resize ( s.__neighbours.capacity() );
+
+      for ( const auto & elt : s.__neighbours ) {
+        NodeSet* newneigh = new NodeSet ( * elt.second );
+        __neighbours.insert ( elt.first, newneigh );
       }
 
-      if ( onEdgeAdded.hasListener() ) {
-        for ( EdgeSetIterator iter = __edges.begin();
-              iter != __edges.end(); ++iter ) {
-          GUM_EMIT2( onEdgeAdded, iter->first(), iter->second() );
-        }
-      }
+      if ( onEdgeAdded.hasListener() )
+        for ( const auto & edge : __edges )
+          GUM_EMIT2 ( onEdgeAdded, edge.first(), edge.second() );
     }
 
     return *this;
   }
 
-  
+
   const std::string EdgeGraphPart::toString() const {
     std::stringstream s;
     bool first = true;
     s << "{";
 
-    for ( EdgeSetIterator it = __edges.begin();it != __edges.end();++it ) {
-      if ( first ) {
+    for ( const auto edge : __edges ) {
+      if ( first )
         first = false;
-      }
-      else {
+      else
         s << ",";
-      }
 
-      s << *it;
+      s << edge;
     }
 
     s << "}";
@@ -143,14 +131,14 @@ namespace gum {
 
 
   const std::vector<NodeId>
-  EdgeGraphPart::undirectedPath( const NodeId n1, const NodeId n2 ) const {
+  EdgeGraphPart::undirectedPath ( const NodeId n1, const NodeId n2 ) const {
     // not recursive version => use a FIFO for simulating the recursion
     List<NodeId> nodeFIFO;
-    nodeFIFO.pushBack( n2 );
+    nodeFIFO.pushBack ( n2 );
 
     // mark[node] = predecessor if visited, else mark[node] does not exist
-    Property<NodeId>::onNodes mark;
-    mark.insert( n2, n2 );
+    NodeProperty<NodeId> mark;
+    mark.insert ( n2, n2 );
 
     NodeId current;
 
@@ -158,36 +146,32 @@ namespace gum {
       current = nodeFIFO.front();
       nodeFIFO.popFront();
 
-      // check the neighbour //////////////////////////////////////////////
-      const NodeSet& set = neighbours( current );
-
-      for ( NodeSetIterator ite = set.begin();ite != set.end();++ite ) {
-        NodeId new_one = *ite;
-
-        if ( mark.exists( new_one ) ) // if this node is already marked, stop
+      // check the neighbour
+      for ( const auto new_one : neighbours ( current ) ) {
+        if ( mark.exists ( new_one ) ) // if this node is already marked, stop
           continue;
 
-        mark.insert( new_one, current );
+        mark.insert ( new_one, current );
 
         if ( new_one == n1 ) {
           std::vector<NodeId> v;
 
           for ( current = n1; current != n2; current = mark[current] )
-            v.push_back( current );
+            v.push_back ( current );
 
-          v.push_back( n2 );
+          v.push_back ( n2 );
 
           return v;
         }
 
-        nodeFIFO.pushBack( new_one );
+        nodeFIFO.pushBack ( new_one );
       }
     }
 
-    GUM_ERROR( NotFound, "no path found" );
+    GUM_ERROR ( NotFound, "no path found" );
 
   }
-  
+
 
   std::ostream& operator<< ( std::ostream& stream, const EdgeGraphPart& set ) {
     stream << set.toString();
@@ -198,4 +182,4 @@ namespace gum {
 } /* namespace gum */
 
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

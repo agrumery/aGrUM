@@ -20,9 +20,13 @@
 /** @file
  * @brief Outlined implementation of BIFXMLBNReader
  *
- * @author Jean-Christophe Magnan & Pierre-Henri Wuillemin
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
+
+
+template class gum::BIFXMLBNReader<float>;
+template class gum::BIFXMLBNReader<double>;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

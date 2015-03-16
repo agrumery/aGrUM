@@ -21,14 +21,16 @@
 /**
  * @file
  * @brief Inference by basic sampling algorithm (pure random) of bnet in credal networks.
- * @author Matthieu HOURBRACQ
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
 
 #ifndef __CN_MC_SAMPLING__H__
 #define __CN_MC_SAMPLING__H__
 
 #include <limits>
-#include <agrum/CN/MultipleInferenceEngine.h>
+#include <agrum/CN/multipleInferenceEngine.h>
+
+#include <agrum/BN/inference/lazyPropagation.h>
 
 namespace gum {
   namespace credal {
@@ -38,8 +40,8 @@ namespace gum {
      * @brief Inference by basic sampling algorithm (pure random) of bnet in credal networks.
      * @ingroup cn_group
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
-     * @tparam BNInferenceEngine A BayesNet inference engine such as LazyPropagation ( recommanded ).
-     * @author Matthieu HOURBRACQ
+     * @tparam BNInferenceEngine A IBayesNet inference engine such as LazyPropagation ( recommanded ).
+     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      *
      * @warning p(e) must be available ( by a call to my_BNInferenceEngine.evidenceMarginal() ) !! the vertices are correct if p(e) > 0 for a sample
      * the test is made once
@@ -48,7 +50,7 @@ namespace gum {
     class CNMonteCarloSampling : public MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > {
       private:
         /** To easily acces MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > methods. */
-        typedef MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > infEs;
+        typedef MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > __infEs;
 
         /// @name Private initialization methods
         /// @{
@@ -60,7 +62,7 @@ namespace gum {
 
         /// @name Private algorithm methods
         /// @{
-        /** Thread samples a BayesNet from the CredalNet. */
+        /** Thread samples a IBayesNet from the CredalNet. */
         inline void __verticesSampling();
 
         /** Insert CredalNet evidence into a thread BNInferenceEngine. */
@@ -69,7 +71,7 @@ namespace gum {
         /** Thread performs an inference using BNInferenceEngine. Calls __verticesSampling and __insertEvidence. */
         inline void __threadInference();
 
-        /** Update thread data after a BayesNet inference. */
+        /** Update thread data after a IBayesNet inference. */
         inline void __threadUpdate();
 
         /**
@@ -77,7 +79,7 @@ namespace gum {
          * @param toFill A reference to the bits to fill. Size must be correct before passing argument (i.e. big enough to represent \c value)
          * @param value The constant integer we want to binarize.
          */
-        inline void __binaryRep ( std::vector< bool > &toFill,  const unsigned int value ) const;
+        inline void __binaryRep ( std::vector< bool >& toFill,  const unsigned int value ) const;
 
         /// @}
 
@@ -91,7 +93,7 @@ namespace gum {
          * Constructor.
          * @param credalNet The CredalNet to be used by the algorithm.
          */
-        CNMonteCarloSampling ( const CredalNet< GUM_SCALAR > &credalNet );
+        CNMonteCarloSampling ( const CredalNet< GUM_SCALAR >& credalNet );
         /** Destructor. */
         virtual ~CNMonteCarloSampling();
         /// @}
@@ -104,17 +106,17 @@ namespace gum {
 
         /// @}
 
-        /** Erase all inference data (including thread data). */
-        //void eraseAllEvidence();
-
-        //// debug /////
 
         ///unsigned int notOptDelete;
 
+
+        virtual void insertEvidenceFile ( const std::string& path ) { InferenceEngine<GUM_SCALAR>::insertEvidenceFile(path);};
       protected:
         bool _repetitiveInd;
     };
 
+    extern template class CNMonteCarloSampling<float, LazyPropagation<float>>;
+    extern template class CNMonteCarloSampling<double, LazyPropagation<double>>;
 
   } // namespace cn
 }

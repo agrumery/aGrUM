@@ -29,19 +29,19 @@
 
 namespace gum {
 
-  
+
   /// default constructor
-  JunctionTreeStrategy::JunctionTreeStrategy () {
+  JunctionTreeStrategy::JunctionTreeStrategy() {
     // for debugging purposes
     GUM_CONSTRUCTOR ( JunctionTreeStrategy );
   }
 
 
   /// destructor
-  JunctionTreeStrategy::~JunctionTreeStrategy () {
+  JunctionTreeStrategy::~JunctionTreeStrategy() {
     // for debugging purposes
     GUM_DESTRUCTOR ( JunctionTreeStrategy );
   }
 
-  
+
 } /* namespace gum */

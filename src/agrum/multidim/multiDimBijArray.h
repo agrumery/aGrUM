@@ -23,17 +23,17 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #ifndef GUM_MULTIDIMBIJARRAY_H
 #define GUM_MULTIDIMBIJARRAY_H
-// ============================================================================
+
 #include <agrum/core/bijection.h>
-// ============================================================================
+
 #include <agrum/multidim/multiDimWithOffset.h>
 #include <agrum/multidim/multiDimArray.h>
-// ============================================================================
+
 namespace gum {
-  // ============================================================================
+
   /**
    * @class MultiDimBijArray "multiDimBijArray.h" <agrum/multidim/multiDimBijArray.h>
    * @brief Decorator of a MultiDimArray, using a bijection over the variables.
@@ -49,35 +49,35 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// Gets the content of decorator and uses its implementation.
       /// @throw OperationNotAllowed If decorator's content is not a MultiDimArray
       ///                            raise an OperationNotAllowed
-      // ============================================================================
+
       MultiDimBijArray ( const VarBijection& bijection,
                          const MultiDimArray<GUM_SCALAR>& array );
 
-      // ============================================================================
+
       /// Gets the content of decorator and uses its implementation.
       /// @throw OperationNotAllowed If decorator's content is not a MultiDimArray
       ///                            raise an OperationNotAllowed
-      // ============================================================================
+
       MultiDimBijArray ( const VarBijection& bijection,
                          const MultiDimBijArray<GUM_SCALAR>& array );
 
-      // ============================================================================
+
       /// copy constructor
       /** The newly created matrix contains the same variables and the same values as
        * from, but no instantiation is associated to it.
        * @param from the multidimensional matrix we copy into this */
-      // ============================================================================
+
       MultiDimBijArray ( const MultiDimBijArray<GUM_SCALAR>& from );
 
-      // ============================================================================
+
       /// destructor
       /** Note that, when the multidimensional array is removed from memory, its
        * variables are not removed as well. */
-      // ============================================================================
+
       virtual ~MultiDimBijArray();
 
       /// @}
@@ -119,7 +119,7 @@ namespace gum {
       virtual const std::string& name() const;
 
       /// Returns the value pointed by i.
-      virtual GUM_SCALAR get ( const Instantiation &i ) const;
+      virtual GUM_SCALAR get ( const Instantiation& i ) const;
 
       /**
        * This will raise an exception:  read only structure
@@ -128,7 +128,7 @@ namespace gum {
        * @param value
        * @throw OperationNotAllowed You can't change a readonly structure
        */
-      virtual void set ( const Instantiation &i, const GUM_SCALAR &value ) const;
+      virtual void set ( const Instantiation& i, const GUM_SCALAR& value ) const;
 
       /**
        * This will raise an exception: you can't change the variables in a
@@ -163,10 +163,10 @@ namespace gum {
        * @param v The variable not added.
        * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
        */
-      virtual void fillWith ( const std::vector< GUM_SCALAR > &v ) const;
+      virtual void fillWith ( const std::vector< GUM_SCALAR >& v ) const;
 
     protected:
-      virtual GUM_SCALAR & _get ( const Instantiation &i ) const;
+      virtual GUM_SCALAR& _get ( const Instantiation& i ) const;
 
       /// synchronise content after MultipleChanges
       virtual void _commitMultipleChanges ( void );
@@ -180,8 +180,8 @@ namespace gum {
       std::string __name;
   };
 } // namespace gum
-// ============================================================================
+
 #include <agrum/multidim/multiDimBijArray.tcc>
-// ============================================================================
+
 #endif // GUM_MULTIDIMBIJARRAY_H
-// ============================================================================
+

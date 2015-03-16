@@ -9,21 +9,17 @@
 #include <cxxtest/TestRunner.h>
 #include <cxxtest/TestListener.h>
 
-namespace CxxTest 
-{
-    class YesNoRunner : public TestListener
-    {
+namespace CxxTest {
+  class YesNoRunner : public TestListener {
     public:
-        YesNoRunner()
-        {
-        }
-        
-        int run()
-        {
-            TestRunner::runAllTests( *this );
-            return tracker().failedTests();
-        }
-    };
+      YesNoRunner() {
+      }
+
+      int run() {
+        TestRunner::runAllTests ( *this );
+        return tracker().failedTests();
+      }
+  };
 }
 
 #endif // __cxxtest__YesNoRunner_h__

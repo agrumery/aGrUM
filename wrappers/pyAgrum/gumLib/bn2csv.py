@@ -82,13 +82,20 @@ class CSVGenerator:
         return self._parents[n]
 
     def caching_probas(self,bn,node_id,n,par):
-        key=n
+        if not n in self._probas:
+          self._probas[n]={}
+        current=self._probas[n]
+        
         for k in par:
-            key+='-'+k+':'+str(self._sample[k])
-
-        if not self._probas.has_key(key):
-            self._probas[key]=bn.cpt(node_id)[dict([(p,self._sample[p]) for p in par])]
-        return self._probas[key]
+          val_k=self._sample[k]
+          if not val_k in current:
+            current[val_k]={}
+          current=current[val_k]
+          
+        if not 'p' in current:
+          current['p']=list(bn.cpt(node_id)[dict([(p,self._sample[p]) for p in par])])
+          
+        return current['p']
 
     def newSample(self,bn,seq):
         """
@@ -122,7 +129,7 @@ class CSVGenerator:
         writer = csv.writer(open(name_out,'wb'))
 
         if visible:
-            print name_in,' ready\r',
+            print name_out,'\r',
             sys.stdout.flush()
 
         titles=[bn.variable(item).name() for item in seq]
@@ -152,7 +159,7 @@ class CSVGenerator:
 
 def generateCSV(name_in, name_out, n,visible=False):
     g=CSVGenerator()
-    g.proceed(name_in, name_out, n,visible)
+    return g.proceed(name_in, name_out, n,visible)
 
 def module_help(exit_value=1):
     """

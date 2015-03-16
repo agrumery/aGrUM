@@ -23,9 +23,9 @@
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
-// ============================================================================
+
 #include <agrum/variables/rangeVariable.h>
-// ============================================================================
+
 #ifdef GUM_NO_INLINE
 #include <agrum/variables/rangeVariable.inl>
 #endif /* GUM_NO_INLINE */
@@ -37,11 +37,11 @@ namespace gum {
   // ==========================================================================
   // Default constructor
   // ==========================================================================
-  RangeVariable::RangeVariable( const std::string& aName,
-                                const std::string& aDesc,
-                                Idx minVal, Idx maxVal ):
-      DiscreteVariable( aName, aDesc ), __minBound( minVal ), __maxBound( maxVal ) {
-    GUM_CONSTRUCTOR( RangeVariable );
+  RangeVariable::RangeVariable ( const std::string& aName,
+                                 const std::string& aDesc,
+                                 Idx minVal, Idx maxVal ) :
+    DiscreteVariable ( aName, aDesc ), __minBound ( minVal ), __maxBound ( maxVal ) {
+    GUM_CONSTRUCTOR ( RangeVariable );
   }
 
   // ==========================================================================
@@ -49,24 +49,24 @@ namespace gum {
   // If aDRV haves any listener, it will not be copied.
   // @param aDRV the variable we copy
   // ==========================================================================
-  RangeVariable::RangeVariable( const RangeVariable& aDRV ):
-      DiscreteVariable( aDRV ), __minBound( aDRV.__minBound ), __maxBound( aDRV.__maxBound ) {
-    GUM_CONS_CPY( RangeVariable );
+  RangeVariable::RangeVariable ( const RangeVariable& aDRV ) :
+    DiscreteVariable ( aDRV ), __minBound ( aDRV.__minBound ), __maxBound ( aDRV.__maxBound ) {
+    GUM_CONS_CPY ( RangeVariable );
   }
 
   // ==========================================================================
   // destructor
   // ==========================================================================
   RangeVariable::~RangeVariable() {
-    GUM_DESTRUCTOR( RangeVariable );
+    GUM_DESTRUCTOR ( RangeVariable );
   }
 
 
   const std::string RangeVariable::toString() const {
     std::stringstream s;
-    s << name() << "[" << min() << "-" << max() << "]";
+    s << name() << "[" << minVal() << "-" << maxVal() << "]";
     return s.str();
   }
 } /* namespace gum */
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

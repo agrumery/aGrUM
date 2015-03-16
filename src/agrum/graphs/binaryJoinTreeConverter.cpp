@@ -32,19 +32,19 @@ namespace gum {
 
 
   /// default constructor
-  BinaryJoinTreeConverter::BinaryJoinTreeConverter () {
+  BinaryJoinTreeConverter::BinaryJoinTreeConverter() {
     // for debugging purposes
     GUM_CONSTRUCTOR ( BinaryJoinTreeConverter );
   }
 
-  
+
   /// destructor
-  BinaryJoinTreeConverter::~BinaryJoinTreeConverter () {
+  BinaryJoinTreeConverter::~BinaryJoinTreeConverter() {
     // for debugging purposes
     GUM_DESTRUCTOR ( BinaryJoinTreeConverter );
   }
 
-    
+
 } /* namespace gum */
 
 

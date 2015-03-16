@@ -1,7 +1,9 @@
 ## for creation of cmake package AGRUM
-get_filename_component(AGRUM_INSTALL_LIBRARY AGRUM_LIBRARY NAME)
-set(AGRUM_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/${AGRUM_INSTALL_LIBRARY})
-set(AGRUM_INCLUDE ${CMAKE_INSTALL_PREFIX}/include)
+set(AGRUM_LIBRARY ${LIBAGRUM})
+set (AGRUM_LIBRARIES ${AGRUM_LIBRARY})
+if (OPENMP_FOUND)
+  list (APPEND AGRUM_LIBARIES gomp)
+endif ()
 configure_file(
   "${CMAKE_CURRENT_CMAKE_DIR}/aGrUMConfig.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/aGrUMConfig.cmake"

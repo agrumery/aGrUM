@@ -55,7 +55,7 @@ public:
 
  * @endcode
  *
- * @author Pierre-Henri Wuillemin
+ * @author Pierre-Henri WUILLEMIN
  */
 #ifndef BIF_READER_H
 #define BIF_READER_H
@@ -64,7 +64,7 @@ public:
 #include <string>
 #include <fstream>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
 #include <agrum/BN/io/BNReader.h>
 
@@ -112,13 +112,12 @@ namespace gum {
 
    * @endcode
    *
-   * @author Pierre-Henri Wuillemin
+   * @author Pierre-Henri WUILLEMIN
    */
   template<typename GUM_SCALAR>
-
   class BIFReader : public BNReader<GUM_SCALAR> {
     public:
-      BIFReader( BayesNet<GUM_SCALAR>* bn, const std::string& filename );
+      BIFReader ( BayesNet<GUM_SCALAR>* bn, const std::string& filename );
       ~BIFReader();
 
       /// Direct access to BIF scanner (mandatory for listener connection)
@@ -129,13 +128,13 @@ namespace gum {
       const std::string& streamName() const;
 
       /// accessor to trace function (just write the number of parser line)
-      bool trace( void ) const;
-      void trace( bool b );
+      bool trace ( void ) const;
+      void trace ( bool b );
 
       /// parse.
       /// @return the number of detected errors
       /// @throws IOError if file not exists
-      int proceed( void );
+      int proceed ( void );
 
       /// @{
       /// publishing Errors API
@@ -146,22 +145,22 @@ namespace gum {
       Size warnings();
 
       /// line of ith error or warning
-      unsigned int errLine( unsigned int i );
+      unsigned int errLine ( unsigned int i );
       /// col of ith error or warning
-      unsigned int errCol( unsigned int i );
+      unsigned int errCol ( unsigned int i );
       /// type of ith error or warning
-      bool errIsError( unsigned int i );
+      bool errIsError ( unsigned int i );
       /// message of ith error or warning
-      std::string errMsg( unsigned int i );
+      std::string errMsg ( unsigned int i );
 
       /// send on std::cerr the list of errors
-      void showElegantErrors();
+      void showElegantErrors(std::ostream& o=std::cerr);
 
       /// send on std::cerr the list of errors or warnings
-      void showElegantErrorsAndWarnings();
+      void showElegantErrorsAndWarnings(std::ostream& o=std::cerr);
 
       /// send on std::cerr the number of errors and the number of warnings
-      void showErrorCounts();
+      void showErrorCounts(std::ostream& o=std::cerr);
       /// @}
 
     protected:
@@ -177,10 +176,13 @@ namespace gum {
       // a boolean to throw the ioerror not in the constructor but in the proceed()
       bool __ioerror;
   };
+
+  extern template class BIFReader<float>;
+  extern template class BIFReader<double>;
 } // namespace gum
 
 #include <agrum/BN/io/BIF/BIFReader.tcc>
 
 #endif // BIF_READER_H
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

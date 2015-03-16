@@ -71,7 +71,7 @@ def computeAUC(points):
 def computeROCpoints(bn,csv_name,target,label,visible=False):
     idTarget=bn.idFromName(target)
     idLabel=-1
-    for i in range(len(bn.variable(idTarget))):
+    for i in range(bn.variable(idTarget).domainSize()):
       if bn.variable(idTarget).label(i)==label:
         idLabel=i
         break;
@@ -120,7 +120,7 @@ def computeROCpoints(bn,csv_name,target,label,visible=False):
         try:
             engine.setEvidence(e)
             engine.makeInference()
-            px=engine.marginal(idTarget)[{target:label}]
+            px=engine.posterior(idTarget)[{target:label}]
             res.append((px,int(data[positions[idTarget]])))
         except gum.OutOfBounds as err:
             print err

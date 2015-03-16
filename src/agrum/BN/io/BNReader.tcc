@@ -20,7 +20,7 @@
 /** @file
  * @brief Templates implementation of bns/io/gumBNReader.h classes.
  *
- * @author Lionel Torti & Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -32,13 +32,13 @@ namespace gum {
   /* ===                           GUM_BN_WRITTER                             === */
   /* ============================================================================ */
   template<typename GUM_SCALAR> INLINE
-  BNReader<GUM_SCALAR>:: BNReader(BayesNet<GUM_SCALAR>* bn,const std::string& filename ) {
-    GUM_CONSTRUCTOR( BNReader );
+  BNReader<GUM_SCALAR>:: BNReader ( BayesNet<GUM_SCALAR>* bn, const std::string& filename ) {
+    GUM_CONSTRUCTOR ( BNReader );
   }
 
   template<typename GUM_SCALAR> INLINE
   BNReader<GUM_SCALAR>::~BNReader() {
-    GUM_DESTRUCTOR( BNReader );
+    GUM_DESTRUCTOR ( BNReader );
   }
 
 

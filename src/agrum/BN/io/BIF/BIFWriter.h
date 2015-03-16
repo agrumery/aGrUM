@@ -24,7 +24,7 @@
  * This class servers to write the content of a Bayesian Network in
  * the BIF format.
  *
- * @author Lionel Torti & Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_BIF_WRITER_H
@@ -43,7 +43,7 @@ namespace gum {
 
   /**
    * @class BIFWriter
-   * @brief Writes a BayesNet in the BIF format.
+   * @brief Writes a IBayesNet in the BIF format.
    * @ingroup bn_group
    *
    * This class servers to write the content of a Bayesian Network in
@@ -53,7 +53,6 @@ namespace gum {
    *
    */
   template<typename GUM_SCALAR>
-
   class BIFWriter: public BNWriter<GUM_SCALAR> {
     public:
       // ==========================================================================
@@ -76,11 +75,11 @@ namespace gum {
       /**
        * Writes a Bayesian Network in the output stream using the BIF format.
        *
-			 * @param output The output stream.
+       * @param output The output stream.
        * @param bn The Bayesian Network writen in output.
        * @throws IOError Raised if and I/O error occurs.
        */
-      virtual void write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn );
+      virtual void write ( std::ostream& output, const IBayesNet<GUM_SCALAR>& bn );
 
       /**
        * Writes a Bayesian Network in the referenced file using the BIF format.
@@ -90,23 +89,26 @@ namespace gum {
        * @param bn The Bayesian Network writed in the file.
        * @throws IOError Raised if and I/O error occurs.
        */
-      virtual void write( std::string filePath, const BayesNet<GUM_SCALAR>& bn );
+      virtual void write ( std::string filePath, const IBayesNet<GUM_SCALAR>& bn );
 
 
     private:
       // Returns the header of the BIF file.
-      std::string __header( const BayesNet<GUM_SCALAR>& bn );
+      std::string __header ( const IBayesNet<GUM_SCALAR>& bn );
 
       // Returns a bloc defining a variable in the BIF format.
-      std::string __variableBloc( const DiscreteVariable& var );
+      std::string __variableBloc ( const DiscreteVariable& var );
 
       // Returns a bloc defining a variable's CPT in the BIF format.
-      std::string __variableCPT( const Potential<GUM_SCALAR>& cpt );
+      std::string __variableCPT ( const Potential<GUM_SCALAR>& cpt );
 
       // Returns the modalities labels of the variables in varsSeq
-      std::string __variablesLabels( const Sequence<const DiscreteVariable*>& varsSeq,
-                                     const Instantiation& inst );
+      std::string __variablesLabels ( const Sequence<const DiscreteVariable*>& varsSeq,
+                                      const Instantiation& inst );
   };
+
+  extern template class BIFWriter<float>;
+  extern template class BIFWriter<double>;
 } /* namespace gum */
 
 #include <agrum/BN/io/BIF/BIFWriter.tcc>

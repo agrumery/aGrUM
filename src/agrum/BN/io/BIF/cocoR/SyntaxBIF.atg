@@ -1,20 +1,20 @@
 #include <agrum/core/cast_unicode.h>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
 
 #undef TRY
-#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.type());}
+#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.errorType());}
 COMPILER BIF
 
 
-gum::AbstractBayesNetFactory* __factory;
+gum::IBayesNetFactory* __factory;
 
-void setFactory(gum::AbstractBayesNetFactory* f) {
+void setFactory(gum::IBayesNetFactory* f) {
   __factory=f;
 }
 
-gum::AbstractBayesNetFactory& factory(void) {
+gum::IBayesNetFactory& factory(void) {
   if (__factory) return *__factory;
   GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
 }
@@ -135,7 +135,7 @@ PROBA =
                 bool error_on_variable=false;
                .)
   '(' IDENT<var> (.
-                try { factory().variableId(var); } catch (gum::Exception& e) { error_on_variable=true;SemErr(e.type());}
+                try { factory().variableId(var); } catch (gum::Exception& e) { error_on_variable=true;SemErr(e.errorType());}
                 TRY(factory().startParentsDeclaration(var));
                .)
   [ '|' LISTE_PARENTS<parents> ]

@@ -20,7 +20,7 @@
 /** @file
  * @brief Class used to compute response times for benchmark purposes
  *
- * @author Pierre-Henri Wuillemin & Jean-Philippe Dubus
+ * @author Pierre-Henri WUILLEMIN & Jean-Philippe Dubus
  */
 #ifndef GUM_TIMER_H
 #define GUM_TIMER_H
@@ -58,7 +58,7 @@ namespace gum {
       /**
        * Copy constructor
        */
-      Timer ( const Timer & );
+      Timer ( const Timer& );
 
       /**
        * Destructor
@@ -77,7 +77,7 @@ namespace gum {
       /**
        * copy operator
        */
-      Timer &operator= ( const Timer & );
+      Timer& operator= ( const Timer& );
 
       /// @}
 

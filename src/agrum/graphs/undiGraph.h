@@ -55,15 +55,15 @@ namespace gum {
    * UndiGraph g1,g2;
    *
    * // adding nodes and edges to g1
-   * NodeId i1=g1.insertNode();
-   * NodeId i2=g1.insertNode();
-   * NodeId i3=g1.insertNode();
-   * g1.insertEdge( i1,i2 );
-   * g1.insertEdge( i1,i3 );
-   * g1.insertEdge( i2,i3 );
+   * NodeId i1=g1.addNode();
+   * NodeId i2=g1.addNode();
+   * NodeId i3=g1.addNode();
+   * g1.addEdge( i1,i2 );
+   * g1.addEdge( i1,i3 );
+   * g1.addEdge( i2,i3 );
    *
    * //throw an InvalidNode
-   * // g1.insertEdge( i1+i2+i3,i1 );
+   * // g1.addEdge( i1+i2+i3,i1 );
    *
    * // copying graphs
    * UndiGraph g3 = g1;
@@ -83,18 +83,15 @@ namespace gum {
    * g2.eraseNode( i2 );
    *
    * // parse a graph
-   * for ( NodeGraphPart::iterator iter = g3.beginNodes();
-   *       iter != g3.endNodes(); ++iter )
-   *   cerr << *iter << endl;
+   * for ( const auto node : g3.nodes() )
+   *   cerr << node << endl;
    *
-   * for ( EdgeGraphPart::iterator iter = g3.beginEdges();
-   *       iter != g3.endEdges(); ++iter )
-   *   cerr << *iter << endl;
+   * for ( const auto& edge : g3.edges())
+   *   cerr << edge << endl;
    *
    * const EdgeSet& a=g3.neighbours( 3 );
-   *
-   * for ( EdgeSetIterator iter = a.begin( ); iter != a.end(); ++iter )
-   *   cerr << "  -  "<<*iter;
+   * for ( const auto& edge : a)
+   *   cerr << "  -  "<<edge;
    *
    * cerr<<endl;
    *
@@ -104,7 +101,7 @@ namespace gum {
    */
   /* =========================================================================== */
 
-  class UndiGraph : public virtual NodeGraphPart,public EdgeGraphPart {
+  class UndiGraph : public virtual NodeGraphPart, public EdgeGraphPart {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
@@ -116,14 +113,14 @@ namespace gum {
        * @param nodes_resize_policy the resizing policy of this hash table
        * @param edges_size the size of the hash table used to store all the edges
        * @param edges_resize_policy the resizing policy of this hash table */
-      explicit UndiGraph( Size nodes_size = GUM_HASHTABLE_DEFAULT_SIZE,
-                          bool nodes_resize_policy    = true,
-                          Size edges_size = GUM_HASHTABLE_DEFAULT_SIZE,
-                          bool edges_resize_policy    = true );
+      explicit UndiGraph ( Size nodes_size = HashTableConst::default_size,
+                           bool nodes_resize_policy    = true,
+                           Size edges_size = HashTableConst::default_size,
+                           bool edges_resize_policy    = true );
 
       /// copy constructor
       /** @param g the UndiGraph to copy */
-      UndiGraph( const UndiGraph& g );
+      UndiGraph ( const UndiGraph& g );
 
       /// destructor
       virtual ~UndiGraph();
@@ -138,17 +135,17 @@ namespace gum {
 
       /// copy operator
       /** @param g the DiGraph to copy */
-      UndiGraph& operator=( const UndiGraph& g );
+      UndiGraph& operator= ( const UndiGraph& g );
 
       /// tests whether two UndiGraphs are identical (same nodes, same edges)
       /** @param g the UndiGraph with which "this" is compared */
       // not virtual : it is a feature !!! :)
-      bool operator==( const UndiGraph& g ) const;
+      bool operator== ( const UndiGraph& g ) const;
 
       /// tests whether two UndiGraphs are different
       /** @param g the UndiGraph with which "this" is compared */
       // not virtual : it is a feature !!! :)
-      bool operator!=( const UndiGraph& g ) const;
+      bool operator!= ( const UndiGraph& g ) const;
 
       /// @}
 
@@ -167,13 +164,14 @@ namespace gum {
        * exception is raised.
        * @throw InvalidNode if first and/or second do not belong to the
        * graph nodes */
-      virtual void insertEdge( const NodeId first,const NodeId second );
+      GUM_DEPRECATED(virtual void insertEdge ( const NodeId first, const NodeId second ));
+      virtual void addEdge ( const NodeId first, const NodeId second );
 
       /// remove a node and its adjacent edges from the graph
       /** @param id the id of the node to be removed
        * @warning if the node does not exist, nothing is done. In particular, no
        * exception is raised.*/
-      virtual void eraseNode( const NodeId id );
+      virtual void eraseNode ( const NodeId id );
 
       /// removes all the nodes and edges from the graph
       virtual void clear();
@@ -188,7 +186,7 @@ namespace gum {
       bool hasUndirectedCycle() const;
 
       /// returns the partial graph formed by the nodes given in parameter
-      virtual UndiGraph partialUndiGraph( NodeSet nodesSet );
+      virtual UndiGraph partialUndiGraph ( NodeSet nodesSet );
 
       /// @}
 

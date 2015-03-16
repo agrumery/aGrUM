@@ -32,15 +32,15 @@ namespace gum {
   /* ============================================================================ */
   // Default constructor.
   template<typename GUM_SCALAR, template <class> class IApproximationPolicy> INLINE
-    CNFWriter<GUM_SCALAR,IApproximationPolicy>::CNFWriter() {
-      GUM_CONSTRUCTOR( CNFWriter );
-    }
+  CNFWriter<GUM_SCALAR, IApproximationPolicy>::CNFWriter() {
+    GUM_CONSTRUCTOR ( CNFWriter );
+  }
 
   // Default destructor.
   template<typename GUM_SCALAR, template <class> class IApproximationPolicy> INLINE
-    CNFWriter<GUM_SCALAR, IApproximationPolicy>::~CNFWriter() {
-      GUM_DESTRUCTOR( CNFWriter );
-    }
+  CNFWriter<GUM_SCALAR, IApproximationPolicy>::~CNFWriter() {
+    GUM_DESTRUCTOR ( CNFWriter );
+  }
 
 
 } /*namespace gum */

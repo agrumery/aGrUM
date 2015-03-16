@@ -21,7 +21,7 @@
  * @file
  * @brief This file contains definition for a "loading action" listener in python
  *
- * @author Pierre-Henri Wuillemin
+ * @author Pierre-Henri WUILLEMIN
  */
 
 #include <Python.h>
@@ -31,54 +31,58 @@
 
 class PythonLoadListener : public gum::Listener {
   private:
-    PyObject *__whenLoading;
+    PyObject* __whenLoading;
   public:
-    void whenLoading( const void *buffer,int percent ) {
+    void whenLoading ( const void* buffer, int percent ) {
       if ( __whenLoading ) {
-        PyObject* arglist = Py_BuildValue( "(i)",percent );
-        PyEval_CallObject( __whenLoading,arglist );
-        Py_DECREF( arglist );
+        PyObject* arglist = Py_BuildValue ( "(i)", percent );
+        PyEval_CallObject ( __whenLoading, arglist );
+        Py_DECREF ( arglist );
       }
     }
 
-    bool setPythonListener( PyObject* l ) {
-      if ( ! PyCallable_Check( l ) ) {
+    bool setPythonListener ( PyObject* l ) {
+      if ( ! PyCallable_Check ( l ) ) {
         return false;
       } else {
-        __whenLoading=l;
-        Py_INCREF( l );
+        __whenLoading = l;
+        Py_INCREF ( l );
         return true;
       }
     }
 
     PythonLoadListener() {
-      __whenLoading=( PyObject* )0;
+      __whenLoading = ( PyObject* ) 0;
     }
     ~PythonLoadListener() {
-      if ( __whenLoading ) Py_DECREF( __whenLoading );
+      if ( __whenLoading ) Py_DECREF ( __whenLoading );
     }
 };
 
 
-int __fillLoadListeners(std::vector<PythonLoadListener>& py_listener, PyObject *l) {
-  if (!l) return 0;
-  if (l==Py_None) return 0;
-  
+int __fillLoadListeners ( std::vector<PythonLoadListener>& py_listener, PyObject* l ) {
+  if ( !l ) return 0;
+
+  if ( l == Py_None ) return 0;
+
   int l_size = 0;
-  PyObject *item;
-  
-  if(PySequence_Check(l)) {
-    l_size = PySequence_Size(l);
-    py_listener.resize(l_size);
-    for(int i=0 ; i < l_size ; i++) {
-      item = PySequence_GetItem(l, i);
-      if(! py_listener[i].setPythonListener(item)) return 0;
+  PyObject* item;
+
+  if ( PySequence_Check ( l ) ) {
+    l_size = PySequence_Size ( l );
+    py_listener.resize ( l_size );
+
+    for ( int i = 0 ; i < l_size ; i++ ) {
+      item = PySequence_GetItem ( l, i );
+
+      if ( ! py_listener[i].setPythonListener ( item ) ) return 0;
     }
   } else {
-    l_size=1;
-    py_listener.resize(l_size);
-    if(! py_listener[0].setPythonListener(l)) return 0;
+    l_size = 1;
+    py_listener.resize ( l_size );
+
+    if ( ! py_listener[0].setPythonListener ( l ) ) return 0;
   }
-  
+
   return l_size;
 }

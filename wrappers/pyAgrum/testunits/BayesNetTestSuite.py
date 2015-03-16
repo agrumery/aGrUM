@@ -1,19 +1,21 @@
 # -*- coding: utf-8 -*-
 # -*- encoding: UTF-8 -*-
 
+# tests use the compiled version of pyAgrum and not the packaged one. So we directly call the __init__.py file
+import __init__ as gum # read "import pyAgrum as gum"
+
 import unittest
-from pyAgrum import BayesNet, LabelizedVar, InvalidNode, InvalidDirectedCycle
 from pyAgrumTestSuite import pyAgrumTestCase
 
 
 class BayesNetTestCase(pyAgrumTestCase):
 
     def setUp(self):
-        self.var1 = LabelizedVar("var1", "1", 2)
-        self.var2 = LabelizedVar( "var2", "2", 2 )
-        self.var3 = LabelizedVar( "var3", "3", 2 )
-        self.var4 = LabelizedVar( "var4", "4", 2 )
-        self.var5 = LabelizedVar( "var5", "(gum::Size) 5", 3 )
+        self.var1 = gum.LabelizedVariable("var1", "1", 2)
+        self.var2 = gum.LabelizedVariable( "var2", "2", 2 )
+        self.var3 = gum.LabelizedVariable( "var3", "3", 2 )
+        self.var4 = gum.LabelizedVariable( "var4", "4", 2 )
+        self.var5 = gum.LabelizedVariable( "var5", "(gum::Size) 5", 3 )
         self.bufferlisten = ""
         self.bufferecoute = ""
 
@@ -25,32 +27,32 @@ class BayesNetTestCase(pyAgrumTestCase):
         idList.append(bn.add(self.var4));
         idList.append(bn.add(self.var5));
 
-        bn.insertArc(idList[0], idList[2]);
-        bn.insertArc(idList[2], idList[4]);
-        bn.insertArc(idList[1], idList[3]);
-        bn.insertArc(idList[0], idList[3]);
-        bn.insertArc(idList[3], idList[4]);
-        bn.insertArc(idList[1], idList[4]);
+        bn.addArc(idList[0], idList[2]);
+        bn.addArc(idList[2], idList[4]);
+        bn.addArc(idList[1], idList[3]);
+        bn.addArc(idList[0], idList[3]);
+        bn.addArc(idList[3], idList[4]);
+        bn.addArc(idList[1], idList[4]);
 
 
 
 class TestConstructors(BayesNetTestCase):
 
     def testConstructor(self):
-        bn = BayesNet()
-        bn = BayesNet('French Touch Network')
+        bn = gum.BayesNet()
+        bn = gum.BayesNet('French Touch Network')
 
 
     def testCopyConstructor(self):
-        bn1 = BayesNet()
-        bn2 = BayesNet(bn1)
+        bn1 = gum.BayesNet()
+        bn2 = gum.BayesNet(bn1)
 
 
 
 class TestInsertions(BayesNetTestCase):
 
     def testVariables(self):
-        bn = BayesNet()
+        bn = gum.BayesNet()
         idList = []
 
         idList.append(bn.add(self.var1))
@@ -59,7 +61,7 @@ class TestInsertions(BayesNetTestCase):
         idList.append(bn.add(self.var4))
         idList.append(bn.add(self.var5))
 
-        self.assertEqual(len(bn), 5)
+        self.assertEqual(bn.size(), 5)
 
         i = 1
         for id_a in idList[:-1]:
@@ -78,7 +80,7 @@ class TestInsertions(BayesNetTestCase):
 
 
     def testArcs(self):
-        bn = BayesNet()
+        bn = gum.BayesNet()
         idList = []
 
         idList.append(bn.add(self.var1))
@@ -87,19 +89,19 @@ class TestInsertions(BayesNetTestCase):
         idList.append(bn.add(self.var4))
         idList.append(bn.add(self.var5))
 
-        bn.insertArc(idList[0], idList[2])
-        bn.insertArc(idList[2], idList[4])
-        bn.insertArc(idList[1], idList[3])
-        bn.insertArc(idList[0], idList[3])
-        bn.insertArc(idList[3], idList[4])
-        bn.insertArc(idList[1], idList[4])
+        bn.addArc(idList[0], idList[2])
+        bn.addArc(idList[2], idList[4])
+        bn.addArc(idList[1], idList[3])
+        bn.addArc(idList[0], idList[3])
+        bn.addArc(idList[3], idList[4])
+        bn.addArc(idList[1], idList[4])
 
-        self.assertRaises(InvalidDirectedCycle, bn.insertArc,idList[4],idList[0])
-        self.assertRaises(InvalidNode, bn.insertArc,42,666)
+        self.assertRaises(gum.InvalidDirectedCycle, bn.addArc,idList[4],idList[0])
+        self.assertRaises(gum.InvalidNode, bn.addArc,42,666)
 
 
     def testEraseArcs(self):
-        bn = BayesNet()
+        bn = gum.BayesNet()
         idList = []
 
         self.assertTrue(bn.empty())
@@ -107,7 +109,7 @@ class TestInsertions(BayesNetTestCase):
         self.fillTopo(bn, idList)
 
         self.assertFalse(bn.empty())
-        self.assertEqual(len(bn), 5)
+        self.assertEqual(bn.size(), 5)
 
         bn.eraseArc(idList[0], idList[2])
         bn.eraseArc(idList[2], idList[4])
@@ -123,7 +125,7 @@ class TestInsertions(BayesNetTestCase):
 class TestFeatures(BayesNetTestCase):
 
     def testMoralGraph(self):
-        bn = BayesNet()
+        bn = gum.BayesNet()
         idList = []
 
         self.fillTopo(bn, idList)
@@ -131,12 +133,21 @@ class TestFeatures(BayesNetTestCase):
 
 
     def testTopologicalOrder(self):
-        bn = BayesNet()
+        bn = gum.BayesNet()
         idList = []
 
         self.fillTopo(bn, idList)
         topoOrder = bn.topologicalOrder()
-        self.assertEqual(topoOrder.size(), 5)
+        self.assertEqual(len(topoOrder), 5)
+        
+    def testChangeLabel(self):      
+        bn = gum.BayesNet()
+        res = bn.loadBIF('../../../src/testunits/ressources/alarm.bif')
+        
+        self.assertEqual(str(bn.variable(0)),"HISTORY<TRUE,FALSE>")
+        bn.variable(0).toLabelizedVar().changeLabel(0,"toto")
+        self.assertEqual(str(bn.variable(0)),"HISTORY<toto,FALSE>")
+
 
 
 
@@ -156,7 +167,7 @@ class TestBIF(BayesNetTestCase):
     def testSimpleBIFLoad(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadBIF('../../../src/testunits/ressources/alarm.bif', self.listen)
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "")
@@ -170,7 +181,7 @@ class TestBIF(BayesNetTestCase):
     def testSimpleBIFLoadWithoutListener(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadBIF('../../../src/testunits/ressources/alarm.bif')
         self.assertEqual(self.bufferlisten, "")
         self.assertEqual(self.bufferecoute, "")
@@ -184,7 +195,7 @@ class TestBIF(BayesNetTestCase):
     def testListBIFLoad(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadBIF('../../../src/testunits/ressources/alarm.bif', [self.listen, self.ecoute])
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
@@ -198,7 +209,7 @@ class TestBIF(BayesNetTestCase):
     def testTupleBIFLoad(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadBIF('../../../src/testunits/ressources/alarm.bif', (self.ecoute, self.listen))
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
@@ -212,7 +223,7 @@ class TestBIF(BayesNetTestCase):
     def testSimpleNETLoad(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadDSL('../../../src/testunits/ressources/test1.net', self.listen)
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "")
@@ -221,7 +232,7 @@ class TestBIF(BayesNetTestCase):
     def testSimpleDSLLoad(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadDSL('../../../src/testunits/ressources/DSL/alarm.dsl', self.listen)
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "")
@@ -235,7 +246,7 @@ class TestBIF(BayesNetTestCase):
     def testSimpleDSLLoadWithoutListener(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadDSL('../../../src/testunits/ressources/DSL/alarm.dsl')
         self.assertEqual(self.bufferlisten, "")
         self.assertEqual(self.bufferecoute, "")
@@ -249,7 +260,7 @@ class TestBIF(BayesNetTestCase):
     def testListDSLLoad(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadDSL('../../../src/testunits/ressources/DSL/alarm.dsl', [self.listen, self.ecoute])
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
@@ -264,7 +275,7 @@ class TestBIF(BayesNetTestCase):
     def testTupleDSLLoad(self):
         self.bufferlisten = ""
         self.bufferecoute = ""
-        bn = BayesNet()
+        bn = gum.BayesNet()
         res = bn.loadDSL('../../../src/testunits/ressources/DSL/alarm.dsl', (self.ecoute, self.listen))
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
@@ -276,7 +287,6 @@ class TestBIF(BayesNetTestCase):
 																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
 
-
 ts = unittest.TestSuite()
 ts.addTest(TestConstructors('testConstructor'))
 ts.addTest(TestConstructors('testCopyConstructor'))
@@ -285,6 +295,7 @@ ts.addTest(TestInsertions('testArcs'))
 ts.addTest(TestInsertions('testEraseArcs'))
 ts.addTest(TestFeatures('testMoralGraph'))
 ts.addTest(TestFeatures('testTopologicalOrder'))
+ts.addTest(TestFeatures('testChangeLabel'))
 ts.addTest(TestBIF('testSimpleBIFLoad'))
 ts.addTest(TestBIF('testSimpleBIFLoadWithoutListener'))
 ts.addTest(TestBIF('testListBIFLoad'))
@@ -292,4 +303,5 @@ ts.addTest(TestBIF('testTupleBIFLoad'))
 ts.addTest(TestBIF('testSimpleDSLLoad'))
 ts.addTest(TestBIF('testSimpleDSLLoadWithoutListener'))
 ts.addTest(TestBIF('testListDSLLoad'))
+ts.addTest(TestBIF('testTupleDSLLoad'))
 ts.addTest(TestBIF('testTupleDSLLoad'))

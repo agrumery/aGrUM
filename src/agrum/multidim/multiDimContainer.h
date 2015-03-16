@@ -23,18 +23,18 @@
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
-// ============================================================================
+
 #ifndef GUM_MULTIDIM_CONTAINER_H
 #define GUM_MULTIDIM_CONTAINER_H
-// ============================================================================
+
 #include <iostream>
 #include <vector>
 #include <cmath>
-// ============================================================================
+
 #include <agrum/config.h>
-// ============================================================================
+
 #include <agrum/multidim/multiDimAdressable.h>
-// ============================================================================
+
 
 namespace gum {
   /* ============================================================================ */
@@ -85,19 +85,19 @@ namespace gum {
       /// @name Constructors / Destructors
       // ############################################################################
       /// @{
-      // ============================================================================
+
       /// Default constructor.
-      // ============================================================================
+
       MultiDimContainer();
 
-      // ============================================================================
+
       /// Copy constructor.
-      // ============================================================================
+
       MultiDimContainer ( const MultiDimContainer<GUM_SCALAR>& src );
 
-      // ============================================================================
+
       /// Destructor.
-      // ============================================================================
+
       virtual ~MultiDimContainer();
 
       /// @}
@@ -107,7 +107,7 @@ namespace gum {
       // ############################################################################
       /// @{
     public:
-      // ============================================================================
+
       /**
        * Changes the value pointed by i.
        *
@@ -115,10 +115,10 @@ namespace gum {
        * then 0 is assumed for dimensions (i.e. variables) not prensent in the
        * instantiation.
        */
-      // ============================================================================
-      virtual void set ( const Instantiation &i, const GUM_SCALAR &value ) const;
 
-      // ============================================================================
+      virtual void set ( const Instantiation& i, const GUM_SCALAR& value ) const;
+
+
       /**
        * Returns the value pointed by i.
        *
@@ -126,10 +126,10 @@ namespace gum {
        * then 0 is assumed for dimensions (i.e. variables) not prensent in the
        * instantiation.
        */
-      // ============================================================================
-      virtual GUM_SCALAR get ( const Instantiation &i ) const ;
 
-      // ============================================================================
+      virtual GUM_SCALAR get ( const Instantiation& i ) const ;
+
+
       /**
        * An [] operator using a Instantiation as argument.
        *
@@ -140,18 +140,18 @@ namespace gum {
        * @param i An Instantiation.
        * @return Returns the adressed (GUM_SCALAR) value.
        */
-      // ============================================================================
-      GUM_SCALAR operator[] ( const Instantiation &i ) const;
 
-      // ============================================================================
+      GUM_SCALAR operator[] ( const Instantiation& i ) const;
+
+
       /**
        * Fill the table with d.
        * @param d The value used to fill this gum::MultiDimContainer.
        */
-      // ============================================================================
-      virtual void fill ( const GUM_SCALAR &d ) const = 0;
 
-      // ==============================================================================
+      virtual void fill ( const GUM_SCALAR& d ) const = 0;
+
+
       /**
        * @brief Automatically fills this gum::MultiDimContainer with the values in v.
        *
@@ -169,7 +169,7 @@ namespace gum {
        * @throw SizeError If v size's does not matches this gum::MultiDimContainer
        *                  domain size.
        */
-      // ==============================================================================
+
       virtual void fillWith ( const std::vector<GUM_SCALAR>& v ) const;
 
       /// @}
@@ -192,16 +192,16 @@ namespace gum {
        * @throw OperationNotAllowed Raised if src does not have the same domain size
        *                            than this gum::MultiDimContainer.
        */
-      // ============================================================================
-      virtual void copyFrom ( const MultiDimContainer<GUM_SCALAR>& src,
-                              Instantiation *p_i = ( Instantiation * ) 0 ) const;
 
-      // ============================================================================
+      virtual void copyFrom ( const MultiDimContainer<GUM_SCALAR>& src,
+                              Instantiation* p_i = ( Instantiation* ) 0 ) const;
+
+
       /**
        * Removes all variables in this gum::MultiDimContainer and copy the content
        * of src, variables included.
        */
-      // ============================================================================
+
       virtual void copy ( const MultiDimContainer<GUM_SCALAR>& src );
 
       /**
@@ -226,24 +226,24 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// Display the content of the array.
-      // ============================================================================
+
       virtual const std::string toString() const;
 
-      // ============================================================================
-      /// Display the internal representation of i.
-      // ============================================================================
-      virtual const std::string toString ( const Instantiation *i ) const = 0;
 
-      // ============================================================================
+      /// Display the internal representation of i.
+
+      virtual const std::string toString ( const Instantiation* i ) const = 0;
+
+
       /// Test if this potential is equal to p.
-      // ============================================================================
+
       bool operator== ( const MultiDimContainer<GUM_SCALAR>& p ) const;
 
-      // ============================================================================
+
       /// Test if this potential is different of p.
-      // ============================================================================
+
       bool operator!= ( const MultiDimContainer<GUM_SCALAR>& p ) const;
 
       /// @}
@@ -252,29 +252,29 @@ namespace gum {
       /// @name Fast large modifications in structures.
       // ############################################################################
       /// @{
-      // ============================================================================
+
       /**
        * @brief Call this method before doing important changes in this
        *        gum::MultiDimContainer.
        * @warning Remember to call endMultipleChanges() when you finish your changes.
        */
-      // ============================================================================
+
       virtual void beginMultipleChanges ( void ) = 0 ;
 
-      // ============================================================================
+
       /**
        * @brief Call this method after doing important changes in this
        *        gum::MultiDimContainer.
        */
-      // ============================================================================
+
       virtual void endMultipleChanges ( void ) = 0 ;
-      virtual void endMultipleChanges ( const GUM_SCALAR & ) = 0 ;
-      // ============================================================================
+      virtual void endMultipleChanges ( const GUM_SCALAR& ) = 0 ;
+
 
       /// @}
 
     protected:
-      // ============================================================================
+
       /**
        * @brief Return a data, given a Instantiation.
        *
@@ -287,14 +287,14 @@ namespace gum {
        *
        * @param i The instantiation used to find the data.
        */
-      // ============================================================================
-      virtual GUM_SCALAR &_get ( const Instantiation &i ) const = 0;
+
+      virtual GUM_SCALAR& _get ( const Instantiation& i ) const = 0;
 
   };
 } /* namespace gum */
 
-// ============================================================================
+
 #include <agrum/multidim/multiDimContainer.tcc>
-// ============================================================================
+
 #endif /* GUM_MULTIDIM_CONTAINER_H */
-// ============================================================================
+

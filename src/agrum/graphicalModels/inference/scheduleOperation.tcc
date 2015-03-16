@@ -30,20 +30,20 @@ namespace gum {
 
   /// returns a new distinct ID for each ScheduleOperation
   template <typename GUM_SCALAR>
-  Id ScheduleOperation<GUM_SCALAR>::__newId () {
+  Id ScheduleOperation<GUM_SCALAR>::__newId() {
     static Id id = 0;
     return ++id;
   }
 
-  
+
   /// default constructor
   template <typename GUM_SCALAR>
-  ScheduleOperation<GUM_SCALAR>::ScheduleOperation ( Type t) :
+  ScheduleOperation<GUM_SCALAR>::ScheduleOperation ( Type t ) :
     __type ( t ), __id ( __newId() ) {
     // for debugging purposes
     GUM_CONSTRUCTOR ( ScheduleOperation );
   }
-  
+
 
   /// copy constructor
   template <typename GUM_SCALAR>
@@ -53,11 +53,11 @@ namespace gum {
     // for debugging purposes
     GUM_CONSTRUCTOR ( ScheduleOperation );
   }
-  
+
 
   /// destructor
   template <typename GUM_SCALAR>
-  ScheduleOperation<GUM_SCALAR>::~ScheduleOperation () {
+  ScheduleOperation<GUM_SCALAR>::~ScheduleOperation() {
     // for debugging purposes
     GUM_DESTRUCTOR ( ScheduleOperation );
   }
@@ -71,19 +71,19 @@ namespace gum {
     __id = from.__id;
     return *this;
   }
-  
+
 
   /// returns the name of the operation
   template <typename GUM_SCALAR>
   INLINE typename ScheduleOperation<GUM_SCALAR>::Type
-  ScheduleOperation<GUM_SCALAR>::type () const {
+  ScheduleOperation<GUM_SCALAR>::type() const {
     return __type;
-  }  
+  }
 
 
   /// returns the id of the operation
   template <typename GUM_SCALAR>
-  INLINE Id ScheduleOperation<GUM_SCALAR>::id () const {
+  INLINE Id ScheduleOperation<GUM_SCALAR>::id() const {
     return __id;
   }
 

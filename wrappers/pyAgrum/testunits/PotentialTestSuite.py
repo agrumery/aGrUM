@@ -1,8 +1,10 @@
 # -*- encoding: UTF-8 -*-
 
+# tests use the compiled version of pyAgrum and not the packaged one. So we directly call the __init__.py file
+import __init__ as gum # read "import pyAgrum as gum"
+
 import unittest
 import numpy as np
-from pyAgrum import BayesNet, LabelizedVar, Potential, Instantiation
 from pyAgrumTestSuite import pyAgrumTestCase
 
 
@@ -10,12 +12,12 @@ class PotentialTestCase(pyAgrumTestCase):
 
     def setUp(self):
         self.var = {}
-        self.var.update({"c": LabelizedVar("c", "nuages", 2)})
-        self.var.update({"s": LabelizedVar("s", "arrosoir", 2)})
-        r = LabelizedVar("r", "pluie", 0).addLabel('bof')\
+        self.var.update({"c": gum.LabelizedVariable("c", "nuages", 2)})
+        self.var.update({"s": gum.LabelizedVariable("s", "arrosoir", 2)})
+        r = gum.LabelizedVariable("r", "pluie", 0).addLabel('bof')\
                                          .addLabel('carrement')
         self.var.update({"r": r})
-        self.var.update({"w": LabelizedVar("w", "herbe mouillée", 2)})
+        self.var.update({"w": gum.LabelizedVariable("w", "herbe mouillée", 2)})
 
 
     def fillBN(self, bn, id_list):
@@ -24,17 +26,17 @@ class PotentialTestCase(pyAgrumTestCase):
         id_list.append(bn.add(self.var["r"]))
         id_list.append(bn.add(self.var["w"]))
 
-        bn.insertArc(id_list[0], id_list[1])
-        bn.insertArc(id_list[0], id_list[2])
-        bn.insertArc(id_list[1], id_list[3])
-        bn.insertArc(id_list[2], id_list[3])
+        bn.addArc(id_list[0], id_list[1])
+        bn.addArc(id_list[0], id_list[2])
+        bn.addArc(id_list[1], id_list[3])
+        bn.addArc(id_list[2], id_list[3])
 
 
 
 class TestInsertions(PotentialTestCase):
 
     def testVariableInsertion(self):
-        pot = Potential()
+        pot = gum.Potential()
         self.assertTrue(pot.empty())
 
         pot.add(self.var['c'])
@@ -49,11 +51,13 @@ class TestInsertions(PotentialTestCase):
             self.assertTrue(pot.contains(var))
             self.assertEqual(pot.variable(id), var)
 
-        self.assertFalse(pot.contains(LabelizedVar("a", "", 5)))
+        self.assertFalse(pot.contains(gum.LabelizedVariable("a", "", 5)))
 
 
+
+        
     def testVariableDeletion(self):
-        pot = Potential()
+        pot = gum.Potential()
         pot.add(self.var['s'])
         pot.add(self.var['r'])
         self.assertEqual(pot.nbrDim(), 2)
@@ -65,16 +69,16 @@ class TestInsertions(PotentialTestCase):
 
 
     def testDimentionIncreasing(self):
-        bn = BayesNet()
+        bn = gum.BayesNet()
         id_list = []
         self.fillBN(bn, id_list)
         list3 = bn.cpt(id_list[3])
         list3[:] = [ [ [ 1,  0     ], [ 0.1 ,  0.9   ] ], \
                      [ [ 0.1,  0.9 ], [ 0.01 ,  0.99 ] ] ]
 
-        addvar = LabelizedVar("d", "rosée", 4)
+        addvar = gum.LabelizedVariable("d", "rosée", 4)
         addvar_id = bn.add(addvar)
-        bn.insertArc(addvar_id, id_list[3])
+        bn.addArc(addvar_id, id_list[3])
 
         list3 = bn.cpt(id_list[3])
         self.assertEqual(list3.var_names, ['d', 'r', 's', 'w'])
@@ -95,13 +99,13 @@ class TestInsertions(PotentialTestCase):
 
 
     def testWithInstantiation(self):
-        bn = BayesNet()
+        bn = gum.BayesNet()
         id_list = []
         self.fillBN(bn, id_list)
         list3 = bn.cpt(id_list[3])
         list3[:] = [ [ [ 1,  0     ], [ 0.1 ,  0.9   ] ], \
                      [ [ 0.1,  0.9 ], [ 0.01 ,  0.99 ] ] ]
-        i = Instantiation(list3)
+        i = gum.Instantiation(list3)
         list3.set(i, 0)
         i.inc()
         list3.set(i, 1)
@@ -110,12 +114,33 @@ class TestInsertions(PotentialTestCase):
               [ [ 0.1,  0.9 ], [ 0.01 ,  0.99 ] ] ] )
         self.assertListsAlmostEqual(list3[:], bn.cpt(id_list[3])[:])
 
-
-
+    def testCopyConstructor(self):
+        pot=gum.Potential()
+        pot.add(self.var['c'])
+        pot.add(self.var['s'])
+        pot.add(self.var['r'])
+        
+        i=gum.Instantiation (pot)
+        val=1
+        i.setFirst()
+        while not i.end():
+          pot.set(i,val)
+          val+=1
+          i.inc()
+        self.assertEqual(pot.sum(),36.0)
+        
+        pot2=gum.Potential(pot)
+        self.assertEqual(pot2.sum(),36.0)
+        
+        i.setFirst()
+        pot.set(i,0) # instead of 1
+        self.assertEqual(pot.sum(),35.0)
+        self.assertEqual(pot2.sum(),36.0)
+        
 class TestIndexs(PotentialTestCase):
 
     def testNumpyIndex(self):
-        bn = BayesNet()
+        bn = gum.BayesNet()
         id_list = []
 
         self.fillBN(bn, id_list)
@@ -148,7 +173,7 @@ class TestIndexs(PotentialTestCase):
 
 
     def testDictIndex(self):
-        bn = BayesNet()
+        bn = gum.BayesNet()
         id_list = []
 
         self.fillBN(bn, id_list)
@@ -170,15 +195,15 @@ class TestIndexs(PotentialTestCase):
         list2[{'r': 'carrement'}] = [0.6, 0.4]
         self.assertListsAlmostEqual(list2[{'r': 'bof'}].tolist(), [0.1, 0.9])
         self.assertListsAlmostEqual(list2[{'r': 1}].tolist(), [0.6, 0.4])
-        
+
         self.assertListsAlmostEqual(list2[{'c': 0}].tolist(), [0.1, 0.6])
         self.assertListsAlmostEqual(list2[{'c': 1}].tolist(), [0.9, 0.4])
-        
+
         self.assertListsAlmostEqual(list2[{'r': 'bof','existepas':0}].tolist(), [0.1, 0.9])
         self.assertListsAlmostEqual(list2[{'r': 1,'existepas':'et non'}].tolist(), [0.6, 0.4])
 
         self.assertRaises(IndexError, list2.__getitem__,{'r':99})
-        
+
         self.assertListsAlmostEqual(list2.toarray(), np.array([[0.1, 0.6],[0.9,0.4]]))
 
 
@@ -188,5 +213,6 @@ ts.addTest(TestInsertions('testVariableInsertion'))
 ts.addTest(TestInsertions('testVariableDeletion'))
 ts.addTest(TestInsertions('testDimentionIncreasing'))
 ts.addTest(TestInsertions('testWithInstantiation'))
+ts.addTest(TestInsertions('testCopyConstructor'))
 ts.addTest(TestIndexs('testNumpyIndex'))
 ts.addTest(TestIndexs('testDictIndex'))

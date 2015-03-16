@@ -25,48 +25,48 @@
 type t_state OK, NOK;
 
 class PowerSupply {
-  t_state powState { [ 0.99, 0.01 ] };
+    t_state powState { [ 0.99, 0.01 ] };
 }
 
 class Room {
-  PowerSupply power;
+    PowerSupply power;
 }
 
 class Equipment {
 
-  Room room;
+    Room room;
 
-  t_state equipState dependson room.power.powState {
-    [ 0.80, 0,
+    t_state equipState dependson room.power.powState {
+      [ 0.80, 0,
       0.20, 1 ]
-  };
+    };
 
 }
 
 class Printer extends Equipment {
 
-  boolean hasPaper { [ 0.1, 0.9 ] };
+    boolean hasPaper { [ 0.1, 0.9 ] };
 
-  boolean hasInk   { [ 0.3, 0.7 ] };
+    boolean hasInk   { [ 0.3, 0.7 ] };
 
-  t_state equipState dependson room.power.powState, hasPaper, hasInk {
-    *, *, *:          0.00, 1.00;
-    OK, true, true:   0.80, 0.20;
-  };
+    t_state equipState dependson room.power.powState, hasPaper, hasInk {
+      *, *, *:          0.00, 1.00;
+      OK, true, true:   0.80, 0.20;
+    };
 }
 
 class Computer extends Equipment {
 
-  Printer[] printers;
+    Printer[] printers;
 
-  boolean exists_printer = exists([printers.equipState], OK);
+    boolean exists_printer = exists ( [printers.equipState], OK );
 
-  boolean can_print dependson equipState, exists_printer {
-    // exists_printer |   false  | |   true   |
-    // state          | OK | NOK | | OK | NOK |
-    /* false */       [1.00, 0.00,  0.00, 1.00,
-    /* true  */        0.00, 1.00,  1.00, 0.00]
-  };
+    boolean can_print dependson equipState, exists_printer {
+      // exists_printer |   false  | |   true   |
+      // state          | OK | NOK | | OK | NOK |
+      /* false */       [1.00, 0.00,  0.00, 1.00,
+      /* true  */        0.00, 1.00,  1.00, 0.00]
+    };
 
 }
 

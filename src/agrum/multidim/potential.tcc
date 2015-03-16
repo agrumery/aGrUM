@@ -24,47 +24,42 @@
 namespace gum {
 
 
-  // ============================================================================
+
   /// Default constructor: creates an empty null dimensional matrix
   /**
    * choose a MultiDimArray<> as decorated implementation  */
-  // ============================================================================
+
   template<typename GUM_SCALAR>
   Potential<GUM_SCALAR>::Potential( ) :
-      MultiDimDecorator<GUM_SCALAR> ( new MultiDimArray<GUM_SCALAR>() ) {
+    MultiDimDecorator<GUM_SCALAR> ( new MultiDimArray<GUM_SCALAR>() ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Potential );
   }
 
-  // ==============================================================================
+
   /// Default constructor: creates an empty null dimensional matrix
-  // ==============================================================================
+
   template<typename GUM_SCALAR>
-  Potential<GUM_SCALAR>::Potential( MultiDimImplementation<GUM_SCALAR> *aContent ) :
-      MultiDimDecorator<GUM_SCALAR> ( aContent ) {
+  Potential<GUM_SCALAR>::Potential( MultiDimImplementation<GUM_SCALAR>* aContent ) :
+    MultiDimDecorator<GUM_SCALAR> ( aContent ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Potential );
   }
 
-  // ==============================================================================
-  /// copy constructor :
-  /// @warning this copy constructor should reference the same content !!!
-  /// TOO DANGEROUS !!!
-  // ==============================================================================
+
+  /// copy constructor
   template<typename GUM_SCALAR>
   Potential<GUM_SCALAR>::Potential( const Potential<GUM_SCALAR>& src ) :
-      MultiDimDecorator<GUM_SCALAR> ( src )  {
+    Potential<GUM_SCALAR> ( static_cast<MultiDimImplementation<GUM_SCALAR> *>(src.content()->newFactory()),*(src.content()) )  {
     // for debugging purposes
     GUM_CONS_CPY( Potential );
-    GUM_ERROR( OperationNotAllowed,
-               "No copy for Potential : how to choose the implementation ?" );
   }
 
   // complex copy constructor : we choose the implementation
   template<typename GUM_SCALAR>
-  Potential<GUM_SCALAR>::Potential( MultiDimImplementation<GUM_SCALAR> *aContent,
-                                const MultiDimContainer<GUM_SCALAR>& src ) :
-      MultiDimDecorator<GUM_SCALAR> ( aContent ) {
+  Potential<GUM_SCALAR>::Potential( MultiDimImplementation<GUM_SCALAR>* aContent,
+                                    const MultiDimContainer<GUM_SCALAR>& src ) :
+    MultiDimDecorator<GUM_SCALAR> ( aContent ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Potential );
 
@@ -90,39 +85,40 @@ namespace gum {
     return *this;
   }
 
-  // ==============================================================================
+
   /// destructor
-  // ==============================================================================
+
   template<typename GUM_SCALAR>
   Potential<GUM_SCALAR>::~Potential() {
     // for debugging purposes
     GUM_DESTRUCTOR( Potential );
   }
 
-  // ==============================================================================
+
   template<typename GUM_SCALAR>
   Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::marginalize( const Potential& p ) const {
-    const Sequence<const DiscreteVariable *>& seq = this->variablesSequence() ;
-    Set<const DiscreteVariable *> delvars;
+    const Sequence<const DiscreteVariable*>& seq = this->variablesSequence() ;
+    Set<const DiscreteVariable*> delvars;
 
     if ( p.empty() ) {
       GUM_ERROR( OperationNotAllowed, "Impossible to marginalize" );
     }
 
-    for ( Sequence<const DiscreteVariable *>::iterator iter = seq.begin();
-          iter != seq.end();++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = seq.beginSafe();
+          iter != seq.endSafe(); ++iter ) {
       if ( ! p.contains( **iter ) ) {
         GUM_ERROR( OperationNotAllowed, "Impossible to marginalize" );
       }
     }
 
-    this->_swapContent(projectSum(p.getMasterRef(),seq.diffSet(p.variablesSequence())));
+    this->_swapContent( projectSum( p.getMasterRef(),
+                                    p.variablesSequence().diffSet( seq ) ) );
 
     // a const method should return a const ref BUT WE NEED t return a non const ref
     return const_cast<Potential<GUM_SCALAR>&>( *this );
   }
 
-  // ==============================================================================
+
   template<typename GUM_SCALAR>
   INLINE
   Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::multiplicateBy( const Potential& p1 ) {
@@ -144,7 +140,7 @@ namespace gum {
     return ( *this );
   }
 
-  // ==============================================================================
+
   template<typename GUM_SCALAR>
   INLINE
   void Potential<GUM_SCALAR>::multiplicate( const Potential& p1, const Potential& p2 ) {
@@ -161,31 +157,31 @@ namespace gum {
     _multiplicate( p1, p2 );
   }
 
-  // ==============================================================================
+
   template<typename GUM_SCALAR>
   void Potential<GUM_SCALAR>::_multiplicate( const Potential& p1, const Potential& p2 )  {
     this->beginMultipleChanges();
     // remove vars in this : WARNING -- THIS IS A COPY OF SEQ !!!!
-    const Sequence<const DiscreteVariable *> seq0 = this->variablesSequence() ;
+    const Sequence<const DiscreteVariable*> seq0 = this->variablesSequence() ;
 
-    for ( Sequence<const DiscreteVariable *>::iterator iter = seq0.begin();
-          iter != seq0.end();++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = seq0.beginSafe();
+          iter != seq0.endSafe(); ++iter ) {
       this->erase( **iter );
     }
 
     // adding vars in p1
-    const Sequence<const DiscreteVariable *>& seq1 = p1.variablesSequence() ;
+    const Sequence<const DiscreteVariable*>& seq1 = p1.variablesSequence() ;
 
-    for ( Sequence<const DiscreteVariable *>::iterator iter = seq1.begin();
-          iter != seq1.end();++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = seq1.beginSafe();
+          iter != seq1.endSafe(); ++iter ) {
       this->add( **iter );
     }
 
     // adding vars in p2 not already there
-    const Sequence<const DiscreteVariable *>& seq2 = p2.variablesSequence() ;
+    const Sequence<const DiscreteVariable*>& seq2 = p2.variablesSequence() ;
 
-    for ( Sequence<const DiscreteVariable *>::iterator iter = seq2.begin();
-          iter != seq2.end();++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = seq2.beginSafe();
+          iter != seq2.endSafe(); ++iter ) {
       if ( ! this->contains( **iter ) ) {
         this->add( **iter );
       }
@@ -198,7 +194,7 @@ namespace gum {
     // have to be made once at least) ...
     // remember that p1[i] means p1[just the part of i that concerns p1]
 
-    for ( i.setFirst();! i.end(); ++i ) this->set( i , p1[i]*p2[i] );
+    for ( i.setFirst(); ! i.end(); ++i ) this->set( i , p1[i]*p2[i] );
   }
 
   /// sum of all elements in this
@@ -207,7 +203,7 @@ namespace gum {
     Instantiation i( this->_content );
     GUM_SCALAR s = ( GUM_SCALAR ) 0;
 
-    for ( i.setFirst();! i.end(); ++i ) s += this->get( i );
+    for ( i.setFirst(); ! i.end(); ++i ) s += this->get( i );
 
     return s;
   }
@@ -221,7 +217,7 @@ namespace gum {
     if ( s != ( GUM_SCALAR ) 0 ) {
       Instantiation i( this->_content );
 
-      for ( i.setFirst();! i.end() ; ++i ) this->set( i, this->get( i ) / s );
+      for ( i.setFirst(); ! i.end() ; ++i ) this->set( i, this->get( i ) / s );
     }
 
     // a const method should return a const ref BUT WE NEED t return a non const ref
@@ -240,6 +236,11 @@ namespace gum {
     MultiDimDecorator<GUM_SCALAR>::content()->swap( *x, *y );
   }
 
+  /// string representation of this.
+  template<typename GUM_SCALAR> INLINE
+  const std::string Potential<GUM_SCALAR>::toString( ) const {
+    return MultiDimDecorator<GUM_SCALAR>::content()->toString( );
+  }
 } /* namespace gum */
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

@@ -22,20 +22,20 @@
  * @file
  * @brief Class allowing creation of Algebraic Decision Diagram
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 #ifndef GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_BASE_H
 #define GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_BASE_H
-// ============================================================================
+
 #include <agrum/core/hashTable.h>
 #include <agrum/core/bijection.h>
-#include <agrum/core/approximationPolicy/approximationPolicy.h>
-// ============================================================================
+#include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
+
 #include <agrum/multidim/multiDimDecisionDiagramBase.h>
-// ============================================================================
+
 #include <agrum/graphs/diGraph.h>
-// ============================================================================
+
 
 namespace gum {
 
@@ -178,11 +178,17 @@ namespace gum {
        * @throw DuplicateElement if another arc linking those nodes already exists
        */
       ///@{
-      void insertArc ( NodeId from, NodeId to, Idx modality );
-      void unsafeInsertArc ( NodeId from, NodeId to, Idx modality );
+      /// @deprecated use addArc instead
+      GUM_DEPRECATED ( void insertArc ( NodeId from, NodeId to, Idx modality ) );
+
+      /// @deprecated use addArc instead
+      GUM_DEPRECATED ( void unsafeInsertArc ( NodeId from, NodeId to, Idx modality ) );
+
+      void addArc ( NodeId from, NodeId to, Idx modality );
+      void unsafeAddArc ( NodeId from, NodeId to, Idx modality );
       ///@}
-      
-      
+
+
 
       /**
        * Adds a default arc in the DD
@@ -194,8 +200,10 @@ namespace gum {
        * @throw OperationNotAllowed if arc doesn't respect variable order property
        * @throw DuplicateElement if another arc linking those nodes already exists
        */
-      void insertDefaultArc ( NodeId from, NodeId to );
-      void unsafeInsertDefaultArc ( NodeId from, NodeId to );
+      GUM_DEPRECATED ( void insertDefaultArc ( NodeId from, NodeId to ) );
+      GUM_DEPRECATED ( void unsafeInsertDefaultArc ( NodeId from, NodeId to ) );
+      void addDefaultArc ( NodeId from, NodeId to );
+      void unsafeAddDefaultArc ( NodeId from, NodeId to );
 
 
       /**
@@ -290,16 +298,16 @@ namespace gum {
       DiGraph _model;
 
       /// Mapping between id and variable
-      typename Property< const DiscreteVariable* >::onNodes _varMap;
+      NodeProperty< const DiscreteVariable* > _varMap;
 
       /// Mapping between terminal nodes and their values
       Bijection< NodeId, GUM_SCALAR > _valueMap;
 
       /// Mapping between variable's values and associated node
-      typename Property< std::vector< NodeId >* >::onNodes _arcMap;
+      NodeProperty< std::vector< NodeId >* > _arcMap;
 
       /// Mapping between variable's values and associated node
-      typename Property< NodeId >::onNodes _defaultArcMap;
+      NodeProperty< NodeId > _defaultArcMap;
 
       /// Mapping between variable and nodes tied to this var
       HashTable< const DiscreteVariable*, List<NodeId>* > _var2NodeIdMap;
@@ -314,10 +322,10 @@ namespace gum {
 
 } /* namespace gum */
 
-// ============================================================================
-#include <agrum/multidim/multiDimDecisionDiagramFactoryBase.tcc>
-// ============================================================================
-#endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_BASE_H */
-// ============================================================================
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+#include <agrum/multidim/multiDimDecisionDiagramFactoryBase.tcc>
+
+#endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_BASE_H */
+
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

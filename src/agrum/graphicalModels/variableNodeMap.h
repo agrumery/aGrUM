@@ -21,7 +21,7 @@
  * @file
  * @brief Header of class VariableNodeMap.
  *
- * @author Lionel Torti and Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_VARIABLE_NODE_MAP_H
 #define GUM_VARIABLE_NODE_MAP_H
@@ -39,20 +39,20 @@
 namespace gum {
 
 
-  // ==============================================================================
+
   /**
    * @class VariableNodeMap
    * @brief Container used to map discrete variables with nodes.
    * @warning VariableNodeMap ensures that every name of variable is unique in
    * the container.
    */
-  // ==============================================================================
+
 
   class VariableNodeMap {
     public:
-      // ============================================================================
+
       /// @name Constructors / Destructors
-      // ============================================================================
+
       /// @{
 
       /// Default constructor
@@ -67,7 +67,7 @@ namespace gum {
 
       /// Copy operator.
       VariableNodeMap& operator= ( const VariableNodeMap& source );
-      
+
       /// @}
 
 
@@ -90,8 +90,8 @@ namespace gum {
       /// Return true if var matches a node.
       bool exists ( const DiscreteVariable& var ) const;
 
-      /// Maps id with var. 
-      /** 
+      /// Maps id with var.
+      /**
        * @warning Var is added by copy.
        * @throws DuplicateLabel if this name already exists
        * @throws DuplicateElement if this id already exists
@@ -109,7 +109,7 @@ namespace gum {
       /// we allow the user to change the name of a variable
       /** @throws DuplicateLabel if this name already exists
        * @throws NotFound Raised if no nodes matches id. */
-      void changeName ( NodeId id,const std::string& new_name );
+      void changeName ( NodeId id, const std::string& new_name );
 
       /// removes all the associations
       void clear();
@@ -175,9 +175,9 @@ namespace gum {
   };
 
 
-  // ============================================================================
+
   /// for friendly displaying the content of clique graphs
-  // ============================================================================
+
   std::ostream& operator<< ( std::ostream&, const VariableNodeMap& );
 
 

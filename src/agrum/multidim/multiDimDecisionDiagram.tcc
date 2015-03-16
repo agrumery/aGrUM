@@ -21,68 +21,68 @@
 * @file
 * @brief Template implementation of MultiDimDecisionDiagram.h class.
 *
-* @author Jean-Christophe Magnan
+* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
-// ============================================================================
+
 #include <agrum/multidim/multiDimDecisionDiagram.h>
-// ============================================================================
+
 
 namespace gum {
 
-/* ******************************************************************************************** */
-/*                                                */
-/*                CONSTRUCTOR, DESTRUCTOR & CO                  */
-/*                                                */
-/* ******************************************************************************************** */
+  /* ******************************************************************************************** */
+  /*                                                */
+  /*                CONSTRUCTOR, DESTRUCTOR & CO                  */
+  /*                                                */
+  /* ******************************************************************************************** */
 
-  // ==============================================================================
+
   // Default constructor
-  // ==============================================================================
-  template<typename GUM_SCALAR,template <class> class IApproximationPolicy>
-  MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >::MultiDimDecisionDiagram( ):
+
+  template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
+  MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >::MultiDimDecisionDiagram( ) :
     MultiDimDecisionDiagramBase<GUM_SCALAR>( ),  IApproximationPolicy<GUM_SCALAR>() {
-    
-    GUM_CONSTRUCTOR( MultiDimDecisionDiagram ) ;
-    
+
+    GUM_CONSTRUCTOR ( MultiDimDecisionDiagram ) ;
+
   }
 
 
-  // ==============================================================================
+
   // Constructor with approximation initialisation
-  // ==============================================================================
-  template<typename GUM_SCALAR,template <class> class IApproximationPolicy>
-  MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >::MultiDimDecisionDiagram( const MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >& source ):
-    MultiDimDecisionDiagramBase<GUM_SCALAR>( ),  IApproximationPolicy<GUM_SCALAR>( source ) {
-      
-    GUM_CONSTRUCTOR( MultiDimDecisionDiagram ) ;
-    
+
+  template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
+  MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >::MultiDimDecisionDiagram ( const MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >& source ) :
+    MultiDimDecisionDiagramBase<GUM_SCALAR>( ),  IApproximationPolicy<GUM_SCALAR> ( source ) {
+
+    GUM_CONSTRUCTOR ( MultiDimDecisionDiagram ) ;
+
   }
 
 
-  // ==============================================================================
+
   // Constructor with approximation initialisation
-  // ==============================================================================
-  template<typename GUM_SCALAR,template <class> class IApproximationPolicy>
-  MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >::MultiDimDecisionDiagram( const IApproximationPolicy<GUM_SCALAR>& source ):
-    MultiDimDecisionDiagramBase<GUM_SCALAR>( ), IApproximationPolicy<GUM_SCALAR>( source ) {
-      
-    GUM_CONSTRUCTOR( MultiDimDecisionDiagram ) ;
-    
+
+  template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
+  MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >::MultiDimDecisionDiagram ( const IApproximationPolicy<GUM_SCALAR>& source ) :
+    MultiDimDecisionDiagramBase<GUM_SCALAR>( ), IApproximationPolicy<GUM_SCALAR> ( source ) {
+
+    GUM_CONSTRUCTOR ( MultiDimDecisionDiagram ) ;
+
   }
 
 
-  // ==============================================================================
+
   // destructor
-  // ==============================================================================
-  template<typename GUM_SCALAR,template <class> class IApproximationPolicy>
+
+  template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
   MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >::~MultiDimDecisionDiagram() {
-    
-    GUM_DESTRUCTOR( MultiDimDecisionDiagram );
-    
+
+    GUM_DESTRUCTOR ( MultiDimDecisionDiagram );
+
   }
 
 
-  // ==============================================================================
+
   // This method creates a clone of this object, without its content
   // (including variable), you must use this method if you want to ensure
   // that the generated object has the same type than the object containing
@@ -94,40 +94,40 @@ namespace gum {
   //
   // @warning you must desallocate by yourself the memory
   // @return an empty clone of this object with the same type
-  // ==============================================================================
-  template<typename GUM_SCALAR,template <class> class IApproximationPolicy>
+
+  template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
   MultiDimContainer<GUM_SCALAR>*
   MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >::newFactory() const {
-    
-    return new MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy>( *this );
-    
-  }
-  
 
-  // ==============================================================================
+    return new MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy> ( *this );
+
+  }
+
+
+
   // Returns a factory that used same approximation pattern
-  // ==============================================================================
+
   template< typename GUM_SCALAR, template < class > class IApproximationPolicy >
   MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>*
   MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >::getFactory() const {
-    
-    MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >* ret = new MultiDimDecisionDiagramFactory<GUM_SCALAR, IApproximationPolicy>( *this );
+
+    MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >* ret = new MultiDimDecisionDiagramFactory<GUM_SCALAR, IApproximationPolicy> ( *this );
 
     return ret;
-    
+
   }
-  
 
-  // ==============================================================================
+
+
   // Returns a factory that used same approximation pattern
-  // ==============================================================================
-  template<typename GUM_SCALAR,template <class> class IApproximationPolicy>
+
+  template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
   MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>*
-  MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >::getFactory( const ApproximationPolicy<GUM_SCALAR>& source ) const {
-    
-    MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >* ret = new MultiDimDecisionDiagramFactory<GUM_SCALAR, IApproximationPolicy>( dynamic_cast<const IApproximationPolicy<GUM_SCALAR>& >( source ) );
+  MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >::getFactory ( const ApproximationPolicy<GUM_SCALAR>& source ) const {
+
+    MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >* ret = new MultiDimDecisionDiagramFactory<GUM_SCALAR, IApproximationPolicy> ( dynamic_cast<const IApproximationPolicy<GUM_SCALAR>& > ( source ) );
 
     return ret;
-    
+
   }
 }

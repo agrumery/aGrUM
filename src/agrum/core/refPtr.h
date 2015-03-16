@@ -71,7 +71,7 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
   template <typename Val> class RefPtr;
-  template <typename Val> void swap( RefPtr<Val>&, RefPtr<Val>& ) ;
+  template <typename Val> void swap ( RefPtr<Val>&, RefPtr<Val>& ) ;
 
   template <typename Val> class HashFunc;
 #endif
@@ -136,7 +136,7 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// default constructor
       /** This constructor creates an object encapsulating the pointer passed in
        * argument. No copy of the value pointed to by the pointer is performed. The
@@ -155,25 +155,25 @@ namespace gum {
        * allocated on the heap)
        * @throws std::bad_alloc exception is thrown if the complete RefPtr structure
        * cannot be set properly. */
-      // ============================================================================
-      explicit RefPtr( Val* val = 0 ) ;
 
-      // ============================================================================
+      explicit RefPtr ( Val* val = 0 ) ;
+
+
       /// copy constructor
       /** @param from the smart pointer we wish to make a copy */
-      // ============================================================================
-      RefPtr( const RefPtr<Val>& from ) ;
 
-      // ============================================================================
+      RefPtr ( const RefPtr<Val>& from ) ;
+
+
       /// copy constructor for downcastable pointers
       /** @param from the smart pointer we wish to make a copy */
-      // ============================================================================
-      template <typename DownVal> RefPtr( const RefPtr<DownVal>& from ) ;
 
-      // ============================================================================
+      template <typename DownVal> RefPtr ( const RefPtr<DownVal>& from ) ;
+
+
       /** @brief destructor: decrements the ref count and deletes if necessary
        * the dumb pointer */
-      // ============================================================================
+
       ~RefPtr();
 
       ///@}
@@ -184,24 +184,24 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// checks whether a RefPtr points toward something
       /** This method enables writing code like @c if (refptr) perform_operation() */
-      // ============================================================================
+
       operator bool() const ;
 
-      // ============================================================================
+
       /// makes the smart pointer point to 0.
       /** If necessary, the dumb pointer previously pointed to by the RefPtr is
        * deallocated. In this case, an exception may be thrown by the destructor of
        * the object pointed to. But, even in this case, the RefPtr guarrantees that
        * after the completion of this method, the RefPtr will point toward 0. */
-      // ============================================================================
+
       void clear();
 
-      // ============================================================================
+
       /// returns the number of smart pointer referencing the contained pointer
-      // ============================================================================
+
       unsigned int refCount() const;
 
       /// @}
@@ -212,7 +212,7 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// copy operator
       /** operator= may throw exceptions when the dumb pointer previously pointed to
        * by the RefPtr is deallocated (that is, the destructor of the object pointed
@@ -221,10 +221,10 @@ namespace gum {
        * the completion of the function, the RefPtr points to the same element
        * as from.
        * @param from the smart pointer we wish to make a copy */
-      // ============================================================================
-      RefPtr<Val>& operator=( const RefPtr<Val>& from );
 
-      // ============================================================================
+      RefPtr<Val>& operator= ( const RefPtr<Val>& from );
+
+
       /// copy operator
       /** operator= may throw exceptions when the dumb pointer previously pointed to
        * by the RefPtr is deallocated (that is, the destructor of the object pointed
@@ -234,10 +234,10 @@ namespace gum {
        * encapsulating the new pointer failed and the RefPtr points toward
        * the 0 pointer.
        * @param from the dumb pointer we wish to encapsulate */
-      // ============================================================================
-      RefPtr<Val>& operator=( Val* from );
 
-      // ============================================================================
+      RefPtr<Val>& operator= ( Val* from );
+
+
       /// copy operator for downcastable pointers
       /** operator= may throw exceptions when the dumb pointer previously pointed to
        * by the RefPtr is deallocated (that is, the destructor of the object pointed
@@ -246,11 +246,11 @@ namespace gum {
        * the completion of the function, the RefPtr points to the same element as
        * from.
        * @param from the smart pointer we wish to make a copy */
-      // ============================================================================
-      template <typename DownVal> RefPtr<Val>&
-      operator=( const RefPtr<DownVal>& from );
 
-      // ============================================================================
+      template <typename DownVal> RefPtr<Val>&
+      operator= ( const RefPtr<DownVal>& from );
+
+
       /// checks whether two RefPtr<Val> are smart pointers for the same element.
       /** "Pointing toward the same element" is a little ambiguous: it does not mean
        * that the smart pointers are pointing toward the same Val instance as
@@ -260,33 +260,33 @@ namespace gum {
        * reference counter, i.e., that at least one of the two smarts pointers has
        * been created using the copy operator. As a consequence both pointers point
        * toward the same Val instance (but the converse is false). */
-      // ============================================================================
+
       bool operator== ( const RefPtr<Val>& from ) const ;
 
-      // ============================================================================
+
       /// checks whether two RefPtr<Val> are smart pointers for different elements
       /** returns true if either the dumb pointers the smart pointers encapsulate are
        * different or the reference counters are different (i.e., the smart pointers
        * are not related through copy operators) */
-      // ============================================================================
+
       bool operator!= ( const RefPtr<Val>& from ) const ;
 
-      // ============================================================================
+
       /// dereferencing operator
       /** This operator allows developers to write code like
        * @c refptr->member()
        * @throws NullElement exception is thrown whenever the smart pointer points
        * toward 0 */
-      // ============================================================================
+
       Val* operator->() const ;
 
-      // ============================================================================
+
       /// dereferencing operator
       /** This operator is provided for convenience but you should prefer using
        * operator -> as this is the syntax you would use with the dumb pointer. Note
        * however that it might be useful for built-in types such as int.
        * @throw NullElement exception is thrown whenever the RefPtr points to 0 */
-      // ============================================================================
+
       Val& operator*() ;
 
       /// const dereferencing operator
@@ -311,16 +311,16 @@ namespace gum {
       template <typename T> friend class HashFunc;
 
       /// the dumb pointer encapsulated into the "smart" pointer
-      Val *__val;
+      Val* __val;
 
       /// a reference counter on *val
-      unsigned int *__refcount;
+      unsigned int* __refcount;
 
       /// a function to remove the content of the smart pointer, if any
-      void __destroy( unsigned int *, Val * );
+      void __destroy ( unsigned int*, Val* );
 
       /// a function to return the refcount pointer
-      unsigned int *__refCountPtr() const;
+      unsigned int* __refCountPtr() const;
   };
 
 

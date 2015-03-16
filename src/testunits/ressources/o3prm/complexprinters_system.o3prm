@@ -23,29 +23,29 @@
 // ============================================================================
 
 type t_state extends boolean
-  OK: true,
-  NOK: false;
+OK: true,
+    NOK: false;
 
 type t_ink extends t_state
-  NotEmpty: OK,
-  Empty:    NOK;
+NotEmpty: OK,
+          Empty:    NOK;
 
 type t_paper extends t_state
-  Ready:    OK,
-  Jammed:   NOK,
-  Empty:    NOK;
+Ready:    OK,
+          Jammed:   NOK,
+          Empty:    NOK;
 
 type t_degraded extends t_state
-  OK: OK,
-  Dysfunctional: NOK,
-  Degraded: NOK;
+OK: OK,
+    Dysfunctional: NOK,
+    Degraded: NOK;
 
 class PowerSupply {
-  t_state state { [ 0.99, 0.01 ] };
+    t_state state { [ 0.99, 0.01 ] };
 }
 
 class Room {
-  PowerSupply power;
+    PowerSupply power;
 }
 
 interface Equipment {
@@ -59,70 +59,72 @@ interface Printer extends Equipment {
 }
 
 class BWPrinter implements Printer {
-  Room room;
-  t_ink hasInk { [0.8, 0.2] };
-  t_paper hasPaper { [0.7, 0.2, 0.1] };
-  t_degraded equipState dependson room.power.state, hasInk, hasPaper {
-    *, *, *:             0.0, 1.0, 0.0;
-    OK, NotEmpty, Ready: 1.0, 0.0, 0.0;
-  };
+    Room room;
+    t_ink hasInk { [0.8, 0.2] };
+    t_paper hasPaper { [0.7, 0.2, 0.1] };
+    t_degraded equipState dependson room.power.state, hasInk, hasPaper {
+      *, *, *:             0.0, 1.0, 0.0;
+      OK, NotEmpty, Ready: 1.0, 0.0, 0.0;
+    };
 }
 
 class ColorPrinter implements Printer {
-  Room room;
-  t_ink black   { [0.8, 0.2] };
-  t_ink magenta { [0.8, 0.2] };
-  t_ink yellow  { [0.8, 0.2] };
-  t_ink cyan    { [0.8, 0.2] };
-  boolean hasInk = forall([black, magenta, yellow, cyan], NotEmpty);
-  t_paper hasPaper { [0.7, 0.2, 0.1] };
-  t_degraded equipState dependson room.power.state, hasPaper, hasInk, black {
-    *, *, *, *:             0.00, 1.00, 0.00;
-    *, *, false, NotEmpty:  0.00, 0.00, 1.00;
-    OK, Ready, true, *:     0.99, 0.01, 0.00;
-  };
+    Room room;
+    t_ink black   { [0.8, 0.2] };
+    t_ink magenta { [0.8, 0.2] };
+    t_ink yellow  { [0.8, 0.2] };
+    t_ink cyan    { [0.8, 0.2] };
+    boolean hasInk = forall ( [black, magenta, yellow, cyan], NotEmpty );
+    t_paper hasPaper { [0.7, 0.2, 0.1] };
+    t_degraded equipState dependson room.power.state, hasPaper, hasInk, black {
+      *, *, *, *:             0.00, 1.00, 0.00;
+      *, *, false, NotEmpty:  0.00, 0.00, 1.00;
+      OK, Ready, true, *:     0.99, 0.01, 0.00;
+    };
 }
 
 class Computer implements Equipment {
-  Room room;
-  Printer[] printers;
-  boolean functional_printer = exists(printers.equipState, OK);
-  boolean degraded_printer = exists(printers.equipState, Degraded);
-  boolean working_printer = exists([functional_printer, degraded_printer], true);
-  t_degraded equipState dependson room.power.state {
-    OK:  0.90, 0.09, 0.01;
-    NOK: 0.00, 1.00, 0.00;
-  };
-  boolean can_print dependson equipState, working_printer {
-    // working_printer |              false                 | |              true             |
-    // equipState           | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
-    /* false */        [1.00,    1.00,         1.00,      1.00,     0.00,         0.00,
-    /* true  */         0.00,    0.00,         0.00,      0.00,     1.00,         1.00]
-  };
+    Room room;
+    Printer[] printers;
+    boolean functional_printer = exists ( printers.equipState, OK );
+    boolean degraded_printer = exists ( printers.equipState, Degraded );
+    boolean working_printer = exists ( [functional_printer, degraded_printer], true );
+    t_degraded equipState dependson room.power.state {
+      OK:  0.90, 0.09, 0.01;
+      NOK: 0.00, 1.00, 0.00;
+    };
+    boolean can_print dependson equipState, working_printer {
+      // working_printer |              false                 | |              true             |
+      // equipState           | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
+      /* false */        [1.00,    1.00,         1.00,      1.00,     0.00,         0.00,
+      /* true  */         0.00,    0.00,         0.00,      0.00,     1.00,         1.00]
+    };
 }
 
 class SafeComputer implements Equipment {
-  Room room;
-  Printer[] printers;
-  boolean functional_printer = exists(printers.(t_state)equipState, OK);
-  boolean degraded_printer = exists(printers.(t_degraded)equipState, Degraded);
-  boolean working_printer = exists([functional_printer, degraded_printer], true);
-  t_degraded equipState dependson room.power.(t_state)state {
-    OK:  0.90, 0.09, 0.01;
-    NOK: 0.00, 1.00, 0.00;
-  };
-  boolean can_print dependson equipState, working_printer {
-    // working_printer |              false                 | |              true             |
-    // equipState           | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
-    /* false */        [1.00,    1.00,         1.00,      1.00,     0.00,         0.00,
-    /* true  */         0.00,    0.00,         0.00,      0.00,     1.00,         1.00]
-  };
+    Room room;
+    Printer[] printers;
+    boolean functional_printer = exists ( printers. ( t_state ) equipState, OK );
+    boolean degraded_printer = exists ( printers. ( t_degraded ) equipState, Degraded );
+    boolean working_printer = exists ( [functional_printer, degraded_printer], true );
+    t_degraded equipState dependson room.power. ( t_state ) state {
+      OK:  0.90, 0.09, 0.01;
+      NOK: 0.00, 1.00, 0.00;
+    };
+    boolean can_print dependson equipState, working_printer {
+      // working_printer |              false                 | |              true             |
+      // equipState           | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
+      /* false */        [1.00,    1.00,         1.00,      1.00,     0.00,         0.00,
+      /* true  */         0.00,    0.00,         0.00,      0.00,     1.00,         1.00]
+    };
 }
 
 class ParamClass {
-  boolean aBoolParam;
+    boolean aBoolParam;
+
   boolean aBoolParamWithDefault default false;
-  t_state aParameter;
+    t_state aParameter;
+
   t_state anotherParameter default OK;
 }
 

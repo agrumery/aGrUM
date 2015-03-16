@@ -1,14 +1,14 @@
-find_package(Doxygen)
+find_package(Doxygen QUIET)
 
 IF (DOXYGEN_FOUND)
-	SET(DOXYGEN_INPUT ${AGRUM_BINARY_DIR}/agrum.doxy ${AGRUM_BINARY_DIR}/piedpage_agrum.html ${AGRUM_BINARY_DIR}/agrum.css)
+	SET(DOXYGEN_INPUT ${AGRUM_BINARY_DIR}/agrum.doxy)
 	SET(DOXYGEN_OUTPUT_DIR "${AGRUM_BINARY_DIR}/docs/html")
 	SET(DOXYGEN_OUTPUT "${DOXYGEN_OUTPUT_DIR}/index.html")
 
 	configure_file("${AGRUM_SOURCE_DIR}/docs/agrum.css.in" "${AGRUM_BINARY_DIR}/agrum.css")
 	configure_file("${AGRUM_SOURCE_DIR}/docs/piedpage_agrum.html.in" "${AGRUM_BINARY_DIR}/piedpage_agrum.html")
 	configure_file("${AGRUM_SOURCE_DIR}/docs/agrum.doxy.in" "${AGRUM_BINARY_DIR}/agrum.doxy")
-  configure_file("${AGRUM_SOURCE_DIR}/docs/aGrUMLayout.xml.in" "${AGRUM_BINARY_DIR}/aGrUMLayout.xml")
+        configure_file("${AGRUM_SOURCE_DIR}/docs/aGrUMLayout.xml.in" "${AGRUM_BINARY_DIR}/aGrUMLayout.xml")
 
 	add_custom_command(OUTPUT ${DOXYGEN_OUTPUT_DIR}
 	 COMMAND ${CMAKE_COMMAND} ARGS -E make_directory ${DOXYGEN_OUTPUT_DIR}
@@ -25,7 +25,6 @@ IF (DOXYGEN_FOUND)
 	 )
 
 	add_custom_target(doc DEPENDS ${DOXYGEN_OUTPUT})
-  add_dependencies(doc ${AGRUM_SOURCES})
 ELSE (DOXYGEN_FOUND)
-    message(WARNING "Doxygen not found : you cannot generate documentation !")
+     message(STATUS "** aGrUM notification : Doxygen not found : you cannot generate documentation !")
 ENDIF (DOXYGEN_FOUND)

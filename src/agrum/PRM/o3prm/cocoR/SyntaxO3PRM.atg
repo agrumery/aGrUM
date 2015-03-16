@@ -1,0 +1,554 @@
+
+
+//##############################################################################
+//
+//                               HEADERS
+//
+//##############################################################################
+
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <fstream>
+
+#include <agrum/core/utils_dir.h>
+#include <agrum/PRM/IPRMFactory.h>
+
+#undef TRY
+// Redefine try / catch to add a semantic error when errors are raised.
+#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.errorContent()); }
+#define  TRY2(inst,msg) try { inst; } catch (gum::Exception& e) { SemErr(msg+" ("+e.errorContent()+")."); }
+#define  TRY3(inst,msg,error) try { if (!error) {inst;} } catch (gum::Exception& e) { SemErr(msg+" ("+e.errorContent()+")."); error=true; }
+
+//##############################################################################
+//
+//                             class Parser
+//
+//##############################################################################
+
+COMPILER O3PRM
+
+private:
+    gum::prm::IPRMFactory*       __factory;
+    std::vector<std::string>    __class_path;
+    gum::Set<std::string>       __imports;
+    std::string                 __package;
+    gum::Directory              __current_directory;
+
+    // Convert std::string to wstring.
+    void SemErr(std::string s) {
+      SemErr(widen(s).c_str());
+    }
+
+    // Return true if type is a class or an interface.
+    bool isClassOrInterface(std::string type) {
+      return factory().isClassOrInterface(type);
+    }
+
+    void importDirID( std::string dirID )
+    {
+        std::string dirname = dirID, dirpath;
+        bool dirFound = false;
+
+        // Create filename
+        replace(dirname.begin(), dirname.end(), '.', '/');
+        dirname += "/";
+
+        // Search in current directory.
+        if ( __current_directory.isValid() ) {
+            dirpath = __current_directory.absolutePath() + dirname;
+            dirFound = Directory::isDir(dirpath);
+        }
+
+        // Search in root package directory.
+        if ( ! dirFound && ! __package.empty() ) {
+            int cpt = std::count(__package.begin(), __package.end(), '.');
+            std::string cd = __current_directory.absolutePath();
+            size_t index = cd.find_last_of('/', cd.size() - 2); // handle if cwd ends with a '/'
+            for ( int i = 0 ; index != std::string::npos && i < cpt ; i++ )
+                index = cd.find_last_of('/', index - 1);
+
+            if ( index != std::string::npos ) {
+                std::string rootDir = cd.substr(0, index+1); // with '/' at end
+                dirpath = rootDir + dirname;
+                dirFound = Directory::isDir(dirpath);
+            }
+        }
+
+        // Search filename in each path stored in __class_path
+        if ( ! dirFound ) {
+          for (const auto & path :__class_path) {
+              // Construct complete filePath
+              dirpath = path + dirname;
+              dirFound = Directory::isDir(dirpath);
+              if (dirFound)
+                break;
+          }
+        }
+
+        // If it is found, import all files in.
+        if (dirFound)
+            importDir( dirpath );
+        // If import filename has not been found, add an error.
+        else
+            SemErr("import not found");
+    }
+
+    void importDir( std::string dirpath )
+    {
+        // Update current directory
+        Directory oldCurrentDirectory = __current_directory;
+        __current_directory = Directory(dirpath);
+
+        for ( const auto & entry : __current_directory.entries()) {
+            if (entry[0]== '.') //"." or ".." or ".svn" or any hidden directories...
+                continue;
+
+            if ( Directory::isDir(dirpath+entry) )
+                importDir( dirpath+entry+"/" );
+            else if ( entry.substr( entry.find_last_of('.') ) == ".o3prm" ) // if .o3prm
+                importFile( dirpath+entry );
+        }
+
+        // Reset previous current directory
+        __current_directory = oldCurrentDirectory;
+    }
+
+    void importFile( std::string filepath )
+    {
+        // If we have already import this file, skip it.
+        // (like filepath is always absolute, there is no conflict)
+        if ( __imports.exists( filepath ) )
+            return;
+        // Remember we have found it.
+        __imports.insert(filepath);
+
+        // We parse it
+        Scanner s(filepath.c_str());
+        Parser p(&s);
+        p.setFactory(__factory);
+        p.setClassPath(__class_path);
+        p.setImports(__imports);
+        p.setCurrentDirectory( filepath.substr(0, filepath.find_last_of('/')+1) );
+        p.Parse();
+
+        // We add file imported in p to file imported here.
+        for (const auto & import : p.getImports())
+            if (not __imports.exists(import))
+            __imports.insert(import);
+
+        // We add warnings and errors to this
+        __errors += p.__errors;
+    }
+
+    void import( std::string fileID ) {
+        // Si on inclut un répertoire entier
+        size_t starIndex = fileID.find_last_of('*');
+        if ( starIndex != std::string::npos ) {
+            return importDirID(fileID.substr(0,starIndex-1));
+        }
+
+        std::string filename = fileID, filepath;
+        std::ifstream file_test;
+        bool fileFound = false;
+
+        // Create filename
+        replace(filename.begin(), filename.end(), '.', '/');
+        filename += ".o3prm";
+
+        // Search in current directory.
+        if ( __current_directory.isValid() ) {
+            filepath = __current_directory.absolutePath() + filename;
+            file_test.open(filepath.c_str());
+            if (file_test.is_open()) {
+                file_test.close();
+                fileFound = true;
+            }
+        }
+
+        // Search in root package directory.
+        if ( ! fileFound && ! __package.empty() ) {
+            int cpt = std::count(__package.begin(), __package.end(), '.');
+            std::string cd = __current_directory.absolutePath();
+            size_t index = cd.find_last_of('/', cd.size() - 2); // handle if cwd ends with a '/'
+            for ( int i = 0 ; index != std::string::npos && i < cpt ; i++ )
+                index = cd.find_last_of('/', index - 1);
+
+            if ( index != std::string::npos ) {
+                std::string rootDir = cd.substr(0, index+1); // with '/' at end
+                filepath = rootDir + filename;
+                file_test.open(filepath.c_str());
+                if (file_test.is_open()) {
+                    file_test.close();
+                    fileFound = true;
+                }
+            }
+        }
+
+        // Search filename in each path stored in __class_path
+        for (const auto & path : __class_path) {
+            // Construct complete filePath
+            filepath = path + filename;
+
+            // We try to open it
+            file_test.open(filepath.c_str());
+            if (file_test.is_open()) {
+                file_test.close();
+                fileFound = true;
+            }
+        }
+
+        // If it is found, import it.
+        if (fileFound)
+            importFile( filepath );
+        else
+            SemErr("import not found");
+    }
+
+    // Set files already import in factory.
+    void setImports(const gum::Set<std::string>& imports) {
+      __imports = imports;
+    }
+
+    // Add these import to this parser.
+    void addImports(const gum::Set<std::string>& imports) {
+      for (const auto & import :imports)
+        if (not __imports.exists(import))
+          __imports.insert(import);
+    }
+
+public:
+    // Set the parser factory.
+    void setFactory(gum::prm::IPRMFactory* f) {
+      __factory = f;
+    }
+
+    // Retrieve the factory.
+    gum::prm::IPRMFactory& factory() {
+      if (__factory) {
+        return *__factory;
+      }
+      GUM_ERROR(OperationNotAllowed,"Please set a factory for scanning BIF file...");
+    }
+
+    // Set the paths to search for imports. Must ended with a '/'.
+    void setClassPath(const std::vector<std::string>& class_path) {
+      __class_path = class_path;
+    }
+
+    // Must be an absolute path
+    void setCurrentDirectory( const std::string & cd ) {
+        __current_directory = Directory(cd);
+        if ( ! __current_directory.isValid() )
+          Warning( widen("gum::o3prm::Parser::setCurrentDirectory : " + cd + " is not a valid directory.").c_str() );
+    }
+
+    // Get files imports.
+    const gum::Set<std::string>& getImports() const {
+      return __imports;
+    }
+
+    // Add this import to this parser.
+    void addImport(const std::string& import) {
+        if (not __imports.exists(import)) {
+          __imports.insert(import);
+        }
+    }
+
+
+//##############################################################################
+//
+//                              SCANNER RULES
+//
+//##############################################################################
+
+//________________________
+CHARACTERS
+  letter = 'A'..'Z' + 'a'..'z'+ '_' .
+  digit  = '0'..'9'.
+  eol    = '\n'.
+
+//________________________
+TOKENS
+  integer    = ['+'|'-'] digit {digit}.
+  float      = ['+'|'-'] digit {digit} '.' digit {digit} [ ('E'|'e') ['+'|'-'] digit {digit} ].
+  word       = letter {(letter | digit)}.
+  eol        = '\n'.
+  dot        = '.'.
+  comma      = ','.
+  colon      = ':'.
+  semicolon  = ';'.
+  type       = "type".
+  class      = "class".
+  interface  = "interface".
+  extends    = "extends".
+  system     = "system".
+  dependson  = "dependson".
+  default    = "default".
+  implements = "implements".
+  noisyOr    = "noisyOr".
+  LEFT_CAST  = "(".
+  RIGHT_CAST = ")".
+
+//________________________
+COMMENTS FROM "/*" TO "*/" NESTED
+COMMENTS FROM "//" TO eol
+
+IGNORE '\r' + eol + '\t'
+
+$checkEOF=false // disable the end of file check
+
+//##############################################################################
+//
+//                              PARSER RULES
+//
+//##############################################################################
+
+PRODUCTIONS
+
+//________________________
+O3PRM = [Package] {SYNC Import} {SYNC Unit} (. factory().popPackage(); .) .
+
+//________________________
+Package = (. std::string name; .)
+    SYNC "package" Ident<name> (. factory().pushPackage(name); __package = name; .)
+    SYNC ';' .
+
+//________________________
+Import  =                              (. std::string fileID; .)
+    SYNC "import" ImportIdent<fileID>  (. import(fileID); .)
+    SYNC ';' .
+
+//________________________
+Unit = Type | Interface | Class | System.
+
+//________________________
+Type = SYNC type word                           (. std::string name, extends, l, s; name = narrow(t->val); .)
+       [ extends Ident<extends> ]               (. TRY2(factory().startDiscreteType(name, extends), "Can not create type "+name) .)
+       Label<l> [ ':' Label<s> ]                (. TRY2(factory().addLabel(l, s), "Can not add label "+l) .)
+       {                                        (. s = ""; .)
+         WEAK ',' Label<l> [ ':' Label<s> ]     (. TRY2(factory().addLabel(l, s), "Can not add label "+l) .)
+       }
+       SYNC ';'                                 (. TRY2(factory().endDiscreteType(), "Can not create type "+name) .)
+       .
+
+//________________________
+Interface = SYNC interface word          (. std::string interface, extends; interface = narrow(t->val); .)
+    [ extends Ident<extends> ]
+    SYNC '{'                             (. TRY2(factory().startInterface(interface, extends), "Can not create interface "+interface) .)
+    {                                    (. std::string type, name; .)
+      Ident<type> (
+        '[' ']' word                     (. name = narrow(t->val); bool array = true; .)
+         Reference<type, name, array>
+      | word                             (. name = narrow(t->val); bool array = false; .)
+        ( IF(isClassOrInterface(type))
+          Reference<type, name, array>
+        | SYNC ';'                       (. TRY2(factory().addAttribute(type, name), "Can not add attribute "+name) .)
+        )
+      )
+    }
+    SYNC '}'                             (. TRY2(factory().endInterface(), "Can not create interface "+interface) .)
+    .
+
+//________________________
+Class = class word                             (. std::string c, super; c = narrow(t->val); .)
+        [ extends Ident<super> ]               (. gum::Set<std::string> set; .)
+        [                                      (. std::string i; .)
+          implements Ident<i>                  (. set.insert(i); .)
+          {
+            ',' Ident<i>                       (. set.insert(i); .)
+          }
+        ]
+        SYNC '{'                               (. TRY2(factory().startClass(c, super, (set.empty()?0:&set)), "Can not create class "+c) .)
+        {                                      (. std::string type, name; bool array = false; .)
+          Ident<type> ( '[' ']' word           (. name = narrow(t->val); array = true; .)
+             Reference<type, name, array>
+          | word                               (. name = narrow(t->val); array = false; .)
+            (
+              RefOrParam<type, name, array>
+            | Attribute<type, name>
+            | Aggregate<type, name>
+            | Functions<type, name>
+            )
+          )
+        }
+        SYNC '}'                               (. TRY2(factory().endClass(), "Can not create class "+c) .)
+        .
+
+//________________________
+RefOrParam<std::string type, std::string name, bool array> =
+    IF(isClassOrInterface(type))
+        Reference<type, name, array>
+    |   Parameter<type, name> .
+
+Reference<std::string type, std::string name, bool array> =
+    ';' (. TRY2(factory().addReferenceSlot(type, name, array), "Can not add reference "+name) .) .
+
+Parameter<std::string type, std::string name> =
+                            (. std::string l; .)
+    [ default Label<l> ]    (. TRY2(factory().addParameter(type, name, l), "Can not add parameter "+name) .)
+    ';'.
+
+//________________________
+Attribute<std::string type, std::string name> =
+                                (. std::string p; bool error = false; .)
+                                (. TRY3(factory().startAttribute(type, name), "Can not create attribute "+name,error) .)
+    [ dependson CastIdent<p>    (. TRY3(factory().addParent(p), "Can not add parent "+p,error) .)
+      { ',' CastIdent<p>        (. TRY3(factory().addParent(p), "Can not add parent "+p,error) .)
+      }
+    ] '{'
+    ( '['                       (. std::vector<float> cpt; float f; .)
+      Number<f>                 (. cpt.push_back(f); .)
+      {
+        WEAK ',' Number<f>      (. cpt.push_back(f); .)
+      }
+      ']'                       (. TRY3(factory().setRawCPFByFloatColumns(cpt), "Problem with CPF of "+name,error) .)
+    | CPTRule<error>
+      { CPTRule<error> }
+    ) '}'                       (. TRY3(factory().endAttribute(), "Can not create attribute "+name,error) .)
+    SYNC ';' .
+
+CPTRule<bool &error> =          (. std::vector<std::string> labels; std::vector<float> values; .)
+                                (. std::string s; float f; .)
+    CPTRuleValue<s>             (. labels.push_back(s); .)
+    { WEAK ',' CPTRuleValue<s>  (. labels.push_back(s); .)
+    } ':' Number<f>             (. values.push_back(f); .)
+    { WEAK ',' Number<f>        (. values.push_back(f); .)
+    } SYNC ';'                  (. TRY3(factory().setCPFByFloatRule(labels, values), std::string("Problem with CPF"), error) .)
+    .
+
+CPTRuleValue<. std::string& s .> =
+    word    (. s = narrow(t->val); .)
+    |  '*'  (. s = "*"; .)
+    .
+
+Aggregate<std::string type, std::string name> =
+                    (. std::string func, s; std::vector<std::string> chains, labels; .)
+    '=' word        (. func = narrow(t->val); .)
+    '(' AggChains<chains> WEAK ',' AggLabels<labels>
+    ')'             (. TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) .)
+    SYNC ';' .
+
+AggChains<. std::vector<std::string>& chains .> =
+                            (. std::string s; .)
+        CastIdent<s>        (. chains.push_back(s); .)
+      | '['                 (. std::string s; .)
+        CastIdent<s>        (. chains.push_back(s); .)
+        {
+          WEAK ',' CastIdent<s>  (. chains.push_back(s); .)
+        }
+        ']'
+      | '{'                 (. std::string s; .)
+        CastIdent<s>        (. chains.push_back(s); .)
+        {
+          WEAK ',' CastIdent<s>  (. chains.push_back(s); .)
+        }
+        SYNC '}'
+      .
+
+AggLabels<. std::vector<std::string>& labels .> =   word            (. labels.push_back(narrow(t->val)); .)
+                                                  | '['
+                                                    word            (. labels.push_back(narrow(t->val)); .)
+                                                    {
+                                                      ',' word      (. labels.push_back(narrow(t->val)); .)
+                                                    }
+                                                    ']'
+                                                  | '{'
+                                                    word            (. labels.push_back(narrow(t->val)); .)
+                                                    {
+                                                      WEAK ',' word      (. labels.push_back(narrow(t->val)); .)
+                                                    }
+                                                    SYNC '}'
+                                                  .
+
+Functions<std::string type, std::string name> =
+                    (. if (type != "boolean") {TRY(throw gum::OperationNotAllowed("noisy-or attributes must be booleans"))} .)
+    '~' noisyOr '(' (. std::vector<std::string> chains, labels; std::vector<float> numbers; float leak = 0.0; .)
+    AggChains<chains> ',' NumberList<numbers> [ ',' Number<leak> [ ',' AggLabels<labels> ] ]
+    ')' SYNC ';'    (. TRY2(factory().addNoisyOrCompound(name, chains, numbers, leak, labels), "Can not add function"+name) .)
+    .
+
+NumberList<. std::vector<float>& numbers .> =
+                            (. float f; .)
+    (  Number<f>            (. numbers.push_back(f); .)
+    | '[' Number<f>         (. numbers.push_back(f); .)
+      { WEAK ',' Number<f>  (. numbers.push_back(f); .)
+      } ']'
+    ).
+
+//________________________
+System = system word    (. TRY(factory().startSystem(narrow(t->val))) .)
+    '{'
+    {                   (. std::string l1, r1; .)
+    Ident<l1>
+    ( ArrayDecl<l1>
+    | word              (. TRY(factory().addInstance(l1, narrow(t->val))) .)
+    | "+=" Ident<r1>    (.
+                            if ( factory().isArrayInCurrentSystem(l1) ) {
+                                TRY(factory().incArray(l1, r1))
+                            } else {
+                                TRY(factory().setReferenceSlot(l1, r1))
+                            }
+                        .)
+    | '='  Ident<r1>    (. TRY( try {
+                            factory().setReferenceSlot(l1, r1);
+                            } catch (gum::Exception& e) {
+                                size_t pos = l1.find_last_of('.');
+                                if (pos != std::string::npos) {
+                                    std::string i = l1.substr(0, pos);
+                                    std::string p = l1.substr(pos+1, std::string::npos);
+                                    factory().setParameter(i, p, r1);
+                                }
+                            } )
+                        .)
+    ) ';'
+    }
+    SYNC '}'            (. TRY(factory().endSystem()) .)
+         .
+
+ArrayDecl<std::string l1> = (. std::string r1; std::stringstream sBuff; sBuff << l1; int size = 0; .)
+    '[' [ integer           (. sBuff << '[' << narrow(t->val) << ']'; size=coco_atoi(t->val); .) ] ']'
+    (   word                (. TRY(factory().addArray(l1, narrow(t->val), size)) .)
+      | '.' word            (. std::string l2 = narrow(t->val); .)
+        (   "+=" Ident<r1>  (. TRY(factory().setReferenceSlot(sBuff.str(), l2, r1)) .)
+          | '='  Ident<r1>  (. TRY( try { factory().setReferenceSlot(sBuff.str(), l2, r1); }
+                               catch ( gum::Exception& e ) { factory().setParameter(sBuff.str(), l2, r1); } ) .)
+        )
+    ) .
+
+//________________________
+ImportIdent<std::string& s> =               (. std::stringstream sBuff; .)
+                        word                (. sBuff << narrow(t->val); .)
+                        {
+                          '.' (word | '*')  (. sBuff << "." << narrow(t->val); .)
+                        }                   (. s = sBuff.str(); .)
+                        .
+
+Ident<std::string& s> =             (. std::stringstream sBuff; .)
+                        word        (. sBuff << narrow(t->val); .)
+                        {
+                          '.' word  (. sBuff << "." << narrow(t->val); .)
+                        }           (. s = sBuff.str(); .)
+                        .
+
+CastIdent<std::string& s> = (. std::string cast, open(gum::prm::PRMObject::LEFT_CAST()), close(gum::prm::PRMObject::RIGHT_CAST()); std::stringstream sBuff; .)
+                            [ LEFT_CAST Ident<cast> RIGHT_CAST            (. sBuff << open << cast << close; .)
+                            ] word                                        (. sBuff << narrow(t->val); .)
+                            {                                             (. cast = ""; .)
+                              '.'                                         (. sBuff << '.'; .)
+                              [ LEFT_CAST Ident<cast> RIGHT_CAST          (. sBuff << open << cast << close; .)
+                              ] word                                      (. sBuff << narrow(t->val); .)
+                            }                                             (. s = sBuff.str(); .)
+                            .
+
+
+Label<std::string& s> =   word        (. s = narrow(t->val); .)
+                        |             (. float val; .)
+                          Number<val> (. std::stringstream sBuff; sBuff << val; s = sBuff.str(); .)
+                        .
+
+Number<float& val> =    integer (. val=coco_atoi(t->val); .)
+                      | float   (. val=coco_atof(t->val); .)
+                      .
+
+END O3PRM.

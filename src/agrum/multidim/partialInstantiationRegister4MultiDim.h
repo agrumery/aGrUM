@@ -59,7 +59,7 @@ namespace gum {
       /// the type of functions used by the register
       typedef MultiDimImplementation<GUM_SCALAR>*
       ( *PartialInstantiationPtr ) ( const MultiDimImplementation<GUM_SCALAR>*,
-                                     const HashTable<const DiscreteVariable*,Idx>& );
+                                     const HashTable<const DiscreteVariable*, Idx>& );
 
 
       // ############################################################################
@@ -135,7 +135,7 @@ namespace gum {
 
       /// a named constructor that constructs one and only one Register per data type
       /** Note that this constructor prevents the famous init order fiasco */
-      static PartialInstantiationRegister4MultiDim& Register ();
+      static PartialInstantiationRegister4MultiDim& Register();
 
       /// @}
 
@@ -147,19 +147,19 @@ namespace gum {
       /// @{
 
       /// Default constructor: creates an empty register
-      PartialInstantiationRegister4MultiDim ();
+      PartialInstantiationRegister4MultiDim();
 
       /// copy operator: never to be used
       PartialInstantiationRegister4MultiDim
       ( const PartialInstantiationRegister4MultiDim& );
 
       /// destructor
-      ~PartialInstantiationRegister4MultiDim ();
+      ~PartialInstantiationRegister4MultiDim();
 
       /// @}
 
       /// the set of associations for a given partial instantiation type
-      typedef HashTable<std::string,PartialInstantiationPtr> PartialInstantiationSet;
+      typedef HashTable<std::string, PartialInstantiationPtr> PartialInstantiationSet;
 
 
       /** @brief a mapping from the types of MultiDimImplementations to partial
@@ -175,9 +175,9 @@ namespace gum {
 
 
 
-  // ==============================================================================
+
   /// a function to more easily register new instantiation functions in MultiDims
-  // ==============================================================================
+
   template<typename GUM_SCALAR>
   void registerPartialInstantiation
   ( const std::string& instantiation_func_name,

@@ -24,7 +24,7 @@
  * This class servers to write the content of a Bayesian Network in
  * the BN format.
  *
- * @author Lionel Torti & Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_CDCNF_WRITER_H
@@ -38,13 +38,13 @@
 #include <agrum/BN/io/cnf/CNFWriter.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/config.h>
-#include <agrum/core/approximationPolicy/approximationPolicy.h>
+#include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
 
 namespace gum {
 
   /**
    * @class BNWriter
-   * @brief Writes a BayesNet in the BN format.
+   * @brief Writes a IBayesNet in the BN format.
    * @ingroup bn_group
    *
    * This class servers to write the content of a Bayesian Network in
@@ -55,7 +55,7 @@ namespace gum {
    */
   template<typename GUM_SCALAR, template<class> class IApproximationPolicy = ExactPolicy>
 
-  class ContextualDependenciesCNFWriter: public CNFWriter<GUM_SCALAR,IApproximationPolicy> {
+  class ContextualDependenciesCNFWriter: public CNFWriter<GUM_SCALAR, IApproximationPolicy> {
     public:
       // ==========================================================================
       /// @name Constructor & destructor
@@ -77,11 +77,11 @@ namespace gum {
       /**
        * Writes a Bayesian Network in the output stream using the BN format.
        *
-			 * @param output The output stream.
+       * @param output The output stream.
        * @param bn The Bayesian Network writen in output.
        * @throws IOError Raised if and I/O error occurs.
        */
-      virtual void write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn );
+      virtual void write ( std::ostream& output, const IBayesNet<GUM_SCALAR>& bn );
 
       /**
        * Writes a Bayesian Network in the referenced file using the BN format.
@@ -91,21 +91,11 @@ namespace gum {
        * @param bn The Bayesian Network writed in the file.
        * @throws IOError Raised if and I/O error occurs.
        */
-      virtual void write( std::string filePath, const BayesNet<GUM_SCALAR>& bn );
-      
-     
-  /*  private:
-      // Returns the header of the BN file.
-      std::string __header( const BayesNet<GUM_SCALAR>& bn );
+      virtual void write ( std::string filePath, const IBayesNet<GUM_SCALAR>& bn );
+  };
 
-      // Returns a bloc defining a variable in the BN format.
-      std::string __variableBloc( const DiscreteVariable& var );
-
-      // Returns a bloc defining a variable's CPT in the BN format.
-      std::string __variableCPT( const Potential<GUM_SCALAR>& cpt );
-
-      // Returns the modalities labels of the variables in varsSeq*/
-      };
+  extern template class ContextualDependenciesCNFWriter<float>;
+  extern template class ContextualDependenciesCNFWriter<double>;
 } /* namespace gum */
 
 #include <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.tcc>

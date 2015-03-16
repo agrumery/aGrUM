@@ -23,54 +23,54 @@
  *
  * how to use it :
  * @code
-	// OPTIONAL LISTENER CLASS
-	class aSimpleListener : public gum::Listener {
-	public:
-		void whenLoading(const void *buffer,int percent) {
-			// percent goes from 0 to 100 (whenLoading is called at most once for each integer between 0 and 100
-			// percent=200 recieved when End Of File.
-		}
-	};
-	// END OF OPTIONAL LISTENER
+  // OPTIONAL LISTENER CLASS
+  class aSimpleListener : public gum::Listener {
+  public:
+    void whenLoading(const void *buffer,int percent) {
+      // percent goes from 0 to 100 (whenLoading is called at most once for each integer between 0 and 100
+      // percent=200 recieved when End Of File.
+    }
+  };
+  // END OF OPTIONAL LISTENER
 
-	gum::FactoredMarkovDecisionProcess<double> fmdp;
+  gum::FactoredMarkovDecisionProcess<double> fmdp;
 
-	try {
-		gum::FMDPDatReader<double> reader( &fmdp, std::string( args[1] ) );
+  try {
+    gum::FMDPDatReader<double> reader( &fmdp, std::string( args[1] ) );
 
-		// OPTIONAL SECTION
-		aSimpleListener l;
-		GUM_CONNECT( reader.scanner(), onLoad, l, aSimpleListener::whenLoading );
-		// END OF OPTIONNAL SECTION
+    // OPTIONAL SECTION
+    aSimpleListener l;
+    GUM_CONNECT( reader.scanner(), onLoad, l, aSimpleListener::whenLoading );
+    // END OF OPTIONNAL SECTION
 
-		if ( reader.proceed() == 0 ) {
-			std::cerr << "Well done !" << std::endl;
-		} else {
-			reader.showElegantErrorsAndWarnings();
-			reader.showErrorCounts();
-		}
-	} catch ( gum::IOError& e ) { GUM_SHOWERROR( e ); }
+    if ( reader.proceed() == 0 ) {
+      std::cerr << "Well done !" << std::endl;
+    } else {
+      reader.showElegantErrorsAndWarnings();
+      reader.showErrorCounts();
+    }
+  } catch ( gum::IOError& e ) { GUM_SHOWERROR( e ); }
 
-	return 0;
+  return 0;
 
  * @endcode
  *
- * @author Pierre-Henri Wuillemin
+ * @author Pierre-Henri WUILLEMIN
  */
-// ============================================================================
+
 #ifndef FMDP_DAT_READER_H
 #define FMDP_DAT_READER_H
-// ============================================================================
+
 #include <iostream>
 #include <string>
 #include <fstream>
-// ============================================================================
+
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/FMDPFactory.h>
 #include <agrum/FMDP/io/FMDPReader.h>
-// ============================================================================
+
 #include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
-// ============================================================================
+
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //including coco-generated PARSER and SCANNER
@@ -81,12 +81,12 @@ namespace gum {
   /**
    * @class FMDPDatReader
    * @brief Definition of templatized reader of FMDPDat files for Bayesian Networks.
-   * @author Jean-Christophe Magnan
+   * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
    */
-   template< typename GUM_SCALAR >
+  template< typename GUM_SCALAR >
   class FMDPDatReader : public FMDPReader<GUM_SCALAR> {
     public:
-      FMDPDatReader( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, const std::string& filename, MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* ddf );
+      FMDPDatReader ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, const std::string& filename, MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* ddf );
       ~FMDPDatReader();
 
       /// Direct access to FMDPDat scanner (mandatory for listener connection)
@@ -97,13 +97,13 @@ namespace gum {
       const std::string& streamName() const;
 
       /// accessor to trace function (just write the number of parser line)
-      bool trace( void ) const;
-      void trace( bool b );
+      bool trace ( void ) const;
+      void trace ( bool b );
 
       /// parse.
       /// @return the number of detected errors
       /// @throws IOError if file not exists
-      int proceed( void );
+      int proceed ( void );
 
       /// @{
       /// publishing Errors API
@@ -114,22 +114,22 @@ namespace gum {
       Size warnings();
 
       /// line of ith error or warning
-      unsigned int errLine( unsigned int i );
+      unsigned int errLine ( unsigned int i );
       /// col of ith error or warning
-      unsigned int errCol( unsigned int i );
+      unsigned int errCol ( unsigned int i );
       /// type of ith error or warning
-      bool errIsError( unsigned int i );
+      bool errIsError ( unsigned int i );
       /// message of ith error or warning
-      std::string errMsg( unsigned int i );
+      std::string errMsg ( unsigned int i );
 
       /// send on std::cerr the list of errors
-      void showElegantErrors();
+      void showElegantErrors(std::ostream& o=std::cerr);
 
       /// send on std::cerr the list of errors or warnings
-      void showElegantErrorsAndWarnings();
+      void showElegantErrorsAndWarnings(std::ostream& o=std::cerr);
 
       /// send on std::cerr the number of errors and the number of warnings
-      void showErrorCounts();
+      void showErrorCounts(std::ostream& o=std::cerr);
       /// @}
 
     protected:
@@ -145,10 +145,13 @@ namespace gum {
       // a boolean to throw the ioerror not in the constructor but in the proceed()
       bool __ioerror;
   };
+
+  extern template class FMDPDatReader<float>;
+  extern template class FMDPDatReader<double>;
 } // namespace gum
 
 #include <agrum/FMDP/io/dat/FMDPDatReader.tcc>
 
 #endif // FMDP_DAT_READER_H
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

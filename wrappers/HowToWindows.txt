@@ -1,21 +1,25 @@
-- install MinGW compiler (for instance Code::Block with MinGW).
-- install CMAKE
-- install SWIG
-- install Python 2.x
-- change PATH properly
 
-- dans build/linux/release
-cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=RELEASE  ../../../src -DCMAKE_VERBOSE_MAKEFILE=OFF
-- dans build/wrappers/pyAgrum
-cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/pyAgrum/ -DCMAKE_VERBOSE_MAKEFILE=OFF  -DPYTHON_INCLUDE_DIR="c:\Python27\include" -DPYTHON_LIBRARY="c:\Python27\libs\python27.lib"
-"c:\Program Files (x86)\CodeBlocks\MinGW\bin\mingw32-make.exe"
+- install mingw (http://sourceforge.net/projects/mingw-w64/ 4.8.x/i686/posix/dwarf/0)
+- install make (from http://sourceforge.net/projects/mingw for instance)
+- install pythonxy (last version)
+- install CMAKE (last version)
 
-Si souci de linkage, qqchose comme
-C:\PROGRA~2\CODEBL~1\MinGW\bin\G__~1.EXE     -shared -o _pyAgrum.pyd -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\_pyAgrum.dir/objects.a -Wl,--no-whole-archive -Lc:\Python27\libs -lpython27 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-"c:\Program Files (x86)\CodeBlocks\MinGW\bin\mingw32-g++.exe" -shared -o _pyAgrum.pyd -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\_pyAgrum.dir/objects.a -Wl,--no-whole-archive -Lc:\Python27\libs -lpython27 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+- change PATH properly (a bit complex : PathEditor helps a lot)
 
-- copier pyAgrum.py et _pyAgrum.pyd dans python\Libs\site-package
-copy pyAgrum.py c:\Python27\Lib\site-packages\.
-copy _pyAgrum.pyd c:\Python27\Lib\site-packages\.
+- COMPILAITON 
+python act test pyAgrum -p windows
 
-et hop
+- INSTALLATION
+python act install pyAgrum -d C:\Python27 #(or wherever python is installed)
+
+
+# if needed : maybe forgotten in some pythonxy
+pip install pydotplus
+
+# certainly needed
+install graphviz for windows
+(change PATH to refer to graphviz binaries)
+
+ipython notebook 
+#and go to app/pyAgrum/notebooks for some sample
+
