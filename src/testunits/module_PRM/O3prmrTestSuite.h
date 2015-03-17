@@ -47,110 +47,10 @@ namespace gum_tests {
           TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/query1.o3prmr" ) );
 
           TS_ASSERT_EQUALS ( si->errors(), 0 );
-          TS_ASSERT_EQUALS ( si->warnings(), 0 );
-
-          delete si;
-        } catch (gum::Exception&) {
-          TS_ASSERT(false);
-        }
-      }
-
-
-      void testParseFile2() {
-        try {
-          gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
-          si->setSyntaxMode ( true );
-          si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
-
-          TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/query2.o3prmr" ) );
-
-          TS_ASSERT_EQUALS ( si->errors(), 1 );
-          TS_ASSERT_EQUALS ( si->warnings(), 0 );
-
-          delete si;
-        } catch (gum::Exception&) {
-          TS_ASSERT(false);
-        }
-      }
-
-
-      void testInference() {
-        try {
-          gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
-          si->setSyntaxMode ( false );
-          si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
-
-          TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/query1.o3prmr" ) );
-
-          TS_ASSERT_EQUALS ( si->errors(), 0 );
-          TS_ASSERT_EQUALS ( si->warnings(), 0 );
-
-          delete si;
-        } catch (gum::Exception&) {
-          TS_ASSERT(false);
-        }
-      }
-
-
-      void testObserve() {
-        try {
-          gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
-          si->setSyntaxMode ( false );
-          si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
-
-          TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/queryObserveTest.o3prmr" ) );
-
-          TS_ASSERT_EQUALS ( si->errors(), 0 );
-          TS_ASSERT_EQUALS ( si->warnings(), 0 );
-
-          // Observe correctly
-          const auto& c1 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c1" );
-          const auto& c2 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c2" );
-
-          TS_ASSERT ( si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c1, &c1.get ( "can_print" ) ) ) );
-          TS_ASSERT ( si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c2, &c2.get ( "equipState" ) ) ) );
-          TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c1, &c1.get ( "equipState" ) ) ) );
-          TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c2, &c2.get ( "can_print" ) ) ) );
-
-          const auto& e = si->inference()->evidence ( c2 );
-          const auto p = e[c1.get ( "equipState" ).id()];
-
-          gum::Instantiation j ( *p );
-          const auto& c2_equipState = c2.get ( "equipState" );
-
-          for ( j.setFirst(); ! j.end(); j.inc() ) {
-            if ( c2_equipState.type().variable().label ( j.val ( c2_equipState.type().variable() ) ) == "Dysfunctional" ) {
-              TS_ASSERT_EQUALS ( p->get ( j ), 1.0 );
-            } else {
-              TS_ASSERT_EQUALS ( p->get ( j ), 0.0 );
-            }
+          if ( si->errors() > 0 ) {
+            si->showElegantErrorsAndWarnings();
           }
-
-          delete si;
-        } catch (gum::Exception& e) {
-          TS_ASSERT(false);
-        }
-      }
-
-      void testUnobserve() {
-        try {
-          gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
-          si->setSyntaxMode ( false );
-          si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
-
-          TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/queryUnobserveTest.o3prmr" ) );
-
-          TS_ASSERT_EQUALS ( si->errors(), 0 );
           TS_ASSERT_EQUALS ( si->warnings(), 0 );
-
-          // Unobserve correctly
-          const gum::prm::Instance<double>& c1 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c1" );
-          const gum::prm::Instance<double>& c2 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c2" );
-
-          TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c1, &c1.get ( "can_print" ) ) ) );
-          TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c2, &c2.get ( "equipState" ) ) ) );
-          TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c1, &c1.get ( "equipState" ) ) ) );
-          TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c2, &c2.get ( "can_print" ) ) ) );
 
           delete si;
         } catch (gum::Exception&) {
@@ -158,47 +58,150 @@ namespace gum_tests {
         }
       }
 
-      void testQuery() {
-        try {
-          gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
-          si->setSyntaxMode ( false );
-          si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
 
-          TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/query1.o3prmr" ) );
+      //void testParseFile2() {
+      //  try {
+      //    gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
+      //    si->setSyntaxMode ( true );
+      //    si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
 
-          si->showElegantErrorsAndWarnings();
-          TS_ASSERT_EQUALS ( si->errors(), 0 );
-          TS_ASSERT_EQUALS ( si->warnings(), 0 );
+      //    TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/query2.o3prmr" ) );
 
-          const gum::prm::Instance<double>& c1 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c1" );
-          const gum::prm::Instance<double>& c2 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c2" );
+      //    TS_ASSERT_EQUALS ( si->errors(), 1 );
+      //    TS_ASSERT_EQUALS ( si->warnings(), 0 );
 
-          TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c1, &c1.get ( "can_print" ) ) ) );
-          TS_ASSERT ( si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c2, &c2.get ( "equipState" ) ) ) );
-          TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c1, &c1.get ( "equipState" ) ) ) );
-          TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c2, &c2.get ( "can_print" ) ) ) );
+      //    delete si;
+      //  } catch (gum::Exception&) {
+      //    TS_ASSERT(false);
+      //  }
+      //}
 
-          // Est-ce que la valeur Dysfonctionnal de l'attribut can_print de l'instance c1 est à 1.0
 
-          const gum::prm::PRMInference<double>::EMap& e = si->inference()->evidence ( c2 );
-          const gum::Potential<double>* p = e[c1.get ( "equipState" ).id()];
+      //void testInference() {
+      //  try {
+      //    gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
+      //    si->setSyntaxMode ( false );
+      //    si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
 
-          gum::Instantiation j ( *p );
-          const gum::prm::Attribute<double>& c2_equipState = c2.get ( "equipState" );
+      //    TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/query1.o3prmr" ) );
 
-          for ( j.setFirst(); ! j.end(); j.inc() ) {
-            if ( c2_equipState.type().variable().label ( j.val ( c2_equipState.type().variable() ) ) == "Dysfunctional" ) {
-              TS_ASSERT_EQUALS ( p->get ( j ), 1.0 );
-            } else {
-              TS_ASSERT_EQUALS ( p->get ( j ), 0.0 );
-            }
-          }
+      //    TS_ASSERT_EQUALS ( si->errors(), 0 );
+      //    TS_ASSERT_EQUALS ( si->warnings(), 0 );
 
-          delete si;
-        } catch (gum::Exception&) {
-          TS_ASSERT(false);
-        }
-      }
+      //    delete si;
+      //  } catch (gum::Exception&) {
+      //    TS_ASSERT(false);
+      //  }
+      //}
+
+
+      //void testObserve() {
+      //  try {
+      //    gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
+      //    si->setSyntaxMode ( false );
+      //    si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
+
+      //    TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/queryObserveTest.o3prmr" ) );
+
+      //    TS_ASSERT_EQUALS ( si->errors(), 0 );
+      //    TS_ASSERT_EQUALS ( si->warnings(), 0 );
+
+      //    // Observe correctly
+      //    const auto& c1 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c1" );
+      //    const auto& c2 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c2" );
+
+      //    TS_ASSERT ( si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c1, &c1.get ( "can_print" ) ) ) );
+      //    TS_ASSERT ( si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c2, &c2.get ( "equipState" ) ) ) );
+      //    TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c1, &c1.get ( "equipState" ) ) ) );
+      //    TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c2, &c2.get ( "can_print" ) ) ) );
+
+      //    const auto& e = si->inference()->evidence ( c2 );
+      //    const auto p = e[c1.get ( "equipState" ).id()];
+
+      //    gum::Instantiation j ( *p );
+      //    const auto& c2_equipState = c2.get ( "equipState" );
+
+      //    for ( j.setFirst(); ! j.end(); j.inc() ) {
+      //      if ( c2_equipState.type().variable().label ( j.val ( c2_equipState.type().variable() ) ) == "Dysfunctional" ) {
+      //        TS_ASSERT_EQUALS ( p->get ( j ), 1.0 );
+      //      } else {
+      //        TS_ASSERT_EQUALS ( p->get ( j ), 0.0 );
+      //      }
+      //    }
+
+      //    delete si;
+      //  } catch (gum::Exception& e) {
+      //    TS_ASSERT(false);
+      //  }
+      //}
+
+      //void testUnobserve() {
+      //  try {
+      //    gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
+      //    si->setSyntaxMode ( false );
+      //    si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
+
+      //    TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/queryUnobserveTest.o3prmr" ) );
+
+      //    TS_ASSERT_EQUALS ( si->errors(), 0 );
+      //    TS_ASSERT_EQUALS ( si->warnings(), 0 );
+
+      //    // Unobserve correctly
+      //    const gum::prm::Instance<double>& c1 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c1" );
+      //    const gum::prm::Instance<double>& c2 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c2" );
+
+      //    TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c1, &c1.get ( "can_print" ) ) ) );
+      //    TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c2, &c2.get ( "equipState" ) ) ) );
+      //    TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c1, &c1.get ( "equipState" ) ) ) );
+      //    TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c2, &c2.get ( "can_print" ) ) ) );
+
+      //    delete si;
+      //  } catch (gum::Exception&) {
+      //    TS_ASSERT(false);
+      //  }
+      //}
+
+      //void testQuery() {
+      //  try {
+      //    gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
+      //    si->setSyntaxMode ( false );
+      //    si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
+
+      //    TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/query1.o3prmr" ) );
+
+      //    si->showElegantErrorsAndWarnings();
+      //    TS_ASSERT_EQUALS ( si->errors(), 0 );
+      //    TS_ASSERT_EQUALS ( si->warnings(), 0 );
+
+      //    const gum::prm::Instance<double>& c1 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c1" );
+      //    const gum::prm::Instance<double>& c2 = si->prm()->system ( "systems.MySystem.MySystem" ).get ( "c2" );
+
+      //    TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c1, &c1.get ( "can_print" ) ) ) );
+      //    TS_ASSERT ( si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c2, &c2.get ( "equipState" ) ) ) );
+      //    TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c1, &c1.get ( "equipState" ) ) ) );
+      //    TS_ASSERT ( ! si->inference()->hasEvidence ( gum::prm::PRMInference<double>::Chain ( &c2, &c2.get ( "can_print" ) ) ) );
+
+      //    // Est-ce que la valeur Dysfonctionnal de l'attribut can_print de l'instance c1 est à 1.0
+
+      //    const gum::prm::PRMInference<double>::EMap& e = si->inference()->evidence ( c2 );
+      //    const gum::Potential<double>* p = e[c1.get ( "equipState" ).id()];
+
+      //    gum::Instantiation j ( *p );
+      //    const gum::prm::Attribute<double>& c2_equipState = c2.get ( "equipState" );
+
+      //    for ( j.setFirst(); ! j.end(); j.inc() ) {
+      //      if ( c2_equipState.type().variable().label ( j.val ( c2_equipState.type().variable() ) ) == "Dysfunctional" ) {
+      //        TS_ASSERT_EQUALS ( p->get ( j ), 1.0 );
+      //      } else {
+      //        TS_ASSERT_EQUALS ( p->get ( j ), 0.0 );
+      //      }
+      //    }
+
+      //    delete si;
+      //  } catch (gum::Exception&) {
+      //    TS_ASSERT(false);
+      //  }
+      //}
   };
 
 } // namespace gum_tests

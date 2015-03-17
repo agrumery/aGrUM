@@ -5,6 +5,7 @@ request MyQuerry {
 
   systems.MySystem.MySystem.c1.can_print = true;
   ? systems.MySystem.MySystem.c2.can_print;
+  //? systems.MySystem.MySystem.c3.can_print;
 
   unobserve systems.MySystem.MySystem.c1.can_print;
 

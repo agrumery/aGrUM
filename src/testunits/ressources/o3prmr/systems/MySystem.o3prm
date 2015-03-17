@@ -25,6 +25,7 @@
 import classes.PowerSupply;
 import classes.Room;
 import classes.Computer;
+import classes.SafeComputer;
 import classes.BWPrinter;
 import classes.ColorPrinter;
 import classes.ParamComputer;
@@ -53,6 +54,18 @@ system MySystem {
 
   c1.printers += color_printers;
   c2.printers += color_printers;
+
+  SafeComputer c3;
+  SafeComputer c4;
+
+  c3.room = r;
+  c4.room = r;
+
+  c3.printers = bw_printers;
+  c4.printers = bw_printers;
+
+  c3.printers += color_printers;
+  c4.printers += color_printers;
 
   ParamComputer pc1;
   ParamComputer pc2(lambda=0.999,t=10);

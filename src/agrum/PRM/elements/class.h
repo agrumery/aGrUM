@@ -32,6 +32,8 @@
 
 #include <agrum/core/sequence.h>
 #include <agrum/core/bijection.h>
+#include <agrum/multidim/formula/formula.h>
+#include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimSparse.h>
 #include <agrum/PRM/elements/classElementContainer.h>
 #include <agrum/PRM/elements/attribute.h>
@@ -173,6 +175,12 @@ namespace gum {
         const Set< SlotChain<GUM_SCALAR>* >& slotChains() const;
 
         /**
+         * Set the formulas for a given node id, not all nodes can be defined
+         * and an OperationNotAllowed will be raised if the nodes not elligible.
+         */
+        void setFormula(NodeId id, MultiDimImplementation<Formula*>* formulas);
+
+        /**
          * Returns the Set of ClassElement<GUM_SCALAR>'s which must be instantiated
          * at Instance level.
          * @return the Set of ClassElement<GUM_SCALAR>'s which must be instantiated
@@ -279,11 +287,14 @@ namespace gum {
         /// @{
 
         /// Mapping between a member's name and itself.
-        /// Used for fast access to a member given it's name.
+        /// Used for fast access to a member given it's name
         HashTable<std::string, ClassElement<GUM_SCALAR>*> __nameMap;
 
         /// The sequence of Attribute<GUM_SCALAR>s.
         Set<Attribute<GUM_SCALAR>*> __attributes;
+
+        /// Attributes formulas.
+        NodeProperty<MultiDimImplementation<Formula*>*> __formulas;
 
         /// The sequence of ReferenceSlot<GUM_SCALAR>.
         Set<ReferenceSlot<GUM_SCALAR>*> __referenceSlots;
