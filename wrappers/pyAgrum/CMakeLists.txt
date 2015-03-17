@@ -2,21 +2,19 @@ project(pyAgrum)
 
 cmake_minimum_required(VERSION 2.6)
 
-message(${CMAKE_CURRENT_BINARY_DIR})
-find_package(SWIG REQUIRED)
-include(${SWIG_USE_FILE})
-
 if ("a${PYTHONVERSION}" STREQUAL "a2") # we use 3 by default
   set(PYTHONVERSION "2")
 
   # hackish
   set(PYTHON_EXECUTABLE "python2")
+  find_package(PythonInterp 2 REQUIRED)
 else ("a${PYTHONVERSION}" STREQUAL "a2") 
   # python 3 : no such package for python 3 
   set(PYTHONVERSION "3")
 
   # hackish
   set(PYTHON_EXECUTABLE "python3")
+  find_package(PythonInterp 3 REQUIRED)
 endif ("a${PYTHONVERSION}" STREQUAL "a2")
 
 if(WIN32)
@@ -59,7 +57,7 @@ if (SWIG_FOUND)
   include("cmake/GUM-UseSWIG.cmake")
 endif(SWIG_FOUND)
 
-find_package(PythonInterp 2.7 REQUIRED)
+
 
 if (APPLE) # let's assume that PYTHON is there
   set(PYTHON_LOCAL_PATH /usr/local/Cellar/python/2.7.7_2/Frameworks/Python.framework/Versions/2.7)
