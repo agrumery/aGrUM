@@ -81,6 +81,8 @@ namespace gum {
       virtual void setRawCPFByFloatLines ( const std::vector<float>& array ) = 0;
       virtual void setRawCPFByFloatColumns ( const std::vector<float>& array ) = 0;
       virtual void setCPFByFloatRule ( const std::vector<std::string>& labels, const std::vector<float>& values ) = 0;
+      virtual void setRawCPFByColumns( const std::vector<std::string>& array ) = 0;
+      virtual void setRawCPFByLines( const std::vector<std::string>& array ) = 0;
       virtual void endAttribute() = 0;
       virtual void addParameter ( const std::string& type,
                                   const std::string& name,

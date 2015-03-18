@@ -642,6 +642,10 @@ namespace gum {
          */
         virtual void setRawCPFByFloatColumns ( const std::vector<float>& array ) override;
 
+
+        virtual void setRawCPFByColumns( const std::vector<std::string>& array ) override;
+        virtual void setRawCPFByLines( const std::vector<std::string>& array ) override;
+
         /**
          * Fills the CPF using a rule.
          *

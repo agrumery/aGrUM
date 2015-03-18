@@ -1499,6 +1499,19 @@ namespace gum {
       const System<GUM_SCALAR>* system = static_cast<const System<GUM_SCALAR>*>( getCurrent() );
       return ( system && system->isArray( name ) );
     }
+
+  template<typename GUM_SCALAR>
+  void 
+  PRMFactory<GUM_SCALAR>::setRawCPFByColumns( const std::vector<std::string>& array ) {
+
+  }
+
+  template<typename GUM_SCALAR>
+  void 
+  PRMFactory<GUM_SCALAR>::setRawCPFByLines( const std::vector<std::string>& array ) {
+
+  }
+
 } /* namespace prm */
 } /* namespace gum */
 
