@@ -123,45 +123,74 @@ namespace gum {
     void
     PRMFactory<GUM_SCALAR>::endClass() {
       Class<GUM_SCALAR>* c = static_cast<Class<GUM_SCALAR>*>( __checkStack( 1, PRMObject::PRMType::CLASS ) );
-      std::string name;
-      std::stringstream msg;
-      msg << "class " << c->name() << " does not respect interface ";
 
+      __checkInterfaceImplementation(c);
+
+      if ( c->parameters().size() > 0 ) {
+        __updateFormulas(c);
+      }
+
+      __stack.pop_back();
+    }
+
+    template<typename GUM_SCALAR>
+    void
+    PRMFactory<GUM_SCALAR>::__checkInterfaceImplementation( Class<GUM_SCALAR>* c ) {
       try {
         for( const auto & i : c->implements() ) {
           try {
             for( const auto node : i->dag().nodes() ) {
-              name = i->get( node ).name();
+              std::string name = i->get( node ).name();
 
               switch( i->get( node ).elt_type() ) {
                 case ClassElement<GUM_SCALAR>::prm_aggregate:
-                case ClassElement<GUM_SCALAR>::prm_attribute: {
-                  if( ( c->get( name ).elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) or
-                      ( c->get( name ).elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) ) {
-                    if( not c->get( name ).type().isSubTypeOf( i->get( name ).type() ) ) {
+                case ClassElement<GUM_SCALAR>::prm_attribute: 
+                  {
+                    if( ( c->get( name ).elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) or
+                        ( c->get( name ).elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) ) {
+
+                      if( not c->get( name ).type().isSubTypeOf( i->get( name ).type() ) ) {
+
+                        std::stringstream msg;
+                        msg << "class " << c->name() << " does not respect interface ";
+                        GUM_ERROR( TypeError, msg.str() + i->name() );
+
+                      }
+                    } else {
+
+                      std::stringstream msg;
+                      msg << "class " << c->name() << " does not respect interface ";
                       GUM_ERROR( TypeError, msg.str() + i->name() );
+
                     }
-                  } else {
-                    GUM_ERROR( TypeError, msg.str() + i->name() );
+
+                    break;
                   }
 
-                  break;
-                }
+                case ClassElement<GUM_SCALAR>::prm_refslot:
+                  {
+                    if( c->get( name ).elt_type() == ClassElement<GUM_SCALAR>::prm_refslot ) {
 
-                case ClassElement<GUM_SCALAR>::prm_refslot: {
-                  if( c->get( name ).elt_type() == ClassElement<GUM_SCALAR>::prm_refslot ) {
-                    const ReferenceSlot<GUM_SCALAR>& ref_i = static_cast<const ReferenceSlot<GUM_SCALAR>&>( i->get( name ) );
-                    const ReferenceSlot<GUM_SCALAR>& ref_this = static_cast<const ReferenceSlot<GUM_SCALAR>&>( c->get( name ) );
+                      const ReferenceSlot<GUM_SCALAR>& ref_i = static_cast<const ReferenceSlot<GUM_SCALAR>&>( i->get( name ) );
+                      const ReferenceSlot<GUM_SCALAR>& ref_this = static_cast<const ReferenceSlot<GUM_SCALAR>&>( c->get( name ) );
 
-                    if( not ref_this.slotType().isSubTypeOf( ref_i.slotType() ) ) {
+                      if( not ref_this.slotType().isSubTypeOf( ref_i.slotType() ) ) {
+
+                        std::stringstream msg;
+                        msg << "class " << c->name() << " does not respect interface ";
+                        GUM_ERROR( TypeError, msg.str() + i->name() );
+
+                      }
+                    } else {
+
+                      std::stringstream msg;
+                      msg << "class " << c->name() << " does not respect interface ";
                       GUM_ERROR( TypeError, msg.str() + i->name() );
-                    }
-                  } else {
-                    GUM_ERROR( TypeError, msg.str() + i->name() );
-                  }
 
-                  break;
-                }
+                    }
+
+                    break;
+                  }
 
                 case ClassElement<GUM_SCALAR>::prm_slotchain: {
                   // Nothing to check: they are automatically inherited
@@ -175,14 +204,58 @@ namespace gum {
               }
             }
           } catch( NotFound& ) {
+            std::stringstream msg;
+            msg << "class " << c->name() << " does not respect interface ";
             GUM_ERROR( TypeError, msg.str() + i->name() );
           }
         }
       } catch( NotFound& ) {
         // this Class<GUM_SCALAR> does not implement any Interface<GUM_SCALAR>
       }
+    }
 
-      __stack.pop_back();
+    template<typename GUM_SCALAR>
+    void
+    PRMFactory<GUM_SCALAR>::__updateFormulas( Class<GUM_SCALAR>* c ) {
+
+      std::cout << "In __updateFormulas( " << c->name() << " )" << std::endl;
+
+      for ( const auto & const_attr : c->attributes() ) {
+        std::cout << "  - " << const_attr->name() << " " ;
+
+        if ( const_attr->hasFormula() ) {
+          std::cout << ": updated !";
+
+          auto attr = const_attr;
+          //auto attr = const_cast<Attribute<GUM_SCALAR>*>(const_attr); 
+
+          delete attr->__cpf;
+          attr->__cpf = new Potential<GUM_SCALAR>();
+
+          for ( auto var : attr->formulas().variablesSequence() ) {
+            attr->cpf().add( *var );
+          }
+
+          Instantiation inst( attr->formulas() );
+
+          for ( inst.begin(); not inst.end(); inst.inc() ) {
+
+            Formula f( attr->formulas()[inst] );
+
+            for ( auto p : c->parameters() ) {
+              std::cout << p->name() << " -> " << p->value() << " ";
+              f.variables().insert( p->name(), p->value() );
+            }
+
+            attr->cpf().set( inst, f.result() );
+
+          }
+
+        }
+        std::cout << std::endl;
+
+      }
+
     }
 
     template<typename GUM_SCALAR>
@@ -1237,7 +1310,7 @@ namespace gum {
         if (params.empty()) {
           addInstance(type, name);
         } else {
-          GUM_ERROR(OperationNotAllowed, "Class " + type + " does not have paramters");
+          GUM_ERROR(OperationNotAllowed, "Class " + type + " does not have parameters");
         }
       } else {
 
@@ -1265,15 +1338,32 @@ namespace gum {
         // Adding class in current package
         try {
 
+          // sub class already have super's package prefixed
+          // Not using methods pushPackage() and popPackage() to not alter imports
           startClass(sub_c, c->name());
+
+          // Update inherited parameters
+          for ( auto p : my_params ) {
+
+            auto type = static_cast<Parameter<GUM_SCALAR>&>( c->get(p.first) ).valueType();
+            if (type == Parameter<GUM_SCALAR>::ParameterType::INT) {
+
+              addParameter("int", p.first, p.second);
+
+            } else {
+
+              addParameter("real", p.first, p.second);
+
+            }
+
+          }
+
           endClass();
 
         } catch (DuplicateElement& e) {
           // Sub Class already exists in this system
         }
-
-        c = __retrieveClass( sub_c );
-
+        c = __retrieveClass(sub_c);
         __addInstance(c, name);
 
       }

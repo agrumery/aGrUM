@@ -56,6 +56,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     class Attribute: public ClassElement<GUM_SCALAR> {
         // ========================================================================
+        friend class PRMFactory<GUM_SCALAR>;
         friend class Class<GUM_SCALAR>;
         friend class Interface<GUM_SCALAR>;
         friend class Instance<GUM_SCALAR>;
@@ -117,6 +118,7 @@ namespace gum {
 
         virtual MultiDimImplementation<std::string>& formulas();
         virtual const MultiDimImplementation<std::string>& formulas() const;
+        virtual bool hasFormula() const;
 
         /// See gum::ClassElement::_addParent().
         virtual void addParent ( const ClassElement<GUM_SCALAR>& elt );

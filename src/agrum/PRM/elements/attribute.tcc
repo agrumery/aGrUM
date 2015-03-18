@@ -196,6 +196,12 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> INLINE
+    bool
+    Attribute<GUM_SCALAR>::hasFormula() const {
+      return __formulas != 0;
+    }
+
+    template<typename GUM_SCALAR> INLINE
     FuncAttribute<GUM_SCALAR>::FuncAttribute ( const std::string& name,
         const Type<GUM_SCALAR>& type,
         MultiDimImplementation<GUM_SCALAR>* impl ) :

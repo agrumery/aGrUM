@@ -109,29 +109,32 @@ namespace gum {
       // in c.
       Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
 
+       //// Copying parameters
+       //for( const auto c_param : c.__parameters ) {
+       //  auto param = new Parameter<GUM_SCALAR>( c_param->name(), c_param->valueType(), c_param->value() );
+
+       //  __parameters.insert( param );
+
+       //  param->setId( c_param->id() );
+       //  __nodeIdMap.insert( param->id(), param );
+       //  __nameMap.insert(param->name(), param);
+       //}
+
       for( const auto c_attr : c.__attributes ) {
         // using multiDimSparse to prevent unecessary memory allocation for large arrays
-        Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR> ( c_attr->name(), c_attr->type(), new MultiDimSparse<GUM_SCALAR> ( 0.0 ) );
+        auto attr = new Attribute<GUM_SCALAR> ( c_attr->name(), c_attr->type(), new MultiDimSparse<GUM_SCALAR> ( 0.0 ) );
+
         bij.insert( & ( c_attr->type().variable() ), & ( attr->type().variable() ) );
         attr->setId( c_attr->id() );
         __nodeIdMap.insert( attr->id(), attr );
         __attributes.insert( attr );
 
-        if( c.__nameMap[c_attr->name()] == c.__nameMap[c_attr->safeName()] )
+        if( c.__nameMap[c_attr->name()] == c.__nameMap[c_attr->safeName()] ) {
           __nameMap.insert( attr->name(), attr );
+        }
 
         __nameMap.insert( attr->safeName(), attr );
-      }
 
-      // Copying parameters
-      for( const auto c_param : c.__parameters ) {
-        auto param = new Parameter<GUM_SCALAR>( c_param->name(), c_param->valueType(), c_param->value() );
-
-        __parameters.insert( param );
-
-        param->setId( c_param->id() );
-        __nodeIdMap.insert( param->id(), param );
-        __nameMap.insert(param->name(), param);
       }
 
       // Copying aggregates
@@ -204,6 +207,16 @@ namespace gum {
         a = static_cast<Attribute<GUM_SCALAR>*>( __nameMap[attr->safeName()] );
         delete a->__cpf;
         a->__cpf = copyPotential( bij, attr->cpf() );
+
+        // Copying formulas if any
+        if ( attr->hasFormula() ) {
+
+          if ( a->__formulas ) {
+            delete a->__formulas;
+          }
+          a->__formulas = copyMultiDim( bij, attr->formulas() );
+
+        }
       }
     }
 
