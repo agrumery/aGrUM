@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_COCO_SCANNER_H__)
-#define gum_COCO_SCANNER_H__
+#if !defined(gum_formula_COCO_SCANNER_H__)
+#define gum_formula_COCO_SCANNER_H__
 
 #include <limits.h>
 #include <stdio.h>
@@ -46,6 +46,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <agrum/core/errorsContainer.h>
 
 namespace gum {
+namespace formula {
 
 
 class Token {
@@ -266,6 +267,7 @@ class Scanner {
 
 }; // end Scanner
 
+} // namespace
 } // namespace
 
 

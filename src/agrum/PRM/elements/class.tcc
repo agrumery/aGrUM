@@ -98,10 +98,6 @@ namespace gum {
       if( __implements ) {
         delete __implements;
       }
-
-      for ( const auto & elt : __formulas ) {
-        delete elt.second;
-      }
     }
 
     template<typename GUM_SCALAR>
@@ -197,11 +193,6 @@ namespace gum {
       for( const auto & arc : c.dag().arcs() ) {
         __nodeIdMap[arc.tail()]->addChild( * ( __nodeIdMap[arc.head()] ) );
         __nodeIdMap[arc.head()]->addParent( * ( __nodeIdMap[arc.tail()] ) );
-      }
-
-      // Copying formulas
-      for ( const auto & formula : c.__formulas ) {
-        __formulas.insert( formula.first, formula.second );
       }
 
       // Copying the IO flag
@@ -859,12 +850,6 @@ namespace gum {
       } catch( OperationNotAllowed& ) {
         GUM_ERROR( NotFound, "no attribute with the given name" );
       }
-    }
-
-    template<typename GUM_SCALAR> INLINE
-    void
-    Class<GUM_SCALAR>::setFormula(NodeId id, MultiDimImplementation<Formula*>* formulas) {
-      __formulas.insert(id, formulas);
     }
 
   } /* namespace prm */

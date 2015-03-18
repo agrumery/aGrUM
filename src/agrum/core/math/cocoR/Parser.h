@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_COCO_PARSER_H__)
-#define gum_COCO_PARSER_H__
+#if !defined(gum_formula_COCO_PARSER_H__)
+#define gum_formula_COCO_PARSER_H__
 
 #include <algorithm>
 #include <cmath>
@@ -45,7 +45,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <vector>
 
 #include <agrum/core/utils_dir.h>
-#include <agrum/multidim/formula/formula.h>
+#include <agrum/core/math/formula.h>
 
 #include <iostream>
 #include <string>
@@ -53,6 +53,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include "Scanner.h"
 
 namespace gum {
+namespace formula {
 
 
 
@@ -88,15 +89,19 @@ class Parser {
     Token* la;      // lookahead token
 
     private:
-  Formula __formula;
+  gum::Formula* __formula;
 
 public:
-  Formula& formula() { 
-    return __formula; 
+  void formula( gum::Formula* f ) {
+    __formula = f;
   }
 
-  const Formula& formula() const {
-    return __formula; 
+  gum::Formula& formula() { 
+    return *__formula; 
+  }
+
+  const gum::Formula& formula() const {
+    return *__formula; 
   }
 
 //##############################################################################
@@ -121,6 +126,7 @@ public:
 
 }; // end Parser
 
+} // namespace
 } // namespace
 
 

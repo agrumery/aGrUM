@@ -22,8 +22,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_FORMULA_FORMULA_H
-#define GUM_FORMULA_FORMULA_H
+#ifndef GUM_MATH_FORMULA_H
+#define GUM_MATH_FORMULA_H
 
 #include <vector>
 #include <stack>
@@ -35,13 +35,15 @@
 
 namespace gum {
 
+  namespace formula {
+    class Scanner;
+    class Parser;
+  }
+
   class FormulaPart {
     public:
       enum token_type { NUMBER, OPERATOR, PARENTHESIS, NIL, FUNCTION, ARG_SEP };
-      enum token_function { exp, log, ln, pow, sqrt, bernoulli, binomial,
-        geometric, negative_binomial, poisson, exponential, gamma, weibull,
-        extreme_value, normal, lognormal, chi_squared, cauchy, fisher_f, student_t,
-        discrete, piecewise_constant, piecewise_linear, nil };
+      enum token_function { exp, log, ln, pow, sqrt, nil };
 
       token_type type;
       double number;
@@ -71,7 +73,7 @@ namespace gum {
 
       /// Args are backwards !
       FormulaPart eval(const std::vector<FormulaPart>& args) const;
-      
+
     private:
       /// Args are backwards !
       double __operator_eval(const std::vector<FormulaPart>& args) const;
@@ -89,7 +91,7 @@ namespace gum {
 
     public:
 
-      Formula();
+      Formula(const std::string& f);
       Formula(const Formula & source);
       ~Formula();
 
@@ -121,6 +123,10 @@ namespace gum {
       void finalize();
 
     private:
+      std::string __formula;
+      gum::formula::Scanner* __scanner;
+      gum::formula::Parser* __parser;
+
       FormulaPart __last_token;
 
       std::vector<FormulaPart> __output;
@@ -137,7 +143,7 @@ namespace gum {
       bool __popOperator(FormulaPart o);
 
       void __reduceOperatorOrFunction(FormulaPart item,
-                                      std::stack<FormulaPart> &stack) const;
+          std::stack<FormulaPart> &stack) const;
 
       void __push_unaryOperator(char o);
 
@@ -153,5 +159,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif /* GUM_FORMULA_FORMULA_H */
+#endif /* GUM_MATH_FORMULA_H */
 

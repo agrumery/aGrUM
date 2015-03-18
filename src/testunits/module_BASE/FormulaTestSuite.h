@@ -23,7 +23,7 @@
 #include <testsuite_utils.h>
 
 #include <agrum/core/exceptions.h>
-#include <agrum/multidim/formula/Parser.h>
+#include <agrum/core/math/formula.h>
 
 namespace gum_tests {
 
@@ -43,12 +43,11 @@ namespace gum_tests {
           // Arrange
           std::string eq = "10 * 2";
           double expected = 20.0;
-          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
-          gum::Parser parser(&scanner);
+          gum::Formula formula(eq);
           // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
           // Assert
-          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );
         }
@@ -59,12 +58,11 @@ namespace gum_tests {
           // Arrange
           std::string eq = "10 / 2";
           double expected = 5.0;
-          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
-          gum::Parser parser(&scanner);
+          gum::Formula formula(eq);
           // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
           // Assert
-          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );
         }
@@ -75,12 +73,11 @@ namespace gum_tests {
           // Arrange
           std::string eq = "10 + 2";
           double expected = 12.0;
-          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
-          gum::Parser parser(&scanner);
+          gum::Formula formula(eq);
           // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
           // Assert
-          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );
         }
@@ -91,12 +88,11 @@ namespace gum_tests {
           // Arrange
           std::string eq = "10 - 2";
           double expected = 8.0;
-          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
-          gum::Parser parser(&scanner);
+          gum::Formula formula(eq);
           // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
           // Assert
-          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );
         }
@@ -107,12 +103,11 @@ namespace gum_tests {
           // Arrange
           std::string eq = "10 - 2 * 5";
           double expected = 0.0;
-          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
-          gum::Parser parser(&scanner);
+          gum::Formula formula(eq);
           // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
           // Assert
-          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );
         }
@@ -123,12 +118,11 @@ namespace gum_tests {
           // Arrange
           std::string eq = "10 * 2 - 5";
           double expected = 15.0;
-          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
-          gum::Parser parser(&scanner);
+          gum::Formula formula(eq);
           // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
           // Assert
-          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );
         }
@@ -139,13 +133,11 @@ namespace gum_tests {
           // Arrange
           std::string eq = "5 + ( ( 1 + 2 ) * 4 ) - 3";
           double expected = 14.0;
-          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
-          gum::Parser parser(&scanner);
+          gum::Formula formula(eq);
           // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
           // Assert
-          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
-          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );
         }
@@ -156,13 +148,11 @@ namespace gum_tests {
           // Arrange
           std::string eq = "-3";
           double expected = -3.0;
-          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
-          gum::Parser parser(&scanner);
+          gum::Formula formula(eq);
           // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
           // Assert
-          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
-          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );
         }
@@ -173,13 +163,11 @@ namespace gum_tests {
           // Arrange
           std::string eq = "exp(0.001)";
           double expected = 1.0010005;
-          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
-          gum::Parser parser(&scanner);
+          gum::Formula formula(eq);
           // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
           // Assert
-          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
-          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );
         }
@@ -190,13 +178,11 @@ namespace gum_tests {
           // Arrange
           std::string eq = "1 + log(1)";
           double expected = 1;
-          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
-          gum::Parser parser(&scanner);
+          gum::Formula formula(eq);
           // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
           // Assert
-          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
-          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );
         }
@@ -207,13 +193,11 @@ namespace gum_tests {
           // Arrange
           std::string eq = "2 + ln(1)";
           double expected = 2;
-          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
-          gum::Parser parser(&scanner);
+          gum::Formula formula(eq);
           // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
           // Assert
-          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
-          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );
         }
@@ -224,13 +208,11 @@ namespace gum_tests {
           // Arrange
           std::string eq = "1 + sqrt(4)";
           double expected = 3;
-          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
-          gum::Parser parser(&scanner);
+          gum::Formula formula(eq);
           // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
           // Assert
-          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
-          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );
         }
@@ -241,13 +223,11 @@ namespace gum_tests {
           // Arrange
           std::string eq = "1 + pow(2,2)";
           double expected = 5;
-          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
-          gum::Parser parser(&scanner);
+          gum::Formula formula(eq);
           // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
           // Assert
-          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
-          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );
         }
@@ -258,13 +238,11 @@ namespace gum_tests {
           // Arrange
           std::string eq = "1-exp(-0.001*2)";
           double expected = 1 - std::exp(-0.001 * 2);
-          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
-          gum::Parser parser(&scanner);
+          gum::Formula formula(eq);
           // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
           // Assert
-          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
-          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );
         }
@@ -278,19 +256,17 @@ namespace gum_tests {
           double unused = 10;
           std::string eq = "1-exp(-lambda*t)";
           double expected = 1 - std::exp(-lambda* t);
-          gum::Scanner scanner((unsigned char*)eq.c_str(), (int) (eq.size()));
-          gum::Parser parser(&scanner);
-          parser.formula().variables().insert("lambda", lambda);
-          parser.formula().variables().insert("t", t);
-          parser.formula().variables().insert("unused", unused);
+          gum::Formula formula(eq);
+          formula.variables().insert("lambda", lambda);
+          formula.variables().insert("t", t);
+          formula.variables().insert("unused", unused);
           // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(parser.Parse());
+          TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
           // Assert
-          TS_ASSERT( parser.formula().variables().exists("lambda") );
-          TS_ASSERT( parser.formula().variables().exists("t") );
-          TS_ASSERT( parser.formula().variables().exists("unused") );
-          TS_GUM_ASSERT_THROWS_NOTHING( parser.formula().result() );
-          TS_ASSERT_DELTA( parser.formula().result(), expected, 1e-6 );
+          TS_ASSERT( formula.variables().exists("lambda") );
+          TS_ASSERT( formula.variables().exists("t") );
+          TS_ASSERT( formula.variables().exists("unused") );
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
         } catch (gum::Exception& e) {
           TS_ASSERT( false );
         }

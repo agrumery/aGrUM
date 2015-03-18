@@ -38,6 +38,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <agrum/core/cocoR/common.h>
 
 namespace gum {
+namespace formula {
 
 
 Token::Token() {
@@ -566,5 +567,6 @@ void Scanner::ResetPeek() {
   pt = tokens;
 }
 
+} // namespace
 } // namespace
 

@@ -17,7 +17,8 @@
 #include <vector>
 
 #include <agrum/core/utils_dir.h>
-#include <agrum/multidim/formula/formula.h>
+#include <agrum/core/math/formula.h>
+
 
 //##############################################################################
 //
@@ -28,15 +29,19 @@
 COMPILER EVAL
 
 private:
-  Formula __formula;
+  gum::Formula* __formula;
 
 public:
-  Formula& formula() { 
-    return __formula; 
+  void formula( gum::Formula* f ) {
+    __formula = f;
   }
 
-  const Formula& formula() const {
-    return __formula; 
+  gum::Formula& formula() { 
+    return *__formula; 
+  }
+
+  const gum::Formula& formula() const {
+    return *__formula; 
   }
 
 //##############################################################################
@@ -100,17 +105,17 @@ PRODUCTIONS
 
 //________________________
 EVAL =  
-  (expression { expression }) (. __formula.finalize(); .)
+  (expression { expression }) (. __formula->finalize(); .)
   .                           
 
 expression =
-    integer              (. __formula.push_number((double)coco_atoi(t->val)); .)
-    | float              (. __formula.push_number((double)coco_atof(t->val)); .)
-    | operator           (. __formula.push_operator(narrow(t->val)[0]); .)
-    | '('                (. __formula.push_leftParenthesis(); .)
-    | ')'                (. __formula.push_rightParenthesis(); .)
-    | ident              (. __formula.push_identifier(narrow(t->val)); .)
-    | ','                (. __formula.push_comma(); .)
+    integer              (. __formula->push_number((double)coco_atoi(t->val)); .)
+    | float              (. __formula->push_number((double)coco_atof(t->val)); .)
+    | operator           (. __formula->push_operator(narrow(t->val)[0]); .)
+    | '('                (. __formula->push_leftParenthesis(); .)
+    | ')'                (. __formula->push_rightParenthesis(); .)
+    | ident              (. __formula->push_identifier(narrow(t->val)); .)
+    | ','                (. __formula->push_comma(); .)
   .
 
 END EVAL.
