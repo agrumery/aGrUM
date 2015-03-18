@@ -218,13 +218,9 @@ namespace gum {
     void
     PRMFactory<GUM_SCALAR>::__updateFormulas( Class<GUM_SCALAR>* c ) {
 
-      std::cout << "In __updateFormulas( " << c->name() << " )" << std::endl;
-
       for ( const auto & const_attr : c->attributes() ) {
-        std::cout << "  - " << const_attr->name() << " " ;
 
         if ( const_attr->hasFormula() ) {
-          std::cout << ": updated !";
 
           auto attr = const_attr;
           //auto attr = const_cast<Attribute<GUM_SCALAR>*>(const_attr); 
@@ -243,7 +239,6 @@ namespace gum {
             Formula f( attr->formulas()[inst] );
 
             for ( auto p : c->parameters() ) {
-              std::cout << p->name() << " -> " << p->value() << " ";
               f.variables().insert( p->name(), p->value() );
             }
 
@@ -252,7 +247,6 @@ namespace gum {
           }
 
         }
-        std::cout << std::endl;
 
       }
 

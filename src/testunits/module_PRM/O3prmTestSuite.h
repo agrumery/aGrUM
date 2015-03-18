@@ -1019,6 +1019,7 @@ namespace gum_tests {
       }
       
       void testParamClass() {
+        try {
           gum::prm::o3prm::O3prmReader<double> reader;
           std::string file = "../../../src/testunits/ressources/o3prm/complexprinters.o3prm";
           std::string package = "fr.lip6.printers";
@@ -1034,6 +1035,29 @@ namespace gum_tests {
           TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["hasInk"] );
           TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["hasPaper"] );
           TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["equipState"] );
+
+          delete prm;
+        } catch (gum::Exception) {
+          TS_ASSERT( false );
+        }
+      }
+
+      void testSystemParamClass() {
+        try {
+          gum::prm::o3prm::O3prmReader<double> reader;
+          std::string file = "../../../src/testunits/ressources/o3prm/complexprinters_system.o3prm";
+          std::string package = "fr.lip6.printers";
+          TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile(file, package) );
+          gum::prm::PRM<double>* prm = reader.prm();
+
+          TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass( "fr.lip6.printers.ParamClass" ));
+          TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass( "fr.lip6.printers.ParamClass<lambda=0.4,t=4>" ));
+          TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass( "fr.lip6.printers.ParamClass<lambda=0.001,t=4>" ));
+
+          delete prm;
+        } catch (gum::Exception) {
+          TS_ASSERT( false );
+        }
       }
 
       void testParamClassHasInk() {
