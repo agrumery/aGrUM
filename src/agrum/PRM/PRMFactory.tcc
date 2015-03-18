@@ -1332,8 +1332,9 @@ namespace gum {
         // Adding class in current package
         try {
 
-          // sub class already have super's package prefixed
-          // Not using methods pushPackage() and popPackage() to not alter imports
+          auto pck_cpy = __packages;
+          __packages.clear();
+
           startClass(sub_c, c->name());
 
           // Update inherited parameters
@@ -1353,6 +1354,8 @@ namespace gum {
           }
 
           endClass();
+
+          __packages = pck_cpy;
 
         } catch (DuplicateElement& e) {
           // Sub Class already exists in this system
