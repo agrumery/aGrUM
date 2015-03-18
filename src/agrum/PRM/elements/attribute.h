@@ -27,8 +27,8 @@
 #ifndef GUM_ATTRIBUTE_H
 #define GUM_ATTRIBUTE_H
 
+#include <agrum/core/math/formula.h>
 #include <agrum/multidim/multiDimImplementation.h>
-
 #include <agrum/PRM/elements/classElement.h>
 
 namespace gum {
@@ -115,6 +115,9 @@ namespace gum {
         /// See gum::ClassElement::cpf().
         virtual const Potential<GUM_SCALAR>& cpf() const;
 
+        virtual MultiDimImplementation<std::string>& formulas();
+        virtual const MultiDimImplementation<std::string>& formulas() const;
+
         /// See gum::ClassElement::_addParent().
         virtual void addParent ( const ClassElement<GUM_SCALAR>& elt );
 
@@ -184,6 +187,9 @@ namespace gum {
 
         /// A pointer on the Potential of this attribute
         Potential<GUM_SCALAR>* __cpf;
+
+        /// A pointer on the Potential defined with formulas of this attribute
+        MultiDimImplementation<std::string>* __formulas;
 
         /// Flag to know if we can delete type.
         bool __delete_type;

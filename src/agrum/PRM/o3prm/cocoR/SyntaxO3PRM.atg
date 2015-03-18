@@ -307,6 +307,8 @@ CHARACTERS
 letter = 'A'..'Z' + 'a'..'z'+ '_' .
 digit  = '0'..'9'.
 eol    = '\n'.
+noQuote1 = ANY - '"' .
+noQuote2 = ANY - "'" .
 
 //________________________
 TOKENS
@@ -331,6 +333,7 @@ LEFT_CAST  = "(".
 RIGHT_CAST = ")".
 int        = "int".
 real       = "real".
+string     = '"' { noQuote1 } '"' | "'" {noQuote2 } "'" .
 
 //________________________
 COMMENTS FROM "/*" TO "*/" NESTED
@@ -463,17 +466,22 @@ Attribute<std::string type, std::string name> =
       { ',' CastIdent<p>        (. TRY3(factory().addParent(p), "Can not add parent "+p,error) .)
       }
     ] '{'
-    ( '['                       (. std::vector<float> cpt; float f; .)
-      Number<f>                 (. cpt.push_back(f); .)
+    ( '['                       (. std::vector<std::string> cpt; std::string s; .)
+      CPFValue<s>               (. cpt.push_back(s); .)
       {
-        WEAK ',' Number<f>      (. cpt.push_back(f); .)
+        WEAK ',' CPFValue<s>    (. cpt.push_back(s); .)
       }
-      ']'                       (. TRY3(factory().setRawCPFByFloatColumns(cpt), "Problem with CPF of "+name,error) .)
+      ']'                       (. TRY3(factory().setRawCPFByColumns(cpt), "Problem with CPF of "+name,error) .)
     | CPTRule<error>
       { CPTRule<error> }
     ) '}'                       (. TRY3(factory().endAttribute(), "Can not create attribute "+name,error) .)
     SYNC ';'
     .
+
+CPFValue<std::string & s> =
+  string (. s = narrow(t->val); .)
+  | (. float f; .) Number<f> (. s = std::to_string(f); .)
+  .
 
 CPTRule<bool &error> =          (. std::vector<std::string> labels; std::vector<float> values; .)
                                 (. std::string s; float f; .)

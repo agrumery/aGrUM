@@ -25,7 +25,10 @@
 
 #include <agrum/PRM/PRMFactory.h>
 
+#include <iostream>
 #include <sstream>
+
+#include <agrum/core/math/formula.h>
 
 namespace gum {
 
@@ -317,28 +320,28 @@ namespace gum {
       Attribute<GUM_SCALAR>* a = static_cast<Attribute<GUM_SCALAR>*>( __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
 
       if( a->cpf().domainSize() != array.size() ) {
-        std::stringstream s;
-        s << "illegal CPF size, found " << array.size() << " and expected " << a->cpf().domainSize();
-        GUM_ERROR( OperationNotAllowed, s.str() );
+        GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
       }
 
       std::vector<GUM_SCALAR> array2( array.begin(), array.end() );
       setRawCPFByColumns( array2 );
     }
+
     template<typename GUM_SCALAR>
     void
     PRMFactory<GUM_SCALAR>::setRawCPFByColumns( const std::vector<GUM_SCALAR>& array ) {
       Attribute<GUM_SCALAR>* a = static_cast<Attribute<GUM_SCALAR>*>( __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
 
       if( a->cpf().domainSize() != array.size() ) {
-        std::stringstream s;
-        s << "illegal CPF size, found " << array.size() << " and expected " << a->cpf().domainSize();
-        GUM_ERROR( OperationNotAllowed, s.str() );
+        GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
       }
 
       if( a->cpf().nbrDim() == 1 ) {
+
         setRawCPFByLines( array );
+
       } else {
+
         std::vector<Size> pos( a->cpf().nbrDim(), 0 );
         Instantiation inst( a->cpf() );
         inst.setFirst();
@@ -346,22 +349,10 @@ namespace gum {
         for( const auto & elt : array ) {
           a->cpf().set( inst, elt );
 
-          for( size_t idx = pos.size(); idx > 0; --idx ) {
-            bool stop = true;
-            ++ ( pos[idx - 1] );
+          __incrementByColumn(a, pos, inst);
 
-            if( pos[idx - 1] == a->cpf().variablesSequence().atPos( idx - 1 )->domainSize() ) {
-              pos[idx - 1] = 0;
-              stop = false;
-            }
-
-            inst.chgVal( a->cpf().variablesSequence().atPos( idx - 1 ), pos[idx - 1] );
-
-            if( stop ) {
-              break;
-            }
-          }
         }
+
       }
     }
 
@@ -1504,11 +1495,82 @@ namespace gum {
   void 
   PRMFactory<GUM_SCALAR>::setRawCPFByColumns( const std::vector<std::string>& array ) {
 
+      auto a = static_cast<Attribute<GUM_SCALAR>*>( __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
+
+      if( a->cpf().domainSize() != array.size() ) {
+        GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
+      }
+
+      if( a->cpf().nbrDim() == 1 ) {
+
+        setRawCPFByLines( array );
+
+      } else {
+
+        std::vector<Size> pos( a->cpf().nbrDim(), 0 );
+        Instantiation inst( a->cpf() );
+        inst.setFirst();
+
+        for( const auto & elt : array ) {
+
+          Formula f(elt);
+          a->cpf().set( inst, f.result() );
+          a->formulas().set( inst, elt );
+
+          __incrementByColumn(a, pos, inst);
+
+        }
+
+      }
   }
+
+  template<typename GUM_SCALAR>
+  void
+  PRMFactory<GUM_SCALAR>::__incrementByColumn(Attribute<GUM_SCALAR>* a, std::vector<Size>& pos, Instantiation& inst) {
+
+    for( size_t idx = pos.size(); idx > 0; --idx ) {
+
+      bool stop = true;
+      ++ ( pos[idx - 1] );
+
+      if( pos[idx - 1] == a->cpf().variablesSequence().atPos( idx - 1 )->domainSize() ) {
+        pos[idx - 1] = 0;
+        stop = false;
+      }
+
+      inst.chgVal( a->cpf().variablesSequence().atPos( idx - 1 ), pos[idx - 1] );
+
+      if( stop ) {
+        break;
+      }
+
+    }
+  }
+
 
   template<typename GUM_SCALAR>
   void 
   PRMFactory<GUM_SCALAR>::setRawCPFByLines( const std::vector<std::string>& array ) {
+
+    auto a = static_cast<Attribute<GUM_SCALAR>*>( __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
+    __checkStack( 2, PRMObject::PRMType::CLASS );
+
+    if( a->cpf().domainSize() != array.size() ) {
+      GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
+    }
+
+    a->formulas().fillWith( array );
+
+    std::vector<GUM_SCALAR> values;
+
+    for ( const auto & s : array ) {
+
+      Formula f(s);
+      values.push_back(f.result());
+
+    }
+
+    a->cpf().fillWith( values );
 
   }
 

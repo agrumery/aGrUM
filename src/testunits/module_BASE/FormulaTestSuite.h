@@ -38,6 +38,36 @@ namespace gum_tests {
 
       }
 
+      void testConstantInt() {
+        try {
+          // Arrange
+          std::string eq = "10";
+          double expected = 10.0;
+          gum::Formula formula(eq);
+          // Act
+          TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+          // Assert
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
+        } catch (gum::Exception& e) {
+          TS_ASSERT( false );
+        }
+      }
+
+      void testConstantFloat() {
+        try {
+          // Arrange
+          std::string eq = "10.0";
+          double expected = 10.0;
+          gum::Formula formula(eq);
+          // Act
+          TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+          // Assert
+          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
+        } catch (gum::Exception& e) {
+          TS_ASSERT( false );
+        }
+      }
+
       void testMultiplication() {
         try {
           // Arrange

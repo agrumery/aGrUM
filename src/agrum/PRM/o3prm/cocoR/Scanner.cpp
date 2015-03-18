@@ -315,14 +315,14 @@ void Scanner::Init() {
   percent=-1;
   EOL    = '\n';
   eofSym = 0;
-  	maxT = 31;
-	noSym = 31;
+  	maxT = 32;
+	noSym = 32;
 	int i;
-	for (i = 48; i <= 57; ++i) start.set(i, 14);
+	for (i = 48; i <= 57; ++i) start.set(i, 17);
 	for (i = 65; i <= 90; ++i) start.set(i, 6);
 	for (i = 95; i <= 95; ++i) start.set(i, 6);
 	for (i = 97; i <= 122; ++i) start.set(i, 6);
-	start.set(45, 15);
+	start.set(45, 18);
 	start.set(10, 7);
 	start.set(46, 8);
 	start.set(44, 9);
@@ -330,14 +330,16 @@ void Scanner::Init() {
 	start.set(59, 11);
 	start.set(40, 12);
 	start.set(41, 13);
-	start.set(123, 16);
-	start.set(125, 17);
-	start.set(91, 18);
-	start.set(93, 19);
-	start.set(42, 20);
-	start.set(61, 21);
-	start.set(126, 22);
-	start.set(43, 24);
+	start.set(34, 14);
+	start.set(39, 15);
+	start.set(123, 19);
+	start.set(125, 20);
+	start.set(91, 21);
+	start.set(93, 22);
+	start.set(42, 23);
+	start.set(61, 24);
+	start.set(126, 25);
+	start.set(43, 27);
 		start.set(Buffer::EoF, -1);
 	keywords.set(L"type", 9);
 	keywords.set(L"class", 10);
@@ -350,7 +352,7 @@ void Scanner::Init() {
 	keywords.set(L"noisyOr", 17);
 	keywords.set(L"int", 20);
 	keywords.set(L"real", 21);
-	keywords.set(L"import", 22);
+	keywords.set(L"import", 23);
 
 
   tvalLength = 128;
@@ -606,33 +608,46 @@ case_0:
 			{t->kind = 19; break;}
 		case 14:
 			case_14:
-			recEnd = pos; recKind = 1;
-			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_14;}
-			else if (ch == L'.') {AddCh(); goto case_1;}
-			else {t->kind = 1; break;}
+			if (ch <= L'!' || (ch >= L'#' && ch <= 65535)) {AddCh(); goto case_14;}
+			else if (ch == L'"') {AddCh(); goto case_16;}
+			else {goto case_0;}
 		case 15:
-			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_14;}
+			case_15:
+			if (ch <= L'&' || (ch >= L'(' && ch <= 65535)) {AddCh(); goto case_15;}
+			else if (ch == 39) {AddCh(); goto case_16;}
 			else {goto case_0;}
 		case 16:
-			{t->kind = 23; break;}
+			case_16:
+			{t->kind = 22; break;}
 		case 17:
-			{t->kind = 24; break;}
+			case_17:
+			recEnd = pos; recKind = 1;
+			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_17;}
+			else if (ch == L'.') {AddCh(); goto case_1;}
+			else {t->kind = 1; break;}
 		case 18:
-			{t->kind = 25; break;}
+			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_17;}
+			else {goto case_0;}
 		case 19:
-			{t->kind = 26; break;}
+			{t->kind = 24; break;}
 		case 20:
-			{t->kind = 27; break;}
+			{t->kind = 25; break;}
 		case 21:
-			{t->kind = 28; break;}
+			{t->kind = 26; break;}
 		case 22:
-			{t->kind = 29; break;}
+			{t->kind = 27; break;}
 		case 23:
-			case_23:
-			{t->kind = 30; break;}
+			{t->kind = 28; break;}
 		case 24:
-			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_14;}
-			else if (ch == L'=') {AddCh(); goto case_23;}
+			{t->kind = 29; break;}
+		case 25:
+			{t->kind = 30; break;}
+		case 26:
+			case_26:
+			{t->kind = 31; break;}
+		case 27:
+			if ((ch >= L'0' && ch <= L'9')) {AddCh(); goto case_17;}
+			else if (ch == L'=') {AddCh(); goto case_26;}
 			else {goto case_0;}
 
   }

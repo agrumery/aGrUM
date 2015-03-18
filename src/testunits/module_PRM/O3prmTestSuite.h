@@ -1004,11 +1004,11 @@ namespace gum_tests {
          TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
          gum::Size class_count = prm->classes().size();
          class_count += prm->interfaces().size();
-         TS_ASSERT_EQUALS( class_count, ( gum::Size ) 10 ); // Don't forget param subclasses !
+         TS_ASSERT_EQUALS( class_count, ( gum::Size ) 11 ); // Don't forget param subclasses !
 
          gum::prm::System<double>* sys = 0;
          TS_GUM_ASSERT_THROWS_NOTHING( sys = &( prm->system( "systems.MySystem" ) ) );
-         TS_ASSERT_EQUALS( sys->size(), ( gum::Size ) 14 );
+         TS_ASSERT_EQUALS( sys->size(), ( gum::Size ) 16 );
 
          if( prm )
            delete prm;

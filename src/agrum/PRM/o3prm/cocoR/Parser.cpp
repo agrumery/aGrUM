@@ -107,23 +107,23 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 }
 
 void Parser::O3PRM() {
-		while (la->kind == 22 /* "import" */) {
-			while (!(la->kind == _EOF || la->kind == 22 /* "import" */)) {SynErr(32); Get();}
+		while (la->kind == 23 /* "import" */) {
+			while (!(la->kind == _EOF || la->kind == 23 /* "import" */)) {SynErr(33); Get();}
 			Import();
 		}
 		while (StartOf(1)) {
-			while (!(StartOf(2))) {SynErr(33); Get();}
+			while (!(StartOf(2))) {SynErr(34); Get();}
 			Unit();
 		}
 }
 
 void Parser::Import() {
 		std::string fileID; 
-		while (!(la->kind == _EOF || la->kind == 22 /* "import" */)) {SynErr(34); Get();}
-		Expect(22 /* "import" */);
+		while (!(la->kind == _EOF || la->kind == 23 /* "import" */)) {SynErr(35); Get();}
+		Expect(23 /* "import" */);
 		ImportIdent(fileID);
 		TRY2(import(fileID), "Can not import " + fileID); 
-		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(35); Get();}
+		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(36); Get();}
 		Expect(_semicolon);
 		factory().addImport(fileID); 
 }
@@ -137,7 +137,7 @@ void Parser::Unit() {
 			Class();
 		} else if (la->kind == _system) {
 			System();
-		} else SynErr(36);
+		} else SynErr(37);
 }
 
 void Parser::ImportIdent(std::string& s) {
@@ -152,16 +152,16 @@ void Parser::ImportIdent(std::string& s) {
 			Get();
 			if (la->kind == _word) {
 				Get();
-			} else if (la->kind == 27 /* "*" */) {
+			} else if (la->kind == 28 /* "*" */) {
 				Get();
-			} else SynErr(37);
+			} else SynErr(38);
 			sBuff << "." << narrow(t->val); 
 		}
 		s = sBuff.str(); 
 }
 
 void Parser::Type() {
-		while (!(la->kind == _EOF || la->kind == _type)) {SynErr(38); Get();}
+		while (!(la->kind == _EOF || la->kind == _type)) {SynErr(39); Get();}
 		Expect(_type);
 		Expect(_word);
 		std::string name, extends, l, s; name = narrow(t->val); 
@@ -186,13 +186,13 @@ void Parser::Type() {
 			}
 			TRY2(factory().addLabel(l, s), "Can not add label "+l) 
 		}
-		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(39); Get();}
+		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(40); Get();}
 		Expect(_semicolon);
 		TRY2(factory().endDiscreteType(), "Can not create type "+name) 
 }
 
 void Parser::Interface() {
-		while (!(la->kind == _EOF || la->kind == _interface)) {SynErr(40); Get();}
+		while (!(la->kind == _EOF || la->kind == _interface)) {SynErr(41); Get();}
 		Expect(_interface);
 		Expect(_word);
 		std::string interface, extends; interface = narrow(t->val); 
@@ -200,16 +200,16 @@ void Parser::Interface() {
 			Get();
 			Ident(extends);
 		}
-		while (!(la->kind == _EOF || la->kind == 23 /* "{" */)) {SynErr(41); Get();}
-		Expect(23 /* "{" */);
+		while (!(la->kind == _EOF || la->kind == 24 /* "{" */)) {SynErr(42); Get();}
+		Expect(24 /* "{" */);
 		TRY2(factory().startInterface(interface, extends), "Can not create interface "+interface) 
 		while (la->kind == _word) {
 			std::string type; 
 			Ident(type);
 			AbstractAttributeOrReference(type);
 		}
-		while (!(la->kind == _EOF || la->kind == 24 /* "}" */)) {SynErr(42); Get();}
-		Expect(24 /* "}" */);
+		while (!(la->kind == _EOF || la->kind == 25 /* "}" */)) {SynErr(43); Get();}
+		Expect(25 /* "}" */);
 		TRY2(factory().endInterface(), "Can not create interface "+interface) 
 }
 
@@ -233,8 +233,8 @@ void Parser::Class() {
 				set.insert(i); 
 			}
 		}
-		while (!(la->kind == _EOF || la->kind == 23 /* "{" */)) {SynErr(43); Get();}
-		Expect(23 /* "{" */);
+		while (!(la->kind == _EOF || la->kind == 24 /* "{" */)) {SynErr(44); Get();}
+		Expect(24 /* "{" */);
 		TRY2(factory().startClass(c, super, (set.empty()?0:&set)), "Can not create class "+c) 
 		while (la->kind == _word || la->kind == _int || la->kind == _real) {
 			if (la->kind == _int || la->kind == _real) {
@@ -245,8 +245,8 @@ void Parser::Class() {
 				AttributeOrReference(type);
 			}
 		}
-		while (!(la->kind == _EOF || la->kind == 24 /* "}" */)) {SynErr(44); Get();}
-		Expect(24 /* "}" */);
+		while (!(la->kind == _EOF || la->kind == 25 /* "}" */)) {SynErr(45); Get();}
+		Expect(25 /* "}" */);
 		TRY2(factory().endClass(), "Can not create class "+c) 
 }
 
@@ -254,15 +254,15 @@ void Parser::System() {
 		Expect(_system);
 		Expect(_word);
 		TRY(factory().startSystem(narrow(t->val))) 
-		Expect(23 /* "{" */);
+		Expect(24 /* "{" */);
 		while (la->kind == _word) {
 			std::string l1, r1; 
 			Ident(l1);
-			if (la->kind == 25 /* "[" */) {
+			if (la->kind == 26 /* "[" */) {
 				ArrayDecl(l1);
 			} else if (la->kind == _word) {
 				InstanceDecl(l1);
-			} else if (la->kind == 30 /* "+=" */) {
+			} else if (la->kind == 31 /* "+=" */) {
 				Get();
 				Ident(r1);
 				if ( factory().isArrayInCurrentSystem(l1) ) {
@@ -271,15 +271,15 @@ void Parser::System() {
 				   TRY(factory().setReferenceSlot(l1, r1))
 				}
 				
-			} else if (la->kind == 28 /* "=" */) {
+			} else if (la->kind == 29 /* "=" */) {
 				Get();
 				Ident(r1);
 				TRY( factory().setReferenceSlot(l1, r1) ) 
-			} else SynErr(45);
+			} else SynErr(46);
 			Expect(_semicolon);
 		}
-		while (!(la->kind == _EOF || la->kind == 24 /* "}" */)) {SynErr(46); Get();}
-		Expect(24 /* "}" */);
+		while (!(la->kind == _EOF || la->kind == 25 /* "}" */)) {SynErr(47); Get();}
+		Expect(25 /* "}" */);
 		TRY(factory().endSystem()) 
 }
 
@@ -303,7 +303,7 @@ void Parser::Label(std::string& s) {
 			float val; 
 			Number(val);
 			std::stringstream sBuff; sBuff << val; s = sBuff.str(); 
-		} else SynErr(47);
+		} else SynErr(48);
 }
 
 void Parser::AbstractAttributeOrReference(std::string type) {
@@ -311,7 +311,7 @@ void Parser::AbstractAttributeOrReference(std::string type) {
 			Reference(type);
 		} else if (la->kind == _word) {
 			AbstractAttribute(type);
-		} else SynErr(48);
+		} else SynErr(49);
 }
 
 void Parser::Parameter() {
@@ -319,7 +319,7 @@ void Parser::Parameter() {
 			IntParameter();
 		} else if (la->kind == _real) {
 			RealParameter();
-		} else SynErr(49);
+		} else SynErr(50);
 }
 
 void Parser::AttributeOrReference(std::string type) {
@@ -327,7 +327,7 @@ void Parser::AttributeOrReference(std::string type) {
 			Reference(type);
 		} else if (la->kind == _word) {
 			AttrAggOrFunc(type);
-		} else SynErr(50);
+		} else SynErr(51);
 }
 
 void Parser::IntParameter() {
@@ -359,14 +359,14 @@ void Parser::Number(float& val) {
 		} else if (la->kind == _float) {
 			Get();
 			val=coco_atof(t->val); 
-		} else SynErr(51);
+		} else SynErr(52);
 }
 
 void Parser::Reference(std::string type) {
 		std::string name; bool array = false; 
-		if (la->kind == 25 /* "[" */) {
+		if (la->kind == 26 /* "[" */) {
 			Get();
-			Expect(26 /* "]" */);
+			Expect(27 /* "]" */);
 			array = true; 
 		}
 		Expect(_word);
@@ -379,13 +379,13 @@ void Parser::AttrAggOrFunc(std::string type) {
 		std::string name; 
 		Expect(_word);
 		name = narrow(t->val); 
-		if (la->kind == _dependson || la->kind == 23 /* "{" */) {
+		if (la->kind == _dependson || la->kind == 24 /* "{" */) {
 			Attribute(type, name);
-		} else if (la->kind == 28 /* "=" */) {
+		} else if (la->kind == 29 /* "=" */) {
 			Aggregate(type, name);
-		} else if (la->kind == 29 /* "~" */) {
+		} else if (la->kind == 30 /* "~" */) {
 			Functions(type, name);
-		} else SynErr(52);
+		} else SynErr(53);
 }
 
 void Parser::AbstractAttribute(std::string type) {
@@ -410,33 +410,33 @@ void Parser::Attribute(std::string type, std::string name) {
 				TRY3(factory().addParent(p), "Can not add parent "+p,error) 
 			}
 		}
-		Expect(23 /* "{" */);
-		if (la->kind == 25 /* "[" */) {
+		Expect(24 /* "{" */);
+		if (la->kind == 26 /* "[" */) {
 			Get();
-			std::vector<float> cpt; float f; 
-			Number(f);
-			cpt.push_back(f); 
+			std::vector<std::string> cpt; std::string s; 
+			CPFValue(s);
+			cpt.push_back(s); 
 			while (WeakSeparator(_comma,5,4) ) {
-				Number(f);
-				cpt.push_back(f); 
+				CPFValue(s);
+				cpt.push_back(s); 
 			}
-			Expect(26 /* "]" */);
-			TRY3(factory().setRawCPFByFloatColumns(cpt), "Problem with CPF of "+name,error) 
-		} else if (la->kind == _word || la->kind == 27 /* "*" */) {
+			Expect(27 /* "]" */);
+			TRY3(factory().setRawCPFByColumns(cpt), "Problem with CPF of "+name,error) 
+		} else if (la->kind == _word || la->kind == 28 /* "*" */) {
 			CPTRule(error);
-			while (la->kind == _word || la->kind == 27 /* "*" */) {
+			while (la->kind == _word || la->kind == 28 /* "*" */) {
 				CPTRule(error);
 			}
-		} else SynErr(53);
-		Expect(24 /* "}" */);
+		} else SynErr(54);
+		Expect(25 /* "}" */);
 		TRY3(factory().endAttribute(), "Can not create attribute "+name,error) 
-		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(54); Get();}
+		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(55); Get();}
 		Expect(_semicolon);
 }
 
 void Parser::Aggregate(std::string type, std::string name) {
 		std::string func, s; std::vector<std::string> chains, labels; 
-		Expect(28 /* "=" */);
+		Expect(29 /* "=" */);
 		Expect(_word);
 		func = narrow(t->val); 
 		Expect(_LEFT_CAST);
@@ -445,13 +445,13 @@ void Parser::Aggregate(std::string type, std::string name) {
 		AggLabels(labels);
 		Expect(_RIGHT_CAST);
 		TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) 
-		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(55); Get();}
+		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(56); Get();}
 		Expect(_semicolon);
 }
 
 void Parser::Functions(std::string type, std::string name) {
 		if (type != "boolean") {TRY(throw gum::OperationNotAllowed("noisy-or attributes must be booleans"))} 
-		Expect(29 /* "~" */);
+		Expect(30 /* "~" */);
 		Expect(_noisyOr);
 		Expect(_LEFT_CAST);
 		std::vector<std::string> chains, labels; std::vector<float> numbers; float leak = 0.0; 
@@ -467,7 +467,7 @@ void Parser::Functions(std::string type, std::string name) {
 			}
 		}
 		Expect(_RIGHT_CAST);
-		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(56); Get();}
+		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(57); Get();}
 		Expect(_semicolon);
 		TRY2(factory().addNoisyOrCompound(name, chains, numbers, leak, labels), "Can not add function"+name) 
 }
@@ -498,6 +498,17 @@ void Parser::CastIdent(std::string& s) {
 		s = sBuff.str(); 
 }
 
+void Parser::CPFValue(std::string & s) {
+		if (la->kind == _string) {
+			Get();
+			s = narrow(t->val); 
+		} else if (la->kind == _integer || la->kind == _float) {
+			float f; 
+			Number(f);
+			s = std::to_string(f); 
+		} else SynErr(58);
+}
+
 void Parser::CPTRule(bool &error) {
 		std::vector<std::string> labels; std::vector<float> values; 
 		std::string s; float f; 
@@ -510,11 +521,11 @@ void Parser::CPTRule(bool &error) {
 		Expect(_colon);
 		Number(f);
 		values.push_back(f); 
-		while (WeakSeparator(_comma,5,9) ) {
+		while (WeakSeparator(_comma,10,9) ) {
 			Number(f);
 			values.push_back(f); 
 		}
-		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(57); Get();}
+		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(59); Get();}
 		Expect(_semicolon);
 		TRY3(factory().setCPFByFloatRule(labels, values), std::string("Problem with CPF"), error) 
 }
@@ -523,10 +534,10 @@ void Parser::CPTRuleValue(std::string& s ) {
 		if (la->kind == _word) {
 			Get();
 			s = narrow(t->val); 
-		} else if (la->kind == 27 /* "*" */) {
+		} else if (la->kind == 28 /* "*" */) {
 			Get();
 			s = "*"; 
-		} else SynErr(58);
+		} else SynErr(60);
 }
 
 void Parser::AggChains(std::vector<std::string>& chains ) {
@@ -534,35 +545,35 @@ void Parser::AggChains(std::vector<std::string>& chains ) {
 			std::string s; 
 			CastIdent(s);
 			chains.push_back(s); 
-		} else if (la->kind == 25 /* "[" */) {
+		} else if (la->kind == 26 /* "[" */) {
 			Get();
 			std::string s; 
 			CastIdent(s);
 			chains.push_back(s); 
-			while (WeakSeparator(_comma,10,4) ) {
+			while (WeakSeparator(_comma,11,4) ) {
 				CastIdent(s);
 				chains.push_back(s); 
 			}
-			Expect(26 /* "]" */);
-		} else if (la->kind == 23 /* "{" */) {
+			Expect(27 /* "]" */);
+		} else if (la->kind == 24 /* "{" */) {
 			Get();
 			std::string s; 
 			CastIdent(s);
 			chains.push_back(s); 
-			while (WeakSeparator(_comma,10,11) ) {
+			while (WeakSeparator(_comma,11,12) ) {
 				CastIdent(s);
 				chains.push_back(s); 
 			}
-			while (!(la->kind == _EOF || la->kind == 24 /* "}" */)) {SynErr(59); Get();}
-			Expect(24 /* "}" */);
-		} else SynErr(60);
+			while (!(la->kind == _EOF || la->kind == 25 /* "}" */)) {SynErr(61); Get();}
+			Expect(25 /* "}" */);
+		} else SynErr(62);
 }
 
 void Parser::AggLabels(std::vector<std::string>& labels ) {
 		if (la->kind == _word) {
 			Get();
 			labels.push_back(narrow(t->val)); 
-		} else if (la->kind == 25 /* "[" */) {
+		} else if (la->kind == 26 /* "[" */) {
 			Get();
 			Expect(_word);
 			labels.push_back(narrow(t->val)); 
@@ -571,18 +582,18 @@ void Parser::AggLabels(std::vector<std::string>& labels ) {
 				Expect(_word);
 				labels.push_back(narrow(t->val)); 
 			}
-			Expect(26 /* "]" */);
-		} else if (la->kind == 23 /* "{" */) {
+			Expect(27 /* "]" */);
+		} else if (la->kind == 24 /* "{" */) {
 			Get();
 			Expect(_word);
 			labels.push_back(narrow(t->val)); 
-			while (WeakSeparator(_comma,12,11) ) {
+			while (WeakSeparator(_comma,13,12) ) {
 				Expect(_word);
 				labels.push_back(narrow(t->val)); 
 			}
-			while (!(la->kind == _EOF || la->kind == 24 /* "}" */)) {SynErr(61); Get();}
-			Expect(24 /* "}" */);
-		} else SynErr(62);
+			while (!(la->kind == _EOF || la->kind == 25 /* "}" */)) {SynErr(63); Get();}
+			Expect(25 /* "}" */);
+		} else SynErr(64);
 }
 
 void Parser::NumberList(std::vector<float>& numbers ) {
@@ -590,26 +601,26 @@ void Parser::NumberList(std::vector<float>& numbers ) {
 		if (la->kind == _integer || la->kind == _float) {
 			Number(f);
 			numbers.push_back(f); 
-		} else if (la->kind == 25 /* "[" */) {
+		} else if (la->kind == 26 /* "[" */) {
 			Get();
 			Number(f);
 			numbers.push_back(f); 
-			while (WeakSeparator(_comma,5,4) ) {
+			while (WeakSeparator(_comma,10,4) ) {
 				Number(f);
 				numbers.push_back(f); 
 			}
-			Expect(26 /* "]" */);
-		} else SynErr(63);
+			Expect(27 /* "]" */);
+		} else SynErr(65);
 }
 
 void Parser::ArrayDecl(std::string l1) {
 		std::string r1; std::stringstream sBuff; sBuff << l1; int size = 0; 
-		Expect(25 /* "[" */);
+		Expect(26 /* "[" */);
 		if (la->kind == _integer) {
 			Get();
 			sBuff << '[' << narrow(t->val) << ']'; size=coco_atoi(t->val); 
 		}
-		Expect(26 /* "]" */);
+		Expect(27 /* "]" */);
 		if (la->kind == _word) {
 			Get();
 			TRY(factory().addArray(l1, narrow(t->val), size)) 
@@ -617,16 +628,16 @@ void Parser::ArrayDecl(std::string l1) {
 			Get();
 			Expect(_word);
 			std::string l2 = narrow(t->val); 
-			if (la->kind == 30 /* "+=" */) {
+			if (la->kind == 31 /* "+=" */) {
 				Get();
 				Ident(r1);
 				TRY(factory().setReferenceSlot(sBuff.str(), l2, r1)) 
-			} else if (la->kind == 28 /* "=" */) {
+			} else if (la->kind == 29 /* "=" */) {
 				Get();
 				Ident(r1);
 				TRY( factory().setReferenceSlot(sBuff.str(), l2, r1) ) 
-			} else SynErr(64);
-		} else SynErr(65);
+			} else SynErr(66);
+		} else SynErr(67);
 }
 
 void Parser::InstanceDecl(std::string l1) {
@@ -636,13 +647,13 @@ void Parser::InstanceDecl(std::string l1) {
 			Get();
 			InstanceParameters(hash);
 			if (la->kind == _comma || la->kind == _RIGHT_CAST) {
-				while (WeakSeparator(_comma,14,13) ) {
+				while (WeakSeparator(_comma,15,14) ) {
 					InstanceParameters(hash);
 				}
 			}
 			Expect(_RIGHT_CAST);
 		} else if (la->kind == _semicolon) {
-		} else SynErr(66);
+		} else SynErr(68);
 		TRY(factory().addInstance(l1, r1, hash)) 
 }
 
@@ -651,7 +662,7 @@ void Parser::InstanceParameters(gum::HashTable<std::string, double> &hash ) {
 			std::string name; float val = 0.0; 
 			Get();
 			name = narrow(t->val); 
-			Expect(28 /* "=" */);
+			Expect(29 /* "=" */);
 			Number(val);
 			hash.insert(name, (double) val); 
 		}
@@ -756,7 +767,7 @@ void Parser::Parse() {
 }
 
 Parser::Parser( Scanner* scanner ) {
-  	maxT = 31;
+  	maxT = 32;
 
   ParserInitCaller<Parser>::CallInit( this );
   dummyToken = NULL;
@@ -770,22 +781,23 @@ bool Parser::StartOf( int s ) {
   const bool T = true;
   const bool x = false;
 
-  	static bool set[15][33] = {
-		{T,x,x,x, x,x,x,x, T,T,T,T, x,T,x,x, x,x,x,x, x,x,T,T, T,x,x,x, x,x,x,x, x},
-		{x,x,x,x, x,x,x,x, x,T,T,T, x,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
-		{T,x,x,x, x,x,x,x, x,T,T,T, x,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
-		{T,T,T,T, x,x,x,x, T,T,T,T, x,T,x,x, x,x,x,x, x,x,T,T, T,x,x,x, x,x,x,x, x},
-		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,x,x, x},
-		{x,T,T,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
-		{T,x,x,T, x,x,x,x, T,T,T,T, x,T,x,x, x,x,x,x, x,x,T,T, T,T,x,x, x,x,x,x, x},
-		{x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
-		{x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x},
-		{x,x,x,x, x,x,x,x, T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
-		{x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
-		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, T,x,x,x, x,x,x,x, x},
-		{x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x},
-		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x},
-		{x,x,x,T, x,x,T,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x}
+  	static bool set[16][34] = {
+		{T,x,x,x, x,x,x,x, T,T,T,T, x,T,x,x, x,x,x,x, x,x,x,T, T,T,x,x, x,x,x,x, x,x},
+		{x,x,x,x, x,x,x,x, x,T,T,T, x,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{T,x,x,x, x,x,x,x, x,T,T,T, x,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{T,T,T,T, x,x,x,x, T,T,T,T, x,T,x,x, x,x,x,x, x,x,x,T, T,T,x,x, x,x,x,x, x,x},
+		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x},
+		{x,T,T,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,x,x, x,x,x,x, x,x},
+		{T,x,x,T, x,x,x,x, T,T,T,T, x,T,x,x, x,x,x,x, x,x,x,T, T,T,T,x, x,x,x,x, x,x},
+		{x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, T,x,x,x, x,x},
+		{x,x,x,x, x,x,x,x, T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,T,T,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,T,x,x, x,x,x,x, x,x},
+		{x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
+		{x,x,x,T, x,x,T,x, x,x,x,x, x,x,x,x, x,x,x,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x}
 	};
 
 
@@ -833,51 +845,53 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 19: s = coco_string_create(L"RIGHT_CAST expected"); break;
 			case 20: s = coco_string_create(L"int expected"); break;
 			case 21: s = coco_string_create(L"real expected"); break;
-			case 22: s = coco_string_create(L"\"import\" expected"); break;
-			case 23: s = coco_string_create(L"\"{\" expected"); break;
-			case 24: s = coco_string_create(L"\"}\" expected"); break;
-			case 25: s = coco_string_create(L"\"[\" expected"); break;
-			case 26: s = coco_string_create(L"\"]\" expected"); break;
-			case 27: s = coco_string_create(L"\"*\" expected"); break;
-			case 28: s = coco_string_create(L"\"=\" expected"); break;
-			case 29: s = coco_string_create(L"\"~\" expected"); break;
-			case 30: s = coco_string_create(L"\"+=\" expected"); break;
-			case 31: s = coco_string_create(L"??? expected"); break;
-			case 32: s = coco_string_create(L"this symbol not expected in O3PRM"); break;
+			case 22: s = coco_string_create(L"string expected"); break;
+			case 23: s = coco_string_create(L"\"import\" expected"); break;
+			case 24: s = coco_string_create(L"\"{\" expected"); break;
+			case 25: s = coco_string_create(L"\"}\" expected"); break;
+			case 26: s = coco_string_create(L"\"[\" expected"); break;
+			case 27: s = coco_string_create(L"\"]\" expected"); break;
+			case 28: s = coco_string_create(L"\"*\" expected"); break;
+			case 29: s = coco_string_create(L"\"=\" expected"); break;
+			case 30: s = coco_string_create(L"\"~\" expected"); break;
+			case 31: s = coco_string_create(L"\"+=\" expected"); break;
+			case 32: s = coco_string_create(L"??? expected"); break;
 			case 33: s = coco_string_create(L"this symbol not expected in O3PRM"); break;
-			case 34: s = coco_string_create(L"this symbol not expected in Import"); break;
+			case 34: s = coco_string_create(L"this symbol not expected in O3PRM"); break;
 			case 35: s = coco_string_create(L"this symbol not expected in Import"); break;
-			case 36: s = coco_string_create(L"invalid Unit"); break;
-			case 37: s = coco_string_create(L"invalid ImportIdent"); break;
-			case 38: s = coco_string_create(L"this symbol not expected in Type"); break;
+			case 36: s = coco_string_create(L"this symbol not expected in Import"); break;
+			case 37: s = coco_string_create(L"invalid Unit"); break;
+			case 38: s = coco_string_create(L"invalid ImportIdent"); break;
 			case 39: s = coco_string_create(L"this symbol not expected in Type"); break;
-			case 40: s = coco_string_create(L"this symbol not expected in Interface"); break;
+			case 40: s = coco_string_create(L"this symbol not expected in Type"); break;
 			case 41: s = coco_string_create(L"this symbol not expected in Interface"); break;
 			case 42: s = coco_string_create(L"this symbol not expected in Interface"); break;
-			case 43: s = coco_string_create(L"this symbol not expected in Class"); break;
+			case 43: s = coco_string_create(L"this symbol not expected in Interface"); break;
 			case 44: s = coco_string_create(L"this symbol not expected in Class"); break;
-			case 45: s = coco_string_create(L"invalid System"); break;
-			case 46: s = coco_string_create(L"this symbol not expected in System"); break;
-			case 47: s = coco_string_create(L"invalid Label"); break;
-			case 48: s = coco_string_create(L"invalid AbstractAttributeOrReference"); break;
-			case 49: s = coco_string_create(L"invalid Parameter"); break;
-			case 50: s = coco_string_create(L"invalid AttributeOrReference"); break;
-			case 51: s = coco_string_create(L"invalid Number"); break;
-			case 52: s = coco_string_create(L"invalid AttrAggOrFunc"); break;
-			case 53: s = coco_string_create(L"invalid Attribute"); break;
-			case 54: s = coco_string_create(L"this symbol not expected in Attribute"); break;
-			case 55: s = coco_string_create(L"this symbol not expected in Aggregate"); break;
-			case 56: s = coco_string_create(L"this symbol not expected in Functions"); break;
-			case 57: s = coco_string_create(L"this symbol not expected in CPTRule"); break;
-			case 58: s = coco_string_create(L"invalid CPTRuleValue"); break;
-			case 59: s = coco_string_create(L"this symbol not expected in AggChains"); break;
-			case 60: s = coco_string_create(L"invalid AggChains"); break;
-			case 61: s = coco_string_create(L"this symbol not expected in AggLabels"); break;
-			case 62: s = coco_string_create(L"invalid AggLabels"); break;
-			case 63: s = coco_string_create(L"invalid NumberList"); break;
-			case 64: s = coco_string_create(L"invalid ArrayDecl"); break;
-			case 65: s = coco_string_create(L"invalid ArrayDecl"); break;
-			case 66: s = coco_string_create(L"invalid InstanceDecl"); break;
+			case 45: s = coco_string_create(L"this symbol not expected in Class"); break;
+			case 46: s = coco_string_create(L"invalid System"); break;
+			case 47: s = coco_string_create(L"this symbol not expected in System"); break;
+			case 48: s = coco_string_create(L"invalid Label"); break;
+			case 49: s = coco_string_create(L"invalid AbstractAttributeOrReference"); break;
+			case 50: s = coco_string_create(L"invalid Parameter"); break;
+			case 51: s = coco_string_create(L"invalid AttributeOrReference"); break;
+			case 52: s = coco_string_create(L"invalid Number"); break;
+			case 53: s = coco_string_create(L"invalid AttrAggOrFunc"); break;
+			case 54: s = coco_string_create(L"invalid Attribute"); break;
+			case 55: s = coco_string_create(L"this symbol not expected in Attribute"); break;
+			case 56: s = coco_string_create(L"this symbol not expected in Aggregate"); break;
+			case 57: s = coco_string_create(L"this symbol not expected in Functions"); break;
+			case 58: s = coco_string_create(L"invalid CPFValue"); break;
+			case 59: s = coco_string_create(L"this symbol not expected in CPTRule"); break;
+			case 60: s = coco_string_create(L"invalid CPTRuleValue"); break;
+			case 61: s = coco_string_create(L"this symbol not expected in AggChains"); break;
+			case 62: s = coco_string_create(L"invalid AggChains"); break;
+			case 63: s = coco_string_create(L"this symbol not expected in AggLabels"); break;
+			case 64: s = coco_string_create(L"invalid AggLabels"); break;
+			case 65: s = coco_string_create(L"invalid NumberList"); break;
+			case 66: s = coco_string_create(L"invalid ArrayDecl"); break;
+			case 67: s = coco_string_create(L"invalid ArrayDecl"); break;
+			case 68: s = coco_string_create(L"invalid InstanceDecl"); break;
 
 
     default: {

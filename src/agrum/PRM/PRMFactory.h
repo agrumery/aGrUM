@@ -805,6 +805,8 @@ namespace gum {
                                       ReferenceSlot<GUM_SCALAR>* ref,
                                       SlotChain<GUM_SCALAR>* sc );
 
+        void __incrementByColumn(Attribute<GUM_SCALAR>* a, std::vector<Size>& pos, Instantiation& inst);
+
         /// Fill seq with the sequence of instance build using inst as the
         /// instantiation of sc->__class and seeking each instantiation of
         /// reference in sc.

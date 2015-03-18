@@ -33,7 +33,7 @@ namespace gum {
     template<typename GUM_SCALAR> Attribute<GUM_SCALAR>::Attribute ( const std::string& name, const Type<GUM_SCALAR>& type,
         MultiDimImplementation<GUM_SCALAR>* impl ) :
       ClassElement<GUM_SCALAR> ( name ), __type ( new Type<GUM_SCALAR> ( type ) ),
-      __cpf ( new Potential<GUM_SCALAR> ( impl ) ), __delete_type ( true ) {
+      __cpf ( new Potential<GUM_SCALAR> ( impl ) ), __formulas(0), __delete_type ( true ) {
       GUM_CONSTRUCTOR ( Attribute );
       __cpf->add ( **__type );
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
@@ -41,7 +41,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> Attribute<GUM_SCALAR>::Attribute ( const std::string& name, Type<GUM_SCALAR>* type, Potential<GUM_SCALAR>* cpf,
         bool delete_type ) :
-      ClassElement<GUM_SCALAR> ( name ), __type ( type ), __cpf ( cpf ), __delete_type ( delete_type ) {
+      ClassElement<GUM_SCALAR> ( name ), __type ( type ), __cpf ( cpf ), __formulas(0), __delete_type ( delete_type ) {
       GUM_CONSTRUCTOR ( Attribute );
 
       if ( not __cpf->variablesSequence().exists ( & ( type->variable() ) ) )
@@ -51,7 +51,7 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> Attribute<GUM_SCALAR>::Attribute ( const Attribute<GUM_SCALAR>& source ) :
-      ClassElement<GUM_SCALAR> ( source ), __type ( new Type<GUM_SCALAR> ( source.type() ) ), __cpf ( 0 ) {
+      ClassElement<GUM_SCALAR> ( source ), __type ( new Type<GUM_SCALAR> ( source.type() ) ), __cpf ( 0 ), __formulas(0) {
       GUM_CONS_CPY ( Attribute );
       GUM_ERROR ( FatalError, "Illegal call to the copy constructor of gum::Attribute" );
     }
@@ -62,6 +62,10 @@ namespace gum {
 
       if ( __delete_type ) {
         delete __type;
+      }
+
+      if (__formulas) {
+        delete __formulas;
       }
     }
 
@@ -166,6 +170,32 @@ namespace gum {
     Attribute<GUM_SCALAR>::addChild ( const ClassElement<GUM_SCALAR>& elt ) { }
 
     template<typename GUM_SCALAR> INLINE
+    MultiDimImplementation<std::string>&
+    Attribute<GUM_SCALAR>::formulas() {
+
+      if (not __formulas) {
+        __formulas = new MultiDimArray<std::string>();
+        for ( const auto var : cpf().variablesSequence() ) {
+          __formulas->add( *var );
+        }
+      }
+
+      return *__formulas;
+    }
+
+    template<typename GUM_SCALAR> INLINE
+    const MultiDimImplementation<std::string>&
+    Attribute<GUM_SCALAR>::formulas() const {
+
+      if (not __formulas) {
+        GUM_ERROR( OperationNotAllowed, "No formulas for this attribute." );
+      }
+
+      return *__formulas;
+
+    }
+
+    template<typename GUM_SCALAR> INLINE
     FuncAttribute<GUM_SCALAR>::FuncAttribute ( const std::string& name,
         const Type<GUM_SCALAR>& type,
         MultiDimImplementation<GUM_SCALAR>* impl ) :
@@ -206,7 +236,6 @@ namespace gum {
     FuncAttribute<GUM_SCALAR>::operator= ( const FuncAttribute<GUM_SCALAR>& from ) {
       GUM_ERROR ( FatalError, "illegal call to copy operator" );
     }
-
 
   } /* namespace prm */
 } /* namespace gum */

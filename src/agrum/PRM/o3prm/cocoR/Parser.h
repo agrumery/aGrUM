@@ -85,7 +85,8 @@ class Parser {
 		_LEFT_CAST=18,
 		_RIGHT_CAST=19,
 		_int=20,
-		_real=21
+		_real=21,
+		_string=22
 	};
 	int maxT;
 
@@ -413,6 +414,7 @@ void addImport(std::string import) {
 	void Aggregate(std::string type, std::string name);
 	void Functions(std::string type, std::string name);
 	void CastIdent(std::string& s);
+	void CPFValue(std::string & s);
 	void CPTRule(bool &error);
 	void CPTRuleValue(std::string& s );
 	void AggChains(std::vector<std::string>& chains );
