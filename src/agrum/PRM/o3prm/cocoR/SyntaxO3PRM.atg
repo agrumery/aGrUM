@@ -479,7 +479,7 @@ Attribute<std::string type, std::string name> =
     .
 
 CPFValue<std::string & s> =
-  string (. s = narrow(t->val); .)
+  string    (. s = narrow(t->val); if (s.size() > 2) { s = s.substr(1, s.size()-2); } else { s = ""; } .)
   | (. float f; .) Number<f> (. s = std::to_string(f); .)
   .
 

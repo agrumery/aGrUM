@@ -41,7 +41,7 @@ OK: OK,
     Degraded: NOK;
 
 class PowerSupply {
-    t_state state { [ 0.99, 0.01 ] };
+    t_state state { [ "0.99", "0.00" ] };
 }
 
 class Room {

@@ -41,8 +41,8 @@ namespace gum_tests {
       void testConstantInt() {
         try {
           // Arrange
-          std::string eq = "10";
-          double expected = 10.0;
+          std::string eq = "1";
+          double expected = 1;
           gum::Formula formula(eq);
           // Act
           TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
@@ -56,8 +56,8 @@ namespace gum_tests {
       void testConstantFloat() {
         try {
           // Arrange
-          std::string eq = "10.0";
-          double expected = 10.0;
+          std::string eq = "0.99";
+          double expected = 0.99;
           gum::Formula formula(eq);
           // Act
           TS_GUM_ASSERT_THROWS_NOTHING(formula.result());

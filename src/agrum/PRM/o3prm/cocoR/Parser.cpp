@@ -501,7 +501,7 @@ void Parser::CastIdent(std::string& s) {
 void Parser::CPFValue(std::string & s) {
 		if (la->kind == _string) {
 			Get();
-			s = narrow(t->val); 
+			s = narrow(t->val); if (s.size() > 2) { s = s.substr(1, s.size()-2); } else { s = ""; } 
 		} else if (la->kind == _integer || la->kind == _float) {
 			float f; 
 			Number(f);

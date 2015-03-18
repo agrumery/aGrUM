@@ -352,7 +352,7 @@ namespace gum {
 
   Formula::Formula( const std::string & f ):
     __formula( f ),
-    __scanner( new gum::formula::Scanner((unsigned char*) f.c_str(), (int) f.size()) ),
+    __scanner( new gum::formula::Scanner((unsigned char*) __formula.c_str(), (int) __formula.size()) ),
     __parser( new gum::formula::Parser( __scanner ) ),
     __last_token( FormulaPart() )
   {
