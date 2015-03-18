@@ -1,296 +1,150 @@
-#include <vector>
+#define GUM_TRACE_ON
+
 #include <iostream>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <set>
-#include <string>
-#include <sstream>
-#include <fstream>
-#include <cmath>
-#include <algorithm>
-#include <cstdlib>
-#include "../agrum/CN/CredalNet.h"
-
-
-
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
-#include <agrum/core/OMPThreads.h>
-//<<<<<<< HEAD
 
-#include <agrum/CN/LrsWrapper.h>
+#include <agrum/learning/database/databaseVectInRAM.h>
+#include <agrum/learning/database/databaseFromCSV.h>
 
-//<<<<<<< HEAD
-//#include <agrum/CN/CNMonteCarloSamplingInferenceTestSuite.h>
-//=======
-//#include <agrum/PRM/PRMFactory.h>
-//#ifndef DOXYGEN_SHOULD_SKIP_THIS
-//including coco-generated PARSER and SCANNER
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 
-//#include <agrum/PRM/o3prm/cocoR/Parser.h>
-//#endif //DOXYGEN_SHOULD_SKIP_THIS
-//#include <agrum/PRM/o3prm/O3prmReader.h>
-//>>>>>>> Bug found for test -t all : now use of string::size() instead of string::length()
+#include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 
+#include <agrum/learning/scores_and_tests/scoreBDeu.h>
 
-#include <agrum/core/Rational.h> // custom decimal to rational
-#include <agrum/core/pow.h> // custom pow functions with integers, faster implementation
+#include <agrum/learning/aprioris/aprioriSmoothing.h>
 
-//=======
+#include <agrum/learning/constraints/structuralConstraintDiGraph.h>
+#include <agrum/learning/constraints/structuralConstraintDAG.h>
 
-#include <agrum/CN/LrsWrapper.h>
+#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
+#include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 
-//#include <agrum/PRM/PRMFactory.h>
-//#ifndef DOXYGEN_SHOULD_SKIP_THIS
-//including coco-generated PARSER and SCANNER
+#include <agrum/learning/paramUtils/paramEstimatorML.h>
+#include <agrum/learning/greedyHillClimbing.h>
+int main(int argc, char *argv[]) {
 
-//#include <agrum/PRM/o3prm/cocoR/Parser.h>
-//#endif //DOXYGEN_SHOULD_SKIP_THIS
-//#include <agrum/PRM/o3prm/O3prmReader.h>
+  //**SPDLOG not installed** namespace spd = spdlog;
 
+  //**SPDLOG not installed**try {
+  // Create console, multithreaded logger
+  //**SPDLOG not installed**auto console = spd::stdout_logger_mt("console");
+  /**SPDLOG not installed** console->info*/ std::cout
+      << ("Bayesian Network Build");
 
-//#include <agrum/core/Rational.h> // custom decimal to rational
-//#include <agrum/core/pow.h> // custom pow functions with integers, faster implementation
+  int k = atoi(argv[2]);
 
-//>>>>>>> Bug found for test -t all : now use of string::size() instead of string::length()
+  gum::learning::DatabaseFromCSV database(argv[1]);
+  /**SPDLOG not installed** console->info*/ std::cout
+      << "Number of rows: " << database.content().size() << std::endl;
+  /**SPDLOG not installed** console->info*/ std::cout
+      << "Number of variables: " << database.variableNames().size()
+      << std::endl;
 
-#include <agrum/CN/CredalNet.h>
-#include <agrum/CN/CNMonteCarloSampling.h>
-#include <agrum/CN/CNLoopyPropagation.h>
+  // K-fold Cross Validation Start
+  int n = database.content().size();
 
-#include <agrum/CN/LpInterface.h>
+  std::vector<int> indexes(n);
+  int i(0);
+  std::generate(indexes.begin(), indexes.end(), [&] { return i++; });
 
-#include <agrum/core/Rational.h>
+  std::random_device rd;
+  std::mt19937 g(rd());
 
-#define xstrfy(s) strfy(s)
-#define strfy(x) #x
+  std::shuffle(indexes.begin(), indexes.end(), g);
 
-#define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/cn/" #x
-
-void test_credal() {
-
-  /////////////// OMP test stuff ///////////////////
-
-  std::cout << "isOMP () ? : " << gum::isOMP() << std::endl;
-  std::cout << "threads : " << gum::getMaxNumberOfThreads() << std::endl;
-  gum::setNumberOfThreads ( gum::getNumberOfLogicalProcessors() * 2 );
-  std::cout << "new number : " << gum::getMaxNumberOfThreads() << std::endl;
-
-  std::cout << "number of procs : " << gum::getNumberOfLogicalProcessors() << std::endl;
-
-  //gum::setDynamicThreadsNumber(true);
-  //gum::setNestedParallelism(true);
-
-  std::cout << "dynamic threads : " << gum::getDynamicThreadsNumber() << std::endl;
-  std::cout << "nested parallelism : " << gum::getNestedParallelism() << std::endl;
-  std::cout << "thread limit : " << omp_get_thread_limit() << std::endl;
-  std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
-
-  ////////////////////////////////
-
-  /*
-  gum::Rational< double >::testRationalAlgorithms();
-  return;
-
-  gum::credal::CredalNet< double > nCN;
-
-  gum::NodeId a = nCN.addNode( "toto", 2 );
-  gum::NodeId b = nCN.addNode( "titi", 3 );
-  gum::NodeId c = nCN.addNode( "tata", 3 );
-
-  nCN.addArc( a, c );
-  nCN.addArc( b, c );
-
-  std::vector< double > lower( 2, 0 );
-  std::vector< double > upper( 2, 1 );
-
-  std::vector< std::vector< double > > v {{0.2, 0.8}};
-  std::vector< std::vector< double > > v1 {{0.2, 0.4, 0.4}};
-
-  gum::Instantiation ins( nCN.current_bn().cpt( a ) );
-  nCN.setCPT(a, ins, v);
-
-  ins = gum::Instantiation( nCN.current_bn().cpt( b ) );
-  nCN.setCPT(b, ins, v1);
-
-  ins = gum::Instantiation( nCN.current_bn().cpt( c ) );
-
-  gum::credal::lp::LpInterface< double > llp;
-  auto cols = llp.addCols( 3 );
-
-  for( ; ! ins.end(); ) {
-    for ( const auto col : cols )
-      llp.addRow( rand() / RAND_MAX  <= col );
-
-    llp.addRow( cols[ rand() % cols.size() ] <= cols[ rand() % cols.size() ] );
-
-    llp.addSumIsOne ();
-
-    nCN.setCPT(c, ins, llp.solve());
-    ins += 3; // card ( c ) = 3
-
-    llp.clearRows();
-  }
-
-
-  //nCN.fillConstraints( a, lower, upper );
-
-  //nCN.fillConstraints( b, std::vector< double >( 6, 0 ), std::vector< double >( 6, 1 ) );
-
-  //nCN.intervalToCredal();
-
-  std::cout << nCN.toString() << std::endl;
-
-  return;
-  */
-
-  /////////////////////////////
-
-  /*
-  gum::credal::CredalNet< double > myCN ( GET_PATH_STR( numerators.bif ) );
-  myCN.idmLearning( 0, true );
-  std::cout << myCN.toString() << std::endl;
-
-  gum::credal::CredalNet< double > myCN1 ( GET_PATH_STR( numerators.bif ) );
-  myCN1.lagrangeNormalization();
-  myCN1.idmLearning( 0, true );
-  std::cout << myCN1.toString() << std::endl;
-
-  gum::credal::CredalNet< double > myCN2 ( GET_PATH_STR( numerators.bif ) );
-  myCN2.bnToCredal( 0.8, true, true );
-  std::cout << myCN2.toString() << std::endl;
-
-  gum::credal::CredalNet< double > myCN3 ( GET_PATH_STR( numerators.bif ) );
-  myCN3.lagrangeNormalization();
-  */
-
-  /*myCN3.idmLearning( 10, true );
-  std::cout << myCN3.toString() << std::endl;*/
-
-  /*
-  myCN3.bnToCredal( 0.8, true, true );
-  std::cout << myCN3.toString() << std::endl;
-
-  return;
-  */
-
-  //////////////////////////////////
-
-
-
-  std::cout << GET_PATH_STR ( bn_c.bif ) << std::endl;
-
-  gum::BayesNet<double> monBNa;
-  gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( gl2uERR_dts3_min.bif ) );
-  //GET_PATH_STR ( bn_c.bif ) );
-  readera.proceed();
-
-  gum::BayesNet<double> monBNb;
-  gum::BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( gl2uERR_dts3_max.bif ) );
-  //GET_PATH_STR ( den_c.bif ) );
-  readerb.proceed();
-
-
-  // (G)(L)2U test
-  gum::credal::CredalNet<double> myCNb ( monBNa, monBNb );
-
-  //myCNb.bnToCredal(0.5);
-
-  myCNb.intervalToCredal();//intervalToCredal();
-  //std::cout << "computing min/max vertex" << std::endl;
-
-
-  std::cout << myCNb.toString() << std::endl;
-
-  myCNb.computeCPTMinMax();
-  gum::credal::CNLoopyPropagation<double> lp2 = gum::credal::CNLoopyPropagation<double> ( myCNb );
-  lp2.makeInference();
-
-  //for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
-  for ( const auto id : myCNb.src_bn().nodes() ) {
-    unsigned int dSize = myCNb.src_bn().variable ( id ).domainSize();
-
-    for ( unsigned int mod = 0; mod < dSize; mod++ ) {
-      std::cout << "l2u p(" << myCNb.src_bn().variable ( id ).name() << " = " << mod  << ") = [ " << lp2.marginalMin ( id ) [mod] << ", " << lp2.marginalMax ( id ) [mod] << " ] " << std::endl;
-    }
-  }
-
-  gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> > MCE ( myCNb );
-  MCE.storeVertices ( true );
-  MCE.makeInference();
-
-  //for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
-  for ( const auto id : myCNb.src_bn().nodes() ) {
-    unsigned int dSize = myCNb.src_bn().variable ( id ).domainSize();
-
-    for ( unsigned int mod = 0; mod < dSize; mod++ ) {
-      std::cout << "MC p(" << myCNb.src_bn().variable ( id ).name() << " = " << mod  << ") = [ " << MCE.marginalMin ( id ) [mod] << ", " << MCE.marginalMax ( id ) [mod] << " ] " << std::endl;
-    }
-
-    std::cout << "MC vertices of : " << myCNb.src_bn().variable ( id ).name() << std::endl;
-    std::cout << MCE.vertices ( id ) << std::endl;
-  }
-
-  return;
-
-
-
-  gum::credal::CredalNet< double > cn ( GET_PATH_STR ( /*gl2u2_*/2Umin.bif ), GET_PATH_STR ( /*gl2u2_*/2Umax.bif ) );
-  cn.intervalToCredal();
-  std::cout << cn.toString() << std::endl;
-
-  ///cn.approximatedBinarization();
-
-  gum::credal::CNMonteCarloSampling< double, gum::LazyPropagation< double > > mc ( cn );
-  //mc.setMaxTime ( 60 * 10 );
-  //mc.setPeriodSize ( 4000 );
-  mc.setMaxTime ( 1 * 60 );
-  mc.setPeriodSize ( 1000 );
-  mc.makeInference();
-
-  //for ( gum::DAG::NodeIterator id = cn.current_bn().beginNodes(); id != cn.current_bn().endNodes(); ++id ) {
-  for ( const auto id : cn.current_bn().nodes() ) {
-    unsigned int dSize = cn.current_bn().variable ( id ).domainSize();
-
-    for ( unsigned int mod = 0; mod < dSize; mod++ ) {
-      std::cout << "mc p(" << cn.current_bn().variable ( id ).name() << " = " << mod  << ") = [ " << mc.marginalMin ( id ) [mod] << ", " << mc.marginalMax ( id ) [mod] << " ] " << std::endl;
-    }
-  }
-
-  cn.approximatedBinarization();
-
-  //std::cout << cn.toString() << std::endl;
-
-  cn.computeCPTMinMax();
-
-  gum::credal::CNLoopyPropagation< double > lp ( cn );
-
-  lp.makeInference();
-
-  //for ( gum::DAG::NodeIterator id = cn.current_bn().beginNodes(); id != cn.current_bn().endNodes(); ++id ) {
-  for ( const auto id : cn.current_bn().nodes() ) {
-    unsigned int dSize = cn.current_bn().variable ( id ).domainSize();
-
-    for ( unsigned int mod = 0; mod < dSize; mod++ ) {
-      std::cout << "l2u p(" << cn.current_bn().variable ( id ).name() << " = " << mod  << ") = [ " << lp.marginalMin ( id ) [mod] << ", " << lp.marginalMax ( id ) [mod] << " ] " << std::endl;
-    }
-  }
-}
-
-int main ( int argc, char* argv[] ) {
+  // K-fold Cross Validation
   try {
-    test_credal();
-    std::cout.flush();
-  } catch ( gum::Exception& e ) {
-    GUM_SHOWERROR ( e );
+    // Structure Learning
+    const int nbCol = 8; // 32 for your case
+
+    // will parse the database once
+    auto translators = gum::learning::make_translators(
+        gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                              gum::learning::Col<0>, nbCol>());
+    auto generators =
+        gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
+
+    auto filter =
+        gum::learning::make_DB_row_filter(database, translators, generators);
+    std::vector<unsigned int> modalities = filter.modalities();
+
+    gum::learning::AprioriSmoothing<> apriori;
+
+    gum::learning::StructuralConstraintSetStatic<
+        gum::learning::StructuralConstraintDAG> struct_constraint;
+
+    gum::learning::GraphChangesGenerator4DiGraph<decltype(struct_constraint)>
+        op_set(struct_constraint);
+
+    gum::learning::GreedyHillClimbing search;
+
+    int foldSize = database.content().size() / k;
+
+    for (int fold = 0; fold < k; fold++) {
+      unsigned int fold_deb = fold * foldSize;
+      unsigned int fold_end = fold_deb + foldSize - 1;
+      std::cout << "LEARNING [" << fold_deb << "," << fold_end << "]  ";
+
+      // LEARNING
+      filter.handler().setRange(fold_deb, fold_end);
+      gum::learning::ScoreBDeu<> score(filter, modalities, apriori);
+      gum::learning::ParamEstimatorML<> estimator(filter, modalities, apriori,
+                                                  score.internalApriori());
+      gum::learning::GraphChangesSelector4DiGraph<
+          decltype(score), decltype(struct_constraint), decltype(op_set)>
+          selector(score, struct_constraint, op_set);
+      gum::Timer timer;
+      gum::BayesNet<float> bn =
+          search.learnBN(selector, estimator, database.variableNames(),
+                         modalities, filter.translatorSet());
+      std::cout << timer.step() << "s ";
+      std::cout << bn.arcs().size() << " arcs" << std::endl;
+
+      // TESTING
+      gum::Instantiation I;
+
+      for (auto &name : filter.variableNames()) {
+        I.add(bn.variableFromName(name));
+      }
+
+      double LL = 0.0;
+      std::cout << "TESTING ";
+
+      if (fold_deb != 0) {
+        std::cout << "[" << 0 << "," << fold_deb - 1 << "]";
+        filter.handler().setRange(0, fold_deb - 1);
+        filter.reset();
+
+        while (filter.hasRows()) {
+          int i = 0;
+
+          for (auto item : filter.row().row())
+            I.chgVal(i++, item);
+
+          LL += bn.log2JointProbability(I);
+        }
+      }
+
+      if (fold_end + 1 < database.content().size() - 1) {
+        std::cout << "[" << fold_end + 1 << "," << database.content().size() - 1
+                  << "]";
+        filter.handler().setRange(fold_end + 1, database.content().size() - 1);
+        filter.reset();
+
+        while (filter.hasRows()) {
+          int i = 0;
+
+          for (auto item : filter.row().row())
+            I.chgVal(i++, item);
+
+          LL += bn.log2JointProbability(I);
+        }
+      }
+
+      std::cout << " LL=" << LL << std::endl << std::endl;
+    }
+  } catch (const gum::Exception &ex) {
+    std::cout << ex.errorContent() << std::endl;
   }
-
-  std::cout.clear();
-  std::cout << "Press ENTER to continue...";
-  std::cin.ignore ( std::numeric_limits<std::streamsize>::max(), '\n' );
-
-  return EXIT_SUCCESS;
 }

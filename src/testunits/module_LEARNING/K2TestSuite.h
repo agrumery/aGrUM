@@ -54,14 +54,14 @@ namespace gum_tests {
 
     void test_k2_asia () {
        gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
-      
+
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 8 > () );
 
       auto generators =
         gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
-      
+
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
 
@@ -84,13 +84,13 @@ namespace gum_tests {
       gum::learning::GraphChangesGenerator4K2
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
-    
+
       gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
         decltype ( op_set ) >
       selector ( score, struct_constraint, op_set );
- 
+
       gum::learning::K2 k2;
       k2.setOrder ( order );
       k2.approximationScheme ().setEpsilon ( 1000 );
@@ -107,24 +107,25 @@ namespace gum_tests {
                                                          modalities,
                                                          filter.translatorSet () );
         TS_ASSERT ( bn.dag ().arcs().size () == 8 );
+        TS_ASSERT ( bn2.dag ().arcs().size () == 8 );
      }
       catch ( gum::Exception& e ) {
         GUM_SHOWERROR ( e );
       }
-      
+
     }
 
     /*
     void xtest_k2_asia_bis () {
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
-      
+
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 8 > () );
 
       auto generators =
         gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
-      
+
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
 
@@ -133,20 +134,20 @@ namespace gum_tests {
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> real_score ( filter, modalities, apriori );
       gum::learning::Score<>& score = real_score;
-      
+
       gum::learning::StructuralConstraintDAG
         struct_constraint ( modalities.size () );
 
       gum::learning::ParamEstimatorML<> real_estimator ( filter, modalities );
       gum::learning::ParamEstimator<>& estimator = real_estimator;
-      
+
       std::vector<unsigned int> order ( filter.modalities ().size() );
       for ( unsigned int i = 0; i < order.size(); ++i ) {
         order[i] = i;
       }
 
       gum::learning::K2 k2;
-     
+
       gum::BayesNet<float> bn = k2.learnBN ( score, struct_constraint, estimator,
                                              database.variableNames (),
                                              modalities, order );
@@ -167,7 +168,7 @@ namespace gum_tests {
       gum::BayesNet<float> bn =
         k2.learnBNFromCSV ( GET_PATH_STR( "asia.csv" ), order );
       std::cout << bn << std::endl << bn.dag () << std::endl;
-      
+
       gum::BayesNet<double> bn2 =
         k2.learnBNFromCSV<double> ( GET_PATH_STR( "asia.csv" ), order );
       std::cout << bn2 << std::endl << bn2.dag () << std::endl;
@@ -178,12 +179,12 @@ namespace gum_tests {
       K2 k2;
 
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
-      
+
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8 > () );
 
       auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
-      
+
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
 
@@ -201,7 +202,7 @@ namespace gum_tests {
       for ( unsigned int i = 0; i < order.size(); ++i ) {
         order[i] = i;
       }
-      
+
       gum::DAG dag = k2.learnDAG ( score, order, struct_constraint );
       gum::BayesNet<float> bn = k2.learnBN ( estimator, dag,
                                              database.variableNames (),
@@ -210,17 +211,17 @@ namespace gum_tests {
       std::cout << bn << std::endl << bn.dag () << std::endl;
     }
 
-    
+
     void xxtest_k2_asia_constraint_SliceOrder () {
       K2 k2;
 
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
-      
+
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8 > () );
 
       auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
-      
+
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
 
@@ -238,7 +239,7 @@ namespace gum_tests {
           slices.insert ( i, true );
         }
       }
-      
+
       gum::learning::StructuralConstraintSliceOrder
         struct_constraint ( slices );
 
@@ -248,7 +249,7 @@ namespace gum_tests {
       for ( unsigned int i = 0; i < order.size(); ++i ) {
         order[i] = i;
       }
-      
+
       gum::DAG dag = k2.learnDAG ( score, order, struct_constraint );
       gum::BayesNet<float> bn = k2.learnBN ( estimator, dag,
                                              database.variableNames (),
@@ -257,17 +258,17 @@ namespace gum_tests {
       std::cout << bn << std::endl << bn.dag () << std::endl;
     }
 
-    
+
     void xxtest_k2 () {
       K2 k2;
 
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "alarm.csv" ) );
-      
+
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 37 > () );
 
       auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
-      
+
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
 
@@ -287,13 +288,13 @@ namespace gum_tests {
       }
 
       gum::Timer timer;
-      
+
       gum::DAG dag = k2.learnDAG ( score, order, struct_constraint );
       gum::BayesNet<float> bn = k2.learnBN ( estimator, dag,
                                              database.variableNames (),
                                              modalities );
       std::cout << "learning time = " << timer.step () << std::endl;
-      
+
       std::cout << dag << " " << bn << std::endl;
     }
     */
