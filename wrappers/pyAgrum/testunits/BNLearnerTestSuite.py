@@ -1,5 +1,4 @@
 # -*- encoding: UTF-8 -*-
-
 import pyAgrum as gum 
 
 import unittest
@@ -48,7 +47,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
         learner.useGreedyHillClimbing()
         bn=learner.learnBN()
 
-        ref=gum.loadBN(self.agrumSrcDir('/testunits/ressources/asia2.bif'))
+        ref=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia2.bif'))
 
         f=gum.BruteForceKL(bn,ref)
         res=f.compute()

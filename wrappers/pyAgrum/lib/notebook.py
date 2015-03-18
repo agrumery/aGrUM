@@ -28,7 +28,6 @@ tools for BN analysis in ipython qtconsole and notebook
 """
 from base64 import encodestring
 import numpy as np
-import scipy
 import time
 
 import matplotlib as mpl
@@ -52,7 +51,6 @@ def configuration():
   packages["IPython"]= IPython.__version__
   packages["MatPlotLib"]= mpl.__version__
   packages["Numpy"]= np.__version__
-  packages["SciPy"]= scipy.__version__
   packages["pyAgrum"]= gum.__version__
 
   res = "<table width='100%'><tr><th>Library</th><th>Version</th></tr>"
