@@ -18,7 +18,7 @@ class pyAgrumTestCase(unittest.TestCase):
 
 
     def assertDelta(self, x, y, delta=0.05):
-        number = (int, float, long)
+        number = (int, float)
         sequence = (list, tuple)
 
         if isinstance(x, number) and isinstance(y, number):

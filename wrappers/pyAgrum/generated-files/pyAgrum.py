@@ -85,19 +85,6 @@ except:
 
 import numpy
 
-def DiscretizedVar(*args):
-  print("** Notification pyAgrum : <DiscretizedVar> obsolete. Please use <DiscretizedVariable> now.")
-  return DiscretizedVariable(*args)
-
-def LabelizedVar(*args):
-  print("** Notification pyAgrum : <LabelizedVar> obsolete. Please use <LabelizedVariable> now.")
-  return LabelizedVariable(*args)
-
-def RangeVar(*args):
-  print("** Notification pyAgrum : <RangeVar> obsolet. Please use <RangeVariable> now.")
-  return RangeVariable(*args)
-
-
 class PythonBNListener(_object):
     """Proxy of C++ PythonBNListener class"""
     __swig_setmethods__ = {}
@@ -3975,7 +3962,12 @@ class BayesNetInference_double(_object):
 
         # set evidences
         self.list_pot = []
-        for var_name, evidce in evidces.iteritems():
+        try:
+          items=evidces.iteritems()
+        except AttributeError:
+          items=evidces.items()
+
+        for var_name, evidce in items:
             pot = Potential_double()
 
             if isinstance(var_name, int):
@@ -5053,7 +5045,13 @@ class InfluenceDiagramInference_double(_object):
 
         # set evidences
         self.list_pot = []
-        for var_name, evidce in evidces.iteritems():
+
+        try:
+          items=evidces.iteritems()
+        except AttributeError:
+          items=evidces.items()
+
+        for var_name, evidce in items:
             pot = Potential_double()
 
             if isinstance(var_name, int):

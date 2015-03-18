@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # -*- encoding: UTF-8 -*-
-
-# tests use the compiled version of pyAgrum and not the packaged one. So we directly call the __init__.py file
-import __init__ as gum # read "import pyAgrum as gum"
+import pyAgrum as gum 
 
 import unittest
 from pyAgrumTestSuite import pyAgrumTestCase
@@ -11,7 +9,7 @@ from pyAgrumTestSuite import pyAgrumTestCase
 class ICIModelsForBNTestCase(pyAgrumTestCase):
 
     def setUp(self):
-	  pass
+      pass
 
     def testLogit(self):
         bn = gum.BayesNet()
@@ -35,12 +33,11 @@ class ICIModelsForBNTestCase(pyAgrumTestCase):
         
         inst=gum.Instantiation(bn.cpt(coeur))
         for i in range(len(witness_age)):
-		  inst.chgVal(   bn.variable(age),   bn.variable(age)[   witness_age[i]])
-		  inst.chgVal(  bn.variable(taux),  bn.variable(taux)[  witness_taux[i]])
-		  inst.chgVal(bn.variable(angine),bn.variable(angine)[witness_angine[i]])
-		  inst.chgVal( bn.variable(coeur),bn. variable(coeur)[ witness_coeur[i]])
-		  
-		  self.assertAlmostEqual(bn.cpt(coeur).get(inst),witness_proba[i],places=3)
+          inst.chgVal(   bn.variable(age),  bn.variable(age)[    witness_age[i]])
+          inst.chgVal(  bn.variable(taux),  bn.variable(taux)[   witness_taux[i]])
+          inst.chgVal( bn.variable(angine), bn.variable(angine) [witness_angine[i]])
+          inst.chgVal( bn.variable(coeur),  bn. variable(coeur)[ witness_coeur[i]])
+          self.assertAlmostEqual(bn.cpt(coeur).get(inst),witness_proba[i],places=3)
 
 ts = unittest.TestSuite()
 ts.addTest(ICIModelsForBNTestCase('testLogit'))

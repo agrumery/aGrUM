@@ -3,9 +3,7 @@
 
 import unittest
 from pyAgrumTestSuite import pyAgrumTestCase
-
-# tests use the compiled version of pyAgrum and not the packaged one. So we directly call the __init__.py file
-import __init__ as gum # read "import pyAgrum as gum"
+import pyAgrum as gum 
 
 
 class BNLearnerCSVTestCase(pyAgrumTestCase):
