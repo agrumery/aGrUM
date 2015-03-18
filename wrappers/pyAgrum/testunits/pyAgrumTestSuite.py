@@ -3,9 +3,13 @@
 import unittest
 from numpy import ndarray
 
+import os
 
 class pyAgrumTestCase(unittest.TestCase):
-
+    def agrumSrcDir(self,s):
+      return __file__.split('/wrappers')[0]+"/"+s
+    
+      
     def assertListsAlmostEqual(self, seq1, seq2, places=7):
         sequence = (tuple, list, ndarray)
         if len(seq1) != len(seq2):

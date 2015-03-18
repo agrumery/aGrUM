@@ -685,7 +685,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             make_options=""
         if options['rule']=='test':
             if options['wrapper']=='pyAgrum':
-              run_cde="python3 ../../../wrappers/pyAgrum/testunits/TestSuite.py"
+              run_cde="cd ..;PYTHONPATH=pyAgrum `which python3` ../../wrappers/pyAgrum/testunits/TestSuite.py"
             else:
               print(ERROR+"No tests for "+options['wrapper']+ENDC)
               sys.exit(0)

@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 # -*- encoding: UTF-8 -*-
+
+import pyAgrum as gum 
 
 import unittest
 from pyAgrumTestSuite import pyAgrumTestCase
-import pyAgrum as gum 
 
 
 class BNLearnerCSVTestCase(pyAgrumTestCase):
@@ -13,7 +13,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
 
     def testHillClimbing(self):
-        learner=gum.BNLearner("../../../src/testunits/ressources/asia.csv")
+        learner=gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia.csv'))
         learner.useGreedyHillClimbing()
         bn=learner.learnBN()
         self.assertEqual(bn.size(),8)
@@ -30,7 +30,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
           self.assertTrue(False)
 
     def testHillClimbingAccurate(self):
-        learner=gum.BNLearner("../../../src/testunits/ressources/asia.csv")
+        learner=gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia.csv'))
         
         witness=['smoking?',
                  'lung_cancer?',
@@ -48,7 +48,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
         learner.useGreedyHillClimbing()
         bn=learner.learnBN()
 
-        ref=gum.loadBN("../../../src/testunits/ressources/asia2.bif")
+        ref=gum.loadBN(self.agrumSrcDir('/testunits/ressources/asia2.bif'))
 
         f=gum.BruteForceKL(bn,ref)
         res=f.compute()
@@ -67,11 +67,11 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
           self.assertTrue(False)
 
     def testLocalSearchWithTabuAccurate(self):
-        learner=gum.BNLearner("../../../src/testunits/ressources/asia.csv")
+        learner=gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia.csv'))
         learner.useLocalSearchWithTabuList()
         bn=learner.learnBN()
 
-        ref=gum.loadBN("../../../src/testunits/ressources/asia2.bif")
+        ref=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia2.bif'))
 
         f=gum.BruteForceKL(bn,ref)
         res=f.compute()

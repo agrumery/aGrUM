@@ -24,6 +24,8 @@ __version__ = '@PYAGRUM_VERSION@'
 __license__ = __doc__
 __project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
 
+from @PYAGRUM_MODULE@ import BayesNet
+from @PYAGRUM_MODULE@ import InfluenceDiagram
 from @PYAGRUM_MODULE@ import GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION,GUM_VERSION
 
 __version__ = '0.9.0.9'

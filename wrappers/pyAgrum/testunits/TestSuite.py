@@ -6,7 +6,7 @@ from __future__ import print_function
 import sys
 
 # to force to use local pyAgrum for the tests (and not installed one)
-sys.path.insert(1,".")
+#sys.path.insert(1,".")
 
 import unittest
 #import SequenceTestSuite
