@@ -20,17 +20,9 @@ Helping functions and consts for pyAgrum
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-__version__ = '@PYAGRUM_VERSION@'
-__license__ = __doc__
-__project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
-
 from @PYAGRUM_MODULE@ import BayesNet
 from @PYAGRUM_MODULE@ import InfluenceDiagram
 from @PYAGRUM_MODULE@ import GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION,GUM_VERSION
-
-__version__ = '0.9.0.9'
-__license__ = __doc__
-__project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
 
 def about():
   print("pyAgrum version {0}.{1}.{2}".format(GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION))

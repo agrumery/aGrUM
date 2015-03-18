@@ -28,8 +28,8 @@ represented by a Bayesian network.
 
 import sys,os,csv,random
 
-from utils.progress_bar import ProgressBar
-from utils.pyAgrum_header import pyAgrum_header
+from .utils.progress_bar import ProgressBar
+from .utils.pyAgrum_header import pyAgrum_header
 
 
 import math
@@ -129,7 +129,7 @@ class CSVGenerator:
         writer = csv.writer(open(name_out,'wb'))
 
         if visible:
-            print name_out,'\r',
+            print(name_out,'\r')
             sys.stdout.flush()
 
         titles=[bn.variable(item).name() for item in seq]
@@ -152,7 +152,7 @@ class CSVGenerator:
 
         if visible:
             print
-            print "Log2-Likelihood : {0}".format(LL)
+            print ("Log2-Likelihood : {0}".format(LL))
             print
 
         return LL
@@ -165,7 +165,7 @@ def module_help(exit_value=1):
     """
     defines help viewed if args are not OK on command line, and exit with exit_value
     """
-    print os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"} nbr [dst.csv]"
+    print( os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"} nbr [dst.csv]")
     sys.exit(exit_value)
 
 if __name__=="__main__":

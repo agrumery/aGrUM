@@ -211,7 +211,12 @@ def _normalizeVals(vals,hilightExtrema=False):
         vmi=0
         vma=1
 
-      return {name:vmi+(val-mi)*(vma-vmi)/(ma-mi) for name,val in vals.iteritems()}
+      try:
+          items=vals.items()
+      except AttributeError:
+          items=vals.iteritems()
+
+      return {name:vmi+(val-mi)*(vma-vmi)/(ma-mi) for name,val in items}
 
 def showInference(bn,ie,size="4",cmap=INFOcmap):
   """

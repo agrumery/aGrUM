@@ -26,6 +26,11 @@ site : https://forge.lip6.fr/projects/pyagrum/wiki
 #*   along with this program; if not, write to the                         *
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+__version__ = '@PYAGRUM_VERSION@'
+__license__ = __doc__
+__project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
+
 from .functions import *
 
 # selection of imports extracted from dir(pyAgrum)

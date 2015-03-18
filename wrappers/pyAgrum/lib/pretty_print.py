@@ -22,7 +22,7 @@
 #OR PERFORMANCE OF THIS SOFTWARE!
 import sys,os
 
-from utils.pyAgrum_header import pyAgrum_header
+from .utils.pyAgrum_header import pyAgrum_header
 import pyAgrum as gum
 
 DECIMAL_LENGTH=4
@@ -33,7 +33,7 @@ def module_help(exit_value=1):
     """
     defines help viewed if args are not OK on command line, and exit with exit_value
     """
-    print os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"}"
+    print(os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"}")
     sys.exit(exit_value)
 
 def max_length(v):
@@ -69,7 +69,7 @@ def pretty_cpt(cpt):
     line+=("{0:^{1}}"+BLANK).format(cpt.variable(0).label(j)[0:DECIMAL_LENGTH+2],DECIMAL_LENGTH+2)
   line+='|'
   print (line)
-  print ('-'*total_width)+'|'+'-'*(2+size)+'|'
+  print (('-'*total_width)+'|'+'-'*(2+size)+'|')
 
   i=gum.Instantiation(cpt)
   i.setFirst()
@@ -84,9 +84,9 @@ def pretty_cpt(cpt):
         line+=NUMBER_FORMAT.format(cpt.get(i))+' '
         i.inc()
       line+='|'
-      print line
+      print(line)
 
-  print ('-'*total_width)+'|'+'-'*(2+size)+'|'
+  print (('-'*total_width)+'|'+'-'*(2+size)+'|')
 
 def pretty_bn(aBN):
   if isinstance(aBN,str):
