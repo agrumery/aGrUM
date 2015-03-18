@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include <iostream>
 #include <string>
+#include <cmath>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
@@ -1012,6 +1013,81 @@ namespace gum_tests {
 
           if( prm )
             delete prm;
+        } catch (gum::Exception) {
+          TS_ASSERT(false);
+        }
+      }
+      
+      void testParamClass() {
+          gum::prm::o3prm::O3prmReader<double> reader;
+          std::string file = "../../../src/testunits/ressources/o3prm/complexprinters.o3prm";
+          std::string package = "fr.lip6.printers";
+          TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile(file, package) );
+          gum::prm::PRM<double>* prm = reader.prm();
+          gum::prm::Class<double>& ParamClass = prm->getClass( "fr.lip6.printers.ParamClass" );
+          TS_ASSERT_EQUALS( ParamClass.attributes().size(), ( gum::Size ) 9 );
+          TS_ASSERT_EQUALS( ParamClass.referenceSlots().size(), ( gum::Size ) 1 );
+          TS_ASSERT_EQUALS( ParamClass.slotChains().size(), ( gum::Size ) 1 );
+          TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["lambda"] );
+          TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["t"] );
+          TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["room"] );
+          TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["hasInk"] );
+          TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["hasPaper"] );
+          TS_GUM_ASSERT_THROWS_NOTHING( ParamClass["equipState"] );
+      }
+
+      void testParamClassHasInk() {
+        try {
+          gum::prm::o3prm::O3prmReader<double> reader;
+          std::string file = "../../../src/testunits/ressources/o3prm/complexprinters.o3prm";
+          std::string package = "fr.lip6.printers";
+          TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile(file, package) );
+
+          auto prm = reader.prm();
+          auto & ParamClass = prm->getClass( "fr.lip6.printers.ParamClass" );
+
+          const auto & hasInk = static_cast<gum::prm::Attribute<double>&>(ParamClass["hasInk"]);
+  
+          gum::Instantiation inst(hasInk.cpf());
+          std::vector<double> values;
+          for ( inst.begin(); not inst.end(); inst.inc() ) {
+            values.push_back(hasInk.cpf()[inst]);
+          }
+
+          TS_ASSERT_EQUALS( values.size(), (size_t) 2 );
+          TS_ASSERT_DELTA( values[0], 0.4, 1e-6 );
+          TS_ASSERT_DELTA( values[1], 0.6, 1e-6 );
+
+          delete prm;
+        } catch (gum::Exception) {
+          TS_ASSERT(false);
+        }
+      }
+
+      void testParamClassHasPaper() {
+        try {
+          gum::prm::o3prm::O3prmReader<double> reader;
+          std::string file = "../../../src/testunits/ressources/o3prm/complexprinters.o3prm";
+          std::string package = "fr.lip6.printers";
+          TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile(file, package) );
+
+          auto prm = reader.prm();
+          auto & ParamClass = prm->getClass( "fr.lip6.printers.ParamClass" );
+
+          const auto & hasPaper = static_cast<gum::prm::Attribute<double>&>(ParamClass["hasPaper"]);
+  
+          gum::Instantiation inst(hasPaper.cpf());
+          std::vector<double> values;
+          for ( inst.begin(); not inst.end(); inst.inc() ) {
+            values.push_back(hasPaper.cpf()[inst]);
+          }
+
+          TS_ASSERT_EQUALS( values.size(), (size_t) 3 );
+          TS_ASSERT_DELTA( values[0], std::exp(-0.4*4), 1e-6 );
+          TS_ASSERT_DELTA( values[1], 1-std::exp(-0.4*4), 1e-6 );
+          TS_ASSERT_DELTA( values[2], 0.0, 1e-6 );
+
+          delete prm;
         } catch (gum::Exception) {
           TS_ASSERT(false);
         }

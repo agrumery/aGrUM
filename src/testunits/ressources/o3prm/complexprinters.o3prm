@@ -121,12 +121,14 @@ class SafeComputer implements Equipment {
 
 class ParamClass {
 	real lambda default 0.4;
+	int t default 4;
 
   Room room;
-  t_ink hasInk { [0.8, 0.2] };
-  t_paper hasPaper { [0.7, 0.2, 0.1] };
+  t_ink hasInk { ["lambda", "1-lambda"] };
+  t_paper hasPaper { ["exp(-lambda*t)", "1-exp(-lambda*t)", 0] };
   t_degraded equipState dependson room.power.state, hasInk, hasPaper {
     *, *, *:             0.0, 1.0, 0.0;
     OK, NotEmpty, Ready: 1.0, 0.0, 0.0;
   };
 }
+
