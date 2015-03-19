@@ -109,16 +109,16 @@ namespace gum {
       // in c.
       Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
 
-       //// Copying parameters
-       //for( const auto c_param : c.__parameters ) {
-       //  auto param = new Parameter<GUM_SCALAR>( c_param->name(), c_param->valueType(), c_param->value() );
+      // Copying parameters
+      for( const auto c_param : c.__parameters ) {
+        auto param = new Parameter<GUM_SCALAR>( c_param->name(), c_param->valueType(), c_param->value() );
 
-       //  __parameters.insert( param );
+        __parameters.insert( param );
 
-       //  param->setId( c_param->id() );
-       //  __nodeIdMap.insert( param->id(), param );
-       //  __nameMap.insert(param->name(), param);
-       //}
+        param->setId( c_param->id() );
+        __nodeIdMap.insert( param->id(), param );
+        __nameMap.insert(param->name(), param);
+      }
 
       for( const auto c_attr : c.__attributes ) {
         // using multiDimSparse to prevent unecessary memory allocation for large arrays
@@ -161,9 +161,9 @@ namespace gum {
       // Copying reference slots
       for( const auto c_refslot : c.__referenceSlots ) {
         ReferenceSlot<GUM_SCALAR>* ref = new ReferenceSlot<GUM_SCALAR> (
-          c_refslot->name(),
-          const_cast<ClassElementContainer<GUM_SCALAR>&>( c_refslot->slotType() ),
-          c_refslot->isArray() );
+            c_refslot->name(),
+            const_cast<ClassElementContainer<GUM_SCALAR>&>( c_refslot->slotType() ),
+            c_refslot->isArray() );
 
         ref->setId( c_refslot->id() );
         __nodeIdMap.insert( ref->id(), ref );
@@ -396,36 +396,41 @@ namespace gum {
       }
 
       switch( overloader->elt_type() ) {
-        case ClassElement<GUM_SCALAR>::prm_attribute: {
-          __overloadAttribute( static_cast<Attribute<GUM_SCALAR>*>( overloader ), static_cast<Attribute<GUM_SCALAR>*>( overloaded ) );
-          __addIOInterfaceFlags( overloader );
-          break;
-        }
+        case ClassElement<GUM_SCALAR>::prm_attribute:
+          {
+            __overloadAttribute( static_cast<Attribute<GUM_SCALAR>*>( overloader ), static_cast<Attribute<GUM_SCALAR>*>( overloaded ) );
+            __addIOInterfaceFlags( overloader );
+            break;
+          }
 
-        case ClassElement<GUM_SCALAR>::prm_aggregate: {
-          __overloadAggregate( static_cast<Aggregate<GUM_SCALAR>*>( overloader ), overloaded );
-          __addIOInterfaceFlags( overloader );
-          break;
-        }
+        case ClassElement<GUM_SCALAR>::prm_aggregate: 
+          {
+            __overloadAggregate( static_cast<Aggregate<GUM_SCALAR>*>( overloader ), overloaded );
+            __addIOInterfaceFlags( overloader );
+            break;
+          }
 
-        case ClassElement<GUM_SCALAR>::prm_refslot: {
-          // __checkOverloadLegality guaranties that overloaded is a ReferenceSlot<GUM_SCALAR>
-          __overloadReference( static_cast<ReferenceSlot<GUM_SCALAR>*>( overloader ),
-                               static_cast<ReferenceSlot<GUM_SCALAR>*>( overloaded ) );
-          break;
-        }
+        case ClassElement<GUM_SCALAR>::prm_refslot:
+          {
+            // __checkOverloadLegality guaranties that overloaded is a ReferenceSlot<GUM_SCALAR>
+            __overloadReference( static_cast<ReferenceSlot<GUM_SCALAR>*>( overloader ),
+                static_cast<ReferenceSlot<GUM_SCALAR>*>( overloaded ) );
+            break;
+          }
 
-        case ClassElement<GUM_SCALAR>::prm_slotchain: {
-          GUM_ERROR( WrongClassElement, "SlotChain<GUM_SCALAR> can not be overloaded" );
-          break;
-        }
+        case ClassElement<GUM_SCALAR>::prm_slotchain:
+          {
+            GUM_ERROR( WrongClassElement, "SlotChain<GUM_SCALAR> can not be overloaded" );
+            break;
+          }
 
-        case ClassElement<GUM_SCALAR>::prm_parameter: {
-          auto overloaded_param = static_cast<Parameter<GUM_SCALAR>*>( overloaded );
-          auto overloader_param = static_cast<Parameter<GUM_SCALAR>*>( overloader );
-          __overloadParameter( overloader_param, overloaded_param );
-          break;
-        }
+        case ClassElement<GUM_SCALAR>::prm_parameter:
+          {
+            auto overloaded_param = static_cast<Parameter<GUM_SCALAR>*>( overloaded );
+            auto overloader_param = static_cast<Parameter<GUM_SCALAR>*>( overloader );
+            __overloadParameter( overloader_param, overloaded_param );
+            break;
+          }
 
         default: {
           GUM_ERROR( FatalError, "unknown ClassElement<GUM_SCALAR> type" );
@@ -543,6 +548,7 @@ namespace gum {
         __nameMap[overloader->safeName()] = overloader;
         __parameters.erase( overloaded );
         __parameters.insert( overloader );
+        delete overloaded;
     }
 
     template<typename GUM_SCALAR>

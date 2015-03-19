@@ -1017,7 +1017,7 @@ namespace gum_tests {
           TS_ASSERT(false);
         }
       }
-      
+
       void testParamClass() {
         try {
           gum::prm::o3prm::O3prmReader<double> reader;
@@ -1071,7 +1071,7 @@ namespace gum_tests {
           auto & ParamClass = prm->getClass( "fr.lip6.printers.ParamClass" );
 
           const auto & hasInk = static_cast<gum::prm::Attribute<double>&>(ParamClass["hasInk"]);
-  
+
           gum::Instantiation inst(hasInk.cpf());
           std::vector<double> values;
           for ( inst.begin(); not inst.end(); inst.inc() ) {
@@ -1099,7 +1099,7 @@ namespace gum_tests {
           auto & ParamClass = prm->getClass( "fr.lip6.printers.ParamClass" );
 
           const auto & hasPaper = static_cast<gum::prm::Attribute<double>&>(ParamClass["hasPaper"]);
-  
+
           gum::Instantiation inst(hasPaper.cpf());
           std::vector<double> values;
           for ( inst.begin(); not inst.end(); inst.inc() ) {
@@ -1129,7 +1129,7 @@ namespace gum_tests {
           auto & paramBis = sys.get("paramBis");
 
           const auto & hasInk = paramBis.get("hasInk");
-  
+
           gum::Instantiation inst(hasInk.cpf());
           std::vector<double> values;
           for ( inst.begin(); not inst.end(); inst.inc() ) {
@@ -1157,7 +1157,7 @@ namespace gum_tests {
       //    auto & sys = prm->system( "fr.lip6.printers.aSys" );
 
       //    const auto & hasPaper = static_cast<gum::prm::Attribute<double>&>(ParamClass["hasPaper"]);
-  
+
       //    gum::Instantiation inst(hasPaper.cpf());
       //    std::vector<double> values;
       //    for ( inst.begin(); not inst.end(); inst.inc() ) {

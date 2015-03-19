@@ -216,41 +216,42 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void
-    PRMFactory<GUM_SCALAR>::__updateFormulas( Class<GUM_SCALAR>* c ) {
+  PRMFactory<GUM_SCALAR>::__updateFormulas( Class<GUM_SCALAR>* c ) {
 
-      for ( const auto & const_attr : c->attributes() ) {
+    for ( const auto & const_attr : c->attributes() ) {
 
-        if ( const_attr->hasFormula() ) {
+      if ( const_attr->hasFormula() ) {
 
-          auto attr = const_attr;
-          //auto attr = const_cast<Attribute<GUM_SCALAR>*>(const_attr); 
+        auto attr = const_attr;
+        //auto attr = const_cast<Attribute<GUM_SCALAR>*>(const_attr); 
 
-          delete attr->__cpf;
-          attr->__cpf = new Potential<GUM_SCALAR>();
+        // Check if formulas is not filled with the wrong variabels (befor the bij array is applied)
+        delete attr->__cpf;
+        attr->__cpf = new Potential<GUM_SCALAR>(new MultiDimArray<GUM_SCALAR>() );
 
-          for ( auto var : attr->formulas().variablesSequence() ) {
-            attr->cpf().add( *var );
+        for ( auto var : attr->formulas().variablesSequence() ) {
+          attr->cpf().add( *var );
+        }
+
+        Instantiation inst( attr->formulas() );
+
+        for ( inst.begin(); not inst.end(); inst.inc() ) {
+
+          Formula f( attr->formulas()[inst] );
+
+          for ( auto p : c->parameters() ) {
+            f.variables().insert( p->name(), p->value() );
           }
 
-          Instantiation inst( attr->formulas() );
-
-          for ( inst.begin(); not inst.end(); inst.inc() ) {
-
-            Formula f( attr->formulas()[inst] );
-
-            for ( auto p : c->parameters() ) {
-              f.variables().insert( p->name(), p->value() );
-            }
-
-            attr->cpf().set( inst, f.result() );
-
-          }
+          attr->cpf().set( inst, f.result() );
 
         }
 
       }
 
     }
+
+  }
 
     template<typename GUM_SCALAR>
     void
@@ -354,7 +355,6 @@ namespace gum {
         }
       }
     }
-
 
     template<typename GUM_SCALAR> INLINE
     void
@@ -1298,6 +1298,7 @@ namespace gum {
                                          const std::string& name,
                                          const HashTable<std::string, double>& params ) 
     {
+
       auto c = __retrieveClass( type );
 
       if (c->parameters().empty()) {
