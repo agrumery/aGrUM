@@ -139,7 +139,7 @@ namespace gum {
       // ###################################################################
       std::string toString();
 
-      Size learnerSize() { return 0; }//__learner->size(); }
+      Size learnerSize() { return __learner->size(); }
 
       Size modelSize() { return __fmdp->size(); }
 

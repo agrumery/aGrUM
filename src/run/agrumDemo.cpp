@@ -27,7 +27,8 @@
 // ==============================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
-#include <agrum/FMDP/simulation/simulator.h>
+#include <agrum/FMDP/simulation/FMDPSimulator.h>
+#include <agrum/FMDP/simulation/taxiSimulator.h>
 #include <agrum/FMDP/simulation/statesChecker.h>
 #include <agrum/FMDP/learning/spimddi.h>
 // ==============================================================================
@@ -36,7 +37,7 @@
 #define strfy(x) #x
 #define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/run/ressources/" #x
 
-void run( const std::string sourceFilePath, const std::string traceFilePath, gum::Idx nbVar, ... ) {
+void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
 
   for( gum::Idx nbTest = 0; nbTest < 50; ++nbTest) {
 
@@ -44,56 +45,20 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
     double rDisc = 0.0;
 
     // *********************************************************************************************
-    // Chargement du fmdp servant de base
-    // *********************************************************************************************
-    gum::FactoredMarkovDecisionProcess<double> fmdp(true);
-    gum::FMDPDatReader<double> reader ( &fmdp, sourceFilePath );
-    reader.trace ( false );
-    reader.proceed( );
-
-    // *********************************************************************************************
     // Initialisation des divers objets
     // *********************************************************************************************
-    gum::Simulator sim(&fmdp);
-    gum::SPIMDDI spim(0.9,0.0001,0.9,0.1,100,10,0.1);
-    gum::Instantiation initialState, endState;
+    gum::SPIMDDI spim(0.9,0.0001,0.99,0.33,100,10,0.1);
+    gum::Instantiation initialState;
 
     // Enregistrement des actions possibles auprès de SPIMDDI
-    for( auto actionIter = fmdp.beginActions(); actionIter != fmdp.endActions(); ++actionIter)
-      spim.addAction( *actionIter, fmdp.actionName(*actionIter));
+    for( auto actionIter = sim.beginActions(); actionIter != sim.endActions(); ++actionIter)
+      spim.addAction( *actionIter, sim.actionName(*actionIter));
 
     // Enregistrement des variables caractérisant les états auprès de SPIMDDI
-    for(auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter){
+    for(auto varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter){
       spim.addVariable(*varIter);
       initialState.add(**varIter);
     }
-
-    // Récupération des caractéristiques d'états finaux
-    va_list ap;
-    va_start(ap, nbVar);
-    for(gum::Idx nbArg = 0; nbArg < nbVar; ++nbArg){
-      std::string varName( va_arg(ap, char*) );
-      std::string varModa( va_arg(ap, char*) );
-
-      const gum::DiscreteVariable* varPtr = nullptr;
-      for(auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter)
-        if(!varName.compare( (*varIter)->name())){
-          varPtr= *varIter;
-          break;
-        }
-
-      endState.add(*varPtr);
-
-      gum::Idx varModaIdx = 0;
-      for(gum::Idx varm = 0; varm < varPtr->domainSize(); ++varm)
-        if(!varModa.compare( varPtr->label(varm))){
-          varModaIdx = varm;
-          break;
-        }
-      endState.chgVal(*varPtr, varModaIdx);
-    }
-    va_end(ap);
-    sim.setEndState(endState);
 
 
     sim.setInitialStateRandomly();
@@ -104,9 +69,6 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
     // ======================================================================================
     gum::StatesChecker sc;
     sc.reset(sim.currentState());
-
-
-
 
     // ======================================================================================
     // Ouverture des fichiers de traces
@@ -119,64 +81,57 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
       return;
     }
 
-//    std::ofstream fmdpFile;
-//    std::stringstream fmdpFileName;
-//    fmdpFileName << traceFilePath << "." << nbTest << ".TOSTRING.dot";
-//    fmdpFile.open ( fmdpFileName.str(), std::ios::out | std::ios::trunc );
-//    if ( !fmdpFile ) {
-//      return;
-//    }
-
+    std::cout << "Initialisation done. Now performing test ..." <<std::endl;
     for( gum::Idx nbRun = 0; nbRun < 1000; ++nbRun ){
 
       spim.setCurrentState(sim.currentState());
 
-      gum::Idx nbDec = 0;
-      while(!sim.hasReachEnd()){
 
-        nbDec++;
+      for(gum::Idx nbDec = 0; nbDec < 25 && !sim.hasReachEnd(); nbDec++){
+
         // Normal Iteration Part
         std::cout << "\n*********************************************\n";
         std::cout << "RUN n° " << nbRun << " - Status : " << sim.currentState().toString() << " - Decision n° " << nbDec << " : ";
+
         gum::Idx actionChosenId = spim.takeAction();
-        std::cout << "By doing " << fmdp.actionName(actionChosenId) << std::endl;
+
+        std::cout << "By doing " << sim.actionName(actionChosenId) << std::endl;
+
         sim.perform( actionChosenId );
-
-        std::cout << "New State : " << sim.currentState() << " - Rew : " << sim.reward();
-        spim.feedback(sim.currentState(), sim.reward());
-
         rDisc = sim.reward() + 0.9*rDisc;
 
+        std::cout << "New State : " << sim.currentState() << " - Discounted Reward : " << rDisc;
+
+        spim.feedback(sim.currentState(), sim.reward());
+
+
         if( !sc.checkState(sim.currentState()) ) {
-            sc.addState(sim.currentState());
-          }
+          sc.addState(sim.currentState());
+        }
 
         traceFile << nbTest << "\t" << nbIte << "\t" << nbRun << "\t" << nbDec << "\t" << sc.nbVisitedStates()
-                  << "\t" << spim.learnerSize() << "\t" << spim.modelSize() << "\t" << spim.optimalPolicySize()
+                  /*<< "\t" << fmdp.size()*/ << "\t" << spim.learnerSize() << "\t" << spim.modelSize() << "\t" << spim.optimalPolicySize()
                   << std::setprecision(15)  << "\t" << rDisc << std::endl;
 
-//        if(nbIte == 100 || nbIte == 1000)
-//          fmdpFile << spim.toString() << std::endl << "========================================================================================" << std::endl;
         nbIte++;
-//        if(nbIte == 1000)
-//          exit(-1);
       }
       sim.setInitialStateRandomly();
     }
+    std::cout << spim.toString() << std::endl;
+    exit(1);
     traceFile.close();
 
-    std::ofstream modelFile;
-    std::stringstream modelFileName;
-    modelFileName << GET_PATH_STR ( modelfactory ) << "." << nbTest << ".dot";
-    modelFile.open ( modelFileName.str(), std::ios::out | std::ios::trunc );
-    if ( !modelFile ) {
-      return;
-    }
+//    std::ofstream modelFile;
+//    std::stringstream modelFileName;
+//    modelFileName << GET_PATH_STR ( modelfactory ) << "." << nbTest << ".dot";
+//    modelFile.open ( modelFileName.str(), std::ios::out | std::ios::trunc );
+//    if ( !modelFile ) {
+//      return;
+//    }
 
-    modelFile << spim.toString();
+//    modelFile << spim.toString();
 
-    modelFile.close();
-//    fmdpFile << spim.toString() << std::endl;
+//    modelFile.close();
  }
 
   std::cout << "FIN EVALUATION" << std::endl;
@@ -188,20 +143,33 @@ void run( const std::string sourceFilePath, const std::string traceFilePath, gum
 // Run the tests on a Coffee FMDP
 // *******************************************************************************
 void runCoffee(){
-  std::string varName("huc");
-  std::string varModa("yes");
-  run ( GET_PATH_STR ( FMDP/coffee/coffee.dat ), GET_PATH_STR ( FMDP/trace.Coffee ), 1, varName.c_str(), varModa.c_str() );
+
+  // *********************************************************************************************
+  // Chargement du fmdp servant de base
+  // *********************************************************************************************
+
+  gum::FMDPSimulator sim(GET_PATH_STR ( FMDP/coffee/coffee.dat ));
+
+  run ( sim, GET_PATH_STR ( FMDP/trace.Coffee ));
 }
 
 
 // *******************************************************************************
 // Run the tests on a Factory FMDP
 // *******************************************************************************
-void runFactory(){
-  std::string varName("connected");
-  std::string varModa("yes");
-  std::cout << "hello" << std::endl;
-  run ( GET_PATH_STR ( FMDP/factory/factory.dat ), GET_PATH_STR ( FMDP/trace.Factory ), 0 );
+//void runFactory(){
+//  run ( GET_PATH_STR ( FMDP/factory/factory.dat ), GET_PATH_STR ( FMDP/trace.Factory ));
+//}
+
+
+// *******************************************************************************
+// Run the tests on a Coffee FMDP
+// *******************************************************************************
+void runTaxi(){
+
+  gum::TaxiSimulator sim;
+
+  run ( sim, GET_PATH_STR ( FMDP/trace.Coffee ));
 }
 
 // *******************************************************************************
@@ -211,8 +179,12 @@ int main ( int argc, char* argv[] ) {
 
   srand(time(NULL));
 
-  runCoffee();
+//  runCoffee();
 //  runFactory();
+  runTaxi();
+
+  return EXIT_SUCCESS;
+}
 
 //for(gum::Idx nbTest=1; nbTest < 27; nbTest++ ){
 //  std::vector<std::string> vnv;
@@ -336,5 +308,3 @@ int main ( int argc, char* argv[] ) {
 //}
 
 //  return 0;
-  return EXIT_SUCCESS;
-}

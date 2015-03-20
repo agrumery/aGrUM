@@ -19,14 +19,14 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the SPUMDD planer class.
+ * @brief Headers of the SVI planer class.
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN
  */
 
 // =========================================================================
-#ifndef GUM_SPUMDD_H
-#define GUM_SPUMDD_H
+#ifndef GUM_SVI_H
+#define GUM_SVI_H
 // =========================================================================
 #include <thread>
 // =========================================================================
@@ -45,15 +45,15 @@
 namespace gum {
 
   /**
-   * @class SPUMDD spumdd.h <agrum/FMDP/planning/spumdd.h>
+   * @class SVI svi.h <agrum/FMDP/planning/svi.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *
-   * Perform a SPUDD planning on given in parameter factored markov decision process
+   * Perform a SVI planning on given in parameter factored markov decision process
    *
    */
   template<typename GUM_SCALAR>
-  class SPUMDD {
+  class SVI {
 
     public:
 
@@ -65,12 +65,12 @@ namespace gum {
        /**
         * Default constructor
         */
-        SPUMDD ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
+        SVI ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
 
        /**
         * Default destructor
         */
-        virtual ~SPUMDD();
+        virtual ~SVI();
 
       /// @}
 
@@ -123,18 +123,6 @@ namespace gum {
         /// Add computed Qaction to table
         void addQaction( MultiDimDecisionGraph<GUM_SCALAR>* );
         void addQaction( MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* );
-
-//        /**
-//         * Returns an iterator reference to the beginning of the var eleminstation Set
-//         * @warning in reverse mode (from end to beginning)
-//         */
-//        INLINE SetIteratorSafe<const DiscreteVariable*> beginVarElimination() { return __elVarSeq.rbeginSafe(); }
-
-//        /**
-//         * Returns an iterator to the end
-//         * @warning in reverse mode (from end to beginning)
-//         */
-//        INLINE SetIteratorSafe<const DiscreteVariable*> endVarElemination() {return __elVarSeq.rendSafe();}
 
         INLINE bool shouldEleminateVar( const DiscreteVariable* v ){
           return v==nullptr?false:_fmdp->mapMainPrime().existsSecond(v);
@@ -216,14 +204,17 @@ namespace gum {
       bool __firstTime;
   };
 
-  extern template class SPUMDD<float>;
-  extern template class SPUMDD<double>;
+//  template<typename GUM_SCALAR>
+//  void evalQactionForArgMax( SPUMDD<GUM_SCALAR>* planer, const MultiDimDecisionGraph<GUM_SCALAR>* Vold, Idx actionId );
+
+  extern template class SVI<float>;
+  extern template class SVI<double>;
 } /* namespace gum */
 
 
-#include <agrum/FMDP/planning/spumdd.tcc>
+#include <agrum/FMDP/planning/svi.tcc>
 
-#endif // GUM_SPUMDD_H
+#endif // GUM_SVI_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

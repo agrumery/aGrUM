@@ -84,18 +84,23 @@ namespace gum {
       if( objectSize > __maxObjectSize )
           return new unsigned char[objectSize];
 
-      //
-      if(!__pool.exists(objectSize)){
-        // Calcul du nombre de block par chunk pour des objets de cette taille
-        std::size_t numBlocks = __chunkSize / objectSize;
-        if( numBlocks > UCHAR_MAX )
-          numBlocks = UCHAR_MAX;
-        FixedAllocator* newFa = new FixedAllocator(objectSize, numBlocks);
-        __pool.set(objectSize, newFa);
-      }
-      nbAllocation++;
+      void* ret;
+      #pragma omp critical(soa)
+      {
+        //
+        if(!__pool.exists(objectSize)){
+          // Calcul du nombre de block par chunk pour des objets de cette taille
+          std::size_t numBlocks = __chunkSize / objectSize;
+          if( numBlocks > UCHAR_MAX )
+            numBlocks = UCHAR_MAX;
+          FixedAllocator* newFa = new FixedAllocator(objectSize, numBlocks);
+          __pool.set(objectSize, newFa);
+        }
+        nbAllocation++;
 
-      return __pool[objectSize]->allocate();
+        ret = __pool[objectSize]->allocate();
+      }
+      return ret;
     }
 
     // ============================================================================
@@ -113,9 +118,13 @@ namespace gum {
           return;
       }
 
-//      std::cout << "Deallocating " << pDeallocatedObject << std::endl;
-      __pool[objectSize]->deallocate(pDeallocatedObject);
-      nbDeallocation++;
+      #pragma omp critical(soa)
+      {
+
+  //      std::cout << "Deallocating " << pDeallocatedObject << std::endl;
+        __pool[objectSize]->deallocate(pDeallocatedObject);
+        nbDeallocation++;
+      }
     }
 
 } // namespace gum

@@ -29,6 +29,7 @@
 #include <cstdlib>
 // =========================================================================
 #include <agrum/FMDP/learning/spimddi.h>
+#include <agrum/FMDP/planning/pspumdd.h>
 // =========================================================================
 
 namespace gum {
@@ -150,14 +151,10 @@ namespace gum {
                 std::cout << "Done" <<  std::endl;
 //                std::cout << __fmdp->toString() << std::endl;
 
-                std::cout << "Performing planninfication ..." <<  std::endl;
-                //__planer->makePlanning(__nbValueIterationStep);
+                std::cout << "Performing planning ..." <<  std::endl;
+                __planer->makePlanning(__nbValueIterationStep);
                 std::cout << "Done" <<  std::endl;
-//                exit(0);
-////                exit(1);
             }
-//            std::cout << reinterpret_cast<const MultiDimDecisionGraph<double,ExactTerminalNodePolicy>*>(__fmdp->reward())->toDot() << std::endl;
-//            std::cout << __planer->optimalPolicy2String() << std::endl;
 
             __nbObservation++;
             std::cout << "\n*********************************************\n" << " " << std::endl << " " << std::endl;
@@ -212,7 +209,7 @@ namespace gum {
           description << __fmdp->toString() << std::endl;
 
           if(__planer->optimalPolicy() )
-              description << __planer->optimalPolicy()->toDot() << std::endl;
+              description << __planer->optimalPolicy2String() << std::endl;
 
           for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter)
               description << *actionIter << " - " << __fmdp->actionName(*actionIter) <<std::endl;

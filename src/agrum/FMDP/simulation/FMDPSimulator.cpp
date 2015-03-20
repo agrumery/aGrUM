@@ -28,7 +28,8 @@
 #include <random>
 #include <cstdlib>
 //======================================================================
-#include <agrum/FMDP/simulation/simulator.h>
+#include <agrum/FMDP/io/dat/FMDPDatReader.h>
+#include <agrum/FMDP/simulation/FMDPSimulator.h>
 //======================================================================
 
 namespace gum {
@@ -40,15 +41,26 @@ namespace gum {
       /*
        * Default constructor.
        */
-      Simulator::Simulator(const FactoredMarkovDecisionProcess<double>* fmdp):__fmdp(fmdp){
-          GUM_CONSTRUCTOR(Simulator)
+      FMDPSimulator::FMDPSimulator(const FactoredMarkovDecisionProcess<double>* fmdp): AbstractSimulator(), __loaded(false){
+          GUM_CONSTRUCTOR(FMDPSimulator)
+      }
+
+      FMDPSimulator::FMDPSimulator(const std::string& ressource): AbstractSimulator(), __loaded(true){
+        GUM_CONSTRUCTOR(FMDPSimulator)
+
+        __fmdp = new FactoredMarkovDecisionProcess<double>(true);
+        FMDPDatReader<double> reader ( __fmdp, ressource );
+        reader.trace ( false );
+        reader.proceed( );
       }
 
       /*
        * Default destructor.
        */
-      Simulator::~Simulator(){
-          GUM_DESTRUCTOR(Simulator)
+      FMDPSimulator::~FMDPSimulator(){
+        GUM_DESTRUCTOR(FMDPSimulator)
+        if(__loaded)
+          delete __fmdp;
       }
 
 
@@ -56,51 +68,27 @@ namespace gum {
     //
     // ===========================================================================
 
-      ///
-      void Simulator::setInitialStateRandomly() {
-
-          do{
-              __currentState.clear();
-              for(auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter){
-                  __currentState.add(**varIter);
-                  __currentState.chgVal(*varIter,  (Idx)(((double)std::rand( ) / (double)RAND_MAX) * (*varIter)->domainSize()));
-              }
-          }while(hasReachEnd());
-      }
-
-      ///
-      bool Simulator::hasReachEnd(){
-
-          for(auto varIter = __endState.variablesSequence().beginSafe(); varIter != __endState.variablesSequence().endSafe(); ++varIter)
-              if(__endState.val(**varIter) != __currentState.val(**varIter))
-                  return false;
-          return true;
-      }
-
-      ///
-      void Simulator::perform( Idx actionId ){
+      void FMDPSimulator::perform( Idx actionId ){
 
           Instantiation newState;
-          for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter ){
+          for( auto varIter = this->beginVariables(); varIter != this->endVariables(); ++varIter ){
 
               newState.add(**varIter);
-              Instantiation transit(__currentState);
-              transit.add(*(__fmdp->main2prime(*varIter)));
-
-              const MultiDimDecisionGraph<double>* varDG = reinterpret_cast<const MultiDimDecisionGraph<double>*>( __fmdp->transition(actionId, *varIter) );
+              Instantiation transit(_currentState);
+              transit.add(*(this->primeVar(*varIter)));
 
               double proba = (double)std::rand( ) / (double)RAND_MAX;
               double cdd = 0.0;
-              for(transit.setFirstOut(__currentState);!transit.end();transit.incOut(__currentState)){
-                  cdd += varDG->get(transit);
+              for(transit.setFirstOut(_currentState);!transit.end();transit.incOut(_currentState)){
+                  cdd += this->_transitionProbability(*varIter, transit, actionId);
                   if(proba <= cdd) {
-                      newState.chgVal(**varIter, transit.val(*(__fmdp->main2prime(*varIter))));
+                      newState.chgVal(**varIter, transit.val(*(this->primeVar(*varIter))));
                       break;
                   }
               }
 
           }
-          __currentState = newState;
+          _currentState = newState;
       }
 
 

@@ -28,6 +28,7 @@
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
 #include <agrum/FMDP/planning/spumdd.h>
+#include <agrum/FMDP/planning/pspumdd.h>
 // ==============================================================================
 
 namespace gum_tests {
@@ -62,6 +63,8 @@ namespace gum_tests {
 //        std::cout << planer.optimalPolicy()->toDot() << std::endl;
 //        for(auto actionIter = fmdp.beginActions(); actionIter != fmdp.endActions(); ++actionIter )
 //            std::cout << "Action Id : " << *actionIter << " - Name : " <<fmdp.actionName(*actionIter) << std::endl;
+
+        std::cout << fmdp.size() << "\t" << planer.vFunction()->realSize() << "\t" << planer.optimalPolicy()->realSize() << std::endl;
       }
 
     public:
@@ -88,7 +91,7 @@ namespace gum_tests {
       }
 
 
-      void est_Factory() {
+      void test_Factory() {
         file = GET_PATH_STR ( "FMDP/factory/factory.dat" );
         run ( "Factory" );
       }
@@ -99,7 +102,7 @@ namespace gum_tests {
       }
 
 
-      void test_Factory0() {
+      void est_Factory0() {
         file = GET_PATH_STR ( "FMDP/factory/factory0.dat" );
         run ( "Factory0" );
       }

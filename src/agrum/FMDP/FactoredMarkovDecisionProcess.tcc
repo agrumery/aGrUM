@@ -285,7 +285,7 @@ namespace gum {
     // Returns name of action given in parameter
     // ===========================================================================
     template<typename GUM_SCALAR> INLINE
-    const std::string
+    const std::string&
     FactoredMarkovDecisionProcess<GUM_SCALAR>::actionName ( Idx actionId ) const {
 
       if ( !__actionMap.existsFirst ( actionId ) )

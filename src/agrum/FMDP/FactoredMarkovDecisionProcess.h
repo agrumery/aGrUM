@@ -148,7 +148,7 @@ namespace gum {
         /**
          * Returns name of action given in parameter
          */
-        const std::string actionName ( Idx actionId ) const;
+        const std::string& actionName ( Idx actionId ) const;
 
 
       /// @}

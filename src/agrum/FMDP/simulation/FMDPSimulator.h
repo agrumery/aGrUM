@@ -23,25 +23,25 @@
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_SIMULATOR_H
-#define GUM_SIMULATOR_H
+#ifndef GUM_FMDP_SIMULATOR_H
+#define GUM_FMDP_SIMULATOR_H
 //======================================================================
 #include <agrum/multidim/instantiation.h>
 //======================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
-//======================================================================
+#include <agrum/FMDP/simulation/abstractSimulator.h>
 //======================================================================
 
 namespace gum {
   /**
-   * @class Simulator simulator.h <agrum/FMDP/simulation/simulator.h>
+   * @class FMDPSimulator FMDPSimulator.h <agrum/FMDP/simulation/FMDPSimulator.h>
    * @brief A class to simulate a Factored Markov Decision Process.
    * @ingroup fmdp_group
    *
    *
    *
    */
-  class Simulator {
+  class FMDPSimulator : public AbstractSimulator {
 
     public:
 
@@ -53,12 +53,13 @@ namespace gum {
         /**
          * Default constructor.
          */
-        Simulator(const FactoredMarkovDecisionProcess<double>* fmdp);
+        FMDPSimulator(const FactoredMarkovDecisionProcess<double>* fmdp);
+        FMDPSimulator(const std::string& resource);
 
         /**
          * Default destructor.
          */
-        ~Simulator();
+        ~FMDPSimulator();
 
       /// @}
 
@@ -67,41 +68,55 @@ namespace gum {
       // ===========================================================================
       /// @{
 
-        /// Sets the intial statefrom which we begun the simulation
-        INLINE void setInitialState( const Instantiation& initialState ) { __currentState = initialState; }
-
-        /// Choses a random state as the first test for a run
-        void setInitialStateRandomly();
-
-        /// Sets the final states upon which a run is over
-        INLINE void setEndState( const Instantiation& endState ) { __endState = endState; }
-
-        /// Tests if end state has been reached
-        bool hasReachEnd();
-
         ///
-        INLINE const Instantiation& currentState() { return __currentState; }
+        double reward() {return __fmdp->reward()->get(this->_currentState);}
 
-        ///
-        INLINE double reward() {return __fmdp->reward()->get(__currentState);}
-
-        ///
-        void perform( Idx );
+        void perform(Idx);
 
       /// @}
+
+      // ===========================================================================
+      /// @name
+      // ===========================================================================
+      /// @{
+
+        const DiscreteVariable* primeVar(const DiscreteVariable* mainVar){ return __fmdp->main2prime(mainVar); }
+
+        /// Iteration over the variables of the simulated probleme
+        SequenceIteratorSafe< const DiscreteVariable* > beginVariables(){ return __fmdp->beginVariables(); }
+        SequenceIteratorSafe< const DiscreteVariable* > endVariables(){ return __fmdp->endVariables(); }
+
+      /// @}
+
+      // ===========================================================================
+      /// @name
+      // ===========================================================================
+      /// @{
+
+        virtual const std::string&  actionName(Idx actionId){ return __fmdp->actionName(actionId); }
+
+        /// Iteration over the variables of the simulated probleme
+        SequenceIteratorSafe< Idx > beginActions(){ return __fmdp->beginActions(); }
+        SequenceIteratorSafe< Idx > endActions(){ return __fmdp->endActions(); }
+      /// @}
+
+    protected :
+
+        virtual double _transitionProbability(const DiscreteVariable* var, const Instantiation& transit, Idx actionId)
+            { return reinterpret_cast<const MultiDimDecisionGraph<double>*>( __fmdp->transition(actionId, var) )->get(transit); }
 
     private :
 
       /// The Factored Markov Decision Process that describes how the system evolves
-      const FactoredMarkovDecisionProcess<double>* __fmdp;
+      FactoredMarkovDecisionProcess<double>* __fmdp;
 
-      /// Tha state in which the system currently is
-      Instantiation __currentState, __endState;
+      /// Just to know if it should be deleted in the end
+      const bool __loaded;
   };
 
 } /* namespace gum */
 
 
 
-#endif // GUM_SIMULATOR_H
+#endif // GUM_FMDP_SIMULATOR_H
 
