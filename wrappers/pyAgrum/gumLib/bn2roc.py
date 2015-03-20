@@ -245,7 +245,11 @@ def showROC(bn,csv_name,variable,label,visible=True,show_fig=False):
   (res,totalP,totalN,idTarget)=computeROCpoints(bn,csv_name,variable,label,visible)
   points,opt,seuil=computeROC(bn,res,totalP,totalN,idTarget,label)
 
-  shortname=os.path.basename(bn.property("name"))
+  try:
+    shortname=os.path.basename(bn.property("name"))
+  except IndexError:
+    shortname="unnamed"
+    
   title=shortname+" vs "+csv_name+ " - "+variable+"="+str(label)
 
   figname='roc_'+shortname+"-"+csv_name+ "-"+variable+"-"+str(label)+'.png'
