@@ -37,13 +37,19 @@ modulesFile="src/modules.txt" # the file to parse to find the modules
 nbr_tests_for_stats=40
 
 #################################################################################################
-# find make
+# find make, python2, python3
 
 def is_tool(prog):
     for dir in os.environ['PATH'].split(os.pathsep):
         if os.path.exists(os.path.join(dir, prog)):
-            return True
-    return False
+            return os.path.join(dir, prog)
+    return None
+
+
+exe_python2=is_tool('python2')
+exe_python3=is_tool('python3')
+
+exe_python=exe_python2
 
 MAKE=""
 if is_tool("make"):
@@ -685,7 +691,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             make_options=""
         if options['rule']=='test':
             if options['wrapper']=='pyAgrum':
-              run_cde="cd ..;PYTHONPATH=.:$PYTHONPATH `which python3` ../../wrappers/pyAgrum/testunits/TestSuite.py"
+              run_cde="cd ..;PYTHONPATH=.:$PYTHONPATH "+exe_python+" ../../wrappers/pyAgrum/testunits/TestSuite.py"
             else:
               print(ERROR+"No tests for "+options['wrapper']+ENDC)
               sys.exit(0)

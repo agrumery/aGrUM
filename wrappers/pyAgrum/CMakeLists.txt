@@ -2,20 +2,31 @@ project(pyAgrum)
 
 cmake_minimum_required(VERSION 2.6)
 
+# PYTHON 2 OR 3
+set(PYTHONVERSION "2")
 if ("a${PYTHONVERSION}" STREQUAL "a2") # we use 3 by default
   set(PYTHONVERSION "2")
-
   # hackish
   set(PYTHON_EXECUTABLE "python2")
+  
   find_package(PythonInterp 2 REQUIRED)
+  set(CMAKE_SWIG_FLAGS  "-Wall" )
+  
+  #change in module naming from inside module between python2 and python3
+  set(PYAGRUM_MODULE "pyAgrum")
 else ("a${PYTHONVERSION}" STREQUAL "a2") 
-  # python 3 : no such package for python 3 
   set(PYTHONVERSION "3")
-
   # hackish
   set(PYTHON_EXECUTABLE "python3")
   find_package(PythonInterp 3 REQUIRED)
+  
+  set(CMAKE_SWIG_FLAGS  "-Wall" )
+  set(CMAKE_SWIG_FLAGS  "${CMAKE_SWIG_FLAGS};-py3" )
+  
+  #change in module naming from inside module between python2 and python3
+  set(PYAGRUM_MODULE ".pyAgrum")
 endif ("a${PYTHONVERSION}" STREQUAL "a2")
+set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files${PYTHONVERSION}")
 
 if(WIN32)
   message(STATUS "** aGrUM notification : Windows detected")
@@ -154,17 +165,9 @@ file(GLOB_RECURSE AGRUM_LEARNING_SOURCES RELATIVE ${CMAKE_CURRENT_BINARY_DIR} ${
 set(AGRUM_C_SOURCES ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrsmp.c)
 set(AGRUM_CPP_SOURCES ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_ID_SOURCES} ${AGRUM_CN_SOURCES} ${AGRUM_GRAPHICALMODEL_SOURCES} ${AGRUM_GRAPHS_SOURCES} ${AGRUM_MULTIDIM_SOURCES} ${AGRUM_VARIABLES_SOURCES}  ${AGRUM_LEARNING_SOURCES})
 
-# Properties
-if ("a${PYTHONVERSION}" STREQUAL "a2") 
-  message(FATAL_ERROR "arg")
-  set(CMAKE_SWIG_FLAGS  "-Wall" )
-else ("a${PYTHONVERSION}" STREQUAL "a2") 
-  set(CMAKE_SWIG_FLAGS  "-Wall" )
-  set(CMAKE_SWIG_FLAGS  "${CMAKE_SWIG_FLAGS};-py3" )
-endif ("a${PYTHONVERSION}" STREQUAL "a2") 
 
 set(SWIG_MODULE_pyAgrum_EXTRA_DEPS ${BUILDSWIGFILES})
-set(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_SOURCE_DIR}/generated-files)
+set(CMAKE_SWIG_OUTDIR ${GENERATED_PYTHON})
 set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/${SWIGFILE} PROPERTIES SWIG_FLAGS  "-I${AGRUM_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/../swig -I${SWIG_SOURCE_DIR}")
 
 set(AGRUM_OPTIMIZATION "-O3 -Wall -Wno-uninitialized -DNDEBUG" )
@@ -191,7 +194,7 @@ if (SWIG_FOUND)
   gum_swig_add_module(pyAgrum python ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i ${AGRUM_CPP_SOURCES} ${AGRUM_C_SOURCES})
   swig_link_libraries(pyAgrum ${PYTHON_LIBRARIES})
 else (SWIG_FOUND)
-  file(GLOB SWIG_GENERATED_FILES "${CMAKE_CURRENT_SOURCE_DIR}/generated-files/*.cxx")
+  file(GLOB SWIG_GENERATED_FILES "${GENERATED_PYTHON}/*.cxx")
   add_library(_pyAgrum  SHARED ${AGRUM_CPP_SOURCES} ${AGRUM_C_SOURCES} ${SWIG_GENERATED_FILES})
   target_link_libraries(_pyAgrum ${PYTHON_LIBRARIES})
 endif (SWIG_FOUND)
@@ -218,14 +221,6 @@ include("${CMAKE_CURRENT_SOURCE_DIR}/../../src/version.txt")
 set(PYAGRUM_VERSION "${AGRUM_VERSION_MAJOR}.${AGRUM_VERSION_MINOR}.${AGRUM_VERSION_PATCH}")
 set(PYAGRUM_EGGFILE "pyAgrum-${PYAGRUM_VERSION}-py${PYTHON_VERSION}.egg-info")
 
-#change in module naming from inside module between python2 and python3
-if ("a${PYTHONVERSION}" STREQUAL "a2") 
-  set(PYAGRUM_MODULE "pyAgrum")
-else ("a${PYTHONVERSION}" STREQUAL "a2") 
-  set(PYAGRUM_MODULE ".pyAgrum")
-endif ("a${PYTHONVERSION}" STREQUAL "a2")
-#message(FATAL_ERROR ${PYAGRUM_MODULE}) 
-
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/__init__.in.py" "${CMAKE_CURRENT_BINARY_DIR}/__init__.py")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.in.py" "${CMAKE_CURRENT_BINARY_DIR}/functions.py")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/egg-info.in" "${CMAKE_CURRENT_BINARY_DIR}/${PYAGRUM_EGGFILE}")
@@ -233,7 +228,7 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/egg-info.in" "${CMAKE_CURRENT_
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/__init__.py DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/functions.py DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PYAGRUM_EGGFILE} DESTINATION ${PYTHON_INSTALL})
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/generated-files/pyAgrum.py DESTINATION ${PYTHON_INSTALL}/pyAgrum)
+install(FILES ${GENERATED_PYTHON}/pyAgrum.py DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 
 if (WIN32)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/_pyAgrum.pyd DESTINATION ${PYTHON_INSTALL}/pyAgrum)
