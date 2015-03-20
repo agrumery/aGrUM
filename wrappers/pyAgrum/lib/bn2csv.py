@@ -77,7 +77,7 @@ class CSVGenerator:
         return node,l #map(bn.idFromName,l)
 
     def caching_nameAndParents(self,bn,n):
-        if not self._parents.has_key(n):
+        if not n in self._parents:
             self._parents[n]=CSVGenerator.nameAndParents(bn,n)
         return self._parents[n]
 
@@ -126,10 +126,9 @@ class CSVGenerator:
           bn=name_in
 
         seq=bn.topologicalOrder()
-        writer = csv.writer(open(name_out,'wb'))
+        writer = csv.writer(open(name_out,'w'))
 
         if visible:
-            print(name_out,'\r')
             sys.stdout.flush()
 
         titles=[bn.variable(item).name() for item in seq]
@@ -151,9 +150,9 @@ class CSVGenerator:
                 prog.display()
 
         if visible:
-            print
-            print ("Log2-Likelihood : {0}".format(LL))
-            print
+            print()
+            print("Log2-Likelihood : {0}".format(LL))
+            print()
 
         return LL
 

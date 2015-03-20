@@ -23,8 +23,8 @@
 
 import sys,os,csv
 
-from utils.progress_bar import ProgressBar
-from utils.pyAgrum_header import pyAgrum_header
+from .utils.progress_bar import ProgressBar
+from .utils.pyAgrum_header import pyAgrum_header
 
 import pyAgrum as gum
 
@@ -46,7 +46,7 @@ def checkCompatibility(bn,fields,csv_name):
     isOK=True
     for field in bn.names():
         if not field in fields:
-            print "** field '{0}' is missing in {1}".format(field,csv_name)
+            print("** field '{0}' is missing in {1}".format(field,csv_name))
             isOK=False
         else:
             res[bn.idFromName(field)]=fields[field]
@@ -81,13 +81,13 @@ def computeROCpoints(bn,csv_name,target,label,visible=False):
 
     nbr_lines=lines_count(csv_name)-1
 
-    csvfile = open(csv_name, "rb")
+    csvfile = open(csv_name, "r") # python2 = "rb"
     dialect = csv.Sniffer().sniff(csvfile.read(1024))
     csvfile.seek(0)
 
-    batchReader = csv.reader(open(csv_name,'rb'),dialect)
+    batchReader = csv.reader(open(csv_name,'r'),dialect) # python2 = "rb"
 
-    titre = batchReader.next()
+    titre = batchReader.__next__() # python2 = .next()
     fields = {}
     for i,nom in enumerate(titre):
         fields[nom]=i
@@ -123,8 +123,8 @@ def computeROCpoints(bn,csv_name,target,label,visible=False):
             px=engine.posterior(idTarget)[{target:label}]
             res.append((px,int(data[positions[idTarget]])))
         except gum.OutOfBounds as err:
-            print err
-            print "erreur : ",e
+            print(err)
+            print("erreur : "+str(e))
 
         if visible:
             prog.increment_amount()
@@ -174,10 +174,10 @@ def module_help(exit_value=1,message=""):
     """
     defines help viewed if args are not OK on command line, and exit with exit_value
     """
-    print os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"} data[.csv] variable label"
-    print
-    print message
-    print
+    print(os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"} data[.csv] variable label")
+    print()
+    print(message)
+    print()
     sys.exit(exit_value)
 
 def drawROC(points,zeTitle,zeFilename,visible,show_fig,save_fig=True,
@@ -236,7 +236,7 @@ def drawROC(points,zeTitle,zeFilename,visible,show_fig,save_fig=True,
 
     if save_fig:
         pylab.savefig(zeFilename,dpi=300)
-        print ("result in "+zeFilename)
+        print("\n result in "+zeFilename)
 
     if show_fig:
         pylab.show()

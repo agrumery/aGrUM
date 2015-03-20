@@ -89,8 +89,7 @@ class ProgressBar:
         Display bar if needed
         """
         if self.hasChanged:
-            print '\r', self.bar,
-            sys.stdout.flush()
+            print('\r', self.bar,end="",flush=True)
             self.hasChanged=False
 
 
@@ -99,38 +98,36 @@ if __name__ == '__main__':
     print
     limit = 1000000
 
-    print 'Example 1: Fixed Bar'
+    print('Example 1: Fixed Bar')
     prog = ProgressBar("ex1",0, limit, 77, mode='fixed')
     oldprog = str(prog)
     for i in xrange(limit+1):
         prog.update_amount(i)
         if oldprog != str(prog):
-            print  "\r",prog,
-            sys.stdout.flush()
+            print("\r",prog,end="",flush=True)
             oldprog=str(prog)
 
-    print '\n\n'
+    print('\n\n')
 
-    print 'Example 2: Dynamic Bar'
+    print('Example 2: Dynamic Bar')
     prog = ProgressBar("ex2",0, limit, 77, mode='dynamic', char='-')
     oldprog = str(prog)
     for i in xrange(limit+1):
         prog.increment_amount()
         if oldprog != str(prog):
-            print  "\r",prog,
-            sys.stdout.flush()
+            print("\r",prog,end="",flush=True)
             oldprog=str(prog)
 
-    print '\n\n'
+    print('\n\n')
 
-    print 'Example 3: Dynamic Bar'
+    print('Example 3: Dynamic Bar')
     prog = ProgressBar("ex3",0, limit, 77, mode='dynamic', char='-')
     oldprog = str(prog)
     for i in xrange(limit+1):
         prog.increment_amount()
         prog.display()
 
-    print '\n\n'
+    print('\n\n')
 
 #<code>
 #from progress_bar import ProgressBar

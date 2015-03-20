@@ -46,7 +46,7 @@ def checkCompatibility(bn,fields,csv_name):
     isOK=True
     for field in bn.names():
         if not field in fields:
-            print "** field '{0}' is missing in {1}".format(field,csv_name)
+            print("** field '{0}' is missing in {1}".format(field,csv_name))
             isOK=False
         else:
             res[bn.idFromName(field)]=fields[field]
@@ -96,11 +96,11 @@ def computeScores(bn_name,csv_name,visible=False,transforme_label=None):
             try:
                 inst.chgVal(i,getNumLabel(inst,i,data[positions[i]],transforme_label))
             except gum.OutOfBounds:
-                print "out of bounds",i,positions[i],data[positions[i]],inst.variable(i)
+                print("out of bounds",i,positions[i],data[positions[i]],inst.variable(i))
 
         p=bn.jointProbability(inst)
         if p==0.0:
-            print (str(num_ligne)+":"+str(inst))
+            print(str(num_ligne)+":"+str(inst))
             nbr_insignificant+=1
         else:
             likelihood+=math.log(p,2)
@@ -127,7 +127,7 @@ def module_help(exit_value=1):
     """
     defines help viewed if args are not OK on command line, and exit with exit_value
     """
-    print os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"} [data[.csv]]"
+    print(os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"} [data[.csv]]")
     sys.exit(exit_value)
 
 def getNumLabel(inst,i,label,transforme_label):
@@ -160,9 +160,9 @@ if __name__=="__main__":
             base,ext=os.path.splitext(csv_name)
 
 
-    print '"{0}" vs "{1}"'.format(bn_name,csv_name)
-    print
+    print('"{0}" vs "{1}"'.format(bn_name,csv_name))
+    print()
     (nbr,LL)=computeScores(bn_name,csv_name,visible=True)
-    print
-    print '{0}% of base is significant.\nscores : {1}'.format(nbr,LL)
+    print()
+    print('{0}% of base is significant.\nscores : {1}'.format(nbr,LL))
 

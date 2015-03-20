@@ -52,7 +52,7 @@ def pretty_cpt(cpt):
     total_width+=width[j]+1
   total_width-=1
 
-  print (' '*total_width+'|-'+'-'*size+'-|')
+  print(' '*total_width+'|-'+'-'*size+'-|')
 
   line='-'*total_width+'|'
   line+="{0:^{1}}".format(cpt.variable(0).name()[0:size+2],size+2)
@@ -68,8 +68,8 @@ def pretty_cpt(cpt):
   for j in range(cpt.variable(0).domainSize()):
     line+=("{0:^{1}}"+BLANK).format(cpt.variable(0).label(j)[0:DECIMAL_LENGTH+2],DECIMAL_LENGTH+2)
   line+='|'
-  print (line)
-  print (('-'*total_width)+'|'+'-'*(2+size)+'|')
+  print(line)
+  print(('-'*total_width)+'|'+'-'*(2+size)+'|')
 
   i=gum.Instantiation(cpt)
   i.setFirst()
@@ -86,7 +86,7 @@ def pretty_cpt(cpt):
       line+='|'
       print(line)
 
-  print (('-'*total_width)+'|'+'-'*(2+size)+'|')
+  print(('-'*total_width)+'|'+'-'*(2+size)+'|')
 
 def pretty_bn(aBN):
   if isinstance(aBN,str):

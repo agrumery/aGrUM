@@ -130,7 +130,7 @@ def module_help(exit_value=1):
     """
     defines help viewed if args are not OK on command line, and exit with exit_value
     """
-    print os.path.basename(sys.argv[0]),"bn1.{"+gum.availableBNExts()+"} bn2.{"+gum.availableBNExts()+"}"
+    print(os.path.basename(sys.argv[0]),"bn1.{"+gum.availableBNExts()+"} bn2.{"+gum.availableBNExts()+"}")
     sys.exit(exit_value)
 
 if __name__=="__main__":
@@ -139,4 +139,4 @@ if __name__=="__main__":
     if len(sys.argv)!=3:
         module_help()
 
-    print compareBN(sys.argv[1],sys.argv[2])
+    print(compareBN(sys.argv[1],sys.argv[2]))

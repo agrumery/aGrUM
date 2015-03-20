@@ -9,12 +9,12 @@ def wc_l(fname):
   """
   res=0
   
-  with open(fname, 'rb') as f:
+  with open(fname, 'r') as f:
     reader= ft.partial(f.read, 131072)
     counter= op.methodcaller('count', '\n')
-    res=sum(it.imap(counter, iter(reader, '')))
+    res=sum(map(counter, iter(reader, ''))) # it.imap in python2
     
-  return res
+  print(res)
   
 def head(filename, count=10):
     """
@@ -23,9 +23,9 @@ def head(filename, count=10):
     lines=[]
     
     with open(filename, 'r') as f:
-        lines = [f.readline() for line in xrange(1, count+1)]
+        lines = [f.readline() for line in range(1, count+1)]
     
-    return filter(len, lines)
+    print("".join(lines))
 
 def rm(filename):
   """
