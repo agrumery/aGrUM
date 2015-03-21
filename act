@@ -694,6 +694,9 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
         else:
             run_cde=""
     else:
+        option_fixed_seed=" -DGUM_RANDOMSEED="+(RANDOMSEED_FOR_FIXED_SEED if options['fixed_seed'] else "0")
+        cmake_options=cmake_options+option_fixed_seed ;
+        
         if options['rule']=='package':
             folders=["build",'package_'+options['platform'],options['option']]
         elif options['rule']=='config':
@@ -743,9 +746,6 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
         cmake_options+="ON"
 
     make_options=make_options+" -j "+options['jobs'].__str__()
-
-    option_fixed_seed=" -DGUM_RANDOMSEED="+(RANDOMSEED_FOR_FIXED_SEED if options['fixed_seed'] else "0")
-    cmake_options=cmake_options+option_fixed_seed ;
 
     [safe_cd(s) for s in folders]
     schedule(CMAKE,cmake_options)

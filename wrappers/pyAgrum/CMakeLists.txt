@@ -34,6 +34,7 @@ if(WIN32)
   message(STATUS "** aGrUM notification : Windows detected")
 else(WIN32)
   if(APPLE)
+    set(CMAKE_MACOSX_RPATH ON)
     message(STATUS "** aGrUM notification : Apple detected")
   else(APPLE)
     message(STATUS "** aGrUM notification : Linux detected")
@@ -73,7 +74,11 @@ endif(SWIG_FOUND)
 
 
 if (APPLE) # let's assume that PYTHON is there
-  set(PYTHON_LOCAL_PATH /usr/local/Cellar/python/2.7.7_2/Frameworks/Python.framework/Versions/2.7)
+  execute_process(
+    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('prefix'))[0])"
+    OUTPUT_VARIABLE PYTHON_LOCAL_PATH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
   set(PYTHON_LIBRARIES ${PYTHON_LOCAL_PATH}/lib/libpython2.7.dylib)
   set(PYTHON_INCLUDE_PATH ${PYTHON_LOCAL_PATH}/include/python2.7)
   #find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} REQUIRED)
