@@ -88,7 +88,7 @@ namespace gum {
       // ============================================================================
       /// The main recursion function
       // ============================================================================
-      NodeId __xPlorePxi( MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* xPloredTree,
+      NodeId __xPlorePxi( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* xPloredTree,
                           NodeId currentNodeId,
                           Idx seqPos );
 
@@ -100,7 +100,7 @@ namespace gum {
       // ============================================================================
       /// The decision graphs used for the operation
       // ============================================================================
-      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __vFunc;
+      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __vFunc;
       const Bijection<const DiscreteVariable*, const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*> __pxi;
 
       // ============================================================================
@@ -124,8 +124,8 @@ namespace gum {
       const COMBINEOPERATOR<GUM_SCALAR> __combine;
       const PROJECTOPERATOR<GUM_SCALAR> __project;
 
-      HashTable<const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*, NodeId>& __curLeafMap;
-      HashTable<const DiscreteVariable*, Idx>& __context;
+      HashTable<const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*, NodeId> __curLeafMap;
+      HashTable<const DiscreteVariable*, Idx> __context;
   };
 
 } // namespace gum

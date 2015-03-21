@@ -80,7 +80,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     MultiDimDecisionGraph< GUM_SCALAR >*
-    AbstractSVI<GUM_SCALAR>::_evalQaction( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Idx actionId ){
+    SVI<GUM_SCALAR>::_evalQaction( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Idx actionId ){
 
       // ******************************************************************************
       // Initialisation :
@@ -91,7 +91,7 @@ namespace gum {
            varIter != Vold->variablesSequence().endSafe(); ++varIter )
         pxi.insert( *varIter, RECAST(this->_fmdp->transition( actionId, this->_fmdp->mapMainPrime().first(*varIter )) ) );
 
-      TreeRegress tr( Vold, pxi, Vold->variablesSequence(), (GUM_SCALAR) 0.0 );
+      TreeRegress<GUM_SCALAR, std::multiplies, std::plus> tr( Vold, pxi, Vold->variablesSequence(), (GUM_SCALAR) 0.0 );
       return tr.compute();
     }
 
@@ -121,7 +121,7 @@ namespace gum {
                                                                   const MultiDimDecisionGraph< GUM_SCALAR >* qAction){
 
       TreeOperator< GUM_SCALAR, Maximizes > argmaxope( vFunction, qAction );
-      MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* ret = argmaxope.compute();
+      MultiDimDecisionGraph<GUM_SCALAR>* ret = argmaxope.compute();
       delete vFunction;
       delete qAction;
       return ret;
@@ -158,7 +158,7 @@ namespace gum {
                                                               const MultiDimDecisionGraph< GUM_SCALAR >* reward){
 
       TreeOperator< GUM_SCALAR, std::plus > argmaxope( function, reward );
-      MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* ret = argmaxope.compute();
+      MultiDimDecisionGraph<GUM_SCALAR>* ret = argmaxope.compute();
       delete function;
       return ret;
     }

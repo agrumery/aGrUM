@@ -108,7 +108,7 @@ namespace gum {
       // ============================================================================
       const COMBINEOPERATOR<GUM_SCALAR> __combine;
 
-      HashTable<const DiscreteVariable*, Idx>& __context;
+      HashTable<const DiscreteVariable*, Idx> __context;
       NodeId __curDT1Leaf;
   };
 

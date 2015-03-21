@@ -50,7 +50,7 @@ namespace gum {
                                             __xip(xip),
                                             __neutral(neutral),
                                             __combine(),
-                                            __project(){
+                                            __project() {
       GUM_CONSTRUCTOR(TreeRegress);
 
       __rd = new MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>();
@@ -86,7 +86,7 @@ namespace gum {
     MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *
     TreeRegress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::compute(){
 
-      __rd->manager()->setRootNode( __xPlorePxi(__pxi.second( __xip.atPos(0) ), __pxi.second( __xip.atPos(0) )->root(), 0, __curLeafMap, __context) );
+      __rd->manager()->setRootNode( __xPlorePxi(__pxi.second( __xip.atPos(0) ), __pxi.second( __xip.atPos(0) )->root(), 0) );
 
       return __rd;
     }
@@ -99,9 +99,10 @@ namespace gum {
               template <typename> class PROJECTOPERATOR,
               template <typename> class TerminalNodePolicy>
     NodeId
-    TreeRegress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::__xPlorePxi( MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* xPloredTree,
-                                                                                                NodeId currentNodeId,
-                                                                                                Idx seqPos ){
+    TreeRegress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::__xPlorePxi(
+                        const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *xPloredTree,
+                        NodeId currentNodeId,
+                        Idx seqPos ){
 
       if( xPloredTree->isTerminalNode(currentNodeId) || __xip.exists(xPloredTree->node(currentNodeId)->nodeVar()) ){
         __curLeafMap.insert(xPloredTree, currentNodeId);
@@ -109,7 +110,7 @@ namespace gum {
         if( seqPos == __xip.size() - 1 ){
           nody = __rd->manager()->addTerminalNode( __xPloreVFunc( __vFunc->root() ) );
         } else {
-          MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* nextTree = __pxi.second( __xip.atPos(seqPos + 1) );
+          const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* nextTree = __pxi.second( __xip.atPos(seqPos + 1) );
           nody = __xPlorePxi( nextTree, nextTree->root(), seqPos + 1);
         }
         __curLeafMap.erase(xPloredTree);
@@ -144,7 +145,7 @@ namespace gum {
 
       if( __vFunc->isTerminalNode(currentNodeId) ){
         GUM_SCALAR val = __vFunc->nodeValue(currentNodeId);
-        for( HashTableIteratorSafe<const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*, NodeId> leafIter = __curLeafMap.cbeginSafe();
+        for( HashTableConstIteratorSafe<const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*, NodeId> leafIter = __curLeafMap.cbeginSafe();
              leafIter != __curLeafMap.cendSafe(); ++leafIter ){
           if( __context.exists( __pxi.first(leafIter.key()) ) ){
             if( leafIter.key()->isTerminalNode(leafIter.val()) )

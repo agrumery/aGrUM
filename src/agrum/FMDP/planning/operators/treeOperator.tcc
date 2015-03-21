@@ -58,9 +58,8 @@ namespace gum {
     /* ***************************************************************************************************************************** */
     template <typename GUM_SCALAR,
               template <typename> class COMBINEOPERATOR,
-              template <typename> class PROJECTOPERATOR,
               template <typename> class TerminalNodePolicy>
-    TreeOperator<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::~TreeOperator( ){
+    TreeOperator<GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy>::~TreeOperator( ){
 
       GUM_DESTRUCTOR(TreeOperator);
 
@@ -75,10 +74,9 @@ namespace gum {
     /* ***************************************************************************************************************************** */
     template <typename GUM_SCALAR,
               template <typename> class COMBINEOPERATOR,
-              template <typename> class PROJECTOPERATOR,
               template <typename> class TerminalNodePolicy>
     MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *
-    TreeOperator<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::compute(){
+    TreeOperator<GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy>::compute(){
 
       __rd->manager()->setRootNode( __xPloreDT1(__dt1->root()) );
 
@@ -90,10 +88,9 @@ namespace gum {
     /// Main recursion function, called every time we move on a node to determine what we have to do
     template <typename GUM_SCALAR,
               template <typename> class COMBINEOPERATOR,
-              template <typename> class PROJECTOPERATOR,
               template <typename> class TerminalNodePolicy>
     NodeId
-    TreeOperator<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::__xPloreDT1( NodeId currentNodeId ){
+    TreeOperator<GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy>::__xPloreDT1( NodeId currentNodeId ){
 
       if( __dt1->isTerminalNode(currentNodeId) ){
         __curDT1Leaf = currentNodeId;
@@ -118,10 +115,9 @@ namespace gum {
 
     template <typename GUM_SCALAR,
               template <typename> class COMBINEOPERATOR,
-              template <typename> class PROJECTOPERATOR,
               template <typename> class TerminalNodePolicy>
-    GUM_SCALAR
-    TreeOperator<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::__xPloreDT2( NodeId currentNodeId ){
+    NodeId
+    TreeOperator<GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy>::__xPloreDT2( NodeId currentNodeId ){
 
       if( __dt2->isTerminalNode(currentNodeId) )
         return __rd->manager()->addTerminalNode( __combine( __dt1->nodeValue(__curDT1Leaf), __dt2->nodeValue(currentNodeId) ) );
