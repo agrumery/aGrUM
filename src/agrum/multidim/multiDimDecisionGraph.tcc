@@ -554,28 +554,41 @@ namespace gum {
 
       for ( NodeGraphPart::NodeIterator nodeIter = __model.begin(); nodeIter != __model.end(); ++nodeIter )
         if ( *nodeIter != 0 ) {
-          if ( this->existsTerminalNode ( (NodeId) *nodeIter ) )
+          if ( this->isTerminalNode ( (NodeId) *nodeIter ) )
             terminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - "
                            << std::setprecision(30) << this->terminalNodeValue ( *nodeIter ) << "\"]"<< ";" << std::endl;
           else {
-            InternalNode* currentNode = __internalNodeMap[ *nodeIter ];
-            nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - "
-                              << currentNode->nodeVar()->name() << "\"]"<< ";" << std::endl;
+              InternalNode* currentNode = __internalNodeMap[ *nodeIter ];
+                          nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - "
+                                            << currentNode->nodeVar()->name() << "\"]"<< ";" << std::endl;
 
-//              if ( _arcMap[*nodeIter] != NULL )
-            for ( Idx sonIter = 0; sonIter < currentNode->nbSons(); ++sonIter )
-              if ( currentNode->son(sonIter) != 0 )
-                arcstream << tab <<  *nodeIter << " -> " << currentNode->son(sonIter)
-                          << " [label=\"" << currentNode->nodeVar()->label ( sonIter ) << "\",color=\"#0000ff\"]"<< ";" << std::endl;
+              //              if ( _arcMap[*nodeIter] != NULL )
+              HashTable<NodeId, LinkedList<Idx>*> sonMap;
+              for ( Idx sonIter = 0; sonIter < currentNode->nbSons(); ++sonIter ){
+                if( !sonMap.exists( currentNode->son(sonIter) ) )
+                  sonMap.insert( currentNode->son(sonIter), new LinkedList<Idx>() );
+                sonMap[currentNode->son(sonIter)]->addLink(sonIter);
+              }
 
-            if( withBackArcs ){
-                Link<Parent>* parentIter = currentNode->parents();
-                while( parentIter != nullptr ){
-                    arcstream << tab <<  *nodeIter << " -> " << parentIter->element().parentId
-                              << " [label=\"" << parentIter->element().modality << "\",color=\"#ff0000\"]"<< ";" << std::endl;
-                    parentIter = parentIter->nextLink();
+              for( auto sonIter = sonMap.beginSafe(); sonIter != sonMap.endSafe(); ++sonIter ){
+                arcstream << tab <<  *nodeIter << " -> " << sonIter.key() << " [label=\" ";
+                Link<Idx>* modaIter = sonIter.val()->list();
+                while(modaIter){
+                  arcstream << currentNode->nodeVar()->label( modaIter->element() ) << ", ";
+                  modaIter = modaIter->nextLink();
                 }
-            }
+                arcstream << "\",color=\"#0000ff\"]"<< ";" << std::endl;
+                delete sonIter.val();
+              }
+
+              if( withBackArcs ){
+                  Link<Parent>* parentIter = currentNode->parents();
+                  while( parentIter != nullptr ){
+                      arcstream << tab <<  *nodeIter << " -> " << parentIter->element().parentId
+                                << " [label=\"" << parentIter->element().modality << "\",color=\"#ff0000\"]"<< ";" << std::endl;
+                      parentIter = parentIter->nextLink();
+                  }
+              }
 
           }
         }

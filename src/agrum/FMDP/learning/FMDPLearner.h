@@ -113,6 +113,9 @@ namespace gum {
         void updateFMDP();
 
       /// @}
+      ///
+      MultiDimDecisionGraph<double>* extractCount(Idx actionId, const DiscreteVariable* var){
+        return __actionLearners[actionId]->getWithDefault(var, nullptr)->extractCount();}
 
       Size size();
 
@@ -126,7 +129,10 @@ namespace gum {
       Set<const DiscreteVariable*> __mainVariables;
 
 
-      HashTable<Idx, Set<IncrementalGraphLearner<VariableAttributeSelection, false>*>*> __actionLearners;
+      HashTable<
+            Idx, HashTable<const DiscreteVariable*, IncrementalGraphLearner<VariableAttributeSelection, false>*>*
+                > __actionLearners;
+
       IncrementalGraphLearner<RewardAttributeSelection, true>* __rewardLearner;
 
       const double __learningThreshold;

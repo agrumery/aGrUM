@@ -57,14 +57,14 @@ namespace gum {
 
     public:
 
-      // ==========================================================================
+      // ###################################################################
       /// @name Constructor & destructor.
-      // ==========================================================================
+      // ###################################################################
       /// @{
 
-        // ###################################################################
+        // ==========================================================================
         /// Default constructor
-        // ###################################################################
+        // ==========================================================================
         SPIMDDI (double discountFactor = 0.75,
                  double epsilon = 0.0001,
                  double learningThreshold = 0.95,
@@ -147,6 +147,11 @@ namespace gum {
 
       Size optimalPolicySize() { return __planer->optimalPolicy()->realSize(); }
 
+      MultiDimDecisionGraph<double>* extractCount(Idx actionId, const DiscreteVariable* var){
+        return __learner->extractCount(actionId, var); }
+
+      double rMax(){ return __rmax; }
+
 
     private :
 
@@ -163,6 +168,7 @@ namespace gum {
 
       /// The planer we use to find the optimal policy
       SPUMDD<double>* __planer;
+      double __rmax;
 
       /// The number of observation we make before using again the planer
       Idx __observationPhaseLenght;

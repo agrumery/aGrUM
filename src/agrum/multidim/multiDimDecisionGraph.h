@@ -265,7 +265,7 @@ namespace gum {
          * Copies src diagrams structure into this diagrams.
          * However it also changes the variables.
          *
-         * This has two implications.
+         * @warning This has two implications.
          * First, this is not just a renaming. Pointers are trully changed.
          * Second, for each pair of variable, the new variable MUST macth the number
          * of variables of the old variable.
@@ -338,11 +338,6 @@ namespace gum {
         // ============================================================================
         const LinkedList<NodeId>* varNodeListe( const DiscreteVariable* var ) const { return __var2NodeIdMap[var]; }
 
-        // ============================================================================
-        /// Returns a const reference on the value map (for iteration purpose)
-        // ============================================================================
-        //const Bijection<NodeId, GUM_SCALAR>& values(  ) const{ return this->__valueMap; }
-
       /// @}
 
       // ============================================================================
@@ -407,12 +402,6 @@ namespace gum {
       /// The root node of the decision graph
       // ============================================================================
       NodeId __root;
-
-      // ============================================================================
-      /// Associates each terminal node to a value
-      // ============================================================================
-//      Bijection< NodeId, GUM_SCALAR > __valueMap;
-//      HashTable< NodeId, LinkedList<Parent>* > __valueParents;
 
       // ============================================================================
       /// Associates each non-terminal node to a variable

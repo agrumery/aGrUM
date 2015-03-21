@@ -30,6 +30,7 @@
 // =========================================================================
 #include <agrum/FMDP/learning/spimddi.h>
 #include <agrum/FMDP/planning/pspumdd.h>
+#include <agrum/FMDP/planning/RMaxMDD.h>
 // =========================================================================
 
 namespace gum {
@@ -59,7 +60,9 @@ namespace gum {
 
           __learner = new FMDPLearner<GTEST, GTEST, IMDDILEARNER>(__fmdp, learningThreshold, similarityThreshold );
 
-          __planer = new SPUMDD<double>(__fmdp, epsilon);
+//          __planer = new SPUMDD<double>(__fmdp, epsilon);
+          __planer = new RMaxMDD<double>(__fmdp,this, 40);
+          __rmax = std::numeric_limits<double>::min();
 
           __nbObservation = 1;
         }
@@ -123,6 +126,9 @@ namespace gum {
         //
         // ###################################################################
         void SPIMDDI::feedback( const Instantiation& newState, double reward ){
+
+            if(reward > __rmax)
+              __rmax = reward;
 
             std::cout << std::endl << "*********************************************\nBegin Feedback - Observation n°" << __nbObservation
                       << "\n*********************************************\n" <<  std::endl;

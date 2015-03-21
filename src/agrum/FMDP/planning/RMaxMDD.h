@@ -19,40 +19,41 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the SPUMDD class.
+ * @brief Headers of the RMax planer class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
-// #define  TRACE_ALGO
 // =========================================================================
-#ifndef GUM_SPUMDD_EVAL_H
-#define GUM_SPUMDD_EVAL_H
+#ifndef GUM_RMAX_MDD_H
+#define GUM_RMAX_MDD_H
 // =========================================================================
-#include <string>
-#include <cstdio>
-#include <iostream>
-#include <fstream>
+/*#include <agrum/core/argMaxSet.h>
+#include <agrum/core/functors.h>
+#include <agrum/core/inline.h>
+#include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>*/
 // =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/planning/spumdd.h>
+#include <agrum/FMDP/learning/spimddi.h>
 // =========================================================================
 
 namespace gum {
 
+
   /**
-   * @class SPUMDDEval spumddEval.h <agrum/FMDP/planning/SPUMDDEval.h>
+   * @class RMaxMDD RMaxMDD.h <agrum/FMDP/planning/RMaxMDD.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *
-   * Perform a SPUDD planning on given in parameter factored markov decision process
-   * And eval the performance of this algorithm
+   * Perform a RMax planning on given in parameter factored markov decision process
    *
    */
-
   template<typename GUM_SCALAR>
-  class SPUMDDEval {
+  class RMaxMDD : public SPUMDD<GUM_SCALAR> {
 
     public:
 
@@ -61,63 +62,61 @@ namespace gum {
       // ==========================================================================
       /// @{
 
-      /**
-      * Default constructor
-      */
-      SPUMDDEval ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
+       /**
+        * Default constructor
+        */
+        RMaxMDD ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, SPIMDDI* spim, double minExplo, GUM_SCALAR epsilon = 0.00001 );
 
-      /**
-      * Default destructor
-      */
-      ~SPUMDDEval();
+       /**
+        * Default destructor
+        */
+        ~RMaxMDD();
 
       /// @}
+
       // ==========================================================================
-      /// @name Planning Algorithm Evaluation Methods
+      /// @name Planning Methods
       // ==========================================================================
       /// @{
 
-    public:
-
-      /**
-       * Method to eval the efficiency of makePlanning algorithm
-       */
-//      MultiDimDecisionGraph< GUM_SCALAR >* makePlanningAlgoEvaluation ( const std::string saveFilesName, Idx mode = 1 );
-
-    private:
-
-      /**
-       * Method to eval the efficiency of Vaction evaluation
-       */
-//      MultiDimDecisionGraph< GUM_SCALAR >* __evalActionValueAlgoEvaluation ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, const std::string saveFilesName, Idx mode );
-
-      /**
-       * Method to eval addition the multiplication by discount reward and the addition of reward to computed value function
-       */
-//      MultiDimDecisionGraph< GUM_SCALAR >* __addRewardAlgoEvaluation ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, const std::string saveFilesName, Idx mode );
-
-      /**
-       * Evals the policy corresponding to the given value function
-       */
-//      std::pair<Idx, Idx> __evalNbRetrogradeEvaluation ( const MultiDimDecisionGraph<GUM_SCALAR>* t1, const MultiDimDecisionGraph<GUM_SCALAR>* t2 );
+        /**
+         * Initializes data structure needed for making the planning
+         * @warning No calling this methods before starting the first makePlaninng
+         * will surely and definitely result in a crash
+         */
+        void initialize();
 
       /// @}
 
-      /// The Factored Markov Decision Process on which we do our planning (NB : this one must have decision diagram as transitions and reward functions )
-      FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
 
-      /// The hyperparameter determining when we do stop value iteration.
-      GUM_SCALAR __epsilon;
+  protected:
 
-      /// RetroVar number save file
-      std::ofstream __traceAlgoSaveFile;
+        /// Performs a single step of value iteration
+        MultiDimDecisionGraph< GUM_SCALAR >* _valueIteration();
+
+        MultiDimDecisionGraph<GUM_SCALAR>* _evalQaction( const MultiDimDecisionGraph<GUM_SCALAR>*, Idx );
+
+        NodeId __createRMax(NodeId currentNodeId,
+                            MultiDimDecisionGraph<GUM_SCALAR>* dTemp,
+                            MultiDimDecisionGraph<GUM_SCALAR>* sortie,
+                            double valSi,
+                            double valSinon);
+
+  private :
+        SPIMDDI* __spim;
+        HashTable<Idx, MultiDimDecisionGraph<GUM_SCALAR>* > __rmaxMap;
+        HashTable<Idx, MultiDimDecisionGraph<GUM_SCALAR>* > __dispatchMap;
+        double __minExplo;
   };
+
+//  extern template class RMaxMDD<float>;
+  extern template class RMaxMDD<double>;
 } /* namespace gum */
 
 
-#include <agrum/FMDP/planning/spumddEval.tcc>
+#include <agrum/FMDP/planning/RMaxMDD.tcc>
 
-#endif // GUM_SPUMDD_EVAL_H
+#endif // GUM_RMAX_MDD_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

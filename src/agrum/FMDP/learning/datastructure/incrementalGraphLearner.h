@@ -181,8 +181,18 @@ namespace gum {
         // ###################################################################
         virtual void updateDecisionGraph() = 0;
 
-      /// @}
+        // ###################################################################
+        /// For RMax strategy, we need a count on each leaves of the number of
+        /// observation already made
+        // ###################################################################
+        MultiDimDecisionGraph<double>* extractCount();
+    protected :
+        virtual void _insertSetOfVars( MultiDimDecisionGraph<double>* ) = 0;
+    private:
+        NodeId __extractCount(NodeId, MultiDimDecisionGraph<double>*);
 
+      /// @}
+    public:
         // ###################################################################
         ///
         // ###################################################################

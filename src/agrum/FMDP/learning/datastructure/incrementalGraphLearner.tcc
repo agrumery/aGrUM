@@ -409,6 +409,35 @@ namespace gum {
       return ret;
     }
 
+    template < TESTNAME AttributeSelection, bool isScalar >
+    MultiDimDecisionGraph<double> *IncrementalGraphLearner<AttributeSelection, isScalar>::extractCount(){
+      MultiDimDecisionGraph<double>* ret = new MultiDimDecisionGraph<double>();
+      _insertSetOfVars(ret);
+
+      ret->manager()->setRootNode(__extractCount(this->_root, ret));
+
+      return ret;
+    }
+
+    template < TESTNAME AttributeSelection, bool isScalar >
+    NodeId  IncrementalGraphLearner<AttributeSelection, isScalar>::__extractCount(NodeId currentNodeId,
+                                                                                  MultiDimDecisionGraph<double>* ret){
+
+
+      if( this->_nodeVarMap[currentNodeId] == this->_value ){
+         NodeId retn = ret->manager()->addTerminalNode( (double) this->_nodeId2Database[currentNodeId]->nbObservation());
+        return retn;
+      }
+
+      NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*this->_nodeVarMap[currentNodeId]->domainSize()) );
+      for( Idx moda = 0; moda < this->_nodeVarMap[currentNodeId]->domainSize(); ++moda )
+        sonsMap[moda] = __extractCount(this->_nodeSonsMap[currentNodeId][moda], ret);
+
+      NodeId retn =  ret->manager()->checkIsomorphism(this->_nodeVarMap[currentNodeId], sonsMap);
+      return retn;
+
+    }
+
     // ============================================================================
     // Display tree current structure in console
     // For debugging purposes only.

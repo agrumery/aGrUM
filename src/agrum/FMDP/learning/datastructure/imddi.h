@@ -153,6 +153,15 @@ namespace gum {
         NodeId __insertLeafInDecisionGraph( AbstractLeaf*, Int2Type<false> );
 
       /// @}
+      ///
+  protected :
+      void _insertSetOfVars( MultiDimDecisionGraph<double>* ret ){
+        for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __varOrder.beginSafe();
+                varIter != __varOrder.endSafe(); ++varIter)
+          ret->add(**varIter);
+      }
+
+  private :
 
       Sequence<const DiscreteVariable*> __varOrder;
 
