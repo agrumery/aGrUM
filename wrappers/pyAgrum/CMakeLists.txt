@@ -79,9 +79,23 @@ if (APPLE) # let's assume that PYTHON is there
     OUTPUT_VARIABLE PYTHON_LOCAL_PATH
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
-  set(PYTHON_LIBRARIES ${PYTHON_LOCAL_PATH}/lib/libpython2.7.dylib)
-  set(PYTHON_INCLUDE_PATH ${PYTHON_LOCAL_PATH}/include/python2.7)
-  #find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} REQUIRED)
+  execute_process(
+    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('CONFINCLUDEPY'))[0])"
+    OUTPUT_VARIABLE PYTHON_INCLUDE_PATH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  execute_process(
+    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('LIBDIR'))[0])"
+    OUTPUT_VARIABLE PYTHON_LIBPATH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  execute_process(
+    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('VERSION'))[0])"
+    OUTPUT_VARIABLE PYTHON_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  #todo : test if PYTHON_VERSION>3.2
+  set(PYTHON_LIBRARIES "${PYTHON_LIBPATH}/libPython${PYTHON_VERSION}.dylib")
 else()
   find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} REQUIRED)
 endif()
