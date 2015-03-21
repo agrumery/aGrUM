@@ -2,9 +2,10 @@ project(pyAgrum)
 
 cmake_minimum_required(VERSION 2.6)
 
+option(FOR_PYTHON2 "ON if pyAgrum will be compiler agains python2. Python3 is uses by default" "OFF")
+
 # PYTHON 2 OR 3
-set(PYTHONVERSION "2")
-if ("a${PYTHONVERSION}" STREQUAL "a2") # we use 3 by default
+if (FOR_PYTHON2) # we use 3 by default
   set(PYTHONVERSION "2")
   # hackish
   set(PYTHON_EXECUTABLE "python2")
@@ -14,7 +15,7 @@ if ("a${PYTHONVERSION}" STREQUAL "a2") # we use 3 by default
   
   #change in module naming from inside module between python2 and python3
   set(PYAGRUM_MODULE "pyAgrum")
-else ("a${PYTHONVERSION}" STREQUAL "a2") 
+else (FOR_PYTHON2) 
   set(PYTHONVERSION "3")
   # hackish
   set(PYTHON_EXECUTABLE "python3")
@@ -25,8 +26,9 @@ else ("a${PYTHONVERSION}" STREQUAL "a2")
   
   #change in module naming from inside module between python2 and python3
   set(PYAGRUM_MODULE ".pyAgrum")
-endif ("a${PYTHONVERSION}" STREQUAL "a2")
+endif (FOR_PYTHON2)
 set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files${PYTHONVERSION}")
+set(_PYAGRUMLIB "_pyAgrum")
 
 if(WIN32)
   message(STATUS "** aGrUM notification : Windows detected")
@@ -166,7 +168,7 @@ set(AGRUM_C_SOURCES ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrslib.c ${AGRUM_
 set(AGRUM_CPP_SOURCES ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_ID_SOURCES} ${AGRUM_CN_SOURCES} ${AGRUM_GRAPHICALMODEL_SOURCES} ${AGRUM_GRAPHS_SOURCES} ${AGRUM_MULTIDIM_SOURCES} ${AGRUM_VARIABLES_SOURCES}  ${AGRUM_LEARNING_SOURCES})
 
 
-set(SWIG_MODULE_pyAgrum_EXTRA_DEPS ${BUILDSWIGFILES})
+set(SWIG_MODULE${_PYAGRUMLIB}_EXTRA_DEPS ${BUILDSWIGFILES})
 set(CMAKE_SWIG_OUTDIR ${GENERATED_PYTHON})
 set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/${SWIGFILE} PROPERTIES SWIG_FLAGS  "-I${AGRUM_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/../swig -I${SWIG_SOURCE_DIR}")
 
@@ -195,23 +197,23 @@ if (SWIG_FOUND)
   swig_link_libraries(pyAgrum ${PYTHON_LIBRARIES})
 else (SWIG_FOUND)
   file(GLOB SWIG_GENERATED_FILES "${GENERATED_PYTHON}/*.cxx")
-  add_library(_pyAgrum  SHARED ${AGRUM_CPP_SOURCES} ${AGRUM_C_SOURCES} ${SWIG_GENERATED_FILES})
-  target_link_libraries(_pyAgrum ${PYTHON_LIBRARIES})
+  add_library(${_PYAGRUMLIB}  SHARED ${AGRUM_CPP_SOURCES} ${AGRUM_C_SOURCES} ${SWIG_GENERATED_FILES})
+  target_link_libraries(${_PYAGRUMLIB} ${PYTHON_LIBRARIES})
 endif (SWIG_FOUND)
 
-set_target_properties(_pyAgrum PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-set_target_properties(_pyAgrum PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS_RELEASE}")
-set_target_properties(_pyAgrum PROPERTIES LINK_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp -lpthread")
+set_target_properties(${_PYAGRUMLIB} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+set_target_properties(${_PYAGRUMLIB} PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS_RELEASE}")
+set_target_properties(${_PYAGRUMLIB} PROPERTIES LINK_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp -lpthread")
 
 
 # for additionnal rule such test pyAgrum
-add_custom_command(TARGET _pyAgrum POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SWIG_OUTDIR}/pyAgrum.py" "${CMAKE_CURRENT_BINARY_DIR}/.")
+add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SWIG_OUTDIR}/pyAgrum.py" "${CMAKE_CURRENT_BINARY_DIR}/.")
 
-  set_target_properties(_pyAgrum PROPERTIES PREFIX "")
+  set_target_properties(${_PYAGRUMLIB} PROPERTIES PREFIX "")
 if (WIN32)
-  set_target_properties(_pyAgrum PROPERTIES SUFFIX ".pyd")
+  set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".pyd")
 else (WIN32)
-  set_target_properties(_pyAgrum PROPERTIES SUFFIX ".so")
+  set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".so")
 endif (WIN32)
 
 file(GLOB GUMLIB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/*.py")
@@ -231,10 +233,10 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PYAGRUM_EGGFILE} DESTINATION ${PYTHO
 install(FILES ${GENERATED_PYTHON}/pyAgrum.py DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 
 if (WIN32)
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/_pyAgrum.pyd DESTINATION ${PYTHON_INSTALL}/pyAgrum)
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/lib_pyAgrum.dll.a DESTINATION ${PYTHON_INSTALL}/pyAgrum)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_PYAGRUMLIB}.pyd DESTINATION ${PYTHON_INSTALL}/pyAgrum)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/lib${_PYAGRUMLIB}.dll.a DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 else (WIN32)
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/_pyAgrum.so DESTINATION ${PYTHON_INSTALL}/pyAgrum)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_PYAGRUMLIB}.so DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 endif (WIN32)
 
 install(FILES ${GUMLIB_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/lib)

@@ -49,7 +49,6 @@ def is_tool(prog):
 exe_python2=is_tool('python2')
 exe_python3=is_tool('python3')
 
-exe_python=exe_python2
 
 MAKE=""
 if is_tool("make"):
@@ -337,6 +336,11 @@ def initParser(current):
                                         action="store_true",
                                         dest="static_lib",
                                         default=False)
+    parser.add_option("", "--python",   help="{2|3}",
+                                        type="choice",
+                                        choices=["2", "3"],
+                                        dest="pyversion",
+                                        default="3")
     return parser
 
 ##########################################################################################################################
@@ -574,8 +578,11 @@ def cleanAll():
     print(WARNING+" cleaning"+ENDC+" ... ",end="")
     sys.stdout.flush()
     #os.system("rm -rf build") #
-    shutil.rmtree("build")
-    print(OKGREEN+"done"+ENDC)
+    if os.path.isdir("build"):
+      shutil.rmtree("build")
+      print(OKGREEN+"done"+ENDC)
+    else:
+      print(OKGREEN+"nothing to do"+ENDC)
     print()
 
 ##########################################################################################################################
@@ -610,6 +617,7 @@ def checkConstraints(parser,options,args):
     current['stats']=options.stats
     current['test_base']=options.test_base
     current['testlist']=options.testlist
+    current['pyversion']=options.pyversion
 
     for key in 'rule option wrapper'.split():
         current[key]=''
@@ -665,26 +673,14 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
     folders=cmake_options=make_options=run_cde =""
 
     if options['wrapper']!="": # we know rule in ["install","wrapper", "test"]
-        # ensure creation of agrum/config.h (as a release version of agrum)
-        folders=["build",options['platform'],'release']
-        cmake_options=" -DCMAKE_BUILD_TYPE=RELEASE  ../../../src -DCMAKE_VERBOSE_MAKEFILE="
-        if (options['verbose']):
-            cmake_options=cmake_options+"ON"
-        else:
-            cmake_options=cmake_options+"OFF"
-
-        cmake_options+=" -DBUILD_SHARED_LIBS="
-        if (options['static_lib']):
-            cmake_options=cmake_options+"OFF"
-        else:
-            cmake_options=cmake_options+"ON"
-
-        [safe_cd(s) for s in folders]
-        schedule(CMAKE,cmake_options)
-        [schedule("back","") for s in folders]
-
         folders=['build','wrappers',options['wrapper']]
         cmake_options="-DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/"+options['wrapper']+"/"
+        
+        if (options['pyversion'])=="2":
+          cmake_options+=" -DFOR_PYTHON2=ON"
+        else:
+          cmake_options+=" -DFOR_PYTHON2=OFF  "
+        
         if options['rule'] in ["install"]:
             make_options=options['rule']
         else:
@@ -721,6 +717,16 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             make_options="agrum-dbg"
           else:
             make_options=options['rule']
+            
+        # MANAGING MODULES
+        listM=[x.upper() for x in options['module'].split('+')]
+        setM=set(listM)
+
+        create_build = lambda module: " -DBUILD_"+module+"="+ ("ON" if module in setM else "OFF")
+        cmake_options = cmake_options+create_build("ALL")
+        for module in listOfModules:
+          cmake_options = cmake_options+create_build(module)
+
 
     cmake_options=cmake_options+" -DCMAKE_INSTALL_PREFIX="+options['destination']
 
@@ -740,15 +746,6 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
 
     option_fixed_seed=" -DGUM_RANDOMSEED="+(RANDOMSEED_FOR_FIXED_SEED if options['fixed_seed'] else "0")
     cmake_options=cmake_options+option_fixed_seed ;
-
-    # MANAGING MODULES
-    listM=[x.upper() for x in options['module'].split('+')]
-    setM=set(listM)
-
-    create_build = lambda module: " -DBUILD_"+module+"="+ ("ON" if module in setM else "OFF")
-    cmake_options = cmake_options+create_build("ALL")
-    for module in listOfModules:
-      cmake_options = cmake_options+create_build(module)
 
     [safe_cd(s) for s in folders]
     schedule(CMAKE,cmake_options)
@@ -817,7 +814,8 @@ def getInvocation(current):
       else:
         invocation+=getParam('quiet')
 
-      invocation+=getParam('static_lib')
+      if (current['static_lib']):
+        invocation+=getParam('static_lib')
       
       if (current['stats']):
         invocation+=getParam('stats')
@@ -828,8 +826,9 @@ def getInvocation(current):
       if (current['no_fun']):
         invocation+=getParam('no_fun')
 
-
       invocation+=getValParam('jobs',str(current['jobs']))
+      
+      invocation+=getValParam('python',current['pyversion'])
     else:
       if current['rule']=="uninstall":
         invocation+=getCommand(current['option'])
@@ -862,6 +861,7 @@ default['no_fun']=False
 default['stats']=False
 default['module']='ALL'
 default['testlist']='all'
+default['pyversion']="3"
 
 not_persistent_options=['fixed_seed','stats','static_lib']
 
@@ -878,14 +878,13 @@ if shlv.has_key('persistent'):
 
 for key in default.iterkeys():
   if not key in not_persistent_options:
-    if persistent.has_key(key):
+    if key in persistent:
         current[key]=persistent[key]
     else:
         current[key]=default[key]
 
 parser=initParser(current)
 (options, args)=parser.parse_args()
-
 checkConstraints(parser,options,args)
 
 if options.no_fun:
@@ -898,6 +897,24 @@ if options.no_fun:
 print(ENDC+ERROR+"aGrUM"+ENDC+" compilation tool "+ERROR+"v"+numversion+ENDC)
 print("(c) 2010-13 "+OKGREEN+"aGrUM Team"+ENDC)
 print()
+
+if exe_python3 is None and exe_python2 is None:
+  # should not be possible : we are in a python script :)
+  print("No python interpreter found")
+  sys.exit(0)
+else:
+  if options.pyversion=="3":
+    if exe_python3 is not None:
+      exe_python=exe_python3
+    else:
+      print("python interperter: python2 (python3 not found)")
+      exe_python=exe_python2
+  else:
+    if exe_python2 is not None:
+      exe_python=exe_python2
+    else:
+      print("python interperter: python3 (python2 not found)")
+      exe_python=exe_python3
 
 moduleManagement(options.module)
 
