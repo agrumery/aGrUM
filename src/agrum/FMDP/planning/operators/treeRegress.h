@@ -29,7 +29,6 @@
 #define GUM_TREE_REGRESS_H
 // =======================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
-#include <agrum/multidim/decisionGraphUtilities/o4DGContext.h>
 #include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
 // =======================================================
 
@@ -40,9 +39,7 @@ namespace gum {
  * @brief Class used to perform Decision Tree Regression in the FMDP Framework
  * @ingroup multidim_group
  *
- * @warning Some optimization here => pxi where only one primed variable is present
- * is visited first. Then qAction is visited. This is done so that remaining prime var *
- * are as low in the tree as it can be.
+ *
  *
  */
 
@@ -101,7 +98,7 @@ namespace gum {
       GUM_SCALAR __xPloreVFunc( NodeId currentNodeId );
 
       // ============================================================================
-      /// The two decision graphs used for the operation
+      /// The decision graphs used for the operation
       // ============================================================================
       MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __vFunc;
       const Bijection<const DiscreteVariable*, const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*> __pxi;
@@ -129,8 +126,6 @@ namespace gum {
 
       HashTable<const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*, NodeId>& __curLeafMap;
       HashTable<const DiscreteVariable*, Idx>& __context;
-
-      Bijection<const DiscreteVariable*, const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*> __var2pxi;
   };
 
 } // namespace gum

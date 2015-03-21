@@ -107,10 +107,10 @@ namespace gum {
         __curLeafMap.insert(xPloredTree, currentNodeId);
         NodeId nody;
         if( seqPos == __xip.size() - 1 ){
-          nody = __rd->manager()->addTerminalNode( __xPloreVFunc( __curLeafMap, __context ) );
+          nody = __rd->manager()->addTerminalNode( __xPloreVFunc( __vFunc->root() ) );
         } else {
           MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* nextTree = __pxi.second( __xip.atPos(seqPos + 1) );
-          nody = __xPlorePxi( nextTree, nextTree->root(), seqPos + 1, __curLeafMap, __context);
+          nody = __xPlorePxi( nextTree, nextTree->root(), seqPos + 1);
         }
         __curLeafMap.erase(xPloredTree);
         return nody;
@@ -122,12 +122,12 @@ namespace gum {
         __rd->add(*(currentNode->nodeVar()));
 
       if( __context.exists(currentNode->nodeVar()) )
-        return __xPlorePxi( xPloredTree, currentNode->son( __context[currentNode->nodeVar()] ), seqPos, __curLeafMap, __context);
+        return __xPlorePxi( xPloredTree, currentNode->son( __context[currentNode->nodeVar()] ), seqPos);
 
       NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*currentNode->nodeVar()->domainSize() ) );
       for( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda ){
         __context.insert(currentNode->nodeVar(), moda);
-        sonsMap[moda] = __xPlorePxi( xPloredTree, currentNode->son( moda ), seqPos, __curLeafMap, __context);
+        sonsMap[moda] = __xPlorePxi( xPloredTree, currentNode->son( moda ), seqPos);
         __context.erase(currentNode->nodeVar());
       }
       return __rd->manager()->addNonTerminalNode(currentNode->nodeVar(), sonsMap);
@@ -163,7 +163,7 @@ namespace gum {
       GUM_SCALAR val = __neutral;
       for( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda ){
         __context.insert(currentNode->nodeVar(), moda);
-        val = __project( val, __xPloreVFunc( currentNode->son( moda ), __curLeafMap, __context));
+        val = __project( val, __xPloreVFunc( currentNode->son( moda ) ));
         __context.erase(currentNode->nodeVar());
       }
       return val;

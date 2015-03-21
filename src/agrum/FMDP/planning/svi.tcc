@@ -89,7 +89,7 @@ namespace gum {
       Bijection<const DiscreteVariable*, const MultiDimDecisionGraph<GUM_SCALAR> *> pxi;
       for( SequenceIteratorSafe<const DiscreteVariable*> varIter = Vold->variablesSequence().beginSafe();
            varIter != Vold->variablesSequence().endSafe(); ++varIter )
-        pxi.insert( *varIter, this->_fmdp->transition( actionId, *varIter ));
+        pxi.insert( *varIter, RECAST(this->_fmdp->transition( actionId, this->_fmdp->mapMainPrime().first(*varIter )) ) );
 
       TreeRegress tr( Vold, pxi, Vold->variablesSequence(), (GUM_SCALAR) 0.0 );
       return tr.compute();
@@ -120,8 +120,7 @@ namespace gum {
     MultiDimDecisionGraph<GUM_SCALAR>* SVI<GUM_SCALAR>::_maximize(const MultiDimDecisionGraph< GUM_SCALAR >* vFunction,
                                                                   const MultiDimDecisionGraph< GUM_SCALAR >* qAction){
 
-      TreeOperator< GUM_SCALAR, Idx>, Maximizes, SetTerminalNodePolicy > argmaxope(
-            vFunction, qAction );
+      TreeOperator< GUM_SCALAR, Maximizes > argmaxope( vFunction, qAction );
       MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* ret = argmaxope.compute();
       delete vFunction;
       delete qAction;
@@ -158,8 +157,7 @@ namespace gum {
     MultiDimDecisionGraph<GUM_SCALAR>* SVI<GUM_SCALAR>::_add( const MultiDimDecisionGraph< GUM_SCALAR >* function,
                                                               const MultiDimDecisionGraph< GUM_SCALAR >* reward){
 
-      TreeOperator< ArgMaxSet<GUM_SCALAR, Idx>, std::plus, SetTerminalNodePolicy > argmaxope(
-            function, reward );
+      TreeOperator< GUM_SCALAR, std::plus > argmaxope( function, reward );
       MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* ret = argmaxope.compute();
       delete function;
       return ret;
@@ -175,8 +173,7 @@ namespace gum {
     MultiDimDecisionGraph<GUM_SCALAR>* SVI<GUM_SCALAR>::_subtract(const MultiDimDecisionGraph< GUM_SCALAR >* newVF,
                                                                   const MultiDimDecisionGraph< GUM_SCALAR >* oldVF){
 
-      TreeOperator< ArgMaxSet<GUM_SCALAR, Idx>, ArgumentMaximisesAction, SetTerminalNodePolicy > argmaxope(
-            newVF, oldVF );
+      TreeOperator< GUM_SCALAR, std::minus > argmaxope( newVF, oldVF );
       return argmaxope.compute();
     }
 

@@ -1,0 +1,119 @@
+/****************************************************************************
+ *  Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES     *
+ *  {prenom.nom}_at_lip6.fr                                                 *
+ *                                                                          *
+ *  This program is free software; you can redistribute it and/or modify    *
+ *  it under the terms of the GNU General Public License as published by    *
+ *  the Free Software Foundation; either version 2 of the License, or       *
+ *  (at your option) any later version.                                     *
+ *                                                                          *
+ *  This program is distributed in the hope that it will be useful,         *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of          *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the            *
+ *  GNU General Public License for more details.                            *
+ *                                                                          *
+ *  You should have received a copy of the GNU General Public License       *
+ *  along with this program; if not, write to the                           *
+ *  Free Software Foundation, Inc.,                                         *
+ *  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                *
+ ****************************************************************************/
+/**
+* @file
+* @brief Class used to compute the operation between two decision diagrams
+*
+* @author Jean-Christophe Magnan
+*/
+
+// =======================================================
+#ifndef GUM_TREE_OPERATOR_H
+#define GUM_TREE_OPERATOR_H
+// =======================================================
+#include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
+// =======================================================
+
+namespace gum {
+
+/**
+ * @class TreeOperator treeOperator.h <agrum/multidim/patterns/treeOperator.h>
+ * @brief Class used to perform Decision Tree Operation in the FMDP Framework
+ * @ingroup multidim_group
+ *
+ *
+ *
+ */
+
+  template <typename GUM_SCALAR,
+            template <typename> class COMBINEOPERATOR,
+            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy >
+  class TreeOperator
+  {
+    public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+
+      // ============================================================================
+      /// Default constructor.
+      // ============================================================================
+      TreeOperator( const MultiDimDecisionGraph< GUM_SCALAR, TerminalNodePolicy>* dt1,
+                    const MultiDimDecisionGraph< GUM_SCALAR, TerminalNodePolicy>* dt2 );
+
+      // ============================================================================
+      /// Default destructor.
+      // ============================================================================
+      ~TreeOperator();
+
+    /// @}
+
+    // ############################################################################
+    /// @name Main Method
+    // ############################################################################
+    /// @{
+
+      // ============================================================================
+      /// Computes and builds the Decision Graph that is the result of the operation
+      // ============================================================================
+      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *compute();
+
+    /// @}
+
+
+    private :
+
+      // ============================================================================
+      /// The main recursion function
+      // ============================================================================
+      NodeId __xPloreDT1( NodeId currentNodeId );
+
+      // ============================================================================
+      /// The main recursion function
+      // ============================================================================
+      NodeId __xPloreDT2( NodeId currentNodeId );
+
+      // ============================================================================
+      /// The two decision graphs used for the operation
+      // ============================================================================
+      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __dt1;
+      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __dt2;
+
+      // ============================================================================
+      /// The resulting decision graph
+      // ============================================================================
+      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
+
+      // ============================================================================
+      /// The function to be performed on the leaves
+      // ============================================================================
+      const COMBINEOPERATOR<GUM_SCALAR> __combine;
+
+      HashTable<const DiscreteVariable*, Idx>& __context;
+      NodeId __curDT1Leaf;
+  };
+
+} // namespace gum
+
+#include <agrum/FMDP/planning/operators/treeOperator.tcc>
+
+#endif // GUM_OPERATOR_H
