@@ -172,6 +172,6 @@ namespace gum {
 
 } // namespace gum
 
-#include <agrum/FMDP/planning/regress.tcc>
+#include <agrum/FMDP/planning/operators/regress.tcc>
 
 #endif // GUM_REGRESS_H

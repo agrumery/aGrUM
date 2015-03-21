@@ -70,12 +70,12 @@ namespace gum {
         // ==========================================================================
         /// Default constructor
         // ==========================================================================
-        SPUMDD ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
+        AbstractSVI ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
 
         // ==========================================================================
         /// Default destructor
         // ==========================================================================
-        virtual ~SPUMDD();
+        virtual ~AbstractSVI();
 
       /// @}
 
@@ -99,7 +99,7 @@ namespace gum {
         // ==========================================================================
         /// Returns the best policy obtained so far
         // ==========================================================================
-        INLINE const MultiDimDecisionGraph<ActionSet, SetTerminalNodePolicy>* optimalPolicy() { return __optimalPolicy; }
+        INLINE const MultiDimDecisionGraph<ActionSet, SetTerminalNodePolicy>* optimalPolicy() { return _optimalPolicy; }
 
         // ==========================================================================
         /// Provide a better toDot for the optimal policy where the leaves have the action
@@ -221,8 +221,8 @@ namespace gum {
         NodeId __recurArgMaxCopy( NodeId,
                                   Idx,
                                   const MultiDimDecisionGraph<GUM_SCALAR>*,
-                                  const MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*,
-                                  HashTable<NodeId,NodeId>);
+                                  MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*,
+                                  HashTable<NodeId,NodeId>&);
   protected:
         // ==========================================================================
         /// Performs argmax_a Q(s,a)

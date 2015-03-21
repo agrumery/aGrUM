@@ -42,13 +42,13 @@ namespace gum {
    *
    */
   template<typename GUM_SCALAR>
-  class SPUMDD : public AbstractSVI {
+  class SPUMDD : public AbstractSVI<GUM_SCALAR> {
 
     public:
 
-      // ==========================================================================
+      // ###################################################################
       /// @name Constructor & destructor.
-      // ==========================================================================
+      // ###################################################################
       /// @{
 
        /**
@@ -68,7 +68,7 @@ namespace gum {
       // ###################################################################
       /// @{
 
-  protected:
+    protected:
 
         // ==========================================================================
         /// Performs a multiplication/projection on given qAction
@@ -108,6 +108,15 @@ namespace gum {
         // ==========================================================================
         virtual MultiDimDecisionGraph<GUM_SCALAR>* _add(const MultiDimDecisionGraph< GUM_SCALAR >* function,
                                                         const MultiDimDecisionGraph< GUM_SCALAR >* reward);
+
+        // ==========================================================================
+        /// Subtract current VFunction from old VFunction to see if threshold is
+        /// reached or not
+        /// @param old and new VFuntion
+        /// @warning this time, nothing is deleted
+        // ==========================================================================
+        virtual MultiDimDecisionGraph<GUM_SCALAR>* _subtract(const MultiDimDecisionGraph< GUM_SCALAR >* newVF,
+                                                             const MultiDimDecisionGraph< GUM_SCALAR >* oldVF);
 
 
       /// @}

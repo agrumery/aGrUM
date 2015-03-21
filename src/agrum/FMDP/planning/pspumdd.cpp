@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/FMDP/planning/pspumdd.h>
+//#include <agrum/FMDP/planning/pspumdd.h>
 
 
-template class gum::PSPUMDD<float>;
-template class gum::PSPUMDD<double>;
+//template class gum::PSPUMDD<float>;
+//template class gum::PSPUMDD<double>;

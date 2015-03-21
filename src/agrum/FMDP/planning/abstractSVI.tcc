@@ -98,7 +98,7 @@ namespace gum {
 
       // ************************************************************************
       // Discarding the case where no \pi* have been computed
-      if(!__optimalPolicy || __optimalPolicy->root() == 0 )
+      if(!_optimalPolicy || _optimalPolicy->root() == 0 )
         return "NO OPTIMAL POLICY CALCULATED YET";
 
       // ************************************************************************
@@ -127,8 +127,8 @@ namespace gum {
       std::queue<NodeId> fifo;
 
       // Loading the FIFO
-      fifo.push(__optimalPolicy->root());
-      visited << __optimalPolicy->root();
+      fifo.push(_optimalPolicy->root());
+      visited << _optimalPolicy->root();
 
 
       // ************************************************************************
@@ -140,10 +140,10 @@ namespace gum {
         fifo.pop();
 
         // Checking if it is terminal
-        if ( __optimalPolicy->isTerminalNode( currentNodeId ) ){
+        if ( _optimalPolicy->isTerminalNode( currentNodeId ) ){
 
           // Get back the associated ActionSet
-          ActionSet ase = __optimalPolicy->nodeValue(currentNodeId);
+          ActionSet ase = _optimalPolicy->nodeValue(currentNodeId);
 
           // Creating a line for this node
           terminalStream << tab << currentNodeId << ";" << tab << currentNodeId  << " [label=\""<< currentNodeId << " - ";
@@ -159,7 +159,7 @@ namespace gum {
         // Either wise
         {
           // Geting back the associated internal node
-          const InternalNode* currentNode = __optimalPolicy->node( currentNodeId );
+          const InternalNode* currentNode = _optimalPolicy->node( currentNodeId );
 
           // Creating a line in internalnode stream for this node
           nonTerminalStream << tab << currentNodeId << ";" << tab << currentNodeId  << " [label=\""<< currentNodeId << " - "
@@ -213,11 +213,11 @@ namespace gum {
 
         // Establishement of sequence of variable elemination
       for ( auto varIter = _fmdp->beginVariables(); varIter != _fmdp->endVariables(); ++varIter )
-        __elVarSeq << _fmdp->main2prime(*varIter);
+        _elVarSeq << _fmdp->main2prime(*varIter);
 
       // Initialisation of the value function
       _vFunction = new MultiDimDecisionGraph< GUM_SCALAR >();
-      __optimalPolicy = new MultiDimDecisionGraph< ActionSet, SetTerminalNodePolicy >();
+      _optimalPolicy = new MultiDimDecisionGraph< ActionSet, SetTerminalNodePolicy >();
       __firstTime = true;
     }
 
@@ -339,14 +339,14 @@ namespace gum {
     // Maximise the AAction to iobtain the vFunction
     // ===========================================================================
     template<typename GUM_SCALAR>
-    void
+    MultiDimDecisionGraph< GUM_SCALAR >*
     AbstractSVI<GUM_SCALAR>::_maximiseQactions( std::vector<MultiDimDecisionGraph<GUM_SCALAR>*>& qActionsSet) {
 
       MultiDimDecisionGraph< GUM_SCALAR >* newVFunction = qActionsSet.back();
       qActionsSet.pop_back();
 
       while ( !qActionsSet.empty() ) {
-        MultiDimDecisionGraph<double>* qAction = qActionsSet.back();
+        MultiDimDecisionGraph<GUM_SCALAR>* qAction = qActionsSet.back();
         qActionsSet.pop_back();
         newVFunction = _maximize ( newVFunction, qAction );
       }
@@ -449,12 +449,11 @@ namespace gum {
     // Recursion part for the createArgMaxCopy
     // ==========================================================================
     template<typename GUM_SCALAR>
-    NodeId
-    AbstractSVI<GUM_SCALAR>::__recurArgMaxCopy( NodeId currentNodeId,
-                                                Idx actionId,
-                                                const MultiDimDecisionGraph<GUM_SCALAR>* src,
-                                                const MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* argMaxCpy,
-                                                HashTable<NodeId,NodeId>& visitedNodes){
+    NodeId AbstractSVI<GUM_SCALAR>::__recurArgMaxCopy(NodeId currentNodeId,
+                                                      Idx actionId,
+                                                      const MultiDimDecisionGraph<GUM_SCALAR>* src,
+                                                      MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* argMaxCpy,
+                                                      HashTable<NodeId,NodeId>& visitedNodes){
 
       if( visitedNodes.exists(currentNodeId))
         return visitedNodes[currentNodeId];
@@ -502,7 +501,7 @@ namespace gum {
     // Recursion part for the createArgMaxCopy
     // ==========================================================================
     template<typename GUM_SCALAR>
-    void AbstractSVI<GUM_SCALAR>::__recurExtractOptPol(NodeId currentNodeId,
+    NodeId AbstractSVI<GUM_SCALAR>::__recurExtractOptPol(NodeId currentNodeId,
                                                        const MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* argMaxOptVFunc,
                                                        HashTable<NodeId,NodeId>& visitedNodes){
       if( visitedNodes.exists(currentNodeId))

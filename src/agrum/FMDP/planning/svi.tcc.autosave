@@ -19,25 +19,23 @@
 ***************************************************************************/
 /**
 * @file
-* @brief Template implementation of FMDP/planning/SPUMDD.h classes.
+* @brief Template implementation of FMDP/planning/SVI.h classes.
 *
 * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
 
 // =========================================================================
 #include <math.h>
-#include <thread>
 #include <vector>
 #include <queue>
 #include <algorithm>
 #include <utility>
 // =========================================================================
-#include <agrum/core/functors.h>
+#include <agrum/multidim/instantiation.h>
 // =========================================================================
-#include <agrum/multidim/potential.h>
-// =========================================================================
-#include <agrum/FMDP/planning/spumdd.h>
-#include <agrum/FMDP/planning/operators/regress.h>
+#include <agrum/FMDP/planning/svi.h>
+#include <agrum/FMDP/planning/operators/treeRegress.h>
+#include <agrum/FMDP/planning/operators/treeOperator.h>
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code only
@@ -56,17 +54,17 @@ namespace gum {
     // Default constructor
     // ===========================================================================
     template<typename GUM_SCALAR> INLINE
-    SPUMDD<GUM_SCALAR>::SPUMDD ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp,
+    SVI<GUM_SCALAR>::SVI ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp,
                                  GUM_SCALAR epsilon ) : AbstractSVI<GUM_SCALAR>(fmdp, epsilon) {
-      GUM_CONSTRUCTOR ( SPUMDD );
+      GUM_CONSTRUCTOR ( SVI );
     }
 
     // ===========================================================================
     // Default destructor
     // ===========================================================================
     template<typename GUM_SCALAR> INLINE
-    SPUMDD<GUM_SCALAR>::~SPUMDD() {
-      GUM_DESTRUCTOR ( SPUMDD );
+    SVI<GUM_SCALAR>::~SVI() {
+      GUM_DESTRUCTOR ( SVI );
     }
 
 
@@ -77,6 +75,27 @@ namespace gum {
   /* **                                                                                                 **/
   /* ************************************************************************************************** **/
 
+    // ===========================================================================
+    // Evals the q function for current fmdp action
+    // ===========================================================================
+    template<typename GUM_SCALAR>
+    MultiDimDecisionGraph< GUM_SCALAR >*
+    AbstractSVI<GUM_SCALAR>::_evalQaction( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Idx actionId ){
+
+      // ******************************************************************************
+      // Initialisation :
+      // Creating a copy of last Vfunction to deduce from the new Qaction
+      // And finding the first var to eleminate (the one at the end)
+      Bijection<const DiscreteVariable*, const MultiDimDecisionGraph<GUM_SCALAR> *> pxi;
+      for( SequenceIteratorSafe<const DiscreteVariable*> varIter = Vold->variablesSequence().beginSafe();
+           varIter != Vold->variablesSequence().endSafe(); ++varIter )
+        pxi.insert( *varIter, RECAST(this->_fmdp->transition( actionId, this->_fmdp->mapMainPrime().first(*varIter )) ) );
+
+      TreeRegress tr( Vold, pxi, Vold->variablesSequence(), (GUM_SCALAR) 0.0 );
+      return tr.compute();
+    }
+
+
     // ==========================================================================
     /// Performs a multiplication/projection on given qAction
     /// @param qAction : the computed Q(s,a)
@@ -85,14 +104,10 @@ namespace gum {
     /// @warning given qAction is deleted, return the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph<GUM_SCALAR>* SPUMDD<GUM_SCALAR>::_regress(  const MultiDimDecisionGraph< GUM_SCALAR >* qAction,
-                                                                      const MultiDimDecisionGraph< GUM_SCALAR >* pxi,
-                                                                      const DiscreteVariable* xip){
-
-      Regress<GUM_SCALAR, std::multiplies, std::plus> r( qAction, pxi, &(this->_elVarSeq), xip, (GUM_SCALAR)0 );
-      MultiDimDecisionGraph<GUM_SCALAR>* ret = r.compute();
-      delete qAction;
-      return ret;
+    MultiDimDecisionGraph<GUM_SCALAR>* SVI<GUM_SCALAR>::_regress( const MultiDimDecisionGraph< GUM_SCALAR >* qAction,
+                                                                  const MultiDimDecisionGraph< GUM_SCALAR >* pxi,
+                                                                  const DiscreteVariable* xip){
+      return nullptr;
     }
 
     // ==========================================================================
@@ -102,9 +117,12 @@ namespace gum {
     /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph<GUM_SCALAR>* SPUMDD<GUM_SCALAR>::_maximize( const MultiDimDecisionGraph< GUM_SCALAR >* vFunction,
-                                                                      const MultiDimDecisionGraph< GUM_SCALAR >* qAction){
-      MultiDimDecisionGraph<GUM_SCALAR>* ret = maximize2MultiDimDecisionGraphs ( vFunction, qAction );
+    MultiDimDecisionGraph<GUM_SCALAR>* SVI<GUM_SCALAR>::_maximize(const MultiDimDecisionGraph< GUM_SCALAR >* vFunction,
+                                                                  const MultiDimDecisionGraph< GUM_SCALAR >* qAction){
+
+      TreeOperator< GUM_SCALAR, Idx>, Maximizes, SetTerminalNodePolicy > argmaxope(
+            vFunction, qAction );
+      MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* ret = argmaxope.compute();
       delete vFunction;
       delete qAction;
       return ret;
@@ -118,11 +136,11 @@ namespace gum {
     /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* SPUMDD<GUM_SCALAR>::_argmaximize(
+    MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* SVI<GUM_SCALAR>::_argmaximize(
                         const MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* vFunction,
                         const MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* qAction){
 
-      MultiDimDecisionGraphOperator< ArgMaxSet<GUM_SCALAR, Idx>, ArgumentMaximisesAction, SetTerminalNodePolicy > argmaxope(
+      TreeOperator< ArgMaxSet<GUM_SCALAR, Idx>, ArgumentMaximisesAction, SetTerminalNodePolicy > argmaxope(
             vFunction, qAction );
       MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* ret = argmaxope.compute();
       delete vFunction;
@@ -137,9 +155,12 @@ namespace gum {
     /// @warning given function is deleted, returns the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph<GUM_SCALAR>* SPUMDD<GUM_SCALAR>::_add(const MultiDimDecisionGraph< GUM_SCALAR >* function,
-                                                                const MultiDimDecisionGraph< GUM_SCALAR >* reward){
-      MultiDimDecisionGraph<GUM_SCALAR>* ret = add2MultiDimDecisionGraphs ( function, reward );
+    MultiDimDecisionGraph<GUM_SCALAR>* SVI<GUM_SCALAR>::_add( const MultiDimDecisionGraph< GUM_SCALAR >* function,
+                                                              const MultiDimDecisionGraph< GUM_SCALAR >* reward){
+
+      TreeOperator< ArgMaxSet<GUM_SCALAR, Idx>, std::plus, SetTerminalNodePolicy > argmaxope(
+            function, reward );
+      MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* ret = argmaxope.compute();
       delete function;
       return ret;
     }
@@ -151,9 +172,12 @@ namespace gum {
     /// @warning this time, nothing is deleted
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph<GUM_SCALAR>* SPUMDD<GUM_SCALAR>::_subtract(const MultiDimDecisionGraph< GUM_SCALAR >* newVF,
-                                                         const MultiDimDecisionGraph< GUM_SCALAR >* oldVF){
-      return subtract2MultiDimDecisionGraphs ( newVF, oldVF );
+    MultiDimDecisionGraph<GUM_SCALAR>* SVI<GUM_SCALAR>::_subtract(const MultiDimDecisionGraph< GUM_SCALAR >* newVF,
+                                                                  const MultiDimDecisionGraph< GUM_SCALAR >* oldVF){
+
+      TreeOperator< ArgMaxSet<GUM_SCALAR, Idx>, ArgumentMaximisesAction, SetTerminalNodePolicy > argmaxope(
+            newVF, oldVF );
+      return argmaxope.compute();
     }
 
 

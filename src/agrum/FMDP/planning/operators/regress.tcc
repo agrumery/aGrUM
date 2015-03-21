@@ -25,7 +25,7 @@
 */
 
 // =======================================================================================
-#include <agrum/FMDP/planning/regress.h>
+#include <agrum/FMDP/planning/operators/regress.h>
 #include <agrum/multidim/decisionGraphUtilities/internalNode.h>
 // =======================================================================================
 

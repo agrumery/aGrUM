@@ -40,7 +40,7 @@
 // =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/planning/RMaxMDD.h>
-#include <agrum/FMDP/planning/regress.h>
+#include <agrum/FMDP/planning/operators/regress.h>
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code only

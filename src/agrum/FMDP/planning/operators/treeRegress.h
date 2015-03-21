@@ -37,8 +37,12 @@ namespace gum {
 
 /**
  * @class TreeRegress treeRegress.h <agrum/multidim/patterns/treeRegress.h>
- * @brief Class used to perform Decision Graph Operations in the FMDP Framework
+ * @brief Class used to perform Decision Tree Regression in the FMDP Framework
  * @ingroup multidim_group
+ *
+ * @warning Some optimization here => pxi where only one primed variable is present
+ * is visited first. Then qAction is visited. This is done so that remaining prime var *
+ * are as low in the tree as it can be.
  *
  */
 
@@ -57,8 +61,10 @@ namespace gum {
       // ============================================================================
       /// Default constructor.
       // ============================================================================
-      TreeRegress( Set<const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*> treeSet,
-               const GUM_SCALAR neutral );
+      TreeRegress(const MultiDimDecisionGraph< GUM_SCALAR, TerminalNodePolicy>* qAction,
+                  const Bijection<const DiscreteVariable*, const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *> pxi,
+                  const Sequence<const DiscreteVariable*> xip,
+                  const GUM_SCALAR neutral );
 
       // ============================================================================
       /// Default destructor.
@@ -85,14 +91,25 @@ namespace gum {
       // ============================================================================
       /// The main recursion function
       // ============================================================================
-      NodeId __compute(  );
-
-
+      NodeId __xPlorePxi( MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* xPloredTree,
+                          NodeId currentNodeId,
+                          Idx seqPos );
 
       // ============================================================================
-      /// One of the two decision graphs used for the operation
+      /// The main recursion function
       // ============================================================================
-      Set<const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*> __treeSet;
+      GUM_SCALAR __xPloreVFunc( NodeId currentNodeId );
+
+      // ============================================================================
+      /// The two decision graphs used for the operation
+      // ============================================================================
+      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __vFunc;
+      const Bijection<const DiscreteVariable*, const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*> __pxi;
+
+      // ============================================================================
+      /// The two decision graphs used for the operation
+      // ============================================================================
+      const Sequence<const DiscreteVariable*> __xip;
 
       // ============================================================================
       /// The resulting decision graph
@@ -105,24 +122,19 @@ namespace gum {
       const GUM_SCALAR __neutral;
 
       // ============================================================================
-      /// The total number of variable implied in the operation
-      // ============================================================================
-      Idx __nbVar;
-
-      // ============================================================================
       /// The functions to be performed on the leaves
       // ============================================================================
       const COMBINEOPERATOR<GUM_SCALAR> __combine;
       const PROJECTOPERATOR<GUM_SCALAR> __project;
 
-      // ============================================================================
-      /// The hashtable used to know if two pair of nodes have already been visited
-      // ============================================================================
-      //HashTable<std::pair<NodeId,NodeId>, NodeId> __explorationTable;
+      HashTable<const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*, NodeId>& __curLeafMap;
+      HashTable<const DiscreteVariable*, Idx>& __context;
+
+      Bijection<const DiscreteVariable*, const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*> __var2pxi;
   };
 
 } // namespace gum
 
-#include <agrum/FMDP/planning/treeRegress.tcc>
+#include <agrum/FMDP/planning/operators/treeRegress.tcc>
 
 #endif // GUM_REGRESS_H
