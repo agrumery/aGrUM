@@ -4,6 +4,7 @@ CMakeCache.txt
 CMakeFiles
 build
 .options.mak.py
+.options.mak.py.db
 aGrUM-dev.kdev
 *.kdev4
 src/testunits/.kdev_include_paths
