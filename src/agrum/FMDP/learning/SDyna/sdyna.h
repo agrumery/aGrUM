@@ -19,14 +19,14 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the SPIMDDI class.
+ * @brief Headers of the SDyna abstract class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 // =========================================================================
-#ifndef GUM_SPIMDDI_H
-#define GUM_SPIMDDI_H
+#ifndef GUM_SDYNA_H
+#define GUM_SDYNA_H
 // =========================================================================
 #include <agrum/core/hashTable.h>
 // =========================================================================
@@ -45,130 +45,258 @@
 namespace gum {
 
   /**
-   * @class SPIMDDI spimddi.h <agrum/FMDP/learning/spimddi.h>
+   * @class sdyna sdyna.h <agrum/FMDP/learning/SDyna/sdyna.h>
    * @brief
    * @ingroup fmdp_group
    *
-   *
+   * The general SDyna architecture abstract class.
+   * Instance of SDyna architecture should inherit
    *
    */
 
-  class SPIMDDI {
+  class SDYNA {
 
+      // ==========================================================================
+      /// @name Constructor & destructor.
+      // ==========================================================================
+      /// @{    
     public:
 
-      // ###################################################################
-      /// @name Constructor & destructor.
-      // ###################################################################
-      /// @{
+        // ==========================================================================
+        /**
+         * Constructor
+         *
+         * @param observationPhaseLenght : the number of observation done before a
+         * replanning is launch. If equals 0, a planning is done after each structural
+         * change.
+         * @param nbValueIterationStep : the number of value iteration done during
+         * one planning
+         * @param discountFactor : the \gamma used for the plannings
+         * @param epsilon : the epsilon under which we consider V to be \epsilon-optimal
+         * @return an instance of SDyna architecture
+         */
+        // ==========================================================================
+        SDYNA (Idx observationPhaseLenght = 100,
+               Idx nbValueIterationStep = 10,
+               double discountFactor = 0.9,
+               double epsilon = 0.0001);
 
         // ==========================================================================
-        /// Default constructor
+        /// Destructor
         // ==========================================================================
-        SPIMDDI (double discountFactor = 0.75,
-                 double epsilon = 0.0001,
-                 double learningThreshold = 0.95,
-                 double similarityThreshold = 0.75,
-                 Idx observationPhaseLenght = 100,
-                 Idx nbValueIterationStep = 10,
-                 double exploThreshold = 0.1);
-
-        // ###################################################################
-        /// Default destructor
-        // ###################################################################
-        ~SPIMDDI ();
+        virtual ~SDYNA ();
 
       /// @}
 
-      // ==========================================================================
-      /// @name
-      // ==========================================================================
+
+      // ###################################################################
+      /// @name Problem specification methods
+      // ###################################################################
       /// @{
+    public:
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        void addAction(const Idx actionId, const std::string &actionName );
+        // ==========================================================================
+        /**
+         * Inserts a new action in the SDyna instance.
+         * @warning Without effect until method initialize is called
+         * @param actionId : an id to identify the action
+         * @param actionName : its human name
+         */
+        // ==========================================================================
+        virtual void addAction(const Idx actionId, const std::string &actionName );
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        void addVariable( const DiscreteVariable* var );
-//        void addReward( double );
+        // ==========================================================================
+        /**
+         * Inserts a new variable in the SDyna instance.
+         * @warning Without effect until method initialize is called
+         * @param var : the var to be added.
+         * Note that variable may or may not have all its modalities given.
+         * If not they will be discovered by the SDyna architecture during the process
+         */
+        // ==========================================================================
+        virtual void addVariable( const DiscreteVariable* var ) = 0;
 
       /// @}
 
-      // ==========================================================================
-      /// @name
-      // ==========================================================================
-      /// @{
 
-        // ###################################################################
-        ///
-        // ###################################################################
+      // ###################################################################
+      /// @name Initialization
+      // ###################################################################
+      /// @{
+    public:
+
+        // ==========================================================================
+        /**
+         * Initializes the Sdyna instance.
+         * @param initialState : the state of the studied system from which we will
+         * begin the explore, learn and exploit process
+         */
+        // ==========================================================================
         void initialize(const Instantiation& initialState);
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        void initialize();
+        // ==========================================================================
+        /**
+         * Initializes the Sdyna instance internal satastructure; i.e. the planer and
+         * the learner.
+         */
+        // ==========================================================================
+        virtual void initialize() = 0;
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        INLINE void setCurrentState( const Instantiation&  currentState ) { __lastState = currentState; }
+      /// @}
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        void feedback(const Instantiation &, double );
-        void feedback(const Instantiation &, const Instantiation&, Idx, double );
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        Idx takeAction();
+      // ###################################################################
+      /// @name Incremental methods
+      // ###################################################################
+      /// @{
+    public:
+
+        // ==========================================================================
+        /**
+         * Sets last state visited to the given state.
+         * During the learning process, we will consider that were in this state before
+         * the transition.
+         * @param currentState : the state
+         */
+        // ==========================================================================
+        void setCurrentState( const Instantiation&  currentState ) { __lastState = currentState; }
+
+        // ==========================================================================
+        /**
+         * @return the id of the action the SDyna instance wish to be performed
+         * @param the state in which we currently are
+         */
+        // ==========================================================================
         Idx takeAction( const Instantiation& );
 
-      /// @}        
+        // ==========================================================================
+        /**
+         * @return the id of the action the SDyna instance wish to be performed
+         */
+        // ==========================================================================
+        Idx takeAction();
+
+    protected :
+        // ==========================================================================
+        /**
+         * @param the state in which we currently are
+         * @return a set containing every optimal actions on that state
+         */
+        // ==========================================================================
+        virtual const ActionSet& _stateActionSet(const Instantiation&) = 0;
+
+    public :
+        // ==========================================================================
+        /**
+         * Performs a feedback on the last transition.
+         * In extenso, learn from the transition.
+         * @param originalState : the state we were in before the transition
+         * @param reachedState : the state we reached after
+         * @param performedAction : the action we performed
+         * @param obtainedReward : the reward we obtained
+         */
+        // ==========================================================================
+        void feedback(const Instantiation & originalState, const Instantiation& reachedState, Idx performedAction, double obtainedReward);
+
+        // ==========================================================================
+        /**
+         * Performs a feedback on the last transition.
+         * In extenso, learn from the transition.
+         * @param reachedState : the state reached after the transition
+         * @param obtainedReward : the reward obtained during the transition
+         * @warning Uses the __originalState and __performedAction stored in cache
+         * If you want to specify the original state and the performed action, see below
+         */
+        // ==========================================================================
+        void feedback(const Instantiation & reachedState, double obtainedReward);
+
+    protected :
+
+        // ==========================================================================
+        /**
+         * Gives to the learner a new transition
+         * @param actionId : the action on which the transition was made
+         * @param obs : the observed transition
+         * @return true if learning this transition implies structural changes
+         * (can trigger a new planning)
+         */
+        // ==========================================================================
+        virtual bool _learnTransition( Idx actionId, const Observation* obs ) = 0;
+
+
+        // ==========================================================================
+        /**
+         * Starts a new planning
+         * @param Idx : the maximal number of value iteration performed in this planning
+         */
+        // ==========================================================================
+        virtual void _makePlanning( Idx ) = 0;
+
+      /// @}
+    public:
+
+      // ==========================================================================
+      /**
+       * Returns
+       * @return a string describing the learned FMDP, and the associated
+       * optimal policy.
+       * Both in DOT language.
+       */
+      // ==========================================================================
+      virtual std::string toString();
+
 
       // ###################################################################
-      /// Returns a string describing the learned FMDP, and the associated
-      /// optimal policy.
-      /// Both as describing using DOT language.
+      /// @name Size methods
+      /// @brief just to get the size of the different data structure for
+      /// performance evaluation purposes only
       // ###################################################################
-      std::string toString();
+      /// @{
+    public:
 
-      Size learnerSize() { return __learner->size(); }
+        /**
+        /** * @brief learnerSize
+        /** * @return
+        /** */
+        virtual Size learnerSize() = 0;
 
-      Size modelSize() { return __fmdp->size(); }
+        /**
+        /** * @brief modelSize
+        /** * @return
+        /** */
+        Size modelSize() { return __fmdp->size(); }
 
-      Size valueFunctionSize() { return __planer->vFunction()->realSize(); }
+        /**
+        /** * @brief valueFunctionSize
+        /** * @return
+        /** */
+        virtual Size valueFunctionSize() = 0;
 
-      Size optimalPolicySize() { return __planer->optimalPolicy()->realSize(); }
+        /**
+        /** * @brief optimalPolicySize
+        /** * @return
+        /** */
+        virtual Size optimalPolicySize() = 0;
 
-      MultiDimDecisionGraph<double>* extractCount(Idx actionId, const DiscreteVariable* var){
-        return __learner->extractCount(actionId, var); }
+      /// @}
 
-      double rMax(){ return __rmax; }
+//      /**
+//      /** * @brief extractCount
+//      /** * @param actionId
+//      /** * @param var
+//      /** * @return
+//      /** */
+//      MultiDimDecisionGraph<double>* extractCount(Idx actionId, const DiscreteVariable* var){
+//        return __learner->extractCount(actionId, var); }
+
+//      double rMax(){ return __rmax; }
+//        double __rmax;
 
 
     private :
 
       /// The learnt Markovian Decision Process
       FactoredMarkovDecisionProcess<double>* __fmdp;
-
-      /// The model learner.
-      /// It will handle by itself the different decision graph learners
-      /// needed to learn the FMDP
-      FMDPLearner<GTEST, GTEST, IMDDILEARNER>* __learner;
-
-//      LabelizedVariable* __rewardVar;
-//      Bijection<double,Idx> __rewardValue2Idx;
-
-      /// The planer we use to find the optimal policy
-      SPUMDD<double>* __planer;
-      double __rmax;
 
       /// The number of observation we make before using again the planer
       Idx __observationPhaseLenght;
@@ -179,13 +307,12 @@ namespace gum {
       /// The number of Value Iteration step we perform
       Idx __nbValueIterationStep;
 
-      /// Threshold under which we perform a random action instead of exploiting the optimal one
-      double __exploThreshold;
-
       Sequence<Idx> __actionSeq;
 
       /// The state in which the system is before we perform a new action
       Instantiation __lastState;
+
+      /// The last performed action
       Idx __lastAction;
 
       /// Since SPIMMDI made these observation, it has to delete them on quitting
@@ -197,7 +324,7 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif // GUM_SPIMDDI_H
+#endif // GUM_SDYNA_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

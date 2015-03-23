@@ -28,7 +28,7 @@
 #include <random>
 #include <cstdlib>
 // =========================================================================
-#include <agrum/FMDP/learning/spimddi.h>
+#include <agrum/FMDP/learning/SDyna/spimddi.h>
 #include <agrum/FMDP/planning/pspumdd.h>
 //#include <agrum/FMDP/planning/RMaxMDD.h>
 // =========================================================================

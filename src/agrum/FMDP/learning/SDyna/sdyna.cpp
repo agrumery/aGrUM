@@ -28,199 +28,185 @@
 #include <random>
 #include <cstdlib>
 // =========================================================================
-#include <agrum/FMDP/learning/spimddi.h>
-#include <agrum/FMDP/planning/pspumdd.h>
-//#include <agrum/FMDP/planning/RMaxMDD.h>
+#include <agrum/FMDP/learning/SDyna/sdyna.h>
 // =========================================================================
 
 namespace gum {
 
-    // ==========================================================================
-    // Constructor & destructor.
-    // ==========================================================================
+  // ==========================================================================
+  // Constructor & destructor.
+  // ==========================================================================
 
-        // ###################################################################
-        // Default constructor
-        // ###################################################################
+    // ###################################################################
+    /**
+     * Constructor
+     *
+     * @param observationPhaseLenght : the number of observation done before a
+     * replanning is launch. If equals 0, a planning is done after each structural
+     * change.
+     * @param nbValueIterationStep : the number of value iteration done during
+     * one planning
+     * @param discountFactor : the \gamma used for the plannings
+     * @param epsilon : the epsilon under which we consider V to be \epsilon-optimal
+     * @return an instance of SDyna architecture
+     */
+    // ###################################################################
 
-        SPIMDDI::SPIMDDI (double discountFactor,
-                          double epsilon,
-                          double learningThreshold,
-                          double similarityThreshold,
-                          Idx observationPhaseLenght,
-                          Idx nbValueIterationStep,
-                          double exploThreshold ) : __observationPhaseLenght(observationPhaseLenght),
-                                                    __nbValueIterationStep(nbValueIterationStep),
-                                                    __exploThreshold(exploThreshold){
+    SDYNA::SDYNA (Idx observationPhaseLenght,
+                  Idx nbValueIterationStep,
+                  double discountFactor ) : __observationPhaseLenght(observationPhaseLenght),
+                                            __nbValueIterationStep(nbValueIterationStep){
 
-          GUM_CONSTRUCTOR(SPIMDDI)
+      GUM_CONSTRUCTOR(SDYNA)
 
-          __fmdp = new FactoredMarkovDecisionProcess<double>();
-          __fmdp->setDiscount(discountFactor);
+      __fmdp = new FactoredMarkovDecisionProcess<double>();
+      __fmdp->setDiscount(discountFactor);
 
-          __learner = new FMDPLearner<GTEST, GTEST, IMDDILEARNER>(__fmdp, learningThreshold, similarityThreshold );
+      __nbObservation = 1;
+    }
 
-          __planer = new SPUMDD<double>(__fmdp, epsilon);
-//          __planer = new RMaxMDD<double>(__fmdp,this, 40);
-          __rmax = std::numeric_limits<double>::min();
+    // ###################################################################
+    /// Destructor
+    // ###################################################################
+    SDYNA::~SDYNA (){
 
-          __nbObservation = 1;
-        }
+      for(auto obsIter = __bin.beginSafe(); obsIter != __bin.endSafe(); ++obsIter)
+          delete *obsIter;
 
-        // ###################################################################
-        // Default destructor
-        // ###################################################################
+      delete __fmdp;
 
-        SPIMDDI::~SPIMDDI (){
+      GUM_DESTRUCTOR(SDYNA)
+    }
 
-          delete __learner;
+  // ==========================================================================
+  /// Problem specification methods
+  // ==========================================================================
 
-          for(auto obsIter = __bin.beginSafe(); obsIter != __bin.endSafe(); ++obsIter)
-              delete *obsIter;
+    // ###################################################################
+    /**
+     * Inserts a new action in the SDyna instance.
+     * @warning Without effect until method initialize is called
+     * @param actionId : an id to identify the action
+     * @param actionName : its human name
+     */
+    // ###################################################################
+    void SDYNA::addAction(const Idx actionId, const std::string &actionName ){
+      __actionSeq.insert(actionId);
+    }
 
-          delete __planer;
-          delete __fmdp;
+  // ==========================================================================
+  /// Initialization
+  // ==========================================================================
 
-          GUM_DESTRUCTOR(SPIMDDI)
-        }
+    // ###################################################################
+    /**
+     * Initializes the Sdyna instance.
+     * @param initialState : the state of the studied system from which we will
+     * begin the explore, learn and exploit process
+     */
+    // ###################################################################
+    void SDYNA::initialize( const Instantiation& initialState ){
+      initialize();
+      setCurrentState( initialState );
+    }
 
-    // ==========================================================================
+  // ==========================================================================
+  /// Incremental methods
+  // ==========================================================================
+
+    // ###################################################################
+    /**
+     * Performs a feedback on the last transition.
+     * In extenso, learn from the transition.
+     * @param originalState : the state we were in before the transition
+     * @param reachedState : the state we reached after
+     * @param performedAction : the action we performed
+     * @param obtainedReward : the reward we obtained
+     */
+    // ###################################################################
+    void SDYNA::feedback( const Instantiation& curState, const Instantiation& prevState, Idx lastAction, double reward){
+      __lastAction = lastAction;
+      __lastState = prevState;
+      feedback( curState, reward );
+    }
+
+    // ###################################################################
+    /**
+     * Performs a feedback on the last transition.
+     * In extenso, learn from the transition.
+     * @param reachedState : the state reached after the transition
+     * @param obtainedReward : the reward obtained during the transition
+     * @warning Uses the __originalState and __performedAction stored in cache
+     * If you want to specify the original state and the performed action, see below
+     */
+    // ###################################################################
+    void SDYNA::feedback( const Instantiation& newState, double reward ){
+
+      std::cout << std::endl << "*********************************************\nBegin Feedback - Observation n°" << __nbObservation
+                << "\n*********************************************\n" <<  std::endl;
+
+      Observation* obs = new Observation();
+
+      for( auto varIter = __lastState.variablesSequence().beginSafe(); varIter != __lastState.variablesSequence().endSafe(); ++varIter)
+        obs->setModality(*varIter, __lastState.val(**varIter));
+
+      for( auto varIter = newState.variablesSequence().beginSafe(); varIter != newState.variablesSequence().endSafe(); ++varIter){
+        obs->setModality(__fmdp->main2prime(*varIter), newState.val(**varIter));
+        obs->setRModality(*varIter, newState.val(**varIter));
+      }
+
+      obs->setReward(reward);
+
+      std::cout << "Taking observation into account ..." <<  std::endl;
+      _learnTransition( __lastAction, obs );
+      std::cout << "Done" <<  std::endl;
+      __bin.insert(obs);
+
+      setCurrentState( newState );
+
+      if( __nbObservation%__observationPhaseLenght == 0)
+        _makePlanning(__nbValueIterationStep);
+
+      __nbObservation++;
+      std::cout << "\n*********************************************\n" << " " << std::endl << " " << std::endl;
+    }
+
+    // ###################################################################
+    /**
+     * @return the id of the action the SDyna instance wish to be performed
+     * @param the state in which we currently are
+     */
+    // ###################################################################
+    Idx SDYNA::takeAction( const Instantiation& curState ){
+        __lastState = curState;
+        return takeAction();
+    }
+
+    // ###################################################################
+    /**
+     * @return the id of the action the SDyna instance wish to be performed
+     */
+    // ###################################################################
+    Idx SDYNA::takeAction( ){
+      ActionSet actionSet = _stateActionSet( __lastState );
+      if( actionSet.size() == 1 ) {
+        __lastAction = actionSet[0];
+      } else {
+          Idx randy = (Idx)( (double)std::rand( ) / (double)RAND_MAX * actionSet.size() );
+          __lastAction = actionSet[ randy==actionSet.size()?0:randy ] ;
+      }
+      return __lastAction;
+    }
+
+    // ###################################################################
     //
-    // ==========================================================================
+    // ###################################################################
+    std::string SDYNA::toString( ){
+      std::stringstream description;
 
-        // ###################################################################
-        //
-        // ###################################################################
+      description << __fmdp->toString() << std::endl;
 
-        void SPIMDDI::addAction(const Idx actionId, const std::string &actionName ){
-          __learner->addAction(actionId, actionName);
-          __actionSeq.insert(actionId);
-        }
-
-
-        void SPIMDDI::addVariable( const DiscreteVariable* var ){
-          __learner->addVariable(var);
-        }
-
-    // ==========================================================================
-    //
-    // ==========================================================================
-
-        // ###################################################################
-        //
-        // ###################################################################
-        void SPIMDDI::initialize( const Instantiation& initialState ){
-          initialize();
-          setCurrentState( initialState );
-        }
-
-        // ###################################################################
-        //
-        // ###################################################################
-        void SPIMDDI::initialize(  ){
-          __learner->initialize();
-          __planer->initialize();
-        }
-
-        // ###################################################################
-        //
-        // ###################################################################
-        void SPIMDDI::feedback( const Instantiation& newState, double reward ){
-
-            if(reward > __rmax)
-              __rmax = reward;
-
-            std::cout << std::endl << "*********************************************\nBegin Feedback - Observation n°" << __nbObservation
-                      << "\n*********************************************\n" <<  std::endl;
-            Observation* obs = new Observation();
-
-            for( auto varIter = __lastState.variablesSequence().beginSafe(); varIter != __lastState.variablesSequence().endSafe(); ++varIter)
-                obs->setModality(*varIter, __lastState.val(**varIter));
-
-            for( auto varIter = newState.variablesSequence().beginSafe(); varIter != newState.variablesSequence().endSafe(); ++varIter){
-              obs->setModality(__fmdp->main2prime(*varIter), newState.val(**varIter));
-              obs->setRModality(*varIter, newState.val(**varIter));
-            }
-
-            obs->setReward(reward);
-
-            std::cout << "Taking observation into account ..." <<  std::endl;
-            __learner->addObservation( __lastAction, obs );
-            std::cout << "Done" <<  std::endl;
-            __bin.insert(obs);
-
-            setCurrentState( newState );
-
-            if( __nbObservation%__observationPhaseLenght == 0) {
-                std::cout << "Updating FMDP ..." <<  std::endl;
-                __learner->updateFMDP();
-                std::cout << "Done" <<  std::endl;
-//                std::cout << __fmdp->toString() << std::endl;
-
-                std::cout << "Performing planning ..." <<  std::endl;
-                __planer->makePlanning(__nbValueIterationStep);
-                std::cout << "Done" <<  std::endl;
-            }
-
-            __nbObservation++;
-            std::cout << "\n*********************************************\n" << " " << std::endl << " " << std::endl;
-        }
-
-        // ###################################################################
-        //
-        // ###################################################################
-        void SPIMDDI::feedback( const Instantiation& curState, const Instantiation& prevState, Idx lastAction, double reward){
-          __lastAction = lastAction;
-          __lastState = prevState;
-          feedback( curState, reward );
-        }
-
-        // ###################################################################
-        //
-        // ###################################################################
-        Idx SPIMDDI::takeAction( ){
-          double explo = (double)std::rand( ) / (double)RAND_MAX;
-          ActionSet actionSet;
-          if( __planer->optimalPolicy()->realSize() && explo > __exploThreshold){
-            std::cout << "Exploitons!" << std::endl;
-            actionSet = __planer->optimalPolicy()->get(__lastState);
-          }else{
-            std::cout << "Explorons!" << std::endl;
-            for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter )
-              actionSet += *actionIter;
-          }
-          if( actionSet.size() == 1 ) {
-            __lastAction = actionSet[0];
-          } else {
-              Idx randy = (Idx)( (double)std::rand( ) / (double)RAND_MAX * actionSet.size() );
-              __lastAction = actionSet[ randy==actionSet.size()?0:randy ] ;
-          }
-          return __lastAction;
-        }
-
-        // ###################################################################
-        //
-        // ###################################################################
-        Idx SPIMDDI::takeAction( const Instantiation& curState ){
-            __lastState = curState;
-            return takeAction();
-        }
-
-        // ###################################################################
-        //
-        // ###################################################################
-        std::string SPIMDDI::toString( ){
-          std::stringstream description;
-
-          description << __fmdp->toString() << std::endl;
-
-          if(__planer->optimalPolicy() )
-              description << __planer->optimalPolicy2String() << std::endl;
-
-          for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter)
-              description << *actionIter << " - " << __fmdp->actionName(*actionIter) <<std::endl;
-
-          return description.str();
-        }
+      return description.str();
+    }
 
 } // End of namespace gum
