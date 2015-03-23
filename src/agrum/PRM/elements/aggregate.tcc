@@ -120,6 +120,9 @@ namespace gum {
           break;
 
         case AggregateType::COUNT:
+          impl = new aggregator::Count<GUM_SCALAR> ( __label );
+          break;
+
         case AggregateType::MEAN:
         case AggregateType::OR:
         case AggregateType::AND:

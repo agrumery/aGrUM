@@ -443,6 +443,10 @@ void Parser::Aggregate(std::string type, std::string name) {
 		AggChains(chains);
 		ExpectWeak(_comma, 6);
 		AggLabels(labels);
+		while (la->kind == _comma) {
+			Get();
+			AggLabels(labels);
+		}
 		Expect(_RIGHT_CAST);
 		TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) 
 		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(56); Get();}
@@ -555,18 +559,7 @@ void Parser::AggChains(std::vector<std::string>& chains ) {
 				chains.push_back(s); 
 			}
 			Expect(27 /* "]" */);
-		} else if (la->kind == 24 /* "{" */) {
-			Get();
-			std::string s; 
-			CastIdent(s);
-			chains.push_back(s); 
-			while (WeakSeparator(_comma,11,12) ) {
-				CastIdent(s);
-				chains.push_back(s); 
-			}
-			while (!(la->kind == _EOF || la->kind == 25 /* "}" */)) {SynErr(61); Get();}
-			Expect(25 /* "}" */);
-		} else SynErr(62);
+		} else SynErr(61);
 }
 
 void Parser::AggLabels(std::vector<std::string>& labels ) {
@@ -591,9 +584,9 @@ void Parser::AggLabels(std::vector<std::string>& labels ) {
 				Expect(_word);
 				labels.push_back(narrow(t->val)); 
 			}
-			while (!(la->kind == _EOF || la->kind == 25 /* "}" */)) {SynErr(63); Get();}
+			while (!(la->kind == _EOF || la->kind == 25 /* "}" */)) {SynErr(62); Get();}
 			Expect(25 /* "}" */);
-		} else SynErr(64);
+		} else SynErr(63);
 }
 
 void Parser::NumberList(std::vector<float>& numbers ) {
@@ -610,7 +603,7 @@ void Parser::NumberList(std::vector<float>& numbers ) {
 				numbers.push_back(f); 
 			}
 			Expect(27 /* "]" */);
-		} else SynErr(65);
+		} else SynErr(64);
 }
 
 void Parser::ArrayDecl(std::string l1) {
@@ -636,8 +629,8 @@ void Parser::ArrayDecl(std::string l1) {
 				Get();
 				Ident(r1);
 				TRY( factory().setReferenceSlot(sBuff.str(), l2, r1) ) 
-			} else SynErr(66);
-		} else SynErr(67);
+			} else SynErr(65);
+		} else SynErr(66);
 }
 
 void Parser::InstanceDecl(std::string l1) {
@@ -653,7 +646,7 @@ void Parser::InstanceDecl(std::string l1) {
 			}
 			Expect(_RIGHT_CAST);
 		} else if (la->kind == _semicolon) {
-		} else SynErr(68);
+		} else SynErr(67);
 		TRY(factory().addInstance(l1, r1, hash)) 
 }
 
@@ -884,14 +877,13 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 58: s = coco_string_create(L"invalid CPFValue"); break;
 			case 59: s = coco_string_create(L"this symbol not expected in CPTRule"); break;
 			case 60: s = coco_string_create(L"invalid CPTRuleValue"); break;
-			case 61: s = coco_string_create(L"this symbol not expected in AggChains"); break;
-			case 62: s = coco_string_create(L"invalid AggChains"); break;
-			case 63: s = coco_string_create(L"this symbol not expected in AggLabels"); break;
-			case 64: s = coco_string_create(L"invalid AggLabels"); break;
-			case 65: s = coco_string_create(L"invalid NumberList"); break;
+			case 61: s = coco_string_create(L"invalid AggChains"); break;
+			case 62: s = coco_string_create(L"this symbol not expected in AggLabels"); break;
+			case 63: s = coco_string_create(L"invalid AggLabels"); break;
+			case 64: s = coco_string_create(L"invalid NumberList"); break;
+			case 65: s = coco_string_create(L"invalid ArrayDecl"); break;
 			case 66: s = coco_string_create(L"invalid ArrayDecl"); break;
-			case 67: s = coco_string_create(L"invalid ArrayDecl"); break;
-			case 68: s = coco_string_create(L"invalid InstanceDecl"); break;
+			case 67: s = coco_string_create(L"invalid InstanceDecl"); break;
 
 
     default: {

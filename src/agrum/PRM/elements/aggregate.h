@@ -33,6 +33,7 @@
 #include <agrum/multidim/aggregators/max.h>
 #include <agrum/multidim/aggregators/exists.h>
 #include <agrum/multidim/aggregators/forall.h>
+#include <agrum/multidim/aggregators/count.h>
 
 #include <agrum/PRM/elements/classElement.h>
 

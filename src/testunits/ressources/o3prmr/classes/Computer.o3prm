@@ -33,6 +33,7 @@ class Computer implements Equipment {
     boolean functional_printer = exists ( printers.equipState, OK );
     boolean degraded_printer = exists ( printers.equipState, Degraded );
     boolean working_printer = exists ( [functional_printer, degraded_printer], true );
+    mycount count_printers = count ( [functional_printer, degraded_printer], true, mycount );
     t_degraded equipState dependson room.power.state {
       OK:  0.90, 0.09, 0.01;
       NOK: 0.00, 1.00, 0.00;

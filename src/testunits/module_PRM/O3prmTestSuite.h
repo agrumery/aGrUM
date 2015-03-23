@@ -812,7 +812,7 @@ namespace gum_tests {
           TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile(file, package) );
           gum::prm::PRM<double>* prm = reader.prm();
           gum::prm::Class<double>& Computer = prm->getClass( "fr.lip6.printers.Computer" );
-          TS_ASSERT_EQUALS( Computer.attributes().size(), ( gum::Size ) 5 );
+          TS_ASSERT_EQUALS( Computer.attributes().size(), ( gum::Size ) 6 );
           TS_ASSERT_EQUALS( Computer.referenceSlots().size(), ( gum::Size ) 2 );
           TS_ASSERT_EQUALS( Computer.aggregates().size(), ( gum::Size ) 2 );
           TS_ASSERT_EQUALS( Computer.slotChains().size(), ( gum::Size ) 2 );

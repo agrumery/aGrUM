@@ -595,6 +595,33 @@ namespace gum {
           break;
         }
 
+        case Aggregate<GUM_SCALAR>::AggregateType::COUNT: {
+          if( params.size() != 2 ) {
+            GUM_ERROR( OperationNotAllowed, "invalid number of parameters" );
+          }
+
+          Idx label_idx = 0;
+
+          while( label_idx < inputs.front()->type()->domainSize() ) {
+            if( inputs.front()->type()->label( label_idx ) == params.front() ) {
+              break;
+            }
+
+            ++label_idx;
+          }
+
+          if( label_idx == inputs.front()->type()->domainSize() ) {
+            GUM_ERROR( NotFound, "could not find label" );
+          }
+
+          auto output_type = __retrieveType( params[1] );
+
+          // Creating and adding the Aggregate<GUM_SCALAR>
+          agg = new Aggregate<GUM_SCALAR> ( name, Aggregate<GUM_SCALAR>::str2enum( agg_type ), *output_type, label_idx );
+
+          break;
+        }
+
         default: {
           GUM_ERROR( FatalError, "Unknown aggregator." );
         }
@@ -610,7 +637,7 @@ namespace gum {
             c->overload( agg );
           }
         } else {
-          // Inner aggregators can be directly used has attributes
+          // Inner aggregators can be directly used as attributes
           Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR> ( agg->name(), agg->type(), agg->buildImpl() );
 
           try {

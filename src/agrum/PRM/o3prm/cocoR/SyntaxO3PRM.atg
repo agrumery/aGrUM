@@ -500,7 +500,7 @@ CPTRuleValue<. std::string& s .> =
 Aggregate<std::string type, std::string name> =
                     (. std::string func, s; std::vector<std::string> chains, labels; .)
     '=' word        (. func = narrow(t->val); .)
-    '(' AggChains<chains> WEAK ',' AggLabels<labels>
+    '(' AggChains<chains> WEAK ',' AggLabels<labels> { ',' AggLabels<labels> }
     ')'             (. TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) .)
     SYNC ';'
     .
@@ -514,28 +514,23 @@ AggChains<. std::vector<std::string>& chains .> =
           WEAK ',' CastIdent<s>  (. chains.push_back(s); .)
         }
         ']'
-      | '{'                 (. std::string s; .)
-        CastIdent<s>        (. chains.push_back(s); .)
-        {
-          WEAK ',' CastIdent<s>  (. chains.push_back(s); .)
-        }
-        SYNC '}'
       .
 
-AggLabels<. std::vector<std::string>& labels .> =   word            (. labels.push_back(narrow(t->val)); .)
-                                                  | '['
-                                                    word            (. labels.push_back(narrow(t->val)); .)
-                                                    {
-                                                      ',' word      (. labels.push_back(narrow(t->val)); .)
-                                                    }
-                                                    ']'
-                                                  | '{'
-                                                    word            (. labels.push_back(narrow(t->val)); .)
-                                                    {
-                                                      WEAK ',' word      (. labels.push_back(narrow(t->val)); .)
-                                                    }
-                                                    SYNC '}'
-                                                  .
+AggLabels<. std::vector<std::string>& labels .> =
+  word              (. labels.push_back(narrow(t->val)); .)
+  | '['
+    word            (. labels.push_back(narrow(t->val)); .)
+    {
+      ',' word      (. labels.push_back(narrow(t->val)); .)
+    }
+    ']'
+  | '{'
+    word            (. labels.push_back(narrow(t->val)); .)
+    {
+    WEAK ',' word   (. labels.push_back(narrow(t->val)); .)
+    }
+    SYNC '}'
+  .
 
 Functions<std::string type, std::string name> =
                     (. if (type != "boolean") {TRY(throw gum::OperationNotAllowed("noisy-or attributes must be booleans"))} .)
