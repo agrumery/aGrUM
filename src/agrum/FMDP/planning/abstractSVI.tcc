@@ -61,7 +61,7 @@ namespace gum {
 
       GUM_CONSTRUCTOR ( AbstractSVI );
 
-      __threshold = epsilon;
+      __threshold = 0.1;//epsilon;
       _vFunction = nullptr;
       _optimalPolicy = nullptr;
     }
@@ -301,7 +301,7 @@ namespace gum {
 
       // *****************************************************************************************
       // Next to evaluate main value function, we take maximise over all action value, ...
-      _maximiseQactions(qActionsSet);
+      newVFunction = _maximiseQactions(qActionsSet);
 
       // *******************************************************************************************
       // Next, we eval the new function value
@@ -366,12 +366,11 @@ namespace gum {
       // ... we multiply the result by the discount factor, ...
       MultiDimDecisionGraph< GUM_SCALAR >* newVFunction = new MultiDimDecisionGraph<GUM_SCALAR>();
       newVFunction->copyAndMultiplyByScalar ( *Vold, _fmdp->discount() );
+      delete Vold;
 
       // *****************************************************************************************
       // ... and finally add reward
       newVFunction = _add(newVFunction, RECAST( _fmdp->reward() ));
-
-      delete Vold;
 
       return newVFunction;
     }
@@ -417,7 +416,6 @@ namespace gum {
       // *****************************************************************************************
       // Next to evaluate main value function, we take maximise over all action value, ...
       _extractOptimalPolicy ( argMaxVFunction ) ;
-      delete argMaxVFunction;
     }
 
 
@@ -467,12 +465,32 @@ namespace gum {
         NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*currentNode->nodeVar()->domainSize()) );
         for( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda )
           sonsMap[moda] = __recurArgMaxCopy(currentNode->son(moda), actionId, src, argMaxCpy,visitedNodes);
-        nody = argMaxCpy->manager()->checkIsomorphism(currentNode->nodeVar(), sonsMap);
+        nody = argMaxCpy->manager()->nodeRedundancyCheck(currentNode->nodeVar(), sonsMap);
       }
       visitedNodes.insert(currentNodeId, nody);
       return nody;
     }
 
+
+
+    // ===========================================================================
+    // Performs argmax_a Q(s,a)
+    // ===========================================================================
+    template<typename GUM_SCALAR>
+    MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*
+    AbstractSVI<GUM_SCALAR>::_argmaximiseQactions( std::vector<MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*>& qActionsSet) {
+
+      MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* newVFunction = qActionsSet.back();
+      qActionsSet.pop_back();
+
+      while ( !qActionsSet.empty() ) {
+        MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* qAction = qActionsSet.back();
+        qActionsSet.pop_back();
+        newVFunction = _argmaximize ( newVFunction, qAction );
+      }
+
+      return newVFunction;
+    }
 
     // ===========================================================================
     // Creates a copy of given in parameter decision Graph and replaces leaves
@@ -517,7 +535,7 @@ namespace gum {
         NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*currentNode->nodeVar()->domainSize()) );
         for( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda )
           sonsMap[moda] = __recurExtractOptPol(currentNode->son(moda), argMaxOptVFunc, visitedNodes);
-        nody = _optimalPolicy->manager()->checkIsomorphism( currentNode->nodeVar(), sonsMap);
+        nody = _optimalPolicy->manager()->nodeRedundancyCheck( currentNode->nodeVar(), sonsMap);
       }
       visitedNodes.insert(currentNodeId, nody);
       return nody;

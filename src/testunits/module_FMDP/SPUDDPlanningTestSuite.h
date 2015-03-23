@@ -69,7 +69,7 @@ namespace gum_tests {
 
     public:
 
-      void est_Coffee() {
+      void test_Coffee() {
         file = GET_PATH_STR ( "FMDP/coffee/coffee.dat" );
         run ( "Coffee" );
       }
@@ -91,7 +91,7 @@ namespace gum_tests {
       }
 
 
-      void test_Factory() {
+      void est_Factory() {
         file = GET_PATH_STR ( "FMDP/factory/factory.dat" );
         run ( "Factory" );
       }

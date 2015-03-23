@@ -109,6 +109,8 @@ namespace gum {
 
       /// @}
 
+
+
       // ###################################################################
       /// @name Planning Methods
       // ###################################################################
@@ -136,7 +138,9 @@ namespace gum {
         // ==========================================================================
         void makePlanning(Idx nbStep = 1000000);
 
-        /// @}
+      /// @}
+
+
 
       // ###################################################################
       /// @name Value Iteration Methods
@@ -144,7 +148,6 @@ namespace gum {
       /// @{
 
   protected:
-
         // ==========================================================================
         /// Performs a single step of value iteration
         // ==========================================================================
@@ -180,11 +183,13 @@ namespace gum {
         /// Called by the evalQaction.
         // ==========================================================================
         INLINE const DiscreteVariable* _lastVar( const MultiDimDecisionGraph< GUM_SCALAR >* function ){
-          return function->variablesSequence().size() > 0 ? nullptr :
+          return function->variablesSequence().size() == 0 ? nullptr :
               function->variablesSequence().atPos( function->variablesSequence().size() - 1 );
         }
 
       /// @}
+
+
 
       // ###################################################################
       /// @name Optimal policy extraction methods
@@ -192,7 +197,6 @@ namespace gum {
       /// @{
 
   protected:
-
         // ==========================================================================
         /// Perform the required tasks to extract an optimal policy
         // ==========================================================================
@@ -254,6 +258,8 @@ namespace gum {
 
 
       /// @}
+
+
 
       // ###################################################################
       /// @name Graph Function Operations Methods

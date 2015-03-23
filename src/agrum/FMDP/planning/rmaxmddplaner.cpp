@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/FMDP/planning/RMaxMDD.h>
+#include <agrum/FMDP/planning/rmaxmddplaner.h>
 
 
 //template class gum::RMaxMDD<float>;
-template class gum::RMaxMDD<double>;
+template class gum::RMaxMDDPlaner<double>;

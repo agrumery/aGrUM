@@ -433,7 +433,7 @@ namespace gum {
       for( Idx moda = 0; moda < this->_nodeVarMap[currentNodeId]->domainSize(); ++moda )
         sonsMap[moda] = __extractCount(this->_nodeSonsMap[currentNodeId][moda], ret);
 
-      NodeId retn =  ret->manager()->checkIsomorphism(this->_nodeVarMap[currentNodeId], sonsMap);
+      NodeId retn =  ret->manager()->nodeRedundancyCheck(this->_nodeVarMap[currentNodeId], sonsMap);
       return retn;
 
     }
