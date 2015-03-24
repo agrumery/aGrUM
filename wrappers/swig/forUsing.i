@@ -84,3 +84,4 @@ ADD_MULTIDIMDECORATOR_API(gum::UtilityTable<double>)
 %enddef
 ADD_CREDALINFERENCEENGINCE_API(%arg(gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> >))
 ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
+

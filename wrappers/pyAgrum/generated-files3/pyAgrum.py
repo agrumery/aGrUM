@@ -2116,6 +2116,52 @@ class DiGraph(_object):
         """arcs(DiGraph self) -> PyObject *"""
         return _pyAgrum.DiGraph_arcs(self)
 
+    def addNode(self, *args) -> "void" :
+        """
+        addNode(DiGraph self) -> gum::NodeId
+        addNode(DiGraph self, gum::NodeId const id)
+        """
+        return _pyAgrum.DiGraph_addNode(self, *args)
+
+    def existsNode(self, *args) -> "bool" :
+        """existsNode(DiGraph self, gum::NodeId const id) -> bool"""
+        return _pyAgrum.DiGraph_existsNode(self, *args)
+
+    def size(self) -> "gum::Size" :
+        """size(DiGraph self) -> gum::Size"""
+        return _pyAgrum.DiGraph_size(self)
+
+    def empty(self) -> "bool" :
+        """empty(DiGraph self) -> bool"""
+        return _pyAgrum.DiGraph_empty(self)
+
+    def eraseArc(self, *args) -> "void" :
+        """eraseArc(DiGraph self, Arc arc)"""
+        return _pyAgrum.DiGraph_eraseArc(self, *args)
+
+    def existsArc(self, *args) -> "bool" :
+        """
+        existsArc(DiGraph self, Arc arc) -> bool
+        existsArc(DiGraph self, gum::NodeId const tail, gum::NodeId const head) -> bool
+        """
+        return _pyAgrum.DiGraph_existsArc(self, *args)
+
+    def eraseParents(self, *args) -> "void" :
+        """eraseParents(DiGraph self, gum::NodeId const id)"""
+        return _pyAgrum.DiGraph_eraseParents(self, *args)
+
+    def eraseChildren(self, *args) -> "void" :
+        """eraseChildren(DiGraph self, gum::NodeId const id)"""
+        return _pyAgrum.DiGraph_eraseChildren(self, *args)
+
+    def sizeArcs(self) -> "gum::Size" :
+        """sizeArcs(DiGraph self) -> gum::Size"""
+        return _pyAgrum.DiGraph_sizeArcs(self)
+
+    def emptyArcs(self) -> "bool" :
+        """emptyArcs(DiGraph self) -> bool"""
+        return _pyAgrum.DiGraph_emptyArcs(self)
+
 DiGraph_swigregister = _pyAgrum.DiGraph_swigregister
 DiGraph_swigregister(DiGraph)
 
@@ -2218,6 +2264,52 @@ class UndiGraph(_object):
         """edges(UndiGraph self) -> PyObject *"""
         return _pyAgrum.UndiGraph_edges(self)
 
+    def neighbours(self, *args) -> "PyObject *" :
+        """neighbours(UndiGraph self, gum::NodeId id) -> PyObject *"""
+        return _pyAgrum.UndiGraph_neighbours(self, *args)
+
+    def addNode(self, *args) -> "void" :
+        """
+        addNode(UndiGraph self) -> gum::NodeId
+        addNode(UndiGraph self, gum::NodeId const id)
+        """
+        return _pyAgrum.UndiGraph_addNode(self, *args)
+
+    def existsNode(self, *args) -> "bool" :
+        """existsNode(UndiGraph self, gum::NodeId const id) -> bool"""
+        return _pyAgrum.UndiGraph_existsNode(self, *args)
+
+    def size(self) -> "gum::Size" :
+        """size(UndiGraph self) -> gum::Size"""
+        return _pyAgrum.UndiGraph_size(self)
+
+    def empty(self) -> "bool" :
+        """empty(UndiGraph self) -> bool"""
+        return _pyAgrum.UndiGraph_empty(self)
+
+    def eraseEdge(self, *args) -> "void" :
+        """eraseEdge(UndiGraph self, Edge edge)"""
+        return _pyAgrum.UndiGraph_eraseEdge(self, *args)
+
+    def existsEdge(self, *args) -> "bool" :
+        """
+        existsEdge(UndiGraph self, Edge edge) -> bool
+        existsEdge(UndiGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool
+        """
+        return _pyAgrum.UndiGraph_existsEdge(self, *args)
+
+    def sizeEdges(self) -> "gum::Size" :
+        """sizeEdges(UndiGraph self) -> gum::Size"""
+        return _pyAgrum.UndiGraph_sizeEdges(self)
+
+    def emptyEdges(self) -> "bool" :
+        """emptyEdges(UndiGraph self) -> bool"""
+        return _pyAgrum.UndiGraph_emptyEdges(self)
+
+    def eraseNeighbours(self, *args) -> "void" :
+        """eraseNeighbours(UndiGraph self, gum::NodeId const id)"""
+        return _pyAgrum.UndiGraph_eraseNeighbours(self, *args)
+
 UndiGraph_swigregister = _pyAgrum.UndiGraph_swigregister
 UndiGraph_swigregister(UndiGraph)
 
@@ -2280,6 +2372,81 @@ class MixedGraph(UndiGraph,DiGraph):
         """__str__(MixedGraph self) -> std::string const"""
         return _pyAgrum.MixedGraph___str__(self)
 
+    def addNode(self, *args) -> "void" :
+        """
+        addNode(MixedGraph self) -> gum::NodeId
+        addNode(MixedGraph self, gum::NodeId const id)
+        """
+        return _pyAgrum.MixedGraph_addNode(self, *args)
+
+    def existsNode(self, *args) -> "bool" :
+        """existsNode(MixedGraph self, gum::NodeId const id) -> bool"""
+        return _pyAgrum.MixedGraph_existsNode(self, *args)
+
+    def size(self) -> "gum::Size" :
+        """size(MixedGraph self) -> gum::Size"""
+        return _pyAgrum.MixedGraph_size(self)
+
+    def empty(self) -> "bool" :
+        """empty(MixedGraph self) -> bool"""
+        return _pyAgrum.MixedGraph_empty(self)
+
+    def eraseEdge(self, *args) -> "void" :
+        """eraseEdge(MixedGraph self, Edge edge)"""
+        return _pyAgrum.MixedGraph_eraseEdge(self, *args)
+
+    def existsEdge(self, *args) -> "bool" :
+        """
+        existsEdge(MixedGraph self, Edge edge) -> bool
+        existsEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool
+        """
+        return _pyAgrum.MixedGraph_existsEdge(self, *args)
+
+    def sizeEdges(self) -> "gum::Size" :
+        """sizeEdges(MixedGraph self) -> gum::Size"""
+        return _pyAgrum.MixedGraph_sizeEdges(self)
+
+    def emptyEdges(self) -> "bool" :
+        """emptyEdges(MixedGraph self) -> bool"""
+        return _pyAgrum.MixedGraph_emptyEdges(self)
+
+    def eraseNeighbours(self, *args) -> "void" :
+        """eraseNeighbours(MixedGraph self, gum::NodeId const id)"""
+        return _pyAgrum.MixedGraph_eraseNeighbours(self, *args)
+
+    def eraseArc(self, *args) -> "void" :
+        """eraseArc(MixedGraph self, Arc arc)"""
+        return _pyAgrum.MixedGraph_eraseArc(self, *args)
+
+    def existsArc(self, *args) -> "bool" :
+        """
+        existsArc(MixedGraph self, Arc arc) -> bool
+        existsArc(MixedGraph self, gum::NodeId const tail, gum::NodeId const head) -> bool
+        """
+        return _pyAgrum.MixedGraph_existsArc(self, *args)
+
+    def eraseParents(self, *args) -> "void" :
+        """
+        eraseParents(MixedGraph self)
+        eraseParents(MixedGraph self, gum::NodeId const id)
+        """
+        return _pyAgrum.MixedGraph_eraseParents(self, *args)
+
+    def eraseChildren(self, *args) -> "void" :
+        """
+        eraseChildren(MixedGraph self)
+        eraseChildren(MixedGraph self, gum::NodeId const id)
+        """
+        return _pyAgrum.MixedGraph_eraseChildren(self, *args)
+
+    def sizeArcs(self) -> "gum::Size" :
+        """sizeArcs(MixedGraph self) -> gum::Size"""
+        return _pyAgrum.MixedGraph_sizeArcs(self)
+
+    def emptyArcs(self) -> "bool" :
+        """emptyArcs(MixedGraph self) -> bool"""
+        return _pyAgrum.MixedGraph_emptyArcs(self)
+
 MixedGraph_swigregister = _pyAgrum.MixedGraph_swigregister
 MixedGraph_swigregister(MixedGraph)
 
@@ -2319,15 +2486,6 @@ class CliqueGraph(UndiGraph):
     def clearEdges(self) -> "void" :
         """clearEdges(CliqueGraph self)"""
         return _pyAgrum.CliqueGraph_clearEdges(self)
-
-    def addNode(self, *args) -> "void" :
-        """
-        addNode(CliqueGraph self, gum::NodeSet const & clique) -> gum::NodeId
-        addNode(CliqueGraph self) -> gum::NodeId
-        addNode(CliqueGraph self, gum::NodeId const id, gum::NodeSet const & clique)
-        addNode(CliqueGraph self, gum::NodeId const id)
-        """
-        return _pyAgrum.CliqueGraph_addNode(self, *args)
 
     def eraseNode(self, *args) -> "void" :
         """eraseNode(CliqueGraph self, gum::NodeId const node)"""

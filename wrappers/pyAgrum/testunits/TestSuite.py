@@ -9,12 +9,12 @@ import sys
 #sys.path.insert(1,".")
 
 import unittest
-#import SequenceTestSuite
 import VariablesTestSuite
 import BayesNetTestSuite
 import PythonBNListenerTestSuite
 import PotentialTestSuite
 import LazyPropagationTestSuite
+import JunctionTreeTestSuite
 import GibbsTestSuite
 import ICIModelsForBNTestSuite
 import BNLearnerTestSuite   
@@ -27,6 +27,7 @@ tests = unittest.TestSuite([
                             PythonBNListenerTestSuite.ts,
                             PotentialTestSuite.ts,
                             LazyPropagationTestSuite.ts, 
+                            JunctionTreeTestSuite.ts, 
                             GibbsTestSuite.ts,
                             ICIModelsForBNTestSuite.ts,
                             BNLearnerTestSuite.ts

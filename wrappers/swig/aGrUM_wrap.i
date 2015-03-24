@@ -138,9 +138,9 @@
   using gum::NodeGraphPart::empty;
 }
 %enddef
-ADD_NODEGRAPHPART_API(DiGraph)
-ADD_NODEGRAPHPART_API(UndiGraph)
-ADD_NODEGRAPHPART_API(MixedGraph)
+ADD_NODEGRAPHPART_API(gum::DiGraph)
+ADD_NODEGRAPHPART_API(gum::UndiGraph)
+ADD_NODEGRAPHPART_API(gum::MixedGraph)
 
 %define ADD_EDGEGRAPHPART_API(classname)
 %extend classname {
@@ -150,10 +150,11 @@ ADD_NODEGRAPHPART_API(MixedGraph)
   using gum::EdgeGraphPart::eraseChildren;
   using gum::EdgeGraphPart::sizeEdges;
   using gum::EdgeGraphPart::emptyEdges;
+  using gum::EdgeGraphPart::eraseNeighbours;
 }
 %enddef
-ADD_EDGEGRAPHPART_API(UndiGraph)
-ADD_EDGEGRAPHPART_API(MixedGraph)
+ADD_EDGEGRAPHPART_API(gum::UndiGraph)
+ADD_EDGEGRAPHPART_API(gum::MixedGraph)
 
 %define ADD_ARCGRAPHPART_API(classname) 
 %extend classname {
@@ -165,8 +166,8 @@ ADD_EDGEGRAPHPART_API(MixedGraph)
   using gum::ArcGraphPart::emptyArcs;
 }
 %enddef
-ADD_ARCGRAPHPART_API(DiGraph);
-ADD_ARCGRAPHPART_API(MixedGraph);
+ADD_ARCGRAPHPART_API(gum::DiGraph);
+ADD_ARCGRAPHPART_API(gum::MixedGraph);
 
 
 
