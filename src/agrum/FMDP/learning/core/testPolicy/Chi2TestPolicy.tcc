@@ -54,13 +54,13 @@ namespace gum {
     // Computes the GStat of current variable according to the test
     // ============================================================================
     template < typename GUM_SCALAR >
-    void Chi2TestPolicy<GUM_SCALAR>::computeScore(){
+    void Chi2TestPolicy<GUM_SCALAR>::computeScore() const {
       ITestPolicy<GUM_SCALAR>::computeScore();
       __chi2Score = 0;
-      for ( auto attrIter = __conTab.aBeginSafe(); attrIter != __conTab.aEndSafe(); ++attrIter ){
+      for ( auto attrIter = __conTab.attrABeginSafe(); attrIter != __conTab.attrAEndSafe(); ++attrIter ){
         double semiExpected = (double)(attrIter.val())/(double)this->nbObservation();
-        for ( auto valIter = __conTab.vBeginSafe(); valIter != __conTab.vEndSafe(); ++valIter ) {
-          double cell = (double)__conTab.joint(attrIter.val(),valIter.val());
+        for ( auto valIter = __conTab.attrBBeginSafe(); valIter != __conTab.attrBEndSafe(); ++valIter ) {
+          double cell = (double)__conTab.joint(attrIter.key(),valIter.key());
           if( cell < 5 )
             continue;
           double expected = semiExpected*(double)(valIter.val());
@@ -74,7 +74,7 @@ namespace gum {
     // Returns the performance of current variable according to the test
     // ============================================================================
     template < typename GUM_SCALAR >
-    double Chi2TestPolicy<GUM_SCALAR>::score(){
+    double Chi2TestPolicy<GUM_SCALAR>::score() const {
       if( this->isModified() )
         computeScore();
       double score = 1 - ChiSquare::probaChi2(__chi2Score, (__conTab.attrASize()-1)*(__conTab.attrBSize()-1));
@@ -85,7 +85,7 @@ namespace gum {
     // Returns a second criterion to severe ties
     // ============================================================================
     template < typename GUM_SCALAR >
-    double Chi2TestPolicy<GUM_SCALAR>::secondaryscore(){
+    double Chi2TestPolicy<GUM_SCALAR>::secondaryscore() const {
       if( this->isModified() )
         computeScore();
       return __chi2Score;

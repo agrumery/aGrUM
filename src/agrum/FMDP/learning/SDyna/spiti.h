@@ -19,22 +19,19 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the SPIMDDI class.
+ * @brief Headers of the SPITI class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 // =========================================================================
-#ifndef GUM_SPIMDDI_H
-#define GUM_SPIMDDI_H
+#ifndef GUM_SPITI_H
+#define GUM_SPITI_H
 // =========================================================================
-#include <agrum/core/hashTable.h>
-// =========================================================================
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
-#include <agrum/FMDP/planning/spumdd.h>
+#include <agrum/FMDP/planning/svi.h>
 #include <agrum/FMDP/learning/FMDPLearner.h>
-#include <agrum/FMDP/learning/observation.h>
 #include <agrum/FMDP/learning/core/templateStrategy.h>
+#include <agrum/FMDP/learning/SDyna/sdyna.h>
 // =========================================================================
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimDecisionGraph.h>
@@ -45,15 +42,14 @@
 namespace gum {
 
   /**
-   * @class SPIMDDI spimddi.h <agrum/FMDP/learning/spimddi.h>
+   * @class SPITI SPITI.h <agrum/FMDP/learning/SPITI.h>
    * @brief
    * @ingroup fmdp_group
    *
    *
    *
    */
-
-  class SPIMDDI {
+  class SPITI : public SDYNA {
 
     public:
 
@@ -61,135 +57,184 @@ namespace gum {
       /// @name Constructor & destructor.
       // ###################################################################
       /// @{
+    public:
+
 
         // ==========================================================================
-        /// Default constructor
+        /**
+         * Constructor
+         * @param observationPhaseLenght : see SDYNA
+         * @param nbValueIterationStep : see SDYNA
+         * @param discountFactor : the \gamma used for the plannings
+         * @param epsilon : the epsilon under which we consider V to be \epsilon-optimal
+         * @param learningThreshold : threshold under which a variable is not install
+         * on a node
+         * @param similarityThreshold : threshold above which two leaves won't be merged
+         * @param exploThreshold : threshold under which we explore another action than
+         * the optimal one
+         */
         // ==========================================================================
-        SPIMDDI (double discountFactor = 0.75,
+        SPITI (Idx observationPhaseLenght = 100,
+                 Idx nbValueIterationStep = 10,
+                 double discountFactor = 0.9,
                  double epsilon = 0.0001,
                  double learningThreshold = 0.95,
                  double similarityThreshold = 0.75,
-                 Idx observationPhaseLenght = 100,
-                 Idx nbValueIterationStep = 10,
                  double exploThreshold = 0.1);
 
-        // ###################################################################
-        /// Default destructor
-        // ###################################################################
-        ~SPIMDDI ();
+        // ==========================================================================
+        /// Destructor
+        // ==========================================================================
+        ~SPITI ();
 
       /// @}
 
-      // ==========================================================================
-      /// @name
-      // ==========================================================================
+      // ###################################################################
+      /// @name Problem specification methods
+      // ###################################################################
       /// @{
+    public:
 
-        // ###################################################################
-        ///
-        // ###################################################################
+        // ==========================================================================
+        /**
+         * Inserts a new action in the SPITI.
+         * @warning Without effect until method initialize is called
+         * @param actionId : an id to identify the action
+         * @param actionName : its humanly understandable name
+         */
+        // ==========================================================================
         void addAction(const Idx actionId, const std::string &actionName );
 
-        // ###################################################################
-        ///
-        // ###################################################################
+        // ==========================================================================
+        /**
+         * Inserts a new variable in the SDyna instance.
+         * @warning Without effect until method initialize is called
+         * @param var : the var to be added.
+         * Note that variable may or may not have all its modalities given.
+         * If not they will be discovered by the SDyna architecture during the process
+         */
+        // ==========================================================================
         void addVariable( const DiscreteVariable* var );
-//        void addReward( double );
 
       /// @}
 
-      // ==========================================================================
-      /// @name
-      // ==========================================================================
+      // ###################################################################
+      /// @name Initialization
+      // ###################################################################
       /// @{
+    public:
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        void initialize(const Instantiation& initialState);
-
-        // ###################################################################
-        ///
-        // ###################################################################
+        // ==========================================================================
+        /**
+         * Initializes the Sdyna instance internal satastructure; i.e. the planer and
+         * the learner.
+         */
+        // ==========================================================================
         void initialize();
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        INLINE void setCurrentState( const Instantiation&  currentState ) { __lastState = currentState; }
+      /// @}
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        void feedback(const Instantiation &, double );
-        void feedback(const Instantiation &, const Instantiation&, Idx, double );
-
-        // ###################################################################
-        ///
-        // ###################################################################
-        Idx takeAction();
-        Idx takeAction( const Instantiation& );
-
-      /// @}        
 
       // ###################################################################
-      /// Returns a string describing the learned FMDP, and the associated
-      /// optimal policy.
-      /// Both as describing using DOT language.
+      /// @name Incremental methods
       // ###################################################################
+      /// @{
+
+    protected :
+        // ==========================================================================
+        /**
+         * @param the state in which we currently are
+         * @return a set containing every optimal actions on that state
+         */
+        // ==========================================================================
+        ActionSet _stateActionSet(const Instantiation&);
+
+        // ==========================================================================
+        /**
+         * Gives to the learner a new transition
+         * @param actionId : the action on which the transition was made
+         * @param obs : the observed transition
+         * @return true if learning this transition implies structural changes
+         * (can trigger a new planning)
+         */
+        // ==========================================================================
+        bool _learnTransition( Idx actionId, const Observation* obs );
+
+
+        // ==========================================================================
+        /**
+         * Starts a new planning
+         * @param Idx : the maximal number of value iteration performed in this planning
+         */
+        // ==========================================================================
+        void _makePlanning( Idx );
+
+      /// @}
+
+
+    public:
+
+      // ==========================================================================
+      /**
+       * Returns
+       * @return a string describing the learned FMDP, and the associated
+       * optimal policy.
+       * Both in DOT language.
+       */
+      // ==========================================================================
       std::string toString();
 
-      Size learnerSize() { return __learner->size(); }
 
-      Size modelSize() { return __fmdp->size(); }
+      // ###################################################################
+      /// @name Size methods
+      /// @brief just to get the size of the different data structure for
+      /// performance evaluation purposes only
+      // ###################################################################
+      /// @{
+    public:
 
-      Size valueFunctionSize() { return __planer->vFunction()->realSize(); }
+        // ==========================================================================
+        /**
+         * @brief learnerSize
+         * @return
+         */
+        // ==========================================================================
+        virtual Size learnerSize() {return __learner->size();}
 
-      Size optimalPolicySize() { return __planer->optimalPolicy()->realSize(); }
+        // ==========================================================================
+        /**
+         * @brief valueFunctionSize
+         * @return
+         */
+        // ==========================================================================
+      virtual Size valueFunctionSize() {return __planer->vFunction()->realSize();}
 
-      MultiDimDecisionGraph<double>* extractCount(Idx actionId, const DiscreteVariable* var){
-        return __learner->extractCount(actionId, var); }
+        // ==========================================================================
+        /**
+         * @brief optimalPolicySize
+         * @return
+         */
+        // ==========================================================================
+        virtual Size optimalPolicySize() {return __planer->optimalPolicy()->realSize();}
 
-      double rMax(){ return __rmax; }
+      /// @}
 
 
     private :
 
-      /// The learnt Markovian Decision Process
-      FactoredMarkovDecisionProcess<double>* __fmdp;
-
       /// The model learner.
       /// It will handle by itself the different decision graph learners
       /// needed to learn the FMDP
-      FMDPLearner<GTEST, GTEST, IMDDILEARNER>* __learner;
-
-//      LabelizedVariable* __rewardVar;
-//      Bijection<double,Idx> __rewardValue2Idx;
+      FMDPLearner<CHI2TEST, CHI2TEST, ITILEARNER>* __learner;
 
       /// The planer we use to find the optimal policy
-      SPUMDD<double>* __planer;
-      double __rmax;
-
-      /// The number of observation we make before using again the planer
-      Idx __observationPhaseLenght;
-
-      /// The total number of observation made so far
-      Idx __nbObservation;
-
-      /// The number of Value Iteration step we perform
-      Idx __nbValueIterationStep;
+      SVI<double>* __planer;
 
       /// Threshold under which we perform a random action instead of exploiting the optimal one
       double __exploThreshold;
 
-      Sequence<Idx> __actionSeq;
-
-      /// The state in which the system is before we perform a new action
-      Instantiation __lastState;
-      Idx __lastAction;
-
-      /// Since SPIMMDI made these observation, it has to delete them on quitting
-      Set<Observation*> __bin;
+      /// The action set to return on exploring
+      ActionSet __explorething;
 
   };
 
@@ -197,7 +242,7 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif // GUM_SPIMDDI_H
+#endif // GUM_SPITI_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

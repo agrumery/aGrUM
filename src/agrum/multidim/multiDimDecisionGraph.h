@@ -350,6 +350,8 @@ namespace gum {
       // ============================================================================
       void setTableName(const std::string& name) { __tableName = name;}
 
+      virtual GUM_SCALAR get ( const Instantiation& i ) const ;
+
 
     protected:
 
@@ -374,7 +376,9 @@ namespace gum {
         * @param i The instantiation used to find the data.
         */
         // ============================================================================
-        GUM_SCALAR& _get(const Instantiation &inst ) const;
+        GUM_SCALAR& _get(const Instantiation &inst ) const {
+          GUM_ERROR(OperationNotAllowed, "You can't edit a function by other mean than the manager");
+        }
 
 
     private:
@@ -412,11 +416,6 @@ namespace gum {
       /// Mapping between var and node
       // ============================================================================
       HashTable< const DiscreteVariable*, LinkedList<NodeId>* > __var2NodeIdMap;
-
-      // ============================================================================
-      /// So to avoid any difficulites with get
-      // ============================================================================
-      mutable GUM_SCALAR __getRet;
 
 
       /// @}

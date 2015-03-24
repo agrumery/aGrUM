@@ -159,13 +159,13 @@ namespace gum {
         // ###################################################################
         ///
         // ###################################################################
-        /*double* effectif();
-
-        double reward();*/
 
         Idx effectif(Idx moda) const { return __valueCount.exists(moda)?__valueCount[moda]:0; }
 
-        Idx valueDomain() const { return __value->domainSize(); }
+        Idx valueDomain() const { return __valueDomain(Int2Type<isScalar>()); }
+    private:
+        Idx __valueDomain( Int2Type<true> ) const { return __valueCount.size(); }
+        Idx __valueDomain( Int2Type<false> ) const {return __value->domainSize(); }
 
         std::string toString() const;
 
@@ -179,6 +179,8 @@ namespace gum {
 
       ///
       Idx __nbObservation;
+
+      ///
       HashTable<ValueType,Idx> __valueCount;
   };
 

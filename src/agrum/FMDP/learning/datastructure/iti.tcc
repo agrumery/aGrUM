@@ -43,42 +43,82 @@ namespace gum {
   // ==========================================================================
   /// @name Constructor & destructor.
   // ==========================================================================
-  /// @{
 
     // ###################################################################
-    /// Variable Learner constructor
-    // ###################################################################
-  template <TESTNAME AttributeSelection, bool isScalar >
-    ITI<AttributeSelection, isScalar>::ITI ( MultiDimDecisionGraph<double>* target,
-            double attributeSelectionThreshold,
-            Set<const DiscreteVariable*> attributeListe,
-            const DiscreteVariable* learnedValue ) : IncrementalGraphLearner<AttributeSelection, isScalar>( target, attributeListe, learnedValue),
-                                                     __nbTotalObservation(0),
-                                                     __attributeSelectionThreshold(attributeSelectionThreshold)
-    {GUM_CONSTRUCTOR(ITI);}
-
-    // ###################################################################
-    /// Reward Learner constructor
+    /**
+     * ITI constructor for functions describing the behaviour of one variable
+     * according to a set of other variable such as conditionnal probabilities
+     * @param target : the MultiDimDecisionGraph in which we load the structure
+     * @param attributeSelectionThreshold : threshold under which a node is not
+     * installed (pe-pruning)
+     * @param temporaryAPIfix : Issue in API in regard to IMDDI
+     * @param attributeListe : Set of vars on which we rely to explain the
+     * behaviour of learned variable
+     * @param learnedValue : the variable from which we try to learn the behaviour
+     */
     // ###################################################################
     template <TESTNAME AttributeSelection, bool isScalar >
     ITI<AttributeSelection, isScalar>::ITI ( MultiDimDecisionGraph<double>* target,
             double attributeSelectionThreshold,
-            Set<const DiscreteVariable*> attributeListe ) : IncrementalGraphLearner<AttributeSelection, isScalar>( target, attributeListe, new LabelizedVariable() ),
+            double temporaryAPIfix,
+            Set<const DiscreteVariable*> attributeListe,
+            const DiscreteVariable* learnedValue ) : IncrementalGraphLearner<AttributeSelection, isScalar>( target, attributeListe, learnedValue),
+                                                     __nbTotalObservation(0),
+                                                     __attributeSelectionThreshold(attributeSelectionThreshold){
+      GUM_CONSTRUCTOR(ITI);
+      __staleTable.insert(this->_root, false);
+    }
+
+    // ###################################################################
+    /**
+     * ITI constructeur for real functions. We try to predict the output of a
+     * function f given a set of variable
+     * @param target : the MultiDimDecisionGraph in which we load the structure
+     * @param attributeSelectionThreshold : threshold under which a node is not
+     * installed (pe-pruning)
+     * @param temporaryAPIfix : Issue in API in regard to IMDDI
+     * @param attributeListeSet of vars on which we rely to explain the
+     * behaviour of learned function
+     */
+    // ###################################################################
+    template <TESTNAME AttributeSelection, bool isScalar >
+    ITI<AttributeSelection, isScalar>::ITI ( MultiDimDecisionGraph<double>* target,
+            double attributeSelectionThreshold,
+            double temporaryAPIfix,
+            Set<const DiscreteVariable*> attributeListe ) : IncrementalGraphLearner<AttributeSelection, isScalar>( target,
+                                                                                                                   attributeListe,
+                                                                                                                   new LabelizedVariable("Reward", "", 2) ),
                                                             __nbTotalObservation(0),
-                                                            __attributeSelectionThreshold(attributeSelectionThreshold)
-    {GUM_CONSTRUCTOR(ITI);}
+                                                            __attributeSelectionThreshold(attributeSelectionThreshold){
+      GUM_CONSTRUCTOR(ITI);
+      __staleTable.insert(this->_root, false);
+    }
 
 
 
-  // ############################################################################
-  // Incrementals methods
-  // ############################################################################
+  // ==========================================================================
+  /// @name New Observation insertion methods
+  // ==========================================================================
+
+    // ############################################################################
+    /**
+     * Inserts a new observation
+     * @param the new observation to learn
+     */
+    // ############################################################################
     template <TESTNAME AttributeSelection, bool isScalar >
     void ITI<AttributeSelection, isScalar>::addObservation ( const Observation* obs ){
       __nbTotalObservation++;
       IncrementalGraphLearner<AttributeSelection, isScalar>::addObservation(obs);
     }
 
+    // ############################################################################
+    /**
+     * Will update internal graph's NodeDatabase of given node with the new observation
+     * @param newObs
+     * @param currentNodeId
+     */
+    // ############################################################################
     template <TESTNAME AttributeSelection, bool isScalar >
     void ITI<AttributeSelection, isScalar>::_updateNodeWithObservation( const Observation* newObs, NodeId currentNodeId ){
        IncrementalGraphLearner<AttributeSelection, isScalar>::_updateNodeWithObservation( newObs, currentNodeId );
@@ -86,16 +126,21 @@ namespace gum {
     }
 
 
-    // ============================================================================
-    // Updates the tree after a new observation has been added
-    // ============================================================================
+
+  // ============================================================================
+  /// @name Graph Structure update methods
+  // ============================================================================
+
+    // ############################################################################
+    /// Updates the internal graph after a new observation has been added
+    // ############################################################################
     template <TESTNAME AttributeSelection, bool isScalar >
     void ITI<AttributeSelection, isScalar>::updateGraph(){
 
       std::vector<NodeId> filo;
-      filo.push_back( _root );
+      filo.push_back( this->_root );
       HashTable<NodeId, Set<const DiscreteVariable*>* > potentialVars;
-      potentialVars.insert( _root, new Set<const DiscreteVariable*>(_setOfVars));
+      potentialVars.insert( this->_root, new Set<const DiscreteVariable*>(this->_setOfVars));
 
 
       while( !filo.empty() ){
@@ -108,8 +153,8 @@ namespace gum {
         Set<const DiscreteVariable*> bestVars;
 
         for( auto varIter = potentialVars[currentNodeId]->cbeginSafe(); varIter != potentialVars[currentNodeId]->cendSafe(); ++varIter )
-          if( _nodeId2Database[currentNodeId]->isTestRelevant() ){
-            double varValue = _nodeId2Database[currentNodeId]->testValue();
+          if( this->_nodeId2Database[currentNodeId]->isTestRelevant(*varIter) ){
+            double varValue = this->_nodeId2Database[currentNodeId]->testValue(*varIter);
             if( varValue >= bestValue ) {
               if( varValue > bestValue ){
                 bestValue = varValue;
@@ -120,14 +165,14 @@ namespace gum {
           }
 
         // Then We installed Variable a test on that node
-        _updateNode( currentNodeId, bestVars );
+        this->_updateNode( currentNodeId, bestVars );
 
         // The we move on the children if needed
-        if( _nodeVarMap[currentNodeId] != _value ) {
-          Set<const DiscreteVariable* >* itsPotentialVars = new Set<const DiscreteVariable*>(potentialVars[currentNodeId]);
-          itsPotentialVars >> _nodeVarMap[currentNodeId];
-          for(Idx moda = 0; moda < _nodeVarMap[currentNodeId]->domainSize(); moda++ ){
-            NodeId sonId = _nodeSonsMap[currentNodeId][moda];
+        if( this->_nodeVarMap[currentNodeId] != this->_value ) {
+          for(Idx moda = 0; moda < this->_nodeVarMap[currentNodeId]->domainSize(); moda++ ){
+            Set<const DiscreteVariable* >* itsPotentialVars = new Set<const DiscreteVariable*>(*potentialVars[currentNodeId]);
+            itsPotentialVars->erase( this->_nodeVarMap[currentNodeId] );
+            NodeId sonId = this->_nodeSonsMap[currentNodeId][moda];
             if( __staleTable[sonId] ) {
                 filo.push_back( sonId );
                 potentialVars.insert( sonId, itsPotentialVars);
@@ -135,39 +180,51 @@ namespace gum {
           }
         }
       }
-      for( auto nodeIter = potentialVars.beginSafe(); nodeIter != potentialVars.endSafe(); ++nodeIter )
-        if( nodeIter.val() )
-          delete nodeIter.val();
+
+      for( HashTableIteratorSafe<NodeId, Set<const DiscreteVariable*>* > nodeIter = potentialVars.beginSafe();
+           nodeIter != potentialVars.endSafe(); ++nodeIter )
+        delete nodeIter.val();
     }
 
 
-
-    // ============================================================================
-    // Insert a new node with given associated database, var and maybe sons
-    // ============================================================================
+    // ############################################################################
+    /**
+     * inserts a new node in internal graohs
+     * @param nDB : the associated database
+     * @param boundVar : the associated variable
+     * @return the newly created node's id
+     */
+    // ############################################################################
     template < TESTNAME AttributeSelection, bool isScalar >
-    NodeId ITI<AttributeSelection, isScalar>::_insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB, const DiscreteVariable* boundVar, NodeId* sonsMap ){
-      NodeId n = IncrementalGraphLearner<AttributeSelection, isScalar>::_insertNode(nDB, boundVar, sonsMap);
-      __staleTable.insert(n, true);      
+    NodeId ITI<AttributeSelection, isScalar>::_insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB, const DiscreteVariable* boundVar ){
+      NodeId n = IncrementalGraphLearner<AttributeSelection, isScalar>::_insertNode(nDB, boundVar);
+      __staleTable.insert(n, true);
       return n;
     }
 
 
-
-    // ============================================================================
-    // Changes var associated to a node
-    // ============================================================================
+    // ############################################################################
+    /**
+     * Changes the associated variable of a node
+     * @param chgedNodeId : the node to change
+     * @param desiredVar : its new associated variable
+     */
+    // ############################################################################
     template < TESTNAME AttributeSelection, bool isScalar >
     void ITI<AttributeSelection, isScalar>::_chgNodeBoundVar( NodeId currentNodeId, const DiscreteVariable* desiredVar ){
-      IncrementalGraphLearner<AttributeSelection, isScalar>::_chgNodeBoundVar( currentNodeId, desiredVar );
-      __staleTable[currentNodeId] = true;
+      if(this->_nodeVarMap[currentNodeId] != desiredVar){
+        __staleTable[currentNodeId] = true;
+        IncrementalGraphLearner<AttributeSelection, isScalar>::_chgNodeBoundVar( currentNodeId, desiredVar );
+      }
     }
 
 
-
-    // ============================================================================
-    // Remove node from graph
-    // ============================================================================
+    // ############################################################################
+    /**
+     * Removes a node from the internal graph
+     * @param removedNodeId : the node to remove
+     */
+    // ############################################################################
     template < TESTNAME AttributeSelection, bool isScalar >
     void ITI<AttributeSelection, isScalar>::_removeNode( NodeId currentNodeId ){
       IncrementalGraphLearner<AttributeSelection, isScalar>::_removeNode( currentNodeId );
@@ -176,91 +233,100 @@ namespace gum {
 
 
 
-  // ############################################################################
-  // Updating methods
-  // ############################################################################
+  // ============================================================================
+  /// @name Decision Graph Updating methods
+  // ============================================================================
 
-
-    // ============================================================================
-    // Computes the Reduced and Ordered Decision Graph  associated to this ordered tree
-    // ============================================================================
+    // ############################################################################
+    /// Updates target to currently learned graph structure
+    // ############################################################################
     template <TESTNAME AttributeSelection, bool isScalar >
     void ITI<AttributeSelection, isScalar>::updateDecisionGraph(){
 
-      _target->clear();
-
-      __insertNodeInDecisionGraph( _root );
-
-      if( _nodeVarMap[_root] == _value )
-        return;
-
-      std::vector<NodeId> filo;
-      filo.push_back( _root );
-      HashTable<NodeId,NodeId> toTarget;
-
-      while(!filo.empty()){
-
-        NodeId currentNode = filo.back();
-        filo.pop_back();
-
-        for(Idx moda = 0; moda < _nodeVarMap[currentNode]->domainSize(); moda++ ){
-          NodeId sonId = _nodeSonsMap[currentNode][moda];
-          toTarget.insert( sonId, __insertNodeInDecisionGraph( sonId ) );
-          _target->manager()->setSon(toTarget(currentNode), moda, toTarget(sonId) );
-          if( _nodeVarMap[sonId] != _value )
-            filo.push_back(_nodeSonsMap[currentNode][moda]);
-        }
-      }
-
-
+      this->_target->clear();
+      this->_target->manager()->setRootNode( this->__insertNodeInDecisionGraph(this->_root) );
     }
 
 
-    // ============================================================================
-    // Computes the Reduced and Ordered Decision Graph  associated to this ordered tree
-    // ============================================================================
+    // ############################################################################
+    /**
+     * Inserts an internal node in the target
+     * @param the source node in internal graph
+     * @return the mathcing node id in the target
+     */
+    // ############################################################################
     template <TESTNAME AttributeSelection, bool isScalar >
     NodeId ITI<AttributeSelection, isScalar>::__insertNodeInDecisionGraph( NodeId currentNodeId ){
 
-      if( _nodeVarMap[currentNodeId] == _value )
-        return __insertTerminalNode(currentNodeId);
+      if( this->_nodeVarMap[currentNodeId] == this->_value ){
+        NodeId nody =  __insertTerminalNode(currentNodeId);
+        return nody;
+      }
 
-      if( !_target->variablesSequence().exists(_nodeVarMap[currentNodeId]))
-        _target->add(*(_nodeVarMap[currentNodeId]));
-      return _target->manager()->addNonTerminalNode( _nodeVarMap[currentNodeId] );
+      if( !this->_target->variablesSequence().exists(this->_nodeVarMap[currentNodeId])){
+        this->_target->add(*(this->_nodeVarMap[currentNodeId]));
+      }
+
+      NodeId nody = this->_target->manager()->addNonTerminalNode( this->_nodeVarMap[currentNodeId] );
+      for( Idx moda = 0; moda < this->_nodeVarMap[currentNodeId]->domainSize(); ++moda ){
+        NodeId son = this->__insertNodeInDecisionGraph( this->_nodeSonsMap[currentNodeId][moda] );
+        this->_target->manager()->setSon(nody,moda, son);
+      }
+
+      return nody;
     }
 
 
-    // ============================================================================
-    // Computes the Reduced and Ordered Decision Graph  associated to this ordered tree
-    // ============================================================================
-    template <TESTNAME AttributeSelection, bool isScalar >
-    NodeId ITI<AttributeSelection, isScalar>::__insertTerminalNode( NodeId currentNodeId ){
-      __insertTerminalNode(currentNodeId, Int2Type<isScalar>());
-    }
-
-
-    // ============================================================================
-    // Computes the Reduced and Ordered Decision Graph  associated to this ordered tree
-    // ============================================================================
+    // ############################################################################
+    /**
+     * Insert a terminal node in the target.
+     * This function is called if we're learning a real value function.
+     * Inserts then a single value in target.
+     * @param the source node in the learned graph
+     * @return the matching node in the target
+     */
+    // ############################################################################
     template <TESTNAME AttributeSelection, bool isScalar >
     NodeId ITI<AttributeSelection, isScalar>::__insertTerminalNode( NodeId currentNodeId, Int2Type<false> ){
 
-      double* probDist = _nodeId2Database[currentNodeId]->effectif();
-      double tot = _nodeId2Database[currentNodeId]->nbObservation();
-      NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*__value->domainSize()) );
-      for(Idx modality = 0; modality < _value->domainSize(); ++modality )
-        sonsMap[modality] = _target->manager()->addTerminalNode( probDist[modality]/tot );
-      MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( probDist, sizeof(GUM_SCALAR)*_value->domainSize());
-      return _target->manager()->addNonTerminalNode( _value, sonsMap );
+
+      if( !this->_target->variablesSequence().exists(this->_value))
+        this->_target->add(*(this->_value));
+
+      double tot = this->_nodeId2Database[currentNodeId]->nbObservation();
+      if(!tot)
+        return this->_target->manager()->addTerminalNode(0.0);
+
+      NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*this->_value->domainSize()) );
+      for(Idx modality = 0; modality < this->_value->domainSize(); ++modality ){
+        double newVal = 0.0;
+          newVal = (double) this->_nodeId2Database[currentNodeId]->effectif(modality) / (double) tot;
+        sonsMap[modality] = this->_target->manager()->addTerminalNode( newVal );
+      }
+      NodeId nody = this->_target->manager()->addNonTerminalNode( this->_value, sonsMap );
+      return nody;
     }
 
 
-    // ============================================================================
-    // Computes the Reduced and Ordered Decision Graph  associated to this ordered tree
-    // ============================================================================
+    // ############################################################################
+    /**
+     * Insert a terminal node in the target.
+     * This function is called if we're learning the behaviour of a variable.
+     * Inserts then this variable and the relevant value beneath into target.
+     * @param the source node in the learned graph
+     * @return the matching node in the target
+     */
+    // ############################################################################
     template <TESTNAME AttributeSelection, bool isScalar >
     NodeId ITI<AttributeSelection, isScalar>::__insertTerminalNode( NodeId currentNodeId, Int2Type<true> ){
-      return _target->manager()->addTerminalNode( _nodeId2Database[currentNodeId]->reward() );
+      double value = 0.0;
+      for( auto valIter = this->_nodeId2Database[currentNodeId]->cbeginValues();
+           valIter != this->_nodeId2Database[currentNodeId]->cendValues(); ++valIter ){
+        value += (double) valIter.key()*valIter.val();
+      }
+      if( this->_nodeId2Database[currentNodeId]->nbObservation() )
+        value /= (double) this->_nodeId2Database[currentNodeId]->nbObservation();
+      NodeId nody =  this->_target->manager()->addTerminalNode( value );
+      return nody;
     }
 } // end gum namespace

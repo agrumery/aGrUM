@@ -28,16 +28,11 @@
 #ifndef GUM_SDYNA_H
 #define GUM_SDYNA_H
 // =========================================================================
-#include <agrum/core/hashTable.h>
-// =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
-#include <agrum/FMDP/planning/spumdd.h>
-#include <agrum/FMDP/learning/FMDPLearner.h>
 #include <agrum/FMDP/learning/observation.h>
-#include <agrum/FMDP/learning/core/templateStrategy.h>
+#include <agrum/FMDP/planning/actionSet.h>
 // =========================================================================
 #include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/multiDimDecisionGraph.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
@@ -56,9 +51,9 @@ namespace gum {
 
   class SDYNA {
 
-      // ==========================================================================
+      // ###################################################################
       /// @name Constructor & destructor.
-      // ==========================================================================
+      // ###################################################################
       /// @{    
     public:
 
@@ -71,15 +66,12 @@ namespace gum {
          * change.
          * @param nbValueIterationStep : the number of value iteration done during
          * one planning
-         * @param discountFactor : the \gamma used for the plannings
-         * @param epsilon : the epsilon under which we consider V to be \epsilon-optimal
          * @return an instance of SDyna architecture
          */
         // ==========================================================================
         SDYNA (Idx observationPhaseLenght = 100,
                Idx nbValueIterationStep = 10,
-               double discountFactor = 0.9,
-               double epsilon = 0.0001);
+               double discountFactor = 0.9);
 
         // ==========================================================================
         /// Destructor
@@ -159,7 +151,7 @@ namespace gum {
          * @param currentState : the state
          */
         // ==========================================================================
-        void setCurrentState( const Instantiation&  currentState ) { __lastState = currentState; }
+        void setCurrentState( const Instantiation&  currentState ) { _lastState = currentState; }
 
         // ==========================================================================
         /**
@@ -183,7 +175,7 @@ namespace gum {
          * @return a set containing every optimal actions on that state
          */
         // ==========================================================================
-        virtual const ActionSet& _stateActionSet(const Instantiation&) = 0;
+        virtual ActionSet _stateActionSet(const Instantiation&) = 0;
 
     public :
         // ==========================================================================
@@ -233,6 +225,8 @@ namespace gum {
         virtual void _makePlanning( Idx ) = 0;
 
       /// @}
+
+
     public:
 
       // ==========================================================================
@@ -254,50 +248,49 @@ namespace gum {
       /// @{
     public:
 
+        // ==========================================================================
         /**
-        /** * @brief learnerSize
-        /** * @return
-        /** */
+         * @brief learnerSize
+         * @return
+         */
+        // ==========================================================================
         virtual Size learnerSize() = 0;
 
+        // ==========================================================================
         /**
-        /** * @brief modelSize
-        /** * @return
-        /** */
-        Size modelSize() { return __fmdp->size(); }
+         * @brief modelSize
+         * @return
+         */
+        // ==========================================================================
+        Size modelSize() { return _fmdp->size(); }
 
+        // ==========================================================================
         /**
-        /** * @brief valueFunctionSize
-        /** * @return
-        /** */
+         * @brief valueFunctionSize
+         * @return
+         */
+        // ==========================================================================
         virtual Size valueFunctionSize() = 0;
 
+        // ==========================================================================
         /**
-        /** * @brief optimalPolicySize
-        /** * @return
-        /** */
+         * @brief optimalPolicySize
+         * @return
+         */
+        // ==========================================================================
         virtual Size optimalPolicySize() = 0;
 
       /// @}
 
-//      /**
-//      /** * @brief extractCount
-//      /** * @param actionId
-//      /** * @param var
-//      /** * @return
-//      /** */
-//      MultiDimDecisionGraph<double>* extractCount(Idx actionId, const DiscreteVariable* var){
-//        return __learner->extractCount(actionId, var); }
 
-//      double rMax(){ return __rmax; }
-//        double __rmax;
-
-
-    private :
-
+  protected :
       /// The learnt Markovian Decision Process
-      FactoredMarkovDecisionProcess<double>* __fmdp;
+      FactoredMarkovDecisionProcess<double>* _fmdp;
 
+      /// The state in which the system is before we perform a new action
+      Instantiation _lastState;
+
+  private :
       /// The number of observation we make before using again the planer
       Idx __observationPhaseLenght;
 
@@ -308,9 +301,6 @@ namespace gum {
       Idx __nbValueIterationStep;
 
       Sequence<Idx> __actionSeq;
-
-      /// The state in which the system is before we perform a new action
-      Instantiation __lastState;
 
       /// The last performed action
       Idx __lastAction;
@@ -327,4 +317,21 @@ namespace gum {
 #endif // GUM_SDYNA_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
+
+//      /**
+//      /** * @brief extractCount
+//      /** * @param actionId
+//      /** * @param var
+//      /** * @return
+//      /** */
+//      MultiDimDecisionGraph<double>* extractCount(Idx actionId, const DiscreteVariable* var){
+//        return __learner->extractCount(actionId, var); }
+
+//      double rMax(){ return __rmax; }
+//        double __rmax;
+//          __planer = new RMaxMDD<double>(__fmdp,this, 40);
+//          __rmax = std::numeric_limits<double>::min();
+
+//if(reward > __rmax)
+//  __rmax = reward;
 

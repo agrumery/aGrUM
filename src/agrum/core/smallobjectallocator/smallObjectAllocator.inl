@@ -60,6 +60,9 @@ namespace gum {
     // ============================================================================
     INLINE SmallObjectAllocator::~SmallObjectAllocator(){
 //      GUM_DESTRUCTOR(SmallObjectAllocator)
+
+    std::cout << "SMALL OBJECT ALLOCATOR STATS : Nb Alloc = " << nbAllocation << " - Nb dealloc = " << nbDeallocation << std::endl;
+
       for(__Pool::iterator pit = __pool.begin(); pit != __pool.end(); ++pit)
         delete pit.val();
     }

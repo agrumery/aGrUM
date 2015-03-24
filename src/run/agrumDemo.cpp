@@ -30,7 +30,7 @@
 #include <agrum/FMDP/simulation/FMDPSimulator.h>
 #include <agrum/FMDP/simulation/taxiSimulator.h>
 #include <agrum/FMDP/simulation/statesChecker.h>
-#include <agrum/FMDP/learning/spimddi.h>
+#include <agrum/FMDP/learning/SDyna/spimddi.h>
 // ==============================================================================
 
 #define xstrfy(s) strfy(s)
@@ -39,7 +39,7 @@
 
 void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
 
-  for( gum::Idx nbTest = 0; nbTest < 50; ++nbTest) {
+  for( gum::Idx nbTest = 16; nbTest < 50; ++nbTest) {
 
     gum::Idx nbIte = 0;
     double rDisc = 0.0;
@@ -47,7 +47,7 @@ void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
     // *********************************************************************************************
     // Initialisation des divers objets
     // *********************************************************************************************
-    gum::SPIMDDI spim(0.9,0.0001,0.99,0.33,100,10,0.1);
+    gum::SPIMDDI spim(100,10,0.9,0.0001,0.99,0.33,0.1);
     gum::Instantiation initialState;
 
     // Enregistrement des actions possibles auprès de SPIMDDI
@@ -82,7 +82,7 @@ void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
     }
 
     std::cout << "Initialisation done. Now performing test ..." <<std::endl;
-    for( gum::Idx nbRun = 0; nbRun < 1000; ++nbRun ){
+    for( gum::Idx nbRun = 0; nbRun < 4000; ++nbRun ){
 
       spim.setCurrentState(sim.currentState());
 
@@ -117,8 +117,6 @@ void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
       }
       sim.setInitialStateRandomly();
     }
-    std::cout << spim.toString() << std::endl;
-    exit(1);
     traceFile.close();
 
 //    std::ofstream modelFile;

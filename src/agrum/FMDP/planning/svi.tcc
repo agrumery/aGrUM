@@ -82,6 +82,8 @@ namespace gum {
     MultiDimDecisionGraph< GUM_SCALAR >*
     SVI<GUM_SCALAR>::_evalQaction( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Idx actionId ){
 
+//      std::cout << " Eval :" << this->_fmdp->actionName(actionId) << std::endl;
+
       // ******************************************************************************
       // Initialisation :
       // Creating a copy of last Vfunction to deduce from the new Qaction
@@ -142,6 +144,7 @@ namespace gum {
       TreeOperator< ArgMaxSet<GUM_SCALAR, Idx>, ArgumentMaximisesAction, SetTerminalNodePolicy > argmaxope(
             vFunction, qAction );
       MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* ret = argmaxope.compute();
+
       delete vFunction;
       delete qAction;
       return ret;

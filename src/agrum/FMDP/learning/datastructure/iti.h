@@ -45,7 +45,12 @@ namespace gum {
    * @brief
    * @ingroup fmdp_group
    *
-   *
+   * Learn a graphical representation of a function as a decision tree.
+   * This learning is done incrementaly.
+   * Hence first observation are add to the structure and then
+   * the structure is updated.
+   * Maintains two graph function : one internal for the learning
+   * and a target which is updated on demand.
    *
    */
 
@@ -54,85 +59,199 @@ namespace gum {
 
     public:
 
-      // ==========================================================================
+      // ###################################################################
       /// @name Constructor & destructor.
-      // ==========================================================================
+      // ###################################################################
       /// @{
 
-        // ###################################################################
-        /// Variable Learner constructor
-        // ###################################################################
+        // ==========================================================================
+        /**
+         * ITI constructor for functions describing the behaviour of one variable
+         * according to a set of other variable such as conditionnal probabilities
+         * @param target : the MultiDimDecisionGraph in which we load the structure
+         * @param attributeSelectionThreshold : threshold under which a node is not
+         * installed (pe-pruning)
+         * @param temporaryAPIfix : Issue in API in regard to IMDDI
+         * @param attributeListe : Set of vars on which we rely to explain the
+         * behaviour of learned variable
+         * @param learnedValue : the variable from which we try to learn the behaviour
+         */
+        // ==========================================================================
         ITI ( MultiDimDecisionGraph<double>* target,
-                double attributeSelectionThreshold,
-                Set<const DiscreteVariable*> attributeListe,
-                const DiscreteVariable* learnedValue );
+              double attributeSelectionThreshold,
+              double temporaryAPIfix,
+              Set<const DiscreteVariable*> attributeListe,
+              const DiscreteVariable* learnedValue );
 
-        // ###################################################################
-        /// Reward Learner constructor
-        // ###################################################################
+        // ==========================================================================
+        /**
+         * ITI constructeur for real functions. We try to predict the output of a
+         * function f given a set of variable
+         * @param target : the MultiDimDecisionGraph in which we load the structure
+         * @param attributeSelectionThreshold : threshold under which a node is not
+         * installed (pe-pruning)
+         * @param temporaryAPIfix : Issue in API in regard to IMDDI
+         * @param attributeListeSet of vars on which we rely to explain the
+         * behaviour of learned function
+         */
+        // ==========================================================================
         ITI ( MultiDimDecisionGraph<double>* target,
-                double attributeSelectionThreshold,
-                Set<const DiscreteVariable*> attributeListe );
+              double attributeSelectionThreshold,
+              double temporaryAPIfix,
+              Set<const DiscreteVariable*> attributeListe );
 
-        // ###################################################################
+        // ==========================================================================
         /// Default destructor
-        // ###################################################################
+        // ==========================================================================
         ~ITI(){GUM_DESTRUCTOR(ITI);}
 
       /// @}
 
-      // ==========================================================================
-      /// @name Incrementals methods
-      // ==========================================================================
+      // ###################################################################
+      /// @name New Observation insertion methods
+      // ###################################################################
       /// @{
+    public :
 
-        // ###################################################################
-        /// Adds a new observation to the structure
-        // ###################################################################
+        // ==========================================================================
+        /**
+         * Inserts a new observation
+         * @param the new observation to learn
+         */
+        // ==========================================================================
         void addObservation ( const Observation* );
 
     protected :
+        // ==========================================================================
+        /**
+         * Will update internal graph's NodeDatabase of given node with the new observation
+         * @param newObs
+         * @param currentNodeId
+         */
+        // ==========================================================================
         void _updateNodeWithObservation( const Observation* newObs, NodeId currentNodeId );
 
+      /// @}
 
+      // ###################################################################
+      /// @name Graph Structure update methods
+      // ###################################################################
+      /// @{
     public :
 
-        // ###################################################################
-        /// Updates the tree after a new observation has been added
-        // ###################################################################
+        // ==========================================================================
+        /// Updates the internal graph after a new observation has been added
+        // ==========================================================================
         void updateGraph();
 
     protected :
-        NodeId _insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
-                                  const DiscreteVariable* boundVar,
-                                  NodeId* sonsMap );
+        // ==========================================================================
+        /**
+         * inserts a new node in internal graph
+         * @param nDB : the associated database
+         * @param boundVar : the associated variable
+         * @return the newly created node's id
+         */
+        // ==========================================================================
+        NodeId _insertNode(NodeDatabase<AttributeSelection, isScalar>* nDB,
+                           const DiscreteVariable* boundVar);
 
+        // ==========================================================================
+        /**
+         * Changes the associated variable of a node
+         * @param chgedNodeId : the node to change
+         * @param desiredVar : its new associated variable
+         */
+        // ==========================================================================
         void _chgNodeBoundVar( NodeId chgedNodeId, const DiscreteVariable* desiredVar );
 
+        // ==========================================================================
+        /**
+         * Removes a node from the internal graph
+         * @param removedNodeId : the node to remove
+         */
+        // ==========================================================================
         void _removeNode( NodeId removedNodeId );
 
       /// @}
 
     public :
 
-      // ==========================================================================
+      // ###################################################################
       /// @name Decision Graph Updating methods
-      // ==========================================================================
+      // ###################################################################
       /// @{
 
-        // ###################################################################
-        ///
-        // ###################################################################
+        // ==========================================================================
+        /// Updates target to currently learned graph structure
+        // ==========================================================================
         void updateDecisionGraph();
 
     private :
+
+        // ==========================================================================
+        /**
+         * Inserts an internal node in the target
+         * @param the source node in internal graph
+         * @return the mathcing node id in the target
+         */
+        // ==========================================================================
         NodeId __insertNodeInDecisionGraph( NodeId );
-        NodeId __insertTerminalNode( NodeId );
+
+        // ==========================================================================
+        /**
+         * Insert a terminal node in the target.
+         * This function is a dispatcher that will call the right function according to
+         * the value of the template isScalar
+         * @param the source node in the learned graph
+         * @return the matching node in the target
+         */
+        // ==========================================================================
+        NodeId __insertTerminalNode( NodeId src ) { return __insertTerminalNode(src, Int2Type<isScalar>()); }
+
+        // ==========================================================================
+        /**
+         * Insert a terminal node in the target.
+         * This function is called if we're learning a real value function.
+         * Inserts then a single value in target.
+         * @param the source node in the learned graph
+         * @return the matching node in the target
+         */
+        // ==========================================================================
         NodeId __insertTerminalNode( NodeId, Int2Type<true> );
+
+        // ==========================================================================
+        /**
+         * Insert a terminal node in the target.
+         * This function is called if we're learning the behaviour of a variable.
+         * Inserts then this variable and the relevant value beneath into target.
+         * @param the source node in the learned graph
+         * @return the matching node in the target
+         */
+        // ==========================================================================
         NodeId __insertTerminalNode( NodeId, Int2Type<false> );
 
       /// @}
 
+
+
+  protected :
+        // ==========================================================================
+        /**
+         * @brief _insertSetOfVars
+         * @param ret
+         */
+        // ==========================================================================
+        void _insertSetOfVars( MultiDimDecisionGraph<double>* ret ){
+        for( SetIteratorSafe<const DiscreteVariable*> varIter = this->_setOfVars.beginSafe();
+                varIter != this->_setOfVars.endSafe(); ++varIter)
+          ret->add(**varIter);
+      }
+
+  private :
+
+      /// Hashtable indicating if given node has been modified (upon receiving new exemple or through a transpose)
+      /// The aim is not if we have revise the installed variable on that node
       HashTable<NodeId, bool> __staleTable;
 
       /// The total number of observation added to this tree
@@ -145,7 +264,7 @@ namespace gum {
 
 } /* namespace gum */
 
-
+#include <agrum/FMDP/learning/datastructure/iti.tcc>
 
 #endif // GUM_ITI_H
 

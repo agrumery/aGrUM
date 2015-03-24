@@ -131,7 +131,7 @@ namespace gum {
         sonsMap[moda] = __xPlorePxi( xPloredTree, currentNode->son( moda ), seqPos);
         __context.erase(currentNode->nodeVar());
       }
-      return __rd->manager()->addNonTerminalNode(currentNode->nodeVar(), sonsMap);
+      return __checkRedundancy(currentNode->nodeVar(), sonsMap);
     }
 
 
@@ -169,6 +169,26 @@ namespace gum {
       }
       return val;
 
+    }
+
+    template <typename GUM_SCALAR,
+              template <typename> class COMBINEOPERATOR,
+              template <typename> class PROJECTOPERATOR,
+              template <typename> class TerminalNodePolicy>
+    NodeId
+    TreeRegress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::__checkRedundancy( const DiscreteVariable* var, NodeId* sonsMap ){
+      bool diff = false;
+      for(Idx moda = 1; moda < var->domainSize() && !diff; ++moda)
+        if(sonsMap[0] != sonsMap[moda])
+          diff = true;
+
+      if(!diff){
+        NodeId zero = sonsMap[0];
+        DEALLOCATE(sonsMap, sizeof(NodeId)*var->domainSize());
+        return zero;
+      }
+
+      return __rd->manager()->addNonTerminalNode(var, sonsMap);
     }
 
 } // namespace gum

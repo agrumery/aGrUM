@@ -154,6 +154,7 @@ namespace gum {
 
           // Terminating line
           terminalStream << "\"];"<< std::endl;
+          continue;
         }
 
         // Either wise
@@ -168,6 +169,10 @@ namespace gum {
           // Going through the sons and agregating them according the the sons Ids
           HashTable<NodeId, LinkedList<Idx>*> sonMap;
           for ( Idx sonIter = 0; sonIter < currentNode->nbSons(); ++sonIter ){
+            if(!visited.exists(currentNode->son(sonIter))){
+              fifo.push(currentNode->son(sonIter));
+              visited << currentNode->son(sonIter);
+            }
             if( !sonMap.exists( currentNode->son(sonIter) ) )
               sonMap.insert( currentNode->son(sonIter), new LinkedList<Idx>() );
             sonMap[currentNode->son(sonIter)]->addLink(sonIter);

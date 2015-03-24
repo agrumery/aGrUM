@@ -28,8 +28,9 @@
 // ==============================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
-#include <agrum/FMDP/simulation/simulator.h>
-#include <agrum/FMDP/learning/spimddi.h>
+#include <agrum/FMDP/simulation/FMDPSimulator.h>
+#include <agrum/FMDP/learning/SDyna/spimddi.h>
+#include <agrum/FMDP/learning/SDyna/spiti.h>
 // ==============================================================================
 
 namespace gum_tests {
@@ -51,8 +52,9 @@ namespace gum_tests {
         // *********************************************************************************************
         // Initialisation des divers objets
         // *********************************************************************************************
-        gum::Simulator sim(&fmdp);
-        gum::SPIMDDI spim;
+        gum::FMDPSimulator sim(&fmdp);
+//        gum::SPIMDDI spim;
+        gum::SPITI spim;
         gum::Instantiation initialState, endState;
 
         // Enregistrement des actions possibles auprès de SPIMDDI
@@ -93,11 +95,6 @@ namespace gum_tests {
         }
         va_end(ap);
 
-        // Création de la variables récompenses (to be deprecated)
-//        const gum::MultiDimDecisionGraph<double>* reward = reinterpret_cast<const gum::MultiDimDecisionGraph<double>*>(fmdp.reward());
-//        for( auto rewardIter = reward->values().beginSafe(); rewardIter != reward->values().endSafe(); ++rewardIter)
-//          spim.addReward(rewardIter.second());
-
         TS_GUM_ASSERT_THROWS_NOTHING ( sim.setEndState(endState) );
         TS_GUM_ASSERT_THROWS_NOTHING ( spim.initialize() );
         TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
@@ -111,17 +108,25 @@ namespace gum_tests {
           while(!sim.hasReachEnd()){
 
             // Normal Iteration Part
-            gum::Idx actionChosenId = spim.takeAction();
+            std::cout << "Choix d'action " << std::endl;
+            gum::Idx actionChosenId = 0;
+            TS_GUM_ASSERT_THROWS_NOTHING ( actionChosenId = spim.takeAction(); )
             std::cout << "Action Chosen : " << actionChosenId << std::endl;
-            sim.perform( actionChosenId );
-            std::cout << "Yoh!" << std::endl;
+            TS_GUM_ASSERT_THROWS_NOTHING ( sim.perform( actionChosenId ) );
 
-            spim.feedback(sim.currentState(), sim.reward());
+            try{
+              spim.feedback(sim.currentState(), sim.reward());
+            } catch(gum::Exception e){
+              std::cout << e.errorType() << std::endl << e.errorCallStack();
+              exit(-2);
+            }
+
+//            TS_GUM_ASSERT_THROWS_NOTHING (  );
 
           }
           TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
         }
-        std::cout << spim.toString() << std::endl;
+//        std::cout << spim.toString() << std::endl;
       }
 
     public:

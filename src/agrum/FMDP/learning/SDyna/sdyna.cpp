@@ -46,8 +46,6 @@ namespace gum {
      * change.
      * @param nbValueIterationStep : the number of value iteration done during
      * one planning
-     * @param discountFactor : the \gamma used for the plannings
-     * @param epsilon : the epsilon under which we consider V to be \epsilon-optimal
      * @return an instance of SDyna architecture
      */
     // ###################################################################
@@ -59,8 +57,8 @@ namespace gum {
 
       GUM_CONSTRUCTOR(SDYNA)
 
-      __fmdp = new FactoredMarkovDecisionProcess<double>();
-      __fmdp->setDiscount(discountFactor);
+      _fmdp = new FactoredMarkovDecisionProcess<double>();
+      _fmdp->setDiscount(discountFactor);
 
       __nbObservation = 1;
     }
@@ -73,7 +71,7 @@ namespace gum {
       for(auto obsIter = __bin.beginSafe(); obsIter != __bin.endSafe(); ++obsIter)
           delete *obsIter;
 
-      delete __fmdp;
+      delete _fmdp;
 
       GUM_DESTRUCTOR(SDYNA)
     }
@@ -126,7 +124,7 @@ namespace gum {
     // ###################################################################
     void SDYNA::feedback( const Instantiation& curState, const Instantiation& prevState, Idx lastAction, double reward){
       __lastAction = lastAction;
-      __lastState = prevState;
+      _lastState = prevState;
       feedback( curState, reward );
     }
 
@@ -147,11 +145,11 @@ namespace gum {
 
       Observation* obs = new Observation();
 
-      for( auto varIter = __lastState.variablesSequence().beginSafe(); varIter != __lastState.variablesSequence().endSafe(); ++varIter)
-        obs->setModality(*varIter, __lastState.val(**varIter));
+      for( auto varIter = _lastState.variablesSequence().beginSafe(); varIter != _lastState.variablesSequence().endSafe(); ++varIter)
+        obs->setModality(*varIter, _lastState.val(**varIter));
 
       for( auto varIter = newState.variablesSequence().beginSafe(); varIter != newState.variablesSequence().endSafe(); ++varIter){
-        obs->setModality(__fmdp->main2prime(*varIter), newState.val(**varIter));
+        obs->setModality(_fmdp->main2prime(*varIter), newState.val(**varIter));
         obs->setRModality(*varIter, newState.val(**varIter));
       }
 
@@ -164,6 +162,7 @@ namespace gum {
 
       setCurrentState( newState );
 
+      std::cout << __nbObservation << " " <<  __observationPhaseLenght << std::endl;
       if( __nbObservation%__observationPhaseLenght == 0)
         _makePlanning(__nbValueIterationStep);
 
@@ -178,7 +177,7 @@ namespace gum {
      */
     // ###################################################################
     Idx SDYNA::takeAction( const Instantiation& curState ){
-        __lastState = curState;
+        _lastState = curState;
         return takeAction();
     }
 
@@ -188,7 +187,7 @@ namespace gum {
      */
     // ###################################################################
     Idx SDYNA::takeAction( ){
-      ActionSet actionSet = _stateActionSet( __lastState );
+      ActionSet actionSet = _stateActionSet( _lastState );
       if( actionSet.size() == 1 ) {
         __lastAction = actionSet[0];
       } else {
@@ -204,7 +203,7 @@ namespace gum {
     std::string SDYNA::toString( ){
       std::stringstream description;
 
-      description << __fmdp->toString() << std::endl;
+      description << _fmdp->toString() << std::endl;
 
       return description.str();
     }

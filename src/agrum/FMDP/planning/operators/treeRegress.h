@@ -97,6 +97,8 @@ namespace gum {
       // ============================================================================
       GUM_SCALAR __xPloreVFunc( NodeId currentNodeId );
 
+      NodeId __checkRedundancy( const DiscreteVariable*, NodeId*) ;
+
       // ============================================================================
       /// The decision graphs used for the operation
       // ============================================================================

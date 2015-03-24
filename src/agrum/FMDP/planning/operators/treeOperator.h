@@ -92,6 +92,8 @@ namespace gum {
       // ============================================================================
       NodeId __xPloreDT2( NodeId currentNodeId );
 
+      NodeId __checkRedundancy( const DiscreteVariable*, NodeId*) ;
+
       // ============================================================================
       /// The two decision graphs used for the operation
       // ============================================================================

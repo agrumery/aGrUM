@@ -82,6 +82,18 @@ namespace gum {
       __addLeaf( this->_root );
     }
 
+    // ============================================================================
+    // Reward Learner constructor
+    // ============================================================================
+    template <TESTNAME AttributeSelection, bool isScalar >
+    IMDDI<AttributeSelection, isScalar>::~IMDDI ( ) {
+      GUM_DESTRUCTOR(IMDDI);
+      for( HashTableIteratorSafe<NodeId, AbstractLeaf*> leafIter = __leafMap.beginSafe();
+           leafIter != __leafMap.endSafe(); ++leafIter )
+        delete leafIter.val();
+
+    }
+
 
 
   // ############################################################################
@@ -399,12 +411,12 @@ namespace gum {
         }
       }
 
-      // *******************************************************************************************************
-      // Polish
+//      // *******************************************************************************************************
+//      // Polish
       this->_target->manager()->setRootNode( toTarget[this->_root] );
       this->_target->manager()->clean();
-//      std::cout << this->_target->toDot() << std::endl;
-//      std::cout << "IMDDI::__rebuildDecisionGraph end" << std::endl;
+////      std::cout << this->_target->toDot() << std::endl;
+////      std::cout << "IMDDI::__rebuildDecisionGraph end" << std::endl;
 
     }
 
@@ -444,174 +456,3 @@ namespace gum {
     }
 } // end gum namespace
 
-
-
-
-
-
-
-
-
-
-// LEFT HERE ON PURPOSE
-// DO NOT NOT DELETE
-
-/*
-////      std::cout << "******************============================================*******************" << std::endl;
-////      __showMap();
-
-      MultiPriorityQueue<std::pair<NodeId,NodeId>, double, std::less<double>> remainingPairs = new MultiPriorityQueue<std::pair<NodeId,NodeId>, double, std::less<double>>();
-      HashTable<NodeId, double*> effectifTable;
-      HashTable<NodeId, double> totalTable;
-
-      HashTable<NodeId, NodeId> leafMap;
-
-////        std::cout << "============================================" << std::endl << "Initialising heap : " << std::endl;
-
-      for( auto lNodeIter = this->_var2Node[this->_value]->beginSafe(); lNodeIter != this->_var2Node[this->_value]->endSafe(); ++lNodeIter){
-////            std::cout << "lNodeIter : " << *lNodeIter << std::endl;
-        if( !effectifTable.exists(*lNodeIter) ){
-          effectifTable.insert( *lNodeIter, this->_nodeId2Database[*lNodeIter]->effectif() );
-          totalTable.insert( *lNodeIter, this->_nodeId2Database[*lNodeIter]->nbObservation() );
-        }
-        for( auto rNodeIter = lNodeIter; ++rNodeIter != this->_var2Node[this->_value]->endSafe();){
-////                std::cout << "rNodeIter : " << *rNodeIter << std::endl;
-          if( !effectifTable.exists(*rNodeIter) ){
-            effectifTable.insert( *rNodeIter, this->_nodeId2Database[*rNodeIter]->effectif() );
-            totalTable.insert( *rNodeIter, this->_nodeId2Database[*rNodeIter]->nbObservation() );
-          }
-          double d = __evalPair( effectifTable[*lNodeIter], totalTable[*lNodeIter], effectifTable[*rNodeIter], totalTable[*rNodeIter]);
-          if( d > __pairSelectionThreshold )
-            remainingPairs->insert( std::pair<NodeId, NodeId>(*lNodeIter, *rNodeIter), d );
-        }
-////            std::cout << "RemainingPairs : " << remainingPairs->toString() << std::endl;
-      }
-
-
-////        std::cout << "============================================" << std::endl << "Seeking merging : " << std::endl;
-
-//      while(!remainingPairs->empty()){
-
-//        std::pair<NodeId,NodeId> p = remainingPairs->top();
-//        remainingPairs->eraseTop();
-
-////            std::cout << "Pair recupered" << std::endl;
-
-//        NodeId nlid = this->_model.addNode();
-//        totalTable.insert( nlid, totalTable[p.first] + totalTable[p.second] );
-//        double* nls = static_cast<double*>( ALLOCATE( sizeof(double)*this->_value->domainSize() ) );
-//        for( Idx moda = 0; moda < this->_value->domainSize(); moda++ )
-//          nls[moda] = effectifTable[p.first][moda] + effectifTable[p.second][moda];
-//        effectifTable.insert(nlid, nls);
-
-////            std::cout << "Recreating heap" << std::endl;
-
-//        MultiPriorityQueue<std::pair<NodeId,NodeId>, double, std::less<double>>* nextRemainingPairs = new MultiPriorityQueue<std::pair<NodeId,NodeId>, double, std::less<double>>();
-//        while( !remainingPairs->empty() ){
-
-//          std::pair<NodeId,NodeId> op = remainingPairs->top();
-//          double od = remainingPairs->topPriority();
-//          remainingPairs->eraseTop();
-
-//          if( op.first == p.first || op.first == p.second ){
-//            double d = __evalPair( effectifTable[nlid], totalTable[nlid], effectifTable[op.second], totalTable[op.second] );
-//            if( d > __pairSelectionThreshold )
-//              nextRemainingPairs->insert( std::pair<NodeId, NodeId>(nlid, op.second), d );
-//          } else {
-//            if( op.second == p.first || op.second == p.second ){
-//              double d = __evalPair( effectifTable[nlid], totalTable[nlid], effectifTable[op.first], totalTable[op.first] );
-//              if( d > __pairSelectionThreshold )
-//                nextRemainingPairs->insert( std::pair<NodeId, NodeId>(nlid, op.first), d );
-//            } else {
-//                nextRemainingPairs->insert( op, od );
-//            }
-//          }
-//        }
-
-////            std::cout << "Leafmap Maintenance" << std::endl;
-
-//        delete remainingPairs;
-//        remainingPairs = nextRemainingPairs;
-
-//        if(!leafMap.exists(p.first))
-//          leafMap.insert(p.first, nlid);
-//        else
-//          leafMap[p.first] = nlid;
-
-//        if(!leafMap.exists(p.second))
-//          leafMap.insert(p.second, nlid);
-//        else
-//          leafMap[p.second] = nlid;
-//      }
-
-////        std::cout << "============================================" << std::endl << "Now merging leaves " << leafMap << std::endl;
-
-
-//      for( auto nodeIter = this->_var2Node[this->_value]->beginSafe(); nodeIter != this->_var2Node[this->_value]->endSafe(); ++nodeIter){
-
-//        NodeId ti = *nodeIter;
-//        while( leafMap.exists(ti) )
-//            ti = leafMap[ti];
-
-//        if(! toTarget.exists(ti) ){
-
-//          if(rewardLeaf){
-//            double ret = 0.0;
-//            for(Idx modality = 0; modality < this->_value->domainSize(); ++modality)
-//              ret += effectifTable[ti][modality] / totalTable[ti] * std::stod(this->_value->label(modality));
-//            toTarget.insert( ti, this->_target->manager()->addTerminalNode(  ret ) );
-//          }else{
-////                    std::cout << "Leaf : " << *nodeIter << " - Target : " << ti << " - HashTab : " << toTarget << std::endl;
-//            NodeId* tts = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*this->_value->domainSize()) );
-//            for( Idx moda = 0; moda < this->_value->domainSize(); moda++){
-//              tts[moda] = this->_target->manager()->addTerminalNode( effectifTable[ti][moda] / totalTable[ti] );
-////                        std::cout << "\tModa : " << moda << " - DD Leaf : " << tts[moda] << std::endl;
-//            }
-////                    std::cout << "Installing Node" << toTarget << std::endl;
-//            toTarget.insert( ti, this->_target->manager()->nodeRedundancyCheck(this->_value, tts ) );
-////                    std::cout << "Done" << toTarget << std::endl;
-//          }
-
-//        }
-
-//        if( *nodeIter != ti )
-//          toTarget.insert( *nodeIter, toTarget[ti] );
-//      }
-////        std::cout << "Yoh" << std::endl;
-
-//      for(auto it = effectifTable.beginSafe(); it != effectifTable.endSafe(); ++it)
-//        DEALLOCATE( it.val(), sizeof(double)*this->_value->domainSize());
-//      delete remainingPairs;*/
-
-
-
-
-/*
-// ============================================================================
-// Performs the leaves merging
-// ============================================================================
-template <TESTNAME AttributeSelection, bool isScalar >
-double IMDDI<AttributeSelection, isScalar>::__evalPair( double* feffectif, double ftotal, double* seffectif, double stotal ){
-
-  double fg = 0.0;
-  double sg = 0.0;
-  double fScalingFactor = ftotal / (ftotal + stotal);
-  double sScalingFactor = stotal / (ftotal + stotal);
-
-  for( Idx moda = 0; moda < this->_value->domainSize(); moda++ ){
-//            std::cout << "Moda : " << moda << "\t- F : " << feffectif[moda] << "\t- Fe : " << ( ( feffectif[moda] + seffectif[moda] ) * fScalingFactor ) << "\t- S : " << seffectif[moda] << "\t- Se : " << ( ( feffectif[moda] + seffectif[moda] ) * sScalingFactor ) << std::endl;
-    if( feffectif[moda] != 0 || seffectif[moda] != 0 ){
-      if( feffectif[moda] != 0 )
-        fg += feffectif[moda] * log( feffectif[moda] / ( ( feffectif[moda] + seffectif[moda] ) * fScalingFactor ) );
-      if( seffectif[moda] != 0 )
-        sg += seffectif[moda] * log( seffectif[moda] / ( ( feffectif[moda] + seffectif[moda] ) * sScalingFactor ) );
-    }
-  }
-
-//        std::cout << " Fg : " << fg << "\t- Sg " << sg << std::endl;
-  double fp = ChiSquare::probaChi2( fg, this->_value->domainSize() - 1 );
-  double sp = ChiSquare::probaChi2( sg, this->_value->domainSize() - 1 );
-//        std::cout << " Fp : " << fp << "\t- Sp " << sp <<  "\t- ST " << __pairSelectionThreshold << std::endl;
-  return fp > sp ? sp : fp;
-}
-*/

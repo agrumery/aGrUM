@@ -90,14 +90,6 @@ namespace gum {
         __actionLearners.insert( actionId, new HashTable<const DiscreteVariable*, IncrementalGraphLearner<VariableAttributeSelection, false>*>());
     }
 
-    // ###################################################################
-    //
-    // ###################################################################
-//    template <TESTNAME VariableAttributeSelection, TESTNAME RewardAttributeSelection, LEARNERNAME LearnerSelection>
-//    void FMDPLearner<VariableAttributeSelection, RewardAttributeSelection, LearnerSelection>::addReward( const DiscreteVariable* var ){
-////        __rewardVar = var;
-//    }
-
 
 
   // ==========================================================================

@@ -108,7 +108,7 @@ namespace gum {
         sonsMap[moda] = __xPloreDT1( currentNode->son( moda ) );
         __context.erase(currentNode->nodeVar());
       }
-      return __rd->manager()->addNonTerminalNode(currentNode->nodeVar(), sonsMap);
+      return __checkRedundancy(currentNode->nodeVar(), sonsMap);
     }
 
 
@@ -128,7 +128,7 @@ namespace gum {
         __rd->add(*(currentNode->nodeVar()));
 
       if( __context.exists( currentNode->nodeVar() ) )
-        __xPloreDT2( currentNode->son( __context[currentNode->nodeVar()] ) );
+        return __xPloreDT2( currentNode->son( __context[currentNode->nodeVar()] ) );
 
       NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*currentNode->nodeVar()->domainSize() ) );
       for( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda ){
@@ -136,7 +136,26 @@ namespace gum {
         sonsMap[moda] = __xPloreDT2( currentNode->son( moda ) );
         __context.erase(currentNode->nodeVar());
       }
-      return __rd->manager()->addNonTerminalNode(currentNode->nodeVar(), sonsMap);
+      return __checkRedundancy(currentNode->nodeVar(), sonsMap);
+    }
+
+    template <typename GUM_SCALAR,
+              template <typename> class COMBINEOPERATOR,
+              template <typename> class TerminalNodePolicy>
+    NodeId
+    TreeOperator<GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy>::__checkRedundancy( const DiscreteVariable* var, NodeId* sonsMap ){
+      bool diff = false;
+      for(Idx moda = 1; moda < var->domainSize() && !diff; ++moda)
+        if(sonsMap[0] != sonsMap[moda])
+          diff = true;
+
+      if(!diff){
+        NodeId zero = sonsMap[0];
+        DEALLOCATE(sonsMap, sizeof(NodeId)*var->domainSize());
+        return zero;
+      }
+
+      return __rd->manager()->addNonTerminalNode(var, sonsMap);
     }
 
 } // namespace gum

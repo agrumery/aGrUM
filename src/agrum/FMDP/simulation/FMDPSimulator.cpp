@@ -41,7 +41,7 @@ namespace gum {
       /*
        * Default constructor.
        */
-      FMDPSimulator::FMDPSimulator(const FactoredMarkovDecisionProcess<double>* fmdp): AbstractSimulator(), __loaded(false){
+      FMDPSimulator::FMDPSimulator(const FactoredMarkovDecisionProcess<double>* fmdp): AbstractSimulator(), __fmdp(const_cast<FactoredMarkovDecisionProcess<double>*>(fmdp)), __loaded(false){
           GUM_CONSTRUCTOR(FMDPSimulator)
       }
 

@@ -634,15 +634,14 @@ namespace gum {
     // ============================================================================
     template<typename GUM_SCALAR, template <class> class TerminalNodePolicy >
     INLINE
-    GUM_SCALAR& MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::_get ( const Instantiation &inst ) const{
+    GUM_SCALAR MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>::get ( const Instantiation &inst ) const{
       NodeId currentNodeId = __root;
       InternalNode* currentNode = nullptr;
       while ( ! isTerminalNode( currentNodeId ) ){
         currentNode = __internalNodeMap[currentNodeId];
         currentNodeId = currentNode->son( inst.val( *(currentNode->nodeVar()) ) );
       }
-      __getRet = this->terminalNodeValue( currentNodeId );//__valueMap.second( currentNodeId );
-      return __getRet;
+      return this->terminalNodeValue( currentNodeId );
     }
 
 } //gum

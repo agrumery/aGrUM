@@ -50,7 +50,26 @@ namespace gum {
     // Default constructor.
     // ============================================================================
     LeafAggregator::~LeafAggregator(){
+
+      __removeContext(0);
+
+      delete __initialContext;
+
+      for( HashTableIteratorSafe<AbstractLeaf*, Set<LeafPair*>*> leafIter = __leaf2Pair.beginSafe();
+           leafIter != __leaf2Pair.endSafe(); ++leafIter ){
+        for( SetIteratorSafe<LeafPair*> pairIter = leafIter.val()->beginSafe();
+             pairIter != leafIter.val()->endSafe(); ++pairIter )  {
+          LeafPair* curPair = *pairIter;
+          __leaf2Pair[curPair->otherLeaf(leafIter.key())]->erase( *pairIter );
+          leafIter.val()->erase(curPair);
+          delete curPair;
+        }
+        delete leafIter.val();
+      }
+
+
       GUM_DESTRUCTOR(LeafAggregator)
+
     }
 
   // ############################################################################
