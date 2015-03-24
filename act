@@ -695,7 +695,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             run_cde=""
     else:
         option_fixed_seed=" -DGUM_RANDOMSEED="+(RANDOMSEED_FOR_FIXED_SEED if options['fixed_seed'] else "0")
-        cmake_options=cmake_options+option_fixed_seed ;
+        cmake_options=option_fixed_seed ;
         
         if options['rule']=='package':
             folders=["build",'package_'+options['platform'],options['option']]
@@ -703,7 +703,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             folders=["build",options['platform'],'config']
         else:
             folders=["build",options['platform'],options['option']]
-        cmake_options=" -DCMAKE_BUILD_TYPE="+options['option'].upper()+" ../../../src"
+        cmake_options+=" -DCMAKE_BUILD_TYPE="+options['option'].upper()+" ../../../src"
         if (options['rule']=="test" or options['rule']=="run"):
             if options['rule']=="test":
               testcde="gumTest"
@@ -726,18 +726,18 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
         setM=set(listM)
 
         create_build = lambda module: " -DBUILD_"+module+"="+ ("ON" if module in setM else "OFF")
-        cmake_options = cmake_options+create_build("ALL")
+        cmake_options += create_build("ALL")
         for module in listOfModules:
-          cmake_options = cmake_options+create_build(module)
+          cmake_options += create_build(module)
 
 
-    cmake_options=cmake_options+" -DCMAKE_INSTALL_PREFIX="+options['destination']
+    cmake_options+=" -DCMAKE_INSTALL_PREFIX="+options['destination']
 
-    cmake_options=cmake_options+" -DCMAKE_VERBOSE_MAKEFILE="
+    cmake_options+=" -DCMAKE_VERBOSE_MAKEFILE="
     if (options['verbose']):
-        cmake_options=cmake_options+"ON"
+        cmake_options+="ON"
     else:
-        cmake_options=cmake_options+"OFF"
+        cmake_options+="OFF"
 
     cmake_options+=" -DBUILD_SHARED_LIBS="
     if (options['static_lib']):
