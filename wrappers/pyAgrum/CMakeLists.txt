@@ -2,15 +2,30 @@ project(pyAgrum)
 
 cmake_minimum_required(VERSION 2.6)
 
+if(WIN32)
+  message(STATUS "** aGrUM notification : Windows detected")
+else(WIN32)
+  if(APPLE)
+    set(CMAKE_MACOSX_RPATH ON)
+    message(STATUS "** aGrUM notification : Apple detected")
+  else(APPLE)
+    message(STATUS "** aGrUM notification : Linux detected")
+  endif(APPLE)
+endif(WIN32)
+
 option(FOR_PYTHON2 "ON if pyAgrum will be compiler agains python2. Python3 is uses by default" "OFF")
 
 # PYTHON 2 OR 3
 if (FOR_PYTHON2) # we use 3 by default
   set(PYTHONVERSION "2")
   # hackish
-  set(PYTHON_EXECUTABLE "python2")
+  if( WIN32)
+	set(PYTHON_EXECUTABLE "python.exe")
+  else(WIN32)
+	set(PYTHON_EXECUTABLE "python2")
+  endif(WIN32)
   
-  find_package(PythonInterp 2 REQUIRED)
+  find_package(PythonInterp REQUIRED)
   set(CMAKE_SWIG_FLAGS  "-Wall" )
   
   #change in module naming from inside module between python2 and python3
@@ -18,7 +33,12 @@ if (FOR_PYTHON2) # we use 3 by default
 else (FOR_PYTHON2) 
   set(PYTHONVERSION "3")
   # hackish
-  set(PYTHON_EXECUTABLE "python3")
+  if(WIN32)
+	set(PYTHON_EXECUTABLE "python.exe")
+  else(WIN32)
+	set(PYTHON_EXECUTABLE "python3")
+  endif(WIN32)
+  
   find_package(PythonInterp 3 REQUIRED)
   
   set(CMAKE_SWIG_FLAGS  "-Wall" )
@@ -30,16 +50,7 @@ endif (FOR_PYTHON2)
 set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files${PYTHONVERSION}")
 set(_PYAGRUMLIB "_pyAgrum")
 
-if(WIN32)
-  message(STATUS "** aGrUM notification : Windows detected")
-else(WIN32)
-  if(APPLE)
-    set(CMAKE_MACOSX_RPATH ON)
-    message(STATUS "** aGrUM notification : Apple detected")
-  else(APPLE)
-    message(STATUS "** aGrUM notification : Linux detected")
-  endif(APPLE)
-endif(WIN32)
+
 
 #== Initializing aGrUM
 set(AGRUM_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src")

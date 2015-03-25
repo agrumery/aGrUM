@@ -40,14 +40,27 @@ nbr_tests_for_stats=40
 # find make, python2, python3
 
 def is_tool(prog):
+    progw=prog+".exe"
     for dir in os.environ['PATH'].split(os.pathsep):
         if os.path.exists(os.path.join(dir, prog)):
             return os.path.join(dir, prog)
+        if os.path.exists(os.path.join(dir, progw)):
+            return os.path.join(dir, progw)
     return None
 
 
+import platform
+from sys import platform as os_platform
+
 exe_python2=is_tool('python2')
 exe_python3=is_tool('python3')
+if exe_python2 is None and exe_python3 is None:
+	exe_py=is_tool('python')
+	if exe_py is not None: #would be absurd, wouldn't it ?
+		if platform.python_version()[0]=="3":
+			exe_python3=exe_py
+		else:
+			exe_python2=exe_py
 
 
 MAKE=""
@@ -687,7 +700,10 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             make_options=""
         if options['rule']=='test':
             if options['wrapper']=='pyAgrum':
-              run_cde="cd ..;PYTHONPATH=.:$PYTHONPATH "+exe_python+" ../../wrappers/pyAgrum/testunits/TestSuite.py"
+			  if os_platform=="win32":
+				run_cde=exe_python+" ..\..\\..\\wrappers\\pyAgrum\\testunits\\TestSuite.py"
+			  else:
+				run_cde=exe_python+" ../../../wrappers/pyAgrum/testunits/TestSuite.py"
             else:
               print(ERROR+"No tests for "+options['wrapper']+ENDC)
               sys.exit(0)
@@ -908,12 +924,14 @@ else:
       exe_python=exe_python3
     else:
       print("python interperter: python2 (python3 not found)")
+      current["pyversion"]="2"
       exe_python=exe_python2
   else:
     if exe_python2 is not None:
       exe_python=exe_python2
     else:
       print("python interperter: python3 (python2 not found)")
+      current["pyversion"]="3"
       exe_python=exe_python3
 
 moduleManagement(options.module)
