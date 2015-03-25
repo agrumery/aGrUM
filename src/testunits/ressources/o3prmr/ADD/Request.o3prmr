@@ -1,0 +1,9 @@
+// dans le fichier de requêtes il faut des noms absolus
+import Objects ;
+
+request MyRequest
+{
+	engine GRD;
+  Objects.exemple_ADD.g3.K = deux;
+ 	? Objects.exemple_ADD.top.state;
+}

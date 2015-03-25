@@ -1,0 +1,51 @@
+// Arbres de défaillance en O3prm (limités aux portes ET et OU, 
+// avec proba de défaillance dépendant du temps pour une feuille)
+
+interface Event {
+	boolean state;
+}
+
+interface Gate extends Event{
+	Event[] inputs ;
+}
+
+class OrGate implements Gate {
+	Event[] inputs ;
+	boolean state = exists(inputs.state, true);
+}
+
+class AndGate implements Gate {
+	Event[] inputs ;
+	boolean state = forall(inputs.state, true);
+}
+
+type intervalle 0, 1, 2, 3, 4, 5 ;
+
+type intervalle_K un, deux, trois, quatre, cinq ;
+
+class k_nGate implements Gate {
+	Event[] inputs ;
+
+	intervalle Nb_true = count(inputs.state, true, intervalle);
+
+  intervalle_K K {["0.2", "0.2", "0.2", "0.2", "0.2"]};
+
+  boolean state dependson K, Nb_true  
+  {[
+    "1",	"0",	"0",	"0",	"0",	"0",	"1",	"1",	"0",	"0",	"0",	"0",	"1",	"1",	"1",	
+    "0",	"0",	"0",	"1",	"1",	"1",	"1",	"0",	"0",	"1",	"1",	"1",	"1",	"1",	"0",
+
+    "0",	"1",	"1",	"1",	"1",	"1",	"0",	"0",	"1",	"1",	"1",	"1",	"0",	"0",	"0",
+    "1",	"1",	"1",	"0",	"0",	"0",	"0",	"1",	"1",	"0",	"0",	"0",	"0",	"0",	"1"
+  ]};
+}      
+
+class Leaf implements Event {
+	// le "paramètre" lambda est le taux de défaillance
+	real lambda default 0.003;
+    int t default 8760;
+	
+	boolean state {
+		["exp(- lambda *t)", "1 -exp(- lambda *t)" ]
+	};
+}

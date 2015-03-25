@@ -324,6 +324,8 @@ void Scanner::Init() {
 	for (i = 42; i <= 43; ++i) start.set(i, 3);
 	for (i = 45; i <= 45; ++i) start.set(i, 3);
 	for (i = 47; i <= 47; ++i) start.set(i, 3);
+	for (i = 60; i <= 60; ++i) start.set(i, 3);
+	for (i = 62; i <= 62; ++i) start.set(i, 3);
 	for (i = 94; i <= 94; ++i) start.set(i, 3);
 	start.set(10, 4);
 	start.set(40, 7);

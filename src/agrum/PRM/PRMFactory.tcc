@@ -216,42 +216,47 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void
-  PRMFactory<GUM_SCALAR>::__updateFormulas( Class<GUM_SCALAR>* c ) {
+    PRMFactory<GUM_SCALAR>::__updateFormulas( Class<GUM_SCALAR>* c ) {
 
-    for ( const auto & const_attr : c->attributes() ) {
+      //for ( const auto & const_attr : c->attributes() ) {
 
-      if ( const_attr->hasFormula() ) {
+      //  if ( const_attr->hasFormula() ) {
 
-        auto attr = const_attr;
-        //auto attr = const_cast<Attribute<GUM_SCALAR>*>(const_attr); 
+      //    auto attr = const_attr;
+      //    //auto attr = const_cast<Attribute<GUM_SCALAR>*>(const_attr); 
 
-        // Check if formulas is not filled with the wrong variabels (befor the bij array is applied)
-        delete attr->__cpf;
-        attr->__cpf = new Potential<GUM_SCALAR>(new MultiDimArray<GUM_SCALAR>() );
+      //    // Check if formulas is not filled with the wrong variables (befor the bij array is applied)
+      //    auto copy = attr->__cpf;
+      //    attr->__cpf = new Potential<GUM_SCALAR>(new MultiDimArray<GUM_SCALAR>() );
 
-        for ( auto var : attr->formulas().variablesSequence() ) {
-          attr->cpf().add( *var );
-        }
+      //    for ( auto var : copy->variablesSequence() ) {
+      //      attr->cpf().add( *var );
+      //    }
 
-        Instantiation inst( attr->formulas() );
+      //    delete copy;
 
-        for ( inst.begin(); not inst.end(); inst.inc() ) {
+      //    Instantiation inst( attr->formulas() );
+      //    Instantiation jnst( attr->cpf() );
 
-          Formula f( attr->formulas()[inst] );
+      //    for ( inst.begin(), jnst.begin(); not (inst.end() or jnst.end()); inst.inc(),jnst.inc() ) {
 
-          for ( auto p : c->parameters() ) {
-            f.variables().insert( p->name(), p->value() );
-          }
+      //      Formula f( attr->formulas()[inst] );
 
-          attr->cpf().set( inst, f.result() );
+      //      for ( auto p : c->parameters() ) {
+      //        f.variables().insert( p->name(), p->value() );
+      //      }
 
-        }
+      //      attr->cpf().set( jnst, f.result() );
 
-      }
+      //    }
+
+      //    GUM_ASSERT( inst.end() and jnst.end() );
+
+      //  }
+
+      //}
 
     }
-
-  }
 
     template<typename GUM_SCALAR>
     void
@@ -1329,11 +1334,13 @@ namespace gum {
       auto c = __retrieveClass( type );
 
       if (c->parameters().empty()) {
+
         if (params.empty()) {
-          addInstance(type, name);
+          __addInstance(c, name);
         } else {
           GUM_ERROR(OperationNotAllowed, "Class " + type + " does not have parameters");
         }
+
       } else {
 
         auto my_params = params;
@@ -1610,37 +1617,37 @@ namespace gum {
   void 
   PRMFactory<GUM_SCALAR>::setRawCPFByColumns( const std::vector<std::string>& array ) {
 
-    auto a = static_cast<Attribute<GUM_SCALAR>*>( __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
-    auto c = static_cast<Class<GUM_SCALAR>*>( __checkStack( 2, PRMObject::PRMType::CLASS ) );
+    //auto a = static_cast<Attribute<GUM_SCALAR>*>( __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
+    //auto c = static_cast<Class<GUM_SCALAR>*>( __checkStack( 2, PRMObject::PRMType::CLASS ) );
 
-    if( a->cpf().domainSize() != array.size() ) {
-      GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
-    }
+    //if( a->cpf().domainSize() != array.size() ) {
+    //  GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
+    //}
 
-    if( a->cpf().nbrDim() == 1 ) {
+    //if( a->cpf().nbrDim() == 1 ) {
 
-      setRawCPFByLines( array );
+    //  setRawCPFByLines( array );
 
-    } else {
+    //} else {
 
-      std::vector<Size> pos( a->cpf().nbrDim(), 0 );
-      Instantiation inst( a->cpf() );
-      inst.setFirst();
+    //  std::vector<Size> pos( a->cpf().nbrDim(), 0 );
+    //  Instantiation inst( a->cpf() );
+    //  inst.setFirst();
 
-      for( const auto & elt : array ) {
+    //  for( const auto & elt : array ) {
 
-        Formula f(elt);
-        for ( const auto p : c->parameters() ) {
-          f.variables().insert( p->name(), p->value() );
-        }
-        a->cpf().set( inst, f.result() );
-        a->formulas().set( inst, elt );
+    //    Formula f(elt);
+    //    for ( const auto p : c->parameters() ) {
+    //      f.variables().insert( p->name(), p->value() );
+    //    }
+    //    a->cpf().set( inst, f.result() );
+    //    a->formulas().set( inst, elt );
 
-        __incrementByColumn(a, pos, inst);
+    //    __incrementByColumn(a, pos, inst);
 
-      }
+    //  }
 
-    }
+    //}
   }
 
   template<typename GUM_SCALAR>
@@ -1670,30 +1677,30 @@ namespace gum {
   void 
   PRMFactory<GUM_SCALAR>::setRawCPFByLines( const std::vector<std::string>& array ) {
 
-    auto a = static_cast<Attribute<GUM_SCALAR>*>( __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
-    auto c = static_cast<Class<GUM_SCALAR>*>( __checkStack( 2, PRMObject::PRMType::CLASS ) );
+    //auto a = static_cast<Attribute<GUM_SCALAR>*>( __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
+    //auto c = static_cast<Class<GUM_SCALAR>*>( __checkStack( 2, PRMObject::PRMType::CLASS ) );
 
-    __checkStack( 2, PRMObject::PRMType::CLASS );
+    //__checkStack( 2, PRMObject::PRMType::CLASS );
 
-    if( a->cpf().domainSize() != array.size() ) {
-      GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
-    }
+    //if( a->cpf().domainSize() != array.size() ) {
+    //  GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
+    //}
 
-    a->formulas().fillWith( array );
+    //a->formulas().fillWith( array );
 
-    std::vector<GUM_SCALAR> values;
+    //std::vector<GUM_SCALAR> values;
 
-    for ( const auto & s : array ) {
+    //for ( const auto & s : array ) {
 
-      Formula f(s);
-      for ( const auto p : c->parameters() ) {
-        f.variables().insert( p->name(), p->value() );
-      }
-      values.push_back(f.result());
+    //  Formula f(s);
+    //  for ( const auto p : c->parameters() ) {
+    //    f.variables().insert( p->name(), p->value() );
+    //  }
+    //  values.push_back(f.result());
 
-    }
+    //}
 
-    a->cpf().fillWith( values );
+    //a->cpf().fillWith( values );
 
   }
 

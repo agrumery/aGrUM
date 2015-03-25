@@ -192,6 +192,10 @@ namespace gum {
           factory.setVariableCPTImplementation( new aggregator::Forall<GUM_SCALAR> ( agg.label() ) );
           break;
 
+        case Aggregate<GUM_SCALAR>::AggregateType::COUNT:
+          factory.setVariableCPTImplementation( new aggregator::Count<GUM_SCALAR> ( agg.label() ) );
+          break;
+
         default:
           GUM_ERROR( OperationNotAllowed, "Aggregator not handled yet" );
           break;

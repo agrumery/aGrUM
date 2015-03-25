@@ -24,39 +24,64 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
+#include <sstream>
+
+#include <agrum/PRM/utils_prm.h>
+
 #include <agrum/PRM/elements/attribute.h>
 #include <agrum/PRM/elements/type.h>
 
 namespace gum {
   namespace prm {
 
-    template<typename GUM_SCALAR> Attribute<GUM_SCALAR>::Attribute ( const std::string& name, const Type<GUM_SCALAR>& type,
-        MultiDimImplementation<GUM_SCALAR>* impl ) :
-      ClassElement<GUM_SCALAR> ( name ), __type ( new Type<GUM_SCALAR> ( type ) ),
-      __cpf ( new Potential<GUM_SCALAR> ( impl ) ), __formulas(0), __delete_type ( true ) {
+    template<typename GUM_SCALAR>
+    Attribute<GUM_SCALAR>::Attribute ( const std::string& name,
+                                       const Type<GUM_SCALAR>& type,
+                                       MultiDimImplementation<GUM_SCALAR>* impl ) :
+      ClassElement<GUM_SCALAR> ( name ),
+      __type ( new Type<GUM_SCALAR> ( type ) ),
+      __cpf ( new Potential<GUM_SCALAR> ( impl ) ),
+      __delete_type ( true ) 
+    {
       GUM_CONSTRUCTOR ( Attribute );
-      __cpf->add ( **__type );
-      this->_safeName = PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
-    }
-
-    template<typename GUM_SCALAR> Attribute<GUM_SCALAR>::Attribute ( const std::string& name, Type<GUM_SCALAR>* type, Potential<GUM_SCALAR>* cpf,
-        bool delete_type ) :
-      ClassElement<GUM_SCALAR> ( name ), __type ( type ), __cpf ( cpf ), __formulas(0), __delete_type ( delete_type ) {
-      GUM_CONSTRUCTOR ( Attribute );
-
-      if ( not __cpf->variablesSequence().exists ( & ( type->variable() ) ) )
-        GUM_ERROR ( OperationNotAllowed, "the given Potential does not contain the type of this Attribute." );
+      __cpf->add( type.variable() );
 
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
     }
 
-    template<typename GUM_SCALAR> Attribute<GUM_SCALAR>::Attribute ( const Attribute<GUM_SCALAR>& source ) :
-      ClassElement<GUM_SCALAR> ( source ), __type ( new Type<GUM_SCALAR> ( source.type() ) ), __cpf ( 0 ), __formulas(0) {
+    template<typename GUM_SCALAR>
+    Attribute<GUM_SCALAR>::Attribute ( const std::string& name,
+                                       Type<GUM_SCALAR>* type,
+                                       Potential<GUM_SCALAR>* cpf,
+                                       bool delete_type ) :
+      ClassElement<GUM_SCALAR> ( name ),
+      __type ( type ),
+      __cpf ( cpf ),
+      __delete_type ( delete_type )
+    {
+      GUM_CONSTRUCTOR ( Attribute );
+
+      if ( not __cpf->variablesSequence().exists ( & ( type->variable() ) ) ) {
+        auto msg = "the given Potential does not contain the type of this Attribute";
+        GUM_ERROR ( OperationNotAllowed, msg );
+      }
+
+      this->_safeName = PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
+    }
+
+    template<typename GUM_SCALAR>
+    Attribute<GUM_SCALAR>::Attribute ( const Attribute<GUM_SCALAR>& source ) :
+      ClassElement<GUM_SCALAR> ( source ),
+      __type (0),
+      __cpf (0)
+    {
       GUM_CONS_CPY ( Attribute );
       GUM_ERROR ( FatalError, "Illegal call to the copy constructor of gum::Attribute" );
     }
 
-    template<typename GUM_SCALAR> Attribute<GUM_SCALAR>::~Attribute() {
+    template<typename GUM_SCALAR>
+    Attribute<GUM_SCALAR>::~Attribute() {
+
       GUM_DESTRUCTOR ( Attribute );
       delete __cpf;
 
@@ -64,9 +89,14 @@ namespace gum {
         delete __type;
       }
 
-      if (__formulas) {
-        delete __formulas;
-      }
+    }
+
+    template<typename GUM_SCALAR>
+    void
+    Attribute<GUM_SCALAR>::copyCpf(const Bijection<const DiscreteVariable *, const DiscreteVariable *>& bij,
+                                   const Attribute<GUM_SCALAR> & source) {
+      delete __cpf;
+      __cpf = copyPotential( bij, source.cpf() );
     }
 
     template<typename GUM_SCALAR> Attribute<GUM_SCALAR>&
@@ -107,7 +137,9 @@ namespace gum {
       } catch ( OperationNotAllowed& ) {
         GUM_ERROR ( OperationNotAllowed, "this Attribute can not have cast descendant" );
       } catch ( WrongType& ) {
-        GUM_ERROR ( WrongType, "the cast descendant Type<GUM_SCALAR> is not a direct subtype of this Attribute super Type<GUM_SCALAR>" );
+        std::stringstream msg;
+        msg << cast->type().name() << " is not a subtype of " << type().name();
+        GUM_ERROR ( WrongType, msg.str() );
       }
 
       Potential<GUM_SCALAR>* cpf = new Potential<GUM_SCALAR>();
@@ -152,7 +184,7 @@ namespace gum {
     void
     Attribute<GUM_SCALAR>::addParent ( const ClassElement<GUM_SCALAR>& elt ) {
       try {
-        __cpf->add ( elt.type().variable() );
+        __cpf->add( elt.type().variable() );
       } catch ( DuplicateElement& ) {
         std::stringstream msg;
         msg << ": " << elt.name() << " as parent of " << this->name();
@@ -164,42 +196,10 @@ namespace gum {
       }
     }
 
-// See gum::ClassElement<GUM_SCALAR>::_addChild().
+    // See gum::ClassElement<GUM_SCALAR>::_addChild().
     template<typename GUM_SCALAR> INLINE
     void
     Attribute<GUM_SCALAR>::addChild ( const ClassElement<GUM_SCALAR>& elt ) { }
-
-    template<typename GUM_SCALAR> INLINE
-    MultiDimImplementation<std::string>&
-    Attribute<GUM_SCALAR>::formulas() {
-
-      if (not __formulas) {
-        __formulas = new MultiDimArray<std::string>();
-        for ( const auto var : cpf().variablesSequence() ) {
-          __formulas->add( *var );
-        }
-      }
-
-      return *__formulas;
-    }
-
-    template<typename GUM_SCALAR> INLINE
-    const MultiDimImplementation<std::string>&
-    Attribute<GUM_SCALAR>::formulas() const {
-
-      if (not __formulas) {
-        GUM_ERROR( OperationNotAllowed, "No formulas for this attribute." );
-      }
-
-      return *__formulas;
-
-    }
-
-    template<typename GUM_SCALAR> INLINE
-    bool
-    Attribute<GUM_SCALAR>::hasFormula() const {
-      return __formulas != 0;
-    }
 
     template<typename GUM_SCALAR> INLINE
     FuncAttribute<GUM_SCALAR>::FuncAttribute ( const std::string& name,

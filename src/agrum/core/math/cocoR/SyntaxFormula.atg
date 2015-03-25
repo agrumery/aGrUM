@@ -60,7 +60,7 @@ eol    = '\n'.
 TOKENS
 integer     =  digit {digit}.
 float       =  digit {digit} '.' digit {digit}. // [ ('E'|'e') ['+'|'-'] digit {digit} ].
-operator    = '+'|'-'|'*'|'/'|'^'.
+operator    = '+'|'-'|'*'|'/'|'^'|'<'|'>'.
 eol         = '\n'.
 ident       = letter {letter | digit | '_'}.
 

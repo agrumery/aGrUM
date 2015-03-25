@@ -27,7 +27,6 @@
 #ifndef GUM_ATTRIBUTE_H
 #define GUM_ATTRIBUTE_H
 
-#include <agrum/core/math/formula.h>
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/PRM/elements/classElement.h>
 
@@ -76,7 +75,8 @@ namespace gum {
          * @param impl The MultiDimImplementation used by the internal Potential of this Attribute.
          *             it will be deleted after the call of ~Attribute.
          */
-        Attribute ( const std::string& name, const Type<GUM_SCALAR>& type,
+        Attribute ( const std::string& name,
+                    const Type<GUM_SCALAR>& type,
                     MultiDimImplementation<GUM_SCALAR>* impl = new MultiDimArray<GUM_SCALAR>() );
 
         /**
@@ -89,7 +89,10 @@ namespace gum {
          *            ~Attribute.
          * @param delete_type If true, the type is deleted with this instance.
          */
-        Attribute ( const std::string& name, Type<GUM_SCALAR>* type, Potential<GUM_SCALAR>* cpf, bool delete_type );
+        Attribute ( const std::string& name,
+                    Type<GUM_SCALAR>* type,
+                    Potential<GUM_SCALAR>* cpf,
+                    bool delete_type );
 
 
         /// Destructor.
@@ -100,6 +103,9 @@ namespace gum {
         /// @name Getters & setters
         // ========================================================================
         /// @{
+
+        virtual void copyCpf( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bif,
+                              const Attribute<GUM_SCALAR> & source);
 
         /// See gum::ClassElement::elt_type().
         virtual typename ClassElement<GUM_SCALAR>::ClassElementType elt_type() const;
@@ -115,10 +121,6 @@ namespace gum {
 
         /// See gum::ClassElement::cpf().
         virtual const Potential<GUM_SCALAR>& cpf() const;
-
-        virtual MultiDimImplementation<std::string>& formulas();
-        virtual const MultiDimImplementation<std::string>& formulas() const;
-        virtual bool hasFormula() const;
 
         /// See gum::ClassElement::_addParent().
         virtual void addParent ( const ClassElement<GUM_SCALAR>& elt );
@@ -142,7 +144,7 @@ namespace gum {
          * @throw OperationNotAllowed Raised if it is not possible to create a
          *                            cast descendant for this Attribute.
          */
-        Attribute* getCastDescendant() const;
+        virtual Attribute* getCastDescendant() const;
 
         /**
          * @brief Define attr as a cast descendant of this Attribute.
@@ -167,7 +169,7 @@ namespace gum {
          * @throw TypeError Raised if attr's Type<GUM_SCALAR> is not a direct descendant of
          *                  this Attribute's Type<GUM_SCALAR>.
          */
-        void setAsCastDescendant ( Attribute* attr );
+        virtual void setAsCastDescendant ( Attribute* attr );
 
         /// @}
       protected:
@@ -189,9 +191,6 @@ namespace gum {
 
         /// A pointer on the Potential of this attribute
         Potential<GUM_SCALAR>* __cpf;
-
-        /// A pointer on the Potential defined with formulas of this attribute
-        MultiDimImplementation<std::string>* __formulas;
 
         /// Flag to know if we can delete type.
         bool __delete_type;

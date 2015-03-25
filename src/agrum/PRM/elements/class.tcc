@@ -120,8 +120,9 @@ namespace gum {
         __nameMap.insert(param->name(), param);
       }
 
+      // Copuying attributes
       for( const auto c_attr : c.__attributes ) {
-        // using multiDimSparse to prevent unecessary memory allocation for large arrays
+        // using multiDimSparse to prevent unecessary memory allocation for large arrays (the potentials are copied latter)
         auto attr = new Attribute<GUM_SCALAR> ( c_attr->name(), c_attr->type(), new MultiDimSparse<GUM_SCALAR> ( 0.0 ) );
 
         bij.insert( & ( c_attr->type().variable() ), & ( attr->type().variable() ) );
@@ -205,18 +206,8 @@ namespace gum {
 
       for( const auto attr : c.__attributes ) {
         a = static_cast<Attribute<GUM_SCALAR>*>( __nameMap[attr->safeName()] );
-        delete a->__cpf;
-        a->__cpf = copyPotential( bij, attr->cpf() );
+        a->copyCpf(bij, *attr);
 
-        // Copying formulas if any
-        if ( attr->hasFormula() ) {
-
-          if ( a->__formulas ) {
-            delete a->__formulas;
-          }
-          a->__formulas = copyMultiDim( bij, attr->formulas() );
-
-        }
       }
     }
 
@@ -398,7 +389,9 @@ namespace gum {
       switch( overloader->elt_type() ) {
         case ClassElement<GUM_SCALAR>::prm_attribute:
           {
-            __overloadAttribute( static_cast<Attribute<GUM_SCALAR>*>( overloader ), static_cast<Attribute<GUM_SCALAR>*>( overloaded ) );
+            auto overloader_attr = static_cast<Attribute<GUM_SCALAR>*>( overloader ); 
+            auto overloaded_attr = static_cast<Attribute<GUM_SCALAR>*>( overloaded );
+            __overloadAttribute( overloader_attr, overloaded_attr );
             __addIOInterfaceFlags( overloader );
             break;
           }
@@ -462,6 +455,8 @@ namespace gum {
         __attributes.insert( overloader );
         // Swapping types, ugly but necessary to preserve the Type<GUM_SCALAR> pointer of overloaded
         __swap_types( overloader, overloaded );
+        // Deleting overloaded attribute
+        delete overloaded;
       }
     }
 
@@ -589,8 +584,6 @@ namespace gum {
           GUM_ERROR( FatalError, "swapping types impossible" );
         }
       }
-
-      delete overloaded;
     }
 
     template<typename GUM_SCALAR>

@@ -62,7 +62,9 @@ namespace gum {
 /// Destructor. Delete current context.
       O3prmrInterpreter::~O3prmrInterpreter() {
         delete m_context;
-        delete m_inf;
+        if (m_inf) {
+          delete m_inf;
+        }
         delete m_reader->prm();
         delete m_reader;
       }
@@ -767,7 +769,6 @@ namespace gum {
 
       void O3prmrInterpreter::query ( const QueryCommand<double>* command ) try {
         const std::string& query = command->value;
-        const Attribute<double>& attr = * ( command->chain.second );
 
         Potential<double> m;
 
@@ -776,12 +777,20 @@ namespace gum {
           generateInfEngine ( * ( command->system ) );
 
         // Inference
-        if ( m_verbose ) m_log << "# Starting inference over query: " << query << "... " << std::flush;
+        if ( m_verbose ) m_log << "# Starting inference over query: " << query << "... " << std::endl;
 
         Timer timer;
         timer.reset();
 
         m_inf->marginal ( command->chain, m );
+
+        if (m_verbose) {
+          m_log << "#DEBUG# Marginal variables inference:" << std::endl;
+          for ( const auto& var: m.variablesSequence() ) {
+            m_log << "#DEBUG#   ptr: " << var << ", size: " << var->domainSize() << " ";
+          }
+          m_log << std::endl;
+        }
 
         // Compute spent time
         double t = timer.step();
@@ -791,25 +800,40 @@ namespace gum {
         if ( m_verbose ) m_log << "# Time in seconds (accuracy ~0.001): " << t << std::endl;
 
         // Show results
-        Instantiation j ( m );
 
         if ( m_verbose ) m_log << std::endl;
 
+        if ( m_verbose ) m_log << "#DEBUG# 1" << std::endl;
         QueryResult result;
         result.command = query;
         result.time = t;
 
+        if ( m_verbose ) m_log << "#DEBUG# 2" << std::endl;
+
+        Instantiation j ( m );
+        const Attribute<double>& attr = * ( command->chain.second );
+        if (m_verbose) m_log << "#DEBUG# " << attr.name() << ": " << attr.type().name() << std::endl;
+        if (m_verbose) m_log << "#DEBUG# " << &(attr.type().variable()) << std::endl;
+
         for ( j.setFirst(); not j.end(); j.inc() ) {
+          if ( m_verbose ) m_log << "#DEBUG# 2.1" << std::endl;
           std::string label = attr.type().variable().label ( j.val ( attr.type().variable() ) );
+          if ( m_verbose ) m_log << "#DEBUG# 2.2" << std::endl;
           float value = m.get ( j );
+          if ( m_verbose ) m_log << "#DEBUG# 2.3" << std::endl;
           SingleResult singleResult;
+          if ( m_verbose ) m_log << "#DEBUG# 2.4" << std::endl;
           singleResult.label = label;
+          if ( m_verbose ) m_log << "#DEBUG# 2.5" << std::endl;
           singleResult.p = value;
+          if ( m_verbose ) m_log << "#DEBUG# 2.6" << std::endl;
           result.values.push_back ( singleResult );
+          if ( m_verbose ) m_log << "#DEBUG# 2.7" << std::endl;
 
           if ( m_verbose ) m_log << label << " : " << value << std::endl;
         }
 
+        if ( m_verbose ) m_log << "#DEBUG# 3" << std::endl;
         m_results.push_back ( result );
 
         if ( m_verbose ) m_log << std::endl;
