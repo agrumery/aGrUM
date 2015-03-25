@@ -86,7 +86,10 @@ namespace gum {
     MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *
     TreeRegress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::compute(){
 
-      __rd->manager()->setRootNode( __xPlorePxi(__pxi.second( __xip.atPos(0) ), __pxi.second( __xip.atPos(0) )->root(), 0) );
+      if(__vFunc->isTerminalNode(__vFunc->root()))
+        __rd->copy(*__vFunc);
+      else
+        __rd->manager()->setRootNode( __xPlorePxi(__pxi.second( __xip.atPos(0) ), __pxi.second( __xip.atPos(0) )->root(), 0) );
 
       return __rd;
     }
@@ -114,6 +117,7 @@ namespace gum {
           nody = __xPlorePxi( nextTree, nextTree->root(), seqPos + 1);
         }
         __curLeafMap.erase(xPloredTree);
+
         return nody;
       }
 
@@ -122,8 +126,9 @@ namespace gum {
       if( !__rd->variablesSequence().exists(currentNode->nodeVar()) )
         __rd->add(*(currentNode->nodeVar()));
 
-      if( __context.exists(currentNode->nodeVar()) )
+      if( __context.exists(currentNode->nodeVar()) ){
         return __xPlorePxi( xPloredTree, currentNode->son( __context[currentNode->nodeVar()] ), seqPos);
+      }
 
       NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*currentNode->nodeVar()->domainSize() ) );
       for( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda ){

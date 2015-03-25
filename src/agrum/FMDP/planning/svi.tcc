@@ -82,16 +82,15 @@ namespace gum {
     MultiDimDecisionGraph< GUM_SCALAR >*
     SVI<GUM_SCALAR>::_evalQaction( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Idx actionId ){
 
-//      std::cout << " Eval :" << this->_fmdp->actionName(actionId) << std::endl;
-
       // ******************************************************************************
       // Initialisation :
       // Creating a copy of last Vfunction to deduce from the new Qaction
       // And finding the first var to eleminate (the one at the end)
       Bijection<const DiscreteVariable*, const MultiDimDecisionGraph<GUM_SCALAR> *> pxi;
       for( SequenceIteratorSafe<const DiscreteVariable*> varIter = Vold->variablesSequence().beginSafe();
-           varIter != Vold->variablesSequence().endSafe(); ++varIter )
+           varIter != Vold->variablesSequence().endSafe(); ++varIter ){
         pxi.insert( *varIter, RECAST(this->_fmdp->transition( actionId, this->_fmdp->mapMainPrime().first(*varIter )) ) );
+      }
 
       TreeRegress<GUM_SCALAR, std::multiplies, std::plus> tr( Vold, pxi, Vold->variablesSequence(), (GUM_SCALAR) 0.0 );
       return tr.compute();

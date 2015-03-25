@@ -85,7 +85,6 @@ namespace gum {
     // ###################################################################
     template <TESTNAME VariableAttributeSelection, TESTNAME RewardAttributeSelection, LEARNERNAME LearnerSelection>
     void FMDPLearner<VariableAttributeSelection, RewardAttributeSelection, LearnerSelection>::addAction(const Idx actionId, const std::string &actionName ){
-//      std::cout << "Action " << actionId << " " << actionName << std::endl;
         __fmdp->addAction(actionId, actionName);
         __actionLearners.insert( actionId, new HashTable<const DiscreteVariable*, IncrementalGraphLearner<VariableAttributeSelection, false>*>());
     }
@@ -102,8 +101,6 @@ namespace gum {
     template <TESTNAME VariableAttributeSelection, TESTNAME RewardAttributeSelection, LEARNERNAME LearnerSelection>
     void FMDPLearner<VariableAttributeSelection, RewardAttributeSelection, LearnerSelection>::initialize(){
 
-      std::cout << "DEBUT INITIALISATION " << std::endl;
-
       for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter ){
         for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter ){
             MultiDimDecisionGraph<double>* varTrans = new MultiDimDecisionGraph<double>();
@@ -118,7 +115,6 @@ namespace gum {
       __fmdp->addReward(reward);
       __rewardLearner = new RewardLearnerType<true>(reward, __learningThreshold, __similarityThreshold, __mainVariables);
 
-      std::cout << "FIN INITIALISATION " << std::endl;
     }
 
     // ###################################################################
@@ -128,21 +124,12 @@ namespace gum {
     void FMDPLearner<VariableAttributeSelection, RewardAttributeSelection, LearnerSelection>::addObservation( Idx actionId, const Observation* newObs ){
 
         for(SequenceIteratorSafe<const DiscreteVariable*> varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter){
-//            std::cout << "Adding observation to a variable learner for action : " << __fmdp->actionName(actionId) << std::endl;
             __actionLearners[actionId]->getWithDefault(*varIter, nullptr)->addObservation(newObs);
-//            std::cout << "\tObservation added" << std::endl;
-//            std::cout << "\tNow updating graph ..." << std::endl;
             __actionLearners[actionId]->getWithDefault(*varIter, nullptr)->updateGraph();
-//            std::cout << "\tGraph updated" << std::endl;
-
         }
 
-//        std::cout << "Adding observation to Reward" << std::endl;
         __rewardLearner->addObservation(newObs);
-//        std::cout << "\tObservation added" << std::endl;
-//        std::cout << "\tNow updating graph ..." << std::endl;
         __rewardLearner->updateGraph();
-//        std::cout << "\tGraph updated" << std::endl;
     }
 
     // ###################################################################

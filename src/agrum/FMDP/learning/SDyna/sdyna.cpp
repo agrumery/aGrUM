@@ -140,9 +140,6 @@ namespace gum {
     // ###################################################################
     void SDYNA::feedback( const Instantiation& newState, double reward ){
 
-      std::cout << std::endl << "*********************************************\nBegin Feedback - Observation n°" << __nbObservation
-                << "\n*********************************************\n" <<  std::endl;
-
       Observation* obs = new Observation();
 
       for( auto varIter = _lastState.variablesSequence().beginSafe(); varIter != _lastState.variablesSequence().endSafe(); ++varIter)
@@ -155,19 +152,15 @@ namespace gum {
 
       obs->setReward(reward);
 
-      std::cout << "Taking observation into account ..." <<  std::endl;
       _learnTransition( __lastAction, obs );
-      std::cout << "Done" <<  std::endl;
       __bin.insert(obs);
 
       setCurrentState( newState );
 
-      std::cout << __nbObservation << " " <<  __observationPhaseLenght << std::endl;
       if( __nbObservation%__observationPhaseLenght == 0)
         _makePlanning(__nbValueIterationStep);
 
       __nbObservation++;
-      std::cout << "\n*********************************************\n" << " " << std::endl << " " << std::endl;
     }
 
     // ###################################################################

@@ -103,7 +103,6 @@ namespace gum {
       __findRetrogradeVariables( __DG2, __DG2InstantiationNeeded );
 
       Idx* varInst = nullptr;
-//        std::cout << "MDGO 85" << std::endl;
       if(__nbVar != 0){
         varInst = static_cast<Idx*>( ALLOCATE( sizeof(Idx)*__nbVar ) );
         for( Idx i = 0; i < __nbVar; i++ )
@@ -114,7 +113,7 @@ namespace gum {
       conti.setDG1Node( __DG1->root() );
       conti.setDG2Node( __DG2->root() );
 
-      NodeId root = __compute( conti, (Idx)0 - 1, "" );
+      NodeId root = __compute( conti, (Idx)0 - 1 );
       __rd->manager()->setRootNode( root );
 
       if(__nbVar != 0 )
@@ -165,8 +164,6 @@ namespace gum {
           ++fite;
           continue;
         }
-
-//            std::cout << "C" << std::endl;
 
         // Test : is current var of the second order present in the first order.
         // if not we add it to final order
@@ -220,7 +217,6 @@ namespace gum {
       // Various initialization needed now that we have a bigger picture
       __nbVar = __rd->variablesSequence().size();
 
-//        std::cout << "MDGO 189" << std::endl;
       if(__nbVar != 0 ){
         __default = static_cast<short int*>( ALLOCATE( sizeof(short int)*__nbVar ) );
         for( Idx i = 0; i < __nbVar; i++ )
@@ -280,10 +276,8 @@ namespace gum {
         const Link<NodeId> * nodeIter = dg->varNodeListe(*varIter)->list();
         while( nodeIter != nullptr ){
 
-//                std::cout << "MDGO 244" << std::endl;
           short int* instantiationNeeded = static_cast<short int*>(ALLOCATE(tableSize));
           dgInstNeed.insert( nodeIter->element(), instantiationNeeded );
-//                std::cout << "MDGO 247" << std::endl;
           short int* varDescendant = static_cast<short int*>(ALLOCATE(tableSize));
           nodesVarDescendant.insert( nodeIter->element(), varDescendant );
           for(Idx j = 0; j < __nbVar; j++ ){
@@ -354,12 +348,10 @@ namespace gum {
               template <typename> class PROJECTOPERATOR,
               template <typename> class TerminalNodePolicy>
     NodeId
-    Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::__compute(  O4DGContext & currentSituation,
-                                                                                        Idx lastInstVarPos,
-                                                                                        std::string tab) {
+    Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::__compute(O4DGContext & currentSituation,
+                                                                                         Idx lastInstVarPos) {
 
       NodeId newNode = 0;
-//      std::cout << "Now computing " << currentSituation.DG1Node() << " " << currentSituation.DG2Node() << std::endl;
 
       // ******************************************************************************************************
       // If both current nodes are terminal,
@@ -391,7 +383,6 @@ namespace gum {
       short int* dg2NeededVar = __DG2InstantiationNeeded.exists( currentSituation.DG2Node() )?__DG2InstantiationNeeded[ currentSituation.DG2Node() ]:__default;
       Idx dg2CurrentVarPos = __DG2->isTerminalNode( currentSituation.DG2Node() )?__nbVar:__rd->variablesSequence().pos( __DG2->node( currentSituation.DG2Node() )->nodeVar() );
 
-//        std::cout << "MDGO 348" << std::endl;
       short int* instNeeded = static_cast<short int*>( ALLOCATE( sizeof(short int)*__nbVar ) );
 
       for( Idx i = 0; i < __nbVar; i++ ){
@@ -425,7 +416,7 @@ namespace gum {
           // If var associated to current node has already been instanciated, we have to jump it
           currentSituation.setDG1Node( __DG1->node( currentSituation.DG1Node() )->son( currentSituation.varModality( dg1CurrentVarPos ) - 1 ) );
 
-          newNode = __compute(currentSituation, lastInstVarPos, tab );
+          newNode = __compute(currentSituation, lastInstVarPos );
           __explorationTable.insert( curSitKey, newNode);
           currentSituation.setDG1Node(origDG1);
           currentSituation.setDG2Node(origDG2);
@@ -447,7 +438,7 @@ namespace gum {
           // If var associated to current node has already been instanciated, we have to jump it
           currentSituation.setDG2Node( __DG2->node( currentSituation.DG2Node() )->son( currentSituation.varModality( dg2CurrentVarPos ) - 1 ) );
 
-          newNode = __compute(currentSituation, lastInstVarPos, tab );
+          newNode = __compute(currentSituation, lastInstVarPos );
           __explorationTable.insert( curSitKey, newNode);
           currentSituation.setDG1Node(origDG1);
           currentSituation.setDG2Node(origDG2);
@@ -478,14 +469,13 @@ namespace gum {
         if( instNeeded[ varPos ] ){
 
           const DiscreteVariable* curVar = __rd->variablesSequence().atPos( varPos );
-//                std::cout << "MDGO 433" << std::endl;
           NodeId* sonsIds = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*curVar->domainSize() ) );
 
           for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
 
             currentSituation.chgVarModality ( varPos, modality + 1 );
 
-            sonsIds[ modality ] = __compute( currentSituation, varPos, tab );
+            sonsIds[ modality ] = __compute( currentSituation, varPos );
           }
 
           newNode = __rd->manager()->nodeRedundancyCheck( curVar, sonsIds );
@@ -504,7 +494,6 @@ namespace gum {
       // ====================================================
       // Terminal Exploration
       if( sameVar && __DG1->node(origDG1)->nodeVar() == __targetVar ){
-//        std::cout << "Same here!" << std::endl;
         GUM_SCALAR newVal = __neutral;
         for( Idx targetModa = 0; targetModa < __targetVar->domainSize(); ++targetModa)
           newVal = __project( newVal, __combine( __DG1->nodeValue( __DG1->node(origDG1)->son(targetModa) ),
@@ -515,9 +504,7 @@ namespace gum {
         return newNode;
       }
       if( __DG1->isTerminalNode(origDG1) ){
-//        std::cout << "DG1 term";
         if( __DG2->node(origDG2)->nodeVar() == __targetVar ){
-//          std::cout << "&& DG2 target" << std::endl;
           GUM_SCALAR newVal = __neutral;
           for( Idx targetModa = 0; targetModa < __targetVar->domainSize(); ++targetModa)
             newVal = __project( newVal, __combine( __DG1->nodeValue( origDG1 ),
@@ -527,10 +514,8 @@ namespace gum {
           DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
           return newNode;
         }
-//        std::cout << std::endl;
       } else {
         if( __DG1->node(origDG1)->nodeVar() == __targetVar && __DG2->isTerminalNode(origDG2) ){
-//          std::cout << "DG1 target && DG2 term" << std::endl;
           GUM_SCALAR newVal = __neutral;
           for( Idx targetModa = 0; targetModa < __targetVar->domainSize(); ++targetModa)
             newVal = __project( newVal, __combine( __DG1->nodeValue( __DG1->node(origDG1)->son(targetModa) ),
@@ -557,7 +542,6 @@ namespace gum {
 
         const DiscreteVariable* curVar = dg1Node->nodeVar();
         Idx varPos = __rd->variablesSequence().pos( curVar );
-//            std::cout << "MDGO 469" << std::endl;
         NodeId* sonsIds = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*curVar->domainSize() ) );
 
         for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
@@ -566,7 +550,7 @@ namespace gum {
           currentSituation.setDG1Node( dg1Node->son( modality ) );
           currentSituation.setDG2Node( dg2Node->son( modality ) );
 
-          sonsIds[ modality ] = __compute( currentSituation, varPos, tab );
+          sonsIds[ modality ] = __compute( currentSituation, varPos );
         }
 
         newNode = __rd->manager()->nodeRedundancyCheck( curVar, sonsIds );
@@ -587,14 +571,13 @@ namespace gum {
         const InternalNode* leaddgNode = leaddg->node( leadNodeId );
 
         const DiscreteVariable* curVar = leaddgNode->nodeVar();
-//            std::cout << "MDGO 499" << std::endl;
         NodeId* sonsIds = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*curVar->domainSize() ) );
 
         for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
           currentSituation.chgVarModality ( leadVarPos, modality + 1 );
           (currentSituation.*leadFunction)( leaddgNode->son( modality ) );
 
-          sonsIds[ modality ] = __compute( currentSituation, leadVarPos, tab );
+          sonsIds[ modality ] = __compute( currentSituation, leadVarPos );
         }
 
         newNode = __rd->manager()->nodeRedundancyCheck( curVar, sonsIds );

@@ -366,12 +366,7 @@ namespace gum {
       } else {
         __fmdp->addTransition ( __varNameMap[var], this->__decisionGraph );
       }
-
-      // this->__decisionDiagramFactory->showProperties();
-//      this->__decisionDiagramFactory->clear();
     }
-
-//    std::cout << __varNameMap[var]->name() <<  this->__decisionGraph->toDot() << std::endl;
   }
 
 
@@ -535,7 +530,6 @@ namespace gum {
       else
         __fmdp->addReward ( this->__decisionGraph );
     }
-//    std::cout << __decisionGraph->toDot( ) << std::endl;
   }
 
 
@@ -649,7 +643,6 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   NodeId
   FMDPFactory<GUM_SCALAR>::addNonTerminalNode ( std::string name_of_var ) {
-//    std::cout << "Adding " << name_of_var << std::endl;
     return __decisionGraph->manager()->addNonTerminalNode ( variable ( name_of_var ) );
   }
 

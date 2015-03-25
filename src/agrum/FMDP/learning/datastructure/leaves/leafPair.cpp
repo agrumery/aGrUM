@@ -39,9 +39,6 @@ namespace gum {
 
     void LeafPair::updateLikelyhood(){
 
-//      std::cout << "\t\t\tUPDATELIKELYHOOD" << std::endl;
-      std::stringstream ss;
-      ss << " " << std::endl << " " << std::endl;
       __likelyhood1 = 0.0;
       __likelyhood2 = 0.0;
 
@@ -53,31 +50,19 @@ namespace gum {
 
       double scaleFactor1 = __l1->total()/(__l1->total() + __l2->total());
       double scaleFactor2 = __l2->total()/(__l1->total() + __l2->total());
-      ss << "Scale Factor 1 : " << scaleFactor1 << " - Scale Factor 2 : " << scaleFactor2 << std::endl;
       for( Idx moda = 0; moda < __l1->nbModa(); ++moda ){
-        ss << "Moda : " << moda;
         if( __l1->effectif(moda) ){
           double add = __l1->effectif(moda) * std::log( __l1->effectif(moda) / ( scaleFactor1 * ( __l1->effectif(moda) + __l2->effectif(moda) ) ) );
           __likelyhood1 += add;
-          ss << " - E 1 : " <<  __l1->effectif(moda) << " - Added 1 : " << add ;
         }
         if( __l2->effectif(moda) ){
           double add = __l2->effectif(moda) * std::log( __l2->effectif(moda) / ( scaleFactor2 * ( __l1->effectif(moda) + __l2->effectif(moda) ) ) );
           __likelyhood2 += add;
-          ss << " - E 2 : " <<  __l2->effectif(moda) << " - Added 2 : " << add;
         }
-        ss << std::endl;
       }
-      ss << "L1 : " << __likelyhood1 << " - L2 : " << __likelyhood2 << std::endl;
 
       __likelyhood1 *= 2;
       __likelyhood2 *= 2;
-//      std::cout << "\t\t\tUPDATELIKELYHOOD" << std::endl;
-
-      if( std::isnan(__likelyhood1) || std::isnan(__likelyhood2) ){
-        std::cout << ss.str() << std::endl;
-        exit(0);
-      }
     }
 
     double LeafPair::likelyhood(){

@@ -107,7 +107,7 @@ namespace gum {
       // ============================================================================
       /// The main recursion function
       // ============================================================================
-      NodeId __compute( O4DGContext & currentSituation, Idx lastInstVarPos , std::string tab );
+      NodeId __compute( O4DGContext & currentSituation, Idx lastInstVarPos );
 
 
 

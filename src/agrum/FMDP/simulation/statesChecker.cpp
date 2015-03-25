@@ -50,23 +50,16 @@ namespace gum {
 
   void StatesChecker::addState(const Instantiation & state){
 
-//    std::cout << __checker->toDot() << std::endl;
-
     __nbVisitedStates++;
 
       NodeId parId = __checker->root();
       Idx parModa = state.valFromPtr( __checker->node( parId )->nodeVar() );
-//      std::cout << "ParId : " << parId << " - ParModa : " << parModa << " - Son : " << __checker->node( parId )->son( parModa ) << std::endl;
       while( __checker->node( parId )->son( parModa ) != __checkerFalseId ){
         parId = __checker->node( parId )->son( parModa );
         parModa = state.valFromPtr( __checker->node( parId )->nodeVar() );
-//        std::cout << "ParId : " << parId << " - ParModa : " << parModa << " - Son : " << __checker->node( parId )->son( parModa ) << std::endl;
       }
-//      std::cout << "Adding state ..." << std::endl;
       __insertState( state, parId, parModa );
       __checker->manager()->reduce();
-//      std::cout << __checker->toDot() << std::endl;
-
   }
 
   void StatesChecker::__insertState(const Instantiation& state, NodeId parentId, Idx parentModa){

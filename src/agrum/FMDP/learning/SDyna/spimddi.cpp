@@ -152,10 +152,8 @@ namespace gum {
     ActionSet SPIMDDI::_stateActionSet(const Instantiation& curState){
       double explo = (double)std::rand( ) / (double)RAND_MAX;
       if( __planer->optimalPolicy()->realSize() && explo > __exploThreshold){
-        std::cout << "Exploitons!" << std::endl;
         return __planer->optimalPolicy()->get(curState);
       }
-      std::cout << "Explorons!" << std::endl;
       return __explorething;
     }
 
@@ -181,13 +179,9 @@ namespace gum {
      */
     // ###################################################################
     void SPIMDDI::_makePlanning( Idx nbValueIterationStep){
-      std::cout << "Updating FMDP ..." <<  std::endl;
       __learner->updateFMDP();
-      std::cout << "Done" <<  std::endl;
 
-      std::cout << "Performing planning ..." <<  std::endl;
       __planer->makePlanning(nbValueIterationStep);
-      std::cout << "Done" <<  std::endl;
     }
 
 

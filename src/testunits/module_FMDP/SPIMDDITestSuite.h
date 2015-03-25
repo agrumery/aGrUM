@@ -29,6 +29,7 @@
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
 #include <agrum/FMDP/simulation/FMDPSimulator.h>
+#include <agrum/FMDP/simulation/taxiSimulator.h>
 #include <agrum/FMDP/learning/SDyna/spimddi.h>
 #include <agrum/FMDP/learning/SDyna/spiti.h>
 // ==============================================================================
@@ -39,63 +40,24 @@ namespace gum_tests {
 
     private :
 
-      void run ( const std::string showSaveFile, gum::Idx nbVar, ... ) {
+      void run ( gum::AbstractSimulator& sim ) {
 
         // *********************************************************************************************
-        // Chargement du fmdp servant de base
+        // Initialisation de l'instance de SDyna
         // *********************************************************************************************
-        gum::FactoredMarkovDecisionProcess<double> fmdp(true);
-        gum::FMDPDatReader<double> reader ( &fmdp, GET_PATH_STR ( "FMDP/coffee/coffee.dat" ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( reader.trace ( false ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( reader.proceed( ) );
-
-        // *********************************************************************************************
-        // Initialisation des divers objets
-        // *********************************************************************************************
-        gum::FMDPSimulator sim(&fmdp);
 //        gum::SPIMDDI spim;
         gum::SPITI spim;
-        gum::Instantiation initialState, endState;
 
         // Enregistrement des actions possibles auprès de SPIMDDI
-        for( auto actionIter = fmdp.beginActions(); actionIter != fmdp.endActions(); ++actionIter){
-          std::cout << "*actionIter : " << *actionIter << std::endl;
-          spim.addAction( *actionIter, fmdp.actionName(*actionIter));
+        for( auto actionIter = sim.beginActions(); actionIter != sim.endActions(); ++actionIter){
+          spim.addAction( *actionIter, sim.actionName(*actionIter));
         }
 
         // Enregistrement des variables caractérisant les états auprès de SPIMDDI
-        for(auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter){
+        for(auto varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter){
           spim.addVariable(*varIter);
-          initialState.add(**varIter);
         }
 
-        // Récupération des caractéristiques d'états finaux
-        va_list ap;
-        va_start(ap, nbVar);
-        for(gum::Idx nbArg = 0; nbArg < nbVar; ++nbArg){
-          std::string varName( va_arg(ap, char*) );
-          std::string varModa( va_arg(ap, char*) );
-
-          const gum::DiscreteVariable* varPtr = nullptr;
-          for(auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter)
-            if(!varName.compare( (*varIter)->name())){
-              varPtr= *varIter;
-              break;
-            }
-
-          endState.add(*varPtr);
-
-          gum::Idx varModaIdx = 0;
-          for(gum::Idx varm = 0; varm < varPtr->domainSize(); ++varm)
-            if(!varModa.compare( varPtr->label(varm))){
-                varModaIdx = varm;
-                break;
-            }
-          endState.chgVal(*varPtr, varModaIdx);
-        }
-        va_end(ap);
-
-        TS_GUM_ASSERT_THROWS_NOTHING ( sim.setEndState(endState) );
         TS_GUM_ASSERT_THROWS_NOTHING ( spim.initialize() );
         TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
 
@@ -108,10 +70,8 @@ namespace gum_tests {
           while(!sim.hasReachEnd()){
 
             // Normal Iteration Part
-            std::cout << "Choix d'action " << std::endl;
             gum::Idx actionChosenId = 0;
             TS_GUM_ASSERT_THROWS_NOTHING ( actionChosenId = spim.takeAction(); )
-            std::cout << "Action Chosen : " << actionChosenId << std::endl;
             TS_GUM_ASSERT_THROWS_NOTHING ( sim.perform( actionChosenId ) );
 
             try{
@@ -120,21 +80,57 @@ namespace gum_tests {
               std::cout << e.errorType() << std::endl << e.errorCallStack();
               exit(-2);
             }
-
-//            TS_GUM_ASSERT_THROWS_NOTHING (  );
-
           }
           TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
         }
-//        std::cout << spim.toString() << std::endl;
       }
 
     public:
 
-      void test_Coffee() {
-        std::string varName("huc");
-        std::string varModa("yes");
-        run ( "Coffee", 1, varName.c_str(), varModa.c_str() );
+
+
+
+      // *******************************************************************************
+      // Run the tests on a Coffee FMDP
+      // *******************************************************************************
+      void est_Coffee(){
+
+        // **************************************************************
+        // Chargement du fmdp servant de base
+        gum::FMDPSimulator sim(GET_PATH_STR ( "FMDP/coffee/coffee.dat" ));
+
+
+        // **************************************************************
+        // Définition des états finaux
+        gum::Instantiation theEnd;
+        for(gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter)
+          if( (*varIter)->name().compare("huc")){
+            theEnd.add(**varIter);
+            theEnd.chgVal(**varIter, (*varIter)->index("yes"));
+            break;
+          }
+        TS_GUM_ASSERT_THROWS_NOTHING (sim.setEndState(theEnd));
+
+
+        // **************************************************************
+        // Lancement
+        run ( sim );
+      }
+
+
+      // *******************************************************************************
+      // Run the tests on a Taxi instance
+      // *******************************************************************************
+      void test_Taxi(){
+
+        // **************************************************************
+        // Chargement du simulateur
+        gum::TaxiSimulator sim;
+
+
+        // **************************************************************
+        // Lancement
+        run ( sim );
       }
 
   };

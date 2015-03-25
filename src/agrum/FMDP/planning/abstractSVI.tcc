@@ -259,7 +259,7 @@ namespace gum {
             gap = fabs ( deltaV->value() );
         delete deltaV;
 
-        std::cout << " ------------------- Fin itération n° " << nbIte << std::endl << " Gap : " << gap <<  " - " << __threshold << std::endl;
+//        std::cout << " ------------------- Fin itération n° " << nbIte << std::endl << " Gap : " << gap <<  " - " << __threshold << std::endl;
 
         // *****************************************************************************************
         // And eventually we update pointers for next loop

@@ -100,7 +100,6 @@ namespace gum {
       if( __manager != nullptr )
         delete __manager;
       this->clear();
-//      std::cout << "ANICLE = " << aNICLE << " - dNICLE = " << dNICLE << " - AIN = " << aIN << " - dIN = " << dIN << std::endl;
     }
 
   // ============================================================================
@@ -399,12 +398,10 @@ namespace gum {
                                                              const Bijection<const DiscreteVariable *, const DiscreteVariable *> &reassign ){
 
 
-//        std::cout << src.toDot() << std::endl;
       this->clear();
 
       // Insertion des nouvelles variables
       for( SequenceIteratorSafe<const DiscreteVariable*> varIter = src.variablesSequence().beginSafe(); varIter != src.variablesSequence().endSafe(); ++varIter){
-//         std::cout << (*varIter)->name() << std::endl;
         this->add(*(reassign.second(*varIter)));
       }
 
