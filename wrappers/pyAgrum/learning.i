@@ -2,13 +2,13 @@
 %ignore  gum::learning::BNLearner::useK2( const Sequence<NodeId>& order);
 %ignore  gum::learning::BNLearner::useK2( const std::vector<NodeId>& order );
 
-%ignore  gum::learning::BNLearner::setForbiddenArcs(const ArcSet& set);
-%ignore  gum::learning::BNLearner::setMandatoryArcs(const ArcSet& set);
-%ignore  gum::learning::BNLearner::addForbiddenArc(const Arc& arc);
-%ignore  gum::learning::BNLearner::addMandatoryArc(const Arc& arc);
-%ignore  gum::learning::BNLearner::eraseForbiddenArc(const Arc& arc);
-%ignore  gum::learning::BNLearner::eraseMandatoryArc(const Arc& arc);
-%ignore  gum::learning::BNLearner::learnParameters ( const DAG& dag,bool take_into_account_score);
+%ignore  gum::learning::BNLearner::setForbiddenArcs(const gum::ArcSet& set);
+%ignore  gum::learning::BNLearner::setMandatoryArcs(const gum::ArcSet& set);
+%ignore  gum::learning::BNLearner::addForbiddenArc(const gum::Arc& arc);
+%ignore  gum::learning::BNLearner::addMandatoryArc(const gum::Arc& arc);
+%ignore  gum::learning::BNLearner::eraseForbiddenArc(const gum::Arc& arc);
+%ignore  gum::learning::BNLearner::eraseMandatoryArc(const gum::Arc& arc);
+%ignore  gum::learning::BNLearner::learnParameters(const gum::DAG& dag);
 
 %extend gum::learning::BNLearner {
 
@@ -16,8 +16,8 @@
     return self->learnBN<double>();
   }
   
-  gum::BayesNet<double> learnParameters(const DAG& dag) {
-    return self->learnParameters<double>(dag);
+  gum::BayesNet<double> learnParameters(const gum::BayesNet<double>& bn) {
+    return self->learnParameters<double>(bn);
   }
 
 
