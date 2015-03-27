@@ -198,7 +198,8 @@ namespace gum {
         __attributes.erase( overloaded );
         __attributes.insert( overloader );
         // Swapping types, ugly but necessary to preserve the Type<GUM_SCALAR> pointer of overloaded
-        __swap_types( overloader, overloaded );
+        overloader->overload( overloaded );
+        delete overloaded;
       }
     }
 
@@ -219,14 +220,6 @@ namespace gum {
       }
 
       end->setAsCastDescendant( parent );
-    }
-
-    template<typename GUM_SCALAR>
-    void
-    Interface<GUM_SCALAR>::__swap_types( Attribute<GUM_SCALAR>* overloader, Attribute<GUM_SCALAR>* overloaded ) {
-      auto tmp = overloader->type( &(overloaded->type()) );
-      overloaded->type( tmp );
-      delete overloaded;
     }
 
     template<typename GUM_SCALAR>

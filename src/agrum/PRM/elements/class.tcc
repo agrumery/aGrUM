@@ -454,7 +454,8 @@ namespace gum {
         __attributes.erase( overloaded );
         __attributes.insert( overloader );
         // Swapping types, ugly but necessary to preserve the Type<GUM_SCALAR> pointer of overloaded
-        __swap_types( overloader, overloaded );
+        overloader->overload(overloaded);
+        //__swap_types( overloader, overloaded );
         // Deleting overloaded attribute
         delete overloaded;
       }
@@ -562,44 +563,44 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     Class<GUM_SCALAR>::__swap_types( ClassElement<GUM_SCALAR>* overloader, ClassElement<GUM_SCALAR>* overloaded ) {
-      if( overloader->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
-        auto loader = static_cast<Attribute<GUM_SCALAR>*>( overloader );
+    //  if( overloader->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
+    //    auto loader = static_cast<Attribute<GUM_SCALAR>*>( overloader );
 
-        if ( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
+    //    if ( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
 
-          auto loaded = static_cast<Attribute<GUM_SCALAR>*>( overloaded );
-          auto tmp = loader->type( & (loaded->type() ) );
-          loaded->type( tmp );
+    //      auto loaded = static_cast<Attribute<GUM_SCALAR>*>( overloaded );
+    //      auto tmp = loader->type( & (loaded->type() ) );
+    //      loaded->type( tmp );
 
-        } else if( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) {
+    //    } else if( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) {
 
-          auto loaded = static_cast<Aggregate<GUM_SCALAR>*>( overloaded );
-          auto tmp = loader->type( loaded->__type );
-          loaded->__type = tmp;
+    //      auto loaded = static_cast<Aggregate<GUM_SCALAR>*>( overloaded );
+    //      auto tmp = loader->type( loaded->__type );
+    //      loaded->__type = tmp;
 
-        } else {
-          GUM_ERROR( FatalError, "swapping types impossible" );
-        }
-      } else if( overloader->elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) {
-        auto loader = static_cast<Aggregate<GUM_SCALAR>*>( overloader );
+    //    } else {
+    //      GUM_ERROR( FatalError, "swapping types impossible" );
+    //    }
+    //  } else if( overloader->elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) {
+    //    auto loader = static_cast<Aggregate<GUM_SCALAR>*>( overloader );
 
-        if( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
+    //    if( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
 
-          auto loaded = static_cast<Attribute<GUM_SCALAR>*>( overloaded );
-          auto tmp = loader->__type;
-          loader->__type = loaded->type( tmp );
+    //      auto loaded = static_cast<Attribute<GUM_SCALAR>*>( overloaded );
+    //      auto tmp = loader->__type;
+    //      loader->__type = loaded->type( tmp );
 
-        } else if( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) {
+    //    } else if( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) {
 
-          auto loaded = static_cast<Aggregate<GUM_SCALAR>*>( overloaded );
-          auto tmp = loader->__type;
-          loader->__type = loaded->__type;
-          loaded->__type = tmp;
+    //      auto loaded = static_cast<Aggregate<GUM_SCALAR>*>( overloaded );
+    //      auto tmp = loader->__type;
+    //      loader->__type = loaded->__type;
+    //      loaded->__type = tmp;
 
-        } else {
-          GUM_ERROR( FatalError, "swapping types impossible" );
-        }
-      }
+    //    } else {
+    //      GUM_ERROR( FatalError, "swapping types impossible" );
+    //    }
+    //  }
     }
 
     template<typename GUM_SCALAR>

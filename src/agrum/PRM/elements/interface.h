@@ -330,8 +330,6 @@ namespace gum {
 
         void __addCastDescendants ( Attribute<GUM_SCALAR>* start, Attribute<GUM_SCALAR>* end );
 
-        void __swap_types ( Attribute<GUM_SCALAR>* overloader, Attribute<GUM_SCALAR>* overloaded );
-
         /// @}
     };
 

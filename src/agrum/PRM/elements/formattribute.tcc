@@ -35,8 +35,8 @@ namespace gum {
     template<typename GUM_SCALAR>
     FormAttribute<GUM_SCALAR>::FormAttribute( const Class<GUM_SCALAR>& c,
                                               const std::string & name,
-                                              const Type<GUM_SCALAR> & type):
-                                              //MultiDimImplementation<std::string>* impl ):
+                                              const Type<GUM_SCALAR> & type,
+                                              MultiDimImplementation<std::string>* impl ):
       Attribute<GUM_SCALAR>(name),
       __fillCpfFlag( true ),
       __type ( new Type<GUM_SCALAR> ( type ) ),
@@ -58,6 +58,7 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     FormAttribute<GUM_SCALAR>::~FormAttribute() {
+      GUM_DESTRUCTOR( FormAttribute );
       delete __type;
       delete __cpf;
       delete __formulas;
@@ -66,8 +67,8 @@ namespace gum {
     template<typename GUM_SCALAR>
     Attribute<GUM_SCALAR>*
     FormAttribute<GUM_SCALAR>::newFactory() const {
-      //auto impl = static_cast<MultiDimImplementation<std::string>*>( this->__formulas->newFactory() );
-      return new FormAttribute( *__class, this->name(), this->type());//, impl );
+      auto impl = static_cast<MultiDimImplementation<std::string>*>( this->__formulas->newFactory() );
+      return new FormAttribute( *__class, this->name(), this->type(), impl );
     }
 
     template<typename GUM_SCALAR>
@@ -167,30 +168,11 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR>
-    Type<GUM_SCALAR>*
-    FormAttribute<GUM_SCALAR>::type(Type<GUM_SCALAR>* type)
-    {
-      auto tmp = __type;
-      __type = type;
-      return tmp;
-    }
-
-    template<typename GUM_SCALAR>
     const Type<GUM_SCALAR>&
     FormAttribute<GUM_SCALAR>::type() const
     {
       return *__type;
     }
-
-    // template<typename GUM_SCALAR>
-    // Potential<GUM_SCALAR>&
-    // FormAttribute<GUM_SCALAR>::cpf()
-    // {
-    //   if (__fillCpfFlag) {
-    //     __fillCpf();
-    //   }
-    //   return *__cpf;
-    // }
 
     template<typename GUM_SCALAR>
     const Potential<GUM_SCALAR>&
@@ -377,8 +359,25 @@ namespace gum {
     FormAttribute<GUM_SCALAR>::swap(const Type<GUM_SCALAR>& old_type,
                                     const Type<GUM_SCALAR>& new_type) 
     {
+      if (&(old_type) == __type) {
+        GUM_ERROR( OperationNotAllowed, "Cannot swap attribute own type" );
+      }
       __formulas->swap( old_type.variable(), new_type.variable() );
       __cpf->swap( old_type.variable(), new_type.variable() );
+    }
+
+    template<typename GUM_SCALAR>
+    Type<GUM_SCALAR>*
+    FormAttribute<GUM_SCALAR>::_type() {
+      return __type;
+    }
+
+    template<typename GUM_SCALAR>
+    void
+    FormAttribute<GUM_SCALAR>::_type( Type<GUM_SCALAR>* t ) {
+      __formulas->swap(__type->variable(), t->variable());
+      __cpf->swap(__type->variable(), t->variable());
+      __type = t;
     }
 
   } /* namespace prm */

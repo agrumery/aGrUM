@@ -80,19 +80,8 @@ namespace gum {
         /// See gum::ClassElement::type().
         virtual Type<GUM_SCALAR>& type() =0;
 
-        /// Changes the type of this attribute (if delete_type is true then it will
-        /// be disposed of by this Attribute).
-        ///
-        /// This must update the corresponding CPF.
-        ///
-        /// Returns previous type, to dispose off if necessary.
-        virtual Type<GUM_SCALAR>* type(Type<GUM_SCALAR>* type) =0;
-
         /// See gum::ClassElement::type().
         virtual const Type<GUM_SCALAR>& type() const =0;
-
-        /// See gum::ClassElement::cpf().
-        /// virtual Potential<GUM_SCALAR>& cpf() =0;
 
         /// See gum::ClassElement::cpf().
         virtual const Potential<GUM_SCALAR>& cpf() const =0;
@@ -149,11 +138,17 @@ namespace gum {
         /// Swap old_type with new_type in the ClassElement cpt.
         virtual void swap(const Type<GUM_SCALAR>& old_type, const Type<GUM_SCALAR>& new_type) =0;
 
+        /// Set this as overload of source (necessayr to preserver internal pointers for MultiDims).
+        virtual void overload(Attribute<GUM_SCALAR>* source);
+
         /// @}
 
         protected:
 
           Attribute(const Attribute<GUM_SCALAR>& source);
+
+          virtual Type<GUM_SCALAR>* _type() =0;
+          virtual void _type( Type<GUM_SCALAR>* t ) =0;
     };
 
     extern template class Attribute<double>;

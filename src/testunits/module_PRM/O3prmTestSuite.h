@@ -90,7 +90,6 @@ namespace gum_tests {
       void testClasses() {
         try {
           gum::prm::o3prm::O3prmReader<double> reader;
-          //reader.readFile("../../../src/testunits/ressources/o3prm/printers.o3prm");
           TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/printers.o3prm" ) );
           TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
           TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );

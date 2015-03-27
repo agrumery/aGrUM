@@ -91,13 +91,8 @@ namespace gum {
         /// See gum::ClassElement::type().
         virtual Type<GUM_SCALAR>& type();
 
-        virtual Type<GUM_SCALAR>* type(Type<GUM_SCALAR>* type);
-
         /// See gum::ClassElement::type().
         virtual const Type<GUM_SCALAR>& type() const;
-
-        /// See gum::ClassElement::cpf().
-        virtual Potential<GUM_SCALAR>& cpf();
 
         /// See gum::ClassElement::cpf().
         virtual const Potential<GUM_SCALAR>& cpf() const;
@@ -123,7 +118,8 @@ namespace gum {
         /// Copy operator. Don't use it.
         ScalarAttribute& operator= ( const ScalarAttribute& from );
 
-        virtual void _setCpf( Potential<GUM_SCALAR>* cpf);
+        virtual Type<GUM_SCALAR>* _type();
+        virtual void _type( Type<GUM_SCALAR>* t );
 
       private:
         // ========================================================================

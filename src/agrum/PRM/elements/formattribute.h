@@ -47,11 +47,8 @@ namespace gum {
 
         FormAttribute( const Class<GUM_SCALAR>& c,
                        const std::string & name,
-                       const Type<GUM_SCALAR> & type);
-        //FormAttribute( const Class<GUM_SCALAR>& c,
-        //               const std::string & name,
-        //               const Type<GUM_SCALAR> & type,
-        //               MultiDimImplementation<std::string>* impl = new MultiDimArray<std::string>() );
+                       const Type<GUM_SCALAR> & type,
+                       MultiDimImplementation<std::string>* impl = new MultiDimArray<std::string>() );
   
         virtual ~FormAttribute();
         
@@ -72,13 +69,7 @@ namespace gum {
         virtual Type<GUM_SCALAR>& type();
 
         /// See gum::prm::Attribute.
-        virtual Type<GUM_SCALAR>* type(Type<GUM_SCALAR>* type);
-
-        /// See gum::prm::Attribute.
         virtual const Type<GUM_SCALAR>& type() const;
-
-        /// See gum::prm::Attribute.
-        //virtual Potential<GUM_SCALAR>& cpf();
 
         /// See gum::prm::Attribute.
         virtual const Potential<GUM_SCALAR>& cpf() const;
@@ -100,6 +91,10 @@ namespace gum {
 
         /// Swap old_type with new_type in the ClassElement cpt.
         virtual void swap(const Type<GUM_SCALAR>& old_type, const Type<GUM_SCALAR>& new_type);
+
+      protected:
+        virtual Type<GUM_SCALAR>* _type();
+        virtual void _type( Type<GUM_SCALAR>* t );
 
       private:
         FormAttribute( const FormAttribute& source);

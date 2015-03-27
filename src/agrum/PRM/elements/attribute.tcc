@@ -48,6 +48,15 @@ namespace gum {
       GUM_DESTRUCTOR( Attribute );
     }
 
+    template<typename GUM_SCALAR>
+    void
+    Attribute<GUM_SCALAR>::overload(Attribute<GUM_SCALAR>* source)
+    {
+      auto old_type = this->_type();
+      this->_type( source->_type() );
+      source->_type( old_type );
+    }
+
   } /* namespace prm */
 } /* namespace gum */
 

@@ -147,13 +147,6 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> INLINE
-    void 
-    ScalarAttribute<GUM_SCALAR>::_setCpf( Potential<GUM_SCALAR>* cpf) {
-      delete __cpf;
-      __cpf = cpf;
-    }
-
-    template<typename GUM_SCALAR> INLINE
     typename ClassElement<GUM_SCALAR>::ClassElementType
     ScalarAttribute<GUM_SCALAR>::elt_type() const { return this->prm_attribute; }
 
@@ -164,20 +157,6 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     const Type<GUM_SCALAR>&
     ScalarAttribute<GUM_SCALAR>::type() const { return *__type; }
-
-    template<typename GUM_SCALAR> INLINE
-    Type<GUM_SCALAR>*
-    ScalarAttribute<GUM_SCALAR>::type(Type<GUM_SCALAR>* type) {
-      auto tmp = __type;
-      __type = type;
-      __cpf->erase( tmp->variable() );
-      __cpf->add( __type->variable() );
-      return tmp;
-    }
-
-    template<typename GUM_SCALAR> INLINE
-    Potential<GUM_SCALAR>&
-    ScalarAttribute<GUM_SCALAR>::cpf() { return *__cpf; }
 
     template<typename GUM_SCALAR> INLINE
     const Potential<GUM_SCALAR>&
@@ -269,7 +248,23 @@ namespace gum {
     ScalarAttribute<GUM_SCALAR>::swap(const Type<GUM_SCALAR>& old_type,
                                       const Type<GUM_SCALAR>& new_type) 
     {
+      if (&(old_type) == __type) {
+        GUM_ERROR( OperationNotAllowed, "Cannot swap attribute own type" );
+      }
       __cpf->swap( old_type.variable(), new_type.variable() );
+    }
+
+    template<typename GUM_SCALAR>
+    Type<GUM_SCALAR>*
+    ScalarAttribute<GUM_SCALAR>::_type() {
+      return __type;
+    }
+
+    template<typename GUM_SCALAR>
+    void
+    ScalarAttribute<GUM_SCALAR>::_type( Type<GUM_SCALAR>* t ) {
+      __cpf->swap(__type->variable(), t->variable());
+      __type = t;
     }
 
   } /* namespace prm */
