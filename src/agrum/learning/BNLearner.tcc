@@ -91,31 +91,28 @@ namespace gum {
       __createApriori ();
       __createParamEstimator ( take_into_account_score );
 
-      std::cout<<"HI ! I AM HERE !"<<std::endl;
-
       // create a DAG with node ids coherent with those of the database
       DAG newDAG;
       NodeProperty<NodeId> mapIds ( bn.size () );
       auto mods=modalities();
 
       for ( auto node : bn.nodes() ) {
-        const NodeId new_id = idFromName ( bn.variable ( node ).name () );
+          const NodeId new_id = idFromName ( bn.variable ( node ).name () );
 
-        if ( mods[new_id]!=bn.variable ( node ).domainSize() )
-          GUM_ERROR ( UnknownLabelInDatabase,"for variable "<<bn.variable ( node ).name () );
+          if ( mods[new_id]!=bn.variable ( node ).domainSize() ) {
+              GUM_ERROR ( UnknownLabelInDatabase,"for variable "<<bn.variable ( node ).name () );
+            }
 
-        mapIds.insert ( node, new_id );
-        newDAG.addNode ( new_id );
-      }
+          mapIds.insert ( node, new_id );
+          newDAG.addNode ( new_id );
+        }
 
 
       for ( const auto& arc : bn.arcs () ) {
-        newDAG.addArc ( mapIds[arc.tail ()],
-                        mapIds[arc.head ()] );
-      }
+          newDAG.addArc ( mapIds[arc.tail ()],
+                          mapIds[arc.head ()] );
+        }
 
-      std::cout<<bn.dag().toDot() <<std::endl;
-      std::cout<<newDAG.toDot() <<std::endl;
       return
         DAG2BNLearner::createBN
         <GUM_SCALAR,
