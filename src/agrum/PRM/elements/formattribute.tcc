@@ -58,9 +58,9 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     Attribute<GUM_SCALAR>*
-    FormAttribute<GUM_SCALAR>::newFactory() const {
+    FormAttribute<GUM_SCALAR>::newFactory(const Class<GUM_SCALAR>& c) const {
       auto impl = static_cast<MultiDimImplementation<std::string>*>( this->__formulas->newFactory() );
-      return new FormAttribute( *__class, this->name(), this->type(), impl );
+      return new FormAttribute( c, this->name(), this->type(), impl );
     }
 
     template<typename GUM_SCALAR>

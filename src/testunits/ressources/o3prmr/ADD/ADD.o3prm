@@ -19,7 +19,7 @@ class AndGate implements Gate {
 	boolean state = forall(inputs.state, true);
 }
 
-type intervalle 0, 1, 2, 3, 4, 5 ;
+type intervalle zero, un, deux, trois, quatre, cinq ;
 
 type intervalle_K un, deux, trois, quatre, cinq ;
 
@@ -43,7 +43,7 @@ class k_nGate implements Gate {
 class Leaf implements Event {
 	// le "paramètre" lambda est le taux de défaillance
 	real lambda default 0.003;
-    int t default 8760;
+  int t default 8760;
 	
 	boolean state {
 		["exp(- lambda *t)", "1 -exp(- lambda *t)" ]

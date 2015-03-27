@@ -68,7 +68,7 @@ namespace gum {
         // ========================================================================
         /// @{
 
-        virtual Attribute* newFactory() const =0;
+        virtual Attribute* newFactory(const Class<GUM_SCALAR>& c) const =0;
         virtual Attribute* copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij ) const =0;
 
         virtual void copyCpf( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bif,

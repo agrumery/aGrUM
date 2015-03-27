@@ -53,7 +53,7 @@ namespace gum {
         virtual ~FormAttribute();
         
         /// See gum::prm::Attribute.
-        virtual Attribute<GUM_SCALAR>* newFactory() const;
+        virtual Attribute<GUM_SCALAR>* newFactory(const Class<GUM_SCALAR>& c) const;
 
         /// See gum::prm::Attribute.
         virtual Attribute<GUM_SCALAR>* copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij ) const;

@@ -123,7 +123,7 @@ namespace gum {
       // Copuying attributes
       for( const auto c_attr : c.__attributes ) {
         // using multiDimSparse to prevent unecessary memory allocation for large arrays (the potentials are copied latter)
-        auto attr = c_attr->newFactory();
+        auto attr = c_attr->newFactory(*this);
 
         bij.insert( & ( c_attr->type().variable() ), & ( attr->type().variable() ) );
         attr->setId( c_attr->id() );
