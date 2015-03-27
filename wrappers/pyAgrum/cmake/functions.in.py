@@ -22,10 +22,9 @@ Helping functions and consts for pyAgrum
 
 from @PYAGRUM_MODULE@ import BayesNet
 from @PYAGRUM_MODULE@ import InfluenceDiagram
-from @PYAGRUM_MODULE@ import GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION,GUM_VERSION
 
 def about():
-  print("pyAgrum version {0}.{1}.{2}".format(GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION))
+  print("pyAgrum version {0}".format('@PYAGRUM_VERSION@'))
   print("(c) Pierre-Henri Wuillemin and others")
   print("    UPMC 2014")
   print("""

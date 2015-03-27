@@ -237,7 +237,7 @@ namespace std {
 
 
 /* WRAPPED HEADERS (pyAgrum API) */
-%include <agrum/config.h>
+%import <agrum/config.h>
 %import <agrum/core/inline.h>
 
 %import <agrum/core/types.h>

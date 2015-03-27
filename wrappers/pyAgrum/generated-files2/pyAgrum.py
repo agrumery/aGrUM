@@ -682,16 +682,6 @@ class Vector_string(_object):
 Vector_string_swigregister = _pyAgrum.Vector_string_swigregister
 Vector_string_swigregister(Vector_string)
 
-GUM_MAJOR_VERSION = _pyAgrum.GUM_MAJOR_VERSION
-GUM_MINOR_VERSION = _pyAgrum.GUM_MINOR_VERSION
-GUM_PATCH_VERSION = _pyAgrum.GUM_PATCH_VERSION
-GUM_VERSION = _pyAgrum.GUM_VERSION
-GUM_CHAR_SIZE = _pyAgrum.GUM_CHAR_SIZE
-GUM_INT_SIZE = _pyAgrum.GUM_INT_SIZE
-GUM_LONG_SIZE = _pyAgrum.GUM_LONG_SIZE
-GUM_FLOAT_SIZE = _pyAgrum.GUM_FLOAT_SIZE
-GUM_DOUBLE_SIZE = _pyAgrum.GUM_DOUBLE_SIZE
-HAVE_MKSTEMP = _pyAgrum.HAVE_MKSTEMP
 
 def __createMsg(*args):
   """__createMsg(std::string const & filename, std::string const & function, int const line, std::string const & msg) -> std::string const"""
