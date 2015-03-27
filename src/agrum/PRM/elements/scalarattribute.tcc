@@ -43,7 +43,7 @@ namespace gum {
       __cpf ( new Potential<GUM_SCALAR> ( impl ) )
     {
       GUM_CONSTRUCTOR ( ScalarAttribute );
-      __cpf->add( type.variable() );
+      __cpf->add( __type->variable() );
 
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
     }
@@ -69,7 +69,8 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     Attribute<GUM_SCALAR>*
-    ScalarAttribute<GUM_SCALAR>::newFactory() const {
+    ScalarAttribute<GUM_SCALAR>::newFactory() const
+    {
       auto impl = static_cast<MultiDimImplementation<GUM_SCALAR>*>( this->cpf().content()->newFactory() );
       return new ScalarAttribute<GUM_SCALAR> ( this->name(), this->type(), impl );
     }
@@ -96,7 +97,21 @@ namespace gum {
                                          const Attribute<GUM_SCALAR> & source) 
     {
       delete __cpf;
-      __cpf = copyPotential( bij, source.cpf() );
+      __cpf = new Potential<double>();
+
+      for ( auto var: source.cpf().variablesSequence() ) {
+        __cpf->add( *( bij.second( var ) ) );
+      }
+
+      Instantiation inst(*__cpf), jnst(source.cpf());
+
+      for ( inst.begin(), jnst.begin(); not ( inst.end() or jnst.end() ); inst.inc(), jnst.inc() ) {
+        __cpf->set( inst, source.cpf().get(jnst) );
+      }
+
+      GUM_ASSERT( inst.end() and jnst.end() );
+      GUM_ASSERT( __cpf->contains( __type->variable() ) );
+      GUM_ASSERT( not __cpf->contains( source.type().variable() ) );
     }
 
     template<typename GUM_SCALAR> ScalarAttribute<GUM_SCALAR>&
@@ -181,24 +196,22 @@ namespace gum {
         GUM_ERROR ( WrongType, msg.str() );
       }
 
-      Potential<GUM_SCALAR>* cpf = new Potential<GUM_SCALAR>();
-      cpf->add ( type().variable() );
-      cpf->add ( cast->type().variable() );
+      delete __cpf;
+      __cpf = new Potential<GUM_SCALAR>();
+      __cpf->add ( type().variable() );
+      __cpf->add ( cast->type().variable() );
 
       DiscreteVariable& my_var = cast->type().variable();
       DiscreteVariable& cast_var = type().variable();
 
-      Instantiation inst ( *cpf );
+      Instantiation inst ( *__cpf );
 
       for ( inst.setFirst(); not inst.end(); inst.inc() ) {
         if ( type().label_map() [inst.pos ( my_var )] == inst.pos ( cast_var ) )
-          cpf->set ( inst, 1 );
+          __cpf->set ( inst, 1 );
         else
-          cpf->set ( inst, 0 );
+          __cpf->set ( inst, 0 );
       }
-
-      delete __cpf;
-      __cpf = cpf;
     }
 
     template<typename GUM_SCALAR>
@@ -209,7 +222,37 @@ namespace gum {
       if (&(old_type) == __type) {
         GUM_ERROR( OperationNotAllowed, "Cannot swap attribute own type" );
       }
-      __cpf->swap( old_type.variable(), new_type.variable() );
+      if (old_type->domainSize() != new_type->domainSize()) {
+        GUM_ERROR( OperationNotAllowed, "Cannot swap types with difference domain size" );
+      }
+      if (not __cpf->contains(old_type.variable())) {
+        GUM_ERROR( NotFound, "could not find variable " + old_type.name() );
+      }
+
+      auto old = __cpf;
+
+      __cpf = new Potential<GUM_SCALAR>();
+
+      for ( auto var : old->variablesSequence() ) {
+        if (var != &(old_type.variable())) {
+          __cpf->add(*var);
+        } else {
+          __cpf->add(new_type.variable());
+        }
+      }
+
+      Instantiation inst(__cpf), jnst(old);
+
+      for (inst.begin(), jnst.begin(); not (inst.end() or jnst.end()); inst.inc(), jnst.inc()) {
+        __cpf->set( inst, old->get( jnst ) );
+      }
+
+      delete old;
+
+      GUM_ASSERT( inst.end() and jnst.end() );
+      GUM_ASSERT( __cpf->contains( __type->variable() ) );
+      GUM_ASSERT( __cpf->contains( new_type.variable() ) );
+      GUM_ASSERT( not __cpf->contains( old_type.variable() ) );
     }
 
     template<typename GUM_SCALAR>
@@ -221,8 +264,34 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     ScalarAttribute<GUM_SCALAR>::_type( Type<GUM_SCALAR>* t ) {
-      __cpf->swap(__type->variable(), t->variable());
+
+      if (__type->variable().domainSize() != t->variable().domainSize()) {
+        GUM_ERROR( OperationNotAllowed, "Cannot swap types with difference domain size" );
+      }
+      auto old = __cpf;
+
+      __cpf = new Potential<GUM_SCALAR>();
+
+      for ( auto var : old->variablesSequence() ) {
+        if (var != &(__type->variable())) {
+          __cpf->add(*var);
+        } else {
+          __cpf->add(t->variable());
+        }
+      }
+
+      Instantiation inst(__cpf), jnst(old);
+
+      for (inst.begin(), jnst.begin(); not (inst.end() or jnst.end()); inst.inc(), jnst.inc()) {
+        __cpf->set( inst, old->get( jnst ) );
+      }
+
+      delete old;
+
       __type = t;
+
+      GUM_ASSERT( __cpf->contains( __type->variable() ) );
+      GUM_ASSERT( inst.end() and jnst.end() );
     }
 
   } /* namespace prm */

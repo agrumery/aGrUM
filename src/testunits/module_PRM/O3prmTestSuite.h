@@ -1147,107 +1147,107 @@ namespace gum_tests {
         }
       }
 
-      //      //void testParamClassHasPaper() {
-      //      //  try {
-      //      //    gum::prm::o3prm::O3prmReader<double> reader;
-      //      //    std::string file = "../../../src/testunits/ressources/o3prm/complexprinters.o3prm";
-      //      //    std::string package = "fr.lip6.printers";
-      //      //    TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile(file, package) );
-      //
-      //      //    auto prm = reader.prm();
-      //      //    auto & sys = prm->system( "fr.lip6.printers.aSys" );
-      //
-      //      //    const auto & hasPaper = static_cast<gum::prm::Attribute<double>&>(ParamClass["hasPaper"]);
-      //
-      //      //    gum::Instantiation inst(hasPaper.cpf());
-      //      //    std::vector<double> values;
-      //      //    for ( inst.begin(); not inst.end(); inst.inc() ) {
-      //      //      values.push_back(hasPaper.cpf()[inst]);
-      //      //    }
-      //
-      //      //    TS_ASSERT_EQUALS( values.size(), (size_t) 3 );
-      //      //    TS_ASSERT_DELTA( values[0], std::exp(-0.4*4), 1e-6 );
-      //      //    TS_ASSERT_DELTA( values[1], 1-std::exp(-0.4*4), 1e-6 );
-      //      //    TS_ASSERT_DELTA( values[2], 0.0, 1e-6 );
-      //
-      //      //    delete prm;
-      //      //  } catch (gum::Exception) {
-      //      //    TS_ASSERT(false);
-      //      //  }
-      //      //}
-      //
-      //
-      //      // Do not uncommment these unless you want to debug or test with errors
-      //      // (it dumps a lot of stuff)
-      //
-      //      //void testErrorsAndWarnings() {
-      //      //  try {
-      //      //    gum::prm::o3prm::O3prmReader<double> reader;
-      //      //    TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( GET_PATH_STR( "o3prm/Printer_with_errors.o3prm" ) ) );
-      //      //    TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
-      //      //    TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 4 );
-      //
-      //      //    if( reader.prm() );
-      //
-      //      //    delete reader.prm();
-      //      //  } catch (gum::Exception) {
-      //      //    TS_ASSERT(false);
-      //      //  }
-      //      //}
-      //
-      //      //void testReadString1() {
-      //      //  try {
-      //      //    std::ifstream stream( GET_PATH_STR( "o3prm/types.o3prm" ) );
-      //      //    std::string buffer;
-      //      //    char tampon[255];
-      //      //    TS_ASSERT( stream.good() );
-      //
-      //      //    while( stream.good() ) {
-      //      //      stream.getline( tampon, 255 );
-      //      //      buffer += tampon;
-      //      //      buffer += "\n";
-      //      //    }
-      //
-      //      //    stream.close();
-      //
-      //      //    gum::prm::o3prm::O3prmReader<double> reader;
-      //      //    TS_GUM_ASSERT_THROWS_NOTHING( reader.readString( buffer ) );
-      //      //    gum::prm::PRM<double>* prm = reader.prm();
-      //      //    TS_ASSERT_EQUALS( prm->type( "t_state" ).variable().domainSize(), ( gum::Size )2 );
-      //      //    TS_ASSERT_EQUALS( prm->type( "t_ink" ).variable().domainSize(), ( gum::Size )2 );
-      //      //    TS_ASSERT_EQUALS( prm->type( "t_degraded" ).variable().domainSize(), ( gum::Size )3 );
-      //      //    TS_ASSERT_EQUALS( prm->type( "t_bw_p" ).variable().domainSize(), ( gum::Size )4 );
-      //      //    TS_ASSERT_EQUALS( prm->type( "t_color_p" ).variable().domainSize(), ( gum::Size )5 );
-      //      //    delete prm;
-      //      //  } catch (gum::Exception) {
-      //      //    TS_ASSERT(false);
-      //      //  }
-      //      //}
-      //
-      //      //void testReadString2() {
-      //      //  try {
-      //      //    std::ifstream stream(GET_PATH_STR( "o3prm/Printer_with_errors.o3prm"));
-      //      //    std::string buffer;
-      //      //    char tampon[255];
-      //      //    TS_ASSERT(stream.good());
-      //
-      //      //    while (stream.good()) {
-      //      //      stream.getline(tampon,255);
-      //      //      buffer += tampon;
-      //      //      buffer += "\n";
-      //      //    }
-      //      //    stream.close();
-      //
-      //      //    gum::prm::o3prm::O3prmReader<double> reader;
-      //      //    TS_GUM_ASSERT_THROWS_NOTHING(reader.readString(buffer));
-      //      //    TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
-      //      //    TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 4 );
-      //      //    if (reader.prm());
-      //      //    delete reader.prm();
-      //      //  } catch (gum::Exception) {
-      //      //    TS_ASSERT(false);
-      //      //  }
-      //      //}
+      // //      //void testParamClassHasPaper() {
+      // //      //  try {
+      // //      //    gum::prm::o3prm::O3prmReader<double> reader;
+      // //      //    std::string file = "../../../src/testunits/ressources/o3prm/complexprinters.o3prm";
+      // //      //    std::string package = "fr.lip6.printers";
+      // //      //    TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile(file, package) );
+      // //
+      // //      //    auto prm = reader.prm();
+      // //      //    auto & sys = prm->system( "fr.lip6.printers.aSys" );
+      // //
+      // //      //    const auto & hasPaper = static_cast<gum::prm::Attribute<double>&>(ParamClass["hasPaper"]);
+      // //
+      // //      //    gum::Instantiation inst(hasPaper.cpf());
+      // //      //    std::vector<double> values;
+      // //      //    for ( inst.begin(); not inst.end(); inst.inc() ) {
+      // //      //      values.push_back(hasPaper.cpf()[inst]);
+      // //      //    }
+      // //
+      // //      //    TS_ASSERT_EQUALS( values.size(), (size_t) 3 );
+      // //      //    TS_ASSERT_DELTA( values[0], std::exp(-0.4*4), 1e-6 );
+      // //      //    TS_ASSERT_DELTA( values[1], 1-std::exp(-0.4*4), 1e-6 );
+      // //      //    TS_ASSERT_DELTA( values[2], 0.0, 1e-6 );
+      // //
+      // //      //    delete prm;
+      // //      //  } catch (gum::Exception) {
+      // //      //    TS_ASSERT(false);
+      // //      //  }
+      // //      //}
+      // //
+      // //
+      // //      // Do not uncommment these unless you want to debug or test with errors
+      // //      // (it dumps a lot of stuff)
+      // //
+      // //      //void testErrorsAndWarnings() {
+      // //      //  try {
+      // //      //    gum::prm::o3prm::O3prmReader<double> reader;
+      // //      //    TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( GET_PATH_STR( "o3prm/Printer_with_errors.o3prm" ) ) );
+      // //      //    TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
+      // //      //    TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 4 );
+      // //
+      // //      //    if( reader.prm() );
+      // //
+      // //      //    delete reader.prm();
+      // //      //  } catch (gum::Exception) {
+      // //      //    TS_ASSERT(false);
+      // //      //  }
+      // //      //}
+      // //
+      // //      //void testReadString1() {
+      // //      //  try {
+      // //      //    std::ifstream stream( GET_PATH_STR( "o3prm/types.o3prm" ) );
+      // //      //    std::string buffer;
+      // //      //    char tampon[255];
+      // //      //    TS_ASSERT( stream.good() );
+      // //
+      // //      //    while( stream.good() ) {
+      // //      //      stream.getline( tampon, 255 );
+      // //      //      buffer += tampon;
+      // //      //      buffer += "\n";
+      // //      //    }
+      // //
+      // //      //    stream.close();
+      // //
+      // //      //    gum::prm::o3prm::O3prmReader<double> reader;
+      // //      //    TS_GUM_ASSERT_THROWS_NOTHING( reader.readString( buffer ) );
+      // //      //    gum::prm::PRM<double>* prm = reader.prm();
+      // //      //    TS_ASSERT_EQUALS( prm->type( "t_state" ).variable().domainSize(), ( gum::Size )2 );
+      // //      //    TS_ASSERT_EQUALS( prm->type( "t_ink" ).variable().domainSize(), ( gum::Size )2 );
+      // //      //    TS_ASSERT_EQUALS( prm->type( "t_degraded" ).variable().domainSize(), ( gum::Size )3 );
+      // //      //    TS_ASSERT_EQUALS( prm->type( "t_bw_p" ).variable().domainSize(), ( gum::Size )4 );
+      // //      //    TS_ASSERT_EQUALS( prm->type( "t_color_p" ).variable().domainSize(), ( gum::Size )5 );
+      // //      //    delete prm;
+      // //      //  } catch (gum::Exception) {
+      // //      //    TS_ASSERT(false);
+      // //      //  }
+      // //      //}
+      // //
+      // //      //void testReadString2() {
+      // //      //  try {
+      // //      //    std::ifstream stream(GET_PATH_STR( "o3prm/Printer_with_errors.o3prm"));
+      // //      //    std::string buffer;
+      // //      //    char tampon[255];
+      // //      //    TS_ASSERT(stream.good());
+      // //
+      // //      //    while (stream.good()) {
+      // //      //      stream.getline(tampon,255);
+      // //      //      buffer += tampon;
+      // //      //      buffer += "\n";
+      // //      //    }
+      // //      //    stream.close();
+      // //
+      // //      //    gum::prm::o3prm::O3prmReader<double> reader;
+      // //      //    TS_GUM_ASSERT_THROWS_NOTHING(reader.readString(buffer));
+      // //      //    TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
+      // //      //    TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 4 );
+      // //      //    if (reader.prm());
+      // //      //    delete reader.prm();
+      // //      //  } catch (gum::Exception) {
+      // //      //    TS_ASSERT(false);
+      // //      //  }
+      // //      //}
   };
 
 } // namespace gum_tests

@@ -59,10 +59,6 @@ namespace gum {
     template<typename GUM_SCALAR>
     Attribute<GUM_SCALAR>*
     FormAttribute<GUM_SCALAR>::newFactory() const {
-      // std::stringstream str;
-      // str << "In FormAttribute::copy(" << __class->name() << ", " << this->name() << ", " << bij.size() << ")";
-      // GUM_TRACE(str.str());
-
       auto impl = static_cast<MultiDimImplementation<std::string>*>( this->__formulas->newFactory() );
       return new FormAttribute( *__class, this->name(), this->type(), impl );
     }
@@ -70,10 +66,6 @@ namespace gum {
     template<typename GUM_SCALAR>
     Attribute<GUM_SCALAR>*
     FormAttribute<GUM_SCALAR>::copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij ) const {
-      // std::stringstream str;
-      // str << "In FormAttribute::copy(" << __class->name() << ", " << this->name() << ", " << bij.size() << ")";
-      // GUM_TRACE(str.str());
-
       auto copy = new FormAttribute<GUM_SCALAR>(*__class, this->name(), this->type());
       for ( auto var : __formulas->variablesSequence() ) {
         if ( var != &(__type->variable()) ) {
@@ -95,9 +87,6 @@ namespace gum {
     FormAttribute<GUM_SCALAR>::copyCpf( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
                                         const Attribute<GUM_SCALAR> & source)
     {
-      // std::stringstream str;
-      // str << "In FormAttribute::copyCpf(" << __class->name() << ", " << this->name() << ", " << source.name() << ")";
-      // GUM_TRACE( str.str() );
 
       delete __formulas;
       __formulas = new MultiDimArray< std::string >();
@@ -214,16 +203,24 @@ namespace gum {
       }
 
       cast->addParent ( *this );
+
       const DiscreteVariable& my_var = type().variable();
       DiscreteVariable& cast_var = cast->type().variable();
       Instantiation inst ( cast->cpf() );
 
-      for ( inst.setFirst(); not inst.end(); inst.inc() ) {
-        if ( type().label_map() [inst.val ( my_var )] == inst.val ( cast_var ) ) {
-          cast->cpf().set ( inst, 1 );
-        } else {
-          cast->cpf().set ( inst, 0 );
+      try {
+        for ( inst.setFirst(); not inst.end(); inst.inc() ) {
+          if ( type().label_map() [inst.val ( my_var )] == inst.val ( cast_var ) ) {
+            cast->cpf().set ( inst, 1 );
+          } else {
+            cast->cpf().set ( inst, 0 );
+          }
         }
+      }
+      catch (Exception& e) {
+        std::cout << e.errorType() << std::endl;
+        std::cout << e.errorContent() << std::endl;
+        std::cout << e.errorCallStack() << std::endl;
       }
 
       GUM_ASSERT( __formulas->contains( __type->variable() ) );
@@ -289,20 +286,6 @@ namespace gum {
     FormAttribute<GUM_SCALAR>::__fillCpf() const 
     {
       try {
-        // std::stringstream str;
-        // str << this->name() << " variables : ";
-        // for ( const auto & var : __formulas->variablesSequence() ) {
-        //   str << var << " ";
-        // }
-        // GUM_TRACE( str.str() );
-
-        // for ( const auto & var : __formulas->variablesSequence() ) {
-        //   std::cout << var << ": " << var->name() << std::endl;
-        // }
-
-        // //for ( const auto & var : __cpf->variablesSequence() ) {
-        // //  GUM_TRACE( &var );
-        // //}
 
         if (__cpf) {
           delete __cpf;
@@ -371,12 +354,42 @@ namespace gum {
       if (&(old_type) == __type) {
         GUM_ERROR( OperationNotAllowed, "Cannot swap attribute own type" );
       }
-      __formulas->swap( old_type.variable(), new_type.variable() );
+      if (old_type->domainSize() != new_type->domainSize()) {
+        GUM_ERROR( OperationNotAllowed, "Cannot swap types with difference domain size" );
+      }
+      if (not __formulas->contains(old_type.variable())) {
+        GUM_ERROR( NotFound, "could not find variable " + old_type.name() );
+      }
+
+      auto old = __formulas;
+
+      __formulas = new MultiDimArray<std::string>();
+
+      for ( auto var : old->variablesSequence() ) {
+        if (var != &(old_type.variable())) {
+          __formulas->add(*var);
+        } else {
+          __formulas->add(new_type.variable());
+        }
+      }
+
+      Instantiation inst(__formulas), jnst(old);
+
+      for (inst.begin(), jnst.begin(); not (inst.end() or jnst.end()); inst.inc(), jnst.inc()) {
+        __formulas->set( inst, old->get( jnst ) );
+      }
+
+      delete old;
+
       if (__cpf) {
         delete __cpf;
         __cpf = 0;
       }
+
+      GUM_ASSERT( inst.end() and jnst.end() );
       GUM_ASSERT( __formulas->contains( __type->variable() ) );
+      GUM_ASSERT( not __formulas->contains( new_type.variable() ) );
+      GUM_ASSERT( __formulas->contains( new_type.variable() ) );
     }
 
     template<typename GUM_SCALAR>
@@ -388,6 +401,10 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     FormAttribute<GUM_SCALAR>::_type( Type<GUM_SCALAR>* t ) {
+
+      if (__type->variable().domainSize() != t->variable().domainSize()) {
+        GUM_ERROR( OperationNotAllowed, "Cannot swap types with difference domain size" );
+      }
       auto old = __formulas;
 
       __formulas = new MultiDimArray<std::string>();
@@ -400,17 +417,23 @@ namespace gum {
         }
       }
 
-      //__formulas->swap(__type->variable(), t->variable());
+      Instantiation inst(__formulas), jnst(old);
+
+      for (inst.begin(), jnst.begin(); not (inst.end() or jnst.end()); inst.inc(), jnst.inc()) {
+        __formulas->set( inst, old->get( jnst ) );
+      }
+
+      delete old;
+
       __type = t;
+
       if (__cpf) {
         delete __cpf;
         __cpf = 0;
       }
+
       GUM_ASSERT( __formulas->contains( __type->variable() ) );
-      Instantiation inst(__formulas);
-      for (Size i = 0; i < __type->variable().domainSize(); ++i) {
-          inst.chgVal(__type->variable(), i);
-      }
+      GUM_ASSERT( inst.end() and jnst.end() );
     }
 
   } /* namespace prm */
