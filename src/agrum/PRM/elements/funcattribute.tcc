@@ -42,15 +42,6 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> INLINE
-    FuncAttribute<GUM_SCALAR>::FuncAttribute ( const std::string& name,
-                                               Type<GUM_SCALAR>* type, Potential<GUM_SCALAR>* cpf,
-                                               bool delete_type ) :
-      ScalarAttribute<GUM_SCALAR> ( name, type, cpf, delete_type ) 
-    {
-      GUM_CONSTRUCTOR ( FuncAttribute );
-    }
-
-    template<typename GUM_SCALAR> INLINE
     FuncAttribute<GUM_SCALAR>::~FuncAttribute() {
       GUM_DESTRUCTOR ( FuncAttribute );
     }

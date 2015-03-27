@@ -64,10 +64,10 @@ namespace gum {
          *            ~Attribute.
          * @param delete_type If true, the type is deleted with this instance.
          */
-        ScalarAttribute ( const std::string& name,
-                          Type<GUM_SCALAR>* type,
-                          Potential<GUM_SCALAR>* cpf,
-                          bool delete_type );
+        // ScalarAttribute ( const std::string& name,
+        //                   Type<GUM_SCALAR>* type,
+        //                   Potential<GUM_SCALAR>* cpf,
+        //                   bool delete_type );
 
 
         /// Destructor.
@@ -132,9 +132,6 @@ namespace gum {
 
         /// A pointer on the Potential of this attribute
         Potential<GUM_SCALAR>* __cpf;
-
-        /// Flag to know if we can delete type.
-        bool __delete_type;
 
         /// @}
     };

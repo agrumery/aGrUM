@@ -40,31 +40,10 @@ namespace gum {
                                                    MultiDimImplementation<GUM_SCALAR>* impl ) :
       Attribute<GUM_SCALAR> ( name ),
       __type ( new Type<GUM_SCALAR> ( type ) ),
-      __cpf ( new Potential<GUM_SCALAR> ( impl ) ),
-      __delete_type ( true ) 
+      __cpf ( new Potential<GUM_SCALAR> ( impl ) )
     {
       GUM_CONSTRUCTOR ( ScalarAttribute );
       __cpf->add( type.variable() );
-
-      this->_safeName = PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
-    }
-
-    template<typename GUM_SCALAR>
-    ScalarAttribute<GUM_SCALAR>::ScalarAttribute ( const std::string& name,
-                                                   Type<GUM_SCALAR>* type,
-                                                   Potential<GUM_SCALAR>* cpf,
-                                                   bool delete_type ) :
-      Attribute<GUM_SCALAR> ( name ),
-      __type ( type ),
-      __cpf ( cpf ),
-      __delete_type ( delete_type )
-    {
-      GUM_CONSTRUCTOR ( ScalarAttribute );
-
-      if ( not __cpf->variablesSequence().exists ( & ( type->variable() ) ) ) {
-        auto msg = "the given Potential does not contain the type of this ScalarAttribute";
-        GUM_ERROR ( OperationNotAllowed, msg );
-      }
 
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
     }
@@ -84,10 +63,7 @@ namespace gum {
 
       GUM_DESTRUCTOR ( ScalarAttribute );
       delete __cpf;
-
-      if ( __delete_type ) {
-        delete __type;
-      }
+      delete __type;
 
     }
 

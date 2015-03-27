@@ -59,22 +59,6 @@ namespace gum {
                           const Type<GUM_SCALAR>& type,
                           MultiDimImplementation<GUM_SCALAR>* impl = new MultiDimArray<GUM_SCALAR>() );
 
-          /**
-           * @brief Constructor used by gum::Instance.
-           * This will create an FuncAttribute with a ready Potential, however it will check the existence
-           * of type in cpf and raise an exception if it is not found.
-           *
-           * @param type The type of this attribute, it will be deleted after a call to ~FuncAttribute.
-           * @param name The name of this FuncAttribute.
-           * @param cpf The Potential of this FuncAttribute, it will be deleted after the call of
-           *            ~FuncAttribute.
-           * @param delete_type If true, the type is deleted with this instance.
-           */
-          FuncAttribute ( const std::string& name,
-                          Type<GUM_SCALAR>* type,
-                          Potential<GUM_SCALAR>* cpf,
-                          bool delete_type );
-
           /// Destructor.
           virtual ~FuncAttribute();
 
