@@ -43,9 +43,6 @@ namespace gum {
       __cpf ( new Potential<GUM_SCALAR> ( impl ) ),
       __delete_type ( true ) 
     {
-      std::stringstream str;
-      str << "In ScalarAttribute(" << name << ", " << type.name() << ", " << impl << ")"; 
-      GUM_TRACE( str.str() );
       GUM_CONSTRUCTOR ( ScalarAttribute );
       __cpf->add( type.variable() );
 
@@ -105,10 +102,6 @@ namespace gum {
     Attribute<GUM_SCALAR>*
     ScalarAttribute<GUM_SCALAR>::copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij) const
     {
-      std::stringstream str;
-      str << "In ScalarAttribute::copy(" << this->name() << ", " << bij.size() << ")";
-      GUM_TRACE(str.str());
-
       auto copy = new ScalarAttribute<GUM_SCALAR> ( this->name(), this->type() );
 
       if ( not bij.existsFirst( & ( type().variable() ) ) ) {
@@ -126,19 +119,8 @@ namespace gum {
     ScalarAttribute<GUM_SCALAR>::copyCpf(const Bijection<const DiscreteVariable *, const DiscreteVariable *>& bij,
                                          const Attribute<GUM_SCALAR> & source) 
     {
-      GUM_TRACE( "In copyCpf(" + this->_safeName + ")" );
-
-      for ( const auto & var: __cpf->variablesSequence() ) {
-        GUM_TRACE( var->name() );
-      }
-      for ( const auto & var: source.cpf().variablesSequence() ) {
-        GUM_TRACE( var->name() );
-      }
-
       delete __cpf;
       __cpf = copyPotential( bij, source.cpf() );
-
-      GUM_TRACE( "Out copyCpf(" + this->_safeName + ")" );
     }
 
     template<typename GUM_SCALAR> ScalarAttribute<GUM_SCALAR>&

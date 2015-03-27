@@ -98,16 +98,17 @@ namespace gum {
             break;
           }
 
-        case ClassElement<GUM_SCALAR>::prm_aggregate: {
-          const Aggregate<GUM_SCALAR>* c_agg = static_cast<const Aggregate<GUM_SCALAR>*> ( __chain->back() );
-          Aggregate<GUM_SCALAR>* agg = new Aggregate<GUM_SCALAR> ( c_agg->name(), c_agg->agg_type(), c_agg->type(), c_agg->id() );
-          new_elt = agg;
-          break;
-        }
+        case ClassElement<GUM_SCALAR>::prm_aggregate:
+          {
+            const Aggregate<GUM_SCALAR>* c_agg = static_cast<const Aggregate<GUM_SCALAR>*> ( __chain->back() );
+            Aggregate<GUM_SCALAR>* agg = new Aggregate<GUM_SCALAR> ( c_agg->name(), c_agg->agg_type(), c_agg->type(), c_agg->id() );
+            new_elt = agg;
+            break;
+          }
 
         default: {
-          GUM_ERROR ( WrongClassElement, "last element of chain is not valid" );
-        }
+                   GUM_ERROR ( WrongClassElement, "last element of chain is not valid" );
+                 }
       }
 
       new_elt->setId ( __chain->back()->id() );

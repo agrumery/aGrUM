@@ -100,9 +100,6 @@ namespace gum {
         FormAttribute( const FormAttribute& source);
         FormAttribute& operator=(const FormAttribute& source);
 
-        /// If true, __cpf will be generated upon the next call to cpf() (const or not)
-        mutable bool __fillCpfFlag;
-
         /// The random variable type of this attribute
         Type<GUM_SCALAR>* __type;
 
