@@ -30,6 +30,9 @@
 
 #include <agrum/core/math/formula.h>
 
+#include <agrum/PRM/elements/funcattribute.h>
+#include <agrum/PRM/elements/formattribute.h>
+
 namespace gum {
 
   namespace prm {
@@ -126,10 +129,6 @@ namespace gum {
 
       __checkInterfaceImplementation(c);
 
-      if ( c->parameters().size() > 0 ) {
-        __updateFormulas(c);
-      }
-
       __stack.pop_back();
     }
 
@@ -139,7 +138,7 @@ namespace gum {
       try {
         for( const auto & i : c->implements() ) {
           try {
-            for( const auto node : i->dag().nodes() ) {
+            for( const auto & node : i->dag().nodes() ) {
               std::string name = i->get( node ).name();
 
               switch( i->get( node ).elt_type() ) {
@@ -216,50 +215,6 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void
-    PRMFactory<GUM_SCALAR>::__updateFormulas( Class<GUM_SCALAR>* c ) {
-
-      //for ( const auto & const_attr : c->attributes() ) {
-
-      //  if ( const_attr->hasFormula() ) {
-
-      //    auto attr = const_attr;
-      //    //auto attr = const_cast<Attribute<GUM_SCALAR>*>(const_attr); 
-
-      //    // Check if formulas is not filled with the wrong variables (befor the bij array is applied)
-      //    auto copy = attr->__cpf;
-      //    attr->__cpf = new Potential<GUM_SCALAR>(new MultiDimArray<GUM_SCALAR>() );
-
-      //    for ( auto var : copy->variablesSequence() ) {
-      //      attr->cpf().add( *var );
-      //    }
-
-      //    delete copy;
-
-      //    Instantiation inst( attr->formulas() );
-      //    Instantiation jnst( attr->cpf() );
-
-      //    for ( inst.begin(), jnst.begin(); not (inst.end() or jnst.end()); inst.inc(),jnst.inc() ) {
-
-      //      Formula f( attr->formulas()[inst] );
-
-      //      for ( auto p : c->parameters() ) {
-      //        f.variables().insert( p->name(), p->value() );
-      //      }
-
-      //      attr->cpf().set( jnst, f.result() );
-
-      //    }
-
-      //    GUM_ASSERT( inst.end() and jnst.end() );
-
-      //  }
-
-      //}
-
-    }
-
-    template<typename GUM_SCALAR>
-    void
     PRMFactory<GUM_SCALAR>::startInterface( const std::string& name, const std::string& extends ) {
       std::string real_name = __addPrefix( name );
       __checkDuplicateName( real_name );
@@ -290,7 +245,7 @@ namespace gum {
       Size count = 0;
       const Sequence<const DiscreteVariable*>& vars = attr->cpf().variablesSequence();
 
-      for( const auto node : c->dag().nodes() ) {
+      for( const auto & node : c->dag().nodes() ) {
         try {
           if( vars.exists( & ( c->get( node ).type().variable() ) ) ) {
             ++count;
@@ -445,11 +400,12 @@ namespace gum {
       std::vector<GUM_SCALAR> values2( values.begin(), values.end() );
       setCPFByRule( parents, values2 );
     }
+
     template<typename GUM_SCALAR>
     void
     PRMFactory<GUM_SCALAR>::setCPFByRule( const std::vector<std::string>& parents,
                                           const std::vector<GUM_SCALAR>& values ) {
-      Attribute<GUM_SCALAR>* a = static_cast<Attribute<GUM_SCALAR>*>( __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
+      auto a = static_cast<FormAttribute<GUM_SCALAR>*>( __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
 
       if( ( parents.size() + 1 ) != a->cpf().variablesSequence().size() ) {
         GUM_ERROR( OperationNotAllowed, "wrong number of parents" );
@@ -459,8 +415,6 @@ namespace gum {
         GUM_ERROR( OperationNotAllowed, "wrong number of values" );
       }
 
-      Instantiation inst( a->cpf() );
-
       // jnst holds parents with a specific value (not "*")
       // knst holds parents without a specific value ("*")
       Instantiation jnst, knst;
@@ -469,7 +423,7 @@ namespace gum {
       bool found = false;
 
       for( size_t i = 0; i < parents.size(); ++i ) {
-        var = a->cpf().variablesSequence().atPos( 1 + i );
+        var = a->formulas().variablesSequence().atPos( 1 + i );
 
         if( parents[i] == "*" ) {
           knst.add( *var );
@@ -493,13 +447,14 @@ namespace gum {
         }
       }
 
+      Instantiation inst( a->cpf() );
       inst.setVals( jnst );
 
       for( Size i = 0; i < a->type()->domainSize(); ++i ) {
         inst.chgVal( a->type().variable(), i );
 
         for( inst.setFirstIn( knst ); not inst.end(); inst.incIn( knst ) ) {
-          a->cpf().set( inst, values[i] );
+          a->formulas().set( inst, std::to_string( values[i] ) );
         }
       }
     }
@@ -643,7 +598,7 @@ namespace gum {
           }
         } else {
           // Inner aggregators can be directly used as attributes
-          Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR> ( agg->name(), agg->type(), agg->buildImpl() );
+          auto attr = new ScalarAttribute<GUM_SCALAR> ( agg->name(), agg->type(), agg->buildImpl() );
 
           try {
             c->add( attr );
@@ -963,8 +918,8 @@ namespace gum {
       }
 
       if( numbers.size() == 1 ) {
-        gum::prm::Attribute<GUM_SCALAR>* attr = new gum::prm::Attribute<GUM_SCALAR> ( name, retrieveType( "boolean" ),
-            new gum::MultiDimNoisyORCompound<GUM_SCALAR> ( leak, numbers.front() ) );
+        auto impl = new gum::MultiDimNoisyORCompound<GUM_SCALAR> ( leak, numbers.front() );
+        auto attr = new ScalarAttribute<GUM_SCALAR> ( name, retrieveType( "boolean" ), impl );
         addAttribute( attr );
       } else if( numbers.size() == parents.size() ) {
         gum::MultiDimNoisyORCompound<GUM_SCALAR>* noisy = new gum::MultiDimNoisyORCompound<GUM_SCALAR> ( leak );
@@ -1267,7 +1222,14 @@ namespace gum {
     void
     PRMFactory<GUM_SCALAR>::startAttribute( const std::string& type, const std::string& name ) {
       ClassElementContainer<GUM_SCALAR>* c = __checkStackContainter( 1 );
-      Attribute<GUM_SCALAR>* a = new Attribute<GUM_SCALAR> ( name, *__retrieveType( type ) );
+      Attribute<GUM_SCALAR>* a;
+
+      if ( PRMObject::isClass( *c ) ) {
+        a = new FormAttribute<GUM_SCALAR> (static_cast<Class<GUM_SCALAR>&>( *c ), name, *__retrieveType( type ) );
+      } else {
+        a = new ScalarAttribute<GUM_SCALAR> (name, *__retrieveType( type ) );
+      }
+
       std::string dot = ".";
 
       try {
@@ -1297,11 +1259,17 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     void
     PRMFactory<GUM_SCALAR>::endSystem() {
-      System<GUM_SCALAR>* model = static_cast<System<GUM_SCALAR>*>( __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
-      __stack.pop_back();
-      model->instantiate();
-      __prm->__systemMap.insert( model->name(), model );
-      __prm->__systems.insert( model );
+      try {
+
+        System<GUM_SCALAR>* model = static_cast<System<GUM_SCALAR>*>( __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
+        __stack.pop_back();
+        model->instantiate();
+        __prm->__systemMap.insert( model->name(), model );
+        __prm->__systems.insert( model );
+
+      } catch (Exception& e) {
+        GUM_ERROR( FatalError, "could not create system" );
+      }
     }
 
     template<typename GUM_SCALAR> INLINE
@@ -1616,38 +1584,35 @@ namespace gum {
   template<typename GUM_SCALAR>
   void 
   PRMFactory<GUM_SCALAR>::setRawCPFByColumns( const std::vector<std::string>& array ) {
+    __checkStack( 2, PRMObject::PRMType::CLASS );
 
-    //auto a = static_cast<Attribute<GUM_SCALAR>*>( __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
-    //auto c = static_cast<Class<GUM_SCALAR>*>( __checkStack( 2, PRMObject::PRMType::CLASS ) );
+    auto a = static_cast<FormAttribute<GUM_SCALAR>*>( __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
 
-    //if( a->cpf().domainSize() != array.size() ) {
-    //  GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
-    //}
+    if( a->formulas().domainSize() != array.size() ) {
+      GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
+    }
 
-    //if( a->cpf().nbrDim() == 1 ) {
+    if( a->formulas().nbrDim() == 1 ) {
 
-    //  setRawCPFByLines( array );
+      setRawCPFByLines( array );
 
-    //} else {
+    } else {
 
-    //  std::vector<Size> pos( a->cpf().nbrDim(), 0 );
-    //  Instantiation inst( a->cpf() );
-    //  inst.setFirst();
+      std::vector<Size> pos( a->formulas().nbrDim(), 0 );
+      Instantiation inst( a->formulas() );
+      inst.setFirst();
 
-    //  for( const auto & elt : array ) {
+      for( const auto & elt : array ) {
 
-    //    Formula f(elt);
-    //    for ( const auto p : c->parameters() ) {
-    //      f.variables().insert( p->name(), p->value() );
-    //    }
-    //    a->cpf().set( inst, f.result() );
-    //    a->formulas().set( inst, elt );
+        a->formulas().set( inst, elt );
+        __incrementByColumn(a, pos, inst);
 
-    //    __incrementByColumn(a, pos, inst);
+      }
 
-    //  }
+      // Generate cpf by calling it
+      a->cpf();
 
-    //}
+    }
   }
 
   template<typename GUM_SCALAR>
@@ -1676,31 +1641,18 @@ namespace gum {
   template<typename GUM_SCALAR>
   void 
   PRMFactory<GUM_SCALAR>::setRawCPFByLines( const std::vector<std::string>& array ) {
+    __checkStack( 2, PRMObject::PRMType::CLASS );
 
-    //auto a = static_cast<Attribute<GUM_SCALAR>*>( __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
-    //auto c = static_cast<Class<GUM_SCALAR>*>( __checkStack( 2, PRMObject::PRMType::CLASS ) );
+    auto a = static_cast<FormAttribute<GUM_SCALAR>*>( __checkStack( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
 
-    //__checkStack( 2, PRMObject::PRMType::CLASS );
+    if( a->formulas().domainSize() != array.size() ) {
+      GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
+    }
 
-    //if( a->cpf().domainSize() != array.size() ) {
-    //  GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
-    //}
+    a->formulas().fillWith( array );
 
-    //a->formulas().fillWith( array );
-
-    //std::vector<GUM_SCALAR> values;
-
-    //for ( const auto & s : array ) {
-
-    //  Formula f(s);
-    //  for ( const auto p : c->parameters() ) {
-    //    f.variables().insert( p->name(), p->value() );
-    //  }
-    //  values.push_back(f.result());
-
-    //}
-
-    //a->cpf().fillWith( values );
+    /// Generate CPF
+    a->cpf();
 
   }
 

@@ -274,7 +274,7 @@ namespace gum {
 
         // We need a local to not eliminate queried inner nodes of the same class
         for( const auto & elt : *i )
-          tmp_pool.insert( & ( elt.second->cpf() ) );
+          tmp_pool.insert( & ( const_cast<Potential<GUM_SCALAR>&>(elt.second->cpf()) ) );
 
         InstanceBayesNet<GUM_SCALAR> bn( *i );
         DefaultTriangulation t( & ( bn.moralGraph() ), & ( bn.modalities() ) );

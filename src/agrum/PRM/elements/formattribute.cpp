@@ -19,17 +19,17 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Source implementation of gum::Attribute
+ * @brief Source implementation of gum::FormAttribute
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
  */
 
-#include <agrum/PRM/elements/attribute.h>
+#include <agrum/PRM/elements/formattribute.h>
 
 namespace gum {
   namespace prm {
-    template class Attribute<double>;
+    template class FormAttribute<double>;
 
   } /* namespace prm */
 } /* namespace gum */

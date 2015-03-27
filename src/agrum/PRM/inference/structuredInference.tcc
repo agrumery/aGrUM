@@ -344,7 +344,7 @@ namespace gum {
           data.mod.insert( id, elt.second->type()->domainSize() );
           data.vars.insert( id, & ( elt.second->type().variable() ) );
           pool.insert( const_cast<Potential<GUM_SCALAR>*>( & ( elt.second->cpf() ) ) );
-          pot = & ( inst->get( v.second ).cpf() );
+          pot = & ( const_cast<Potential<GUM_SCALAR>&>(inst->get( v.second ).cpf()) );
 
           for( const auto var : pot->variablesSequence() ) {
             try {
@@ -607,7 +607,7 @@ namespace gum {
 
               // Adding the potentials
               for( auto attr = inst->begin(); attr != inst->end(); ++attr )
-                pool.insert( & ( ( * ( attr.val() ) ).cpf() ) );
+                pool.insert( & ( const_cast<Potential<GUM_SCALAR>&>( ( * ( attr.val() ) ).cpf() )) );
 
               // Adding evidences if any
               if( this->hasEvidence( inst ) )
@@ -624,7 +624,7 @@ namespace gum {
               // Second case, the instance has evidences
               // Adding the potentials
               for( const auto elt : *inst )
-                pool.insert( & elt.second->cpf() );
+                pool.insert( & const_cast<Potential<GUM_SCALAR>&>(elt.second->cpf()) );
 
               // Adding evidences
               for( const auto & elt : this->evidence( inst ) )
@@ -644,7 +644,7 @@ namespace gum {
               }
 
               for( const auto agg : data->c.aggregates() )
-                pool.insert( & ( inst->get( agg->id() ).cpf() ) );
+                pool.insert( & ( const_cast<Potential<GUM_SCALAR>&>( inst->get( agg->id() ).cpf() )) );
 
               // We eliminate inner aggregators with their parents if necessary (see CData constructor)
               Size size = data->inners().size() + data->aggregators().size();

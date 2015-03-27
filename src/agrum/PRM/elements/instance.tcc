@@ -209,8 +209,9 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     void
-    Instance<GUM_SCALAR>::__copyAggregates( Aggregate<GUM_SCALAR>* source ) {
-      Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR> ( source->name(), source->type(), source->buildImpl() );
+    Instance<GUM_SCALAR>::__copyAggregates( Aggregate<GUM_SCALAR>* source )
+    {
+      auto attr = new ScalarAttribute<GUM_SCALAR> ( source->name(), source->type(), source->buildImpl() );
       GUM_ASSERT( & ( attr->type().variable() ) != & ( source->type().variable() ) );
       attr->setId( source->id() );
       __nodeIdMap.insert( attr->id(), attr );
@@ -219,8 +220,10 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     void
-    Instance<GUM_SCALAR>::__copyAttribute( Attribute<GUM_SCALAR>* source ) {
-      Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR> ( source->name(), source->type() );
+    Instance<GUM_SCALAR>::__copyAttribute( Attribute<GUM_SCALAR>* source )
+    {
+      auto attr = new ScalarAttribute<GUM_SCALAR> ( source->name(), source->type() );
+      GUM_ASSERT( & ( attr->type().variable() ) != & ( source->type().variable() ) );
       // The potential is copied when instantiate() is called
       attr->cpf().fill( ( GUM_SCALAR ) 0 );
       attr->setId( source->id() );
@@ -569,11 +572,16 @@ namespace gum {
     Instance<GUM_SCALAR>::__copyAttributeCPF( Attribute<GUM_SCALAR>* attr ) {
       // try {
       try {
-        Potential<GUM_SCALAR>* p = copyPotential( bijection(), type().get( attr->safeName() ).cpf() );
-        delete( attr->__cpf );
-        attr->__cpf = p;
+
+        const auto & type_attr = static_cast< const Attribute<GUM_SCALAR> & >(type().get( attr->safeName() ) );
+        attr->copyCpf( bijection(), type_attr );
+
       } catch( Exception& e ) {
 #ifndef NDEBUG
+        GUM_TRACE_VAR( e.errorType() );
+        GUM_TRACE_VAR( e.errorContent() );
+        GUM_TRACE_VAR( e.errorCallStack() );
+
         GUM_TRACE_VAR( name() );
         GUM_TRACE_VAR( attr->safeName() );
 

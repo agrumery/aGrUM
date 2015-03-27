@@ -25,12 +25,13 @@
  *
  */
 
-#include <agrum/PRM/elements/attribute.h>
+#include <agrum/PRM/elements/funcattribute.h>
 
 namespace gum {
   namespace prm {
-    template class Attribute<double>;
+    template class FuncAttribute<double>;
 
   } /* namespace prm */
 } /* namespace gum */
+
 

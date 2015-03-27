@@ -123,8 +123,8 @@ namespace gum {
         /// This is similar to the following call: this->lastElt().type()
         virtual const Type<GUM_SCALAR>& type() const;
 
-        /// This is similar to the following call: this->lastElt().cpf()
-        virtual Potential<GUM_SCALAR>& cpf();
+        // /// This is similar to the following call: this->lastElt().cpf()
+        // virtual Potential<GUM_SCALAR>& cpf();
 
         /// This is similar to the following call: this->lastElt().cpf()
         virtual const Potential<GUM_SCALAR>& cpf() const;

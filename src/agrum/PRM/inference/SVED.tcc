@@ -238,7 +238,7 @@ namespace gum {
       // Adding potentials and eliminating the remaining nodes
       for( const auto & a : *i )
         if( __bb.requisiteNodes( i ).exists( a.first ) )
-          pool.insert( & ( a.second->cpf() ) );
+          pool.insert( & ( const_cast<Potential<GUM_SCALAR>&>(a.second->cpf()) ) );
 
       InstanceBayesNet<GUM_SCALAR> bn( *i );
       DefaultTriangulation t( & ( bn.moralGraph() ), & ( bn.modalities() ) );

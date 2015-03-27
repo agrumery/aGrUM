@@ -26,6 +26,7 @@
 #include <agrum/PRM/elements/interface.h>
 
 #include <agrum/PRM/elements/attribute.h>
+#include <agrum/PRM/elements/scalarattribute.h>
 #include <agrum/PRM/elements/referenceSlot.h>
 #include <agrum/PRM/elements/class.h>
 
@@ -67,7 +68,7 @@ namespace gum {
     Interface<GUM_SCALAR>::__inheritInterface( const Interface<GUM_SCALAR>& i ) {
       // Copying attributes
       for( const auto i_attr : i.__attributes ) {
-        Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR> ( i_attr ->name(), i_attr ->type() );
+        auto attr = new ScalarAttribute<GUM_SCALAR> ( i_attr ->name(), i_attr ->type() );
         attr->setId( i_attr ->id() );
         __nodeIdMap.insert( attr->id(), attr );
         __attributes.insert( attr );
@@ -217,17 +218,14 @@ namespace gum {
         parent = child;
       }
 
-      parent->setAsCastDescendant( end );
+      end->setAsCastDescendant( parent );
     }
 
     template<typename GUM_SCALAR>
     void
     Interface<GUM_SCALAR>::__swap_types( Attribute<GUM_SCALAR>* overloader, Attribute<GUM_SCALAR>* overloaded ) {
-      Type<GUM_SCALAR>* tmp = overloader->__type;
-      overloader->__type = overloaded->__type;
-      overloaded->__type = tmp;
-      overloader->__cpf->erase( tmp->variable() );
-      overloader->__cpf->add( overloader->__type->variable() );
+      auto tmp = overloader->type( &(overloaded->type()) );
+      overloaded->type( tmp );
       delete overloaded;
     }
 

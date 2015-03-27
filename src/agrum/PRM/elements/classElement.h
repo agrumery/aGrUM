@@ -207,12 +207,12 @@ namespace gum {
          */
         virtual std::string cast ( const Type<GUM_SCALAR>& t ) const;
 
-        /**
-         * Return a reference over the gum::Potential of this class element.
-         * @throw OperationNotAllowed Raised if this class element doesn't have
-         *                            any gum::Potential (like a gum::ReferenceSlot).
-         */
-        virtual Potential<GUM_SCALAR>& cpf() = 0;
+        // /**
+        //  * Return a reference over the gum::Potential of this class element.
+        //  * @throw OperationNotAllowed Raised if this class element doesn't have
+        //  *                            any gum::Potential (like a gum::ReferenceSlot).
+        //  */
+        // virtual Potential<GUM_SCALAR>& cpf() = 0;
 
         /**
          * Return a constant reference over the gum::Potential of this class element.

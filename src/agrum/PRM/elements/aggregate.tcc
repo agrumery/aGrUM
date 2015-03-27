@@ -146,7 +146,6 @@ namespace gum {
     void
     Aggregate<GUM_SCALAR>::addChild ( const ClassElement<GUM_SCALAR>& elt ) { }
 
-
   } /* namespace prm */
 } /* namespace gum */
 

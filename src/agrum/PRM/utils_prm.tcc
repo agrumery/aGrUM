@@ -75,8 +75,7 @@ namespace gum {
       }
     }
 
-
-// the function used to combine two tables
+    // the function used to combine two tables
     template<typename GUM_SCALAR>
     Potential<GUM_SCALAR>* multPotential( const Potential<GUM_SCALAR>& t1,
                                           const Potential<GUM_SCALAR>& t2 ) {

@@ -79,21 +79,24 @@ namespace gum {
     SlotChain<GUM_SCALAR>::__copyLastElt() {
       ClassElement<GUM_SCALAR>* new_elt = 0;
 
-      switch ( __chain->back()->elt_type() ) {
-        case ClassElement<GUM_SCALAR>::prm_attribute: {
-          const Attribute<GUM_SCALAR>* old_attr = static_cast<const Attribute<GUM_SCALAR>*> ( __chain->back() );
-          Type<GUM_SCALAR>* t = new Type<GUM_SCALAR> ( old_attr->type() );
-          Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
-          bij.insert ( & ( old_attr->type().variable() ), & ( t->variable() ) );
+      switch ( __chain->back()->elt_type() )
+      {
+        case ClassElement<GUM_SCALAR>::prm_attribute:
+          {
+            auto old_attr = static_cast<const Attribute<GUM_SCALAR>*> ( __chain->back() );
 
-          for ( MultiDimInterface::iterator iter = __chain->back()->cpf().begin(); iter != __chain->back()->cpf().end(); ++iter )
-            if ( ( *iter ) != & ( old_attr->type().variable() ) )
-              bij.insert ( *iter, *iter );
+            Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
+            for ( auto iter = old_attr->cpf().begin(); iter != old_attr->cpf().end(); ++iter ) {
+              if ( ( *iter ) != & ( old_attr->type().variable() ) ) {
 
-          Potential<GUM_SCALAR>* p = copyPotential ( bij, __chain->back()->cpf() );
-          new_elt = new Attribute<GUM_SCALAR> ( __chain->back()->name(), t, p, true );
-          break;
-        }
+                bij.insert ( *iter, *iter );
+
+              }
+            }
+
+            new_elt = old_attr->copy( bij );
+            break;
+          }
 
         case ClassElement<GUM_SCALAR>::prm_aggregate: {
           const Aggregate<GUM_SCALAR>* c_agg = static_cast<const Aggregate<GUM_SCALAR>*> ( __chain->back() );
@@ -144,9 +147,9 @@ namespace gum {
     const Type<GUM_SCALAR>&
     SlotChain<GUM_SCALAR>::type() const { return __chain->back()->type(); }
 
-    template<typename GUM_SCALAR> INLINE
-    Potential<GUM_SCALAR>&
-    SlotChain<GUM_SCALAR>::cpf() { return __chain->back()->cpf(); }
+    // template<typename GUM_SCALAR> INLINE
+    // Potential<GUM_SCALAR>&
+    // SlotChain<GUM_SCALAR>::cpf() { return __chain->back()->cpf(); }
 
     template<typename GUM_SCALAR> INLINE
     const Potential<GUM_SCALAR>&

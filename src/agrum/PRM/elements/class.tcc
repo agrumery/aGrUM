@@ -123,7 +123,7 @@ namespace gum {
       // Copuying attributes
       for( const auto c_attr : c.__attributes ) {
         // using multiDimSparse to prevent unecessary memory allocation for large arrays (the potentials are copied latter)
-        auto attr = new Attribute<GUM_SCALAR> ( c_attr->name(), c_attr->type(), new MultiDimSparse<GUM_SCALAR> ( 0.0 ) );
+        auto attr = c_attr->newFactory();
 
         bij.insert( & ( c_attr->type().variable() ), & ( attr->type().variable() ) );
         attr->setId( c_attr->id() );
@@ -506,7 +506,20 @@ namespace gum {
             sc->setId( slotchain->id() );
 
             for( const auto child : this->dag().children( sc->id() ) )
-              get( child ).cpf().swap( slotchain->lastElt().type().variable(), sc->lastElt().type().variable() );
+            {
+              auto & elt = get( child );
+              if ( ClassElement<GUM_SCALAR>::isAttribute( elt ) ) {
+                auto & attr = static_cast< Attribute<GUM_SCALAR> & >( elt );
+                auto & old_type = slotchain->lastElt().type().variable();
+                auto & new_type = sc->lastElt().type().variable();
+                attr.swap( old_type, new_type );
+              }
+              else
+              {
+                GUM_ERROR( OperationNotAllowed, "unexpected ClassElement" );
+                //get( child ).cpf().swap( slotchain->lastElt().type().variable(), sc->lastElt().type().variable() );
+              }
+            }
 
             toAdd.push_back( sc );
             toRemove.push_back( slotchain );
@@ -550,36 +563,39 @@ namespace gum {
     void
     Class<GUM_SCALAR>::__swap_types( ClassElement<GUM_SCALAR>* overloader, ClassElement<GUM_SCALAR>* overloaded ) {
       if( overloader->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
-        Attribute<GUM_SCALAR>* loader = static_cast<Attribute<GUM_SCALAR>*>( overloader );
+        auto loader = static_cast<Attribute<GUM_SCALAR>*>( overloader );
 
-        if( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
-          Attribute<GUM_SCALAR>* loaded = static_cast<Attribute<GUM_SCALAR>*>( overloaded );
-          Type<GUM_SCALAR>* tmp = loader->__type;
-          loader->__type = loaded->__type;
-          loaded->__type = tmp;
-          loader->__cpf->erase( tmp->variable() );
-          loader->__cpf->add( loader->__type->variable() );
+        if ( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
+
+          auto loaded = static_cast<Attribute<GUM_SCALAR>*>( overloaded );
+          auto tmp = loader->type( & (loaded->type() ) );
+          loaded->type( tmp );
+
         } else if( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) {
-          Aggregate<GUM_SCALAR>* loaded = static_cast<Aggregate<GUM_SCALAR>*>( overloaded );
-          Type<GUM_SCALAR>* tmp = loader->__type;
-          loader->__type = loaded->__type;
+
+          auto loaded = static_cast<Aggregate<GUM_SCALAR>*>( overloaded );
+          auto tmp = loader->type( loaded->__type );
           loaded->__type = tmp;
+
         } else {
           GUM_ERROR( FatalError, "swapping types impossible" );
         }
       } else if( overloader->elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) {
-        Aggregate<GUM_SCALAR>* loader = static_cast<Aggregate<GUM_SCALAR>*>( overloader );
+        auto loader = static_cast<Aggregate<GUM_SCALAR>*>( overloader );
 
         if( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
-          Attribute<GUM_SCALAR>* loaded = static_cast<Attribute<GUM_SCALAR>*>( overloaded );
-          Type<GUM_SCALAR>* tmp = loader->__type;
-          loader->__type = loaded->__type;
-          loaded->__type = tmp;
+
+          auto loaded = static_cast<Attribute<GUM_SCALAR>*>( overloaded );
+          auto tmp = loader->__type;
+          loader->__type = loaded->type( tmp );
+
         } else if( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) {
-          Aggregate<GUM_SCALAR>* loaded = static_cast<Aggregate<GUM_SCALAR>*>( overloaded );
-          Type<GUM_SCALAR>* tmp = loader->__type;
+
+          auto loaded = static_cast<Aggregate<GUM_SCALAR>*>( overloaded );
+          auto tmp = loader->__type;
           loader->__type = loaded->__type;
           loaded->__type = tmp;
+
         } else {
           GUM_ERROR( FatalError, "swapping types impossible" );
         }
@@ -605,7 +621,7 @@ namespace gum {
         parent = child;
       }
 
-      parent->setAsCastDescendant( end );
+      end->setAsCastDescendant( parent );
       __dag.addArc( parent->id(), end->id() );
     }
 
