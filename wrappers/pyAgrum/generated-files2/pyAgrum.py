@@ -1559,13 +1559,35 @@ class TypeError(FactoryError):
 TypeError_swigregister = _pyAgrum.TypeError_swigregister
 TypeError_swigregister(TypeError)
 
-class IncompatibleScoreApriori(Exception):
-    """Proxy of C++ gum::IncompatibleScoreApriori class"""
+class LearningError(Exception):
+    """Proxy of C++ gum::LearningError class"""
     __swig_setmethods__ = {}
     for _s in [Exception]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
-    __setattr__ = lambda self, name, value: _swig_setattr(self, IncompatibleScoreApriori, name, value)
+    __setattr__ = lambda self, name, value: _swig_setattr(self, LearningError, name, value)
     __swig_getmethods__ = {}
     for _s in [Exception]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, LearningError, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(gum::LearningError self, std::string aMsg, std::string aType="factory error") -> LearningError
+        __init__(gum::LearningError self, std::string aMsg) -> LearningError
+        """
+        this = _pyAgrum.new_LearningError(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _pyAgrum.delete_LearningError
+    __del__ = lambda self : None;
+LearningError_swigregister = _pyAgrum.LearningError_swigregister
+LearningError_swigregister(LearningError)
+
+class IncompatibleScoreApriori(LearningError):
+    """Proxy of C++ gum::IncompatibleScoreApriori class"""
+    __swig_setmethods__ = {}
+    for _s in [LearningError]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, IncompatibleScoreApriori, name, value)
+    __swig_getmethods__ = {}
+    for _s in [LearningError]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
     __getattr__ = lambda self, name: _swig_getattr(self, IncompatibleScoreApriori, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
@@ -1581,13 +1603,13 @@ class IncompatibleScoreApriori(Exception):
 IncompatibleScoreApriori_swigregister = _pyAgrum.IncompatibleScoreApriori_swigregister
 IncompatibleScoreApriori_swigregister(IncompatibleScoreApriori)
 
-class PossiblyIncompatibleScoreApriori(Exception):
+class PossiblyIncompatibleScoreApriori(LearningError):
     """Proxy of C++ gum::PossiblyIncompatibleScoreApriori class"""
     __swig_setmethods__ = {}
-    for _s in [Exception]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    for _s in [LearningError]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
     __setattr__ = lambda self, name, value: _swig_setattr(self, PossiblyIncompatibleScoreApriori, name, value)
     __swig_getmethods__ = {}
-    for _s in [Exception]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    for _s in [LearningError]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
     __getattr__ = lambda self, name: _swig_getattr(self, PossiblyIncompatibleScoreApriori, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
@@ -1602,6 +1624,50 @@ class PossiblyIncompatibleScoreApriori(Exception):
     __del__ = lambda self : None;
 PossiblyIncompatibleScoreApriori_swigregister = _pyAgrum.PossiblyIncompatibleScoreApriori_swigregister
 PossiblyIncompatibleScoreApriori_swigregister(PossiblyIncompatibleScoreApriori)
+
+class MissingVariableInDatabase(LearningError):
+    """Proxy of C++ gum::MissingVariableInDatabase class"""
+    __swig_setmethods__ = {}
+    for _s in [LearningError]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, MissingVariableInDatabase, name, value)
+    __swig_getmethods__ = {}
+    for _s in [LearningError]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, MissingVariableInDatabase, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(gum::MissingVariableInDatabase self, std::string aMsg, std::string aType="A name of variable is not found in the database") -> MissingVariableInDatabase
+        __init__(gum::MissingVariableInDatabase self, std::string aMsg) -> MissingVariableInDatabase
+        """
+        this = _pyAgrum.new_MissingVariableInDatabase(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _pyAgrum.delete_MissingVariableInDatabase
+    __del__ = lambda self : None;
+MissingVariableInDatabase_swigregister = _pyAgrum.MissingVariableInDatabase_swigregister
+MissingVariableInDatabase_swigregister(MissingVariableInDatabase)
+
+class UnknownLabelInDatabase(LearningError):
+    """Proxy of C++ gum::UnknownLabelInDatabase class"""
+    __swig_setmethods__ = {}
+    for _s in [LearningError]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, UnknownLabelInDatabase, name, value)
+    __swig_getmethods__ = {}
+    for _s in [LearningError]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, UnknownLabelInDatabase, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(gum::UnknownLabelInDatabase self, std::string aMsg, std::string aType="An unknown label is found in the database") -> UnknownLabelInDatabase
+        __init__(gum::UnknownLabelInDatabase self, std::string aMsg) -> UnknownLabelInDatabase
+        """
+        this = _pyAgrum.new_UnknownLabelInDatabase(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _pyAgrum.delete_UnknownLabelInDatabase
+    __del__ = lambda self : None;
+UnknownLabelInDatabase_swigregister = _pyAgrum.UnknownLabelInDatabase_swigregister
+UnknownLabelInDatabase_swigregister(UnknownLabelInDatabase)
 
 class SyntaxError(IOError):
     """Proxy of C++ gum::SyntaxError class"""
@@ -2908,6 +2974,10 @@ class BNLearner(_object):
         """names(BNLearner self) -> Vector_string"""
         return _pyAgrum.BNLearner_names(self)
 
+    def modalities(self):
+        """modalities(BNLearner self) -> std::vector< unsigned int,std::allocator< unsigned int > > const &"""
+        return _pyAgrum.BNLearner_modalities(self)
+
     def idFromName(self, *args):
         """idFromName(BNLearner self, std::string const & var_name) -> gum::NodeId"""
         return _pyAgrum.BNLearner_idFromName(self, *args)
@@ -2975,8 +3045,13 @@ class BNLearner(_object):
         """setMaxIndegree(BNLearner self, unsigned int max_indegree)"""
         return _pyAgrum.BNLearner_setMaxIndegree(self, *args)
 
+    def setForbiddenArcs(self, *args):
+        """setForbiddenArcs(BNLearner self, gum::ArcSet const & set)"""
+        return _pyAgrum.BNLearner_setForbiddenArcs(self, *args)
+
     def addForbiddenArc(self, *args):
         """
+        addForbiddenArc(BNLearner self, Arc arc)
         addForbiddenArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
         addForbiddenArc(BNLearner self, std::string const & tail, std::string const & head)
         """
@@ -2984,13 +3059,19 @@ class BNLearner(_object):
 
     def eraseForbiddenArc(self, *args):
         """
+        eraseForbiddenArc(BNLearner self, Arc arc)
         eraseForbiddenArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
         eraseForbiddenArc(BNLearner self, std::string const & tail, std::string const & head)
         """
         return _pyAgrum.BNLearner_eraseForbiddenArc(self, *args)
 
+    def setMandatoryArcs(self, *args):
+        """setMandatoryArcs(BNLearner self, gum::ArcSet const & set)"""
+        return _pyAgrum.BNLearner_setMandatoryArcs(self, *args)
+
     def addMandatoryArc(self, *args):
         """
+        addMandatoryArc(BNLearner self, Arc arc)
         addMandatoryArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
         addMandatoryArc(BNLearner self, std::string const & tail, std::string const & head)
         """
@@ -2998,6 +3079,7 @@ class BNLearner(_object):
 
     def eraseMandatoryArc(self, *args):
         """
+        eraseMandatoryArc(BNLearner self, Arc arc)
         eraseMandatoryArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
         eraseMandatoryArc(BNLearner self, std::string const & tail, std::string const & head)
         """
@@ -3140,7 +3222,7 @@ class BNLearner(_object):
         return _pyAgrum.BNLearner_learnBN(self)
 
     def learnParameters(self, *args):
-        """learnParameters(BNLearner self, DAG dag) -> BayesNet_double"""
+        """learnParameters(BNLearner self, BayesNet_double bn) -> BayesNet_double"""
         return _pyAgrum.BNLearner_learnParameters(self, *args)
 
     def setSliceOrder(self, *args):
@@ -3148,7 +3230,11 @@ class BNLearner(_object):
         return _pyAgrum.BNLearner_setSliceOrder(self, *args)
 
     def useK2(self, *args):
-        """useK2(BNLearner self, PyObject * l)"""
+        """
+        useK2(BNLearner self, gum::Sequence< gum::NodeId > const & order)
+        useK2(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & order)
+        useK2(BNLearner self, PyObject * l)
+        """
         return _pyAgrum.BNLearner_useK2(self, *args)
 
     def castAsASC(self, *args):
