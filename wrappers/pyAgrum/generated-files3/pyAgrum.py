@@ -3241,7 +3241,11 @@ class BNLearner(_object):
         return _pyAgrum.BNLearner_setSliceOrder(self, *args)
 
     def useK2(self, *args) -> "void" :
-        """useK2(BNLearner self, PyObject * l)"""
+        """
+        useK2(BNLearner self, gum::Sequence< gum::NodeId > const & order)
+        useK2(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & order)
+        useK2(BNLearner self, PyObject * l)
+        """
         return _pyAgrum.BNLearner_useK2(self, *args)
 
     def castAsASC(self, *args) -> "gum::IApproximationSchemeConfiguration const &" :

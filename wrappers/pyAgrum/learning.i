@@ -1,6 +1,6 @@
-%ignore  gum::learning::BNLearner::setSliceOrder( const NodeProperty<unsigned int>& slice_order );
-%ignore  gum::learning::BNLearner::useK2( const Sequence<NodeId>& order);
-%ignore  gum::learning::BNLearner::useK2( const std::vector<NodeId>& order );
+%ignore  gum::learning::BNLearner::setSliceOrder( const NodeProperty<unsigned int>& slice_order );  // gum should be added by SED in cmake/GUM-UseSWIG.cmake
+%ignore  gum::learning::BNLearner::useK2( const gum::Sequence<gum::NodeId>& order);
+%ignore  gum::learning::BNLearner::useK2( const std::vector<gum::NodeId>& order );
 
 %ignore  gum::learning::BNLearner::setForbiddenArcs(const gum::ArcSet& set);
 %ignore  gum::learning::BNLearner::setMandatoryArcs(const gum::ArcSet& set);

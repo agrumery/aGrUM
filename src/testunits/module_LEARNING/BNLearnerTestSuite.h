@@ -168,12 +168,13 @@ public:
             gum::BayesNet<float> bn2 = learner.learnParameters ( bn );
             TS_ASSERT ( bn2.dim () == bn.dim() );
 
-            // check all the variables
-            /*for ( gum::NodeId  node : bn.nodes() ) {
-              gum::NodeId node2=bn2.idFromName ( bn.variable ( node ).name() );
-              TS_ASSERT_EQUALS ( bn.variable ( node ).toString(),bn2.variable ( node2 ).toString() );
-            }*/
             std::cout<<"(missing tests)";
+          // check all the variables
+          // TODO
+          /*for ( gum::NodeId  node : bn.nodes() ) {
+            gum::NodeId node2=bn2.idFromName ( bn.variable ( node ).name() );
+            TS_ASSERT_EQUALS ( bn.variable ( node ).toString(),bn2.variable ( node2 ).toString() );
+          }*/
 
         } catch ( gum::Exception& e ) {
             GUM_SHOWERROR ( e );
