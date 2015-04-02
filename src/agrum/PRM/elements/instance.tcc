@@ -575,6 +575,7 @@ namespace gum {
 
         const auto & type_attr = static_cast< const Attribute<GUM_SCALAR> & >(type().get( attr->safeName() ) );
         attr->copyCpf( bijection(), type_attr );
+        GUM_ASSERT( attr->cpf().contains( attr->type().variable() ) );
 
       } catch( Exception& e ) {
 #ifndef NDEBUG

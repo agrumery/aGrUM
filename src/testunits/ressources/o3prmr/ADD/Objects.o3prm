@@ -2,12 +2,11 @@ import ADD;
 
 system exemple_ADD {
 
-  Leaf be1 (lambda= 0.000002);
-  Leaf be2 (lambda= 0.000002, t= 8760);
-  Leaf be3 (lambda= 0.000001, t= 8760);
-  Leaf be4 (lambda= 0.0000002, t= 8760);
-  Leaf be5 (lambda= 0.0000002, t= 8760);
-
+  Leaf be1 (lambda= 0.002);
+  Leaf be2 (lambda= 0.002);
+  Leaf be3 (lambda= 0.001);
+  Leaf be4 (lambda= 0.002);
+  Leaf be5 (lambda= 0.002);
 
   AndGate g1;
   g1.inputs += be1;

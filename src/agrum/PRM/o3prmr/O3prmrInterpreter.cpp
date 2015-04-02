@@ -52,6 +52,7 @@ namespace gum {
       O3prmrInterpreter::O3prmrInterpreter() :
         m_context ( new O3prmrContext<double>() ),
         m_reader ( new o3prm::O3prmReader<double>() ),
+        m_bn ( 0 ),
         m_inf ( 0 ),
         m_syntax_flag ( false ),
         m_verbose ( false ),
@@ -64,6 +65,9 @@ namespace gum {
         delete m_context;
         if (m_inf) {
           delete m_inf;
+        }
+        if (m_bn) {
+          delete m_bn;
         }
         delete m_reader->prm();
         delete m_reader;
@@ -764,79 +768,63 @@ namespace gum {
         return false;
       }
 
-
 ///
-
-      void O3prmrInterpreter::query ( const QueryCommand<double>* command ) try {
+      void O3prmrInterpreter::query ( const QueryCommand<double>* command ) try
+      {
         const std::string& query = command->value;
 
         Potential<double> m;
 
         // Create inference engine if it has not been already created.
-        if ( ! m_inf )
+        if ( ! m_inf ) {
           generateInfEngine ( * ( command->system ) );
+        }
 
         // Inference
-        if ( m_verbose ) m_log << "# Starting inference over query: " << query << "... " << std::endl;
+        if ( m_verbose ) { m_log << "# Starting inference over query: " << query << "... " << std::endl; }
 
         Timer timer;
         timer.reset();
 
         m_inf->marginal ( command->chain, m );
 
-        if (m_verbose) {
-          m_log << "#DEBUG# Marginal variables inference:" << std::endl;
-          for ( const auto& var: m.variablesSequence() ) {
-            m_log << "#DEBUG#   ptr: " << var << ", size: " << var->domainSize() << " ";
-          }
-          m_log << std::endl;
-        }
-
         // Compute spent time
         double t = timer.step();
 
-        if ( m_verbose ) m_log << "Finished." << std::endl;
+        if ( m_verbose ) { m_log << "Finished." << std::endl; }
 
-        if ( m_verbose ) m_log << "# Time in seconds (accuracy ~0.001): " << t << std::endl;
+        if ( m_verbose ) { m_log << "# Time in seconds (accuracy ~0.001): " << t << std::endl; }
 
         // Show results
 
-        if ( m_verbose ) m_log << std::endl;
+        if ( m_verbose ) { m_log << std::endl; }
 
-        if ( m_verbose ) m_log << "#DEBUG# 1" << std::endl;
         QueryResult result;
         result.command = query;
         result.time = t;
 
-        if ( m_verbose ) m_log << "#DEBUG# 2" << std::endl;
-
         Instantiation j ( m );
         const Attribute<double>& attr = * ( command->chain.second );
-        if (m_verbose) m_log << "#DEBUG# " << attr.name() << ": " << attr.type().name() << std::endl;
-        if (m_verbose) m_log << "#DEBUG# " << &(attr.type().variable()) << std::endl;
 
-        for ( j.setFirst(); not j.end(); j.inc() ) {
-          if ( m_verbose ) m_log << "#DEBUG# 2.1" << std::endl;
-          std::string label = attr.type().variable().label ( j.val ( attr.type().variable() ) );
-          if ( m_verbose ) m_log << "#DEBUG# 2.2" << std::endl;
+        for ( j.setFirst(); not j.end(); j.inc() )
+        {
+          //auto label_value = j.val ( attr.type().variable() );
+          auto label_value = j.val ( 0 );
+          std::string label = attr.type().variable().label ( label_value );
           float value = m.get ( j );
-          if ( m_verbose ) m_log << "#DEBUG# 2.3" << std::endl;
-          SingleResult singleResult;
-          if ( m_verbose ) m_log << "#DEBUG# 2.4" << std::endl;
-          singleResult.label = label;
-          if ( m_verbose ) m_log << "#DEBUG# 2.5" << std::endl;
-          singleResult.p = value;
-          if ( m_verbose ) m_log << "#DEBUG# 2.6" << std::endl;
-          result.values.push_back ( singleResult );
-          if ( m_verbose ) m_log << "#DEBUG# 2.7" << std::endl;
 
-          if ( m_verbose ) m_log << label << " : " << value << std::endl;
+          SingleResult singleResult;
+          singleResult.label = label;
+          singleResult.p = value;
+
+          result.values.push_back ( singleResult );
+
+          if ( m_verbose ) { m_log << label << " : " << value << std::endl; }
         }
 
-        if ( m_verbose ) m_log << "#DEBUG# 3" << std::endl;
         m_results.push_back ( result );
 
-        if ( m_verbose ) m_log << std::endl;
+        if ( m_verbose ) { m_log << std::endl; }
 
       } catch ( Exception& e ) {
         throw "something went wrong while infering: " + e.errorContent();
@@ -876,8 +864,11 @@ namespace gum {
           //
         } else if ( m_engine == "GRD" ) {
           BayesNetInference<double>* bn_inf = 0;
-          BayesNet<double>* bn = new BayesNet<double>();
-          BayesNetFactory<double> bn_factory ( bn );
+          if (m_bn) {
+            delete m_bn;
+          }
+          m_bn = new BayesNet<double>();
+          BayesNetFactory<double> bn_factory ( m_bn );
 
           if ( m_verbose ) m_log << "(Grounding the network... " << std::flush;
 
@@ -886,13 +877,13 @@ namespace gum {
           if ( m_verbose ) m_log << "Finished)" << std::flush;
 
           if ( m_bn_engine == "VE" ) {
-            bn_inf = new VariableElimination<double> ( *bn );
+            bn_inf = new VariableElimination<double> ( *m_bn );
           } else if ( m_bn_engine == "VEBB" ) {
-            bn_inf = new VEWithBB<double> ( *bn );
+            bn_inf = new VEWithBB<double> ( *m_bn );
           } else if ( m_bn_engine == "lazy" ) {
-            bn_inf = new LazyPropagation<double> ( *bn );
+            bn_inf = new LazyPropagation<double> ( *m_bn );
           } else {
-            bn_inf = new ShaferShenoyInference<double> ( *bn );
+            bn_inf = new ShaferShenoyInference<double> ( *m_bn );
           }
 
           auto grd_inf = new GroundedInference<double> ( * ( prm() ), sys );

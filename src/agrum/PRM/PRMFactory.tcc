@@ -1550,6 +1550,9 @@ namespace gum {
       if (name.length() == 0) {
         GUM_ERROR(OperationNotAllowed, "illegal import name");
       }
+      if (__namespaces.empty()) {
+        __namespaces.push_back( new List<std::string>() );
+      }
       __namespaces.back()->push_back(name);
     }
 

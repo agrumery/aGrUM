@@ -297,6 +297,8 @@ namespace gum {
           __cpf->add( *var );
         }
 
+        auto params = __class->scope();
+
         Instantiation inst( __formulas );
         Instantiation jnst( __cpf );
 
@@ -310,10 +312,8 @@ namespace gum {
 
           Formula f( val );
 
-          if ( __class ) {
-            for ( auto p : __class->parameters() ) {
-              f.variables().insert( p->name(), p->value() );
-            }
+          for ( auto item : params ) {
+            f.variables().insert( item.first, item.second->value() );
           }
 
           __cpf->set( jnst, f.result() );

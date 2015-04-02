@@ -203,29 +203,30 @@ namespace gum_tests {
         }
       }
 
-      void testADD() {
-        try {
-          gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
-          si->setVerboseMode(false);
-          si->setSyntaxMode ( false );
-          si->addPath ( "../../../src/testunits/ressources/o3prmr/ADD/" );
+      //void testADDInference() {
+      //  try {
+      //    gum::prm::o3prmr::O3prmrInterpreter si;
+      //    si.setVerboseMode(true);
+      //    si.setSyntaxMode ( false );
+      //    si.addPath ( "../../../src/testunits/ressources/o3prmr/ADD/" );
 
-          TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/ADD/Request.o3prmr" ) );
+      //    TS_GUM_ASSERT_THROWS_NOTHING ( si.interpretFile ( "../../../src/testunits/ressources/o3prmr/ADD/Request.o3prmr" ) );
 
-          TS_ASSERT_EQUALS( si->results().size(), (size_t)1 );
-          auto result = si->results()[0];
-          TS_ASSERT_EQUALS(result.values.size(), (size_t)2);
-            
+      //    TS_ASSERT_EQUALS( si.results().size(), (size_t)1 );
+      //    if ( si.results().size() > 0 ) {
+      //      auto result = si.results()[0];
+      //      TS_ASSERT_EQUALS(result.values.size(), (size_t)2);
+      //    }
 
-          si->showElegantErrorsAndWarnings();
-          TS_ASSERT_EQUALS ( si->errors(), 0 );
-          TS_ASSERT_EQUALS ( si->warnings(), 0 );
+      //    si.showElegantErrorsAndWarnings();
+      //    TS_ASSERT_EQUALS ( si.errors(), 0 );
+      //    TS_ASSERT_EQUALS ( si.warnings(), 0 );
 
-          delete si;
-        } catch (gum::Exception&) {
-          TS_ASSERT(false);
-        }
-      }
+      //  } catch (gum::Exception&) {
+      //    TS_ASSERT(false);
+      //  }
+      //}
+
   };
 
 } // namespace gum_tests

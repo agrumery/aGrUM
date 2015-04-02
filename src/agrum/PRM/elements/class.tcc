@@ -25,6 +25,8 @@
  */
 
 //to ease parsing
+#include <queue>
+
 #include <agrum/PRM/elements/class.h>
 
 #include <agrum/PRM/elements/interface.h>
@@ -727,9 +729,69 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> INLINE
-    const Set< Parameter<GUM_SCALAR>* >&
+    const Set< Parameter<GUM_SCALAR>* > &
     Class<GUM_SCALAR>::parameters() const {
       return __parameters;
+    }
+
+    // Private struct for retrieving all params in scope
+    template<typename GUM_SCALAR>
+    struct ParamScopeData {
+      std::string prefix;
+      const Class<GUM_SCALAR>* c;
+
+      ParamScopeData( std::string prefix, const ReferenceSlot<GUM_SCALAR>& ref) {
+        prefix = prefix + ref.name() + ".";
+        c = static_cast<const Class<GUM_SCALAR>*>( &(ref.slotType()) );
+      }
+
+    };
+
+    template<typename GUM_SCALAR> INLINE
+    HashTable<std::string, const Parameter<GUM_SCALAR>*>
+    Class<GUM_SCALAR>::scope() const 
+    {
+      HashTable<std::string, const Parameter<GUM_SCALAR>*> params;
+      Set<const Class<GUM_SCALAR>*> visited;
+      visited.insert( this );
+
+      for (const auto p: parameters()) {
+        params.insert( p->name(), p );
+      }
+
+      std::queue< ParamScopeData<GUM_SCALAR> > queue;
+
+      for (const auto ref: referenceSlots()) {
+
+        if ( PRMObject::isClass( ref->slotType() ) ) {
+          queue.push( ParamScopeData<GUM_SCALAR>( "", *ref) );
+        }
+
+      }
+
+      while ( not queue.empty() ) {
+        auto data = queue.front();
+        queue.pop();
+        
+        if ( not visited.contains( data.c ) ) {
+          visited.insert( data.c );
+
+          for (const auto p: data.c->parameters()) {
+            params.insert( data.prefix + p->name(), p );
+          }
+
+          for ( const auto ref: data.c->referenceSlots() ) {
+
+            if (PRMObject::isClass( ref->slotType() )) {
+              queue.push( ParamScopeData<GUM_SCALAR>( data.prefix, *ref) );
+            }
+
+          }
+        }
+      }
+
+      return params;
+
     }
 
     template<typename GUM_SCALAR> INLINE

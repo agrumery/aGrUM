@@ -111,7 +111,7 @@ namespace gum {
         /**
          * @brief Getter on an Attribute<GUM_SCALAR> of this Instance<GUM_SCALAR>.
          *
-         * Recall that Aggregate<GUM_SCALAR> are instantiated has Attribute<GUM_SCALAR>
+         * Recall that Aggregate<GUM_SCALAR> are instantiated as Attribute<GUM_SCALAR>
          * when an Instance<GUM_SCALAR> is created. Thus any random variable contained
          * in this Instance<GUM_SCALAR> is mapped to an Attribute<GUM_SCALAR>.
          *

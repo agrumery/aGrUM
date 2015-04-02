@@ -102,15 +102,6 @@ namespace gum {
           impl = new aggregator::Max<GUM_SCALAR>();
           break;
 
-          //case AggregateType::COUNT:
-          //  if (__label < __type.variable().domainSize()) {
-          //    impl = new aggregator::Count<GUM_SCALAR>(__label);
-          //  } else {
-          //    std::string msg = "This aggregator of type agg_count isn't initialized "
-          //      "properly.";
-          //    GUM_ERROR(FatalError, msg);
-          //  }
-          //  break;
         case AggregateType::EXISTS:
           impl = new aggregator::Exists<GUM_SCALAR> ( __label );
           break;

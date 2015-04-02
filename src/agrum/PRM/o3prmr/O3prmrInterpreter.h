@@ -162,6 +162,7 @@ namespace gum {
           O3prmrContext<double>* m_context;
           gum::prm::o3prm::O3prmReader<double>* m_reader;
           std::vector<std::string> m_paths;
+          gum::BayesNet<double>* m_bn;
           gum::prm::PRMInference<double>* m_inf;
           std::string m_engine;
           std::string m_bn_engine;

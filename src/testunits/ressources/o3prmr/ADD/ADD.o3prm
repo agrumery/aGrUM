@@ -20,24 +20,23 @@ class AndGate implements Gate {
 }
 
 type intervalle zero, un, deux, trois, quatre, cinq ;
-
-type intervalle_K un, deux, trois, quatre, cinq ;
+type intervalle_K zero, un, deux, trois;
 
 class k_nGate implements Gate {
 	Event[] inputs ;
 
 	intervalle Nb_true = count(inputs.state, true, intervalle);
 
-  intervalle_K K {["0.2", "0.2", "0.2", "0.2", "0.2"]};
+  intervalle_K K {[0.25, 0.25, 0.25, 0.25]};
 
-  boolean state dependson K, Nb_true  
-  {[
-    "1",	"0",	"0",	"0",	"0",	"0",	"1",	"1",	"0",	"0",	"0",	"0",	"1",	"1",	"1",	
-    "0",	"0",	"0",	"1",	"1",	"1",	"1",	"0",	"0",	"1",	"1",	"1",	"1",	"1",	"0",
-
-    "0",	"1",	"1",	"1",	"1",	"1",	"0",	"0",	"1",	"1",	"1",	"1",	"0",	"0",	"0",
-    "1",	"1",	"1",	"0",	"0",	"0",	"0",	"1",	"1",	"0",	"0",	"0",	"0",	"0",	"1"
-  ]};
+  boolean state dependson K, Nb_true 
+  {
+    *, *:         1.00, 0.00;
+    trois, zero:  0.00, 1.00;
+    trois, un:    0.00, 1.00;
+    trois, deux:  0.00, 1.00;
+    trois, trois: 0.00, 1.00;
+  };
 }      
 
 class Leaf implements Event {

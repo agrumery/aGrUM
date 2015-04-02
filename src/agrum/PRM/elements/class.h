@@ -31,6 +31,7 @@
 #include <set>
 
 #include <agrum/core/sequence.h>
+#include <agrum/core/set.h>
 #include <agrum/core/bijection.h>
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimSparse.h>
@@ -154,6 +155,12 @@ namespace gum {
          * @return Returns the set of parameters of this Class<GUM_SCALAR>.
          */
         const Set< Parameter<GUM_SCALAR>* >& parameters() const;
+
+        /**
+         * Returns all the parameters in the scope of this class.
+         * &return all the parameters in the scope of this class.
+         */
+        HashTable<std::string, const Parameter<GUM_SCALAR>*> scope() const;
 
         /**
          * Returns the set of Aggregate<GUM_SCALAR> of this Class<GUM_SCALAR>.
