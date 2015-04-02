@@ -62,7 +62,7 @@ integer     =  digit {digit}.
 float       =  digit {digit} '.' digit {digit}. // [ ('E'|'e') ['+'|'-'] digit {digit} ].
 operator    = '+'|'-'|'*'|'/'|'^'|'<'|'>'.
 eol         = '\n'.
-ident       = letter {letter | digit | '_'}.
+ident       = letter {letter | digit | '_' | '.'}.
 
 // // Bernouilli distributions
 // bernoulli = "bernoulli".

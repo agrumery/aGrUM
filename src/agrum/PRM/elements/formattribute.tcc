@@ -23,6 +23,7 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
+#include <iostream>
 
 #include <agrum/core/math/formula.h>
 

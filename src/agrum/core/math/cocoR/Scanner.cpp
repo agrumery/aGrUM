@@ -512,7 +512,7 @@ case_0:
 		case 5:
 			case_5:
 			recEnd = pos; recKind = 5;
-			if ((ch >= L'0' && ch <= L'9') || (ch >= L'A' && ch <= L'Z') || ch == L'_' || (ch >= L'a' && ch <= L'z')) {AddCh(); goto case_5;}
+			if (ch == L'.' || (ch >= L'0' && ch <= L'9') || (ch >= L'A' && ch <= L'Z') || ch == L'_' || (ch >= L'a' && ch <= L'z')) {AddCh(); goto case_5;}
 			else {t->kind = 5; break;}
 		case 6:
 			case_6:

@@ -740,8 +740,8 @@ namespace gum {
       std::string prefix;
       const Class<GUM_SCALAR>* c;
 
-      ParamScopeData( std::string prefix, const ReferenceSlot<GUM_SCALAR>& ref) {
-        prefix = prefix + ref.name() + ".";
+      ParamScopeData( std::string s, const ReferenceSlot<GUM_SCALAR>& ref) {
+        prefix = s + ref.name() + ".";
         c = static_cast<const Class<GUM_SCALAR>*>( &(ref.slotType()) );
       }
 
