@@ -155,18 +155,20 @@ namespace gum {
 
     /// initialize the cell translator by a first database parsing
     ALWAYS_INLINE void CellTranslatorUniversal::initialize () {
-      if ( in (0).type () == DBCell::EltType::FLOAT ) {
-        const float nb = in (0).getFloat ();
-        if ( ! __numbers.existsFirst ( nb ) ) {
-          __numbers.insert ( nb, __max_value );
-          ++__max_value;
+      if ( __check_database ) {
+        if ( in (0).type () == DBCell::EltType::FLOAT ) {
+          const float nb = in (0).getFloat ();
+          if ( ! __numbers.existsFirst ( nb ) ) {
+            __numbers.insert ( nb, __max_value );
+            ++__max_value;
+          }
         }
-      }
-      else {
-        const int nb = in (0).getStringIndex ();
-        if ( ! __strings.existsFirst ( nb ) ) {
-          __strings.insert ( nb, __max_value );
-          ++__max_value;
+        else {
+          const int nb = in (0).getStringIndex ();
+          if ( ! __strings.existsFirst ( nb ) ) {
+            __strings.insert ( nb, __max_value );
+            ++__max_value;
+          }
         }
       }
     }
