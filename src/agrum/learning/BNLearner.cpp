@@ -83,6 +83,160 @@ namespace gum {
       }
     }
 
+    
+    /// Database default constructor
+    BNLearner::Database::Database
+    ( std::string filename,
+      const NodeProperty< Sequence<std::string> >& modalities,
+      bool check_database ) :
+      __database ( BNLearner::__readFile ( filename ) ),
+      __generators ( RowGeneratorIdentity() ) {
+      // create the RowFilter used for learning: we first generate a universal
+      // filter that can parse any database. Then, we parse once the DB to
+      // convert it into a compact int (an interval 0..N-1) so that we can
+      // parse it very quickly
+      CellTranslatorUniversal
+        dummy_translator ( Sequence<std::string> (),
+                           true ); // by default, check the database
+      __raw_translators.insertTranslator ( dummy_translator,
+                                           Col<0> (), __database.nbVariables() );
+                                           
+      // assign the user values to the raw translators
+      for ( auto iter = modalities.cbegin ();
+            iter != modalities.cend (); ++iter ) {
+        __raw_translators[iter.key ()].setUserValues ( iter.val (),
+                                                       check_database );
+      }
+      
+      auto raw_filter = make_DB_row_filter ( __database, __raw_translators,
+                                             __generators );
+      __raw_translators = raw_filter.translatorSet ();
+ 
+      // check that the database complies with the modalities specified by the
+      // user. Notably, if the db contains numbers that correspond to strings 
+      // specified by the user, map them into strings
+      {
+        DBHandler& handler = raw_filter.handler ();
+        const unsigned long db_size = handler.DBSize ();
+        
+        // determine the number of threads to use for the parsing
+        unsigned int max_nb_threads =
+          std::min ( db_size / __min_nb_rows_per_thread,
+                     (unsigned long) __max_threads_number );
+        const unsigned long
+          max_size_per_thread = ( db_size + max_nb_threads - 1 ) / max_nb_threads;
+        max_nb_threads = db_size / max_size_per_thread;
+        
+        std::vector<DatabaseVectInRAM::Handler>
+          handlers ( max_nb_threads, __database.handler () );
+
+        // as we shall not raise exception inside OMP threads, we shall keep
+        // track of the errors and raise exceptions after OMP threads have
+        // completed their job
+        std::vector< std::pair<int, std::string> >
+          errors ( max_nb_threads, std::pair<int, std::string> ( -1, "" ) );
+
+        #pragma omp parallel num_threads ( max_nb_threads )
+        { 
+          // use the ith handler
+          const unsigned int num_threads = getNumberOfRunningThreads();
+          const int this_thread = getThreadNumber();
+          DBHandler& the_handler = handlers[this_thread];
+          
+          // indicate to the filter which part of the database it must parse
+          const unsigned long
+            size_per_thread = ( db_size + num_threads - 1 ) / num_threads;
+          const unsigned long min_range = size_per_thread * this_thread;
+          const unsigned long max_range = std::min ( min_range + size_per_thread,
+                                                     db_size );
+          if ( min_range < max_range ) {
+            bool has_errors = false;
+            for ( the_handler.setRange ( min_range, max_range );
+                  the_handler.hasRows () && !has_errors; the_handler.nextRow () ) {
+              DBRow& row = the_handler.row ();
+              for ( auto iter = modalities.cbegin();
+                    iter != modalities.cend(); ++iter ) {
+                const unsigned int i = iter.key ();
+                switch ( row[i].type () ) {
+                case DBCell::EltType::STRING:
+                  if ( ! iter.val().exists( row[i].getString () ) ) {
+                    std::stringstream str;
+                    str << "Column " << iter.key () << " contains modality "
+                        << row[i].getString ()
+                        << " which has not been specified by the user";
+                    errors[this_thread].first = i;
+                    errors[this_thread].second = str.str ();
+                    has_errors = true;
+                  }
+                  break;
+                
+                case DBCell::EltType::MISSING:
+                  break;
+                  
+                case DBCell::EltType::FLOAT:
+                  {
+                    std::stringstream str;
+                    str << row[i].getFloat ();
+                    if ( ! iter.val().exists( str.str () ) ) {
+                      std::stringstream str2;
+                      str2 << "Column " << iter.key () << " contains modality "
+                           << str.str ()
+                           << " which has not been specified by the user";
+                      errors[this_thread].first = i;
+                      errors[this_thread].second = str2.str ();
+                      has_errors = true;
+                    }
+                    else {
+                      row[i].setString ( str.str () );
+                    }
+                  }
+                  break;
+
+                default:
+                  GUM_ERROR ( TypeError,
+                              "type not supported by DBCell convertType" );
+                }
+              }
+            }
+          }
+        }
+
+        // raise an exception if needed
+        for ( const auto& error : errors ) {
+          if ( error.first != - 1) {
+            GUM_ERROR ( UnknownLabelInDatabase, error.second );
+          }
+        }
+      }
+
+ 
+      // get the modalities of the filters
+      __modalities = raw_filter.modalities ();
+
+      // create the fast translators
+      DBTransformCompactInt raw2fast_transfo;
+      raw2fast_transfo.transform ( raw_filter );
+
+      __translators.insertTranslator ( CellTranslatorCompactIntId ( false ),
+                                       Col<0> (), __database.nbVariables() );
+
+      // create the row filter using the fast translators
+      __row_filter = new
+        DBRowFilter< DatabaseVectInRAM::Handler,
+                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                     FilteredRowGeneratorSet<RowGeneratorIdentity> >
+        ( __database.handler (), __translators, __generators );
+      __translators = __row_filter->translatorSet ();
+
+      // fill the variable name -> nodeid hashtable
+      const std::vector<std::string>& var_names = __database.variableNames ();
+      unsigned int id = 0;
+      for ( const auto& name : var_names ) {
+        __name2nodeId.insert ( const_cast<std::string&> ( name ), id );
+        ++id;
+      }
+    }
+
 
     /// Database default constructor
     BNLearner::Database::Database ( std::string filename,
@@ -106,6 +260,7 @@ namespace gum {
                       "their counterpart in the score database" );
         }
       }
+
 
       // create the RowFilter used for learning: we first generate a universal
       // filter that can parse any database. Then, we parse once the DB to
@@ -142,6 +297,18 @@ namespace gum {
       __name2nodeId = score_database.__name2nodeId;
     }
 
+    
+    /// Database default constructor
+    BNLearner::Database::Database
+    ( std::string filename,
+      Database& score_database,
+      const NodeProperty< Sequence<std::string> >& modalities ) :
+      __database ( BNLearner::__readFile ( filename ) ),
+      __generators ( RowGeneratorIdentity() ) {
+      GUM_ERROR ( OperationNotAllowed, "Learners with both Dirichlet apriori and "
+                  "variables' modalities specified are not implemented yet" );
+    }
+      
 
     /// prevent copy constructor
     BNLearner::Database::Database ( const Database& from ) :
@@ -244,6 +411,19 @@ namespace gum {
     }
 
 
+    /// default constructor
+    BNLearner::BNLearner
+    ( const std::string& filename,
+      const NodeProperty< Sequence<std::string> >& modalities,
+      bool parse_database ) :
+      __score_database ( filename, modalities, parse_database ),
+      __user_modalities ( modalities ),
+      __modalities_parse_db ( parse_database ) {
+      // for debugging purposes
+      GUM_CONSTRUCTOR ( BNLearner );
+    }
+
+
     /// copy constructor
     BNLearner::BNLearner ( const BNLearner& from ) :
       __score_type ( from.__score_type ),
@@ -260,6 +440,8 @@ namespace gum {
       __greedy_hill_climbing ( from.__greedy_hill_climbing ),
       __local_search_with_tabu_list ( from.__local_search_with_tabu_list ),
       __score_database ( from.__score_database ),
+      __user_modalities ( from.__user_modalities ),
+      __modalities_parse_db ( from.__modalities_parse_db ),
       __apriori_dbname ( from.__apriori_dbname ),
       __initial_dag ( from.__initial_dag ) {
       // for debugging purposes
@@ -284,6 +466,8 @@ namespace gum {
       __local_search_with_tabu_list
       ( std::move ( from.__local_search_with_tabu_list ) ),
       __score_database ( std::move ( from.__score_database ) ),
+      __user_modalities ( std::move ( from.__user_modalities ) ),
+      __modalities_parse_db ( from.__modalities_parse_db ),
       __apriori_dbname ( std::move ( from.__apriori_dbname ) ),
       __initial_dag ( std::move ( from.__initial_dag ) ) {
       // for debugging purposes
@@ -340,6 +524,8 @@ namespace gum {
         __greedy_hill_climbing = from.__greedy_hill_climbing;
         __local_search_with_tabu_list = from.__local_search_with_tabu_list;
         __score_database = from.__score_database;
+        __user_modalities = from.__user_modalities;
+        __modalities_parse_db = from.__modalities_parse_db;
         __apriori_dbname = from.__apriori_dbname;
         __initial_dag = from.__initial_dag;
         __current_algorithm = nullptr;
@@ -388,6 +574,8 @@ namespace gum {
         __local_search_with_tabu_list =
           std::move ( from.__local_search_with_tabu_list );
         __score_database = std::move ( from.__score_database );
+        __user_modalities = std::move ( from.__user_modalities );
+        __modalities_parse_db = from.__modalities_parse_db;
         __apriori_dbname = std::move ( from.__apriori_dbname );
         __initial_dag = std::move ( from.__initial_dag );
         __current_algorithm = nullptr;
@@ -441,8 +629,14 @@ namespace gum {
           delete __apriori_database;
           __apriori_database = nullptr;
         }
-        __apriori_database = new Database ( __apriori_dbname, __score_database );
-
+        if ( __user_modalities.empty () ) {
+          __apriori_database = new Database ( __apriori_dbname, __score_database );
+        }
+        else {
+          __apriori_database = new Database ( __apriori_dbname, __score_database,
+                                              __user_modalities );
+        }
+        
         __apriori = new AprioriDirichletFromDatabase<>
           ( __apriori_database->rowFilter (),
             __apriori_database->modalities () );
@@ -601,7 +795,8 @@ namespace gum {
 
         StructuralConstraintSetStatic < StructuralConstraintIndegree,
                                         StructuralConstraintDAG > sel_constraint;
-        static_cast<StructuralConstraintIndegree&> ( sel_constraint ) = __constraint_Indegree;
+        static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+          __constraint_Indegree;
 
         GraphChangesSelector4DiGraph < Score<>,
                                        decltype ( sel_constraint ),

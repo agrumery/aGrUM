@@ -27,9 +27,11 @@
 #ifndef GUM_LEARNING_BN_LEARNER_H
 #define GUM_LEARNING_BN_LEARNER_H
 
+#include <sstream>
 
 #include <agrum/config.h>
 #include <agrum/core/bijection.h>
+#include <agrum/core/sequence.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
 
@@ -83,7 +85,7 @@ namespace gum {
 
   namespace learning {
 
-    
+
     class BNLearnerListener;
 
     /** @class BNLearner
@@ -99,12 +101,12 @@ namespace gum {
       /// an enumeration enabling to select easily the score we wish to use
       enum class ScoreType {
         AIC,
-        BD,
-        BDeu,
-        BIC,
-        K2,
-        LOG2LIKELIHOOD
-      };
+          BD,
+          BDeu,
+          BIC,
+          K2,
+          LOG2LIKELIHOOD
+          };
 
       /// an enumeration to select the type of parameter estimation we shall apply
       enum ParamEstimatorType {
@@ -121,9 +123,9 @@ namespace gum {
       /// an enumeration to select easily the learning algorithm to use
       enum class AlgoType {
         K2,
-        GREEDY_HILL_CLIMBING,
-        LOCAL_SEARCH_WITH_TABU_LIST
-      };
+          GREEDY_HILL_CLIMBING,
+          LOCAL_SEARCH_WITH_TABU_LIST
+          };
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -139,6 +141,17 @@ namespace gum {
         /// default constructor
         Database ( std::string filename );
 
+        /// default constructor with defined modalities for some variables
+        /** @param modalities indicate for some nodes (not necessarily all the
+         * nodes of the BN) which modalities they should have and in which
+         * order these modalities should be stored into the nodes. For instance,
+         * if modalities = { 1 -> {True, False, Big} }, then the node of id 1
+         * in the BN will have 3 modalities, the first one being True, the
+         * second one being False, and the third bein Big. */
+        Database ( std::string filename,
+                   const NodeProperty< Sequence<std::string> >& modalities,
+                   bool check_database = false );
+
         /// default constructor for the aprioris
         /** We must ensure that, when reading the apriori database, if the
          * "apriori" rowFilter says that a given variable has value i
@@ -148,6 +161,23 @@ namespace gum {
          * aprioris that make sense. */
         Database ( std::string filename,
                    Database& score_database );
+
+        /// default constructor for the aprioris
+        /** We must ensure that, when reading the apriori database, if the
+         * "apriori" rowFilter says that a given variable has value i
+         * (given by its fast translator), the corresponding "raw" value in the
+         * apriori database is the same as in the score/parameter database
+         * read before creating the apriori. This is compulsory to have
+         * aprioris that make sense.
+         * @param modalities indicate for some nodes (not necessarily all the
+         * nodes of the BN) which modalities they should have and in which
+         * order these modalities should be stored into the nodes. For instance,
+         * if modalities = { 1 -> {True, False, Big} }, then the node of id 1
+         * in the BN will have 3 modalities, the first one being True, the
+         * second one being False, and the third bein Big. */
+        Database ( std::string filename,
+                   Database& score_database,
+                   const NodeProperty< Sequence<std::string> >& modalities );
 
         /// copy constructor
         Database ( const Database& from );
@@ -193,10 +223,10 @@ namespace gum {
         const std::vector<std::string>& names () const noexcept;
 
         /// returns the node id corresponding to a variable name
-        NodeId idFromName( const std::string& var_name ) const;
+        NodeId idFromName ( const std::string& var_name ) const;
 
         /// returns the variable name corresponding to a given node id
-        const std::string& nameFromId( NodeId id ) const;
+        const std::string& nameFromId ( NodeId id ) const;
 
         /// returns the "raw" translators (needed for the aprioris)
         /** We must ensure that, when reading the apriori database, if the
@@ -232,10 +262,20 @@ namespace gum {
 
         /// the modalities of the variables
         std::vector<unsigned int> __modalities;
-        
+
         /// a hashtable assigning to each variable name its NodeId
         Bijection<std::string, NodeId> __name2nodeId;
-        
+
+        /// the max number of threads authorized
+        #if defined(_OPENMP) && defined(NDEBUG)
+          unsigned int __max_threads_number { getMaxNumberOfThreads() };
+        #else
+          unsigned int __max_threads_number { 1 };
+        #endif /* NDEBUG */
+
+        /// the minimal number of rows to parse (on average) by thread
+        unsigned int __min_nb_rows_per_thread { 100 };
+
       };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
@@ -247,13 +287,35 @@ namespace gum {
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
-      
+
       /// default constructor
       /**
        * read the database file for the score / parameter estimation and var names
        */
       BNLearner ( const std::string& filename );
 
+      /// default constructor
+      /**
+       * read the database file for the score / parameter estimation and var names
+       * @param modalities indicate for some nodes (not necessarily all the
+       * nodes of the BN) which modalities they should have and in which
+       * order these modalities should be stored into the nodes. For instance,
+       * if modalities = { 1 -> {True, False, Big} }, then the node of id 1
+       * in the BN will have 3 modalities, the first one being True, the
+       * second one being False, and the third bein Big.
+       * @param parse_database if true, the modalities specified by the user
+       * will be considered as a superset of the modalities of the variables. A
+       * parsing of the database will allow to determine which ones are really
+       * necessary and will keep them in the order specified by the user
+       * (NodeProperty modalities). If parse_database is set to false (the
+       * default), then the modalities specified by the user will be considered as
+       * being exactly those of the variablles of the BN (as a consequence, if we
+       * find other values in the database, an exception will be raised
+       * during learning). */
+      BNLearner ( const std::string& filename,
+                  const NodeProperty< Sequence<std::string> >& modalities,
+                  bool parse_database = false );
+                   
       /// copy constructor
       BNLearner ( const BNLearner& );
 
@@ -273,7 +335,7 @@ namespace gum {
 
       /// copy operator
       BNLearner& operator= ( const BNLearner& );
-      
+
       /// move operator
       BNLearner& operator= ( BNLearner && );
 
@@ -315,7 +377,12 @@ namespace gum {
        * implicit apriori for parameter learning. By default, if a score exists,
        * we will learn parameters by taking into account the apriori specified by
        * methods useAprioriXXX () + the implicit apriori of the score, else we
-       * just take into account the apriori specified by useAprioriXXX () */
+       * just take into account the apriori specified by useAprioriXXX ()
+       * @throw MissingVariableInDatabase if a variable of the BN is not found in
+       * the database.
+       * @throw UnknownLabelInDatabase if a label is found in the databast that
+       * do not correpond to the variable.
+       */
       template <typename GUM_SCALAR = float>
       BayesNet<GUM_SCALAR> learnParameters ( const BayesNet<GUM_SCALAR>& bn,
                                              bool take_into_account_score = true );
@@ -326,7 +393,14 @@ namespace gum {
       /// returns the names of the variables in the database
       const std::vector<std::string>& names () const;
 
+      /// returns the names of the variables in the database
+      const std::vector<unsigned int>& modalities () noexcept;
+
       /// returns the node id corresponding to a variable name
+      /**
+       * @throw MissingVariableInDatabase if a variable of the BN is not found
+       * in the database.
+       */
       NodeId idFromName ( const std::string& var_name ) const;
 
       /// returns the variable name corresponding to a given node id
@@ -380,7 +454,7 @@ namespace gum {
 
       /// use the Dirichlet apriori
       void useAprioriDirichlet ( const std::string& filename );
-      
+
       /// @}
 
 
@@ -438,7 +512,7 @@ namespace gum {
 
       /// assign a set of forbidden arcs
       void setMandatoryArcs ( const ArcSet& set );
-      
+
       /// @name assign a new forbidden arc
       ///@{
       void addMandatoryArc ( const Arc& arc );
@@ -461,7 +535,7 @@ namespace gum {
 
       /// the score selected for learning
       ScoreType __score_type { ScoreType::BDeu };
-      
+
       /// the score used
       Score<>* __score { nullptr };
 
@@ -511,6 +585,12 @@ namespace gum {
       /// the database to be used by the scores and parameter estimators
       Database __score_database;
 
+      /// indicates the values the user specified for the translators
+      NodeProperty< Sequence<std::string> > __user_modalities;
+
+      /// indicates whether we shall parse the database to update __user_modalities
+      bool __modalities_parse_db { false };
+        
       /// the database used by the Dirichlet a priori
       Database* __apriori_database { nullptr };
 
@@ -521,7 +601,9 @@ namespace gum {
       DAG __initial_dag;
 
       // the current algorithm as an approximationScheme
-      const ApproximationScheme* __current_algorithm { nullptr };
+      const ApproximationScheme* __current_algorithm {
+        nullptr
+          };
 
 
 
@@ -530,7 +612,7 @@ namespace gum {
 
       /// create the apriori used for learning
       void __createApriori();
-      
+
       /// create the score used for learning
       void __createScore ();
 
@@ -855,3 +937,4 @@ namespace gum {
 
 
 #endif /* GUM_LEARNING_BN_LEARNER_H */
+
