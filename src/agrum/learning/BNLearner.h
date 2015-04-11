@@ -294,7 +294,6 @@ namespace gum {
        */
       BNLearner ( const std::string& filename );
 
-      /// default constructor
       /**
        * read the database file for the score / parameter estimation and var names
        * @param modalities indicate for some nodes (not necessarily all the
@@ -309,13 +308,22 @@ namespace gum {
        * necessary and will keep them in the order specified by the user
        * (NodeProperty modalities). If parse_database is set to false (the
        * default), then the modalities specified by the user will be considered as
-       * being exactly those of the variablles of the BN (as a consequence, if we
+       * being exactly those of the variables of the BN (as a consequence, if we
        * find other values in the database, an exception will be raised
        * during learning). */
       BNLearner ( const std::string& filename,
                   const NodeProperty< Sequence<std::string> >& modalities,
                   bool parse_database = false );
-                   
+
+      /**
+       * wrapper for BNLearner (filename,modalities,parse_database) using a bn to find those
+       * modalities.
+       **/
+      template<typename GUM_SCALAR = float>
+      BNLearner( const std::string& filename,
+                  const gum::BayesNet<GUM_SCALAR>& src,
+                  bool parse_database = false );
+
       /// copy constructor
       BNLearner ( const BNLearner& );
 
@@ -532,7 +540,6 @@ namespace gum {
 
 
     private:
-
       /// the score selected for learning
       ScoreType __score_type { ScoreType::BDeu };
 
@@ -590,7 +597,7 @@ namespace gum {
 
       /// indicates whether we shall parse the database to update __user_modalities
       bool __modalities_parse_db { false };
-        
+
       /// the database used by the Dirichlet a priori
       Database* __apriori_database { nullptr };
 
@@ -605,7 +612,9 @@ namespace gum {
         nullptr
           };
 
-
+      /// read the first line of a file to find column names
+			template<typename GUM_SCALAR>
+      static const NodeProperty< Sequence<std::string> > __labelsFromBN(const std::string& filename,const BayesNet<GUM_SCALAR>& src);
 
       /// reads a file and returns a databaseVectInRam
       static DatabaseVectInRAM __readFile ( const std::string& filename );

@@ -17,6 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+//floating point env
+#include <cfenv>
+
 
 #include <iostream>
 #include <cxxtest/AgrumTestSuite.h>
@@ -53,8 +56,7 @@ namespace gum_tests
   };
 
 
-  class BNLearnerTestSuite: public CxxTest::TestSuite
-  {
+  class BNLearnerTestSuite: public CxxTest::TestSuite  {
   public:
     void test_asia () {
       gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ) );
@@ -98,7 +100,7 @@ namespace gum_tests
         GUM_SHOWERROR ( e );
       }
     }
-  
+
     void test_asia_with_user_modalities_string () {
       gum::NodeProperty< gum::Sequence<std::string> > modals;
       modals.insert ( 0, gum::Sequence<std::string> () );
@@ -112,18 +114,18 @@ namespace gum_tests
       modals[2].insert ( "true" );
       modals[2].insert ( "bigbigbig" );
       modals[2].insert ( "false" );
-      
+
       gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ),
                                          modals );
 
       learner.useGreedyHillClimbing ();
       learner.setMaxIndegree ( 10 );
       learner.useScoreLog2Likelihood ();
-        
+
       TS_ASSERT_THROWS ( learner.useScoreBD (), gum::IncompatibleScoreApriori );
       TS_GUM_ASSERT_THROWS_NOTHING ( learner.useScoreBDeu () );
       learner.useScoreLog2Likelihood ();
-        
+
       learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
       // learner.addForbiddenArc ( gum::Arc (4,3) );
       // learner.addForbiddenArc ( gum::Arc (5,1) );
@@ -160,7 +162,7 @@ namespace gum_tests
       }
     }
 
-    
+
     void test_asia_with_user_modalities_string_min () {
       gum::NodeProperty< gum::Sequence<std::string> > modals;
       modals.insert ( 0, gum::Sequence<std::string> () );
@@ -174,18 +176,18 @@ namespace gum_tests
       modals[2].insert ( "true" );
       modals[2].insert ( "bigbigbig" );
       modals[2].insert ( "false" );
-      
+
       gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ),
                                          modals, true );
 
       learner.useGreedyHillClimbing ();
       learner.setMaxIndegree ( 10 );
       learner.useScoreLog2Likelihood ();
-        
+
       TS_ASSERT_THROWS ( learner.useScoreBD (), gum::IncompatibleScoreApriori );
       TS_GUM_ASSERT_THROWS_NOTHING ( learner.useScoreBDeu () );
       learner.useScoreLog2Likelihood ();
-        
+
       learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
       // learner.addForbiddenArc ( gum::Arc (4,3) );
       // learner.addForbiddenArc ( gum::Arc (5,1) );
@@ -237,7 +239,7 @@ namespace gum_tests
       modals[2].insert ( "false" );
 
       bool except = false;
-      
+
       try {
         gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ),
                                            modals );
@@ -249,7 +251,7 @@ namespace gum_tests
 
       TS_ASSERT ( except );
     }
-    
+
 
     void test_asia_with_user_modalities_numbers () {
       gum::NodeProperty< gum::Sequence<std::string> > modals;
@@ -270,11 +272,11 @@ namespace gum_tests
       learner.useGreedyHillClimbing ();
       learner.setMaxIndegree ( 10 );
       learner.useScoreLog2Likelihood ();
-        
+
       TS_ASSERT_THROWS ( learner.useScoreBD (), gum::IncompatibleScoreApriori );
       TS_GUM_ASSERT_THROWS_NOTHING ( learner.useScoreBDeu () );
       learner.useScoreLog2Likelihood ();
-        
+
       learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
       // learner.addForbiddenArc ( gum::Arc (4,3) );
       // learner.addForbiddenArc ( gum::Arc (5,1) );
@@ -327,7 +329,7 @@ namespace gum_tests
 
 
       bool except = false;
-      
+
       try {
         gum::learning::BNLearner learner ( GET_PATH_STR ( "asia.csv" ),
                                            modals );
@@ -339,8 +341,6 @@ namespace gum_tests
 
       TS_ASSERT ( except );
     }
-    
-
 
     void test_asia_param () {
       gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ) );
@@ -370,8 +370,22 @@ namespace gum_tests
       }
     }
 
-    void test_asia_param_bn () {
+
+    void test_asia_param_from_bn () {
       gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ) );
+
+      learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
+      gum::BayesNet<float> bn = learner.learnBN ();
+
+      try {
+        gum::BayesNet<float> bn2 = learner.learnParameters ( bn );
+        TS_ASSERT ( bn2.dag ().arcs().size () == bn.dag ().arcs().size () );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR ( e );
+      }
+    }
+
+    void test_asia_param_bn () {
 #define createBoolVar(s) gum::LabelizedVariable(s,s,0).addLabel("false").addLabel("true");
       //smoking?,lung_cancer?,bronchitis?,visit_to_Asia?,tuberculosis?,tuberculos_or_cancer?,dyspnoea?,positive_XraY?
       auto s=createBoolVar ( "smoking?" );
@@ -403,6 +417,8 @@ namespace gum_tests
       bn.addArc ( no,nd );
       bn.addArc ( no,np );
 
+      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ) ,bn);
+
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
 
@@ -410,13 +426,10 @@ namespace gum_tests
         gum::BayesNet<float> bn2 = learner.learnParameters ( bn );
         TS_ASSERT ( bn2.dim () == bn.dim() );
 
-        std::cout<<"(missing tests)";
-        // check all the variables
-        // TODO
-        /*for ( gum::NodeId  node : bn.nodes() ) {
+        for ( gum::NodeId  node : bn.nodes() ) {
           gum::NodeId node2=bn2.idFromName ( bn.variable ( node ).name() );
           TS_ASSERT_EQUALS ( bn.variable ( node ).toString(),bn2.variable ( node2 ).toString() );
-          }*/
+          }
 
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR ( e );
@@ -424,7 +437,6 @@ namespace gum_tests
     }
 
     void test_asia_param_bn_with_not_matching_variable () {
-      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ) );
 #define createBoolVar(s) gum::LabelizedVariable(s,s,0).addLabel("false").addLabel("true");
       auto s=createBoolVar ( "smoking?" );
       auto l=createBoolVar ( "lung_cancer?" );
@@ -448,6 +460,8 @@ namespace gum_tests
       bn.add ( d );
       bn.add ( p );
 
+      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ) ,bn);
+
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
 
@@ -455,7 +469,6 @@ namespace gum_tests
     }
 
     void test_asia_param_bn_with_subset_of_variables_in_base () {
-      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ) );
 #define createBoolVar(s) gum::LabelizedVariable(s,s,0).addLabel("false").addLabel("true");
       auto s=createBoolVar ( "smoking?" );
       auto t=createBoolVar ( "tuberculosis?" );
@@ -472,6 +485,8 @@ namespace gum_tests
       bn.addArc ( ns,nt );
       bn.addArc ( nt,no );
       bn.addArc ( no,nd );
+
+      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ) ,bn);
 
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
@@ -480,8 +495,6 @@ namespace gum_tests
     }
 
     void test_asia_param_bn_with_unknow_modality() {
-      // asia3-faulty contains a label "beurk" for variable "smoking?"
-      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3-faulty.csv" ) );
 #define createBoolVar(s) gum::LabelizedVariable(s,s,0).addLabel("false").addLabel("true");
       auto s=createBoolVar ( "smoking?" );
       auto t=createBoolVar ( "tuberculosis?" );
@@ -499,27 +512,16 @@ namespace gum_tests
       bn.addArc ( nt,no );
       bn.addArc ( no,nd );
 
-      learner.useScoreLog2Likelihood();
-      learner.useAprioriSmoothing();
+      // asia3-faulty contains a label "beurk" for variable "smoking?"
 
-      TS_ASSERT_THROWS ( gum::BayesNet<float> bn2 = learner.learnParameters ( bn ),gum::UnknownLabelInDatabase );
+
+      TS_ASSERT_THROWS (
+        gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3-faulty.csv" ) ,bn);
+        learner.useScoreLog2Likelihood();
+        learner.useAprioriSmoothing();
+        gum::BayesNet<float> bn2 = learner.learnParameters ( bn )
+      ,gum::UnknownLabelInDatabase );
     }
-
-
-    void test_asia_param_from_bn () {
-      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ) );
-
-      learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
-      gum::BayesNet<float> bn = learner.learnBN ();
-
-      try {
-        gum::BayesNet<float> bn2 = learner.learnParameters ( bn );
-        TS_ASSERT ( bn2.dag ().arcs().size () == bn.dag ().arcs().size () );
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR ( e );
-      }
-    }
-
 
     void test_listener() {
       {

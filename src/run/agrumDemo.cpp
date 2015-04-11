@@ -1,150 +1,103 @@
 #define GUM_TRACE_ON
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+
+#include <agrum/config.h>
+#include <agrum/core/exceptions.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/learning/database/CSVParser.h>
+#include <agrum/learning/BNLearner.h>
 
-#include <agrum/learning/database/databaseVectInRAM.h>
-#include <agrum/learning/database/databaseFromCSV.h>
+#define xstrfy(s) strfy(s)
+#define strfy(x) #x
 
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
+#define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/" x
+#define GET_PATH_XSTR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/" xstrfy(x)
 
-#include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
+// namespace gum {
+//
+//     /**
+//      * learnParameters
+//      */
+//     BayesNet<GUM_SCALAR> learnParameters(std::string filename,const
+//     BayesNet<GUM_SCALAR>& source,GUM_SCALAR smooth;
+// }// gum
 
-#include <agrum/learning/scores_and_tests/scoreBDeu.h>
+gum::BayesNet<double> buildBN() {
+  gum::BayesNet<double> bn;
+#define createBoolVar(s)                                                       \
+  gum::LabelizedVariable(s, s, 0).addLabel("false").addLabel("true");
+  auto s = createBoolVar ( "smoking?" );
+  auto l = createBoolVar ( "lung_cancer?" );
+  auto b = createBoolVar ( "bronchitis?" );
+  auto v = createBoolVar ( "visit_to_Asia?" );
+  auto t = createBoolVar ( "tuberculosis?" );
+  auto o = createBoolVar ( "tuberculos_or_cancer?" );
+  auto d = createBoolVar ( "dyspnoea?" );
+#undef createBoolVar
 
-#include <agrum/learning/aprioris/aprioriSmoothing.h>
+  bn.add ( s );
+  bn.add ( l );
+  bn.add ( b );
+  bn.add ( v );
+  bn.add ( t );
+  bn.add ( o );
+  bn.add ( d );
 
-#include <agrum/learning/constraints/structuralConstraintDiGraph.h>
-#include <agrum/learning/constraints/structuralConstraintDAG.h>
+  // uncorrect name is : will it be correctly handled ?f
+  // auto p = createBoolVar("ZORBLOBO");
+  // bn.add(p);
 
-#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
-#include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
+  return bn;
+}
 
-#include <agrum/learning/paramUtils/paramEstimatorML.h>
-#include <agrum/learning/greedyHillClimbing.h>
-int main(int argc, char *argv[]) {
+std::vector<std::string> loadNames ( std::string filename ) {
+  std::ifstream in ( filename, std::ifstream::in );
 
-  //**SPDLOG not installed** namespace spd = spdlog;
+  if ( ( in.rdstate() & std::ifstream::failbit ) != 0 ) {
+    GUM_ERROR ( gum::IOError, "File " << filename << " not found" );
+  }
 
-  //**SPDLOG not installed**try {
-  // Create console, multithreaded logger
-  //**SPDLOG not installed**auto console = spd::stdout_logger_mt("console");
-  /**SPDLOG not installed** console->info*/ std::cout
-      << ("Bayesian Network Build");
+  gum::learning::CSVParser parser ( in );
+  parser.next();
 
-  int k = atoi(argv[2]);
+  return parser.current();
+}
 
-  gum::learning::DatabaseFromCSV database(argv[1]);
-  /**SPDLOG not installed** console->info*/ std::cout
-      << "Number of rows: " << database.content().size() << std::endl;
-  /**SPDLOG not installed** console->info*/ std::cout
-      << "Number of variables: " << database.variableNames().size()
-      << std::endl;
+gum::BayesNet<double> learnParameters ( std::string filename,
+                                        const gum::BayesNet<double>& src,
+                                        double smoothing = 1.0 ) {
+  auto names = loadNames ( GET_PATH_STR ( "asia.csv" ) );
 
-  // K-fold Cross Validation Start
-  int n = database.content().size();
+  gum::NodeProperty<gum::Sequence<std::string>> modals;
 
-  std::vector<int> indexes(n);
-  int i(0);
-  std::generate(indexes.begin(), indexes.end(), [&] { return i++; });
+  for ( gum::Idx col = 0; col < names.size(); col++ ) {
+    try {
+      gum::NodeId graphId = src.idFromName ( names[col] );
 
-  std::random_device rd;
-  std::mt19937 g(rd());
+      modals.insert ( col, gum::Sequence<std::string>() );
 
-  std::shuffle(indexes.begin(), indexes.end(), g);
-
-  // K-fold Cross Validation
-  try {
-    // Structure Learning
-    const int nbCol = 8; // 32 for your case
-
-    // will parse the database once
-    auto translators = gum::learning::make_translators(
-        gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                              gum::learning::Col<0>, nbCol>());
-    auto generators =
-        gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
-
-    auto filter =
-        gum::learning::make_DB_row_filter(database, translators, generators);
-    std::vector<unsigned int> modalities = filter.modalities();
-
-    gum::learning::AprioriSmoothing<> apriori;
-
-    gum::learning::StructuralConstraintSetStatic<
-        gum::learning::StructuralConstraintDAG> struct_constraint;
-
-    gum::learning::GraphChangesGenerator4DiGraph<decltype(struct_constraint)>
-        op_set(struct_constraint);
-
-    gum::learning::GreedyHillClimbing search;
-
-    int foldSize = database.content().size() / k;
-
-    for (int fold = 0; fold < k; fold++) {
-      unsigned int fold_deb = fold * foldSize;
-      unsigned int fold_end = fold_deb + foldSize - 1;
-      std::cout << "LEARNING [" << fold_deb << "," << fold_end << "]  ";
-
-      // LEARNING
-      filter.handler().setRange(fold_deb, fold_end);
-      gum::learning::ScoreBDeu<> score(filter, modalities, apriori);
-      gum::learning::ParamEstimatorML<> estimator(filter, modalities, apriori,
-                                                  score.internalApriori());
-      gum::learning::GraphChangesSelector4DiGraph<
-          decltype(score), decltype(struct_constraint), decltype(op_set)>
-          selector(score, struct_constraint, op_set);
-      gum::Timer timer;
-      gum::BayesNet<float> bn =
-          search.learnBN(selector, estimator, database.variableNames(),
-                         modalities, filter.translatorSet());
-      std::cout << timer.step() << "s ";
-      std::cout << bn.arcs().size() << " arcs" << std::endl;
-
-      // TESTING
-      gum::Instantiation I;
-
-      for (auto &name : filter.variableNames()) {
-        I.add(bn.variableFromName(name));
-      }
-
-      double LL = 0.0;
-      std::cout << "TESTING ";
-
-      if (fold_deb != 0) {
-        std::cout << "[" << 0 << "," << fold_deb - 1 << "]";
-        filter.handler().setRange(0, fold_deb - 1);
-        filter.reset();
-
-        while (filter.hasRows()) {
-          int i = 0;
-
-          for (auto item : filter.row().row())
-            I.chgVal(i++, item);
-
-          LL += bn.log2JointProbability(I);
-        }
-      }
-
-      if (fold_end + 1 < database.content().size() - 1) {
-        std::cout << "[" << fold_end + 1 << "," << database.content().size() - 1
-                  << "]";
-        filter.handler().setRange(fold_end + 1, database.content().size() - 1);
-        filter.reset();
-
-        while (filter.hasRows()) {
-          int i = 0;
-
-          for (auto item : filter.row().row())
-            I.chgVal(i++, item);
-
-          LL += bn.log2JointProbability(I);
-        }
-      }
-
-      std::cout << " LL=" << LL << std::endl << std::endl;
+      for ( gum::Size i = 0; i < src.variable ( graphId ).domainSize(); ++i )
+        modals[col].insert ( src.variable ( graphId ).label ( i ) );
+    } catch ( const gum::NotFound& e ) {
+      // no problem : a colonne which is not in the BN...
     }
-  } catch (const gum::Exception &ex) {
-    std::cout << ex.errorContent() << std::endl;
+  }
+
+  gum::learning::BNLearner learner ( filename, modals );
+
+  learner.useScoreLog2Likelihood();
+  learner.useAprioriSmoothing();
+  return learner.learnParameters<double> ( src );
+}
+
+int main ( int argc, char* argv[] ) {
+  try {
+    auto bn = buildBN();
+    auto bn2 = learnParameters ( GET_PATH_STR ( "asia3.csv" ), bn, 1.0 );
+  } catch ( const gum::Exception& e ) {
+    GUM_SHOWERROR ( e );
   }
 }

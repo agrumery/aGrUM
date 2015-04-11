@@ -24,12 +24,15 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
+#include <fstream>
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
 // to help IDE parser
 #include <agrum/learning/BNLearner.h>
 
+#include <agrum/learning/database/CSVParser.h>
 #include <agrum/learning/BNLearnerListener.h>
 
 
@@ -38,6 +41,14 @@ namespace gum {
 
   namespace learning {
 
+      template<typename GUM_SCALAR>
+      BNLearner::BNLearner( const std::string& filename,
+                  const gum::BayesNet<GUM_SCALAR>& src,
+                  bool parse_database)
+      : BNLearner(filename,BNLearner::__labelsFromBN<GUM_SCALAR>(filename,src),parse_database) {
+        GUM_TRACE_VAR(modalities());
+        GUM_TRACE_VAR(names());
+      }
 
     /// learn a Bayes Net from a file
     template <typename GUM_SCALAR>
@@ -125,6 +136,35 @@ namespace gum {
           __score_database.rawTranslators () );
     }
 
+    template<typename GUM_SCALAR>
+      const NodeProperty< Sequence<std::string> >
+      BNLearner::__labelsFromBN(const std::string& filename,const BayesNet<GUM_SCALAR>& src) {
+
+      std::ifstream in(filename, std::ifstream::in);
+      if ((in.rdstate() & std::ifstream::failbit) != 0) {
+	GUM_ERROR(gum::IOError, "File " << filename << " not found");
+
+      }
+
+      CSVParser parser(in);
+      parser.next();
+      auto names =  parser.current();
+
+      NodeProperty<Sequence<std::string>> modals;
+
+      for ( gum::Idx col = 0; col < names.size(); col++ ) {
+	try {
+	  gum::NodeId graphId = src.idFromName ( names[col] );
+	  modals.insert ( col, gum::Sequence<std::string>() );
+	  for ( gum::Size i = 0; i < src.variable ( graphId ).domainSize(); ++i )
+	    modals[col].insert ( src.variable ( graphId ).label ( i ) );
+	} catch ( const gum::NotFound& e ) {
+	  // no problem : a colonne which is not in the BN...
+	}
+      }
+
+      return modals;
+    }
 
   } /* namespace learning */
 
