@@ -33,7 +33,7 @@
 #include <agrum/learning/BNLearner.h>
 
 #include <agrum/learning/database/CSVParser.h>
-#include <agrum/learning/BNLearnerListener.h>
+#include <agrum/learning/BNLearnUtils/BNLearnerListener.h>
 
 
 namespace gum {
@@ -41,26 +41,35 @@ namespace gum {
 
   namespace learning {
     template<typename GUM_SCALAR>
-    BNLearner ( const std::string& filename ) : genericBNLearner ( filename ) {
+    BNLearner<GUM_SCALAR>::BNLearner ( const std::string& filename ) : genericBNLearner ( filename ) {
       GUM_CONSTRUCTOR ( BNLearner );
     }
 
     template<typename GUM_SCALAR>
-    BNLearner ( const std::string& filename,
-                const NodeProperty< Sequence<std::string> >& modalities,
-                bool parse_database = false ) : genericBNLearner ( filename,modalities,parse_database ) {
+    BNLearner<GUM_SCALAR>::BNLearner ( const std::string& filename,
+                                       const NodeProperty< Sequence<std::string> >& modalities,
+                                       bool parse_database ) : genericBNLearner ( filename,modalities,parse_database ) {
       GUM_CONSTRUCTOR ( BNLearner );
     }
 
     /// copy constructor
     template<typename GUM_SCALAR>
-    BNLearner ( const BNLearner& ) : ;
+    BNLearner<GUM_SCALAR>::BNLearner ( const BNLearner<GUM_SCALAR>& src ) : genericBNLearner ( static_cast<const genericBNLearner&> ( src ) ) {
+      GUM_CONSTRUCTOR ( BNLearner );
+    }
 
     /// move constructor
-    BNLearner ( BNLearner && );
+    template<typename GUM_SCALAR>
+    BNLearner<GUM_SCALAR>::BNLearner ( BNLearner<GUM_SCALAR> && src ) : genericBNLearner ( static_cast<genericBNLearner&&> ( src ) ) {
+      GUM_CONSTRUCTOR ( BNLearner );
+    }
+
 
     /// destructor
-    virtual ~BNLearner();
+    template<typename GUM_SCALAR>
+    BNLearner<GUM_SCALAR>::~BNLearner() {
+      GUM_DESTRUCTOR ( BNLearner );
+    }
 
     /// @}
 
@@ -71,18 +80,24 @@ namespace gum {
     /// @{
 
     /// copy operator
-    BNLearner& operator= ( const BNLearner& );
+    template<typename GUM_SCALAR>
+    BNLearner<GUM_SCALAR>& BNLearner<GUM_SCALAR>::operator= ( const BNLearner<GUM_SCALAR>& src ) {
+      static_cast<genericBNLearner *> ( this )->operator= ( static_cast<const genericBNLearner &> ( src ) );
+      return *this;
+    }
 
     /// move operator
-    BNLearner& operator= ( BNLearner && );
+    template<typename GUM_SCALAR>
+    BNLearner<GUM_SCALAR>& BNLearner<GUM_SCALAR>::operator= ( BNLearner<GUM_SCALAR> && src ) {
+      static_cast<genericBNLearner *> ( this )->operator= ( static_cast<genericBNLearner &&> ( src ) );
+      return *this;
+    }
 
     template<typename GUM_SCALAR>
     BNLearner<GUM_SCALAR>::BNLearner ( const std::string& filename,
                                        const gum::BayesNet<GUM_SCALAR>& src,
                                        bool parse_database )
-      : BNLearner ( filename,BNLearner<GUM_SCALAR>::__labelsFromBN ( filename,src ),parse_database ) {
-      GUM_TRACE_VAR ( modalities() );
-      GUM_TRACE_VAR ( names() );
+      : BNLearner<GUM_SCALAR> ( filename,BNLearner<GUM_SCALAR>::__labelsFromBN ( filename,src ),parse_database ) {
     }
 
     /// learn a Bayes Net from a file
@@ -110,7 +125,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     BayesNet<GUM_SCALAR>
     BNLearner<GUM_SCALAR>::learnParameters ( const DAG& dag,
-        bool take_into_account_score ) {
+                                             bool take_into_account_score ) {
       // create the apriori and the estimator
       __createApriori ();
       __createParamEstimator ( take_into_account_score );
@@ -132,7 +147,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     BayesNet<GUM_SCALAR>
     BNLearner<GUM_SCALAR>::learnParameters ( const BayesNet<GUM_SCALAR>& bn,
-        bool take_into_account_score ) {
+                                             bool take_into_account_score ) {
       // create the apriori and the estimator
       __createApriori ();
       __createParamEstimator ( take_into_account_score );
@@ -143,21 +158,21 @@ namespace gum {
       auto mods=modalities();
 
       for ( auto node : bn.nodes() ) {
-        const NodeId new_id = idFromName ( bn.variable ( node ).name () );
+          const NodeId new_id = idFromName ( bn.variable ( node ).name () );
 
-        if ( mods[new_id]!=bn.variable ( node ).domainSize() ) {
-          GUM_ERROR ( UnknownLabelInDatabase,"for variable "<<bn.variable ( node ).name () );
+          if ( mods[new_id]!=bn.variable ( node ).domainSize() ) {
+              GUM_ERROR ( UnknownLabelInDatabase,"for variable "<<bn.variable ( node ).name () );
+            }
+
+          mapIds.insert ( node, new_id );
+          newDAG.addNode ( new_id );
         }
-
-        mapIds.insert ( node, new_id );
-        newDAG.addNode ( new_id );
-      }
 
 
       for ( const auto& arc : bn.arcs () ) {
-        newDAG.addArc ( mapIds[arc.tail ()],
-                        mapIds[arc.head ()] );
-      }
+          newDAG.addArc ( mapIds[arc.tail ()],
+                          mapIds[arc.head ()] );
+        }
 
       return
         DAG2BNLearner::createBN
@@ -177,9 +192,9 @@ namespace gum {
       std::ifstream in ( filename, std::ifstream::in );
 
       if ( ( in.rdstate() & std::ifstream::failbit ) != 0 ) {
-        GUM_ERROR ( gum::IOError, "File " << filename << " not found" );
+          GUM_ERROR ( gum::IOError, "File " << filename << " not found" );
 
-      }
+        }
 
       CSVParser parser ( in );
       parser.next();
@@ -188,16 +203,17 @@ namespace gum {
       NodeProperty<Sequence<std::string>> modals;
 
       for ( gum::Idx col = 0; col < names.size(); col++ ) {
-        try {
-          gum::NodeId graphId = src.idFromName ( names[col] );
-          modals.insert ( col, gum::Sequence<std::string>() );
+          try {
+              gum::NodeId graphId = src.idFromName ( names[col] );
+              modals.insert ( col, gum::Sequence<std::string>() );
 
-          for ( gum::Size i = 0; i < src.variable ( graphId ).domainSize(); ++i )
-            modals[col].insert ( src.variable ( graphId ).label ( i ) );
-        } catch ( const gum::NotFound& e ) {
-          // no problem : a colonne which is not in the BN...
+              for ( gum::Size i = 0; i < src.variable ( graphId ).domainSize(); ++i )
+                modals[col].insert ( src.variable ( graphId ).label ( i ) );
+            }
+          catch ( const gum::NotFound& e ) {
+              // no problem : a colonne which is not in the BN...
+            }
         }
-      }
 
       return modals;
     }

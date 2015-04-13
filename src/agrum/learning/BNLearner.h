@@ -35,7 +35,7 @@
 #include <agrum/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
 
-#include <agrum/learning/genericBNLearner.h>
+#include <agrum/learning/BNLearnUtils/genericBNLearner.h>
 
 
 namespace gum {
