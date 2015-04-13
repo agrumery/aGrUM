@@ -10,29 +10,20 @@
 %ignore  gum::learning::BNLearner::eraseMandatoryArc(const gum::Arc& arc);
 %ignore  gum::learning::BNLearner::learnParameters(const gum::DAG& dag);
 
-%extend gum::learning::BNLearner {
-
-  gum::BayesNet<double> learnBN() {
-    return self->learnBN<double>();
-  }
-  
-  gum::BayesNet<double> learnParameters(const gum::BayesNet<double>& bn) {
-    return self->learnParameters<double>(bn);
-  }
-
+%extend gum::learning::BNLearner<double> {
 
   void setSliceOrder(PyObject *l) {
     NodeProperty<unsigned int> ranks; // gum should be added by SED in cmake/GUM-UseSWIG.cmake
 
     if (PyList_Check(l)==0) {
-      PyErr_SetString(PyExc_TypeError, "arg must be a sequence");
+      PyErr_SetString(PyExc_TypeError, "arg must be a sequence (of sequences of int)");
       return;
     }
 
     for(Py_ssize_t i=0;i<PySequence_Size(l);i++) {
       PyObject* rows=PyList_GetItem(l, i);
       if (PyList_Check(rows)==0) {
-        PyErr_SetString(PyExc_TypeError, "arg must be a sequence of sequence");
+        PyErr_SetString(PyExc_TypeError, "arg must be a sequence of sequences (of int)");
         return;
       }
 
