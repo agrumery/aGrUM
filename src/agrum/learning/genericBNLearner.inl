@@ -26,7 +26,7 @@
  */
 
 // to help IDE parser
-#include <agrum/learning/BNLearner.h>
+#include <agrum/learning/genericBNLearner.h>
 
 namespace gum {
 
@@ -38,27 +38,27 @@ namespace gum {
     INLINE DBRowFilter< DatabaseVectInRAM::Handler,
            DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
            FilteredRowGeneratorSet<RowGeneratorIdentity> >&
-    BNLearner::Database::rowFilter () {
+    genericBNLearner::Database::rowFilter () {
       return *__row_filter;
     }
 
 
     // returns the modalities of the variables
     INLINE std::vector<unsigned int>&
-    BNLearner::Database::modalities () noexcept {
+    genericBNLearner::Database::modalities () noexcept {
       return __modalities;
     }
 
 
     // returns the names of the variables in the database
     INLINE const std::vector<std::string>&
-    BNLearner::Database::names () const noexcept {
+    genericBNLearner::Database::names () const noexcept {
       return __database.variableNames ();
     }
 
     // returns the node id corresponding to a variable name
     INLINE NodeId
-    BNLearner::Database::idFromName ( const std::string& var_name ) const {
+    genericBNLearner::Database::idFromName ( const std::string& var_name ) const {
       try {
         return __name2nodeId.second ( const_cast<std::string&> ( var_name ) );
       } catch ( gum::NotFound ) {
@@ -69,14 +69,14 @@ namespace gum {
 
     // returns the variable name corresponding to a given node id
     INLINE const std::string&
-    BNLearner::Database::nameFromId ( NodeId id ) const {
+    genericBNLearner::Database::nameFromId ( NodeId id ) const {
       return __name2nodeId.first ( id );
     }
 
 
     // returns the "raw" translators (needed for the aprioris)
     INLINE DBRowTranslatorSetDynamic<CellTranslatorUniversal>&
-    BNLearner::Database::rawTranslators () {
+    genericBNLearner::Database::rawTranslators () {
       return __raw_translators;
     }
 
@@ -86,61 +86,61 @@ namespace gum {
 
     // returns the node id corresponding to a variable name
     INLINE NodeId
-    BNLearner::idFromName ( const std::string& var_name ) const {
+    genericBNLearner::idFromName ( const std::string& var_name ) const {
       return __score_database.idFromName ( var_name );
     }
 
 
     // returns the variable name corresponding to a given node id
     INLINE const std::string&
-    BNLearner::nameFromId ( NodeId id ) const {
+    genericBNLearner::nameFromId ( NodeId id ) const {
       return __score_database.nameFromId ( id );
     }
 
 
     // sets an initial DAG structure
-    INLINE void BNLearner::setInitialDAG ( const DAG& dag ) {
+    INLINE void genericBNLearner::setInitialDAG ( const DAG& dag ) {
       __initial_dag = dag;
     }
 
 
     // indicate that we wish to use an AIC score
-    INLINE void BNLearner::useScoreAIC() {
+    INLINE void genericBNLearner::useScoreAIC() {
       __score_type = ScoreType::AIC;
       __checkScoreAprioriCompatibility ();
     }
 
 
     // indicate that we wish to use a BD score
-    INLINE void BNLearner::useScoreBD () {
+    INLINE void genericBNLearner::useScoreBD () {
       __score_type = ScoreType::BD;
       __checkScoreAprioriCompatibility ();
     }
 
 
     // indicate that we wish to use a BDeu score
-    INLINE void BNLearner::useScoreBDeu () {
+    INLINE void genericBNLearner::useScoreBDeu () {
       __score_type = ScoreType::BDeu;
       __checkScoreAprioriCompatibility ();
     }
 
 
     // indicate that we wish to use a BIC score
-    INLINE void BNLearner::useScoreBIC() {
+    INLINE void genericBNLearner::useScoreBIC() {
       __score_type = ScoreType::BIC;
       __checkScoreAprioriCompatibility ();
     }
 
 
     // indicate that we wish to use a K2 score
-    INLINE void BNLearner::useScoreK2() {
+    INLINE void genericBNLearner::useScoreK2() {
       __score_type = ScoreType::K2;
       __checkScoreAprioriCompatibility ();
     }
 
 
     // indicate that we wish to use a Log2Likelihood score
-    INLINE void BNLearner::useScoreLog2Likelihood() {
+    INLINE void genericBNLearner::useScoreLog2Likelihood() {
       __score_type = ScoreType::LOG2LIKELIHOOD;
       __checkScoreAprioriCompatibility ();
     }
@@ -148,34 +148,34 @@ namespace gum {
 
     // sets the max indegree
     INLINE void
-    BNLearner::setMaxIndegree ( unsigned int max_indegree ) {
+    genericBNLearner::setMaxIndegree ( unsigned int max_indegree ) {
       __constraint_Indegree.setMaxIndegree ( max_indegree );
     }
 
 
     // indicate that we wish to use a K2 algorithm
-    INLINE void BNLearner::useK2 ( const Sequence<NodeId>& order ) noexcept {
+    INLINE void genericBNLearner::useK2 ( const Sequence<NodeId>& order ) noexcept {
       __selected_algo = AlgoType::K2;
       __K2.setOrder ( order );
     }
 
 
     // indicate that we wish to use a K2 algorithm
-    INLINE void BNLearner::useK2 ( const std::vector<NodeId>& order ) noexcept {
+    INLINE void genericBNLearner::useK2 ( const std::vector<NodeId>& order ) noexcept {
       __selected_algo = AlgoType::K2;
       __K2.setOrder ( order );
     }
 
 
     // indicate that we wish to use a greedy hill climbing algorithm
-    INLINE void BNLearner::useGreedyHillClimbing() noexcept {
+    INLINE void genericBNLearner::useGreedyHillClimbing() noexcept {
       __selected_algo = AlgoType::GREEDY_HILL_CLIMBING;
     }
 
 
     // indicate that we wish to use a local search with tabu list
     INLINE void
-    BNLearner::useLocalSearchWithTabuList ( unsigned int tabu_size,
+    genericBNLearner::useLocalSearchWithTabuList ( unsigned int tabu_size,
     unsigned int nb_decrease ) noexcept {
       __selected_algo = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
       __constraint_TabuList.setTabuListSize ( tabu_size );
@@ -184,105 +184,105 @@ namespace gum {
 
 
     // assign a set of forbidden arcs
-    INLINE void BNLearner::setForbiddenArcs ( const ArcSet& set ) {
+    INLINE void genericBNLearner::setForbiddenArcs ( const ArcSet& set ) {
       __constraint_ForbiddenArcs.setArcs ( set );
     }
 
 
     // assign a new forbidden arc
-    INLINE void BNLearner::addForbiddenArc ( const Arc& arc ) {
+    INLINE void genericBNLearner::addForbiddenArc ( const Arc& arc ) {
       __constraint_ForbiddenArcs.addArc ( arc );
     }
 
 
     // remove a forbidden arc
-    INLINE void BNLearner::eraseForbiddenArc ( const Arc& arc ) {
+    INLINE void genericBNLearner::eraseForbiddenArc ( const Arc& arc ) {
       __constraint_ForbiddenArcs.eraseArc ( arc );
     }
 
 
     // assign a new forbidden arc
-    INLINE void BNLearner::addForbiddenArc
+    INLINE void genericBNLearner::addForbiddenArc
     ( const NodeId tail, const NodeId head ) {
       addForbiddenArc ( Arc ( tail,head ) );
     }
 
 
     // remove a forbidden arc
-    INLINE void BNLearner::eraseForbiddenArc
+    INLINE void genericBNLearner::eraseForbiddenArc
     ( const NodeId tail, const NodeId head ) {
       eraseForbiddenArc ( Arc ( tail,head ) );
     }
 
     // assign a new forbidden arc
-    INLINE void BNLearner::addForbiddenArc
+    INLINE void genericBNLearner::addForbiddenArc
     ( const std::string& tail, const std::string& head ) {
       addForbiddenArc ( Arc ( idFromName ( tail ), idFromName ( head ) ) );
     }
 
 
     // remove a forbidden arc
-    INLINE void BNLearner::eraseForbiddenArc
+    INLINE void genericBNLearner::eraseForbiddenArc
     ( const std::string& tail, const std::string& head ) {
       eraseForbiddenArc ( Arc ( idFromName ( tail ), idFromName ( head ) ) );
     }
 
 
     // assign a set of forbidden arcs
-    INLINE void BNLearner::setMandatoryArcs ( const ArcSet& set ) {
+    INLINE void genericBNLearner::setMandatoryArcs ( const ArcSet& set ) {
       __constraint_MandatoryArcs.setArcs ( set );
     }
 
 
     // assign a new forbidden arc
-    INLINE void BNLearner::addMandatoryArc ( const Arc& arc ) {
+    INLINE void genericBNLearner::addMandatoryArc ( const Arc& arc ) {
       __constraint_MandatoryArcs.addArc ( arc );
     }
 
 
     // remove a forbidden arc
-    INLINE void BNLearner::eraseMandatoryArc ( const Arc& arc ) {
+    INLINE void genericBNLearner::eraseMandatoryArc ( const Arc& arc ) {
       __constraint_MandatoryArcs.eraseArc ( arc );
     }
 
 
     // assign a new forbidden arc
-    INLINE void BNLearner::addMandatoryArc
+    INLINE void genericBNLearner::addMandatoryArc
     ( const std::string& tail, const std::string& head ) {
       addMandatoryArc ( Arc ( idFromName ( tail ), idFromName ( head ) ) );
     }
 
 
     // remove a forbidden arc
-    INLINE void BNLearner::eraseMandatoryArc
+    INLINE void genericBNLearner::eraseMandatoryArc
     ( const std::string& tail, const std::string& head ) {
       eraseMandatoryArc ( Arc ( idFromName ( tail ), idFromName ( head ) ) );
     }
 
 
     // assign a new forbidden arc
-    INLINE void BNLearner::addMandatoryArc
+    INLINE void genericBNLearner::addMandatoryArc
     ( const NodeId tail, const NodeId head ) {
       addMandatoryArc ( Arc ( tail , head ) );
     }
 
 
     // remove a forbidden arc
-    INLINE void BNLearner::eraseMandatoryArc
+    INLINE void genericBNLearner::eraseMandatoryArc
     ( const NodeId tail, const NodeId head ) {
       eraseMandatoryArc ( Arc ( tail , head ) );
     }
 
 
     // sets a partial order on the nodes
-    INLINE void BNLearner::setSliceOrder
+    INLINE void genericBNLearner::setSliceOrder
     ( const NodeProperty<unsigned int>& slice_order ) {
       __constraint_SliceOrder = slice_order;
     }
 
 
     // sets the apriori weight
-    INLINE void BNLearner::setAprioriWeight ( float weight ) {
+    INLINE void genericBNLearner::setAprioriWeight ( float weight ) {
       if ( weight < 0 ) {
         GUM_ERROR ( OutOfBounds, "the weight of the apriori must be positive" );
       }
@@ -293,14 +293,14 @@ namespace gum {
 
 
     // use the apriori smoothing
-    INLINE void BNLearner::useNoApriori () {
+    INLINE void genericBNLearner::useNoApriori () {
       __apriori_type = AprioriType::NO_APRIORI;
       __checkScoreAprioriCompatibility ();
     }
 
 
     // use the apriori smoothing
-    INLINE void BNLearner::useAprioriSmoothing ( float weight ) {
+    INLINE void genericBNLearner::useAprioriSmoothing ( float weight ) {
       __apriori_type = AprioriType::SMOOTHING;
 
       if ( weight >= 0 ) {
@@ -313,7 +313,7 @@ namespace gum {
 
     // use the Dirichlet apriori
     INLINE void
-    BNLearner::useAprioriDirichlet ( const std::string& filename ) {
+    genericBNLearner::useAprioriDirichlet ( const std::string& filename ) {
       __apriori_dbname = filename;
       __apriori_type = AprioriType::DIRICHLET_FROM_DATABASE;
       __checkScoreAprioriCompatibility ();
@@ -321,7 +321,7 @@ namespace gum {
 
 
     // returns the type (as a string) of a given apriori
-    INLINE const std::string& BNLearner::__getAprioriType () const {
+    INLINE const std::string& genericBNLearner::__getAprioriType () const {
       switch ( __apriori_type ) {
       case AprioriType::NO_APRIORI:
         return AprioriNoApriori<>::type::type;
@@ -334,19 +334,19 @@ namespace gum {
 
       default:
         GUM_ERROR ( OperationNotAllowed,
-                    "BNLearner getAprioriType does not support yet this apriori" );
+                    "genericBNLearner getAprioriType does not support yet this apriori" );
       }
     }
 
 
     // returns the names of the variables in the database
-    INLINE const std::vector<std::string>& BNLearner::names () const {
+    INLINE const std::vector<std::string>& genericBNLearner::names () const {
       return __score_database.names ();
     }
 
     // returns the modalities  of the variables in the database
     INLINE const std::vector<unsigned int>&
-    BNLearner::modalities () noexcept {
+    genericBNLearner::modalities () noexcept {
       return __score_database.modalities();
     }
 

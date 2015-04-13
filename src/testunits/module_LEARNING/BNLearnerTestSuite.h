@@ -59,7 +59,7 @@ namespace gum_tests
   class BNLearnerTestSuite: public CxxTest::TestSuite  {
   public:
     void test_asia () {
-      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ) );
+      gum::learning::BNLearner<float> learner ( GET_PATH_STR ( "asia3.csv" ) );
 
       learner.useLocalSearchWithTabuList ( 100, 1 );
       learner.setMaxIndegree ( 10 );
@@ -115,7 +115,7 @@ namespace gum_tests
       modals[2].insert ( "bigbigbig" );
       modals[2].insert ( "false" );
 
-      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ),
+      gum::learning::BNLearner<float> learner ( GET_PATH_STR ( "asia3.csv" ),
                                          modals );
 
       learner.useGreedyHillClimbing ();
@@ -177,7 +177,7 @@ namespace gum_tests
       modals[2].insert ( "bigbigbig" );
       modals[2].insert ( "false" );
 
-      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ),
+      gum::learning::BNLearner<float> learner ( GET_PATH_STR ( "asia3.csv" ),
                                          modals, true );
 
       learner.useGreedyHillClimbing ();
@@ -241,7 +241,7 @@ namespace gum_tests
       bool except = false;
 
       try {
-        gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ),
+        gum::learning::BNLearner<float> learner ( GET_PATH_STR ( "asia3.csv" ),
                                            modals );
         learner.useAprioriSmoothing ();
       }
@@ -267,7 +267,7 @@ namespace gum_tests
       modals[2].insert ( "bigbigbig" );
       modals[2].insert ( "0" );
 
-      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia.csv" ),
+      gum::learning::BNLearner<float> learner ( GET_PATH_STR ( "asia.csv" ),
                                          modals );
       learner.useGreedyHillClimbing ();
       learner.setMaxIndegree ( 10 );
@@ -331,7 +331,7 @@ namespace gum_tests
       bool except = false;
 
       try {
-        gum::learning::BNLearner learner ( GET_PATH_STR ( "asia.csv" ),
+        gum::learning::BNLearner<float> learner ( GET_PATH_STR ( "asia.csv" ),
                                            modals );
         learner.useAprioriSmoothing ();
       }
@@ -343,7 +343,7 @@ namespace gum_tests
     }
 
     void test_asia_param () {
-      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ) );
+      gum::learning::BNLearner<float> learner ( GET_PATH_STR ( "asia3.csv" ) );
 
       gum::DAG dag;
 
@@ -372,7 +372,7 @@ namespace gum_tests
 
 
     void test_asia_param_from_bn () {
-      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ) );
+      gum::learning::BNLearner<float> learner ( GET_PATH_STR ( "asia3.csv" ) );
 
       learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
       gum::BayesNet<float> bn = learner.learnBN ();
@@ -417,7 +417,7 @@ namespace gum_tests
       bn.addArc ( no,nd );
       bn.addArc ( no,np );
 
-      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ) ,bn);
+      gum::learning::BNLearner<float> learner ( GET_PATH_STR ( "asia3.csv" ) ,bn);
 
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
@@ -460,7 +460,7 @@ namespace gum_tests
       bn.add ( d );
       bn.add ( p );
 
-      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ) ,bn);
+      gum::learning::BNLearner<float> learner ( GET_PATH_STR ( "asia3.csv" ) ,bn);
 
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
@@ -486,7 +486,7 @@ namespace gum_tests
       bn.addArc ( nt,no );
       bn.addArc ( no,nd );
 
-      gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3.csv" ) ,bn);
+      gum::learning::BNLearner<float> learner ( GET_PATH_STR ( "asia3.csv" ) ,bn);
 
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
@@ -516,7 +516,7 @@ namespace gum_tests
 
 
       TS_ASSERT_THROWS (
-        gum::learning::BNLearner learner ( GET_PATH_STR ( "asia3-faulty.csv" ) ,bn);
+        gum::learning::BNLearner<float> learner ( GET_PATH_STR ( "asia3-faulty.csv" ) ,bn);
         learner.useScoreLog2Likelihood();
         learner.useAprioriSmoothing();
         gum::BayesNet<float> bn2 = learner.learnParameters ( bn )
@@ -525,7 +525,7 @@ namespace gum_tests
 
     void test_listener() {
       {
-        gum::learning::BNLearner learner ( GET_PATH_STR ( "asia.csv" ) );
+        gum::learning::BNLearner<double> learner ( GET_PATH_STR ( "asia.csv" ) );
         aSimpleBNLeanerListener listen ( learner );
 
         learner.setVerbosity ( true );
@@ -533,14 +533,14 @@ namespace gum_tests
         learner.useScoreK2 ();
         learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
 
-        gum::BayesNet<double> bn = learner.learnBN<double> ();
+        gum::BayesNet<double> bn = learner.learnBN();
 
         TS_ASSERT_EQUALS ( listen.getNbr() ,2 );
         TS_ASSERT_EQUALS ( listen.getMess() ,"stopped on request" );
         TS_ASSERT_EQUALS ( learner.messageApproximationScheme() ,"stopped on request" );
       }
       {
-        gum::learning::BNLearner learner ( GET_PATH_STR ( "asia2.csv" ) );
+        gum::learning::BNLearner<double> learner ( GET_PATH_STR ( "asia2.csv" ) );
         aSimpleBNLeanerListener listen ( learner );
 
         learner.setVerbosity ( true );
@@ -548,35 +548,35 @@ namespace gum_tests
         learner.useScoreK2 ();
         learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
 
-        gum::BayesNet<double> bn = learner.learnBN<double> ();
+        gum::BayesNet<double> bn = learner.learnBN();
 
         TS_ASSERT_EQUALS ( listen.getNbr() ,3 );
         TS_ASSERT_EQUALS ( listen.getMess() ,"stopped on request" );
         TS_ASSERT_EQUALS ( learner.messageApproximationScheme() ,"stopped on request" );
       }
       {
-        gum::learning::BNLearner learner ( GET_PATH_STR ( "asia.csv" ) );
+        gum::learning::BNLearner<double> learner ( GET_PATH_STR ( "asia.csv" ) );
         aSimpleBNLeanerListener listen ( learner );
 
         learner.setVerbosity ( true );
         learner.setMaxIndegree ( 2 );
         learner.useLocalSearchWithTabuList();
 
-        gum::BayesNet<double> bn = learner.learnBN<double> ();
+        gum::BayesNet<double> bn = learner.learnBN();
 
         TS_ASSERT_EQUALS ( listen.getNbr() ,75);
         TS_ASSERT_EQUALS ( listen.getMess() ,"stopped on request" );
         TS_ASSERT_EQUALS ( learner.messageApproximationScheme() ,"stopped on request" );
       }
       {
-        gum::learning::BNLearner learner ( GET_PATH_STR ( "asia.csv" ) );
+        gum::learning::BNLearner<double> learner ( GET_PATH_STR ( "asia.csv" ) );
         aSimpleBNLeanerListener listen ( learner );
 
         learner.setVerbosity ( true );
         learner.setMaxIndegree ( 2 );
         learner.useGreedyHillClimbing();
 
-        gum::BayesNet<double> bn = learner.learnBN<double> ();
+        gum::BayesNet<double> bn = learner.learnBN();
 
         TS_ASSERT_EQUALS ( listen.getNbr() ,2);
         TS_ASSERT_EQUALS ( listen.getMess() ,"stopped on request" );

@@ -28,12 +28,14 @@
 #include <algorithm>
 
 #include <agrum/config.h>
-#include <agrum/learning/BNLearner.h>
+#include <agrum/learning/genericBNLearner.h>
+#include <agrum/learning/BNLearnerListener.h>
+
 #include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/BNLearner.inl>
+#include <agrum/learning/genericBNLearner.inl>
 #endif /* GUM_NO_INLINE */
 
 
@@ -44,8 +46,8 @@ namespace gum {
 
 
     /// Database default constructor
-    BNLearner::Database::Database ( std::string filename ) :
-      __database ( BNLearner::__readFile ( filename ) ),
+    genericBNLearner::Database::Database ( std::string filename ) :
+      __database ( genericBNLearner::__readFile ( filename ) ),
       __generators ( RowGeneratorIdentity() ) {
       // create the RowFilter used for learning: we first generate a universal
       // filter that can parse any database. Then, we parse once the DB to
@@ -83,13 +85,13 @@ namespace gum {
       }
     }
 
-    
+
     /// Database default constructor
-    BNLearner::Database::Database
+    genericBNLearner::Database::Database
     ( std::string filename,
       const NodeProperty< Sequence<std::string> >& modalities,
       bool check_database ) :
-      __database ( BNLearner::__readFile ( filename ) ),
+      __database ( genericBNLearner::__readFile ( filename ) ),
       __generators ( RowGeneratorIdentity() ) {
       // create the RowFilter used for learning: we first generate a universal
       // filter that can parse any database. Then, we parse once the DB to
@@ -100,25 +102,25 @@ namespace gum {
                            true ); // by default, check the database
       __raw_translators.insertTranslator ( dummy_translator,
                                            Col<0> (), __database.nbVariables() );
-                                           
+
       // assign the user values to the raw translators
       for ( auto iter = modalities.cbegin ();
             iter != modalities.cend (); ++iter ) {
         __raw_translators[iter.key ()].setUserValues ( iter.val (),
                                                        check_database );
       }
-      
+
       auto raw_filter = make_DB_row_filter ( __database, __raw_translators,
                                              __generators );
       __raw_translators = raw_filter.translatorSet ();
- 
+
       // check that the database complies with the modalities specified by the
-      // user. Notably, if the db contains numbers that correspond to strings 
+      // user. Notably, if the db contains numbers that correspond to strings
       // specified by the user, map them into strings
       {
         DBHandler& handler = raw_filter.handler ();
         const unsigned long db_size = handler.DBSize ();
-        
+
         // determine the number of threads to use for the parsing
         unsigned int max_nb_threads =
           std::min ( db_size / __min_nb_rows_per_thread,
@@ -126,7 +128,7 @@ namespace gum {
         const unsigned long
           max_size_per_thread = ( db_size + max_nb_threads - 1 ) / max_nb_threads;
         max_nb_threads = db_size / max_size_per_thread;
-        
+
         std::vector<DatabaseVectInRAM::Handler>
           handlers ( max_nb_threads, __database.handler () );
 
@@ -137,12 +139,12 @@ namespace gum {
           errors ( max_nb_threads, std::pair<int, std::string> ( -1, "" ) );
 
         #pragma omp parallel num_threads ( max_nb_threads )
-        { 
+        {
           // use the ith handler
           const unsigned int num_threads = getNumberOfRunningThreads();
           const int this_thread = getThreadNumber();
           DBHandler& the_handler = handlers[this_thread];
-          
+
           // indicate to the filter which part of the database it must parse
           const unsigned long
             size_per_thread = ( db_size + num_threads - 1 ) / num_threads;
@@ -169,10 +171,10 @@ namespace gum {
                     has_errors = true;
                   }
                   break;
-                
+
                 case DBCell::EltType::MISSING:
                   break;
-                  
+
                 case DBCell::EltType::FLOAT:
                   {
                     std::stringstream str;
@@ -209,7 +211,7 @@ namespace gum {
         }
       }
 
- 
+
       // get the modalities of the filters
       __modalities = raw_filter.modalities ();
 
@@ -239,9 +241,9 @@ namespace gum {
 
 
     /// Database default constructor
-    BNLearner::Database::Database ( std::string filename,
+    genericBNLearner::Database::Database ( std::string filename,
                                     Database& score_database ) :
-      __database ( BNLearner::__readFile ( filename ) ),
+      __database ( genericBNLearner::__readFile ( filename ) ),
       __generators ( RowGeneratorIdentity() ) {
       // check that there are at least as many variables in the a priori
       // database as those in the score_database
@@ -282,7 +284,7 @@ namespace gum {
       // create the fast translators
       DBTransformCompactInt raw2fast_transfo;
       raw2fast_transfo.transform ( raw_filter );
-      
+
       __translators.insertTranslator ( CellTranslatorCompactIntId ( false ),
                                        Col<0> (),
                                        score_database.__database.nbVariables() );
@@ -293,25 +295,25 @@ namespace gum {
                      FilteredRowGeneratorSet<RowGeneratorIdentity> >
         ( __database.handler (), __translators, __generators );
       __translators = __row_filter->translatorSet ();
-      
+
       __name2nodeId = score_database.__name2nodeId;
     }
 
-    
+
     /// Database default constructor
-    BNLearner::Database::Database
+    genericBNLearner::Database::Database
     ( std::string filename,
       Database& score_database,
       const NodeProperty< Sequence<std::string> >& modalities ) :
-      __database ( BNLearner::__readFile ( filename ) ),
+      __database ( genericBNLearner::__readFile ( filename ) ),
       __generators ( RowGeneratorIdentity() ) {
       GUM_ERROR ( OperationNotAllowed, "Learners with both Dirichlet apriori and "
                   "variables' modalities specified are not implemented yet" );
     }
-      
+
 
     /// prevent copy constructor
-    BNLearner::Database::Database ( const Database& from ) :
+    genericBNLearner::Database::Database ( const Database& from ) :
       __database ( from.__database ),
       __raw_translators ( from.__raw_translators ),
       __translators ( from.__translators ),
@@ -328,7 +330,7 @@ namespace gum {
 
 
     /// prevent move constructor
-    BNLearner::Database::Database ( Database&& from ) :
+    genericBNLearner::Database::Database ( Database&& from ) :
       __database ( std::move ( from.__database ) ),
       __raw_translators ( std::move ( from.__raw_translators ) ),
       __translators ( std::move ( from.__translators ) ),
@@ -345,14 +347,14 @@ namespace gum {
 
 
     /// destructor
-    BNLearner::Database::~Database () {
+    genericBNLearner::Database::~Database () {
       delete __row_filter;
     }
 
 
     /// copy operator
-    BNLearner::Database&
-    BNLearner::Database::operator= ( const Database& from ) {
+    genericBNLearner::Database&
+    genericBNLearner::Database::operator= ( const Database& from ) {
       if ( this != & from ) {
         delete __row_filter;
         __row_filter = nullptr;
@@ -376,8 +378,8 @@ namespace gum {
 
 
     /// move operator
-    BNLearner::Database&
-    BNLearner::Database::operator= ( Database&& from ) {
+    genericBNLearner::Database&
+    genericBNLearner::Database::operator= ( Database&& from ) {
       if ( this != & from ) {
         delete __row_filter;
         __row_filter = nullptr;
@@ -404,15 +406,15 @@ namespace gum {
 
 
     /// default constructor
-    BNLearner::BNLearner ( const std::string& filename ) :
+    genericBNLearner::genericBNLearner ( const std::string& filename ) :
       __score_database ( filename ) {
       // for debugging purposes
-      GUM_CONSTRUCTOR ( BNLearner );
+      GUM_CONSTRUCTOR ( genericBNLearner );
     }
 
 
     /// default constructor
-    BNLearner::BNLearner
+    genericBNLearner::genericBNLearner
     ( const std::string& filename,
       const NodeProperty< Sequence<std::string> >& modalities,
       bool parse_database ) :
@@ -420,12 +422,12 @@ namespace gum {
       __user_modalities ( modalities ),
       __modalities_parse_db ( parse_database ) {
       // for debugging purposes
-      GUM_CONSTRUCTOR ( BNLearner );
+      GUM_CONSTRUCTOR ( genericBNLearner );
     }
 
 
     /// copy constructor
-    BNLearner::BNLearner ( const BNLearner& from ) :
+    genericBNLearner::genericBNLearner ( const genericBNLearner& from ) :
       __score_type ( from.__score_type ),
       __param_estimator_type ( from.__param_estimator_type ),
       __apriori_type ( from.__apriori_type ),
@@ -445,12 +447,12 @@ namespace gum {
       __apriori_dbname ( from.__apriori_dbname ),
       __initial_dag ( from.__initial_dag ) {
       // for debugging purposes
-      GUM_CONS_CPY ( BNLearner );
+      GUM_CONS_CPY ( genericBNLearner );
     }
 
 
     /// move constructor
-    BNLearner::BNLearner ( BNLearner && from ) :
+    genericBNLearner::genericBNLearner ( genericBNLearner && from ) :
       __score_type ( from.__score_type ),
       __param_estimator_type ( from.__param_estimator_type ),
       __apriori_type ( from.__apriori_type ),
@@ -471,24 +473,24 @@ namespace gum {
       __apriori_dbname ( std::move ( from.__apriori_dbname ) ),
       __initial_dag ( std::move ( from.__initial_dag ) ) {
       // for debugging purposes
-      GUM_CONS_MOV ( BNLearner );
+      GUM_CONS_MOV ( genericBNLearner );
     }
 
 
     /// destructor
-    BNLearner::~BNLearner() {
+    genericBNLearner::~genericBNLearner() {
       if ( __score ) delete __score;
       if ( __param_estimator ) delete __param_estimator;
       if ( __apriori ) delete __apriori;
       if ( __apriori_database ) delete __apriori_database;
 
-      GUM_DESTRUCTOR ( BNLearner );
+      GUM_DESTRUCTOR ( genericBNLearner );
     }
 
 
     /// copy operator
-    BNLearner&
-    BNLearner::operator= ( const BNLearner& from ) {
+    genericBNLearner&
+    genericBNLearner::operator= ( const genericBNLearner& from ) {
       if ( this != &from ) {
         if ( __score ) {
           delete __score;
@@ -536,8 +538,8 @@ namespace gum {
 
 
     /// move operator
-    BNLearner&
-    BNLearner::operator= ( BNLearner && from ) {
+    genericBNLearner&
+    genericBNLearner::operator= ( genericBNLearner && from ) {
       if ( this != &from ) {
         if ( __score ) {
           delete __score;
@@ -587,12 +589,12 @@ namespace gum {
 
     /// reads a file and returns a databaseVectInRam
     DatabaseVectInRAM
-    BNLearner::__readFile ( const std::string& filename ) {
+    genericBNLearner::__readFile ( const std::string& filename ) {
       // get the extension of the file
       int filename_size = filename.size();
 
       if ( filename_size < 4 ) {
-        GUM_ERROR ( FormatNotFound, "BNLearner could not determine the "
+        GUM_ERROR ( FormatNotFound, "genericBNLearner could not determine the "
                     "file type of the database" );
       }
 
@@ -605,12 +607,12 @@ namespace gum {
       }
 
       GUM_ERROR ( OperationNotAllowed,
-                  "BNLearner does not support yet this type of database file" );
+                  "genericBNLearner does not support yet this type of database file" );
     }
 
 
     /// create the apriori used for learning
-    void BNLearner::__createApriori() {
+    void genericBNLearner::__createApriori() {
       // first, save the old apriori, to be delete if everything is ok
       Apriori<>* old_apriori = __apriori;
 
@@ -619,7 +621,7 @@ namespace gum {
       case AprioriType::NO_APRIORI:
         __apriori = new AprioriNoApriori<>;
         break;
-        
+
       case AprioriType::SMOOTHING:
         __apriori = new AprioriSmoothing<>;
         break;
@@ -636,7 +638,7 @@ namespace gum {
           __apriori_database = new Database ( __apriori_dbname, __score_database,
                                               __user_modalities );
         }
-        
+
         __apriori = new AprioriDirichletFromDatabase<>
           ( __apriori_database->rowFilter (),
             __apriori_database->modalities () );
@@ -644,7 +646,7 @@ namespace gum {
 
       default:
         GUM_ERROR ( OperationNotAllowed,
-                    "BNLearner does not support yet this apriori" );
+                    "genericBNLearner does not support yet this apriori" );
       }
 
       // do not forget to assign a weight to the apriori
@@ -656,7 +658,7 @@ namespace gum {
 
 
     /// create the score used for learning
-    void BNLearner::__createScore () {
+    void genericBNLearner::__createScore () {
       // first, save the old score, to be delete if everything is ok
       Score<>* old_score = __score;
 
@@ -700,7 +702,7 @@ namespace gum {
 
       default:
         GUM_ERROR ( OperationNotAllowed,
-                    "BNLearner does not support yet this score" );
+                    "genericBNLearner does not support yet this score" );
       }
 
       // remove the old score, if any
@@ -709,7 +711,7 @@ namespace gum {
 
 
     /// create the parameter estimator used for learning
-    void BNLearner::__createParamEstimator ( bool take_into_account_score ) {
+    void genericBNLearner::__createParamEstimator ( bool take_into_account_score ) {
       // first, save the old estimator, to be delete if everything is ok
       ParamEstimator<>* old_estimator = __param_estimator;
 
@@ -733,7 +735,7 @@ namespace gum {
 
       default:
         GUM_ERROR ( OperationNotAllowed,
-                    "BNLearner does not support yet this parameter estimator" );
+                    "genericBNLearner does not support yet this parameter estimator" );
       }
 
       // remove the old estimator, if any
@@ -742,7 +744,7 @@ namespace gum {
 
 
     /// learn a structure from a file
-    DAG BNLearner::learnDAG () {
+    DAG genericBNLearner::learnDAG () {
       // create the score and the apriori
       __createApriori ();
       __createScore ();
@@ -752,13 +754,13 @@ namespace gum {
 
 
     /// learn a structure from a file
-    DAG BNLearner::__learnDAG () {
+    DAG genericBNLearner::__learnDAG () {
       // add the mandatory arcs to the initial dag and remove the forbidden ones
       // from the initial graph
       DAG init_graph = __initial_dag;
 
       const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs ();
-      
+
       for ( const auto & arc : mandatory_arcs ) {
         if ( ! init_graph.exists ( arc.tail () ) )
           init_graph.addNode ( arc.tail () );
@@ -851,7 +853,7 @@ namespace gum {
           __constraint_MandatoryArcs;
         static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
           __constraint_ForbiddenArcs;
-        
+
         GraphChangesGenerator4K2< decltype ( gen_constraint ) >
           op_set ( gen_constraint );
 
@@ -862,7 +864,7 @@ namespace gum {
           ( gen_constraint ).arcs ();
         const Sequence<NodeId>& order = __K2.order ();
         bool order_compatible = true;
-        
+
         for ( const auto & arc : mandatory_arcs ) {
           if ( order.pos ( arc.tail () ) >= order.pos ( arc.head () ) ) {
             order_compatible = false;
@@ -876,12 +878,12 @@ namespace gum {
             sel_constraint;
           static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
             __constraint_Indegree;
-          
+
           GraphChangesSelector4DiGraph < Score<>,
                                          decltype ( sel_constraint ),
                                          decltype ( op_set ) >
             selector ( *__score, sel_constraint, op_set );
-          
+
           return __K2.learnStructure
             ( selector, __score_database.modalities (), init_graph );
         }
@@ -891,12 +893,12 @@ namespace gum {
             sel_constraint;
           static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
             __constraint_Indegree;
-          
+
           GraphChangesSelector4DiGraph < Score<>,
                                          decltype ( sel_constraint ),
                                          decltype ( op_set ) >
             selector ( *__score, sel_constraint, op_set );
-          
+
           return __K2.learnStructure
             ( selector, __score_database.modalities (), init_graph );
         }
@@ -910,34 +912,34 @@ namespace gum {
       }
     }
 
-    
+
     /// checks whether the current score and apriori are compatible
-    bool BNLearner::__checkScoreAprioriCompatibility () {
+    bool genericBNLearner::__checkScoreAprioriCompatibility () {
       const std::string& apriori = __getAprioriType ();
 
       switch ( __score_type ) {
       case ScoreType::AIC:
         return ScoreAIC<>::isAprioriCompatible ( apriori, __apriori_weight );
-        
+
       case ScoreType::BD:
         return ScoreBD<>::isAprioriCompatible ( apriori, __apriori_weight );
 
       case ScoreType::BDeu:
         return ScoreBDeu<>::isAprioriCompatible ( apriori, __apriori_weight );
-        
+
       case ScoreType::BIC:
         return ScoreBIC<>::isAprioriCompatible ( apriori, __apriori_weight );
-         
+
       case ScoreType::K2:
         return ScoreK2<>::isAprioriCompatible ( apriori, __apriori_weight );
- 
+
       case ScoreType::LOG2LIKELIHOOD:
         return ScoreLog2Likelihood<>::isAprioriCompatible
           ( apriori, __apriori_weight );
- 
+
       default:
         GUM_ERROR ( OperationNotAllowed,
-                    "BNLearner does not support yet this score" );
+                    "genericBNLearner does not support yet this score" );
       }
     }
 

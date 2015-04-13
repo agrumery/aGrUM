@@ -18,11 +18,11 @@ s
 
 
 #include <agrum/learning/BNLearnerListener.h>
-#include <agrum/learning/BNLearner.h>
+#include <agrum/learning/genericBNLearner.h>
 
 namespace gum {
   namespace learning {
-    BNLearnerListener::BNLearnerListener ( BNLearner* bnl, ApproximationScheme& sch ) : ApproximationSchemeListener ( sch ), __bnlearner ( bnl ) {
+    BNLearnerListener::BNLearnerListener ( genericBNLearner* bnl, ApproximationScheme& sch ) : ApproximationSchemeListener ( sch ), __bnlearner ( bnl ) {
       bnl->setCurrentApproximationScheme ( &sch );
       GUM_CONSTRUCTOR ( BNLearnerListener );
     }
