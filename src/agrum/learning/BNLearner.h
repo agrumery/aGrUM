@@ -96,8 +96,7 @@ namespace gum {
      * @ingroup learning_group
      */
     class BNLearner: public gum::IApproximationSchemeConfiguration {
-    private:
-
+    public:
       /// an enumeration enabling to select easily the score we wish to use
       enum class ScoreType {
         AIC,
@@ -128,6 +127,7 @@ namespace gum {
           };
 
 
+    private:
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       /// a helper to easily read databases
