@@ -68,6 +68,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     def testLocalSearchWithTabuAccurate(self):
         learner=gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia.csv'))
         learner.useLocalSearchWithTabuList()
+        
         bn=learner.learnBN()
 
         ref=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia2.bif'))
@@ -75,10 +76,22 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
         f=gum.BruteForceKL(bn,ref)
         res=f.compute()
         self.assertDelta(res['klPQ'],0,1)
-
-
+        
+     
+    def testParameterLearning(self):
+        bn=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia_bool.bif'))
+        
+        learner=gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'),bn)  
+        learner.useScoreLog2Likelihood()
+        learner.useAprioriSmoothing(1.0)
+                
+        bn2=learner.learnParameters(bn)
+        for i in range(bn.size()):	
+          self.assertEquals(str(bn2.variable(i)),str(bn.variable(bn.idFromName(bn2.variable(i).name()))))	
+        
 ts = unittest.TestSuite()
 ts.addTest(BNLearnerCSVTestCase('testHillClimbing'))
 ts.addTest(BNLearnerCSVTestCase('testHillClimbingAccurate'))
 ts.addTest(BNLearnerCSVTestCase('testLocalSearchWithTabu'))
 ts.addTest(BNLearnerCSVTestCase('testLocalSearchWithTabuAccurate'))
+ts.addTest(BNLearnerCSVTestCase('testParameterLearning'))
