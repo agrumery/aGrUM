@@ -31,6 +31,7 @@
 #include <agrum/FMDP/simulation/taxiSimulator.h>
 #include <agrum/FMDP/simulation/statesChecker.h>
 #include <agrum/FMDP/learning/SDyna/spimddi.h>
+#include <agrum/FMDP/learning/SDyna/spiti.h>
 // ==============================================================================
 
 #define xstrfy(s) strfy(s)
@@ -39,7 +40,9 @@
 
 void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
 
-  for( gum::Idx nbTest = 16; nbTest < 50; ++nbTest) {
+  for( gum::Idx nbTest = 0; nbTest < 10; ++nbTest) {
+
+    std::cout << "Test n° : " << nbTest << std::endl;
 
     gum::Idx nbIte = 0;
     double rDisc = 0.0;
@@ -47,17 +50,20 @@ void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
     // *********************************************************************************************
     // Initialisation des divers objets
     // *********************************************************************************************
-    gum::SPIMDDI spim(100,10,0.9,0.0001,0.99,0.33,0.1);
-    gum::Instantiation initialState;
+
+//    gum::SPIMDDI spim(500,1,0.9,0.0001,0.99,0.25,0.1);
+    gum::SPITI spim(10,1,0.9,0.0001,0.99,0.33,0.1);
+
 
     // Enregistrement des actions possibles auprès de SPIMDDI
-    for( auto actionIter = sim.beginActions(); actionIter != sim.endActions(); ++actionIter)
+    for( auto actionIter = sim.beginActions(); actionIter != sim.endActions(); ++actionIter){
+      //std::cout << *actionIter << " "  << sim.actionName(*actionIter) << std::endl;
       spim.addAction( *actionIter, sim.actionName(*actionIter));
+    }
 
     // Enregistrement des variables caractérisant les états auprès de SPIMDDI
     for(auto varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter){
       spim.addVariable(*varIter);
-      initialState.add(**varIter);
     }
 
 
@@ -79,31 +85,43 @@ void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
     traceFile.open ( traceFileName.str(), std::ios::out | std::ios::trunc );
     if ( !traceFile ) {
       return;
+    }    
+
+    std::ofstream modelFile;
+    std::stringstream modelFileName;
+    modelFileName << traceFilePath << "." << nbTest << ".model.dot";
+    modelFile.open ( modelFileName.str(), std::ios::out | std::ios::trunc );
+    if ( !modelFile ) {
+      return;
     }
 
-    std::cout << "Initialisation done. Now performing test ..." <<std::endl;
-    for( gum::Idx nbRun = 0; nbRun < 4000; ++nbRun ){
+
+    //std::cout << "Initialisation done. Now performing test ..." <<std::endl;
+    for( gum::Idx nbRun = 0; nbRun < 3000; ++nbRun ){
 
       spim.setCurrentState(sim.currentState());
 
+      double cumulr = 0.0;
 
-      for(gum::Idx nbDec = 0; nbDec < 25 && !sim.hasReachEnd(); nbDec++){
+      for(gum::Idx nbDec = 0; !sim.hasReachEnd() && nbDec < 25; nbDec++){
 
         // Normal Iteration Part
-        std::cout << "\n*********************************************\n";
-        std::cout << "RUN n° " << nbRun << " - Status : " << sim.currentState().toString() << " - Decision n° " << nbDec << " : ";
+        //std::cout << "\n*********************************************\n";
+        //std::cout << "RUN n° " << nbRun << " - Status : " << sim.currentState().toString() << " - Decision n° " << nbDec << " : ";
 
         gum::Idx actionChosenId = spim.takeAction();
 
-        std::cout << "By doing " << sim.actionName(actionChosenId) << std::endl;
+        //std::cout << "By doing " << sim.actionName(actionChosenId) << std::endl;
 
         sim.perform( actionChosenId );
         rDisc = sim.reward() + 0.9*rDisc;
+        cumulr += sim.reward();
 
-        std::cout << "New State : " << sim.currentState() << " - Discounted Reward : " << rDisc;
+        //std::cout << "New State : " << sim.currentState() << "- Reward : " << sim.reward() << " - Discounted Reward : " << rDisc << " - cumulr " << cumulr << std::endl;
 
         spim.feedback(sim.currentState(), sim.reward());
 
+        //std::cout << "Update performed" << std::endl;
 
         if( !sc.checkState(sim.currentState()) ) {
           sc.addState(sim.currentState());
@@ -115,21 +133,19 @@ void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
 
         nbIte++;
       }
+      std::cout << "Run n°" << nbRun << " is over. Nb Observation : " << nbIte << " / 5 000 000. Nb Visited States : "
+                <<  sc.nbVisitedStates() << " - Bonus Explo : " << std::pow( (500 - (double) sc.nbVisitedStates() ) / 500, 3.0) << std::endl;
+//      if(nbRun%10 == 0 && nbRun > 1)
+//        spim.makePlanning();
       sim.setInitialStateRandomly();
+
+      modelFile << nbRun << "\t" << spim.optimalPolicy2String() << std::endl;
+
+      if(nbIte > 4000000)
+        break;
     }
     traceFile.close();
-
-//    std::ofstream modelFile;
-//    std::stringstream modelFileName;
-//    modelFileName << GET_PATH_STR ( modelfactory ) << "." << nbTest << ".dot";
-//    modelFile.open ( modelFileName.str(), std::ios::out | std::ios::trunc );
-//    if ( !modelFile ) {
-//      return;
-//    }
-
-//    modelFile << spim.toString();
-
-//    modelFile.close();
+    modelFile.close();
  }
 
   std::cout << "FIN EVALUATION" << std::endl;
@@ -147,17 +163,40 @@ void runCoffee(){
   // *********************************************************************************************
 
   gum::FMDPSimulator sim(GET_PATH_STR ( FMDP/coffee/coffee.dat ));
+  gum::Instantiation theEnd;
+  for(gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter)
+    if( (*varIter)->name().compare("huc")){
+      theEnd.add(**varIter);
+      theEnd.chgVal(**varIter, (*varIter)->index("yes"));
+      break;
+    }
+  sim.setEndState(theEnd);
 
   run ( sim, GET_PATH_STR ( FMDP/trace.Coffee ));
 }
 
 
 // *******************************************************************************
-// Run the tests on a Factory FMDP
+// Run the tests on a Coffee FMDP
 // *******************************************************************************
-//void runFactory(){
-//  run ( GET_PATH_STR ( FMDP/factory/factory.dat ), GET_PATH_STR ( FMDP/trace.Factory ));
-//}
+void runFactory(){
+
+  // *********************************************************************************************
+  // Chargement du fmdp servant de base
+  // *********************************************************************************************
+
+  gum::FMDPSimulator sim(GET_PATH_STR ( FMDP/factory/tiny-factory.dat ));
+//  gum::Instantiation theEnd;
+//  for(gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter)
+//    if( (*varIter)->name().compare("connected")){
+//      theEnd.add(**varIter);
+//      theEnd.chgVal(**varIter, (*varIter)->index("yes"));
+//      break;
+//    }
+//  sim.setEndState(theEnd);
+
+  run ( sim, GET_PATH_STR ( FMDP/trace.Factory ));
+}
 
 
 // *******************************************************************************
@@ -167,8 +206,9 @@ void runTaxi(){
 
   gum::TaxiSimulator sim;
 
-  run ( sim, GET_PATH_STR ( FMDP/trace.Coffee ));
+  run ( sim, GET_PATH_STR ( FMDP/trace.Taxi ) );
 }
+
 
 // *******************************************************************************
 // The main function
@@ -206,7 +246,7 @@ int main ( int argc, char* argv[] ) {
 //  std::istringstream iss1;
 //  std::string mot;
 
-//  std::cout << "DEBUT CARACTERISATION VARIABLES" << std::endl;
+//  //std::cout << "DEBUT CARACTERISATION VARIABLES" << std::endl;
 //  std::getline(fichier, ligne);
 //  iss1.str(ligne);
 //  while( std::getline(iss1, mot, ',') ){
@@ -220,7 +260,7 @@ int main ( int argc, char* argv[] ) {
 
 //      int index = 0;
 //      while( std::getline(iss2, moda, ',') ){
-////              std::cout << moda << " - " << std::stoi(moda) << std::endl;
+////              //std::cout << moda << " - " << std::stoi(moda) << std::endl;
 //        gum::Idx value = std::stoi(moda);
 //        if( value > vmv[index])
 //          vmv[index] = value;
@@ -230,13 +270,13 @@ int main ( int argc, char* argv[] ) {
 
 //  fichier.close();  // on ferme le fichier
 
-//  std::cout << "FIN CARACTERISATION VARIABLES" << std::endl;
+//  //std::cout << "FIN CARACTERISATION VARIABLES" << std::endl;
 
 
 //  // REMBOBINAGE
 ////  fichier.seekg(0, std::ios::beg);
 ////  if(fichier.eof())
-////    std::cout << "Oh Dear we're in trouble!" << std::endl;
+////    //std::cout << "Oh Dear we're in trouble!" << std::endl;
 ////  std::getline(fichier,ligne);
 
 //  // ############################################################################
@@ -275,20 +315,20 @@ int main ( int argc, char* argv[] ) {
 //    std::string moda;
 
 //    gum::Idx index = 0;
-//    std::cout << "Taking new Observation into account : " << nbIte << std::endl;
+//    //std::cout << "Taking new Observation into account : " << nbIte << std::endl;
 //    gum::Observation* obs = new gum::Observation();
 //    while( std::getline(iss2, moda, ',') ){
-////        std::cout << index << "-" << std::stoi(moda) << std::endl;
+////        //std::cout << index << "-" << std::stoi(moda) << std::endl;
 //      if( index < vv.size() - 1 ){
-////        std::cout << "attribut " << vv[index]->toString() << std::endl;
+////        //std::cout << "attribut " << vv[index]->toString() << std::endl;
 //        obs->setModality(vv[index],std::stoi(moda));
 //      }else{
-////        std::cout << "value " << value->toString() << std::endl;
+////        //std::cout << "value " << value->toString() << std::endl;
 //        obs->setModality(value, std::stoi(moda));
 //      }
 //      index++;
 //    }
-////    std::cout << obs->toString() << std::endl;
+////    //std::cout << obs->toString() << std::endl;
 //    gum::Timer timy;
 //    timy.reset();
 //    learner.addObservation( obs );
