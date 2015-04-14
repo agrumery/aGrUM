@@ -34,7 +34,7 @@
 #include <agrum/multidim/instantiation.h>
 // =========================================================================
 #include <agrum/FMDP/planning/svi.h>
-#include <agrum/FMDP/planning/operators/treeRegress.h>
+#include <agrum/FMDP/planning/operators/enhancedTreeRegress.h>
 #include <agrum/FMDP/planning/operators/treeOperator.h>
 // =========================================================================
 
@@ -92,7 +92,7 @@ namespace gum {
         pxi.insert( *varIter, RECAST(this->_fmdp->transition( actionId, this->_fmdp->mapMainPrime().first(*varIter )) ) );
       }
 
-      TreeRegress<GUM_SCALAR, std::multiplies, std::plus> tr( Vold, pxi, Vold->variablesSequence(), (GUM_SCALAR) 0.0 );
+      TreeRegress<GUM_SCALAR, std::multiplies, std::plus> tr( Vold, pxi );//, Vold->variablesSequence(), (GUM_SCALAR) 0.0 );
       return tr.compute();
     }
 

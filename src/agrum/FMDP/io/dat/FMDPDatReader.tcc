@@ -28,8 +28,6 @@
 
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
 
-#include <agrum/multidim/patterns/DDUtility/DDModeMacro.h>
-
 namespace gum {
 
   template<typename GUM_SCALAR>

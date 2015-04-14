@@ -61,6 +61,13 @@ namespace gum {
                     const MultiDimDecisionGraph< GUM_SCALAR, TerminalNodePolicy>* dt2 );
 
       // ============================================================================
+      /// Default constructor.
+      // ============================================================================
+      TreeOperator(const MultiDimDecisionGraph< GUM_SCALAR, TerminalNodePolicy>* dt1,
+                    const MultiDimDecisionGraph< GUM_SCALAR, TerminalNodePolicy>* dt2,
+                    const HashTable<const DiscreteVariable*, Idx> givenContext );
+
+      // ============================================================================
       /// Default destructor.
       // ============================================================================
       ~TreeOperator();

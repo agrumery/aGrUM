@@ -21,7 +21,7 @@ COMPILER MDPDAT
                 gum::AbstractFMDPFactory* __factory;
                 
                 /// for each transition diagram, we need to know the associated variable
-                std::string __currentDecisionDiagramVar;
+                std::string __currentDecisionGraphVar;
                 
                 /// for building the diagram, we need to keep track of var parents
                 std::vector< gum::NodeId > __parentNode;
@@ -124,7 +124,7 @@ PRODUCTIONS
         MDPDAT = 
                         VARIABLES_DECLARATION 
                         { ACTION }
-                        REWARD_DECISION_DIAGRAM
+                        REWARD_DECISION_GRAPH
                         DISCOUNT
                         TOLERANCE
                         .
@@ -163,20 +163,20 @@ PRODUCTIONS
                 "action"                                            (. __factory->startActionDeclaration(); .)
                 (IDENT<name_of_action> | STRING<name_of_action>)    (. TRY( __factory->addAction( name_of_action ) ); .)
                 [ FLOAT<tolerance> ]
-                { TRANSITION_DECISION_DIAGRAM } 
-                [ COST_DECISION_DIAGRAM ]
+                { TRANSITION_DECISION_GRAPH }
+                [ COST_DECISION_GRAPH ]
                 "endaction"                                         (. TRY( __factory->endActionDeclaration() ); .)
                 .
   
         /// *************************************************************************************
         /// Transition Decision Diagram main rule
         /// *************************************************************************************
-        TRANSITION_DECISION_DIAGRAM =  (. std::string name_of_var;
+        TRANSITION_DECISION_GRAPH =  (. std::string name_of_var;
                                           __factory->startTransitionDeclaration(); .)
                 IDENT<name_of_var>     (. std::string prime_name_of_var = name_of_var + "'";
-                                          __currentDecisionDiagramVar = prime_name_of_var; .)
+                                          __currentDecisionGraphVar = prime_name_of_var; .)
                 ( IF( IsFollowedByIdent() ) 
-                '(' SUB_TRANSITION_DECISION_DIAGRAM ')' |  '(' TRANSITION_LEAF ')' )
+                '(' SUB_TRANSITION_DECISION_GRAPH ')' |  '(' TRANSITION_LEAF ')' )
                                        (. TRY( __factory->addTransition( name_of_var ) );
                                           __factory->endTransitionDeclaration();
                                           __parentModality.clear();
@@ -186,7 +186,7 @@ PRODUCTIONS
         /// *************************************************************************************
         /// Transition Decision Diagram recursion rule
         /// *************************************************************************************
-        SUB_TRANSITION_DECISION_DIAGRAM =           (. std::string name_of_var;
+        SUB_TRANSITION_DECISION_GRAPH =           (. std::string name_of_var;
                                                        std::string modality_of_var;
                                                        NodeId var_id; .)
                 IDENT<name_of_var>                  (. var_id = __factory->addNonTerminalNode( name_of_var );
@@ -198,7 +198,7 @@ PRODUCTIONS
                 IDENT_OR_INTEGER<modality_of_var>   (. __parentNode.push_back( var_id );
                                                        __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] ); .)
                 ( IF( IsFollowedByIdent() ) 
-                '(' SUB_TRANSITION_DECISION_DIAGRAM ')' |  '(' TRANSITION_LEAF ')' )
+                '(' SUB_TRANSITION_DECISION_GRAPH ')' |  '(' TRANSITION_LEAF ')' )
                                                     (. __parentModality.pop_back(); .)
                 ')'}                                (. __parentNode.pop_back(); .)
                 .
@@ -208,7 +208,7 @@ PRODUCTIONS
         /// *************************************************************************************
         TRANSITION_LEAF =       (. float value;
                                    gum::Idx i = 0;
-                                   NodeId var_id = __factory->addNonTerminalNode( __currentDecisionDiagramVar );
+                                   NodeId var_id = __factory->addNonTerminalNode( __currentDecisionGraphVar );
                                    if( !__parentNode.empty() )
                                       __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
                                    else
@@ -225,11 +225,11 @@ PRODUCTIONS
         /// *************************************************************************************
         /// Cost Decision Diagram main rule
         /// *************************************************************************************
-        COST_DECISION_DIAGRAM =  (. std::string name_of_var;
+        COST_DECISION_GRAPH =  (. std::string name_of_var;
                                     __factory->startCostDeclaration(); .)
                 "cost"
                 '('        
-                SUB_DECISION_DIAGRAM
+                SUB_DECISION_GRAPH
                 ')'              (. TRY( __factory->addCost( ) );
                                     __factory->endCostDeclaration();
                                     __parentModality.clear();
@@ -239,24 +239,24 @@ PRODUCTIONS
         /// *************************************************************************************
         /// Reward Decision Diagram main rule
         /// *************************************************************************************
-        REWARD_DECISION_DIAGRAM =                                (. std::string name_of_var;
+        REWARD_DECISION_GRAPH =                                (. std::string name_of_var;
                                                                     __factory->startRewardDeclaration(); .)
                 "reward"
 		(
                 ( IF( IsFollowedByIdent() )
-                '(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' )   (. TRY( __factory->addReward( ) );
+                '(' SUB_DECISION_GRAPH ')' |  '(' LEAF ')' )   (. TRY( __factory->addReward( ) );
                                                                     __parentModality.clear();
                                                                     __parentNode.clear(); .)
 		|                   
         '['                                                      (. std::string operand_type; .)
         OPERAND<operand_type>                                    (.  __factory->setOperationModeOn( operand_type );.)
                 ( IF( IsFollowedByIdent() )
-                '(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' )   (. TRY( __factory->addReward( ) );
+                '(' SUB_DECISION_GRAPH ')' |  '(' LEAF ')' )   (. TRY( __factory->addReward( ) );
                                                                                         __parentModality.clear();
                                                                                         __parentNode.clear(); .)
 		{
                 ( IF( IsFollowedByIdent() )
-                '(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' )   (. TRY( __factory->addReward( ) );
+                '(' SUB_DECISION_GRAPH ')' |  '(' LEAF ')' )   (. TRY( __factory->addReward( ) );
                                                                     __parentModality.clear();
                                                                     __parentNode.clear(); .)
 		}
@@ -267,7 +267,7 @@ PRODUCTIONS
         /// *************************************************************************************
         /// Decision Diagram recursion rule
         /// *************************************************************************************
-        SUB_DECISION_DIAGRAM =                      (. std::string name_of_var;
+        SUB_DECISION_GRAPH =                      (. std::string name_of_var;
                                                        std::string modality_of_var;
                                                        NodeId var_id;.)
                 IDENT<name_of_var>                  (. var_id = __factory->addNonTerminalNode( name_of_var );
@@ -279,7 +279,7 @@ PRODUCTIONS
                 IDENT_OR_INTEGER<modality_of_var>   (. __parentNode.push_back( var_id );
                                                        __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] );  .)
                 ( IF( IsFollowedByIdent() )
-                '(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' )
+                '(' SUB_DECISION_GRAPH ')' |  '(' LEAF ')' )
                                                     (. __parentModality.pop_back(); .)
                 ')'}                                (. __parentNode.pop_back(); .)
                 .

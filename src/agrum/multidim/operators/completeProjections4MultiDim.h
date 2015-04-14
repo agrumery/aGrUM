@@ -30,7 +30,6 @@
 
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimArray.h>
-#include <agrum/multidim/multiDimDecisionDiagram.h>
 #include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/multidim/instantiation.h>
 

@@ -32,6 +32,7 @@
 #include <agrum/FMDP/learning/FMDPLearner.h>
 #include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/SDyna/sdyna.h>
+#include <agrum/FMDP/simulation/statesChecker.h>
 // =========================================================================
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimDecisionGraph.h>
@@ -139,6 +140,19 @@ namespace gum {
       /// @name Incremental methods
       // ###################################################################
       /// @{
+    public:
+        // ==========================================================================
+        /**
+         * Performs a feedback on the last transition.
+         * In extenso, learn from the transition.
+         * @param reachedState : the state reached after the transition
+         * @param obtainedReward : the reward obtained during the transition
+         * @warning Uses the __originalState and __performedAction stored in cache
+         * If you want to specify the original state and the performed action, see below
+         */
+        // ==========================================================================
+        void feedback(const Instantiation & reachedState, double obtainedReward);
+
 
     protected :
         // ==========================================================================
@@ -148,6 +162,7 @@ namespace gum {
          */
         // ==========================================================================
         ActionSet _stateActionSet(const Instantiation&);
+
 
         // ==========================================================================
         /**
@@ -183,6 +198,8 @@ namespace gum {
        */
       // ==========================================================================
       std::string toString();
+
+      std::string optimalPolicy2String(){ return __planer->optimalPolicy2String(); }
 
 
       // ###################################################################
@@ -231,7 +248,9 @@ namespace gum {
       SVI<double>* __planer;
 
       /// Threshold under which we perform a random action instead of exploiting the optimal one
-      double __exploThreshold;
+//      double __exploThreshold;
+      StatesChecker __statecpt;
+      double __sss;
 
       /// The action set to return on exploring
       ActionSet __explorething;

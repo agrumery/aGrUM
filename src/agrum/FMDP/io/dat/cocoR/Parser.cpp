@@ -110,7 +110,7 @@ void Parser::MDPDAT() {
 		while (la->kind == 10 /* "action" */) {
 			ACTION();
 		}
-		REWARD_DECISION_DIAGRAM();
+		REWARD_DECISION_GRAPH();
 		DISCOUNT();
 		TOLERANCE();
 }
@@ -139,23 +139,23 @@ void Parser::ACTION() {
 			FLOAT(tolerance);
 		}
 		while (la->kind == _ident) {
-			TRANSITION_DECISION_DIAGRAM();
+			TRANSITION_DECISION_GRAPH();
 		}
 		if (la->kind == 12 /* "cost" */) {
-			COST_DECISION_DIAGRAM();
+			COST_DECISION_GRAPH();
 		}
 		Expect(11 /* "endaction" */);
 		TRY( __factory->endActionDeclaration() ); 
 }
 
-void Parser::REWARD_DECISION_DIAGRAM() {
+void Parser::REWARD_DECISION_GRAPH() {
 		std::string name_of_var;
-		__factory->startRewardDeclaration(); 
+		 __factory->startRewardDeclaration(); 
 		Expect(13 /* "reward" */);
 		if (la->kind == _lpar) {
 			if (IsFollowedByIdent() ) {
 				Expect(_lpar);
-				SUB_DECISION_DIAGRAM();
+				SUB_DECISION_GRAPH();
 				Expect(9 /* ")" */);
 			} else {
 				Get();
@@ -163,8 +163,8 @@ void Parser::REWARD_DECISION_DIAGRAM() {
 				Expect(9 /* ")" */);
 			}
 			TRY( __factory->addReward( ) );
-			__parentModality.clear();
-			__parentNode.clear(); 
+			 __parentModality.clear();
+			 __parentNode.clear(); 
 		} else if (la->kind == 14 /* "[" */) {
 			Get();
 			std::string operand_type; 
@@ -172,7 +172,7 @@ void Parser::REWARD_DECISION_DIAGRAM() {
 			__factory->setOperationModeOn( operand_type );
 			if (IsFollowedByIdent() ) {
 				Expect(_lpar);
-				SUB_DECISION_DIAGRAM();
+				SUB_DECISION_GRAPH();
 				Expect(9 /* ")" */);
 			} else if (la->kind == _lpar) {
 				Get();
@@ -180,12 +180,12 @@ void Parser::REWARD_DECISION_DIAGRAM() {
 				Expect(9 /* ")" */);
 			} else SynErr(20);
 			TRY( __factory->addReward( ) );
-			                   __parentModality.clear();
-			                   __parentNode.clear(); 
+			                     __parentModality.clear();
+			                     __parentNode.clear(); 
 			while (la->kind == _lpar) {
 				if (IsFollowedByIdent() ) {
 					Expect(_lpar);
-					SUB_DECISION_DIAGRAM();
+					SUB_DECISION_GRAPH();
 					Expect(9 /* ")" */);
 				} else {
 					Get();
@@ -193,8 +193,8 @@ void Parser::REWARD_DECISION_DIAGRAM() {
 					Expect(9 /* ")" */);
 				}
 				TRY( __factory->addReward( ) );
-				__parentModality.clear();
-				__parentNode.clear(); 
+				 __parentModality.clear();
+				 __parentNode.clear(); 
 			}
 			Expect(15 /* "]" */);
 		} else SynErr(21);
@@ -265,15 +265,15 @@ void Parser::FLOAT(float& val) {
 		} else SynErr(23);
 }
 
-void Parser::TRANSITION_DECISION_DIAGRAM() {
+void Parser::TRANSITION_DECISION_GRAPH() {
 		std::string name_of_var;
-		__factory->startTransitionDeclaration(); 
+		 __factory->startTransitionDeclaration(); 
 		IDENT(name_of_var);
 		std::string prime_name_of_var = name_of_var + "'";
-		__currentDecisionDiagramVar = prime_name_of_var; 
+		__currentDecisionGraphVar = prime_name_of_var; 
 		if (IsFollowedByIdent() ) {
 			Expect(_lpar);
-			SUB_TRANSITION_DECISION_DIAGRAM();
+			SUB_TRANSITION_DECISION_GRAPH();
 			Expect(9 /* ")" */);
 		} else if (la->kind == _lpar) {
 			Get();
@@ -286,12 +286,12 @@ void Parser::TRANSITION_DECISION_DIAGRAM() {
 		__parentNode.clear(); 
 }
 
-void Parser::COST_DECISION_DIAGRAM() {
+void Parser::COST_DECISION_GRAPH() {
 		std::string name_of_var;
-		__factory->startCostDeclaration(); 
+		 __factory->startCostDeclaration(); 
 		Expect(12 /* "cost" */);
 		Expect(_lpar);
-		SUB_DECISION_DIAGRAM();
+		SUB_DECISION_GRAPH();
 		Expect(9 /* ")" */);
 		TRY( __factory->addCost( ) );
 		__factory->endCostDeclaration();
@@ -299,10 +299,10 @@ void Parser::COST_DECISION_DIAGRAM() {
 		__parentNode.clear(); 
 }
 
-void Parser::SUB_TRANSITION_DECISION_DIAGRAM() {
+void Parser::SUB_TRANSITION_DECISION_GRAPH() {
 		std::string name_of_var;
-		std::string modality_of_var;
-		NodeId var_id; 
+		 std::string modality_of_var;
+		 NodeId var_id; 
 		IDENT(name_of_var);
 		var_id = __factory->addNonTerminalNode( name_of_var );
 		if( !__parentNode.empty() )
@@ -316,7 +316,7 @@ void Parser::SUB_TRANSITION_DECISION_DIAGRAM() {
 			__parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] ); 
 			if (IsFollowedByIdent() ) {
 				Expect(_lpar);
-				SUB_TRANSITION_DECISION_DIAGRAM();
+				SUB_TRANSITION_DECISION_GRAPH();
 				Expect(9 /* ")" */);
 			} else if (la->kind == _lpar) {
 				Get();
@@ -332,7 +332,7 @@ void Parser::SUB_TRANSITION_DECISION_DIAGRAM() {
 void Parser::TRANSITION_LEAF() {
 		float value;
 		gum::Idx i = 0;
-		NodeId var_id = __factory->addNonTerminalNode( __currentDecisionDiagramVar );
+		NodeId var_id = __factory->addNonTerminalNode( __currentDecisionGraphVar );
 		if( !__parentNode.empty() )
 		  __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
 		else
@@ -348,10 +348,10 @@ void Parser::TRANSITION_LEAF() {
 		}
 }
 
-void Parser::SUB_DECISION_DIAGRAM() {
+void Parser::SUB_DECISION_GRAPH() {
 		std::string name_of_var;
-		std::string modality_of_var;
-		NodeId var_id;
+		 std::string modality_of_var;
+		 NodeId var_id;
 		IDENT(name_of_var);
 		var_id = __factory->addNonTerminalNode( name_of_var );
 		if( !__parentNode.empty() )
@@ -365,7 +365,7 @@ void Parser::SUB_DECISION_DIAGRAM() {
 			__parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] );  
 			if (IsFollowedByIdent() ) {
 				Expect(_lpar);
-				SUB_DECISION_DIAGRAM();
+				SUB_DECISION_GRAPH();
 				Expect(9 /* ")" */);
 			} else if (la->kind == _lpar) {
 				Get();
@@ -555,13 +555,13 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 17: s = coco_string_create(L"\"tolerance\" expected"); break;
 			case 18: s = coco_string_create(L"??? expected"); break;
 			case 19: s = coco_string_create(L"invalid ACTION"); break;
-			case 20: s = coco_string_create(L"invalid REWARD_DECISION_DIAGRAM"); break;
-			case 21: s = coco_string_create(L"invalid REWARD_DECISION_DIAGRAM"); break;
+			case 20: s = coco_string_create(L"invalid REWARD_DECISION_GRAPH"); break;
+			case 21: s = coco_string_create(L"invalid REWARD_DECISION_GRAPH"); break;
 			case 22: s = coco_string_create(L"invalid IDENT_OR_INTEGER"); break;
 			case 23: s = coco_string_create(L"invalid FLOAT"); break;
-			case 24: s = coco_string_create(L"invalid TRANSITION_DECISION_DIAGRAM"); break;
-			case 25: s = coco_string_create(L"invalid SUB_TRANSITION_DECISION_DIAGRAM"); break;
-			case 26: s = coco_string_create(L"invalid SUB_DECISION_DIAGRAM"); break;
+			case 24: s = coco_string_create(L"invalid TRANSITION_DECISION_GRAPH"); break;
+			case 25: s = coco_string_create(L"invalid SUB_TRANSITION_DECISION_GRAPH"); break;
+			case 26: s = coco_string_create(L"invalid SUB_DECISION_GRAPH"); break;
 
 
     default: {

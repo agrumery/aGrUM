@@ -235,136 +235,6 @@
 
 
 
-
-/* ******************************************************************************************* */
-/*                                                                                             */
-/*                          MultiDimDecisionDiagram functions                                  */
-/*                                                                                             */
-/* ******************************************************************************************* */
-
-#include <agrum/multidim/patterns/DDUtility/DDModeMacro.h>
-
-
-/// a specialized max projection function for multiDimDecisionDiagrams
-
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION exploreByMaximising
-#define GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(x,y) ( x >= y ? x : y )
-#define GUM_MULTI_DIM_PROJECTION_NEUTRAL ( -1 * std::numeric_limits<GUM_SCALAR>::max() )
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
-#ifdef P4DDDEBUG
-#include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctionsDebug.h>
-#else
-#include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctions.h>
-#endif
-#undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectMaxMultiDimDecisionDiagram
-#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
-#undef GUM_DECISION_DIAGRAM_PROJECTION_NAME
-
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME projectMaxMultiDimDecisionDiagram
-#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
-#undef GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME
-
-#undef GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR
-#undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION
-#undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
-
-
-
-/// a specialized min projection function for multiDimDecisionDiagrams
-
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION exploreByMinimising
-#define GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(x,y) ( x <= y ? x : y )
-#define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<GUM_SCALAR>::max()
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
-#ifdef P4DDDEBUG
-#include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctionsDebug.h>
-#else
-#include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctions.h>
-#endif
-#undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectMinMultiDimDecisionDiagram
-#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
-#undef GUM_DECISION_DIAGRAM_PROJECTION_NAME
-
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME projectMinMultiDimDecisionDiagram
-#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
-#undef GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME
-
-#undef GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR
-#undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION
-#undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
-
-
-
-/// a specialized sum projection function for multiDimDecisionDiagrams
-
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION exploreBySumming
-#define GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(x,y) ( x + y )
-#define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR) 0
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
-#ifdef P4DDDEBUG
-#include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctionsDebug.h>
-#else
-#include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctions.h>
-#endif
-#undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectSumMultiDimDecisionDiagram
-#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
-#undef GUM_DECISION_DIAGRAM_PROJECTION_NAME
-
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME projectSumMultiDimDecisionDiagram
-#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
-#undef GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME
-
-#undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION
-#undef GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR
-#undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
-
-
-
-/// a specialized product projection function for multiDimDecisionDiagrams
-
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION exploreByMultiplicating
-#define GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(x,y) ( x * y )
-#define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR) 1
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
-#ifdef P4DDDEBUG
-#include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctionsDebug.h>
-#else
-#include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctions.h>
-#endif
-#undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_NAME projectProductMultiDimDecisionDiagram
-#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
-#undef GUM_DECISION_DIAGRAM_PROJECTION_NAME
-
-
-#define GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME projectProductMultiDimDecisionDiagram
-#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionDiagram.h>
-#undef GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME
-
-#undef GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION
-#undef GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR
-#undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
-
-
-
 /* ******************************************************************************************* */
 /*                                                                                             */
 /*                          MultiDimDecisionGraph functions                                    */
@@ -575,7 +445,6 @@ namespace gum {
       first_init = false;
 
       std::string MultiDimArrayString ( "MultiDimArray" );
-      std::string MultiDimDecisionDiagramString ( "MultiDimDecisionDiagram" );
       std::string MultiDimDecisionGraphString ( "MultiDimDecisionGraph" );
       std::string BaseNameString ( "MultiDimImplementation" );
 
@@ -588,16 +457,6 @@ namespace gum {
                                        &projectSumMultiDimArray );
       registerProjection<GUM_SCALAR> ( "product", MultiDimArrayString,
                                        &projectProductMultiDimArray );
-
-      // register base functions for multiDimDiagram
-      registerProjection<GUM_SCALAR> ( "max", MultiDimDecisionDiagramString,
-                                       &projectMaxMultiDimDecisionDiagram );
-      registerProjection<GUM_SCALAR> ( "min", MultiDimDecisionDiagramString,
-                                       &projectMinMultiDimDecisionDiagram );
-      registerProjection<GUM_SCALAR> ( "sum", MultiDimDecisionDiagramString,
-                                       &projectSumMultiDimDecisionDiagram );
-      registerProjection<GUM_SCALAR> ( "product", MultiDimDecisionDiagramString,
-                                       &projectProductMultiDimDecisionDiagram );
 
       // register base functions for multiDimArrays
       registerProjection<GUM_SCALAR> ( "max", MultiDimDecisionGraphString,

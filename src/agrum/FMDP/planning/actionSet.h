@@ -175,6 +175,16 @@ namespace gum {
       }
 
       // ============================================================================
+      /// Use to insert the content of another set inside this one
+      // ============================================================================
+      ActionSet& operator -= ( const ActionSet& src) {
+        for( auto iter = src.beginSafe(); iter != src.endSafe(); ++iter )
+          if( __actionSeq->exists(*iter) )
+            __actionSeq->erase(*iter);
+        return *this;
+      }
+
+      // ============================================================================
       /// Gives the ith element
       // ============================================================================
       const Idx& operator [] ( const Idx i ) const {

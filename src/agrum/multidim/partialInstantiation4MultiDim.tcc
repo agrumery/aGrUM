@@ -120,7 +120,6 @@ namespace gum {
       first_init = false;
 
       std::string MultiDimArrayString ( "MultiDimArray" );
-      std::string MultiDimDecisionDiagramString ( "MultiDimDecisionDiagram" );
       std::string BaseNameString ( "MultiDimImplementation" );
 
       // register base functions for multiDimArrays

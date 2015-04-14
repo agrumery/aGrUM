@@ -51,6 +51,25 @@ namespace gum {
 
     }
 
+    /* ***************************************************************************************************************************** */
+    /* CONSTRUCTOR                                                                                                                   */
+    /* ***************************************************************************************************************************** */
+    template <typename GUM_SCALAR,
+              template <typename> class COMBINEOPERATOR,
+              template <typename> class TerminalNodePolicy>
+    TreeOperator<GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy>::TreeOperator(
+                  const MultiDimDecisionGraph< GUM_SCALAR, TerminalNodePolicy>* dt1,
+                  const MultiDimDecisionGraph< GUM_SCALAR, TerminalNodePolicy>* dt2,
+                  const HashTable<const DiscreteVariable*, Idx> givenContext ) : __dt1(dt1),
+                                                                                __dt2(dt2),
+                                                                                __combine(),
+                                                                                __context(givenContext){
+      GUM_CONSTRUCTOR(TreeOperator);
+
+      __rd = new MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>();
+
+    }
+
 
 
     /* ***************************************************************************************************************************** */

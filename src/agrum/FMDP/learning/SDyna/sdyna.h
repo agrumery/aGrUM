@@ -200,7 +200,9 @@ namespace gum {
          * If you want to specify the original state and the performed action, see below
          */
         // ==========================================================================
-        void feedback(const Instantiation & reachedState, double obtainedReward);
+        virtual void feedback(const Instantiation & reachedState, double obtainedReward);
+
+        void makePlanning(){ this->_makePlanning(this->__nbValueIterationStep);}
 
     protected :
 
@@ -238,6 +240,8 @@ namespace gum {
        */
       // ==========================================================================
       virtual std::string toString();
+
+      virtual std::string optimalPolicy2String() = 0;
 
 
       // ###################################################################

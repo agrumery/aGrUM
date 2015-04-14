@@ -23,8 +23,8 @@
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_TAXI_SIMULATOR_H
-#define GUM_TAXI_SIMULATOR_H
+#ifndef GUM_FACTORY_SIMULATOR_H
+#define GUM_FACTORY_SIMULATOR_H
 //======================================================================
 #include <agrum/multidim/instantiation.h>
 //======================================================================
@@ -39,19 +39,19 @@ namespace gum {
 
 
 
-  enum TaxiSimulationLandmark : Idx { HOME = 0, WORK = 1, THEATER = 2, CLUB = 3, TAXI = 4 };
-  enum TaxiSimulationLandmarkX : Idx { HOMEX = 0, WORKX = 0, THEATERX = 3, CLUBX = 4, STATIONX = 2 };
-  enum TaxiSimulationLandmarkY : Idx { HOMEY = 0, WORKY = 4, THEATERY = 0, CLUBY = 4, STATIONY = 1 };
-  enum TaxiSimulationAction : Idx { GoNorth = 0, GoEast = 1, GoSouth = 2, GoWest = 3, PickUp  = 4, PutDown = 5, FillUp = 6 };
+  enum FactorySimulationLandmark : Idx { HOME = 0, WORK = 1, THEATER = 2, CLUB = 3, Factory = 4 };
+  enum FactorySimulationLandmarkX : Idx { HOMEX = 0, WORKX = 0, THEATERX = 3, CLUBX = 4, STATIONX = 2 };
+  enum FactorySimulationLandmarkY : Idx { HOMEY = 0, WORKY = 4, THEATERY = 0, CLUBY = 4, STATIONY = 1 };
+  enum FactorySimulationAction : Idx { GoNorth = 0, GoEast = 1, GoSouth = 2, GoWest = 3, PickUp  = 4, PutDown = 5, FillUp = 6 };
   /**
-   * @class Taxi taxi.h <agrum/FMDP/simulation/taxi.h>
-   * @brief A class to simulate the Taxi problem
+   * @class Factory Factory.h <agrum/FMDP/simulation/Factory.h>
+   * @brief A class to simulate the Factory problem
    * @ingroup fmdp_group
    *
    *
    *
    */
-  class TaxiSimulator : public AbstractSimulator {
+  class FactorySimulator : public AbstractSimulator {
 
   public:
 
@@ -63,12 +63,12 @@ namespace gum {
       /**
        * Default constructor.
        */
-      TaxiSimulator();
+      FactorySimulator();
 
       /**
        * Default destructor.
        */
-      ~TaxiSimulator();
+      ~FactorySimulator();
 
     /// @}
 
@@ -98,8 +98,8 @@ namespace gum {
       const DiscreteVariable* primeVar(const DiscreteVariable* mainVar){ return __primeMap.second(mainVar); }
 
       /// Iteration over the variables of the simulated probleme
-      SequenceIteratorSafe< const DiscreteVariable* > beginVariables(){return __taxiVars.beginSafe();}
-      SequenceIteratorSafe< const DiscreteVariable* > endVariables(){return __taxiVars.endSafe();}
+      SequenceIteratorSafe< const DiscreteVariable* > beginVariables(){return __FactoryVars.beginSafe();}
+      SequenceIteratorSafe< const DiscreteVariable* > endVariables(){return __FactoryVars.endSafe();}
 
     /// @}
 
@@ -111,8 +111,8 @@ namespace gum {
       const std::string& actionName(Idx actionId){return *__actionMap[actionId];}
 
       /// Iteration over the variables of the simulated probleme
-      SequenceIteratorSafe< Idx > beginActions() {return __taxiActions.beginSafe();}
-      SequenceIteratorSafe< Idx > endActions() {return __taxiActions.endSafe();}
+      SequenceIteratorSafe< Idx > beginActions() {return __FactoryActions.beginSafe();}
+      SequenceIteratorSafe< Idx > endActions() {return __FactoryActions.endSafe();}
 
 
     /// @}
@@ -129,7 +129,7 @@ namespace gum {
     void __fillUp();
 
     /// Variables data structures
-    Sequence<const DiscreteVariable*> __taxiVars;
+    Sequence<const DiscreteVariable*> __FactoryVars;
     Bijection<const DiscreteVariable*, const DiscreteVariable*> __primeMap;
     LabelizedVariable* __xPos;
     LabelizedVariable* __yPos;
@@ -138,14 +138,14 @@ namespace gum {
     LabelizedVariable* __fuelLevel;
 
     /// Actions
-    Sequence<Idx> __taxiActions;
+    Sequence<Idx> __FactoryActions;
     HashTable<Idx, std::string*> __actionMap;//__actionMap.insert ( actionId, new std::string ( action ) );
-    TaxiSimulationAction __lastAction;
+    FactorySimulationAction __lastAction;
 };
 
 } /* namespace gum */
 
 
 
-#endif // GUM_TAXI_SIMULATOR_H
+#endif // GUM_FACTORY_SIMULATOR_H
 

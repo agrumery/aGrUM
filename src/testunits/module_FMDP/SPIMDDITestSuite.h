@@ -63,7 +63,7 @@ namespace gum_tests {
 
 
 
-        for( gum::Idx nbRun = 0; nbRun < 100; ++nbRun ){
+        for( gum::Idx nbRun = 0; nbRun < 1000; ++nbRun ){
 
           TS_GUM_ASSERT_THROWS_NOTHING ( spim.setCurrentState(sim.currentState()) );
 

@@ -25,8 +25,9 @@
 */
 
 // =======================================================================================
-#include <agrum/FMDP/planning/operators/treeRegress.h>
+#include <agrum/FMDP/planning/operators/enhancedTreeRegress.h>
 #include <agrum/multidim/decisionGraphUtilities/internalNode.h>
+#include <agrum/FMDP/planning/operators/treeOperator.h>
 // =======================================================================================
 
 #define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
@@ -43,18 +44,9 @@ namespace gum {
               template <typename> class TerminalNodePolicy>
     TreeRegress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::TreeRegress(
               const MultiDimDecisionGraph< GUM_SCALAR, TerminalNodePolicy>* qAction,
-              const Bijection<const DiscreteVariable*, const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *> pxi,
-              const Sequence<const DiscreteVariable*> xip,
-              const GUM_SCALAR neutral ) :  __vFunc( qAction ),
-                                            __pxi(pxi),
-                                            __xip(xip),
-                                            __neutral(neutral),
-                                            __combine(),
-                                            __project() {
+              const Bijection<const DiscreteVariable*, const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *> pxi ) : __vFunc( qAction ),
+                                                                                                                              __pxi(pxi) {
       GUM_CONSTRUCTOR(TreeRegress);
-
-      __rd = new MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>();
-
     }
 
 
@@ -86,57 +78,13 @@ namespace gum {
     MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *
     TreeRegress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::compute(){
 
-      if(__vFunc->isTerminalNode(__vFunc->root()))
-        __rd->copy(*__vFunc);
-      else
-        __rd->manager()->setRootNode( __xPlorePxi(__pxi.second( __xip.atPos(0) ), __pxi.second( __xip.atPos(0) )->root(), 0) );
-
-      return __rd;
-    }
-
-
-
-    /// Main recursion function, called every time we move on a node to determine what we have to do
-    template <typename GUM_SCALAR,
-              template <typename> class COMBINEOPERATOR,
-              template <typename> class PROJECTOPERATOR,
-              template <typename> class TerminalNodePolicy>
-    NodeId
-    TreeRegress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::__xPlorePxi(
-                        const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *xPloredTree,
-                        NodeId currentNodeId,
-                        Idx seqPos ){
-
-      if( xPloredTree->isTerminalNode(currentNodeId) || __xip.exists(xPloredTree->node(currentNodeId)->nodeVar()) ){
-        __curLeafMap.insert(xPloredTree, currentNodeId);
-        NodeId nody;
-        if( seqPos == __xip.size() - 1 ){
-          nody = __rd->manager()->addTerminalNode( __xPloreVFunc( __vFunc->root() ) );
-        } else {
-          const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* nextTree = __pxi.second( __xip.atPos(seqPos + 1) );
-          nody = __xPlorePxi( nextTree, nextTree->root(), seqPos + 1);
-        }
-        __curLeafMap.erase(xPloredTree);
-
-        return nody;
-      }
-
-      const InternalNode* currentNode = xPloredTree->node(currentNodeId);
-
-      if( !__rd->variablesSequence().exists(currentNode->nodeVar()) )
-        __rd->add(*(currentNode->nodeVar()));
-
-      if( __context.exists(currentNode->nodeVar()) ){
-        return __xPlorePxi( xPloredTree, currentNode->son( __context[currentNode->nodeVar()] ), seqPos);
-      }
-
-      NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE( sizeof(NodeId)*currentNode->nodeVar()->domainSize() ) );
-      for( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda ){
-        __context.insert(currentNode->nodeVar(), moda);
-        sonsMap[moda] = __xPlorePxi( xPloredTree, currentNode->son( moda ), seqPos);
-        __context.erase(currentNode->nodeVar());
-      }
-      return __checkRedundancy(currentNode->nodeVar(), sonsMap);
+      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* ret;
+      if(__vFunc->isTerminalNode(__vFunc->root())){
+        ret = new MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>();
+        ret->copy(*__vFunc);
+      } else
+        ret = __xPloreVFunc(__vFunc->root());
+      return ret;
     }
 
 
@@ -145,55 +93,52 @@ namespace gum {
               template <typename> class COMBINEOPERATOR,
               template <typename> class PROJECTOPERATOR,
               template <typename> class TerminalNodePolicy>
-    GUM_SCALAR
+    MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*
     TreeRegress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::__xPloreVFunc( NodeId currentNodeId ){
 
-      if( __vFunc->isTerminalNode(currentNodeId) ){
-        GUM_SCALAR val = __vFunc->nodeValue(currentNodeId);
-        for( HashTableConstIteratorSafe<const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*, NodeId> leafIter = __curLeafMap.cbeginSafe();
-             leafIter != __curLeafMap.cendSafe(); ++leafIter ){
-          if( __context.exists( __pxi.first(leafIter.key()) ) ){
-            if( leafIter.key()->isTerminalNode(leafIter.val()) )
-              val = __combine(val, leafIter.key()->nodeValue(leafIter.val()));
-            else {
-              const InternalNode* currentNode = leafIter.key()->node(leafIter.val());
-              NodeId sonId = currentNode->son( __context[currentNode->nodeVar()] );
-              val = __combine(val, leafIter.key()->nodeValue(sonId));
-            }
-          }
-        }
-        return val;
-      }
-
       const InternalNode* currentNode = __vFunc->node(currentNodeId);
-      GUM_SCALAR val = __neutral;
+
+      std::vector<MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>*> varbucket;
+
       for( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda ){
+
+        MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* vpxi = nullptr;
         __context.insert(currentNode->nodeVar(), moda);
-        val = __project( val, __xPloreVFunc( currentNode->son( moda ) ));
+        if( __vFunc->isTerminalNode(currentNode->son(moda)) ){
+
+          GUM_SCALAR value = __vFunc->nodeValue(currentNode->son(moda));
+          if(value) {
+            vpxi = new MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>();
+            vpxi->manager()->setRootNode( vpxi->manager()->addTerminalNode(value) );
+          }
+        } else {
+          vpxi = __xPloreVFunc( currentNode->son(moda) );
+        }
+
+        if(vpxi != nullptr){
+          TreeOperator< GUM_SCALAR, COMBINEOPERATOR > combinope( vpxi, __pxi.second(currentNode->nodeVar()), __context );
+          varbucket.push_back( combinope.compute() );
+        }
+        delete vpxi;
         __context.erase(currentNode->nodeVar());
       }
-      return val;
 
-    }
+      if( varbucket.empty() )
+        return nullptr;
 
-    template <typename GUM_SCALAR,
-              template <typename> class COMBINEOPERATOR,
-              template <typename> class PROJECTOPERATOR,
-              template <typename> class TerminalNodePolicy>
-    NodeId
-    TreeRegress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::__checkRedundancy( const DiscreteVariable* var, NodeId* sonsMap ){
-      bool diff = false;
-      for(Idx moda = 1; moda < var->domainSize() && !diff; ++moda)
-        if(sonsMap[0] != sonsMap[moda])
-          diff = true;
-
-      if(!diff){
-        NodeId zero = sonsMap[0];
-        DEALLOCATE(sonsMap, sizeof(NodeId)*var->domainSize());
-        return zero;
+      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* vp = varbucket.back();
+      varbucket.pop_back();
+      while(!varbucket.empty()){
+         MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* temp = vp;
+         TreeOperator< GUM_SCALAR, PROJECTOPERATOR > projope( vp, varbucket.back() );
+         vp = projope.compute();
+         delete temp;
+         temp = varbucket.back();
+         varbucket.pop_back();
+         delete temp;
       }
 
-      return __rd->manager()->addNonTerminalNode(var, sonsMap);
+      return vp;
     }
 
 } // namespace gum

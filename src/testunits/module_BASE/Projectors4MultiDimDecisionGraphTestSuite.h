@@ -147,7 +147,7 @@ class MultiDimProjectors4DecisionGraphTestSuite: public CxxTest::TestSuite {
                           gum::MultiDimDecisionGraph<double>* a3,
                           gum::Set<const gum::DiscreteVariable*> delVars ) {
 
-      std::string dotfile = GET_PATH_STR ( "DecisionDiagramError.log" );
+      std::string dotfile = GET_PATH_STR ( "DecisionGraphError.log" );
       std::ofstream output ( dotfile.c_str(), std::ios::out );
 
       if ( ! output.good() )

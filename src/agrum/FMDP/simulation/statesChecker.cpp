@@ -31,6 +31,7 @@ namespace gum {
   }
 
   StatesChecker::~StatesChecker(){
+    delete __checker;
     GUM_DESTRUCTOR(StatesChecker)
   }
 
@@ -40,7 +41,7 @@ namespace gum {
          varIter != initialState.variablesSequence().endSafe(); ++varIter )
       __checker->add(**varIter);
 
-    __nbVisitedStates = 0;
+    __nbVisitedStates = 1;
     __checkerFalseId = __checker->manager()->addTerminalNode(false);
     __checkerTrueId = __checker->manager()->addTerminalNode(true);
 

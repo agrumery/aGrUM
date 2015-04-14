@@ -33,7 +33,6 @@
 #include <agrum/core/sequence.h>
 
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
 
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/IFMDPFactory.h>
@@ -72,7 +71,6 @@ namespace gum {
         /**
          * Use this constructor if you want to use an already created factored markov decision process.
          * @param fmdp A pointer over the @ref FactoredMarkovDecisionProcess filled by this factory.
-         * @param ddFactory The @ref MultiDimDecisionDiagramFactoryBase that will be used.
          */
         FMDPFactory ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp );
 
@@ -160,7 +158,7 @@ namespace gum {
         void addTransition ( const std::string& var, const MultiDimAdressable* transition );
 
         /// Tells the factory to add a transition table to the current fmdp.
-        /// This transition table will be extracted from incorporated multiDimDecisionDiagram.
+        /// This transition table will be extracted from incorporated multiDimDecisionGraph.
         void addTransition ( const std::string& var );
 
         /// Tells the factory that we're out of a transition declaration.
@@ -179,7 +177,7 @@ namespace gum {
         void addCost ( const MultiDimAdressable* cost );
 
         /// Tells the factory to add a cost table to the current fmdp.
-        /// This cost table will be extracted from incorporated multiDimDecisionDiagram.
+        /// This cost table will be extracted from incorporated multiDimDecisionGraph.
         void addCost( );
 
         /// Tells the factory that we're out of a cost declaration.
@@ -202,7 +200,7 @@ namespace gum {
         void addReward ( const MultiDimAdressable* reward );
 
         /// Tells the factory to add a reward table to the current fmdp.
-        /// This reward table will be extracted from incorporated multiDimDecisionDiagram.
+        /// This reward table will be extracted from incorporated multiDimDecisionGraph.
         void addReward( );
 
         /// Tells the factory that we're out of a cost declaration.
@@ -225,9 +223,9 @@ namespace gum {
 
       /// @}
       // ==========================================================================
-      /// @name DecisionDiagram Creation specific methods
-      /// @brief methods used by internal decisiondiagramfactory to build up
-      /// a multidimdecisiondiagram
+      /// @name DecisionGraph Creation specific methods
+      /// @brief methods used by internal DecisionGraphfactory to build up
+      /// a multidimDecisionGraph
       // ==========================================================================
       /// @{
 

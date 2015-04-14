@@ -348,7 +348,7 @@ namespace gum {
 
 
   // Tells the factory to add a transition table to the current fmdp.
-  // This transition table will be extracted from incorporated multiDimDecisionDiagram.
+  // This transition table will be extracted from incorporated multiDimDecisionGraph.
 
   template<typename GUM_SCALAR> INLINE
   void
@@ -426,7 +426,7 @@ namespace gum {
 
 
   // Tells the factory to add a cost
-  // This cost table will be extracted from incorporated multiDimDecisionDiagram.
+  // This cost table will be extracted from incorporated multiDimDecisionGraph.
 
   template<typename GUM_SCALAR> INLINE
   void
@@ -441,9 +441,6 @@ namespace gum {
         __fmdp->addCostForAction ( __stringBag[0], this->__decisionGraph );
       else
         __fmdp->addCost ( this->__decisionGraph );
-
-      // this->__decisionDiagramFactory->showProperties();
-//      this->__decisionDiagramFactory->clear();
     }
   }
 
@@ -513,7 +510,7 @@ namespace gum {
 
 
   // Tells the factory to add a reward
-  // This reward table will be extracted from incorporated multiDimDecisionDiagram.
+  // This reward table will be extracted from incorporated multiDimDecisionGraph.
 
   template<typename GUM_SCALAR> INLINE
   void
@@ -551,16 +548,16 @@ namespace gum {
           temp = res;
 
           switch( __stringBag[0][0] ) {
-            case '+' : res = add2MultiDimDecisionDiagrams( res,  elt );
+            case '+' : res = add2MultiDimDecisionGraphs( res,  elt );
               break;
 
-            case '-' : res = subtract2MultiDimDecisionDiagrams( res,  elt );
+            case '-' : res = subtract2MultiDimDecisionGraphs( res,  elt );
               break;
 
-            case '*' : res = multiply2MultiDimDecisionDiagrams( res,  elt );
+            case '*' : res = multiply2MultiDimDecisionGraphs( res,  elt );
               break;
 
-            case '/' : res = divide2MultiDimDecisionDiagrams( res,  elt );
+            case '/' : res = divide2MultiDimDecisionGraphs( res,  elt );
               break;
 
             default : break;

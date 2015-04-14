@@ -32,8 +32,6 @@
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
 // =====================================================================
-#include <agrum/multidim/multiDimDecisionDiagramFactory.h>
-// =====================================================================
 
 
 namespace gum_tests {

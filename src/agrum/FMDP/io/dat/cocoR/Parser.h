@@ -88,7 +88,7 @@ class Parser {
     gum::AbstractFMDPFactory* __factory;
                 
                 /// for each transition diagram, we need to know the associated variable
-                std::string __currentDecisionDiagramVar;
+                std::string __currentDecisionGraphVar;
                 
                 /// for building the diagram, we need to keep track of var parents
                 std::vector< gum::NodeId > __parentNode;
@@ -141,7 +141,7 @@ class Parser {
     	void MDPDAT();
 	void VARIABLES_DECLARATION();
 	void ACTION();
-	void REWARD_DECISION_DIAGRAM();
+	void REWARD_DECISION_GRAPH();
 	void DISCOUNT();
 	void TOLERANCE();
 	void VARIABLE();
@@ -150,11 +150,11 @@ class Parser {
 	void IDENT_OR_INTEGER(std::string& name);
 	void STRING(std::string& str);
 	void FLOAT(float& val);
-	void TRANSITION_DECISION_DIAGRAM();
-	void COST_DECISION_DIAGRAM();
-	void SUB_TRANSITION_DECISION_DIAGRAM();
+	void TRANSITION_DECISION_GRAPH();
+	void COST_DECISION_GRAPH();
+	void SUB_TRANSITION_DECISION_GRAPH();
 	void TRANSITION_LEAF();
-	void SUB_DECISION_DIAGRAM();
+	void SUB_DECISION_GRAPH();
 	void LEAF();
 	void OPERAND(std::string& op);
 

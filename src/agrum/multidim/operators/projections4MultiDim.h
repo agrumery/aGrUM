@@ -31,7 +31,6 @@
 // =============================================================================
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimArray.h>
-#include <agrum/multidim/multiDimDecisionDiagram.h>
 #include <agrum/multidim/multiDimDecisionGraph.h>
 #include <agrum/multidim/multiDimDecorator.h>
 // =============================================================================
@@ -188,100 +187,6 @@ namespace gum {
   combine2MultiDimArrays ( const MultiDimImplementation<GUM_SCALAR>* t1,
                            const MultiDimImplementation<GUM_SCALAR>* t2,
                            const GUM_SCALAR ( *f ) ( const GUM_SCALAR&, const GUM_SCALAR& ) );
-
-
-
-
-  // ############################################################################
-  /// @name Projectors For Decision Diagrams
-  // ############################################################################
-  /// @{
-
-   /// a specialized function for projecting a multiDimDecisionDiagram using a Max operator
-   /** The function projects a table over the subset of its variables NOT IN
-    * the set of variables del_vars. For instance, if table is a MultiDimDecisionDiagram
-    * defined over A,B,C,D and if del_vars = {A,C}, then the function returns
-    * a table over B,D defined as Max_{A,C} table (A,B,C,D).
-    * @return function ProjectMaxMultiDimDecisionDiagram allocates on the heap the
-    * new T multiDimDecisionDiagram and returns it
-    * @warning In practice, do not use this function but rather operator/function
-    * projectMax on multiDimDecorators. This operator will take care to select this
-    * function if it is appropriate for your projection. */
-   template<typename GUM_SCALAR>
-   MultiDimDecisionDiagramBase<GUM_SCALAR>*
-   projectMaxMultiDimDecisionDiagram ( const MultiDimDecisionDiagramBase<GUM_SCALAR>* table,
-                                       const Set<const DiscreteVariable*>& del_vars );
-
-   template<typename GUM_SCALAR>
-   MultiDimImplementation<GUM_SCALAR>*
-   projectMaxMultiDimDecisionDiagram ( const MultiDimImplementation<GUM_SCALAR>* table,
-                                       const Set<const DiscreteVariable*>& del_vars );
-
-
-   /// a specialized function for projecting a multiDimDecisionDiagram using a Min operator
-   /** The function projects a table over the subset of its variables NOT IN
-    * the set of variables del_vars. For instance, if table is a MultiDimDecisionDiagram
-    * defined over A,B,C,D and if del_vars = {A,C}, then the function returns
-    * a table over B,D defined as Min_{A,C} table (A,B,C,D).
-    * @return function ProjectMaxMultiDimDecisionDiagrams allocates on the heap the
-    * new T multiDimDecisionDiagram and returns it
-    * @warning In practice, do not use this function but rather operator/function
-    * projectMin on multiDimDecorators. This operator will take care to select this
-    * function if it is appropriate for your projection. */
-   template<typename GUM_SCALAR>
-   MultiDimDecisionDiagramBase<GUM_SCALAR>*
-   projectMinMultiDimDecisionDiagram ( const MultiDimDecisionDiagramBase<GUM_SCALAR>* table,
-                                       const Set<const DiscreteVariable*>& del_vars );
-
-   template<typename GUM_SCALAR>
-   MultiDimImplementation<GUM_SCALAR>*
-   projectMinMultiDimDecisionDiagram ( const MultiDimImplementation<GUM_SCALAR>* table,
-                                       const Set<const DiscreteVariable*>& del_vars );
-
-
-   /// a specialized function for projecting a multiDimDecisionDiagram using a summation
-   /** The function projects a table over the subset of its variables NOT IN
-    * the set of variables del_vars. For instance, if table is a MultiDimDecisionDiagram
-    * defined over A,B,C,D and if del_vars = {A,C}, then the function returns
-    * a table over B,D defined as Sum_{A,C} table (A,B,C,D).
-    * @return function ProjectMaxMultiDimDecisionDiagrams allocates on the heap the
-    * new T multiDimDecisionDiagram and returns it
-    * @warning In practice, do not use this function but rather operator/function
-    * projectSum on multiDimDecorators. This operator will take care to select this
-    * function if it is appropriate for your projection. */
-   template<typename GUM_SCALAR>
-   MultiDimDecisionDiagramBase<GUM_SCALAR>*
-   projectSumMultiDimDecisionDiagram ( const MultiDimDecisionDiagramBase<GUM_SCALAR>* table,
-                                       const Set<const DiscreteVariable*>& del_vars );
-
-   template<typename GUM_SCALAR>
-   MultiDimImplementation<GUM_SCALAR>*
-   projectSumMultiDimDecisionDiagram ( const MultiDimImplementation<GUM_SCALAR>* table,
-                                       const Set<const DiscreteVariable*>& del_vars );
-
-
-   /// a specialized function for projecting a multiDimDecisionDiagram using products
-   /** The function projects a table over the subset of its variables NOT IN
-    * the set of variables del_vars. For instance, if table is a MultiDimDecisionDiagram
-    * defined over A,B,C,D and if del_vars = {A,C}, then the function returns
-    * a table over B,D defined as Prod_{A,C} table (A,B,C,D).
-    * @return function ProjectMaxMultiDimDecisionDiagrams allocates on the heap the
-    * new T multiDimDecisionDiagram and returns it
-    * @warning In practice, do not use this function but rather operator/function
-    * projectProduct on multiDimDecorators. This operator will take care to select
-    * this function if it is appropriate for your projection. */
-   template<typename GUM_SCALAR>
-   MultiDimDecisionDiagramBase<GUM_SCALAR>*
-   projectProductMultiDimDecisionDiagram ( const MultiDimDecisionDiagramBase<GUM_SCALAR>* table,
-                                           const Set<const DiscreteVariable*>& del_vars );
-
-   template<typename GUM_SCALAR>
-   MultiDimImplementation<GUM_SCALAR>*
-   projectProductMultiDimDecisionDiagram ( const MultiDimImplementation<GUM_SCALAR>* table,
-                                           const Set<const DiscreteVariable*>& del_vars );
-
-  /// @}
-
 
 
 

@@ -61,13 +61,16 @@ namespace gum {
       Instantiation retState;
       for(auto varIter = this->beginVariables(); varIter != this->endVariables(); ++varIter){
         retState.add(**varIter);
-        retState.chgVal(*varIter,  (Idx)(((double)std::rand( ) / (double)RAND_MAX) * (*varIter)->domainSize()));
+        retState.chgVal(*varIter,  (Idx)(((double)std::rand( ) / (double)RAND_MAX) * (double)(*varIter)->domainSize()));
       }
       return retState;
     }
 
     ///
     bool AbstractSimulator::hasReachEnd(){
+
+      if( _endState.empty() )
+        return false;
 
       for(auto varIter = _endState.variablesSequence().beginSafe(); varIter != _endState.variablesSequence().endSafe(); ++varIter)
         if(_endState.val(**varIter) != _currentState.val(**varIter))

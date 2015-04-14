@@ -42,8 +42,8 @@ namespace gum_tests {
       void run ( const std::string showSaveFile ) {
 
         gum::FactoredMarkovDecisionProcess<double> fmdp(true);
-        gum::SPUMDD<double> planer ( &fmdp );//, 10 ); // Epsilon is set high, indeed we just want ot check that the algorithm works fine.
-//        gum::SVI<double> planer(&fmdp);
+        //gum::SPUMDD<double> planer ( &fmdp );//, 10 ); // Epsilon is set high, indeed we just want ot check that the algorithm works fine.
+        gum::SVI<double> planer(&fmdp);
 
         gum::FMDPDatReader<double> reader ( &fmdp, file );
         TS_GUM_ASSERT_THROWS_NOTHING ( reader.trace ( false ) );
