@@ -35,7 +35,7 @@
 #include <agrum/FMDP/simulation/statesChecker.h>
 // =========================================================================
 #include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================

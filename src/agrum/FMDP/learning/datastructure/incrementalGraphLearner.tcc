@@ -58,7 +58,7 @@ namespace gum {
      */
     // ############################################################################
     template < TESTNAME AttributeSelection, bool isScalar >
-    IncrementalGraphLearner<AttributeSelection, isScalar>::IncrementalGraphLearner( MultiDimDecisionGraph<double>* target,
+    IncrementalGraphLearner<AttributeSelection, isScalar>::IncrementalGraphLearner( MultiDimFunctionGraph<double>* target,
                                                                                     Set<const DiscreteVariable*> varList,
                                                                                     const DiscreteVariable* value ) : _target(target),
                                                                                                                       _setOfVars(varList),
@@ -436,8 +436,8 @@ namespace gum {
   /// @name RMax methods
   // ============================================================================
     template < TESTNAME AttributeSelection, bool isScalar >
-    MultiDimDecisionGraph<double> *IncrementalGraphLearner<AttributeSelection, isScalar>::extractCount(){
-      MultiDimDecisionGraph<double>* ret = new MultiDimDecisionGraph<double>();
+    MultiDimFunctionGraph<double> *IncrementalGraphLearner<AttributeSelection, isScalar>::extractCount(){
+      MultiDimFunctionGraph<double>* ret = new MultiDimFunctionGraph<double>();
       _insertSetOfVars(ret);
 
       ret->manager()->setRootNode(__extractCount(this->_root, ret));
@@ -447,7 +447,7 @@ namespace gum {
 
     template < TESTNAME AttributeSelection, bool isScalar >
     NodeId  IncrementalGraphLearner<AttributeSelection, isScalar>::__extractCount(NodeId currentNodeId,
-                                                                                  MultiDimDecisionGraph<double>* ret){
+                                                                                  MultiDimFunctionGraph<double>* ret){
 
 
       if( this->_nodeVarMap[currentNodeId] == this->_value ){

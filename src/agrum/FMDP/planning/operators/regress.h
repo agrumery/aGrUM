@@ -28,9 +28,9 @@
 #ifndef GUM_REGRESS_H
 #define GUM_REGRESS_H
 // =======================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
-#include <agrum/multidim/decisionGraphUtilities/o4DGContext.h>
-#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/FunctionGraphUtilities/o4DGContext.h>
+#include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
 // =======================================================
 
 namespace gum {
@@ -57,8 +57,8 @@ namespace gum {
       // ============================================================================
       /// Default constructor.
       // ============================================================================
-      Regress( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* vfunction,
-               const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* probDist,
+      Regress( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* vfunction,
+               const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* probDist,
                const Set<const DiscreteVariable*>* primedVars,
                const DiscreteVariable* targetVar,
                const GUM_SCALAR neutral );
@@ -78,7 +78,7 @@ namespace gum {
       // ============================================================================
       /// Computes and builds the Decision Graph that is the result of the operation
       // ============================================================================
-      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *compute();
+      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *compute();
 
     /// @}
 
@@ -93,7 +93,7 @@ namespace gum {
       // ============================================================================
       /// Heuristic methods to decide which of two retrograde variables should come first
       // ============================================================================
-      Idx __distance( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *,
+      Idx __distance( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *,
                       const DiscreteVariable*,
                       const DiscreteVariable* );
 
@@ -101,7 +101,7 @@ namespace gum {
       /// Establish for each node in both decision graph if it has retrograde variables
       /// beneath it
       // ============================================================================
-      void __findRetrogradeVariables( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* dg,
+      void __findRetrogradeVariables( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dg,
                                       HashTable<NodeId, short int*>& dgInstNeed );
 
       // ============================================================================
@@ -114,17 +114,17 @@ namespace gum {
       // ============================================================================
       /// One of the two decision graphs used for the operation
       // ============================================================================
-      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG1;
+      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG1;
 
       // ============================================================================
       /// The other one
       // ============================================================================
-      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG2;
+      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG2;
 
       // ============================================================================
       /// The resulting decision graph
       // ============================================================================
-      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
+      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
 
       // ============================================================================
       /// The set of variables we want to keep at the end

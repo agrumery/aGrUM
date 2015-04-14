@@ -39,7 +39,7 @@
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code only
-#define RECAST(x) reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*>(x)
+#define RECAST(x) reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>(x)
 
 namespace gum {
 
@@ -79,14 +79,14 @@ namespace gum {
     // Evals the q function for current fmdp action
     // ===========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph< GUM_SCALAR >*
-    SVI<GUM_SCALAR>::_evalQaction( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Idx actionId ){
+    MultiDimFunctionGraph< GUM_SCALAR >*
+    SVI<GUM_SCALAR>::_evalQaction( const MultiDimFunctionGraph< GUM_SCALAR >* Vold, Idx actionId ){
 
       // ******************************************************************************
       // Initialisation :
       // Creating a copy of last Vfunction to deduce from the new Qaction
       // And finding the first var to eleminate (the one at the end)
-      Bijection<const DiscreteVariable*, const MultiDimDecisionGraph<GUM_SCALAR> *> pxi;
+      Bijection<const DiscreteVariable*, const MultiDimFunctionGraph<GUM_SCALAR> *> pxi;
       for( SequenceIteratorSafe<const DiscreteVariable*> varIter = Vold->variablesSequence().beginSafe();
            varIter != Vold->variablesSequence().endSafe(); ++varIter ){
         pxi.insert( *varIter, RECAST(this->_fmdp->transition( actionId, this->_fmdp->mapMainPrime().first(*varIter )) ) );
@@ -105,8 +105,8 @@ namespace gum {
     /// @warning given qAction is deleted, return the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph<GUM_SCALAR>* SVI<GUM_SCALAR>::_regress( const MultiDimDecisionGraph< GUM_SCALAR >* qAction,
-                                                                  const MultiDimDecisionGraph< GUM_SCALAR >* pxi,
+    MultiDimFunctionGraph<GUM_SCALAR>* SVI<GUM_SCALAR>::_regress( const MultiDimFunctionGraph< GUM_SCALAR >* qAction,
+                                                                  const MultiDimFunctionGraph< GUM_SCALAR >* pxi,
                                                                   const DiscreteVariable* xip){
       return nullptr;
     }
@@ -118,11 +118,11 @@ namespace gum {
     /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph<GUM_SCALAR>* SVI<GUM_SCALAR>::_maximize(const MultiDimDecisionGraph< GUM_SCALAR >* vFunction,
-                                                                  const MultiDimDecisionGraph< GUM_SCALAR >* qAction){
+    MultiDimFunctionGraph<GUM_SCALAR>* SVI<GUM_SCALAR>::_maximize(const MultiDimFunctionGraph< GUM_SCALAR >* vFunction,
+                                                                  const MultiDimFunctionGraph< GUM_SCALAR >* qAction){
 
       TreeOperator< GUM_SCALAR, Maximizes > argmaxope( vFunction, qAction );
-      MultiDimDecisionGraph<GUM_SCALAR>* ret = argmaxope.compute();
+      MultiDimFunctionGraph<GUM_SCALAR>* ret = argmaxope.compute();
       delete vFunction;
       delete qAction;
       return ret;
@@ -136,13 +136,13 @@ namespace gum {
     /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* SVI<GUM_SCALAR>::_argmaximize(
-                        const MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* vFunction,
-                        const MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* qAction){
+    MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* SVI<GUM_SCALAR>::_argmaximize(
+                        const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* vFunction,
+                        const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* qAction){
 
       TreeOperator< ArgMaxSet<GUM_SCALAR, Idx>, ArgumentMaximisesAction, SetTerminalNodePolicy > argmaxope(
             vFunction, qAction );
-      MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* ret = argmaxope.compute();
+      MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* ret = argmaxope.compute();
 
       delete vFunction;
       delete qAction;
@@ -156,11 +156,11 @@ namespace gum {
     /// @warning given function is deleted, returns the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph<GUM_SCALAR>* SVI<GUM_SCALAR>::_add( const MultiDimDecisionGraph< GUM_SCALAR >* function,
-                                                              const MultiDimDecisionGraph< GUM_SCALAR >* reward){
+    MultiDimFunctionGraph<GUM_SCALAR>* SVI<GUM_SCALAR>::_add( const MultiDimFunctionGraph< GUM_SCALAR >* function,
+                                                              const MultiDimFunctionGraph< GUM_SCALAR >* reward){
 
       TreeOperator< GUM_SCALAR, std::plus > argmaxope( function, reward );
-      MultiDimDecisionGraph<GUM_SCALAR>* ret = argmaxope.compute();
+      MultiDimFunctionGraph<GUM_SCALAR>* ret = argmaxope.compute();
       delete function;
       return ret;
     }
@@ -172,8 +172,8 @@ namespace gum {
     /// @warning this time, nothing is deleted
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph<GUM_SCALAR>* SVI<GUM_SCALAR>::_subtract(const MultiDimDecisionGraph< GUM_SCALAR >* newVF,
-                                                                  const MultiDimDecisionGraph< GUM_SCALAR >* oldVF){
+    MultiDimFunctionGraph<GUM_SCALAR>* SVI<GUM_SCALAR>::_subtract(const MultiDimFunctionGraph< GUM_SCALAR >* newVF,
+                                                                  const MultiDimFunctionGraph< GUM_SCALAR >* oldVF){
 
       TreeOperator< GUM_SCALAR, std::minus > argmaxope( newVF, oldVF );
       return argmaxope.compute();

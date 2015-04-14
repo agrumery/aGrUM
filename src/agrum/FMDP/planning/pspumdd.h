@@ -33,8 +33,8 @@
 #include <agrum/core/inline.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
-#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>*/
+#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>*/
 // =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/planning/spumdd.h>
@@ -92,9 +92,9 @@ namespace gum {
   protected:
 
         /// Performs a single step of value iteration
-        MultiDimDecisionGraph< GUM_SCALAR >* _valueIteration();
+        MultiDimFunctionGraph< GUM_SCALAR >* _valueIteration();
 
-        MultiDimDecisionGraph<GUM_SCALAR>* _evalQaction( const MultiDimDecisionGraph<GUM_SCALAR>*, Idx );
+        MultiDimFunctionGraph<GUM_SCALAR>* _evalQaction( const MultiDimFunctionGraph<GUM_SCALAR>*, Idx );
 
   private :
       /// A map to ensure all FMDP actions are correctly iterrated over during value iteration

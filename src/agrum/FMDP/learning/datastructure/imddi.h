@@ -28,7 +28,7 @@
 #ifndef GUM_IMDDI_H
 #define GUM_IMDDI_H
 // =========================================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
 #include <agrum/FMDP/learning/datastructure/variableselector.h>
@@ -42,7 +42,7 @@
 namespace gum {
 
   /**
-   * @class IMDDI imddi.h <agrum/FMDP/planning/decisionGraph/imddi.h>
+   * @class IMDDI imddi.h <agrum/FMDP/planning/FunctionGraph/imddi.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -63,7 +63,7 @@ namespace gum {
         // ==========================================================================
         /// Variable Learner constructor
         // ==========================================================================
-        IMDDI ( MultiDimDecisionGraph<double>* target,
+        IMDDI ( MultiDimFunctionGraph<double>* target,
                 double attributeSelectionThreshold,
                 double pairSelectionThreshold,
                 Set<const DiscreteVariable*> attributeListe,
@@ -72,7 +72,7 @@ namespace gum {
         // ==========================================================================
         /// Reward Learner constructor
         // ==========================================================================
-        IMDDI ( MultiDimDecisionGraph<double>* target,
+        IMDDI ( MultiDimFunctionGraph<double>* target,
                 double attributeSelectionThreshold,
                 double pairSelectionThreshold,
                 Set<const DiscreteVariable*> attributeListe );
@@ -146,16 +146,16 @@ namespace gum {
         // ==========================================================================
         ///
         // ==========================================================================
-        void updateDecisionGraph();
+        void updateFunctionGraph();
   private :
-        void __rebuildDecisionGraph();
-        NodeId __insertLeafInDecisionGraph( AbstractLeaf*, Int2Type<true> );
-        NodeId __insertLeafInDecisionGraph( AbstractLeaf*, Int2Type<false> );
+        void __rebuildFunctionGraph();
+        NodeId __insertLeafInFunctionGraph( AbstractLeaf*, Int2Type<true> );
+        NodeId __insertLeafInFunctionGraph( AbstractLeaf*, Int2Type<false> );
 
       /// @}
       ///
   protected :
-      void _insertSetOfVars( MultiDimDecisionGraph<double>* ret ){
+      void _insertSetOfVars( MultiDimFunctionGraph<double>* ret ){
         for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __varOrder.beginSafe();
                 varIter != __varOrder.endSafe(); ++varIter)
           ret->add(**varIter);

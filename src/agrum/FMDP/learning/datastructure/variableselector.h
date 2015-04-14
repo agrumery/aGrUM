@@ -37,7 +37,7 @@
 namespace gum {
 
   /**
-   * @class VariableSelector variableselector.h <agrum/FMDP/planning/decisionGraph/variableselector.h>
+   * @class VariableSelector variableselector.h <agrum/FMDP/planning/FunctionGraph/variableselector.h>
    * @brief
    * @ingroup fmdp_group
    *

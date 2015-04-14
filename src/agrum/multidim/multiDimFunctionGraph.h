@@ -20,13 +20,13 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of MultiDimDecisionGraph.
+ * @brief Headers of MultiDimFunctionGraph.
  *
  * @author Jean-Christophe Magnan
  *
  */
-#ifndef GUM_MULTI_DIM_DECISION_GRAPH_H
-#define GUM_MULTI_DIM_DECISION_GRAPH_H
+#ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_H
+#define GUM_MULTI_DIM_FUNCTION_GRAPH_H
 
 // ============================================================================
 //#include <agrum/core/inline.h>
@@ -39,25 +39,25 @@
 #include <agrum/graphs/graphElements.h>
 // ============================================================================
 #include <agrum/multidim/multiDimImplementation.h>
-#include <agrum/multidim/multiDimDecisionGraphManager.h>
-#include <agrum/multidim/decisionGraphUtilities/internalNode.h>
-#include <agrum/multidim/decisionGraphUtilities/link.h>
-#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
+#include <agrum/multidim/multiDimFunctionGraphManager.h>
+#include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
+#include <agrum/multidim/FunctionGraphUtilities/link.h>
+#include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
 // ============================================================================
 
 namespace gum {
 
   template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
-  class MultiDimDecisionGraphManager;
+  class MultiDimFunctionGraphManager;
   /**
-   * @class MultiDimDecisionGraph multiDimDecisionGraph.h <agrum/multidim/multiDimDecisionGraph.h>
+   * @class MultiDimFunctionGraph multiDimFunctionGraph.h <agrum/multidim/multiDimFunctionGraph.h>
    *
    * @brief Class implementingting a decision graph
    *
    * @ingroup multidim_group
    */
   template<typename GUM_SCALAR, template <class> class TerminalNodePolicy = ExactTerminalNodePolicy >
-  class MultiDimDecisionGraph : public MultiDimImplementation< GUM_SCALAR >, public TerminalNodePolicy<GUM_SCALAR> {
+  class MultiDimFunctionGraph : public MultiDimImplementation< GUM_SCALAR >, public TerminalNodePolicy<GUM_SCALAR> {
 
     public:
 
@@ -73,22 +73,22 @@ namespace gum {
         // ============================================================================
         /// Default constructor.
         // ============================================================================
-        MultiDimDecisionGraph();
+        MultiDimFunctionGraph();
 
         // ============================================================================
         /// Copy constructor.
         // ============================================================================
-        MultiDimDecisionGraph( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>& from );
+        MultiDimFunctionGraph( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from );
 
         // ============================================================================
         /// Copy Operator.
         // ============================================================================
-        MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>& operator=(const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>& from);
+        MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& operator=(const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from);
 
         // ============================================================================
         /// Destructor.
         // ============================================================================
-        ~MultiDimDecisionGraph();
+        ~MultiDimFunctionGraph();
 
       /// @}
 
@@ -125,7 +125,7 @@ namespace gum {
         * see MultiDimImplementation::set ( const Instantiation &i, const GUM_SCALAR &value )
         *
         * @throw OperationNotAllowed. Decision Graph can't be edited so easily.
-        * MultiDimDecisionGraphManager provides the framework to editate a Decision Graph.
+        * MultiDimFunctionGraphManager provides the framework to editate a Decision Graph.
         */
         // ============================================================================
         void set ( const Instantiation &i, const GUM_SCALAR &value ) const;
@@ -135,7 +135,7 @@ namespace gum {
         * see MultiDimImplementation::fill( const GUM_SCALAR &d )
         *
         * @throw OperationNotAllowed. Decision Graph can't be edited so easily.
-        * MultiDimDecisionGraphManager provides the framework to editate a Decision Graph.
+        * MultiDimFunctionGraphManager provides the framework to editate a Decision Graph.
         */
         // ============================================================================
         void fill( const GUM_SCALAR &d ) const;
@@ -145,7 +145,7 @@ namespace gum {
         * see MultiDimImplementation::fillWith ( const std::vector<GUM_SCALAR>& v )
         *
         * @throw OperationNotAllowed. Decision Graph can't be edited so easily.
-        * MultiDimDecisionGraphManager provides the framework to editate a Decision Graph.
+        * MultiDimFunctionGraphManager provides the framework to editate a Decision Graph.
         */
         // ==============================================================================
         void fillWith ( const std::vector<GUM_SCALAR>& v ) const;
@@ -237,7 +237,7 @@ namespace gum {
          * @param src The MultiDimContainer src which values are copied.
          * @param p_i Give the order to iterate in this MultiDimContainer during
          *            the copy (natural order if null).
-         * @throw OperationNotAllowed MultiDimDecisionGraph can't copy other multiDim.
+         * @throw OperationNotAllowed MultiDimFunctionGraph can't copy other multiDim.
          */
         // ============================================================================
         void copyFrom ( const MultiDimContainer<GUM_SCALAR>& src,
@@ -247,18 +247,18 @@ namespace gum {
         /**
          * Removes all variables in this MultiDimContainer and copy the content
          * of src, variables included.
-         * @throw OperationNotAllowed MultiDimDecisionGraph can't copy other multiDim.
+         * @throw OperationNotAllowed MultiDimFunctionGraph can't copy other multiDim.
          */
         // ============================================================================
         void copy ( const MultiDimContainer<GUM_SCALAR>& src );
 
         // ============================================================================
         /**
-         * Removes all variables in this MultiDimDecisionGraph and copy the content
+         * Removes all variables in this MultiDimFunctionGraph and copy the content
          * of src, variables included.
          */
         // ============================================================================
-        void copy ( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>& src );
+        void copy ( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src );
 
         // ============================================================================
         /**
@@ -271,7 +271,7 @@ namespace gum {
          * of variables of the old variable.
          */
         // ============================================================================
-        void copyAndReassign ( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> &src,
+        void copyAndReassign ( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> &src,
                                const Bijection<const DiscreteVariable*, const DiscreteVariable*>& reassign );
 
         // ============================================================================
@@ -279,7 +279,7 @@ namespace gum {
          * Copies src diagrams and multiply every value by the given scalar.
          */
         // ============================================================================
-        void copyAndMultiplyByScalar ( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>& src,
+        void copyAndMultiplyByScalar ( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src,
                                        GUM_SCALAR gamma );
 
         // ============================================================================
@@ -309,7 +309,7 @@ namespace gum {
         // ============================================================================
         /// Returns a const reference to the manager of this diagram
         // ============================================================================
-        MultiDimDecisionGraphManager<GUM_SCALAR, TerminalNodePolicy>* manager();
+        MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>* manager();
 
         // ============================================================================
         /// Returns the id of the root node from the diagram
@@ -400,7 +400,7 @@ namespace gum {
       // ============================================================================
       /// A reference to the manager that edits this decision graph
       // ============================================================================
-      MultiDimDecisionGraphManager<GUM_SCALAR, TerminalNodePolicy>* __manager;
+      MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>* __manager;
 
       // ============================================================================
       /// The root node of the decision graph
@@ -420,10 +420,10 @@ namespace gum {
 
       /// @}
 
-      friend class MultiDimDecisionGraphManager<GUM_SCALAR, TerminalNodePolicy>;
+      friend class MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>;
   };
 }
 
-#include <agrum/multidim/multiDimDecisionGraph.tcc>
+#include <agrum/multidim/multiDimFunctionGraph.tcc>
 
-#endif // GUM_MULTI_DIM_DECISION_GRAPH_H
+#endif // GUM_MULTI_DIM_FUNCTION_GRAPH_H

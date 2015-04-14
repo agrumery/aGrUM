@@ -30,7 +30,7 @@
 // =========================================================================
 #include <agrum/core/multiPriorityQueue.h>
 // =========================================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 // =========================================================================
 #include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
@@ -41,7 +41,7 @@
 namespace gum {
 
   /**
-   * @class ITI iti.h <agrum/FMDP/planning/decisionGraph/iti.h>
+   * @class ITI iti.h <agrum/FMDP/planning/FunctionGraph/iti.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -68,7 +68,7 @@ namespace gum {
         /**
          * ITI constructor for functions describing the behaviour of one variable
          * according to a set of other variable such as conditionnal probabilities
-         * @param target : the MultiDimDecisionGraph in which we load the structure
+         * @param target : the MultiDimFunctionGraph in which we load the structure
          * @param attributeSelectionThreshold : threshold under which a node is not
          * installed (pe-pruning)
          * @param temporaryAPIfix : Issue in API in regard to IMDDI
@@ -77,7 +77,7 @@ namespace gum {
          * @param learnedValue : the variable from which we try to learn the behaviour
          */
         // ==========================================================================
-        ITI ( MultiDimDecisionGraph<double>* target,
+        ITI ( MultiDimFunctionGraph<double>* target,
               double attributeSelectionThreshold,
               double temporaryAPIfix,
               Set<const DiscreteVariable*> attributeListe,
@@ -87,7 +87,7 @@ namespace gum {
         /**
          * ITI constructeur for real functions. We try to predict the output of a
          * function f given a set of variable
-         * @param target : the MultiDimDecisionGraph in which we load the structure
+         * @param target : the MultiDimFunctionGraph in which we load the structure
          * @param attributeSelectionThreshold : threshold under which a node is not
          * installed (pe-pruning)
          * @param temporaryAPIfix : Issue in API in regard to IMDDI
@@ -95,7 +95,7 @@ namespace gum {
          * behaviour of learned function
          */
         // ==========================================================================
-        ITI ( MultiDimDecisionGraph<double>* target,
+        ITI ( MultiDimFunctionGraph<double>* target,
               double attributeSelectionThreshold,
               double temporaryAPIfix,
               Set<const DiscreteVariable*> attributeListe );
@@ -185,7 +185,7 @@ namespace gum {
         // ==========================================================================
         /// Updates target to currently learned graph structure
         // ==========================================================================
-        void updateDecisionGraph();
+        void updateFunctionGraph();
 
     private :
 
@@ -196,7 +196,7 @@ namespace gum {
          * @return the mathcing node id in the target
          */
         // ==========================================================================
-        NodeId __insertNodeInDecisionGraph( NodeId );
+        NodeId __insertNodeInFunctionGraph( NodeId );
 
         // ==========================================================================
         /**
@@ -242,7 +242,7 @@ namespace gum {
          * @param ret
          */
         // ==========================================================================
-        void _insertSetOfVars( MultiDimDecisionGraph<double>* ret ){
+        void _insertSetOfVars( MultiDimFunctionGraph<double>* ret ){
         for( SetIteratorSafe<const DiscreteVariable*> varIter = this->_setOfVars.beginSafe();
                 varIter != this->_setOfVars.endSafe(); ++varIter)
           ret->add(**varIter);

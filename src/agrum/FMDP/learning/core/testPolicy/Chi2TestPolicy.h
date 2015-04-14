@@ -24,8 +24,8 @@
  * @author Jean-Christophe Magnan
  *
  */
-#ifndef GUM_MULTI_DIM_DECISION_GRAPH_CHI2_TEST_POLICY_H
-#define GUM_MULTI_DIM_DECISION_GRAPH_CHI2_TEST_POLICY_H
+#ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_CHI2_TEST_POLICY_H
+#define GUM_MULTI_DIM_FUNCTION_GRAPH_CHI2_TEST_POLICY_H
 
 // ============================================================================
 #include <agrum/FMDP/learning/core/contingencyTable.h>
@@ -123,4 +123,4 @@ namespace gum {
 
 #include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy.tcc>
 
-#endif /* GUM_MULTI_DIM_DECISION_GRAPH_CHI2_TEST_POLICY_H */
+#endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_CHI2_TEST_POLICY_H */

@@ -20,10 +20,10 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Sources of gum::MultiDimDecisionGraphManager.
+ * @brief Sources of gum::MultiDimFunctionGraphManager.
  *
  * @author Jean-Christophe Magnan
  *
  */
 
-#include <agrum/multidim/multiDimDecisionGraphManager.h>
+#include <agrum/multidim/multiDimFunctionGraphManager.h>

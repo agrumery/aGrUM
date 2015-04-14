@@ -35,8 +35,8 @@
 // =========================================================================
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/multiDimDecisionGraph.h>
-#include <agrum/multidim/decisionGraphUtilities/multiDimDecisionGraphOperator.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphOperator.h>
 // =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/planning/rmaxmddplaner.h>
@@ -44,7 +44,7 @@
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code only
-#define RECAST(x) reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*>(x)
+#define RECAST(x) reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>(x)
 
 namespace gum {
 
@@ -94,8 +94,8 @@ namespace gum {
       SPUMDD<GUM_SCALAR>::initialize();
 
       for( SequenceIteratorSafe<Idx> actionIter = this->_fmdp->beginActions(); actionIter != this->_fmdp->endActions(); ++actionIter){
-        __rmaxMap.insert(*actionIter, new  MultiDimDecisionGraph<GUM_SCALAR>());
-        __dispatchMap.insert(*actionIter, new  MultiDimDecisionGraph<GUM_SCALAR>());
+        __rmaxMap.insert(*actionIter, new  MultiDimFunctionGraph<GUM_SCALAR>());
+        __dispatchMap.insert(*actionIter, new  MultiDimFunctionGraph<GUM_SCALAR>());
       }
     }
 
@@ -111,13 +111,13 @@ namespace gum {
     // Performs a single step of value iteration
     // ===========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph< GUM_SCALAR >* RMaxMDDPlaner<GUM_SCALAR>::_valueIteration() {
+    MultiDimFunctionGraph< GUM_SCALAR >* RMaxMDDPlaner<GUM_SCALAR>::_valueIteration() {
 
       for( SequenceIteratorSafe<Idx> actionIter = this->_fmdp->beginActions(); actionIter != this->_fmdp->endActions(); ++actionIter ){
         __rmaxMap[*actionIter]->clear();
         __dispatchMap[*actionIter]->clear();
 
-        MultiDimDecisionGraph<GUM_SCALAR>* dsa =  new  MultiDimDecisionGraph<GUM_SCALAR>();
+        MultiDimFunctionGraph<GUM_SCALAR>* dsa =  new  MultiDimFunctionGraph<GUM_SCALAR>();
         dsa->manager()->setRootNode(dsa->manager()->addTerminalNode(std::numeric_limits<GUM_SCALAR>::max()));
         for( SequenceIteratorSafe<const DiscreteVariable*> varIter = this->_fmdp->beginVariables(); varIter != this->_fmdp->endVariables(); ++varIter ){
           dsa = _minimizes( __spim->extractCount(*actionIter, *varIter), dsa );
@@ -140,14 +140,14 @@ namespace gum {
 
       // *****************************************************************************************
       // Loop reset
-      MultiDimDecisionGraph< GUM_SCALAR >* newVFunction = new MultiDimDecisionGraph< GUM_SCALAR >();
+      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = new MultiDimFunctionGraph< GUM_SCALAR >();
       newVFunction->copyAndReassign ( *this->_vFunction, this->_fmdp->mapMainPrime() );
 
       // *****************************************************************************************
       // For each action
-      std::vector<MultiDimDecisionGraph<GUM_SCALAR>*> qActionsSet;
+      std::vector<MultiDimFunctionGraph<GUM_SCALAR>*> qActionsSet;
       for ( auto actionIter = this->_fmdp->beginActions(); actionIter != this->_fmdp->endActions(); ++actionIter  ) {
-        MultiDimDecisionGraph<GUM_SCALAR>* qAction = _evalQaction( newVFunction, *actionIter );
+        MultiDimFunctionGraph<GUM_SCALAR>* qAction = _evalQaction( newVFunction, *actionIter );
         qActionsSet.push_back(qAction);
       }
       delete newVFunction;
@@ -164,9 +164,9 @@ namespace gum {
     // Evals the q function for current fmdp action
     // ===========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph< GUM_SCALAR >*
-    RMaxMDDPlaner<GUM_SCALAR>::_evalQaction( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Idx actionId ){
-      MultiDimDecisionGraph<GUM_SCALAR>* qAction = SPUMDD<GUM_SCALAR>::_evalQaction(Vold, actionId);
+    MultiDimFunctionGraph< GUM_SCALAR >*
+    RMaxMDDPlaner<GUM_SCALAR>::_evalQaction( const MultiDimFunctionGraph< GUM_SCALAR >* Vold, Idx actionId ){
+      MultiDimFunctionGraph<GUM_SCALAR>* qAction = SPUMDD<GUM_SCALAR>::_evalQaction(Vold, actionId);
       qAction = this->_addReward(qAction);
       qAction = _multiply( qAction, __dispatchMap[actionId] );
       qAction = _rmaximize( qAction, __rmaxMap[actionId] );
@@ -190,15 +190,15 @@ namespace gum {
 
       // *****************************************************************************************
       // Loop reset
-      MultiDimDecisionGraph< GUM_SCALAR >* newVFunction = new MultiDimDecisionGraph< GUM_SCALAR >();
+      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = new MultiDimFunctionGraph< GUM_SCALAR >();
       newVFunction->copyAndReassign ( *this->_vFunction, this->_fmdp->mapMainPrime() );
 
-      std::vector<MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*> argMaxQActionsSet;
+      std::vector<MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*> argMaxQActionsSet;
       // *****************************************************************************************
       // For each action
       for ( auto actionIter = this->_fmdp->beginActions(); actionIter != this->_fmdp->endActions(); ++actionIter  ) {
 
-        MultiDimDecisionGraph<GUM_SCALAR>* qAction = _evalQaction( newVFunction, *actionIter );
+        MultiDimFunctionGraph<GUM_SCALAR>* qAction = _evalQaction( newVFunction, *actionIter );
 
         argMaxQActionsSet.push_back( this->_makeArgMax(qAction, *actionIter) );
       }
@@ -207,7 +207,7 @@ namespace gum {
 
       // *****************************************************************************************
       // Next to evaluate main value function, we take maximise over all action value, ...
-      MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >*
+      MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >*
           argMaxVFunction = this->_argmaximiseQactions( argMaxQActionsSet );
 
       // *****************************************************************************************
@@ -230,9 +230,9 @@ namespace gum {
     // @warning given d(s|a) and  d(X_i | s,a) are deleted, returns the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph<GUM_SCALAR>* RMaxMDDPlaner<GUM_SCALAR>::_minimizes(const MultiDimDecisionGraph< GUM_SCALAR >* dxisa,
-                                                                             const MultiDimDecisionGraph< GUM_SCALAR >* dsa){
-      MultiDimDecisionGraph<GUM_SCALAR>* ret = minimize2MultiDimDecisionGraphs ( dxisa, dsa );
+    MultiDimFunctionGraph<GUM_SCALAR>* RMaxMDDPlaner<GUM_SCALAR>::_minimizes(const MultiDimFunctionGraph< GUM_SCALAR >* dxisa,
+                                                                             const MultiDimFunctionGraph< GUM_SCALAR >* dsa){
+      MultiDimFunctionGraph<GUM_SCALAR>* ret = minimize2MultiDimFunctionGraphs ( dxisa, dsa );
       delete dxisa;
       delete dsa;
       return ret;
@@ -246,9 +246,9 @@ namespace gum {
     // @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph<GUM_SCALAR>* RMaxMDDPlaner<GUM_SCALAR>::_rmaximize( const MultiDimDecisionGraph< GUM_SCALAR >* qAction,
-                                                                              const MultiDimDecisionGraph< GUM_SCALAR >* rMax){
-      MultiDimDecisionGraph<GUM_SCALAR>* ret = maximize2MultiDimDecisionGraphs ( qAction, rMax );
+    MultiDimFunctionGraph<GUM_SCALAR>* RMaxMDDPlaner<GUM_SCALAR>::_rmaximize( const MultiDimFunctionGraph< GUM_SCALAR >* qAction,
+                                                                              const MultiDimFunctionGraph< GUM_SCALAR >* rMax){
+      MultiDimFunctionGraph<GUM_SCALAR>* ret = maximize2MultiDimFunctionGraphs ( qAction, rMax );
       delete qAction;
       return ret;
     }
@@ -260,9 +260,9 @@ namespace gum {
     // @warning given  qAction is deleted, returns the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph<GUM_SCALAR>* RMaxMDDPlaner<GUM_SCALAR>::_multiply(const MultiDimDecisionGraph< GUM_SCALAR >* qAction,
-                                                                            const MultiDimDecisionGraph< GUM_SCALAR >* dispatch){
-      MultiDimDecisionGraph<GUM_SCALAR>* ret = multiply2MultiDimDecisionGraphs( qAction, dispatch );
+    MultiDimFunctionGraph<GUM_SCALAR>* RMaxMDDPlaner<GUM_SCALAR>::_multiply(const MultiDimFunctionGraph< GUM_SCALAR >* qAction,
+                                                                            const MultiDimFunctionGraph< GUM_SCALAR >* dispatch){
+      MultiDimFunctionGraph<GUM_SCALAR>* ret = multiply2MultiDimFunctionGraphs( qAction, dispatch );
       delete qAction;
       return ret;
     }
@@ -280,8 +280,8 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     NodeId RMaxMDDPlaner<GUM_SCALAR>::__createRMax(NodeId currentNodeId,
-                                              MultiDimDecisionGraph<GUM_SCALAR>* dTemp,
-                                              MultiDimDecisionGraph<GUM_SCALAR>* sortie,
+                                              MultiDimFunctionGraph<GUM_SCALAR>* dTemp,
+                                              MultiDimFunctionGraph<GUM_SCALAR>* sortie,
                                               double valSi,
                                               double valSinon) {
 

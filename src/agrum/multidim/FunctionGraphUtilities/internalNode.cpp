@@ -20,13 +20,13 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Methods of the MultiDimDecisionGraph InternalNode class.
+ * @brief Methods of the MultiDimFunctionGraph InternalNode class.
  *
  * @author Jean-Christophe Magnan
  *
  */
 // =======================================================================================
-#include <agrum/multidim/decisionGraphUtilities/internalNode.h>
+#include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
 // =======================================================================================
 #define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
 #define DEALLOCATE(x,y) SmallObjectAllocator::instance().deallocate(x,y)

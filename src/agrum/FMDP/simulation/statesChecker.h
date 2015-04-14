@@ -29,7 +29,7 @@
 #define GUM_STATES_CHECKER_H
 // =========================================================================
 // =========================================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 // =========================================================================
 
 namespace gum {
@@ -82,7 +82,7 @@ namespace gum {
 
       Idx __nbVisitedStates;
 
-      MultiDimDecisionGraph<bool>* __checker;
+      MultiDimFunctionGraph<bool>* __checker;
       NodeId __checkerTrueId, __checkerFalseId;
   };
 } /* namespace gum */

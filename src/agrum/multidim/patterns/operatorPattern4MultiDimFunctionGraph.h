@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief the pattern used by all binary MultiDimDecisionGraphs operators
+ * @brief the pattern used by all binary MultiDimFunctionGraphs operators
  *
  * @author Jean-Christophe MAGNAN
  */
@@ -28,7 +28,7 @@
 // check if we allowed these patterns to be used
 #ifndef GUM_OPERATOR_PATTERN_ALLOWED
 
-#warning To use operatorPattern4MultiDimDecisionGraph.h, you must define GUM_OPERATOR_PATTERN_ALLOWED
+#warning To use operatorPattern4MultiDimFunctionGraph.h, you must define GUM_OPERATOR_PATTERN_ALLOWED
 
 #else
 
@@ -36,15 +36,15 @@
 #include <agrum/core/functors.h>
 // =======================================================================================
 #include <agrum/multidim/multiDimImplementation.h>
-#include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 // =======================================================================================
-#include <agrum/multidim/decisionGraphUtilities/multiDimDecisionGraphOperator.h>
+#include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphOperator.h>
 // =======================================================================================
 
 namespace gum {
 
 /**
- * This specialized function combines two MultiDimDecisionGraphs.
+ * This specialized function combines two MultiDimFunctionGraphs.
  * Any operation (addition, subtraction, multiplication, ...) must call this methods.
  **/
 
@@ -52,9 +52,9 @@ namespace gum {
 #define GUM_MULTI_DIM_OPERATOR_TYPE GUM_SCALAR
 
   template< typename  GUM_SCALAR >
-  MultiDimDecisionGraph< GUM_SCALAR >*
-  GUM_MULTI_DIM_OPERATOR_NAME( const MultiDimDecisionGraph< GUM_SCALAR >* dg1,
-                               const MultiDimDecisionGraph< GUM_SCALAR >* dg2 ) {
+  MultiDimFunctionGraph< GUM_SCALAR >*
+  GUM_MULTI_DIM_OPERATOR_NAME( const MultiDimFunctionGraph< GUM_SCALAR >* dg1,
+                               const MultiDimFunctionGraph< GUM_SCALAR >* dg2 ) {
 #endif
 
 
@@ -65,11 +65,11 @@ namespace gum {
   MultiDimImplementation< GUM_SCALAR >*
   GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME( const MultiDimImplementation< GUM_SCALAR >* tt1,
                                                      const MultiDimImplementation< GUM_SCALAR >* tt2 ) {
-    const MultiDimDecisionGraph< GUM_SCALAR >* dg1 = reinterpret_cast<const MultiDimDecisionGraph< GUM_SCALAR >*>( tt1 );
-    const MultiDimDecisionGraph< GUM_SCALAR >* dg2 = reinterpret_cast<const MultiDimDecisionGraph< GUM_SCALAR >*>( tt2 );
+    const MultiDimFunctionGraph< GUM_SCALAR >* dg1 = reinterpret_cast<const MultiDimFunctionGraph< GUM_SCALAR >*>( tt1 );
+    const MultiDimFunctionGraph< GUM_SCALAR >* dg2 = reinterpret_cast<const MultiDimFunctionGraph< GUM_SCALAR >*>( tt2 );
 #endif
 
-    MultiDimDecisionGraphOperator< GUM_MULTI_DIM_OPERATOR_TYPE, GUM_MULTI_DIM_OPERATOR> ope( dg1, dg2);
+    MultiDimFunctionGraphOperator< GUM_MULTI_DIM_OPERATOR_TYPE, GUM_MULTI_DIM_OPERATOR> ope( dg1, dg2);
 
     return ope.compute();
   }

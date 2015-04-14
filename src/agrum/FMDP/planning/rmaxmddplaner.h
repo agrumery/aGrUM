@@ -33,8 +33,8 @@
 #include <agrum/core/inline.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
-#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>*/
+#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>*/
 // =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/planning/spumdd.h>
@@ -100,12 +100,12 @@ namespace gum {
         // ==========================================================================
         /// Performs a single step of value iteration
         // ==========================================================================
-        virtual MultiDimDecisionGraph< GUM_SCALAR >* _valueIteration();
+        virtual MultiDimFunctionGraph< GUM_SCALAR >* _valueIteration();
 
         // ==========================================================================
         /// Performs the P(s'|s,a).V^{t-1}(s') part of the value itération
         // ==========================================================================
-        virtual MultiDimDecisionGraph<GUM_SCALAR>* _evalQaction( const MultiDimDecisionGraph<GUM_SCALAR>*, Idx );
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* _evalQaction( const MultiDimFunctionGraph<GUM_SCALAR>*, Idx );
 
       /// @}
 
@@ -139,8 +139,8 @@ namespace gum {
         /// @param rMax : the RMax for that action
         /// @warning given  qAction is deleted, returns the new one
         // ==========================================================================
-        virtual MultiDimDecisionGraph<GUM_SCALAR>* _rmaximize(const MultiDimDecisionGraph< GUM_SCALAR >* qAction,
-                                                              const MultiDimDecisionGraph< GUM_SCALAR >* rMax);
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* _rmaximize(const MultiDimFunctionGraph< GUM_SCALAR >* qAction,
+                                                              const MultiDimFunctionGraph< GUM_SCALAR >* rMax);
 
         // ==========================================================================
         /// Maximizes between QAction and its dispatch
@@ -148,8 +148,8 @@ namespace gum {
         /// @param dispatch : for the maximization xwith rmax after
         /// @warning given  qAction is deleted, returns the new one
         // ==========================================================================
-        virtual MultiDimDecisionGraph<GUM_SCALAR>* _multiply(const MultiDimDecisionGraph< GUM_SCALAR >* qAction,
-                                                            const MultiDimDecisionGraph< GUM_SCALAR >* dispatch);
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* _multiply(const MultiDimFunctionGraph< GUM_SCALAR >* qAction,
+                                                            const MultiDimFunctionGraph< GUM_SCALAR >* dispatch);
 
         // ==========================================================================
         /// Minimizes between d(X_i | s,a) and d(s|a)
@@ -157,8 +157,8 @@ namespace gum {
         /// @param dsa : d(s|a)
         /// @warning given d(s|a) is deleted, returns the new one
         // ==========================================================================
-        virtual MultiDimDecisionGraph<GUM_SCALAR>* _minimizes(const MultiDimDecisionGraph< GUM_SCALAR >* dxisa,
-                                                            const MultiDimDecisionGraph< GUM_SCALAR >* dsa);
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* _minimizes(const MultiDimFunctionGraph< GUM_SCALAR >* dxisa,
+                                                            const MultiDimFunctionGraph< GUM_SCALAR >* dsa);
 
 
       /// @}
@@ -175,8 +175,8 @@ namespace gum {
         /// visited states.
         // ==========================================================================
         NodeId __createRMax(NodeId currentNodeId,
-                            MultiDimDecisionGraph<GUM_SCALAR>* dTemp,
-                            MultiDimDecisionGraph<GUM_SCALAR>* sortie,
+                            MultiDimFunctionGraph<GUM_SCALAR>* dTemp,
+                            MultiDimFunctionGraph<GUM_SCALAR>* sortie,
                             double valSi,
                             double valSinon);
 
@@ -184,8 +184,8 @@ namespace gum {
 
   private :
         SPIMDDI* __spim;
-        HashTable<Idx, MultiDimDecisionGraph<GUM_SCALAR>* > __rmaxMap;
-        HashTable<Idx, MultiDimDecisionGraph<GUM_SCALAR>* > __dispatchMap;
+        HashTable<Idx, MultiDimFunctionGraph<GUM_SCALAR>* > __rmaxMap;
+        HashTable<Idx, MultiDimFunctionGraph<GUM_SCALAR>* > __dispatchMap;
         double __minExplo;
   };
 

@@ -31,13 +31,13 @@
 // =======================================================
 #include <agrum/config.h>
 // =======================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 // =======================================================
 
 namespace gum {
 
 /**
-* @class O4DGContext o4DGContext.h <agrum/multidim/decisionGraphUtilities/o4DGContext.h>
+* @class O4DGContext o4DGContext.h <agrum/multidim/FunctionGraphUtilities/o4DGContext.h>
 * @brief Class used to manipulate context during Decision Graph Operations
 * @ingroup multidim_group
 *
@@ -150,7 +150,7 @@ namespace gum {
 
 //========================================================================
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/decisionGraphUtilities/o4DGContext.inl>
+#include <agrum/multidim/FunctionGraphUtilities/o4DGContext.inl>
 #endif /* GUM_NO_INLINE */
 //========================================================================
 

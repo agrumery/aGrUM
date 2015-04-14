@@ -35,7 +35,7 @@
 //======================================================================
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/multidim/multiDimImplementation.h>
-#include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 //======================================================================
 
 namespace gum {

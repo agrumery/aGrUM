@@ -328,7 +328,7 @@ namespace gum {
       /**
        * Returns the temporal Graph
        */
-      gum::DAG* getDecisionGraph() const;
+      gum::DAG* getFunctionGraph() const;
 
       /**
        * Returns the sequence of decision nodes in the directed path

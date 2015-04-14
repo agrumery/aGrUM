@@ -334,11 +334,11 @@ namespace gum {
 
       for ( auto actionIter = __actionTransitionTable.beginSafe(); actionIter != __actionTransitionTable.endSafe(); ++actionIter ) {
         for ( auto tableIter = ( actionIter.val() )->beginSafe(); tableIter != ( actionIter.val() )->endSafe(); ++tableIter ) {
-          fmdpCore << std::endl << reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*>(tableIter.val())->toDot();
+          fmdpCore << std::endl << reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>(tableIter.val())->toDot();
         }
       }
 
-      fmdpCore << std::endl << reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*>(__defaultRewardTable)->toDot();
+      fmdpCore << std::endl << reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>(__defaultRewardTable)->toDot();
       return fmdpCore.str();
     }
 

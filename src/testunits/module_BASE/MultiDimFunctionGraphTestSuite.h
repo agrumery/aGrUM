@@ -27,9 +27,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
 // =========================================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
-#include <agrum/multidim/multiDimDecisionGraphManager.h>
-#include <agrum/multidim/multiDimDecisionGraphGenerator.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/multiDimFunctionGraphManager.h>
+#include <agrum/multidim/multiDimFunctionGraphGenerator.h>
 #include <agrum/multidim/instantiation.h>
 // =========================================================================
 #include <agrum/variables/labelizedVariable.h>
@@ -37,10 +37,10 @@
 
 namespace gum_tests {
 
-  class MultiDimDecisionGraphTestSuite: public CxxTest::TestSuite {
+  class MultiDimFunctionGraphTestSuite: public CxxTest::TestSuite {
 
     private:
-      void __fillFactory ( gum::MultiDimDecisionGraph< float >* factory, gum::List<gum::NodeId>* idList ) {
+      void __fillFactory ( gum::MultiDimFunctionGraph< float >* factory, gum::List<gum::NodeId>* idList ) {
 
 
           factory->add( *Cprimevar );
@@ -145,33 +145,33 @@ namespace gum_tests {
         // *********************************************************************
         // Création du multidim
         // *********************************************************************
-        gum::MultiDimDecisionGraph<float>* decisionGraph = NULL;
+        gum::MultiDimFunctionGraph<float>* FunctionGraph = NULL;
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph = new gum::MultiDimDecisionGraph<float>() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph = new gum::MultiDimFunctionGraph<float>() );
 
         // *********************************************************************
         // Remplissage du multidim ( donc accessoirement des fonctions d'insertion
         // de noeuds et d'arcs sans risques de levage d'exception)
         // *********************************************************************
         gum::List<gum::NodeId> idList;
-        TS_GUM_ASSERT_THROWS_NOTHING ( __fillFactory ( decisionGraph, &idList ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( __fillFactory ( FunctionGraph, &idList ) );
 
         // *********************************************************************
         // Destruction du multidim
         // *********************************************************************
-        TS_GUM_ASSERT_THROWS_NOTHING ( delete decisionGraph );
+        TS_GUM_ASSERT_THROWS_NOTHING ( delete FunctionGraph );
       }
 
 
 
-      void test_MultiDimDecisionGraph_Diagram_Handlers_Methods() {
+      void test_MultiDimFunctionGraph_Diagram_Handlers_Methods() {
 
         // *********************************************************************
         // Création du multidim
         // *********************************************************************
-        gum::MultiDimDecisionGraph<float>* decisionGraph = new gum::MultiDimDecisionGraph<float>();
+        gum::MultiDimFunctionGraph<float>* FunctionGraph = new gum::MultiDimFunctionGraph<float>();
         gum::List<gum::NodeId> idList;
-        __fillFactory ( decisionGraph, &idList );
+        __fillFactory ( FunctionGraph, &idList );
 
         // *********************************************************************
         // Tests
@@ -179,25 +179,25 @@ namespace gum_tests {
         gum::LabelizedVariable* Banditovar = new gum::LabelizedVariable ( "Bandito", "Desperado", 2 );
 
         // Test is terminal node
-        TS_ASSERT_EQUALS ( decisionGraph->isTerminalNode ( 16 ), true );
-        TS_ASSERT_EQUALS ( decisionGraph->isTerminalNode ( 6 ), false );
+        TS_ASSERT_EQUALS ( FunctionGraph->isTerminalNode ( 16 ), true );
+        TS_ASSERT_EQUALS ( FunctionGraph->isTerminalNode ( 6 ), false );
 
         // Test Root
-        TS_ASSERT_EQUALS ( decisionGraph->root(), ( gum::NodeId ) 1 );
+        TS_ASSERT_EQUALS ( FunctionGraph->root(), ( gum::NodeId ) 1 );
 
         // test node value
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->nodeValue ( 16 ) );
-        TS_ASSERT_EQUALS ( decisionGraph->nodeValue ( 16 ), 0 );
-        TS_ASSERT_THROWS ( decisionGraph->nodeValue ( 6 ), gum::NotFound );
+        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph->nodeValue ( 16 ) );
+        TS_ASSERT_EQUALS ( FunctionGraph->nodeValue ( 16 ), 0 );
+        TS_ASSERT_THROWS ( FunctionGraph->nodeValue ( 6 ), gum::NotFound );
 
         // Test node variable
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->node ( 6 ) );
-        TS_ASSERT_THROWS ( decisionGraph->node ( 16 ), gum::NotFound );
+        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph->node ( 6 ) );
+        TS_ASSERT_THROWS ( FunctionGraph->node ( 16 ), gum::NotFound );
 
         // *********************************************************************
         // Cleaning
         // *********************************************************************
-        TS_GUM_ASSERT_THROWS_NOTHING ( delete decisionGraph );
+        TS_GUM_ASSERT_THROWS_NOTHING ( delete FunctionGraph );
         delete Banditovar;
 
       }
@@ -207,19 +207,19 @@ namespace gum_tests {
         // *********************************************************************
         // Création du multidim
         // *********************************************************************
-          gum::MultiDimDecisionGraph<float>* decisionGraph = new gum::MultiDimDecisionGraph<float>();
+          gum::MultiDimFunctionGraph<float>* FunctionGraph = new gum::MultiDimFunctionGraph<float>();
           gum::List<gum::NodeId> idList;
-          __fillFactory ( decisionGraph, &idList );
+          __fillFactory ( FunctionGraph, &idList );
 
         // For comparison with what readers will return
-        std::string dotfile = GET_PATH_STR ( "DecisionGraph.dot" );
+        std::string dotfile = GET_PATH_STR ( "FunctionGraph.dot" );
         std::ofstream output ( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
         if ( ! output.good() ) {
           GUM_ERROR ( gum::IOError, "Stream states flags are not all unset." );
         }
 
-        output << decisionGraph->toDot();
+        output << FunctionGraph->toDot();
 
         output.flush();
 
@@ -229,7 +229,7 @@ namespace gum_tests {
           GUM_ERROR ( gum::IOError, "Writting in the ostream failed." );
         }
 
-        delete decisionGraph;
+        delete FunctionGraph;
       }
 
 
@@ -242,9 +242,9 @@ namespace gum_tests {
         // *********************************************************************
         // Création du multidim
         // *********************************************************************
-        gum::MultiDimDecisionGraph<float>* decisionGraph = new gum::MultiDimDecisionGraph<float>();
+        gum::MultiDimFunctionGraph<float>* FunctionGraph = new gum::MultiDimFunctionGraph<float>();
         gum::List<gum::NodeId> idList;
-        __fillFactory ( decisionGraph, &idList );
+        __fillFactory ( FunctionGraph, &idList );
 
 
         // *********************************************************************
@@ -253,18 +253,18 @@ namespace gum_tests {
 
         // Ajout d'un noeud terminal ayant la même valeur qu'un autre noeud terminal
         // (la factory doit renvoyer l'id de ce node)
-        TS_ASSERT_EQUALS ( decisionGraph->manager()->addTerminalNode ( 10 ), idList[16] );
+        TS_ASSERT_EQUALS ( FunctionGraph->manager()->addTerminalNode ( 10 ), idList[16] );
 //        std::cout << idList << std::endl;
-//        decisionGraph->toDot();
+//        FunctionGraph->toDot();
 
         // Test de retrait d'un noeud non terminal
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->manager()->eraseNode ( idList[12] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph->manager()->eraseNode ( idList[12] ) );
 
         // Test de retrait d'un noeud terminal
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->manager()->eraseNode ( idList[15] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph->manager()->eraseNode ( idList[15] ) );
 
         // Test de retrait du même noeud, pour s'assurer du levage d'exception
-        TS_ASSERT_THROWS ( decisionGraph->manager()->eraseNode ( idList[15] ), gum::NotFound );
+        TS_ASSERT_THROWS ( FunctionGraph->manager()->eraseNode ( idList[15] ), gum::NotFound );
 
 
         // *********************************************************************
@@ -273,36 +273,36 @@ namespace gum_tests {
 
 //        // Test d'ajout d'un arc ayant pour départ un noeud inexistant (doit lever l'exception gum::NotFound)
 //        // (le noeud 15 a été détruit un peu plus haut)
-//        TS_ASSERT_THROWS ( decisionGraph->manager()->setSon ( idList[15], 2, idList[1] ), gum::NotFound );
+//        TS_ASSERT_THROWS ( FunctionGraph->manager()->setSon ( idList[15], 2, idList[1] ), gum::NotFound );
 
 //        // Test d'ajout d'un arc ayant pour départ un noeud terminal (doit lever l'exception gum::InvalidNode
 //        // vu que les noeuds terminaux sont ... terminaux)
-//        TS_ASSERT_THROWS ( decisionGraph->manager()->setSon ( idList[16], 3, idList[1] ), gum::InvalidNode );
+//        TS_ASSERT_THROWS ( FunctionGraph->manager()->setSon ( idList[16], 3, idList[1] ), gum::InvalidNode );
 
 //        // Test d'ajout d'un arc entre 2 noeuds dépassant le nb de modlaity de la variable originelle
-//        TS_ASSERT_THROWS ( decisionGraph->manager()->setSon ( idList[8], 4, idList[18] ), gum::InvalidArgument );
+//        TS_ASSERT_THROWS ( FunctionGraph->manager()->setSon ( idList[8], 4, idList[18] ), gum::InvalidArgument );
 
 //        // Test d'ajout d'un arc entre 2 noeuds déjà reliés par un autre arc de valeur égale(doit DuplicateElement)
-//        TS_ASSERT_THROWS ( decisionGraph->manager()->setSon ( idList[8], 1, idList[18] ), gum::DuplicateElement );
+//        TS_ASSERT_THROWS ( FunctionGraph->manager()->setSon ( idList[8], 1, idList[18] ), gum::DuplicateElement );
 
 //        // Test d'ajout d'un arc qui viole l'ordre sur les variables (doit lever l'exception gum::OperationNotAllowed)
-//        TS_ASSERT_THROWS ( decisionGraph->manager()->setSon ( idList[8], 0, idList[1] ), gum::OperationNotAllowed );
+//        TS_ASSERT_THROWS ( FunctionGraph->manager()->setSon ( idList[8], 0, idList[1] ), gum::OperationNotAllowed );
 
 //        // Test de retrait d'un arc existant (ne doit lever aucune exception)
-//        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->manager()->eraseArc ( idList[3], idList[4] ) );
+//        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph->manager()->eraseArc ( idList[3], idList[4] ) );
 
 //        // Test de retrait d'un arc avec valeur spécifiée
-//        TS_GUM_ASSERT_THROWS_NOTHING( decisionGraph->manager()->eraseSpecificArc( idList[8], 1, idList[18] ) );
+//        TS_GUM_ASSERT_THROWS_NOTHING( FunctionGraph->manager()->eraseSpecificArc( idList[8], 1, idList[18] ) );
           
 //        // Test de retrait d'un arc après une tentative ayant eu pour but d'ajouter un autre arc reliant les deux noeuds
-//        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->manager()->setSon ( idList[8], 1, idList[18] ) );
-//        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->manager()->eraseArc( idList[8], idList[18] ) );
+//        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph->manager()->setSon ( idList[8], 1, idList[18] ) );
+//        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph->manager()->eraseArc( idList[8], idList[18] ) );
 
 //        // Test de retrait de retrait de l'arc qui violait la contrainte d'ordre et donc n'existe pas
-//        TS_ASSERT_THROWS ( decisionGraph->manager()->eraseArc ( idList[8], idList[1] ), gum::InvalidArc );
+//        TS_ASSERT_THROWS ( FunctionGraph->manager()->eraseArc ( idList[8], idList[1] ), gum::InvalidArc );
 
 //        // Test de retrait d'un arc dont un des noeuds n'existe plus (doit lever l'exception InvalidArc)
-//        TS_ASSERT_THROWS ( decisionGraph->manager()->eraseArc ( idList[15], idList[1] ), gum::NotFound );
+//        TS_ASSERT_THROWS ( FunctionGraph->manager()->eraseArc ( idList[15], idList[1] ), gum::NotFound );
 
 
         // *********************************************************************
@@ -310,41 +310,41 @@ namespace gum_tests {
         // *********************************************************************
 
 //        // Test d'ajout d'un arc par défaut sans risque
-//        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->manager()->insertDefaultArc ( idList[5], idList[7] ) );
+//        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph->manager()->insertDefaultArc ( idList[5], idList[7] ) );
 //        //factory->showProperties();
 
 //        // Test d'ajout d'un arc par défaut ayant pour départ un noeud inexistant (doit lever l'exception gum::InvalidNode)
 //        // (le noeud 15 a été détruit un peu plus haut
-//        TS_ASSERT_THROWS ( decisionGraph->manager()->insertDefaultArc ( idList[15], idList[1] ), gum::NotFound );
+//        TS_ASSERT_THROWS ( FunctionGraph->manager()->insertDefaultArc ( idList[15], idList[1] ), gum::NotFound );
 
 //        // Test d'ajout d'un arc par défaut ayant pour départ un noeud terminal (doit lever l'exception gum::OperationNotAllowed
 //        // vu que les noeuds terminaux sont ... terminaux)
-//        TS_ASSERT_THROWS ( decisionGraph->manager()->insertDefaultArc ( idList[16], idList[1] ), gum::InvalidNode );
+//        TS_ASSERT_THROWS ( FunctionGraph->manager()->insertDefaultArc ( idList[16], idList[1] ), gum::InvalidNode );
 
 //        // Test d'ajout d'un arc par défaut entre 2 noeuds déjà reliés par un autre arc (doit rien lever)
-//        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->manager()->insertDefaultArc ( idList[0], idList[1] ) );
+//        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph->manager()->insertDefaultArc ( idList[0], idList[1] ) );
 
 //        // Test d'ajout d'un arc par défaut entre 2 noeuds déjà reliés par un autre arc par defaut(doit lever DuplicateElement)
-//        TS_ASSERT_THROWS ( decisionGraph->manager()->insertDefaultArc ( idList[0], idList[3] ), gum::DuplicateElement );
+//        TS_ASSERT_THROWS ( FunctionGraph->manager()->insertDefaultArc ( idList[0], idList[3] ), gum::DuplicateElement );
 
 //        // Test d'ajout d'un arc par défaut qui viole l'ordre sur les variables (doit lever l'exception InvalidArc)
-//        TS_ASSERT_THROWS ( decisionGraph->manager()->insertDefaultArc ( idList[8], idList[1] ), gum::OperationNotAllowed );
+//        TS_ASSERT_THROWS ( FunctionGraph->manager()->insertDefaultArc ( idList[8], idList[1] ), gum::OperationNotAllowed );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( delete decisionGraph );
+        TS_GUM_ASSERT_THROWS_NOTHING ( delete FunctionGraph );
       }
 
 
       /** *************************************************************************************/
       /**   Test des fonctions d'accès et de modification du multidim     */
       /** *************************************************************************************/
-      void test_MultiDimDecisionGraph_Accessors_Modifiers_Methods() {
+      void test_MultiDimFunctionGraph_Accessors_Modifiers_Methods() {
 
         // *********************************************************************
         // Création du multidim
         // *********************************************************************
-        gum::MultiDimDecisionGraph<float>* decisionGraph = new gum::MultiDimDecisionGraph<float>();
+        gum::MultiDimFunctionGraph<float>* FunctionGraph = new gum::MultiDimFunctionGraph<float>();
         gum::List<gum::NodeId> idList;
-        __fillFactory ( decisionGraph, &idList );
+        __fillFactory ( FunctionGraph, &idList );
 
 
         // *********************************************************************
@@ -352,7 +352,7 @@ namespace gum_tests {
         // accesoirement bien présentent
         // *********************************************************************
         gum::Sequence< const gum::DiscreteVariable* > varSeq;
-        TS_GUM_ASSERT_THROWS_NOTHING ( varSeq = decisionGraph->variablesSequence( ));
+        TS_GUM_ASSERT_THROWS_NOTHING ( varSeq = FunctionGraph->variablesSequence( ));
         TS_ASSERT_EQUALS ( varSeq.exists ( Cprimevar ), true );
         TS_ASSERT_EQUALS ( varSeq.exists ( Cvar ), true );
         TS_ASSERT_EQUALS ( varSeq.exists ( PLvar ), true );
@@ -366,45 +366,45 @@ namespace gum_tests {
         // *********************************************************************
         // Test name() et basename()
         // *********************************************************************
-        TS_ASSERT_EQUALS ( decisionGraph->name(), "MultiDimDecisionGraph" );
+        TS_ASSERT_EQUALS ( FunctionGraph->name(), "MultiDimFunctionGraph" );
 
-        TS_ASSERT_EQUALS ( decisionGraph->basename(), "MultiDimImplementation" );
+        TS_ASSERT_EQUALS ( FunctionGraph->basename(), "MultiDimImplementation" );
 
 
         // *********************************************************************
         // Test set(), fill() et fillWith()
         // *********************************************************************
-        gum::Instantiation inst ( *decisionGraph );
+        gum::Instantiation inst ( *FunctionGraph );
 
-        TS_ASSERT_THROWS ( decisionGraph->set ( inst, 14.0 ), gum::OperationNotAllowed );
+        TS_ASSERT_THROWS ( FunctionGraph->set ( inst, 14.0 ), gum::OperationNotAllowed );
 
-        TS_ASSERT_THROWS ( decisionGraph->fill ( 14.0 ), gum::OperationNotAllowed );
+        TS_ASSERT_THROWS ( FunctionGraph->fill ( 14.0 ), gum::OperationNotAllowed );
 
         std::vector<float> v;
 
         for ( float i = 0; i < 128; i++ )
           v.push_back ( i );
 
-        TS_ASSERT_THROWS ( decisionGraph->fillWith ( v ), gum::OperationNotAllowed );
+        TS_ASSERT_THROWS ( FunctionGraph->fillWith ( v ), gum::OperationNotAllowed );
 
         for ( float i = 128; i < 256; i++ )
           v.push_back ( i );
 
-        TS_ASSERT_THROWS ( decisionGraph->fillWith ( v ), gum::OperationNotAllowed );
+        TS_ASSERT_THROWS ( FunctionGraph->fillWith ( v ), gum::OperationNotAllowed );
 
 
         // *********************************************************************
         // Test get(), [], et l'accès aux valeurs
         // *********************************************************************
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->get ( inst ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( ( *decisionGraph ) [inst] );
+        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph->get ( inst ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( ( *FunctionGraph ) [inst] );
 
         for ( inst.setFirst(); ! inst.end(); ++inst )
           if ( inst.val ( *Cvar ) == 1 ) {
             if ( inst.val ( *Cprimevar ) == 1 ) {
-              TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 9, 0.001 );
+              TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 9, 0.001 );
             } else {
-              TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 1, 0.001 );
+              TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 1, 0.001 );
             }
           } else {
 
@@ -417,26 +417,26 @@ namespace gum_tests {
                   if ( inst.val ( *BOvar ) == 1 ) {
 
                     if ( inst.val ( *Cprimevar ) == 1 ) {
-                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 9, 0.001 );
+                      TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 9, 0.001 );
                     } else {
-                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 1, 0.001 );
+                      TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 1, 0.001 );
                     }
 
                   } else {
 
                     if ( inst.val ( *Cprimevar ) == 1 ) {
-                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
+                      TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 0, 0.001 );
                     } else {
-                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
+                      TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 10, 0.001 );
                     }
 
                   }
                 } else {
 
                   if ( inst.val ( *Cprimevar ) == 1 ) {
-                    TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
+                    TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 0, 0.001 );
                   } else {
-                    TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
+                    TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 10, 0.001 );
                   }
 
                 }
@@ -449,17 +449,17 @@ namespace gum_tests {
                     if ( inst.val ( *BOvar ) == 1 ) {
 
                       if ( inst.val ( *Cprimevar ) == 1 ) {
-                        TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 9, 0.001 );
+                        TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 9, 0.001 );
                       } else {
-                        TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 1, 0.001 );
+                        TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 1, 0.001 );
                       }
 
                     } else {
 
                       if ( inst.val ( *Cprimevar ) == 1 ) {
-                        TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
+                        TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 0, 0.001 );
                       } else {
-                        TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
+                        TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 10, 0.001 );
                       }
 
                     }
@@ -467,9 +467,9 @@ namespace gum_tests {
                   } else {
 
                     if ( inst.val ( *Cprimevar ) == 1 ) {
-                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
+                      TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 0, 0.001 );
                     } else {
-                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
+                      TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 10, 0.001 );
                     }
 
                   }
@@ -477,9 +477,9 @@ namespace gum_tests {
                 } else {
 
                   if ( inst.val ( *Cprimevar ) == 1 ) {
-                    TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
+                    TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 0, 0.001 );
                   } else {
-                    TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
+                    TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 10, 0.001 );
                   }
 
                 }
@@ -493,17 +493,17 @@ namespace gum_tests {
                   if ( inst.val ( *BOvar ) == 1 ) {
 
                     if ( inst.val ( *Cprimevar ) == 1 ) {
-                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 9, 0.001 );
+                      TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 9, 0.001 );
                     } else {
-                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 1, 0.001 );
+                      TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 1, 0.001 );
                     }
 
                   } else {
 
                     if ( inst.val ( *Cprimevar ) == 1 ) {
-                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
+                      TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 0, 0.001 );
                     } else {
-                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
+                      TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 10, 0.001 );
                     }
 
                   }
@@ -511,9 +511,9 @@ namespace gum_tests {
                 } else {
 
                   if ( inst.val ( *Cprimevar ) == 1 ) {
-                    TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
+                    TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 0, 0.001 );
                   } else {
-                    TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
+                    TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 10, 0.001 );
                   }
 
                 }
@@ -521,9 +521,9 @@ namespace gum_tests {
               } else {
 
                 if ( inst.val ( *Cprimevar ) == 1 ) {
-                  TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
+                  TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 0, 0.001 );
                 } else {
-                  TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
+                  TS_ASSERT_DELTA ( FunctionGraph->get ( inst ), 10, 0.001 );
                 }
 
               }
@@ -535,96 +535,96 @@ namespace gum_tests {
         // Test swap()
         // *********************************************************************
         gum::LabelizedVariable* lv = new gum::LabelizedVariable ( "Test", "Cornichon", 2 );
-        TS_ASSERT_THROWS ( decisionGraph->swap ( *Cvar, *lv ), gum::OperationNotAllowed );
+        TS_ASSERT_THROWS ( FunctionGraph->swap ( *Cvar, *lv ), gum::OperationNotAllowed );
         delete lv;
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( delete decisionGraph );
+        TS_GUM_ASSERT_THROWS_NOTHING ( delete FunctionGraph );
       }
 
 
 
-      void test_MultiDimDecisionGraph_Implementation_Methods() {
+      void test_MultiDimFunctionGraph_Implementation_Methods() {
 
 
         // *********************************************************************
         // Création du multidim
         // *********************************************************************
-        gum::MultiDimDecisionGraph<float>* decisionGraph = new gum::MultiDimDecisionGraph<float>();
+        gum::MultiDimFunctionGraph<float>* FunctionGraph = new gum::MultiDimFunctionGraph<float>();
         gum::List<gum::NodeId> idList;
-        __fillFactory ( decisionGraph, &idList );
+        __fillFactory ( FunctionGraph, &idList );
         gum::LabelizedVariable* lv = new gum::LabelizedVariable ( "Test", "Cornichon", 2 );
 
         // *********************************************************************
         // Test nbrDim(), domainSize(), realSize()
         // *********************************************************************
 
-        TS_ASSERT_EQUALS ( decisionGraph->nbrDim( ) , ( gum::Idx ) 8 );
+        TS_ASSERT_EQUALS ( FunctionGraph->nbrDim( ) , ( gum::Idx ) 8 );
 
-        TS_ASSERT_EQUALS ( decisionGraph->domainSize( ), ( gum::Size ) 256 );
+        TS_ASSERT_EQUALS ( FunctionGraph->domainSize( ), ( gum::Size ) 256 );
 
-        TS_ASSERT_EQUALS ( decisionGraph->realSize( ), ( gum::Size ) 15 );//19 );
+        TS_ASSERT_EQUALS ( FunctionGraph->realSize( ), ( gum::Size ) 15 );//19 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->compressionRate( ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph->compressionRate( ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->variable ( 0 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph->variable ( 0 ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->pos ( *Cvar ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph->pos ( *Cvar ) );
 
-        TS_ASSERT_EQUALS ( decisionGraph->contains ( *Cprimevar ), true );
-        TS_ASSERT_EQUALS ( decisionGraph->contains ( *lv ), false );
+        TS_ASSERT_EQUALS ( FunctionGraph->contains ( *Cprimevar ), true );
+        TS_ASSERT_EQUALS ( FunctionGraph->contains ( *lv ), false );
 
-        TS_ASSERT_EQUALS ( decisionGraph->empty( ), false );
+        TS_ASSERT_EQUALS ( FunctionGraph->empty( ), false );
 
         // *********************************************************************
         // Test add(), erase()
         // *********************************************************************
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->add ( *lv ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph->add ( *lv ) );
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->erase ( *Cvar ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph->erase ( *Cvar ) );
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( delete decisionGraph );
+        TS_GUM_ASSERT_THROWS_NOTHING ( delete FunctionGraph );
         delete lv;
       }
 
 
 
-      void test_MultiDimDecisionGraph_Copy_Methods() {
+      void test_MultiDimFunctionGraph_Copy_Methods() {
 
         // *********************************************************************
         // Création du multidim
         // *********************************************************************
-          gum::MultiDimDecisionGraph<float>* decisionGraph = new gum::MultiDimDecisionGraph<float>();
+          gum::MultiDimFunctionGraph<float>* FunctionGraph = new gum::MultiDimFunctionGraph<float>();
           gum::List<gum::NodeId> idList;
-          __fillFactory ( decisionGraph, &idList );
+          __fillFactory ( FunctionGraph, &idList );
 
 
-        gum::MultiDimDecisionGraph<float>* decisionGraph2 = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph2 = new gum::MultiDimDecisionGraph<float>( *decisionGraph ) );
+        gum::MultiDimFunctionGraph<float>* FunctionGraph2 = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph2 = new gum::MultiDimFunctionGraph<float>( *FunctionGraph ) );
 
-        TS_ASSERT_THROWS ( decisionGraph2->copyFrom ( *decisionGraph ) , gum::OperationNotAllowed );
+        TS_ASSERT_THROWS ( FunctionGraph2->copyFrom ( *FunctionGraph ) , gum::OperationNotAllowed );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph2->copy(*decisionGraph); );
+        TS_GUM_ASSERT_THROWS_NOTHING ( FunctionGraph2->copy(*FunctionGraph); );
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( delete decisionGraph );
+        TS_GUM_ASSERT_THROWS_NOTHING ( delete FunctionGraph );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( delete decisionGraph2 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( delete FunctionGraph2 );
 
       }
 
 
 
-      void test_MultiDimDecisionGraph_Various_Methods() {
+      void test_MultiDimFunctionGraph_Various_Methods() {
 
         // *********************************************************************
         // Création du multidim
         // *********************************************************************
-        gum::MultiDimDecisionGraph<float>* dg1 = new gum::MultiDimDecisionGraph<float>();
-        gum::MultiDimDecisionGraph<float>* dg2 = new gum::MultiDimDecisionGraph<float>();
-        gum::MultiDimDecisionGraph<float>* dg3 = new gum::MultiDimDecisionGraph<float>();
+        gum::MultiDimFunctionGraph<float>* dg1 = new gum::MultiDimFunctionGraph<float>();
+        gum::MultiDimFunctionGraph<float>* dg2 = new gum::MultiDimFunctionGraph<float>();
+        gum::MultiDimFunctionGraph<float>* dg3 = new gum::MultiDimFunctionGraph<float>();
         gum::List<gum::NodeId> idList;
         __fillFactory ( dg1, &idList );
         __fillFactory ( dg2, &idList );
@@ -665,21 +665,21 @@ namespace gum_tests {
         // *********************************************************************
         // Création du multidim
         // *********************************************************************
-        gum::MultiDimDecisionGraph<float>* decisionGraph = new gum::MultiDimDecisionGraph<float>();
+        gum::MultiDimFunctionGraph<float>* FunctionGraph = new gum::MultiDimFunctionGraph<float>();
         gum::List<gum::NodeId> idList;
-        __fillFactory ( decisionGraph, &idList );
+        __fillFactory ( FunctionGraph, &idList );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( decisionGraph->manager()->moveTo(Cprimevar, decisionGraph->variablesSequence().pos( BOvar ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( FunctionGraph->manager()->moveTo(Cprimevar, FunctionGraph->variablesSequence().pos( BOvar ) ) );
 
         // For comparison with what readers will return
-        std::string dotfile = GET_PATH_STR ( "DecisionGraphMVBOvar.dot" );
+        std::string dotfile = GET_PATH_STR ( "FunctionGraphMVBOvar.dot" );
         std::ofstream output ( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
         if ( ! output.good() ) {
           GUM_ERROR ( gum::IOError, "Stream states flags are not all unset." );
         }
 
-        output << decisionGraph->toDot(true);
+        output << FunctionGraph->toDot(true);
 
         output.flush();
 
@@ -689,7 +689,7 @@ namespace gum_tests {
           GUM_ERROR ( gum::IOError, "Writting in the ostream failed." );
         }
 
-        delete decisionGraph;
+        delete FunctionGraph;
 
       }
 
@@ -705,12 +705,12 @@ namespace gum_tests {
             varList->insert ( new gum::LabelizedVariable ( varName.str(), "", 2 + rand() % 4 ) );
           }
 
-          gum::MultiDimDecisionGraphGenerator gene( 2, 5, *varList);
+          gum::MultiDimFunctionGraphGenerator gene( 2, 5, *varList);
 
-          gum::MultiDimDecisionGraph<double>* dg1 = nullptr;
+          gum::MultiDimFunctionGraph<double>* dg1 = nullptr;
           TS_GUM_ASSERT_THROWS_NOTHING( dg1 = gene.generate());
 
-          gum::MultiDimDecisionGraph<double>* dg2 = new gum::MultiDimDecisionGraph<double>();
+          gum::MultiDimFunctionGraph<double>* dg2 = new gum::MultiDimFunctionGraph<double>();
 
           TS_GUM_ASSERT_THROWS_NOTHING( dg2->copy(*dg1) );
           TS_GUM_ASSERT_THROWS_NOTHING( dg2->manager()->reduce() );

@@ -103,7 +103,7 @@ namespace gum {
     protected :
 
         virtual double _transitionProbability(const DiscreteVariable* var, const Instantiation& transit, Idx actionId)
-            { return reinterpret_cast<const MultiDimDecisionGraph<double>*>( __fmdp->transition(actionId, var) )->get(transit); }
+            { return reinterpret_cast<const MultiDimFunctionGraph<double>*>( __fmdp->transition(actionId, var) )->get(transit); }
 
     private :
 

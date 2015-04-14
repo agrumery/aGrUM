@@ -26,7 +26,7 @@
 
 // =======================================================================================
 #include <agrum/FMDP/planning/operators/regress.h>
-#include <agrum/multidim/decisionGraphUtilities/internalNode.h>
+#include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
 // =======================================================================================
 
 #define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
@@ -42,8 +42,8 @@ namespace gum {
               template <typename> class PROJECTOPERATOR,
               template <typename> class TerminalNodePolicy>
     Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::Regress(
-        const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *DG1,
-        const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *DG2,
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *DG1,
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *DG2,
         const Set<const DiscreteVariable*>* primedVars,
         const DiscreteVariable* targetVar,
         const GUM_SCALAR neutral ) : __DG1( DG1 ),
@@ -54,7 +54,7 @@ namespace gum {
                                      __DG1InstantiationNeeded(DG1->realSize(),true,false),
                                      __DG2InstantiationNeeded(DG2->realSize(),true,false){
       GUM_CONSTRUCTOR(Regress);
-      __rd = new MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>();
+      __rd = new MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>();
       __nbVar = 0;
       __default = nullptr;
       __primedVars = primedVars;
@@ -96,7 +96,7 @@ namespace gum {
               template <typename> class COMBINEOPERATOR,
               template <typename> class PROJECTOPERATOR,
               template <typename> class TerminalNodePolicy>
-    MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> * Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::compute(){
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> * Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::compute(){
 
       __establishVarOrder();
       __findRetrogradeVariables( __DG1, __DG1InstantiationNeeded );
@@ -236,7 +236,7 @@ namespace gum {
               template <typename> class PROJECTOPERATOR,
               template <typename> class TerminalNodePolicy>
     Idx Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::__distance(
-        const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* d,
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* d,
         const DiscreteVariable* from,
         const DiscreteVariable* to){
 
@@ -263,7 +263,7 @@ namespace gum {
               template <typename> class PROJECTOPERATOR,
               template <typename> class TerminalNodePolicy>
     void Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::__findRetrogradeVariables(
-        const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *dg,
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *dg,
         HashTable<NodeId, short int*>& dgInstNeed){
 
       HashTable<NodeId, short int*> nodesVarDescendant;
@@ -402,7 +402,7 @@ namespace gum {
 
       NodeId origDG1 = currentSituation.DG1Node(), origDG2 = currentSituation.DG2Node();
 
-      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* leaddg = nullptr;
+      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* leaddg = nullptr;
       NodeId leadNodeId = 0;
       Idx leadVarPos = __rd->variablesSequence().size();
       typedef void (O4DGContext::*SetNodeFunction)(const NodeId&);

@@ -52,7 +52,7 @@ namespace gum {
       /**
        * Default constructor.
        */
-      ExactPolicy() {};
+      ExactPolicy() {}
 
       /// @}
 
@@ -66,17 +66,17 @@ namespace gum {
         return value;
       };
 
-      void combineAdd ( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
+      void combineAdd ( const ApproximationPolicy<GUM_SCALAR>* ap ) {}
 
-      void combineSub ( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
+      void combineSub ( const ApproximationPolicy<GUM_SCALAR>* ap ) {}
 
-      void combineMult ( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
+      void combineMult ( const ApproximationPolicy<GUM_SCALAR>* ap ) {}
 
-      void combineDiv ( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
+      void combineDiv ( const ApproximationPolicy<GUM_SCALAR>* ap ) {}
 
-      void combineMax ( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
+      void combineMax ( const ApproximationPolicy<GUM_SCALAR>* ap ) {}
 
-      void combineMin ( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
+      void combineMin ( const ApproximationPolicy<GUM_SCALAR>* ap ) {}
 
       /// @}
   };

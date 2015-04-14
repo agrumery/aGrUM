@@ -35,14 +35,14 @@
 // =========================================================================
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/multiDimDecisionGraph.h>
-#include <agrum/multidim/decisionGraphUtilities/multiDimDecisionGraphOperator.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphOperator.h>
 // =========================================================================
 #include <agrum/FMDP/planning/abstractSVI.h>
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code purposes only
-#define RECAST(x) reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*>(x)
+#define RECAST(x) reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>(x)
 
 namespace gum {
 
@@ -221,8 +221,8 @@ namespace gum {
         _elVarSeq << _fmdp->main2prime(*varIter);
 
       // Initialisation of the value function
-      _vFunction = new MultiDimDecisionGraph< GUM_SCALAR >();
-      _optimalPolicy = new MultiDimDecisionGraph< ActionSet, SetTerminalNodePolicy >();
+      _vFunction = new MultiDimFunctionGraph< GUM_SCALAR >();
+      _optimalPolicy = new MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >();
       __firstTime = true;
     }
 
@@ -247,11 +247,11 @@ namespace gum {
 
         ++nbIte;
 
-        MultiDimDecisionGraph< GUM_SCALAR >* newVFunction = _valueIteration();
+        MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = _valueIteration();
 
         // *****************************************************************************************
         // Then we compare new value function and the old one
-        MultiDimDecisionGraph< GUM_SCALAR >* deltaV = _subtract( newVFunction, _vFunction );
+        MultiDimFunctionGraph< GUM_SCALAR >* deltaV = _subtract( newVFunction, _vFunction );
         gap = 0;
 
         for ( deltaV->beginValues(); deltaV->hasValue(); deltaV->nextValue() )
@@ -288,18 +288,18 @@ namespace gum {
     // Performs a single step of value iteration
     // ===========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph< GUM_SCALAR >* AbstractSVI<GUM_SCALAR>::_valueIteration() {
+    MultiDimFunctionGraph< GUM_SCALAR >* AbstractSVI<GUM_SCALAR>::_valueIteration() {
 
       // *****************************************************************************************
       // Loop reset
-      MultiDimDecisionGraph< GUM_SCALAR >* newVFunction = new MultiDimDecisionGraph< GUM_SCALAR >();
+      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = new MultiDimFunctionGraph< GUM_SCALAR >();
       newVFunction->copyAndReassign ( *_vFunction, _fmdp->mapMainPrime() );
 
       // *****************************************************************************************
       // For each action
-      std::vector<MultiDimDecisionGraph<GUM_SCALAR>*> qActionsSet;
+      std::vector<MultiDimFunctionGraph<GUM_SCALAR>*> qActionsSet;
       for ( auto actionIter = _fmdp->beginActions(); actionIter != _fmdp->endActions(); ++actionIter  ) {
-        MultiDimDecisionGraph<GUM_SCALAR>* qAction = _evalQaction( newVFunction, *actionIter );
+        MultiDimFunctionGraph<GUM_SCALAR>* qAction = _evalQaction( newVFunction, *actionIter );
         qActionsSet.push_back(qAction);
       }
       delete newVFunction;
@@ -320,14 +320,14 @@ namespace gum {
     // Evals the q function for current fmdp action
     // ===========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph< GUM_SCALAR >*
-    AbstractSVI<GUM_SCALAR>::_evalQaction( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Idx actionId ){
+    MultiDimFunctionGraph< GUM_SCALAR >*
+    AbstractSVI<GUM_SCALAR>::_evalQaction( const MultiDimFunctionGraph< GUM_SCALAR >* Vold, Idx actionId ){
 
       // ******************************************************************************
       // Initialisation :
       // Creating a copy of last Vfunction to deduce from the new Qaction
       // And finding the first var to eleminate (the one at the end)
-      MultiDimDecisionGraph< GUM_SCALAR >* qAction = new MultiDimDecisionGraph< GUM_SCALAR >();
+      MultiDimFunctionGraph< GUM_SCALAR >* qAction = new MultiDimFunctionGraph< GUM_SCALAR >();
       qAction->copy( *Vold );
       const DiscreteVariable* xip = this->_lastVar(qAction);
 
@@ -344,14 +344,14 @@ namespace gum {
     // Maximise the AAction to iobtain the vFunction
     // ===========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph< GUM_SCALAR >*
-    AbstractSVI<GUM_SCALAR>::_maximiseQactions( std::vector<MultiDimDecisionGraph<GUM_SCALAR>*>& qActionsSet) {
+    MultiDimFunctionGraph< GUM_SCALAR >*
+    AbstractSVI<GUM_SCALAR>::_maximiseQactions( std::vector<MultiDimFunctionGraph<GUM_SCALAR>*>& qActionsSet) {
 
-      MultiDimDecisionGraph< GUM_SCALAR >* newVFunction = qActionsSet.back();
+      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = qActionsSet.back();
       qActionsSet.pop_back();
 
       while ( !qActionsSet.empty() ) {
-        MultiDimDecisionGraph<GUM_SCALAR>* qAction = qActionsSet.back();
+        MultiDimFunctionGraph<GUM_SCALAR>* qAction = qActionsSet.back();
         qActionsSet.pop_back();
         newVFunction = _maximize ( newVFunction, qAction );
       }
@@ -364,12 +364,12 @@ namespace gum {
     // Updates the value function by multiplying by discount and adding reward
     // ===========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph<GUM_SCALAR>*
-    AbstractSVI<GUM_SCALAR>::_addReward ( MultiDimDecisionGraph< GUM_SCALAR >* Vold ) {
+    MultiDimFunctionGraph<GUM_SCALAR>*
+    AbstractSVI<GUM_SCALAR>::_addReward ( MultiDimFunctionGraph< GUM_SCALAR >* Vold ) {
 
       // *****************************************************************************************
       // ... we multiply the result by the discount factor, ...
-      MultiDimDecisionGraph< GUM_SCALAR >* newVFunction = new MultiDimDecisionGraph<GUM_SCALAR>();
+      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = new MultiDimFunctionGraph<GUM_SCALAR>();
       newVFunction->copyAndMultiplyByScalar ( *Vold, _fmdp->discount() );
       delete Vold;
 
@@ -397,15 +397,15 @@ namespace gum {
 
       // *****************************************************************************************
       // Loop reset
-      MultiDimDecisionGraph< GUM_SCALAR >* newVFunction = new MultiDimDecisionGraph< GUM_SCALAR >();
+      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = new MultiDimFunctionGraph< GUM_SCALAR >();
       newVFunction->copyAndReassign ( *_vFunction, _fmdp->mapMainPrime() );
 
-      std::vector<MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*> argMaxQActionsSet;
+      std::vector<MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*> argMaxQActionsSet;
       // *****************************************************************************************
       // For each action
       for ( auto actionIter = _fmdp->beginActions(); actionIter != _fmdp->endActions(); ++actionIter  ) {
 
-        MultiDimDecisionGraph<GUM_SCALAR>* qAction = _evalQaction( newVFunction, *actionIter );
+        MultiDimFunctionGraph<GUM_SCALAR>* qAction = _evalQaction( newVFunction, *actionIter );
 
         qAction = _addReward ( qAction );
 
@@ -416,7 +416,7 @@ namespace gum {
 
       // *****************************************************************************************
       // Next to evaluate main value function, we take maximise over all action value, ...
-      MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* argMaxVFunction = _argmaximiseQactions( argMaxQActionsSet );
+      MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* argMaxVFunction = _argmaximiseQactions( argMaxQActionsSet );
 
       // *****************************************************************************************
       // Next to evaluate main value function, we take maximise over all action value, ...
@@ -430,11 +430,11 @@ namespace gum {
     // is bind this Graph (given in parameter).
     // ===========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >*
-    AbstractSVI<GUM_SCALAR>::_makeArgMax ( const MultiDimDecisionGraph<GUM_SCALAR>* qAction, Idx actionId ) {
+    MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >*
+    AbstractSVI<GUM_SCALAR>::_makeArgMax ( const MultiDimFunctionGraph<GUM_SCALAR>* qAction, Idx actionId ) {
 
-      MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* amcpy
-          = new MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >();
+      MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* amcpy
+          = new MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >();
 
       // Insertion des nouvelles variables
       for( SequenceIteratorSafe<const DiscreteVariable*> varIter = qAction->variablesSequence().beginSafe(); varIter != qAction->variablesSequence().endSafe(); ++varIter)
@@ -454,8 +454,8 @@ namespace gum {
     template<typename GUM_SCALAR>
     NodeId AbstractSVI<GUM_SCALAR>::__recurArgMaxCopy(NodeId currentNodeId,
                                                       Idx actionId,
-                                                      const MultiDimDecisionGraph<GUM_SCALAR>* src,
-                                                      MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* argMaxCpy,
+                                                      const MultiDimFunctionGraph<GUM_SCALAR>* src,
+                                                      MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* argMaxCpy,
                                                       HashTable<NodeId,NodeId>& visitedNodes){
 
       if( visitedNodes.exists(currentNodeId))
@@ -482,14 +482,14 @@ namespace gum {
     // Performs argmax_a Q(s,a)
     // ===========================================================================
     template<typename GUM_SCALAR>
-    MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*
-    AbstractSVI<GUM_SCALAR>::_argmaximiseQactions( std::vector<MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*>& qActionsSet) {
+    MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*
+    AbstractSVI<GUM_SCALAR>::_argmaximiseQactions( std::vector<MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*>& qActionsSet) {
 
-      MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* newVFunction = qActionsSet.back();
+      MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* newVFunction = qActionsSet.back();
       qActionsSet.pop_back();
 
       while ( !qActionsSet.empty() ) {
-        MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* qAction = qActionsSet.back();
+        MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* qAction = qActionsSet.back();
         qActionsSet.pop_back();
         newVFunction = _argmaximize ( newVFunction, qAction );
       }
@@ -505,7 +505,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     AbstractSVI<GUM_SCALAR>::_extractOptimalPolicy (
-        const MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* argMaxOptimalValueFunction ) {
+        const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* argMaxOptimalValueFunction ) {
 
       _optimalPolicy->clear();
 
@@ -525,7 +525,7 @@ namespace gum {
     // ==========================================================================
     template<typename GUM_SCALAR>
     NodeId AbstractSVI<GUM_SCALAR>::__recurExtractOptPol(NodeId currentNodeId,
-                                                       const MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* argMaxOptVFunc,
+                                                       const MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* argMaxOptVFunc,
                                                        HashTable<NodeId,NodeId>& visitedNodes){
       if( visitedNodes.exists(currentNodeId))
         return visitedNodes[currentNodeId];

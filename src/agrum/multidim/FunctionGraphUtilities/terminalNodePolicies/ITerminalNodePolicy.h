@@ -24,8 +24,8 @@
  * @author Jean-Christophe Magnan
  *
  */
-#ifndef GUM_MULTI_DIM_DECISION_GRAPH_INTERFACE_TERMINAL_NODE_POLICY_H
-#define GUM_MULTI_DIM_DECISION_GRAPH_INTERFACE_TERMINAL_NODE_POLICY_H
+#ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_INTERFACE_TERMINAL_NODE_POLICY_H
+#define GUM_MULTI_DIM_FUNCTION_GRAPH_INTERFACE_TERMINAL_NODE_POLICY_H
 
 // ============================================================================
 #include <agrum/graphs/nodeGraphPart.h>
@@ -34,7 +34,7 @@
 namespace gum {
 
   /**
-   * @class ITerminalNodePolicy ITerminalNodePolicy.h <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/ITerminalNodePolicy.h>
+   * @class ITerminalNodePolicy ITerminalNodePolicy.h <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ITerminalNodePolicy.h>
    *
    * @brief Interface specifying the methods to be implemented by any TerminalNodePolicy
    *
@@ -136,4 +136,4 @@ namespace gum {
 
 } // End of namespace gum
 
-#endif /* GUM_MULTI_DIM_DECISION_GRAPH_INTERFACE_TERMINAL_NODE_POLICY_H */
+#endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_INTERFACE_TERMINAL_NODE_POLICY_H */

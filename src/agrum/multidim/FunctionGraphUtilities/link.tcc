@@ -20,13 +20,13 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Template methods of MultiDimDecisionGraph.
+ * @brief Template methods of MultiDimFunctionGraph.
  *
  * @author Jean-Christophe Magnan
  *
  */
 // ============================================================================
-#include <agrum/multidim/decisionGraphUtilities/link.h>
+#include <agrum/multidim/FunctionGraphUtilities/link.h>
 // ============================================================================
 #define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
 #define DEALLOCATE(x,y) SmallObjectAllocator::instance().deallocate(x,y)

@@ -35,8 +35,8 @@
 #include <agrum/core/inline.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
-#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
 // =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/planning/actionSet.h>
@@ -94,12 +94,12 @@ namespace gum {
         // ==========================================================================
         /// Returns a const ptr on the value function computed so far
         // ==========================================================================
-        INLINE const MultiDimDecisionGraph<GUM_SCALAR>* vFunction() { return _vFunction; }
+        INLINE const MultiDimFunctionGraph<GUM_SCALAR>* vFunction() { return _vFunction; }
 
         // ==========================================================================
         /// Returns the best policy obtained so far
         // ==========================================================================
-        INLINE const MultiDimDecisionGraph<ActionSet, SetTerminalNodePolicy>* optimalPolicy() { return _optimalPolicy; }
+        INLINE const MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>* optimalPolicy() { return _optimalPolicy; }
 
         // ==========================================================================
         /// Provide a better toDot for the optimal policy where the leaves have the action
@@ -151,24 +151,24 @@ namespace gum {
         // ==========================================================================
         /// Performs a single step of value iteration
         // ==========================================================================
-        virtual MultiDimDecisionGraph< GUM_SCALAR >* _valueIteration();
+        virtual MultiDimFunctionGraph< GUM_SCALAR >* _valueIteration();
 
         // ==========================================================================
         /// Performs the P(s'|s,a).V^{t-1}(s') part of the value itération
         // ==========================================================================
-        virtual MultiDimDecisionGraph<GUM_SCALAR>* _evalQaction( const MultiDimDecisionGraph<GUM_SCALAR>*, Idx );
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* _evalQaction( const MultiDimFunctionGraph<GUM_SCALAR>*, Idx );
 
         // ==========================================================================
         /// Performs max_a Q(s,a)
         /// @warning Performs also the deallocation of the QActions
         // ==========================================================================
-        virtual MultiDimDecisionGraph<GUM_SCALAR>* _maximiseQactions( std::vector<MultiDimDecisionGraph<GUM_SCALAR>*>& );
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* _maximiseQactions( std::vector<MultiDimFunctionGraph<GUM_SCALAR>*>& );
 
         // ==========================================================================
         /// Perform the R(s) + \gamma . function
         /// @warning function is deleted, new one is returned
         // ==========================================================================
-        virtual MultiDimDecisionGraph< GUM_SCALAR >* _addReward ( MultiDimDecisionGraph< GUM_SCALAR >* function );
+        virtual MultiDimFunctionGraph< GUM_SCALAR >* _addReward ( MultiDimFunctionGraph< GUM_SCALAR >* function );
 
         // ==========================================================================
         /// Indicates if whether or not given var is to be eliminated.
@@ -182,7 +182,7 @@ namespace gum {
         /// Returns the last var in the var order for given graph function
         /// Called by the evalQaction.
         // ==========================================================================
-        INLINE const DiscreteVariable* _lastVar( const MultiDimDecisionGraph< GUM_SCALAR >* function ){
+        INLINE const DiscreteVariable* _lastVar( const MultiDimFunctionGraph< GUM_SCALAR >* function ){
           return function->variablesSequence().size() == 0 ? nullptr :
               function->variablesSequence().atPos( function->variablesSequence().size() - 1 );
         }
@@ -214,8 +214,8 @@ namespace gum {
          * @warning delete the original Qaction, returns its conversion
          */
         // ==========================================================================
-        MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* _makeArgMax (
-                      const MultiDimDecisionGraph<GUM_SCALAR>* Qaction,
+        MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* _makeArgMax (
+                      const MultiDimFunctionGraph<GUM_SCALAR>* Qaction,
                       Idx actionId );
 
   private:
@@ -224,16 +224,16 @@ namespace gum {
         // ==========================================================================
         NodeId __recurArgMaxCopy( NodeId,
                                   Idx,
-                                  const MultiDimDecisionGraph<GUM_SCALAR>*,
-                                  MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*,
+                                  const MultiDimFunctionGraph<GUM_SCALAR>*,
+                                  MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*,
                                   HashTable<NodeId,NodeId>&);
   protected:
         // ==========================================================================
         /// Performs argmax_a Q(s,a)
         /// @warning Performs also the deallocation of the QActions
         // ==========================================================================
-        virtual MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* _argmaximiseQactions(
-            std::vector<MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*>& );
+        virtual MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* _argmaximiseQactions(
+            std::vector<MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*>& );
 
         // ==========================================================================
         /// From V(s)* = argmax_a Q*(s,a), this function extract \pi*(s)
@@ -241,14 +241,14 @@ namespace gum {
         /// presents at the leaves the associated ActionSet
         /// @warning deallocate the argmax optimal value function
         // ==========================================================================
-        void _extractOptimalPolicy ( const MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* optimalValueFunction );
+        void _extractOptimalPolicy ( const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* optimalValueFunction );
 
   private:
         // ==========================================================================
         /// Recursion part for the createArgMaxCopy
         // ==========================================================================
         NodeId __recurExtractOptPol(NodeId,
-                                    const MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*,
+                                    const MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*,
                                     HashTable<NodeId,NodeId>&);
 
         // ==========================================================================
@@ -275,8 +275,8 @@ namespace gum {
         /// @param xip : the variable we eliminate on the projection
         /// @warning given qAction is deleted, return the new one
         // ==========================================================================
-        virtual MultiDimDecisionGraph<GUM_SCALAR>* _regress(const MultiDimDecisionGraph< GUM_SCALAR >* qAction,
-                                                            const MultiDimDecisionGraph< GUM_SCALAR >* pxi,
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* _regress(const MultiDimFunctionGraph< GUM_SCALAR >* qAction,
+                                                            const MultiDimFunctionGraph< GUM_SCALAR >* pxi,
                                                             const DiscreteVariable* xi) = 0;
 
         // ==========================================================================
@@ -285,8 +285,8 @@ namespace gum {
         /// @param vFunction : the vFunction so far
         /// @warning given vFunction and qAction are deleted, returns the new one
         // ==========================================================================
-        virtual MultiDimDecisionGraph<GUM_SCALAR>* _maximize(const MultiDimDecisionGraph< GUM_SCALAR >* vFunction,
-                                                             const MultiDimDecisionGraph< GUM_SCALAR >* qAction) = 0;
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* _maximize(const MultiDimFunctionGraph< GUM_SCALAR >* vFunction,
+                                                             const MultiDimFunctionGraph< GUM_SCALAR >* qAction) = 0;
 
         // ==========================================================================
         /// ArgMaximizes between QAction and VFunction
@@ -294,9 +294,9 @@ namespace gum {
         /// @param vFunction : the vFunction so far
         /// @warning given vFunction and qAction are deleted, returns the new one
         // ==========================================================================
-        virtual MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* _argmaximize(
-                            const MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* vFunction,
-                            const MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* qAction) = 0;
+        virtual MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* _argmaximize(
+                            const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* vFunction,
+                            const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* qAction) = 0;
 
         // ==========================================================================
         /// Adds reward to given function( whether a qAction or vFunction)
@@ -304,8 +304,8 @@ namespace gum {
         /// @param function : either V(s) or Q(s,a)
         /// @warning given function is deleted, returns the new one
         // ==========================================================================
-        virtual MultiDimDecisionGraph<GUM_SCALAR>* _add(const MultiDimDecisionGraph< GUM_SCALAR >* function,
-                                                        const MultiDimDecisionGraph< GUM_SCALAR >* reward) = 0;
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* _add(const MultiDimFunctionGraph< GUM_SCALAR >* function,
+                                                        const MultiDimFunctionGraph< GUM_SCALAR >* reward) = 0;
 
         // ==========================================================================
         /// Subtract current VFunction from old VFunction to see if threshold is
@@ -313,8 +313,8 @@ namespace gum {
         /// @param old and new VFuntion
         /// @warning this time, nothing is deleted
         // ==========================================================================
-        virtual MultiDimDecisionGraph<GUM_SCALAR>* _subtract(const MultiDimDecisionGraph< GUM_SCALAR >* newVF,
-                                                             const MultiDimDecisionGraph< GUM_SCALAR >* oldVF) = 0;
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* _subtract(const MultiDimFunctionGraph< GUM_SCALAR >* newVF,
+                                                             const MultiDimFunctionGraph< GUM_SCALAR >* oldVF) = 0;
 
 
       /// @}
@@ -330,7 +330,7 @@ namespace gum {
         // ==========================================================================
         /// The Value Function computed iteratively
         // ==========================================================================
-        MultiDimDecisionGraph<GUM_SCALAR>* _vFunction;
+        MultiDimFunctionGraph<GUM_SCALAR>* _vFunction;
 
         // ==========================================================================
         /// The associated optimal policy
@@ -339,7 +339,7 @@ namespace gum {
         /// somme translation from the _fmdp is required. optimalPolicy2String do this
         /// job.
         // ==========================================================================
-        MultiDimDecisionGraph< ActionSet, SetTerminalNodePolicy >* _optimalPolicy;
+        MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* _optimalPolicy;
 
         // ==========================================================================
         /// A Set to eleminate primed variables

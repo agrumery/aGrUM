@@ -24,7 +24,7 @@
 namespace gum {
 
   StatesChecker::StatesChecker() : __nbVisitedStates(0),
-                                   __checker(new MultiDimDecisionGraph<bool>()),
+                                   __checker(new MultiDimFunctionGraph<bool>()),
                                    __checkerTrueId(0),
                                    __checkerFalseId(0){
     GUM_CONSTRUCTOR(StatesChecker)

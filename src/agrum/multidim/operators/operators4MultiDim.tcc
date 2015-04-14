@@ -166,107 +166,107 @@
 
 /* ******************************************************************************************* */
 /*                                                                                             */
-/*                          MultiDimDecisionGraphs functions                                   */
+/*                          MultiDimFunctionGraphs functions                                   */
 /*                                                                                             */
 /* ******************************************************************************************* */
 
 // //////////////////////////////////////////////////////////////////////////////////
-/// a specialized function for summing two multiDimDecisionGraphs
+/// a specialized function for summing two multiDimFunctionGraphs
 // //////////////////////////////////////////////////////////////////////////////////
 
 #define GUM_MULTI_DIM_OPERATOR std::plus
 
-#define GUM_MULTI_DIM_OPERATOR_NAME add2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+#define GUM_MULTI_DIM_OPERATOR_NAME add2MultiDimFunctionGraphs
+#include <agrum/multidim/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME add2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME add2MultiDimFunctionGraphs
+#include <agrum/multidim/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
 #undef GUM_MULTI_DIM_OPERATOR
 
 
 // //////////////////////////////////////////////////////////////////////////////////
-/// a specialized function for subtracting two multiDimDecisionGraphs
+/// a specialized function for subtracting two multiDimFunctionGraphs
 // //////////////////////////////////////////////////////////////////////////////////
 
 #define GUM_MULTI_DIM_OPERATOR std::minus
 
-#define GUM_MULTI_DIM_OPERATOR_NAME subtract2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+#define GUM_MULTI_DIM_OPERATOR_NAME subtract2MultiDimFunctionGraphs
+#include <agrum/multidim/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME subtract2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME subtract2MultiDimFunctionGraphs
+#include <agrum/multidim/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
 #undef GUM_MULTI_DIM_OPERATOR
 
 
 // //////////////////////////////////////////////////////////////////////////////////
-/// a specialized function for multiplying two multiDimDecisionGraphs
+/// a specialized function for multiplying two multiDimFunctionGraphs
 // //////////////////////////////////////////////////////////////////////////////////
 
 #define GUM_MULTI_DIM_OPERATOR std::multiplies
 
-#define GUM_MULTI_DIM_OPERATOR_NAME multiply2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+#define GUM_MULTI_DIM_OPERATOR_NAME multiply2MultiDimFunctionGraphs
+#include <agrum/multidim/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME multiply2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME multiply2MultiDimFunctionGraphs
+#include <agrum/multidim/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
 #undef GUM_MULTI_DIM_OPERATOR
 
 
 // //////////////////////////////////////////////////////////////////////////////////
-/// a specialized function for dividing two multiDimDecisionGraphs
+/// a specialized function for dividing two multiDimFunctionGraphs
 // //////////////////////////////////////////////////////////////////////////////////
 
 #define GUM_MULTI_DIM_OPERATOR std::divides
 
-#define GUM_MULTI_DIM_OPERATOR_NAME divide2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+#define GUM_MULTI_DIM_OPERATOR_NAME divide2MultiDimFunctionGraphs
+#include <agrum/multidim/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME divide2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME divide2MultiDimFunctionGraphs
+#include <agrum/multidim/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
 #undef GUM_MULTI_DIM_OPERATOR
 
 
 // //////////////////////////////////////////////////////////////////////////////////
-/// a specialized function for finding max of two multiDimDecisionGraphs
+/// a specialized function for finding max of two multiDimFunctionGraphs
 // //////////////////////////////////////////////////////////////////////////////////
 
 #define GUM_MULTI_DIM_OPERATOR Maximizes
 
-#define GUM_MULTI_DIM_OPERATOR_NAME maximize2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+#define GUM_MULTI_DIM_OPERATOR_NAME maximize2MultiDimFunctionGraphs
+#include <agrum/multidim/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME maximize2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME maximize2MultiDimFunctionGraphs
+#include <agrum/multidim/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
 #undef GUM_MULTI_DIM_OPERATOR
 
 
 // //////////////////////////////////////////////////////////////////////////////////
-/// a specialized function for finding min of two multiDimDecisionGraphs
+/// a specialized function for finding min of two multiDimFunctionGraphs
 // //////////////////////////////////////////////////////////////////////////////////
 
 #define GUM_MULTI_DIM_OPERATOR Minimizes
 
-#define GUM_MULTI_DIM_OPERATOR_NAME minimize2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+#define GUM_MULTI_DIM_OPERATOR_NAME minimize2MultiDimFunctionGraphs
+#include <agrum/multidim/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME minimize2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME minimize2MultiDimFunctionGraphs
+#include <agrum/multidim/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
 #undef GUM_MULTI_DIM_OPERATOR
@@ -388,7 +388,7 @@ namespace gum {
       first_init = false;
 
       std::string MultiDimArrayString ( "MultiDimArray" );
-      std::string MultiDimDecisionGraphString ( "MultiDimDecisionGraph" );
+      std::string MultiDimFunctionGraphString ( "MultiDimFunctionGraph" );
       std::string BaseNameString ( "MultiDimImplementation" );
 
       // register base functions for multiDimArrays
@@ -401,15 +401,15 @@ namespace gum {
       registerOperator<GUM_SCALAR> ( "/", MultiDimArrayString, MultiDimArrayString,
                                      &divide2MultiDimArrays );
 
-      // register base functions for multiDimDecisionGraphs
-      registerOperator<GUM_SCALAR> ( "+", MultiDimDecisionGraphString, MultiDimDecisionGraphString,
-                                     &add2MultiDimDecisionGraphs );
-      registerOperator<GUM_SCALAR> ( "-", MultiDimDecisionGraphString, MultiDimDecisionGraphString,
-                                     &subtract2MultiDimDecisionGraphs );
-      registerOperator<GUM_SCALAR> ( "*", MultiDimDecisionGraphString, MultiDimDecisionGraphString,
-                                     &multiply2MultiDimDecisionGraphs );
-      registerOperator<GUM_SCALAR> ( "/", MultiDimDecisionGraphString, MultiDimDecisionGraphString,
-                                     &divide2MultiDimDecisionGraphs );
+      // register base functions for multiDimFunctionGraphs
+      registerOperator<GUM_SCALAR> ( "+", MultiDimFunctionGraphString, MultiDimFunctionGraphString,
+                                     &add2MultiDimFunctionGraphs );
+      registerOperator<GUM_SCALAR> ( "-", MultiDimFunctionGraphString, MultiDimFunctionGraphString,
+                                     &subtract2MultiDimFunctionGraphs );
+      registerOperator<GUM_SCALAR> ( "*", MultiDimFunctionGraphString, MultiDimFunctionGraphString,
+                                     &multiply2MultiDimFunctionGraphs );
+      registerOperator<GUM_SCALAR> ( "/", MultiDimFunctionGraphString, MultiDimFunctionGraphString,
+                                     &divide2MultiDimFunctionGraphs );
 
       // register default basename functions
       registerOperator<GUM_SCALAR> ( "+", BaseNameString, BaseNameString,

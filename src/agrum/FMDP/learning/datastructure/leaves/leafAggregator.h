@@ -35,7 +35,7 @@
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/nodeGraphPart.h>
 // =========================================================================
-#include <agrum/multidim/decisionGraphUtilities/link.h>
+#include <agrum/multidim/FunctionGraphUtilities/link.h>
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/leaves/leafPair.h>
 #include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
@@ -46,7 +46,7 @@
 namespace gum {
 
   /**
-   * @class LeafAggregator leafAggregator.h <agrum/FMDP/learning/decisionGraph/leafAggregator.h>
+   * @class LeafAggregator leafAggregator.h <agrum/FMDP/learning/FunctionGraph/leafAggregator.h>
    * @brief Gather together leaves with similar distributions
    * @ingroup fmdp_group
    *

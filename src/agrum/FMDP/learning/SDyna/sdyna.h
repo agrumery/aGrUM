@@ -328,7 +328,7 @@ namespace gum {
 //      /** * @param var
 //      /** * @return
 //      /** */
-//      MultiDimDecisionGraph<double>* extractCount(Idx actionId, const DiscreteVariable* var){
+//      MultiDimFunctionGraph<double>* extractCount(Idx actionId, const DiscreteVariable* var){
 //        return __learner->extractCount(actionId, var); }
 
 //      double rMax(){ return __rmax; }

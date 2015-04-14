@@ -282,7 +282,7 @@ int main ( int argc, char* argv[] ) {
 //  // ############################################################################
 //  // Learning phase :
 //  // ############################################################################
-//  gum::MultiDimDecisionGraph<double>* target = new gum::MultiDimDecisionGraph<double>();
+//  gum::MultiDimFunctionGraph<double>* target = new gum::MultiDimFunctionGraph<double>();
 //  gum::Set<const gum::DiscreteVariable*> varList;
 //  std::vector<const gum::DiscreteVariable*> vv(vnv.size());
 //  for(gum::Idx i = 0; i < vnv.size() - 1; i++ ){

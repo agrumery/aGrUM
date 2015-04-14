@@ -170,7 +170,7 @@ namespace gum {
         virtual void addTransition ( const std::string& var, const MultiDimAdressable* transition ) = 0;
 
         /// Tells the factory to add a transition table to the current fmdp.
-        /// This transition table will be extracted from incorporated multiDimDecisionGraph.
+        /// This transition table will be extracted from incorporated multiDimFunctionGraph.
         virtual void addTransition ( const std::string& var ) = 0;
 
         /// Tells the factory that we're out of a transition declaration.
@@ -233,7 +233,7 @@ namespace gum {
 
       /// @}
       // ==========================================================================
-      /// @name DecisionGraph Creation specific methods
+      /// @name FunctionGraph Creation specific methods
       // ==========================================================================
       /// @{
 

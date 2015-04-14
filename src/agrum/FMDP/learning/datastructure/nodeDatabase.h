@@ -43,7 +43,7 @@
 namespace gum {
 
   /**
-   * @class NodeDatabase NodeDatabase.h <agrum/FMDP/learning/decisionGraph/nodeDatabase.h>
+   * @class NodeDatabase NodeDatabase.h <agrum/FMDP/learning/FunctionGraph/nodeDatabase.h>
    * @brief
    * @ingroup fmdp_group
    *

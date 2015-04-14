@@ -25,8 +25,8 @@
 */
 
 // =======================================================================================
-#include <agrum/multidim/decisionGraphUtilities/multiDimDecisionGraphOperator.h>
-#include <agrum/multidim/decisionGraphUtilities/internalNode.h>
+#include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphOperator.h>
+#include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
 // =======================================================================================
 
 #define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
@@ -40,15 +40,15 @@ namespace gum {
     template <typename GUM_SCALAR,
               template <typename> class FUNCTOR,
               template <typename> class TerminalNodePolicy>
-    MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::MultiDimDecisionGraphOperator(
-        const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *DG1,
-        const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *DG2 ):__DG1( DG1 ),
+    MultiDimFunctionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::MultiDimFunctionGraphOperator(
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *DG1,
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *DG2 ):__DG1( DG1 ),
                                                                                      __DG2( DG2 ),
                                                                                      __function(),
                                                                                      __DG1InstantiationNeeded(DG1->realSize(),true,false),
                                                                                      __DG2InstantiationNeeded(DG2->realSize(),true,false){
-      GUM_CONSTRUCTOR(MultiDimDecisionGraphOperator);
-      __rd = new MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>();
+      GUM_CONSTRUCTOR(MultiDimFunctionGraphOperator);
+      __rd = new MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>();
       __nbVar = 0;
       __default = nullptr;
     }
@@ -61,9 +61,9 @@ namespace gum {
     template <typename GUM_SCALAR,
               template <typename> class FUNCTOR,
               template <typename> class TerminalNodePolicy>
-    MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::~MultiDimDecisionGraphOperator( ){
+    MultiDimFunctionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::~MultiDimFunctionGraphOperator( ){
 
-      GUM_DESTRUCTOR(MultiDimDecisionGraphOperator);
+      GUM_DESTRUCTOR(MultiDimFunctionGraphOperator);
 
       if(__nbVar != 0)
         DEALLOCATE( __default, sizeof(short int)*__nbVar);
@@ -86,7 +86,7 @@ namespace gum {
     template <typename GUM_SCALAR,
               template <typename> class FUNCTOR,
               template <typename> class TerminalNodePolicy>
-    MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> * MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::compute(){
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> * MultiDimFunctionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::compute(){
 
       __establishVarOrder();
       __findRetrogradeVariables( __DG1, __DG1InstantiationNeeded );
@@ -123,7 +123,7 @@ namespace gum {
     template <typename GUM_SCALAR,
               template <typename> class FUNCTOR,
               template <typename> class TerminalNodePolicy>
-    void MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::__establishVarOrder(){
+    void MultiDimFunctionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::__establishVarOrder(){
 
       SequenceIteratorSafe<const DiscreteVariable*> fite = __DG1->variablesSequence().beginSafe();
       SequenceIteratorSafe<const DiscreteVariable*> site = __DG2->variablesSequence().beginSafe();
@@ -218,8 +218,8 @@ namespace gum {
               template <typename> class FUNCTOR,
               template <typename> class TerminalNodePolicy>
     INLINE
-    Idx MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::__distance(
-        const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* d,
+    Idx MultiDimFunctionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::__distance(
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* d,
         const DiscreteVariable* from,
         const DiscreteVariable* to){
 
@@ -245,8 +245,8 @@ namespace gum {
               template <typename> class FUNCTOR,
               template <typename> class TerminalNodePolicy>
     INLINE
-    void MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::__findRetrogradeVariables(
-        const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *dg,
+    void MultiDimFunctionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::__findRetrogradeVariables(
+        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *dg,
         HashTable<NodeId, short int*>& dgInstNeed){
 
       HashTable<NodeId, short int*> nodesVarDescendant;
@@ -331,7 +331,7 @@ namespace gum {
               template <typename> class FUNCTOR,
               template <typename> class TerminalNodePolicy>
     NodeId
-    MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::__compute(  O4DGContext & currentSituation,
+    MultiDimFunctionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::__compute(  O4DGContext & currentSituation,
                                                                                         Idx lastInstVarPos) {
 
       NodeId newNode = 0;
@@ -382,7 +382,7 @@ namespace gum {
 
       NodeId origDG1 = currentSituation.DG1Node(), origDG2 = currentSituation.DG2Node();
 
-      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* leaddg = nullptr;
+      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* leaddg = nullptr;
       NodeId leadNodeId = 0;
       Idx leadVarPos = __rd->variablesSequence().size();
       typedef void (O4DGContext::*SetNodeFunction)(const NodeId&);

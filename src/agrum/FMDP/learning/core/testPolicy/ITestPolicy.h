@@ -24,8 +24,8 @@
  * @author Jean-Christophe Magnan
  *
  */
-#ifndef GUM_MULTI_DIM_DECISION_GRAPH_INTERFACE_TEST_POLICY_H
-#define GUM_MULTI_DIM_DECISION_GRAPH_INTERFACE_TEST_POLICY_H
+#ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_INTERFACE_TEST_POLICY_H
+#define GUM_MULTI_DIM_FUNCTION_GRAPH_INTERFACE_TEST_POLICY_H
 
 // ============================================================================
 #include <agrum/graphs/nodeGraphPart.h>
@@ -117,4 +117,4 @@ namespace gum {
 
 } // End of namespace gum
 
-#endif /* GUM_MULTI_DIM_DECISION_GRAPH_INTERFACE_TEST_POLICY_H */
+#endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_INTERFACE_TEST_POLICY_H */

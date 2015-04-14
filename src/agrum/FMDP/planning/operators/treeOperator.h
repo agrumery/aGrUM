@@ -28,8 +28,8 @@
 #ifndef GUM_TREE_OPERATOR_H
 #define GUM_TREE_OPERATOR_H
 // =======================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
-#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
 // =======================================================
 
 namespace gum {
@@ -57,14 +57,14 @@ namespace gum {
       // ============================================================================
       /// Default constructor.
       // ============================================================================
-      TreeOperator( const MultiDimDecisionGraph< GUM_SCALAR, TerminalNodePolicy>* dt1,
-                    const MultiDimDecisionGraph< GUM_SCALAR, TerminalNodePolicy>* dt2 );
+      TreeOperator( const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy>* dt1,
+                    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy>* dt2 );
 
       // ============================================================================
       /// Default constructor.
       // ============================================================================
-      TreeOperator(const MultiDimDecisionGraph< GUM_SCALAR, TerminalNodePolicy>* dt1,
-                    const MultiDimDecisionGraph< GUM_SCALAR, TerminalNodePolicy>* dt2,
+      TreeOperator(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy>* dt1,
+                    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy>* dt2,
                     const HashTable<const DiscreteVariable*, Idx> givenContext );
 
       // ============================================================================
@@ -82,7 +82,7 @@ namespace gum {
       // ============================================================================
       /// Computes and builds the Decision Graph that is the result of the operation
       // ============================================================================
-      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *compute();
+      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *compute();
 
     /// @}
 
@@ -104,13 +104,13 @@ namespace gum {
       // ============================================================================
       /// The two decision graphs used for the operation
       // ============================================================================
-      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __dt1;
-      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __dt2;
+      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __dt1;
+      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __dt2;
 
       // ============================================================================
       /// The resulting decision graph
       // ============================================================================
-      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
+      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
 
       // ============================================================================
       /// The function to be performed on the leaves

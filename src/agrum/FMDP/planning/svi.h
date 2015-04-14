@@ -73,7 +73,7 @@ namespace gum {
           // ==========================================================================
           /// Performs the P(s'|s,a).V^{t-1}(s') part of the value itération
           // ==========================================================================
-          MultiDimDecisionGraph<GUM_SCALAR>* _evalQaction( const MultiDimDecisionGraph<GUM_SCALAR>*, Idx );
+          MultiDimFunctionGraph<GUM_SCALAR>* _evalQaction( const MultiDimFunctionGraph<GUM_SCALAR>*, Idx );
 
         /// @}
 
@@ -91,8 +91,8 @@ namespace gum {
         /// @param xip : the variable we eliminate on the projection
         /// @warning given qAction is deleted, return the new one
         // ==========================================================================
-        virtual MultiDimDecisionGraph<GUM_SCALAR>* _regress(const MultiDimDecisionGraph< GUM_SCALAR >* qAction,
-                                                            const MultiDimDecisionGraph< GUM_SCALAR >* pxi,
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* _regress(const MultiDimFunctionGraph< GUM_SCALAR >* qAction,
+                                                            const MultiDimFunctionGraph< GUM_SCALAR >* pxi,
                                                             const DiscreteVariable* xi);
 
         // ==========================================================================
@@ -101,8 +101,8 @@ namespace gum {
         /// @param vFunction : the vFunction so far
         /// @warning given vFunction and qAction are deleted, returns the new one
         // ==========================================================================
-        virtual MultiDimDecisionGraph<GUM_SCALAR>* _maximize(const MultiDimDecisionGraph< GUM_SCALAR >* vFunction,
-                                                             const MultiDimDecisionGraph< GUM_SCALAR >* qAction);
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* _maximize(const MultiDimFunctionGraph< GUM_SCALAR >* vFunction,
+                                                             const MultiDimFunctionGraph< GUM_SCALAR >* qAction);
 
         // ==========================================================================
         /// ArgMaximizes between QAction and VFunction
@@ -110,9 +110,9 @@ namespace gum {
         /// @param vFunction : the vFunction so far
         /// @warning given vFunction and qAction are deleted, returns the new one
         // ==========================================================================
-        virtual MultiDimDecisionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* _argmaximize(
-                            const MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* vFunction,
-                            const MultiDimDecisionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* qAction);
+        virtual MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* _argmaximize(
+                            const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* vFunction,
+                            const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* qAction);
 
         // ==========================================================================
         /// Adds reward to given function( whether a qAction or vFunction)
@@ -120,8 +120,8 @@ namespace gum {
         /// @param function : either V(s) or Q(s,a)
         /// @warning given function is deleted, returns the new one
         // ==========================================================================
-        virtual MultiDimDecisionGraph<GUM_SCALAR>* _add(const MultiDimDecisionGraph< GUM_SCALAR >* function,
-                                                        const MultiDimDecisionGraph< GUM_SCALAR >* reward);
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* _add(const MultiDimFunctionGraph< GUM_SCALAR >* function,
+                                                        const MultiDimFunctionGraph< GUM_SCALAR >* reward);
 
         // ==========================================================================
         /// Subtract current VFunction from old VFunction to see if threshold is
@@ -129,8 +129,8 @@ namespace gum {
         /// @param old and new VFuntion
         /// @warning this time, nothing is deleted
         // ==========================================================================
-        virtual MultiDimDecisionGraph<GUM_SCALAR>* _subtract(const MultiDimDecisionGraph< GUM_SCALAR >* newVF,
-                                                             const MultiDimDecisionGraph< GUM_SCALAR >* oldVF);
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* _subtract(const MultiDimFunctionGraph< GUM_SCALAR >* newVF,
+                                                             const MultiDimFunctionGraph< GUM_SCALAR >* oldVF);
 
 
       /// @}

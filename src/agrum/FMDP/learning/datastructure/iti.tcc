@@ -48,7 +48,7 @@ namespace gum {
     /**
      * ITI constructor for functions describing the behaviour of one variable
      * according to a set of other variable such as conditionnal probabilities
-     * @param target : the MultiDimDecisionGraph in which we load the structure
+     * @param target : the MultiDimFunctionGraph in which we load the structure
      * @param attributeSelectionThreshold : threshold under which a node is not
      * installed (pe-pruning)
      * @param temporaryAPIfix : Issue in API in regard to IMDDI
@@ -58,7 +58,7 @@ namespace gum {
      */
     // ###################################################################
     template <TESTNAME AttributeSelection, bool isScalar >
-    ITI<AttributeSelection, isScalar>::ITI ( MultiDimDecisionGraph<double>* target,
+    ITI<AttributeSelection, isScalar>::ITI ( MultiDimFunctionGraph<double>* target,
             double attributeSelectionThreshold,
             double temporaryAPIfix,
             Set<const DiscreteVariable*> attributeListe,
@@ -73,7 +73,7 @@ namespace gum {
     /**
      * ITI constructeur for real functions. We try to predict the output of a
      * function f given a set of variable
-     * @param target : the MultiDimDecisionGraph in which we load the structure
+     * @param target : the MultiDimFunctionGraph in which we load the structure
      * @param attributeSelectionThreshold : threshold under which a node is not
      * installed (pe-pruning)
      * @param temporaryAPIfix : Issue in API in regard to IMDDI
@@ -82,7 +82,7 @@ namespace gum {
      */
     // ###################################################################
     template <TESTNAME AttributeSelection, bool isScalar >
-    ITI<AttributeSelection, isScalar>::ITI ( MultiDimDecisionGraph<double>* target,
+    ITI<AttributeSelection, isScalar>::ITI ( MultiDimFunctionGraph<double>* target,
             double attributeSelectionThreshold,
             double temporaryAPIfix,
             Set<const DiscreteVariable*> attributeListe ) : IncrementalGraphLearner<AttributeSelection, isScalar>( target,
@@ -241,10 +241,10 @@ namespace gum {
     /// Updates target to currently learned graph structure
     // ############################################################################
     template <TESTNAME AttributeSelection, bool isScalar >
-    void ITI<AttributeSelection, isScalar>::updateDecisionGraph(){
+    void ITI<AttributeSelection, isScalar>::updateFunctionGraph(){
 
       this->_target->clear();
-      this->_target->manager()->setRootNode( this->__insertNodeInDecisionGraph(this->_root) );
+      this->_target->manager()->setRootNode( this->__insertNodeInFunctionGraph(this->_root) );
     }
 
 
@@ -256,7 +256,7 @@ namespace gum {
      */
     // ############################################################################
     template <TESTNAME AttributeSelection, bool isScalar >
-    NodeId ITI<AttributeSelection, isScalar>::__insertNodeInDecisionGraph( NodeId currentNodeId ){
+    NodeId ITI<AttributeSelection, isScalar>::__insertNodeInFunctionGraph( NodeId currentNodeId ){
 
       if( this->_nodeVarMap[currentNodeId] == this->_value ){
         NodeId nody =  __insertTerminalNode(currentNodeId);
@@ -269,7 +269,7 @@ namespace gum {
 
       NodeId nody = this->_target->manager()->addNonTerminalNode( this->_nodeVarMap[currentNodeId] );
       for( Idx moda = 0; moda < this->_nodeVarMap[currentNodeId]->domainSize(); ++moda ){
-        NodeId son = this->__insertNodeInDecisionGraph( this->_nodeSonsMap[currentNodeId][moda] );
+        NodeId son = this->__insertNodeInFunctionGraph( this->_nodeSonsMap[currentNodeId][moda] );
         this->_target->manager()->setSon(nody,moda, son);
       }
 

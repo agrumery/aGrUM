@@ -24,21 +24,21 @@
  * @author Jean-Christophe Magnan
  *
  */
-#ifndef GUM_MULTI_DIM_DECISION_GRAPH_EXACT_TERMINAL_NODE_POLICY_H
-#define GUM_MULTI_DIM_DECISION_GRAPH_EXACT_TERMINAL_NODE_POLICY_H
+#ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_EXACT_TERMINAL_NODE_POLICY_H
+#define GUM_MULTI_DIM_FUNCTION_GRAPH_EXACT_TERMINAL_NODE_POLICY_H
 
 // ============================================================================
 #include <agrum/core/bijection.h>
 // ============================================================================
 #include <agrum/graphs/nodeGraphPart.h>
 // ============================================================================
-#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/ITerminalNodePolicy.h>
+#include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ITerminalNodePolicy.h>
 // ============================================================================
 
 namespace gum {
 
   /**
-   * @class ExactTerminalNodePolicy ExactTerminalNodePolicy.h <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
+   * @class ExactTerminalNodePolicy ExactTerminalNodePolicy.h <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
    *
    * @brief Implementation of a Terminal Node Policy that maps nodeid directly to value
    *
@@ -146,4 +146,4 @@ namespace gum {
 
 } // End of namespace gum
 
-#endif /* GUM_MULTI_DIM_DECISION_GRAPH_EXACT_TERMINAL_NODE_POLICY_H */
+#endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_EXACT_TERMINAL_NODE_POLICY_H */

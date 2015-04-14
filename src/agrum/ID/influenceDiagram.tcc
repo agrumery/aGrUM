@@ -691,7 +691,7 @@ namespace gum {
   */
   template<typename GUM_SCALAR>
   gum::DAG*
-  InfluenceDiagram<GUM_SCALAR>::getDecisionGraph() const {
+  InfluenceDiagram<GUM_SCALAR>::getFunctionGraph() const {
     gum::DAG* temporalGraph = new gum::DAG();
 
     for( const auto node : _dag.nodes() ) {

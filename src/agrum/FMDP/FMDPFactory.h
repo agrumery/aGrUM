@@ -158,7 +158,7 @@ namespace gum {
         void addTransition ( const std::string& var, const MultiDimAdressable* transition );
 
         /// Tells the factory to add a transition table to the current fmdp.
-        /// This transition table will be extracted from incorporated multiDimDecisionGraph.
+        /// This transition table will be extracted from incorporated multiDimFunctionGraph.
         void addTransition ( const std::string& var );
 
         /// Tells the factory that we're out of a transition declaration.
@@ -177,7 +177,7 @@ namespace gum {
         void addCost ( const MultiDimAdressable* cost );
 
         /// Tells the factory to add a cost table to the current fmdp.
-        /// This cost table will be extracted from incorporated multiDimDecisionGraph.
+        /// This cost table will be extracted from incorporated multiDimFunctionGraph.
         void addCost( );
 
         /// Tells the factory that we're out of a cost declaration.
@@ -200,7 +200,7 @@ namespace gum {
         void addReward ( const MultiDimAdressable* reward );
 
         /// Tells the factory to add a reward table to the current fmdp.
-        /// This reward table will be extracted from incorporated multiDimDecisionGraph.
+        /// This reward table will be extracted from incorporated multiDimFunctionGraph.
         void addReward( );
 
         /// Tells the factory that we're out of a cost declaration.
@@ -223,9 +223,9 @@ namespace gum {
 
       /// @}
       // ==========================================================================
-      /// @name DecisionGraph Creation specific methods
-      /// @brief methods used by internal DecisionGraphfactory to build up
-      /// a multidimDecisionGraph
+      /// @name FunctionGraph Creation specific methods
+      /// @brief methods used by internal FunctionGraphfactory to build up
+      /// a multidimFunctionGraph
       // ==========================================================================
       /// @{
 
@@ -270,10 +270,10 @@ namespace gum {
       void __resetParts();
 
       /// Insert every variables in the decision graph
-      void __initializeDecisionGraph();
+      void __initializeFunctionGraph();
 
       /// Insert every variables in the decision graph
-      void __finalizeDecisionGraph();
+      void __finalizeFunctionGraph();
 
       /// @}
 
@@ -283,8 +283,8 @@ namespace gum {
       /// The constructed FMDP
       FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
 
-      /// The decisionGraph we're building at a given time
-      MultiDimDecisionGraph<GUM_SCALAR>* __decisionGraph;
+      /// The FunctionGraph we're building at a given time
+      MultiDimFunctionGraph<GUM_SCALAR>* __FunctionGraph;
 
       /// Mapping between a declared variable's name and itself.
       HashTable< std::string, const DiscreteVariable* > __varNameMap;

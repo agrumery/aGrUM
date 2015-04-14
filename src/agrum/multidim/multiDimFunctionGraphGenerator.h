@@ -19,29 +19,29 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::MultiDimDecisionGraphGenerator.
+ * @brief Headers of gum::MultiDimFunctionGraphGenerator.
  *
  * @author Jean-Christophe Magnan
  *
  */
-#ifndef GUM_MULTI_DIM_DECISION_GRAPH_GENERATOR_H
-#define GUM_MULTI_DIM_DECISION_GRAPH_GENERATOR_H
+#ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_GENERATOR_H
+#define GUM_MULTI_DIM_FUNCTION_GRAPH_GENERATOR_H
 
 // ============================================================================
 #include <agrum/config.h>
 // ============================================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 // ============================================================================
 
 namespace gum {
   /**
-   * @class MultiDimDecisionGraphGenerator multiDimDecisionGraphGenerator.h <agrum/multidim/multiDimDecisionGraphGenerator.h>
+   * @class MultiDimFunctionGraphGenerator multiDimFunctionGraphGenerator.h <agrum/multidim/multiDimFunctionGraphGenerator.h>
    *
    * @brief Class implementing a decision graph generator with template type :double
    *
    * @ingroup multidim_group
    */
-  class MultiDimDecisionGraphGenerator {
+  class MultiDimFunctionGraphGenerator {
 
   public:
     // ############################################################################
@@ -51,16 +51,16 @@ namespace gum {
       // ============================================================================
       /// Default constructor.
       // ============================================================================
-      MultiDimDecisionGraphGenerator(Idx maxVar, Idx minVar, const Sequence<const DiscreteVariable *>& varSeq);
+      MultiDimFunctionGraphGenerator(Idx maxVar, Idx minVar, const Sequence<const DiscreteVariable *>& varSeq);
 
       // ============================================================================
       /// destructor.
       // ============================================================================
-      ~MultiDimDecisionGraphGenerator();
+      ~MultiDimFunctionGraphGenerator();
 
     /// @}
 
-      MultiDimDecisionGraph<double>* generate();
+      MultiDimFunctionGraph<double>* generate();
 
 
 
@@ -77,4 +77,4 @@ namespace gum {
       static Idx __genSeed;
   };
 } /* end of namespace */
-#endif /* GUM_MULTI_DIM_DECISION_GRAPH_GENERATOR_H */
+#endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_GENERATOR_H */

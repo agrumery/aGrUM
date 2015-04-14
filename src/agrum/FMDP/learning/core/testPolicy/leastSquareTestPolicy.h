@@ -24,14 +24,14 @@
  * @author Jean-Christophe Magnan
  *
  */
-#ifndef GUM_MULTI_DIM_DECISION_GRAPH_LEAST_SQUARE_TEST_POLICY_H
-#define GUM_MULTI_DIM_DECISION_GRAPH_LEAST_SQUARE_TEST_POLICY_H
+#ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_LEAST_SQUARE_TEST_POLICY_H
+#define GUM_MULTI_DIM_FUNCTION_GRAPH_LEAST_SQUARE_TEST_POLICY_H
 
 // ============================================================================
 #include <agrum/FMDP/learning/core/contingencyTable.h>
 #include <agrum/FMDP/learning/core/testPolicy/ITestPolicy.h>
 // ============================================================================
-#include <agrum/multidim/decisionGraphUtilities/link.h>
+#include <agrum/multidim/FunctionGraphUtilities/link.h>
 // ============================================================================
 
 namespace gum {
@@ -127,4 +127,4 @@ namespace gum {
 
 #include <agrum/FMDP/learning/core/testPolicy/leastSquareTestPolicy.tcc>
 
-#endif /* GUM_MULTI_DIM_DECISION_GRAPH_LEAST_SQUARE_TEST_POLICY_H */
+#endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_LEAST_SQUARE_TEST_POLICY_H */

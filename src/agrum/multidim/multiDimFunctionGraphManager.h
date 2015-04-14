@@ -20,47 +20,47 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::MultiDimDecisionGraphManager.
+ * @brief Headers of gum::MultiDimFunctionGraphManager.
  *
  * @author Jean-Christophe Magnan
  *
  */
-#ifndef GUM_MULTI_DIM_DECISION_GRAPH_MANAGER_H
-#define GUM_MULTI_DIM_DECISION_GRAPH_MANAGER_H
+#ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
+#define GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
 
 // ============================================================================
 #include <agrum/config.h>
 // ============================================================================
 #include <agrum/graphs/nodeGraphPart.h>
 // ============================================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
-#include <agrum/multidim/decisionGraphUtilities/internalNode.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
 // ============================================================================
 
 namespace gum{
 
   template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
-  class MultiDimDecisionGraph;
+  class MultiDimFunctionGraph;
 
   /**
-   * @class MultiDimDecisionGraphManager multiDimDecisionGraphManager.h <agrum/multidim/multiDimDecisionGraphManager.h>
+   * @class MultiDimFunctionGraphManager multiDimFunctionGraphManager.h <agrum/multidim/multiDimFunctionGraphManager.h>
    *
    * @brief Class implementingting a decision graph manager
    * This class provides the methods to edit a Decision Graph.
-   * Any modification on a MultiDimDecisionGraph graph is done via this class.
+   * Any modification on a MultiDimFunctionGraph graph is done via this class.
    *
-   * At any time during the runtime, it exists only one instance of this class for a given MultiDimDecisionGraph.
-   * To get such instance, use MultiDimDecisionGraph::getManager();
+   * At any time during the runtime, it exists only one instance of this class for a given MultiDimFunctionGraph.
+   * To get such instance, use MultiDimFunctionGraph::getManager();
    * To do so :@code
-       MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* dg = new MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>();
-       MultiDimDecisionGraphManager<GUM_SCALAR, TerminalNodePolicy>* dgm = dg->manager();
+       MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dg = new MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>();
+       MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>* dgm = dg->manager();
        @endcode
-   * This is the only way to get an instance of a MultiDimDecisionGraphManager since the constructor is private.
+   * This is the only way to get an instance of a MultiDimFunctionGraphManager since the constructor is private.
    *
    * @ingroup multidim_group
    */
   template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
-  class MultiDimDecisionGraphManager
+  class MultiDimFunctionGraphManager
   {
       // ############################################################################
       /// @name Constructors / Destructors
@@ -71,25 +71,25 @@ namespace gum{
         /// This friend methods from is the only way to get an instance of a manager.
         /// See class description for more info.
         // ============================================================================
-        friend MultiDimDecisionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
-              MultiDimDecisionGraph<GUM_SCALAR,TerminalNodePolicy>::manager();
+        friend MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
+              MultiDimFunctionGraph<GUM_SCALAR,TerminalNodePolicy>::manager();
 
         // ============================================================================
         /**
          * Default constructor.
          * Private.
-         * You have to call MultiDimDecisionGraph::getManager() to get the instance
-         * of MultiDimDecisionGraphManager bound to your decision graph.
+         * You have to call MultiDimFunctionGraph::getManager() to get the instance
+         * of MultiDimFunctionGraphManager bound to your decision graph.
          */
         // ============================================================================
-        MultiDimDecisionGraphManager( MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* master);
+        MultiDimFunctionGraphManager( MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* master);
 
     public :
         // ============================================================================
         /// Destructor. Don't worry, it will be call on the destruction of your
-        /// MultiDimDecisionGraph.
+        /// MultiDimFunctionGraph.
         // ============================================================================
-        ~MultiDimDecisionGraphManager();
+        ~MultiDimFunctionGraphManager();
 
       /// @}
 
@@ -120,7 +120,7 @@ namespace gum{
          * NodeId of this node is generated automatically.
          *
          * @param var Associated variable
-         * @throw OperationNotAllowed if MultiDimDecisionGraph has no variable yet.
+         * @throw OperationNotAllowed if MultiDimFunctionGraph has no variable yet.
          * @return the id of the added non terminal node.
          */
         // ============================================================================
@@ -132,7 +132,7 @@ namespace gum{
          * NodeId of this node is generated automatically.
          *
          * @param var Associated variable
-         * @throw OperationNotAllowed if MultiDimDecisionGraph has no variable yet.
+         * @throw OperationNotAllowed if MultiDimFunctionGraph has no variable yet.
          * @return the id of the added non terminal node.
          */
         // ============================================================================
@@ -140,7 +140,7 @@ namespace gum{
 
         // ============================================================================
         /**
-         * Adds a value to the MultiDimDecisionGraph.
+         * Adds a value to the MultiDimFunctionGraph.
          * This will create a terminal node, which of id is returned.
          * If a terminal node with such value already exists,
          * its id will be return instead.
@@ -249,15 +249,15 @@ namespace gum{
         // ============================================================================
         /// The multidimdecisiongraph supposed to be edited.
         // ============================================================================
-        MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __decisionGraph;
+        MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __FunctionGraph;
 
   };
 } // namespace gum
 
 // ============================================================================
-#include <agrum/multidim/multiDimDecisionGraphManager.tcc>
+#include <agrum/multidim/multiDimFunctionGraphManager.tcc>
 // ============================================================================
-#endif // GUM_MULTI_DIM_DECISION_GRAPH_MANAGER_H
+#endif // GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
 // ============================================================================
 
 

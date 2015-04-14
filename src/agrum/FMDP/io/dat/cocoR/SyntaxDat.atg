@@ -21,7 +21,7 @@ COMPILER MDPDAT
                 gum::AbstractFMDPFactory* __factory;
                 
                 /// for each transition diagram, we need to know the associated variable
-                std::string __currentDecisionGraphVar;
+                std::string __currentFunctionGraphVar;
                 
                 /// for building the diagram, we need to keep track of var parents
                 std::vector< gum::NodeId > __parentNode;
@@ -174,7 +174,7 @@ PRODUCTIONS
         TRANSITION_DECISION_GRAPH =  (. std::string name_of_var;
                                           __factory->startTransitionDeclaration(); .)
                 IDENT<name_of_var>     (. std::string prime_name_of_var = name_of_var + "'";
-                                          __currentDecisionGraphVar = prime_name_of_var; .)
+                                          __currentFunctionGraphVar = prime_name_of_var; .)
                 ( IF( IsFollowedByIdent() ) 
                 '(' SUB_TRANSITION_DECISION_GRAPH ')' |  '(' TRANSITION_LEAF ')' )
                                        (. TRY( __factory->addTransition( name_of_var ) );
@@ -208,7 +208,7 @@ PRODUCTIONS
         /// *************************************************************************************
         TRANSITION_LEAF =       (. float value;
                                    gum::Idx i = 0;
-                                   NodeId var_id = __factory->addNonTerminalNode( __currentDecisionGraphVar );
+                                   NodeId var_id = __factory->addNonTerminalNode( __currentFunctionGraphVar );
                                    if( !__parentNode.empty() )
                                       __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
                                    else

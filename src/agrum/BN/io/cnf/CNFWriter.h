@@ -40,6 +40,7 @@
 #include <agrum/core/hashTable.h>
 #include <agrum/config.h>
 #include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
+#include <agrum/core/algorithms/approximationPolicy/exactPolicy.h>
 
 namespace gum {
 

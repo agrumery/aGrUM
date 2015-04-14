@@ -29,15 +29,15 @@
 #include <agrum/core/timer.h>
 // ==========================================================================
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/multiDimDecisionGraph.h>
-#include <agrum/multidim/multiDimDecisionGraphGenerator.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/multiDimFunctionGraphGenerator.h>
 // ==========================================================================
 #include <agrum/variables/labelizedVariable.h>
 // ==========================================================================
 
 namespace gum_tests {
 
-class MultiDimProjectors4DecisionGraphTestSuite: public CxxTest::TestSuite {
+class MultiDimProjectors4FunctionGraphTestSuite: public CxxTest::TestSuite {
 
   private :
 
@@ -94,47 +94,47 @@ class MultiDimProjectors4DecisionGraphTestSuite: public CxxTest::TestSuite {
     // ************************************************************************************************
     /// Génération fixe de diagramme de décision
     // ************************************************************************************************
-    gum::MultiDimDecisionGraph<double>* __generateDecisionGraph1 ( const gum::Sequence< const gum::DiscreteVariable* >* varList ) {
+    gum::MultiDimFunctionGraph<double>* __generateFunctionGraph1 ( const gum::Sequence< const gum::DiscreteVariable* >* varList ) {
 
-      gum::MultiDimDecisionGraph<double>* generatedDecisionGraph = new gum::MultiDimDecisionGraph<double>();
+      gum::MultiDimFunctionGraph<double>* generatedFunctionGraph = new gum::MultiDimFunctionGraph<double>();
 
       for ( gum::SequenceIterator< const gum::DiscreteVariable* > varIter = varList->begin();
          varIter != varList->end(); ++varIter )
-        generatedDecisionGraph->add(**varIter);
+        generatedFunctionGraph->add(**varIter);
 
-      gum::NodeId a = generatedDecisionGraph->manager()->addNonTerminalNode ( varList->atPos ( 0 ) );
-      gum::NodeId b = generatedDecisionGraph->manager()->addNonTerminalNode ( varList->atPos ( 1 ) );
-      gum::NodeId c = generatedDecisionGraph->manager()->addNonTerminalNode ( varList->atPos ( 2 ) );
+      gum::NodeId a = generatedFunctionGraph->manager()->addNonTerminalNode ( varList->atPos ( 0 ) );
+      gum::NodeId b = generatedFunctionGraph->manager()->addNonTerminalNode ( varList->atPos ( 1 ) );
+      gum::NodeId c = generatedFunctionGraph->manager()->addNonTerminalNode ( varList->atPos ( 2 ) );
 
-      gum::NodeId d = generatedDecisionGraph->manager()->addTerminalNode ( 6 );
-      gum::NodeId e = generatedDecisionGraph->manager()->addTerminalNode ( 2 );
-      gum::NodeId g = generatedDecisionGraph->manager()->addTerminalNode ( 3 );
+      gum::NodeId d = generatedFunctionGraph->manager()->addTerminalNode ( 6 );
+      gum::NodeId e = generatedFunctionGraph->manager()->addTerminalNode ( 2 );
+      gum::NodeId g = generatedFunctionGraph->manager()->addTerminalNode ( 3 );
 
-      generatedDecisionGraph->manager()->setSon( a, 0, b );
-      generatedDecisionGraph->manager()->setSon( a, 1, c );
+      generatedFunctionGraph->manager()->setSon( a, 0, b );
+      generatedFunctionGraph->manager()->setSon( a, 1, c );
 
-      generatedDecisionGraph->manager()->setSon( b, 0, d );
-      generatedDecisionGraph->manager()->setSon( b, 1, c );
+      generatedFunctionGraph->manager()->setSon( b, 0, d );
+      generatedFunctionGraph->manager()->setSon( b, 1, c );
 
-      generatedDecisionGraph->manager()->setSon( c, 0, e );
-      generatedDecisionGraph->manager()->setSon( c, 1, g );
+      generatedFunctionGraph->manager()->setSon( c, 0, e );
+      generatedFunctionGraph->manager()->setSon( c, 1, g );
 
-      generatedDecisionGraph->manager()->setRootNode(a);
+      generatedFunctionGraph->manager()->setRootNode(a);
 
-      return generatedDecisionGraph;
+      return generatedFunctionGraph;
     }
 
 
     // ************************************************************************************************
     /// Génération aléatoire de diagramme de décision
     // ************************************************************************************************
-    gum::MultiDimDecisionGraph<double>* __generateRandomDecisionGraph (
+    gum::MultiDimFunctionGraph<double>* __generateRandomFunctionGraph (
                         const gum::Sequence< const gum::DiscreteVariable* >* varList,
                         double lowLimit = -100,
                         double highLimit = 100 ) {
 
       srand( time(NULL) );
-      gum::MultiDimDecisionGraphGenerator gene( 2, 5, *varList);
+      gum::MultiDimFunctionGraphGenerator gene( 2, 5, *varList);
 
       return gene.generate();
     }
@@ -143,11 +143,11 @@ class MultiDimProjectors4DecisionGraphTestSuite: public CxxTest::TestSuite {
     // ************************************************************************************************
     /// Sauvegarde des diagrammes générant une erreur dans un fichier log
     // ************************************************************************************************
-    void __saveDiagrams ( gum::MultiDimDecisionGraph<double>* a1,
-                          gum::MultiDimDecisionGraph<double>* a3,
+    void __saveDiagrams ( gum::MultiDimFunctionGraph<double>* a1,
+                          gum::MultiDimFunctionGraph<double>* a3,
                           gum::Set<const gum::DiscreteVariable*> delVars ) {
 
-      std::string dotfile = GET_PATH_STR ( "DecisionGraphError.log" );
+      std::string dotfile = GET_PATH_STR ( "FunctionGraphError.log" );
       std::ofstream output ( dotfile.c_str(), std::ios::out );
 
       if ( ! output.good() )
@@ -193,14 +193,14 @@ class MultiDimProjectors4DecisionGraphTestSuite: public CxxTest::TestSuite {
     // ************************************************************************************************
     /// Evals given in parameter operation. Returned boolean parameter indicates if all went well or not
     // ************************************************************************************************
-    bool __evalOperation ( int operationId, gum::MultiDimDecisionGraph<double>* a1,
+    bool __evalOperation ( int operationId, gum::MultiDimFunctionGraph<double>* a1,
                            gum::Set< const gum::DiscreteVariable* > del_vars,
                            double& tempsCalcul,
                            double& tempsEval,
                            double delta = 0.01 ) {
 
       bool hasNoError = true;
-      gum::MultiDimDecisionGraph<double>* a3 = nullptr;
+      gum::MultiDimFunctionGraph<double>* a3 = nullptr;
 
       gum::Timer timy;
       timy.reset();
@@ -210,19 +210,19 @@ class MultiDimProjectors4DecisionGraphTestSuite: public CxxTest::TestSuite {
 
       switch ( operationId ) {
         case 1 :  // Test Addition
-                  TS_GUM_ASSERT_THROWS_NOTHING ( a3 = projectSumMultiDimDecisionGraph ( a1, del_vars ) );
+                  TS_GUM_ASSERT_THROWS_NOTHING ( a3 = projectSumMultiDimFunctionGraph ( a1, del_vars ) );
                   break;
 
         case 2 :  // Test Multiplication
-                  TS_GUM_ASSERT_THROWS_NOTHING ( a3 = projectProductMultiDimDecisionGraph ( a1, del_vars ) );
+                  TS_GUM_ASSERT_THROWS_NOTHING ( a3 = projectProductMultiDimFunctionGraph ( a1, del_vars ) );
                   break;
 
         case 3 :  // Test Minimisation
-                  TS_GUM_ASSERT_THROWS_NOTHING ( a3 = projectMinMultiDimDecisionGraph ( a1, del_vars ) );
+                  TS_GUM_ASSERT_THROWS_NOTHING ( a3 = projectMinMultiDimFunctionGraph ( a1, del_vars ) );
                   break;
 
         case 4 :  // Test Maximisation
-                  TS_GUM_ASSERT_THROWS_NOTHING ( a3 = projectMaxMultiDimDecisionGraph ( a1, del_vars ) );
+                  TS_GUM_ASSERT_THROWS_NOTHING ( a3 = projectMaxMultiDimFunctionGraph ( a1, del_vars ) );
                   break;
 
         default : // Should Not Happen
@@ -338,7 +338,7 @@ class MultiDimProjectors4DecisionGraphTestSuite: public CxxTest::TestSuite {
     // ************************************************************************************************
     /// Test sur les fonctions avec valeurs exactes
     // ************************************************************************************************
-    void test_Projections_Functions_on_MultiDimDecisionGraphs() {
+    void test_Projections_Functions_on_MultiDimFunctionGraphs() {
 
       gum::Timer time;
       double tempsGene = 0;
@@ -352,8 +352,8 @@ class MultiDimProjectors4DecisionGraphTestSuite: public CxxTest::TestSuite {
 
         gum::Sequence< const gum::DiscreteVariable* >* varList = __generateFixVarList();
 
-        gum::MultiDimDecisionGraph<double>* a1 = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING ( a1 = __generateDecisionGraph1 ( varList ) );
+        gum::MultiDimFunctionGraph<double>* a1 = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING ( a1 = __generateFunctionGraph1 ( varList ) );
 
         gum::Set< const gum::DiscreteVariable* > del_vars;
         del_vars << varList->atPos ( 0 );
@@ -387,8 +387,8 @@ class MultiDimProjectors4DecisionGraphTestSuite: public CxxTest::TestSuite {
 
         gum::Sequence< const gum::DiscreteVariable* >* varList = __generateRandomVarList ( nbLoop + 1 );
 
-        gum::MultiDimDecisionGraph<double>* a1 = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING ( a1 = __generateRandomDecisionGraph ( varList, nbLoop + 2 ) );
+        gum::MultiDimFunctionGraph<double>* a1 = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING ( a1 = __generateRandomFunctionGraph ( varList, nbLoop + 2 ) );
 
         gum::Idx maxSwapVar = (rand() %( varList->size() - 2 )) + 1;
 
@@ -454,7 +454,7 @@ class MultiDimProjectors4DecisionGraphTestSuite: public CxxTest::TestSuite {
 //        gum::LabelizedVariable* vC = new gum::LabelizedVariable ( "C", "", 2 );
 //        gum::LabelizedVariable* vD = new gum::LabelizedVariable ( "D", "", 4 );
 
-//        gum::MultiDimDecisionGraph<double>* dg1 = new gum::MultiDimDecisionGraph<double>();
+//        gum::MultiDimFunctionGraph<double>* dg1 = new gum::MultiDimFunctionGraph<double>();
 
 //        dg1->add(*vA);
 //        dg1->add(*vB);
@@ -591,7 +591,7 @@ class MultiDimProjectors4DecisionGraphTestSuite: public CxxTest::TestSuite {
 //        gum::LabelizedVariable* vC = new gum::LabelizedVariable ( "C", "", 2 );
 //        gum::LabelizedVariable* vD = new gum::LabelizedVariable ( "D", "", 4 );
 
-//        gum::MultiDimDecisionGraph<double>* dg1 = new gum::MultiDimDecisionGraph<double>();
+//        gum::MultiDimFunctionGraph<double>* dg1 = new gum::MultiDimFunctionGraph<double>();
 
 //        dg1->add(*vA);
 //        dg1->add(*vB);
@@ -691,7 +691,7 @@ class MultiDimProjectors4DecisionGraphTestSuite: public CxxTest::TestSuite {
 //        del_vars << vB;
 //        del_vars << vC;
 
-//        gum::MultiDimDecisionGraph<double>* dg2 = nullptr;
+//        gum::MultiDimFunctionGraph<double>* dg2 = nullptr;
 //        double a = 0.0, b = 0.0, c = 0.01;
 //        TS_GUM_ASSERT_THROWS_NOTHING ( __evalOperation ( 1, dg1, del_vars, a, b, c ) );
 
@@ -713,7 +713,7 @@ class MultiDimProjectors4DecisionGraphTestSuite: public CxxTest::TestSuite {
 //        gum::LabelizedVariable* v5 = new gum::LabelizedVariable ( "var5", "", 5 );
 //        gum::LabelizedVariable* v6 = new gum::LabelizedVariable ( "var6", "", 4 );
 
-//        gum::MultiDimDecisionGraph<double>* dg1 = new gum::MultiDimDecisionGraph<double>();
+//        gum::MultiDimFunctionGraph<double>* dg1 = new gum::MultiDimFunctionGraph<double>();
 
 //        dg1->add(*v0);
 //        dg1->add(*v1);

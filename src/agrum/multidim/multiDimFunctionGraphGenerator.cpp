@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Sources of MultiDimDecisionGraphGenerator.
+ * @brief Sources of MultiDimFunctionGraphGenerator.
  *
  * @author Jean-Christophe Magnan
  *
@@ -28,7 +28,7 @@
 #include <random>
 #include <cstdlib>
 // ==========================================================================
-#include <agrum/multidim/multiDimDecisionGraphGenerator.h>
+#include <agrum/multidim/multiDimFunctionGraphGenerator.h>
 // ==========================================================================
 #include <agrum/core/priorityQueue.h>
 // ==========================================================================
@@ -38,15 +38,15 @@
 
 namespace gum{
 
-    Idx MultiDimDecisionGraphGenerator::__genSeed = 0;
+    Idx MultiDimFunctionGraphGenerator::__genSeed = 0;
 
     // ==========================================================================
     // Constructor
     // ==========================================================================
-    MultiDimDecisionGraphGenerator::MultiDimDecisionGraphGenerator(Idx maxVar, Idx minVar, const Sequence<const DiscreteVariable *> &varSeq):
+    MultiDimFunctionGraphGenerator::MultiDimFunctionGraphGenerator(Idx maxVar, Idx minVar, const Sequence<const DiscreteVariable *> &varSeq):
         __minNbVarInDiagram(minVar), __maxNbVarInDiagram(maxVar), __varSeq(varSeq){
 
-        GUM_CONSTRUCTOR(MultiDimDecisionGraphGenerator);
+        GUM_CONSTRUCTOR(MultiDimFunctionGraphGenerator);
 
         __nbTotalVar = __varSeq.size();
     }
@@ -54,19 +54,19 @@ namespace gum{
     // ==========================================================================
     // Destructor
     // ==========================================================================
-    MultiDimDecisionGraphGenerator::~MultiDimDecisionGraphGenerator(){
+    MultiDimFunctionGraphGenerator::~MultiDimFunctionGraphGenerator(){
 
-        GUM_DESTRUCTOR(MultiDimDecisionGraphGenerator);
+        GUM_DESTRUCTOR(MultiDimFunctionGraphGenerator);
 
     }
 
-    MultiDimDecisionGraph<double>* MultiDimDecisionGraphGenerator::generate(){
+    MultiDimFunctionGraph<double>* MultiDimFunctionGraphGenerator::generate(){
 
       srand( time(NULL) );
-      MultiDimDecisionGraph<double>* generatedDecisionGraph = new MultiDimDecisionGraph<double>();
+      MultiDimFunctionGraph<double>* generatedFunctionGraph = new MultiDimFunctionGraph<double>();
 
       for ( SequenceIteratorSafe< const DiscreteVariable* > varIter = __varSeq.beginSafe(); varIter != __varSeq.endSafe(); ++varIter ){
-          generatedDecisionGraph->add(**varIter);
+          generatedFunctionGraph->add(**varIter);
       }
 
 
@@ -74,15 +74,15 @@ namespace gum{
       HashTable<NodeId,Idx> node2MinVar;
       Idx nbIter = 0;
 
-//        while ( ( generatedDecisionGraph->variablesSequence().size() < __minNbVarInDiagram ) || ( generatedDecisionGraph->variablesSequence().size() > __maxNbVarInDiagram ) ) {
+//        while ( ( generatedFunctionGraph->variablesSequence().size() < __minNbVarInDiagram ) || ( generatedFunctionGraph->variablesSequence().size() > __maxNbVarInDiagram ) ) {
 
       std::vector< NodeId > filo;
 
       // L'idée est de d'abord générer un arbre avant de fusionner les sous-graphe isomorphe
-//            generatedDecisionGraph->add( *(__varSeq.atPos(0)));
-      generatedDecisionGraph->manager()->setRootNode( generatedDecisionGraph->manager()->addNonTerminalNode( __varSeq.atPos(0) ) );
-      node2MinVar.insert(generatedDecisionGraph->root(), 0 );
-      filo.push_back(generatedDecisionGraph->root());
+//            generatedFunctionGraph->add( *(__varSeq.atPos(0)));
+      generatedFunctionGraph->manager()->setRootNode( generatedFunctionGraph->manager()->addNonTerminalNode( __varSeq.atPos(0) ) );
+      node2MinVar.insert(generatedFunctionGraph->root(), 0 );
+      filo.push_back(generatedFunctionGraph->root());
 
 
 //            std::default_random_engine generator;
@@ -93,17 +93,17 @@ namespace gum{
         NodeId currentNodeId = filo.back();
         filo.pop_back();
         NodeId cvp = node2MinVar[ currentNodeId ];
-        const InternalNode* currentNode = generatedDecisionGraph->node( currentNodeId );
+        const InternalNode* currentNode = generatedFunctionGraph->node( currentNodeId );
 
         LinkedList<NodeId> potentialSons;
         Idx nbPotentialSons = 0;
-        for( Idx varPos = 0; varPos < generatedDecisionGraph->variablesSequence().size(); varPos++ ){
-          const DiscreteVariable* var = generatedDecisionGraph->variablesSequence().atPos( varPos );
+        for( Idx varPos = 0; varPos < generatedFunctionGraph->variablesSequence().size(); varPos++ ){
+          const DiscreteVariable* var = generatedFunctionGraph->variablesSequence().atPos( varPos );
 
           Idx vsp = __varSeq.pos( var );
           if( vsp > cvp ){
 
-            const Link<NodeId>* nicleIter = generatedDecisionGraph->varNodeListe( var )->list();
+            const Link<NodeId>* nicleIter = generatedFunctionGraph->varNodeListe( var )->list();
             while ( nicleIter ){
               nbPotentialSons++;
               potentialSons.addLink( nicleIter->element() );
@@ -117,10 +117,10 @@ namespace gum{
           if( ! potentialSons.list() || (double)std::rand( ) / (double)RAND_MAX > ( 1.0 / ( 1.0 + 3.0 / nbPotentialSons ) ) ){
 
             if( __createLeaf( currentNodeId, node2MinVar ) ) {
-              generatedDecisionGraph->manager()->setSon( currentNodeId, modality, generatedDecisionGraph->manager()->addTerminalNode( (double)std::rand( ) / (double)RAND_MAX*100 ) );
+              generatedFunctionGraph->manager()->setSon( currentNodeId, modality, generatedFunctionGraph->manager()->addTerminalNode( (double)std::rand( ) / (double)RAND_MAX*100 ) );
            } else {
               Idx sonVarPos = __generateVarPos( node2MinVar[currentNodeId] + 1, __nbTotalVar - node2MinVar[ currentNodeId ] - 2 );
-              generatedDecisionGraph->manager()->setSon( currentNodeId, modality, generatedDecisionGraph->manager()->addNonTerminalNode( __varSeq.atPos( sonVarPos ) ) );
+              generatedFunctionGraph->manager()->setSon( currentNodeId, modality, generatedFunctionGraph->manager()->addNonTerminalNode( __varSeq.atPos( sonVarPos ) ) );
               filo.push_back( currentNode->son( modality));
               node2MinVar.insert( currentNode->son(modality), sonVarPos);
             }
@@ -132,25 +132,25 @@ namespace gum{
                 nicleIter = nicleIter->nextLink();
                 sonPos--;
             }
-            generatedDecisionGraph->manager()->setSon( currentNodeId, modality, nicleIter->element() );
+            generatedFunctionGraph->manager()->setSon( currentNodeId, modality, nicleIter->element() );
           }
         }
         ++nbIter;
       }
 
-        generatedDecisionGraph->manager()->reduce();
-        generatedDecisionGraph->manager()->clean();
+        generatedFunctionGraph->manager()->reduce();
+        generatedFunctionGraph->manager()->clean();
 
-      return generatedDecisionGraph;
+      return generatedFunctionGraph;
     }
 
 
-    bool MultiDimDecisionGraphGenerator::__createLeaf( NodeId currentNodeId, HashTable<NodeId,Idx>& node2MinVar ){
+    bool MultiDimFunctionGraphGenerator::__createLeaf( NodeId currentNodeId, HashTable<NodeId,Idx>& node2MinVar ){
        return !( currentNodeId == 1 ||
            ( (double)std::rand( ) / (double)RAND_MAX < 0.9 + 0.01*( float(__nbTotalVar - node2MinVar[ currentNodeId ]) / float(__nbTotalVar) ) && node2MinVar[ currentNodeId ] < __nbTotalVar - 1 ) );
     }
 
-    Idx MultiDimDecisionGraphGenerator::__generateVarPos(Idx offset, Idx span){
+    Idx MultiDimFunctionGraphGenerator::__generateVarPos(Idx offset, Idx span){
 
         Idx randOut = 0;
 

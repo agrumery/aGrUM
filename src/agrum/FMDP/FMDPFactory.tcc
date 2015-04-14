@@ -325,7 +325,7 @@ namespace gum {
       __states.push_back( FMDPfactory_state::TRANSITION );
 
 //       VERBOSITY ( "starting transition declaration" );
-    this->__initializeDecisionGraph();
+    this->__initializeFunctionGraph();
   }
 
 
@@ -348,7 +348,7 @@ namespace gum {
 
 
   // Tells the factory to add a transition table to the current fmdp.
-  // This transition table will be extracted from incorporated multiDimDecisionGraph.
+  // This transition table will be extracted from incorporated multiDimFunctionGraph.
 
   template<typename GUM_SCALAR> INLINE
   void
@@ -358,13 +358,13 @@ namespace gum {
       __illegalStateError( "addTransition" );
     else {
 
-      this->__finalizeDecisionGraph();
+      this->__finalizeFunctionGraph();
 
       if ( __foo_flag ){
-        this->__decisionGraph->setTableName( "ACTION :" + __stringBag[0] + " - VARIABLE : " + var);
-        __fmdp->addTransitionForAction ( __stringBag[0], __varNameMap[var], this->__decisionGraph );
+        this->__FunctionGraph->setTableName( "ACTION :" + __stringBag[0] + " - VARIABLE : " + var);
+        __fmdp->addTransitionForAction ( __stringBag[0], __varNameMap[var], this->__FunctionGraph );
       } else {
-        __fmdp->addTransition ( __varNameMap[var], this->__decisionGraph );
+        __fmdp->addTransition ( __varNameMap[var], this->__FunctionGraph );
       }
     }
   }
@@ -404,7 +404,7 @@ namespace gum {
       __states.push_back( FMDPfactory_state::COST );
 
 //       VERBOSITY ( "starting Cost declaration" );
-    this->__initializeDecisionGraph();
+    this->__initializeFunctionGraph();
   }
 
 
@@ -426,7 +426,7 @@ namespace gum {
 
 
   // Tells the factory to add a cost
-  // This cost table will be extracted from incorporated multiDimDecisionGraph.
+  // This cost table will be extracted from incorporated multiDimFunctionGraph.
 
   template<typename GUM_SCALAR> INLINE
   void
@@ -435,12 +435,12 @@ namespace gum {
       __illegalStateError( "addCost" );
     else {
 
-      this->__finalizeDecisionGraph();
+      this->__finalizeFunctionGraph();
 
       if ( __foo_flag )
-        __fmdp->addCostForAction ( __stringBag[0], this->__decisionGraph );
+        __fmdp->addCostForAction ( __stringBag[0], this->__FunctionGraph );
       else
-        __fmdp->addCost ( this->__decisionGraph );
+        __fmdp->addCost ( this->__FunctionGraph );
     }
   }
 
@@ -479,7 +479,7 @@ namespace gum {
       __states.push_back( FMDPfactory_state::REWARD );
 
 //       VERBOSITY ( "starting reward declaration" );
-    this->__initializeDecisionGraph();
+    this->__initializeFunctionGraph();
   }
 
 
@@ -510,7 +510,7 @@ namespace gum {
 
 
   // Tells the factory to add a reward
-  // This reward table will be extracted from incorporated multiDimDecisionGraph.
+  // This reward table will be extracted from incorporated multiDimFunctionGraph.
 
   template<typename GUM_SCALAR> INLINE
   void
@@ -519,13 +519,13 @@ namespace gum {
       __illegalStateError( "addReward" );
     else {
 
-      this->__finalizeDecisionGraph();
-      __decisionGraph->setTableName("Reward");
+      this->__finalizeFunctionGraph();
+      __FunctionGraph->setTableName("Reward");
 
       if ( __foo_flag )
-        __ddBag.push_back ( this->__decisionGraph );
+        __ddBag.push_back ( this->__FunctionGraph );
       else
-        __fmdp->addReward ( this->__decisionGraph );
+        __fmdp->addReward ( this->__FunctionGraph );
     }
   }
 
@@ -548,16 +548,16 @@ namespace gum {
           temp = res;
 
           switch( __stringBag[0][0] ) {
-            case '+' : res = add2MultiDimDecisionGraphs( res,  elt );
+            case '+' : res = add2MultiDimFunctionGraphs( res,  elt );
               break;
 
-            case '-' : res = subtract2MultiDimDecisionGraphs( res,  elt );
+            case '-' : res = subtract2MultiDimFunctionGraphs( res,  elt );
               break;
 
-            case '*' : res = multiply2MultiDimDecisionGraphs( res,  elt );
+            case '*' : res = multiply2MultiDimFunctionGraphs( res,  elt );
               break;
 
-            case '/' : res = divide2MultiDimDecisionGraphs( res,  elt );
+            case '/' : res = divide2MultiDimFunctionGraphs( res,  elt );
               break;
 
             default : break;
@@ -568,7 +568,7 @@ namespace gum {
           if( temp != nullptr )
             delete temp;
         }
-        reinterpret_cast<MultiDimDecisionGraph<GUM_SCALAR>*>(res)->setTableName("Reward");
+        reinterpret_cast<MultiDimFunctionGraph<GUM_SCALAR>*>(res)->setTableName("Reward");
         __fmdp->addReward ( res );
       }
 
@@ -640,7 +640,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   NodeId
   FMDPFactory<GUM_SCALAR>::addNonTerminalNode ( std::string name_of_var ) {
-    return __decisionGraph->manager()->addNonTerminalNode ( variable ( name_of_var ) );
+    return __FunctionGraph->manager()->addNonTerminalNode ( variable ( name_of_var ) );
   }
 
 
@@ -649,7 +649,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   NodeId
   FMDPFactory<GUM_SCALAR>::addTerminalNode ( float value ) {
-    return __decisionGraph->manager()->addTerminalNode ( ( GUM_SCALAR ) value );
+    return __FunctionGraph->manager()->addTerminalNode ( ( GUM_SCALAR ) value );
   }
 
 
@@ -657,14 +657,14 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::addArc ( NodeId from, NodeId to, Idx modality ) {
-    __decisionGraph->manager()->setSon( from, modality, to );
+    __FunctionGraph->manager()->setSon( from, modality, to );
   }
 
 
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::setRoot( NodeId rootId ) {
-    __decisionGraph->manager()->setRootNode( rootId );
+    __FunctionGraph->manager()->setRootNode( rootId );
   }
 
   /* **************************************************************************************************** **/
@@ -728,26 +728,26 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::__initializeDecisionGraph() {
+  FMDPFactory<GUM_SCALAR>::__initializeFunctionGraph() {
 
-    this->__decisionGraph = new MultiDimDecisionGraph<GUM_SCALAR>();
+    this->__FunctionGraph = new MultiDimFunctionGraph<GUM_SCALAR>();
     // Recopie des variables principales dans le graphe de décision
     for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter){
-      __decisionGraph->add(**varIter);
+      __FunctionGraph->add(**varIter);
     }
 
     // Recopie des version primes des variables dans le graphe de décision
     for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter){
-      __decisionGraph->add(*(__fmdp->main2prime(*varIter)));
+      __FunctionGraph->add(*(__fmdp->main2prime(*varIter)));
     }
   }
 
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::__finalizeDecisionGraph() {
-    this->__decisionGraph->manager()->reduce();
-    this->__decisionGraph->manager()->clean();
+  FMDPFactory<GUM_SCALAR>::__finalizeFunctionGraph() {
+    this->__FunctionGraph->manager()->reduce();
+    this->__FunctionGraph->manager()->clean();
   }
 
   //~ ==============

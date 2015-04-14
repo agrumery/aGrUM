@@ -20,17 +20,9 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Sources of gum::MultiDimDecisionGraph.
+ * @brief Sources of the Link and LinkedList classes.
  *
  * @author Jean-Christophe Magnan
  *
  */
-// =============================================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
-// =============================================================================
-
-namespace gum {
-
-} // end of namespace gum
-
-
+#include <agrum/multidim/FunctionGraphUtilities/link.h>

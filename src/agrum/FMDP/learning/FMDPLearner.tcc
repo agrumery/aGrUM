@@ -103,14 +103,14 @@ namespace gum {
 
       for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter ){
         for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter ){
-            MultiDimDecisionGraph<double>* varTrans = new MultiDimDecisionGraph<double>();
+            MultiDimFunctionGraph<double>* varTrans = new MultiDimFunctionGraph<double>();
             varTrans->setTableName("ACTION : " + __fmdp->actionName(*actionIter) + " - VARIABLE : " + (*varIter)->name());
             __fmdp->addTransitionForAction(__fmdp->actionName(*actionIter), *varIter, varTrans);
             __actionLearners[*actionIter]->insert( (*varIter), new VariableLearnerType<false>(varTrans,__learningThreshold, __similarityThreshold, __mainVariables,__fmdp->main2prime(*varIter)));
         }
       }
 
-      MultiDimDecisionGraph<double>* reward = new MultiDimDecisionGraph<double>();
+      MultiDimFunctionGraph<double>* reward = new MultiDimFunctionGraph<double>();
       reward->setTableName("REWARD");
       __fmdp->addReward(reward);
       __rewardLearner = new RewardLearnerType<true>(reward, __learningThreshold, __similarityThreshold, __mainVariables);
@@ -158,7 +158,7 @@ namespace gum {
 
       for( SequenceIteratorSafe<Idx> actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter )
           for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter)
-            __actionLearners[*actionIter]->getWithDefault(*varIter, nullptr)->updateDecisionGraph();
-      __rewardLearner->updateDecisionGraph();
+            __actionLearners[*actionIter]->getWithDefault(*varIter, nullptr)->updateFunctionGraph();
+      __rewardLearner->updateFunctionGraph();
     }
 } // End of namespace gum

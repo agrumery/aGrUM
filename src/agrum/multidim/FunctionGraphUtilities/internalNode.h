@@ -20,13 +20,13 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the MultiDimDecisionGraph InternalNode class.
+ * @brief Headers of the MultiDimFunctionGraph InternalNode class.
  *
  * @author Jean-Christophe Magnan
  *
  */
-#ifndef GUM_MULTI_DIM_DECISION_GRAPH_INTERNAL_NODE_H
-#define GUM_MULTI_DIM_DECISION_GRAPH_INTERNAL_NODE_H
+#ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_INTERNAL_NODE_H
+#define GUM_MULTI_DIM_FUNCTION_GRAPH_INTERNAL_NODE_H
 
 // ============================================================================
 #include <agrum/config.h>
@@ -35,7 +35,7 @@
 // ============================================================================
 #include <agrum/graphs/graphElements.h>
 // ============================================================================
-#include <agrum/multidim/decisionGraphUtilities/link.h>
+#include <agrum/multidim/FunctionGraphUtilities/link.h>
 // ============================================================================
 #include <agrum/variables/discreteVariable.h>
 // ============================================================================
@@ -70,7 +70,7 @@ namespace gum {
   };
 
   /**
-   * @class InternalNode InternalNode.h <agrum/multidim/decisionGraphUtilities/internalNode.h>
+   * @class InternalNode InternalNode.h <agrum/multidim/FunctionGraphUtilities/internalNode.h>
    *
    * @brief Structure used to represent a node internal structure
    *
@@ -213,4 +213,4 @@ namespace gum {
 
 } // End of namespace gum
 
-#endif /* GUM_MULTI_DIM_DECISION_GRAPH_INTERNAL_NODE_H */
+#endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_INTERNAL_NODE_H */

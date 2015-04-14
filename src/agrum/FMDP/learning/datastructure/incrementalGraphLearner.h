@@ -29,12 +29,12 @@
 #define GUM_INCREMENTAL_GRAPH_LEARNER_H
 // =========================================================================
 // =========================================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 // =========================================================================
 #include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/datastructure/nodeDatabase.h>
 // =========================================================================
-#include <agrum/multidim/decisionGraphUtilities/link.h>
+#include <agrum/multidim/FunctionGraphUtilities/link.h>
 // =========================================================================
 
 namespace gum {
@@ -76,7 +76,7 @@ namespace gum {
          * (and is to be deprecated)
          */
         // ==========================================================================
-        IncrementalGraphLearner ( MultiDimDecisionGraph<double>* target,
+        IncrementalGraphLearner ( MultiDimFunctionGraph<double>* target,
                                   Set<const DiscreteVariable*> attributesSet,
                                   const DiscreteVariable* learnVariable );
 
@@ -262,7 +262,7 @@ namespace gum {
         // ==========================================================================
         /// Updates target to currently learned graph structure
         // ==========================================================================
-        virtual void updateDecisionGraph() = 0;
+        virtual void updateFunctionGraph() = 0;
 
       /// @}
 
@@ -286,11 +286,11 @@ namespace gum {
         /// For RMax strategy, we need a count on each leaves of the number of
         /// observation already made
         // ==========================================================================
-        MultiDimDecisionGraph<double>* extractCount();
+        MultiDimFunctionGraph<double>* extractCount();
     protected :
-        virtual void _insertSetOfVars( MultiDimDecisionGraph<double>* ) = 0;
+        virtual void _insertSetOfVars( MultiDimFunctionGraph<double>* ) = 0;
     private:
-        NodeId __extractCount(NodeId, MultiDimDecisionGraph<double>*);
+        NodeId __extractCount(NodeId, MultiDimFunctionGraph<double>*);
 
       /// @}
 
@@ -346,7 +346,7 @@ namespace gum {
 
 
     /// The final diagram we're building
-    MultiDimDecisionGraph<double>* _target;
+    MultiDimFunctionGraph<double>* _target;
 
     Set<const DiscreteVariable*> _setOfVars;
 

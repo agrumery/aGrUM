@@ -88,7 +88,7 @@ class Parser {
     gum::AbstractFMDPFactory* __factory;
                 
                 /// for each transition diagram, we need to know the associated variable
-                std::string __currentDecisionGraphVar;
+                std::string __currentFunctionGraphVar;
                 
                 /// for building the diagram, we need to keep track of var parents
                 std::vector< gum::NodeId > __parentNode;

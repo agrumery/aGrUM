@@ -29,7 +29,7 @@
 
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimArray.h>
-#include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/core/timer.h>
 
@@ -70,13 +70,13 @@ namespace gum {
 
 
   template<typename T>
-  MultiDimDecisionGraph<T>*
-  add2MultiDimDecisionGraphs ( const MultiDimDecisionGraph<T>* t1,
-                               const MultiDimDecisionGraph<T>* t2 );
+  MultiDimFunctionGraph<T>*
+  add2MultiDimFunctionGraphs ( const MultiDimFunctionGraph<T>* t1,
+                               const MultiDimFunctionGraph<T>* t2 );
 
   template<typename T>
   MultiDimImplementation<T>*
-  add2MultiDimDecisionGraphs ( const MultiDimImplementation<T>* t1,
+  add2MultiDimFunctionGraphs ( const MultiDimImplementation<T>* t1,
                                const MultiDimImplementation<T>* t2 );
 
 
@@ -113,13 +113,13 @@ namespace gum {
 
 
   template<typename T>
-  MultiDimDecisionGraph<T>*
-  subtract2MultiDimDecisionGraphs ( const MultiDimDecisionGraph<T>* t1,
-                               const MultiDimDecisionGraph<T>* t2 );
+  MultiDimFunctionGraph<T>*
+  subtract2MultiDimFunctionGraphs ( const MultiDimFunctionGraph<T>* t1,
+                               const MultiDimFunctionGraph<T>* t2 );
 
   template<typename T>
   MultiDimImplementation<T>*
-  subtract2MultiDimDecisionGraphs ( const MultiDimImplementation<T>* t1,
+  subtract2MultiDimFunctionGraphs ( const MultiDimImplementation<T>* t1,
                                const MultiDimImplementation<T>* t2 );
 
 
@@ -156,13 +156,13 @@ namespace gum {
 
 
   template<typename T>
-  MultiDimDecisionGraph<T>*
-  multiply2MultiDimDecisionGraphs ( const MultiDimDecisionGraph<T>* t1,
-                               const MultiDimDecisionGraph<T>* t2 );
+  MultiDimFunctionGraph<T>*
+  multiply2MultiDimFunctionGraphs ( const MultiDimFunctionGraph<T>* t1,
+                               const MultiDimFunctionGraph<T>* t2 );
 
   template<typename T>
   MultiDimImplementation<T>*
-  multiply2MultiDimDecisionGraphs ( const MultiDimImplementation<T>* t1,
+  multiply2MultiDimFunctionGraphs ( const MultiDimImplementation<T>* t1,
                                const MultiDimImplementation<T>* t2 );
 
 
@@ -199,35 +199,35 @@ namespace gum {
 
 
   template<typename T>
-  MultiDimDecisionGraph<T>*
-  divide2MultiDimDecisionGraphs ( const MultiDimDecisionGraph<T>* t1,
-                               const MultiDimDecisionGraph<T>* t2 );
+  MultiDimFunctionGraph<T>*
+  divide2MultiDimFunctionGraphs ( const MultiDimFunctionGraph<T>* t1,
+                               const MultiDimFunctionGraph<T>* t2 );
 
   template<typename T>
   MultiDimImplementation<T>*
-  divide2MultiDimDecisionGraphs ( const MultiDimImplementation<T>* t1,
+  divide2MultiDimFunctionGraphs ( const MultiDimImplementation<T>* t1,
                                const MultiDimImplementation<T>* t2 );
 
 
-  /// a specialized function for compare value from two multiDimDecisionGraphs and gets the maximal
+  /// a specialized function for compare value from two multiDimFunctionGraphs and gets the maximal
   /** The function produces a tensorial comparison between t1 and t2, that is, if t1
-   * and t2 are multiDimDecisionGraphs over variables A,B,C,D and D,B,E respectively,
-   * function maximise2MultiDimDecisionGraphs will return a multiDimDecisionGraph T defined as
+   * and t2 are multiDimFunctionGraphs over variables A,B,C,D and D,B,E respectively,
+   * function maximise2MultiDimFunctionGraphs will return a multiDimFunctionGraph T defined as
    * T[A,B,C,D,E] = max( t1[A,B,C,D], t2[D,B,E] ) for all A,B,C,D,E.
-   * @return function maximise2MultiDimDecisionGraphs allocates on the heap the new
-   * T multiDimDecisionGraph and returns it
+   * @return function maximise2MultiDimFunctionGraphs allocates on the heap the new
+   * T multiDimFunctionGraph and returns it
    */
 
 
 
   template<typename T>
-  MultiDimDecisionGraph<T>*
-  maximise2MultiDimDecisionGraphs ( const MultiDimDecisionGraph<T>* t1,
-                               const MultiDimDecisionGraph<T>* t2 );
+  MultiDimFunctionGraph<T>*
+  maximise2MultiDimFunctionGraphs ( const MultiDimFunctionGraph<T>* t1,
+                               const MultiDimFunctionGraph<T>* t2 );
 
   template<typename T>
   MultiDimImplementation<T>*
-  maximise2MultiDimDecisionGraphs ( const MultiDimImplementation<T>* t1,
+  maximise2MultiDimFunctionGraphs ( const MultiDimImplementation<T>* t1,
                                const MultiDimImplementation<T>* t2 );
 
 

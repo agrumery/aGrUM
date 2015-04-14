@@ -20,7 +20,7 @@
 
 #include <cmath>
 
-#include <agrum/multidim/decisionGraphUtilities/o4DGContext.h>
+#include <agrum/multidim/FunctionGraphUtilities/o4DGContext.h>
 
 
 namespace gum {
@@ -98,7 +98,7 @@ namespace gum {
     O4DGContext::~O4DGContext() {
 
         GUM_DESTRUCTOR(O4DGContext);
-//        MultiDimDecisionGraph::soa.deallocate( __varInstantiation, __nbVar*sizeof(Idx) );
+//        MultiDimFunctionGraph::soa.deallocate( __varInstantiation, __nbVar*sizeof(Idx) );
     }
 
 
@@ -119,5 +119,5 @@ namespace gum {
 
 
 #ifdef GUM_NO_INLINE
-#include <agrum/multidim/decisionGraphUtilities/o4DGContext.inl>
+#include <agrum/multidim/FunctionGraphUtilities/o4DGContext.inl>
 #endif

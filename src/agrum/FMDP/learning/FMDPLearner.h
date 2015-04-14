@@ -114,7 +114,7 @@ namespace gum {
 
       /// @}
       ///
-      MultiDimDecisionGraph<double>* extractCount(Idx actionId, const DiscreteVariable* var){
+      MultiDimFunctionGraph<double>* extractCount(Idx actionId, const DiscreteVariable* var){
         return __actionLearners[actionId]->getWithDefault(var, nullptr)->extractCount();}
 
       Size size();

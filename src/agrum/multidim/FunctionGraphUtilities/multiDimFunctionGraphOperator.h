@@ -25,18 +25,18 @@
 */
 
 // =======================================================
-#ifndef GUM_MULTI_DIM_DECISION_GRAPH_OPERATOR_H
-#define GUM_MULTI_DIM_DECISION_GRAPH_OPERATOR_H
+#ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_OPERATOR_H
+#define GUM_MULTI_DIM_FUNCTION_GRAPH_OPERATOR_H
 // =======================================================
-#include <agrum/multidim/multiDimDecisionGraph.h>
-#include <agrum/multidim/decisionGraphUtilities/o4DGContext.h>
-#include <agrum/multidim/decisionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/FunctionGraphUtilities/o4DGContext.h>
+#include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
 // =======================================================
 
 namespace gum {
 
 /**
- * @class MultiDimDecisionGraphOperator multiDimDecisionGraphOperator.h <agrum/multidim/patterns/multiDimDecisionGraphOperator.h>
+ * @class MultiDimFunctionGraphOperator multiDimFunctionGraphOperator.h <agrum/multidim/patterns/multiDimFunctionGraphOperator.h>
  * @brief Class used to perform Decision Graph Operations
  * @ingroup multidim_group
  *
@@ -45,7 +45,7 @@ namespace gum {
   template <typename GUM_SCALAR,
             template <typename> class FUNCTOR,
             template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy >
-  class MultiDimDecisionGraphOperator
+  class MultiDimFunctionGraphOperator
   {
     public:
     // ############################################################################
@@ -56,13 +56,13 @@ namespace gum {
       // ============================================================================
       /// Default constructor.
       // ============================================================================
-      MultiDimDecisionGraphOperator( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* DG1,
-                                     const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* DG2 );
+      MultiDimFunctionGraphOperator( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* DG1,
+                                     const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* DG2 );
 
       // ============================================================================
       /// Default destructor.
       // ============================================================================
-      ~MultiDimDecisionGraphOperator();
+      ~MultiDimFunctionGraphOperator();
 
     /// @}
 
@@ -74,7 +74,7 @@ namespace gum {
       // ============================================================================
       /// Computes and builds the Decision Graph that is the result of the operation
       // ============================================================================
-      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *compute();
+      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *compute();
 
     /// @}
 
@@ -89,7 +89,7 @@ namespace gum {
       // ============================================================================
       /// Heuristic methods to decide which of two retrograde variables should come first
       // ============================================================================
-      Idx __distance(const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy> *,
+      Idx __distance(const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *,
                      const DiscreteVariable*,
                      const DiscreteVariable*);
 
@@ -97,7 +97,7 @@ namespace gum {
       /// Establish for each node in both decision graph if it has retrograde variables
       /// beneath it
       // ============================================================================
-      void __findRetrogradeVariables( const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* dg,
+      void __findRetrogradeVariables( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dg,
                                       HashTable<NodeId, short int*>& dgInstNeed);
 
       // ============================================================================
@@ -110,17 +110,17 @@ namespace gum {
       // ============================================================================
       /// One of the two decision graphs used for the operation
       // ============================================================================
-      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG1;
+      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG1;
 
       // ============================================================================
       /// The other one
       // ============================================================================
-      const MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG2;
+      const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG2;
 
       // ============================================================================
       /// The resulting decision graph
       // ============================================================================
-      MultiDimDecisionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
+      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
 
       // ============================================================================
       /// The total number of variable implied in the operation
@@ -157,6 +157,6 @@ namespace gum {
 
 } // namespace gum
 
-#include <agrum/multidim/decisionGraphUtilities/multiDimDecisionGraphOperator.tcc>
+#include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphOperator.tcc>
 
-#endif // GUM_MULTI_DIM_DECISION_GRAPH_OPERATOR_H
+#endif // GUM_MULTI_DIM_FUNCTION_GRAPH_OPERATOR_H

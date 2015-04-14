@@ -25,8 +25,8 @@
  * @author Jean-Christophe Magnan
  *
  */
-#ifndef GUM_MULTI_DIM_DECISION_GRAPH_LINK_H
-#define GUM_MULTI_DIM_DECISION_GRAPH_LINK_H
+#ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_LINK_H
+#define GUM_MULTI_DIM_FUNCTION_GRAPH_LINK_H
 
 // ============================================================================
 #include <agrum/config.h>
@@ -37,7 +37,7 @@
 namespace gum {
 
   /**
-   * @class Link link.h <agrum/multidim/decisionGraphUtilities/link.h>
+   * @class Link link.h <agrum/multidim/FunctionGraphUtilities/link.h>
    *
    * @brief Link of a chain list allocated using the SmallObjectAllocator
    *
@@ -104,7 +104,7 @@ namespace gum {
   };
 
   /**
-   * @class LinkedList link.h <agrum/multidim/decisionGraphUtilities/link.h>
+   * @class LinkedList link.h <agrum/multidim/FunctionGraphUtilities/link.h>
    *
    * @brief Chain list allocated using the SmallObjectAllocator
    *
@@ -166,6 +166,6 @@ namespace gum {
 
 } // End of namespace gum
 
-#include <agrum/multidim/decisionGraphUtilities/link.tcc>
+#include <agrum/multidim/FunctionGraphUtilities/link.tcc>
 
-#endif /* GUM_MULTI_DIM_DECISION_GRAPH_LINK_H */
+#endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_LINK_H */

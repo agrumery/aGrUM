@@ -40,7 +40,7 @@
 namespace gum {
 
   /**
-   * @class FusionContext FusionContext.h <agrum/FMDP/learning/decisionGraph/fusionContext.h>
+   * @class FusionContext FusionContext.h <agrum/FMDP/learning/FunctionGraph/fusionContext.h>
    * @brief Contains leaves situation after a merging have been made
    * @ingroup fmdp_group
    *

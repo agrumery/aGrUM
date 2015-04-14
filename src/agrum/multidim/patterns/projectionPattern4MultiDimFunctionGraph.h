@@ -34,22 +34,22 @@
 
 // =======================================================================================
 #include <agrum/multidim/multiDimImplementation.h>
-#include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 // =======================================================================================
-#include <agrum/multidim/decisionGraphUtilities/multiDimDecisionGraphProjector.h>
+#include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphProjector.h>
 // =======================================================================================
 
 namespace gum {
 
-/// a specialized function for projecting a multiDimDecisionGraph over a subset of its vars
+/// a specialized function for projecting a multiDimFunctionGraph over a subset of its vars
 
 #ifdef GUM_MULTI_DIM_PROJECTION_NAME
 
 #define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
 
   template<typename GUM_SCALAR>
-  MultiDimDecisionGraph<GUM_SCALAR>*
-  GUM_MULTI_DIM_PROJECTION_NAME ( const MultiDimDecisionGraph<GUM_SCALAR>* table, const Set<const DiscreteVariable*>& delVars ) {
+  MultiDimFunctionGraph<GUM_SCALAR>*
+  GUM_MULTI_DIM_PROJECTION_NAME ( const MultiDimFunctionGraph<GUM_SCALAR>* table, const Set<const DiscreteVariable*>& delVars ) {
 
 #endif
 
@@ -63,11 +63,11 @@ namespace gum {
     GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME ( const MultiDimImplementation<GUM_SCALAR>* ttable,
                                                              const Set<const DiscreteVariable*>& delVars ) {
 
-      const MultiDimDecisionGraph<GUM_SCALAR>* table = reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*> ( ttable );
+      const MultiDimFunctionGraph<GUM_SCALAR>* table = reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*> ( ttable );
 
 #endif
 
-      MultiDimDecisionGraphProjector< GUM_MULTI_DIM_PROJECTION_TYPE, GUM_MULTI_DIM_PROJECTION_OPERATOR> proj(
+      MultiDimFunctionGraphProjector< GUM_MULTI_DIM_PROJECTION_TYPE, GUM_MULTI_DIM_PROJECTION_OPERATOR> proj(
                   table, delVars, GUM_MULTI_DIM_PROJECTION_NEUTRAL );
 
       return proj.project();

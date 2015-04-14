@@ -48,7 +48,7 @@ namespace gum {
     // Variable Learner constructor
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
-    IMDDI<AttributeSelection, isScalar>::IMDDI ( MultiDimDecisionGraph<double>* target,
+    IMDDI<AttributeSelection, isScalar>::IMDDI ( MultiDimFunctionGraph<double>* target,
             double attributeSelectionThreshold,
             double pairSelectionThreshold,
             Set<const DiscreteVariable*> attributeListe,
@@ -68,7 +68,7 @@ namespace gum {
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
     IMDDI<AttributeSelection, isScalar>::IMDDI (
-            MultiDimDecisionGraph<double>* target,
+            MultiDimFunctionGraph<double>* target,
             double attributeSelectionThreshold,
             double pairSelectionThreshold,
             Set<const DiscreteVariable*> attributeListe ) : IncrementalGraphLearner<AttributeSelection, isScalar>( target,
@@ -306,10 +306,10 @@ namespace gum {
     // Computes the Reduced and Ordered Decision Graph  associated to this ordered tree
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
-    void IMDDI<AttributeSelection, isScalar>::updateDecisionGraph(){
+    void IMDDI<AttributeSelection, isScalar>::updateFunctionGraph(){
 
 //      if( __lg.needsUpdate() || this->_needUpdate ){
-        __rebuildDecisionGraph();
+        __rebuildFunctionGraph();
         this->_needUpdate = false;
 //      }
     }
@@ -319,7 +319,7 @@ namespace gum {
     // Performs the leaves merging
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
-    void IMDDI<AttributeSelection, isScalar>::__rebuildDecisionGraph(){
+    void IMDDI<AttributeSelection, isScalar>::__rebuildFunctionGraph(){
 
       // *******************************************************************************************************
       // Mise à jour de l'aggregateur de feuille
@@ -342,7 +342,7 @@ namespace gum {
            treeNodeIter != treeNode2leaf.cendSafe(); ++treeNodeIter ){
 
         if( !leaf2DGNode.exists( treeNodeIter.val() ) )
-          leaf2DGNode.insert( treeNodeIter.val(), __insertLeafInDecisionGraph( treeNodeIter.val(), Int2Type<isScalar>() ) );
+          leaf2DGNode.insert( treeNodeIter.val(), __insertLeafInFunctionGraph( treeNodeIter.val(), Int2Type<isScalar>() ) );
 
         toTarget.insert( treeNodeIter.key(), leaf2DGNode[treeNodeIter.val()] );
       }
@@ -371,7 +371,7 @@ namespace gum {
     // Performs the leaves merging
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
-    NodeId IMDDI<AttributeSelection, isScalar>::__insertLeafInDecisionGraph( AbstractLeaf* leaf, Int2Type<true> ){
+    NodeId IMDDI<AttributeSelection, isScalar>::__insertLeafInFunctionGraph( AbstractLeaf* leaf, Int2Type<true> ){
 
 
       double value = 0.0;
@@ -388,7 +388,7 @@ namespace gum {
     // Performs the leaves merging
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
-    NodeId IMDDI<AttributeSelection, isScalar>::__insertLeafInDecisionGraph( AbstractLeaf* leaf, Int2Type<false> ){
+    NodeId IMDDI<AttributeSelection, isScalar>::__insertLeafInFunctionGraph( AbstractLeaf* leaf, Int2Type<false> ){
 
       NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*this->_value->domainSize()) );
       for(Idx modality = 0; modality <  this->_value->domainSize(); ++modality ){

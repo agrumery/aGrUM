@@ -270,7 +270,7 @@ void Parser::TRANSITION_DECISION_GRAPH() {
 		 __factory->startTransitionDeclaration(); 
 		IDENT(name_of_var);
 		std::string prime_name_of_var = name_of_var + "'";
-		__currentDecisionGraphVar = prime_name_of_var; 
+		__currentFunctionGraphVar = prime_name_of_var; 
 		if (IsFollowedByIdent() ) {
 			Expect(_lpar);
 			SUB_TRANSITION_DECISION_GRAPH();
@@ -332,7 +332,7 @@ void Parser::SUB_TRANSITION_DECISION_GRAPH() {
 void Parser::TRANSITION_LEAF() {
 		float value;
 		gum::Idx i = 0;
-		NodeId var_id = __factory->addNonTerminalNode( __currentDecisionGraphVar );
+		NodeId var_id = __factory->addNonTerminalNode( __currentFunctionGraphVar );
 		if( !__parentNode.empty() )
 		  __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
 		else
