@@ -1,5 +1,5 @@
-# this file is for giving access to methods defined in template ancestror.
-# SWIG does not allow to use "using" for this kind of methods.
+// this file is for giving access to methods defined in template ancestror.
+// SWIG does not allow to use "using" for this kind of methods.
 
 %define ADD_MULTIDIMDECORATOR_API(classname)
 %extend classname {
@@ -84,3 +84,4 @@ ADD_MULTIDIMDECORATOR_API(gum::UtilityTable<double>)
 %enddef
 ADD_CREDALINFERENCEENGINCE_API(%arg(gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> >))
 ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
+

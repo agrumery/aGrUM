@@ -171,10 +171,15 @@ namespace gum {
 
 ///////////////////////////////////
 /// Exceptions for learning
-  GUM_MAKE_ERROR ( IncompatibleScoreApriori, Exception, "The score already "
+  GUM_MAKE_ERROR ( LearningError, Exception, "factory error" )
+  GUM_MAKE_ERROR ( IncompatibleScoreApriori, LearningError, "The score already "
                    "contains a different 'implicit' apriori" )
-  GUM_MAKE_ERROR ( PossiblyIncompatibleScoreApriori, Exception,
+  GUM_MAKE_ERROR ( PossiblyIncompatibleScoreApriori, LearningError,
                    "Due to its weight, the apriori is currently compatible with the score but if you change the weight, it will become incompatible" )
+  GUM_MAKE_ERROR ( MissingVariableInDatabase, LearningError,
+                   "A name of variable is not found in the database" )
+  GUM_MAKE_ERROR ( UnknownLabelInDatabase, LearningError,
+                   "An unknown label is found in the database" )
 
 
   /// special exception for syntax errors in files

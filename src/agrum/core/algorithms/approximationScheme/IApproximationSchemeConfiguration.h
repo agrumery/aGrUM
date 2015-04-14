@@ -53,7 +53,8 @@ namespace gum {
         Epsilon,
         Rate,
         Limit,
-        TimeLimit
+        TimeLimit,
+        Stopped
       };
 
       /// Constructors and Destructors
@@ -89,13 +90,16 @@ namespace gum {
           case ApproximationSchemeSTATE::TimeLimit: s << "stopped with timeout=" << maxTime();
             break;
 
+          case ApproximationSchemeSTATE::Stopped: s << "stopped on request";
+            break;
+
           case ApproximationSchemeSTATE::Undefined: s << "undefined state";
             break;
         };
 
         return s.str();
       }
-      
+
       /// Given that we approximate f(t), stopping criterion on |f(t+1)-f(t)|
       /// If the criterion was disabled it will be enabled
       /// @{
