@@ -34,7 +34,7 @@
 #include <agrum/multidim/instantiation.h>
 // =========================================================================
 #include <agrum/FMDP/planning/svi.h>
-#include <agrum/FMDP/planning/operators/enhancedTreeRegress.h>
+#include <agrum/FMDP/planning/operators/treeRegress.h>
 #include <agrum/FMDP/planning/operators/treeOperator.h>
 // =========================================================================
 
