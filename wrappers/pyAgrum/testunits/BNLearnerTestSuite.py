@@ -89,6 +89,12 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
         for i in range(bn.size()):	
           self.assertEquals(str(bn2.variable(i)),str(bn.variable(bn.idFromName(bn2.variable(i).name()))))	
         
+        bn=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia_bool.bif'))        
+        # there is a beurk modality in asia3-faulty.csv
+        with self.assertRaises(gum.UnknownLabelInDatabase):
+          learner=gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3-faulty.csv'),bn)  
+
+        
 ts = unittest.TestSuite()
 ts.addTest(BNLearnerCSVTestCase('testHillClimbing'))
 ts.addTest(BNLearnerCSVTestCase('testHillClimbingAccurate'))
