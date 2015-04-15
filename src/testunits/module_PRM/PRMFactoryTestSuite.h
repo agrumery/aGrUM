@@ -23,14 +23,12 @@
 
 #include <agrum/PRM/PRMFactory.h>
 
-
 namespace gum_tests {
   class PRMFactoryTestSuite : public CxxTest::TestSuite {
     public:
-
-      void testInit() {
-        gum::prm::PRMFactory<double > f;
-        delete f.prm();
-      }
+    void testInit() {
+      gum::prm::PRMFactory<double> f;
+      delete f.prm();
+    }
   };
-}//gum_tests
+} // gum_tests

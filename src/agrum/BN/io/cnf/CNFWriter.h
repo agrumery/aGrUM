@@ -54,48 +54,50 @@ namespace gum {
    * for information on this format.
    *
    */
-  template<typename GUM_SCALAR, template<class> class IApproximationPolicy = ExactPolicy>
-  class CNFWriter: public BNWriter<GUM_SCALAR>, public IApproximationPolicy<GUM_SCALAR>  {
+  template <typename GUM_SCALAR,
+            template <class> class IApproximationPolicy = ExactPolicy>
+  class CNFWriter : public BNWriter<GUM_SCALAR>,
+                    public IApproximationPolicy<GUM_SCALAR> {
     public:
-      // ==========================================================================
-      /// @name Constructor & destructor
-      // ==========================================================================
-      /// @{
+    // ==========================================================================
+    /// @name Constructor & destructor
+    // ==========================================================================
+    /// @{
 
-      /**
-       * Default constructor.
-       */
-      CNFWriter();
+    /**
+     * Default constructor.
+     */
+    CNFWriter();
 
-      /**
-       * Destructor.
-       */
-      virtual ~CNFWriter();
+    /**
+     * Destructor.
+     */
+    virtual ~CNFWriter();
 
-      /// @}
+    /// @}
 
-      /**
-       * Writes a Bayesian Network in the output stream using the BN format.
-       *
-       * @param output The output stream.
-       * @param bn The Bayesian Network writen in output.
-       * @throws IOError Raised if and I/O error occurs.
-       */
-      virtual void write ( std::ostream& output, const IBayesNet<GUM_SCALAR>& bn ) = 0;
+    /**
+     * Writes a Bayesian Network in the output stream using the BN format.
+     *
+     * @param output The output stream.
+     * @param bn The Bayesian Network writen in output.
+     * @throws IOError Raised if and I/O error occurs.
+     */
+    virtual void write(std::ostream &output, const IBayesNet<GUM_SCALAR> &bn) = 0;
 
-      /**
-       * Writes a Bayesian Network in the referenced file using the BN format.
-       * If the files doesn't exists, it is created.
-       *
-       * @param filePath The path to the file used to write the Bayesian Network.
-       * @param bn The Bayesian Network writed in the file.
-       * @throws IOError Raised if and I/O error occurs.
-       */
-      virtual void write ( std::string filePath, const IBayesNet<GUM_SCALAR>& bn ) = 0;
+    /**
+     * Writes a Bayesian Network in the referenced file using the BN format.
+     * If the files doesn't exists, it is created.
+     *
+     * @param filePath The path to the file used to write the Bayesian Network.
+     * @param bn The Bayesian Network writed in the file.
+     * @throws IOError Raised if and I/O error occurs.
+     */
+    virtual void write(std::string filePath, const IBayesNet<GUM_SCALAR> &bn) = 0;
 
-      inline GUM_SCALAR fromExact ( const GUM_SCALAR& value ) const {
-        return IApproximationPolicy<GUM_SCALAR>::fromExact ( value );
-      }
+    inline GUM_SCALAR fromExact(const GUM_SCALAR &value) const {
+      return IApproximationPolicy<GUM_SCALAR>::fromExact(value);
+    }
   };
 
   extern template class CNFWriter<float>;
@@ -103,4 +105,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/io/cnf/CNFWriter.tcc>
-#endif    // GUM_NET_WRITER_H
+#endif // GUM_NET_WRITER_H

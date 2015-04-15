@@ -26,19 +26,15 @@
 #ifndef GUM_LEARNING_DAG_2_BN_LEARNER_H
 #define GUM_LEARNING_DAG_2_BN_LEARNER_H
 
-
 #include <vector>
 
 #include <agrum/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     /* ========================================================================= */
     /* ===                          BN CREATOR CLASS                         === */
     /* ========================================================================= */
@@ -48,66 +44,56 @@ namespace gum {
      * @ingroup learning_group
      */
     class DAG2BNLearner {
-    public:
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      DAG2BNLearner ();
+      DAG2BNLearner();
 
       /// copy constructor
-      DAG2BNLearner ( const DAG2BNLearner& from );
+      DAG2BNLearner(const DAG2BNLearner &from);
 
       /// move constructor
-      DAG2BNLearner ( DAG2BNLearner&& from );
+      DAG2BNLearner(DAG2BNLearner &&from);
 
       /// destructor
-      ~DAG2BNLearner ();
+      ~DAG2BNLearner();
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
       /// create a BN
-      template <typename GUM_SCALAR = float,
-                typename PARAM_ESTIMATOR,
+      template <typename GUM_SCALAR = float, typename PARAM_ESTIMATOR,
                 typename CELL_TRANSLATORS>
-      static BayesNet<GUM_SCALAR>
-      createBN ( PARAM_ESTIMATOR& estimator,
-                 const DAG& dag,
-                 const std::vector<std::string>& names,
-                 const std::vector<unsigned int>& modal,
-                 const CELL_TRANSLATORS& translator );
+      static BayesNet<GUM_SCALAR> createBN(PARAM_ESTIMATOR &estimator,
+                                           const DAG &dag,
+                                           const std::vector<std::string> &names,
+                                           const std::vector<unsigned int> &modal,
+                                           const CELL_TRANSLATORS &translator);
 
       /// @}
 
-
-    private:
-      /// copy a potential into another whose variables' sequence differs 
+      private:
+      /// copy a potential into another whose variables' sequence differs
       /** The variables of both potential should be the same, only their
        * order differs */
       template <typename GUM_SCALAR = float>
-      static void __probaVarReordering ( gum::Potential<GUM_SCALAR>& pot,
-                                         const gum::Potential<float>& other_pot );
- 
-  
+      static void __probaVarReordering(gum::Potential<GUM_SCALAR> &pot,
+                                       const gum::Potential<float> &other_pot);
     };
 
-    
   } /* namespace learning */
-  
-  
+
 } /* namespace gum */
 
-    
 /// always include templated methods
 #include <agrum/learning/paramUtils/DAG2BNLearner.tcc>
-
 
 #endif /* GUM_LEARNING_DAG_2_BN_LEARNER_H */

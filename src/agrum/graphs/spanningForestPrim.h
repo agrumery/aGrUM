@@ -26,13 +26,10 @@
 #ifndef GUM_SPANNING_FOREST_PRIM_H
 #define GUM_SPANNING_FOREST_PRIM_H
 
-
 #include <agrum/core/priorityQueue.h>
 #include <agrum/graphs/spanningForest.h>
 
-
 namespace gum {
-
 
   /* =========================================================================== */
   /** @class SpanningForestPrim
@@ -42,91 +39,81 @@ namespace gum {
   /* =========================================================================== */
   class SpanningForestPrim : public SpanningForest {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /// Default constructor
-      /** Note that this algorithm takes into account the fact that the graph given
-       * in input is not connected (that, is, it may contain several connected
-       * components)
-       * @param graph the graph the spanning forest of which we look for
-       * @param costTable the cost for each edge of graph
-       * @warning note that, by aGrUM's rule, the graph and the costs are not
-       * copied but only referenced by the elimination sequence algorithm.
-       * @throws GraphError if the grand and/or the cost table are null pointers */
-      SpanningForestPrim ( const UndiGraph* graph,
-                           const EdgeProperty<float>* costTable );
+    /// Default constructor
+    /** Note that this algorithm takes into account the fact that the graph given
+     * in input is not connected (that, is, it may contain several connected
+     * components)
+     * @param graph the graph the spanning forest of which we look for
+     * @param costTable the cost for each edge of graph
+     * @warning note that, by aGrUM's rule, the graph and the costs are not
+     * copied but only referenced by the elimination sequence algorithm.
+     * @throws GraphError if the grand and/or the cost table are null pointers */
+    SpanningForestPrim(const UndiGraph *graph, const EdgeProperty<float> *costTable);
 
-      /// Copy constructor
-      SpanningForestPrim ( const SpanningForestPrim& toCopy );
+    /// Copy constructor
+    SpanningForestPrim(const SpanningForestPrim &toCopy);
 
-      /// Destructor
-      virtual ~SpanningForestPrim();
+    /// Destructor
+    virtual ~SpanningForestPrim();
 
-      /// @}
+    /// @}
 
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
 
-      // ############################################################################
-      /// @name Accessors / Modifiers
-      // ############################################################################
-      /// @{
+    /// Returns the edges in a min cost spanning forest
+    /** @returns edges in the spanning forest */
+    const EdgeSet &edgesInSpanningForest();
 
-      /// Returns the edges in a min cost spanning forest
-      /** @returns edges in the spanning forest */
-      const EdgeSet& edgesInSpanningForest();
+    /// Construct the spanning forest
+    /** @return the spanning forest */
+    const UndiGraph &spanningForest();
 
-      /// Construct the spanning forest
-      /** @return the spanning forest */
-      const UndiGraph& spanningForest();
+    /// Returns the cost of the spanning forest
+    /** @return cost of the spanning forest */
+    float costOfSpanningForest();
 
-      /// Returns the cost of the spanning forest
-      /** @return cost of the spanning forest */
-      float costOfSpanningForest();
-
-      /// @}
-
+    /// @}
 
     private:
-      /// the graph the spanning tree of which we wish to compute
-      const UndiGraph& __graph;
+    /// the graph the spanning tree of which we wish to compute
+    const UndiGraph &__graph;
 
-      /// the costs of the edges
-      const EdgeProperty<float>& __costTable;
+    /// the costs of the edges
+    const EdgeProperty<float> &__costTable;
 
-      /// the next edges that may be added to the spanning tree
-      PriorityQueue<Edge, float> __edgesToExplore;
+    /// the next edges that may be added to the spanning tree
+    PriorityQueue<Edge, float> __edgesToExplore;
 
-      /// the computed spanning tree
-      UndiGraph __spanning_tree;
+    /// the computed spanning tree
+    UndiGraph __spanning_tree;
 
-      /// the cost of the spanning tree
-      float __spanning_tree_cost;
+    /// the cost of the spanning tree
+    float __spanning_tree_cost;
 
-      /// a Boolean indicating whether we need recompute the spanning tree
-      bool __require_computation;
+    /// a Boolean indicating whether we need recompute the spanning tree
+    bool __require_computation;
 
+    /// Computes the spanning forest
+    void __compute();
 
+    /// compute a spanning tree in a given connected component of __graph
+    void __computeInAComponent(const NodeId id);
 
-      /// Computes the spanning forest
-      void __compute();
+    /// explore the neighborhood of a node belonging to the spanning tree
+    void __exploreNode(const NodeId id);
 
-      /// compute a spanning tree in a given connected component of __graph
-      void __computeInAComponent ( const NodeId id );
-
-      /// explore the neighborhood of a node belonging to the spanning tree
-      void __exploreNode ( const NodeId id );
-
-
-
-      /// Copy operator: private to prevent using it
-      SpanningForestPrim& operator= ( const SpanningForestPrim& toCopy );
-
+    /// Copy operator: private to prevent using it
+    SpanningForestPrim &operator=(const SpanningForestPrim &toCopy);
   };
 
-
 } /* namespace gum */
-
 
 #endif /* GUM_SPANNING_FOREST_PRIM_H */

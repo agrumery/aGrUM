@@ -20,7 +20,6 @@
 #ifndef GUM_UTILS_RANDOM_H
 #define GUM_UTILS_RANDOM_H
 
-
 #include <iostream>
 #include <utility>
 #include <vector>
@@ -34,26 +33,20 @@ namespace gum {
 
   /// return a random discrete distribution
   /// @param n is the number of modalities for the ditribution
-  template<typename GUM_SCALAR>
-  std::vector<GUM_SCALAR> randomDistribution ( Size n );
+  template <typename GUM_SCALAR> std::vector<GUM_SCALAR> randomDistribution(Size n);
 
   /// initialize random generator seed
-  void initRandom ( unsigned int init = 0 );
-
+  void initRandom(unsigned int init = 0);
 
   /// returns the aGrUM's seed used by the std::generators
-  unsigned int& randomGeneratorSeed ( unsigned int seed = 0 );
-  
+  unsigned int &randomGeneratorSeed(unsigned int seed = 0);
 
 } /* namespace gum */
-
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/utils_random.inl>
 #endif // GUM_NO_INLINE
 
-
 #include <agrum/core/utils_random.tcc>
-
 
 #endif /* GUM_UTILS_RANDOM_H */

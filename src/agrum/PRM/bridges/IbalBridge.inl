@@ -25,9 +25,5 @@
  */
 
 namespace gum {
-  namespace prm {
-
-
-  } /* namespace prm */
+  namespace prm {} /* namespace prm */
 } /* namespace gum */
-

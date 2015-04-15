@@ -46,92 +46,113 @@
 
 namespace gum {
   /**
-   * @class MaxInducedWidthMCBayesNetGenerator maxInducedWidthMCBayesNetGenerator.h <agrum/BN/generator/SimpleMCayesNetGenerator.h>
+   * @class MaxInducedWidthMCBayesNetGenerator maxInducedWidthMCBayesNetGenerator.h
+   *<agrum/BN/generator/SimpleMCayesNetGenerator.h>
    * @brief Class for generating bayesian networks with Markov chains.
    * @ingroup bn_group
    *
-   * This class is inherited from MCBayesNetGenerator and is an example of Markov Chain Bayesian Network Generator that can be implemented.
-   * Here a constraint is added which is the maximum number of parents that nodes can have.
-   * @warning  Be careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high
+   * This class is inherited from MCBayesNetGenerator and is an example of Markov
+   *Chain Bayesian Network Generator that can be implemented.
+   * Here a constraint is added which is the maximum number of parents that nodes can
+   *have.
+   * @warning  Be careful when entering the parameters, high Values may cause the
+   *density of the Bayesian Network to be too high
    * resulting in the failure of most of the inference Methods.
    * */
-  template<typename GUM_SCALAR, template<class> class ICPTGenerator = SimpleCPTGenerator, template<class> class ICPTDisturber = SimpleCPTDisturber>
-  class MaxInducedWidthMCBayesNetGenerator : public MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber> {
+  template <typename GUM_SCALAR,
+            template <class> class ICPTGenerator = SimpleCPTGenerator,
+            template <class> class ICPTDisturber = SimpleCPTDisturber>
+  class MaxInducedWidthMCBayesNetGenerator
+      : public MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber> {
 
     public:
+    // ############################################################################
+    /// @name Constructors / Destructor
+    // ############################################################################
+    /// @{
 
-      // ############################################################################
-      /// @name Constructors / Destructor
-      // ############################################################################
-      /// @{
+    /**
+    * Constructor.
+    * Use by default the SimpleCPTGenerator for generating the BNs CPT
+    * and the SimpleCPTDisturber to tweak the CPT when the dimension of the table
+    * changes.
+    * @param nbrNodes The number of nodes in the generated BN.
+    * @param maxArcs The maximum number of Arcs.
+    * @param maxModality Each DRV has from 2 to maxModality modalities
+    * @param maxInducedWidth The number of maximum variable allow in the cliques of
+    * the junction tree of the bayesian Network.
+    * @param iteration The number of iterations wanted to repeat the algorithm
+    * @param p probability for the change of the state (see \ref probability_p_q "use
+    * of p and q" )
+    * @param q probability for the change of the state (see \ref probability_p_q "use
+    * of p and q" )
+    */
+    MaxInducedWidthMCBayesNetGenerator(Size nbrNodes, Size maxArcs,
+                                       Size maxModality = 2,
+                                       Size maxInducedWidth = 3,
+                                       Idx iteration = 5000, Idx p = 30, Idx q = 40);
 
-      /**
-      * Constructor.
-      * Use by default the SimpleCPTGenerator for generating the BNs CPT
-      * and the SimpleCPTDisturber to tweak the CPT when the dimension of the table changes.
-      * @param nbrNodes The number of nodes in the generated BN.
-      * @param maxArcs The maximum number of Arcs.
-      * @param maxModality Each DRV has from 2 to maxModality modalities
-      * @param maxInducedWidth The number of maximum variable allow in the cliques of the junction tree of the bayesian Network.
-      * @param iteration The number of iterations wanted to repeat the algorithm
-      * @param p probability for the change of the state (see \ref probability_p_q "use of p and q" )
-      * @param q probability for the change of the state (see \ref probability_p_q "use of p and q" )
-      */
-      MaxInducedWidthMCBayesNetGenerator ( Size nbrNodes,  Size maxArcs, Size maxModality = 2, Size maxInducedWidth = 3, Idx iteration = 5000,  Idx p = 30, Idx q = 40 );
+    /**
+    * Constructor.
+    * Use by default the SimpleCPTGenerator for generating the BNs CPT
+    * and the SimpleCPTDisturber to tweak the CPT when the dimension of the table
+    * changes.
+    * @param bayesNet the IBayesNet used as reference to fill the parameters
+    * nbrNodes, maxArcs and maxModality
+    * @param maxInducedWidth The number of maximum variable allow in the cliques of
+    * the junction tree of the bayesian Network.
+    * @param iteration The number of iterations wanted to repeat the algorithm
+    * @param p probability for the change of the state (see \ref probability_p_q "use
+    * of p and q" )
+    * @param q probability for the change of the state (see \ref probability_p_q "use
+    * of p and q" )
+    */
+    MaxInducedWidthMCBayesNetGenerator(BayesNet<GUM_SCALAR> bayesNet,
+                                       Size maxInducedWidth = 3,
+                                       Idx iteration = 5000, Idx p = 30, Idx q = 40);
 
-      /**
-      * Constructor.
-      * Use by default the SimpleCPTGenerator for generating the BNs CPT
-      * and the SimpleCPTDisturber to tweak the CPT when the dimension of the table changes.
-      * @param bayesNet the IBayesNet used as reference to fill the parameters nbrNodes, maxArcs and maxModality
-      * @param maxInducedWidth The number of maximum variable allow in the cliques of the junction tree of the bayesian Network.
-      * @param iteration The number of iterations wanted to repeat the algorithm
-      * @param p probability for the change of the state (see \ref probability_p_q "use of p and q" )
-      * @param q probability for the change of the state (see \ref probability_p_q "use of p and q" )
-      */
-      MaxInducedWidthMCBayesNetGenerator ( BayesNet<GUM_SCALAR> bayesNet, Size maxInducedWidth = 3, Idx iteration = 5000,  Idx p = 30, Idx q = 40 );
+    /**
+     * Destructor.
+     */
+    ~MaxInducedWidthMCBayesNetGenerator();
 
-      /**
-       * Destructor.
-       */
-      ~MaxInducedWidthMCBayesNetGenerator();
+    /// @}
 
-      /// @}
+    // ############################################################################
+    /// @name Getters and Setters
+    // ############################################################################
+    /// @{
+    ///@name Getters
 
-      // ############################################################################
-      /// @name Getters and Setters
-      // ############################################################################
-      /// @{
-      ///@name Getters
+    /**
+    * Return a constant reference to the number of maximum parents imposed on the
+    * Markov Chain BayesNetGenerator.
+    */
+    Size maxlog10InducedWidth() const;
 
-
-      /**
-      * Return a constant reference to the number of maximum parents imposed on the Markov Chain BayesNetGenerator.
-      */
-      Size maxlog10InducedWidth() const;
-
-      ///@name Setters
-      /**
-      * Modifies the value of the number of maximum parents imposed on the BayesNetGenerator
-      */
-      void setMaxlog10InducedWidth ( Size maxlog10InducedWidth );
-/// @}
+    ///@name Setters
+    /**
+    * Modifies the value of the number of maximum parents imposed on the
+    * BayesNetGenerator
+    */
+    void setMaxlog10InducedWidth(Size maxlog10InducedWidth);
+    /// @}
 
     protected:
-      Size _maxlog10InducedWidth;
+    Size _maxlog10InducedWidth;
 
     private:
-      /**
-       * function to holding the the specification wanted for the Bayesian markov.
-       * @return boolean state that verify the conditions
-       */
+    /**
+     * function to holding the the specification wanted for the Bayesian markov.
+     * @return boolean state that verify the conditions
+     */
 
-      virtual bool __checkConditions();
+    virtual bool __checkConditions();
   };
 
   extern template class MaxInducedWidthMCBayesNetGenerator<float>;
   extern template class MaxInducedWidthMCBayesNetGenerator<double>;
-}/*namespace gum*/
+} /*namespace gum*/
 
 #include <agrum/BN/generator/maxInducedWidthMCBayesNetGenerator.tcc>
 #endif // MCBAYESNETGENERATOR

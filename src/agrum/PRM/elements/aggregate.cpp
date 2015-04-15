@@ -33,4 +33,3 @@ namespace gum {
     template class Aggregate<double>;
   } /* namespace prm */
 } /* namespace gum */
-

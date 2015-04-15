@@ -38,165 +38,155 @@
 
 namespace gum_tests {
 
-  class NetReaderTestSuite: public CxxTest::TestSuite {
+  class NetReaderTestSuite : public CxxTest::TestSuite {
 
     public:
-      void testConstuctor() {
-        std::string file = GET_PATH_STR ( "test1.net" );
+    void testConstuctor() {
+      std::string file = GET_PATH_STR("test1.net");
 
-        gum::BayesNet<float> net;
+      gum::BayesNet<float> net;
 
-        gum::NetReader<float>* reader = 0;
+      gum::NetReader<float> *reader = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( reader = new gum::NetReader<float> ( &net, file ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::NetReader<float>(&net, file));
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( delete reader );
+      TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
+    }
 
+    void testRead_not_existing_file() {
+      std::string file = GET_PATH_STR("test.net");
+
+      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+
+      gum::NetReader<float> reader(net, file);
+
+      TS_ASSERT_THROWS(reader.trace(false), gum::IOError);
+
+      int nbrErr = 0;
+
+      TS_ASSERT_THROWS(nbrErr = reader.proceed(), gum::IOError);
+
+      TS_ASSERT(!nbrErr);
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      // 0 warnings : no properties
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+
+      TS_ASSERT(net != 0);
+
+      if (net != 0) {
+        TS_ASSERT(net->empty());
+
+        delete net;
       }
+    }
 
-      void testRead_not_existing_file() {
-        std::string file = GET_PATH_STR ( "test.net" );
+    void testRead_file1() {
+      std::string file = GET_PATH_STR("test1.net");
 
-        gum::BayesNet<float>* net = new gum::BayesNet<float>();
+      gum::BayesNet<float> *net = new gum::BayesNet<float>();
 
-        gum::NetReader<float> reader ( net, file );
+      gum::NetReader<float> reader(net, file);
 
-        TS_ASSERT_THROWS ( reader.trace ( false ), gum::IOError );
+      reader.trace(false);
 
-        int nbrErr = 0;
+      int nbrErr = 0;
 
-        TS_ASSERT_THROWS ( nbrErr = reader.proceed() , gum::IOError );
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-        TS_ASSERT ( ! nbrErr );
-        TS_ASSERT_EQUALS ( reader.warnings(), ( gum::Size ) 0 );
-        // 0 warnings : no properties
-        TS_ASSERT_EQUALS ( reader.errors(), ( gum::Size ) 0 )
+      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      // 0 warnings : no properties
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
-        TS_ASSERT ( net != 0 );
+      TS_ASSERT(net != 0);
 
-        if ( net != 0 ) {
-          TS_ASSERT ( net->empty() );
+      if (net != 0) {
+        TS_ASSERT(!net->empty());
 
-          delete net;
-
-        }
+        delete net;
       }
+    }
 
-      void testRead_file1() {
-        std::string file = GET_PATH_STR ( "test1.net" );
+    void testRead_file2() {
+      std::string file = GET_PATH_STR("test2.net");
 
-        gum::BayesNet<float>* net = new gum::BayesNet<float>();
+      gum::BayesNet<float> *net = new gum::BayesNet<float>();
 
-        gum::NetReader<float> reader ( net, file );
+      gum::NetReader<float> reader(net, file);
 
+      reader.trace(false);
 
-        reader.trace ( false );
+      int nbrErr = 0;
 
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-        int nbrErr = 0;
+      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      // 0 warnings : no properties
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( nbrErr = reader.proceed() );
+      TS_ASSERT(net != 0);
 
-        TS_ASSERT ( nbrErr == 0 );
-        TS_ASSERT_EQUALS ( reader.warnings(), ( gum::Size ) 0 );
-        // 0 warnings : no properties
-        TS_ASSERT_EQUALS ( reader.errors(), ( gum::Size ) 0 )
+      if (net != 0) {
+        TS_ASSERT(!net->empty());
 
-        TS_ASSERT ( net != 0 );
-
-        if ( net != 0 ) {
-          TS_ASSERT ( ! net->empty() );
-
-          delete net;
-
-        }
+        delete net;
       }
+    }
 
+    void testRead_file3() {
+      std::string file = GET_PATH_STR("test3.net");
 
-      void testRead_file2() {
-        std::string file = GET_PATH_STR ( "test2.net" );
+      gum::BayesNet<float> *net = new gum::BayesNet<float>();
 
-        gum::BayesNet<float>* net = new gum::BayesNet<float>();
+      gum::NetReader<float> reader(net, file);
 
-        gum::NetReader<float> reader ( net, file );
+      reader.trace(false);
 
+      int nbrErr = 0;
 
-        reader.trace ( false );
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
+      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      // 0 warnings : no properties
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
-        int nbrErr = 0;
+      TS_ASSERT(net != 0);
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( nbrErr = reader.proceed() );
+      if (net != 0) {
+        TS_ASSERT(!net->empty());
 
-        TS_ASSERT ( nbrErr == 0 );
-        TS_ASSERT_EQUALS ( reader.warnings(), ( gum::Size ) 0 );
-        // 0 warnings : no properties
-        TS_ASSERT_EQUALS ( reader.errors(), ( gum::Size ) 0 )
-
-        TS_ASSERT ( net != 0 );
-
-        if ( net != 0 ) {
-          TS_ASSERT ( ! net->empty() );
-
-          delete net;
-
-        }
+        delete net;
       }
+    }
 
-      void testRead_file3() {
-        std::string file = GET_PATH_STR ( "test3.net" );
+    void testRead_file_with_xp() {
+      std::string file = GET_PATH_STR("bn_with_xp.net");
 
-        gum::BayesNet<float>* net = new gum::BayesNet<float>();
+      gum::BayesNet<float> *net = new gum::BayesNet<float>();
 
-        gum::NetReader<float> reader ( net, file );
+      gum::NetReader<float> reader(net, file);
 
-        reader.trace ( false );
+      reader.trace(false);
 
-        int nbrErr = 0;
+      int nbrErr = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( nbrErr = reader.proceed() );
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-        TS_ASSERT ( nbrErr == 0 );
-        TS_ASSERT_EQUALS ( reader.warnings(), ( gum::Size ) 0 );
-        // 0 warnings : no properties
-        TS_ASSERT_EQUALS ( reader.errors(), ( gum::Size ) 0 )
+      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      // 0 warnings : no properties
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      reader.showElegantErrors();
 
-        TS_ASSERT ( net != 0 );
+      TS_ASSERT(net != 0);
 
-        if ( net != 0 ) {
-          TS_ASSERT ( ! net->empty() );
+      if (net != 0) {
+        TS_ASSERT(!net->empty());
 
-          delete net;
-        }
+        delete net;
       }
-
-      void testRead_file_with_xp() {
-        std::string file = GET_PATH_STR ( "bn_with_xp.net" );
-
-        gum::BayesNet<float>* net = new gum::BayesNet<float>();
-
-        gum::NetReader<float> reader ( net, file );
-
-        reader.trace ( false );
-
-        int nbrErr = 0;
-
-        TS_GUM_ASSERT_THROWS_NOTHING ( nbrErr = reader.proceed() );
-
-        TS_ASSERT ( nbrErr == 0 );
-        TS_ASSERT_EQUALS ( reader.warnings(), ( gum::Size ) 0 );
-        // 0 warnings : no properties
-        TS_ASSERT_EQUALS ( reader.errors(), ( gum::Size ) 0 )
-        reader.showElegantErrors();
-
-        TS_ASSERT ( net != 0 );
-
-        if ( net != 0 ) {
-          TS_ASSERT ( ! net->empty() );
-
-          delete net;
-        }
-      }
-
+    }
   };
 }

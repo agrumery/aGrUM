@@ -44,10 +44,8 @@
 
 namespace gum {
 
-  
   namespace learning {
 
-    
     /** @class StructuralConstraintTabuList
      * @brief The class imposing a N-sized tabu list as a structural constraints
      * for learning algorithms
@@ -62,83 +60,79 @@ namespace gum {
      * @ingroup learning_group
      */
     class StructuralConstraintTabuList : public virtual StructuralConstraintEmpty {
-    public:
-      
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      StructuralConstraintTabuList ();
+      StructuralConstraintTabuList();
 
       /// constructor starting with a given graph
-      StructuralConstraintTabuList ( const DiGraph& graph );
+      StructuralConstraintTabuList(const DiGraph &graph);
 
       /// copy constructor
-      StructuralConstraintTabuList ( const StructuralConstraintTabuList& from );
+      StructuralConstraintTabuList(const StructuralConstraintTabuList &from);
 
       /// move constructor
-      StructuralConstraintTabuList ( StructuralConstraintTabuList&& from );
+      StructuralConstraintTabuList(StructuralConstraintTabuList &&from);
 
       /// destructor
-      virtual ~StructuralConstraintTabuList ();
-      
+      virtual ~StructuralConstraintTabuList();
+
       /// @}
 
-      
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
       /// @{
 
       /// copy operator
-      StructuralConstraintTabuList&
-      operator= ( const StructuralConstraintTabuList& from );
+      StructuralConstraintTabuList &
+      operator=(const StructuralConstraintTabuList &from);
 
       /// move operator
-      StructuralConstraintTabuList&
-      operator= ( StructuralConstraintTabuList&& from );
+      StructuralConstraintTabuList &operator=(StructuralConstraintTabuList &&from);
 
       /// @}
-      
-      
+
       // ##########################################################################
       /// @name Specific Accessors / Modifiers
       // ##########################################################################
       /// @{
 
       /// sets the size of the tabu list
-      void setTabuListSize ( unsigned int new_size );
-      
+      void setTabuListSize(unsigned int new_size);
+
       /// sets a new graph from which we will perform checkings
-      void setGraphAlone ( const DiGraph& graph );
+      void setGraphAlone(const DiGraph &graph);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added nothing is done. In
        * particular, no exception is raised.
        * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
        * or y does not belong to the graph nodes */
-      void modifyGraphAlone ( const ArcAddition& change );
+      void modifyGraphAlone(const ArcAddition &change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If a nonexisting arc is removed, nothing is done. In
        * particular, no exception is raised. */
-      void modifyGraphAlone ( const ArcDeletion& change );
+      void modifyGraphAlone(const ArcDeletion &change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
        * is removed, nothing is done. In particular, no exception is raised.
        * @throws InvalidNode exception is thrown if at least one extremity of
        * the arc does not belong to the graph nodes */
-      void modifyGraphAlone ( const ArcReversal& change );
+      void modifyGraphAlone(const ArcReversal &change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
        * is removed, nothing is done. In particular, no exception is raised.
        * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
        * or y does not belong to the graph nodes */
-      void modifyGraphAlone ( const GraphChange& change );
+      void modifyGraphAlone(const GraphChange &change);
 
       /// indicates whether a change will always violate the constraint
       /** Some learning algorithms need examine several times whether a given
@@ -152,76 +146,68 @@ namespace gum {
        * in a 2TBN structure, it is always impossible to add a backward-time arc.
        * Such graph changes are always invalid and are therefore tagged as such
        * by the isAlwaysInvalid method. */
-      bool isAlwaysInvalidAlone ( const GraphChange& change ) const noexcept;
-      
+      bool isAlwaysInvalidAlone(const GraphChange &change) const noexcept;
+
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist. */
-      bool checkArcAdditionAlone ( NodeId x, NodeId y ) const noexcept;
+      bool checkArcAdditionAlone(NodeId x, NodeId y) const noexcept;
 
       /// checks whether the constraints enable to remove arc (x,y)
       /** an arc can be removed if and only if the arc exists. */
-      bool checkArcDeletionAlone ( NodeId x, NodeId y ) const noexcept;
+      bool checkArcDeletionAlone(NodeId x, NodeId y) const noexcept;
 
-       /// checks whether the constraints enable to reverse arc (x,y)
+      /// checks whether the constraints enable to reverse arc (x,y)
       /** an arc can be reversed if and only if it exists and arc (y,x)
        * does not. */
-      bool checkArcReversalAlone ( NodeId x, NodeId y ) const noexcept;
-      
+      bool checkArcReversalAlone(NodeId x, NodeId y) const noexcept;
+
       /// checks whether the constraints enable to perform a graph change
       /** An arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist.
        * An arc can be removed if and only if the arc exists.
        * An arc (x,y) can be reversed if and only if it exists and arc (y,x)
        * does not. */
-      bool checkModificationAlone ( const GraphChange& change ) const noexcept;
+      bool checkModificationAlone(const GraphChange &change) const noexcept;
 
       /// checks whether the constraints enable to add an arc
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist. */
-      bool checkModificationAlone ( const ArcAddition& change ) const noexcept;
+      bool checkModificationAlone(const ArcAddition &change) const noexcept;
 
       /// checks whether the constraints enable to remove an arc
       /** an arc can be removed if and only if the arc exists. */
-      bool checkModificationAlone ( const ArcDeletion& change ) const noexcept;
+      bool checkModificationAlone(const ArcDeletion &change) const noexcept;
 
       /// checks whether the constraints enable to reverse an arc
       /** an arc (x,y) can be reversed if and only if it exists and arc (y,x)
        * does not. */
-      bool checkModificationAlone ( const ArcReversal& change ) const noexcept;
+      bool checkModificationAlone(const ArcReversal &change) const noexcept;
 
-      /// @}
+/// @}
 
-      
-      // include the set of methods that enable the structural constraint to
-      // be standalone, i.e., that it needs not be included into a
-      // StructuralConstraintSetStatic to be used by learning algorithms
-      #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintTabuList
-      #include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
-      #undef GUM_CONSTRAINT_CLASS_NAME
+// include the set of methods that enable the structural constraint to
+// be standalone, i.e., that it needs not be included into a
+// StructuralConstraintSetStatic to be used by learning algorithms
+#define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintTabuList
+#include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
+#undef GUM_CONSTRAINT_CLASS_NAME
 
-
-
-    protected:
+      protected:
       /// the tabu list
-      Bijection<GraphChange,int> _TabuList__changes;
+      Bijection<GraphChange, int> _TabuList__changes;
 
       /// the index of the oldest element
-      int _TabuList__offset { 0 };
-
+      int _TabuList__offset{0};
     };
-    
- 
+
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #include <agrum/learning/constraints/structuralConstraintTabuList.inl>
 #endif /* GUM_NO_INLINE */
-
 
 #endif /* GUM_LEARNING_STRUCTURAL_TABU_LIST_H */

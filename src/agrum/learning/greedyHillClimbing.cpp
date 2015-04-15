@@ -25,67 +25,52 @@
 
 #include <agrum/learning/greedyHillClimbing.h>
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     /// default constructor
-    GreedyHillClimbing::GreedyHillClimbing () {
-      setEpsilon ( 0 );
-      disableMinEpsilonRate ();
-      disableMaxIter ();
-      disableMaxTime ();
-      GUM_CONSTRUCTOR ( learning::GreedyHillClimbing );
+    GreedyHillClimbing::GreedyHillClimbing() {
+      setEpsilon(0);
+      disableMinEpsilonRate();
+      disableMaxIter();
+      disableMaxTime();
+      GUM_CONSTRUCTOR(learning::GreedyHillClimbing);
     }
 
-    
     /// copy constructor
-    GreedyHillClimbing::GreedyHillClimbing ( const GreedyHillClimbing& from ) :
-      ApproximationScheme ( from ) {
-      GUM_CONS_CPY ( learning::GreedyHillClimbing );
+    GreedyHillClimbing::GreedyHillClimbing(const GreedyHillClimbing &from)
+        : ApproximationScheme(from) {
+      GUM_CONS_CPY(learning::GreedyHillClimbing);
     }
-
 
     /// move constructor
-    GreedyHillClimbing::GreedyHillClimbing ( GreedyHillClimbing&& from ) :
-      ApproximationScheme ( std::move ( from ) ) {
-      GUM_CONS_MOV ( learning::GreedyHillClimbing );
+    GreedyHillClimbing::GreedyHillClimbing(GreedyHillClimbing &&from)
+        : ApproximationScheme(std::move(from)) {
+      GUM_CONS_MOV(learning::GreedyHillClimbing);
     }
 
-    
     /// destructor
-    GreedyHillClimbing::~GreedyHillClimbing () {
-      GUM_DESTRUCTOR ( learning::GreedyHillClimbing );
+    GreedyHillClimbing::~GreedyHillClimbing() {
+      GUM_DESTRUCTOR(learning::GreedyHillClimbing);
     }
 
-    
     /// copy operator
-    GreedyHillClimbing&
-    GreedyHillClimbing::operator= ( const GreedyHillClimbing& from ) {
-      ApproximationScheme::operator= ( from );
+    GreedyHillClimbing &GreedyHillClimbing::
+    operator=(const GreedyHillClimbing &from) {
+      ApproximationScheme::operator=(from);
       return *this;
     }
-
 
     /// move operator
-    GreedyHillClimbing&
-    GreedyHillClimbing::operator= ( GreedyHillClimbing&& from ) {
-      ApproximationScheme::operator= ( std::move ( from ) );
+    GreedyHillClimbing &GreedyHillClimbing::operator=(GreedyHillClimbing &&from) {
+      ApproximationScheme::operator=(std::move(from));
       return *this;
     }
 
-    
     /// returns the approximation policy of the learning algorithm
-    ApproximationScheme& GreedyHillClimbing::approximationScheme () {
-      return *this;
-    }
-
+    ApproximationScheme &GreedyHillClimbing::approximationScheme() { return *this; }
 
   } /* namespace learning */
-  
-  
-} /* namespace gum */
 
+} /* namespace gum */

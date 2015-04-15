@@ -31,74 +31,61 @@
 namespace gum {
 
   INLINE
-  const std::string&
-  DAGmodel::property ( const std::string& name ) const {
+  const std::string &DAGmodel::property(const std::string &name) const {
     try {
-      return  __properties() [name];
-    } catch ( NotFound& ) {
+      return __properties()[name];
+    } catch (NotFound &) {
       std::string msg = "The following property does not exists: ";
-      GUM_ERROR ( NotFound, msg + name );
+      GUM_ERROR(NotFound, msg + name);
     }
   }
 
   INLINE
-  const std::string&
-  DAGmodel::propertyWithDefault ( const std::string& name, const std::string& byDefault ) const {
+  const std::string &
+  DAGmodel::propertyWithDefault(const std::string &name,
+                                const std::string &byDefault) const {
     try {
-      return  __properties() [name];
-    } catch ( NotFound& ) {
+      return __properties()[name];
+    } catch (NotFound &) {
       return byDefault;
     }
   }
 
-
   INLINE
-  void
-  DAGmodel::setProperty ( const std::string& name, const std::string& value ) {
+  void DAGmodel::setProperty(const std::string &name, const std::string &value) {
     try {
-      __properties() [name] = value;
-    } catch ( NotFound& ) {
-      __properties().insert ( name, value );
+      __properties()[name] = value;
+    } catch (NotFound &) {
+      __properties().insert(name, value);
     }
   }
 
   INLINE
-  const DAG&
-  DAGmodel::dag() const {
-    return _dag;
-  }
-
+  const DAG &DAGmodel::dag() const { return _dag; }
 
   INLINE
-  const DAG::NodeIterator
-  DAGmodel::beginNodes() const { // deprecated
+  const DAG::NodeIterator DAGmodel::beginNodes() const { // deprecated
     return dag().begin();
   }
 
   INLINE
-  const DAG::NodeIterator
-  DAGmodel::endNodes () const {// deprecated
+  const DAG::NodeIterator DAGmodel::endNodes() const { // deprecated
     return dag().end();
   }
 
   INLINE
-  const DAG::ArcIterator
-  DAGmodel::beginArcs() const {// deprecated
+  const DAG::ArcIterator DAGmodel::beginArcs() const { // deprecated
     return dag().arcs().begin();
   }
 
   INLINE
-  const DAG::ArcIterator&
-  DAGmodel::endArcs() const {// deprecated
+  const DAG::ArcIterator &DAGmodel::endArcs() const { // deprecated
     return dag().arcs().end();
   }
 
-
-
   INLINE
-  HashTable<std::string, std::string>&
-  DAGmodel::__properties() const {
-    if ( __propertiesMap == nullptr ) {
+  HashTable<std::string, std::string> &DAGmodel::__properties() const {
+    if (__propertiesMap == nullptr) {
       __propertiesMap = new HashTable<std::string, std::string>();
     }
 
@@ -106,61 +93,39 @@ namespace gum {
   }
 
   INLINE
-  double
-  DAGmodel::log10DomainSize ( void ) const {
+  double DAGmodel::log10DomainSize(void) const {
     double dSize = 0.0;
 
-    for ( const auto node : nodes() ) {
-      dSize += log10 ( variable ( node ).domainSize() );
+    for (const auto node : nodes()) {
+      dSize += log10(variable(node).domainSize());
     }
 
     return dSize;
   }
 
   INLINE
-  void
-  DAGmodel::completeInstantiation ( Instantiation& I ) const {
+  void DAGmodel::completeInstantiation(Instantiation &I) const {
     I.clear();
 
-    for ( const auto node : dag() )
-      I << variable ( node );
+    for (const auto node : dag())
+      I << variable(node);
   }
 
   INLINE
-  Size
-  DAGmodel::size() const {
-    return dag().size();
-  }
-
+  Size DAGmodel::size() const { return dag().size(); }
 
   INLINE
-  bool
-  DAGmodel::empty() const {
-    return size() == 0;
-  }
+  bool DAGmodel::empty() const { return size() == 0; }
 
   INLINE
-  Size
-  DAGmodel::sizeArcs() const {
-    return _dag.sizeArcs();
-  }
+  Size DAGmodel::sizeArcs() const { return _dag.sizeArcs(); }
 
   INLINE
-  Size
-  DAGmodel::nbrArcs() const {
-    return _dag.sizeArcs();
-  }
+  Size DAGmodel::nbrArcs() const { return _dag.sizeArcs(); }
 
+  INLINE const ArcSet &DAGmodel::arcs() const { return _dag.arcs(); }
 
-  INLINE const ArcSet&
-  DAGmodel::arcs() const {
-    return _dag.arcs();
-  }
-
-  INLINE const NodeGraphPart&
-  DAGmodel::nodes() const {
-    return ( NodeGraphPart& ) _dag;
+  INLINE const NodeGraphPart &DAGmodel::nodes() const {
+    return (NodeGraphPart &)_dag;
   }
 } /* namespace gum */
-
-

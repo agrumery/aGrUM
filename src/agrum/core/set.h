@@ -59,15 +59,13 @@
 #include <agrum/core/list.h>
 #include <agrum/core/hashTable.h>
 
-
 namespace gum {
 
-  
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-  template<typename Key> class SetIteratorSafe;
-  template<typename Key> class SetIterator;
-  template<typename Key, typename Alloc> class Set;
+  template <typename Key> class SetIteratorSafe;
+  template <typename Key> class SetIterator;
+  template <typename Key, typename Alloc> class Set;
 
   template <typename Key> using SetConstIterator = SetIterator<Key>;
   template <typename Key> using SetConstIteratorSafe = SetIteratorSafe<Key>;
@@ -76,32 +74,30 @@ namespace gum {
   // using this class rather than just creating __SetIterEnd as a global
   // variable is to prevent other classes to access and modify __SetIterEnd
   class SetIteratorStaticEnd {
-  private:
+    private:
     // the safe iterator used by everyone
-    static const SetIteratorSafe<int>* __SetIterEndSafe;
+    static const SetIteratorSafe<int> *__SetIterEndSafe;
 
     // the unsafe iterator used by everyone
-    static const SetIterator<int>* __SetIterEnd;
+    static const SetIterator<int> *__SetIterEnd;
 
     // creates (if needed) and returns the iterator __SetIterEndSafe
-    static const SetIteratorSafe<int>* endSafe4Statics();
+    static const SetIteratorSafe<int> *endSafe4Statics();
 
     // creates (if needed) and returns the iterator __SetIterEndSafe
-    static const SetIteratorSafe<int>* constEndSafe4Statics();
+    static const SetIteratorSafe<int> *constEndSafe4Statics();
 
     // creates (if needed) and returns the iterator __SetIterEnd
-    static const SetIterator<int>* end4Statics();
+    static const SetIterator<int> *end4Statics();
 
     // creates (if needed) and returns the iterator __SetIterEnd
-    static const SetIterator<int>* constEnd4Statics();
+    static const SetIterator<int> *constEnd4Statics();
 
     // friends that have access to the iterator
-    template<typename Key, typename Alloc> friend class Set;
+    template <typename Key, typename Alloc> friend class Set;
   };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
-
 
   /* =========================================================================== */
   /* ===                               GUM_SET                               === */
@@ -149,25 +145,23 @@ namespace gum {
    * @endcode
    *
    */
-  template<typename Key, typename Alloc = std::allocator<Key> >
-  class Set {
-  public:
+  template <typename Key, typename Alloc = std::allocator<Key>> class Set {
+    public:
     /// types for STL compliance
     /// @{
-    using value_type      = Key;
-    using reference       = Key&;
-    using const_reference = const Key&;
-    using pointer         = Key*;
-    using const_pointer   = const Key*;
-    using size_type       = std::size_t;
+    using value_type = Key;
+    using reference = Key &;
+    using const_reference = const Key &;
+    using pointer = Key *;
+    using const_pointer = const Key *;
+    using size_type = std::size_t;
     using difference_type = std::ptrdiff_t;
-    using allocator_type  = Alloc;
-    using iterator             = SetIterator<Key>;
-    using const_iterator       = SetIterator<Key>;
-    using iterator_safe        = SetIteratorSafe<Key>;
-    using const_iterator_safe  = SetIteratorSafe<Key>;
+    using allocator_type = Alloc;
+    using iterator = SetIterator<Key>;
+    using const_iterator = SetIterator<Key>;
+    using iterator_safe = SetIteratorSafe<Key>;
+    using const_iterator_safe = SetIteratorSafe<Key>;
     /// @}
-
 
     // ############################################################################
     /// @name Constructors / Destructors
@@ -182,30 +176,25 @@ namespace gum {
      * @param resize_policy enables the hashtable to resize itself automatically
      * when its number of elements is sufficiently high that it induces slow
      * retrievals of elements */
-    explicit
-    Set ( Size capacity = HashTableConst::default_size,
-          bool resize_policy = true );
+    explicit Set(Size capacity = HashTableConst::default_size,
+                 bool resize_policy = true);
 
     /// initializer list constructor
-    explicit
-    Set( std::initializer_list<Key> list );
-    
+    explicit Set(std::initializer_list<Key> list);
+
     /// copy constructor
-    Set( const Set<Key,Alloc>& aHT );
+    Set(const Set<Key, Alloc> &aHT);
 
     /// generalized copy constructor
-    template <typename OtherAlloc>
-    Set( const Set<Key,OtherAlloc>& aHT );
+    template <typename OtherAlloc> Set(const Set<Key, OtherAlloc> &aHT);
 
     /// move constructor
-    Set ( Set<Key,Alloc>&& aHT );
+    Set(Set<Key, Alloc> &&aHT);
 
     /// destructor
     ~Set();
 
     /// @}
-
-
 
     // ############################################################################
     /// @name Operators
@@ -213,51 +202,49 @@ namespace gum {
     /// @{
 
     /// copy operator
-    Set<Key,Alloc>& operator= ( const Set<Key,Alloc>& from );
+    Set<Key, Alloc> &operator=(const Set<Key, Alloc> &from);
 
     /// generalized copy operator
     template <typename OtherAlloc>
-    Set<Key,Alloc>& operator= ( const Set<Key,OtherAlloc>& from );
+    Set<Key, Alloc> &operator=(const Set<Key, OtherAlloc> &from);
 
     /// move operator
-    Set<Key,Alloc>& operator= ( Set<Key,Alloc>&& from );
+    Set<Key, Alloc> &operator=(Set<Key, Alloc> &&from);
 
     /// mathematical equality between two sets
     template <typename OtherAlloc>
-    bool operator== ( const Set<Key,OtherAlloc>& s2 ) const;
+    bool operator==(const Set<Key, OtherAlloc> &s2) const;
 
     /// mathematical inequality between two sets
     template <typename OtherAlloc>
-    bool operator!= ( const Set<Key,OtherAlloc>& s2 ) const;
+    bool operator!=(const Set<Key, OtherAlloc> &s2) const;
 
     /// Intersection operator
     /** @return a Set containing the elements belonging both to this and s2. */
     template <typename OtherAlloc>
-    Set<Key,Alloc> operator* ( const Set<Key,OtherAlloc>& s2 ) const;
+    Set<Key, Alloc> operator*(const Set<Key, OtherAlloc> &s2) const;
 
     /// Union operator
     /** @return a new Set containing the union of the elements of this and s2 */
     template <typename OtherAlloc>
-    Set<Key,Alloc> operator+ ( const Set<Key,OtherAlloc>& s2 ) const;
+    Set<Key, Alloc> operator+(const Set<Key, OtherAlloc> &s2) const;
 
     /// Disjunction operator
     /** @return a Set whose elements belong to this but not to s2
      * @warning Unlike + and *, the - operator is not commutative! */
     template <typename OtherAlloc>
-    Set<Key,Alloc> operator- ( const Set<Key,OtherAlloc>& s2 ) const;
+    Set<Key, Alloc> operator-(const Set<Key, OtherAlloc> &s2) const;
 
     /// adds a new element to the set (alias for insert)
-    Set<Key,Alloc>& operator<< ( const Key& k );
+    Set<Key, Alloc> &operator<<(const Key &k);
 
     /// adds a new element to the set (alias for insert)
-    Set<Key,Alloc>& operator<< ( Key&& k );
+    Set<Key, Alloc> &operator<<(Key &&k);
 
     /// removes an element from the set (alias for erase)
-    Set<Key,Alloc>& operator>> ( const Key& k );
+    Set<Key, Alloc> &operator>>(const Key &k);
 
     /// @}
-
-
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -267,12 +254,12 @@ namespace gum {
     /// inserts a new element into the set
     /** @warning if the set already contains the element, nothing is done.
      * In particular, it is not added to the set and no exception is thrown. */
-    void insert( const Key& k );
+    void insert(const Key &k);
 
     /// inserts a new element into the set
     /** @warning if the set already contains the element, nothing is done.
      * In particular, it is not added to the set and no exception is thrown. */
-    void insert( Key&& k );
+    void insert(Key &&k);
 
     /// emplace a new element in the set
     /** emplace is a method that allows to construct directly an element of
@@ -280,18 +267,17 @@ namespace gum {
      * @param args the arguments passed to the constructor
      * @warning if the set already contains the element, nothing is done.
      * In particular, it is not added to the set and no exception is thrown. */
-    template <typename... Args>
-    void emplace ( Args&&... args);
+    template <typename... Args> void emplace(Args &&... args);
 
     /// erases an element from the set
     /** @warning if the set does not contain the element, nothing is done.
      * In particular, no exception is thrown. */
-    void erase( const Key& k );
+    void erase(const Key &k);
 
     /// erases an element from the set
     /** @warning if the set does not contain the element, nothing is done.
      * In particular, no exception is thrown. */
-    void erase( const iterator_safe& k );
+    void erase(const iterator_safe &k);
 
     /// removes all the elements, if any, from the set
     void clear();
@@ -300,10 +286,10 @@ namespace gum {
     Size size() const noexcept;
 
     /// indicates whether a given elements belong to the set
-    bool contains( const Key& k ) const;
+    bool contains(const Key &k) const;
 
     /// indicates whether a given elements belong to the set
-    bool exists( const Key& k ) const;
+    bool exists(const Key &k) const;
 
     /// indicates whether the set is the empty set
     bool empty() const noexcept;
@@ -313,35 +299,34 @@ namespace gum {
 
     /// @}
 
-
     // ############################################################################
     /// @name Iterators
     // ############################################################################
     /// @{
 
     /// the usual safe begin iterator to parse the set
-    iterator_safe beginSafe () const;
+    iterator_safe beginSafe() const;
 
     /// the usual safe begin iterator to parse the set
-    const_iterator_safe cbeginSafe () const;
+    const_iterator_safe cbeginSafe() const;
 
     /// the usual safe end iterator to parse the set
-    const iterator_safe& endSafe () const noexcept;
-    
+    const iterator_safe &endSafe() const noexcept;
+
     /// the usual safe end iterator to parse the set
-    const const_iterator_safe& cendSafe () const noexcept;
+    const const_iterator_safe &cendSafe() const noexcept;
 
     /// the usual unsafe begin iterator to parse the set
-    iterator begin () const;
+    iterator begin() const;
 
     /// the usual unsafe begin iterator to parse the set
-    const_iterator cbegin () const;
+    const_iterator cbegin() const;
 
     /// the usual unsafe end iterator to parse the set
-    const iterator& end () const noexcept;
-    
+    const iterator &end() const noexcept;
+
     /// the usual unsafe end iterator to parse the set
-    const const_iterator& cend () const noexcept;
+    const const_iterator &cend() const noexcept;
 
     /** @brief returns the end iterator for other classes' statics (read the
      * detailed description of this method)
@@ -372,8 +357,8 @@ namespace gum {
      *
      * So, to summarize: when initializing static members, use end4Statics() rather
      * than end(). In all the other cases, use simply the usual method end(). */
-    static const iterator& end4Statics();
-    
+    static const iterator &end4Statics();
+
     /** @brief returns the end iterator for other classes' statics (read the
      * detailed description of this method)
      *
@@ -404,8 +389,8 @@ namespace gum {
      * So, to summarize: when initializing static members, use constEnd4Statics()
      * rather than cend(). In all the other cases, use simply the usual method
      * cend(). */
-    static const const_iterator& constEnd4Statics();
-    
+    static const const_iterator &constEnd4Statics();
+
     /** @brief returns the end iterator for other classes' statics (read the
      * detailed description of this method)
      *
@@ -436,8 +421,8 @@ namespace gum {
      * So, to summarize: when initializing static members, use endSafe4Statics()
      * rather than endSafe (). In all the other cases, use simply the usual
      * method endSafe (). */
-    static const iterator_safe& endSafe4Statics();
-    
+    static const iterator_safe &endSafe4Statics();
+
     /** @brief returns the end iterator for other classes' statics (read the
      * detailed description of this method)
      *
@@ -468,9 +453,8 @@ namespace gum {
      * So, to summarize: when initializing static members, use
      * constEndSafe4Statics() rather than cendSafe(). In all the other cases, use
      * simply the usual method cendSafe (). */
-    static const const_iterator_safe& constEndSafe4Statics ();
+    static const const_iterator_safe &constEndSafe4Statics();
     /// @}
-
 
     // ############################################################################
     /// @name Fine tuning
@@ -479,11 +463,11 @@ namespace gum {
 
     /// returns the capacity of the underlying hashtable containing the set
     /** The method runs in constant time. */
-    Size capacity() const ;
+    Size capacity() const;
 
     /// changes the size of the underlying hashtable containing the set
     /** See HashTable's method resize for more details */
-    void resize( Size new_capacity ) ;
+    void resize(Size new_capacity);
 
     /** @brief enables the user to change dynamically the resizing policy of
      * the underlying hashtable
@@ -492,14 +476,12 @@ namespace gum {
      * to guarantee that its elements are fast to retrieve. When new_policy is
      * false, the set will not try to change its memory size, hence resulting in
      * potentially slower accesses. */
-    void setResizePolicy( const bool new_policy ) ;
+    void setResizePolicy(const bool new_policy);
 
     /// returns the current resizing policy of the underlying hashtable
-    bool resizePolicy() const ;
+    bool resizePolicy() const;
 
     ///  @}
-
-
 
     // ############################################################################
     /// @name mapper
@@ -516,9 +498,8 @@ namespace gum {
      * order as iterators on the latter. */
     template <typename NewKey,
               typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
-    HashTable<Key,NewKey,NewAlloc>
-    hashMap( NewKey( *f )( const Key& ),
-             Size capacity = 0 ) const;
+    HashTable<Key, NewKey, NewAlloc> hashMap(NewKey (*f)(const Key &),
+                                             Size capacity = 0) const;
 
     /// creates a hashtable of NewKey from the set
     /** @param val the value taken by all the elements of the resulting hashtable
@@ -530,8 +511,7 @@ namespace gum {
      * order as iterators on the latter. */
     template <typename NewKey,
               typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
-    HashTable<Key,NewKey,NewAlloc>
-    hashMap( const NewKey& val, Size size = 0 ) const;
+    HashTable<Key, NewKey, NewAlloc> hashMap(const NewKey &val, Size size = 0) const;
 
     /// a method to create a List of NewKey from the set
     /** @param f a function that maps a Key into a NewKey
@@ -539,28 +519,22 @@ namespace gum {
      * arbitrary */
     template <typename NewKey,
               typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
-    List<NewKey,NewAlloc>
-    listMap( NewKey( *f )( const Key& ) ) const;
+    List<NewKey, NewAlloc> listMap(NewKey (*f)(const Key &)) const;
 
     /// @}
 
-
-  private:
+    private:
     // friends
     friend class SetIterator<Key>;
     friend class SetIteratorSafe<Key>;
     template <typename K, typename A> friend class Set;
 
     /// a set of X's is actually a hashtable whose keys are the X's
-    HashTable<Key,bool,Alloc> __inside;
+    HashTable<Key, bool, Alloc> __inside;
 
     /// convert a hashtable into a set of keys
-    Set( const HashTable<Key,bool,Alloc>& h );
-
+    Set(const HashTable<Key, bool, Alloc> &h);
   };
-
-
-
 
   /* =========================================================================== */
   /* ===                          SAFE SET ITERATORS                         === */
@@ -593,25 +567,21 @@ namespace gum {
    * @endcode
    */
   template <typename Key> class SetIteratorSafe {
-  public:
+    public:
     /// types for STL compliance
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using value_type        = Key;
-    using reference         = value_type&;
-    using const_reference   = const value_type&;
-    using pointer           = value_type*;
-    using const_pointer     = const value_type*;
-    using difference_type   = std::ptrdiff_t;
+    using value_type = Key;
+    using reference = value_type &;
+    using const_reference = const value_type &;
+    using pointer = value_type *;
+    using const_pointer = const value_type *;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     /** @brief an enumeration to position the iterator at the beginning or the end
      * of the set */
-    enum Position {
-      BEGIN,
-      END
-    };
-    
+    enum Position { BEGIN, END };
 
     // ############################################################################
     /// @name Constructors / Destructors
@@ -619,30 +589,27 @@ namespace gum {
     /// @{
 
     /// default constructor: the iterator points toward nothing
-    SetIteratorSafe( );
+    SetIteratorSafe();
 
     /// creates an iterator for a given set
     /** By default, the iterator points to the beginning of the set, but, using
      * optional argument pos, you can make it point to end() */
     template <typename Alloc>
-    SetIteratorSafe( const Set<Key,Alloc>& from,
-                     Position pos = BEGIN );
+    SetIteratorSafe(const Set<Key, Alloc> &from, Position pos = BEGIN);
 
     /// copy constructor
-    SetIteratorSafe( const SetIteratorSafe<Key>& from );
+    SetIteratorSafe(const SetIteratorSafe<Key> &from);
 
     /// copy constructor
-    explicit
-    SetIteratorSafe( const SetIterator<Key>& from );
+    explicit SetIteratorSafe(const SetIterator<Key> &from);
 
     /// move constructor
-    SetIteratorSafe( SetIteratorSafe<Key>&& from );
+    SetIteratorSafe(SetIteratorSafe<Key> &&from);
 
     /// destructor
     ~SetIteratorSafe() noexcept;
 
     /// @}
-
 
     // ############################################################################
     /// @name Operators
@@ -650,44 +617,43 @@ namespace gum {
     /// @{
 
     /// assignment operator
-    SetIteratorSafe<Key>& operator= ( const SetIteratorSafe<Key>& from );
+    SetIteratorSafe<Key> &operator=(const SetIteratorSafe<Key> &from);
 
     /// assignment operator
-    SetIteratorSafe<Key>& operator= ( const SetIterator<Key>& from );
+    SetIteratorSafe<Key> &operator=(const SetIterator<Key> &from);
 
     /// move operator
-    SetIteratorSafe<Key>& operator= ( SetIteratorSafe<Key>&& from ) noexcept;
-    
+    SetIteratorSafe<Key> &operator=(SetIteratorSafe<Key> &&from) noexcept;
+
     /// increments the iterator
-    SetIteratorSafe<Key>& operator++ () noexcept;
+    SetIteratorSafe<Key> &operator++() noexcept;
 
     /// makes the iterator point to i elements further in the set
-    SetIteratorSafe<Key>& operator+= ( unsigned int ) noexcept;
+    SetIteratorSafe<Key> &operator+=(unsigned int) noexcept;
 
     /// returns a new iterator
-    SetIteratorSafe<Key> operator+ ( unsigned int ) const;
-   
+    SetIteratorSafe<Key> operator+(unsigned int) const;
+
     /// indicates whether two iterators point to different elements or sets
-    bool operator!= ( const SetIteratorSafe<Key>& from ) const noexcept;
+    bool operator!=(const SetIteratorSafe<Key> &from) const noexcept;
 
     /// indicates whether two iterators point toward the same element of a same set
-    bool operator== ( const SetIteratorSafe<Key>& from ) const noexcept;
+    bool operator==(const SetIteratorSafe<Key> &from) const noexcept;
 
     /// returns the element pointed to by the iterator
     /** @throws UndefinedIteratorValue exception if the iterator does not point
      * to an element of the set (for instance if the set or the element previously
      * pointed to by the iterator have been deleted) */
-    const Key& operator*() const ;
+    const Key &operator*() const;
 
     /// returns a pointer to the element pointed to by the iterator
     /** @throws UndefinedIteratorValue exception if the iterator does not point
      * to an element of the set (for instance if the set or the element previously
      * pointed to by the iterator have been deleted) */
-    const Key* operator->() const ;
+    const Key *operator->() const;
 
     /// @}
 
-    
     // ############################################################################
     /// @name Accessors / Modifiers
     // ############################################################################
@@ -695,23 +661,17 @@ namespace gum {
 
     /** @brief makes the iterator point toward nothing (in particular, it is not
      * related anymore to its current set) */
-    void clear () noexcept;
+    void clear() noexcept;
 
     /// @}
-    
 
-  private:
+    private:
     /// for efficiency, Set should be able to modify the hashtable iterator
     template <typename K, typename A> friend class Set;
 
     /// the underlying iterator for the set's hashtable containing the data
-    HashTableConstIteratorSafe<Key,bool> __ht_iter;
-
+    HashTableConstIteratorSafe<Key, bool> __ht_iter;
   };
-
-
-
-
 
   /* =========================================================================== */
   /* ===                         UNSAFE SET ITERATORS                        === */
@@ -746,26 +706,22 @@ namespace gum {
    * @endcode
    */
   template <typename Key> class SetIterator {
-  public:
+    public:
     /// types for STL compliance
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using value_type        = Key;
-    using reference         = value_type&;
-    using const_reference   = const value_type&;
-    using pointer           = value_type*;
-    using const_pointer     = const value_type*;
-    using difference_type   = std::ptrdiff_t;
+    using value_type = Key;
+    using reference = value_type &;
+    using const_reference = const value_type &;
+    using pointer = value_type *;
+    using const_pointer = const value_type *;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     /** @brief an enumeration to position the iterator at the beginning or the end
      * of the set */
-    enum Position {
-      BEGIN,
-      END
-    };
+    enum Position { BEGIN, END };
 
-    
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -778,20 +734,18 @@ namespace gum {
     /** By default, the iterator points to the beginning of the set, but, using
      * optional argument pos, you can make it point to end() */
     template <typename Alloc>
-    SetIterator( const Set<Key,Alloc>& from,
-                 Position pos = BEGIN );
+    SetIterator(const Set<Key, Alloc> &from, Position pos = BEGIN);
 
     /// copy constructor
-    SetIterator( const SetIterator<Key>& from ) noexcept;
+    SetIterator(const SetIterator<Key> &from) noexcept;
 
     /// move constructor
-    SetIterator( SetIterator<Key>&& from ) noexcept;
+    SetIterator(SetIterator<Key> &&from) noexcept;
 
     /// destructor
     ~SetIterator() noexcept;
 
     /// @}
-
 
     // ############################################################################
     /// @name Operators
@@ -799,41 +753,40 @@ namespace gum {
     /// @{
 
     /// assignment operator
-    SetIterator<Key>& operator= ( const SetIterator<Key>& from ) noexcept;
+    SetIterator<Key> &operator=(const SetIterator<Key> &from) noexcept;
 
     /// move operator
-    SetIterator<Key>& operator= ( SetIterator<Key>&& from ) noexcept;
-    
+    SetIterator<Key> &operator=(SetIterator<Key> &&from) noexcept;
+
     /// increments the iterator
-    SetIterator<Key>& operator++ () noexcept;
+    SetIterator<Key> &operator++() noexcept;
 
     /// makes the iterator point to i elements further in the set
-    SetIterator<Key>& operator+= ( unsigned int ) noexcept;
+    SetIterator<Key> &operator+=(unsigned int) noexcept;
 
     /// returns a new iterator
-    SetIterator<Key> operator+ ( unsigned int ) const noexcept;
-   
+    SetIterator<Key> operator+(unsigned int) const noexcept;
+
     /// indicates whether two iterators point to different elements or sets
-    bool operator!= ( const SetIterator<Key>& from ) const noexcept;
+    bool operator!=(const SetIterator<Key> &from) const noexcept;
 
     /// indicates whether two iterators point toward the same element of a same set
-    bool operator== ( const SetIterator<Key>& from ) const noexcept;
+    bool operator==(const SetIterator<Key> &from) const noexcept;
 
     /// returns the element pointed to by the iterator
     /** @throws UndefinedIteratorValue exception if the iterator does not point
      * to an element of the set (for instance if the set or the element previously
      * pointed to by the iterator have been deleted) */
-    const Key& operator*() const ;
+    const Key &operator*() const;
 
     /// returns a pointer to the element pointed to by the iterator
     /** @throws UndefinedIteratorValue exception if the iterator does not point
      * to an element of the set (for instance if the set or the element previously
      * pointed to by the iterator have been deleted) */
-    const Key* operator->() const ;
+    const Key *operator->() const;
 
     /// @}
 
-    
     // ############################################################################
     /// @name Accessors / Modifiers
     // ############################################################################
@@ -841,39 +794,26 @@ namespace gum {
 
     /** @brief makes the iterator point toward nothing (in particular, it is not
      * related anymore to its current set) */
-    void clear () noexcept;
+    void clear() noexcept;
 
     /// @}
-    
 
-  private:
+    private:
     /// for efficiency, Set should be able to modify the hashtable iterator
     template <typename K, typename A> friend class Set;
     friend class SetIteratorSafe<Key>;
 
     /// the underlying iterator for the set's hashtable containing the data
-    HashTableConstIterator<Key,bool> __ht_iter;
-
+    HashTableConstIterator<Key, bool> __ht_iter;
   };
-
-
-
-
-
-
-
 
   /// a << operator for HashTableList
   template <typename Key, typename Alloc>
-  std::ostream& operator<<
-  ( std::ostream&, const Set<Key,Alloc>& );
-
+  std::ostream &operator<<(std::ostream &, const Set<Key, Alloc> &);
 
 } /* namespace gum */
-
 
 /// always include the implementation of the templates
 #include <agrum/core/set.tcc>
 
-
-#endif  // GUM_SET_H
+#endif // GUM_SET_H

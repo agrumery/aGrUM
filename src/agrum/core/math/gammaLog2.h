@@ -37,30 +37,28 @@ namespace gum {
    * @brief The class for computing Log2 (Gamma(x))
    */
   class GammaLog2 {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     ///@{
 
     /// default constructor
-    GammaLog2 ( bool requires_precision = false ) :
-      __requires_precision { requires_precision } {}
+    GammaLog2(bool requires_precision = false)
+        : __requires_precision{requires_precision} {}
 
     /// copy constructor
-    GammaLog2 ( const GammaLog2& from ) :
-      __requires_precision { from.__requires_precision } {}
+    GammaLog2(const GammaLog2 &from)
+        : __requires_precision{from.__requires_precision} {}
 
     /// move constructor
-    GammaLog2 ( GammaLog2&& from ) :
-      __requires_precision { from.__requires_precision } {}
+    GammaLog2(GammaLog2 &&from) : __requires_precision{from.__requires_precision} {}
 
     /// destructor
-    ~GammaLog2 () {}
+    ~GammaLog2() {}
 
     ///@}
 
-    
     // ############################################################################
     /// @name Operators
     // ############################################################################
@@ -68,49 +66,42 @@ namespace gum {
 
     /// returns log2 ( gamma (x) ) for x > 0
     /** @hrows OutOfBounds exception is raised if x <= 0 */
-    float operator() ( float x ) const;
+    float operator()(float x) const;
 
     /// sets whether we need more precision for small values
-    void setPrecision ( bool );
+    void setPrecision(bool);
 
     /// @}
-    
-    
+
     // ############################################################################
     /// @name Operators
     // ############################################################################
     /// @{
-    
+
     /// returns log2 ( gamma (x) ) for x >= 0
     /** @hrows OutOfBounds exception is raised if x <= 0 */
-    float gammaLog2 ( float x ) const;
+    float gammaLog2(float x) const;
 
     /// @}
-    
 
-  private:
+    private:
     /// indicates whether we need more precision for small values
-    bool __requires_precision { false };
-    
+    bool __requires_precision{false};
+
     /// 1 / log(2)
-    static constexpr float __1log2 { M_LOG2E };
+    static constexpr float __1log2{M_LOG2E};
 
     /// log ( sqrt(2pi) )
-    static constexpr float __log_sqrt_2pi { GUM_LOG_SQRT_2PI };
-    
+    static constexpr float __log_sqrt_2pi{GUM_LOG_SQRT_2PI};
+
     /// the 5000 values from 0 to 50 by step of 1/100
     static const std::vector<float> __small_values;
-    
   };
 
-  
 } /* namespace gum */
-
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/math/gammaLog2.inl>
 #endif // GUM_NO_INLINE
 
-
 #endif /* GUM_GAMMA_LOG2_H */
-

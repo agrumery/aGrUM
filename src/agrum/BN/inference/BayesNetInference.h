@@ -31,120 +31,119 @@
 #include <agrum/config.h>
 #include <agrum/BN/IBayesNet.h>
 
-
 namespace gum {
   /**
-   * @class BayesNetInference BayesNetInference.h <agrum/BN/inference/BayesNetInference.h>
+   * @class BayesNetInference BayesNetInference.h
+   *<agrum/BN/inference/BayesNetInference.h>
    * @brief Abstract class for making inference in bayesian networks.
    * @ingroup bn_group
    *
    */
-  template <typename GUM_SCALAR>
-  class BayesNetInference {
+  template <typename GUM_SCALAR> class BayesNetInference {
     public:
-      /**
-       * Default constructor
-       */
-      BayesNetInference ( const IBayesNet<GUM_SCALAR>& bn );
+    /**
+     * Default constructor
+     */
+    BayesNetInference(const IBayesNet<GUM_SCALAR> &bn);
 
-      /**
-       * Destructor.
-       */
-      virtual ~BayesNetInference();
+    /**
+     * Destructor.
+     */
+    virtual ~BayesNetInference();
 
-      /**
-       * Makes the inference
-       */
-      virtual void makeInference() = 0;
+    /**
+     * Makes the inference
+     */
+    virtual void makeInference() = 0;
 
-      /**
-       * @brief Returns the probability of the variable.
-       *
-       * If makeInference() wasn't called yet, then only the posterior
-       * of the given variable will be computed.
-       *
-       * @param id The variable's id.
-       * @return The probability of the variable.
-       * @throw NotFound Raised if no variable matches id.
-       * @throw OperationNotAllowed Raised if the inference can not be done.
-       */
-      virtual const Potential<GUM_SCALAR>& posterior ( NodeId id );
+    /**
+     * @brief Returns the probability of the variable.
+     *
+     * If makeInference() wasn't called yet, then only the posterior
+     * of the given variable will be computed.
+     *
+     * @param id The variable's id.
+     * @return The probability of the variable.
+     * @throw NotFound Raised if no variable matches id.
+     * @throw OperationNotAllowed Raised if the inference can not be done.
+     */
+    virtual const Potential<GUM_SCALAR> &posterior(NodeId id);
 
-      /**
-       * Insert new evidence in the inference.
-       * @warning if an evidence already w.r.t. a given node and a new
-       * evidence w.r.t. this node is obserted, the old evidence is removed.
-       *
-       * @warning The potentials are not copied.
-       *
-       * @throw OperationNotAllowed Raised if an evidence is over more than one variable.
-       */
-      virtual void insertEvidence ( const List<const Potential<GUM_SCALAR>*>& pot_list ) = 0;
+    /**
+     * Insert new evidence in the inference.
+     * @warning if an evidence already w.r.t. a given node and a new
+     * evidence w.r.t. this node is obserted, the old evidence is removed.
+     *
+     * @warning The potentials are not copied.
+     *
+     * @throw OperationNotAllowed Raised if an evidence is over more than one
+     *variable.
+     */
+    virtual void
+    insertEvidence(const List<const Potential<GUM_SCALAR> *> &pot_list) = 0;
 
-      /**
-       * Insert a new hard evidence in the inference
-       *
-       * @throw OutOfBound if val is not in the domainSize of node id
-       */
-      void addHardEvidence(const NodeId id,const Idx val);
+    /**
+     * Insert a new hard evidence in the inference
+     *
+     * @throw OutOfBound if val is not in the domainSize of node id
+     */
+    void addHardEvidence(const NodeId id, const Idx val);
 
-      /**
-       * Remove a given evidence from the graph.
-       *
-       * @warning the potential has to be deleted aterward.
-       */
-      virtual void eraseEvidence ( const Potential<GUM_SCALAR>* e ) = 0;
+    /**
+     * Remove a given evidence from the graph.
+     *
+     * @warning the potential has to be deleted aterward.
+     */
+    virtual void eraseEvidence(const Potential<GUM_SCALAR> *e) = 0;
 
-      /**
-       * Remove all evidence from the graph.
-       */
-      virtual void eraseAllEvidence() = 0;
+    /**
+     * Remove all evidence from the graph.
+     */
+    virtual void eraseAllEvidence() = 0;
 
-      /**
-       * Returns a constant reference over the IBayesNet on which this class work.
-       */
-      const IBayesNet<GUM_SCALAR>& bn() const;
+    /**
+     * Returns a constant reference over the IBayesNet on which this class work.
+     */
+    const IBayesNet<GUM_SCALAR> &bn() const;
 
     protected:
+    /**
+     * @brief Fill the potential with the computed posterior
+     *
+     * This method is called when a BayesNetInference user ask for the posterior of
+     * a given variable.
+     *
+     * The reference "posterior" is a reference over an empty Potential, it doesn't
+     * even contains a reference over the variable's DiscreteVariable (don't forget
+     * to add it!).
+     *
+     * @param id The variable's id.
+     * @param posterior The completely empty potential to fill.
+     * @throw ElementNotFound Raised if no variable matches id.
+     */
+    virtual void _fillPosterior(NodeId id, Potential<GUM_SCALAR> &posterior) = 0;
 
-      /**
-       * @brief Fill the potential with the computed posterior
-       *
-       * This method is called when a BayesNetInference user ask for the posterior of
-       * a given variable.
-       *
-       * The reference "posterior" is a reference over an empty Potential, it doesn't
-       * even contains a reference over the variable's DiscreteVariable (don't forget
-       * to add it!).
-       *
-       * @param id The variable's id.
-       * @param posterior The completely empty potential to fill.
-       * @throw ElementNotFound Raised if no variable matches id.
-       */
-      virtual void _fillPosterior ( NodeId id, Potential<GUM_SCALAR>& posterior ) = 0;
+    /**
+     * Invalidate the set of posterior kept here.
+     */
+    void _invalidatePosteriors();
 
-      /**
-       * Invalidate the set of posterior kept here.
-       */
-      void _invalidatePosteriors();
-
-      /**
-       * Mapping between posterior and __bayesNet's nodes.
-       */
-      NodeProperty<Potential<GUM_SCALAR>*> _posteriors;
+    /**
+     * Mapping between posterior and __bayesNet's nodes.
+     */
+    NodeProperty<Potential<GUM_SCALAR> *> _posteriors;
 
     private:
-      /**
-       * The Bayes net we wish to perform inference on.
-       */
-      const IBayesNet<GUM_SCALAR>& __bayesNet;
+    /**
+     * The Bayes net we wish to perform inference on.
+     */
+    const IBayesNet<GUM_SCALAR> &__bayesNet;
   };
 
   extern template class BayesNetInference<float>;
   extern template class BayesNetInference<double>;
 
 } /* namespace gum */
-
 
 #include <agrum/BN/inference/BayesNetInference.tcc>
 

@@ -22,4 +22,3 @@
 
 template class gum::particle::Gibbs<float>;
 template class gum::particle::Gibbs<double>;
-

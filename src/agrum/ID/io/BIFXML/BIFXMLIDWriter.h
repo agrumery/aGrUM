@@ -51,71 +51,72 @@ namespace gum {
    * for information about this format.
    *
    */
-  template<typename GUM_SCALAR>
+  template <typename GUM_SCALAR>
 
-  class BIFXMLIDWriter: public IDWriter<GUM_SCALAR> {
+  class BIFXMLIDWriter : public IDWriter<GUM_SCALAR> {
     public:
-      // ==========================================================================
-      /// @name Constructor & destructor
-      // ==========================================================================
-      /// @{
+    // ==========================================================================
+    /// @name Constructor & destructor
+    // ==========================================================================
+    /// @{
 
-      /**
-       * Default constructor.
-       */
-      BIFXMLIDWriter();
+    /**
+     * Default constructor.
+     */
+    BIFXMLIDWriter();
 
-      /**
-       * Destructor.
-       */
-      virtual ~BIFXMLIDWriter();
+    /**
+     * Destructor.
+     */
+    virtual ~BIFXMLIDWriter();
 
-      /// @}
+    /// @}
 
-      /**
-       * Writes an influence diagram in the given ouput stream.
-       *
-       * @param output The output stream.
-       * @param infdiag The influence diagram writen in the stream.
-       * @throws IOError Raised if an I/O error occurs.
-       */
-      virtual void write ( std::ostream& output, const InfluenceDiagram<GUM_SCALAR>& infdiag );
+    /**
+     * Writes an influence diagram in the given ouput stream.
+     *
+     * @param output The output stream.
+     * @param infdiag The influence diagram writen in the stream.
+     * @throws IOError Raised if an I/O error occurs.
+     */
+    virtual void write(std::ostream &output,
+                       const InfluenceDiagram<GUM_SCALAR> &infdiag);
 
-      /**
-       * Writes an Influence Diagram in the file referenced by filePath.
-       * If the file doesn't exists, it is created.
-       * If the file exists, it's content will be erased.
-       *
-       * @param filePath The path to the file used to write the Influence Diagram.
-       * @param infdiag The Influence Diagram writen in the file.
-       * @throw IOError Raised if an I/O error occurs.
-       */
-      virtual void write ( std::string filePath, const InfluenceDiagram<GUM_SCALAR>& infdiag );
+    /**
+     * Writes an Influence Diagram in the file referenced by filePath.
+     * If the file doesn't exists, it is created.
+     * If the file exists, it's content will be erased.
+     *
+     * @param filePath The path to the file used to write the Influence Diagram.
+     * @param infdiag The Influence Diagram writen in the file.
+     * @throw IOError Raised if an I/O error occurs.
+     */
+    virtual void write(std::string filePath,
+                       const InfluenceDiagram<GUM_SCALAR> &infdiag);
 
     private:
-      /**
-       * Returns the header of the BIF file.
-       */
-      std::string __heading();
+    /**
+     * Returns the header of the BIF file.
+     */
+    std::string __heading();
 
-      /**
-       * Returns the end of the BIF file.
-       */
-      std::string __documentend();
+    /**
+     * Returns the end of the BIF file.
+     */
+    std::string __documentend();
 
-      /**
-       * Returns a bloc defining a variable in the BIF format.
-       */
-      std::string __variableBloc ( const DiscreteVariable& var, int nodeType );
+    /**
+     * Returns a bloc defining a variable in the BIF format.
+     */
+    std::string __variableBloc(const DiscreteVariable &var, int nodeType);
 
-      /**
-       * Returns a bloc defining a variable's table (if she has) in the BIF format.
-       */
-      std::string __variableDefinition ( const NodeId& varNodeId, const InfluenceDiagram<GUM_SCALAR>& infdiag );
-
-
+    /**
+     * Returns a bloc defining a variable's table (if she has) in the BIF format.
+     */
+    std::string __variableDefinition(const NodeId &varNodeId,
+                                     const InfluenceDiagram<GUM_SCALAR> &infdiag);
   };
 } /* namespace gum */
 
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.tcc>
-#endif    // GUM_BIF_XML_ID_WRITER_H
+#endif // GUM_BIF_XML_ID_WRITER_H

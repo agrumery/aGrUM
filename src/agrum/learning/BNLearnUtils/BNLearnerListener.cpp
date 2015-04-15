@@ -16,37 +16,39 @@ s
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include <agrum/learning/BNLearnUtils/BNLearnerListener.h>
 #include <agrum/learning/BNLearnUtils/genericBNLearner.h>
 
 namespace gum {
   namespace learning {
-    BNLearnerListener::BNLearnerListener ( genericBNLearner* bnl, ApproximationScheme& sch ) : ApproximationSchemeListener ( sch ), __bnlearner ( bnl ) {
-      bnl->setCurrentApproximationScheme ( &sch );
-      GUM_CONSTRUCTOR ( BNLearnerListener );
+    BNLearnerListener::BNLearnerListener(genericBNLearner *bnl,
+                                         ApproximationScheme &sch)
+        : ApproximationSchemeListener(sch), __bnlearner(bnl) {
+      bnl->setCurrentApproximationScheme(&sch);
+      GUM_CONSTRUCTOR(BNLearnerListener);
     }
 
-    BNLearnerListener::BNLearnerListener ( const BNLearnerListener& other ) : ApproximationSchemeListener ( other )  {
-      GUM_CONS_CPY ( BNLearnerListener );
-      GUM_ERROR ( OperationNotAllowed, "No copy constructor for BNLearnerListener" );
-
+    BNLearnerListener::BNLearnerListener(const BNLearnerListener &other)
+        : ApproximationSchemeListener(other) {
+      GUM_CONS_CPY(BNLearnerListener);
+      GUM_ERROR(OperationNotAllowed, "No copy constructor for BNLearnerListener");
     }
 
-    BNLearnerListener::~BNLearnerListener() {
-      GUM_DESTRUCTOR ( BNLearnerListener );
+    BNLearnerListener::~BNLearnerListener() { GUM_DESTRUCTOR(BNLearnerListener); }
+
+    BNLearnerListener &BNLearnerListener::operator=(const BNLearnerListener &other) {
+      GUM_CONS_CPY(BNLearnerListener);
+      GUM_ERROR(OperationNotAllowed, "No copy constructor for BNLearnerListener");
     }
 
-    BNLearnerListener& BNLearnerListener::operator= ( const BNLearnerListener& other ) {
-      GUM_CONS_CPY ( BNLearnerListener );
-      GUM_ERROR ( OperationNotAllowed, "No copy constructor for BNLearnerListener" );
+    void BNLearnerListener::whenProgress(const void *src, Size pourcent,
+                                         double error, double time) {
+      __bnlearner->distributeProgress(static_cast<const ApproximationScheme *>(src),
+                                      pourcent, error, time);
     }
-
-    void BNLearnerListener::whenProgress ( const void* src, Size pourcent, double error, double time ) {
-      __bnlearner->distributeProgress ( static_cast<const ApproximationScheme*> ( src ), pourcent, error, time );
-    }
-    void BNLearnerListener::whenStop ( const void* src, std::string message ) {
-      __bnlearner->distributeStop ( static_cast<const ApproximationScheme*> ( src ), message );
+    void BNLearnerListener::whenStop(const void *src, std::string message) {
+      __bnlearner->distributeStop(static_cast<const ApproximationScheme *>(src),
+                                  message);
     }
   }
 }

@@ -43,9 +43,11 @@
 //   IBALBridge::~IBALBridge()
 //   {
 //     GUM_DESTRUCTOR( IBALBridge );
-//     typedef HashTable<const ClassElementContainer*, IBALBridge::ParamData*>::iterator
+//     typedef HashTable<const ClassElementContainer*,
+//     IBALBridge::ParamData*>::iterator
 //             ParamIter;
-//     for (ParamIter iter = __paramData.begin(); iter != __paramData.end(); ++iter) {
+//     for (ParamIter iter = __paramData.begin(); iter != __paramData.end(); ++iter)
+//     {
 //       delete *iter;
 //     }
 //     __paramData.clear();
@@ -99,7 +101,8 @@
 //     List<NodeId> nodes_list; // Used to parse the graph in width
 //     NodeProperty<bool> visit_map;
 //     bool first = true;
-//     for (DAG::NodeIterator iter = c.dag().beginNodes(); iter != c.dag().endNodes(); ++iter) {
+//     for (DAG::NodeIterator iter = c.dag().beginNodes(); iter !=
+//     c.dag().endNodes(); ++iter) {
 //       __print_param(buffer, prm, c, c.get(*iter), counter, first);
 //       if (c.dag().parents(*iter).size() == 0) {
 //         nodes_list.push_back(*iter);
@@ -112,7 +115,8 @@
 //     for (ParamIter iter = __paramData[&c]->paramName.begin();
 //          iter != __paramData[&c]->paramName.end(); ++iter) {
 //       if (not (static_cast<const ReferenceSlot*>(iter.key()))->isArray() ) {
-//         buffer << "  " << iter.key()->name() << " = " << *iter << ";" << std::endl;
+//         buffer << "  " << iter.key()->name() << " = " << *iter << ";" <<
+//         std::endl;
 //       }
 //     }
 //
@@ -145,7 +149,8 @@
 //     output << tmp << std::endl << std::flush;
 //   }
 //
-//   // Print a parameter if necessary and add it to the parameter map for future use.
+//   // Print a parameter if necessary and add it to the parameter map for future
+//   use.
 //   void
 //   IBALBridge::__print_param(std::ostream& output, const PRM& prm,
 //                             const Class& c, const ClassElement& elt,
@@ -154,13 +159,15 @@
 //     std::stringstream param;
 //     switch (elt.elt_type()) {
 //       case ClassElement::prm_refslot: {
-//                                         if (not static_cast<const ReferenceSlot&>(elt).isArray()) {
+//                                         if (not static_cast<const
+//                                         ReferenceSlot&>(elt).isArray()) {
 //                                           if (not first) { param << ", "; }
 //                                           else           { first = false; }
 //                                           std::stringstream tmp;
 //                                           tmp << "ref" << counter++;
 //                                           param << tmp.str();
-//                                           __paramData[&c]->paramName.insert(&elt, tmp.str());
+//                                           __paramData[&c]->paramName.insert(&elt,
+//                                           tmp.str());
 //                                           __paramData[&c]->paramSequence.insert(&elt);
 //                                         }
 //                                         break;
@@ -171,7 +178,8 @@
 //                                           std::stringstream tmp;
 //                                           tmp << "ref" << counter++;
 //                                           param << tmp.str();
-//                                           __paramData[&c]->paramName.insert(&elt, tmp.str());
+//                                           __paramData[&c]->paramName.insert(&elt,
+//                                           tmp.str());
 //                                           __paramData[&c]->paramSequence.insert(&elt);
 //                                           break;
 //                                         }
@@ -187,11 +195,13 @@
 //   {
 //     switch (elt.elt_type()) {
 //       case ClassElement::prm_aggregate: {
-//                             __print_agg(output, prm, c, static_cast<const Aggregate&>(elt));
+//                             __print_agg(output, prm, c, static_cast<const
+//                             Aggregate&>(elt));
 //                             break;
 //                           }
 //       case ClassElement::prm_attribute: {
-//                             __print_att(output, prm, c, static_cast<const Attribute&>(elt));
+//                             __print_att(output, prm, c, static_cast<const
+//                             Attribute&>(elt));
 //                             break;
 //                           }
 //       default: { /* Do nothing */ break; }
@@ -209,7 +219,8 @@
 //
 //     const DiscreteVariable* apply_on = 0;
 //     if (c.dag().parents(agg.id()).size() > 0) {
-//       const ClassElement& parent = c.get(c.dag().parents(agg.id()).begin()->tail());
+//       const ClassElement& parent =
+//       c.get(c.dag().parents(agg.id()).begin()->tail());
 //       apply_on = &(parent.type().variable());
 //     } else {
 //       GUM_ERROR(NotFound, "aggregator without any parents");
@@ -219,18 +230,23 @@
 //       case Aggregate::agg_exists: {
 //                                     buffer << "false" << std::endl;
 //                                     buffer << "    # ";
-//                                     buffer << __print_label(*apply_on, agg.label());
+//                                     buffer << __print_label(*apply_on,
+//                                     agg.label());
 //                                     buffer << " :: _ : true" << std::endl;
 //                                     buffer << "    # _ :: xs : ";
-//                                     buffer << agg.name() << "(xs)" << std::endl << std::endl;
+//                                     buffer << agg.name() << "(xs)" << std::endl <<
+//                                     std::endl;
 //                                     break;
 //                                   }
 //       case Aggregate::agg_forall: {
 //                                     buffer << "true" << std::endl;
 //                                     buffer << "    # ";
-//                                     buffer << __print_label(*apply_on, agg.label());
-//                                     buffer << " :: xs : " << agg.name() << "(xs)" << std::endl;
-//                                     buffer << "    # _ :: _ : false" << std::endl << std::endl;
+//                                     buffer << __print_label(*apply_on,
+//                                     agg.label());
+//                                     buffer << " :: xs : " << agg.name() << "(xs)"
+//                                     << std::endl;
+//                                     buffer << "    # _ :: _ : false" << std::endl
+//                                     << std::endl;
 //                                     break;
 //                                   }
 //       default: {
@@ -269,7 +285,8 @@
 //       if (not first) { buffer << ", "; }
 //       else           { first = false; }
 //       buffer << __cleanFloatValue(attr.cpf().get(inst)) << ": ";
-//       buffer << __print_label(attr.type().variable(), inst.val(attr.type().variable()));
+//       buffer << __print_label(attr.type().variable(),
+//       inst.val(attr.type().variable()));
 //     }
 //     buffer << " ];" << std::endl << std::endl;
 //     output << buffer.str();
@@ -292,19 +309,22 @@
 //
 //     //std::string priv_flag = (attr.innerNode())?"private ":"";
 //     std::string priv_flag = (c.isInnerNode(attr.id()))?"":"";
-//     buffer << "  " << priv_flag << attr.name() << " = case " << __print_parents(c, attr);
+//     buffer << "  " << priv_flag << attr.name() << " = case " << __print_parents(c,
+//     attr);
 //     buffer << " of" << std::endl;
 //
 //     inst.setFirstOut(var);
 //     while (true) {
-//       buffer << "    # " << __print_label(*(parents.atPos(0)), inst.val(*(parents.atPos(0))));
+//       buffer << "    # " << __print_label(*(parents.atPos(0)),
+//       inst.val(*(parents.atPos(0))));
 //       buffer << " : dist [ ";
 //       bool first = true;
 //       for (inst.setFirstIn(var); not inst.end(); inst.incIn(var)) {
 //         if (not first) { buffer << ", "; }
 //         else           { first = false; }
 //         buffer << __cleanFloatValue(attr.cpf().get(inst)) << ": ";
-//         buffer << __print_label(attr.type().variable(), inst.val(attr.type().variable()));
+//         buffer << __print_label(attr.type().variable(),
+//         inst.val(attr.type().variable()));
 //       }
 //       inst.unsetOverflow();
 //       buffer << " ]";
@@ -350,7 +370,8 @@
 //         if (not first) { buffer << ", "; }
 //         else           { first = false; }
 //         buffer << __cleanFloatValue(attr.cpf().get(inst)) << ": ";
-//         buffer << __print_label(attr.type().variable(), inst.val(attr.type().variable()));
+//         buffer << __print_label(attr.type().variable(),
+//         inst.val(attr.type().variable()));
 //       }
 //       inst.unsetOverflow();
 //       buffer << " ]";
@@ -406,7 +427,9 @@
 //                                           }
 //         case ClassElement::prm_aggregate: {
 //                                             buffer << c.get(iter->tail()).name();
-//                                             buffer << "(" << __paramData[&c]->paramName[&(c.get(iter->tail()))] << ")";
+//                                             buffer << "(" <<
+//                                             __paramData[&c]->paramName[&(c.get(iter->tail()))]
+//                                             << ")";
 //                                             break;
 //                                           }
 //         default: { /* do nothing */ break; }
@@ -439,7 +462,8 @@
 //   {
 //     std::stringstream buffer;
 //
-//     buffer << __cleanInstanceName(i.name()) << " = " << __removeDots(i.type().name());
+//     buffer << __cleanInstanceName(i.name()) << " = " <<
+//     __removeDots(i.type().name());
 //     buffer << "(";
 //     bool first = true;
 //     typedef Sequence< const ClassElement* >::iterator param_iter;
@@ -449,13 +473,15 @@
 //         case ClassElement::prm_refslot: {
 //                                           if (not first) { buffer << ", "; }
 //                                           else           { first = false; }
-//                                           buffer << __cleanInstanceName(i.getInstance((*iter)->id()).name());
+//                                           buffer <<
+//                                           __cleanInstanceName(i.getInstance((*iter)->id()).name());
 //                                           break;
 //                                         }
 //         case ClassElement::prm_aggregate: {
 //                                           if (not first) { buffer << ", "; }
 //                                           else           { first = false; }
-//                                           buffer << __print_agg_parents_list(m, i, (*iter)->id());
+//                                           buffer << __print_agg_parents_list(m, i,
+//                                           (*iter)->id());
 //                                           break;
 //                                           }
 //         default: { /* do nothing */ break; }
@@ -468,15 +494,18 @@
 //
 //   // Prints the list of parents of a given aggregator in the IBAL formalism.
 //   std::string
-//   IBALBridge::__print_agg_parents_list(const Model& m, const Instance& i, NodeId id)
+//   IBALBridge::__print_agg_parents_list(const Model& m, const Instance& i, NodeId
+//   id)
 //   {
 //     std::stringstream buffer;
 //     buffer << "[ ";
 //
 //     typedef Set<Instance*>::iterator inst_iter;
 //     bool first = true;
-//     for (DAG::ArcIterator iter = i.type().dag().parents(id).begin(); iter != i.type().dag().parents(id).end(); ++iter) {
-//       std::string attr_name = static_cast<const SlotChain&>(i.type().get(iter->tail())).lastElt().name();
+//     for (DAG::ArcIterator iter = i.type().dag().parents(id).begin(); iter !=
+//     i.type().dag().parents(id).end(); ++iter) {
+//       std::string attr_name = static_cast<const
+//       SlotChain&>(i.type().get(iter->tail())).lastElt().name();
 //       for (inst_iter jter = i.getInstances(iter->tail()).begin();
 //           jter != i.getInstances(iter->tail()).end(); ++jter) {
 //         if (not first) { buffer << ", "; }
@@ -519,12 +548,14 @@
 //         std::string prefix = toLowerCase(__cleanInstanceName(iter->name()));
 //         for (PRMInference::EMapConstIterator jter = obs.evidence(*iter).begin();
 //              jter != obs.evidence(*iter).end(); ++jter) {
-//           output << "obs " << prefix << "." << toLowerCase(iter->get(jter.key()).name()) << " = ";
+//           output << "obs " << prefix << "." <<
+//           toLowerCase(iter->get(jter.key()).name()) << " = ";
 //           Instantiation i(**jter);
 //           const DiscreteVariable* var = (**jter).variablesSequence().atPos(0);
 //           for (i.setFirst(); not i.end(); i.inc()) {
 //             if ((**jter).get(i) == (prm_float) 1) {
-//               output << "'" << toLowerCase(var->label(i.val(var))) << ";" << std::endl;
+//               output << "'" << toLowerCase(var->label(i.val(var))) << ";" <<
+//               std::endl;
 //             }
 //           }
 //         }

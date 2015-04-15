@@ -1,0 +1,14 @@
+# We'll use defaults from the LLVM style, but with 4 columns indentation.
+BasedOnStyle: LLVM
+IndentWidth: 2
+UseTab: Never
+AccessModifierOffset: 0
+Standard: Cpp11
+Cpp11BracedListStyle: true
+IndentCaseLabels: true
+NamespaceIndentation: All
+SpacesInParentheses: false
+BreakBeforeBraces: Attach
+AlwaysBreakTemplateDeclarations: false
+ColumnLimit: 85
+PointerAlignment: Right

@@ -40,84 +40,89 @@ namespace gum {
    */
   class ParseError {
     public:
-      ParseError ( bool is_error, const std::string& msg, int line );
-      ParseError ( bool is_error, const std::string& msg, const std::string& filename, int line, int col = 0 );
-      ParseError ( bool is_error, const std::string& msg, const std::string& filename, const std::string& code, int line, int col = 0 );
+    ParseError(bool is_error, const std::string &msg, int line);
+    ParseError(bool is_error, const std::string &msg, const std::string &filename,
+               int line, int col = 0);
+    ParseError(bool is_error, const std::string &msg, const std::string &filename,
+               const std::string &code, int line, int col = 0);
 
-      bool is_error;
-      int line;
-      int colomn; // default 0
-      std::string msg;
-      std::string filename; // default ""
-      mutable std::string code; // default ""
+    bool is_error;
+    int line;
+    int colomn; // default 0
+    std::string msg;
+    std::string filename;     // default ""
+    mutable std::string code; // default ""
 
-      ///
-      std::string toString() const;
-      ///
-      std::string toElegantString() const;
+    ///
+    std::string toString() const;
+    ///
+    std::string toElegantString() const;
   };
 
   class ErrorsContainer {
 
-      mutable std::vector<ParseError> errors;
+    mutable std::vector<ParseError> errors;
 
     public:
-      int error_count;   // number of errors detected
-      int warning_count; // number of warnings detected
+    int error_count;   // number of errors detected
+    int warning_count; // number of warnings detected
 
-      ErrorsContainer();
-      ErrorsContainer ( const ErrorsContainer& cont );
+    ErrorsContainer();
+    ErrorsContainer(const ErrorsContainer &cont);
 
-      /// Add an error object to container.
-      void add ( ParseError error );
+    /// Add an error object to container.
+    void add(ParseError error);
 
-      /// Return the i-th error.
-      /// May throw an exception if i >= count().
-      ParseError error ( int i ) const;
-      ParseError last() const;
+    /// Return the i-th error.
+    /// May throw an exception if i >= count().
+    ParseError error(int i) const;
+    ParseError last() const;
 
-      /// Add an error.
-      void addError ( const std::string& msg, const std::string& filename, int line, int col );
-      /// Add a warning.
-      void addWarning ( const std::string& msg, const std::string& filename, int line, int col );
-      /// Add an exception.
-      void addException ( const std::string& msg, const std::string& filename );
+    /// Add an error.
+    void addError(const std::string &msg, const std::string &filename, int line,
+                  int col);
+    /// Add a warning.
+    void addWarning(const std::string &msg, const std::string &filename, int line,
+                    int col);
+    /// Add an exception.
+    void addException(const std::string &msg, const std::string &filename);
 
-      /// Return the number of errors and warnings
-      int count ( void ) const;
+    /// Return the number of errors and warnings
+    int count(void) const;
 
-      /// Print errors on output stream.
-      void syntheticResults ( std::ostream& o ) const;
-      void simpleErrors ( std::ostream& o ) const;
-      void simpleErrorsAndWarnings ( std::ostream& o ) const;
-      void elegantErrors ( std::ostream& o ) const;
-      void elegantErrorsAndWarnings ( std::ostream& o ) const;
+    /// Print errors on output stream.
+    void syntheticResults(std::ostream &o) const;
+    void simpleErrors(std::ostream &o) const;
+    void simpleErrorsAndWarnings(std::ostream &o) const;
+    void elegantErrors(std::ostream &o) const;
+    void elegantErrorsAndWarnings(std::ostream &o) const;
 
-      // Use by coco/R
-      void Error ( const std::wstring& filename, int line, int col, const wchar_t* msg );
-      void Warning ( const std::wstring& filename, int line, int col, const wchar_t* msg );
-      void Exception ( const std::wstring& filename, const wchar_t* msg );
+    // Use by coco/R
+    void Error(const std::wstring &filename, int line, int col, const wchar_t *msg);
+    void Warning(const std::wstring &filename, int line, int col,
+                 const wchar_t *msg);
+    void Exception(const std::wstring &filename, const wchar_t *msg);
 
-      // Deprecated.
-      // Use error(i)->method().
-      bool is_error ( int i ) const;
-      int line ( int i ) const;
-      int col ( int i ) const;
-      std::wstring msg ( int i ) const;
-      std::wstring filename ( int i ) const;
+    // Deprecated.
+    // Use error(i)->method().
+    bool is_error(int i) const;
+    int line(int i) const;
+    int col(int i) const;
+    std::wstring msg(int i) const;
+    std::wstring filename(int i) const;
 
-      ErrorsContainer operator+ ( const ErrorsContainer& cont ) const;
-      ErrorsContainer operator= ( const ErrorsContainer& cont );
-      ErrorsContainer operator+= ( const ErrorsContainer& cont );
+    ErrorsContainer operator+(const ErrorsContainer &cont) const;
+    ErrorsContainer operator=(const ErrorsContainer &cont);
+    ErrorsContainer operator+=(const ErrorsContainer &cont);
 
   }; // ErrorsContainer
 
-}//namespace gum
+} // namespace gum
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #include <agrum/core/errorsContainer.inl>
 #endif /* GUM_NO_INLINE */
 
-#endif //GUM_ERRORS_CONTAINERS_H
+#endif // GUM_ERRORS_CONTAINERS_H
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

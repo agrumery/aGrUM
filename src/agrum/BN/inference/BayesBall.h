@@ -46,34 +46,29 @@ namespace gum {
    */
   class BayesBall {
     public:
+    /// Default constructor.
+    BayesBall();
 
-      /// Default constructor.
-      BayesBall();
+    /// Destructor.
+    ~BayesBall();
 
-      /// Destructor.
-      ~BayesBall();
-
-      /**
-       * Fill requisite with the requisite nodes in dag given a query and hard
-       * evidences.
-       */
-      void requisiteNodes ( const DAG& dag,
-                            const Set<NodeId>& query,
-                            const Set<NodeId>& hardEvidence,
-                            Set<NodeId>& requisite );
+    /**
+     * Fill requisite with the requisite nodes in dag given a query and hard
+     * evidences.
+     */
+    void requisiteNodes(const DAG &dag, const Set<NodeId> &query,
+                        const Set<NodeId> &hardEvidence, Set<NodeId> &requisite);
 
     private:
+    /// Call this when a node receive the ball from one of his child.
+    void __fromChild(NodeId node, const DAG &dag, const Set<NodeId> &hardEvidence);
 
-      /// Call this when a node receive the ball from one of his child.
-      void __fromChild ( NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence );
+    /// Call this when a node reveive the ball from one of this parents.
+    void __fromParent(NodeId node, const DAG &dag, const Set<NodeId> &hardEvidence);
 
-      /// Call this when a node reveive the ball from one of this parents.
-      void __fromParent ( NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence );
-
-      /// Top and bottom flags for each nodes.
-      //HashTable< NodeId, std::pair<bool, bool> > __marks;
-      NodeProperty< std::pair<bool, bool> > __marks;
-
+    /// Top and bottom flags for each nodes.
+    // HashTable< NodeId, std::pair<bool, bool> > __marks;
+    NodeProperty<std::pair<bool, bool>> __marks;
   };
 } /* namespace gum */
 
@@ -82,4 +77,3 @@ namespace gum {
 #endif // GUM_NO_INLINE
 
 #endif /* GUM_BAYESBALLS_H */
-

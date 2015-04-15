@@ -29,24 +29,18 @@
 #include <agrum/learning/database/filteredRow.h>
 #include <agrum/learning/database/filteredRowGenerator.h>
 
-
 namespace gum {
 
-  
   namespace learning {
-
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
     // the general type for sets of filtered row generators
-    template<typename... Generators>
-    class FilteredRowGeneratorSet;
+    template <typename... Generators> class FilteredRowGeneratorSet;
 
-    
     // the end of the recurive definition of sets of filtered row generators
-    template<>
-    class FilteredRowGeneratorSet<> {
-    public:
+    template <> class FilteredRowGeneratorSet<> {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -54,21 +48,20 @@ namespace gum {
       /// @{
 
       /// default constructor
-      FilteredRowGeneratorSet () noexcept {}
+      FilteredRowGeneratorSet() noexcept {}
 
       /// copy constructor
-      FilteredRowGeneratorSet ( const FilteredRowGeneratorSet<>& from ) noexcept :
-        __input_row ( from.__input_row ) {}
+      FilteredRowGeneratorSet(const FilteredRowGeneratorSet<> &from) noexcept
+          : __input_row(from.__input_row) {}
 
       /// move constructor
-      FilteredRowGeneratorSet ( FilteredRowGeneratorSet<>&& from ) noexcept :
-        __input_row ( from.__input_row ) {}
+      FilteredRowGeneratorSet(FilteredRowGeneratorSet<> &&from) noexcept
+          : __input_row(from.__input_row) {}
 
       /// destructor
-      ~FilteredRowGeneratorSet () noexcept {}
+      ~FilteredRowGeneratorSet() noexcept {}
 
       /// @}
-
 
       // ##########################################################################
       /// @name Operators
@@ -77,22 +70,19 @@ namespace gum {
       /// @{
 
       /// copy operator
-      FilteredRowGeneratorSet<>&
-      operator= ( const FilteredRowGeneratorSet<>& from ) {
+      FilteredRowGeneratorSet<> &operator=(const FilteredRowGeneratorSet<> &from) {
         __input_row = from.__input_row;
         return *this;
       }
 
       /// move operator
-      FilteredRowGeneratorSet<>&
-      operator= ( FilteredRowGeneratorSet<>&& from ) {
+      FilteredRowGeneratorSet<> &operator=(FilteredRowGeneratorSet<> &&from) {
         __input_row = from.__input_row;
         return *this;
       }
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -100,39 +90,32 @@ namespace gum {
       /// @{
 
       /// indicates whether there are still rows to generate
-      bool hasRows () noexcept { 
-        return __input_row != nullptr;
-      }
+      bool hasRows() noexcept { return __input_row != nullptr; }
 
-      /// sets the filtered row used as input to generate new output filtered rows 
-      bool setInputRow ( FilteredRow& row ) noexcept {
+      /// sets the filtered row used as input to generate new output filtered rows
+      bool setInputRow(FilteredRow &row) noexcept {
         __input_row = &row;
         return true;
       }
 
       /// clear the sets of rows to generate
-      void reset () {
-        __input_row = nullptr;
-      }
+      void reset() { __input_row = nullptr; }
 
       /// generates a new row and returns it
-      FilteredRow& generate () {
-        FilteredRow& row = *__input_row;
-        reset ();
+      FilteredRow &generate() {
+        FilteredRow &row = *__input_row;
+        reset();
         return row;
       }
 
       /// @}
 
-    private:
-      FilteredRow* __input_row { nullptr };
-
+      private:
+      FilteredRow *__input_row{nullptr};
     };
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
-
-    
     /** @class FilteredRowGeneratorSet
      * @ingroup learning_group
      * @brief The class used to pack generators into a row filter
@@ -157,15 +140,13 @@ namespace gum {
      *     TimeSlicerGenerator () );
      * @endcode
      */
-    template<typename Generator, typename... OtherGenerators>
-    class FilteredRowGeneratorSet<Generator,OtherGenerators...> :
-      public FilteredRowGeneratorSet<OtherGenerators...> {
-    public:
-
+    template <typename Generator, typename... OtherGenerators>
+    class FilteredRowGeneratorSet<Generator, OtherGenerators...>
+        : public FilteredRowGeneratorSet<OtherGenerators...> {
+      public:
       /// the type for the next generators to apply
       using NextGenerators = FilteredRowGeneratorSet<OtherGenerators...>;
 
-      
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -173,24 +154,21 @@ namespace gum {
       /// @{
 
       /// default constructor
-      FilteredRowGeneratorSet ( const Generator& first_generator,
-                                const OtherGenerators&... next_generators )
-      noexcept;
+      FilteredRowGeneratorSet(const Generator &first_generator,
+                              const OtherGenerators &... next_generators) noexcept;
 
       /// copy constructor
-      FilteredRowGeneratorSet
-      ( const FilteredRowGeneratorSet<Generator,OtherGenerators...>& from );
+      FilteredRowGeneratorSet(
+          const FilteredRowGeneratorSet<Generator, OtherGenerators...> &from);
 
       /// move constructor
-      FilteredRowGeneratorSet
-      ( FilteredRowGeneratorSet<Generator,OtherGenerators...>&& from )
-      noexcept;
+      FilteredRowGeneratorSet(
+          FilteredRowGeneratorSet<Generator, OtherGenerators...> &&from) noexcept;
 
       /// destructor
-      ~FilteredRowGeneratorSet () noexcept;
+      ~FilteredRowGeneratorSet() noexcept;
 
       /// @}
-
 
       // ##########################################################################
       /// @name Operators
@@ -199,16 +177,15 @@ namespace gum {
       /// @{
 
       /// copy operator
-      FilteredRowGeneratorSet<Generator,OtherGenerators...>&
-      operator= ( const FilteredRowGeneratorSet<Generator,OtherGenerators...>& );
+      FilteredRowGeneratorSet<Generator, OtherGenerators...> &
+      operator=(const FilteredRowGeneratorSet<Generator, OtherGenerators...> &);
 
       /// move operator
-      FilteredRowGeneratorSet<Generator,OtherGenerators...>&
-      operator= ( FilteredRowGeneratorSet<Generator,OtherGenerators...>&& );
+      FilteredRowGeneratorSet<Generator, OtherGenerators...> &
+      operator=(FilteredRowGeneratorSet<Generator, OtherGenerators...> &&);
 
       /// @}
 
- 
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -216,42 +193,34 @@ namespace gum {
       /// @{
 
       /// returns true if there are still rows that can be output by the RowFilter
-      bool hasRows () noexcept;
+      bool hasRows() noexcept;
 
       /// sets the input row from which the generator will create new rows
-      bool setInputRow ( FilteredRow& row ) noexcept;
-      
+      bool setInputRow(FilteredRow &row) noexcept;
+
       /// generate new rows from the input row
-      FilteredRow& generate ();
+      FilteredRow &generate();
 
       /// resets the filter
-      void reset ();
-      
+      void reset();
+
       /// @}
 
-    private:
+      private:
       /// the first generator to apply
       Generator __first_generator;
-
     };
-
-
 
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
 
 // always include the template implementation
 #include <agrum/learning/database/filteredRowGeneratorSet.tcc>
 
-
 namespace gum {
 
-  
   namespace learning {
-
 
     /// a function to create easily a FilteredRowGeneratorSet
     /** Below is an example of the use of this function. Basically, all the
@@ -260,18 +229,14 @@ namespace gum {
      * auto my_gen = make_generators ( DuplicateGenerator (), IdGenerator () );
      * @endcode
      */
-    template<typename... Args>
+    template <typename... Args>
     constexpr FilteredRowGeneratorSet<Args...>
-    make_generators ( const Args&... args ) {
-      return FilteredRowGeneratorSet<Args...> ( args... );
+    make_generators(const Args &... args) {
+      return FilteredRowGeneratorSet<Args...>(args...);
     }
-
-
 
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
 
 #endif /* GUM_LEARNING_FILTERED_ROW_GENERATOR_SET_H */

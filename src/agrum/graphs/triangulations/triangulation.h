@@ -28,9 +28,7 @@
 #include <vector>
 #include <agrum/graphs/cliqueGraph.h>
 
-
 namespace gum {
-
 
   /* =========================================================================== */
   /* ===               BASIC INTERFACE TO PERFORM TRIANGULATIONS             === */
@@ -44,122 +42,105 @@ namespace gum {
   /* =========================================================================== */
   class Triangulation {
     public:
+    /// constructor
 
-      /// constructor
+    Triangulation();
 
-      Triangulation();
+    /// destructor
 
+    virtual ~Triangulation();
 
-      /// destructor
+    /// returns the fill-ins added by the triangulation algorithm
 
-      virtual ~Triangulation();
+    virtual const EdgeSet &fillIns() = 0;
 
+    /// returns an elimination ordering compatible with the triangulated graph
+    /// @todo : whu not a Sequence ?
 
-      /// returns the fill-ins added by the triangulation algorithm
+    virtual const std::vector<NodeId> &eliminationOrder() = 0;
 
-      virtual const EdgeSet& fillIns() = 0;
+    /** @brief returns the number of a given node in the elimination order
+     * (0 = first node eliminated) */
 
+    virtual Idx eliminationOrder(const NodeId) = 0;
 
-      /// returns an elimination ordering compatible with the triangulated graph
-      /// @todo : whu not a Sequence ?
+    /// returns the triangulated graph
 
-      virtual const std::vector<NodeId>& eliminationOrder() = 0;
+    virtual const UndiGraph &triangulatedGraph() = 0;
 
+    /// returns the elimination tree of a compatible ordering
 
-      /** @brief returns the number of a given node in the elimination order
-       * (0 = first node eliminated) */
+    virtual const CliqueGraph &eliminationTree() = 0;
 
-      virtual Idx eliminationOrder ( const NodeId ) = 0;
+    /// returns a compatible junction tree
 
+    virtual const CliqueGraph &junctionTree() = 0;
 
-      /// returns the triangulated graph
+    /// returns the max of log10DomainSize of cliques in the junction tree.
+    /** This is usefull for instance to estimate the complexity (both in space and in
+     *time) of
+     * the inference that will use the junction tree.
+     *
+     * This method is not 'const' since it can be called before building any junction
+     *tree
+     * and hence needs to build it...
+     **/
 
-      virtual const UndiGraph& triangulatedGraph() = 0;
+    double maxLog10CliqueDomainSize();
 
+    /** @brief returns the Id of the clique created by the
+     * elimination of a given node during the triangulation process */
 
-      /// returns the elimination tree of a compatible ordering
+    virtual NodeId createdJunctionTreeClique(const NodeId id) = 0;
 
-      virtual const CliqueGraph& eliminationTree() = 0;
+    /** @brief returns the Ids of the cliques of the junction tree created by the
+     * elimination of the nodes */
 
+    virtual const NodeProperty<NodeId> &createdJunctionTreeCliques() = 0;
 
-      /// returns a compatible junction tree
+    /// returns a junction tree of maximal prime subgraphs
+    /** @warning Actually, the cliques of the junction tree are guarranteed to be
+     * maximal prime subgraph of the original graph that was triangulated only if
+     * the triangulation performed is minimal (in the sense that removing any edge
+     * in the triangulated graph results in a nontriangulated graph). This can be
+     * ensured by requiring minimality of the triangulation. */
 
-      virtual const CliqueGraph& junctionTree() = 0;
+    virtual const CliqueGraph &maxPrimeSubgraphTree() = 0;
 
+    /** @brief returns the Id of the maximal prime subgraph created by the
+     * elimination of a given node during the triangulation process */
 
-      /// returns the max of log10DomainSize of cliques in the junction tree.
-      /** This is usefull for instance to estimate the complexity (both in space and in time) of
-       * the inference that will use the junction tree.
-       *
-       * This method is not 'const' since it can be called before building any junction tree
-       * and hence needs to build it...
-       **/
+    virtual NodeId createdMaxPrimeSubgraph(const NodeId id) = 0;
 
-      double maxLog10CliqueDomainSize();
+    /// reinitialize the graph to be triangulated to an empty graph
 
+    virtual void clear() = 0;
 
-      /** @brief returns the Id of the clique created by the
-       * elimination of a given node during the triangulation process */
+    /** @brief returns a fresh triangulation (over an empty graph) of the same
+     * type as the current object
+     *
+     * note that we return a pointer as it enables subclasses to return
+     * pointers to their types, not Triangulation pointers. See item 25 of the
+     * more effective C++.*/
 
-      virtual NodeId createdJunctionTreeClique ( const NodeId id ) = 0;
+    virtual Triangulation *newFactory() const = 0;
 
+    /// returns the modalities of the variables of the graph to be triangulated
 
-      /** @brief returns the Ids of the cliques of the junction tree created by the
-       * elimination of the nodes */
-
-      virtual const NodeProperty<NodeId>& createdJunctionTreeCliques() = 0;
-
-
-      /// returns a junction tree of maximal prime subgraphs
-      /** @warning Actually, the cliques of the junction tree are guarranteed to be
-       * maximal prime subgraph of the original graph that was triangulated only if
-       * the triangulation performed is minimal (in the sense that removing any edge
-       * in the triangulated graph results in a nontriangulated graph). This can be
-       * ensured by requiring minimality of the triangulation. */
-
-      virtual const CliqueGraph& maxPrimeSubgraphTree() = 0;
-
-
-      /** @brief returns the Id of the maximal prime subgraph created by the
-       * elimination of a given node during the triangulation process */
-
-      virtual NodeId createdMaxPrimeSubgraph ( const NodeId id ) = 0;
-
-
-      /// reinitialize the graph to be triangulated to an empty graph
-
-      virtual void clear() = 0;
-
-
-      /** @brief returns a fresh triangulation (over an empty graph) of the same
-       * type as the current object
-       *
-       * note that we return a pointer as it enables subclasses to return
-       * pointers to their types, not Triangulation pointers. See item 25 of the
-       * more effective C++.*/
-
-      virtual Triangulation* newFactory() const = 0;
-
-
-      /// returns the modalities of the variables of the graph to be triangulated
-
-      const NodeProperty<Size>& modalities() const;
+    const NodeProperty<Size> &modalities() const;
 
     protected:
-      /// the modalities of the nodes of the graph
-      NodeProperty<Size> _modalities;
+    /// the modalities of the nodes of the graph
+    NodeProperty<Size> _modalities;
 
     private:
-      /// prevent copy constructor
-      Triangulation ( const Triangulation& );
+    /// prevent copy constructor
+    Triangulation(const Triangulation &);
 
-      /// prevent copy operator
-      Triangulation& operator= ( const Triangulation& );
-
+    /// prevent copy operator
+    Triangulation &operator=(const Triangulation &);
   };
 
-
 } /* namespace gum */
-
 
 #endif /* GUM_TRIANGULATION_H */

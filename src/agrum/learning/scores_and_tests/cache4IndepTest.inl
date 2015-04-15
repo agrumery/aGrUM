@@ -26,143 +26,113 @@
 
 #include <tuple>
 
-
 namespace gum {
-  
-  
+
   namespace learning {
 
-
     /// default constructor
-    INLINE Cache4IndepTest::Cache4IndepTest () {
-      GUM_CONSTRUCTOR ( Cache4IndepTest );
-    }
-
+    INLINE Cache4IndepTest::Cache4IndepTest() { GUM_CONSTRUCTOR(Cache4IndepTest); }
 
     /// copy constructor
-    INLINE Cache4IndepTest::Cache4IndepTest ( const Cache4IndepTest& from ) :
-      __scores ( from.__scores ) {
-      GUM_CONS_CPY ( Cache4IndepTest );
+    INLINE Cache4IndepTest::Cache4IndepTest(const Cache4IndepTest &from)
+        : __scores(from.__scores) {
+      GUM_CONS_CPY(Cache4IndepTest);
     }
 
-    
     /// move constructor
-    INLINE Cache4IndepTest::Cache4IndepTest ( Cache4IndepTest&& from ) :
-      __scores ( std::move ( from.__scores ) ) {
-      GUM_CONS_MOV ( Cache4IndepTest );
+    INLINE Cache4IndepTest::Cache4IndepTest(Cache4IndepTest &&from)
+        : __scores(std::move(from.__scores)) {
+      GUM_CONS_MOV(Cache4IndepTest);
     }
-
 
     /// destructor
-    INLINE Cache4IndepTest::~Cache4IndepTest () {
-      GUM_DESTRUCTOR ( Cache4IndepTest );
-    }
-      
+    INLINE Cache4IndepTest::~Cache4IndepTest() { GUM_DESTRUCTOR(Cache4IndepTest); }
 
     /// copy operator
-    INLINE Cache4IndepTest&
-    Cache4IndepTest::operator= ( const Cache4IndepTest& from ) {
-      if ( &from != this ) {
+    INLINE Cache4IndepTest &Cache4IndepTest::operator=(const Cache4IndepTest &from) {
+      if (&from != this) {
         __scores = from.__scores;
       }
       return *this;
     }
 
-
     /// move operator
-    INLINE Cache4IndepTest&
-    Cache4IndepTest::operator= ( Cache4IndepTest&& from ) {
-      if ( &from != this ) {
-        __scores = std::move ( from.__scores );
+    INLINE Cache4IndepTest &Cache4IndepTest::operator=(Cache4IndepTest &&from) {
+      if (&from != this) {
+        __scores = std::move(from.__scores);
       }
       return *this;
     }
 
-
     /// insert a new score into the cache
     INLINE void
-    Cache4IndepTest::insert ( unsigned int var1,
-                              unsigned int var2,
-                              const std::vector<unsigned int>& conditioning_set,
-                              float score ) {
-      if ( var1 > var2 ) std::swap ( var1, var2 );
-      __scores.insert ( std::tuple<IdSet<>,unsigned int,unsigned int>
-                        ( IdSet<> ( conditioning_set, 0 ), var1, var2 ),
-                        std::move ( score ) );
+    Cache4IndepTest::insert(unsigned int var1, unsigned int var2,
+                            const std::vector<unsigned int> &conditioning_set,
+                            float score) {
+      if (var1 > var2)
+        std::swap(var1, var2);
+      __scores.insert(std::tuple<IdSet<>, unsigned int, unsigned int>(
+                          IdSet<>(conditioning_set, 0), var1, var2),
+                      std::move(score));
     }
 
-    
     /// insert a new score into the cache
     template <typename Alloc>
-    INLINE void
-    Cache4IndepTest::insert ( unsigned int var1,
-                              unsigned int var2,
-                              IdSet<Alloc>& conditioning_set,
-                              float score ) {
-      if ( var1 > var2 ) std::swap ( var1, var2 );
-      __scores.insert ( std::tuple<IdSet<>,unsigned int,unsigned int>
-                        ( IdSet<> ( conditioning_set ), var1, var2 ),
-                        std::move ( score ) );
+    INLINE void Cache4IndepTest::insert(unsigned int var1, unsigned int var2,
+                                        IdSet<Alloc> &conditioning_set,
+                                        float score) {
+      if (var1 > var2)
+        std::swap(var1, var2);
+      __scores.insert(std::tuple<IdSet<>, unsigned int, unsigned int>(
+                          IdSet<>(conditioning_set), var1, var2),
+                      std::move(score));
     }
-
 
     /// removes a score (if it exists)
     INLINE void
-    Cache4IndepTest::erase ( unsigned int var1,
-                             unsigned int var2,
-                             const std::vector<unsigned int>& conditioning_set ) {
-      if ( var1 > var2 ) std::swap ( var1, var2 );
-      __scores.erase ( std::tuple<IdSet<>,unsigned int,unsigned int>
-                       ( IdSet<> ( conditioning_set, 0 ), var1, var2 ) );
+    Cache4IndepTest::erase(unsigned int var1, unsigned int var2,
+                           const std::vector<unsigned int> &conditioning_set) {
+      if (var1 > var2)
+        std::swap(var1, var2);
+      __scores.erase(std::tuple<IdSet<>, unsigned int, unsigned int>(
+          IdSet<>(conditioning_set, 0), var1, var2));
     }
 
-    
     /// removes a score (if it exists)
     template <typename Alloc>
-    INLINE void
-    Cache4IndepTest::erase ( unsigned int var1,
-                             unsigned int var2,
-                             const IdSet<Alloc>& conditioning_set ) {
-      if ( var1 > var2 ) std::swap ( var1, var2 );
-      __scores.erase ( std::tuple<IdSet<>,unsigned int,unsigned int>
-                       ( conditioning_set, var1, var2 ) );
+    INLINE void Cache4IndepTest::erase(unsigned int var1, unsigned int var2,
+                                       const IdSet<Alloc> &conditioning_set) {
+      if (var1 > var2)
+        std::swap(var1, var2);
+      __scores.erase(std::tuple<IdSet<>, unsigned int, unsigned int>(
+          conditioning_set, var1, var2));
     }
-                   
 
     /// indicates whether a given score exists
     INLINE bool
-    Cache4IndepTest::exists ( unsigned int var1,
-                              unsigned int var2,
-                              const std::vector<unsigned int>& conditioning_set ) {
-      if ( var1 > var2 ) std::swap ( var1, var2 );
-      return
-        __scores.exists ( std::tuple<IdSet<>,unsigned int,unsigned int>
-                          ( IdSet<> ( conditioning_set,0 ), var1, var2 ) );
+    Cache4IndepTest::exists(unsigned int var1, unsigned int var2,
+                            const std::vector<unsigned int> &conditioning_set) {
+      if (var1 > var2)
+        std::swap(var1, var2);
+      return __scores.exists(std::tuple<IdSet<>, unsigned int, unsigned int>(
+          IdSet<>(conditioning_set, 0), var1, var2));
     }
 
-    
     /// returns a given score
     INLINE float
-    Cache4IndepTest::score ( unsigned int var1,
-                             unsigned int var2,
-                             const std::vector<unsigned int>& conditioning_set ) {
-      if ( var1 > var2 ) std::swap ( var1, var2 );
-      return __scores[ std::tuple<IdSet<>,unsigned int,unsigned int>
-                       ( IdSet<> ( conditioning_set, 0 ), var1, var2 ) ];
+    Cache4IndepTest::score(unsigned int var1, unsigned int var2,
+                           const std::vector<unsigned int> &conditioning_set) {
+      if (var1 > var2)
+        std::swap(var1, var2);
+      return __scores[std::tuple<IdSet<>, unsigned int, unsigned int>(
+          IdSet<>(conditioning_set, 0), var1, var2)];
     }
 
-
     /// removes all the stored scores
-    INLINE void
-    Cache4IndepTest::clear () {
-      __scores.clear ();
-    } 
+    INLINE void Cache4IndepTest::clear() { __scores.clear(); }
 
-    
   } /* namespace learning */
-  
-  
-} /* namespace gum */
 
+} /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -34,17 +34,13 @@
 #ifndef GUM_LEARNING_SCORE_LOG2_LIKELIHOOD_H
 #define GUM_LEARNING_SCORE_LOG2_LIKELIHOOD_H
 
-
 #include <agrum/learning/scores_and_tests/score.h>
 #include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     /* ========================================================================= */
     /* ===                    SCORE LOG2 LIKELIHOOD CLASS                    === */
     /* ========================================================================= */
@@ -62,9 +58,9 @@ namespace gum {
      * details.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float> >
-    class ScoreLog2Likelihood : public Score<IdSetAlloc,CountAlloc> {
-    public:
+              typename CountAlloc = std::allocator<float>>
+    class ScoreLog2Likelihood : public Score<IdSetAlloc, CountAlloc> {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -74,32 +70,31 @@ namespace gum {
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
       template <typename RowFilter>
-      ScoreLog2Likelihood ( const RowFilter& filter,
-                            const std::vector<unsigned int>& var_modalities,
-                            Apriori<IdSetAlloc,CountAlloc>& apriori );
+      ScoreLog2Likelihood(const RowFilter &filter,
+                          const std::vector<unsigned int> &var_modalities,
+                          Apriori<IdSetAlloc, CountAlloc> &apriori);
 
       /// copy constructor
-      ScoreLog2Likelihood ( const ScoreLog2Likelihood<IdSetAlloc,CountAlloc>& );
+      ScoreLog2Likelihood(const ScoreLog2Likelihood<IdSetAlloc, CountAlloc> &);
 
       /// move constructor
-      ScoreLog2Likelihood ( ScoreLog2Likelihood<IdSetAlloc,CountAlloc>&& );
+      ScoreLog2Likelihood(ScoreLog2Likelihood<IdSetAlloc, CountAlloc> &&);
 
       /// virtual copy factory
-      virtual ScoreLog2Likelihood<IdSetAlloc,CountAlloc>* copyFactory () const;
+      virtual ScoreLog2Likelihood<IdSetAlloc, CountAlloc> *copyFactory() const;
 
       /// destructor
-      virtual ~ScoreLog2Likelihood ();
+      virtual ~ScoreLog2Likelihood();
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
       /// returns the score corresponding to a given nodeset
-      float score ( unsigned int nodeset_index );
+      float score(unsigned int nodeset_index);
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** @returns true if the apriori is compatible with the score.
@@ -118,7 +113,7 @@ namespace gum {
        * @throws InvalidArgument is raised if the apriori is not handled yet by
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
-      virtual bool isAprioriCompatible () const final;
+      virtual bool isAprioriCompatible() const final;
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** @returns true if the apriori is compatible with the score.
@@ -137,8 +132,8 @@ namespace gum {
        * @throws InvalidArgument is raised if the apriori is not handled yet by
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
-      static bool isAprioriCompatible ( const std::string& apriori_type,
-                                        float weight = 1.0f );
+      static bool isAprioriCompatible(const std::string &apriori_type,
+                                      float weight = 1.0f);
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** @returns true if the apriori is compatible with the score.
@@ -158,7 +153,7 @@ namespace gum {
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
       static bool
-      isAprioriCompatible ( const Apriori<IdSetAlloc,CountAlloc>& apriori );
+      isAprioriCompatible(const Apriori<IdSetAlloc, CountAlloc> &apriori);
 
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD score
@@ -171,27 +166,21 @@ namespace gum {
        * to be meaningfull a structure + parameter learning requires that the same
        * aprioris are taken into account during structure learning and parameter
        * learning. */
-      virtual const ScoreInternalApriori<IdSetAlloc,CountAlloc>&
-      internalApriori () const noexcept final;
+      virtual const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
+      internalApriori() const noexcept final;
 
       /// @}
 
-    private:
-      
+      private:
       /// the internal apriori of the score
-      ScoreInternalNoApriori<IdSetAlloc,CountAlloc> __internal_apriori;
-      
+      ScoreInternalNoApriori<IdSetAlloc, CountAlloc> __internal_apriori;
     };
-    
 
   } /* namespace learning */
-  
-  
-} /* namespace gum */
 
+} /* namespace gum */
 
 // always include the template implementation
 #include <agrum/learning/scores_and_tests/scoreLog2Likelihood.tcc>
-
 
 #endif /* GUM_LEARNING_SCORE_LOG2_LIKELIHOOD_H */

@@ -19,7 +19,8 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Definition of templatized reader of dat files for Factored Markov Decision Process.
+ * @brief Definition of templatized reader of dat files for Factored Markov Decision
+ Process.
  *
  * how to use it :
  * @code
@@ -27,7 +28,8 @@
   class aSimpleListener : public gum::Listener {
   public:
     void whenLoading(const void *buffer,int percent) {
-      // percent goes from 0 to 100 (whenLoading is called at most once for each integer between 0 and 100
+      // percent goes from 0 to 100 (whenLoading is called at most once for each
+ integer between 0 and 100
       // percent=200 recieved when End Of File.
     }
   };
@@ -71,11 +73,10 @@
 
 #include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
 
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-//including coco-generated PARSER and SCANNER
+// including coco-generated PARSER and SCANNER
 #include <agrum/FMDP/io/dat/cocoR/Parser.h>
-#endif //DOXYGEN_SHOULD_SKIP_THIS
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
   /**
@@ -83,67 +84,69 @@ namespace gum {
    * @brief Definition of templatized reader of FMDPDat files for Bayesian Networks.
    * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
    */
-  template< typename GUM_SCALAR >
+  template <typename GUM_SCALAR>
   class FMDPDatReader : public FMDPReader<GUM_SCALAR> {
     public:
-      FMDPDatReader ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, const std::string& filename, MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* ddf );
-      ~FMDPDatReader();
+    FMDPDatReader(FactoredMarkovDecisionProcess<GUM_SCALAR> *fmdp,
+                  const std::string &filename,
+                  MultiDimDecisionDiagramFactoryBase<GUM_SCALAR> *ddf);
+    ~FMDPDatReader();
 
-      /// Direct access to FMDPDat scanner (mandatory for listener connection)
-      /// @throws IOError if file not exists
-      MDPDAT::Scanner& scanner();
+    /// Direct access to FMDPDat scanner (mandatory for listener connection)
+    /// @throws IOError if file not exists
+    MDPDAT::Scanner &scanner();
 
-      /// name of readen file
-      const std::string& streamName() const;
+    /// name of readen file
+    const std::string &streamName() const;
 
-      /// accessor to trace function (just write the number of parser line)
-      bool trace ( void ) const;
-      void trace ( bool b );
+    /// accessor to trace function (just write the number of parser line)
+    bool trace(void) const;
+    void trace(bool b);
 
-      /// parse.
-      /// @return the number of detected errors
-      /// @throws IOError if file not exists
-      int proceed ( void );
+    /// parse.
+    /// @return the number of detected errors
+    /// @throws IOError if file not exists
+    int proceed(void);
 
-      /// @{
-      /// publishing Errors API
+    /// @{
+    /// publishing Errors API
 
-      /// # of errors
-      Size errors();
-      /// # of errors
-      Size warnings();
+    /// # of errors
+    Size errors();
+    /// # of errors
+    Size warnings();
 
-      /// line of ith error or warning
-      unsigned int errLine ( unsigned int i );
-      /// col of ith error or warning
-      unsigned int errCol ( unsigned int i );
-      /// type of ith error or warning
-      bool errIsError ( unsigned int i );
-      /// message of ith error or warning
-      std::string errMsg ( unsigned int i );
+    /// line of ith error or warning
+    unsigned int errLine(unsigned int i);
+    /// col of ith error or warning
+    unsigned int errCol(unsigned int i);
+    /// type of ith error or warning
+    bool errIsError(unsigned int i);
+    /// message of ith error or warning
+    std::string errMsg(unsigned int i);
 
-      /// send on std::cerr the list of errors
-      void showElegantErrors(std::ostream& o=std::cerr);
+    /// send on std::cerr the list of errors
+    void showElegantErrors(std::ostream &o = std::cerr);
 
-      /// send on std::cerr the list of errors or warnings
-      void showElegantErrorsAndWarnings(std::ostream& o=std::cerr);
+    /// send on std::cerr the list of errors or warnings
+    void showElegantErrorsAndWarnings(std::ostream &o = std::cerr);
 
-      /// send on std::cerr the number of errors and the number of warnings
-      void showErrorCounts(std::ostream& o=std::cerr);
-      /// @}
+    /// send on std::cerr the number of errors and the number of warnings
+    void showErrorCounts(std::ostream &o = std::cerr);
+    /// @}
 
     protected:
-      FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
-      FMDPFactory<GUM_SCALAR>* __factory;
-      MDPDAT::Scanner* __scanner;
-      MDPDAT::Parser* __parser;
+    FactoredMarkovDecisionProcess<GUM_SCALAR> *__fmdp;
+    FMDPFactory<GUM_SCALAR> *__factory;
+    MDPDAT::Scanner *__scanner;
+    MDPDAT::Parser *__parser;
 
-      std::string __streamName;
-      bool __traceScanning;
-      bool __parseDone;
+    std::string __streamName;
+    bool __traceScanning;
+    bool __parseDone;
 
-      // a boolean to throw the ioerror not in the constructor but in the proceed()
-      bool __ioerror;
+    // a boolean to throw the ioerror not in the constructor but in the proceed()
+    bool __ioerror;
   };
 
   extern template class FMDPDatReader<float>;

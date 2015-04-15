@@ -22,4 +22,3 @@
 
 template class gum::FactorisedValuesCNFWriter<float>;
 template class gum::FactorisedValuesCNFWriter<double>;
-

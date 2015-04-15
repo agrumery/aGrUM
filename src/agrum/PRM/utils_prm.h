@@ -37,7 +37,6 @@
 
 #include <agrum/PRM/elements/PRMObject.h>
 
-
 /*!  @ingroup prm_group
  *
  * \page prm_page How to use Probabilistic Relational Models ?
@@ -159,30 +158,36 @@ namespace gum {
     typedef float prm_float;
 
     /// Decompose a string in a vector of strings using "." as separators.
-    void decomposePath ( const std::string& path, std::vector<std::string>& v );
+    void decomposePath(const std::string &path, std::vector<std::string> &v);
 
     /**
-     * @brief Returns a copy of a Potential after applying a bijection over the variables in source.
-     * This copies the Potential source in a new Potential by permuting all variables in source with respect
+     * @brief Returns a copy of a Potential after applying a bijection over the
+     *variables in source.
+     * This copies the Potential source in a new Potential by permuting all variables
+     *in source with respect
      * to bij.
      *
-     * @warning This method in most case creates the new Potential using a gum::MultiDimBijArray, this means
-     *          that the created Potential holds a reference over source, so do not delete source if you
+     * @warning This method in most case creates the new Potential using a
+     *gum::MultiDimBijArray, this means
+     *          that the created Potential holds a reference over source, so do not
+     *delete source if you
      *          still need the created potential.
      *
-     * @param bij A Bijection of DiscreteVariable where firsts are variables in source and seconds variables
+     * @param bij A Bijection of DiscreteVariable where firsts are variables in
+     *source and seconds variables
      *            added in the returned Potential.
      * @param source The copied Potential.
      * @return a pointer over a Potential which is a copy of source.
      * @throw FatalError raised if an unknown MultiDimImplementation is encountered.
      */
-    template<typename GUM_SCALAR>
-    Potential<GUM_SCALAR>* copyPotential ( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                                           const Potential<GUM_SCALAR>& source );
+    template <typename GUM_SCALAR>
+    Potential<GUM_SCALAR> *copyPotential(
+        const Bijection<const DiscreteVariable *, const DiscreteVariable *> &bij,
+        const Potential<GUM_SCALAR> &source);
 
-    template<typename GUM_SCALAR>
-    Potential<GUM_SCALAR>* multPotential ( const Potential<GUM_SCALAR>& t1,
-                                           const Potential<GUM_SCALAR>& t2 );
+    template <typename GUM_SCALAR>
+    Potential<GUM_SCALAR> *multPotential(const Potential<GUM_SCALAR> &t1,
+                                         const Potential<GUM_SCALAR> &t2);
     /**
      * @brief Proceeds with the elimination of var in pool.
      * @param var The variable eliminated from every potentials in pool.
@@ -190,10 +195,10 @@ namespace gum {
      * @param trash All create potentials are inserted in this set, useful to
      *              delete later.
      */
-    template<typename GUM_SCALAR>
-    void eliminateNode ( const DiscreteVariable* var,
-                         Set<Potential<GUM_SCALAR>*>& pool,
-                         Set<Potential<GUM_SCALAR>*>& trash );
+    template <typename GUM_SCALAR>
+    void eliminateNode(const DiscreteVariable *var,
+                       Set<Potential<GUM_SCALAR> *> &pool,
+                       Set<Potential<GUM_SCALAR> *> &trash);
 
   } /* namespace prm */
 } /* namespace gum */

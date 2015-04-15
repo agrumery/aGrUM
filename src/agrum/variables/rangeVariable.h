@@ -36,7 +36,6 @@
 #include <agrum/core/hashFunc.h>
 #include <agrum/variables/discreteVariable.h>
 
-
 namespace gum {
 
   /**
@@ -49,131 +48,112 @@ namespace gum {
    * If maxVal - minVal < 0, then domainsize() = 0.
    */
 
-
   class RangeVariable : public DiscreteVariable {
 
     public:
+    /// @name Constructors / Destructors
 
-      /// @name Constructors / Destructors
+    /// @{
+    /// Default constructor
+    RangeVariable(const std::string &aName, const std::string &aDesc, Idx minVal = 0,
+                  Idx maxVal = 1);
 
-      /// @{
-      /// Default constructor
-      RangeVariable ( const std::string& aName, const std::string& aDesc,
-                      Idx minVal = 0, Idx maxVal = 1 );
+    /** Copy Constructor.
+     *
+     * If aDRV haves any listener, it will not be copied.
+     *
+     * @param aDRV the variable we copy
+     */
+    RangeVariable(const RangeVariable &aDRV);
 
+    /// destructor
+    virtual ~RangeVariable();
 
-      /** Copy Constructor.
-       *
-       * If aDRV haves any listener, it will not be copied.
-       *
-       * @param aDRV the variable we copy
-       */
-      RangeVariable ( const RangeVariable& aDRV );
+    /// Copy Factory.
+    /// @return Returns a pointer on a new copy of this.
+    virtual DiscreteVariable *clone() const;
 
+    /// @}
 
-      /// destructor
-      virtual ~RangeVariable();
+    /// @name Accessors / Modifiers
 
+    /// @{
+    /// returns the size of the random discrete variable domain
+    virtual Size domainSize() const;
 
-      /// Copy Factory.
-      /// @return Returns a pointer on a new copy of this.
-      virtual DiscreteVariable* clone() const;
+    /// returns the type of variable
 
-      /// @}
+    virtual VarType varType(void) const;
 
+    ///
+    /**
+     * Get the indice-th label.
+     * @param indice the index of the label we wish to return
+     * @throw OutOfBound
+     */
+    virtual const std::string label(Idx indice) const;
 
+    /// get a numerical representation of he indice-the value.
+    virtual double numerical(Idx indice) const;
 
-      /// @name Accessors / Modifiers
+    /**
+     * Returns the lower bound.
+     */
+    Idx minVal() const;
 
-      /// @{
-      /// returns the size of the random discrete variable domain
-      virtual Size domainSize() const;
+    /**
+     * Set a new value for the lower bound.
+     */
+    void setMinVal(Idx minVal);
 
+    /**
+     * Returns the upper bound.
+     */
+    Idx maxVal() const;
 
-      /// returns the type of variable
+    /**
+     * Set a new value of the upper bound.
+     */
+    void setMaxVal(Idx maxVal);
 
-      virtual VarType varType ( void ) const;
+    /**
+     * Returns true if the param belongs to the variable's interval.
+     */
+    bool belongs(Idx indice) const;
 
+    /**
+     * @return the modality index from the label
+     * @throw NotFound
+     */
+    virtual Idx operator[](const std::string &) const;
+    virtual Idx index(const std::string &) const;
 
-      ///
-      /**
-       * Get the indice-th label.
-       * @param indice the index of the label we wish to return
-       * @throw OutOfBound
-       */
-      virtual const std::string label ( Idx indice ) const;
+    /// @}
 
-      /// get a numerical representation of he indice-the value.
-      virtual double numerical ( Idx indice ) const;
+    /// @name Operators
+    /// @{
+    /**
+     * Copy operator
+     * @param aRV to be copied
+     * @return a ref to *this */
+    RangeVariable &operator=(const RangeVariable &aRV);
 
+    /// @}
 
-      /**
-       * Returns the lower bound.
-       */
-      Idx minVal() const;
-
-
-      /**
-       * Set a new value for the lower bound.
-       */
-      void setMinVal ( Idx minVal );
-
-
-      /**
-       * Returns the upper bound.
-       */
-      Idx maxVal() const;
-
-
-      /**
-       * Set a new value of the upper bound.
-       */
-      void setMaxVal ( Idx maxVal );
-
-
-      /**
-       * Returns true if the param belongs to the variable's interval.
-       */
-      bool belongs ( Idx indice ) const;
-
-      /**
-       * @return the modality index from the label
-       * @throw NotFound
-       */
-      virtual Idx operator[] ( const std::string& ) const;
-      virtual Idx index( const std::string& ) const;
-
-
-      /// @}
-
-
-      /// @name Operators
-      /// @{
-      /**
-       * Copy operator
-       * @param aRV to be copied
-       * @return a ref to *this */
-      RangeVariable& operator= ( const RangeVariable& aRV );
-
-      /// @}
-
-      virtual const std::string toString() const;
+    virtual const std::string toString() const;
 
     private:
+    /// @name Private Members.
 
-      /// @name Private Members.
+    /// @{
+    /// The lower bound.
+    Idx __minBound;
 
-      /// @{
-      /// The lower bound.
-      Idx __minBound;
+    /// The upper bound.
+    Idx __maxBound;
 
-      /// The upper bound.
-      Idx __maxBound;
-
-      /// @}
-
+    /// @}
   };
-
 
 } /* namespace gum */
 
@@ -182,4 +162,3 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_RANGE_VARIABLE_H */
-

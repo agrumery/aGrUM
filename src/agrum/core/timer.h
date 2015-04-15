@@ -29,9 +29,7 @@
 
 #include <agrum/config.h>
 
-
 namespace gum {
-
 
   /** @class Timer
    *  @brief Class used to compute response times for benchmark purposes
@@ -45,90 +43,83 @@ namespace gum {
 
   class Timer {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /**
-       * Default constructor (launching the timer)
-       */
-      Timer();
+    /**
+     * Default constructor (launching the timer)
+     */
+    Timer();
 
-      /**
-       * Copy constructor
-       */
-      Timer ( const Timer& );
+    /**
+     * Copy constructor
+     */
+    Timer(const Timer &);
 
-      /**
-       * Destructor
-       */
-      ~Timer();
+    /**
+     * Destructor
+     */
+    ~Timer();
 
-      /// @}
+    /// @}
 
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
 
+    /**
+     * copy operator
+     */
+    Timer &operator=(const Timer &);
 
-      // ############################################################################
-      /// @name Operators
-      // ############################################################################
-      /// @{
+    /// @}
 
-      /**
-       * copy operator
-       */
-      Timer& operator= ( const Timer& );
+    // ############################################################################
+    /// @name Timer manipulation
+    // ############################################################################
+    /// @{
 
-      /// @}
+    /**
+     * Reset the timer
+     */
+    void reset();
+    /**
+     * Pause the timer and return the delta (@see step() )
+     */
+    double pause();
+    /**
+     * Resume the timer and return the delta (@see step() )
+     */
+    double resume();
 
+    /**
+     * Returns the delta time between now and the last reset() call
+     * (or the constructor)
+     *
+     * @return delta time in seconds (accuracy : 0.001 ms)
+     */
+    double step() const;
 
-      // ############################################################################
-      /// @name Timer manipulation
-      // ############################################################################
-      /// @{
-
-      /**
-       * Reset the timer
-       */
-      void reset();
-      /**
-       * Pause the timer and return the delta (@see step() )
-       */
-      double pause();
-      /**
-       * Resume the timer and return the delta (@see step() )
-       */
-      double resume();
-
-      /**
-       * Returns the delta time between now and the last reset() call
-       * (or the constructor)
-       *
-       * @return delta time in seconds (accuracy : 0.001 ms)
-       */
-      double step() const;
-
-
-
-      /// @}
+    /// @}
 
     protected:
-      /// time of the last call to reset() or the constructor
-      long _start;
+    /// time of the last call to reset() or the constructor
+    long _start;
 
-      ///time of the last call to pause()
-      long _pause;
+    /// time of the last call to pause()
+    long _pause;
 
-      ///false if running
-      bool _sleeping;
+    /// false if running
+    bool _sleeping;
   };
 
-
 } /* namespace gum */
-
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/timer.inl>
 #endif // GUM_NO_INLINE
 
-#endif  // GUM_TIMER_H
+#endif // GUM_TIMER_H

@@ -26,75 +26,72 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/BN/inference/BayesBall.inl>
-#endif //GUM_NO_INLINE
+#endif // GUM_NO_INLINE
 
 namespace gum {
 
-  void
-  BayesBall::requisiteNodes ( const DAG& dag,
-                              const Set<NodeId>& query,
-                              const Set<NodeId>& hardEvidence,
-                              Set<NodeId>& requisite ) {
+  void BayesBall::requisiteNodes(const DAG &dag, const Set<NodeId> &query,
+                                 const Set<NodeId> &hardEvidence,
+                                 Set<NodeId> &requisite) {
     __marks.clear();
 
-    for ( auto node : query ) {
-      __fromChild ( node, dag, hardEvidence );
+    for (auto node : query) {
+      __fromChild(node, dag, hardEvidence);
     }
 
-    for ( auto node : dag.nodes() ) {
+    for (auto node : dag.nodes()) {
       try {
-        if ( __marks[node].first ) {
-          requisite.insert ( node );
+        if (__marks[node].first) {
+          requisite.insert(node);
         }
-      } catch ( NotFound& ) {
+      } catch (NotFound &) {
         // Do nothing
       }
     }
   }
 
-  void
-  BayesBall::__fromChild ( NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence ) {
-    if ( not __marks.exists ( node ) ) {
-      __marks.insert ( node, std::pair<bool, bool> ( false, false ) );
+  void BayesBall::__fromChild(NodeId node, const DAG &dag,
+                              const Set<NodeId> &hardEvidence) {
+    if (not __marks.exists(node)) {
+      __marks.insert(node, std::pair<bool, bool>(false, false));
     }
 
-    if ( ( not hardEvidence.exists ( node ) ) and ( not __marks[node].first ) ) {
+    if ((not hardEvidence.exists(node)) and (not __marks[node].first)) {
       __marks[node].first = true;
 
-      for ( auto par : dag.parents ( node ) ) {
-        __fromChild ( par, dag, hardEvidence );
+      for (auto par : dag.parents(node)) {
+        __fromChild(par, dag, hardEvidence);
       }
     }
 
-    if ( not __marks[node].second ) {
+    if (not __marks[node].second) {
       __marks[node].second = true;
 
-      for ( auto chi :  dag.children ( node ) ) {
-        __fromParent ( chi, dag, hardEvidence );
+      for (auto chi : dag.children(node)) {
+        __fromParent(chi, dag, hardEvidence);
       }
     }
   }
 
-  void
-  BayesBall::__fromParent ( NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence ) {
-    if ( !__marks.exists ( node ) ) {
-      __marks.insert ( node, std::pair<bool, bool> ( false, false ) );
+  void BayesBall::__fromParent(NodeId node, const DAG &dag,
+                               const Set<NodeId> &hardEvidence) {
+    if (!__marks.exists(node)) {
+      __marks.insert(node, std::pair<bool, bool>(false, false));
     }
 
-    if ( hardEvidence.exists ( node ) and ( not __marks[node].first ) ) {
+    if (hardEvidence.exists(node) and (not __marks[node].first)) {
       __marks[node].first = true;
 
-      for ( auto par : dag.parents ( node ) ) {
-        __fromChild ( par, dag, hardEvidence );
+      for (auto par : dag.parents(node)) {
+        __fromChild(par, dag, hardEvidence);
       }
-    } else if ( !__marks[node].second ) {
+    } else if (!__marks[node].second) {
       __marks[node].second = true;
 
-      for ( auto chi : dag.children ( node ) ) {
-        __fromParent ( chi, dag, hardEvidence );
+      for (auto chi : dag.children(node)) {
+        __fromParent(chi, dag, hardEvidence);
       }
     }
   }
 
 } /* namespace gum */
-

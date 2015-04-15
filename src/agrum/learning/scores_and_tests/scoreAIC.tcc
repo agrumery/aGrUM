@@ -25,77 +25,66 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
 #include <sstream>
 #include <agrum/learning/scores_and_tests/scoreAIC.h>
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     /// default constructor
     template <typename IdSetAlloc, typename CountAlloc>
-    template <typename RowFilter> INLINE
-    ScoreAIC<IdSetAlloc,CountAlloc>::ScoreAIC
-    ( const RowFilter& filter,
-      const std::vector<unsigned int>& var_modalities,
-      Apriori<IdSetAlloc,CountAlloc>& apriori ) :
-      Score<IdSetAlloc,CountAlloc> ( filter, var_modalities, apriori ) {     
+    template <typename RowFilter>
+    INLINE ScoreAIC<IdSetAlloc, CountAlloc>::ScoreAIC(
+        const RowFilter &filter, const std::vector<unsigned int> &var_modalities,
+        Apriori<IdSetAlloc, CountAlloc> &apriori)
+        : Score<IdSetAlloc, CountAlloc>(filter, var_modalities, apriori) {
       // for debugging purposes
-      GUM_CONSTRUCTOR ( ScoreAIC );
+      GUM_CONSTRUCTOR(ScoreAIC);
     }
-
 
     /// copy constructor
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreAIC<IdSetAlloc,CountAlloc>::ScoreAIC
-    ( const ScoreAIC<IdSetAlloc,CountAlloc>& from ) :
-      Score<IdSetAlloc,CountAlloc> ( from ),
-      __internal_apriori ( from.__internal_apriori ) {
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE ScoreAIC<IdSetAlloc, CountAlloc>::ScoreAIC(
+        const ScoreAIC<IdSetAlloc, CountAlloc> &from)
+        : Score<IdSetAlloc, CountAlloc>(from),
+          __internal_apriori(from.__internal_apriori) {
       // for debugging purposes
-      GUM_CONS_CPY ( ScoreAIC );
+      GUM_CONS_CPY(ScoreAIC);
     }
-      
 
     /// move constructor
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreAIC<IdSetAlloc,CountAlloc>::ScoreAIC
-    ( ScoreAIC<IdSetAlloc,CountAlloc>&& from ) :
-      Score<IdSetAlloc,CountAlloc> ( std::move ( from ) ),
-      __internal_apriori ( std::move ( from.__internal_apriori ) ) {
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE ScoreAIC<IdSetAlloc, CountAlloc>::ScoreAIC(
+        ScoreAIC<IdSetAlloc, CountAlloc> &&from)
+        : Score<IdSetAlloc, CountAlloc>(std::move(from)),
+          __internal_apriori(std::move(from.__internal_apriori)) {
       // for debugging purposes
-      GUM_CONS_MOV ( ScoreAIC );
+      GUM_CONS_MOV(ScoreAIC);
     }
-      
 
     /// virtual copy factory
     template <typename IdSetAlloc, typename CountAlloc>
-    ScoreAIC<IdSetAlloc,CountAlloc>*
-    ScoreAIC<IdSetAlloc,CountAlloc>::copyFactory () const {
-      return new ScoreAIC<IdSetAlloc,CountAlloc> ( *this );
+    ScoreAIC<IdSetAlloc, CountAlloc> *
+    ScoreAIC<IdSetAlloc, CountAlloc>::copyFactory() const {
+      return new ScoreAIC<IdSetAlloc, CountAlloc>(*this);
     }
-
 
     /// destructor
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreAIC<IdSetAlloc,CountAlloc>::~ScoreAIC () {
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE ScoreAIC<IdSetAlloc, CountAlloc>::~ScoreAIC() {
       // for debugging purposes
-      GUM_DESTRUCTOR ( ScoreAIC );
+      GUM_DESTRUCTOR(ScoreAIC);
     }
-
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template <typename IdSetAlloc, typename CountAlloc>
-    bool ScoreAIC<IdSetAlloc,CountAlloc>::isAprioriCompatible
-    ( const std::string& apriori_type,
-      float weight ) {
+    bool ScoreAIC<IdSetAlloc, CountAlloc>::isAprioriCompatible(
+        const std::string &apriori_type, float weight) {
       // check that the apriori is compatible with the score
-      if ( ( apriori_type == AprioriDirichletType::type ) ||
-           ( apriori_type == AprioriSmoothingType::type ) ||
-           ( apriori_type == AprioriNoAprioriType::type ) ) {
+      if ((apriori_type == AprioriDirichletType::type) ||
+          (apriori_type == AprioriSmoothingType::type) ||
+          (apriori_type == AprioriNoAprioriType::type)) {
         return true;
       }
 
@@ -103,108 +92,102 @@ namespace gum {
       std::stringstream msg;
       msg << "The apriori '" << apriori_type
           << "' is not yet supported by method isAprioriCompatible";
-      GUM_ERROR ( InvalidArgument, msg.str () );
+      GUM_ERROR(InvalidArgument, msg.str());
     }
-    
 
     /// indicates whether the apriori is compatible (meaningful) with the score
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    bool ScoreAIC<IdSetAlloc,CountAlloc>::isAprioriCompatible
-    ( const Apriori<IdSetAlloc,CountAlloc>& apriori ) {
-      return isAprioriCompatible ( apriori.getType (), apriori.weight () );
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE bool ScoreAIC<IdSetAlloc, CountAlloc>::isAprioriCompatible(
+        const Apriori<IdSetAlloc, CountAlloc> &apriori) {
+      return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
-    
 
     /// indicates whether the apriori is compatible (meaningful) with the score
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    bool ScoreAIC<IdSetAlloc,CountAlloc>::isAprioriCompatible () const {
-      return isAprioriCompatible ( *this->_apriori );
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE bool ScoreAIC<IdSetAlloc, CountAlloc>::isAprioriCompatible() const {
+      return isAprioriCompatible(*this->_apriori);
     }
 
-    
     /// returns the internal apriori of the score
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    const ScoreInternalApriori<IdSetAlloc,CountAlloc>&
-    ScoreAIC<IdSetAlloc,CountAlloc>::internalApriori () const noexcept {
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
+    ScoreAIC<IdSetAlloc, CountAlloc>::internalApriori() const noexcept {
       return __internal_apriori;
     }
 
-
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
-    float ScoreAIC<IdSetAlloc,CountAlloc>::score
-    ( unsigned int nodeset_index ) {
+    float ScoreAIC<IdSetAlloc, CountAlloc>::score(unsigned int nodeset_index) {
       // if the score has already been computed, get its value
-      if ( this->_isInCache ( nodeset_index ) ) {
-        return this->_cachedScore ( nodeset_index );
+      if (this->_isInCache(nodeset_index)) {
+        return this->_cachedScore(nodeset_index);
       }
-      
+
       // get the counts for all the targets and for the conditioning nodes
-      const std::vector<float,CountAlloc>& N_ijk = 
-        this->_getAllCounts ( nodeset_index );
-      const unsigned int targets_modal = N_ijk.size ();
+      const std::vector<float, CountAlloc> &N_ijk =
+          this->_getAllCounts(nodeset_index);
+      const unsigned int targets_modal = N_ijk.size();
       float score = 0;
- 
+
       // get the nodes involved in the score as well as their modalities
-      const std::vector<unsigned int,IdSetAlloc>& all_nodes =
-        this->_getAllNodes ( nodeset_index );
-      const std::vector<unsigned int,IdSetAlloc>* conditioning_nodes =
-        this->_getConditioningNodes ( nodeset_index );
-      const std::vector<unsigned int>& modalities = this->modalities ();
+      const std::vector<unsigned int, IdSetAlloc> &all_nodes =
+          this->_getAllNodes(nodeset_index);
+      const std::vector<unsigned int, IdSetAlloc> *conditioning_nodes =
+          this->_getConditioningNodes(nodeset_index);
+      const std::vector<unsigned int> &modalities = this->modalities();
 
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
-      if ( conditioning_nodes ) {
+      if (conditioning_nodes) {
         // get the counts for the conditioning nodes
-        const std::vector<float,CountAlloc>& N_ij = 
-          this->_getConditioningCounts ( nodeset_index );
-        const unsigned int conditioning_modal = N_ij.size ();
+        const std::vector<float, CountAlloc> &N_ij =
+            this->_getConditioningCounts(nodeset_index);
+        const unsigned int conditioning_modal = N_ij.size();
 
         // initialize the score: this should be the penalty of the AIC score, i.e.,
         // -(ri-1 ) * qi
         const float penalty =
-          conditioning_modal * ( modalities[all_nodes.back ()] - 1 );
- 
-        if ( this->_apriori->weight () ) {
-          const std::vector<float,CountAlloc>& N_prime_ijk = 
-            this->_getAllApriori ( nodeset_index );
-          const std::vector<float,CountAlloc>& N_prime_ij = 
-            this->_getConditioningApriori ( nodeset_index );
- 
+            conditioning_modal * (modalities[all_nodes.back()] - 1);
+
+        if (this->_apriori->weight()) {
+          const std::vector<float, CountAlloc> &N_prime_ijk =
+              this->_getAllApriori(nodeset_index);
+          const std::vector<float, CountAlloc> &N_prime_ij =
+              this->_getConditioningApriori(nodeset_index);
+
           // compute the score: it remains to compute the log likelihood, i.e.,
           // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
-         for ( unsigned int k = 0; k < targets_modal; ++k ) {
-           const float new_count = N_ijk[k] + N_prime_ijk[k];
-            if ( new_count ) {
-              score += new_count * logf ( new_count );
+          for (unsigned int k = 0; k < targets_modal; ++k) {
+            const float new_count = N_ijk[k] + N_prime_ijk[k];
+            if (new_count) {
+              score += new_count * logf(new_count);
             }
           }
-          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
+          for (unsigned int j = 0; j < conditioning_modal; ++j) {
             const float new_count = N_ij[j] + N_prime_ij[j];
-            if ( new_count ) {
-              score -= new_count * logf ( new_count );
+            if (new_count) {
+              score -= new_count * logf(new_count);
             }
           }
-        }
-        else {
+        } else {
           // compute the score: it remains to compute the log likelihood, i.e.,
           // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
-            if ( N_ijk[k] ) {
-              score += N_ijk[k] * logf ( N_ijk[k] );
+          for (unsigned int k = 0; k < targets_modal; ++k) {
+            if (N_ijk[k]) {
+              score += N_ijk[k] * logf(N_ijk[k]);
             }
           }
-          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
-            if ( N_ij[j] ) {
-              score -= N_ij[j] * logf ( N_ij[j] );
+          for (unsigned int j = 0; j < conditioning_modal; ++j) {
+            if (N_ij[j]) {
+              score -= N_ij[j] * logf(N_ij[j]);
             }
           }
         }
-          
+
         // divide by log(2), since the log likelihood uses log_2
         score *= this->_1log2;
 
@@ -212,53 +195,50 @@ namespace gum {
         score -= penalty;
 
         // shall we put the score into the cache?
-        if ( this->_isUsingCache () ) {
-          this->_insertIntoCache ( nodeset_index, score );
+        if (this->_isUsingCache()) {
+          this->_insertIntoCache(nodeset_index, score);
         }
 
         return score;
-      }
-      else {
+      } else {
         // here, there are no conditioning nodes
 
         // initialize the score: this should be the penalty of the AIC score, i.e.,
         // -(ri-1 )
-        const float penalty = modalities[all_nodes.back ()] - 1;
+        const float penalty = modalities[all_nodes.back()] - 1;
 
-        if ( this->_apriori->weight () ) {
-          const std::vector<float,CountAlloc>& N_prime_ijk = 
-            this->_getAllApriori ( nodeset_index );
+        if (this->_apriori->weight()) {
+          const std::vector<float, CountAlloc> &N_prime_ijk =
+              this->_getAllApriori(nodeset_index);
 
           // compute the score: it remains to compute the log likelihood, i.e.,
           // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
           float N = 0;
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+          for (unsigned int k = 0; k < targets_modal; ++k) {
             const float new_count = N_ijk[k] + N_prime_ijk[k];
-            if ( new_count ) {
-              score += new_count * logf ( new_count );
+            if (new_count) {
+              score += new_count * logf(new_count);
               N += new_count;
             }
           }
-          score -= N * logf ( N );
-        }
-        else {
-         // compute the score: it remains to compute the log likelihood, i.e.,
+          score -= N * logf(N);
+        } else {
+          // compute the score: it remains to compute the log likelihood, i.e.,
           // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
           float N = 0;
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
-            if ( N_ijk[k] ) {
-              score += N_ijk[k] * logf ( N_ijk[k] );
+          for (unsigned int k = 0; k < targets_modal; ++k) {
+            if (N_ijk[k]) {
+              score += N_ijk[k] * logf(N_ijk[k]);
               N += N_ijk[k];
             }
           }
-          score -= N * logf ( N );
- 
+          score -= N * logf(N);
         }
-        
+
         // divide by log(2), since the log likelihood uses log_2
         score *= this->_1log2;
 
@@ -266,19 +246,16 @@ namespace gum {
         score -= penalty;
 
         // shall we put the score into the cache?
-        if ( this->_isUsingCache () ) {
-          this->_insertIntoCache ( nodeset_index, score );
+        if (this->_isUsingCache()) {
+          this->_insertIntoCache(nodeset_index, score);
         }
 
         return score;
       }
     }
 
-
   } /* namespace learning */
-  
-  
-} /* namespace gum */
 
+} /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

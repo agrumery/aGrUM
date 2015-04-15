@@ -25,9 +25,7 @@
 
 #include <agrum/learning/localSearchWithTabuList.h>
 
-
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
 #include <agrum/learning/localSearchWithTabuList.inl>
 #endif /* GUM_NO_INLINE */
-

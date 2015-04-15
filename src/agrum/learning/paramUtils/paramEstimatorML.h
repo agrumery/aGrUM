@@ -36,13 +36,10 @@
 #include <agrum/learning/paramUtils/paramEstimator.h>
 #include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     /* ========================================================================= */
     /* ===                     PARAM ESTIMATOR ML CLASS                      === */
     /* ========================================================================= */
@@ -58,11 +55,9 @@ namespace gum {
      * performed, use method parameters to retrieve the parameters of interest.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float> >
-    class ParamEstimatorML :
-      public ParamEstimator<IdSetAlloc,CountAlloc> {
-    public:
-
+              typename CountAlloc = std::allocator<float>>
+    class ParamEstimatorML : public ParamEstimator<IdSetAlloc, CountAlloc> {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -72,30 +67,27 @@ namespace gum {
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
       template <typename RowFilter>
-      ParamEstimatorML
-      ( const RowFilter& filter,
-        const std::vector<unsigned int>& var_modalities,
-        Apriori<IdSetAlloc,CountAlloc>& apriori,
-        const ScoreInternalApriori<IdSetAlloc,CountAlloc>& score_internal_apriori =
-        ScoreInternalNoApriori<IdSetAlloc,CountAlloc> ()  );
+      ParamEstimatorML(const RowFilter &filter,
+                       const std::vector<unsigned int> &var_modalities,
+                       Apriori<IdSetAlloc, CountAlloc> &apriori,
+                       const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
+                           score_internal_apriori =
+                               ScoreInternalNoApriori<IdSetAlloc, CountAlloc>());
 
       /// copy constructor
-      ParamEstimatorML ( const ParamEstimatorML<IdSetAlloc,CountAlloc>& );
+      ParamEstimatorML(const ParamEstimatorML<IdSetAlloc, CountAlloc> &);
 
       /// move constructor
-      ParamEstimatorML ( ParamEstimatorML<IdSetAlloc,CountAlloc>&& );
+      ParamEstimatorML(ParamEstimatorML<IdSetAlloc, CountAlloc> &&);
 
       /// virtual copy factory
-      virtual ParamEstimatorML<IdSetAlloc,CountAlloc>* copyFactory () const;
- 
-       /// destructor
-      virtual ~ParamEstimatorML ();
+      virtual ParamEstimatorML<IdSetAlloc, CountAlloc> *copyFactory() const;
 
-      
+      /// destructor
+      virtual ~ParamEstimatorML();
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -108,24 +100,16 @@ namespace gum {
        * were specified) and, then, the target node.
        * @throw CPTError is raised if some values of the conditioning sets were
        * not observed in the database. */
-      const std::vector<float,CountAlloc>&
-      parameters ( unsigned int nodeset_index );
+      const std::vector<float, CountAlloc> &parameters(unsigned int nodeset_index);
 
       /// @}
-
-      
     };
 
-
   } /* namespace learning */
-  
-  
-} /* namespace gum */
 
+} /* namespace gum */
 
 /// include the template implementation
 #include <agrum/learning/paramUtils/paramEstimatorML.tcc>
-
-
 
 #endif /* GUM_LEARNING_PARAM_ESTIMATOR_ML_H */

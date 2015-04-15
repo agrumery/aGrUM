@@ -155,11 +155,13 @@
 //     void __print_model(std::ostream& output, const PRM& prm, const Model& m);
 //
 //     /// Prints the given instance in the stream in the IBAL formalism.
-//     void __print_instance(std::ostream& output, const PRM& prm, const Model& m, const Instance& i);
+//     void __print_instance(std::ostream& output, const PRM& prm, const Model& m,
+//     const Instance& i);
 //
 //
 //     /// Prints the list of parents of a given aggregator in the IBAL formalism.
-//     std::string __print_agg_parents_list(const Model& m, const Instance& i, NodeId id);
+//     std::string __print_agg_parents_list(const Model& m, const Instance& i, NodeId
+//     id);
 //
 //     /// @}
 //   #ifndef DOXYGEN_SHOULD_SKIP_THIS

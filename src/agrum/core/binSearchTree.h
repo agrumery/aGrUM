@@ -23,7 +23,6 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-
 #ifndef GUM_BIN_SEARCH_TREE_H
 #define GUM_BIN_SEARCH_TREE_H
 
@@ -31,9 +30,7 @@
 
 #include <agrum/core/binTreeNode.h>
 
-
 namespace gum {
-
 
   // classes provided/used by this header
 
@@ -43,309 +40,267 @@ namespace gum {
 
   template <typename Val, class Cmp> class AVLSearchTree;
 
-
   /* =========================================================================== */
   /* ===                      GENERIC BINARY SEARCH TREE                     === */
   /* =========================================================================== */
   /** @class BinSearchTree
    * @brief generic binary search trees */
   /* =========================================================================== */
-  template < typename Val,
+  template <typename Val,
 
-           class Cmp = std::less<Val>,
+            class Cmp = std::less<Val>,
 
-           class Node = BinTreeNode<Val> > class BinSearchTree {
+            class Node = BinTreeNode<Val>>
+  class BinSearchTree {
     public:
-      typedef BinSearchTreeIterator<Val, Cmp, Node> iterator;
-      typedef BinSearchTreeIterator<Val, Cmp, Node> const_iterator;
+    typedef BinSearchTreeIterator<Val, Cmp, Node> iterator;
+    typedef BinSearchTreeIterator<Val, Cmp, Node> const_iterator;
 
+    // ############################################################################
+    /// @name constructors / destructors
+    // ############################################################################
+    ///@{
 
-      // ############################################################################
-      /// @name constructors / destructors
-      // ############################################################################
-      ///@{
+    /// basic constructor: returns an empty binary search tree
+    /** @param uniqueness_policy allows (false) or disables (true) the possibility
+     * for the binary tree to have multiple instances of the same value within
+     * the tree. */
 
-      /// basic constructor: returns an empty binary search tree
-      /** @param uniqueness_policy allows (false) or disables (true) the possibility
-       * for the binary tree to have multiple instances of the same value within
-       * the tree. */
+    explicit BinSearchTree(bool uniqueness_policy = false);
 
-      explicit BinSearchTree ( bool uniqueness_policy = false );
+    /// copy constructor
 
+    BinSearchTree(const BinSearchTree<Val, Cmp, Node> &from);
 
-      /// copy constructor
+    /// destructor
 
-      BinSearchTree ( const BinSearchTree<Val, Cmp, Node>& from );
+    virtual ~BinSearchTree();
 
+    ///@}
 
-      /// destructor
+    // ############################################################################
+    /// @name operators
+    // ############################################################################
+    ///@{
 
-      virtual ~BinSearchTree();
+    /// copy operator
 
-      ///@}
+    BinSearchTree<Val, Cmp, Node> &
+    operator=(const BinSearchTree<Val, Cmp, Node> &from);
 
+    ///@}
 
-      // ############################################################################
-      /// @name operators
-      // ############################################################################
-      ///@{
+    // ############################################################################
+    /// @name iterators
+    // ############################################################################
+    ///@{
 
-      /// copy operator
+    /// begin iterator
 
-      BinSearchTree<Val, Cmp, Node>&
-      operator= ( const BinSearchTree<Val, Cmp, Node>& from );
+    iterator begin();
+    const_iterator begin() const;
 
-      ///@}
+    /// rbegin iterator
 
+    iterator rbegin();
+    const_iterator rbegin() const;
 
-      // ############################################################################
-      /// @name iterators
-      // ############################################################################
-      ///@{
+    /// end iterator
 
-      /// begin iterator
+    const iterator &end();
+    const const_iterator &end() const;
 
-      iterator begin();
-      const_iterator begin() const;
+    /// rend iterator
 
+    const iterator &rend();
+    const const_iterator &rend() const;
 
-      /// rbegin iterator
+    /// returns an iterator pointing to the root of the tree
 
-      iterator rbegin();
-      const_iterator rbegin() const;
+    iterator root();
+    const_iterator root() const;
 
+    ///@}
 
-      /// end iterator
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
 
-      const iterator& end();
-      const const_iterator& end() const;
+    /// returns the value of the root of the tree
+    /** @throw NotFound exception is raised if the tree is empty */
 
+    const Val &rootValue() const;
 
-      /// rend iterator
+    /// returns the value of the leftmost node with the minimal key in the tree
+    /** @throw NotFound exception is raised if the tree is empty */
 
-      const iterator& rend();
-      const const_iterator& rend() const;
+    const Val &minValue() const;
 
+    /// returns the value of the rightmost node with the maximal key in the tree
+    /** @throw NotFound exception is raised if the tree is empty */
 
-      /// returns an iterator pointing to the root of the tree
+    const Val &maxValue() const;
 
-      iterator root();
-      const_iterator root() const;
+    /** @brief creates a copy of the value, insert it in the tree and returns
+     * the copy value
+     *
+     * When elements are inserted into binary search trees, this is actually copies
+     * that are inserted. Thus, the method returns the newly created copy, so that
+     * the user may reference it.
+     * @throw DuplicateElement exception is raised if the binary tree already
+     * contains the value and the uniqueness property is set to true */
 
-      ///@}
+    const Val &insert(const Val &val);
 
+    /// erase the leftmost node with the given (key,val) pair
+    /**
+     * @throws NotFound if we could not find the node
+     */
 
+    void erase(const Val &val);
 
-      // ############################################################################
-      /// @name Accessors / Modifiers
-      // ############################################################################
-      /// @{
+    /// erase the node pointed to by the iterator
+    /** if we could not find the node, then nothing happens. In particular, no
+     * exception is raised. */
 
-      /// returns the value of the root of the tree
-      /** @throw NotFound exception is raised if the tree is empty */
+    void erase(const iterator &iter);
 
-      const Val& rootValue() const;
+    /// indicates whether the BinSearchTree contains the value
 
+    bool contains(const Val &) const;
 
-      /// returns the value of the leftmost node with the minimal key in the tree
-      /** @throw NotFound exception is raised if the tree is empty */
+    /// removes all the elements from the BinSearchTree
 
-      const Val& minValue() const;
+    void clear();
 
+    /// returns the number of elements in the binary search tree
 
-      /// returns the value of the rightmost node with the maximal key in the tree
-      /** @throw NotFound exception is raised if the tree is empty */
+    Size size() const;
 
-      const Val& maxValue() const;
+    /// indicates whether the binary search tree is empty
 
+    bool empty() const;
 
-      /** @brief creates a copy of the value, insert it in the tree and returns
-       * the copy value
-       *
-       * When elements are inserted into binary search trees, this is actually copies
-       * that are inserted. Thus, the method returns the newly created copy, so that
-       * the user may reference it.
-       * @throw DuplicateElement exception is raised if the binary tree already
-       * contains the value and the uniqueness property is set to true */
+    /// displays the content of the tree (in increasing order w.r.t. Cmp)
 
-      const Val& insert ( const Val& val );
+    virtual const std::string toString() const;
 
+    /// @}
 
-      /// erase the leftmost node with the given (key,val) pair
-      /**
-       * @throws NotFound if we could not find the node
-       */
+    // ############################################################################
+    /// @name Fine tuning
+    // ############################################################################
+    /// @{
 
-      void erase ( const Val& val );
+    /// returns the current uniqueness policy
 
+    bool uniquenessPolicy() const;
 
-      /// erase the node pointed to by the iterator
-      /** if we could not find the node, then nothing happens. In particular, no
-       * exception is raised. */
+    /** @brief enables the user to change dynamically the policy for checking
+     * whether there can exist several identical elements in the binary tree
+     *
+     * By default, trees can store several times the same element. However, for
+     * some applications, we should ensure that all elements in the binary search
+     * tree are distinct.
+     * @warning When setting the policy to "uniqueness", the function does not
+     * check whether the tree already contains identical elements. It thus only
+     * ensures that elements inserted from now on do not already belong to the
+     * tree. */
 
-      void erase ( const iterator& iter );
+    void setUniquenessPolicy(const bool new_policy);
 
-
-      /// indicates whether the BinSearchTree contains the value
-
-      bool contains ( const Val& ) const;
-
-
-      /// removes all the elements from the BinSearchTree
-
-      void clear();
-
-
-      /// returns the number of elements in the binary search tree
-
-      Size size() const ;
-
-
-      /// indicates whether the binary search tree is empty
-
-      bool empty() const ;
-
-
-      /// displays the content of the tree (in increasing order w.r.t. Cmp)
-
-      virtual const std::string toString() const;
-
-      /// @}
-
-
-      // ############################################################################
-      /// @name Fine tuning
-      // ############################################################################
-      /// @{
-
-      /// returns the current uniqueness policy
-
-      bool uniquenessPolicy() const ;
-
-
-      /** @brief enables the user to change dynamically the policy for checking
-       * whether there can exist several identical elements in the binary tree
-       *
-       * By default, trees can store several times the same element. However, for
-       * some applications, we should ensure that all elements in the binary search
-       * tree are distinct.
-       * @warning When setting the policy to "uniqueness", the function does not
-       * check whether the tree already contains identical elements. It thus only
-       * ensures that elements inserted from now on do not already belong to the
-       * tree. */
-
-      void setUniquenessPolicy ( const bool new_policy ) ;
-
-      /// @}
-
+    /// @}
 
     protected:
-      /// the root node of the tree
-      Node* _root;
+    /// the root node of the tree
+    Node *_root;
 
-      /// the comparison function
-      Cmp _cmp;
+    /// the comparison function
+    Cmp _cmp;
 
-      /// the list of iterators pointing to the binary search tree
-      mutable iterator* _iterator_list;
+    /// the list of iterators pointing to the binary search tree
+    mutable iterator *_iterator_list;
 
-      /// the uniqueness property: whether the same value can appear multiple times
-      mutable bool _uniqueness_policy;
+    /// the uniqueness property: whether the same value can appear multiple times
+    mutable bool _uniqueness_policy;
 
-      /// the number of elements stored in the tree
-      Size _nb_elements;
+    /// the number of elements stored in the tree
+    Size _nb_elements;
 
-      /** @name pseudo static iterator
-       * the end and rend iterators are constructed only once per binary search tree
-       * so as to optimize for(iter = begin();iter != end(); iter++) loops: this
-       * will avoid creating objects end and rend each time we pass in the loop. */
-      //\{
-      iterator _iter_end;
-      //\}
+    /** @name pseudo static iterator
+     * the end and rend iterators are constructed only once per binary search tree
+     * so as to optimize for(iter = begin();iter != end(); iter++) loops: this
+     * will avoid creating objects end and rend each time we pass in the loop. */
+    //\{
+    iterator _iter_end;
+    //\}
 
+    // to speed-up accesses
 
-      // to speed-up accesses
+    friend class BinSearchTreeIterator<Val, Cmp, Node>;
 
-      friend class BinSearchTreeIterator<Val, Cmp, Node>;
+    friend class AVLSearchTree<Val, Cmp>;
 
-      friend class AVLSearchTree<Val, Cmp>;
+    /// a method for recursively copying the contents of a BinSearchTree
+    /** @warning this function produces a tree with precisely the same structure
+     * as that passed in argument (node). Hence, this should be used only when
+     * copying binary search trees storing data w.r.t. the same weak order Cmp.
+     * @param root_from the root of the tree to be copied
+     * @param parent is the node that should be the parent of the copy
+     * @param dir the direction of the edge parent->copy */
 
+    Node *_copy(Node *root_from, Node *parent = 0,
+                BinTreeDir dir = BinTreeDir::LEFT_CHILD);
 
+    /// returns the smallest node w.r.t. order Cmp in the subtree rooted at node
 
-      /// a method for recursively copying the contents of a BinSearchTree
-      /** @warning this function produces a tree with precisely the same structure
-       * as that passed in argument (node). Hence, this should be used only when
-       * copying binary search trees storing data w.r.t. the same weak order Cmp.
-       * @param root_from the root of the tree to be copied
-       * @param parent is the node that should be the parent of the copy
-       * @param dir the direction of the edge parent->copy */
+    Node *_minNode(Node *node) const;
 
-      Node* _copy ( Node* root_from,
-                    Node* parent = 0,
-                    BinTreeDir dir = BinTreeDir::LEFT_CHILD );
+    /// returns the greatest node w.r.t. order Cmp in the subtree rooted at node
 
+    Node *_maxNode(Node *node) const;
 
-      /// returns the smallest node w.r.t. order Cmp in the subtree rooted at node
+    /// returns the next node according to weak ordering Cmp
 
-      Node* _minNode ( Node* node ) const;
+    Node *_succNode(Node *node) const;
 
+    /// returns the previous node according to weak ordering Cmp
 
-      /// returns the greatest node w.r.t. order Cmp in the subtree rooted at node
+    Node *_prevNode(Node *node) const;
 
-      Node* _maxNode ( Node* node ) const;
+    /// returns the node containing a given value (0 if the value cannot be found)
 
+    Node *_getNode(const Val &) const;
 
-      /// returns the next node according to weak ordering Cmp
+    /// a method for recursively destroying a subtree of the BinSearchTree
+    /** note that this method does not update the iterators pointing to nodes
+     * of the subtree. These should be cleared before _deleteSubTree is called. */
 
-      Node* _succNode ( Node* node ) const;
+    void _deleteSubTree(Node *node);
 
+    /// erase the node passed in argument
 
-      /// returns the previous node according to weak ordering Cmp
+    virtual void _erase(Node *node);
 
-      Node* _prevNode ( Node* node ) const;
+    /** @brief creates a copy of the value, insert it in the tree and returns
+     * the copy value
+     *
+     * When elements are inserted into binary search trees, this is actually copies
+     * that are inserted. Thus, the method returns the node containing the newly
+     * created copy, so that the user may reference the new copy.
+     * @warning this method is actually the implementation of method insert. It
+     * is used to speed-up insertions in terminal classes such as AVL trees.
+     * @throw DuplicateElement exception is raised if the binary tree already
+     * contains the value and the uniqueness property is set to true */
 
-
-      /// returns the node containing a given value (0 if the value cannot be found)
-
-      Node* _getNode ( const Val& ) const;
-
-
-      /// a method for recursively destroying a subtree of the BinSearchTree
-      /** note that this method does not update the iterators pointing to nodes
-       * of the subtree. These should be cleared before _deleteSubTree is called. */
-
-      void _deleteSubTree ( Node* node );
-
-
-      /// erase the node passed in argument
-
-      virtual void _erase ( Node* node );
-
-
-      /** @brief creates a copy of the value, insert it in the tree and returns
-       * the copy value
-       *
-       * When elements are inserted into binary search trees, this is actually copies
-       * that are inserted. Thus, the method returns the node containing the newly
-       * created copy, so that the user may reference the new copy.
-       * @warning this method is actually the implementation of method insert. It
-       * is used to speed-up insertions in terminal classes such as AVL trees.
-       * @throw DuplicateElement exception is raised if the binary tree already
-       * contains the value and the uniqueness property is set to true */
-
-      virtual Node* _insert ( const Val& val );
-
-
+    virtual Node *_insert(const Val &val);
 
     private:
+    /// update all iterators when a given node is deleted
 
-      /// update all iterators when a given node is deleted
-
-      void __updateEraseIterators ( Node* node );
+    void __updateEraseIterators(Node *node);
   };
-
-
-
 
   /* =========================================================================== */
   /* ===                 GENERIC BINARY SEARCH TREE ITERATORS                === */
@@ -354,172 +309,149 @@ namespace gum {
    * @brief generic binary search trees */
   /* =========================================================================== */
 
-  template <typename Val, class Cmp, class Node > class BinSearchTreeIterator {
+  template <typename Val, class Cmp, class Node> class BinSearchTreeIterator {
     public:
-      // ############################################################################
-      /// constructors / destructors
-      // ############################################################################
-      ///@{
+    // ############################################################################
+    /// constructors / destructors
+    // ############################################################################
+    ///@{
 
-      /// basic constructor: returns an iterator pointing toward nothing
+    /// basic constructor: returns an iterator pointing toward nothing
 
-      BinSearchTreeIterator();
+    BinSearchTreeIterator();
 
+    /// copy constructor: creates an iterator pointing toward the same tree
 
-      /// copy constructor: creates an iterator pointing toward the same tree
+    BinSearchTreeIterator(const BinSearchTreeIterator<Val, Cmp, Node> &from);
 
-      BinSearchTreeIterator ( const BinSearchTreeIterator<Val, Cmp, Node>& from );
+    /// destructor
 
+    ~BinSearchTreeIterator();
 
-      /// destructor
+    ///@}
 
-      ~BinSearchTreeIterator();
+    // ############################################################################
+    /// operators
+    // ############################################################################
+    ///@{
 
-      ///@}
+    /// copy operator
 
+    BinSearchTreeIterator<Val, Cmp, Node> &
+    operator=(const BinSearchTreeIterator<Val, Cmp, Node> &from);
 
-      // ############################################################################
-      /// operators
-      // ############################################################################
-      ///@{
+    /// returns the value pointed to by the iterator
+    /** @throw UndefinedIteratorValue exception is raised if the iterator does
+     * not point to a valid node of the tree */
 
-      /// copy operator
+    const Val &operator*() const;
 
-      BinSearchTreeIterator<Val, Cmp, Node>&
-      operator= ( const BinSearchTreeIterator<Val, Cmp, Node>& from );
+    /// point the iterator to the next value in the binary search tree
+    /** A binary search tree stores data according to a complete weak order <= .
+     * A ++ operation on an iterator makes the latter point on the next value
+     * in the tree w.r.t. ordering <=.
+     *
+     * for (iter=begin(); iter!=end(); ++iter) loops are guaranteed to
+     * parse the whole binary search tree as long as no element is added to or
+     * deleted from the tree while being in the loop. Deleting elements during the
+     * loop is guaranteed to never produce a segmentation fault. */
 
+    BinSearchTreeIterator<Val, Cmp, Node> &operator++();
 
-      /// returns the value pointed to by the iterator
-      /** @throw UndefinedIteratorValue exception is raised if the iterator does
-       * not point to a valid node of the tree */
+    /// point the iterator to the preceding value in the binary search tree
+    /** A binary search tree stores data according to a complete weak order <= .
+     * A -- operation on an iterator makes the latter point on the preceding value
+     * in the tree w.r.t. ordering <=.
+     *
+     * for (iter=rbegin(); iter!=rend(); --iter) loops are guaranteed to
+     * parse the whole binary search tree as long as no element is added to or
+     * deleted from the tree while being in the loop. Deleting elements during the
+     * loop is guaranteed to never produce a segmentation fault. */
 
-      const Val& operator*() const;
+    BinSearchTreeIterator<Val, Cmp, Node> &operator--();
 
+    /// checks whether two iterators are pointing toward different elements
 
-      /// point the iterator to the next value in the binary search tree
-      /** A binary search tree stores data according to a complete weak order <= .
-       * A ++ operation on an iterator makes the latter point on the next value
-       * in the tree w.r.t. ordering <=.
-       *
-       * for (iter=begin(); iter!=end(); ++iter) loops are guaranteed to
-       * parse the whole binary search tree as long as no element is added to or
-       * deleted from the tree while being in the loop. Deleting elements during the
-       * loop is guaranteed to never produce a segmentation fault. */
+    bool operator!=(const BinSearchTreeIterator<Val, Cmp, Node> &from) const;
 
-      BinSearchTreeIterator<Val, Cmp, Node>& operator++ ();
+    /// checks whether two iterators are pointing toward the same element
 
+    bool operator==(const BinSearchTreeIterator<Val, Cmp, Node> &from) const;
 
-      /// point the iterator to the preceding value in the binary search tree
-      /** A binary search tree stores data according to a complete weak order <= .
-       * A -- operation on an iterator makes the latter point on the preceding value
-       * in the tree w.r.t. ordering <=.
-       *
-       * for (iter=rbegin(); iter!=rend(); --iter) loops are guaranteed to
-       * parse the whole binary search tree as long as no element is added to or
-       * deleted from the tree while being in the loop. Deleting elements during the
-       * loop is guaranteed to never produce a segmentation fault. */
+    ///@}
 
-      BinSearchTreeIterator<Val, Cmp, Node>& operator-- ();
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
 
+    /// makes the iterator move to its parent node
 
-      /// checks whether two iterators are pointing toward different elements
+    BinSearchTreeIterator<Val, Cmp, Node> &up();
 
-      bool operator!= ( const BinSearchTreeIterator<Val, Cmp, Node>& from ) const ;
+    /// makes the iterator move to the left child of the node it points to
 
+    BinSearchTreeIterator<Val, Cmp, Node> &downLeft();
 
-      /// checks whether two iterators are pointing toward the same element
+    /// makes the iterator move to the right child of the node it points to
 
-      bool operator== ( const BinSearchTreeIterator<Val, Cmp, Node>& from ) const ;
+    BinSearchTreeIterator<Val, Cmp, Node> &downRight();
 
-      ///@}
+    /// detach the iterator from its current tree (if any) and reset it
 
+    void clear();
 
-      // ############################################################################
-      /// @name Accessors / Modifiers
-      // ############################################################################
-      /// @{
-
-
-      /// makes the iterator move to its parent node
-
-      BinSearchTreeIterator<Val, Cmp, Node>& up();
-
-
-      /// makes the iterator move to the left child of the node it points to
-
-      BinSearchTreeIterator<Val, Cmp, Node>& downLeft();
-
-
-      /// makes the iterator move to the right child of the node it points to
-
-      BinSearchTreeIterator<Val, Cmp, Node>& downRight();
-
-
-      /// detach the iterator from its current tree (if any) and reset it
-
-      void clear();
-
-      ///@}
-
+    ///@}
 
     protected:
-      /// the current node pointed to by the iterator
-      Node* _node;
+    /// the current node pointed to by the iterator
+    Node *_node;
 
-      /// the next node to be used when _node=0 (if a ++ operator is applied)
-      Node* _next_node;
+    /// the next node to be used when _node=0 (if a ++ operator is applied)
+    Node *_next_node;
 
-      /// the preceding node to be used when _node=0 (if a -- operator is applied)
-      Node* _prev_node;
+    /// the preceding node to be used when _node=0 (if a -- operator is applied)
+    Node *_prev_node;
 
-      /// the parent to be used when _node=0 (if operation up is applied)
-      Node* _parent;
+    /// the parent to be used when _node=0 (if operation up is applied)
+    Node *_parent;
 
-      /// the left child to be used when _node=0 and leftdown() is applied
-      Node* _left_child;
+    /// the left child to be used when _node=0 and leftdown() is applied
+    Node *_left_child;
 
-      /// the right child to be used when _node=0 and rightdown() is applied
-      Node* _right_child;
+    /// the right child to be used when _node=0 and rightdown() is applied
+    Node *_right_child;
 
-      /// the binary search tree pointed to by the iterator
-      BinSearchTree<Val, Cmp, Node>* _tree;
+    /// the binary search tree pointed to by the iterator
+    BinSearchTree<Val, Cmp, Node> *_tree;
 
-      /// the next iterator in the list of iterators of the binSearchTree
-      BinSearchTreeIterator<Val, Cmp, Node>* _next_iter;
-
+    /// the next iterator in the list of iterators of the binSearchTree
+    BinSearchTreeIterator<Val, Cmp, Node> *_next_iter;
 
     private:
-      // to speed-up accesses
+    // to speed-up accesses
 
-      friend class BinSearchTree<Val, Cmp, Node>;
+    friend class BinSearchTree<Val, Cmp, Node>;
 
-      friend class AVLSearchTree<Val, Cmp>;
+    friend class AVLSearchTree<Val, Cmp>;
 
+    /// a function called to initialize an iterator
+    /** Assuming that the iterator has been constructed using the default
+     * constructor (i.e., it points toward no binary search tree), this method
+     * make it point toward one tree and, if needed, add it to the set of
+     * iterators of the tree */
 
+    void _initialize(const BinSearchTree<Val, Cmp, Node> *tree,
+                     const Node *current_node, bool add_to_iterator_list);
 
-      /// a function called to initialize an iterator
-      /** Assuming that the iterator has been constructed using the default
-       * constructor (i.e., it points toward no binary search tree), this method
-       * make it point toward one tree and, if needed, add it to the set of
-       * iterators of the tree */
+    /// a method to detach the current iterator from its tree's iterator's list
 
-      void _initialize ( const BinSearchTree<Val, Cmp, Node>* tree,
-                         const Node* current_node,
-                         bool add_to_iterator_list );
-
-
-      /// a method to detach the current iterator from its tree's iterator's list
-
-      void _detachFromTree();
-
+    void _detachFromTree();
   };
 
 } /* namespace gum */
 
-
 // always include the template implementations
 #include <agrum/core/binSearchTree.tcc>
 
-
 #endif /* GUM_BIN_SEARCH_TREE_H */
-

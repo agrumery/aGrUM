@@ -31,10 +31,8 @@
 
 #include <agrum/config.h>
 
-
 namespace gum {
   std::string getUniqueFileName();
 } /* namespace gum */
-
 
 #endif /* GUM_UTILS_STRING_H */

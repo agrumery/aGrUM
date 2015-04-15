@@ -29,4 +29,3 @@
 #ifdef GUM_NO_INLINE
 #include <agrum/learning/database/databaseVectInRAM.inl>
 #endif /* GUM_NO_INLINE */
-

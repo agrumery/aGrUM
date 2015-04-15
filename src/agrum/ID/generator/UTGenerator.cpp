@@ -25,19 +25,12 @@
  */
 #include <agrum/ID/generator/UTGenerator.h>
 
-
 namespace gum {
 
-
   // Default constructor.
-  UTGenerator::UTGenerator() {
-    GUM_CONSTRUCTOR ( UTGenerator );
-  }
+  UTGenerator::UTGenerator() { GUM_CONSTRUCTOR(UTGenerator); }
 
   // Destructor.
-  UTGenerator::~UTGenerator() {
-    GUM_DESTRUCTOR ( UTGenerator );
-  }
-
+  UTGenerator::~UTGenerator() { GUM_DESTRUCTOR(UTGenerator); }
 
 } /* namespace gum */

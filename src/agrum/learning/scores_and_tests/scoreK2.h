@@ -31,22 +31,17 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-
 #ifndef GUM_LEARNING_SCORE_K2_H
 #define GUM_LEARNING_SCORE_K2_H
-
 
 #include <agrum/core/math/gammaLog2.h>
 #include <agrum/learning/scores_and_tests/score.h>
 #include <agrum/learning/scores_and_tests/scoreInternalK2Apriori.h>
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     /* ========================================================================= */
     /* ===                          SCORE K2 CLASS                           === */
     /* ========================================================================= */
@@ -72,9 +67,9 @@ namespace gum {
      * details.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float> >
-    class ScoreK2 : public Score<IdSetAlloc,CountAlloc> {
-    public:
+              typename CountAlloc = std::allocator<float>>
+    class ScoreK2 : public Score<IdSetAlloc, CountAlloc> {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -92,32 +87,31 @@ namespace gum {
        * Dirichlet (BD) formula to include the sum of the two aprioris into the
        * score. */
       template <typename RowFilter>
-      ScoreK2 ( const RowFilter& filter,
-                const std::vector<unsigned int>& var_modalities,
-                Apriori<IdSetAlloc,CountAlloc>& apriori );
+      ScoreK2(const RowFilter &filter,
+              const std::vector<unsigned int> &var_modalities,
+              Apriori<IdSetAlloc, CountAlloc> &apriori);
 
       /// copy constructor
-      ScoreK2 ( const ScoreK2<IdSetAlloc,CountAlloc>& );
+      ScoreK2(const ScoreK2<IdSetAlloc, CountAlloc> &);
 
       /// move constructor
-      ScoreK2 ( ScoreK2<IdSetAlloc,CountAlloc>&& );
+      ScoreK2(ScoreK2<IdSetAlloc, CountAlloc> &&);
 
       /// virtual copy factory
-      virtual ScoreK2<IdSetAlloc,CountAlloc>* copyFactory () const;
+      virtual ScoreK2<IdSetAlloc, CountAlloc> *copyFactory() const;
 
       /// destructor
-      virtual ~ScoreK2 ();
-      
+      virtual ~ScoreK2();
+
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
       /// returns the log2(K2 score) corresponding to a given nodeset
-      float score ( unsigned int nodeset_index );
+      float score(unsigned int nodeset_index);
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** When using the K2 score, you should use a NoApriori: actually,
@@ -138,7 +132,7 @@ namespace gum {
        * @throws InvalidArgument is raised if the apriori is not handled yet by
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
-      virtual bool isAprioriCompatible () const final;
+      virtual bool isAprioriCompatible() const final;
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** When using the K2 score, you should use a NoApriori: actually,
@@ -159,8 +153,8 @@ namespace gum {
        * @throws InvalidArgument is raised if the apriori is not handled yet by
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
-      static bool isAprioriCompatible ( const std::string& apriori_type,
-                                        float weight = 1.0f );
+      static bool isAprioriCompatible(const std::string &apriori_type,
+                                      float weight = 1.0f);
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** When using the K2 score, you should use a NoApriori: actually,
@@ -182,7 +176,7 @@ namespace gum {
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
       static bool
-      isAprioriCompatible ( const Apriori<IdSetAlloc,CountAlloc>& apriori );
+      isAprioriCompatible(const Apriori<IdSetAlloc, CountAlloc> &apriori);
 
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD score
@@ -195,30 +189,24 @@ namespace gum {
        * to be meaningfull a structure + parameter learning requires that the same
        * aprioris are taken into account during structure learning and parameter
        * learning. */
-      virtual const ScoreInternalApriori<IdSetAlloc,CountAlloc>&
-      internalApriori () const noexcept final;
-  
+      virtual const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
+      internalApriori() const noexcept final;
+
       /// @}
 
-      
-    private:
+      private:
       /// the log(gamma (n)) function: generalizes log((n-1)!)
       GammaLog2 __gammalog2;
-      
+
       /// the internal apriori of the score
-      ScoreInternalK2Apriori<IdSetAlloc,CountAlloc> __internal_apriori;
-      
+      ScoreInternalK2Apriori<IdSetAlloc, CountAlloc> __internal_apriori;
     };
-    
 
   } /* namespace learning */
-  
-  
-} /* namespace gum */
 
+} /* namespace gum */
 
 /// always include the template implementation
 #include <agrum/learning/scores_and_tests/scoreK2.tcc>
-
 
 #endif /* GUM_LEARNING_SCORE_K2_H */

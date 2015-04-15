@@ -73,25 +73,19 @@
 
 namespace gum {
 
-
-  template<class Element> class SplayBinaryNode;
-  template<class Element> class SplayTree;
-
-
+  template <class Element> class SplayBinaryNode;
+  template <class Element> class SplayTree;
 
   /// Display the node
 
-  template <typename Element> INLINE
-  std::ostream& operator<< ( std::ostream& out,
-                             const SplayBinaryNode<Element>& e );
-
+  template <typename Element>
+  INLINE std::ostream &operator<<(std::ostream &out,
+                                  const SplayBinaryNode<Element> &e);
 
   /// Display the tree
 
-  template <typename Element> INLINE
-  std::ostream& operator<< ( std::ostream& out, const SplayTree<Element>& s );
-
-
+  template <typename Element>
+  INLINE std::ostream &operator<<(std::ostream &out, const SplayTree<Element> &s);
 
   /* ============================================================================ */
   /* ===                                   NODE                               === */
@@ -100,189 +94,162 @@ namespace gum {
    * @brief the nodes of splay trees
    * @ingroup basicstruct_group
    */
-  template<class Element> class SplayBinaryNode {
+  template <class Element> class SplayBinaryNode {
     public:
-      // ############################################################################
-      /// @name Accessors / Modifiers
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
 
+    /// Position of the node
+    /**
+     * @return the position of the node into the tree
+     */
 
-      /// Position of the node
-      /**
-       * @return the position of the node into the tree
-       */
+    int position() const;
 
-      int position() const ;
+    /// Element in the node
+    /**
+     * @return the element in the node
+     */
 
+    const Element &getElement() const;
 
-      /// Element in the node
-      /**
-       * @return the element in the node
-       */
+    /**
+     * @return the left child
+     * @warning the returned value can be null
+     */
 
-      const Element& getElement() const ;
+    const SplayBinaryNode<Element> *getFg() const;
 
+    /**
+     * @return the right child
+     * @warning the returned value can be null
+     */
 
-      /**
-       * @return the left child
-       * @warning the returned value can be null
-       */
+    const SplayBinaryNode<Element> *getFd() const;
 
-      const SplayBinaryNode<Element>* getFg() const ;
-
-
-      /**
-       * @return the right child
-       * @warning the returned value can be null
-       */
-
-      const SplayBinaryNode<Element>* getFd() const ;
-
-      /// @}
-
+    /// @}
 
     protected:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
+    /// basic constructor: creates a node with a reference to the element
+    /**
+    * @param e the element in the node
+    * @param addr TODO don't know what to do here ..
+     * @param g the left child of the node, can be nullptr
+     * @param d the right child of the node, can be nullptr
+     * @param p the father of the node, can be nullptr if the node
+     * is the root of the tree */
 
-      /// basic constructor: creates a node with a reference to the element
-      /**
-      * @param e the element in the node
-      * @param addr TODO don't know what to do here ..
-       * @param g the left child of the node, can be nullptr
-       * @param d the right child of the node, can be nullptr
-       * @param p the father of the node, can be nullptr if the node
-       * is the root of the tree */
+    SplayBinaryNode(const Element &e,
+                    HashTable<Element, SplayBinaryNode<Element> *> &addr,
+                    SplayBinaryNode *g = 0, SplayBinaryNode *d = 0,
+                    SplayBinaryNode *p = 0);
 
-      SplayBinaryNode ( const Element& e,
-                        HashTable<Element, SplayBinaryNode<Element>*>& addr,
-                        SplayBinaryNode* g = 0,
-                        SplayBinaryNode* d = 0,
-                        SplayBinaryNode* p = 0 );
+    /// copy constructor
+    /**
+    * @param from the src SplayBinaryNode
+    * @param addr TODO don't know what to do here ..
+    */
 
+    SplayBinaryNode(const SplayBinaryNode<Element> &from,
+                    HashTable<Element, SplayBinaryNode<Element> *> &addr);
 
-      /// copy constructor
-      /**
-      * @param from the src SplayBinaryNode
-      * @param addr TODO don't know what to do here ..
-      */
+    /// a function used to perform copies
+    /**
+    * @param from the src SplayBinaryNode
+    * @param addr TODO don't know what to do here ..
+    */
 
-      SplayBinaryNode ( const SplayBinaryNode<Element>& from,
-                        HashTable<Element, SplayBinaryNode<Element>*>& addr );
+    void _copy(const SplayBinaryNode<Element> &from,
+               HashTable<Element, SplayBinaryNode<Element> *> &addr);
 
+    /// destructor
 
-      /// a function used to perform copies
-      /**
-      * @param from the src SplayBinaryNode
-      * @param addr TODO don't know what to do here ..
-      */
+    ~SplayBinaryNode();
 
-      void _copy ( const SplayBinaryNode<Element>& from,
-                   HashTable<Element, SplayBinaryNode<Element>*>& addr );
+    /// @}
 
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
 
-      /// destructor
+    /// A right rotation, the node must have a father
+    /**
+     * @return a pointer to the root of the sub-tree after rotation
+     */
 
-      ~SplayBinaryNode();
+    SplayBinaryNode<Element> *zig();
 
-      /// @}
+    /// A left rotation, the node must hava a father
+    /**
+     * @return a pointer to the root of the sub-tree after rotation
+     */
 
+    SplayBinaryNode<Element> *zag();
 
-      // ############################################################################
-      /// @name Accessors / Modifiers
-      // ############################################################################
-      /// @{
+    /// A splay rotation, the node will be the root of the tree
+    /**
+     * @return a pointer to the root of the sub-tree after rotation
+     */
 
+    SplayBinaryNode<Element> *splay();
 
-      /// A right rotation, the node must have a father
-      /**
-       * @return a pointer to the root of the sub-tree after rotation
-       */
+    /// Concatenation of two trees
+    /**
+     * @param e the node to add
+     * @param addr TODO don't know what to do here ..
+     * @return the root of the created tree
+     */
 
-      SplayBinaryNode<Element>* zig() ;
+    SplayBinaryNode<Element> *
+    join(const SplayBinaryNode<Element> *e,
+         HashTable<Element, SplayBinaryNode<Element> *> &addr);
 
+    /// @}
 
-      /// A left rotation, the node must hava a father
-      /**
-       * @return a pointer to the root of the sub-tree after rotation
-       */
+    // ############################################################################
+    /// @name Data Members
+    // ############################################################################
+    /// @{
 
-      SplayBinaryNode<Element>* zag() ;
+    /// The content
 
+    Element elt;
 
-      /// A splay rotation, the node will be the root of the tree
-      /**
-       * @return a pointer to the root of the sub-tree after rotation
-       */
+    /// The size of the sub-tree
 
-      SplayBinaryNode<Element>* splay() ;
+    Size size;
 
+    /// The left child
 
-      /// Concatenation of two trees
-      /**
-       * @param e the node to add
-       * @param addr TODO don't know what to do here ..
-       * @return the root of the created tree
-       */
+    SplayBinaryNode *fg;
 
-      SplayBinaryNode<Element>*
-      join ( const SplayBinaryNode<Element>* e,
-             HashTable<Element, SplayBinaryNode<Element>*>& addr ) ;
+    /// The right child
 
-      /// @}
+    SplayBinaryNode *fd;
 
+    /// The father, nullptr for the root
 
-      // ############################################################################
-      /// @name Data Members
-      // ############################################################################
-      /// @{
+    SplayBinaryNode *pere;
 
+    /// @}
 
-      /// The content
+    /// Friendly with SplayTree
 
-      Element elt;
+    friend class SplayTree<Element>;
 
+    /// Friendly to display
 
-      /// The size of the sub-tree
-
-      Size size;
-
-
-      /// The left child
-
-      SplayBinaryNode* fg;
-
-
-      /// The right child
-
-      SplayBinaryNode* fd;
-
-
-      /// The father, nullptr for the root
-
-      SplayBinaryNode* pere;
-
-      /// @}
-
-
-
-      /// Friendly with SplayTree
-
-      friend class SplayTree<Element>;
-
-
-      /// Friendly to display
-
-      friend std::ostream& operator<< <>
-      ( std::ostream& out, const SplayBinaryNode<Element>& );
+    friend std::ostream &operator<<<>(std::ostream &out,
+                                      const SplayBinaryNode<Element> &);
   };
-
-
-
 
   /* ============================================================================ */
   /* ===                                SPLAY TREE                            === */
@@ -293,183 +260,156 @@ namespace gum {
    * @warning an Element must be in just one Splay Tree,
    * the behavior is unspecified else.
    */
-  template<class Element> class SplayTree {
+  template <class Element> class SplayTree {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /// basic constructor, make an empty splay tree
+    /// basic constructor, make an empty splay tree
 
-      SplayTree();
+    SplayTree();
 
+    /// basic constructor, make a splay tree with one element
+    /*
+     * @param e the element of the tree
+     */
 
-      /// basic constructor, make a splay tree with one element
-      /*
-       * @param e the element of the tree
-       */
+    SplayTree(const Element &e);
 
-      SplayTree ( const Element& e );
+    /// copy constructor
 
+    SplayTree(const SplayTree &from);
 
-      /// copy constructor
+    /// Assignment operator
 
-      SplayTree ( const SplayTree& from );
+    SplayTree<Element> &operator=(const SplayTree<Element> &from);
 
+    /// Destructor
 
-      /// Assignment operator
+    ~SplayTree();
 
-      SplayTree<Element>& operator= ( const SplayTree<Element>& from );
+    /// @}
 
+    // ############################################################################
+    /// @name Methods
+    // ############################################################################
+    /// @{
 
-      /// Destructor
+    /// Get the element at the position n
+    /**
+     * @throw NotFound
+     */
 
-      ~SplayTree();
+    Element &operator[](const unsigned int i);
+    const Element &operator[](const unsigned int i) const;
 
-      /// @}
+    /// Get the first element
+    /**
+     * @throw NotFound
+     */
 
+    Element &front();
 
-      // ############################################################################
-      /// @name Methods
-      // ############################################################################
-      /// @{
+    /// Get the last element
+    /**
+     * @throw NotFound
+     */
 
+    Element &back();
 
-      /// Get the element at the position n
-      /**
-       * @throw NotFound
-       */
+    /// Remove the first element
 
-      Element& operator[] ( const unsigned int i );
-      const Element& operator[] ( const unsigned int i ) const;
+    void popFront();
 
+    /// Remove the last element
 
-      /// Get the first element
-      /**
-       * @throw NotFound
-       */
+    void popBack();
 
-      Element& front();
+    /// Add an element in the first position
 
+    void pushFront(const Element &e);
 
-      /// Get the last element
-      /**
-       * @throw NotFound
-       */
+    /// Add an element in the last position
 
-      Element& back();
+    void pushBack(const Element &e);
 
+    /// Add an element to the tree
+    /*
+     * @param e the element to add
+     */
 
-      /// Remove the first element
+    void insert(const Element &e);
 
-      void popFront() ;
+    /// Concatenation of two trees
+    /*
+     * @param s the tree to add
+     */
 
+    void join(const SplayTree<Element> &s);
 
-      /// Remove the last element
+    /// Divide the tree at the position
+    /*
+     * @param i the position of the element (e) for split
+     * @warning all the elements less than e are stored into the tree and those who
+     * are greater than e in the returned tree.
+     */
 
-      void popBack() ;
+    SplayTree<Element> split(const int i);
 
+    /// Divide the tree at the position
+    /*
+     * @param e the element for split
+     * @warning all the elements less than e are stored into the tree and those
+     * greater than e are in the returned tree
+     * @warning the element e is neither in the trees
+     */
 
-      /// Add an element in the first position
+    SplayTree<Element> split_by_val(const Element &e);
 
-      void pushFront ( const Element& e ) ;
+    /// The number of elements in the tree
+    /**
+     * @return the size of the tree
+     * @throw NotFound
+     */
 
+    Size size() const;
 
-      /// Add an element in the last position
+    /// Test if the tree contains the element
 
-      void pushBack ( const Element& e ) ;
+    bool contains(const Element &) const;
 
-
-      /// Add an element to the tree
-      /*
-       * @param e the element to add
-       */
-
-      void insert ( const Element& e );
-
-
-      /// Concatenation of two trees
-      /*
-       * @param s the tree to add
-       */
-
-      void join ( const SplayTree<Element>& s );
-
-
-      /// Divide the tree at the position
-      /*
-       * @param i the position of the element (e) for split
-       * @warning all the elements less than e are stored into the tree and those who
-       * are greater than e in the returned tree.
-       */
-
-      SplayTree<Element> split ( const int i );
-
-
-      /// Divide the tree at the position
-      /*
-       * @param e the element for split
-       * @warning all the elements less than e are stored into the tree and those
-       * greater than e are in the returned tree
-       * @warning the element e is neither in the trees
-       */
-
-      SplayTree<Element> split_by_val ( const Element& e );
-
-
-      /// The number of elements in the tree
-      /**
-       * @return the size of the tree
-       * @throw NotFound
-       */
-
-      Size size() const ;
-
-
-      /// Test if the tree contains the element
-
-      bool contains ( const Element& ) const ;
-
-      /// @}
-
+    /// @}
 
     protected:
-      // ############################################################################
-      /// @name Data Menbers
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Data Menbers
+    // ############################################################################
+    /// @{
 
+    /// Root of the tree
 
-      /// Root of the tree
+    SplayBinaryNode<Element> *root;
 
-      SplayBinaryNode<Element>* root;
+    /// The hash table to find quickly the position of a node
 
+    HashTable<Element, SplayBinaryNode<Element> *> addr;
 
-      /// The hash table to find quickly the position of a node
+    /// @}
 
-      HashTable<Element, SplayBinaryNode<Element>*> addr;
+    /// a function used to perform copies
 
-      /// @}
+    void _copy(const SplayTree<Element> &);
 
+    /// Friendly to display
 
-      /// a function used to perform copies
-
-      void _copy ( const SplayTree<Element>& );
-
-
-      /// Friendly to display
-
-      friend std::ostream& operator<< <>
-      ( std::ostream& out, const SplayTree<Element>& );
+    friend std::ostream &operator<<<>(std::ostream &out, const SplayTree<Element> &);
   };
-
 
 } /* namespace gum */
 
-
 // always include the .tcc as it contains only templates
 #include <agrum/core/splay.tcc>
-
 
 #endif /* GUM_SPLAY_H */

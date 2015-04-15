@@ -21,7 +21,8 @@
  * @file
  * @brief Definition of abstract classes for import of Influence Diagram from a file
  *
- * All classes used to import an influence diagram from a file must inherit from IDReader
+ * All classes used to import an influence diagram from a file must inherit from
+ *IDReader
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
@@ -33,10 +34,7 @@
 #include <agrum/config.h>
 #include <agrum/ID/influenceDiagram.h>
 
-
 namespace gum {
-
-
 
   /**
    * @class IDReader
@@ -46,31 +44,29 @@ namespace gum {
    * All classes used to read an influence diagram from
    * a file must inherit from this class
    */
-  template<typename GUM_SCALAR>
-  class IDReader {
+  template <typename GUM_SCALAR> class IDReader {
     public:
-      /**
-       * Constructor
-       * A reader is created to reading a defined file.
-       * Note that an ID as to be created before and given in parameter.
-       */
-      IDReader ( InfluenceDiagram<GUM_SCALAR>* infdiag, const std::string& filePath );
+    /**
+     * Constructor
+     * A reader is created to reading a defined file.
+     * Note that an ID as to be created before and given in parameter.
+     */
+    IDReader(InfluenceDiagram<GUM_SCALAR> *infdiag, const std::string &filePath);
 
-      /**
-       * Default destructor.
-       */
-      virtual ~IDReader();
+    /**
+     * Default destructor.
+     */
+    virtual ~IDReader();
 
-      /**
-       * Reads the influence diagram from the file referenced by filePath  given at the creation of class
-       * @return Returns the number of error during the parsing (0 if none).
-       */
-      virtual void proceed() = 0;
+    /**
+     * Reads the influence diagram from the file referenced by filePath  given at the
+     * creation of class
+     * @return Returns the number of error during the parsing (0 if none).
+     */
+    virtual void proceed() = 0;
   };
 
-
 } /* namespace gum */
-
 
 #include "IDReader.tcc"
 

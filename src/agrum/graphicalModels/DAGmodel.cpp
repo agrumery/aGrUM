@@ -25,116 +25,109 @@
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
-  DAGmodel::DAGmodel() :
-    __mutableMoralGraph ( nullptr ),
-    __mutableTopologicalOrder ( nullptr ),
-    __propertiesMap ( nullptr ) {
-    GUM_CONSTRUCTOR ( DAGmodel );
+  DAGmodel::DAGmodel()
+      : __mutableMoralGraph(nullptr), __mutableTopologicalOrder(nullptr),
+        __propertiesMap(nullptr) {
+    GUM_CONSTRUCTOR(DAGmodel);
   }
 
-  DAGmodel::DAGmodel ( const DAGmodel& from ) :
-    _dag ( from._dag ) ,
-    __mutableMoralGraph ( nullptr ),
-    __mutableTopologicalOrder ( nullptr ),
-    __propertiesMap ( nullptr ) {
-    GUM_CONS_CPY ( DAGmodel );
+  DAGmodel::DAGmodel(const DAGmodel &from)
+      : _dag(from._dag), __mutableMoralGraph(nullptr),
+        __mutableTopologicalOrder(nullptr), __propertiesMap(nullptr) {
+    GUM_CONS_CPY(DAGmodel);
 
-    if ( from.__propertiesMap ) {
-      __propertiesMap = new HashTable<std::string, std::string> ( * ( from.__propertiesMap ) );
+    if (from.__propertiesMap) {
+      __propertiesMap =
+          new HashTable<std::string, std::string>(*(from.__propertiesMap));
     }
   }
 
   DAGmodel::~DAGmodel() {
-    GUM_DESTRUCTOR ( DAGmodel );
+    GUM_DESTRUCTOR(DAGmodel);
     // Removing previous properties
 
-    if ( __propertiesMap ) {
+    if (__propertiesMap) {
       delete __propertiesMap;
     }
 
-    if ( __mutableMoralGraph ) {
+    if (__mutableMoralGraph) {
       delete __mutableMoralGraph;
     }
 
-    if ( __mutableTopologicalOrder ) {
+    if (__mutableTopologicalOrder) {
       delete __mutableTopologicalOrder;
     }
   }
 
-
-  void
-  DAGmodel::__topologicalOrder( ) const {
+  void DAGmodel::__topologicalOrder() const {
     DAG dag = this->dag();
     std::vector<NodeId> roots;
 
-    for ( const auto node : dag.nodes() )
-      if ( dag.parents ( node ).empty() )
-        roots.push_back ( node );
+    for (const auto node : dag.nodes())
+      if (dag.parents(node).empty())
+        roots.push_back(node);
 
-    while ( roots.size() ) {
-      __mutableTopologicalOrder->insert ( roots.back() );
+    while (roots.size()) {
+      __mutableTopologicalOrder->insert(roots.back());
       roots.pop_back();
 
-      while ( dag.children ( __mutableTopologicalOrder->back() ).size() ) {
-        NodeId child = * ( dag.children ( __mutableTopologicalOrder->back() ).begin() );
-        dag.eraseArc ( Arc ( __mutableTopologicalOrder->back(), child ) );
+      while (dag.children(__mutableTopologicalOrder->back()).size()) {
+        NodeId child = *(dag.children(__mutableTopologicalOrder->back()).begin());
+        dag.eraseArc(Arc(__mutableTopologicalOrder->back(), child));
 
-        if ( dag.parents ( child ).empty() )
-          roots.push_back ( child );
+        if (dag.parents(child).empty())
+          roots.push_back(child);
       }
     }
 
-    GUM_ASSERT ( dag.sizeArcs() == ( gum::Size ) ( 0 ) );
-    GUM_ASSERT ( __mutableTopologicalOrder->size() == dag.size() );
+    GUM_ASSERT(dag.sizeArcs() == (gum::Size)(0));
+    GUM_ASSERT(__mutableTopologicalOrder->size() == dag.size());
   }
 
-
-  void
-  DAGmodel::__moralGraph( ) const {
-    __mutableMoralGraph->populateNodes ( dag() );
+  void DAGmodel::__moralGraph() const {
+    __mutableMoralGraph->populateNodes(dag());
     // transform the arcs into edges
 
-    for ( const auto arc : arcs() )
-      __mutableMoralGraph->addEdge ( arc.first(), arc.second() );
+    for (const auto arc : arcs())
+      __mutableMoralGraph->addEdge(arc.first(), arc.second());
 
     //}
 
     // marry the parents
-    for ( const auto node : nodes() ) {
-      const NodeSet& parents = dag().parents ( node);
+    for (const auto node : nodes()) {
+      const NodeSet &parents = dag().parents(node);
 
-      for ( auto it1 = parents.begin (); it1 != parents.end (); ++it1 ) {
+      for (auto it1 = parents.begin(); it1 != parents.end(); ++it1) {
         auto it2 = it1;
 
-        for ( ++it2; it2 != parents.end (); ++it2 ) {
+        for (++it2; it2 != parents.end(); ++it2) {
           // will automatically check if this edge already exists
-          __mutableMoralGraph->addEdge ( *it1, *it2 );
+          __mutableMoralGraph->addEdge(*it1, *it2);
         }
       }
     }
   }
 
-
-  DAGmodel& DAGmodel::operator= ( const DAGmodel& source ) {
-    if ( this != &source ) {
-      if ( __propertiesMap ) {
+  DAGmodel &DAGmodel::operator=(const DAGmodel &source) {
+    if (this != &source) {
+      if (__propertiesMap) {
         delete __propertiesMap;
         __propertiesMap = nullptr;
       }
 
-
-      if ( __mutableMoralGraph ) {
+      if (__mutableMoralGraph) {
         delete __mutableMoralGraph;
         __mutableMoralGraph = nullptr;
       }
 
-      if ( __mutableTopologicalOrder ) {
+      if (__mutableTopologicalOrder) {
         delete __mutableTopologicalOrder;
         __mutableTopologicalOrder = nullptr;
       }
 
-      if ( source.__propertiesMap != 0 ) {
-        __propertiesMap = new HashTable<std::string, std::string> ( * ( source.__propertiesMap ) );
+      if (source.__propertiesMap != 0) {
+        __propertiesMap =
+            new HashTable<std::string, std::string>(*(source.__propertiesMap));
       }
 
       _dag = source._dag;
@@ -143,38 +136,34 @@ namespace gum {
     return *this;
   }
 
-
-  const UndiGraph&
-  DAGmodel::moralGraph ( bool clear ) const {
-    if ( clear || ( __mutableMoralGraph == nullptr ) ) { // we have to call _moralGraph
-      if ( __mutableMoralGraph == nullptr ) {
+  const UndiGraph &DAGmodel::moralGraph(bool clear) const {
+    if (clear || (__mutableMoralGraph == nullptr)) { // we have to call _moralGraph
+      if (__mutableMoralGraph == nullptr) {
         __mutableMoralGraph = new UndiGraph();
       } else {
-        //clear is True ,__mutableMoralGraph exists
+        // clear is True ,__mutableMoralGraph exists
         __mutableMoralGraph->clear();
       }
 
-      __moralGraph( );
+      __moralGraph();
     }
 
     return *__mutableMoralGraph;
   }
 
-
-  const Sequence<NodeId>&
-  DAGmodel::topologicalOrder ( bool clear ) const {
-    if ( clear || ( __mutableTopologicalOrder == nullptr ) ) { // we have to call _topologicalOrder
-      if ( __mutableTopologicalOrder == nullptr ) {
+  const Sequence<NodeId> &DAGmodel::topologicalOrder(bool clear) const {
+    if (clear || (__mutableTopologicalOrder ==
+                  nullptr)) { // we have to call _topologicalOrder
+      if (__mutableTopologicalOrder == nullptr) {
         __mutableTopologicalOrder = new Sequence<NodeId>();
       } else {
-        //clear is True
+        // clear is True
         __mutableTopologicalOrder->clear();
       }
 
-      __topologicalOrder( );
+      __topologicalOrder();
     }
 
     return *__mutableTopologicalOrder;
   }
 }
-

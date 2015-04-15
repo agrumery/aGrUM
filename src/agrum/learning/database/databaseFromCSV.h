@@ -34,7 +34,6 @@
 #ifndef GUM_DATABASE_FROM_CSV_H
 #define GUM_DATABASE_FROM_CSV_H
 
-
 #include <string>
 #include <vector>
 
@@ -42,12 +41,9 @@
 #include <agrum/learning/database/DBTransform.h>
 #include <agrum/learning/database/DBTransformIdentity.h>
 
-
 namespace gum {
 
-
   namespace learning {
-
 
     /** @class DatabaseFromCSV
      * @brief The class representing a tabular database created from a CSV
@@ -62,11 +58,9 @@ namespace gum {
      * number 0).
      */
     class DatabaseFromCSV : public DatabaseVectInRAM {
-    public:
-
+      public:
       /// the handler used for parsing the database
       using Handler = typename DatabaseVectInRAM::Handler;
-
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -83,54 +77,45 @@ namespace gum {
        * contain names for its columns, the DatabaseFromCSV creates some (those
        * are "node X", where X is the number of the column, the first column having
        * number 0). */
-      DatabaseFromCSV
-      ( const std::string filename,
-        bool fileContainsNames = true,
-        const DBTransform& transform = DBTransformIdentity (),
-        const std::string delimiter = ",",
-        const char commentmarker = '#',
-        const char quoteMarker = '"',
-        const std::vector<std::string> missingVal = { "?", "N/A", "n/a" } );
+      DatabaseFromCSV(const std::string filename, bool fileContainsNames = true,
+                      const DBTransform &transform = DBTransformIdentity(),
+                      const std::string delimiter = ",",
+                      const char commentmarker = '#', const char quoteMarker = '"',
+                      const std::vector<std::string> missingVal = {"?", "N/A",
+                                                                   "n/a"});
 
       /// copy constructor
-      DatabaseFromCSV ( const DatabaseFromCSV& from );
+      DatabaseFromCSV(const DatabaseFromCSV &from);
 
       /// move constructor
-      DatabaseFromCSV ( DatabaseFromCSV&& from );
+      DatabaseFromCSV(DatabaseFromCSV &&from);
 
       /// destructor
-      virtual ~DatabaseFromCSV ();
+      virtual ~DatabaseFromCSV();
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
       /// @{
-        
+
       /// copy operator
-      DatabaseFromCSV& operator= ( const DatabaseFromCSV& from );
+      DatabaseFromCSV &operator=(const DatabaseFromCSV &from);
 
       /// move constructor
-      DatabaseFromCSV& operator= ( DatabaseFromCSV&& from );
+      DatabaseFromCSV &operator=(DatabaseFromCSV &&from);
 
       /// @}
-
     };
-
 
   } /* namespace learning */
 
-
 } /* namespace gum */
-
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #include <agrum/learning/database/databaseFromCSV.inl>
 #endif /* GUM_NO_INLINE */
 
-
 #endif /* GUM_DATABASE_FROM_CSV_H */
-

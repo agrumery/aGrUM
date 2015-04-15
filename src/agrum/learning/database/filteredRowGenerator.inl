@@ -25,90 +25,73 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
 namespace gum {
-
 
   namespace learning {
 
-
     /// default constructor
-    INLINE FilteredRowGenerator::FilteredRowGenerator () noexcept {
-      GUM_CONSTRUCTOR ( FilteredRowGenerator );
+    INLINE FilteredRowGenerator::FilteredRowGenerator() noexcept {
+      GUM_CONSTRUCTOR(FilteredRowGenerator);
     }
-
 
     /// copy constructor
-    INLINE FilteredRowGenerator::FilteredRowGenerator
-    ( const FilteredRowGenerator& from ) noexcept :
-    _input_row ( from._input_row ),
-    _nb_remaining_output_rows { from._nb_remaining_output_rows } {
-      GUM_CONS_CPY ( FilteredRowGenerator );
+    INLINE FilteredRowGenerator::FilteredRowGenerator(
+        const FilteredRowGenerator &from) noexcept
+        : _input_row(from._input_row),
+          _nb_remaining_output_rows{from._nb_remaining_output_rows} {
+      GUM_CONS_CPY(FilteredRowGenerator);
     }
-
 
     /// move constructor
-    INLINE FilteredRowGenerator::FilteredRowGenerator
-    ( FilteredRowGenerator&& from ) noexcept :
-    _input_row ( from._input_row ),
-    _nb_remaining_output_rows { from._nb_remaining_output_rows } {
-      GUM_CONS_MOV ( FilteredRowGenerator );
+    INLINE
+    FilteredRowGenerator::FilteredRowGenerator(FilteredRowGenerator &&from) noexcept
+        : _input_row(from._input_row),
+          _nb_remaining_output_rows{from._nb_remaining_output_rows} {
+      GUM_CONS_MOV(FilteredRowGenerator);
     }
-
 
     /// destructor
-    INLINE FilteredRowGenerator::~FilteredRowGenerator () noexcept {
-      GUM_DESTRUCTOR ( FilteredRowGenerator );
+    INLINE FilteredRowGenerator::~FilteredRowGenerator() noexcept {
+      GUM_DESTRUCTOR(FilteredRowGenerator);
     }
-
 
     /// copy operator
-    INLINE FilteredRowGenerator&
-    FilteredRowGenerator::operator= ( const FilteredRowGenerator& from ) noexcept {
+    INLINE FilteredRowGenerator &FilteredRowGenerator::
+    operator=(const FilteredRowGenerator &from) noexcept {
       _input_row = from._input_row;
       _nb_remaining_output_rows = from._nb_remaining_output_rows;
       return *this;
     }
-
 
     /// move operator
-    INLINE FilteredRowGenerator&
-    FilteredRowGenerator::operator= ( FilteredRowGenerator&& from ) noexcept {
+    INLINE FilteredRowGenerator &FilteredRowGenerator::
+    operator=(FilteredRowGenerator &&from) noexcept {
       _input_row = from._input_row;
       _nb_remaining_output_rows = from._nb_remaining_output_rows;
       return *this;
     }
 
-
     /// returns true if there are still rows that can be output by the RowFilter
-    INLINE bool FilteredRowGenerator::hasRows () noexcept {
+    INLINE bool FilteredRowGenerator::hasRows() noexcept {
       return _nb_remaining_output_rows;
     }
 
-
     /// sets the input row from which the generator will create new rows
-    INLINE void FilteredRowGenerator::setInputRow ( FilteredRow& row ) noexcept {
+    INLINE void FilteredRowGenerator::setInputRow(FilteredRow &row) noexcept {
       _input_row = &row;
-      _nb_remaining_output_rows = _computeRows ();
+      _nb_remaining_output_rows = _computeRows();
     }
 
-
     /// decrease the number of remaining output rows
-    INLINE void FilteredRowGenerator::decreaseRemainingRows () noexcept {
+    INLINE void FilteredRowGenerator::decreaseRemainingRows() noexcept {
       --_nb_remaining_output_rows;
     }
 
-
     /// resets the filter
-    INLINE void FilteredRowGenerator::reset () {
-      _nb_remaining_output_rows = 0;
-    }
-
+    INLINE void FilteredRowGenerator::reset() { _nb_remaining_output_rows = 0; }
 
   } /* namespace learning */
 
-
 } /* namespace gum */
-
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

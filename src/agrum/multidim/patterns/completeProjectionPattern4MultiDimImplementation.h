@@ -22,7 +22,6 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN */
 
-
 // check if we allowed these patterns to be used
 #ifndef GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED
 
@@ -31,33 +30,29 @@
 #else
 namespace gum {
 
-
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
-  template<typename GUM_SCALAR>
-  GUM_SCALAR
-  GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
-  ( const MultiDimImplementation<GUM_SCALAR>& ttable,
-    Instantiation* instantiation ) {
+  template <typename GUM_SCALAR>
+  GUM_SCALAR GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(
+      const MultiDimImplementation<GUM_SCALAR> &ttable,
+      Instantiation *instantiation) {
 #endif
 
     typename CompleteProjectionRegister4MultiDim<GUM_SCALAR>::CompleteProjectionPtr
-    func;
+        func;
 
     // get the appropriate function to perform the operation
     try {
       // try to find func(ttable,del_vars) in the register
-      func = CompleteProjectionRegister4MultiDim<GUM_SCALAR>::Register().get
-             ( GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME, ttable.name() );
-    } catch ( NotFound& ) {
-      func = CompleteProjectionRegister4MultiDim<GUM_SCALAR>::Register().get
-             ( GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME, ttable.basename() );
+      func = CompleteProjectionRegister4MultiDim<GUM_SCALAR>::Register().get(
+          GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME, ttable.name());
+    } catch (NotFound &) {
+      func = CompleteProjectionRegister4MultiDim<GUM_SCALAR>::Register().get(
+          GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME, ttable.basename());
     }
 
     // perform the projection
-    return func ( &ttable, instantiation );
+    return func(&ttable, instantiation);
   }
-
 
 } /* End of namespace gum */
 #endif /* GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED */
-
