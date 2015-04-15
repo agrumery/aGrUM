@@ -33,8 +33,8 @@
 
 #ifndef GUM_TRACE_ON
 #define GUM_TRACE_ON // in DEBUG MODE we force TRACE to be ON
-#else // GUM_TRACE_ON on mode debug add  TRACE_CONSTRUCTION_ON (tracing
-      // construction/destruction of object)
+#else                // GUM_TRACE_ON on mode debug add  TRACE_CONSTRUCTION_ON (tracing
+// construction/destruction of object)
 #define GUM_DEEP_TRACE_ON
 #endif // GUM_TRACE_ON
 

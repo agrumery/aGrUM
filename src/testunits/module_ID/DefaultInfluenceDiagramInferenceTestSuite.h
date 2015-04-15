@@ -54,11 +54,11 @@ namespace gum_tests {
     void fillTopoOilWildcater(gum::InfluenceDiagram<float> &id,
                               gum::List<gum::NodeId> &idList) {
       try {
-        idList.insert(id.addDecisionNode(*TestVar)); // 0
-        idList.insert(id.addDecisionNode(*DrillVar)); // 1
-        idList.insert(id.addChanceNode(*ResultTestVar)); // 2
-        idList.insert(id.addChanceNode(*OilAmountVar)); // 3
-        idList.insert(id.addUtilityNode(*TestUtilityVar)); // 4
+        idList.insert(id.addDecisionNode(*TestVar));           // 0
+        idList.insert(id.addDecisionNode(*DrillVar));          // 1
+        idList.insert(id.addChanceNode(*ResultTestVar));       // 2
+        idList.insert(id.addChanceNode(*OilAmountVar));        // 3
+        idList.insert(id.addUtilityNode(*TestUtilityVar));     // 4
         idList.insert(id.addUtilityNode(*DrillingUtilityVar)); // 5
 
         id.addArc(idList[0], idList[4]);
@@ -126,18 +126,18 @@ namespace gum_tests {
     void fillTopoDecAsia(gum::InfluenceDiagram<float> &id,
                          gum::List<gum::NodeId> &idList) {
       try {
-        idList.insert(id.addDecisionNode(*HospitalizeVar)); // 0
-        idList.insert(id.addDecisionNode(*TakeXRayVar)); // 1
-        idList.insert(id.addChanceNode(*SmokingVar)); // 2
-        idList.insert(id.addChanceNode(*BronchitisVar)); // 3
-        idList.insert(id.addChanceNode(*LungCancerVar)); // 4
-        idList.insert(id.addChanceNode(*EitherVar)); // 5
-        idList.insert(id.addChanceNode(*DyspnoeaVar)); // 6
-        idList.insert(id.addChanceNode(*PositiveXRayVar)); // 7
-        idList.insert(id.addChanceNode(*TubercolisisVar)); // 8
-        idList.insert(id.addChanceNode(*VisitAsiaVar)); // 9
+        idList.insert(id.addDecisionNode(*HospitalizeVar));           // 0
+        idList.insert(id.addDecisionNode(*TakeXRayVar));              // 1
+        idList.insert(id.addChanceNode(*SmokingVar));                 // 2
+        idList.insert(id.addChanceNode(*BronchitisVar));              // 3
+        idList.insert(id.addChanceNode(*LungCancerVar));              // 4
+        idList.insert(id.addChanceNode(*EitherVar));                  // 5
+        idList.insert(id.addChanceNode(*DyspnoeaVar));                // 6
+        idList.insert(id.addChanceNode(*PositiveXRayVar));            // 7
+        idList.insert(id.addChanceNode(*TubercolisisVar));            // 8
+        idList.insert(id.addChanceNode(*VisitAsiaVar));               // 9
         idList.insert(id.addUtilityNode(*HospitalizationUtilityVar)); // 10
-        idList.insert(id.addUtilityNode(*TakingXRayUtilityVar)); // 11
+        idList.insert(id.addUtilityNode(*TakingXRayUtilityVar));      // 11
 
         id.addArc(idList[0], idList[10]);
         id.addArc(idList[0], idList[1]);
@@ -416,22 +416,22 @@ namespace gum_tests {
       idList.insert(id.addDecisionNode(dVar2)); // 1
       idList.insert(id.addDecisionNode(dVar3)); // 2
       idList.insert(id.addDecisionNode(dVar4)); // 3
-      idList.insert(id.addChanceNode(cVar1)); // 4
-      idList.insert(id.addChanceNode(cVar2)); // 5
-      idList.insert(id.addChanceNode(cVar3)); // 6
-      idList.insert(id.addChanceNode(cVar4)); // 7
-      idList.insert(id.addChanceNode(cVar5)); // 8
-      idList.insert(id.addChanceNode(cVar6)); // 9
-      idList.insert(id.addChanceNode(cVar7)); // 10
-      idList.insert(id.addChanceNode(cVar8)); // 11
-      idList.insert(id.addChanceNode(cVar9)); // 12
-      idList.insert(id.addChanceNode(cVar10)); // 13
-      idList.insert(id.addChanceNode(cVar11)); // 14
-      idList.insert(id.addChanceNode(cVar12)); // 15
-      idList.insert(id.addUtilityNode(uVar1)); // 16
-      idList.insert(id.addUtilityNode(uVar2)); // 17
-      idList.insert(id.addUtilityNode(uVar3)); // 18
-      idList.insert(id.addUtilityNode(uVar4)); // 19
+      idList.insert(id.addChanceNode(cVar1));   // 4
+      idList.insert(id.addChanceNode(cVar2));   // 5
+      idList.insert(id.addChanceNode(cVar3));   // 6
+      idList.insert(id.addChanceNode(cVar4));   // 7
+      idList.insert(id.addChanceNode(cVar5));   // 8
+      idList.insert(id.addChanceNode(cVar6));   // 9
+      idList.insert(id.addChanceNode(cVar7));   // 10
+      idList.insert(id.addChanceNode(cVar8));   // 11
+      idList.insert(id.addChanceNode(cVar9));   // 12
+      idList.insert(id.addChanceNode(cVar10));  // 13
+      idList.insert(id.addChanceNode(cVar11));  // 14
+      idList.insert(id.addChanceNode(cVar12));  // 15
+      idList.insert(id.addUtilityNode(uVar1));  // 16
+      idList.insert(id.addUtilityNode(uVar2));  // 17
+      idList.insert(id.addUtilityNode(uVar3));  // 18
+      idList.insert(id.addUtilityNode(uVar4));  // 19
 
       id.addArc(idList[4], idList[6]);
       id.addArc(idList[5], idList[6]);

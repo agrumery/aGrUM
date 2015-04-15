@@ -181,7 +181,7 @@ namespace gum_tests {
 
           // then we check if another variable goes on it
           //(or if this is the root). It's done implicitly by the size of the list of
-          //node associated to that var.
+          // node associated to that var.
           // if not we move on
           // else
           if (!var2NodeIdMap[(*varList)[numVar]]->empty()) {

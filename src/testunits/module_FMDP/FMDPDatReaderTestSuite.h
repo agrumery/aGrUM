@@ -96,7 +96,7 @@ namespace gum_tests {
     //~
     //~
     //~ for ( gum::DAG::NodeIterator iter = net->dag().beginNodes();iter !=
-    //net->dag().endNodes(); ++iter ) {
+    // net->dag().endNodes(); ++iter ) {
     //~ if ( net->variable( *iter ).name() == "n1" )
     //~ node_1 = *iter;
     //~ else

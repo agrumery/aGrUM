@@ -57,13 +57,13 @@ namespace gum_tests {
         idList.insert(id.addDecisionNode(*decisionVar2)); // 1
         idList.insert(id.addDecisionNode(*decisionVar3)); // 2
         idList.insert(id.addDecisionNode(*decisionVar4)); // 3
-        idList.insert(id.addChanceNode(*chanceVar1)); // 4
-        idList.insert(id.addChanceNode(*chanceVar2)); // 5
-        idList.insert(id.addChanceNode(*chanceVar3)); // 6
-        idList.insert(id.addChanceNode(*chanceVar4)); // 7
-        idList.insert(id.addChanceNode(*chanceVar5)); // 8
-        idList.insert(id.addUtilityNode(*utilityVar1)); // 9
-        idList.insert(id.addUtilityNode(*utilityVar2)); // 10
+        idList.insert(id.addChanceNode(*chanceVar1));     // 4
+        idList.insert(id.addChanceNode(*chanceVar2));     // 5
+        idList.insert(id.addChanceNode(*chanceVar3));     // 6
+        idList.insert(id.addChanceNode(*chanceVar4));     // 7
+        idList.insert(id.addChanceNode(*chanceVar5));     // 8
+        idList.insert(id.addUtilityNode(*utilityVar1));   // 9
+        idList.insert(id.addUtilityNode(*utilityVar2));   // 10
 
         id.addArc(idList[0], idList[4]);
         id.addArc(idList[4], idList[9]);
@@ -768,22 +768,22 @@ namespace gum_tests {
       idList.insert(id.addDecisionNode(dVar2)); // 1
       idList.insert(id.addDecisionNode(dVar3)); // 2
       idList.insert(id.addDecisionNode(dVar4)); // 3
-      idList.insert(id.addChanceNode(cVar1)); // 4
-      idList.insert(id.addChanceNode(cVar2)); // 5
-      idList.insert(id.addChanceNode(cVar3)); // 6
-      idList.insert(id.addChanceNode(cVar4)); // 7
-      idList.insert(id.addChanceNode(cVar5)); // 8
-      idList.insert(id.addChanceNode(cVar6)); // 9
-      idList.insert(id.addChanceNode(cVar7)); // 10
-      idList.insert(id.addChanceNode(cVar8)); // 11
-      idList.insert(id.addChanceNode(cVar9)); // 12
-      idList.insert(id.addChanceNode(cVar10)); // 13
-      idList.insert(id.addChanceNode(cVar11)); // 14
-      idList.insert(id.addChanceNode(cVar12)); // 15
-      idList.insert(id.addUtilityNode(uVar1)); // 16
-      idList.insert(id.addUtilityNode(uVar2)); // 17
-      idList.insert(id.addUtilityNode(uVar3)); // 18
-      idList.insert(id.addUtilityNode(uVar4)); // 19
+      idList.insert(id.addChanceNode(cVar1));   // 4
+      idList.insert(id.addChanceNode(cVar2));   // 5
+      idList.insert(id.addChanceNode(cVar3));   // 6
+      idList.insert(id.addChanceNode(cVar4));   // 7
+      idList.insert(id.addChanceNode(cVar5));   // 8
+      idList.insert(id.addChanceNode(cVar6));   // 9
+      idList.insert(id.addChanceNode(cVar7));   // 10
+      idList.insert(id.addChanceNode(cVar8));   // 11
+      idList.insert(id.addChanceNode(cVar9));   // 12
+      idList.insert(id.addChanceNode(cVar10));  // 13
+      idList.insert(id.addChanceNode(cVar11));  // 14
+      idList.insert(id.addChanceNode(cVar12));  // 15
+      idList.insert(id.addUtilityNode(uVar1));  // 16
+      idList.insert(id.addUtilityNode(uVar2));  // 17
+      idList.insert(id.addUtilityNode(uVar3));  // 18
+      idList.insert(id.addUtilityNode(uVar4));  // 19
 
       id.addArc(idList[4], idList[6]);
       id.addArc(idList[5], idList[6]);

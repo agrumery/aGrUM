@@ -93,7 +93,9 @@ namespace gum {
           break;
         }
 
-        default: { /* do nothing */ break; }
+        default: { /* do nothing */
+          break;
+        }
       }
     }
 
@@ -157,7 +159,9 @@ namespace gum {
           break;
         }
 
-        default: { /* do nothing */ break; }
+        default: { /* do nothing */
+          break;
+        }
       }
     }
 

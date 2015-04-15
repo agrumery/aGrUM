@@ -93,8 +93,9 @@
 /* dependent on mp implementation */
 /**********************************/
 
-#define exactdivint(a, b, c) divint((a), (b), (c)) /*should use special code here   \
-                                                      */
+#define exactdivint(a, b, c)                                                        \
+  divint((a), (b), (c)) /*should use special code here                              \
+                           */
 #define positive(a) (((a)[0] < 2 || ((a)[0] == 2 && (a)[1] == 0)) ? FALSE : TRUE)
 #define negative(a) (((a)[0] > -2 || ((a)[0] == -2 && (a)[1] == 0)) ? FALSE : TRUE)
 #define zero(a) ((((a)[0] == 2 || (a)[0] == -2) && (a)[1] == 0) ? TRUE : FALSE)
@@ -183,8 +184,8 @@ void gcd(lrs_mp u, lrs_mp v); /* returns u=gcd(u,v) destroying v                
 long greater(lrs_mp a, lrs_mp b); /* tests if a > b and returns (TRUE=POS) */
 void itomp(long in, lrs_mp a); /* convert integer i to lrs_mp                    */
 void linint(lrs_mp a, long ka, lrs_mp b, long kb); /* compute a*ka+b*kb --> a */
-void mptodouble(lrs_mp a, double *x); /* convert lrs_mp to double */
-long mptoi(lrs_mp a); /* convert lrs_mp to long integer */
+void mptodouble(lrs_mp a, double *x);              /* convert lrs_mp to double */
+long mptoi(lrs_mp a);                      /* convert lrs_mp to long integer */
 void mulint(lrs_mp a, lrs_mp b, lrs_mp c); /* multiply two integers a*b --> c */
 void normalize(lrs_mp a);        /* normalize lrs_mp after computation             */
 void pmp(char name[], lrs_mp a); /* print the long precision integer a             */
@@ -223,7 +224,7 @@ void reduceint(lrs_mp Na, lrs_mp Da); /* divide Na by Da and return it */
 void reducearray(lrs_mp_vector p,
                  long n); /* find gcd of p[0]..p[n-1] and divide through by */
 void scalerat(lrs_mp Na, lrs_mp Da, long ka); /* scales rational by ka */
-void subint(lrs_mp a, lrs_mp b, lrs_mp c); /* compute c=a-b */
+void subint(lrs_mp a, lrs_mp b, lrs_mp c);    /* compute c=a-b */
 
 /**********************************/
 /* Miscellaneous functions        */

@@ -66,7 +66,7 @@ namespace gum {
 #else  //__MINGW32__
     _callstack = "Callstack only in linux debug mode";
 #endif //__MINGW32__
-#else // NDEBUG
+#else  // NDEBUG
     _callstack = "Callstack only in linux debug mode";
 #endif // NDEBUG
   }

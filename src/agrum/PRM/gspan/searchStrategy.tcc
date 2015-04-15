@@ -106,7 +106,8 @@ namespace gum {
                   break;
                 }
 
-                default: { /* Do nothing */ }
+                default: { /* Do nothing */
+                }
               }
             }
 

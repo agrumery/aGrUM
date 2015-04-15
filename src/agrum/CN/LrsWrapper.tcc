@@ -433,7 +433,7 @@ namespace gum {
 
       //__vertices = nredund;
       //__output = std::vector< std::vector< GUM_SCALAR > > ( nredund, std::vector<
-      //GUM_SCALAR > ( __dat->n - 1 ) );
+      // GUM_SCALAR > ( __dat->n - 1 ) );
 
       for (decltype(m) i = 1; i <= m; i++)
         if (redineq[i] == 0)

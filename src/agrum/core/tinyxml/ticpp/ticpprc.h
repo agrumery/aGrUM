@@ -59,12 +59,11 @@ class TiCppRC {
   */
   virtual ~TiCppRC();
 
-  std::
-      vector<
-          ticpp::Base *> m_spawnedWrappers; /**< Remember all wrappers that we've
-                                               created with 'new' - ( e.g.
-                                               NodeFactory, FirstChildElement, etc.
-                                               )*/
+  std::vector<ticpp::Base *>
+      m_spawnedWrappers; /**< Remember all wrappers that we've
+                            created with 'new' - ( e.g.
+                            NodeFactory, FirstChildElement, etc.
+                            )*/
 
   /**
   Delete all container objects we've spawned with 'new'.

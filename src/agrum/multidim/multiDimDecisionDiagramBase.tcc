@@ -714,7 +714,7 @@ namespace gum {
     //~ std::stringstream varString;
     //~ varString << std::endl << " Sequence variable : ";
     //~ for( SequenceIteratorSafe< const DiscreteVariable* > iter = varsSeq->begin();
-    //iter != varsSeq->end(); ++iter )
+    // iter != varsSeq->end(); ++iter )
     //~ varString << (*iter)->name() << " - ";
     //~ varString << std::endl;
     //~ GUM_TRACE( varString.str() );
@@ -724,8 +724,8 @@ namespace gum {
     //~ std::stringstream preceedingVarLog;
     //~ preceedingVarLog << std::endl << " Preceeding variable Table : ";
     //~ for( HashTableConstIteratorSafe< NodeId, Set< const DiscreteVariable* >* >
-    //iterH = preceedingVariablesTable->begin(); iterH !=
-    //preceedingVariablesTable->end(); ++iterH ){
+    // iterH = preceedingVariablesTable->begin(); iterH !=
+    // preceedingVariablesTable->end(); ++iterH ){
     //~ preceedingVarLog << std::endl << "Noeud : " << iterH.key() << " - Variable :
     //" << this->nodeVariable( iterH.key() )->toString() << " - Preceeding Variable :
     //";
@@ -739,8 +739,8 @@ namespace gum {
     //~ std::stringstream retorgradeVarLog;
     //~ retorgradeVarLog << std::endl << " Retrograde variable Table : ";
     //~ for( HashTableConstIteratorSafe< NodeId, Set< const DiscreteVariable* >* >
-    //iterH = retrogradeVariablesTable->begin(); iterH !=
-    //retrogradeVariablesTable->end(); ++iterH ){
+    // iterH = retrogradeVariablesTable->begin(); iterH !=
+    // retrogradeVariablesTable->end(); ++iterH ){
     //~ retorgradeVarLog << std::endl << "Noeud : " << iterH.key() << " - Variable :
     //" << this->nodeVariable( iterH.key() )->toString() << " - Preceeding Variable :
     //";

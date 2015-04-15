@@ -57,26 +57,26 @@ namespace gum_tests {
       factory->setVariablesSequence(varseq);
 
       idList->insert(factory->addNonTerminalNode(Cprimevar)); // 0
-      idList->insert(factory->addNonTerminalNode(Cvar)); // 1
-      idList->insert(factory->addNonTerminalNode(PLvar)); // 2
-      idList->insert(factory->addNonTerminalNode(APUvar)); // 3
-      idList->insert(factory->addNonTerminalNode(BPUvar)); // 4
-      idList->insert(factory->addNonTerminalNode(ADRvar)); // 5
-      idList->insert(factory->addNonTerminalNode(BDRvar)); // 6
-      idList->insert(factory->addNonTerminalNode(BOvar)); // 7
+      idList->insert(factory->addNonTerminalNode(Cvar));      // 1
+      idList->insert(factory->addNonTerminalNode(PLvar));     // 2
+      idList->insert(factory->addNonTerminalNode(APUvar));    // 3
+      idList->insert(factory->addNonTerminalNode(BPUvar));    // 4
+      idList->insert(factory->addNonTerminalNode(ADRvar));    // 5
+      idList->insert(factory->addNonTerminalNode(BDRvar));    // 6
+      idList->insert(factory->addNonTerminalNode(BOvar));     // 7
 
-      idList->insert(factory->addNonTerminalNode(Cvar)); // 8
-      idList->insert(factory->addNonTerminalNode(PLvar)); // 9
+      idList->insert(factory->addNonTerminalNode(Cvar));   // 8
+      idList->insert(factory->addNonTerminalNode(PLvar));  // 9
       idList->insert(factory->addNonTerminalNode(APUvar)); // 10
       idList->insert(factory->addNonTerminalNode(BPUvar)); // 11
       idList->insert(factory->addNonTerminalNode(ADRvar)); // 12
       idList->insert(factory->addNonTerminalNode(BDRvar)); // 13
-      idList->insert(factory->addNonTerminalNode(BOvar)); // 14
+      idList->insert(factory->addNonTerminalNode(BOvar));  // 14
 
-      idList->insert(factory->addTerminalNode(0)); // 15
+      idList->insert(factory->addTerminalNode(0));  // 15
       idList->insert(factory->addTerminalNode(10)); // 16
-      idList->insert(factory->addTerminalNode(9)); // 17
-      idList->insert(factory->addTerminalNode(1)); // 18
+      idList->insert(factory->addTerminalNode(9));  // 17
+      idList->insert(factory->addTerminalNode(1));  // 18
 
       factory->addArc((*idList)[0], (*idList)[1], 1);
       factory->addArc((*idList)[0], (*idList)[8], 0);

@@ -86,7 +86,7 @@ namespace gum {
     //~ /**
     //~ * @brief Copy constructor.
     //~ * The copy will have an exact copy of the constructed Factored markov
-    //Decision Process in source.
+    // Decision Process in source.
     //~ * @warning You can only copy a factory if its current state is NONE or
     //~ *          NETWORK.
     //~ * @throw OperationNotAllowed Raised if the state of source is not NONE or

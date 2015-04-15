@@ -76,6 +76,7 @@ namespace gum {
       // fill the variable name -> nodeid hashtable
       const std::vector<std::string> &var_names = __database.variableNames();
       unsigned int id = 0;
+
       for (const auto &name : var_names) {
         __name2nodeId.insert(const_cast<std::string &>(name), id);
         ++id;
@@ -115,10 +116,13 @@ namespace gum {
         const unsigned long db_size = handler.DBSize();
 
         // determine the number of threads to use for the parsing
-        unsigned int max_nb_threads = std::min(db_size / __min_nb_rows_per_thread,
-                                               (unsigned long)__max_threads_number);
+        unsigned int max_nb_threads =
+            std::max(1UL, std::min(db_size / __min_nb_rows_per_thread,
+                                   (unsigned long)__max_threads_number));
+
         const unsigned long max_size_per_thread =
             (db_size + max_nb_threads - 1) / max_nb_threads;
+
         max_nb_threads = db_size / max_size_per_thread;
 
         std::vector<DatabaseVectInRAM::Handler> handlers(max_nb_threads,
@@ -143,14 +147,18 @@ namespace gum {
           const unsigned long min_range = size_per_thread * this_thread;
           const unsigned long max_range =
               std::min(min_range + size_per_thread, db_size);
+
           if (min_range < max_range) {
             bool has_errors = false;
+
             for (the_handler.setRange(min_range, max_range);
                  the_handler.hasRows() && !has_errors; the_handler.nextRow()) {
               DBRow &row = the_handler.row();
+
               for (auto iter = modalities.cbegin(); iter != modalities.cend();
                    ++iter) {
                 const unsigned int i = iter.key();
+
                 switch (row[i].type()) {
                   case DBCell::EltType::STRING:
                     if (!iter.val().exists(row[i].getString())) {
@@ -162,6 +170,7 @@ namespace gum {
                       errors[this_thread].second = str.str();
                       has_errors = true;
                     }
+
                     break;
 
                   case DBCell::EltType::MISSING:
@@ -170,6 +179,7 @@ namespace gum {
                   case DBCell::EltType::FLOAT: {
                     std::stringstream str;
                     str << row[i].getFloat();
+
                     if (!iter.val().exists(str.str())) {
                       std::stringstream str2;
                       str2 << "Column " << iter.key() << " contains modality "
@@ -220,6 +230,7 @@ namespace gum {
       // fill the variable name -> nodeid hashtable
       const std::vector<std::string> &var_names = __database.variableNames();
       unsigned int id = 0;
+
       for (const auto &name : var_names) {
         __name2nodeId.insert(const_cast<std::string &>(name), id);
         ++id;
@@ -237,9 +248,11 @@ namespace gum {
         GUM_ERROR(InvalidArgument, "the a priori seems to have fewer variables "
                                    "than the observed database");
       }
+
       const std::vector<std::string> &score_vars =
           score_database.__database.variableNames();
       const std::vector<std::string> &apriori_vars = __database.variableNames();
+
       for (unsigned int i = 0, size = score_vars.size(); i < size; ++i) {
         if (score_vars[i] != apriori_vars[i]) {
           GUM_ERROR(InvalidArgument, "some a priori variables do not match "
@@ -442,10 +455,13 @@ namespace gum {
     genericBNLearner::~genericBNLearner() {
       if (__score)
         delete __score;
+
       if (__param_estimator)
         delete __param_estimator;
+
       if (__apriori)
         delete __apriori;
+
       if (__apriori_database)
         delete __apriori_database;
 
@@ -589,6 +605,7 @@ namespace gum {
             delete __apriori_database;
             __apriori_database = nullptr;
           }
+
           if (__user_modalities.empty()) {
             __apriori_database = new Database(__apriori_dbname, __score_database);
           } else {
@@ -678,6 +695,7 @@ namespace gum {
                 new ParamEstimatorML<>(__score_database.rowFilter(),
                                        __score_database.modalities(), *__apriori);
           }
+
           break;
 
         default:

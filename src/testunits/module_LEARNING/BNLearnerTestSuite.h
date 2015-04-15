@@ -491,16 +491,11 @@ namespace gum_tests {
       bn.addArc(no, nd);
 
       // asia3-faulty contains a label "beurk" for variable "smoking?"
-      std::cout << "error test";
-      /*
-            TS_ASSERT_THROWS (
-              gum::learning::BNLearner<float> learner ( GET_PATH_STR (
-         "asia3-faulty.csv" ) ,bn);
-              learner.useScoreLog2Likelihood();
-              learner.useAprioriSmoothing();
-              gum::BayesNet<float> bn2 = learner.learnParameters ( bn )
-            ,gum::UnknownLabelInDatabase );
-            */
+      // std::cout << "error test";
+
+      TS_ASSERT_THROWS(gum::learning::BNLearner<float> learner(
+                           GET_PATH_STR("asia3-faulty.csv"), bn),
+                       gum::UnknownLabelInDatabase);
     }
 
     void test_listener() {
