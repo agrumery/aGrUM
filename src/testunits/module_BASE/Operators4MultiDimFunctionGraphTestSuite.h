@@ -110,9 +110,9 @@ namespace gum_tests {
            varIter != varList->end(); ++varIter )
           generatedFunctionGraph->add(**varIter);
 
-        gum::NodeId a = generatedFunctionGraph->manager()->addNonTerminalNode ( varList->atPos ( 0 ) );
-        gum::NodeId b = generatedFunctionGraph->manager()->addNonTerminalNode ( varList->atPos ( 1 ) );
-        gum::NodeId c = generatedFunctionGraph->manager()->addNonTerminalNode ( varList->atPos ( 2 ) );
+        gum::NodeId a = generatedFunctionGraph->manager()->addInternalNode ( varList->atPos ( 0 ) );
+        gum::NodeId b = generatedFunctionGraph->manager()->addInternalNode ( varList->atPos ( 1 ) );
+        gum::NodeId c = generatedFunctionGraph->manager()->addInternalNode ( varList->atPos ( 2 ) );
 
         gum::NodeId d = generatedFunctionGraph->manager()->addTerminalNode ( 6 );
         gum::NodeId e = generatedFunctionGraph->manager()->addTerminalNode ( 2 );
@@ -144,8 +144,8 @@ namespace gum_tests {
            varIter != varList->end(); ++varIter )
           generatedFunctionGraph->add(**varIter);
 
-        gum::NodeId a = generatedFunctionGraph->manager()->addNonTerminalNode ( varList->atPos ( 0 ) );
-        gum::NodeId c = generatedFunctionGraph->manager()->addNonTerminalNode ( varList->atPos ( 2 ) );
+        gum::NodeId a = generatedFunctionGraph->manager()->addInternalNode ( varList->atPos ( 0 ) );
+        gum::NodeId c = generatedFunctionGraph->manager()->addInternalNode ( varList->atPos ( 2 ) );
 
         gum::NodeId d = generatedFunctionGraph->manager()->addTerminalNode ( 4 );
         gum::NodeId e = generatedFunctionGraph->manager()->addTerminalNode ( 5 );
@@ -473,18 +473,18 @@ namespace gum_tests {
 //        dg1->add(*v0);
 //        dg1->add(*v2);
 
-//        n01 = dg1->manager()->addNonTerminalNode( v3 );
-//        n02 = dg1->manager()->addNonTerminalNode( v0 );
-//        n03 = dg1->manager()->addNonTerminalNode( v1 );
-//        n04 = dg1->manager()->addNonTerminalNode( v1 );
-//        n05 = dg1->manager()->addNonTerminalNode( v2 );
-//        n06 = dg1->manager()->addNonTerminalNode( v2 );
-//        n07 = dg1->manager()->addNonTerminalNode( v0 );
+//        n01 = dg1->manager()->addInternalNode( v3 );
+//        n02 = dg1->manager()->addInternalNode( v0 );
+//        n03 = dg1->manager()->addInternalNode( v1 );
+//        n04 = dg1->manager()->addInternalNode( v1 );
+//        n05 = dg1->manager()->addInternalNode( v2 );
+//        n06 = dg1->manager()->addInternalNode( v2 );
+//        n07 = dg1->manager()->addInternalNode( v0 );
 //        n08 = dg1->manager()->addTerminalNode( 19.0836 );
 //        n09 = dg1->manager()->addTerminalNode( 88.4791 );
 //        n10 = dg1->manager()->addTerminalNode( 16.2301 );
 //        n11 = dg1->manager()->addTerminalNode( 30.7077 );
-//        n12 = dg1->manager()->addNonTerminalNode( v2 );
+//        n12 = dg1->manager()->addInternalNode( v2 );
 //        n13 = dg1->manager()->addTerminalNode( 90.9853 );
 //        n14 = dg1->manager()->addTerminalNode( 28.7184 );
 //        n15 = dg1->manager()->addTerminalNode( 16.5207 );
@@ -549,14 +549,14 @@ namespace gum_tests {
 //        dg2->add(*v2);
 //        dg2->add(*v1);
 
-//        n01 = dg2->manager()->addNonTerminalNode( v0 );
-//        n02 = dg2->manager()->addNonTerminalNode( v1 );
-//        n03 = dg2->manager()->addNonTerminalNode( v3 );
+//        n01 = dg2->manager()->addInternalNode( v0 );
+//        n02 = dg2->manager()->addInternalNode( v1 );
+//        n03 = dg2->manager()->addInternalNode( v3 );
 //        n04 = dg2->manager()->addTerminalNode( 27.0957 );
 //        n05 = dg2->manager()->addTerminalNode( 8.01978 );
-//        n06 = dg2->manager()->addNonTerminalNode( v2 );
-//        n07 = dg2->manager()->addNonTerminalNode( v1 );
-//        n08 = dg2->manager()->addNonTerminalNode( v1 );
+//        n06 = dg2->manager()->addInternalNode( v2 );
+//        n07 = dg2->manager()->addInternalNode( v1 );
+//        n08 = dg2->manager()->addInternalNode( v1 );
 //        n09 = dg2->manager()->addTerminalNode( 16.2307 );
 //        n10 = dg2->manager()->addTerminalNode( 30.7077 );
 //        n11 = dg2->manager()->addTerminalNode( 26.1679 );

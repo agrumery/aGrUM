@@ -19,7 +19,7 @@
  ****************************************************************************/
 /**
 * @file  Headers for O4DGContext
-* @brief Class used to manipulate o4DGContext in Decision Graph Operations
+* @brief Class used to manipulate o4DGContext in Function Graph Operations
 *
 * @author Pierre-Henri WUILLEMIN & Jean-Christophe Magnan
 */
@@ -38,7 +38,7 @@ namespace gum {
 
 /**
 * @class O4DGContext o4DGContext.h <agrum/multidim/FunctionGraphUtilities/o4DGContext.h>
-* @brief Class used to manipulate context during Decision Graph Operations
+* @brief Class used to manipulate context during Function Graph Operations
 * @ingroup multidim_group
 *
 */

@@ -69,7 +69,7 @@ namespace gum {
   /* ***************************************************************************************************************************** */
   /* Compute                                                            */
   /*                                                                */
-  /* This function is the main function. To be call every time an Projection between the two given Decision Graphs is required   */
+  /* This function is the main function. To be call every time an Projection between the two given Function Graphs is required   */
   /* ***************************************************************************************************************************** */
   template <typename GUM_SCALAR,
             template <typename> class FUNCTOR,

@@ -639,8 +639,8 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   NodeId
-  FMDPFactory<GUM_SCALAR>::addNonTerminalNode ( std::string name_of_var ) {
-    return __FunctionGraph->manager()->addNonTerminalNode ( variable ( name_of_var ) );
+  FMDPFactory<GUM_SCALAR>::addInternalNode ( std::string name_of_var ) {
+    return __FunctionGraph->manager()->addInternalNode ( variable ( name_of_var ) );
   }
 
 

@@ -411,7 +411,7 @@ namespace gum {
         ArgMaxSet<GUM_SCALAR, Idx> leaf( qAction->nodeValue(qAction->root()), actionId );
         amcpy->manager()->setRootNode(amcpy->manager()->addTerminalNode(leaf));
       } else {
-        amcpy->manager()->setRootNode(amcpy->manager()->addNonTerminalNode( qAction->node(qAction->root())->nodeVar() ));
+        amcpy->manager()->setRootNode(amcpy->manager()->addInternalNode( qAction->node(qAction->root())->nodeVar() ));
         src2dest.insert( qAction->root(), amcpy->root() );
         lifo.push_back(qAction->root());
       }
@@ -430,7 +430,7 @@ namespace gum {
               ArgMaxSet<GUM_SCALAR, Idx> leaf( qAction->nodeValue(srcSonNodeId), actionId );
               destSonNodeId = amcpy->manager()->addTerminalNode(leaf);
             } else {
-              destSonNodeId = amcpy->manager()->addNonTerminalNode(qAction->node(srcSonNodeId)->nodeVar());
+              destSonNodeId = amcpy->manager()->addInternalNode(qAction->node(srcSonNodeId)->nodeVar());
               lifo.push_back(srcSonNodeId);
             }
             src2dest.insert( srcSonNodeId, destSonNodeId );
@@ -467,7 +467,7 @@ namespace gum {
         __transferActionIds( argMaxOptimalPolicy->nodeValue( argMaxOptimalPolicy->root() ), leaf );
         __optimalPolicy->manager()->setRootNode(__optimalPolicy->manager()->addTerminalNode(leaf));
       } else {
-        __optimalPolicy->manager()->setRootNode(__optimalPolicy->manager()->addNonTerminalNode( argMaxOptimalPolicy->node(argMaxOptimalPolicy->root())->nodeVar() ));
+        __optimalPolicy->manager()->setRootNode(__optimalPolicy->manager()->addInternalNode( argMaxOptimalPolicy->node(argMaxOptimalPolicy->root())->nodeVar() ));
         src2dest.insert( argMaxOptimalPolicy->root(), __optimalPolicy->root() );
         lifo.push_back(argMaxOptimalPolicy->root());
       }
@@ -489,7 +489,7 @@ namespace gum {
               destSonNodeId = __optimalPolicy->manager()->addTerminalNode(leaf);
 //              std::cout << "Done" << std::endl;
             } else {
-              destSonNodeId = __optimalPolicy->manager()->addNonTerminalNode(argMaxOptimalPolicy->node(srcSonNodeId)->nodeVar());
+              destSonNodeId = __optimalPolicy->manager()->addInternalNode(argMaxOptimalPolicy->node(srcSonNodeId)->nodeVar());
               lifo.push_back(srcSonNodeId);
             }
             src2dest.insert( srcSonNodeId, destSonNodeId );

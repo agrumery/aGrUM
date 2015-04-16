@@ -240,7 +240,7 @@ namespace gum {
     private :
 
       /// The model learner.
-      /// It will handle by itself the different decision graph learners
+      /// It will handle by itself the different function graph learners
       /// needed to learn the FMDP
       FMDPLearner<CHI2TEST, CHI2TEST, ITILEARNER>* __learner;
 

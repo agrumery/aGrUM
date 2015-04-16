@@ -37,7 +37,7 @@ namespace gum {
   /**
    * @class MultiDimFunctionGraphGenerator multiDimFunctionGraphGenerator.h <agrum/multidim/multiDimFunctionGraphGenerator.h>
    *
-   * @brief Class implementing a decision graph generator with template type :double
+   * @brief Class implementing a function graph generator with template type :double
    *
    * @ingroup multidim_group
    */

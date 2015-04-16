@@ -254,7 +254,7 @@ namespace gum {
 
 
       // ###################################################################
-      /// @name Decision Graph Updating methods
+      /// @name Function Graph Updating methods
       // ###################################################################
       /// @{
   public :

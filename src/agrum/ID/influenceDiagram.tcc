@@ -687,7 +687,7 @@ namespace gum {
   }
 
   /*
-  * Returns the decision graph
+  * Returns the function graph
   */
   template<typename GUM_SCALAR>
   gum::DAG*

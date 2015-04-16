@@ -234,7 +234,7 @@ namespace gum {
 
 
   // ============================================================================
-  /// @name Decision Graph Updating methods
+  /// @name Function Graph Updating methods
   // ============================================================================
 
     // ############################################################################
@@ -267,7 +267,7 @@ namespace gum {
         this->_target->add(*(this->_nodeVarMap[currentNodeId]));
       }
 
-      NodeId nody = this->_target->manager()->addNonTerminalNode( this->_nodeVarMap[currentNodeId] );
+      NodeId nody = this->_target->manager()->addInternalNode( this->_nodeVarMap[currentNodeId] );
       for( Idx moda = 0; moda < this->_nodeVarMap[currentNodeId]->domainSize(); ++moda ){
         NodeId son = this->__insertNodeInFunctionGraph( this->_nodeSonsMap[currentNodeId][moda] );
         this->_target->manager()->setSon(nody,moda, son);
@@ -303,7 +303,7 @@ namespace gum {
           newVal = (double) this->_nodeId2Database[currentNodeId]->effectif(modality) / (double) tot;
         sonsMap[modality] = this->_target->manager()->addTerminalNode( newVal );
       }
-      NodeId nody = this->_target->manager()->addNonTerminalNode( this->_value, sonsMap );
+      NodeId nody = this->_target->manager()->addInternalNode( this->_value, sonsMap );
       return nody;
     }
 

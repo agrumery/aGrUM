@@ -89,7 +89,7 @@ namespace gum {
     /* ***************************************************************************************************************************** */
     /* Compute                                                                                                                       */
     /*                                                                                                                               */
-    /* This function is the main function. To be call every time an operation between the two given Decision Graphs is required      */
+    /* This function is the main function. To be call every time an operation between the two given Function Graphs is required      */
     /* ***************************************************************************************************************************** */
     template <typename GUM_SCALAR,
               template <typename> class COMBINEOPERATOR,
@@ -174,7 +174,7 @@ namespace gum {
         return zero;
       }
 
-      return __rd->manager()->addNonTerminalNode(var, sonsMap);
+      return __rd->manager()->addInternalNode(var, sonsMap);
     }
 
 } // namespace gum

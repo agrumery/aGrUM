@@ -19,7 +19,7 @@
  ****************************************************************************/
 /**
 * @file
-* @brief Class used to compute the projection of a decision graph
+* @brief Class used to compute the projection of a function graph
 *
 * @author Jean-Christophe Magnan
 */
@@ -36,7 +36,7 @@ namespace gum {
 
 /**
  * @class MultiDimFunctionGraphProjector multiDimFunctionGraphProjector.h <agrum/multidim/patterns/multiDimFunctionGraphProjector.h>
- * @brief Class used to perform Decision Graph projections
+ * @brief Class used to perform Function Graph projections
  * @ingroup multidim_group
  *
  */
@@ -72,7 +72,7 @@ namespace gum {
     /// @{
 
       // ============================================================================
-      /// Computes and builds the Decision Graph that is the result of the Projection
+      /// Computes and builds the Function Graph that is the result of the Projection
       // ============================================================================
       MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* project();
 
@@ -85,7 +85,7 @@ namespace gum {
     private :
 
       // ============================================================================
-      /// One of the two decision graphs used for the Projection
+      /// One of the two function graphs used for the Projection
       // ============================================================================
       const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __src;
 
@@ -95,7 +95,7 @@ namespace gum {
       const Set<const DiscreteVariable*>& __delVars;
 
       // ============================================================================
-      /// The resulting decision graph
+      /// The resulting function graph
       // ============================================================================
       MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
 

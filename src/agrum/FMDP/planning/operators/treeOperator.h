@@ -80,7 +80,7 @@ namespace gum {
     /// @{
 
       // ============================================================================
-      /// Computes and builds the Decision Graph that is the result of the operation
+      /// Computes and builds the Function Graph that is the result of the operation
       // ============================================================================
       MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *compute();
 
@@ -102,13 +102,13 @@ namespace gum {
       NodeId __checkRedundancy( const DiscreteVariable*, NodeId*) ;
 
       // ============================================================================
-      /// The two decision graphs used for the operation
+      /// The two function graphs used for the operation
       // ============================================================================
       const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __dt1;
       const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __dt2;
 
       // ============================================================================
-      /// The resulting decision graph
+      /// The resulting function graph
       // ============================================================================
       MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
 

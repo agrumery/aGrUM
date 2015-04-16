@@ -323,7 +323,7 @@ namespace gum {
 
         // ==========================================================================
         /// The Factored Markov Decision Process describing our planning situation
-        /// (NB : this one must have decision graph as transitions and reward functions )
+        /// (NB : this one must have function graph as transitions and reward functions )
         // ==========================================================================
         const FactoredMarkovDecisionProcess<GUM_SCALAR>* _fmdp;
 

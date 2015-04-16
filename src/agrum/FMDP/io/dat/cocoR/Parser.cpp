@@ -304,7 +304,7 @@ void Parser::SUB_TRANSITION_DECISION_GRAPH() {
 		 std::string modality_of_var;
 		 NodeId var_id; 
 		IDENT(name_of_var);
-		var_id = __factory->addNonTerminalNode( name_of_var );
+		var_id = __factory->addInternalNode( name_of_var );
 		if( !__parentNode.empty() )
 		 __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
 		else
@@ -332,7 +332,7 @@ void Parser::SUB_TRANSITION_DECISION_GRAPH() {
 void Parser::TRANSITION_LEAF() {
 		float value;
 		gum::Idx i = 0;
-		NodeId var_id = __factory->addNonTerminalNode( __currentFunctionGraphVar );
+		NodeId var_id = __factory->addInternalNode( __currentFunctionGraphVar );
 		if( !__parentNode.empty() )
 		  __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
 		else
@@ -353,7 +353,7 @@ void Parser::SUB_DECISION_GRAPH() {
 		 std::string modality_of_var;
 		 NodeId var_id;
 		IDENT(name_of_var);
-		var_id = __factory->addNonTerminalNode( name_of_var );
+		var_id = __factory->addInternalNode( name_of_var );
 		if( !__parentNode.empty() )
 		 __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
 		else

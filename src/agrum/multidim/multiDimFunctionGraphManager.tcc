@@ -43,12 +43,12 @@ namespace gum {
     // ============================================================================
     // Default constructor.
     // Private.
-    // You have to call MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::manager() to get the instance
-    // of MultiDimFunctionGraphManager bound to your decision graph.
+    // You have to call MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy, isReduced >::manager() to get the instance
+    // of MultiDimFunctionGraphManager bound to your function graph.
     // ============================================================================
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
     INLINE
-    MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::MultiDimFunctionGraphManager(MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *mddg ){
+    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::MultiDimFunctionGraphManager(MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy, isReduced > *mddg ){
       GUM_CONSTRUCTOR ( MultiDimFunctionGraphManager ) ;
       __FunctionGraph = mddg;
     }
@@ -59,9 +59,9 @@ namespace gum {
     // Destructor. Don't worry, it will be call on the destruction of your
     // MultiDimFunctionGraph.
     // ============================================================================
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
     INLINE
-    MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::~MultiDimFunctionGraphManager(){
+    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::~MultiDimFunctionGraphManager(){
       GUM_DESTRUCTOR ( MultiDimFunctionGraphManager );
     }
 
@@ -74,9 +74,9 @@ namespace gum {
     // ============================================================================
     /// Sets root node of decision diagram
     // ============================================================================
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
     INLINE
-    void MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::setRootNode ( const NodeId& root ){
+    void MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::setRootNode ( const NodeId& root ){
       __FunctionGraph->__root = root;
     }
 
@@ -91,9 +91,9 @@ namespace gum {
     // @throw OperationNotAllowed if MultiDimFunctionGraph has no this variable yet.
     // @return the id of the added non terminal node.
     // ============================================================================
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
     INLINE
-    NodeId MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::addNonTerminalNode ( const DiscreteVariable* var,
+    NodeId MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::addInternalNode ( const DiscreteVariable* var,
                                                                                               NodeId nid ){
 
         InternalNode* newNodeStruct = new InternalNode( var );
@@ -105,9 +105,9 @@ namespace gum {
       return nid;
     }
 
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
     INLINE
-    NodeId MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::addNonTerminalNode( const DiscreteVariable* var ){
+    NodeId MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::addInternalNode( const DiscreteVariable* var ){
         InternalNode* newNodeStruct = new InternalNode( var );
         NodeId nid = __FunctionGraph->__model.addNode();
         __FunctionGraph->__internalNodeMap.insert( nid, newNodeStruct );
@@ -116,9 +116,9 @@ namespace gum {
         return nid;
     }
 
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
     INLINE
-    NodeId MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::addNonTerminalNode( const DiscreteVariable* var,
+    NodeId MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::__addInternalNode( const DiscreteVariable* var,
                                                                                              NodeId* sons ){
         InternalNode* newNodeStruct = new InternalNode( var, sons );
         NodeId nid = __FunctionGraph->__model.addNode();
@@ -140,10 +140,10 @@ namespace gum {
     // @param value The value added by copy.
     // @return the id of the terminal node hence created.
     // ============================================================================
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
     INLINE
     NodeId
-    MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::addTerminalNode ( const GUM_SCALAR& value ){
+    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::addTerminalNode ( const GUM_SCALAR& value ){
 
       if( __FunctionGraph->existsTerminalNode( value ) )
         return __FunctionGraph->terminalNodeId( value );
@@ -161,9 +161,9 @@ namespace gum {
     // @param id The id of the variable to erase.
     //
     // ============================================================================
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
     void
-    MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::eraseNode ( NodeId eraseId,
+    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::eraseNode ( NodeId eraseId,
                                                                               NodeId replacingId,
                                                                               bool updateParents ){
 
@@ -214,9 +214,9 @@ namespace gum {
     // ============================================================================
     /// Sets nodes son for given modality to designated son node
     // ============================================================================
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
     INLINE
-    void MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::setSon( const NodeId& node,
+    void MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::setSon( const NodeId& node,
                                                                                const Idx& modality,
                                                                                const NodeId& sonNode ){
         __FunctionGraph->__internalNodeMap[node]->setSon( modality, sonNode );
@@ -229,8 +229,8 @@ namespace gum {
     // ============================================================================
     // Changes var position in variable sequence
     // ============================================================================
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
-    void MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::moveTo( const DiscreteVariable* x, Idx desiredPos ){
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
+    void MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::moveTo( const DiscreteVariable* x, Idx desiredPos ){
 
       // First we determine the position of both variable
       // We also determine which one precede the other
@@ -258,8 +258,8 @@ namespace gum {
     // X must precede Y before the swap (at the end Y will then precede X).
     // Not respecting this constraint leads to hasardous behaviour.
     // ============================================================================
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
-    void MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::__adjacentSwap( const DiscreteVariable* x,
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
+    void MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::__adjacentSwap( const DiscreteVariable* x,
                                                                                        const DiscreteVariable* y ){
 
       LinkedList<NodeId>* oldxNodes = __FunctionGraph->__var2NodeIdMap[ x ];
@@ -300,16 +300,16 @@ namespace gum {
           }
 
           // Insertion du nouveau noeud x
-          currentNewYNodeSons[ indy ] = nodeRedundancyCheck( x, currentNewXNodeSons);
+          currentNewYNodeSons[ indy ] = __nodeRedundancyCheck( x, currentNewXNodeSons);
         }
         
         // Transformation de l'ancien noeud x en nouveau noeud y
         currentNewYNodeId = currentNewYNodeSons[0];
-        if( isRedundant( y, currentNewYNodeSons ) ) {
+        if( __isRedundant( y, currentNewYNodeSons ) ) {
             _migrateNode(oldxNodes->list()->element(), currentNewYNodeId);
             DEALLOCATE( currentNewYNodeSons, y->domainSize()*sizeof(NodeId) );
         } else {
-            currentNewYNodeId = checkIsomorphism( y, currentNewYNodeSons );
+            currentNewYNodeId = __checkIsomorphism( y, currentNewYNodeSons );
             if( currentNewYNodeId != 0 ) {
                 _migrateNode(oldxNodes->list()->element(), currentNewYNodeId);
                 DEALLOCATE( currentNewYNodeSons, y->domainSize()*sizeof(NodeId) );
@@ -360,9 +360,9 @@ namespace gum {
     // ============================================================================
     //
     // ============================================================================
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
     INLINE
-    void MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::_migrateNode( const NodeId& origin,
+    void MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::_migrateNode( const NodeId& origin,
                                                                  const NodeId& destination ){
 
         InternalNode* org = __FunctionGraph->__internalNodeMap[origin];
@@ -393,19 +393,19 @@ namespace gum {
     // if it has the same child for every variable value
     // @warning : will deallocate by itslef sonsMap if a match exists
     // ============================================================================
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
     INLINE
     NodeId
-    MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::nodeRedundancyCheck( const DiscreteVariable* var, NodeId* sonsIds ){
+    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::__nodeRedundancyCheck( const DiscreteVariable* var, NodeId* sonsIds ){
 
       NodeId newNode = sonsIds[0];
 
-      if( isRedundant( var, sonsIds ) ){
+      if( __isRedundant( var, sonsIds ) ){
         DEALLOCATE( sonsIds, sizeof(NodeId)*var->domainSize() );
       } else {
-        newNode = checkIsomorphism( var, sonsIds );
+        newNode = __checkIsomorphism( var, sonsIds );
         if ( newNode == 0 ) {
-          newNode = addNonTerminalNode( var, sonsIds);
+          newNode = __addInternalNode( var, sonsIds);
         } else {
           DEALLOCATE( sonsIds, sizeof(NodeId)*var->domainSize() );
         }
@@ -421,9 +421,9 @@ namespace gum {
     // (meaning for every value assume by the associated variable, these two nodes
     // have the same children)
     // ============================================================================
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
     INLINE
-    NodeId MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::checkIsomorphism ( const DiscreteVariable* var,
+    NodeId MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::__checkIsomorphism ( const DiscreteVariable* var,
                                                                          NodeId* sons){
 
       const InternalNode* nody = nullptr;
@@ -454,9 +454,9 @@ namespace gum {
     // Checks if node has the same child for every variable value
     // @warning WON'T deallocate sons
     // ============================================================================
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
     INLINE
-    bool MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::isRedundant ( const DiscreteVariable* var,
+    bool MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::__isRedundant ( const DiscreteVariable* var,
                                                                   NodeId* sons){
         for( Idx m = 1; m < var->domainSize(); m++ )
             if( sons[m] != sons[0] )
@@ -467,10 +467,10 @@ namespace gum {
     // ============================================================================
     // Ensures that every isomorphic subgraphs are merged together.
     // ============================================================================
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
     INLINE
     void
-    MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::reduce( ){
+    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::__reduce( Int2Type<true> ){
       Link<NodeId>* currentNodeId = nullptr;
       Link<NodeId>* nextNodeId = nullptr;
       InternalNode* currentNode = nullptr;
@@ -535,10 +535,10 @@ namespace gum {
     }
 
 
-    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
     INLINE
     void
-    MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::clean( ){
+    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::clean( ){
       Sequence< const DiscreteVariable* > oldSequence(__FunctionGraph->variablesSequence());
       for ( SequenceIterator< const DiscreteVariable* > varIter = oldSequence.begin(); varIter != oldSequence.end(); ++varIter )
         if( ! __FunctionGraph->varNodeListe( *varIter )->list() )
@@ -556,14 +556,14 @@ namespace gum {
 //
 // @return the id of the added non terminal node.
 // ============================================================================
-//    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+//    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
 //    INLINE
-//    NodeId MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::addNonTerminalNode ( NodeId nid ){
+//    NodeId MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::addInternalNode ( NodeId nid ){
 
 
 //        // Getting the structure for this internal node
-//        typename MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::InternalNode* newNodeStruct =
-//                new typename MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::InternalNode();
+//        typename MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy, isReduced >::InternalNode* newNodeStruct =
+//                new typename MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy, isReduced >::InternalNode();
 
 //        // Getting a new id for this node
 //        if( nid == 0 )
@@ -593,9 +593,9 @@ namespace gum {
 //        }
 //      }
 
-//      NodeId rnid = addNonTerminalNode(nid);
+//      NodeId rnid = addInternalNode(nid);
 //      __FunctionGraph->__internalNodeMap[rnid]->setNodeVar(var);
-//      MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::_addElemToNICL( &(__FunctionGraph->__var2NodeIdMap[var]), rnid );
+//      MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy, isReduced >::_addElemToNICL( &(__FunctionGraph->__var2NodeIdMap[var]), rnid );
 
 
 // ############################################################################
@@ -613,9 +613,9 @@ namespace gum {
 // @throw OperationNotAllowed if arc doesn't respect variable order property
 // @throw DuplicateElement if another arc linking those nodes already exists
 //    // ============================================================================
-//    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+//    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
 //    void
-//    MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::insertArc ( NodeId from, NodeId to, Idx modality ){
+//    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::insertArc ( NodeId from, NodeId to, Idx modality ){
 
 //        if(!__FunctionGraph->__model.exists(from)){
 //          GUM_ERROR ( NotFound, " Origin node " <<  from << " does not exist." )
@@ -661,9 +661,9 @@ namespace gum {
 // if several arcs have different value but same parent and child, this method will erase all of them .
 // If you want to erase a specific one, use eraseSpecificArc
 // ============================================================================
-//    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+//    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
 //    void
-//    MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::eraseArc ( NodeId from, NodeId to ){
+//    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::eraseArc ( NodeId from, NodeId to ){
 
 //      if(!__FunctionGraph->__model.exists(from)){
 //        GUM_ERROR ( NotFound, " Origin node " <<  from << " does not exist." )
@@ -695,9 +695,9 @@ namespace gum {
 // @param modality the modality corresponding to the to delete arc
 // @throw InvalidArc If arc does not exist
 // ============================================================================
-//    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+//    template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced>
 //    void
-//    MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>::eraseSpecificArc ( NodeId from, NodeId to, Idx modality ){
+//    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy, isReduced >::eraseSpecificArc ( NodeId from, NodeId to, Idx modality ){
 
 //      if(!__FunctionGraph->__model.exists(from)){
 //        GUM_ERROR ( NotFound, " Origin node " <<  from << " does not exist." )

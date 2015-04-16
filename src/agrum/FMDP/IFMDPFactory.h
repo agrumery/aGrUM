@@ -238,7 +238,7 @@ namespace gum {
       /// @{
 
         /// Insert in diagram a non terminal node
-        virtual NodeId addNonTerminalNode ( std::string name_of_var ) = 0;
+        virtual NodeId addInternalNode ( std::string name_of_var ) = 0;
 
         /// Insert in diagram a terminal node
         virtual NodeId addTerminalNode ( float value ) = 0;

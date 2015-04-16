@@ -80,7 +80,7 @@ namespace gum{
 
       // L'idée est de d'abord générer un arbre avant de fusionner les sous-graphe isomorphe
 //            generatedFunctionGraph->add( *(__varSeq.atPos(0)));
-      generatedFunctionGraph->manager()->setRootNode( generatedFunctionGraph->manager()->addNonTerminalNode( __varSeq.atPos(0) ) );
+      generatedFunctionGraph->manager()->setRootNode( generatedFunctionGraph->manager()->addInternalNode( __varSeq.atPos(0) ) );
       node2MinVar.insert(generatedFunctionGraph->root(), 0 );
       filo.push_back(generatedFunctionGraph->root());
 
@@ -120,7 +120,7 @@ namespace gum{
               generatedFunctionGraph->manager()->setSon( currentNodeId, modality, generatedFunctionGraph->manager()->addTerminalNode( (double)std::rand( ) / (double)RAND_MAX*100 ) );
            } else {
               Idx sonVarPos = __generateVarPos( node2MinVar[currentNodeId] + 1, __nbTotalVar - node2MinVar[ currentNodeId ] - 2 );
-              generatedFunctionGraph->manager()->setSon( currentNodeId, modality, generatedFunctionGraph->manager()->addNonTerminalNode( __varSeq.atPos( sonVarPos ) ) );
+              generatedFunctionGraph->manager()->setSon( currentNodeId, modality, generatedFunctionGraph->manager()->addInternalNode( __varSeq.atPos( sonVarPos ) ) );
               filo.push_back( currentNode->son( modality));
               node2MinVar.insert( currentNode->son(modality), sonVarPos);
             }

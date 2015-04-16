@@ -73,7 +73,7 @@ namespace gum {
     for( ; varIter < state.variablesSequence().size(); ++varIter ){
 
       const DiscreteVariable* curVar = state.variablesSequence().atPos(varIter);
-      NodeId varId = __checker->manager()->addNonTerminalNode(curVar);
+      NodeId varId = __checker->manager()->addInternalNode(curVar);
       if(parentId)
         __checker->manager()->setSon(parentId, parentModa, varId);
       else

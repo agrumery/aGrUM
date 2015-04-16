@@ -81,7 +81,7 @@ namespace gum {
     /* ***************************************************************************************************************************** */
     /* Compute                                                                                                                       */
     /*                                                                                                                               */
-    /* This function is the main function. To be call every time an operation between the two given Decision Graphs is required      */
+    /* This function is the main function. To be call every time an operation between the two given Function Graphs is required      */
     /* ***************************************************************************************************************************** */
     template <typename GUM_SCALAR,
               template <typename> class FUNCTOR,
@@ -455,7 +455,7 @@ namespace gum {
             sonsIds[ modality ] = __compute( currentSituation, varPos );
           }
 
-          newNode = __rd->manager()->nodeRedundancyCheck( curVar, sonsIds );
+          newNode = __rd->manager()->addInternalNode( curVar, sonsIds );
 
           __explorationTable.insert ( curSitKey, newNode );
           currentSituation.chgVarModality ( varPos, 0 );
@@ -493,7 +493,7 @@ namespace gum {
           sonsIds[ modality ] = __compute( currentSituation, varPos );
         }
 
-        newNode = __rd->manager()->nodeRedundancyCheck( curVar, sonsIds );
+        newNode = __rd->manager()->addInternalNode( curVar, sonsIds );
 
         __explorationTable.insert ( curSitKey, newNode );
         currentSituation.chgVarModality ( varPos, 0 );
@@ -520,7 +520,7 @@ namespace gum {
           sonsIds[ modality ] = __compute( currentSituation, leadVarPos );
         }
 
-        newNode = __rd->manager()->nodeRedundancyCheck( curVar, sonsIds );
+        newNode = __rd->manager()->addInternalNode( curVar, sonsIds );
 
         __explorationTable.insert ( curSitKey, newNode );
         currentSituation.chgVarModality ( leadVarPos, 0 );

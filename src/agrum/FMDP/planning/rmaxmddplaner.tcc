@@ -297,7 +297,7 @@ namespace gum {
       for( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda )
         sonsMap[moda] = __createRMax(currentNode->son(moda), dTemp, sortie, valSi, valSinon);
 
-      return sortie->manager()->addNonTerminalNode(currentNode->nodeVar(), sonsMap);
+      return sortie->manager()->addInternalNode(currentNode->nodeVar(), sonsMap);
     }
 
 } // end of namespace gum

@@ -84,7 +84,7 @@ namespace gum {
    * @brief A class to store the optimal actions.
    * @ingroup fmdp_group
    *
-   * Stores the ids of optimal actions. To be used as leaves on optimal policy tree or decision graph
+   * Stores the ids of optimal actions. To be used as leaves on optimal policy tree or function graph
    *
    */
   class ActionSet {

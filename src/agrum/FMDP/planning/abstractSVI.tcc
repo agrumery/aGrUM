@@ -470,7 +470,7 @@ namespace gum {
         NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*currentNode->nodeVar()->domainSize()) );
         for( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda )
           sonsMap[moda] = __recurArgMaxCopy(currentNode->son(moda), actionId, src, argMaxCpy,visitedNodes);
-        nody = argMaxCpy->manager()->nodeRedundancyCheck(currentNode->nodeVar(), sonsMap);
+        nody = argMaxCpy->manager()->addInternalNode(currentNode->nodeVar(), sonsMap);
       }
       visitedNodes.insert(currentNodeId, nody);
       return nody;
@@ -540,7 +540,7 @@ namespace gum {
         NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*currentNode->nodeVar()->domainSize()) );
         for( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda )
           sonsMap[moda] = __recurExtractOptPol(currentNode->son(moda), argMaxOptVFunc, visitedNodes);
-        nody = _optimalPolicy->manager()->nodeRedundancyCheck( currentNode->nodeVar(), sonsMap);
+        nody = _optimalPolicy->manager()->addInternalNode( currentNode->nodeVar(), sonsMap);
       }
       visitedNodes.insert(currentNodeId, nody);
       return nody;

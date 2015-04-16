@@ -53,23 +53,23 @@ namespace gum_tests {
           factory->add( *BOvar );
 
 
-          idList->insert ( factory->manager()->addNonTerminalNode ( Cprimevar ) ); //1
+          idList->insert ( factory->manager()->addInternalNode ( Cprimevar ) ); //1
           factory->manager()->setRootNode((*idList)[0]);
-          idList->insert ( factory->manager()->addNonTerminalNode ( Cvar ) );      //2
-          idList->insert ( factory->manager()->addNonTerminalNode ( PLvar ) );     //3
-          idList->insert ( factory->manager()->addNonTerminalNode ( APUvar ) );    //4
-          idList->insert ( factory->manager()->addNonTerminalNode ( BPUvar ) );    //5
-          idList->insert ( factory->manager()->addNonTerminalNode ( ADRvar ) );    //6
-          idList->insert ( factory->manager()->addNonTerminalNode ( BDRvar ) );    //7
-          idList->insert ( factory->manager()->addNonTerminalNode ( BOvar ) );     //8
+          idList->insert ( factory->manager()->addInternalNode ( Cvar ) );      //2
+          idList->insert ( factory->manager()->addInternalNode ( PLvar ) );     //3
+          idList->insert ( factory->manager()->addInternalNode ( APUvar ) );    //4
+          idList->insert ( factory->manager()->addInternalNode ( BPUvar ) );    //5
+          idList->insert ( factory->manager()->addInternalNode ( ADRvar ) );    //6
+          idList->insert ( factory->manager()->addInternalNode ( BDRvar ) );    //7
+          idList->insert ( factory->manager()->addInternalNode ( BOvar ) );     //8
 
-          idList->insert ( factory->manager()->addNonTerminalNode ( Cvar ) );      //9
-          idList->insert ( factory->manager()->addNonTerminalNode ( PLvar ) );     //10
-          idList->insert ( factory->manager()->addNonTerminalNode ( APUvar ) );    //11
-          idList->insert ( factory->manager()->addNonTerminalNode ( BPUvar ) );    //12
-          idList->insert ( factory->manager()->addNonTerminalNode ( ADRvar ) );    //13
-          idList->insert ( factory->manager()->addNonTerminalNode ( BDRvar ) );    //14
-          idList->insert ( factory->manager()->addNonTerminalNode ( BOvar ) );     //15
+          idList->insert ( factory->manager()->addInternalNode ( Cvar ) );      //9
+          idList->insert ( factory->manager()->addInternalNode ( PLvar ) );     //10
+          idList->insert ( factory->manager()->addInternalNode ( APUvar ) );    //11
+          idList->insert ( factory->manager()->addInternalNode ( BPUvar ) );    //12
+          idList->insert ( factory->manager()->addInternalNode ( ADRvar ) );    //13
+          idList->insert ( factory->manager()->addInternalNode ( BDRvar ) );    //14
+          idList->insert ( factory->manager()->addInternalNode ( BOvar ) );     //15
 
           idList->insert ( factory->manager()->addTerminalNode ( 0 ) );    //16
           idList->insert ( factory->manager()->addTerminalNode ( 10 ) );   //17

@@ -37,7 +37,7 @@ namespace gum {
 
 /**
  * @class MultiDimFunctionGraphOperator multiDimFunctionGraphOperator.h <agrum/multidim/patterns/multiDimFunctionGraphOperator.h>
- * @brief Class used to perform Decision Graph Operations
+ * @brief Class used to perform Function Graph Operations
  * @ingroup multidim_group
  *
  */
@@ -72,7 +72,7 @@ namespace gum {
     /// @{
 
       // ============================================================================
-      /// Computes and builds the Decision Graph that is the result of the operation
+      /// Computes and builds the Function Graph that is the result of the operation
       // ============================================================================
       MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *compute();
 
@@ -94,7 +94,7 @@ namespace gum {
                      const DiscreteVariable*);
 
       // ============================================================================
-      /// Establish for each node in both decision graph if it has retrograde variables
+      /// Establish for each node in both function graph if it has retrograde variables
       /// beneath it
       // ============================================================================
       void __findRetrogradeVariables( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dg,
@@ -108,7 +108,7 @@ namespace gum {
 
 
       // ============================================================================
-      /// One of the two decision graphs used for the operation
+      /// One of the two function graphs used for the operation
       // ============================================================================
       const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG1;
 
@@ -118,7 +118,7 @@ namespace gum {
       const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG2;
 
       // ============================================================================
-      /// The resulting decision graph
+      /// The resulting function graph
       // ============================================================================
       MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
 
@@ -138,13 +138,13 @@ namespace gum {
       HashTable<double, NodeId> __explorationTable;
 
       // ============================================================================
-      /// Table uses to know if a given node of first decision graph has retrograde
+      /// Table uses to know if a given node of first function graph has retrograde
       /// vrariables
       // ============================================================================
       HashTable<NodeId, short int*> __DG1InstantiationNeeded;
 
       // ============================================================================
-      /// Table uses to know if a given node of second decision graph has retrograde
+      /// Table uses to know if a given node of second function graph has retrograde
       /// vrariables
       // ============================================================================
       HashTable<NodeId, short int*> __DG2InstantiationNeeded;

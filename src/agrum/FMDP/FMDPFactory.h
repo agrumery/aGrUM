@@ -230,7 +230,7 @@ namespace gum {
       /// @{
 
         /// Insert in diagram a non terminal node
-        NodeId addNonTerminalNode ( std::string name_of_var );
+        NodeId addInternalNode ( std::string name_of_var );
 
         /// Insert in diagram a terminal node
         NodeId addTerminalNode ( float value );
@@ -269,10 +269,10 @@ namespace gum {
       /// Reset the different parts used to constructed the FMDP.
       void __resetParts();
 
-      /// Insert every variables in the decision graph
+      /// Insert every variables in the function graph
       void __initializeFunctionGraph();
 
-      /// Insert every variables in the decision graph
+      /// Insert every variables in the function graph
       void __finalizeFunctionGraph();
 
       /// @}

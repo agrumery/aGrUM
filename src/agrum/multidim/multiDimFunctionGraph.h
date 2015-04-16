@@ -31,10 +31,11 @@
 // ============================================================================
 //#include <agrum/core/inline.h>
 #include <agrum/core/types.h>
-// ============================================================================
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 #include <agrum/core/list.h>
 #include <agrum/core/bijection.h>
+// ============================================================================
+#include <agrum/FMDP/learning/core/templateStrategy.h>
 // ============================================================================
 #include <agrum/graphs/graphElements.h>
 // ============================================================================
@@ -47,16 +48,16 @@
 
 namespace gum {
 
-  template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+  template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced = true>
   class MultiDimFunctionGraphManager;
   /**
    * @class MultiDimFunctionGraph multiDimFunctionGraph.h <agrum/multidim/multiDimFunctionGraph.h>
    *
-   * @brief Class implementingting a decision graph
+   * @brief Class implementingting a function graph
    *
    * @ingroup multidim_group
    */
-  template<typename GUM_SCALAR, template <class> class TerminalNodePolicy = ExactTerminalNodePolicy >
+  template<typename GUM_SCALAR, template <class> class TerminalNodePolicy = ExactTerminalNodePolicy, bool isReduced = false>
   class MultiDimFunctionGraph : public MultiDimImplementation< GUM_SCALAR >, public TerminalNodePolicy<GUM_SCALAR> {
 
     public:
@@ -78,12 +79,12 @@ namespace gum {
         // ============================================================================
         /// Copy constructor.
         // ============================================================================
-        MultiDimFunctionGraph( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from );
+        MultiDimFunctionGraph( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy, isReduced>& from );
 
         // ============================================================================
         /// Copy Operator.
         // ============================================================================
-        MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& operator=(const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from);
+        MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy, isReduced>& operator=(const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy, isReduced>& from);
 
         // ============================================================================
         /// Destructor.
@@ -124,8 +125,8 @@ namespace gum {
         /**
         * see MultiDimImplementation::set ( const Instantiation &i, const GUM_SCALAR &value )
         *
-        * @throw OperationNotAllowed. Decision Graph can't be edited so easily.
-        * MultiDimFunctionGraphManager provides the framework to editate a Decision Graph.
+        * @throw OperationNotAllowed. Function Graph can't be edited so easily.
+        * MultiDimFunctionGraphManager provides the framework to editate a Function Graph.
         */
         // ============================================================================
         void set ( const Instantiation &i, const GUM_SCALAR &value ) const;
@@ -134,8 +135,8 @@ namespace gum {
         /**
         * see MultiDimImplementation::fill( const GUM_SCALAR &d )
         *
-        * @throw OperationNotAllowed. Decision Graph can't be edited so easily.
-        * MultiDimFunctionGraphManager provides the framework to editate a Decision Graph.
+        * @throw OperationNotAllowed. Function Graph can't be edited so easily.
+        * MultiDimFunctionGraphManager provides the framework to editate a Function Graph.
         */
         // ============================================================================
         void fill( const GUM_SCALAR &d ) const;
@@ -144,8 +145,8 @@ namespace gum {
         /**
         * see MultiDimImplementation::fillWith ( const std::vector<GUM_SCALAR>& v )
         *
-        * @throw OperationNotAllowed. Decision Graph can't be edited so easily.
-        * MultiDimFunctionGraphManager provides the framework to editate a Decision Graph.
+        * @throw OperationNotAllowed. Function Graph can't be edited so easily.
+        * MultiDimFunctionGraphManager provides the framework to editate a Function Graph.
         */
         // ==============================================================================
         void fillWith ( const std::vector<GUM_SCALAR>& v ) const;
@@ -258,7 +259,7 @@ namespace gum {
          * of src, variables included.
          */
         // ============================================================================
-        void copy ( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src );
+        void copy ( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy, isReduced>& src );
 
         // ============================================================================
         /**
@@ -271,7 +272,7 @@ namespace gum {
          * of variables of the old variable.
          */
         // ============================================================================
-        void copyAndReassign ( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> &src,
+        void copyAndReassign ( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy, isReduced> &src,
                                const Bijection<const DiscreteVariable*, const DiscreteVariable*>& reassign );
 
         // ============================================================================
@@ -279,12 +280,12 @@ namespace gum {
          * Copies src diagrams and multiply every value by the given scalar.
          */
         // ============================================================================
-        void copyAndMultiplyByScalar ( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src,
+        void copyAndMultiplyByScalar ( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy, isReduced>& src,
                                        GUM_SCALAR gamma );
 
         // ============================================================================
         /**
-         * Clears the decision graph
+         * Clears the function graph
          */
         // ============================================================================
         void clear( );
@@ -309,7 +310,7 @@ namespace gum {
         // ============================================================================
         /// Returns a const reference to the manager of this diagram
         // ============================================================================
-        MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>* manager();
+        MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy, isReduced>* manager();
 
         // ============================================================================
         /// Returns the id of the root node from the diagram
@@ -398,12 +399,12 @@ namespace gum {
       NodeGraphPart __model;
 
       // ============================================================================
-      /// A reference to the manager that edits this decision graph
+      /// A reference to the manager that edits this function graph
       // ============================================================================
-      MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>* __manager;
+      MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy, isReduced>* __manager;
 
       // ============================================================================
-      /// The root node of the decision graph
+      /// The root node of the function graph
       // ============================================================================
       NodeId __root;
 
@@ -420,7 +421,7 @@ namespace gum {
 
       /// @}
 
-      friend class MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>;
+      friend class MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy, isReduced>;
   };
 }
 

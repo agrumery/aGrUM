@@ -303,7 +303,7 @@ namespace gum {
 
 
     // ============================================================================
-    // Computes the Reduced and Ordered Decision Graph  associated to this ordered tree
+    // Computes the Reduced and Ordered Function Graph  associated to this ordered tree
     // ============================================================================
     template <TESTNAME AttributeSelection, bool isScalar >
     void IMDDI<AttributeSelection, isScalar>::updateFunctionGraph(){
@@ -355,7 +355,7 @@ namespace gum {
           NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*(*varIter)->domainSize()) );
           for(Idx modality = 0; modality < (*varIter)->domainSize(); ++modality )
             sonsMap[modality] = toTarget[this->_nodeSonsMap[curNodeIter->element()][modality]];
-          toTarget.insert(curNodeIter->element(), this->_target->manager()->nodeRedundancyCheck( *varIter, sonsMap ) );
+          toTarget.insert(curNodeIter->element(), this->_target->manager()->addInternalNode( *varIter, sonsMap ) );
         }
       }
 
@@ -397,7 +397,7 @@ namespace gum {
           newVal = (double) leaf->effectif(modality) / (double) leaf->total();
         sonsMap[modality] = this->_target->manager()->addTerminalNode( newVal );
       }
-      return  this->_target->manager()->nodeRedundancyCheck( this->_value, sonsMap );
+      return  this->_target->manager()->addInternalNode( this->_value, sonsMap );
 
     }
 } // end gum namespace
