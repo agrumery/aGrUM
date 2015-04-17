@@ -123,6 +123,6 @@ namespace gum {
 
 } // namespace gum
 
-#include <agrum/FMDP/planning/operators/treeOperator.tcc>
+#include <agrum/multidim/FunctionGraphUtilities/operators/treeOperator.tcc>
 
 #endif // GUM_OPERATOR_H

@@ -36,7 +36,6 @@
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
-#include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphOperator.h>
 // =========================================================================
 #include <agrum/FMDP/planning/abstractSVI.h>
 // =========================================================================
@@ -57,7 +56,7 @@ namespace gum {
     // Default constructor
     // ===========================================================================
     template<typename GUM_SCALAR> INLINE
-    AbstractSVI<GUM_SCALAR>::AbstractSVI ( FMDP<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon ) : _fmdp(fmdp) {
+    AbstractSVI<GUM_SCALAR>::AbstractSVI ( IOperatorStrategy<GUM_SCALAR>* opi, GUM_SCALAR discountFactor, GUM_SCALAR epsilon ) : _operator(opi), _discountFactor(discountFactor) {
 
       GUM_CONSTRUCTOR ( AbstractSVI );
 
@@ -80,6 +79,8 @@ namespace gum {
 
       if(_optimalPolicy)
         delete _optimalPolicy;
+
+      delete _operator;
     }
 
 
@@ -211,7 +212,9 @@ namespace gum {
     // Initializes data structure needed for making the planning
     // ===========================================================================
     template<typename GUM_SCALAR>
-    void AbstractSVI<GUM_SCALAR>::initialize(  ) {
+    void AbstractSVI<GUM_SCALAR>::initialize(FMDP<GUM_SCALAR> *fmdp) {
+
+      _fmdp = fmdp;
 
       // Determination of the threshold value
       __threshold *= ( 1 - _fmdp->discount() ) / ( 2 * _fmdp->discount() );
@@ -251,7 +254,7 @@ namespace gum {
 
         // *****************************************************************************************
         // Then we compare new value function and the old one
-        MultiDimFunctionGraph< GUM_SCALAR >* deltaV = _subtract( newVFunction, _vFunction );
+        MultiDimFunctionGraph< GUM_SCALAR >* deltaV = _operator->subtract( newVFunction, _vFunction );
         gap = 0;
 
         for ( deltaV->beginValues(); deltaV->hasValue(); deltaV->nextValue() )
@@ -327,15 +330,8 @@ namespace gum {
       // Initialisation :
       // Creating a copy of last Vfunction to deduce from the new Qaction
       // And finding the first var to eleminate (the one at the end)
-      MultiDimFunctionGraph< GUM_SCALAR >* qAction = new MultiDimFunctionGraph< GUM_SCALAR >();
-      qAction->copy( *Vold );
-      const DiscreteVariable* xip = this->_lastVar(qAction);
 
-      while( this->_shouldEleminateVar(xip) ){
-          qAction = _regress(qAction, RECAST(_fmdp->transition(actionId,_fmdp->mapMainPrime().first(xip))), xip);
-          xip=this->_lastVar(qAction);
-      }
-      return qAction;
+      return _operator->regress(Vold, actionId, this->_fmdp, this->_elVarSeq );
     }
 
 
@@ -353,7 +349,7 @@ namespace gum {
       while ( !qActionsSet.empty() ) {
         MultiDimFunctionGraph<GUM_SCALAR>* qAction = qActionsSet.back();
         qActionsSet.pop_back();
-        newVFunction = _maximize ( newVFunction, qAction );
+        newVFunction = _operator->maximize ( newVFunction, qAction );
       }
 
       return newVFunction;
@@ -370,12 +366,12 @@ namespace gum {
       // *****************************************************************************************
       // ... we multiply the result by the discount factor, ...
       MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = new MultiDimFunctionGraph<GUM_SCALAR>();
-      newVFunction->copyAndMultiplyByScalar ( *Vold, _fmdp->discount() );
+      newVFunction->copyAndMultiplyByScalar ( *Vold, this->_discountFactor );
       delete Vold;
 
       // *****************************************************************************************
       // ... and finally add reward
-      newVFunction = _add(newVFunction, RECAST( _fmdp->reward() ));
+      newVFunction = _operator->add(newVFunction, RECAST( _fmdp->reward() ));
 
       return newVFunction;
     }
@@ -491,7 +487,7 @@ namespace gum {
       while ( !qActionsSet.empty() ) {
         MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* qAction = qActionsSet.back();
         qActionsSet.pop_back();
-        newVFunction = _argmaximize ( newVFunction, qAction );
+        newVFunction = _operator->argmaximize ( newVFunction, qAction );
       }
 
       return newVFunction;

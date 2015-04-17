@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the Learning Strategy interface.
+ * @brief Headers of the \epsilon-greedy decision maker class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
@@ -27,15 +27,16 @@
 
 
 // =========================================================================
-#ifndef GUM_SDYNA_LEARNING_STRATEGY_H
-#define GUM_SDYNA_LEARNING_STRATEGY_H
-// =========================================================================
-#include <string>
+#ifndef GUM_E_GREEDY_DECIDER_H
+#define GUM_E_GREEDY_DECIDER_H
 // =========================================================================
 #include <agrum/core/types.h>
 // =========================================================================
 #include <agrum/FMDP/FMDP.h>
-#include <agrum/FMDP/learning/observation.h>
+#include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
+#include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
+#include <agrum/FMDP/planning/actionSet.h>
+#include <agrum/FMDP/simulation/statesChecker.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
@@ -43,12 +44,12 @@
 namespace gum {
 
   /**
-   * @class ILearningStrategy ILearningStrategy.h <agrum/FMDP/SDyna/ILearningStrategy.h>
-   * @brief Interface for manipulating FMDP learner
+   * @class E_GreedyDecider E_GreedyDecider.h <agrum/FMDP/SDyna/E_GreedyDecider.h>
+   * @brief Class to make decision following an \epsilon-greedy compromise between exploration and exploitation
    * @ingroup fmdp_group
    *
    */
-  class ILearningStrategy {
+  class E_GreedyDecider : public IDecisionStrategy {
 
       // ###################################################################
       /// @name Constructor & destructor.
@@ -57,9 +58,14 @@ namespace gum {
     public :
 
         // ==========================================================================
-        /// Destructor (virtual and empty since it's an interface)
+        /// Constructor
         // ==========================================================================
-        virtual ~ILearningStrategy(){}
+        E_GreedyDecider( IPlanningStrategy<double>* planer );
+
+        // ==========================================================================
+        /// Destructor
+        // ==========================================================================
+        ~E_GreedyDecider();
 
       /// @}
 
@@ -72,7 +78,7 @@ namespace gum {
         // ==========================================================================
         /// Initializes the learner
         // ==========================================================================
-        virtual void initialize( FMDP<double>* fmdp ) = 0;
+        void initialize( const FMDP<double>* fmdp );
 
       /// @}
 
@@ -81,46 +87,24 @@ namespace gum {
       /// @name Incremental methods
       // ###################################################################
       /// @{
-    public :
+    public:
+        void checkState( const Instantiation& newState );
 
-        // ==========================================================================
-        /**
-         * Gives to the learner a new transition
-         * @param actionId : the action on which the transition was made
-         * @param obs : the observed transition
-         * @return true if learning this transition implies structural changes
-         * (can trigger a new planning)
-         */
-        // ==========================================================================
-        virtual bool addObservation( Idx actionId, const Observation* obs ) = 0;
-
-
-        // ==========================================================================
-        /**
-         * Starts an update of datastructure in the associated FMDP
-         */
-        // ==========================================================================
-        virtual void updateFMDP() = 0;
+        ActionSet getStateOptimalPolicy( const Instantiation& curState );
 
       /// @}
 
+    private :
 
-      // ###################################################################
-      /// @name Miscelleanous methods
-      // ###################################################################
-      /// @{
-    public :
+        IPlanningStrategy<double>* __planer;
 
-        // ==========================================================================
-        /**
-         * @brief learnerSize
-         * @return
-         */
-        // ==========================================================================
-        virtual Size size() = 0;
+        /// Threshold under which we perform a random action instead of exploiting the optimal one
+        StatesChecker __statecpt;
+        double __sss;
 
-      /// @}
+        /// The action set to return on exploring
+        ActionSet __explorething;
   };
 
 }
-#endif // GUM_SDYNA_LEARNING_STRATEGY_H
+#endif // GUM_E_GREEDY_DECIDER_H

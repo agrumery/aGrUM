@@ -113,6 +113,6 @@ namespace gum {
 
 } // namespace gum
 
-#include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphProjector.tcc>
+#include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphProjector.tcc>
 
 #endif // GUM_MULTI_DIM_FUNCTION_GRAPH_PROJECTOR_H

@@ -75,45 +75,33 @@ namespace gum {
     //
     // ###################################################################
     template <TESTNAME VariableAttributeSelection, TESTNAME RewardAttributeSelection, LEARNERNAME LearnerSelection>
-    void FMDPLearner<VariableAttributeSelection, RewardAttributeSelection, LearnerSelection>::addVariable( const DiscreteVariable* var ){
-        __fmdp->addVariable(var);
-        __mainVariables.insert(var);
-    }
+    void FMDPLearner<VariableAttributeSelection, RewardAttributeSelection, LearnerSelection>::initialize(  FMDP<double>* fmdp  ){
 
-    // ###################################################################
-    //
-    // ###################################################################
-    template <TESTNAME VariableAttributeSelection, TESTNAME RewardAttributeSelection, LEARNERNAME LearnerSelection>
-    void FMDPLearner<VariableAttributeSelection, RewardAttributeSelection, LearnerSelection>::addAction(const Idx actionId, const std::string &actionName ){
-        __fmdp->addAction(actionId, actionName);
-        __actionLearners.insert( actionId, new HashTable<const DiscreteVariable*, IncrementalGraphLearner<VariableAttributeSelection, false>*>());
-    }
+      __fmdp = fmdp;
 
-
-
-  // ==========================================================================
-  //
-  // ==========================================================================
-
-    // ###################################################################
-    //
-    // ###################################################################
-    template <TESTNAME VariableAttributeSelection, TESTNAME RewardAttributeSelection, LEARNERNAME LearnerSelection>
-    void FMDPLearner<VariableAttributeSelection, RewardAttributeSelection, LearnerSelection>::initialize(){
+      Set<const DiscreteVariable*> mainVariables;
+      for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter )
+        mainVariables.insert(*varIter);
 
       for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter ){
+
+        // Adding a Hashtable for the action
+        __actionLearners.insert( actionId, new HashTable<const DiscreteVariable*, IncrementalGraphLearner<VariableAttributeSelection, false>*>());
+
+        // Adding a learner for each variable
         for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter ){
             MultiDimFunctionGraph<double>* varTrans = new MultiDimFunctionGraph<double>();
             varTrans->setTableName("ACTION : " + __fmdp->actionName(*actionIter) + " - VARIABLE : " + (*varIter)->name());
             __fmdp->addTransitionForAction(__fmdp->actionName(*actionIter), *varIter, varTrans);
-            __actionLearners[*actionIter]->insert( (*varIter), new VariableLearnerType<false>(varTrans,__learningThreshold, __similarityThreshold, __mainVariables,__fmdp->main2prime(*varIter)));
+            __actionLearners[*actionIter]->insert( (*varIter),
+                          new VariableLearnerType<false>(varTrans,__learningThreshold, __similarityThreshold, mainVariables,__fmdp->main2prime(*varIter)));
         }
       }
 
       MultiDimFunctionGraph<double>* reward = new MultiDimFunctionGraph<double>();
       reward->setTableName("REWARD");
       __fmdp->addReward(reward);
-      __rewardLearner = new RewardLearnerType<true>(reward, __learningThreshold, __similarityThreshold, __mainVariables);
+      __rewardLearner = new RewardLearnerType<true>(reward, __learningThreshold, __similarityThreshold, mainVariables);
 
     }
 

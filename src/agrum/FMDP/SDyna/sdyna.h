@@ -72,9 +72,9 @@ namespace gum {
          * @return an instance of SDyna architecture
          */
         // ==========================================================================
-        SDYNA (Idx observationPhaseLenght = 100,
-               Idx nbValueIterationStep = 10,
-               double discountFactor = 0.9);
+        SDYNA (ILearningStrategy *learner, IPlanningStrategy<double> *planer,
+               IDecisionStrategy *decider, Idx observationPhaseLenght = 100,
+               Idx nbValueIterationStep = 10);
 
         // ==========================================================================
         /// Destructor
@@ -98,7 +98,7 @@ namespace gum {
          * @param actionName : its human name
          */
         // ==========================================================================
-        void addAction(const Idx actionId, const std::string &actionName );
+        void addAction(const Idx actionId, const std::string &actionName ) { _fmdp->addAction(actionId,actionName); }
 
         // ==========================================================================
         /**
@@ -109,7 +109,7 @@ namespace gum {
          * If not they will be discovered by the SDyna architecture during the process
          */
         // ==========================================================================
-        void addVariable( const DiscreteVariable* var ){ __learner->addVariable(var); }
+        void addVariable( const DiscreteVariable* var ){ _fmdp->addVariable( var ); }
 
       /// @}
 
@@ -163,16 +163,6 @@ namespace gum {
         // ==========================================================================
         Idx takeAction();
 
-    protected :
-        // ==========================================================================
-        /**
-         * @param the state in which we currently are
-         * @return a set containing every optimal actions on that state
-         */
-        // ==========================================================================
-        virtual ActionSet _stateActionSet(const Instantiation&) = 0;
-
-    public :
         // ==========================================================================
         /**
          * Performs a feedback on the last transition.
@@ -283,8 +273,6 @@ namespace gum {
       /// The number of Value Iteration step we perform
       Idx __nbValueIterationStep;
 
-      Sequence<Idx> __actionSeq;
-
       /// The last performed action
       Idx __lastAction;
 
@@ -295,7 +283,7 @@ namespace gum {
       ILearningStrategy* __learner;
 
       /// The planer used to plan an optimal strategy
-      IPlanningStrategy* __planer;
+      IPlanningStrategy<double>* __planer;
 
       /// The decider
       IDecisionStrategy* __decider;

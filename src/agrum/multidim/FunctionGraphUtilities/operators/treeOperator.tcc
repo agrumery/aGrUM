@@ -25,7 +25,7 @@
 */
 
 // =======================================================================================
-#include <agrum/FMDP/planning/operators/treeOperator.h>
+#include <agrum/multidim/FunctionGraphUtilities/operators/treeOperator.h>
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
 // =======================================================================================
 

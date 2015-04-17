@@ -50,15 +50,17 @@ namespace gum {
      */
     // ###################################################################
 
-    SDYNA::SDYNA (Idx observationPhaseLenght,
-                  Idx nbValueIterationStep,
-                  double discountFactor ) : __observationPhaseLenght(observationPhaseLenght),
-                                            __nbValueIterationStep(nbValueIterationStep){
+    SDYNA::SDYNA (ILearningStrategy* learner,
+                  IPlanningStrategy<double>* planer,
+                  IDecisionStrategy* decider,
+                  Idx observationPhaseLenght,
+                  Idx nbValueIterationStep ) : __learner(learner), __planer(planer), __decider(decider),
+                                               __observationPhaseLenght(observationPhaseLenght),
+                                               __nbValueIterationStep(nbValueIterationStep){
 
       GUM_CONSTRUCTOR(SDYNA)
 
       _fmdp = new FMDP<double>();
-      _fmdp->setDiscount(discountFactor);
 
       __nbObservation = 1;
     }
@@ -81,23 +83,6 @@ namespace gum {
     }
 
   // ==========================================================================
-  /// Problem specification methods
-  // ==========================================================================
-
-    // ###################################################################
-    /**
-     * Inserts a new action in the SDyna instance.
-     * @warning Without effect until method initialize is called
-     * @param actionId : an id to identify the action
-     * @param actionName : its human name
-     */
-    // ###################################################################
-    void SDYNA::addAction(const Idx actionId, const std::string &actionName ){
-      __actionSeq.insert(actionId);
-      __learner->addAction(actionId, actionName);
-    }
-
-  // ==========================================================================
   /// Initialization
   // ==========================================================================
 
@@ -109,8 +94,9 @@ namespace gum {
      */
     // ###################################################################
     void SDYNA::initialize( const Instantiation& initialState ){
-      __learner->initialize();
-      __planer->initialize();
+      __learner->initialize(_fmdp);
+      __planer->initialize(_fmdp);
+      __decider->initialize(_fmdp);
       setCurrentState( initialState );
     }
 
@@ -162,6 +148,7 @@ namespace gum {
       __bin.insert(obs);
 
       setCurrentState( newState );
+      __decider->checkState( _lastState);
 
       if( __nbObservation%__observationPhaseLenght == 0)
         makePlanning(__nbValueIterationStep);

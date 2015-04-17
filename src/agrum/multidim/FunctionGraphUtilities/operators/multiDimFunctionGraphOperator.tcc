@@ -25,7 +25,7 @@
 */
 
 // =======================================================================================
-#include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphOperator.h>
+#include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
 // =======================================================================================
 

@@ -28,7 +28,7 @@
 #ifndef GUM_SPUMDD_H
 #define GUM_SPUMDD_H
 // =========================================================================
-#include <agrum/FMDP/planning/abstractSVI.h>
+#include <agrum/FMDP/planning/IOperatorStrategy.h>
 // =========================================================================
 
 namespace gum {
@@ -42,7 +42,7 @@ namespace gum {
    *
    */
   template<typename GUM_SCALAR>
-  class SPUMDD : public AbstractSVI<GUM_SCALAR> {
+  class SPUMDD : public IOperatorStrategy<GUM_SCALAR> {
 
     public:
 
@@ -54,12 +54,12 @@ namespace gum {
        /**
         * Default constructor
         */
-        SPUMDD ( FMDP<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
+        SPUMDD (  );
 
        /**
         * Default destructor
         */
-        virtual ~SPUMDD();
+        ~SPUMDD();
 
       /// @}
 
@@ -77,9 +77,10 @@ namespace gum {
         /// @param xip : the variable we eliminate on the projection
         /// @warning given qAction is deleted, return the new one
         // ==========================================================================
-        virtual MultiDimFunctionGraph<GUM_SCALAR>* _regress(const MultiDimFunctionGraph< GUM_SCALAR >* qAction,
-                                                            const MultiDimFunctionGraph< GUM_SCALAR >* pxi,
-                                                            const DiscreteVariable* xi);
+        MultiDimFunctionGraph<GUM_SCALAR>* regress(const MultiDimFunctionGraph< GUM_SCALAR >* Vold,
+                                                   Idx actionId,
+                                                   const FMDP< GUM_SCALAR >* fmdp,
+                                                   const Set<const DiscreteVariable*>& elVarSeq);
 
         // ==========================================================================
         /// Maximizes between QAction and VFunction
@@ -87,8 +88,8 @@ namespace gum {
         /// @param vFunction : the vFunction so far
         /// @warning given vFunction and qAction are deleted, returns the new one
         // ==========================================================================
-        virtual MultiDimFunctionGraph<GUM_SCALAR>* _maximize(const MultiDimFunctionGraph< GUM_SCALAR >* vFunction,
-                                                             const MultiDimFunctionGraph< GUM_SCALAR >* qAction);
+        MultiDimFunctionGraph<GUM_SCALAR>* maximize(const MultiDimFunctionGraph< GUM_SCALAR >* vFunction,
+                                                    const MultiDimFunctionGraph< GUM_SCALAR >* qAction);
 
         // ==========================================================================
         /// ArgMaximizes between QAction and VFunction
@@ -96,7 +97,7 @@ namespace gum {
         /// @param vFunction : the vFunction so far
         /// @warning given vFunction and qAction are deleted, returns the new one
         // ==========================================================================
-        virtual MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* _argmaximize(
+        MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* argmaximize(
                             const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* vFunction,
                             const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* qAction);
 
@@ -106,8 +107,8 @@ namespace gum {
         /// @param function : either V(s) or Q(s,a)
         /// @warning given function is deleted, returns the new one
         // ==========================================================================
-        virtual MultiDimFunctionGraph<GUM_SCALAR>* _add(const MultiDimFunctionGraph< GUM_SCALAR >* function,
-                                                        const MultiDimFunctionGraph< GUM_SCALAR >* reward);
+        MultiDimFunctionGraph<GUM_SCALAR>* add(const MultiDimFunctionGraph< GUM_SCALAR >* function,
+                                               const MultiDimFunctionGraph< GUM_SCALAR >* reward);
 
         // ==========================================================================
         /// Subtract current VFunction from old VFunction to see if threshold is
@@ -115,15 +116,30 @@ namespace gum {
         /// @param old and new VFuntion
         /// @warning this time, nothing is deleted
         // ==========================================================================
-        virtual MultiDimFunctionGraph<GUM_SCALAR>* _subtract(const MultiDimFunctionGraph< GUM_SCALAR >* newVF,
-                                                             const MultiDimFunctionGraph< GUM_SCALAR >* oldVF);
+        MultiDimFunctionGraph<GUM_SCALAR>* subtract(const MultiDimFunctionGraph< GUM_SCALAR >* newVF,
+                                                    const MultiDimFunctionGraph< GUM_SCALAR >* oldVF);
 
 
       /// @}
-  };
 
-  extern template class SPUMDD<float>;
-  extern template class SPUMDD<double>;
+    protected :
+        // ==========================================================================
+        /// Indicates if whether or not given var is to be eliminated.
+        /// Called by the evalQaction.
+        // ==========================================================================
+        INLINE bool _shouldEleminateVar( const DiscreteVariable* v, const FMDP<GUM_SCALAR>* fmdp ){
+          return v==nullptr?false:fmdp->mapMainPrime().existsSecond(v);
+        }
+
+        // ==========================================================================
+        /// Returns the last var in the var order for given graph function
+        /// Called by the evalQaction.
+        // ==========================================================================
+        INLINE const DiscreteVariable* _lastVar( const MultiDimFunctionGraph< GUM_SCALAR >* function ){
+          return function->variablesSequence().size() == 0 ? nullptr :
+              function->variablesSequence().atPos( function->variablesSequence().size() - 1 );
+        }
+  };
 } /* namespace gum */
 
 

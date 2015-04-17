@@ -39,7 +39,9 @@
 #include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
 // =========================================================================
 #include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
 #include <agrum/FMDP/planning/actionSet.h>
+#include <agrum/FMDP/planning/IOperatorStrategy.h>
 // =========================================================================
 
 namespace gum {
@@ -58,7 +60,7 @@ namespace gum {
    *
    */
   template<typename GUM_SCALAR>
-  class AbstractSVI {
+  class AbstractSVI : public IPlanningStrategy<GUM_SCALAR> {
 
       // ###################################################################
       /// @name Constructor & destructor.
@@ -70,7 +72,7 @@ namespace gum {
         // ==========================================================================
         /// Default constructor
         // ==========================================================================
-        AbstractSVI ( FMDP<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
+        AbstractSVI ( IOperatorStrategy<GUM_SCALAR>* opi, GUM_SCALAR discountFactor = 0.9, GUM_SCALAR epsilon = 0.00001 );
 
         // ==========================================================================
         /// Default destructor
@@ -97,9 +99,24 @@ namespace gum {
         INLINE const MultiDimFunctionGraph<GUM_SCALAR>* vFunction() { return _vFunction; }
 
         // ==========================================================================
+        /// Returns vFunction computed so far current size
+        // ==========================================================================
+        virtual Size vFunctionSize() { return _vFunction!=nullptr?_vFunction->realSize():0; }
+
+        // ==========================================================================
         /// Returns the best policy obtained so far
         // ==========================================================================
         INLINE const MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>* optimalPolicy() { return _optimalPolicy; }
+
+        // ==========================================================================
+        /// Returns optimalPolicy computed so far current size
+        // ==========================================================================
+        virtual Size optimalPolicySize() { return _optimalPolicy!=nullptr?_optimalPolicy->realSize():0; }
+
+        // ==========================================================================
+        /// Returns optimalPolicy computed so far current size
+        // ==========================================================================
+        ActionSet getStateOptimalPolicy( const Instantiation& curState ){ _optimalPolicy->get(curState); }
 
         // ==========================================================================
         /// Provide a better toDot for the optimal policy where the leaves have the action
@@ -125,7 +142,7 @@ namespace gum {
          * will surely and definitely result in a crash
          */
         // ==========================================================================
-        virtual void initialize();
+        virtual void initialize( FMDP<GUM_SCALAR>* fmdp );
 
 
         // ==========================================================================
@@ -169,23 +186,6 @@ namespace gum {
         /// @warning function is deleted, new one is returned
         // ==========================================================================
         virtual MultiDimFunctionGraph< GUM_SCALAR >* _addReward ( MultiDimFunctionGraph< GUM_SCALAR >* function );
-
-        // ==========================================================================
-        /// Indicates if whether or not given var is to be eliminated.
-        /// Called by the evalQaction.
-        // ==========================================================================
-        INLINE bool _shouldEleminateVar( const DiscreteVariable* v ){
-          return v==nullptr?false:_fmdp->mapMainPrime().existsSecond(v);
-        }
-
-        // ==========================================================================
-        /// Returns the last var in the var order for given graph function
-        /// Called by the evalQaction.
-        // ==========================================================================
-        INLINE const DiscreteVariable* _lastVar( const MultiDimFunctionGraph< GUM_SCALAR >* function ){
-          return function->variablesSequence().size() == 0 ? nullptr :
-              function->variablesSequence().atPos( function->variablesSequence().size() - 1 );
-        }
 
       /// @}
 
@@ -259,66 +259,6 @@ namespace gum {
 
       /// @}
 
-
-
-      // ###################################################################
-      /// @name Graph Function Operations Methods
-      // ###################################################################
-      /// @{
-
-  protected:
-
-        // ==========================================================================
-        /// Performs a multiplication/projection on given qAction
-        /// @param qAction : the computed Q(s,a)
-        /// @param pxip : the transition probabilities for the xip variable
-        /// @param xip : the variable we eliminate on the projection
-        /// @warning given qAction is deleted, return the new one
-        // ==========================================================================
-        virtual MultiDimFunctionGraph<GUM_SCALAR>* _regress(const MultiDimFunctionGraph< GUM_SCALAR >* qAction,
-                                                            const MultiDimFunctionGraph< GUM_SCALAR >* pxi,
-                                                            const DiscreteVariable* xi) = 0;
-
-        // ==========================================================================
-        /// Maximizes between QAction and VFunction
-        /// @param qAction : the computed Q(s,a)
-        /// @param vFunction : the vFunction so far
-        /// @warning given vFunction and qAction are deleted, returns the new one
-        // ==========================================================================
-        virtual MultiDimFunctionGraph<GUM_SCALAR>* _maximize(const MultiDimFunctionGraph< GUM_SCALAR >* vFunction,
-                                                             const MultiDimFunctionGraph< GUM_SCALAR >* qAction) = 0;
-
-        // ==========================================================================
-        /// ArgMaximizes between QAction and VFunction
-        /// @param qAction : the computed Q(s,a)
-        /// @param vFunction : the vFunction so far
-        /// @warning given vFunction and qAction are deleted, returns the new one
-        // ==========================================================================
-        virtual MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* _argmaximize(
-                            const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* vFunction,
-                            const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* qAction) = 0;
-
-        // ==========================================================================
-        /// Adds reward to given function( whether a qAction or vFunction)
-        /// @param reward : R(s) or R(s,a)
-        /// @param function : either V(s) or Q(s,a)
-        /// @warning given function is deleted, returns the new one
-        // ==========================================================================
-        virtual MultiDimFunctionGraph<GUM_SCALAR>* _add(const MultiDimFunctionGraph< GUM_SCALAR >* function,
-                                                        const MultiDimFunctionGraph< GUM_SCALAR >* reward) = 0;
-
-        // ==========================================================================
-        /// Subtract current VFunction from old VFunction to see if threshold is
-        /// reached or not
-        /// @param old and new VFuntion
-        /// @warning this time, nothing is deleted
-        // ==========================================================================
-        virtual MultiDimFunctionGraph<GUM_SCALAR>* _subtract(const MultiDimFunctionGraph< GUM_SCALAR >* newVF,
-                                                             const MultiDimFunctionGraph< GUM_SCALAR >* oldVF) = 0;
-
-
-      /// @}
-
   protected:
 
         // ==========================================================================
@@ -345,6 +285,13 @@ namespace gum {
         /// A Set to eleminate primed variables
         // ==========================================================================
         Set< const DiscreteVariable* > _elVarSeq;
+
+        // ==========================================================================
+        /// Discount Factor used for infinite horizon planning
+        // ==========================================================================
+        GUM_SCALAR _discountFactor;
+
+        IOperatorStrategy<GUM_SCALAR>* _operator;
 
     private :
         // ==========================================================================

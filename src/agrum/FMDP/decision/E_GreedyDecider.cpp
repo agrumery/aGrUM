@@ -28,7 +28,7 @@
 #include <random>
 #include <cstdlib>
 // =========================================================================
-#include <agrum/FMDP/SDyna/spiti.h>
+#include <agrum/FMDP/decision/E_GreedyDecider.h>
 // =========================================================================
 
 namespace gum {
@@ -51,19 +51,9 @@ namespace gum {
      * the optimal one
      */
     // ###################################################################
-    SPITI::SPITI (Idx observationPhaseLenght,
-                  Idx nbValueIterationStep,
-                  double discountFactor,
-                  double epsilon,
-                  double learningThreshold,
-                  double similarityThreshold,
-                  double exploThreshold ) : SDYNA(observationPhaseLenght,nbValueIterationStep, discountFactor)/*, __exploThreshold(exploThreshold)*/{
+    E_GreedyDecider::E_GreedyDecider (IPlanningStrategy<double> *planer ) : __planer(planer) {
 
-      GUM_CONSTRUCTOR(SPITI)
-
-      //__learner = new FMDPLearner<CHI2TEST, CHI2TEST, ITILEARNER>(this->_fmdp, learningThreshold, similarityThreshold );
-
-      //__planer = new SVI<double>(this->_fmdp, epsilon);
+      GUM_CONSTRUCTOR(E_GreedyDecider)
 
       __sss = 1.0;
     }
@@ -77,9 +67,9 @@ namespace gum {
      * Both in DOT language.
      */
     // ###################################################################
-    SPITI::~SPITI (){
+    E_GreedyDecider::~E_GreedyDecider (){
 
-      GUM_DESTRUCTOR(SPITI)
+      GUM_DESTRUCTOR(E_GreedyDecider)
     }
 
 
@@ -94,10 +84,10 @@ namespace gum {
      * the learner.
      */
     // ###################################################################
-    void SPITI::initialize(  ){
-      for( auto actionIter = this->_fmdp->beginActions(); actionIter != this->_fmdp->endActions(); ++actionIter )
+    void E_GreedyDecider::initialize( const FMDP<double>* fmdp ){
+      for( auto actionIter = fmdp->beginActions(); actionIter != fmdp->endActions(); ++actionIter )
         __explorething += *actionIter;
-      for( auto varIter = this->_fmdp->beginVariables(); varIter != this->_fmdp->endVariables(); ++varIter )
+      for( auto varIter = fmdp->beginVariables(); varIter != fmdp->endVariables(); ++varIter )
         __sss *= (double) (*varIter)->domainSize();
     }
 
@@ -117,9 +107,7 @@ namespace gum {
      * If you want to specify the original state and the performed action, see below
      */
     // ###################################################################
-    void SPITI::feedback(const Instantiation & reachedState, double obtainedReward){
-      SDYNA::feedback(reachedState,obtainedReward);
-
+    void E_GreedyDecider::checkState(const Instantiation & reachedState){
       if( __statecpt.nbVisitedStates() == 0 )
         __statecpt.reset(reachedState);
       else
@@ -133,7 +121,7 @@ namespace gum {
      * @return a set containing every optimal actions on that state
      */
     // ###################################################################
-    ActionSet SPITI::_stateActionSet(const Instantiation& curState){
+    ActionSet E_GreedyDecider::getStateOptimalPolicy(const Instantiation& curState){
 
       double explo = (double)std::rand( ) / (double)RAND_MAX;
       double temp = std::pow( (__sss - (double) __statecpt.nbVisitedStates() ) / __sss, 3.0);
@@ -141,8 +129,8 @@ namespace gum {
 
       //std::cout << << exploThreshold << std::endl;
 
-      if( __planer->optimalPolicy()->realSize() ){
-        ActionSet optimalSet = __planer->optimalPolicy()->get(curState);
+      if( __planer->optimalPolicySize() ){
+        ActionSet optimalSet = __planer->getStateOptimalPolicy(curState);
         if( explo > exploThreshold ) {
           //std::cout << "Exploit : " << optimalSet << std::endl;
           return optimalSet;

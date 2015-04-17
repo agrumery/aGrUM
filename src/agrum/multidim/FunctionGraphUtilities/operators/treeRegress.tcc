@@ -25,9 +25,9 @@
 */
 
 // =======================================================================================
-#include <agrum/FMDP/planning/operators/treeRegress.h>
+#include <agrum/multidim/FunctionGraphUtilities/operators/treeRegress.h>
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
-#include <agrum/FMDP/planning/operators/treeOperator.h>
+#include <agrum/multidim/FunctionGraphUtilities/operators/treeOperator.h>
 // =======================================================================================
 
 #define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)

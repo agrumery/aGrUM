@@ -31,6 +31,7 @@
 #include <agrum/core/hashTable.h>
 // =========================================================================
 #include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>
 #include <agrum/FMDP/learning/observation.h>
 #include <agrum/FMDP/learning/datastructure/imddi.h>
 #include <agrum/FMDP/learning/datastructure/iti.h>
@@ -49,7 +50,7 @@ namespace gum {
    *
    */
   template <TESTNAME VariableAttributeSelection, TESTNAME RewardAttributeSelection, LEARNERNAME LearnerSelection>
-  class FMDPLearner {
+  class FMDPLearner : public ILearningStrategy {
 
     template < bool isScalar >
     using VariableLearnerType = typename LearnerSelect<LearnerSelection, IMDDI<VariableAttributeSelection, isScalar>,
@@ -78,56 +79,71 @@ namespace gum {
 
       /// @}
 
-      // ==========================================================================
-      /// @name
-      // ==========================================================================
+      // ###################################################################
+      /// @name Initialization
+      // ###################################################################
       /// @{
+    public:
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        void addVariable(const DiscreteVariable*);
-
-        void addAction(const Idx actionId, const std::string &);
+        // ==========================================================================
+        /// Initializes the learner
+        // ==========================================================================
+        void initialize( FMDP<double>* fmdp );
 
       /// @}
 
-      // ==========================================================================
-      /// @name
-      // ==========================================================================
+
+      // ###################################################################
+      /// @name Incremental methods
+      // ###################################################################
       /// @{
+    public :
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        void initialize();
+        // ==========================================================================
+        /**
+         * Gives to the learner a new transition
+         * @param actionId : the action on which the transition was made
+         * @param obs : the observed transition
+         * @return true if learning this transition implies structural changes
+         * (can trigger a new planning)
+         */
+        // ==========================================================================
+        bool addObservation( Idx actionId, const Observation* obs );
 
-        // ###################################################################
-        ///
-        // ###################################################################
-        void addObservation(Idx, const Observation*);
 
-        // ###################################################################
-        ///
-        // ###################################################################
+        // ==========================================================================
+        /**
+         * Starts an update of datastructure in the associated FMDP
+         */
+        // ==========================================================================
         void updateFMDP();
 
       /// @}
-      ///
+
+
+      // ###################################################################
+      /// @name Miscelleanous methods
+      // ###################################################################
+      /// @{
+    public :
+
+        // ==========================================================================
+        /**
+         * @brief learnerSize
+         * @return
+         */
+        // ==========================================================================
+        Size size();
+
+      /// @}
+
       MultiDimFunctionGraph<double>* extractCount(Idx actionId, const DiscreteVariable* var){
         return __actionLearners[actionId]->getWithDefault(var, nullptr)->extractCount();}
 
-      Size size();
-
     private :
-
 
       /// The FMDP to store the learned model
       FMDP<double>* __fmdp;
-
-      /// Set of main variables describing the system'rdfgll
-      Set<const DiscreteVariable*> __mainVariables;
-
 
       HashTable<
             Idx, HashTable<const DiscreteVariable*, IncrementalGraphLearner<VariableAttributeSelection, false>*>*

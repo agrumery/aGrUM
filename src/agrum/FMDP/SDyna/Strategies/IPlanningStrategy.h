@@ -45,6 +45,7 @@ namespace gum {
    * @ingroup fmdp_group
    *
    */
+  template<typename GUM_SCALAR>
   class IPlanningStrategy {
 
       // ###################################################################
@@ -69,7 +70,7 @@ namespace gum {
         // ==========================================================================
         /// Initializes the learner
         // ==========================================================================
-        virtual void initialize() = 0;
+        virtual void initialize(FMDP<GUM_SCALAR>* fmdp) = 0;
 
       /// @}
 

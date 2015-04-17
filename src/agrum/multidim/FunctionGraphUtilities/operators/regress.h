@@ -29,7 +29,7 @@
 #define GUM_REGRESS_H
 // =======================================================
 #include <agrum/multidim/multiDimFunctionGraph.h>
-#include <agrum/multidim/FunctionGraphUtilities/o4DGContext.h>
+#include <agrum/multidim/FunctionGraphUtilities/operators/o4DGContext.h>
 #include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
 // =======================================================
 
@@ -172,6 +172,6 @@ namespace gum {
 
 } // namespace gum
 
-#include <agrum/FMDP/planning/operators/regress.tcc>
+#include <agrum/multidim/FunctionGraphUtilities/operators/regress.tcc>
 
 #endif // GUM_REGRESS_H

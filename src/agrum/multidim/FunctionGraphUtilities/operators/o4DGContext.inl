@@ -20,7 +20,7 @@
 
 #include <cmath>
 
-#include <agrum/multidim/FunctionGraphUtilities/o4DGContext.h>
+#include <agrum/multidim/FunctionGraphUtilities/operators/o4DGContext.h>
 
 #ifndef O4DGCONTEXT_INL
 #define O4DGCONTEXT_INL

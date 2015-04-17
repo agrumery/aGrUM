@@ -25,7 +25,7 @@
 */
 
 // =========================================================================================
-#include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphProjector.h>
+#include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphProjector.h>
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
 // =========================================================================================
 #include <agrum/variables/labelizedVariable.h>
