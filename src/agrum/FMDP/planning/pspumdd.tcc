@@ -39,7 +39,7 @@
 #include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphOperator.h>
 // =========================================================================
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/FMDP.h>
 #include <agrum/FMDP/planning/pspumdd.h>
 #include <agrum/FMDP/planning/operators/regress.h>
 // =========================================================================
@@ -60,7 +60,7 @@ namespace gum {
     // Default constructor
     // ===========================================================================
     template<typename GUM_SCALAR> INLINE
-    PSPUMDD<GUM_SCALAR>::PSPUMDD ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon ) : SPUMDD<GUM_SCALAR>(fmdp, epsilon) {
+    PSPUMDD<GUM_SCALAR>::PSPUMDD ( FMDP<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon ) : SPUMDD<GUM_SCALAR>(fmdp, epsilon) {
 
       GUM_CONSTRUCTOR ( PSPUMDD );
     }

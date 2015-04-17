@@ -36,7 +36,7 @@
 #include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>*/
 // =========================================================================
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/FMDP.h>
 #include <agrum/FMDP/planning/spumdd.h>
 #include <agrum/FMDP/learning/spimddi.h>
 // =========================================================================
@@ -65,7 +65,7 @@ namespace gum {
         // ==========================================================================
         /// Default constructor
         // ==========================================================================
-        RMaxMDDPlaner ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, SPIMDDI* spim, double minExplo, GUM_SCALAR epsilon = 0.00001 );
+        RMaxMDDPlaner ( FMDP<GUM_SCALAR>* fmdp, SPIMDDI* spim, double minExplo, GUM_SCALAR epsilon = 0.00001 );
 
         // ==========================================================================
         /// Default destructor

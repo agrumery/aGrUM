@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/FMDP.h>
 
-template class gum::FactoredMarkovDecisionProcess<float>;
-template class gum::FactoredMarkovDecisionProcess<double>;
+template class gum::FMDP<float>;
+template class gum::FMDP<double>;

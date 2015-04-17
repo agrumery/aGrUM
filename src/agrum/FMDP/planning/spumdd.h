@@ -54,7 +54,7 @@ namespace gum {
        /**
         * Default constructor
         */
-        SPUMDD ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
+        SPUMDD ( FMDP<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
 
        /**
         * Default destructor

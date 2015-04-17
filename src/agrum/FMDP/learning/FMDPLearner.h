@@ -30,7 +30,7 @@
 // =========================================================================
 #include <agrum/core/hashTable.h>
 // =========================================================================
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/FMDP.h>
 #include <agrum/FMDP/learning/observation.h>
 #include <agrum/FMDP/learning/datastructure/imddi.h>
 #include <agrum/FMDP/learning/datastructure/iti.h>
@@ -69,7 +69,7 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        FMDPLearner ( FactoredMarkovDecisionProcess<double>* target, double learningThreshold, double similarityThreshold );
+        FMDPLearner ( FMDP<double>* target, double learningThreshold, double similarityThreshold );
 
         // ###################################################################
         /// Default destructor
@@ -123,7 +123,7 @@ namespace gum {
 
 
       /// The FMDP to store the learned model
-      FactoredMarkovDecisionProcess<double>* __fmdp;
+      FMDP<double>* __fmdp;
 
       /// Set of main variables describing the system'rdfgll
       Set<const DiscreteVariable*> __mainVariables;

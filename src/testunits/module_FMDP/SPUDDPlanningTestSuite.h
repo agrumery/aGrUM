@@ -25,7 +25,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 // ==============================================================================
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/FMDP.h>
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
 #include <agrum/FMDP/planning/spumdd.h>
 #include <agrum/FMDP/planning/pspumdd.h>
@@ -41,7 +41,7 @@ namespace gum_tests {
 
       void run ( const std::string showSaveFile ) {
 
-        gum::FactoredMarkovDecisionProcess<double> fmdp(true);
+        gum::FMDP<double> fmdp(true);
         //gum::SPUMDD<double> planer ( &fmdp );//, 10 ); // Epsilon is set high, indeed we just want ot check that the algorithm works fine.
         gum::SVI<double> planer(&fmdp);
 

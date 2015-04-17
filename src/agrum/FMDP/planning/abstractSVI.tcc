@@ -57,7 +57,7 @@ namespace gum {
     // Default constructor
     // ===========================================================================
     template<typename GUM_SCALAR> INLINE
-    AbstractSVI<GUM_SCALAR>::AbstractSVI ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon ) : _fmdp(fmdp) {
+    AbstractSVI<GUM_SCALAR>::AbstractSVI ( FMDP<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon ) : _fmdp(fmdp) {
 
       GUM_CONSTRUCTOR ( AbstractSVI );
 

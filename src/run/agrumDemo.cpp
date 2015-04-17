@@ -25,13 +25,13 @@
 // ==============================================================================
 //#include <agrum/agrum.h>
 // ==============================================================================
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/FMDP.h>
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
 #include <agrum/FMDP/simulation/FMDPSimulator.h>
 #include <agrum/FMDP/simulation/taxiSimulator.h>
 #include <agrum/FMDP/simulation/statesChecker.h>
-#include <agrum/FMDP/learning/SDyna/spimddi.h>
-#include <agrum/FMDP/learning/SDyna/spiti.h>
+#include <agrum/FMDP/SDyna/spimddi.h>
+#include <agrum/FMDP/SDyna/spiti.h>
 // ==============================================================================
 
 #define xstrfy(s) strfy(s)

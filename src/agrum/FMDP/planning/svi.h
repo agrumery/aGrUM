@@ -54,7 +54,7 @@ namespace gum {
         // ==========================================================================
         /// Default constructor
         // ==========================================================================
-        SVI ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
+        SVI ( FMDP<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
 
         // ==========================================================================
         /// Default destructor

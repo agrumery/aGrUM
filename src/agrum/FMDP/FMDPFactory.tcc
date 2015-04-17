@@ -46,7 +46,7 @@ namespace gum {
   // @param fmdp A pointer over the Factored Markov Decision Process filled by this factory.
 
   template<typename GUM_SCALAR> INLINE
-  FMDPFactory<GUM_SCALAR>::FMDPFactory ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp ) : __fmdp ( fmdp ) {
+  FMDPFactory<GUM_SCALAR>::FMDPFactory ( FMDP<GUM_SCALAR>* fmdp ) : __fmdp ( fmdp ) {
 
     GUM_CONSTRUCTOR( FMDPFactory );
 
@@ -76,7 +76,7 @@ namespace gum {
   // Returns the IBayesNet created by this factory.
 
   template<typename GUM_SCALAR> INLINE
-  FactoredMarkovDecisionProcess<GUM_SCALAR>*
+  FMDP<GUM_SCALAR>*
   FMDPFactory<GUM_SCALAR>::FMDP() const {
 
     if( state() != FMDPfactory_state::NONE )

@@ -33,7 +33,7 @@
 #include <agrum/graphs/graphElements.h>
 #include <agrum/variables/labelizedVariable.h>
 
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/FMDP.h>
 
 
 namespace gum {

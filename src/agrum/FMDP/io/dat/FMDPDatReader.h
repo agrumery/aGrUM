@@ -33,7 +33,7 @@
   };
   // END OF OPTIONAL LISTENER
 
-  gum::FactoredMarkovDecisionProcess<double> fmdp;
+  gum::FMDP<double> fmdp;
 
   try {
     gum::FMDPDatReader<double> reader( &fmdp, std::string( args[1] ) );
@@ -66,7 +66,7 @@
 #include <string>
 #include <fstream>
 // ======================================================================================================
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/FMDP.h>
 #include <agrum/FMDP/FMDPFactory.h>
 #include <agrum/FMDP/io/FMDPReader.h>
 // ======================================================================================================
@@ -87,7 +87,7 @@ namespace gum {
   template< typename GUM_SCALAR >
   class FMDPDatReader : public FMDPReader<GUM_SCALAR> {
     public:
-      FMDPDatReader ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, const std::string& filename );
+      FMDPDatReader ( FMDP<GUM_SCALAR>* fmdp, const std::string& filename );
       ~FMDPDatReader();
 
       /// Direct access to FMDPDat scanner (mandatory for listener connection)
@@ -134,7 +134,7 @@ namespace gum {
       /// @}
 
     protected:
-      FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
+      FMDP<GUM_SCALAR>* __fmdp;
       FMDPFactory<GUM_SCALAR>* __factory;
       MDPDAT::Scanner* __scanner;
       MDPDAT::Parser* __parser;

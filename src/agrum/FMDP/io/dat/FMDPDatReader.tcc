@@ -31,7 +31,7 @@
 namespace gum {
 
   template<typename GUM_SCALAR>
-  FMDPDatReader<GUM_SCALAR>::FMDPDatReader ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, const std::string& filename )
+  FMDPDatReader<GUM_SCALAR>::FMDPDatReader ( FMDP<GUM_SCALAR>* fmdp, const std::string& filename )
     : FMDPReader<GUM_SCALAR> ( fmdp, filename ) {
 
     GUM_CONSTRUCTOR ( FMDPDatReader );

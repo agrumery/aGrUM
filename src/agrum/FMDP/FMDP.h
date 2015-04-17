@@ -40,7 +40,7 @@
 
 namespace gum {
   /**
-   * @class FactoredMarkovDecisionProcess
+   * @class FMDP
    * @brief This class is used to implement factored decision process.
    * @ingroup fmdp_group
    *
@@ -51,7 +51,7 @@ namespace gum {
    */
 
   template<typename GUM_SCALAR>
-  class FactoredMarkovDecisionProcess {
+  class FMDP {
 
     public:
 
@@ -63,12 +63,12 @@ namespace gum {
         /**
          * Default constructor.
          */
-        FactoredMarkovDecisionProcess(bool onDestructionDeleteVar = false);
+        FMDP(bool onDestructionDeleteVar = false);
 
         /**
          * Default destructor.
          */
-        ~FactoredMarkovDecisionProcess();
+        ~FMDP();
 
       /// @}
 
@@ -260,13 +260,13 @@ namespace gum {
       bool __onDestructionDeleteVars;
   };
 
-//  extern template class FactoredMarkovDecisionProcess<float>;
-//  extern template class FactoredMarkovDecisionProcess<double>;
+//  extern template class FMDP<float>;
+//  extern template class FMDP<double>;
 
 } /* namespace gum */
 
 
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.tcc>
+#include <agrum/FMDP/FMDP.tcc>
 
 #endif // GUM_FACTORED_MARKOV_DECISION_PROCESS_H
 

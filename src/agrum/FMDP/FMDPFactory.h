@@ -34,7 +34,7 @@
 
 #include <agrum/variables/labelizedVariable.h>
 
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/FMDP.h>
 #include <agrum/FMDP/IFMDPFactory.h>
 
 
@@ -70,9 +70,9 @@ namespace gum {
 
         /**
          * Use this constructor if you want to use an already created factored markov decision process.
-         * @param fmdp A pointer over the @ref FactoredMarkovDecisionProcess filled by this factory.
+         * @param fmdp A pointer over the @ref FMDP filled by this factory.
          */
-        FMDPFactory ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp );
+        FMDPFactory ( FMDP<GUM_SCALAR>* fmdp );
 
         /**
          * @brief Destructor.
@@ -96,7 +96,7 @@ namespace gum {
          * @throw OperationNotAllowed Raise if the state of the factory is different
          *                            than NONE.
          */
-        FactoredMarkovDecisionProcess<GUM_SCALAR>* FMDP() const;
+        FMDP<GUM_SCALAR>* FMDP() const;
 
         /// Returns the current state of the factory.
         FMDPfactory_state state() const;
@@ -281,7 +281,7 @@ namespace gum {
       std::vector<FMDPfactory_state> __states;
 
       /// The constructed FMDP
-      FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
+      FMDP<GUM_SCALAR>* __fmdp;
 
       /// The FunctionGraph we're building at a given time
       MultiDimFunctionGraph<GUM_SCALAR>* __FunctionGraph;

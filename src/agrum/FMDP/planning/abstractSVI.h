@@ -38,7 +38,7 @@
 #include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
 // =========================================================================
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/FMDP.h>
 #include <agrum/FMDP/planning/actionSet.h>
 // =========================================================================
 
@@ -70,7 +70,7 @@ namespace gum {
         // ==========================================================================
         /// Default constructor
         // ==========================================================================
-        AbstractSVI ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
+        AbstractSVI ( FMDP<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
 
         // ==========================================================================
         /// Default destructor
@@ -89,7 +89,7 @@ namespace gum {
         // ==========================================================================
         /// Returns a const ptr on the Factored Markov Decision Process on which we're planning
         // ==========================================================================
-        INLINE const FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp() { return _fmdp; }
+        INLINE const FMDP<GUM_SCALAR>* fmdp() { return _fmdp; }
 
         // ==========================================================================
         /// Returns a const ptr on the value function computed so far
@@ -325,7 +325,7 @@ namespace gum {
         /// The Factored Markov Decision Process describing our planning situation
         /// (NB : this one must have function graph as transitions and reward functions )
         // ==========================================================================
-        const FactoredMarkovDecisionProcess<GUM_SCALAR>* _fmdp;
+        const FMDP<GUM_SCALAR>* _fmdp;
 
         // ==========================================================================
         /// The Value Function computed iteratively

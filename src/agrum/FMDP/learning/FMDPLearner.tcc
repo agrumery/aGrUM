@@ -39,7 +39,7 @@ namespace gum {
     // ###################################################################
     template <TESTNAME VariableAttributeSelection, TESTNAME RewardAttributeSelection, LEARNERNAME LearnerSelection>
     FMDPLearner<VariableAttributeSelection, RewardAttributeSelection, LearnerSelection>::FMDPLearner(
-        FactoredMarkovDecisionProcess<double> *target,
+        FMDP<double> *target,
         double lT ,
         double sT) : __fmdp(target),
                      __learningThreshold(lT),

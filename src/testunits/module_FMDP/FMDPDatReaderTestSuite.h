@@ -29,7 +29,7 @@
 // =====================================================================
 #include <agrum/variables/labelizedVariable.h>
 // =====================================================================
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/FMDP.h>
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
 // =====================================================================
 
@@ -44,7 +44,7 @@ namespace gum_tests {
 
       void run( ) {
 
-        gum::FactoredMarkovDecisionProcess<float> fmdp(true);
+        gum::FMDP<float> fmdp(true);
         gum::FMDPDatReader<float> reader ( &fmdp, file ) ;
 
         reader.trace ( false );
@@ -72,7 +72,7 @@ namespace gum_tests {
       void testConstuctor() {
         std::string file = GET_PATH_STR ( "FMDP/coffee/coffee.dat" );
 
-        gum::FactoredMarkovDecisionProcess<float> fmdp;
+        gum::FMDP<float> fmdp;
 
         gum::FMDPDatReader<float>* reader = 0;
 

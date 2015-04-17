@@ -28,7 +28,7 @@
 //======================================================================
 #include <agrum/multidim/instantiation.h>
 //======================================================================
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/FMDP.h>
 //======================================================================
 #include <agrum/FMDP/simulation/abstractSimulator.h>
 //======================================================================

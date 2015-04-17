@@ -28,7 +28,7 @@
 //======================================================================
 #include <agrum/multidim/instantiation.h>
 //======================================================================
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/FMDP.h>
 #include <agrum/FMDP/simulation/abstractSimulator.h>
 //======================================================================
 
@@ -53,7 +53,7 @@ namespace gum {
         /**
          * Default constructor.
          */
-        FMDPSimulator(const FactoredMarkovDecisionProcess<double>* fmdp);
+        FMDPSimulator(const FMDP<double>* fmdp);
         FMDPSimulator(const std::string& resource);
 
         /**
@@ -108,7 +108,7 @@ namespace gum {
     private :
 
       /// The Factored Markov Decision Process that describes how the system evolves
-      FactoredMarkovDecisionProcess<double>* __fmdp;
+      FMDP<double>* __fmdp;
 
       /// Just to know if it should be deleted in the end
       const bool __loaded;

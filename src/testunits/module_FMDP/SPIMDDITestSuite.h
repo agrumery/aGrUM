@@ -26,12 +26,12 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 // ==============================================================================
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/FMDP.h>
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
 #include <agrum/FMDP/simulation/FMDPSimulator.h>
 #include <agrum/FMDP/simulation/taxiSimulator.h>
-#include <agrum/FMDP/learning/SDyna/spimddi.h>
-#include <agrum/FMDP/learning/SDyna/spiti.h>
+#include <agrum/FMDP/SDyna/spimddi.h>
+#include <agrum/FMDP/SDyna/spiti.h>
 // ==============================================================================
 
 namespace gum_tests {
