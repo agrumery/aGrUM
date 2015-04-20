@@ -51,26 +51,27 @@ namespace gum {
 
     /** @brief the wrapper of Create<>s that will be used to translate
      * a set of database cells */
-    template <int Idx, typename... Translators> class BasicDBRowTranslatorSetStatic;
+    template <int OUTPUT_SIZE, typename... Translators>
+    class BasicDBRowTranslatorSetStatic;
 
     /** @brief the end of the recursive definition of
      * BasicDBRowTranslatorSetStatic: should do nothing */
-    template <int Idx> class BasicDBRowTranslatorSetStatic<Idx> {
+    template <int OUTPUT_SIZE> class BasicDBRowTranslatorSetStatic<OUTPUT_SIZE> {
       public:
-      static constexpr unsigned int output_size = Idx;
+      static constexpr unsigned int output_size = OUTPUT_SIZE;
 
       BasicDBRowTranslatorSetStatic() noexcept {}
       BasicDBRowTranslatorSetStatic(
-          const BasicDBRowTranslatorSetStatic<Idx> &) noexcept {}
-      BasicDBRowTranslatorSetStatic(BasicDBRowTranslatorSetStatic<Idx> &&) noexcept {
-      }
+          const BasicDBRowTranslatorSetStatic<OUTPUT_SIZE> &) noexcept {}
+      BasicDBRowTranslatorSetStatic(
+          BasicDBRowTranslatorSetStatic<OUTPUT_SIZE> &&) noexcept {}
       ~BasicDBRowTranslatorSetStatic() noexcept {}
-      BasicDBRowTranslatorSetStatic<Idx> &
-      operator=(const BasicDBRowTranslatorSetStatic<Idx> &) noexcept {
+      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE> &
+      operator=(const BasicDBRowTranslatorSetStatic<OUTPUT_SIZE> &) noexcept {
         return *this;
       }
-      BasicDBRowTranslatorSetStatic<Idx> &
-      operator=(BasicDBRowTranslatorSetStatic<Idx> &&) noexcept {
+      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE> &
+      operator=(BasicDBRowTranslatorSetStatic<OUTPUT_SIZE> &&) noexcept {
         return *this;
       }
 
@@ -89,15 +90,15 @@ namespace gum {
 
     /** @brief the implementation of the wrapper of Create<>s (used to
      * translate the cells of a DBRow) */
-    template <int Idx, typename Translator, typename... OtherTranslators>
-    class BasicDBRowTranslatorSetStatic<Idx, Translator, OtherTranslators...>
+    template <int OUTPUT_SIZE, typename Translator, typename... OtherTranslators>
+    class BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator, OtherTranslators...>
         : public BasicDBRowTranslatorSetStatic<
-              Idx + std::remove_reference<Translator>::type::output_size,
+              OUTPUT_SIZE + std::remove_reference<Translator>::type::output_size,
               OtherTranslators...> {
       public:
       /// the type of the subsequent Create<>s to apply
       using NextTranslators = BasicDBRowTranslatorSetStatic<
-          Idx + std::remove_reference<Translator>::type::output_size,
+          OUTPUT_SIZE + std::remove_reference<Translator>::type::output_size,
           OtherTranslators...>;
 
       /// the number of columns written by all the BasicDBRowTranslatorSetStatics
@@ -118,11 +119,11 @@ namespace gum {
 
       /// copy constructor
       BasicDBRowTranslatorSetStatic(const BasicDBRowTranslatorSetStatic<
-          Idx, Translator, OtherTranslators...> &from);
+          OUTPUT_SIZE, Translator, OtherTranslators...> &from);
 
       /// move constructor
       BasicDBRowTranslatorSetStatic(BasicDBRowTranslatorSetStatic<
-          Idx, Translator, OtherTranslators...> &&from);
+          OUTPUT_SIZE, Translator, OtherTranslators...> &&from);
 
       public:
       /// destructor
@@ -138,13 +139,14 @@ namespace gum {
 
       protected:
       /// copy operator
-      BasicDBRowTranslatorSetStatic<Idx, Translator, OtherTranslators...> &
-      operator=(const BasicDBRowTranslatorSetStatic<Idx, Translator,
+      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator, OtherTranslators...> &
+      operator=(const BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator,
                                                     OtherTranslators...> &);
 
       /// move operator
-      BasicDBRowTranslatorSetStatic<Idx, Translator, OtherTranslators...> &operator=(
-          BasicDBRowTranslatorSetStatic<Idx, Translator, OtherTranslators...> &&);
+      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator, OtherTranslators...> &
+      operator=(BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator,
+                                              OtherTranslators...> &&);
 
       /// @}
 

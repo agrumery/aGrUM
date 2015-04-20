@@ -163,9 +163,10 @@ namespace gum {
                   case DBCell::EltType::STRING:
                     if (!iter.val().exists(row[i].getString())) {
                       std::stringstream str;
-                      str << "Column " << iter.key() << " contains modality "
+                      str << "Column " << 1 + iter.key() << " contains modality '"
                           << row[i].getString()
-                          << " which has not been specified by the user";
+                          << "' which has not been specified by the user in line "
+                          << the_handler.numRow();
                       errors[this_thread].first = i;
                       errors[this_thread].second = str.str();
                       has_errors = true;
@@ -182,9 +183,10 @@ namespace gum {
 
                     if (!iter.val().exists(str.str())) {
                       std::stringstream str2;
-                      str2 << "Column " << iter.key() << " contains modality "
-                           << str.str()
-                           << " which has not been specified by the user";
+                      str << "Column " << 1 + iter.key() << " contains modality '"
+                          << str.str()
+                          << "' which has not been specified by the user in line "
+                          << the_handler.numRow();
                       errors[this_thread].first = i;
                       errors[this_thread].second = str2.str();
                       has_errors = true;

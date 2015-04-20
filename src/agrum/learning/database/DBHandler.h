@@ -27,6 +27,7 @@
 
 #include <utility>
 
+#include <agrum/config.h>
 #include <agrum/learning/database/DBRow.h>
 
 #define CACHE_SIZE 128
@@ -75,6 +76,9 @@ namespace gum {
 
       /// go to the next row in the database
       virtual void nextRow() noexcept = 0;
+
+      /// number of row
+      virtual Idx numRow() const noexcept = 0;
 
       /// indicates wether there are still rows to parse in the database
       virtual bool hasRows() const noexcept = 0;

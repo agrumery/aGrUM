@@ -216,6 +216,9 @@ namespace gum {
         /// makes the handler point to the next row
         void nextRow() noexcept;
 
+        /// number of row
+        Idx numRow() const noexcept;
+
         /// indicates whether the handler has reached its end or not
         bool hasRows() const noexcept;
 
