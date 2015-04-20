@@ -25,11 +25,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 // ==============================================================================
-#include <agrum/FMDP/FMDP.h>
-#include <agrum/FMDP/io/dat/FMDPDatReader.h>
-#include <agrum/FMDP/planning/spumdd.h>
-#include <agrum/FMDP/planning/pspumdd.h>
-#include <agrum/FMDP/planning/svi.h>
+#include <agrum/FMDP/fmdp.h>
+#include <agrum/FMDP/io/dat/fmdpDatReader.h>
+#include <agrum/FMDP/planning/structuredPlanning.h>
 // ==============================================================================
 
 namespace gum_tests {
@@ -43,17 +41,20 @@ namespace gum_tests {
 
         gum::FMDP<double> fmdp(true);
         //gum::SPUMDD<double> planer ( &fmdp );//, 10 ); // Epsilon is set high, indeed we just want ot check that the algorithm works fine.
-        gum::SVI<double> planer(&fmdp);
+        gum::StructuredPlanning<double>* planer = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING ( planer = gum::StructuredPlanning<double>::spumddInstance(0.9,0.01) );
 
         gum::FMDPDatReader<double> reader ( &fmdp, file );
         TS_GUM_ASSERT_THROWS_NOTHING ( reader.trace ( false ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( reader.proceed( ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( planer.initialize() );
-        TS_GUM_ASSERT_THROWS_NOTHING ( planer.makePlanning(10000) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( planer->initialize(&fmdp) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( planer->makePlanning(10000) );
 
-        std::cout << fmdp.size() << "\t" << planer.vFunction()->realSize() << "\t" << planer.optimalPolicy()->realSize() << std::endl;
-        std::cout << planer.optimalPolicy2String() << std::endl;
+        std::cout << fmdp.size() << "\t" << planer->vFunction()->realSize() << "\t" << planer->optimalPolicy()->realSize() << std::endl;
+        std::cout << planer->optimalPolicy2String() << std::endl;
+
+        TS_GUM_ASSERT_THROWS_NOTHING ( delete planer );
       }
 
     public:
@@ -63,7 +64,7 @@ namespace gum_tests {
         run ( "Coffee" );
       }
 
-      void est_FactoryS() {
+      void test_FactoryS() {
         file = GET_PATH_STR ( "FMDP/factory/tiny-factory.dat" );
         run ( "TinyFactory" );
       }

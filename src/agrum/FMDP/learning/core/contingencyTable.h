@@ -32,6 +32,7 @@
 // =========================================================================
 #include <agrum/core/hashTable.h>
 #include <agrum/core/set.h>
+#include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
 #include <agrum/FMDP/learning/observation.h>
 // =========================================================================
@@ -68,6 +69,12 @@ namespace gum {
         /// Default destructor
         // ==========================================================================
         ~ContingencyTable();
+
+        // ============================================================================
+        /// Allocators and Deallocators redefinition
+        // ============================================================================
+        void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
+        void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(ContingencyTable));}
 
       /// @}
 

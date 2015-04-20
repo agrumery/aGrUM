@@ -31,8 +31,11 @@
 #include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/learning/observation.h>
 #include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>
+#include <agrum/FMDP/learning/fmdpLearner.h>
 #include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
+#include <agrum/FMDP/planning/structuredPlanning.h>
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
+#include <agrum/FMDP/decision/E_GreedyDecider.h>
 #include <agrum/FMDP/planning/actionSet.h>
 // =========================================================================
 #include <agrum/multidim/instantiation.h>
@@ -55,10 +58,45 @@ namespace gum {
   class SDYNA {
 
       // ###################################################################
+      /// @name
+      // ###################################################################
+      /// @
+    public:
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        static SDYNA* spitiInstance( double attributeSelectionThreshold = 0.99,
+                                     double discountFactor = 0.9,
+                                     double epsilon = 0.01,
+                                     Idx observationPhaseLenght = 100,
+                                     Idx nbValueIterationStep = 1 ){
+          ILearningStrategy* ls = new FMDPLearner<CHI2TEST,CHI2TEST,ITILEARNER>(attributeSelectionThreshold);
+          IPlanningStrategy<double>* ps = StructuredPlanning<double>::sviInstance( discountFactor, epsilon);
+          IDecisionStrategy* ds = new E_GreedyDecider(ps);
+          return new SDYNA( ls, ps, ds, observationPhaseLenght, nbValueIterationStep);
+        }
+
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        static SDYNA* spimddiInstance( double attributeSelectionThreshold = 0.99,
+                                       double similarityThreshold = 0.3,
+                                       double discountFactor = 0.9,
+                                       double epsilon = 0.01,
+                                       Idx observationPhaseLenght = 100,
+                                       Idx nbValueIterationStep = 1 ){
+          ILearningStrategy* ls = new FMDPLearner<GTEST,GTEST,IMDDILEARNER>(attributeSelectionThreshold, similarityThreshold);
+          IPlanningStrategy<double>* ps = StructuredPlanning<double>::spumddInstance( discountFactor, epsilon);
+          IDecisionStrategy* ds = new E_GreedyDecider(ps);
+          return new SDYNA( ls, ps, ds, observationPhaseLenght, nbValueIterationStep);
+        }
+
+      /// @}
+
+      // ###################################################################
       /// @name Constructor & destructor.
       // ###################################################################
-      /// @{    
-    public:
+      /// @{
 
         // ==========================================================================
         /**
@@ -72,13 +110,15 @@ namespace gum {
          * @return an instance of SDyna architecture
          */
         // ==========================================================================
+    private:
         SDYNA (ILearningStrategy *learner, IPlanningStrategy<double> *planer,
-               IDecisionStrategy *decider, Idx observationPhaseLenght = 100,
-               Idx nbValueIterationStep = 10);
+               IDecisionStrategy *decider, Idx observationPhaseLenght,
+               Idx nbValueIterationStep);
 
         // ==========================================================================
         /// Destructor
         // ==========================================================================
+    public:
         ~SDYNA ();
 
       /// @}
@@ -208,9 +248,9 @@ namespace gum {
        * Both in DOT language.
        */
       // ==========================================================================
-      virtual std::string toString();
+      std::string toString();
 
-      virtual std::string optimalPolicy2String(){ return __planer->optimalPolicy2String(); }
+      std::string optimalPolicy2String(){ return __planer->optimalPolicy2String(); }
 
 
       // ###################################################################
@@ -243,7 +283,7 @@ namespace gum {
          * @return
          */
         // ==========================================================================
-        virtual Size valueFunctionSize() {return __planer->vFunctionSize();}
+        Size valueFunctionSize() {return __planer->vFunctionSize();}
 
         // ==========================================================================
         /**
@@ -251,7 +291,7 @@ namespace gum {
          * @return
          */
         // ==========================================================================
-        virtual Size optimalPolicySize() {return __planer->optimalPolicySize();}
+        Size optimalPolicySize() {return __planer->optimalPolicySize();}
 
       /// @}
 
@@ -264,6 +304,17 @@ namespace gum {
       Instantiation _lastState;
 
   private :
+
+      /// The learner used to learn the FMDP
+      ILearningStrategy* __learner;
+
+      /// The planer used to plan an optimal strategy
+      IPlanningStrategy<double>* __planer;
+
+      /// The decider
+      IDecisionStrategy* __decider;
+
+
       /// The number of observation we make before using again the planer
       Idx __observationPhaseLenght;
 
@@ -278,15 +329,6 @@ namespace gum {
 
       /// Since SDYNA made these observation, it has to delete them on quitting
       Set<Observation*> __bin;
-
-      /// The learner used to learn the FMDP
-      ILearningStrategy* __learner;
-
-      /// The planer used to plan an optimal strategy
-      IPlanningStrategy<double>* __planer;
-
-      /// The decider
-      IDecisionStrategy* __decider;
   };
 
 

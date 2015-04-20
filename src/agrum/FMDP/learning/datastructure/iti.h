@@ -79,7 +79,6 @@ namespace gum {
         // ==========================================================================
         ITI ( MultiDimFunctionGraph<double>* target,
               double attributeSelectionThreshold,
-              double temporaryAPIfix,
               Set<const DiscreteVariable*> attributeListe,
               const DiscreteVariable* learnedValue );
 
@@ -97,7 +96,6 @@ namespace gum {
         // ==========================================================================
         ITI ( MultiDimFunctionGraph<double>* target,
               double attributeSelectionThreshold,
-              double temporaryAPIfix,
               Set<const DiscreteVariable*> attributeListe );
 
         // ==========================================================================

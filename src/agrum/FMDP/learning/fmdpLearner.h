@@ -73,7 +73,7 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        FMDPLearner ( FMDP<double>* target, double learningThreshold, double similarityThreshold );
+        FMDPLearner (double learningThreshold, double similarityThreshold = 0.05);
 
         // ###################################################################
         /// Default destructor
@@ -110,19 +110,19 @@ namespace gum {
         ///
         // ==========================================================================
         VariableLearnerType* __instantiateVarLearner(MultiDimFunctionGraph<double>* target,
-                                                     Set<const DiscreteVariable*> mainVariables,
-                                                     DiscreteVariable* learnedVar){
+                                                     Set<const DiscreteVariable*>& mainVariables,
+                                                     const DiscreteVariable* learnedVar){
           return __instantiateVarLearner( target, mainVariables, learnedVar, Int2Type<LearnerSelection>()); }
 
         VariableLearnerType* __instantiateVarLearner( MultiDimFunctionGraph<double>* target,
-                                                      Set<const DiscreteVariable*> mainVariables,
-                                                      DiscreteVariable* learnedVar,
+                                                      Set<const DiscreteVariable*>& mainVariables,
+                                                      const DiscreteVariable* learnedVar,
                                                       Int2Type<IMDDILEARNER>){
           return new VariableLearnerType(target,__learningThreshold, __similarityThreshold, mainVariables, learnedVar); }
 
         VariableLearnerType* __instantiateVarLearner( MultiDimFunctionGraph<double>* target,
-                                                      Set<const DiscreteVariable*> mainVariables,
-                                                      DiscreteVariable* learnedVar,
+                                                      Set<const DiscreteVariable*>& mainVariables,
+                                                      const DiscreteVariable* learnedVar,
                                                       Int2Type<ITILEARNER>){
           return new VariableLearnerType(target,__learningThreshold, mainVariables, learnedVar); }
 
@@ -131,16 +131,16 @@ namespace gum {
         ///
         // ==========================================================================
         RewardLearnerType* __instantiateRewardLearner( MultiDimFunctionGraph<double>* target,
-                                                         Set<const DiscreteVariable*> mainVariables){
+                                                         Set<const DiscreteVariable*>& mainVariables){
           return __instantiateRewardLearner( target, mainVariables, Int2Type<LearnerSelection>()); }
 
         RewardLearnerType* __instantiateRewardLearner( MultiDimFunctionGraph<double>* target,
-                                                         Set<const DiscreteVariable*> mainVariables,
+                                                         Set<const DiscreteVariable*>& mainVariables,
                                                          Int2Type<IMDDILEARNER>){
           return new RewardLearnerType(target,__learningThreshold, __similarityThreshold, mainVariables); }
 
         RewardLearnerType* __instantiateRewardLearner( MultiDimFunctionGraph<double>* target,
-                                                         Set<const DiscreteVariable*> mainVariables,
+                                                         Set<const DiscreteVariable*>& mainVariables,
                                                          Int2Type<ITILEARNER>){
           return new RewardLearnerType(target,__learningThreshold, mainVariables); }
 

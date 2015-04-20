@@ -30,6 +30,7 @@
 #define GUM_OBSERVATION_H
 // =========================================================================
 #include <agrum/core/hashTable.h>
+#include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
@@ -63,6 +64,12 @@ namespace gum {
         /// Default destructor
         // ###################################################################
         ~Observation() {GUM_DESTRUCTOR(Observation)}
+
+        // ============================================================================
+        /// Allocators and Deallocators redefinition
+        // ============================================================================
+        void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
+        void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(Observation));}
 
       /// @}
 

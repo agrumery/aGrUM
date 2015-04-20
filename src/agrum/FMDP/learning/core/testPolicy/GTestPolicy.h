@@ -54,6 +54,12 @@ namespace gum {
 
       virtual ~GTestPolicy(){ GUM_DESTRUCTOR(GTestPolicy) }
 
+      // ============================================================================
+      /// Allocators and Deallocators redefinition
+      // ============================================================================
+      void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
+      void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(GTestPolicy));}
+
       // ############################################################################
       /// @name Observation insertion
       // ############################################################################

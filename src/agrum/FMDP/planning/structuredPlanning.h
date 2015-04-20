@@ -19,14 +19,14 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the AbstractTreeOperatorStrategy planer class.
+ * @brief Headers of the StructuredPlanning planer class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 // =========================================================================
-#ifndef GUM_ABSTRACT_TreeOperatorStrategy_H
-#define GUM_ABSTRACT_TreeOperatorStrategy_H
+#ifndef GUM_STRUCTURED_PLANNING_H
+#define GUM_STRUCTURED_PLANNING_H
 // =========================================================================
 #include <thread>
 // =========================================================================
@@ -42,12 +42,14 @@
 #include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
 #include <agrum/FMDP/planning/actionSet.h>
 #include <agrum/FMDP/planning/IOperatorStrategy.h>
+#include <agrum/FMDP/planning/mddOperatorStrategy.h>
+#include <agrum/FMDP/planning/treeOperatorStrategy.h>
 // =========================================================================
 
 namespace gum {
 
   /**
-   * @class AbstractTreeOperatorStrategy abstractSVI.h <agrum/FMDP/planning/abstractSVI.h>
+   * @class StructuredPlanning structuredPlanning.h <agrum/FMDP/planning/structuredPlanning.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *
@@ -60,24 +62,43 @@ namespace gum {
    *
    */
   template<typename GUM_SCALAR>
-  class AbstractTreeOperatorStrategy : public IPlanningStrategy<GUM_SCALAR> {
+  class StructuredPlanning : public IPlanningStrategy<GUM_SCALAR> {
+
+
+      // ###################################################################
+      /// @name
+      // ###################################################################
+      /// @{
+  public :
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        static StructuredPlanning<GUM_SCALAR>* spumddInstance(GUM_SCALAR discountFactor = 0.9, GUM_SCALAR epsilon = 0.00001)
+              { return new StructuredPlanning<GUM_SCALAR>( new MDDOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon);}
+
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        static StructuredPlanning<GUM_SCALAR>* sviInstance(GUM_SCALAR discountFactor = 0.9, GUM_SCALAR epsilon = 0.00001)
+              { return new StructuredPlanning<GUM_SCALAR>( new TreeOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon);}
+
+      /// @}
 
       // ###################################################################
       /// @name Constructor & destructor.
       // ###################################################################
       /// @{
-
-  public:
-
+  private:
         // ==========================================================================
         /// Default constructor
         // ==========================================================================
-        AbstractTreeOperatorStrategy ( IOperatorStrategy<GUM_SCALAR>* opi, GUM_SCALAR discountFactor = 0.9, GUM_SCALAR epsilon = 0.00001 );
+        StructuredPlanning ( IOperatorStrategy<GUM_SCALAR>* opi, GUM_SCALAR discountFactor, GUM_SCALAR epsilon );
 
         // ==========================================================================
         /// Default destructor
         // ==========================================================================
-        virtual ~AbstractTreeOperatorStrategy();
+  public:
+        virtual ~StructuredPlanning();
 
       /// @}
 
@@ -116,7 +137,7 @@ namespace gum {
         // ==========================================================================
         /// Returns optimalPolicy computed so far current size
         // ==========================================================================
-        ActionSet getStateOptimalPolicy( const Instantiation& curState ){ _optimalPolicy->get(curState); }
+        ActionSet getStateOptimalPolicy( const Instantiation& curState ){ return _optimalPolicy->get(curState); }
 
         // ==========================================================================
         /// Provide a better toDot for the optimal policy where the leaves have the action
@@ -306,9 +327,9 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/FMDP/planning/abstractSVI.tcc>
+#include <agrum/FMDP/planning/structuredPlanning.tcc>
 
-#endif // GUM_ABSTRACT_TreeOperatorStrategy_H
+#endif // GUM_STRUCTURED_PLANNING_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

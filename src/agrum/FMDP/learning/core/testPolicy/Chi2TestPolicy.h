@@ -51,6 +51,12 @@ namespace gum {
 
       virtual ~Chi2TestPolicy(){ GUM_DESTRUCTOR(Chi2TestPolicy) }
 
+      // ============================================================================
+      /// Allocators and Deallocators redefinition
+      // ============================================================================
+      void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
+      void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(Chi2TestPolicy));}
+
       // ############################################################################
       /// @name Observation insertion
       // ############################################################################

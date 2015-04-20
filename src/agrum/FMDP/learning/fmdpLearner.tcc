@@ -39,10 +39,8 @@ namespace gum {
     // ###################################################################
     template <TESTNAME VariableAttributeSelection, TESTNAME RewardAttributeSelection, LEARNERNAME LearnerSelection>
     FMDPLearner<VariableAttributeSelection, RewardAttributeSelection, LearnerSelection>::FMDPLearner(
-        FMDP<double> *target,
         double lT ,
-        double sT) : __fmdp(target),
-                     __learningThreshold(lT),
+        double sT) : __learningThreshold(lT),
                      __similarityThreshold(sT){
       GUM_CONSTRUCTOR(FMDPLearner);
     }
@@ -100,7 +98,7 @@ namespace gum {
       MultiDimFunctionGraph<double>* reward = __instantiateFunctionGraph();
       reward->setTableName("REWARD");
       __fmdp->addReward(reward);
-      __rewardLearner = __instantiateRewardLearner(reward);
+      __rewardLearner = __instantiateRewardLearner(reward, mainVariables);
 
     }
 

@@ -58,9 +58,9 @@ namespace gum {
      */
     // ###################################################################
     template <TESTNAME AttributeSelection, bool isScalar >
-    ITI<AttributeSelection, isScalar>::ITI ( MultiDimFunctionGraph<double>* target,
+    ITI<AttributeSelection, isScalar>::ITI (
+            MultiDimFunctionGraph<double>* target,
             double attributeSelectionThreshold,
-            double temporaryAPIfix,
             Set<const DiscreteVariable*> attributeListe,
             const DiscreteVariable* learnedValue ) : IncrementalGraphLearner<AttributeSelection, isScalar>( target, attributeListe, learnedValue),
                                                      __nbTotalObservation(0),
@@ -82,9 +82,9 @@ namespace gum {
      */
     // ###################################################################
     template <TESTNAME AttributeSelection, bool isScalar >
-    ITI<AttributeSelection, isScalar>::ITI ( MultiDimFunctionGraph<double>* target,
+    ITI<AttributeSelection, isScalar>::ITI (
+            MultiDimFunctionGraph<double>* target,
             double attributeSelectionThreshold,
-            double temporaryAPIfix,
             Set<const DiscreteVariable*> attributeListe ) : IncrementalGraphLearner<AttributeSelection, isScalar>( target,
                                                                                                                    attributeListe,
                                                                                                                    new LabelizedVariable("Reward", "", 2) ),

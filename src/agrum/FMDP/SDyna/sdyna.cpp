@@ -70,6 +70,8 @@ namespace gum {
     // ###################################################################
     SDYNA::~SDYNA (){
 
+      delete __decider;
+
       delete __learner;
 
       delete __planer;

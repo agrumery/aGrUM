@@ -28,6 +28,8 @@
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_INTERFACE_TEST_POLICY_H
 
 // ============================================================================
+#include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
+// ============================================================================
 #include <agrum/graphs/nodeGraphPart.h>
 // ============================================================================
 
@@ -48,6 +50,12 @@ namespace gum {
       ITestPolicy() : __isModified(false), __nbObs(0){ GUM_CONSTRUCTOR(ITestPolicy) }
 
       virtual ~ITestPolicy(){ GUM_DESTRUCTOR(ITestPolicy) }
+
+      // ============================================================================
+      /// Allocators and Deallocators redefinition
+      // ============================================================================
+      void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
+      void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(ITestPolicy));}
 
 
       // ############################################################################

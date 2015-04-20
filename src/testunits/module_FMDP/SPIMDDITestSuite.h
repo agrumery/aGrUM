@@ -26,12 +26,11 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 // ==============================================================================
-#include <agrum/FMDP/FMDP.h>
-#include <agrum/FMDP/io/dat/FMDPDatReader.h>
-#include <agrum/FMDP/simulation/FMDPSimulator.h>
+#include <agrum/FMDP/fmdp.h>
+#include <agrum/FMDP/io/dat/fmdpDatReader.h>
+#include <agrum/FMDP/simulation/fmdpSimulator.h>
 #include <agrum/FMDP/simulation/taxiSimulator.h>
-#include <agrum/FMDP/SDyna/spimddi.h>
-#include <agrum/FMDP/SDyna/spiti.h>
+#include <agrum/FMDP/SDyna/sdyna.h>
 // ==============================================================================
 
 namespace gum_tests {
@@ -46,36 +45,40 @@ namespace gum_tests {
         // Initialisation de l'instance de SDyna
         // *********************************************************************************************
 //        gum::SPIMDDI spim;
-        gum::SPITI spim;
+        gum::SDYNA* sdyna = nullptr;
+//        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna = gum::SDYNA::spitiInstance() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna = gum::SDYNA::spimddiInstance() );
 
         // Enregistrement des actions possibles auprès de SPIMDDI
         for( auto actionIter = sim.beginActions(); actionIter != sim.endActions(); ++actionIter){
-          spim.addAction( *actionIter, sim.actionName(*actionIter));
+          sdyna->addAction( *actionIter, sim.actionName(*actionIter));
         }
 
         // Enregistrement des variables caractérisant les états auprès de SPIMDDI
         for(auto varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter){
-          spim.addVariable(*varIter);
+          sdyna->addVariable(*varIter);
         }
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( spim.initialize() );
         TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna->initialize(sim.currentState()) );
 
 
+        for( gum::Idx nbRun = 0; nbRun < 10; ++nbRun ){
 
-        for( gum::Idx nbRun = 0; nbRun < 1000; ++nbRun ){
-
-          TS_GUM_ASSERT_THROWS_NOTHING ( spim.setCurrentState(sim.currentState()) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( sdyna->setCurrentState(sim.currentState()) );
+          gum::Idx nbDec = 0;
 
           while(!sim.hasReachEnd()){
 
             // Normal Iteration Part
             gum::Idx actionChosenId = 0;
-            TS_GUM_ASSERT_THROWS_NOTHING ( actionChosenId = spim.takeAction(); )
+            TS_GUM_ASSERT_THROWS_NOTHING ( actionChosenId = sdyna->takeAction(); )
             TS_GUM_ASSERT_THROWS_NOTHING ( sim.perform( actionChosenId ) );
+            GUM_TRACE("NbRun : " << nbRun << " - NbDec : " << nbDec )
+            nbDec++;
 
             try{
-              spim.feedback(sim.currentState(), sim.reward());
+              sdyna->feedback(sim.currentState(), sim.reward());
             } catch(gum::Exception e){
               std::cout << e.errorType() << std::endl << e.errorCallStack();
               exit(-2);
@@ -83,6 +86,8 @@ namespace gum_tests {
           }
           TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
         }
+        TS_GUM_ASSERT_THROWS_NOTHING ( delete sdyna );
+
       }
 
     public:
@@ -93,7 +98,7 @@ namespace gum_tests {
       // *******************************************************************************
       // Run the tests on a Coffee FMDP
       // *******************************************************************************
-      void est_Coffee(){
+      void test_Coffee(){
 
         // **************************************************************
         // Chargement du fmdp servant de base
@@ -121,7 +126,7 @@ namespace gum_tests {
       // *******************************************************************************
       // Run the tests on a Taxi instance
       // *******************************************************************************
-      void test_Taxi(){
+      void est_Taxi(){
 
         // **************************************************************
         // Chargement du simulateur
