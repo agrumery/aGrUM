@@ -28,11 +28,11 @@
 //======================================================================
 #include <agrum/multidim/instantiation.h>
 //======================================================================
-#include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/fmdp.h>
 //======================================================================
 #include <agrum/FMDP/simulation/abstractSimulator.h>
 //======================================================================
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/variables/discreteVariable.h>
 //======================================================================
 
 namespace gum {
@@ -131,11 +131,11 @@ namespace gum {
     /// Variables data structures
     Sequence<const DiscreteVariable*> __FactoryVars;
     Bijection<const DiscreteVariable*, const DiscreteVariable*> __primeMap;
-    LabelizedVariable* __xPos;
-    LabelizedVariable* __yPos;
-    LabelizedVariable* __passengerPos;
-    LabelizedVariable* __passengerDest;
-    LabelizedVariable* __fuelLevel;
+    DiscreteVariable* __xPos;
+    DiscreteVariable* __yPos;
+    DiscreteVariable* __passengerPos;
+    DiscreteVariable* __passengerDest;
+    DiscreteVariable* __fuelLevel;
 
     /// Actions
     Sequence<Idx> __FactoryActions;

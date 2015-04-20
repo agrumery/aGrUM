@@ -31,9 +31,9 @@
 #include <vector>
 
 #include <agrum/graphs/graphElements.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/variables/discreteVariable.h>
 
-#include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/fmdp.h>
 
 
 namespace gum {

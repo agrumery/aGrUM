@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/FMDP/io/dat/FMDPDatReader.h>
+#include <agrum/FMDP/planning/mddOperatorStrategy.h>
 
-template class gum::FMDPDatReader<float>;
-template class gum::FMDPDatReader<double>;
 
+template class gum::MDDOperatorStrategy<float>;
+template class gum::MDDOperatorStrategy<double>;

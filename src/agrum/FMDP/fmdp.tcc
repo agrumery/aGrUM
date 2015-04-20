@@ -28,7 +28,7 @@
 #include <cstdio>
 #include <iostream>
 //======================================================================
-#include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/fmdp.h>
 //======================================================================
 
 namespace gum {

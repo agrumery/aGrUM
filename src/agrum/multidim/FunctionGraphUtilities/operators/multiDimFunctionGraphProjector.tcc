@@ -28,7 +28,7 @@
 #include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphProjector.h>
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
 // =========================================================================================
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/variables/discreteVariable.h>
 // =========================================================================================
 
 namespace gum {
@@ -49,7 +49,7 @@ namespace gum {
       __neutral( neutral ){
 
     GUM_CONSTRUCTOR(MultiDimFunctionGraphProjector);
-    __rd = new MultiDimFunctionGraph<GUM_SCALAR>();
+    __rd = MultiDimFunctionGraph<GUM_SCALAR>::getReducedAndOrderedInstance();
   }
 
 

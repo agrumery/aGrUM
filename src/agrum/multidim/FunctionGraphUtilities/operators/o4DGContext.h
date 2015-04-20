@@ -59,6 +59,16 @@ namespace gum {
         /// Default destructor.
         // ============================================================================
         ~O4DGContext();
+
+        // ============================================================================
+        /// Operator new overload to use the SmallObjectAllocator
+        // ============================================================================
+        void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
+
+        // ============================================================================
+        /// Operator delete overload to use the SmallObjectAllocator
+        // ============================================================================
+        void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(O4DGContext));}
       /// @}
 
       // ############################################################################

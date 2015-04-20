@@ -19,7 +19,7 @@
 ***************************************************************************/
 /**
 * @file
-* @brief Template implementation of FMDP/planning/AbstractSVI.h classes.
+* @brief Template implementation of FMDP/planning/AbstractTreeOperatorStrategy.h classes.
 *
 * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
@@ -56,9 +56,9 @@ namespace gum {
     // Default constructor
     // ===========================================================================
     template<typename GUM_SCALAR> INLINE
-    AbstractSVI<GUM_SCALAR>::AbstractSVI ( IOperatorStrategy<GUM_SCALAR>* opi, GUM_SCALAR discountFactor, GUM_SCALAR epsilon ) : _operator(opi), _discountFactor(discountFactor) {
+    AbstractTreeOperatorStrategy<GUM_SCALAR>::AbstractTreeOperatorStrategy ( IOperatorStrategy<GUM_SCALAR>* opi, GUM_SCALAR discountFactor, GUM_SCALAR epsilon ) : _operator(opi), _discountFactor(discountFactor) {
 
-      GUM_CONSTRUCTOR ( AbstractSVI );
+      GUM_CONSTRUCTOR ( AbstractTreeOperatorStrategy );
 
       __threshold = 0.1;//epsilon;
       _vFunction = nullptr;
@@ -69,9 +69,9 @@ namespace gum {
     // Default destructor
     // ===========================================================================
     template<typename GUM_SCALAR> INLINE
-    AbstractSVI<GUM_SCALAR>::~AbstractSVI() {
+    AbstractTreeOperatorStrategy<GUM_SCALAR>::~AbstractTreeOperatorStrategy() {
 
-      GUM_DESTRUCTOR ( AbstractSVI );
+      GUM_DESTRUCTOR ( AbstractTreeOperatorStrategy );
 
       if(_vFunction){
         delete _vFunction;
@@ -95,7 +95,7 @@ namespace gum {
     // Initializes data structure needed for making the planning
     // ===========================================================================
     template<typename GUM_SCALAR>
-    std::string AbstractSVI<GUM_SCALAR>::optimalPolicy2String(){
+    std::string AbstractTreeOperatorStrategy<GUM_SCALAR>::optimalPolicy2String(){
 
       // ************************************************************************
       // Discarding the case where no \pi* have been computed
@@ -212,7 +212,7 @@ namespace gum {
     // Initializes data structure needed for making the planning
     // ===========================================================================
     template<typename GUM_SCALAR>
-    void AbstractSVI<GUM_SCALAR>::initialize(FMDP<GUM_SCALAR> *fmdp) {
+    void AbstractTreeOperatorStrategy<GUM_SCALAR>::initialize(FMDP<GUM_SCALAR> *fmdp) {
 
       _fmdp = fmdp;
 
@@ -224,8 +224,8 @@ namespace gum {
         _elVarSeq << _fmdp->main2prime(*varIter);
 
       // Initialisation of the value function
-      _vFunction = new MultiDimFunctionGraph< GUM_SCALAR >();
-      _optimalPolicy = new MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >();
+      _vFunction = _operator->getFunctionInstance();
+      _optimalPolicy = _operator->getAggregatorInstance();
       __firstTime = true;
     }
 
@@ -234,7 +234,7 @@ namespace gum {
     // Performs a value iteration
     // ===========================================================================
     template<typename GUM_SCALAR>
-    void AbstractSVI<GUM_SCALAR>::makePlanning( Idx nbStep ) {
+    void AbstractTreeOperatorStrategy<GUM_SCALAR>::makePlanning( Idx nbStep ) {
 
       if(__firstTime){
         _vFunction->copy(*(RECAST(_fmdp->reward())));
@@ -291,11 +291,11 @@ namespace gum {
     // Performs a single step of value iteration
     // ===========================================================================
     template<typename GUM_SCALAR>
-    MultiDimFunctionGraph< GUM_SCALAR >* AbstractSVI<GUM_SCALAR>::_valueIteration() {
+    MultiDimFunctionGraph< GUM_SCALAR >* AbstractTreeOperatorStrategy<GUM_SCALAR>::_valueIteration() {
 
       // *****************************************************************************************
       // Loop reset
-      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = new MultiDimFunctionGraph< GUM_SCALAR >();
+      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = _operator->getFunctionInstance();
       newVFunction->copyAndReassign ( *_vFunction, _fmdp->mapMainPrime() );
 
       // *****************************************************************************************
@@ -324,7 +324,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph< GUM_SCALAR >*
-    AbstractSVI<GUM_SCALAR>::_evalQaction( const MultiDimFunctionGraph< GUM_SCALAR >* Vold, Idx actionId ){
+    AbstractTreeOperatorStrategy<GUM_SCALAR>::_evalQaction( const MultiDimFunctionGraph< GUM_SCALAR >* Vold, Idx actionId ){
 
       // ******************************************************************************
       // Initialisation :
@@ -341,7 +341,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph< GUM_SCALAR >*
-    AbstractSVI<GUM_SCALAR>::_maximiseQactions( std::vector<MultiDimFunctionGraph<GUM_SCALAR>*>& qActionsSet) {
+    AbstractTreeOperatorStrategy<GUM_SCALAR>::_maximiseQactions( std::vector<MultiDimFunctionGraph<GUM_SCALAR>*>& qActionsSet) {
 
       MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = qActionsSet.back();
       qActionsSet.pop_back();
@@ -361,11 +361,11 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph<GUM_SCALAR>*
-    AbstractSVI<GUM_SCALAR>::_addReward ( MultiDimFunctionGraph< GUM_SCALAR >* Vold ) {
+    AbstractTreeOperatorStrategy<GUM_SCALAR>::_addReward ( MultiDimFunctionGraph< GUM_SCALAR >* Vold ) {
 
       // *****************************************************************************************
       // ... we multiply the result by the discount factor, ...
-      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = new MultiDimFunctionGraph<GUM_SCALAR>();
+      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = _operator->getFunctionInstance();
       newVFunction->copyAndMultiplyByScalar ( *Vold, this->_discountFactor );
       delete Vold;
 
@@ -389,11 +389,11 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     void
-    AbstractSVI<GUM_SCALAR>::_evalPolicy (  ) {
+    AbstractTreeOperatorStrategy<GUM_SCALAR>::_evalPolicy (  ) {
 
       // *****************************************************************************************
       // Loop reset
-      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = new MultiDimFunctionGraph< GUM_SCALAR >();
+      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = _operator->getFunctionInstance();
       newVFunction->copyAndReassign ( *_vFunction, _fmdp->mapMainPrime() );
 
       std::vector<MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*> argMaxQActionsSet;
@@ -427,10 +427,10 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >*
-    AbstractSVI<GUM_SCALAR>::_makeArgMax ( const MultiDimFunctionGraph<GUM_SCALAR>* qAction, Idx actionId ) {
+    AbstractTreeOperatorStrategy<GUM_SCALAR>::_makeArgMax ( const MultiDimFunctionGraph<GUM_SCALAR>* qAction, Idx actionId ) {
 
       MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* amcpy
-          = new MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >();
+          = _operator->getArgMaxFunctionInstance();
 
       // Insertion des nouvelles variables
       for( SequenceIteratorSafe<const DiscreteVariable*> varIter = qAction->variablesSequence().beginSafe(); varIter != qAction->variablesSequence().endSafe(); ++varIter)
@@ -448,7 +448,7 @@ namespace gum {
     // Recursion part for the createArgMaxCopy
     // ==========================================================================
     template<typename GUM_SCALAR>
-    NodeId AbstractSVI<GUM_SCALAR>::__recurArgMaxCopy(NodeId currentNodeId,
+    NodeId AbstractTreeOperatorStrategy<GUM_SCALAR>::__recurArgMaxCopy(NodeId currentNodeId,
                                                       Idx actionId,
                                                       const MultiDimFunctionGraph<GUM_SCALAR>* src,
                                                       MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* argMaxCpy,
@@ -479,7 +479,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*
-    AbstractSVI<GUM_SCALAR>::_argmaximiseQactions( std::vector<MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*>& qActionsSet) {
+    AbstractTreeOperatorStrategy<GUM_SCALAR>::_argmaximiseQactions( std::vector<MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*>& qActionsSet) {
 
       MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* newVFunction = qActionsSet.back();
       qActionsSet.pop_back();
@@ -500,7 +500,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     void
-    AbstractSVI<GUM_SCALAR>::_extractOptimalPolicy (
+    AbstractTreeOperatorStrategy<GUM_SCALAR>::_extractOptimalPolicy (
         const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* argMaxOptimalValueFunction ) {
 
       _optimalPolicy->clear();
@@ -520,7 +520,7 @@ namespace gum {
     // Recursion part for the createArgMaxCopy
     // ==========================================================================
     template<typename GUM_SCALAR>
-    NodeId AbstractSVI<GUM_SCALAR>::__recurExtractOptPol(NodeId currentNodeId,
+    NodeId AbstractTreeOperatorStrategy<GUM_SCALAR>::__recurExtractOptPol(NodeId currentNodeId,
                                                        const MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* argMaxOptVFunc,
                                                        HashTable<NodeId,NodeId>& visitedNodes){
       if( visitedNodes.exists(currentNodeId))
@@ -546,7 +546,7 @@ namespace gum {
     // Extract from an ArgMaxSet the associated ActionSet
     // ==========================================================================
     template<typename GUM_SCALAR>
-    void AbstractSVI<GUM_SCALAR>::__transferActionIds( const ArgMaxSet<GUM_SCALAR, Idx>& src, ActionSet& dest){
+    void AbstractTreeOperatorStrategy<GUM_SCALAR>::__transferActionIds( const ArgMaxSet<GUM_SCALAR, Idx>& src, ActionSet& dest){
       for( auto idi = src.beginSafe(); idi != src.endSafe(); ++idi )
         dest += *idi;
     }

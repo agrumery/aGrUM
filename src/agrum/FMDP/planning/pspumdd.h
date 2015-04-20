@@ -19,14 +19,14 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the PSPUMDD planer class.
+ * @brief Headers of the PMDDOperatorStrategy planer class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 // =========================================================================
-#ifndef GUM_PSPUMDD_H
-#define GUM_PSPUMDD_H
+#ifndef GUM_PMDDOperatorStrategy_H
+#define GUM_PMDDOperatorStrategy_H
 // =========================================================================
 /*#include <agrum/core/argMaxSet.h>
 #include <agrum/core/functors.h>
@@ -36,7 +36,7 @@
 #include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>*/
 // =========================================================================
-#include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/planning/spumdd.h>
 // =========================================================================
 
@@ -44,7 +44,7 @@ namespace gum {
 
 
   /**
-   * @class PSPUMDD pspumdd.h <agrum/FMDP/planning/pspumdd.h>
+   * @class PMDDOperatorStrategy pspumdd.h <agrum/FMDP/planning/pspumdd.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *
@@ -53,7 +53,7 @@ namespace gum {
    *
    */
   template<typename GUM_SCALAR>
-  class PSPUMDD : public SPUMDD<GUM_SCALAR> {
+  class PMDDOperatorStrategy : public MDDOperatorStrategy<GUM_SCALAR> {
 
     public:
 
@@ -65,12 +65,12 @@ namespace gum {
        /**
         * Default constructor
         */
-        PSPUMDD ( FMDP<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
+        PMDDOperatorStrategy ( FMDP<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
 
        /**
         * Default destructor
         */
-        ~PSPUMDD();
+        ~PMDDOperatorStrategy();
 
       /// @}
 
@@ -101,14 +101,14 @@ namespace gum {
       Bijection<Idx,Idx> __actionCpt2actionId;
   };
 
-  extern template class PSPUMDD<float>;
-  extern template class PSPUMDD<double>;
+  extern template class PMDDOperatorStrategy<float>;
+  extern template class PMDDOperatorStrategy<double>;
 } /* namespace gum */
 
 
 #include <agrum/FMDP/planning/pspumdd.tcc>
 
-#endif // GUM_PSPUMDD_H
+#endif // GUM_PMDDOperatorStrategy_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

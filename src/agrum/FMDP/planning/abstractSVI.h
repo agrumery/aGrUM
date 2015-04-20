@@ -19,14 +19,14 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the AbstractSVI planer class.
+ * @brief Headers of the AbstractTreeOperatorStrategy planer class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 // =========================================================================
-#ifndef GUM_ABSTRACT_SVI_H
-#define GUM_ABSTRACT_SVI_H
+#ifndef GUM_ABSTRACT_TreeOperatorStrategy_H
+#define GUM_ABSTRACT_TreeOperatorStrategy_H
 // =========================================================================
 #include <thread>
 // =========================================================================
@@ -38,7 +38,7 @@
 #include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
 // =========================================================================
-#include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
 #include <agrum/FMDP/planning/actionSet.h>
 #include <agrum/FMDP/planning/IOperatorStrategy.h>
@@ -47,7 +47,7 @@
 namespace gum {
 
   /**
-   * @class AbstractSVI abstractSVI.h <agrum/FMDP/planning/abstractSVI.h>
+   * @class AbstractTreeOperatorStrategy abstractSVI.h <agrum/FMDP/planning/abstractSVI.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *
@@ -60,7 +60,7 @@ namespace gum {
    *
    */
   template<typename GUM_SCALAR>
-  class AbstractSVI : public IPlanningStrategy<GUM_SCALAR> {
+  class AbstractTreeOperatorStrategy : public IPlanningStrategy<GUM_SCALAR> {
 
       // ###################################################################
       /// @name Constructor & destructor.
@@ -72,12 +72,12 @@ namespace gum {
         // ==========================================================================
         /// Default constructor
         // ==========================================================================
-        AbstractSVI ( IOperatorStrategy<GUM_SCALAR>* opi, GUM_SCALAR discountFactor = 0.9, GUM_SCALAR epsilon = 0.00001 );
+        AbstractTreeOperatorStrategy ( IOperatorStrategy<GUM_SCALAR>* opi, GUM_SCALAR discountFactor = 0.9, GUM_SCALAR epsilon = 0.00001 );
 
         // ==========================================================================
         /// Default destructor
         // ==========================================================================
-        virtual ~AbstractSVI();
+        virtual ~AbstractTreeOperatorStrategy();
 
       /// @}
 
@@ -308,7 +308,7 @@ namespace gum {
 
 #include <agrum/FMDP/planning/abstractSVI.tcc>
 
-#endif // GUM_ABSTRACT_SVI_H
+#endif // GUM_ABSTRACT_TreeOperatorStrategy_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

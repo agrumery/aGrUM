@@ -36,7 +36,7 @@
 #include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
 #include <agrum/FMDP/learning/datastructure/leaves/concreteLeaf.h>
 // =========================================================================
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/variables/discreteVariable.h>
 // =========================================================================
 
 namespace gum {

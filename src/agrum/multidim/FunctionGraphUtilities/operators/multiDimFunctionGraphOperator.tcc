@@ -48,7 +48,7 @@ namespace gum {
                                                                                      __DG1InstantiationNeeded(DG1->realSize(),true,false),
                                                                                      __DG2InstantiationNeeded(DG2->realSize(),true,false){
       GUM_CONSTRUCTOR(MultiDimFunctionGraphOperator);
-      __rd = new MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>();
+      __rd = MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::getReducedAndOrderedInstance();
       __nbVar = 0;
       __default = nullptr;
     }

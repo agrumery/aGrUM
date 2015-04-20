@@ -28,7 +28,7 @@
 #ifndef GUM_SDYNA_H
 #define GUM_SDYNA_H
 // =========================================================================
-#include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/learning/observation.h>
 #include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>
 #include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>

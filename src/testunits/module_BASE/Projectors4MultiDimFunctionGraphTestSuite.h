@@ -96,7 +96,7 @@ class MultiDimProjectors4FunctionGraphTestSuite: public CxxTest::TestSuite {
     // ************************************************************************************************
     gum::MultiDimFunctionGraph<double>* __generateFunctionGraph1 ( const gum::Sequence< const gum::DiscreteVariable* >* varList ) {
 
-      gum::MultiDimFunctionGraph<double>* generatedFunctionGraph = new gum::MultiDimFunctionGraph<double>();
+      gum::MultiDimFunctionGraph<double>* generatedFunctionGraph = gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
 
       for ( gum::SequenceIterator< const gum::DiscreteVariable* > varIter = varList->begin();
          varIter != varList->end(); ++varIter )
@@ -454,7 +454,7 @@ class MultiDimProjectors4FunctionGraphTestSuite: public CxxTest::TestSuite {
 //        gum::LabelizedVariable* vC = new gum::LabelizedVariable ( "C", "", 2 );
 //        gum::LabelizedVariable* vD = new gum::LabelizedVariable ( "D", "", 4 );
 
-//        gum::MultiDimFunctionGraph<double>* dg1 = new gum::MultiDimFunctionGraph<double>();
+//        gum::MultiDimFunctionGraph<double>* dg1 = gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
 
 //        dg1->add(*vA);
 //        dg1->add(*vB);
@@ -591,7 +591,7 @@ class MultiDimProjectors4FunctionGraphTestSuite: public CxxTest::TestSuite {
 //        gum::LabelizedVariable* vC = new gum::LabelizedVariable ( "C", "", 2 );
 //        gum::LabelizedVariable* vD = new gum::LabelizedVariable ( "D", "", 4 );
 
-//        gum::MultiDimFunctionGraph<double>* dg1 = new gum::MultiDimFunctionGraph<double>();
+//        gum::MultiDimFunctionGraph<double>* dg1 = gum::MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
 
 //        dg1->add(*vA);
 //        dg1->add(*vB);

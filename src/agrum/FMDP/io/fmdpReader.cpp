@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/FMDP/planning/svi.h>
+#include <agrum/FMDP/io/fmdpReader.h>
 
+template class gum::FMDPReader<float>;
+template class gum::FMDPReader<double>;
 
-template class gum::SVI<float>;
-template class gum::SVI<double>;

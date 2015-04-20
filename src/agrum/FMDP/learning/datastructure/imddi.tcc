@@ -32,7 +32,7 @@
 #include <agrum/FMDP/learning/datastructure/imddi.h>
 #include <agrum/FMDP/learning/core/chiSquare.h>
 // =======================================================
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/variables/labelizedVariable.h>
 // =======================================================
 
 #define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)

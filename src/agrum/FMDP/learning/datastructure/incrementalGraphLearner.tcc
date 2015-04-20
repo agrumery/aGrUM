@@ -437,7 +437,7 @@ namespace gum {
   // ============================================================================
     template < TESTNAME AttributeSelection, bool isScalar >
     MultiDimFunctionGraph<double> *IncrementalGraphLearner<AttributeSelection, isScalar>::extractCount(){
-      MultiDimFunctionGraph<double>* ret = new MultiDimFunctionGraph<double>();
+      MultiDimFunctionGraph<double>* ret = MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
       _insertSetOfVars(ret);
 
       ret->manager()->setRootNode(__extractCount(this->_root, ret));

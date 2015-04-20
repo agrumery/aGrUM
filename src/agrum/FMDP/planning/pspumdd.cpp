@@ -21,5 +21,5 @@
 //#include <agrum/FMDP/planning/pspumdd.h>
 
 
-//template class gum::PSPUMDD<float>;
-//template class gum::PSPUMDD<double>;
+//template class gum::PMDDOperatorStrategy<float>;
+//template class gum::PMDDOperatorStrategy<double>;

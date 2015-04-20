@@ -19,7 +19,7 @@
 ***************************************************************************/
 /**
 * @file
-* @brief Template implementation of FMDP/planning/SPUMDD.h classes.
+* @brief Template implementation of FMDP/planning/MDDOperatorStrategy.h classes.
 *
 * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
@@ -38,7 +38,7 @@
 #include <agrum/multidim/FunctionGraphUtilities/operators/regress.h>
 #include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
 // =========================================================================
-#include <agrum/FMDP/planning/spumdd.h>
+#include <agrum/FMDP/planning/mddOperatorStrategy.h>
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code only
@@ -57,16 +57,16 @@ namespace gum {
     // Default constructor
     // ===========================================================================
     template<typename GUM_SCALAR> INLINE
-    SPUMDD<GUM_SCALAR>::SPUMDD (  ) {
-      GUM_CONSTRUCTOR ( SPUMDD );
+    MDDOperatorStrategy<GUM_SCALAR>::MDDOperatorStrategy (  ) {
+      GUM_CONSTRUCTOR ( MDDOperatorStrategy );
     }
 
     // ===========================================================================
     // Default destructor
     // ===========================================================================
     template<typename GUM_SCALAR> INLINE
-    SPUMDD<GUM_SCALAR>::~SPUMDD() {
-      GUM_DESTRUCTOR ( SPUMDD );
+    MDDOperatorStrategy<GUM_SCALAR>::~MDDOperatorStrategy() {
+      GUM_DESTRUCTOR ( MDDOperatorStrategy );
     }
 
 
@@ -85,11 +85,11 @@ namespace gum {
     /// @warning given qAction is deleted, return the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimFunctionGraph<GUM_SCALAR>* SPUMDD<GUM_SCALAR>::regress(const MultiDimFunctionGraph< GUM_SCALAR >* Vold,
+    MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::regress(const MultiDimFunctionGraph< GUM_SCALAR >* Vold,
                                                                     Idx actionId,
                                                                     const FMDP< GUM_SCALAR >* fmdp,
                                                                     const Set<const DiscreteVariable*>& elVarSeq ){
-      MultiDimFunctionGraph< GUM_SCALAR >* qAction = new MultiDimFunctionGraph< GUM_SCALAR >();
+      MultiDimFunctionGraph< GUM_SCALAR >* qAction = MultiDimFunctionGraph<GUM_SCALAR>::getReducedAndOrderedInstance();
       qAction->copy( *Vold );
 
       const DiscreteVariable* xip = this->_lastVar(qAction);
@@ -114,7 +114,7 @@ namespace gum {
     /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimFunctionGraph<GUM_SCALAR>* SPUMDD<GUM_SCALAR>::maximize( const MultiDimFunctionGraph< GUM_SCALAR >* vFunction,
+    MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::maximize( const MultiDimFunctionGraph< GUM_SCALAR >* vFunction,
                                                                       const MultiDimFunctionGraph< GUM_SCALAR >* qAction){
       MultiDimFunctionGraph<GUM_SCALAR>* ret = maximize2MultiDimFunctionGraphs ( vFunction, qAction );
       delete vFunction;
@@ -130,7 +130,7 @@ namespace gum {
     /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* SPUMDD<GUM_SCALAR>::argmaximize(
+    MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* MDDOperatorStrategy<GUM_SCALAR>::argmaximize(
                         const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* vFunction,
                         const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* qAction){
 
@@ -149,7 +149,7 @@ namespace gum {
     /// @warning given function is deleted, returns the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimFunctionGraph<GUM_SCALAR>* SPUMDD<GUM_SCALAR>::add(const MultiDimFunctionGraph< GUM_SCALAR >* function,
+    MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::add(const MultiDimFunctionGraph< GUM_SCALAR >* function,
                                                                 const MultiDimFunctionGraph< GUM_SCALAR >* reward){
       MultiDimFunctionGraph<GUM_SCALAR>* ret = add2MultiDimFunctionGraphs ( function, reward );
       delete function;
@@ -163,7 +163,7 @@ namespace gum {
     /// @warning this time, nothing is deleted
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimFunctionGraph<GUM_SCALAR>* SPUMDD<GUM_SCALAR>::subtract(const MultiDimFunctionGraph< GUM_SCALAR >* newVF,
+    MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::subtract(const MultiDimFunctionGraph< GUM_SCALAR >* newVF,
                                                          const MultiDimFunctionGraph< GUM_SCALAR >* oldVF){
       return subtract2MultiDimFunctionGraphs ( newVF, oldVF );
     }

@@ -35,7 +35,7 @@
 //======================================================================
 #include <agrum/config.h>
 //======================================================================
-#include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/fmdp.h>
 //======================================================================
 
 
@@ -80,6 +80,6 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/FMDP/io/FMDPReader.tcc>
+#include <agrum/FMDP/io/fmdpReader.tcc>
 
 #endif // GUM_FMDP_READER_H

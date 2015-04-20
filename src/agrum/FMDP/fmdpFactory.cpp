@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/fmdpFactory.h>
 
-template class gum::FMDP<float>;
-template class gum::FMDP<double>;
+template class gum::FMDPFactory<float>;
+template class gum::FMDPFactory<double>;

@@ -36,7 +36,7 @@
 #include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>*/
 // =========================================================================
-#include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/planning/spumdd.h>
 #include <agrum/FMDP/learning/spimddi.h>
 // =========================================================================
@@ -53,7 +53,7 @@ namespace gum {
    *
    */
   template<typename GUM_SCALAR>
-  class RMaxMDDPlaner : public SPUMDD<GUM_SCALAR> {
+  class RMaxMDDPlaner : public MDDOperatorStrategy<GUM_SCALAR> {
 
     public:
 

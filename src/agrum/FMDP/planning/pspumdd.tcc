@@ -19,7 +19,7 @@
 ***************************************************************************/
 /**
 * @file
-* @brief Template implementation of FMDP/planning/PSPUMDD.h classes.
+* @brief Template implementation of FMDP/planning/PMDDOperatorStrategy.h classes.
 *
 * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
@@ -39,7 +39,7 @@
 #include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphOperator.h>
 // =========================================================================
-#include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/planning/pspumdd.h>
 #include <agrum/FMDP/planning/operators/regress.h>
 // =========================================================================
@@ -60,17 +60,17 @@ namespace gum {
     // Default constructor
     // ===========================================================================
     template<typename GUM_SCALAR> INLINE
-    PSPUMDD<GUM_SCALAR>::PSPUMDD ( FMDP<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon ) : SPUMDD<GUM_SCALAR>(fmdp, epsilon) {
+    PMDDOperatorStrategy<GUM_SCALAR>::PMDDOperatorStrategy ( FMDP<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon ) : MDDOperatorStrategy<GUM_SCALAR>(fmdp, epsilon) {
 
-      GUM_CONSTRUCTOR ( PSPUMDD );
+      GUM_CONSTRUCTOR ( PMDDOperatorStrategy );
     }
 
     // ===========================================================================
     // Default destructor
     // ===========================================================================
     template<typename GUM_SCALAR> INLINE
-    PSPUMDD<GUM_SCALAR>::~PSPUMDD() {
-      GUM_DESTRUCTOR ( PSPUMDD );
+    PMDDOperatorStrategy<GUM_SCALAR>::~PMDDOperatorStrategy() {
+      GUM_DESTRUCTOR ( PMDDOperatorStrategy );
     }
 
 
@@ -85,9 +85,9 @@ namespace gum {
     // Initializes data structure needed for making the planning
     // ===========================================================================
     template<typename GUM_SCALAR>
-    void PSPUMDD<GUM_SCALAR>::initialize(  ) {
+    void PMDDOperatorStrategy<GUM_SCALAR>::initialize(  ) {
 
-      SPUMDD<GUM_SCALAR>::initialize();
+      MDDOperatorStrategy<GUM_SCALAR>::initialize();
 
       Idx threadId = 0;
       SequenceIteratorSafe<Idx> actionIter = this->_fmdp->beginActions();
@@ -105,7 +105,7 @@ namespace gum {
     // Performs a single step of value iteration
     // ===========================================================================
     template<typename GUM_SCALAR>
-    MultiDimFunctionGraph< GUM_SCALAR >* PSPUMDD<GUM_SCALAR>::_valueIteration() {
+    MultiDimFunctionGraph< GUM_SCALAR >* PMDDOperatorStrategy<GUM_SCALAR>::_valueIteration() {
 
       // *****************************************************************************************
       // Loop reset
@@ -243,7 +243,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph< GUM_SCALAR >*
-    PSPUMDD<GUM_SCALAR>::_evalQaction( const MultiDimFunctionGraph< GUM_SCALAR >* Vold, Idx actionId ){
+    PMDDOperatorStrategy<GUM_SCALAR>::_evalQaction( const MultiDimFunctionGraph< GUM_SCALAR >* Vold, Idx actionId ){
 
 //      std::cout << "===========================================================================================" << std::endl;
 //      std::cout << "Thread " << actionId << " - " << planer->fmdp()->actionName(actionId)  << std::endl;
@@ -325,7 +325,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     void
-    PSPUMDD<GUM_SCALAR>::__evalPolicy (  ) {
+    PMDDOperatorStrategy<GUM_SCALAR>::__evalPolicy (  ) {
 
       // *****************************************************************************************
       // Loop reset
@@ -383,7 +383,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     void
-    PSPUMDD<GUM_SCALAR>::addQaction(MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy> *qaction ) {
+    PMDDOperatorStrategy<GUM_SCALAR>::addQaction(MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy> *qaction ) {
         __argMaxQFunctionSet.push_back ( qaction );
     }
 
@@ -395,7 +395,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >*
-    PSPUMDD<GUM_SCALAR>::__createArgMaxCopy ( const MultiDimFunctionGraph<GUM_SCALAR>* qAction, Idx actionId ) {
+    PMDDOperatorStrategy<GUM_SCALAR>::__createArgMaxCopy ( const MultiDimFunctionGraph<GUM_SCALAR>* qAction, Idx actionId ) {
 
       MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* amcpy
           = new MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >();
@@ -449,7 +449,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     void
-    PSPUMDD<GUM_SCALAR>::__extractOptimalPolicy (
+    PMDDOperatorStrategy<GUM_SCALAR>::__extractOptimalPolicy (
         const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* argMaxOptimalPolicy ) {
 
 //      std::cout << argMaxOptimalPolicy->toDot() << std::endl;
@@ -503,13 +503,13 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR>
-    void PSPUMDD<GUM_SCALAR>::__transferActionIds( const ArgMaxSet<GUM_SCALAR, Idx>& src, ActionSet& dest){
+    void PMDDOperatorStrategy<GUM_SCALAR>::__transferActionIds( const ArgMaxSet<GUM_SCALAR, Idx>& src, ActionSet& dest){
       for( auto idi = src.beginSafe(); idi != src.endSafe(); ++idi )
         dest += *idi;
     }
 
     template<typename GUM_SCALAR>
-    std::string PSPUMDD<GUM_SCALAR>::optimalPolicy2String(){
+    std::string PMDDOperatorStrategy<GUM_SCALAR>::optimalPolicy2String(){
       if(!__optimalPolicy || __optimalPolicy->root() == 0 )
         return "NO OPTIMAL POLICY CALCULATED YET";
 

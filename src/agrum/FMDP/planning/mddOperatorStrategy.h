@@ -19,14 +19,14 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the SPUMDD planer class.
+ * @brief Headers of the MDDOperatorStrategy planer class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 // =========================================================================
-#ifndef GUM_SPUMDD_H
-#define GUM_SPUMDD_H
+#ifndef GUM_MDD_OPERATOR_STRATEGY_H
+#define GUM_MDD_OPERATOR_STRATEGY_H
 // =========================================================================
 #include <agrum/FMDP/planning/IOperatorStrategy.h>
 // =========================================================================
@@ -34,7 +34,7 @@
 namespace gum {
 
   /**
-   * @class SPUMDD spumdd.h <agrum/FMDP/planning/spumdd.h>
+   * @class MDDOperatorStrategy spumdd.h <agrum/FMDP/planning/spumdd.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *
@@ -42,7 +42,7 @@ namespace gum {
    *
    */
   template<typename GUM_SCALAR>
-  class SPUMDD : public IOperatorStrategy<GUM_SCALAR> {
+  class MDDOperatorStrategy : public IOperatorStrategy<GUM_SCALAR> {
 
     public:
 
@@ -54,12 +54,28 @@ namespace gum {
        /**
         * Default constructor
         */
-        SPUMDD (  );
+        MDDOperatorStrategy (  );
 
        /**
         * Default destructor
         */
-        ~SPUMDD();
+        ~MDDOperatorStrategy();
+
+      /// @}
+
+
+
+      // ###################################################################
+      /// @name
+      // ###################################################################
+      /// @{
+
+        MultiDimFunctionGraph<GUM_SCALAR, ExactTerminalNodePolicy>* getFunctionInstance()
+                { return MultiDimFunctionGraph<GUM_SCALAR>::getReducedAndOrderedInstance(); }
+        MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* getArgMaxFunctionInstance()
+                { return MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>::getReducedAndOrderedInstance(); }
+        MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>* getAggregatorInstance()
+                { return MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>::getReducedAndOrderedInstance(); }
 
       /// @}
 
@@ -143,9 +159,9 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/FMDP/planning/spumdd.tcc>
+#include <agrum/FMDP/planning/mddOperatorStrategy.tcc>
 
-#endif // GUM_SPUMDD_H
+#endif // GUM_MDD_OPERATOR_STRATEGY_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

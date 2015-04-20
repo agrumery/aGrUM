@@ -47,7 +47,7 @@ namespace gum {
                                                                                           __combine(){
       GUM_CONSTRUCTOR(TreeOperator);
 
-      __rd = new MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>();
+      __rd = MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::getTreeInstance();
 
     }
 
@@ -66,7 +66,7 @@ namespace gum {
                                                                                 __context(givenContext){
       GUM_CONSTRUCTOR(TreeOperator);
 
-      __rd = new MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>();
+      __rd = MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::getTreeInstance();
 
     }
 

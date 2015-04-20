@@ -48,8 +48,15 @@
 
 namespace gum {
 
-  template<typename GUM_SCALAR, template <class> class TerminalNodePolicy, bool isReduced = true>
+  template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
   class MultiDimFunctionGraphManager;
+
+  template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+  class MultiDimFunctionGraphROManager;
+
+  template<typename GUM_SCALAR, template <class> class TerminalNodePolicy>
+  class MultiDimFunctionGraphTreeManager;
+
   /**
    * @class MultiDimFunctionGraph multiDimFunctionGraph.h <agrum/multidim/multiDimFunctionGraph.h>
    *
@@ -57,7 +64,7 @@ namespace gum {
    *
    * @ingroup multidim_group
    */
-  template<typename GUM_SCALAR, template <class> class TerminalNodePolicy = ExactTerminalNodePolicy, bool isReduced = false>
+  template<typename GUM_SCALAR, template <class> class TerminalNodePolicy = ExactTerminalNodePolicy>
   class MultiDimFunctionGraph : public MultiDimImplementation< GUM_SCALAR >, public TerminalNodePolicy<GUM_SCALAR> {
 
     public:
@@ -67,24 +74,52 @@ namespace gum {
       // ############################################################################
       const static GUM_SCALAR defaultValue;
 
+    public:
+      // ############################################################################
+      /// @name
+      // ############################################################################
+      /// @{
+        // ============================================================================
+        /**
+         * @brief Returns a reduced and ordered instance
+         * Reduced and ordered instance will reduce the size of the graph whenever
+         * it's possible. An inherent order on the variable helps doing so.
+         * The order in which variables will be inserted with function add(const DiscreteVariable&)
+         * specify that order.
+         **/
+        // ============================================================================
+        static MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* getReducedAndOrderedInstance(){
+          return new MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>(); }
+
+        // ============================================================================
+        /// @brief Returns an arborescent instance
+        // ============================================================================
+        static MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* getTreeInstance(){
+          return new MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>(false); }
+
+      /// @}
+
       // ############################################################################
       /// @name Constructors / Destructors
       // ############################################################################
       /// @{
+
         // ============================================================================
         /// Default constructor.
         // ============================================================================
-        MultiDimFunctionGraph();
+    private:
+        MultiDimFunctionGraph(bool isReduced = true);
 
+    public:
         // ============================================================================
         /// Copy constructor.
         // ============================================================================
-        MultiDimFunctionGraph( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy, isReduced>& from );
+        MultiDimFunctionGraph( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from );
 
         // ============================================================================
         /// Copy Operator.
         // ============================================================================
-        MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy, isReduced>& operator=(const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy, isReduced>& from);
+        MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& operator=(const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from);
 
         // ============================================================================
         /// Destructor.
@@ -259,7 +294,7 @@ namespace gum {
          * of src, variables included.
          */
         // ============================================================================
-        void copy ( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy, isReduced>& src );
+        void copy ( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src );
 
         // ============================================================================
         /**
@@ -272,7 +307,7 @@ namespace gum {
          * of variables of the old variable.
          */
         // ============================================================================
-        void copyAndReassign ( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy, isReduced> &src,
+        void copyAndReassign ( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> &src,
                                const Bijection<const DiscreteVariable*, const DiscreteVariable*>& reassign );
 
         // ============================================================================
@@ -280,7 +315,7 @@ namespace gum {
          * Copies src diagrams and multiply every value by the given scalar.
          */
         // ============================================================================
-        void copyAndMultiplyByScalar ( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy, isReduced>& src,
+        void copyAndMultiplyByScalar ( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src,
                                        GUM_SCALAR gamma );
 
         // ============================================================================
@@ -310,7 +345,7 @@ namespace gum {
         // ============================================================================
         /// Returns a const reference to the manager of this diagram
         // ============================================================================
-        MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy, isReduced>* manager();
+        MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>* manager();
 
         // ============================================================================
         /// Returns the id of the root node from the diagram
@@ -352,6 +387,8 @@ namespace gum {
       void setTableName(const std::string& name) { __tableName = name;}
 
       virtual GUM_SCALAR get ( const Instantiation& i ) const ;
+
+      bool isReducedAndOrdered() const { return __isReduced; }
 
 
     protected:
@@ -401,7 +438,7 @@ namespace gum {
       // ============================================================================
       /// A reference to the manager that edits this function graph
       // ============================================================================
-      MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy, isReduced>* __manager;
+      MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>* __manager;
 
       // ============================================================================
       /// The root node of the function graph
@@ -418,10 +455,12 @@ namespace gum {
       // ============================================================================
       HashTable< const DiscreteVariable*, LinkedList<NodeId>* > __var2NodeIdMap;
 
+      bool __isReduced;
+
 
       /// @}
 
-      friend class MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy, isReduced>;
+      friend class MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>;
   };
 }
 

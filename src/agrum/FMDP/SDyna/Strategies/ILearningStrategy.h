@@ -34,7 +34,7 @@
 // =========================================================================
 #include <agrum/core/types.h>
 // =========================================================================
-#include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/learning/observation.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>

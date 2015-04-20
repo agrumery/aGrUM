@@ -35,7 +35,7 @@
 #include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
 // =========================================================================
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/variables/discreteVariable.h>
 // =========================================================================
 
 namespace gum {

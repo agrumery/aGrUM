@@ -38,7 +38,7 @@
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
 // =======================================================================================
-#include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphOperator.h>
+#include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
 // =======================================================================================
 
 namespace gum {

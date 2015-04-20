@@ -80,7 +80,7 @@ namespace gum {
 
       MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* ret;
       if(__vFunc->isTerminalNode(__vFunc->root())){
-        ret = new MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>();
+        ret = MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::getTreeInstance();
         ret->copy(*__vFunc);
       } else
         ret = __xPloreVFunc(__vFunc->root());
@@ -108,7 +108,7 @@ namespace gum {
 
           GUM_SCALAR value = __vFunc->nodeValue(currentNode->son(moda));
           if(value) {
-            vpxi = new MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>();
+            vpxi = MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::getTreeInstance();
             vpxi->manager()->setRootNode( vpxi->manager()->addTerminalNode(value) );
           }
         } else {

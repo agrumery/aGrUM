@@ -63,7 +63,7 @@ namespace gum{
     MultiDimFunctionGraph<double>* MultiDimFunctionGraphGenerator::generate(){
 
       srand( time(NULL) );
-      MultiDimFunctionGraph<double>* generatedFunctionGraph = new MultiDimFunctionGraph<double>();
+      MultiDimFunctionGraph<double>* generatedFunctionGraph = MultiDimFunctionGraph<double>::getReducedAndOrderedInstance();
 
       for ( SequenceIteratorSafe< const DiscreteVariable* > varIter = __varSeq.beginSafe(); varIter != __varSeq.endSafe(); ++varIter ){
           generatedFunctionGraph->add(**varIter);

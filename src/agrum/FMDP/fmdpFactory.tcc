@@ -24,7 +24,7 @@
  * @author Jean-Christophe Magnan and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/FMDP/FMDPFactory.h>
+#include <agrum/FMDP/fmdpFactory.h>
 
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/potential.h>
@@ -77,7 +77,7 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   FMDP<GUM_SCALAR>*
-  FMDPFactory<GUM_SCALAR>::FMDP() const {
+  FMDPFactory<GUM_SCALAR>::fmdp() const {
 
     if( state() != FMDPfactory_state::NONE )
       GUM_ERROR( OperationNotAllowed, "Illegal state to return the factored markov decision process: it is not yet finished." );
@@ -730,7 +730,7 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::__initializeFunctionGraph() {
 
-    this->__FunctionGraph = new MultiDimFunctionGraph<GUM_SCALAR>();
+    this->__FunctionGraph = MultiDimFunctionGraph<GUM_SCALAR>::getReducedAndOrderedInstance();
     // Recopie des variables principales dans le graphe de décision
     for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter){
       __FunctionGraph->add(**varIter);

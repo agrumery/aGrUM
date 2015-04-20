@@ -38,7 +38,7 @@
 #include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphOperator.h>
 // =========================================================================
-#include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/planning/rmaxmddplaner.h>
 #include <agrum/FMDP/planning/operators/regress.h>
 // =========================================================================
@@ -59,7 +59,7 @@ namespace gum {
     // Default constructor
     // ===========================================================================
     template<typename GUM_SCALAR> INLINE
-    RMaxMDDPlaner<GUM_SCALAR>::RMaxMDDPlaner ( FMDP<GUM_SCALAR>* fmdp, SPIMDDI* spim, double minExplo, GUM_SCALAR epsilon ) : SPUMDD<GUM_SCALAR>(fmdp, epsilon),
+    RMaxMDDPlaner<GUM_SCALAR>::RMaxMDDPlaner ( FMDP<GUM_SCALAR>* fmdp, SPIMDDI* spim, double minExplo, GUM_SCALAR epsilon ) : MDDOperatorStrategy<GUM_SCALAR>(fmdp, epsilon),
                                                                                                                                             __spim(spim),
                                                                                                                                             __minExplo(minExplo){
 
@@ -91,7 +91,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     void RMaxMDDPlaner<GUM_SCALAR>::initialize(  ) {
-      SPUMDD<GUM_SCALAR>::initialize();
+      MDDOperatorStrategy<GUM_SCALAR>::initialize();
 
       for( SequenceIteratorSafe<Idx> actionIter = this->_fmdp->beginActions(); actionIter != this->_fmdp->endActions(); ++actionIter){
         __rmaxMap.insert(*actionIter, new  MultiDimFunctionGraph<GUM_SCALAR>());
@@ -166,7 +166,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph< GUM_SCALAR >*
     RMaxMDDPlaner<GUM_SCALAR>::_evalQaction( const MultiDimFunctionGraph< GUM_SCALAR >* Vold, Idx actionId ){
-      MultiDimFunctionGraph<GUM_SCALAR>* qAction = SPUMDD<GUM_SCALAR>::_evalQaction(Vold, actionId);
+      MultiDimFunctionGraph<GUM_SCALAR>* qAction = MDDOperatorStrategy<GUM_SCALAR>::_evalQaction(Vold, actionId);
       qAction = this->_addReward(qAction);
       qAction = _multiply( qAction, __dispatchMap[actionId] );
       qAction = _rmaximize( qAction, __rmaxMap[actionId] );

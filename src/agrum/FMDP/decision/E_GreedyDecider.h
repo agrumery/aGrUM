@@ -32,7 +32,7 @@
 // =========================================================================
 #include <agrum/core/types.h>
 // =========================================================================
-#include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
 #include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
 #include <agrum/FMDP/planning/actionSet.h>

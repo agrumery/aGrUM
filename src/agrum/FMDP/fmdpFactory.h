@@ -34,8 +34,8 @@
 
 #include <agrum/variables/labelizedVariable.h>
 
-#include <agrum/FMDP/FMDP.h>
-#include <agrum/FMDP/IFMDPFactory.h>
+#include <agrum/FMDP/fmdp.h>
+#include <agrum/FMDP/IfmdpFactory.h>
 
 
 namespace gum {
@@ -96,7 +96,7 @@ namespace gum {
          * @throw OperationNotAllowed Raise if the state of the factory is different
          *                            than NONE.
          */
-        FMDP<GUM_SCALAR>* FMDP() const;
+        FMDP<GUM_SCALAR>* fmdp() const;
 
         /// Returns the current state of the factory.
         FMDPfactory_state state() const;
@@ -304,7 +304,7 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/FMDP/FMDPFactory.tcc>
+#include <agrum/FMDP/fmdpFactory.tcc>
 
 #endif // GUM_FMDP_FACTORY_H
 

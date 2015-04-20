@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the SPUMDD planer class.
+ * @brief Headers of the MDDOperatorStrategy planer class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
@@ -38,7 +38,7 @@
 #include <agrum/multidim/multiDimFunctionGraph.h>
 #include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
 // =========================================================================
-#include <agrum/FMDP/FMDP.h>
+#include <agrum/FMDP/fmdp.h>
 // =========================================================================
 
 namespace gum {  

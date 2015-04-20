@@ -26,7 +26,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/FMDP/io/dat/FMDPDatReader.h>
+#include <agrum/FMDP/io/dat/fmdpDatReader.h>
 
 namespace gum {
 

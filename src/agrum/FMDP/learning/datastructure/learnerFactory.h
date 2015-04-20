@@ -19,22 +19,23 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the FMDPLearner class.
+ * @brief Headers of the Learning Strategy interface.
  *
- * @author Jean-Christophe MAGNAN
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
+
+
 // =========================================================================
-#ifndef GUM_FMDP_LEARNER_H
-#define GUM_FMDP_LEARNER_H
+#ifndef GUM_SDYNA_LEARNING_STRATEGY_H
+#define GUM_SDYNA_LEARNING_STRATEGY_H
 // =========================================================================
-#include <agrum/core/hashTable.h>
+#include <string>
 // =========================================================================
-#include <agrum/FMDP/FMDP.h>
-#include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>
+#include <agrum/core/types.h>
+// =========================================================================
+#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/learning/observation.h>
-#include <agrum/FMDP/learning/datastructure/imddi.h>
-#include <agrum/FMDP/learning/datastructure/iti.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
@@ -42,40 +43,23 @@
 namespace gum {
 
   /**
-   * @class FMDPLearner FMDPLearner.h <agrum/FMDP/learning/FMDPLearner.h>
-   * @brief
+   * @class ILearningStrategy ILearningStrategy.h <agrum/FMDP/SDyna/ILearningStrategy.h>
+   * @brief Interface for manipulating FMDP learner
    * @ingroup fmdp_group
    *
-   *
-   *
    */
-  template <TESTNAME VariableAttributeSelection, TESTNAME RewardAttributeSelection, LEARNERNAME LearnerSelection>
-  class FMDPLearner : public ILearningStrategy {
+  class ILearningStrategy {
 
-    template < bool isScalar >
-    using VariableLearnerType = typename LearnerSelect<LearnerSelection, IMDDI<VariableAttributeSelection, isScalar>,
-                                                               ITI<VariableAttributeSelection, isScalar> >::type ;
-    template < bool isScalar >
-    using RewardLearnerType = typename LearnerSelect<LearnerSelection, IMDDI<VariableAttributeSelection, isScalar>,
-                                                               ITI<VariableAttributeSelection, isScalar> >::type ;
-
-
-    public:
-
-      // ==========================================================================
+      // ###################################################################
       /// @name Constructor & destructor.
-      // ==========================================================================
+      // ###################################################################
       /// @{
+    public :
 
-        // ###################################################################
-        /// Default constructor
-        // ###################################################################
-        FMDPLearner ( FMDP<double>* target, double learningThreshold, double similarityThreshold );
-
-        // ###################################################################
-        /// Default destructor
-        // ###################################################################
-        ~FMDPLearner ();
+        // ==========================================================================
+        /// Destructor (virtual and empty since it's an interface)
+        // ==========================================================================
+        virtual ~ILearningStrategy(){}
 
       /// @}
 
@@ -88,7 +72,7 @@ namespace gum {
         // ==========================================================================
         /// Initializes the learner
         // ==========================================================================
-        void initialize( FMDP<double>* fmdp );
+        virtual void initialize( FMDP<double>* fmdp ) = 0;
 
       /// @}
 
@@ -108,7 +92,7 @@ namespace gum {
          * (can trigger a new planning)
          */
         // ==========================================================================
-        bool addObservation( Idx actionId, const Observation* obs );
+        virtual bool addObservation( Idx actionId, const Observation* obs ) = 0;
 
 
         // ==========================================================================
@@ -116,7 +100,7 @@ namespace gum {
          * Starts an update of datastructure in the associated FMDP
          */
         // ==========================================================================
-        void updateFMDP();
+        virtual void updateFMDP() = 0;
 
       /// @}
 
@@ -133,35 +117,10 @@ namespace gum {
          * @return
          */
         // ==========================================================================
-        Size size();
+        virtual Size size() = 0;
 
       /// @}
-
-      MultiDimFunctionGraph<double>* extractCount(Idx actionId, const DiscreteVariable* var){
-        return __actionLearners[actionId]->getWithDefault(var, nullptr)->extractCount();}
-
-    private :
-
-      /// The FMDP to store the learned model
-      FMDP<double>* __fmdp;
-
-      HashTable<
-            Idx, HashTable<const DiscreteVariable*, IncrementalGraphLearner<VariableAttributeSelection, false>*>*
-                > __actionLearners;
-
-      IncrementalGraphLearner<RewardAttributeSelection, true>* __rewardLearner;
-
-      const double __learningThreshold;
-      const double __similarityThreshold;
-
   };
 
-
-} /* namespace gum */
-
-#include <agrum/FMDP/learning/FMDPLearner.tcc>
-
-#endif // GUM_FMDP_LEARNER_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
-
+}
+#endif // GUM_SDYNA_LEARNING_STRATEGY_H

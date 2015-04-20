@@ -19,47 +19,64 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the SVI planer class.
+ * @brief Headers of the TreeOperatorStrategy planer class.
  *
  * @author Jean-Christophe MAGNAN
  */
 
 // =========================================================================
-#ifndef GUM_SVI_H
-#define GUM_SVI_H
+#ifndef GUM_TreeOperatorStrategy_H
+#define GUM_TreeOperatorStrategy_H
 // =========================================================================
-#include <agrum/FMDP/planning/abstractSVI.h>
+#include <agrum/FMDP/planning/IOperatorStrategy.h>
 // =========================================================================
 
 namespace gum {
 
   /**
-   * @class SVI svi.h <agrum/FMDP/planning/svi.h>
+   * @class TreeOperatorStrategy svi.h <agrum/FMDP/planning/svi.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *
-   * Perform a SVI planning on given in parameter factored markov decision process
+   * Perform a TreeOperatorStrategy planning on given in parameter factored markov decision process
    *
    */
   template<typename GUM_SCALAR>
-  class SVI : public IOperatorStrategy<GUM_SCALAR> {
+  class TreeOperatorStrategy : public IOperatorStrategy<GUM_SCALAR> {
 
-    public:
 
       // ###################################################################
       /// @name Constructor & destructor.
       // ###################################################################
       /// @{
+  public:
 
         // ==========================================================================
         /// Default constructor
         // ==========================================================================
-        SVI (  );
+        TreeOperatorStrategy (  );
 
         // ==========================================================================
         /// Default destructor
         // ==========================================================================
-        ~SVI();
+        ~TreeOperatorStrategy();
+
+      /// @}
+
+
+
+      // ###################################################################
+      /// @name
+      // ###################################################################
+      /// @{
+  public:
+
+        MultiDimFunctionGraph<GUM_SCALAR, ExactTerminalNodePolicy>* getFunctionInstance()
+                { return MultiDimFunctionGraph<GUM_SCALAR>::getTreeInstance(); }
+        MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* getArgMaxFunctionInstance()
+                { return MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>::getTreeInstance(); }
+        MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>* getAggregatorInstance()
+                { return MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>::getTreeInstance(); }
 
       /// @}
 
@@ -125,9 +142,9 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/FMDP/planning/svi.tcc>
+#include <agrum/FMDP/planning/treeOperatorStrategy.tcc>
 
-#endif // GUM_SVI_H
+#endif // GUM_TreeOperatorStrategy_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

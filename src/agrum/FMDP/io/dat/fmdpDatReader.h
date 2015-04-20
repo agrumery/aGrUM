@@ -66,9 +66,9 @@
 #include <string>
 #include <fstream>
 // ======================================================================================================
-#include <agrum/FMDP/FMDP.h>
-#include <agrum/FMDP/FMDPFactory.h>
-#include <agrum/FMDP/io/FMDPReader.h>
+#include <agrum/FMDP/fmdp.h>
+#include <agrum/FMDP/fmdpFactory.h>
+#include <agrum/FMDP/io/fmdpReader.h>
 // ======================================================================================================
 #include <agrum/multidim/multiDimFunctionGraph.h>
 // ======================================================================================================
@@ -151,7 +151,7 @@ namespace gum {
   extern template class FMDPDatReader<double>;
 } // namespace gum
 
-#include <agrum/FMDP/io/dat/FMDPDatReader.tcc>
+#include <agrum/FMDP/io/dat/fmdpDatReader.tcc>
 
 #endif // FMDP_DAT_READER_H
 
