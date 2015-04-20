@@ -572,13 +572,13 @@ namespace gum_tests {
       void test_DBNTonda() {
         gum::BayesNet<double> dbn;
         gum::NodeId bf_0 = dbn.add ( gum::LabelizedVariable ( "bf_0", "bf_0", 4 ) );
-        gum::NodeId bf_t = dbn.add ( gum::LabelizedVariable ( "bf_t", "bf_t", 4 ) );
+        /*gum::NodeId bf_t =*/ dbn.add ( gum::LabelizedVariable ( "bf_t", "bf_t", 4 ) );
         gum::NodeId c_0 = dbn.add ( gum::LabelizedVariable ( "c_0", "c_0", 5 ) );
         gum::NodeId c_t = dbn.add ( gum::LabelizedVariable ( "c_t", "c_t", 5 ) );
         gum::NodeId h_0 = dbn.add ( gum::LabelizedVariable ( "h_0", "h_0", 5 ) );
         gum::NodeId h_t = dbn.add ( gum::LabelizedVariable ( "h_t", "h_t", 5 ) );
         gum::NodeId tf_0 = dbn.add ( gum::LabelizedVariable ( "tf_0", "tf_0", 5 ) );
-        gum::NodeId tf_t = dbn.add ( gum::LabelizedVariable ( "tf_t", "tf_t", 5 ) );
+        /*gum::NodeId tf_t =*/ dbn.add ( gum::LabelizedVariable ( "tf_t", "tf_t", 5 ) );
         gum::NodeId wl_0 = dbn.add ( gum::LabelizedVariable ( "wl_0", "wl_0", 4 ) );
         gum::NodeId wl_t = dbn.add ( gum::LabelizedVariable ( "wl_t", "wl_t", 4 ) );
 
@@ -600,25 +600,53 @@ namespace gum_tests {
           learner.useAprioriSmoothing ( 0.01 );
           learn1=learner.learnParameters ( dbn );
         }
-
         gum::BayesNet<double> learn2;
+        {
+          try {
+            gum::NodeProperty<gum::Sequence<std::string>> modals;
+            auto ds= std::vector<unsigned int> ( {4,4,5,5,5,5,5,5,4,4} );
+            auto labels= std::vector<std::string> ( {"0","1","2","3","4","5"} );
+
+            for ( auto i=0U; i<ds.size(); i++ ) {
+              modals.insert ( i, gum::Sequence<std::string>() );
+
+              for ( auto k=0U; k<ds[i]; k++ )
+                modals[i].insert ( labels[k] );
+            }
+
+            // while explicit learning does the right thing
+            gum::learning::BNLearner<double> learner ( GET_PATH_STR ( "DBN_Tonda.csv" ) ,modals );
+            learner.useScoreLog2Likelihood();
+            learner.useAprioriSmoothing ( 1.0 );
+            learn2=learner.learnParameters ( dbn );
+          } catch ( gum::Exception& e ) {
+            GUM_SHOWERROR ( e );
+          }
+        }
+
+        gum::BayesNet<double> learn3;
         {
           // while explicit learning does the right thing
           gum::learning::BNLearner<double> learner ( GET_PATH_STR ( "DBN_Tonda.csv" ) ,dbn );
           learner.useScoreLog2Likelihood();
           learner.useAprioriSmoothing ( 1.0 );
-          learn2=learner.learnParameters ( dbn );
+          learn3=learner.learnParameters ( dbn );
         }
 
         TS_ASSERT_EQUALS ( learn1.variable ( learn1.idFromName ( "wl_0" ) ).toString(),"wl_0<1,0,2,3>" );
         TS_ASSERT_EQUALS ( learn2.variable ( learn2.idFromName ( "wl_0" ) ).toString(),"wl_0<0,1,2,3>" );
+        TS_ASSERT_EQUALS ( learn2.variable ( learn3.idFromName ( "wl_0" ) ).toString(),"wl_0<0,1,2,3>" );
 
-        auto& p1=learn1.cpt(learn1.idFromName("c_0"));
-        auto& p2=learn2.cpt(learn1.idFromName("c_0"));
-        gum::Instantiation I1(p1),I2(p2);
-        for(I1.setFirst(),I2.setFirst();! I1.end();I1.inc(),I2.inc()) {
-          TS_ASSERT_EQUALS(I1.toString(),I2.toString()); // same modalities orders
-          TS_ASSERT_EQUALS(p1[I1],p2[I2]); // same probabilities
+        auto& p1=learn1.cpt ( learn1.idFromName ( "c_0" ) );
+        auto& p2=learn2.cpt ( learn2.idFromName ( "c_0" ) );
+        auto& p3=learn3.cpt ( learn3.idFromName ( "c_0" ) );
+        gum::Instantiation I1 ( p1 ),I2 ( p2 ),I3 ( p3 );
+
+        for ( I1.setFirst(),I2.setFirst(),I3.setFirst(); ! I1.end(); I1.inc(),I2.inc(),I3.inc() ) {
+          TS_ASSERT_EQUALS ( I1.toString(),I2.toString() ); // same modalities orders
+          TS_ASSERT_EQUALS ( I1.toString(),I3.toString() ); // same modalities orders
+          TS_ASSERT_EQUALS ( p1[I1],p2[I2] ); // same probabilities
+          TS_ASSERT_EQUALS ( p1[I1],p3[I3] ); // same probabilities
         }
       }
   };

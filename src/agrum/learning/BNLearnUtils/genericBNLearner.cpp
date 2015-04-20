@@ -183,7 +183,7 @@ namespace gum {
 
                     if (!iter.val().exists(str.str())) {
                       std::stringstream str2;
-                      str << "Column " << 1 + iter.key() << " contains modality '"
+                      str2 << "Column " << 1 + iter.key() << " contains modality '"
                           << str.str()
                           << "' which has not been specified by the user in line "
                           << the_handler.numRow();
@@ -907,3 +907,4 @@ namespace gum {
   } /* namespace learning */
 
 } /* namespace gum */
+
