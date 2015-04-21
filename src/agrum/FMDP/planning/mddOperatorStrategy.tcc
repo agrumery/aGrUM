@@ -122,6 +122,17 @@ namespace gum {
       return ret;
     }
 
+    // ==========================================================================
+    // ==========================================================================
+    template<typename GUM_SCALAR>
+    MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::multiply( const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                                                                      const MultiDimFunctionGraph< GUM_SCALAR >* f2){
+      MultiDimFunctionGraph<GUM_SCALAR>* ret = multiply2MultiDimFunctionGraphs ( f1, f2 );
+      delete f1;
+      delete f2;
+      return ret;
+    }
+
 
     // ==========================================================================
     /// ArgMaximizes between QAction and VFunction

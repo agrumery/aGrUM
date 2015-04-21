@@ -77,9 +77,14 @@ namespace gum {
 
       __fmdp = fmdp;
 
+      __modaMax = 0;
+      __rmax = 0.0;
+
       Set<const DiscreteVariable*> mainVariables;
-      for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter )
+      for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter ){
         mainVariables.insert(*varIter);
+        __modaMax=__modaMax<(*varIter)->domainSize()?(*varIter)->domainSize():__modaMax;
+      }
 
       for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter ){
 
@@ -115,6 +120,8 @@ namespace gum {
 
         __rewardLearner->addObservation(newObs);
         __rewardLearner->updateGraph();
+
+        __rmax=__rmax<newObs->reward()?newObs->reward():__rmax;
 
         return false;
     }

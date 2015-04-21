@@ -19,7 +19,7 @@
 ***************************************************************************/
 /**
 * @file
-* @brief Template implementation of FMDP/planning/RMaxMDDPlaner.h classes.
+* @brief Template implementation of abstractRMaxPlaner classes.
 *
 * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
@@ -28,23 +28,23 @@
 #include <math.h>
 #include <vector>
 #include <queue>
-#include <algorithm>
-#include <utility>
+//#include <algorithm>
+//#include <utility>
 // =========================================================================
 #include <agrum/core/functors.h>
+#include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
-#include <agrum/multidim/FunctionGraphUtilities/multiDimFunctionGraphOperator.h>
 // =========================================================================
-#include <agrum/FMDP/fmdp.h>
-#include <agrum/FMDP/planning/rmaxmddplaner.h>
-#include <agrum/FMDP/planning/operators/regress.h>
+#include <agrum/FMDP/planning/abstractRMaxPlaner.h>
 // =========================================================================
 
-/// For shorter line and hence more comprehensive code only
-#define RECAST(x) reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>(x)
+/// For shorter line and hence more comprehensive code purposes only
+#define RECAST(x) reinterpret_cast<const MultiDimFunctionGraph<double>*>(x)
+#define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
+#define DEALLOCATE(x,y) SmallObjectAllocator::instance().deallocate(x,y)
 
 namespace gum {
 
@@ -58,45 +58,40 @@ namespace gum {
     // ===========================================================================
     // Default constructor
     // ===========================================================================
-    template<typename GUM_SCALAR> INLINE
-    RMaxMDDPlaner<GUM_SCALAR>::RMaxMDDPlaner ( FMDP<GUM_SCALAR>* fmdp, SPIMDDI* spim, double minExplo, GUM_SCALAR epsilon ) : MDDOperatorStrategy<GUM_SCALAR>(fmdp, epsilon),
-                                                                                                                                            __spim(spim),
-                                                                                                                                            __minExplo(minExplo){
+    AbstractRMaxPlaner::AbstractRMaxPlaner ( IOperatorStrategy<double>* opi,
+                                             double discountFactor,
+                                             double epsilon,
+                                             const ILearningStrategy* learner) : StructuredPlaner( opi, discountFactor, epsilon),
+                                                                                  __fmdpLearner(learner) {
 
-      GUM_CONSTRUCTOR ( RMaxMDDPlaner );
+      GUM_CONSTRUCTOR ( AbstractRMaxPlaner );
     }
 
     // ===========================================================================
     // Default destructor
     // ===========================================================================
-    template<typename GUM_SCALAR> INLINE
-    RMaxMDDPlaner<GUM_SCALAR>::~RMaxMDDPlaner() {
-      GUM_DESTRUCTOR ( RMaxMDDPlaner );
-      for( SequenceIteratorSafe<Idx> actionIter = this->_fmdp->beginActions(); actionIter != this->_fmdp->endActions(); ++actionIter){
-        delete __rmaxMap[*actionIter];
-        delete __dispatchMap[*actionIter];
-      }
+    AbstractRMaxPlaner::~AbstractRMaxPlaner() {
+
+      GUM_DESTRUCTOR ( AbstractRMaxPlaner );
     }
 
 
 
   /* ************************************************************************************************** **/
   /* **                                                                                                 **/
-  /* **                                   Planning Methods                                              **/
+  /* **                                     Planning Methods                                            **/
   /* **                                                                                                 **/
   /* ************************************************************************************************** **/
 
-    // ===========================================================================
-    // Initializes data structure needed for making the planning
-    // ===========================================================================
-    template<typename GUM_SCALAR>
-    void RMaxMDDPlaner<GUM_SCALAR>::initialize(  ) {
-      MDDOperatorStrategy<GUM_SCALAR>::initialize();
 
-      for( SequenceIteratorSafe<Idx> actionIter = this->_fmdp->beginActions(); actionIter != this->_fmdp->endActions(); ++actionIter){
-        __rmaxMap.insert(*actionIter, new  MultiDimFunctionGraph<GUM_SCALAR>());
-        __dispatchMap.insert(*actionIter, new  MultiDimFunctionGraph<GUM_SCALAR>());
-      }
+    // ===========================================================================
+    // Performs a value iteration
+    // ===========================================================================
+    void AbstractRMaxPlaner::makePlanning( Idx nbStep ) {
+
+      __makeRMaxFunctionGraphs();
+
+      StructuredPlaner::makePlanning(nbStep);
     }
 
 
@@ -107,197 +102,128 @@ namespace gum {
   /* **                                                                                                 **/
   /* ************************************************************************************************** **/
 
+
+
     // ===========================================================================
     // Performs a single step of value iteration
     // ===========================================================================
-    template<typename GUM_SCALAR>
-    MultiDimFunctionGraph< GUM_SCALAR >* RMaxMDDPlaner<GUM_SCALAR>::_valueIteration() {
-
-      for( SequenceIteratorSafe<Idx> actionIter = this->_fmdp->beginActions(); actionIter != this->_fmdp->endActions(); ++actionIter ){
-        __rmaxMap[*actionIter]->clear();
-        __dispatchMap[*actionIter]->clear();
-
-        MultiDimFunctionGraph<GUM_SCALAR>* dsa =  new  MultiDimFunctionGraph<GUM_SCALAR>();
-        dsa->manager()->setRootNode(dsa->manager()->addTerminalNode(std::numeric_limits<GUM_SCALAR>::max()));
-        for( SequenceIteratorSafe<const DiscreteVariable*> varIter = this->_fmdp->beginVariables(); varIter != this->_fmdp->endVariables(); ++varIter ){
-          dsa = _minimizes( __spim->extractCount(*actionIter, *varIter), dsa );
-        }
-
-        __rmaxMap[*actionIter]->clear();
-        __dispatchMap[*actionIter]->clear();
-        for( SequenceIteratorSafe<const DiscreteVariable*> varIter = dsa->variablesSequence().beginSafe();
-                varIter != dsa->variablesSequence().endSafe(); ++varIter ){
-          __rmaxMap[*actionIter]->add(**varIter);
-          __dispatchMap[*actionIter]->add(**varIter);
-        }
-        __rmaxMap[*actionIter]->manager()->setRootNode(
-              __createRMax(dsa->root(), dsa, __rmaxMap[*actionIter], std::numeric_limits<double>::min(), __spim->rMax()/(1-this->_fmdp->discount())) );
-        __dispatchMap[*actionIter]->manager()->setRootNode( __createRMax(dsa->root(), dsa, __dispatchMap[*actionIter], 1.0, 0.0) );
-
-        delete dsa;
-      }
-
+    MultiDimFunctionGraph<double>* AbstractRMaxPlaner::_valueIteration() {
 
       // *****************************************************************************************
       // Loop reset
-      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = new MultiDimFunctionGraph< GUM_SCALAR >();
-      newVFunction->copyAndReassign ( *this->_vFunction, this->_fmdp->mapMainPrime() );
+      MultiDimFunctionGraph<double>* newVFunction = _operator->getFunctionInstance();
+      newVFunction->copyAndReassign ( *_vFunction, _fmdp->mapMainPrime() );
 
       // *****************************************************************************************
       // For each action
-      std::vector<MultiDimFunctionGraph<GUM_SCALAR>*> qActionsSet;
-      for ( auto actionIter = this->_fmdp->beginActions(); actionIter != this->_fmdp->endActions(); ++actionIter  ) {
-        MultiDimFunctionGraph<GUM_SCALAR>* qAction = _evalQaction( newVFunction, *actionIter );
+      std::vector<MultiDimFunctionGraph<double>*> qActionsSet;
+      for ( auto actionIter = _fmdp->beginActions(); actionIter != _fmdp->endActions(); ++actionIter  ) {
+        MultiDimFunctionGraph<double>* qAction = _evalQaction( newVFunction, *actionIter );
+
+        // *******************************************************************************************
+        // Next, we add the reward
+        newVFunction = _addReward ( newVFunction );
+
+        newVFunction = this->_operator->maximize( __actionsRMaxTable[*actionIter], this->_operator->multiply(newVFunction, __actionsBoolTable[*actionIter]) );
+
         qActionsSet.push_back(qAction);
       }
       delete newVFunction;
 
       // *****************************************************************************************
       // Next to evaluate main value function, we take maximise over all action value, ...
-      newVFunction = this->_maximiseQactions(qActionsSet);
+      newVFunction = _maximiseQactions(qActionsSet);
 
       return newVFunction;
     }
 
 
     // ===========================================================================
-    // Evals the q function for current fmdp action
+    // Updates the value function by multiplying by discount and adding reward
     // ===========================================================================
-    template<typename GUM_SCALAR>
-    MultiDimFunctionGraph< GUM_SCALAR >*
-    RMaxMDDPlaner<GUM_SCALAR>::_evalQaction( const MultiDimFunctionGraph< GUM_SCALAR >* Vold, Idx actionId ){
-      MultiDimFunctionGraph<GUM_SCALAR>* qAction = MDDOperatorStrategy<GUM_SCALAR>::_evalQaction(Vold, actionId);
-      qAction = this->_addReward(qAction);
-      qAction = _multiply( qAction, __dispatchMap[actionId] );
-      qAction = _rmaximize( qAction, __rmaxMap[actionId] );
-      return qAction;
-    }
+//    template<typename double>
+//    MultiDimFunctionGraph<double>*
+//    AbstractRMaxPlaner::_addReward ( MultiDimFunctionGraph< double >* Vold ) {
 
+//      // *****************************************************************************************
+//      // ... we multiply the result by the discount factor, ...
+//      MultiDimFunctionGraph< double >* newVFunction = _operator->getFunctionInstance();
+//      newVFunction->copyAndMultiplyByScalar ( *Vold, this->_discountFactor );
+//      delete Vold;
 
+//      // *****************************************************************************************
+//      // ... and finally add reward
+//      newVFunction = _operator->add(newVFunction, RECAST( _fmdp->reward() ));
 
-  /* ************************************************************************************************** **/
-  /* **                                                                                                 **/
-  /* **                                   Optimal Policy Evaluation Methods                             **/
-  /* **                                                                                                 **/
-  /* ************************************************************************************************** **/
+//      return newVFunction;
+//    }
 
-    // ===========================================================================
-    // Evals the policy corresponding to the given value function
-    // ===========================================================================
-    template<typename GUM_SCALAR>
-    void
-    RMaxMDDPlaner<GUM_SCALAR>::_evalPolicy (  ) {
+    void AbstractRMaxPlaner::__makeRMaxFunctionGraphs() {
 
-      // *****************************************************************************************
-      // Loop reset
-      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = new MultiDimFunctionGraph< GUM_SCALAR >();
-      newVFunction->copyAndReassign ( *this->_vFunction, this->_fmdp->mapMainPrime() );
+      __rThreshold = __fmdpLearner->modaMax()*5;
+      __rmax = __fmdpLearner->rMax() / ( 1.0 - this->_discountFactor);
 
-      std::vector<MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*> argMaxQActionsSet;
-      // *****************************************************************************************
-      // For each action
-      for ( auto actionIter = this->_fmdp->beginActions(); actionIter != this->_fmdp->endActions(); ++actionIter  ) {
+      for(auto actionIter = this->fmdp()->beginActions(); actionIter != this->fmdp()->endActions(); ++actionIter ){
 
-        MultiDimFunctionGraph<GUM_SCALAR>* qAction = _evalQaction( newVFunction, *actionIter );
+        std::vector<MultiDimFunctionGraph<double>*> rmaxs;
+        std::vector<MultiDimFunctionGraph<double>*> boolQs;
+        __actionsBoolTable.clear();
+        __actionsRMaxTable.clear();
 
-        argMaxQActionsSet.push_back( this->_makeArgMax(qAction, *actionIter) );
+        for(auto varIter = this->fmdp()->beginVariables(); varIter != this->fmdp()->endVariables(); ++varIter){
+
+          const IVisitableGraphLearner* visited = __fmdpLearner->varLearner(*actionIter, *varIter);
+
+          MultiDimFunctionGraph<double>* varRMax = this->_operator->getFunctionInstance();
+          MultiDimFunctionGraph<double>* varBoolQ = this->_operator->getFunctionInstance();
+
+          visited->insertSetOfVars(varRMax);
+          visited->insertSetOfVars(varBoolQ);
+
+          __visitLearner(visited, visited->root(), varRMax, varBoolQ);
+          varRMax->manager()->reduce();
+          varRMax->manager()->clean();
+          varBoolQ->manager()->reduce();
+          varBoolQ->manager()->clean();
+
+          rmaxs.push_back(varRMax);
+          boolQs.push_back(varBoolQ);
+        }
+
+        __actionsRMaxTable.insert(*actionIter, this->_maximiseQactions(rmaxs));
+        __actionsBoolTable.insert(*actionIter, this->_maximiseQactions(boolQs));
       }
-      delete newVFunction;
-
-
-      // *****************************************************************************************
-      // Next to evaluate main value function, we take maximise over all action value, ...
-      MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >*
-          argMaxVFunction = this->_argmaximiseQactions( argMaxQActionsSet );
-
-      // *****************************************************************************************
-      // Next to evaluate main value function, we take maximise over all action value, ...
-      this->_extractOptimalPolicy ( argMaxVFunction ) ;
     }
 
 
 
-  /* ************************************************************************************************** **/
-  /* **                                                                                                 **/
-  /* **                              Graph Function Operations Methods                                  **/
-  /* **                                                                                                 **/
-  /* ************************************************************************************************** **/
 
-    // ==========================================================================
-    // Minimizes between d(X_i | s,a) and d(s|a)
-    // @param dxisa : d(X_i | s,a)
-    // @param dsa : d(s|a)
-    // @warning given d(s|a) and  d(X_i | s,a) are deleted, returns the new one
-    // ==========================================================================
-    template<typename GUM_SCALAR>
-    MultiDimFunctionGraph<GUM_SCALAR>* RMaxMDDPlaner<GUM_SCALAR>::_minimizes(const MultiDimFunctionGraph< GUM_SCALAR >* dxisa,
-                                                                             const MultiDimFunctionGraph< GUM_SCALAR >* dsa){
-      MultiDimFunctionGraph<GUM_SCALAR>* ret = minimize2MultiDimFunctionGraphs ( dxisa, dsa );
-      delete dxisa;
-      delete dsa;
-      return ret;
-    }
+    std::pair<NodeId,NodeId> AbstractRMaxPlaner::__visitLearner(  IVisitableGraphLearner* visited,
+                                              NodeId currentNodeId,
+                                              MultiDimFunctionGraph<double>* rmax,
+                                              MultiDimFunctionGraph<double>* boolQ) {
 
-
-    // ==========================================================================
-    // Maximizes between QAction and VFunction
-    // @param qAction : the computed Q(s,a)
-    // @param vFunction : the vFunction so far
-    // @warning given vFunction and qAction are deleted, returns the new one
-    // ==========================================================================
-    template<typename GUM_SCALAR>
-    MultiDimFunctionGraph<GUM_SCALAR>* RMaxMDDPlaner<GUM_SCALAR>::_rmaximize( const MultiDimFunctionGraph< GUM_SCALAR >* qAction,
-                                                                              const MultiDimFunctionGraph< GUM_SCALAR >* rMax){
-      MultiDimFunctionGraph<GUM_SCALAR>* ret = maximize2MultiDimFunctionGraphs ( qAction, rMax );
-      delete qAction;
-      return ret;
-    }
-
-    // ==========================================================================
-    // Maximizes between QAction and its dispatch
-    // @param qAction : the computed Q(s,a)
-    // @param dispatch : for the maximization xwith rmax after
-    // @warning given  qAction is deleted, returns the new one
-    // ==========================================================================
-    template<typename GUM_SCALAR>
-    MultiDimFunctionGraph<GUM_SCALAR>* RMaxMDDPlaner<GUM_SCALAR>::_multiply(const MultiDimFunctionGraph< GUM_SCALAR >* qAction,
-                                                                            const MultiDimFunctionGraph< GUM_SCALAR >* dispatch){
-      MultiDimFunctionGraph<GUM_SCALAR>* ret = multiply2MultiDimFunctionGraphs( qAction, dispatch );
-      delete qAction;
-      return ret;
-    }
-
-
-
-  /* ************************************************************************************************** **/
-  /* **                                                                                                 **/
-  /* **                                        RMax Methods                                             **/
-  /* **                                                                                                 **/
-  /* ************************************************************************************************** **/
-
-    // ===========================================================================
-    // Evals the q function for current fmdp action
-    // ===========================================================================
-    template<typename GUM_SCALAR>
-    NodeId RMaxMDDPlaner<GUM_SCALAR>::__createRMax(NodeId currentNodeId,
-                                              MultiDimFunctionGraph<GUM_SCALAR>* dTemp,
-                                              MultiDimFunctionGraph<GUM_SCALAR>* sortie,
-                                              double valSi,
-                                              double valSinon) {
-
-      if( dTemp->isTerminalNode(currentNodeId) ){
-        if( dTemp->nodeValue(currentNodeId) >= __minExplo )
-          return sortie->manager()->addTerminalNode( valSi );
-        else
-          return sortie->manager()->addTerminalNode( valSinon );
+      std::pair<NodeId, NodeId> rep;
+      if(visited->isTerminal(currentNodeId)){
+        rep.first = rmax->manager()->addTerminalNode( visited->nodeNbObservation(currentNodeId>__rThreshold?__rmax:0.0));
+        rep.second = boolQ->manager()->addTerminalNode( visited->nodeNbObservation(currentNodeId>__rThreshold?0.0:1.0));
+        return rep;
       }
 
-      const InternalNode* currentNode = dTemp->node(currentNodeId);
-      NodeId* sonsMap = static_cast<NodeId*>( ALLOCATE(sizeof(NodeId)*currentNode->nodeVar()->domainSize()) );
-      for( Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda )
-        sonsMap[moda] = __createRMax(currentNode->son(moda), dTemp, sortie, valSi, valSinon);
 
-      return sortie->manager()->addInternalNode(currentNode->nodeVar(), sonsMap);
+      NodeId* rmaxsons = static_cast<NodeId*>(ALLOCATE(sizeof(NodeId)*visited->nodeVar(currentNodeId)->domainSize()));
+      NodeId* bqsons = static_cast<NodeId*>(ALLOCATE(sizeof(NodeId)*visited->nodeVar(currentNodeId)->domainSize()));
+
+      for( Idx moda = 0; moda < visited->nodeVar(currentNodeId)->domainSize(); ++moda ){
+        std::pair<NodeId, NodeId> sonp = __visitLearner(visited, visited->nodeSon(currentNodeId, moda), rmax, boolQ);
+        rmaxsons[moda] = sonp.first;
+        bqsons[moda] = sonp.second;
+      }
+
+      rep.first = rmax->manager()->addInternalNode(visited->nodeVar(currentNodeId), rmaxsons);
+      rep.second = boolQ->manager()->addInternalNode(visited->nodeVar(currentNodeId), bqsons);
+      return rep;
     }
+
 
 } // end of namespace gum

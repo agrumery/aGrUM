@@ -119,6 +119,19 @@ namespace gum {
       return ret;
     }
 
+    // ==========================================================================
+    // ==========================================================================
+    template<typename GUM_SCALAR>
+    MultiDimFunctionGraph<GUM_SCALAR>* TreeOperatorStrategy<GUM_SCALAR>::multiply(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                                                                  const MultiDimFunctionGraph< GUM_SCALAR >* f2){
+
+      TreeOperator< GUM_SCALAR, std::multiplies > argmaxope( f1, f2 );
+      MultiDimFunctionGraph<GUM_SCALAR>* ret = argmaxope.compute();
+      delete f1;
+      delete f2;
+      return ret;
+    }
+
 
     // ==========================================================================
     /// ArgMaximizes between QAction and VFunction

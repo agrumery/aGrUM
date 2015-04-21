@@ -169,7 +169,7 @@ namespace gum {
          * makePlanning will then stop whether when optimal value function is reach or when nbStep have been performed
          */
         // ==========================================================================
-        void makePlanning(Idx nbStep = 1000000);
+        virtual void makePlanning(Idx nbStep = 1000000);
 
       /// @}
 

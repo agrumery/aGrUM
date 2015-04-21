@@ -103,6 +103,15 @@ namespace gum {
                                                              const MultiDimFunctionGraph< GUM_SCALAR >* qAction) = 0;
 
         // ==========================================================================
+        /// Multiplies f1 and f2
+        /// @param f1 :
+        /// @param f2 :
+        /// @warning given f1 and f2 are deleted, returns the new one
+        // ==========================================================================
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* multiply(  const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                                                              const MultiDimFunctionGraph< GUM_SCALAR >* f2) = 0;
+
+        // ==========================================================================
         /// ArgMaximizes between QAction and VFunction
         /// @param qAction : the computed Q(s,a)
         /// @param vFunction : the vFunction so far

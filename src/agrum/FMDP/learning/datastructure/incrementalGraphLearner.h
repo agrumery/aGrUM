@@ -32,6 +32,7 @@
 #include <agrum/multidim/multiDimFunctionGraph.h>
 // =========================================================================
 #include <agrum/FMDP/learning/core/templateStrategy.h>
+#include <agrum/FMDP/learning/datastructure/IVisitableGraphLearner.h>
 #include <agrum/FMDP/learning/datastructure/nodeDatabase.h>
 // =========================================================================
 #include <agrum/multidim/FunctionGraphUtilities/link.h>
@@ -53,7 +54,7 @@ namespace gum {
    *
    */
   template <TESTNAME AttributeSelection, bool isScalar = false >
-  class IncrementalGraphLearner {    
+  class IncrementalGraphLearner : public IVisitableGraphLearner {
 
     typedef typename ValueSelect<isScalar, double, long unsigned int>::type ValueType;
 
@@ -304,9 +305,13 @@ namespace gum {
         // ==========================================================================
         ///
         // ==========================================================================
-        const NodeDatabase<AttributeSelection, isScalar> nodeDB(NodeId ni) const { return this->_nodeId2Database[ni]; }
+        Idx nodeNbObservation(NodeId ni) const { return this->_nodeId2Database[ni]->nbObservation(); }        
 
-
+        void insertSetOfVars( MultiDimFunctionGraph<double>* ret) const {
+          for( SetIteratorSafe<const DiscreteVariable*> varIter = _setOfVars.beginSafe();
+                  varIter != _setOfVars.endSafe(); ++varIter)
+            ret->add(**varIter);
+        }
       /// @}
 
   protected :

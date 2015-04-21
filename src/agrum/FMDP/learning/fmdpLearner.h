@@ -192,8 +192,16 @@ namespace gum {
         // ==========================================================================
         /// \brief extractCount
         // ==========================================================================
-        const IncrementalGraphLearner<VariableAttributeSelection, false>* varLearner(Idx actionId, const DiscreteVariable* var){
+        const IVisitableGraphLearner* varLearner(Idx actionId, const DiscreteVariable* var){
           return __actionLearners[actionId]->getWithDefault(var, nullptr);}
+
+        virtual double rMax() const {return __rmax;}
+    private:
+        double __rmax;
+    public:
+        virtual double modaMax() const {return __modaMax;}
+    private:
+        double __modaMax;
 
       /// @}
 

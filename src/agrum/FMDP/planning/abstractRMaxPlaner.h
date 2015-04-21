@@ -29,6 +29,8 @@
 #define GUM_ABSTRACT_RMAX_PLANER_H
 // =========================================================================
 #include <agrum/FMDP/fmdp.h>
+#include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>
+#include <agrum/FMDP/learning/fmdpLearner.h>
 #include <agrum/FMDP/planning/structuredPlaner.h>
 // =========================================================================
 
@@ -42,8 +44,7 @@ namespace gum {
    * Perform a RMax planning on given in parameter factored markov decision process
    *
    */
-  template<typename GUM_SCALAR>
-  class AbstractRMaxPlaner : public StructuredPlaner<GUM_SCALAR> {
+  class AbstractRMaxPlaner : public StructuredPlaner<double> {
 
 
       // ###################################################################
@@ -54,14 +55,20 @@ namespace gum {
         // ==========================================================================
         ///
         // ==========================================================================
-        static AbstractRMaxPlaner<GUM_SCALAR>* ReducedAndOrderedInstance(GUM_SCALAR discountFactor = 0.9, GUM_SCALAR epsilon = 0.00001)
-              { return new AbstractRMaxPlaner<GUM_SCALAR>( new MDDOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon);}
+        static AbstractRMaxPlaner* ReducedAndOrderedInstance(
+                        const ILearningStrategy* learner,
+                        double discountFactor = 0.9,
+                        double epsilon = 0.00001)
+              { return new AbstractRMaxPlaner( new MDDOperatorStrategy<double>(), discountFactor, epsilon, learner);}
 
         // ==========================================================================
         ///
         // ==========================================================================
-        static AbstractRMaxPlaner<GUM_SCALAR>* TreeInstance(GUM_SCALAR discountFactor = 0.9, GUM_SCALAR epsilon = 0.00001)
-              { return new AbstractRMaxPlaner<GUM_SCALAR>( new TreeOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon);}
+        static AbstractRMaxPlaner* TreeInstance(
+                        const ILearningStrategy* learner,
+                        double discountFactor = 0.9,
+                        double epsilon = 0.00001)
+              { return new AbstractRMaxPlaner( new TreeOperatorStrategy<double>(), discountFactor, epsilon, learner);}
 
       /// @}
 
@@ -69,16 +76,19 @@ namespace gum {
       /// @name Constructor & destructor.
       // ###################################################################
       /// @{
-  private:
+    private:
         // ==========================================================================
         /// Default constructor
         // ==========================================================================
-        AbstractRMaxPlaner( IOperatorStrategy<GUM_SCALAR>* opi, GUM_SCALAR discountFactor, GUM_SCALAR epsilon );
+        AbstractRMaxPlaner( IOperatorStrategy<double>* opi,
+                            double discountFactor,
+                            double epsilon,
+                            const ILearningStrategy* learner);
 
         // ==========================================================================
         /// Default destructor
         // ==========================================================================
-  public:
+    public:
         ~AbstractRMaxPlaner();
 
       /// @}
@@ -90,16 +100,7 @@ namespace gum {
       // ###################################################################
       /// @{
 
-  public:
-
-        // ==========================================================================
-        /**
-         * Initializes data structure needed for making the planning
-         * @warning No calling this methods before starting the first makePlaninng
-         * will surely and definitely result in a crash
-         */
-        // ==========================================================================
-        virtual void initialize( FMDP<GUM_SCALAR>* fmdp );
+    public:
 
 
         // ==========================================================================
@@ -121,39 +122,32 @@ namespace gum {
       // ###################################################################
       /// @{
 
-  protected:
+    protected:
         // ==========================================================================
         /// Performs a single step of value iteration
         // ==========================================================================
-        virtual MultiDimFunctionGraph< GUM_SCALAR >* _valueIteration();
+        virtual MultiDimFunctionGraph< double >* _valueIteration();
 
       /// @}
-
-
-
-      // ###################################################################
-      /// @name Optimal policy extraction methods
-      // ###################################################################
-      /// @{
-
-  protected:
-        // ==========================================================================
-        /// Perform the required tasks to extract an optimal policy
-        // ==========================================================================
-        virtual void _evalPolicy ();
-
-      /// @}
-
-  protected:
 
     private :
-        // ==========================================================================
-        /// The threshold value
-        /// Whenever | V^{n} - V^{n+1} | < threshold, we consider that V ~ V*
-        // ==========================================================================
-        GUM_SCALAR __threshold;
 
-        bool __firstTime;
+        void __makeRMaxFunctionGraphs();
+
+       std::pair<NodeId,NodeId> __visitLearner(IVisitableGraphLearner*,
+                                               NodeId currentNodeId,
+                                               MultiDimFunctionGraph<double>*,
+                                               MultiDimFunctionGraph<double>*);
+
+    private :
+
+        ///
+        HashTable<Idx, MultiDimFunctionGraph<double>*> __actionsRMaxTable;
+        HashTable<Idx, MultiDimFunctionGraph<double>*> __actionsBoolTable;
+        ILearningStrategy* __fmdpLearner;
+        double __rThreshold;
+        double __rmax;
+
   };
 
 } /* namespace gum */

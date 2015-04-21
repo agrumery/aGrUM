@@ -27,16 +27,12 @@
 
 
 // =========================================================================
-#ifndef GUM_SDYNA_LEARNING_STRATEGY_H
-#define GUM_SDYNA_LEARNING_STRATEGY_H
+#ifndef GUM_INTERFACE_VISITABLE_GRAPH_LEARNER_H
+#define GUM_INTERFACE_VISITABLE_GRAPH_LEARNER_H
 // =========================================================================
-#include <string>
+#include <agrum/core/sequence.h>
 // =========================================================================
-#include <agrum/core/types.h>
-// =========================================================================
-#include <agrum/FMDP/fmdp.h>
-#include <agrum/FMDP/learning/observation.h>
-#include <agrum/FMDP/learning/datastructure/IVisitableGraphLearner.h>
+#include <agrum/graphs/nodeGraphPart.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
@@ -44,12 +40,12 @@
 namespace gum {
 
   /**
-   * @class ILearningStrategy ILearningStrategy.h <agrum/FMDP/SDyna/ILearningStrategy.h>
+   * @class IVisitableGraphLearner IVisitableGraphLearner.h <agrum/FMDP/SDyna/IVisitableGraphLearner.h>
    * @brief Interface for manipulating FMDP learner
    * @ingroup fmdp_group
    *
    */
-  class ILearningStrategy {
+  class IVisitableGraphLearner {
 
       // ###################################################################
       /// @name Constructor & destructor.
@@ -60,79 +56,47 @@ namespace gum {
         // ==========================================================================
         /// Destructor (virtual and empty since it's an interface)
         // ==========================================================================
-        virtual ~ILearningStrategy(){}
+        virtual ~IVisitableGraphLearner(){}
 
       /// @}
 
+
+
       // ###################################################################
-      /// @name Initialization
+      /// @name Visit Methods
       // ###################################################################
       /// @{
-    public:
+  public :
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        NodeId root() const = 0;
 
         // ==========================================================================
-        /// Initializes the learner
+        ///
         // ==========================================================================
-        virtual void initialize( FMDP<double>* fmdp ) = 0;
-
-      /// @}
-
-
-      // ###################################################################
-      /// @name Incremental methods
-      // ###################################################################
-      /// @{
-    public :
+        bool isTerminal(NodeId ni) const = 0;
 
         // ==========================================================================
-        /**
-         * Gives to the learner a new transition
-         * @param actionId : the action on which the transition was made
-         * @param obs : the observed transition
-         * @return true if learning this transition implies structural changes
-         * (can trigger a new planning)
-         */
+        ///
         // ==========================================================================
-        virtual bool addObservation( Idx actionId, const Observation* obs ) = 0;
-
+        const DiscreteVariable* nodeVar(NodeId ni) const = 0;
 
         // ==========================================================================
-        /**
-         * Starts an update of datastructure in the associated FMDP
-         */
+        ///
         // ==========================================================================
-        virtual void updateFMDP() = 0;
-
-      /// @}
-
-
-      // ###################################################################
-      /// @name Miscelleanous methods
-      // ###################################################################
-      /// @{
-    public :
+        NodeId nodeSon(NodeId ni, Idx modality) const = 0;
 
         // ==========================================================================
-        /**
-         * @brief learnerSize
-         * @return
-         */
+        ///
         // ==========================================================================
-        virtual Size size() = 0;
+        Idx nodeNbObservation(NodeId ni) const = 0;
 
-        // ==========================================================================
-        /**
-         * @brief Required for RMax
-         * @return
-         */
-        // ==========================================================================
-        virtual const IVisitableGraphLearner* varLearner(Idx actionId, const DiscreteVariable* var);
+        void insertSetOfVars( MultiDimFunctionGraph<double>* ) const = 0;
 
-        virtual double rMax() const = 0;
-        virtual double modaMax() const = 0;
 
-      /// @}
+    /// @}
   };
 
 }
-#endif // GUM_SDYNA_LEARNING_STRATEGY_H
+#endif // GUM_INTERFACE_VISITABLE_GRAPH_LEARNER_H
