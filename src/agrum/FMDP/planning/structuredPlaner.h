@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the StructuredPlanning planer class.
+ * @brief Headers of the StructuredPlaner planer class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
@@ -49,7 +49,7 @@
 namespace gum {
 
   /**
-   * @class StructuredPlanning structuredPlanning.h <agrum/FMDP/planning/structuredPlanning.h>
+   * @class StructuredPlaner structuredPlaner.h <agrum/FMDP/planning/structuredPlaner.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *
@@ -62,7 +62,7 @@ namespace gum {
    *
    */
   template<typename GUM_SCALAR>
-  class StructuredPlanning : public IPlanningStrategy<GUM_SCALAR> {
+  class StructuredPlaner : public IPlanningStrategy<GUM_SCALAR> {
 
 
       // ###################################################################
@@ -73,14 +73,14 @@ namespace gum {
         // ==========================================================================
         ///
         // ==========================================================================
-        static StructuredPlanning<GUM_SCALAR>* spumddInstance(GUM_SCALAR discountFactor = 0.9, GUM_SCALAR epsilon = 0.00001)
-              { return new StructuredPlanning<GUM_SCALAR>( new MDDOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon);}
+        static StructuredPlaner<GUM_SCALAR>* spumddInstance(GUM_SCALAR discountFactor = 0.9, GUM_SCALAR epsilon = 0.00001)
+              { return new StructuredPlaner<GUM_SCALAR>( new MDDOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon);}
 
         // ==========================================================================
         ///
         // ==========================================================================
-        static StructuredPlanning<GUM_SCALAR>* sviInstance(GUM_SCALAR discountFactor = 0.9, GUM_SCALAR epsilon = 0.00001)
-              { return new StructuredPlanning<GUM_SCALAR>( new TreeOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon);}
+        static StructuredPlaner<GUM_SCALAR>* sviInstance(GUM_SCALAR discountFactor = 0.9, GUM_SCALAR epsilon = 0.00001)
+              { return new StructuredPlaner<GUM_SCALAR>( new TreeOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon);}
 
       /// @}
 
@@ -92,13 +92,13 @@ namespace gum {
         // ==========================================================================
         /// Default constructor
         // ==========================================================================
-        StructuredPlanning ( IOperatorStrategy<GUM_SCALAR>* opi, GUM_SCALAR discountFactor, GUM_SCALAR epsilon );
+        StructuredPlaner ( IOperatorStrategy<GUM_SCALAR>* opi, GUM_SCALAR discountFactor, GUM_SCALAR epsilon );
 
         // ==========================================================================
         /// Default destructor
         // ==========================================================================
   public:
-        virtual ~StructuredPlanning();
+        virtual ~StructuredPlaner();
 
       /// @}
 
@@ -133,11 +133,6 @@ namespace gum {
         /// Returns optimalPolicy computed so far current size
         // ==========================================================================
         virtual Size optimalPolicySize() { return _optimalPolicy!=nullptr?_optimalPolicy->realSize():0; }
-
-        // ==========================================================================
-        /// Returns optimalPolicy computed so far current size
-        // ==========================================================================
-        ActionSet getStateOptimalPolicy( const Instantiation& curState ){ return _optimalPolicy->get(curState); }
 
         // ==========================================================================
         /// Provide a better toDot for the optimal policy where the leaves have the action
@@ -327,7 +322,7 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/FMDP/planning/structuredPlanning.tcc>
+#include <agrum/FMDP/planning/structuredPlaner.tcc>
 
 #endif // GUM_STRUCTURED_PLANNING_H
 

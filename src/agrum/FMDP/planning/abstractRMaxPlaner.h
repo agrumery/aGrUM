@@ -19,106 +19,149 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the Planning Strategy interface.
+ * @brief Headers of the RMax planer class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
-
-
 // =========================================================================
-#ifndef GUM_SDYNA_PLANNING_STRATEGY_H
-#define GUM_SDYNA_PLANNING_STRATEGY_H
+#ifndef GUM_ABSTRACT_RMAX_PLANER_H
+#define GUM_ABSTRACT_RMAX_PLANER_H
 // =========================================================================
-#include <string>
-// =========================================================================
-#include <agrum/core/types.h>
-// =========================================================================
-#include <agrum/FMDP/planning/actionSet.h>
+#include <agrum/FMDP/fmdp.h>
+#include <agrum/FMDP/planning/structuredPlaner.h>
 // =========================================================================
 
-namespace gum {
+namespace gum {  
 
   /**
-   * @class IPlanningStrategy IPlanningStrategy.h <agrum/FMDP/SDyna/IPlanningStrategy.h>
-   * @brief Interface for manipulating FMDP planer
+   * @class AbstractRMaxPlaner AbstractRMaxPlaner.h <agrum/FMDP/planning/AbstractRMaxPlaner.h>
+   * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
+   *
+   * Perform a RMax planning on given in parameter factored markov decision process
    *
    */
   template<typename GUM_SCALAR>
-  class IPlanningStrategy {
+  class AbstractRMaxPlaner : public StructuredPlaner<GUM_SCALAR> {
+
+
+      // ###################################################################
+      /// @name
+      // ###################################################################
+      /// @{
+    public :
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        static AbstractRMaxPlaner<GUM_SCALAR>* ReducedAndOrderedInstance(GUM_SCALAR discountFactor = 0.9, GUM_SCALAR epsilon = 0.00001)
+              { return new AbstractRMaxPlaner<GUM_SCALAR>( new MDDOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon);}
+
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        static AbstractRMaxPlaner<GUM_SCALAR>* TreeInstance(GUM_SCALAR discountFactor = 0.9, GUM_SCALAR epsilon = 0.00001)
+              { return new AbstractRMaxPlaner<GUM_SCALAR>( new TreeOperatorStrategy<GUM_SCALAR>(), discountFactor, epsilon);}
+
+      /// @}
 
       // ###################################################################
       /// @name Constructor & destructor.
       // ###################################################################
       /// @{
-    public :
+  private:
+        // ==========================================================================
+        /// Default constructor
+        // ==========================================================================
+        AbstractRMaxPlaner( IOperatorStrategy<GUM_SCALAR>* opi, GUM_SCALAR discountFactor, GUM_SCALAR epsilon );
 
         // ==========================================================================
-        /// Destructor (virtual and empty since it's an interface)
+        /// Default destructor
         // ==========================================================================
-        virtual ~IPlanningStrategy(){}
-
-      /// @}
-
-      // ###################################################################
-      /// @name Initialization
-      // ###################################################################
-      /// @{
-    public:
-
-        // ==========================================================================
-        /// Initializes the learner
-        // ==========================================================================
-        virtual void initialize(FMDP<GUM_SCALAR>* fmdp) = 0;
+  public:
+        ~AbstractRMaxPlaner();
 
       /// @}
 
 
+
       // ###################################################################
-      /// @name Incremental methods
+      /// @name Planning Methods
       // ###################################################################
       /// @{
-    public :
+
+  public:
+
         // ==========================================================================
         /**
-         * Starts a new planning
-         * @param Idx : the maximal number of value iteration performed in this planning
+         * Initializes data structure needed for making the planning
+         * @warning No calling this methods before starting the first makePlaninng
+         * will surely and definitely result in a crash
          */
         // ==========================================================================
-        virtual void makePlanning(Idx) = 0;
+        virtual void initialize( FMDP<GUM_SCALAR>* fmdp );
+
 
         // ==========================================================================
-        /// Returns optimalPolicy computed so far current size
+        /**
+         * Performs a value iteration
+         *
+         * @param nbStep : enables you to specify how many value iterations you wish to do.
+         * makePlanning will then stop whether when optimal value function is reach or when nbStep have been performed
+         */
         // ==========================================================================
-        virtual const MultiDimFunctionGraph<ActionSet,SetTerminalNodePolicy>* optimalPolicy( ) = 0;
+        void makePlanning(Idx nbStep = 1000000);
 
       /// @}
 
 
+
       // ###################################################################
-      /// @name Miscelleanous methods
+      /// @name Value Iteration Methods
       // ###################################################################
       /// @{
-    public :
 
+  protected:
         // ==========================================================================
-        /// Returns vFunction computed so far current size
+        /// Performs a single step of value iteration
         // ==========================================================================
-        virtual Size vFunctionSize() = 0;
-
-        // ==========================================================================
-        /// Returns optimalPolicy computed so far current size
-        // ==========================================================================
-        virtual Size optimalPolicySize() = 0;
-
-        // ==========================================================================
-        /// Returns a string describing the optimal policy in a dot format
-        // ==========================================================================
-        virtual std::string optimalPolicy2String() = 0;
+        virtual MultiDimFunctionGraph< GUM_SCALAR >* _valueIteration();
 
       /// @}
+
+
+
+      // ###################################################################
+      /// @name Optimal policy extraction methods
+      // ###################################################################
+      /// @{
+
+  protected:
+        // ==========================================================================
+        /// Perform the required tasks to extract an optimal policy
+        // ==========================================================================
+        virtual void _evalPolicy ();
+
+      /// @}
+
+  protected:
+
+    private :
+        // ==========================================================================
+        /// The threshold value
+        /// Whenever | V^{n} - V^{n+1} | < threshold, we consider that V ~ V*
+        // ==========================================================================
+        GUM_SCALAR __threshold;
+
+        bool __firstTime;
   };
 
-}
-#endif // GUM_SDYNA_LEARNING_STRATEGY_H
+} /* namespace gum */
+
+
+#include <agrum/FMDP/planning/abstractRMaxPlaner.tcc>
+
+#endif // GUM_ABSTRACT_RMAX_PLANER_H
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
+

@@ -27,29 +27,21 @@
 
 
 // =========================================================================
-#ifndef GUM_E_GREEDY_DECIDER_H
-#define GUM_E_GREEDY_DECIDER_H
+#ifndef GUM_LAZY_DECIDER_H
+#define GUM_LAZY_DECIDER_H
 // =========================================================================
-#include <agrum/core/types.h>
-// =========================================================================
-#include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
-#include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
-#include <agrum/FMDP/planning/actionSet.h>
-#include <agrum/FMDP/simulation/statesChecker.h>
-// =========================================================================
-#include <agrum/variables/discreteVariable.h>
 // =========================================================================
 
 namespace gum {
 
   /**
-   * @class E_GreedyDecider E_GreedyDecider.h <agrum/FMDP/SDyna/E_GreedyDecider.h>
+   * @class LazyDecider lazyDecider.h <agrum/FMDP/SDyna/lazyDecider.h>
    * @brief Class to make decision following an \epsilon-greedy compromise between exploration and exploitation
    * @ingroup fmdp_group
    *
    */
-  class E_GreedyDecider : public IDecisionStrategy {
+  class LazyDecider : public IDecisionStrategy {
 
       // ###################################################################
       /// @name Constructor & destructor.
@@ -60,25 +52,12 @@ namespace gum {
         // ==========================================================================
         /// Constructor
         // ==========================================================================
-        E_GreedyDecider(  );
+        LazyDecider(  );
 
         // ==========================================================================
         /// Destructor
         // ==========================================================================
-        ~E_GreedyDecider();
-
-      /// @}
-
-      // ###################################################################
-      /// @name Initialization
-      // ###################################################################
-      /// @{
-    public:
-
-        // ==========================================================================
-        /// Initializes the learner
-        // ==========================================================================
-        void initialize( const FMDP<double>* fmdp );
+        ~LazyDecider();
 
       /// @}
 
@@ -88,18 +67,8 @@ namespace gum {
       // ###################################################################
       /// @{
     public:
-        void checkState( const Instantiation& newState );
-
-        ActionSet stateOptimalPolicy( const Instantiation& curState );
-
-      /// @}
-
-    private :
-
-        /// Threshold under which we perform a random action instead of exploiting the optimal one
-        StatesChecker __statecpt;
-        double __sss;
+        void checkState( const Instantiation& newState ){}
   };
 
 }
-#endif // GUM_E_GREEDY_DECIDER_H
+#endif // GUM_LAZY_DECIDER_H

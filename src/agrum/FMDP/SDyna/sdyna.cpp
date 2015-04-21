@@ -172,6 +172,8 @@ namespace gum {
       //std::cout << << "Planning ..." << std::endl;
       __planer->makePlanning(nbValueIterationStep);
       //std::cout << << "Done" << std::endl;
+
+      __decider->setOptimalStrategy(__planer->optimalPolicy());
     }
 
     // ###################################################################
@@ -191,7 +193,7 @@ namespace gum {
      */
     // ###################################################################
     Idx SDYNA::takeAction( ){
-      ActionSet actionSet = __decider->getStateOptimalPolicy( _lastState );
+      ActionSet actionSet = __decider->stateOptimalPolicy( _lastState );
       if( actionSet.size() == 1 ) {
         __lastAction = actionSet[0];
       } else {

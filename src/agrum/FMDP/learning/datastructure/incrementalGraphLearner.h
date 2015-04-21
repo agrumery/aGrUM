@@ -277,20 +277,35 @@ namespace gum {
 
 
       // ###################################################################
-      /// @name RMax Methods
+      /// @name Visit Methods
       // ###################################################################
       /// @{
   public :
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        NodeId root() const { return this->_root; }
 
         // ==========================================================================
-        /// For RMax strategy, we need a count on each leaves of the number of
-        /// observation already made
+        ///
         // ==========================================================================
-        MultiDimFunctionGraph<double>* extractCount();
-    protected :
-        virtual void _insertSetOfVars( MultiDimFunctionGraph<double>* ) = 0;
-    private:
-        NodeId __extractCount(NodeId, MultiDimFunctionGraph<double>*);
+        bool isTerminal(NodeId ni) const { return !this->_nodeSonsMap.exists(ni); }
+
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        const DiscreteVariable* nodeVar(NodeId ni) const { return this->_nodeVarMap[ni]; }
+
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        NodeId nodeSon(NodeId ni, Idx modality) const { return this->_nodeSonsMap[ni][modality]; }
+
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        const NodeDatabase<AttributeSelection, isScalar> nodeDB(NodeId ni) const { return this->_nodeId2Database[ni]; }
+
 
       /// @}
 

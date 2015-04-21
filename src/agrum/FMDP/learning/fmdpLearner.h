@@ -189,10 +189,15 @@ namespace gum {
         // ==========================================================================
         Size size();
 
+        // ==========================================================================
+        /// \brief extractCount
+        // ==========================================================================
+        const IncrementalGraphLearner<VariableAttributeSelection, false>* varLearner(Idx actionId, const DiscreteVariable* var){
+          return __actionLearners[actionId]->getWithDefault(var, nullptr);}
+
       /// @}
 
-      MultiDimFunctionGraph<double>* extractCount(Idx actionId, const DiscreteVariable* var){
-        return __actionLearners[actionId]->getWithDefault(var, nullptr)->extractCount();}
+
 
     private :
 

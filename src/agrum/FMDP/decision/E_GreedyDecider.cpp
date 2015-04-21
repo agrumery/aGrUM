@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the ModelLearner class.
+ * @brief Headers of the class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
@@ -40,18 +40,9 @@ namespace gum {
     // ###################################################################
     /**
      * Constructor
-     * @param observationPhaseLenght : see SDYNA
-     * @param nbValueIterationStep : see SDYNA
-     * @param discountFactor : the \gamma used for the plannings
-     * @param epsilon : the epsilon under which we consider V to be \epsilon-optimal
-     * @param learningThreshold : threshold under which a variable is not install
-     * on a node
-     * @param similarityThreshold : threshold above which two leaves won't be merged
-     * @param exploThreshold : threshold under which we explore another action than
-     * the optimal one
      */
     // ###################################################################
-    E_GreedyDecider::E_GreedyDecider (IPlanningStrategy<double> *planer ) : __planer(planer) {
+    E_GreedyDecider::E_GreedyDecider () {
 
       GUM_CONSTRUCTOR(E_GreedyDecider)
 
@@ -61,10 +52,7 @@ namespace gum {
 
     // ###################################################################
     /**
-     * Returns
-     * @return a string describing the learned FMDP, and the associated
-     * optimal policy.
-     * Both in DOT language.
+     *
      */
     // ###################################################################
     E_GreedyDecider::~E_GreedyDecider (){
@@ -80,13 +68,11 @@ namespace gum {
 
     // ###################################################################
     /**
-     * Initializes the Sdyna instance internal satastructure; i.e. the planer and
-     * the learner.
+     *
      */
     // ###################################################################
     void E_GreedyDecider::initialize( const FMDP<double>* fmdp ){
-      for( auto actionIter = fmdp->beginActions(); actionIter != fmdp->endActions(); ++actionIter )
-        __explorething += *actionIter;
+      IDecisionStrategy::initialize(fmdp);
       for( auto varIter = fmdp->beginVariables(); varIter != fmdp->endVariables(); ++varIter )
         __sss *= (double) (*varIter)->domainSize();
     }
@@ -102,9 +88,6 @@ namespace gum {
      * Performs a feedback on the last transition.
      * In extenso, learn from the transition.
      * @param reachedState : the state reached after the transition
-     * @param obtainedReward : the reward obtained during the transition
-     * @warning Uses the __originalState and __performedAction stored in cache
-     * If you want to specify the original state and the performed action, see below
      */
     // ###################################################################
     void E_GreedyDecider::checkState(const Instantiation & reachedState){
@@ -121,7 +104,7 @@ namespace gum {
      * @return a set containing every optimal actions on that state
      */
     // ###################################################################
-    ActionSet E_GreedyDecider::getStateOptimalPolicy(const Instantiation& curState){
+    ActionSet E_GreedyDecider::stateOptimalPolicy(const Instantiation& curState){
 
       double explo = (double)std::rand( ) / (double)RAND_MAX;
       double temp = std::pow( (__sss - (double) __statecpt.nbVisitedStates() ) / __sss, 3.0);
@@ -129,23 +112,21 @@ namespace gum {
 
       //std::cout << << exploThreshold << std::endl;
 
-      if( __planer->optimalPolicySize() ){
-        ActionSet optimalSet = __planer->getStateOptimalPolicy(curState);
-        if( explo > exploThreshold ) {
-          //std::cout << "Exploit : " << optimalSet << std::endl;
-          return optimalSet;
-        } else {
-          if( __explorething.size() > optimalSet.size()){
-            ActionSet ret(__explorething);
-            ret -= optimalSet;
-            //std::cout << << "Explore : " << ret << std::endl;
-            return ret;
-          }
-        }
+      ActionSet optimalSet = IDecisionStrategy::stateOptimalPolicy(curState);
+      if( explo > exploThreshold ) {
+        //std::cout << "Exploit : " << optimalSet << std::endl;
+        return optimalSet;
+      }
+
+      if( _allActions.size() > optimalSet.size()){
+        ActionSet ret(_allActions);
+        ret -= optimalSet;
+        //std::cout << << "Explore : " << ret << std::endl;
+        return ret;
       }
 
       //std::cout << "Explore : " << __explorething << std::endl;
-      return __explorething;
+      return _allActions;
     }
 
 } // End of namespace gum

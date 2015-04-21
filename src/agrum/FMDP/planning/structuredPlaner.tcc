@@ -19,7 +19,7 @@
 ***************************************************************************/
 /**
 * @file
-* @brief Template implementation of FMDP/planning/StructuredPlanning.h classes.
+* @brief Template implementation of FMDP/planning/StructuredPlaner.h classes.
 *
 * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
@@ -37,7 +37,7 @@
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
 // =========================================================================
-#include <agrum/FMDP/planning/structuredPlanning.h>
+#include <agrum/FMDP/planning/structuredPlaner.h>
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code purposes only
@@ -56,11 +56,11 @@ namespace gum {
     // Default constructor
     // ===========================================================================
     template<typename GUM_SCALAR> INLINE
-    StructuredPlanning<GUM_SCALAR>::StructuredPlanning ( IOperatorStrategy<GUM_SCALAR>* opi, GUM_SCALAR discountFactor, GUM_SCALAR epsilon )
+    StructuredPlaner<GUM_SCALAR>::StructuredPlaner ( IOperatorStrategy<GUM_SCALAR>* opi, GUM_SCALAR discountFactor, GUM_SCALAR epsilon )
                                             : _discountFactor(discountFactor),
                                               _operator(opi) {
 
-      GUM_CONSTRUCTOR ( StructuredPlanning );
+      GUM_CONSTRUCTOR ( StructuredPlaner );
 
       __threshold = epsilon;
       _vFunction = nullptr;
@@ -71,9 +71,9 @@ namespace gum {
     // Default destructor
     // ===========================================================================
     template<typename GUM_SCALAR> INLINE
-    StructuredPlanning<GUM_SCALAR>::~StructuredPlanning() {
+    StructuredPlaner<GUM_SCALAR>::~StructuredPlaner() {
 
-      GUM_DESTRUCTOR ( StructuredPlanning );
+      GUM_DESTRUCTOR ( StructuredPlaner );
 
       if(_vFunction){
         delete _vFunction;
@@ -97,7 +97,7 @@ namespace gum {
     // Initializes data structure needed for making the planning
     // ===========================================================================
     template<typename GUM_SCALAR>
-    std::string StructuredPlanning<GUM_SCALAR>::optimalPolicy2String(){
+    std::string StructuredPlaner<GUM_SCALAR>::optimalPolicy2String(){
 
       // ************************************************************************
       // Discarding the case where no \pi* have been computed
@@ -214,7 +214,7 @@ namespace gum {
     // Initializes data structure needed for making the planning
     // ===========================================================================
     template<typename GUM_SCALAR>
-    void StructuredPlanning<GUM_SCALAR>::initialize(FMDP<GUM_SCALAR> *fmdp) {
+    void StructuredPlaner<GUM_SCALAR>::initialize(FMDP<GUM_SCALAR> *fmdp) {
 
       _fmdp = fmdp;
 
@@ -236,7 +236,7 @@ namespace gum {
     // Performs a value iteration
     // ===========================================================================
     template<typename GUM_SCALAR>
-    void StructuredPlanning<GUM_SCALAR>::makePlanning( Idx nbStep ) {
+    void StructuredPlaner<GUM_SCALAR>::makePlanning( Idx nbStep ) {
 
       if(__firstTime){
         _vFunction->copy(*(RECAST(_fmdp->reward())));
@@ -293,7 +293,7 @@ namespace gum {
     // Performs a single step of value iteration
     // ===========================================================================
     template<typename GUM_SCALAR>
-    MultiDimFunctionGraph< GUM_SCALAR >* StructuredPlanning<GUM_SCALAR>::_valueIteration() {
+    MultiDimFunctionGraph< GUM_SCALAR >* StructuredPlaner<GUM_SCALAR>::_valueIteration() {
 
       // *****************************************************************************************
       // Loop reset
@@ -326,7 +326,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph< GUM_SCALAR >*
-    StructuredPlanning<GUM_SCALAR>::_evalQaction( const MultiDimFunctionGraph< GUM_SCALAR >* Vold, Idx actionId ){
+    StructuredPlaner<GUM_SCALAR>::_evalQaction( const MultiDimFunctionGraph< GUM_SCALAR >* Vold, Idx actionId ){
 
       // ******************************************************************************
       // Initialisation :
@@ -343,7 +343,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph< GUM_SCALAR >*
-    StructuredPlanning<GUM_SCALAR>::_maximiseQactions( std::vector<MultiDimFunctionGraph<GUM_SCALAR>*>& qActionsSet) {
+    StructuredPlaner<GUM_SCALAR>::_maximiseQactions( std::vector<MultiDimFunctionGraph<GUM_SCALAR>*>& qActionsSet) {
 
       MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = qActionsSet.back();
       qActionsSet.pop_back();
@@ -363,7 +363,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph<GUM_SCALAR>*
-    StructuredPlanning<GUM_SCALAR>::_addReward ( MultiDimFunctionGraph< GUM_SCALAR >* Vold ) {
+    StructuredPlaner<GUM_SCALAR>::_addReward ( MultiDimFunctionGraph< GUM_SCALAR >* Vold ) {
 
       // *****************************************************************************************
       // ... we multiply the result by the discount factor, ...
@@ -391,7 +391,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     void
-    StructuredPlanning<GUM_SCALAR>::_evalPolicy (  ) {
+    StructuredPlaner<GUM_SCALAR>::_evalPolicy (  ) {
 
       // *****************************************************************************************
       // Loop reset
@@ -429,7 +429,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >*
-    StructuredPlanning<GUM_SCALAR>::_makeArgMax ( const MultiDimFunctionGraph<GUM_SCALAR>* qAction, Idx actionId ) {
+    StructuredPlaner<GUM_SCALAR>::_makeArgMax ( const MultiDimFunctionGraph<GUM_SCALAR>* qAction, Idx actionId ) {
 
       MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* amcpy
           = _operator->getArgMaxFunctionInstance();
@@ -450,7 +450,7 @@ namespace gum {
     // Recursion part for the createArgMaxCopy
     // ==========================================================================
     template<typename GUM_SCALAR>
-    NodeId StructuredPlanning<GUM_SCALAR>::__recurArgMaxCopy(NodeId currentNodeId,
+    NodeId StructuredPlaner<GUM_SCALAR>::__recurArgMaxCopy(NodeId currentNodeId,
                                                       Idx actionId,
                                                       const MultiDimFunctionGraph<GUM_SCALAR>* src,
                                                       MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* argMaxCpy,
@@ -481,7 +481,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*
-    StructuredPlanning<GUM_SCALAR>::_argmaximiseQactions( std::vector<MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*>& qActionsSet) {
+    StructuredPlaner<GUM_SCALAR>::_argmaximiseQactions( std::vector<MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*>& qActionsSet) {
 
       MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* newVFunction = qActionsSet.back();
       qActionsSet.pop_back();
@@ -502,7 +502,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     void
-    StructuredPlanning<GUM_SCALAR>::_extractOptimalPolicy (
+    StructuredPlaner<GUM_SCALAR>::_extractOptimalPolicy (
         const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* argMaxOptimalValueFunction ) {
 
       _optimalPolicy->clear();
@@ -522,7 +522,7 @@ namespace gum {
     // Recursion part for the createArgMaxCopy
     // ==========================================================================
     template<typename GUM_SCALAR>
-    NodeId StructuredPlanning<GUM_SCALAR>::__recurExtractOptPol(NodeId currentNodeId,
+    NodeId StructuredPlaner<GUM_SCALAR>::__recurExtractOptPol(NodeId currentNodeId,
                                                        const MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* argMaxOptVFunc,
                                                        HashTable<NodeId,NodeId>& visitedNodes){
       if( visitedNodes.exists(currentNodeId))
@@ -548,7 +548,7 @@ namespace gum {
     // Extract from an ArgMaxSet the associated ActionSet
     // ==========================================================================
     template<typename GUM_SCALAR>
-    void StructuredPlanning<GUM_SCALAR>::__transferActionIds( const ArgMaxSet<GUM_SCALAR, Idx>& src, ActionSet& dest){
+    void StructuredPlaner<GUM_SCALAR>::__transferActionIds( const ArgMaxSet<GUM_SCALAR, Idx>& src, ActionSet& dest){
       for( auto idi = src.beginSafe(); idi != src.endSafe(); ++idi )
         dest += *idi;
     }

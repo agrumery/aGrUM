@@ -69,8 +69,10 @@ namespace gum {
         // ==========================================================================
         /// Initializes the learner
         // ==========================================================================
-        virtual void initialize( const FMDP<double>* fmdp ) = 0;
-
+        virtual void initialize( const FMDP<double>* fmdp ){
+          for( auto actionIter = fmdp->beginActions(); actionIter != fmdp->endActions(); ++actionIter )
+            _allActions += *actionIter;
+        }
       /// @}
 
 
@@ -81,7 +83,18 @@ namespace gum {
     public:
         virtual void checkState( const Instantiation& newState ) = 0;
 
-        virtual ActionSet getStateOptimalPolicy( const Instantiation& curState ) = 0;
+        void setOptimalStrategy( const MultiDimFunctionGraph<ActionSet,SetTerminalNodePolicy>* optPol) const { _optPol = optPol; }
+
+        virtual ActionSet stateOptimalPolicy( const Instantiation& curState ) {
+          return _optPol->realSize()==0?_allActions:_optPol->get(curState); }
+
+    protected :
+
+        ///
+        mutable MultiDimFunctionGraph<ActionSet,SetTerminalNodePolicy>* _optPol;
+
+        ///
+        ActionSet _allActions;
 
       /// @}
   };

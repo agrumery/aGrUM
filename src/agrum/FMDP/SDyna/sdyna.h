@@ -33,7 +33,7 @@
 #include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>
 #include <agrum/FMDP/learning/fmdpLearner.h>
 #include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
-#include <agrum/FMDP/planning/structuredPlanning.h>
+#include <agrum/FMDP/planning/structuredPlaner.h>
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
 #include <agrum/FMDP/decision/E_GreedyDecider.h>
 #include <agrum/FMDP/planning/actionSet.h>
@@ -71,8 +71,8 @@ namespace gum {
                                      Idx observationPhaseLenght = 100,
                                      Idx nbValueIterationStep = 1 ){
           ILearningStrategy* ls = new FMDPLearner<CHI2TEST,CHI2TEST,ITILEARNER>(attributeSelectionThreshold);
-          IPlanningStrategy<double>* ps = StructuredPlanning<double>::sviInstance( discountFactor, epsilon);
-          IDecisionStrategy* ds = new E_GreedyDecider(ps);
+          IPlanningStrategy<double>* ps = StructuredPlaner<double>::sviInstance( discountFactor, epsilon);
+          IDecisionStrategy* ds = new E_GreedyDecider();
           return new SDYNA( ls, ps, ds, observationPhaseLenght, nbValueIterationStep);
         }
 
@@ -86,8 +86,8 @@ namespace gum {
                                        Idx observationPhaseLenght = 100,
                                        Idx nbValueIterationStep = 1 ){
           ILearningStrategy* ls = new FMDPLearner<GTEST,GTEST,IMDDILEARNER>(attributeSelectionThreshold, similarityThreshold);
-          IPlanningStrategy<double>* ps = StructuredPlanning<double>::spumddInstance( discountFactor, epsilon);
-          IDecisionStrategy* ds = new E_GreedyDecider(ps);
+          IPlanningStrategy<double>* ps = StructuredPlaner<double>::spumddInstance( discountFactor, epsilon);
+          IDecisionStrategy* ds = new E_GreedyDecider();
           return new SDYNA( ls, ps, ds, observationPhaseLenght, nbValueIterationStep);
         }
 
