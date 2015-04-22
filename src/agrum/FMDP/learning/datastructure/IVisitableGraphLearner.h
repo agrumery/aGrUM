@@ -70,29 +70,29 @@ namespace gum {
         // ==========================================================================
         ///
         // ==========================================================================
-        NodeId root() const = 0;
+        virtual NodeId root() const = 0;
 
         // ==========================================================================
         ///
         // ==========================================================================
-        bool isTerminal(NodeId ni) const = 0;
+        virtual bool isTerminal(NodeId ni) const = 0;
 
         // ==========================================================================
         ///
         // ==========================================================================
-        const DiscreteVariable* nodeVar(NodeId ni) const = 0;
+        virtual const DiscreteVariable* nodeVar(NodeId ni) const = 0;
 
         // ==========================================================================
         ///
         // ==========================================================================
-        NodeId nodeSon(NodeId ni, Idx modality) const = 0;
+        virtual NodeId nodeSon(NodeId ni, Idx modality) const = 0;
 
         // ==========================================================================
         ///
         // ==========================================================================
-        Idx nodeNbObservation(NodeId ni) const = 0;
+        virtual Idx nodeNbObservation(NodeId ni) const = 0;
 
-        void insertSetOfVars( MultiDimFunctionGraph<double>* ) const = 0;
+        virtual void insertSetOfVars( MultiDimFunctionGraph<double>* ) const = 0;
 
 
     /// @}

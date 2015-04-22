@@ -110,22 +110,22 @@ namespace gum {
       double temp = std::pow( (__sss - (double) __statecpt.nbVisitedStates() ) / __sss, 3.0);
       double exploThreshold = temp < 0.1 ? 0.1 : temp;
 
-      //std::cout << << exploThreshold << std::endl;
+//      std::cout << exploThreshold << std::endl;
 
       ActionSet optimalSet = IDecisionStrategy::stateOptimalPolicy(curState);
       if( explo > exploThreshold ) {
-        //std::cout << "Exploit : " << optimalSet << std::endl;
+//        std::cout << "Exploit : " << optimalSet << std::endl;
         return optimalSet;
       }
 
       if( _allActions.size() > optimalSet.size()){
         ActionSet ret(_allActions);
         ret -= optimalSet;
-        //std::cout << << "Explore : " << ret << std::endl;
+//        std::cout << "Explore : " << ret << std::endl;
         return ret;
       }
 
-      //std::cout << "Explore : " << __explorething << std::endl;
+//      std::cout << "Explore : " << _allActions << std::endl;
       return _allActions;
     }
 

@@ -134,7 +134,7 @@ namespace gum {
 
         void __makeRMaxFunctionGraphs();
 
-       std::pair<NodeId,NodeId> __visitLearner(IVisitableGraphLearner*,
+       std::pair<NodeId,NodeId> __visitLearner(const IVisitableGraphLearner*,
                                                NodeId currentNodeId,
                                                MultiDimFunctionGraph<double>*,
                                                MultiDimFunctionGraph<double>*);
@@ -144,7 +144,7 @@ namespace gum {
         ///
         HashTable<Idx, MultiDimFunctionGraph<double>*> __actionsRMaxTable;
         HashTable<Idx, MultiDimFunctionGraph<double>*> __actionsBoolTable;
-        ILearningStrategy* __fmdpLearner;
+        const ILearningStrategy* __fmdpLearner;
         double __rThreshold;
         double __rmax;
 

@@ -35,7 +35,7 @@
 
 namespace gum_tests {
 
-  class SPIMDDITestSuite: public CxxTest::TestSuite {
+  class SDynaTestSuite: public CxxTest::TestSuite {
 
     private :
 
@@ -44,45 +44,56 @@ namespace gum_tests {
         // *********************************************************************************************
         // Initialisation de l'instance de SDyna
         // *********************************************************************************************
-//        gum::SPIMDDI spim;
         gum::SDYNA* sdyna = nullptr;
 //        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna = gum::SDYNA::spitiInstance() );
-        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna = gum::SDYNA::spimddiInstance() );
+//        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna = gum::SDYNA::spimddiInstance() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna = gum::SDYNA::RMaxMDDInstance() );
 
-        // Enregistrement des actions possibles auprès de SPIMDDI
+        std::cout << "Instantiate"<< std::endl;
+        // Enregistrement des actions possibles auprès de SDyna
         for( auto actionIter = sim.beginActions(); actionIter != sim.endActions(); ++actionIter){
           sdyna->addAction( *actionIter, sim.actionName(*actionIter));
         }
+        std::cout << "Actions added"<< std::endl;
 
-        // Enregistrement des variables caractérisant les états auprès de SPIMDDI
+        // Enregistrement des variables caractérisant les états auprès de SDyna
         for(auto varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter){
           sdyna->addVariable(*varIter);
         }
+        std::cout << "Var added"<< std::endl;
 
         TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
+        std::cout << "Initiale state chosen"<< std::endl;
         TS_GUM_ASSERT_THROWS_NOTHING ( sdyna->initialize(sim.currentState()) );
+        std::cout << "Initialized"<< std::endl;
 
 
-        for( gum::Idx nbRun = 0; nbRun < 10; ++nbRun ){
+        gum::Idx nbObs = 0;
+        for( gum::Idx nbRun = 0; nbRun < 10 || nbObs < 125; ++nbRun ){
 
+          sim.setInitialStateRandomly();
           TS_GUM_ASSERT_THROWS_NOTHING ( sdyna->setCurrentState(sim.currentState()) );
           gum::Idx nbDec = 0;
 
           while(!sim.hasReachEnd()){
 
+            nbObs++;
+
             // Normal Iteration Part
             gum::Idx actionChosenId = 0;
             TS_GUM_ASSERT_THROWS_NOTHING ( actionChosenId = sdyna->takeAction(); )
             TS_GUM_ASSERT_THROWS_NOTHING ( sim.perform( actionChosenId ) );
-            GUM_TRACE("NbRun : " << nbRun << " - NbDec : " << nbDec )
+            std::cout << "NbRun : " << nbRun << " - NbDec : " << nbDec << " - Nbobs : " << nbObs << std::endl;
             nbDec++;
 
-            try{
+//            TS_GUM_ASSERT_THROWS_NOTHING ( sdyna->feedback(sim.currentState(), sim.reward());)
+            try {
               sdyna->feedback(sim.currentState(), sim.reward());
-            } catch(gum::Exception e){
-              std::cout << e.errorType() << std::endl << e.errorCallStack();
-              exit(-2);
+            } catch(gum::Exception ex){
+              std::cout << ex.errorType() << std::endl << ex.errorContent() << std::endl << ex.errorCallStack() << std::endl;
+              exit(-42);
             }
+
           }
           TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
         }

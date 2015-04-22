@@ -42,7 +42,7 @@
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code purposes only
-#define RECAST(x) reinterpret_cast<const MultiDimFunctionGraph<double>*>(x)
+//#define RECAST(x) reinterpret_cast<const MultiDimFunctionGraph<double>*>(x)
 #define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
 #define DEALLOCATE(x,y) SmallObjectAllocator::instance().deallocate(x,y)
 
@@ -198,10 +198,10 @@ namespace gum {
 
 
 
-    std::pair<NodeId,NodeId> AbstractRMaxPlaner::__visitLearner(  IVisitableGraphLearner* visited,
-                                              NodeId currentNodeId,
-                                              MultiDimFunctionGraph<double>* rmax,
-                                              MultiDimFunctionGraph<double>* boolQ) {
+    std::pair<NodeId,NodeId> AbstractRMaxPlaner::__visitLearner(const IVisitableGraphLearner *visited,
+                                                                NodeId currentNodeId,
+                                                                MultiDimFunctionGraph<double>* rmax,
+                                                                MultiDimFunctionGraph<double>* boolQ) {
 
       std::pair<NodeId, NodeId> rep;
       if(visited->isTerminal(currentNodeId)){

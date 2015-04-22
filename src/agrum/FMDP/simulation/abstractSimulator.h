@@ -69,7 +69,7 @@ namespace gum {
 
         /// Sets the intial statefrom which we begun the simulation
         INLINE void setInitialState( const Instantiation& initialState ) { _currentState = initialState; }
-        INLINE void setInitialStateRandomly( ) { _currentState = _randomState(); }
+        void setInitialStateRandomly( );
 
   protected:
         /// Choses a random state as the first test for a run

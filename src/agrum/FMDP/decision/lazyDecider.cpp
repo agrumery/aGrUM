@@ -28,5 +28,5 @@
 #include <random>
 #include <cstdlib>
 // =========================================================================
-#include <agrum/FMDP/decision/abstractRMaxDecider.h>
+#include <agrum/FMDP/decision/lazyDecider.h>
 // =========================================================================

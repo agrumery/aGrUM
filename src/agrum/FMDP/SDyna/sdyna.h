@@ -34,8 +34,10 @@
 #include <agrum/FMDP/learning/fmdpLearner.h>
 #include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
 #include <agrum/FMDP/planning/structuredPlaner.h>
+#include <agrum/FMDP/planning/abstractRMaxPlaner.h>
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
 #include <agrum/FMDP/decision/E_GreedyDecider.h>
+#include <agrum/FMDP/decision/lazyDecider.h>
 #include <agrum/FMDP/planning/actionSet.h>
 // =========================================================================
 #include <agrum/multidim/instantiation.h>
@@ -90,6 +92,22 @@ namespace gum {
           IDecisionStrategy* ds = new E_GreedyDecider();
           return new SDYNA( ls, ps, ds, observationPhaseLenght, nbValueIterationStep);
         }
+
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        static SDYNA* RMaxMDDInstance( double attributeSelectionThreshold = 0.99,
+                                       double similarityThreshold = 0.3,
+                                       double discountFactor = 0.9,
+                                       double epsilon = 0.01,
+                                       Idx observationPhaseLenght = 100,
+                                       Idx nbValueIterationStep = 1 ){
+          ILearningStrategy* ls = new FMDPLearner<GTEST,GTEST,IMDDILEARNER>(attributeSelectionThreshold, similarityThreshold);
+          IPlanningStrategy<double>* ps = AbstractRMaxPlaner::ReducedAndOrderedInstance(ls, discountFactor, epsilon);
+          IDecisionStrategy* ds = new LazyDecider();
+          return new SDYNA( ls, ps, ds, observationPhaseLenght, nbValueIterationStep);
+        }
+
 
       /// @}
 

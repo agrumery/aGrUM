@@ -27,12 +27,12 @@
 // ==============================================================================
 #include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
-#include <agrum/FMDP/planning/structuredPlanning.h>
+#include <agrum/FMDP/planning/structuredPlaner.h>
 // ==============================================================================
 
 namespace gum_tests {
 
-  class SPUDDPlanningTestSuite: public CxxTest::TestSuite {
+  class StructuredPlanerTestSuite: public CxxTest::TestSuite {
 
     private :
       std::string file;
@@ -41,8 +41,8 @@ namespace gum_tests {
 
         gum::FMDP<double> fmdp(true);
         //gum::SPUMDD<double> planer ( &fmdp );//, 10 ); // Epsilon is set high, indeed we just want ot check that the algorithm works fine.
-        gum::StructuredPlanning<double>* planer = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING ( planer = gum::StructuredPlanning<double>::spumddInstance(0.9,0.01) );
+        gum::StructuredPlaner<double>* planer = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING ( planer = gum::StructuredPlaner<double>::spumddInstance(0.9,0.01) );
 
         gum::FMDPDatReader<double> reader ( &fmdp, file );
         TS_GUM_ASSERT_THROWS_NOTHING ( reader.trace ( false ) );

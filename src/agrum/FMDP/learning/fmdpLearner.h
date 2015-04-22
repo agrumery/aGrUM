@@ -192,7 +192,7 @@ namespace gum {
         // ==========================================================================
         /// \brief extractCount
         // ==========================================================================
-        const IVisitableGraphLearner* varLearner(Idx actionId, const DiscreteVariable* var){
+        const IVisitableGraphLearner* varLearner(Idx actionId, const DiscreteVariable* var) const {
           return __actionLearners[actionId]->getWithDefault(var, nullptr);}
 
         virtual double rMax() const {return __rmax;}

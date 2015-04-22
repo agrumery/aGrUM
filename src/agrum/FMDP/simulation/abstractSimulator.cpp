@@ -56,8 +56,15 @@ namespace gum {
   //
   // ===========================================================================
 
-    Instantiation AbstractSimulator::_randomState() {
+    void AbstractSimulator::setInitialStateRandomly(){
+      bool hre = true;
+      while(hre){
+        _currentState = _randomState();
+        hre = hasReachEnd();
+      }
+    }
 
+    Instantiation AbstractSimulator::_randomState() {
       Instantiation retState;
       for(auto varIter = this->beginVariables(); varIter != this->endVariables(); ++varIter){
         retState.add(**varIter);
