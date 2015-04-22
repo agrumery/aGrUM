@@ -75,7 +75,7 @@ namespace gum_tests {
           TS_GUM_ASSERT_THROWS_NOTHING ( sdyna->setCurrentState(sim.currentState()) );
           gum::Idx nbDec = 0;
 
-          while(!sim.hasReachEnd()){
+          while(!sim.hasReachEnd() && nbObs < 125){
 
             nbObs++;
 

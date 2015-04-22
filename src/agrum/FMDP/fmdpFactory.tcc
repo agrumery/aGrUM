@@ -607,8 +607,8 @@ namespace gum {
   FMDPFactory<GUM_SCALAR>::addDiscount( float discount ) {
     if( state() != FMDPfactory_state::DISCOUNT )
       __illegalStateError( "addDiscount" );
-    else
-      __fmdp->setDiscount ( ( GUM_SCALAR ) discount );
+//    else
+//      __fmdp->setDiscount ( ( GUM_SCALAR ) discount );
   }
 
 

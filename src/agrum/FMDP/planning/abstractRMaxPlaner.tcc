@@ -42,7 +42,7 @@
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code purposes only
-//#define RECAST(x) reinterpret_cast<const MultiDimFunctionGraph<double>*>(x)
+#define RECASTED(x) reinterpret_cast<const MultiDimFunctionGraph<double>*>(x)
 #define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
 #define DEALLOCATE(x,y) SmallObjectAllocator::instance().deallocate(x,y)
 
@@ -92,6 +92,8 @@ namespace gum {
       __makeRMaxFunctionGraphs();
 
       StructuredPlaner::makePlanning(nbStep);
+
+      __clearTables();
     }
 
 
@@ -122,9 +124,9 @@ namespace gum {
 
         // *******************************************************************************************
         // Next, we add the reward
-        newVFunction = _addReward ( newVFunction );
+        qAction = _addReward ( qAction );
 
-        newVFunction = this->_operator->maximize( __actionsRMaxTable[*actionIter], this->_operator->multiply(newVFunction, __actionsBoolTable[*actionIter]) );
+        qAction = this->_operator->maximize( __actionsRMaxTable[*actionIter], this->_operator->multiply(qAction, __actionsBoolTable[*actionIter], 1 ), 2 );
 
         qActionsSet.push_back(qAction);
       }
@@ -160,15 +162,13 @@ namespace gum {
 
     void AbstractRMaxPlaner::__makeRMaxFunctionGraphs() {
 
-      __rThreshold = __fmdpLearner->modaMax()*5;
+      __rThreshold = __fmdpLearner->modaMax()*5>30?__fmdpLearner->modaMax()*5:30;
       __rmax = __fmdpLearner->rMax() / ( 1.0 - this->_discountFactor);
 
       for(auto actionIter = this->fmdp()->beginActions(); actionIter != this->fmdp()->endActions(); ++actionIter ){
 
         std::vector<MultiDimFunctionGraph<double>*> rmaxs;
         std::vector<MultiDimFunctionGraph<double>*> boolQs;
-        __actionsBoolTable.clear();
-        __actionsRMaxTable.clear();
 
         for(auto varIter = this->fmdp()->beginVariables(); varIter != this->fmdp()->endVariables(); ++varIter){
 
@@ -180,16 +180,34 @@ namespace gum {
           visited->insertSetOfVars(varRMax);
           visited->insertSetOfVars(varBoolQ);
 
-          __visitLearner(visited, visited->root(), varRMax, varBoolQ);
+          std::pair<NodeId,NodeId> rooty = __visitLearner(visited, visited->root(), varRMax, varBoolQ);
+          varRMax->manager()->setRootNode(rooty.first);
           varRMax->manager()->reduce();
           varRMax->manager()->clean();
+          varBoolQ->manager()->setRootNode(rooty.second);
           varBoolQ->manager()->reduce();
           varBoolQ->manager()->clean();
 
           rmaxs.push_back(varRMax);
           boolQs.push_back(varBoolQ);
+
+//          std::cout << RECASTED(this->_fmdp->transition(*actionIter, *varIter))->toDot() << std::endl;
+//          for( auto varIter2 = RECASTED(this->_fmdp->transition(*actionIter, *varIter))->variablesSequence().beginSafe(); varIter2 != RECASTED(this->_fmdp->transition(*actionIter, *varIter))->variablesSequence().endSafe(); ++varIter2 )
+//              std::cout << (*varIter2)->name() << " | ";
+//          std::cout << std::endl;
+
+//          std::cout << varRMax->toDot() << std::endl;
+//          for( auto varIter = varRMax->variablesSequence().beginSafe(); varIter != varRMax->variablesSequence().endSafe(); ++varIter )
+//              std::cout << (*varIter)->name() << " | ";
+//          std::cout << std::endl;
+
+//          std::cout << varBoolQ->toDot() << std::endl;
+//          for( auto varIter = varBoolQ->variablesSequence().beginSafe(); varIter != varBoolQ->variablesSequence().endSafe(); ++varIter )
+//              std::cout << (*varIter)->name() << " | ";
+//          std::cout << std::endl;
         }
 
+//        std::cout << "Maximising" << std::endl;
         __actionsRMaxTable.insert(*actionIter, this->_maximiseQactions(rmaxs));
         __actionsBoolTable.insert(*actionIter, this->_maximiseQactions(boolQs));
       }
@@ -205,8 +223,8 @@ namespace gum {
 
       std::pair<NodeId, NodeId> rep;
       if(visited->isTerminal(currentNodeId)){
-        rep.first = rmax->manager()->addTerminalNode( visited->nodeNbObservation(currentNodeId>__rThreshold?__rmax:0.0));
-        rep.second = boolQ->manager()->addTerminalNode( visited->nodeNbObservation(currentNodeId>__rThreshold?0.0:1.0));
+        rep.first = rmax->manager()->addTerminalNode( visited->nodeNbObservation(currentNodeId)<__rThreshold?__rmax:0.0);
+        rep.second = boolQ->manager()->addTerminalNode( visited->nodeNbObservation(currentNodeId)<__rThreshold?0.0:1.0);
         return rep;
       }
 
@@ -225,5 +243,15 @@ namespace gum {
       return rep;
     }
 
+
+    void AbstractRMaxPlaner::__clearTables(){
+
+      for(auto actionIter = this->fmdp()->beginActions(); actionIter != this->fmdp()->endActions(); ++actionIter ){
+        delete __actionsBoolTable[*actionIter];
+        delete __actionsRMaxTable[*actionIter];
+      }
+      __actionsRMaxTable.clear();
+      __actionsBoolTable.clear();
+    }
 
 } // end of namespace gum

@@ -123,22 +123,12 @@ namespace gum {
          */
         void addReward ( const MultiDimImplementation<GUM_SCALAR>* reward );
 
-        /**
-         * Precises the discount factor for that mdp
-         */
-        void setDiscount ( GUM_SCALAR discount );
-
       /// @}
 
       // ===========================================================================
       /// @name FMPD manipulation methods.
       // ===========================================================================
       /// @{
-
-        /**
-         * Returns the discount factor of mdp
-         */
-        const GUM_SCALAR discount( ) const;
 
         /**
          * Returns the reward table of mdp
@@ -251,9 +241,6 @@ namespace gum {
 
       /// default reward table
       const MultiDimImplementation< GUM_SCALAR >* __defaultRewardTable;
-
-      /// FMDP discount factor
-      GUM_SCALAR __discount;
 
       /// Boolean indicates whether or not main variables should be deleted on destruction of this instance
       /// Usually the case when fmdp has been initialized with the factory

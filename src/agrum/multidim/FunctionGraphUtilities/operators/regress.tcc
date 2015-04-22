@@ -320,6 +320,13 @@ namespace gum {
           nodeIter = nodeIter->nextLink();
         }
       }
+
+      dg->beginValues();
+      while( dg->hasValue() ){
+        dgInstNeed.insert( dg->id(), __default );
+        dg->nextValue();
+      }
+
       for(HashTableIterator<NodeId, short int*> it = nodesVarDescendant.begin(); it != nodesVarDescendant.end(); ++it ){
         DEALLOCATE(it.val(),tableSize);
       }
@@ -378,15 +385,14 @@ namespace gum {
 
       //First we ensure that we hadn't already visit this pair of node under hte same circumstances
 
-      short int* dg1NeededVar = __DG1InstantiationNeeded.exists( currentSituation.DG1Node() )?__DG1InstantiationNeeded[ currentSituation.DG1Node() ]:__default;
+      short int* dg1NeededVar = __DG1InstantiationNeeded[ currentSituation.DG1Node() ]; //__DG1InstantiationNeeded.exists( currentSituation.DG1Node() )?__DG1InstantiationNeeded[ currentSituation.DG1Node() ]:__default;
       Idx dg1CurrentVarPos = __DG1->isTerminalNode( currentSituation.DG1Node() )?__nbVar:__rd->variablesSequence().pos( __DG1->node( currentSituation.DG1Node() )->nodeVar() );
-      short int* dg2NeededVar = __DG2InstantiationNeeded.exists( currentSituation.DG2Node() )?__DG2InstantiationNeeded[ currentSituation.DG2Node() ]:__default;
+      short int* dg2NeededVar = __DG2InstantiationNeeded[ currentSituation.DG2Node() ]; //__DG2InstantiationNeeded.exists( currentSituation.DG2Node() )?__DG2InstantiationNeeded[ currentSituation.DG2Node() ]:__default;
       Idx dg2CurrentVarPos = __DG2->isTerminalNode( currentSituation.DG2Node() )?__nbVar:__rd->variablesSequence().pos( __DG2->node( currentSituation.DG2Node() )->nodeVar() );
 
       short int* instNeeded = static_cast<short int*>( ALLOCATE( sizeof(short int)*__nbVar ) );
 
       for( Idx i = 0; i < __nbVar; i++ ){
-
         instNeeded[i] = dg1NeededVar[i] + dg2NeededVar[i];
       }
 

@@ -48,7 +48,6 @@ namespace gum {
       GUM_CONSTRUCTOR ( FMDP );
       __defaultCostTable = nullptr;
       __defaultRewardTable = nullptr;
-      __discount = 0;
       __onDestructionDeleteVars = onDestructionDeleteVar;
   }
 
@@ -243,15 +242,6 @@ namespace gum {
       __defaultRewardTable = reward;
     }
 
-    // ===========================================================================
-    // Precises the discount factor for that mdp
-    // ===========================================================================
-    template<typename GUM_SCALAR> INLINE
-    void
-    FMDP<GUM_SCALAR>::setDiscount ( GUM_SCALAR discount ) {
-      __discount = discount;
-    }
-
 
 
 /* ************************************************************************************************** **/
@@ -259,16 +249,6 @@ namespace gum {
 /* **                               FMPD manipulation methods.                                        **/
 /* **                                                                                                 **/
 /* ************************************************************************************************** **/
-
-
-    // ===========================================================================
-    // Returns the discount factor for that mdp
-    // ===========================================================================
-    template<typename GUM_SCALAR> INLINE
-    const GUM_SCALAR
-    FMDP<GUM_SCALAR>::discount( ) const {
-      return __discount;
-    }
 
     // ===========================================================================
     // Returns the reward table of mdp

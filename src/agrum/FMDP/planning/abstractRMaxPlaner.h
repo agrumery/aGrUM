@@ -131,13 +131,13 @@ namespace gum {
       /// @}
 
     private :
-
         void __makeRMaxFunctionGraphs();
 
-       std::pair<NodeId,NodeId> __visitLearner(const IVisitableGraphLearner*,
-                                               NodeId currentNodeId,
-                                               MultiDimFunctionGraph<double>*,
-                                               MultiDimFunctionGraph<double>*);
+        std::pair<NodeId,NodeId> __visitLearner(  const IVisitableGraphLearner*,
+                                                 NodeId currentNodeId,
+                                                 MultiDimFunctionGraph<double>*,
+                                                 MultiDimFunctionGraph<double>*);
+        void __clearTables();
 
     private :
 

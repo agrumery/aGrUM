@@ -219,7 +219,7 @@ namespace gum {
       _fmdp = fmdp;
 
       // Determination of the threshold value
-      __threshold *= ( 1 - _fmdp->discount() ) / ( 2 * _fmdp->discount() );
+      __threshold *= ( 1 - _discountFactor ) / ( 2 * _discountFactor );
 
         // Establishement of sequence of variable elemination
       for ( auto varIter = _fmdp->beginVariables(); varIter != _fmdp->endVariables(); ++varIter )
@@ -252,7 +252,7 @@ namespace gum {
 
         ++nbIte;
 
-        MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = _valueIteration();
+        MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = this->_valueIteration();
 
         // *****************************************************************************************
         // Then we compare new value function and the old one
@@ -270,13 +270,12 @@ namespace gum {
         // And eventually we update pointers for next loop
         delete _vFunction;
         _vFunction = newVFunction;
-
       }
 
       // *****************************************************************************************
       // Policy matching value function research
       // *****************************************************************************************
-      _evalPolicy ( );
+      this->_evalPolicy ( );
     }
 
 
@@ -304,18 +303,18 @@ namespace gum {
       // For each action
       std::vector<MultiDimFunctionGraph<GUM_SCALAR>*> qActionsSet;
       for ( auto actionIter = _fmdp->beginActions(); actionIter != _fmdp->endActions(); ++actionIter  ) {
-        MultiDimFunctionGraph<GUM_SCALAR>* qAction = _evalQaction( newVFunction, *actionIter );
+        MultiDimFunctionGraph<GUM_SCALAR>* qAction = this->_evalQaction( newVFunction, *actionIter );
         qActionsSet.push_back(qAction);
       }
       delete newVFunction;
 
       // *****************************************************************************************
       // Next to evaluate main value function, we take maximise over all action value, ...
-      newVFunction = _maximiseQactions(qActionsSet);
+      newVFunction = this->_maximiseQactions(qActionsSet);
 
       // *******************************************************************************************
       // Next, we eval the new function value
-      newVFunction = _addReward ( newVFunction );
+      newVFunction = this->_addReward ( newVFunction );
 
       return newVFunction;
     }
@@ -403,9 +402,9 @@ namespace gum {
       // For each action
       for ( auto actionIter = _fmdp->beginActions(); actionIter != _fmdp->endActions(); ++actionIter  ) {
 
-        MultiDimFunctionGraph<GUM_SCALAR>* qAction = _evalQaction( newVFunction, *actionIter );
+        MultiDimFunctionGraph<GUM_SCALAR>* qAction = this->_evalQaction( newVFunction, *actionIter );
 
-        qAction = _addReward ( qAction );
+        qAction = this->_addReward ( qAction );
 
         argMaxQActionsSet.push_back( _makeArgMax(qAction, *actionIter) );
       }

@@ -108,48 +108,41 @@ namespace gum {
     }
 
     // ==========================================================================
-    /// Maximizes between QAction and VFunction
-    /// @param qAction : the computed Q(s,a)
-    /// @param vFunction : the vFunction so far
-    /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::maximize( const MultiDimFunctionGraph< GUM_SCALAR >* vFunction,
-                                                                      const MultiDimFunctionGraph< GUM_SCALAR >* qAction){
-      MultiDimFunctionGraph<GUM_SCALAR>* ret = maximize2MultiDimFunctionGraphs ( vFunction, qAction );
-      delete vFunction;
-      delete qAction;
+    MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::maximize(
+                                                                  const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                                                                  const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                                                                  Idx del ){
+      MultiDimFunctionGraph<GUM_SCALAR>* ret = maximize2MultiDimFunctionGraphs ( f1, f2 );
+      this->_deleteFunctionGraph( f1, f2, del);
       return ret;
     }
 
     // ==========================================================================
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::multiply( const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                                                                      const MultiDimFunctionGraph< GUM_SCALAR >* f2){
+    MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::multiply(
+                                                                  const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                                                                  const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                                                                  Idx del ){
       MultiDimFunctionGraph<GUM_SCALAR>* ret = multiply2MultiDimFunctionGraphs ( f1, f2 );
-      delete f1;
-      delete f2;
+      this->_deleteFunctionGraph( f1, f2, del);
       return ret;
     }
 
 
     // ==========================================================================
-    /// ArgMaximizes between QAction and VFunction
-    /// @param qAction : the computed Q(s,a)
-    /// @param vFunction : the vFunction so far
-    /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* MDDOperatorStrategy<GUM_SCALAR>::argmaximize(
-                        const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* vFunction,
-                        const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* qAction){
+                            const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* f1,
+                            const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* f2,
+                            Idx del){
 
-      MultiDimFunctionGraphOperator< ArgMaxSet<GUM_SCALAR, Idx>, ArgumentMaximisesAction, SetTerminalNodePolicy > argmaxope(
-            vFunction, qAction );
+      MultiDimFunctionGraphOperator< ArgMaxSet<GUM_SCALAR, Idx>, ArgumentMaximisesAction, SetTerminalNodePolicy > argmaxope( f1, f2 );
       MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* ret = argmaxope.compute();
-      delete vFunction;
-      delete qAction;
+      this->_deleteFunctionGraph( f1, f2, del);
       return ret;
     }
 
@@ -160,10 +153,12 @@ namespace gum {
     /// @warning given function is deleted, returns the new one
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::add(const MultiDimFunctionGraph< GUM_SCALAR >* function,
-                                                                const MultiDimFunctionGraph< GUM_SCALAR >* reward){
-      MultiDimFunctionGraph<GUM_SCALAR>* ret = add2MultiDimFunctionGraphs ( function, reward );
-      delete function;
+    MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::add(
+                                                              const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                                                              const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                                                              Idx del){
+      MultiDimFunctionGraph<GUM_SCALAR>* ret = add2MultiDimFunctionGraphs ( f1, f2 );
+      this->_deleteFunctionGraph( f1, f2, del);
       return ret;
     }
 
@@ -174,9 +169,13 @@ namespace gum {
     /// @warning this time, nothing is deleted
     // ==========================================================================
     template<typename GUM_SCALAR>
-    MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::subtract(const MultiDimFunctionGraph< GUM_SCALAR >* newVF,
-                                                         const MultiDimFunctionGraph< GUM_SCALAR >* oldVF){
-      return subtract2MultiDimFunctionGraphs ( newVF, oldVF );
+    MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::subtract(
+                                                        const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                                                        const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                                                        Idx del){
+      MultiDimFunctionGraph<GUM_SCALAR>* ret = subtract2MultiDimFunctionGraphs ( f1, f2 );
+      this->_deleteFunctionGraph( f1, f2, del);
+      return ret;
     }
 
 

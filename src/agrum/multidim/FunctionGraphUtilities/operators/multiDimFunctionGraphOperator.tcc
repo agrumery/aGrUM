@@ -65,14 +65,17 @@ namespace gum {
 
       GUM_DESTRUCTOR(MultiDimFunctionGraphOperator);
 
-      if(__nbVar != 0)
-        DEALLOCATE( __default, sizeof(short int)*__nbVar);
 
       for(auto instIter = __DG1InstantiationNeeded.beginSafe(); instIter != __DG1InstantiationNeeded.endSafe(); ++instIter )
-        DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
+        if( instIter.val() != __default)
+          DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
 
       for(auto instIter = __DG2InstantiationNeeded.beginSafe(); instIter != __DG2InstantiationNeeded.endSafe(); ++instIter )
-        DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
+        if( instIter.val() != __default)
+          DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
+
+      if(__nbVar != 0)
+        DEALLOCATE( __default, sizeof(short int)*__nbVar);
 
     }
 
@@ -99,7 +102,7 @@ namespace gum {
             varInst[i] = (Idx) 0;
       }
 
-      O4DGContext conti( varInst, __nbVar );
+      O4DGContext conti( varInst, __nbVar );      
       conti.setDG1Node( __DG1->root() );
       conti.setDG2Node( __DG2->root() );
 
@@ -255,7 +258,6 @@ namespace gum {
       for( auto varIter = dg->variablesSequence().rbeginSafe(); varIter != dg->variablesSequence().rendSafe(); --varIter ) {
 
         Idx varPos = __rd->variablesSequence().pos( *varIter );
-
         const Link<NodeId> * nodeIter = dg->varNodeListe(*varIter)->list();
         while( nodeIter != nullptr ){
 
@@ -268,7 +270,6 @@ namespace gum {
             instantiationNeeded[j] = (short int) 0;
             varDescendant[j] = (short int) 0;
           }
-
 
           varDescendant[ varPos ] = (short int) 1;
           for(Idx modality = 0; modality < dg->node(nodeIter->element())->nbSons(); ++modality ){
@@ -284,7 +285,6 @@ namespace gum {
           nodeIter = nodeIter->nextLink();
         }
       }
-
 
       for( auto varIter = dg->variablesSequence().beginSafe(); varIter != dg->variablesSequence().endSafe(); ++varIter ) {
 
@@ -304,10 +304,16 @@ namespace gum {
           nodeIter = nodeIter->nextLink();
         }
       }
+
+      dg->beginValues();
+      while( dg->hasValue() ){
+        dgInstNeed.insert( dg->id(), __default );
+        dg->nextValue();
+      }
+
       for(HashTableIterator<NodeId, short int*> it = nodesVarDescendant.begin(); it != nodesVarDescendant.end(); ++it ){
         DEALLOCATE(it.val(),tableSize);
       }
-
       nodesVarDescendant.clear();
     }
 
@@ -358,23 +364,19 @@ namespace gum {
 
       //First we ensure that we hadn't already visit this pair of node under hte same circumstances
 
-      short int* dg1NeededVar = __DG1InstantiationNeeded.exists( currentSituation.DG1Node() )?__DG1InstantiationNeeded[ currentSituation.DG1Node() ]:__default;
+      short int* dg1NeededVar = __DG1InstantiationNeeded[ currentSituation.DG1Node() ]; //__DG1InstantiationNeeded.exists( currentSituation.DG1Node() )?__DG1InstantiationNeeded[ currentSituation.DG1Node() ]:__default;
       Idx dg1CurrentVarPos = __DG1->isTerminalNode( currentSituation.DG1Node() )?__nbVar:__rd->variablesSequence().pos( __DG1->node( currentSituation.DG1Node() )->nodeVar() );
-      short int* dg2NeededVar = __DG2InstantiationNeeded.exists( currentSituation.DG2Node() )?__DG2InstantiationNeeded[ currentSituation.DG2Node() ]:__default;
+      short int* dg2NeededVar = __DG2InstantiationNeeded[ currentSituation.DG2Node() ]; //__DG2InstantiationNeeded.exists( currentSituation.DG2Node() )?__DG2InstantiationNeeded[ currentSituation.DG2Node() ]:__default;
       Idx dg2CurrentVarPos = __DG2->isTerminalNode( currentSituation.DG2Node() )?__nbVar:__rd->variablesSequence().pos( __DG2->node( currentSituation.DG2Node() )->nodeVar() );
 
       short int* instNeeded = static_cast<short int*>( ALLOCATE( sizeof(short int)*__nbVar ) );
-
-      for( Idx i = 0; i < __nbVar; i++ ){
-
+      for( Idx i = 0; i < __nbVar; i++ )
         instNeeded[i] = dg1NeededVar[i] + dg2NeededVar[i];
-      }
 
       double curSitKey = currentSituation.key( instNeeded );
 
       if ( __explorationTable.exists ( curSitKey ) ){
         DEALLOCATE( instNeeded, sizeof(short int)*__nbVar);
-
         return __explorationTable[ curSitKey ];
       }
 

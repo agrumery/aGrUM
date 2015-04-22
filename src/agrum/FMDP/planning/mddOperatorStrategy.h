@@ -99,50 +99,40 @@ namespace gum {
                                                    const Set<const DiscreteVariable*>& elVarSeq);
 
         // ==========================================================================
-        /// Maximizes between QAction and VFunction
-        /// @param qAction : the computed Q(s,a)
-        /// @param vFunction : the vFunction so far
         /// @warning given vFunction and qAction are deleted, returns the new one
         // ==========================================================================
-        MultiDimFunctionGraph<GUM_SCALAR>* maximize(const MultiDimFunctionGraph< GUM_SCALAR >* vFunction,
-                                                    const MultiDimFunctionGraph< GUM_SCALAR >* qAction);
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* maximize(  const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                                                              const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                                                              Idx del = 3);
 
         // ==========================================================================
-        /// Multiplies f1 and f2
-        /// @param f1 :
-        /// @param f2 :
         /// @warning given f1 and f2 are deleted, returns the new one
         // ==========================================================================
-        MultiDimFunctionGraph<GUM_SCALAR>* multiply(  const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                                                      const MultiDimFunctionGraph< GUM_SCALAR >* f2) ;
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* multiply(  const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                                                              const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                                                              Idx del = 3);
 
         // ==========================================================================
-        /// ArgMaximizes between QAction and VFunction
-        /// @param qAction : the computed Q(s,a)
-        /// @param vFunction : the vFunction so far
         /// @warning given vFunction and qAction are deleted, returns the new one
         // ==========================================================================
-        MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* argmaximize(
-                            const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* vFunction,
-                            const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* qAction);
+        virtual MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* argmaximize(
+                            const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* f1,
+                            const MultiDimFunctionGraph< ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy >* f2,
+                            Idx del = 3);
 
         // ==========================================================================
-        /// Adds reward to given function( whether a qAction or vFunction)
-        /// @param reward : R(s) or R(s,a)
-        /// @param function : either V(s) or Q(s,a)
         /// @warning given function is deleted, returns the new one
         // ==========================================================================
-        MultiDimFunctionGraph<GUM_SCALAR>* add(const MultiDimFunctionGraph< GUM_SCALAR >* function,
-                                               const MultiDimFunctionGraph< GUM_SCALAR >* reward);
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* add( const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                                                        const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                                                        Idx del = 1);
 
         // ==========================================================================
-        /// Subtract current VFunction from old VFunction to see if threshold is
-        /// reached or not
-        /// @param old and new VFuntion
         /// @warning this time, nothing is deleted
         // ==========================================================================
-        MultiDimFunctionGraph<GUM_SCALAR>* subtract(const MultiDimFunctionGraph< GUM_SCALAR >* newVF,
-                                                    const MultiDimFunctionGraph< GUM_SCALAR >* oldVF);
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* subtract(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                                                            const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                                                            Idx del = 0);
 
 
       /// @}

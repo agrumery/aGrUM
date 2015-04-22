@@ -25,13 +25,12 @@
 // ==============================================================================
 //#include <agrum/agrum.h>
 // ==============================================================================
-#include <agrum/FMDP/FMDP.h>
-#include <agrum/FMDP/io/dat/FMDPDatReader.h>
-#include <agrum/FMDP/simulation/FMDPSimulator.h>
+#include <agrum/FMDP/fmdp.h>
+#include <agrum/FMDP/io/dat/fmdpDatReader.h>
+#include <agrum/FMDP/simulation/fmdpSimulator.h>
 #include <agrum/FMDP/simulation/taxiSimulator.h>
 #include <agrum/FMDP/simulation/statesChecker.h>
-#include <agrum/FMDP/SDyna/spimddi.h>
-#include <agrum/FMDP/SDyna/spiti.h>
+#include <agrum/FMDP/SDyna/sdyna.h>
 // ==============================================================================
 
 #define xstrfy(s) strfy(s)
@@ -51,24 +50,23 @@ void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
     // Initialisation des divers objets
     // *********************************************************************************************
 
-//    gum::SPIMDDI spim(500,1,0.9,0.0001,0.99,0.25,0.1);
-    gum::SPITI spim(10,1,0.9,0.0001,0.99,0.33,0.1);
+    gum::SDYNA* spim = gum::SDYNA::RMaxMDDInstance();
 
 
     // Enregistrement des actions possibles auprès de SPIMDDI
     for( auto actionIter = sim.beginActions(); actionIter != sim.endActions(); ++actionIter){
       //std::cout << *actionIter << " "  << sim.actionName(*actionIter) << std::endl;
-      spim.addAction( *actionIter, sim.actionName(*actionIter));
+      spim->addAction( *actionIter, sim.actionName(*actionIter));
     }
 
     // Enregistrement des variables caractérisant les états auprès de SPIMDDI
     for(auto varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter){
-      spim.addVariable(*varIter);
+      spim->addVariable(*varIter);
     }
 
 
     sim.setInitialStateRandomly();
-    spim.initialize();
+    spim->initialize(sim.currentState());
 
     // ======================================================================================
     // Création du checker détat visité
@@ -99,7 +97,7 @@ void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
     //std::cout << "Initialisation done. Now performing test ..." <<std::endl;
     for( gum::Idx nbRun = 0; nbRun < 3000; ++nbRun ){
 
-      spim.setCurrentState(sim.currentState());
+      spim->setCurrentState(sim.currentState());
 
       double cumulr = 0.0;
 
@@ -109,7 +107,7 @@ void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
         //std::cout << "\n*********************************************\n";
         //std::cout << "RUN n° " << nbRun << " - Status : " << sim.currentState().toString() << " - Decision n° " << nbDec << " : ";
 
-        gum::Idx actionChosenId = spim.takeAction();
+        gum::Idx actionChosenId = spim->takeAction();
 
         //std::cout << "By doing " << sim.actionName(actionChosenId) << std::endl;
 
@@ -119,7 +117,12 @@ void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
 
         //std::cout << "New State : " << sim.currentState() << "- Reward : " << sim.reward() << " - Discounted Reward : " << rDisc << " - cumulr " << cumulr << std::endl;
 
-        spim.feedback(sim.currentState(), sim.reward());
+        try{
+          spim->feedback(sim.currentState(), sim.reward());
+        } catch(gum::Exception ex){
+          std::cout << ex.errorType() << std::endl << ex.errorContent() << std::endl << ex.errorCallStack() << std::endl;
+          exit(-42);
+        }
 
         //std::cout << "Update performed" << std::endl;
 
@@ -128,24 +131,25 @@ void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
         }
 
         traceFile << nbTest << "\t" << nbIte << "\t" << nbRun << "\t" << nbDec << "\t" << sc.nbVisitedStates()
-                  /*<< "\t" << fmdp.size()*/ << "\t" << spim.learnerSize() << "\t" << spim.modelSize() << "\t" << spim.optimalPolicySize()
+                  /*<< "\t" << fmdp.size()*/ << "\t" << spim->learnerSize() << "\t" << spim->modelSize() << "\t" << spim->optimalPolicySize()
                   << std::setprecision(15)  << "\t" << rDisc << std::endl;
 
         nbIte++;
       }
       std::cout << "Run n°" << nbRun << " is over. Nb Observation : " << nbIte << " / 5 000 000. Nb Visited States : "
-                <<  sc.nbVisitedStates() << " - Bonus Explo : " << std::pow( (500 - (double) sc.nbVisitedStates() ) / 500, 3.0) << std::endl;
+                <<  sc.nbVisitedStates() << std::endl;
 //      if(nbRun%10 == 0 && nbRun > 1)
-//        spim.makePlanning();
+//        spim->makePlanning();
       sim.setInitialStateRandomly();
 
-      modelFile << nbRun << "\t" << spim.optimalPolicy2String() << std::endl;
+      modelFile << nbRun << "\t" << spim->optimalPolicy2String() << std::endl;
 
       if(nbIte > 4000000)
         break;
     }
     traceFile.close();
     modelFile.close();
+    delete spim;
  }
 
   std::cout << "FIN EVALUATION" << std::endl;
@@ -172,7 +176,7 @@ void runCoffee(){
     }
   sim.setEndState(theEnd);
 
-  run ( sim, GET_PATH_STR ( FMDP/trace.Coffee ));
+  run ( sim, GET_PATH_STR ( TRACE/trace.Coffee ));
 }
 
 
@@ -195,7 +199,7 @@ void runFactory(){
 //    }
 //  sim.setEndState(theEnd);
 
-  run ( sim, GET_PATH_STR ( FMDP/trace.Factory ));
+  run ( sim, GET_PATH_STR ( TRACE/trace.Factory ));
 }
 
 
@@ -206,7 +210,7 @@ void runTaxi(){
 
   gum::TaxiSimulator sim;
 
-  run ( sim, GET_PATH_STR ( FMDP/trace.Taxi ) );
+  run ( sim, GET_PATH_STR ( TRACE/trace.Taxi ) );
 }
 
 
@@ -217,9 +221,9 @@ int main ( int argc, char* argv[] ) {
 
   srand(time(NULL));
 
-//  runCoffee();
+  runCoffee();
 //  runFactory();
-  runTaxi();
+//  runTaxi();
 
   return EXIT_SUCCESS;
 }

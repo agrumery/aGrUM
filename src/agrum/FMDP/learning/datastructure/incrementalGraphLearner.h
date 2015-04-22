@@ -305,9 +305,12 @@ namespace gum {
         // ==========================================================================
         ///
         // ==========================================================================
-        Idx nodeNbObservation(NodeId ni) const { return this->_nodeId2Database[ni]->nbObservation(); }        
+        Idx nodeNbObservation(NodeId ni) const { return this->_nodeId2Database[ni]->nbObservation(); }
 
-        void insertSetOfVars( MultiDimFunctionGraph<double>* ret) const {
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        virtual void insertSetOfVars( MultiDimFunctionGraph<double>* ret) const {
           for( SetIteratorSafe<const DiscreteVariable*> varIter = _setOfVars.beginSafe();
                   varIter != _setOfVars.endSafe(); ++varIter)
             ret->add(**varIter);
