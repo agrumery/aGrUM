@@ -597,7 +597,7 @@ namespace gum_tests {
           // inductive learning leads to scrambled modalities
           gum::learning::BNLearner<double> learner ( GET_PATH_STR ( "DBN_Tonda.csv" ) );
           learner.useScoreLog2Likelihood();
-          learner.useAprioriSmoothing ( 0.01 );
+          learner.useAprioriSmoothing ( 1.0 );
           learn1=learner.learnParameters ( dbn );
         }
         gum::BayesNet<double> learn2;
@@ -623,7 +623,6 @@ namespace gum_tests {
             GUM_SHOWERROR ( e );
           }
         }
-
         gum::BayesNet<double> learn3;
         {
           // while explicit learning does the right thing

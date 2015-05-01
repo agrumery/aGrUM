@@ -55,9 +55,9 @@ namespace gum {
     BNLearner<GUM_SCALAR>::BNLearner ( const std::string& filename,
                                        const gum::BayesNet<GUM_SCALAR>& src,
                                        bool parse_database )
-      : BNLearner<GUM_SCALAR> ( filename,
-                                BNLearner<GUM_SCALAR>::__labelsFromBN ( filename, src ),
-                                parse_database ) {
+      : genericBNLearner ( filename,
+                           BNLearner<GUM_SCALAR>::__labelsFromBN ( filename, src ),
+                           parse_database ) {
       //GUM_CONSTRUCTOR in BNLearner(filename,modalities,parse_database)
     }
 
@@ -174,8 +174,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    const NodeProperty<Sequence<std::string>>
-                                           BNLearner<GUM_SCALAR>::__labelsFromBN ( const std::string& filename,
+    const NodeProperty<Sequence<std::string>>&
+    BNLearner<GUM_SCALAR>::__labelsFromBN ( const std::string& filename,
     const BayesNet<GUM_SCALAR>& src ) {
       std::ifstream in ( filename, std::ifstream::in );
 
@@ -187,7 +187,8 @@ namespace gum {
       parser.next();
       auto names = parser.current();
 
-      NodeProperty<Sequence<std::string>> modals;
+      static NodeProperty<Sequence<std::string>> modals;
+      modals.clear ();
 
       for ( gum::Idx col = 0; col < names.size(); col++ ) {
         try {

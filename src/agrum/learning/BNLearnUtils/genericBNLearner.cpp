@@ -83,6 +83,8 @@ namespace gum {
       }
     }
 
+    
+
     /// Database default constructor
     genericBNLearner::Database::Database(
         std::string filename, const NodeProperty<Sequence<std::string>> &modalities,
@@ -95,18 +97,19 @@ namespace gum {
       // parse it very quickly
       CellTranslatorUniversal dummy_translator(
           Sequence<std::string>(),
-          true); // by default, check the database
+          true ); // by default, check the database
       __raw_translators.insertTranslator(dummy_translator, Col<0>(),
                                          __database.nbVariables());
 
       // assign the user values to the raw translators
       for (auto iter = modalities.cbegin(); iter != modalities.cend(); ++iter) {
-        __raw_translators[iter.key()].setUserValues(iter.val(), check_database);
+        __raw_translators[iter.key()].setUserValues(iter.val(), check_database );
       }
 
       auto raw_filter =
           make_DB_row_filter(__database, __raw_translators, __generators);
       __raw_translators = raw_filter.translatorSet();
+
 
       // check that the database complies with the modalities specified by the
       // user. Notably, if the db contains numbers that correspond to strings
@@ -191,7 +194,7 @@ namespace gum {
                       errors[this_thread].second = str2.str();
                       has_errors = true;
                     } else {
-                      row[i].setString(str.str());
+                      row[i].setStringSafe (str.str());
                     }
                   } break;
 
@@ -213,6 +216,7 @@ namespace gum {
 
       // get the modalities of the filters
       __modalities = raw_filter.modalities();
+
 
       // create the fast translators
       DBTransformCompactInt raw2fast_transfo;

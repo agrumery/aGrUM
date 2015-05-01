@@ -195,6 +195,16 @@ namespace gum {
       return Nb_outputs;
     }
 
+    
+    /// for friendly displaying the content of translators
+    template <int Nb_inputs, int Nb_outputs>
+    std::ostream &operator<< ( std::ostream& stream,
+                               const DBCellTranslator<Nb_inputs,Nb_outputs>& tr ) {
+      stream << tr.toString ();
+      return stream;
+    }
+    
+
   } /* namespace learning */
 
 } /* namespace gum */

@@ -260,6 +260,19 @@ namespace gum {
       }
     }
 
+
+    std::string CellTranslatorUniversal::toString () const noexcept {
+      std::stringstream s;
+
+      s << "numbers: " << __numbers << " ### strings: ";
+      for ( auto iter = __strings.begin (); iter != __strings.end (); ++iter ) {
+        s << '(' << DBCell::getString ( iter.first () ) << " -> "
+          << iter.second () << ')' << "  ";
+      }
+
+      return s.str ();
+    }
+
   } /* namespace learning */
 
 } /* namespace gum */
