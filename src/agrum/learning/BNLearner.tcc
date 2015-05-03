@@ -38,46 +38,46 @@ namespace gum {
 
   namespace learning {
     template <typename GUM_SCALAR>
-    BNLearner<GUM_SCALAR>::BNLearner ( const std::string& filename )
-      : genericBNLearner ( filename ) {
-      GUM_CONSTRUCTOR ( BNLearner );
+    BNLearner<GUM_SCALAR>::BNLearner(const std::string &filename)
+        : genericBNLearner(filename) {
+      GUM_CONSTRUCTOR(BNLearner);
     }
 
     template <typename GUM_SCALAR>
-    BNLearner<GUM_SCALAR>::BNLearner (
-      const std::string& filename,
-      const NodeProperty<Sequence<std::string>>& modalities, bool parse_database )
-      : genericBNLearner ( filename, modalities, parse_database ) {
-      GUM_CONSTRUCTOR ( BNLearner );
+    BNLearner<GUM_SCALAR>::BNLearner(
+        const std::string &filename,
+        const NodeProperty<Sequence<std::string>> &modalities, bool parse_database)
+        : genericBNLearner(filename, modalities, parse_database) {
+      GUM_CONSTRUCTOR(BNLearner);
     }
 
     template <typename GUM_SCALAR>
-    BNLearner<GUM_SCALAR>::BNLearner ( const std::string& filename,
-                                       const gum::BayesNet<GUM_SCALAR>& src,
-                                       bool parse_database )
-      : genericBNLearner ( filename,
-                           BNLearner<GUM_SCALAR>::__labelsFromBN ( filename, src ),
-                           parse_database ) {
-      //GUM_CONSTRUCTOR in BNLearner(filename,modalities,parse_database)
+    BNLearner<GUM_SCALAR>::BNLearner(const std::string &filename,
+                                     const gum::BayesNet<GUM_SCALAR> &src,
+                                     bool parse_database)
+        : BNLearner(filename, 
+		    BNLearner<GUM_SCALAR>::__labelsFromBN(filename, src),
+                    parse_database) {
+      // GUM_CONSTRUCTOR in BNLearner(filename,modalities,parse_database)
     }
 
     /// copy constructor
     template <typename GUM_SCALAR>
-    BNLearner<GUM_SCALAR>::BNLearner ( const BNLearner<GUM_SCALAR>& src )
-      : genericBNLearner ( static_cast<const genericBNLearner&> ( src ) ) {
-      GUM_CONSTRUCTOR ( BNLearner );
+    BNLearner<GUM_SCALAR>::BNLearner(const BNLearner<GUM_SCALAR> &src)
+        : genericBNLearner(static_cast<const genericBNLearner &>(src)) {
+      GUM_CONSTRUCTOR(BNLearner);
     }
 
     /// move constructor
     template <typename GUM_SCALAR>
-    BNLearner<GUM_SCALAR>::BNLearner ( BNLearner<GUM_SCALAR> &&src )
-      : genericBNLearner ( static_cast<genericBNLearner &&> ( src ) ) {
-      GUM_CONSTRUCTOR ( BNLearner );
+    BNLearner<GUM_SCALAR>::BNLearner(BNLearner<GUM_SCALAR> &&src)
+        : genericBNLearner(static_cast<genericBNLearner &&>(src)) {
+      GUM_CONSTRUCTOR(BNLearner);
     }
 
     /// destructor
     template <typename GUM_SCALAR> BNLearner<GUM_SCALAR>::~BNLearner() {
-      GUM_DESTRUCTOR ( BNLearner );
+      GUM_DESTRUCTOR(BNLearner);
     }
 
     /// @}
@@ -89,19 +89,19 @@ namespace gum {
 
     /// copy operator
     template <typename GUM_SCALAR>
-    BNLearner<GUM_SCALAR>& BNLearner<GUM_SCALAR>::
-    operator= ( const BNLearner<GUM_SCALAR>& src ) {
-      static_cast<genericBNLearner*> ( this )->operator= (
-        static_cast<const genericBNLearner&> ( src ) );
+    BNLearner<GUM_SCALAR> &BNLearner<GUM_SCALAR>::
+    operator=(const BNLearner<GUM_SCALAR> &src) {
+      static_cast<genericBNLearner *>(this)->operator=(
+          static_cast<const genericBNLearner &>(src));
       return *this;
     }
 
     /// move operator
     template <typename GUM_SCALAR>
-    BNLearner<GUM_SCALAR>& BNLearner<GUM_SCALAR>::
-    operator= ( BNLearner<GUM_SCALAR> &&src ) {
-      static_cast<genericBNLearner*> ( this )->operator= (
-        static_cast<genericBNLearner &&> ( src ) );
+    BNLearner<GUM_SCALAR> &BNLearner<GUM_SCALAR>::
+    operator=(BNLearner<GUM_SCALAR> &&src) {
+      static_cast<genericBNLearner *>(this)->operator=(
+          static_cast<genericBNLearner &&>(src));
       return *this;
     }
 
@@ -114,90 +114,90 @@ namespace gum {
       __createParamEstimator();
 
       return DAG2BNLearner::createBN<
-             GUM_SCALAR, ParamEstimator<>,
-             DBRowTranslatorSetDynamic<CellTranslatorUniversal>> (
-               *__param_estimator, __learnDAG(), __score_database.names(),
-               __score_database.modalities(), __score_database.rawTranslators() );
+          GUM_SCALAR, ParamEstimator<>,
+          DBRowTranslatorSetDynamic<CellTranslatorUniversal>>(
+          *__param_estimator, __learnDAG(), __score_database.names(),
+          __score_database.modalities(), __score_database.rawTranslators());
     }
 
     /// learns a BN (its parameters) when its structure is known
     template <typename GUM_SCALAR>
     BayesNet<GUM_SCALAR>
-    BNLearner<GUM_SCALAR>::learnParameters ( const DAG& dag,
-        bool take_into_account_score ) {
+    BNLearner<GUM_SCALAR>::learnParameters(const DAG &dag,
+                                           bool take_into_account_score) {
       // create the apriori and the estimator
       __createApriori();
-      __createParamEstimator ( take_into_account_score );
+      __createParamEstimator(take_into_account_score);
 
       return DAG2BNLearner::createBN<
-             GUM_SCALAR, ParamEstimator<>,
-             DBRowTranslatorSetDynamic<CellTranslatorUniversal>> (
-               *__param_estimator, dag, __score_database.names(),
-               __score_database.modalities(), __score_database.rawTranslators() );
+          GUM_SCALAR, ParamEstimator<>,
+          DBRowTranslatorSetDynamic<CellTranslatorUniversal>>(
+          *__param_estimator, dag, __score_database.names(),
+          __score_database.modalities(), __score_database.rawTranslators());
     }
 
     /// learns a BN (its parameters) when its structure is known
     template <typename GUM_SCALAR>
     BayesNet<GUM_SCALAR>
-    BNLearner<GUM_SCALAR>::learnParameters ( const BayesNet<GUM_SCALAR>& bn,
-        bool take_into_account_score ) {
+    BNLearner<GUM_SCALAR>::learnParameters(const BayesNet<GUM_SCALAR> &bn,
+                                           bool take_into_account_score) {
       // create the apriori and the estimator
       __createApriori();
-      __createParamEstimator ( take_into_account_score );
+      __createParamEstimator(take_into_account_score);
 
       // create a DAG with node ids coherent with those of the database
       DAG newDAG;
-      NodeProperty<NodeId> mapIds ( bn.size() );
+      NodeProperty<NodeId> mapIds(bn.size());
       auto mods = modalities();
 
-      for ( auto node : bn.nodes() ) {
-        const NodeId new_id = idFromName ( bn.variable ( node ).name() );
+      for (auto node : bn.nodes()) {
+        const NodeId new_id = idFromName(bn.variable(node).name());
 
-        if ( mods[new_id] != bn.variable ( node ).domainSize() ) {
-          GUM_ERROR ( UnknownLabelInDatabase, "for variable "
-                      << bn.variable ( node ).name() );
+        if (mods[new_id] != bn.variable(node).domainSize()) {
+          GUM_ERROR(UnknownLabelInDatabase, "for variable "
+                                                << bn.variable(node).name());
         }
 
-        mapIds.insert ( node, new_id );
-        newDAG.addNode ( new_id );
+        mapIds.insert(node, new_id);
+        newDAG.addNode(new_id);
       }
 
-      for ( const auto &arc : bn.arcs() ) {
-        newDAG.addArc ( mapIds[arc.tail()], mapIds[arc.head()] );
+      for (const auto &arc : bn.arcs()) {
+        newDAG.addArc(mapIds[arc.tail()], mapIds[arc.head()]);
       }
 
       return DAG2BNLearner::createBN<
-             GUM_SCALAR, ParamEstimator<>,
-             DBRowTranslatorSetDynamic<CellTranslatorUniversal>> (
-               *__param_estimator, newDAG, __score_database.names(),
-               __score_database.modalities(), __score_database.rawTranslators() );
+          GUM_SCALAR, ParamEstimator<>,
+          DBRowTranslatorSetDynamic<CellTranslatorUniversal>>(
+          *__param_estimator, newDAG, __score_database.names(),
+          __score_database.modalities(), __score_database.rawTranslators());
     }
 
     template <typename GUM_SCALAR>
-    const NodeProperty<Sequence<std::string>>&
-    BNLearner<GUM_SCALAR>::__labelsFromBN ( const std::string& filename,
-    const BayesNet<GUM_SCALAR>& src ) {
-      std::ifstream in ( filename, std::ifstream::in );
+    const NodeProperty<Sequence<std::string>> &
+    BNLearner<GUM_SCALAR>::__labelsFromBN(const std::string &filename,
+                                          const BayesNet<GUM_SCALAR> &src) {
+      std::ifstream in(filename, std::ifstream::in);
 
-      if ( ( in.rdstate() & std::ifstream::failbit ) != 0 ) {
-        GUM_ERROR ( gum::IOError, "File " << filename << " not found" );
+      if ((in.rdstate() & std::ifstream::failbit) != 0) {
+        GUM_ERROR(gum::IOError, "File " << filename << " not found");
       }
 
-      CSVParser parser ( in );
+      CSVParser parser(in);
       parser.next();
       auto names = parser.current();
 
       static NodeProperty<Sequence<std::string>> modals;
-      modals.clear ();
+      modals.clear();
 
-      for ( gum::Idx col = 0; col < names.size(); col++ ) {
+      for (gum::Idx col = 0; col < names.size(); col++) {
         try {
-          gum::NodeId graphId = src.idFromName ( names[col] );
-          modals.insert ( col, gum::Sequence<std::string>() );
+          gum::NodeId graphId = src.idFromName(names[col]);
+          modals.insert(col, gum::Sequence<std::string>());
 
-          for ( gum::Size i = 0; i < src.variable ( graphId ).domainSize(); ++i )
-            modals[col].insert ( src.variable ( graphId ).label ( i ) );
-        } catch ( const gum::NotFound& e ) {
+          for (gum::Size i = 0; i < src.variable(graphId).domainSize(); ++i)
+            modals[col].insert(src.variable(graphId).label(i));
+        } catch (const gum::NotFound &e) {
           // no problem : a colonne which is not in the BN...
         }
       }

@@ -261,7 +261,7 @@ namespace gum {
       /// returns the size of the output for this cell translator
       unsigned int outputSize() const noexcept;
 
-      virtual std::string toString () const noexcept { return std::string (); }
+      virtual std::string toString() const noexcept { return std::string(); }
 
       /// @}
 
@@ -280,12 +280,11 @@ namespace gum {
       unsigned int _output_cols[Nb_outputs];
     };
 
-
     /// for friendly displaying the content of translators
     template <int Nb_inputs, int Nb_outputs>
-    std::ostream &operator<< ( std::ostream &, const DBCellTranslator<Nb_inputs,Nb_outputs>& );
+    std::ostream &operator<<(std::ostream &,
+                             const DBCellTranslator<Nb_inputs, Nb_outputs> &);
 
-    
   } /* namespace learning */
 
 } /* namespace gum */

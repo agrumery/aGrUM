@@ -222,8 +222,8 @@ namespace gum {
       /// returns the set of translations for number values in the database
       const Bijection<float, unsigned int> &numberTranslations() const noexcept;
 
-      virtual std::string toString () const noexcept;
-      
+      virtual std::string toString() const noexcept;
+
       /// @}
 
       private:
