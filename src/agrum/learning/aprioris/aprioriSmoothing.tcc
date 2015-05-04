@@ -24,75 +24,69 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
 namespace gum {
 
-  
   namespace learning {
 
-     
     /// default constructor
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    AprioriSmoothing<IdSetAlloc,CountAlloc>::AprioriSmoothing () {
-      GUM_CONSTRUCTOR ( AprioriSmoothing );
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE AprioriSmoothing<IdSetAlloc, CountAlloc>::AprioriSmoothing() {
+      GUM_CONSTRUCTOR(AprioriSmoothing);
     }
-
 
     /// copy constructor
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    AprioriSmoothing<IdSetAlloc,CountAlloc>::AprioriSmoothing
-    ( const AprioriSmoothing<IdSetAlloc,CountAlloc>& from ) :
-      Apriori<IdSetAlloc,CountAlloc> ( from ) {
-      GUM_CONS_CPY ( AprioriSmoothing );
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE AprioriSmoothing<IdSetAlloc, CountAlloc>::AprioriSmoothing(
+        const AprioriSmoothing<IdSetAlloc, CountAlloc> &from)
+        : Apriori<IdSetAlloc, CountAlloc>(from) {
+      GUM_CONS_CPY(AprioriSmoothing);
     }
-      
 
     /// move constructor
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    AprioriSmoothing<IdSetAlloc,CountAlloc>::AprioriSmoothing
-    ( AprioriSmoothing<IdSetAlloc,CountAlloc>&& from ) :
-      Apriori<IdSetAlloc,CountAlloc> ( std::move ( from ) ) {
-      GUM_CONS_MOV ( AprioriSmoothing );
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE AprioriSmoothing<IdSetAlloc, CountAlloc>::AprioriSmoothing(
+        AprioriSmoothing<IdSetAlloc, CountAlloc> &&from)
+        : Apriori<IdSetAlloc, CountAlloc>(std::move(from)) {
+      GUM_CONS_MOV(AprioriSmoothing);
     }
-
 
     /// virtual copy constructor
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    AprioriSmoothing<IdSetAlloc,CountAlloc>*
-    AprioriSmoothing<IdSetAlloc,CountAlloc>::copyFactory () const {
-      return new AprioriSmoothing<IdSetAlloc,CountAlloc> ( *this );
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE AprioriSmoothing<IdSetAlloc, CountAlloc> *
+    AprioriSmoothing<IdSetAlloc, CountAlloc>::copyFactory() const {
+      return new AprioriSmoothing<IdSetAlloc, CountAlloc>(*this);
     }
-
 
     /// destructor
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    AprioriSmoothing<IdSetAlloc,CountAlloc>::~AprioriSmoothing () {
-      GUM_DESTRUCTOR ( AprioriSmoothing );
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE AprioriSmoothing<IdSetAlloc, CountAlloc>::~AprioriSmoothing() {
+      GUM_DESTRUCTOR(AprioriSmoothing);
     }
 
-    
     /// include the apriori into a given set of counts
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    void AprioriSmoothing<IdSetAlloc,CountAlloc>::compute () {
-      if ( this->_weight != 0 ) {
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE void AprioriSmoothing<IdSetAlloc, CountAlloc>::compute() {
+      if (this->_weight != 0) {
         // put the weight into the countings for the targets
         // and the sum of the weight times the target for the conditioning nodes
-        const unsigned int size = this->_target_nodesets->size ();
-        for ( unsigned int i = 0; i < size; ++i ) {
-          if ( this->_target_nodesets->operator[] ( i ) != nullptr ) {
-            std::vector<float,CountAlloc>& apriori = this->_apriori_counts
-              [ this->_target_nodesets->operator[] ( i )->second ];
-            for ( auto& count : apriori ) {
+        const unsigned int size = this->_target_nodesets->size();
+        for (unsigned int i = 0; i < size; ++i) {
+          if (this->_target_nodesets->operator[](i) != nullptr) {
+            std::vector<float, CountAlloc> &apriori =
+                this->_apriori_counts[this->_target_nodesets->operator[](i)->second];
+            for (auto &count : apriori) {
               count = this->_weight;
             }
           }
 
-          if ( this->_conditioning_nodesets->operator[] ( i ) != nullptr ) {
-            const float weight = this->_weight * ( *( this->_modalities ) )
-              [ ( *( this->_target_nodesets) ) [i]->first.back () ];
-            std::vector<float,CountAlloc>& apriori = this->_apriori_counts
-              [ this->_conditioning_nodesets->operator[] ( i )->second ];
-            for ( auto& count : apriori ) {
+          if (this->_conditioning_nodesets->operator[](i) != nullptr) {
+            const float weight =
+                this->_weight *
+                (*(this->_modalities))[(*(this->_target_nodesets))[i]->first.back()];
+            std::vector<float, CountAlloc> &apriori =
+                this->_apriori_counts[this->_conditioning_nodesets->operator[](i)
+                                          ->second];
+            for (auto &count : apriori) {
               count = weight;
             }
           }
@@ -100,28 +94,22 @@ namespace gum {
       }
     }
 
-
     /// indicates whether an apriori is of a certain type
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    bool AprioriSmoothing<IdSetAlloc,CountAlloc>::isOfType
-    ( const std::string& type ) {
-      return AprioriSmoothingType::isOfType ( type );
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE bool
+    AprioriSmoothing<IdSetAlloc, CountAlloc>::isOfType(const std::string &type) {
+      return AprioriSmoothingType::isOfType(type);
     }
 
-
     /// returns the type of the apriori
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    const std::string&
-    AprioriSmoothing<IdSetAlloc,CountAlloc>::getType () const noexcept {
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE const std::string &
+    AprioriSmoothing<IdSetAlloc, CountAlloc>::getType() const noexcept {
       return AprioriSmoothingType::type;
     }
 
-
   } /* namespace learning */
-  
-  
+
 } /* namespace gum */
 
-
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-

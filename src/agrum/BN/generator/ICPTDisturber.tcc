@@ -24,24 +24,18 @@
  * @author Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
  */
 
-#include<agrum/BN/generator/ICPTDisturber.h>
+#include <agrum/BN/generator/ICPTDisturber.h>
 
 namespace gum {
 
-
   // Default constructor.
-  template < typename GUM_SCALAR>
-  ICPTDisturber<GUM_SCALAR>::ICPTDisturber() {
-    GUM_CONSTRUCTOR ( ICPTDisturber );
+  template <typename GUM_SCALAR> ICPTDisturber<GUM_SCALAR>::ICPTDisturber() {
+    GUM_CONSTRUCTOR(ICPTDisturber);
   }
 
   // Destructor.
-  template < typename GUM_SCALAR>
-  ICPTDisturber<GUM_SCALAR>::~ICPTDisturber() {
-    GUM_DESTRUCTOR ( ICPTDisturber );
+  template <typename GUM_SCALAR> ICPTDisturber<GUM_SCALAR>::~ICPTDisturber() {
+    GUM_DESTRUCTOR(ICPTDisturber);
   }
 
-
 } /* namespace gum */
-
-

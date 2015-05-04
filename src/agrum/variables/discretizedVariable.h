@@ -31,7 +31,6 @@
 
 namespace gum {
 
-
 #define INC_MARKS_ARRAY 4
 
   /**
@@ -54,143 +53,136 @@ namespace gum {
    * [T1,T2[ (modality 0) and [T2,T3] (modality 1).
    * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
    */
-  template<typename T_TICKS>
+  template <typename T_TICKS>
 
   class DiscretizedVariable : public DiscreteVariable {
     private:
-      std::vector<T_TICKS> __ticks; // Array from 0 to domainSize-2
-      Size __ticks_size;
+    std::vector<T_TICKS> __ticks; // Array from 0 to domainSize-2
+    Size __ticks_size;
+
     protected:
-      /**
-       * make a copy
-       * TODO since we removed T_OtherData maybe some changes are
-       * needed in this method?
-       * @param aDRV  the copied object
-       */
-      void _copy ( const DiscretizedVariable<T_TICKS>& aDRV );
+    /**
+     * make a copy
+     * TODO since we removed T_OtherData maybe some changes are
+     * needed in this method?
+     * @param aDRV  the copied object
+     */
+    void _copy(const DiscretizedVariable<T_TICKS> &aDRV);
 
-      /**
-       * perform a dichotomy on ticks
-       * @param target T_TICKS value
-       * @param min first index
-       * @param max last index
-       * @return either the index of target, either the index of the predecessor of
-       target in ticks
-      */
-      Idx _dichotomy ( const T_TICKS& target,
-                       Idx min,
-                       Idx max ) const;
+    /**
+     * perform a dichotomy on ticks
+     * @param target T_TICKS value
+     * @param min first index
+     * @param max last index
+     * @return either the index of target, either the index of the predecessor of
+     target in ticks
+    */
+    Idx _dichotomy(const T_TICKS &target, Idx min, Idx max) const;
 
-      /**
-       * seach the class of target (internally use _dichotomy)
-       * @param target
-       * @return the class of target
-       */
-      Idx _pos ( const T_TICKS& target ) const;
-
+    /**
+     * seach the class of target (internally use _dichotomy)
+     * @param target
+     * @return the class of target
+     */
+    Idx _pos(const T_TICKS &target) const;
 
     public:
-      /** @name constructors & destructors
-       * @{
-       **/
+    /** @name constructors & destructors
+     * @{
+     **/
 
-      /**
-      * Constructor
-      * @param aName the name
-      * @param aDesc the description
-      */
-      DiscretizedVariable ( const std::string& aName,
-                            const std::string& aDesc );
+    /**
+    * Constructor
+    * @param aName the name
+    * @param aDesc the description
+    */
+    DiscretizedVariable(const std::string &aName, const std::string &aDesc);
 
-      /**
-       * Copy constructor
-       * @param aDRV
-       */
-      DiscretizedVariable ( const DiscretizedVariable<T_TICKS>& aDRV );
+    /**
+     * Copy constructor
+     * @param aDRV
+     */
+    DiscretizedVariable(const DiscretizedVariable<T_TICKS> &aDRV);
 
-      /**
-       * Destructor.
-      */
-      virtual ~DiscretizedVariable();
+    /**
+     * Destructor.
+    */
+    virtual ~DiscretizedVariable();
 
+    /// @}
 
-      /// @}
+    /// a virtual clone
+    virtual DiscreteVariable *clone() const;
 
-      /// a virtual clone
-      virtual DiscreteVariable* clone() const;
+    /// returns the type of variable
 
+    virtual VarType varType(void) const;
 
-      /// returns the type of variable
+    /**
+     * operator =
+     * @param aDRV a labelized discrete random variable
+     * @return a reference to *this
+     **/
+    const DiscretizedVariable<T_TICKS> &
+    operator=(DiscretizedVariable<T_TICKS> &aDRV);
 
-      virtual VarType varType ( void ) const;
+    /**
+     *
+     * @param aTick
+     * @return true if the tick already exists
+     */
+    bool isTick(const T_TICKS &aTick) const;
 
-      /**
-       * operator =
-       * @param aDRV a labelized discrete random variable
-       * @return a reference to *this
-       **/
-      const DiscretizedVariable<T_TICKS>& operator= ( DiscretizedVariable<T_TICKS>& aDRV );
+    /**
+     * add a tick.
+     * @param aTick
+     * @throw DefaultInLabel
+     */
+    DiscretizedVariable &addTick(const T_TICKS &aTick);
 
-      /**
-       *
-       * @param aTick
-       * @return true if the tick already exists
-       */
-      bool isTick ( const T_TICKS& aTick ) const;
+    /**
+     * erase all the Ticks
+     */
+    void eraseTicks(void);
 
-      /**
-       * add a tick.
-       * @param aTick
-       * @throw DefaultInLabel
-       */
-      DiscretizedVariable& addTick ( const T_TICKS& aTick );
+    /**
+     * @param i
+     * @return the ith label
+     * @throw OutOfBound
+     */
+    virtual const std::string label(Idx i) const;
 
-      /**
-       * erase all the Ticks
-       */
-      void eraseTicks ( void );
+    /// get a numerical representation of he indice-the value.
+    virtual double numerical(Idx indice) const;
 
-      /**
-       * @param i
-       * @return the ith label
-       * @throw OutOfBound
-       */
-      virtual const std::string label ( Idx i ) const;
+    /// from the label to its index in var.
+    /// @throws NotFound
+    virtual Idx operator[](const std::string &label) const;
+    virtual Idx index(const std::string &label) const;
 
-      /// get a numerical representation of he indice-the value.
-      virtual double numerical( Idx indice ) const;
+    /**
+     *
+     * @param aTarget searched label
+     * @return index of this labelized
+     * @throw OutOfBound, OutOfLowerBound, OutOfUpperBound
+     */
+    Idx operator[](const T_TICKS &aTarget) const;
+    Idx index(const T_TICKS &aTarget) const;
 
-      /// from the label to its index in var.
-      /// @throws NotFound
-      virtual Idx operator[] ( const std::string& label ) const;
-      virtual Idx index( const std::string& label) const;
+    /**
+     *
+     * @return the size of the random discrete variable domain
+     */
+    virtual Size domainSize() const;
 
-      /**
-       *
-       * @param aTarget searched label
-       * @return index of this labelized
-       * @throw OutOfBound, OutOfLowerBound, OutOfUpperBound
-       */
-      Idx operator[] ( const T_TICKS& aTarget ) const;
-      Idx index ( const T_TICKS& aTarget ) const;
-
-      /**
-       *
-       * @return the size of the random discrete variable domain
-       */
-      virtual Size domainSize() const;
-
-      /// from the index to the tick.
-      /// @throws NotFound
-      const T_TICKS& tick ( Idx i ) const;
+    /// from the index to the tick.
+    /// @throws NotFound
+    const T_TICKS &tick(Idx i) const;
   };
-
 
 } /* namespace gum */
 
-
 /// always include the implementation of the templates
 #include <agrum/variables/discretizedVariable.tcc>
-
 
 #endif /* GUM_DISCRETIZED_VARIABLE_H */

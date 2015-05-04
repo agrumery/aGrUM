@@ -20,102 +20,108 @@
 /** @file
  * @brief A Interface to all Causal Independence models
  *
- * Causal Independence (CI) is a method of defining a discrete distribution that can dramatically
+ * Causal Independence (CI) is a method of defining a discrete distribution that can
+ *dramatically
  * reduce the number of prior probabilities necessary to define a distribution.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
-#include<agrum/multidim/multiDimReadOnly.h>
-#include<agrum/multidim/ICIModels/multiDimICIModel.h>
-#include<agrum/core/bijection.h>
+#include <agrum/multidim/multiDimReadOnly.h>
+#include <agrum/multidim/ICIModels/multiDimICIModel.h>
+#include <agrum/core/bijection.h>
 
 namespace gum {
 
   // Default constructor
 
-  template<typename GUM_SCALAR> INLINE
-  MultiDimICIModel<GUM_SCALAR>::MultiDimICIModel ( GUM_SCALAR external_weight, GUM_SCALAR default_weight ) :
-    MultiDimReadOnly<GUM_SCALAR>(),
-    __external_weight ( external_weight ),
-    __default_weight ( default_weight ) {
-    GUM_CONSTRUCTOR ( MultiDimICIModel ) ;
+  template <typename GUM_SCALAR>
+  INLINE MultiDimICIModel<GUM_SCALAR>::MultiDimICIModel(GUM_SCALAR external_weight,
+                                                        GUM_SCALAR default_weight)
+      : MultiDimReadOnly<GUM_SCALAR>(), __external_weight(external_weight),
+        __default_weight(default_weight) {
+    GUM_CONSTRUCTOR(MultiDimICIModel);
   }
 
+  /// Default constructor
 
-/// Default constructor
-
-  template<typename GUM_SCALAR> INLINE
-  MultiDimICIModel<GUM_SCALAR>::MultiDimICIModel ( const MultiDimICIModel<GUM_SCALAR>& from ) :
-    MultiDimReadOnly<GUM_SCALAR> ( from ) {
-    GUM_CONS_CPY ( MultiDimICIModel );
+  template <typename GUM_SCALAR>
+  INLINE MultiDimICIModel<GUM_SCALAR>::MultiDimICIModel(
+      const MultiDimICIModel<GUM_SCALAR> &from)
+      : MultiDimReadOnly<GUM_SCALAR>(from) {
+    GUM_CONS_CPY(MultiDimICIModel);
     __default_weight = from.__default_weight;
     __external_weight = from.__external_weight;
     __causal_weights = from.__causal_weights;
   }
 
-
   // Copy constructor using a bijection to swap variables from source.
 
-  template<typename GUM_SCALAR> INLINE
-  MultiDimICIModel<GUM_SCALAR>::MultiDimICIModel (
-    const Bijection < const DiscreteVariable*, const DiscreteVariable* >& bij,
-    const MultiDimICIModel<GUM_SCALAR>& from ) : MultiDimReadOnly<GUM_SCALAR>() {
-    GUM_CONSTRUCTOR ( MultiDimICIModel );
+  template <typename GUM_SCALAR>
+  INLINE MultiDimICIModel<GUM_SCALAR>::MultiDimICIModel(
+      const Bijection<const DiscreteVariable *, const DiscreteVariable *> &bij,
+      const MultiDimICIModel<GUM_SCALAR> &from)
+      : MultiDimReadOnly<GUM_SCALAR>() {
+    GUM_CONSTRUCTOR(MultiDimICIModel);
     __default_weight = from.__default_weight;
     __external_weight = from.__external_weight;
 
-    for ( HashTableConstIteratorSafe< const DiscreteVariable*, GUM_SCALAR > iter = from.__causal_weights.beginSafe(); iter != from.__causal_weights.endSafe(); ++iter ) {
+    for (HashTableConstIteratorSafe<const DiscreteVariable *, GUM_SCALAR> iter =
+             from.__causal_weights.beginSafe();
+         iter != from.__causal_weights.endSafe(); ++iter) {
       try {
-        causalWeight ( * ( bij.first ( iter.key() ) ), iter.val () );
-      } catch ( NotFound& ) {
-        causalWeight ( * ( iter.key() ), iter.val () );
+        causalWeight(*(bij.first(iter.key())), iter.val());
+      } catch (NotFound &) {
+        causalWeight(*(iter.key()), iter.val());
       }
     }
   }
 
+  // destructor
 
-// destructor
-
-  template<typename GUM_SCALAR> INLINE
-  MultiDimICIModel<GUM_SCALAR>::~MultiDimICIModel() {
-    GUM_DESTRUCTOR ( MultiDimICIModel );
+  template <typename GUM_SCALAR>
+  INLINE MultiDimICIModel<GUM_SCALAR>::~MultiDimICIModel() {
+    GUM_DESTRUCTOR(MultiDimICIModel);
   }
 
-  template<typename GUM_SCALAR> INLINE
-  GUM_SCALAR MultiDimICIModel<GUM_SCALAR>::causalWeight ( const DiscreteVariable& v ) const {
-    return ( __causal_weights.exists ( &v ) ) ? __causal_weights[&v] : __default_weight;
+  template <typename GUM_SCALAR>
+  INLINE GUM_SCALAR
+      MultiDimICIModel<GUM_SCALAR>::causalWeight(const DiscreteVariable &v) const {
+    return (__causal_weights.exists(&v)) ? __causal_weights[&v] : __default_weight;
   }
 
-  template<typename GUM_SCALAR> INLINE
-  void MultiDimICIModel<GUM_SCALAR>::causalWeight ( const DiscreteVariable& v, GUM_SCALAR w ) const {
-    if ( ! this->contains ( v ) ) {
-      GUM_ERROR ( InvalidArgument, v.name() << " is not a cause for this CI Model" );
+  template <typename GUM_SCALAR>
+  INLINE void MultiDimICIModel<GUM_SCALAR>::causalWeight(const DiscreteVariable &v,
+                                                         GUM_SCALAR w) const {
+    if (!this->contains(v)) {
+      GUM_ERROR(InvalidArgument, v.name() << " is not a cause for this CI Model");
     }
 
-    if ( w == ( GUM_SCALAR ) 0 ) {
-      GUM_ERROR ( gum::OutOfBounds, "causal weight in CI Model>0" );
+    if (w == (GUM_SCALAR)0) {
+      GUM_ERROR(gum::OutOfBounds, "causal weight in CI Model>0");
     }
 
-    __causal_weights.set ( &v, w );
+    __causal_weights.set(&v, w);
   }
 
-  template<typename GUM_SCALAR> INLINE
-  GUM_SCALAR MultiDimICIModel<GUM_SCALAR>::externalWeight() const {
+  template <typename GUM_SCALAR>
+  INLINE GUM_SCALAR MultiDimICIModel<GUM_SCALAR>::externalWeight() const {
     return __external_weight;
   }
 
-  template<typename GUM_SCALAR> INLINE
-  void MultiDimICIModel<GUM_SCALAR>::externalWeight ( GUM_SCALAR w ) const {
+  template <typename GUM_SCALAR>
+  INLINE void MultiDimICIModel<GUM_SCALAR>::externalWeight(GUM_SCALAR w) const {
     __external_weight = w;
   }
 
-  template<typename GUM_SCALAR>
+  template <typename GUM_SCALAR>
   const std::string MultiDimICIModel<GUM_SCALAR>::toString() const {
     std::stringstream s;
-    s << MultiDimImplementation<GUM_SCALAR>::variable ( 0 ) << "=CIModel([" << externalWeight() << "],";
+    s << MultiDimImplementation<GUM_SCALAR>::variable(0) << "=CIModel(["
+      << externalWeight() << "],";
 
-    for ( Idx i = 1; i < MultiDimImplementation<GUM_SCALAR>::nbrDim(); i++ ) {
-      s << MultiDimImplementation<GUM_SCALAR>::variable ( i ) << "[" << causalWeight ( MultiDimImplementation<GUM_SCALAR>::variable ( i ) ) << "]";
+    for (Idx i = 1; i < MultiDimImplementation<GUM_SCALAR>::nbrDim(); i++) {
+      s << MultiDimImplementation<GUM_SCALAR>::variable(i) << "["
+        << causalWeight(MultiDimImplementation<GUM_SCALAR>::variable(i)) << "]";
     }
 
     s << ")";
@@ -126,20 +132,19 @@ namespace gum {
   }
 
   // returns the name of the implementation
-  template<typename GUM_SCALAR> INLINE
-  const std::string& MultiDimICIModel<GUM_SCALAR>::name() const {
+  template <typename GUM_SCALAR>
+  INLINE const std::string &MultiDimICIModel<GUM_SCALAR>::name() const {
     static const std::string str = "MultiDimICIModel";
     return str;
   }
 
-  template<typename GUM_SCALAR> INLINE
-  void MultiDimICIModel<GUM_SCALAR>::_swap ( const DiscreteVariable* x,
-      const DiscreteVariable* y ) {
-    MultiDimImplementation<GUM_SCALAR>::_swap ( x, y );
-    __causal_weights.insert ( y, __causal_weights[x] );
-    __causal_weights.erase ( x );
+  template <typename GUM_SCALAR>
+  INLINE void MultiDimICIModel<GUM_SCALAR>::_swap(const DiscreteVariable *x,
+                                                  const DiscreteVariable *y) {
+    MultiDimImplementation<GUM_SCALAR>::_swap(x, y);
+    __causal_weights.insert(y, __causal_weights[x]);
+    __causal_weights.erase(x);
   }
 
-// ==================================================
+  // ==================================================
 } /* namespace gum */
-

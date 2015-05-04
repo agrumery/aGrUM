@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
 # -*- encoding: UTF-8 -*-
-
-# tests use the compiled version of pyAgrum and not the packaged one. So we directly call the __init__.py file
-import __init__ as gum # read "import pyAgrum as gum"
+import pyAgrum as gum 
 
 import unittest
 from pyAgrumTestSuite import pyAgrumTestCase
@@ -142,7 +139,7 @@ class TestFeatures(BayesNetTestCase):
         
     def testChangeLabel(self):      
         bn = gum.BayesNet()
-        res = bn.loadBIF('../../../src/testunits/ressources/alarm.bif')
+        res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'))
         
         self.assertEqual(str(bn.variable(0)),"HISTORY<TRUE,FALSE>")
         bn.variable(0).toLabelizedVar().changeLabel(0,"toto")
@@ -155,7 +152,7 @@ class TestBIF(BayesNetTestCase):
 
     def listen(self, percent):
         if not percent>100:
-            if (10*(percent/10)==percent):
+            if (percent %10 == 0):
                 self.bufferlisten += "#"
 
 
@@ -168,7 +165,7 @@ class TestBIF(BayesNetTestCase):
         self.bufferlisten = ""
         self.bufferecoute = ""
         bn = gum.BayesNet()
-        res = bn.loadBIF('../../../src/testunits/ressources/alarm.bif', self.listen)
+        res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'), self.listen)
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "")
         self.assertTrue(res)
@@ -182,7 +179,7 @@ class TestBIF(BayesNetTestCase):
         self.bufferlisten = ""
         self.bufferecoute = ""
         bn = gum.BayesNet()
-        res = bn.loadBIF('../../../src/testunits/ressources/alarm.bif')
+        res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'))
         self.assertEqual(self.bufferlisten, "")
         self.assertEqual(self.bufferecoute, "")
         self.assertTrue(res)
@@ -196,7 +193,7 @@ class TestBIF(BayesNetTestCase):
         self.bufferlisten = ""
         self.bufferecoute = ""
         bn = gum.BayesNet()
-        res = bn.loadBIF('../../../src/testunits/ressources/alarm.bif', [self.listen, self.ecoute])
+        res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'), [self.listen, self.ecoute])
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
         self.assertTrue(res)
@@ -210,7 +207,7 @@ class TestBIF(BayesNetTestCase):
         self.bufferlisten = ""
         self.bufferecoute = ""
         bn = gum.BayesNet()
-        res = bn.loadBIF('../../../src/testunits/ressources/alarm.bif', (self.ecoute, self.listen))
+        res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'), (self.ecoute, self.listen))
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
         self.assertTrue(res)
@@ -224,7 +221,7 @@ class TestBIF(BayesNetTestCase):
         self.bufferlisten = ""
         self.bufferecoute = ""
         bn = gum.BayesNet()
-        res = bn.loadDSL('../../../src/testunits/ressources/test1.net', self.listen)
+        res = bn.loadDSL(self.agrumSrcDir('src/testunits/ressources/test1.net'), self.listen)
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "")
         self.assertTrue(res)
@@ -233,7 +230,7 @@ class TestBIF(BayesNetTestCase):
         self.bufferlisten = ""
         self.bufferecoute = ""
         bn = gum.BayesNet()
-        res = bn.loadDSL('../../../src/testunits/ressources/DSL/alarm.dsl', self.listen)
+        res = bn.loadDSL(self.agrumSrcDir('src/testunits/ressources/DSL/alarm.dsl'), self.listen)
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "")
         self.assertTrue(res)
@@ -247,7 +244,7 @@ class TestBIF(BayesNetTestCase):
         self.bufferlisten = ""
         self.bufferecoute = ""
         bn = gum.BayesNet()
-        res = bn.loadDSL('../../../src/testunits/ressources/DSL/alarm.dsl')
+        res = bn.loadDSL(self.agrumSrcDir('src/testunits/ressources/DSL/alarm.dsl'))
         self.assertEqual(self.bufferlisten, "")
         self.assertEqual(self.bufferecoute, "")
         self.assertTrue(res)
@@ -261,7 +258,7 @@ class TestBIF(BayesNetTestCase):
         self.bufferlisten = ""
         self.bufferecoute = ""
         bn = gum.BayesNet()
-        res = bn.loadDSL('../../../src/testunits/ressources/DSL/alarm.dsl', [self.listen, self.ecoute])
+        res = bn.loadDSL(self.agrumSrcDir('src/testunits/ressources/DSL/alarm.dsl'), [self.listen, self.ecoute])
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
         self.assertTrue(res)
@@ -276,7 +273,7 @@ class TestBIF(BayesNetTestCase):
         self.bufferlisten = ""
         self.bufferecoute = ""
         bn = gum.BayesNet()
-        res = bn.loadDSL('../../../src/testunits/ressources/DSL/alarm.dsl', (self.ecoute, self.listen))
+        res = bn.loadDSL(self.agrumSrcDir('src/testunits/ressources/DSL/alarm.dsl'), (self.ecoute, self.listen))
         self.assertEqual(self.bufferlisten, "##########")
         self.assertEqual(self.bufferecoute, "FINI")
         self.assertTrue(res)

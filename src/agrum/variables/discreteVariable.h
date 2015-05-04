@@ -34,7 +34,6 @@
 #include <agrum/core/hashFunc.h>
 #include <agrum/variables/variable.h>
 
-
 namespace gum {
 
   /* =========================================================================== */
@@ -51,127 +50,106 @@ namespace gum {
 
   class DiscreteVariable : public Variable {
     public:
-      enum class VarType : char {
-        Discretized,
-        Labelized,
-        Range
-      };
+    enum class VarType : char { Discretized, Labelized, Range };
 
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
+    /// Default constructor
 
-      /// Default constructor
+    DiscreteVariable(const std::string &aName, const std::string &aDesc);
 
-      DiscreteVariable ( const std::string& aName, const std::string& aDesc );
+    /// Copy constructor
 
+    /** Copy Constructor.
+     *
+     * If aDRV haves any listener, it will not be copied.
+     *
+     * @param aDRV the variable we copy
+     */
+    DiscreteVariable(const DiscreteVariable &aDRV);
 
-      /// Copy constructor
+    /// destructor
 
-      /** Copy Constructor.
-       *
-       * If aDRV haves any listener, it will not be copied.
-       *
-       * @param aDRV the variable we copy
-       */
-      DiscreteVariable ( const DiscreteVariable& aDRV );
+    virtual ~DiscreteVariable();
 
+    /// Copy Factory.
+    /// @return Returns a pointer on a new copy of this.
 
-      /// destructor
+    virtual DiscreteVariable *clone() const = 0;
 
-      virtual ~DiscreteVariable();
+    /// @}
 
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
 
-      /// Copy Factory.
-      /// @return Returns a pointer on a new copy of this.
+    /// @return true if the domainSize() < 2;
 
-      virtual DiscreteVariable* clone() const = 0;
+    bool empty() const;
 
-      /// @}
+    /// @return the number of modalities of the random discrete
 
+    virtual Size domainSize() const = 0;
 
-      // ############################################################################
-      /// @name Accessors / Modifiers
-      // ############################################################################
-      /// @{
+    /// get the indice-th label. This method is pure virtual.
+    /** @param indice the index of the label we wish to return
+     * @throw OutOfBound
+     */
+    virtual const std::string label(Idx indice) const = 0;
 
+    /// get a numerical representation of the indice-th value.
+    virtual double numerical(Idx indice) const = 0;
 
-      /// @return true if the domainSize() < 2;
+    /// returns the varType of variable
 
-      bool empty() const;
+    virtual VarType varType(void) const = 0;
+    /// @}
 
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
 
-      /// @return the number of modalities of the random discrete
+    /// Copy operator
+    /** @param aRV to be copied
+     * @return a ref to *this */
 
-      virtual Size domainSize() const = 0;
+    DiscreteVariable &operator=(const DiscreteVariable &aRV);
 
+    /// equality operator
 
-      /// get the indice-th label. This method is pure virtual.
-      /** @param indice the index of the label we wish to return
-       * @throw OutOfBound
-       */
-      virtual const std::string label ( Idx indice ) const = 0;
+    virtual bool operator==(const DiscreteVariable &aRV) const;
 
-      /// get a numerical representation of the indice-th value.
-      virtual double numerical ( Idx indice ) const = 0;
+    /// inequality operator
 
-      /// returns the varType of variable
+    virtual bool operator!=(const DiscreteVariable &aRV) const;
 
-      virtual VarType varType ( void ) const = 0;
-      /// @}
+    /// @}
 
+    /// from the label to its index in var.
+    ///  @warning This operation may have different complexity in different
+    /// subclasses.
+    /// @throws NotFound
+    virtual Idx operator[](const std::string &label) const = 0;
+    virtual Idx index(const std::string &label) const = 0;
 
-      // ############################################################################
-      /// @name Operators
-      // ############################################################################
-      /// @{
-
-
-      /// Copy operator
-      /** @param aRV to be copied
-       * @return a ref to *this */
-
-      DiscreteVariable& operator= ( const DiscreteVariable& aRV );
-
-
-      /// equality operator
-
-      virtual bool operator== ( const DiscreteVariable& aRV ) const ;
-
-
-      /// inequality operator
-
-      virtual bool operator!= ( const DiscreteVariable& aRV ) const ;
-
-      /// @}
-
-      /// from the label to its index in var.
-      ///  @warning This operation may have different complexity in different
-      /// subclasses.
-      /// @throws NotFound
-      virtual Idx operator[] ( const std::string& label ) const = 0;
-      virtual Idx index ( const std::string& label ) const = 0;
-
-      /// string version of *this
-      virtual const std::string toString() const;
-
+    /// string version of *this
+    virtual const std::string toString() const;
 
     protected:
-      /// (protected) Default constructor
-      DiscreteVariable( ) {
-        GUM_CONSTRUCTOR ( DiscreteVariable );
-      };
+    /// (protected) Default constructor
+    DiscreteVariable() { GUM_CONSTRUCTOR(DiscreteVariable); };
   };
-
 
   /// for friendly displaying the content of the variable
 
-  std::ostream& operator<< ( std::ostream&, const DiscreteVariable& );
+  std::ostream &operator<<(std::ostream &, const DiscreteVariable &);
 
 } /* namespace gum */
-
 
 #ifndef GUM_NO_INLINE
 #include <agrum/variables/discreteVariable.inl>

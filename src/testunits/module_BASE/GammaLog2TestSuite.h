@@ -29,23 +29,21 @@
 
 namespace gum_tests {
 
-  class GammaLog2TestSuite: public CxxTest::TestSuite {
+  class GammaLog2TestSuite : public CxxTest::TestSuite {
     public:
-      void test1 () {
-        gum::GammaLog2 f;
-        gum::GammaLog2 g ( true );
+    void test1() {
+      gum::GammaLog2 f;
+      gum::GammaLog2 g(true);
 
-        for ( unsigned int i = 0; i < 60; ++i ) {
-          for ( unsigned int j = 0; j < 100; ++j ) {
-            if ( i + j > 0 ) {
-              float index = i + j / 100.0f;
-              TS_ASSERT ( fabs ( f ( index ) - g ( index ) ) < 0.01 );
-            }
+      for (unsigned int i = 0; i < 60; ++i) {
+        for (unsigned int j = 0; j < 100; ++j) {
+          if (i + j > 0) {
+            float index = i + j / 100.0f;
+            TS_ASSERT(fabs(f(index) - g(index)) < 0.01);
           }
         }
       }
-
+    }
   };
 
 } // namespace gum_tests
-

@@ -36,12 +36,9 @@
 #include <agrum/core/hashFunc.h>
 #include <agrum/graphs/nodeGraphPart.h>
 
-
 namespace gum {
 
-  
   namespace learning {
-
 
     /// the type of modification that can be applied to the graph
     enum GraphChangeType {
@@ -52,35 +49,33 @@ namespace gum {
       EDGE_DELETION
     };
 
-  
     /* ========================================================================= */
     /* ===                        GRAPH CHANGE CLASS                         === */
     /* ========================================================================= */
     /** @class GraphChange
-     * @brief 
+     * @brief
      * @ingroup learning_group
      */
     class GraphChange {
-    public:
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      GraphChange ( GraphChangeType type, NodeId node1, NodeId node2 ) noexcept;
+      GraphChange(GraphChangeType type, NodeId node1, NodeId node2) noexcept;
 
       /// copy constructor
-      GraphChange ( const GraphChange& from ) noexcept;
+      GraphChange(const GraphChange &from) noexcept;
 
       /// move constructor
-      GraphChange ( GraphChange&& from ) noexcept;
+      GraphChange(GraphChange &&from) noexcept;
 
       /// destructor
-      ~GraphChange () noexcept;
+      ~GraphChange() noexcept;
 
       /// @}
-      
 
       // ##########################################################################
       /// @name Operators
@@ -88,41 +83,39 @@ namespace gum {
       /// @{
 
       /// copy constructor
-      GraphChange& operator= ( const GraphChange& from ) noexcept;
+      GraphChange &operator=(const GraphChange &from) noexcept;
 
       /// move operator
-      GraphChange& operator= ( GraphChange&& from ) noexcept;
+      GraphChange &operator=(GraphChange &&from) noexcept;
 
       /// returns whether two graph changes are identical or not
-      bool operator== ( const GraphChange& from ) const noexcept;
+      bool operator==(const GraphChange &from) const noexcept;
 
       /// returns whether two graph changes are different or not
-      bool operator!= ( const GraphChange& from ) const noexcept;
+      bool operator!=(const GraphChange &from) const noexcept;
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors/Modifiers
       // ##########################################################################
       /// @{
-      
+
       /// returns the type of the operation
-      GraphChangeType type () const noexcept;
+      GraphChangeType type() const noexcept;
 
       /// returns the first node involved in the modification
-      NodeId node1 () const noexcept;
+      NodeId node1() const noexcept;
 
       /// returns the second node involved in the modification
-      NodeId node2 () const noexcept;
+      NodeId node2() const noexcept;
 
       /// put the content of the graph change into a string
-      virtual std::string toString () const;
+      virtual std::string toString() const;
 
       /// @}
-      
-      
-    private:
+
+      private:
       /// the type of modification
       GraphChangeType __type;
 
@@ -131,10 +124,7 @@ namespace gum {
 
       /// the second node in the edge or arc to be modified
       NodeId __node2;
-
     };
-
-
 
     /* ========================================================================= */
     /* ===                        ARC ADDITION CLASS                         === */
@@ -149,26 +139,25 @@ namespace gum {
      * this class.
      */
     class ArcAddition : public GraphChange {
-    public:
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      ArcAddition ( NodeId node1, NodeId node2 ) noexcept;
+      ArcAddition(NodeId node1, NodeId node2) noexcept;
 
       /// copy constructor
-      ArcAddition ( const ArcAddition& from ) noexcept;
+      ArcAddition(const ArcAddition &from) noexcept;
 
       /// move constructor
-      ArcAddition ( ArcAddition&& from ) noexcept;
+      ArcAddition(ArcAddition &&from) noexcept;
 
       /// destructor
-      ~ArcAddition () noexcept;
+      ~ArcAddition() noexcept;
 
       /// @}
-      
 
       // ##########################################################################
       /// @name Operators
@@ -176,19 +165,18 @@ namespace gum {
       /// @{
 
       /// copy constructor
-      ArcAddition& operator= ( const ArcAddition& from ) noexcept;
+      ArcAddition &operator=(const ArcAddition &from) noexcept;
 
       /// move operator
-      ArcAddition& operator= ( ArcAddition&& from ) noexcept;
+      ArcAddition &operator=(ArcAddition &&from) noexcept;
 
       /// returns whether two arc additions are identical or not
-      bool operator== ( const ArcAddition& from ) const noexcept;
+      bool operator==(const ArcAddition &from) const noexcept;
 
       /// returns whether two arc additions are different or not
-      bool operator!= ( const ArcAddition& from ) const noexcept;
+      bool operator!=(const ArcAddition &from) const noexcept;
 
       /// @}
-      
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -196,12 +184,10 @@ namespace gum {
       /// @{
 
       /// put the content of the ArcAddition into a string
-      virtual std::string toString () const final;
+      virtual std::string toString() const final;
 
       /// @}
-
     };
-
 
     /* ========================================================================= */
     /* ===                        ARC DELETION CLASS                         === */
@@ -216,26 +202,25 @@ namespace gum {
      * this class.
      */
     class ArcDeletion : public GraphChange {
-    public:
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      ArcDeletion ( NodeId node1, NodeId node2 ) noexcept;
+      ArcDeletion(NodeId node1, NodeId node2) noexcept;
 
       /// copy constructor
-      ArcDeletion ( const ArcDeletion& from ) noexcept;
+      ArcDeletion(const ArcDeletion &from) noexcept;
 
       /// move constructor
-      ArcDeletion ( ArcDeletion&& from ) noexcept;
+      ArcDeletion(ArcDeletion &&from) noexcept;
 
       /// destructor
-      ~ArcDeletion () noexcept;
+      ~ArcDeletion() noexcept;
 
       /// @}
-      
 
       // ##########################################################################
       /// @name Operators
@@ -243,19 +228,18 @@ namespace gum {
       /// @{
 
       /// copy constructor
-      ArcDeletion& operator= ( const ArcDeletion& from ) noexcept;
+      ArcDeletion &operator=(const ArcDeletion &from) noexcept;
 
       /// move operator
-      ArcDeletion& operator= ( ArcDeletion&& from ) noexcept;
+      ArcDeletion &operator=(ArcDeletion &&from) noexcept;
 
       /// returns whether two arc deletions are identical or not
-      bool operator== ( const ArcDeletion& from ) const noexcept;
+      bool operator==(const ArcDeletion &from) const noexcept;
 
       /// returns whether two arc deletions are different or not
-      bool operator!= ( const ArcDeletion& from ) const noexcept;
+      bool operator!=(const ArcDeletion &from) const noexcept;
 
       /// @}
-
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -263,13 +247,10 @@ namespace gum {
       /// @{
 
       /// put the content of the ArcDeletion into a string
-      virtual std::string toString () const final;
+      virtual std::string toString() const final;
 
       /// @}
- 
     };
-
-
 
     /* ========================================================================= */
     /* ===                        ARC REVERSAL CLASS                         === */
@@ -284,26 +265,25 @@ namespace gum {
      * this class.
      */
     class ArcReversal : public GraphChange {
-    public:
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      ArcReversal ( NodeId node1, NodeId node2 ) noexcept;
+      ArcReversal(NodeId node1, NodeId node2) noexcept;
 
       /// copy constructor
-      ArcReversal ( const ArcReversal& from ) noexcept;
+      ArcReversal(const ArcReversal &from) noexcept;
 
       /// move constructor
-      ArcReversal ( ArcReversal&& from ) noexcept;
+      ArcReversal(ArcReversal &&from) noexcept;
 
       /// destructor
-      ~ArcReversal () noexcept;
+      ~ArcReversal() noexcept;
 
       /// @}
-      
 
       // ##########################################################################
       /// @name Operators
@@ -311,19 +291,18 @@ namespace gum {
       /// @{
 
       /// copy constructor
-      ArcReversal& operator= ( const ArcReversal& from ) noexcept;
+      ArcReversal &operator=(const ArcReversal &from) noexcept;
 
       /// move operator
-      ArcReversal& operator= ( ArcReversal&& from ) noexcept;
+      ArcReversal &operator=(ArcReversal &&from) noexcept;
 
       /// returns whether two arc reversals are identical or not
-      bool operator== ( const ArcReversal& from ) const noexcept;
+      bool operator==(const ArcReversal &from) const noexcept;
 
       /// returns whether two arc reversals are different or not
-      bool operator!= ( const ArcReversal& from ) const noexcept;
+      bool operator!=(const ArcReversal &from) const noexcept;
 
       /// @}
-
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -331,13 +310,10 @@ namespace gum {
       /// @{
 
       /// put the content of the ArcReversal into a string
-      virtual std::string toString () const final;
+      virtual std::string toString() const final;
 
       /// @}
-
-     };
-
-
+    };
 
     /* ========================================================================= */
     /* ===                        EDGE ADDITION CLASS                        === */
@@ -352,26 +328,25 @@ namespace gum {
      * this class.
      */
     class EdgeAddition : public GraphChange {
-    public:
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      EdgeAddition ( NodeId node1, NodeId node2 ) noexcept;
+      EdgeAddition(NodeId node1, NodeId node2) noexcept;
 
       /// copy constructor
-      EdgeAddition ( const EdgeAddition& from ) noexcept;
+      EdgeAddition(const EdgeAddition &from) noexcept;
 
       /// move constructor
-      EdgeAddition ( EdgeAddition&& from ) noexcept;
+      EdgeAddition(EdgeAddition &&from) noexcept;
 
       /// destructor
-      ~EdgeAddition () noexcept;
+      ~EdgeAddition() noexcept;
 
       /// @}
-      
 
       // ##########################################################################
       /// @name Operators
@@ -379,19 +354,18 @@ namespace gum {
       /// @{
 
       /// copy constructor
-      EdgeAddition& operator= ( const EdgeAddition& from ) noexcept;
+      EdgeAddition &operator=(const EdgeAddition &from) noexcept;
 
       /// move operator
-      EdgeAddition& operator= ( EdgeAddition&& from ) noexcept;
+      EdgeAddition &operator=(EdgeAddition &&from) noexcept;
 
       /// returns whether two edge additions are identical or not
-      bool operator== ( const EdgeAddition& from ) const noexcept;
+      bool operator==(const EdgeAddition &from) const noexcept;
 
       /// returns whether two edge additions are different or not
-      bool operator!= ( const EdgeAddition& from ) const noexcept;
+      bool operator!=(const EdgeAddition &from) const noexcept;
 
       /// @}
-      
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -399,14 +373,11 @@ namespace gum {
       /// @{
 
       /// put the content of the EdgeAddition into a string
-      virtual std::string toString () const final;
+      virtual std::string toString() const final;
 
       /// @}
-
     };
 
-
-    
     /* ========================================================================= */
     /* ===                        EDGE DELETION CLASS                        === */
     /* ========================================================================= */
@@ -420,26 +391,25 @@ namespace gum {
      * this class.
      */
     class EdgeDeletion : public GraphChange {
-    public:
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      EdgeDeletion ( NodeId node1, NodeId node2 ) noexcept;
+      EdgeDeletion(NodeId node1, NodeId node2) noexcept;
 
       /// copy constructor
-      EdgeDeletion ( const EdgeDeletion& from ) noexcept;
+      EdgeDeletion(const EdgeDeletion &from) noexcept;
 
       /// move constructor
-      EdgeDeletion ( EdgeDeletion&& from ) noexcept;
+      EdgeDeletion(EdgeDeletion &&from) noexcept;
 
       /// destructor
-      ~EdgeDeletion () noexcept;
+      ~EdgeDeletion() noexcept;
 
       /// @}
-      
 
       // ##########################################################################
       /// @name Operators
@@ -447,19 +417,18 @@ namespace gum {
       /// @{
 
       /// copy constructor
-      EdgeDeletion& operator= ( const EdgeDeletion& from ) noexcept;
+      EdgeDeletion &operator=(const EdgeDeletion &from) noexcept;
 
       /// move operator
-      EdgeDeletion& operator= ( EdgeDeletion&& from ) noexcept;
+      EdgeDeletion &operator=(EdgeDeletion &&from) noexcept;
 
       /// returns whether two edge deletions are identical or not
-      bool operator== ( const EdgeDeletion& from ) const noexcept;
+      bool operator==(const EdgeDeletion &from) const noexcept;
 
       /// returns whether two edge deletions are different or not
-      bool operator!= ( const EdgeDeletion& from ) const noexcept;
+      bool operator!=(const EdgeDeletion &from) const noexcept;
 
       /// @}
-
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -467,130 +436,107 @@ namespace gum {
       /// @{
 
       /// put the content of the EdgeDeletion into a string
-      virtual std::string toString () const final;
+      virtual std::string toString() const final;
 
       /// @}
- 
     };
 
-
-
-    
     /// a \c << operator for GraphChanges
-    std::ostream& operator<< ( std::ostream& stream,
-                               const GraphChange& change );
+    std::ostream &operator<<(std::ostream &stream, const GraphChange &change);
 
-  
     /// a \c << operator for ArcAddition
-    std::ostream& operator<< ( std::ostream& stream,
-                               const ArcAddition& change );
+    std::ostream &operator<<(std::ostream &stream, const ArcAddition &change);
 
     /// a \c << operator for ArcDeletion
-    std::ostream& operator<< ( std::ostream& stream,
-                               const ArcDeletion& change );
-  
+    std::ostream &operator<<(std::ostream &stream, const ArcDeletion &change);
+
     /// a \c << operator for ArcReversal
-    std::ostream& operator<< ( std::ostream& stream,
-                               const ArcReversal& change );
+    std::ostream &operator<<(std::ostream &stream, const ArcReversal &change);
 
     /// a \c << operator for EdgeAddition
-    std::ostream& operator<< ( std::ostream& stream,
-                               const EdgeAddition& change );
+    std::ostream &operator<<(std::ostream &stream, const EdgeAddition &change);
 
     /// a \c << operator for EdgeDeletion
-    std::ostream& operator<< ( std::ostream& stream,
-                               const EdgeDeletion& change );
-  
+    std::ostream &operator<<(std::ostream &stream, const EdgeDeletion &change);
 
   } /* namespace learning */
-  
-
 
   /// the hash function for Graph Changes
-  template <> class HashFunc<learning::GraphChange> :
-    public HashFuncSmallKey<NodeId> {
-  public:
+  template <>
+  class HashFunc<learning::GraphChange> : public HashFuncSmallKey<NodeId> {
+    public:
     /// computes the hashed value of a key
-    Size operator() ( const learning::GraphChange& key ) const {
-      return ( ( ( unsigned long ) key.node1() * HashFuncConst::gold +
-                 ( unsigned long ) key.node2() * HashFuncConst::pi )
-               >> _right_shift );
+    Size operator()(const learning::GraphChange &key) const {
+      return (((unsigned long)key.node1() * HashFuncConst::gold +
+               (unsigned long)key.node2() * HashFuncConst::pi) >>
+              _right_shift);
     }
   };
 
-  
   /// the hash function for Arc Additions
-  template <> class HashFunc<learning::ArcAddition> :
-    public HashFuncSmallKey<NodeId> {
-  public:
+  template <>
+  class HashFunc<learning::ArcAddition> : public HashFuncSmallKey<NodeId> {
+    public:
     /// computes the hashed value of a key
-    Size operator() ( const learning::ArcAddition& key ) const {
-      return ( ( ( unsigned long ) key.node1() * HashFuncConst::gold +
-                 ( unsigned long ) key.node2() * HashFuncConst::pi )
-               >> _right_shift );
+    Size operator()(const learning::ArcAddition &key) const {
+      return (((unsigned long)key.node1() * HashFuncConst::gold +
+               (unsigned long)key.node2() * HashFuncConst::pi) >>
+              _right_shift);
     }
   };
 
-  
   /// the hash function for Arc Deletions
-  template <> class HashFunc<learning::ArcDeletion> :
-    public HashFuncSmallKey<NodeId> {
-  public:
+  template <>
+  class HashFunc<learning::ArcDeletion> : public HashFuncSmallKey<NodeId> {
+    public:
     /// computes the hashed value of a key
-    Size operator() ( const learning::ArcDeletion& key ) const {
-      return ( ( ( unsigned long ) key.node1() * HashFuncConst::gold +
-                 ( unsigned long ) key.node2() * HashFuncConst::pi )
-               >> _right_shift );
+    Size operator()(const learning::ArcDeletion &key) const {
+      return (((unsigned long)key.node1() * HashFuncConst::gold +
+               (unsigned long)key.node2() * HashFuncConst::pi) >>
+              _right_shift);
     }
   };
 
-  
   /// the hash function for Arc Reversals
-  template <> class HashFunc<learning::ArcReversal> :
-    public HashFuncSmallKey<NodeId> {
-  public:
+  template <>
+  class HashFunc<learning::ArcReversal> : public HashFuncSmallKey<NodeId> {
+    public:
     /// computes the hashed value of a key
-    Size operator() ( const learning::ArcReversal& key ) const {
-      return ( ( ( unsigned long ) key.node1() * HashFuncConst::gold +
-                 ( unsigned long ) key.node2() * HashFuncConst::pi )
-               >> _right_shift );
+    Size operator()(const learning::ArcReversal &key) const {
+      return (((unsigned long)key.node1() * HashFuncConst::gold +
+               (unsigned long)key.node2() * HashFuncConst::pi) >>
+              _right_shift);
     }
   };
 
-  
   /// the hash function for Edge Additions
-  template <> class HashFunc<learning::EdgeAddition> :
-    public HashFuncSmallKey<NodeId> {
-  public:
+  template <>
+  class HashFunc<learning::EdgeAddition> : public HashFuncSmallKey<NodeId> {
+    public:
     /// computes the hashed value of a key
-    Size operator() ( const learning::EdgeAddition& key ) const {
-      return ( ( ( unsigned long ) key.node1() * HashFuncConst::gold +
-                 ( unsigned long ) key.node2() * HashFuncConst::pi )
-               >> _right_shift );
+    Size operator()(const learning::EdgeAddition &key) const {
+      return (((unsigned long)key.node1() * HashFuncConst::gold +
+               (unsigned long)key.node2() * HashFuncConst::pi) >>
+              _right_shift);
     }
   };
 
-  
   /// the hash function for Edge Deletions
-  template <> class HashFunc<learning::EdgeDeletion> :
-    public HashFuncSmallKey<NodeId> {
-  public:
+  template <>
+  class HashFunc<learning::EdgeDeletion> : public HashFuncSmallKey<NodeId> {
+    public:
     /// computes the hashed value of a key
-    Size operator() ( const learning::EdgeDeletion& key ) const {
-      return ( ( ( unsigned long ) key.node1() * HashFuncConst::gold +
-                 ( unsigned long ) key.node2() * HashFuncConst::pi )
-               >> _right_shift );
+    Size operator()(const learning::EdgeDeletion &key) const {
+      return (((unsigned long)key.node1() * HashFuncConst::gold +
+               (unsigned long)key.node2() * HashFuncConst::pi) >>
+              _right_shift);
     }
   };
-
-
 
 } /* namespace gum */
 
-
 #ifndef GUM_NO_INLINE
 #include <agrum/learning/structureUtils/graphChange.inl>
-#endif //GUM_NOINLINE
-
+#endif // GUM_NOINLINE
 
 #endif /* GUM_LEARNING_GRAPH_CHANGE_H */

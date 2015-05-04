@@ -14,11 +14,11 @@ python act install pyAgrum -d C:\Python27 #(or wherever python is installed)
 
 
 # if needed : maybe forgotten in some pythonxy
-pip install pyparsing 
-pip install pydot
+pip install pydotplus
 
 # certainly needed
 install graphviz for windows
+(change PATH to refer to graphviz binaries)
 
 ipython notebook 
 #and go to app/pyAgrum/notebooks for some sample

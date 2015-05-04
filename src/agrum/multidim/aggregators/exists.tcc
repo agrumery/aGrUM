@@ -24,51 +24,57 @@
  */
 #include <sstream>
 // to ease parser in IDEs
-#include<agrum/multidim/aggregators/exists.h>
+#include <agrum/multidim/aggregators/exists.h>
 
 namespace gum {
 
   namespace aggregator {
-    template<typename GUM_SCALAR> INLINE
-    Exists<GUM_SCALAR>::Exists ( Idx value ) : MultiDimAggregator<GUM_SCALAR>(), __value ( value ) {
-      GUM_CONSTRUCTOR ( Exists )
+    template <typename GUM_SCALAR>
+    INLINE Exists<GUM_SCALAR>::Exists(Idx value)
+        : MultiDimAggregator<GUM_SCALAR>(), __value(value) {
+      GUM_CONSTRUCTOR(Exists)
     }
 
-    template<typename GUM_SCALAR> INLINE
-    Exists<GUM_SCALAR>::Exists ( const Exists<GUM_SCALAR>& from ) : MultiDimAggregator<GUM_SCALAR> ( from ) {
+    template <typename GUM_SCALAR>
+    INLINE Exists<GUM_SCALAR>::Exists(const Exists<GUM_SCALAR> &from)
+        : MultiDimAggregator<GUM_SCALAR>(from) {
       __value = from.__value;
-      GUM_CONS_CPY ( Exists );
+      GUM_CONS_CPY(Exists);
     }
 
-    template<typename GUM_SCALAR> INLINE
-    Exists<GUM_SCALAR>::~Exists() {
-      GUM_DESTRUCTOR ( Exists );
+    template <typename GUM_SCALAR> INLINE Exists<GUM_SCALAR>::~Exists() {
+      GUM_DESTRUCTOR(Exists);
     }
 
-    template<typename GUM_SCALAR> INLINE
-    Idx Exists<GUM_SCALAR>::_neutralElt() const { return ( Idx ) 0;}
+    template <typename GUM_SCALAR>
+    INLINE Idx Exists<GUM_SCALAR>::_neutralElt() const {
+      return (Idx)0;
+    }
 
-    template<typename GUM_SCALAR> INLINE
-    Idx Exists<GUM_SCALAR>::_folder ( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const {
-      if ( i1 != __value ) {
-        return ( Idx ) 0;
+    template <typename GUM_SCALAR>
+    INLINE Idx Exists<GUM_SCALAR>::_folder(const DiscreteVariable &v, Idx i1, Idx i2,
+                                           bool &stop_iteration) const {
+      if (i1 != __value) {
+        return (Idx)0;
       } else {
         stop_iteration = true;
-        return ( Idx ) 1;
+        return (Idx)1;
       }
     }
 
-    template<typename GUM_SCALAR> INLINE
+    template <typename GUM_SCALAR>
+    INLINE
 
-    std::string Exists<GUM_SCALAR>::aggregatorName ( void ) const {
+        std::string
+        Exists<GUM_SCALAR>::aggregatorName(void) const {
       std::stringstream ss;
       ss << "exists[" << __value << "]";
       return ss.str();
     }
 
-    template<typename GUM_SCALAR> INLINE
-    MultiDimContainer<GUM_SCALAR>* Exists<GUM_SCALAR>::newFactory() const {
-      return new Exists<GUM_SCALAR> ( __value );
+    template <typename GUM_SCALAR>
+    INLINE MultiDimContainer<GUM_SCALAR> *Exists<GUM_SCALAR>::newFactory() const {
+      return new Exists<GUM_SCALAR>(__value);
     }
 
   } // namespace aggregator

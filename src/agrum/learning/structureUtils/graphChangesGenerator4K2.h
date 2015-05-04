@@ -49,13 +49,12 @@
  * applied, used again the iterator for loop, and so on. Note that, whenever
  * you execute method modifyGraph, this will automatically flush the current
  * list of changes and put into the list only the changes that are affected
- * by the graph modification. 
+ * by the graph modification.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_K2_H
 #define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_K2_H
-
 
 #include <agrum/config.h>
 #include <agrum/core/set.h>
@@ -66,17 +65,13 @@
 #include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/structureUtils/IGraphChangesGenerator4DiGraph.h>
 
-
 namespace gum {
 
-  
   namespace learning {
-
 
     // a dummy class used to check that the generator is adapted to K2
     struct __GraphChangesGenerator4K2 {};
-   
-    
+
     /** @class GraphChangesGenerator4K2
      * @brief The basic class for computing the next graph changes possible in a
      * structure learning algorithm
@@ -109,43 +104,39 @@ namespace gum {
      * applied, used again the iterator for loop, and so on. Note that, whenever
      * you execute method modifyGraph, this will automatically flush the current
      * list of changes and put into the list only the changes that are affected
-     * by the graph modification. 
+     * by the graph modification.
      *
      * @ingroup learning_group
      */
     template <typename STRUCT_CONSTRAINT>
-    class GraphChangesGenerator4K2 :
-      public IGraphChangesGenerator4DiGraph, __GraphChangesGenerator4K2 {
-    public:
-
+    class GraphChangesGenerator4K2 : public IGraphChangesGenerator4DiGraph,
+                                     __GraphChangesGenerator4K2 {
+      public:
       /// the iterator for parsing the list of possible graph change operators
       using iterator = typename Set<GraphChange>::const_iterator;
 
       /// the const iterator for parsing the list of graph change operators
       using const_iterator = iterator;
-      
-      
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      GraphChangesGenerator4K2 ( STRUCT_CONSTRAINT& constraint );
+      GraphChangesGenerator4K2(STRUCT_CONSTRAINT &constraint);
 
       /// copy constructor
-      GraphChangesGenerator4K2
-      ( const GraphChangesGenerator4K2<STRUCT_CONSTRAINT>& from );
+      GraphChangesGenerator4K2(
+          const GraphChangesGenerator4K2<STRUCT_CONSTRAINT> &from);
 
       /// move operator
-      GraphChangesGenerator4K2
-      ( GraphChangesGenerator4K2<STRUCT_CONSTRAINT>&& from );
+      GraphChangesGenerator4K2(GraphChangesGenerator4K2<STRUCT_CONSTRAINT> &&from);
 
       /// destructor
-      virtual ~GraphChangesGenerator4K2 ();
+      virtual ~GraphChangesGenerator4K2();
 
       /// @}
-
 
       // ##########################################################################
       /// @name Operators
@@ -153,17 +144,14 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesGenerator4K2<STRUCT_CONSTRAINT>&
-      operator=
-      ( const GraphChangesGenerator4K2<STRUCT_CONSTRAINT>& from );
+      GraphChangesGenerator4K2<STRUCT_CONSTRAINT> &
+      operator=(const GraphChangesGenerator4K2<STRUCT_CONSTRAINT> &from);
 
       /// move operator
-      GraphChangesGenerator4K2<STRUCT_CONSTRAINT>&
-      operator=
-      ( GraphChangesGenerator4K2<STRUCT_CONSTRAINT>&& from );
+      GraphChangesGenerator4K2<STRUCT_CONSTRAINT> &
+      operator=(GraphChangesGenerator4K2<STRUCT_CONSTRAINT> &&from);
 
       /// @}
-
 
       // ##########################################################################
       /// @name Iterators
@@ -171,61 +159,59 @@ namespace gum {
       /// @{
 
       /// returns an (unsafe) iterator on the beginning of the list of operators
-      iterator begin () const;
+      iterator begin() const;
 
       /// returns an (unsafe) iterator on the end of the list of operators
-      const iterator& end () const;
+      const iterator &end() const;
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
       /// returns the constraint that is used by the generator
-      STRUCT_CONSTRAINT& constraint () const noexcept;
+      STRUCT_CONSTRAINT &constraint() const noexcept;
 
       /// sets a new graph from which the generator will compute possible changes
-      void setGraph ( const DiGraph& graph );
+      void setGraph(const DiGraph &graph);
 
       /// notify the generator of a change applied to the graph
-      void modifyGraph ( const ArcAddition& change );
+      void modifyGraph(const ArcAddition &change);
 
       /// notify the generator of a change applied to the graph
-      void modifyGraph ( const ArcDeletion& change );
+      void modifyGraph(const ArcDeletion &change);
 
       /// notify the generator of a change applied to the graph
-      void modifyGraph ( const ArcReversal& change );
+      void modifyGraph(const ArcReversal &change);
 
       /// notify the generator of a change applied to the graph
-      void modifyGraph ( const GraphChange& change );
+      void modifyGraph(const GraphChange &change);
 
       /// empty the set of possible change operators that can be applied
-      void clearChanges () noexcept;
+      void clearChanges() noexcept;
 
       /// notifies the generator that we have parsed all its legal changes
-      void notifyGetCompleted ();
+      void notifyGetCompleted();
 
       /// sets the maximum number of threads used to compute the set of changes
-      void setMaxNbThreads ( unsigned int nb ) noexcept;
+      void setMaxNbThreads(unsigned int nb) noexcept;
 
       /// set a new order on the random variables
-      void setOrder ( const Sequence<NodeId>& order );
+      void setOrder(const Sequence<NodeId> &order);
 
       /// set a new order on the random variables
-      void setOrder ( const std::vector<NodeId>& order );
-            
+      void setOrder(const std::vector<NodeId> &order);
+
       /// @}
-      
 
-    protected:
+      protected:
       /// the graph on which we generate operators
       DiGraph _graph;
 
       /// the structural constraint used to restrict the changes
-      STRUCT_CONSTRAINT* _constraint;
+      STRUCT_CONSTRAINT *_constraint;
 
       /// the order on the variables
       Sequence<NodeId> _order;
@@ -234,28 +220,22 @@ namespace gum {
       Set<GraphChange> _legal_changes;
 
       /// create the set of legal and illegal changes from a given graph
-      void _createChanges ();
+      void _createChanges();
 
-
-    private:
-      /// the max number of threads authorized
-      #if defined(_OPENMP) && defined(NDEBUG)
-        unsigned int __max_threads_number { getMaxNumberOfThreads() };
-      #else
-        unsigned int __max_threads_number { 1 };
-      #endif /* NDEBUG */
-
+      private:
+/// the max number of threads authorized
+#if defined(_OPENMP) && defined(NDEBUG)
+      unsigned int __max_threads_number{getMaxNumberOfThreads()};
+#else
+      unsigned int __max_threads_number{1};
+#endif /* NDEBUG */
     };
 
-
   } /* namespace learning */
-  
-  
-} /* namespace gum */
 
+} /* namespace gum */
 
 /// always include the templated functions
 #include <agrum/learning/structureUtils/graphChangesGenerator4K2.tcc>
-
 
 #endif /* GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_K2_H */

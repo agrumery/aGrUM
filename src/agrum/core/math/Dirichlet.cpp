@@ -25,9 +25,7 @@
 
 #include <agrum/core/math/Dirichlet.h>
 
-
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
 #include <agrum/core/math/Dirichlet.inl>
 #endif /* GUM_NO_INLINE */
-

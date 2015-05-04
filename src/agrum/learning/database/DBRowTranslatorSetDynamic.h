@@ -37,7 +37,6 @@
 #ifndef GUM_LEARNING_DB_ROW_TRANSLATOR_SET_DYNAMIC_H
 #define GUM_LEARNING_DB_ROW_TRANSLATOR_SET_DYNAMIC_H
 
-
 #include <vector>
 
 #include <agrum/config.h>
@@ -46,13 +45,10 @@
 #include <agrum/learning/database/filteredRow.h>
 #include <agrum/learning/database/DBCellTranslator.h>
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     /** @class DBRowTranslatorSetDynamic
      * @ingroup learning_group
      * @brief the "non-meta-programming" class that includes cell translator packs
@@ -71,10 +67,8 @@ namespace gum {
      * methods are also inlined, otherwise, methods' calls induce virtual
      * function overheads.
      */
-    template <typename Translator>
-    class DBRowTranslatorSetDynamic {
-    public:
-  
+    template <typename Translator> class DBRowTranslatorSetDynamic {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -82,20 +76,18 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowTranslatorSetDynamic ();
+      DBRowTranslatorSetDynamic();
 
       /// copy constructor
-      DBRowTranslatorSetDynamic
-      ( const DBRowTranslatorSetDynamic<Translator>& from );
+      DBRowTranslatorSetDynamic(const DBRowTranslatorSetDynamic<Translator> &from);
 
       /// move constructor
-      DBRowTranslatorSetDynamic ( DBRowTranslatorSetDynamic<Translator>&& from );
+      DBRowTranslatorSetDynamic(DBRowTranslatorSetDynamic<Translator> &&from);
 
       /// destructor
-      ~DBRowTranslatorSetDynamic () noexcept;
-  
+      ~DBRowTranslatorSetDynamic() noexcept;
+
       /// @}
-  
 
       // ##########################################################################
       /// @name Operators
@@ -104,26 +96,25 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowTranslatorSetDynamic<Translator>&
-      operator= ( const DBRowTranslatorSetDynamic<Translator>& );
+      DBRowTranslatorSetDynamic<Translator> &
+      operator=(const DBRowTranslatorSetDynamic<Translator> &);
 
       /// move operator
-      DBRowTranslatorSetDynamic<Translator>&
-      operator= ( DBRowTranslatorSetDynamic<Translator>&& );
+      DBRowTranslatorSetDynamic<Translator> &
+      operator=(DBRowTranslatorSetDynamic<Translator> &&);
 
       /// returns the ith translator
       /** @throws NotFound is raised if there are fewer than i translators in
        * the translator set */
-      Translator& operator[] ( unsigned int i );
+      Translator &operator[](unsigned int i);
 
       /// returns the ith translator
       /** @throws NotFound is raised if there are fewer than i translators in
        * the translator set */
-      const Translator& operator[] ( unsigned int i ) const;
+      const Translator &operator[](unsigned int i) const;
 
       /// @}
 
- 
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -137,100 +128,87 @@ namespace gum {
        * from deb_cols by applying increment ColsIncr. */
       template <typename Cols,
                 typename ColsIncr = typename Make_Default_Incr<Cols>::type>
-      void insertTranslator
-      ( Cols deb_cols = Cols (),
-        unsigned int nb_times = 1,
-        ColsIncr incr  = ColsIncr () );
+      void insertTranslator(Cols deb_cols = Cols(), unsigned int nb_times = 1,
+                            ColsIncr incr = ColsIncr());
 
       /// inserts new translators at the end of the set
       /** insert a new translator that will read columns deb_cols. If we wish to
        * insert several translators, use an nb_times different from 1. In this
        * case, the other translators will read columns of the database deduced
        * from deb_cols by applying increment ColsIncr. */
-      template <typename NewTranslator,
-                typename Cols,
+      template <typename NewTranslator, typename Cols,
                 typename ColsIncr = typename Make_Default_Incr<Cols>::type>
-      void insertTranslator
-      ( const NewTranslator& translator,
-        Cols deb_cols = Cols (),
-        unsigned int nb_times = 1,
-        ColsIncr incr  = ColsIncr () );
+      void insertTranslator(const NewTranslator &translator, Cols deb_cols = Cols(),
+                            unsigned int nb_times = 1, ColsIncr incr = ColsIncr());
 
       /// inserts new translators at the end of the set
       /** insert a new translator that will read only one column, namely deb_col.
        * If we wish to insert several translators, use an nb_times different
        * from 1. In this case, the other translators will read columns of the
        * database deduced from deb_col by applying increment "increment". */
-      void insertTranslator ( unsigned int deb_col,
-                              unsigned int nb_times = 1,
-                              unsigned int increment  = 1 );
+      void insertTranslator(unsigned int deb_col, unsigned int nb_times = 1,
+                            unsigned int increment = 1);
 
       /// execute all the translations on the current database row
-      void translate ();
+      void translate();
 
       /// initialize the cell translators by parsing once the database
       /** If initialization is required, this method is called for each row
        * of the database used for initialization. */
-      void initialize ();
+      void initialize();
 
       /// performs a post initialization after the database parsing
-      void postInitialize ();
- 
+      void postInitialize();
+
       /** @brief indicates whether some of the translators need an initial parsing
        * of the database to initialize itself */
-      bool requiresInitialization () const noexcept;
+      bool requiresInitialization() const noexcept;
 
       /// push back the number of modalities of the variables of the output columns
-      void modalities ( std::vector<unsigned int>& modals ) const;
+      void modalities(std::vector<unsigned int> &modals) const;
 
       /// sets the input row that shall be read by all the cell translators
-      void setInputRow ( const DBRow& row ) noexcept;
+      void setInputRow(const DBRow &row) noexcept;
 
       /// returns the current input DBRow
-      const DBRow& inputRow () const;
+      const DBRow &inputRow() const;
 
       /// returns the current output row
-      FilteredRow& outputRow () noexcept;
+      FilteredRow &outputRow() noexcept;
 
       /// remove all the translators from the vector
-      void clear () noexcept;
+      void clear() noexcept;
 
       /// returns the name of the jth value of the ith column
-      std::string translateBack ( unsigned int col,
-                                  unsigned int translated_val ) const;
+      std::string translateBack(unsigned int col, unsigned int translated_val) const;
 
       /// returns the size of the input as used by the cell translators
-      unsigned int inputSize () const noexcept;
+      unsigned int inputSize() const noexcept;
 
       /// returns the size of the output of the cell translators
-      unsigned int outputSize () const noexcept;
+      unsigned int outputSize() const noexcept;
 
       /// returns the number of translators stored into the set
-      unsigned int nbTranslators () const noexcept;
+      unsigned int nbTranslators() const noexcept;
 
       /// @}
-  
-  private:
+
+      private:
       /// the vector of the cell filters
-      std::vector<Translator*> __translators;
+      std::vector<Translator *> __translators;
 
       /// the size of the output
-      unsigned int __output_size { 0 };
-    
+      unsigned int __output_size{0};
+
       /// the output row into which the translators write their output
       FilteredRow __output_row;
-
     };
-
 
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
 
 // always include templated implementation
 #include <agrum/learning/database/DBRowTranslatorSetDynamic.tcc>
-
 
 #endif /* GUM_LEARNING_DB_ROW_TRANSLATOR_SET_DYNAMIC_H */

@@ -26,53 +26,39 @@
 
 namespace gum {
 
-
   namespace learning {
 
-
     /// copy constructor
-    INLINE DatabaseFromCSV::DatabaseFromCSV ( const DatabaseFromCSV& from ) :
-      DatabaseVectInRAM ( from ) {
+    INLINE DatabaseFromCSV::DatabaseFromCSV(const DatabaseFromCSV &from)
+        : DatabaseVectInRAM(from) {
       // for debugging purposes
-      GUM_CONS_CPY ( DatabaseFromCSV );
+      GUM_CONS_CPY(DatabaseFromCSV);
     }
-
 
     /// move constructor
-    INLINE DatabaseFromCSV::DatabaseFromCSV ( DatabaseFromCSV&& from ) :
-      DatabaseVectInRAM ( std::move ( from ) ) {
+    INLINE DatabaseFromCSV::DatabaseFromCSV(DatabaseFromCSV &&from)
+        : DatabaseVectInRAM(std::move(from)) {
       // for debugging purposes
-      GUM_CONS_MOV ( DatabaseFromCSV );
+      GUM_CONS_MOV(DatabaseFromCSV);
     }
-
 
     /// destructor
-    INLINE DatabaseFromCSV::~DatabaseFromCSV () {
-      GUM_DESTRUCTOR ( DatabaseFromCSV );
-    }
+    INLINE DatabaseFromCSV::~DatabaseFromCSV() { GUM_DESTRUCTOR(DatabaseFromCSV); }
 
-    
     /// copy operator
-    INLINE DatabaseFromCSV&
-    DatabaseFromCSV::operator= ( const DatabaseFromCSV& from ) {
-      DatabaseVectInRAM::operator= ( from );
+    INLINE DatabaseFromCSV &DatabaseFromCSV::operator=(const DatabaseFromCSV &from) {
+      DatabaseVectInRAM::operator=(from);
       return *this;
     }
-
 
     /// move constructor
-    INLINE DatabaseFromCSV&
-    DatabaseFromCSV::operator= ( DatabaseFromCSV&& from ) {
-      DatabaseVectInRAM::operator= ( std::move ( from ) );
+    INLINE DatabaseFromCSV &DatabaseFromCSV::operator=(DatabaseFromCSV &&from) {
+      DatabaseVectInRAM::operator=(std::move(from));
       return *this;
     }
-
 
   } /* namespace learning */
 
-
 } /* namespace gum */
 
-
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-

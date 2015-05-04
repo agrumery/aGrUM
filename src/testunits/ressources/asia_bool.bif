@@ -1,0 +1,50 @@
+network Asia {
+}
+variable  visit_to_Asia? { 
+	type discrete[2] {  true , false };
+}
+variable  tuberculosis? {
+	type discrete[2] {  true , false };
+}
+variable  tuberculos_or_cancer? { 
+	type discrete[2] {  true , false };
+}
+variable  positive_XraY? {
+	type discrete[2] {  true , false };
+}
+variable  lung_cancer? { // 2 values
+	type discrete[2] {  true , false };
+}
+variable  smoking? {
+	type discrete[2] {  true , false };
+}
+variable  bronchitis? { // 2 values
+	type discrete[2] {  true , false };
+}
+variable  dyspnoea? { // 2 values
+	type discrete[2] {  true , false };
+}
+probability (  visit_to_Asia? ) {
+	table 0.01 0.99 ;
+}
+probability (  tuberculosis? | visit_to_Asia?) {
+	table 0.05 0.01 0.95 0.99 ;
+}
+probability (  tuberculos_or_cancer? | tuberculosis? , lung_cancer? ) { 
+	table 1.0 1.0 1.0 0.0 0.0 0.0 0.0 1.0 ;
+}
+probability (  positive_XraY?| tuberculos_or_cancer? ) { 
+	table 0.98 0.05 0.02 0.95 ;
+}
+probability (  lung_cancer? | smoking? ) {
+	table 0.1 0.01 0.9 0.99 ;
+}
+probability (  smoking? ) { 
+	table 0.5 0.5 ;
+}
+probability (  bronchitis? | smoking? ) {
+	table 0.6 0.3 0.4 0.7 ;
+}
+probability (  dyspnoea? | tuberculos_or_cancer? , bronchitis? ) {
+	table 0.9 0.7 0.8 0.1 0.1 0.3 0.2 0.9 ;
+}

@@ -30,82 +30,69 @@
 #include <agrum/config.h>
 #include <agrum/learning/aprioris/apriori.h>
 
-
 namespace gum {
 
-  
   namespace learning {
-
 
     /** @class AprioriSmoothing
      * @brief the smooth a priori: adds a weight w to all the countings
      * @ingroup learning_group
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float> >
-    class AprioriSmoothing :
-      public Apriori<IdSetAlloc,CountAlloc> {
-    public:
+              typename CountAlloc = std::allocator<float>>
+    class AprioriSmoothing : public Apriori<IdSetAlloc, CountAlloc> {
+      public:
       using type = AprioriSmoothingType;
-      
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
-      
+
       /// default constructor
-      AprioriSmoothing ();
+      AprioriSmoothing();
 
       /// virtual copy constructor
-      virtual AprioriSmoothing<IdSetAlloc,CountAlloc>* copyFactory () const;
+      virtual AprioriSmoothing<IdSetAlloc, CountAlloc> *copyFactory() const;
 
       /// destructor
-      virtual ~AprioriSmoothing ();
+      virtual ~AprioriSmoothing();
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
       /// include the apriori into a given set of counts
-      virtual void compute () final;
+      virtual void compute() final;
 
       /// indicates whether an apriori is of a certain type
-      virtual bool isOfType ( const std::string& type ) final;
+      virtual bool isOfType(const std::string &type) final;
 
       /// returns the type of the apriori
-      virtual const std::string& getType () const noexcept final;
+      virtual const std::string &getType() const noexcept final;
 
       /// @}
 
-      
-    protected:
-
+      protected:
       /// copy constructor
-      AprioriSmoothing ( const AprioriSmoothing<IdSetAlloc,CountAlloc>& from );
-      
+      AprioriSmoothing(const AprioriSmoothing<IdSetAlloc, CountAlloc> &from);
+
       /// move constructor
-      AprioriSmoothing ( AprioriSmoothing<IdSetAlloc,CountAlloc>&& from );
+      AprioriSmoothing(AprioriSmoothing<IdSetAlloc, CountAlloc> &&from);
 
       /// prevent copy operator
-      AprioriSmoothing<IdSetAlloc,CountAlloc>&
-      operator= ( const AprioriSmoothing<IdSetAlloc,CountAlloc>& ) = delete;
-
+      AprioriSmoothing<IdSetAlloc, CountAlloc> &
+      operator=(const AprioriSmoothing<IdSetAlloc, CountAlloc> &) = delete;
     };
 
-    
   } /* namespace learning */
-  
-  
-} /* namespace gum */
 
+} /* namespace gum */
 
 /// include the template implementation
 #include <agrum/learning/aprioris/aprioriSmoothing.tcc>
 
-
 #endif /* GUM_LEARNING_A_PRIORI_SMOOTHING_H */
-

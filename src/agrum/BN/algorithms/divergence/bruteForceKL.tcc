@@ -30,63 +30,66 @@
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 
 namespace gum {
-  template<typename GUM_SCALAR>
-  BruteForceKL<GUM_SCALAR>::BruteForceKL ( const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q ) : KL<GUM_SCALAR> ( P, Q ) {
-    GUM_CONSTRUCTOR ( BruteForceKL );
+  template <typename GUM_SCALAR>
+  BruteForceKL<GUM_SCALAR>::BruteForceKL(const IBayesNet<GUM_SCALAR> &P,
+                                         const IBayesNet<GUM_SCALAR> &Q)
+      : KL<GUM_SCALAR>(P, Q) {
+    GUM_CONSTRUCTOR(BruteForceKL);
   }
 
-  template<typename GUM_SCALAR>
-  BruteForceKL<GUM_SCALAR>::BruteForceKL ( const KL< GUM_SCALAR >& kl ) : KL<GUM_SCALAR> ( kl ) {
-    GUM_CONSTRUCTOR ( BruteForceKL );
+  template <typename GUM_SCALAR>
+  BruteForceKL<GUM_SCALAR>::BruteForceKL(const KL<GUM_SCALAR> &kl)
+      : KL<GUM_SCALAR>(kl) {
+    GUM_CONSTRUCTOR(BruteForceKL);
   }
 
-  template<typename GUM_SCALAR>
-  BruteForceKL<GUM_SCALAR>::~BruteForceKL() {
-    GUM_DESTRUCTOR ( BruteForceKL );
+  template <typename GUM_SCALAR> BruteForceKL<GUM_SCALAR>::~BruteForceKL() {
+    GUM_DESTRUCTOR(BruteForceKL);
   }
 
-  template<typename GUM_SCALAR>
-  void BruteForceKL<GUM_SCALAR>::_computeKL() {
-    _klPQ = _klQP = _hellinger = _bhattacharya = ( GUM_SCALAR ) 0.0;
+  template <typename GUM_SCALAR> void BruteForceKL<GUM_SCALAR>::_computeKL() {
+    _klPQ = _klQP = _hellinger = _bhattacharya = (GUM_SCALAR)0.0;
     _errorPQ = _errorQP = 0;
 
-    gum::Instantiation Ip; _p.completeInstantiation ( Ip );
-    gum::Instantiation Iq; _q.completeInstantiation ( Iq );
+    gum::Instantiation Ip;
+    _p.completeInstantiation(Ip);
+    gum::Instantiation Iq;
+    _q.completeInstantiation(Iq);
 
     // map between _p variables and _q variables (using name of vars)
-    HashTable<const DiscreteVariable*, const DiscreteVariable*> map;
+    HashTable<const DiscreteVariable *, const DiscreteVariable *> map;
 
-    for ( Idx ite = 0; ite < Ip.nbrDim(); ++ite ) {
-      map.insert ( &Ip.variable ( ite ), &_q.variableFromName ( Ip.variable ( ite ).name() ) );
+    for (Idx ite = 0; ite < Ip.nbrDim(); ++ite) {
+      map.insert(&Ip.variable(ite), &_q.variableFromName(Ip.variable(ite).name()));
     }
 
-    for ( Ip.setFirst(); ! Ip.end(); ++Ip ) {
-      Iq.setValsFrom ( map, Ip );
-      GUM_SCALAR pp = _p.jointProbability ( Ip );
-      GUM_SCALAR pq = _q.jointProbability ( Iq );
+    for (Ip.setFirst(); !Ip.end(); ++Ip) {
+      Iq.setValsFrom(map, Ip);
+      GUM_SCALAR pp = _p.jointProbability(Ip);
+      GUM_SCALAR pq = _q.jointProbability(Iq);
 
-      _hellinger += pow ( sqrt ( pp ) - sqrt ( pq ), 2 );
-      _bhattacharya += sqrt ( pp * pq );
+      _hellinger += pow(sqrt(pp) - sqrt(pq), 2);
+      _bhattacharya += sqrt(pp * pq);
 
-      if ( pp != ( GUM_SCALAR ) 0.0 ) {
-        if ( pq != ( GUM_SCALAR ) 0.0 ) {
-          _klPQ -= pp * log2 ( pq / pp );
+      if (pp != (GUM_SCALAR)0.0) {
+        if (pq != (GUM_SCALAR)0.0) {
+          _klPQ -= pp * log2(pq / pp);
         } else {
           _errorPQ++;
         }
       }
 
-      if ( pq != ( GUM_SCALAR ) 0.0 ) {
-        if ( pp != ( GUM_SCALAR ) 0.0 ) {
-          _klQP -= pq * log2 ( pp / pq );
+      if (pq != (GUM_SCALAR)0.0) {
+        if (pp != (GUM_SCALAR)0.0) {
+          _klQP -= pq * log2(pp / pq);
         } else {
           _errorQP++;
         }
       }
     }
 
-    _hellinger = sqrt ( _hellinger );
-    _bhattacharya = -log ( _bhattacharya );
+    _hellinger = sqrt(_hellinger);
+    _bhattacharya = -log(_bhattacharya);
   }
 
 } // namespace gum

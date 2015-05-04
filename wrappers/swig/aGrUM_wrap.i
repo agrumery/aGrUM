@@ -1,4 +1,3 @@
-
 /* INCLUDES */
 %{
 #include <iostream>
@@ -138,9 +137,9 @@
   using gum::NodeGraphPart::empty;
 }
 %enddef
-ADD_NODEGRAPHPART_API(DiGraph)
-ADD_NODEGRAPHPART_API(UndiGraph)
-ADD_NODEGRAPHPART_API(MixedGraph)
+ADD_NODEGRAPHPART_API(gum::DiGraph)
+ADD_NODEGRAPHPART_API(gum::UndiGraph)
+ADD_NODEGRAPHPART_API(gum::MixedGraph)
 
 %define ADD_EDGEGRAPHPART_API(classname)
 %extend classname {
@@ -150,10 +149,11 @@ ADD_NODEGRAPHPART_API(MixedGraph)
   using gum::EdgeGraphPart::eraseChildren;
   using gum::EdgeGraphPart::sizeEdges;
   using gum::EdgeGraphPart::emptyEdges;
+  using gum::EdgeGraphPart::eraseNeighbours;
 }
 %enddef
-ADD_EDGEGRAPHPART_API(UndiGraph)
-ADD_EDGEGRAPHPART_API(MixedGraph)
+ADD_EDGEGRAPHPART_API(gum::UndiGraph)
+ADD_EDGEGRAPHPART_API(gum::MixedGraph)
 
 %define ADD_ARCGRAPHPART_API(classname) 
 %extend classname {
@@ -165,8 +165,8 @@ ADD_EDGEGRAPHPART_API(MixedGraph)
   using gum::ArcGraphPart::emptyArcs;
 }
 %enddef
-ADD_ARCGRAPHPART_API(DiGraph);
-ADD_ARCGRAPHPART_API(MixedGraph);
+ADD_ARCGRAPHPART_API(gum::DiGraph);
+ADD_ARCGRAPHPART_API(gum::MixedGraph);
 
 
 
@@ -202,6 +202,38 @@ ADD_APPROXIMATIONSCHEME_API(gum::credal::CNLoopyPropagation<double>)
 
 %extend gum::learning::BNLearner {
   using gum::IApproximationSchemeConfiguration::messageApproximationScheme;
+
+  using gum::IApproximationScheme::setMaxTime;
+  using gum::IApproximationScheme::maxTime;
+  using gum::IApproximationScheme::currentTime;
+
+  using gum::learning::genericBNLearner::learnDAG;
+  using gum::learning::genericBNLearner::names;
+  using gum::learning::genericBNLearner::modalities;
+  using gum::learning::genericBNLearner::idFromName;
+  using gum::learning::genericBNLearner::nameFromId;
+  using gum::learning::genericBNLearner::useScoreAIC;
+  using gum::learning::genericBNLearner::useScoreBD;
+  using gum::learning::genericBNLearner::useScoreBDeu;
+  using gum::learning::genericBNLearner::useScoreBIC;
+  using gum::learning::genericBNLearner::useScoreK2;
+  using gum::learning::genericBNLearner::useScoreLog2Likelihood;
+  using gum::learning::genericBNLearner::setAprioriWeight;
+  using gum::learning::genericBNLearner::useNoApriori;
+  using gum::learning::genericBNLearner::useAprioriSmoothing;
+  using gum::learning::genericBNLearner::useAprioriDirichlet;
+  using gum::learning::genericBNLearner::useGreedyHillClimbing;
+  using gum::learning::genericBNLearner::useLocalSearchWithTabuList;
+  using gum::learning::genericBNLearner::useK2;
+  using gum::learning::genericBNLearner::setMaxIndegree;
+  using gum::learning::genericBNLearner::setSliceOrder;
+  using gum::learning::genericBNLearner::addForbiddenAr;
+  using gum::learning::genericBNLearner::eraseForbiddenArc;
+  using gum::learning::genericBNLearner::addMandatoryArc;
+  using gum::learning::genericBNLearner::addMandatoryArc;
+  using gum::learning::genericBNLearner::eraseMandatoryArc;
+
+  /*using gum::learning::genericBNLearner::setInitialDAG;*/
 }
 
 %include "forUsing.i"
@@ -236,7 +268,7 @@ namespace std {
 
 
 /* WRAPPED HEADERS (pyAgrum API) */
-%include <agrum/config.h>
+%import <agrum/config.h>
 %import <agrum/core/inline.h>
 
 %import <agrum/core/types.h>
@@ -302,6 +334,7 @@ namespace std {
 %import <agrum/graphs/listeners/diGraphListener.h>
 %import <agrum/BN/io/BIF/BIFReader.h>
 
+%import <agrum/learning/BNLearnUtils/genericBNLearner.h>
 %include <agrum/learning/BNLearner.h>
 
 %include <agrum/CN/credalNet.h>
@@ -345,3 +378,5 @@ namespace std {
 
 %template ( InfluenceDiagram_double) gum::InfluenceDiagram<double>;
 %template ( InfluenceDiagramInference_double) gum::InfluenceDiagramInference<double>;
+
+%template ( BNLearner_double) gum::learning::BNLearner<double>;

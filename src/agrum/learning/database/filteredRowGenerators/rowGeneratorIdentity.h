@@ -25,22 +25,18 @@
 #ifndef GUM_LEARNING_ROW_GENERATOR_IDENTITY_H
 #define GUM_LEARNING_ROW_GENERATOR_IDENTITY_H
 
-
 #include <agrum/learning/database/filteredRowGenerator.h>
-
 
 namespace gum {
 
-  
   namespace learning {
-
 
     /** @class RowGeneratorIdentity
      * @brief A filtered row generator that returns exactly the rows it gets
      * in input
      * @ingroup learning_group */
     class RowGeneratorIdentity : public FilteredRowGenerator {
-    public:
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -48,19 +44,18 @@ namespace gum {
       /// @{
 
       /// default constructor
-      RowGeneratorIdentity ();
+      RowGeneratorIdentity();
 
       /// copy constructor
-      RowGeneratorIdentity ( const RowGeneratorIdentity& );
+      RowGeneratorIdentity(const RowGeneratorIdentity &);
 
       /// move constructor
-      RowGeneratorIdentity ( RowGeneratorIdentity&& );
+      RowGeneratorIdentity(RowGeneratorIdentity &&);
 
       /// destructor
-      ~RowGeneratorIdentity ();
+      ~RowGeneratorIdentity();
 
       /// @}
-
 
       // ##########################################################################
       /// @name Operators
@@ -69,13 +64,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      RowGeneratorIdentity& operator= ( const RowGeneratorIdentity& );
+      RowGeneratorIdentity &operator=(const RowGeneratorIdentity &);
 
       /// move operator
-      RowGeneratorIdentity& operator= ( RowGeneratorIdentity&& );      
-      
+      RowGeneratorIdentity &operator=(RowGeneratorIdentity &&);
+
       /// @}
- 
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -84,26 +78,21 @@ namespace gum {
       /// @{
 
       /// generates new lines from those the generator gets in input
-      FilteredRow& generate ();
+      FilteredRow &generate();
 
       /// computes the rows it will provide in output
-      unsigned int _computeRows ();
+      unsigned int _computeRows();
 
       /// @}
-      
     };
-
 
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.inl>
 #endif /* GUM_NO_INLINE */
-
 
 #endif /* GUM_LEARNING_ROW_GENERATOR_IDENTITY_H */

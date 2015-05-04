@@ -6,15 +6,15 @@ from __future__ import print_function
 import sys
 
 # to force to use local pyAgrum for the tests (and not installed one)
-sys.path.insert(1,".")
+sys.path.insert(1,"..")
 
 import unittest
-#import SequenceTestSuite
 import VariablesTestSuite
 import BayesNetTestSuite
 import PythonBNListenerTestSuite
 import PotentialTestSuite
 import LazyPropagationTestSuite
+import JunctionTreeTestSuite
 import GibbsTestSuite
 import ICIModelsForBNTestSuite
 import BNLearnerTestSuite   
@@ -27,6 +27,7 @@ tests = unittest.TestSuite([
                             PythonBNListenerTestSuite.ts,
                             PotentialTestSuite.ts,
                             LazyPropagationTestSuite.ts, 
+                            JunctionTreeTestSuite.ts, 
                             GibbsTestSuite.ts,
                             ICIModelsForBNTestSuite.ts,
                             BNLearnerTestSuite.ts
@@ -55,7 +56,11 @@ runner.stream.writeln(result.separator2)
 failed, errored = map(len, (result.failures, result.errors)) 
 errs=failed+errored
 
-print("",end='\n',file=sys.stdout)
+import platform
+from sys import platform as os_platform
+
+print()
+print("pyAgrum on Python {0} - {1}".format(platform.python_version(),os_platform),end='\n',file=sys.stdout)
 print("## Profiling : %5.0f ms ##"%(1000.0*duration),end='\n',file=sys.stdout)
 print("Failed %d of %d tests"%(errs,result.testsRun),end='\n',file=sys.stdout)
 print("Success rate: %d%%"%(((result.testsRun-errs)*100)/result.testsRun),end='\n',file=sys.stdout)

@@ -42,12 +42,9 @@
 #include <agrum/config.h>
 #include <agrum/learning/database/DBTransform.h>
 
-
 namespace gum {
 
-  
   namespace learning {
-
 
     // ============================================================================
     // DB TRANSFORM IDENTITY
@@ -68,7 +65,7 @@ namespace gum {
      * unchanged, simply use DBTransformIdentity.
      */
     class DBTransformIdentity : public DBTransform {
-    public:
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -76,19 +73,18 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBTransformIdentity ();
+      DBTransformIdentity();
 
       /// copy constructor
-      DBTransformIdentity ( const DBTransformIdentity& );
+      DBTransformIdentity(const DBTransformIdentity &);
 
       /// move constructor
-      DBTransformIdentity ( DBTransformIdentity&& );
+      DBTransformIdentity(DBTransformIdentity &&);
 
       /// destructor
-      virtual ~DBTransformIdentity ();
+      virtual ~DBTransformIdentity();
 
       /// @}
-      
 
       // ##########################################################################
       /// @name Operators
@@ -97,13 +93,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTransformIdentity& operator= ( const DBTransformIdentity& );
+      DBTransformIdentity &operator=(const DBTransformIdentity &);
 
       /// move operator
-      DBTransformIdentity& operator= ( DBTransformIdentity&& );
+      DBTransformIdentity &operator=(DBTransformIdentity &&);
 
       /// @}
-
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -113,19 +108,14 @@ namespace gum {
 
       /// transforms a vector of DBrows
       /** @return true if the transformation could be performed successfully. */
-      virtual bool transform ( std::vector<DBRow>& db,
-                               std::vector<std::string> miss ) const;
+      virtual bool transform(std::vector<DBRow> &db,
+                             std::vector<std::string> miss) const;
 
       /// @}
-
     };
-    
-    
+
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
-    
 
 #endif /* GUM_LEARNING_DB_TRANSFORM_IDENTITY_H */

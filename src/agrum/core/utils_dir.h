@@ -41,34 +41,34 @@ namespace gum {
   class Directory {
 
     public:
-      //! Return true if \a directory is a valid directory, false otherwise.
-      static bool isDir ( const std::string& directory );
+    //! Return true if \a directory is a valid directory, false otherwise.
+    static bool isDir(const std::string &directory);
 
-      //! Contructor
-      Directory();
-      //! Contructor
-      Directory ( const std::string& directory );
-      //! Contructor
-      Directory ( const Directory& dir );
-      //! Destructor
-      ~Directory();
+    //! Contructor
+    Directory();
+    //! Contructor
+    Directory(const std::string &directory);
+    //! Contructor
+    Directory(const Directory &dir);
+    //! Destructor
+    ~Directory();
 
-      //! Return true if directory has been opened, false otherwise.
-      bool isValid() const;
-      //! Return directory content.
-      std::vector<std::string> entries() const;
-      //! Return directory parent.
-      Directory parent() const;
-      //! Return directory path.
-      std::string path() const;
-      //! Return directory absolute path.
-      std::string absolutePath() const;
+    //! Return true if directory has been opened, false otherwise.
+    bool isValid() const;
+    //! Return directory content.
+    std::vector<std::string> entries() const;
+    //! Return directory parent.
+    Directory parent() const;
+    //! Return directory path.
+    std::string path() const;
+    //! Return directory absolute path.
+    std::string absolutePath() const;
 
-      Directory& operator= ( const Directory& d );
+    Directory &operator=(const Directory &d);
 
     private:
-      std::string m_dirName;
-      mutable DIR* m_dirPtr;
+    std::string m_dirName;
+    mutable DIR *m_dirPtr;
 
   }; // END CLASS DIRECTORY
 

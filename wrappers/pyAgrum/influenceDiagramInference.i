@@ -11,7 +11,13 @@ def setEvidence(self, evidces):
 
     # set evidences
     self.list_pot = []
-    for var_name, evidce in evidces.iteritems():
+
+    try:
+      items=evidces.iteritems()
+    except AttributeError:
+      items=evidces.items()
+
+    for var_name, evidce in items:
         pot = Potential_double()
 
         if isinstance(var_name, int):

@@ -26,13 +26,12 @@
 namespace gum {
 
   /// returns the aGrUM's seed used by the std::generators
-  unsigned int& randomGeneratorSeed ( unsigned int seed ) {
-    static unsigned int gum_seed =    
-      std::chrono::system_clock::now().time_since_epoch().count();
-    if ( seed ) gum_seed = seed;
+  unsigned int &randomGeneratorSeed(unsigned int seed) {
+    static unsigned int gum_seed =
+        std::chrono::system_clock::now().time_since_epoch().count();
+    if (seed)
+      gum_seed = seed;
     return gum_seed;
   }
 
 } /* namespace gum */
-
-

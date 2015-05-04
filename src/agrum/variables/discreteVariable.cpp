@@ -24,23 +24,20 @@
 #include <agrum/variables/discreteVariable.inl>
 #endif /* GUM_NO_INLINE */
 
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
 namespace gum {
-
 
   const std::string DiscreteVariable::toString() const {
     std::stringstream s;
     s << name() << "<";
 
-    if ( domainSize() > 0 ) {
-      s << label ( 0 );
+    if (domainSize() > 0) {
+      s << label(0);
 
-      for ( Idx i = 1; i < domainSize(); ++i ) {
+      for (Idx i = 1; i < domainSize(); ++i) {
         s << ",";
-        s << label ( i );
+        s << label(i);
       }
     }
 
@@ -49,18 +46,13 @@ namespace gum {
     return s.str();
   }
 
-
   /// for friendly displaying the content of the variable
 
-  std::ostream& operator<< ( std::ostream& s, const DiscreteVariable& DRV ) {
+  std::ostream &operator<<(std::ostream &s, const DiscreteVariable &DRV) {
     s << DRV.toString();
     return s;
   }
 
-
 } /* namespace gum */
 
-
-
-#endif    // DOXYGEN_SHOULD_SKIP_THIS
-
+#endif // DOXYGEN_SHOULD_SKIP_THIS

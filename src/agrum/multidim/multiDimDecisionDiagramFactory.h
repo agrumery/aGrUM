@@ -34,65 +34,70 @@
 #include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
 #include <agrum/multidim/multiDimDecisionDiagram.h>
 
-
 namespace gum {
 
-  template< typename GUM_SCALAR, template<class> class IApproximationPolicy>
+  template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
   class MultiDimDecisionDiagram;
 
   /**
-   * @class MultiDimDecisionDiagramFactoryBase multiDimDecisionDiagramFactoryBase.h <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
+   * @class MultiDimDecisionDiagramFactoryBase multiDimDecisionDiagramFactoryBase.h
+   *<agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
    * @brief Class implementingting an algebraic decision diagram factory
    * @ingroup multidim_group
    *
    */
-  template<typename GUM_SCALAR, template <class> class IApproximationPolicy = ExactPolicy>
-  class MultiDimDecisionDiagramFactory : public MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>, public IApproximationPolicy<GUM_SCALAR> {
+  template <typename GUM_SCALAR,
+            template <class> class IApproximationPolicy = ExactPolicy>
+  class MultiDimDecisionDiagramFactory
+      : public MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>,
+        public IApproximationPolicy<GUM_SCALAR> {
 
-    public :
+    public:
+    // ===========================================================================
+    /// @name Constructors, Destructors.
+    // ===========================================================================
+    /// @{
 
-      // ===========================================================================
-      /// @name Constructors, Destructors.
-      // ===========================================================================
-      /// @{
+    /**
+     * Default constructor.
+     */
+    MultiDimDecisionDiagramFactory();
 
-      /**
-       * Default constructor.
-       */
-      MultiDimDecisionDiagramFactory();
+    /**
+     * clone constructor.
+     * @arg md is used for initialize approximation policy
+     */
+    MultiDimDecisionDiagramFactory(const IApproximationPolicy<GUM_SCALAR> &md);
 
-      /**
-       * clone constructor.
-       * @arg md is used for initialize approximation policy
-       */
-      MultiDimDecisionDiagramFactory ( const IApproximationPolicy<GUM_SCALAR>& md );
+    /**
+     * Destructor.
+     * @warning : this will not destroy properties on node. They have to be removed
+     * on multidim destruction
+     */
+    ~MultiDimDecisionDiagramFactory();
 
-      /**
-       * Destructor.
-       * @warning : this will not destroy properties on node. They have to be removed on multidim destruction
-       */
-      ~MultiDimDecisionDiagramFactory();
+    /// @}
 
-      /// @}
+    /**
+     * Returns the multidimDecisionDiagram made
+     */
+    MultiDimDecisionDiagramBase<GUM_SCALAR> *
+    getMultiDimDecisionDiagram(bool fillWithDefaultArc = true,
+                               GUM_SCALAR defaultValue = 0, bool doCompress = false);
 
-      /**
-       * Returns the multidimDecisionDiagram made
-       */
-      MultiDimDecisionDiagramBase<GUM_SCALAR>* getMultiDimDecisionDiagram ( bool fillWithDefaultArc = true, GUM_SCALAR defaultValue = 0, bool doCompress = false );
-
-      /// Convert value to approximation representation
-      inline GUM_SCALAR fromExact ( const GUM_SCALAR& value ) const { return IApproximationPolicy<GUM_SCALAR>::fromExact ( value ); };
+    /// Convert value to approximation representation
+    inline GUM_SCALAR fromExact(const GUM_SCALAR &value) const {
+      return IApproximationPolicy<GUM_SCALAR>::fromExact(value);
+    };
 
     private:
-      void __mergedNode ( NodeId from, NodeId to );
+    void __mergedNode(NodeId from, NodeId to);
   };
 
 } /* namespace gum */
 
-
 #include <agrum/multidim/multiDimDecisionDiagramFactory.tcc>
 
 #endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H */
-
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

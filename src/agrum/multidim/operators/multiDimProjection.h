@@ -65,113 +65,98 @@
 #ifndef GUM_MULTI_DIM_PROJECTION_H
 #define GUM_MULTI_DIM_PROJECTION_H
 
-
 #include <utility>
 #include <agrum/core/set.h>
 #include <agrum/variables/discreteVariable.h>
 
-
 namespace gum {
 
-
-  template< typename GUM_SCALAR, template<typename> class TABLE >
+  template <typename GUM_SCALAR, template <typename> class TABLE>
   class MultiDimProjection {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /// default constructor
-      MultiDimProjection ( TABLE<GUM_SCALAR>*
-                           ( *proj )
-                           ( const TABLE<GUM_SCALAR>&,
-                             const Set<const DiscreteVariable*>& ) );
+    /// default constructor
+    MultiDimProjection(TABLE<GUM_SCALAR> *(*proj)(
+        const TABLE<GUM_SCALAR> &, const Set<const DiscreteVariable *> &));
 
-      /// copy constructor
-      MultiDimProjection ( const MultiDimProjection<GUM_SCALAR, TABLE>& );
+    /// copy constructor
+    MultiDimProjection(const MultiDimProjection<GUM_SCALAR, TABLE> &);
 
-      /// destructor
-      virtual ~MultiDimProjection();
+    /// destructor
+    virtual ~MultiDimProjection();
 
-      /// virtual constructor
-      /** @return a new fresh MultiDimCombinator with the same projection
-       * function. */
-      virtual MultiDimProjection<GUM_SCALAR, TABLE>* newFactory() const;
+    /// virtual constructor
+    /** @return a new fresh MultiDimCombinator with the same projection
+     * function. */
+    virtual MultiDimProjection<GUM_SCALAR, TABLE> *newFactory() const;
 
-      /// @}
+    /// @}
 
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
 
-      // ############################################################################
-      /// @name Accessors/Modifiers
-      // ############################################################################
-      /// @{
+    /// creates and returns the projection of the table over a subset of its vars
+    /** @return a new freshly created TABLE which is the result of the projection
+     * of the TABLE passed in argument over the set of variables NOT IN del_vars
+     * @warning If del_vars is precisely equal to the variables of table, the
+     * result is an empty table. */
+    TABLE<GUM_SCALAR> *project(const TABLE<GUM_SCALAR> &table,
+                               const Set<const DiscreteVariable *> &del_vars);
+    void project(TABLE<GUM_SCALAR> &container, const TABLE<GUM_SCALAR> &table,
+                 const Set<const TABLE<GUM_SCALAR> *> &del_vars);
 
-      /// creates and returns the projection of the table over a subset of its vars
-      /** @return a new freshly created TABLE which is the result of the projection
-       * of the TABLE passed in argument over the set of variables NOT IN del_vars
-       * @warning If del_vars is precisely equal to the variables of table, the
-       * result is an empty table. */
-      TABLE<GUM_SCALAR>* project ( const TABLE<GUM_SCALAR>& table,
-                                   const Set<const DiscreteVariable*>& del_vars );
-      void project ( TABLE<GUM_SCALAR>& container,
-                     const TABLE<GUM_SCALAR>& table,
-                     const Set<const TABLE<GUM_SCALAR>*>& del_vars );
+    /// changes the function used for projecting TABLES
+    void setProjectFunction(TABLE<GUM_SCALAR> *(*proj)(
+        const TABLE<GUM_SCALAR> &, const Set<const DiscreteVariable *> &));
 
-      /// changes the function used for projecting TABLES
-      void setProjectFunction ( TABLE<GUM_SCALAR>*
-                                ( *proj )
-                                ( const TABLE<GUM_SCALAR>&,
-                                  const Set<const DiscreteVariable*>& ) );
+    /// returns the projection function currently used by the projector
+    TABLE<GUM_SCALAR> *(*projectFunction())(const TABLE<GUM_SCALAR> &,
+                                            const Set<const DiscreteVariable *> &);
 
-      /// returns the projection function currently used by the projector
-      TABLE<GUM_SCALAR>* ( * projectFunction() )
-      ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& );
+    /** @brief returns a rough estimate of the number of operations that will be
+     * performed to compute the projection */
+    float nbOperations(const TABLE<GUM_SCALAR> &table,
+                       const Set<const DiscreteVariable *> &del_vars) const;
+    float nbOperations(const Sequence<const DiscreteVariable *> &vars,
+                       const Set<const DiscreteVariable *> &del_vars) const;
 
-      /** @brief returns a rough estimate of the number of operations that will be
-       * performed to compute the projection */
-      float nbOperations ( const TABLE<GUM_SCALAR>& table,
-                           const Set<const DiscreteVariable*>& del_vars ) const;
-      float nbOperations ( const Sequence<const DiscreteVariable*>& vars,
-                           const Set<const DiscreteVariable*>& del_vars ) const;
+    /// returns the memory consumption used during the projection
+    /** Actually, this function does not return a precise account of the memory
+     * used by the multidimProjection but a rough estimate based on the size
+     * of the table involved in the projection.
+     * @return a pair of memory consumption: the first one is the maximum
+     * amount of memory used during the combination and the second one is the
+     * amount of memory still used at the end of the function ( the memory used by
+     * the resulting table ) */
+    std::pair<long, long>
+    memoryUsage(const TABLE<GUM_SCALAR> &table,
+                const Set<const DiscreteVariable *> &del_vars) const;
+    std::pair<long, long>
+    memoryUsage(const Sequence<const DiscreteVariable *> &vars,
+                const Set<const DiscreteVariable *> &del_vars) const;
 
-      /// returns the memory consumption used during the projection
-      /** Actually, this function does not return a precise account of the memory
-       * used by the multidimProjection but a rough estimate based on the size
-       * of the table involved in the projection.
-       * @return a pair of memory consumption: the first one is the maximum
-       * amount of memory used during the combination and the second one is the
-       * amount of memory still used at the end of the function ( the memory used by
-       * the resulting table ) */
-      std::pair<long, long>
-      memoryUsage ( const TABLE<GUM_SCALAR>& table,
-                    const Set<const DiscreteVariable*>& del_vars ) const;
-      std::pair<long, long>
-      memoryUsage ( const Sequence<const DiscreteVariable*>& vars,
-                    const Set<const DiscreteVariable*>& del_vars ) const;
-
-      /// @}
-
+    /// @}
 
     protected:
-      /// the projection function actually used
-      TABLE<GUM_SCALAR>* ( *_proj ) ( const TABLE<GUM_SCALAR>&,
-                                      const Set<const DiscreteVariable*>& );
+    /// the projection function actually used
+    TABLE<GUM_SCALAR> *(*_proj)(const TABLE<GUM_SCALAR> &,
+                                const Set<const DiscreteVariable *> &);
 
     private:
-      /// forbid copy operators
-      MultiDimProjection<GUM_SCALAR, TABLE>& operator=
-      ( const MultiDimProjection<GUM_SCALAR, TABLE>& );
-
+    /// forbid copy operators
+    MultiDimProjection<GUM_SCALAR, TABLE> &
+    operator=(const MultiDimProjection<GUM_SCALAR, TABLE> &);
   };
 
-
 } /* namespace gum */
-
 
 // always include the template implementation
 #include <agrum/multidim/operators/multiDimProjection.tcc>
 
-
 #endif /* GUM_MULTI_DIM_PROJECTION_H */
-

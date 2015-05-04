@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 /**
  * @file
  * @brief Source implementation of SimpleCPTDisturber.
@@ -34,9 +33,7 @@
 #include <agrum/config.h>
 #include <agrum/BN/generator/ICPTDisturber.h>
 
-
 namespace gum {
-
 
   /** @class SimpleCPTDisturber
    * @brief Class for disturbing Conditional Probability Tables.
@@ -45,46 +42,52 @@ namespace gum {
    * This class implements a CPTGenerator CPT generation algorithm.
    */
   template <typename GUM_SCALAR>
-  class SimpleCPTDisturber: public ICPTDisturber<GUM_SCALAR> {
+  class SimpleCPTDisturber : public ICPTDisturber<GUM_SCALAR> {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructor
-      // ############################################################################
-      /// @{
-      /**
-       * Default constructor.
-       */
-      SimpleCPTDisturber();
+    // ############################################################################
+    /// @name Constructors / Destructor
+    // ############################################################################
+    /// @{
+    /**
+     * Default constructor.
+     */
+    SimpleCPTDisturber();
 
-      /**
-       * Destructor.
-       */
-      virtual ~SimpleCPTDisturber();
-      /// @}
+    /**
+     * Destructor.
+     */
+    virtual ~SimpleCPTDisturber();
+    /// @}
 
-      // ############################################################################
-      /// @name CPT disturbing methods
-      // ############################################################################
-      /// @{
-      /**
-       * Disturb a CPT using GUM_SCALAR when removing parent varIdi.
-       * @param varIdi The variable id parent of the CPT owner.
-       * @param varIdj The variable on the CPT owner.
-       * @param bayesNet the Bayesian Network.
-       * @param cptCopy copy of the CPT before reduction.
-       * @param marg of the inference before reduction on the node varIdi.
-       */
-      virtual void disturbReducCPT ( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, Potential<GUM_SCALAR>& marg );
+    // ############################################################################
+    /// @name CPT disturbing methods
+    // ############################################################################
+    /// @{
+    /**
+     * Disturb a CPT using GUM_SCALAR when removing parent varIdi.
+     * @param varIdi The variable id parent of the CPT owner.
+     * @param varIdj The variable on the CPT owner.
+     * @param bayesNet the Bayesian Network.
+     * @param cptCopy copy of the CPT before reduction.
+     * @param marg of the inference before reduction on the node varIdi.
+     */
+    virtual void disturbReducCPT(NodeId varIdi, NodeId varIdj,
+                                 BayesNet<GUM_SCALAR> &bayesNet,
+                                 Potential<GUM_SCALAR> &cptCopy,
+                                 Potential<GUM_SCALAR> &marg);
 
-      /**
-       * Disturb a CPT using GUM_SCALAR when inserting a new parent varIdi.
-       * @param varIdi The variable id parent of the CPT owner.
-       * @param varIdj A reference on the CPT owner.
-       * @param bayesNet the Bayesian Network.
-       * @param cptCopy copy of the CPT before augmentation.
-       * @param variation degree of variation from the initial probability.
-       */
-      virtual void disturbAugmCPT ( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, GUM_SCALAR variation );
+    /**
+     * Disturb a CPT using GUM_SCALAR when inserting a new parent varIdi.
+     * @param varIdi The variable id parent of the CPT owner.
+     * @param varIdj A reference on the CPT owner.
+     * @param bayesNet the Bayesian Network.
+     * @param cptCopy copy of the CPT before augmentation.
+     * @param variation degree of variation from the initial probability.
+     */
+    virtual void disturbAugmCPT(NodeId varIdi, NodeId varIdj,
+                                BayesNet<GUM_SCALAR> &bayesNet,
+                                Potential<GUM_SCALAR> &cptCopy,
+                                GUM_SCALAR variation);
   };
 
   extern template class SimpleCPTDisturber<float>;

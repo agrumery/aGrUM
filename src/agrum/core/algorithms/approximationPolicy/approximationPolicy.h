@@ -35,56 +35,55 @@
 namespace gum {
 
   /**
-   * @class ApproximationPolicy approximationPolicy.h <agrum/multidim/approximationPolicy.h>
+   * @class ApproximationPolicy approximationPolicy.h
+   *<agrum/multidim/approximationPolicy.h>
    * @brief Mother class for all approximation policy classes
    * @ingroup multidim_group
    *
    */
-  template<typename GUM_SCALAR>
-  class ApproximationPolicy {
+  template <typename GUM_SCALAR> class ApproximationPolicy {
 
-    public :
+    public:
+    // ===========================================================================
+    /// @name Constructors / Destructors
+    // ===========================================================================
+    /// @{
 
-      // ===========================================================================
-      /// @name Constructors / Destructors
-      // ===========================================================================
-      /// @{
+    /**
+     * Default constructor.
+     */
+    ApproximationPolicy(){};
 
-      /**
-       * Default constructor.
-       */
-      ApproximationPolicy( ) {  };
+    /**
+     * copy constructor.
+     */
+    ApproximationPolicy(const ApproximationPolicy<GUM_SCALAR> *md){};
 
-      /**
-       * copy constructor.
-       */
-      ApproximationPolicy ( const ApproximationPolicy<GUM_SCALAR>* md ) { };
+    /// @}
 
-      /// @}
+    // ===========================================================================
+    /// @name Accessors/Modifiers
+    // ===========================================================================
+    /// @{
 
-      // ===========================================================================
-      /// @name Accessors/Modifiers
-      // ===========================================================================
-      /// @{
+    /// Convert value to his approximation. This method (at least in release mode,
+    /// should not verify the limits
+    virtual GUM_SCALAR fromExact(const GUM_SCALAR &value) const = 0;
 
-      /// Convert value to his approximation. This method (at least in release mode, should not verify the limits
-      virtual GUM_SCALAR fromExact ( const GUM_SCALAR& value ) const = 0;
+    virtual void combineAdd(const ApproximationPolicy<GUM_SCALAR> *ap) = 0;
 
-      virtual void combineAdd ( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
+    virtual void combineSub(const ApproximationPolicy<GUM_SCALAR> *ap) = 0;
 
-      virtual void combineSub ( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
+    virtual void combineMult(const ApproximationPolicy<GUM_SCALAR> *ap) = 0;
 
-      virtual void combineMult ( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
+    virtual void combineDiv(const ApproximationPolicy<GUM_SCALAR> *ap) = 0;
 
-      virtual void combineDiv ( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
+    virtual void combineMax(const ApproximationPolicy<GUM_SCALAR> *ap) = 0;
 
-      virtual void combineMax ( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
+    virtual void combineMin(const ApproximationPolicy<GUM_SCALAR> *ap) = 0;
 
-      virtual void combineMin ( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
-
-      /// @}
+    /// @}
   };
-
 }
 
 #endif /* GUM_APPROXIMATION_POLICY_H */

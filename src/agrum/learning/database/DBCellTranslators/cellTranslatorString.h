@@ -34,19 +34,16 @@
 #include <agrum/core/bijection.h>
 #include <agrum/learning/database/DBCellTranslator.h>
 
-
 namespace gum {
 
-  
   namespace learning {
-
 
     /** @class CellTranslatorString
      * @ingroup learning_group
      * @brief A cell translator translating DBCells that contain string
      */
-    class CellTranslatorString : public DBCellTranslator<1,1> {
-    public:
+    class CellTranslatorString : public DBCellTranslator<1, 1> {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -76,25 +73,23 @@ namespace gum {
        * useful for learning non-stationary Bayesian networks.
        * @param check_database indicates whether we shall parse the database to
        * initialize the translator. */
-      CellTranslatorString
-      ( Sequence<std::string> values = Sequence<std::string> (),
-        bool check_database = true );
+      CellTranslatorString(Sequence<std::string> values = Sequence<std::string>(),
+                           bool check_database = true);
 
       /// copy constructor
-      CellTranslatorString ( const CellTranslatorString& from );
+      CellTranslatorString(const CellTranslatorString &from);
 
       /// move constructor
-      CellTranslatorString ( CellTranslatorString&& from );
+      CellTranslatorString(CellTranslatorString &&from);
 
       /// virtual copy constructor
-      virtual CellTranslatorString* copyFactory () final;
- 
+      virtual CellTranslatorString *copyFactory() final;
+
       /// destructor
-      virtual ~CellTranslatorString ();
-      
+      virtual ~CellTranslatorString();
+
       /// @}
 
-      
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
@@ -102,16 +97,13 @@ namespace gum {
       /// @{
 
       /// copy operator
-      CellTranslatorString&
-      operator= ( const CellTranslatorString& from );
+      CellTranslatorString &operator=(const CellTranslatorString &from);
 
       /// move operator
-      CellTranslatorString&
-      operator= ( CellTranslatorString&& from );
+      CellTranslatorString &operator=(CellTranslatorString &&from);
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -119,29 +111,28 @@ namespace gum {
       /// @{
 
       /// perform the translation
-      void translate ();
+      void translate();
 
       /// initialize the cell translator by a first database parsing
       /** If initialization is required, this method is called for each row
        * of the database used for initialization. */
-      void initialize ();
+      void initialize();
 
       /// perform a post initialization after the database parsing
-      void postInitialize ();
+      void postInitialize();
 
       /// add the number of modalities discovered in the database into a vector
-      void modalities ( std::vector<unsigned int>& modal ) const noexcept;
+      void modalities(std::vector<unsigned int> &modal) const noexcept;
 
       /// returns whether the translator needs a DB parsing to initialize itself
-      bool requiresInitialization () const noexcept;
+      bool requiresInitialization() const noexcept;
 
       /// returns a given value as stored within the database
-      std::string translateBack ( unsigned int col,
-                                  unsigned int translated_val ) const;
+      std::string translateBack(unsigned int col, unsigned int translated_val) const;
 
       /// returns the name of the variable(s) the translator has processed
-      void variableNames ( const std::vector<std::string>& db_var,
-                           std::vector<std::string>& output_vars ) const;
+      void variableNames(const std::vector<std::string> &db_var,
+                         std::vector<std::string> &output_vars) const;
 
       /// specify the set of possible values (to do before creating the row filter)
       /** @param values The user can specify the values which the cell translator
@@ -169,38 +160,32 @@ namespace gum {
        * @warning this method should be used before the translator is copied into
        * the DBRowFilter, i.e., before the latter is created (as the creation of
        * the row filter induces the parsing of the database). */
-      void setUserValues ( const Sequence<std::string>& values,
-                           bool check_database = true );
+      void setUserValues(const Sequence<std::string> &values,
+                         bool check_database = true);
 
       /// @}
-      
 
-    private:
+      private:
       /// the next max translated value
-      unsigned int __max_value { 0 };
-      
+      unsigned int __max_value{0};
+
       /// the set of strings (actually their indices) found so far
-      Bijection<int,unsigned int> __strings;
+      Bijection<int, unsigned int> __strings;
 
       /// the sequence of values specified by the user
-      Sequence<std::string>* __user_values { nullptr };
+      Sequence<std::string> *__user_values{nullptr};
 
       /// indicates whether the translator shall be initialized by DB parsing
-      bool __check_database { true };
-      
+      bool __check_database{true};
     };
-
 
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorString.inl>
 #endif /* GUM_NO_INLINE */
-
 
 #endif /* GUM_LEARNING_CELL_TRANSLATOR_STRING_H */

@@ -34,9 +34,7 @@
 
 namespace gum {
 
-  
   namespace learning {
-
 
     // ============================================================================
     // DB TRANSFORM UNIFIER
@@ -47,7 +45,7 @@ namespace gum {
      * same type (except for missing values) throughout the database
      */
     class DBTransformUnifier : public DBTransform {
-    public:
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -55,19 +53,18 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBTransformUnifier ();
+      DBTransformUnifier();
 
       /// copy constructor
-      DBTransformUnifier ( const DBTransformUnifier& );
+      DBTransformUnifier(const DBTransformUnifier &);
 
       /// move constructor
-      DBTransformUnifier ( DBTransformUnifier&& );
+      DBTransformUnifier(DBTransformUnifier &&);
 
       /// destructor
-      virtual ~DBTransformUnifier ();
+      virtual ~DBTransformUnifier();
 
       /// @}
-      
 
       // ##########################################################################
       /// @name Operators
@@ -76,13 +73,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTransformUnifier& operator= ( const DBTransformUnifier& );
+      DBTransformUnifier &operator=(const DBTransformUnifier &);
 
       /// move operator
-      DBTransformUnifier& operator= ( DBTransformUnifier&& );
+      DBTransformUnifier &operator=(DBTransformUnifier &&);
 
       /// @}
-
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -91,25 +87,19 @@ namespace gum {
       /// @{
 
       /// indicates whether a BDCell contains a missing value
-      bool isMissing ( const DBCell& cell,
-                       const std::vector<std::string>& miss ) const noexcept;
- 
+      bool isMissing(const DBCell &cell, const std::vector<std::string> &miss) const
+          noexcept;
+
       /// transforms a vector of DBrows to unify the types of its columns
       /** @return true if the unification could be performed successfully. */
-      bool
-      transform ( std::vector<DBRow>& db,
-                  std::vector<std::string> miss = { "?", "N/A", "n/a" } ) const;
+      bool transform(std::vector<DBRow> &db,
+                     std::vector<std::string> miss = {"?", "N/A", "n/a"}) const;
 
       /// @}
-
     };
-    
-    
+
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
-    
 
 #endif /* GUM_LEARNING_DB_TRANSFORM_UNIFIER_H */

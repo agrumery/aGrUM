@@ -85,21 +85,13 @@
 
 namespace gum {
 
-
 #define GUM_HEAP_DEFAULT_CAPACITY 10
-
-
 
   // templates provided by this file
 
-
   template <typename Val, typename Cmp, typename Alloc> class Heap;
   template <typename Val, typename Cmp, typename Alloc>
-  std::ostream& operator<< ( std::ostream&, const Heap<Val,Cmp,Alloc>& );
-
-
-
-
+  std::ostream &operator<<(std::ostream &, const Heap<Val, Cmp, Alloc> &);
 
   /* =========================================================================== */
   /* ===                      SIMPLE HEAP DATA STRUCTURE                     === */
@@ -165,23 +157,23 @@ namespace gum {
   /* =========================================================================== */
 
   template <typename Val, typename Cmp = std::less<Val>,
-            typename Alloc = std::allocator<Val> >
+            typename Alloc = std::allocator<Val>>
   class Heap {
-  public:
+    public:
     /// types for STL compliance
     /// @{
-    using value_type      = Val;
-    using reference       = Val&;
-    using const_reference = const Val&;
-    using pointer         = Val*;
-    using const_pointer   = const Val*;
-    using size_type       = std::size_t;
+    using value_type = Val;
+    using reference = Val &;
+    using const_reference = const Val &;
+    using pointer = Val *;
+    using const_pointer = const Val *;
+    using size_type = std::size_t;
     using difference_type = std::ptrdiff_t;
-    using allocator_type  = Alloc;
+    using allocator_type = Alloc;
     // using iterator        = HeapIterator<Val>;
     // using const_iterator  = HeapIterator<Val>;
     /// @}
-    
+
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -193,27 +185,24 @@ namespace gum {
      * be nearer than e2 to the top of the heap.
      * @param capacity the size of the internal data structures containing the
      * elements (could be for instance vectors or hashtables) */
-    explicit Heap ( Cmp compare = Cmp(),
-                    Size capacity = GUM_HEAP_DEFAULT_CAPACITY );
+    explicit Heap(Cmp compare = Cmp(), Size capacity = GUM_HEAP_DEFAULT_CAPACITY);
 
     /// initializer list constructor
-    explicit Heap ( std::initializer_list<Val> list );
+    explicit Heap(std::initializer_list<Val> list);
 
     /// copy constructor
-    Heap ( const Heap<Val,Cmp,Alloc>& from );
+    Heap(const Heap<Val, Cmp, Alloc> &from);
 
     /// generalized copy constructor
-    template <typename OtherAlloc>
-    Heap ( const Heap<Val,Cmp,OtherAlloc>& from );
+    template <typename OtherAlloc> Heap(const Heap<Val, Cmp, OtherAlloc> &from);
 
     /// move constructor
-    Heap ( Heap<Val,Cmp,Alloc>&& from ) noexcept;
+    Heap(Heap<Val, Cmp, Alloc> &&from) noexcept;
 
     /// destructor
-    ~Heap ();
+    ~Heap();
 
     /// @}
-
 
     // ############################################################################
     /// @name Operators
@@ -224,28 +213,27 @@ namespace gum {
     /** When a problem occurs during the copy (for instance when not enough memory
      * is available), the operator guarantees that the heap stays in a coherent
      * state. Actually, the heap becomes empty. An exception is then thrown. */
-    Heap<Val,Cmp,Alloc>& operator= ( const Heap<Val,Cmp,Alloc>& );
+    Heap<Val, Cmp, Alloc> &operator=(const Heap<Val, Cmp, Alloc> &);
 
     /// generalized copy operator
     /** When a problem occurs during the copy (for instance when not enough memory
      * is available), the operator guarantees that the heap stays in a coherent
      * state. Actually, the heap becomes empty. An exception is then thrown. */
     template <typename OtherAlloc>
-    Heap<Val,Cmp,Alloc>& operator= ( const Heap<Val,Cmp,OtherAlloc>& );
+    Heap<Val, Cmp, Alloc> &operator=(const Heap<Val, Cmp, OtherAlloc> &);
 
     /// move operator
     /** When a problem occurs during the copy (for instance when not enough memory
      * is available), the operator guarantees that the heap stays in a coherent
      * state. Actually, the heap becomes empty. An exception is then thrown. */
-    Heap<Val,Cmp,Alloc>& operator= ( Heap<Val,Cmp,Alloc>&& ) noexcept;
-    
+    Heap<Val, Cmp, Alloc> &operator=(Heap<Val, Cmp, Alloc> &&) noexcept;
+
     /// returns the element at index index_elt from the heap
     /** @throw NotFound exception is thrown if there is no element
      * at position "index_elt". */
-    const Val& operator[] ( Size index_elt ) const;
+    const Val &operator[](Size index_elt) const;
 
     /// @}
-
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -254,16 +242,16 @@ namespace gum {
 
     /// returns the element at the top of the heap
     /** @throw NotFound exception is thrown if the heap is empty */
-    const Val& top () const;
+    const Val &top() const;
 
     /// removes the top element from the heap and return it
     /** @throw NotFound exception is thrown if the heap is empty */
-    Val pop ();
+    Val pop();
 
     /// removes the top of the heap (but does not return it)
     /** If the heap is empty, it does nothing (in particular, it does not throw
      * any exception). */
-    void eraseTop ();
+    void eraseTop();
 
     /// removes the element positioned at "index" from the heap
     /** If the element cannot be found, the function returns without throwing any
@@ -277,34 +265,32 @@ namespace gum {
      * incrementing the index by 1 each time we jump to another node, we get a
      * unique index for each element. This is precisely what the index passed in
      * argument of the function represents. */
-    void eraseByPos ( Size index );
+    void eraseByPos(Size index);
 
     /// removes a given element from the heap (but does not return it)
     /** If the element cannot be found, the function returns without throwing any
      * exception.
      * @param val the element we wish to remove. If the heap contains several times
      * this element, then the one with the smallest index is removed. */
-    void erase ( const Val& val );
+    void erase(const Val &val);
 
     /// inserts a new element (actually a copy) in the heap and returns its index
-    Size insert ( const Val& val );
+    Size insert(const Val &val);
 
     /// inserts a new element (by moving it) in the heap and returns its index
-    Size insert ( Val&& val );
+    Size insert(Val &&val);
 
-    /// emplace a new element in the heap and returns its index 
-    template <typename... Args>
-    Size emplace (Args&&... args);
+    /// emplace a new element in the heap and returns its index
+    template <typename... Args> Size emplace(Args &&... args);
 
     /// returns the number of elements in the heap
     Size size() const noexcept;
 
     /// indicates whether the heap is empty
-    bool empty () const noexcept;
+    bool empty() const noexcept;
 
     /// indicates whether the heap contains a given value
-    bool contains ( const Val& ) const;
-
+    bool contains(const Val &) const;
 
     /// displays the content of the heap
 
@@ -312,12 +298,10 @@ namespace gum {
 
     /// @}
 
-
     // ############################################################################
     /// @name Fine tuning
     // ############################################################################
     /// @{
-
 
     /// returns the size of the internal structure storing the heap
     Size capacity() const noexcept;
@@ -325,33 +309,27 @@ namespace gum {
     /// changes the size of the the internal structure storing the heap
     /** If the new size does not enable the heap to contain the elements it
      * currently contains, then the resizing does not occur. */
-    void resize ( Size new_size );
+    void resize(Size new_size);
 
     /// @}
 
-
-  private:
+    private:
     /// an array storing all the elements of the heap
-    std::vector<Val,Alloc> __heap;
+    std::vector<Val, Alloc> __heap;
 
     /// the number of elements in the heap
-    Size __nb_elements { 0 };
+    Size __nb_elements{0};
 
     /// comparison function
     Cmp __cmp;
 
-
     /// after inserting an element at the end of the heap, restore heap property
-    Size __restoreHeap ();
-
+    Size __restoreHeap();
   };
-
 
 } /* namespace gum */
 
-
 /// always include the implementation of the templates
 #include <agrum/core/heap.tcc>
-
 
 #endif /* GUM_HEAP_H */

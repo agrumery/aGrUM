@@ -27,12 +27,9 @@
 #ifndef GUM_DEFAULT_JUNCTION_TREE_STRATEGY_H
 #define GUM_DEFAULT_JUNCTION_TREE_STRATEGY_H
 
-
 #include <agrum/graphs/junctionTreeStrategy.h>
 
-
 namespace gum {
-
 
   /* =========================================================================== */
   /** @class DefaultJunctionTreeStrategy
@@ -45,84 +42,77 @@ namespace gum {
   /* =========================================================================== */
   class DefaultJunctionTreeStrategy : public JunctionTreeStrategy {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /// default constructor
-      DefaultJunctionTreeStrategy();
+    /// default constructor
+    DefaultJunctionTreeStrategy();
 
-      /// destructor
-      virtual ~DefaultJunctionTreeStrategy();
+    /// destructor
+    virtual ~DefaultJunctionTreeStrategy();
 
-      /// virtual copy constructor
-      virtual DefaultJunctionTreeStrategy* newFactory() const;
+    /// virtual copy constructor
+    virtual DefaultJunctionTreeStrategy *newFactory() const;
 
-      /// @}
+    /// @}
 
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
 
-      // ############################################################################
-      /// @name Accessors / Modifiers
-      // ############################################################################
-      /// @{
+    /// indicates whether the junction tree strategy needs fill-ins to work properly
+    /** If the junctionTreeStrategy needs fill-ins to work properly, its assigned
+     * triangulation instance (see method setTriangulation) will be commited to
+     * compute them. */
+    bool requiresFillIns() const;
 
-      /// indicates whether the junction tree strategy needs fill-ins to work properly
-      /** If the junctionTreeStrategy needs fill-ins to work properly, its assigned
-       * triangulation instance (see method setTriangulation) will be commited to
-       * compute them. */
-      bool requiresFillIns() const;
+    /// returns the junction tree computed
+    /** The idea behind this method is that the JunctionTreeStrategy asks its
+     * assigned triangulation (see method setTriangulation) all the data it
+     * needs to compute correctly the junction tree. For instance, it may asks
+     * for a triangulated graph or an elimination tree, or even the order of
+     * elimination of the nodes, etc. All these data are available from the
+     * triangulation class. Knowing these data, the junctionTreeStrategy computes
+     * and returns a junction tree corresponding to the triangulated graph. */
+    const CliqueGraph &junctionTree();
 
-      /// returns the junction tree computed
-      /** The idea behind this method is that the JunctionTreeStrategy asks its
-       * assigned triangulation (see method setTriangulation) all the data it
-       * needs to compute correctly the junction tree. For instance, it may asks
-       * for a triangulated graph or an elimination tree, or even the order of
-       * elimination of the nodes, etc. All these data are available from the
-       * triangulation class. Knowing these data, the junctionTreeStrategy computes
-       * and returns a junction tree corresponding to the triangulated graph. */
-      const CliqueGraph& junctionTree();
+    /// assign the triangulation to the junction tree strategy
+    void setTriangulation(StaticTriangulation *triangulation);
 
-      /// assign the triangulation to the junction tree strategy
-      void setTriangulation ( StaticTriangulation* triangulation );
+    /** @brief returns, for each node, the clique of the junction tree which was
+     * created by its deletion */
+    const NodeProperty<NodeId> &createdCliques();
 
-      /** @brief returns, for each node, the clique of the junction tree which was
-       * created by its deletion */
-      const NodeProperty<NodeId>& createdCliques();
+    /** @brief returns the Id of the clique of the junction tree created by the
+     * elimination of a given node during the triangulation process */
+    NodeId createdClique(const NodeId id);
 
-      /** @brief returns the Id of the clique of the junction tree created by the
-       * elimination of a given node during the triangulation process */
-      NodeId createdClique ( const NodeId id );
+    /// resets the current junction tree strategy data structures
+    void clear();
 
-      /// resets the current junction tree strategy data structures
-      void clear();
-
-      /// @}
-
+    /// @}
 
     private:
-      /// the triangulation to which the junction tree is associated
-      StaticTriangulation* __triangulation;
+    /// the triangulation to which the junction tree is associated
+    StaticTriangulation *__triangulation;
 
-      /// a boolean indicating whether the junction tree has been constructed
-      bool __has_junction_tree;
+    /// a boolean indicating whether the junction tree has been constructed
+    bool __has_junction_tree;
 
-      /// the junction tree computed by the algorithm
-      CliqueGraph __junction_tree;
+    /// the junction tree computed by the algorithm
+    CliqueGraph __junction_tree;
 
-      /** @brief indicates which clique of the junction tree was created
-       * by the elimination of a given node (the key of the table) */
-      NodeProperty<NodeId> __node_2_junction_clique;
+    /** @brief indicates which clique of the junction tree was created
+     * by the elimination of a given node (the key of the table) */
+    NodeProperty<NodeId> __node_2_junction_clique;
 
-
-      /// computes a junction tree from an elimination tree
-      void __computeJunctionTree();
-
+    /// computes a junction tree from an elimination tree
+    void __computeJunctionTree();
   };
-
 
 } /* namespace gum */
 
-
 #endif /* GUM_DEFAULT_JUNCTION_TREE_STRATEGY_H */
-

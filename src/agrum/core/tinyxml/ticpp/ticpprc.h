@@ -39,79 +39,82 @@ class TiCppRCImp;
 Base class for reference counting functionality
 */
 class TiCppRC {
-    // Allow ticpp::Node to directly modify reference count
-    friend class ticpp::Base;
+  // Allow ticpp::Node to directly modify reference count
+  friend class ticpp::Base;
 
   private:
-
-    TiCppRCImp* m_tiRC; /**< Pointer to reference counter */
+  TiCppRCImp *m_tiRC; /**< Pointer to reference counter */
 
   public:
+  /**
+  Constructor
+  Spawns new reference counter with a pointer to this
+  */
+  TiCppRC();
 
-    /**
-    Constructor
-    Spawns new reference counter with a pointer to this
-    */
-    TiCppRC();
+  /**
+  Destructor
+  Nullifies the pointer to this held by the reference counter
+  Decrements reference count
+  */
+  virtual ~TiCppRC();
 
-    /**
-    Destructor
-    Nullifies the pointer to this held by the reference counter
-    Decrements reference count
-    */
-    virtual ~TiCppRC();
+  std::vector<ticpp::Base *>
+      m_spawnedWrappers; /**< Remember all wrappers that we've
+                            created with 'new' - ( e.g.
+                            NodeFactory, FirstChildElement, etc.
+                            )*/
 
-    std::vector< ticpp::Base* > m_spawnedWrappers; /**< Remember all wrappers that we've created with 'new' - ( e.g. NodeFactory, FirstChildElement, etc. )*/
-
-    /**
-    Delete all container objects we've spawned with 'new'.
-    */
-    void DeleteSpawnedWrappers();
+  /**
+  Delete all container objects we've spawned with 'new'.
+  */
+  void DeleteSpawnedWrappers();
 };
 
 class TiCppRCImp {
   private:
+  int m_count; /**< Holds reference count to me, and to the node I point to */
 
-    int m_count;    /**< Holds reference count to me, and to the node I point to */
-
-    TiCppRC* m_tiCppRC; /**< Holds pointer to an object inheriting TiCppRC */
+  TiCppRC *m_tiCppRC; /**< Holds pointer to an object inheriting TiCppRC */
 
   public:
+  /**
+  Initializes m_tiCppRC pointer, and set reference count to 1
+  */
+  TiCppRCImp(TiCppRC *tiCppRC);
 
-    /**
-    Initializes m_tiCppRC pointer, and set reference count to 1
-    */
-    TiCppRCImp ( TiCppRC* tiCppRC );
+  /**
+  Allows the TiCppRC object to set the pointer to itself ( m_tiCppRc ) to nullptr
+  when the TiCppRC object is deleted
+  */
+  void Nullify();
 
-    /**
-    Allows the TiCppRC object to set the pointer to itself ( m_tiCppRc ) to nullptr when the TiCppRC object is deleted
-    */
-    void Nullify();
+  /**
+  Increment Reference Count
+  */
+  void IncRef();
 
-    /**
-    Increment Reference Count
-    */
-    void IncRef();
+  /**
+  Decrement Reference Count
+  */
+  void DecRef();
 
-    /**
-    Decrement Reference Count
-    */
-    void DecRef();
+  /**
+  Set Reference Count to 1 - dangerous! - Use only if you are sure of the
+  consequences
+  */
+  void InitRef();
 
-    /**
-    Set Reference Count to 1 - dangerous! - Use only if you are sure of the consequences
-    */
-    void InitRef();
+  /**
+  Get internal pointer to the TiCppRC object - not reference counted, use at your own
+  risk
+  */
+  TiCppRC *Get();
 
-    /**
-    Get internal pointer to the TiCppRC object - not reference counted, use at your own risk
-    */
-    TiCppRC* Get();
-
-    /**
-    Returns state of internal pointer - will be null if the object was deleted
-    */
-    bool IsNull();
+  /**
+  Returns state of internal pointer - will be null if the object was deleted
+  */
+  bool IsNull();
 };
 
 #endif // TICPP_INCLUDED

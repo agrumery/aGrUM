@@ -19,7 +19,8 @@
  ***************************************************************************/
 /**
  * @file
- * @brief classe for import of Influence Diagram from a XML file written with BIF Format
+ * @brief classe for import of Influence Diagram from a XML file written with BIF
+Format
  *
  * Read an influence diagram from a XML file with BIF format
  *
@@ -29,7 +30,8 @@
 class aSimpleListener : public gum::Listener {
 public:
   void whenProceeding(const void *buffer,int percent, std::string status) {
-  // percent goes from 0 to 100 (whenLoading is called at most once for each integer between 0 and 100
+  // percent goes from 0 to 100 (whenLoading is called at most once for each integer
+between 0 and 100
     // percent=200 recieved when End Of File.
  }
 };
@@ -79,8 +81,6 @@ public:
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/ID/io/IDReader.h>
 
-
-
 namespace gum {
   /**
    * @class BIFXMLIDReader
@@ -92,58 +92,58 @@ namespace gum {
    * for information about this format.
    *
    */
-  template<typename GUM_SCALAR>
-  class BIFXMLIDReader : IDReader<GUM_SCALAR> {
+  template <typename GUM_SCALAR> class BIFXMLIDReader : IDReader<GUM_SCALAR> {
     public:
-      /**
-       * Constructor
-       * A reader is created to reading a defined file.
-       * Note that an ID as to be created before and given in parameter.
-       */
-      BIFXMLIDReader ( InfluenceDiagram<GUM_SCALAR>* infdiag, const std::string& filePath );
+    /**
+     * Constructor
+     * A reader is created to reading a defined file.
+     * Note that an ID as to be created before and given in parameter.
+     */
+    BIFXMLIDReader(InfluenceDiagram<GUM_SCALAR> *infdiag,
+                   const std::string &filePath);
 
-      /**
-       * Default destructor.
-       */
-      ~BIFXMLIDReader();
+    /**
+     * Default destructor.
+     */
+    ~BIFXMLIDReader();
 
-      /**
-       * Reads the influence diagram from the file referenced by filePath  given at the creation of class
-       * @return Returns the number of error during the parsing (0 if none).
-       */
-      virtual void proceed();
+    /**
+     * Reads the influence diagram from the file referenced by filePath  given at the
+     * creation of class
+     * @return Returns the number of error during the parsing (0 if none).
+     */
+    virtual void proceed();
 
-      /**
-       * Signaler used to indicates how many percent of the Xml files have been parsed yet
-       */
-      typename gum::Signaler2<int, std::string> onProceed;
+    /**
+     * Signaler used to indicates how many percent of the Xml files have been parsed
+     * yet
+     */
+    typename gum::Signaler2<int, std::string> onProceed;
 
     private:
+    /**
+     * Parsing xml element containing data on variables
+     */
+    void __parsingVariables(ticpp::Element *parentNetwork);
 
-      /**
-       * Parsing xml element containing data on variables
-       */
-      void __parsingVariables ( ticpp::Element* parentNetwork );
+    /**
+     * fill the diagram
+     */
+    void __fillingDiagram(ticpp::Element *parentNetwork);
 
-      /**
-       * fill the diagram
-       */
-      void __fillingDiagram ( ticpp::Element* parentNetwork );
+    /**
+     * An handle to the influence diagram in which will be load the content of the
+     * xml filePath
+     */
+    InfluenceDiagram<GUM_SCALAR> *__infdiag;
 
-      /**
-       * An handle to the influence diagram in which will be load the content of the xml filePath
-       */
-      InfluenceDiagram<GUM_SCALAR>* __infdiag;
-
-      /**
-       * the path to the xml filePath
-       */
-      std::string __filePath;
+    /**
+     * the path to the xml filePath
+     */
+    std::string __filePath;
   };
 
-
 } /* namespace gum */
-
 
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader.tcc>
 

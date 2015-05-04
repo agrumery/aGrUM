@@ -23,21 +23,17 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-
 
 #include <agrum/core/hashTable.h>
 
-
 namespace gum {
 
-
   // creates (if needed) and returns the iterator __HashTableIterEnd
-  const HashTableIterator<int, int>* HashTableIteratorStaticEnd::end4Statics() {
+  const HashTableIterator<int, int> *HashTableIteratorStaticEnd::end4Statics() {
     static bool first_time = true;
 
-    if ( first_time ) {
+    if (first_time) {
       first_time = false;
       __HashTableIterEnd = new HashTableIterator<int, int>;
     }
@@ -45,21 +41,18 @@ namespace gum {
     return __HashTableIterEnd;
   }
 
-
   // creates (if needed) and returns the iterator __HashTableIterEnd
-  const HashTableConstIterator<int, int>*
+  const HashTableConstIterator<int, int> *
   HashTableIteratorStaticEnd::constEnd4Statics() {
-    return
-      reinterpret_cast<const HashTableConstIterator<int, int>*> ( end4Statics() );
+    return reinterpret_cast<const HashTableConstIterator<int, int> *>(end4Statics());
   }
 
-
   // creates (if needed) and returns the iterator __HashTableIterEndSafe
-  const HashTableIteratorSafe<int, int>*
+  const HashTableIteratorSafe<int, int> *
   HashTableIteratorStaticEnd::endSafe4Statics() {
     static bool first_time = true;
 
-    if ( first_time ) {
+    if (first_time) {
       first_time = false;
       __HashTableIterEndSafe = new HashTableIteratorSafe<int, int>;
     }
@@ -67,29 +60,22 @@ namespace gum {
     return __HashTableIterEndSafe;
   }
 
-
   // creates (if needed) and returns the iterator __HashTableIterEndSafe
-  const HashTableConstIteratorSafe<int, int>*
+  const HashTableConstIteratorSafe<int, int> *
   HashTableIteratorStaticEnd::constEndSafe4Statics() {
-    return
-      reinterpret_cast<const HashTableConstIteratorSafe<int, int>*>
-      ( endSafe4Statics() );
+    return reinterpret_cast<const HashTableConstIteratorSafe<int, int> *>(
+        endSafe4Statics());
   }
 
+  /// create the end iterator for all hash tables
+  const HashTableIterator<int, int> *HashTableIteratorStaticEnd::__HashTableIterEnd =
+      HashTableIteratorStaticEnd::end4Statics();
 
   /// create the end iterator for all hash tables
-  const HashTableIterator<int, int>*
-  HashTableIteratorStaticEnd::__HashTableIterEnd =
-    HashTableIteratorStaticEnd::end4Statics();
-
-
-  /// create the end iterator for all hash tables
-  const HashTableIteratorSafe<int, int>*
-  HashTableIteratorStaticEnd::__HashTableIterEndSafe =
-    HashTableIteratorStaticEnd::endSafe4Statics();
-
+  const HashTableIteratorSafe<int, int> *
+      HashTableIteratorStaticEnd::__HashTableIterEndSafe =
+          HashTableIteratorStaticEnd::endSafe4Statics();
 
 } /* namespace gum */
-
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

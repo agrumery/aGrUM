@@ -23,28 +23,21 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-
 #include <agrum/config.h>
 #include <agrum/graphs/binaryJoinTreeConverter.h>
 
-
 namespace gum {
-
 
   /// default constructor
   BinaryJoinTreeConverter::BinaryJoinTreeConverter() {
     // for debugging purposes
-    GUM_CONSTRUCTOR ( BinaryJoinTreeConverter );
+    GUM_CONSTRUCTOR(BinaryJoinTreeConverter);
   }
-
 
   /// destructor
   BinaryJoinTreeConverter::~BinaryJoinTreeConverter() {
     // for debugging purposes
-    GUM_DESTRUCTOR ( BinaryJoinTreeConverter );
+    GUM_DESTRUCTOR(BinaryJoinTreeConverter);
   }
 
-
 } /* namespace gum */
-
-

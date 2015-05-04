@@ -28,12 +28,9 @@
 #include <agrum/graphs/eliminations/defaultEliminationSequenceStrategy.h>
 #include <agrum/graphs/defaultJunctionTreeStrategy.h>
 
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
 namespace gum {
-
 
   /* =========================================================================== */
   /* =========================================================================== */
@@ -41,39 +38,30 @@ namespace gum {
   /* =========================================================================== */
   /* =========================================================================== */
 
-
   /// basic constructor. initialize the triangulation
 
-  DefaultTriangulation::DefaultTriangulation
-  ( const UndiGraph* theGraph,
-    const NodeProperty<Size>* modal,
-    bool minimality, float theRatio, float theThreshold ) :
-    UnconstrainedTriangulation ( theGraph, modal,
-                                 DefaultEliminationSequenceStrategy(),
-                                 DefaultJunctionTreeStrategy(),
-                                 minimality ),
-    __quasi_ratio ( theRatio ),
-    __threshold ( theThreshold ) {
+  DefaultTriangulation::DefaultTriangulation(const UndiGraph *theGraph,
+                                             const NodeProperty<Size> *modal,
+                                             bool minimality, float theRatio,
+                                             float theThreshold)
+      : UnconstrainedTriangulation(theGraph, modal,
+                                   DefaultEliminationSequenceStrategy(),
+                                   DefaultJunctionTreeStrategy(), minimality),
+        __quasi_ratio(theRatio), __threshold(theThreshold) {
     // for debugging purposes
-    GUM_CONSTRUCTOR ( DefaultTriangulation );
+    GUM_CONSTRUCTOR(DefaultTriangulation);
   }
-
-
 
   /// default constructor: initialize the triangulation for an empty graph
 
-  DefaultTriangulation::DefaultTriangulation ( bool minimality,
-      double theRatio,
-      double theThreshold ) :
-    UnconstrainedTriangulation ( DefaultEliminationSequenceStrategy(),
-                                 DefaultJunctionTreeStrategy(),
-                                 minimality ),
-    __quasi_ratio ( theRatio ),
-    __threshold ( theThreshold ) {
+  DefaultTriangulation::DefaultTriangulation(bool minimality, double theRatio,
+                                             double theThreshold)
+      : UnconstrainedTriangulation(DefaultEliminationSequenceStrategy(),
+                                   DefaultJunctionTreeStrategy(), minimality),
+        __quasi_ratio(theRatio), __threshold(theThreshold) {
     // for debugging purposes
-    GUM_CONSTRUCTOR ( DefaultTriangulation );
+    GUM_CONSTRUCTOR(DefaultTriangulation);
   }
-
 
   /*
 
@@ -84,7 +72,9 @@ namespace gum {
     UnconstrainedTriangulation (
 
 
-    static_cast<const UnconstrainedEliminationSequenceStrategy&>(*(from._elimination_sequence_strategy)) ),
+    static_cast<const
+  UnconstrainedEliminationSequenceStrategy&>(*(from._elimination_sequence_strategy))
+  ),
     __original_graph( from.__original_graph ),
     __triangulated_graph( from.__triangulated_graph ),
     __modalities (from.__modalities),
@@ -110,25 +100,19 @@ namespace gum {
   }
   */
 
-
-
   /// destructor
 
   DefaultTriangulation::~DefaultTriangulation() {
     // for debugging purposes
-    GUM_DESTRUCTOR ( DefaultTriangulation );
+    GUM_DESTRUCTOR(DefaultTriangulation);
   }
-
-
 
   /// virtual copy constructor
 
-  DefaultTriangulation* DefaultTriangulation::newFactory() const {
+  DefaultTriangulation *DefaultTriangulation::newFactory() const {
     return new DefaultTriangulation;
   }
 
-
 } /* namespace gum */
-
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

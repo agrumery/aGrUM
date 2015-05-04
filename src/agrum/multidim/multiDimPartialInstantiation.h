@@ -25,7 +25,6 @@
 #ifndef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_H
 #define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_H
 
-
 #include <utility>
 #include <agrum/core/set.h>
 #include <agrum/variables/discreteVariable.h>
@@ -33,83 +32,71 @@
 #include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/multidim/partialInstantiationRegister4MultiDim.h>
 
-
 namespace gum {
 
-
-  template< typename GUM_SCALAR, template<typename> class TABLE >
+  template <typename GUM_SCALAR, template <typename> class TABLE>
   class MultiDimPartialInstantiation {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /// default constructor
-      MultiDimPartialInstantiation();
+    /// default constructor
+    MultiDimPartialInstantiation();
 
-      /// copy constructor
-      MultiDimPartialInstantiation
-      ( const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& );
+    /// copy constructor
+    MultiDimPartialInstantiation(
+        const MultiDimPartialInstantiation<GUM_SCALAR, TABLE> &);
 
-      /// destructor
-      virtual ~MultiDimPartialInstantiation();
+    /// destructor
+    virtual ~MultiDimPartialInstantiation();
 
-      /// virtual constructor
-      /** @return a new fresh MultiDimPartialInstantiation for the same kind of
-       * table and data*/
-      virtual MultiDimPartialInstantiation<GUM_SCALAR, TABLE>* newFactory() const;
+    /// virtual constructor
+    /** @return a new fresh MultiDimPartialInstantiation for the same kind of
+     * table and data*/
+    virtual MultiDimPartialInstantiation<GUM_SCALAR, TABLE> *newFactory() const;
 
-      /// @}
+    /// @}
 
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
 
-      // ############################################################################
-      /// @name Operators
-      // ############################################################################
-      /// @{
+    /// copy operator
+    MultiDimPartialInstantiation<GUM_SCALAR, TABLE> &
+    operator=(const MultiDimPartialInstantiation<GUM_SCALAR, TABLE> &);
 
-      /// copy operator
-      MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& operator=
-      ( const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& );
+    /// @}
 
-      /// @}
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
 
+    /** @brief creates and returns the partial instantiation of the table over a
+     * subset of its vars
+     *
+     * @return a new freshly created TABLE which is the result of the instantiation
+     * of a subset of the variables of the TABLE passed in argument
+     * @warning If inst_vars is precisely equal to the variables of table, the
+     * result is an empty table. */
+    TABLE<GUM_SCALAR> *
+    instantiate(const TABLE<GUM_SCALAR> &table,
+                const HashTable<const DiscreteVariable *, Idx> &inst_vars);
+    void instantiate(TABLE<GUM_SCALAR> &container, const TABLE<GUM_SCALAR> &table,
+                     const HashTable<const DiscreteVariable *, Idx> &inst_vars);
 
-      // ############################################################################
-      /// @name Accessors/Modifiers
-      // ############################################################################
-      /// @{
-
-      /** @brief creates and returns the partial instantiation of the table over a
-       * subset of its vars
-       *
-       * @return a new freshly created TABLE which is the result of the instantiation
-       * of a subset of the variables of the TABLE passed in argument
-       * @warning If inst_vars is precisely equal to the variables of table, the
-       * result is an empty table. */
-      TABLE<GUM_SCALAR>*
-      instantiate ( const TABLE<GUM_SCALAR>& table,
-                    const HashTable<const DiscreteVariable*, Idx>& inst_vars );
-      void
-      instantiate ( TABLE<GUM_SCALAR>& container,
-                    const TABLE<GUM_SCALAR>& table,
-                    const HashTable<const DiscreteVariable*, Idx>& inst_vars );
-
-      /// @}
-
+    /// @}
 
     private:
-      /// the function that is used to actually perform the instantiation
-
+    /// the function that is used to actually perform the instantiation
   };
 
-
 } /* namespace gum */
-
 
 // always include the template implementation
 #include <agrum/multidim/multiDimPartialInstantiation.tcc>
 
-
 #endif /* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_H */
-

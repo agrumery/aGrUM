@@ -24,25 +24,19 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
 namespace gum {
-
 
   /* ============================================================================ */
   /* ===                           GUM_BN_WRITTER                             === */
   /* ============================================================================ */
-  template<typename GUM_SCALAR> INLINE
-  BNWriter<GUM_SCALAR>::BNWriter() {
-    GUM_CONSTRUCTOR ( BNWriter );
+  template <typename GUM_SCALAR> INLINE BNWriter<GUM_SCALAR>::BNWriter() {
+    GUM_CONSTRUCTOR(BNWriter);
   }
 
-  template<typename GUM_SCALAR> INLINE
-  BNWriter<GUM_SCALAR>::~BNWriter() {
-    GUM_DESTRUCTOR ( BNWriter );
+  template <typename GUM_SCALAR> INLINE BNWriter<GUM_SCALAR>::~BNWriter() {
+    GUM_DESTRUCTOR(BNWriter);
   }
-
 
 } /* namespace gum */
 
-
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif // DOXYGEN_SHOULD_SKIP_THIS

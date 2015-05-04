@@ -33,4 +33,3 @@ namespace gum {
     template class SlotChain<double>;
   } /* namespace prm */
 } /* namespace gum */
-

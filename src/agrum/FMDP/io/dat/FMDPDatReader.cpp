@@ -22,4 +22,3 @@
 
 template class gum::FMDPDatReader<float>;
 template class gum::FMDPDatReader<double>;
-

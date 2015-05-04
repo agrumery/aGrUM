@@ -20,6 +20,5 @@
 
 #include <agrum/FMDP/FMDPFactory.h>
 
-
 template class gum::FMDPFactory<float>;
 template class gum::FMDPFactory<double>;

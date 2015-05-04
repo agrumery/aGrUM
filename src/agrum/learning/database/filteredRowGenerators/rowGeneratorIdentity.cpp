@@ -24,71 +24,56 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
 #include <agrum/config.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
-
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.inl>
 #endif /* GUM_NO_INLINE */
 
-
 namespace gum {
 
-  
   namespace learning {
 
-
     /// default constructor
-    RowGeneratorIdentity::RowGeneratorIdentity () {
-      GUM_CONSTRUCTOR ( RowGeneratorIdentity );
+    RowGeneratorIdentity::RowGeneratorIdentity() {
+      GUM_CONSTRUCTOR(RowGeneratorIdentity);
     }
-    
 
     /// copy constructor
-    RowGeneratorIdentity::RowGeneratorIdentity
-    ( const RowGeneratorIdentity& from ) :
-    FilteredRowGenerator ( from ) {
-      GUM_CONS_CPY ( RowGeneratorIdentity );
+    RowGeneratorIdentity::RowGeneratorIdentity(const RowGeneratorIdentity &from)
+        : FilteredRowGenerator(from) {
+      GUM_CONS_CPY(RowGeneratorIdentity);
     }
-
 
     /// move constructor
-    RowGeneratorIdentity::RowGeneratorIdentity ( RowGeneratorIdentity&& from ) :
-    FilteredRowGenerator ( std::move ( from ) ) {
-      GUM_CONS_MOV ( RowGeneratorIdentity );
+    RowGeneratorIdentity::RowGeneratorIdentity(RowGeneratorIdentity &&from)
+        : FilteredRowGenerator(std::move(from)) {
+      GUM_CONS_MOV(RowGeneratorIdentity);
     }
-
 
     /// destructor
-    RowGeneratorIdentity::~RowGeneratorIdentity () {
-      GUM_DESTRUCTOR ( RowGeneratorIdentity );
+    RowGeneratorIdentity::~RowGeneratorIdentity() {
+      GUM_DESTRUCTOR(RowGeneratorIdentity);
     }
-
 
     /// copy operator
-    RowGeneratorIdentity&
-    RowGeneratorIdentity::operator= ( const RowGeneratorIdentity& from ) {
-      FilteredRowGenerator::operator= ( from );
+    RowGeneratorIdentity &RowGeneratorIdentity::
+    operator=(const RowGeneratorIdentity &from) {
+      FilteredRowGenerator::operator=(from);
       return *this;
     }
 
-    
     /// move operator
-    RowGeneratorIdentity&
-    RowGeneratorIdentity::operator= ( RowGeneratorIdentity&& from ) {
-      FilteredRowGenerator::operator= ( std::move ( from ) );
+    RowGeneratorIdentity &RowGeneratorIdentity::
+    operator=(RowGeneratorIdentity &&from) {
+      FilteredRowGenerator::operator=(std::move(from));
       return *this;
     }
 
-    
   } /* namespace learning */
 
-  
 } /* namespace gum */
 
-
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-

@@ -78,111 +78,99 @@
 #ifndef GUM_MULTI_DIM_COMBINATION_DEFAULT_H
 #define GUM_MULTI_DIM_COMBINATION_DEFAULT_H
 
-
 #include <agrum/core/sequence.h>
 #include <agrum/multidim/operators/multiDimCombination.h>
 #include <agrum/variables/discreteVariable.h>
 
-
 namespace gum {
 
-
-  template< typename GUM_SCALAR, template<typename> class TABLE >
+  template <typename GUM_SCALAR, template <typename> class TABLE>
   class MultiDimCombinationDefault : public MultiDimCombination<GUM_SCALAR, TABLE> {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /// default constructor
-      /** @param combine a function that takes two tables in input and produces a
-       * new table which is the result of the combination of the two tables
-       * passed in argument. */
-      MultiDimCombinationDefault ( TABLE<GUM_SCALAR>* ( *combine )
-                                   ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) );
+    /// default constructor
+    /** @param combine a function that takes two tables in input and produces a
+     * new table which is the result of the combination of the two tables
+     * passed in argument. */
+    MultiDimCombinationDefault(TABLE<GUM_SCALAR> *(*combine)(
+        const TABLE<GUM_SCALAR> &, const TABLE<GUM_SCALAR> &));
 
-      /// copy constructor
-      MultiDimCombinationDefault ( const MultiDimCombinationDefault<GUM_SCALAR, TABLE>& );
+    /// copy constructor
+    MultiDimCombinationDefault(
+        const MultiDimCombinationDefault<GUM_SCALAR, TABLE> &);
 
-      /// destructor
-      virtual ~MultiDimCombinationDefault ();
+    /// destructor
+    virtual ~MultiDimCombinationDefault();
 
-      /// virtual constructor
-      /** @return a new fresh MultiDimCombinator with the same combination
-       * function. */
-      virtual MultiDimCombinationDefault<GUM_SCALAR, TABLE>* newFactory () const;
+    /// virtual constructor
+    /** @return a new fresh MultiDimCombinator with the same combination
+     * function. */
+    virtual MultiDimCombinationDefault<GUM_SCALAR, TABLE> *newFactory() const;
 
-      /// @}
+    /// @}
 
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
 
-      // ############################################################################
-      /// @name Accessors/Modifiers
-      // ############################################################################
-      /// @{
+    /// creates and returns the result of the combination of the tables within set
+    /** @return a new freshly created TABLE which is the result of the combination
+     * of all the TABLES passed in argument
+     * @throws InvalidArgumentsNumber exception is thrown if the set passed in
+     * argument contains less than two elements */
+    virtual TABLE<GUM_SCALAR> *combine(const Set<const TABLE<GUM_SCALAR> *> &set);
+    virtual void combine(TABLE<GUM_SCALAR> &container,
+                         const Set<const TABLE<GUM_SCALAR> *> &set);
 
-      /// creates and returns the result of the combination of the tables within set
-      /** @return a new freshly created TABLE which is the result of the combination
-       * of all the TABLES passed in argument
-       * @throws InvalidArgumentsNumber exception is thrown if the set passed in
-       * argument contains less than two elements */
-      virtual TABLE<GUM_SCALAR>* combine ( const Set<const TABLE<GUM_SCALAR>*>& set );
-      virtual void combine ( TABLE<GUM_SCALAR>& container ,
-                             const Set<const TABLE<GUM_SCALAR>*>& set );
+    /// changes the function used for combining two TABLES
+    virtual void
+    setCombineFunction(TABLE<GUM_SCALAR> *(*combine)(const TABLE<GUM_SCALAR> &,
+                                                     const TABLE<GUM_SCALAR> &));
 
-      /// changes the function used for combining two TABLES
-      virtual void setCombineFunction ( TABLE<GUM_SCALAR>*
-                                        ( *combine ) ( const TABLE<GUM_SCALAR>&,
-                                            const TABLE<GUM_SCALAR>& ) );
+    /// returns the combination function currently used by the combinator
+    virtual TABLE<GUM_SCALAR> *(*combineFunction())(const TABLE<GUM_SCALAR> &,
+                                                    const TABLE<GUM_SCALAR> &);
 
-      /// returns the combination function currently used by the combinator
-      virtual TABLE<GUM_SCALAR>* ( * combineFunction () )
-      ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& );
+    /** @brief returns a rough estimate of the number of operations that will be
+    * performed to compute the combination */
+    virtual float nbOperations(const Set<const TABLE<GUM_SCALAR> *> &set) const;
+    virtual float
+    nbOperations(const Set<const Sequence<const DiscreteVariable *> *> &set) const;
 
-      /** @brief returns a rough estimate of the number of operations that will be
-      * performed to compute the combination */
-      virtual float
-      nbOperations ( const Set<const TABLE<GUM_SCALAR>*>& set ) const;
-      virtual float
-      nbOperations ( const Set<const Sequence<const DiscreteVariable*>*>& set )
-      const;
+    /// returns the additional memory consumption used during the combination
+    /** Actually, this function does not return a precise account of the memory
+     * used by the multidimCombination but a rough estimate based on the sizes
+     * of the tables involved in the combination.
+     * @return a pair of memory consumption: the first one is the maximum
+     * amount of memory used during the combination and the second one is the
+     * amount of memory still used at the end of the function ( the memory used by
+     * the resulting table ) */
+    virtual std::pair<long, long>
+    memoryUsage(const Set<const TABLE<GUM_SCALAR> *> &set) const;
+    virtual std::pair<long, long>
+    memoryUsage(const Set<const Sequence<const DiscreteVariable *> *> &set) const;
 
-      /// returns the additional memory consumption used during the combination
-      /** Actually, this function does not return a precise account of the memory
-       * used by the multidimCombination but a rough estimate based on the sizes
-       * of the tables involved in the combination.
-       * @return a pair of memory consumption: the first one is the maximum
-       * amount of memory used during the combination and the second one is the
-       * amount of memory still used at the end of the function ( the memory used by
-       * the resulting table ) */
-      virtual std::pair<long, long>
-      memoryUsage ( const Set<const TABLE<GUM_SCALAR>*>& set ) const;
-      virtual std::pair<long, long>
-      memoryUsage ( const Set<const Sequence<const DiscreteVariable*>*>& set ) const;
-
-      /// @}
-
+    /// @}
 
     protected:
-      /// the function used to combine two tables
-      TABLE<GUM_SCALAR>* ( *_combine ) ( const TABLE<GUM_SCALAR>& t1,
-                                         const TABLE<GUM_SCALAR>& t2 );
+    /// the function used to combine two tables
+    TABLE<GUM_SCALAR> *(*_combine)(const TABLE<GUM_SCALAR> &t1,
+                                   const TABLE<GUM_SCALAR> &t2);
 
-
-      /** @brief returns the domain size of the Cartesian product of the union of
-       * all the variables in seq1 and seq2 */
-      Size _combinedSize ( const Sequence<const DiscreteVariable*>& seq1,
-                           const Sequence<const DiscreteVariable*>& seq2 ) const;
-
+    /** @brief returns the domain size of the Cartesian product of the union of
+     * all the variables in seq1 and seq2 */
+    Size _combinedSize(const Sequence<const DiscreteVariable *> &seq1,
+                       const Sequence<const DiscreteVariable *> &seq2) const;
   };
 
-
 } /* namespace gum */
-
 
 // always include the template implementation
 #include <agrum/multidim/operators/multiDimCombinationDefault.tcc>
 
-
 #endif /* GUM_MULTI_DIM_COMBINATION_DEFAULT_H */
-

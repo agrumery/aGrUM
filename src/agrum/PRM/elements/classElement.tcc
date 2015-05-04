@@ -23,58 +23,57 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
-#include<agrum/PRM/elements/classElement.h>
-#include<agrum/PRM/elements/type.h>
+#include <agrum/PRM/elements/classElement.h>
+#include <agrum/PRM/elements/type.h>
 
 namespace gum {
   namespace prm {
 
-    template<typename GUM_SCALAR>
-    ClassElement<GUM_SCALAR>::ClassElement ( const std::string& name ) :
-      PRMObject ( name ) {
-      GUM_CONSTRUCTOR ( ClassElement );
+    template <typename GUM_SCALAR>
+    ClassElement<GUM_SCALAR>::ClassElement(const std::string &name)
+        : PRMObject(name) {
+      GUM_CONSTRUCTOR(ClassElement);
     }
 
-    template<typename GUM_SCALAR>
-    ClassElement<GUM_SCALAR>::ClassElement ( const ClassElement& source ) :
-      PRMObject ( source.name() ), __id ( source.id() ) {
-      GUM_CONS_CPY ( ClassElement );
+    template <typename GUM_SCALAR>
+    ClassElement<GUM_SCALAR>::ClassElement(const ClassElement &source)
+        : PRMObject(source.name()), __id(source.id()) {
+      GUM_CONS_CPY(ClassElement);
     }
 
-    template<typename GUM_SCALAR>
-    ClassElement<GUM_SCALAR>::~ClassElement() {
-      GUM_DESTRUCTOR ( ClassElement );
+    template <typename GUM_SCALAR> ClassElement<GUM_SCALAR>::~ClassElement() {
+      GUM_DESTRUCTOR(ClassElement);
     }
 
-    template<typename GUM_SCALAR>  INLINE
-    NodeId
-    ClassElement<GUM_SCALAR>::id() const { return __id; }
+    template <typename GUM_SCALAR>
+    INLINE NodeId ClassElement<GUM_SCALAR>::id() const {
+      return __id;
+    }
 
-    template<typename GUM_SCALAR>  INLINE
-    PRMObject::PRMType
-    ClassElement<GUM_SCALAR>::obj_type() const { return PRMType::CLASS_ELT; }
+    template <typename GUM_SCALAR>
+    INLINE PRMObject::PRMType ClassElement<GUM_SCALAR>::obj_type() const {
+      return PRMType::CLASS_ELT;
+    }
 
-    template<typename GUM_SCALAR>  INLINE
-    void
-    ClassElement<GUM_SCALAR>::setId ( NodeId id ) { __id = id; }
+    template <typename GUM_SCALAR>
+    INLINE void ClassElement<GUM_SCALAR>::setId(NodeId id) {
+      __id = id;
+    }
 
-    template<typename GUM_SCALAR>  INLINE
-    const std::string&
-    ClassElement<GUM_SCALAR>::safeName() const {
+    template <typename GUM_SCALAR>
+    INLINE const std::string &ClassElement<GUM_SCALAR>::safeName() const {
       return _safeName;
     }
 
-    template<typename GUM_SCALAR>  INLINE
-    std::string
-    ClassElement<GUM_SCALAR>::cast ( const Type<GUM_SCALAR>& t ) const {
-      if ( type().isSubTypeOf ( t ) ) {
+    template <typename GUM_SCALAR>
+    INLINE std::string
+    ClassElement<GUM_SCALAR>::cast(const Type<GUM_SCALAR> &t) const {
+      if (type().isSubTypeOf(t)) {
         return PRMObject::LEFT_CAST() + t.name() + PRMObject::RIGHT_CAST() + name();
       } else {
-        GUM_ERROR ( OperationNotAllowed, "illegal cast" );
+        GUM_ERROR(OperationNotAllowed, "illegal cast");
       }
     }
 
-
   } /* namespace prm */
 } /* namespace gum */
-

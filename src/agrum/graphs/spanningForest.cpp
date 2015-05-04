@@ -25,35 +25,23 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
 #include <agrum/config.h>
 #include <agrum/graphs/spanningForest.h>
 
-
 namespace gum {
 
+  SpanningForest::SpanningForest() { GUM_CONSTRUCTOR(SpanningForest); }
 
-  SpanningForest::SpanningForest() {
-    GUM_CONSTRUCTOR ( SpanningForest );
+  SpanningForest::~SpanningForest() { GUM_DESTRUCTOR(SpanningForest); }
+
+  SpanningForest::SpanningForest(const SpanningForest &toCopy) {
+    GUM_CONS_CPY(SpanningForest);
   }
 
-
-  SpanningForest::~SpanningForest() {
-    GUM_DESTRUCTOR ( SpanningForest );
-  }
-
-
-  SpanningForest::SpanningForest ( const SpanningForest& toCopy ) {
-    GUM_CONS_CPY ( SpanningForest );
-  }
-
-
-  SpanningForest& SpanningForest::operator= ( const SpanningForest& toCopy ) {
+  SpanningForest &SpanningForest::operator=(const SpanningForest &toCopy) {
     return *this;
   }
 
-
 } /* namespace gum */
-
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

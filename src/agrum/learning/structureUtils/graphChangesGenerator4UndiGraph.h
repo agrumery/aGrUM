@@ -45,13 +45,12 @@
  * applied, used again the iterator for loop, and so on. Note that, whenever
  * you execute method modifyGraph, this will automatically flush the current
  * list of changes and put into the list only the changes that are affected
- * by the graph modification. 
+ * by the graph modification.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H
 #define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H
-
 
 #include <agrum/config.h>
 #include <agrum/core/set.h>
@@ -60,13 +59,10 @@
 #include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/structureUtils/IGraphChangesGenerator4UndiGraph.h>
 
-
 namespace gum {
 
-  
   namespace learning {
-   
-    
+
     /** @class GraphChangesGenerator4UndiGraph
      * @brief The basic class for computing the next graph changes possible in an
      * undirected structure learning algorithm
@@ -101,38 +97,34 @@ namespace gum {
      * @ingroup learning_group
      */
     template <typename STRUCT_CONSTRAINT>
-    class GraphChangesGenerator4UndiGraph :
-      public IGraphChangesGenerator4UndiGraph {
-    public:
-
+    class GraphChangesGenerator4UndiGraph : public IGraphChangesGenerator4UndiGraph {
+      public:
       /// the iterator for parsing the list of possible graph change operators
       using iterator = typename Set<GraphChange>::const_iterator;
 
       /// the const iterator for parsing the list of graph change operators
       using const_iterator = iterator;
-      
-      
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      GraphChangesGenerator4UndiGraph ( STRUCT_CONSTRAINT& constraint );
+      GraphChangesGenerator4UndiGraph(STRUCT_CONSTRAINT &constraint);
 
       /// copy constructor
-      GraphChangesGenerator4UndiGraph
-      ( const GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>& from );
+      GraphChangesGenerator4UndiGraph(
+          const GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT> &from);
 
       /// move operator
-      GraphChangesGenerator4UndiGraph
-      ( GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&& from );
+      GraphChangesGenerator4UndiGraph(
+          GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT> &&from);
 
       /// destructor
-      virtual ~GraphChangesGenerator4UndiGraph ();
+      virtual ~GraphChangesGenerator4UndiGraph();
 
       /// @}
-
 
       // ##########################################################################
       /// @name Operators
@@ -140,17 +132,14 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&
-      operator=
-      ( const GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>& from );
+      GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT> &
+      operator=(const GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT> &from);
 
       /// move operator
-      GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&
-      operator=
-      ( GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&& from );
+      GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT> &
+      operator=(GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT> &&from);
 
       /// @}
-
 
       // ##########################################################################
       /// @name Iterators
@@ -158,79 +147,71 @@ namespace gum {
       /// @{
 
       /// returns an (unsafe) iterator on the beginning of the list of operators
-      iterator begin () const;
+      iterator begin() const;
 
       /// returns an (unsafe) iterator on the end of the list of operators
-      const iterator& end () const;
+      const iterator &end() const;
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
       /// returns the constraint that is used by the generator
-      STRUCT_CONSTRAINT& constraint () const noexcept;
+      STRUCT_CONSTRAINT &constraint() const noexcept;
 
       /// sets a new graph from which the operator will compute possible changes
-      void setGraph ( const UndiGraph& graph );
+      void setGraph(const UndiGraph &graph);
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph ( const EdgeAddition& change );
+      void modifyGraph(const EdgeAddition &change);
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph ( const EdgeDeletion& change );
+      void modifyGraph(const EdgeDeletion &change);
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph ( const GraphChange& change );
+      void modifyGraph(const GraphChange &change);
 
       /// empty the set of possible change operators that can be applied
-      void clearChanges () noexcept;
+      void clearChanges() noexcept;
 
       /// notifies the generator that we have parsed all its legal changes
-      void notifyGetCompleted ();
+      void notifyGetCompleted();
 
       /// sets the maximum number of threads used to compute the set of changes
-      void setMaxNbThreads ( unsigned int nb ) noexcept;
-      
-      /// @}
-      
+      void setMaxNbThreads(unsigned int nb) noexcept;
 
-    protected:
+      /// @}
+
+      protected:
       /// the graph on which we generate operators
       UndiGraph _graph;
 
       /// a reference on the structural constraint used to restrict the changes
-      STRUCT_CONSTRAINT* _constraint;
+      STRUCT_CONSTRAINT *_constraint;
 
       /// the current set of operators
       Set<GraphChange> _legal_changes;
 
       /// create the set of legal and illegal changes from a given graph
-      void _createChanges ();
-      
-    
-    private:
-      /// the max number of threads authorized
-      #if defined(_OPENMP) && defined(NDEBUG)
-        unsigned int __max_threads_number { getMaxNumberOfThreads() };
-      #else
-        unsigned int __max_threads_number { 1 };
-      #endif /* NDEBUG */
+      void _createChanges();
 
+      private:
+/// the max number of threads authorized
+#if defined(_OPENMP) && defined(NDEBUG)
+      unsigned int __max_threads_number{getMaxNumberOfThreads()};
+#else
+      unsigned int __max_threads_number{1};
+#endif /* NDEBUG */
     };
 
-
   } /* namespace learning */
-  
-  
-} /* namespace gum */
 
+} /* namespace gum */
 
 /// always include the templated functions
 #include <agrum/learning/structureUtils/graphChangesGenerator4UndiGraph.tcc>
-
 
 #endif /* GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H */

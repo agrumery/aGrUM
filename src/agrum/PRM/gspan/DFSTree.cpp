@@ -31,6 +31,5 @@ namespace gum {
     namespace gspan {
       template class DFSTree<double>;
     } /* namespace gspan */
-  } /* namespace prm */
+  }   /* namespace prm */
 } /* namespace gum */
-

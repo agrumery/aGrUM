@@ -36,13 +36,10 @@
 #include <agrum/core/hashTable.h>
 #include <agrum/learning/scores_and_tests/idSet.h>
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     /* ========================================================================= */
     /* ===                        CACHE 4 SCORE CLASS                        === */
     /* ========================================================================= */
@@ -56,26 +53,25 @@ namespace gum {
      * an efficient cache that can significantly alleviate the scoring burden.
      */
     class Cache4Score {
-    public:
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      Cache4Score ();
+      Cache4Score();
 
       /// copy constructor
-      Cache4Score ( const Cache4Score& from );
+      Cache4Score(const Cache4Score &from);
 
       /// move constructor
-      Cache4Score ( Cache4Score&& from );
+      Cache4Score(Cache4Score &&from);
 
       /// destructor
-      ~Cache4Score ();
-      
-      /// @}
+      ~Cache4Score();
 
+      /// @}
 
       // ##########################################################################
       /// @name Operators
@@ -83,13 +79,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      Cache4Score& operator= ( const Cache4Score& from );
+      Cache4Score &operator=(const Cache4Score &from);
 
       /// move operator
-      Cache4Score& operator= ( Cache4Score&& from );
+      Cache4Score &operator=(Cache4Score &&from);
 
       /// @}
-
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -99,62 +94,53 @@ namespace gum {
       /// insert a new score into the cache
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
-      void insert ( unsigned int var,
-                    const std::vector<unsigned int>& conditioning_set,
-                    float score );
+      void insert(unsigned int var,
+                  const std::vector<unsigned int> &conditioning_set, float score);
 
       /// insert a new score into the cache
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
       template <typename Alloc>
-      void insert ( unsigned int var,
-                    IdSet<Alloc>& conditioning_set,
-                    float score );
+      void insert(unsigned int var, IdSet<Alloc> &conditioning_set, float score);
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
-      void erase ( unsigned int var,
-                   const std::vector<unsigned int>& conditioning_set );
+      void erase(unsigned int var,
+                 const std::vector<unsigned int> &conditioning_set);
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
       template <typename Alloc>
-      void erase ( unsigned int var,
-                   const IdSet<Alloc>& conditioning_set );
-                   
+      void erase(unsigned int var, const IdSet<Alloc> &conditioning_set);
+
       /// indicates whether a given score exists
-      bool exists ( unsigned int var,
-                    const std::vector<unsigned int>& conditioning_set );
+      bool exists(unsigned int var,
+                  const std::vector<unsigned int> &conditioning_set);
 
       /// returns a given score
       /** @throws NotFound is raised if the score is not cached */
-      float score ( unsigned int var,
-                    const std::vector<unsigned int>& conditioning_set );
+      float score(unsigned int var,
+                  const std::vector<unsigned int> &conditioning_set);
 
       /// removes all the stored scores
-      void clear ();
-      
-      /// @}
-      
+      void clear();
 
-    private:
+      /// @}
+
+      private:
       /// the scores stored into the cache
-      HashTable<std::pair<IdSet<>,unsigned int>, float> __scores;
+      HashTable<std::pair<IdSet<>, unsigned int>, float> __scores;
     };
 
-    
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #include <agrum/learning/scores_and_tests/cache4Score.inl>
 #endif /* GUM_NO_INLINE */
-
 
 #endif /* GUM_LEARNING_CACHE_4_SCORE_H */

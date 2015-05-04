@@ -33,9 +33,7 @@
 #include <agrum/graphs/nodeGraphPart.h>
 #include <agrum/graphs/edgeGraphPart.h>
 
-
 namespace gum {
-
 
   /* =========================================================================== */
   /* ===          BASE CLASS FOR MANIPULATING ALL UNDIRECTED GRAPHS          === */
@@ -103,105 +101,98 @@ namespace gum {
 
   class UndiGraph : public virtual NodeGraphPart, public EdgeGraphPart {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /// default constructor
-      /** @param nodes_size the size of the hash table used to store all the nodes
-       * @param nodes_resize_policy the resizing policy of this hash table
-       * @param edges_size the size of the hash table used to store all the edges
-       * @param edges_resize_policy the resizing policy of this hash table */
-      explicit UndiGraph ( Size nodes_size = HashTableConst::default_size,
-                           bool nodes_resize_policy    = true,
-                           Size edges_size = HashTableConst::default_size,
-                           bool edges_resize_policy    = true );
+    /// default constructor
+    /** @param nodes_size the size of the hash table used to store all the nodes
+     * @param nodes_resize_policy the resizing policy of this hash table
+     * @param edges_size the size of the hash table used to store all the edges
+     * @param edges_resize_policy the resizing policy of this hash table */
+    explicit UndiGraph(Size nodes_size = HashTableConst::default_size,
+                       bool nodes_resize_policy = true,
+                       Size edges_size = HashTableConst::default_size,
+                       bool edges_resize_policy = true);
 
-      /// copy constructor
-      /** @param g the UndiGraph to copy */
-      UndiGraph ( const UndiGraph& g );
+    /// copy constructor
+    /** @param g the UndiGraph to copy */
+    UndiGraph(const UndiGraph &g);
 
-      /// destructor
-      virtual ~UndiGraph();
+    /// destructor
+    virtual ~UndiGraph();
 
-      /// @}
+    /// @}
 
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
 
-      // ############################################################################
-      /// @name Operators
-      // ############################################################################
-      /// @{
+    /// copy operator
+    /** @param g the DiGraph to copy */
+    UndiGraph &operator=(const UndiGraph &g);
 
-      /// copy operator
-      /** @param g the DiGraph to copy */
-      UndiGraph& operator= ( const UndiGraph& g );
+    /// tests whether two UndiGraphs are identical (same nodes, same edges)
+    /** @param g the UndiGraph with which "this" is compared */
+    // not virtual : it is a feature !!! :)
+    bool operator==(const UndiGraph &g) const;
 
-      /// tests whether two UndiGraphs are identical (same nodes, same edges)
-      /** @param g the UndiGraph with which "this" is compared */
-      // not virtual : it is a feature !!! :)
-      bool operator== ( const UndiGraph& g ) const;
+    /// tests whether two UndiGraphs are different
+    /** @param g the UndiGraph with which "this" is compared */
+    // not virtual : it is a feature !!! :)
+    bool operator!=(const UndiGraph &g) const;
 
-      /// tests whether two UndiGraphs are different
-      /** @param g the UndiGraph with which "this" is compared */
-      // not virtual : it is a feature !!! :)
-      bool operator!= ( const UndiGraph& g ) const;
+    /// @}
 
-      /// @}
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
 
+    /// insert a new edge into the undirected graph
+    /** The order in which the extremal nodes are specified is not important.
+     * @param first the id of one extremal node of the new inserted edge
+     * @param second the id of the other extremal node of the new inserted edge
+     * @warning if the edge already exists, nothing is done. In particular, no
+     * exception is raised.
+     * @throw InvalidNode if first and/or second do not belong to the
+     * graph nodes */
+    GUM_DEPRECATED(virtual void insertEdge(const NodeId first, const NodeId second));
+    virtual void addEdge(const NodeId first, const NodeId second);
 
+    /// remove a node and its adjacent edges from the graph
+    /** @param id the id of the node to be removed
+     * @warning if the node does not exist, nothing is done. In particular, no
+     * exception is raised.*/
+    virtual void eraseNode(const NodeId id);
 
-      // ############################################################################
-      /// @name Accessors/Modifiers
-      // ############################################################################
-      /// @{
+    /// removes all the nodes and edges from the graph
+    virtual void clear();
 
-      /// insert a new edge into the undirected graph
-      /** The order in which the extremal nodes are specified is not important.
-       * @param first the id of one extremal node of the new inserted edge
-       * @param second the id of the other extremal node of the new inserted edge
-       * @warning if the edge already exists, nothing is done. In particular, no
-       * exception is raised.
-       * @throw InvalidNode if first and/or second do not belong to the
-       * graph nodes */
-      GUM_DEPRECATED(virtual void insertEdge ( const NodeId first, const NodeId second ));
-      virtual void addEdge ( const NodeId first, const NodeId second );
+    /// to friendly display the content of the graph
+    virtual const std::string toString() const;
 
-      /// remove a node and its adjacent edges from the graph
-      /** @param id the id of the node to be removed
-       * @warning if the node does not exist, nothing is done. In particular, no
-       * exception is raised.*/
-      virtual void eraseNode ( const NodeId id );
+    /// to friendly display graph in DOT format
+    virtual const std::string toDot() const;
 
-      /// removes all the nodes and edges from the graph
-      virtual void clear();
+    /// checks whether the graph contains cycles
+    bool hasUndirectedCycle() const;
 
-      /// to friendly display the content of the graph
-      virtual const std::string toString() const;
+    /// returns the partial graph formed by the nodes given in parameter
+    virtual UndiGraph partialUndiGraph(NodeSet nodesSet);
 
-      /// to friendly display graph in DOT format
-      virtual const std::string toDot() const;
-
-      /// checks whether the graph contains cycles
-      bool hasUndirectedCycle() const;
-
-      /// returns the partial graph formed by the nodes given in parameter
-      virtual UndiGraph partialUndiGraph ( NodeSet nodesSet );
-
-      /// @}
-
+    /// @}
   };
 
-
   /// for friendly displaying the content of undirected graphs
-  std::ostream& operator<< ( std::ostream&, const UndiGraph& );
-
+  std::ostream &operator<<(std::ostream &, const UndiGraph &);
 
 } /* namespace gum */
 
-
 #ifndef GUM_NO_INLINE
 #include <agrum/graphs/undiGraph.inl>
-#endif //GUM_NOINLINE
+#endif // GUM_NOINLINE
 
 #endif /* GUM_UNDIGRAPH_H */
