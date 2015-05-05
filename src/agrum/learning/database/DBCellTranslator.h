@@ -115,6 +115,7 @@ namespace gum {
      *   void translate () {    // the method called to translate the column
      *     out( 0 ) = in ( 0 ); // the first element (0) in input is put into the
      *                          // the first element (0) in the output vector
+     *   }
      * };
      * @endcode
      * A similar way of specifying the operations to perform is through the use
@@ -125,6 +126,7 @@ namespace gum {
      *   public:
      *   void translate () { // the method called to translate the column
      *     outputRow() [outputCols() [0]] = inputRow() [inputCols() [0]];
+     *   }
      * };
      * @endcode
      * The template parameters Nb_inputs and Nb_outputs indicate how many columns
