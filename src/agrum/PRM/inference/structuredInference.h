@@ -123,6 +123,7 @@ namespace gum {
       _joint(const std::vector<typename PRMInference<GUM_SCALAR>::Chain> &queries,
              Potential<GUM_SCALAR> &j);
 
+      /// @}
       private:
       /// Private structure to represent data about a reduced graph.
       struct RGData {
