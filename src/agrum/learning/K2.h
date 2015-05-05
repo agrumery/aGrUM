@@ -121,6 +121,7 @@ namespace gum {
       /** @brief checks that the order passed to K2 is coherent with the variables
        * as specified by their modalities */
       void __checkOrder(const std::vector<unsigned int> &modal);
+      /// @}
     };
 
   } /* namespace learning */
