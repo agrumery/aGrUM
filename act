@@ -864,32 +864,44 @@ def getInvocation(current):
 
 def checkAgrumMemoryLeak(x):
   commande='act test debug -t {0}'.format(x)
+
+  first=WARNING+format(x)+ENDC+" : "
+  flag=0
+
   print(WARNING+format(commande)+ENDC+" : ",end="")
   sys.stdout.flush()
   proc=Popen(commande+" --no-fun",shell=True,stdout=PIPE,stderr=STDOUT)
   out=proc.stdout.readlines()
   for line in out:
     if "NO MEMORY LEAK" in line:
-      print(OKGREEN+"ok"+ENDC)
-      return False
+      last=OKGREEN+"ok"+ENDC
+      flag=1
     elif "Memory leaks found" in line:
-      print(ERROR+line.split("|")[2].strip()+ENDC)
-      return True
+      last=ERROR+line.split("|")[2].strip()+ENDC
+      flag=2
 
-  print(ERROR+"?"+ENDC)
-  return True
+  if flag==0:
+    last=ERROR+"?"+ENDC
+
+  print(last)
+  return (first+last,flag==1)
 
 def checkAgrumMemoryLeaks():
-  print("\nSearching leaks test by test (may be a bit long).\n")
+  print("Searching leaks test by test (may be a bit long).\n")
   res=[]
   for x in sorted([CrossPlatformRelPath(x,"src/testunits").split('/')[1].split('TestSuite')[0]
-                  for x in glob.glob('src/testunits/module_*/*TestSuite.h')]):
-    if checkAgrumMemoryLeak(x):
-      res.append(x)
+                   for x in glob.glob('src/testunits/module_*/*TestSuite.h')]):
+    (msg,testOK)=checkAgrumMemoryLeak(x)
+    if not testOK:
+      res.append(msg)
 
-  print("\n"+WARNING+"Test(s) with problem(s) : {0}.\n".format(", ".join(res) if len(res)>0 else "none")+ENDC)
+  print("\n"+WARNING+"Test(s) with problem(s) :\n -{0}\n".format("\n -".join(res) if len(res)>0 else "none")+ENDC)
 
 ##########################################################################################################################
+print(ENDC+ERROR+"aGrUM"+ENDC+" compilation tool "+ERROR+"v"+numversion+ENDC)
+print("(c) 2010-15 "+OKGREEN+"aGrUM Team"+ENDC)
+print()
+
 listOfModules=parseModulesTxt(modulesFile)
 
 default={}
@@ -939,6 +951,11 @@ for key in default.iterkeys():
 
 parser=initParser(current)
 (options, args)=parser.parse_args()
+
+if options.oneByOne:
+  checkAgrumMemoryLeaks()
+  sys.exit(0)
+
 checkConstraints(parser,options,args)
 
 if options.no_fun:
@@ -947,10 +964,6 @@ if options.no_fun:
   ERROR = ''
   ENDC = ''
 
-
-print(ENDC+ERROR+"aGrUM"+ENDC+" compilation tool "+ERROR+"v"+numversion+ENDC)
-print("(c) 2010-13 "+OKGREEN+"aGrUM Team"+ENDC)
-print()
 
 if exe_python3 is None and exe_python2 is None:
   # should not be possible : we are in a python script :)
@@ -1012,8 +1025,6 @@ shlv['persistent']=persistent
 shlv.sync()
 shlv.close()
 
-if current['1by1']:
-  checkAgrumMemoryLeaks()
 
 proceed(current,RANDOMSEED_FOR_FIXED_SEED="10")
 
