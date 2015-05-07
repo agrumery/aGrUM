@@ -42,6 +42,8 @@ namespace gum {
   BayesNetInference<GUM_SCALAR>::~BayesNetInference() {
     GUM_DESTRUCTOR(BayesNetInference);
     _invalidatePosteriors();
+    for(auto p : __garbages)
+      delete(p);
   }
 
   template <typename GUM_SCALAR>
@@ -88,6 +90,9 @@ namespace gum {
 
     pot_list.insert(po);
     insertEvidence(pot_list);
+
+    // remember to free it
+    __garbages.insert(po);
   }
 
 } /* namespace gum */

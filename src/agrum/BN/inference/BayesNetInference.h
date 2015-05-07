@@ -138,6 +138,10 @@ namespace gum {
      * The Bayes net we wish to perform inference on.
      */
     const IBayesNet<GUM_SCALAR> &__bayesNet;
+
+    // list of potential created by internal methods (addHardEvidence for instance)
+    // to be deleted during the destruction of the inference
+    List<const Potential<GUM_SCALAR> *> __garbages;
   };
 
   extern template class BayesNetInference<float>;
