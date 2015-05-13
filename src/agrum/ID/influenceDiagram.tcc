@@ -226,7 +226,7 @@ namespace gum {
     if (dSize > 6)
       output << "  domainSize: 10^" << dSize;
     else
-      output << "  domainSize: " << round(pow(10.0, dSize));
+      output << "  domainSize: " << std::round(std::pow(10.0, dSize));
 
     output << std::endl << "}";
 

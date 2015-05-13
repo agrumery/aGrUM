@@ -117,10 +117,10 @@ namespace gum {
       pq = _q.jointProbability(Iq);
 
       if (pp != (GUM_SCALAR)0.0) {
-        _hellinger += pow(sqrt(pp) - sqrt(pq), 2) / pp;
+        _hellinger += std::pow(std::sqrt(pp) - std::sqrt(pq), 2) / pp;
 
         if (pq != (GUM_SCALAR)0.0) {
-          _bhattacharya += sqrt(pq / pp); // sqrt(pp*pq)/pp
+          _bhattacharya += std::sqrt(pq / pp); // std::sqrt(pp*pq)/pp
           /// check_rate=true;
           this->enableMinEpsilonRate(); // replace check_rate=true;
           ratio = pq / pp;
@@ -144,15 +144,15 @@ namespace gum {
       if (this->isEnabledMinEpsilonRate() /* replace check_rate */) {
         // delta is used as a temporary variable
         delta = _klPQ / nbrIterations();
-        error = (double)fabs(delta - oldPQ);
+        error = (double) std::fabs(delta - oldPQ);
         oldPQ = delta;
       }
     } while (continueApproximationScheme(error /*,check_rate*/));
 
     _klPQ = -_klPQ / (nbrIterations());
     _klQP = -_klQP / (nbrIterations());
-    _hellinger = sqrt(_hellinger / nbrIterations());
-    _bhattacharya = -log(_bhattacharya);
+    _hellinger = std::sqrt(_hellinger / nbrIterations());
+    _bhattacharya = -std::log(_bhattacharya);
   }
 
 } // namespace gum

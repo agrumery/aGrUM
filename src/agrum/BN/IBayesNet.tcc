@@ -108,12 +108,12 @@ namespace gum {
     if (dSize > 6)
       s << "domainSize: 10^" << dSize;
     else
-      s << "domainSize: " << round(pow(10.0, dSize));
+      s << "domainSize: " << std::round(std::pow(10.0, dSize));
 
     s << ", parameters: " << param << ", compression ratio: ";
 
     if (compressionRatio > -3)
-      s << trunc(100.0 - pow(10.0, compressionRatio + 2.0));
+      s << trunc(100.0 - std::pow(10.0, compressionRatio + 2.0));
     else
       s << "100-10^" << compressionRatio + 2.0;
 

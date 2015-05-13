@@ -78,7 +78,7 @@ namespace gum {
       fact += this->causalWeight(v) * this->variable(j).numerical(i.val(v));
     }
 
-    fact = 1 / (1 + exp(-fact)); // or exp(fact)/(1+exp(fact))
+    fact = 1 / (1 + std::exp(-fact)); // or std::exp(fact)/(1+std::exp(fact))
     return (i.val(C) == 1) ? fact : (GUM_SCALAR)1.0 - fact;
   }
 

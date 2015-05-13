@@ -97,7 +97,7 @@ namespace gum {
     double dSize = 0.0;
 
     for (const auto node : nodes()) {
-      dSize += log10(variable(node).domainSize());
+      dSize += std::log10(variable(node).domainSize());
     }
 
     return dSize;

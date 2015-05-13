@@ -28,7 +28,7 @@
 #include <algorithm>
 
 #define INFERENCE_DEFAULT_MAXITER 10000000
-#define INFERENCE_DEFAULT_EPSILON 1e-4 * log(2)
+#define INFERENCE_DEFAULT_EPSILON 1e-4 * std::log(2)
 #define INFERENCE_DEFAULT_MIN_EPSILON_RATE 1e-4
 #define INFERENCE_DEFAULT_PERIOD_SIZE 500
 #define INFERENCE_DEFAULT_VERBOSITY false
@@ -122,10 +122,10 @@ namespace gum {
       if (n_v == (GUM_SCALAR)1)
         sum_entropy += 100;
       else
-        sum_entropy += n_v * log(n_v / (n_v - 1));
+        sum_entropy += n_v * std::log(n_v / (n_v - 1));
     }
 
-    return sum_entropy / nbr + __sampling_nbr.size() * log((double)nbr / nb);
+    return sum_entropy / nbr + __sampling_nbr.size() * std::log((double)nbr / nb);
   }
 
   /** same as __updateStats_with_err but with no entropy computation */

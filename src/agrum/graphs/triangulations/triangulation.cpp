@@ -52,7 +52,7 @@ namespace gum {
       dSize = 0.0;
 
       for (const auto nod : jt.clique(cl))
-        dSize += log10(_modalities[nod]);
+        dSize += std::log10(_modalities[nod]);
 
       if (res < dSize)
         res = dSize;

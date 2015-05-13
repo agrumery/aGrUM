@@ -104,7 +104,7 @@ namespace gum {
     bool isNegative = (number < 0) ? true : false;
     GUM_SCALAR pnumber = (isNegative) ? -number : number;
 
-    if (fabs(pnumber - 1.) < zero) {
+    if (std::fabs(pnumber - 1.) < zero) {
       numerator = (isNegative) ? -1 : 1;
       denominator = 1;
       return;
@@ -120,7 +120,7 @@ namespace gum {
     while (b <= den_max && d <= den_max) {
       mediant = (double)(a + c) / (double)(b + d);
 
-      if (fabs(pnumber - mediant) < zero) {
+      if (std::fabs(pnumber - mediant) < zero) {
         if (b + d <= den_max) {
           numerator = (isNegative) ? -(a + c) : (a + c);
           denominator = b + d;
@@ -181,11 +181,11 @@ namespace gum {
     /// when we found a convergent with delta < zero, and look for the
     /// semi-convergents before
     while (true) {
-      a.push_back(lrint(floor(rnumber)));
+      a.push_back(std::lrint(std::floor(rnumber)));
       p.push_back(a.back() * p.back() + p[p.size() - 2]);
       q.push_back(a.back() * q.back() + q[q.size() - 2]);
 
-      delta = fabs(pnumber - (GUM_SCALAR)p.back() / q.back());
+      delta = std::fabs(pnumber - (GUM_SCALAR)p.back() / q.back());
 
       if (delta < zero) {
         numerator = (number > 0) ? p.back() : -p.back();
@@ -193,7 +193,7 @@ namespace gum {
         break;
       }
 
-      if (fabs(rnumber - a.back()) < 1e-6)
+      if (std::fabs(rnumber - a.back()) < 1e-6)
         break;
 
       rnumber = 1. / (rnumber - a.back());
@@ -213,8 +213,8 @@ namespace gum {
     p_tmp = n * p[i] + p[i - 1];
     q_tmp = n * q[i] + q[i - 1];
 
-    delta = fabs(pnumber - ((double)p[i]) / q[i]);
-    delta_tmp = fabs(pnumber - ((double)p_tmp) / q_tmp);
+    delta = std::fabs(pnumber - ((double)p[i]) / q[i]);
+    delta_tmp = std::fabs(pnumber - ((double)p_tmp) / q_tmp);
 
     if (delta < zero) {
       numerator = (number > 0) ? p[i] : -p[i];
@@ -234,7 +234,7 @@ namespace gum {
       p_tmp = n * p[i] + p[i - 1];
       q_tmp = n * q[i] + q[i - 1];
 
-      delta_tmp = fabs(pnumber - ((double)p_tmp) / q_tmp);
+      delta_tmp = std::fabs(pnumber - ((double)p_tmp) / q_tmp);
 
       if (delta_tmp < zero) {
         numerator = (number > 0) ? p_tmp : -p_tmp;
@@ -273,7 +273,7 @@ namespace gum {
 
     /// we find all convergents until we met den_max
     while (true) {
-      a.push_back(lrint(floor(rnumber)));
+      a.push_back(std::lrint(std::floor(rnumber)));
 
       p_tmp = a.back() * p.back() + p[p.size() - 2];
       q_tmp = a.back() * q.back() + q[q.size() - 2];
@@ -284,7 +284,7 @@ namespace gum {
       p.push_back(p_tmp);
       q.push_back(q_tmp);
 
-      if (fabs(rnumber - a.back()) < 1e-6)
+      if (std::fabs(rnumber - a.back()) < 1e-6)
         break;
 
       rnumber = 1. / (rnumber - a.back());
@@ -321,8 +321,8 @@ namespace gum {
     p_tmp = n * p[i] + p[i - 1];
     q_tmp = n * q[i] + q[i - 1];
 
-    delta_tmp = fabs(pnumber - ((double)p_tmp) / q_tmp);
-    delta = fabs(pnumber - ((double)p[i]) / q[i]);
+    delta_tmp = std::fabs(pnumber - ((double)p_tmp) / q_tmp);
+    delta = std::fabs(pnumber - ((double)p[i]) / q[i]);
 
     if (delta_tmp < delta && q_tmp <= denMax && p_tmp <= denMax) {
       numerator = (number > 0) ? p_tmp : -p_tmp;

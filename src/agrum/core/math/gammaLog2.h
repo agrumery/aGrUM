@@ -88,10 +88,10 @@ namespace gum {
     /// indicates whether we need more precision for small values
     bool __requires_precision{false};
 
-    /// 1 / log(2)
+    /// 1 / std::log(2)
     static constexpr float __1log2{M_LOG2E};
 
-    /// log ( sqrt(2pi) )
+    /// std::log ( std::sqrt(2pi) )
     static constexpr float __log_sqrt_2pi{GUM_LOG_SQRT_2PI};
 
     /// the 5000 values from 0 to 50 by step of 1/100

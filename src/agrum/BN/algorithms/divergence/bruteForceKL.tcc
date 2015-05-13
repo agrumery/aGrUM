@@ -68,8 +68,8 @@ namespace gum {
       GUM_SCALAR pp = _p.jointProbability(Ip);
       GUM_SCALAR pq = _q.jointProbability(Iq);
 
-      _hellinger += pow(sqrt(pp) - sqrt(pq), 2);
-      _bhattacharya += sqrt(pp * pq);
+      _hellinger += std::pow(std::sqrt(pp) - std::sqrt(pq), 2);
+      _bhattacharya += std::sqrt(pp * pq);
 
       if (pp != (GUM_SCALAR)0.0) {
         if (pq != (GUM_SCALAR)0.0) {
@@ -88,8 +88,8 @@ namespace gum {
       }
     }
 
-    _hellinger = sqrt(_hellinger);
-    _bhattacharya = -log(_bhattacharya);
+    _hellinger = std::sqrt(_hellinger);
+    _bhattacharya = -std::log(_bhattacharya);
   }
 
 } // namespace gum

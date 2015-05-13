@@ -160,7 +160,7 @@ namespace gum {
         ;
 
         if (zeCreatedObjs != zeDeletedObjts) {
-          nb_err += abs(zeDeletedObjts - zeCreatedObjs);
+          nb_err += std::abs(zeDeletedObjts - zeCreatedObjs);
           stream << "<--- failed";
         }
 

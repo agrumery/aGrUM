@@ -367,7 +367,7 @@ namespace gum {
         if (_current_epsilon > .0) { // ! _current_epsilon can be 0. AND epsilon
                                      // isEnabled can be disabled !
           _current_rate =
-              fabs((_current_epsilon - _last_epsilon) / _current_epsilon);
+              std::fabs((_current_epsilon - _last_epsilon) / _current_epsilon);
         }
         // limit with current eps ---> 0 is | 1 - ( last_eps / 0 ) | ---> infinity
         // the else means a return false if we isEnabled the rate below, as we would
