@@ -1,4 +1,4 @@
-project(EXAMPLE)
+ project(EXAMPLE)
 cmake_minimum_required(VERSION 2.8)
 
 include("${EXAMPLE_SOURCE_DIR}/../config.txt")
@@ -14,9 +14,9 @@ else (aGrUM_FOUND)
   message(FATAL_ERROR "Please install aGrUM")
 endif (aGrUM_FOUND)
 
-# cmake -DCMAKE_BUILD_TYPE=DEBUG 
+# cmake -DCMAKE_BUILD_TYPE=DEBUG
 # or
-# cmake -DCMAKE_BUILD_TYPE=RELEASE 
+# cmake -DCMAKE_BUILD_TYPE=RELEASE
 #     RELEASE is the default option (thanks to the next 3 lines)
 if( CMAKE_BUILD_TYPE )
   message(STATUS  "version : '${CMAKE_BUILD_TYPE}'")
