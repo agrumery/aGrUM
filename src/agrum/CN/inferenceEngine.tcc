@@ -930,7 +930,7 @@ namespace gum {
         eq = true;
 
         for (auto end = (Size)vertex.size(), i = (Size)0; i < end; i++) {
-          if (fabs(vertex[i] - (*it)[i]) > 1e-6) {
+          if (std::fabs(vertex[i] - (*it)[i]) > 1e-6) {
             eq = false;
             break;
           }
@@ -956,8 +956,8 @@ namespace gum {
                   maxItEnd = _marginalMax[id].cend();
              jt != jtEnd && minIt != minItEnd && maxIt != maxItEnd;
              ++jt, ++minIt, ++maxIt) {
-          if ((fabs(*jt - *minIt) < 1e-6 || fabs(*jt - *maxIt) < 1e-6) &&
-              fabs(*minIt - *maxIt) > 1e-6)
+          if ((std::fabs(*jt - *minIt) < 1e-6 || std::fabs(*jt - *maxIt) < 1e-6) &&
+              std::fabs(*minIt - *maxIt) > 1e-6)
             return false;
         }
         return true;
@@ -1139,7 +1139,7 @@ namespace gum {
         eq = true;
 
         for (Size i = 0; i < dsize; i++) {
-          if (fabs(vertex[i] - (*it)[i]) > 1e-6) {
+          if (std::fabs(vertex[i] - (*it)[i]) > 1e-6) {
             eq = false;
             break;
           }
@@ -1170,8 +1170,8 @@ namespace gum {
                   maxItEnd = _marginalMax[id].cend();
              jt != jtEnd && minIt != minItEnd && maxIt != maxItEnd;
              ++jt, ++minIt, ++maxIt) {
-          if ((fabs(*jt - *minIt) < 1e-6 || fabs(*jt - *maxIt) < 1e-6) &&
-              fabs(*minIt - *maxIt) > 1e-6)
+          if ((std::fabs(*jt - *minIt) < 1e-6 || std::fabs(*jt - *maxIt) < 1e-6) &&
+              std::fabs(*minIt - *maxIt) > 1e-6)
             return false;
         }
         return true;

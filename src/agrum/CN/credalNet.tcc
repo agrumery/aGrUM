@@ -73,7 +73,7 @@ namespace gum {
             sum += prob;
           }
 
-          if (fabs(sum - 1) > 1e-6)
+          if (std::fabs(sum - 1) > 1e-6)
             GUM_ERROR(
                 CPTNoSumTo1,
                 "setCPTs : a vertex coordinates does not sum to one for node id : "
@@ -115,7 +115,7 @@ namespace gum {
           sum += prob;
         }
 
-        if (fabs(sum - 1) > 1e-6)
+        if (std::fabs(sum - 1) > 1e-6)
           GUM_ERROR(
               CPTNoSumTo1,
               "setCPT : a vertex coordinates does not sum to one for node id : "
@@ -202,7 +202,7 @@ namespace gum {
           sum += prob;
         }
 
-        if (fabs(sum - 1) > 1e-6)
+        if (std::fabs(sum - 1) > 1e-6)
           GUM_ERROR(
               CPTNoSumTo1,
               "setCPT : a vertex coordinates does not sum to one for node id : "
@@ -467,7 +467,7 @@ namespace gum {
               sum += *modality;
             }
 
-            if (fabs(1. - sum) > __epsRedund) {
+            if (std::fabs(1. - sum) > __epsRedund) {
               GUM_ERROR(CPTNoSumTo1, __src_bn.variable(node).name()
                                          << "(" << __epsRedund << ")"
                                          << " " << entry << std::endl << vertex
@@ -484,7 +484,7 @@ namespace gum {
           else if (den == 0 || beta == 1)
             epsilon = 1;
           else
-            epsilon = pow(beta, log(den + 1));
+            epsilon = std::pow(beta, std::log(den + 1));
 
           epsi_moy += epsilon;
           epsi_den += 1;
@@ -697,7 +697,7 @@ namespace gum {
           std::vector<std::vector<GUM_SCALAR>> vertices;
 
           for (Size modality = 0; modality < var_dSize; modality++) {
-            if (fabs(upper[modality] - lower[modality]) < 1e-6)
+            if (std::fabs(upper[modality] - lower[modality]) < 1e-6)
               continue;
 
             all_equals = false;
@@ -716,7 +716,7 @@ namespace gum {
             for (Size i = 0; i < vsize; i++)
               total += vertex[i];
 
-            if (fabs(total - 1.) > 1e-6)
+            if (std::fabs(total - 1.) > 1e-6)
               GUM_ERROR(CPTNoSumTo1, __src_bn.variable(node).name()
                                          << " " << entry << std::endl << vertex
                                          << std::endl);
@@ -737,7 +737,7 @@ namespace gum {
             for (Size i = 0; i < vsize; i++)
               total += vertex[i];
 
-            if (fabs(total - 1.) > 1e-6)
+            if (std::fabs(total - 1.) > 1e-6)
               GUM_ERROR(CPTNoSumTo1, __src_bn.variable(node).name()
                                          << " " << entry << std::endl << vertex
                                          << std::endl);
@@ -1738,7 +1738,7 @@ namespace gum {
             auto vsize = vertex.size();
 
             for (Size modality = 0; modality < vsize; modality++) {
-              if (fabs(vertex[modality] - v_rep[p][modality]) > __epsRedund) {
+              if (std::fabs(vertex[modality] - v_rep[p][modality]) > __epsRedund) {
                 thread_redund = false;
                 break;
               }

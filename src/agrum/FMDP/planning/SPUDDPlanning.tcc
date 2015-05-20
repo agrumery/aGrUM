@@ -181,8 +181,8 @@ namespace gum {
       for (BijectionIterator<NodeId, GUM_SCALAR> valIter =
                deltaV->valuesMap().begin();
            valIter != deltaV->valuesMap().end(); ++valIter)
-        if (gap < fabs(valIter.second()))
-          gap = fabs(valIter.second());
+        if (gap < std::fabs(valIter.second()))
+          gap = std::fabs(valIter.second());
 
       delete deltaV;
 
@@ -680,7 +680,7 @@ namespace gum {
                                std::ios::out | std::ios::app);
 
       if (!__traceAlgoSaveFile) {
-        GUM_ERROR(IOError, "log file" << traceFileName
+        GUM_ERROR(IOError, "log file" << traceFileName.str()
                                       << " does not open correctly");
       }
 
@@ -792,8 +792,8 @@ namespace gum {
       for (BijectionIterator<NodeId, GUM_SCALAR> valIter =
                deltaV->valuesMap().begin();
            valIter != deltaV->valuesMap().end(); ++valIter)
-        if (gap < fabs(valIter.second()))
-          gap = fabs(valIter.second());
+        if (gap < std::fabs(valIter.second()))
+          gap = std::fabs(valIter.second());
 
       delete deltaV;
 

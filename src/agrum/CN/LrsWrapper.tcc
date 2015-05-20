@@ -221,7 +221,7 @@ namespace gum {
         eq = true;
 
         for (decltype(__card) mod = 0; mod < __card; mod++)
-          if (fabs(v[mod] - vertex[mod]) > 1e-6) {
+          if (std::fabs(v[mod] - vertex[mod]) > 1e-6) {
             eq = false;
             break;
           }
@@ -259,7 +259,7 @@ namespace gum {
       for (const auto elem : __vertex)
         sum += elem;
 
-      if (fabs(sum - 1) < 1e-6) {
+      if (std::fabs(sum - 1) < 1e-6) {
         __output = std::vector<std::vector<GUM_SCALAR>>(1, __vertex);
         return;
       }

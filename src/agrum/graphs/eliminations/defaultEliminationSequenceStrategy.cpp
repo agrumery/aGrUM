@@ -109,7 +109,7 @@ namespace gum {
         __log_modalities.resize(__graph->sizeNodes() / 2);
 
         for (const auto node : graph->nodes())
-          __log_modalities.insert(node, log((*modal)[node]));
+          __log_modalities.insert(node, std::log((*modal)[node]));
 
         // creation du simplicial set
         __simplicial_set =

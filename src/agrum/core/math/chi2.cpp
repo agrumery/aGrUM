@@ -34,10 +34,10 @@
 #define GUM_Z_MAX 6.0            // maximum meaningful z value
 #define GUM_CHI_EPSILON 0.000001 // accuracy of critchi approximation
 #define GUM_CHI_MAX 99999.0      // maximum chi square value
-#define GUM_LOG_SQRT_PI 0.5723649429247000870717135 // log (sqrt (pi))
-#define GUM_I_SQRT_PI 0.5641895835477562869480795   // 1 / sqrt (pi)
+#define GUM_LOG_SQRT_PI 0.5723649429247000870717135 // std::log (std::sqrt (pi))
+#define GUM_I_SQRT_PI 0.5641895835477562869480795   // 1 / std::sqrt (pi)
 #define GUM_BIGX 20.0                               // max value to represent exp (x)
-#define gum__ex(x) (((x) < -GUM_BIGX) ? 0.0 : exp(x))
+#define gum__ex(x) (((x) < -GUM_BIGX) ? 0.0 : std::exp(x))
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
@@ -66,7 +66,7 @@ namespace gum {
     if (z == 0.0)
       x = 0.0;
     else {
-      y = 0.5 * fabs(z);
+      y = 0.5 * std::fabs(z);
 
       if (y >= (GUM_Z_MAX * 0.5))
         x = 1.0;
@@ -135,7 +135,7 @@ namespace gum {
     if (df > 1)
       y = gum__ex(-a);
 
-    s = (even ? y : (2.0 * __probaZValue(-sqrt(x))));
+    s = (even ? y : (2.0 * __probaZValue(-std::sqrt(x))));
 
     if (df > 2) {
       x = 0.5 * (df - 1.0);
@@ -143,17 +143,17 @@ namespace gum {
 
       if (a > GUM_BIGX) {
         e = (even ? 0.0 : GUM_LOG_SQRT_PI);
-        c = log(a);
+        c = std::log(a);
 
         while (z <= x) {
-          e = log(z) + e;
+          e = std::log(z) + e;
           s += gum__ex(c * z - a - e);
           z += 1.0;
         }
 
         return (s);
       } else {
-        e = (even ? 1.0 : (GUM_I_SQRT_PI / sqrt(a)));
+        e = (even ? 1.0 : (GUM_I_SQRT_PI / std::sqrt(a)));
         c = 0.0;
 
         while (z <= x) {
@@ -179,7 +179,7 @@ namespace gum {
     else if (proba >= 1.0)
       return (0.0);
 
-    chisqval = df / sqrt(proba); /* fair first value */
+    chisqval = df / std::sqrt(proba); /* fair first value */
 
     while (maxchisq - minchisq > GUM_CHI_EPSILON) {
       if (__probaChi2(chisqval, df) < proba)

@@ -67,7 +67,7 @@ namespace gum {
         __containing_list(__graph->size()),
         __nb_triangles(__graph->size() * __graph->size() / 2),
         __nb_adjacent_neighbours(__graph->size()), __quasi_ratio(theRatio),
-        __log_threshold(log(1 + theThreshold)), __we_want_fill_ins(false) {
+        __log_threshold(std::log(1 + theThreshold)), __we_want_fill_ins(false) {
     if (!theGraph)
       // for debugging purposes
       GUM_CONSTRUCTOR(SimplicialSet);
@@ -836,7 +836,7 @@ namespace gum {
 
     __log_tree_width = std::numeric_limits<float>::max();
     __quasi_ratio = theRatio;
-    __log_threshold = log(1 + theThreshold);
+    __log_threshold = std::log(1 + theThreshold);
     __changed_status.clear();
     __fill_ins_list.clear();
 

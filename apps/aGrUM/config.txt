@@ -1,0 +1,9 @@
+#
+# add here the installation directory for agrum
+# do not forget to change this line if needed ("act install -d...")
+# system-wide
+# set(AGRUM_INSTALLATION_DIRECTORY "/usr")
+set(AGRUM_INSTALLATION_DIRECTORY "~/usr")
+
+message(STATUS "aGrUM installation path : ${AGRUM_INSTALLATION_DIRECTORY} ")
+

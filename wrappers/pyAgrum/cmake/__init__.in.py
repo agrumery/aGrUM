@@ -58,10 +58,3 @@ from @PYAGRUM_MODULE@ import DefaultInLabel,DuplicateElement,DuplicateLabel,Empt
 
 # seed is chosen randomly :)
 initRandom(0)
-
-## if needed python2 vs python3 
-#import sys
-#if sys.version_info[0] == 2:
-#    from two import *
-#else:
-#    from .three import *
