@@ -680,7 +680,7 @@ namespace gum {
                                std::ios::out | std::ios::app);
 
       if (!__traceAlgoSaveFile) {
-        GUM_ERROR(IOError, "log file" << traceFileName
+        GUM_ERROR(IOError, "log file" << traceFileName.str()
                                       << " does not open correctly");
       }
 
