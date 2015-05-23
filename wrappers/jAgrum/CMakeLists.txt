@@ -1,28 +1,13 @@
-project(jAgrum)
-
-cmake_minimum_required(VERSION 2.6)
-
-set(CMAKE_INSTALL_PREFIX /usr)
-set(AGRUM_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src/")
-
-find_package(SWIG REQUIRED)
-include(${SWIG_USE_FILE})
 
 set(JAVA_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}/lib)
 make_directory(${JAVA_OUTDIR})
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 include_directories("/usr/lib/jvm/java-6-sun/include")
 include_directories("/usr/lib/jvm/java-6-sun/include/linux")
 
-include_directories(${AGRUM_SRC_DIR})
-
-file(GLOB_RECURSE AGRUM_CORE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${AGRUM_SRC_DIR}/agrum/core/*.cpp)
-file(GLOB_RECURSE AGRUM_BN_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${AGRUM_SRC_DIR}/agrum/BN/*.cpp)
-file(GLOB_RECURSE AGRUM_GRAPHICALMODEL_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${AGRUM_SRC_DIR}/agrum/graphicalModels/*.cpp)
-file(GLOB_RECURSE AGRUM_GRAPHS_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${AGRUM_SRC_DIR}/agrum/graphs/*.cpp)
-file(GLOB_RECURSE AGRUM_MULTIDIM_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${AGRUM_SRC_DIR}/agrum/multidim/*.cpp)
-file(GLOB_RECURSE AGRUM_LEARNING_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${AGRUM_SRC_DIR}/agrum/learning/*.cpp)
+include_directories (${AGRUM_SOURCE_DIR})
+include_directories (${AGRUM_BINARY_DIR})
 
 # Properties
 set(CMAKE_SWIG_FLAGS "-Wall")
@@ -40,9 +25,9 @@ foreach(CPP_FILE ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_GRAPHICALMODE
 endforeach(CPP_FILE ${AGRUM_CORE_SOURCES})
 
 # Build
-swig_add_module(jAgrum java jAgrum.i ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_GRAPHICALMODEL_SOURCES} ${AGRUM_GRAPHS_SOURCES} ${AGRUM_MULTIDIM_SOURCES})
+swig_add_module (jAgrum java jAgrum.i)
 #for now we do not take for pyAgrum the ${AGRUM_LEARNING_SOURCES}
-#swig_link_libraries(jAgrum ${PYTHON_LIBRARIES})
+swig_link_libraries (jAgrum agrum)
 
 set_target_properties(jAgrum PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${JAVA_OUTDIR})
 

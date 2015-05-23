@@ -1,24 +1,14 @@
-project(AGRUM)
-
-cmake_minimum_required(VERSION 2.8)
-
-if(POLICY CMP0042)
-  cmake_policy(SET CMP0042 OLD)
-endif(POLICY CMP0042)
 
 include("version.txt")
 include("modules.txt")
 
-list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
-set(CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+set (CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 include(Options.agrum)
 include(Modules.agrum)
 
-include(CompilOptions.agrum)
-
 include(Config.agrum)
-configure_file("${CMAKE_CURRENT_CMAKE_DIR}/config.h.in" "${AGRUM_BINARY_DIR}/agrum/config.h")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.h.in" "${AGRUM_BINARY_DIR}/agrum/config.h")
 
 ### CONDITIONAL RULES (if flex/bison have been found, we add rules) ####
 #include("${CMAKE_CURRENT_CMAKE_DIR}/FlexBison.agrum.cmake")
