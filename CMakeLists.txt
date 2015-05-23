@@ -6,6 +6,10 @@ if (NOT DEFINED CMAKE_BUILD_TYPE)
   set (CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
 endif ()
 
+if (POLICY CMP0018)
+  cmake_policy (SET CMP0018 OLD)
+endif ()
+
 if (POLICY CMP0042)
   cmake_policy (SET CMP0042 OLD)
 endif ()

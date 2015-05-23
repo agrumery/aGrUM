@@ -31,6 +31,7 @@ endif(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 
 include(openMP)
 
+
 include_directories(BEFORE ${AGRUM_BINARY_DIR})
 include_directories(BEFORE ${AGRUM_SOURCE_DIR})
 link_directories(${AGRUM_BINARY_DIR}/lib)
@@ -40,9 +41,7 @@ set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INC
 ## target library
 
 add_library(${LIBAGRUM} ${AGRUM_FILES})
-if (OPENMP_FOUND)
-  target_link_libraries(${LIBAGRUM} gomp)
-endif ()
+
 set_target_properties(${LIBAGRUM} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
 
 ####################################################################

@@ -12,8 +12,7 @@ if (FOR_PYTHON2) # we use 3 by default
   endif(WIN32)
   
   find_package(PythonInterp REQUIRED)
-  set(CMAKE_SWIG_FLAGS  "-Wall" )
-  
+
   #change in module naming from inside module between python2 and python3
   set(PYAGRUM_MODULE "pyAgrum")
 else (FOR_PYTHON2) 
@@ -26,8 +25,7 @@ else (FOR_PYTHON2)
   endif(WIN32)
   
   find_package(PythonInterp 3 REQUIRED)
-  
-  set(CMAKE_SWIG_FLAGS  "-Wall" )
+
   set(CMAKE_SWIG_FLAGS  "${CMAKE_SWIG_FLAGS};-py3" )
   
   #change in module naming from inside module between python2 and python3
@@ -145,22 +143,19 @@ else (SWIG_FOUND)
   add_library (${_PYAGRUMLIB} MODULE ${SWIG_GENERATED_FILES})
   target_link_libraries (${_PYAGRUMLIB} agrum)
   target_link_libraries (${_PYAGRUMLIB} ${PYTHON_LIBRARIES})
+  set_target_properties(${_PYAGRUMLIB} PROPERTIES PREFIX "")
+  if (WIN32)
+    set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".pyd")
+  else (WIN32)
+    set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".so")
+  endif (WIN32)
 endif (SWIG_FOUND)
 
 set_target_properties(${_PYAGRUMLIB} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-set_target_properties(${_PYAGRUMLIB} PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS_RELEASE}")
-set_target_properties(${_PYAGRUMLIB} PROPERTIES LINK_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp -lpthread")
-
 
 # for additionnal rule such test pyAgrum
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SWIG_OUTDIR}/pyAgrum.py" "${CMAKE_CURRENT_BINARY_DIR}/.")
 
-  set_target_properties(${_PYAGRUMLIB} PROPERTIES PREFIX "")
-if (WIN32)
-  set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".pyd")
-else (WIN32)
-  set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".so")
-endif (WIN32)
 
 file(GLOB GUMLIB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/*.py")
 file(GLOB GUMLIB_UTILS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/utils/*.py")
@@ -180,7 +175,6 @@ install(FILES ${GENERATED_PYTHON}/pyAgrum.py DESTINATION ${PYTHON_INSTALL}/pyAgr
 
 if (WIN32)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_PYAGRUMLIB}.pyd DESTINATION ${PYTHON_INSTALL}/pyAgrum)
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/lib${_PYAGRUMLIB}.dll.a DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 else (WIN32)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_PYAGRUMLIB}.so DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 endif (WIN32)
