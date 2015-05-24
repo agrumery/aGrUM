@@ -20,8 +20,8 @@ set (AGRUM_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/src)
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/cmake)
 
 
-include(CompilOptions.agrum)
-
+include (CompilOptions.agrum)
+include (openMP)
 
 add_subdirectory (src)
 add_subdirectory (wrappers)

@@ -29,8 +29,6 @@ if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 endif(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 ####################################################################
 
-include(openMP)
-
 
 include_directories(BEFORE ${AGRUM_BINARY_DIR})
 include_directories(BEFORE ${AGRUM_SOURCE_DIR})
