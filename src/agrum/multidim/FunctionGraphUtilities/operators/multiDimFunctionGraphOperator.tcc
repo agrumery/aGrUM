@@ -67,11 +67,11 @@ namespace gum {
 
 
       for(auto instIter = __DG1InstantiationNeeded.beginSafe(); instIter != __DG1InstantiationNeeded.endSafe(); ++instIter )
-        if( instIter.val() != __default)
+//        if( instIter.val() != __default)
           DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
 
       for(auto instIter = __DG2InstantiationNeeded.beginSafe(); instIter != __DG2InstantiationNeeded.endSafe(); ++instIter )
-        if( instIter.val() != __default)
+//        if( instIter.val() != __default)
           DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
 
       if(__nbVar != 0)
@@ -252,8 +252,19 @@ namespace gum {
         const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *dg,
         HashTable<NodeId, short int*>& dgInstNeed){
 
+//      std::cout << dg->toDot() << std::endl;
+//      for( auto varIter = dg->variablesSequence().beginSafe(); varIter != dg->variablesSequence().endSafe(); ++varIter )
+//          std::cout << (*varIter)->name() << " | ";
+//      std::cout << std::endl;
+
+//      for( auto varIter = __rd->variablesSequence().beginSafe(); varIter != __rd->variablesSequence().endSafe(); ++varIter )
+//          std::cout << (*varIter)->name() << " | ";
+//      std::cout << std::endl;
+
       HashTable<NodeId, short int*> nodesVarDescendant;
       std::size_t tableSize = __nbVar*sizeof(short int);
+
+//      std::cout << "Var Descendant Phase" << std::endl;
 
       for( auto varIter = dg->variablesSequence().rbeginSafe(); varIter != dg->variablesSequence().rendSafe(); --varIter ) {
 
@@ -286,6 +297,8 @@ namespace gum {
         }
       }
 
+//      std::cout << "Inst Needed Phase" << std::endl;
+
       for( auto varIter = dg->variablesSequence().beginSafe(); varIter != dg->variablesSequence().endSafe(); ++varIter ) {
 
         const Link<NodeId> * nodeIter = dg->varNodeListe(*varIter)->list();
@@ -305,11 +318,15 @@ namespace gum {
         }
       }
 
-      dg->beginValues();
-      while( dg->hasValue() ){
-        dgInstNeed.insert( dg->id(), __default );
-        dg->nextValue();
-      }
+//      std::cout << "Terminal Node Phase" << std::endl;
+
+//      dg->beginValues();
+//      while( dg->hasValue() ){
+//        dgInstNeed.insert( dg->id(), __default );
+//        dg->nextValue();
+//      }
+
+//      std::cout << "Cleanning Phase" << std::endl;
 
       for(HashTableIterator<NodeId, short int*> it = nodesVarDescendant.begin(); it != nodesVarDescendant.end(); ++it ){
         DEALLOCATE(it.val(),tableSize);
@@ -364,9 +381,11 @@ namespace gum {
 
       //First we ensure that we hadn't already visit this pair of node under hte same circumstances
 
-      short int* dg1NeededVar = __DG1InstantiationNeeded[ currentSituation.DG1Node() ]; //__DG1InstantiationNeeded.exists( currentSituation.DG1Node() )?__DG1InstantiationNeeded[ currentSituation.DG1Node() ]:__default;
+//      short int* dg1NeededVar = __DG1InstantiationNeeded[ currentSituation.DG1Node() ];
+      short int* dg1NeededVar = __DG1InstantiationNeeded.exists( currentSituation.DG1Node() )?__DG1InstantiationNeeded[ currentSituation.DG1Node() ]:__default;
       Idx dg1CurrentVarPos = __DG1->isTerminalNode( currentSituation.DG1Node() )?__nbVar:__rd->variablesSequence().pos( __DG1->node( currentSituation.DG1Node() )->nodeVar() );
-      short int* dg2NeededVar = __DG2InstantiationNeeded[ currentSituation.DG2Node() ]; //__DG2InstantiationNeeded.exists( currentSituation.DG2Node() )?__DG2InstantiationNeeded[ currentSituation.DG2Node() ]:__default;
+//      short int* dg2NeededVar = __DG2InstantiationNeeded[ currentSituation.DG2Node() ];
+      short int* dg2NeededVar = __DG2InstantiationNeeded.exists( currentSituation.DG2Node() )?__DG2InstantiationNeeded[ currentSituation.DG2Node() ]:__default;
       Idx dg2CurrentVarPos = __DG2->isTerminalNode( currentSituation.DG2Node() )?__nbVar:__rd->variablesSequence().pos( __DG2->node( currentSituation.DG2Node() )->nodeVar() );
 
       short int* instNeeded = static_cast<short int*>( ALLOCATE( sizeof(short int)*__nbVar ) );

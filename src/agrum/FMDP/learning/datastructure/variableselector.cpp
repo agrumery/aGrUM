@@ -88,8 +88,8 @@ namespace gum {
 
       for( auto varIter = bestSet->beginSafe(); varIter != bestSet->endSafe(); ++varIter ){
         if( bestVar == nullptr ||
-            bestVar->domainSize() < (*varIter)->domainSize() ||
-            (bestVar->domainSize() == (*varIter)->domainSize() && __remainingVarsOtherScore[bestVar] < __remainingVarsOtherScore[*varIter]))
+            __remainingVarsOtherScore[bestVar] < __remainingVarsOtherScore[*varIter] ||
+            (__remainingVarsOtherScore[bestVar] == __remainingVarsOtherScore[*varIter] && bestVar->domainSize() < (*varIter)->domainSize()) )
           bestVar = *varIter;
       }
       __removeVar(bestVar);

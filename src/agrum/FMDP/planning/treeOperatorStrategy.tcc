@@ -124,8 +124,6 @@ namespace gum {
                                                                   const MultiDimFunctionGraph< GUM_SCALAR >* f1,
                                                                   const MultiDimFunctionGraph< GUM_SCALAR >* f2,
                                                                   Idx del ){
-
-      std::cout << "TOH!" << std::endl;
       TreeOperator< GUM_SCALAR, std::multiplies > opi( f1, f2 );
       MultiDimFunctionGraph<GUM_SCALAR>* ret = opi.compute();
       this->_deleteFunctionGraph( f1, f2, del);

@@ -239,7 +239,7 @@ namespace gum {
     void StructuredPlaner<GUM_SCALAR>::makePlanning( Idx nbStep ) {
 
       if(__firstTime){
-        _vFunction->copy(*(RECAST(_fmdp->reward())));
+        this->_initVFunction();
         __firstTime = false;
       }
 
@@ -264,7 +264,7 @@ namespace gum {
             gap = fabs ( deltaV->value() );
         delete deltaV;
 
-//        std::cout << " ------------------- Fin itération n° " << nbIte << std::endl << " Gap : " << gap <<  " - " << __threshold << std::endl;
+        std::cout << " ------------------- Fin itération n° " << nbIte << std::endl << " Gap : " << gap <<  " - " << __threshold << std::endl;
 
         // *****************************************************************************************
         // And eventually we update pointers for next loop
@@ -276,9 +276,19 @@ namespace gum {
       // Policy matching value function research
       // *****************************************************************************************
       this->_evalPolicy ( );
+
+//      std::cout << this->_fmdp->toString() << std::endl;
+//      std::cout << this->optimalPolicy2String() << std::endl;
     }
 
 
+    // ===========================================================================
+    // Performs a single step of value iteration
+    // ===========================================================================
+    template<typename GUM_SCALAR>
+    void StructuredPlaner<GUM_SCALAR>::_initVFunction() {
+      _vFunction->copy(*(RECAST(_fmdp->reward())));
+    }
 
   /* ************************************************************************************************** **/
   /* **                                                                                                 **/
@@ -362,7 +372,7 @@ namespace gum {
     // ===========================================================================
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph<GUM_SCALAR>*
-    StructuredPlaner<GUM_SCALAR>::_addReward ( MultiDimFunctionGraph< GUM_SCALAR >* Vold ) {
+    StructuredPlaner<GUM_SCALAR>::_addReward (MultiDimFunctionGraph< GUM_SCALAR >* Vold , Idx actionId) {
 
       // *****************************************************************************************
       // ... we multiply the result by the discount factor, ...
@@ -372,7 +382,7 @@ namespace gum {
 
       // *****************************************************************************************
       // ... and finally add reward
-      newVFunction = _operator->add(newVFunction, RECAST( _fmdp->reward() ));
+      newVFunction = _operator->add(newVFunction, RECAST( _fmdp->reward(actionId) ));
 
       return newVFunction;
     }

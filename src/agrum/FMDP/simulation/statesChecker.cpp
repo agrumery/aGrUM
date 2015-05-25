@@ -24,7 +24,7 @@
 namespace gum {
 
   StatesChecker::StatesChecker() : __nbVisitedStates(0),
-                                   __checker(MultiDimFunctionGraph<bool>::getReducedAndOrderedInstance()),
+                                   __checker(MultiDimFunctionGraph<bool>::getTreeInstance()),
                                    __checkerTrueId(0),
                                    __checkerFalseId(0){
     GUM_CONSTRUCTOR(StatesChecker)
@@ -36,6 +36,7 @@ namespace gum {
   }
 
   void StatesChecker::reset(const Instantiation & initialState){
+
     __checker->clear();
     for( SequenceIteratorSafe<const DiscreteVariable*> varIter = initialState.variablesSequence().beginSafe();
          varIter != initialState.variablesSequence().endSafe(); ++varIter )
@@ -46,6 +47,7 @@ namespace gum {
     __checkerTrueId = __checker->manager()->addTerminalNode(true);
 
     __insertState( initialState, 0, 0 );
+    std::cout << __checker->toDot() << std::endl;
 
   }
 
@@ -60,10 +62,10 @@ namespace gum {
         parModa = state.valFromPtr( __checker->node( parId )->nodeVar() );
       }
       __insertState( state, parId, parModa );
-      __checker->manager()->reduce();
   }
 
   void StatesChecker::__insertState(const Instantiation& state, NodeId parentId, Idx parentModa){
+
 
     Idx varIter = 0;
     if( parentId )

@@ -30,6 +30,8 @@
 // =========================================================================
 #include <cmath>
 // =========================================================================
+#include <agrum/core/hashTable.h>
+// =========================================================================
 
 namespace gum {
 
@@ -88,3 +90,11 @@ namespace gum {
 } /* namespace gum */
 
 #endif // GUM_CHI_SQUARE_H
+
+
+//static HashTable<std::pair<double, unsigned long>, double> __chi2Cache;
+//static HashTable<double, double> __ZCache;
+//static Idx nbZ;
+//static Idx nbChi;
+//static Idx nbZt;
+//static Idx nbChit;

@@ -53,6 +53,9 @@ namespace gum {
   template<typename GUM_SCALAR>
   class FMDP {
 
+    template <typename GUM_SCALAR_O>
+    using VarTransitionTable = HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR_O >* >;
+
     public:
 
       // ===========================================================================
@@ -73,7 +76,7 @@ namespace gum {
       /// @}
 
       // ===========================================================================
-      /// @name FMDP instantiation methods.
+      /// @name Variable Handling Methods.
       // ===========================================================================
       /// @{
 
@@ -84,69 +87,37 @@ namespace gum {
         void addVariable ( const DiscreteVariable* var );
 
         /**
+         * Returns an iterator reference to he beginning of the list of variables
+         */
+        SequenceIteratorSafe< const DiscreteVariable* > beginVariables() const {return __varSeq.beginSafe(); }
+
+        /**
+         * Returns an iterator reference to the end of the list of variables
+         */
+        SequenceIteratorSafe< const DiscreteVariable* > endVariables() const { return __varSeq.endSafe(); }
+
+        /**
+         * Returns the primed variable associate to the given main variable
+         */
+        const DiscreteVariable* main2prime(const DiscreteVariable* mainVar) const { return __main2primed.second(mainVar); }
+
+        /**
+         * Returns the map binding main variables and prime variables
+         */
+        INLINE const Bijection<const DiscreteVariable*, const DiscreteVariable*>& mapMainPrime() const { return __main2primed; }
+
+      /// @}
+
+      // ===========================================================================
+      /// @name Action Handling Methods.
+      // ===========================================================================
+      /// @{
+
+        /**
          * Adds an action to FMDP description
          * @throw DuplicateElement if an action with same name already exists
          */
         void addAction ( Idx actionId, const std::string& action );
-
-        /**
-         * Adds a variable transition table to specified action
-         * @throw NotFound if action or var does not exists
-         * @throw DuplicateElement if variable already has a transition for this action
-         */
-        void addTransitionForAction(const std::string& action ,
-                                    const DiscreteVariable* var,
-                                    const MultiDimImplementation<GUM_SCALAR>* transition);
-
-        /**
-         * Adds a default variable transition
-         * @throw NotFound if var does not exists
-         * @throw DuplicateElement if variable already has a default transition
-         */
-        void addTransition ( const DiscreteVariable* var, const MultiDimImplementation<GUM_SCALAR>* transition );
-
-        /**
-         * Adds a cost table to specified action
-         * @throw NotFound if action does not exists
-         */
-        void addCostForAction ( const std::string& action, const MultiDimImplementation<GUM_SCALAR>* cost  );
-
-        /**
-         * Adds a default variable cost
-         * @throw DuplicateElement if a default cost exists already
-         */
-        void addCost ( const MultiDimImplementation<GUM_SCALAR>* cost );
-
-        /**
-         * Adds a default variable reward
-         * @throw DuplicateElement if a default reward exists already
-         */
-        void addReward ( const MultiDimImplementation<GUM_SCALAR>* reward );
-
-      /// @}
-
-      // ===========================================================================
-      /// @name FMPD manipulation methods.
-      // ===========================================================================
-      /// @{
-
-        /**
-         * Returns the reward table of mdp
-         */
-        const MultiDimImplementation< GUM_SCALAR >* reward( ) const;
-
-        /**
-         * Returns name of action given in parameter
-         */
-        const std::string& actionName ( Idx actionId ) const;
-
-
-      /// @}
-
-      // ===========================================================================
-      /// @name Action Iterator Handling Methods.
-      // ===========================================================================
-      /// @{
 
         /**
          * Returns an iterator reference to he beginning of the list of actions
@@ -161,60 +132,116 @@ namespace gum {
       /// @}
 
       // ===========================================================================
-      /// @name Variable Iterator Handling Methods.
+      /// @name Transition methods.
       // ===========================================================================
       /// @{
 
         /**
-         * Returns an iterator reference to he beginning of the list of variables
+         * Adds a variable transition table to specified action
+         * @throw NotFound if action or var does not exists
+         * @throw DuplicateElement if variable already has a transition for this action
          */
-        SequenceIteratorSafe< const DiscreteVariable* > beginVariables() const {return __varSeq.beginSafe(); }
+        void addTransitionForAction(Idx actionId,
+                                    const DiscreteVariable* var,
+                                    const MultiDimImplementation<GUM_SCALAR>* transition);
 
         /**
-         * Returns an iterator reference to the end of the list of variables
+         * Adds a default variable transition
+         * @throw NotFound if var does not exists
+         * @throw DuplicateElement if variable already has a default transition
          */
-        SequenceIteratorSafe< const DiscreteVariable* > endVariables() const { return __varSeq.endSafe(); }
+        void addTransition ( const DiscreteVariable* var, const MultiDimImplementation<GUM_SCALAR>* transition ) {
+          this->addTransitionForAction( 0, var, transition );
+        }
+
+        /**
+         * Returns transition associated to given in parameter variable and the given action
+         */
+        const MultiDimImplementation< GUM_SCALAR >* transition ( Idx actionId, const DiscreteVariable* v ) const;
 
       /// @}
 
-      /**
-       * Returns transition associated to given in parameter variable and the given action
-       */
-      const MultiDimImplementation< GUM_SCALAR >* transition ( Idx actionId, const DiscreteVariable* v ) const;
+      // ===========================================================================
+      /// @name Cost methods.
+      // ===========================================================================
+      /// @{
 
-      /**
-       * Returns set of the main variables
-       */
-      Set< const DiscreteVariable* > variables() const;
+        /**
+         * Adds a cost table to specified action
+         * @throw NotFound if action does not exists
+         */
+        void addCostForAction ( Idx actionId, const MultiDimImplementation<GUM_SCALAR>* cost  );
 
-      /**
-       * Returns the primed variable associate to the given main variable
-       */
-      const DiscreteVariable* main2prime(const DiscreteVariable*) const;
+        /**
+         * Adds a default variable cost
+         * @throw DuplicateElement if a default cost exists already
+         */
+        void addCost ( const MultiDimImplementation<GUM_SCALAR>* cost ){
+          this->addCostForAction( 0, cost );
+        }
 
-      /**
-       * Returns the map binding main variables and prime variables
-       */
-      INLINE const Bijection<const DiscreteVariable*, const DiscreteVariable*>& mapMainPrime() const { return __main2primed; }
+        /**
+         * Returns the reward table of mdp
+         */
+        const MultiDimImplementation< GUM_SCALAR >* cost( Idx actionId = 0 ) const;
 
       /// @}
 
-      /**
-       * Displays the FMDP in a Dot format
-       */
-      std::string toString() const;
+      // ===========================================================================
+      /// @name Reward methods.
+      // ===========================================================================
+      /// @{
 
-      /**
-       * Returns the map binding main variables and prime variables
-       */
-      Size size() const;
+        /**
+         * Adds a default variable reward
+         * @throw DuplicateElement if a default reward exists already
+         */
+        void addRewardForAction ( Idx actionId, const MultiDimImplementation<GUM_SCALAR>* reward );
+
+        /**
+         * Adds a default variable reward
+         * @throw DuplicateElement if a default reward exists already
+         */
+        void addReward ( const MultiDimImplementation<GUM_SCALAR>* reward ){
+          this->addRewardForAction( 0, reward );
+        }
+
+        /**
+         * Returns the reward table of mdp
+         */
+        const MultiDimImplementation< GUM_SCALAR >* reward( Idx actionId = 0 ) const;
+
+      /// @}
+
+      // ===========================================================================
+      /// @name FMPD miscelleanous methods.
+      // ===========================================================================
+      /// @{
+
+        /**
+         * Returns name of action given in parameter
+         */
+        const std::string& actionName ( Idx actionId ) const;
+
+        /**
+          * Returns action id
+          */
+        Idx actionId( const std::string& ) const;
+
+        /**
+         * Displays the FMDP in a Dot format
+         */
+        std::string toString() const;
+
+        /**
+         * Returns the map binding main variables and prime variables
+         */
+        Size size() const;
+
+
+      /// @}
 
     private :
-
-      /**
-        * Returns action id
-        */
-      const Idx& __actionId( const std::string& ) const;
 
       /// Sequence de variables and its iterator
       Sequence< const DiscreteVariable* > __varSeq;
@@ -228,19 +255,13 @@ namespace gum {
       Bijection< Idx, const std::string* > __actionMap;
 
       /// Table which give for each action a table containing variables transition cpt
-      HashTable< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > __actionTransitionTable;
+      HashTable< Idx, VarTransitionTable< GUM_SCALAR >* > __actionTransitionTable;
 
       /// Table which give for each action cost table
       HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* > __actionCostTable;
 
-      /// Variable default transition cpt table
-      HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > __defaultTransitionTable;
-
-      /// default cost table
-      const MultiDimImplementation< GUM_SCALAR >* __defaultCostTable;
-
-      /// default reward table
-      const MultiDimImplementation< GUM_SCALAR >* __defaultRewardTable;
+      /// Table which give for each action reward table
+      HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* > __actionRewardTable;
 
       /// Boolean indicates whether or not main variables should be deleted on destruction of this instance
       /// Usually the case when fmdp has been initialized with the factory

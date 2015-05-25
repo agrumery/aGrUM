@@ -54,9 +54,11 @@ namespace gum {
                   IPlanningStrategy<double>* planer,
                   IDecisionStrategy* decider,
                   Idx observationPhaseLenght,
-                  Idx nbValueIterationStep ) : __learner(learner), __planer(planer), __decider(decider),
-                                               __observationPhaseLenght(observationPhaseLenght),
-                                               __nbValueIterationStep(nbValueIterationStep){
+                  Idx nbValueIterationStep,
+                  bool actionReward ) : __learner(learner), __planer(planer), __decider(decider),
+                                          __observationPhaseLenght(observationPhaseLenght),
+                                          __nbValueIterationStep(nbValueIterationStep),
+                                          __actionReward(actionReward) {
 
       GUM_CONSTRUCTOR(SDYNA)
 
@@ -141,7 +143,10 @@ namespace gum {
 
       for( auto varIter = newState.variablesSequence().beginSafe(); varIter != newState.variablesSequence().endSafe(); ++varIter){
         obs->setModality(_fmdp->main2prime(*varIter), newState.val(**varIter));
-        obs->setRModality(*varIter, newState.val(**varIter));
+        if( this->__actionReward )
+          obs->setRModality(*varIter, _lastState.val(**varIter));
+        else
+          obs->setRModality(*varIter, newState.val(**varIter));
       }
 
       obs->setReward(reward);
@@ -165,11 +170,11 @@ namespace gum {
      */
     // ###################################################################
     void SDYNA::makePlanning( Idx nbValueIterationStep ){
-      //std::cout << << "Updating decision trees ..." << std::endl;
+      std::cout << "Updating decision trees ..." << std::endl;
       __learner->updateFMDP();
       //std::cout << << "Done" << std::endl;
 
-      //std::cout << << "Planning ..." << std::endl;
+      std::cout << "Planning ..." << std::endl;
       __planer->makePlanning(nbValueIterationStep);
       //std::cout << << "Done" << std::endl;
 

@@ -19,58 +19,73 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the lazy decision maker class.
+ * @brief Headers of the States Counter class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
-
-
 // =========================================================================
-#ifndef GUM_LAZY_DECIDER_H
-#define GUM_LAZY_DECIDER_H
+#ifndef GUM_STATES_COUNTER_H
+#define GUM_STATES_COUNTER_H
 // =========================================================================
-#include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
+// =========================================================================
+#include <agrum/core/sequence.h>
+#include <agrum/multidim/multiDimFunctionGraph.h>
 // =========================================================================
 
 namespace gum {
 
+
   /**
-   * @class LazyDecider lazyDecider.h <agrum/FMDP/SDyna/lazyDecider.h>
-   * @brief Class to make decision following an \epsilon-greedy compromise between exploration and exploitation
+   * @class StatesCounter statesCounter.h <agrum/FMDP/simulation/statesCounter.h>
+   * @brief Provides the necessary to check whether or not states have been already visited.
    * @ingroup fmdp_group
-   *
-   * Does nothing more than the interface for DecisionStrategy does
-   *
    */
-  class LazyDecider : public IDecisionStrategy {
+  class StatesCounter {
 
-      // ###################################################################
+    public:
+
+      // ==========================================================================
       /// @name Constructor & destructor.
-      // ###################################################################
+      // ==========================================================================
       /// @{
-    public :
 
-        // ==========================================================================
-        /// Constructor
-        // ==========================================================================
-        LazyDecider(  ){}
+       /**
+        * Default constructor
+        */
+        StatesCounter (  );
 
-        // ==========================================================================
-        /// Destructor
-        // ==========================================================================
-        ~LazyDecider(){}
+       /**
+        * Default destructor
+        */
+        ~StatesCounter ();
 
       /// @}
 
-
-      // ###################################################################
-      /// @name Incremental methods
-      // ###################################################################
+      // ==========================================================================
+      /// @name Miscelleanous methods
+      // ==========================================================================
       /// @{
-    public:
-        void checkState( const Instantiation& newState ){}
-  };
 
-}
-#endif // GUM_LAZY_DECIDER_H
+        void incState( const Instantiation& );
+
+        void reset( const Instantiation& );
+
+        const MultiDimFunctionGraph<Idx>* counter();
+
+      /// @}
+
+  private:
+
+      void __incState(const Instantiation&, NodeId, Idx, Idx );
+
+      MultiDimFunctionGraph<Idx>* __counter;
+
+      Set<Instantiation*> __visitedStates;
+  };
+} /* namespace gum */
+
+#endif // GUM_STATES_COUNTER_H
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
+

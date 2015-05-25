@@ -340,7 +340,7 @@ namespace gum {
     if ( state() != FMDPfactory_state::TRANSITION )
       __illegalStateError ( "addTransition" );
     else if ( __foo_flag )
-      __fmdp->addTransitionForAction ( __stringBag[0], __varNameMap[var], t );
+      __fmdp->addTransitionForAction ( __fmdp->actionId(__stringBag[0]), __varNameMap[var], t );
     else
       __fmdp->addTransition( __varNameMap[var], t );
 
@@ -362,7 +362,7 @@ namespace gum {
 
       if ( __foo_flag ){
         this->__FunctionGraph->setTableName( "ACTION :" + __stringBag[0] + " - VARIABLE : " + var);
-        __fmdp->addTransitionForAction ( __stringBag[0], __varNameMap[var], this->__FunctionGraph );
+        __fmdp->addTransitionForAction ( __fmdp->actionId(__stringBag[0]), __varNameMap[var], this->__FunctionGraph );
       } else {
         __fmdp->addTransition ( __varNameMap[var], this->__FunctionGraph );
       }
@@ -419,7 +419,7 @@ namespace gum {
     if ( state() != FMDPfactory_state::COST )
       __illegalStateError ( "addCost" );
     else if ( __foo_flag )
-      __fmdp->addCostForAction ( __stringBag[0], c );
+      __fmdp->addCostForAction ( __fmdp->actionId(__stringBag[0]), c );
     else
       __fmdp->addCost( c );
   }
@@ -438,7 +438,7 @@ namespace gum {
       this->__finalizeFunctionGraph();
 
       if ( __foo_flag )
-        __fmdp->addCostForAction ( __stringBag[0], this->__FunctionGraph );
+        __fmdp->addCostForAction ( __fmdp->actionId(__stringBag[0]), this->__FunctionGraph );
       else
         __fmdp->addCost ( this->__FunctionGraph );
     }

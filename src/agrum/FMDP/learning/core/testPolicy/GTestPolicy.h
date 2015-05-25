@@ -26,11 +26,11 @@
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_G_TEST_POLICY_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_G_TEST_POLICY_H
-
 // ============================================================================
 #include <agrum/FMDP/learning/core/contingencyTable.h>
 #include <agrum/FMDP/learning/core/chiSquare.h>
 #include <agrum/FMDP/learning/core/testPolicy/ITestPolicy.h>
+#include <agrum/FMDP/learning/core/tupleHashFunc.h>
 // ============================================================================
 
 namespace gum {
@@ -50,15 +50,28 @@ namespace gum {
 
     public:
 
-      GTestPolicy( ) : ITestPolicy<GUM_SCALAR>(), __conTab(), __GStat(0) { GUM_CONSTRUCTOR(GTestPolicy) }
+      // ############################################################################
+      /// @name Constructor/Destrcutor
+      // ############################################################################
+      /// @{
 
-      virtual ~GTestPolicy(){ GUM_DESTRUCTOR(GTestPolicy) }
+        // ============================================================================
+        /// Allocators and Deallocators redefinition
+        // ============================================================================
+        GTestPolicy( ) : ITestPolicy<GUM_SCALAR>(), __conTab(), __GStat(0) { GUM_CONSTRUCTOR(GTestPolicy) }
 
-      // ============================================================================
-      /// Allocators and Deallocators redefinition
-      // ============================================================================
-      void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
-      void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(GTestPolicy));}
+        // ============================================================================
+        /// Allocators and Deallocators redefinition
+        // ============================================================================
+        virtual ~GTestPolicy(){ GUM_DESTRUCTOR(GTestPolicy) }
+
+        // ============================================================================
+        /// Allocators and Deallocators redefinition
+        // ============================================================================
+        void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
+        void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(GTestPolicy));}
+
+      /// @}
 
       // ############################################################################
       /// @name Observation insertion
@@ -74,7 +87,7 @@ namespace gum {
 
 
       // ############################################################################
-      /// @name Test relevance
+      /// @name Test methods
       // ############################################################################
       /// @{
 
@@ -82,14 +95,6 @@ namespace gum {
         /// Returns true if enough observation were made so that the test can be relevant
         // ============================================================================
         bool isTestRelevant() const { return ( this->nbObservation() > 20 && this->nbObservation() > __conTab.attrASize() * 5 ); }
-
-      /// @}
-
-
-      // ############################################################################
-      /// @name Test result
-      // ############################################################################
-      /// @{
 
         // ============================================================================
         /// Computes the GStat of current variable according to the test
@@ -109,23 +114,45 @@ namespace gum {
 
       /// @}
 
+
+      // ############################################################################
+      /// @name Fusion Methods
+      // ############################################################################
+      /// @{
+
+        // ============================================================================
+        /// Returns the performance of current variable according to the test
+        // ============================================================================
+        void add(const GTestPolicy<GUM_SCALAR>& src);
+
+        // ============================================================================
+        ///
+        // ============================================================================
         const ContingencyTable<long unsigned int, GUM_SCALAR>& ct() const { return __conTab; }
 
-        void add(const GTestPolicy<GUM_SCALAR>& src);
+
+      /// @}
+
+
+      // ############################################################################
+      /// @name Miscelleanous Methods
+      // ############################################################################
+      /// @{
 
         std::string toString() const { std::stringstream ss;
                                 ss << ITestPolicy<GUM_SCALAR>::toString()
                                    << "\t\t\tContingency Table : " <<std::endl
                                    << __conTab.toString() << std::endl
-                                   << "\t\t\tGStat : " << this->score() << std::endl
+                                   << "\t\t\tGStat : " << __GStat << std::endl
                                    << "\t\t\tGStat : " << this->secondaryscore() << std::endl;
                                 return ss.str();}
+
+      /// @}
 
     private :
 
       /// The contingency table used to keeps records of all observation
       ContingencyTable<long unsigned int, GUM_SCALAR> __conTab;
-
       mutable double __GStat;
   };
 
@@ -134,3 +161,18 @@ namespace gum {
 #include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.tcc>
 
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_G_TEST_POLICY_H */
+
+
+// ############################################################################
+/// @name Cache methods and attributes
+// ############################################################################
+/// @{
+
+//        static HashTable<std::tuple<Idx,Idx,Idx>, double> __logCache;
+//        static Idx nbLog;
+//        static Idx nbLogt;
+//        static double __logEval(std::tuple<Idx,Idx,Idx> values);
+
+//        static bool
+
+/// @}

@@ -180,7 +180,12 @@ namespace gum {
       // ###################################################################
       /// @{
 
-  protected:
+  protected:        
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        virtual void _initVFunction();
+
         // ==========================================================================
         /// Performs a single step of value iteration
         // ==========================================================================
@@ -201,7 +206,7 @@ namespace gum {
         /// Perform the R(s) + \gamma . function
         /// @warning function is deleted, new one is returned
         // ==========================================================================
-        virtual MultiDimFunctionGraph< GUM_SCALAR >* _addReward ( MultiDimFunctionGraph< GUM_SCALAR >* function );
+        virtual MultiDimFunctionGraph< GUM_SCALAR >* _addReward ( MultiDimFunctionGraph< GUM_SCALAR >* function, Idx actionId = 0 );
 
       /// @}
 
@@ -309,13 +314,13 @@ namespace gum {
 
         IOperatorStrategy<GUM_SCALAR>* _operator;
 
+
     private :
         // ==========================================================================
         /// The threshold value
         /// Whenever | V^{n} - V^{n+1} | < threshold, we consider that V ~ V*
         // ==========================================================================
         GUM_SCALAR __threshold;
-
         bool __firstTime;
   };
 

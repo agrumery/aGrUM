@@ -64,14 +64,14 @@ namespace gum {
     __passengerDest->changeLabel(CLUB, "Club");
     __passengerPos->changeLabel(TAXI, "Taxi");
 
-//    __fuelLevel = new LabelizedVariable("FuelLevel", "Niveau du réservoir", 14);
+    __fuelLevel = new LabelizedVariable("FuelLevel", "Niveau du réservoir", 14);
 
     // Ajout à séquence
     __taxiVars.insert(__xPos);
     __taxiVars.insert(__yPos);
     __taxiVars.insert(__passengerPos);
     __taxiVars.insert(__passengerDest);
-//    __taxiVars.insert(__fuelLevel);
+    __taxiVars.insert(__fuelLevel);
 
     // Prime version creation
     for( SequenceIteratorSafe<const DiscreteVariable*> varIter = this->beginVariables(); varIter != this->endVariables(); ++varIter){
@@ -96,8 +96,8 @@ namespace gum {
     __actionMap.insert(PickUp, new std::string ("Pick Up"));
     __taxiActions.insert(PutDown);
     __actionMap.insert(PutDown, new std::string ("Put Down"));
-//    __taxiActions.insert(FillUp);
-//    __actionMap.insert(FillUp, new std::string ("FillUp"));
+    __taxiActions.insert(FillUp);
+    __actionMap.insert(FillUp, new std::string ("FillUp"));
   }
 
   TaxiSimulator::~TaxiSimulator(){
@@ -122,11 +122,11 @@ namespace gum {
 //      curFuelLevel = (Idx)(((double)std::rand( ) / (double)RAND_MAX) * 7.0) + 5;
 //    randy.chgVal(__fuelLevel, curFuelLevel);
 
-    TaxiSimulationLandmark passPos = (TaxiSimulationLandmark) randy.valFromPtr(__passengerPos);
-    TaxiSimulationLandmark passDest = (TaxiSimulationLandmark) randy.valFromPtr(__passengerDest);
-    while( passPos == passDest || passPos == TAXI )
-      passPos = (TaxiSimulationLandmark) (((double)std::rand( ) / (double)RAND_MAX) * 3.0);
-    randy.chgVal(__passengerPos, passPos);
+//    TaxiSimulationLandmark passPos = (TaxiSimulationLandmark) randy.valFromPtr(__passengerPos);
+//    TaxiSimulationLandmark passDest = (TaxiSimulationLandmark) randy.valFromPtr(__passengerDest);
+//    while( passPos == passDest || passPos == TAXI )
+//      passPos = (TaxiSimulationLandmark) (((double)std::rand( ) / (double)RAND_MAX) * 3.0);
+//    randy.chgVal(__passengerPos, passPos);
 
     return randy;
   }
@@ -136,8 +136,8 @@ namespace gum {
   // Reward according to the situation
   // ==================================================================================================================
   bool TaxiSimulator::hasReachEnd(){
-    if( _currentState.valFromPtr(__passengerPos) == _currentState.valFromPtr(__passengerDest) )
-      return true;
+//    if( _currentState.valFromPtr(__passengerPos) == _currentState.valFromPtr(__passengerDest) )
+//      return true;
 
 //    if( _currentState.valFromPtr(__fuelLevel) == 0 )
 //      return true;
@@ -150,24 +150,7 @@ namespace gum {
   // Reward according to the situation
   // ==================================================================================================================
   double TaxiSimulator::reward(){
-    if( _currentState.valFromPtr(__passengerPos) == _currentState.valFromPtr(__passengerDest) ) {
-      return 30.0;
-    }
-
-    if( __lastAction == PickUp ){
-      if( _currentState.valFromPtr(__passengerPos) != TAXI )
-        return 0.0;
-      else
-        return 20.0;
-    }
-
-    if( __lastAction == PutDown )
-      return 0.0;
-
-//    if( _currentState.valFromPtr(__fuelLevel) == 0 )
-//      return -10.0;
-
-    return 10.0;//-1.0;
+    return __reward;
   }
 
   // ==================================================================================================================
@@ -177,18 +160,20 @@ namespace gum {
 
     __lastAction = (TaxiSimulationAction) actionId;
 
-//    Idx curFuelLevel = _currentState.valFromPtr(__fuelLevel);
-//    if( curFuelLevel > 0 )
-//      _currentState.chgVal(__fuelLevel, --curFuelLevel);
+    __evalReward();
+
+    Idx curFuelLevel = _currentState.valFromPtr(__fuelLevel);
+    if( curFuelLevel > 0 )
+      _currentState.chgVal(__fuelLevel, --curFuelLevel);
 
     switch(actionId){
-      case GoNorth : return __goNorth( );
-      case GoEast : return __goEast( );
-      case GoSouth : return __goSouth( );
-      case GoWest : return __goWest( );
-      case PickUp : return __pickUp( );
-      case PutDown : return __putDown( );
-      case FillUp : return __fillUp( );
+      case GoNorth  : return __performGoNorth( );
+      case GoEast   : return __performGoEast( );
+      case GoSouth  : return __performGoSouth( );
+      case GoWest   : return __performGoWest( );
+      case PickUp   : return __performPickUp( );
+      case PutDown  : return __performPutDown( );
+      case FillUp   : return __performFillUp( );
     }
   }
 
@@ -196,7 +181,7 @@ namespace gum {
   // ==================================================================================================================
   // Transition if you go North
   // ==================================================================================================================
-  void TaxiSimulator::__goNorth(){
+  void TaxiSimulator::__performGoNorth(){
     Idx curPos = this->_currentState.valFromPtr(__yPos);
     if( curPos < 4 )
       _currentState.chgVal(__yPos, ++curPos);
@@ -206,7 +191,7 @@ namespace gum {
   // ==================================================================================================================
   // Transition if you go east
   // ==================================================================================================================
-  void TaxiSimulator::__goEast(){
+  void TaxiSimulator::__performGoEast(){
     Idx xCurPos = this->_currentState.valFromPtr(__xPos);
     Idx yCurPos = this->_currentState.valFromPtr(__yPos);
 
@@ -226,7 +211,7 @@ namespace gum {
   // ==================================================================================================================
   // Transition if you go south
   // ==================================================================================================================
-  void TaxiSimulator::__goSouth(){
+  void TaxiSimulator::__performGoSouth(){
     Idx curPos = this->_currentState.valFromPtr(__yPos);
     if( curPos > 0 )
       _currentState.chgVal(__yPos, --curPos);
@@ -236,7 +221,7 @@ namespace gum {
   // ==================================================================================================================
   // Transition if you go west
   // ==================================================================================================================
-  void TaxiSimulator::__goWest(){
+  void TaxiSimulator::__performGoWest(){
     Idx xCurPos = this->_currentState.valFromPtr(__xPos);
     Idx yCurPos = this->_currentState.valFromPtr(__yPos);
 
@@ -256,7 +241,7 @@ namespace gum {
   // ==================================================================================================================
   // Transition if you go pick up sb
   // ==================================================================================================================
-  void TaxiSimulator::__pickUp(){
+  void TaxiSimulator::__performPickUp(){
     TaxiSimulationLandmarkX xCurPos = (TaxiSimulationLandmarkX) this->_currentState.valFromPtr(__xPos);
     TaxiSimulationLandmarkY yCurPos = (TaxiSimulationLandmarkY) this->_currentState.valFromPtr(__yPos);
     TaxiSimulationLandmark passPos = (TaxiSimulationLandmark) this->_currentState.valFromPtr(__passengerPos);
@@ -289,7 +274,7 @@ namespace gum {
   // ==================================================================================================================
   // Transition if you go put down sb
   // ==================================================================================================================
-  void TaxiSimulator::__putDown(){
+  void TaxiSimulator::__performPutDown(){
     TaxiSimulationLandmarkX xCurPos = (TaxiSimulationLandmarkX) this->_currentState.valFromPtr(__xPos);
     TaxiSimulationLandmarkY yCurPos = (TaxiSimulationLandmarkY) this->_currentState.valFromPtr(__yPos);
     TaxiSimulationLandmark passPos = (TaxiSimulationLandmark) this->_currentState.valFromPtr(__passengerPos);
@@ -326,11 +311,113 @@ namespace gum {
   // ==================================================================================================================
   // Transition if you go reffill
   // ==================================================================================================================
-  void TaxiSimulator::__fillUp(){
+  void TaxiSimulator::__performFillUp(){
     TaxiSimulationLandmarkX xCurPos = (TaxiSimulationLandmarkX) this->_currentState.valFromPtr(__xPos);
     TaxiSimulationLandmarkY yCurPos = (TaxiSimulationLandmarkY) this->_currentState.valFromPtr(__yPos);
 
     if( xCurPos == STATIONX && yCurPos == STATIONY )
       _currentState.chgVal(__fuelLevel, 13);
+  }
+
+
+  // ==================================================================================================================
+  // Reward according to the situation
+  // ==================================================================================================================
+  void TaxiSimulator::__evalReward(){
+
+    TaxiSimulationLandmarkX xCurPos = (TaxiSimulationLandmarkX) this->_currentState.valFromPtr(__xPos);
+    TaxiSimulationLandmarkY yCurPos = (TaxiSimulationLandmarkY) this->_currentState.valFromPtr(__yPos);
+    TaxiSimulationLandmark passPos = (TaxiSimulationLandmark) this->_currentState.valFromPtr(__passengerPos);
+    TaxiSimulationLandmark passDest = (TaxiSimulationLandmark) this->_currentState.valFromPtr(__passengerDest);
+
+    if( __lastAction == PutDown ){
+      if( passPos == TAXI ) {
+          if( __isAtDestination( passDest,  xCurPos, yCurPos) )
+            __reward = 30.0;
+          else
+            __reward = 0.0;
+          return;
+      }
+      __reward = 0;
+      return;
+    }
+
+    if( __lastAction == PickUp ){
+      if( __isAtMeetPoint(passPos, xCurPos, yCurPos) )
+        __reward = 20.0;
+      else
+        __reward = 0.0;
+      return;
+    }
+
+    if( _currentState.valFromPtr(__fuelLevel) == 0 && __lastAction != FillUp ){
+      __reward = 0.0;
+      return;
+    }
+
+    if( __lastAction == FillUp && (xCurPos != STATIONX || yCurPos != STATIONY)){
+      __reward = 0.0;
+      return;
+    }
+
+    __reward = 10.0;//-1.0;
+  }
+
+  bool TaxiSimulator::__isAtDestination(  TaxiSimulationLandmark passDest,
+                                          TaxiSimulationLandmarkX xCurPos,
+                                          TaxiSimulationLandmarkY yCurPos ){
+    switch(passDest){
+      case HOME :     {
+                        if( xCurPos == HOMEX && yCurPos == HOMEY )
+                          return true;
+                        break;
+                      }
+      case WORK :     {
+                        if( xCurPos == WORKX && yCurPos == WORKY )
+                          return true;
+                        break;
+                      }
+      case THEATER :  {
+                        if( xCurPos == THEATERX && yCurPos == THEATERY )
+                          return true;
+                        break;
+                      }
+      case CLUB :     {
+                        if( xCurPos == CLUBX && yCurPos == CLUBY )
+                          return true;
+                        break;
+                      }
+      case TAXI :  return false;
+    }
+    return false;
+  }
+
+  bool TaxiSimulator::__isAtMeetPoint(  TaxiSimulationLandmark passPos,
+                                        TaxiSimulationLandmarkX xCurPos,
+                                        TaxiSimulationLandmarkY yCurPos ){
+    switch(passPos){
+      case HOME :     {
+                        if( xCurPos == HOMEX && yCurPos == HOMEY )
+                          return true;
+                        break;
+                      }
+      case WORK :     {
+                        if( xCurPos == WORKX && yCurPos == WORKY )
+                          return true;
+                        break;
+                      }
+      case THEATER :  {
+                        if( xCurPos == THEATERX && yCurPos == THEATERY )
+                          return true;
+                        break;
+                      }
+      case CLUB :     {
+                        if( xCurPos == CLUBX && yCurPos == CLUBY )
+                          return true;
+                        break;
+                      }
+      case TAXI :  return false;
+    }
+    return false;
   }
 } // End of namespace gum

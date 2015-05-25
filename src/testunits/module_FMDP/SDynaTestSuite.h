@@ -48,6 +48,7 @@ namespace gum_tests {
 //        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna = gum::SDYNA::spitiInstance() );
 //        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna = gum::SDYNA::spimddiInstance() );
         TS_GUM_ASSERT_THROWS_NOTHING ( sdyna = gum::SDYNA::RMaxMDDInstance() );
+//        TS_GUM_ASSERT_THROWS_NOTHING ( sdyna = gum::SDYNA::RMaxTreeInstance() );
 
         std::cout << "Instantiate"<< std::endl;
         // Enregistrement des actions possibles auprès de SDyna
@@ -69,13 +70,13 @@ namespace gum_tests {
 
 
         gum::Idx nbObs = 0;
-        for( gum::Idx nbRun = 0; nbRun < 10 || nbObs < 125; ++nbRun ){
+        for( gum::Idx nbRun = 0; nbRun < 100; ++nbRun ){
 
           sim.setInitialStateRandomly();
           TS_GUM_ASSERT_THROWS_NOTHING ( sdyna->setCurrentState(sim.currentState()) );
           gum::Idx nbDec = 0;
 
-          while(!sim.hasReachEnd() && nbObs < 125){
+          while(!sim.hasReachEnd() && nbDec < 125){
 
             nbObs++;
 

@@ -47,19 +47,33 @@ namespace gum {
 
     public:
 
-      ITestPolicy() : __isModified(false), __nbObs(0){ GUM_CONSTRUCTOR(ITestPolicy) }
 
-      virtual ~ITestPolicy(){ GUM_DESTRUCTOR(ITestPolicy) }
+      // ############################################################################
+      /// @name Constructor/Destructor
+      // ############################################################################
+      /// @{
 
-      // ============================================================================
-      /// Allocators and Deallocators redefinition
-      // ============================================================================
-      void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
-      void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(ITestPolicy));}
+        // ============================================================================
+        ///
+        // ============================================================================
+        ITestPolicy() : __isModified(false), __nbObs(0){ GUM_CONSTRUCTOR(ITestPolicy) }
+
+        // ============================================================================
+        ///
+        // ============================================================================
+        virtual ~ITestPolicy(){ GUM_DESTRUCTOR(ITestPolicy) }
+
+        // ============================================================================
+        /// Allocators and Deallocators redefinition
+        // ============================================================================
+        void* operator new(size_t s){ return SmallObjectAllocator::instance().allocate(s);}
+        void operator delete(void* p){ SmallObjectAllocator::instance().deallocate(p, sizeof(ITestPolicy));}
+
+      /// @}
 
 
       // ############################################################################
-      /// @name Observation insertion
+      /// @name Observation methods
       // ############################################################################
       /// @{
 
@@ -68,11 +82,16 @@ namespace gum {
         // ============================================================================
         virtual void addObservation( Idx attr, GUM_SCALAR value ){ __isModified = true; __nbObs++; }
 
+        // ============================================================================
+        /// Comptabilizes the new observation
+        // ============================================================================
+        Idx nbObservation() const { return __nbObs; }
+
       /// @}
 
 
       // ############################################################################
-      /// @name Test relevance
+      /// @name Test methods
       // ############################################################################
       /// @{
 
@@ -80,14 +99,6 @@ namespace gum {
         /// Returns true if enough observation were added so that the test can be relevant
         // ============================================================================
         virtual bool isTestRelevant() const = 0;
-
-      /// @}
-
-
-      // ############################################################################
-      /// @name Test result
-      // ############################################################################
-      /// @{
 
         // ============================================================================
         /// Recomputes the statistic from the beginning
@@ -106,17 +117,38 @@ namespace gum {
 
       /// @}
 
+
+      // ############################################################################
+      /// @name Fusion Methods
+      // ############################################################################
+      /// @{
+
+        // ============================================================================
+        ///
+        // ============================================================================
         void add( const ITestPolicy<GUM_SCALAR>& src){ __isModified = true; __nbObs += src.nbObservation(); }
 
-        Idx nbObservation() const { return __nbObs; }
+      /// @}
 
+
+      // ############################################################################
+      /// @name Miscelleanous Methods
+      // ############################################################################
+      /// @{
+
+        // ============================================================================
+        ///
+        // ============================================================================
         std::string toString() const { std::stringstream ss; ss << "\t\t\tNb Obs : " <<__nbObs << std::endl; return ss.str(); }
 
+      /// @}
+
     protected :
-      bool isModified() const { return __isModified; }
+      bool _isModified() const { return __isModified; }
 
     private :
 
+      ///  Booleans indicating if we have to re eval test
       mutable bool __isModified;
 
       ///

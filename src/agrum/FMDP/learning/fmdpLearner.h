@@ -73,7 +73,7 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        FMDPLearner (double learningThreshold, double similarityThreshold = 0.05);
+        FMDPLearner (double learningThreshold, bool actionReward, double similarityThreshold = 0.05);
 
         // ###################################################################
         /// Default destructor
@@ -214,6 +214,8 @@ namespace gum {
 
       HashTable<Idx, VarLearnerTable*> __actionLearners;
 
+      bool __actionReward;
+      HashTable<Idx, RewardLearnerType*> __actionRewardLearners;
       RewardLearnerType* __rewardLearner;
 
       const double __learningThreshold;

@@ -39,118 +39,144 @@
 
 void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
 
-  for( gum::Idx nbTest = 0; nbTest < 10; ++nbTest) {
+  for( gum::Idx sdyi = 0; sdyi < 4; sdyi++ ){
 
-    std::cout << "Test n° : " << nbTest << std::endl;
-
-    gum::Idx nbIte = 0;
-    double rDisc = 0.0;
-
-    // *********************************************************************************************
-    // Initialisation des divers objets
-    // *********************************************************************************************
-
-    gum::SDYNA* spim = gum::SDYNA::RMaxMDDInstance();
-
-
-    // Enregistrement des actions possibles auprès de SPIMDDI
-    for( auto actionIter = sim.beginActions(); actionIter != sim.endActions(); ++actionIter){
-      //std::cout << *actionIter << " "  << sim.actionName(*actionIter) << std::endl;
-      spim->addAction( *actionIter, sim.actionName(*actionIter));
+    std::stringstream sdynaInstanceName;
+    switch(sdyi){
+      case 0 :  sdynaInstanceName << "SPIMDDI";
+                break;
+      case 1 :  sdynaInstanceName << "SPITI";
+                break;
+      case 2 :  sdynaInstanceName << "AbstractRMaxMDD";
+                break;
+      case 3 :  sdynaInstanceName << "AbstractRMaxTree";
+                break;
     }
 
-    // Enregistrement des variables caractérisant les états auprès de SPIMDDI
-    for(auto varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter){
-      spim->addVariable(*varIter);
-    }
+    for( gum::Idx nbTest = 0; nbTest < 20; ++nbTest) {
 
-
-    sim.setInitialStateRandomly();
-    spim->initialize(sim.currentState());
-
-    // ======================================================================================
-    // Création du checker détat visité
-    // ======================================================================================
-    gum::StatesChecker sc;
-    sc.reset(sim.currentState());
-
-    // ======================================================================================
-    // Ouverture des fichiers de traces
-    // ======================================================================================
-    std::ofstream traceFile;
-    std::stringstream traceFileName;
-    traceFileName << traceFilePath << "." << nbTest << ".csv";
-    traceFile.open ( traceFileName.str(), std::ios::out | std::ios::trunc );
-    if ( !traceFile ) {
-      return;
-    }    
-
-    std::ofstream modelFile;
-    std::stringstream modelFileName;
-    modelFileName << traceFilePath << "." << nbTest << ".model.dot";
-    modelFile.open ( modelFileName.str(), std::ios::out | std::ios::trunc );
-    if ( !modelFile ) {
-      return;
-    }
-
-
-    //std::cout << "Initialisation done. Now performing test ..." <<std::endl;
-    for( gum::Idx nbRun = 0; nbRun < 3000; ++nbRun ){
-
-      spim->setCurrentState(sim.currentState());
-
-      double cumulr = 0.0;
-
-      for(gum::Idx nbDec = 0; !sim.hasReachEnd() && nbDec < 25; nbDec++){
-
-        // Normal Iteration Part
-        //std::cout << "\n*********************************************\n";
-        //std::cout << "RUN n° " << nbRun << " - Status : " << sim.currentState().toString() << " - Decision n° " << nbDec << " : ";
-
-        gum::Idx actionChosenId = spim->takeAction();
-
-        //std::cout << "By doing " << sim.actionName(actionChosenId) << std::endl;
-
-        sim.perform( actionChosenId );
-        rDisc = sim.reward() + 0.9*rDisc;
-        cumulr += sim.reward();
-
-        //std::cout << "New State : " << sim.currentState() << "- Reward : " << sim.reward() << " - Discounted Reward : " << rDisc << " - cumulr " << cumulr << std::endl;
-
-        try{
-          spim->feedback(sim.currentState(), sim.reward());
-        } catch(gum::Exception ex){
-          std::cout << ex.errorType() << std::endl << ex.errorContent() << std::endl << ex.errorCallStack() << std::endl;
-          exit(-42);
+        gum::SDYNA* spim;
+        switch(sdyi){
+          case 0 :  spim = gum::SDYNA::spimddiInstance();
+                    break;
+          case 1 :  spim = gum::SDYNA::spitiInstance();
+                    break;
+          case 2 :  spim = gum::SDYNA::RMaxMDDInstance();
+                    break;
+          case 3 :  spim = gum::SDYNA::RMaxTreeInstance();
+                    break;
         }
 
-        //std::cout << "Update performed" << std::endl;
+      std::cout << "Test n° : " << nbTest << std::endl;
 
-        if( !sc.checkState(sim.currentState()) ) {
-          sc.addState(sim.currentState());
-        }
+      gum::Idx nbIte = 0;
+      double rDisc = 0.0;
 
-        traceFile << nbTest << "\t" << nbIte << "\t" << nbRun << "\t" << nbDec << "\t" << sc.nbVisitedStates()
-                  /*<< "\t" << fmdp.size()*/ << "\t" << spim->learnerSize() << "\t" << spim->modelSize() << "\t" << spim->optimalPolicySize()
-                  << std::setprecision(15)  << "\t" << rDisc << std::endl;
+      // *********************************************************************************************
+      // Initialisation des divers objets
+      // *********************************************************************************************
 
-        nbIte++;
+
+      // Enregistrement des actions possibles auprès de SPIMDDI
+      for( auto actionIter = sim.beginActions(); actionIter != sim.endActions(); ++actionIter){
+        //std::cout << *actionIter << " "  << sim.actionName(*actionIter) << std::endl;
+        spim->addAction( *actionIter, sim.actionName(*actionIter));
       }
-      std::cout << "Run n°" << nbRun << " is over. Nb Observation : " << nbIte << " / 5 000 000. Nb Visited States : "
-                <<  sc.nbVisitedStates() << std::endl;
-//      if(nbRun%10 == 0 && nbRun > 1)
-//        spim->makePlanning();
+
+      // Enregistrement des variables caractérisant les états auprès de SPIMDDI
+      for(auto varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter){
+        spim->addVariable(*varIter);
+      }
+
+
       sim.setInitialStateRandomly();
+      spim->initialize(sim.currentState());
 
-      modelFile << nbRun << "\t" << spim->optimalPolicy2String() << std::endl;
+      // ======================================================================================
+      // Création du checker détat visité
+      // ======================================================================================
+      gum::StatesChecker sc;
+      sc.reset(sim.currentState());
 
-      if(nbIte > 4000000)
-        break;
-    }
-    traceFile.close();
-    modelFile.close();
-    delete spim;
- }
+      // ======================================================================================
+      // Ouverture des fichiers de traces
+      // ======================================================================================
+      std::ofstream traceFile;
+      std::stringstream traceFileName;
+      traceFileName << traceFilePath << "." << sdynaInstanceName.str() << "." << nbTest << ".csv";
+      traceFile.open ( traceFileName.str(), std::ios::out | std::ios::trunc );
+      if ( !traceFile ) {
+        return;
+      }
+
+      std::ofstream modelFile;
+      std::stringstream modelFileName;
+      modelFileName << traceFilePath << "." << sdynaInstanceName.str() << "." << nbTest << ".model.dot";
+      modelFile.open ( modelFileName.str(), std::ios::out | std::ios::trunc );
+      if ( !modelFile ) {
+        return;
+      }
+
+
+      //std::cout << "Initialisation done. Now performing test ..." <<std::endl;
+      for( gum::Idx nbRun = 0; nbRun < 5000; ++nbRun ){
+
+        spim->setCurrentState(sim.currentState());
+
+        double cumulr = 0.0;
+
+        for(gum::Idx nbDec = 0; nbDec < 25; nbDec++){
+
+          // Normal Iteration Part
+          //std::cout << "\n*********************************************\n";
+          //std::cout << "RUN n° " << nbRun << " - Status : " << sim.currentState().toString() << " - Decision n° " << nbDec << " : ";
+
+          gum::Idx actionChosenId = spim->takeAction();
+
+          //std::cout << "By doing " << sim.actionName(actionChosenId) << std::endl;
+
+          sim.perform( actionChosenId );
+          rDisc = sim.reward() + 0.9*rDisc;
+          cumulr += sim.reward();
+
+          //std::cout << "New State : " << sim.currentState() << "- Reward : " << sim.reward() << " - Discounted Reward : " << rDisc << " - cumulr " << cumulr << std::endl;
+
+//          try{
+            spim->feedback(sim.currentState(), sim.reward());
+//          }catch(gum::Exception ex){
+//            std::cout << ex.errorContent() << std::endl << ex.errorCallStack() << std::endl;
+//            exit(-42);
+//          }
+
+          //std::cout << "Update performed" << std::endl;
+
+          if( !sc.checkState(sim.currentState()) ) {
+            sc.addState(sim.currentState());
+          }
+
+          traceFile << nbTest << "\t" << nbIte << "\t" << nbRun << "\t" << nbDec << "\t" << sc.nbVisitedStates()
+                    /*<< "\t" << fmdp.size()*/ << "\t" << spim->learnerSize() << "\t" << spim->modelSize() << "\t" << spim->optimalPolicySize()
+                    << std::setprecision(15)  << "\t" << rDisc << std::endl;
+
+  //        std::cout << "Run n°" << nbRun << " is going on. Nb Observation : " << nbIte << " / 4,000,000. Nb Visited States : "
+  //                  <<  sc.nbVisitedStates() << ". Size Learner : " << spim->learnerSize() << std::endl;
+
+          nbIte++;
+        }
+        std::cout << "Run n°" << nbRun << " is over. Nb Observation : " << nbIte << " / 4,000,000. Nb Visited States : "
+                  <<  sc.nbVisitedStates() << ". Size Learner : " << spim->learnerSize() << std::endl;
+        sim.setInitialStateRandomly();
+
+        modelFile << nbRun << "\t" << spim->optimalPolicy2String() << std::endl;
+
+        if(nbIte > 4000000)
+          break;
+      }
+      traceFile.close();
+      modelFile.close();
+      delete spim;
+   }
+  }
 
   std::cout << "FIN EVALUATION" << std::endl;
 
@@ -221,9 +247,9 @@ int main ( int argc, char* argv[] ) {
 
   srand(time(NULL));
 
-  runCoffee();
+//  runCoffee();
 //  runFactory();
-//  runTaxi();
+  runTaxi();
 
   return EXIT_SUCCESS;
 }

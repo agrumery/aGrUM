@@ -42,7 +42,7 @@ namespace gum {
   enum TaxiSimulationLandmark : Idx { HOME = 0, WORK = 1, THEATER = 2, CLUB = 3, TAXI = 4 };
   enum TaxiSimulationLandmarkX : Idx { HOMEX = 0, WORKX = 0, THEATERX = 3, CLUBX = 4, STATIONX = 2 };
   enum TaxiSimulationLandmarkY : Idx { HOMEY = 0, WORKY = 4, THEATERY = 0, CLUBY = 4, STATIONY = 1 };
-  enum TaxiSimulationAction : Idx { GoNorth = 0, GoEast = 1, GoSouth = 2, GoWest = 3, PickUp  = 4, PutDown = 5, FillUp = 6 };
+  enum TaxiSimulationAction : Idx { GoNorth = 1, GoEast = 2, GoSouth = 3, GoWest = 4, PickUp  = 5, PutDown = 6, FillUp = 7 };
   /**
    * @class Taxi taxi.h <agrum/FMDP/simulation/taxi.h>
    * @brief A class to simulate the Taxi problem
@@ -73,7 +73,7 @@ namespace gum {
     /// @}
 
     // ===========================================================================
-    /// @name
+    /// @name States
     // ===========================================================================
     /// @{
 
@@ -84,9 +84,6 @@ namespace gum {
   public :
 
       bool hasReachEnd();
-      ///
-      double reward();
-      void perform( Idx );
 
     /// @}
 
@@ -115,18 +112,37 @@ namespace gum {
       SequenceIteratorSafe< Idx > endActions() {return __taxiActions.endSafe();}
 
 
-    /// @}
-
+      void perform( Idx );
 
   private :
 
-    void __goNorth();
-    void __goEast();
-    void __goSouth();
-    void __goWest();
-    void __pickUp();
-    void __putDown();
-    void __fillUp();
+      void __performGoNorth();
+      void __performGoEast();
+      void __performGoSouth();
+      void __performGoWest();
+      void __performPickUp();
+      void __performPutDown();
+      void __performFillUp();
+
+    /// @}
+
+    // ===========================================================================
+    /// @name Rewards
+    // ===========================================================================
+    /// @{
+  public:
+      double reward();
+
+  private :
+      void __evalReward();
+      bool __isAtDestination( TaxiSimulationLandmark passDest,
+                              TaxiSimulationLandmarkX xCurPos,
+                              TaxiSimulationLandmarkY yCurPos );
+      bool __isAtMeetPoint( TaxiSimulationLandmark passpos,
+                            TaxiSimulationLandmarkX xCurPos,
+                            TaxiSimulationLandmarkY yCurPos );
+
+    /// @}
 
     /// Variables data structures
     Sequence<const DiscreteVariable*> __taxiVars;
@@ -141,6 +157,9 @@ namespace gum {
     Sequence<Idx> __taxiActions;
     HashTable<Idx, std::string*> __actionMap;//__actionMap.insert ( actionId, new std::string ( action ) );
     TaxiSimulationAction __lastAction;
+
+    /// Reward
+    double __reward;
 };
 
 } /* namespace gum */

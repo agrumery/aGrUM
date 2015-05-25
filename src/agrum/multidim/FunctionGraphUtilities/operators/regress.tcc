@@ -72,17 +72,20 @@ namespace gum {
               template <typename> class TerminalNodePolicy>
     Regress<GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy>::~Regress( ){
 
-      GUM_DESTRUCTOR(Regress);
+
+
+      for(auto instIter = __DG1InstantiationNeeded.beginSafe(); instIter != __DG1InstantiationNeeded.endSafe(); ++instIter )
+//        if( instIter.val() != __default)
+          DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
+
+      for(auto instIter = __DG2InstantiationNeeded.beginSafe(); instIter != __DG2InstantiationNeeded.endSafe(); ++instIter )
+//        if( instIter.val() != __default)
+          DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
 
       if(__nbVar != 0)
         DEALLOCATE( __default, sizeof(short int)*__nbVar);
 
-      for(auto instIter = __DG1InstantiationNeeded.beginSafe(); instIter != __DG1InstantiationNeeded.endSafe(); ++instIter )
-        DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
-
-      for(auto instIter = __DG2InstantiationNeeded.beginSafe(); instIter != __DG2InstantiationNeeded.endSafe(); ++instIter )
-        DEALLOCATE( instIter.val(), sizeof(short int)*__nbVar);
-
+      GUM_DESTRUCTOR(Regress);
     }
 
 
@@ -321,11 +324,11 @@ namespace gum {
         }
       }
 
-      dg->beginValues();
-      while( dg->hasValue() ){
-        dgInstNeed.insert( dg->id(), __default );
-        dg->nextValue();
-      }
+//      dg->beginValues();
+//      while( dg->hasValue() ){
+//        dgInstNeed.insert( dg->id(), __default );
+//        dg->nextValue();
+//      }
 
       for(HashTableIterator<NodeId, short int*> it = nodesVarDescendant.begin(); it != nodesVarDescendant.end(); ++it ){
         DEALLOCATE(it.val(),tableSize);
@@ -385,9 +388,11 @@ namespace gum {
 
       //First we ensure that we hadn't already visit this pair of node under hte same circumstances
 
-      short int* dg1NeededVar = __DG1InstantiationNeeded[ currentSituation.DG1Node() ]; //__DG1InstantiationNeeded.exists( currentSituation.DG1Node() )?__DG1InstantiationNeeded[ currentSituation.DG1Node() ]:__default;
+//      short int* dg1NeededVar = __DG1InstantiationNeeded[ currentSituation.DG1Node() ];
+      short int* dg1NeededVar = __DG1InstantiationNeeded.exists( currentSituation.DG1Node() )?__DG1InstantiationNeeded[ currentSituation.DG1Node() ]:__default;
       Idx dg1CurrentVarPos = __DG1->isTerminalNode( currentSituation.DG1Node() )?__nbVar:__rd->variablesSequence().pos( __DG1->node( currentSituation.DG1Node() )->nodeVar() );
-      short int* dg2NeededVar = __DG2InstantiationNeeded[ currentSituation.DG2Node() ]; //__DG2InstantiationNeeded.exists( currentSituation.DG2Node() )?__DG2InstantiationNeeded[ currentSituation.DG2Node() ]:__default;
+//      short int* dg2NeededVar = __DG2InstantiationNeeded[ currentSituation.DG2Node() ];
+      short int* dg2NeededVar = __DG2InstantiationNeeded.exists( currentSituation.DG2Node() )?__DG2InstantiationNeeded[ currentSituation.DG2Node() ]:__default;
       Idx dg2CurrentVarPos = __DG2->isTerminalNode( currentSituation.DG2Node() )?__nbVar:__rd->variablesSequence().pos( __DG2->node( currentSituation.DG2Node() )->nodeVar() );
 
       short int* instNeeded = static_cast<short int*>( ALLOCATE( sizeof(short int)*__nbVar ) );

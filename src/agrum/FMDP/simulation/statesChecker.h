@@ -29,6 +29,7 @@
 #define GUM_STATES_CHECKER_H
 // =========================================================================
 // =========================================================================
+#include <agrum/core/sequence.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
 // =========================================================================
 
@@ -66,7 +67,7 @@ namespace gum {
       // ==========================================================================
       /// @{
 
-        bool checkState( const Instantiation& state ){ return __checker->get( state ); }
+        bool checkState( const Instantiation& state ){ return __checker->get( state );}
 
         void addState( const Instantiation& );
 
@@ -84,6 +85,8 @@ namespace gum {
 
       MultiDimFunctionGraph<bool>* __checker;
       NodeId __checkerTrueId, __checkerFalseId;
+
+      Set<Instantiation*> __visitedStates;
   };
 } /* namespace gum */
 

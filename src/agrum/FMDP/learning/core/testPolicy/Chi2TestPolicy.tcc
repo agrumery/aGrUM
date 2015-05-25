@@ -75,7 +75,7 @@ namespace gum {
     // ============================================================================
     template < typename GUM_SCALAR >
     double Chi2TestPolicy<GUM_SCALAR>::score() const {
-      if( this->isModified() )
+      if( this->_isModified() )
         computeScore();
       double score = 1 - ChiSquare::probaChi2(__chi2Score, (__conTab.attrASize()-1)*(__conTab.attrBSize()-1));
       return score;
@@ -86,7 +86,7 @@ namespace gum {
     // ============================================================================
     template < typename GUM_SCALAR >
     double Chi2TestPolicy<GUM_SCALAR>::secondaryscore() const {
-      if( this->isModified() )
+      if( this->_isModified() )
         computeScore();
       return __chi2Score;
     }
