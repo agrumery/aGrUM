@@ -22,4 +22,3 @@
 
 template class gum::GeneralizedCNFWriter<float>;
 template class gum::GeneralizedCNFWriter<double>;
-

@@ -22,5 +22,3 @@
  *
  * @author Pierre-Henri WUILLEMIN
  */
-
-

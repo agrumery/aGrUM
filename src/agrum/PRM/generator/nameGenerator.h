@@ -46,33 +46,33 @@ namespace gum {
      */
     class NameGenerator {
       public:
-        // ========================================================================
-        /// @name Constructors and destructor.
-        // ========================================================================
-        /// @{
+      // ========================================================================
+      /// @name Constructors and destructor.
+      // ========================================================================
+      /// @{
 
-        /// Default constructor.
-        NameGenerator();
-        /// Copy constructor.
-        NameGenerator ( const NameGenerator& source );
-        /// Destructor.
-        virtual ~NameGenerator();
-        /// Affectation operator
-        NameGenerator& operator= ( const NameGenerator& source );
+      /// Default constructor.
+      NameGenerator();
+      /// Copy constructor.
+      NameGenerator(const NameGenerator &source);
+      /// Destructor.
+      virtual ~NameGenerator();
+      /// Affectation operator
+      NameGenerator &operator=(const NameGenerator &source);
 
-        /// @}
-        // ========================================================================
-        /// Getters and setters.
-        // ========================================================================
-        /// @{
+      /// @}
+      // ========================================================================
+      /// Getters and setters.
+      // ========================================================================
+      /// @{
 
-        /// Returns the next name w.r.t. the given Type.
-        std::string nextName ( PRMObject::PRMType type );
+      /// Returns the next name w.r.t. the given Type.
+      std::string nextName(PRMObject::PRMType type);
 
-        /// @}
+      /// @}
       private:
-        /// The vector of counters.
-        std::vector<unsigned int> __counters;
+      /// The vector of counters.
+      std::vector<unsigned int> __counters;
     };
 
   } /* namespace prm */
@@ -83,4 +83,3 @@ namespace gum {
 #endif
 
 #endif /* GUM_NAME_GENERATOR_H */
-

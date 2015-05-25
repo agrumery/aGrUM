@@ -31,53 +31,61 @@ namespace gum {
 
   namespace aggregator {
 
-    /* ============================================================================ */
-    /* ============================================================================ */
+    /* ============================================================================
+     */
+    /* ============================================================================
+     */
     /* ===                     GUM_MAX_AGGREGATOR                     === */
-    /* ============================================================================ */
-    /* ============================================================================ */
+    /* ============================================================================
+     */
+    /* ============================================================================
+     */
     /** @class Max
     * @brief max aggregator
     * @ingroup multidim_group
     *
     * @see MultiDimAggregator for more details of implementations
     *
-    * Note that a <tt>Max</tt> aggregator with a binary aggregator variable is the \f$ \exists \neq 0\f$ aggregator.
+    * Note that a <tt>Max</tt> aggregator with a binary aggregator variable is the
+    *\f$ \exists \neq 0\f$ aggregator.
     */
-    /* ============================================================================ */
+    /* ============================================================================
+     */
 
-    template<typename GUM_SCALAR> class Max : public MultiDimAggregator<GUM_SCALAR> {
+    template <typename GUM_SCALAR>
+    class Max : public MultiDimAggregator<GUM_SCALAR> {
       public:
-        Max();
-        Max ( const Max<GUM_SCALAR>& from );
-        virtual ~Max();
+      Max();
+      Max(const Max<GUM_SCALAR> &from);
+      virtual ~Max();
 
-        /**
-         * This method creates a clone of this object, withouth its content
-         * (including variable), you must use this method if you want to ensure
-         * that the generated object has the same type than the object containing
-         * the called newFactory()
-         * For example :
-         *   MultiDimArray<double> y;
-         *   MultiDimContainer<double>* x = y.newFactory();
-         * Then x is a MultiDimArray<double>*
-         *
-         * @warning you must desallocate by yourself the memory
-         * @return an empty clone of this object with the same type
-         */
-        virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
+      /**
+       * This method creates a clone of this object, withouth its content
+       * (including variable), you must use this method if you want to ensure
+       * that the generated object has the same type than the object containing
+       * the called newFactory()
+       * For example :
+       *   MultiDimArray<double> y;
+       *   MultiDimContainer<double>* x = y.newFactory();
+       * Then x is a MultiDimArray<double>*
+       *
+       * @warning you must desallocate by yourself the memory
+       * @return an empty clone of this object with the same type
+       */
+      virtual MultiDimContainer<GUM_SCALAR> *newFactory() const;
 
+      virtual std::string aggregatorName(void) const;
 
-        virtual std::string aggregatorName ( void ) const;
       protected:
-        virtual Idx _neutralElt ( void ) const ;
-        virtual Idx _folder ( const DiscreteVariable& v, Idx i1, Idx i2 , bool& stop_iteration ) const;
+      virtual Idx _neutralElt(void) const;
+      virtual Idx _folder(const DiscreteVariable &v, Idx i1, Idx i2,
+                          bool &stop_iteration) const;
     };
 
     extern template class Max<float>;
     extern template class Max<double>;
   } // aggregator
-} //gum
+} // gum
 
 #include <agrum/multidim/aggregators/max.tcc>
 

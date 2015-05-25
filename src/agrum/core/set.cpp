@@ -23,21 +23,17 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-
 
 #include <agrum/core/set.h>
 
-
 namespace gum {
 
-
   // creates (if needed) and returns the iterator __SetIterEndSafe
-  const SetIteratorSafe<int>* SetIteratorStaticEnd::endSafe4Statics() {
+  const SetIteratorSafe<int> *SetIteratorStaticEnd::endSafe4Statics() {
     static bool first_time = true;
 
-    if ( first_time ) {
+    if (first_time) {
       first_time = false;
       __SetIterEndSafe = new SetIteratorSafe<int>;
     }
@@ -45,18 +41,16 @@ namespace gum {
     return __SetIterEndSafe;
   }
 
-
   // creates (if needed) and returns the iterator __SetIterEndSafe
-  const SetIteratorSafe<int>* SetIteratorStaticEnd::constEndSafe4Statics() {
+  const SetIteratorSafe<int> *SetIteratorStaticEnd::constEndSafe4Statics() {
     return endSafe4Statics();
   }
 
-
   // creates (if needed) and returns the iterator __SetIterEnd
-  const SetIterator<int>* SetIteratorStaticEnd::end4Statics() {
+  const SetIterator<int> *SetIteratorStaticEnd::end4Statics() {
     static bool first_time = true;
 
-    if ( first_time ) {
+    if (first_time) {
       first_time = false;
       __SetIterEnd = new SetIterator<int>;
     }
@@ -64,24 +58,19 @@ namespace gum {
     return __SetIterEnd;
   }
 
-
   // creates (if needed) and returns the iterator __SetIterEnd
-  const SetIterator<int>* SetIteratorStaticEnd::constEnd4Statics() {
+  const SetIterator<int> *SetIteratorStaticEnd::constEnd4Statics() {
     return end4Statics();
   }
 
+  // create the end iterator for all Sets
+  const SetIteratorSafe<int> *SetIteratorStaticEnd::__SetIterEndSafe =
+      SetIteratorStaticEnd::endSafe4Statics();
 
   // create the end iterator for all Sets
-  const SetIteratorSafe<int>* SetIteratorStaticEnd::__SetIterEndSafe =
-    SetIteratorStaticEnd::endSafe4Statics();
-
-
-  // create the end iterator for all Sets
-  const SetIterator<int>* SetIteratorStaticEnd::__SetIterEnd =
-    SetIteratorStaticEnd::end4Statics();
-
+  const SetIterator<int> *SetIteratorStaticEnd::__SetIterEnd =
+      SetIteratorStaticEnd::end4Statics();
 
 } /* namespace gum */
-
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

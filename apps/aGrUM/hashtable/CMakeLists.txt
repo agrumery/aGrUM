@@ -18,8 +18,11 @@ endif (aGrUM_FOUND)
 # or
 # cmake -DCMAKE_BUILD_TYPE=RELEASE 
 #     RELEASE is the default option (thanks to the next 3 lines)
-if( NOT DEFINED CMAKE_BUILD_TYPE )
+if( CMAKE_BUILD_TYPE )
+  message(STATUS  "version : '${CMAKE_BUILD_TYPE}'")
+else ()
   set( CMAKE_BUILD_TYPE RELEASE)
+  message(STATUS  "default version : ${CMAKE_BUILD_TYPE}")
 endif()
 
 file(GLOB EXAMPLE_SOURCE ${EXAMPLE_SOURCE_DIR}/*.cpp)

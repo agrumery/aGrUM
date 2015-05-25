@@ -29,10 +29,12 @@
 
 aGrUM has its own implementation of signalers/listeners.
 
-Let's say that <tt>class A</tt> has a method <tt>f(int i,char ch)</tt> and would like to give to everyone the right to know whenever <tt>f()</tt> is run.
+Let's say that <tt>class A</tt> has a method <tt>f(int i,char ch)</tt> and would like
+to give to everyone the right to know whenever <tt>f()</tt> is run.
 
 @code
-#include <agrum/core/signal/signaler2.h> // Note the '2' because the signal we want will send 2 args (i and ch)
+#include <agrum/core/signal/signaler2.h> // Note the '2' because the signal we want
+will send 2 args (i and ch)
 class A {
  public:
   gum::signaler2<int,char> onF; // Note that onF is public !
@@ -44,7 +46,8 @@ class A {
 }
 @endcode
 
-Note that for <tt>class A</tt>, adding signaler is very light : a new public attribute and a GUM_EMITx when needed (where x is the number of args).
+Note that for <tt>class A</tt>, adding signaler is very light : a new public
+attribute and a GUM_EMITx when needed (where x is the number of args).
 
 Now, how to listen to such a signal ?
 @code
@@ -52,7 +55,8 @@ Now, how to listen to such a signal ?
 
 class B : gum::listener {
  public:
-  void whenF(const void *src,int i, char ch) {std::cout<<"object "<<src<<"run f on "<<i<<" and "<<ch<<std::endl;}
+  void whenF(const void *src,int i, char ch) {std::cout<<"object "<<src<<"run f on
+"<<i<<" and "<<ch<<std::endl;}
 };
 
 A a;

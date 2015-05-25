@@ -23,7 +23,6 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN */
 
-
 // check if we allowed these patterns to be used
 #ifndef GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED
 
@@ -33,30 +32,29 @@
 namespace gum {
 
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
-  template<typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR>*
-  GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
-  ( const MultiDimImplementation<GUM_SCALAR>& ttable,
-    const HashTable<const DiscreteVariable*, Idx>& inst_vars ) {
+  template <typename GUM_SCALAR>
+  MultiDimImplementation<GUM_SCALAR> *GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
+      const MultiDimImplementation<GUM_SCALAR> &ttable,
+      const HashTable<const DiscreteVariable *, Idx> &inst_vars) {
 #endif
 
-    typename PartialInstantiationRegister4MultiDim<GUM_SCALAR>::PartialInstantiationPtr func;
+    typename PartialInstantiationRegister4MultiDim<
+        GUM_SCALAR>::PartialInstantiationPtr func;
 
     // get the appropriate function to perform the operation
     try {
       // try to find func(ttable,inst_vars) in the register
-      func = PartialInstantiationRegister4MultiDim<GUM_SCALAR>::Register().get
-             ( "i", ttable.name() );
-    } catch ( NotFound& ) {
-      func = PartialInstantiationRegister4MultiDim<GUM_SCALAR>::Register().get
-             ( "i", ttable.basename() );
+      func = PartialInstantiationRegister4MultiDim<GUM_SCALAR>::Register().get(
+          "i", ttable.name());
+    } catch (NotFound &) {
+      func = PartialInstantiationRegister4MultiDim<GUM_SCALAR>::Register().get(
+          "i", ttable.basename());
     }
 
     // perform the partial instantiation
-    return func ( &ttable, inst_vars );
+    return func(&ttable, inst_vars);
   }
 
 } /* End of namespace gum */
 
 #endif /* GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED */
-

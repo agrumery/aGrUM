@@ -24,46 +24,49 @@
  */
 #include <sstream>
 // to ease parser in IDEs
-#include<agrum/multidim/aggregators/or.h>
+#include <agrum/multidim/aggregators/or.h>
 
 namespace gum {
 
   namespace aggregator {
-    template<typename GUM_SCALAR> INLINE
-    Or<GUM_SCALAR>::Or( ) : MultiDimAggregator<GUM_SCALAR>() {
-      GUM_CONSTRUCTOR ( Or )
+    template <typename GUM_SCALAR>
+    INLINE Or<GUM_SCALAR>::Or()
+        : MultiDimAggregator<GUM_SCALAR>() {
+      GUM_CONSTRUCTOR(Or)
     }
 
-    template<typename GUM_SCALAR> INLINE
-    Or<GUM_SCALAR>::Or ( const Or<GUM_SCALAR>& from ) : MultiDimAggregator<GUM_SCALAR> ( from ) {
-      GUM_CONS_CPY ( Or );
+    template <typename GUM_SCALAR>
+    INLINE Or<GUM_SCALAR>::Or(const Or<GUM_SCALAR> &from)
+        : MultiDimAggregator<GUM_SCALAR>(from) {
+      GUM_CONS_CPY(Or);
     }
 
-    template<typename GUM_SCALAR> INLINE
-    Or<GUM_SCALAR>::~Or() {
-      GUM_DESTRUCTOR ( Or );
+    template <typename GUM_SCALAR> INLINE Or<GUM_SCALAR>::~Or() {
+      GUM_DESTRUCTOR(Or);
     }
 
-    template<typename GUM_SCALAR> INLINE
-    Idx Or<GUM_SCALAR>::_neutralElt() const { return ( Idx ) 0;}
+    template <typename GUM_SCALAR> INLINE Idx Or<GUM_SCALAR>::_neutralElt() const {
+      return (Idx)0;
+    }
 
-    template<typename GUM_SCALAR> INLINE
-    Idx Or<GUM_SCALAR>::_folder ( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const {
-      if ( i1 != 1 ) {
-        return ( Idx ) 0;
+    template <typename GUM_SCALAR>
+    INLINE Idx Or<GUM_SCALAR>::_folder(const DiscreteVariable &v, Idx i1, Idx i2,
+                                       bool &stop_iteration) const {
+      if (i1 != 1) {
+        return (Idx)0;
       } else {
         stop_iteration = true;
-        return ( Idx ) 1;
+        return (Idx)1;
       }
     }
 
-    template<typename GUM_SCALAR> INLINE
-    std::string Or<GUM_SCALAR>::aggregatorName ( void ) const {
-      return std::string ( "or" );
+    template <typename GUM_SCALAR>
+    INLINE std::string Or<GUM_SCALAR>::aggregatorName(void) const {
+      return std::string("or");
     }
 
-    template<typename GUM_SCALAR> INLINE
-    MultiDimContainer<GUM_SCALAR>* Or<GUM_SCALAR>::newFactory() const {
+    template <typename GUM_SCALAR>
+    INLINE MultiDimContainer<GUM_SCALAR> *Or<GUM_SCALAR>::newFactory() const {
       return new Or<GUM_SCALAR>();
     }
 

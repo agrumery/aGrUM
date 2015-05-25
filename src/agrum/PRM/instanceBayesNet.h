@@ -47,77 +47,80 @@ namespace gum {
      *
      */
     template <typename GUM_SCALAR>
-    class InstanceBayesNet: public IBayesNet<GUM_SCALAR> {
+    class InstanceBayesNet : public IBayesNet<GUM_SCALAR> {
       public:
-        // ========================================================================
-        /// @name Constructors & destructor.
-        // ========================================================================
-        /// @{
+      // ========================================================================
+      /// @name Constructors & destructor.
+      // ========================================================================
+      /// @{
 
-        /// Default constructor.
-        /// @param i The Instance<GUM_SCALAR> decorated by this InstanceBayesNet.
-        InstanceBayesNet ( const Instance<GUM_SCALAR>& i );
+      /// Default constructor.
+      /// @param i The Instance<GUM_SCALAR> decorated by this InstanceBayesNet.
+      InstanceBayesNet(const Instance<GUM_SCALAR> &i);
 
-        /// Copy constructor.
-        InstanceBayesNet ( const InstanceBayesNet& from );
+      /// Copy constructor.
+      InstanceBayesNet(const InstanceBayesNet &from);
 
-        /// Copy operator.
-        InstanceBayesNet& operator= ( const InstanceBayesNet& from );
+      /// Copy operator.
+      InstanceBayesNet &operator=(const InstanceBayesNet &from);
 
-        /// Destructor.
-        virtual ~InstanceBayesNet();
+      /// Destructor.
+      virtual ~InstanceBayesNet();
 
-        /// @}
-        // ===========================================================================
-        /// @name Variable manipulation methods.
-        // ===========================================================================
-        /// @{
+      /// @}
+      // ===========================================================================
+      /// @name Variable manipulation methods.
+      // ===========================================================================
+      /// @{
 
-        /// See gum::IBaseBayesNet::cpt().
-        virtual const Potential<GUM_SCALAR>& cpt ( NodeId varId ) const;
+      /// See gum::IBaseBayesNet::cpt().
+      virtual const Potential<GUM_SCALAR> &cpt(NodeId varId) const;
 
-        /// See gum::IBaseBayesNet::variableNodeMap().
-        virtual const VariableNodeMap& variableNodeMap() const;
+      /// See gum::IBaseBayesNet::variableNodeMap().
+      virtual const VariableNodeMap &variableNodeMap() const;
 
-        /// See gum::IBaseBayesNet::variable().
-        virtual const DiscreteVariable& variable ( NodeId id ) const;
+      /// See gum::IBaseBayesNet::variable().
+      virtual const DiscreteVariable &variable(NodeId id) const;
 
-        /// See gum::IBaseBayesNet::nodeId().
-        virtual NodeId nodeId ( const DiscreteVariable& var ) const;
+      /// See gum::IBaseBayesNet::nodeId().
+      virtual NodeId nodeId(const DiscreteVariable &var) const;
 
-        /// See gum::IBaseBayesNet::idFromName().
-        virtual NodeId idFromName ( const std::string& name ) const;
+      /// See gum::IBaseBayesNet::idFromName().
+      virtual NodeId idFromName(const std::string &name) const;
 
-        /// See gum::IBaseBayesNet::variableFromName().
-        virtual const DiscreteVariable& variableFromName ( const std::string& name ) const;
+      /// See gum::IBaseBayesNet::variableFromName().
+      virtual const DiscreteVariable &
+      variableFromName(const std::string &name) const;
 
-        const NodeProperty<Size>& modalities() const;
+      const NodeProperty<Size> &modalities() const;
 
-        /// @}
-        // ===========================================================================
-        /// @name Graphical methods
-        // ===========================================================================
-        /// @{
-        /// @return Returns a dot representation of this IBayesNet.
-        virtual std::string toDot ( void ) const;
+      /// @}
+      // ===========================================================================
+      /// @name Graphical methods
+      // ===========================================================================
+      /// @{
+      /// @return Returns a dot representation of this IBayesNet.
+      virtual std::string toDot(void) const;
 
-        /// @}
+      /// @}
       private:
-        /// Mapping between DiscreteVariable and their NodeId
-        HashTable<const DiscreteVariable*, const Attribute<GUM_SCALAR>*> __varNodeMap;
+      /// Mapping between DiscreteVariable and their NodeId
+      HashTable<const DiscreteVariable *, const Attribute<GUM_SCALAR> *>
+          __varNodeMap;
 
-        /// Private getter with type checking in case the id is not a formal Attribute<GUM_SCALAR>.
-        /// @throw NotFound Raised if id is not a formal attribute.
-        const ClassElement<GUM_SCALAR>& __get ( NodeId id ) const;
+      /// Private getter with type checking in case the id is not a formal
+      /// Attribute<GUM_SCALAR>.
+      /// @throw NotFound Raised if id is not a formal attribute.
+      const ClassElement<GUM_SCALAR> &__get(NodeId id) const;
 
-        const ClassElement<GUM_SCALAR>& __get ( const std::string& name ) const;
+      const ClassElement<GUM_SCALAR> &__get(const std::string &name) const;
 
-        /// The ClassElementContainer decorated by this.
-        const Instance<GUM_SCALAR>* __inst;
+      /// The ClassElementContainer decorated by this.
+      const Instance<GUM_SCALAR> *__inst;
 
-        mutable NodeProperty<Size> __modalities;
+      mutable NodeProperty<Size> __modalities;
 
-        void __init ( const Instance<GUM_SCALAR>& i );
+      void __init(const Instance<GUM_SCALAR> &i);
     };
 
     extern template class InstanceBayesNet<double>;
@@ -128,4 +131,3 @@ namespace gum {
 #include <agrum/PRM/instanceBayesNet.tcc>
 
 #endif /* GUM_INSTANCE_BAYESNET_H */
-

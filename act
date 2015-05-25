@@ -307,6 +307,11 @@ def initParser(current):
                                         action="store_true",
                                         dest="stats",
                                         default=False)
+    parser.add_option("", "--1by1",
+                                        help="aGrUM debug tests one by one (searching leaks).",
+                                        action="store_true",
+                                        dest="oneByOne",
+                                        default=False)
     parser.add_option("-p", "--platform",
                                         help="{linux|windows|mac}",
                                         type="choice",
@@ -628,6 +633,7 @@ def checkConstraints(parser,options,args):
     current['fixed_seed']=options.fixed_seed
     current['no_fun']=options.no_fun
     current['stats']=options.stats
+    current['1by1']=options.oneByOne
     current['test_base']=options.test_base
     current['testlist']=options.testlist
     current['pyversion']=options.pyversion
@@ -688,12 +694,12 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
     if options['wrapper']!="": # we know rule in ["install","wrapper", "test"]
         folders=['build','wrappers',options['wrapper']]
         cmake_options="-DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/"+options['wrapper']+"/"
-        
+
         if (options['pyversion'])=="2":
           cmake_options+=" -DFOR_PYTHON2=ON"
         else:
           cmake_options+=" -DFOR_PYTHON2=OFF  "
-        
+
         if options['rule'] in ["install"]:
             make_options=options['rule']
         else:
@@ -712,7 +718,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
     else:
         option_fixed_seed=" -DGUM_RANDOMSEED="+(RANDOMSEED_FOR_FIXED_SEED if options['fixed_seed'] else "0")
         cmake_options=option_fixed_seed ;
-        
+
         if options['rule']=='package':
             folders=["build",'package_'+options['platform'],options['option']]
         elif options['rule']=='config':
@@ -736,7 +742,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             make_options="agrum-dbg"
           else:
             make_options=options['rule']
-            
+
         # MANAGING MODULES
         listM=[x.upper() for x in options['module'].split('+')]
         setM=set(listM)
@@ -832,9 +838,12 @@ def getInvocation(current):
 
       if (current['static_lib']):
         invocation+=getParam('static_lib')
-      
+
       if (current['stats']):
         invocation+=getParam('stats')
+
+      if (current['1by1']):
+        invocation+=getParam('1by1')
 
       if (current['fixed_seed']):
         invocation+=getParam('fixed_seed')
@@ -843,7 +852,7 @@ def getInvocation(current):
         invocation+=getParam('no_fun')
 
       invocation+=getValParam('jobs',str(current['jobs']))
-      
+
       invocation+=getValParam('python',current['pyversion'])
     else:
       if current['rule']=="uninstall":
@@ -852,7 +861,47 @@ def getInvocation(current):
     invocation+=ENDC
     return invocation
 
+
+def checkAgrumMemoryLeak(x):
+  commande='act test debug -t {0}'.format(x)
+
+  first=WARNING+format(x)+ENDC+" : "
+  flag=0
+
+  print(WARNING+format(commande)+ENDC+" : ",end="")
+  sys.stdout.flush()
+  proc=Popen(commande+" --no-fun",shell=True,stdout=PIPE,stderr=STDOUT)
+  out=proc.stdout.readlines()
+  for line in out:
+    if "NO MEMORY LEAK" in line:
+      last=OKGREEN+"ok"+ENDC
+      flag=1
+    elif "Memory leaks found" in line:
+      last=ERROR+line.split("|")[2].strip()+ENDC
+      flag=2
+
+  if flag==0:
+    last=ERROR+"?"+ENDC
+
+  print(last)
+  return (first+last,flag==1)
+
+def checkAgrumMemoryLeaks():
+  print("Searching leaks test by test (may be a bit long).\n")
+  res=[]
+  for x in sorted([CrossPlatformRelPath(x,"src/testunits").split('/')[1].split('TestSuite')[0]
+                   for x in glob.glob('src/testunits/module_*/*TestSuite.h')]):
+    (msg,testOK)=checkAgrumMemoryLeak(x)
+    if not testOK:
+      res.append(msg)
+
+  print("\n"+WARNING+"Test(s) with problem(s) :\n -{0}\n".format("\n -".join(res) if len(res)>0 else "none")+ENDC)
+
 ##########################################################################################################################
+print(ENDC+ERROR+"aGrUM"+ENDC+" compilation tool "+ERROR+"v"+numversion+ENDC)
+print("(c) 2010-15 "+OKGREEN+"aGrUM Team"+ENDC)
+print()
+
 listOfModules=parseModulesTxt(modulesFile)
 
 default={}
@@ -875,6 +924,7 @@ default['static_lib']=False
 default['fixed_seed']=False
 default['no_fun']=False
 default['stats']=False
+default['1by1']=False
 default['module']='ALL'
 default['testlist']='all'
 default['pyversion']="3"
@@ -901,6 +951,11 @@ for key in default.iterkeys():
 
 parser=initParser(current)
 (options, args)=parser.parse_args()
+
+if options.oneByOne:
+  checkAgrumMemoryLeaks()
+  sys.exit(0)
+
 checkConstraints(parser,options,args)
 
 if options.no_fun:
@@ -909,10 +964,6 @@ if options.no_fun:
   ERROR = ''
   ENDC = ''
 
-
-print(ENDC+ERROR+"aGrUM"+ENDC+" compilation tool "+ERROR+"v"+numversion+ENDC)
-print("(c) 2010-13 "+OKGREEN+"aGrUM Team"+ENDC)
-print()
 
 if exe_python3 is None and exe_python2 is None:
   # should not be possible : we are in a python script :)
@@ -973,6 +1024,7 @@ for key in current:
 shlv['persistent']=persistent
 shlv.sync()
 shlv.close()
+
 
 proceed(current,RANDOMSEED_FOR_FIXED_SEED="10")
 

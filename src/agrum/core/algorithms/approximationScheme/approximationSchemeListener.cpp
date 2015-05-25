@@ -16,30 +16,35 @@ s
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
 
 namespace gum {
-  ApproximationSchemeListener::ApproximationSchemeListener ( IApproximationSchemeConfiguration& sch ) : __sch ( sch ) {
-    GUM_CONSTRUCTOR ( ApproximationSchemeListener );
+  ApproximationSchemeListener::ApproximationSchemeListener(
+      IApproximationSchemeConfiguration &sch)
+      : __sch(sch) {
+    GUM_CONSTRUCTOR(ApproximationSchemeListener);
 
-    GUM_CONNECT ( ( __sch ), onProgress, ( *this ), ApproximationSchemeListener::whenProgress );
-    GUM_CONNECT ( ( __sch ), onStop, ( *this ), ApproximationSchemeListener::whenStop );
+    GUM_CONNECT((__sch), onProgress, (*this),
+                ApproximationSchemeListener::whenProgress);
+    GUM_CONNECT((__sch), onStop, (*this), ApproximationSchemeListener::whenStop);
   }
 
-  ApproximationSchemeListener::ApproximationSchemeListener ( const ApproximationSchemeListener& other ) : __sch ( other.__sch ) {
-    GUM_CONS_CPY ( ApproximationSchemeListener );
-    GUM_ERROR ( OperationNotAllowed, "No copy constructor for ApproximationSchemeListener" );
-
+  ApproximationSchemeListener::ApproximationSchemeListener(
+      const ApproximationSchemeListener &other)
+      : __sch(other.__sch) {
+    GUM_CONS_CPY(ApproximationSchemeListener);
+    GUM_ERROR(OperationNotAllowed,
+              "No copy constructor for ApproximationSchemeListener");
   }
 
   ApproximationSchemeListener::~ApproximationSchemeListener() {
-    GUM_DESTRUCTOR ( ApproximationSchemeListener );
+    GUM_DESTRUCTOR(ApproximationSchemeListener);
   }
 
-  ApproximationSchemeListener& ApproximationSchemeListener::operator= ( const ApproximationSchemeListener& other ) {
-    GUM_CONS_CPY ( ApproximationSchemeListener );
-    GUM_ERROR ( OperationNotAllowed, "No copy constructor for ApproximationSchemeListener" );
+  ApproximationSchemeListener &ApproximationSchemeListener::
+  operator=(const ApproximationSchemeListener &other) {
+    GUM_CONS_CPY(ApproximationSchemeListener);
+    GUM_ERROR(OperationNotAllowed,
+              "No copy constructor for ApproximationSchemeListener");
   }
-
 }

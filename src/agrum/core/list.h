@@ -137,12 +137,9 @@
 
 #include <agrum/core/refPtr.h>
 
-
 #define GUM_DEFAULT_ITERATOR_NUMBER 4
 
-
 namespace gum {
-
 
   // ==============================================================================
   // templates provided by this header
@@ -155,13 +152,11 @@ namespace gum {
   template <typename Val> class ListConstIteratorSafe;
   template <typename Val, typename Alloc> class List;
 
-#ifndef SWIG  // SWIG cannot read these lines
+#ifndef SWIG // SWIG cannot read these lines
   /// an << operator for List
-  template <typename Val, typename Alloc> std::ostream&
-  operator<< ( std::ostream& stream, const List<Val, Alloc>& list );
+  template <typename Val, typename Alloc>
+  std::ostream &operator<<(std::ostream &stream, const List<Val, Alloc> &list);
 #endif // SWIG
-
-
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -172,9 +167,8 @@ namespace gum {
   // The type of __list_end is a pointer to void because C++ allows pointers to
   // void to be cast into pointers to other types (and conversely). This avoids
   // the weird strict-aliasing rule warning
-  extern const void* const __list_end_safe;
-  extern const void* const __list_end;
-
+  extern const void *const __list_end_safe;
+  extern const void *const __list_end;
 
   /* =========================================================================== */
   /* ===             BUCKETS: SINGLE ELEMENTS OF A CHAINED LIST              === */
@@ -187,12 +181,12 @@ namespace gum {
    * @warning Values stored in buckets are ALWAYS COPIES. */
   /* =========================================================================== */
   template <typename Val> class ListBucket {
-  private:
+    private:
     /// a dummy type for the emplace constructor
     /** this type is used to prevent the list emplace (int) to compile */
     enum class Emplace { EMPLACE };
 
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -202,30 +196,28 @@ namespace gum {
     ListBucket() = delete;
 
     /// default constructor
-    explicit ListBucket ( const Val& v );
+    explicit ListBucket(const Val &v);
 
     /// constructor for Val rvalues
-    explicit ListBucket ( Val && v ) noexcept;
+    explicit ListBucket(Val &&v) noexcept;
 
     /// emplace (universal) constructor
-    template <typename... Args>
-    explicit ListBucket ( Emplace, Args && ... args );
+    template <typename... Args> explicit ListBucket(Emplace, Args &&... args);
 
     /// copy constructor
-    ListBucket ( const ListBucket<Val>& src );
+    ListBucket(const ListBucket<Val> &src);
 
     /// move constructor should be useless
-    ListBucket ( ListBucket<Val> && src ) = delete;
+    ListBucket(ListBucket<Val> &&src) = delete;
 
     /// destructor
     /** @warning during its deletion, the bucket takes care of properly
      * rechaining the chained list. However, it has no knowledge about the
      * variables that keep track of the beginning/end of the chained list, hence
      * it cannot update them properly. This should be done by the List itself */
-    ~ListBucket ();
+    ~ListBucket();
 
     /// @}
-
 
     // ############################################################################
     /// @name Operators
@@ -233,19 +225,18 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ListBucket<Val>& operator= ( const ListBucket<Val>& src );
+    ListBucket<Val> &operator=(const ListBucket<Val> &src);
 
     /// move operator should be useless
-    ListBucket<Val>& operator= ( ListBucket<Val> && src ) = delete;
+    ListBucket<Val> &operator=(ListBucket<Val> &&src) = delete;
 
     /// equality check
-    bool operator== ( const ListBucket<Val>& src ) const;
+    bool operator==(const ListBucket<Val> &src) const;
 
     /// inequality check
-    bool operator!= ( const ListBucket<Val>& src ) const;
+    bool operator!=(const ListBucket<Val> &src) const;
 
     /// @}
-
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -253,21 +244,20 @@ namespace gum {
     /// @{
 
     /// dereferencing operator
-    Val& operator* () noexcept;
+    Val &operator*() noexcept;
 
     /// dereferencing operator
-    const Val& operator* () const noexcept;
+    const Val &operator*() const noexcept;
 
     /// returns the bucket toward the next element
-    const ListBucket<Val>* next () const noexcept;
+    const ListBucket<Val> *next() const noexcept;
 
     /// returns the bucket toward the preceding element
-    const ListBucket<Val>* previous () const noexcept;
+    const ListBucket<Val> *previous() const noexcept;
 
     /// @}
 
-
-  private:
+    private:
     // all the list containers and iterators should be able to access the buckets
     template <typename T, typename A> friend class List;
     friend class ListIterator<Val>;
@@ -277,18 +267,15 @@ namespace gum {
 
     /// @{
     /// chaining toward the adjacent elements
-    ListBucket<Val>* __prev {nullptr};
-    ListBucket<Val>* __next {nullptr};
+    ListBucket<Val> *__prev{nullptr};
+    ListBucket<Val> *__next{nullptr};
     /// @}
 
     /// val is the value contained in the box.
     Val __val;
-
   };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
-
 
   /* =========================================================================== */
   /* ===                     GENERIC DOUBLY CHAINED LISTS                    === */
@@ -400,39 +387,31 @@ namespace gum {
    * List<float> flist = list2.map (f);
    * @endcode
    */
-  template <typename Val, typename Alloc = std::allocator<Val> >
-  class List {
-  public:
+  template <typename Val, typename Alloc = std::allocator<Val>> class List {
+    public:
     /// types for STL compliance
     /// @{
-    using value_type      = Val;
-    using reference       = Val& ;
-    using const_reference = const Val& ;
-    using pointer         = Val* ;
-    using const_pointer   = const Val* ;
-    using size_type       = std::size_t;
+    using value_type = Val;
+    using reference = Val &;
+    using const_reference = const Val &;
+    using pointer = Val *;
+    using const_pointer = const Val *;
+    using size_type = std::size_t;
     using difference_type = std::ptrdiff_t;
-    using allocator_type  = Alloc;
-    using iterator            = ListIterator<Val>;
-    using const_iterator      = ListConstIterator<Val>;
-    using iterator_safe       = ListIteratorSafe<Val>;
+    using allocator_type = Alloc;
+    using iterator = ListIterator<Val>;
+    using const_iterator = ListConstIterator<Val>;
+    using iterator_safe = ListIteratorSafe<Val>;
     using const_iterator_safe = ListConstIteratorSafe<Val>;
     /// @}
 
-
     /// type of the allocator for ListBuckets
     /// @{
-    using BucketAllocator =
-      typename Alloc::template rebind<ListBucket<Val>>::other;
+    using BucketAllocator = typename Alloc::template rebind<ListBucket<Val>>::other;
     /// @}
 
-
     /// locations around iterators where insertions of new elements can take place
-    enum class location {
-      BEFORE,
-        AFTER
-        };
-
+    enum class location { BEFORE, AFTER };
 
     // ############################################################################
     /// @name Constructors / Destructors
@@ -449,23 +428,21 @@ namespace gum {
      * elements. This constructor runs in linear time.
      * @param src the list the contents of which is copied into the current one.
      */
-    List ( const List<Val, Alloc>& src );
+    List(const List<Val, Alloc> &src);
 
     /// generalized copy constructor
-    template <typename OtherAlloc>
-    List ( const List<Val, OtherAlloc>& src );
+    template <typename OtherAlloc> List(const List<Val, OtherAlloc> &src);
 
     /// move constructor
-    List ( List<Val, Alloc> && src );
+    List(List<Val, Alloc> &&src);
 
     /// initializer_list constructor
-    List ( std::initializer_list<Val> list );
+    List(std::initializer_list<Val> list);
 
     /// Destructor
     ~List();
 
     /// @}
-
 
     // ############################################################################
     /// @name Iterators
@@ -477,28 +454,28 @@ namespace gum {
      * when the element they point to is erased. As such, in this case, they
      * can throw an exception when we try to derefence them and they are
      * able to perform a valid ++ or -- step */
-    const const_iterator_safe& cendSafe () const noexcept;
+    const const_iterator_safe &cendSafe() const noexcept;
 
     /// returns a safe iterator pointing to the end of the List
     /** Safe iterators are iterators whose state is updated by the list
      * when the element they point to is erased. As such, in this case, they
      * can throw an exception when we try to derefence them and they are
      * able to perform a valid ++ or -- step */
-    const iterator_safe& endSafe () noexcept;
+    const iterator_safe &endSafe() noexcept;
 
     /// return a safe const iterator pointing just before the beginning of the List
     /** Safe const iterators are const iterators whose state is updated by the list
      * when the element they point to is erased. As such, in this case, they
      * can throw an exception when we try to derefence them and they are
      * able to perform a valid ++ or -- step */
-    const const_iterator_safe& crendSafe () const noexcept;
+    const const_iterator_safe &crendSafe() const noexcept;
 
     /// returns a safe iterator pointing just before the beginning of the List
     /** Safe iterators are iterators whose state is updated by the list
      * when the element they point to is erased. As such, in this case, they
      * can throw an exception when we try to derefence them and they are
      * able to perform a valid ++ or -- step */
-    const iterator_safe& rendSafe() noexcept;
+    const iterator_safe &rendSafe() noexcept;
 
     /// returns a safe const iterator pointing to the beginning of the List
     /** Safe const iterators are const iterators whose state is updated by the list
@@ -535,7 +512,7 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    const const_iterator& cend () const noexcept;
+    const const_iterator &cend() const noexcept;
 
     /// returns an unsafe iterator pointing to the end of the List
     /** Unsafe iterators are a little bit faster than safe iterators and
@@ -544,7 +521,7 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    const iterator& end () noexcept;
+    const iterator &end() noexcept;
 
     /// returns an unsafe const iterator pointing to the end of the List
     /** Unsafe const iterators are a little bit faster than safe const iterators
@@ -553,7 +530,7 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    const const_iterator& end () const noexcept;
+    const const_iterator &end() const noexcept;
 
     /** @brief returns an unsafe const iterator pointing just before the
      * beginning of the List
@@ -564,7 +541,7 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    const const_iterator& crend () const noexcept;
+    const const_iterator &crend() const noexcept;
 
     /// returns an unsafe iterator pointing just before the beginning of the List
     /** Unsafe iterators are a little bit faster than safe iterators and
@@ -573,7 +550,7 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    const iterator& rend () noexcept;
+    const iterator &rend() noexcept;
 
     /** @brief returns an unsafe const iterator pointing just before the
      * beginning of the List
@@ -584,7 +561,7 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    const const_iterator& rend () const noexcept;
+    const const_iterator &rend() const noexcept;
 
     /// returns an unsafe const iterator pointing to the beginning of the List
     /** Unsafe const iterators are a little bit faster than safe const iterators
@@ -593,7 +570,7 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    const_iterator cbegin () const;
+    const_iterator cbegin() const;
 
     /// returns an unsafe iterator pointing to the beginning of the List
     /** Unsafe iterators are a little bit faster than safe iterators and
@@ -602,7 +579,7 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    iterator begin ();
+    iterator begin();
 
     /// returns an unsafe const iterator pointing to the beginning of the List
     /** Unsafe const iterators are a little bit faster than safe const iterators
@@ -611,7 +588,7 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    const_iterator begin () const;
+    const_iterator begin() const;
 
     /// returns an unsafe const iterator pointing to the last element of the List
     /** Unsafe iterators are a little bit faster than safe iterators and
@@ -620,7 +597,7 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    const_iterator crbegin () const;
+    const_iterator crbegin() const;
 
     /// returns an unsafe iterator pointing to the last element of the List
     /** Unsafe iterators are a little bit faster than safe iterators and
@@ -629,7 +606,7 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    iterator rbegin ();
+    iterator rbegin();
 
     /// returns an unsafe const iterator pointing to the last element of the List
     /** Unsafe iterators are a little bit faster than safe iterators and
@@ -638,10 +615,9 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    const_iterator rbegin () const;
+    const_iterator rbegin() const;
 
     /// @}
-
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -654,23 +630,21 @@ namespace gum {
      * @return a reference on the copy inserted into the list.
      * @warning Note that \e val is not actually inserted into the list. Rather, it
      * is a copy of val that is inserted. */
-    Val& pushFront ( const Val& val );
+    Val &pushFront(const Val &val);
 
     /// pushFront for rvalues
-    Val& pushFront ( Val && val );
+    Val &pushFront(Val &&val);
 
     /// an alias for pushFront used for STL compliance
     /** defining push_front allows using, for instance, FrontInserters */
-    template <typename... Args>
-    Val& push_front ( Args && ... args );
+    template <typename... Args> Val &push_front(Args &&... args);
 
     /// emplace elements at the beginning of the chained list
     /** emplace is a method that allows to construct directly an element of
      * type Val by passing to its constructor all the arguments it needs
      * @param args the arguments passed to the constructor
      * @return a reference on the copy inserted into the list */
-    template <typename... Args>
-    Val& emplaceFront ( Args && ... args );
+    template <typename... Args> Val &emplaceFront(Args &&... args);
 
     /// inserts a new element (a copy) at the end of the chained list.
     /** The value passed in argument is not actually inserted into the list: this
@@ -678,32 +652,30 @@ namespace gum {
      * @return a reference on the copy inserted into the list.
      * @warning Note that \e val is not actually inserted into the list. Rather, it
      * is a copy of val that is inserted. */
-    Val& pushBack ( const Val& val );
+    Val &pushBack(const Val &val);
 
     /// pushBack for rvalues
-    Val& pushBack ( Val && val );
+    Val &pushBack(Val &&val);
 
     /// an alias for pushBack used for STL compliance
     /** defining push_back allows using, for instance, BackInserters */
-    template <typename... Args>
-    Val& push_back ( Args && ... args );
+    template <typename... Args> Val &push_back(Args &&... args);
 
     /// emplace elements at the end of the chained list
     /** emplace is a method that allows to construct directly an element of
      * type Val by passing to its constructor all the arguments it needs
      * @param args the arguments passed to the constructor
      * @return a reference on the copy inserted into the list */
-    template <typename... Args>
-    Val& emplaceBack ( Args && ... args );
+    template <typename... Args> Val &emplaceBack(Args &&... args);
 
     /// inserts a new element at the end of the chained list (alias of pushBack)
     /** @return a reference on the copy inserted into the list.
      * @warning Note that \e val is not actually inserted into the list. Rather, it
      * is a copy of val that is inserted. */
-    Val& insert ( const Val& val );
+    Val &insert(const Val &val);
 
     /// insert for rvalues
-    Val& insert ( Val && val );
+    Val &insert(Val &&val);
 
     /// inserts a new element at the ith pos of the chained list
     /** The first element of the list is at pos 0. After the insert, the element
@@ -712,42 +684,42 @@ namespace gum {
      * @return a reference on the copy inserted into the list.
      * @warning Note that \e val is not actually inserted into the list. Rather,
      * it is a copy of val that is inserted. */
-    Val& insert ( unsigned int pos, const Val& val );
+    Val &insert(unsigned int pos, const Val &val);
 
     /// insert an rvalue at the ith pos of the chained list
     /** The first element of the list is at pos 0. After the insert, the element
      * is placed precisely at pos if pos is less than the size of the list
      * before insertion, else it is inserted at the end of the list.
      * @return a reference on the copy inserted into the list. */
-    Val& insert ( unsigned int pos, Val && val );
+    Val &insert(unsigned int pos, Val &&val);
 
     /// inserts a new element before or after a given iterator
     /** @return a reference on the copy inserted into the list.
      * @warning Note that \e val is not actually inserted into the list. Rather,
      * it is a copy of val that is inserted. */
-    Val& insert ( const const_iterator_safe& iter, const Val& val,
-                  location place = location::BEFORE );
+    Val &insert(const const_iterator_safe &iter, const Val &val,
+                location place = location::BEFORE);
 
     /// inserts an rvalue before or after a given iterator
     /** @return a reference on the copy inserted into the list.
      * @warning Note that \e val is not actually inserted into the list. Rather,
      * it is a copy of val that is inserted. */
-    Val& insert ( const const_iterator_safe& iter, Val && val,
-                  location place = location::BEFORE );
+    Val &insert(const const_iterator_safe &iter, Val &&val,
+                location place = location::BEFORE);
 
     /// inserts a new element before or after a given iterator
     /** @return a reference on the copy inserted into the list.
      * @warning Note that \e val is not actually inserted into the list. Rather,
      * it is a copy of val that is inserted. */
-    Val& insert ( const const_iterator& iter, const Val& val,
-                  location place = location::BEFORE );
+    Val &insert(const const_iterator &iter, const Val &val,
+                location place = location::BEFORE);
 
     /// inserts an rvalue before or after a given iterator
     /** @return a reference on the copy inserted into the list.
      * @warning Note that \e val is not actually inserted into the list. Rather,
      * it is a copy of val that is inserted. */
-    Val& insert ( const const_iterator& iter, Val && val,
-                  location place = location::BEFORE );
+    Val &insert(const const_iterator &iter, Val &&val,
+                location place = location::BEFORE);
 
     /// emplace a new element before a given iterator
     /** emplace is a method that allows to construct directly an element of
@@ -759,7 +731,7 @@ namespace gum {
      * @param args the arguments passed to the constructor
      * @return a reference on the copy inserted into the list */
     template <typename... Args>
-    Val& emplace ( const const_iterator& iter, Args && ... args );
+    Val &emplace(const const_iterator &iter, Args &&... args);
 
     /// emplace a new element before a given safe iterator
     /** emplace is a method that allows to construct directly an element of
@@ -771,15 +743,15 @@ namespace gum {
      * @param args the arguments passed to the constructor
      * @return a reference on the copy inserted into the list */
     template <typename... Args>
-    Val& emplace ( const const_iterator_safe& iter, Args && ... args );
+    Val &emplace(const const_iterator_safe &iter, Args &&... args);
 
     /// returns a reference to first element of a list, if any
     /** @throw NotFound exception is thrown if the list is empty */
-    Val& front() const;
+    Val &front() const;
 
     /// returns a reference to last element of a list, if any
     /** @throw NotFound exception is thrown if the list is empty */
-    Val& back() const;
+    Val &back() const;
 
     /// returns the number of elements in the list.
     /** This method runs in constant time. */
@@ -789,25 +761,25 @@ namespace gum {
     /** This method runs in linear time.
      * @param val the value of the element we wish to check the existence of.
      * Comparisons between Val instances are performed through == operators. */
-    bool exists ( const Val& val ) const;
+    bool exists(const Val &val) const;
 
     /// erases the ith element of the List (the first one is in position 0)
     /** If the element cannot be found, the function returns without throwing any
      * exception. It runs in linear time in the size of the list.
      * @param i the position in the list of the element we wish to remove. */
-    void erase ( unsigned int i );
+    void erase(unsigned int i);
 
     /// erases the element of the List pointed to by the safe iterator
     /** If the element cannot be found, i.e., it has already been erased or the
      * iterator points to end/rend, the function returns without throwing any
      * exception. It runs in linear time in the size of the list. */
-    void erase ( const iterator_safe& iter );
+    void erase(const iterator_safe &iter);
 
     /// erases the element of the List pointed to by the safe const iterator
     /** If the element cannot be found, i.e., it has already been erased or the
      * iterator points to end/rend, the function returns without throwing any
      * exception. It runs in linear time in the size of the list. */
-    void erase ( const const_iterator_safe& iter );
+    void erase(const const_iterator_safe &iter);
 
     /// erases the first element encountered with a given value
     /** If no element equal to \e val can be found, the function
@@ -815,14 +787,14 @@ namespace gum {
      * the size of the list and in the number of iterators referenced in the list.
      * Comparisons between Val instances are performed through == operators.
      * @param val the value of the element we wish to remove. */
-    void eraseByVal ( const Val& val );
+    void eraseByVal(const Val &val);
 
     /// erases all the elements encountered with a given value
     /** If no element equal to \e val can be found, the function
      * returns without throwing any exception.
      * @param val the value of the element we wish to remove.
      * Comparisons between Val instances are performed through == operators. */
-    void eraseAllVal ( const Val& val );
+    void eraseAllVal(const Val &val);
 
     /// removes the last element of a List, if any
     /** When the list is empty, it does not do anything. */
@@ -842,33 +814,32 @@ namespace gum {
     bool empty() const noexcept;
 
     /// swap the current list with another one
-    void swap ( List& other_list );
+    void swap(List &other_list);
 
     /// converts a list into a string
     std::string toString() const;
 
     /// creates a list of mountains from a list of val
     /** @param f a function that maps any Val element into a Mount */
-    template <typename Mount, typename OtherAlloc = std::allocator<Mount> >
-    List<Mount, OtherAlloc> map ( Mount ( *f ) ( Val ) ) const;
+    template <typename Mount, typename OtherAlloc = std::allocator<Mount>>
+    List<Mount, OtherAlloc> map(Mount (*f)(Val)) const;
 
     /// creates a list of mountains from a list of val
     /** @param f a function that maps any Val element into a Mount */
-    template <typename Mount, typename OtherAlloc = std::allocator<Mount> >
-    List<Mount, OtherAlloc> map ( Mount ( *f ) ( Val& ) ) const;
+    template <typename Mount, typename OtherAlloc = std::allocator<Mount>>
+    List<Mount, OtherAlloc> map(Mount (*f)(Val &)) const;
 
     /// creates a list of mountains from a list of val
     /** @param f a function that maps any Val element into a Mount */
-    template <typename Mount, typename OtherAlloc = std::allocator<Mount> >
-    List<Mount, OtherAlloc> map ( Mount ( *f ) ( const Val& ) ) const;
+    template <typename Mount, typename OtherAlloc = std::allocator<Mount>>
+    List<Mount, OtherAlloc> map(Mount (*f)(const Val &)) const;
 
     /// creates a list of mountains with a given value from a list of val
     /** @param mount the value taken by all the elements of the resulting list  */
-    template <typename Mount, typename OtherAlloc = std::allocator<Mount> >
-    List<Mount, OtherAlloc> map ( const Mount& mount ) const;
+    template <typename Mount, typename OtherAlloc = std::allocator<Mount>>
+    List<Mount, OtherAlloc> map(const Mount &mount) const;
 
     /// @}
-
 
     // ############################################################################
     /// @name Operators
@@ -887,7 +858,7 @@ namespace gum {
      * be resetted to end()/rend().
      * @param src the list the content of which will be copied into the
      * current List */
-    List<Val, Alloc>& operator= ( const List<Val, Alloc>& src );
+    List<Val, Alloc> &operator=(const List<Val, Alloc> &src);
 
     /// Generalized copy operator.
     /** The new list and that which is copied do not share the
@@ -902,10 +873,10 @@ namespace gum {
      * @param src the list the content of which will be copied into the
      * current List */
     template <typename OtherAlloc>
-    List<Val, Alloc>& operator= ( const List<Val, OtherAlloc>& src );
+    List<Val, Alloc> &operator=(const List<Val, OtherAlloc> &src);
 
     /// move operator
-    List<Val, Alloc>& operator= ( List<Val, Alloc> && src );
+    List<Val, Alloc> &operator=(List<Val, Alloc> &&src);
 
     /// inserts a new element at the end of the list (alias of pushBack).
     /** This enables writing code like \c list \c += \c xxx; to add element \c xxx
@@ -913,20 +884,20 @@ namespace gum {
      * @return a reference on the copy inserted into the list.
      * @warning Note that \e val is not actually inserted into the list. Rather, it
      * is a copy of val that is inserted. */
-    Val& operator+= ( const Val& val );
+    Val &operator+=(const Val &val);
 
     /// operator += with rvalues
-    Val& operator+= ( Val && val );
+    Val &operator+=(Val &&val);
 
     /// checks whether two lists are identical (same elements in the same order)
     /** this method runs in time linear in the number of elements of the list */
     template <typename OtherAlloc>
-    bool operator== ( const List<Val, OtherAlloc>& src ) const;
+    bool operator==(const List<Val, OtherAlloc> &src) const;
 
     /// checks whether two lists are different (different elements or orders)
     /** this method runs in time linear in the number of elements of the list */
     template <typename OtherAlloc>
-    bool operator!= ( const List<Val, OtherAlloc>& src ) const;
+    bool operator!=(const List<Val, OtherAlloc> &src) const;
 
     /// returns the ith element in the current chained list.
     /** The first of the list element has index 0.
@@ -935,7 +906,7 @@ namespace gum {
      * @throw NotFound exception is thrown if the element to be retrieved
      * does not exist
      * @return a reference on the element stored at the ith position in the list */
-    Val& operator[] ( const unsigned int i );
+    Val &operator[](const unsigned int i);
 
     /// returns the const ith element in the current chained list.
     /** The first of the list element has index 0.
@@ -944,39 +915,36 @@ namespace gum {
      * @throw NotFound exception is thrown if the element to be retrieved
      * does not exist
      * @return a reference on the element stored at the ith position in the list */
-    const Val& operator[] ( const unsigned int i ) const;
+    const Val &operator[](const unsigned int i) const;
 
     /// @}
 
-
-  private:
+    private:
     /// a pointer on the first element of the chained list
-    ListBucket<Val>* __deb_list {nullptr};
+    ListBucket<Val> *__deb_list{nullptr};
 
     /// a pointer on the last element of the chained list
-    ListBucket<Val>* __end_list {nullptr};
+    ListBucket<Val> *__end_list{nullptr};
 
     /// the number of elements in the list
-    unsigned int __nb_elements {0};
+    unsigned int __nb_elements{0};
 
     /// the list of "safe" iterators attached to the list
-    mutable std::vector<const_iterator_safe*> __safe_iterators;
+    mutable std::vector<const_iterator_safe *> __safe_iterators;
 
     /// the allocator for the buckets
     mutable BucketAllocator __alloc_bucket;
-
-
 
     /// a function used to perform copies of elements of Lists
     /** before performing the copy, we assume in this function that the current
      * list (this) is empty (else there would be memory leak). */
     template <typename OtherAlloc>
-    void __copy_elements ( const List<Val, OtherAlloc>& src );
+    void __copy_elements(const List<Val, OtherAlloc> &src);
 
     /// returns the bucket corresponding to the ith position in the list
     /** This method assumes that the list contains at least i+1 elements. The
      * index of the first element of the list is 0. */
-    ListBucket<Val>* __getIthBucket ( unsigned int i ) const noexcept;
+    ListBucket<Val> *__getIthBucket(unsigned int i) const noexcept;
 
     /// returns the bucket corresponding to a given value
     /** Actually, this is the first bucket of value val encountered in the list, if
@@ -984,7 +952,7 @@ namespace gum {
      * method enables fast removals of buckets. It runs in linear time.
      * @param val the value of the element the bucket of which we wish to return.
      * Comparisons between Val instances are performed through == operators. */
-    ListBucket<Val>* __getBucket ( const Val& val ) const noexcept;
+    ListBucket<Val> *__getBucket(const Val &val) const noexcept;
 
     /// removes an element from a chained list
     /** If parameter \e bucket is equal to 0, then the method does not perform
@@ -993,54 +961,44 @@ namespace gum {
      * method runs in constant time.
      * @param bucket a pointer on the bucket in the chained list
      * we wish to remove. */
-    void __erase ( ListBucket<Val>* bucket );
+    void __erase(ListBucket<Val> *bucket);
 
     /// create a new bucket with a given value
-    ListBucket<Val>* __createBucket ( const Val& val ) const;
+    ListBucket<Val> *__createBucket(const Val &val) const;
 
     /// create a new bucket with a given value
-    ListBucket<Val>* __createBucket ( Val && val ) const;
+    ListBucket<Val> *__createBucket(Val &&val) const;
 
     /// create an emplace bucket
     template <typename... Args>
-    ListBucket<Val>* __createEmplaceBucket ( Args && ... args ) const;
+    ListBucket<Val> *__createEmplaceBucket(Args &&... args) const;
 
     /// insert a bucket at the front of the list
-    Val& __pushFront ( ListBucket<Val>* new_elt );
+    Val &__pushFront(ListBucket<Val> *new_elt);
 
     /// insert a bucket at the end of the list
-    Val& __pushBack ( ListBucket<Val>* new_elt );
+    Val &__pushBack(ListBucket<Val> *new_elt);
 
     /// insert a new bucket before another one
-    Val& __insertBefore ( ListBucket<Val>* new_elt,
-                          ListBucket<Val>* current_elt );
+    Val &__insertBefore(ListBucket<Val> *new_elt, ListBucket<Val> *current_elt);
 
     /// insert a new bucket after another one
-    Val& __insertAfter ( ListBucket<Val>* new_elt,
-                         ListBucket<Val>* current_elt );
+    Val &__insertAfter(ListBucket<Val> *new_elt, ListBucket<Val> *current_elt);
 
     /// inserts a new bucket before or after the location pointed to by an iterator
-    Val& __insert ( const const_iterator_safe& iter,
-                    ListBucket<Val>* new_elt,
-                    location place );
+    Val &__insert(const const_iterator_safe &iter, ListBucket<Val> *new_elt,
+                  location place);
 
     /// inserts a new bucket before or after the location pointed to by an iterator
-    Val& __insert ( const const_iterator& iter,
-                    ListBucket<Val>* new_elt,
-                    location place );
-
+    Val &__insert(const const_iterator &iter, ListBucket<Val> *new_elt,
+                  location place);
 
     /// ListIterator should be a friend to optimize access to elements
     friend class ListIterator<Val>;
     friend class ListConstIterator<Val>;
     friend class ListIteratorSafe<Val>;
     friend class ListConstIteratorSafe<Val>;
-
   };
-
-
-
-
 
   /* =========================================================================== */
   /* ===                      UNSAFE LIST CONST ITERATORS                    === */
@@ -1092,18 +1050,17 @@ namespace gum {
    * @endcode
    */
   template <typename Val> class ListConstIterator {
-  public:
+    public:
     /// types for STL compliance
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using value_type        = Val;
-    using reference         = Val& ;
-    using const_reference   = const Val& ;
-    using pointer           = Val* ;
-    using const_pointer     = const Val* ;
-    using difference_type   = std::ptrdiff_t;
+    using value_type = Val;
+    using reference = Val &;
+    using const_reference = const Val &;
+    using pointer = Val *;
+    using const_pointer = const Val *;
+    using difference_type = std::ptrdiff_t;
     /// @}
-
 
     // ############################################################################
     /// @name Constructors / Destructors
@@ -1114,24 +1071,23 @@ namespace gum {
     ListConstIterator() noexcept;
 
     /// constructor for a begin
-    template<typename Alloc>
-    ListConstIterator ( const List<Val, Alloc>& theList ) noexcept;
+    template <typename Alloc>
+    ListConstIterator(const List<Val, Alloc> &theList) noexcept;
 
     /// copy constructor
-    ListConstIterator ( const ListConstIterator<Val>& src ) noexcept;
+    ListConstIterator(const ListConstIterator<Val> &src) noexcept;
 
     /// move constructor
-    ListConstIterator ( ListConstIterator<Val> && src ) noexcept;
+    ListConstIterator(ListConstIterator<Val> &&src) noexcept;
 
     /// Constructor for an iterator pointing to the \e ind_eltth element of a List
     /** @throw UndefinedIteratorValue if the element does not exist in the list */
-    ListConstIterator ( const List<Val>& theList, unsigned int ind_elt );
+    ListConstIterator(const List<Val> &theList, unsigned int ind_elt);
 
     /// Destructor
     ~ListConstIterator() noexcept;
 
     /// @}
-
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -1153,7 +1109,6 @@ namespace gum {
 
     /// @}
 
-
     // ############################################################################
     /// @name Operators
     // ############################################################################
@@ -1161,79 +1116,72 @@ namespace gum {
 
     /// Copy operator
     /** The current iterator now points to the same element as iterator \e from. */
-    ListConstIterator<Val>&
-    operator= ( const ListConstIterator<Val>& src ) noexcept;
+    ListConstIterator<Val> &operator=(const ListConstIterator<Val> &src) noexcept;
 
     /// move operator
-    ListConstIterator<Val>&
-    operator= ( ListConstIterator<Val> && src ) noexcept;
+    ListConstIterator<Val> &operator=(ListConstIterator<Val> &&src) noexcept;
 
     /// makes the iterator point to the next element in the List
     /** for (iter=begin(); iter!=end(); ++iter) loops are guaranteed to parse
      * the whole List as long as no element is added to or deleted from the List
      * while being in the loop. Runs in constant time. */
-    ListConstIterator<Val>& operator++() noexcept;
+    ListConstIterator<Val> &operator++() noexcept;
 
     /// makes the iterator point to i elements further in the List
-    ListConstIterator<Val>& operator+= ( difference_type ) noexcept;
+    ListConstIterator<Val> &operator+=(difference_type) noexcept;
 
     /// makes the iterator point to the preceding element in the List
     /** for (iter=rbegin(); iter!=rend(); --iter) loops are guaranteed to
      * parse the whole List as long as no element is added to or deleted from
      * the List while being in the loop. Runs in constant time. */
-    ListConstIterator<Val>& operator--() noexcept;
+    ListConstIterator<Val> &operator--() noexcept;
 
     /// makes the iterator point to i elements befor in the List
-    ListConstIterator<Val>& operator-= ( difference_type ) noexcept;
+    ListConstIterator<Val> &operator-=(difference_type) noexcept;
 
     /// returns a new iterator
-    ListConstIterator<Val> operator+ ( difference_type ) noexcept;
+    ListConstIterator<Val> operator+(difference_type) noexcept;
 
     /// returns a new iterator
-    ListConstIterator<Val> operator- ( difference_type ) noexcept;
+    ListConstIterator<Val> operator-(difference_type) noexcept;
 
     /// checks whether two iterators point toward different elements
     /** @warning the end and rend iterators are always equal, whatever the list
      * they belong to, i.e., \c list1.end() == \c list2.rend(). */
-    bool operator!= ( const ListConstIterator<Val>& src ) const noexcept;
+    bool operator!=(const ListConstIterator<Val> &src) const noexcept;
 
     /// checks whether two iterators point toward the same elements.
     /** @warning the end and rend iterators are always equal, whatever the list
      * they belong to, i.e., \c list1.end() == \c list2.rend(). */
-    bool operator== ( const ListConstIterator<Val>& src ) const noexcept;
+    bool operator==(const ListConstIterator<Val> &src) const noexcept;
 
     /// gives access to the content of the iterator
     /** @throw UndefinedIteratorValue if the iterator points to nothing */
-    const Val& operator*() const;
+    const Val &operator*() const;
 
     /// dereferences the value pointed to by the iterator
     /** @throw UndefinedIteratorValue if the iterator points to nothing */
-    const Val* operator->() const;
+    const Val *operator->() const;
 
     /// @}
 
-
-  private:
+    private:
     /** class List must be a friend because it uses the getBucket method
      * to speed up some processes. */
-    template < typename T, typename A> friend class List;
+    template <typename T, typename A> friend class List;
 
     /// the bucket in the chained list pointed to by the iterator
-    ListBucket<Val>* __bucket {nullptr};
-
+    ListBucket<Val> *__bucket{nullptr};
 
     /// returns the bucket the iterator is pointing to.
-    ListBucket<Val>* __getBucket() const noexcept;
+    ListBucket<Val> *__getBucket() const noexcept;
   };
-
 
   /// for STL compliance, a distance operator
   template <typename Val>
   typename ListConstIterator<Val>::difference_type
-  operator- ( const ListConstIterator<Val>& iter1,
-              const ListConstIterator<Val>& iter2 );
-
-
+  operator-(const ListConstIterator<Val> &iter1,
+            const ListConstIterator<Val> &iter2);
 
   /* =========================================================================== */
   /* ===                         UNSAFE LIST ITERATORS                       === */
@@ -1283,18 +1231,17 @@ namespace gum {
    *   cerr << iter->size() << endl;
    * @endcode
    */
-  template <typename Val>
-  class ListIterator : public ListConstIterator<Val> {
-  public:
+  template <typename Val> class ListIterator : public ListConstIterator<Val> {
+    public:
     /// types for STL compliance
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using value_type        = Val;
-    using reference         = Val& ;
-    using const_reference   = const Val& ;
-    using pointer           = Val* ;
-    using const_pointer     = const Val* ;
-    using difference_type   = std::ptrdiff_t;
+    using value_type = Val;
+    using reference = Val &;
+    using const_reference = const Val &;
+    using pointer = Val *;
+    using const_pointer = const Val *;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     // ############################################################################
@@ -1306,24 +1253,22 @@ namespace gum {
     ListIterator() noexcept;
 
     /// constructor for a begin
-    template<typename Alloc>
-    ListIterator ( const List<Val, Alloc>& theList ) noexcept;
+    template <typename Alloc> ListIterator(const List<Val, Alloc> &theList) noexcept;
 
     /// copy constructor
-    ListIterator ( const ListIterator<Val>& src ) noexcept;
+    ListIterator(const ListIterator<Val> &src) noexcept;
 
     /// move constructor
-    ListIterator ( ListIterator<Val> && src ) noexcept;
+    ListIterator(ListIterator<Val> &&src) noexcept;
 
     /// Constructor for an iterator pointing to the \e ind_eltth element of a List
     /** @throw UndefinedIteratorValue if the element does not exist in the list */
-    ListIterator ( const List<Val>& theList, unsigned int ind_elt );
+    ListIterator(const List<Val> &theList, unsigned int ind_elt);
 
     /// Destructor
     ~ListIterator() noexcept;
 
     /// @}
-
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -1336,7 +1281,6 @@ namespace gum {
 
     /// @}
 
-
     // ############################################################################
     /// @name Operators
     // ############################################################################
@@ -1344,37 +1288,36 @@ namespace gum {
 
     /// Copy operator
     /** The current iterator now points to the same element as iterator \e from. */
-    ListIterator<Val>&
-    operator= ( const ListIterator<Val>& src ) noexcept;
+    ListIterator<Val> &operator=(const ListIterator<Val> &src) noexcept;
 
     /// move operator
-    ListIterator<Val>& operator= ( ListIterator<Val> && src ) noexcept;
+    ListIterator<Val> &operator=(ListIterator<Val> &&src) noexcept;
 
     /// makes the iterator point to the next element in the List
     /** for (iter=begin(); iter!=end(); ++iter) loops are guaranteed to parse
      * the whole List as long as no element is added to or deleted from the List
      * while being in the loop. Deleting elements during the loop is guaranteed
      * to never produce a segmentation fault. Runs in constant time. */
-    ListIterator<Val>& operator++() noexcept;
+    ListIterator<Val> &operator++() noexcept;
 
     /// makes the iterator point to i elements further in the List
-    ListIterator<Val>& operator+= ( difference_type ) noexcept;
+    ListIterator<Val> &operator+=(difference_type) noexcept;
 
     /// makes the iterator point to the preceding element in the List
     /** for (iter=rbegin(); iter!=rend(); --iter) loops are guaranteed to
      * parse the whole List as long as no element is added to or deleted from
      * the List while being in the loop. Deleting elements during the loop is
      * guaranteed to never produce a segmentation fault. Runs in constant time. */
-    ListIterator<Val>& operator--() noexcept;
+    ListIterator<Val> &operator--() noexcept;
 
     /// makes the iterator point to i elements befor in the List
-    ListIterator<Val>& operator-= ( difference_type ) noexcept;
+    ListIterator<Val> &operator-=(difference_type) noexcept;
 
     /// returns a new iterator
-    ListIterator<Val> operator+ ( difference_type ) noexcept;
+    ListIterator<Val> operator+(difference_type) noexcept;
 
     /// returns a new iterator
-    ListIterator<Val> operator- ( difference_type ) noexcept;
+    ListIterator<Val> operator-(difference_type) noexcept;
 
     using ListConstIterator<Val>::operator==;
     using ListConstIterator<Val>::operator!=;
@@ -1383,17 +1326,14 @@ namespace gum {
 
     /// gives access to the content of the iterator
     /** @throw UndefinedIteratorValue */
-    Val& operator*();
+    Val &operator*();
 
     /// dereferences the value pointed to by the iterator
     /** @throw UndefinedIteratorValue */
-    Val* operator->();
+    Val *operator->();
 
     /// @}
   };
-
-
-
 
   /* =========================================================================== */
   /* ===                          LIST CONST ITERATORS                       === */
@@ -1440,16 +1380,16 @@ namespace gum {
    * @endcode
    */
   template <typename Val> class ListConstIteratorSafe {
-  public:
+    public:
     /// types for STL compliance
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using value_type        = Val;
-    using reference         = Val& ;
-    using const_reference   = const Val& ;
-    using pointer           = Val* ;
-    using const_pointer     = const Val* ;
-    using difference_type   = std::ptrdiff_t;
+    using value_type = Val;
+    using reference = Val &;
+    using const_reference = const Val &;
+    using pointer = Val *;
+    using const_pointer = const Val *;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     // ############################################################################
@@ -1461,24 +1401,22 @@ namespace gum {
     ListConstIteratorSafe() noexcept;
 
     /// constructor for a begin
-    template<typename Alloc>
-    ListConstIteratorSafe ( const List<Val, Alloc>& theList );
+    template <typename Alloc> ListConstIteratorSafe(const List<Val, Alloc> &theList);
 
     /// copy constructor
-    ListConstIteratorSafe ( const ListConstIteratorSafe<Val>& src );
+    ListConstIteratorSafe(const ListConstIteratorSafe<Val> &src);
 
     /// Constructor for an iterator pointing to the \e ind_eltth element of a List
-    template<typename Alloc>
-    ListConstIteratorSafe ( const List<Val, Alloc>& theList, unsigned int ind_elt );
+    template <typename Alloc>
+    ListConstIteratorSafe(const List<Val, Alloc> &theList, unsigned int ind_elt);
 
     /// move constructor
-    ListConstIteratorSafe ( ListConstIteratorSafe<Val> && src );
+    ListConstIteratorSafe(ListConstIteratorSafe<Val> &&src);
 
     /// Destructor
     ~ListConstIteratorSafe();
 
     /// @}
-
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -1491,17 +1429,16 @@ namespace gum {
      * iterator is still alive. After being detached, the iterator does not point
      * to any element, i.e., trying to access its content will raise an exception.
      */
-    void clear() ;
+    void clear();
 
     /// positions the iterator to the end of the list
-    void setToEnd() ;
+    void setToEnd();
 
     /** @brief returns a bool indicating whether the iterator points to the end
      * of the list */
-    bool isEnd() const ;
+    bool isEnd() const;
 
     /// @}
-
 
     // ############################################################################
     /// @name Operators
@@ -1510,106 +1447,98 @@ namespace gum {
 
     /// Copy operator
     /** The current iterator now points to the same element as iterator \e from. */
-    ListConstIteratorSafe<Val>& operator=
-    ( const ListConstIteratorSafe<Val>& src );
+    ListConstIteratorSafe<Val> &operator=(const ListConstIteratorSafe<Val> &src);
 
     /// move operator
-    ListConstIteratorSafe<Val>& operator= ( ListConstIteratorSafe<Val> && src );
+    ListConstIteratorSafe<Val> &operator=(ListConstIteratorSafe<Val> &&src);
 
     /// makes the iterator point to the next element in the List
     /** for (iter=beginSafe(); iter!=endSafe(); ++iter) loops are guaranteed to
      * parse the whole List as long as no element is added to or deleted from the
      * List while being in the loop. Deleting elements during the loop is
      * guaranteed to never produce a segmentation fault. Runs in constant time. */
-    ListConstIteratorSafe<Val>& operator++() noexcept;
+    ListConstIteratorSafe<Val> &operator++() noexcept;
 
     /// makes the iterator point to i elements further in the List
-    ListConstIteratorSafe<Val>& operator+= ( difference_type ) noexcept;
+    ListConstIteratorSafe<Val> &operator+=(difference_type) noexcept;
 
     /// makes the iterator point to the preceding element in the List
     /** for (iter=rbeginSafe(); iter!=rendSafe(); --iter) loops are guaranteed to
      * parse the whole List as long as no element is added to or deleted from
      * the List while being in the loop. Deleting elements during the loop is
      * guaranteed to never produce a segmentation fault. Runs in constant time. */
-    ListConstIteratorSafe<Val>& operator--() noexcept;
+    ListConstIteratorSafe<Val> &operator--() noexcept;
 
     /// makes the iterator point to i elements befor in the List
-    ListConstIteratorSafe<Val>& operator-= ( difference_type ) noexcept;
+    ListConstIteratorSafe<Val> &operator-=(difference_type) noexcept;
 
     /// returns a new iterator
-    ListConstIteratorSafe<Val> operator+ ( difference_type ) noexcept;
+    ListConstIteratorSafe<Val> operator+(difference_type) noexcept;
 
     /// returns a new iterator
-    ListConstIteratorSafe<Val> operator- ( difference_type ) noexcept;
+    ListConstIteratorSafe<Val> operator-(difference_type) noexcept;
 
     /// checks whether two iterators point toward different elements
     /** @warning the end and rend iterators are always equal, whatever the list
      * they belong to, i.e., \c list1.end() == \c list2.rend(). */
-    bool operator!= ( const ListConstIteratorSafe<Val>& src ) const;
+    bool operator!=(const ListConstIteratorSafe<Val> &src) const;
 
     /// checks whether two iterators point toward the same elements.
     /** @warning the end and rend iterators are always equal, whatever the list
      * they belong to, i.e., \c list1.end() == \c list2.rend(). */
-    bool operator== ( const ListConstIteratorSafe<Val>& src ) const;
+    bool operator==(const ListConstIteratorSafe<Val> &src) const;
 
     /// gives access to the content of the iterator
     /** @throw UndefinedIteratorValue */
-    const Val& operator*() const;
+    const Val &operator*() const;
 
     /// dereferences the value pointed to by the iterator
     /** @throw UndefinedIteratorValue */
-    const Val* operator->() const;
+    const Val *operator->() const;
 
     /// @}
 
-
-  private:
+    private:
     /** class List must be a friend because it uses the getBucket method
      * to speed up some processes. */
     template <typename T, typename A> friend class List;
     friend class ListConstIterator<Val>;
 
     /// the list the iterator is pointing to
-    const List< Val, std::allocator<Val> >* __list {nullptr};
+    const List<Val, std::allocator<Val>> *__list{nullptr};
 
     /// the bucket in the chained list pointed to by the iterator
-    ListBucket<Val>* __bucket {nullptr};
+    ListBucket<Val> *__bucket{nullptr};
 
     /** \brief the bucket we should start from when we are pointing on a deleted
      * bucket and we decide to do a ++. */
-    ListBucket<Val>* __next_current_bucket {nullptr};
+    ListBucket<Val> *__next_current_bucket{nullptr};
 
     /** \brief the bucket we should start from when we are pointing on a deleted
      * bucket and we decide to do a --. */
-    ListBucket<Val>* __prev_current_bucket {nullptr};
+    ListBucket<Val> *__prev_current_bucket{nullptr};
 
     /// indicates whether the bucket the iterator points to has been deleted
-    bool __null_pointing { false };
-
+    bool __null_pointing{false};
 
     /// returns the bucket the iterator is pointing to.
-    ListBucket<Val>* __getBucket() const noexcept;
+    ListBucket<Val> *__getBucket() const noexcept;
 
     /// remove the iterator for its list' safe iterators list
-    void __removeFromSafeList () const;
+    void __removeFromSafeList() const;
 
     /// makes the iterator point to the next element in the List
-    ListConstIteratorSafe<Val>& __opPlus ( unsigned int i ) noexcept;
+    ListConstIteratorSafe<Val> &__opPlus(unsigned int i) noexcept;
 
     /// makes the iterator point to i elements before in the List
-    ListConstIteratorSafe<Val>& __opMinus ( unsigned int i ) noexcept;
+    ListConstIteratorSafe<Val> &__opMinus(unsigned int i) noexcept;
   };
-
 
   /// for STL compliance, a distance operator
   template <typename Val>
   typename ListConstIteratorSafe<Val>::difference_type
-  operator- ( const ListConstIteratorSafe<Val>& iter1,
-              const ListConstIteratorSafe<Val>& iter2 );
-
-
-
-
+  operator-(const ListConstIteratorSafe<Val> &iter1,
+            const ListConstIteratorSafe<Val> &iter2);
 
   /* =========================================================================== */
   /* ===                             LIST ITERATORS                          === */
@@ -1660,16 +1589,16 @@ namespace gum {
    */
   template <typename Val>
   class ListIteratorSafe : public ListConstIteratorSafe<Val> {
-  public:
+    public:
     /// types for STL compliance
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using value_type        = Val;
-    using reference         = Val& ;
-    using const_reference   = const Val& ;
-    using pointer           = Val* ;
-    using const_pointer     = const Val* ;
-    using difference_type   = std::ptrdiff_t;
+    using value_type = Val;
+    using reference = Val &;
+    using const_reference = const Val &;
+    using pointer = Val *;
+    using const_pointer = const Val *;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     // ############################################################################
@@ -1681,24 +1610,22 @@ namespace gum {
     ListIteratorSafe() noexcept;
 
     /// constructor for a begin
-    template<typename Alloc>
-    ListIteratorSafe ( const List<Val, Alloc>& theList );
+    template <typename Alloc> ListIteratorSafe(const List<Val, Alloc> &theList);
 
     /// copy constructor
-    ListIteratorSafe ( const ListIteratorSafe<Val>& src );
+    ListIteratorSafe(const ListIteratorSafe<Val> &src);
 
     /// Constructor for an iterator pointing to the \e ind_eltth element of a List
-    template<typename Alloc>
-    ListIteratorSafe ( const List<Val, Alloc>& theList, unsigned int ind_elt );
+    template <typename Alloc>
+    ListIteratorSafe(const List<Val, Alloc> &theList, unsigned int ind_elt);
 
     /// move constructor
-    ListIteratorSafe ( ListIteratorSafe<Val> && src );
+    ListIteratorSafe(ListIteratorSafe<Val> &&src);
 
     /// Destructor
     ~ListIteratorSafe();
 
     /// @}
-
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -1711,7 +1638,6 @@ namespace gum {
 
     /// @}
 
-
     // ############################################################################
     /// @name Operators
     // ############################################################################
@@ -1719,36 +1645,36 @@ namespace gum {
 
     /// Copy operator
     /** The current iterator now points to the same element as iterator \e from. */
-    ListIteratorSafe<Val>& operator= ( const ListIteratorSafe<Val>& src );
+    ListIteratorSafe<Val> &operator=(const ListIteratorSafe<Val> &src);
 
     /// move operator
-    ListIteratorSafe<Val>& operator= ( ListIteratorSafe<Val> && src );
+    ListIteratorSafe<Val> &operator=(ListIteratorSafe<Val> &&src);
 
     /// makes the iterator point to the next element in the List
     /** for (iter = beginSafe(); iter != endSafe(); ++iter) loops are guaranteed to
      * parse the whole List as long as no element is added to or deleted from the
      * List while being in the loop. Deleting elements during the loop is
      * guaranteed to never produce a segmentation fault. Runs in constant time. */
-    ListIteratorSafe<Val>& operator++() noexcept;
+    ListIteratorSafe<Val> &operator++() noexcept;
 
     /// makes the iterator point to i elements further in the List
-    ListIteratorSafe<Val>& operator+= ( difference_type ) noexcept;
+    ListIteratorSafe<Val> &operator+=(difference_type) noexcept;
 
     /// makes the iterator point to the preceding element in the List
     /** for (iter=rbeginSafe(); iter!=rendSafe(); --iter) loops are guaranteed to
      * parse the whole List as long as no element is added to or deleted from
      * the List while being in the loop. Deleting elements during the loop is
      * guaranteed to never produce a segmentation fault. Runs in constant time. */
-    ListIteratorSafe<Val>& operator--() noexcept;
+    ListIteratorSafe<Val> &operator--() noexcept;
 
     /// makes the iterator point to i elements befor in the List
-    ListIteratorSafe<Val>& operator-= ( difference_type ) noexcept;
+    ListIteratorSafe<Val> &operator-=(difference_type) noexcept;
 
     /// returns a new iterator
-    ListIteratorSafe<Val> operator+ ( difference_type ) noexcept;
+    ListIteratorSafe<Val> operator+(difference_type) noexcept;
 
     /// returns a new iterator
-    ListIteratorSafe<Val> operator- ( difference_type ) noexcept;
+    ListIteratorSafe<Val> operator-(difference_type) noexcept;
 
     using ListConstIteratorSafe<Val>::operator!=;
     using ListConstIteratorSafe<Val>::operator==;
@@ -1757,16 +1683,14 @@ namespace gum {
 
     /// gives access to the content of the iterator
     /** @throw UndefinedIteratorValue */
-    Val& operator*();
+    Val &operator*();
 
     /// dereferences the value pointed to by the iterator
     /** @throw UndefinedIteratorValue */
-    Val* operator->();
+    Val *operator->();
 
     /// @}
-
   };
-
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   // constructor and destructor for the iterator that represents end and rend
@@ -1776,9 +1700,7 @@ namespace gum {
   template <> ListConstIterator<Debug>::~ListConstIterator() noexcept;
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-
 } /* namespace gum */
-
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -1794,6 +1716,5 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-
-#endif  /* GUM_LIST_H */
+#endif /* GUM_LIST_H */
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

@@ -30,85 +30,72 @@
 #include <agrum/config.h>
 #include <agrum/learning/aprioris/apriori.h>
 
-
 namespace gum {
 
-  
   namespace learning {
-
 
     /** @class AprioriNoApriori
      * @brief the no a priori class: corresponds to 0 weight-sample
      * @ingroup learning_group
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float> >
-    class AprioriNoApriori :
-      public Apriori<IdSetAlloc,CountAlloc> {
-    public:
+              typename CountAlloc = std::allocator<float>>
+    class AprioriNoApriori : public Apriori<IdSetAlloc, CountAlloc> {
+      public:
       using type = AprioriNoAprioriType;
-      
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
-      
+
       /// default constructor
-      AprioriNoApriori ();
+      AprioriNoApriori();
 
       /// virtual copy constructor
-      virtual AprioriNoApriori<IdSetAlloc,CountAlloc>* copyFactory () const;
+      virtual AprioriNoApriori<IdSetAlloc, CountAlloc> *copyFactory() const;
 
       /// destructor
-      virtual ~AprioriNoApriori ();
+      virtual ~AprioriNoApriori();
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
       /// include the apriori into a given set of counts
-      virtual void compute () final;
+      virtual void compute() final;
 
       /// indicates whether an apriori is of a certain type
-      virtual bool isOfType ( const std::string& type ) final;
+      virtual bool isOfType(const std::string &type) final;
 
       /// returns the type of the apriori
-      virtual const std::string& getType () const noexcept final;
+      virtual const std::string &getType() const noexcept final;
 
       /// sets the weight of the a priori
-      virtual void setWeight ( float weight ) final;
+      virtual void setWeight(float weight) final;
 
       /// @}
 
-      
-    protected:
-
+      protected:
       /// copy constructor
-      AprioriNoApriori ( const AprioriNoApriori<IdSetAlloc,CountAlloc>& from );
-      
+      AprioriNoApriori(const AprioriNoApriori<IdSetAlloc, CountAlloc> &from);
+
       /// move constructor
-      AprioriNoApriori ( AprioriNoApriori<IdSetAlloc,CountAlloc>&& from );
+      AprioriNoApriori(AprioriNoApriori<IdSetAlloc, CountAlloc> &&from);
 
       /// prevent copy operator
-      AprioriNoApriori<IdSetAlloc,CountAlloc>&
-      operator= ( const AprioriNoApriori<IdSetAlloc,CountAlloc>& ) = delete;
-
+      AprioriNoApriori<IdSetAlloc, CountAlloc> &
+      operator=(const AprioriNoApriori<IdSetAlloc, CountAlloc> &) = delete;
     };
 
-    
   } /* namespace learning */
-  
-  
-} /* namespace gum */
 
+} /* namespace gum */
 
 /// include the template implementation
 #include <agrum/learning/aprioris/aprioriNoApriori.tcc>
 
-
 #endif /* GUM_LEARNING_A_PRIORI_NO_APRIORI_H */
-

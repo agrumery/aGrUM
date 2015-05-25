@@ -56,7 +56,8 @@ Here is a list of howtos about some classes of aGrUM :
 /*! \page installing_agrum Installing the aGrUM library
 \section Installation
 
-aGrUM is in heavy developpement. Do not hesitate to have a look at http://agrum.lip6.fr to see which version you should use.
+aGrUM is in heavy developpement. Do not hesitate to have a look at
+http://agrum.lip6.fr to see which version you should use.
 
 To install aGrUm :
 
@@ -81,7 +82,8 @@ act install release -d ~/usr
 
 \page using_agrum Using aGrUM
 
-As a build system, aGrUM uses CMake (http://www.cmake.org). A minimal project with agrum should look like this (for a project foo):
+As a build system, aGrUM uses CMake (http://www.cmake.org). A minimal project with
+agrum should look like this (for a project foo):
 - in the project folder, a sub-folder src,
 - in src folder, your *.{cpp|h|etc.} files
 - in src folder, a file named CMakeLists.txt like this one :
@@ -156,35 +158,28 @@ int main(void) {
 namespace gum {
 
   /// Internal namespace for aGrUM signaler/listener components
-  namespace __sig__ {
-  }
+  namespace __sig__ {}
 
   /// Internal namespace for aGrUM debugging tools
-  namespace __debug__ {
-  }
+  namespace __debug__ {}
 
   /// Aggregators are functional description of CPTs
-  namespace aggregator {
-  }
+  namespace aggregator {}
 
   /// Internal namespace for complexity tools (quite empty for now)
-  namespace complexity {
-  }
+  namespace complexity {}
 
   /// namespace for all credal networks entities
   namespace credal {
 
-    ///namespace for constraint-based description of credal sets
-    namespace lp {
-    }
+    /// namespace for constraint-based description of credal sets
+    namespace lp {}
   }
 
   /// namespace for all particles for approximation inference based on simulation
-  namespace particle {
-  }
+  namespace particle {}
 
   /// namespace for all probabilistic relational models entities
-  namespace prm {
-  }
+  namespace prm {}
 }
 #endif // CONFIG_H

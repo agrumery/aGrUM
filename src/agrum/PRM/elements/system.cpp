@@ -32,4 +32,3 @@ namespace gum {
     template class System<double>;
   } /* namespace prm */
 } /* namespace gum */
-

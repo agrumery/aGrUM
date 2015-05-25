@@ -31,7 +31,6 @@
 
 namespace gum {
 
-
   /**
    * @class GibbsInference GibbsInference.h <agrum/BN/inference/GibbsInference.h>
    * @brief class for making Gibbs sampling inference in bayesian networks.
@@ -40,80 +39,75 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
 
-  class GibbsInference :
-    public ApproximationScheme,
-    public BayesNetInference<GUM_SCALAR>,
-    public particle::Gibbs<GUM_SCALAR> {
+  class GibbsInference : public ApproximationScheme,
+                         public BayesNetInference<GUM_SCALAR>,
+                         public particle::Gibbs<GUM_SCALAR> {
 
     public:
-      /**
-       * Default constructor
-       */
-      GibbsInference ( const IBayesNet<GUM_SCALAR>& BN );
+    /**
+     * Default constructor
+     */
+    GibbsInference(const IBayesNet<GUM_SCALAR> &BN);
 
-      /**
-       * Destructor.
-       */
-      virtual ~GibbsInference();
+    /**
+     * Destructor.
+     */
+    virtual ~GibbsInference();
 
-      /**
-       * Makes the inference: all posteriors are computed.
-       */
-      virtual void makeInference() ;
+    /**
+     * Makes the inference: all posteriors are computed.
+     */
+    virtual void makeInference();
 
-      /**
-       * Insert new evidence in the graph.
-       * @warning if an evidence already w.r.t. a given node and a new
-       * evidence w.r.t. this node is inserted, the old evidence is removed.
-       */
-      virtual void insertEvidence ( const List<const Potential<GUM_SCALAR>*>& pot_list ) ;
+    /**
+     * Insert new evidence in the graph.
+     * @warning if an evidence already w.r.t. a given node and a new
+     * evidence w.r.t. this node is inserted, the old evidence is removed.
+     */
+    virtual void insertEvidence(const List<const Potential<GUM_SCALAR> *> &pot_list);
 
-      /**
-       * Remove a given evidence from the graph.
-       */
-      virtual void eraseEvidence ( const Potential<GUM_SCALAR>* e ) ;
+    /**
+     * Remove a given evidence from the graph.
+     */
+    virtual void eraseEvidence(const Potential<GUM_SCALAR> *e);
 
-      /**
-       * Remove all evidence from the graph.
-       */
-      virtual void eraseAllEvidence() ;
+    /**
+     * Remove all evidence from the graph.
+     */
+    virtual void eraseAllEvidence();
 
-      /// lazy management of infenrence
-      ///@{
-      void setRequiredInference();
-      bool isInferenceRequired();
-      ///@}
+    /// lazy management of infenrence
+    ///@{
+    void setRequiredInference();
+    bool isInferenceRequired();
+    ///@}
 
-      using particle::Gibbs<GUM_SCALAR>::particle;
-      using particle::Gibbs<GUM_SCALAR>::initParticle;
-      using particle::Gibbs<GUM_SCALAR>::nextParticle;
-      using particle::Gibbs<GUM_SCALAR>::bn;
+    using particle::Gibbs<GUM_SCALAR>::particle;
+    using particle::Gibbs<GUM_SCALAR>::initParticle;
+    using particle::Gibbs<GUM_SCALAR>::nextParticle;
+    using particle::Gibbs<GUM_SCALAR>::bn;
 
     protected:
-      /**
-       * Returns the probability of the variable.
-       *
-       * @param id The variable's id.
-       * @param posterior the potential to fill
-       * @throw ElementNotFound Raised if no variable matches id.
-       */
-      virtual void _fillPosterior ( NodeId id , Potential<GUM_SCALAR>& posterior );
-
+    /**
+     * Returns the probability of the variable.
+     *
+     * @param id The variable's id.
+     * @param posterior the potential to fill
+     * @throw ElementNotFound Raised if no variable matches id.
+     */
+    virtual void _fillPosterior(NodeId id, Potential<GUM_SCALAR> &posterior);
 
     private:
-      ///inference flag
-      bool __inference_is_required;
+    /// inference flag
+    bool __inference_is_required;
 
+    /// the actual number of sampling for each modality by node
+    NodeProperty<Potential<GUM_SCALAR> *> __sampling_nbr;
 
-      /// the actual number of sampling for each modality by node
-      NodeProperty<Potential<GUM_SCALAR>*> __sampling_nbr;
-
-
-      void __unsetRequiredInference();
-      void __initStats();
-      void __updateStats_without_err();
-      double __updateStats_with_err ( Size nbr );
-
+    void __unsetRequiredInference();
+    void __initStats();
+    void __updateStats_without_err();
+    double __updateStats_with_err(Size nbr);
   };
 
   extern template class GibbsInference<float>;
@@ -121,8 +115,6 @@ namespace gum {
 
 } /* namespace gum */
 
-
 #include <agrum/BN/inference/GibbsInference.tcc>
-
 
 #endif /* GUM_GIBBS_INFERENCE_H */

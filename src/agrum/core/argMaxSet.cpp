@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
- *   {prenom.nom}_at_lip6.fr                                               *
+ *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,10 +17,5 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief Outlined implementation of ArgMaxSet
- *
- * @author Jean-Christophe Magnan
- */
 
-#include <agrum/core/argMaxSet.h>
+#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>

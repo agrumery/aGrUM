@@ -33,89 +33,75 @@
 #include <agrum/learning/scores_and_tests/counter.h>
 #include <agrum/learning/aprioris/apriori.h>
 
-
 namespace gum {
 
-  
   namespace learning {
-
 
     /** @class AprioriDirichletFromDatabase
      * @brief A dirichlet priori: computes its N'_ijk from a database
      * @ingroup learning_group
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float> >
-    class AprioriDirichletFromDatabase :
-      public Apriori<IdSetAlloc,CountAlloc>,
-      private Counter<IdSetAlloc,CountAlloc> {
-    public:
+              typename CountAlloc = std::allocator<float>>
+    class AprioriDirichletFromDatabase : public Apriori<IdSetAlloc, CountAlloc>,
+                                         private Counter<IdSetAlloc, CountAlloc> {
+      public:
       using type = AprioriDirichletType;
-      
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
-      
+
       /// default constructor
       template <typename RowFilter>
-      AprioriDirichletFromDatabase
-      ( const RowFilter& filter,
-        const std::vector<unsigned int>& var_modalities );
+      AprioriDirichletFromDatabase(const RowFilter &filter,
+                                   const std::vector<unsigned int> &var_modalities);
 
       /// virtual copy constructor
-      virtual AprioriDirichletFromDatabase<IdSetAlloc,CountAlloc>*
-      copyFactory () const;
+      virtual AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc> *
+      copyFactory() const;
 
       /// destructor
-      virtual ~AprioriDirichletFromDatabase ();
+      virtual ~AprioriDirichletFromDatabase();
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
       /// include the apriori into a given set of counts
-      virtual void compute () final;
+      virtual void compute() final;
 
       /// indicates whether an apriori is of a certain type
-      virtual bool isOfType ( const std::string& type ) final;
+      virtual bool isOfType(const std::string &type) final;
 
       /// returns the type of the apriori
-      virtual const std::string& getType () const noexcept final;
+      virtual const std::string &getType() const noexcept final;
 
       /// @}
 
-      
-    protected:
-
+      protected:
       /// copy constructor
-      AprioriDirichletFromDatabase
-      ( const AprioriDirichletFromDatabase<IdSetAlloc,CountAlloc>& from );
-      
+      AprioriDirichletFromDatabase(
+          const AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc> &from);
+
       /// move constructor
-      AprioriDirichletFromDatabase
-      ( AprioriDirichletFromDatabase<IdSetAlloc,CountAlloc>&& from );
+      AprioriDirichletFromDatabase(
+          AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc> &&from);
 
       /// prevent copy operator
-      AprioriDirichletFromDatabase<IdSetAlloc,CountAlloc>& operator=
-      ( const AprioriDirichletFromDatabase<IdSetAlloc,CountAlloc>& ) = delete;
-      
+      AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc> &operator=(
+          const AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc> &) = delete;
     };
 
-    
   } /* namespace learning */
-  
-  
-} /* namespace gum */
 
+} /* namespace gum */
 
 /// include the template implementation
 #include <agrum/learning/aprioris/aprioriDirichletFromDatabase.tcc>
 
-
 #endif /* GUM_LEARNING_A_PRIORI_DIRICHLET_FROM_DATABASE_H */
-

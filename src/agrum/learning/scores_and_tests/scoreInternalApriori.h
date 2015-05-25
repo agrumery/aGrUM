@@ -19,7 +19,7 @@
  ***************************************************************************/
 /** @file
  * @brief the base class for all the score's internal aprioris
- * 
+ *
  * Some scores include an apriori. For instance, the K2 score is a BD score
  * with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with a
  * N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i is the
@@ -36,17 +36,13 @@
 #ifndef GUM_LEARNING_SCORE_INTERNAL_APRIORI_H
 #define GUM_LEARNING_SCORE_INTERNAL_APRIORI_H
 
-
 #include <vector>
 #include <agrum/config.h>
 
-
 namespace gum {
-
 
   namespace learning {
 
-    
     /** @class ScoreInternalApriori
      * @brief the base class for all the score's internal aprioris
      * @ingroup learning_group
@@ -63,41 +59,38 @@ namespace gum {
      * learning.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float> >
-   class ScoreInternalApriori {
-    public:
-
+              typename CountAlloc = std::allocator<float>>
+    class ScoreInternalApriori {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      ScoreInternalApriori ();
+      ScoreInternalApriori();
 
       /// virtual copy constructor
-      virtual ScoreInternalApriori<IdSetAlloc,CountAlloc>*
-      copyFactory () const = 0;
-   
+      virtual ScoreInternalApriori<IdSetAlloc, CountAlloc> *copyFactory() const = 0;
+
       /// destructor
-      virtual ~ScoreInternalApriori ();
+      virtual ~ScoreInternalApriori();
 
       /// @}
-
 
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
-      
+
       /// insert the internal score apriori into a set of countings
-      virtual void insertScoreApriori
-      ( const std::vector<unsigned int>& modalities,
-        std::vector< std::vector<float,CountAlloc> >& counts,
-        const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
-                                     unsigned int>* >& target_nodesets,
-        const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
-                                     unsigned int>* >& conditioning_nodesets ) = 0;
+      virtual void insertScoreApriori(
+          const std::vector<unsigned int> &modalities,
+          std::vector<std::vector<float, CountAlloc>> &counts,
+          const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
+                                      unsigned int> *> &target_nodesets,
+          const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
+                                      unsigned int> *> &conditioning_nodesets) = 0;
 
       /// indicates whether the apriori is potentially informative
       /** Basically, only the NoApriori is uninformative. However, it may happen
@@ -107,31 +100,23 @@ namespace gum {
        * temporarily uninformative. These classes will then be able to speed-up
        * their code by avoiding to take into account the apriori in their
        * computations. */
-      virtual bool isInformative () const;
-      
-      /// @}
-      
+      virtual bool isInformative() const;
 
-    protected:
-      
+      /// @}
+
+      protected:
       /// copy constructor
-      ScoreInternalApriori
-      ( const ScoreInternalApriori<IdSetAlloc,CountAlloc>& from );
+      ScoreInternalApriori(const ScoreInternalApriori<IdSetAlloc, CountAlloc> &from);
 
       /// move constructor
-      ScoreInternalApriori ( ScoreInternalApriori<IdSetAlloc,CountAlloc>&& from );
-
+      ScoreInternalApriori(ScoreInternalApriori<IdSetAlloc, CountAlloc> &&from);
     };
-
 
   } /* namespace learning */
 
-
 } /* namespace gum */
-
 
 /// include the template implementation
 #include <agrum/learning/scores_and_tests/scoreInternalApriori.tcc>
-
 
 #endif /* GUM_LEARNING_SCORE_INTERNAL_APRIORI_H */

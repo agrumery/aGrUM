@@ -39,104 +39,105 @@ namespace gum {
      * @ingroup bn_group
      *
      */
-    template <typename GUM_SCALAR>
-    class Gibbs {
+    template <typename GUM_SCALAR> class Gibbs {
 
       public:
-        /**
-         * Default constructor
-         */
-        Gibbs ( const IBayesNet<GUM_SCALAR>& BN );
+      /**
+       * Default constructor
+       */
+      Gibbs(const IBayesNet<GUM_SCALAR> &BN);
 
-        /**
-         * Destructor.
-         */
-        virtual ~Gibbs();
+      /**
+       * Destructor.
+       */
+      virtual ~Gibbs();
 
-        /** Evidence management
-        * @{
-        */
+      /** Evidence management
+      * @{
+      */
 
-        /**
-            * Insert new evidence in the graph.
-            * @warning if an evidence already w.r.t. a given node and a new
-            * evidence w.r.t. this node is onserted, the old evidence is removed.
-            */
-        virtual void insertEvidence ( const List<const Potential<GUM_SCALAR>*>& pot_list ) ;
+      /**
+          * Insert new evidence in the graph.
+          * @warning if an evidence already w.r.t. a given node and a new
+          * evidence w.r.t. this node is onserted, the old evidence is removed.
+          */
+      virtual void
+      insertEvidence(const List<const Potential<GUM_SCALAR> *> &pot_list);
 
-        /**
-         * Remove a given evidence from the graph.
-         */
-        virtual void eraseEvidence ( const Potential<GUM_SCALAR>* e ) ;
+      /**
+       * Remove a given evidence from the graph.
+       */
+      virtual void eraseEvidence(const Potential<GUM_SCALAR> *e);
 
-        /**
-         * Remove all evidence from the graph.
-         */
-        virtual void eraseAllEvidence() ;
+      /**
+       * Remove all evidence from the graph.
+       */
+      virtual void eraseAllEvidence();
 
-        /** @} */
+      /** @} */
 
-        /// initialize the particle using nodes_array as the list of nodes that could be drawn.
-        /// @warning nodes_array is assumed to be compatible with a topological order
-        void initParticle();
+      /// initialize the particle using nodes_array as the list of nodes that could
+      /// be drawn.
+      /// @warning nodes_array is assumed to be compatible with a topological order
+      void initParticle();
 
-        /// compute the next particle
-        void nextParticle();
+      /// compute the next particle
+      void nextParticle();
 
-        /// getters and setters
-        /// @{
-        void setNbrDrawnBySample ( Size s );
-        Size nbrDrawnBySample( );
+      /// getters and setters
+      /// @{
+      void setNbrDrawnBySample(Size s);
+      Size nbrDrawnBySample();
 
-        const Instantiation& particle();
+      const Instantiation &particle();
 
-        const IBayesNet<GUM_SCALAR>& bn();
-        ///@}
+      const IBayesNet<GUM_SCALAR> &bn();
+      ///@}
 
       private:
-        void __setValVar ( NodeId id, Idx choice );
+      void __setValVar(NodeId id, Idx choice);
 
-        void __drawVar ( NodeId id );
-        void __GibbsSample ( NodeId id );
-        void __MonteCarloSample();
+      void __drawVar(NodeId id);
+      void __GibbsSample(NodeId id);
+      void __MonteCarloSample();
 
-        Size __nbr_drawn_by_sample;
+      Size __nbr_drawn_by_sample;
 
-        /// nbr of iteration by sampling
-        Size __nbr_of_iterations;
+      /// nbr of iteration by sampling
+      Size __nbr_of_iterations;
 
-        /// the actual values of sample
-        Instantiation __particle;
+      /// the actual values of sample
+      Instantiation __particle;
 
-        /// std::vector of ids in the bN to update during sampling
-        std::vector<NodeId> __nodes_array;
+      /// std::vector of ids in the bN to update during sampling
+      std::vector<NodeId> __nodes_array;
 
-        /// a table of instantiation for each cpt
-        NodeProperty<Instantiation*> __cpt_idx;
+      /// a table of instantiation for each cpt
+      NodeProperty<Instantiation *> __cpt_idx;
 
-        /// a table of children for each node
-        NodeProperty<std::vector<NodeId>*> __node_children;
+      /// a table of children for each node
+      NodeProperty<std::vector<NodeId> *> __node_children;
 
-        /// a table of potential for posterior computed in the markov blanket
-        NodeProperty<Potential<GUM_SCALAR>*> __sampling_posterior;
+      /// a table of potential for posterior computed in the markov blanket
+      NodeProperty<Potential<GUM_SCALAR> *> __sampling_posterior;
 
-        /// a list of all the evidence stored into the graph
-        NodeProperty<const Potential<GUM_SCALAR>*> __evidences;
+      /// a list of all the evidence stored into the graph
+      NodeProperty<const Potential<GUM_SCALAR> *> __evidences;
 
-        /// a table of instantiation for direct access on _sampling_nbr
-        NodeProperty<Instantiation*> __sampling_idx;
+      /// a table of instantiation for direct access on _sampling_nbr
+      NodeProperty<Instantiation *> __sampling_idx;
 
-        /// a list of hard evidence (not sampled)
-        NodeProperty<Idx> __hard_evidences;
+      /// a list of hard evidence (not sampled)
+      NodeProperty<Idx> __hard_evidences;
 
-        /// The Bayes net we draw particle on
-        const IBayesNet<GUM_SCALAR>& __bayesNet;
+      /// The Bayes net we draw particle on
+      const IBayesNet<GUM_SCALAR> &__bayesNet;
     };
 
     extern template class Gibbs<float>;
     extern template class Gibbs<double>;
   } // namespace particle
-} //namespace gum
+} // namespace gum
 
 #include <agrum/BN/particles/Gibbs.tcc>
 

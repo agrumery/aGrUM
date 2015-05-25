@@ -22,4 +22,3 @@
 
 template class gum::NetWriter<float>;
 template class gum::NetWriter<double>;
-

@@ -36,35 +36,34 @@ namespace gum {
    * This abstract class is an implementation of the strategy pattern to
    * help changing CPT generation policies for the BayesNetGenerator class.
    */
-  template <typename GUM_SCALAR>
-  class ICPTGenerator {
+  template <typename GUM_SCALAR> class ICPTGenerator {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructor
-      // ############################################################################
-      /// @{
-      /**
-       * Default constructor.
-       */
-      ICPTGenerator();
+    // ############################################################################
+    /// @name Constructors / Destructor
+    // ############################################################################
+    /// @{
+    /**
+     * Default constructor.
+     */
+    ICPTGenerator();
 
-      /**
-       * Destructor.
-       */
-      virtual ~ICPTGenerator();
-      /// @}
+    /**
+     * Destructor.
+     */
+    virtual ~ICPTGenerator();
+    /// @}
 
-      // ############################################################################
-      /// @name CPT generation methods
-      // ############################################################################
-      /// @{
-      /**
-       * Generates a CPT using floats.
-       * @param varId The variable id of the CPT owner.
-       * @param cpt A reference on the CPT to fill.
-       */
-      virtual void generateCPT ( const Idx& varId, const Potential<GUM_SCALAR>& cpt ) = 0;
-      /// @}
+    // ############################################################################
+    /// @name CPT generation methods
+    // ############################################################################
+    /// @{
+    /**
+     * Generates a CPT using floats.
+     * @param varId The variable id of the CPT owner.
+     * @param cpt A reference on the CPT to fill.
+     */
+    virtual void generateCPT(const Idx &varId, const Potential<GUM_SCALAR> &cpt) = 0;
+    /// @}
   };
 
   extern template class ICPTGenerator<float>;
@@ -74,4 +73,3 @@ namespace gum {
 
 #include <agrum/BN/generator/ICPTGenerator.tcc>
 #endif /* GUM_I_CPT_GENERATOR_H */
-

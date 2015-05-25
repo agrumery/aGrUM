@@ -29,4 +29,3 @@
 #ifdef GUM_NO_INLINE
 #include <agrum/learning/scores_and_tests/cache4Score.inl>
 #endif /* GUM_NO_INLINE */
-

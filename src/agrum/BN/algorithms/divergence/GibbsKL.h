@@ -19,7 +19,8 @@
 ***************************************************************************/
 /**
 * @file
-* @brief algorithm for approximated computation KL divergence between BNs using GIBBS sampling
+* @brief algorithm for approximated computation KL divergence between BNs using GIBBS
+*sampling
 *
 * @author Pierre-Henri WUILLEMIN
 *
@@ -36,15 +37,21 @@
 namespace gum {
 
   /**
-  * GibbsKL computes the KL divergence betweens 2 BNs using an approximation pattern : GIBBS sampling.
+  * GibbsKL computes the KL divergence betweens 2 BNs using an approximation pattern
+  *: GIBBS sampling.
   *
-  * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The computations are made once. The second is for free :)
-  * GibbsKL allows as well to compute in the same time the Hellinger distance (\f$ \sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001)
+  * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
+  *computations are made once. The second is for free :)
+  * GibbsKL allows as well to compute in the same time the Hellinger distance (\f$
+  *\sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001)
   * and Bhattacharya distance (Kaylath,T. 1967)
   *
-  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP()). In those cases, Hellinger distance approximation is under-evaluated.
+  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL
+  *keeps working but trace this error (errorPQ() and errorQP()). In those cases,
+  *Hellinger distance approximation is under-evaluated.
   *
-  * @warning : convergence and stop criteria are designed w.r.t the main computation : KL(P||Q). The 3 others have no guarantee.
+  * @warning : convergence and stop criteria are designed w.r.t the main computation
+  *: KL(P||Q). The 3 others have no guarantee.
   *
   * snippets :
   * @code
@@ -58,45 +65,44 @@ namespace gum {
   * }
   * @endcode
   */
-  template<typename GUM_SCALAR> class GibbsKL:
-    public KL<GUM_SCALAR>,
-    public ApproximationScheme,
-    public particle::Gibbs<GUM_SCALAR> {
+  template <typename GUM_SCALAR>
+  class GibbsKL : public KL<GUM_SCALAR>,
+                  public ApproximationScheme,
+                  public particle::Gibbs<GUM_SCALAR> {
     public:
+    /* no default constructor */
 
-      /* no default constructor */
+    /** constructor must give 2 BNs
+     * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or
+     * compatible node sets.
+     */
+    GibbsKL(const IBayesNet<GUM_SCALAR> &P, const IBayesNet<GUM_SCALAR> &Q);
 
-      /** constructor must give 2 BNs
-       * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
-       */
-      GibbsKL ( const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q );
+    /** copy constructor
+     */
+    GibbsKL(const KL<GUM_SCALAR> &kl);
 
-      /** copy constructor
-       */
-      GibbsKL ( const KL<GUM_SCALAR>& kl );
+    /** destructor */
+    ~GibbsKL();
 
-
-      /** destructor */
-      ~GibbsKL();
-
-      using particle::Gibbs<GUM_SCALAR>::particle;
-      using particle::Gibbs<GUM_SCALAR>::initParticle;
-      using particle::Gibbs<GUM_SCALAR>::nextParticle;
-      using particle::Gibbs<GUM_SCALAR>::bn;
+    using particle::Gibbs<GUM_SCALAR>::particle;
+    using particle::Gibbs<GUM_SCALAR>::initParticle;
+    using particle::Gibbs<GUM_SCALAR>::nextParticle;
+    using particle::Gibbs<GUM_SCALAR>::bn;
 
     protected:
-      void _computeKL ( void );
+    void _computeKL(void);
 
-      using KL<GUM_SCALAR>::_p;
-      using KL<GUM_SCALAR>::_q;
-      using KL<GUM_SCALAR>::_hellinger;
-      using KL<GUM_SCALAR>::_bhattacharya;
+    using KL<GUM_SCALAR>::_p;
+    using KL<GUM_SCALAR>::_q;
+    using KL<GUM_SCALAR>::_hellinger;
+    using KL<GUM_SCALAR>::_bhattacharya;
 
-      using KL<GUM_SCALAR>::_klPQ;
-      using KL<GUM_SCALAR>::_klQP;
+    using KL<GUM_SCALAR>::_klPQ;
+    using KL<GUM_SCALAR>::_klQP;
 
-      using KL<GUM_SCALAR>::_errorPQ;
-      using KL<GUM_SCALAR>::_errorQP;
+    using KL<GUM_SCALAR>::_errorPQ;
+    using KL<GUM_SCALAR>::_errorQP;
   };
 
   extern template class GibbsKL<float>;
@@ -106,4 +112,4 @@ namespace gum {
 
 #include <agrum/BN/algorithms/divergence/GibbsKL.tcc>
 
-#endif// GUM_GIBBS_KL_H
+#endif // GUM_GIBBS_KL_H

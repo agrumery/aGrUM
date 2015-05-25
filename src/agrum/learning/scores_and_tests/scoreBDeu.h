@@ -31,22 +31,17 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-
 #ifndef GUM_LEARNING_SCORE_BDEU_H
 #define GUM_LEARNING_SCORE_BDEU_H
-
 
 #include <agrum/core/math/gammaLog2.h>
 #include <agrum/learning/scores_and_tests/score.h>
 #include <agrum/learning/scores_and_tests/scoreInternalBDeuApriori.h>
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     /* ========================================================================= */
     /* ===                         SCORE BDeu CLASS                          === */
     /* ========================================================================= */
@@ -72,9 +67,9 @@ namespace gum {
      * details.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float> >
-    class ScoreBDeu : public Score<IdSetAlloc,CountAlloc> {
-    public:
+              typename CountAlloc = std::allocator<float>>
+    class ScoreBDeu : public Score<IdSetAlloc, CountAlloc> {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -92,32 +87,31 @@ namespace gum {
        * Dirichlet (BD) formula to include the sum of the two aprioris into the
        * score. */
       template <typename RowFilter>
-      ScoreBDeu ( const RowFilter& filter,
-                  const std::vector<unsigned int>& var_modalities,
-                  Apriori<IdSetAlloc,CountAlloc>& apriori );
+      ScoreBDeu(const RowFilter &filter,
+                const std::vector<unsigned int> &var_modalities,
+                Apriori<IdSetAlloc, CountAlloc> &apriori);
 
       /// copy constructor
-      ScoreBDeu ( const ScoreBDeu<IdSetAlloc,CountAlloc>& );
+      ScoreBDeu(const ScoreBDeu<IdSetAlloc, CountAlloc> &);
 
       /// move constructor
-      ScoreBDeu ( ScoreBDeu<IdSetAlloc,CountAlloc>&& );
+      ScoreBDeu(ScoreBDeu<IdSetAlloc, CountAlloc> &&);
 
       /// virtual copy factory
-      virtual ScoreBDeu<IdSetAlloc,CountAlloc>* copyFactory () const;
+      virtual ScoreBDeu<IdSetAlloc, CountAlloc> *copyFactory() const;
 
       /// destructor
-      virtual ~ScoreBDeu ();
-      
+      virtual ~ScoreBDeu();
+
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
       /// returns the log2(BDeu score) corresponding to a given nodeset
-      float score ( unsigned int nodeset_index );
+      float score(unsigned int nodeset_index);
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** When using the BDeu score, you should use a NoApriori: actually,
@@ -139,7 +133,7 @@ namespace gum {
        * @throws InvalidArgument is raised if the apriori is not handled yet by
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
-      virtual bool isAprioriCompatible () const final;
+      virtual bool isAprioriCompatible() const final;
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** When using the BDeu score, you should use a NoApriori: actually,
@@ -161,8 +155,8 @@ namespace gum {
        * @throws InvalidArgument is raised if the apriori is not handled yet by
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
-      static bool isAprioriCompatible ( const std::string& apriori_type,
-                                        float weight = 1.0f );
+      static bool isAprioriCompatible(const std::string &apriori_type,
+                                      float weight = 1.0f);
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** When using the BDeu score, you should use a NoApriori: actually,
@@ -185,8 +179,8 @@ namespace gum {
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
       static bool
-      isAprioriCompatible ( const Apriori<IdSetAlloc,CountAlloc>& apriori );
-      
+      isAprioriCompatible(const Apriori<IdSetAlloc, CountAlloc> &apriori);
+
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD score
        * with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with a
@@ -198,36 +192,30 @@ namespace gum {
        * to be meaningfull a structure + parameter learning requires that the same
        * aprioris are taken into account during structure learning and parameter
        * learning. */
-      virtual const ScoreInternalApriori<IdSetAlloc,CountAlloc>&
-      internalApriori () const noexcept final;
+      virtual const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
+      internalApriori() const noexcept final;
 
       /// sets the effective sample size of the internal apriori
-      void setEffectiveSampleSize ( float ess );
-      
+      void setEffectiveSampleSize(float ess);
+
       /// @}
 
-      
-    private:
+      private:
       /// the log(gamma (n)) function: generalizes log((n-1)!)
       GammaLog2 __gammalog2;
-           
+
       /// the internal apriori of the score
-      ScoreInternalBDeuApriori<IdSetAlloc,CountAlloc> __internal_apriori;
+      ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc> __internal_apriori;
 
       /// the effective sample size of the internal apriori
-      float __ess { 1.0f };
- 
+      float __ess{1.0f};
     };
-    
 
   } /* namespace learning */
-  
-  
-} /* namespace gum */
 
+} /* namespace gum */
 
 /// always include the template implementation
 #include <agrum/learning/scores_and_tests/scoreBDeu.tcc>
-
 
 #endif /* GUM_LEARNING_SCORE_BDEU_H */

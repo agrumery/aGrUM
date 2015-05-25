@@ -26,7 +26,6 @@
 
 #include <agrum/PRM/gspan/DFSTree.h>
 
-
 namespace gum {
   namespace prm {
     namespace gspan {
@@ -37,6 +36,5 @@ namespace gum {
       template class TreeWidthSearch<double>;
 
     } /* namespace gspan */
-  } /* namespace prm */
+  }   /* namespace prm */
 } /* namespace gum */
-

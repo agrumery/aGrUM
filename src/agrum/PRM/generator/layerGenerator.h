@@ -48,103 +48,102 @@ namespace gum {
      *
      * @ingroup prm_group
      */
-    template<typename GUM_SCALAR>
-    class LayerGenerator: public PRMGenerator<GUM_SCALAR> {
+    template <typename GUM_SCALAR>
+    class LayerGenerator : public PRMGenerator<GUM_SCALAR> {
       public:
-        // ========================================================================
-        /// @name Constructors and destructor.
-        // ========================================================================
-        /// @{
+      // ========================================================================
+      /// @name Constructors and destructor.
+      // ========================================================================
+      /// @{
 
-        /// Default constructor.
-        LayerGenerator();
-        /// Copy constructor.
-        LayerGenerator ( const LayerGenerator& source );
-        /// Copy operator.
-        LayerGenerator& operator= ( const LayerGenerator& source );
-        /// Destructor.
-        virtual ~LayerGenerator();
+      /// Default constructor.
+      LayerGenerator();
+      /// Copy constructor.
+      LayerGenerator(const LayerGenerator &source);
+      /// Copy operator.
+      LayerGenerator &operator=(const LayerGenerator &source);
+      /// Destructor.
+      virtual ~LayerGenerator();
 
-        /// @}
-        // ========================================================================
-        /// Getters and setters.
-        // ========================================================================
-        /// @{
+      /// @}
+      // ========================================================================
+      /// Getters and setters.
+      // ========================================================================
+      /// @{
 
-        /// Inner structure used to describe a Layer of the generated PRM<GUM_SCALAR>.
-        struct LayerData {
-          // Number of attributes for the layer's interface.
-          Size a;
-          // Number of aggregates for the layer's interface.
-          Size g;
-          // Number of classes for this layer.
-          Size c;
-          // Number of instances for this layer.
-          Size o;
-          // Density of arcs between attributes of the same classe in this layer.
-          float inner_density;
-          // The odds of an instance of the precedent layer to be added to a
-          // reference slot of a class of this layer.
-          float outter_density;
-        };
+      /// Inner structure used to describe a Layer of the generated PRM<GUM_SCALAR>.
+      struct LayerData {
+        // Number of attributes for the layer's interface.
+        Size a;
+        // Number of aggregates for the layer's interface.
+        Size g;
+        // Number of classes for this layer.
+        Size c;
+        // Number of instances for this layer.
+        Size o;
+        // Density of arcs between attributes of the same classe in this layer.
+        float inner_density;
+        // The odds of an instance of the precedent layer to be added to a
+        // reference slot of a class of this layer.
+        float outter_density;
+      };
 
-        /// Returns the domain size of generated types.
-        Size getDomainSize() const;
+      /// Returns the domain size of generated types.
+      Size getDomainSize() const;
 
-        /// Set the domain size of generated types.
-        void setDomainSize ( Size s );
+      /// Set the domain size of generated types.
+      void setDomainSize(Size s);
 
-        /// Returns the max number of parents allowed for any attribute or aggregator
-        unsigned int getMaxParents() const;
+      /// Returns the max number of parents allowed for any attribute or aggregator
+      unsigned int getMaxParents() const;
 
-        /// Returns the max number of parents allowed for any attribute or aggregator
-        void setMaxParents ( Size s );
+      /// Returns the max number of parents allowed for any attribute or aggregator
+      void setMaxParents(Size s);
 
-        /**
-         * @brief Defines the structure of each layers.
-         * Each value in v defines a layer, were v[i].first is the number of
-         * different classes in the i-th layer and v[i].second is the number of
-         * instances in the i-th layer.
-         * @param v A vector describing each layer.
-         */
-        void setLayers ( const std::vector<LayerData>& v );
+      /**
+       * @brief Defines the structure of each layers.
+       * Each value in v defines a layer, were v[i].first is the number of
+       * different classes in the i-th layer and v[i].second is the number of
+       * instances in the i-th layer.
+       * @param v A vector describing each layer.
+       */
+      void setLayers(const std::vector<LayerData> &v);
 
-        std::vector<LayerData>& getLayer();
-        const std::vector<LayerData>& getLayer() const;
+      std::vector<LayerData> &getLayer();
+      const std::vector<LayerData> &getLayer() const;
 
-        /// Proceeds with the generation of the PRM<GUM_SCALAR>.
-        virtual PRM<GUM_SCALAR>* generate();
+      /// Proceeds with the generation of the PRM<GUM_SCALAR>.
+      virtual PRM<GUM_SCALAR> *generate();
 
-        /// @}
+      /// @}
       private:
-        std::vector<LayerData> __layers;
-        Size __domain_size;
-        Size __max_parents;
+      std::vector<LayerData> __layers;
+      Size __domain_size;
+      Size __max_parents;
 
-        struct MyData {
-          // interface name
-          std::string i;
-          std::vector<std::string> a;
-          std::vector<std::string> g;
-          std::string r;
-          std::vector<std::string> c;
-        };
+      struct MyData {
+        // interface name
+        std::string i;
+        std::vector<std::string> a;
+        std::vector<std::string> g;
+        std::string r;
+        std::vector<std::string> c;
+      };
 
-        std::string __generateType ( PRMFactory<GUM_SCALAR>& f );
+      std::string __generateType(PRMFactory<GUM_SCALAR> &f);
 
-        void __generateInterfaces ( PRMFactory<GUM_SCALAR>& f,
-                                    const std::string& type,
-                                    std::vector<MyData>& l );
+      void __generateInterfaces(PRMFactory<GUM_SCALAR> &f, const std::string &type,
+                                std::vector<MyData> &l);
 
-        void __generateClasses ( PRMFactory<GUM_SCALAR>& f, const std::string& type,
-                                 std::vector<LayerGenerator::MyData>& l );
+      void __generateClasses(PRMFactory<GUM_SCALAR> &f, const std::string &type,
+                             std::vector<LayerGenerator::MyData> &l);
 
-        void __generateClassDag ( Size lvl, DAG& dag,
-                                  Bijection<std::string, NodeId>& names,
-                                  std::vector<LayerGenerator::MyData>& l );
+      void __generateClassDag(Size lvl, DAG &dag,
+                              Bijection<std::string, NodeId> &names,
+                              std::vector<LayerGenerator::MyData> &l);
 
-        void __generateSystem ( PRMFactory<GUM_SCALAR>& factory,
-                                std::vector<LayerGenerator::MyData>& l );
+      void __generateSystem(PRMFactory<GUM_SCALAR> &factory,
+                            std::vector<LayerGenerator::MyData> &l);
     };
 
   } /* namespace prm */
@@ -153,4 +152,3 @@ namespace gum {
 #include <agrum/PRM/generator/layerGenerator.tcc>
 
 #endif /* GUM_LAYER_GENERATOR_H */
-

@@ -48,21 +48,27 @@ namespace gum {
   /**
    * Set the number of threads to be used.
    *
-   * To avoid spare cycles (less then 100% CPU occupied), use more threads than logical processors (x2 is a good all-around value).
+   * To avoid spare cycles (less then 100% CPU occupied), use more threads than
+   *logical processors (x2 is a good all-around value).
    * @param number The number of threads to be used.
    */
-  inline void setNumberOfThreads ( unsigned int number ) {
+  inline void setNumberOfThreads(unsigned int number) {
 #ifdef _OPENMP
-    omp_set_num_threads ( number );
+    omp_set_num_threads(number);
 #else
-    GUM_ERROR ( OperationNotAllowed, "openMP was not enabled at compilation (or you asked for 0 threads !)" );
+    GUM_ERROR(
+        OperationNotAllowed,
+        "openMP was not enabled at compilation (or you asked for 0 threads !)");
 #endif
   }
 
   /**
-   * Call this from anywhere (parallel region or not). By default, it is the number of threads launched in any parallel region.
+   * Call this from anywhere (parallel region or not). By default, it is the number
+   *of threads launched in any parallel region.
    *
-   * It should return the number of logical processors by default, i.e. omp_get_num_procs(). If setNumberOfThreads(number) was called, it will return the choosen number.
+   * It should return the number of logical processors by default, i.e.
+   *omp_get_num_procs(). If setNumberOfThreads(number) was called, it will return the
+   *choosen number.
    *
    * @return The maximum number of threads at any time.
    */
@@ -115,14 +121,17 @@ namespace gum {
   }
 
   /**
-   * Nested parallelism, i.e. parallel activity within another parallel activity : threads creating more threads. Off by default.
-   * @param value \c True if nested parallelism should be activated, \c False otherwise.
+   * Nested parallelism, i.e. parallel activity within another parallel activity :
+   * threads creating more threads. Off by default.
+   * @param value \c True if nested parallelism should be activated, \c False
+   * otherwise.
    */
-  inline void setNestedParallelism ( bool value ) {
+  inline void setNestedParallelism(bool value) {
 #ifdef _OPENMP
-    omp_set_nested ( ( ( value == true ) ? 1 : 0 ) );
+    omp_set_nested(((value == true) ? 1 : 0));
 #else
-    GUM_ERROR ( OperationNotAllowed, "openMP was not enabled at compilation (and you asked for nested parallelism !)" );
+    GUM_ERROR(OperationNotAllowed, "openMP was not enabled at compilation (and you "
+                                   "asked for nested parallelism !)");
 #endif
   }
 
@@ -132,7 +141,7 @@ namespace gum {
    */
   inline bool getNestedParallelism() {
 #ifdef _OPENMP
-    return ( ( omp_get_nested() == 0 ) ? false : true );
+    return ((omp_get_nested() == 0) ? false : true);
 #else
     return false;
 #endif
@@ -141,13 +150,16 @@ namespace gum {
   /**
    * Automatically adjust the number of running threads within a parallel region.
    * Desactivated by default.
-   * @param value \c True if dynamic thread number should be used, \c False otherwise.
+   * @param value \c True if dynamic thread number should be used, \c False
+   * otherwise.
    */
-  inline void setDynamicThreadsNumber ( bool value ) {
+  inline void setDynamicThreadsNumber(bool value) {
 #ifdef _OPENMP
-    omp_set_dynamic ( ( ( value == true ) ? 1 : 0 ) );
+    omp_set_dynamic(((value == true) ? 1 : 0));
 #else
-    GUM_ERROR ( OperationNotAllowed, "openMP was not enabled at compilation (and you asked for dynamic adjustment of the number of threads !)" );
+    GUM_ERROR(OperationNotAllowed, "openMP was not enabled at compilation (and you "
+                                   "asked for dynamic adjustment of the number of "
+                                   "threads !)");
 #endif
   }
 
@@ -157,12 +169,11 @@ namespace gum {
    */
   inline bool getDynamicThreadsNumber() {
 #ifdef _OPENMP
-    return ( ( omp_get_dynamic() == 0 ) ? false : true );
+    return ((omp_get_dynamic() == 0) ? false : true);
 #else
     return false;
 #endif
   }
-
 }
 
 #endif

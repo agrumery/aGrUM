@@ -48,7 +48,6 @@
 
 #include <agrum/variables/discreteVariable.h>
 
-
 namespace gum {
 
   class Instantiation;
@@ -68,146 +67,129 @@ namespace gum {
 
   class MultiDimInterface {
     public:
+    /// Alias for Sequence<DiscreteVariable*>::iterator.
+    typedef Sequence<const DiscreteVariable *>::iterator iterator;
 
-      /// Alias for Sequence<DiscreteVariable*>::iterator.
-      typedef Sequence<const DiscreteVariable*>::iterator iterator;
+    /// No constructor : interface only.
 
+    virtual ~MultiDimInterface(){};
 
-      /// No constructor : interface only.
+    // ##############################################################################
+    /// @name Accessors / Modifiers
+    // ##############################################################################
+    /// @{
 
-      virtual ~MultiDimInterface() {};
+    /// Returns the number of vars in the multidimensional container.
 
-      // ##############################################################################
-      /// @name Accessors / Modifiers
-      // ##############################################################################
-      /// @{
+    virtual Idx nbrDim() const = 0;
 
+    /**
+     * @brief Returns the product of the size of the domains of the variables
+     *        belonging to the matrix.
+     */
 
-      /// Returns the number of vars in the multidimensional container.
+    virtual Size domainSize() const = 0;
 
-      virtual Idx nbrDim() const = 0;
+    /**
+     * @brief Adds a new var to the variables of the multidimensional matrix.
+     * @see operator<<(MultiDimInterface& c, const DiscreteVariable& v)
+     *
+     * @param v The new var.
+     * @warning Note that the variable passed in argument is not duplicated, that
+     *          is, only a pointer toward the variable is kept by the
+     *          MultiDimInterface.
+     * @throw DuplicateElement is thrown if the variable already belongs to the
+     *                         sequence of variables.
+     * @throw OperationNotAllowed if this object is non mutable.
+     */
 
+    virtual void add(const DiscreteVariable &v) = 0;
 
-      /**
-       * @brief Returns the product of the size of the domains of the variables
-       *        belonging to the matrix.
-       */
+    /**
+     * @brief Removes a var from the variables of the multidimensional matrix.
+     * @see operator>>(MultiDimInterface& c, const DiscreteVariable& v)
+     *
+     * If the variable does not belong to the MultiDimBase, then this method,
+     * NotFound is thrown.
+     * @throw OperationNotAllowed if this object is non mutable.
+     * @throw NotFound is v does not belong to this
+     */
 
-      virtual Size domainSize() const  = 0;
+    virtual void erase(const DiscreteVariable &v) = 0;
 
+    /// Returns a const ref to the sequence of DiscreteVariable*.
 
-      /**
-       * @brief Adds a new var to the variables of the multidimensional matrix.
-       * @see operator<<(MultiDimInterface& c, const DiscreteVariable& v)
-       *
-       * @param v The new var.
-       * @warning Note that the variable passed in argument is not duplicated, that
-       *          is, only a pointer toward the variable is kept by the
-       *          MultiDimInterface.
-       * @throw DuplicateElement is thrown if the variable already belongs to the
-       *                         sequence of variables.
-       * @throw OperationNotAllowed if this object is non mutable.
-       */
+    virtual const Sequence<const DiscreteVariable *> &variablesSequence() const = 0;
 
-      virtual void add ( const DiscreteVariable& v ) = 0;
+    /**
+     * Returns a const ref to the ith var.
+     * @throw NotFound
+     */
 
+    virtual const DiscreteVariable &variable(Idx i) const = 0;
 
-      /**
-       * @brief Removes a var from the variables of the multidimensional matrix.
-       * @see operator>>(MultiDimInterface& c, const DiscreteVariable& v)
-       *
-       * If the variable does not belong to the MultiDimBase, then this method,
-       * NotFound is thrown.
-       * @throw OperationNotAllowed if this object is non mutable.
-       * @throw NotFound is v does not belong to this
-       */
+    /**
+     * Returns the index of a var.
+     * @throw NotFound
+     */
 
-      virtual void erase ( const DiscreteVariable& v ) = 0;
+    virtual Idx pos(const DiscreteVariable &v) const = 0;
 
+    /// Returns true if var is in *this.
 
-      /// Returns a const ref to the sequence of DiscreteVariable*.
+    virtual bool contains(const DiscreteVariable &v) const = 0;
 
-      virtual const Sequence<const DiscreteVariable*>& variablesSequence() const = 0;
+    /// Returns true if no var is in *this.
 
+    virtual bool empty(void) const = 0;
 
-      /**
-       * Returns a const ref to the ith var.
-       * @throw NotFound
-       */
+    /**
+     * @brief Swap two variables in this multidim.
+     * If x is in this MultiDim and y has the same domain size,
+     * then x will be replace by y in this MultiDim.
+     *
+     * @param x The variable in this which will be replaced.
+     * @param y The variable replacing y.
+     * @throw NotFound Raised if x does not belong to this MultiDim.
+     * @throw OperationNotAllowed If y and x are not interchangeable.
+     * @throw DuplicateElement If y is already in this MultiDim.
+     */
+    void swap(const DiscreteVariable &x, const DiscreteVariable &y);
 
-      virtual const DiscreteVariable& variable ( Idx i ) const = 0;
+    /// @}
 
+    // ############################################################################
+    /// @name Iterators
+    // ############################################################################
+    /// @{
 
-      /**
-       * Returns the index of a var.
-       * @throw NotFound
-       */
+    /// Iterator pointing at the beginning of the Sequence of variables.
 
-      virtual Idx pos ( const DiscreteVariable& v ) const = 0;
+    iterator begin() const;
 
+    /// Iterator pointing at the rbeginning of the Sequence of variables.
 
-      /// Returns true if var is in *this.
+    iterator rbegin() const;
 
-      virtual bool contains ( const DiscreteVariable& v ) const  = 0;
+    /// Constant reference on the iterator pointing at the end of the Sequence
+    /// of variables.
 
+    const iterator &end() const;
 
-      /// Returns true if no var is in *this.
+    /// Constant reference on the iterator pointing at the rend of the Sequence
+    /// of variables.
 
-      virtual bool empty ( void ) const  = 0;
+    const iterator &rend() const;
 
-      /**
-       * @brief Swap two variables in this multidim.
-       * If x is in this MultiDim and y has the same domain size,
-       * then x will be replace by y in this MultiDim.
-       *
-       * @param x The variable in this which will be replaced.
-       * @param y The variable replacing y.
-       * @throw NotFound Raised if x does not belong to this MultiDim.
-       * @throw OperationNotAllowed If y and x are not interchangeable.
-       * @throw DuplicateElement If y is already in this MultiDim.
-       */
-      void swap ( const DiscreteVariable& x, const DiscreteVariable& y );
-
-      /// @}
-
-      // ############################################################################
-      /// @name Iterators
-      // ############################################################################
-      /// @{
-
-
-      /// Iterator pointing at the beginning of the Sequence of variables.
-
-      iterator begin() const;
-
-
-      /// Iterator pointing at the rbeginning of the Sequence of variables.
-
-      iterator rbegin() const;
-
-
-      /// Constant reference on the iterator pointing at the end of the Sequence
-      /// of variables.
-
-      const iterator& end() const;
-
-
-      /// Constant reference on the iterator pointing at the rend of the Sequence
-      /// of variables.
-
-      const iterator& rend() const;
-
-      /// @}
+    /// @}
     protected:
-
-      /**
-       * @brief This is called by MultiDimContainer::swap() to proceed with the
-       *        swapping between x and y.
-       * This is called only when everything have been checked.
-       */
-      virtual void _swap ( const DiscreteVariable* x, const DiscreteVariable* y ) = 0;
+    /**
+     * @brief This is called by MultiDimContainer::swap() to proceed with the
+     *        swapping between x and y.
+     * This is called only when everything have been checked.
+     */
+    virtual void _swap(const DiscreteVariable *x, const DiscreteVariable *y) = 0;
   };
-
 
   /**
    * @brief Adds a new var to the sequence of vars.
@@ -229,8 +211,7 @@ namespace gum {
    * @ingroup multidim_group
    */
 
-  MultiDimInterface& operator<< ( MultiDimInterface& c, const DiscreteVariable& v );
-
+  MultiDimInterface &operator<<(MultiDimInterface &c, const DiscreteVariable &v);
 
   /**
    * @brief Removes a var from the variables of the MutliDimAdressing.
@@ -241,14 +222,12 @@ namespace gum {
    * @ingroup multidim_group
    */
 
-  MultiDimInterface& operator>> ( MultiDimInterface& c, const DiscreteVariable& v );
+  MultiDimInterface &operator>>(MultiDimInterface &c, const DiscreteVariable &v);
 
 } /* namespace gum */
-
 
 #ifndef GUM_NO_INLINE
 #include <agrum/multidim/multiDimInterface.inl>
 #endif // GUM_NO_INLINE
 
 #endif /* GUM_MULTIDIM_INTERFACE_H */
-

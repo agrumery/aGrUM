@@ -22,7 +22,7 @@
  *
  * This class is the one to be called by scores and independence tests to
  * compute countings of observations from tabular databases. It calls
- * as many RecordCounterThreads as possible to do the job in parallel. 
+ * as many RecordCounterThreads as possible to do the job in parallel.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -43,16 +43,12 @@
 #include <agrum/learning/database/DBRowFilter.h>
 #include <agrum/learning/scores_and_tests/idSet.h>
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     template <typename IdSetAlloc, typename CountAlloc> class Counter;
-    
- 
+
     /* ========================================================================= */
     /* ===                      THREAD RECORD COUNTER BASE                   === */
     /* ========================================================================= */
@@ -67,35 +63,34 @@ namespace gum {
      * is but rather to be created by class RecordCounterThread.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float> >
-    class RecordCounterThreadBase {      
-    public:
+              typename CountAlloc = std::allocator<float>>
+    class RecordCounterThreadBase {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
-      
+
       /// default constructor
-      RecordCounterThreadBase ( const std::vector<unsigned int>& var_modalities );
+      RecordCounterThreadBase(const std::vector<unsigned int> &var_modalities);
 
       /// copy constructor
-      RecordCounterThreadBase
-      ( const RecordCounterThreadBase<IdSetAlloc,CountAlloc>& from );
+      RecordCounterThreadBase(
+          const RecordCounterThreadBase<IdSetAlloc, CountAlloc> &from);
 
       /// move operator
-      RecordCounterThreadBase
-      ( RecordCounterThreadBase<IdSetAlloc,CountAlloc>&& from );
+      RecordCounterThreadBase(
+          RecordCounterThreadBase<IdSetAlloc, CountAlloc> &&from);
 
       /// virtual copy constructor
-      virtual RecordCounterThreadBase<IdSetAlloc,CountAlloc>*
-      copyFactory () const = 0;
+      virtual RecordCounterThreadBase<IdSetAlloc, CountAlloc> *
+      copyFactory() const = 0;
 
       /// destructor
-      virtual ~RecordCounterThreadBase ();
-     
+      virtual ~RecordCounterThreadBase();
+
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -103,49 +98,42 @@ namespace gum {
 
       /// adds a new target nodeset to be counted
       /** @return the id of the nodeset counter created */
-      unsigned int addNodeSet ( const std::vector<unsigned int,IdSetAlloc>& ids );
+      unsigned int addNodeSet(const std::vector<unsigned int, IdSetAlloc> &ids);
 
       /// remove all the current target nodesets
-      void clearNodeSets () noexcept;
+      void clearNodeSets() noexcept;
 
       /// update all the countings of all the nodesets by parsing the database
-      virtual void count () = 0;
+      virtual void count() = 0;
 
       /// returns the size of the database
-      virtual unsigned long DBSize () noexcept = 0;
+      virtual unsigned long DBSize() noexcept = 0;
 
       /// sets the interval of records on which countings should be performed
-      virtual void setRange ( unsigned long min_index,
-                              unsigned long max_index ) = 0;
+      virtual void setRange(unsigned long min_index, unsigned long max_index) = 0;
 
       /// returns the countings for the nodeset specified in argument
-      const std::vector<float,CountAlloc>&
-      getCounts ( unsigned int nodeset_id ) const noexcept;
-      
+      const std::vector<float, CountAlloc> &getCounts(unsigned int nodeset_id) const
+          noexcept;
+
       /// @}
 
-
-    protected:
-
+      protected:
       /// the modalities of the variables
-      const std::vector<unsigned int>* _modalities { nullptr };
+      const std::vector<unsigned int> *_modalities{nullptr};
 
       /// the nodesets whose observations will be counted
-      std::vector< const std::vector<unsigned int,IdSetAlloc>* > _nodesets;
+      std::vector<const std::vector<unsigned int, IdSetAlloc> *> _nodesets;
 
-      /// the nodesets countings 
-      std::vector< std::vector<float,CountAlloc> > _countings;
+      /// the nodesets countings
+      std::vector<std::vector<float, CountAlloc>> _countings;
 
       /// the size of the cache used to prevent cacheline omp parallel problems
-      static constexpr unsigned int _cache_size { 128 };
-      
+      static constexpr unsigned int _cache_size{128};
+
       /// used to prevent cacheline omp parallel problems
-      const char _align[ _cache_size ] {};
-
+      const char _align[_cache_size]{};
     };
-
-
-      
 
     /* ========================================================================= */
     /* ===                        THREAD RECORD COUNTER                      === */
@@ -160,42 +148,40 @@ namespace gum {
      * by class RecordCounter. When the latter has to create several threads to
      * parse the database, it does so by creating RecorCounterThreads.
      */
-    template <typename RowFilter,
-              typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float> >
-    class RecordCounterThread :
-      public RecordCounterThreadBase<IdSetAlloc,CountAlloc> {      
+    template <typename RowFilter, typename IdSetAlloc = std::allocator<unsigned int>,
+              typename CountAlloc = std::allocator<float>>
+    class RecordCounterThread
+        : public RecordCounterThreadBase<IdSetAlloc, CountAlloc> {
 
-      using Base = RecordCounterThreadBase<IdSetAlloc,CountAlloc>;
+      using Base = RecordCounterThreadBase<IdSetAlloc, CountAlloc>;
 
-    public:
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
-      
+
       /// default constructor
-      RecordCounterThread ( const RowFilter& filter,
-                            const std::vector<unsigned int>& var_modalities );
+      RecordCounterThread(const RowFilter &filter,
+                          const std::vector<unsigned int> &var_modalities);
 
       /// copy constructor
-      RecordCounterThread
-      ( const RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>& from );
+      RecordCounterThread(
+          const RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc> &from);
 
       /// move operator
-      RecordCounterThread
-      ( RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>&& from );
+      RecordCounterThread(
+          RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc> &&from);
 
       /// virtual copy constructor
-      virtual RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>*
-      copyFactory () const;
+      virtual RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc> *
+      copyFactory() const;
 
       /// destructor
-      virtual ~RecordCounterThread ();
-     
+      virtual ~RecordCounterThread();
+
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -209,33 +195,27 @@ namespace gum {
       using Base::clearNodeSets;
 
       /// update all the countings of all the nodesets by parsing the database
-      void count ();
+      void count();
 
       /// returns the countings for the nodeset specified in argument
       using Base::getCounts;
-      
+
       /// returns the size of the database
-      unsigned long DBSize () noexcept;
+      unsigned long DBSize() noexcept;
 
       /// sets the interval of records on which countings should be performed
-      void setRange ( unsigned long min_index, unsigned long max_index );
+      void setRange(unsigned long min_index, unsigned long max_index);
 
       /// returns the filter used for the countings
-      RowFilter& filter () noexcept;
+      RowFilter &filter() noexcept;
 
       /// @}
 
-
-    private:
-
+      private:
       /// the DBRowFilter used to parse the database
       RowFilter __filter;
-
     };
 
-
-
-    
     /* ========================================================================= */
     /* ===                            RECORD COUNTER                         === */
     /* ========================================================================= */
@@ -245,13 +225,12 @@ namespace gum {
      *
      * This class is the one to be called by scores and independence tests to
      * compute countings of observations from tabular databases. It calls
-     * as many RecordCounterThreads as possible to do the job in parallel. 
+     * as many RecordCounterThreads as possible to do the job in parallel.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float> >
+              typename CountAlloc = std::allocator<float>>
     class RecordCounter {
-    public:
-      
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -259,31 +238,30 @@ namespace gum {
 
       /// default constructor
       template <typename RowFilter>
-      RecordCounter ( const RowFilter& filter,
-                      const std::vector<unsigned int>& var_modalities );
+      RecordCounter(const RowFilter &filter,
+                    const std::vector<unsigned int> &var_modalities);
 
       /// copy constructor
-      RecordCounter ( const RecordCounter<IdSetAlloc,CountAlloc>& from );
+      RecordCounter(const RecordCounter<IdSetAlloc, CountAlloc> &from);
 
       /// move constructor
-      RecordCounter ( RecordCounter<IdSetAlloc,CountAlloc>&& from );
+      RecordCounter(RecordCounter<IdSetAlloc, CountAlloc> &&from);
 
       /// destructor
-      ~RecordCounter ();
+      ~RecordCounter();
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
       /// add a new nodeset to count
-      unsigned int addNodeSet ( const std::vector<unsigned int,IdSetAlloc>& ids );
-      
+      unsigned int addNodeSet(const std::vector<unsigned int, IdSetAlloc> &ids);
+
       /// returns the size of the database
-      unsigned long DBSize () noexcept;
+      unsigned long DBSize() noexcept;
 
       /// performs countings from the database by cutting it into several pieces
       /** This method implements a parallel counting strategy which consists of
@@ -293,37 +271,36 @@ namespace gum {
        * (i.e., proper supersets). When all the database has been parsed, the
        * countings are aggregated to result in countings over the whole
        * database. */
-      void countOnSubDatabase ();
+      void countOnSubDatabase();
 
       /// performs the countings of the ids' subsets from those of their supersets
-      void countSubsets ();
+      void countSubsets();
 
       /// perform the countings of all the sets of ids
       /** This method selects the most appropriate parallel counting method and
        * performs it. */
-      void count ();
+      void count();
 
       /// returns the counts performed for a given idSet
-      const std::vector<float,CountAlloc>&
-      getCounts ( unsigned int idset ) const noexcept;
-      
+      const std::vector<float, CountAlloc> &getCounts(unsigned int idset) const
+          noexcept;
+
       /// resets the counter, i.e., remove all its sets of ids and counting vectors
-      void clearNodeSets () noexcept;
+      void clearNodeSets() noexcept;
 
       /// returns the modalities of the variables in the database
-      const std::vector<unsigned int>& modalities () const;
+      const std::vector<unsigned int> &modalities() const;
 
       /// sets the maximum number of threads used to perform countings
-      void setMaxNbThreads ( unsigned int nb ) noexcept;
-      
-      /// @}
-      
+      void setMaxNbThreads(unsigned int nb) noexcept;
 
-    private:
+      /// @}
+
+      private:
       template <typename I, typename C> friend class Counter;
 
       /// the modalities of the variables
-      const std::vector<unsigned int>* __modalities { nullptr };
+      const std::vector<unsigned int> *__modalities{nullptr};
 
       /// the set of ordered vectors of ids + their indices in __nodesets
       /** The goal of this structure is essentially to store the vectors of
@@ -336,20 +313,19 @@ namespace gum {
        * deduced from it. IdSets are used to quickly determine which sets are
        * included into others. */
       Bijection<IdSet<IdSetAlloc>, unsigned int> __idsets;
-      
+
       /// the vector of the unordered ids' vectors used to generate the idsets
       /** When the user add nodes (i.e., vectors of ids), those are unordered
        * and will be processed (counted) as such. However, in order to determine
        * which vectors of ids are contained into other vectors, we create IdSets
        * from them (those are ordered vectors that will enable fast subset
        * computations) */
-      std::vector<const std::vector<unsigned int,IdSetAlloc>* > __nodesets; 
+      std::vector<const std::vector<unsigned int, IdSetAlloc> *> __nodesets;
 
       /// a table associating to each variable the IdSets that contain it
       /** This table is used to quickly compute the IdSets that are contained
        * in other IdSets */
-      HashTable<unsigned int, std::vector<const IdSet<IdSetAlloc>*> >
-      __var2idsets;
+      HashTable<unsigned int, std::vector<const IdSet<IdSetAlloc> *>> __var2idsets;
 
       /// the possible states of a set of ids
       enum SetState {
@@ -364,7 +340,7 @@ namespace gum {
 
       /// a vector for computing the countings of the IdSets which are subsets
       /** These countings are derived from the countings of the supersets */
-      std::vector< std::vector<float,CountAlloc> > __countings;
+      std::vector<std::vector<float, CountAlloc>> __countings;
 
       /// a hashtable associating to each IdSet its index in __set2thread_id
       /** This table indicates for each @e distinct set its index in
@@ -375,58 +351,51 @@ namespace gum {
        * indices of supersets in __nodesets (the content of __idset2index is
        * similar to that of __idsets, except that it is faster to search
        * within hashtables pointer to idsets rather than idsets themselves. */
-      HashTable<const IdSet<IdSetAlloc>*, unsigned int> __idset2index;
+      HashTable<const IdSet<IdSetAlloc> *, unsigned int> __idset2index;
 
       /// a table associating to each IdSet its index in the threadRecordCounters
       /** For the IdSets which are subsets of other IdSets, the index corresponds
        * to that of its superset in __set2thread_id */
-      std::vector<std::pair<const IdSet<IdSetAlloc>*, unsigned int> >
-      __set2thread_id;
+      std::vector<std::pair<const IdSet<IdSetAlloc> *, unsigned int>>
+          __set2thread_id;
 
       /// a partial lattice indicating the relations between subsets and supersets
       /** In this lattice, an arc X -> Y indicates that X is a superset of Y. As
        * such, we should perform countings of X before deducing those of Y. */
       DAG __subset_lattice;
-      
+
       /// the set of ThreadCounters
-      std::vector<RecordCounterThreadBase<IdSetAlloc,CountAlloc>*>
-      __thread_counters;
+      std::vector<RecordCounterThreadBase<IdSetAlloc, CountAlloc> *>
+          __thread_counters;
 
       /// the number of thread counter used by the last count ()
-      unsigned int __nb_thread_counters { 0 };
-      
-      /// the max number of threads authorized
-      #if defined(_OPENMP) && defined(NDEBUG)
-        unsigned int __max_threads_number { getMaxNumberOfThreads() };
-      #else
-        unsigned int __max_threads_number { 1 };
-      #endif /* NDEBUG */
+      unsigned int __nb_thread_counters{0};
+
+/// the max number of threads authorized
+#if defined(_OPENMP) && defined(NDEBUG)
+      unsigned int __max_threads_number{getMaxNumberOfThreads()};
+#else
+      unsigned int __max_threads_number{1};
+#endif /* NDEBUG */
 
       /// the minimal number of rows to parse (on average) by thread
-      unsigned int __min_nb_rows_per_thread { 100 };
-      
+      unsigned int __min_nb_rows_per_thread{100};
 
       /// determine which sets are subsets
-      void __computeSubsets ();
+      void __computeSubsets();
 
       // computes the countings of one subset from those of its superset
-      void __countOneSubset ( unsigned int i );
-      
+      void __countOneSubset(unsigned int i);
+
       /// returns the counting performed
-      std::vector< std::vector<float,CountAlloc> >& __getCounts () noexcept;
-
+      std::vector<std::vector<float, CountAlloc>> &__getCounts() noexcept;
     };
-
 
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
 
 // always include the template implementation
 #include <agrum/learning/scores_and_tests/recordCounter.tcc>
 
-
 #endif /* GUM_LEARNING_RECORD_COUNTER_H */
-

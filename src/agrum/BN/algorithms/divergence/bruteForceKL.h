@@ -34,13 +34,18 @@ namespace gum {
   /**
   * BruteForceKL computes exactly the KL divergence betweens 2 BNs.
   *
-  * BruteForceKL should be used only if difficulty() gives an estimation ( KL_CORRECT ) of the needed time.
-  * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The computations are made once. The second is for free :)
-  * BruteForce allows as well to compute in the same time the Hellinger distance (\f$ \sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001).
+  * BruteForceKL should be used only if difficulty() gives an estimation ( KL_CORRECT
+  *) of the needed time.
+  * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
+  *computations are made once. The second is for free :)
+  * BruteForce allows as well to compute in the same time the Hellinger distance (\f$
+  *\sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001).
   *
-  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP())?  *
+  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL
+  *keeps working but trace this error (errorPQ() and errorQP())?  *
   *
-  * @warning This BruteForceKL should be use only if difficulty()==complexity::CORRECT or at most complexity::DIFFICULT ...
+  * @warning This BruteForceKL should be use only if
+  *difficulty()==complexity::CORRECT or at most complexity::DIFFICULT ...
   * snippets :
   * @code
   * gum::KL base_kl(net1,net2);
@@ -54,34 +59,34 @@ namespace gum {
   * @endcode
   */
 
-  template<typename GUM_SCALAR> class BruteForceKL: public KL<GUM_SCALAR> {
+  template <typename GUM_SCALAR> class BruteForceKL : public KL<GUM_SCALAR> {
     public:
-      /** constructor must give 2 BNs
-       * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
-       */
-      BruteForceKL ( const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q );
+    /** constructor must give 2 BNs
+     * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or
+     * compatible node sets.
+     */
+    BruteForceKL(const IBayesNet<GUM_SCALAR> &P, const IBayesNet<GUM_SCALAR> &Q);
 
-      /** copy constructor
-       */
-      BruteForceKL ( const KL<GUM_SCALAR>& kl );
+    /** copy constructor
+     */
+    BruteForceKL(const KL<GUM_SCALAR> &kl);
 
-
-      /** destructor */
-      virtual ~BruteForceKL();
+    /** destructor */
+    virtual ~BruteForceKL();
 
     protected:
-      void _computeKL ( void );
+    void _computeKL(void);
 
-      using KL<GUM_SCALAR>::_p;
-      using KL<GUM_SCALAR>::_q;
-      using KL<GUM_SCALAR>::_hellinger;
-      using KL<GUM_SCALAR>::_bhattacharya;
+    using KL<GUM_SCALAR>::_p;
+    using KL<GUM_SCALAR>::_q;
+    using KL<GUM_SCALAR>::_hellinger;
+    using KL<GUM_SCALAR>::_bhattacharya;
 
-      using KL<GUM_SCALAR>::_klPQ;
-      using KL<GUM_SCALAR>::_klQP;
+    using KL<GUM_SCALAR>::_klPQ;
+    using KL<GUM_SCALAR>::_klQP;
 
-      using KL<GUM_SCALAR>::_errorPQ;
-      using KL<GUM_SCALAR>::_errorQP;
+    using KL<GUM_SCALAR>::_errorPQ;
+    using KL<GUM_SCALAR>::_errorQP;
   };
 
   extern template class BruteForceKL<float>;
@@ -90,4 +95,4 @@ namespace gum {
 
 #include <agrum/BN/algorithms/divergence/bruteForceKL.tcc>
 
-#endif// GUM_BRUTE_FORCE_KL_H
+#endif // GUM_BRUTE_FORCE_KL_H

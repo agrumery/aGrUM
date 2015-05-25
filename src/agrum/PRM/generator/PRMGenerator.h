@@ -24,7 +24,6 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
-
 #ifndef GUM_PRM_GENERATOR_H
 #define GUM_PRM_GENERATOR_H
 #include <string>
@@ -42,40 +41,39 @@ namespace gum {
      *
      * @ingroup prm_group
      */
-    template<typename GUM_SCALAR>
-    class PRMGenerator {
+    template <typename GUM_SCALAR> class PRMGenerator {
       public:
-        // ========================================================================
-        /// @name Constructors and destructor.
-        // ========================================================================
-        /// @{
+      // ========================================================================
+      /// @name Constructors and destructor.
+      // ========================================================================
+      /// @{
 
-        /// Default constructor.
-        PRMGenerator();
-        /// Copy constructor.
-        PRMGenerator ( const PRMGenerator& source );
-        /// Destructor.
-        virtual ~PRMGenerator();
+      /// Default constructor.
+      PRMGenerator();
+      /// Copy constructor.
+      PRMGenerator(const PRMGenerator &source);
+      /// Destructor.
+      virtual ~PRMGenerator();
 
-        /// @}
-        // ========================================================================
-        /// Getters and setters.
-        // ========================================================================
-        /// @{
+      /// @}
+      // ========================================================================
+      /// Getters and setters.
+      // ========================================================================
+      /// @{
 
-        /// Defines the NameGenerator used by this generator.
-        void setNameGenerator ( const NameGenerator& name_gen );
+      /// Defines the NameGenerator used by this generator.
+      void setNameGenerator(const NameGenerator &name_gen);
 
-        /// Returns the NameGenerator used by this generator.
-        const NameGenerator& getNameGenerator() const;
+      /// Returns the NameGenerator used by this generator.
+      const NameGenerator &getNameGenerator() const;
 
-        /// Proceeds with the generation of the PRM.
-        virtual PRM<GUM_SCALAR>* generate() = 0;
+      /// Proceeds with the generation of the PRM.
+      virtual PRM<GUM_SCALAR> *generate() = 0;
 
-        /// @}
+      /// @}
       protected:
-        /// The name generator used by this class.
-        NameGenerator _name_gen;
+      /// The name generator used by this class.
+      NameGenerator _name_gen;
     };
 
   } /* namespace prm */
@@ -84,4 +82,3 @@ namespace gum {
 #include <agrum/PRM/generator/PRMGenerator.tcc>
 
 #endif /* GUM_PRM_GENERATOR_H */
-

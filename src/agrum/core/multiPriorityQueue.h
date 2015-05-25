@@ -82,21 +82,16 @@
 
 #include <agrum/core/hashTable.h>
 
-
 namespace gum {
 
-
 #define GUM_MULTIPLE_PRIORITY_QUEUE_DEFAULT_CAPACITY 10
-
 
   // templates provided by this file
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   class MultiPriorityQueue;
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
-  std::ostream& operator<<
-  ( std::ostream&, const MultiPriorityQueue<Val,Priority,Cmp,Alloc>& );
-
-
+  std::ostream &operator<<(std::ostream &,
+                           const MultiPriorityQueue<Val, Priority, Cmp, Alloc> &);
 
   /* =========================================================================== */
   /* ===                           PRIORITY QUEUES                           === */
@@ -156,33 +151,31 @@ namespace gum {
    */
   /* =========================================================================== */
   template <typename Val, typename Priority = int,
-            typename Cmp = std::less<Priority>,
-            typename Alloc = std::allocator<Val> >
+            typename Cmp = std::less<Priority>, typename Alloc = std::allocator<Val>>
   class MultiPriorityQueue {
 
     template <typename V, typename P, typename C, typename A>
     friend class MultiPriorityQueue;
-    
-  public:
+
+    public:
     /// types for STL compliance
     /// @{
-    using value_type      = Val;
-    using reference       = Val&;
-    using const_reference = const Val&;
-    using pointer         = Val*;
-    using const_pointer   = const Val*;
+    using value_type = Val;
+    using reference = Val &;
+    using const_reference = const Val &;
+    using pointer = Val *;
+    using const_pointer = const Val *;
     using difference_type = std::ptrdiff_t;
-    using allocator_type  = Alloc;
+    using allocator_type = Alloc;
     /// @}
 
     // the allocator for the indices
     using IndexAlloc =
-      typename Alloc::template rebind< std::pair<Val,std::vector<Size> > >::other;
+        typename Alloc::template rebind<std::pair<Val, std::vector<Size>>>::other;
 
     // the allocator for the heap
     using HeapAlloc =
-      typename Alloc::template rebind< std::pair<Priority,const Val*> >::other;
-
+        typename Alloc::template rebind<std::pair<Priority, const Val *>>::other;
 
     // ############################################################################
     /// @name Constructors / Destructors
@@ -195,33 +188,30 @@ namespace gum {
      * be nearer than e2 to the top of the heap.
      * @param capacity the size of the internal data structures containing the
      * elements (could be for instance vectors or hashtables) */
-    explicit
-    MultiPriorityQueue
-    ( Cmp compare = Cmp(),
-      Size capacity = GUM_MULTIPLE_PRIORITY_QUEUE_DEFAULT_CAPACITY );
+    explicit MultiPriorityQueue(
+        Cmp compare = Cmp(),
+        Size capacity = GUM_MULTIPLE_PRIORITY_QUEUE_DEFAULT_CAPACITY);
 
     /// initializer list constructor
     /** The elements of the initializer list are pairs <Val,Priority>.
      * The comparison function is the default one, i.e., std::less<Priority>. */
-    explicit MultiPriorityQueue
-    ( std::initializer_list< std::pair<Val,Priority> > list );
-    
+    explicit MultiPriorityQueue(
+        std::initializer_list<std::pair<Val, Priority>> list);
+
     /// copy constructor
-    MultiPriorityQueue ( const MultiPriorityQueue<Val,Priority,Cmp,Alloc>& );
+    MultiPriorityQueue(const MultiPriorityQueue<Val, Priority, Cmp, Alloc> &);
 
     /// generalized copy constructor
     template <typename OtherAlloc>
-    MultiPriorityQueue
-    ( const MultiPriorityQueue<Val,Priority,Cmp,OtherAlloc>& );
+    MultiPriorityQueue(const MultiPriorityQueue<Val, Priority, Cmp, OtherAlloc> &);
 
     /// move constructor
-    MultiPriorityQueue ( MultiPriorityQueue<Val,Priority,Cmp,Alloc>&& );
+    MultiPriorityQueue(MultiPriorityQueue<Val, Priority, Cmp, Alloc> &&);
 
     /// destructor
-    ~MultiPriorityQueue ();
+    ~MultiPriorityQueue();
 
     /// @}
-    
 
     // ############################################################################
     /// @name Operators
@@ -233,8 +223,8 @@ namespace gum {
      * is available), the operator guarantees that the heap stays in a coherent
      * state. Actually, the priority queue becomes empty. An exception is then
      * thrown. */
-    MultiPriorityQueue<Val,Priority,Cmp,Alloc>&
-    operator= ( const MultiPriorityQueue<Val,Priority,Cmp,Alloc>& );
+    MultiPriorityQueue<Val, Priority, Cmp, Alloc> &
+    operator=(const MultiPriorityQueue<Val, Priority, Cmp, Alloc> &);
 
     /// generalized copy operator
     /** When a problem occurs during the copy (for instance when not enough memory
@@ -242,19 +232,18 @@ namespace gum {
      * state. Actually, the priority queue becomes empty. An exception is then
      * thrown. */
     template <typename OtherAlloc>
-    MultiPriorityQueue<Val,Priority,Cmp,Alloc>&
-    operator= ( const MultiPriorityQueue<Val,Priority,Cmp,OtherAlloc>& );
+    MultiPriorityQueue<Val, Priority, Cmp, Alloc> &
+    operator=(const MultiPriorityQueue<Val, Priority, Cmp, OtherAlloc> &);
 
     /// move operator
-    MultiPriorityQueue<Val,Priority,Cmp,Alloc>&
-    operator= ( MultiPriorityQueue<Val,Priority,Cmp,Alloc>&& );
+    MultiPriorityQueue<Val, Priority, Cmp, Alloc> &
+    operator=(MultiPriorityQueue<Val, Priority, Cmp, Alloc> &&);
 
     /// returns the element at index "index_elt" from the priority queue
     /** @throw NotFound exception is thrown if the element does not exist */
-    const Val& operator[] ( Size index_elt ) const;
+    const Val &operator[](Size index_elt) const;
 
     /// @}
-
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -268,41 +257,40 @@ namespace gum {
     bool empty() const noexcept;
 
     /// indicates whether the priority queue contains a given value
-    bool contains ( const Val& ) const;
+    bool contains(const Val &) const;
 
     /// returns the element at the top of the priority queue
     /** @throw NotFound exception is thrown if the queue is empty */
-    const Val& top () const;
+    const Val &top() const;
 
     /// returns the priority of the top element
     /** @throw NotFound exception is thrown if the queue is empty */
-    const Priority& topPriority () const;
+    const Priority &topPriority() const;
 
     /// removes the top element from the priority queue and return it
     /** @throw NotFound exception is thrown if the queue is empty */
-    Val pop ();
+    Val pop();
 
     /// inserts a new (a copy) element in the priority queue
     /** @return the index of the element inserted into the priority queue (see
      * method eraseByPos for more details about the index) */
-    Size insert ( const Val& val, const Priority& priority );
+    Size insert(const Val &val, const Priority &priority);
 
     /// inserts (by move) a new element in the priority queue
     /** @return the index of the element inserted into the priority queue (see
      * method eraseByPos for more details about the index) */
-    Size insert ( Val&& val, Priority&& priority );
+    Size insert(Val &&val, Priority &&priority);
 
     /// emplace a new element into the priority queue
     /** @return the index of the element inserted into the priority queue (see
      * method eraseByPos for more details about the index)
      * @throw DuplicateElement exception is thrown if the element already exists */
-    template <typename... Args>
-    Size emplace ( Args&&... args );
+    template <typename... Args> Size emplace(Args &&... args);
 
     /// removes the top of the priority queue (but does not return it)
     /** If the heap is empty, it does nothing (in particular, it does not throw
      * any exception). */
-    void eraseTop ();
+    void eraseTop();
 
     /// removes the element at position "index" from the priority queue
     /** If the element cannot be found, the function returns without throwing any
@@ -316,47 +304,46 @@ namespace gum {
      * incrementing the index by 1 each time we jump to another node, we get a
      * unique index for each element. This is precisely what the index passed in
      * argument of the function represents. */
-    void eraseByPos ( Size index );
+    void eraseByPos(Size index);
 
     /// removes a given element from the priority queue (but does not return it)
     /** If the element cannot be found, the function returns without throwing any
      * exception.
      * @param val the element we wish to remove. If the queue contains several
      * times this element, then the one with the smallest index is removed. */
-    void erase ( const Val& val );
+    void erase(const Val &val);
 
     /// modifies the priority of the element at position "index" of the queue
     /** @throw NotFound If the element cannot be found */
-    Size setPriorityByPos ( Size index, const Priority& new_priority );
+    Size setPriorityByPos(Size index, const Priority &new_priority);
 
     /// modifies the priority of the element at position "index" of the queue
     /** @throw NotFound If the element cannot be found */
-    Size setPriorityByPos ( Size index, Priority&& new_priority );
+    Size setPriorityByPos(Size index, Priority &&new_priority);
 
     /// modifies the priority of each instance of a given element
     /** @throw NotFound If the element cannot be found */
-    void setPriority ( const Val& elt, const Priority& new_priority );
+    void setPriority(const Val &elt, const Priority &new_priority);
 
     /// returns the priority of an instance of the value passed in argument
     /** Of course, this method is really meaningful only when there is only one
-     * instance of the given element within the PriorityQueue. 
+     * instance of the given element within the PriorityQueue.
      * @throw NotFound If the element cannot be found */
-    const Priority& priority ( const Val& elt ) const;
+    const Priority &priority(const Val &elt) const;
 
     /// removes all the elements from the queue
-    void clear ();
+    void clear();
 
     /// returns a hashtable the keys of which are the values stored in the queue
     /** The keys of the hashtable correspond to the values stored in the
      * priority queue and, for each key, the corresponding value is the list of
      * indices in the queue where we can find the key. */
-    const HashTable< Val, std::vector<Size> >& allValues () const ;
+    const HashTable<Val, std::vector<Size>> &allValues() const;
 
     /// displays the content of the queue
-    std::string toString () const;
+    std::string toString() const;
 
     /// @}
-
 
     // ############################################################################
     /// @name Fine tuning
@@ -367,32 +354,27 @@ namespace gum {
     Size capacity() const noexcept;
 
     /// changes the size of the internal structure storing the priority queue
-    void resize ( Size new_size );
+    void resize(Size new_size);
 
     /// @}
 
-
-
-  private:
+    private:
     /// an array storing all the elements of the heap as well as their score
-    std::vector< std::pair<Priority, const Val*>, HeapAlloc > __heap;
+    std::vector<std::pair<Priority, const Val *>, HeapAlloc> __heap;
 
     /// a hashtable for quickly finding the elements by their value
-    HashTable< Val, std::vector<Size>, IndexAlloc > __indices;
+    HashTable<Val, std::vector<Size>, IndexAlloc> __indices;
 
     /// the number of elements in the heap
-    Size __nb_elements { 0 };
+    Size __nb_elements{0};
 
     /// comparison function
     Cmp __cmp;
   };
 
-
 } /* namespace gum */
-
 
 /// always include the implementation of the templates
 #include <agrum/core/multiPriorityQueue.tcc>
-
 
 #endif /* GUM_MULTI_PRIORITY_QUEUE_H */

@@ -24,150 +24,125 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
 namespace gum {
 
-  
   namespace learning {
 
-
     /// copy constructor
-    INLINE CellTranslatorString::CellTranslatorString
-    ( const CellTranslatorString& from ) :
-      DBCellTranslator<1,1> ( from ),
-      __max_value ( from.__max_value ),
-      __strings ( from.__strings ),
-      __check_database ( from.__check_database ) {
-      if ( from.__user_values != nullptr ) {
-        __user_values = new Sequence<std::string> ( *from.__user_values );
+    INLINE
+    CellTranslatorString::CellTranslatorString(const CellTranslatorString &from)
+        : DBCellTranslator<1, 1>(from), __max_value(from.__max_value),
+          __strings(from.__strings), __check_database(from.__check_database) {
+      if (from.__user_values != nullptr) {
+        __user_values = new Sequence<std::string>(*from.__user_values);
       }
     }
-
 
     /// move constructor
-    INLINE CellTranslatorString::CellTranslatorString
-    ( CellTranslatorString&& from ) :
-      DBCellTranslator<1,1> ( std::move ( from ) ),
-      __max_value ( std::move ( from.__max_value ) ),
-      __strings ( std::move ( from.__strings ) ),
-      __check_database ( std::move ( from.__check_database ) ) {
-      if ( from.__user_values != nullptr ) {
-        __user_values = new Sequence<std::string>
-          ( std::move ( *from.__user_values ) );
+    INLINE CellTranslatorString::CellTranslatorString(CellTranslatorString &&from)
+        : DBCellTranslator<1, 1>(std::move(from)),
+          __max_value(std::move(from.__max_value)),
+          __strings(std::move(from.__strings)),
+          __check_database(std::move(from.__check_database)) {
+      if (from.__user_values != nullptr) {
+        __user_values = new Sequence<std::string>(std::move(*from.__user_values));
       }
     }
 
-
     /// virtual copy constructor
-    INLINE CellTranslatorString*
-    CellTranslatorString::copyFactory () {
-      return new CellTranslatorString ( *this );
+    INLINE CellTranslatorString *CellTranslatorString::copyFactory() {
+      return new CellTranslatorString(*this);
     }
- 
 
     /// destructor
-    INLINE CellTranslatorString::~CellTranslatorString () {
-      if ( __user_values != nullptr ) {
+    INLINE CellTranslatorString::~CellTranslatorString() {
+      if (__user_values != nullptr) {
         delete __user_values;
       }
     }
-      
 
     /// copy operator
-    INLINE CellTranslatorString&
-    CellTranslatorString::operator=
-    ( const CellTranslatorString& from )  {
-      if ( this != & from ) {
-        DBCellTranslator<1,1>::operator= ( from );
+    INLINE CellTranslatorString &CellTranslatorString::
+    operator=(const CellTranslatorString &from) {
+      if (this != &from) {
+        DBCellTranslator<1, 1>::operator=(from);
         __max_value = from.__max_value;
         __strings = from.__strings;
         __check_database = from.__check_database;
-        if ( __user_values ) {
+        if (__user_values) {
           delete __user_values;
           __user_values = nullptr;
         }
-        if ( from.__user_values != nullptr ) {
-          __user_values = new Sequence<std::string> ( *from.__user_values );
+        if (from.__user_values != nullptr) {
+          __user_values = new Sequence<std::string>(*from.__user_values);
         }
       }
       return *this;
     }
-
 
     /// move operator
-    INLINE CellTranslatorString&
-    CellTranslatorString::operator= ( CellTranslatorString&& from )  {
-      if ( this != & from ) {
-        DBCellTranslator<1,1>::operator= ( std::move ( from ) );
-        __max_value = std::move ( from.__max_value );
-        __strings   = std::move ( from.__strings );
+    INLINE CellTranslatorString &CellTranslatorString::
+    operator=(CellTranslatorString &&from) {
+      if (this != &from) {
+        DBCellTranslator<1, 1>::operator=(std::move(from));
+        __max_value = std::move(from.__max_value);
+        __strings = std::move(from.__strings);
         __check_database = from.__check_database;
-        if ( __user_values ) {
+        if (__user_values) {
           delete __user_values;
           __user_values = nullptr;
         }
-        if ( from.__user_values != nullptr ) {
-          __user_values = new Sequence<std::string>
-            ( std::move ( *from.__user_values ) );
+        if (from.__user_values != nullptr) {
+          __user_values = new Sequence<std::string>(std::move(*from.__user_values));
         }
       }
       return *this;
     }
 
-
     /// perform the translation
-    ALWAYS_INLINE void CellTranslatorString::translate () {
-      out (0) = __strings.second ( in (0).getStringIndex () );
+    ALWAYS_INLINE void CellTranslatorString::translate() {
+      out(0) = __strings.second(in(0).getStringIndex());
     }
-    
 
     /// initialize the cell translator by a first database parsing
-    ALWAYS_INLINE void CellTranslatorString::initialize () {
-      const int nb = in (0).getStringIndex ();
-      if ( ! __strings.existsFirst ( nb ) ) {
-        __strings.insert ( nb, __max_value );
+    ALWAYS_INLINE void CellTranslatorString::initialize() {
+      const int nb = in(0).getStringIndex();
+      if (!__strings.existsFirst(nb)) {
+        __strings.insert(nb, __max_value);
         ++__max_value;
       }
     }
 
-    
     /// add the number of modalities discovered in the database into a vector
-    INLINE void CellTranslatorString::modalities
-    ( std::vector<unsigned int>& modal ) const noexcept {
-      modal.push_back ( __max_value );
+    INLINE void
+    CellTranslatorString::modalities(std::vector<unsigned int> &modal) const
+        noexcept {
+      modal.push_back(__max_value);
     }
 
-
     /// returns whether the translator needs a DB parsing to initialize itself
-    INLINE bool CellTranslatorString::requiresInitialization ()
-      const noexcept {
+    INLINE bool CellTranslatorString::requiresInitialization() const noexcept {
       return __check_database;
     }
 
-
     /// returns a given value as stored within the database
     INLINE std::string
-    CellTranslatorString::translateBack ( unsigned int col,
-                                             unsigned int translated_val ) const {
+    CellTranslatorString::translateBack(unsigned int col,
+                                        unsigned int translated_val) const {
       std::stringstream str;
-      str << DBCell::getString ( __strings.first ( translated_val ) );
-      return  str.str ();
+      str << DBCell::getString(__strings.first(translated_val));
+      return str.str();
     }
-
 
     /// returns the name of the variable(s) the translator has processed
-    INLINE void
-    CellTranslatorString::variableNames
-    ( const std::vector<std::string>& db_var,
-      std::vector<std::string>& output_vars ) const {
-      output_vars.push_back ( db_var[_input_cols[0]] );
+    INLINE void CellTranslatorString::variableNames(
+        const std::vector<std::string> &db_var,
+        std::vector<std::string> &output_vars) const {
+      output_vars.push_back(db_var[_input_cols[0]]);
     }
 
-    
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -30,4 +30,3 @@
 #ifdef GUM_NO_INLINE
 #include <agrum/core/hashFunc.inl>
 #endif /* GUM_NO_INLINE */
-

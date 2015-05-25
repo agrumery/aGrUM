@@ -19,25 +19,21 @@
  ***************************************************************************/
 /** @file
  * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
- * 
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_SCORE_INTERNAL_BDEU_APRIORI_H
 #define GUM_LEARNING_SCORE_INTERNAL_BDEU_APRIORI_H
-
 
 #include <vector>
 
 #include <agrum/config.h>
 #include <agrum/learning/scores_and_tests/scoreInternalApriori.h>
 
-
 namespace gum {
-
 
   namespace learning {
 
-    
     /** @class ScoreInternalBDeuApriori
      * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
      * @ingroup learning_group
@@ -54,73 +50,64 @@ namespace gum {
      * learning.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float> >
-    class ScoreInternalBDeuApriori :
-      public ScoreInternalApriori<IdSetAlloc,CountAlloc> {
-    public:
-
+              typename CountAlloc = std::allocator<float>>
+    class ScoreInternalBDeuApriori
+        : public ScoreInternalApriori<IdSetAlloc, CountAlloc> {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      ScoreInternalBDeuApriori ();
+      ScoreInternalBDeuApriori();
 
       /// virtual copy constructor
-      virtual ScoreInternalBDeuApriori<IdSetAlloc,CountAlloc>*
-      copyFactory () const final;
-   
+      virtual ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc> *
+      copyFactory() const final;
+
       /// copy constructor
-      ScoreInternalBDeuApriori
-      ( const ScoreInternalBDeuApriori<IdSetAlloc,CountAlloc>& from );
+      ScoreInternalBDeuApriori(
+          const ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc> &from);
 
       /// move constructor
-      ScoreInternalBDeuApriori
-      ( ScoreInternalBDeuApriori<IdSetAlloc,CountAlloc>&& from );
+      ScoreInternalBDeuApriori(
+          ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc> &&from);
 
       /// destructor
-      virtual ~ScoreInternalBDeuApriori ();
+      virtual ~ScoreInternalBDeuApriori();
 
       /// @}
-
 
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
-      
+
       /// insert the internal score apriori into a set of countings
-      virtual void insertScoreApriori
-      ( const std::vector<unsigned int>& modalities,
-        std::vector< std::vector<float,CountAlloc> >& counts,
-        const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
-                                     unsigned int>* >& target_nodesets,
-        const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
-                                     unsigned int>* >& conditioning_nodesets )
-      final;
-      
+      virtual void insertScoreApriori(
+          const std::vector<unsigned int> &modalities,
+          std::vector<std::vector<float, CountAlloc>> &counts,
+          const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
+                                      unsigned int> *> &target_nodesets,
+          const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
+                                      unsigned int> *> &conditioning_nodesets) final;
+
       /// sets the effective sample size of the internal apriori
-      void setEffectiveSampleSize ( float ess );
-      
+      void setEffectiveSampleSize(float ess);
+
       /// @}
-      
 
-    private:
+      private:
       /// the effective sample size of the internal apriori
-      float __ess { 1.0f };
-
+      float __ess{1.0f};
     };
-
 
   } /* namespace learning */
 
-
 } /* namespace gum */
-
 
 /// include the template implementation
 #include <agrum/learning/scores_and_tests/scoreInternalBDeuApriori.tcc>
-
 
 #endif /* GUM_LEARNING_SCORE_INTERNAL_BDEU_APRIORI_H */

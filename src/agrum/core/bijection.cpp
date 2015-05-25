@@ -23,56 +23,46 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-
 
 #include <agrum/core/bijection.h>
 
-
 namespace gum {
 
-  
   // creates (if needed) and returns the safe iterator __BijectionIterEndSafe
-  const BijectionIteratorSafe<int,int>*
+  const BijectionIteratorSafe<int, int> *
   BijectionIteratorStaticEnd::endSafe4Statics() {
     static bool first_time = true;
 
-    if ( first_time ) {
+    if (first_time) {
       first_time = false;
-      __BijectionIterEndSafe = new BijectionIteratorSafe<int,int>;
+      __BijectionIterEndSafe = new BijectionIteratorSafe<int, int>;
     }
 
     return __BijectionIterEndSafe;
   }
 
   // creates (if needed) and returns the unsafe iterator __BijectionIterEnd
-  const BijectionIterator<int,int>*
-  BijectionIteratorStaticEnd::end4Statics() {
+  const BijectionIterator<int, int> *BijectionIteratorStaticEnd::end4Statics() {
     static bool first_time = true;
 
-    if ( first_time ) {
+    if (first_time) {
       first_time = false;
-      __BijectionIterEnd = new BijectionIterator<int,int>;
+      __BijectionIterEnd = new BijectionIterator<int, int>;
     }
 
     return __BijectionIterEnd;
   }
 
+  // create the end iterator for all Bijections
+  const BijectionIteratorSafe<int, int> *
+      BijectionIteratorStaticEnd::__BijectionIterEndSafe =
+          BijectionIteratorStaticEnd::endSafe4Statics();
 
   // create the end iterator for all Bijections
-  const BijectionIteratorSafe<int,int>*
-  BijectionIteratorStaticEnd::__BijectionIterEndSafe =
-    BijectionIteratorStaticEnd::endSafe4Statics();
-
-
-  // create the end iterator for all Bijections
-  const BijectionIterator<int,int>*
-  BijectionIteratorStaticEnd::__BijectionIterEnd =
-    BijectionIteratorStaticEnd::end4Statics();
-
+  const BijectionIterator<int, int> *BijectionIteratorStaticEnd::__BijectionIterEnd =
+      BijectionIteratorStaticEnd::end4Statics();
 
 } /* namespace gum */
-
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

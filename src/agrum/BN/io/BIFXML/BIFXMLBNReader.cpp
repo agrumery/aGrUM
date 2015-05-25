@@ -24,7 +24,6 @@
  */
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 
-
 template class gum::BIFXMLBNReader<float>;
 template class gum::BIFXMLBNReader<double>;
 

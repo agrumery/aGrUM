@@ -43,104 +43,93 @@
 #include <agrum/learning/database/DBCellTranslator.h>
 #include <agrum/learning/database/DBCellTranslatorCreate.h>
 
-
 namespace gum {
 
-  
   namespace learning {
-
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
     /** @brief the wrapper of Create<>s that will be used to translate
-     * a set of database cells */ 
-    template<int Idx, typename... Translators>
+     * a set of database cells */
+    template <int OUTPUT_SIZE, typename... Translators>
     class BasicDBRowTranslatorSetStatic;
-
 
     /** @brief the end of the recursive definition of
      * BasicDBRowTranslatorSetStatic: should do nothing */
-    template <int Idx>
-    class BasicDBRowTranslatorSetStatic<Idx> {
-    public:
-      static constexpr unsigned int output_size = Idx;
-  
-      BasicDBRowTranslatorSetStatic () noexcept {}
-      BasicDBRowTranslatorSetStatic
-      ( const BasicDBRowTranslatorSetStatic<Idx>& ) noexcept {}
-      BasicDBRowTranslatorSetStatic
-      ( BasicDBRowTranslatorSetStatic<Idx>&& ) noexcept {}
-      ~BasicDBRowTranslatorSetStatic () noexcept {}
-      BasicDBRowTranslatorSetStatic<Idx>&
-      operator= ( const BasicDBRowTranslatorSetStatic<Idx>& ) noexcept
-      { return *this; }
-      BasicDBRowTranslatorSetStatic<Idx>&
-      operator= ( BasicDBRowTranslatorSetStatic<Idx>&& ) noexcept
-      { return *this; }
+    template <int OUTPUT_SIZE> class BasicDBRowTranslatorSetStatic<OUTPUT_SIZE> {
+      public:
+      static constexpr unsigned int output_size = OUTPUT_SIZE;
 
-      void setInputRow ( const DBRow& ) noexcept {}
-      void setOutputRow ( FilteredRow& ) noexcept {}
-      void translate () noexcept {}
-      void initialize () noexcept {}
-      void postInitialize () noexcept {}
-      bool requiresInitialization () const noexcept { return false; }
-      void modalities ( std::vector<unsigned int>& ) const noexcept {} 
-      std::string translateBack ( unsigned int, unsigned int ) const {
-        GUM_ERROR ( NotFound, "the variable could not be translated back: it "
-                    "was not found by the translator" );
+      BasicDBRowTranslatorSetStatic() noexcept {}
+      BasicDBRowTranslatorSetStatic(
+          const BasicDBRowTranslatorSetStatic<OUTPUT_SIZE> &) noexcept {}
+      BasicDBRowTranslatorSetStatic(
+          BasicDBRowTranslatorSetStatic<OUTPUT_SIZE> &&) noexcept {}
+      ~BasicDBRowTranslatorSetStatic() noexcept {}
+      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE> &
+      operator=(const BasicDBRowTranslatorSetStatic<OUTPUT_SIZE> &) noexcept {
+        return *this;
+      }
+      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE> &
+      operator=(BasicDBRowTranslatorSetStatic<OUTPUT_SIZE> &&) noexcept {
+        return *this;
+      }
+
+      void setInputRow(const DBRow &) noexcept {}
+      void setOutputRow(FilteredRow &) noexcept {}
+      void translate() noexcept {}
+      void initialize() noexcept {}
+      void postInitialize() noexcept {}
+      bool requiresInitialization() const noexcept { return false; }
+      void modalities(std::vector<unsigned int> &) const noexcept {}
+      std::string translateBack(unsigned int, unsigned int) const {
+        GUM_ERROR(NotFound, "the variable could not be translated back: it "
+                            "was not found by the translator");
       }
     };
 
-
     /** @brief the implementation of the wrapper of Create<>s (used to
      * translate the cells of a DBRow) */
-    template <int Idx, typename Translator, typename... OtherTranslators>
-    class BasicDBRowTranslatorSetStatic<Idx,Translator,OtherTranslators...> :
-      public BasicDBRowTranslatorSetStatic
-               < Idx + std::remove_reference<Translator>::type::output_size,
-                 OtherTranslators... > {
-    public:
-      
+    template <int OUTPUT_SIZE, typename Translator, typename... OtherTranslators>
+    class BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator, OtherTranslators...>
+        : public BasicDBRowTranslatorSetStatic<
+              OUTPUT_SIZE + std::remove_reference<Translator>::type::output_size,
+              OtherTranslators...> {
+      public:
       /// the type of the subsequent Create<>s to apply
-      using NextTranslators = BasicDBRowTranslatorSetStatic
-        < Idx + std::remove_reference<Translator>::type::output_size,
-          OtherTranslators... >;
+      using NextTranslators = BasicDBRowTranslatorSetStatic<
+          OUTPUT_SIZE + std::remove_reference<Translator>::type::output_size,
+          OtherTranslators...>;
 
       /// the number of columns written by all the BasicDBRowTranslatorSetStatics
       static constexpr unsigned int output_size = NextTranslators::output_size;
-
 
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
 
       /// @{
- 
-    protected:
-      
+
+      protected:
       /// default constructor
       /** @param first_translator the Create<> for the first translator to apply
        * @param next_translators all the other Create<>s to apply */
-      BasicDBRowTranslatorSetStatic
-      ( const Translator& first_translator,
-        const OtherTranslators&... next_translators );
+      BasicDBRowTranslatorSetStatic(const Translator &first_translator,
+                                    const OtherTranslators &... next_translators);
 
       /// copy constructor
-      BasicDBRowTranslatorSetStatic
-      ( const BasicDBRowTranslatorSetStatic<Idx,Translator,OtherTranslators...>&
-        from );
-  
+      BasicDBRowTranslatorSetStatic(const BasicDBRowTranslatorSetStatic<
+          OUTPUT_SIZE, Translator, OtherTranslators...> &from);
+
       /// move constructor
-      BasicDBRowTranslatorSetStatic
-      ( BasicDBRowTranslatorSetStatic<Idx,Translator,OtherTranslators...>&& from );
-  
-    public:
-      
-     /// destructor
-      ~BasicDBRowTranslatorSetStatic () noexcept;
- 
+      BasicDBRowTranslatorSetStatic(BasicDBRowTranslatorSetStatic<
+          OUTPUT_SIZE, Translator, OtherTranslators...> &&from);
+
+      public:
+      /// destructor
+      ~BasicDBRowTranslatorSetStatic() noexcept;
+
       /// @}
-      
 
       // ##########################################################################
       /// @name Operators
@@ -148,21 +137,19 @@ namespace gum {
 
       /// @{
 
-    protected:
-
+      protected:
       /// copy operator
-      BasicDBRowTranslatorSetStatic<Idx,Translator,OtherTranslators...>&
-      operator=
-      ( const BasicDBRowTranslatorSetStatic<Idx,Translator,OtherTranslators...>& );
+      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator, OtherTranslators...> &
+      operator=(const BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator,
+                                                    OtherTranslators...> &);
 
       /// move operator
-      BasicDBRowTranslatorSetStatic<Idx,Translator,OtherTranslators...>&
-      operator=
-      ( BasicDBRowTranslatorSetStatic<Idx,Translator,OtherTranslators...>&& );
-      
+      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator, OtherTranslators...> &
+      operator=(BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator,
+                                              OtherTranslators...> &&);
+
       /// @}
-      
-  
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -170,62 +157,55 @@ namespace gum {
       /// @{
 
       /// sets the input row to filter
-      void setInputRow ( const DBRow& row ) noexcept;
+      void setInputRow(const DBRow &row) noexcept;
 
       /// sets the output rows of the translators
-      void setOutputRow ( FilteredRow& output_row ) noexcept;
+      void setOutputRow(FilteredRow &output_row) noexcept;
 
       /// returns the current input DBRow
-      const DBRow& inputRow () const;
+      const DBRow &inputRow() const;
 
       /// returns the current output row
-      FilteredRow& outputRow ();
+      FilteredRow &outputRow();
 
       /// perform the translation of a database row
-      void translate ();
+      void translate();
 
       /// returns the name of the jth value of the ith column
-      std::string translateBack ( unsigned int col,
-                                  unsigned int translated_val ) const;
+      std::string translateBack(unsigned int col, unsigned int translated_val) const;
 
       /// initialize the cell filters by parsing once the database
       /** If initialization is required, this method is called for each row
        * of the database used for initialization. */
-      void initialize ();
+      void initialize();
 
       /// perform a post initialization after the database parsing
-      void postInitialize ();
+      void postInitialize();
 
       /** @brief indicates whether one of the translators needs an initial parsing
        * of the database to initialize itself */
-      bool requiresInitialization () const noexcept;
+      bool requiresInitialization() const noexcept;
 
       /// push back the number of modalities of the variables of the output columns
-      void modalities ( std::vector<unsigned int>& modals ) const;
+      void modalities(std::vector<unsigned int> &modals) const;
 
       /// returns the size of the input as used by the cell translators
-      unsigned int inputSize () const noexcept;
+      unsigned int inputSize() const noexcept;
 
       /// returns the size of the output of the cell translators
-      unsigned int outputSize () const noexcept;
- 
+      unsigned int outputSize() const noexcept;
+
       /// @}
 
-      
-    private:
+      private:
       /// the Create<> translator that should be executed
       Translator __translator;
 
       /// only DBRowTranslatorSetStatics can create BasicDBRowTranslatorSetStatics
-      template <typename... Translators>
-      friend class DBRowTranslatorSetStatic;
-
+      template <typename... Translators> friend class DBRowTranslatorSetStatic;
     };
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS
-
-
-
 
     /** @class DBRowTranslatorSetStatic
      * @ingroup learning_group
@@ -260,16 +240,14 @@ namespace gum {
      * @endcode
      */
     template <typename... Translators>
-    class DBRowTranslatorSetStatic :
-      BasicDBRowTranslatorSetStatic<0,Translators...> {
-    public:
-  
-      using TranslatorSetStatic = BasicDBRowTranslatorSetStatic<0,Translators...>;
+    class DBRowTranslatorSetStatic
+        : BasicDBRowTranslatorSetStatic<0, Translators...> {
+      public:
+      using TranslatorSetStatic = BasicDBRowTranslatorSetStatic<0, Translators...>;
 
       /// the size of the output filtered row
       static constexpr unsigned int output_size = TranslatorSetStatic::output_size;
 
-      
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -278,21 +256,18 @@ namespace gum {
 
       /// default constructor
       /** @param translators the set of DBCellTranslators to apply */
-      DBRowTranslatorSetStatic ( const Translators&...  translators );
+      DBRowTranslatorSetStatic(const Translators &... translators);
 
       /// copy constructor
-      DBRowTranslatorSetStatic
-      ( const DBRowTranslatorSetStatic<Translators...>& from );
+      DBRowTranslatorSetStatic(const DBRowTranslatorSetStatic<Translators...> &from);
 
       /// move constructor
-      DBRowTranslatorSetStatic
-      ( DBRowTranslatorSetStatic<Translators...>&& from );
+      DBRowTranslatorSetStatic(DBRowTranslatorSetStatic<Translators...> &&from);
 
       /// destructor
-      ~DBRowTranslatorSetStatic () noexcept;
-  
+      ~DBRowTranslatorSetStatic() noexcept;
+
       /// @}
-  
 
       // ##########################################################################
       /// @name Operators
@@ -301,16 +276,15 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowTranslatorSetStatic<Translators...>&
-      operator= ( const DBRowTranslatorSetStatic<Translators...>& );
+      DBRowTranslatorSetStatic<Translators...> &
+      operator=(const DBRowTranslatorSetStatic<Translators...> &);
 
       /// move operator
-      DBRowTranslatorSetStatic<Translators...>&
-      operator= ( DBRowTranslatorSetStatic<Translators...>&& );      
+      DBRowTranslatorSetStatic<Translators...> &
+      operator=(DBRowTranslatorSetStatic<Translators...> &&);
 
       /// @}
 
- 
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -318,55 +292,51 @@ namespace gum {
       /// @{
 
       /// execute all the translations on the current database row
-      void translate ();
-     
+      void translate();
+
       /// back-translate a given output (i.e., returns its input)
       /** @param col the column in _output_cols corresponding to the translated
        * value
        * @param translated_val the value in _output_cols of which we want to
        * know the original value (that which will be stored into the
        * Bayesian network) */
-      std::string translateBack ( unsigned int col,
-                                  unsigned int translated_val ) const;
+      std::string translateBack(unsigned int col, unsigned int translated_val) const;
 
       /// initialize the cell filters by parsing once the database
-      void initialize ();
+      void initialize();
 
       /// perform a post initialization after the database parsing
-      void postInitialize ();
+      void postInitialize();
 
       /** @brief indicates whether one of the translators needs an initial parsing
        * of the database to initialize itself */
-      bool requiresInitialization () const noexcept;
+      bool requiresInitialization() const noexcept;
 
       /// push back the number of modalities of the variables of the output columns
-      void modalities ( std::vector<unsigned int>& modals ) const;
+      void modalities(std::vector<unsigned int> &modals) const;
 
       /// sets the input row that shall be read by all the cell translators
-      void setInputRow ( const DBRow& row ) noexcept;
-      
+      void setInputRow(const DBRow &row) noexcept;
+
       /// returns the current output row
-      FilteredRow& outputRow () noexcept;
+      FilteredRow &outputRow() noexcept;
 
       /// returns the current input DBRow
-      const DBRow& inputRow () const;
+      const DBRow &inputRow() const;
 
       /// returns the size of the input as used by the cell translators
-      unsigned int inputSize () const noexcept;
+      unsigned int inputSize() const noexcept;
 
       /// returns the size of the output of the cell translators
-      unsigned int outputSize () const noexcept;
+      unsigned int outputSize() const noexcept;
 
       /// @}
-  
-    private:
+
+      private:
       /// the output row into which the translators write their output
       FilteredRow __output_row;
-
     };
 
-
-    
     /// a function to create easily a DBRowTranslatorSetStatic
     /** Below is an example of the use of this function. Basically, all the
      * arguments are Create<> translators.
@@ -380,22 +350,17 @@ namespace gum {
      * );
      * @endcode
      */
-    template<typename... Args>
+    template <typename... Args>
     constexpr DBRowTranslatorSetStatic<Args...>
-    make_translators ( const Args&... args ) {
-      return DBRowTranslatorSetStatic<Args...> ( args... );
+    make_translators(const Args &... args) {
+      return DBRowTranslatorSetStatic<Args...>(args...);
     }
-
 
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
 
 // always include the template implementation
 #include <agrum/learning/database/DBRowTranslatorSetStatic.tcc>
 
-    
 #endif /* GUM_LEARNING_DB_ROW_TRANSLATOR_SET_STATIC_H */
-

@@ -19,7 +19,7 @@
  ***************************************************************************/
 /** @file
  * @brief the internal apriori for the K2 score: Laplace Apriori
- * 
+ *
  * Some scores include an apriori. For instance, the K2 score is a BD score
  * with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with a
  * N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i is the
@@ -36,19 +36,15 @@
 #ifndef GUM_LEARNING_SCORE_INTERNAL_K2_APRIORI_H
 #define GUM_LEARNING_SCORE_INTERNAL_K2_APRIORI_H
 
-
 #include <vector>
 
 #include <agrum/config.h>
 #include <agrum/learning/scores_and_tests/scoreInternalApriori.h>
 
-
 namespace gum {
-
 
   namespace learning {
 
-    
     /** @class ScoreInternalK2Apriori
      * @brief the internal apriori for the K2 score: Laplace Apriori
      * @ingroup learning_group
@@ -65,65 +61,56 @@ namespace gum {
      * learning.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float> >
-    class ScoreInternalK2Apriori :
-      public ScoreInternalApriori<IdSetAlloc,CountAlloc> {
-    public:
-
+              typename CountAlloc = std::allocator<float>>
+    class ScoreInternalK2Apriori
+        : public ScoreInternalApriori<IdSetAlloc, CountAlloc> {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      ScoreInternalK2Apriori ();
+      ScoreInternalK2Apriori();
 
       /// virtual copy constructor
-      virtual ScoreInternalK2Apriori<IdSetAlloc,CountAlloc>*
-      copyFactory () const final;
-   
+      virtual ScoreInternalK2Apriori<IdSetAlloc, CountAlloc> *
+      copyFactory() const final;
+
       /// copy constructor
-      ScoreInternalK2Apriori
-      ( const ScoreInternalK2Apriori<IdSetAlloc,CountAlloc>& from );
+      ScoreInternalK2Apriori(
+          const ScoreInternalK2Apriori<IdSetAlloc, CountAlloc> &from);
 
       /// move constructor
-      ScoreInternalK2Apriori
-      ( ScoreInternalK2Apriori<IdSetAlloc,CountAlloc>&& from );
+      ScoreInternalK2Apriori(ScoreInternalK2Apriori<IdSetAlloc, CountAlloc> &&from);
 
       /// destructor
-      virtual ~ScoreInternalK2Apriori ();
+      virtual ~ScoreInternalK2Apriori();
 
       /// @}
-
 
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
-      
+
       /// insert the internal score apriori into a set of countings
-      virtual void insertScoreApriori
-      ( const std::vector<unsigned int>& modalities,
-        std::vector< std::vector<float,CountAlloc> >& counts,
-        const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
-                                     unsigned int>* >& target_nodesets,
-        const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
-                                     unsigned int>* >& conditioning_nodesets )
-      final;
-      
+      virtual void insertScoreApriori(
+          const std::vector<unsigned int> &modalities,
+          std::vector<std::vector<float, CountAlloc>> &counts,
+          const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
+                                      unsigned int> *> &target_nodesets,
+          const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
+                                      unsigned int> *> &conditioning_nodesets) final;
+
       /// @}
-
     };
-
 
   } /* namespace learning */
 
-
 } /* namespace gum */
-
 
 /// include the template implementation
 #include <agrum/learning/scores_and_tests/scoreInternalK2Apriori.tcc>
-
 
 #endif /* GUM_LEARNING_SCORE_INTERNAL_K2_APRIORI_H */

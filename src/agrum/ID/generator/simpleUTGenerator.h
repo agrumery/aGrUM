@@ -30,9 +30,7 @@
 
 #include <agrum/ID/generator/UTGenerator.h>
 
-
 namespace gum {
-
 
   /** @class SimpleUTGenerator
    * @brief Class for generating Utility Tables.
@@ -40,46 +38,43 @@ namespace gum {
    *
    * This class implements a CPTGenerator UT generation algorithm.
    */
-  class SimpleUTGenerator: public UTGenerator {
+  class SimpleUTGenerator : public UTGenerator {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructor
-      // ############################################################################
-      /// @{
-      /**
-       * Default constructor.
-       */
-      SimpleUTGenerator();
+    // ############################################################################
+    /// @name Constructors / Destructor
+    // ############################################################################
+    /// @{
+    /**
+     * Default constructor.
+     */
+    SimpleUTGenerator();
 
-      /**
-       * Destructor.
-       */
-      virtual ~SimpleUTGenerator();
-      /// @}
+    /**
+     * Destructor.
+     */
+    virtual ~SimpleUTGenerator();
+    /// @}
 
-      // ############################################################################
-      /// @name UT generation methods
-      // ############################################################################
-      /// @{
-      /**
-       * Generates a UT using floats.
-       * @param varId The variable id of the UT owner.
-       * @param ut A reference on the UT to fill.
-       */
-      virtual void generateUT ( const Idx& varId, const UtilityTable<float>& ut );
+    // ############################################################################
+    /// @name UT generation methods
+    // ############################################################################
+    /// @{
+    /**
+     * Generates a UT using floats.
+     * @param varId The variable id of the UT owner.
+     * @param ut A reference on the UT to fill.
+     */
+    virtual void generateUT(const Idx &varId, const UtilityTable<float> &ut);
 
-      /**
-       * Generates a UT using doubles.
-       * @param varId The variable id of the UT owner.
-       * @param ut A reference on the UT to fill.
-       */
-      virtual void generateUT ( const Idx& varId, const UtilityTable<double>& ut );
-      /// @}
+    /**
+     * Generates a UT using doubles.
+     * @param varId The variable id of the UT owner.
+     * @param ut A reference on the UT to fill.
+     */
+    virtual void generateUT(const Idx &varId, const UtilityTable<double> &ut);
+    /// @}
   };
-
 
 } /* namespace gum */
 
-
 #endif /* GUM_SIMPLE_UT_GENERATOR_H */
-
