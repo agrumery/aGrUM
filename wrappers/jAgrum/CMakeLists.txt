@@ -15,7 +15,7 @@ set_source_files_properties(jAgrum.i PROPERTIES CPLUSPLUS ON)
 # Build
 swig_add_module (jAgrum java jAgrum.i)
 #for now we do not take for pyAgrum the ${AGRUM_LEARNING_SOURCES}
-swig_link_libraries (jAgrum agrum)
+swig_link_libraries (jAgrum ${LIBAGRUM})
 
 set_target_properties(jAgrum PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${JAVA_OUTDIR})
 

@@ -19,7 +19,7 @@ set (AGRUM_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/src)
 
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/cmake)
 
-
+set (LIBAGRUM "agrum")
 include (CompilOptions.agrum)
 include (openMP)
 
