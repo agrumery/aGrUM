@@ -134,7 +134,7 @@ namespace gum {
       /// @{
 
       /// Returns the NodeId of this element in it's class DAG.
-      NodeId id() const;
+      virtual NodeId id() const;
 
       /// Used to assign the id of this element.
       virtual void setId(NodeId id);
