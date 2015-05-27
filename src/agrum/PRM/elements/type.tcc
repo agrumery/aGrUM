@@ -39,12 +39,16 @@ namespace gum {
     Type<GUM_SCALAR>::Type(Type<GUM_SCALAR> &super_type,
                            const std::vector<Idx> &label_map,
                            const DiscreteVariable &var)
-        : PRMObject(var.name()), __var(var.clone()), __super(&super_type),
-          __label_map(new std::vector<Idx>(label_map)) {
+        : PRMObject(var.name()),
+          __var(var.clone()),
+          __super(&super_type),
+          __label_map(new std::vector<Idx>(label_map)) 
+    {
       GUM_CONSTRUCTOR(Type);
 
-      if (__isValid()) {
+      if (not __isValid()) {
         delete __label_map;
+        __label_map = 0;
         GUM_ERROR(OperationNotAllowed, "Invalid label map.");
       }
     }
@@ -63,7 +67,9 @@ namespace gum {
     template <typename GUM_SCALAR> Type<GUM_SCALAR>::~Type() {
       GUM_DESTRUCTOR(Type);
       delete __var;
-      delete __label_map;
+      if (__label_map) {
+        delete __label_map;
+      }
     }
 
     template <typename GUM_SCALAR>
