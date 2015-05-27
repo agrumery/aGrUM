@@ -31,33 +31,35 @@
 namespace gum_tests {
 
   class ClassElementTestSuite {
+    typedef gum::prm::ClassElement<double> ClassElt;
+
     public:
 
-    void testIsReferenceSlot(const gum::prm::ClassElement<double> &elt, bool expected) {
+    void testIsReferenceSlot(const ClassElt &elt, bool expected) {
       // Arrange
       // Act
-      bool actual = gum::prm::ClassElement<double>::isReferenceSlot(elt);
+      bool actual = ClassElt::isReferenceSlot(elt);
       // Assert
       TS_ASSERT_EQUALS(actual, expected);
     }
 
-    void testIsAttribute(const gum::prm::ClassElement<double> &elt, bool expected) {
+    void testIsAttribute(const ClassElt &elt, bool expected) {
       // Arrange
       // Act
-      bool actual = gum::prm::ClassElement<double>::isAttribute(elt);
+      bool actual = ClassElt::isAttribute(elt);
       // Assert
       TS_ASSERT_EQUALS(actual, expected);
     }
 
-    void testIsSlotChain(const gum::prm::ClassElement<double> &elt, bool expected) {
+    void testIsSlotChain(const ClassElt &elt, bool expected) {
       // Arrange
       // Act
-      bool actual = gum::prm::ClassElement<double>::isSlotChain(elt);
+      bool actual = ClassElt::isSlotChain(elt);
       // Assert
       TS_ASSERT_EQUALS(actual, expected);
     }
 
-    void testSetNodeId(gum::prm::ClassElement<double> &elt) {
+    void testSetNodeId(ClassElt &elt) {
       // Arrange
       auto old_id = elt.id();
       auto new_id = old_id + 1;
@@ -67,6 +69,16 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(old_id, elt.id());
       TS_ASSERT_EQUALS(new_id, elt.id());
     }
+
+    void test_obj_type(const ClassElt &elt) {
+      // Arrange
+      auto expected = gum::prm::PRMObject::PRMType::CLASS_ELT;
+      // Act
+      auto actual = elt.obj_type();
+      // Assert
+      TS_ASSERT_EQUALS(expected, actual);
+    }
+
 
   };
 

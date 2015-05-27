@@ -89,8 +89,19 @@ namespace gum_tests {
       var.addLabel("True");
       gum::prm::Type<double> type{var};
       gum::prm::Attribute<double> attr{"my_attr", type};
-      // Act
+      // Act & Assert
       __classEltTestSuite->testSetNodeId(attr);
+    }
+
+    void testObjType() {
+      // Arrange
+      gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
+      var.addLabel("False");
+      var.addLabel("True");
+      gum::prm::Type<double> type{var};
+      gum::prm::Attribute<double> attr{"my_attr", type};
+      // Act & Assert
+      __classEltTestSuite->test_obj_type(attr);
     }
 
   };
