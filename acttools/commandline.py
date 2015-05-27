@@ -23,21 +23,23 @@
 from optparse import OptionParser
 import shelve
 
+from configuration import cfg
+
 def getCurrent():
   current={}
-  shlv=shelve.open(const.configFile,writeback=True)
-  for key in const.default.iterkeys():
-    current[key]=const.default[key]
-    if not key in const.non_persistent:
-      if shld.has_key(key):
+  shlv=shelve.open(cfg.configFile,writeback=True)
+  for key in cfg.default.iterkeys():
+    current[key]=cfg.default[key]
+    if not key in cfg.non_persistent:
+      if shlv.has_key(key):
         current[key]=shlv[key]
 
   return current
 
 def initParser(current):
-    us="%prog [options] ["+"|".join(const.LIST_RULES)+"] ["+"|".join(const.LIST_OPTIONS)+"] ["+"|".join(const.LIST_WRAPPERS)+"]"
+    us="%prog [options] ["+"|".join(cfg.LIST_ACTIONS)+"] ["+"|".join(cfg.LIST_MODES)+"] ["+"|".join(cfg.LIST_TARGETS)+"]"
     parser=OptionParser(usage=us,description="Compilation tools for aGrUM and wrappers",
-                        version="%prog v"+numversion)
+                        version="%prog v"+cfg.numversion)
     parser.add_option("", "--no-fun",
                                         help="No fancy output parser",
                                         action="store_true",
@@ -59,7 +61,7 @@ def initParser(current):
                                         dest="fixed_seed",
                                         default=False)
     parser.add_option("", "--stats",
-                                        help="Consolidation on "+str(nbr_tests_for_stats)+" runs.",
+                                        help="Consolidation on "+str(cfg.nbr_tests_for_stats)+" runs.",
                                         action="store_true",
                                         dest="stats",
                                         default=False)
@@ -82,12 +84,12 @@ def initParser(current):
                                         help="testlist management : {show|all|test1+test2+test3}",
                                         metavar="TESTS-COMMAND",
                                         dest="testlist",
-                                        default=current['testlist'])
+                                        default=current['tests'])
     parser.add_option("-m","--module",
                                         help="module management : {show|all|module1+module2+module3}",
                                         metavar="MODULES-COMMAND",
-                                        dest="module",
-                                        default=current['module'])
+                                        dest="modules",
+                                        default=current['modules'])
     parser.add_option("", "--static_lib",
                                         help="build static library",
                                         action="store_true",

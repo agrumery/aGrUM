@@ -33,21 +33,21 @@ except:
    except:
        pass
 import re
-import const
+import const as cfg
 
-const.numversion="2.0"
-const.modulesFile="src/modules.txt" # the file to parse to find the modules
-const.configFile=".options.act2.py" #
+cfg.numversion="2.0"
+cfg.modulesFile="src/modules.txt" # the file to parse to find the modules
+cfg.configFile=".options.act2.py" #
 
 
-const.C_VALUE = '\033[1m\033[32m'
-const.C_WARNING = '\033[1m\033[33m'
-const.C_ERROR = '\033[1m\033[31m'
-const.C_END = '\033[0m'
+cfg.C_VALUE = '\033[1m\033[32m'
+cfg.C_WARNING = '\033[1m\033[33m'
+cfg.C_ERROR = '\033[1m\033[31m'
+cfg.C_END = '\033[0m'
 
-const.nbr_tests_for_stats=40
+cfg.nbr_tests_for_stats=40
 
-def parseModulesTxt(filename=const.modulesFile):
+def parseModulesTxt(filename=cfg.modulesFile):
   modules={}
   module_line=re.compile(r"^\s*list\s*\(\s*APPEND\s*MODULES\s*\"(.*)\"\s*\)(\s*#\s*(.*))?")
   with open(filename,"r") as f:
@@ -61,30 +61,31 @@ def parseModulesTxt(filename=const.modulesFile):
         modules[module]=descr
   return modules
 
-const.LIST_ACTIONS="lib test install doc clean show uninstall package".split()
-const.LIST_MODE="debug release".split()
-const.LIST_TARGETS="aGrUM pyAgrum jAgrum".split()
-const.LIST_MODULES=parseModulesTxt(modulesFile)
+cfg.LIST_ACTIONS="lib test install doc clean show uninstall package".split()
+cfg.LIST_MODES="debug release".split()
+cfg.LIST_TARGETS="aGrUM pyAgrum jAgrum".split()
+cfg.LIST_MODULES=parseModulesTxt()
 
-const.default['actions']="lib"
-const.default['targets']="aGrUM"
-const.default['modules']='ALL'
-const.default['mode']="release"
-const.default['verbose']=False
-const.default['destination']="/usr"
-const.default['jobs']="5"
-const.default['static_lib']=False
-const.default['fixed_seed']=False
-const.default['no_fun']=False
-const.default['stats']=False
-const.default['onebyone']=False
-const.default['tests']='all'
-const.default['pyversion']="3"
+cfg.default={}
+cfg.default['actions']="lib"
+cfg.default['targets']="aGrUM"
+cfg.default['modules']='ALL'
+cfg.default['mode']="release"
+cfg.default['verbose']=False
+cfg.default['destination']="/usr"
+cfg.default['jobs']="5"
+cfg.default['static_lib']=False
+cfg.default['fixed_seed']=False
+cfg.default['no_fun']=False
+cfg.default['stats']=False
+cfg.default['onebyone']=False
+cfg.default['tests']='all'
+cfg.default['pyversion']="3"
 
-const.non_persistent=["fixed_seed","stats","no_fun","static_lib","onebyone","stats"]
+cfg.non_persistent=["fixed_seed","stats","no_fun","static_lib","onebyone","stats"]
 
 
 def about():
-  print(const.C_END+const.C_WARNING+"aGrUM"+const.C_END+" compilation tool "+const.C_VALUE+numversion+const.C_END)
-  print("(c) 2010-15 "+const.C_ERROR+"aGrUM Team"+const.C_END)
+  print(cfg.C_END+cfg.C_WARNING+"aGrUM"+cfg.C_END+" compilation tool "+cfg.C_VALUE+cfg.numversion+cfg.C_END)
+  print("(c) 2010-15 "+cfg.C_ERROR+"aGrUM Team"+cfg.C_END)
   print("\n")

@@ -23,8 +23,12 @@
 from __future__ import print_function
 
 from acttools.configuration import about
-from acttools.options import getCurrent
+from acttools.commandline import getCurrent,initParser
+
+current=getCurrent()
+parser=initParser(current)
+(options, args)=parser.parse_args()
 
 about()
-current=getCurrent()
-print(current)
+print("options: {0}".format(options))
+print("arg: {0}".format(args))
