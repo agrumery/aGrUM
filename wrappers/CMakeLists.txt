@@ -25,7 +25,8 @@ if (BUILD_PYTHON)
   endif ()
 endif ()
 
-option (BUILD_JAVA "java bindings" ON)
+## Very experimental for now.
+option (BUILD_JAVA "java bindings" OFF)
 if (BUILD_JAVA)
   find_package (JNI)
   if (JNI_FOUND)

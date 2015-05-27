@@ -1,0 +1,1053 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+#***************************************************************************
+#*   Copyright (C) 2010 by Pierre-Henri WUILLEMIN                          *
+#*   {prenom.nom}_at_lip6.fr                                               *
+#*                                                                         *
+#*   This program is free software; you can redistribute it and/or modify  *
+#*   it under the terms of the GNU General Public License as published by  *
+#*   the Free Software Foundation; either version 2 of the License, or     *
+#*   (at your option) any later version.                                   *
+#*                                                                         *
+#*   This program is distributed in the hope that it will be useful,       *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU General Public License for more details.                          *
+#*                                                                         *
+#*   You should have received a copy of the GNU General Public License     *
+#*   along with this program; if not, write to the                         *
+#*   Free Software Foundation, Inc.,                                       *
+#*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+#***************************************************************************
+from __future__ import print_function
+import sys,os,re,glob,math,io
+
+import shelve
+from optparse import OptionParser
+from datetime import datetime
+from distutils import sysconfig
+from sys import argv
+from subprocess import Popen, PIPE, call
+from threading import Thread
+
+numversion="1.7"
+modulesFile="src/modules.txt" # the file to parse to find the modules
+
+nbr_tests_for_stats=40
+
+#################################################################################################
+# find make, python2, python3
+
+def is_tool(prog):
+    progw=prog+".exe"
+    for dir in os.environ['PATH'].split(os.pathsep):
+        if os.path.exists(os.path.join(dir, prog)):
+            return os.path.join(dir, prog)
+        if os.path.exists(os.path.join(dir, progw)):
+            return os.path.join(dir, progw)
+    return None
+
+
+import platform
+from sys import platform as os_platform
+
+exe_python2=is_tool('python2')
+exe_python3=is_tool('python3')
+if exe_python2 is None and exe_python3 is None:
+	exe_py=is_tool('python')
+	if exe_py is not None: #would be absurd, wouldn't it ?
+		if platform.python_version()[0]=="3":
+			exe_python3=exe_py
+		else:
+			exe_python2=exe_py
+
+
+MAKE=""
+if is_tool("make"):
+  MAKE='make '
+  CMAKE='cmake '
+elif is_tool("mingw32-make.exe"):
+  MAKE='mingw32-make.exe '
+  CMAKE='cmake -G "MinGW Makefiles" '
+
+if MAKE=="":
+  print("No <make> utility found. Exit")
+  exit(1)
+
+##########################################################################################################################
+# ANSI colored string
+try:
+   import colorama
+   colorama.init()
+except:
+   try:
+       import tendo.ansiterm
+   except:
+       pass
+
+
+OKGREEN = '\033[1m\033[32m'
+WARNING = '\033[1m\033[33m'
+ERROR = '\033[1m\033[31m'
+ENDC = '\033[0m'
+
+##########################################################################################################################
+# for timeout in popen (cross-platform)
+from subprocess import PIPE, Popen, STDOUT
+from threading  import Thread
+
+try:
+    from Queue import Queue, Empty
+except ImportError:
+    from queue import Queue, Empty  # python 3.x
+
+ON_POSIX = 'posix' in sys.builtin_module_names
+
+def enqueue_output(out, queue):
+    for line in iter(out.readline, b''):
+        queue.put(line)
+    out.close()
+
+def prettifying(line):
+  #prettifying the line
+  res=""
+
+  if line=="":
+    return ""
+
+  # prettifying compilation
+  s=line.split("%]")
+
+  if len(s)>=2:
+    res+=OKGREEN+"%]".join(s[:-1])+"%]"+ENDC+" "
+    line=s[-1].strip()
+
+  if line=="":
+    return res.rstrip()
+
+  remove_dirs=lambda s : s[:s.find("/")-1]
+
+  # prettifying (compacting) path
+  if line[0]!="/": # we keep message beginning with full path
+    s=line.split("/agrum/")
+    if len(s)==2:
+      res+=remove_dirs(s[0])+WARNING+" agrum/"+s[1].rstrip()+ENDC
+      line=""
+    else:
+      s=line.split("/generated-files/")
+      if len(s)==2:
+        line=""
+        res+=remove_dirs(s[0])+WARNING+" generated-files/"+s[1].rstrip()+ENDC
+
+  if line=="":
+    return res.rstrip()
+
+  #prettifying test execution
+  s=line.split(". [")
+  if len(s)==2:
+    res+=s[0]+". "+OKGREEN+"["+s[1].rstrip()+ENDC
+  else:
+    s=line.split("# [")
+    if len(s)==2:
+      res+=s[0]+"# "+OKGREEN+"["+s[1].rstrip()+ENDC
+    else: # test pyAgrum
+      s=line.split(" ... ")
+      if len(s)==2:
+        res+=OKGREEN+s[0]+ENDC+" ... "+WARNING+"OK   "+ENDC
+      else: # end of test execution
+        s=line.split("##")
+        if len(s)==3:
+          res+=WARNING+"##"+ENDC+s[1]+WARNING+"##"+ENDC
+        elif line[0:6]=="Failed":
+          res+="Failed "+WARNING+line[7:]+ENDC
+        elif line[0:6]=="Succes":
+          res+="Success rate: "+WARNING+line[14:]+ENDC
+        elif line[-11:]=="<--- failed":
+          res=line[0:-11]+ERROR+"<--- failed"+ENDC
+        else:
+          s=line.split("Memory leaks found")
+          if len(s)==2:
+            res=s[0]+ERROR+"Memory leaks found"+ENDC+s[1]
+          else:
+            res=line
+
+  return res.rstrip()
+
+
+def threaded_execution(cde,verbose):
+  os.environ["PYTHONUNBUFFERED"]="1"
+  p = Popen(cde,shell=True,bufsize=1,stdout=PIPE, stderr=PIPE )
+
+  inp = Queue()
+  sout = io.open(p.stdout.fileno(), 'rb', closefd=False)
+  serr = io.open(p.stderr.fileno(), 'rb', closefd=False)
+
+  def Pump(stream, category):
+      queue = Queue()
+      def rdr():
+          while True:
+              buf = stream.read1(8192)
+              if len(buf)>0:
+                  queue.put( buf )
+              else:
+                  queue.put( None )
+                  return
+      def clct():
+          active = True
+          while active:
+              r = queue.get()
+              try:
+                  while True:
+                      r1 = queue.get(timeout=0.005)
+                      if r1 is None:
+                          active = False
+                          break
+                      else:
+                          r += r1
+              except Empty:
+                  pass
+              inp.put( (category, r) )
+      for tgt in [rdr, clct]:
+          th = Thread(target=tgt)
+          th.setDaemon(True)
+          th.start()
+
+  Pump(sout, 'stdout')
+  Pump(serr, 'stderr')
+
+  waiter = "|/-\\"
+  w_pos=0
+  lastline = ""
+
+  def readerLoop(lastline):
+    chan,lines = inp.get( True,timeout = 0.1)
+    if chan=='stdout' and lines is not None:
+      lines=(lastline+lines).split("\n")
+      for i in range(len(lines)-1):
+        if lines[i]!="":
+          print("\r"+prettifying(lines[i]))
+      lastline=lines[-1]
+      if lastline!="":
+        print("\r"+prettifying(lastline),end="")
+      sys.stdout.flush()
+    elif chan=='stderr' and lines is not None:
+      lines=lines.split("\n")
+      for line in lines:
+        if line!="":
+          if line[0]=="/":
+            print(line)
+          else:
+            print(ERROR+line+ENDC)
+    return lastline
+
+  while p.poll() is None:
+    # App still working
+    try:
+      lastline=readerLoop(lastline)
+    except Empty:
+      print(waiter[w_pos]+"\b",end="")
+      sys.stdout.flush()
+      w_pos=(w_pos+1)%len(waiter)
+
+  # flushing the buffers
+  while True:
+    try:
+      lastline=readerLoop(lastline)
+    except Empty:
+      break
+
+
+  return p.returncode
+
+##########################################################################################################################
+def parseModulesTxt(filename):
+  modules={}
+  module_line=re.compile(r"^\s*list\s*\(\s*APPEND\s*MODULES\s*\"(.*)\"\s*\)(\s*#\s*(.*))?")
+  with open(filename,"r") as f:
+    for line in f:
+      rep=module_line.search(line)
+      if rep:
+        module=rep.groups(0)[0]
+        descr=rep.groups(0)[2]
+        if descr==0:
+          descr=module
+        modules[module]=descr
+  return modules
+
+##########################################################################################################################
+def initParser(current):
+    global list_options,list_rules,list_wrappers
+
+    us="%prog [options] ["+"|".join(list_rules)+"] ["+"|".join(list_options)+"] ["+"|".join(list_wrappers)+"]"
+    parser=OptionParser(usage=us,description="Compilation tools for aGrUM/pyAgrum",
+                        version="%prog v"+numversion)
+    parser.add_option("", "--no-fun",
+                                        help="No fancy output parser",
+                                        action="store_true",
+                                        dest="no_fun",
+                                        default=False)
+    parser.add_option("-v", "--verbose",
+                                        help="more message on what is happening",
+                                        action="store_true",
+                                        dest="verbose",
+                                        default=current['verbose'])
+    parser.add_option("-q", "--quiet",
+                                        help="please be quiet",
+                                        action="store_false",
+                                        dest="verbose",
+                                        default=current['verbose'])
+    parser.add_option("", "--fixed_seed",
+                                        help="Random seed is fixed once for all. Hence random algorithms should be time-normalized.",
+                                        action="store_true",
+                                        dest="fixed_seed",
+                                        default=False)
+    parser.add_option("", "--stats",
+                                        help="Consolidation on "+str(nbr_tests_for_stats)+" runs.",
+                                        action="store_true",
+                                        dest="stats",
+                                        default=False)
+    parser.add_option("", "--1by1",
+                                        help="aGrUM debug tests one by one (searching leaks).",
+                                        action="store_true",
+                                        dest="oneByOne",
+                                        default=False)
+    parser.add_option("-p", "--platform",
+                                        help="{linux|windows|mac}",
+                                        type="choice",
+                                        choices=["linux", "windows",  "mac"],
+                                        action="store",
+                                        dest="platform",
+                                        default=current['platform'])
+    parser.add_option("-d", "--dest",
+                                        help="destination folder when installing",
+                                        metavar="FOLDER",
+                                        dest="destination",
+                                        default=current['destination'])
+    parser.add_option("-j", "--jobs",
+                                        help="number of jobs",
+                                        type='int',
+                                        dest="jobs",
+                                        default=current['jobs'])
+    parser.add_option("-t","--testlist",
+                                        help="testlist management : {show|all|test1+test2+test3}",
+                                        metavar="TESTS-COMMAND",
+                                        dest="testlist",
+                                        default=current['testlist'])
+    parser.add_option("","--with-test-base",
+                                        help="Tests will include tests for BASE module",
+                                        action="store_true",
+                                        dest="test_base",
+                                        default=current['test_base'])
+    parser.add_option("","--without-test-base",
+                                        help="Tests will not include tests for BASE module",
+                                        action="store_false",
+                                        dest="test_base",
+                                        default=current['test_base'])
+    parser.add_option("-m","--module",
+                                        help="module management : {show|all|module1+module2+module3}",
+                                        metavar="MODULES-COMMAND",
+                                        dest="module",
+                                        default=current['module'])
+    parser.add_option("", "--static_lib",
+                                        help="build static library",
+                                        action="store_true",
+                                        dest="static_lib",
+                                        default=False)
+    parser.add_option("", "--python",   help="{2|3}",
+                                        type="choice",
+                                        choices=["2", "3"],
+                                        dest="pyversion",
+                                        default="3")
+    return parser
+
+##########################################################################################################################
+def moduleManagement(cde):
+  global current,listOfModules
+
+  listM=[x.upper() for x in cde.split('+')]
+  setM=set(listM)
+
+  if 'ALL' in setM:
+    cde='ALL'
+  else:
+    if not setM.issubset(set(listOfModules)):
+      cde='LIST'
+
+  if cde=="ALL":
+      current['module']='+'.join(sorted(listOfModules))
+  elif cde=='LIST':
+    print("Module is in")
+    print("    - ALL")
+    for x in sorted(listOfModules):
+      print("    - "+x+" ("+listOfModules[x]+")")
+    sys.exit(0)
+  else:
+    current['module']='+'.join(listM)
+
+def testManagement(cde):
+  global current
+  if cde=="all":
+    writeTestList(allTests())
+  elif cde=='list':
+    afficheTests()
+    sys.exit(0)
+  else:
+    l=checkTestList(cde)
+    writeTestList(l)
+
+##########################################################################################################################
+def checkTestList(cde):
+  res=[]
+  alltests=allTests()
+  for ss in cde.split('+'):
+    s='/'+ss+'TestSuite.h'
+    name=""
+    for tryfile in alltests:
+      if tryfile.endswith(s):
+        name=tryfile
+        break
+    if name=="":
+      print(ERROR+'Test "src/testunits/[module]/'+OKGREEN+ss+ERROR+'TestSuite.h" does not exists for the selected modules'+ENDC)
+      print()
+      afficheTests()
+      sys.exit(0)
+    else:
+      res.append(name)
+  return res
+
+##########################################################################################################################
+def writeTestList(l):
+  today = datetime.now()
+  f = open('src/testunits/testList.cmake', 'w')
+  f.write("# file automatically generated by act\n")
+  f.write("# "+today.strftime("%A, %d. %B %Y %H:%M")+"\n")
+  f.write("# do not change it\n")
+  f.write("set(AGRUM_TESTS \n  ")
+  f.write("\n  ".join(l))
+  f.write("\n)\n")
+  f.close()
+  f = open('src/testunits/testList.all', 'w')
+  f.write("# file automatically generated by act\n")
+  f.write("# "+today.strftime("%A, %d. %B %Y %H:%M")+"\n")
+  f.write("# do not change it\n")
+  f.write("set(AGRUM_TESTS \n  ")
+  f.write("\n  ".join(l))
+  f.write("\n)\n")
+  f.close()
+
+##########################################################################################################################
+def CrossPlatformRelPath(x,y):
+  return os.path.relpath(x,"src/testunits").replace("\\","/")
+
+def allTests():
+    global current
+
+    s=[]
+
+    if current['test_base']:
+      s+=[CrossPlatformRelPath(x,"src/testunits")
+          for x in glob.glob('src/testunits/module_BASE/*TestSuite.h')]
+
+    for x in current['module'].split('+'):
+      s+=[CrossPlatformRelPath(x,"src/testunits")
+          for x in glob.glob('src/testunits/module_'+x.upper()+'/*TestSuite.h')]
+
+    return sorted(s)
+
+##########################################################################################################################
+def checkTestListCmake():
+    if not os.path.exists('src/testunits/testList.cmake'):
+      writeTestList(allTests())
+    else:
+      with open('src/testunits/testList.cmake') as f:
+        content = f.readlines()
+
+      res=[]
+      rewrite=False
+      for line in content:
+        if line[0:2]=="  ":
+          s=line.strip()
+          if not os.path.exists('src/testunits/'+s):
+            print(ERROR+'Test '+WARNING+s[:-11]+ERROR+' (src/testunits/'+s+') does not exist => removing it from tests list'+ENDC)
+            rewrite=True
+          else:
+            res.append(s)
+      if rewrite:
+        writeTestList(res)
+
+
+##########################################################################################################################
+def afficheTestsForModule(m):
+  print("="*(2+len(m)))
+  print(" "+m+" ")
+  print("="*(2+len(m)))
+
+  l=allTests()
+  prefix="module_"+m.upper()+"/"
+  l=[s[len(prefix):-11] for s in l if s.startswith(prefix)]
+  w=max([len(x) for x in l])
+  nbr=80/w
+  i=0
+  for s in l:
+      print(s.ljust(w),end="\t")
+      i+=1
+      if i>nbr:
+          i=0
+          print("")
+  if i!=0:
+      print("")
+  print("")
+
+
+def afficheTests():
+  global current
+  if current['test_base']:
+    afficheTestsForModule('BASE')
+  for modul in current['module'].split('+'):
+    afficheTestsForModule(modul)
+
+##########################################################################################################################
+def schedule(act,arg,exec_cde=False):
+    global sh,sh_no_exec
+
+    sh.append({'action':act,'argument':arg})
+    if not exec_cde:
+      sh_no_exec.append({'action':act,'argument':arg})
+
+    # safe_cd =>  # cde="[ ! -d "+folder+" ] && mkdir "+folder+" ; cd "+folder
+    # cd .. ou autre
+    # autre
+
+
+def special_execute(action,argument):
+  if action=="safe_cd":
+    if not os.path.exists(argument):
+      os.mkdir(argument)
+    os.chdir(argument)
+  elif action=="back":
+    os.chdir("..")
+  elif action=="cd":
+    os.chdir(argument)
+  else:
+    return False
+
+  return True
+
+def execute(actions,options):
+  nberr=0
+  for k in actions:
+    if options.verbose:
+      print(WARNING+k['action']+' '+OKGREEN+k['argument']+ENDC)
+
+    action=k['action']
+    argument=k['argument']
+
+    if not special_execute(action,argument):
+      commande=action+" "+argument
+      if options.no_fun:
+        rc=call(commande,shell=True)
+      else:
+        rc=threaded_execution(commande,options.verbose)
+
+      if rc>0:
+        print("** exit code ="+str(rc))
+        return
+
+      #for line in proc.stderr.readlines():
+      #  sys.stdout.write(ERROR+line+ENDC)
+
+def execute_test_with_stats(actions,i,nbr_tests_for_stats):
+  time_line=re.compile(r'## Profiling :\s+(.*?)\sms ##')
+  stat_line=re.compile(r"Failed (.*?) of (.*?) test")
+
+  tps=0
+  for k in actions:
+
+    action=k['action']
+    argument=k['argument']
+
+    if not special_execute(action,argument):
+      commande=action+" "+argument
+      proc=Popen(commande,shell=True,stdout=PIPE,stderr=STDOUT)
+      out=proc.stdout.readlines()
+      tps=0
+      failed=0
+      total=-1
+      for line in out:
+        time_match = time_line.search(line)
+        if time_match:
+          tps=int(time_match.groups()[0])
+          continue
+
+        stat_match = stat_line.search(line)
+        if stat_match:
+          failed=int(stat_match.groups()[0])
+          total=int(stat_match.groups()[1])
+
+      if total>=0:
+        print("Stats {5}{3}/{4}{6} : succes rate {7}{0}/{1}{6} in {8}{2}{6} ms".format(total-failed,total,tps,i+1,nbr_tests_for_stats,OKGREEN,ENDC,WARNING,ERROR))
+
+  return tps
+##########################################################################################################################
+
+def cleanAll():
+    import shutil
+    print(WARNING+" cleaning"+ENDC+" ... ",end="")
+    sys.stdout.flush()
+    #os.system("rm -rf build") #
+    if os.path.isdir("build"):
+      shutil.rmtree("build")
+      print(OKGREEN+"done"+ENDC)
+    else:
+      print(OKGREEN+"nothing to do"+ENDC)
+    print()
+
+##########################################################################################################################
+def showAll():
+    global persistent
+    print("Actual options/args")
+    print("-------------------")
+    for key in persistent:
+        if key in ['cleanAll']: # keys we do not need to show
+            continue
+        print("  "+key+" : "+persistent[key].__str__())
+    print("-------------------")
+    print()
+
+
+##########################################################################################################################
+def safe_cd(folder):
+    schedule("safe_cd",folder)
+
+##########################################################################################################################
+def checkConstraints(parser,options,args):
+    global current,persistent
+    global list_rules,list_options,list_wrappers
+
+    current['verbose']=options.verbose
+    current['static_lib']=options.static_lib
+    current['platform']=options.platform
+    current['destination']=options.destination
+    current['jobs']=options.jobs
+    current['fixed_seed']=options.fixed_seed
+    current['no_fun']=options.no_fun
+    current['stats']=options.stats
+    current['1by1']=options.oneByOne
+    current['test_base']=options.test_base
+    current['testlist']=options.testlist
+    current['pyversion']=options.pyversion
+
+    for key in 'rule option wrapper'.split():
+        current[key]=''
+
+    if len(args) >0: # no args for cdline, just options
+        for arg in args:
+            if arg in list_rules:
+                current['rule']=arg
+                continue
+            if arg in list_options:
+                current['option']=arg
+                continue
+            if arg in list_wrappers:
+                current['wrapper']=arg
+                continue
+            parser.error(arg+" is an invalid argument")
+    else:
+        for key in 'rule option wrapper'.split():
+          if key in persistent:
+            current[key]=persistent[key]
+          else:
+            current[key]=""
+
+    if current['option']=='':
+        current['option']='release'
+    if current['rule']=='' and current['wrapper']!='':
+        current['rule']='wrapper'
+    #if current['option']=='debug':
+    #    if current['rule']=='agrum':
+    #        current['rule']='agrum-dbg'
+
+    if current['wrapper']!="":
+        if (not current['rule'] in ["wrapper", "install","test","uninstall"]):
+            parser.print_help()
+            parser.error("incompatibilty ²between options <rule>='"+current['rule'] +"' and <wrapper>='"+current['wrapper']+"'")
+        if current['option']!='release':
+            parser.print_help()
+            parser.error('no debug mode for wrappers compilation')
+
+    if current['platform']=='windows':
+        if not current['rule'] in ["agrum","test","run","clean",'package','install']:
+            parser.print_help()
+            parser.error("incompatibilty between options <platform>='"+current['platform']+"' and <rule>='"+current['rule']+"'")
+        if not current['option']=='release':
+            parser.print_help()
+            parser.error("incompatibilty between options <platform>='"+current['platform']+"' and <option>='"+current['option']+"'")
+
+
+##########################################################################################################################
+def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
+    global listOfModules
+
+    folders=cmake_options=make_options=run_cde =""
+
+    if options['wrapper']!="": # we know rule in ["install","wrapper", "test"]
+        folders=['build','wrappers',options['wrapper']]
+        cmake_options="-DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/"+options['wrapper']+"/"
+
+        if (options['pyversion'])=="2":
+          cmake_options+=" -DFOR_PYTHON2=ON"
+        else:
+          cmake_options+=" -DFOR_PYTHON2=OFF  "
+
+        if options['rule'] in ["install"]:
+            make_options=options['rule']
+        else:
+            make_options=""
+        if options['rule']=='test':
+            if options['wrapper']=='pyAgrum':
+			  if os_platform=="win32":
+				run_cde=exe_python+" ..\..\\..\\wrappers\\pyAgrum\\testunits\\TestSuite.py"
+			  else:
+				run_cde=exe_python+" ../../../wrappers/pyAgrum/testunits/TestSuite.py"
+            else:
+              print(ERROR+"No tests for "+options['wrapper']+ENDC)
+              sys.exit(0)
+        else:
+            run_cde=""
+    else:
+        option_fixed_seed=" -DGUM_RANDOMSEED="+(RANDOMSEED_FOR_FIXED_SEED if options['fixed_seed'] else "0")
+        cmake_options=option_fixed_seed ;
+
+        if options['rule']=='package':
+            folders=["build",'package_'+options['platform'],options['option']]
+        elif options['rule']=='config':
+            folders=["build",options['platform'],'config']
+        else:
+            folders=["build",options['platform'],options['option']]
+        cmake_options+=" -DCMAKE_BUILD_TYPE="+options['option'].upper()+" ../../../src"
+        if (options['rule']=="test" or options['rule']=="run"):
+            if options['rule']=="test":
+              testcde="gumTest"
+              make_options="gumTest"
+            else:
+              testcde="run"
+              make_options="run"
+            if (options['platform'] != "windows"):
+              run_cde="./"+testcde
+            else:
+              run_cde=".\\"+testcde+".exe"
+        else:
+          if (options['rule']=="agrum" and options['option'].upper()=="DEBUG"):
+            make_options="agrum-dbg"
+          else:
+            make_options=options['rule']
+
+        # MANAGING MODULES
+        listM=[x.upper() for x in options['module'].split('+')]
+        setM=set(listM)
+
+        create_build = lambda module: " -DBUILD_"+module+"="+ ("ON" if module in setM else "OFF")
+        cmake_options += create_build("ALL")
+        for module in listOfModules:
+          cmake_options += create_build(module)
+
+
+    cmake_options+=" -DCMAKE_INSTALL_PREFIX="+options['destination']
+
+    cmake_options+=" -DCMAKE_VERBOSE_MAKEFILE="
+    if (options['verbose']):
+        cmake_options+="ON"
+    else:
+        cmake_options+="OFF"
+
+    cmake_options+=" -DBUILD_SHARED_LIBS="
+    if (options['static_lib']):
+        cmake_options+="OFF"
+    else:
+        cmake_options+="ON"
+
+    make_options=make_options+" -j "+options['jobs'].__str__()
+
+    [safe_cd(s) for s in folders]
+    schedule(CMAKE,cmake_options)
+    if options['rule']!='config':
+        schedule(MAKE,make_options)
+    if (run_cde!=""):
+        schedule(run_cde,"",exec_cde=True)
+    [schedule("back","") for s in folders]
+
+##########################################################################################################################
+def uninstall(options):
+    if options['wrapper']!='':
+        install_folder=options['destination'] #sysconfig.get_python_lib(1,0,prefix=install_folder)
+        print("suppresion récursive de "+ERROR+install_folder+"/pyAgrum"+ENDC)
+        os.system('cd '+install_folder+' && rm -rf pyAgrum')
+        print("suppresion récursive de "+ERROR+install_folder+"/gumLib"+ENDC)
+        os.system('cd '+install_folder+' && rm -rf gumLib')
+        print("suppresion de "+ERROR+install_folder+"/pyAgrum*.egg-info"+ENDC)
+        os.system('rm -f '+install_folder+"/pyAgrum*.egg-info")
+    else:
+        folders=["build",options['platform'],options['option']]
+        [safe_cd(s) for s in folders]
+        schedule("make","uninstall")
+        [schedule("back","") for s in folders]
+
+###################################################################################################################
+def _getParam(name):
+  return ENDC+'--'+ERROR+name
+
+def getParam(name):
+  return _getParam(name)+" "
+
+def getValParam(name,val):
+  return _getParam(name)+ENDC+'='+OKGREEN+val+" "
+
+def getCommand(name):
+  return OKGREEN+name+" "
+
+def getInvocation(current):
+    invocation=WARNING+"invocation"+ENDC+" : "+"act "
+
+    invocation+=getCommand(current['rule'])
+
+    if not current['rule'] in "show clean uninstall default".split():
+      if current['rule']=='wrapper':
+        invocation+=getCommand(current['wrapper'])
+      else:
+        invocation+=getCommand(current['option'])
+
+      invocation+=getValParam('module',current['module'])
+
+      if (current['rule']=='test'):
+        invocation+=getValParam('testlist',current['testlist'])
+        if current['test_base']:
+          invocation+=getParam("with-test-base")
+        else:
+          invocation+=getParam("without-test-base")
+
+      if (current['rule']=='install'):
+        invocation+=getValParam('dest',current['destination'])
+
+      invocation+=getValParam('platform',current['platform'])
+
+      if (current['verbose']):
+        invocation+=getParam('verbose')
+      else:
+        invocation+=getParam('quiet')
+
+      if (current['static_lib']):
+        invocation+=getParam('static_lib')
+
+      if (current['stats']):
+        invocation+=getParam('stats')
+
+      if (current['1by1']):
+        invocation+=getParam('1by1')
+
+      if (current['fixed_seed']):
+        invocation+=getParam('fixed_seed')
+
+      if (current['no_fun']):
+        invocation+=getParam('no_fun')
+
+      invocation+=getValParam('jobs',str(current['jobs']))
+
+      invocation+=getValParam('python',current['pyversion'])
+    else:
+      if current['rule']=="uninstall":
+        invocation+=getCommand(current['option'])
+
+    invocation+=ENDC
+    return invocation
+
+
+def checkAgrumMemoryLeak(x):
+  commande='act test debug -t {0}'.format(x)
+
+  first=WARNING+format(x)+ENDC+" : "
+  flag=0
+
+  print(WARNING+format(commande)+ENDC+" : ",end="")
+  sys.stdout.flush()
+  proc=Popen(commande+" --no-fun",shell=True,stdout=PIPE,stderr=STDOUT)
+  out=proc.stdout.readlines()
+  for line in out:
+    if "NO MEMORY LEAK" in line:
+      last=OKGREEN+"ok"+ENDC
+      flag=1
+    elif "Memory leaks found" in line:
+      last=ERROR+line.split("|")[2].strip()+ENDC
+      flag=2
+
+  if flag==0:
+    last=ERROR+"?"+ENDC
+
+  print(last)
+  return (first+last,flag==1)
+
+def checkAgrumMemoryLeaks():
+  print("Searching leaks test by test (may be a bit long).\n")
+  res=[]
+  for x in sorted([CrossPlatformRelPath(x,"src/testunits").split('/')[1].split('TestSuite')[0]
+                   for x in glob.glob('src/testunits/module_*/*TestSuite.h')]):
+    (msg,testOK)=checkAgrumMemoryLeak(x)
+    if not testOK:
+      res.append(msg)
+
+  print("\n"+WARNING+"Test(s) with problem(s) :\n -{0}\n".format("\n -".join(res) if len(res)>0 else "none")+ENDC)
+
+##########################################################################################################################
+print(ENDC+ERROR+"aGrUM"+ENDC+" compilation tool "+ERROR+"v"+numversion+ENDC)
+print("(c) 2010-15 "+OKGREEN+"aGrUM Team"+ENDC)
+print()
+
+listOfModules=parseModulesTxt(modulesFile)
+
+default={}
+current={}
+persistent={}
+
+list_rules="config test run agrum wrapper install doc clean default show uninstall package".split()
+list_options="debug release".split()
+list_wrappers="pyAgrum jAgrum".split()
+
+default['platform']="linux"
+default['option']="release"
+default['rule']="agrum"
+default['destination']="/usr"
+default['wrapper']=""
+default['jobs']="5"
+default['test_base']=True
+default['verbose']=False
+default['static_lib']=False
+default['fixed_seed']=False
+default['no_fun']=False
+default['stats']=False
+default['1by1']=False
+default['module']='ALL'
+default['testlist']='all'
+default['pyversion']="3"
+
+not_persistent_options=['fixed_seed','stats','static_lib']
+
+shlv=shelve.open(".options.mak.py",writeback=True)
+
+if shlv.has_key('persistent'):
+    persistent=shlv['persistent']
+#except:
+#  pass
+
+#shlv=shelve.open(".options.mak.py",writeback=True)
+#if shlv.has_key('persistent'):
+#    persistent=shlv['persistent']
+
+for key in default.iterkeys():
+  if not key in not_persistent_options:
+    if key in persistent:
+        current[key]=persistent[key]
+    else:
+        current[key]=default[key]
+
+parser=initParser(current)
+(options, args)=parser.parse_args()
+
+if options.oneByOne:
+  checkAgrumMemoryLeaks()
+  sys.exit(0)
+
+checkConstraints(parser,options,args)
+
+if options.no_fun:
+  OKGREEN = ''
+  WARNING = ''
+  ERROR = ''
+  ENDC = ''
+
+
+if exe_python3 is None and exe_python2 is None:
+  # should not be possible : we are in a python script :)
+  print("No python interpreter found")
+  sys.exit(0)
+else:
+  if options.pyversion=="3":
+    if exe_python3 is not None:
+      exe_python=exe_python3
+    else:
+      print("python interperter: python2 (python3 not found)")
+      current["pyversion"]="2"
+      exe_python=exe_python2
+  else:
+    if exe_python2 is not None:
+      exe_python=exe_python2
+    else:
+      print("python interperter: python3 (python2 not found)")
+      current["pyversion"]="3"
+      exe_python=exe_python3
+
+moduleManagement(options.module)
+
+print(getInvocation(current))
+print
+
+if options.testlist!="":
+    testManagement(options.testlist)
+
+checkTestListCmake()
+#needed for cmake
+if not os.path.exists('src/testunits/testList.cmake'):
+    writeTestList(allTests())
+
+global sh,sh_no_exec
+sh=[];
+sh_no_exec=[]
+
+## SPECIAL RULES
+if current['rule']=='show':
+    showAll()
+    sys.exit(0)
+if current['rule']=='clean':
+    cleanAll()
+    sys.exit(0)
+if current['rule']=='uninstall':
+    uninstall(current)
+    execute(sh,options)
+    sys.exit(0)
+
+if current['rule']=='default':
+    current=default
+    print(getInvocation(current))
+
+for key in current:
+  if not key in not_persistent_options:
+    persistent[key]=current[key]
+shlv['persistent']=persistent
+shlv.sync()
+shlv.close()
+
+
+proceed(current,RANDOMSEED_FOR_FIXED_SEED="10")
+
+if not(current['stats']):
+  execute(sh,options)
+else:
+  execute(sh_no_exec,options)
+
+  print("###########################################")
+  print("Processing profile for "+getInvocation(current))
+  print("This will take a certain amount of time ...")
+  print("###########################################")
+  vals=list()
+  for i in range(nbr_tests_for_stats):
+    vals.append(execute_test_with_stats(sh,i,nbr_tests_for_stats))
+
+  s=0.0
+  s2=0.0
+  for v in vals:
+    s+=v
+    s2+=v*v
+  mean=s/nbr_tests_for_stats
+  var=s2/nbr_tests_for_stats-mean*mean
+  print("=======================")
+  print("Mean :{0}".format(mean))
+  print("StdDev :{0}".format(math.sqrt(var)))
