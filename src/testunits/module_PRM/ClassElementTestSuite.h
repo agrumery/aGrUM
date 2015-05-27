@@ -21,6 +21,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
+#include <agrum/core/exceptions.h>
 #include <agrum/PRM/elements/classElement.h>
 
 /**
@@ -77,6 +78,47 @@ namespace gum_tests {
       auto actual = elt.obj_type();
       // Assert
       TS_ASSERT_EQUALS(expected, actual);
+    }
+
+    void testSafeName(const ClassElt &elt) {
+      // Arrange
+      auto expected = gum::prm::PRMObject::LEFT_CAST()
+        + elt.type().name()
+        + gum::prm::PRMObject::RIGHT_CAST()
+        + "my_attr";
+      // Act
+      auto actual = elt.safeName();
+      // Assert
+      TS_ASSERT_EQUALS(expected, actual);
+    }
+
+    void testCast_NotAllowed(const ClassElt &elt) {
+      // Arrange
+      gum::LabelizedVariable foo{"foo", "A dummy variable"};
+      gum::prm::Type<double> bar{foo};
+      // Assert
+      try {
+        TS_ASSERT_THROWS(elt.cast(bar), gum::OperationNotAllowed);
+      } catch (gum::OperationNotAllowed& e) {
+
+      }
+    }
+
+    void testCast(const ClassElt &elt, const gum::prm::Type<double> &type) {
+      try {
+      // Arrange
+      auto expected = gum::prm::PRMObject::LEFT_CAST()
+        + type.name()
+        + gum::prm::PRMObject::RIGHT_CAST()
+        + elt.name();
+      std::string actual;
+      // Act
+      TS_ASSERT_THROWS_NOTHING(actual = elt.cast(type));
+      // Assert
+      TS_ASSERT_EQUALS(expected, actual);
+      } catch (gum::OperationNotAllowed &e) {
+        TS_FAIL("Exception raised");
+      }
     }
 
 

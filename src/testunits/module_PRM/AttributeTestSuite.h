@@ -104,6 +104,52 @@ namespace gum_tests {
       __classEltTestSuite->test_obj_type(attr);
     }
 
+    void testSafeName() {
+      // Arrange
+      gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
+      var.addLabel("False");
+      var.addLabel("True");
+      gum::prm::Type<double> type{var};
+      gum::prm::Attribute<double> attr{"my_attr", type};
+
+      // Act & Assert
+      __classEltTestSuite->testSafeName(attr);
+    }
+
+    void testCast_NotAllowed() {
+      // Arrange
+      gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
+      var.addLabel("False");
+      var.addLabel("True");
+      gum::prm::Type<double> type{var};
+      gum::prm::Attribute<double> attr{"my_attr", type};
+
+      // Act & Assert
+      __classEltTestSuite->testCast_NotAllowed(attr);
+    }
+
+    void testCast() {
+      // Arrange
+      gum::LabelizedVariable boolean_var{"boolean", "A boolean discrete variable", 0};
+      boolean_var.addLabel("False");
+      boolean_var.addLabel("True");
+
+      gum::LabelizedVariable state_var{"state", "A binary discete variable to represent a state", 0};
+      state_var.addLabel("OK");
+      state_var.addLabel("NOK");
+
+      std::vector<gum::Idx> map;
+      map.push_back(1);
+      map.push_back(0);
+
+      gum::prm::Type<double> boolean{boolean_var};
+      gum::prm::Type<double> state{boolean, map, state_var};
+      gum::prm::Attribute<double> attr{"my_attr", state};
+
+      // Act & Assert
+      __classEltTestSuite->testCast(attr, boolean);
+    }
+
   };
 
 } // gum_tests
