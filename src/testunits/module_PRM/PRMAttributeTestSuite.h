@@ -33,7 +33,7 @@
  */
 namespace gum_tests {
 
-  class AttributeTestSuite : public CxxTest::TestSuite {
+  class PRMAttributeTestSuite : public CxxTest::TestSuite {
     private:
       ClassElementTestSuite* __classEltTestSuite;
     public:
