@@ -23,6 +23,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
+#include <agrum/core/exceptions.h>
 #include <agrum/PRM/elements/type.h>
 
 #include <module_PRM/ClassElementTestSuite.h>
@@ -170,6 +171,199 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS( variable, __boolean );
     }
 
+    void testEqualityOperator() {
+      // Arrange
+      Type a { *__boolean };
+      Type b { *__boolean };
+      Type c { *__state };
+      // Act & Assert
+      TS_ASSERT( a == a );
+      TS_ASSERT( a == b );
+      TS_ASSERT( b == a );
+
+      TS_ASSERT( !(c == a) );
+      TS_ASSERT( !(a == c) );
+      TS_ASSERT( !(c == b) );
+      TS_ASSERT( !(b == c) );
+    }
+
+    void testInequalityOperator() {
+      // Arrange
+      Type a { *__boolean };
+      Type b { *__boolean };
+      Type c { *__state };
+
+      // Act & Assert
+      TS_ASSERT( !(a != a) );
+      TS_ASSERT( !(a != b) );
+      TS_ASSERT( !(b != a) );
+
+      TS_ASSERT( c != a );
+      TS_ASSERT( a != c );
+      TS_ASSERT( c != b );
+      TS_ASSERT( b != c );
+    }
+
+    void testObjType() {
+      // Arrange
+      Type boolean { *__boolean };
+      auto expected = gum::prm::PRMObject::PRMType::TYPE;
+      // Act
+      auto actual = boolean.obj_type();
+      // Assert
+      TS_ASSERT_EQUALS( expected, actual );
+    }
+
+    void testName() {
+      // Arrange
+      Type boolean { *__boolean };
+      auto expected = __boolean->name();
+      // Act
+      auto actual = boolean.name();
+      // Assert
+      TS_ASSERT_EQUALS( expected, actual );
+    }
+
+    void testIsSubType() {
+      // Arrange
+      Type boolean { *__boolean };
+      std::vector<gum::Idx> map;
+      map.push_back( 1 );
+      map.push_back( 0 );
+      Type state { boolean, map, *__state };
+      // Act & Assert
+      TS_ASSERT( state.isSubType() );
+      TS_ASSERT( not boolean.isSubType() );
+    }
+    
+    void testIsSubTypeOf() {
+      // Arrange
+      Type boolean { *__boolean };
+      std::vector<gum::Idx> map;
+      map.push_back( 1 );
+      map.push_back( 0 );
+      Type state { boolean, map, *__state };
+      Type dummy { *__state };
+      // Act & Assert
+      TS_ASSERT( state.isSubTypeOf(boolean) );
+      TS_ASSERT( state.isSubTypeOf(state) );
+      TS_ASSERT( not boolean.isSubTypeOf(state) );
+      TS_ASSERT( not dummy.isSubTypeOf(boolean) );
+      TS_ASSERT( not boolean.isSubTypeOf(dummy) );
+      TS_ASSERT( dummy.isSubTypeOf(state) );
+      TS_ASSERT( state.isSubTypeOf(dummy) );
+    }
+
+    void testIsSuperTypeOf() {
+      // Arrange
+      Type boolean { *__boolean };
+      std::vector<gum::Idx> map;
+      map.push_back( 1 );
+      map.push_back( 0 );
+      Type state { boolean, map, *__state };
+      Type dummy { *__state };
+      // Act & Assert
+      TS_ASSERT( boolean.isSuperTypeOf(state) );
+      TS_ASSERT( state.isSuperTypeOf(state) );
+      TS_ASSERT( not state.isSuperTypeOf(boolean) );
+      TS_ASSERT( not dummy.isSuperTypeOf(boolean) );
+      TS_ASSERT( not boolean.isSuperTypeOf(dummy) );
+      TS_ASSERT( dummy.isSuperTypeOf(state) );
+      TS_ASSERT( state.isSuperTypeOf(dummy) );
+    }
+
+    void testSuper() {
+      // Arrange
+      Type boolean { *__boolean };
+      std::vector<gum::Idx> map;
+      map.push_back( 1 );
+      map.push_back( 0 );
+      Type state { boolean, map, *__state };
+      Type *super = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( super = &( state.super() ) );
+      // Act & Assert
+      TS_ASSERT_EQUALS( *super, boolean );
+    }
+
+    void testSuperConst() {
+      // Arrange
+      Type boolean { *__boolean };
+      std::vector<gum::Idx> map;
+      map.push_back( 1 );
+      map.push_back( 0 );
+      Type state { boolean, map, *__state };
+      const auto &dummy = state;
+      Type const *super = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( super = &( dummy.super() ) );
+      // Act & Assert
+      TS_ASSERT_EQUALS( *super, boolean );
+    }
+
+    void testSuperNotFound() {
+      // Arrange
+      Type boolean { *__boolean };
+      // Act & Assert
+      TS_ASSERT_THROWS( boolean.super(), gum::NotFound );
+    }
+
+    void testSetSuper() {
+      // Arrange
+      Type boolean { *__boolean };
+      std::vector<gum::Idx> map;
+      map.push_back( 1 );
+      map.push_back( 0 );
+      Type state { boolean, map, *__state };
+      Type boolean_bis { *__boolean };
+      // Act
+      TS_ASSERT_THROWS_NOTHING( state.setSuper( boolean_bis ) );
+      // Assert
+      TS_ASSERT_EQUALS( state.super(), boolean );
+      TS_ASSERT_EQUALS( state.super(), boolean_bis );
+      TS_ASSERT_DIFFERS( &(state.super()), &boolean );
+      TS_ASSERT_EQUALS( &(state.super()), &boolean_bis );
+    }
+
+    void testSetSuperWrongtype() {
+      // Arrange
+      Type boolean { *__boolean };
+      std::vector<gum::Idx> map;
+      map.push_back( 1 );
+      map.push_back( 0 );
+      Type state { boolean, map, *__state };
+      Type state_bis { *__state };
+      // Act & Assert
+      TS_ASSERT_THROWS( state.setSuper( state_bis ), gum::WrongType );
+    }
+
+    void testSetSuperOperationNotAllowed() {
+      // Arrange
+      Type boolean { *__boolean };
+      Type state { *__state };
+      // Act & Assert
+      TS_ASSERT_THROWS( state.setSuper( boolean ), gum::OperationNotAllowed );
+    }
+
+    void testLabelMap() {
+      // Arrange
+      Type boolean { *__boolean };
+      std::vector<gum::Idx> map;
+      map.push_back( 1 );
+      map.push_back( 0 );
+      Type state { boolean, map, *__state };
+      // Act 
+      auto actual = state.label_map();
+      // Assert
+      TS_ASSERT_EQUALS( map, actual);
+    }
+
+    void testLabelMapNotFound() {
+      // Arrange
+      Type boolean { *__boolean };
+      // Act & Assert
+      TS_ASSERT_THROWS( boolean.label_map(), gum::NotFound );
+    }
   };
 
 } // gum_tests
