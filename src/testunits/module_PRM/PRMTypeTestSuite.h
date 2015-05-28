@@ -37,12 +37,24 @@ namespace gum_tests {
   class PRMTypeTestSuite : public CxxTest::TestSuite {
     typedef gum::prm::Type<double> Type;
 
+    gum::LabelizedVariable *__boolean;
+    gum::LabelizedVariable *__state;
+
     public:
 
     void setUp() {
+      __boolean = new gum::LabelizedVariable { "boolean", "Boolean variable", 0 };
+      __boolean->addLabel( "false" );
+      __boolean->addLabel( "true" );
+
+      __state = new gum::LabelizedVariable { "state", "State variable", 0 };
+      __state->addLabel( "OK" );
+      __state->addLabel( "NOK" );
     }
 
     void tearDown() {
+      delete __boolean;
+      delete __state;
     }
 
     void testStaticBoolean() {
@@ -57,6 +69,105 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(boolean->variable().label(0), labels[0]);
       TS_ASSERT_EQUALS(boolean->variable().label(1), labels[1]);
       delete boolean;
+    }
+
+    void testConstructor() {
+      // Arrange
+      Type *type = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( type = new Type { *__boolean } );
+      // Assert
+      TS_ASSERT_THROWS_NOTHING( delete type );
+    }
+
+    void testSuperConstructor() {
+      // Arrange
+      Type boolean { *__boolean };
+      Type *state = nullptr;
+      std::vector<gum::Idx> map;
+      map.push_back( 1 );
+      map.push_back( 0 );
+      // Act
+      try {
+        state = new Type { boolean, map, *__state };
+      } catch (...) {
+        // TS_ASSERT_THROWS_NOTHING does not work here
+        TS_FAIL( "Exception thrown" );
+      }
+      // Assert
+      TS_ASSERT_THROWS_NOTHING( delete state );
+    }
+
+    void testCopyConstructor() {
+      // Arrange
+      Type boolean { *__boolean };
+      Type *copy = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( copy = new Type { boolean } );
+      // Assert
+      TS_ASSERT_THROWS_NOTHING( delete copy );
+    }
+
+    void testGetVariable() {
+      // Arrange
+      Type boolean { *__boolean };
+      gum::DiscreteVariable *variable = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( variable = &( boolean.variable() ) );
+      // Assert
+      TS_ASSERT_EQUALS( variable->name(), __boolean->name() );
+      TS_ASSERT_EQUALS( variable->description(), __boolean->description() );
+      TS_ASSERT_EQUALS( variable->label(0), __boolean->label(0) );
+      TS_ASSERT_EQUALS( variable->label(1), __boolean->label(1) );
+      TS_ASSERT_EQUALS( variable->domainSize(), __boolean->domainSize() );
+      TS_ASSERT_DIFFERS( variable, __boolean );
+    }
+
+    void testGetVariableConst() {
+      // Arrange
+      Type boolean { *__boolean };
+      const Type &const_boolean = boolean;
+      gum::DiscreteVariable const *variable = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( variable = &( const_boolean.variable() ) );
+      // Assert
+      TS_ASSERT_EQUALS( variable->name(), __boolean->name() );
+      TS_ASSERT_EQUALS( variable->description(), __boolean->description() );
+      TS_ASSERT_EQUALS( variable->label(0), __boolean->label(0) );
+      TS_ASSERT_EQUALS( variable->label(1), __boolean->label(1) );
+      TS_ASSERT_EQUALS( variable->domainSize(), __boolean->domainSize() );
+      TS_ASSERT_DIFFERS( variable, __boolean );
+    }
+
+    void testIndirectionOperator() {
+      // Arrange
+      Type boolean { *__boolean };
+      gum::DiscreteVariable *variable = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( variable = &( *boolean ) );
+      // Assert
+      TS_ASSERT_EQUALS( variable->name(), __boolean->name() );
+      TS_ASSERT_EQUALS( variable->description(), __boolean->description() );
+      TS_ASSERT_EQUALS( variable->label(0), __boolean->label(0) );
+      TS_ASSERT_EQUALS( variable->label(1), __boolean->label(1) );
+      TS_ASSERT_EQUALS( variable->domainSize(), __boolean->domainSize() );
+      TS_ASSERT_DIFFERS( variable, __boolean );
+    }
+
+    void testIndirectionOperatorConst() {
+      // Arrange
+      Type boolean { *__boolean };
+      const Type &const_boolean = boolean;
+      gum::DiscreteVariable const *variable = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( variable = &( *const_boolean ) );
+      // Assert
+      TS_ASSERT_EQUALS( variable->name(), __boolean->name() );
+      TS_ASSERT_EQUALS( variable->description(), __boolean->description() );
+      TS_ASSERT_EQUALS( variable->label(0), __boolean->label(0) );
+      TS_ASSERT_EQUALS( variable->label(1), __boolean->label(1) );
+      TS_ASSERT_EQUALS( variable->domainSize(), __boolean->domainSize() );
+      TS_ASSERT_DIFFERS( variable, __boolean );
     }
 
   };

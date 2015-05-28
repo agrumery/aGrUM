@@ -18,6 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef GUM_CLASSELEMENT_TEST_SUITE_H
+#define GUM_CLASSELEMENT_TEST_SUITE_H
+
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
@@ -125,3 +128,5 @@ namespace gum_tests {
   };
 
 } // gum_tests
+
+#endif // GUM_CLASSELEMENT_TEST_SUITE_H
