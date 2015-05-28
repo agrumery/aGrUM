@@ -127,7 +127,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE DiscreteVariable *Type<GUM_SCALAR>::operator->() const {
+    INLINE DiscreteVariable *Type<GUM_SCALAR>::operator->() {
+      return __var;
+    }
+
+    template <typename GUM_SCALAR>
+    INLINE DiscreteVariable const *Type<GUM_SCALAR>::operator->() const {
       return __var;
     }
 

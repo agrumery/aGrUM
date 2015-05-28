@@ -127,19 +127,24 @@ namespace gum {
       /// @{
 
       /**
-       * Dereference on the DiscreteVariable contained in this.
+       * Indirection on the DiscreteVariable contained in this.
        */
       DiscreteVariable &operator*();
 
       /**
-       * Constant dereference on the DiscreteVariable contained in this.
+       * Constant indirection on the DiscreteVariable contained in this.
        */
       const DiscreteVariable &operator*() const;
 
       /**
        * Dereference the DiscreteVariable contained in this.
        */
-      DiscreteVariable *operator->() const;
+      DiscreteVariable *operator->();
+
+      /**
+       * Constant dereference the DiscreteVariable contained in this.
+       */
+      DiscreteVariable const *operator->() const;
 
       /**
        * Equality operator.
