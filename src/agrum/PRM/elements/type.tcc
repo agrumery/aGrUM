@@ -64,7 +64,8 @@ namespace gum {
       }
     }
 
-    template <typename GUM_SCALAR> Type<GUM_SCALAR>::~Type() {
+    template <typename GUM_SCALAR>
+    Type<GUM_SCALAR>::~Type() {
       GUM_DESTRUCTOR(Type);
       delete __var;
       if (__label_map) {
@@ -103,7 +104,11 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Type<GUM_SCALAR> &Type<GUM_SCALAR>::super() {
-      return *__super;
+      if (__super) {
+        return *__super;
+      } else {
+        GUM_ERROR(NotFound, "No super type for this type.");
+      }
     }
 
     template <typename GUM_SCALAR>
@@ -159,10 +164,10 @@ namespace gum {
     INLINE void Type<GUM_SCALAR>::setSuper(Type<GUM_SCALAR> &t) {
       try {
         if (t != super()) {
-          GUM_ERROR(WrongType, "the given Type is not equal to this Type super.");
+          GUM_ERROR(WrongType, "The given type is not a valid super type for this Type");
         }
       } catch (NotFound &) {
-        GUM_ERROR(OperationNotAllowed, "this Type has no super Type");
+        GUM_ERROR(OperationNotAllowed, "This Type has no super Type");
       }
 
       __super = &t;

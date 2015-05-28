@@ -179,6 +179,8 @@ namespace gum {
 
       /**
        * Returns true if this is a subtype of super.
+       * Note that two types that are equal are also subtypes,
+       * if a == b then a.isSubTypeOf(b) == b.isSubTypeOf(a) == true.
        */
       bool isSubTypeOf(const Type &super) const;
 
