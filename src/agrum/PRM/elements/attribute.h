@@ -75,28 +75,32 @@ namespace gum {
        * @param name The name of this Attribute.
        * @param type The type of this Attribute, it is copied.
        * @param impl The MultiDimImplementation used by the internal Potential of
-       * this Attribute.
-       *             it will be deleted after the call of ~Attribute.
+       *             this Attribute. It will be deleted after the call of
+       *             ~Attribute.
        */
-      Attribute(const std::string &name, const Type<GUM_SCALAR> &type,
+      Attribute(const std::string &name,
+                const Type<GUM_SCALAR> &type,
                 MultiDimImplementation<GUM_SCALAR> *impl =
-                    new MultiDimArray<GUM_SCALAR>());
+                  new MultiDimArray<GUM_SCALAR>());
 
       /**
        * @brief Constructor used by gum::Instance.
        * This will create an Attribute with a ready Potential, however it will check
        * the existence
        * of type in cpf and raise an exception if it is not found.
-       * @param type The type of this attribute, it will be deleted after a call to
-       * ~Attribute.
+       * @param type The type of this attribute.
        * @param name The name of this Attribute.
        * @param cpf The Potential of this Attribute, it will be deleted after the
-       * call of
-       *            ~Attribute.
+       *            call of ~Attribute.
        * @param delete_type If true, the type is deleted with this instance.
+       *
+       * @throw gum::InvalidArgument Raised if cpf does not contain a pointer toward
+       *                             type.variable().
        */
-      Attribute(const std::string &name, Type<GUM_SCALAR> *type,
-                Potential<GUM_SCALAR> *cpf, bool delete_type);
+      Attribute(const std::string &name,
+                Type<GUM_SCALAR> *type,
+                Potential<GUM_SCALAR> *cpf,
+                bool delete_type);
 
       /// Destructor.
       virtual ~Attribute();

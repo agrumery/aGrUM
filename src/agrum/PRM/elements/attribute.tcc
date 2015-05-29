@@ -43,28 +43,34 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    Attribute<GUM_SCALAR>::Attribute(const std::string &name, Type<GUM_SCALAR> *type,
-                                     Potential<GUM_SCALAR> *cpf, bool delete_type)
-        : ClassElement<GUM_SCALAR>(name), __type(type), __cpf(cpf),
-          __delete_type(delete_type) {
+    Attribute<GUM_SCALAR>::Attribute(const std::string &name,
+                                     Type<GUM_SCALAR> *type,
+                                     Potential<GUM_SCALAR> *cpf,
+                                     bool delete_type)
+        : ClassElement<GUM_SCALAR>(name),
+          __type(type),
+          __cpf(cpf),
+          __delete_type(delete_type)
+    {
+      if (not __cpf->variablesSequence().exists(&(type->variable()))) {
+        std::string msg = "the given Potential does not contain the type of this Attribute.";
+        GUM_ERROR( InvalidArgument, msg);
+      }
+
+      // If Error raised, it will thin this attribute was not properly disposed of
       GUM_CONSTRUCTOR(Attribute);
-
-      if (not __cpf->variablesSequence().exists(&(type->variable())))
-        GUM_ERROR(
-            OperationNotAllowed,
-            "the given Potential does not contain the type of this Attribute.");
-
-      this->_safeName =
-          PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
+      this->_safeName = PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
     }
 
     template <typename GUM_SCALAR>
     Attribute<GUM_SCALAR>::Attribute(const Attribute<GUM_SCALAR> &source)
         : ClassElement<GUM_SCALAR>(source),
-          __type(new Type<GUM_SCALAR>(source.type())), __cpf(0) {
+          __type(new Type<GUM_SCALAR>(source.type())),
+          __cpf(0)
+    {
       GUM_CONS_CPY(Attribute);
-      GUM_ERROR(FatalError,
-                "Illegal call to the copy constructor of gum::Attribute");
+      std::string msg = "Illegal call to the copy constructor of gum::Attribute";
+      GUM_ERROR(FatalError, msg);
     }
 
     template <typename GUM_SCALAR> Attribute<GUM_SCALAR>::~Attribute() {
