@@ -38,17 +38,26 @@ namespace gum_tests {
       typedef gum::prm::Attribute<double> Attribute;
       ClassElementTestSuite* __classEltTestSuite;
       gum::prm::Type<double> *__boolean;
+      gum::prm::Type<double> *__state;
 
     public:
 
       void setUp() {
         __classEltTestSuite = new ClassElementTestSuite;
         __boolean = gum::prm::Type<double>::boolean();
+        gum::LabelizedVariable state { "state", "A state variable", 0 };
+        state.addLabel( "OK" );
+        state.addLabel( "NOK" );
+        std::vector<gum::Idx> map;
+        map.push_back( 1 );
+        map.push_back( 0 );
+        __state = new gum::prm::Type<double> { *__boolean, map, state };
       }
 
       void tearDown() {
         delete __classEltTestSuite;
         delete __boolean;
+        delete __state;
       }
 
       /// ClassElement Tests 
@@ -292,6 +301,106 @@ namespace gum_tests {
     }
 
     /// @}
+
+    /// Add parents and children
+    /// @{
+    void testAddParentCheckChild() {
+      // Arrange
+      Attribute parent { "attr", *__boolean };
+      Attribute child { "attr", *__boolean };
+      auto before = child.cpf().variablesSequence().size();
+      // Act
+      TS_ASSERT_THROWS_NOTHING( child.addParent( parent ) );
+      // Assert
+      auto after = child.cpf().variablesSequence().size();
+      TS_ASSERT_EQUALS( before + 1, after );
+      TS_ASSERT( child.cpf().contains( parent.type().variable() ) );
+    }
+
+    void testAddParentDupplicateError() {
+      // Arrange
+      Attribute parent { "attr", *__boolean };
+      Attribute child { "attr", *__boolean };
+      child.addParent( parent );
+      auto before = child.cpf().variablesSequence().size();
+      // Act
+      TS_ASSERT_THROWS( child.addParent( parent ), gum::DuplicateElement );
+      // Assert
+      auto after = child.cpf().variablesSequence().size();
+      TS_ASSERT_EQUALS( before, after );
+      TS_ASSERT( child.cpf().contains( parent.type().variable() ) );
+    }
+
+    void testAddChild() {
+      // Arrange
+      Attribute parent { "attr", *__boolean };
+      Attribute child { "attr", *__boolean };
+      auto before = parent.cpf().variablesSequence().size();
+      // Act
+      TS_ASSERT_THROWS_NOTHING( parent.addChild( child ) );
+      // Assert
+      auto after = parent.cpf().variablesSequence().size();
+      TS_ASSERT_EQUALS( before, after );
+      TS_ASSERT( not parent.cpf().contains( child.type().variable() ) );
+    }
+    /// @}
+
+    /// Get and set Cast Descendants
+    /// @{
+    void testGetCastDescendant() {
+      // Arrange
+      Attribute state { "state", *__state };
+      Attribute *cast = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( cast = state.getCastDescendant() );
+      // Assert
+      TS_ASSERT_DIFFERS( cast, nullptr );
+      TS_ASSERT_EQUALS( cast->type(), *__boolean );
+      TS_ASSERT_DIFFERS( &( cast->type().variable() ), &( __boolean->variable() ) );
+      TS_ASSERT( cast->cpf().contains( cast->type().variable() ) );
+      TS_ASSERT( cast->cpf().contains( state.type().variable() ) );
+      TS_ASSERT_THROWS_NOTHING( delete cast );
+    }
+
+    void testSetAsCastDescendant() {
+      // Arrange
+      Attribute boolean { "boolean", *__boolean };
+      Attribute state { "sate", *__state };
+      auto before = boolean.cpf().variablesSequence().size();
+      // Act
+      TS_ASSERT_THROWS_NOTHING( state.setAsCastDescendant( &boolean ) );
+      // Assert
+      auto after = boolean.cpf().variablesSequence().size();
+      TS_ASSERT_EQUALS( before + 1, after );
+    }
+
+    void testSetAsCastDescendantOperationNotAllowed() {
+      // Arrange
+      Attribute boolean { "boolean", *__boolean };
+      Attribute boolean_bis { "boolean", *__boolean };
+      auto before = boolean.cpf().variablesSequence().size();
+      // Act
+      TS_ASSERT_THROWS( boolean_bis.setAsCastDescendant( &boolean ), gum::OperationNotAllowed );
+      // Assert
+      auto after = boolean.cpf().variablesSequence().size();
+      TS_ASSERT_EQUALS( before, after );
+    }
+
+    void testSetAsCastDescendantTypeError() {
+      // Arrange
+      gum::LabelizedVariable foovar { "Foo", "Bar", 5 };
+      Attribute foo { "foobar", foovar };
+      Attribute state { "state", *__state };
+      auto before = foo.cpf().variablesSequence().size();
+      // Act
+      TS_ASSERT_THROWS( state.setAsCastDescendant( &foo ), gum::WrongType );
+      // Assert
+      auto after = foo.cpf().variablesSequence().size();
+      TS_ASSERT_EQUALS( before, after );
+    }
+
+    /// @}
+
   };
 
 } // gum_tests
