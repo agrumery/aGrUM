@@ -23,7 +23,8 @@
 from optparse import OptionParser
 import shelve
 
-from configuration import cfg
+from configuration import cfg,warn,error,notif,critic
+from invocation import showInvocation
 
 def getCurrent():
   current={}
@@ -36,8 +37,14 @@ def getCurrent():
 
   return current
 
-def initParser(current):
-    us="%prog [options] ["+"|".join(cfg.LIST_ACTIONS)+"] ["+"|".join(cfg.LIST_MODES)+"] ["+"|".join(cfg.LIST_TARGETS)+"]"
+def setCurrent(current):
+  shlv=shelve.open(cfg.configFile,writeback=True)
+  for key in current.keys():
+    if not key in cfg.non_persistent:
+      shlv[key]=current[key]
+
+def parseCommandLine(current):
+    us="%prog [options] ["+"|".join(cfg.actions)+"] ["+"|".join(cfg.modes)+"] ["+"|".join(cfg.targets)+"]"
     parser=OptionParser(usage=us,description="Compilation tools for aGrUM and wrappers",
                         version="%prog v"+cfg.numversion)
     parser.add_option("", "--no-fun",
@@ -65,7 +72,7 @@ def initParser(current):
                                         action="store_true",
                                         dest="stats",
                                         default=False)
-    parser.add_option("", "--1by1",
+    parser.add_option("", "--oneByOne",
                                         help="aGrUM debug tests one by one (searching leaks).",
                                         action="store_true",
                                         dest="oneByOne",
@@ -80,10 +87,10 @@ def initParser(current):
                                         type='int',
                                         dest="jobs",
                                         default=current['jobs'])
-    parser.add_option("-t","--testlist",
-                                        help="testlist management : {show|all|test1+test2+test3}",
+    parser.add_option("-t","--tests",
+                                        help="tests management : {show|all|test1+test2+test3}",
                                         metavar="TESTS-COMMAND",
-                                        dest="testlist",
+                                        dest="tests",
                                         default=current['tests'])
     parser.add_option("-m","--module",
                                         help="module management : {show|all|module1+module2+module3}",
@@ -100,4 +107,68 @@ def initParser(current):
                                         choices=["2", "3"],
                                         dest="pyversion",
                                         default="3")
-    return parser
+    return parser.parse_args()
+
+def setifyString(s):
+  return set(filter(None,s.split("+"))) # filter to setify "a++b+c" into set(['a','b','c'])
+
+def updateCurrent(current,options,args):
+  #helper
+  def update(current,key,val,test):
+    if test:
+      if current[key]!=val:
+        warn("{0} changed : {1} -> {2}".format(key,current[key],val))
+        current[key]=val
+    return test
+  #end of helper
+
+  # fixing options
+  for opt, value in options.__dict__.items():
+    if opt not in current:
+      error("Options not known : {0} in {1}".format(opt,current.keys()))
+
+    update(current,opt,value,current[opt]!=value)
+
+  bT=bA=bM=False
+  # fixing args
+  for arg in args:
+    t=setifyString(arg)
+    if update(current,'targets',t,t.issubset(cfg.targets)):
+      if bT:
+        error("Targets overwritten by [{0}]".format("+".join(t)))
+      bT=True
+      continue
+    if update(current,'action',arg,arg in cfg.actions):
+      if bA:
+        error("Action overwritten by [{0}]".format(arg))
+      bA=True
+      continue
+    if update(current,'mode',arg,arg in cfg.modes):
+      if bM:
+        error("Mode overwritten by [{0}]".format(arg))
+      bM=True
+      continue
+
+    error("[{0}] unknown".format(arg))
+
+  setCurrent(current)
+  showInvocation(current)
+  checkConsistency(current)
+
+
+def checkConsistency(current):
+  # helper
+  def check_aGrumTest(option,current):
+    if current[option] :
+      prefix="Option [{0}] acts only".format(option)
+      if current['targets']!=['aGrUM']:
+        notif(prefix+" on target [aGrUM].")
+      if current['action']!='test':
+        critic(prefix+" on action [test] (not on [{0}]).".format(current['action']))
+  #end of helper
+
+  if current['stats'] and current['oneByOne']:
+    notif("Options [stats] and [oneByOne] are mutually exclusive")
+
+  check_aGrumTest('stats',current)
+  check_aGrumTest('oneByOne',current)

@@ -24,6 +24,9 @@
 
 ##########################################################################################################################
 # ANSI colored string
+import sys
+import re
+
 try:
    import colorama
    colorama.init()
@@ -32,18 +35,11 @@ except:
        import tendo.ansiterm
    except:
        pass
-import re
 import const as cfg
 
 cfg.numversion="2.0"
 cfg.modulesFile="src/modules.txt" # the file to parse to find the modules
 cfg.configFile=".options.act2.py" #
-
-
-cfg.C_VALUE = '\033[1m\033[32m'
-cfg.C_WARNING = '\033[1m\033[33m'
-cfg.C_ERROR = '\033[1m\033[31m'
-cfg.C_END = '\033[0m'
 
 cfg.nbr_tests_for_stats=40
 
@@ -59,33 +55,65 @@ def parseModulesTxt(filename=cfg.modulesFile):
         if descr==0:
           descr=module
         modules[module]=descr
-  return modules
+  return set(modules)
 
-cfg.LIST_ACTIONS="lib test install doc clean show uninstall package".split()
-cfg.LIST_MODES="debug release".split()
-cfg.LIST_TARGETS="aGrUM pyAgrum jAgrum".split()
-cfg.LIST_MODULES=parseModulesTxt()
+cfg.actions=set("lib test install doc clean show uninstall package".split())
+cfg.modes=set("debug release".split())
+cfg.targets=set("aGrUM pyAgrum jAgrum".split())
+cfg.modules=parseModulesTxt()
 
 cfg.default={}
-cfg.default['actions']="lib"
-cfg.default['targets']="aGrUM"
+cfg.default['action']="lib"
+cfg.default['targets']=set(["aGrUM"])
 cfg.default['modules']='ALL'
 cfg.default['mode']="release"
 cfg.default['verbose']=False
 cfg.default['destination']="/usr"
-cfg.default['jobs']="5"
+cfg.default['jobs']=5
 cfg.default['static_lib']=False
 cfg.default['fixed_seed']=False
 cfg.default['no_fun']=False
 cfg.default['stats']=False
-cfg.default['onebyone']=False
+cfg.default['oneByOne']=False
 cfg.default['tests']='all'
 cfg.default['pyversion']="3"
 
-cfg.non_persistent=["fixed_seed","stats","no_fun","static_lib","onebyone","stats"]
+cfg.non_persistent=["fixed_seed","stats","no_fun","static_lib","oneByOne"]
 
+
+def configureColors(no_fun=False):
+  if no_fun:
+    cfg.C_VALUE = ''
+    cfg.C_WARNING = ''
+    cfg.C_ERROR = ''
+    cfg.C_END = ''
+  else:
+    cfg.C_VALUE = '\033[1m\033[32m'
+    cfg.C_WARNING = '\033[1m\033[33m'
+    cfg.C_ERROR = '\033[1m\033[31m'
+    cfg.C_END = '\033[0m'
+
+def configureOutputs(options):
+  cfg.verbosity=options.verbose
+  configureColors(options.no_fun)
 
 def about():
   print(cfg.C_END+cfg.C_WARNING+"aGrUM"+cfg.C_END+" compilation tool "+cfg.C_VALUE+cfg.numversion+cfg.C_END)
   print("(c) 2010-15 "+cfg.C_ERROR+"aGrUM Team"+cfg.C_END)
-  print("\n")
+  print("")
+
+def notif(s):
+  print("-- "+cfg.C_VALUE+s+cfg.C_END)
+
+def warn(s):
+  if cfg.verbosity:
+    print("-- "+cfg.C_WARNING+s+cfg.C_END)
+
+def error(s):
+  print("-- "+cfg.C_ERROR+s+cfg.C_END)
+
+def critic(s):
+  error(s)
+  print("\n-- "+cfg.C_ERROR+"stopped."+cfg.C_END+"\n")
+  sys.exit(1)
+

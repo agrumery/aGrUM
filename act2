@@ -22,13 +22,18 @@
 #***************************************************************************
 from __future__ import print_function
 
-from acttools.configuration import about
-from acttools.commandline import getCurrent,initParser
+from acttools import *
 
+# options management
 current=getCurrent()
-parser=initParser(current)
-(options, args)=parser.parse_args()
+(options, args)=parseCommandLine(current)
 
-about()
-print("options: {0}".format(options))
-print("arg: {0}".format(args))
+# colors, fun & verbosity
+configureOutputs(options)
+
+if not options.no_fun:
+  about()
+
+updateCurrent(current,options,args)
+
+# from now, current contains the specification

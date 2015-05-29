@@ -20,69 +20,37 @@
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
+from configuration import cfg
+
 def _getParam(name):
-  return C_END+'--'+C_ERROR+name
+  return cfg.C_END+'--'+cfg.C_ERROR+name
 
 def getParam(name):
   return _getParam(name)+" "
 
 def getValParam(name,val):
-  return _getParam(name)+C_END+'='+C_VALUE+val+" "
+  return _getParam(name)+cfg.C_END+'='+cfg.C_VALUE+str(val)+" "
 
 def getCommand(name):
-  return OKGREEN+name+" "
+  return cfg.C_WARNING+name+" "
 
-def showInvocation(current):
-    invocation=C_WARNING+"invocation"+C_END+" : "+"act "
+def showInvocation(current,forced=False):
+  if forced or not current['no_fun']:
+    invocation=cfg.C_WARNING+"invocation"+cfg.C_END+" : "+"act "
 
-    invocation+=getCommand(current['rule'])
+    invocation+=getCommand(current['action'])
+    invocation+=getCommand(current['mode'])
+    invocation+=getCommand("+".join(current['targets']))
 
-    if not current['rule'] in "show clean uninstall default".split():
-      if current['rule']=='wrapper':
-        invocation+=getCommand(current['wrapper'])
-      else:
-        invocation+=getCommand(current['option'])
+    for opt in current.keys():
+      if not opt in ['action','mode','targets']:
+        if not opt in cfg.non_persistent:
+          invocation+=getValParam(opt,current[opt])
 
-      invocation+=getValParam('module',current['module'])
+    for opt in cfg.non_persistent:
+      if current[opt]:
+        invocation+=getParam(opt)
 
-      if (current['rule']=='test'):
-        invocation+=getValParam('testlist',current['testlist'])
-        if current['test_base']:
-          invocation+=getParam("with-test-base")
-        else:
-          invocation+=getParam("without-test-base")
-
-      if (current['rule']=='install'):
-        invocation+=getValParam('dest',current['destination'])
-
-      invocation+=getValParam('platform',current['platform'])
-
-      if (current['verbose']):
-        invocation+=getParam('verbose')
-      else:
-        invocation+=getParam('quiet')
-
-      if (current['static_lib']):
-        invocation+=getParam('static_lib')
-
-      if (current['stats']):
-        invocation+=getParam('stats')
-
-      if (current['1by1']):
-        invocation+=getParam('1by1')
-
-      if (current['fixed_seed']):
-        invocation+=getParam('fixed_seed')
-
-      if (current['no_fun']):
-        invocation+=getParam('no_fun')
-
-      invocation+=getValParam('jobs',str(current['jobs']))
-
-      invocation+=getValParam('python',current['pyversion'])
-    else:
-      if current['rule']=="uninstall":
-        invocation+=getCommand(current['option'])
-
-    invocation+=C_END
-    return invocation
+    invocation+=cfg.C_END
+    print(invocation)
+    print("")
