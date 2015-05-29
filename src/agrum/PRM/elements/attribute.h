@@ -126,12 +126,23 @@ namespace gum {
       /// See gum::ClassElement::cpf().
       virtual const Potential<GUM_SCALAR> &cpf() const;
 
+      /// @}
+      // ========================================================================
+      /// @name Adding parents & children
+      // ========================================================================
+      /// @{
+
       /// See gum::ClassElement::_addParent().
       virtual void addParent(const ClassElement<GUM_SCALAR> &elt);
 
       /// See gum::ClassElement::_addChild().
       virtual void addChild(const ClassElement<GUM_SCALAR> &elt);
 
+      /// @}
+      // ========================================================================
+      /// @name Cast descendants
+      // ========================================================================
+      /// @{
       /**
        * @brief Returns a proper cast descendant of this Attribute.
        *
