@@ -164,27 +164,24 @@ namespace gum {
       /**
        * @brief Define attr as a cast descendant of this Attribute.
        *
-       * When overloading an inherited Attribute using of subtype of it,
-       * it is necessary to change the inherited Attribute CPF to make it
-       * a proper cast descendant.
+       * When overloading an inherited Attribute with a subtype,
+       * it is necessary to change the inherited Attribute's CPF.
        *
-       * Furthermore it is necessary to change the DiscreteVariable used
-       * by this Attribute's super Type<GUM_SCALAR> in order to have the same
-       *pointers in
-       * both super Type<GUM_SCALAR> (i.e. this->type().super().variable()) and the
-       * cast descendant CPF (i.e. attr->cpf()).
+       * It is also necessary to change the DiscreteVariable used
+       * by this Attribute's supertype in order to have the same
+       * pointers in both supertype (i.e. this->type().super().variable())
+       * and cpf (i.e. attr->cpf()).
        *
-       * This can only be done if attr Type<GUM_SCALAR> is a direct subtype of this
-       * Attribute Type<GUM_SCALAR> (i.e. this->type().super() == attr->type()).
+       * This can only be done if attr->type() is a direct subtype of 
+       * this->type() (i.e. this->type().super() == attr->type()).
        *
        * @param attr The Attribute which is transformed to be this Attribute
        *             cast descendant.
        *
        * @throw OperationNotAllowed Raised if this Attribute can not have any
        *                            cast descendant.
-       * @throw TypeError Raised if attr's Type<GUM_SCALAR> is not a direct
-       *descendant of
-       *                  this Attribute's Type<GUM_SCALAR>.
+       * @throw WrongType Raised if attr's Type<GUM_SCALAR> is not a direct
+       *                  descendant of this Attribute's Type<GUM_SCALAR>.
        */
       void setAsCastDescendant(Attribute *attr);
 
