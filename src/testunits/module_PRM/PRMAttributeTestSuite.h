@@ -51,8 +51,8 @@ namespace gum_tests {
         delete __boolean;
       }
 
-      /// @{
       /// ClassElement Tests 
+      /// @{
       void testIsReferenceSlot() {
         // Arrange
         gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
@@ -158,6 +158,8 @@ namespace gum_tests {
       }
       /// @}
 
+      /// Constructor & destructor
+      /// @{
       void testClassConstructor() {
         // Arrange
         std::string name = "my_state";
@@ -227,7 +229,69 @@ namespace gum_tests {
         delete cpf;
         delete type;
       }
+      /// @}
 
+    /// Getters & setters
+    /// @{
+    void testType() {
+      // Arrange
+      Attribute attr { "attr", *__boolean };
+      auto &expected = *__boolean;
+      // Act
+      auto &actual = attr.type();
+      // Assert
+      TS_ASSERT_EQUALS( expected, actual );
+      TS_ASSERT_DIFFERS( &expected, &actual );
+    }
+
+    void testTypeConst() {
+      // Arrange
+      Attribute attr { "attr", *__boolean };
+      const auto &attr_const = attr;
+      const auto &expected = *__boolean;
+      // Act
+      const auto &actual = attr_const.type();
+      // Assert
+      TS_ASSERT_EQUALS( expected, actual );
+      TS_ASSERT_DIFFERS( &expected, &actual );
+    }
+
+    void testCpf() {
+      // Arrange
+      Attribute attr { "attr", *__boolean };
+      gum::Potential<double> expected;
+      expected << attr.type().variable();
+      // Act
+      auto &actual = attr.cpf();
+      // Assert
+      gum::Instantiation i(expected);
+      gum::Instantiation j(actual);
+      for ( i.setFirst(), j.setFirst(); not (i.end() or j.end()); i.inc(), j.inc() ) {
+        TS_ASSERT_EQUALS( expected[i], actual[j] );
+      }
+      TS_ASSERT( i.end() );
+      TS_ASSERT( j.end() );
+    }
+
+    void testCpfConst() {
+      // Arrange
+      Attribute attr { "attr", *__boolean };
+      const auto &attr_const = attr;
+      gum::Potential<double> expected;
+      expected << attr.type().variable();
+      // Act
+      const auto &actual = attr_const.cpf();
+      // Assert
+      gum::Instantiation i(expected);
+      gum::Instantiation j(actual);
+      for ( i.setFirst(), j.setFirst(); not (i.end() or j.end()); i.inc(), j.inc() ) {
+        TS_ASSERT_EQUALS( expected[i], actual[j] );
+      }
+      TS_ASSERT( i.end() );
+      TS_ASSERT( j.end() );
+    }
+
+    /// @}
   };
 
 } // gum_tests
