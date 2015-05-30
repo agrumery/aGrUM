@@ -37,3 +37,12 @@ if not options.no_fun:
 updateCurrent(current,options,args)
 
 # from now, current contains the specification
+current['dry']=True # dry_run
+
+safe_cd(current,"build")
+
+goCmake(current)
+goMake(current)
+goPost(current)
+
+safe_cd(current,"..")

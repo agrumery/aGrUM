@@ -23,7 +23,8 @@
 from optparse import OptionParser
 import shelve
 
-from configuration import cfg,warn,error,notif,critic
+from configuration import cfg
+from utils import warn,error,notif,critic
 from invocation import showInvocation
 
 def getCurrent():

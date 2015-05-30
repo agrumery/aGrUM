@@ -20,8 +20,24 @@
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
+import sys
+import re
 
-def moduleManagement(current,cde,listOfModules=const.LIST_MODULES):
+def parseModulesTxt(filename):
+  modules={}
+  module_line=re.compile(r"^\s*list\s*\(\s*APPEND\s*MODULES\s*\"(.*)\"\s*\)(\s*#\s*(.*))?")
+  with open(filename,"r") as f:
+    for line in f:
+      rep=module_line.search(line)
+      if rep:
+        module=rep.groups(0)[0]
+        descr=rep.groups(0)[2]
+        if descr==0:
+          descr=module
+        modules[module]=descr
+  return set(modules)
+
+def moduleManagement(current,cde,listOfModules):
   listM=[x.upper() for x in cde.split('+')]
   setM=set(listM)
 

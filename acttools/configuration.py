@@ -21,21 +21,22 @@
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
 
+import const as cfg
+from modules import parseModulesTxt
 
 ##########################################################################################################################
 # ANSI colored string
-import sys
-import re
-
 try:
-   import colorama
-   colorama.init()
+  import colorama
+  colorama.init()
+  cfg.withColour=True
 except:
-   try:
-       import tendo.ansiterm
-   except:
-       pass
-import const as cfg
+  try:
+    import tendo.ansiterm
+    cfg.withColour=True
+  except:
+    cfg.withColour=False
+    pass
 
 cfg.numversion="2.0"
 cfg.modulesFile="src/modules.txt" # the file to parse to find the modules
@@ -43,24 +44,10 @@ cfg.configFile=".options.act2.py" #
 
 cfg.nbr_tests_for_stats=40
 
-def parseModulesTxt(filename=cfg.modulesFile):
-  modules={}
-  module_line=re.compile(r"^\s*list\s*\(\s*APPEND\s*MODULES\s*\"(.*)\"\s*\)(\s*#\s*(.*))?")
-  with open(filename,"r") as f:
-    for line in f:
-      rep=module_line.search(line)
-      if rep:
-        module=rep.groups(0)[0]
-        descr=rep.groups(0)[2]
-        if descr==0:
-          descr=module
-        modules[module]=descr
-  return set(modules)
-
 cfg.actions=set("lib test install doc clean show uninstall package".split())
 cfg.modes=set("debug release".split())
 cfg.targets=set("aGrUM pyAgrum jAgrum".split())
-cfg.modules=parseModulesTxt()
+cfg.modules=parseModulesTxt(cfg.modulesFile)
 
 cfg.default={}
 cfg.default['action']="lib"
@@ -80,9 +67,8 @@ cfg.default['pyversion']="3"
 
 cfg.non_persistent=["fixed_seed","stats","no_fun","static_lib","oneByOne"]
 
-
 def configureColors(no_fun=False):
-  if no_fun:
+  if no_fun or not cfg.withColour:
     cfg.C_VALUE = ''
     cfg.C_WARNING = ''
     cfg.C_ERROR = ''
@@ -101,19 +87,3 @@ def about():
   print(cfg.C_END+cfg.C_WARNING+"aGrUM"+cfg.C_END+" compilation tool "+cfg.C_VALUE+cfg.numversion+cfg.C_END)
   print("(c) 2010-15 "+cfg.C_ERROR+"aGrUM Team"+cfg.C_END)
   print("")
-
-def notif(s):
-  print("-- "+cfg.C_VALUE+s+cfg.C_END)
-
-def warn(s):
-  if cfg.verbosity:
-    print("-- "+cfg.C_WARNING+s+cfg.C_END)
-
-def error(s):
-  print("-- "+cfg.C_ERROR+s+cfg.C_END)
-
-def critic(s):
-  error(s)
-  print("\n-- "+cfg.C_ERROR+"stopped."+cfg.C_END+"\n")
-  sys.exit(1)
-
