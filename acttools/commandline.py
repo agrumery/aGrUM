@@ -198,7 +198,7 @@ def updateCurrent(current,options,args):
       bM=True
       continue
 
-    error("[{0}] unknown".format(arg))
+    error("arg [{0}] unknown".format(arg))
 
   setCurrent(current)
   showInvocation(current)

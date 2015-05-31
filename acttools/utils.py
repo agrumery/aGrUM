@@ -26,14 +26,14 @@ from configuration import cfg
 
 def safe_cd(current,folder):
   trace(current,"cd "+folder)
-  if not current['dry']:
+  if not current['dry_run']:
     if folder!="..":
       if not os.path.exists(folder):
         os.mkdir(folder)
     os.chdir(folder)
 
 def trace(current,cde):
-  if current['dry'] or current['verbose']:
+  if current['dry_run'] or current['verbose']:
     notif(cde)
 
 def notif(s):
