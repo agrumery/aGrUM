@@ -1,7 +1,7 @@
 #enable_testing()
 find_package(PythonInterp)
 
-set(CXXTESTGEN ${CMAKE_SOURCE_DIR}/testunits/cxxtest/cxxtestgen.py)
+set(CXXTESTGEN ${CMAKE_SOURCE_DIR}/src/testunits/cxxtest/cxxtestgen.py)
 
 include_directories(${AGRUM_SOURCE_DIR}/testunits/cxxtest)
 include_directories(${AGRUM_SOURCE_DIR}/testunits)

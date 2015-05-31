@@ -20,12 +20,9 @@
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
-
 import const as cfg
 from modules import parseModulesTxt
 
-##########################################################################################################################
-# ANSI colored string
 try:
   import colorama
   colorama.init()
@@ -43,29 +40,6 @@ cfg.modulesFile="src/modules.txt" # the file to parse to find the modules
 cfg.configFile=".options.act2.py" #
 
 cfg.nbr_tests_for_stats=40
-
-cfg.actions=set("lib test install doc clean show uninstall package".split())
-cfg.modes=set("debug release".split())
-cfg.targets=set("aGrUM pyAgrum jAgrum".split())
-cfg.modules=parseModulesTxt(cfg.modulesFile)
-
-cfg.default={}
-cfg.default['action']="lib"
-cfg.default['targets']=set(["aGrUM"])
-cfg.default['modules']='ALL'
-cfg.default['mode']="release"
-cfg.default['verbose']=False
-cfg.default['destination']="/usr"
-cfg.default['jobs']=5
-cfg.default['static_lib']=False
-cfg.default['fixed_seed']=False
-cfg.default['no_fun']=False
-cfg.default['stats']=False
-cfg.default['oneByOne']=False
-cfg.default['tests']='all'
-cfg.default['pyversion']="3"
-
-cfg.non_persistent=["fixed_seed","stats","no_fun","static_lib","oneByOne"]
 
 def configureColors(no_fun=False):
   if no_fun or not cfg.withColour:

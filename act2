@@ -25,7 +25,9 @@ from __future__ import print_function
 from acttools import *
 
 # options management
+initParams()
 current=getCurrent()
+
 (options, args)=parseCommandLine(current)
 
 # colors, fun & verbosity
