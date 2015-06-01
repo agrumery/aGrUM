@@ -211,70 +211,8 @@ namespace gum {
       /// @}
     };
 
-    /**
-     * @class FuncAttribute attribute.h <agrum/PRM/attribute.h>
-     * @brief This class overload gum::prm::ClassElement::_addParent() and
-     *        gum::prm::ClassElement::_addChild with empty methods.
-     *
-     * This class should be used when dealing with functions such as Noisy-Or which
-     * require special method calls to add parents. See
-     * gum::prm::PRMFactory::addAttribute(Attribute*) for more details.
-     */
-    template <typename GUM_SCALAR>
-    class FuncAttribute : public Attribute<GUM_SCALAR> {
-      public:
-      /**
-       * @brief Constructor used by gum::Class.
-       * This will create an FuncAttribute with only one variable: type and with the
-       *given
-       * implementation.
-       *
-       * @param name The name of this FuncAttribute.
-       * @param type The type of this FuncAttribute, it is copied.
-       * @param impl The MultiDimImplementation used by the internal Potential of
-       *this FuncAttribute.
-       *             it will be deleted after the call of ~FuncAttribute.
-       */
-      FuncAttribute(const std::string &name, const Type<GUM_SCALAR> &type,
-                    MultiDimImplementation<GUM_SCALAR> *impl =
-                        new MultiDimArray<GUM_SCALAR>());
-
-      /**
-       * @brief Constructor used by gum::Instance.
-       * This will create an FuncAttribute with a ready Potential, however it will
-       *check the existence
-       * of type in cpf and raise an exception if it is not found.
-       *
-       * @param type The type of this attribute, it will be deleted after a call to
-       *~FuncAttribute.
-       * @param name The name of this FuncAttribute.
-       * @param cpf The Potential of this FuncAttribute, it will be deleted after the
-       *call of
-       *            ~FuncAttribute.
-       * @param delete_type If true, the type is deleted with this instance.
-       */
-      FuncAttribute(const std::string &name, Type<GUM_SCALAR> *type,
-                    Potential<GUM_SCALAR> *cpf, bool delete_type);
-
-      /// Destructor.
-      virtual ~FuncAttribute();
-
-      /// See gum::ClassElement::_addParent().
-      virtual void addParent(const ClassElement<GUM_SCALAR> &elt);
-
-      /// See gum::ClassElement::_addChild().
-      virtual void addChild(const ClassElement<GUM_SCALAR> &elt);
-
-      private:
-      /// Copy constructor. Don't use it.
-      FuncAttribute(const FuncAttribute &source);
-
-      /// Copy operator. Don't use it.
-      FuncAttribute &operator=(const FuncAttribute &from);
-    };
 
     extern template class Attribute<double>;
-    extern template class FuncAttribute<double>;
   } /* namespace prm */
 } // namespace gum
 
