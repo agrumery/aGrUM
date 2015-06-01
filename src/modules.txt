@@ -1,8 +1,9 @@
-# Warning : this file is roughly parsed by <act>. 
+# Warning : this file is roughly parsed by <act>.
 # Change it only if you want to add a new module.
 
 # list all of modules
 set(MODULES)
+list(APPEND MODULES "BASE") # Core
 list(APPEND MODULES "BN") # Bayesian networks
 list(APPEND MODULES "CN") # Credal networks
 list(APPEND MODULES "FMDP") # Factored Markov Decision Process

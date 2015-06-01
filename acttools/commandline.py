@@ -31,6 +31,9 @@ from optparse import OptionParser
 from configuration import cfg
 
 from invocation import showInvocation
+from utils import setifyString
+from modules import check_modules,parseModulesTxt
+from tests import check_tests
 
 def initParams():
     cfg.default={}
@@ -53,7 +56,8 @@ def initParams():
     cfg.actions=set("lib test install doc clean show uninstall package".split())
     cfg.modes=set("debug release".split())
     cfg.targets=set("aGrUM pyAgrum jAgrum".split())
-    cfg.modules=parseModulesTxt()
+    cfg.moduleLabels=parseModulesTxt()
+    cfg.modules=set(cfg.moduleLabels)
 
     cfg.non_persistent=["fixed_seed","stats","no_fun","static_lib","oneByOne","dry_run"]
 
@@ -127,22 +131,6 @@ def parseCommandLine(current):
                                         default=False)
     return cfg.parser.parse_args()
 
-def setifyString(s):
-  return set(filter(None,s.split("+"))) # filter to setify "a++b+c" into set(['a','b','c'])
-
-def parseModulesTxt(filename=cfg.modulesFile):
-  modules={}
-  module_line=re.compile(r"^\s*list\s*\(\s*APPEND\s*MODULES\s*\"(.*)\"\s*\)(\s*#\s*(.*))?")
-  with open(filename,"r") as f:
-    for line in f:
-      rep=module_line.search(line)
-      if rep:
-        module=rep.groups(0)[0]
-        descr=rep.groups(0)[2]
-        if descr==0:
-          descr=module
-        modules[module]=descr
-  return set(modules)
 
 def getCurrent():
   current={}
@@ -200,9 +188,9 @@ def updateCurrent(current,options,args):
 
     error("arg [{0}] unknown".format(arg))
 
+  checkConsistency(current)
   setCurrent(current)
   showInvocation(current)
-  checkConsistency(current)
 
 
 def checkConsistency(current):
@@ -221,3 +209,7 @@ def checkConsistency(current):
 
   check_aGrumTest('stats',current)
   check_aGrumTest('oneByOne',current)
+
+  check_modules(current)
+  
+  check_tests(current)

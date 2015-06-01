@@ -23,10 +23,13 @@
 import sys
 import re
 
-def parseModulesTxt(filename):
+from configuration import cfg
+from utils import setifyString
+
+def parseModulesTxt():
   modules={}
   module_line=re.compile(r"^\s*list\s*\(\s*APPEND\s*MODULES\s*\"(.*)\"\s*\)(\s*#\s*(.*))?")
-  with open(filename,"r") as f:
+  with open(cfg.modulesFile,"r") as f:
     for line in f:
       rep=module_line.search(line)
       if rep:
@@ -35,25 +38,26 @@ def parseModulesTxt(filename):
         if descr==0:
           descr=module
         modules[module]=descr
-  return set(modules)
+  return modules
 
-def moduleManagement(current,cde,listOfModules):
-  listM=[x.upper() for x in cde.split('+')]
-  setM=set(listM)
+def check_modules(current):
+  setM=setifyString(current['modules'])
 
   if 'ALL' in setM:
     cde='ALL'
   else:
-    if not setM.issubset(set(listOfModules)):
+    if not setM.issubset(set(cfg.modules)):
       cde='LIST'
+    else:
+      cde='+'.join(setM)
 
   if cde=="ALL":
-      current['module']='+'.join(sorted(listOfModules))
+      current['module']='+'.join(sorted(cfg.modules))
   elif cde=='LIST':
-    print("Module is in")
+    print("Modules is in")
     print("    - ALL")
-    for x in sorted(listOfModules):
-      print("    - "+x+" ("+listOfModules[x]+")")
+    for x in sorted(cfg.modules):
+      print("    - "+x+" ("+cfg.moduleLabels[x]+")")
     sys.exit(0)
   else:
-    current['module']='+'.join(listM)
+    current['module']=cde

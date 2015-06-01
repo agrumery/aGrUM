@@ -20,20 +20,29 @@
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
-def testManagement(current,cde):
+from __future__ import print_function
+import datetime
+import glob
+
+from configuration import cfg
+from utils import warn,error,notif,critic,setifyString
+
+def check_tests(current):
+  cde=current['tests']
+
   if cde=="all":
-    writeTestList(allTests(current))
+    writeTestList(allTests(current['modules']))
   elif cde=='list':
     afficheTests(current)
     sys.exit(0)
   else:
-    l=checkTestList(cde)
+    l=checkTestList(current)
     writeTestList(l)
 
-def checkTestList(cde):
+def checkTestList(current):
   res=[]
-  alltests=allTests()
-  for ss in cde.split('+'):
+  alltests=allTests(current['modules'])
+  for ss in setifyString(current['tests']):
     s='/'+ss+'TestSuite.h'
     name=""
     for tryfile in alltests:
@@ -41,9 +50,8 @@ def checkTestList(cde):
         name=tryfile
         break
     if name=="":
-      print(ERROR+'Test "src/testunits/[module]/'+OKGREEN+ss+ERROR+'TestSuite.h" does not exists for the selected modules'+ENDC)
-      print()
-      afficheTests()
+      error('Test "src/testunits/[module]/'+ss+'TestSuite.h" does not exists for the selected modules')
+      afficheTests(current)
       sys.exit(0)
     else:
       res.append(name)
@@ -68,25 +76,22 @@ def writeTestList(l):
   f.write("\n)\n")
   f.close()
 
-def CrossPlatformRelPath(x,y):
-  return os.path.relpath(x,"src/testunits").replace("\\","/")
 
-def allTests(current):
+def allTests(moduleset):
+  def CrossPlatformRelPath(x,y):
+    return os.path.relpath(x,"src/testunits").replace("\\","/")
+
   s=[]
 
-  if current['test_base']:
-    s+=[CrossPlatformRelPath(x,"src/testunits")
-        for x in glob.glob('src/testunits/module_BASE/*TestSuite.h')]
-
-  for x in current['module'].split('+'):
+  for x in moduleset:
     s+=[CrossPlatformRelPath(x,"src/testunits")
         for x in glob.glob('src/testunits/module_'+x.upper()+'/*TestSuite.h')]
 
   return sorted(s)
 
-def checkTestListCmake():
+def checkTestListCmake(current):
     if not os.path.exists('src/testunits/testList.cmake'):
-      writeTestList(allTests())
+      writeTestList(allTests(current['modules']))
     else:
       with open('src/testunits/testList.cmake') as f:
         content = f.readlines()
@@ -109,7 +114,8 @@ def afficheTestsForModule(m):
   print(" "+m+" ")
   print("="*(2+len(m)))
 
-  l=allTests()
+  print(m)
+  l=allTests(set([m]))
   prefix="module_"+m.upper()+"/"
   l=[s[len(prefix):-11] for s in l if s.startswith(prefix)]
   w=max([len(x) for x in l])
@@ -127,7 +133,7 @@ def afficheTestsForModule(m):
 
 
 def afficheTests(current):
-  if current['test_base']:
-    afficheTestsForModule('BASE')
-  for modul in current['module'].split('+'):
+  print(current['modules'])
+  for modul in current['modules']:
+    print(modul)
     afficheTestsForModule(modul)

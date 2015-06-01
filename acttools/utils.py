@@ -24,6 +24,9 @@
 import os
 from configuration import cfg
 
+def setifyString(s):
+  return set(filter(None,s.split("+"))) # filter to setify "a++b+c" into set(['a','b','c'])
+
 def safe_cd(current,folder):
   trace(current,"cd "+folder)
   if not current['dry_run']:
