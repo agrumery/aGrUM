@@ -20,6 +20,8 @@
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
+from __future__ import print_function
+import sys
 
 # for timeout in popen (cross-platform)
 from subprocess import PIPE, Popen, STDOUT
@@ -187,3 +189,11 @@ def threaded_execution(cde,verbose):
 
 
   return p.returncode
+
+def execCde(line,options):
+    if options.no_fun:
+      rc=call(commande,shell=True)
+    else:
+      rc=threaded_execution(commande,options.verbose)
+
+    return rc

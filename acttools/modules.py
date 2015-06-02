@@ -24,7 +24,7 @@ import sys
 import re
 
 from configuration import cfg
-from utils import setifyString
+from utils import setifyString,notif
 
 def parseModulesTxt():
   modules={}
@@ -52,7 +52,7 @@ def check_modules(current):
       cde='+'.join(setM)
 
   if cde=="ALL":
-      current['module']='+'.join(sorted(cfg.modules))
+      current['modules']='+'.join(sorted(cfg.modules))
   elif cde=='LIST':
     print("Modules is in")
     print("    - ALL")
@@ -60,4 +60,4 @@ def check_modules(current):
       print("    - "+x+" ("+cfg.moduleLabels[x]+")")
     sys.exit(0)
   else:
-    current['module']=cde
+    current['modules']=cde

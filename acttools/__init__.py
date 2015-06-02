@@ -25,3 +25,4 @@ from __future__ import print_function
 from configuration import cfg,about,configureOutputs
 from commandline import getCurrent,parseCommandLine,updateCurrent,initParams
 from utils import safe_cd
+from builder import buildCmake,buildMake,buildPost

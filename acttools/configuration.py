@@ -32,7 +32,7 @@ except:
     import tendo.ansiterm
     cfg.withColour=True
   except:
-    cfg.withColour=False
+    cfg.withColour=True
     pass
 
 cfg.numversion="2.0"

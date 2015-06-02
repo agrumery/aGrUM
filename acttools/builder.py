@@ -20,36 +20,42 @@
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
-
-import os
 from configuration import cfg
+from utils import trace
+from multijobs import execCde
 
-def setifyString(s):
-  return set(filter(None,s.split("+"))) # filter to setify "a++b+c" into set(['a','b','c'])
+def buildCmake(current):
+    line="cmake .."
 
-def safe_cd(current,folder):
-  trace(current,"cd "+folder)
-  if not current['dry_run']:
-    if folder!="..":
-      if not os.path.exists(folder):
-        os.mkdir(folder)
-    os.chdir(folder)
+    if current["mode"]=="release":
+        line+=" -DCMAKE_BUILD_TYPE=RELEASE"
+    else:
+        line+=" -DCMAKE_BUILD_TYPE=DEBUG"
 
-def trace(current,cde):
-  if current['dry_run'] or current['verbose']:
-    notif(cde)
+    if current["pyversion"]=="3":
+        line+=" -DFOR_PYTHON2=OFF"
+    else:
+        line+=" -DFOR_PYTHON2=ON"
 
-def notif(s):
-  print("-- "+cfg.C_VALUE+str(s)+cfg.C_END)
+    line+=" -DCMAKE_INSTALL_PREFIX="+current["destination"]
 
-def warn(s):
-  if cfg.verbosity:
-    print("-- "+cfg.C_WARNING+str(s)+cfg.C_END)
+    if current["verbose"]:
+        line+=" -DCMAKE_VERBOSE_MAKEFILE=ON"
+    else:
+        line+=" -DCMAKE_VERBOSE_MAKEFILE=OFF"
 
-def error(s):
-  print("-- "+cfg.C_ERROR+str(s)+cfg.C_END)
+    if current["static_lib"]:
+        line+=" -DBUILD_SHARED_LIBS=OFF"
+    else:
+        line+=" -DBUILD_SHARED_LIBS=ON"
 
-def critic(s):
-  error(s)
-  print("\n-- "+cfg.C_ERROR+"stopped."+cfg.C_END+"\n")
-  sys.exit(1)
+    trace(current,line)
+    if not current['dry_run']:
+        return execCde(line,options)
+
+
+def buildMake(current):
+    return "undone"
+
+def buildPost(current):
+    return "undone"

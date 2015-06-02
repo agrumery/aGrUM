@@ -21,27 +21,26 @@
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
 from __future__ import print_function
-import datetime
-import glob
+from datetime import datetime
+import glob,os,sys
 
 from configuration import cfg
 from utils import warn,error,notif,critic,setifyString
 
 def check_tests(current):
   cde=current['tests']
+  alltests=allTests(setifyString(current['modules']))
 
   if cde=="all":
-    writeTestList(allTests(current['modules']))
+    writeTestList(alltests)
   elif cde=='list':
     afficheTests(current)
     sys.exit(0)
   else:
-    l=checkTestList(current)
-    writeTestList(l)
+    writeTestList(checkTestList(current,alltests))
 
-def checkTestList(current):
+def checkTestList(current,alltests):
   res=[]
-  alltests=allTests(current['modules'])
   for ss in setifyString(current['tests']):
     s='/'+ss+'TestSuite.h'
     name=""
@@ -102,7 +101,7 @@ def checkTestListCmake(current):
         if line[0:2]=="  ":
           s=line.strip()
           if not os.path.exists('src/testunits/'+s):
-            print(ERROR+'Test '+WARNING+s[:-11]+ERROR+' (src/testunits/'+s+') does not exist => removing it from tests list'+ENDC)
+            notif('Test '+s[:-11]+' (src/testunits/'+s+') does not exist => removing it from tests list')
             rewrite=True
           else:
             res.append(s)
@@ -114,7 +113,6 @@ def afficheTestsForModule(m):
   print(" "+m+" ")
   print("="*(2+len(m)))
 
-  print(m)
   l=allTests(set([m]))
   prefix="module_"+m.upper()+"/"
   l=[s[len(prefix):-11] for s in l if s.startswith(prefix)]
@@ -133,7 +131,5 @@ def afficheTestsForModule(m):
 
 
 def afficheTests(current):
-  print(current['modules'])
-  for modul in current['modules']:
-    print(modul)
+  for modul in setifyString(current['modules']):
     afficheTestsForModule(modul)

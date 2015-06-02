@@ -43,8 +43,8 @@ current['dry_run']=True # dry_run
 
 safe_cd(current,"build")
 
-goCmake(current)
-goMake(current)
-goPost(current)
+buildCmake(current)
+buildMake(current)
+buildPost(current)
 
 safe_cd(current,"..")
