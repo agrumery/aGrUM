@@ -88,7 +88,7 @@ namespace gum_tests {
       auto expected = gum::prm::PRMObject::LEFT_CAST()
         + elt.type().name()
         + gum::prm::PRMObject::RIGHT_CAST()
-        + "my_attr";
+        + elt.name();
       // Act
       auto actual = elt.safeName();
       // Assert
