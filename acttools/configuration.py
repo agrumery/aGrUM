@@ -38,6 +38,7 @@ except:
 cfg.numversion="2.0"
 cfg.modulesFile="src/modules.txt" # the file to parse to find the modules
 cfg.configFile=".options.act2.py" #
+cfg.fixedSeedValue="10"
 
 cfg.nbr_tests_for_stats=40
 

@@ -21,7 +21,7 @@
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
 from configuration import cfg
-from utils import trace
+from utils import trace,setifyString
 from multijobs import execCde
 
 def buildCmake(current):
@@ -49,6 +49,22 @@ def buildCmake(current):
     else:
         line+=" -DBUILD_SHARED_LIBS=ON"
 
+    line+=" -DBUILD_ALL=OFF"
+    for module in setifyString(current["modules"]):
+        line+=" -DBUILD_"+module+"=ON"
+
+    if current["fixed_seed"]:
+        line+=" -DGUM_RANDOMSEED="+cfg.fixedSeedValue
+    else:
+        line+=" -DGUM_RANDOMSEED=0"
+
+    line+="  -DCMAKE_INSTALL_PREFIX="+current["destination"]
+
+    if current['verbose']:
+        line+=" -DCMAKE_VERBOSE_MAKEFILE=ON"
+    else:
+        line+=" -DCMAKE_VERBOSE_MAKEFILE=ON"
+        
     trace(current,line)
     if not current['dry_run']:
         return execCde(line,options)
