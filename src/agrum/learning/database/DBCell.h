@@ -175,7 +175,7 @@ namespace gum {
       };
 
       /// a bijection assigning to each string index its corresponding string
-      static Bijection<std::string, int> __strings;
+      static Bijection<std::string, int>& __strings();
 
       /// the last index used so far
       static int __string_max_index;

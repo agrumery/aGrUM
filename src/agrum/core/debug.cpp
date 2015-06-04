@@ -231,38 +231,14 @@ namespace gum {
     void __staticCorrections() {
       __dec_creation("HashTableConstIterator", "__hash_static_end", 0,
                      "static variable correction", 0);
-      __dec_creation("HashTableIterator", "__hash_static_end", 0,
-                     "static variable correction", 0);
+      
       __dec_creation("HashTableConstIteratorSafe", "__hash_static_end", 0,
-                     "static variable correction", 0);
-      __dec_creation("HashTableIteratorSafe", "__hash_static_end", 0,
-                     "static variable correction", 0);
-      __dec_creation("SetIteratorSafe", "__set_static_end", 0,
-                     "static variable correction", 0);
-      __dec_creation("HashTableConstIteratorSafe", "__set_static_end", 0,
-                     "static variable correction", 0);
-      __dec_creation("SetIterator", "__set_static_end", 0,
-                     "static variable correction", 0);
-      __dec_creation("HashTableConstIterator", "__set_static_end", 0,
-                     "static variable correction", 0);
-      __dec_creation("BijectionIteratorSafe", "__bijection_static_end", 0,
-                     "static variable correction", 0);
-      __dec_creation("HashTableConstIteratorSafe", "__bijection_static_end", 0,
-                     "static variable correction", 0);
-      __dec_creation("BijectionIterator", "__bijection_static_end", 0,
-                     "static variable correction", 0);
-      __dec_creation("HashTableConstIterator", "__bijection_static_end", 0,
                      "static variable correction", 0);
 
       __dec_creation("Set", "__empty_edge_set", 0, "static variable correction", 0);
+
       __dec_creation("HashTable", "__empty_edge_set", 0,
                      "static variable correction", 0);
-
-      __dec_creation("Bijection", "__strings", 0, "BCell string bijection", 0);
-      __dec_creation("BijectionImplementation", "__strings", 0,
-                     "BCell string bijection", 0);
-      __dec_creation("HashTable", "__strings", 0, "BCell string bijection", 0);
-      __dec_creation("HashTable", "__strings", 0, "BCell string bijection", 0);
     }
 
     void __atexit(void) {

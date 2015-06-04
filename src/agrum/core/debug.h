@@ -151,6 +151,8 @@ namespace gum {
                         const char *zeMsg, const void *zePtr, int zeSize = -1);
     void __inc_deletion(const char *zeKey, const char *zeFile, long zeLine,
                         const char *zeMsg, const void *zePtr);
+    void __dec_creation(const char *zeKey, const char *zeFile, long zeLine,
+                        const char *zeMsg, const void *zePtr);
     void __dumpObjects(void);
     void __atexit(void);
 

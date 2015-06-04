@@ -25,6 +25,10 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#ifndef NDEBUG
+#include <agrum/core/debug.h>
+#endif
+
 #include <agrum/core/bijection.h>
 
 namespace gum {
@@ -37,6 +41,12 @@ namespace gum {
     if (first_time) {
       first_time = false;
       __BijectionIterEndSafe = new BijectionIteratorSafe<int, int>;
+#ifndef NDEBUG
+      __debug__::__dec_creation("BijectionIteratorSafe", "__bijection_static_end", 0,
+                                "static variable correction", 0);
+      __debug__::__dec_creation("HashTableConstIteratorSafe", "__bijection_static_end", 0,
+                                "static variable correction", 0);
+#endif
     }
 
     return __BijectionIterEndSafe;
@@ -49,6 +59,12 @@ namespace gum {
     if (first_time) {
       first_time = false;
       __BijectionIterEnd = new BijectionIterator<int, int>;
+#ifndef NDEBUG
+      __debug__::__dec_creation("BijectionIterator", "__bijection_static_end", 0,
+                                "static variable correction", 0);
+      __debug__::__dec_creation("HashTableConstIterator", "__bijection_static_end", 0,
+                                "static variable correction", 0);
+#endif
     }
 
     return __BijectionIterEnd;
