@@ -63,7 +63,7 @@ def initParams():
     cfg.default['stats']=False
     cfg.default['oneByOne']=False
     cfg.default['tests']='all'
-    cfg.default['pyversion']="3"
+    cfg.default['python']="3"
     cfg.default['dry_run']=False
 
     cfg.actions=set("lib test install doc clean show uninstall package".split())
@@ -138,7 +138,7 @@ def configureOptions(current):
     cfg.parser.add_option("", "--python",   help="{2|3}",
                                         type="choice",
                                         choices=["2", "3"],
-                                        dest="pyversion",
+                                        dest="python",
                                         default="3")
     cfg.parser.add_option("", "--dry-run",  help="dry run",
                                         action="store_true",

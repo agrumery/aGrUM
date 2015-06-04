@@ -21,7 +21,7 @@
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
 from configuration import cfg
-from utils import trace,setifyString
+from utils import trace,setifyString,safe_cd
 from multijobs import execCde
 
 def buildCmake(current):
@@ -32,7 +32,7 @@ def buildCmake(current):
     else:
         line+=" -DCMAKE_BUILD_TYPE=DEBUG"
 
-    if current["pyversion"]=="3":
+    if current["python"]=="3":
         line+=" -DFOR_PYTHON2=OFF"
     else:
         line+=" -DFOR_PYTHON2=ON"
@@ -85,12 +85,16 @@ def buildMake(current):
 
 
 def buildPost(current):
-    return "undone"
+    if current["action"]=="test":
+      if current["targets"]==set(["aGrUM"]):
+        safe_cd(current,"src")
+        execFromLine(current,"gumTest")
+        safe_cd(current,"..")
 
 
 def execFromLine(current,line):
     trace(current,line)
     if not current['dry_run']:
-        return execCde(line,options)
+        return execCde(line,current)
 
 

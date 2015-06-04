@@ -24,33 +24,45 @@ from __future__ import print_function
 
 from acttools import *
 
-##
-# options management
-initParams()
+def main():
+  ##
+  # options management
+  initParams()
 
-current=getCurrent()
-configureOptions(current)
+  current=getCurrent()
+  configureOptions(current)
 
-(options, args)=parseCommandLine(current)
+  (options, args)=parseCommandLine(current)
 
-# colors, fun & verbosity
-configureOutputs(options)
+  # colors, fun & verbosity
+  configureOutputs(options)
 
-if not options.no_fun:
-  about()
+  if not options.no_fun:
+    about()
 
-updateCurrent(current,options,args)
+  updateCurrent(current,options,args)
 
-##
-# from now, current contains the specification
+  ##
+  # from now, current contains the specification
 
-# looking at special commands (clean/show/etc.)
-if not specialActions(current):
-  # creating "classical" compilation from cmake/make/postprocess
-  safe_cd(current,"build")
+  # looking at special commands (clean/show/etc.)
+  if not specialActions(current):
+    # creating "classical" compilation from cmake/make/postprocess
+    safe_cd(current,"build")
 
-  buildCmake(current)
-  buildMake(current)
-  buildPost(current)
+    buildCmake(current)
+    buildMake(current)
+    buildPost(current)
 
-  safe_cd(current,"..")
+    safe_cd(current,"..")
+
+import traceback
+import sys
+if __name__ == "__main__":
+    try:
+      main()
+    except KeyboardInterrupt:
+      print("\n Shutdown requested...exiting \n")
+    except Exception:
+      traceback.print_exc(file=sys.stdout)
+    sys.exit(0)

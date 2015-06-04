@@ -22,6 +22,7 @@
 #***************************************************************************
 from __future__ import print_function
 import os
+import sys
 import shutil
 
 from configuration import cfg
@@ -48,13 +49,13 @@ def specialActions(current):
 
 
 def cleanAll():
-    print(cfg.C_WARNING+" cleaning"+cfg.C_ENDC+" ... ",end="")
+    print(cfg.C_WARNING+" cleaning"+cfg.C_END+" ... ",end="")
     sys.stdout.flush()
     if os.path.isdir("build"):
       shutil.rmtree("build")
-      print(cfg.C_OKGREEN+"done"+cfg.C_ENDC)
+      print(cfg.C_VALUE+"done"+cfg.C_END)
     else:
-      print(cfg.C_OKGREEN+"nothing to do"+cfg.C_ENDC)
+      print(cfg.C_VALUE+"nothing to do"+cfg.C_END)
 
 
 def showAct2Config(current):

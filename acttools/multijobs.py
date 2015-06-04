@@ -22,10 +22,14 @@
 #***************************************************************************
 from __future__ import print_function
 import sys
-
+import os
+import io
 # for timeout in popen (cross-platform)
 from subprocess import PIPE, Popen, STDOUT
 from threading  import Thread
+
+from configuration import cfg
+from utils import notif,error,critic
 
 try:
     from Queue import Queue, Empty
@@ -50,25 +54,25 @@ def prettifying(line):
   s=line.split("%]")
 
   if len(s)>=2:
-    res+=C_WARNING+"%]".join(s[:-1])+"%]"+C_END+" "
+    res+=cfg.C_VALUE+"%]".join(s[:-1])+"%]"+cfg.C_END+" "
     line=s[-1].strip()
 
   if line=="":
     return res.rstrip()
 
-  remove_dirs=lambda s : s[:s.find("/")-1]
+  remove_dirs=lambda s : s[:s.find(" src/")]
 
   # prettifying (compacting) path
   if line[0]!="/": # we keep message beginning with full path
     s=line.split("/agrum/")
     if len(s)==2:
-      res+=remove_dirs(s[0])+WARNING+" agrum/"+s[1].rstrip()+ENDC
+      res+=remove_dirs(s[0])+cfg.C_MSG+" agrum/"+s[1].rstrip()+cfg.C_END
       line=""
     else:
       s=line.split("/generated-files/")
       if len(s)==2:
         line=""
-        res+=remove_dirs(s[0])+WARNING+" generated-files/"+s[1].rstrip()+ENDC
+        res+=remove_dirs(s[0])+cfg.C_MSG+" generated-files/"+s[1].rstrip()+cfg.C_END
 
   if line=="":
     return res.rstrip()
@@ -76,29 +80,29 @@ def prettifying(line):
   #prettifying test execution
   s=line.split(". [")
   if len(s)==2:
-    res+=s[0]+". "+OKGREEN+"["+s[1].rstrip()+ENDC
+    res+=s[0]+". "+cfg.C_VALUE+"["+s[1].rstrip()+cfg.C_END
   else:
     s=line.split("# [")
     if len(s)==2:
-      res+=s[0]+"# "+OKGREEN+"["+s[1].rstrip()+ENDC
+      res+=s[0]+"# "+cfg.C_VALUE+"["+s[1].rstrip()+cfg.C_END
     else: # test pyAgrum
       s=line.split(" ... ")
       if len(s)==2:
-        res+=OKGREEN+s[0]+ENDC+" ... "+WARNING+"OK   "+ENDC
+        res+=OKGREEN+s[0]+cfg.C_END+" ... "+cfg.C_MSG+"OK   "+cfg.C_END
       else: # end of test execution
         s=line.split("##")
         if len(s)==3:
-          res+=WARNING+"##"+ENDC+s[1]+WARNING+"##"+ENDC
+          res+=WARNING+"##"+cfg.C_END+s[1]+cfg.C_MSG+"##"+cfg.C_END
         elif line[0:6]=="Failed":
-          res+="Failed "+WARNING+line[7:]+ENDC
+          res+="Failed "+cfg.C_MSG+line[7:]+cfg.C_END
         elif line[0:6]=="Succes":
-          res+="Success rate: "+WARNING+line[14:]+ENDC
+          res+="Success rate: "+cfg.C_MSG+line[14:]+cfg.C_END
         elif line[-11:]=="<--- failed":
-          res=line[0:-11]+ERROR+"<--- failed"+ENDC
+          res=line[0:-11]+cfg.C_ERROR+"<--- failed"+cfg.C_END
         else:
           s=line.split("Memory leaks found")
           if len(s)==2:
-            res=s[0]+ERROR+"Memory leaks found"+ENDC+s[1]
+            res=s[0]+cfg.C_ERROR+"Memory leaks found"+cfg.C_END+s[1]
           else:
             res=line
 
@@ -168,7 +172,7 @@ def threaded_execution(cde,verbose):
           if line[0]=="/":
             print(line)
           else:
-            print(ERROR+line+ENDC)
+            error(line)
     return lastline
 
   while p.poll() is None:
@@ -190,10 +194,10 @@ def threaded_execution(cde,verbose):
 
   return p.returncode
 
-def execCde(line,options):
-    if options.no_fun:
+def execCde(commande,current):
+    if current["no_fun"]:
       rc=call(commande,shell=True)
     else:
-      rc=threaded_execution(commande,options.verbose)
+      rc=threaded_execution(commande,current["verbose"])
 
     return rc
