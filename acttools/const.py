@@ -1,4 +1,4 @@
-
+# a way of creating constants in python
 class _const:
     class ConstError(TypeError): pass
     def __setattr__(self,name,value):

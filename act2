@@ -24,9 +24,12 @@ from __future__ import print_function
 
 from acttools import *
 
+##
 # options management
 initParams()
+
 current=getCurrent()
+configureOptions(current)
 
 (options, args)=parseCommandLine(current)
 
@@ -38,13 +41,16 @@ if not options.no_fun:
 
 updateCurrent(current,options,args)
 
+##
 # from now, current contains the specification
-current['dry_run']=True # dry_run
 
-safe_cd(current,"build")
+# looking at special commands (clean/show/etc.)
+if not specialActions(current):
+  # creating "classical" compilation from cmake/make/postprocess
+  safe_cd(current,"build")
 
-buildCmake(current)
-buildMake(current)
-buildPost(current)
+  buildCmake(current)
+  buildMake(current)
+  buildPost(current)
 
-safe_cd(current,"..")
+  safe_cd(current,"..")

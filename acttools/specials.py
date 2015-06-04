@@ -21,9 +21,54 @@
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
 from __future__ import print_function
+import os
+import shutil
 
-from configuration import cfg,configureOptions,configureOutputs,initParams
-from commandline import getCurrent,parseCommandLine,updateCurrent
-from utils import safe_cd,about
-from builder import buildCmake,buildMake,buildPost
-from specials import specialActions
+from configuration import cfg
+from utils import trace,notif
+
+def specialActions(current):
+  if current["action"]=="clean":
+    trace(current,"Special action [clean]")
+    if not current["dry_run"]:
+      cleanAll()
+    print("")
+    return True
+
+  if current["action"]=="show":
+
+    trace(current,"Special action [show]")
+
+    # action=show is the only action still performed even if dry_run=True
+    showAct2Config(current)
+    print("")
+    return True
+
+  return False
+
+
+def cleanAll():
+    print(cfg.C_WARNING+" cleaning"+cfg.C_ENDC+" ... ",end="")
+    sys.stdout.flush()
+    if os.path.isdir("build"):
+      shutil.rmtree("build")
+      print(cfg.C_OKGREEN+"done"+cfg.C_ENDC)
+    else:
+      print(cfg.C_OKGREEN+"nothing to do"+cfg.C_ENDC)
+
+
+def showAct2Config(current):
+  def aff(k):
+    notif("[{0}] => {1}".format(k,current[k]))
+
+  for k in cfg.mains:
+    aff(k)
+  print("")
+
+  for k in current.keys():
+    if not k in cfg.mains and not k in cfg.non_persistent:
+      aff(k)
+  print("")
+
+  for k in cfg.non_persistent:
+    aff(k)

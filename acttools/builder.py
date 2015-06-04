@@ -58,20 +58,39 @@ def buildCmake(current):
     else:
         line+=" -DGUM_RANDOMSEED=0"
 
-    line+="  -DCMAKE_INSTALL_PREFIX="+current["destination"]
+    execFromLine(current,line)
 
-    if current['verbose']:
-        line+=" -DCMAKE_VERBOSE_MAKEFILE=ON"
-    else:
-        line+=" -DCMAKE_VERBOSE_MAKEFILE=ON"
-        
+
+def buildMake(current):
+    line="make"
+
+    if current["action"]=="test":
+      if current["targets"]==set(["aGrUM"]):
+        line+=" gumTest"
+
+    if current["action"]=="install":
+      line+=" install"
+      if current["targets"]==set(["pyAgrum"]):
+        line+=" -C wrappers/pyAgrum"
+
+    if current["action"]=="uninstall":
+      line+=" uninstall"
+      if current["targets"]==set(["pyAgrum"]):
+        line+=" -C wrappers/pyAgrum"
+
+    line+=" -j "+str(current["jobs"])
+
+    execFromLine(current,line)
+
+
+
+def buildPost(current):
+    return "undone"
+
+
+def execFromLine(current,line):
     trace(current,line)
     if not current['dry_run']:
         return execCde(line,options)
 
 
-def buildMake(current):
-    return "undone"
-
-def buildPost(current):
-    return "undone"

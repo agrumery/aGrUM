@@ -20,115 +20,17 @@
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
+
+import re
 import shelve
 
 from configuration import cfg
-from utils import warn,error,notif,critic
-
-import re
-from optparse import OptionParser
-
-from configuration import cfg
-
+from utils import warn,error,notif,critic,setifyString
 from invocation import showInvocation
-from utils import setifyString
 from modules import check_modules,parseModulesTxt
 from tests import check_tests
 
-def initParams():
-    cfg.default={}
-    cfg.default['action']="lib"
-    cfg.default['targets']=set(["aGrUM"])
-    cfg.default['modules']='ALL'
-    cfg.default['mode']="release"
-    cfg.default['verbose']=False
-    cfg.default['destination']="/usr"
-    cfg.default['jobs']=5
-    cfg.default['static_lib']=False
-    cfg.default['fixed_seed']=False
-    cfg.default['no_fun']=False
-    cfg.default['stats']=False
-    cfg.default['oneByOne']=False
-    cfg.default['tests']='all'
-    cfg.default['pyversion']="3"
-    cfg.default['dry_run']=False
-
-    cfg.actions=set("lib test install doc clean show uninstall package".split())
-    cfg.modes=set("debug release".split())
-    cfg.targets=set("aGrUM pyAgrum jAgrum".split())
-    cfg.moduleLabels=parseModulesTxt()
-    cfg.modules=set(cfg.moduleLabels)
-
-    cfg.non_persistent=["fixed_seed","stats","no_fun","static_lib","oneByOne","dry_run"]
-
 def parseCommandLine(current):
-    us="%prog [options] ["+"|".join(cfg.actions)+"] ["+"|".join(cfg.modes)+"] ["+"|".join(cfg.targets)+"]"
-    cfg.parser=OptionParser(usage=us,description="Compilation tools for aGrUM and wrappers",
-                        version="%prog v"+cfg.numversion)
-    cfg.parser.add_option("", "--no-fun",
-                                        help="No fancy output parser",
-                                        action="store_true",
-                                        dest="no_fun",
-                                        default=False)
-    cfg.parser.add_option("-v", "--verbose",
-                                        help="more message on what is happening",
-                                        action="store_true",
-                                        dest="verbose",
-                                        default=current['verbose'])
-    cfg.parser.add_option("-q", "--quiet",
-                                        help="please be quiet",
-                                        action="store_false",
-                                        dest="verbose",
-                                        default=current['verbose'])
-    cfg.parser.add_option("", "--fixed_seed",
-                                        help="Random seed is fixed once for all. Hence random algorithms should be time-normalized.",
-                                        action="store_true",
-                                        dest="fixed_seed",
-                                        default=False)
-    cfg.parser.add_option("", "--stats",
-                                        help="Consolidation on "+str(cfg.nbr_tests_for_stats)+" runs.",
-                                        action="store_true",
-                                        dest="stats",
-                                        default=False)
-    cfg.parser.add_option("", "--oneByOne",
-                                        help="aGrUM debug tests one by one (searching leaks).",
-                                        action="store_true",
-                                        dest="oneByOne",
-                                        default=False)
-    cfg.parser.add_option("-d", "--dest",
-                                        help="destination folder when installing",
-                                        metavar="FOLDER",
-                                        dest="destination",
-                                        default=current['destination'])
-    cfg.parser.add_option("-j", "--jobs",
-                                        help="number of jobs",
-                                        type='int',
-                                        dest="jobs",
-                                        default=current['jobs'])
-    cfg.parser.add_option("-t","--tests",
-                                        help="tests management : {show|all|test1+test2+test3}",
-                                        metavar="TESTS-COMMAND",
-                                        dest="tests",
-                                        default=current['tests'])
-    cfg.parser.add_option("-m","--module",
-                                        help="module management : {show|all|module1+module2+module3}",
-                                        metavar="MODULES-COMMAND",
-                                        dest="modules",
-                                        default=current['modules'])
-    cfg.parser.add_option("", "--static_lib",
-                                        help="build static library",
-                                        action="store_true",
-                                        dest="static_lib",
-                                        default=False)
-    cfg.parser.add_option("", "--python",   help="{2|3}",
-                                        type="choice",
-                                        choices=["2", "3"],
-                                        dest="pyversion",
-                                        default="3")
-    cfg.parser.add_option("", "--dry-run",  help="dry run",
-                                        action="store_true",
-                                        dest="dry_run",
-                                        default=False)
     return cfg.parser.parse_args()
 
 
@@ -194,22 +96,40 @@ def updateCurrent(current,options,args):
 
 
 def checkConsistency(current):
+  has_notif=False
   # helper
   def check_aGrumTest(option,current):
     if current[option] :
       prefix="Option [{0}] acts only".format(option)
       if current['targets']!=['aGrUM']:
+        has_notif=True
         notif(prefix+" on target [aGrUM].")
       if current['action']!='test':
         critic(prefix+" on action [test] (not on [{0}]).".format(current['action']))
   #end of helper
 
+  # test for only one target
+  if current['action']=='test':
+    if len(current['targets'])>1:
+      first="aGrUM" if "aGrUM" in current['targets'] else list(current['targets'])[0]
+      has_notif=True
+      notif("Action [test] on only one target : selecting ["+first+"]")
+      current['targets']=[first]
+
   if current['stats'] and current['oneByOne']:
+    has_notif=True
     notif("Options [stats] and [oneByOne] are mutually exclusive")
+
+  # check -t and -m
+  check_modules(current)
+  check_tests(current)
 
   check_aGrumTest('stats',current)
   check_aGrumTest('oneByOne',current)
 
-  check_modules(current)
-  
-  check_tests(current)
+  if current['action']=='package':
+    critic("Action [package] is not implemented yed")
+
+  if has_notif:
+    print("")
+

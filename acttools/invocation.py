@@ -39,17 +39,20 @@ def showInvocation(current,forced=False):
     invocation=cfg.C_WARNING+"invocation"+cfg.C_END+" : "+"act "
 
     invocation+=getCommand(current['action'])
-    invocation+=getCommand(current['mode'])
-    invocation+=getCommand("+".join(current['targets']))
 
-    for opt in current.keys():
-      if not opt in ['action','mode','targets']:
-        if not opt in cfg.non_persistent:
-          invocation+=getValParam(opt,current[opt])
+    if current['action'] not in cfg.specialActions:
+      invocation+=getCommand("+".join(current['targets']))
+      invocation+=getCommand(current['mode'])
 
-    for opt in cfg.non_persistent:
-      if current[opt]:
-        invocation+=getParam(opt)
+
+      for opt in current.keys():
+        if not opt in ['action','mode','targets']:
+          if not opt in cfg.non_persistent:
+            invocation+=getValParam(opt,current[opt])
+
+      for opt in cfg.non_persistent:
+        if current[opt]:
+          invocation+=getParam(opt)
 
     invocation+=cfg.C_END
     print(invocation)

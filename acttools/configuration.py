@@ -21,6 +21,8 @@
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
 import const as cfg
+from optparse import OptionParser
+
 from modules import parseModulesTxt
 
 try:
@@ -42,23 +44,122 @@ cfg.fixedSeedValue="10"
 
 cfg.nbr_tests_for_stats=40
 
+#for message
+cfg.prefixe_line="-- "
+cfg.prefixe_trace="==> "
+
+def initParams():
+    cfg.default={}
+    cfg.default['action']="lib"
+    cfg.default['targets']=set(["aGrUM"])
+    cfg.default['modules']='ALL'
+    cfg.default['mode']="release"
+    cfg.default['verbose']=False
+    cfg.default['destination']="/usr"
+    cfg.default['jobs']=5
+    cfg.default['static_lib']=False
+    cfg.default['fixed_seed']=False
+    cfg.default['no_fun']=False
+    cfg.default['stats']=False
+    cfg.default['oneByOne']=False
+    cfg.default['tests']='all'
+    cfg.default['pyversion']="3"
+    cfg.default['dry_run']=False
+
+    cfg.actions=set("lib test install doc clean show uninstall package".split())
+    cfg.modes=set("debug release".split())
+    cfg.targets=set("aGrUM pyAgrum jAgrum".split())
+    cfg.moduleLabels=parseModulesTxt()
+    cfg.modules=set(cfg.moduleLabels)
+
+    cfg.non_persistent=["fixed_seed","stats","no_fun","static_lib","oneByOne","dry_run"]
+    cfg.mains=["action","targets","mode"]
+    cfg.specialActions=["show","clean"]
+
+def configureOptions(current):
+    us="%prog [options] ["+"|".join(cfg.actions)+"] ["+"|".join(cfg.modes)+"] ["+"|".join(cfg.targets)+"]"
+    cfg.parser=OptionParser(usage=us,description="Compilation tools for aGrUM and wrappers",
+                        version="%prog v"+cfg.numversion)
+    cfg.parser.add_option("", "--no-fun",
+                                        help="No fancy output parser",
+                                        action="store_true",
+                                        dest="no_fun",
+                                        default=False)
+    cfg.parser.add_option("-v", "--verbose",
+                                        help="more message on what is happening",
+                                        action="store_true",
+                                        dest="verbose",
+                                        default=current['verbose'])
+    cfg.parser.add_option("-q", "--quiet",
+                                        help="please be quiet",
+                                        action="store_false",
+                                        dest="verbose",
+                                        default=current['verbose'])
+    cfg.parser.add_option("", "--fixed_seed",
+                                        help="Random seed is fixed once for all. Hence random algorithms should be time-normalized.",
+                                        action="store_true",
+                                        dest="fixed_seed",
+                                        default=False)
+    cfg.parser.add_option("", "--stats",
+                                        help="Consolidation on "+str(cfg.nbr_tests_for_stats)+" runs.",
+                                        action="store_true",
+                                        dest="stats",
+                                        default=False)
+    cfg.parser.add_option("", "--oneByOne",
+                                        help="aGrUM debug tests one by one (searching leaks).",
+                                        action="store_true",
+                                        dest="oneByOne",
+                                        default=False)
+    cfg.parser.add_option("-d", "--dest",
+                                        help="destination folder when installing",
+                                        metavar="FOLDER",
+                                        dest="destination",
+                                        default=current['destination'])
+    cfg.parser.add_option("-j", "--jobs",
+                                        help="number of jobs",
+                                        type='int',
+                                        dest="jobs",
+                                        default=current['jobs'])
+    cfg.parser.add_option("-t","--tests",
+                                        help="tests management : {show|all|test1+test2+test3}",
+                                        metavar="TESTS-COMMAND",
+                                        dest="tests",
+                                        default=current['tests'])
+    cfg.parser.add_option("-m","--module",
+                                        help="module management : {show|all|module1+module2+module3}",
+                                        metavar="MODULES-COMMAND",
+                                        dest="modules",
+                                        default=current['modules'])
+    cfg.parser.add_option("", "--static_lib",
+                                        help="build static library",
+                                        action="store_true",
+                                        dest="static_lib",
+                                        default=False)
+    cfg.parser.add_option("", "--python",   help="{2|3}",
+                                        type="choice",
+                                        choices=["2", "3"],
+                                        dest="pyversion",
+                                        default="3")
+    cfg.parser.add_option("", "--dry-run",  help="dry run",
+                                        action="store_true",
+                                        dest="dry_run",
+                                        default=False)
+
+
 def configureColors(no_fun=False):
   if no_fun or not cfg.withColour:
     cfg.C_VALUE = ''
     cfg.C_WARNING = ''
     cfg.C_ERROR = ''
     cfg.C_END = ''
+    cfg.C_MSG=''
   else:
     cfg.C_VALUE = '\033[1m\033[32m'
     cfg.C_WARNING = '\033[1m\033[33m'
     cfg.C_ERROR = '\033[1m\033[31m'
     cfg.C_END = '\033[0m'
+    cfg.C_MSG='\033[1m\033[34m'
 
 def configureOutputs(options):
   cfg.verbosity=options.verbose
   configureColors(options.no_fun)
-
-def about():
-  print(cfg.C_END+cfg.C_WARNING+"aGrUM"+cfg.C_END+" compilation tool "+cfg.C_VALUE+cfg.numversion+cfg.C_END)
-  print("(c) 2010-15 "+cfg.C_ERROR+"aGrUM Team"+cfg.C_END)
-  print("")

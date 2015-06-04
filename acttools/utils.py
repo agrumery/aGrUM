@@ -20,9 +20,15 @@
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
-
+import sys
 import os
+
 from configuration import cfg
+
+def about():
+  print(cfg.C_END+cfg.C_WARNING+"aGrUM"+cfg.C_END+" compilation tool "+cfg.C_VALUE+cfg.numversion+cfg.C_END)
+  print("(c) 2010-15 "+cfg.C_MSG+"aGrUM Team"+cfg.C_END)
+  print("")
 
 def setifyString(s):
   return set(filter(None,s.split("+"))) # filter to setify "a++b+c" into set(['a','b','c'])
@@ -35,21 +41,38 @@ def safe_cd(current,folder):
         os.mkdir(folder)
     os.chdir(folder)
 
+def colFormat(v,col):
+  s=str(v)
+  return col+s.replace("[",cfg.C_VALUE+"[").replace("]","]"+col)
+
 def trace(current,cde):
   if current['dry_run'] or current['verbose']:
-    notif(cde)
+    notif(cde,cfg.prefixe_trace)
 
-def notif(s):
-  print("-- "+cfg.C_VALUE+str(s)+cfg.C_END)
+def notif(s,pref=None):
+  if pref is None:
+    pref=cfg.prefixe_line
 
-def warn(s):
+  print(pref+colFormat(s,cfg.C_MSG)+cfg.C_END)
+
+def warn(s,pref=None):
+  if pref is None:
+    pref=cfg.prefixe_line
+
   if cfg.verbosity:
-    print("-- "+cfg.C_WARNING+str(s)+cfg.C_END)
+    print(pref+colFormat(s,cfg.C_WARNING)+cfg.C_END)
 
-def error(s):
-  print("-- "+cfg.C_ERROR+str(s)+cfg.C_END)
+def error(s,pref=None):
+  if pref is None:
+    pref=cfg.prefixe_line
 
-def critic(s):
-  error(s)
-  print("\n-- "+cfg.C_ERROR+"stopped."+cfg.C_END+"\n")
+  print(pref+colFormat(s,cfg.C_ERROR)+cfg.C_END)
+
+def critic(s,pref=None):
+  if pref is None:
+    pref=cfg.prefixe_line
+
+  error(s,pref)
+  print("\n"+pref+colFormat(s+"stopped.",cfg.C_ERROR)+cfg.C_END+"\n")
+
   sys.exit(1)
