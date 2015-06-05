@@ -43,6 +43,8 @@ namespace gum {
 #ifndef NDEBUG
       __debug__::__dec_creation("HashTableIterator", "__hash_static_end", 0,
           "static variable correction", 0);
+      __debug__::__dec_creation("HashTableConstIterator", "__hash_static_end", 0,
+          "static variable correction", 0);
 #endif
     }
 
@@ -66,6 +68,8 @@ namespace gum {
 #ifndef NDEBUG
       __debug__::__dec_creation("HashTableIteratorSafe", "__hash_static_end", 0,
           "static variable correction", 0);
+      __debug__::__dec_creation("HashTableConstIteratorSafe", "__hash_static_end", 0,
+                     "static variable correction", 0);
 #endif
     }
 

@@ -228,18 +228,7 @@ namespace gum {
     }
 
     // take into account static objects in agrum (no called destructor before exit())
-    void __staticCorrections() {
-      __dec_creation("HashTableConstIterator", "__hash_static_end", 0,
-                     "static variable correction", 0);
-      
-      __dec_creation("HashTableConstIteratorSafe", "__hash_static_end", 0,
-                     "static variable correction", 0);
-
-      __dec_creation("Set", "__empty_edge_set", 0, "static variable correction", 0);
-
-      __dec_creation("HashTable", "__empty_edge_set", 0,
-                     "static variable correction", 0);
-    }
+    void __staticCorrections() { }
 
     void __atexit(void) {
       __staticCorrections();
