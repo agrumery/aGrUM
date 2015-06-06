@@ -18,11 +18,7 @@ endif()
 
 option (BUILD_PYTHON "python bindings" ON)
 if (BUILD_PYTHON)
-  find_package (PythonLibs)
-  find_package (PythonInterp)
-  if (PYTHON_EXECUTABLE AND PYTHONLIBS_FOUND)
-    add_subdirectory (pyAgrum)
-  endif ()
+  add_subdirectory (pyAgrum)
 endif ()
 
 ## Very experimental for now.
