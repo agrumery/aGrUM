@@ -22,8 +22,8 @@
 #include <testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
+#include <agrum/PRM/elements/attribute.h>
 #include <agrum/PRM/elements/aggregate.h>
-#include <agrum/learning/database/DBCell.h>
 
 #include <module_PRM/ClassElementTestSuite.h>
 
@@ -229,6 +229,32 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS( agg.label(), gum::OperationNotAllowed );
         // Assert
+      }
+
+      void testAddParent() {
+        // Arrange
+        gum::prm::Attribute<double> parent( "attr", *__boolean );
+        Aggregate child("my_agg", AggType::MIN, *__boolean);
+        auto before = parent.cpf().variablesSequence().size();
+        // Act
+        TS_ASSERT_THROWS_NOTHING( child.addParent(parent) );
+        // Assert
+        auto after = parent.cpf().variablesSequence().size();
+        TS_ASSERT_EQUALS( before, after );
+        TS_ASSERT( not parent.cpf().contains( child.type().variable() ) );
+      }
+
+      void testAddChild() {
+        // Arrange
+        gum::prm::Attribute<double> child( "attr", *__boolean );
+        Aggregate parent("my_agg", AggType::MIN, *__boolean);
+        auto before = child.cpf().variablesSequence().size();
+        // Act
+        TS_ASSERT_THROWS_NOTHING( parent.addChild( child ) );
+        // Assert
+        auto after = child.cpf().variablesSequence().size();
+        TS_ASSERT_EQUALS( before, after );
+        TS_ASSERT( not child.cpf().contains( parent.type().variable() ) );
       }
       /// @}
   };
