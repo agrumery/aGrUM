@@ -155,7 +155,7 @@ ADD_NODEGRAPHPART_API(gum::MixedGraph)
 ADD_EDGEGRAPHPART_API(gum::UndiGraph)
 ADD_EDGEGRAPHPART_API(gum::MixedGraph)
 
-%define ADD_ARCGRAPHPART_API(classname) 
+%define ADD_ARCGRAPHPART_API(classname)
 %extend classname {
   using gum::ArcGraphPart::eraseArc;
   using gum::ArcGraphPart::existsArc;
@@ -194,7 +194,7 @@ ADD_ARCGRAPHPART_API(gum::MixedGraph);
   using gum::ApproximationScheme::messageApproximationScheme;
   using gum::ApproximationScheme::history;
 }
-%enddef  
+%enddef
 ADD_APPROXIMATIONSCHEME_API(gum::GibbsInference<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::GibbsKL<double>)
 ADD_APPROXIMATIONSCHEME_API(%arg(gum::credal::CNMonteCarloSampling<double,gum::LazyPropagation<double> >))
@@ -203,9 +203,9 @@ ADD_APPROXIMATIONSCHEME_API(gum::credal::CNLoopyPropagation<double>)
 %extend gum::learning::BNLearner {
   using gum::IApproximationSchemeConfiguration::messageApproximationScheme;
 
-  using gum::IApproximationScheme::setMaxTime;
-  using gum::IApproximationScheme::maxTime;
-  using gum::IApproximationScheme::currentTime;
+  using gum::learning::genericBNLearner::setMaxTime;
+  using gum::learning::genericBNLearner::maxTime;
+  using gum::learning::genericBNLearner::currentTime;
 
   using gum::learning::genericBNLearner::learnDAG;
   using gum::learning::genericBNLearner::names;

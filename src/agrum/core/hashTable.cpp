@@ -27,6 +27,10 @@
 
 #include <agrum/core/hashTable.h>
 
+#ifndef NDEBUG
+#include <agrum/core/debug.h>
+#endif
+
 namespace gum {
 
   // creates (if needed) and returns the iterator __HashTableIterEnd
@@ -36,6 +40,12 @@ namespace gum {
     if (first_time) {
       first_time = false;
       __HashTableIterEnd = new HashTableIterator<int, int>;
+#ifndef NDEBUG
+      __debug__::__dec_creation("HashTableIterator", "__hash_static_end", 0,
+          "static variable correction", 0);
+      __debug__::__dec_creation("HashTableConstIterator", "__hash_static_end", 0,
+          "static variable correction", 0);
+#endif
     }
 
     return __HashTableIterEnd;
@@ -55,6 +65,12 @@ namespace gum {
     if (first_time) {
       first_time = false;
       __HashTableIterEndSafe = new HashTableIteratorSafe<int, int>;
+#ifndef NDEBUG
+      __debug__::__dec_creation("HashTableIteratorSafe", "__hash_static_end", 0,
+          "static variable correction", 0);
+      __debug__::__dec_creation("HashTableConstIteratorSafe", "__hash_static_end", 0,
+                     "static variable correction", 0);
+#endif
     }
 
     return __HashTableIterEndSafe;

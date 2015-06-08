@@ -24,12 +24,30 @@
  */
 
 #include <agrum/config.h>
+
+#ifndef NDEBUG
+#include <agrum/core/debug.h>
+#endif
+
 #include <agrum/graphs/eliminations/eliminationSequenceStrategy.h>
 
 namespace gum {
 
   // an empty fill-ins set returned by default when we ask for a fill-ins set
-  const EdgeSet EliminationSequenceStrategy::__empty_fill_ins;
+  const EdgeSet& EliminationSequenceStrategy::__empty_fill_ins() {
+    static bool first_use = true;
+    if (first_use) {
+      first_use = false;
+#ifndef NDEBUG
+      __debug__::__dec_creation("Set", "__empty_edge_set", 0, "static variable correction", 0);
+      __debug__::__dec_creation("HashTable", "__empty_edge_set", 0,
+          "static variable correction", 0);
+#endif
+    }
+    static EdgeSet empty_fill_ins;
+    return empty_fill_ins;
+  }
+
 
   /// default constructor
   EliminationSequenceStrategy::EliminationSequenceStrategy() {
@@ -55,6 +73,6 @@ namespace gum {
 
   /** @brief in case fill-ins are provided, this function returns the fill-ins
    * due to all the nodes eliminated so far */
-  const EdgeSet &EliminationSequenceStrategy::fillIns() { return __empty_fill_ins; }
+  const EdgeSet &EliminationSequenceStrategy::fillIns() { return __empty_fill_ins(); }
 
 } /* namespace gum */

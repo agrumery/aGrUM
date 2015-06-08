@@ -25,6 +25,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#include <agrum/core/debug.h>
+
 #include <agrum/core/set.h>
 
 namespace gum {
@@ -36,6 +38,12 @@ namespace gum {
     if (first_time) {
       first_time = false;
       __SetIterEndSafe = new SetIteratorSafe<int>;
+#ifndef NDEBUG
+      __debug__::__dec_creation("SetIteratorSafe", "__set_static_end", 0,
+                     "static variable correction", 0);
+      __debug__::__dec_creation("HashTableConstIteratorSafe", "__set_static_end", 0,
+                     "static variable correction", 0);
+#endif
     }
 
     return __SetIterEndSafe;
@@ -53,6 +61,12 @@ namespace gum {
     if (first_time) {
       first_time = false;
       __SetIterEnd = new SetIterator<int>;
+#ifndef NDEBUG
+      __debug__::__dec_creation("SetIterator", "__set_static_end", 0,
+                     "static variable correction", 0);
+      __debug__::__dec_creation("HashTableConstIterator", "__set_static_end", 0,
+                     "static variable correction", 0);
+#endif
     }
 
     return __SetIterEnd;

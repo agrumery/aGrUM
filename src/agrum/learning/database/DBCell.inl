@@ -37,12 +37,12 @@ namespace gum {
     /// constructor for a string
     INLINE DBCell::DBCell(const std::string &str) : __type(DBCell::EltType::STRING) {
       // store the string into the static list of strings
-      if (!__strings.existsFirst(str)) {
-        __strings.insert(str, __string_max_index);
+      if (!__strings().existsFirst(str)) {
+        __strings().insert(str, __string_max_index);
         __int = __string_max_index;
         ++__string_max_index;
       } else {
-        __int = __strings.second(str);
+        __int = __strings().second(str);
       }
 
       GUM_CONSTRUCTOR(DBCell);
@@ -96,12 +96,12 @@ namespace gum {
 
     /// unsafe set operator (assumes that the preceding type is of the same type)
     INLINE DBCell &DBCell::operator=(const std::string &str) noexcept {
-      if (!__strings.existsFirst(str)) {
-        __strings.insert(str, __string_max_index);
+      if (!__strings().existsFirst(str)) {
+        __strings().insert(str, __string_max_index);
         __int = __string_max_index;
         ++__string_max_index;
       } else {
-        __int = __strings.second(str);
+        __int = __strings().second(str);
       }
 
       return *this;
@@ -135,13 +135,13 @@ namespace gum {
 
     /// returns the DBcell as a string (without checking its type)
     INLINE const std::string &DBCell::getString() const noexcept {
-      return __strings.first(__int);
+      return __strings().first(__int);
     }
 
     /// returns the DBcell as a string (safe with type checking)
     INLINE const std::string &DBCell::getStringSafe() const {
       if (__type == EltType::STRING)
-        return __strings.first(__int);
+        return __strings().first(__int);
       else
         GUM_ERROR(TypeError, "the DBCell does not contain a string");
     }
@@ -159,28 +159,28 @@ namespace gum {
 
     /// returns the DBcell as a string (without checking its type)
     INLINE const std::string &DBCell::getString(unsigned int index) {
-      return __strings.first(index);
+      return __strings().first(index);
     }
 
     /// unsafe set (assumes that the preceding type is of the same type)
     INLINE void DBCell::setString(const std::string &str) {
-      if (!__strings.existsFirst(str)) {
-        __strings.insert(str, __string_max_index);
+      if (!__strings().existsFirst(str)) {
+        __strings().insert(str, __string_max_index);
         __int = __string_max_index;
         ++__string_max_index;
       } else {
-        __int = __strings.second(str);
+        __int = __strings().second(str);
       }
     }
 
     /// sets the content of the DBCell (safe type checking)
     INLINE void DBCell::setStringSafe(const std::string &str) {
-      if (!__strings.existsFirst(str)) {
-        __strings.insert(str, __string_max_index);
+      if (!__strings().existsFirst(str)) {
+        __strings().insert(str, __string_max_index);
         __int = __string_max_index;
         ++__string_max_index;
       } else {
-        __int = __strings.second(str);
+        __int = __strings().second(str);
       }
       __type = EltType::STRING;
     }
@@ -214,7 +214,7 @@ namespace gum {
           switch (__type) {
             case STRING:
               try {
-                __float = stof(__strings.first(__int));
+                __float = stof(__strings().first(__int));
                 __type = EltType::FLOAT;
                 return true;
               } catch (std::invalid_argument &) {
@@ -234,12 +234,12 @@ namespace gum {
           switch (__type) {
             case FLOAT: {
               std::string str = std::to_string(__float);
-              if (!__strings.existsFirst(str)) {
-                __strings.insert(str, __string_max_index);
+              if (!__strings().existsFirst(str)) {
+                __strings().insert(str, __string_max_index);
                 __int = __string_max_index;
                 ++__string_max_index;
               } else {
-                __int = __strings.second(str);
+                __int = __strings().second(str);
               }
               __type = EltType::STRING;
             }
