@@ -6040,6 +6040,21 @@ class BNLearner_double(_object):
         return _pyAgrum.BNLearner_double_messageApproximationScheme(self)
 
 
+    def setMaxTime(self, timeout):
+        """setMaxTime(BNLearner_double self, double timeout)"""
+        return _pyAgrum.BNLearner_double_setMaxTime(self, timeout)
+
+
+    def maxTime(self):
+        """maxTime(BNLearner_double self) -> double"""
+        return _pyAgrum.BNLearner_double_maxTime(self)
+
+
+    def currentTime(self):
+        """currentTime(BNLearner_double self) -> double"""
+        return _pyAgrum.BNLearner_double_currentTime(self)
+
+
     def learnDAG(self):
         """learnDAG(BNLearner_double self) -> DAG"""
         return _pyAgrum.BNLearner_double_learnDAG(self)
