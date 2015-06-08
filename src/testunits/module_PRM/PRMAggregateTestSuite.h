@@ -37,9 +37,11 @@ namespace gum_tests {
   class PRMAggregateTestSuite : public CxxTest::TestSuite {
     private:
       typedef gum::prm::Aggregate<double> Aggregate;
+      typedef gum::prm::Aggregate<double>::AggregateType AggType;
       ClassElementTestSuite* __classEltTestSuite;
       gum::prm::Type<double> *__boolean;
       gum::prm::Type<double> *__state;
+      std::vector<AggType> *__types;
 
     public:
 
@@ -53,12 +55,16 @@ namespace gum_tests {
         map.push_back( 1 );
         map.push_back( 0 );
         __state = new gum::prm::Type<double> { *__boolean, map, state };
+        __types = new std::vector<AggType> { AggType::MIN, AggType::MAX,
+          AggType::MEAN, AggType::COUNT, AggType::EXISTS, AggType::FORALL,
+          AggType::OR, AggType::AND };
       }
 
       void tearDown() {
         delete __classEltTestSuite;
         delete __boolean;
         delete __state;
+        delete __types;
       }
 
       /// ClassElement Tests 
@@ -173,24 +179,57 @@ namespace gum_tests {
       /// @{
       void testFirstConstructor() {
         // Arrange
-        auto type = Aggregate::AggregateType::OR;
         Aggregate *agg = nullptr;
-        // Act
-        TS_ASSERT_THROWS_NOTHING( agg = new Aggregate("my_agg", type, *__boolean) );
-        // Assert
-        TS_ASSERT_THROWS_NOTHING( delete agg );
+        for (auto t : *__types) {
+          // Act
+          TS_ASSERT_THROWS_NOTHING( agg = new Aggregate("my_agg", t, *__boolean) );
+          // Assert
+          TS_ASSERT_THROWS_NOTHING( delete agg );
+        }
       }
 
       void testSecondConstructor() {
         // Arrange
-        auto type = Aggregate::AggregateType::EXISTS;
         Aggregate *agg = nullptr;
-        // Act
-        TS_ASSERT_THROWS_NOTHING( agg = new Aggregate("my_agg", type, *__boolean, 0) );
-        // Assert
-        TS_ASSERT_THROWS_NOTHING( delete agg );
+        for (auto t : *__types) {
+          // Act
+          TS_ASSERT_THROWS_NOTHING( agg = new Aggregate("my_agg", t, *__boolean, 0) );
+          // Assert
+          TS_ASSERT_THROWS_NOTHING( delete agg );
+        }
+      }
+      /// @}
+
+      /// Getters & setters
+      /// @{
+      void testAggTypeNoLabel() {
+        // Arrange
+        for (auto t : *__types) {
+          // Act
+          Aggregate agg("my_agg", t, *__boolean);
+          // Assert
+          TS_ASSERT_EQUALS( agg.agg_type(), t );
+        }
       }
 
+      void testLabel() {
+        // Arrange
+        gum::Idx actual = 1;
+        Aggregate agg("my_agg", AggType::MIN, *__boolean, actual);
+        gum::Idx expected = 0;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( expected = agg.label() );
+        // Assert
+        TS_ASSERT_EQUALS(actual, expected);
+      }
+
+      void testLabelOperationNotAllowed() {
+        // Arrange
+        Aggregate agg("my_agg", AggType::MIN, *__boolean);
+        // Act
+        TS_ASSERT_THROWS( agg.label(), gum::OperationNotAllowed );
+        // Assert
+      }
       /// @}
   };
 
