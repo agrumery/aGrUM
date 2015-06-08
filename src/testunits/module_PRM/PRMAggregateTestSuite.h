@@ -22,6 +22,10 @@
 #include <testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
+#include <agrum/multidim/aggregators/or.h>
+#include <agrum/multidim/aggregators/and.h>
+#include <agrum/multidim/aggregators/count.h>
+
 #include <agrum/PRM/elements/attribute.h>
 #include <agrum/PRM/elements/aggregate.h>
 
@@ -255,6 +259,108 @@ namespace gum_tests {
         auto after = child.cpf().variablesSequence().size();
         TS_ASSERT_EQUALS( before, after );
         TS_ASSERT( not child.cpf().contains( parent.type().variable() ) );
+      }
+
+      void testCpf() {
+        // Arrange
+        Aggregate agg("my_agg", AggType::MIN, *__boolean);
+        // Act & Assert
+        TS_ASSERT_THROWS( agg.cpf(), gum::OperationNotAllowed );
+      }
+
+      void testCpfConst() {
+        // Arrange
+        Aggregate agg("my_agg", AggType::MIN, *__boolean);
+        const auto &const_agg = agg;
+        // Act & Assert
+        TS_ASSERT_THROWS( const_agg.cpf(), gum::OperationNotAllowed );
+      }
+
+      void testBuildImplMin() {
+        // Arrange
+        Aggregate agg( "my_agg", AggType::MIN, *__boolean );
+        gum::MultiDimImplementation<double> *impl = nullptr;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( impl = agg.buildImpl() );
+        // Assert
+        TS_ASSERT( dynamic_cast< gum::aggregator::Min<double>* >( impl ) );
+        TS_ASSERT_THROWS_NOTHING( delete impl );
+      }
+
+      void testBuildImplMax() {
+        // Arrange
+        Aggregate agg( "my_agg", AggType::MAX, *__boolean );
+        gum::MultiDimImplementation<double> *impl = nullptr;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( impl = agg.buildImpl() );
+        // Assert
+        TS_ASSERT( dynamic_cast< gum::aggregator::Max<double>* >( impl ) );
+        TS_ASSERT_THROWS_NOTHING( delete impl );
+      }
+
+      void testBuildImplExists() {
+        // Arrange
+        Aggregate agg( "my_agg", AggType::EXISTS, *__boolean, 0 );
+        gum::MultiDimImplementation<double> *impl = nullptr;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( impl = agg.buildImpl() );
+        // Assert
+        TS_ASSERT( dynamic_cast< gum::aggregator::Exists<double>* >( impl ) );
+        TS_ASSERT_THROWS_NOTHING( delete impl );
+      }
+
+      void testBuildImplForAll() {
+        // Arrange
+        Aggregate agg( "my_agg", AggType::FORALL, *__boolean, 0 );
+        gum::MultiDimImplementation<double> *impl = nullptr;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( impl = agg.buildImpl() );
+        // Assert
+        TS_ASSERT( dynamic_cast< gum::aggregator::Forall<double>* >( impl ) );
+        TS_ASSERT_THROWS_NOTHING( delete impl );
+      }
+
+      void testBuildImplCount() {
+        // Arrange
+        Aggregate agg( "my_agg", AggType::COUNT, *__boolean, 0 );
+        gum::MultiDimImplementation<double> *impl = nullptr;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( impl = agg.buildImpl() );
+        // Assert
+        TS_ASSERT( dynamic_cast< gum::aggregator::Count<double>* >( impl ) );
+        TS_ASSERT_THROWS_NOTHING( delete impl );
+      }
+
+      void testBuildImplMean() {
+        // Arrange
+        Aggregate agg( "my_agg", AggType::MEAN, *__boolean, 0 );
+        gum::MultiDimImplementation<double> *impl = nullptr;
+        // Act
+        TS_ASSERT_THROWS( impl = agg.buildImpl(), gum::OperationNotAllowed );
+        // Assert
+        TS_ASSERT_EQUALS( impl, nullptr );
+      }
+
+      void testBuildImplOr() {
+        // Arrange
+        Aggregate agg( "my_agg", AggType::OR, *__boolean, 0 );
+        gum::MultiDimImplementation<double> *impl = nullptr;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( impl = agg.buildImpl() );
+        // Assert
+        TS_ASSERT( dynamic_cast< gum::aggregator::Or<double>* >( impl ) );
+        TS_ASSERT_THROWS_NOTHING( delete impl );
+      }
+
+      void testBuildImplAnd() {
+        // Arrange
+        Aggregate agg( "my_agg", AggType::AND, *__boolean, 0 );
+        gum::MultiDimImplementation<double> *impl = nullptr;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( impl = agg.buildImpl() );
+        // Assert
+        TS_ASSERT( dynamic_cast< gum::aggregator::And<double>* >( impl ) );
+        TS_ASSERT_THROWS_NOTHING( delete impl );
       }
       /// @}
   };
