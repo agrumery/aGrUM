@@ -34,7 +34,7 @@ namespace gum {
                                      const Type<GUM_SCALAR> &rvType)
         : ClassElement<GUM_SCALAR>(name), __agg_type(aggType),
           __type(new Type<GUM_SCALAR>(rvType)),
-          __label(rvType.variable().domainSize() + 1) {
+          __label(__type->variable().domainSize() + 1) {
       GUM_CONSTRUCTOR(Aggregate);
       this->_safeName =
           PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
@@ -82,6 +82,9 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR> INLINE Idx Aggregate<GUM_SCALAR>::label() const {
+      if ( __label == __type->variable().domainSize() + 1 ) {
+        GUM_ERROR( OperationNotAllowed, "no label defined for this aggregate" );
+      }
       return __label;
     }
 
