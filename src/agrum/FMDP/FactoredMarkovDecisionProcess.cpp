@@ -19,4 +19,3 @@
  ***************************************************************************/
 
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
-

@@ -50,7 +50,8 @@ namespace gum {
      * @class PRMFactory
      * @brief Factory which builds a PRM<GUM_SCALAR>.
      *
-     * The Factory always create one PRM<GUM_SCALAR> which is not deleted with the factory, so
+     * The Factory always create one PRM<GUM_SCALAR> which is not deleted with the
+     *factory, so
      * be very careful to delete the PRM<GUM_SCALAR> built by this factory.
      *
      * The factory does not allow any sequence of calls, if you call a method when
@@ -63,9 +64,8 @@ namespace gum {
      * @see PRM<GUM_SCALAR> PRMObject
      * @ingroup prm_group
      */
-// ==========================================================================
-    template<typename GUM_SCALAR>
-    class PRMFactory : public IPRMFactory {
+    // ==========================================================================
+    template <typename GUM_SCALAR> class PRMFactory : public IPRMFactory {
       public:
         // ======================================================================
         /// @name Constructors & destructor
@@ -845,4 +845,3 @@ namespace gum {
 #include <agrum/PRM/PRMFactory.tcc>
 
 #endif /* GUM_PRM_FACTORY_H */
-

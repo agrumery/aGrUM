@@ -105,6 +105,7 @@ namespace gum {
 
         virtual Attribute<GUM_SCALAR>* getCastDescendant() const;
         virtual void setAsCastDescendant ( Attribute<GUM_SCALAR>* attr );
+        virtual void becomeCastDescendant( Type<GUM_SCALAR> &subtype );
 
         /// Swap old_type with new_type in the ClassElement cpt.
         virtual void swap(const Type<GUM_SCALAR>& old_type, const Type<GUM_SCALAR>& new_type);

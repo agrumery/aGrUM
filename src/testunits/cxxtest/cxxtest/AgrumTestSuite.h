@@ -5,8 +5,10 @@
 
 #include <cxxtest/TestSuite.h>
 
-#define TS_GUM_ASSERT_THROWS_NOTHING(x) TS_ASSERT_THROWS_NOTHING(try { x; } catch (gum::Exception& e) {GUM_SHOWERROR(e);TS_FAIL("gum::Exception thrown");})
+#define TS_GUM_ASSERT_THROWS_NOTHING(x)                                             \
+  TS_ASSERT_THROWS_NOTHING(try { x; } catch (gum::Exception & e) {                  \
+    GUM_SHOWERROR(e);                                                               \
+    TS_FAIL("gum::Exception thrown");                                               \
+  })
 
-
-#endif //AGRUM_TEST_SUITE_H
-
+#endif // AGRUM_TEST_SUITE_H

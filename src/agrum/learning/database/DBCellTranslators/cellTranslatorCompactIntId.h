@@ -37,12 +37,9 @@
 #include <agrum/core/set.h>
 #include <agrum/learning/database/DBCellTranslator.h>
 
-
 namespace gum {
 
-  
   namespace learning {
-
 
     /** @class CellTranslatorCompactIntId
      * @ingroup learning_group
@@ -53,8 +50,8 @@ namespace gum {
      * parse form an interval { 0 ,..., n }, then, prefer using class
      * CellTranslatorNumber. The latter class is slower but safer.
      */
-    class CellTranslatorCompactIntId : public DBCellTranslator<1,1> {
-    public:
+    class CellTranslatorCompactIntId : public DBCellTranslator<1, 1> {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -71,23 +68,22 @@ namespace gum {
        * @warning Note that if you set check_database to false, method
        * modalities () will raise an exception because the modalities are
        * computed at initialization by parsing the database */
-      CellTranslatorCompactIntId ( bool check_database = true );
+      CellTranslatorCompactIntId(bool check_database = true);
 
       /// copy constructor
-      CellTranslatorCompactIntId ( const CellTranslatorCompactIntId& from );
+      CellTranslatorCompactIntId(const CellTranslatorCompactIntId &from);
 
       /// move constructor
-      CellTranslatorCompactIntId ( CellTranslatorCompactIntId&& from );
+      CellTranslatorCompactIntId(CellTranslatorCompactIntId &&from);
 
       /// virtual copy constructor
-      virtual CellTranslatorCompactIntId* copyFactory () final;
- 
+      virtual CellTranslatorCompactIntId *copyFactory() final;
+
       /// destructor
-      virtual ~CellTranslatorCompactIntId ();
-      
+      virtual ~CellTranslatorCompactIntId();
+
       /// @}
 
-      
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
@@ -95,16 +91,13 @@ namespace gum {
       /// @{
 
       /// copy operator
-      CellTranslatorCompactIntId&
-      operator= ( const CellTranslatorCompactIntId& from );
+      CellTranslatorCompactIntId &operator=(const CellTranslatorCompactIntId &from);
 
       /// move operator
-      CellTranslatorCompactIntId&
-      operator= ( CellTranslatorCompactIntId&& from );
+      CellTranslatorCompactIntId &operator=(CellTranslatorCompactIntId &&from);
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -112,53 +105,46 @@ namespace gum {
       /// @{
 
       /// perform the translation
-      void translate ();
+      void translate();
 
       /// initialize the cell translator by a first database parsing
       /** If initialization is required, this method is called for each row
        * of the database used for initialization. */
-      void initialize ();
+      void initialize();
 
       /// perform a post initialization after the database parsing
-      void postInitialize ();
+      void postInitialize();
 
       /// add the number of modalities discovered in the database into a vector
-      void modalities ( std::vector<unsigned int>& modal ) const noexcept;
+      void modalities(std::vector<unsigned int> &modal) const noexcept;
 
       /// returns whether the translator needs a DB parsing to initialize itself
-      bool requiresInitialization () const noexcept;
+      bool requiresInitialization() const noexcept;
 
       /// returns a given value as stored within the database
-      std::string translateBack ( unsigned int col,
-                                  unsigned int translated_val ) const;
+      std::string translateBack(unsigned int col, unsigned int translated_val) const;
 
       /// returns the name of the variable(s) the translator has processed
-      void variableNames ( const std::vector<std::string>& db_var,
-                           std::vector<std::string>& output_vars ) const;
+      void variableNames(const std::vector<std::string> &db_var,
+                         std::vector<std::string> &output_vars) const;
 
       /// @}
-      
-      
-    private:
+
+      private:
       /// the set of values found so far
       Set<unsigned int> __values;
 
       /// do we need to parse the database at initialization?
-      bool __check_database { true };
-      
+      bool __check_database{true};
     };
-
 
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.inl>
 #endif /* GUM_NO_INLINE */
-
 
 #endif /* GUM_LEARNING_CELL_TRANSLATOR_COMPACT_INT_ID_H */

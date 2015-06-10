@@ -35,18 +35,14 @@
 #ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_SLICE_ORDER_H
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_SLICE_ORDER_H
 
-
 #include <agrum/config.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     /** @class StructuralConstraintSliceOrder
      * @brief the structural constraint imposing a partial order over nodes
      *
@@ -62,109 +58,104 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class StructuralConstraintSliceOrder :
-      protected virtual StructuralConstraintSetStatic<StructuralConstraintDiGraph>
-    {
-    public:
-      
+    class StructuralConstraintSliceOrder
+        : protected virtual StructuralConstraintSetStatic<
+              StructuralConstraintDiGraph> {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      StructuralConstraintSliceOrder ();
+      StructuralConstraintSliceOrder();
 
       /// constructor starting with an empty graph with a given number of nodes
       /** param order the partial order  */
-      StructuralConstraintSliceOrder ( const NodeProperty<unsigned int>& order );
+      StructuralConstraintSliceOrder(const NodeProperty<unsigned int> &order);
 
       /// constructor starting with a given graph
-      StructuralConstraintSliceOrder ( const DiGraph& graph,
-                                       const NodeProperty<unsigned int>& order );
+      StructuralConstraintSliceOrder(const DiGraph &graph,
+                                     const NodeProperty<unsigned int> &order);
 
       /// copy constructor
-      StructuralConstraintSliceOrder
-      ( const StructuralConstraintSliceOrder& from );
+      StructuralConstraintSliceOrder(const StructuralConstraintSliceOrder &from);
 
       /// move constructor
-      StructuralConstraintSliceOrder
-      ( StructuralConstraintSliceOrder&& from );
+      StructuralConstraintSliceOrder(StructuralConstraintSliceOrder &&from);
 
       /// destructor
-      virtual ~StructuralConstraintSliceOrder ();
-      
+      virtual ~StructuralConstraintSliceOrder();
+
       /// @}
 
-      
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
       /// @{
-      
+
       /// copy operator
-      StructuralConstraintSliceOrder&
-      operator= ( const StructuralConstraintSliceOrder& from );
+      StructuralConstraintSliceOrder &
+      operator=(const StructuralConstraintSliceOrder &from);
 
       /// move operator
-      StructuralConstraintSliceOrder&
-      operator= ( StructuralConstraintSliceOrder&& from );
+      StructuralConstraintSliceOrder &
+      operator=(StructuralConstraintSliceOrder &&from);
 
       /// @}
-      
 
       // ##########################################################################
       /// @name Specific Accessors / Modifiers
       // ##########################################################################
       /// @{
 
-      /// sets the time slices of all the nodes in the property 
-      void setSliceOrder ( const NodeProperty<unsigned int>& slice );
+      /// sets the time slices of all the nodes in the property
+      void setSliceOrder(const NodeProperty<unsigned int> &slice);
 
       /// returns the current slice order
-      const NodeProperty<unsigned int>& sliceOrder () const noexcept;
+      const NodeProperty<unsigned int> &sliceOrder() const noexcept;
 
       /// adds a new node in the slice order
-      void addNode ( NodeId node, unsigned int slice );
+      void addNode(NodeId node, unsigned int slice);
 
       /** @brief assign a given slice to all the nodes specified in the
        * partial order */
-      void setDefaultSlice ( unsigned int slice );
-      
+      void setDefaultSlice(unsigned int slice);
+
       /// sets a new graph from which we will perform checkings
-      void setGraphAlone ( const DiGraph& graph );
+      void setGraphAlone(const DiGraph &graph);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, nothing is done. In
        * particular, no exception is raised.
        * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
-       * or y does not belong to the graph nodes 
+       * or y does not belong to the graph nodes
        * @throws InvalidArc exception is thrown if any time-backward arc
        * is created by the arc addition. */
-      void modifyGraphAlone ( const ArcAddition& change );
+      void modifyGraphAlone(const ArcAddition &change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If a nonexisting arc is removed, nothing is done. In
        * particular, no exception is raised. */
-      void modifyGraphAlone ( const ArcDeletion& change );
+      void modifyGraphAlone(const ArcDeletion &change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
        * is removed, nothing is done. In particular, no exception is raised.
        * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
-       * or y does not belong to the graph nodes 
+       * or y does not belong to the graph nodes
        * @throws InvalidArc exception is thrown if any time-backward arc
        * is created by the arc reversal. */
-      void modifyGraphAlone ( const ArcReversal& change );
+      void modifyGraphAlone(const ArcReversal &change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
        * is removed, nothing is done. In particular, no exception is raised.
        * @throws InvalidNode exception is thrown if an arc (x,y) is added or
-       * reversed and x or y does not belong to the graph nodes 
+       * reversed and x or y does not belong to the graph nodes
        * @throws InvalidArc exception is thrown if any time-backward arc
        * is created by an arc addition or reversal. */
-      void modifyGraphAlone ( const GraphChange& change );
+      void modifyGraphAlone(const GraphChange &change);
 
       /// indicates whether a change will always violate the constraint
       /** Some learning algorithms need examine several times whether a given
@@ -178,38 +169,38 @@ namespace gum {
        * in a 2TBN structure, it is always impossible to add a backward-time arc.
        * Such graph changes are always invalid and are therefore tagged as such
        * by the isAlwaysInvalid method. */
-      bool isAlwaysInvalidAlone ( const GraphChange& change ) const noexcept;
+      bool isAlwaysInvalidAlone(const GraphChange &change) const noexcept;
 
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist and is not a
        * backward-time arc. */
-      bool checkArcAdditionAlone ( NodeId x, NodeId y ) const noexcept;
+      bool checkArcAdditionAlone(NodeId x, NodeId y) const noexcept;
 
       /// checks whether the constraints enable to remove arc (x,y)
       /** an arc can be removed if and only if the arc exists. */
-      bool checkArcDeletionAlone ( NodeId x, NodeId y ) const noexcept;
+      bool checkArcDeletionAlone(NodeId x, NodeId y) const noexcept;
 
       /// checks whether the constraints enable to reverse arc (x,y)
       /** an arc can be reversed if and only if it exists and arc (y,x)
        * does not and is not a backward-time arc. */
-      bool checkArcReversalAlone ( NodeId x, NodeId y ) const noexcept;
+      bool checkArcReversalAlone(NodeId x, NodeId y) const noexcept;
 
       /// checks whether the constraints enable to add an arc
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist and is not a
        * backward-time arc. */
-      bool checkModificationAlone ( const ArcAddition& change ) const noexcept;
+      bool checkModificationAlone(const ArcAddition &change) const noexcept;
 
       /// checks whether the constraints enable to remove an arc
       /** an arc can be removed if and only if the arc exists. */
-      bool checkModificationAlone ( const ArcDeletion& change ) const noexcept;
+      bool checkModificationAlone(const ArcDeletion &change) const noexcept;
 
       /// checks whether the constraints enable to reverse an arc
       /** an arc can be reversed if and only if it exists and arc (y,x)
        * does not and is not a backward-time arc. */
-      bool checkModificationAlone ( const ArcReversal& change ) const noexcept;
-      
+      bool checkModificationAlone(const ArcReversal &change) const noexcept;
+
       /// checks whether the constraints enable to perform a graph change
       /** An arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist and is not a
@@ -217,37 +208,29 @@ namespace gum {
        * An arc can be removed if and only if the arc exists.
        * An arc (x,y) can be reversed if and only if it exists and arc (y,x)
        * does not and is not a backward-time arc. */
-      bool checkModificationAlone ( const GraphChange& change ) const noexcept;
- 
-      /// @}
+      bool checkModificationAlone(const GraphChange &change) const noexcept;
 
-      
-      // include the set of methods that enable the structural constraint to
-      // be standalone, i.e., that it needs not be included into a
-      // StructuralConstraintSetStatic to be used by learning algorithms
-      #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintSliceOrder
-      #include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
-      #undef GUM_CONSTRAINT_CLASS_NAME
+/// @}
 
+// include the set of methods that enable the structural constraint to
+// be standalone, i.e., that it needs not be included into a
+// StructuralConstraintSetStatic to be used by learning algorithms
+#define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintSliceOrder
+#include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
+#undef GUM_CONSTRAINT_CLASS_NAME
 
-
-    protected:
+      protected:
       /// slices to which belong the nodes
       NodeProperty<unsigned int> _SliceOrder__order;
-
     };
-    
- 
+
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #include <agrum/learning/constraints/structuralConstraintSliceOrder.inl>
 #endif /* GUM_NO_INLINE */
-
 
 #endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_SLICE_ORDER_H */

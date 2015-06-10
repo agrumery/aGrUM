@@ -38,7 +38,8 @@ namespace gum {
      * @brief Attribute is a member of a Class in a PRM.
      *
      * A Attribute is defined by its name, its containing class, its type and
-     * by a Conditional Probability Function (aka CPF but represented by a Potential).
+     * by a Conditional Probability Function (aka CPF but represented by a
+     *Potential).
      *
      * An attribute in a PRM is the equivalent of a random variable in a bayesian
      * network.
@@ -57,6 +58,10 @@ namespace gum {
 
       public:
   
+        // ========================================================================
+        /// @name Constructors & destructor
+        // ========================================================================
+        /// @{
         Attribute(const std::string& name);
 
         /// Destructor.
@@ -135,6 +140,12 @@ namespace gum {
          */
         virtual void setAsCastDescendant ( Attribute<GUM_SCALAR>* attr ) =0;
 
+        /**
+         * @brief Change this attribute to be a cast descendant of a an attribute with type
+         *        subtype.
+         */
+        virtual void becomeCastDescendant( Type<GUM_SCALAR> &subtype ) =0;
+
         /// Swap old_type with new_type in the ClassElement cpt.
         virtual void swap(const Type<GUM_SCALAR>& old_type, const Type<GUM_SCALAR>& new_type) =0;
 
@@ -143,12 +154,12 @@ namespace gum {
 
         /// @}
 
-        protected:
+      protected:
 
-          Attribute(const Attribute<GUM_SCALAR>& source);
+        Attribute(const Attribute<GUM_SCALAR>& source);
 
-          virtual Type<GUM_SCALAR>* _type() =0;
-          virtual void _type( Type<GUM_SCALAR>* t ) =0;
+        virtual Type<GUM_SCALAR>* _type() =0;
+        virtual void _type( Type<GUM_SCALAR>* t ) =0;
     };
 
     extern template class Attribute<double>;
@@ -159,4 +170,3 @@ namespace gum {
 #include <agrum/PRM/elements/attribute.tcc>
 
 #endif /* GUM_ATTRIBUTE_H */
-

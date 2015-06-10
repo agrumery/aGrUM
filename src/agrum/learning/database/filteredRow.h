@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The class representing database filtered rows 
+ * @brief The class representing database filtered rows
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -28,12 +28,9 @@
 #include <vector>
 #include <agrum/config.h>
 
-
 namespace gum {
 
-  
   namespace learning {
-
 
     /** @class FilteredRow
      * @ingroup learning_group
@@ -52,7 +49,7 @@ namespace gum {
      * discard non-fully observed rows.
      */
     class FilteredRow {
-    public:
+      public:
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -60,29 +57,27 @@ namespace gum {
       /// @{
 
       /// returns the filtered row as a vector of integers
-      std::vector<unsigned int>& row () noexcept { return __row; }
+      std::vector<unsigned int> &row() noexcept { return __row; }
 
       /// returns a reference on the weight of the row
-      float& weight () noexcept { return __weight; }
+      float &weight() noexcept { return __weight; }
 
       /// returns the weight of the row
-      float weight () const noexcept { return __weight; }
+      float weight() const noexcept { return __weight; }
 
-      /// returns a reference on the number of unobserved values 
-      unsigned int& unobserved () noexcept { return __nb_unobserved; }
+      /// returns a reference on the number of unobserved values
+      unsigned int &unobserved() noexcept { return __nb_unobserved; }
 
-      /// returns the number of unobserved values 
-      unsigned int unobserved () const noexcept { return __nb_unobserved; }
+      /// returns the number of unobserved values
+      unsigned int unobserved() const noexcept { return __nb_unobserved; }
 
       /// returns the value at the ith column
       /** by convention, unobserved columns should have value
        * std::numeric_limits<unsigned int>::max () */
-      unsigned int
-      operator[] ( unsigned int i ) const noexcept { return __row[i]; }
+      unsigned int operator[](unsigned int i) const noexcept { return __row[i]; }
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
@@ -90,35 +85,29 @@ namespace gum {
       /// @{
 
       /// tests whether two rows are identical
-      bool operator== ( const FilteredRow& from ) {
-        return ( ( __weight == from.__weight ) &&
-                 ( __nb_unobserved == from.__nb_unobserved ) &&
-                 ( __row == from.__row ) );
+      bool operator==(const FilteredRow &from) {
+        return ((__weight == from.__weight) &&
+                (__nb_unobserved == from.__nb_unobserved) && (__row == from.__row));
       }
 
       /// tests whether two rows are different
-      bool operator!= ( const FilteredRow& from ) { return ! operator== ( from ); }
+      bool operator!=(const FilteredRow &from) { return !operator==(from); }
 
       /// @}
-      
-    private:
-      
+
+      private:
       /// the integer-encoded filtered row
       std::vector<unsigned int> __row;
 
       /// the weight of the row
-      float __weight { 1 };
+      float __weight{1};
 
       /// the number of unobserved values
-      unsigned int __nb_unobserved { 0 };
- 
+      unsigned int __nb_unobserved{0};
     };
-
 
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
 
 #endif /* GUM_LEARNING_FILTERED_ROW_H */

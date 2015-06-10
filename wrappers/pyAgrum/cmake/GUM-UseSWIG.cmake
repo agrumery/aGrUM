@@ -147,6 +147,9 @@ macro(GUM_SWIG_ADD_SOURCE_TO_MODULE name outfiles infile)
     COMMAND sed
     ARGS -i 's/\\bNodeProperty\\b/gum::NodeProperty/g'
     ${swig_generated_file_fullname}
+    COMMAND sed
+    ARGS -i 's/^\# include <Python\\.h>/\#include <cmath>\\n\#include <Python.h>/g'
+    ${swig_generated_file_fullname}
     MAIN_DEPENDENCY "${swig_source_file_fullname}"
     DEPENDS ${SWIG_MODULE_${name}_EXTRA_DEPS}
     COMMENT "Swig source")

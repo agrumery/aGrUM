@@ -33,9 +33,7 @@
 #include <agrum/graphs/diGraph.h>
 #include <agrum/graphs/undiGraph.h>
 
-
 namespace gum {
-
 
   /* =========================================================================== */
   /* ===      BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS    === */
@@ -121,113 +119,104 @@ namespace gum {
 
   class MixedGraph : public virtual UndiGraph, public virtual DiGraph {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /// default constructor
-      /** @param nodes_size the size of the hash table used to store all the nodes
-       * @param nodes_resize_policy the resizing policy of this hash table
-       * @param arcs_size the size of the hash table used to store all the arcs
-       * @param arcs_resize_policy the resizing policy of this hash table
-       * @param edges_size the size of the hash table used to store all the edges
-       * @param edges_resize_policy the resizing policy of this hash table */
-      explicit MixedGraph ( Size nodes_size = HashTableConst::default_size,
-                            bool nodes_resize_policy    = true,
-                            Size arcs_size = HashTableConst::default_size,
-                            bool arcs_resize_policy    = true,
-                            Size edges_size = HashTableConst::default_size,
-                            bool edges_resize_policy    = true );
+    /// default constructor
+    /** @param nodes_size the size of the hash table used to store all the nodes
+     * @param nodes_resize_policy the resizing policy of this hash table
+     * @param arcs_size the size of the hash table used to store all the arcs
+     * @param arcs_resize_policy the resizing policy of this hash table
+     * @param edges_size the size of the hash table used to store all the edges
+     * @param edges_resize_policy the resizing policy of this hash table */
+    explicit MixedGraph(Size nodes_size = HashTableConst::default_size,
+                        bool nodes_resize_policy = true,
+                        Size arcs_size = HashTableConst::default_size,
+                        bool arcs_resize_policy = true,
+                        Size edges_size = HashTableConst::default_size,
+                        bool edges_resize_policy = true);
 
+    /// copy constructor
+    /** @param g the MixedGraph to copy */
+    MixedGraph(const MixedGraph &g);
 
-      /// copy constructor
-      /** @param g the MixedGraph to copy */
-      MixedGraph ( const MixedGraph& g );
+    /// destructor
+    virtual ~MixedGraph();
 
-      /// destructor
-      virtual ~MixedGraph();
+    /// @}
 
-      /// @}
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
 
+    /// copy operator
+    /** @param g the MixedGraph to copy */
+    MixedGraph &operator=(const MixedGraph &g);
 
-      // ############################################################################
-      /// @name Operators
-      // ############################################################################
-      /// @{
+    /// tests whether two MixedGraphs are identical (same nodes, arcs and edges)
+    /** @param g the MixedGraph with which "this" is compared */
+    // not virtual : it is a feature !!! :)
+    bool operator==(const MixedGraph &g) const;
 
-      /// copy operator
-      /** @param g the MixedGraph to copy */
-      MixedGraph& operator= ( const MixedGraph& g );
+    /// tests whether two MixedGraphs are different
+    /** @param g the MixedGraph with which "this" is compared */
+    // not virtual : it is a feature !!! :)
+    bool operator!=(const MixedGraph &g) const;
 
-      /// tests whether two MixedGraphs are identical (same nodes, arcs and edges)
-      /** @param g the MixedGraph with which "this" is compared */
-      // not virtual : it is a feature !!! :)
-      bool operator== ( const MixedGraph& g ) const;
+    /// @}
 
-      /// tests whether two MixedGraphs are different
-      /** @param g the MixedGraph with which "this" is compared */
-      // not virtual : it is a feature !!! :)
-      bool operator!= ( const MixedGraph& g ) const;
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
 
-      /// @}
+    /// remove a node as well as its adjacent arcs and edges from the graph
+    /** @param id the id of the node to be removed
+     * @warning if the node does not exist, nothing is done. In particular, no
+     * exception is raised.*/
+    virtual void eraseNode(const NodeId id);
 
+    /// removes all the nodes, arcs and edges from the graph
+    virtual void clear();
 
+    /** @brief returns a mixed edge/directed arc path from node1 to node2 in the
+     * arc/edge set
+     *
+     * This function returns, if any, a path from node1 to node2, using edges
+     * and/or arcs (following the direction of th arcs)
+     * @param node1 the id from which the path begins
+     * @param node2 the id to which the path ends
+     * @throw NotFound exception is raised if no path can be found between the
+     * two nodes */
+    const std::vector<NodeId> mixedOrientedPath(const NodeId node1,
+                                                const NodeId node2) const;
 
-      // ############################################################################
-      /// @name Accessors/Modifiers
-      // ############################################################################
-      /// @{
+    /// returns a mixed/directed path from node1 to node2 in the arc/edge set
+    /** This function returns, if any, a path from node1 to node2, using edges
+     * and/or arcs (not necessarily following the direction of th arcs)
+     * @param node1 the id from which the path begins
+     * @param node2 the id to which the path ends
+     * @throw NotFound exception is raised if no path can be found between the
+     * two nodes */
+    const std::vector<NodeId> mixedUnorientedPath(const NodeId node1,
+                                                  const NodeId node2) const;
 
-      /// remove a node as well as its adjacent arcs and edges from the graph
-      /** @param id the id of the node to be removed
-       * @warning if the node does not exist, nothing is done. In particular, no
-       * exception is raised.*/
-      virtual void eraseNode ( const NodeId id );
+    /// to friendly display the content of the MixedGraph
+    virtual const std::string toString() const;
 
-      /// removes all the nodes, arcs and edges from the graph
-      virtual void clear();
-
-      /** @brief returns a mixed edge/directed arc path from node1 to node2 in the
-       * arc/edge set
-       *
-       * This function returns, if any, a path from node1 to node2, using edges
-       * and/or arcs (following the direction of th arcs)
-       * @param node1 the id from which the path begins
-       * @param node2 the id to which the path ends
-       * @throw NotFound exception is raised if no path can be found between the
-       * two nodes */
-      const std::vector<NodeId>
-      mixedOrientedPath ( const NodeId node1, const NodeId node2 ) const;
-
-      /// returns a mixed/directed path from node1 to node2 in the arc/edge set
-      /** This function returns, if any, a path from node1 to node2, using edges
-       * and/or arcs (not necessarily following the direction of th arcs)
-       * @param node1 the id from which the path begins
-       * @param node2 the id to which the path ends
-       * @throw NotFound exception is raised if no path can be found between the
-       * two nodes */
-      const std::vector<NodeId>
-      mixedUnorientedPath ( const NodeId node1, const NodeId node2 ) const;
-
-      /// to friendly display the content of the MixedGraph
-      virtual const std::string toString() const;
-
-      /// @}
-
+    /// @}
   };
 
-
   /// for friendly displaying the content of directed graphs
-  std::ostream& operator<< ( std::ostream&, const MixedGraph& );
-
+  std::ostream &operator<<(std::ostream &, const MixedGraph &);
 
 } /* namespace gum */
 
-
-
 #ifndef GUM_NO_INLINE
 #include <agrum/graphs/mixedGraph.inl>
-#endif //GUM_NOINLINE
+#endif // GUM_NOINLINE
 
 #endif /* GUM_MIXEDGRAPH_H */

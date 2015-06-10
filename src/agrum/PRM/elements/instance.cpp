@@ -27,11 +27,9 @@
 
 #include <agrum/PRM/elements/instance.h>
 
-
 namespace gum {
   namespace prm {
     template class Instance<double>;
 
   } /* namespace prm */
 } /* namespace gum */
-

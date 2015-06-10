@@ -99,6 +99,14 @@
     PyErr_SetObject (
       SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__OutOfBounds ), err );
     SWIG_fail;
+  } catch ( gum::UnknownLabelInDatabase& e ) {
+    gum::UnknownLabelInDatabase* ecopy = new gum::UnknownLabelInDatabase ( e );
+    PyObject* err = SWIG_NewPointerObj ( ecopy,
+    SWIGTYPE_p_gum__UnknownLabelInDatabase,
+    1 );
+    PyErr_SetObject (
+      SWIG_Python_ExceptionType ( SWIGTYPE_p_gum__UnknownLabelInDatabase ), err );
+    SWIG_fail;
   } catch ( gum::Exception& e ) {
     PyErr_SetString ( PyExc_Exception, e.errorContent().c_str() );
     SWIG_fail;

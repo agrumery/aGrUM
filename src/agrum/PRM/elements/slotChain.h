@@ -38,27 +38,30 @@
 namespace gum {
   namespace prm {
 
-    template<typename GUM_SCALAR> class Class;
-    template<typename GUM_SCALAR> class Attribute;
-
+    template <typename GUM_SCALAR> class Class;
+    template <typename GUM_SCALAR> class Attribute;
 
     /**
      * @class SlotChain slotChain.h <agrum/PRM/slotChain.h>
      *
-     * @brief A SlotChain represents a sequence of gum::prm::ClassElement<GUM_SCALAR> where
-     *        the n-1 first gum::prm::ClassElement<GUM_SCALAR> are gum::prm::ReferenceSlot and
-     *        the last gum::prm::ClassElement<GUM_SCALAR> an gum::prm::Attribute or an
+     * @brief A SlotChain represents a sequence of gum::prm::ClassElement<GUM_SCALAR>
+     *where
+     *        the n-1 first gum::prm::ClassElement<GUM_SCALAR> are
+     *gum::prm::ReferenceSlot and
+     *        the last gum::prm::ClassElement<GUM_SCALAR> an gum::prm::Attribute or
+     *an
      *        gum::prm::Aggregate.
      *
      * A SlotChain behaves as an gum::prm::Attribute or an gum::prm::Aggregate
-     * (depending the gum::prm::ClassElement<GUM_SCALAR> type of it's last element) regarding
+     * (depending the gum::prm::ClassElement<GUM_SCALAR> type of it's last element)
+     *regarding
      * the following methods: gum::prm::ClassElement<GUM_SCALAR>::type() and
      * gum::prm::ClassElement<GUM_SCALAR>::cpf().
      *
      */
-// ==========================================================================
-    template<typename GUM_SCALAR>
-    class SlotChain: public ClassElement<GUM_SCALAR> {
+    // ==========================================================================
+    template <typename GUM_SCALAR>
+    class SlotChain : public ClassElement<GUM_SCALAR> {
       public:
         // ========================================================================
         /// @name Constructors & destructor
@@ -175,29 +178,28 @@ namespace gum {
           } else {
             GUM_ERROR ( OperationNotAllowed, "no possible safe name for this ClassElement<GUM_SCALAR>" );
           }
-        }
+      }
 
-        /// @}
+      /// @}
       private:
+      /// Copy operator. Don't use it.
+      SlotChain &operator=(const SlotChain &source);
 
-        /// Copy operator. Don't use it.
-        SlotChain& operator= ( const SlotChain& source );
+      // ========================================================================
+      /// @name Private members of SlotChain.
+      // ========================================================================
+      /// @{
 
-        // ========================================================================
-        /// @name Private members of SlotChain.
-        // ========================================================================
-        /// @{
+      /// The sequence of ClassElement<GUM_SCALAR> composing the slot chain
+      Sequence<ClassElement<GUM_SCALAR> *> *__chain;
 
-        /// The sequence of ClassElement<GUM_SCALAR> composing the slot chain
-        Sequence<ClassElement<GUM_SCALAR>*>* __chain;
+      /// Flag indicating if this slot chain is multiple or not.
+      bool __isMultiple;
 
-        /// Flag indicating if this slot chain is multiple or not.
-        bool __isMultiple;
+      /// Copy the last element, this prevents unwanted DuplicateElement exceptions.
+      void __copyLastElt();
 
-        /// Copy the last element, this prevents unwanted DuplicateElement exceptions.
-        void __copyLastElt();
-
-        /// @}
+      /// @}
     };
 
     extern template class SlotChain<double>;
@@ -207,4 +209,3 @@ namespace gum {
 #include <agrum/PRM/elements/slotChain.tcc>
 
 #endif /* GUM_SLOT_CHAIN_H */
-

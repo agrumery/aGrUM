@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef APPROXIMATIONSCHEMELISTENER_H
 #define APPROXIMATIONSCHEMELISTENER_H
 
@@ -29,18 +28,19 @@ namespace gum {
   class ApproximationSchemeListener : public Listener {
 
     public:
-      ApproximationSchemeListener ( IApproximationSchemeConfiguration& sch );
-      virtual ~ApproximationSchemeListener();
+    ApproximationSchemeListener(IApproximationSchemeConfiguration &sch);
+    virtual ~ApproximationSchemeListener();
 
-      virtual void whenProgress ( const void* src, Size pourcent, double error, double time ) = 0;
-      virtual void whenStop ( const void* src, std::string message ) = 0;
+    virtual void whenProgress(const void *src, Size pourcent, double error,
+                              double time) = 0;
+    virtual void whenStop(const void *src, std::string message) = 0;
 
     protected:
-      ApproximationSchemeListener ( const ApproximationSchemeListener& other );
-      ApproximationSchemeListener& operator= ( const ApproximationSchemeListener& other );
+    ApproximationSchemeListener(const ApproximationSchemeListener &other);
+    ApproximationSchemeListener &operator=(const ApproximationSchemeListener &other);
 
     private:
-      IApproximationSchemeConfiguration& __sch;
+    IApproximationSchemeConfiguration &__sch;
   };
 }
 

@@ -49,8 +49,7 @@ namespace gum {
      * @brief A System is a container of Instance and describe a relational
      *        skeleton.
      */
-    template<typename GUM_SCALAR>
-    class System: public PRMObject {
+    template <typename GUM_SCALAR> class System : public PRMObject {
       public:
         // ========================================================================
         /// @name Constructors & destructor.
@@ -261,73 +260,77 @@ namespace gum {
 
         /// @}
       private:
-        /// Copy constructor. Don't use it.
-        System ( const System& from );
+      /// Copy constructor. Don't use it.
+      System(const System &from);
 
-        /// Copy operator. Don't use it.
-        System& operator= ( const System& from );
+      /// Copy operator. Don't use it.
+      System &operator=(const System &from);
 
-        // ========================================================================
-        /// @name Private Instance handling methods and members.
-        // ========================================================================
-        /// @{
+      // ========================================================================
+      /// @name Private Instance handling methods and members.
+      // ========================================================================
+      /// @{
 
-        /// The relational skeleton of this System.
-        DiGraph __skeleton;
+      /// The relational skeleton of this System.
+      DiGraph __skeleton;
 
-        /// The maping between Instance and their NodeId in the relational
-        /// skeleton of this System.
-        NodeProperty<Instance<GUM_SCALAR>*> __nodeIdMap;
+      /// The maping between Instance and their NodeId in the relational
+      /// skeleton of this System.
+      NodeProperty<Instance<GUM_SCALAR> *> __nodeIdMap;
 
-        /// The mapping between Instance and their names.
-        HashTable<std::string, Instance<GUM_SCALAR>*> __nameMap;
+      /// The mapping between Instance and their names.
+      HashTable<std::string, Instance<GUM_SCALAR> *> __nameMap;
 
-        /// Mapping between a class and all it's Instance in this system
-        HashTable<Class<GUM_SCALAR>*, Set<Instance<GUM_SCALAR>*>*> __instanceMap;
+      /// Mapping between a class and all it's Instance in this system
+      HashTable<Class<GUM_SCALAR> *, Set<Instance<GUM_SCALAR> *> *> __instanceMap;
 
-        /// Typedef of the pair of a Class<GUM_SCALAR> and the sequence of it's instantiation.
-        typedef std::pair< ClassElementContainer<GUM_SCALAR>*, Sequence<Instance<GUM_SCALAR>*>* > model_pair;
+      /// Typedef of the pair of a Class<GUM_SCALAR> and the sequence of it's
+      /// instantiation.
+      typedef std::pair<ClassElementContainer<GUM_SCALAR> *,
+                        Sequence<Instance<GUM_SCALAR> *> *> model_pair;
 
-        /// Mapping between arrays and their name. The first element of the pair
-        /// is the type of the array.
-        HashTable< std::string, model_pair> __arrayMap;
+      /// Mapping between arrays and their name. The first element of the pair
+      /// is the type of the array.
+      HashTable<std::string, model_pair> __arrayMap;
 
-        /// @}
-        // ========================================================================
-        /// @name Ground BN private methods.
-        // ========================================================================
-        /// @{
+      /// @}
+      // ========================================================================
+      /// @name Ground BN private methods.
+      // ========================================================================
+      /// @{
 
-        /// @brief Method which ground ReferenceSlot of an Instance and add arcs
-        ///        in the IBayesNet.
-        /// @param instance The Instance grounded by this method.
-        /// @param factory  The factory used to build the grounded IBayesNet.
-        void __groundRef ( const Instance<GUM_SCALAR>& instance,
-                           BayesNetFactory<GUM_SCALAR>& factory ) const;
+      /// @brief Method which ground ReferenceSlot of an Instance and add arcs
+      ///        in the IBayesNet.
+      /// @param instance The Instance grounded by this method.
+      /// @param factory  The factory used to build the grounded IBayesNet.
+      void __groundRef(const Instance<GUM_SCALAR> &instance,
+                       BayesNetFactory<GUM_SCALAR> &factory) const;
 
-        /// @brief Method which ground Atttributes and Aggregators of
-        ///        an Instance.
-        /// @param instance The Instance grounded by this method.
-        /// @param factory  The factory used to build the grounded IBayesNet.
-        void __groundAttr ( const Instance<GUM_SCALAR>& instance,
-                            BayesNetFactory<GUM_SCALAR>& factory ) const;
+      /// @brief Method which ground Atttributes and Aggregators of
+      ///        an Instance.
+      /// @param instance The Instance grounded by this method.
+      /// @param factory  The factory used to build the grounded IBayesNet.
+      void __groundAttr(const Instance<GUM_SCALAR> &instance,
+                        BayesNetFactory<GUM_SCALAR> &factory) const;
 
-        /// @brief Method which copy node's Potential of an Instance to the grounded
-        ///        Bayesian Network.
-        /// @param instance The Instance currently grounded.
-        /// @param attr     The Attribute<GUM_SCALAR> for which the Potential is grounded.
-        /// @param factory  The factory used to build the grounded IBayesNet.
-        void __groundPotential ( const Instance<GUM_SCALAR>& instance, const Attribute<GUM_SCALAR>& attr,
-                                 BayesNetFactory<GUM_SCALAR>& factory ) const;
+      /// @brief Method which copy node's Potential of an Instance to the grounded
+      ///        Bayesian Network.
+      /// @param instance The Instance currently grounded.
+      /// @param attr     The Attribute<GUM_SCALAR> for which the Potential is
+      /// grounded.
+      /// @param factory  The factory used to build the grounded IBayesNet.
+      void __groundPotential(const Instance<GUM_SCALAR> &instance,
+                             const Attribute<GUM_SCALAR> &attr,
+                             BayesNetFactory<GUM_SCALAR> &factory) const;
 
-        /// @brief Ground an aggregator with the given name in the grounded
-        ///        IBayesNet.
-        /// @param elt     The aggregator grounded.
-        /// @param name    The aggregator's name in the grounded IBayesNet.
-        /// @param factory The factory used to build the grounded IBayesNet.
-        void __groundAgg ( const ClassElement<GUM_SCALAR>& elt, const std::string& name,
-                           BayesNetFactory<GUM_SCALAR>& factory ) const;
-        /// @}
+      /// @brief Ground an aggregator with the given name in the grounded
+      ///        IBayesNet.
+      /// @param elt     The aggregator grounded.
+      /// @param name    The aggregator's name in the grounded IBayesNet.
+      /// @param factory The factory used to build the grounded IBayesNet.
+      void __groundAgg(const ClassElement<GUM_SCALAR> &elt, const std::string &name,
+                       BayesNetFactory<GUM_SCALAR> &factory) const;
+      /// @}
     };
 
     extern template class System<double>;
@@ -337,4 +340,3 @@ namespace gum {
 #include <agrum/PRM/elements/system.tcc>
 
 #endif // GUM_SYSTEM_H
-

@@ -26,60 +26,54 @@
  *
  */
 
-//to ease IDE parser
+// to ease IDE parser
 #include <agrum/multidim/multiDimInterface.h>
 
 namespace gum {
 
   // Iterator pointing at the beginning of the Sequence of variables.
   INLINE
-  MultiDimInterface::iterator
-  MultiDimInterface::begin() const {
+  MultiDimInterface::iterator MultiDimInterface::begin() const {
     return variablesSequence().begin();
   }
 
-
   // Iterator pointing at the rbeginning of the Sequence of variables.
   INLINE
-  MultiDimInterface::iterator
-  MultiDimInterface::rbegin() const {
+  MultiDimInterface::iterator MultiDimInterface::rbegin() const {
     return variablesSequence().rbegin();
   }
 
   // Constant reference on the iterator pointing at the end of the Sequence
   // of variables.
   INLINE
-  const MultiDimInterface::iterator&
-  MultiDimInterface::end() const {
+  const MultiDimInterface::iterator &MultiDimInterface::end() const {
     return variablesSequence().end();
   }
 
   // Constant reference on the iterator pointing at the rend of the Sequence
   // of variables.
   INLINE
-  const MultiDimInterface::iterator&
-  MultiDimInterface::rend() const {
+  const MultiDimInterface::iterator &MultiDimInterface::rend() const {
     return variablesSequence().rend();
   }
 
   // Swap two variables in this multidim.
   INLINE
-  void MultiDimInterface::swap ( const DiscreteVariable& x,
-                                 const DiscreteVariable& y ) {
-    if ( not contains ( x ) ) {
-      GUM_ERROR ( NotFound, "could not find the variable" );
+  void MultiDimInterface::swap(const DiscreteVariable &x,
+                               const DiscreteVariable &y) {
+    if (not contains(x)) {
+      GUM_ERROR(NotFound, "could not find the variable");
     }
 
-    if ( contains ( y ) ) {
-      GUM_ERROR ( DuplicateElement, "variable already in MultiDim" );
+    if (contains(y)) {
+      GUM_ERROR(DuplicateElement, "variable already in MultiDim");
     }
 
-    if ( x.domainSize() != y.domainSize() ) {
-      GUM_ERROR ( OperationNotAllowed, "incompatible variables" );
+    if (x.domainSize() != y.domainSize()) {
+      GUM_ERROR(OperationNotAllowed, "incompatible variables");
     }
 
-    _swap ( &x, &y );
+    _swap(&x, &y);
   }
-
 
 } /* namespace gum */

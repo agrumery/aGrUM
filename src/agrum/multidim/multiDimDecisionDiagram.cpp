@@ -19,4 +19,3 @@
  ***************************************************************************/
 
 #include <agrum/multidim/multiDimDecisionDiagram.h>
-

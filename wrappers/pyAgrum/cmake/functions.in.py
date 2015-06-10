@@ -32,13 +32,13 @@ def about():
     There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  For details, see 'pyAgrum.warranty'.
     """)
-  
+
 def availableBNExts():
     """
     return the list of suffix for supported BN file formats.
     """
     return "bif|dsl|net|bifxml"
-    
+
 def loadBN(s,listeners=None):
     """
     returns a BN from a file using one of the availableBNExts() suffixes.
@@ -85,21 +85,21 @@ def loadID(s):
   """
   return an InfluenceDiagram from a bifxml file.
   """
-  
+
   extension=s.split('.')[-1].upper()
   if extension!="BIFXML":
     raise Exception("extension "+extension+" unknown. Please use bifxml.")
-  
+
   diag=InfluenceDiagram()
   res=diag.loadBIFXML(s)
-  
+
   if not res:
     raise Exception("Error(s) in "+s)
 
   diag.setProperty("name",s)
   return diag
-  
-  
+
+
 # OBSOLETE FUNCTIONS FOR 0.9.1
 def DiscretizedVar(*args):
   from .pyAgrum import DiscretizedVariable

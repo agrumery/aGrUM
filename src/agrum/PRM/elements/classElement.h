@@ -47,8 +47,7 @@ namespace gum {
      *
      * @ingroup prm_group
      */
-    template<typename GUM_SCALAR>
-    class ClassElement: public PRMObject {
+    template <typename GUM_SCALAR> class ClassElement : public PRMObject {
       public:
         // ========================================================================
         /// @name Constructor & Destructor.
@@ -223,13 +222,12 @@ namespace gum {
 
         /// @}
       protected:
-        /// The safe name of this ClassElement.
-        std::string _safeName;
+      /// The safe name of this ClassElement.
+      std::string _safeName;
 
       private:
-
-        /// The node's id of this element
-        NodeId __id;
+      /// The node's id of this element
+      NodeId __id;
     };
 
     extern template class ClassElement<double>;
@@ -239,4 +237,3 @@ namespace gum {
 #include <agrum/PRM/elements/classElement.tcc>
 
 #endif /* GUM_CLASS_ELEMENT_H */
-

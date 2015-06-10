@@ -24,25 +24,22 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
 namespace gum {
-
 
   /* ============================================================================ */
   /* ===                           GUM_FMDP_WRITTER                           === */
   /* ============================================================================ */
-  template<typename GUM_SCALAR> INLINE
-  FMDPReader<GUM_SCALAR>:: FMDPReader ( FactoredMarkovDecisionProcess<GUM_SCALAR>* FMDP, const std::string& filename ) {
-    GUM_CONSTRUCTOR ( FMDPReader );
+  template <typename GUM_SCALAR>
+  INLINE
+  FMDPReader<GUM_SCALAR>::FMDPReader(FactoredMarkovDecisionProcess<GUM_SCALAR> *FMDP,
+                                     const std::string &filename) {
+    GUM_CONSTRUCTOR(FMDPReader);
   }
 
-  template<typename GUM_SCALAR> INLINE
-  FMDPReader<GUM_SCALAR>::~FMDPReader() {
-    GUM_DESTRUCTOR ( FMDPReader );
+  template <typename GUM_SCALAR> INLINE FMDPReader<GUM_SCALAR>::~FMDPReader() {
+    GUM_DESTRUCTOR(FMDPReader);
   }
-
 
 } /* namespace gum */
 
-
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif // DOXYGEN_SHOULD_SKIP_THIS

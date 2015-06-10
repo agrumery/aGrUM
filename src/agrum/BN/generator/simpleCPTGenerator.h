@@ -30,9 +30,7 @@
 #include <agrum/config.h>
 #include <agrum/BN/generator/ICPTGenerator.h>
 
-
 namespace gum {
-
 
   /** @class SimpleCPTGenerator
    * @brief Class for generating Conditional Probability Tables.
@@ -41,33 +39,33 @@ namespace gum {
    * This class implements a CPTGenerator CPT generation algorithm.
    */
   template <typename GUM_SCALAR>
-  class SimpleCPTGenerator: public ICPTGenerator<GUM_SCALAR> {
+  class SimpleCPTGenerator : public ICPTGenerator<GUM_SCALAR> {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructor
-      // ############################################################################
-      /// @{
-      /**
-       * Default constructor.
-       */
-      SimpleCPTGenerator();
+    // ############################################################################
+    /// @name Constructors / Destructor
+    // ############################################################################
+    /// @{
+    /**
+     * Default constructor.
+     */
+    SimpleCPTGenerator();
 
-      /**
-       * Destructor.
-       */
-      virtual ~SimpleCPTGenerator();
-      /// @}
+    /**
+     * Destructor.
+     */
+    virtual ~SimpleCPTGenerator();
+    /// @}
 
-      // ############################################################################
-      /// @name CPT generation methods
-      // ############################################################################
-      /// @{
-      /**
-       * Generates a CPT using floats.
-       * @param varId The variable id of the CPT owner.
-       * @param cpt A reference on the CPT to fill.
-       */
-      virtual void generateCPT ( const Idx& varId, const Potential<GUM_SCALAR>& cpt );
+    // ############################################################################
+    /// @name CPT generation methods
+    // ############################################################################
+    /// @{
+    /**
+     * Generates a CPT using floats.
+     * @param varId The variable id of the CPT owner.
+     * @param cpt A reference on the CPT to fill.
+     */
+    virtual void generateCPT(const Idx &varId, const Potential<GUM_SCALAR> &cpt);
   };
 
   extern template class SimpleCPTGenerator<float>;
@@ -76,4 +74,3 @@ namespace gum {
 
 #include <agrum/BN/generator/simpleCPTGenerator.tcc>
 #endif /* GUM_SIMPLE_CPT_GENERATOR_H */
-

@@ -24,12 +24,10 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #include <agrum/graphs/triangulations/incrementalTriangulation.h>
 
 namespace gum {
-
 
   /* =========================================================================== */
   /* =========================================================================== */
@@ -37,46 +35,33 @@ namespace gum {
   /* =========================================================================== */
   /* =========================================================================== */
 
-
-
   /// returns a junction tree corresponding to the current graph
 
   INLINE
-  const CliqueGraph& IncrementalTriangulation::junctionTree() {
+  const CliqueGraph &IncrementalTriangulation::junctionTree() {
     updateTriangulation();
     return __junction_tree;
   }
 
-
-
   /// returns the junction tree of the maximal prime subgraphs
 
   INLINE
-  const CliqueGraph&
-  IncrementalTriangulation::maxPrimeSubgraphTree() {
+  const CliqueGraph &IncrementalTriangulation::maxPrimeSubgraphTree() {
     updateTriangulation();
     return __T_mpd;
   }
 
-
-
   /// returns the triangulation algorithm (useful for fine tuning it)
 
-  INLINE const UnconstrainedTriangulation&
-  IncrementalTriangulation::triangulationAlgo() const  {
+  INLINE const UnconstrainedTriangulation &
+  IncrementalTriangulation::triangulationAlgo() const {
     return *__triangulation;
   }
 
-
-
   /// returns the current graph (that which is incrementally triangulated)
 
-  INLINE const UndiGraph& IncrementalTriangulation::graph() const {
-    return __graph;
-  }
-
+  INLINE const UndiGraph &IncrementalTriangulation::graph() const { return __graph; }
 
 } /* namespace gum */
-
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

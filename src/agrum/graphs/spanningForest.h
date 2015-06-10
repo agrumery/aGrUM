@@ -28,9 +28,7 @@
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/undiGraph.h>
 
-
 namespace gum {
-
 
   /* =========================================================================== */
   /** @class SpanningForest
@@ -38,63 +36,57 @@ namespace gum {
   /* =========================================================================== */
   class SpanningForest {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /// Destructor
-      virtual ~SpanningForest();
+    /// Destructor
+    virtual ~SpanningForest();
 
-      /// @}
+    /// @}
 
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
 
-      // ############################################################################
-      /// @name Accessors / Modifiers
-      // ############################################################################
-      /// @{
+    /// Returns the edges in a min cost spanning forest
+    /** @returns edges in the spanning forest */
+    virtual const EdgeSet &edgesInSpanningForest() = 0;
 
-      /// Returns the edges in a min cost spanning forest
-      /** @returns edges in the spanning forest */
-      virtual const EdgeSet& edgesInSpanningForest() = 0;
+    /// Construct the spanning forest
+    /** @return the spanning forest */
+    virtual const UndiGraph &spanningForest() = 0;
 
-      /// Construct the spanning forest
-      /** @return the spanning forest */
-      virtual const UndiGraph& spanningForest() = 0;
+    /// Returns the cost of the spanning forest
+    /** @return cost of the spanning forest */
+    virtual float costOfSpanningForest() = 0;
 
-      /// Returns the cost of the spanning forest
-      /** @return cost of the spanning forest */
-      virtual float costOfSpanningForest() = 0;
-
-      /// @}
-
+    /// @}
 
     protected:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /// default constructor
-      /** You should use SpanningForestPrim or SpanningForestKuskal to create
-       * appropriate spanning trees algorithms. */
-      SpanningForest();
+    /// default constructor
+    /** You should use SpanningForestPrim or SpanningForestKuskal to create
+     * appropriate spanning trees algorithms. */
+    SpanningForest();
 
-      /// Copy constructor
-      SpanningForest ( const SpanningForest& toCopy );
+    /// Copy constructor
+    SpanningForest(const SpanningForest &toCopy);
 
-      /// Copy operator
-      /** avoid copying the interface from scratch: this would prevent, in
-       * particular, that a Prim algorithm be initialized by a Kruskal algo. */
-      SpanningForest& operator= ( const SpanningForest& toCopy );
+    /// Copy operator
+    /** avoid copying the interface from scratch: this would prevent, in
+     * particular, that a Prim algorithm be initialized by a Kruskal algo. */
+    SpanningForest &operator=(const SpanningForest &toCopy);
 
-      /// @}
-
+    /// @}
   };
-
 
 } /* namespace gum */
 
-
 #endif /* GUM_SPANNING_FOREST_H */
-

@@ -23,34 +23,30 @@
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
-#include"IDReader.h"
+#include "IDReader.h"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
 namespace gum {
-
 
   /*
    * Constructor
    * A reader is created to reading a defined file.
    * Note that an ID as to be created before and given in parameter.
    */
-  template<typename GUM_SCALAR> INLINE
-  IDReader<GUM_SCALAR>:: IDReader ( InfluenceDiagram<GUM_SCALAR>* infdiag, const std::string& filePath ) {
-    GUM_CONSTRUCTOR ( IDReader );
+  template <typename GUM_SCALAR>
+  INLINE IDReader<GUM_SCALAR>::IDReader(InfluenceDiagram<GUM_SCALAR> *infdiag,
+                                        const std::string &filePath) {
+    GUM_CONSTRUCTOR(IDReader);
   }
 
   /*
    * Default destructor.
    */
-  template<typename GUM_SCALAR> INLINE
-  IDReader<GUM_SCALAR>::~IDReader() {
-    GUM_DESTRUCTOR ( IDReader );
+  template <typename GUM_SCALAR> INLINE IDReader<GUM_SCALAR>::~IDReader() {
+    GUM_DESTRUCTOR(IDReader);
   }
-
 
 } /* namespace gum */
 
-
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif // DOXYGEN_SHOULD_SKIP_THIS

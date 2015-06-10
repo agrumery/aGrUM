@@ -1,6 +1,7 @@
 #since some IDEs need a Makefile
 #here is a simple wrapper to act embedded in Makefile
 #
+CLANGFORMAT=clang-format-3.5
 
 ACT=./act --no-fun 
 JOBS=7
@@ -48,4 +49,10 @@ last:
 linuxreleasedoc:
 	$(ACT) release doc -p linux
 	cat build/linux/release/warning.txt
+
+clang-format:
+	for i in `find src -name "*.h"` ; do $(CLANGFORMAT) -i $$i; done
+	for i in `find src -name "*.cpp"` ; do $(CLANGFORMAT) -i $$i; done
+	for i in `find src -name "*.tcc"` ; do $(CLANGFORMAT) -i $$i; done
+	for i in `find src -name "*.inl"` ; do $(CLANGFORMAT) -i $$i; done
 

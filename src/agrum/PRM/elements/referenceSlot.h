@@ -48,112 +48,112 @@ namespace gum {
      * @see PRM PRMFactory ClassElementContainer ClassElement
      * @ingroup prm_group
      */
-// ==========================================================================
-    template<typename GUM_SCALAR>
-    class ReferenceSlot: public ClassElement<GUM_SCALAR> {
+    // ==========================================================================
+    template <typename GUM_SCALAR>
+    class ReferenceSlot : public ClassElement<GUM_SCALAR> {
       public:
-        // ========================================================================
-        /// @name Protected constructors & destructor.
-        // ========================================================================
-        /// @{
+      // ========================================================================
+      /// @name Protected constructors & destructor.
+      // ========================================================================
+      /// @{
 
-        /**
-         * Default constructor
-         *
-         * @param name The name of this element.
-         * @param type The type of this reference slot.
-         * @param isArray Determine if this reference slot is multiple or not.
-         */
-        ReferenceSlot ( const std::string& name, ClassElementContainer<GUM_SCALAR>& type,
-                        bool isArray = false );
+      /**
+       * Default constructor
+       *
+       * @param name The name of this element.
+       * @param type The type of this reference slot.
+       * @param isArray Determine if this reference slot is multiple or not.
+       */
+      ReferenceSlot(const std::string &name, ClassElementContainer<GUM_SCALAR> &type,
+                    bool isArray = false);
 
-        /**
-         * Destructor.
-         */
-        virtual ~ReferenceSlot();
+      /**
+       * Destructor.
+       */
+      virtual ~ReferenceSlot();
 
-        /// @}
-        // ========================================================================
-        /// @name Getters & setters
-        // ========================================================================
-        /// @{
+      /// @}
+      // ========================================================================
+      /// @name Getters & setters
+      // ========================================================================
+      /// @{
 
-        /**
-         * Implementation of the pure virtual method of PRMObject.
-         */
-        virtual typename ClassElement<GUM_SCALAR>::ClassElementType elt_type() const;
+      /**
+       * Implementation of the pure virtual method of PRMObject.
+       */
+      virtual typename ClassElement<GUM_SCALAR>::ClassElementType elt_type() const;
 
-        /**
-         * Returns the type of this slot, which is a ClassElementContainer
-         * (it is not the type of PRMObject).
-         */
-        ClassElementContainer<GUM_SCALAR>& slotType();
+      /**
+       * Returns the type of this slot, which is a ClassElementContainer
+       * (it is not the type of PRMObject).
+       */
+      ClassElementContainer<GUM_SCALAR> &slotType();
 
-        /**
-         * Returns the type of this slot, which is a ClassElementContainer
-         * (it is not the type of PRMObject).
-         */
-        const ClassElementContainer<GUM_SCALAR>& slotType() const;
+      /**
+       * Returns the type of this slot, which is a ClassElementContainer
+       * (it is not the type of PRMObject).
+       */
+      const ClassElementContainer<GUM_SCALAR> &slotType() const;
 
-        /**
-         * Returns true if this reference slot is an array.
-         */
-        bool isArray() const;
+      /**
+       * Returns true if this reference slot is an array.
+       */
+      bool isArray() const;
 
-        /// See gum::ClassElement::addParent().
-        virtual void addParent ( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::ClassElement::addParent().
+      virtual void addParent(const ClassElement<GUM_SCALAR> &elt);
 
-        /// See gum::ClassElement::addChild().
-        virtual void addChild ( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::ClassElement::addChild().
+      virtual void addChild(const ClassElement<GUM_SCALAR> &elt);
 
-        /// @}
-        // ========================================================================
-        /// @name Not allowed operations on a ReferenceSlot.
-        // ========================================================================
-        /// @{
+      /// @}
+      // ========================================================================
+      /// @name Not allowed operations on a ReferenceSlot.
+      // ========================================================================
+      /// @{
 
-        /// @brief Raise an OperationNotAllowed.
-        /// See gum::ClassElement::type().
-        virtual Type<GUM_SCALAR>& type();
+      /// @brief Raise an OperationNotAllowed.
+      /// See gum::ClassElement::type().
+      virtual Type<GUM_SCALAR> &type();
 
-        /// @brief Raise an OperationNotAllowed.
-        /// See gum::ClassElement::type().
-        virtual const Type<GUM_SCALAR>& type() const;
+      /// @brief Raise an OperationNotAllowed.
+      /// See gum::ClassElement::type().
+      virtual const Type<GUM_SCALAR> &type() const;
 
-        /// @brief Raise an OperationNotAllowed.
-        /// See gum::ClassElement::cpf().
-        virtual Potential<GUM_SCALAR>& cpf();
+      /// @brief Raise an OperationNotAllowed.
+      /// See gum::ClassElement::cpf().
+      virtual Potential<GUM_SCALAR> &cpf();
 
-        /// @brief Raise an OperationNotAllowed.
-        /// See gum::ClassElement::cpf().
-        virtual const Potential<GUM_SCALAR>& cpf() const;
+      /// @brief Raise an OperationNotAllowed.
+      /// See gum::ClassElement::cpf().
+      virtual const Potential<GUM_SCALAR> &cpf() const;
 
-        /// @}
+      /// @}
       private:
-        // ========================================================================
-        /// @name Private methods
-        // ========================================================================
-        // @{
+      // ========================================================================
+      /// @name Private methods
+      // ========================================================================
+      // @{
 
-        /// Copy constructor. Don't use it.
-        ReferenceSlot ( const ReferenceSlot& source );
+      /// Copy constructor. Don't use it.
+      ReferenceSlot(const ReferenceSlot &source);
 
-        /// Copy operator. Don't use it.
-        ReferenceSlot& operator= ( const ReferenceSlot& from );
+      /// Copy operator. Don't use it.
+      ReferenceSlot &operator=(const ReferenceSlot &from);
 
-        /// @}
-        // ========================================================================
-        /// @name Private members
-        // ========================================================================
-        // @{
+      /// @}
+      // ========================================================================
+      /// @name Private members
+      // ========================================================================
+      // @{
 
-        /// The type of this ReferenceSlot.
-        ClassElementContainer<GUM_SCALAR>& __slotType;
+      /// The type of this ReferenceSlot.
+      ClassElementContainer<GUM_SCALAR> &__slotType;
 
-        /// Flag indicating if this slot is an array.
-        bool __isArray;
+      /// Flag indicating if this slot is an array.
+      bool __isArray;
 
-        /// @}
+      /// @}
     };
 
     extern template class ReferenceSlot<double>;
@@ -163,4 +163,3 @@ namespace gum {
 #include <agrum/PRM/elements/referenceSlot.tcc>
 
 #endif /* GUM_CLASS_ELEMENT_H */
-

@@ -39,46 +39,51 @@ namespace gum {
    * This abstract class is an implementation of the strategy pattern to
    * help changing CPT generation policies for the BayesNetGenerator class.
    */
-  template <typename GUM_SCALAR>
-  class ICPTDisturber {
+  template <typename GUM_SCALAR> class ICPTDisturber {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructor
-      // ############################################################################
-      /// @{
-      /**
-       * Default constructor.
-       */
-      ICPTDisturber();
+    // ############################################################################
+    /// @name Constructors / Destructor
+    // ############################################################################
+    /// @{
+    /**
+     * Default constructor.
+     */
+    ICPTDisturber();
 
-      /**
-       * Destructor.
-       */
-      virtual ~ICPTDisturber();
-      /// @}
+    /**
+     * Destructor.
+     */
+    virtual ~ICPTDisturber();
+    /// @}
 
-      // ############################################################################
-      /// @name CPT disturbing methods
-      // ############################################################################
-      /**
-       * Generates a CPT using floats.
-       * @param varIdi The variable id parent of the CPT owner
-       * @param varIdj A reference on the CPT owner
-       * @param bayesNet the modified Bayesian Network
-       * @param cptCopy copy of the CPT before changing size
-       * @param marg of the inference before changing size
-       */
-      virtual void disturbReducCPT ( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, Potential<GUM_SCALAR>& marg ) = 0;
+    // ############################################################################
+    /// @name CPT disturbing methods
+    // ############################################################################
+    /**
+     * Generates a CPT using floats.
+     * @param varIdi The variable id parent of the CPT owner
+     * @param varIdj A reference on the CPT owner
+     * @param bayesNet the modified Bayesian Network
+     * @param cptCopy copy of the CPT before changing size
+     * @param marg of the inference before changing size
+     */
+    virtual void disturbReducCPT(NodeId varIdi, NodeId varIdj,
+                                 BayesNet<GUM_SCALAR> &bayesNet,
+                                 Potential<GUM_SCALAR> &cptCopy,
+                                 Potential<GUM_SCALAR> &marg) = 0;
 
-      /**
-       * Generates a CPT using floats.
-       * @param varIdi The variable id parent of the CPT owner
-       * @param varIdj A reference on the CPT owner
-       * @param bayesNet the modified Bayesian Network
-       * @param cptCopy copy of the CPT before changing size
-       * @param variation degree of variation from the initial probability
-       */
-      virtual void disturbAugmCPT ( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, GUM_SCALAR variation ) = 0;
+    /**
+     * Generates a CPT using floats.
+     * @param varIdi The variable id parent of the CPT owner
+     * @param varIdj A reference on the CPT owner
+     * @param bayesNet the modified Bayesian Network
+     * @param cptCopy copy of the CPT before changing size
+     * @param variation degree of variation from the initial probability
+     */
+    virtual void disturbAugmCPT(NodeId varIdi, NodeId varIdj,
+                                BayesNet<GUM_SCALAR> &bayesNet,
+                                Potential<GUM_SCALAR> &cptCopy,
+                                GUM_SCALAR variation) = 0;
   };
 
   extern template class ICPTDisturber<float>;
@@ -86,5 +91,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#include<agrum/BN/generator/ICPTDisturber.tcc>
+#include <agrum/BN/generator/ICPTDisturber.tcc>
 #endif // GUM_I_CPT_DISTURBER_H

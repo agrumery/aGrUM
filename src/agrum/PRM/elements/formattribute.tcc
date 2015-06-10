@@ -233,7 +233,7 @@ namespace gum {
     FormAttribute<GUM_SCALAR>::setAsCastDescendant ( Attribute<GUM_SCALAR>* cast )
     {
       try {
-        cast->type().setSuper ( type() );
+        type().setSuper( cast->type() );
       } catch ( OperationNotAllowed& ) {
         GUM_ERROR ( OperationNotAllowed, "this ScalarAttribute can not have cast descendant" );
       } catch ( WrongType& ) {
@@ -242,29 +242,35 @@ namespace gum {
         GUM_ERROR ( WrongType, msg.str() );
       }
 
+      cast->becomeCastDescendant( type() );
+    }
+
+    template<typename GUM_SCALAR>
+    void 
+    FormAttribute<GUM_SCALAR>::becomeCastDescendant( Type<GUM_SCALAR> &subtype )
+    {
       delete __formulas;
 
       __formulas = new MultiDimArray< std::string >();
       __formulas->add ( type().variable() );
-      __formulas->add ( cast->type().variable() );
-
-      auto & my_var = cast->type().variable();
-      auto & cast_var = type().variable();
+      __formulas->add ( subtype.variable() );
 
       Instantiation inst ( __formulas );
 
       for ( inst.setFirst(); not inst.end(); inst.inc() ) {
-        if ( type().label_map() [inst.pos ( my_var )] == inst.pos ( cast_var ) )
+        auto my_pos = inst.pos ( subtype.variable() );
+        if ( subtype.label_map()[ my_pos ] == inst.pos( type().variable() ) ) {
           __formulas->set ( inst, "1" );
-        else
+        } else {
           __formulas->set ( inst, "0" );
+        }
       }
 
       if (__cpf) {
         delete __cpf;
-        __cpf = 0;
+        __cpf = nullptr;
       }
-      GUM_ASSERT( __formulas->contains( __type->variable() ) );
+
     }
 
     template<typename GUM_SCALAR>

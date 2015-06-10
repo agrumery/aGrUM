@@ -32,17 +32,15 @@
 #include <agrum/PRM/PRMFactory.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-//including coco-generated PARSER and SCANNER
+// including coco-generated PARSER and SCANNER
 
 #include <agrum/PRM/o3prm/cocoR/Parser.h>
-#endif //DOXYGEN_SHOULD_SKIP_THIS
-
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
   namespace prm {
     namespace o3prm {
-      template<typename GUM_SCALAR>
-      class O3prmReader {
+      template <typename GUM_SCALAR> class O3prmReader {
         public:
 
           O3prmReader();
@@ -102,27 +100,26 @@ namespace gum {
           /// @}
 
         private:
-          O3prmReader ( const O3prmReader& source );
+        O3prmReader(const O3prmReader &source);
 
-          O3prmReader& operator= ( const O3prmReader& source );
+        O3prmReader &operator=(const O3prmReader &source);
 
-          gum::prm::PRMFactory<GUM_SCALAR> __factory;
+        gum::prm::PRMFactory<GUM_SCALAR> __factory;
 
-          std::vector<std::string> __class_path;
+        std::vector<std::string> __class_path;
 
-          Parser* __parser;
-          bool __parseDone;
-          bool __prmTake;
-          // Needed when file can't be parse (can not open it for exemple)
-          ErrorsContainer __errors;
+        Parser *__parser;
+        bool __parseDone;
+        bool __prmTake;
+        // Needed when file can't be parse (can not open it for exemple)
+        ErrorsContainer __errors;
       };
 
       extern template class O3prmReader<double>;
     } /* namespace o3prm */
-  } /* namespace prm */
+  }   /* namespace prm */
 } /* namespace gum */
 
 #include <agrum/PRM/o3prm/O3prmReader.tcc>
-
 
 #endif /* GUM_SKOOL_READER_H */

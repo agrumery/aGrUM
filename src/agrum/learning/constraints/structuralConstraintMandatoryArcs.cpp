@@ -31,75 +31,61 @@
 #include <agrum/learning/constraints/structuralConstraintMandatoryArcs.inl>
 #endif /* GUM_NO_INLINE */
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     /// default constructor
-    StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs () {
-      GUM_CONSTRUCTOR ( StructuralConstraintMandatoryArcs );
+    StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs() {
+      GUM_CONSTRUCTOR(StructuralConstraintMandatoryArcs);
     }
 
-    
     /// constructor starting with a given graph
-    StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs
-    ( const DiGraph& graph ) {
-      setGraph ( graph );
-      GUM_CONSTRUCTOR ( StructuralConstraintMandatoryArcs );
+    StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
+        const DiGraph &graph) {
+      setGraph(graph);
+      GUM_CONSTRUCTOR(StructuralConstraintMandatoryArcs);
     }
 
-    
     /// copy constructor
-    StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs
-    ( const StructuralConstraintMandatoryArcs& from ) :
-      _MandatoryArcs__mandatory_arcs ( from._MandatoryArcs__mandatory_arcs ) {
-      GUM_CONS_CPY ( StructuralConstraintMandatoryArcs );
+    StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
+        const StructuralConstraintMandatoryArcs &from)
+        : _MandatoryArcs__mandatory_arcs(from._MandatoryArcs__mandatory_arcs) {
+      GUM_CONS_CPY(StructuralConstraintMandatoryArcs);
     }
-
 
     /// move constructor
-    StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs
-    ( StructuralConstraintMandatoryArcs&& from ) :
-      _MandatoryArcs__mandatory_arcs
-      ( std::move ( from._MandatoryArcs__mandatory_arcs ) ) {
-      GUM_CONS_MOV ( StructuralConstraintMandatoryArcs );
+    StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
+        StructuralConstraintMandatoryArcs &&from)
+        : _MandatoryArcs__mandatory_arcs(
+              std::move(from._MandatoryArcs__mandatory_arcs)) {
+      GUM_CONS_MOV(StructuralConstraintMandatoryArcs);
     }
-
 
     /// destructor
-    StructuralConstraintMandatoryArcs::~StructuralConstraintMandatoryArcs () {
-      GUM_DESTRUCTOR ( StructuralConstraintMandatoryArcs );
+    StructuralConstraintMandatoryArcs::~StructuralConstraintMandatoryArcs() {
+      GUM_DESTRUCTOR(StructuralConstraintMandatoryArcs);
     }
-    
 
     /// copy operator
-    StructuralConstraintMandatoryArcs&
-    StructuralConstraintMandatoryArcs::operator=
-    ( const StructuralConstraintMandatoryArcs& from ) {
-      if ( this != &from ) {
+    StructuralConstraintMandatoryArcs &StructuralConstraintMandatoryArcs::
+    operator=(const StructuralConstraintMandatoryArcs &from) {
+      if (this != &from) {
         _MandatoryArcs__mandatory_arcs = from._MandatoryArcs__mandatory_arcs;
       }
       return *this;
     }
 
-    
     /// move operator
-    StructuralConstraintMandatoryArcs&
-    StructuralConstraintMandatoryArcs::operator=
-    ( StructuralConstraintMandatoryArcs&& from ) {
-      if ( this != &from ) {
+    StructuralConstraintMandatoryArcs &StructuralConstraintMandatoryArcs::
+    operator=(StructuralConstraintMandatoryArcs &&from) {
+      if (this != &from) {
         _MandatoryArcs__mandatory_arcs =
-          std::move ( from._MandatoryArcs__mandatory_arcs );
+            std::move(from._MandatoryArcs__mandatory_arcs);
       }
       return *this;
-    } 
-
+    }
 
   } /* namespace learning */
 
-  
 } /* namespace gum */
-

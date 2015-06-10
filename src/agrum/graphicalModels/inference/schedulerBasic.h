@@ -26,100 +26,91 @@
 #ifndef GUM_SCHEDULER_BASIC_H
 #define GUM_SCHEDULER_BASIC_H
 
-
 #include <agrum/graphicalModels/inference/scheduler.h>
-
 
 namespace gum {
 
-
-  template<typename GUM_SCALAR>
+  template <typename GUM_SCALAR>
   class SchedulerBasic : public Scheduler<GUM_SCALAR> {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /// default constructor
-      SchedulerBasic();
+    /// default constructor
+    SchedulerBasic();
 
-      /// copy constructor
-      SchedulerBasic ( const SchedulerBasic<GUM_SCALAR>& );
+    /// copy constructor
+    SchedulerBasic(const SchedulerBasic<GUM_SCALAR> &);
 
-      /// destructor
-      virtual ~SchedulerBasic();
+    /// destructor
+    virtual ~SchedulerBasic();
 
-      /// virtual constructor
-      /** @return a new fresh SchedulerBasic */
-      SchedulerBasic<GUM_SCALAR>* newFactory() const;
+    /// virtual constructor
+    /** @return a new fresh SchedulerBasic */
+    SchedulerBasic<GUM_SCALAR> *newFactory() const;
 
-      /// @}
+    /// @}
 
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
 
-      // ############################################################################
-      /// @name Accessors/Modifiers
-      // ############################################################################
-      /// @{
+    /// execute all the operations of a given schedule
+    /** @return a Boolean indicating whether all the schedule was performed */
+    bool execute(Schedule<GUM_SCALAR> &);
 
-      /// execute all the operations of a given schedule
-      /** @return a Boolean indicating whether all the schedule was performed */
-      bool execute ( Schedule<GUM_SCALAR>& );
+    /// execute only k operations of a given schedule (default k = 1)
+    /** If there are fewer than k operations in the schedule, then all those
+     * operations are performed
+     * @return a Boolean indicating whether the k operations (or all the
+     * operations of the schedule) were performed */
+    bool execute(Schedule<GUM_SCALAR> &, unsigned int k);
 
-      /// execute only k operations of a given schedule (default k = 1)
-      /** If there are fewer than k operations in the schedule, then all those
-       * operations are performed
-       * @return a Boolean indicating whether the k operations (or all the
-       * operations of the schedule) were performed */
-      bool execute ( Schedule<GUM_SCALAR>&, unsigned int k );
+    /** @brief returns an estimation of the number of elementary operations needed
+     * to perform a given schedule */
+    float nbOperations(const Schedule<GUM_SCALAR> &) const;
 
-      /** @brief returns an estimation of the number of elementary operations needed
-       * to perform a given schedule */
-      float nbOperations ( const Schedule<GUM_SCALAR>& ) const;
+    /** @brief returns an estimation of the number of elementary operations needed
+     * to perform the k first ScheduleOperations of a given schedule
+     *
+     * If there are fewer than k operations in the schedule, then all those
+     * operations are taken into account */
+    float nbOperations(const Schedule<GUM_SCALAR> &, unsigned int k) const;
 
-      /** @brief returns an estimation of the number of elementary operations needed
-       * to perform the k first ScheduleOperations of a given schedule
-       *
-       * If there are fewer than k operations in the schedule, then all those
-       * operations are taken into account */
-      float nbOperations ( const Schedule<GUM_SCALAR>&, unsigned int k ) const;
+    /// returns the memory consumption used during the execution of a schedule
+    /** Actually, this function does not return a precise account of the memory
+     * used to perform the schedule but a rough estimate based on the sizes
+     * of the tables involved in the schedule.
+     * @return a pair of memory consumption: the first one is the maximum
+     * amount of memory used during the execution of the Schedule and the second
+     * one is the amount of memory still used at the end of the execution of
+     * the schedule */
+    std::pair<long, long> memoryUsage(const Schedule<GUM_SCALAR> &) const;
 
-      /// returns the memory consumption used during the execution of a schedule
-      /** Actually, this function does not return a precise account of the memory
-       * used to perform the schedule but a rough estimate based on the sizes
-       * of the tables involved in the schedule.
-       * @return a pair of memory consumption: the first one is the maximum
-       * amount of memory used during the execution of the Schedule and the second
-       * one is the amount of memory still used at the end of the execution of
-       * the schedule */
-      std::pair<long, long>
-      memoryUsage ( const Schedule<GUM_SCALAR>& ) const;
+    /** @brief returns the memory consumption used during the execution of the
+     * k first ScheduleOperations of a given schedule
+     *
+     * Actually, this function does not return a precise account of the memory
+     * used to perform the schedule but a rough estimate based on the sizes
+     * of the tables involved in the schedule.
+     * If there are fewer than k operations in the schedule, then all those
+     * operations are taken into account.
+     * @return a pair of memory consumption: the first one is the maximum
+     * amount of memory used during the execution of the Schedule and the second
+     * one is the amount of memory still used at the end of the execution of
+     * k first operations of the schedule */
+    std::pair<long, long> memoryUsage(const Schedule<GUM_SCALAR> &,
+                                      unsigned int k) const;
 
-      /** @brief returns the memory consumption used during the execution of the
-       * k first ScheduleOperations of a given schedule
-       *
-       * Actually, this function does not return a precise account of the memory
-       * used to perform the schedule but a rough estimate based on the sizes
-       * of the tables involved in the schedule.
-       * If there are fewer than k operations in the schedule, then all those
-       * operations are taken into account.
-       * @return a pair of memory consumption: the first one is the maximum
-       * amount of memory used during the execution of the Schedule and the second
-       * one is the amount of memory still used at the end of the execution of
-       * k first operations of the schedule */
-      std::pair<long, long>
-      memoryUsage ( const Schedule<GUM_SCALAR>&, unsigned int k ) const;
-
-      /// @}
-
+    /// @}
   };
-
 
 } /* namespace gum */
 
-
 // always include the template implementation
 #include <agrum/graphicalModels/inference/schedulerBasic.tcc>
-
 
 #endif /* GUM_SCHEDULER_BASIC_H */

@@ -31,53 +31,62 @@
 namespace gum {
   namespace prm {
 
-    template<typename GUM_SCALAR>
-    SlotChain<GUM_SCALAR>::SlotChain ( const std::string& name, const Sequence< ClassElement<GUM_SCALAR>* >& chain ) :
-      ClassElement<GUM_SCALAR> ( name ), __chain ( new Sequence<ClassElement<GUM_SCALAR>*> ( chain ) ), __isMultiple ( false ) {
-      GUM_CONSTRUCTOR ( SlotChain );
+    template <typename GUM_SCALAR>
+    SlotChain<GUM_SCALAR>::SlotChain(
+        const std::string &name, const Sequence<ClassElement<GUM_SCALAR> *> &chain)
+        : ClassElement<GUM_SCALAR>(name),
+          __chain(new Sequence<ClassElement<GUM_SCALAR> *>(chain)),
+          __isMultiple(false) {
+      GUM_CONSTRUCTOR(SlotChain);
       this->_safeName = name;
 
-      if ( __chain->size() < 2 ) {
-        GUM_ERROR ( OperationNotAllowed, "chain must contain at least two ClassElement" );
+      if (__chain->size() < 2) {
+        GUM_ERROR(OperationNotAllowed,
+                  "chain must contain at least two ClassElement");
       }
 
-      for ( Size i = 0; i < __chain->size() - 1; ++i ) {
-        if ( __chain->atPos ( i )->elt_type() != ClassElement<GUM_SCALAR>::prm_refslot ) {
-          GUM_ERROR ( WrongClassElement, "illegal ClassElement in chain" );
+      for (Size i = 0; i < __chain->size() - 1; ++i) {
+        if (__chain->atPos(i)->elt_type() != ClassElement<GUM_SCALAR>::prm_refslot) {
+          GUM_ERROR(WrongClassElement, "illegal ClassElement in chain");
         } else {
-          __isMultiple = __isMultiple or static_cast<ReferenceSlot<GUM_SCALAR>*> ( __chain->atPos ( i ) )->isArray();
+          __isMultiple =
+              __isMultiple or
+              static_cast<ReferenceSlot<GUM_SCALAR> *>(__chain->atPos(i))->isArray();
         }
       }
 
       __copyLastElt();
     }
 
-// Parameters are inverse to prevent unwanted constructors calls (it happened)
-    template<typename GUM_SCALAR>
-    SlotChain<GUM_SCALAR>::SlotChain ( Sequence<ClassElement<GUM_SCALAR>*>* chain, const std::string& name ) :
-      ClassElement<GUM_SCALAR> ( name ), __chain ( chain ), __isMultiple ( false ) {
-      GUM_CONSTRUCTOR ( SlotChain );
+    // Parameters are inverse to prevent unwanted constructors calls (it happened)
+    template <typename GUM_SCALAR>
+    SlotChain<GUM_SCALAR>::SlotChain(Sequence<ClassElement<GUM_SCALAR> *> *chain,
+                                     const std::string &name)
+        : ClassElement<GUM_SCALAR>(name), __chain(chain), __isMultiple(false) {
+      GUM_CONSTRUCTOR(SlotChain);
       this->_safeName = name;
 
-      if ( __chain->size() < 2 ) {
-        GUM_ERROR ( OperationNotAllowed, "chain must containt at least two ClassElement" );
+      if (__chain->size() < 2) {
+        GUM_ERROR(OperationNotAllowed,
+                  "chain must containt at least two ClassElement");
       }
 
-      for ( Size i = 0; i < __chain->size() - 1; ++i ) {
-        if ( not ( __chain->atPos ( i )->elt_type() != ClassElement<GUM_SCALAR>::prm_refslot ) ) {
-          GUM_ERROR ( WrongClassElement, "illegal ClassElement in chain" );
+      for (Size i = 0; i < __chain->size() - 1; ++i) {
+        if (not(__chain->atPos(i)->elt_type() !=
+                ClassElement<GUM_SCALAR>::prm_refslot)) {
+          GUM_ERROR(WrongClassElement, "illegal ClassElement in chain");
         } else {
-          __isMultiple = __isMultiple or static_cast<ReferenceSlot<GUM_SCALAR>*> ( __chain->atPos ( i ) )->isArray();
+          __isMultiple =
+              __isMultiple or
+              static_cast<ReferenceSlot<GUM_SCALAR> *>(__chain->atPos(i))->isArray();
         }
       }
 
       __copyLastElt();
     }
 
-    template<typename GUM_SCALAR>
-    void
-    SlotChain<GUM_SCALAR>::__copyLastElt() {
-      ClassElement<GUM_SCALAR>* new_elt = 0;
+    template <typename GUM_SCALAR> void SlotChain<GUM_SCALAR>::__copyLastElt() {
+      ClassElement<GUM_SCALAR> *new_elt = 0;
 
       switch ( __chain->back()->elt_type() )
       {
@@ -111,92 +120,99 @@ namespace gum {
                  }
       }
 
-      new_elt->setId ( __chain->back()->id() );
-      __chain->setAtPos ( __chain->size() - 1, new_elt );
+      new_elt->setId(__chain->back()->id());
+      __chain->setAtPos(__chain->size() - 1, new_elt);
     }
 
-    template<typename GUM_SCALAR>
-    SlotChain<GUM_SCALAR>::~SlotChain() {
-      GUM_DESTRUCTOR ( SlotChain );
+    template <typename GUM_SCALAR> SlotChain<GUM_SCALAR>::~SlotChain() {
+      GUM_DESTRUCTOR(SlotChain);
       delete __chain->back();
       delete __chain;
     }
 
-    template<typename GUM_SCALAR>
-    SlotChain<GUM_SCALAR>::SlotChain ( const SlotChain<GUM_SCALAR>& source ) :
-      ClassElement<GUM_SCALAR> ( source.name() ), __chain ( new Sequence<ClassElement<GUM_SCALAR>*> ( source.chain() ) ),
-      __isMultiple ( source.isMultiple() ) {
-      GUM_CONS_CPY ( SlotChain );
+    template <typename GUM_SCALAR>
+    SlotChain<GUM_SCALAR>::SlotChain(const SlotChain<GUM_SCALAR> &source)
+        : ClassElement<GUM_SCALAR>(source.name()),
+          __chain(new Sequence<ClassElement<GUM_SCALAR> *>(source.chain())),
+          __isMultiple(source.isMultiple()) {
+      GUM_CONS_CPY(SlotChain);
       __copyLastElt();
     }
 
-    template<typename GUM_SCALAR>
-    SlotChain<GUM_SCALAR>&
-    SlotChain<GUM_SCALAR>::operator= ( const SlotChain<GUM_SCALAR>& source ) {
-      GUM_ERROR ( FatalError, "Illegal call to gum::SlotChain<GUM_SCALAR> copy constructor." );
+    template <typename GUM_SCALAR>
+    SlotChain<GUM_SCALAR> &SlotChain<GUM_SCALAR>::
+    operator=(const SlotChain<GUM_SCALAR> &source) {
+      GUM_ERROR(FatalError,
+                "Illegal call to gum::SlotChain<GUM_SCALAR> copy constructor.");
     }
 
-    template<typename GUM_SCALAR> INLINE
-    typename ClassElement<GUM_SCALAR>::ClassElementType
-    SlotChain<GUM_SCALAR>::elt_type() const { return this->prm_slotchain; }
-
-    template<typename GUM_SCALAR> INLINE
-    Type<GUM_SCALAR>&
-    SlotChain<GUM_SCALAR>::type() { return __chain->back()->type(); }
-
-    template<typename GUM_SCALAR> INLINE
-    const Type<GUM_SCALAR>&
-    SlotChain<GUM_SCALAR>::type() const { return __chain->back()->type(); }
-
-    // template<typename GUM_SCALAR> INLINE
-    // Potential<GUM_SCALAR>&
-    // SlotChain<GUM_SCALAR>::cpf() { return __chain->back()->cpf(); }
-
-    template<typename GUM_SCALAR> INLINE
-    const Potential<GUM_SCALAR>&
-    SlotChain<GUM_SCALAR>::cpf() const { return __chain->back()->cpf(); }
-
-    template<typename GUM_SCALAR> INLINE
-    ClassElementContainer<GUM_SCALAR>&
-    SlotChain<GUM_SCALAR>::end() {
-      return static_cast<ReferenceSlot<GUM_SCALAR>*> ( __chain->atPos ( __chain->size() - 2 ) )->slotType();
+    template <typename GUM_SCALAR>
+    INLINE typename ClassElement<GUM_SCALAR>::ClassElementType
+    SlotChain<GUM_SCALAR>::elt_type() const {
+      return this->prm_slotchain;
     }
 
-    template<typename GUM_SCALAR> INLINE
-    const ClassElementContainer<GUM_SCALAR>&
+    template <typename GUM_SCALAR>
+    INLINE Type<GUM_SCALAR> &SlotChain<GUM_SCALAR>::type() {
+      return __chain->back()->type();
+    }
+
+    template <typename GUM_SCALAR>
+    INLINE const Type<GUM_SCALAR> &SlotChain<GUM_SCALAR>::type() const {
+      return __chain->back()->type();
+    }
+
+    template <typename GUM_SCALAR>
+    INLINE const Potential<GUM_SCALAR> &SlotChain<GUM_SCALAR>::cpf() const {
+      return __chain->back()->cpf();
+    }
+
+    template <typename GUM_SCALAR>
+    INLINE ClassElementContainer<GUM_SCALAR> &SlotChain<GUM_SCALAR>::end() {
+      return static_cast<ReferenceSlot<GUM_SCALAR> *>(
+                 __chain->atPos(__chain->size() - 2))->slotType();
+    }
+
+    template <typename GUM_SCALAR>
+    INLINE const ClassElementContainer<GUM_SCALAR> &
     SlotChain<GUM_SCALAR>::end() const {
-      return static_cast<ReferenceSlot<GUM_SCALAR>*> ( __chain->atPos ( __chain->size() - 2 ) )->slotType();
+      return static_cast<ReferenceSlot<GUM_SCALAR> *>(
+                 __chain->atPos(__chain->size() - 2))->slotType();
     }
 
-    template<typename GUM_SCALAR> INLINE
-    ClassElement<GUM_SCALAR>&
-    SlotChain<GUM_SCALAR>::lastElt() {return * ( __chain->back() ); }
+    template <typename GUM_SCALAR>
+    INLINE ClassElement<GUM_SCALAR> &SlotChain<GUM_SCALAR>::lastElt() {
+      return *(__chain->back());
+    }
 
-    template<typename GUM_SCALAR> INLINE
-    const ClassElement<GUM_SCALAR>&
-    SlotChain<GUM_SCALAR>::lastElt() const {return * ( __chain->back() ); }
+    template <typename GUM_SCALAR>
+    INLINE const ClassElement<GUM_SCALAR> &SlotChain<GUM_SCALAR>::lastElt() const {
+      return *(__chain->back());
+    }
 
-    template<typename GUM_SCALAR> INLINE
-    Sequence<ClassElement<GUM_SCALAR>*>&
-    SlotChain<GUM_SCALAR>::chain() { return *__chain; }
+    template <typename GUM_SCALAR>
+    INLINE Sequence<ClassElement<GUM_SCALAR> *> &SlotChain<GUM_SCALAR>::chain() {
+      return *__chain;
+    }
 
-    template<typename GUM_SCALAR> INLINE
-    const Sequence<ClassElement<GUM_SCALAR>*>&
-    SlotChain<GUM_SCALAR>::chain() const { return *__chain; }
+    template <typename GUM_SCALAR>
+    INLINE const Sequence<ClassElement<GUM_SCALAR> *> &
+    SlotChain<GUM_SCALAR>::chain() const {
+      return *__chain;
+    }
 
-    template<typename GUM_SCALAR> INLINE
-    void
-    SlotChain<GUM_SCALAR>::addParent ( const ClassElement<GUM_SCALAR>& elt ) { }
+    template <typename GUM_SCALAR>
+    INLINE void
+    SlotChain<GUM_SCALAR>::addParent(const ClassElement<GUM_SCALAR> &elt) {}
 
-    template<typename GUM_SCALAR> INLINE
-    void
-    SlotChain<GUM_SCALAR>::addChild ( const ClassElement<GUM_SCALAR>& elt ) { }
+    template <typename GUM_SCALAR>
+    INLINE void
+    SlotChain<GUM_SCALAR>::addChild(const ClassElement<GUM_SCALAR> &elt) {}
 
-    template<typename GUM_SCALAR> INLINE
-    bool
-    SlotChain<GUM_SCALAR>::isMultiple() const { return __isMultiple; }
-
+    template <typename GUM_SCALAR>
+    INLINE bool SlotChain<GUM_SCALAR>::isMultiple() const {
+      return __isMultiple;
+    }
 
   } /* namespace prm */
 } /* namespace gum */
-

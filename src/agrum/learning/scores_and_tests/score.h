@@ -34,7 +34,6 @@
 #ifndef GUM_LEARNING_SCORE_H
 #define GUM_LEARNING_SCORE_H
 
-
 #include <agrum/config.h>
 #include <agrum/core/math/math.h>
 
@@ -45,12 +44,9 @@
 #include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/aprioris/apriori.h>
 
-
 namespace gum {
 
-
   namespace learning {
-
 
     /* ========================================================================= */
     /* ===                            SCORE CLASS                            === */
@@ -68,10 +64,9 @@ namespace gum {
      * observed countings if you are developping a new score class, or use
      * method score to get the computed score if you are an end user. */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float> >
-    class Score : private Counter<IdSetAlloc,CountAlloc> {
-    public:
-
+              typename CountAlloc = std::allocator<float>>
+    class Score : private Counter<IdSetAlloc, CountAlloc> {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -83,18 +78,16 @@ namespace gum {
        * @param apriori the a priori that is taken into account in the
        * score/countings */
       template <typename RowFilter>
-      Score ( const RowFilter& filter,
-              const std::vector<unsigned int>& var_modalities,
-              Apriori<IdSetAlloc,CountAlloc>& apriori );
+      Score(const RowFilter &filter, const std::vector<unsigned int> &var_modalities,
+            Apriori<IdSetAlloc, CountAlloc> &apriori);
 
       /// virtual copy factory
-      virtual Score<IdSetAlloc,CountAlloc>* copyFactory () const = 0;
+      virtual Score<IdSetAlloc, CountAlloc> *copyFactory() const = 0;
 
       /// destructor
-      virtual ~Score ();
+      virtual ~Score();
 
       /// @}
-
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -111,7 +104,7 @@ namespace gum {
        * the observed countings of "var" in this vector. The user shall pass this
        * index as argument to methods _getAllCounts to get the corresponding
        * counting vector. */
-      unsigned int addNodeSet ( unsigned int var );
+      unsigned int addNodeSet(unsigned int var);
 
       /// add a new target variable plus some conditioning vars
       /** @param var represents the index of the target variable in the filtered
@@ -127,27 +120,26 @@ namespace gum {
        * _getConditioningCounts to get the counting vectors of
        * (conditioning_ids,vars) [in this order] and conditioning_ids
        * respectively. */
-      unsigned int
-      addNodeSet ( unsigned int var,
-                   const std::vector<unsigned int>& conditioning_ids );
+      unsigned int addNodeSet(unsigned int var,
+                              const std::vector<unsigned int> &conditioning_ids);
 
       /// clears all the data structures from memory
-      void clear ();
+      void clear();
 
       /// clears the current cache (clear nodesets as well)
-      void clearCache ();
+      void clearCache();
 
       /// turn on/off the use of a cache of the previously computed score
-      void useCache ( bool on_off ) noexcept;
+      void useCache(bool on_off) noexcept;
 
       /// returns the modalities of the variables
-      using Counter<IdSetAlloc,CountAlloc>::modalities;
+      using Counter<IdSetAlloc, CountAlloc>::modalities;
 
       /// sets the maximum number of threads used to compute the scores
-      using Counter<IdSetAlloc,CountAlloc>::setMaxNbThreads;
+      using Counter<IdSetAlloc, CountAlloc>::setMaxNbThreads;
 
       /// returns the score corresponding to a given nodeset
-      virtual float score ( unsigned int nodeset_index ) = 0;
+      virtual float score(unsigned int nodeset_index) = 0;
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** The combination of some scores and aprioris can be meaningless. For
@@ -156,7 +148,7 @@ namespace gum {
        * aGrUM allows you to perform such combination, but yuou can check with
        * method isAprioriCompatible () whether the result the score will give
        * you is meaningful or not. */
-      virtual bool isAprioriCompatible () const = 0;
+      virtual bool isAprioriCompatible() const = 0;
 
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD score
@@ -169,20 +161,17 @@ namespace gum {
        * to be meaningfull a structure + parameter learning requires that the same
        * aprioris are taken into account during structure learning and parameter
        * learning. */
-      virtual const ScoreInternalApriori<IdSetAlloc,CountAlloc>&
-      internalApriori () const noexcept = 0;
+      virtual const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
+      internalApriori() const noexcept = 0;
 
       /// @}
 
-
-    protected:
+      protected:
       /// 1 / log(2)
-      const float _1log2 { M_LOG2E };
+      const float _1log2{M_LOG2E};
 
       /// the a priori used by the score
-      Apriori<IdSetAlloc,CountAlloc>* _apriori;
-
-
+      Apriori<IdSetAlloc, CountAlloc> *_apriori;
 
       /// returns the counting vector for a given (conditioned) target set
       /** This method returns the observation countings for the set of variables
@@ -194,19 +183,19 @@ namespace gum {
        * @warning the dimensions of the vector are as follows: first come the
        * nodes of the conditioning set (in the order in which they were specified
        * when callind addNodeset, and then the target nodes. */
-      using Counter<IdSetAlloc,CountAlloc>::_getAllCounts;
+      using Counter<IdSetAlloc, CountAlloc>::_getAllCounts;
 
       /// returns the counting vector for a conditioning set
       /** see method _getAllCounts for details */
-      using Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts;
+      using Counter<IdSetAlloc, CountAlloc>::_getConditioningCounts;
 
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets
        * are the last ones */
-      using Counter<IdSetAlloc,CountAlloc>::_getAllNodes;
+      using Counter<IdSetAlloc, CountAlloc>::_getAllNodes;
 
       /// returns the conditioning nodes (nullptr if there are no such nodes)
-      using Counter<IdSetAlloc,CountAlloc>::_getConditioningNodes;
+      using Counter<IdSetAlloc, CountAlloc>::_getConditioningNodes;
 
       /// returns the apriori vector for a given (conditioned) target set
       /** This method returns the observation countings for the set of variables
@@ -218,39 +207,36 @@ namespace gum {
        * @warning the dimensions of the vector are as follows: first come the
        * nodes of the conditioning set (in the order in which they were specified
        * when callind addNodeset, and then the target nodes. */
-      const std::vector<float,CountAlloc>&
-      _getAllApriori ( unsigned int index );
+      const std::vector<float, CountAlloc> &_getAllApriori(unsigned int index);
 
       /// returns the apriori vector for a conditioning set
-      const std::vector<float,CountAlloc>&
-      _getConditioningApriori ( unsigned int index );
+      const std::vector<float, CountAlloc> &
+      _getConditioningApriori(unsigned int index);
 
       /// indicates whether a score belongs to the cache
-      bool _isInCache ( unsigned int nodeset_index ) const noexcept;
+      bool _isInCache(unsigned int nodeset_index) const noexcept;
 
       /// inserts a new score into the cache
-      void _insertIntoCache ( unsigned int nodeset_index, float score );
+      void _insertIntoCache(unsigned int nodeset_index, float score);
 
       /// returns a cached score
-      float _cachedScore ( unsigned int nodeset_index ) const noexcept;
+      float _cachedScore(unsigned int nodeset_index) const noexcept;
 
       /// indicates whether we use the cache or not
-      bool _isUsingCache () const noexcept;
+      bool _isUsingCache() const noexcept;
 
       /// copy constructor: to be used by the virtual copy constructor
-      Score ( const Score<IdSetAlloc,CountAlloc>& );
+      Score(const Score<IdSetAlloc, CountAlloc> &);
 
       /// move constructor: to be used by the descendants in the hierarchy
-      Score ( Score<IdSetAlloc,CountAlloc>&& );
+      Score(Score<IdSetAlloc, CountAlloc> &&);
 
-
-      
-    private:
+      private:
       /// a cache for the previously computed scores
       Cache4Score __cache;
 
       /// a Boolean indicating whether we wish to use the cache
-      bool __use_cache { true };
+      bool __use_cache{true};
 
       /// indicates whether the ith nodeset's score is in the cache or not
       std::vector<bool> __is_cached_score;
@@ -259,31 +245,24 @@ namespace gum {
       std::vector<float> __cached_score;
 
       /// has the a priori been computed
-      bool __apriori_computed { false };
+      bool __apriori_computed{false};
 
       /// an empty conditioning set
       const std::vector<unsigned int> __empty_conditioning_set;
-
-
 
       // ##########################################################################
       // ##########################################################################
 
       /// prevent copy operator
-      Score<IdSetAlloc,CountAlloc>&
-      operator= ( const Score<IdSetAlloc,CountAlloc>& ) = delete;
-
+      Score<IdSetAlloc, CountAlloc> &
+      operator=(const Score<IdSetAlloc, CountAlloc> &) = delete;
     };
-
 
   } /* namespace learning */
 
-
 } /* namespace gum */
-
 
 /// include the template implementation
 #include <agrum/learning/scores_and_tests/score.tcc>
-
 
 #endif /* GUM_LEARNING_SCORE_H */

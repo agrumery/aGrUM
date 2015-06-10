@@ -1,4 +1,3 @@
-
 /* INCLUDES */
 %{
 #include <iostream>
@@ -156,7 +155,7 @@ ADD_NODEGRAPHPART_API(gum::MixedGraph)
 ADD_EDGEGRAPHPART_API(gum::UndiGraph)
 ADD_EDGEGRAPHPART_API(gum::MixedGraph)
 
-%define ADD_ARCGRAPHPART_API(classname) 
+%define ADD_ARCGRAPHPART_API(classname)
 %extend classname {
   using gum::ArcGraphPart::eraseArc;
   using gum::ArcGraphPart::existsArc;
@@ -195,7 +194,7 @@ ADD_ARCGRAPHPART_API(gum::MixedGraph);
   using gum::ApproximationScheme::messageApproximationScheme;
   using gum::ApproximationScheme::history;
 }
-%enddef  
+%enddef
 ADD_APPROXIMATIONSCHEME_API(gum::GibbsInference<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::GibbsKL<double>)
 ADD_APPROXIMATIONSCHEME_API(%arg(gum::credal::CNMonteCarloSampling<double,gum::LazyPropagation<double> >))
@@ -203,6 +202,38 @@ ADD_APPROXIMATIONSCHEME_API(gum::credal::CNLoopyPropagation<double>)
 
 %extend gum::learning::BNLearner {
   using gum::IApproximationSchemeConfiguration::messageApproximationScheme;
+
+  using gum::learning::genericBNLearner::setMaxTime;
+  using gum::learning::genericBNLearner::maxTime;
+  using gum::learning::genericBNLearner::currentTime;
+
+  using gum::learning::genericBNLearner::learnDAG;
+  using gum::learning::genericBNLearner::names;
+  using gum::learning::genericBNLearner::modalities;
+  using gum::learning::genericBNLearner::idFromName;
+  using gum::learning::genericBNLearner::nameFromId;
+  using gum::learning::genericBNLearner::useScoreAIC;
+  using gum::learning::genericBNLearner::useScoreBD;
+  using gum::learning::genericBNLearner::useScoreBDeu;
+  using gum::learning::genericBNLearner::useScoreBIC;
+  using gum::learning::genericBNLearner::useScoreK2;
+  using gum::learning::genericBNLearner::useScoreLog2Likelihood;
+  using gum::learning::genericBNLearner::setAprioriWeight;
+  using gum::learning::genericBNLearner::useNoApriori;
+  using gum::learning::genericBNLearner::useAprioriSmoothing;
+  using gum::learning::genericBNLearner::useAprioriDirichlet;
+  using gum::learning::genericBNLearner::useGreedyHillClimbing;
+  using gum::learning::genericBNLearner::useLocalSearchWithTabuList;
+  using gum::learning::genericBNLearner::useK2;
+  using gum::learning::genericBNLearner::setMaxIndegree;
+  using gum::learning::genericBNLearner::setSliceOrder;
+  using gum::learning::genericBNLearner::addForbiddenAr;
+  using gum::learning::genericBNLearner::eraseForbiddenArc;
+  using gum::learning::genericBNLearner::addMandatoryArc;
+  using gum::learning::genericBNLearner::addMandatoryArc;
+  using gum::learning::genericBNLearner::eraseMandatoryArc;
+
+  /*using gum::learning::genericBNLearner::setInitialDAG;*/
 }
 
 %include "forUsing.i"
@@ -303,6 +334,7 @@ namespace std {
 %import <agrum/graphs/listeners/diGraphListener.h>
 %import <agrum/BN/io/BIF/BIFReader.h>
 
+%import <agrum/learning/BNLearnUtils/genericBNLearner.h>
 %include <agrum/learning/BNLearner.h>
 
 %include <agrum/CN/credalNet.h>
@@ -346,3 +378,5 @@ namespace std {
 
 %template ( InfluenceDiagram_double) gum::InfluenceDiagram<double>;
 %template ( InfluenceDiagramInference_double) gum::InfluenceDiagramInference<double>;
+
+%template ( BNLearner_double) gum::learning::BNLearner<double>;

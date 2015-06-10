@@ -24,31 +24,21 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
 namespace gum {
 
-  
   namespace learning {
 
-
     /// generates new lines from those the generator gets in input
-    INLINE FilteredRow& RowGeneratorIdentity::generate () {
-      decreaseRemainingRows ();
+    INLINE FilteredRow &RowGeneratorIdentity::generate() {
+      decreaseRemainingRows();
       return *_input_row;
     }
 
-
     /// computes the rows it will provide in output
-    INLINE unsigned int RowGeneratorIdentity::_computeRows () {
-      return 1;
-    }
-
+    INLINE unsigned int RowGeneratorIdentity::_computeRows() { return 1; }
 
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
-
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

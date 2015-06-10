@@ -27,8 +27,5 @@
 #include <agrum/PRM/generator/PRMGenerator.h>
 
 namespace gum {
-  namespace prm {
-
-  } /* namespace prm */
+  namespace prm {} /* namespace prm */
 } /* namespace gum */
-

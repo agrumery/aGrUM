@@ -24,97 +24,82 @@
  */
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 
-
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
 #include <agrum/learning/constraints/structuralConstraintDAG.inl>
 #endif /* GUM_NO_INLINE */
 
-
 namespace gum {
-
 
   namespace learning {
 
-
     /// default constructor
-    StructuralConstraintDAG::StructuralConstraintDAG () {
-      GUM_CONSTRUCTOR ( StructuralConstraintDAG );
+    StructuralConstraintDAG::StructuralConstraintDAG() {
+      GUM_CONSTRUCTOR(StructuralConstraintDAG);
     }
-
 
     /// constructor starting with an empty graph with a given number of nodes
-    StructuralConstraintDAG::StructuralConstraintDAG ( unsigned int nb_nodes ) :
-      StructuralConstraintDiGraph ( nb_nodes ) {
-      StructuralConstraintDiGraph::setGraph ( nb_nodes );
+    StructuralConstraintDAG::StructuralConstraintDAG(unsigned int nb_nodes)
+        : StructuralConstraintDiGraph(nb_nodes) {
+      StructuralConstraintDiGraph::setGraph(nb_nodes);
 
       DAG g;
-      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
-        g.addNode ( i );
+      for (unsigned int i = 0; i < nb_nodes; ++i) {
+        g.addNode(i);
       }
-      _DAG__cycle_detector.setDAG ( g );
+      _DAG__cycle_detector.setDAG(g);
 
-      GUM_CONSTRUCTOR ( StructuralConstraintDAG );
+      GUM_CONSTRUCTOR(StructuralConstraintDAG);
     }
-
 
     /// constructor starting with a given graph
-    StructuralConstraintDAG::StructuralConstraintDAG ( const DAG& graph ) {
-      StructuralConstraintDiGraph::setGraph ( graph );
-      _DAG__cycle_detector.setDAG ( graph );
+    StructuralConstraintDAG::StructuralConstraintDAG(const DAG &graph) {
+      StructuralConstraintDiGraph::setGraph(graph);
+      _DAG__cycle_detector.setDAG(graph);
 
-      GUM_CONSTRUCTOR ( StructuralConstraintDAG );
+      GUM_CONSTRUCTOR(StructuralConstraintDAG);
     }
-
 
     /// copy constructor
-    StructuralConstraintDAG::StructuralConstraintDAG
-    ( const StructuralConstraintDAG& from ) :
-      StructuralConstraintDiGraph ( from ),
-      _DAG__cycle_detector ( from._DAG__cycle_detector ) {
-      GUM_CONS_CPY ( StructuralConstraintDAG );
+    StructuralConstraintDAG::StructuralConstraintDAG(
+        const StructuralConstraintDAG &from)
+        : StructuralConstraintDiGraph(from),
+          _DAG__cycle_detector(from._DAG__cycle_detector) {
+      GUM_CONS_CPY(StructuralConstraintDAG);
     }
-
 
     /// move constructor
-    StructuralConstraintDAG::StructuralConstraintDAG
-    ( StructuralConstraintDAG&& from ) :
-      StructuralConstraintDiGraph ( std::move ( from ) ),
-      _DAG__cycle_detector ( std::move ( from._DAG__cycle_detector ) ) {
-      GUM_CONS_MOV ( StructuralConstraintDAG );
+    StructuralConstraintDAG::StructuralConstraintDAG(StructuralConstraintDAG &&from)
+        : StructuralConstraintDiGraph(std::move(from)),
+          _DAG__cycle_detector(std::move(from._DAG__cycle_detector)) {
+      GUM_CONS_MOV(StructuralConstraintDAG);
     }
-
 
     /// destructor
-    StructuralConstraintDAG::~StructuralConstraintDAG () {
-      GUM_DESTRUCTOR ( StructuralConstraintDAG );
+    StructuralConstraintDAG::~StructuralConstraintDAG() {
+      GUM_DESTRUCTOR(StructuralConstraintDAG);
     }
 
-
     /// copy operator
-    StructuralConstraintDAG&
-    StructuralConstraintDAG::operator= ( const StructuralConstraintDAG& from ) {
-      if ( this != &from ) {
-        StructuralConstraintDiGraph::operator= ( from );
+    StructuralConstraintDAG &StructuralConstraintDAG::
+    operator=(const StructuralConstraintDAG &from) {
+      if (this != &from) {
+        StructuralConstraintDiGraph::operator=(from);
         _DAG__cycle_detector = from._DAG__cycle_detector;
       }
       return *this;
     }
 
-
     /// move operator
-    StructuralConstraintDAG&
-    StructuralConstraintDAG::operator= ( StructuralConstraintDAG&& from ) {
-      if ( this != &from ) {
-        StructuralConstraintDiGraph::operator= ( std::move ( from ) );
-        _DAG__cycle_detector = std::move ( from._DAG__cycle_detector );
+    StructuralConstraintDAG &StructuralConstraintDAG::
+    operator=(StructuralConstraintDAG &&from) {
+      if (this != &from) {
+        StructuralConstraintDiGraph::operator=(std::move(from));
+        _DAG__cycle_detector = std::move(from._DAG__cycle_detector);
       }
       return *this;
     }
 
-
   } /* namespace learning */
 
-
 } /* namespace gum */
-

@@ -27,7 +27,5 @@
 #include <agrum/PRM/generator/layerGenerator.h>
 
 namespace gum {
-  namespace prm {
-  } /* namespace prm */
+  namespace prm {} /* namespace prm */
 } /* namespace gum */
-

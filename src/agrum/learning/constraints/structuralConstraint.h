@@ -18,38 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the base class for all structural constraints 
+ * @brief the base class for all structural constraints
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_H
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_H
 
-
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 
-
 namespace gum {
-    
 
   namespace learning {
-
 
     /** @class StructuralConstraintEmpty
      * @brief the base class for all structural constraints
      * @ingroup learning_group
      */
     struct StructuralConstraintEmpty {
-      
+
       using allConstraints = __ConstraintSet<void>;
-
     };
-
 
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
 
 #endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_H */

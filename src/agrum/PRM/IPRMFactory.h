@@ -52,28 +52,31 @@ namespace gum {
      * @ingroup prm_group
      */
     struct IPRMFactory {
-      virtual ~IPRMFactory() {};
+      virtual ~IPRMFactory(){};
 
-      //virtual PRM<GUM_SCALAR>* prm() const=0;
+      // virtual PRM<GUM_SCALAR>* prm() const=0;
       virtual PRMObject::PRMType currentType() const = 0;
-      virtual PRMObject* getCurrent() = 0;
-      virtual const PRMObject* getCurrent() const = 0;
-      virtual PRMObject* closeCurrent() = 0;
+      virtual PRMObject *getCurrent() = 0;
+      virtual const PRMObject *getCurrent() const = 0;
+      virtual PRMObject *closeCurrent() = 0;
       virtual std::string currentPackage() const = 0;
-      //Class<GUM_SCALAR>& retrieveClass ( const std::string& name )=0;
-      //Type<GUM_SCALAR>& retrieveType ( const std::string& name )=0;
-      //Type<GUM_SCALAR>& retrieveCommonType ( const std::vector<ClassElement<GUM_SCALAR>*>& elts )=0;
-      virtual void pushPackage ( const std::string& name ) = 0;
+      // Class<GUM_SCALAR>& retrieveClass ( const std::string& name )=0;
+      // Type<GUM_SCALAR>& retrieveType ( const std::string& name )=0;
+      // Type<GUM_SCALAR>& retrieveCommonType ( const
+      // std::vector<ClassElement<GUM_SCALAR>*>& elts )=0;
+      virtual void pushPackage(const std::string &name) = 0;
       virtual std::string popPackage() = 0;
       virtual void addImport ( const std::string& name ) = 0;
       virtual void startDiscreteType ( const std::string& name, std::string super = "" ) = 0;
       virtual void addLabel ( const std::string& l, std::string extends = "" ) = 0;
       virtual void endDiscreteType() = 0;
-      virtual void startClass ( const std::string& c, const std::string& extends = "",
-                                const Set<std::string>* implements = nullptr ) = 0;
+      virtual void startClass(const std::string &c, const std::string &extends = "",
+                              const Set<std::string> *implements = nullptr) = 0;
       virtual void endClass() = 0;
-      virtual void startInterface ( const std::string& i, const std::string& extends = "" ) = 0;
-      virtual void addAttribute ( const std::string& type, const std::string& name ) = 0;
+      virtual void startInterface(const std::string &i,
+                                  const std::string &extends = "") = 0;
+      virtual void addAttribute(const std::string &type,
+                                const std::string &name) = 0;
       virtual void endInterface() = 0;
       //virtual void addAttribute ( Attribute<GUM_SCALAR>* attr ) =0;
       virtual void startAttribute ( const std::string& type, const std::string& name ) = 0;
@@ -119,4 +122,3 @@ namespace gum {
 } /* namespace gum */
 
 #endif /* GUM_IPRM_FACTORY_H */
-

@@ -20,7 +20,8 @@
 
 /**
  * @file
- * @brief Inference by basic sampling algorithm (pure random) of bnet in credal networks.
+ * @brief Inference by basic sampling algorithm (pure random) of bnet in credal
+ * networks.
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
 
@@ -36,83 +37,92 @@ namespace gum {
   namespace credal {
 
     /**
-     * @class CNMonteCarloSampling CNMonteCarloSampling.h <agrum/CN/CNMonteCarloSampling.h>
-     * @brief Inference by basic sampling algorithm (pure random) of bnet in credal networks.
+     * @class CNMonteCarloSampling CNMonteCarloSampling.h
+     *<agrum/CN/CNMonteCarloSampling.h>
+     * @brief Inference by basic sampling algorithm (pure random) of bnet in credal
+     *networks.
      * @ingroup cn_group
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
-     * @tparam BNInferenceEngine A IBayesNet inference engine such as LazyPropagation ( recommanded ).
+     * @tparam BNInferenceEngine A IBayesNet inference engine such as LazyPropagation
+     *( recommanded ).
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      *
-     * @warning p(e) must be available ( by a call to my_BNInferenceEngine.evidenceMarginal() ) !! the vertices are correct if p(e) > 0 for a sample
+     * @warning p(e) must be available ( by a call to
+     *my_BNInferenceEngine.evidenceMarginal() ) !! the vertices are correct if p(e) >
+     *0 for a sample
      * the test is made once
      */
-    template< typename GUM_SCALAR, class BNInferenceEngine >
-    class CNMonteCarloSampling : public MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > {
+    template <typename GUM_SCALAR, class BNInferenceEngine>
+    class CNMonteCarloSampling
+        : public MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine> {
       private:
-        /** To easily acces MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > methods. */
-        typedef MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > __infEs;
+      /** To easily acces MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >
+       * methods. */
+      typedef MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine> __infEs;
 
-        /// @name Private initialization methods
-        /// @{
-        /** Initialize approximation Scheme. */
-        void __mcInitApproximationScheme();
-        /** Initialize threads data. */
-        void __mcThreadDataCopy();
-        /// @}
+      /// @name Private initialization methods
+      /// @{
+      /** Initialize approximation Scheme. */
+      void __mcInitApproximationScheme();
+      /** Initialize threads data. */
+      void __mcThreadDataCopy();
+      /// @}
 
-        /// @name Private algorithm methods
-        /// @{
-        /** Thread samples a IBayesNet from the CredalNet. */
-        inline void __verticesSampling();
+      /// @name Private algorithm methods
+      /// @{
+      /** Thread samples a IBayesNet from the CredalNet. */
+      inline void __verticesSampling();
 
-        /** Insert CredalNet evidence into a thread BNInferenceEngine. */
-        inline void __insertEvidence();
+      /** Insert CredalNet evidence into a thread BNInferenceEngine. */
+      inline void __insertEvidence();
 
-        /** Thread performs an inference using BNInferenceEngine. Calls __verticesSampling and __insertEvidence. */
-        inline void __threadInference();
+      /** Thread performs an inference using BNInferenceEngine. Calls
+       * __verticesSampling and __insertEvidence. */
+      inline void __threadInference();
 
-        /** Update thread data after a IBayesNet inference. */
-        inline void __threadUpdate();
+      /** Update thread data after a IBayesNet inference. */
+      inline void __threadUpdate();
 
-        /**
-         * Get the binary representation of a given value.
-         * @param toFill A reference to the bits to fill. Size must be correct before passing argument (i.e. big enough to represent \c value)
-         * @param value The constant integer we want to binarize.
-         */
-        inline void __binaryRep ( std::vector< bool >& toFill,  const unsigned int value ) const;
+      /**
+       * Get the binary representation of a given value.
+       * @param toFill A reference to the bits to fill. Size must be correct before
+       * passing argument (i.e. big enough to represent \c value)
+       * @param value The constant integer we want to binarize.
+       */
+      inline void __binaryRep(std::vector<bool> &toFill,
+                              const unsigned int value) const;
 
-        /// @}
-
+      /// @}
 
       protected:
-
       public:
-        /// @name Constructors / Destructors
-        /// @{
-        /**
-         * Constructor.
-         * @param credalNet The CredalNet to be used by the algorithm.
-         */
-        CNMonteCarloSampling ( const CredalNet< GUM_SCALAR >& credalNet );
-        /** Destructor. */
-        virtual ~CNMonteCarloSampling();
-        /// @}
+      /// @name Constructors / Destructors
+      /// @{
+      /**
+       * Constructor.
+       * @param credalNet The CredalNet to be used by the algorithm.
+       */
+      CNMonteCarloSampling(const CredalNet<GUM_SCALAR> &credalNet);
+      /** Destructor. */
+      virtual ~CNMonteCarloSampling();
+      /// @}
 
-        /// @name Public algorithm methods
-        /// @{
+      /// @name Public algorithm methods
+      /// @{
 
-        /** Starts the inference. */
-        void makeInference();
+      /** Starts the inference. */
+      void makeInference();
 
-        /// @}
+      /// @}
 
+      /// unsigned int notOptDelete;
 
-        ///unsigned int notOptDelete;
+      virtual void insertEvidenceFile(const std::string &path) {
+        InferenceEngine<GUM_SCALAR>::insertEvidenceFile(path);
+      };
 
-
-        virtual void insertEvidenceFile ( const std::string& path ) { InferenceEngine<GUM_SCALAR>::insertEvidenceFile(path);};
       protected:
-        bool _repetitiveInd;
+      bool _repetitiveInd;
     };
 
     extern template class CNMonteCarloSampling<float, LazyPropagation<float>>;

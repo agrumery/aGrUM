@@ -25,19 +25,14 @@
 
 #include <agrum/learning/aprioris/aprioriTypes.h>
 
-
 namespace gum {
 
-  
   namespace learning {
-
 
     const std::string AprioriDirichletType::type = "Dirichlet";
     const std::string AprioriSmoothingType::type = "Smoothing";
     const std::string AprioriNoAprioriType::type = "NoApriori";
-    
-    
+
   } /* namespace learning */
-  
-  
+
 } /* namespace gum */

@@ -25,73 +25,61 @@
 #ifndef GUM_BINARY_JOIN_TREE_CONVERTER_H
 #define GUM_BINARY_JOIN_TREE_CONVERTER_H
 
-
 #include <agrum/core/set.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/cliqueGraph.h>
 
-
 namespace gum {
-
 
   class BinaryJoinTreeConverter {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /// default constructor
-      BinaryJoinTreeConverter();
+    /// default constructor
+    BinaryJoinTreeConverter();
 
-      /// destructor
-      virtual ~BinaryJoinTreeConverter();
+    /// destructor
+    virtual ~BinaryJoinTreeConverter();
 
-      /// @}
+    /// @}
 
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
 
+    /// returns a binary join tree corresponding to clique graph JT
+    /** This method creates and returns a new binary join tree compatible with
+     * that passed in argument (JT) and optimized for inference. As such, this
+     * requires knowing the join tree to be converted (of course), but also
+     * which roots will be used by the collect/diffusion inference engine and
+     * the domain size of the variables contained in the cliques of JT (to
+     * optimize the combination of the potentials contained in the cliques.
+     * @throws InvalidNode exception is thrown if some roots do not belong to
+     * JT or if several roots belong to the same connected component.
+     * @warning If you do not pass in argument a root for each connected component,
+     * then for those with unspecified roots, an arbitrary root will be computed
+     * and used for the binarization. */
+    virtual CliqueGraph convert(const CliqueGraph &JT,
+                                const NodeProperty<unsigned int> &domain_sizes,
+                                const NodeSet &roots) = 0;
 
-      // ############################################################################
-      /// @name Accessors/Modifiers
-      // ############################################################################
-      /// @{
+    /// returns all the roots considered for all the connected components
+    virtual const NodeSet &roots() const = 0;
 
-      /// returns a binary join tree corresponding to clique graph JT
-      /** This method creates and returns a new binary join tree compatible with
-       * that passed in argument (JT) and optimized for inference. As such, this
-       * requires knowing the join tree to be converted (of course), but also
-       * which roots will be used by the collect/diffusion inference engine and
-       * the domain size of the variables contained in the cliques of JT (to
-       * optimize the combination of the potentials contained in the cliques.
-       * @throws InvalidNode exception is thrown if some roots do not belong to
-       * JT or if several roots belong to the same connected component.
-       * @warning If you do not pass in argument a root for each connected component,
-       * then for those with unspecified roots, an arbitrary root will be computed
-       * and used for the binarization. */
-      virtual CliqueGraph
-      convert ( const CliqueGraph& JT,
-                const NodeProperty<unsigned int>& domain_sizes,
-                const NodeSet& roots ) = 0;
-
-      /// returns all the roots considered for all the connected components
-      virtual const NodeSet& roots() const = 0;
-
-      /// @}
-
-
+    /// @}
 
     private:
-      /// forbid copy constructor
-      BinaryJoinTreeConverter ( const BinaryJoinTreeConverter& );
+    /// forbid copy constructor
+    BinaryJoinTreeConverter(const BinaryJoinTreeConverter &);
 
-      /// forbid copy operator
-      BinaryJoinTreeConverter& operator= ( const BinaryJoinTreeConverter& );
-
+    /// forbid copy operator
+    BinaryJoinTreeConverter &operator=(const BinaryJoinTreeConverter &);
   };
-
 
 } /* namespace gum */
 
-
 #endif /* GUM_BINARY_JOIN_TREE_CONVERTER_H */
-

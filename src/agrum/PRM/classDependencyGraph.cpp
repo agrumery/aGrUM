@@ -31,4 +31,3 @@ namespace gum {
     template class ClassDependencyGraph<double>;
   } /* namespace prm */
 } /* namespace gum */
-

@@ -49,82 +49,82 @@ namespace gum {
       class DFSCode {
 
         public:
+        /**
+         * Returns true of e2 is a valid neighbor for e1 (i.e. it respect the
+         * neighborhood restriction) if e1 precedes e2 in a DFSCode.
+         *
+         * @param e1 An EdgeCode.
+         * @param e2 Another EdgeCode.
+         * @return Returns true of e2 is a valid neighbor for e1 (i.e. it respect
+         *         the neighborhood restriction) if e1 precedes e2 in a DFSCode.
+         */
+        static bool validNeighbors(EdgeCode *e1, EdgeCode *e2);
 
-          /**
-           * Returns true of e2 is a valid neighbor for e1 (i.e. it respect the
-           * neighborhood restriction) if e1 precedes e2 in a DFSCode.
-           *
-           * @param e1 An EdgeCode.
-           * @param e2 Another EdgeCode.
-           * @return Returns true of e2 is a valid neighbor for e1 (i.e. it respect
-           *         the neighborhood restriction) if e1 precedes e2 in a DFSCode.
-           */
-          static bool validNeighbors ( EdgeCode* e1, EdgeCode* e2 );
+        /**
+         * Default constructor.
+         * Create an empty DFSCode.
+         */
+        DFSCode();
 
-          /**
-           * Default constructor.
-           * Create an empty DFSCode.
-           */
-          DFSCode();
+        /**
+         * @brief Copy constructor.
+         *
+         * Proceeds with a deep copy.
+         */
+        DFSCode(const DFSCode &source);
 
-          /**
-           * @brief Copy constructor.
-           *
-           * Proceeds with a deep copy.
-           */
-          DFSCode ( const DFSCode& source );
+        /**
+         * @brief Destructor.
+         * This will delete all children of this DFSCode, with their respective
+         * EdgeCode.
+         */
+        ~DFSCode();
 
-          /**
-           * @brief Destructor.
-           * This will delete all children of this DFSCode, with their respective EdgeCode.
-           */
-          ~DFSCode();
+        /**
+         * The vector containing the EdgeCode composing this DFSCode.
+         */
+        std::vector<EdgeCode *> codes;
 
-          /**
-           * The vector containing the EdgeCode composing this DFSCode.
-           */
-          std::vector<EdgeCode*> codes;
+        /**
+         * @brief Copy operator.
+         *
+         * Proceeds with a deep copy.
+         */
+        DFSCode &operator=(const DFSCode &source);
 
-          /**
-           * @brief Copy operator.
-           *
-           * Proceeds with a deep copy.
-           */
-          DFSCode& operator= ( const DFSCode& source );
+        /**
+         * Equality operator.
+         * @param code The code tested for equality with this.
+         * @return Returns true if this and code are equal.
+         */
+        bool operator==(const DFSCode &code) const;
 
-          /**
-           * Equality operator.
-           * @param code The code tested for equality with this.
-           * @return Returns true if this and code are equal.
-           */
-          bool operator== ( const DFSCode& code ) const;
+        /**
+         * Difference operator.
+         * @param code The code tested for difference with this.
+         * @return Returns true if this and code are different.
+         */
+        bool operator!=(const DFSCode &code) const;
 
-          /**
-           * Difference operator.
-           * @param code The code tested for difference with this.
-           * @return Returns true if this and code are different.
-           */
-          bool operator!= ( const DFSCode& code ) const;
+        /**
+         * Lesser than operator.
+         * @param code The code on which the test is made.
+         * @return Returns true if this is lesser than code.
+         */
+        bool operator<(const DFSCode &code) const;
 
-          /**
-           * Lesser than operator.
-           * @param code The code on which the test is made.
-           * @return Returns true if this is lesser than code.
-           */
-          bool operator< ( const DFSCode& code ) const;
+        /**
+         * Lesser or equal than operator.
+         * @param code The code on which the test is made.
+         * @return Returns true if this is lesser than code.
+         */
+        bool operator<=(const DFSCode &code) const;
 
-          /**
-           * Lesser or equal than operator.
-           * @param code The code on which the test is made.
-           * @return Returns true if this is lesser than code.
-           */
-          bool operator<= ( const DFSCode& code ) const;
+        /// Code alias.
+        typedef std::vector<EdgeCode *>::iterator iterator;
 
-          /// Code alias.
-          typedef std::vector<EdgeCode*>::iterator iterator;
-
-          /// Code alias.
-          typedef std::vector<EdgeCode*>::const_iterator const_iterator;
+        /// Code alias.
+        typedef std::vector<EdgeCode *>::const_iterator const_iterator;
       };
 
       /**
@@ -133,29 +133,27 @@ namespace gum {
        * @param code The printed DFSCode.
        * @return Returns out after printing code in it.
        */
-      std::ostream& operator<< ( std::ostream& out, const DFSCode& code );
+      std::ostream &operator<<(std::ostream &out, const DFSCode &code);
 
-      inline
-      bool
-      DFSCode::validNeighbors ( EdgeCode* e1, EdgeCode* e2 ) {
-        if ( e1->isBackward() ) {
-          if ( e2->isForward() ) {
-            return ( e2->i <= e1->i ) and ( e2->j = ( e1->i + 1 ) );
+      inline bool DFSCode::validNeighbors(EdgeCode *e1, EdgeCode *e2) {
+        if (e1->isBackward()) {
+          if (e2->isForward()) {
+            return (e2->i <= e1->i) and (e2->j = (e1->i + 1));
           } else {
-            return ( e2->i == e1->i ) and ( e1->j < e2->j );
+            return (e2->i == e1->i) and (e1->j < e2->j);
           }
         } else {
           // e1 is a forward edge
-          if ( e2->isForward() ) {
-            return ( e2->i <= e1->j ) and ( e2->j == ( e1->j + 1 ) );
+          if (e2->isForward()) {
+            return (e2->i <= e1->j) and (e2->j == (e1->j + 1));
           } else {
-            return ( e2->i == e1->j ) and ( e2->j < e1->i );
+            return (e2->i == e1->j) and (e2->j < e1->i);
           }
         }
       }
 
     } /* namespace gspan */
-  } /* namespace prm */
+  }   /* namespace prm */
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
@@ -163,4 +161,3 @@ namespace gum {
 #endif // GUM_NO_INLINE
 
 #endif /* GUM_DFS_CODE_H */
-

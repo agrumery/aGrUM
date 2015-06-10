@@ -33,38 +33,34 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/learning/greedyHillClimbing.h>
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     /** @class K2
      * @brief The K2 algorithm
      * @ingroup learning_group
      */
     class K2 : private GreedyHillClimbing {
-    public:
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      K2 ();
+      K2();
 
       /// copy constructor
-      K2 ( const K2& from );
+      K2(const K2 &from);
 
       /// move constructor
-      K2 ( K2&& from );
+      K2(K2 &&from);
 
       /// destructor
-      ~K2 ();
+      ~K2();
 
       /// @}
-
 
       // ##########################################################################
       /// @name Operators
@@ -72,13 +68,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      K2& operator= ( const K2& from );
+      K2 &operator=(const K2 &from);
 
       /// move operator
-      K2& operator= ( K2&& from );
-      
+      K2 &operator=(K2 &&from);
+
       /// @}
-      
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -86,16 +81,16 @@ namespace gum {
       /// @{
 
       /// returns the approximation policy of the learning algorithm
-      ApproximationScheme& approximationScheme ();
+      ApproximationScheme &approximationScheme();
 
       /// sets the order on the variables
-      void setOrder ( const Sequence<NodeId>& order );
+      void setOrder(const Sequence<NodeId> &order);
 
       /// sets the order on the variables
-      void setOrder ( const std::vector<NodeId>& order );
+      void setOrder(const std::vector<NodeId> &order);
 
       /// returns the current order
-      const Sequence<NodeId>& order () const noexcept;
+      const Sequence<NodeId> &order() const noexcept;
 
       /// learns the structure of a Bayes net
       /** @param A selector class that computes the best changes that can be
@@ -106,55 +101,39 @@ namespace gum {
        * database
        * @param initial_dag the DAG we start from for our learning */
       template <typename GRAPH_CHANGES_SELECTOR>
-      DAG
-      learnStructure
-      ( GRAPH_CHANGES_SELECTOR& selector,
-        const std::vector<unsigned int>& modal,
-        DAG initial_dag = DAG () );
+      DAG learnStructure(GRAPH_CHANGES_SELECTOR &selector,
+                         const std::vector<unsigned int> &modal,
+                         DAG initial_dag = DAG());
 
-      
       /// learns the structure and the parameters of a BN
-      template <typename GUM_SCALAR = float,
-                typename GRAPH_CHANGES_SELECTOR,
-                typename PARAM_ESTIMATOR,
-                typename CELL_TRANSLATORS>
+      template <typename GUM_SCALAR = float, typename GRAPH_CHANGES_SELECTOR,
+                typename PARAM_ESTIMATOR, typename CELL_TRANSLATORS>
       BayesNet<GUM_SCALAR>
-      learnBN
-      ( GRAPH_CHANGES_SELECTOR& selector,
-        PARAM_ESTIMATOR& estimator,
-        const std::vector<std::string>& names,
-        const std::vector<unsigned int>& modal,
-        const CELL_TRANSLATORS& translator,
-        DAG initial_dag = DAG () );
+      learnBN(GRAPH_CHANGES_SELECTOR &selector, PARAM_ESTIMATOR &estimator,
+              const std::vector<std::string> &names,
+              const std::vector<unsigned int> &modal,
+              const CELL_TRANSLATORS &translator, DAG initial_dag = DAG());
 
-
-    private:
+      private:
       /// the order on the variable used for learning
       Sequence<NodeId> __order;
 
-
       /** @brief checks that the order passed to K2 is coherent with the variables
        * as specified by their modalities */
-      void __checkOrder ( const std::vector<unsigned int>& modal );
-      
+      void __checkOrder(const std::vector<unsigned int> &modal);
+      /// @}
     };
 
-    
   } /* namespace learning */
-  
-  
-} /* namespace gum */
 
+} /* namespace gum */
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #include <agrum/learning/K2.inl>
 #endif /* GUM_NO_INLINE */
 
-
 /// always include templated methods
 #include <agrum/learning/K2.tcc>
 
-
 #endif /* GUM_LEARNING_K2_H */
-

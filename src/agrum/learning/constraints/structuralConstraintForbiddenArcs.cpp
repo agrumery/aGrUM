@@ -31,75 +31,61 @@
 #include <agrum/learning/constraints/structuralConstraintForbiddenArcs.inl>
 #endif /* GUM_NO_INLINE */
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     /// default constructor
-    StructuralConstraintForbiddenArcs::StructuralConstraintForbiddenArcs () {
-      GUM_CONSTRUCTOR ( StructuralConstraintForbiddenArcs );
+    StructuralConstraintForbiddenArcs::StructuralConstraintForbiddenArcs() {
+      GUM_CONSTRUCTOR(StructuralConstraintForbiddenArcs);
     }
 
-    
     /// constructor starting with a given graph
-    StructuralConstraintForbiddenArcs::StructuralConstraintForbiddenArcs
-    ( const DiGraph& graph ) {
-      setGraph ( graph );
-      GUM_CONSTRUCTOR ( StructuralConstraintForbiddenArcs );
+    StructuralConstraintForbiddenArcs::StructuralConstraintForbiddenArcs(
+        const DiGraph &graph) {
+      setGraph(graph);
+      GUM_CONSTRUCTOR(StructuralConstraintForbiddenArcs);
     }
 
-    
     /// copy constructor
-    StructuralConstraintForbiddenArcs::StructuralConstraintForbiddenArcs
-    ( const StructuralConstraintForbiddenArcs& from ) :
-      _ForbiddenArcs__forbidden_arcs ( from._ForbiddenArcs__forbidden_arcs ) {
-      GUM_CONS_CPY ( StructuralConstraintForbiddenArcs );
+    StructuralConstraintForbiddenArcs::StructuralConstraintForbiddenArcs(
+        const StructuralConstraintForbiddenArcs &from)
+        : _ForbiddenArcs__forbidden_arcs(from._ForbiddenArcs__forbidden_arcs) {
+      GUM_CONS_CPY(StructuralConstraintForbiddenArcs);
     }
-
 
     /// move constructor
-    StructuralConstraintForbiddenArcs::StructuralConstraintForbiddenArcs
-    ( StructuralConstraintForbiddenArcs&& from ) :
-      _ForbiddenArcs__forbidden_arcs
-      ( std::move ( from._ForbiddenArcs__forbidden_arcs ) ) {
-      GUM_CONS_MOV ( StructuralConstraintForbiddenArcs );
+    StructuralConstraintForbiddenArcs::StructuralConstraintForbiddenArcs(
+        StructuralConstraintForbiddenArcs &&from)
+        : _ForbiddenArcs__forbidden_arcs(
+              std::move(from._ForbiddenArcs__forbidden_arcs)) {
+      GUM_CONS_MOV(StructuralConstraintForbiddenArcs);
     }
-
 
     /// destructor
-    StructuralConstraintForbiddenArcs::~StructuralConstraintForbiddenArcs () {
-      GUM_DESTRUCTOR ( StructuralConstraintForbiddenArcs );
+    StructuralConstraintForbiddenArcs::~StructuralConstraintForbiddenArcs() {
+      GUM_DESTRUCTOR(StructuralConstraintForbiddenArcs);
     }
-    
 
     /// copy operator
-    StructuralConstraintForbiddenArcs&
-    StructuralConstraintForbiddenArcs::operator=
-    ( const StructuralConstraintForbiddenArcs& from ) {
-      if ( this != &from ) {
+    StructuralConstraintForbiddenArcs &StructuralConstraintForbiddenArcs::
+    operator=(const StructuralConstraintForbiddenArcs &from) {
+      if (this != &from) {
         _ForbiddenArcs__forbidden_arcs = from._ForbiddenArcs__forbidden_arcs;
       }
       return *this;
     }
 
-    
     /// move operator
-    StructuralConstraintForbiddenArcs&
-    StructuralConstraintForbiddenArcs::operator=
-    ( StructuralConstraintForbiddenArcs&& from ) {
-      if ( this != &from ) {
+    StructuralConstraintForbiddenArcs &StructuralConstraintForbiddenArcs::
+    operator=(StructuralConstraintForbiddenArcs &&from) {
+      if (this != &from) {
         _ForbiddenArcs__forbidden_arcs =
-          std::move ( from._ForbiddenArcs__forbidden_arcs );
+            std::move(from._ForbiddenArcs__forbidden_arcs);
       }
       return *this;
-    } 
-
+    }
 
   } /* namespace learning */
 
-  
 } /* namespace gum */
-

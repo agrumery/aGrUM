@@ -33,55 +33,43 @@
 #include <agrum/graphs/graphElements.inl>
 #endif /* GUM_NO_INLINE */
 
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-
 
 namespace gum {
 
-
   ////////////////////////////////////////////////////////////////
-  //we need to provide hash functions for some Edge and Arc
-
+  // we need to provide hash functions for some Edge and Arc
 
   /// returns a hashed key for hash tables the keys of which are represented
   /// by a Edge
 
-  Size
-  HashFunc<Edge>::operator() ( const Edge& key ) const {
-    pair.first  = key.first();
+  Size HashFunc<Edge>::operator()(const Edge &key) const {
+    pair.first = key.first();
     pair.second = key.second();
-    return HashFuncSmallKeyPair<NodeId, NodeId>::operator() ( pair );
+    return HashFuncSmallKeyPair<NodeId, NodeId>::operator()(pair);
   }
-
 
   /// returns a hashed key for hash tables the keys of which are represented
   /// by a Arc
 
-  Size
-  HashFunc<Arc>::operator() ( const Arc& key ) const {
-    pair.first  = key.first();
+  Size HashFunc<Arc>::operator()(const Arc &key) const {
+    pair.first = key.first();
     pair.second = key.second();
-    return HashFuncSmallKeyPair<NodeId, NodeId>::operator() ( pair );
+    return HashFuncSmallKeyPair<NodeId, NodeId>::operator()(pair);
   }
-
-
 
   /// A \c << operator for edges
 
-  std::ostream& operator<< ( std::ostream& stream, const Edge& edge ) {
-    return ( stream << edge.first() << "--" << edge.second() );
+  std::ostream &operator<<(std::ostream &stream, const Edge &edge) {
+    return (stream << edge.first() << "--" << edge.second());
   }
-
 
   /// A \c << operator for arcs
 
-  std::ostream& operator<< ( std::ostream& stream, const Arc& arc ) {
-    return ( stream << arc.first() << "->" << arc.second() );
+  std::ostream &operator<<(std::ostream &stream, const Arc &arc) {
+    return (stream << arc.first() << "->" << arc.second());
   }
 
-
 } /* namespace gum */
-
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

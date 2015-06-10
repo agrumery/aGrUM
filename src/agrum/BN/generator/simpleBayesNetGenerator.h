@@ -34,55 +34,58 @@
 #include <agrum/config.h>
 #include <agrum/BN/generator/IBayesNetGenerator.h>
 
-
-
 namespace gum {
 
   /**
-   * @class IBayesNetGenerator simpleBayesNetGenerator.h <agrum/BN/generator/simpleBayesNetGenerator.h>
+   * @class IBayesNetGenerator simpleBayesNetGenerator.h
+   *<agrum/BN/generator/simpleBayesNetGenerator.h>
    * @brief Class for generating bayesian networks.
    * @ingroup bn_group
    *
    * This class randomly generates a bayesian network given three parameters:
-   * the number of nodes and the max number of arcs and the number of maximum modality for each nodes.
-   * @warning  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high
+   * the number of nodes and the max number of arcs and the number of maximum
+   *modality for each nodes.
+   * @warning  Be Careful when entering the parameters, high Values may cause the
+   *density of the Bayesian Network to be too high
    * resulting in the failure of most of the inference Methods.
    */
-  template <typename GUM_SCALAR, template<class> class ICPTGenerator = SimpleCPTGenerator>
-  class SimpleBayesNetGenerator : public IBayesNetGenerator<GUM_SCALAR, ICPTGenerator> {
+  template <typename GUM_SCALAR,
+            template <class> class ICPTGenerator = SimpleCPTGenerator>
+  class SimpleBayesNetGenerator
+      : public IBayesNetGenerator<GUM_SCALAR, ICPTGenerator> {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructor
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructor
+    // ############################################################################
+    /// @{
 
-      /**
-      * Constructor.
-      * Use by default the SimpleCPTGenerator for generating the BNs CPT.
-      * @param nbrNodes The number of nodes imposed on the generator.
-      * @param maxArcs The number of maximum arcs imposed on the generator.
-      * @param maxModality Each DRV has from 2 to maxModality modalities
-      */
-      SimpleBayesNetGenerator ( Size nbrNodes, Size maxArcs, Size maxModality = 2 );
+    /**
+    * Constructor.
+    * Use by default the SimpleCPTGenerator for generating the BNs CPT.
+    * @param nbrNodes The number of nodes imposed on the generator.
+    * @param maxArcs The number of maximum arcs imposed on the generator.
+    * @param maxModality Each DRV has from 2 to maxModality modalities
+    */
+    SimpleBayesNetGenerator(Size nbrNodes, Size maxArcs, Size maxModality = 2);
 
-      /**
-       * Destructor.
-       */
-      ~SimpleBayesNetGenerator();
-      /// @}
+    /**
+     * Destructor.
+     */
+    ~SimpleBayesNetGenerator();
+    /// @}
 
-      // ############################################################################
-      /// @name BN generation methods
-      // ############################################################################
-      /// @{
-      /**
-      * function that generates a bayesian networks.
-       * @param bayesNet Bayesian Network to be completed after initialisation
-       * @return null but modify inputed Bayesian Network
-       */
-      void generateBN ( BayesNet<GUM_SCALAR>& bayesNet );
+    // ############################################################################
+    /// @name BN generation methods
+    // ############################################################################
+    /// @{
+    /**
+    * function that generates a bayesian networks.
+     * @param bayesNet Bayesian Network to be completed after initialisation
+     * @return null but modify inputed Bayesian Network
+     */
+    void generateBN(BayesNet<GUM_SCALAR> &bayesNet);
 
-      /// @}
+    /// @}
   }; /* class SimpleBayesNetGenerator */
 
   extern template class SimpleBayesNetGenerator<float>;
@@ -90,7 +93,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include<agrum/BN/generator/simpleBayesNetGenerator.tcc>
+#include <agrum/BN/generator/simpleBayesNetGenerator.tcc>
 
 #endif /* GUM_SIMPLE_BAYES_NET_GENERATOR_H */
-

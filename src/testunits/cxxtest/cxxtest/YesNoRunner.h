@@ -12,13 +12,12 @@
 namespace CxxTest {
   class YesNoRunner : public TestListener {
     public:
-      YesNoRunner() {
-      }
+    YesNoRunner() {}
 
-      int run() {
-        TestRunner::runAllTests ( *this );
-        return tracker().failedTests();
-      }
+    int run() {
+      TestRunner::runAllTests(*this);
+      return tracker().failedTests();
+    }
   };
 }
 

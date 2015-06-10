@@ -25,35 +25,29 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-
 #include <agrum/graphs/eliminations/unconstrainedEliminationSequenceStrategy.h>
-
 
 namespace gum {
 
   /// default constructor
   UnconstrainedEliminationSequenceStrategy::
-  UnconstrainedEliminationSequenceStrategy() {
+      UnconstrainedEliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_CONSTRUCTOR ( UnconstrainedEliminationSequenceStrategy );
+    GUM_CONSTRUCTOR(UnconstrainedEliminationSequenceStrategy);
   }
-
 
   /// copy constructor
-  UnconstrainedEliminationSequenceStrategy::
-  UnconstrainedEliminationSequenceStrategy
-  ( const UnconstrainedEliminationSequenceStrategy& ) {
+  UnconstrainedEliminationSequenceStrategy::UnconstrainedEliminationSequenceStrategy(
+      const UnconstrainedEliminationSequenceStrategy &) {
     // for debugging purposes
-    GUM_CONS_CPY ( UnconstrainedEliminationSequenceStrategy );
+    GUM_CONS_CPY(UnconstrainedEliminationSequenceStrategy);
   }
-
 
   /// destructor
   UnconstrainedEliminationSequenceStrategy::
-  ~UnconstrainedEliminationSequenceStrategy() {
+      ~UnconstrainedEliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_DESTRUCTOR ( UnconstrainedEliminationSequenceStrategy );
+    GUM_DESTRUCTOR(UnconstrainedEliminationSequenceStrategy);
   }
-
 
 } /* namespace gum */

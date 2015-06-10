@@ -187,7 +187,7 @@ namespace gum {
     void
     ScalarAttribute<GUM_SCALAR>::setAsCastDescendant ( Attribute<GUM_SCALAR>* cast ) {
       try {
-        cast->type().setSuper ( type() );
+        type().setSuper ( cast->type() );
       } catch ( OperationNotAllowed& ) {
         GUM_ERROR ( OperationNotAllowed, "this ScalarAttribute can not have cast descendant" );
       } catch ( WrongType& ) {
@@ -195,22 +195,26 @@ namespace gum {
         msg << type().name() << " is not a subtype of " << cast->type().name();
         GUM_ERROR ( WrongType, msg.str() );
       }
+    }
 
+    template<typename GUM_SCALAR>
+    void
+    ScalarAttribute<GUM_SCALAR>::becomeCastDescendant( Type<GUM_SCALAR> &subtype ) 
+    {
       delete __cpf;
       __cpf = new Potential<GUM_SCALAR>();
       __cpf->add ( type().variable() );
-      __cpf->add ( cast->type().variable() );
-
-      DiscreteVariable& my_var = cast->type().variable();
-      DiscreteVariable& cast_var = type().variable();
+      __cpf->add ( subtype.variable() );
 
       Instantiation inst ( *__cpf );
 
       for ( inst.setFirst(); not inst.end(); inst.inc() ) {
-        if ( type().label_map() [inst.pos ( my_var )] == inst.pos ( cast_var ) )
+        auto my_pos = inst.pos ( subtype.variable() );
+        if ( subtype.label_map()[ my_pos ] == inst.pos( type().variable() ) ) {
           __cpf->set ( inst, 1 );
-        else
+        } else {
           __cpf->set ( inst, 0 );
+        }
       }
     }
 

@@ -25,35 +25,30 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-
 #include <agrum/graphs/eliminations/partialOrderedEliminationSequenceStrategy.h>
-
 
 namespace gum {
 
   /// default constructor
   PartialOrderedEliminationSequenceStrategy::
-  PartialOrderedEliminationSequenceStrategy() {
+      PartialOrderedEliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_CONSTRUCTOR ( PartialOrderedEliminationSequenceStrategy );
+    GUM_CONSTRUCTOR(PartialOrderedEliminationSequenceStrategy);
   }
-
 
   /// copy constructor
   PartialOrderedEliminationSequenceStrategy::
-  PartialOrderedEliminationSequenceStrategy
-  ( const PartialOrderedEliminationSequenceStrategy& ) {
+      PartialOrderedEliminationSequenceStrategy(
+          const PartialOrderedEliminationSequenceStrategy &) {
     // for debugging purposes
-    GUM_CONS_CPY ( PartialOrderedEliminationSequenceStrategy );
+    GUM_CONS_CPY(PartialOrderedEliminationSequenceStrategy);
   }
-
 
   /// destructor
   PartialOrderedEliminationSequenceStrategy::
-  ~PartialOrderedEliminationSequenceStrategy() {
+      ~PartialOrderedEliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_DESTRUCTOR ( PartialOrderedEliminationSequenceStrategy );
+    GUM_DESTRUCTOR(PartialOrderedEliminationSequenceStrategy);
   }
-
 
 } /* namespace gum */

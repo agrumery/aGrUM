@@ -33,4 +33,3 @@ namespace gum {
     template class Class<double>;
   } /* namespace prm */
 } /* namespace gum */
-

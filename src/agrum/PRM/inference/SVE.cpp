@@ -26,7 +26,6 @@
 
 #include <agrum/PRM/inference/SVE.h>
 
-
 namespace gum {
   namespace prm {
 
@@ -34,4 +33,3 @@ namespace gum {
 
   } /* namespace prm */
 } /* namespace gum */
-

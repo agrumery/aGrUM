@@ -26,7 +26,6 @@
 
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
-
 namespace gum {
 
   namespace prm {
@@ -36,5 +35,5 @@ namespace gum {
       template class O3prmReader<double>;
 
     } /* namespace o3prm */
-  } /* namespace prm */
+  }   /* namespace prm */
 } /* namespace gum */

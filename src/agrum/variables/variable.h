@@ -32,16 +32,13 @@
 
 #include <agrum/config.h>
 
-
 namespace gum {
 
   class Variable;
 
   /// for friendly displaying the content of the variable
 
-  std::ostream& operator<< ( std::ostream& s, const Variable& LDRV );
-
-
+  std::ostream &operator<<(std::ostream &s, const Variable &LDRV);
 
   /* =========================================================================== */
   /* =========================================================================== */
@@ -56,122 +53,103 @@ namespace gum {
 
   class Variable {
     public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
+    /// destructor
 
-      /// destructor
+    virtual ~Variable();
 
-      virtual ~Variable();
+    /// Copy Factory.
+    /// @return Returns a pointer on a new copy of this.
 
+    virtual Variable *clone() const = 0;
 
-      /// Copy Factory.
-      /// @return Returns a pointer on a new copy of this.
+    /// @}
 
-      virtual Variable* clone() const = 0;
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
 
-      /// @}
+    /// Copy operator
+    /** @param aRV to be copied
+     * @return a const ref to *this */
 
+    Variable &operator=(const Variable &aRV);
 
-      // ############################################################################
-      /// @name Operators
-      // ############################################################################
-      /// @{
+    /// equality operator
 
-      /// Copy operator
-      /** @param aRV to be copied
-       * @return a const ref to *this */
+    virtual bool operator==(const Variable &aRV) const;
 
-      Variable& operator= ( const Variable& aRV );
+    /// inequality operator
 
+    virtual bool operator!=(const Variable &aRV) const;
 
-      /// equality operator
+    /// @}
 
-      virtual bool operator== ( const Variable& aRV ) const ;
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
 
+    /// sets the name of the variable
+    /** @param theValue */
 
-      /// inequality operator
+    void setName(const std::string &theValue);
 
-      virtual bool operator!= ( const Variable& aRV ) const ;
+    /// returns the name of the variable
 
-      /// @}
+    const std::string &name() const;
 
+    /// sets the description of the variable
+    /// @warning since __description is mutable, setDescription() is const
+    /** @param theValue */
 
-      // ############################################################################
-      /// @name Accessors / Modifiers
-      // ############################################################################
-      /// @{
+    void setDescription(const std::string &theValue) const;
 
-      /// sets the name of the variable
-      /** @param theValue */
+    /// returns the description of the variable
 
-      void setName ( const std::string& theValue );
+    const std::string &description() const;
 
-
-      /// returns the name of the variable
-
-      const std::string& name() const;
-
-
-      /// sets the description of the variable
-      /// @warning since __description is mutable, setDescription() is const
-      /** @param theValue */
-
-      void setDescription ( const std::string& theValue ) const;
-
-
-      /// returns the description of the variable
-
-      const std::string& description() const;
-
-      /// @}
-
-
+    /// @}
 
     protected:
-      /// (protected) Default constructor
-      Variable( ) {GUM_CONSTRUCTOR ( Variable );};
+    /// (protected) Default constructor
+    Variable() { GUM_CONSTRUCTOR(Variable); };
 
+    /// protected copy
+    /** @param aRV to be copied */
 
+    void _copy(const Variable &aRV);
 
-      /// protected copy
-      /** @param aRV to be copied */
+    /// constructor
+    /** @param aName name of the variable
+     * @param aDesc description of the variable */
 
-      void _copy ( const Variable& aRV );
+    Variable(const std::string &aName, const std::string &aDesc);
 
+    /// copy constructor
+    /** @param aRV the variable we copy */
 
-
-      /// constructor
-      /** @param aName name of the variable
-       * @param aDesc description of the variable */
-
-      Variable ( const std::string& aName, const std::string& aDesc );
-
-
-      /// copy constructor
-      /** @param aRV the variable we copy */
-
-      Variable ( const Variable& aRV );
-
+    Variable(const Variable &aRV);
 
     private:
-      /// the name of the variable
-      std::string __name;
+    /// the name of the variable
+    std::string __name;
 
-      /// the description of the variable
-      /// since description is not a characteristic of a variable, we allow the description to be changed even in a const reference.
-      mutable std::string __description;
+    /// the description of the variable
+    /// since description is not a characteristic of a variable, we allow the
+    /// description to be changed even in a const reference.
+    mutable std::string __description;
   };
 
-
 } /* namespace gum */
-
 
 #ifndef GUM_NO_INLINE
 #include <agrum/variables/variable.inl>
 #endif /* GUM_NO_INLINE */
-
 
 #endif /* GUM_VARIABLE_H */

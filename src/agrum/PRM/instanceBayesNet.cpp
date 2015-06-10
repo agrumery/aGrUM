@@ -26,7 +26,6 @@
 
 #include <agrum/PRM/instanceBayesNet.h>
 
-
 namespace gum {
   namespace prm {
 
@@ -34,4 +33,3 @@ namespace gum {
 
   } /* namespace prm */
 } /* namespace gum */
-

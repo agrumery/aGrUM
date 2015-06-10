@@ -85,6 +85,7 @@ namespace gum {
 
         /// See gum::prm::Attribute.
         virtual void setAsCastDescendant ( Attribute<GUM_SCALAR>* attr );
+        virtual void becomeCastDescendant( Type<GUM_SCALAR> &subtype );
 
         virtual MultiDimImplementation< std::string > & formulas();
         virtual const MultiDimImplementation< std::string > & formulas() const;
@@ -109,7 +110,7 @@ namespace gum {
         /// A pointer on the Potential of this attribute
         MultiDimImplementation<std::string>* __formulas;
 
-        /// A pointe toward the class of this attribuet
+        /// A pointe toward the class of this attribute
         const Class<GUM_SCALAR> * __class;
 
         void __fillCpf() const;

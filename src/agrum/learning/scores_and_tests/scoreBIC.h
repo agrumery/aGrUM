@@ -31,17 +31,13 @@
 #ifndef GUM_LEARNING_SCORE_BIC_H
 #define GUM_LEARNING_SCORE_BIC_H
 
-
 #include <agrum/learning/scores_and_tests/score.h>
 #include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     /* ========================================================================= */
     /* ===                         SCORE BIC CLASS                           === */
     /* ========================================================================= */
@@ -60,9 +56,9 @@ namespace gum {
      * details.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<float> >
-    class ScoreBIC : public Score<IdSetAlloc,CountAlloc> {
-    public:
+              typename CountAlloc = std::allocator<float>>
+    class ScoreBIC : public Score<IdSetAlloc, CountAlloc> {
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -72,24 +68,23 @@ namespace gum {
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
       template <typename RowFilter>
-      ScoreBIC ( const RowFilter& filter,
-                 const std::vector<unsigned int>& var_modalities,
-                 Apriori<IdSetAlloc,CountAlloc>& apriori );
+      ScoreBIC(const RowFilter &filter,
+               const std::vector<unsigned int> &var_modalities,
+               Apriori<IdSetAlloc, CountAlloc> &apriori);
 
       /// copy constructor
-      ScoreBIC ( const ScoreBIC<IdSetAlloc,CountAlloc>& );
+      ScoreBIC(const ScoreBIC<IdSetAlloc, CountAlloc> &);
 
       /// move constructor
-      ScoreBIC ( ScoreBIC<IdSetAlloc,CountAlloc>&& );
+      ScoreBIC(ScoreBIC<IdSetAlloc, CountAlloc> &&);
 
       /// virtual copy factory
-      virtual ScoreBIC<IdSetAlloc,CountAlloc>* copyFactory () const;
+      virtual ScoreBIC<IdSetAlloc, CountAlloc> *copyFactory() const;
 
       /// destructor
-      virtual ~ScoreBIC ();
+      virtual ~ScoreBIC();
 
       /// @}
-
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -97,26 +92,7 @@ namespace gum {
       /// @{
 
       /// returns the score corresponding to a given nodeset
-      float score ( unsigned int nodeset_index );
-      
-      /// indicates whether the apriori is compatible (meaningful) with the score
-      /** @returns true if the apriori is compatible with the score.
-       * @throws IncompatibleScoreApriori is raised if the apriori is known to
-       * be incompatible with the score. Such a case arises because the score
-       * already implicitly contains an apriori which should not be combined
-       * with the apriori passed in argument. aGrUM will nevertheless allow you to
-       * use this apriori with the score, but you should be warned that the result
-       * of learning will most probably be meaningless.
-       * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
-       * apriori is incompatible with the score but, with its current weight, it
-       * becomes compatible (e.g., a Dirichlet apriori with a 0-weight is the
-       * same as a NoApriori). In such a case, you should not modify the weight.
-       * aGrUM will allow you to do so but the result of learning will most
-       * probably be meaningless.
-       * @throws InvalidArgument is raised if the apriori is not handled yet by
-       * method isAprioriCompatible (the method needs be updated to take it into
-       * account). */
-      virtual bool isAprioriCompatible () const final;
+      float score(unsigned int nodeset_index);
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** @returns true if the apriori is compatible with the score.
@@ -135,8 +111,27 @@ namespace gum {
        * @throws InvalidArgument is raised if the apriori is not handled yet by
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
-      static bool isAprioriCompatible ( const std::string& apriori_type,
-                                        float weight = 1.0f );
+      virtual bool isAprioriCompatible() const final;
+
+      /// indicates whether the apriori is compatible (meaningful) with the score
+      /** @returns true if the apriori is compatible with the score.
+       * @throws IncompatibleScoreApriori is raised if the apriori is known to
+       * be incompatible with the score. Such a case arises because the score
+       * already implicitly contains an apriori which should not be combined
+       * with the apriori passed in argument. aGrUM will nevertheless allow you to
+       * use this apriori with the score, but you should be warned that the result
+       * of learning will most probably be meaningless.
+       * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
+       * apriori is incompatible with the score but, with its current weight, it
+       * becomes compatible (e.g., a Dirichlet apriori with a 0-weight is the
+       * same as a NoApriori). In such a case, you should not modify the weight.
+       * aGrUM will allow you to do so but the result of learning will most
+       * probably be meaningless.
+       * @throws InvalidArgument is raised if the apriori is not handled yet by
+       * method isAprioriCompatible (the method needs be updated to take it into
+       * account). */
+      static bool isAprioriCompatible(const std::string &apriori_type,
+                                      float weight = 1.0f);
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** @returns true if the apriori is compatible with the score.
@@ -156,7 +151,7 @@ namespace gum {
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
       static bool
-      isAprioriCompatible ( const Apriori<IdSetAlloc,CountAlloc>& apriori );
+      isAprioriCompatible(const Apriori<IdSetAlloc, CountAlloc> &apriori);
 
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD score
@@ -169,27 +164,21 @@ namespace gum {
        * to be meaningfull a structure + parameter learning requires that the same
        * aprioris are taken into account during structure learning and parameter
        * learning. */
-      virtual const ScoreInternalApriori<IdSetAlloc,CountAlloc>&
-      internalApriori () const noexcept final;
-      
+      virtual const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
+      internalApriori() const noexcept final;
+
       /// @}
 
-    private:
-      
+      private:
       /// the internal apriori of the score
-      ScoreInternalNoApriori<IdSetAlloc,CountAlloc> __internal_apriori;
-      
+      ScoreInternalNoApriori<IdSetAlloc, CountAlloc> __internal_apriori;
     };
-    
 
   } /* namespace learning */
-  
-  
-} /* namespace gum */
 
+} /* namespace gum */
 
 // always include the template implementation
 #include <agrum/learning/scores_and_tests/scoreBIC.tcc>
-
 
 #endif /* GUM_LEARNING_SCORE_BIC_H */

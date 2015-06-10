@@ -41,12 +41,9 @@
 #include <agrum/config.h>
 #include <agrum/learning/database/DBRow.h>
 
-
 namespace gum {
 
-  
   namespace learning {
-
 
     // ============================================================================
     // DB TRANSFORM
@@ -66,7 +63,7 @@ namespace gum {
      * needed its DBRows. This is precisely the goal of the DBTransform classes.
      */
     class DBTransform {
-    public:
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -74,19 +71,18 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBTransform ();
+      DBTransform();
 
       /// copy constructor
-      DBTransform ( const DBTransform& );
+      DBTransform(const DBTransform &);
 
       /// move constructor
-      DBTransform ( DBTransform&& );
+      DBTransform(DBTransform &&);
 
       /// destructor
-      virtual ~DBTransform ();
+      virtual ~DBTransform();
 
       /// @}
-      
 
       // ##########################################################################
       /// @name Operators
@@ -95,13 +91,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTransform& operator= ( const DBTransform& );
+      DBTransform &operator=(const DBTransform &);
 
       /// move operator
-      DBTransform& operator= ( DBTransform&& );
+      DBTransform &operator=(DBTransform &&);
 
       /// @}
-
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -111,19 +106,14 @@ namespace gum {
 
       /// transforms a vector of DBrows
       /** @return true if the transformation could be performed successfully. */
-      virtual bool transform ( std::vector<DBRow>& db,
-                               std::vector<std::string> miss ) const = 0;
+      virtual bool transform(std::vector<DBRow> &db,
+                             std::vector<std::string> miss) const = 0;
 
       /// @}
-
     };
-    
-    
+
   } /* namespace learning */
 
-  
 } /* namespace gum */
-
-    
 
 #endif /* GUM_LEARNING_DB_TRANSFORM_H */

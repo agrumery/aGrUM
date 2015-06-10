@@ -47,17 +47,18 @@ namespace gum {
 
     /**
      * @class Class<GUM_SCALAR> class.h <agrum/PRM/class.h>
-     * @brief A Class<GUM_SCALAR> is an object of a PRM representing a fragment of a Bayesian
+     * @brief A Class<GUM_SCALAR> is an object of a PRM representing a fragment of a
+     *Bayesian
      *        Network which can be instantiated in Instance.
      *
      *
      * @see PRM Class<GUM_SCALAR> ClassElement<GUM_SCALAR>
      * @ingroup prm_group
      */
-    template<typename GUM_SCALAR>
-    class Class: public ClassElementContainer<GUM_SCALAR> {
+    template <typename GUM_SCALAR>
+    class Class : public ClassElementContainer<GUM_SCALAR> {
 
-        friend class Interface<GUM_SCALAR>;
+      friend class Interface<GUM_SCALAR>;
 
       public:
         /// @name Constructors & destructor.
@@ -247,18 +248,18 @@ namespace gum {
 
         /// @}
       protected:
+      /// returns a constant reference over this interface's dag.
+      virtual const DAG &_dag() const;
 
-        /// returns a constant reference over this interface's dag.
-        virtual const DAG& _dag() const;
+      /// Returns a non constant reference over this Interface<GUM_SCALAR>'s DAG.
+      virtual DAG &_dag();
 
-        /// Returns a non constant reference over this Interface<GUM_SCALAR>'s DAG.
-        virtual DAG& _dag();
+      /// Fills set with all the subtypes of this Class<GUM_SCALAR>.
+      void _findAllSubtypes(Set<ClassElementContainer<GUM_SCALAR> *> &set);
 
-        /// Fills set with all the subtypes of this Class<GUM_SCALAR>.
-        void _findAllSubtypes ( Set<ClassElementContainer<GUM_SCALAR>*>& set );
-
-        /// See gum::prm::ClassElementContainer<GUM_SCALAR>(const ClassElement<GUM_SCALAR>&).
-        void _updateDescendants ( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::prm::ClassElementContainer<GUM_SCALAR>(const
+      /// ClassElement<GUM_SCALAR>&).
+      void _updateDescendants(const ClassElement<GUM_SCALAR> &elt);
 
       private:
         /// Copy operator. Don't use it.
@@ -384,7 +385,6 @@ namespace gum {
     extern template class Class<double>;
   } /* namespace prm */
 } // namespace gum
-
 
 #include <agrum/PRM/elements/class.tcc>
 

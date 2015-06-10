@@ -24,12 +24,11 @@
  * graph changes that increase the global score are applied. Those that increase
  * it the more are applied first. The algorithm stops when no single change can
  * increase the score anymore.
- * 
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_GREEDY_HILL_CLIMBING_H
 #define GUM_LEARNING_GREEDY_HILL_CLIMBING_H
-
 
 #include <vector>
 #include <string>
@@ -38,13 +37,10 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
 
-
 namespace gum {
 
-  
   namespace learning {
 
-    
     /** @class GreedyHillClimbing
      * @brief The greedy hill climbing learning algorithm (for directed graphs)
      *
@@ -55,48 +51,46 @@ namespace gum {
      * @ingroup learning_group
      */
     class GreedyHillClimbing : public ApproximationScheme {
-    public:
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      GreedyHillClimbing ();
+      GreedyHillClimbing();
 
       /// copy constructor
-      GreedyHillClimbing ( const GreedyHillClimbing& from );
+      GreedyHillClimbing(const GreedyHillClimbing &from);
 
       /// move constructor
-      GreedyHillClimbing ( GreedyHillClimbing&& from );
+      GreedyHillClimbing(GreedyHillClimbing &&from);
 
       /// destructor
-      ~GreedyHillClimbing ();
+      ~GreedyHillClimbing();
 
       /// @}
 
-      
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
       /// @{
 
       /// copy operator
-      GreedyHillClimbing& operator= ( const GreedyHillClimbing& from );
+      GreedyHillClimbing &operator=(const GreedyHillClimbing &from);
 
       /// move operator
-      GreedyHillClimbing& operator= ( GreedyHillClimbing&& from );
+      GreedyHillClimbing &operator=(GreedyHillClimbing &&from);
 
       /// @}
-      
-      
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
       /// returns the approximation policy of the learning algorithm
-      ApproximationScheme& approximationScheme ();
+      ApproximationScheme &approximationScheme();
 
       /// learns the structure of a Bayes net
       /** @param A selector class that computes the best changes that can be
@@ -109,37 +103,27 @@ namespace gum {
        * allow to apply
        * @param initial_dag the DAG we start from for our learning */
       template <typename GRAPH_CHANGES_SELECTOR>
-      DAG learnStructure ( GRAPH_CHANGES_SELECTOR& selector,
-                           const std::vector<unsigned int>& modal,
-                           DAG initial_dag = DAG () );
-      
+      DAG learnStructure(GRAPH_CHANGES_SELECTOR &selector,
+                         const std::vector<unsigned int> &modal,
+                         DAG initial_dag = DAG());
+
       /// learns the structure and the parameters of a BN
-      template <typename GUM_SCALAR = float,
-                typename GRAPH_CHANGES_SELECTOR,
-                typename PARAM_ESTIMATOR,
-                typename CELL_TRANSLATORS>
-      BayesNet<GUM_SCALAR> learnBN
-      ( GRAPH_CHANGES_SELECTOR& selector,
-        PARAM_ESTIMATOR& estimator,
-        const std::vector<std::string>& names,
-        const std::vector<unsigned int>& modal,
-        const CELL_TRANSLATORS& translator,
-        DAG initial_dag = DAG () );
+      template <typename GUM_SCALAR = float, typename GRAPH_CHANGES_SELECTOR,
+                typename PARAM_ESTIMATOR, typename CELL_TRANSLATORS>
+      BayesNet<GUM_SCALAR>
+      learnBN(GRAPH_CHANGES_SELECTOR &selector, PARAM_ESTIMATOR &estimator,
+              const std::vector<std::string> &names,
+              const std::vector<unsigned int> &modal,
+              const CELL_TRANSLATORS &translator, DAG initial_dag = DAG());
 
       /// @}
-
     };
 
-
   } /* namespace learning */
-  
-  
-} /* namespace gum */
 
+} /* namespace gum */
 
 /// always include templated methods
 #include <agrum/learning/greedyHillClimbing.tcc>
 
-
 #endif /* GUM_LEARNING_GREEDY_HILL_CLIMBING_H */
-
