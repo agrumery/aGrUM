@@ -65,8 +65,8 @@ reduce ( lrs_mp Na, lrs_mp Da ) { /* reduces Na/Da by gcd(Na,Da) */
   lrs_mp Nb, Db, Nc, Dc;
   copy ( Nb, Na );
   copy ( Db, Da );
-  storesign ( Nb, POS );
-  storesign ( Db, POS );
+  STORESIGN ( Nb, POS );
+  STORESIGN ( Db, POS );
   copy ( Nc, Na );
   copy ( Dc, Da );
   gcd ( Nb, Db );   /* Nb is the gcd(Na,Da) */
@@ -167,7 +167,7 @@ atomp ( const char* s, lrs_mp a ) /*convert string to lrs_mp integer */
     i++;
   }
 
-  storesign ( a, sig );
+  STORESIGN ( a, sig );
 
   if ( s[i] ) {
     fprintf ( stderr, "\nIllegal character in number: '%s'\n", s + i );
@@ -259,7 +259,7 @@ void
 pmp ( char name[], lrs_mp Nt ) {
   fprintf ( lrs_ofp, "%s", name );
 
-  if ( sign ( Nt ) != NEG )
+  if ( SIGN ( Nt ) != NEG )
     fprintf ( lrs_ofp, " " );
 
   fprintf ( lrs_ofp, "%ld", *Nt );
@@ -275,7 +275,7 @@ prat ( const char* name, lrs_mp Nin, lrs_mp Din )
   copy ( Dt, Din );
   reduce ( Nt, Dt );
 
-  if ( sign ( Nt ) != NEG )
+  if ( SIGN ( Nt ) != NEG )
     fprintf ( lrs_ofp, " " );
 
   fprintf ( lrs_ofp, "%s%ld", name, *Nt );
@@ -429,20 +429,20 @@ reducearray ( lrs_mp_vector p, long n )
   lrs_mp Temp;
   long i = 0L;
 
-  while ( ( i < n ) && zero ( p[i] ) )
+  while ( ( i < n ) && IS_ZERO ( p[i] ) )
     i++;
 
   if ( i == n )
     return;
 
   copy ( divisor, p[i] );
-  storesign ( divisor, POS );
+  STORESIGN ( divisor, POS );
   i++;
 
   while ( i < n ) {
-    if ( !zero ( p[i] ) ) {
+    if ( !IS_ZERO ( p[i] ) ) {
       copy ( Temp, p[i] );
-      storesign ( Temp, POS );
+      STORESIGN ( Temp, POS );
       gcd ( divisor, Temp );
     }
 
@@ -451,7 +451,7 @@ reducearray ( lrs_mp_vector p, long n )
 
   /* reduce by divisor */
   for ( i = 0; i < n; i++ )
-    if ( !zero ( p[i] ) )
+    if ( !IS_ZERO ( p[i] ) )
       reduceint ( p[i], divisor );
 }       /* end of reducearray */
 

@@ -96,15 +96,15 @@
 #define exactdivint(a, b, c)                                                        \
   divint((a), (b), (c)) /*should use special code here                              \
                            */
-#define positive(a) (((a)[0] < 2 || ((a)[0] == 2 && (a)[1] == 0)) ? FALSE : TRUE)
-#define negative(a) (((a)[0] > -2 || ((a)[0] == -2 && (a)[1] == 0)) ? FALSE : TRUE)
-#define zero(a) ((((a)[0] == 2 || (a)[0] == -2) && (a)[1] == 0) ? TRUE : FALSE)
-#define one(a) (((a)[0] == 2 && (a)[1] == 1) ? TRUE : FALSE)
-#define length(a) (((a)[0] > 0) ? (a)[0] : -(a)[0])
-#define sign(a) (((a)[0] < 0) ? NEG : POS)
-#define storesign(a, sa) a[0] = ((a)[0] > 0) ? (sa) * ((a)[0]) : -(sa) * ((a)[0])
-#define changesign(a) a[0] = -(a)[0]
-#define storelength(a, la) a[0] = ((a)[0] > 0) ? (la) : -(la)
+#define POSITIVE(a) (((a)[0] < 2 || ((a)[0] == 2 && (a)[1] == 0)) ? FALSE : TRUE)
+#define NEGATIVE(a) (((a)[0] > -2 || ((a)[0] == -2 && (a)[1] == 0)) ? FALSE : TRUE)
+#define IS_ZERO(a) ((((a)[0] == 2 || (a)[0] == -2) && (a)[1] == 0) ? TRUE : FALSE)
+#define IS_ONE(a) (((a)[0] == 2 && (a)[1] == 1) ? TRUE : FALSE)
+#define LENGTH(a) (((a)[0] > 0) ? (a)[0] : -(a)[0])
+#define SIGN(a) (((a)[0] < 0) ? NEG : POS)
+#define STORESIGN(a, sa) a[0] = ((a)[0] > 0) ? (sa) * ((a)[0]) : -(sa) * ((a)[0])
+#define CHANGESIGN(a) a[0] = -(a)[0]
+#define STORELENGTH(a, la) a[0] = ((a)[0] > 0) ? (la) : -(la)
 
 /*
  *  convert between decimal and machine (longword digits). Notice lovely

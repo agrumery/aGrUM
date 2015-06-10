@@ -151,7 +151,7 @@ void
 copy ( lrs_mp a, lrs_mp b ) { /* assigns a=b  */
   long i;
 
-  for ( i = 0; i <= length ( b ); i++ )
+  for ( i = 0; i <= LENGTH ( b ); i++ )
     a[i] = b[i];
 }
 
@@ -167,15 +167,15 @@ divint ( lrs_mp a, lrs_mp b, lrs_mp c ) { /* c=a/b, a contains remainder on retu
   long i, j, qh;
 
   /*  figure out and save sign, do everything with positive numbers */
-  sig = sign ( a ) * sign ( b );
+  sig = SIGN ( a ) * SIGN ( b );
 
-  la = length ( a );
-  lb = length ( b );
+  la = LENGTH ( a );
+  lb = LENGTH ( b );
   lc = la - lb + 2;
 
   if ( la < lb ) {
-    storelength ( c, TWO );
-    storesign ( c, POS );
+    STORELENGTH ( c, TWO );
+    STORESIGN ( c, POS );
     c[1] = 0;
     normalize ( c );
     return;
@@ -184,8 +184,8 @@ divint ( lrs_mp a, lrs_mp b, lrs_mp c ) { /* c=a/b, a contains remainder on retu
   for ( i = 1; i < lc; i++ )
     c[i] = 0;
 
-  storelength ( c, lc );
-  storesign ( c, ( sign ( a ) == sign ( b ) ) ? POS : NEG );
+  STORELENGTH ( c, lc );
+  STORESIGN ( c, ( SIGN ( a ) == SIGN ( b ) ) ? POS : NEG );
 
   /******************************/
   /* division by a single word: */
@@ -203,10 +203,10 @@ divint ( lrs_mp a, lrs_mp b, lrs_mp c ) { /* c=a/b, a contains remainder on retu
     }
 
     a[1] = cy;
-    storesign ( a, ( cy == 0 ) ? POS : sign ( a ) );
-    storelength ( a, TWO );
+    STORESIGN ( a, ( cy == 0 ) ? POS : SIGN ( a ) );
+    STORELENGTH ( a, TWO );
     /*      set sign of c to sig  (**mod**)            */
-    storesign ( c, sig );
+    STORESIGN ( c, sig );
     normalize ( c );
     return;
   } else {
@@ -294,10 +294,10 @@ divint ( lrs_mp a, lrs_mp b, lrs_mp c ) { /* c=a/b, a contains remainder on retu
 
     for ( i = lc; c[i - 1] == 0 && i > 2; i-- ); /* strip excess 0's from quotient */
 
-    storelength ( c, i );
+    STORELENGTH ( c, i );
 
     if ( i == 2 && c[1] == 0 )
-      storesign ( c, POS );
+      STORESIGN ( c, POS );
 
     cy = 0;
 
@@ -308,10 +308,10 @@ divint ( lrs_mp a, lrs_mp b, lrs_mp c ) { /* c=a/b, a contains remainder on retu
 
     for ( i = la; a[i - 1] == 0 && i > 2; i-- ); /* strip excess 0's from quotient */
 
-    storelength ( a, i );
+    STORELENGTH ( a, i );
 
     if ( i == 2 && a[1] == 0 )
-      storesign ( a, POS );
+      STORESIGN ( a, POS );
 
     if ( cy )
       fprintf ( lrs_ofp, "divide error" );
@@ -353,10 +353,10 @@ gcd ( lrs_mp u, lrs_mp v ) /*returns u=gcd(u,v) destroying v */
 
 bigu:
 
-  if ( zero ( v ) )
+  if ( IS_ZERO ( v ) )
     return;
 
-  if ( ( i = length ( u ) ) < maxsplen || ( i == maxsplen && u[maxsplen - 1] < maxspval ) )
+  if ( ( i = LENGTH ( u ) ) < maxsplen || ( i == maxsplen && u[maxsplen - 1] < maxspval ) )
     goto quickfinish;
 
   divint ( u, v, r );
@@ -364,12 +364,12 @@ bigu:
 
 bigv:
 
-  if ( zero ( u ) ) {
+  if ( IS_ZERO ( u ) ) {
     copy ( u, v );
     return;
   }
 
-  if ( ( i = length ( v ) ) < maxsplen || ( i == maxsplen && v[maxsplen - 1] < maxspval ) )
+  if ( ( i = LENGTH ( v ) ) < maxsplen || ( i == maxsplen && v[maxsplen - 1] < maxspval ) )
     goto quickfinish;
 
   divint ( v, u, r );
@@ -381,10 +381,10 @@ bigv:
 quickfinish:
   ul = vl = 0;
 
-  for ( i = length ( u ) - 1; i > 0; i-- )
+  for ( i = LENGTH ( u ) - 1; i > 0; i-- )
     ul = BASE * ul + u[i];
 
-  for ( i = length ( v ) - 1; i > 0; i-- )
+  for ( i = LENGTH ( v ) - 1; i > 0; i-- )
     vl = BASE * vl + v[i];
 
   if ( ul > vl )
@@ -398,7 +398,7 @@ qu:
       ul = ul / BASE;
     }
 
-    storelength ( u, i );
+    STORELENGTH ( u, i );
     return;
   }
 
@@ -411,7 +411,7 @@ qv:
       vl = vl / BASE;
     }
 
-    storelength ( u, i );
+    STORELENGTH ( u, i );
     return;
   }
 
@@ -429,16 +429,16 @@ compare ( lrs_mp a, lrs_mp b ) { /* a ? b and returns -1,0,1 for <,=,> */
   if ( a[0] < b[0] )
     return -1L;
 
-  for ( i = length ( a ) - 1; i >= 1; i-- ) {
+  for ( i = LENGTH ( a ) - 1; i >= 1; i-- ) {
     if ( a[i] < b[i] ) {
-      if ( sign ( a ) == POS )
+      if ( SIGN ( a ) == POS )
         return -1L;
       else
         return 1L;
     }
 
     if ( a[i] > b[i] ) {
-      if ( sign ( a ) == NEG )
+      if ( SIGN ( a ) == NEG )
         return -1L;
       else
         return 1L;
@@ -459,16 +459,16 @@ greater ( lrs_mp a, lrs_mp b ) { /* tests if a > b and returns (TRUE=POS) */
   if ( a[0] < b[0] )
     return ( FALSE );
 
-  for ( i = length ( a ) - 1; i >= 1; i-- ) {
+  for ( i = LENGTH ( a ) - 1; i >= 1; i-- ) {
     if ( a[i] < b[i] ) {
-      if ( sign ( a ) == POS )
+      if ( SIGN ( a ) == POS )
         return ( 0 );
       else
         return ( 1 );
     }
 
     if ( a[i] > b[i] ) {
-      if ( sign ( a ) == NEG )
+      if ( SIGN ( a ) == NEG )
         return ( 0 );
       else
         return ( 1 );
@@ -482,13 +482,13 @@ itomp ( long in, lrs_mp a )
 /* convert integer i to multiple precision with base BASE */
 {
   long i;
-  a[0] = 2;     /* initialize to zero */
+  a[0] = 2;     /* initialize to ZERO */
 
   for ( i = 1; i < lrs_digits; i++ )
     a[i] = 0;
 
   if ( in < 0 ) {
-    storesign ( a, NEG );
+    STORESIGN ( a, NEG );
     in = in * ( -1 );
   }
 
@@ -498,7 +498,7 @@ itomp ( long in, lrs_mp a )
     i++;
     a[i] = in - BASE * ( in / BASE );
     in = in / BASE;
-    storelength ( a, i + 1 );
+    STORELENGTH ( a, i + 1 );
   }
 }       /* end of itomp */
 
@@ -508,17 +508,17 @@ linint ( lrs_mp a, long ka, lrs_mp b, long kb ) /*compute a*ka+b*kb --> a */
 /***Handbook of Algorithms and Data Structures P.239 ***/
 {
   long i, la, lb;
-  la = length ( a );
-  lb = length ( b );
+  la = LENGTH ( a );
+  lb = LENGTH ( b );
 
   for ( i = 1; i < la; i++ )
     a[i] *= ka;
 
-  if ( sign ( a ) != sign ( b ) )
+  if ( SIGN ( a ) != SIGN ( b ) )
     kb = ( -kb );
 
   if ( lb > la ) {
-    storelength ( a, lb );
+    STORELENGTH ( a, lb );
 
     for ( i = la; i < lb; i++ )
       a[i] = 0;
@@ -538,14 +538,14 @@ mptodouble ( lrs_mp a, double* x ) { /* convert lrs_mp to double */
   double y = 1.0;
 
   ( *x ) = 0;
-  la = length ( a );
+  la = LENGTH ( a );
 
   for ( i = 1; i < la; i++ ) {
     ( *x ) = ( *x ) + y * a[i];
     y = y * BASE;
   }
 
-  if ( negative ( a ) )
+  if ( NEGATIVE ( a ) )
     ( *x ) = - ( *x );
 }
 
@@ -556,8 +556,8 @@ mulint ( lrs_mp a, lrs_mp b, lrs_mp c ) /* multiply two integers a*b --> c */
 {
   long nlength, i, j, la, lb;
   /*** b and c may coincide ***/
-  la = length ( a );
-  lb = length ( b );
+  la = LENGTH ( a );
+  lb = LENGTH ( b );
   nlength = la + lb - 2;
 
   if ( nlength > lrs_digits )
@@ -577,8 +577,8 @@ mulint ( lrs_mp a, lrs_mp b, lrs_mp c ) /* multiply two integers a*b --> c */
     c[i] = b[i] * a[1];
   }
 
-  storelength ( c, nlength );
-  storesign ( c, sign ( a ) == sign ( b ) ? POS : NEG );
+  STORELENGTH ( c, nlength );
+  STORESIGN ( c, SIGN ( a ) == SIGN ( b ) ? POS : NEG );
   normalize ( c );
 }
 /***end of mulint ***/
@@ -586,7 +586,7 @@ mulint ( lrs_mp a, lrs_mp b, lrs_mp c ) /* multiply two integers a*b --> c */
 void
 normalize ( lrs_mp a ) {
   long cy, i, la;
-  la = length ( a );
+  la = LENGTH ( a );
 start:
   cy = 0;
 
@@ -611,7 +611,7 @@ start:
     for ( i = 1; i < la; i++ )
       a[i] = ( -a[i] );
 
-    storesign ( a, sign ( a ) == POS ? NEG : POS );
+    STORESIGN ( a, SIGN ( a ) == POS ? NEG : POS );
     goto start;
   }
 
@@ -623,22 +623,22 @@ start:
       digits_overflow();
   };
 
-  storelength ( a, i );
+  STORELENGTH ( a, i );
 
   if ( i == 2 && a[1] == 0 )
-    storesign ( a, POS );
+    STORESIGN ( a, POS );
 }       /* end of normalize */
 
 
 long
 mptoi ( lrs_mp a ) { /* convert lrs_mp to long integer */
-  long len = length ( a );
+  long len = LENGTH ( a );
 
   if ( len == 2 )
-    return sign ( a ) * a[1];
+    return SIGN ( a ) * a[1];
 
   if ( len == 3 )
-    return sign ( a ) * ( a[1] + BASE * a[2] );
+    return SIGN ( a ) * ( a[1] + BASE * a[2] );
 
   notimpl ( "mp to large for conversion to long" );
   return 0;     /* never executed */
@@ -649,14 +649,14 @@ pmp ( char name[], lrs_mp a ) { /*print the long precision integer a */
   long i;
   fprintf ( lrs_ofp, "%s", name );
 
-  if ( sign ( a ) == NEG )
+  if ( SIGN ( a ) == NEG )
     fprintf ( lrs_ofp, "-" );
   else
     fprintf ( lrs_ofp, " " );
 
-  fprintf ( lrs_ofp, "%lu", a[length ( a ) - 1] );
+  fprintf ( lrs_ofp, "%lu", a[LENGTH ( a ) - 1] );
 
-  for ( i = length ( a ) - 2; i >= 1; i-- )
+  for ( i = LENGTH ( a ) - 2; i >= 1; i-- )
     fprintf ( lrs_ofp, FORMAT, a[i] );
 
   fprintf ( lrs_ofp, " " );
@@ -674,21 +674,21 @@ prat ( char name[], lrs_mp Nin, lrs_mp Din ) { /*reduce and print Nin/Din  */
   reduce ( Nt, Dt );
 
   /* print out       */
-  if ( sign ( Nin ) * sign ( Din ) == NEG )
+  if ( SIGN ( Nin ) * SIGN ( Din ) == NEG )
     fprintf ( lrs_ofp, "-" );
   else
     fprintf ( lrs_ofp, " " );
 
-  fprintf ( lrs_ofp, "%lu", Nt[length ( Nt ) - 1] );
+  fprintf ( lrs_ofp, "%lu", Nt[LENGTH ( Nt ) - 1] );
 
-  for ( i = length ( Nt ) - 2; i >= 1; i-- )
+  for ( i = LENGTH ( Nt ) - 2; i >= 1; i-- )
     fprintf ( lrs_ofp, FORMAT, Nt[i] );
 
   if ( ! ( Dt[0] == 2 && Dt[1] == 1 ) ) { /* rational */
     fprintf ( lrs_ofp, "/" );
-    fprintf ( lrs_ofp, "%lu", Dt[length ( Dt ) - 1] );
+    fprintf ( lrs_ofp, "%lu", Dt[LENGTH ( Dt ) - 1] );
 
-    for ( i = length ( Dt ) - 2; i >= 1; i-- )
+    for ( i = LENGTH ( Dt ) - 2; i >= 1; i-- )
       fprintf ( lrs_ofp, FORMAT, Dt[i] );
   }
 
@@ -768,7 +768,7 @@ atomp ( char s[], lrs_mp a ) { /*convert string to lrs_mp integer */
     i++;
   }
 
-  storesign ( a, sig );
+  STORESIGN ( a, sig );
 
   if ( s[i] ) {
     fprintf ( stderr, "\nIllegal character in number: '%s'\n", s + i );
@@ -873,20 +873,20 @@ reducearray ( lrs_mp_vector p, long n )
   lrs_mp Temp;
   long i = 0L;
 
-  while ( ( i < n ) && zero ( p[i] ) )
+  while ( ( i < n ) && IS_ZERO ( p[i] ) )
     i++;
 
   if ( i == n )
     return;
 
   copy ( divisor, p[i] );
-  storesign ( divisor, POS );
+  STORESIGN ( divisor, POS );
   i++;
 
   while ( i < n ) {
-    if ( !zero ( p[i] ) ) {
+    if ( !IS_ZERO ( p[i] ) ) {
       copy ( Temp, p[i] );
-      storesign ( Temp, POS );
+      STORESIGN ( Temp, POS );
       gcd ( divisor, Temp );
     }
 
@@ -895,7 +895,7 @@ reducearray ( lrs_mp_vector p, long n )
 
   /* reduce by divisor */
   for ( i = 0; i < n; i++ )
-    if ( !zero ( p[i] ) )
+    if ( !IS_ZERO ( p[i] ) )
       reduceint ( p[i], divisor );
 }       /* end of reducearray */
 
@@ -912,8 +912,8 @@ reduce ( lrs_mp Na, lrs_mp Da ) { /* reduces Na Da by gcd(Na,Da) */
   lrs_mp Nb, Db, Nc, Dc;
   copy ( Nb, Na );
   copy ( Db, Da );
-  storesign ( Nb, POS );
-  storesign ( Db, POS );
+  STORESIGN ( Nb, POS );
+  STORESIGN ( Db, POS );
   copy ( Nc, Na );
   copy ( Dc, Da );
   gcd ( Nb, Db );   /* Nb is the gcd(Na,Da) */
@@ -932,10 +932,10 @@ comprod ( lrs_mp Na, lrs_mp Nb, lrs_mp Nc, lrs_mp Nd ) /* +1 if Na*Nb > Nc*Nd  *
   mulint ( Nc, Nd, md );
   linint ( mc, ONE, md, -ONE );
 
-  if ( positive ( mc ) )
+  if ( POSITIVE ( mc ) )
     return ( 1 );
 
-  if ( negative ( mc ) )
+  if ( NEGATIVE ( mc ) )
     return ( -1 );
 
   return ( 0 );
