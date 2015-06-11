@@ -195,6 +195,7 @@ namespace gum {
         msg << type().name() << " is not a subtype of " << cast->type().name();
         GUM_ERROR ( WrongType, msg.str() );
       }
+      cast->becomeCastDescendant( type() );
     }
 
     template<typename GUM_SCALAR>
