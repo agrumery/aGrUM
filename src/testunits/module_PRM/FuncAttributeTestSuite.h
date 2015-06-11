@@ -22,7 +22,7 @@
 #include <testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/PRM/elements/scalarattribute.h>
+#include <agrum/PRM/elements/funcattribute.h>
 #include <agrum/PRM/elements/class.h>
 
 #include <module_PRM/ClassElementTestSuite.h>
@@ -34,9 +34,9 @@
  */
 namespace gum_tests {
 
-  class ScalarAttributeTestSuite : public CxxTest::TestSuite {
+  class FuncAttributeTestSuite : public CxxTest::TestSuite {
     private:
-      typedef gum::prm::ScalarAttribute<double> Attribute;
+      typedef gum::prm::FuncAttribute<double> Attribute;
       ClassElementTestSuite* __classEltTestSuite;
       gum::prm::Type<double> *__boolean;
       gum::prm::Type<double> *__state;
@@ -257,8 +257,8 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING( child.addParent( parent ) );
         // Assert
         auto after = child.cpf().variablesSequence().size();
-        TS_ASSERT_EQUALS( before + 1, after );
-        TS_ASSERT( child.cpf().contains( parent.type().variable() ) );
+        TS_ASSERT_EQUALS( before, after );
+        TS_ASSERT( not child.cpf().contains( parent.type().variable() ) );
       }
 
       void testAddParentDupplicateError() {
@@ -268,11 +268,11 @@ namespace gum_tests {
         child.addParent( parent );
         auto before = child.cpf().variablesSequence().size();
         // Act
-        TS_ASSERT_THROWS( child.addParent( parent ), gum::DuplicateElement );
+        TS_ASSERT_THROWS_NOTHING( child.addParent( parent ) );
         // Assert
         auto after = child.cpf().variablesSequence().size();
         TS_ASSERT_EQUALS( before, after );
-        TS_ASSERT( child.cpf().contains( parent.type().variable() ) );
+        TS_ASSERT( not child.cpf().contains( parent.type().variable() ) );
       }
 
       void testAddChild() {
