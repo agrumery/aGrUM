@@ -39,8 +39,11 @@ namespace gum {
      *        gum::prm::ClassElement::_addChild with empty methods.
      *
      * This class should be used when dealing with functions such as Noisy-Or which
-     * require special method calls to add parents. See
-     * gum::prm::PRMFactory::addAttribute(Attribute*) for more details.
+     * require special method calls to add parents.
+     * When dealing with such attributes, you should create the MultiDim yourself and
+     * populate it with the attribute's parents.
+     *
+     * See gum::prm::PRMFactory::addAttribute(Attribute*) for more details.
      */
     template<typename GUM_SCALAR>
       class FuncAttribute: public ScalarAttribute<GUM_SCALAR> {
