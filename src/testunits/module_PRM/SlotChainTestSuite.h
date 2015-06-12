@@ -1,0 +1,168 @@
+/***************************************************************************
+ *   (C) 2007-2013 by Christophe GONZALES and Pierre-Henri WUILLEMIN       *
+ *   {prenom.nom}@lip6.fr                                                  *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it wil be useful,        *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#include <cxxtest/AgrumTestSuite.h>
+#include <testsuite_utils.h>
+
+#include <agrum/PRM/elements/slotChain.h>
+#include <agrum/PRM/elements/referenceSlot.h>
+#include <agrum/PRM/elements/class.h>
+
+#include <module_PRM/ClassElementTestSuite.h>
+
+/**
+ * This class is used to test gum::prm::ClassElement, since it is an abstrac
+ * class, tests defined here should be called by each sub class of 
+ * gum::prm::ClassElement.
+ */
+namespace gum_tests {
+
+  class SlotChainTestSuite : public CxxTest::TestSuite {
+    private:
+      typedef gum::prm::SlotChain<double> SlotChain;
+      ClassElementTestSuite* __classEltTestSuite;
+      gum::prm::Class<double> *__A;
+      gum::prm::Class<double> *__B;
+      gum::prm::Class<double> *__C;
+      gum::prm::Type<double> *__boolean;
+      gum::prm::Type<double> *__state;
+      gum::Sequence< gum::prm::ClassElement<double>* > *__booleanChain;
+      gum::Sequence< gum::prm::ClassElement<double>* > *__stateChain;
+
+      // these will be dispodes by their repsective class
+      gum::prm::ReferenceSlot<double> *__refI;
+      gum::prm::ReferenceSlot<double> *__refJ;
+      gum::prm::Attribute<double> *__boolAttr;
+      gum::prm::Attribute<double> *__stateAttr;
+
+    public:
+
+      void setUp() {
+        __classEltTestSuite = new ClassElementTestSuite();
+        __A = new gum::prm::Class<double>("A");
+        __B = new gum::prm::Class<double>("B");
+        __C = new gum::prm::Class<double>("C");
+
+        __refI = new gum::prm::ReferenceSlot<double>("refA", *__B);
+        __A->add(__refI);
+        __refJ = new gum::prm::ReferenceSlot<double>("refB", *__C);
+        __B->add(__refJ);
+
+        __boolean = gum::prm::Type<double>::boolean();
+        __boolAttr = new gum::prm::ScalarAttribute<double>("myBool", *__boolean);
+        __C->add(__boolAttr);
+
+        gum::LabelizedVariable state { "state", "A state variable", 0 };
+        state.addLabel( "OK" );
+        state.addLabel( "NOK" );
+        std::vector<gum::Idx> map;
+        map.push_back( 1 );
+        map.push_back( 0 );
+        __state = new gum::prm::Type<double>( *__boolean, map, state );
+        __stateAttr = new gum::prm::ScalarAttribute<double>( "myState", *__state );
+        __C->add(__stateAttr);
+
+        __booleanChain = new gum::Sequence< gum::prm::ClassElement<double>* >();
+        __booleanChain->insert( __refI );
+        __booleanChain->insert( __refJ );
+        __booleanChain->insert( __boolAttr );
+
+        __stateChain = new gum::Sequence< gum::prm::ClassElement<double>* >();
+        __stateChain->insert( __refI );
+        __stateChain->insert( __refJ );
+        __stateChain->insert( __stateAttr );
+      }
+
+      void tearDown() {
+        delete __classEltTestSuite;
+        delete __A;
+        delete __B;
+        delete __C;
+        delete __boolean;
+        delete __state;
+        delete __booleanChain;
+        delete __stateChain;
+      }
+
+      /// ClassElement Tests 
+      /// @{
+      void testIsReferenceSlot() {
+        // Arrange
+        SlotChain slot( "slot", *__booleanChain);
+        bool expected = false;
+        // Act & Assert
+        __classEltTestSuite->testIsReferenceSlot(slot, expected);
+      }
+
+      void testIsAttribute() {
+        // Arrange
+        SlotChain slot( "slot", *__booleanChain);
+        bool expected = false;
+        // Act & Assert
+        __classEltTestSuite->testIsAttribute(slot, expected);
+      }
+
+      void testIsSlotChain() {
+        // Arrange
+        SlotChain slot( "slot", *__booleanChain);
+        bool expected = true;
+        // Act & Assert
+        __classEltTestSuite->testIsSlotChain(slot, expected);
+      }
+
+      void testSetNodeId() {
+        // Arrange
+        SlotChain slot( "slot", *__booleanChain);
+        // Act & Assert
+        __classEltTestSuite->testSetNodeId(slot);
+      }
+
+      void testObjType() {
+        // Arrange
+        SlotChain slot( "slot", *__booleanChain);
+        // Act & Assert
+        __classEltTestSuite->test_obj_type(slot);
+      }
+
+      void testSafeName() {
+        // Arrange
+        SlotChain slot( "slot", *__booleanChain);
+        // Act & Assert
+        __classEltTestSuite->testSafeName(slot);
+      }
+
+      void testCast_NotAllowed() {
+        // Arrange
+        SlotChain slot( "slot", *__booleanChain );
+        // Act & Assert
+        __classEltTestSuite->testCast_NotAllowed(slot);
+      }
+
+      void testCast() {
+        // Arrange
+        SlotChain slot( "slot", *__stateChain );
+        // Act & Assert
+        __classEltTestSuite->testCast(slot, *__boolean);
+      }
+      /// @}
+
+  };
+
+} // gum_tests
