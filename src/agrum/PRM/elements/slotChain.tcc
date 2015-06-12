@@ -38,7 +38,6 @@ namespace gum {
           __chain(new Sequence<ClassElement<GUM_SCALAR> *>(chain)),
           __isMultiple(false) {
       GUM_CONSTRUCTOR(SlotChain);
-      this->_safeName = name;
 
       if (__chain->size() < 2) {
         GUM_ERROR(OperationNotAllowed,
@@ -56,6 +55,8 @@ namespace gum {
       }
 
       __copyLastElt();
+
+      this->_safeName = PRMObject::LEFT_CAST() + lastElt().type().name() + PRMObject::RIGHT_CAST() + name;
     }
 
     // Parameters are inverse to prevent unwanted constructors calls (it happened)
@@ -64,7 +65,6 @@ namespace gum {
                                      const std::string &name)
         : ClassElement<GUM_SCALAR>(name), __chain(chain), __isMultiple(false) {
       GUM_CONSTRUCTOR(SlotChain);
-      this->_safeName = name;
 
       if (__chain->size() < 2) {
         GUM_ERROR(OperationNotAllowed,
@@ -83,6 +83,7 @@ namespace gum {
       }
 
       __copyLastElt();
+      this->_safeName = PRMObject::LEFT_CAST() + lastElt().type().name() + PRMObject::RIGHT_CAST() + name;
     }
 
     template <typename GUM_SCALAR> void SlotChain<GUM_SCALAR>::__copyLastElt() {

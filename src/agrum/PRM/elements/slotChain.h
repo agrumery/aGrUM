@@ -164,42 +164,26 @@ namespace gum {
         /// See gum::ClassElement<GUM_SCALAR>::_addChild().
         virtual void addChild ( const ClassElement<GUM_SCALAR>& elt );
 
-        virtual std::string cast ( const Type<GUM_SCALAR>& t ) const {
-          if ( lastElt().type().isSubTypeOf ( t ) ) {
-            std::stringstream sBuff;
-
-            for ( Size i = 0; i < chain().size() - 1; ++i ) {
-              sBuff << chain().atPos ( i ) << ".";
-            }
-
-            sBuff << PRMObject::LEFT_CAST() << t.name() << PRMObject::RIGHT_CAST();
-            sBuff << lastElt().name();
-            return sBuff.str();
-          } else {
-            GUM_ERROR ( OperationNotAllowed, "no possible safe name for this ClassElement<GUM_SCALAR>" );
-          }
-      }
-
-      /// @}
+        /// @}
       private:
-      /// Copy operator. Don't use it.
-      SlotChain &operator=(const SlotChain &source);
+        /// Copy operator. Don't use it.
+        SlotChain &operator=(const SlotChain &source);
 
-      // ========================================================================
-      /// @name Private members of SlotChain.
-      // ========================================================================
-      /// @{
+        // ========================================================================
+        /// @name Private members of SlotChain.
+        // ========================================================================
+        /// @{
 
-      /// The sequence of ClassElement<GUM_SCALAR> composing the slot chain
-      Sequence<ClassElement<GUM_SCALAR> *> *__chain;
+        /// The sequence of ClassElement<GUM_SCALAR> composing the slot chain
+        Sequence<ClassElement<GUM_SCALAR> *> *__chain;
 
-      /// Flag indicating if this slot chain is multiple or not.
-      bool __isMultiple;
+        /// Flag indicating if this slot chain is multiple or not.
+        bool __isMultiple;
 
-      /// Copy the last element, this prevents unwanted DuplicateElement exceptions.
-      void __copyLastElt();
+        /// Copy the last element, this prevents unwanted DuplicateElement exceptions.
+        void __copyLastElt();
 
-      /// @}
+        /// @}
     };
 
     extern template class SlotChain<double>;
