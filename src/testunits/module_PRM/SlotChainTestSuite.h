@@ -22,6 +22,7 @@
 #include <testsuite_utils.h>
 
 #include <agrum/PRM/elements/slotChain.h>
+#include <agrum/PRM/elements/formattribute.h>
 #include <agrum/PRM/elements/referenceSlot.h>
 #include <agrum/PRM/elements/class.h>
 
@@ -49,6 +50,7 @@ namespace gum_tests {
       // these will be dispodes by their repsective class
       gum::prm::ReferenceSlot<double> *__refI;
       gum::prm::ReferenceSlot<double> *__refJ;
+      gum::prm::ReferenceSlot<double> *__refK;
       gum::prm::Attribute<double> *__boolAttr;
       gum::prm::Attribute<double> *__stateAttr;
 
@@ -64,6 +66,8 @@ namespace gum_tests {
         __A->add(__refI);
         __refJ = new gum::prm::ReferenceSlot<double>("refB", *__C);
         __B->add(__refJ);
+        __refK = new gum::prm::ReferenceSlot<double>("refK", *__C, true);
+        __B->add(__refK);
 
         __boolean = gum::prm::Type<double>::boolean();
         __boolAttr = new gum::prm::ScalarAttribute<double>("myBool", *__boolean);
@@ -86,7 +90,7 @@ namespace gum_tests {
 
         __stateChain = new gum::Sequence< gum::prm::ClassElement<double>* >();
         __stateChain->insert( __refI );
-        __stateChain->insert( __refJ );
+        __stateChain->insert( __refK );
         __stateChain->insert( __stateAttr );
       }
 
@@ -160,6 +164,167 @@ namespace gum_tests {
         SlotChain slot( "slot", *__stateChain );
         // Act & Assert
         __classEltTestSuite->testCast(slot, *__boolean);
+      }
+      /// @}
+
+      /// Constructors & destructors
+      /// @{
+      void testConstructorSimple() {
+        // Arrange
+        SlotChain *slot = nullptr;
+        // Act & Assert
+        TS_ASSERT_THROWS_NOTHING( slot = new SlotChain( "slot", *__booleanChain ) );
+        TS_ASSERT_THROWS_NOTHING( delete slot );
+      }
+
+      void testSecondConstructorSimple() {
+        // Arrange
+        SlotChain *slot = nullptr;
+        // Act & Assert
+        TS_ASSERT_THROWS_NOTHING( slot = new SlotChain( __booleanChain, "slot" ) );
+        TS_ASSERT_THROWS_NOTHING( delete slot );
+      }
+
+      void testConstructorComplex() {
+        // Arrange
+        SlotChain *slot = nullptr;
+        // Act & Assert
+        TS_ASSERT_THROWS_NOTHING( slot = new SlotChain( "slot", *__stateChain ) );
+        TS_ASSERT_THROWS_NOTHING( delete slot );
+      }
+
+      void testSecondConstructorComplex() {
+        // Arrange
+        SlotChain *slot = nullptr;
+        // Act & Assert
+        TS_ASSERT_THROWS_NOTHING( slot = new SlotChain( __stateChain, "slot" ) );
+        TS_ASSERT_THROWS_NOTHING( delete slot );
+      }
+      /// @}
+
+
+      /// Methods
+      /// @{
+      void testIsMultiple() {
+        // Arrange
+        SlotChain simple("simple", *__booleanChain);
+        SlotChain multiple("multiple", *__stateChain);
+        // Act & Assert
+        TS_ASSERT( not simple.isMultiple() );
+        TS_ASSERT( multiple.isMultiple() );
+      }
+
+      void testLastEltSimple() {
+        // Arrange
+        SlotChain simple("simple", *__booleanChain);
+        gum::prm::ClassElement<double> *elt = nullptr;
+        // Act 
+        TS_ASSERT_THROWS_NOTHING( elt = &( simple.lastElt() ) );
+        // Assert
+        TS_ASSERT_EQUALS( __boolAttr->safeName(), elt->safeName() );
+      }
+
+      void testLastEltSimpleConst() {
+        // Arrange
+        SlotChain simple("simple", *__booleanChain);
+        const auto &const_simple = simple;
+        gum::prm::ClassElement<double> const *elt = nullptr;
+        // Act 
+        TS_ASSERT_THROWS_NOTHING( elt = &( const_simple.lastElt() ) );
+        // Assert
+        TS_ASSERT_EQUALS( __boolAttr->safeName(), elt->safeName() );
+      }
+
+      void testChain() {
+        // Arrange
+        SlotChain simple("simple", *__booleanChain);
+        gum::Sequence< gum::prm::ClassElement<double>* > const * chain = nullptr;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( chain = &(simple.chain()) );
+        // ASSERT
+        TS_ASSERT_EQUALS( chain->size(), __booleanChain->size() );
+        TS_ASSERT_EQUALS( chain->atPos(0), __booleanChain->atPos(0) );
+        TS_ASSERT_EQUALS( chain->atPos(1), __booleanChain->atPos(1) );
+        TS_ASSERT_DIFFERS( chain->atPos(2), __booleanChain->atPos(2) );
+      }
+
+      void testCpf() {
+        // Arrange
+        SlotChain slot("simple", *__booleanChain);
+        gum::Potential<double> expected;
+        expected << slot.type().variable();
+        // Act
+        auto &actual = slot.cpf();
+        // Assert
+        gum::Instantiation i(expected);
+        gum::Instantiation j(actual);
+        for ( i.setFirst(), j.setFirst(); not (i.end() or j.end()); i.inc(), j.inc() ) {
+          TS_ASSERT_EQUALS( expected[i], actual[j] );
+        }
+        TS_ASSERT( i.end() );
+        TS_ASSERT( j.end() );
+      }
+
+      void testCpfConst() {
+        // Arrange
+        SlotChain slot("simple", *__booleanChain);
+        const auto &slot_const = slot;
+        gum::Potential<double> expected;
+        expected << slot.type().variable();
+        // Act
+        const auto &actual = slot_const.cpf();
+        // Assert
+        gum::Instantiation i(expected);
+        gum::Instantiation j(actual);
+        for ( i.setFirst(), j.setFirst(); not (i.end() or j.end()); i.inc(), j.inc() ) {
+          TS_ASSERT_EQUALS( expected[i], actual[j] );
+        }
+        TS_ASSERT( i.end() );
+        TS_ASSERT( j.end() );
+      }
+
+      /// @}
+
+      /// Add parents and children
+      /// @{
+      void testAddParentCheckChild() {
+        // Arrange
+        gum::prm::ScalarAttribute<double> parent (  "attr", *__boolean  );
+        SlotChain child (  "child", *__booleanChain  );
+        auto before = child.cpf().variablesSequence().size();
+        // Act
+        TS_ASSERT_THROWS_NOTHING( child.addParent( parent ) );
+        // Assert
+        auto after = child.cpf().variablesSequence().size();
+        TS_ASSERT_EQUALS( before, after );
+        TS_ASSERT( not child.cpf().contains( parent.type().variable() ) );
+      }
+
+      void testAddParentDupplicateError() {
+        // Arrange
+        gum::prm::ScalarAttribute<double> parent (  "attr", *__boolean  );
+        SlotChain child (  "child", *__booleanChain  );
+        child.addParent( parent );
+        auto before = child.cpf().variablesSequence().size();
+        // Act
+        TS_ASSERT_THROWS_NOTHING( child.addParent( parent ) );
+        // Assert
+        auto after = child.cpf().variablesSequence().size();
+        TS_ASSERT_EQUALS( before, after );
+        TS_ASSERT( not child.cpf().contains( parent.type().variable() ) );
+      }
+
+      void testAddChild() {
+        // Arrange
+        SlotChain parent (  "simple", *__booleanChain  );
+        gum::prm::ScalarAttribute<double> child (  "attr", *__boolean  );
+        auto before = parent.cpf().variablesSequence().size();
+        // Act
+        TS_ASSERT_THROWS_NOTHING( parent.addChild( child ) );
+        // Assert
+        auto after = parent.cpf().variablesSequence().size();
+        TS_ASSERT_EQUALS( before, after );
+        TS_ASSERT( not parent.cpf().contains( child.type().variable() ) );
       }
       /// @}
 

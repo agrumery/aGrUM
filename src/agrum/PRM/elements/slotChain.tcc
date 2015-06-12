@@ -63,27 +63,28 @@ namespace gum {
     template <typename GUM_SCALAR>
     SlotChain<GUM_SCALAR>::SlotChain(Sequence<ClassElement<GUM_SCALAR> *> *chain,
                                      const std::string &name)
-        : ClassElement<GUM_SCALAR>(name), __chain(chain), __isMultiple(false) {
-      GUM_CONSTRUCTOR(SlotChain);
+        : SlotChain(name, *chain) {
+      // No need to
+      //GUM_CONSTRUCTOR(SlotChain);
 
-      if (__chain->size() < 2) {
-        GUM_ERROR(OperationNotAllowed,
-                  "chain must containt at least two ClassElement");
-      }
+      //if (__chain->size() < 2) {
+      //  GUM_ERROR(OperationNotAllowed,
+      //            "chain must containt at least two ClassElement");
+      //}
 
-      for (Size i = 0; i < __chain->size() - 1; ++i) {
-        if (not(__chain->atPos(i)->elt_type() !=
-                ClassElement<GUM_SCALAR>::prm_refslot)) {
-          GUM_ERROR(WrongClassElement, "illegal ClassElement in chain");
-        } else {
-          __isMultiple =
-              __isMultiple or
-              static_cast<ReferenceSlot<GUM_SCALAR> *>(__chain->atPos(i))->isArray();
-        }
-      }
+      //for (Size i = 0; i < __chain->size() - 1; ++i) {
+      //  if (not(__chain->atPos(i)->elt_type() !=
+      //          ClassElement<GUM_SCALAR>::prm_refslot)) {
+      //    GUM_ERROR(WrongClassElement, "illegal ClassElement in chain");
+      //  } else {
+      //    __isMultiple =
+      //        __isMultiple or
+      //        static_cast<ReferenceSlot<GUM_SCALAR> *>(__chain->atPos(i))->isArray();
+      //  }
+      //}
 
-      __copyLastElt();
-      this->_safeName = PRMObject::LEFT_CAST() + lastElt().type().name() + PRMObject::RIGHT_CAST() + name;
+      //__copyLastElt();
+      //this->_safeName = PRMObject::LEFT_CAST() + lastElt().type().name() + PRMObject::RIGHT_CAST() + name;
     }
 
     template <typename GUM_SCALAR> void SlotChain<GUM_SCALAR>::__copyLastElt() {
