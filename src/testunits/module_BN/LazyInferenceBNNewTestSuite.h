@@ -19,11 +19,13 @@
  ***************************************************************************/
 #include <iostream>
 #include <string>
+#include <cmath>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/io/BIF/BIFReader.h>
 
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
@@ -94,12 +96,12 @@ namespace gum_tests {
       gum::Instantiation i2 ( p2 );
 
       for ( i1.setFirst (), i2.setFirst (); ! i1.end (); i1.inc (), i2.inc () ) {
-        if ( ( p1[i1] == 0 ) && ( std::abs ( p2[i2] ) > __epsilon ) ) return false;
+        if ( ( p1[i1] == 0 ) && ( std::fabs ( p2[i2] ) > __epsilon ) ) return false;
         if ( p1[i1] > p2[i2] ) {
-          if ( abs ( ( p1[i1] - p2[i2] ) / p1[i1] ) > __epsilon ) return false;
+          if ( std::fabs ( ( p1[i1] - p2[i2] ) / p1[i1] ) > __epsilon ) return false;
         }
         else {
-          if ( abs ( ( p1[i1] - p2[i2] ) / p1[i2] ) > __epsilon ) return false;
+          if ( std::fabs ( ( p1[i1] - p2[i2] ) / p1[i2] ) > __epsilon ) return false;
         }
       }
 
@@ -233,6 +235,92 @@ namespace gum_tests {
       //@TODO : test computations and not only good behaviour
     }
 
+    
+
+    void testAlarm () {
+      std::string file = GET_PATH_STR("alarm.bif");
+      gum::BayesNet<float> bn;
+      gum::BIFReader<float> reader(&bn, file);
+      int nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+
+      gum::LazyPropagationNew<float> inf1 (bn);
+      gum::LazyPropagation<float> inf2 (bn);
+
+      TS_ASSERT_THROWS_NOTHING(inf1.makeInference());
+      TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
+
+      for ( auto node : bn.dag() ) {
+        TS_ASSERT_THROWS_NOTHING(inf1.posterior(node));
+        TS_ASSERT_THROWS_NOTHING(inf2.posterior(node));
+        TS_ASSERT( equalPotentials ( inf1.posterior(node),inf2.posterior(node) ) );
+      }
+
+      std::vector<gum::NodeId> ev_nodes { 2, 6, 7, 10, 12, 14, 16 };
+      gum::List<const gum::Potential<float>*> evidences;
+      for ( const auto node : ev_nodes ) {
+        gum::Potential<float>* ev_pot = new gum::Potential<float>;
+        (*ev_pot) << bn.variable ( node );
+        ev_pot->fill((float)0);
+        gum::Instantiation inst(*ev_pot);
+        if ( node <= 10 ) {
+          inst.chgVal(bn.variable(node), 0);
+          ev_pot->set(inst, (float)1);
+        }
+        else { 
+          inst.chgVal(bn.variable(node), 0);
+          ev_pot->set(inst, (float)0.4);
+          inst.chgVal(bn.variable(node), 1);
+          ev_pot->set(inst, (float)0.6);
+        }
+        evidences.insert ( ev_pot );
+      }
+      
+      gum::LazyPropagationNew<float> inf3 (bn);
+      gum::LazyPropagation<float> inf4 (bn);
+      TS_ASSERT_THROWS_NOTHING(inf1.insertEvidence(evidences));
+      TS_ASSERT_THROWS_NOTHING(inf2.insertEvidence(evidences));
+      TS_ASSERT_THROWS_NOTHING(inf3.insertEvidence(evidences));
+      TS_ASSERT_THROWS_NOTHING(inf4.insertEvidence(evidences));
+
+      TS_ASSERT_THROWS_NOTHING(inf1.makeInference());
+      TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
+      TS_ASSERT_THROWS_NOTHING(inf3.makeInference());
+      TS_ASSERT_THROWS_NOTHING(inf4.makeInference());
+
+      for ( auto node : bn.dag() ) {
+        TS_ASSERT_THROWS_NOTHING(inf1.posterior(node));
+        TS_ASSERT_THROWS_NOTHING(inf2.posterior(node));
+        TS_ASSERT_THROWS_NOTHING(inf3.posterior(node));
+        TS_ASSERT_THROWS_NOTHING(inf4.posterior(node));
+        TS_ASSERT( equalPotentials ( inf1.posterior(node),inf2.posterior(node) ) );
+        TS_ASSERT( equalPotentials ( inf1.posterior(node),inf3.posterior(node) ) );
+        TS_ASSERT( equalPotentials ( inf1.posterior(node),inf4.posterior(node) ) );
+      }
+
+      gum::LazyPropagationNew<float> inf5 (bn);
+      inf5.setFindRelevantPotentialsType (gum::LazyPropagationNew<float>::FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION);
+      TS_ASSERT_THROWS_NOTHING(inf5.insertEvidence(evidences));
+      TS_ASSERT_THROWS_NOTHING(inf5.makeInference());
+      for ( auto node : bn.dag() ) {
+        TS_ASSERT_THROWS_NOTHING(inf5.posterior(node));
+        TS_ASSERT( equalPotentials ( inf1.posterior(node),inf5.posterior(node) ) );
+      }
+      
+
+      for ( auto node : bn.dag() ) {
+        inf1.clearInference ();
+        TS_ASSERT_THROWS_NOTHING(inf1.posterior(node));
+        TS_ASSERT( equalPotentials ( inf1.posterior(node),inf2.posterior(node) ) );
+      }
+
+      for ( auto pot : evidences ) delete pot;
+      
+    }
+
+    
     private:
     // Builds a BN to test the inference
     void fill(gum::BayesNet<float> &bn) {

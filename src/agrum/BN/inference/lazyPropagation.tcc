@@ -204,11 +204,19 @@ namespace gum {
     for (const auto other : __JT->neighbours(id)) {
       if (other != from) {
         // remove the potentials sent on clique id's adjacent separators
-        for (const auto pot : __sep_potentials[Arc(other, id)])
-          delete pot;
+        for (const auto pot : __sep_potentials[Arc(other, id)]) {
+          if ( __created_potentials.exists ( pot ) ) {
+            delete pot;
+            __created_potentials.erase ( pot );
+          }
+        }
 
-        for (const auto pot : __sep_potentials[Arc(id, other)])
-          delete pot;
+        for (const auto pot : __sep_potentials[Arc(id, other)]) {
+          if ( __created_potentials.exists ( pot ) ) {
+            delete pot;
+            __created_potentials.erase ( pot );
+          }
+        }
 
         __sep_potentials[Arc(other, id)].clear();
         __sep_potentials[Arc(id, other)].clear();
@@ -695,9 +703,6 @@ namespace gum {
     // indicate that we performed the inference with root =
     // __collected_cliques.begin()
     __last_collect_clique = __collected_cliques.begin().key();
-
-    // ##### bug potentiel a virer : s'il y a plusieurs composantes connexes,
-    // il faut plusieurs cliques de collecte
   }
 
   // returns the marginal a posteriori proba of a given node
@@ -742,10 +747,9 @@ namespace gum {
     const List<const Potential<GUM_SCALAR> *> &evidence_list =
         __clique_evidence[targetClique];
 
-    for (ListConstIteratorSafe<const Potential<GUM_SCALAR> *> iter =
-             evidence_list.cbeginSafe();
-         iter != evidence_list.cendSafe(); ++iter)
-      pot_list.insert(*iter);
+    for ( const auto ev : evidence_list ) {
+      pot_list.insert( ev );
+    }
 
     // add the messages sent by adjacent nodes to targetClique
     for (const auto other : __JT->neighbours(targetClique))
@@ -766,7 +770,8 @@ namespace gum {
 
     if (pot_list.size() == 1) {
       marginal = **pot_list.begin();
-    } else {
+    }
+    else {
       Set<const Potential<GUM_SCALAR> *> set;
 
       for (const auto pot : pot_list)

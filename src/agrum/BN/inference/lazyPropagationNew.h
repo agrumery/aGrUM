@@ -39,6 +39,15 @@ namespace gum {
 
   class LazyPropagationNew : public BayesNetInference<GUM_SCALAR> {
     public:
+
+    /// type of algorithm for determining the relevant potentials for combinations 
+    enum FindRelevantPotentialsType {
+      FIND_RELEVANT_ALL,
+      FIND_RELEVANT_D_SEPARATION,
+      FIND_RELEVANT_D_SEPARATION2
+    };
+    
+    
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -84,6 +93,20 @@ namespace gum {
 
     /// performs a whole inference (collect + diffusion)
     void makeInference(bool force_inference);
+
+    /// clears the messages of previous inferences
+    void clearInference ();
+
+    /// sets how we determine the relevant potentials to combine
+    /** When a clique sends a message to a separator, it first constitute the set
+     * of the potentials it contains and of the potentials contained in the
+     * messages it received. If FindRelevantPotentialsType = FIND_RELEVANT_ALL,
+     * all these potentials are combined and projected to produce the message
+     * sent to the separator.
+     * If FindRelevantPotentialsType = FIND_RELEVANT_D_SEPARATION, then only the
+     * set of potentials d-connected to the variables of the separator are kept
+     * for combination and projection. */
+    void setFindRelevantPotentialsType ( FindRelevantPotentialsType type );
 
     /// returns the probability P(e) of the evidence enterred into the BN
     GUM_SCALAR evidenceProbability();
@@ -162,6 +185,12 @@ namespace gum {
     /// a list of all the evidence stored into the graph
     __PotentialSet __evidences;
 
+    /// the set of nodes that received hard evidences
+    NodeSet __hard_evidence_nodes;
+
+    /// the set of nodes that received soft evidences
+    NodeSet __soft_evidence_nodes;
+
     /// the list of all potentials created during a propagation phase
     __PotentialSet __created_potentials;
 
@@ -175,6 +204,12 @@ namespace gum {
     NodeId __last_collect_clique;
 
     NodeSet __roots;
+
+    /** @brief update a set of potentials: the remaining are those to be combined
+     * to produce a message on a separator */
+    void (LazyPropagationNew<GUM_SCALAR>::*__findRelevantPotentials)
+    ( __PotentialSet& pot_list,
+      Set<const DiscreteVariable *>& kept_vars );
 
     /// creates the message sent by clique from_id to clique to_id
 
@@ -201,18 +236,44 @@ namespace gum {
      * posterior*/
 
     void __marginalizeOut(__PotentialSet &pot_list,
-                          Set<const DiscreteVariable *> &del_vars);
+                          Set<const DiscreteVariable *> &del_vars,
+                          Set<const DiscreteVariable *>& kept_vars );
 
     void __aPosterioriMarginal(NodeId id, Potential<GUM_SCALAR> &posterior);
 
     void __aPosterioriJoint(const NodeSet &ids, Potential<GUM_SCALAR> &posterior);
 
     /// initialization function
-
     void __initialize(const IBayesNet<GUM_SCALAR> &BN,
                       StaticTriangulation &triangulation,
                       const NodeProperty<Size> &modalities);
 
+    /// check wether an evidence is a hard one
+    bool __isHardEvidence ( const Potential<GUM_SCALAR>* pot );
+
+    /** @brief update a set of potentials: the remaining are those to be combined
+     * to produce a message on a separator */
+    void __findRelevantPotentialsWithdSeparation
+    ( __PotentialSet& pot_list,
+      Set<const DiscreteVariable *>& kept_vars );
+
+    /** @brief update a set of potentials: the remaining are those to be combined
+     * to produce a message on a separator */
+    void __findRelevantPotentialsWithdSeparation2
+    ( __PotentialSet& pot_list,
+      Set<const DiscreteVariable *>& kept_vars );
+
+    /** @brief update a set of potentials: the remaining are those to be combined
+     * to produce a message on a separator */
+    void __findRelevantPotentialsGetAll
+    ( __PotentialSet& pot_list,
+      Set<const DiscreteVariable *>& kept_vars );
+    
+
+    /// remove barren variables from a set of potentials
+    void __removeBarrenVariables ( __PotentialSet& pot_list,
+                                   Set<const DiscreteVariable *>& del_vars );
+    
     /// avoid copy constructors
     LazyPropagationNew(const LazyPropagationNew<GUM_SCALAR> &);
 

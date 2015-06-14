@@ -49,7 +49,7 @@ namespace gum_tests {
       gen.generateBN(*bn);
       gum::Set<gum::NodeId> requisite;
 
-      gum::Set<gum::NodeId> query, hardEvidence;
+      gum::Set<gum::NodeId> query, hardEvidence, softEvidence;
       gum::Sequence<gum::NodeId> nodes_seq;
 
       for (const auto node : bn->nodes())
@@ -62,7 +62,7 @@ namespace gum_tests {
         query.insert(nodes_seq.atPos(j));
 
       TS_ASSERT_THROWS_NOTHING(
-          balls.requisiteNodes(bn->dag(), query, hardEvidence, requisite));
+                               balls.requisiteNodes(bn->dag(), query, hardEvidence, softEvidence, requisite));
 
       TS_ASSERT(requisite.size() >= 5);
 
