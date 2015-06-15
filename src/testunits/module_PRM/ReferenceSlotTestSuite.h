@@ -119,27 +119,119 @@ namespace gum_tests {
         __classEltTestSuite->testCast_NotAllowed(ref);
       }
 
-      //void testCast() {
-      //  // Arrange
-      //  ReferenceSlot ref( "ref", *__A );
-      //  // Act & Assert
-      //  __classEltTestSuite->testCast(ref, *__boolean);
-      //}
       /// @}
 
       /// Constructors & destructors
       /// @{
-      /// @}
+      void testConstructor() {
+        // Arrange
+        ReferenceSlot *ref = nullptr;
+        // Act & Assert
+        TS_ASSERT_THROWS_NOTHING( ref = new ReferenceSlot("ref", *__A, false) );
+        delete ref;
+      }
 
+      void testConstructorArray() {
+        // Arrange
+        ReferenceSlot *ref = nullptr;
+        // Act & Assert
+        TS_ASSERT_THROWS_NOTHING( ref = new ReferenceSlot("ref", *__A, true) );
+        delete ref;
+      }
+      /// @}
 
       /// Methods
       /// @{
+      void testSlotType() {
+        // Arrange
+        ReferenceSlot ref( "ref", *__A, false );
+        // Act
+        auto &type = ref.slotType();
+        // Assert
+        TS_ASSERT_EQUALS( __A, &type );
+      }
+
+      void testSlotTypeConst() {
+        // Arrange
+        ReferenceSlot ref( "ref", *__A, false );
+        const auto &const_ref = ref;
+        // Act
+        const auto &type = const_ref.slotType();
+        // Assert
+        TS_ASSERT_EQUALS( __A, &type );
+      }
+
+      void testIsArrayFalse() {
+        // Arrange
+        ReferenceSlot ref( "ref", *__A, false );
+        // Act & Assert
+        TS_ASSERT( not ref.isArray() );
+      }
+
+      void testIsArrayTrue() {
+        // Arrange
+        ReferenceSlot ref( "ref", *__A, true );
+        // Act & Assert
+        TS_ASSERT( ref.isArray() );
+      }
+
+      void testType() {
+        // Arrange
+        ReferenceSlot ref( "ref", *__A, false );
+        // Act & assert
+        TS_ASSERT_THROWS( ref.type(), gum::OperationNotAllowed );
+      }
+
+      void testTypeConst() {
+        // Arrange
+        ReferenceSlot ref( "ref", *__A, false );
+        const auto &const_ref = ref;
+        // Act & assert
+        TS_ASSERT_THROWS( const_ref.type(), gum::OperationNotAllowed );
+      }
+
+      void testCPF() {
+        // Arrange
+        ReferenceSlot ref( "ref", *__A, false );
+        // Act & assert
+        TS_ASSERT_THROWS( ref.cpf(), gum::OperationNotAllowed );
+      }
+
+      void testCPFConst() {
+        // Arrange
+        ReferenceSlot ref( "ref", *__A, false );
+        const auto &const_ref = ref;
+        // Act & assert
+        TS_ASSERT_THROWS( const_ref.cpf(), gum::OperationNotAllowed );
+      }
       /// @}
 
       /// Add parents and children
       /// @{
-      /// @}
+      void testAddParentCheckChild() {
+        // Arrange
+        gum::prm::ScalarAttribute<double> parent (  "attr", *__boolean  );
+        ReferenceSlot child (  "child", *__A  );
+        auto before = parent.cpf().variablesSequence().size();
+        // Act
+        TS_ASSERT_THROWS_NOTHING( child.addParent( parent ) );
+        // Assert
+        auto after = parent.cpf().variablesSequence().size();
+        TS_ASSERT_EQUALS( before, after );
+      }
 
+      void testAddChild() {
+        // Arrange
+        ReferenceSlot parent (  "simple", *__A  );
+        gum::prm::ScalarAttribute<double> child (  "attr", *__boolean  );
+        auto before = child.cpf().variablesSequence().size();
+        // Act
+        TS_ASSERT_THROWS_NOTHING( parent.addChild( child ) );
+        // Assert
+        auto after = child.cpf().variablesSequence().size();
+        TS_ASSERT_EQUALS( before, after );
+      }
+      /// @}
   };
 
 } // gum_tests
