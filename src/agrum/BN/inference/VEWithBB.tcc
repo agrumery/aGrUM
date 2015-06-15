@@ -112,12 +112,13 @@ namespace gum {
     Set<NodeId> query;
     query.insert(id);
     Set<NodeId> hardEvidence;
+    Set<NodeId> softEvidence;
 
     for (const auto &elt : __hardEvidence)
       hardEvidence.insert(elt.first);
 
     BayesBall bb;
-    bb.requisiteNodes(this->bn().dag(), query, hardEvidence, requisite_nodes);
+    bb.requisiteNodes(this->bn().dag(), query, hardEvidence, softEvidence, requisite_nodes);
   }
 
   template <typename GUM_SCALAR>
