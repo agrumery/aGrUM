@@ -1,0 +1,202 @@
+/***************************************************************************
+ *   (C) 2007-2013 by Christophe GONZALES and Pierre-Henri WUILLEMIN       *
+ *   {prenom.nom}@lip6.fr                                                  *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it wil be useful,        *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#include <cxxtest/AgrumTestSuite.h>
+#include <testsuite_utils.h>
+
+#include <agrum/PRM/elements/class.h>
+
+/**
+ * This class is used to test gum::prm::ClassElement, since it is an abstrac
+ * class, tests defined here should be called by each sub class of 
+ * gum::prm::ClassElement.
+ */
+namespace gum_tests {
+
+  class PRMClassTestSuite : public CxxTest::TestSuite {
+    private:
+      typedef gum::prm::Class<double> Class;
+      typedef gum::prm::ScalarAttribute<double> Attribute;
+
+      gum::prm::Type<double> *__boolean;
+
+    public:
+
+      void setUp() {
+        __boolean = gum::prm::Type<double>::boolean();
+      }
+
+      void tearDown() {
+        delete __boolean;
+      }
+
+      /// Constructor & Destructor
+      /// @{
+      void testConstructor() {
+        // Arrange
+        Class *c = nullptr;
+        // Act & Assert
+        TS_ASSERT_THROWS_NOTHING( c = new Class("class") );
+        TS_ASSERT_THROWS_NOTHING( delete c );
+      }
+      /// @}
+      /// Belongs and exists tests
+      /// @{
+      void testBelongsTo() {
+        // Arrange
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *__boolean);
+        c.add(attr);
+        bool actual = false;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( actual = c.belongsTo( *attr ) );
+        // Assert
+        TS_ASSERT(actual);
+      }
+
+      void testBelongsToNot() {
+        // Arrange
+        Class c("class");
+        Attribute attr("attr", *__boolean);
+        bool actual = false;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( actual = c.belongsTo( attr ) );
+        // Assert
+        TS_ASSERT(not actual);
+      }
+
+      void testExists() {
+        // Arrange
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *__boolean);
+        c.add(attr);
+        bool actual = false;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( actual = c.exists( "attr" ) );
+        // Assert
+        TS_ASSERT(actual);
+      }
+
+      void testExistsNot() {
+        // Arrange
+        Class c("class");
+        bool actual = false;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( actual = c.exists( "attr" ) );
+        // Assert
+        TS_ASSERT(not actual);
+      }
+      /// @}
+      /// Input, output and inner nodes methods.
+      /// @{
+      void testIsInputNode() {
+        // Arrange
+        Class c("class");
+        Attribute *a = new Attribute("attr", *__boolean);
+        c.add( a );
+        bool actual = false;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( actual = c.isInputNode( *a ) );
+        // Assert
+        TS_ASSERT( not actual );
+      }
+
+      void testSetInputNode() {
+        // Arrange
+        Class c("class");
+        Attribute *a = new Attribute("attr", *__boolean);
+        c.add( a );
+        bool before = c.isInputNode( *a );
+        bool after = false;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( c.setInputNode(*a, true) );
+        // Assert
+        TS_ASSERT( after = c.isInputNode(*a) );
+        TS_ASSERT_DIFFERS( before, after );
+        TS_ASSERT( after );
+      }
+
+      void testIsOutputNode() {
+        // Arrange
+        Class c("class");
+        Attribute *a = new Attribute("attr", *__boolean);
+        c.add( a );
+        bool actual = false;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( actual = c.isOutputNode( *a ) );
+        // Assert
+        TS_ASSERT( not actual );
+      }
+
+      void testSetOutputNode() {
+        // Arrange
+        Class c("class");
+        Attribute *a = new Attribute("attr", *__boolean);
+        c.add( a );
+        bool before = c.isOutputNode( *a );
+        bool after = false;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( c.setOutputNode(*a, true) );
+        // Assert
+        TS_ASSERT( after = c.isOutputNode(*a) );
+        TS_ASSERT_DIFFERS( before, after );
+        TS_ASSERT( after );
+      }
+
+      void testIsInnerNode() {
+        // Arrange
+        Class c("class");
+        Attribute *a = new Attribute("attr", *__boolean);
+        c.add( a );
+        bool actual = false;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( actual = c.isInnerNode( *a ) );
+        // Assert
+        TS_ASSERT( actual );
+      }
+
+      void testInnerNodeConsistency() {
+        // Arrange
+        Class c("class");
+        Attribute *a = new Attribute("attr", *__boolean);
+        c.add( a );
+        // Act & Assert
+        TS_ASSERT( c.isInnerNode( *a ) );
+        TS_ASSERT( not c.isInputNode( *a ) );
+        TS_ASSERT( not c.isOutputNode( *a ) );
+        TS_ASSERT_THROWS_NOTHING( c.setInputNode( *a, true ) );
+        TS_ASSERT( not c.isInnerNode( *a ) );
+        TS_ASSERT( c.isInputNode( *a ) );
+        TS_ASSERT( not c.isOutputNode( *a ) );
+        TS_ASSERT_THROWS_NOTHING( c.setOutputNode( *a, true ) );
+        TS_ASSERT( not c.isInnerNode( *a ) );
+        TS_ASSERT( c.isInputNode( *a ) );
+        TS_ASSERT( c.isOutputNode( *a ) );
+        TS_ASSERT_THROWS_NOTHING( c.setInputNode( *a, false ) );
+        TS_ASSERT_THROWS_NOTHING( c.setOutputNode( *a, false ) );
+        TS_ASSERT( c.isInnerNode( *a ) );
+        TS_ASSERT( not c.isInputNode( *a ) );
+        TS_ASSERT( not c.isOutputNode( *a ) );
+      }
+      /// @}
+
+  };
+
+} // gum_tests
