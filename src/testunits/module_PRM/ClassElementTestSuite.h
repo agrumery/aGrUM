@@ -85,10 +85,18 @@ namespace gum_tests {
 
     void testSafeName(const ClassElt &elt) {
       // Arrange
-      auto expected = gum::prm::PRMObject::LEFT_CAST()
-        + elt.type().name()
-        + gum::prm::PRMObject::RIGHT_CAST()
-        + elt.name();
+      std::string expected;
+      if ( ClassElt::isReferenceSlot( elt ) ) { 
+        expected = gum::prm::PRMObject::LEFT_CAST()
+          + static_cast<const gum::prm::ReferenceSlot<double>&>(elt).slotType().name()
+          + gum::prm::PRMObject::RIGHT_CAST()
+          + elt.name();
+      } else {
+        expected = gum::prm::PRMObject::LEFT_CAST()
+          + elt.type().name()
+          + gum::prm::PRMObject::RIGHT_CAST()
+          + elt.name();
+      }
       // Act
       auto actual = elt.safeName();
       // Assert
