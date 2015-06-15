@@ -27,15 +27,6 @@
 
 namespace gum {
   namespace prm {
-    template <typename GUM_SCALAR>
-    ReferenceSlot<GUM_SCALAR>::ReferenceSlot(const std::string &name,
-                                             ClassElementContainer<GUM_SCALAR> &type,
-                                             bool isArray)
-        : ClassElement<GUM_SCALAR>(name), __slotType(type), __isArray(isArray) {
-      GUM_CONSTRUCTOR(ReferenceSlot);
-      this->_safeName = PRMObject::LEFT_CAST() + ((PRMObject &)__slotType).name() +
-                        PRMObject::RIGHT_CAST() + name;
-    }
 
     // Destructor.
     template <typename GUM_SCALAR> ReferenceSlot<GUM_SCALAR>::~ReferenceSlot() {
