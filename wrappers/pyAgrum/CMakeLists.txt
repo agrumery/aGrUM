@@ -1,11 +1,9 @@
 set(AGRUM_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
 include("${AGRUM_SOURCE_DIR}/version.txt")
-
 option(FOR_PYTHON2 "ON if pyAgrum will be compiler agains python2. Python3 is uses by default" "OFF")
 
 # PYTHON 2 OR 3
 if (FOR_PYTHON2) # we use 3 by default
-  set(PYTHONVERSION "2")
   # hackish
   if( WIN32)
 	set(PYTHON_EXECUTABLE "python.exe")
@@ -13,12 +11,8 @@ if (FOR_PYTHON2) # we use 3 by default
 	set(PYTHON_EXECUTABLE "python2")
   endif(WIN32)
 
-  find_package(PythonInterp 2 REQUIRED)
-
-  #change in module naming from inside module between python2 and python3
-  set(PYAGRUM_MODULE "pyAgrum")
+  find_package(PythonInterp REQUIRED)
 else (FOR_PYTHON2)
-  set(PYTHONVERSION "3")
   # hackish
   if(WIN32)
 	set(PYTHON_EXECUTABLE "python.exe")
@@ -27,13 +21,61 @@ else (FOR_PYTHON2)
   endif(WIN32)
 
   find_package(PythonInterp 3 REQUIRED)
+endif (FOR_PYTHON2)
 
+execute_process(
+  COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())"
+  OUTPUT_VARIABLE PYTHON_INCLUDE_DIR
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+execute_process(
+  COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_config_var('LIBDIR'))"
+  OUTPUT_VARIABLE PYTHON_LIBRARY
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# maybe something to do for MAC ???
+# if (APPLE) # let's assume that PYTHON is there
+#   execute_process(
+#     COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('prefix'))[0])"
+#     OUTPUT_VARIABLE PYTHON_LOCAL_PATH
+#     OUTPUT_STRIP_TRAILING_WHITESPACE
+#   )
+#   execute_process(
+#     COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('CONFINCLUDEPY'))[0])"
+#     OUTPUT_VARIABLE PYTHON_INCLUDE_PATH
+#     OUTPUT_STRIP_TRAILING_WHITESPACE
+#   )
+#   execute_process(
+#     COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('LIBDIR'))[0])"
+#     OUTPUT_VARIABLE PYTHON_LIBPATH
+#     OUTPUT_STRIP_TRAILING_WHITESPACE
+#   )
+#   execute_process(
+#     COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('VERSION'))[0])"
+#     OUTPUT_VARIABLE PYTHON_VERSION
+#     OUTPUT_STRIP_TRAILING_WHITESPACE
+#   )
+#   #todo : test if PYTHON_VERSION>3.2
+#   set(PYTHON_LIBRARIES "${PYTHON_LIBPATH}/libPython${PYTHON_VERSION}.dylib")
+# else()
+#   find_package(PythonLibs ${PYTHON_VERSION} REQUIRED)
+# endif()
+
+find_package(PythonLibs REQUIRED)
+string(SUBSTRING ${PYTHONLIBS_VERSION_STRING} 0 1 PYTHON_MAJOR)
+
+if (${PYTHON_MAJOR} EQUAL "2")
+  #change in module naming from inside module between python2 and python3
+  set(PYAGRUM_MODULE "pyAgrum")
+else ()
   set(CMAKE_SWIG_FLAGS  "${CMAKE_SWIG_FLAGS};-py3" )
 
   #change in module naming from inside module between python2 and python3
   set(PYAGRUM_MODULE ".pyAgrum")
-endif (FOR_PYTHON2)
-set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files${PYTHONVERSION}")
+endif ()
+set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files${PYTHON_MAJOR}")
 set(_PYAGRUMLIB "_pyAgrum")
 
 
@@ -42,51 +84,9 @@ execute_process(
   OUTPUT_VARIABLE PYTHON_INSTALL
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-execute_process(
-  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_version())"
-  OUTPUT_VARIABLE PYTHON_VERSION
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
-message(${PYTHON_EXECUTABLE})
-execute_process(
-  COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())"
-  OUTPUT_VARIABLE PYTHON_INCLUDE_PATH
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
-
-
-if (APPLE) # let's assume that PYTHON is there
-  execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('prefix'))[0])"
-    OUTPUT_VARIABLE PYTHON_LOCAL_PATH
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
-  execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('CONFINCLUDEPY'))[0])"
-    OUTPUT_VARIABLE PYTHON_INCLUDE_PATH
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
-  execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('LIBDIR'))[0])"
-    OUTPUT_VARIABLE PYTHON_LIBPATH
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
-  execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('VERSION'))[0])"
-    OUTPUT_VARIABLE PYTHON_VERSION
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
-  #todo : test if PYTHON_VERSION>3.2
-  set(PYTHON_LIBRARIES "${PYTHON_LIBPATH}/libPython${PYTHON_VERSION}.dylib")
-else()
-  find_package(PythonLibs ${PYTHON_VERSION} REQUIRED)
-endif()
-
 
 message("================================")
-message("version : ${PYTHON_VERSION}")
+message("version : ${PYTHONLIBS_VERSION_STRING}")
 message("installation : ${PYTHON_INSTALL}")
 message("include : ${PYTHON_INCLUDE_PATH}")
 message("library : ${PYTHON_LIBRARIES}")
@@ -135,22 +135,22 @@ set(SWIG_MODULE${_PYAGRUMLIB}_EXTRA_DEPS ${BUILDSWIGFILES})
 set(CMAKE_SWIG_OUTDIR ${GENERATED_PYTHON})
 
 
-# if (SWIG_FOUND)
-#   gum_swig_add_module(pyAgrum python ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
-#   swig_link_libraries(pyAgrum ${LIBAGRUM})
-#   swig_link_libraries(pyAgrum ${PYTHON_LIBRARIES})
-# else (SWIG_FOUND)
+if (SWIG_FOUND)
+  gum_swig_add_module(pyAgrum python ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
+  swig_link_libraries(pyAgrum ${LIBAGRUM})
+  swig_link_libraries(pyAgrum ${PYTHON_LIBRARIES})
+else (SWIG_FOUND)
   file(GLOB SWIG_GENERATED_FILES "${GENERATED_PYTHON}/*.cxx")
   add_library (${_PYAGRUMLIB} MODULE ${SWIG_GENERATED_FILES})
   target_link_libraries (${_PYAGRUMLIB} ${LIBAGRUM})
-  target_link_libraries (${_PYAGRUMLIB} ${PYTHON_LIBRARIES})
+  #target_link_libraries (${_PYAGRUMLIB} ${PYTHON_LIBRARIES})
   set_target_properties(${_PYAGRUMLIB} PROPERTIES PREFIX "")
   if (WIN32)
     set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".pyd")
   else (WIN32)
     set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".so")
   endif (WIN32)
-# endif (SWIG_FOUND)
+endif (SWIG_FOUND)
 
 set_target_properties(${_PYAGRUMLIB} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
