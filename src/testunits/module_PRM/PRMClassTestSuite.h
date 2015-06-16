@@ -21,6 +21,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
+#include <sstream>
+
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/PRM/elements/class.h>
 
@@ -34,11 +36,12 @@ namespace gum_tests {
   class PRMClassTestSuite : public CxxTest::TestSuite {
     private:
       typedef gum::prm::Class<double> Class;
+      typedef gum::prm::Type<double> Type;
       typedef gum::prm::ScalarAttribute<double> Attribute;
       typedef gum::prm::ReferenceSlot<double> Reference;
 
-      gum::prm::Type<double> *__boolean;
-      gum::prm::Type<double> *__state;
+      Type *__boolean;
+      Type *__state;
 
     public:
 
@@ -50,7 +53,7 @@ namespace gum_tests {
         std::vector<gum::Idx> map;
         map.push_back( 1 );
         map.push_back( 0 );
-        __state = new gum::prm::Type<double> { *__boolean, map, state };
+        __state = new Type( *__boolean, map, state );
       }
 
       void tearDown() {
@@ -239,6 +242,55 @@ namespace gum_tests {
         const auto &b = sub_c.get( attr->safeName() );
         const auto &s = sub_c.get( state->safeName() );
         TS_ASSERT_DIFFERS( b.type(), s.type() );
+      }
+
+      void testOverloadAttributeWithSeveralCastDescendants() {
+        // Arrange
+        int size = 10;
+        std::vector< Type* > types;
+        types.push_back( __boolean );
+        std::vector<gum::Idx> map;
+        map.push_back( 1 );
+        map.push_back( 0 );
+        for ( int i = 1; i < size; i++) {
+          auto &super = *( types[i-1] );
+          std::stringstream sbuff;
+          sbuff << "type_" << i;
+          auto name = sbuff.str();
+          auto var = gum::LabelizedVariable(name, "", 2);
+          auto t = new Type( super, map, var );
+          types.push_back( t );
+        }
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *(types[0]));
+        c.add( attr );
+        Class sub_c("sub_c", c);
+        Attribute *state = new Attribute("attr", *(types[size-1]));
+        // Act
+        try {
+          sub_c.overload( state);
+        } catch ( gum::Exception& e ) {
+          GUM_TRACE( e.errorContent() );
+          GUM_TRACE( e.errorCallStack() );
+        }
+        TS_ASSERT_THROWS_NOTHING( sub_c.overload( state) );
+        // Assert
+        for (int i = 0; i < size; i++) {
+          std::string i_name = "(" + types[i]->name() + ")attr";
+          TS_ASSERT( sub_c.exists( i_name ) );
+
+          for (int j = i + 1; j < size; j++) {
+            std::string j_name = "(" + types[j]->name() + ")attr";
+            auto i_attr = sub_c.get( i_name ).type();
+            auto j_attr = sub_c.get( j_name ).type();
+            TS_ASSERT_DIFFERS( i_attr, j_attr );
+          }
+        }
+        // Cleanup
+        for (int i = 1; i < size; ++i) {
+          delete types[i];
+        }
+
       }
       /// @}
       /// Input, output and inner nodes methods.
