@@ -38,15 +38,24 @@ namespace gum_tests {
       typedef gum::prm::ReferenceSlot<double> Reference;
 
       gum::prm::Type<double> *__boolean;
+      gum::prm::Type<double> *__state;
 
     public:
 
       void setUp() {
         __boolean = gum::prm::Type<double>::boolean();
+        gum::LabelizedVariable state { "state", "A state variable", 0 };
+        state.addLabel( "OK" );
+        state.addLabel( "NOK" );
+        std::vector<gum::Idx> map;
+        map.push_back( 1 );
+        map.push_back( 0 );
+        __state = new gum::prm::Type<double> { *__boolean, map, state };
       }
 
       void tearDown() {
         delete __boolean;
+        delete __state;
       }
 
       /// Constructor & Destructor
@@ -208,7 +217,29 @@ namespace gum_tests {
         // Cleanup
         delete bttr;
       }
-      
+
+      void testOverloadAttribute() {
+        // Arrange
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *__boolean);
+        c.add( attr );
+        Class sub_c("sub_c", c);
+        Attribute *state = new Attribute("attr", *__state);
+        // Act
+        try {
+          sub_c.overload( state);
+        } catch ( gum::Exception& e ) {
+          GUM_TRACE( e.errorContent() );
+          GUM_TRACE( e.errorCallStack() );
+        }
+        TS_ASSERT_THROWS_NOTHING( sub_c.overload( state) );
+        // Assert
+        TS_ASSERT( sub_c.exists( state->safeName() ) );
+        TS_ASSERT( sub_c.exists( attr->safeName() ) );
+        const auto &b = sub_c.get( attr->safeName() );
+        const auto &s = sub_c.get( state->safeName() );
+        TS_ASSERT_DIFFERS( b.type(), s.type() );
+      }
       /// @}
       /// Input, output and inner nodes methods.
       /// @{
