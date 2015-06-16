@@ -21,6 +21,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
+#include <agrum/variables/labelizedVariable.h>
 #include <agrum/PRM/elements/class.h>
 
 /**
@@ -34,6 +35,7 @@ namespace gum_tests {
     private:
       typedef gum::prm::Class<double> Class;
       typedef gum::prm::ScalarAttribute<double> Attribute;
+      typedef gum::prm::ReferenceSlot<double> Reference;
 
       gum::prm::Type<double> *__boolean;
 
@@ -103,6 +105,110 @@ namespace gum_tests {
         // Assert
         TS_ASSERT(not actual);
       }
+
+      void testGet() {
+        // Arrange
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *__boolean);
+        c.add( attr );
+        // Act
+        auto &actual = c.get( attr->name() );
+        // Assert
+        TS_ASSERT_EQUALS( &actual, attr );
+      }
+
+      void testGetConst() {
+        // Arrange
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *__boolean);
+        c.add( attr );
+        const auto &const_c = c;
+        // Act
+        const auto &actual = const_c.get( attr->name() );
+        // Assert
+        TS_ASSERT_EQUALS( &actual, attr );
+      }
+
+      void testGetNotFound() {
+        // Arrange
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *__boolean);
+        c.add( attr );
+        // Act & Assert
+        TS_ASSERT_THROWS( c.get( "foo" ), gum::NotFound );
+      }
+
+      void testGetConstNotFound() {
+        // Arrange
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *__boolean);
+        c.add( attr );
+        const auto &const_c = c;
+        // Act & Assert
+        TS_ASSERT_THROWS( const_c.get( "foo" ), gum::NotFound );
+      }
+
+      void testAdd() {
+        // Arra,ge
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *__boolean);
+        gum::NodeId id = 100; // Id generation starts at 0
+        // Act & assert
+        TS_ASSERT_THROWS_NOTHING( id = c.add( attr ) );
+        TS_ASSERT( c.exists( attr->name() ) );
+        TS_ASSERT_EQUALS( &( c.get( attr->name() ) ), attr );
+        TS_ASSERT_EQUALS( id, attr->id() );
+        TS_ASSERT_DIFFERS( id, (gum::NodeId) 100 );
+      }
+
+      void testAddDuplicate() {
+        // Arrange
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *__boolean);
+        // Act & assert
+        TS_ASSERT_THROWS_NOTHING( c.add( attr ) );
+        TS_ASSERT_THROWS( c.add( attr ), gum::DuplicateElement );
+        TS_ASSERT_EQUALS( c.attributes().size(), (gum::Size) 1 );
+      }
+
+      void testOverloadOperationNotAllowed() {
+        // Arrange
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *__boolean);
+        // Act & assert
+        TS_ASSERT_THROWS( c.overload( attr ), gum::OperationNotAllowed );
+        // Cleanup
+        delete attr;
+      }
+
+      void testOverloadWrongClassElement() {
+        // Arrange
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *__boolean);
+        c.add( attr );
+        Class sub_c("sub c", c);
+        Reference *ref = new Reference("attr", c);
+        // Act & Assert
+        TS_ASSERT_THROWS( sub_c.overload( ref ), gum::OperationNotAllowed );
+        // Cleanup
+        delete ref;
+      }
+
+      void testOverloadTypeError() {
+        // Arrange
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *__boolean);
+        c.add( attr );
+        Class sub_c("sub_c", c);
+        gum::LabelizedVariable var("foo", "bar", 2);
+        gum::prm::Type<double> type(var);
+        Attribute *bttr = new Attribute("attr", type);
+        // Act & Assert
+        TS_ASSERT_THROWS( sub_c.overload( bttr ), gum::OperationNotAllowed );
+        // Cleanup
+        delete bttr;
+      }
+      
       /// @}
       /// Input, output and inner nodes methods.
       /// @{
