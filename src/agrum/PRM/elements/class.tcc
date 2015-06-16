@@ -458,11 +458,7 @@ namespace gum {
         __nameMap[overloader->safeName()] = overloader;
         __attributes.erase( overloaded );
         __attributes.insert( overloader );
-        // Swapping types, ugly but necessary to preserve the Type<GUM_SCALAR> pointer of overloaded
         overloader->overload(overloaded);
-        //__swap_types( overloader, overloaded );
-        // Deleting overloaded attribute
-        delete overloaded;
       }
     }
 
@@ -634,7 +630,7 @@ namespace gum {
         parent = child;
       }
 
-      end->setAsCastDescendant( parent );
+      parent->setAsCastDescendant( end );
       __dag.addArc( parent->id(), end->id() );
     }
 
