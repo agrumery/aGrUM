@@ -169,8 +169,6 @@ namespace gum {
       /**
        * Add an arc between two ClassElement<GUM_SCALAR>.
        */
-      GUM_DEPRECATED(virtual void insertArc(const std::string &tail,
-                                            const std::string &head)) = 0;
       virtual void addArc(const std::string &tail, const std::string &head) = 0;
 
       /**
@@ -178,6 +176,8 @@ namespace gum {
        *
        * Attribute or Aggregate can either be input, output, both
        * or internal nodes.
+       *
+       * By defaut, attributes and aggregates are inner nodes.
        *
        * @param elt A ClassElement<GUM_SCALAR>.
        * @return Returns true if id is an input node.
@@ -189,6 +189,8 @@ namespace gum {
        *
        * Attribute or Aggregate can either be input, output, both
        * or internal nodes.
+       *
+       * By defaut, attributes and aggregates are inner nodes.
        *
        * @param elt A ClassElement<GUM_SCALAR>.
        * @param b The flag value.
@@ -206,6 +208,8 @@ namespace gum {
        * Attribute or Aggregate can either be input, output, both
        * or internal nodes.
        *
+       * By defaut, attributes and aggregates are inner nodes.
+       *
        * @param elt A ClassElement<GUM_SCALAR>.
        * @return Returns true if id is an input node.
        */
@@ -216,6 +220,8 @@ namespace gum {
        *
        * Attribute or Aggregate can either be input, output, both
        * or internal nodes.
+       *
+       * By defaut, attributes and aggregates are inner nodes.
        *
        * @param elt A ClassElement<GUM_SCALAR>.
        * @param b The flag value.
@@ -229,12 +235,14 @@ namespace gum {
 
       /**
        * @brief Returns true if the node is an inner node.
-       *
+       * 
        * Attribute or Aggregate can either be input, output, both
        * or internal nodes.
        *
+       * By defaut, attributes and aggregates are inner nodes.
+       *
        * @param elt A ClassElement<GUM_SCALAR>.
-       * @return true if elt is an input node.
+       * @return true if elt is an inner node.
        *
        * @throw NotFound Raised if NodeId does'nt match any ClassElement<GUM_SCALAR>
        *in this.
@@ -242,7 +250,6 @@ namespace gum {
        *                          an Aggregate.
        */
       bool isInnerNode(const ClassElement<GUM_SCALAR> &elt) const;
-
       /// @}
       // ========================================================================
       /// @name Graphical operator

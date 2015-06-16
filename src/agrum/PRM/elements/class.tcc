@@ -260,12 +260,6 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void Class<GUM_SCALAR>::insertArc(const std::string &tail_name,
-                                      const std::string &head_name) {
-      addArc(tail_name, head_name);
-    }
-
-    template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::addArc(const std::string &tail_name,
                                    const std::string &head_name) {
       ClassElement<GUM_SCALAR> *tail = 0;

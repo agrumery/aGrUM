@@ -323,11 +323,6 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE void Interface<GUM_SCALAR>::insertArc(const std::string &tail,
-                                                 const std::string &head) {
-      addArc(tail, head);
-    }
-    template <typename GUM_SCALAR>
     INLINE void Interface<GUM_SCALAR>::addArc(const std::string &tail,
                                               const std::string &head) {
       GUM_ERROR(OperationNotAllowed, "an Interface does not have arcs");

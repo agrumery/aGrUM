@@ -90,7 +90,7 @@ namespace gum {
       } else if (ClassElement<GUM_SCALAR>::isAttribute(elt) or
                  ClassElement<GUM_SCALAR>::isAggregate(elt)) {
         try {
-          _getIOFlag(elt).second = b;
+          _getIOFlag(elt).first = b;
         } catch (NotFound &) {
           _setIOFlag(elt, std::make_pair(b, false));
         }
