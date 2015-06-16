@@ -421,7 +421,7 @@ namespace gum {
 
         case ClassElement<GUM_SCALAR>::prm_slotchain:
           {
-            GUM_ERROR( WrongClassElement, "SlotChain<GUM_SCALAR> can not be overloaded" );
+            GUM_ERROR( OperationNotAllowed, "SlotChain<GUM_SCALAR> can not be overloaded" );
             break;
           }
 
@@ -432,7 +432,7 @@ namespace gum {
             __overloadParameter( overloader_param, overloaded_param );
             break;
           }
-        default: { GUM_ERROR(FatalError, "unknown ClassElement<GUM_SCALAR> type"); }
+        default: { GUM_ERROR(OperationNotAllowed, "unknown ClassElement<GUM_SCALAR> type"); }
       }
 
       return overloader->id();

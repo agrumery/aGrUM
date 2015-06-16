@@ -145,24 +145,18 @@ namespace gum {
        * than the ClassElement<GUM_SCALAR> it overloaded.
        *
        * You can only overload inherited ClassElement<GUM_SCALAR> and only if elt is
-       *a subtype
-       * of the inherited ClassElement<GUM_SCALAR>. Thus you can only overload
-       *ReferenceSlot and
-       * Attribute. In the case of Attribute you can overload an inherited Attribute
-       * even if they are of the same type: this is useful when you want to redefine
-       * the dependencies of an Attribute or its CPF. You can also overload an
-       * Attribute with an Aggregate, as long as their respective Type allow it.
+       * a subtype of the inherited ClassElement<GUM_SCALAR>. Thus you can only 
+       * overload ReferenceSlot and Attribute. In the case of Attribute you can 
+       * overload an inherited Attribute even if they are of the same type: this is 
+       * useful when you want to redefine the dependencies of an Attribute or its 
+       * CPF. You can also overload an Attribute with an Aggregate, as long as their 
+       * respective Type allow it.
        *
-       * @param elt The ClassElement<GUM_SCALAR> overloading an inherited
-       *ClassElement<GUM_SCALAR>
-       *            in this ClassElementContainer.
+       * @param elt The ClassElement<GUM_SCALAR> overloading an inherited 
+       *            ClassElement<GUM_SCALAR> in this ClassElementContainer.
        * @return the NodeId assigned to elt.
        *
-       * @throw OperationNotAllowed Raised if there is no ClassElement<GUM_SCALAR> to
-       *overload.
-       * @throw WrongClassElement Raised if the overloading is illegal.
-       * @throw TypeError Raised if elt isn't a legal subtype of
-       *this->get(elt->name()).
+       * @throw OperationNotAllowed Raised if  overloading is illegal.
        */
       virtual NodeId overload(ClassElement<GUM_SCALAR> *elt) = 0;
 
