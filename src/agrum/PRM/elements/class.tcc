@@ -94,7 +94,8 @@ namespace gum {
       GUM_ERROR(FatalError, "don't copy classes");
     }
 
-    template <typename GUM_SCALAR> Class<GUM_SCALAR>::~Class() {
+    template <typename GUM_SCALAR>
+    Class<GUM_SCALAR>::~Class() {
       GUM_DESTRUCTOR(Class);
 
       for( const auto & elt : __nodeIdMap ) {
@@ -414,8 +415,9 @@ namespace gum {
         case ClassElement<GUM_SCALAR>::prm_refslot:
           {
             // __checkOverloadLegality guaranties that overloaded is a ReferenceSlot<GUM_SCALAR>
-            __overloadReference( static_cast<ReferenceSlot<GUM_SCALAR>*>( overloader ),
-                static_cast<ReferenceSlot<GUM_SCALAR>*>( overloaded ) );
+            auto overloader_ref = static_cast<ReferenceSlot<GUM_SCALAR>*>( overloader );
+            auto overloaded_ref = static_cast<ReferenceSlot<GUM_SCALAR>*>( overloaded );
+            __overloadReference( overloader_ref, overloaded_ref );
             break;
           }
 
@@ -470,6 +472,7 @@ namespace gum {
       overloader->setId(overloaded->id());
       __nodeIdMap[overloader->id()] = overloader;
       __nameMap[overloader->name()] = overloader;
+      __nameMap.insert(overloader->safeName(), overloader);
       __referenceSlots.insert(overloader);
       SlotChain<GUM_SCALAR> *sc = 0;
       ReferenceSlot<GUM_SCALAR> *ref = 0;
@@ -552,6 +555,7 @@ namespace gum {
 
       // Removing overloaded ReferenceSlot<GUM_SCALAR>
       __referenceSlots.erase(overloaded);
+      __nameMap.erase(overloaded->safeName());
       delete overloaded;
     }
 
