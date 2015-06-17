@@ -39,6 +39,7 @@ namespace gum_tests {
       typedef gum::prm::Type<double> Type;
       typedef gum::prm::ScalarAttribute<double> Attribute;
       typedef gum::prm::ReferenceSlot<double> Reference;
+      typedef gum::prm::SlotChain<double> SlotChain;
 
       Type *__boolean;
       Type *__state;
@@ -381,6 +382,36 @@ namespace gum_tests {
         TS_ASSERT( not c_4.exists( sub_ref->safeName() ) );
         TS_ASSERT_EQUALS( c_4.referenceSlots().size(), (gum::Size)1 );
         delete sub_ref;
+      }
+
+      void testOverloadSlotChainOperantionNotAllowed() {
+        // Arrange
+        Class c_1("c_1");
+        Class c_2("c_2");
+        Reference *ref_1 = new Reference("ref_1", c_2, false);
+        c_1.add(ref_1);
+        Class c_3("c_3");
+        Reference *ref_2 = new Reference("ref_2", c_3, false);
+        c_2.add(ref_2);
+        Attribute *attr = new Attribute("attr", *__boolean);
+        c_3.add( attr );
+        gum::Sequence< gum::prm::ClassElement<double>* > seq;
+        seq.insert(ref_1);
+        seq.insert(ref_2);
+        seq.insert(attr);
+        SlotChain *chain = new SlotChain("ref_1.ref_2.attr", seq);
+        c_1.add( chain );
+        Class c_4("c_4", c_1);
+        SlotChain *chain_copy = new SlotChain("ref_1.ref_2.attr", seq);
+        // Act
+        TS_ASSERT_THROWS( c_4.overload( chain_copy ), gum::OperationNotAllowed );
+        // Assert
+        TS_ASSERT( c_1.exists( chain->safeName() ) );
+        //TS_ASSERT( c_4.exists( chain->safeName() ) );
+        GUM_TRACE( chain->safeName() );
+        TS_ASSERT( c_4.exists( chain->name() ) );
+        TS_ASSERT_EQUALS( c_4.slotChains().size(), (gum::Size)1 );
+        delete chain_copy;
       }
 
       /// @}
