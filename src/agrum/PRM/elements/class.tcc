@@ -128,9 +128,10 @@ namespace gum {
         __nameMap.insert(param->name(), param);
       }
 
-      // Copuying attributes
+      // Copying attributes
       for( const auto c_attr : c.__attributes ) {
-        // using multiDimSparse to prevent unecessary memory allocation for large arrays (the potentials are copied latter)
+        // using multiDimSparse to prevent unecessary memory allocation for
+        // large arrays (the potentials are copied latter)
         auto attr = c_attr->newFactory(*this);
 
         bij.insert( & ( c_attr->type().variable() ), & ( attr->type().variable() ) );
@@ -200,8 +201,8 @@ namespace gum {
         __nodeIdMap.insert(sc->id(), sc);
         __slotChains.insert(sc);
 
-        // Slot chains do not have safe names
         __nameMap.insert(sc->name(), sc);
+        __nameMap.insert(sc->safeName(), sc);
       }
 
       // Copying dependencies yield by arcs
