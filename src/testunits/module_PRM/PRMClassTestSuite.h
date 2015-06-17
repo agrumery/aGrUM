@@ -184,6 +184,10 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( c.attributes().size(), (gum::Size) 1 );
       }
 
+      /// @}
+      /// Overloading
+      /// @{
+
       void testOverloadOperationNotAllowed() {
         // Arrange
         Class c("class");
@@ -223,6 +227,23 @@ namespace gum_tests {
       }
 
       void testOverloadAttribute() {
+        // Arrange
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *__boolean);
+        c.add( attr );
+        Class sub_c("sub_c", c);
+        Attribute *sub_attr = new Attribute("attr", *__boolean);
+        // Act
+        TS_ASSERT_THROWS_NOTHING( sub_c.overload( sub_attr) );
+        // Assert
+        TS_ASSERT( sub_c.exists( sub_attr->safeName() ) );
+        TS_ASSERT( sub_c.exists( attr->safeName() ) );
+        const auto &b = sub_c.get( attr->safeName() );
+        const auto &s = sub_c.get( sub_attr->safeName() );
+        TS_ASSERT_EQUALS( b.type(), s.type() );
+      }
+
+      void testOverloadAttributeWithSubtype() {
         // Arrange
         Class c("class");
         Attribute *attr = new Attribute("attr", *__boolean);
@@ -292,7 +313,7 @@ namespace gum_tests {
         sub_c.overload( state);
         auto before = sub_c.attributes().size();
         // Act
-        TS_ASSERT_THROWS_NOTHING( sub_c.overload( state) );
+        TS_ASSERT_THROWS( sub_c.overload( state), gum::DuplicateElement );
         // Assert
         auto after = sub_c.attributes().size();
         TS_ASSERT( sub_c.exists( attr->safeName() ) );
@@ -325,7 +346,7 @@ namespace gum_tests {
         sub_c.overload( state);
         auto before = sub_c.attributes().size();
         // Act
-        TS_ASSERT_THROWS_NOTHING( sub_c.overload( state) );
+        TS_ASSERT_THROWS( sub_c.overload( state), gum::DuplicateElement );
         // Assert
         auto after = sub_c.attributes().size();
         for (int i = 0; i < size; i++) {
@@ -406,9 +427,7 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS( c_4.overload( chain_copy ), gum::OperationNotAllowed );
         // Assert
-        TS_ASSERT( c_1.exists( chain->safeName() ) );
-        //TS_ASSERT( c_4.exists( chain->safeName() ) );
-        GUM_TRACE( chain->safeName() );
+        TS_ASSERT( c_4.exists( chain->safeName() ) );
         TS_ASSERT( c_4.exists( chain->name() ) );
         TS_ASSERT_EQUALS( c_4.slotChains().size(), (gum::Size)1 );
         delete chain_copy;
@@ -417,6 +436,7 @@ namespace gum_tests {
       /// @}
       /// Input, output and inner nodes methods.
       /// @{
+
       void testIsInputNode() {
         // Arrange
         Class c("class");
