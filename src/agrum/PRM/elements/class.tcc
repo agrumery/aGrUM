@@ -391,6 +391,9 @@ namespace gum {
       }
 
       ClassElement<GUM_SCALAR> *overloaded = __nameMap[overloader->name()];
+      if (overloaded == overloader) {
+        GUM_ERROR( DuplicateElement, "dupplicate ClassElement" );
+      }
       // Checking overload legality
       if ( not __checkOverloadLegality( overloaded, overloader ) ) {
         GUM_ERROR( OperationNotAllowed, "illegal overload" );
@@ -462,6 +465,7 @@ namespace gum {
         __attributes.erase( overloaded );
         __attributes.insert( overloader );
         overloader->overload(overloaded);
+        delete overloaded;
       }
     }
 
