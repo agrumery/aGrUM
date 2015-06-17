@@ -229,12 +229,6 @@ namespace gum_tests {
         Class sub_c("sub_c", c);
         Attribute *state = new Attribute("attr", *__state);
         // Act
-        try {
-          sub_c.overload( state);
-        } catch ( gum::Exception& e ) {
-          GUM_TRACE( e.errorContent() );
-          GUM_TRACE( e.errorCallStack() );
-        }
         TS_ASSERT_THROWS_NOTHING( sub_c.overload( state) );
         // Assert
         TS_ASSERT( sub_c.exists( state->safeName() ) );
@@ -267,12 +261,6 @@ namespace gum_tests {
         Class sub_c("sub_c", c);
         Attribute *state = new Attribute("attr", *(types[size-1]));
         // Act
-        try {
-          sub_c.overload( state);
-        } catch ( gum::Exception& e ) {
-          GUM_TRACE( e.errorContent() );
-          GUM_TRACE( e.errorCallStack() );
-        }
         TS_ASSERT_THROWS_NOTHING( sub_c.overload( state) );
         // Assert
         for (int i = 0; i < size; i++) {
@@ -292,6 +280,109 @@ namespace gum_tests {
         }
 
       }
+
+      void testOverloadAttributeDuplicateElement() {
+        // Arrange
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *__boolean);
+        c.add( attr );
+        Class sub_c("sub_c", c);
+        Attribute *state = new Attribute("attr", *__state);
+        sub_c.overload( state);
+        auto before = sub_c.attributes().size();
+        // Act
+        TS_ASSERT_THROWS_NOTHING( sub_c.overload( state) );
+        // Assert
+        auto after = sub_c.attributes().size();
+        TS_ASSERT( sub_c.exists( attr->safeName() ) );
+        TS_ASSERT( sub_c.exists( state->safeName() ) );
+        TS_ASSERT_EQUALS( before, after );
+      }
+
+      void testOverloadAttributeWithSeveralCastDescendantsDuplicate() {
+        // Arrange
+        int size = 10;
+        std::vector< Type* > types;
+        types.push_back( __boolean );
+        std::vector<gum::Idx> map;
+        map.push_back( 1 );
+        map.push_back( 0 );
+        for ( int i = 1; i < size; i++) {
+          auto &super = *( types[i-1] );
+          std::stringstream sbuff;
+          sbuff << "type_" << i;
+          auto name = sbuff.str();
+          auto var = gum::LabelizedVariable(name, "", 2);
+          auto t = new Type( super, map, var );
+          types.push_back( t );
+        }
+        Class c("class");
+        Attribute *attr = new Attribute("attr", *(types[0]));
+        c.add( attr );
+        Class sub_c("sub_c", c);
+        Attribute *state = new Attribute("attr", *(types[size-1]));
+        sub_c.overload( state);
+        auto before = sub_c.attributes().size();
+        // Act
+        TS_ASSERT_THROWS_NOTHING( sub_c.overload( state) );
+        // Assert
+        auto after = sub_c.attributes().size();
+        for (int i = 0; i < size; i++) {
+          std::string i_name = "(" + types[i]->name() + ")attr";
+          TS_ASSERT( sub_c.exists( i_name ) );
+
+          for (int j = i + 1; j < size; j++) {
+            std::string j_name = "(" + types[j]->name() + ")attr";
+            auto i_attr = sub_c.get( i_name ).type();
+            auto j_attr = sub_c.get( j_name ).type();
+            TS_ASSERT_DIFFERS( i_attr, j_attr );
+          }
+        }
+        TS_ASSERT_EQUALS( before, after );
+        // Cleanup
+        for (int i = 1; i < size; ++i) {
+          delete types[i];
+        }
+
+      }
+
+      void testOverloadReference() {
+        // Arrange
+        Class c_1("c_1");
+        Class c_2("c_2", c_1);
+        Class c_3("c_3");
+        Reference *ref = new Reference("ref", c_1, false);
+        c_3.add(ref);
+        Class c_4("c_4", c_3);
+        Reference *sub_ref = new Reference("ref", c_2, false);
+        // Act
+        TS_ASSERT_THROWS_NOTHING( c_4.overload( sub_ref ) );
+        // Assert
+        TS_ASSERT( not c_4.exists( ref->safeName() ) );
+        TS_ASSERT( c_4.exists( sub_ref->name() ) );
+        TS_ASSERT( c_4.exists( sub_ref->safeName() ) );
+        TS_ASSERT_EQUALS( c_4.referenceSlots().size(), (gum::Size)1 );
+      }
+
+      void testOverloadReferenceIllegal() {
+        // Arrange
+        Class c_1("c_1");
+        Class c_2("c_2", c_1);
+        Class c_3("c_3");
+        Reference *ref = new Reference("ref", c_1, false);
+        c_3.add(ref);
+        Class c_4("c_4", c_3);
+        Reference *sub_ref = new Reference("ref", c_3);
+        // Act
+        TS_ASSERT_THROWS( c_4.overload( sub_ref ), gum::OperationNotAllowed );
+        // Assert
+        TS_ASSERT( c_4.exists( ref->safeName() ) );
+        TS_ASSERT( c_4.exists( ref->name() ) );
+        TS_ASSERT( not c_4.exists( sub_ref->safeName() ) );
+        TS_ASSERT_EQUALS( c_4.referenceSlots().size(), (gum::Size)1 );
+        delete sub_ref;
+      }
+
       /// @}
       /// Input, output and inner nodes methods.
       /// @{
