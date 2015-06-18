@@ -125,7 +125,8 @@ namespace gum {
          * Cast descendant are automatically added Attribute<GUM_SCALAR> for type casting.
          * @param safe_name The safe name of an Attribute<GUM_SCALAR> of this class.
          * @return true if safe_name is a cast descendant.
-         * @throw NotFound Raised if safe_name does not name an Attribute<GUM_SCALAR> in this Class<GUM_SCALAR>.
+         * @throw NotFound Raised if safe_name does not name an Attribute<GUM_SCALAR>
+         *                 in this Class<GUM_SCALAR>.
          */
         bool isCastDescendant ( const std::string& safe_name ) const;
 
