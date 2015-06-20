@@ -1146,78 +1146,55 @@ namespace gum_tests {
           TS_ASSERT(false);
         }
       }
-      
-      // Do not uncommment these unless you want to debug or test with errors
-      // (it dumps a lot of stuff)
-      
-      //void testErrorsAndWarnings() {
-      //  try {
-      //    gum::prm::o3prm::O3prmReader<double> reader;
-      //    TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( GET_PATH_STR( "o3prm/Printer_with_errors.o3prm" ) ) );
-      //    TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
-      //    TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 4 );
-      
-      //    if( reader.prm() );
-      
-      //    delete reader.prm();
-      //  } catch (gum::Exception) {
-      //    TS_ASSERT(false);
-      //  }
-      //}
-      
-      //void testReadString1() {
-      //  try {
-      //    std::ifstream stream( GET_PATH_STR( "o3prm/types.o3prm" ) );
-      //    std::string buffer;
-      //    char tampon[255];
-      //    TS_ASSERT( stream.good() );
-      
-      //    while( stream.good() ) {
-      //      stream.getline( tampon, 255 );
-      //      buffer += tampon;
-      //      buffer += "\n";
-      //    }
-      
-      //    stream.close();
-      
-      //    gum::prm::o3prm::O3prmReader<double> reader;
-      //    TS_GUM_ASSERT_THROWS_NOTHING( reader.readString( buffer ) );
-      //    gum::prm::PRM<double>* prm = reader.prm();
-      //    TS_ASSERT_EQUALS( prm->type( "t_state" ).variable().domainSize(), ( gum::Size )2 );
-      //    TS_ASSERT_EQUALS( prm->type( "t_ink" ).variable().domainSize(), ( gum::Size )2 );
-      //    TS_ASSERT_EQUALS( prm->type( "t_degraded" ).variable().domainSize(), ( gum::Size )3 );
-      //    TS_ASSERT_EQUALS( prm->type( "t_bw_p" ).variable().domainSize(), ( gum::Size )4 );
-      //    TS_ASSERT_EQUALS( prm->type( "t_color_p" ).variable().domainSize(), ( gum::Size )5 );
-      //    delete prm;
-      //  } catch (gum::Exception) {
-      //    TS_ASSERT(false);
-      //  }
-      //}
-      
-      //void testReadString2() {
-      //  try {
-      //    std::ifstream stream(GET_PATH_STR( "o3prm/Printer_with_errors.o3prm"));
-      //    std::string buffer;
-      //    char tampon[255];
-      //    TS_ASSERT(stream.good());
-      
-      //    while (stream.good()) {
-      //      stream.getline(tampon,255);
-      //      buffer += tampon;
-      //      buffer += "\n";
-      //    }
-      //    stream.close();
-      
-      //    gum::prm::o3prm::O3prmReader<double> reader;
-      //    TS_GUM_ASSERT_THROWS_NOTHING(reader.readString(buffer));
-      //    TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
-      //    TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 4 );
-      //    if (reader.prm());
-      //    delete reader.prm();
-      //  } catch (gum::Exception) {
-      //    TS_ASSERT(false);
-      //  }
-      //}
+
+      void testAsiaBN() {
+        try {
+          // Arrange
+          gum::prm::o3prm::O3prmReader<double> reader;
+          std::string file = "../../../src/testunits/ressources/o3prm/Asia.o3prm";
+          std::string package = "";
+          reader.readFile(file, package);
+          auto prm = reader.prm();
+          gum::prm::Class<double> const * asia = nullptr;
+          // Act
+          TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass("Asia") ) );
+          // Assert
+          TS_ASSERT_EQUALS( asia->attributes().size(), (gum::Size) 8 );
+          TS_ASSERT_EQUALS( asia->dag().sizeArcs(), (gum::Size) 8 );
+          delete prm;
+        } catch (gum::Exception& e) {
+          TS_ASSERT(false);
+        }
+      }
+
+      void testAsiaBNGrd() {
+        try {
+          // Arrange
+          gum::prm::o3prm::O3prmReader<double> reader;
+          std::string file = "../../../src/testunits/ressources/o3prm/Asia.o3prm";
+          std::string package = "";
+          reader.readFile(file, package);
+          auto prm = reader.prm();
+          auto &asia = prm->getClass("Asia");
+          gum::prm::System<double> sys( "Asia" );
+          auto i = new gum::prm::Instance<double>("asia", asia); 
+          sys.add(i);
+          sys.instantiate();
+          auto bn = new gum::BayesNet<double>("Asia");
+          gum::BayesNetFactory<double> factory(bn);
+          // Act
+          TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
+          // Assert
+          TS_ASSERT_EQUALS( bn->size(), (gum::Size) 8 );
+          TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size) 8 );
+          GUM_TRACE( bn->toDot() );
+          delete prm;
+          delete bn;
+        } catch (gum::Exception& e) {
+          TS_ASSERT(false);
+        }
+      }
+
   };
 
 } // namespace gum_tests
