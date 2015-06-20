@@ -203,6 +203,50 @@ namespace gum_tests {
         }
       }
 
+      void testAsiaBN() {
+        try {
+          // Arrange
+          auto si = new gum::prm::o3prmr::O3prmrInterpreter();
+          si->setSyntaxMode ( false );
+          si->addPath ( "../../../src/testunits/ressources/o3prmr/Asia/" );
+          si->interpretFile ( "../../../src/testunits/ressources/o3prmr/Asia/myRequest.o3prmr" ); 
+          auto prm = si->prm();
+          gum::prm::Class<double> const * asia = nullptr;
+          // Act
+          TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass("Asia.Asia") ) );
+          // Assert
+          TS_ASSERT_EQUALS( asia->attributes().size(), (gum::Size) 8 );
+          TS_ASSERT_EQUALS( asia->dag().sizeArcs(), (gum::Size) 8 );
+          delete si;
+        } catch (gum::Exception& e) {
+          TS_ASSERT(false);
+        }
+      }
+
+      void testAsiaBNGrd() {
+        try {
+          // Arrange
+          auto si = new gum::prm::o3prmr::O3prmrInterpreter();
+          si->setSyntaxMode ( false );
+          si->addPath ( "../../../src/testunits/ressources/o3prmr/Asia/" );
+          si->interpretFile ( "../../../src/testunits/ressources/o3prmr/Asia/myRequest.o3prmr" ); 
+          auto prm = si->prm();
+          const auto &sys = prm->system("system.MySystem");
+          auto bn = new gum::BayesNet<double>("plop");
+          gum::BayesNetFactory<double> factory(bn);
+          // Act
+          TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
+          // Assert
+          TS_ASSERT_EQUALS( bn->size(), (gum::Size) 8 );
+          TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size) 8 );
+          //GUM_TRACE( bn->toDot() );
+          delete si;
+          delete bn;
+        } catch (gum::Exception& e) {
+          TS_ASSERT(false);
+        }
+      }
+
       //void testADDInference() {
       //  try {
       //    gum::prm::o3prmr::O3prmrInterpreter si;
