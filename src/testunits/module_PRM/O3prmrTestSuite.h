@@ -247,29 +247,29 @@ namespace gum_tests {
         }
       }
 
-      //void testADDInference() {
-      //  try {
-      //    gum::prm::o3prmr::O3prmrInterpreter si;
-      //    si.setVerboseMode(true);
-      //    si.setSyntaxMode ( false );
-      //    si.addPath ( "../../../src/testunits/ressources/o3prmr/ADD/" );
-
-      //    TS_GUM_ASSERT_THROWS_NOTHING ( si.interpretFile ( "../../../src/testunits/ressources/o3prmr/ADD/Request.o3prmr" ) );
-
-      //    TS_ASSERT_EQUALS( si.results().size(), (size_t)1 );
-      //    if ( si.results().size() > 0 ) {
-      //      auto result = si.results()[0];
-      //      TS_ASSERT_EQUALS(result.values.size(), (size_t)2);
-      //    }
-
-      //    si.showElegantErrorsAndWarnings();
-      //    TS_ASSERT_EQUALS ( si.errors(), 0 );
-      //    TS_ASSERT_EQUALS ( si.warnings(), 0 );
-
-      //  } catch (gum::Exception&) {
-      //    TS_ASSERT(false);
-      //  }
-      //}
+      void testComplexPrintersGrd() {
+        try {
+          // Arrange
+          auto si = new gum::prm::o3prmr::O3prmrInterpreter();
+          si->setSyntaxMode ( false );
+          si->addPath ( "../../../src/testunits/ressources/o3prmr/ComplexPrinters/" );
+          si->interpretFile ( "../../../src/testunits/ressources/o3prmr/ComplexPrinters/fr/lip6/printers/request.o3prmr" ); 
+          auto prm = si->prm();
+          const auto &sys = prm->system("fr.lip6.printers.system.Work");
+          auto bn = new gum::BayesNet<double>("plop");
+          gum::BayesNetFactory<double> factory(bn);
+          // Act
+          TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
+          // Assert
+          TS_ASSERT_EQUALS( bn->size(), (gum::Size) 144 );
+          TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size) 193 );
+          //GUM_TRACE( bn->toDot() );
+          delete si;
+          delete bn;
+        } catch (gum::Exception& e) {
+          TS_ASSERT(false);
+        }
+      }
 
   };
 

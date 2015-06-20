@@ -1,0 +1,9 @@
+import fr.lip6.printers.system;
+
+request MyRequest
+{
+	engine SVE;
+	
+	? fr.lip6.printers.system.Work.pow.state;
+	? fr.lip6.printers.system.Work.c2.can_print;
+};
