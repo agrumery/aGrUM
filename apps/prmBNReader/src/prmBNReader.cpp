@@ -124,10 +124,11 @@ void testWith(std::string filename){
 }
 
 int main(void) {
-  testWith("../data/AsiaWithSystem.o3prm");
-  testWith("../data/AsiaClassOnly.o3prm");
-  testWith("../data/AsiaClassAndSystemSameName.o3prm");
-  testWith("../data/FileNotFound.o3prm");
+  //testWith("../data/AsiaWithSystem.o3prm");
+  //testWith("../data/AsiaClassOnly.o3prm");
+  testWith("../data/AsiaSystemOnly.o3prm");
+  //testWith("../data/AsiaClassAndSystemSameName.o3prm");
+  //testWith("../data/FileNotFound.o3prm");
 
   std::cout<<" ... End of tests ..."<<std::endl;
 }
