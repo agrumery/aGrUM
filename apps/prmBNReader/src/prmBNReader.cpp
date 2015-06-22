@@ -103,30 +103,31 @@ private:
 } // gum
 
 void testWith(std::string filename){
-  std::cout<<"========"<<std::endl;
-  std::cout<<"=(test)= "<<filename<< " => ";
-
-  gum::BayesNet<double> bn;
-  gum::O3prmBNReader<double> reader(&bn,filename);
-
   try {
-    reader.proceed();
+    std::cout<<"========"<<std::endl;
+    std::cout<<"=(test)= "<<filename<< " => ";
+
+    gum::BayesNet<double> bn;
+    gum::O3prmBNReader<double> reader(&bn,filename);
+      reader.proceed();
+    if (bn.size()==8) {
+      std::cout<<"OK"<<std::endl;
+      std::cout<<"========"<<std::endl<<std::endl;
+    } else {
+      std::cout<<"Not OK : "<<std::endl;
+      std::cout<<"========"<<std::endl<<std::endl;
+
+      reader.showElegantErrorsAndWarnings();
+      std::cout<<"---------begin TO DOT------------"<<std::endl;
+      std::cout<<bn.toDot()<<std::endl;
+      std::cout<<"---------end   TO DOT------------"<<std::endl;
+      std::cout<<"#nodes : "<<bn.size()<<std::endl;
+      std::cout<<"#arcs : "<<bn.sizeArcs()<<std::endl<<std::endl<<std::endl<<std::endl<<std::endl<<std::endl;
+    }
   } catch (gum::Exception& e) {
-    GUM_SHOWERROR(e);
-  }
-  if (bn.size()==8) {
-    std::cout<<"OK"<<std::endl;
-    std::cout<<"========"<<std::endl<<std::endl;
-  } else {
     std::cout<<"Not OK : "<<std::endl;
     std::cout<<"========"<<std::endl<<std::endl;
-
-    reader.showElegantErrorsAndWarnings();
-    std::cout<<"---------begin TO DOT------------"<<std::endl;
-    std::cout<<bn.toDot()<<std::endl;
-    std::cout<<"---------end   TO DOT------------"<<std::endl;
-    std::cout<<"#nodes : "<<bn.size()<<std::endl;
-    std::cout<<"#arcs : "<<bn.sizeArcs()<<std::endl<<std::endl<<std::endl<<std::endl<<std::endl<<std::endl;
+    GUM_SHOWERROR(e);
   }
 }
 
