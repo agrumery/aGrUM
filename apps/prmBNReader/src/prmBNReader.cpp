@@ -21,7 +21,7 @@ template <typename GUM_SCALAR> class O3prmBNReader : public BNReader<GUM_SCALAR>
   /// @throws IOError if file not exists
   int proceed(void) {
     prm::o3prm::O3prmReader<double> reader;
-    reader.readFile("../data/Asia.o3prm");
+    reader.readFile(__filename);
     gum::prm::PRM<double> *prm = reader.prm();
     __errors=reader.errorsContainer();
 
@@ -32,7 +32,7 @@ template <typename GUM_SCALAR> class O3prmBNReader : public BNReader<GUM_SCALAR>
         if (prm->isClass("Asia")) {
           ParseError warn(false,"No instance Asia found but class found. Generating instance.",__filename,-1);
           __errors.add(warn);
-          gum::prm::System<double> s("Asia");
+          gum::prm::System<double> s("S_Asia");
           gum::prm::Instance<double> i("a",prm->getClass("Asia"));
           __generateBN(s);
         } else {
@@ -102,14 +102,32 @@ private:
 
 } // gum
 
-int main(void) {
+void testWith(std::string filename){
+  std::cout<<"*********************"<<std::endl;
+  std::cout<<"** test with "<<filename<<std::endl;
+  std::cout<<"*********************"<<std::endl;
+
   gum::BayesNet<double> bn;
-  gum::O3prmBNReader<double> reader(&bn,"../data/asia.o3prm");
-  reader.proceed();
-  reader.showElegantErrorsAndWarnings();
+  try {
+    gum::O3prmBNReader<double> reader(&bn,filename);
+    reader.proceed();
+    reader.showElegantErrorsAndWarnings();
+  } catch (gum::Exception& e) {
+    GUM_SHOWERROR(e);
+  }
   //=readBN();
+  std::cout<<"---------begin TO DOT------------"<<std::endl;
   std::cout<<bn.toDot()<<std::endl;
-  std::cout<<bn.size()<<std::endl;
-  std::cout<<bn.sizeArcs()<<std::endl;
-  return 0;
+  std::cout<<"---------end   TO DOT------------"<<std::endl;
+  std::cout<<"#nodes : "<<bn.size()<<std::endl;
+  std::cout<<"#arcs : "<<bn.sizeArcs()<<std::endl<<std::endl<<std::endl;
+}
+
+int main(void) {
+  testWith("../data/AsiaWithSystem.o3prm");
+  testWith("../data/AsiaClassOnly.o3prm");
+  testWith("../data/AsiaClassAndSystemSameName.o3prm");
+  testWith("../data/FileNotFound.o3prm");
+
+  std::cout<<" ... End of tests ..."<<std::endl;
 }
