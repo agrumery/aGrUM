@@ -674,9 +674,6 @@ namespace gum {
         /// Adds __prefix to str iff __prefix != ""
         std::string __addPrefix ( const std::string& str ) const;
 
-        /// Raise a DuplicateElement if the name already exists.
-        void __checkDuplicateName ( const std::string& name );
-
         /// Return a pointer on a PRMObject at __stack.size() - i position after
         /// checking the type of the object given obj_type.
         /// @throw FactoryInvalidState Raised if the stack isn't consistent with the

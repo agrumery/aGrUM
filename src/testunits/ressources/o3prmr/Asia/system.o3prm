@@ -1,5 +1,5 @@
 import Asia;
 
-system MySystem {
+system Asia {
     Asia asia;
 }

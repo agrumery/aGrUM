@@ -97,7 +97,11 @@ namespace gum {
     PRMFactory<GUM_SCALAR>::startClass( const std::string& name, const std::string& extends,
                                         const Set<std::string>* implements ) {
       std::string real_name = __addPrefix( name );
-      __checkDuplicateName( real_name );
+      if ( __prm->__classMap.exists(real_name) || __prm->__interfaceMap.exists(real_name) ) {
+        std::stringstream msg;
+        msg << "\"" << real_name << "\" is already used.";
+        GUM_ERROR(DuplicateElement, msg.str());
+      }
       Class<GUM_SCALAR>* c = 0;
       Class<GUM_SCALAR>* mother = 0;
       Set<Interface<GUM_SCALAR>*> impl;
@@ -223,7 +227,11 @@ namespace gum {
     void
     PRMFactory<GUM_SCALAR>::startInterface( const std::string& name, const std::string& extends ) {
       std::string real_name = __addPrefix( name );
-      __checkDuplicateName( real_name );
+      if ( __prm->__classMap.exists(real_name) || __prm->__interfaceMap.exists(real_name) ) {
+        std::stringstream msg;
+        msg << "\"" << real_name << "\" is already used.";
+        GUM_ERROR(DuplicateElement, msg.str());
+      }
       Interface<GUM_SCALAR>* i = 0;
       Interface<GUM_SCALAR>* super = 0;
 
@@ -1210,17 +1218,17 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void PRMFactory<GUM_SCALAR>::startDiscreteType(const std::string &name,
                                                           std::string super) {
+      std::string real_name = __addPrefix(name);
+      if ( __prm->__typeMap.exists(real_name) ) {
+        std::stringstream msg;
+        msg << "\"" << real_name << "\" is already used.";
+        GUM_ERROR(DuplicateElement, msg.str());
+      }
       if (super == "") {
-        std::string real_name = __addPrefix(name);
-        __checkDuplicateName(real_name);
-        Type<GUM_SCALAR> *t =
-            new Type<GUM_SCALAR>(LabelizedVariable(real_name, "", 0));
+        auto t = new Type<GUM_SCALAR>(LabelizedVariable(real_name, "", 0));
         __stack.push_back(t);
       } else {
-        std::string real_name = __addPrefix(name);
-        __checkDuplicateName(real_name);
-        Type<GUM_SCALAR> *t =
-            new Type<GUM_SCALAR>(LabelizedVariable(real_name, "", 0));
+        auto t = new Type<GUM_SCALAR>(LabelizedVariable(real_name, "", 0));
         t->__super = __retrieveType(super);
         t->__label_map = new std::vector<Idx>();
         __stack.push_back(t);
@@ -1289,7 +1297,11 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void PRMFactory<GUM_SCALAR>::startSystem(const std::string &name) {
-      __checkDuplicateName(__addPrefix(name));
+      if ( __prm->__systemMap.exists(name) ) {
+        std::stringstream msg;
+        msg << "\"" << name << "\" is already used.";
+        GUM_ERROR(DuplicateElement, msg.str());
+      }
       System<GUM_SCALAR> *model = new System<GUM_SCALAR>(__addPrefix(name));
       __stack.push_back(model);
     }
@@ -1437,17 +1449,6 @@ namespace gum {
         return full_name;
       } else {
         return str;
-      }
-    }
-
-    template <typename GUM_SCALAR>
-    INLINE void
-    PRMFactory<GUM_SCALAR>::__checkDuplicateName(const std::string &name) {
-      if (__prm->__classMap.exists(name) || __prm->__typeMap.exists(name) ||
-          __prm->__interfaceMap.exists(name) || __prm->__systemMap.exists(name)) {
-        std::stringstream msg;
-        msg << "\"" << name << "\" is already used.";
-        GUM_ERROR(DuplicateElement, msg.str());
       }
     }
 
