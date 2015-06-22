@@ -1,0 +1,50 @@
+class Asia {
+
+    boolean visitToAsia {
+        [ 0.99,  // False
+          0.01 ] // True
+    };
+
+    boolean tuberculosis dependson visitToAsia {
+        // False | True
+        [    0.99, 0.95,  // False
+             0.01, 0.05 ] // True
+    };
+
+    boolean smoking {
+        [ 0.50,  // False
+          0.50 ] // True
+    };
+
+    boolean lungCancer dependson smoking {
+        // False | True => smoking
+        [    0.99, 0.90,  // False
+             0.01, 0.10 ] // True
+    };
+
+    boolean bronchitis dependson smoking {
+        // False | True => smoking
+        [    0.70, 0.40,  // False
+             0.30, 0.60 ] // True
+    };
+
+    boolean tubOrCancer dependson tuberculosis, lungCancer {
+        //      False    ||     True      => tuberculosis
+        //  False | True || False | True  => lungCancer
+        [     1.00, 0.00,     0.00, 0.00,  // False
+              0.00, 1.00,     1.00, 1.00 ] // True
+    };
+
+    boolean positiveXRay dependson tubOrCancer {
+        // False | True => tubOrCancer
+        [ 0.95, 0.02,  // False
+          0.05, 0.98 ] // True
+    };
+
+    boolean dyspnea dependson tubOrCancer, bronchitis {
+        //      False    ||     True      => tubOrCancer
+        //  False | True || False | True  => bronchitis
+        [     0.90, 0.20,     0.30, 0.10,  // False
+              0.10, 0.80,     0.70, 0.90 ] // True
+    };
+}
