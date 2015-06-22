@@ -103,32 +103,39 @@ private:
 } // gum
 
 void testWith(std::string filename){
-  std::cout<<"*********************"<<std::endl;
-  std::cout<<"** test with "<<filename<<std::endl;
-  std::cout<<"*********************"<<std::endl;
+  std::cout<<"========"<<std::endl;
+  std::cout<<"=(test)= "<<filename<< " => ";
 
   gum::BayesNet<double> bn;
+  gum::O3prmBNReader<double> reader(&bn,filename);
+
   try {
-    gum::O3prmBNReader<double> reader(&bn,filename);
     reader.proceed();
-    reader.showElegantErrorsAndWarnings();
   } catch (gum::Exception& e) {
     GUM_SHOWERROR(e);
   }
-  //=readBN();
-  std::cout<<"---------begin TO DOT------------"<<std::endl;
-  std::cout<<bn.toDot()<<std::endl;
-  std::cout<<"---------end   TO DOT------------"<<std::endl;
-  std::cout<<"#nodes : "<<bn.size()<<std::endl;
-  std::cout<<"#arcs : "<<bn.sizeArcs()<<std::endl<<std::endl<<std::endl;
+  if (bn.size()==8) {
+    std::cout<<"OK"<<std::endl;
+    std::cout<<"========"<<std::endl<<std::endl;
+  } else {
+    std::cout<<"Not OK : "<<std::endl;
+    std::cout<<"========"<<std::endl<<std::endl;
+
+    reader.showElegantErrorsAndWarnings();
+    std::cout<<"---------begin TO DOT------------"<<std::endl;
+    std::cout<<bn.toDot()<<std::endl;
+    std::cout<<"---------end   TO DOT------------"<<std::endl;
+    std::cout<<"#nodes : "<<bn.size()<<std::endl;
+    std::cout<<"#arcs : "<<bn.sizeArcs()<<std::endl<<std::endl<<std::endl<<std::endl<<std::endl<<std::endl;
+  }
 }
 
 int main(void) {
-  //testWith("../data/AsiaWithSystem.o3prm");
-  //testWith("../data/AsiaClassOnly.o3prm");
+  testWith("../data/AsiaWithSystem.o3prm");
   testWith("../data/AsiaSystemOnly.o3prm");
-  //testWith("../data/AsiaClassAndSystemSameName.o3prm");
-  //testWith("../data/FileNotFound.o3prm");
+  testWith("../data/AsiaClassOnly.o3prm");
+  testWith("../data/AsiaClassAndSystemSameName.o3prm");
+  testWith("../data/FileNotFound.o3prm");
 
   std::cout<<" ... End of tests ..."<<std::endl;
 }
