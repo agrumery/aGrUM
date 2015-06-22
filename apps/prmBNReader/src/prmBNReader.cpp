@@ -33,7 +33,8 @@ template <typename GUM_SCALAR> class O3prmBNReader : public BNReader<GUM_SCALAR>
           ParseError warn(false,"No instance Asia found but class found. Generating instance.",__filename,-1);
           __errors.add(warn);
           gum::prm::System<double> s("S_Asia");
-          gum::prm::Instance<double> i("a",prm->getClass("Asia"));
+          auto i = new gum::prm::Instance<double>("a",prm->getClass("Asia"));
+          s.add( i );
           __generateBN(s);
         } else {
           ParseError err(true,"Neither instance nor class Asia.",__filename,-1);
