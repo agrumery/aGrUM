@@ -83,24 +83,28 @@ namespace gum {
       template<typename GUM_SCALAR> INLINE
       int
       O3prmReader<GUM_SCALAR>::readFile ( const std::string& file, const std::string& package ) {
-        size_t lastSlashIndex = file.find_last_of ( '/' );
-        Directory dir ( file.substr ( 0, lastSlashIndex + 1 ) );
-
-        if (!dir.isValid()) {
-          __errors.addException("directory doesn't exist.", dir.path());
-          return __errors.count();
-        }
-
-        std::string basename = file.substr(lastSlashIndex + 1);
-
-        std::string absFilename = dir.absolutePath() + basename;
-
         try {
-          if (__parser && __parser->getImports().exists(absFilename))
-            return __errors.count();
-          ;
+          size_t lastSlashIndex = file.find_last_of ( '/' );
 
-          Scanner s(absFilename.c_str());
+          Directory dir ( file.substr ( 0, lastSlashIndex + 1 ) );
+
+          if (!dir.isValid()) {
+            __errors.addException("directory doesn't exist.", dir.path());
+            return __errors.count();
+          }
+
+          std::string basename = file.substr(lastSlashIndex + 1);
+          std::string absFilename = dir.absolutePath() + basename;
+
+          if (__parser && __parser->getImports().exists(absFilename)) {
+            return __errors.count();
+          }
+
+          std::string file_content = __readFile( absFilename );
+
+          unsigned char *buffer = new unsigned char[file_content.length()+1];
+          strcpy( (char *)buffer, file_content.c_str() );
+          Scanner s( buffer, file_content.length()+1 );
 
           if ( ! __parseDone ) {
             __parser = new Parser ( &s );
@@ -114,22 +118,45 @@ namespace gum {
           __parser->addImport ( absFilename );
 
           if (package.length() > 0) {
-              __factory.pushPackage(package);
-              __parser->Parse();
-              __factory.popPackage();
+            __factory.pushPackage(package);
+            __parser->Parse();
+            __factory.popPackage();
           }   else {
-              __parser->Parse();
+            __parser->Parse();
           }
 
           __parseDone = true;
 
           __errors += __parser->errors();
         } catch (gum::Exception &e) {
-          GUM_SHOWERROR(e);
           __errors.addException(e.errorContent(), file);
+          return __errors.count();
         }
 
         return __parser->errors().count();
+      }
+
+      template <typename GUM_SCALAR>
+      std::string
+      O3prmReader<GUM_SCALAR>::__readFile( const std::string& file ) {
+        // read entire file into string
+        std::ifstream is(file, std::ifstream::binary);
+        if (is) {
+          // get length of file:
+          is.seekg(0, is.end);
+          int length = is.tellg();
+          is.seekg(0, is.beg);
+
+          std::string str;
+          str.resize(length, ' '); // reserve space
+          char* begin = &*str.begin();
+
+          is.read(begin, length);
+          is.close();
+
+          return str;
+        }
+        GUM_ERROR( OperationNotAllowed, "Could not open file" );
       }
 
       template <typename GUM_SCALAR>
@@ -145,7 +172,6 @@ namespace gum {
           __parseDone = true;
           __errors += __parser->errors();
         } catch (gum::Exception &e) {
-          GUM_SHOWERROR(e);
           __errors.addException(e.errorContent(), "");
         }
 

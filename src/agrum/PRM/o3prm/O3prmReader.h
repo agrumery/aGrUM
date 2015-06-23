@@ -113,6 +113,9 @@ namespace gum {
         bool __prmTake;
         // Needed when file can't be parse (can not open it for exemple)
         ErrorsContainer __errors;
+
+        // Read a file into a std::string
+        std::string __readFile( const std::string& file );
       };
 
       extern template class O3prmReader<double>;

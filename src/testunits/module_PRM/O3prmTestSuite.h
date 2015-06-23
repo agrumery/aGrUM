@@ -1194,6 +1194,26 @@ namespace gum_tests {
         }
       }
 
+      void testFileNotFound() {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = "ThisFileDoesNotExist.o3prm";
+        std::string package = "";
+        // Act & Assert
+        TS_ASSERT_THROWS_NOTHING( reader.readFile(file, package) );
+        TS_ASSERT_DIFFERS(reader.errors(), (gum::Size) 0);
+      }
+
+      void testFileNotFoundInResDir() {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = "../../../src/testunits/ressources/o3prm/ThisFileDoesNotExist.o3prm";
+        std::string package = "";
+        // Act & Assert
+        TS_ASSERT_THROWS_NOTHING( reader.readFile(file, package) );
+        TS_ASSERT_DIFFERS(reader.errors(), (gum::Size) 0);
+      }
+
   };
 
 } // namespace gum_tests

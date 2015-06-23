@@ -145,47 +145,70 @@ namespace gum {
       bool O3prmrInterpreter::interpretFile(const std::string &filename) {
         m_results.clear();
 
-        // Test if filename exist
-        std::ifstream file_test;
-        file_test.open(filename.c_str());
+        try {
+          std::string file_content = __readFile(filename);
 
-        if (!file_test.is_open()) {
-          addError("file '" + filename + "' not found. Check classPath");
+          delete m_context;
+          m_context = new O3prmrContext<double>(filename);
+          O3prmrContext<double> c(filename);
+
+          // On vérifie la syntaxe
+          unsigned char *buffer = new unsigned char[file_content.length()+1];
+          strcpy( (char *)buffer, file_content.c_str() );
+          Scanner s( buffer, file_content.length()+1 );
+          Parser p(&s);
+          p.setO3prmrContext(&c);
+          p.Parse();
+
+          m_errors = p.errors();
+
+          if (errors() > 0) {
+            return false;
+          }
+
+          // Set paths to search from.
+          delete m_reader;
+          m_reader = new o3prm::O3prmReader<double>();
+
+          for (size_t i = 0; i < m_paths.size(); i++) {
+            m_reader->addClassPath(m_paths[i]);
+          }
+
+          // On vérifie la sémantique.
+          if (!checkSemantic(&c)) {
+            return false;
+          }
+
+          if (isInSyntaxMode()) {
+            return true;
+          } else {
+            return interpret(&c);
+          }
+        } catch (gum::Exception& e) {
           return false;
         }
+      }
 
-        file_test.close();
+      std::string
+      O3prmrInterpreter::__readFile( const std::string& file ) {
+        // read entire file into string
+        std::ifstream is(file, std::ifstream::binary);
+        if (is) {
+          // get length of file:
+          is.seekg(0, is.end);
+          int length = is.tellg();
+          is.seekg(0, is.beg);
 
-        delete m_context;
-        m_context = new O3prmrContext<double>(filename);
-        O3prmrContext<double> c(filename);
+          std::string str;
+          str.resize(length, ' '); // reserve space
+          char* begin = &*str.begin();
 
-        // On vérifie la syntaxe
-        Scanner s(filename.c_str());
-        Parser p(&s);
-        p.setO3prmrContext(&c);
-        p.Parse();
+          is.read(begin, length);
+          is.close();
 
-        m_errors = p.errors();
-
-        if (errors() > 0)
-          return false;
-
-        // Set paths to search from.
-        delete m_reader;
-        m_reader = new o3prm::O3prmReader<double>();
-
-        for (size_t i = 0; i < m_paths.size(); i++)
-          m_reader->addClassPath(m_paths[i]);
-
-        // On vérifie la sémantique.
-        if (!checkSemantic(&c))
-          return false;
-
-        if (isInSyntaxMode())
-          return true;
-        else
-          return interpret(&c);
+          return str;
+        }
+        GUM_ERROR( OperationNotAllowed, "Could not open file" );
       }
 
       bool O3prmrInterpreter::interpretLine(const std::string &line) {
