@@ -437,6 +437,11 @@ namespace gum {
         void __addInverse ( const std::string& name, Instance<GUM_SCALAR>* i );
 
         /**
+         * @brief Starts this instance instantiations.
+         */
+        void __instantiate();
+
+        /**
          * @brief This method is used to propagate instantiations between Instance<GUM_SCALAR>
          *        sharing dependencies.
          *
@@ -477,6 +482,9 @@ namespace gum {
         /// @name Private members.
         // ========================================================================
         /// @{
+
+        /// True if this instance has been instantiated
+        bool __instantiated;
 
         /// The type of this Instance<GUM_SCALAR>.
         Class<GUM_SCALAR>* __type;

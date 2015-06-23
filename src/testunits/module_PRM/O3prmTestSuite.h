@@ -1194,6 +1194,73 @@ namespace gum_tests {
         }
       }
 
+      void testVisitAsiaTwoClassesBN() {
+        try {
+          // Arrange
+          gum::prm::o3prm::O3prmReader<double> reader;
+          std::string file = "../../../src/testunits/ressources/o3prm/AsiaClassAndSystemWithTwoClasses.o3prm";
+          std::string package = "";
+          reader.readFile(file, package);
+          auto prm = reader.prm();
+          gum::prm::Class<double> const * asia = nullptr;
+          // Act
+          TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass("VisitAsia") ) );
+          // Assert
+          TS_ASSERT_EQUALS( asia->attributes().size(), (gum::Size) 2 );
+          TS_ASSERT_EQUALS( asia->dag().sizeArcs(), (gum::Size) 1 );
+          delete prm;
+        } catch (gum::Exception& e) {
+          TS_ASSERT(false);
+        }
+      }
+
+      void testAsiaTwoClassesBN() {
+        try {
+          // Arrange
+          gum::prm::o3prm::O3prmReader<double> reader;
+          std::string file = "../../../src/testunits/ressources/o3prm/AsiaClassAndSystemWithTwoClasses.o3prm";
+          std::string package = "";
+          reader.readFile(file, package);
+          auto prm = reader.prm();
+          gum::prm::Class<double> const * asia = nullptr;
+          // Act
+          TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass("Asia") ) );
+          // Assert
+          TS_ASSERT_EQUALS( asia->attributes().size(), (gum::Size) 6 );
+          TS_ASSERT_EQUALS( asia->referenceSlots().size(), (gum::Size) 1 );
+          TS_ASSERT_EQUALS( asia->dag().sizeArcs(), (gum::Size) 7 );
+          delete prm;
+        } catch (gum::Exception& e) {
+          TS_ASSERT(false);
+        }
+      }
+
+      void testAsiaTwoClassBNGrd() {
+        try {
+          // Arrange
+          gum::prm::o3prm::O3prmReader<double> reader;
+          std::string file = "../../../src/testunits/ressources/o3prm/AsiaClassAndSystemWithTwoClasses.o3prm";
+          std::string package = "";
+          reader.readFile(file, package);
+          auto prm = reader.prm();
+          auto &sys = prm->system( "Asia" );
+          //sys.instantiate();
+          auto bn = new gum::BayesNet<double>("Asia");
+          gum::BayesNetFactory<double> factory(bn);
+          // Act
+          TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
+          // Assert
+          TS_ASSERT_EQUALS( bn->size(), (gum::Size) 8 );
+          TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size) 8 );
+          delete prm;
+          delete bn;
+        } catch (gum::Exception& e) {
+          TS_ASSERT(false);
+          GUM_TRACE( e.errorContent() );
+          GUM_TRACE( e.errorCallStack() );
+        }
+      }
+
       void testFileNotFound() {
         // Arrange
         gum::prm::o3prm::O3prmReader<double> reader;

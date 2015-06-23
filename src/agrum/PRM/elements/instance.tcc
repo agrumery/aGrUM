@@ -32,7 +32,7 @@ namespace gum {
   namespace prm {
     template<typename GUM_SCALAR>
     Instance<GUM_SCALAR>::Instance( const std::string& name, Class<GUM_SCALAR>& type ) :
-      PRMObject( name ), __type( &type ) {
+      PRMObject( name ), __instantiated(false), __type( &type ) {
       GUM_CONSTRUCTOR( Instance );
 
       // First we create attributes for each aggregate in type
@@ -58,6 +58,14 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR> void Instance<GUM_SCALAR>::instantiate() {
+      if ( not __instantiated ) {
+        __instantiated = true;
+        __instantiate();
+      }
+    }
+
+    template <typename GUM_SCALAR> void Instance<GUM_SCALAR>::__instantiate() {
+
       // First retrieving any referenced instance
       for( const auto chain : type().slotChains() ) {
         __instantiateSlotChain( chain );
