@@ -12,7 +12,7 @@ class VisitAsia {
     };
 }
 
-class Asia {
+class AsiaClass {
   VisitAsia v;
 
     boolean smoking {

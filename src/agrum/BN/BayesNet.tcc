@@ -424,50 +424,6 @@ namespace gum {
     return output;
   }
 
-  template <typename GUM_SCALAR>
-  std::string BayesNet<GUM_SCALAR>::toDot(void) const {
-    std::stringstream output;
-    output << "digraph \"";
-
-    std::string bn_name;
-
-    try {
-      bn_name = this->property("name");
-    } catch (NotFound &) {
-      bn_name = "no_name";
-    }
-
-    output << bn_name << "\" {" << std::endl;
-    output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];"
-           << std::endl;
-    output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl
-           << std::endl;
-
-    for (auto node : nodes()) {
-      output << "\"" << variable(node).name() << "\" [comment=\"" << node << ":"
-             << variable(node) << "\"];" << std::endl;
-    }
-
-    output << std::endl;
-
-    std::string tab = "  ";
-
-    for (auto node : nodes()) {
-      if (dag().children(node).size() > 0) {
-        for (auto child : dag().children(node)) {
-          output << tab << "\"" << variable(node).name() << "\" -> "
-                 << "\"" << variable(child).name() << "\";" << std::endl;
-        }
-      } else if (dag().parents(node).size() == 0) {
-        output << tab << "\"" << variable(node).name() << "\";" << std::endl;
-      }
-    }
-
-    output << "}" << std::endl;
-
-    return output.str();
-  }
-
   /// begin Multiple Change for all CPTs
   template <typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::beginTopologyTransformation() {

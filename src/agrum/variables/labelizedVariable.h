@@ -145,8 +145,9 @@ namespace gum {
     const Sequence<std::string> &labels() const;
 
     /// returns the type of variable
-
     virtual VarType varType(void) const;
+
+    virtual const std::string domain(void) const;
 
     /// @}
 

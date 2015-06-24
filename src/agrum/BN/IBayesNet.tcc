@@ -143,7 +143,7 @@ namespace gum {
 
     for (auto node : nodes())
       output << "\"" << variable(node).name() << "\" [comment=\"" << node << ":"
-             << variable(node) << "\"];" << std::endl;
+             << variable(node).toString(true) << "\"];" << std::endl; // using description for printing variable(node)
 
     output << std::endl;
 

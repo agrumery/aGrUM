@@ -57,9 +57,9 @@ namespace gum {
   // ==========================================================================
   RangeVariable::~RangeVariable() { GUM_DESTRUCTOR(RangeVariable); }
 
-  const std::string RangeVariable::toString() const {
+  const std::string RangeVariable::domain() const {
     std::stringstream s;
-    s << name() << "[" << minVal() << "-" << maxVal() << "]";
+    s << "[" << minVal() << "-" << maxVal() << "]";
     return s.str();
   }
 } /* namespace gum */

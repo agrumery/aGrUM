@@ -23,6 +23,22 @@
 #include <agrum/variables/labelizedVariable.inl>
 #endif /* GUM_NO_INLINE */
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+namespace gum {
+const std::string LabelizedVariable::domain(void) const {
+  std::stringstream s;
+  s << "<";
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+  if (domainSize() > 0) {
+    s << label(0);
+
+    for (Idx i = 1; i < domainSize(); ++i) {
+      s << ",";
+      s << label(i);
+    }
+  }
+
+  s << ">";
+
+  return s.str();
+}
+}// gum

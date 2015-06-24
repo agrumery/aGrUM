@@ -26,7 +26,9 @@ namespace gum {
       prm::o3prm::O3prmReader<double> reader;
       reader.readFile(__filename);
       gum::prm::PRM<double> *prm = reader.prm();
+      std::cout<<"HOP"<<std::endl;
       __errors = reader.errorsContainer();
+      std::cout<<"HOP"<<std::endl;
 
       if (errors() == 0) {
         if (prm->isSystem("Asia")) {
@@ -61,7 +63,7 @@ namespace gum {
     /// line of ith error or warning
     unsigned int errLine(unsigned int i) { return __errors.error(i).line; }
     /// col of ith error or warning
-    unsigned int errCol(unsigned int i) { return __errors.error(i).colomn; }
+    unsigned int errCol(unsigned int i) { return __errors.error(i).column; }
     /// type of ith error or warning
     bool errIsError(unsigned int i) { return __errors.error(i).is_error; }
     /// message of ith error or warning
@@ -128,24 +130,55 @@ void testWith(std::string filename, gum::Size nbNode) {
   }
 }
 
+std::string getVariableName(std::string path,std::string type,std::string name) {
+  return name;
+}
 void showBN(std::string filename) {
-  try {
-    gum::BayesNet<double> bn;
-    gum::O3prmBNReader<double> reader(&bn, filename);
-    reader.proceed();
+  gum::Set<std::string> names;
 
-    std::regex re("([^.]*)+");
+  try {
+    std::cout<<"HAHA"<<std::endl;
+    gum::BayesNet<double> bn;
+    std::cout<<"HAHA"<<std::endl;
+    gum::O3prmBNReader<double> reader(&bn, filename);
+    std::cout<<"HAHA"<<std::endl;
+    reader.proceed();
+    std::cout<<"HAHA"<<std::endl;
+    reader.showElegantErrorsAndWarnings();
+    std::cout<<"HIHI"<<std::endl;
+
+    std::regex re("([^\\(]+)(\\([^\\)]+\\))(.*)");
     std::smatch match;
     for (auto node : bn.nodes()) {
+      // keeping the complete name in description
+      bn.variable(node).setDescription(bn.variable(node).name());
+      std::cout<<"HOHO"<<std::endl;
+
+      // trying to simplify the name
       if (std::regex_search(bn.variable(node).name(), match, re)) {
-        if (match.size() > 1) {
-          for (int i = 1; i < match.size(); i++) {
-            std::cout << match.str(i) << " - ";
+        std::cout<<"HEHE"<<std::endl;
+        if (match.size() != 4) {
+          std::cout<<"ERROR : "<<bn.variable(node).name()<<std::endl;
+        } else {
+          std::string newNameRadical=getVariableName(match.str(1),match.str(2),match.str(3));
+          std::string newName=newNameRadical;
+          std::cout<<" trying to add "<<newName<<std::endl;
+
+          // forcing newName to be unique
+          int num=0;
+          while (names.contains(newName)) {
+            newName=newNameRadical+std::to_string(++num);
           }
-          std::cout << std::endl;
+          std::cout<<" adding "<<newName<<std::endl;
+          names.insert(newName);
+
+          bn.changeVariableName(node,newName);
         }
+
       }
+      std::cout << std::endl;
     }
+
     std::cout << bn.toDot() << std::endl;
   } catch (gum::Exception &e) {
     std::cout << "========" << std::endl;
@@ -155,13 +188,17 @@ void showBN(std::string filename) {
 }
 
 int main(void) {
+  /*
   testWith("../data/AsiaWithSystem.o3prm", 8);
   testWith("../data/AsiaSystemOnly.o3prm", 8);
   testWith("../data/AsiaClassOnly.o3prm", 8);
   testWith("../data/AsiaClassAndSystemSameName.o3prm", 8);
   testWith("../data/FileNotFound.o3prm", 0);
   std::cout << " ... End of tests ..." << std::endl;
+  */
 
-  //showBN("../data/AsiaWithSystem.o3prm");
-   showBN("../data/AsiaClassAndSystemWithTwoClasses.o3prm");
+  showBN("../data/AsiaWithSystem.o3prm");
+  //showBN("../data/AsiaClassAndSystemWithTwoClasses.o3prm");
 }
+
+

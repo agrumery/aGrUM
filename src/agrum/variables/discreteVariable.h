@@ -138,7 +138,11 @@ namespace gum {
     virtual Idx index(const std::string &label) const = 0;
 
     /// string version of *this
-    virtual const std::string toString() const;
+    /// @param useDescription is true if toString use description instead of name
+    const std::string toString(bool useDescription=false) const ;
+
+    /// string represent the domain of the variable
+    virtual const std::string domain() const = 0;
 
     protected:
     /// (protected) Default constructor

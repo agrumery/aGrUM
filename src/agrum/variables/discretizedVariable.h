@@ -173,7 +173,8 @@ namespace gum {
      *
      * @return the size of the random discrete variable domain
      */
-    virtual Size domainSize() const;
+    virtual Size domainSize(void) const;
+    virtual const std::string domain(void) const;
 
     /// from the index to the tick.
     /// @throws NotFound

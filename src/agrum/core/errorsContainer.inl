@@ -90,7 +90,7 @@ namespace gum {
   int ErrorsContainer::line(int i) const { return errors[i].line; }
 
   INLINE
-  int ErrorsContainer::col(int i) const { return errors[i].colomn; }
+  int ErrorsContainer::col(int i) const { return errors[i].column; }
 
   INLINE
   std::wstring ErrorsContainer::msg(int i) const { return widen(errors[i].msg); }

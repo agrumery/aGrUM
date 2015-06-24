@@ -36,19 +36,35 @@
 namespace gum {
 
   ParseError::ParseError(bool is_error, const std::string &msg, int line)
-      : is_error(is_error), line(line), colomn(-1), msg(msg), filename(""),
+      : is_error(is_error), line(line), column(-1), msg(msg), filename(""),
         code("") {}
 
   ParseError::ParseError(bool is_error, const std::string &msg,
                          const std::string &filename, int line, int col)
-      : is_error(is_error), line(line), colomn(col), msg(msg), filename(filename),
+      : is_error(is_error), line(line), column(col), msg(msg), filename(filename),
         code("") {}
 
   ParseError::ParseError(bool is_error, const std::string &msg,
                          const std::string &filename, const std::string &code,
                          int line, int col)
-      : is_error(is_error), line(line), colomn(col), msg(msg), filename(filename),
+      : is_error(is_error), line(line), column(col), msg(msg), filename(filename),
         code(code) {}
+
+  ParseError::ParseError(const ParseError &cont) {
+   this->operator=(cont);
+  }
+
+  ParseError ParseError::operator=(const ParseError &cont) {
+    if (this != &cont) {
+      is_error = cont.is_error;
+      line = cont.line;
+      column = cont.column; // default 0
+      msg = cont.msg;
+      filename = cont.filename; // default ""
+      code == cont.code;        // default ""
+    }
+    return *this;
+  }
 
   ///
   std::string ParseError::toString() const {
@@ -78,11 +94,10 @@ namespace gum {
 
     std::ostringstream s;
 
-    s << filename << ":" << line << ": " << (is_error ? "error" : "warning") << "\n";
     s << code << "\n";
 
-    if (colomn > 0)
-      s << std::string(colomn - 1, ' ') << "^";
+    if (column > 0)
+      s << std::string(column - 1, ' ') << "^";
 
     s << msg << "\n";
 

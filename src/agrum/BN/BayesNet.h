@@ -101,9 +101,6 @@ namespace gum {
      */
     virtual const VariableNodeMap &variableNodeMap() const /* override */;
 
-    /// @return Returns a dot representation of this BayesNet.
-    virtual std::string toDot(void) const /* override */;
-
     /**
      * Add a variable, it's associate node and it's CPT. The id of the new
      * variable is automatically generated.

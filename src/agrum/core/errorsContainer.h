@@ -45,10 +45,13 @@ namespace gum {
                int line, int col = 0);
     ParseError(bool is_error, const std::string &msg, const std::string &filename,
                const std::string &code, int line, int col = 0);
+    ParseError(const ParseError &cont);
+
+    ParseError operator=(const ParseError& cont);
 
     bool is_error;
     int line;
-    int colomn; // default 0
+    int column; // default 0
     std::string msg;
     std::string filename;     // default ""
     mutable std::string code; // default ""

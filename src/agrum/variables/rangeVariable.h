@@ -140,7 +140,7 @@ namespace gum {
 
     /// @}
 
-    virtual const std::string toString() const;
+    virtual const std::string domain() const;
 
     private:
     /// @name Private Members.

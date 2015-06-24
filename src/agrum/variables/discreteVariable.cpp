@@ -28,20 +28,10 @@
 
 namespace gum {
 
-  const std::string DiscreteVariable::toString() const {
+  const std::string DiscreteVariable::toString(bool useDescription) const {
     std::stringstream s;
-    s << name() << "<";
-
-    if (domainSize() > 0) {
-      s << label(0);
-
-      for (Idx i = 1; i < domainSize(); ++i) {
-        s << ",";
-        s << label(i);
-      }
-    }
-
-    s << ">";
+    s << (useDescription?description():name());
+    s << domain();
 
     return s.str();
   }

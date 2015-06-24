@@ -269,6 +269,26 @@ namespace gum {
 
     return __ticks[i];
   }
+
+  template <typename T_TICKS>
+  const std::string DiscretizedVariable<T_TICKS>::domain(void) const {
+  std::stringstream s;
+  s << "<";
+
+  if (domainSize() > 0) {
+    s << label(0);
+
+    for (Idx i = 1; i < domainSize(); ++i) {
+      s << ",";
+      s << label(i);
+    }
+  }
+
+  s << ">";
+
+  return s.str();
+}
+
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
