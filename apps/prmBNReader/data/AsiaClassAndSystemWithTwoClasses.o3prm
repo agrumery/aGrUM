@@ -55,6 +55,6 @@ class AsiaClass {
 
 system Asia {
   VisitAsia visit;
-  Asia a;
+  Plop a;
   a.v = visit;
 }

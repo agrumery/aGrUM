@@ -26,9 +26,7 @@ namespace gum {
       prm::o3prm::O3prmReader<double> reader;
       reader.readFile(__filename);
       gum::prm::PRM<double> *prm = reader.prm();
-      std::cout<<"HOP"<<std::endl;
       __errors = reader.errorsContainer();
-      std::cout<<"HOP"<<std::endl;
 
       if (errors() == 0) {
         if (prm->isSystem("Asia")) {
@@ -137,39 +135,34 @@ void showBN(std::string filename) {
   gum::Set<std::string> names;
 
   try {
-    std::cout<<"HAHA"<<std::endl;
     gum::BayesNet<double> bn;
-    std::cout<<"HAHA"<<std::endl;
     gum::O3prmBNReader<double> reader(&bn, filename);
-    std::cout<<"HAHA"<<std::endl;
+    std::cout<<"proceeding ..."<<std::endl;
     reader.proceed();
-    std::cout<<"HAHA"<<std::endl;
+    std::cout<<"done ..."<<std::endl;
     reader.showElegantErrorsAndWarnings();
-    std::cout<<"HIHI"<<std::endl;
 
     std::regex re("([^\\(]+)(\\([^\\)]+\\))(.*)");
     std::smatch match;
     for (auto node : bn.nodes()) {
       // keeping the complete name in description
       bn.variable(node).setDescription(bn.variable(node).name());
-      std::cout<<"HOHO"<<std::endl;
 
       // trying to simplify the name
       if (std::regex_search(bn.variable(node).name(), match, re)) {
-        std::cout<<"HEHE"<<std::endl;
         if (match.size() != 4) {
           std::cout<<"ERROR : "<<bn.variable(node).name()<<std::endl;
         } else {
           std::string newNameRadical=getVariableName(match.str(1),match.str(2),match.str(3));
           std::string newName=newNameRadical;
-          std::cout<<" trying to add "<<newName<<std::endl;
+          std::cout<<"  + trying to add "<<newName<<std::endl;
 
           // forcing newName to be unique
           int num=0;
           while (names.contains(newName)) {
             newName=newNameRadical+std::to_string(++num);
           }
-          std::cout<<" adding "<<newName<<std::endl;
+          std::cout<<"      => adding "<<newName<<std::endl;
           names.insert(newName);
 
           bn.changeVariableName(node,newName);
@@ -197,8 +190,8 @@ int main(void) {
   std::cout << " ... End of tests ..." << std::endl;
   */
 
-  showBN("../data/AsiaWithSystem.o3prm");
-  //showBN("../data/AsiaClassAndSystemWithTwoClasses.o3prm");
+  //showBN("../data/AsiaWithSystem.o3prm");
+  showBN("../data/AsiaClassAndSystemWithTwoClasses.o3prm");
 }
 
 
