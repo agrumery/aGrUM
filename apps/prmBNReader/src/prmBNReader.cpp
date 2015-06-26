@@ -26,6 +26,7 @@ namespace gum {
       prm::o3prm::O3prmReader<double> reader;
       reader.readFile(__filename);
       gum::prm::PRM<double> *prm = reader.prm();
+      reader.showElegantErrorsAndWarnings();
       __errors = reader.errorsContainer();
 
       if (errors() == 0) {
@@ -137,42 +138,43 @@ void showBN(std::string filename) {
   try {
     gum::BayesNet<double> bn;
     gum::O3prmBNReader<double> reader(&bn, filename);
-    std::cout<<"proceeding ..."<<std::endl;
     reader.proceed();
-    std::cout<<"done ..."<<std::endl;
-    reader.showElegantErrorsAndWarnings();
 
-    std::regex re("([^\\(]+)(\\([^\\)]+\\))(.*)");
-    std::smatch match;
-    for (auto node : bn.nodes()) {
-      // keeping the complete name in description
-      bn.variable(node).setDescription(bn.variable(node).name());
+    if (reader.errors()==0) {
+     std::regex re("([^\\(]+)(\\([^\\)]+\\))(.*)");
+     std::smatch match;
+     for (auto node : bn.nodes()) {
+       // keeping the complete name in description
+       bn.variable(node).setDescription(bn.variable(node).name());
 
-      // trying to simplify the name
-      if (std::regex_search(bn.variable(node).name(), match, re)) {
-        if (match.size() != 4) {
-          std::cout<<"ERROR : "<<bn.variable(node).name()<<std::endl;
-        } else {
-          std::string newNameRadical=getVariableName(match.str(1),match.str(2),match.str(3));
-          std::string newName=newNameRadical;
-          std::cout<<"  + trying to add "<<newName<<std::endl;
+       // trying to simplify the name
+       if (std::regex_search(bn.variable(node).name(), match, re)) {
+         if (match.size() != 4) {
+           std::cout<<"ERROR : "<<bn.variable(node).name()<<std::endl;
+         } else {
+           std::string newNameRadical=getVariableName(match.str(1),match.str(2),match.str(3));
+           std::string newName=newNameRadical;
+           std::cout<<"  + trying to add "<<newName<<std::endl;
 
-          // forcing newName to be unique
-          int num=0;
-          while (names.contains(newName)) {
-            newName=newNameRadical+std::to_string(++num);
-          }
-          std::cout<<"      => adding "<<newName<<std::endl;
-          names.insert(newName);
+           // forcing newName to be unique
+           int num=0;
+           while (names.contains(newName)) {
+             newName=newNameRadical+std::to_string(++num);
+           }
+           std::cout<<"      => adding "<<newName<<std::endl;
+           names.insert(newName);
 
-          bn.changeVariableName(node,newName);
-        }
+           bn.changeVariableName(node,newName);
+         }
 
-      }
-      std::cout << std::endl;
-    }
+       }
+       std::cout << std::endl;
+     }
 
     std::cout << bn.toDot() << std::endl;
+    } else {
+       std::cout<<std::endl<<" Compiling \""<<filename<<"\" failed."<<std::endl<<std::endl;
+     }
   } catch (gum::Exception &e) {
     std::cout << "========" << std::endl;
     GUM_SHOWERROR(e);

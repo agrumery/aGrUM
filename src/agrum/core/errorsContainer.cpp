@@ -50,19 +50,25 @@ namespace gum {
       : is_error(is_error), line(line), column(col), msg(msg), filename(filename),
         code(code) {}
 
-  ParseError::ParseError(const ParseError &cont) {
-   this->operator=(cont);
+  ParseError::ParseError(const ParseError &err) {
+    is_error = err.is_error;
+    line = err.line;
+    column = err.column; // default 0
+    msg = err.msg;
+    filename = err.filename; // default ""
+    code == err.code;        // default ""
   }
 
-  ParseError ParseError::operator=(const ParseError &cont) {
-    if (this != &cont) {
-      is_error = cont.is_error;
-      line = cont.line;
-      column = cont.column; // default 0
-      msg = cont.msg;
-      filename = cont.filename; // default ""
-      code == cont.code;        // default ""
+  ParseError ParseError::operator=(const ParseError &err) {
+    if (this != &err) {
+      is_error = err.is_error;
+      line = err.line;
+      column = err.column; // default 0
+      msg = err.msg;
+      filename = err.filename; // default ""
+      code == err.code;        // default ""
     }
+
     return *this;
   }
 
@@ -71,9 +77,13 @@ namespace gum {
     std::ostringstream s;
 
     if (!filename.empty())
-      s << filename << ":" << line << ": ";
-    else
-      s << line << " : ";
+      s << filename << ":";
+
+    if (line > 0)
+      s << line << ": ";
+
+    if (column > 0)
+      s << column << " : ";
 
     s << (is_error ? "error" : "warning") << " : " << msg;
 
@@ -82,8 +92,7 @@ namespace gum {
 
   ///
   std::string ParseError::toElegantString() const {
-    if (filename.empty())
-      return toString();
+    std::cout<<toString()<<std::endl;
 
     if (code.empty()) {
       std::ifstream ifs(filename.c_str());
@@ -98,8 +107,6 @@ namespace gum {
 
     if (column > 0)
       s << std::string(column - 1, ' ') << "^";
-
-    s << msg << "\n";
 
     return s.str();
   }
@@ -130,7 +137,6 @@ namespace gum {
   }
 
   ErrorsContainer::ErrorsContainer(const ErrorsContainer &cont) {
-
     error_count = cont.error_count;
     warning_count = cont.warning_count;
     errors.clear();
