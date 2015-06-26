@@ -32,6 +32,7 @@
 #include <agrum/multidim/operators/multiDimCombineAndProjectDefault.h>
 #include <agrum/graphs/binaryJoinTreeConverterDefault.h>
 #include <agrum/graphs/triangulations/orderedTriangulation.h>
+#include <agrum/BN/inference/barrenNodesFinder.h>
 
 // to ease IDE parsers
 #include <agrum/BN/inference/BayesNetInference.h>
@@ -268,6 +269,9 @@ namespace gum {
     // connected component containing the variable of the evidence
     NodeId pot_clique = __node_to_clique[var];
     __setRequiredInference(pot_clique, pot_clique);
+
+    // indicate that we shall recompute the set of barren nodes/potentials
+    __need_recompute_barren_potentials = true;
   }
   
 
@@ -300,6 +304,9 @@ namespace gum {
 
     for (auto &elt : __diffused_cliques)
       elt.second = false;
+
+    // indicate that we shall recompute the set of barren nodes/potentials
+    __need_recompute_barren_potentials = true;
   }
 
   
@@ -381,6 +388,9 @@ namespace gum {
       // indicate that, now, new inference is required
       __setRequiredInference(clique_id, clique_id);
     }
+
+    // indicate that we shall recompute the set of barren nodes/potentials
+    __need_recompute_barren_potentials = true;
   }
 
   
@@ -582,12 +592,19 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void LazyPropagationNew<GUM_SCALAR>::__produceMessage(NodeId from_id,
                                                                NodeId to_id) {
+    // get the set of barren potentials for computing the message
+    const __PotentialSet& barren_pots =
+      __barren_potentials[Arc ( from_id, to_id )];
+    
     // get the potentials of the clique
-    const List<const Potential<GUM_SCALAR> *> &clique_pot =
+    const List<const Potential<GUM_SCALAR> *>& clique_pot =
       __clique_potentials[from_id];
     __PotentialSet pot_list(clique_pot.size());
-    for (const auto &cli : clique_pot)
-      pot_list.insert(cli);
+    for (const auto &cli : clique_pot) {
+      if ( ! barren_pots.exists ( cli ) ) {
+        pot_list.insert( cli );
+      }
+    }
 
     // add the evidence to the clique potentials
     const List<const Potential<GUM_SCALAR> *> &evidence_list =
@@ -625,6 +642,24 @@ namespace gum {
     __sep_potentials[Arc(from_id, to_id)] = pot_list;
   }
 
+
+  /// compute barren nodes if necessary
+  template <typename GUM_SCALAR>
+  INLINE void LazyPropagationNew<GUM_SCALAR>::__computeBarrenPotentials () {
+    if ( __need_recompute_barren_potentials ) {
+      BarrenNodesFinder finder ( this->bn().dag () );
+
+      // insert the evidence into the finder
+      finder.setEvidence ( __soft_evidence_nodes + __hard_evidence_nodes );
+
+      // compute the barren potentials w.r.t. evidence
+      __barren_potentials =
+        std::move ( finder.barrenPotentials ( *__JT, this->bn() ) );
+      
+      __need_recompute_barren_potentials = false;
+    }
+  }
+    
   
   // performs the __collect phase of Lazy Propagation
   template <typename GUM_SCALAR>
@@ -654,6 +689,9 @@ namespace gum {
     // clean-up the area that will receive the __collect
     __setRequiredInference(clique, clique);
 
+    // compute barren nodes if necessary
+    __computeBarrenPotentials ();
+    
     // perform the __collect
     __last_collect_clique = clique;
 
@@ -726,6 +764,9 @@ namespace gum {
         elt.second = false;
       }
     }
+    
+    // compute barren nodes if necessary
+    __computeBarrenPotentials ();
 
     // perform the __collect in all connected components of the junction tree
     for (const auto &elt : __collected_cliques)
@@ -748,6 +789,9 @@ namespace gum {
   // returns the marginal a posteriori proba of a given node
   template <typename GUM_SCALAR>
   void LazyPropagationNew<GUM_SCALAR>::__aPosterioriMarginal(NodeId id, Potential<GUM_SCALAR> &marginal) {
+    // compute barren nodes if necessary
+    __computeBarrenPotentials ();
+
     // check if we performed a __collect on id, else we need some
     NodeId clique_of_id = __node_to_clique[id];
 
@@ -835,6 +879,9 @@ namespace gum {
   void
   LazyPropagationNew<GUM_SCALAR>::__aPosterioriJoint(const NodeSet &ids,
                                                      Potential<GUM_SCALAR> &marginal) {
+    // compute barren nodes if necessary
+    __computeBarrenPotentials ();
+    
     // find a clique that contains all the nodes in ids. To do so, we loop over
     // all the cliques and check wheither there exists one with this feature
     NodeId clique_of_ids = 0;

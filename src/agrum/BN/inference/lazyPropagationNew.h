@@ -54,7 +54,6 @@ namespace gum {
     /// @{
 
     /// default constructor
-
     LazyPropagationNew(const IBayesNet<GUM_SCALAR> &BN);
 
     /// constructor with a given elimination sequence
@@ -115,7 +114,8 @@ namespace gum {
     /** @warning right now, method joint cannot compute joint a posteriori
      * probabilities of every nodeset. In cases where it is not able to perform
      * properly this task, it will raise a OperationNotAllowed exception.
-     * @warning : joint computes a new Potential<GUM_SCALAR> and returns a pointer :
+     * @warning : joint computes a new Potential<GUM_SCALAR> and returns
+     * a pointer :
      * do not forget to free it !
      * @return a pointer to a dynamically allocated Potential<GUM_SCALAR>
      * @throw OperationNotAllowed
@@ -137,7 +137,8 @@ namespace gum {
     /** Mutual information between X and Y
     * @see http://en.wikipedia.org/wiki/Mutual_information
     *
-    * @warning Due to limitation of @ref joint, may not be able to compute this value
+    * @warning Due to limitation of @ref joint, may not be able to compute
+    * this value
     * @throw OperationNotAllowed in these cases
     */
     GUM_SCALAR I(NodeId X, NodeId Y);
@@ -145,7 +146,8 @@ namespace gum {
     /** Variation of information between X and Y
     * @see http://en.wikipedia.org/wiki/Variation_of_information
     *
-    * @warning Due to limitation of @ref joint, may not be able to compute this value
+    * @warning Due to limitation of @ref joint, may not be able to compute
+    * this value
     * @throw OperationNotAllowed in these cases
     */
     GUM_SCALAR VI(NodeId X, NodeId Y);
@@ -190,6 +192,15 @@ namespace gum {
 
     /// the set of nodes that received soft evidences
     NodeSet __soft_evidence_nodes;
+
+    /// the set of barren potentials: can be discarded from computations
+    /** Assigns a set (possibly empty) of barren potentials to each message
+     * sent in the junction tree. A message is represented by an arc from
+     * one clique (id) to another. */
+    ArcProperty<__PotentialSet> __barren_potentials;
+
+    /// indicates whether we shall recompute barren nodes
+    bool __need_recompute_barren_potentials { true };
 
     /// the list of all potentials created during a propagation phase
     __PotentialSet __created_potentials;
@@ -273,6 +284,9 @@ namespace gum {
     /// remove barren variables from a set of potentials
     void __removeBarrenVariables ( __PotentialSet& pot_list,
                                    Set<const DiscreteVariable *>& del_vars );
+
+    /// compute barren nodes if necessary
+    void __computeBarrenPotentials ();
     
     /// avoid copy constructors
     LazyPropagationNew(const LazyPropagationNew<GUM_SCALAR> &);

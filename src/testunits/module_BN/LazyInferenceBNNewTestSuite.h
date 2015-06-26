@@ -258,6 +258,7 @@ namespace gum_tests {
         TS_ASSERT( equalPotentials ( inf1.posterior(node),inf2.posterior(node) ) );
       }
 
+
       std::vector<gum::NodeId> ev_nodes { 2, 6, 7, 10, 12, 14, 16 };
       gum::List<const gum::Potential<float>*> evidences;
       for ( const auto node : ev_nodes ) {
