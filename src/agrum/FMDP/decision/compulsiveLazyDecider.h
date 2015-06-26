@@ -77,10 +77,10 @@ namespace gum {
     public:
         void checkState( const Instantiation& newState ){
           if( !__initialized ){
-            __counter.reset(reachedState);
+            __counter.reset(newState);
             __initialized = true;
           } else
-            __counter.incState(reachedState);
+            __counter.incState(newState);
         }
 
     private :

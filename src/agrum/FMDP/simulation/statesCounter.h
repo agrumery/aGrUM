@@ -28,8 +28,10 @@
 #ifndef GUM_STATES_COUNTER_H
 #define GUM_STATES_COUNTER_H
 // =========================================================================
-// =========================================================================
 #include <agrum/core/sequence.h>
+// =========================================================================
+#include <agrum/FMDP/learning/datastructure/IVisitableGraphLearner.h>
+// =========================================================================
 #include <agrum/multidim/multiDimFunctionGraph.h>
 // =========================================================================
 
@@ -41,7 +43,7 @@ namespace gum {
    * @brief Provides the necessary to check whether or not states have been already visited.
    * @ingroup fmdp_group
    */
-  class StatesCounter {
+  class StatesCounter : public IVisitableGraphLearner {
 
     public:
 
@@ -71,15 +73,56 @@ namespace gum {
 
         void reset( const Instantiation& );
 
-        const MultiDimFunctionGraph<Idx>* counter();
+        const MultiDimFunctionGraph<int>* counter();
 
       /// @}
+
+
+
+      // ###################################################################
+      /// @name Visit Methods
+      // ###################################################################
+      /// @{
+    public :
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        NodeId root() const { return __counter->root(); }
+
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        bool isTerminal(NodeId ni) const { return __counter->isTerminalNode(ni); }
+
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        const DiscreteVariable* nodeVar(NodeId ni) const { return __counter->node(ni)->nodeVar(); }
+
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        NodeId nodeSon(NodeId ni, Idx modality) const { return __counter->node(ni)->son(modality); }
+
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        Idx nodeNbObservation(NodeId ni) const { return __counter->nodeValue(ni); }
+
+        void insertSetOfVars( MultiDimFunctionGraph<double>* ret ) const {
+        for( SequenceIteratorSafe<const DiscreteVariable*> varIter = __counter->variablesSequence().beginSafe();
+                varIter != __counter->variablesSequence().endSafe(); ++varIter)
+          ret->add(**varIter);
+      }
+
+
+    /// @}
 
   private:
 
       void __incState(const Instantiation&, NodeId, Idx, Idx );
 
-      MultiDimFunctionGraph<Idx>* __counter;
+      MultiDimFunctionGraph<int>* __counter;
 
       Set<Instantiation*> __visitedStates;
   };

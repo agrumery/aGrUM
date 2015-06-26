@@ -35,6 +35,7 @@
 #include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
 #include <agrum/FMDP/planning/structuredPlaner.h>
 #include <agrum/FMDP/planning/abstractRMaxPlaner.h>
+#include <agrum/FMDP/planning/rMaxPlaner.h>
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
 #include <agrum/FMDP/decision/E_GreedyDecider.h>
 #include <agrum/FMDP/decision/lazyDecider.h>
@@ -138,8 +139,9 @@ namespace gum {
                                        Idx nbValueIterationStep = 10 ){
           bool actionReward = true;
           ILearningStrategy* ls = new FMDPLearner<GTEST,GTEST,IMDDILEARNER>(attributeSelectionThreshold, actionReward, similarityThreshold);
-          IPlanningStrategy<double>* ps = AbstractRMaxPlaner::ReducedAndOrderedInstance(ls, discountFactor, epsilon);
-          IDecisionStrategy* ds = new CompulsiveLazyDecider();
+          RMaxPlaner* rm = RMaxPlaner::ReducedAndOrderedInstance(ls, discountFactor, epsilon);
+          IPlanningStrategy<double>* ps = rm;
+          IDecisionStrategy* ds = rm;
           return new SDYNA( ls, ps, ds, observationPhaseLenght, nbValueIterationStep, actionReward);
         }
 
@@ -153,8 +155,9 @@ namespace gum {
                                        Idx nbValueIterationStep = 10 ){
           bool actionReward = true;
           ILearningStrategy* ls = new FMDPLearner<GTEST,GTEST,ITILEARNER>(attributeSelectionThreshold, actionReward);
-          IDecisionStrategy* ds = new CompulsiveLazyDecider();
-          IPlanningStrategy<double>* ps = AbstractRMaxPlaner::TreeInstance(ls, discountFactor, epsilon);
+          RMaxPlaner* rm = RMaxPlaner::TreeInstance(ls, discountFactor, epsilon);
+          IPlanningStrategy<double>* ps = rm;
+          IDecisionStrategy* ds = rm;
           return new SDYNA( ls, ps, ds, observationPhaseLenght, nbValueIterationStep, actionReward);
         }
 
@@ -408,21 +411,3 @@ namespace gum {
 #endif // GUM_SDYNA_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
-
-//      /**
-//      /** * @brief extractCount
-//      /** * @param actionId
-//      /** * @param var
-//      /** * @return
-//      /** */
-//      MultiDimFunctionGraph<double>* extractCount(Idx actionId, const DiscreteVariable* var){
-//        return __learner->extractCount(actionId, var); }
-
-//      double rMax(){ return __rmax; }
-//        double __rmax;
-//          __planer = new RMaxMDD<double>(__fmdp,this, 40);
-//          __rmax = std::numeric_limits<double>::min();
-
-//if(reward > __rmax)
-//  __rmax = reward;
-

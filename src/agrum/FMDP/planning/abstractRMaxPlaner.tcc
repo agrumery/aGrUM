@@ -268,7 +268,7 @@ namespace gum {
 
 //        std::cout << "Maximising" << std::endl;
         __actionsRMaxTable.insert(*actionIter, this->_maximiseQactions(rmaxs));
-        __actionsBoolTable.insert(*actionIter, this->_maximiseQactions(boolQs));
+        __actionsBoolTable.insert(*actionIter, this->_minimiseFunctions(boolQs));
       }
     }
 

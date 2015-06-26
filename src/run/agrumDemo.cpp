@@ -20,224 +20,63 @@
 
 // ==============================================================================
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <cstdarg>
 // ==============================================================================
 //#include <agrum/agrum.h>
 // ==============================================================================
-#include <agrum/FMDP/fmdp.h>
-#include <agrum/FMDP/io/dat/fmdpDatReader.h>
-#include <agrum/FMDP/simulation/fmdpSimulator.h>
-#include <agrum/FMDP/simulation/taxiSimulator.h>
-#include <agrum/FMDP/simulation/statesChecker.h>
-#include <agrum/FMDP/SDyna/sdyna.h>
+#include<agrum/core/smallobjectallocator/smallObjectAllocator.h>
+// ==============================================================================
+#include <agrum/multidim/multiDimFunctionGraphGenerator.h>
+#include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
+// ==============================================================================
+#include <agrum/variables/labelizedVariable.h>
+// ==============================================================================
+#include <run/functionGraphBinarizer.h>
+#include <run/globalFunctionGraphMinimizer.h>
 // ==============================================================================
 
 #define xstrfy(s) strfy(s)
 #define strfy(x) #x
 #define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/run/ressources/" #x
 
-void run( gum::AbstractSimulator& sim, const std::string traceFilePath){
-
-  for( gum::Idx sdyi = 0; sdyi < 4; sdyi++ ){
-
-    std::stringstream sdynaInstanceName;
-    switch(sdyi){
-      case 0 :  sdynaInstanceName << "SPIMDDI";
-                break;
-      case 1 :  sdynaInstanceName << "SPITI";
-                break;
-      case 2 :  sdynaInstanceName << "AbstractRMaxMDD";
-                break;
-      case 3 :  sdynaInstanceName << "AbstractRMaxTree";
-                break;
-    }
-
-    for( gum::Idx nbTest = 0; nbTest < 20; ++nbTest) {
-
-        gum::SDYNA* spim;
-        switch(sdyi){
-          case 0 :  spim = gum::SDYNA::spimddiInstance();
-                    break;
-          case 1 :  spim = gum::SDYNA::spitiInstance();
-                    break;
-          case 2 :  spim = gum::SDYNA::RMaxMDDInstance();
-                    break;
-          case 3 :  spim = gum::SDYNA::RMaxTreeInstance();
-                    break;
-        }
-
-      std::cout << "Test n° : " << nbTest << std::endl;
-
-      gum::Idx nbIte = 0;
-      double rDisc = 0.0;
-
-      // *********************************************************************************************
-      // Initialisation des divers objets
-      // *********************************************************************************************
 
 
-      // Enregistrement des actions possibles auprès de SPIMDDI
-      for( auto actionIter = sim.beginActions(); actionIter != sim.endActions(); ++actionIter){
-        //std::cout << *actionIter << " "  << sim.actionName(*actionIter) << std::endl;
-        spim->addAction( *actionIter, sim.actionName(*actionIter));
-      }
 
-      // Enregistrement des variables caractérisant les états auprès de SPIMDDI
-      for(auto varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter){
-        spim->addVariable(*varIter);
-      }
+// *****************************************************************************************************
+/// Génération aléatoire d'une liste de 10 variables
+// *****************************************************************************************************
+gum::Sequence< const gum::DiscreteVariable* >* generateRandomVarList ( gum::Idx maxNbVarInDiagram, gum::Idx maxVarDomainSize ) {
 
+  gum::Sequence< const gum::DiscreteVariable* >* ret = new gum::Sequence< const gum::DiscreteVariable* >();
 
-      sim.setInitialStateRandomly();
-      spim->initialize(sim.currentState());
-
-      // ======================================================================================
-      // Création du checker détat visité
-      // ======================================================================================
-      gum::StatesChecker sc;
-      sc.reset(sim.currentState());
-
-      // ======================================================================================
-      // Ouverture des fichiers de traces
-      // ======================================================================================
-      std::ofstream traceFile;
-      std::stringstream traceFileName;
-      traceFileName << traceFilePath << "." << sdynaInstanceName.str() << "." << nbTest << ".csv";
-      traceFile.open ( traceFileName.str(), std::ios::out | std::ios::trunc );
-      if ( !traceFile ) {
-        return;
-      }
-
-      std::ofstream modelFile;
-      std::stringstream modelFileName;
-      modelFileName << traceFilePath << "." << sdynaInstanceName.str() << "." << nbTest << ".model.dot";
-      modelFile.open ( modelFileName.str(), std::ios::out | std::ios::trunc );
-      if ( !modelFile ) {
-        return;
-      }
-
-
-      //std::cout << "Initialisation done. Now performing test ..." <<std::endl;
-      for( gum::Idx nbRun = 0; nbRun < 5000; ++nbRun ){
-
-        spim->setCurrentState(sim.currentState());
-
-        double cumulr = 0.0;
-
-        for(gum::Idx nbDec = 0; nbDec < 25; nbDec++){
-
-          // Normal Iteration Part
-          //std::cout << "\n*********************************************\n";
-          //std::cout << "RUN n° " << nbRun << " - Status : " << sim.currentState().toString() << " - Decision n° " << nbDec << " : ";
-
-          gum::Idx actionChosenId = spim->takeAction();
-
-          //std::cout << "By doing " << sim.actionName(actionChosenId) << std::endl;
-
-          sim.perform( actionChosenId );
-          rDisc = sim.reward() + 0.9*rDisc;
-          cumulr += sim.reward();
-
-          //std::cout << "New State : " << sim.currentState() << "- Reward : " << sim.reward() << " - Discounted Reward : " << rDisc << " - cumulr " << cumulr << std::endl;
-
-//          try{
-            spim->feedback(sim.currentState(), sim.reward());
-//          }catch(gum::Exception ex){
-//            std::cout << ex.errorContent() << std::endl << ex.errorCallStack() << std::endl;
-//            exit(-42);
-//          }
-
-          //std::cout << "Update performed" << std::endl;
-
-          if( !sc.checkState(sim.currentState()) ) {
-            sc.addState(sim.currentState());
-          }
-
-          traceFile << nbTest << "\t" << nbIte << "\t" << nbRun << "\t" << nbDec << "\t" << sc.nbVisitedStates()
-                    /*<< "\t" << fmdp.size()*/ << "\t" << spim->learnerSize() << "\t" << spim->modelSize() << "\t" << spim->optimalPolicySize()
-                    << std::setprecision(15)  << "\t" << rDisc << std::endl;
-
-  //        std::cout << "Run n°" << nbRun << " is going on. Nb Observation : " << nbIte << " / 4,000,000. Nb Visited States : "
-  //                  <<  sc.nbVisitedStates() << ". Size Learner : " << spim->learnerSize() << std::endl;
-
-          nbIte++;
-        }
-        std::cout << "Run n°" << nbRun << " is over. Nb Observation : " << nbIte << " / 4,000,000. Nb Visited States : "
-                  <<  sc.nbVisitedStates() << ". Size Learner : " << spim->learnerSize() << std::endl;
-        sim.setInitialStateRandomly();
-
-        modelFile << nbRun << "\t" << spim->optimalPolicy2String() << std::endl;
-
-        if(nbIte > 4000000)
-          break;
-      }
-      traceFile.close();
-      modelFile.close();
-      delete spim;
-   }
+  for ( gum::Idx j = 0; j < maxNbVarInDiagram; j++ ) {
+    std::stringstream varName;
+    varName << "var" << j;
+    ret->insert ( new gum::LabelizedVariable ( varName.str(), "", 2 + rand() % maxVarDomainSize ) );
   }
 
-  std::cout << "FIN EVALUATION" << std::endl;
+  return ret;
+}
 
+void shuffleVarList ( gum::Sequence< const gum::DiscreteVariable* >* varList ) {
+  for ( gum::Idx j = 0; j < 10; j++ )
+    varList->swap ( rand() % ( varList->size() ), rand() % ( varList->size() ) );
 }
 
 
-// *******************************************************************************
-// Run the tests on a Coffee FMDP
-// *******************************************************************************
-void runCoffee(){
 
-  // *********************************************************************************************
-  // Chargement du fmdp servant de base
-  // *********************************************************************************************
+// *****************************************************************************************************
+/// Génération aléatoire de diagramme de décision
+// *****************************************************************************************************
+gum::MultiDimFunctionGraph<double>* generateRandomFunctionGraph ( const gum::Sequence< const gum::DiscreteVariable* >* varList ) {
 
-  gum::FMDPSimulator sim(GET_PATH_STR ( FMDP/coffee/coffee.dat ));
-  gum::Instantiation theEnd;
-  for(gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter)
-    if( (*varIter)->name().compare("huc")){
-      theEnd.add(**varIter);
-      theEnd.chgVal(**varIter, (*varIter)->index("yes"));
-      break;
-    }
-  sim.setEndState(theEnd);
+  gum::MultiDimFunctionGraphGenerator gene( 2, 5, *varList);
 
-  run ( sim, GET_PATH_STR ( TRACE/trace.Coffee ));
+  return gene.generate();
 }
 
-
-// *******************************************************************************
-// Run the tests on a Coffee FMDP
-// *******************************************************************************
-void runFactory(){
-
-  // *********************************************************************************************
-  // Chargement du fmdp servant de base
-  // *********************************************************************************************
-
-  gum::FMDPSimulator sim(GET_PATH_STR ( FMDP/factory/tiny-factory.dat ));
-//  gum::Instantiation theEnd;
-//  for(gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter)
-//    if( (*varIter)->name().compare("connected")){
-//      theEnd.add(**varIter);
-//      theEnd.chgVal(**varIter, (*varIter)->index("yes"));
-//      break;
-//    }
-//  sim.setEndState(theEnd);
-
-  run ( sim, GET_PATH_STR ( TRACE/trace.Factory ));
-}
-
-
-// *******************************************************************************
-// Run the tests on a Coffee FMDP
-// *******************************************************************************
-void runTaxi(){
-
-  gum::TaxiSimulator sim;
-
-  run ( sim, GET_PATH_STR ( TRACE/trace.Taxi ) );
-}
 
 
 // *******************************************************************************
@@ -246,133 +85,124 @@ void runTaxi(){
 int main ( int argc, char* argv[] ) {
 
   srand(time(NULL));
+  for( gum::Idx maxNbVar = 5; maxNbVar < 16; maxNbVar += 5){
+    for( gum::Idx maxNbModa = 2; maxNbModa < 11; maxNbModa += 2){
 
-//  runCoffee();
-//  runFactory();
-  runTaxi();
+      // ======================================================================================
+      // Ouverture des fichiers de traces
+      // ======================================================================================
+      std::ofstream traceFile;
+      std::stringstream traceFileName;
+      traceFileName << GET_PATH_STR ( TRACE/operations ) << "." << maxNbVar << "." << maxNbModa << ".csv";
+      traceFile.open ( traceFileName.str(), std::ios::out | std::ios::trunc );
+      if ( !traceFile ) {
+        return EXIT_FAILURE;
+      }
 
+      for( gum::Idx i = 0; i  < 1000; i++ ){
+
+        std::cout << "Iteration n°" << i << " - MaxNbVar : " << maxNbVar << " - " << maxNbModa << std::endl;
+        std::stringstream stats;
+        gum::MultiDimFunctionGraph<double>* res;
+
+        // ---------------------------------------------------------------------------------------------------
+        // Generating var list
+        // ---------------------------------------------------------------------------------------------------
+        gum::Sequence< const gum::DiscreteVariable* >* varList = generateRandomVarList ( maxNbVar, 2 );
+
+        // ---------------------------------------------------------------------------------------------------
+        // Generating first diagram
+        // ---------------------------------------------------------------------------------------------------
+        shuffleVarList(varList);
+        gum::MultiDimFunctionGraph<double>* a1 = generateRandomFunctionGraph ( varList );
+        a1->manager()->minimizeSize();
+
+        // ---------------------------------------------------------------------------------------------------
+        // Generating second diagram
+        // ---------------------------------------------------------------------------------------------------
+        shuffleVarList(varList);
+        gum::MultiDimFunctionGraph<double>* a2 = generateRandomFunctionGraph ( varList );
+        a2->manager()->minimizeSize();
+
+
+        // ---------------------------------------------------------------------------------------------------
+        // Operation with no global order
+        // ---------------------------------------------------------------------------------------------------
+        gum::MultiDimFunctionGraphOperator<double, std::plus> opeSC(a1, a2);
+        res = opeSC.compute();
+        delete res;
+        stats << a1->realSize() << ";" << a2->realSize() << ";" << opeSC.nbVarRetro() << ";" << opeSC.sizeVarRetroDomain() << ";" << opeSC.nbCall()<< ";";
+
+        std::cout << stats.str() << std::endl;
+
+
+        // ---------------------------------------------------------------------------------------------------
+        // Operation with global order
+        // ---------------------------------------------------------------------------------------------------
+        gum::GlobalFunctionGraphMinimizer gm;
+        gm.loadFunctionGraphs(a1,a2);
+        gm.minimize();
+
+        gum::MultiDimFunctionGraphOperator<double, std::plus> opeAC(a1, a2);
+        res = opeAC.compute();
+        delete res;
+        stats << a1->realSize() << ";" << a2->realSize() << ";" << opeAC.nbVarRetro() << ";" << opeAC.sizeVarRetroDomain() << ";" << opeAC.nbCall()<< ";";
+
+        std::cout << stats.str() << std::endl;
+
+
+
+        // ---------------------------------------------------------------------------------------------------
+        // Binarisation
+        // ---------------------------------------------------------------------------------------------------
+        gum::FunctionGraphBinarizer fgb;
+
+        fgb.loadFunctionGraph(a1);
+        gum::MultiDimFunctionGraph<double>* a3 = fgb.binarize();
+        a3->manager()->minimizeSize();
+
+        fgb.loadFunctionGraph(a2);
+        gum::MultiDimFunctionGraph<double>* a4 = fgb.binarize();
+        a4->manager()->minimizeSize();
+
+        // ---------------------------------------------------------------------------------------------------
+        // Operation with no global order and binary variables
+        // ---------------------------------------------------------------------------------------------------
+        gum::MultiDimFunctionGraphOperator<double, std::plus> opeBSC(a3, a4);
+        res = opeBSC.compute();
+        delete res;
+        stats << a3->realSize() << ";" << a4->realSize() << ";" << opeBSC.nbVarRetro() << ";" << opeBSC.sizeVarRetroDomain() << ";" << opeBSC.nbCall()<< ";";
+
+        std::cout << stats.str() << std::endl;
+
+
+        // ---------------------------------------------------------------------------------------------------
+        // Operation with global order
+        // ---------------------------------------------------------------------------------------------------
+        gm.loadFunctionGraphs(a3,a4);
+        gm.minimize();
+
+        gum::MultiDimFunctionGraphOperator<double, std::plus> opeBAC(a3, a4);
+        res = opeBAC.compute();
+        delete res;
+        stats << a3->realSize() << ";" << a4->realSize() << ";" << opeBAC.nbVarRetro() << ";" << opeBAC.sizeVarRetroDomain() << ";" << opeBAC.nbCall()<< ";";
+
+        std::cout << stats.str() << std::endl;
+
+        traceFile << stats.str() << std::endl;
+
+        delete a4;
+        delete a3;
+        delete a2;
+        delete a1;
+        for(gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter = varList->beginSafe(); varIter != varList->endSafe(); ++varIter){
+          delete *varIter;
+        }
+        delete varList;
+      }
+
+      traceFile.close();
+    }
+  }
   return EXIT_SUCCESS;
 }
-
-//for(gum::Idx nbTest=1; nbTest < 27; nbTest++ ){
-//  std::vector<std::string> vnv;
-//  std::vector<gum::Idx> vmv;
-
-//  std::stringstream inputFileName;
-//  inputFileName << GET_PATH_STR(dataBNs/)  <<  nbTest << "-10000.csv";
-
-
-//  // ############################################################################
-//  // Informations Récupération
-//  // ############################################################################
-//  std::ifstream fichier(inputFileName.str(), std::ios::in);  // on ouvre le fichier en lecture
-
-//  if(!fichier) { // si l'ouverture a réussi
-//    std::cerr << "Impossible d'ouvrir le fichier : " << inputFileName.str() << "!" << std::endl;
-//    return 1;
-//  }
-
-//  std::string ligne;
-//  std::istringstream iss1;
-//  std::string mot;
-
-//  //std::cout << "DEBUT CARACTERISATION VARIABLES" << std::endl;
-//  std::getline(fichier, ligne);
-//  iss1.str(ligne);
-//  while( std::getline(iss1, mot, ',') ){
-//    vnv.push_back( mot );
-//    vmv.push_back( 1 );
-//  }
-
-//  while( std::getline(fichier, ligne) ){
-//      std::istringstream iss2(ligne);
-//      std::string moda;
-
-//      int index = 0;
-//      while( std::getline(iss2, moda, ',') ){
-////              //std::cout << moda << " - " << std::stoi(moda) << std::endl;
-//        gum::Idx value = std::stoi(moda);
-//        if( value > vmv[index])
-//          vmv[index] = value;
-//        index++;
-//      }
-//  }
-
-//  fichier.close();  // on ferme le fichier
-
-//  //std::cout << "FIN CARACTERISATION VARIABLES" << std::endl;
-
-
-//  // REMBOBINAGE
-////  fichier.seekg(0, std::ios::beg);
-////  if(fichier.eof())
-////    //std::cout << "Oh Dear we're in trouble!" << std::endl;
-////  std::getline(fichier,ligne);
-
-//  // ############################################################################
-//  // Learning phase :
-//  // ############################################################################
-//  gum::MultiDimFunctionGraph<double>* target = new gum::MultiDimFunctionGraph<double>();
-//  gum::Set<const gum::DiscreteVariable*> varList;
-//  std::vector<const gum::DiscreteVariable*> vv(vnv.size());
-//  for(gum::Idx i = 0; i < vnv.size() - 1; i++ ){
-//    vv[i] = new gum::LabelizedVariable(vnv[i],"",vmv[i]+1);
-//    varList << vv[i];
-//  }
-//  gum::LabelizedVariable* value = new gum::LabelizedVariable(vnv[vnv.size()-1],"",vmv[vmv.size()-1]+1);
-//  gum::IMDDI learner(target, 0.95, 0.95, varList, value);
-
-//  fichier.open(inputFileName.str(), std::ios::in);  // on ouvre le fichier en lecture
-
-//  if(!fichier) { // si l'ouverture a réussi
-//    std::cerr << "Impossible d'ouvrir le fichier : " << inputFileName.str() << "!" << std::endl;
-//    return 1;
-//  }
-//  std::getline(fichier, ligne);
-
-//  std::ofstream traceFile;
-//  std::stringstream traceFileName;
-//  traceFileName << GET_PATH_STR(/) << nbTest << ".csv";
-//  traceFile.open ( traceFileName.str(), std::ios::out | std::ios::trunc );
-//  if ( !traceFile ) {
-//    return 2;
-//  }
-
-
-//  gum::Idx nbIte = 0;
-//  while( std::getline(fichier, ligne) ){
-//    std::istringstream iss2(ligne);
-//    std::string moda;
-
-//    gum::Idx index = 0;
-//    //std::cout << "Taking new Observation into account : " << nbIte << std::endl;
-//    gum::Observation* obs = new gum::Observation();
-//    while( std::getline(iss2, moda, ',') ){
-////        //std::cout << index << "-" << std::stoi(moda) << std::endl;
-//      if( index < vv.size() - 1 ){
-////        //std::cout << "attribut " << vv[index]->toString() << std::endl;
-//        obs->setModality(vv[index],std::stoi(moda));
-//      }else{
-////        //std::cout << "value " << value->toString() << std::endl;
-//        obs->setModality(value, std::stoi(moda));
-//      }
-//      index++;
-//    }
-////    //std::cout << obs->toString() << std::endl;
-//    gum::Timer timy;
-//    timy.reset();
-//    learner.addObservation( obs );
-//    double tempAdd = timy.step();
-//    learner.updateOrderedTree();
-//    double tempUp = timy.step();
-//    learner.toDG();
-//    double tempCon = timy.step();
-//    traceFile << nbIte << ";" << tempAdd << ";" << tempUp << ";" << tempCon << std::endl;
-//    nbIte++;
-//  }
-
-//  fichier.close();  // on ferme le fichier
-//  traceFile.close();
-//}
-
-//  return 0;

@@ -27,7 +27,7 @@ namespace gum {
   // =================================================================================================
   //
   // =================================================================================================
-  StatesCounter::StatesCounter() : __counter(MultiDimFunctionGraph<Idx>::getTreeInstance()){
+  StatesCounter::StatesCounter() : __counter(MultiDimFunctionGraph<int>::getTreeInstance()){
     GUM_CONSTRUCTOR(StatesCounter)
   }
 
@@ -71,7 +71,7 @@ namespace gum {
         parId = __counter->node( parId )->son( parModa );
         parModa = state.valFromPtr( __counter->node( parId )->nodeVar() );
       }
-      __incState( state, parId, parModa );
+      __incState( state, parId, parModa, nbVisits );
   }
 
 

@@ -72,7 +72,7 @@ namespace gum {
     // ###################################################################
     SDYNA::~SDYNA (){
 
-      delete __decider;
+//      delete __decider;
 
       delete __learner;
 
@@ -155,7 +155,7 @@ namespace gum {
       __bin.insert(obs);
 
       setCurrentState( newState );
-      __decider->checkState( _lastState);
+      __decider->checkState( _lastState, __lastAction );
 
       if( __nbObservation%__observationPhaseLenght == 0)
         makePlanning(__nbValueIterationStep);

@@ -107,6 +107,13 @@ namespace gum {
                                                               Idx del = 3);
 
         // ==========================================================================
+        /// @warning Minimze the two given functions
+        // ==========================================================================
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* minimize(  const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                                                              const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                                                              Idx del = 3);
+
+        // ==========================================================================
         /// @warning given f1 and f2 are deleted, returns the new one
         // ==========================================================================
         virtual MultiDimFunctionGraph<GUM_SCALAR>* multiply(  const MultiDimFunctionGraph< GUM_SCALAR >* f1,

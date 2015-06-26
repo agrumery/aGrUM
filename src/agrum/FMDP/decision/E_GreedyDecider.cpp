@@ -90,7 +90,7 @@ namespace gum {
      * @param reachedState : the state reached after the transition
      */
     // ###################################################################
-    void E_GreedyDecider::checkState(const Instantiation & reachedState){
+    void E_GreedyDecider::checkState(const Instantiation & reachedState, Idx actionId ){
       if( __statecpt.nbVisitedStates() == 0 )
         __statecpt.reset(reachedState);
       else

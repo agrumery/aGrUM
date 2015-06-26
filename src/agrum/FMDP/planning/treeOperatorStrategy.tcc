@@ -118,6 +118,21 @@ namespace gum {
     }
 
     // ==========================================================================
+    /// @warning given f1 and f2 are deleted, returns the new one
+    // ==========================================================================
+    template<typename GUM_SCALAR>
+    MultiDimFunctionGraph<GUM_SCALAR>* TreeOperatorStrategy<GUM_SCALAR>::minimize(
+                                                                  const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                                                                  const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                                                                  Idx del ){
+
+      TreeOperator< GUM_SCALAR, Minimizes > opi( f1, f2 );
+      MultiDimFunctionGraph<GUM_SCALAR>* ret = opi.compute();
+      this->_deleteFunctionGraph( f1, f2, del);
+      return ret;
+    }
+
+    // ==========================================================================
     // ==========================================================================
     template<typename GUM_SCALAR>
     MultiDimFunctionGraph<GUM_SCALAR>* TreeOperatorStrategy<GUM_SCALAR>::multiply(

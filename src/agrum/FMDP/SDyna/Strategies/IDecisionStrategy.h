@@ -71,8 +71,9 @@ namespace gum {
         // ==========================================================================
         virtual void initialize( const FMDP<double>* fmdp ){
           _optPol = nullptr;
-          for( auto actionIter = fmdp->beginActions(); actionIter != fmdp->endActions(); ++actionIter )
-            _allActions += *actionIter;
+          if(_allActions.size() == 0)
+            for( auto actionIter = fmdp->beginActions(); actionIter != fmdp->endActions(); ++actionIter )
+              _allActions += *actionIter;
         }
       /// @}
 
@@ -82,7 +83,7 @@ namespace gum {
       // ###################################################################
       /// @{
     public:
-        virtual void checkState( const Instantiation& newState ) = 0;
+        virtual void checkState( const Instantiation& newState, Idx actionId ) = 0;
 
         void setOptimalStrategy( const MultiDimFunctionGraph<ActionSet,SetTerminalNodePolicy>* optPol) {
               _optPol = const_cast<MultiDimFunctionGraph<ActionSet,SetTerminalNodePolicy>*>(optPol); }

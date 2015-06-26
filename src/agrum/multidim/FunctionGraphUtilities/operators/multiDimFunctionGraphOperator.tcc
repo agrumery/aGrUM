@@ -51,12 +51,16 @@ namespace gum {
       __rd = MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::getReducedAndOrderedInstance();
       __nbVar = 0;
       __default = nullptr;
+
+      __nbCall = 0;
+      __nbVar = 0;
+      __sizeVarRetro = 1;
     }
 
 
 
     /* ***************************************************************************************************************************** */
-    /* DESTRUCTOR                                                                                                                   */
+    /* DESTRUCTOR                                                                                                                    */
     /* ***************************************************************************************************************************** */
     template <typename GUM_SCALAR,
               template <typename> class FUNCTOR,
@@ -172,14 +176,19 @@ namespace gum {
           continue;
         }
 
-        // Test : if chosing first order var cost less in terms or re exploration,
-        // we chose it
+        // Test : the current tested situation is when two retrograde variables
+        // are detected.
+        // Chosen solution here is to find compute domainSize in between
+        // and chose the one with the smallest
+        __nbVarRetro++;
         if( __distance( __DG1, *fite, *site) < __distance( __DG2, *site, *fite) ){
           __rd->add( **fite );
+          __sizeVarRetro *= (*fite)->domainSize();
           ++fite;
           continue;
         } else {
           __rd->add( **site );
+          __sizeVarRetro *= (*site)->domainSize();
           ++site;
           continue;
         }
@@ -252,19 +261,8 @@ namespace gum {
         const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy> *dg,
         HashTable<NodeId, short int*>& dgInstNeed){
 
-//      std::cout << dg->toDot() << std::endl;
-//      for( auto varIter = dg->variablesSequence().beginSafe(); varIter != dg->variablesSequence().endSafe(); ++varIter )
-//          std::cout << (*varIter)->name() << " | ";
-//      std::cout << std::endl;
-
-//      for( auto varIter = __rd->variablesSequence().beginSafe(); varIter != __rd->variablesSequence().endSafe(); ++varIter )
-//          std::cout << (*varIter)->name() << " | ";
-//      std::cout << std::endl;
-
       HashTable<NodeId, short int*> nodesVarDescendant;
       std::size_t tableSize = __nbVar*sizeof(short int);
-
-//      std::cout << "Var Descendant Phase" << std::endl;
 
       for( auto varIter = dg->variablesSequence().rbeginSafe(); varIter != dg->variablesSequence().rendSafe(); --varIter ) {
 
@@ -297,8 +295,6 @@ namespace gum {
         }
       }
 
-//      std::cout << "Inst Needed Phase" << std::endl;
-
       for( auto varIter = dg->variablesSequence().beginSafe(); varIter != dg->variablesSequence().endSafe(); ++varIter ) {
 
         const Link<NodeId> * nodeIter = dg->varNodeListe(*varIter)->list();
@@ -317,16 +313,6 @@ namespace gum {
           nodeIter = nodeIter->nextLink();
         }
       }
-
-//      std::cout << "Terminal Node Phase" << std::endl;
-
-//      dg->beginValues();
-//      while( dg->hasValue() ){
-//        dgInstNeed.insert( dg->id(), __default );
-//        dg->nextValue();
-//      }
-
-//      std::cout << "Cleanning Phase" << std::endl;
 
       for(HashTableIterator<NodeId, short int*> it = nodesVarDescendant.begin(); it != nodesVarDescendant.end(); ++it ){
         DEALLOCATE(it.val(),tableSize);
@@ -356,6 +342,8 @@ namespace gum {
     NodeId
     MultiDimFunctionGraphOperator<GUM_SCALAR, FUNCTOR, TerminalNodePolicy>::__compute(  O4DGContext & currentSituation,
                                                                                         Idx lastInstVarPos) {
+
+      __nbCall += 1;
 
       NodeId newNode = 0;
 

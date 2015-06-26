@@ -122,6 +122,18 @@ namespace gum {
     // ==========================================================================
     // ==========================================================================
     template<typename GUM_SCALAR>
+    MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::minimize(
+                                                                  const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                                                                  const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                                                                  Idx del ){
+      MultiDimFunctionGraph<GUM_SCALAR>* ret = minimize2MultiDimFunctionGraphs ( f1, f2 );
+      this->_deleteFunctionGraph( f1, f2, del);
+      return ret;
+    }
+
+    // ==========================================================================
+    // ==========================================================================
+    template<typename GUM_SCALAR>
     MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::multiply(
                                                                   const MultiDimFunctionGraph< GUM_SCALAR >* f1,
                                                                   const MultiDimFunctionGraph< GUM_SCALAR >* f2,

@@ -88,7 +88,7 @@ namespace gum {
       // ###################################################################
       /// @{
     public:
-        void checkState( const Instantiation& newState );
+        void checkState( const Instantiation& newState, Idx actionId );
 
         ActionSet stateOptimalPolicy( const Instantiation& curState );
 
@@ -96,7 +96,6 @@ namespace gum {
 
     private :
 
-        /// Threshold under which we perform a random action instead of exploiting the optimal one
         StatesChecker __statecpt;
         double __sss;
   };

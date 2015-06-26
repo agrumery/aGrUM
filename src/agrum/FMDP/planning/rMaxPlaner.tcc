@@ -19,7 +19,7 @@
 ***************************************************************************/
 /**
 * @file
-* @brief Template implementation of abstractRMaxPlaner classes.
+* @brief Template implementation of RMaxPlaner classes.
 *
 * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
@@ -38,7 +38,7 @@
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
 // =========================================================================
-#include <agrum/FMDP/planning/abstractRMaxPlaner.h>
+#include <agrum/FMDP/planning/rMaxPlaner.h>
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code purposes only
@@ -58,21 +58,26 @@ namespace gum {
     // ===========================================================================
     // Default constructor
     // ===========================================================================
-    AbstractRMaxPlaner::AbstractRMaxPlaner ( IOperatorStrategy<double>* opi,
-                                             double discountFactor,
-                                             double epsilon,
-                                             const ILearningStrategy* learner) : StructuredPlaner( opi, discountFactor, epsilon),
-                                                                                  __fmdpLearner(learner) {
+    RMaxPlaner::RMaxPlaner ( IOperatorStrategy<double>* opi,
+                             double discountFactor,
+                             double epsilon,
+                             const ILearningStrategy* learner) : StructuredPlaner( opi, discountFactor, epsilon ),
+                                                                  IDecisionStrategy(),
+                                                                  __fmdpLearner(learner),
+                                                                  __initialized(false) {
 
-      GUM_CONSTRUCTOR ( AbstractRMaxPlaner );
+      GUM_CONSTRUCTOR ( RMaxPlaner );
     }
 
     // ===========================================================================
     // Default destructor
     // ===========================================================================
-    AbstractRMaxPlaner::~AbstractRMaxPlaner() {
+    RMaxPlaner::~RMaxPlaner() {
 
-      GUM_DESTRUCTOR ( AbstractRMaxPlaner );
+      GUM_DESTRUCTOR ( RMaxPlaner );
+
+      for (HashTableIteratorSafe<Idx, StatesCounter*> scIter = __counterTable.beginSafe(); scIter != __counterTable.endSafe(); ++scIter)
+        delete scIter.val();
     }
 
 
@@ -83,11 +88,26 @@ namespace gum {
   /* **                                                                                                 **/
   /* ************************************************************************************************** **/
 
+    // ==========================================================================
+    // Initializes data structure needed for making the planning
+    // ==========================================================================
+    void RMaxPlaner::initialize( FMDP<double>* fmdp ){
+      if(!__initialized){
+        StructuredPlaner::initialize(fmdp);
+        IDecisionStrategy::initialize(fmdp);
+        for(auto actionIter = fmdp->beginActions(); actionIter != fmdp->endActions(); ++actionIter ){
+          __counterTable.insert( *actionIter, new StatesCounter() );
+          __initializedTable.insert( *actionIter, false );
+        }
+        __initialized = true;
+      }
+    }
+
 
     // ===========================================================================
     // Performs a value iteration
     // ===========================================================================
-    void AbstractRMaxPlaner::makePlanning( Idx nbStep ) {
+    void RMaxPlaner::makePlanning( Idx nbStep ) {
 
       __makeRMaxFunctionGraphs();
 
@@ -110,7 +130,7 @@ namespace gum {
     // ===========================================================================
     // Performs a single step of value iteration
     // ===========================================================================
-    void AbstractRMaxPlaner::_initVFunction() {
+    void RMaxPlaner::_initVFunction() {
       _vFunction->manager()->setRootNode( _vFunction->manager()->addTerminalNode(0.0));
       for ( auto actionIter = _fmdp->beginActions(); actionIter != _fmdp->endActions(); ++actionIter  )
         _vFunction = this->_operator->add(_vFunction, RECASTED(this->_fmdp->reward(*actionIter)),1);
@@ -119,7 +139,7 @@ namespace gum {
     // ===========================================================================
     // Performs a single step of value iteration
     // ===========================================================================
-    MultiDimFunctionGraph<double>* AbstractRMaxPlaner::_valueIteration() {
+    MultiDimFunctionGraph<double>* RMaxPlaner::_valueIteration() {
 
       // *****************************************************************************************
       // Loop reset
@@ -151,27 +171,6 @@ namespace gum {
     }
 
 
-    // ===========================================================================
-    // Updates the value function by multiplying by discount and adding reward
-    // ===========================================================================
-//    template<typename double>
-//    MultiDimFunctionGraph<double>*
-//    AbstractRMaxPlaner::_addReward ( MultiDimFunctionGraph< double >* Vold ) {
-
-//      // *****************************************************************************************
-//      // ... we multiply the result by the discount factor, ...
-//      MultiDimFunctionGraph< double >* newVFunction = _operator->getFunctionInstance();
-//      newVFunction->copyAndMultiplyByScalar ( *Vold, this->_discountFactor );
-//      delete Vold;
-
-//      // *****************************************************************************************
-//      // ... and finally add reward
-//      newVFunction = _operator->add(newVFunction, RECAST( _fmdp->reward() ));
-
-//      return newVFunction;
-//    }
-
-
 
   /* ************************************************************************************************** **/
   /* **                                                                                                 **/
@@ -182,7 +181,7 @@ namespace gum {
     // ===========================================================================
     // Evals the policy corresponding to the given value function
     // ===========================================================================
-    void AbstractRMaxPlaner::_evalPolicy (  ) {
+    void RMaxPlaner::_evalPolicy (  ) {
 
       // *****************************************************************************************
       // Loop reset
@@ -219,7 +218,7 @@ namespace gum {
     // ===========================================================================
     //
     // ===========================================================================
-    void AbstractRMaxPlaner::__makeRMaxFunctionGraphs() {
+    void RMaxPlaner::__makeRMaxFunctionGraphs() {
 
       __rThreshold = __fmdpLearner->modaMax()*5>30?__fmdpLearner->modaMax()*5:30;
       __rmax = __fmdpLearner->rMax() / ( 1.0 - this->_discountFactor);
@@ -231,7 +230,7 @@ namespace gum {
 
         for(auto varIter = this->fmdp()->beginVariables(); varIter != this->fmdp()->endVariables(); ++varIter){
 
-          const IVisitableGraphLearner* visited = __fmdpLearner->varLearner(*actionIter, *varIter);
+          const IVisitableGraphLearner* visited = __counterTable[*actionIter];
 
           MultiDimFunctionGraph<double>* varRMax = this->_operator->getFunctionInstance();
           MultiDimFunctionGraph<double>* varBoolQ = this->_operator->getFunctionInstance();
@@ -268,7 +267,7 @@ namespace gum {
 
 //        std::cout << "Maximising" << std::endl;
         __actionsRMaxTable.insert(*actionIter, this->_maximiseQactions(rmaxs));
-        __actionsBoolTable.insert(*actionIter, this->_maximiseQactions(boolQs));
+        __actionsBoolTable.insert(*actionIter, this->_minimiseFunctions(boolQs));
       }
     }
 
@@ -276,10 +275,10 @@ namespace gum {
     // ===========================================================================
     //
     // ===========================================================================
-    std::pair<NodeId,NodeId> AbstractRMaxPlaner::__visitLearner(const IVisitableGraphLearner *visited,
-                                                                NodeId currentNodeId,
-                                                                MultiDimFunctionGraph<double>* rmax,
-                                                                MultiDimFunctionGraph<double>* boolQ) {
+    std::pair<NodeId,NodeId> RMaxPlaner::__visitLearner(const IVisitableGraphLearner* visited,
+                                                        NodeId currentNodeId,
+                                                        MultiDimFunctionGraph<double>* rmax,
+                                                        MultiDimFunctionGraph<double>* boolQ) {
 
       std::pair<NodeId, NodeId> rep;
       if(visited->isTerminal(currentNodeId)){
@@ -307,7 +306,7 @@ namespace gum {
     // ===========================================================================
     //
     // ===========================================================================
-    void AbstractRMaxPlaner::__clearTables(){
+    void RMaxPlaner::__clearTables(){
 
       for(auto actionIter = this->fmdp()->beginActions(); actionIter != this->fmdp()->endActions(); ++actionIter ){
         delete __actionsBoolTable[*actionIter];

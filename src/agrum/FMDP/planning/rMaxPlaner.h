@@ -25,26 +25,27 @@
  */
 
 // =========================================================================
-#ifndef GUM_ABSTRACT_RMAX_PLANER_H
-#define GUM_ABSTRACT_RMAX_PLANER_H
+#ifndef GUM_RMAX_PLANER_H
+#define GUM_RMAX_PLANER_H
 // =========================================================================
 #include <agrum/FMDP/fmdp.h>
-#include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>
+#include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
 #include <agrum/FMDP/learning/fmdpLearner.h>
 #include <agrum/FMDP/planning/structuredPlaner.h>
+#include <agrum/FMDP/simulation/statesCounter.h>
 // =========================================================================
 
 namespace gum {  
 
   /**
-   * @class AbstractRMaxPlaner AbstractRMaxPlaner.h <agrum/FMDP/planning/AbstractRMaxPlaner.h>
+   * @class RMaxPlaner rMaxPlaner.h <agrum/FMDP/planning/rMaxPlaner.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
    *
    * Perform a RMax planning on given in parameter factored markov decision process
    *
    */
-  class AbstractRMaxPlaner : public StructuredPlaner<double> {
+  class RMaxPlaner : public StructuredPlaner<double>, public IDecisionStrategy {
 
 
       // ###################################################################
@@ -55,20 +56,20 @@ namespace gum {
         // ==========================================================================
         ///
         // ==========================================================================
-        static AbstractRMaxPlaner* ReducedAndOrderedInstance(
+        static RMaxPlaner* ReducedAndOrderedInstance(
                         const ILearningStrategy* learner,
                         double discountFactor = 0.9,
                         double epsilon = 0.00001)
-              { return new AbstractRMaxPlaner( new MDDOperatorStrategy<double>(), discountFactor, epsilon, learner);}
+              { return new RMaxPlaner( new MDDOperatorStrategy<double>(), discountFactor, epsilon, learner);}
 
         // ==========================================================================
         ///
         // ==========================================================================
-        static AbstractRMaxPlaner* TreeInstance(
+        static RMaxPlaner* TreeInstance(
                         const ILearningStrategy* learner,
                         double discountFactor = 0.9,
                         double epsilon = 0.00001)
-              { return new AbstractRMaxPlaner( new TreeOperatorStrategy<double>(), discountFactor, epsilon, learner);}
+              { return new RMaxPlaner( new TreeOperatorStrategy<double>(), discountFactor, epsilon, learner);}
 
       /// @}
 
@@ -80,16 +81,16 @@ namespace gum {
         // ==========================================================================
         /// Default constructor
         // ==========================================================================
-        AbstractRMaxPlaner( IOperatorStrategy<double>* opi,
-                            double discountFactor,
-                            double epsilon,
-                            const ILearningStrategy* learner);
+        RMaxPlaner(IOperatorStrategy<double>* opi,
+                    double discountFactor,
+                    double epsilon,
+                    const ILearningStrategy* learner);
 
         // ==========================================================================
         /// Default destructor
         // ==========================================================================
     public:
-        ~AbstractRMaxPlaner();
+        ~RMaxPlaner();
 
       /// @}
 
@@ -100,7 +101,16 @@ namespace gum {
       // ###################################################################
       /// @{
 
-    public:
+  public:
+
+        // ==========================================================================
+        /**
+         * Initializes data structure needed for making the planning
+         * @warning No calling this methods before starting the first makePlaninng
+         * will surely and definitely result in a crash
+         */
+        // ==========================================================================
+        void initialize( FMDP<double>* fmdp );
 
 
         // ==========================================================================
@@ -161,21 +171,42 @@ namespace gum {
 
     private :
 
-      ///
       HashTable<Idx, MultiDimFunctionGraph<double>*> __actionsRMaxTable;
       HashTable<Idx, MultiDimFunctionGraph<double>*> __actionsBoolTable;
       const ILearningStrategy* __fmdpLearner;
+
       double __rThreshold;
       double __rmax;
+
+
+      // ###################################################################
+      /// @name Incremental methods
+      // ###################################################################
+      /// @{
+    public:
+        void checkState( const Instantiation& newState, Idx actionId ){
+          if( !__initializedTable[actionId] ){
+            __counterTable[actionId]->reset(newState);
+            __initializedTable[actionId] = true;
+          } else
+            __counterTable[actionId]->incState(newState);
+        }
+
+    private :
+        HashTable<Idx, StatesCounter*> __counterTable;
+        HashTable<Idx, bool> __initializedTable;
+
+        bool __initialized;
+      /// @}
 
   };
 
 } /* namespace gum */
 
 
-#include <agrum/FMDP/planning/abstractRMaxPlaner.tcc>
+#include <agrum/FMDP/planning/rMaxPlaner.tcc>
 
-#endif // GUM_ABSTRACT_RMAX_PLANER_H
+#endif // GUM_RMAX_PLANER_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

@@ -180,6 +180,12 @@ namespace gum{
         // ============================================================================
         void setSon( const NodeId& node, const Idx& modality, const NodeId& sonNode );
 
+
+        // ============================================================================
+        /// Performs a sifting in search of a(local) minimal size
+        // ============================================================================
+        void minimizeSize();
+
         // ============================================================================
         /// Changes var position in variable sequence
         // ============================================================================
@@ -260,7 +266,7 @@ namespace gum{
         // ============================================================================
         /// The multidimdecisiongraph supposed to be edited.
         // ============================================================================
-        MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __FunctionGraph;
+        MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __functionGraph;
 
   };
 

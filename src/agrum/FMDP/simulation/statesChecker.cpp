@@ -47,7 +47,6 @@ namespace gum {
     __checkerTrueId = __checker->manager()->addTerminalNode(true);
 
     __insertState( initialState, 0, 0 );
-    std::cout << __checker->toDot() << std::endl;
 
   }
 

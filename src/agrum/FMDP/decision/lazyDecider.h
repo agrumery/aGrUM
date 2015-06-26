@@ -69,7 +69,7 @@ namespace gum {
       // ###################################################################
       /// @{
     public:
-        void checkState( const Instantiation& newState ){}
+        void checkState( const Instantiation& newState, Idx actionId ){}
   };
 
 }

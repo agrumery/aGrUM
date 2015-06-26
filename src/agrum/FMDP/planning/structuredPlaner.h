@@ -203,6 +203,12 @@ namespace gum {
         virtual MultiDimFunctionGraph<GUM_SCALAR>* _maximiseQactions( std::vector<MultiDimFunctionGraph<GUM_SCALAR>*>& );
 
         // ==========================================================================
+        /// Performs min_i F_i
+        /// @warning Performs also the deallocation of the F_i
+        // ==========================================================================
+        virtual MultiDimFunctionGraph<GUM_SCALAR>* _minimiseFunctions( std::vector<MultiDimFunctionGraph<GUM_SCALAR>*>& );
+
+        // ==========================================================================
         /// Perform the R(s) + \gamma . function
         /// @warning function is deleted, new one is returned
         // ==========================================================================

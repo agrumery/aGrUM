@@ -78,6 +78,21 @@ namespace gum {
 
     /// @}
 
+    public:
+      Idx nbCall(){ return __nbCall; }
+    private:
+      Idx __nbCall;
+
+    public:
+      Idx nbVarRetro(){ return __nbVarRetro; }
+    private:
+      Idx __nbVarRetro;
+
+    public:
+      Idx sizeVarRetroDomain(){ return __sizeVarRetro; }
+    private:
+      Idx __sizeVarRetro;
+
 
     private :
       // ============================================================================
@@ -104,6 +119,8 @@ namespace gum {
       /// The main recursion function
       // ============================================================================
       NodeId __compute(O4DGContext & currentSituation, Idx lastInstVarPos);
+
+
 
 
 

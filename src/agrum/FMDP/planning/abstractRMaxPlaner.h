@@ -59,7 +59,7 @@ namespace gum {
                         const ILearningStrategy* learner,
                         double discountFactor = 0.9,
                         double epsilon = 0.00001)
-              { return new AbstractRMaxPlaner( new MDDOperatorStrategy<double>(), discountFactor, epsilon, learner);}
+              { return new AbstractRMaxPlaner( new MDDOperatorStrategy<double>(), discountFactor, epsilon, learner); }
 
         // ==========================================================================
         ///
@@ -68,7 +68,7 @@ namespace gum {
                         const ILearningStrategy* learner,
                         double discountFactor = 0.9,
                         double epsilon = 0.00001)
-              { return new AbstractRMaxPlaner( new TreeOperatorStrategy<double>(), discountFactor, epsilon, learner);}
+              { return new AbstractRMaxPlaner( new TreeOperatorStrategy<double>(), discountFactor, epsilon, learner); }
 
       /// @}
 

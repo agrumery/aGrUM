@@ -367,6 +367,27 @@ namespace gum {
     }
 
 
+
+    // ===========================================================================
+    // Maximise the AAction to iobtain the vFunction
+    // ===========================================================================
+    template<typename GUM_SCALAR>
+    MultiDimFunctionGraph< GUM_SCALAR >*
+    StructuredPlaner<GUM_SCALAR>::_minimiseFunctions( std::vector<MultiDimFunctionGraph<GUM_SCALAR>*>& qActionsSet) {
+
+      MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = qActionsSet.back();
+      qActionsSet.pop_back();
+
+      while ( !qActionsSet.empty() ) {
+        MultiDimFunctionGraph<GUM_SCALAR>* qAction = qActionsSet.back();
+        qActionsSet.pop_back();
+        newVFunction = _operator->minimize ( newVFunction, qAction );
+      }
+
+      return newVFunction;
+    }
+
+
     // ===========================================================================
     // Updates the value function by multiplying by discount and adding reward
     // ===========================================================================
