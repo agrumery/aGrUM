@@ -21,8 +21,8 @@
  * @file
  * @brief Implementation of lazy propagation for inference in Bayesian Networks.
  */
-#ifndef GUM_LAZY_PROPAGATION_NEW_H
-#define GUM_LAZY_PROPAGATION_NEW_H
+#ifndef GUM_LAZY_PROPAGATION_H
+#define GUM_LAZY_PROPAGATION_H
 
 #include <math.h>
 
@@ -31,14 +31,14 @@
 
 namespace gum {
   /**
-   * @class LazyPropagationNew lazyPropagation.h <agrum/BN/inference/lazyPropagation.h>
+   * @class LazyPropagation lazyPropagation.h <agrum/BN/inference/lazyPropagation.h>
    * @brief Implementation of lazy propagation for inference in Bayesian Networks
    * @ingroup bn_group
    */
   template <typename GUM_SCALAR>
 
-  class LazyPropagationNew : public BayesNetInference<GUM_SCALAR> {
-    public:
+  class LazyPropagation : public BayesNetInference<GUM_SCALAR> {
+  public:
 
     /// type of algorithm for determining the relevant potentials for combinations 
     enum FindRelevantPotentialsType {
@@ -54,14 +54,14 @@ namespace gum {
     /// @{
 
     /// default constructor
-    LazyPropagationNew(const IBayesNet<GUM_SCALAR> &BN);
+    LazyPropagation(const IBayesNet<GUM_SCALAR> &BN);
 
     /// constructor with a given elimination sequence
-    LazyPropagationNew(const IBayesNet<GUM_SCALAR> &BN,
+    LazyPropagation(const IBayesNet<GUM_SCALAR> &BN,
                     const std::vector<NodeId> &elim_order);
 
     /// destructor
-    ~LazyPropagationNew();
+    ~LazyPropagation();
 
     /// @}
 
@@ -129,31 +129,31 @@ namespace gum {
     /// @{
 
     /** Entropy
-    * Compute Shanon's entropy of a node given the observation
-    * @see http://en.wikipedia.org/wiki/Information_entropy
-    */
+     * Compute Shanon's entropy of a node given the observation
+     * @see http://en.wikipedia.org/wiki/Information_entropy
+     */
     GUM_SCALAR H(NodeId X);
 
     /** Mutual information between X and Y
-    * @see http://en.wikipedia.org/wiki/Mutual_information
-    *
-    * @warning Due to limitation of @ref joint, may not be able to compute
-    * this value
-    * @throw OperationNotAllowed in these cases
-    */
+     * @see http://en.wikipedia.org/wiki/Mutual_information
+     *
+     * @warning Due to limitation of @ref joint, may not be able to compute
+     * this value
+     * @throw OperationNotAllowed in these cases
+     */
     GUM_SCALAR I(NodeId X, NodeId Y);
 
     /** Variation of information between X and Y
-    * @see http://en.wikipedia.org/wiki/Variation_of_information
-    *
-    * @warning Due to limitation of @ref joint, may not be able to compute
-    * this value
-    * @throw OperationNotAllowed in these cases
-    */
+     * @see http://en.wikipedia.org/wiki/Variation_of_information
+     *
+     * @warning Due to limitation of @ref joint, may not be able to compute
+     * this value
+     * @throw OperationNotAllowed in these cases
+     */
     GUM_SCALAR VI(NodeId X, NodeId Y);
     /// @}
 
-    protected:
+  protected:
     /**
      * Returns the probability of the variable.
      *
@@ -163,7 +163,7 @@ namespace gum {
      */
     virtual void _fillPosterior(Id id, Potential<GUM_SCALAR> &posterior);
 
-    private:
+  private:
     typedef Set<const Potential<GUM_SCALAR> *> __PotentialSet;
     typedef SetIteratorSafe<const Potential<GUM_SCALAR> *> __PotentialSetIterator;
 
@@ -221,7 +221,7 @@ namespace gum {
 
     /** @brief update a set of potentials: the remaining are those to be combined
      * to produce a message on a separator */
-    void (LazyPropagationNew<GUM_SCALAR>::*__findRelevantPotentials)
+    void (LazyPropagation<GUM_SCALAR>::*__findRelevantPotentials)
     ( __PotentialSet& pot_list,
       Set<const DiscreteVariable *>& kept_vars );
 
@@ -292,18 +292,18 @@ namespace gum {
     void __computeBarrenPotentials ();
     
     /// avoid copy constructors
-    LazyPropagationNew(const LazyPropagationNew<GUM_SCALAR> &);
+    LazyPropagation(const LazyPropagation<GUM_SCALAR> &);
 
     /// avoid copy operators
-    LazyPropagationNew<GUM_SCALAR> &operator=(const LazyPropagationNew<GUM_SCALAR> &);
+    LazyPropagation<GUM_SCALAR> &operator=(const LazyPropagation<GUM_SCALAR> &);
   };
 
-  // extern template class LazyPropagationNew<float>;
-  // extern template class LazyPropagationNew<double>;
+  // extern template class LazyPropagation<float>;
+  // extern template class LazyPropagation<double>;
 
 } /* namespace gum */
 
-#include <agrum/BN/inference/lazyPropagationNew.tcc>
+#include <agrum/BN/inference/lazyPropagation.tcc>
 
-#endif /* GUM_LAZY_PROPAGATION_NEW_H */
+#endif /* GUM_LAZY_PROPAGATION_H */
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

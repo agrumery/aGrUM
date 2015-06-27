@@ -29,8 +29,8 @@
 
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
-#include <agrum/BN/inference/lazyPropagationNew.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/lazyPropagationOld.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -112,8 +112,8 @@ namespace gum_tests {
     void testCreationAndInference() {
       fill(*bn);
       // Testing the inference
-      gum::LazyPropagationNew<float> *inf = 0;
-      TS_ASSERT_THROWS_NOTHING(inf = new gum::LazyPropagationNew<float>(*bn));
+      gum::LazyPropagation<float> *inf = 0;
+      TS_ASSERT_THROWS_NOTHING(inf = new gum::LazyPropagation<float>(*bn));
       TS_ASSERT_THROWS_NOTHING(inf->makeInference());
 
       if (inf != 0) {
@@ -123,8 +123,8 @@ namespace gum_tests {
 
     void testMarginal() {
       fill(*bn);
-      gum::LazyPropagationNew<float> inf(*bn);
-      gum::LazyPropagation<float> inf2(*bn);
+      gum::LazyPropagation<float> inf(*bn);
+      gum::LazyPropagationOld<float> inf2(*bn);
 
       TS_ASSERT_THROWS_NOTHING(inf.makeInference());
       TS_ASSERT_THROWS_NOTHING(inf.posterior(i1));
@@ -149,8 +149,8 @@ namespace gum_tests {
       e_list.insert(e_i1);
       e_list.insert(e_i4);
 
-      gum::LazyPropagationNew<float> inf(*bn);
-      gum::LazyPropagation<float> infX(*bn);
+      gum::LazyPropagation<float> inf(*bn);
+      gum::LazyPropagationOld<float> infX(*bn);
 
       TS_ASSERT_THROWS_NOTHING(inf.insertEvidence(e_list));
       TS_ASSERT_THROWS_NOTHING(infX.insertEvidence(e_list));
@@ -170,8 +170,8 @@ namespace gum_tests {
       TS_ASSERT ( equalPotentials ( inf.posterior(i4), infX.posterior(i4) ) );
       TS_ASSERT ( equalPotentials ( inf.posterior(i5), infX.posterior(i5) ) );
 
-      gum::LazyPropagationNew<float> inf2(*bn);
-      gum::LazyPropagation<float> inf2X(*bn);
+      gum::LazyPropagation<float> inf2(*bn);
+      gum::LazyPropagationOld<float> inf2X(*bn);
 
 
       /* addHardEvidece : memore leak */
@@ -206,7 +206,7 @@ namespace gum_tests {
     void testJoint() {
       fill(*bn);
       // Testing the inference
-      gum::LazyPropagationNew<float> inf(*bn);
+      gum::LazyPropagation<float> inf(*bn);
       gum::NodeSet nodeset;
       nodeset.insert(2);
       nodeset.insert(4);
@@ -222,7 +222,7 @@ namespace gum_tests {
     void testInformationMethods() {
       fill(*bn);
 
-      gum::LazyPropagationNew<float> inf(*bn);
+      gum::LazyPropagation<float> inf(*bn);
       inf.makeInference();
 
       TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2));
@@ -246,8 +246,8 @@ namespace gum_tests {
       TS_ASSERT(nbrErr == 0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
-      gum::LazyPropagationNew<float> inf1 (bn);
-      gum::LazyPropagation<float> inf2 (bn);
+      gum::LazyPropagation<float> inf1 (bn);
+      gum::LazyPropagationOld<float> inf2 (bn);
 
       TS_ASSERT_THROWS_NOTHING(inf1.makeInference());
       TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
@@ -278,8 +278,8 @@ namespace gum_tests {
         evidences.insert ( ev_pot );
       }
       
-      gum::LazyPropagationNew<float> inf3 (bn);
-      gum::LazyPropagation<float> inf4 (bn);
+      gum::LazyPropagation<float> inf3 (bn);
+      gum::LazyPropagationOld<float> inf4 (bn);
       TS_ASSERT_THROWS_NOTHING(inf1.insertEvidence(evidences));
       TS_ASSERT_THROWS_NOTHING(inf2.insertEvidence(evidences));
       TS_ASSERT_THROWS_NOTHING(inf3.insertEvidence(evidences));
@@ -300,8 +300,8 @@ namespace gum_tests {
         TS_ASSERT( equalPotentials ( inf1.posterior(node),inf4.posterior(node) ) );
       }
 
-      gum::LazyPropagationNew<float> inf5 (bn);
-      inf5.setFindRelevantPotentialsType (gum::LazyPropagationNew<float>::FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION);
+      gum::LazyPropagation<float> inf5 (bn);
+      inf5.setFindRelevantPotentialsType (gum::LazyPropagation<float>::FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION);
       TS_ASSERT_THROWS_NOTHING(inf5.insertEvidence(evidences));
       TS_ASSERT_THROWS_NOTHING(inf5.makeInference());
       for ( auto node : bn.dag() ) {

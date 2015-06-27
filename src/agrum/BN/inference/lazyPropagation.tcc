@@ -26,7 +26,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #include <agrum/config.h>
 #include <agrum/multidim/instantiation.h>
-#include <agrum/BN/inference/lazyPropagationNew.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/BayesBall.h>
 #include <agrum/multidim/operators/multiDimProjection.h>
 #include <agrum/multidim/operators/multiDimCombineAndProjectDefault.h>
@@ -61,9 +61,9 @@ namespace gum {
   // initialization function
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagationNew<GUM_SCALAR>::__initialize(const IBayesNet<GUM_SCALAR> &BN,
-                                               StaticTriangulation &triangulation,
-                                               const NodeProperty<Size> &modalities) {
+  LazyPropagation<GUM_SCALAR>::__initialize(const IBayesNet<GUM_SCALAR> &BN,
+                                            StaticTriangulation &triangulation,
+                                            const NodeProperty<Size> &modalities) {
     const JunctionTree &triang_jt = triangulation.junctionTree();
     BinaryJoinTreeConverterDefault bon_converter;
     NodeSet emptyset;
@@ -132,14 +132,14 @@ namespace gum {
   // default constructor
   template <typename GUM_SCALAR>
   INLINE
-  LazyPropagationNew<GUM_SCALAR>::LazyPropagationNew(const IBayesNet<GUM_SCALAR> &BN)
+  LazyPropagation<GUM_SCALAR>::LazyPropagation(const IBayesNet<GUM_SCALAR> &BN)
     : BayesNetInference<GUM_SCALAR>(BN) {
     // for debugging purposessetRequiredInference
-    GUM_CONSTRUCTOR(LazyPropagationNew);
+    GUM_CONSTRUCTOR(LazyPropagation);
 
     // set the findRelevantPotentials function
     __findRelevantPotentials =
-      & LazyPropagationNew<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
+      & LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
   
     // set the correspondance between variables and their id and get the variables
     // domain sizes
@@ -158,15 +158,15 @@ namespace gum {
   // constructor with a given elimination sequence
   template <typename GUM_SCALAR>
   INLINE
-  LazyPropagationNew<GUM_SCALAR>::LazyPropagationNew(const IBayesNet<GUM_SCALAR> &BN,
-                                                     const std::vector<NodeId> &elim_order)
+  LazyPropagation<GUM_SCALAR>::LazyPropagation(const IBayesNet<GUM_SCALAR> &BN,
+                                               const std::vector<NodeId> &elim_order)
     : BayesNetInference<GUM_SCALAR>(BN) {
     // for debugging purposessetRequiredInference
-    GUM_CONSTRUCTOR(LazyPropagationNew);
+    GUM_CONSTRUCTOR(LazyPropagation);
 
     // set the findRelevantPotentials function
     __findRelevantPotentials =
-      & LazyPropagationNew<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
+      & LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
 
     // set the correspondance between variables and their id and get the variables
     // domain sizes
@@ -186,9 +186,9 @@ namespace gum {
   
   // destructor
   template <typename GUM_SCALAR>
-  INLINE LazyPropagationNew<GUM_SCALAR>::~LazyPropagationNew() {
+  INLINE LazyPropagation<GUM_SCALAR>::~LazyPropagation() {
     // for debugging purposes
-    GUM_DESTRUCTOR(LazyPropagationNew);
+    GUM_DESTRUCTOR(LazyPropagation);
     // remove all the created potentials
 
     for (const auto pot : __created_potentials)
@@ -202,8 +202,8 @@ namespace gum {
 
   // indicates that we need inference in a given Junction tree connected component
   template <typename GUM_SCALAR>
-  void LazyPropagationNew<GUM_SCALAR>::__setRequiredInference(NodeId id,
-                                                              NodeId from) {
+  void LazyPropagation<GUM_SCALAR>::__setRequiredInference(NodeId id,
+                                                           NodeId from) {
     // check if an inference has already happened through clique id
     if ((__collected_cliques[id] == false) && (__diffused_cliques[id] == false))
       return;
@@ -243,7 +243,7 @@ namespace gum {
   // remove a given evidence from the graph
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagationNew<GUM_SCALAR>::eraseEvidence(const Potential<GUM_SCALAR> *pot) {
+  LazyPropagation<GUM_SCALAR>::eraseEvidence(const Potential<GUM_SCALAR> *pot) {
     this->_invalidatePosteriors();
     
     // if the evidence does not exist, do nothing
@@ -278,7 +278,7 @@ namespace gum {
 
   // remove all evidence from the graph
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagationNew<GUM_SCALAR>::eraseAllEvidence() {
+  INLINE void LazyPropagation<GUM_SCALAR>::eraseAllEvidence() {
     this->_invalidatePosteriors();
     // remove the evidence store in the cliques
     for (auto &elt : __clique_evidence)
@@ -314,7 +314,7 @@ namespace gum {
   
   /// clears the messages of previous inferences
   template <typename GUM_SCALAR>
-  void LazyPropagationNew<GUM_SCALAR>::clearInference () {
+  void LazyPropagation<GUM_SCALAR>::clearInference () {
     this->_invalidatePosteriors();
 
     // remove the messages sent during a previous propagation
@@ -337,7 +337,7 @@ namespace gum {
   //template <typename GUM_SCALAR>
   template <typename GUM_SCALAR>
   INLINE bool
-  LazyPropagationNew<GUM_SCALAR>::__isHardEvidence ( const Potential<GUM_SCALAR>* pot ) {
+  LazyPropagation<GUM_SCALAR>::__isHardEvidence ( const Potential<GUM_SCALAR>* pot ) {
     Instantiation i(pot);
     unsigned int nb_non_zeros = 0;
     for ( i.setFirst (); ! i.end (); i.inc () ) {
@@ -353,7 +353,7 @@ namespace gum {
 
   // insert new evidence in the graph
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagationNew<GUM_SCALAR>::insertEvidence
+  INLINE void LazyPropagation<GUM_SCALAR>::insertEvidence
   ( const List<const Potential<GUM_SCALAR> *> &pot_list) {
     this->_invalidatePosteriors();
     List<const Potential<GUM_SCALAR> *> empty_list;
@@ -407,25 +407,25 @@ namespace gum {
   /// sets how we determine the relevant potentials to combine
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagationNew<GUM_SCALAR>::setFindRelevantPotentialsType
+  LazyPropagation<GUM_SCALAR>::setFindRelevantPotentialsType
   ( FindRelevantPotentialsType type ) {
     switch ( type ) {
     case FIND_RELEVANT_D_SEPARATION2:
       __findRelevantPotentials =
-        & LazyPropagationNew<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
+        & LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
       break;
       
-     case FIND_RELEVANT_D_SEPARATION:
+    case FIND_RELEVANT_D_SEPARATION:
       __findRelevantPotentials =
-        & LazyPropagationNew<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation;
+        & LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation;
       break;
       
     case FIND_RELEVANT_ALL:
       __findRelevantPotentials =
-        & LazyPropagationNew<GUM_SCALAR>::__findRelevantPotentialsGetAll;
+        & LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsGetAll;
       break;
 
-   default:
+    default:
       GUM_ERROR ( InvalidArgument,
                   "setFindRelevantPotentialsType for this type not implemented yet" );
     }
@@ -435,7 +435,7 @@ namespace gum {
   // find the potentials d-connected to a set of variables
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagationNew<GUM_SCALAR>::__findRelevantPotentialsGetAll
+  LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsGetAll
   ( __PotentialSet& pot_list,
     Set<const DiscreteVariable *>& kept_vars ) {
   }
@@ -444,7 +444,7 @@ namespace gum {
   // find the potentials d-connected to a set of variables
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagationNew<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation
+  LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation
   ( __PotentialSet& pot_list,
     Set<const DiscreteVariable *>& kept_vars ) {
     // find the node ids of the kept variables
@@ -482,7 +482,7 @@ namespace gum {
   // find the potentials d-connected to a set of variables
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagationNew<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2
+  LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2
   ( __PotentialSet& pot_list,
     Set<const DiscreteVariable *>& kept_vars ) {
     // find the node ids of the kept variables
@@ -503,7 +503,7 @@ namespace gum {
   // remove barren variables
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagationNew<GUM_SCALAR>::__removeBarrenVariables
+  LazyPropagation<GUM_SCALAR>::__removeBarrenVariables
   ( __PotentialSet& pot_list,
     Set<const DiscreteVariable *>& del_vars ) {
     // remove from del_vars the variables that received some evidence:
@@ -570,7 +570,7 @@ namespace gum {
   
   // remove variables del_vars from the list of potentials pot_list
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagationNew<GUM_SCALAR>::__marginalizeOut
+  INLINE void LazyPropagation<GUM_SCALAR>::__marginalizeOut
   ( __PotentialSet& pot_list,
     Set<const DiscreteVariable *>& del_vars,
     Set<const DiscreteVariable *>& kept_vars ) {
@@ -612,8 +612,8 @@ namespace gum {
 
   // creates the message sent by clique from_id to clique to_id
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagationNew<GUM_SCALAR>::__produceMessage(NodeId from_id,
-                                                               NodeId to_id) {
+  INLINE void LazyPropagation<GUM_SCALAR>::__produceMessage(NodeId from_id,
+                                                            NodeId to_id) {
     // get the set of CPTs of the BN that are barren w.r.t. the message
     // we wish to produce
     const __PotentialSet& barren_pots =
@@ -708,7 +708,7 @@ namespace gum {
 
   /// compute barren nodes if necessary
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagationNew<GUM_SCALAR>::__computeBarrenPotentials () {
+  INLINE void LazyPropagation<GUM_SCALAR>::__computeBarrenPotentials () {
     if ( __need_recompute_barren_potentials ) {
       BarrenNodesFinder finder ( this->bn().dag () );
 
@@ -726,7 +726,7 @@ namespace gum {
   
   // performs the __collect phase of Lazy Propagation
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagationNew<GUM_SCALAR>::__collect(NodeId id, NodeId from) {
+  INLINE void LazyPropagation<GUM_SCALAR>::__collect(NodeId id, NodeId from) {
     __collected_cliques[id] = true;
 
     for (const auto other : __JT->neighbours(id))
@@ -741,7 +741,7 @@ namespace gum {
 
   // performs the __collect phase of Lazy Propagation
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagationNew<GUM_SCALAR>::collect(NodeId id, bool force_collect) {
+  INLINE void LazyPropagation<GUM_SCALAR>::collect(NodeId id, bool force_collect) {
     // get a clique that contains id
     NodeId clique = __node_to_clique[id];
     
@@ -763,7 +763,7 @@ namespace gum {
 
   // performs the __diffusion phase of Lazy Propagation
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagationNew<GUM_SCALAR>::__diffusion(NodeId id, NodeId from) {
+  INLINE void LazyPropagation<GUM_SCALAR>::__diffusion(NodeId id, NodeId from) {
     __diffused_cliques[id] = true;
 
     // #### TODO: make a more efficient inference using a stack of
@@ -777,8 +777,8 @@ namespace gum {
 
   // performs the __collect phase of Lazy Propagation
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagationNew<GUM_SCALAR>::diffusion(NodeId id,
-                                                        bool force_diffusion) {
+  INLINE void LazyPropagation<GUM_SCALAR>::diffusion(NodeId id,
+                                                     bool force_diffusion) {
     // get a clique that contains id
     NodeId clique = __node_to_clique[id];
 
@@ -798,14 +798,14 @@ namespace gum {
   // performs a whole inference (__collect + __diffusion)
 
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagationNew<GUM_SCALAR>::makeInference() {
+  INLINE void LazyPropagation<GUM_SCALAR>::makeInference() {
     makeInference(false);
   }
 
   // performs a whole inference (__collect + __diffusion)
 
   template <typename GUM_SCALAR>
-  INLINE void LazyPropagationNew<GUM_SCALAR>::makeInference(bool force_inference) {
+  INLINE void LazyPropagation<GUM_SCALAR>::makeInference(bool force_inference) {
     // prepare a new inference from scratch
 
     if (force_inference) {
@@ -851,7 +851,7 @@ namespace gum {
 
   // returns the marginal a posteriori proba of a given node
   template <typename GUM_SCALAR>
-  void LazyPropagationNew<GUM_SCALAR>::__aPosterioriMarginal(NodeId id, Potential<GUM_SCALAR> &marginal) {
+  void LazyPropagation<GUM_SCALAR>::__aPosterioriMarginal(NodeId id, Potential<GUM_SCALAR> &marginal) {
     // if the node received a hard evidence, just return it
     if ( __hard_evidence_nodes.exists ( id ) ) {
       marginal = *( __bn_node2hard_potential[id] );
@@ -959,8 +959,8 @@ namespace gum {
   // returns the joint a posteriori proba of a given set of nodes
   template <typename GUM_SCALAR>
   void
-  LazyPropagationNew<GUM_SCALAR>::__aPosterioriJoint(const NodeSet &ids,
-                                                     Potential<GUM_SCALAR> &marginal) {
+  LazyPropagation<GUM_SCALAR>::__aPosterioriJoint(const NodeSet &ids,
+                                                  Potential<GUM_SCALAR> &marginal) {
     // compute barren nodes if necessary
     __computeBarrenPotentials ();
     
@@ -1082,7 +1082,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE const JunctionTree *LazyPropagationNew<GUM_SCALAR>::junctionTree() const {
+  INLINE const JunctionTree *LazyPropagation<GUM_SCALAR>::junctionTree() const {
     return __JT;
   }
 
@@ -1090,14 +1090,14 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE void
-  LazyPropagationNew<GUM_SCALAR>::_fillPosterior(NodeId id,
-                                                 Potential<GUM_SCALAR> &posterior) {
+  LazyPropagation<GUM_SCALAR>::_fillPosterior(NodeId id,
+                                              Potential<GUM_SCALAR> &posterior) {
     __aPosterioriMarginal(id, posterior);
     posterior.normalize();
   }
 
   template <typename GUM_SCALAR>
-  INLINE GUM_SCALAR LazyPropagationNew<GUM_SCALAR>::evidenceProbability() {
+  INLINE GUM_SCALAR LazyPropagation<GUM_SCALAR>::evidenceProbability() {
     // TODO: il y a un bug dans cette fonction: actuellement, je choisis un
     // noeud X sur lequel je fais une collecte, et je calcule P(e) comme etant
     // P(e) = sum_X P(X,e). Mais s'il y a plusieurs composantes connexes dans
@@ -1126,7 +1126,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR> *
-  LazyPropagationNew<GUM_SCALAR>::joint(const NodeSet &nodes) {
+  LazyPropagation<GUM_SCALAR>::joint(const NodeSet &nodes) {
     Potential<GUM_SCALAR> *res = new Potential<GUM_SCALAR>();
 
     try {
@@ -1144,7 +1144,7 @@ namespace gum {
    * Compute Shanon's entropy of a node given the observation
    */
   template <typename GUM_SCALAR>
-  GUM_SCALAR LazyPropagationNew<GUM_SCALAR>::H(NodeId X) {
+  GUM_SCALAR LazyPropagation<GUM_SCALAR>::H(NodeId X) {
     const Potential<GUM_SCALAR> &pX = this->posterior(X);
 
     Instantiation i(pX);
@@ -1168,7 +1168,7 @@ namespace gum {
    * @throw OperationNotAllowed in these cases
    */
   template <typename GUM_SCALAR>
-  GUM_SCALAR LazyPropagationNew<GUM_SCALAR>::I(NodeId X, NodeId Y) {
+  GUM_SCALAR LazyPropagation<GUM_SCALAR>::I(NodeId X, NodeId Y) {
     const Potential<GUM_SCALAR> &pX = this->posterior(X);
     const Potential<GUM_SCALAR> &pY = this->posterior(Y);
 
@@ -1206,7 +1206,7 @@ namespace gum {
    * @throw OperationNotAllowed in these cases
    */
   template <typename GUM_SCALAR>
-  INLINE GUM_SCALAR LazyPropagationNew<GUM_SCALAR>::VI(NodeId X, NodeId Y) {
+  INLINE GUM_SCALAR LazyPropagation<GUM_SCALAR>::VI(NodeId X, NodeId Y) {
     return H(X) + H(Y) - 2 * I(X, Y);
   }
 } /* namespace gum */
