@@ -21,8 +21,8 @@
  * @file
  * @brief Implementation of lazy propagation for inference in Bayesian Networks.
  */
-#ifndef GUM_LAZY_PROPAGATION_H
-#define GUM_LAZY_PROPAGATION_H
+#ifndef GUM_LAZY_PROPAGATION_OLD_H
+#define GUM_LAZY_PROPAGATION_OLD_H
 
 #include <math.h>
 
@@ -31,14 +31,14 @@
 
 namespace gum {
   /**
-   * @class LazyPropagation lazyPropagation.h <agrum/BN/inference/lazyPropagation.h>
+   * @class LazyPropagationOld lazyPropagationOld.h <agrum/BN/inference/lazyPropagationOld.h>
    * @brief Implementation of lazy propagation for inference in Bayesian Networks
    * @ingroup bn_group
    */
   template <typename GUM_SCALAR>
 
-  class LazyPropagation : public BayesNetInference<GUM_SCALAR> {
-    public:
+  class LazyPropagationOld : public BayesNetInference<GUM_SCALAR> {
+  public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -46,14 +46,14 @@ namespace gum {
 
     /// default constructor
 
-    LazyPropagation(const IBayesNet<GUM_SCALAR> &BN);
+    LazyPropagationOld(const IBayesNet<GUM_SCALAR> &BN);
 
     /// constructor with a given elimination sequence
-    LazyPropagation(const IBayesNet<GUM_SCALAR> &BN,
-                    const std::vector<NodeId> &elim_order);
+    LazyPropagationOld(const IBayesNet<GUM_SCALAR> &BN,
+                       const std::vector<NodeId> &elim_order);
 
     /// destructor
-    ~LazyPropagation();
+    ~LazyPropagationOld();
 
     /// @}
 
@@ -73,10 +73,10 @@ namespace gum {
     /// remove a given evidence from the graph
     virtual void eraseEvidence(const Potential<GUM_SCALAR> *);
 
-    /// performs the collect phase of Lazy Propagation
+    /// performs the collect phase of Lazy PropagationOld
     void collect(NodeId id, bool force_collect = false);
 
-    /// performs the diffusion phase of Lazy Propagation
+    /// performs the diffusion phase of Lazy PropagationOld
     void diffusion(NodeId id, bool force_diffusion = false);
 
     /// perfoms a whole inference (with force_inference flag at false)
@@ -106,29 +106,29 @@ namespace gum {
     /// @{
 
     /** Entropy
-    * Compute Shanon's entropy of a node given the observation
-    * @see http://en.wikipedia.org/wiki/Information_entropy
-    */
+     * Compute Shanon's entropy of a node given the observation
+     * @see http://en.wikipedia.org/wiki/Information_entropy
+     */
     GUM_SCALAR H(NodeId X);
 
     /** Mutual information between X and Y
-    * @see http://en.wikipedia.org/wiki/Mutual_information
-    *
-    * @warning Due to limitation of @ref joint, may not be able to compute this value
-    * @throw OperationNotAllowed in these cases
-    */
+     * @see http://en.wikipedia.org/wiki/Mutual_information
+     *
+     * @warning Due to limitation of @ref joint, may not be able to compute this value
+     * @throw OperationNotAllowed in these cases
+     */
     GUM_SCALAR I(NodeId X, NodeId Y);
 
     /** Variation of information between X and Y
-    * @see http://en.wikipedia.org/wiki/Variation_of_information
-    *
-    * @warning Due to limitation of @ref joint, may not be able to compute this value
-    * @throw OperationNotAllowed in these cases
-    */
+     * @see http://en.wikipedia.org/wiki/Variation_of_information
+     *
+     * @warning Due to limitation of @ref joint, may not be able to compute this value
+     * @throw OperationNotAllowed in these cases
+     */
     GUM_SCALAR VI(NodeId X, NodeId Y);
     /// @}
 
-    protected:
+  protected:
     /**
      * Returns the probability of the variable.
      *
@@ -138,7 +138,7 @@ namespace gum {
      */
     virtual void _fillPosterior(Id id, Potential<GUM_SCALAR> &posterior);
 
-    private:
+  private:
     typedef Set<const Potential<GUM_SCALAR> *> __PotentialSet;
     typedef SetIteratorSafe<const Potential<GUM_SCALAR> *> __PotentialSetIterator;
 
@@ -214,18 +214,18 @@ namespace gum {
                       const NodeProperty<Size> &modalities);
 
     /// avoid copy constructors
-    LazyPropagation(const LazyPropagation<GUM_SCALAR> &);
+    LazyPropagationOld(const LazyPropagationOld<GUM_SCALAR> &);
 
     /// avoid copy operators
-    LazyPropagation<GUM_SCALAR> &operator=(const LazyPropagation<GUM_SCALAR> &);
+    LazyPropagationOld<GUM_SCALAR> &operator=(const LazyPropagationOld<GUM_SCALAR> &);
   };
 
-  extern template class LazyPropagation<float>;
-  extern template class LazyPropagation<double>;
+  extern template class LazyPropagationOld<float>;
+  extern template class LazyPropagationOld<double>;
 
 } /* namespace gum */
 
-#include <agrum/BN/inference/lazyPropagation.tcc>
+#include <agrum/BN/inference/lazyPropagationOld.tcc>
 
-#endif /* GUM_LAZY_PROPAGATION_H */
+#endif /* GUM_LAZY_PROPAGATION_OLD_H */
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

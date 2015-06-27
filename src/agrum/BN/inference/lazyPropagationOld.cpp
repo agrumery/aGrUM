@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/lazyPropagationOld.h>
 
-template class gum::LazyPropagation<float>;
-template class gum::LazyPropagation<double>;
+template class gum::LazyPropagationOld<float>;
+template class gum::LazyPropagationOld<double>;
