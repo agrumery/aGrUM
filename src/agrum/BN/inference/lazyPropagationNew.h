@@ -181,6 +181,9 @@ namespace gum {
     /// the list of all the evidence stored in the cliques
     NodeProperty<List<const Potential<GUM_SCALAR> *>> __clique_evidence;
 
+    /// the list of hard evidence potentials per random variable
+    NodeProperty<const Potential<GUM_SCALAR>*> __bn_node2hard_potential;
+
     /// the list of all potentials stored in the separators
     ArcProperty<__PotentialSet> __sep_potentials;
 

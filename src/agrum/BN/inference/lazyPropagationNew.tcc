@@ -253,21 +253,22 @@ namespace gum {
     // get the variable involved in pot and indicate that this variable did
     // not receive any evidence
     const Sequence<const DiscreteVariable *> &vars = pot->variablesSequence();
-    NodeId var = this->bn().nodeId(*vars.atPos(0));
+    const NodeId var = this->bn().nodeId(*vars.atPos(0));
     __hard_evidence_nodes.erase ( var );
     __soft_evidence_nodes.erase ( var );
     
     // remove the potential from the list of evidence of the cliques
-    for (auto &elt : __clique_evidence) {
+    for ( auto &elt : __clique_evidence ) {
       elt.second.eraseByVal(pot);
     }
 
     // remove the potential from the list of evidence
     __evidences.erase(pot);
+    __bn_node2hard_potential.erase ( var );
 
     // indicate that we need to perform both __collect and __diffusion in the
     // connected component containing the variable of the evidence
-    NodeId pot_clique = __node_to_clique[var];
+    const NodeId pot_clique = __node_to_clique[var];
     __setRequiredInference(pot_clique, pot_clique);
 
     // indicate that we shall recompute the set of barren nodes/potentials
@@ -289,6 +290,7 @@ namespace gum {
 
     // remove actually all the evidence taken into account
     __evidences.clear();
+    __bn_node2hard_potential.clear();
 
     // indicate that no node received any evidence
     __hard_evidence_nodes.clear ();
@@ -364,13 +366,16 @@ namespace gum {
                   "Evidence can be be given w.r.t only one random variable for "
                   << pot);
       }
+    }
 
-      // remove already existing evidence w.r.t. variable in pot
-      const DiscreteVariable *var = vars.atPos(0);
+    for (const auto pot : pot_list) {
+      const DiscreteVariable *var = pot->variablesSequence().atPos(0);
       NodeId var_id = this->bn().nodeId(*var);
-      NodeId clique_id = __node_to_clique[var_id]; // the clique that contains the var
+      NodeId clique_id = __node_to_clique[var_id]; // get the clique that
+                                                   // contains the var
       auto& clique_evidences = __clique_evidence[clique_id];
  
+      // remove already existing evidence w.r.t. variable in pot
       for ( auto ev_pot : clique_evidences ) {
         if ( var == ev_pot->variablesSequence().atPos(0) ) {
           // here we found the evidence corresponding to the variable
@@ -381,10 +386,15 @@ namespace gum {
       
       // insert the evidence
       __evidences.insert(pot);
-      __clique_evidence[clique_id].insert(pot);
-      if ( __isHardEvidence ( pot ) ) __hard_evidence_nodes.insert ( var_id );
-      else __soft_evidence_nodes.insert ( var_id );
-
+      __clique_evidence[clique_id].insert( pot );
+      if ( __isHardEvidence ( pot ) ) {
+        __hard_evidence_nodes.insert ( var_id );
+        __bn_node2hard_potential.insert ( var_id, pot );
+      }
+      else {
+        __soft_evidence_nodes.insert ( var_id );
+      }
+      
       // indicate that, now, new inference is required
       __setRequiredInference(clique_id, clique_id);
     }
@@ -577,10 +587,22 @@ namespace gum {
       combine_and_project.combineAndProject ( pot_list, del_vars );
 
     // determine which new potentials we have created and put them into the
-    // set of potentials created during inference
-    for ( const auto pot : new_pot_list ) {
-      if ( ! pot_list.exists ( pot ) ) {
-        __created_potentials.insert(pot);
+    // set of potentials created during inference. In addition, remove all the
+    // potentials that have no dimension
+    for ( auto iter_pot = new_pot_list.beginSafe ();
+          iter_pot != new_pot_list.endSafe (); ++iter_pot ) {
+      if ( (*iter_pot)->variablesSequence ().size () == 0 ) {
+        // as we have already marginalized out variables that received evidence,
+        // it may be the case that, after combining and projecting, some
+        // potentials might be empty. In this case, we shall remove them
+        // from memory
+        delete *iter_pot;
+        new_pot_list.erase ( iter_pot );
+      }
+      else {
+        if ( ! pot_list.exists ( *iter_pot ) ) {
+          __created_potentials.insert( *iter_pot );
+        }
       }
     }
 
@@ -597,24 +619,64 @@ namespace gum {
     const __PotentialSet& barren_pots =
       __barren_potentials[Arc ( from_id, to_id )];
 
-    // get the potentials of the clique
+    // get the potentials of the clique. For the potentials that contain a hard
+    // evidence, marginalize them over the nodes that received hard evidence
     const List<const Potential<GUM_SCALAR> *>& clique_pot =
       __clique_potentials[from_id];
     __PotentialSet pot_list(clique_pot.size());
-    for (const auto &cli : clique_pot) {
-      if ( ! barren_pots.exists ( cli ) ) {
-        pot_list.insert( cli );
+    for ( const auto &cli : clique_pot ) {
+      if ( ! barren_pots.exists ( cli ) ) { // do not take into account barren CPTs
+        // check whether a variable of cli received a hard evidence
+        NodeSet hard_vars;
+        Set< const DiscreteVariable * > del_vars;
+        for ( const auto var : cli->variablesSequence () ) {
+          const NodeId id = this->bn().nodeId ( *var );
+          if ( __hard_evidence_nodes.exists ( id ) ) {
+            hard_vars.insert ( id );
+            del_vars.insert ( var );
+          }
+        }
+        if ( hard_vars.empty () ) { // no hard evidence => no marginalization
+          pot_list.insert( cli );
+        }
+        else { // marginalize out the hard evidence nodes
+          // if all the variables are to be marginalized out, don't take into
+          // account the CPT
+          if ( hard_vars.size () != cli->variablesSequence ().size () ) {
+            // get the set of potential to combine (the CPT of the clique + the
+            // potentials of the hard evidence)
+            __PotentialSet marg_pot_set { cli };
+            for ( const auto var_id : hard_vars ) {
+              marg_pot_set.insert ( __bn_node2hard_potential[var_id] );
+            }
+
+            // perform the combination of those potentials and their projection
+            MultiDimCombineAndProjectDefault<GUM_SCALAR,Potential>
+              combine_and_project (LPNewmultiPotential,LPNewprojPotential);
+            __PotentialSet new_pot_list =
+              combine_and_project.combineAndProject ( marg_pot_set, del_vars );
+
+            // insert the resulting set of potentials into pot_list
+            for ( const auto pot : new_pot_list ) {
+              pot_list.insert( pot );
+              __created_potentials.insert( pot );
+            }
+          }
+        }
       }
     }
 
-    // add the evidence to the clique potentials
+    // add the soft evidence to the clique potentials
     const List<const Potential<GUM_SCALAR> *> &evidence_list =
       __clique_evidence[from_id];
 
-    for (ListConstIteratorSafe<const Potential<GUM_SCALAR> *> iter =
-           evidence_list.cbeginSafe();
-         iter != evidence_list.cendSafe(); ++iter)
-      pot_list.insert(*iter);
+    for ( const auto ev_pot : evidence_list ) {
+      NodeId ev_node =
+        this->bn().nodeId ( *( ev_pot->variablesSequence ().atPos(0) ) );
+      if ( ! __hard_evidence_nodes.exists ( ev_node ) ) {
+        pot_list.insert( ev_pot );
+      }
+    }
 
     // add the messages sent by adjacent nodes to from_id
     for (const auto other : __JT->neighbours(from_id))
@@ -790,6 +852,12 @@ namespace gum {
   // returns the marginal a posteriori proba of a given node
   template <typename GUM_SCALAR>
   void LazyPropagationNew<GUM_SCALAR>::__aPosterioriMarginal(NodeId id, Potential<GUM_SCALAR> &marginal) {
+    // if the node received a hard evidence, just return it
+    if ( __hard_evidence_nodes.exists ( id ) ) {
+      marginal = *( __bn_node2hard_potential[id] );
+      return;
+    }
+    
     // compute barren nodes if necessary
     __computeBarrenPotentials ();
 
@@ -832,11 +900,23 @@ namespace gum {
     // add the evidence to the clique potentials
     const List<const Potential<GUM_SCALAR> *> &evidence_list =
       __clique_evidence[targetClique];
+    for ( const auto ev_pot : evidence_list ) {
+      pot_list.insert( ev_pot );
+    }
 
-    for (ListConstIteratorSafe<const Potential<GUM_SCALAR> *> iter =
-           evidence_list.cbeginSafe();
-         iter != evidence_list.cendSafe(); ++iter)
-      pot_list.insert(*iter);
+    // if some node of the clique received a hard evidence, add this evidence
+    // this is compulsory because, during the messages computations, we
+    // marginalized out the hard evidence nodes from the CPTs prior to the
+    // combinations. Hence, we must marginalize out these nodes on all tables
+    // that contain them
+    for ( const auto node : __JT->clique ( targetClique ) ) {
+      if ( __bn_node2hard_potential.exists ( node ) ) {
+        const auto ev_pot = __bn_node2hard_potential[node];
+        if ( ! pot_list.exists ( ev_pot ) ) {
+          pot_list.insert( ev_pot );
+        }
+      }
+    }
 
     // add the messages sent by adjacent nodes to targetClique
     for (const auto other : __JT->neighbours(targetClique))
@@ -862,19 +942,20 @@ namespace gum {
 
     if (pot_list.size() == 1) {
       marginal = **pot_list.begin();
-    } else {
+    }
+    else {
       Set<const Potential<GUM_SCALAR> *> set;
-
       for (const auto pot : pot_list)
         set << pot;
 
-      MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination(
-                                                                         LPNewmultiPotential);
+      MultiDimCombinationDefault<GUM_SCALAR, Potential>
+        fast_combination( LPNewmultiPotential );
 
       fast_combination.combine(marginal, set);
     }
   }
 
+  
   // returns the joint a posteriori proba of a given set of nodes
   template <typename GUM_SCALAR>
   void
@@ -944,6 +1025,21 @@ namespace gum {
          iter != evidence_list.cendSafe(); ++iter) {
       pot_list.insert(*iter);
     }
+
+    // if some node of the clique received a hard evidence, add this evidence
+    // this is compulsory because, during the messages computations, we
+    // marginalized out the hard evidence nodes from the CPTs prior to the
+    // combinations. Hence, we must marginalize out these nodes on all tables
+    // that contain them
+    for ( const auto node : __JT->clique ( clique_of_ids ) ) {
+      if ( __bn_node2hard_potential.exists ( node ) ) {
+        const auto ev_pot = __bn_node2hard_potential[node];
+        if ( ! pot_list.exists ( ev_pot ) ) {
+          pot_list.insert( ev_pot );
+        }
+      }
+    }
+
 
     // add the messages sent by adjacent nodes to clique_of_ids
     for (const auto other : __JT->neighbours(clique_of_ids))

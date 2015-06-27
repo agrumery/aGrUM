@@ -251,7 +251,7 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS_NOTHING(inf1.makeInference());
       TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
-
+      
       for ( auto node : bn.dag() ) {
         TS_ASSERT_THROWS_NOTHING(inf1.posterior(node));
         TS_ASSERT_THROWS_NOTHING(inf2.posterior(node));
@@ -284,12 +284,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(inf2.insertEvidence(evidences));
       TS_ASSERT_THROWS_NOTHING(inf3.insertEvidence(evidences));
       TS_ASSERT_THROWS_NOTHING(inf4.insertEvidence(evidences));
-
+ 
       TS_ASSERT_THROWS_NOTHING(inf1.makeInference());
       TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
       TS_ASSERT_THROWS_NOTHING(inf3.makeInference());
       TS_ASSERT_THROWS_NOTHING(inf4.makeInference());
-
+ 
       for ( auto node : bn.dag() ) {
         TS_ASSERT_THROWS_NOTHING(inf1.posterior(node));
         TS_ASSERT_THROWS_NOTHING(inf2.posterior(node));
