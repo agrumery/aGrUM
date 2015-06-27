@@ -592,10 +592,11 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void LazyPropagationNew<GUM_SCALAR>::__produceMessage(NodeId from_id,
                                                                NodeId to_id) {
-    // get the set of barren potentials for computing the message
+    // get the set of CPTs of the BN that are barren w.r.t. the message
+    // we wish to produce
     const __PotentialSet& barren_pots =
       __barren_potentials[Arc ( from_id, to_id )];
-    
+
     // get the potentials of the clique
     const List<const Potential<GUM_SCALAR> *>& clique_pot =
       __clique_potentials[from_id];
