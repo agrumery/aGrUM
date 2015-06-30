@@ -36,6 +36,7 @@ namespace gum_tests {
   class PRMClassTestSuite : public CxxTest::TestSuite {
     private:
       typedef gum::prm::Class<double> Class;
+      typedef gum::prm::Interface<double> Interface;
       typedef gum::prm::Type<double> Type;
       typedef gum::prm::ScalarAttribute<double> Attribute;
       typedef gum::prm::ReferenceSlot<double> Reference;
@@ -70,6 +71,62 @@ namespace gum_tests {
         // Act & Assert
         TS_ASSERT_THROWS_NOTHING( c = new Class("class") );
         TS_ASSERT_THROWS_NOTHING( delete c );
+      }
+
+      void testConstructorInheritance() {
+        // Arrange
+        Class toRef("toRef");
+        auto a = new Attribute("a", *__boolean);
+        toRef.add(a);
+        auto ref = new Reference("rho", toRef);
+        gum::Sequence< gum::prm::ClassElement<double>* > seq;
+        seq << ref << a;
+        auto chain = new SlotChain("rho.a", seq);
+        Class super("super");
+        auto b = new Attribute("b", *__boolean);
+        auto b_id = super.add( b );
+        auto c = new Attribute("c", *__boolean);
+        auto c_id = super.add( c );
+        super.addArc( "b", "c" );
+        super.add( ref );
+        super.add( chain );
+        super.addArc( "rho.a", "c");
+        Class *subclass = nullptr;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( subclass = new Class("subclass", super) );
+        // Assert
+        TS_ASSERT( subclass->exists("b") );
+        TS_ASSERT_EQUALS( subclass->get(b_id).name(), "b" );
+        TS_ASSERT( subclass->exists("c") );
+        TS_ASSERT_EQUALS( subclass->get(c_id).name(), "c" );
+        TS_ASSERT_EQUALS( subclass->attributes().size(), (gum::Size) 2 );
+        TS_ASSERT_EQUALS( subclass->referenceSlots().size(), (gum::Size) 1 );
+        TS_ASSERT_EQUALS( subclass->slotChains().size(), (gum::Size) 1 );
+        delete subclass;
+      }
+
+      void testConstructorImplementation() {
+        // Arrange
+        Class toRef("toRef");
+        auto a = new Attribute("a", *__boolean);
+        toRef.add(a);
+        auto ref = new Reference("rho", toRef);
+        Interface i("i");
+        auto b = new Attribute("b", *__boolean);
+        auto c = new Attribute("c", *__boolean);
+        i.add( ref );
+        i.add( b );
+        i.add( c );
+        Class *subclass = nullptr;
+        gum::Set< Interface* > set;
+        set << &i;
+        // Act
+        TS_ASSERT_THROWS_NOTHING( subclass = new Class("subclass", set) );
+        // Assert
+        TS_ASSERT_EQUALS( subclass->attributes().size(), (gum::Size) 0 );
+        TS_ASSERT_EQUALS( subclass->referenceSlots().size(), (gum::Size) 0 );
+        TS_ASSERT_EQUALS( subclass->slotChains().size(), (gum::Size) 0 );
+        delete subclass;
       }
       /// @}
       /// Belongs and exists tests
@@ -527,6 +584,8 @@ namespace gum_tests {
         TS_ASSERT( not c.isOutputNode( *a ) );
       }
       /// @}
+      /// Get operator
+
 
   };
 
