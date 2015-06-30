@@ -104,7 +104,7 @@ namespace gum {
 
           unsigned char *buffer = new unsigned char[file_content.length()+1];
           strcpy( (char *)buffer, file_content.c_str() );
-          Scanner s( buffer, file_content.length()+1, basename );
+          Scanner s( buffer, file_content.length()+1, absFilename );
 
           if ( ! __parseDone ) {
             __parser = new Parser ( &s );
