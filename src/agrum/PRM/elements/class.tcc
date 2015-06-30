@@ -44,8 +44,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     Class<GUM_SCALAR>::Class(const std::string &name, Class<GUM_SCALAR> &super)
         : ClassElementContainer<GUM_SCALAR>(name), __dag(super.dag()),
-          __super(&super), __implements(0),
-          __instantiations(super.__instantiations) {
+          __super(&super), __implements(0) {
       GUM_CONSTRUCTOR(Class);
       super.__addExtension(this);
       __inheritClass(super);
@@ -66,8 +65,7 @@ namespace gum {
     Class<GUM_SCALAR>::Class(const std::string &name, Class<GUM_SCALAR> &super,
                              const Set<Interface<GUM_SCALAR> *> &set)
         : ClassElementContainer<GUM_SCALAR>(name), __dag(super.dag()),
-          __super(&super), __implements(nullptr),
-          __instantiations(super.__instantiations) {
+          __super(&super), __implements(nullptr) {
       GUM_CONSTRUCTOR(Class);
       super.__addExtension(this);
       __inheritClass(super);
@@ -88,8 +86,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     Class<GUM_SCALAR>::Class(const Class<GUM_SCALAR> &source)
         : ClassElementContainer<GUM_SCALAR>(source.name()), __dag(source.dag()),
-          __super(source.__super), __implements(0),
-          __instantiations(source.__instantiations) {
+          __super(source.__super), __implements(0) {
       GUM_CONS_CPY(Class);
       GUM_ERROR(FatalError, "don't copy classes");
     }
@@ -576,49 +573,6 @@ namespace gum {
         delete overloaded;
     }
 
-    template<typename GUM_SCALAR>
-    void
-    Class<GUM_SCALAR>::__swap_types( ClassElement<GUM_SCALAR>* overloader, ClassElement<GUM_SCALAR>* overloaded ) {
-      //  if( overloader->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
-      //    auto loader = static_cast<Attribute<GUM_SCALAR>*>( overloader );
-
-      //    if ( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
-
-      //      auto loaded = static_cast<Attribute<GUM_SCALAR>*>( overloaded );
-      //      auto tmp = loader->type( & (loaded->type() ) );
-      //      loaded->type( tmp );
-
-      //    } else if( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) {
-
-      //      auto loaded = static_cast<Aggregate<GUM_SCALAR>*>( overloaded );
-      //      auto tmp = loader->type( loaded->__type );
-      //      loaded->__type = tmp;
-
-      //    } else {
-      //      GUM_ERROR( FatalError, "swapping types impossible" );
-      //    }
-      //  } else if( overloader->elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) {
-      //    auto loader = static_cast<Aggregate<GUM_SCALAR>*>( overloader );
-
-      //    if( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
-
-      //      auto loaded = static_cast<Attribute<GUM_SCALAR>*>( overloaded );
-      //      auto tmp = loader->__type;
-      //      loader->__type = loaded->type( tmp );
-
-      //    } else if( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) {
-
-      //      auto loaded = static_cast<Aggregate<GUM_SCALAR>*>( overloaded );
-      //      auto tmp = loader->__type;
-      //      loader->__type = loaded->__type;
-      //      loaded->__type = tmp;
-
-      //    } else {
-      //      GUM_ERROR( FatalError, "swapping types impossible" );
-      //    }
-      //  }
-    }
-
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::__addCastDescendants(Attribute<GUM_SCALAR> *start,
                                                  Attribute<GUM_SCALAR> *end) {
@@ -817,11 +771,6 @@ namespace gum {
     INLINE const Set<SlotChain<GUM_SCALAR> *> &
     Class<GUM_SCALAR>::slotChains() const {
       return __slotChains;
-    }
-
-    template <typename GUM_SCALAR>
-    INLINE const Sequence<NodeId> &Class<GUM_SCALAR>::toInstantiate() const {
-      return __instantiations;
     }
 
     template <typename GUM_SCALAR>

@@ -48,9 +48,7 @@ namespace gum {
     /**
      * @class Class<GUM_SCALAR> class.h <agrum/PRM/class.h>
      * @brief A Class<GUM_SCALAR> is an object of a PRM representing a fragment of a
-     *Bayesian
-     *        Network which can be instantiated in Instance.
-     *
+     *        Bayesian Network which can be instantiated in Instance.
      *
      * @see PRM Class<GUM_SCALAR> ClassElement<GUM_SCALAR>
      * @ingroup prm_group
@@ -181,14 +179,6 @@ namespace gum {
          */
         const Set< SlotChain<GUM_SCALAR>* >& slotChains() const;
 
-        /**
-         * Returns the Set of ClassElement<GUM_SCALAR>'s which must be instantiated
-         * at Instance level.
-         * @return the Set of ClassElement<GUM_SCALAR>'s which must be instantiated
-         *        at Instance level.
-         */
-        const Sequence<NodeId>& toInstantiate() const;
-
         /// @}
         // ========================================================================
         /// @name Inheritance methods
@@ -248,18 +238,18 @@ namespace gum {
 
         /// @}
       protected:
-      /// returns a constant reference over this interface's dag.
-      virtual const DAG &_dag() const;
+        /// returns a constant reference over this interface's dag.
+        virtual const DAG &_dag() const;
 
-      /// Returns a non constant reference over this Interface<GUM_SCALAR>'s DAG.
-      virtual DAG &_dag();
+        /// Returns a non constant reference over this Interface<GUM_SCALAR>'s DAG.
+        virtual DAG &_dag();
 
-      /// Fills set with all the subtypes of this Class<GUM_SCALAR>.
-      void _findAllSubtypes(Set<ClassElementContainer<GUM_SCALAR> *> &set);
+        /// Fills set with all the subtypes of this Class<GUM_SCALAR>.
+        void _findAllSubtypes(Set<ClassElementContainer<GUM_SCALAR> *> &set);
 
-      /// See gum::prm::ClassElementContainer<GUM_SCALAR>(const
-      /// ClassElement<GUM_SCALAR>&).
-      void _updateDescendants(const ClassElement<GUM_SCALAR> &elt);
+        /// See gum::prm::ClassElementContainer<GUM_SCALAR>(const
+        /// ClassElement<GUM_SCALAR>&).
+        void _updateDescendants(const ClassElement<GUM_SCALAR> &elt);
 
       private:
         /// Copy operator. Don't use it.
@@ -312,12 +302,6 @@ namespace gum {
         /// Recursively adds cast descendant from start to end in this Class<GUM_SCALAR>.
         void __addCastDescendants ( Attribute<GUM_SCALAR>* start, Attribute<GUM_SCALAR>* end );
 
-        /// When an attribute or an aggregate is overloaded it's inherited counterpar
-        /// is deleted. However we need to keep traof it's Type pointer. This method
-        /// swaps the Type's between overloader and overloaded and ends by deleting
-        /// overloaded.
-        void __swap_types ( ClassElement<GUM_SCALAR>* overloader, ClassElement<GUM_SCALAR>* overloaded );
-
         /// @}
         // ========================================================================
         /// @name Inheritance members
@@ -363,21 +347,6 @@ namespace gum {
 
         /// Overloads a parameter.
         void __overloadParameter( Parameter<GUM_SCALAR>* overloader, Parameter<GUM_SCALAR>* overloaded );
-
-        /// @}
-        // ========================================================================
-        /// @name Initialisation members
-        // ========================================================================
-        /// @{
-
-        /// The set of attributes and aggregates which must redefined at instance
-        /// level.
-        /// This concerns any output and input nodes.
-        /// A sequence is used because the nodes are ordered given their
-        /// topological order.
-        /// This is mutable because it does not modify the class, only updates
-        /// information on it.
-        Sequence<NodeId> __instantiations;
 
         /// @}
     };
