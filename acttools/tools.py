@@ -61,4 +61,12 @@ def check_tools():
     else:
       critic("No <make> utility found. Exit")
 
-    return (exe_python2,exe_python3,exe_cmake,exe_make)
+    exe_clangformat=None
+    if is_tool("clang-format"):
+        exe_clangformat="clang-format"
+    for version in range(5,9):
+        if is_tool("clang-format-3.{}".format(version)):
+            exe_clangformat="clang-format-3.{}".format(version)
+            break
+
+    return (exe_python2,exe_python3,exe_cmake,exe_make,exe_clangformat)

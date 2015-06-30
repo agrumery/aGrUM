@@ -43,7 +43,7 @@ def safe_cd(current,folder):
 
 def colFormat(v,col):
   s=str(v)
-  return col+s.replace("[",cfg.C_VALUE+"[").replace("]","]"+col)
+  return col+s.replace("[",cfg.C_VALUE).replace("]",col)
 
 def trace(current,cde):
   if current['dry_run'] or current['verbose']:

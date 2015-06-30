@@ -24,9 +24,10 @@ from __future__ import print_function
 import os
 import sys
 import shutil
+import glob
 
 from configuration import cfg
-from utils import trace,notif
+from utils import trace,notif,critic
 
 def specialActions(current):
   if current["action"]=="clean":
@@ -37,11 +38,16 @@ def specialActions(current):
     return True
 
   if current["action"]=="show":
-
     trace(current,"Special action [show]")
-
     # action=show is the only action still performed even if dry_run=True
     showAct2Config(current)
+    print("")
+    return True
+
+  if current["action"]=="autoindent":
+    trace(current,"Special action [show]")
+    # action=show is the only action still performed even if dry_run=True
+    autoindent(current)
     print("")
     return True
 
@@ -73,3 +79,39 @@ def showAct2Config(current):
 
   for k in cfg.non_persistent:
     aff(k)
+
+from os.path import isdir
+
+def recglob(path,mask):
+    for item in  glob.glob(path+"/*"):
+        if isdir(item):
+            for item in recglob(item,mask):
+                yield item
+
+    for item in  glob.glob(path+"/"+mask):
+        if not isdir(item):
+            yield item
+
+def srcAgrum():
+    for i in recglob("src/agrum","*.cpp"):
+        yield i
+    for i in recglob("src/agrum","*.h"):
+        yield i
+    for i in recglob("src/agrum","*.inl"):
+        yield i
+    for i in recglob("src/agrum","*.tcc"):
+        yield i
+    for i in recglob("src/testunits","*TestSuite.h"):
+        yield i
+
+def autoindent(current):
+    import glob
+    if cfg.clangformat==None:
+        critic("No clang-format tool has been found.")
+
+    for src in srcAgrum():
+        line=cfg.clangformat+" -i "+src
+        notif("autoindent [{0}]".format(src))
+        trace(current,line)
+        if not current["dry_run"]:
+            call(line,shell=True)

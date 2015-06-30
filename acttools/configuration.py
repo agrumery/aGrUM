@@ -69,7 +69,7 @@ def initParams():
     cfg.default['python']="3"
     cfg.default['dry_run']=False
 
-    cfg.actions=set("lib test install doc clean show uninstall package".split())
+    cfg.actions=set("lib test install doc clean show uninstall package autoindent".split())
     cfg.modes=set("debug release".split())
     cfg.targets=set("aGrUM pyAgrum jAgrum".split())
     cfg.moduleLabels=parseModulesTxt()
@@ -77,10 +77,10 @@ def initParams():
 
     cfg.non_persistent=["fixed_seed","stats","no_fun","static_lib","oneByOne","dry_run"]
     cfg.mains=["action","targets","mode"]
-    cfg.specialActions=["show","clean"]
+    cfg.specialActions=["show","clean","autoindent"]
 
 def configureOptions(current):
-    us="%prog [options] ["+"|".join(cfg.actions)+"] ["+"|".join(cfg.modes)+"] ["+"|".join(cfg.targets)+"]"
+    us="%prog [options] ["+"|".join(sorted(cfg.actions))+"] ["+"|".join(cfg.modes)+"] ["+"|".join(cfg.targets)+"]"
     cfg.parser=OptionParser(usage=us,description="Compilation tools for aGrUM and wrappers",
                         version="%prog v"+cfg.numversion)
     cfg.parser.add_option("", "--no-fun",
@@ -169,4 +169,4 @@ def configureOutputs(options):
 
 from tools import check_tools
 def configureTools():
-    (cfg.python2,cfg.python3,cfg.cmake,cfg.make)=check_tools()
+    (cfg.python2,cfg.python3,cfg.cmake,cfg.make,cfg.clangformat)=check_tools()
