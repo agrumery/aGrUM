@@ -38,14 +38,22 @@ namespace gum {
   template <typename GUM_SCALAR>
 
   class LazyPropagation : public BayesNetInference<GUM_SCALAR> {
-    public:
+  public:
+
+    /// type of algorithm for determining the relevant potentials for combinations 
+    enum FindRelevantPotentialsType {
+      FIND_RELEVANT_ALL,
+      FIND_RELEVANT_D_SEPARATION,
+      FIND_RELEVANT_D_SEPARATION2
+    };
+    
+    
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
     /// default constructor
-
     LazyPropagation(const IBayesNet<GUM_SCALAR> &BN);
 
     /// constructor with a given elimination sequence
@@ -85,6 +93,20 @@ namespace gum {
     /// performs a whole inference (collect + diffusion)
     void makeInference(bool force_inference);
 
+    /// clears the messages of previous inferences
+    void clearInference ();
+
+    /// sets how we determine the relevant potentials to combine
+    /** When a clique sends a message to a separator, it first constitute the set
+     * of the potentials it contains and of the potentials contained in the
+     * messages it received. If FindRelevantPotentialsType = FIND_RELEVANT_ALL,
+     * all these potentials are combined and projected to produce the message
+     * sent to the separator.
+     * If FindRelevantPotentialsType = FIND_RELEVANT_D_SEPARATION, then only the
+     * set of potentials d-connected to the variables of the separator are kept
+     * for combination and projection. */
+    void setFindRelevantPotentialsType ( FindRelevantPotentialsType type );
+
     /// returns the probability P(e) of the evidence enterred into the BN
     GUM_SCALAR evidenceProbability();
 
@@ -92,7 +114,8 @@ namespace gum {
     /** @warning right now, method joint cannot compute joint a posteriori
      * probabilities of every nodeset. In cases where it is not able to perform
      * properly this task, it will raise a OperationNotAllowed exception.
-     * @warning : joint computes a new Potential<GUM_SCALAR> and returns a pointer :
+     * @warning : joint computes a new Potential<GUM_SCALAR> and returns
+     * a pointer :
      * do not forget to free it !
      * @return a pointer to a dynamically allocated Potential<GUM_SCALAR>
      * @throw OperationNotAllowed
@@ -106,29 +129,31 @@ namespace gum {
     /// @{
 
     /** Entropy
-    * Compute Shanon's entropy of a node given the observation
-    * @see http://en.wikipedia.org/wiki/Information_entropy
-    */
+     * Compute Shanon's entropy of a node given the observation
+     * @see http://en.wikipedia.org/wiki/Information_entropy
+     */
     GUM_SCALAR H(NodeId X);
 
     /** Mutual information between X and Y
-    * @see http://en.wikipedia.org/wiki/Mutual_information
-    *
-    * @warning Due to limitation of @ref joint, may not be able to compute this value
-    * @throw OperationNotAllowed in these cases
-    */
+     * @see http://en.wikipedia.org/wiki/Mutual_information
+     *
+     * @warning Due to limitation of @ref joint, may not be able to compute
+     * this value
+     * @throw OperationNotAllowed in these cases
+     */
     GUM_SCALAR I(NodeId X, NodeId Y);
 
     /** Variation of information between X and Y
-    * @see http://en.wikipedia.org/wiki/Variation_of_information
-    *
-    * @warning Due to limitation of @ref joint, may not be able to compute this value
-    * @throw OperationNotAllowed in these cases
-    */
+     * @see http://en.wikipedia.org/wiki/Variation_of_information
+     *
+     * @warning Due to limitation of @ref joint, may not be able to compute
+     * this value
+     * @throw OperationNotAllowed in these cases
+     */
     GUM_SCALAR VI(NodeId X, NodeId Y);
     /// @}
 
-    protected:
+  protected:
     /**
      * Returns the probability of the variable.
      *
@@ -138,7 +163,7 @@ namespace gum {
      */
     virtual void _fillPosterior(Id id, Potential<GUM_SCALAR> &posterior);
 
-    private:
+  private:
     typedef Set<const Potential<GUM_SCALAR> *> __PotentialSet;
     typedef SetIteratorSafe<const Potential<GUM_SCALAR> *> __PotentialSetIterator;
 
@@ -156,11 +181,29 @@ namespace gum {
     /// the list of all the evidence stored in the cliques
     NodeProperty<List<const Potential<GUM_SCALAR> *>> __clique_evidence;
 
+    /// the list of hard evidence potentials per random variable
+    NodeProperty<const Potential<GUM_SCALAR>*> __bn_node2hard_potential;
+
     /// the list of all potentials stored in the separators
     ArcProperty<__PotentialSet> __sep_potentials;
 
     /// a list of all the evidence stored into the graph
     __PotentialSet __evidences;
+
+    /// the set of nodes that received hard evidences
+    NodeSet __hard_evidence_nodes;
+
+    /// the set of nodes that received soft evidences
+    NodeSet __soft_evidence_nodes;
+
+    /// the set of barren potentials: can be discarded from computations
+    /** Assigns a set (possibly empty) of barren potentials to each message
+     * sent in the junction tree. A message is represented by an arc from
+     * one clique (id) to another. */
+    ArcProperty<__PotentialSet> __barren_potentials;
+
+    /// indicates whether we shall recompute barren nodes
+    bool __need_recompute_barren_potentials { true };
 
     /// the list of all potentials created during a propagation phase
     __PotentialSet __created_potentials;
@@ -175,6 +218,12 @@ namespace gum {
     NodeId __last_collect_clique;
 
     NodeSet __roots;
+
+    /** @brief update a set of potentials: the remaining are those to be combined
+     * to produce a message on a separator */
+    void (LazyPropagation<GUM_SCALAR>::*__findRelevantPotentials)
+    ( __PotentialSet& pot_list,
+      Set<const DiscreteVariable *>& kept_vars );
 
     /// creates the message sent by clique from_id to clique to_id
 
@@ -201,18 +250,47 @@ namespace gum {
      * posterior*/
 
     void __marginalizeOut(__PotentialSet &pot_list,
-                          Set<const DiscreteVariable *> &del_vars);
+                          Set<const DiscreteVariable *> &del_vars,
+                          Set<const DiscreteVariable *>& kept_vars );
 
     void __aPosterioriMarginal(NodeId id, Potential<GUM_SCALAR> &posterior);
 
     void __aPosterioriJoint(const NodeSet &ids, Potential<GUM_SCALAR> &posterior);
 
     /// initialization function
-
     void __initialize(const IBayesNet<GUM_SCALAR> &BN,
                       StaticTriangulation &triangulation,
                       const NodeProperty<Size> &modalities);
 
+    /// check wether an evidence is a hard one
+    bool __isHardEvidence ( const Potential<GUM_SCALAR>* pot );
+
+    /** @brief update a set of potentials: the remaining are those to be combined
+     * to produce a message on a separator */
+    void __findRelevantPotentialsWithdSeparation
+    ( __PotentialSet& pot_list,
+      Set<const DiscreteVariable *>& kept_vars );
+
+    /** @brief update a set of potentials: the remaining are those to be combined
+     * to produce a message on a separator */
+    void __findRelevantPotentialsWithdSeparation2
+    ( __PotentialSet& pot_list,
+      Set<const DiscreteVariable *>& kept_vars );
+
+    /** @brief update a set of potentials: the remaining are those to be combined
+     * to produce a message on a separator */
+    void __findRelevantPotentialsGetAll
+    ( __PotentialSet& pot_list,
+      Set<const DiscreteVariable *>& kept_vars );
+    
+
+    /// remove barren variables from a set of potentials
+    void __removeBarrenVariables ( __PotentialSet& pot_list,
+                                   Set<const DiscreteVariable *>& del_vars );
+
+    /// compute barren nodes if necessary
+    void __computeBarrenPotentials ();
+    
     /// avoid copy constructors
     LazyPropagation(const LazyPropagation<GUM_SCALAR> &);
 
@@ -220,8 +298,8 @@ namespace gum {
     LazyPropagation<GUM_SCALAR> &operator=(const LazyPropagation<GUM_SCALAR> &);
   };
 
-  extern template class LazyPropagation<float>;
-  extern template class LazyPropagation<double>;
+  // extern template class LazyPropagation<float>;
+  // extern template class LazyPropagation<double>;
 
 } /* namespace gum */
 
