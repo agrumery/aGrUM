@@ -342,11 +342,14 @@ namespace gum {
       /// this Interface.
       void __addExtension(Interface *c);
 
-      void __checkOverloadLegality(const ClassElement<GUM_SCALAR> *overloaded,
+      bool __checkOverloadLegality(const ClassElement<GUM_SCALAR> *overloaded,
                                    const ClassElement<GUM_SCALAR> *overloader);
 
       void __overloadAttribute(Attribute<GUM_SCALAR> *overloader,
                                Attribute<GUM_SCALAR> *overloaded);
+
+      void __overloadReferenceSlot(ReferenceSlot<GUM_SCALAR> *overloader,
+                                   ReferenceSlot<GUM_SCALAR> *overloaded);
 
       void __addCastDescendants(Attribute<GUM_SCALAR> *start,
                                 Attribute<GUM_SCALAR> *end);

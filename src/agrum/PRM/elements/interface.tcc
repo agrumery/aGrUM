@@ -81,7 +81,7 @@ namespace gum {
 
       // Copying reference slots
       for (const auto i_ref : i.__referenceSlots) {
-        ReferenceSlot<GUM_SCALAR> *ref = new ReferenceSlot<GUM_SCALAR>(
+       auto ref = new ReferenceSlot<GUM_SCALAR>(
             i_ref->name(),
             const_cast<ClassElementContainer<GUM_SCALAR> &>(i_ref->slotType()),
             i_ref->isArray());
@@ -147,37 +147,32 @@ namespace gum {
       }
 
       ClassElement<GUM_SCALAR> *overloaded = __nameMap[overloader->name()];
-      // __checkOverloadLegality garanties that overloader->type() is a subtype of
-      // overloaded->type()
-      __checkOverloadLegality(overloaded, overloader);
+      if (overloaded == overloader) {
+        GUM_ERROR( DuplicateElement, "dupplicate ClassElement" );
+      }
+      if (not __checkOverloadLegality(overloaded, overloader) ) {
+        GUM_ERROR(OperationNotAllowed, "illegal overload");
+      }
 
       switch (overloader->elt_type()) {
         case ClassElement<GUM_SCALAR>::prm_attribute: {
-          __overloadAttribute(static_cast<Attribute<GUM_SCALAR> *>(overloader),
-                              static_cast<Attribute<GUM_SCALAR> *>(overloaded));
+          auto attr_overloader = static_cast<Attribute<GUM_SCALAR> *>(overloader);
+          auto attr_overloaded = static_cast<Attribute<GUM_SCALAR> *>(overloaded);
+          __overloadAttribute(attr_overloader, attr_overloaded);
           break;
         }
 
         case ClassElement<GUM_SCALAR>::prm_refslot: {
-          ReferenceSlot<GUM_SCALAR> *ref =
-              static_cast<ReferenceSlot<GUM_SCALAR> *>(overloader);
-          // Adding overloading reference
-          ref->setId(overloaded->id());
-          __nodeIdMap[ref->id()] = ref;
-          __nameMap[ref->name()] = ref;
-          __referenceSlots.insert(ref);
-          // Removing overloaded ReferenceSlot<GUM_SCALAR>
-          __referenceSlots.erase(
-              static_cast<ReferenceSlot<GUM_SCALAR> *>(overloaded));
-          delete overloaded;
+          auto ref_overloader = static_cast<ReferenceSlot<GUM_SCALAR> *>(overloader);
+          auto ref_overloaded = static_cast<ReferenceSlot<GUM_SCALAR> *>(overloaded);
+          __overloadReferenceSlot(ref_overloader, ref_overloaded);
           break;
         }
 
         case ClassElement<GUM_SCALAR>::prm_aggregate:
         case ClassElement<GUM_SCALAR>::prm_slotchain: {
-          GUM_ERROR(
-              WrongClassElement,
-              "wrong ClassElement<GUM_SCALAR> to overload can not be overloaded");
+          auto msg = "element can not be overloaded";
+          GUM_ERROR( OperationNotAllowed, msg);
           break;
         }
 
@@ -212,6 +207,22 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
+    void
+    Interface<GUM_SCALAR>::__overloadReferenceSlot(ReferenceSlot<GUM_SCALAR> *overloader,
+                                                   ReferenceSlot<GUM_SCALAR> *overloaded) {
+      // Adding overloading reference
+      overloader->setId(overloaded->id());
+      __nodeIdMap[overloader->id()] = overloader;
+      __nameMap[overloader->name()] = overloader;
+      __nameMap.insert(overloader->safeName(), overloader);
+      __referenceSlots.insert(overloader);
+      // Removing overloaded ReferenceSlot<GUM_SCALAR>
+      __referenceSlots.erase( overloaded );
+      __nameMap.erase(overloaded->safeName());
+      delete overloaded;
+    }
+
+    template <typename GUM_SCALAR>
     void Interface<GUM_SCALAR>::__addCastDescendants(Attribute<GUM_SCALAR> *start,
                                                      Attribute<GUM_SCALAR> *end) {
       Attribute<GUM_SCALAR> *parent = start;
@@ -224,34 +235,37 @@ namespace gum {
         // Only use child's safe name when adding to the name map!
         __nameMap.insert(child->safeName(), child);
         __attributes.insert(child);
+        // Do not use Class<GUM_SCALAR>::insertArc(), child's CPF is already
+        // initialized properly
         parent = child;
       }
 
-      end->setAsCastDescendant( parent );
+      parent->setAsCastDescendant( end );
     }
 
     template <typename GUM_SCALAR>
-    void Interface<GUM_SCALAR>::__checkOverloadLegality(
+    bool Interface<GUM_SCALAR>::__checkOverloadLegality(
         const ClassElement<GUM_SCALAR> *overloaded,
-        const ClassElement<GUM_SCALAR> *overloader) {
-      if (overloaded->elt_type() != overloader->elt_type())
-        GUM_ERROR(TypeError, "invalid overload");
+        const ClassElement<GUM_SCALAR> *overloader)
+    {
+      if (overloaded->elt_type() != overloader->elt_type()) {
+        return false;
+      }
 
       if (overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute) {
-        if (not overloader->type().isSubTypeOf(overloaded->type()))
-          GUM_ERROR(TypeError, "the overloading ClassElement<GUM_SCALAR> "
-                               "Type<GUM_SCALAR> is illegal");
+        if (not overloader->type().isSubTypeOf(overloaded->type())) {
+          return false;
+        }
       } else if (overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_refslot) {
-        if (not static_cast<const ReferenceSlot<GUM_SCALAR> *>(overloader)
-                    ->slotType()
-                    .isSubTypeOf(static_cast<const ReferenceSlot<GUM_SCALAR> *>(
-                                     overloaded)->slotType()))
-          GUM_ERROR(
-              TypeError,
-              "the overloading ReferenceSlot<GUM_SCALAR> slot type is illegal");
+        auto ref_overloader = static_cast<const ReferenceSlot<GUM_SCALAR> *>(overloader);
+        auto ref_overloaded = static_cast<const ReferenceSlot<GUM_SCALAR> *>(overloaded);
+        if (not ref_overloader->slotType().isSubTypeOf(ref_overloaded->slotType())) {
+          return false;
+        }
       } else {
-        GUM_ERROR(TypeError, "illegal type to overload");
+        return false;
       }
+      return true;
     }
 
     template <typename GUM_SCALAR>
