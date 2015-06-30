@@ -39,6 +39,9 @@ Scanner.h Specification
 #include <string.h>
 #include <wchar.h>
 
+#include <locale>
+#include <codecvt>
+
 #include <agrum/core/signal/signaler1.h>
 #include <agrum/core/cocoR/common.h>
 #include <agrum/core/errorsContainer.h>
@@ -245,7 +248,7 @@ class Scanner {
 
     Buffer* buffer;   // scanner buffer
 
-    Scanner( const unsigned char* buf, int len,bool trace=false );
+    Scanner( const unsigned char* buf, int len, std::string filename="anonymous buffer", bool trace=false );
     Scanner( const char* fileName,bool trace=false );
     Scanner( const wchar_t* fileName,bool trace=false );
     Scanner( FILE* s,bool trace=false );
@@ -496,9 +499,10 @@ int UTF8Buffer::Read() {
   return ch;
 }
 
-Scanner::Scanner( const unsigned char* buf, int len,bool trace ) {
+Scanner::Scanner(const unsigned char* buf, int len, std::string filename, bool trace) {
   buffer = new Buffer( buf, len );
-  __filenamne=L"anonymous buffer";
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+  __filenamne=converter.from_bytes(filename);
   __trace=trace;
   Init();
 }

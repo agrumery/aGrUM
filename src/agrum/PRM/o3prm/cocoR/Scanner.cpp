@@ -258,9 +258,10 @@ int UTF8Buffer::Read() {
   return ch;
 }
 
-Scanner::Scanner( const unsigned char* buf, int len,bool trace ) {
+Scanner::Scanner(const unsigned char* buf, int len, std::string filename, bool trace) {
   buffer = new Buffer( buf, len );
-  __filenamne=L"anonymous buffer";
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+  __filenamne=converter.from_bytes(filename);
   __trace=trace;
   Init();
 }
