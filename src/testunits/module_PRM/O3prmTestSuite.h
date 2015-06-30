@@ -1281,6 +1281,25 @@ namespace gum_tests {
         TS_ASSERT_DIFFERS(reader.errors(), (gum::Size) 0);
       }
 
+      void testAsiaWithErrors() {
+        try {
+          // Arrange
+          gum::prm::o3prm::O3prmReader<double> reader;
+          std::string file = "../../../src/testunits/ressources/o3prm/AsiaWithError.o3prm";
+          std::string package = "";
+          // Act
+          TS_ASSERT_THROWS_NOTHING(reader.readFile(file, package));
+          // Assert
+          TS_ASSERT_EQUALS( reader.errors(), (gum::Size) 2);
+          TS_ASSERT_DIFFERS( reader.prm(), nullptr );
+          delete reader.prm();
+        } catch (gum::Exception& e) {
+          TS_ASSERT(false);
+          GUM_TRACE( e.errorContent() );
+          GUM_TRACE( e.errorCallStack() );
+        }
+      }
+
   };
 
 } // namespace gum_tests
