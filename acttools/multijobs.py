@@ -60,54 +60,52 @@ def prettifying(line):
   if line=="":
     return res.rstrip()
 
-  remove_dirs=lambda s : s[:s.find(" src/")]
+  remove_dirs=lambda s : s[:s.rfind(" ")]
 
   # prettifying (compacting) path
-  if line[0]!="/": # we keep message beginning with full path
-    s=line.split("/agrum/")
-    if len(s)==2:
-      res+=remove_dirs(s[0])+cfg.C_MSG+" agrum/"+s[1].rstrip()+cfg.C_END
-      line=""
-    else:
-      s=line.split("/generated-files/")
-      if len(s)==2:
-        line=""
-        res+=remove_dirs(s[0])+cfg.C_MSG+" generated-files/"+s[1].rstrip()+cfg.C_END
+  if line[0]=="/": # we keep message beginning with full path
+    return line
 
-  if line=="":
-    return res.rstrip()
+  s=line.split("agrum.dir/")
+  if len(s)==2:
+      return remove_dirs(s[0])+" "+cfg.C_MSG+s[1].rstrip()+cfg.C_END
+
+  s=line.split("/generated-files/")
+  if len(s)==2:
+      return remove_dirs(s[0])+cfg.C_MSG+" generated-files/"+s[1].rstrip()+cfg.C_END
+
+  s=line.split(" /")
+  if len(s)==2:
+      return remove_dirs(s[0])+cfg.C_MSG+" /"+s[1].rstrip()+cfg.C_END
 
   #prettifying test execution
   s=line.split(". [")
   if len(s)==2:
-    res+=s[0]+". "+cfg.C_VALUE+"["+s[1].rstrip()+cfg.C_END
-  else:
-    s=line.split("# [")
-    if len(s)==2:
-      res+=s[0]+"# "+cfg.C_VALUE+"["+s[1].rstrip()+cfg.C_END
-    else: # test pyAgrum
-      s=line.split(" ... ")
-      if len(s)==2:
-        res+=OKGREEN+s[0]+cfg.C_END+" ... "+cfg.C_MSG+"OK   "+cfg.C_END
-      else: # end of test execution
-        s=line.split("##")
-        if len(s)==3:
-          res+=WARNING+"##"+cfg.C_END+s[1]+cfg.C_MSG+"##"+cfg.C_END
-        elif line[0:6]=="Failed":
-          res+="Failed "+cfg.C_MSG+line[7:]+cfg.C_END
-        elif line[0:6]=="Succes":
-          res+="Success rate: "+cfg.C_MSG+line[14:]+cfg.C_END
-        elif line[-11:]=="<--- failed":
-          res=line[0:-11]+cfg.C_ERROR+"<--- failed"+cfg.C_END
-        else:
-          s=line.split("Memory leaks found")
-          if len(s)==2:
-            res=s[0]+cfg.C_ERROR+"Memory leaks found"+cfg.C_END+s[1]
-          else:
-            res=line
+      return s[0]+". "+cfg.C_VALUE+"["+s[1].rstrip()+cfg.C_END
 
-  return res.rstrip()
+  s=line.split("# [")
+  if len(s)==2:
+      return s[0]+"# "+cfg.C_VALUE+"["+s[1].rstrip()+cfg.C_END
 
+  s=line.split(" ... ")
+  if len(s)==2:
+      return cfg.C_WARNING+s[0]+cfg.C_END+" ... "+cfg.C_MSG+"OK   "+cfg.C_END
+
+  # end of test execution
+  s=line.split("##")
+  if len(s)==3:
+      return cfg.C_WARNING+"##"+cfg.C_END+s[1]+cfg.C_MSG+"##"+cfg.C_END
+  if line[0:6]=="Failed":
+      return "Failed "+cfg.C_MSG+line[7:]+cfg.C_END
+  if line[0:6]=="Succes":
+      return "Success rate: "+cfg.C_MSG+line[14:]+cfg.C_END
+  if line[-11:]=="<--- failed":
+      return line[0:-11]+cfg.C_ERROR+"<--- failed"+cfg.C_END
+
+  s=line.split("Memory leaks found")
+  if len(s)==2:
+      return s[0]+cfg.C_ERROR+"Memory leaks found"+cfg.C_END+s[1]
+  return line
 
 def threaded_execution(cde,verbose):
   os.environ["PYTHONUNBUFFERED"]="1"
@@ -160,10 +158,10 @@ def threaded_execution(cde,verbose):
       lines=(lastline+lines).split("\n")
       for i in range(len(lines)-1):
         if lines[i]!="":
-          print("\r"+prettifying(lines[i]))
+          print("\r"+prettifying(lines[i]).rstrip())
       lastline=lines[-1]
       if lastline!="":
-        print("\r"+prettifying(lastline),end="")
+        print("\r"+prettifying(lastline).rstrip(),end="")
       sys.stdout.flush()
     elif chan=='stderr' and lines is not None:
       lines=lines.split("\n")

@@ -22,6 +22,7 @@
 #***************************************************************************
 import const as cfg
 from optparse import OptionParser
+from sys import platform
 
 from modules import parseModulesTxt
 
@@ -47,6 +48,8 @@ cfg.nbr_tests_for_stats=40
 #for message
 cfg.prefixe_line="-- "
 cfg.prefixe_trace="==> "
+
+cfg.os_platform=platform
 
 def initParams():
     cfg.default={}
@@ -163,3 +166,7 @@ def configureColors(no_fun=False):
 def configureOutputs(options):
   cfg.verbosity=options.verbose
   configureColors(options.no_fun)
+
+from tools import check_tools
+def configureTools():
+    (cfg.python2,cfg.python3,cfg.cmake,cfg.make)=check_tools()

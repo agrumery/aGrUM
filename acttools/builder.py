@@ -24,8 +24,8 @@ from configuration import cfg
 from utils import trace,setifyString,safe_cd
 from multijobs import execCde
 
-def buildCmake(current):
-    line="cmake .."
+def buildCmake(current,target):
+    line=cfg.cmake+" .."
 
     if current["mode"]=="release":
         line+=" -DCMAKE_BUILD_TYPE=RELEASE"
@@ -61,40 +61,50 @@ def buildCmake(current):
     execFromLine(current,line)
 
 
-def buildMake(current):
-    line="make"
+def buildMake(current,target):
+    line=cfg.make
 
     if current["action"]=="test":
-      if current["targets"]==set(["aGrUM"]):
-        line+=" gumTest"
+        if target=="aGrUM":
+            line+=" gumTest"
 
     if current["action"]=="install":
       line+=" install"
-      if current["targets"]==set(["pyAgrum"]):
+      if target=="pyAgrum":
         line+=" -C wrappers/pyAgrum"
-
-    if current["action"]=="uninstall":
+    elif current["action"]=="uninstall":
       line+=" uninstall"
-      if current["targets"]==set(["pyAgrum"]):
+      if target=="pyAgrum":
         line+=" -C wrappers/pyAgrum"
-
+    elif current["action"]=="lib":
+      if target=="pyAgrum":
+        line+=" -C wrappers/pyAgrum"
+    elif current["action"]=="doc":
+        line+=" doc"
+    else:
+        critic(current["action"]+" not treated for now")
     line+=" -j "+str(current["jobs"])
 
     execFromLine(current,line)
 
 
 
-def buildPost(current):
+def buildPost(current,target):
     if current["action"]=="test":
-      if current["targets"]==set(["aGrUM"]):
-        safe_cd(current,"src")
-        execFromLine(current,"gumTest")
-        safe_cd(current,"..")
+        if target=="aGrUM":
+            safe_cd(current,"src")
+            execFromLine(current,"gumTest")
+            safe_cd(current,"..")
+        elif target=="pyAgrum":
+            run_cde="PYTHONPATH=wrappers "
+            if cfg.os_platform=="win32":
+                run_cde+=cfg.python+" ..\\..\\..\\wrappers\\pyAgrum\\testunits\\TestSuite.py"
+            else:
+                run_cde+=cfg.python+" ../wrappers/pyAgrum/testunits/TestSuite.py"
+            execFromLine(current,run_cde)
 
 
 def execFromLine(current,line):
     trace(current,line)
     if not current['dry_run']:
         return execCde(line,current)
-
-

@@ -51,7 +51,7 @@ def setCurrent(current):
     if not key in cfg.non_persistent:
       shlv[key]=current[key]
 
-def updateCurrent(current,options,args):
+def checkCurrent(current,options,args):
   #helper
   def update(current,key,val,test):
     if test:
@@ -91,6 +91,8 @@ def updateCurrent(current,options,args):
     error("arg [{0}] unknown".format(arg))
 
   checkConsistency(current)
+  checkPython(current)
+
   setCurrent(current)
   showInvocation(current)
 
@@ -133,3 +135,20 @@ def checkConsistency(current):
   if has_notif:
     print("")
 
+def checkPython(current):
+    if current['python']=="3":
+        if cfg.python3==None:
+            notif("Python3 is not found. Swapping to python2.")
+            print("")
+            current['python']="2"
+            cfg.python=cfg.python2
+        else:
+            cfg.python=cfg.python3
+    else:
+        if cfg.exe_python2==None:
+            notif("Python2 is not found. Swapping to python3.")
+            print("")
+            cfg.python=cfg.python3
+            current["python"]="3"
+        else:
+            cfg.python=cfg.python2

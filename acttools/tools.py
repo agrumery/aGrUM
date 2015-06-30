@@ -20,7 +20,7 @@
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
-
+import os
 #################################################################################################
 # find make, python2, python3
 def is_tool(prog):
@@ -36,25 +36,29 @@ def is_tool(prog):
 import platform
 from sys import platform as os_platform
 
-exe_python2=is_tool('python2')
-exe_python3=is_tool('python3')
-if exe_python2 is None and exe_python3 is None:
-	exe_py=is_tool('python')
-	if exe_py is not None: #would be absurd, wouldn't it ?
-		if platform.python_version()[0]=="3":
-			exe_python3=exe_py
-		else:
-			exe_python2=exe_py
+from utils import critic
 
+def check_tools():
+    exe_python2=is_tool('python2')
+    exe_python3=is_tool('python3')
+    if exe_python2 is None and exe_python3 is None:
+    	exe_py=is_tool('python')
+    	if exe_py is not None: #would be absurd, wouldn't it ?
+    		if platform.python_version()[0]=="3":
+    			exe_python3=exe_py
+    		else:
+    			exe_python2=exe_py
 
-MAKE=""
-if is_tool("make"):
-  MAKE='make '
-  CMAKE='cmake '
-elif is_tool("mingw32-make.exe"):
-  MAKE='mingw32-make.exe '
-  CMAKE='cmake -G "MinGW Makefiles" '
+    if not is_tool("cmake"):
+      critic("No <cmake> utility found. Exit")
+    exe_cmake="cmake"
 
-if MAKE=="":
-  print("No <make> utility found. Exit")
-  exit(1)
+    if is_tool("make"):
+      exe_make='make '
+    elif is_tool("mingw32-make.exe"):
+      exe_make='mingw32-make.exe '
+      exe_cmake+=' -G "MinGW Makefiles" '
+    else:
+      critic("No <make> utility found. Exit")
+
+    return (exe_python2,exe_python3,exe_cmake,exe_make)

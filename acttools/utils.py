@@ -73,6 +73,6 @@ def critic(s,pref=None):
     pref=cfg.prefixe_line
 
   error(s,pref)
-  print("\n"+pref+colFormat(s+"stopped.",cfg.C_ERROR)+cfg.C_END+"\n")
+  print(pref+colFormat("Stopped.",cfg.C_MSG)+cfg.C_END+"\n")
 
   sys.exit(1)
