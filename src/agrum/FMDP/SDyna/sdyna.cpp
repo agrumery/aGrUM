@@ -90,6 +90,12 @@ namespace gum {
   /// Initialization
   // ==========================================================================
 
+    void SDYNA::initialize(){
+      __learner->initialize(_fmdp);
+      __planer->initialize(_fmdp);
+      __decider->initialize(_fmdp);
+    }
+
     // ###################################################################
     /**
      * Initializes the Sdyna instance.
@@ -98,9 +104,7 @@ namespace gum {
      */
     // ###################################################################
     void SDYNA::initialize( const Instantiation& initialState ){
-      __learner->initialize(_fmdp);
-      __planer->initialize(_fmdp);
-      __decider->initialize(_fmdp);
+      initialize();
       setCurrentState( initialState );
     }
 

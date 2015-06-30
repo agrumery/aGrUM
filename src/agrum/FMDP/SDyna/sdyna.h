@@ -231,6 +231,7 @@ namespace gum {
       /// @{
     public:
 
+        void initialize();
         // ==========================================================================
         /**
          * Initializes the Sdyna instance.
