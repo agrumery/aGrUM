@@ -10,5 +10,10 @@ NamespaceIndentation: All
 SpacesInParentheses: false
 BreakBeforeBraces: Attach
 AlwaysBreakTemplateDeclarations: false
-ColumnLimit: 85
-PointerAlignment: Right
+ColumnLimit: 80
+PointerAlignment: Left
+AlignAfterOpenBracket: true
+BinPackArguments: true
+BinPackParameters: true
+MaxEmptyLinesToKeep: 2
+SpacesBeforeTrailingComments: 2
