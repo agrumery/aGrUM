@@ -260,8 +260,7 @@ int UTF8Buffer::Read() {
 
 Scanner::Scanner(const unsigned char* buf, int len, std::string filename, bool trace) {
   buffer = new Buffer( buf, len );
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  __filenamne=converter.from_bytes(filename);
+  __filenamne=widen( filename.c_str() );
   __trace=trace;
   Init();
 }

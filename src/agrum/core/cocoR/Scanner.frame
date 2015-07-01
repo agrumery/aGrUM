@@ -38,9 +38,7 @@ Scanner.h Specification
 #include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
-
-#include <locale>
-#include <codecvt>
+#include <locale.h>
 
 #include <agrum/core/signal/signaler1.h>
 #include <agrum/core/cocoR/common.h>
@@ -501,8 +499,7 @@ int UTF8Buffer::Read() {
 
 Scanner::Scanner(const unsigned char* buf, int len, std::string filename, bool trace) {
   buffer = new Buffer( buf, len );
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  __filenamne=converter.from_bytes(filename);
+  __filenamne=widen( filename.c_str() );
   __trace=trace;
   Init();
 }
