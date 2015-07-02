@@ -255,7 +255,7 @@ void import( std::string fileID ) {
       fileID = current_pck.substr(0, last_dot) + fileID;
     }
 
-    // Si on inclut un répertoire entier
+    // Si on inclut un r?(C)pertoire entier
     size_t starIndex = fileID.find_last_of('*');
     if ( starIndex != std::string::npos ) {
         return importDirID(fileID.substr(0,starIndex-1));
