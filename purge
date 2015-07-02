@@ -8,7 +8,7 @@ echo
 python act clean
 
 echo "Force cocoR files to be generated" 
-find -name *.atg -print | xargs touch
+find . -name *.atg -print | xargs touch
 
 echo "Force swig files to be generated"
-find -name *.i -print | xargs touch
+find . -name *.i -print | xargs touch

@@ -38,12 +38,9 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include <string>
-#include <locale>
-
-//#include <wchar>
-//#include <codecvt>
+#include <string.h>
+#include <wchar.h>
+#include <locale.h>
 
 #include <agrum/core/signal/signaler1.h>
 #include <agrum/core/cocoR/common.h>

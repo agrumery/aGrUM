@@ -77,7 +77,6 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
       TS_ASSERT_EQUALS(res, 0);
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)72);
-      GUM_TRACE(bn.toDot());
     }
   };
 }  // namespace gum_tests
