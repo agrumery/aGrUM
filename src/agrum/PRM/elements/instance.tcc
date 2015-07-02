@@ -320,12 +320,6 @@ namespace gum {
       }
     }
 
-    template<typename GUM_SCALAR> INLINE
-    bool
-    Instance<GUM_SCALAR>::isInstantiated( NodeId id ) const {
-      return __nodeIdMap.exists( id );
-    }
-
     template <typename GUM_SCALAR>
     INLINE void
     Instance<GUM_SCALAR>::__addReferingInstance(SlotChain<GUM_SCALAR> *sc,
@@ -344,11 +338,6 @@ namespace gum {
         i->__referingAttr[id]->push_back(
             std::make_pair(this, sc->lastElt().safeName()));
       }
-    }
-
-    template <typename GUM_SCALAR>
-    INLINE void Instance<GUM_SCALAR>::instantiate(NodeId id) {
-      // Do nothing
     }
 
     template <typename GUM_SCALAR>

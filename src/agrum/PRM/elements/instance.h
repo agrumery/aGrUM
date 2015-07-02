@@ -169,18 +169,6 @@ namespace gum {
         /// @{
 
         /**
-         * Deprecated: all attribute are now instantiated.
-         * TODO remove this one day.
-         */
-        bool isInstantiated ( NodeId ) const;
-
-        /**
-         * Deprecated: all attribute are now instantiated.
-         * TODO remove this one day.
-         */
-        void instantiate ( NodeId id );
-
-        /**
          * @brief Instantiate all nodes which requires it.
          *
          * All attributes are now instantiated, which means they have
@@ -191,8 +179,6 @@ namespace gum {
          *          this instance attribute's CPF. Furthermore, the
          *          instantiated attribute's type will change (but will not be
          *          deleted).
-         *
-         *
          */
         void instantiate();
 
