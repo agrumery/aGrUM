@@ -1165,6 +1165,11 @@ namespace gum {
 
     template <typename GUM_SCALAR> INLINE PRMFactory<GUM_SCALAR>::~PRMFactory() {
       GUM_DESTRUCTOR(PRMFactory);
+      while (not __namespaces.empty()) {
+        auto ns = __namespaces.back();
+        __namespaces.pop_back();
+        delete ns;
+      }
     }
 
     template <typename GUM_SCALAR>
