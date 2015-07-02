@@ -145,6 +145,8 @@ namespace gum {
       }
     }
 
+    delete prm;
+
     return errors() + warnings();
   }
 
