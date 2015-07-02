@@ -98,8 +98,10 @@ namespace gum {
                                          const std::string& type,
                                          const std::string& name);
     static std::string __getEntityName(const std::string& filename);
+    static std::string __getInstanceName(const std::string& classname);
   };
 
+  extern template class O3prmBNReader<double>;
 }  // gum
 
 #include <agrum/prm/o3prm/O3prmBNReader.tcc>

@@ -24,7 +24,10 @@
  * @author Pierre-Henri WUILLEMIN and Lionel TORTI
  */
 // to ease Parser
-#include <agrum/PRM/o3prrm/O3prmBNReader.h>
+#include <algorithm>
+#include <string>
+
+#include <agrum/PRM/o3prm/O3prmBNReader.h>
 
 namespace gum {
   template <typename GUM_SCALAR>
@@ -32,14 +35,22 @@ namespace gum {
   O3prmBNReader<GUM_SCALAR>::__getVariableName(const std::string& path,
                                                const std::string& type,
                                                const std::string& name) {
-    return path + "." + name;
+    return path + name;  // path ends up with a "."
+  }
+
+  template <typename GUM_SCALAR>
+  std::string
+  O3prmBNReader<GUM_SCALAR>::__getInstanceName(const std::string& classname) {
+    auto res = classname.substr(0, 4);
+    std::transform(res.begin(), res.end(), res.begin(), ::tolower);
+    return res;
   }
 
   template <typename GUM_SCALAR>
   std::string
   O3prmBNReader<GUM_SCALAR>::__getEntityName(const std::string& filename) {
     auto b = filename.find_last_of("/\\");
-    auto e = filename.find_last_of(".");
+    auto e = filename.find_last_of(".") - 1;
     GUM_ASSERT(e > b);  // we are waiting ../../basnemae.o3prm
     return filename.substr(b + 1, e - b);
   }
@@ -89,8 +100,8 @@ namespace gum {
                           __filename, 0);
           __errors.add(warn);
           gum::prm::System<double> s("S_" + __entityName);
-          auto i = new gum::prm::Instance<double>(__entityName.substr(0, 3),
-                                                  prm->getClass(__entityName));
+          auto i = new gum::prm::Instance<double>(
+              __getInstanceName(__entityName), prm->getClass(__entityName));
           s.add(i);
           __generateBN(s);
         } else {
