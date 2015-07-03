@@ -23,6 +23,7 @@
 #include <fstream>
 #include <string>
 #include <cstdarg>
+#include <future>
 // ==============================================================================
 //#include <agrum/agrum.h>
 // ==============================================================================
@@ -78,131 +79,131 @@ gum::MultiDimFunctionGraph<double>* generateRandomFunctionGraph ( const gum::Seq
 }
 
 
+std::string test( gum::Idx maxNbVar, gum::Idx maxNbModa ){
+
+  // ---------------------------------------------------------------------------------------------------
+  // Generating var list
+  // ---------------------------------------------------------------------------------------------------
+  gum::Sequence< const gum::DiscreteVariable* >* varList = generateRandomVarList ( maxNbVar, maxNbModa );
+
+  std::stringstream stats;
+  gum::MultiDimFunctionGraph<double>* res;
+
+  // ---------------------------------------------------------------------------------------------------
+  // Generating first diagram
+  // ---------------------------------------------------------------------------------------------------
+  shuffleVarList(varList);
+  gum::MultiDimFunctionGraph<double>* a1 = generateRandomFunctionGraph ( varList );
+
+  // ---------------------------------------------------------------------------------------------------
+  // Generating second diagram
+  // ---------------------------------------------------------------------------------------------------
+  shuffleVarList(varList);
+  gum::MultiDimFunctionGraph<double>* a2 = generateRandomFunctionGraph ( varList );
+
+  // ---------------------------------------------------------------------------------------------------
+  // Minimisation des diagrammes
+  // ---------------------------------------------------------------------------------------------------
+  a1->manager()->minimizeSize();
+  a2->manager()->minimizeSize();
+
+
+  // ---------------------------------------------------------------------------------------------------
+  // Operation with no global order
+  // ---------------------------------------------------------------------------------------------------
+  gum::MultiDimFunctionGraphOperator<double, std::plus> opeSC(a1, a2);
+  res = opeSC.compute();
+  delete res;
+  stats << a1->realSize() << ";" << a2->realSize() << ";" << opeSC.nbVarRetro() << ";" << opeSC.sizeVarRetroDomain() << ";" << opeSC.nbCall()<< ";";
+
+//  std::cout << stats.str() << std::endl;
+
+
+  // ---------------------------------------------------------------------------------------------------
+  // Operation with global order
+  // ---------------------------------------------------------------------------------------------------
+  gum::GlobalFunctionGraphMinimizer gm;
+  gm.loadFunctionGraphs(a1,a2);
+  gm.minimize();
+
+  gum::MultiDimFunctionGraphOperator<double, std::plus> opeAC(a1, a2);
+  res = opeAC.compute();
+  delete res;
+  stats << a1->realSize() << ";" << a2->realSize() << ";" << opeAC.nbVarRetro() << ";" << opeAC.sizeVarRetroDomain() << ";" << opeAC.nbCall()<< ";";
+
+//  std::cout << stats.str() << std::endl;
+
+
+
+  // ---------------------------------------------------------------------------------------------------
+  // Binarisation
+  // ---------------------------------------------------------------------------------------------------
+  gum::FunctionGraphBinarizer fgb;
+
+  fgb.loadFunctionGraph(a1);
+  gum::MultiDimFunctionGraph<double>* a3 = fgb.binarize();
+  a3->manager()->minimizeSize();
+
+  fgb.loadFunctionGraph(a2);
+  gum::MultiDimFunctionGraph<double>* a4 = fgb.binarize();
+  a4->manager()->minimizeSize();
+
+  // ---------------------------------------------------------------------------------------------------
+  // Operation with no global order and binary variables
+  // ---------------------------------------------------------------------------------------------------
+  gum::MultiDimFunctionGraphOperator<double, std::plus> opeBSC(a3, a4);
+  res = opeBSC.compute();
+  delete res;
+  stats << a3->realSize() << ";" << a4->realSize() << ";" << opeBSC.nbVarRetro() << ";" << opeBSC.sizeVarRetroDomain() << ";" << opeBSC.nbCall()<< ";";
+
+//  std::cout << stats.str() << std::endl;
+
+
+  // ---------------------------------------------------------------------------------------------------
+  // Operation with global order
+  // ---------------------------------------------------------------------------------------------------
+  gm.loadFunctionGraphs(a3,a4);
+  gm.minimize();
+
+  gum::MultiDimFunctionGraphOperator<double, std::plus> opeBAC(a3, a4);
+  res = opeBAC.compute();
+  delete res;
+  stats << a3->realSize() << ";" << a4->realSize() << ";" << opeBAC.nbVarRetro() << ";" << opeBAC.sizeVarRetroDomain() << ";" << opeBAC.nbCall()<< ";";
+
+//  std::cout << stats.str() << std::endl;
+
+  delete a4;
+  delete a3;
+  delete a2;
+  delete a1;
+
+  for(gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter = varList->beginSafe(); varIter != varList->endSafe(); ++varIter){
+    delete *varIter;
+  }
+  delete varList;
+
+  return stats.str();
+
+}
+
+#include <agrum/core/argMaxSet.h>
+#include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
 
 // *******************************************************************************
 // The main function
 // *******************************************************************************
 int main ( int argc, char* argv[] ) {
 
-  srand(time(NULL));
-  for( gum::Idx maxNbVar = 5; maxNbVar < 16; maxNbVar += 5){
-    for( gum::Idx maxNbModa = 2; maxNbModa < 11; maxNbModa += 2){
-
-      // ======================================================================================
-      // Ouverture des fichiers de traces
-      // ======================================================================================
-      std::ofstream traceFile;
-      std::stringstream traceFileName;
-      traceFileName << GET_PATH_STR ( TRACE/operations ) << "." << maxNbVar << "." << maxNbModa << ".csv";
-      traceFile.open ( traceFileName.str(), std::ios::out | std::ios::trunc );
-      if ( !traceFile ) {
-        return EXIT_FAILURE;
-      }
-
-      for( gum::Idx i = 0; i  < 1000; i++ ){
-
-        std::cout << "Iteration n°" << i << " - MaxNbVar : " << maxNbVar << " - " << maxNbModa << std::endl;
-        std::stringstream stats;
-        gum::MultiDimFunctionGraph<double>* res;
-
-        // ---------------------------------------------------------------------------------------------------
-        // Generating var list
-        // ---------------------------------------------------------------------------------------------------
-        gum::Sequence< const gum::DiscreteVariable* >* varList = generateRandomVarList ( maxNbVar, 2 );
-
-        // ---------------------------------------------------------------------------------------------------
-        // Generating first diagram
-        // ---------------------------------------------------------------------------------------------------
-        shuffleVarList(varList);
-        gum::MultiDimFunctionGraph<double>* a1 = generateRandomFunctionGraph ( varList );
-        a1->manager()->minimizeSize();
-
-        // ---------------------------------------------------------------------------------------------------
-        // Generating second diagram
-        // ---------------------------------------------------------------------------------------------------
-        shuffleVarList(varList);
-        gum::MultiDimFunctionGraph<double>* a2 = generateRandomFunctionGraph ( varList );
-        a2->manager()->minimizeSize();
+  gum::MultiDimFunctionGraph< gum::ArgMaxSet<double, gum::Idx>, gum::SetTerminalNodePolicy >* f
+      = gum::MultiDimFunctionGraph< gum::ArgMaxSet<double, gum::Idx>, gum::SetTerminalNodePolicy >::getReducedAndOrderedInstance();
 
 
-        // ---------------------------------------------------------------------------------------------------
-        // Operation with no global order
-        // ---------------------------------------------------------------------------------------------------
-        gum::MultiDimFunctionGraphOperator<double, std::plus> opeSC(a1, a2);
-        res = opeSC.compute();
-        delete res;
-        stats << a1->realSize() << ";" << a2->realSize() << ";" << opeSC.nbVarRetro() << ";" << opeSC.sizeVarRetroDomain() << ";" << opeSC.nbCall()<< ";";
+  gum::ArgMaxSet<double, gum::Idx> leaf( 0,1 );
+  gum::NodeId nody = f->manager()->addTerminalNode(leaf);
 
-        std::cout << stats.str() << std::endl;
+  f->manager()->setRootNode(nody);
 
+  delete f;
 
-        // ---------------------------------------------------------------------------------------------------
-        // Operation with global order
-        // ---------------------------------------------------------------------------------------------------
-        gum::GlobalFunctionGraphMinimizer gm;
-        gm.loadFunctionGraphs(a1,a2);
-        gm.minimize();
-
-        gum::MultiDimFunctionGraphOperator<double, std::plus> opeAC(a1, a2);
-        res = opeAC.compute();
-        delete res;
-        stats << a1->realSize() << ";" << a2->realSize() << ";" << opeAC.nbVarRetro() << ";" << opeAC.sizeVarRetroDomain() << ";" << opeAC.nbCall()<< ";";
-
-        std::cout << stats.str() << std::endl;
-
-
-
-        // ---------------------------------------------------------------------------------------------------
-        // Binarisation
-        // ---------------------------------------------------------------------------------------------------
-        gum::FunctionGraphBinarizer fgb;
-
-        fgb.loadFunctionGraph(a1);
-        gum::MultiDimFunctionGraph<double>* a3 = fgb.binarize();
-        a3->manager()->minimizeSize();
-
-        fgb.loadFunctionGraph(a2);
-        gum::MultiDimFunctionGraph<double>* a4 = fgb.binarize();
-        a4->manager()->minimizeSize();
-
-        // ---------------------------------------------------------------------------------------------------
-        // Operation with no global order and binary variables
-        // ---------------------------------------------------------------------------------------------------
-        gum::MultiDimFunctionGraphOperator<double, std::plus> opeBSC(a3, a4);
-        res = opeBSC.compute();
-        delete res;
-        stats << a3->realSize() << ";" << a4->realSize() << ";" << opeBSC.nbVarRetro() << ";" << opeBSC.sizeVarRetroDomain() << ";" << opeBSC.nbCall()<< ";";
-
-        std::cout << stats.str() << std::endl;
-
-
-        // ---------------------------------------------------------------------------------------------------
-        // Operation with global order
-        // ---------------------------------------------------------------------------------------------------
-        gm.loadFunctionGraphs(a3,a4);
-        gm.minimize();
-
-        gum::MultiDimFunctionGraphOperator<double, std::plus> opeBAC(a3, a4);
-        res = opeBAC.compute();
-        delete res;
-        stats << a3->realSize() << ";" << a4->realSize() << ";" << opeBAC.nbVarRetro() << ";" << opeBAC.sizeVarRetroDomain() << ";" << opeBAC.nbCall()<< ";";
-
-        std::cout << stats.str() << std::endl;
-
-        traceFile << stats.str() << std::endl;
-
-        delete a4;
-        delete a3;
-        delete a2;
-        delete a1;
-        for(gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter = varList->beginSafe(); varIter != varList->endSafe(); ++varIter){
-          delete *varIter;
-        }
-        delete varList;
-      }
-
-      traceFile.close();
-    }
-  }
   return EXIT_SUCCESS;
 }
