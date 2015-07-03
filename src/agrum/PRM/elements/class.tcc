@@ -608,13 +608,23 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::__addIOInterfaceFlags(ClassElement<GUM_SCALAR> *elt) {
+      // We only add IO Flags if elt matches is required by and interface
       if (__implements != nullptr) {
         for (const auto impl : *__implements) {
-          if (impl->isOutputNode(*elt)) {
+          Interface<GUM_SCALAR> *super = impl;
+          while (super) {
+            // If the attribute is defined in an interface, we set it as an OutputNode
+            if (impl->exists(elt->name()) ) {
+              try {
+                this->_getIOFlag(*elt).second = true;
+              } catch (NotFound &) {
+                this->_setIOFlag(*elt, std::make_pair(false, true));
+              }
+            }
             try {
-              this->_getIOFlag(*elt).second = true;
-            } catch (NotFound &) {
-              this->_setIOFlag(*elt, std::make_pair(false, true));
+              super = &(super->super());
+            } catch (NotFound& e) {
+              super = nullptr;
             }
           }
         }

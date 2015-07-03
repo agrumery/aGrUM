@@ -38,6 +38,7 @@ namespace gum_tests {
       typedef gum::prm::Class<double> Class;
       typedef gum::prm::Interface<double> Interface;
       typedef gum::prm::Type<double> Type;
+      typedef gum::prm::Aggregate<double> Aggregate;
       typedef gum::prm::ScalarAttribute<double> Attribute;
       typedef gum::prm::ReferenceSlot<double> Reference;
       typedef gum::prm::SlotChain<double> SlotChain;
@@ -583,9 +584,71 @@ namespace gum_tests {
         TS_ASSERT( not c.isInputNode( *a ) );
         TS_ASSERT( not c.isOutputNode( *a ) );
       }
-      /// @}
-      /// Get operator
 
+      void testIONodesInheritance() {
+        try {
+          // Arrange
+          // Event
+          Interface event("Event");
+          auto e_state = new Attribute("state", *__boolean);
+          event.add( e_state );
+          // Gate
+          Interface gate("Gate", event);
+          auto g_inputs = new Reference("inputs", event, true);
+          gate.add( g_inputs );
+          gum::Set< gum::prm::Interface<double>* > impl;
+          impl << &gate;
+          // OrGate
+          Class orGate("OrGate", impl);
+          auto or_inputs = new Reference("inputs", event, true);
+          orGate.add( or_inputs );
+          auto or_state = new Aggregate("state", Aggregate::AggregateType::EXISTS, *__boolean, 1);
+          orGate.add( or_state );
+          gum::Sequence< gum::prm::ClassElement<double>* > or_seq;
+          or_seq << &(orGate.get( "inputs" )) << &(event.get( "state" ));
+          auto or_chain = new SlotChain("inputs.state", or_seq);
+          orGate.add( or_chain );
+          orGate.addArc( "inputs.state", "state" );
+          // AndGate
+          Class andGate("AndGate", impl);
+          auto and_inputs = new Reference("inputs", event, true);
+          andGate.add( and_inputs );
+          auto and_state = new Aggregate("state", Aggregate::AggregateType::FORALL, *__boolean, 1);
+          andGate.add( and_state );
+          gum::Sequence< gum::prm::ClassElement<double>* > and_seq;
+          and_seq << and_inputs << &(event.get( "state" ));
+          auto and_chain = new SlotChain("inputs.state", and_seq);
+          andGate.add( and_chain );
+          andGate.addArc( "inputs.state", "state" );
+          // KNGate
+          Class knGate("k_nGate", impl);
+          auto kn_inputs = new Reference("inputs", event, true);
+          knGate.add( kn_inputs );
+          Type intervalle( gum::LabelizedVariable("intervalle", "", 6) );
+          auto nb_true = new Aggregate( "Nb_true", Aggregate::AggregateType::COUNT, *__boolean, 1 );
+          knGate.add( nb_true );
+          gum::Sequence< gum::prm::ClassElement<double>* > kn_seq;
+          kn_seq << kn_inputs << &(event.get( "state" ));
+          auto kn_chain = new SlotChain("inputs.state", kn_seq);
+          knGate.add( kn_chain );
+          knGate.addArc( "inputs.state", "Nb_true" );
+          Type intervalle_k( gum::LabelizedVariable("intervalle_K", "", 4) );
+          auto k = new Attribute( "K", intervalle_k);
+          knGate.add( k );
+          std::vector<double> k_values{ 0.25, 0.25, 0.25, 0.25 };
+          k->cpf().fillWith( k_values );
+          auto kn_state = new Attribute("state", *__boolean);
+          knGate.add( kn_state );
+          knGate.addArc( "K", "state" );
+          knGate.addArc( "Nb_true", "state" );
+          // Assert
+          TS_ASSERT( knGate.isOutputNode( knGate.get( "state" ) ) );
+        } catch (gum::Exception &e) {
+          GUM_TRACE( e.errorContent() );
+          GUM_TRACE( e.errorCallStack() );
+        }
+      }
+      /// @}
 
   };
 
