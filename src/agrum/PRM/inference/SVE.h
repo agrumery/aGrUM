@@ -115,7 +115,7 @@ namespace gum {
 
       HashTable<const Class<GUM_SCALAR> *, BucketSet *> __lifted_pools;
 
-      Sequence<const ClassElementContainer<GUM_SCALAR> *> *__class_elim_order;
+      Sequence<std::string> *__class_elim_order;
 
       HashTable<const Instance<GUM_SCALAR> *, Set<const DiscreteVariable *> *>
           __delayedVariables;
@@ -183,6 +183,7 @@ namespace gum {
                                                const Aggregate<GUM_SCALAR> *agg);
 
       void __initLiftedNodes(const Class<GUM_SCALAR> &c);
+      std::string __trim(const std::string& s);
 
       /// @}
     };

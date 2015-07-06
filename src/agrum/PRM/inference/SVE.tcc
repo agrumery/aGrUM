@@ -29,6 +29,75 @@
 namespace gum {
   namespace prm {
 
+    template <typename GUM_SCALAR>
+    std::string __print_attribute__( const Instance<GUM_SCALAR>& i, const Attribute<GUM_SCALAR> &a) {
+      std::stringstream s;
+      const auto &class_a = i.type().get( a.safeName() );
+      s << &(a.type().variable()) << " - ";
+      s << i.name() << "." << a.safeName() << ": input=" << i.type().isInputNode( class_a );
+      s << " output=" << i.type().isOutputNode( class_a ) << " inner=" << i.type().isInnerNode( class_a );
+      return s.str();
+    }
+
+    template <typename GUM_SCALAR>
+    std::string __print_instance__( const Instance<GUM_SCALAR> &i ) {
+      std::stringstream s;
+      s << i.name() << std::endl;
+      s << "Attributes: " << std::endl;
+      for (auto a : i) {
+        s << __print_attribute__(i, *(a.second));
+      }
+      if (i.type().slotChains().size()) {
+        s << std::endl <<  "SlotChains: " << std::endl;
+        for ( auto sc: i.type().slotChains() ) {
+          s << sc->name() << " ";
+        }
+      }
+      return s.str();
+    }
+
+    template <typename GUM_SCALAR>
+    std::string __print_system__( const System<GUM_SCALAR> &s ) {
+      std::stringstream str;
+      for (auto i : s) {
+        str << __print_instance__(*(i.second)) << std::endl;
+      }
+      return str.str();
+    }
+
+    template <typename LIST>
+    std::string __print_list__( LIST l ) {
+      std::stringstream s;
+      s << "[";
+      for (auto i: l) {
+        s << i->name() << " ";
+      }
+      s << "]";
+      return s.str();
+    }
+
+    template <typename GUM_SCALAR>
+    std::string __print_pot__( const Potential<GUM_SCALAR> &pot ) {
+      std::stringstream s;
+      s << "{";
+      for ( auto var: pot.variablesSequence() ) {
+        s << var << ", ";
+      }
+      s << "}";
+      return s.str();
+    }
+
+    template <typename SET>
+    std::string __print_set__( SET set ) {
+      std::stringstream s;
+      s << "[";
+      for (auto p: set) {
+        s << __print_pot__( *p ) << " ";
+      }
+      s << "]";
+      return s.str();
+    }
+
     template <typename GUM_SCALAR> SVE<GUM_SCALAR>::~SVE() {
       GUM_DESTRUCTOR(SVE);
 
@@ -156,6 +225,7 @@ namespace gum {
         List<const Instance<GUM_SCALAR> *> &elim_list,
         Set<const Instance<GUM_SCALAR> *> &ignore,
         Set<const Instance<GUM_SCALAR> *> &eliminated) {
+
       Set<NodeId> delayedVars;
       ignore.insert(i);
       // Calling elimination over child instance
@@ -165,8 +235,7 @@ namespace gum {
         for (auto child = (*(iter.val())).begin(); child != (*(iter.val())).end();
              ++child) {
           if (not ignore.exists(child->first)) {
-            __eliminateNodesDownward(i, child->first, pool, trash, my_list, ignore,
-                                     eliminated);
+            __eliminateNodesDownward(i, child->first, pool, trash, my_list, ignore, eliminated);
           } else if (not eliminated.exists(child->first)) {
             __addDelayedVariable(child->first, i, iter.key());
             delayedVars.insert(iter.key());
@@ -182,18 +251,22 @@ namespace gum {
       // Calling elimination over child's parents
       for (const auto node : my_list) {
         if (__checkElimOrder(i, node) and (node != from)) {
-          if (not ignore.exists(node))
-            __eliminateNodesDownward(i, node, pool, trash, elim_list, ignore,
-                                     eliminated);
-        } else if (node != from)
+          if (not ignore.exists(node)) {
+            __eliminateNodesDownward(i, node, pool, trash, elim_list, ignore, eliminated);
+          }
+        } else if (node != from) {
           elim_list.insert(node);
+        }
       }
 
       // Adding parents instance to elim_list
-      for (const auto chain : i->type().slotChains())
-        for (const auto inst : i->getInstances(chain->id()))
-          if (inst != from)
+      for (const auto chain : i->type().slotChains()) {
+        for (const auto inst : i->getInstances(chain->id())) {
+          if (inst != from) {
             elim_list.insert(inst);
+          }
+        }
+      }
     }
 
     template <typename GUM_SCALAR>
@@ -240,15 +313,17 @@ namespace gum {
         List<const Instance<GUM_SCALAR> *> &elim_list,
         Set<const Instance<GUM_SCALAR> *> &ignore,
         Set<const Instance<GUM_SCALAR> *> &eliminated) {
+
       // Downward elimination
       ignore.insert(i);
 
-      for (auto iter = i->beginInvRef(); iter != i->endInvRef(); ++iter)
-        for (auto child = (*(iter.val())).begin(); child != (*(iter.val())).end();
-             ++child)
-          if (not ignore.exists(child->first))
-            __eliminateNodesDownward(i, child->first, pool, trash, elim_list, ignore,
-                                     eliminated);
+      for (auto iter = i->beginInvRef(); iter != i->endInvRef(); ++iter) {
+        for (auto child = (*(iter.val())).begin(); child != (*(iter.val())).end(); ++child) { 
+          if (not ignore.exists(child->first)) {
+            __eliminateNodesDownward(i, child->first, pool, trash, elim_list, ignore, eliminated);
+          }
+        }
+      }
 
       // Eliminating all nodes in i instance
       __variableElimination(i, pool, trash);
@@ -259,8 +334,7 @@ namespace gum {
       while (not elim_list.empty()) {
         if (__checkElimOrder(i, elim_list.front())) {
           if (not ignore.exists(elim_list.front())) {
-            __eliminateNodesDownward(i, elim_list.front(), pool, trash, elim_list,
-                                     ignore, eliminated);
+            __eliminateNodesDownward(i, elim_list.front(), pool, trash, elim_list, ignore, eliminated);
           }
         } else {
           tmp_list.insert(elim_list.front());
@@ -270,11 +344,13 @@ namespace gum {
       }
 
       // Upward elimination
-      for (const auto chain : i->type().slotChains())
-        for (const auto parent : i->getInstances(chain->id()))
-          if (not ignore.exists(parent))
-            __eliminateNodesUpward(parent, pool, trash, tmp_list, ignore,
-                                   eliminated);
+      for (const auto chain : i->type().slotChains()) {
+        for (const auto parent : i->getInstances(chain->id())) {
+          if (not ignore.exists(parent)) {
+            __eliminateNodesUpward(parent, pool, trash, tmp_list, ignore, eliminated);
+          }
+        }
+      }
     }
 
     template <typename GUM_SCALAR>
@@ -438,26 +514,44 @@ namespace gum {
 
     template <typename GUM_SCALAR> void SVE<GUM_SCALAR>::__initElimOrder() {
       ClassDependencyGraph<GUM_SCALAR> cdg(*(this->_prm));
-      __class_elim_order = new Sequence<const ClassElementContainer<GUM_SCALAR> *>();
+      Sequence<const ClassElementContainer<GUM_SCALAR> *> class_elim_order;
       std::list<NodeId> l;
 
-      for (const auto node : cdg.dag().nodes())
-        if (cdg.dag().parents(node).empty())
+      for (const auto node : cdg.dag().nodes()) {
+        if (cdg.dag().parents(node).empty()) {
           l.push_back(node);
+        }
+      }
 
       Set<NodeId> visited_node;
 
       while (not l.empty()) {
         visited_node.insert(l.front());
 
-        if (not __class_elim_order->exists(cdg.get(l.front()).first))
-          __class_elim_order->insert(cdg.get(l.front()).first);
+        if (not class_elim_order.exists(cdg.get(l.front()).first)) {
+          class_elim_order.insert(cdg.get(l.front()).first);
+        }
 
-        for (const auto child : cdg.dag().children(l.front()))
-          if (not visited_node.contains(child))
+        for (const auto child : cdg.dag().children(l.front())) {
+          if (not visited_node.contains(child)) {
             l.push_back(child);
+          }
+        }
 
         l.pop_front();
+      }
+
+      __class_elim_order = new Sequence<std::string>();
+      for ( auto c: class_elim_order ) {
+        std::string name = c->name();
+        auto pos = name.find_first_of("<");
+        if (pos != std::string::npos) {
+          name = name.substr(0, pos);
+        }
+        try {
+          __class_elim_order->insert( name );
+        } catch (DuplicateElement& e) { }
+
       }
     }
 
@@ -470,14 +564,17 @@ namespace gum {
       __eliminateNodes(i, elt->id(), pool, trash);
       m.fill((GUM_SCALAR)1);
 
-      for (const auto pot : pool)
-        if (pot->contains(elt->type().variable()))
+      for (const auto pot : pool) {
+        if (pot->contains(elt->type().variable())) {
           m.multiplicateBy(*pot);
+        }
+      }
 
       m.normalize();
 
-      for (const auto pot : trash)
+      for (const auto pot : trash) {
         delete pot;
+      }
     }
 
     template <typename GUM_SCALAR>
@@ -507,6 +604,16 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
+    INLINE std::string 
+    SVE<GUM_SCALAR>::__trim(const std::string& s) {
+      auto pos = s.find_first_of("<");
+      if (pos != std::string::npos) {
+        return s.substr(0, pos);
+      }
+      return s;
+    }
+
+    template <typename GUM_SCALAR>
     INLINE bool
     SVE<GUM_SCALAR>::__checkElimOrder(const Instance<GUM_SCALAR> *first,
                                       const Instance<GUM_SCALAR> *second) {
@@ -514,8 +621,9 @@ namespace gum {
         __initElimOrder();
       }
 
-      return (__class_elim_order->pos(&(first->type())) <=
-              __class_elim_order->pos(&(second->type())));
+      auto first_name = __trim(first->type().name());
+      auto second_name = __trim(second->type().name());
+      return ( __class_elim_order->pos(first_name) <= __class_elim_order->pos(second_name) );
     }
 
     template <typename GUM_SCALAR>

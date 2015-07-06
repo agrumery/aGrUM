@@ -206,10 +206,10 @@ namespace gum {
                           Potential<GUM_SCALAR> &j) = 0;
 
       /// The PRM<GUM_SCALAR> on which inference is done.
-      const PRM<GUM_SCALAR> *_prm;
+      PRM<GUM_SCALAR> const *_prm;
 
       /// The Model on which inference is done.
-      const System<GUM_SCALAR> *_sys;
+      System<GUM_SCALAR> const *_sys;
 
       /// @}
 
