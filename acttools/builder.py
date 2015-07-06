@@ -21,7 +21,7 @@
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
 from configuration import cfg
-from utils import trace,setifyString,safe_cd
+from utils import trace,setifyString,safe_cd,critic
 from multijobs import execCde
 
 def buildCmake(current,target):
@@ -65,25 +65,25 @@ def buildMake(current,target):
     line=cfg.make
 
     if current["action"]=="test":
-        if target=="aGrUM":
-            line+=" gumTest"
-
-    if current["action"]=="install":
+      if target =="aGrUM":
+        line+=" gumTest"
+      elif target!= "pyAgrum":
+        critic("Action '"+current["action"]+"' not treated for target '"+target+"'.")
+    elif current["action"]=="install":
       line+=" install"
-      if target=="pyAgrum":
-        line+=" -C wrappers/pyAgrum"
     elif current["action"]=="uninstall":
       line+=" uninstall"
-      if target=="pyAgrum":
-        line+=" -C wrappers/pyAgrum"
     elif current["action"]=="lib":
-      if target=="pyAgrum":
-        line+=" -C wrappers/pyAgrum"
+      pass
     elif current["action"]=="doc":
-        line+=" doc"
+      line+=" doc"
     else:
-        critic(current["action"]+" not treated for now")
+      critic("Action '"+current["action"]+"' not treated for now")
+      
     line+=" -j "+str(current["jobs"])
+
+    if target=="pyAgrum":
+      line+=" -C wrappers/pyAgrum"
 
     execFromLine(current,line)
 

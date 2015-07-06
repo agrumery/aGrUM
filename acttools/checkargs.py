@@ -145,7 +145,7 @@ def checkPython(current):
         else:
             cfg.python=cfg.python3
     else:
-        if cfg.exe_python2==None:
+        if cfg.python2==None:
             notif("Python2 is not found. Swapping to python3.")
             print("")
             cfg.python=cfg.python3
