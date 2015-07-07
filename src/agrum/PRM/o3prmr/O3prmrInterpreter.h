@@ -104,7 +104,7 @@ namespace gum {
         /// Default are working dir, request file dir if any
         /// and one is calculate from package if any.
         std::vector<std::string> getPaths() const;
-        void addPath(const std::string &path);
+        void addPath(std::string path);
         void clearPaths();
 
         /// syntax mode don't process anything, just check syntax. Default is false.

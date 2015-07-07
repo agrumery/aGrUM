@@ -100,7 +100,10 @@ namespace gum {
 
       /// Root paths to search from there packages.
       /// Default are './' and one is calculate from request package if any.
-      void O3prmrInterpreter::addPath(const std::string &path) {
+      void O3prmrInterpreter::addPath(std::string path) {
+        if (path.length() and path.back() != '/') {
+          path = path + '/';
+        }
         m_paths.push_back(path);
       }
 

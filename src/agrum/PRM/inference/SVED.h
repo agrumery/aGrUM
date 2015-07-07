@@ -121,7 +121,7 @@ namespace gum {
       /// potentials).
       HashTable<const Set<NodeId> *, BucketSet *> __lifted_pools;
 
-      Sequence<const ClassElementContainer<GUM_SCALAR> *> *__class_elim_order;
+      Sequence<std::string> *__class_elim_order;
 
       StructuredBayesBall<GUM_SCALAR> __bb;
 
@@ -180,6 +180,8 @@ namespace gum {
                             List<const Instance<GUM_SCALAR> *> &reduced_list,
                             Set<const Instance<GUM_SCALAR> *> &ignore,
                             BucketSet &pool, BucketSet &trash);
+
+      std::string __trim(const std::string& s);
       /// @}
     };
 

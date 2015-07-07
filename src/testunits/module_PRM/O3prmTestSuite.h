@@ -613,17 +613,17 @@ namespace gum_tests {
           TS_ASSERT( not BWPrinter.isOutputNode( BWPrinter["(fr.lip6.printers.t_paper)hasPaper"] ) );
           TS_ASSERT( not BWPrinter.isInputNode( BWPrinter["(fr.lip6.printers.t_paper)hasPaper"] ) );
           TS_ASSERT( BWPrinter.isInnerNode( BWPrinter["(fr.lip6.printers.t_paper)hasPaper"] ) );
-          // t_state hasPaper
-          TS_ASSERT( not BWPrinter.isOutputNode( BWPrinter["(fr.lip6.printers.t_state)hasPaper"] ) );
-          TS_ASSERT( not BWPrinter.isInputNode( BWPrinter["(fr.lip6.printers.t_state)hasPaper"] ) );
-          TS_ASSERT( BWPrinter.isInnerNode( BWPrinter["(fr.lip6.printers.t_state)hasPaper"] ) );
+          // t_state hasInk
+          TS_ASSERT( not BWPrinter.isOutputNode( BWPrinter["(fr.lip6.printers.t_ink)hasInk"] ) );
+          TS_ASSERT( not BWPrinter.isInputNode( BWPrinter["(fr.lip6.printers.t_ink)hasInk"] ) );
+          TS_ASSERT( BWPrinter.isInnerNode( BWPrinter["(fr.lip6.printers.t_ink)hasInk"] ) );
           // Boolean hasPaper
           TS_ASSERT( not BWPrinter.isOutputNode( BWPrinter["(boolean)hasPaper"] ) );
           TS_ASSERT( not BWPrinter.isInputNode( BWPrinter["(boolean)hasPaper"] ) );
           TS_ASSERT( BWPrinter.isInnerNode( BWPrinter["(boolean)hasPaper"] ) );
           // Boolean hasInk
-          TS_ASSERT( not BWPrinter.isOutputNode( BWPrinter["hasInk"] ) );
-          TS_ASSERT( not BWPrinter.isInputNode( BWPrinter["hasInk"] ) );
+          TS_ASSERT( not BWPrinter.isOutputNode( BWPrinter["(boolean)hasInk"] ) );
+          TS_ASSERT( not BWPrinter.isInputNode( BWPrinter["(boolean)hasInk"] ) );
           TS_ASSERT( BWPrinter.isInnerNode( BWPrinter["hasInk"] ) );
           delete prm;
         } catch (gum::Exception) {
@@ -738,10 +738,6 @@ namespace gum_tests {
           TS_ASSERT( not ColorPrinter.isOutputNode( ColorPrinter["(fr.lip6.printers.t_paper)hasPaper"] ) );
           TS_ASSERT( not ColorPrinter.isInputNode( ColorPrinter["(fr.lip6.printers.t_paper)hasPaper"] ) );
           TS_ASSERT( ColorPrinter.isInnerNode( ColorPrinter["(fr.lip6.printers.t_paper)hasPaper"] ) );
-          // t_state hasPaper
-          TS_ASSERT( not ColorPrinter.isOutputNode( ColorPrinter["(fr.lip6.printers.t_state)hasPaper"] ) );
-          TS_ASSERT( not ColorPrinter.isInputNode( ColorPrinter["(fr.lip6.printers.t_state)hasPaper"] ) );
-          TS_ASSERT( ColorPrinter.isInnerNode( ColorPrinter["(fr.lip6.printers.t_state)hasPaper"] ) );
           // Boolean hasPaper
           TS_ASSERT( not ColorPrinter.isOutputNode( ColorPrinter["(boolean)hasPaper"] ) );
           TS_ASSERT( not ColorPrinter.isInputNode( ColorPrinter["(boolean)hasPaper"] ) );

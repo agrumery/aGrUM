@@ -64,14 +64,6 @@ namespace gum {
                 "illegal call to ClassElementContainer copy constructor");
     }
 
-    // template<typename GUM_SCALAR> INLINE
-    // Property<std::pair<bool, bool>*>::onNodes&
-    // ClassElementContainer<GUM_SCALAR>::_IOFlags() { return _IOFlags; }
-    //
-    // template<typename GUM_SCALAR> INLINE
-    // const Property<std::pair<bool, bool>*>::onNodes&
-    // ClassElementContainer<GUM_SCALAR>::_IOFlags() const { return _IOFlags; }
-    //
     template <typename GUM_SCALAR>
     INLINE bool ClassElementContainer<GUM_SCALAR>::isInputNode(
         const ClassElement<GUM_SCALAR> &elt) const {

@@ -342,29 +342,71 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR> void SVED<GUM_SCALAR>::__initElimOrder() {
-      ClassDependencyGraph<GUM_SCALAR> cdg(*this->_prm);
-      __class_elim_order = new Sequence<const ClassElementContainer<GUM_SCALAR> *>();
+      ClassDependencyGraph<GUM_SCALAR> cdg(*(this->_prm));
+      Sequence<const ClassElementContainer<GUM_SCALAR> *> class_elim_order;
       std::list<NodeId> l;
 
-      for (const auto node : cdg.dag().nodes())
-        if (cdg.dag().parents(node).empty())
+      for (const auto node : cdg.dag().nodes()) {
+        if (cdg.dag().parents(node).empty()) {
           l.push_back(node);
+        }
+      }
 
       Set<NodeId> visited_node;
 
       while (not l.empty()) {
         visited_node.insert(l.front());
 
-        if (not __class_elim_order->exists(cdg.get(l.front()).first))
-          __class_elim_order->insert(cdg.get(l.front()).first);
+        if (not class_elim_order.exists(cdg.get(l.front()).first)) {
+          class_elim_order.insert(cdg.get(l.front()).first);
+        }
 
-        for (const auto child : cdg.dag().children(l.front()))
-          if (not visited_node.contains(child))
+        for (const auto child : cdg.dag().children(l.front())) {
+          if (not visited_node.contains(child)) {
             l.push_back(child);
+          }
+        }
 
         l.pop_front();
       }
+
+      __class_elim_order = new Sequence<std::string>();
+      for ( auto c: class_elim_order ) {
+        std::string name = c->name();
+        auto pos = name.find_first_of("<");
+        if (pos != std::string::npos) {
+          name = name.substr(0, pos);
+        }
+        try {
+          __class_elim_order->insert( name );
+        } catch (DuplicateElement& e) { }
+
+      }
     }
+    //template <typename GUM_SCALAR> void SVED<GUM_SCALAR>::__initElimOrder() {
+    //  ClassDependencyGraph<GUM_SCALAR> cdg(*this->_prm);
+    //  __class_elim_order = new Sequence<const ClassElementContainer<GUM_SCALAR> *>();
+    //  std::list<NodeId> l;
+
+    //  for (const auto node : cdg.dag().nodes())
+    //    if (cdg.dag().parents(node).empty())
+    //      l.push_back(node);
+
+    //  Set<NodeId> visited_node;
+
+    //  while (not l.empty()) {
+    //    visited_node.insert(l.front());
+
+    //    if (not __class_elim_order->exists(cdg.get(l.front()).first))
+    //      __class_elim_order->insert(cdg.get(l.front()).first);
+
+    //    for (const auto child : cdg.dag().children(l.front()))
+    //      if (not visited_node.contains(child))
+    //        l.push_back(child);
+
+    //    l.pop_front();
+    //  }
+    //}
 
     template <typename GUM_SCALAR>
     void SVED<GUM_SCALAR>::_marginal(const Chain &chain, Potential<GUM_SCALAR> &m) {
@@ -556,6 +598,16 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
+    INLINE std::string 
+    SVED<GUM_SCALAR>::__trim(const std::string& s) {
+      auto pos = s.find_first_of("<");
+      if (pos != std::string::npos) {
+        return s.substr(0, pos);
+      }
+      return s;
+    }
+
+    template <typename GUM_SCALAR>
     INLINE bool
     SVED<GUM_SCALAR>::__checkElimOrder(const Instance<GUM_SCALAR> *first,
                                        const Instance<GUM_SCALAR> *second) {
@@ -563,8 +615,9 @@ namespace gum {
         __initElimOrder();
       }
 
-      return (__class_elim_order->pos(&(first->type())) <=
-              __class_elim_order->pos(&(second->type())));
+      auto first_name = __trim(first->type().name());
+      auto second_name = __trim(second->type().name());
+      return ( __class_elim_order->pos(first_name) <= __class_elim_order->pos(second_name) );
     }
 
     template <typename GUM_SCALAR>
