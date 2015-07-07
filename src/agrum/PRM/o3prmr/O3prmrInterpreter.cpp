@@ -104,7 +104,11 @@ namespace gum {
         if (path.length() and path.back() != '/') {
           path = path + '/';
         }
-        m_paths.push_back(path);
+        if (Directory::isDir(path)) {
+          m_paths.push_back(path);
+        } else {
+          GUM_ERROR( NotFound, "not a directory" );
+        }
       }
 
       /// Root paths to search from there packages.
