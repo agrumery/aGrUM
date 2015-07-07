@@ -39,7 +39,8 @@
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
 #include <agrum/FMDP/decision/E_GreedyDecider.h>
 #include <agrum/FMDP/decision/lazyDecider.h>
-#include <agrum/FMDP/decision/compulsiveLazyDecider.h>
+#include <agrum/FMDP/decision/randomDecider.h>
+#include <agrum/FMDP/decision/statisticalLazyDecider.h>
 #include <agrum/FMDP/planning/actionSet.h>
 // =========================================================================
 #include <agrum/multidim/instantiation.h>
@@ -158,6 +159,37 @@ namespace gum {
           RMaxPlaner* rm = RMaxPlaner::TreeInstance(ls, discountFactor, epsilon);
           IPlanningStrategy<double>* ps = rm;
           IDecisionStrategy* ds = rm;
+          return new SDYNA( ls, ps, ds, observationPhaseLenght, nbValueIterationStep, actionReward);
+        }
+
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        static SDYNA* RandomMDDInstance( double attributeSelectionThreshold = 0.99,
+                                       double similarityThreshold = 0.3,
+                                       double discountFactor = 0.9,
+                                       double epsilon = 1,
+                                       Idx observationPhaseLenght = 100,
+                                       Idx nbValueIterationStep = 10 ){
+          bool actionReward = true;
+          ILearningStrategy* ls = new FMDPLearner<GTEST,GTEST,IMDDILEARNER>(attributeSelectionThreshold, actionReward, similarityThreshold);
+          IPlanningStrategy<double>* ps = StructuredPlaner<double>::spumddInstance( discountFactor, epsilon);
+          IDecisionStrategy* ds = new RandomDecider();
+          return new SDYNA( ls, ps, ds, observationPhaseLenght, nbValueIterationStep, actionReward);
+        }
+
+        // ==========================================================================
+        ///
+        // ==========================================================================
+        static SDYNA* RandomTreeInstance( double attributeSelectionThreshold = 0.99,
+                                       double discountFactor = 0.9,
+                                       double epsilon = 1,
+                                       Idx observationPhaseLenght = 100,
+                                       Idx nbValueIterationStep = 10 ){
+          bool actionReward = true;
+          ILearningStrategy* ls = new FMDPLearner<CHI2TEST,CHI2TEST,ITILEARNER>(attributeSelectionThreshold, actionReward);
+          IPlanningStrategy<double>* ps = StructuredPlaner<double>::sviInstance( discountFactor, epsilon);
+          IDecisionStrategy* ds = new RandomDecider();
           return new SDYNA( ls, ps, ds, observationPhaseLenght, nbValueIterationStep, actionReward);
         }
 

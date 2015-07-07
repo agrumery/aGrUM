@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the compulsive lazy decision maker class.
+ * @brief Headers of the Random decision maker class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
@@ -27,25 +27,23 @@
 
 
 // =========================================================================
-#ifndef GUM_COMPULSIVE_LAZY_DECIDER_H
-#define GUM_COMPULSIVE_LAZY_DECIDER_H
+#ifndef GUM_RANDOM_DECIDER_H
+#define GUM_RANDOM_DECIDER_H
 // =========================================================================
-#include <agrum/FMDP/decision/lazyDecider.h>
-#include <agrum/FMDP/simulation/statesCounter.h>
+#include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
 // =========================================================================
 
 namespace gum {
 
   /**
-   * @class CompulsiveLazyDecider compulsiveLazyDecider.h <agrum/FMDP/SDyna/compulsiveLazyDecider.h>
-   * @brief Class to make decision following an \epsilon-greedy compromise between exploration and exploitation
+   * @class RandomDecider RandomDecider.h <agrum/FMDP/SDyna/RandomDecider.h>
+   * @brief Class to make decision randomly
    * @ingroup fmdp_group
    *
-   * Does nothing more for decison making
-   * But count how many times every visited states have been visited
+   * Does nothing more than the interface for DecisionStrategy does
    *
    */
-  class CompulsiveLazyDecider : public IDecisionStrategy {
+  class RandomDecider : public IDecisionStrategy {
 
       // ###################################################################
       /// @name Constructor & destructor.
@@ -56,16 +54,12 @@ namespace gum {
         // ==========================================================================
         /// Constructor
         // ==========================================================================
-        CompulsiveLazyDecider(  ) : __counter(), __initialized(false) {
-          GUM_CONSTRUCTOR(CompulsiveLazyDecider)
-        }
+        RandomDecider(  ){}
 
         // ==========================================================================
         /// Destructor
         // ==========================================================================
-        ~CompulsiveLazyDecider(){
-          GUM_DESTRUCTOR(CompulsiveLazyDecider)
-        }
+        ~RandomDecider(){}
 
       /// @}
 
@@ -75,18 +69,8 @@ namespace gum {
       // ###################################################################
       /// @{
     public:
-        void checkState( const Instantiation& newState ){
-          if( !__initialized ){
-            __counter.reset(newState);
-            __initialized = true;
-          } else
-            __counter.incState(newState);
-        }
-
-    private :
-        StatesCounter __counter;
-        bool __initialized;
+        void checkState( const Instantiation& newState, Idx actionId ){}
   };
 
 }
-#endif // GUM_COMPULSIVE_LAZY_DECIDER_H
+#endif // GUM_RANDOM_DECIDER_H

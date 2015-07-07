@@ -25,5 +25,5 @@
  */
 
 // =========================================================================
-#include <agrum/FMDP/decision/compulsiveLazyDecider.h>
+#include <agrum/FMDP/decision/statisticalLazyDecider.h>
 // =========================================================================

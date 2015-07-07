@@ -186,15 +186,14 @@ std::string test( gum::Idx maxNbVar, gum::Idx maxNbModa ){
 
 }
 
-
 // *******************************************************************************
 // The main function
 // *******************************************************************************
 int main ( int argc, char* argv[] ) {
 
   srand(time(NULL));
-  for( gum::Idx maxNbVar = 10; maxNbVar < 16; maxNbVar += 5 ){
-    for( gum::Idx maxNbModa = 7; maxNbModa < 9; maxNbModa ++ ){
+  for( gum::Idx maxNbVar = 5; maxNbVar < 16; maxNbVar += 5 ){
+    for( gum::Idx maxNbModa = 5; maxNbModa < 9; maxNbModa ++ ){
 
       // ======================================================================================
       // Ouverture des fichiers de traces
@@ -212,11 +211,11 @@ int main ( int argc, char* argv[] ) {
         std::cout << "Iteration n°" << i << " - MaxNbVar : " << maxNbVar << " - " << maxNbModa << std::endl;
 
 
-        std::future<std::string> fut = std::async(std::launch::async,test, maxNbVar, maxNbModa);
-        bool done = fut.wait_for(std::chrono::seconds(60)) == std::future_status::ready;
+//        std::future<std::string> fut = std::async(std::launch::async,test, maxNbVar, maxNbModa);
+//        bool done = fut.wait_for(std::chrono::seconds(60)) == std::future_status::ready;
 
-        if(done){
-          std::string ret = fut.get(); // test(maxNbVar, maxNbModa);
+        if(true){//done){
+          std::string ret = test(maxNbVar, maxNbModa);// fut.get();
           std::cout << ret << std::endl;
           traceFile << ret << std::endl;
           i++;

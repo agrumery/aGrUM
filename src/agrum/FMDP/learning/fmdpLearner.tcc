@@ -141,7 +141,7 @@ namespace gum {
           __rewardLearner->updateGraph();
         }
 
-        __rmax=__rmax<newObs->reward()?newObs->reward():__rmax;
+        __rmax=__rmax< std::abs(newObs->reward())?std::abs(newObs->reward()):__rmax;
 
         return false;
     }
