@@ -30,6 +30,7 @@
 #include <agrum/BN/inference/GibbsInference.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/junctionTreeInference.h>
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
@@ -167,6 +168,9 @@ namespace gum_tests {
       gum::LazyPropagation<double> inf_LazyProp(*bn);
       inf_LazyProp.makeInference();
 
+      gum::JunctionTreeInference<double> inf_jt(*bn);
+      inf_jt.makeInference();
+
       gum::VariableElimination<double> inf_ValElim(*bn);
       inf_ValElim.makeInference();
 
@@ -181,6 +185,7 @@ namespace gum_tests {
         const gum::Potential<double> &marginal_ShaShe = inf_ShaShe.posterior(i);
         const gum::Potential<double> &marginal_LazyProp = inf_LazyProp.posterior(i);
         const gum::Potential<double> &marginal_ValElim = inf_ValElim.posterior(i);
+        const gum::Potential<double> &marginal_JT = inf_jt.posterior(i);
 
         gum::Instantiation I;
         I << bn->variable(i);
@@ -193,6 +198,8 @@ namespace gum_tests {
           TS_ASSERT_DELTA(marginal_LazyProp[I], marginal_ValElim[I],
                           1e-10); // EXACT INFERENCE
           TS_ASSERT_DELTA(marginal_ShaShe[I], marginal_ValElim[I],
+                          1e-10); // EXACT INFERENCE
+          TS_ASSERT_DELTA(marginal_LazyProp[I], marginal_JT[I],
                           1e-10); // EXACT INFERENCE
         }
       }
@@ -301,6 +308,29 @@ namespace gum_tests {
       }
 
       {
+        gum::JunctionTreeInference<float> inf(*bn);
+        inf.makeInference();
+        {
+          const gum::Potential<float> &p = inf.posterior(w);
+          gum::Instantiation I(p);
+          TS_ASSERT_DELTA(p[I], 0.3529, 1e-7);
+          ++I;
+          TS_ASSERT_DELTA(p[I], 0.6471, 1e-7);
+        }
+
+        inf.eraseAllEvidence();
+        inf.insertEvidence(list_pot);
+        inf.makeInference();
+        {
+          const gum::Potential<float> &p = inf.posterior(w);
+          gum::Instantiation I(p);
+          TS_ASSERT_DELTA(p[I], 0.082, 1e-7);
+          ++I;
+          TS_ASSERT_DELTA(p[I], 0.918, 1e-7);
+        }
+      }
+
+      {
         gum::LazyPropagation<float> inf(*bn);
         inf.makeInference();
         {
@@ -399,15 +429,15 @@ namespace gum_tests {
         gum::LazyPropagation<float> infLazy(*net);
         infLazy.makeInference();
 
-        gum::LazyPropagation<float> infShaf(*net);
-        infShaf.makeInference();
+        gum::JunctionTreeInference<float> infJT(*net);
+        infJT.makeInference();
 
         for (const auto node : net->nodes()) {
           gum::Instantiation I;
           I << net->variable(node);
 
           for (I.setFirst(); !I.end(); ++I) {
-            TS_ASSERT_DELTA(infLazy.posterior(node)[I], infShaf.posterior(node)[I],
+            TS_ASSERT_DELTA(infLazy.posterior(node)[I], infJT.posterior(node)[I],
                             1e-6);
           }
         }

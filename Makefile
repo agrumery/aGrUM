@@ -1,9 +1,9 @@
 #since some IDEs need a Makefile
 #here is a simple wrapper to act embedded in Makefile
 #
-CLANGFORMAT=clang-format-3.5
+CLANGFORMAT=clang-format-3.6
 
-ACT=./act --no-fun 
+ACT=./act --no-fun
 JOBS=7
 
 library:

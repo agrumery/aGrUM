@@ -121,7 +121,6 @@ namespace gum {
     DiscreteVariable &operator=(const DiscreteVariable &aRV);
 
     /// equality operator
-
     virtual bool operator==(const DiscreteVariable &aRV) const;
 
     /// inequality operator
@@ -138,8 +137,10 @@ namespace gum {
     virtual Idx index(const std::string &label) const = 0;
 
     /// string version of *this
-    /// @param useDescription is true if toString use description instead of name
-    const std::string toString(bool useDescription=false) const ;
+    const std::string toString() const ;
+
+    /// string version of *this using description attribute instead of name.
+    const std::string toStringWithDescription() const ;
 
     /// string represent the domain of the variable
     virtual const std::string domain() const = 0;
