@@ -162,7 +162,7 @@ namespace gum {
   } /* namespace prm */
 } // namespace gum
 
-#include <agrum/PRM/elements/scalarattribute.tcc>
+#include <agrum/PRM/elements/scalarAttribute.tcc>
 
 #endif /* GUM_SCALAR_ATTRIBUTE_H */
 

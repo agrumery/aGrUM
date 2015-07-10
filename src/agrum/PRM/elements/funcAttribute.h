@@ -87,6 +87,6 @@ namespace gum {
   } /* namespace prm */
 } // namespace gum
 
-#include <agrum/PRM/elements/funcattribute.tcc>
+#include <agrum/PRM/elements/funcAttribute.tcc>
 
 #endif /* GUM_FUNC_ATTRIBUTE_H */
