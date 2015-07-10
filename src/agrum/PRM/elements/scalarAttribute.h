@@ -32,6 +32,26 @@
 namespace gum {
   namespace prm {
 
+    /**
+     * @class ScalarAttribute scalarAttribute.h <agrum/PRM/elements/scalarAttribute.h>
+     * @brief ScalarAttribute is a member of a Class in a PRM.
+     *
+     * A ScalarAttribute is defined by its name, its containing class, its type and
+     * by a Conditional Probability Function (aka CPF but represented by a
+     * Potential).
+     *
+     * An attribute in a PRM is the equivalent of a random variable in a bayesian
+     * network.
+     *
+     * This class is constructed by a gum::PRMFactory and is deleted by its
+     * gum::Class.
+     *
+     * Built-in copies (copy constructor and copy operator) are illegal due to
+     * various problems raised by redondant information.
+     *
+     * @see PRM PRMFactory Class ClassElement Type<GUM_SCALAR> Potential
+     * @ingroup prm_group
+     */
     template<typename GUM_SCALAR>
     class ScalarAttribute: public Attribute<GUM_SCALAR> {
 

@@ -26,7 +26,7 @@
 #include <agrum/PRM/elements/interface.h>
 
 #include <agrum/PRM/elements/attribute.h>
-#include <agrum/PRM/elements/scalarattribute.h>
+#include <agrum/PRM/elements/scalarAttribute.h>
 #include <agrum/PRM/elements/referenceSlot.h>
 #include <agrum/PRM/elements/class.h>
 

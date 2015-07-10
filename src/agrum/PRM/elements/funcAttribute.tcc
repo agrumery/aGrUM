@@ -24,7 +24,6 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/PRM/elements/funcattribute.h>
 #include <agrum/PRM/elements/type.h>
 
 namespace gum {

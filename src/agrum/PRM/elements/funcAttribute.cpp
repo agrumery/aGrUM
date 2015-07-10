@@ -19,17 +19,17 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Source implementation of gum::ScalarAttribute
+ * @brief Source implementation of gum::Attribute
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
  */
 
-#include <agrum/PRM/elements/scalarattribute.h>
+#include <agrum/PRM/elements/funcAttribute.h>
 
 namespace gum {
   namespace prm {
-    template class ScalarAttribute<double>;
+    template class FuncAttribute<double>;
 
   } /* namespace prm */
 } /* namespace gum */

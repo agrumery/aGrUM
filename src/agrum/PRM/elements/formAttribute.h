@@ -35,7 +35,7 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class FormAttribute formattribute.h <agrum/PRM/elements/formattribute.h>
+     * @class FormAttribute formAttribute.h <agrum/PRM/elements/formAttribute.h>
      * @brief FormAttribute is a member of a Class in a PRM.
      *
      * @see PRM PRMFactory Class ClassElement Type<GUM_SCALAR> Potential Attribute

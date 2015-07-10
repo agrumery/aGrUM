@@ -28,13 +28,13 @@
 #define GUM_FUNC_ATTRIBUTE_H
 
 #include <agrum/multidim/multiDimImplementation.h>
-#include <agrum/PRM/elements/scalarattribute.h>
+#include <agrum/PRM/elements/scalarAttribute.h>
 
 namespace gum {
   namespace prm {
 
     /**
-     * @class FuncAttribute attribute.h <agrum/PRM/attribute.h>
+     * @class FuncAttribute funcAttribute.h <agrum/PRM/elements/funcAttribute.h>
      * @brief This class overload gum::prm::ClassElement::_addParent() and
      *        gum::prm::ClassElement::_addChild with empty methods.
      *

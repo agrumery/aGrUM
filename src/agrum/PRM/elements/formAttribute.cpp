@@ -25,7 +25,7 @@
  *
  */
 
-#include <agrum/PRM/elements/formattribute.h>
+#include <agrum/PRM/elements/formAttribute.h>
 
 namespace gum {
   namespace prm {

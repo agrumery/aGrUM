@@ -37,7 +37,7 @@
 #include <agrum/PRM/elements/class.h>
 #include <agrum/PRM/elements/instance.h>
 #include <agrum/PRM/elements/attribute.h>
-#include <agrum/PRM/elements/funcattribute.h>
+#include <agrum/PRM/elements/funcAttribute.h>
 #include <agrum/PRM/elements/aggregate.h>
 #include <agrum/PRM/elements/referenceSlot.h>
 #include <agrum/PRM/elements/slotChain.h>

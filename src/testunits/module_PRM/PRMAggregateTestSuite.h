@@ -26,7 +26,7 @@
 #include <agrum/multidim/aggregators/and.h>
 #include <agrum/multidim/aggregators/count.h>
 
-#include <agrum/PRM/elements/formattribute.h>
+#include <agrum/PRM/elements/formAttribute.h>
 #include <agrum/PRM/elements/aggregate.h>
 
 #include <module_PRM/ClassElementTestSuite.h>

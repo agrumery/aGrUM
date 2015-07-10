@@ -28,7 +28,7 @@
 #include <agrum/core/math/formula.h>
 
 #include <agrum/PRM/elements/type.h>
-#include <agrum/PRM/elements/scalarattribute.h>
+#include <agrum/PRM/elements/scalarAttribute.h>
 
 namespace gum {
   namespace prm {

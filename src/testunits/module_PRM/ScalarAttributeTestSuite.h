@@ -22,7 +22,7 @@
 #include <testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/PRM/elements/scalarattribute.h>
+#include <agrum/PRM/elements/scalarAttribute.h>
 #include <agrum/PRM/elements/class.h>
 
 #include <module_PRM/ClassElementTestSuite.h>
