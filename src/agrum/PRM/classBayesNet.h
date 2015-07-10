@@ -35,17 +35,21 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class ClassBayesNet<GUM_SCALAR> classBayesNet.h <agrum/PRM/classBayesNet.h>
+     * @class ClassBayesNet<GUM_SCALAR> classBayesNet.h
+     *<agrum/PRM/classBayesNet.h>
      * @brief This class decorates a gum::prm::Class<GUM_SCALAR> has an
      *IBaseBayesNet.
      *
-     * This class filters Attribute and Aggregate in a way it can be interpreted as
+     * This class filters Attribute and Aggregate in a way it can be interpreted
+     *as
      * a IBayesNet. SlotChains and ReferenceSlot are not represented.
      *
-     * Remember that a ClassBayesNet<GUM_SCALAR> does not contain input nodes parents
+     * Remember that a ClassBayesNet<GUM_SCALAR> does not contain input nodes
+     *parents
      *and
      * output nodes children. Thus you should be careful when using one of the
-     * BayesNetInference over a ClassBayesNet<GUM_SCALAR> since some variables are
+     * BayesNetInference over a ClassBayesNet<GUM_SCALAR> since some variables
+     *are
      *missing in
      * the DAG but not in the nodes CPT.
      */
@@ -58,14 +62,16 @@ namespace gum {
       /// @{
 
       /// Default constructor.
-      /// @param c The Class<GUM_SCALAR> decorated by this ClassBayesNet<GUM_SCALAR>.
-      ClassBayesNet<GUM_SCALAR>(const Class<GUM_SCALAR> &c);
+      /// @param c The Class<GUM_SCALAR> decorated by this
+      /// ClassBayesNet<GUM_SCALAR>.
+      ClassBayesNet<GUM_SCALAR>(const Class<GUM_SCALAR>& c);
 
       /// Copy constructor.
-      ClassBayesNet<GUM_SCALAR>(const ClassBayesNet<GUM_SCALAR> &from);
+      ClassBayesNet<GUM_SCALAR>(const ClassBayesNet<GUM_SCALAR>& from);
 
       /// Copy operator.
-      ClassBayesNet<GUM_SCALAR> &operator=(const ClassBayesNet<GUM_SCALAR> &from);
+      ClassBayesNet<GUM_SCALAR>&
+      operator=(const ClassBayesNet<GUM_SCALAR>& from);
 
       /// Destructor.
       virtual ~ClassBayesNet<GUM_SCALAR>();
@@ -89,26 +95,26 @@ namespace gum {
        *                 IBayesNet.
        * @throw OperationNotAllowed raised if varId is an Aggregate.
        */
-      virtual const Potential<GUM_SCALAR> &cpt(NodeId varId) const;
+      virtual const Potential<GUM_SCALAR>& cpt(NodeId varId) const;
 
       /// See gum::IBaseBayesNet::variableNodeMap().
-      virtual const VariableNodeMap &variableNodeMap() const;
+      virtual const VariableNodeMap& variableNodeMap() const;
 
       /// See gum::IBaseBayesNet::variable().
-      virtual const DiscreteVariable &variable(NodeId id) const;
+      virtual const DiscreteVariable& variable(NodeId id) const;
 
       /// See gum::IBaseBayesNet::nodeId().
-      virtual NodeId nodeId(const DiscreteVariable &var) const;
+      virtual NodeId nodeId(const DiscreteVariable& var) const;
 
       /// See gum::IBaseBayesNet::idFromName().
-      virtual NodeId idFromName(const std::string &name) const;
+      virtual NodeId idFromName(const std::string& name) const;
 
       /// See gum::IBaseBayesNet::variableFromName().
-      virtual const DiscreteVariable &
-      variableFromName(const std::string &name) const;
+      virtual const DiscreteVariable&
+      variableFromName(const std::string& name) const;
 
       /// See gum::IBaseBayesNet::modalities().
-      const NodeProperty<Size> &modalities() const;
+      const NodeProperty<Size>& modalities() const;
 
       /// @}
       // ===========================================================================
@@ -121,23 +127,25 @@ namespace gum {
       /// @}
       private:
       /// Mapping between DiscreteVariable and their NodeId
-      HashTable<const DiscreteVariable *, const ClassElement<GUM_SCALAR> *>
+      HashTable<const DiscreteVariable*, const ClassElement<GUM_SCALAR>*>
           __varNodeMap;
 
-      /// Private getter with type checking in case the id is not a formal Attribute.
+      /// Private getter with type checking in case the id is not a formal
+      /// Attribute.
       /// @throw NotFound Raised if id is not a formal attribute.
-      const ClassElement<GUM_SCALAR> &__get(NodeId id) const;
+      const ClassElement<GUM_SCALAR>& __get(NodeId id) const;
 
-      /// Private getter with type checking in case the id is not a formal Attribute.
+      /// Private getter with type checking in case the id is not a formal
+      /// Attribute.
       /// @throw NotFound Raised if id is not a formal attribute.
-      const ClassElement<GUM_SCALAR> &__get(const std::string &name) const;
+      const ClassElement<GUM_SCALAR>& __get(const std::string& name) const;
 
       /// The ClassElementContainer decorated by this.
-      const Class<GUM_SCALAR> *__class;
+      const Class<GUM_SCALAR>* __class;
 
       mutable NodeProperty<Size> __modalities;
 
-      void __init(const Class<GUM_SCALAR> &c);
+      void __init(const Class<GUM_SCALAR>& c);
     };
 
     extern template class ClassBayesNet<double>;

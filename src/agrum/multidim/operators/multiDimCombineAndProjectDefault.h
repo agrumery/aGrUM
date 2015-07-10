@@ -44,14 +44,14 @@ namespace gum {
 
     /// default constructor
     MultiDimCombineAndProjectDefault(
-        TABLE<GUM_SCALAR> *(*combine)(const TABLE<GUM_SCALAR> &,
-                                      const TABLE<GUM_SCALAR> &),
-        TABLE<GUM_SCALAR> *(*project)(const TABLE<GUM_SCALAR> &,
-                                      const Set<const DiscreteVariable *> &));
+        TABLE<GUM_SCALAR>* (*combine)(const TABLE<GUM_SCALAR>&,
+                                      const TABLE<GUM_SCALAR>&),
+        TABLE<GUM_SCALAR>* (*project)(const TABLE<GUM_SCALAR>&,
+                                      const Set<const DiscreteVariable*>&));
 
     /// copy constructor
     MultiDimCombineAndProjectDefault(
-        const MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE> &);
+        const MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>&);
 
     /// destructor
     virtual ~MultiDimCombineAndProjectDefault();
@@ -59,7 +59,8 @@ namespace gum {
     /// virtual constructor
     /** @return a new fresh MultiDimCombineAndProjectDefault with the same
      * combination and projection functions. */
-    virtual MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE> *newFactory() const;
+    virtual MultiDimCombineAndProjectDefault<GUM_SCALAR, TABLE>*
+    newFactory() const;
 
     /// @}
 
@@ -68,85 +69,94 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /** @brief creates and returns the result of the projection over the variables
+    /** @brief creates and returns the result of the projection over the
+     *variables
      * not in del_vars of the combination of the tables within set
      *
      * @return a new freshly created TABLE which is the result of the projection
      * of the combination of all the TABLES passed in argument
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements */
-    virtual Set<const TABLE<GUM_SCALAR> *>
-    combineAndProject(Set<const TABLE<GUM_SCALAR> *> set,
-                      Set<const DiscreteVariable *> del_vars);
+    virtual Set<const TABLE<GUM_SCALAR>*>
+    combineAndProject(Set<const TABLE<GUM_SCALAR>*> set,
+                      Set<const DiscreteVariable*> del_vars);
 
     /// changes the function used for combining two TABLES
     virtual void
-    setCombineFunction(TABLE<GUM_SCALAR> *(*combine)(const TABLE<GUM_SCALAR> &,
-                                                     const TABLE<GUM_SCALAR> &));
+    setCombineFunction(TABLE<GUM_SCALAR>* (*combine)(const TABLE<GUM_SCALAR>&,
+                                                     const TABLE<GUM_SCALAR>&));
 
     /// changes the class that performs the combinations
-    /** Combinations are performed by pair, the CombineFunction being the function
-     * used to combine 2 tables, thus producing a new one. Of course, when we have
+    /** Combinations are performed by pair, the CombineFunction being the
+     * function
+     * used to combine 2 tables, thus producing a new one. Of course, when we
+     * have
      * to combine, say T1 * T2 * T3 * T4, there are several ways to do this
      * computation. For instance, we might first compute T1 * T2, then T3 * T4,
      * and finally compute the product of the resulting two tables. Or we might
-     * compute T1 * T2, then combine the result with T3, and then combine the last
+     * compute T1 * T2, then combine the result with T3, and then combine the
+     * last
      * result with T4. The CombinationClass is responsible for determining which
-     * of these possibilities will actually be used. Function setCombinationClass
+     * of these possibilities will actually be used. Function
+     * setCombinationClass
      * allows to change the combinationClass and, thus, the way all those tables
      * will be combined. */
-    virtual void
-    setCombinationClass(const MultiDimCombination<GUM_SCALAR, TABLE> &comb_class);
+    virtual void setCombinationClass(
+        const MultiDimCombination<GUM_SCALAR, TABLE>& comb_class);
 
     /// returns the current combination function
-    virtual TABLE<GUM_SCALAR> *(*combineFunction())(const TABLE<GUM_SCALAR> &,
-                                                    const TABLE<GUM_SCALAR> &);
+    virtual TABLE<GUM_SCALAR>* (*combineFunction())(const TABLE<GUM_SCALAR>&,
+                                                    const TABLE<GUM_SCALAR>&);
 
     /// changes the function used for projecting TABLES
-    virtual void setProjectFunction(TABLE<GUM_SCALAR> *(*proj)(
-        const TABLE<GUM_SCALAR> &, const Set<const DiscreteVariable *> &));
+    virtual void setProjectFunction(TABLE<GUM_SCALAR>* (*proj)(
+        const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>&));
 
     /// changes the class that performs the projections
     /** As for the combination class, it is possible to change the projection
      * class, thus defining a new projection behaviour. */
     virtual void
-    setProjectionClass(const MultiDimProjection<GUM_SCALAR, TABLE> &proj_class);
+    setProjectionClass(const MultiDimProjection<GUM_SCALAR, TABLE>& proj_class);
 
     /// returns the current projection function
-    virtual TABLE<GUM_SCALAR> *(*projectFunction())(
-        const TABLE<GUM_SCALAR> &, const Set<const DiscreteVariable *> &);
+    virtual TABLE<GUM_SCALAR>* (*projectFunction())(
+        const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>&);
 
     /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination */
-    virtual float nbOperations(const Set<const TABLE<GUM_SCALAR> *> &set,
-                               const Set<const DiscreteVariable *> &del_vars) const;
     virtual float
-    nbOperations(const Set<const Sequence<const DiscreteVariable *> *> &set,
-                 Set<const DiscreteVariable *> del_vars) const;
+    nbOperations(const Set<const TABLE<GUM_SCALAR>*>& set,
+                 const Set<const DiscreteVariable*>& del_vars) const;
+    virtual float
+    nbOperations(const Set<const Sequence<const DiscreteVariable*>*>& set,
+                 Set<const DiscreteVariable*> del_vars) const;
 
-    /// returns the memory consumption used during the combinations and projections
+    /// returns the memory consumption used during the combinations and
+    /// projections
     /** Actually, this function does not return a precise account of the memory
-     * used by the MultiDimCombineAndProject but a rough estimate based on the size
+     * used by the MultiDimCombineAndProject but a rough estimate based on the
+     * size
      * of the tables involved in the combinations and projections.
      * @return a pair of memory consumption: the first one is the maximum
      * amount of memory used during the set of combinations and projections
-     * performed, and the second one is the amount of memory still used at the end
+     * performed, and the second one is the amount of memory still used at the
+     * end
      * of the function ( the memory used by the resulting tables ) */
     virtual std::pair<long, long>
-    memoryUsage(const Set<const TABLE<GUM_SCALAR> *> &set,
-                const Set<const DiscreteVariable *> &del_vars) const;
+    memoryUsage(const Set<const TABLE<GUM_SCALAR>*>& set,
+                const Set<const DiscreteVariable*>& del_vars) const;
     virtual std::pair<long, long>
-    memoryUsage(const Set<const Sequence<const DiscreteVariable *> *> &set,
-                Set<const DiscreteVariable *> del_vars) const;
+    memoryUsage(const Set<const Sequence<const DiscreteVariable*>*>& set,
+                Set<const DiscreteVariable*> del_vars) const;
 
     /// @}
 
     private:
     /// the class used for the combinations
-    MultiDimCombination<GUM_SCALAR, TABLE> *__combination;
+    MultiDimCombination<GUM_SCALAR, TABLE>* __combination;
 
     /// the class used for the projections
-    MultiDimProjection<GUM_SCALAR, TABLE> *__projection;
+    MultiDimProjection<GUM_SCALAR, TABLE>* __projection;
   };
 
 } /* namespace gum */

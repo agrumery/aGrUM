@@ -34,11 +34,16 @@
 
 namespace gum {
 
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /* ===                GENERIC UNDIRECTED EDGES IMPLEMENTATION              === */
-  /* =========================================================================== */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
+  /* ===                GENERIC UNDIRECTED EDGES IMPLEMENTATION              ===
+   */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
 
   /// basic constructor
 
@@ -50,14 +55,14 @@ namespace gum {
 
   /// copy constructor
 
-  INLINE Edge::Edge(const Edge &src) : n1(src.n1), n2(src.n2) {
+  INLINE Edge::Edge(const Edge& src) : n1(src.n1), n2(src.n2) {
     // for debugging purposes
     GUM_CONS_CPY(Edge);
   }
 
   /// copy operator
 
-  INLINE Edge &Edge::operator=(const Edge &src) {
+  INLINE Edge& Edge::operator=(const Edge& src) {
     // for debugging purposes
     GUM_OP_CPY(Edge);
     n1 = src.n1;
@@ -98,21 +103,26 @@ namespace gum {
 
   /// check if two undirected edges are equal
 
-  INLINE bool Edge::operator==(const Edge &src) const {
+  INLINE bool Edge::operator==(const Edge& src) const {
     return ((n1 == src.n1) && (n2 == src.n2));
   }
 
   /// check if two undirected edges are different
 
-  INLINE bool Edge::operator!=(const Edge &src) const {
+  INLINE bool Edge::operator!=(const Edge& src) const {
     return ((n1 != src.n1) || (n2 != src.n2));
   }
 
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /* ===                 GENERIC DIRECTED EDGES IMPLEMENTATION               === */
-  /* =========================================================================== */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
+  /* ===                 GENERIC DIRECTED EDGES IMPLEMENTATION               ===
+   */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
 
   /// basic constructor.
 
@@ -123,14 +133,14 @@ namespace gum {
 
   /// copy constructor
 
-  INLINE Arc::Arc(const Arc &src) : n1(src.n1), n2(src.n2) {
+  INLINE Arc::Arc(const Arc& src) : n1(src.n1), n2(src.n2) {
     // for debugging purposes
     GUM_CONS_CPY(Arc);
   }
 
   /// copy operator
 
-  INLINE Arc &Arc::operator=(const Arc &src) {
+  INLINE Arc& Arc::operator=(const Arc& src) {
     // for debugging purposes
     GUM_OP_CPY(Arc);
     n1 = src.n1;
@@ -187,13 +197,13 @@ namespace gum {
 
   /// check if two arcs are equal
 
-  INLINE bool Arc::operator==(const Arc &src) const {
+  INLINE bool Arc::operator==(const Arc& src) const {
     return ((n1 == src.n1) && (n2 == src.n2));
   }
 
   /// check if two arcs are different
 
-  INLINE bool Arc::operator!=(const Arc &src) const {
+  INLINE bool Arc::operator!=(const Arc& src) const {
     return ((n1 != src.n1) || (n2 != src.n2));
   }
 

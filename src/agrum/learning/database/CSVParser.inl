@@ -48,7 +48,7 @@ namespace gum {
     }
 
     // search for quote taking into account the '\'...
-    INLINE Size CSVParser::__correspondingQuoteMarker(const std::string &str,
+    INLINE Size CSVParser::__correspondingQuoteMarker(const std::string& str,
                                                       Size pos) const {
       Size res = pos, before;
 
@@ -56,19 +56,20 @@ namespace gum {
         res = str.find_first_of(__quoteMarker, res + 1);
 
         if (res == std::string::npos)
-          return res; // no quote found
+          return res;  // no quote found
 
         before = str.find_last_not_of('\\', res - 1);
 
         if (before == std::string::npos)
-          return res; // quote found, it is the good one
+          return res;  // quote found, it is the good one
 
         if ((res - before) % 2 == 1)
-          return res; // the quote is the good one, even if there are some '\' before
+          return res;  // the quote is the good one, even if there are some '\'
+                       // before
       }
     }
 
-    INLINE const std::vector<std::string> &CSVParser::current() const {
+    INLINE const std::vector<std::string>& CSVParser::current() const {
       if (__emptyData)
         GUM_ERROR(NullElement, "No parsed data");
 
@@ -82,6 +83,6 @@ namespace gum {
       return __noLine;
     }
 
-  } // namespace learning
+  }  // namespace learning
 
-} // namespace gum
+}  // namespace gum

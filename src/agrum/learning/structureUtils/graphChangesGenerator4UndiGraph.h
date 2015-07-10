@@ -22,7 +22,8 @@
  * the user to be executed by the learning algorithms
  *
  * Structure learning algorithm try different modifications of the graph. Class
- * GraphChangesGenerator4UndiGraph provides a simple way to compute those that we
+ * GraphChangesGenerator4UndiGraph provides a simple way to compute those that
+ *we
  * wish to perform. For instance, in the basic PC algorithm for learning
  * undirected graphs, one may expect that all possible edge additions and
  * deletions can be applied and GraphChangesGenerator4UndiGraph provides exactly
@@ -64,23 +65,29 @@ namespace gum {
   namespace learning {
 
     /** @class GraphChangesGenerator4UndiGraph
-     * @brief The basic class for computing the next graph changes possible in an
+     * @brief The basic class for computing the next graph changes possible in
+     *an
      * undirected structure learning algorithm
      *
-     * Structure learning algorithm try different modifications of the graph. Class
-     * GraphChangesGenerator4UndiGraph provides a simple way to compute those that
+     * Structure learning algorithm try different modifications of the graph.
+     *Class
+     * GraphChangesGenerator4UndiGraph provides a simple way to compute those
+     *that
      * we wish to perform. For instance, in the basic PC algorithm for learning
      * undirected graphs, one may expect that all possible edge additions and
      * deletions can be applied and GraphChangesGenerator4UndiGraph provides
      * exactly this set of operations. This class provides the following minimal
      * methods:
-     *   - void setGraph ( const UndiGraph& ) : assigns a new graph as a starting
+     *   - void setGraph ( const UndiGraph& ) : assigns a new graph as a
+     *starting
      *     point to the generator of graph change operators
-     *   - void modifyGraph ( const GraphChange& ) : indicate to the operator set
+     *   - void modifyGraph ( const GraphChange& ) : indicate to the operator
+     *set
      *     that the graph has been changed and that we need to compute the new
      *     operators that result from this change
      *   - void clearChanges () : empty the set of possible operators
-     *   - methods begin () and end () that return iterators allowing to parse the
+     *   - methods begin () and end () that return iterators allowing to parse
+     *the
      *     available set of operators.
      *
      * Basically, the idea is to use method setGraph at the beginning of the
@@ -88,7 +95,8 @@ namespace gum {
      * Then, parse this set using a for ( auto iter = operator_set.begin ();
      * iter != operator_set.end (); ++iter ) loop and compute the scores
      * induced by these changes. When this is done, flush the operator set by
-     * calling method clearChanges. Then iterate changes and after each new change
+     * calling method clearChanges. Then iterate changes and after each new
+     *change
      * applied, used again the iterator for loop, and so on. Note that, whenever
      * you execute method modifyGraph, this will automatically flush the current
      * list of changes and put into the list only the changes that are affected
@@ -97,7 +105,8 @@ namespace gum {
      * @ingroup learning_group
      */
     template <typename STRUCT_CONSTRAINT>
-    class GraphChangesGenerator4UndiGraph : public IGraphChangesGenerator4UndiGraph {
+    class GraphChangesGenerator4UndiGraph
+        : public IGraphChangesGenerator4UndiGraph {
       public:
       /// the iterator for parsing the list of possible graph change operators
       using iterator = typename Set<GraphChange>::const_iterator;
@@ -111,15 +120,15 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GraphChangesGenerator4UndiGraph(STRUCT_CONSTRAINT &constraint);
+      GraphChangesGenerator4UndiGraph(STRUCT_CONSTRAINT& constraint);
 
       /// copy constructor
       GraphChangesGenerator4UndiGraph(
-          const GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT> &from);
+          const GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>& from);
 
       /// move operator
       GraphChangesGenerator4UndiGraph(
-          GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT> &&from);
+          GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&& from);
 
       /// destructor
       virtual ~GraphChangesGenerator4UndiGraph();
@@ -132,12 +141,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT> &
-      operator=(const GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT> &from);
+      GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&
+      operator=(const GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>& from);
 
       /// move operator
-      GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT> &
-      operator=(GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT> &&from);
+      GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&
+      operator=(GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&& from);
 
       /// @}
 
@@ -150,7 +159,7 @@ namespace gum {
       iterator begin() const;
 
       /// returns an (unsafe) iterator on the end of the list of operators
-      const iterator &end() const;
+      const iterator& end() const;
 
       /// @}
 
@@ -160,19 +169,19 @@ namespace gum {
       /// @{
 
       /// returns the constraint that is used by the generator
-      STRUCT_CONSTRAINT &constraint() const noexcept;
+      STRUCT_CONSTRAINT& constraint() const noexcept;
 
       /// sets a new graph from which the operator will compute possible changes
-      void setGraph(const UndiGraph &graph);
+      void setGraph(const UndiGraph& graph);
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph(const EdgeAddition &change);
+      void modifyGraph(const EdgeAddition& change);
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph(const EdgeDeletion &change);
+      void modifyGraph(const EdgeDeletion& change);
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph(const GraphChange &change);
+      void modifyGraph(const GraphChange& change);
 
       /// empty the set of possible change operators that can be applied
       void clearChanges() noexcept;
@@ -190,7 +199,7 @@ namespace gum {
       UndiGraph _graph;
 
       /// a reference on the structural constraint used to restrict the changes
-      STRUCT_CONSTRAINT *_constraint;
+      STRUCT_CONSTRAINT* _constraint;
 
       /// the current set of operators
       Set<GraphChange> _legal_changes;

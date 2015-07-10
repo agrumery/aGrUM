@@ -27,21 +27,22 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/undiGraph.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 #include <cstdio>
 #include <iostream>
 #include "graphElements.h"
 
 namespace gum {
 
-  UndiGraph::UndiGraph(Size nodes_size, bool nodes_resize_policy, Size edges_size,
-                       bool edges_resize_policy)
+  UndiGraph::UndiGraph(Size nodes_size, bool nodes_resize_policy,
+                       Size edges_size, bool edges_resize_policy)
       : NodeGraphPart(nodes_size, nodes_resize_policy),
         EdgeGraphPart(edges_size, edges_resize_policy) {
     GUM_CONSTRUCTOR(UndiGraph);
   }
 
-  UndiGraph::UndiGraph(const UndiGraph &g) : NodeGraphPart(g), EdgeGraphPart(g) {
+  UndiGraph::UndiGraph(const UndiGraph& g)
+      : NodeGraphPart(g), EdgeGraphPart(g) {
     GUM_CONS_CPY(UndiGraph);
   }
 
@@ -107,7 +108,8 @@ namespace gum {
     std::stringstream edgeStream;
     List<NodeId> treatedNodes;
     output << "digraph \""
-           << "no_name\" {" << std::endl << "edge [dir=none]" << std::endl;
+           << "no_name\" {" << std::endl
+           << "edge [dir=none]" << std::endl;
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
@@ -122,8 +124,9 @@ namespace gum {
       treatedNodes.insert(node);
     }
 
-    output << nodeStream.str() << std::endl << edgeStream.str() << std::endl << "}"
-           << std::endl;
+    output << nodeStream.str() << std::endl
+           << edgeStream.str() << std::endl
+           << "}" << std::endl;
 
     return output.str();
   }
@@ -144,7 +147,7 @@ namespace gum {
   }
 
   /// for friendly displaying the content of undirected graphs
-  std::ostream &operator<<(std::ostream &stream, const UndiGraph &g) {
+  std::ostream& operator<<(std::ostream& stream, const UndiGraph& g) {
     stream << g.toString();
     return stream;
   }

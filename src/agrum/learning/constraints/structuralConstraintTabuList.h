@@ -26,7 +26,8 @@
  * inverse change is put into the tabu list. For instance, if the learning
  * algorithm adds an arc (X, Y), then the "Deletion of Arc (X,Y)" operation is
  * inserted into the tabu list. If the operation performed is an arc (X,Y)
- * reversal, then the "Reversal of Arc (Y,X)" operation is added to the tabu list.
+ * reversal, then the "Reversal of Arc (Y,X)" operation is added to the tabu
+ *list.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -51,15 +52,19 @@ namespace gum {
      * for learning algorithms
      *
      * By default, the size of the tabu list is 2, but it can be changed by the
-     * user using method setTabuSize (). Each time you modify the graph you learn,
-     * the inverse change is put into the tabu list. For instance, if the learning
-     * algorithm adds an arc (X, Y), then the "Deletion of Arc (X,Y)" operation is
+     * user using method setTabuSize (). Each time you modify the graph you
+     *learn,
+     * the inverse change is put into the tabu list. For instance, if the
+     *learning
+     * algorithm adds an arc (X, Y), then the "Deletion of Arc (X,Y)" operation
+     *is
      * inserted into the tabu list. If the operation performed is an arc (X,Y)
      * reversal, then the "Reversal of Arc (Y,X)" operation is added to the tabu
      * list.
      * @ingroup learning_group
      */
-    class StructuralConstraintTabuList : public virtual StructuralConstraintEmpty {
+    class StructuralConstraintTabuList
+        : public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -70,13 +75,13 @@ namespace gum {
       StructuralConstraintTabuList();
 
       /// constructor starting with a given graph
-      StructuralConstraintTabuList(const DiGraph &graph);
+      StructuralConstraintTabuList(const DiGraph& graph);
 
       /// copy constructor
-      StructuralConstraintTabuList(const StructuralConstraintTabuList &from);
+      StructuralConstraintTabuList(const StructuralConstraintTabuList& from);
 
       /// move constructor
-      StructuralConstraintTabuList(StructuralConstraintTabuList &&from);
+      StructuralConstraintTabuList(StructuralConstraintTabuList&& from);
 
       /// destructor
       virtual ~StructuralConstraintTabuList();
@@ -89,11 +94,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      StructuralConstraintTabuList &
-      operator=(const StructuralConstraintTabuList &from);
+      StructuralConstraintTabuList&
+      operator=(const StructuralConstraintTabuList& from);
 
       /// move operator
-      StructuralConstraintTabuList &operator=(StructuralConstraintTabuList &&from);
+      StructuralConstraintTabuList&
+      operator=(StructuralConstraintTabuList&& from);
 
       /// @}
 
@@ -106,33 +112,33 @@ namespace gum {
       void setTabuListSize(unsigned int new_size);
 
       /// sets a new graph from which we will perform checkings
-      void setGraphAlone(const DiGraph &graph);
+      void setGraphAlone(const DiGraph& graph);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added nothing is done. In
        * particular, no exception is raised.
        * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
        * or y does not belong to the graph nodes */
-      void modifyGraphAlone(const ArcAddition &change);
+      void modifyGraphAlone(const ArcAddition& change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If a nonexisting arc is removed, nothing is done. In
        * particular, no exception is raised. */
-      void modifyGraphAlone(const ArcDeletion &change);
+      void modifyGraphAlone(const ArcDeletion& change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
        * is removed, nothing is done. In particular, no exception is raised.
        * @throws InvalidNode exception is thrown if at least one extremity of
        * the arc does not belong to the graph nodes */
-      void modifyGraphAlone(const ArcReversal &change);
+      void modifyGraphAlone(const ArcReversal& change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
        * is removed, nothing is done. In particular, no exception is raised.
        * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
        * or y does not belong to the graph nodes */
-      void modifyGraphAlone(const GraphChange &change);
+      void modifyGraphAlone(const GraphChange& change);
 
       /// indicates whether a change will always violate the constraint
       /** Some learning algorithms need examine several times whether a given
@@ -140,13 +146,15 @@ namespace gum {
        * addition is considered, the learning algorithm may discard this change
        * because it violates the structural constraint (e.g., if the latter
        * enforces a DAG structure, this arc addition might induce a directed
-       * cycle), but, later on, other arc removal may induce that the arc addition
+       * cycle), but, later on, other arc removal may induce that the arc
+       * addition
        * is now possible. Such change is thus not always invalid. Conversely,
        * there are changes that can be discarded once and for all. For instance,
-       * in a 2TBN structure, it is always impossible to add a backward-time arc.
+       * in a 2TBN structure, it is always impossible to add a backward-time
+       * arc.
        * Such graph changes are always invalid and are therefore tagged as such
        * by the isAlwaysInvalid method. */
-      bool isAlwaysInvalidAlone(const GraphChange &change) const noexcept;
+      bool isAlwaysInvalidAlone(const GraphChange& change) const noexcept;
 
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
@@ -168,21 +176,21 @@ namespace gum {
        * An arc can be removed if and only if the arc exists.
        * An arc (x,y) can be reversed if and only if it exists and arc (y,x)
        * does not. */
-      bool checkModificationAlone(const GraphChange &change) const noexcept;
+      bool checkModificationAlone(const GraphChange& change) const noexcept;
 
       /// checks whether the constraints enable to add an arc
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist. */
-      bool checkModificationAlone(const ArcAddition &change) const noexcept;
+      bool checkModificationAlone(const ArcAddition& change) const noexcept;
 
       /// checks whether the constraints enable to remove an arc
       /** an arc can be removed if and only if the arc exists. */
-      bool checkModificationAlone(const ArcDeletion &change) const noexcept;
+      bool checkModificationAlone(const ArcDeletion& change) const noexcept;
 
       /// checks whether the constraints enable to reverse an arc
       /** an arc (x,y) can be reversed if and only if it exists and arc (y,x)
        * does not. */
-      bool checkModificationAlone(const ArcReversal &change) const noexcept;
+      bool checkModificationAlone(const ArcReversal& change) const noexcept;
 
 /// @}
 

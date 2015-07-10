@@ -26,9 +26,11 @@
 
 namespace gum {
 
-  /* ============================================================================ */
-  /* ===                           GUM_BN_WRITTER                             === */
-  /* ============================================================================ */
+  /* ============================================================================
+   */
+  /* ===                           GUM_BN_WRITTER === */
+  /* ============================================================================
+   */
   template <typename GUM_SCALAR> INLINE BNWriter<GUM_SCALAR>::BNWriter() {
     GUM_CONSTRUCTOR(BNWriter);
   }
@@ -39,4 +41,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

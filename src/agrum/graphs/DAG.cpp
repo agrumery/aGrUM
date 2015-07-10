@@ -27,7 +27,7 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/DAG.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 
 namespace gum {
 
@@ -35,16 +35,18 @@ namespace gum {
   DAG::DAG(Size nodes_size, bool nodes_resize_policy, Size arcs_size,
            bool arcs_resize_policy)
       : NodeGraphPart(nodes_size, nodes_resize_policy),
-        DiGraph(nodes_size, nodes_resize_policy, arcs_size, arcs_resize_policy) {
+        DiGraph(nodes_size, nodes_resize_policy, arcs_size,
+                arcs_resize_policy) {
     GUM_CONSTRUCTOR(DAG);
   }
 
   // diamond structure require to explicitely initialize NodeGraphPart
-  DAG::DAG(const DAG &g) : NodeGraphPart(g), DiGraph(g) { GUM_CONS_CPY(DAG); }
+  DAG::DAG(const DAG& g) : NodeGraphPart(g), DiGraph(g) { GUM_CONS_CPY(DAG); }
 
   DAG::~DAG() { GUM_DESTRUCTOR(DAG); }
 
-  /// we prefer to re-implement this (instead of using ArcGraphPart::directedPath)
+  /// we prefer to re-implement this (instead of using
+  /// ArcGraphPart::directedPath)
   /// for optimisation
   /// @warning : this version is optimized for the search of a directedPath
   /// in a DAG !

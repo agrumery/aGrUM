@@ -9,8 +9,8 @@ namespace CxxTest {
 
   void List::initialize() { _head = _tail = 0; }
 
-  Link *List::head() {
-    Link *l = _head;
+  Link* List::head() {
+    Link* l = _head;
 
     while (l && !l->active())
       l = l->next();
@@ -18,8 +18,8 @@ namespace CxxTest {
     return l;
   }
 
-  const Link *List::head() const {
-    Link *l = _head;
+  const Link* List::head() const {
+    Link* l = _head;
 
     while (l && !l->active())
       l = l->next();
@@ -27,8 +27,8 @@ namespace CxxTest {
     return l;
   }
 
-  Link *List::tail() {
-    Link *l = _tail;
+  Link* List::tail() {
+    Link* l = _tail;
 
     while (l && !l->active())
       l = l->prev();
@@ -36,8 +36,8 @@ namespace CxxTest {
     return l;
   }
 
-  const Link *List::tail() const {
-    Link *l = _tail;
+  const Link* List::tail() const {
+    Link* l = _tail;
 
     while (l && !l->active())
       l = l->prev();
@@ -50,14 +50,14 @@ namespace CxxTest {
   unsigned List::size() const {
     unsigned count = 0;
 
-    for (const Link *l = head(); l != 0; l = l->next())
+    for (const Link* l = head(); l != 0; l = l->next())
       ++count;
 
     return count;
   }
 
-  Link *List::nth(unsigned n) {
-    Link *l = head();
+  Link* List::nth(unsigned n) {
+    Link* l = head();
 
     while (n--)
       l = l->next();
@@ -66,12 +66,12 @@ namespace CxxTest {
   }
 
   void List::activateAll() {
-    for (Link *l = _head; l != 0; l = l->justNext())
+    for (Link* l = _head; l != 0; l = l->justNext())
       l->setActive(true);
   }
 
-  void List::leaveOnly(const Link &link) {
-    for (Link *l = head(); l != 0; l = l->next())
+  void List::leaveOnly(const Link& link) {
+    for (Link* l = head(); l != 0; l = l->next())
       if (l != &link)
         l->setActive(false);
   }
@@ -84,30 +84,12 @@ namespace CxxTest {
 
   void Link::setActive(bool value) { _active = value; }
 
-  Link *Link::justNext() { return _next; }
+  Link* Link::justNext() { return _next; }
 
-  Link *Link::justPrev() { return _prev; }
+  Link* Link::justPrev() { return _prev; }
 
-  Link *Link::next() {
-    Link *l = _next;
-
-    while (l && !l->_active)
-      l = l->_next;
-
-    return l;
-  }
-
-  Link *Link::prev() {
-    Link *l = _prev;
-
-    while (l && !l->_active)
-      l = l->_prev;
-
-    return l;
-  }
-
-  const Link *Link::next() const {
-    Link *l = _next;
+  Link* Link::next() {
+    Link* l = _next;
 
     while (l && !l->_active)
       l = l->_next;
@@ -115,8 +97,8 @@ namespace CxxTest {
     return l;
   }
 
-  const Link *Link::prev() const {
-    Link *l = _prev;
+  Link* Link::prev() {
+    Link* l = _prev;
 
     while (l && !l->_active)
       l = l->_prev;
@@ -124,7 +106,25 @@ namespace CxxTest {
     return l;
   }
 
-  void Link::attach(List &l) {
+  const Link* Link::next() const {
+    Link* l = _next;
+
+    while (l && !l->_active)
+      l = l->_next;
+
+    return l;
+  }
+
+  const Link* Link::prev() const {
+    Link* l = _prev;
+
+    while (l && !l->_active)
+      l = l->_prev;
+
+    return l;
+  }
+
+  void Link::attach(List& l) {
     if (l._tail)
       l._tail->_next = this;
 
@@ -137,7 +137,7 @@ namespace CxxTest {
     l._tail = this;
   }
 
-  void Link::detach(List &l) {
+  void Link::detach(List& l) {
     if (_prev)
       _prev->_next = _next;
     else
@@ -150,4 +150,4 @@ namespace CxxTest {
   }
 }
 
-#endif // __cxxtest__LinkedList_cpp__
+#endif  // __cxxtest__LinkedList_cpp__

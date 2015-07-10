@@ -34,18 +34,18 @@ namespace gum_tests {
 
   class TorcsTestSuite : public CxxTest::TestSuite {
     public:
-    gum::BayesNet<float> *bn;
+    gum::BayesNet<float>* bn;
 
-    gum::LabelizedVariable *node1;
-    gum::LabelizedVariable *node2;
-    gum::LabelizedVariable *node3;
-    gum::LabelizedVariable *node4;
-    gum::LabelizedVariable *node5;
+    gum::LabelizedVariable* node1;
+    gum::LabelizedVariable* node2;
+    gum::LabelizedVariable* node3;
+    gum::LabelizedVariable* node4;
+    gum::LabelizedVariable* node5;
 
-    gum::List<gum::Potential<float> *> *evidence;
+    gum::List<gum::Potential<float>*>* evidence;
 
     void setUp() {
-      gum::HashTable<gum::LabelizedVariable *, gum::Id> idMap;
+      gum::HashTable<gum::LabelizedVariable*, gum::Id> idMap;
       bn = new gum::BayesNet<float>();
 
       node1 = new gum::LabelizedVariable("TgR", "", 72);
@@ -67,9 +67,9 @@ namespace gum_tests {
       bn->addArc(idMap[node3], idMap[node5]);
       bn->addArc(idMap[node4], idMap[node5]);
 
-      evidence = new gum::List<gum::Potential<float> *>();
+      evidence = new gum::List<gum::Potential<float>*>();
 
-      gum::Potential<float> *e1 =
+      gum::Potential<float>* e1 =
           new gum::Potential<float>(new gum::MultiDimArray<float>());
       (*e1) << bn->variable(idMap[node1]);
       e1->fill((float)0);
@@ -77,7 +77,7 @@ namespace gum_tests {
       inst1.chgVal(bn->variable(idMap[node1]), 4);
       e1->set(inst1, (float)1);
 
-      gum::Potential<float> *e2 =
+      gum::Potential<float>* e2 =
           new gum::Potential<float>(new gum::MultiDimArray<float>());
       (*e2) << bn->variable(idMap[node2]);
       e2->fill((float)0);
@@ -85,7 +85,7 @@ namespace gum_tests {
       inst2.chgVal(bn->variable(idMap[node2]), 4);
       e2->set(inst1, (float)1);
 
-      gum::Potential<float> *e3 =
+      gum::Potential<float>* e3 =
           new gum::Potential<float>(new gum::MultiDimArray<float>());
       (*e3) << bn->variable(idMap[node3]);
       e3->fill((float)0);
@@ -126,7 +126,7 @@ namespace gum_tests {
 
     private:
     // Uncomment this to have some outputs.
-    void printProba(const gum::Potential<double> &) {
+    void printProba(const gum::Potential<double>&) {
       // gum::Instantiation inst(p);
 
       // for (inst.setFirst(); !inst.end(); ++inst)

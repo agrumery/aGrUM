@@ -30,7 +30,7 @@ namespace gum_tests {
   class AVLSearchTreeTestSuite : public CxxTest::TestSuite {
     public:
     void testConstructors() {
-      gum::AVLSearchTree<int> *tree = 0;
+      gum::AVLSearchTree<int>* tree = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(tree = new gum::AVLSearchTree<int>);
       TS_ASSERT(tree->size() == 0);
@@ -122,8 +122,8 @@ namespace gum_tests {
 
       unsigned int i = 0;
 
-      for (gum::AVLSearchTree<int>::iterator iter = tree.begin(); iter != tree.end();
-           ++iter, ++i) {
+      for (gum::AVLSearchTree<int>::iterator iter = tree.begin();
+           iter != tree.end(); ++iter, ++i) {
         switch (i) {
           case 0:
             TS_ASSERT(*iter == 1);
@@ -236,7 +236,7 @@ namespace gum_tests {
         for (unsigned int i = 0; i < 10; ++i) {
           try {
             tree.erase(vect[i + j]);
-          } catch (gum::NotFound &e) {
+          } catch (gum::NotFound& e) {
           }
 
           TS_ASSERT(tree.checkAVLStructure() == true);

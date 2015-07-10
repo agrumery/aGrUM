@@ -12,13 +12,13 @@ namespace CxxTest {
 // Convert total tests to string
 //
 #ifndef _CXXTEST_FACTOR
-  char *WorldDescription::strTotalTests(char *s) const {
+  char* WorldDescription::strTotalTests(char* s) const {
     numberToString(numTotalTests(), s);
     return s;
   }
-#else  // _CXXTEST_FACTOR
-  char *WorldDescription::strTotalTests(char *s) const {
-    char *p = numberToString(numTotalTests(), s);
+#else   // _CXXTEST_FACTOR
+  char* WorldDescription::strTotalTests(char* s) const {
+    char* p = numberToString(numTotalTests(), s);
 
     if (numTotalTests() <= 1)
       return s;
@@ -36,7 +36,8 @@ namespace CxxTest {
       if (!power)
         continue;
 
-      p = numberToString(factor, copyString(p, (numFactors == 0) ? " = " : " * "));
+      p = numberToString(factor,
+                         copyString(p, (numFactors == 0) ? " = " : " * "));
 
       if (power > 1)
         p = numberToString(power, copyString(p, "^"));
@@ -55,7 +56,7 @@ namespace CxxTest {
 
     return s;
   }
-#endif // _CXXTEST_FACTOR
+#endif  // _CXXTEST_FACTOR
 }
 
-#endif // __cxxtest__Descriptions_cpp__
+#endif  // __cxxtest__Descriptions_cpp__

@@ -42,122 +42,119 @@ namespace gum {
 
   class FormulaPart {
     public:
-      enum token_type { NUMBER, OPERATOR, PARENTHESIS, NIL, FUNCTION, ARG_SEP };
-      enum token_function { exp, log, ln, pow, sqrt, nil };
+    enum token_type { NUMBER, OPERATOR, PARENTHESIS, NIL, FUNCTION, ARG_SEP };
+    enum token_function { exp, log, ln, pow, sqrt, nil };
 
-      token_type type;
-      double number;
-      char character;
-      token_function function;
+    token_type type;
+    double number;
+    char character;
+    token_function function;
 
-      FormulaPart();
-      FormulaPart(token_type t, double n);
-      FormulaPart(token_type t, char c);
-      FormulaPart(token_type t, token_function);
+    FormulaPart();
+    FormulaPart(token_type t, double n);
+    FormulaPart(token_type t, char c);
+    FormulaPart(token_type t, token_function);
 
-      FormulaPart(const FormulaPart & source);
+    FormulaPart(const FormulaPart& source);
 
-      ~FormulaPart();
+    ~FormulaPart();
 
-      FormulaPart& operator= (const FormulaPart & source);
+    FormulaPart& operator=(const FormulaPart& source);
 
-      std::string str() const;
+    std::string str() const;
 
-      bool isLeftAssociative() const;
+    bool isLeftAssociative() const;
 
-      bool isRightAssociative() const;
+    bool isRightAssociative() const;
 
-      int precedence() const;
+    int precedence() const;
 
-      size_t argc() const;
+    size_t argc() const;
 
-      /// Args are backwards !
-      FormulaPart eval(const std::vector<FormulaPart>& args) const;
+    /// Args are backwards !
+    FormulaPart eval(const std::vector<FormulaPart>& args) const;
 
     private:
-      /// Args are backwards !
-      double __operator_eval(const std::vector<FormulaPart>& args) const;
-      double __function_eval(const std::vector<FormulaPart>& args) const;
+    /// Args are backwards !
+    double __operator_eval(const std::vector<FormulaPart>& args) const;
+    double __function_eval(const std::vector<FormulaPart>& args) const;
 
-      size_t __operator_argc() const;
-      size_t __function_argc() const;
+    size_t __operator_argc() const;
+    size_t __function_argc() const;
   };
 
   /// Implementation of the Shunting-yard algorithm to convert infix notation
   /// to RPN.
   /// The result() method implements the postfix aglorithm to compute the
-  /// formula result. 
+  /// formula result.
   class Formula {
 
     public:
+    Formula(const std::string& f);
+    Formula(const Formula& source);
+    ~Formula();
 
-      Formula(const std::string& f);
-      Formula(const Formula & source);
-      ~Formula();
+    Formula& operator=(const Formula& source);
 
-      Formula & operator=(const Formula & source);
+    HashTable<std::string, double>& variables();
 
-      HashTable<std::string, double> & variables();
+    const HashTable<std::string, double>& variables() const;
 
-      const HashTable<std::string, double> & variables() const;
+    double result() const;
 
-      double result() const;
+    void push_number(const double& v);
 
-      void push_number(const double &v);
+    void push_operator(char o);
 
-      void push_operator(char o);
+    void push_leftParenthesis();
 
-      void push_leftParenthesis();
+    void push_rightParenthesis();
 
-      void push_rightParenthesis();
+    void push_function(const std::string& func);
 
-      void push_function(const std::string & func);
+    void push_variable(const std::string& var);
 
-      void push_variable(const std::string & var);
+    /// Use this if you don't know is ident is a function or a variable.
+    void push_identifier(const std::string& ident);
 
-      /// Use this if you don't know is ident is a function or a variable.
-      void push_identifier(const std::string & ident);
+    void push_comma();
 
-      void push_comma();
-
-      void finalize();
+    void finalize();
 
     private:
-      std::string __formula;
-      gum::formula::Scanner* __scanner;
-      gum::formula::Parser* __parser;
+    std::string __formula;
+    gum::formula::Scanner* __scanner;
+    gum::formula::Parser* __parser;
 
-      FormulaPart __last_token;
+    FormulaPart __last_token;
 
-      std::vector<FormulaPart> __output;
-      std::stack<FormulaPart> __stack;
+    std::vector<FormulaPart> __output;
+    std::stack<FormulaPart> __stack;
 
-      HashTable<std::string, double> __variables;
+    HashTable<std::string, double> __variables;
 
-      std::vector<FormulaPart>& output();
-      const std::vector<FormulaPart>& output() const;
+    std::vector<FormulaPart>& output();
+    const std::vector<FormulaPart>& output() const;
 
-      std::stack<FormulaPart>& stack();
-      const std::stack<FormulaPart>& stack() const;
+    std::stack<FormulaPart>& stack();
+    const std::stack<FormulaPart>& stack() const;
 
-      bool __popOperator(FormulaPart o);
+    bool __popOperator(FormulaPart o);
 
-      void __reduceOperatorOrFunction(FormulaPart item,
-          std::stack<FormulaPart> &stack) const;
+    void __reduceOperatorOrFunction(FormulaPart item,
+                                    std::stack<FormulaPart>& stack) const;
 
-      void __push_unaryOperator(char o);
+    void __push_unaryOperator(char o);
 
-      void __push_operator(FormulaPart t);
+    void __push_operator(FormulaPart t);
 
-      bool __isUnaryOperator(char o);
+    bool __isUnaryOperator(char o);
 
-      void __push_output(FormulaPart t);
+    void __push_output(FormulaPart t);
 
-      void __push_stack(FormulaPart t);
-
+    void __push_stack(FormulaPart t);
   };
 
 } /* namespace gum */
 
 #endif /* GUM_MATH_FORMULA_H */
-

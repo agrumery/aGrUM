@@ -1,21 +1,21 @@
 /*********************************************************************************
- *    Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES        *
- *   {prenom.nom}_at_lip6.fr                                                     *
+ *    Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES *
+ *   {prenom.nom}_at_lip6.fr *
  *                                                                               *
- *   This program is free software; you can redistribute it and/or modify        *
- *   it under the terms of the GNU General Public License as published by        *
- *   the Free Software Foundation; either version 2 of the License, or           *
- *   (at your option) any later version.                                         *
+ *   This program is free software; you can redistribute it and/or modify *
+ *   it under the terms of the GNU General Public License as published by *
+ *   the Free Software Foundation; either version 2 of the License, or *
+ *   (at your option) any later version. *
  *                                                                               *
- *   This program is distributed in the hope that it will be useful,             *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of              *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the               *
- *   GNU General Public License for more details.                                *
+ *   This program is distributed in the hope that it will be useful, *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the *
+ *   GNU General Public License for more details. *
  *                                                                               *
- *   You should have received a copy of the GNU General Public License           *
- *   along with this program; if not, write to the                               *
- *   Free Software Foundation, Inc.,                                             *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.                   *
+ *   You should have received a copy of the GNU General Public License *
+ *   along with this program; if not, write to the *
+ *   Free Software Foundation, Inc., *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. *
  *********************************************************************************/
 /**
 * @file
@@ -32,17 +32,20 @@
 
 namespace gum {
 
-  /// Main recursion function, called every time we move on a node to determine what
+  /// Main recursion function, called every time we move on a node to determine
+  /// what
   /// we have to do
 
   // A key is used for prunning uneccesary operations since once a node has been
   // visited in a given context, there's no use to revisit him,
-  // the result will be the same node, so we just have to do an association context -
+  // the result will be the same node, so we just have to do an association
+  // context -
   // node.
   // The context consists in :
   //              _ Leader node we are visiting.
   //              _ Follower node we are visiting.
-  //              _ For all retrograde variables, if it has been instanciated before,
+  //              _ For all retrograde variables, if it has been instanciated
+  //              before,
   //              current modality instanciated, meaning :
   //                      _ 0 means the variable hasn't be instanciated yet,
   //                      _ From 1 to domainSize + 1 means that current modality
@@ -55,8 +58,8 @@ namespace gum {
   // this function ), check only have to be at the beginning of that function.
   template <typename T>
   NodeId GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION(
-      NonOrderedOperatorData<T> &opData, const DiscreteVariable *leaderParentVar,
-      std::string tabu) {
+      NonOrderedOperatorData<T>& opData,
+      const DiscreteVariable* leaderParentVar, std::string tabu) {
 
     if (opData.explorationTable->exists(opData.conti.contextKey()))
       return (*(opData.explorationTable))[opData.conti.contextKey()];
@@ -68,13 +71,15 @@ namespace gum {
     // we only have to compute the resulting value
     if (opData.DD1->isTerminalNode(opData.conti.getDD1Node()) &&
         opData.DD2->isTerminalNode(opData.conti.getDD2Node())) {
-      // We have to compute new valueand we insert a new node in diagram with this
+      // We have to compute new valueand we insert a new node in diagram with
+      // this
       // value, ...
       newNode = opData.factory->addTerminalNode(GUM_MULTI_DIM_OPERATOR(
           opData.DD1->unsafeNodeValue(opData.conti.getDD1Node()),
           opData.DD2->unsafeNodeValue(opData.conti.getDD2Node())));
 
-      // And ensure that if we get back to those node we won't explore them again
+      // And ensure that if we get back to those node we won't explore them
+      // again
       opData.explorationTable->insert(opData.conti.contextKey(), newNode);
     }
 
@@ -94,18 +99,19 @@ namespace gum {
         Idx indexDebut = 0;
 
         if (leaderParentVar != nullptr)
-          indexDebut = opData.factory->variablesSequence().pos(leaderParentVar) + 1;
+          indexDebut =
+              opData.factory->variablesSequence().pos(leaderParentVar) + 1;
 
         if (indexFin != indexDebut)
           for (Idx i = indexDebut; i < indexFin; ++i) {
-            const DiscreteVariable *preneededVar =
+            const DiscreteVariable* preneededVar =
                 opData.factory->variablesSequence().atPos(i);
 
             if ((*opData.retrogradeVarTable)[opData.conti.getDD2Node()]->exists(
                     preneededVar) &&
                 (opData.conti.variableModality(preneededVar) == 0)) {
 
-              const std::vector<Idx> *usedModalities =
+              const std::vector<Idx>* usedModalities =
                   opData.DD2->variableUsedModalities(preneededVar);
 
               if (usedModalities == nullptr)
@@ -120,8 +126,9 @@ namespace gum {
                    modality++) {
                 if ((*usedModalities)[modality]) {
                   opData.conti.chgVarModality(preneededVar, modality + 1);
-                  sonsIds[modality] = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION(
-                      opData, preneededVar, tabu);
+                  sonsIds[modality] =
+                      GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION(
+                          opData, preneededVar, tabu);
 
                   --nbUnexploredModalities;
 
@@ -150,7 +157,8 @@ namespace gum {
                                               defaultSon, nodeCount);
 
               opData.conti.chgVarModality(preneededVar, 0);
-              opData.explorationTable->insert(opData.conti.contextKey(), newNode);
+              opData.explorationTable->insert(opData.conti.contextKey(),
+                                              newNode);
 
               return newNode;
             }
@@ -218,9 +226,9 @@ namespace gum {
       // down on both
       if (indexLeader == indexFollower) {
 
-        const std::vector<NodeId> *leaderSonsMap =
+        const std::vector<NodeId>* leaderSonsMap =
             opData.DD1->unsafeNodeSons(opData.conti.getDD1Node());
-        const std::vector<NodeId> *followerSonsMap =
+        const std::vector<NodeId>* followerSonsMap =
             opData.DD2->unsafeNodeSons(opData.conti.getDD2Node());
 
         NodeId leaderCurrentNode = opData.conti.getDD1Node();
@@ -232,11 +240,12 @@ namespace gum {
             opData.DD1->unsafeNodeVariable(leaderCurrentNode)->domainSize();
 
         for (Idx modality = 0;
-             modality <
-                 opData.DD1->unsafeNodeVariable(leaderCurrentNode)->domainSize();
+             modality < opData.DD1->unsafeNodeVariable(leaderCurrentNode)
+                            ->domainSize();
              modality++) {
 
-          if ((*leaderSonsMap)[modality] == 0 && (*followerSonsMap)[modality] == 0)
+          if ((*leaderSonsMap)[modality] == 0 &&
+              (*followerSonsMap)[modality] == 0)
             continue;
 
           if ((*leaderSonsMap)[modality] == 0)
@@ -298,19 +307,19 @@ namespace gum {
 
   template <typename T>
   NodeId GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION(
-      NonOrderedOperatorData<T> &opData, const DiscreteVariable *leaderParentVar,
-      std::string tabu) {
+      NonOrderedOperatorData<T>& opData,
+      const DiscreteVariable* leaderParentVar, std::string tabu) {
 
     NodeId newNode = 0;
 
     NodeId leaderCurrentNode = opData.conti.getDD1Node();
-    const DiscreteVariable *leaderCurrentVar =
+    const DiscreteVariable* leaderCurrentVar =
         opData.DD1->unsafeNodeVariable(leaderCurrentNode);
     bool isIndeedRetorgrade = opData.conti.isRetrogradeVar(leaderCurrentVar);
-    const std::vector<NodeId> *sonsMap =
+    const std::vector<NodeId>* sonsMap =
         opData.DD1->unsafeNodeSons(leaderCurrentNode);
 
-    const std::vector<Idx> *usedModalities =
+    const std::vector<Idx>* usedModalities =
         opData.DD2->variableUsedModalities(leaderCurrentVar);
     std::vector<NodeId> sonsIds(sonsMap->size(), 0);
 
@@ -320,12 +329,15 @@ namespace gum {
     // ********************************************************************************************************
     // For each value the current var take on this node, we have to do our
     // computation
-    for (Idx modality = 0; modality < leaderCurrentVar->domainSize(); modality++) {
+    for (Idx modality = 0; modality < leaderCurrentVar->domainSize();
+         modality++) {
       NodeId sonId = (*sonsMap)[modality];
 
-      if (sonId != 0 || (usedModalities != nullptr && (*usedModalities)[modality])) {
+      if (sonId != 0 ||
+          (usedModalities != nullptr && (*usedModalities)[modality])) {
 
-        // But we have to indicates to possible node on follower diagram, the current
+        // But we have to indicates to possible node on follower diagram, the
+        // current
         // value of the var
         if (isIndeedRetorgrade)
           opData.conti.chgVarModality(leaderCurrentVar, modality + 1);
@@ -351,15 +363,18 @@ namespace gum {
     //*********************************************************************************************************
 
     // ********************************************************************************************************
-    // Then, if not all possible value of that node have been investigate (meaning we
+    // Then, if not all possible value of that node have been investigate
+    // (meaning we
     // have a default arc)
-    // we have to look on second diagram every value that can still take this var
+    // we have to look on second diagram every value that can still take this
+    // var
     // (meaning value not taken
     // on this leader node and the defautl one )
     NodeId defaultSon = 0;
 
     if (nbUnexploredModalities != 0) {
-      opData.conti.setDD1Node(opData.DD1->unsafeNodeDefaultSon(leaderCurrentNode));
+      opData.conti.setDD1Node(
+          opData.DD1->unsafeNodeDefaultSon(leaderCurrentNode));
 
       if (isIndeedRetorgrade)
         opData.conti.chgVarModality(leaderCurrentVar,
@@ -396,16 +411,16 @@ namespace gum {
 
   template <typename T>
   NodeId GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION(
-      NonOrderedOperatorData<T> &opData, const DiscreteVariable *leaderParentVar,
-      std::string tabu) {
+      NonOrderedOperatorData<T>& opData,
+      const DiscreteVariable* leaderParentVar, std::string tabu) {
 
     NodeId newNode = 0;
 
     NodeId followerCurrentNode = opData.conti.getDD2Node();
-    const DiscreteVariable *followerCurrentVar =
+    const DiscreteVariable* followerCurrentVar =
         opData.DD2->unsafeNodeVariable(followerCurrentNode);
     bool isIndeedRetorgrade = opData.conti.isRetrogradeVar(followerCurrentVar);
-    const std::vector<NodeId> *sonsMap =
+    const std::vector<NodeId>* sonsMap =
         opData.DD2->unsafeNodeSons(followerCurrentNode);
 
     if (isIndeedRetorgrade &&
@@ -444,7 +459,8 @@ namespace gum {
       // ****************************************************************************************************************
     } else {
       // ***************************************************************************************************************
-      // If we aren't in one of the above cases, it means that leader diagram hasn't
+      // If we aren't in one of the above cases, it means that leader diagram
+      // hasn't
       // the variable pointed by follower current node.
       std::vector<NodeId> sonsIds(sonsMap->size(), 0);
 

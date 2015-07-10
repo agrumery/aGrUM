@@ -30,90 +30,100 @@
 #else
 namespace gum {
 
-/// a specialized function for projecting a multiDimArray over a subset of its vars
+/// a specialized function for projecting a multiDimArray over a subset of its
+/// vars
 
 #ifdef GUM_MULTI_DIM_PROJECTION_NAME
 #define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
   template <typename GUM_SCALAR>
-  MultiDimArray<GUM_SCALAR> *
-  GUM_MULTI_DIM_PROJECTION_NAME(const MultiDimArray<GUM_SCALAR> *table,
-                                const Set<const DiscreteVariable *> &del_vars) {
+  MultiDimArray<GUM_SCALAR>*
+  GUM_MULTI_DIM_PROJECTION_NAME(const MultiDimArray<GUM_SCALAR>* table,
+                                const Set<const DiscreteVariable*>& del_vars) {
 #endif
 
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER_NAME
 #define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR *
 #define GUM_MULTI_DIM_PROJECTION_POINTER
     template <typename GUM_SCALAR>
-    MultiDimArray<GUM_SCALAR *> *GUM_MULTI_DIM_PROJECTION_POINTER_NAME(
-        const MultiDimArray<GUM_SCALAR *> *table,
-        const Set<const DiscreteVariable *> &del_vars) {
+    MultiDimArray<GUM_SCALAR*>* GUM_MULTI_DIM_PROJECTION_POINTER_NAME(
+        const MultiDimArray<GUM_SCALAR*>* table,
+        const Set<const DiscreteVariable*>& del_vars) {
 #endif
 
 #ifdef GUM_MULTI_DIM_PROJECTION_NAME_F
 #define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
       template <typename GUM_SCALAR>
-      MultiDimArray<GUM_SCALAR> *GUM_MULTI_DIM_PROJECTION_NAME_F(
-          const MultiDimArray<GUM_SCALAR> *table,
-          const Set<const DiscreteVariable *> &del_vars,
-          GUM_SCALAR (*f)(const GUM_SCALAR &, const GUM_SCALAR &)) {
+      MultiDimArray<GUM_SCALAR>* GUM_MULTI_DIM_PROJECTION_NAME_F(
+          const MultiDimArray<GUM_SCALAR>* table,
+          const Set<const DiscreteVariable*>& del_vars,
+          GUM_SCALAR (*f)(const GUM_SCALAR&, const GUM_SCALAR&)) {
 #endif
 
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER_NAME_F
 #define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR *
 #define GUM_MULTI_DIM_PROJECTION_POINTER
         template <typename GUM_SCALAR>
-        MultiDimArray<GUM_SCALAR *> *GUM_MULTI_DIM_PROJECTION_POINTER_NAME_F(
-            const MultiDimArray<GUM_SCALAR *> *table,
-            const Set<const DiscreteVariable *> &del_vars,
-            GUM_SCALAR *(*f)(const GUM_SCALAR const *, const GUM_SCALAR const *)) {
+        MultiDimArray<GUM_SCALAR*>* GUM_MULTI_DIM_PROJECTION_POINTER_NAME_F(
+            const MultiDimArray<GUM_SCALAR*>* table,
+            const Set<const DiscreteVariable*>& del_vars,
+            GUM_SCALAR* (*f)(const GUM_SCALAR const*,
+                             const GUM_SCALAR const*)) {
 #endif
 
 #ifdef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
 #define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
           template <typename GUM_SCALAR>
-          MultiDimImplementation<GUM_SCALAR> *
+          MultiDimImplementation<GUM_SCALAR>*
           GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME(
-              const MultiDimImplementation<GUM_SCALAR> *ttable,
-              const Set<const DiscreteVariable *> &del_vars) {
-            const MultiDimArray<GUM_SCALAR> *table =
-                reinterpret_cast<const MultiDimArray<GUM_SCALAR> *>(ttable);
+              const MultiDimImplementation<GUM_SCALAR>* ttable,
+              const Set<const DiscreteVariable*>& del_vars) {
+            const MultiDimArray<GUM_SCALAR>* table =
+                reinterpret_cast<const MultiDimArray<GUM_SCALAR>*>(ttable);
 #endif
 
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
 #define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR *
 #define GUM_MULTI_DIM_PROJECTION_POINTER
             template <typename GUM_SCALAR>
-            MultiDimImplementation<GUM_SCALAR *> *
+            MultiDimImplementation<GUM_SCALAR*>*
             GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME(
-                const MultiDimImplementation<GUM_SCALAR *> *ttable,
-                const Set<const DiscreteVariable *> &del_vars) {
-              const MultiDimArray<GUM_SCALAR *> *table =
-                  reinterpret_cast<const MultiDimArray<GUM_SCALAR *> *>(ttable);
+                const MultiDimImplementation<GUM_SCALAR*>* ttable,
+                const Set<const DiscreteVariable*>& del_vars) {
+              const MultiDimArray<GUM_SCALAR*>* table =
+                  reinterpret_cast<const MultiDimArray<GUM_SCALAR*>*>(ttable);
 #endif
 
-              // create the neutral element used to fill the result upon its creation
-              const GUM_SCALAR neutral_element = GUM_MULTI_DIM_PROJECTION_NEUTRAL;
+              // create the neutral element used to fill the result upon its
+              // creation
+              const GUM_SCALAR neutral_element =
+                  GUM_MULTI_DIM_PROJECTION_NEUTRAL;
 
               // first, compute whether we should loop over table or over the
               // projected
               // table first to get a faster algorithm.
-              const Sequence<const DiscreteVariable *> &table_vars =
+              const Sequence<const DiscreteVariable*>& table_vars =
                   table->variablesSequence();
               bool need_swapping = table_vars.size() >= 2 * del_vars.size();
 
               if (!need_swapping) {
-                // Compute the variables that belong to both the projection set and
+                // Compute the variables that belong to both the projection set
+                // and
                 // table.
-                // Store the domain size of the Cartesian product of these variables
-                // (result_domain_size) as well as the domain size of the Cartesian
+                // Store the domain size of the Cartesian product of these
+                // variables
+                // (result_domain_size) as well as the domain size of the
+                // Cartesian
                 // product
-                // of the variables of table that do not belong to projection set,
+                // of the variables of table that do not belong to projection
+                // set,
                 // i.e.,
                 // those variables that belong to table but not to del_vars
                 // (table_alone_domain_size).
-                // In addition, store the number of increments in the computation
+                // In addition, store the number of increments in the
+                // computation
                 // loops at the
-                // end of the function before which the variables of the projection
+                // end of the function before which the variables of the
+                // projection
                 // set
                 // need be incremented (vector before incr).
                 std::vector<Idx> table_and_result_offset;
@@ -123,7 +133,7 @@ namespace gum {
                 Idx table_alone_domain_size = 1;
                 Idx result_domain_size = 1;
                 Idx table_domain_size = 1;
-                Sequence<const DiscreteVariable *> result_varSeq;
+                Sequence<const DiscreteVariable*> result_varSeq;
                 {
                   Idx tmp_before_incr = 1;
                   bool has_before_incr = false;
@@ -152,11 +162,14 @@ namespace gum {
                     }
                   }
                 }
-                std::vector<Idx> table_and_result_value = table_and_result_domain;
+                std::vector<Idx> table_and_result_value =
+                    table_and_result_domain;
                 std::vector<Idx> current_incr = before_incr;
-                std::vector<Idx> table_and_result_down = table_and_result_offset;
+                std::vector<Idx> table_and_result_down =
+                    table_and_result_offset;
 
-                for (unsigned int i = 0; i < table_and_result_down.size(); ++i) {
+                for (unsigned int i = 0; i < table_and_result_down.size();
+                     ++i) {
                   table_and_result_down[i] *= (table_and_result_domain[i] - 1);
                 }
 
@@ -164,10 +177,11 @@ namespace gum {
                 // projection:
                 // the variables are stored in the order in which they appear in
                 // "table"
-                // Hence, ++ operations on an instantiation on table will more or
+                // Hence, ++ operations on an instantiation on table will more
+                // or
                 // less
                 // correspond to a ++ operation on an instantiation on result
-                MultiDimArray<GUM_MULTI_DIM_PROJECTION_TYPE> *result =
+                MultiDimArray<GUM_MULTI_DIM_PROJECTION_TYPE>* result =
                     new MultiDimArray<GUM_MULTI_DIM_PROJECTION_TYPE>;
 
                 if (!result_varSeq.size()) {
@@ -191,30 +205,37 @@ namespace gum {
     result->endMultipleChanges(neutral_element);
 #endif
 
-                // compute the projection: first loop over the variables X's in table
+                // compute the projection: first loop over the variables X's in
+                // table
                 // that do
-                // not belong to result and, for each value of these X's, loop over
+                // not belong to result and, for each value of these X's, loop
+                // over
                 // the
-                // variables in both table and result. As such, in the internal loop,
+                // variables in both table and result. As such, in the internal
+                // loop,
                 // the
-                // offsets of "result" need only be incremented as usually to parse
-                // appropriately this table. For result, the problem is slightly more
+                // offsets of "result" need only be incremented as usually to
+                // parse
+                // appropriately this table. For result, the problem is slightly
+                // more
                 // complicated: in the outer for loop, we shall always reset
                 // resul_offset to 0.
-                // For the inner loop, result_offset should be incremented (++) only
+                // For the inner loop, result_offset should be incremented (++)
+                // only
                 // when t1
                 // before_incr[xxx] steps in the loop have already been made.
 
                 // but before doing so, check whether there exist
                 // positive_before_incr. If
-                // this is not the case, optimize by not using before_incr at all
-                GUM_MULTI_DIM_PROJECTION_TYPE *pt =
-                    const_cast<GUM_MULTI_DIM_PROJECTION_TYPE *>(
+                // this is not the case, optimize by not using before_incr at
+                // all
+                GUM_MULTI_DIM_PROJECTION_TYPE* pt =
+                    const_cast<GUM_MULTI_DIM_PROJECTION_TYPE*>(
                         &(table->unsafeGet(0)));
-                GUM_MULTI_DIM_PROJECTION_TYPE *pres =
-                    const_cast<GUM_MULTI_DIM_PROJECTION_TYPE *>(
+                GUM_MULTI_DIM_PROJECTION_TYPE* pres =
+                    const_cast<GUM_MULTI_DIM_PROJECTION_TYPE*>(
                         &(result->unsafeGet(0)));
-                GUM_MULTI_DIM_PROJECTION_TYPE *pres_deb = pres;
+                GUM_MULTI_DIM_PROJECTION_TYPE* pres_deb = pres;
 
                 if (!nb_positive_before_incr) {
                   for (Idx i = 0; i < table_alone_domain_size; ++i) {
@@ -238,7 +259,8 @@ namespace gum {
                     pres = pres_deb;
                   }
                 } else {
-                  // here there are positive before_incr and we should use them to
+                  // here there are positive before_incr and we should use them
+                  // to
                   // know
                   // when result_offset needs be changed
                   Idx result_offset = 0;
@@ -248,9 +270,11 @@ namespace gum {
                     GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
 #else
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-        *(pres[result_offset]) = GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
+        *(pres[result_offset]) =
+            GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
 #else
-        pres[result_offset] = GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
+        pres[result_offset] =
+            GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
 #endif
 #endif
 
@@ -282,28 +306,33 @@ namespace gum {
                 }
 
                 return result;
-              } else { // need_swapping = true
+              } else {  // need_swapping = true
 
                 // Compute the variables that are in t1 but not in t2. For these
                 // variables,
-                // get the increment in the offset of t1 that would result from an
+                // get the increment in the offset of t1 that would result from
+                // an
                 // increment
-                // in one of these variables (vector t1_alone_offset). Also store the
+                // in one of these variables (vector t1_alone_offset). Also
+                // store the
                 // domain
                 // size of these variables (vector t1_alone_domain) and, for the
                 // computation
-                // loops at the end of this function, |variable| - the current values
+                // loops at the end of this function, |variable| - the current
+                // values
                 // of these
-                // variables (vector t1_alone_value). All these vectors reference the
+                // variables (vector t1_alone_value). All these vectors
+                // reference the
                 // variables
-                // of t1 \ t2 in the order in which they appear in seq1. Keep as well
+                // of t1 \ t2 in the order in which they appear in seq1. Keep as
+                // well
                 // the size
                 // of the Cartesian product of these variables.
                 std::vector<Idx> table_alone_offset;
                 std::vector<Idx> table_alone_domain;
                 Idx offset = 1;
                 Idx table_alone_domain_size = 1;
-                HashTable<const DiscreteVariable *, Idx> var1offset(
+                HashTable<const DiscreteVariable*, Idx> var1offset(
                     table_vars.size());
 
                 for (const auto var : table_vars) {
@@ -323,22 +352,28 @@ namespace gum {
                 for (unsigned int i = 0; i < table_alone_down.size(); ++i)
                   table_alone_down[i] *= (table_alone_domain[i] - 1);
 
-                // Compute the same vectors for the variables that belong to both t1
+                // Compute the same vectors for the variables that belong to
+                // both t1
                 // and t2.
-                // In this case, All these vectors reference the variables in the
+                // In this case, All these vectors reference the variables in
+                // the
                 // order in
                 // which they appear in seq2. In addition, store the number of
                 // increments in
-                // the computation loops at the end of the function before which the
+                // the computation loops at the end of the function before which
+                // the
                 // variables
-                // of t1 cap t2 need be incremented (vector t1_and_t2_before incr).
+                // of t1 cap t2 need be incremented (vector t1_and_t2_before
+                // incr).
                 // Similarly,
-                // store the number of such increments currently still needed before
+                // store the number of such increments currently still needed
+                // before
                 // the next
-                // incrementation of the variables of t1 cap t2. Keep as well the
+                // incrementation of the variables of t1 cap t2. Keep as well
+                // the
                 // size of the
                 // Cartesian product of these variables.
-                Sequence<const DiscreteVariable *> result_varSeq;
+                Sequence<const DiscreteVariable*> result_varSeq;
                 std::vector<Idx> table_and_result_offset;
                 std::vector<Idx> table_and_result_domain;
                 Idx result_domain_size = 1;
@@ -358,10 +393,13 @@ namespace gum {
                   }
                 }
 
-                std::vector<Idx> table_and_result_value = table_and_result_domain;
-                std::vector<Idx> table_and_result_down = table_and_result_offset;
+                std::vector<Idx> table_and_result_value =
+                    table_and_result_domain;
+                std::vector<Idx> table_and_result_down =
+                    table_and_result_offset;
 
-                for (unsigned int i = 0; i < table_and_result_down.size(); ++i) {
+                for (unsigned int i = 0; i < table_and_result_down.size();
+                     ++i) {
                   table_and_result_down[i] *= (table_and_result_domain[i] - 1);
                 }
 
@@ -369,10 +407,11 @@ namespace gum {
                 // projection:
                 // the variables are stored in the order in which they appear in
                 // "table"
-                // Hence, ++ operations on an instantiation on table will more or
+                // Hence, ++ operations on an instantiation on table will more
+                // or
                 // less
                 // correspond to a ++ operation on an instantiation on result
-                MultiDimArray<GUM_MULTI_DIM_PROJECTION_TYPE> *result =
+                MultiDimArray<GUM_MULTI_DIM_PROJECTION_TYPE>* result =
                     new MultiDimArray<GUM_MULTI_DIM_PROJECTION_TYPE>;
                 result->beginMultipleChanges();
 
@@ -391,37 +430,48 @@ namespace gum {
     result->endMultipleChanges(neutral_element);
 #endif
 
-                // compute the sum: first loop over the variables X's both in table
+                // compute the sum: first loop over the variables X's both in
+                // table
                 // and in
-                // result and, for each value of these X's, loop over the variables
+                // result and, for each value of these X's, loop over the
+                // variables
                 // that are
-                // in table but not result. As such, in the internal loop, there is
+                // in table but not result. As such, in the internal loop, there
+                // is
                 // no
-                // increment in the offset of "result", and in the outer loop, this
+                // increment in the offset of "result", and in the outer loop,
+                // this
                 // offset
                 // is incremented using a simple ++ operator.
-                // For table, the problem is slightly more complicated: in the outer
+                // For table, the problem is slightly more complicated: in the
+                // outer
                 // for loop,
-                // we shall increment the variables of table cap result according to
+                // we shall increment the variables of table cap result
+                // according to
                 // vectors
-                // table_and_result_xxx. Each time a variable of these vectors has
+                // table_and_result_xxx. Each time a variable of these vectors
+                // has
                 // been
-                // incremented up to its max, we shall put it down to 0 and increment
+                // incremented up to its max, we shall put it down to 0 and
+                // increment
                 // the next
-                // one, and so on. For the inner loop, this is similar except that we
+                // one, and so on. For the inner loop, this is similar except
+                // that we
                 // shall do
-                // these operations only when before_incr[xxx] steps in the loop have
+                // these operations only when before_incr[xxx] steps in the loop
+                // have
                 // already been made.
-                GUM_MULTI_DIM_PROJECTION_TYPE *pt =
-                    const_cast<GUM_MULTI_DIM_PROJECTION_TYPE *>(
+                GUM_MULTI_DIM_PROJECTION_TYPE* pt =
+                    const_cast<GUM_MULTI_DIM_PROJECTION_TYPE*>(
                         &(table->unsafeGet(0)));
-                GUM_MULTI_DIM_PROJECTION_TYPE *pres =
-                    const_cast<GUM_MULTI_DIM_PROJECTION_TYPE *>(
+                GUM_MULTI_DIM_PROJECTION_TYPE* pres =
+                    const_cast<GUM_MULTI_DIM_PROJECTION_TYPE*>(
                         &(result->unsafeGet(0)));
 
                 // but before doing so, check whether there exist
                 // positive_before_incr. If
-                // this is not the case, optimize by not using before_incr at all
+                // this is not the case, optimize by not using before_incr at
+                // all
                 if (!has_before_incr) {
                   for (Idx i = 0; i < result_domain_size; ++i) {
                     for (Idx j = 0; j < table_alone_domain_size; ++j) {
@@ -443,7 +493,8 @@ namespace gum {
                     ++pres;
                   }
                 } else {
-                  // here there are positive before_incr and we should use them to
+                  // here there are positive before_incr and we should use them
+                  // to
                   // know
                   // when result_offset needs be changed
                   Idx table_offset = 0;
@@ -461,7 +512,8 @@ namespace gum {
 #endif
 
                       // update the increment of table for the inner loop
-                      for (unsigned int k = 0; k < table_alone_value.size(); ++k) {
+                      for (unsigned int k = 0; k < table_alone_value.size();
+                           ++k) {
                         --table_alone_value[k];
 
                         if (table_alone_value[k]) {

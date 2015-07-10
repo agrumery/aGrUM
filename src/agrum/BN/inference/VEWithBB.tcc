@@ -29,7 +29,7 @@
 namespace gum {
 
   template <typename GUM_SCALAR>
-  INLINE VEWithBB<GUM_SCALAR>::VEWithBB(const IBayesNet<GUM_SCALAR> &bn)
+  INLINE VEWithBB<GUM_SCALAR>::VEWithBB(const IBayesNet<GUM_SCALAR>& bn)
       : BayesNetInference<GUM_SCALAR>(bn), __ve(bn) {
     GUM_CONSTRUCTOR(VEWithBB);
     __ve.makeInference();
@@ -52,12 +52,13 @@ namespace gum {
       GUM_ERROR( FatalError, "illegal call to VEWithBB copy operator." );
     }*/
 
-  template <typename GUM_SCALAR> INLINE void VEWithBB<GUM_SCALAR>::makeInference() {}
+  template <typename GUM_SCALAR>
+  INLINE void VEWithBB<GUM_SCALAR>::makeInference() {}
 
   template <typename GUM_SCALAR>
   void VEWithBB<GUM_SCALAR>::insertEvidence(
-      const List<const Potential<GUM_SCALAR> *> &pot_list) {
-    for (const auto &pot : pot_list) {
+      const List<const Potential<GUM_SCALAR>*>& pot_list) {
+    for (const auto& pot : pot_list) {
       if (pot->nbrDim() != 1) {
         GUM_ERROR(OperationNotAllowed,
                   "Evidence can only be giben w.r.t. one random variable");
@@ -87,13 +88,15 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void VEWithBB<GUM_SCALAR>::eraseEvidence(const Potential<GUM_SCALAR> *e) {
+  INLINE void
+  VEWithBB<GUM_SCALAR>::eraseEvidence(const Potential<GUM_SCALAR>* e) {
     if (e->nbrDim() != 1) {
       GUM_ERROR(OperationNotAllowed,
                 "Evidence can only be giben w.r.t. one random variable");
     }
 
-    __hardEvidence.erase((this->bn().nodeId(*(e->variablesSequence().atPos(0)))));
+    __hardEvidence.erase(
+        (this->bn().nodeId(*(e->variablesSequence().atPos(0)))));
     __ve.eraseEvidence(e);
     this->_invalidatePosteriors();
   }
@@ -108,29 +111,30 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void
   VEWithBB<GUM_SCALAR>::__fillRequisiteNode(NodeId id,
-                                            Set<NodeId> &requisite_nodes) {
+                                            Set<NodeId>& requisite_nodes) {
     Set<NodeId> query;
     query.insert(id);
     Set<NodeId> hardEvidence;
     Set<NodeId> softEvidence;
 
-    for (const auto &elt : __hardEvidence)
+    for (const auto& elt : __hardEvidence)
       hardEvidence.insert(elt.first);
 
     BayesBall bb;
-    bb.requisiteNodes(this->bn().dag(), query, hardEvidence, softEvidence, requisite_nodes);
+    bb.requisiteNodes(this->bn().dag(), query, hardEvidence, softEvidence,
+                      requisite_nodes);
   }
 
   template <typename GUM_SCALAR>
   void VEWithBB<GUM_SCALAR>::_fillPosterior(NodeId id,
-                                            Potential<GUM_SCALAR> &posterior) {
+                                            Potential<GUM_SCALAR>& posterior) {
     Set<NodeId> requisite_nodes;
     __fillRequisiteNode(id, requisite_nodes);
-    Set<Potential<GUM_SCALAR> *> pool;
+    Set<Potential<GUM_SCALAR>*> pool;
     Set<NodeId> elim_set;
 
     for (const auto node : requisite_nodes) {
-      pool.insert(const_cast<Potential<GUM_SCALAR> *>(&(this->bn().cpt(node))));
+      pool.insert(const_cast<Potential<GUM_SCALAR>*>(&(this->bn().cpt(node))));
       elim_set.insert(node);
 
       for (const auto parent : this->bn().dag().parents(node))
@@ -148,13 +152,13 @@ namespace gum {
       }
     }
 
-    Set<Potential<GUM_SCALAR> *> trash;
+    Set<Potential<GUM_SCALAR>*> trash;
     __ve.eliminateNodes(elim_order, pool, trash);
     posterior.add(this->bn().variable(id));
 
     try {
-      pool.insert(const_cast<Potential<GUM_SCALAR> *>(__ve.__evidences[id]));
-    } catch (NotFound &) {
+      pool.insert(const_cast<Potential<GUM_SCALAR>*>(__ve.__evidences[id]));
+    } catch (NotFound&) {
       // No evidence on query
     }
 

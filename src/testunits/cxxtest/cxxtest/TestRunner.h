@@ -15,7 +15,7 @@
 namespace CxxTest {
   class TestRunner {
     public:
-    static void runAllTests(TestListener &listener) {
+    static void runAllTests(TestListener& listener) {
       tracker().setListener(&listener);
       _TS_TRY { TestRunner().runWorld(); }
       _TS_LAST_CATCH({
@@ -24,7 +24,7 @@ namespace CxxTest {
       tracker().setListener(0);
     }
 
-    static void runAllTests(TestListener *listener) {
+    static void runAllTests(TestListener* listener) {
       if (listener) {
         listener->warning(__FILE__, __LINE__,
                           "Deprecated; Use runAllTests( TestListener & )");
@@ -40,7 +40,7 @@ namespace CxxTest {
       tracker().enterWorld(wd);
 
       if (wd.setUp()) {
-        for (SuiteDescription *sd = wd.firstSuite(); sd; sd = sd->next())
+        for (SuiteDescription* sd = wd.firstSuite(); sd; sd = sd->next())
           if (sd->active())
             runSuite(*sd);
 
@@ -50,13 +50,13 @@ namespace CxxTest {
       tracker().leaveWorld(wd);
     }
 
-    void runSuite(SuiteDescription &sd) {
+    void runSuite(SuiteDescription& sd) {
       StateGuard sg;
 
       tracker().enterSuite(sd);
 
       if (sd.setUp()) {
-        for (TestDescription *td = sd.firstTest(); td; td = td->next())
+        for (TestDescription* td = sd.firstTest(); td; td = td->next())
           if (td->active())
             runTest(*td);
 
@@ -66,7 +66,7 @@ namespace CxxTest {
       tracker().leaveSuite(sd);
     }
 
-    void runTest(TestDescription &td) {
+    void runTest(TestDescription& td) {
       StateGuard sg;
 
       tracker().enterTest(td);
@@ -82,21 +82,21 @@ namespace CxxTest {
     class StateGuard {
 #ifdef _CXXTEST_HAVE_EH
       bool _abortTestOnFail;
-#endif // _CXXTEST_HAVE_EH
+#endif  // _CXXTEST_HAVE_EH
       unsigned _maxDumpSize;
 
       public:
       StateGuard() {
 #ifdef _CXXTEST_HAVE_EH
         _abortTestOnFail = abortTestOnFail();
-#endif // _CXXTEST_HAVE_EH
+#endif  // _CXXTEST_HAVE_EH
         _maxDumpSize = maxDumpSize();
       }
 
       ~StateGuard() {
 #ifdef _CXXTEST_HAVE_EH
         setAbortTestOnFail(_abortTestOnFail);
-#endif // _CXXTEST_HAVE_EH
+#endif  // _CXXTEST_HAVE_EH
         setMaxDumpSize(_maxDumpSize);
       }
     };
@@ -106,7 +106,7 @@ namespace CxxTest {
       WorldGuard() : StateGuard() {
 #ifdef _CXXTEST_HAVE_EH
         setAbortTestOnFail(CXXTEST_DEFAULT_ABORT);
-#endif // _CXXTEST_HAVE_EH
+#endif  // _CXXTEST_HAVE_EH
         setMaxDumpSize(CXXTEST_MAX_DUMP_SIZE);
       }
     };
@@ -118,4 +118,4 @@ namespace CxxTest {
   void initialize();
 }
 
-#endif // __cxxtest_TestRunner_h__
+#endif  // __cxxtest_TestRunner_h__

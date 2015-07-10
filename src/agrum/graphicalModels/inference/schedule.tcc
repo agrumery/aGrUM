@@ -36,7 +36,7 @@ namespace gum {
 
   /// copy constructor
   template <typename GUM_SCALAR>
-  Schedule<GUM_SCALAR>::Schedule(const Schedule<GUM_SCALAR> &from)
+  Schedule<GUM_SCALAR>::Schedule(const Schedule<GUM_SCALAR>& from)
       : __dag(from.__dag), __operation2node(from.__operation2node),
         __created_multidims(from.__created_multidims),
         __operations_with_wrong_parents(from.__operations_with_wrong_parents),
@@ -45,11 +45,11 @@ namespace gum {
     GUM_CONS_CPY(Schedule);
 
     // we must now copy the operations of "from" into "this"
-    for (const auto &elt : from.__node2operation)
+    for (const auto& elt : from.__node2operation)
       __node2operation.insert(elt.first, elt.second->newFactory());
 
     // update the set of operations involved with each multidim table
-    for (const auto &elt : from.__multidim2operations)
+    for (const auto& elt : from.__multidim2operations)
       __multidim2operations.insert(elt.first, new NodeSet(*elt.second));
   }
 
@@ -60,25 +60,25 @@ namespace gum {
 
     // remove all the operations that were stored
 
-    for (const auto &elt : __node2operation)
+    for (const auto& elt : __node2operation)
       delete elt.second;
 
     // remove the sets of operations involved with each multidim table
-    for (const auto &elt : __multidim2operations)
+    for (const auto& elt : __multidim2operations)
       delete elt.second;
   }
 
   /// copy operator
   template <typename GUM_SCALAR>
-  Schedule<GUM_SCALAR> &Schedule<GUM_SCALAR>::operator=(const Schedule &from) {
+  Schedule<GUM_SCALAR>& Schedule<GUM_SCALAR>::operator=(const Schedule& from) {
     // avoid self assignment
     if (this != &from) {
       // remove all the operations that were stored
-      for (const auto &elt : __node2operation)
+      for (const auto& elt : __node2operation)
         delete elt.second;
 
       // remove the sets of operations involved with each multidim table
-      for (const auto &elt : __multidim2operations)
+      for (const auto& elt : __multidim2operations)
         delete elt.second;
 
       // fill all the data structures with the elements of from
@@ -90,13 +90,13 @@ namespace gum {
 
       __node2operation.clear();
 
-      for (const auto &elt : from.__node2operation)
+      for (const auto& elt : from.__node2operation)
         __node2operation.insert(elt.first, elt.second->newFactory());
 
       // update the set of operations involved with each multidim table
       __multidim2operations.clear();
 
-      for (const auto &elt : from.__multidim2operations)
+      for (const auto& elt : from.__multidim2operations)
         __multidim2operations.insert(elt.first, new NodeSet(*elt.second));
     }
 
@@ -105,9 +105,9 @@ namespace gum {
 
   /// inserts an operation to be scheduled
   template <typename GUM_SCALAR>
-  NodeId Schedule<GUM_SCALAR>::insert(const ScheduleOperation<GUM_SCALAR> &op) {
+  NodeId Schedule<GUM_SCALAR>::insert(const ScheduleOperation<GUM_SCALAR>& op) {
     // create a copy of the operation
-    ScheduleOperation<GUM_SCALAR> *operation = op.newFactory();
+    ScheduleOperation<GUM_SCALAR>* operation = op.newFactory();
 
     // create a new node for the operation in the DAG
     NodeId node_id = __dag.addNode();
@@ -144,7 +144,7 @@ namespace gum {
 
     // now we shall find whether, upon executing the operation, new multidim
     // tables are created
-    NodeSet *involved_ops;
+    NodeSet* involved_ops;
 
     for (const auto tab : operation->multiDimResults()) {
       MultiDimId table_id = tab->id();
@@ -153,7 +153,8 @@ namespace gum {
         __created_multidims.insert(table_id, node_id);
 
       if (!__multidim2operations.exists(table_id)) {
-        involved_ops = __multidim2operations.insert(table_id, new NodeSet).second;
+        involved_ops =
+            __multidim2operations.insert(table_id, new NodeSet).second;
       } else {
         involved_ops = __multidim2operations[table_id];
       }
@@ -163,11 +164,12 @@ namespace gum {
 
     // update __multidim2operations with the arguments passed to the newly
     // added operation
-    for (const auto &par : operation->multiDimArgs()) {
+    for (const auto& par : operation->multiDimArgs()) {
       MultiDimId table_id = par->id();
 
       if (!__multidim2operations.exists(table_id)) {
-        involved_ops = __multidim2operations.insert(table_id, new NodeSet).second;
+        involved_ops =
+            __multidim2operations.insert(table_id, new NodeSet).second;
       } else {
         involved_ops = __multidim2operations[table_id];
       }
@@ -178,17 +180,20 @@ namespace gum {
     return node_id;
   }
 
-  /// updates the set of parents for the nodes whoses parents are not correct yet
+  /// updates the set of parents for the nodes whoses parents are not correct
+  /// yet
   template <typename GUM_SCALAR>
   void Schedule<GUM_SCALAR>::__updateWrongParents() const {
     // parse all the nodes whose parents sets are incorrect
 
-    auto localWrongs = __operations_with_wrong_parents; // complete copy of NodeSet
+    auto localWrongs =
+        __operations_with_wrong_parents;  // complete copy of NodeSet
 
     for (const auto wrong : localWrongs) {
-      // get the arguments passed to wrong and check that those that are abstract
+      // get the arguments passed to wrong and check that those that are
+      // abstract
       // multidims belong to the schedule
-      const Sequence<const ScheduleMultiDim<GUM_SCALAR> *> &args =
+      const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& args =
           __node2operation[wrong]->multiDimArgs();
       bool still_wrong = false;
 
@@ -237,17 +242,18 @@ namespace gum {
   /** @brief adds a constraint indicating that an operation cannot be performed
    * before another one */
   template <typename GUM_SCALAR>
-  INLINE void
-  Schedule<GUM_SCALAR>::forceAfter(const ScheduleOperation<GUM_SCALAR> &op_to_force,
-                                   const ScheduleOperation<GUM_SCALAR> &op_before) {
-    forceAfter(__operation2node[op_to_force.id()], __operation2node[op_before.id()]);
+  INLINE void Schedule<GUM_SCALAR>::forceAfter(
+      const ScheduleOperation<GUM_SCALAR>& op_to_force,
+      const ScheduleOperation<GUM_SCALAR>& op_before) {
+    forceAfter(__operation2node[op_to_force.id()],
+               __operation2node[op_before.id()]);
   }
 
   /** @brief adds a constraint indicating that an operation cannot be performed
    * before a set of operations */
   template <typename GUM_SCALAR>
   void Schedule<GUM_SCALAR>::forceAfter(NodeId op_to_force,
-                                        const NodeSet &ops_before) {
+                                        const NodeSet& ops_before) {
     for (const auto op : ops_before)
       if (op != op_to_force)
         forceAfter(op_to_force, op);
@@ -257,8 +263,8 @@ namespace gum {
    * before a set of operations */
   template <typename GUM_SCALAR>
   void Schedule<GUM_SCALAR>::forceAfter(
-      const ScheduleOperation<GUM_SCALAR> &op_to_force,
-      const Set<const ScheduleOperation<GUM_SCALAR> *> &ops_before) {
+      const ScheduleOperation<GUM_SCALAR>& op_to_force,
+      const Set<const ScheduleOperation<GUM_SCALAR>*>& ops_before) {
     for (const auto op : ops_before)
       if (*op != op_to_force)
         forceAfter(op_to_force, *op);
@@ -279,17 +285,18 @@ namespace gum {
   /** @brief adds a constraint indicating that an operation must be performed
    * before another one */
   template <typename GUM_SCALAR>
-  INLINE void
-  Schedule<GUM_SCALAR>::forceBefore(const ScheduleOperation<GUM_SCALAR> &op_to_force,
-                                    const ScheduleOperation<GUM_SCALAR> &op_after) {
-    forceBefore(__operation2node[op_to_force.id()], __operation2node[op_after.id()]);
+  INLINE void Schedule<GUM_SCALAR>::forceBefore(
+      const ScheduleOperation<GUM_SCALAR>& op_to_force,
+      const ScheduleOperation<GUM_SCALAR>& op_after) {
+    forceBefore(__operation2node[op_to_force.id()],
+                __operation2node[op_after.id()]);
   }
 
   /** @brief adds a constraint indicating that an operation must be performed
    * before a set of operations */
   template <typename GUM_SCALAR>
   void Schedule<GUM_SCALAR>::forceBefore(NodeId op_to_force,
-                                         const NodeSet &ops_after) {
+                                         const NodeSet& ops_after) {
     for (const auto op : ops_after)
       if (op != op_to_force)
         forceBefore(op_to_force, op);
@@ -299,10 +306,10 @@ namespace gum {
    * before a set of operations */
   template <typename GUM_SCALAR>
   void Schedule<GUM_SCALAR>::forceBefore(
-      const ScheduleOperation<GUM_SCALAR> &op_to_force,
-      const Set<const ScheduleOperation<GUM_SCALAR> *> &ops_after) {
-    for (typename Set<const ScheduleOperation<GUM_SCALAR> *>::const_iterator iter =
-             ops_after.begin();
+      const ScheduleOperation<GUM_SCALAR>& op_to_force,
+      const Set<const ScheduleOperation<GUM_SCALAR>*>& ops_after) {
+    for (typename Set<const ScheduleOperation<GUM_SCALAR>*>::const_iterator
+             iter = ops_after.begin();
          iter != ops_after.end(); ++iter) {
       if (**iter != op_to_force) {
         forceBefore(op_to_force, **iter);
@@ -312,21 +319,21 @@ namespace gum {
 
   /// returns the set of operations involving a given multidim table
   template <typename GUM_SCALAR>
-  INLINE const NodeSet &Schedule<GUM_SCALAR>::operationsInvolving(
-      const ScheduleMultiDim<GUM_SCALAR> &table) const {
+  INLINE const NodeSet& Schedule<GUM_SCALAR>::operationsInvolving(
+      const ScheduleMultiDim<GUM_SCALAR>& table) const {
     return *(__multidim2operations[table.id()]);
   }
 
   /// returns the set of operations involving a given multidim table
   template <typename GUM_SCALAR>
-  INLINE const NodeSet &
+  INLINE const NodeSet&
   Schedule<GUM_SCALAR>::operationsInvolving(MultiDimId table_id) const {
     return *(__multidim2operations[table_id]);
   }
 
   /// returns a DAG indicating in which order the operations can be performed
   template <typename GUM_SCALAR>
-  INLINE const DAG &Schedule<GUM_SCALAR>::dag() const {
+  INLINE const DAG& Schedule<GUM_SCALAR>::dag() const {
     // first update the set of parents of the nodes of the graph whose parents
     // were not set correctly
     __updateWrongParents();
@@ -335,7 +342,7 @@ namespace gum {
 
   /// returns the scheduleOperation corresponding to an id in the DAG
   template <typename GUM_SCALAR>
-  INLINE const ScheduleOperation<GUM_SCALAR> &
+  INLINE const ScheduleOperation<GUM_SCALAR>&
   Schedule<GUM_SCALAR>::operation(NodeId node_id) const {
     return *(__node2operation[node_id]);
   }
@@ -343,21 +350,21 @@ namespace gum {
   /// returns the id associated to a given operation
   template <typename GUM_SCALAR>
   INLINE NodeId
-      Schedule<GUM_SCALAR>::nodeId(const ScheduleOperation<GUM_SCALAR> &op) const {
+  Schedule<GUM_SCALAR>::nodeId(const ScheduleOperation<GUM_SCALAR>& op) const {
     return __operation2node[op.id()];
   }
 
   /// returns the association between operations anf nodeIds
   template <typename GUM_SCALAR>
-  INLINE const NodeProperty<const ScheduleOperation<GUM_SCALAR> *> &
+  INLINE const NodeProperty<const ScheduleOperation<GUM_SCALAR>*>&
   Schedule<GUM_SCALAR>::operations() const {
-    return reinterpret_cast<NodeProperty<const ScheduleOperation<GUM_SCALAR> *> &>(
-        __node2operation);
+    return reinterpret_cast<
+        NodeProperty<const ScheduleOperation<GUM_SCALAR>*>&>(__node2operation);
   }
 
   /// returns the set of ScheduleOperations that can be executed at once
   template <typename GUM_SCALAR>
-  INLINE const NodeSet &Schedule<GUM_SCALAR>::availableOperations() const {
+  INLINE const NodeSet& Schedule<GUM_SCALAR>::availableOperations() const {
     // update the set of parents
     __updateWrongParents();
     return __operations_available;
@@ -382,7 +389,7 @@ namespace gum {
 
     // now update the availability of the children of id: a child is available
     // if and only if it has only one parent
-    const NodeSet &children = __dag.children(id);
+    const NodeSet& children = __dag.children(id);
 
     for (const auto child : children)
       if (__dag.parents(child).size() == 1)
@@ -405,7 +412,7 @@ namespace gum {
   /// executes a given operation
   template <typename GUM_SCALAR>
   INLINE void
-  Schedule<GUM_SCALAR>::execute(const ScheduleOperation<GUM_SCALAR> &op) {
+  Schedule<GUM_SCALAR>::execute(const ScheduleOperation<GUM_SCALAR>& op) {
     execute(__operation2node[op.id()]);
   }
 
@@ -420,20 +427,21 @@ namespace gum {
    * to perform a given ScheduleOperation */
   template <typename GUM_SCALAR>
   INLINE float
-  Schedule<GUM_SCALAR>::nbOperations(ScheduleOperation<GUM_SCALAR> &op) const {
+  Schedule<GUM_SCALAR>::nbOperations(ScheduleOperation<GUM_SCALAR>& op) const {
     return op.nbOperations();
   }
 
   /// returns the memory consumption used during the execution of an operation
   template <typename GUM_SCALAR>
-  INLINE std::pair<long, long> Schedule<GUM_SCALAR>::memoryUsage(NodeId id) const {
+  INLINE std::pair<long, long>
+  Schedule<GUM_SCALAR>::memoryUsage(NodeId id) const {
     return __node2operation[id]->memoryUsage();
   }
 
   /// returns the memory consumption used during the execution of an operation
   template <typename GUM_SCALAR>
   INLINE std::pair<long, long>
-  Schedule<GUM_SCALAR>::memoryUsage(ScheduleOperation<GUM_SCALAR> &op) const {
+  Schedule<GUM_SCALAR>::memoryUsage(ScheduleOperation<GUM_SCALAR>& op) const {
     return op.memoryUsage();
   }
 

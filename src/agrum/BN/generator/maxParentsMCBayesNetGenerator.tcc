@@ -32,14 +32,17 @@ namespace gum {
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template <typename GUM_SCALAR, template <class> class ICPTGenerator,
             template <class> class ICPTDisturber>
-  INLINE MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::
-      MaxParentsMCBayesNetGenerator(Size nbrNodes, Size maxArcs, Size max_modality,
-                                    Size maxParents, Idx iteration, Idx p, Idx q)
+  INLINE
+  MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::
+      MaxParentsMCBayesNetGenerator(Size nbrNodes, Size maxArcs,
+                                    Size max_modality, Size maxParents,
+                                    Idx iteration, Idx p, Idx q)
       : MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>(
             nbrNodes, maxArcs, max_modality, iteration, p, q) {
     if (maxParents == 0)
-      GUM_ERROR(OperationNotAllowed,
-                "maxParents must be at least equal to 1 to have a connexe graph");
+      GUM_ERROR(
+          OperationNotAllowed,
+          "maxParents must be at least equal to 1 to have a connexe graph");
 
     _maxParents = maxParents;
     GUM_CONSTRUCTOR(MaxParentsMCBayesNetGenerator);
@@ -47,9 +50,11 @@ namespace gum {
 
   template <typename GUM_SCALAR, template <class> class ICPTGenerator,
             template <class> class ICPTDisturber>
-  INLINE MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::
-      MaxParentsMCBayesNetGenerator(BayesNet<GUM_SCALAR> bayesNet, Size maxParents,
-                                    Idx iteration, Idx p, Idx q)
+  INLINE
+  MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::
+      MaxParentsMCBayesNetGenerator(BayesNet<GUM_SCALAR> bayesNet,
+                                    Size maxParents, Idx iteration, Idx p,
+                                    Idx q)
       : MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>(
             bayesNet, iteration, p, q) {
     _maxParents = maxParents;
@@ -60,7 +65,8 @@ namespace gum {
   template <typename GUM_SCALAR, template <class> class ICPTGenerator,
             template <class> class ICPTDisturber>
   INLINE MaxParentsMCBayesNetGenerator<
-      GUM_SCALAR, ICPTGenerator, ICPTDisturber>::~MaxParentsMCBayesNetGenerator() {
+      GUM_SCALAR, ICPTGenerator,
+      ICPTDisturber>::~MaxParentsMCBayesNetGenerator() {
     GUM_DESTRUCTOR(MaxParentsMCBayesNetGenerator);
   }
 
@@ -84,11 +90,13 @@ namespace gum {
   }
   template <typename GUM_SCALAR, template <class> class ICPTGenerator,
             template <class> class ICPTDisturber>
-  INLINE void MaxParentsMCBayesNetGenerator<
-      GUM_SCALAR, ICPTGenerator, ICPTDisturber>::setMaxParents(Size maxParents) {
+  INLINE void
+  MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator,
+                                ICPTDisturber>::setMaxParents(Size maxParents) {
     if (maxParents == 0)
-      GUM_ERROR(OperationNotAllowed,
-                "maxParents must be at least equal to 1 to have a connexe graph");
+      GUM_ERROR(
+          OperationNotAllowed,
+          "maxParents must be at least equal to 1 to have a connexe graph");
 
     _maxParents = maxParents;
   }

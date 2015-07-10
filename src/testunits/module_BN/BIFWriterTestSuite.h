@@ -56,7 +56,7 @@ namespace gum_tests {
         getline(file1, str);
         c1++;
       }
-      file1.clear(); //  set new value for error control state  //
+      file1.clear();  //  set new value for error control state  //
       file2.seekg(0, std::ios::beg);
       while (!file2.eof()) {
         getline(file2, str);
@@ -83,7 +83,7 @@ namespace gum_tests {
     }
 
     public:
-    gum::BayesNet<double> *bn;
+    gum::BayesNet<double>* bn;
     gum::Id i1, i2, i3, i4, i5;
 
     void setUp() {
@@ -111,7 +111,7 @@ namespace gum_tests {
     void tearDown() { delete bn; }
 
     void testConstuctor() {
-      gum::BIFWriter<double> *writer = nullptr;
+      gum::BIFWriter<double>* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::BIFWriter<double>());
       delete writer;
     }
@@ -130,7 +130,7 @@ namespace gum_tests {
       try {
         writer.write(file, *bn);
         TS_ASSERT(true);
-      } catch (gum::IOError &e) {
+      } catch (gum::IOError& e) {
         TS_ASSERT(false);
       }
 
@@ -139,8 +139,8 @@ namespace gum_tests {
 
     private:
     // Builds a BN to test the inference
-    void fill(gum::BayesNet<double> &bn) {
-      const gum::Potential<double> &p1 = bn.cpt(i1);
+    void fill(gum::BayesNet<double>& bn) {
+      const gum::Potential<double>& p1 = bn.cpt(i1);
       {
         // FILLING PARAMS
         const double t[2] = {0.2, 0.8};
@@ -149,7 +149,7 @@ namespace gum_tests {
         p1.fillWith(v);
       }
 
-      const gum::Potential<double> &p2 = bn.cpt(i2);
+      const gum::Potential<double>& p2 = bn.cpt(i2);
       {
         // FILLING PARAMS
         const double t[2] = {0.3, 0.7};
@@ -158,7 +158,7 @@ namespace gum_tests {
         p2.fillWith(v);
       }
 
-      const gum::Potential<double> &p3 = bn.cpt(i3);
+      const gum::Potential<double>& p3 = bn.cpt(i3);
       {
         // FILLING PARAMS
         const double t[4] = {0.1, 0.9, 0.9, 0.1};
@@ -167,7 +167,7 @@ namespace gum_tests {
         p3.fillWith(v);
       }
 
-      const gum::Potential<double> &p4 = bn.cpt(i4);
+      const gum::Potential<double>& p4 = bn.cpt(i4);
       {
         // FILLING PARAMS
         const double t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
@@ -176,7 +176,7 @@ namespace gum_tests {
         p4.fillWith(v);
       }
 
-      const gum::Potential<double> &p5 = bn.cpt(i5);
+      const gum::Potential<double>& p5 = bn.cpt(i5);
       {
         // FILLING PARAMS
         const double t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,

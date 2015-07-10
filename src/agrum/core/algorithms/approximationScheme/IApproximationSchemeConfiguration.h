@@ -20,7 +20,8 @@
 
 /**
  * @file
- * @brief This file contains getters and setters defintion for ApproximationSchem
+ * @brief This file contains getters and setters defintion for
+ *ApproximationSchem
  *settings
   * @see ApproximationScheme
  *
@@ -44,8 +45,8 @@ namespace gum {
    */
   class IApproximationSchemeConfiguration {
     public:
-    Signaler3<Size, double, double> onProgress; // progression,error,time
-    Signaler1<std::string> onStop; // criteria messageApproximationScheme
+    Signaler3<Size, double, double> onProgress;  // progression,error,time
+    Signaler1<std::string> onStop;  // criteria messageApproximationScheme
 
     enum class ApproximationSchemeSTATE : char {
       Undefined,
@@ -117,11 +118,13 @@ namespace gum {
     virtual void disableEpsilon() = 0;
     /// Enable stopping criterion on epsilon
     virtual void enableEpsilon() = 0;
-    /// @return true if stopping criterion on epsilon is enabled, false otherwise
+    /// @return true if stopping criterion on epsilon is enabled, false
+    /// otherwise
     virtual bool isEnabledEpsilon() const = 0;
     /// @}
 
-    /// Given that we approximate f(t), stopping criterion on d/dt(|f(t+1)-f(t)|)
+    /// Given that we approximate f(t), stopping criterion on
+    /// d/dt(|f(t+1)-f(t)|)
     /// If the criterion was disabled it will be enabled
     /// @{
     /// @throw OutOfLowerBound if rate<0
@@ -176,7 +179,8 @@ namespace gum {
     virtual void disableMaxTime() = 0;
     /// Enable stopping criterion on timeout
     virtual void enableMaxTime() = 0;
-    /// @return true if stopping criterion on timeout is enabled, false otherwise
+    /// @return true if stopping criterion on timeout is enabled, false
+    /// otherwise
     virtual bool isEnabledMaxTime() const = 0;
     /// @}
 
@@ -213,13 +217,13 @@ namespace gum {
     virtual Size nbrIterations() const = 0;
 
     /// @throw OperationNotAllowed if scheme not performed or verbosity=false
-    virtual const std::vector<double> &history() const = 0;
+    virtual const std::vector<double>& history() const = 0;
     /// @}
 
     // @name transmission of configuration
-    void copyConfiguration(const IApproximationSchemeConfiguration &cfg) {
+    void copyConfiguration(const IApproximationSchemeConfiguration& cfg) {
       GUM_TRACE("COPYING CONFIGURATION");
     }
   };
-} // namespace gum
-#endif // GUM_APPROXIMATION_SCHEME_CONFIGURATION_H
+}  // namespace gum
+#endif  // GUM_APPROXIMATION_SCHEME_CONFIGURATION_H

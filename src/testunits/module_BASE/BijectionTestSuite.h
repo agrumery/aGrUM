@@ -51,7 +51,7 @@ namespace gum_tests {
       bij_bis.insert(8, 10);
       TS_ASSERT(bij_bis.size() == 4);
 
-      gum::Bijection<int, int> *bijection3 = new gum::Bijection<int, int>;
+      gum::Bijection<int, int>* bijection3 = new gum::Bijection<int, int>;
       bijection3->insert(1, 2);
       bijection3->insert(3, 3);
 
@@ -101,7 +101,7 @@ namespace gum_tests {
       bij_bis.insert("d", "bd");
       TS_ASSERT(bij_bis.size() == 4);
 
-      gum::Bijection<std::string, std::string> *bijection3 =
+      gum::Bijection<std::string, std::string>* bijection3 =
           new gum::Bijection<std::string, std::string>;
       bijection3->insert("a", "b");
       bijection3->insert("b", "a");
@@ -257,7 +257,7 @@ namespace gum_tests {
 
       try {
         carre.insert(4, 1);
-      } catch (gum::DuplicateElement &) {
+      } catch (gum::DuplicateElement&) {
       }
 
       TS_ASSERT(!carre.existsFirst(4));
@@ -314,7 +314,8 @@ namespace gum_tests {
 
       unsigned int nb = 0;
 
-      for (auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb) {
+      for (auto iter = bijection.begin(); iter != bijection.end();
+           ++iter, ++nb) {
       }
 
       TS_ASSERT(nb == 8);
@@ -409,7 +410,8 @@ namespace gum_tests {
 
       unsigned int nb = 0;
 
-      for (auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb) {
+      for (auto iter = bijection.begin(); iter != bijection.end();
+           ++iter, ++nb) {
       }
 
       TS_ASSERT(nb == 8);
@@ -451,8 +453,10 @@ namespace gum_tests {
       bijection.insert("9", "7");
       bijection.insert("2", "1");
 
-      gum::Bijection<std::string, std::string>::iterator iter1 = bijection.begin();
-      gum::Bijection<std::string, std::string>::iterator iter2 = bijection.end();
+      gum::Bijection<std::string, std::string>::iterator iter1 =
+          bijection.begin();
+      gum::Bijection<std::string, std::string>::iterator iter2 =
+          bijection.end();
 
       unsigned int nb = 0;
 
@@ -489,61 +493,64 @@ namespace gum_tests {
     }
 
     void test_constructorsStar() {
-      gum::Bijection<int *, int *> bijection;
+      gum::Bijection<int*, int*> bijection;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int *)1, (int *)2));
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int *)3, (int *)4));
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int *)5, (int *)6));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)1, (int*)2));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)3, (int*)4));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)5, (int*)6));
 
-      TS_ASSERT_THROWS(bijection.insert((int *)5, (int *)6), gum::DuplicateElement);
-      TS_ASSERT_THROWS(bijection.insert((int *)5, (int *)7), gum::DuplicateElement);
-      TS_ASSERT_THROWS(bijection.insert((int *)7, (int *)6), gum::DuplicateElement);
+      TS_ASSERT_THROWS(bijection.insert((int*)5, (int*)6),
+                       gum::DuplicateElement);
+      TS_ASSERT_THROWS(bijection.insert((int*)5, (int*)7),
+                       gum::DuplicateElement);
+      TS_ASSERT_THROWS(bijection.insert((int*)7, (int*)6),
+                       gum::DuplicateElement);
 
-      gum::Bijection<int *, int *> bijection2 = bijection;
+      gum::Bijection<int*, int*> bijection2 = bijection;
       TS_ASSERT(bijection2.size() == 3);
 
-      gum::Bijection<int *, int *> *bijection3 = new gum::Bijection<int *, int *>;
-      bijection3->insert((int *)1, (int *)2);
-      bijection3->insert((int *)3, (int *)3);
+      gum::Bijection<int*, int*>* bijection3 = new gum::Bijection<int*, int*>;
+      bijection3->insert((int*)1, (int*)2);
+      bijection3->insert((int*)3, (int*)3);
 
-      gum::Bijection<int *, int *> bijection4 = bijection;
+      gum::Bijection<int*, int*> bijection4 = bijection;
       bijection4 = *bijection3;
       delete bijection3;
-      TS_ASSERT(bijection4.first((int *)2) == (int *)1);
-      TS_ASSERT(bijection4.first((int *)3) == (int *)3);
-      TS_ASSERT(bijection4.second((int *)1) == (int *)2);
-      TS_ASSERT(bijection4.second((int *)3) == (int *)3);
+      TS_ASSERT(bijection4.first((int*)2) == (int*)1);
+      TS_ASSERT(bijection4.first((int*)3) == (int*)3);
+      TS_ASSERT(bijection4.second((int*)1) == (int*)2);
+      TS_ASSERT(bijection4.second((int*)3) == (int*)3);
     }
 
     void testAccessStar() {
-      gum::Bijection<int *, int *> bijection;
+      gum::Bijection<int*, int*> bijection;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int *)1, (int *)2));
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int *)3, (int *)4));
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int *)5, (int *)6));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)1, (int*)2));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)3, (int*)4));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)5, (int*)6));
 
-      TS_ASSERT(bijection.first((int *)2) == (int *)1);
-      TS_ASSERT(bijection.first((int *)4) == (int *)3);
-      TS_ASSERT(bijection.first((int *)6) == (int *)5);
-      TS_ASSERT(bijection.second((int *)1) == (int *)2);
-      TS_ASSERT(bijection.second((int *)3) == (int *)4);
-      TS_ASSERT(bijection.second((int *)5) == (int *)6);
-      TS_ASSERT(bijection.existsFirst((int *)1));
-      TS_ASSERT(bijection.existsFirst((int *)3));
-      TS_ASSERT(bijection.existsFirst((int *)5));
-      TS_ASSERT(bijection.existsSecond((int *)2));
-      TS_ASSERT(bijection.existsSecond((int *)4));
-      TS_ASSERT(bijection.existsSecond((int *)6));
+      TS_ASSERT(bijection.first((int*)2) == (int*)1);
+      TS_ASSERT(bijection.first((int*)4) == (int*)3);
+      TS_ASSERT(bijection.first((int*)6) == (int*)5);
+      TS_ASSERT(bijection.second((int*)1) == (int*)2);
+      TS_ASSERT(bijection.second((int*)3) == (int*)4);
+      TS_ASSERT(bijection.second((int*)5) == (int*)6);
+      TS_ASSERT(bijection.existsFirst((int*)1));
+      TS_ASSERT(bijection.existsFirst((int*)3));
+      TS_ASSERT(bijection.existsFirst((int*)5));
+      TS_ASSERT(bijection.existsSecond((int*)2));
+      TS_ASSERT(bijection.existsSecond((int*)4));
+      TS_ASSERT(bijection.existsSecond((int*)6));
       TS_ASSERT(bijection.size() == 3);
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.eraseFirst((int *)1));
-      TS_ASSERT(!bijection.existsSecond((int *)2));
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.eraseFirst((int *)3));
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.eraseSecond((int *)6));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.eraseFirst((int*)1));
+      TS_ASSERT(!bijection.existsSecond((int*)2));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.eraseFirst((int*)3));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.eraseSecond((int*)6));
       TS_ASSERT(bijection.empty());
 
-      bijection.insert((int *)1, (int *)2);
-      bijection.insert((int *)3, (int *)4);
-      bijection.insert((int *)5, (int *)6);
+      bijection.insert((int*)1, (int*)2);
+      bijection.insert((int*)3, (int*)4);
+      bijection.insert((int*)5, (int*)6);
 
       TS_ASSERT(!bijection.empty());
 
@@ -552,30 +559,30 @@ namespace gum_tests {
     }
 
     void test_phStar() {
-      gum::Bijection<int *, int *> carre;
-      carre.insert((int *)1, (int *)1);
-      carre.insert((int *)2, (int *)4);
-      carre.insert((int *)3, (int *)9);
+      gum::Bijection<int*, int*> carre;
+      carre.insert((int*)1, (int*)1);
+      carre.insert((int*)2, (int*)4);
+      carre.insert((int*)3, (int*)9);
 
       try {
-        carre.insert((int *)4, (int *)1);
-      } catch (gum::DuplicateElement &) {
+        carre.insert((int*)4, (int*)1);
+      } catch (gum::DuplicateElement&) {
       }
 
-      TS_ASSERT(!carre.existsFirst((int *)4));
+      TS_ASSERT(!carre.existsFirst((int*)4));
     }
 
     void testResizeStar() {
-      gum::Bijection<int *, int *> bijection(2);
+      gum::Bijection<int*, int*> bijection(2);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int *)1, (int *)2));
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int *)3, (int *)4));
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int *)5, (int *)6));
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int *)6, (int *)3));
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int *)7, (int *)5));
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int *)8, (int *)9));
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int *)9, (int *)7));
-      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int *)2, (int *)1));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)1, (int*)2));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)3, (int*)4));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)5, (int*)6));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)6, (int*)3));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)7, (int*)5));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)8, (int*)9));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)9, (int*)7));
+      TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)2, (int*)1));
 
       bijection.resize(2);
 
@@ -583,31 +590,32 @@ namespace gum_tests {
     }
 
     void testIteratorsStar() {
-      gum::Bijection<int *, int *> bijection;
+      gum::Bijection<int*, int*> bijection;
 
-      bijection.insert((int *)1, (int *)2);
-      bijection.insert((int *)3, (int *)4);
-      bijection.insert((int *)5, (int *)6);
-      bijection.insert((int *)6, (int *)3);
-      bijection.insert((int *)7, (int *)5);
-      bijection.insert((int *)8, (int *)9);
-      bijection.insert((int *)9, (int *)7);
-      bijection.insert((int *)2, (int *)1);
+      bijection.insert((int*)1, (int*)2);
+      bijection.insert((int*)3, (int*)4);
+      bijection.insert((int*)5, (int*)6);
+      bijection.insert((int*)6, (int*)3);
+      bijection.insert((int*)7, (int*)5);
+      bijection.insert((int*)8, (int*)9);
+      bijection.insert((int*)9, (int*)7);
+      bijection.insert((int*)2, (int*)1);
 
       auto iter1 = bijection.begin();
       auto iter2 = bijection.end();
 
       unsigned int nb = 0;
 
-      for (auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb) {
+      for (auto iter = bijection.begin(); iter != bijection.end();
+           ++iter, ++nb) {
       }
 
       TS_ASSERT(nb == 8);
 
-      bijection.eraseFirst((int *)1);
-      bijection.eraseFirst((int *)5);
-      bijection.eraseFirst((int *)6);
-      bijection.eraseFirst((int *)9);
+      bijection.eraseFirst((int*)1);
+      bijection.eraseFirst((int*)5);
+      bijection.eraseFirst((int*)6);
+      bijection.eraseFirst((int*)9);
 
       nb = 0;
 
@@ -630,14 +638,14 @@ namespace gum_tests {
     }
 
     void testcopyConstructor() {
-      gum::Bijection<gum::NodeId, const gum::LabelizedVariable *> b;
+      gum::Bijection<gum::NodeId, const gum::LabelizedVariable*> b;
       b.insert(1, new gum::LabelizedVariable("A"));
       b.insert(2, new gum::LabelizedVariable("B"));
       b.insert(3, new gum::LabelizedVariable("C"));
       b.insert(4, new gum::LabelizedVariable("D"));
       b.insert(5, new gum::LabelizedVariable("E"));
 
-      gum::Bijection<gum::NodeId, const gum::LabelizedVariable *> copy(b);
+      gum::Bijection<gum::NodeId, const gum::LabelizedVariable*> copy(b);
 
       for (auto iter = b.begin(); iter != b.end(); ++iter) {
         delete iter.second();

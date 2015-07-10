@@ -22,11 +22,11 @@ namespace gum_tests {
     std::flush(std::cout);
   }
 
-  void str2file(const std::string &filename, const std::string &message) {
+  void str2file(const std::string& filename, const std::string& message) {
     std::ofstream outFile;
     outFile.open(filename);
     outFile << message << std::endl;
     outFile.close();
   }
 }
-#endif // TESTSUITE_UTILS_H
+#endif  // TESTSUITE_UTILS_H

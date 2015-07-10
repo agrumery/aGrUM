@@ -29,49 +29,49 @@
 namespace gum {
   namespace prm {
 
-    template<typename GUM_SCALAR> INLINE
-    FuncAttribute<GUM_SCALAR>::FuncAttribute ( const std::string& name,
-                                               const Type<GUM_SCALAR>& type,
-                                               MultiDimImplementation<GUM_SCALAR>* impl ) :
-      ScalarAttribute<GUM_SCALAR> ( name, type, impl )
-    {
+    template <typename GUM_SCALAR>
+    INLINE FuncAttribute<GUM_SCALAR>::FuncAttribute(
+        const std::string& name, const Type<GUM_SCALAR>& type,
+        MultiDimImplementation<GUM_SCALAR>* impl)
+        : ScalarAttribute<GUM_SCALAR>(name, type, impl) {
       std::stringstream str;
-      str << "In FuncAttribute(" << name << ", " << type.name() << ", " << impl << ")"; 
-      GUM_CONSTRUCTOR ( FuncAttribute );
+      str << "In FuncAttribute(" << name << ", " << type.name() << ", " << impl
+          << ")";
+      GUM_CONSTRUCTOR(FuncAttribute);
     }
 
-    template<typename GUM_SCALAR> INLINE
-    FuncAttribute<GUM_SCALAR>::~FuncAttribute() {
-      GUM_DESTRUCTOR ( FuncAttribute );
+    template <typename GUM_SCALAR>
+    INLINE FuncAttribute<GUM_SCALAR>::~FuncAttribute() {
+      GUM_DESTRUCTOR(FuncAttribute);
     }
 
-    template<typename GUM_SCALAR> INLINE
-    void
-    FuncAttribute<GUM_SCALAR>::addParent ( const ClassElement<GUM_SCALAR>& elt ) { }
+    template <typename GUM_SCALAR>
+    INLINE void
+    FuncAttribute<GUM_SCALAR>::addParent(const ClassElement<GUM_SCALAR>& elt) {}
 
-    template<typename GUM_SCALAR> INLINE
-    void
-    FuncAttribute<GUM_SCALAR>::addChild ( const ClassElement<GUM_SCALAR>& elt ) { }
+    template <typename GUM_SCALAR>
+    INLINE void
+    FuncAttribute<GUM_SCALAR>::addChild(const ClassElement<GUM_SCALAR>& elt) {}
 
-    template<typename GUM_SCALAR> INLINE
-    FuncAttribute<GUM_SCALAR>::FuncAttribute ( const FuncAttribute<GUM_SCALAR>& source ) :
-      ScalarAttribute<GUM_SCALAR> ( source ) {
-      GUM_CONS_CPY ( FuncAttribute );
-      GUM_ERROR ( FatalError, "illegal call to copy constructor" );
+    template <typename GUM_SCALAR>
+    INLINE FuncAttribute<GUM_SCALAR>::FuncAttribute(
+        const FuncAttribute<GUM_SCALAR>& source)
+        : ScalarAttribute<GUM_SCALAR>(source) {
+      GUM_CONS_CPY(FuncAttribute);
+      GUM_ERROR(FatalError, "illegal call to copy constructor");
     }
 
-    template<typename GUM_SCALAR> INLINE
-    FuncAttribute<GUM_SCALAR>&
-    FuncAttribute<GUM_SCALAR>::operator= ( const FuncAttribute<GUM_SCALAR>& from ) {
-      GUM_ERROR ( FatalError, "illegal call to copy operator" );
+    template <typename GUM_SCALAR>
+    INLINE FuncAttribute<GUM_SCALAR>& FuncAttribute<GUM_SCALAR>::
+    operator=(const FuncAttribute<GUM_SCALAR>& from) {
+      GUM_ERROR(FatalError, "illegal call to copy operator");
     }
 
-    template<typename GUM_SCALAR> INLINE
-    void 
-    FuncAttribute<GUM_SCALAR>::_setCpf( Potential<GUM_SCALAR>* cpf) {
-      GUM_ERROR( OperationNotAllowed, "Cannot change CPF of a functional attribute" );
+    template <typename GUM_SCALAR>
+    INLINE void FuncAttribute<GUM_SCALAR>::_setCpf(Potential<GUM_SCALAR>* cpf) {
+      GUM_ERROR(OperationNotAllowed,
+                "Cannot change CPF of a functional attribute");
     }
 
   } /* namespace prm */
 } /* namespace gum */
-

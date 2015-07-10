@@ -38,54 +38,57 @@ namespace gum {
      * @brief This class overload gum::prm::ClassElement::_addParent() and
      *        gum::prm::ClassElement::_addChild with empty methods.
      *
-     * This class should be used when dealing with functions such as Noisy-Or which
+     * This class should be used when dealing with functions such as Noisy-Or
+     *which
      * require special method calls to add parents.
-     * When dealing with such attributes, you should create the MultiDim yourself and
+     * When dealing with such attributes, you should create the MultiDim
+     *yourself and
      * populate it with the attribute's parents.
      *
      * See gum::prm::PRMFactory::addAttribute(Attribute*) for more details.
      */
-    template<typename GUM_SCALAR>
-      class FuncAttribute: public ScalarAttribute<GUM_SCALAR> {
-        public:
-          /**
-           * @brief Constructor used by gum::Class.
-           * This will create an FuncAttribute with only one variable: type and with the given
-           * implementation.
-           *
-           * @param name The name of this FuncAttribute.
-           * @param type The type of this FuncAttribute, it is copied.
-           * @param impl The MultiDimImplementation used by the internal Potential of this FuncAttribute.
-           *             it will be deleted after the call of ~FuncAttribute.
-           */
-          FuncAttribute ( const std::string& name,
-                          const Type<GUM_SCALAR>& type,
-                          MultiDimImplementation<GUM_SCALAR>* impl = new MultiDimArray<GUM_SCALAR>() );
+    template <typename GUM_SCALAR>
+    class FuncAttribute : public ScalarAttribute<GUM_SCALAR> {
+      public:
+      /**
+       * @brief Constructor used by gum::Class.
+       * This will create an FuncAttribute with only one variable: type and with
+       *the given
+       * implementation.
+       *
+       * @param name The name of this FuncAttribute.
+       * @param type The type of this FuncAttribute, it is copied.
+       * @param impl The MultiDimImplementation used by the internal Potential
+       *of this FuncAttribute.
+       *             it will be deleted after the call of ~FuncAttribute.
+       */
+      FuncAttribute(const std::string& name, const Type<GUM_SCALAR>& type,
+                    MultiDimImplementation<GUM_SCALAR>* impl =
+                        new MultiDimArray<GUM_SCALAR>());
 
-          /// Destructor.
-          virtual ~FuncAttribute();
+      /// Destructor.
+      virtual ~FuncAttribute();
 
-          /// See gum::ClassElement::_addParent().
-          virtual void addParent ( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::ClassElement::_addParent().
+      virtual void addParent(const ClassElement<GUM_SCALAR>& elt);
 
-          /// See gum::ClassElement::_addChild().
-          virtual void addChild ( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::ClassElement::_addChild().
+      virtual void addChild(const ClassElement<GUM_SCALAR>& elt);
 
-        protected:
+      protected:
+      /// Copy constructor. Don't use it.
+      FuncAttribute(const FuncAttribute& source);
 
-          /// Copy constructor. Don't use it.
-          FuncAttribute ( const FuncAttribute& source );
+      /// Copy operator. Don't use it.
+      FuncAttribute& operator=(const FuncAttribute& from);
 
-          /// Copy operator. Don't use it.
-          FuncAttribute& operator= ( const FuncAttribute& from );
-
-          virtual void _setCpf( Potential<GUM_SCALAR>* cpf);
-      };
+      virtual void _setCpf(Potential<GUM_SCALAR>* cpf);
+    };
 
     extern template class FuncAttribute<double>;
 
   } /* namespace prm */
-} // namespace gum
+}  // namespace gum
 
 #include <agrum/PRM/elements/funcAttribute.tcc>
 

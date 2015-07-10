@@ -27,16 +27,15 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/BN/inference/BayesBall.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
 namespace gum {
 
-  void BayesBall::requisiteNodes(const DAG &dag,
-                                 const NodeSet& query,
+  void BayesBall::requisiteNodes(const DAG& dag, const NodeSet& query,
                                  const NodeSet& hardEvidence,
                                  const NodeSet& softEvidence,
                                  NodeSet& requisite) {
- 
+
     // save the parameters so as to avoid passing them in arguments to
     // the recursive functions
     __dag = &dag;
@@ -46,34 +45,36 @@ namespace gum {
     // create the marks (top and bottom) so that we won't have to test their
     // existence in the recursive functions
     __marks.clear();
-    __marks.resize ( dag.size () );
-    const std::pair<bool, bool> empty_mark (false, false);
-    for ( const auto node : dag ) __marks.insert ( node, empty_mark );
-    
+    __marks.resize(dag.size());
+    const std::pair<bool, bool> empty_mark(false, false);
+    for (const auto node : dag)
+      __marks.insert(node, empty_mark);
+
     // perform the ball bouncing
-    for ( const auto node : query ) {
-      __fromChild ( node );
+    for (const auto node : query) {
+      __fromChild(node);
     }
 
-    // the requisite nodes are those whose top mark (the first one) is set to true
-    for ( const auto node : dag ) {
-      if ( __marks[node].first ) {
+    // the requisite nodes are those whose top mark (the first one) is set to
+    // true
+    for (const auto node : dag) {
+      if (__marks[node].first) {
         requisite.insert(node);
       }
     }
   }
-  
 
-  void BayesBall::__fromChild ( NodeId node ) {
-    if ( __hardEvidence->exists(node) ) {
+
+  void BayesBall::__fromChild(NodeId node) {
+    if (__hardEvidence->exists(node)) {
       // mark its top so that it will be included in the end into
       // the set of requisite nodes
       __marks[node].first = true;
       return;
     }
-      
-    if ( not __marks[node].first ) {
-      __marks[node].first = true; // top marked
+
+    if (not __marks[node].first) {
+      __marks[node].first = true;  // top marked
 
       for (const auto par : __dag->parents(node)) {
         __fromChild(par);
@@ -81,7 +82,7 @@ namespace gum {
     }
 
     if (not __marks[node].second) {
-      __marks[node].second = true; // bottom marked
+      __marks[node].second = true;  // bottom marked
 
       for (const auto chi : __dag->children(node)) {
         __fromParent(chi);
@@ -89,12 +90,12 @@ namespace gum {
     }
   }
 
-  
+
   void BayesBall::__fromParent(NodeId node) {
     const bool hard_evidence = __hardEvidence->exists(node);
-    const bool evidence = hard_evidence or __softEvidence->exists ( node );
-    
-    if ( evidence && ! __marks[node].first ) {
+    const bool evidence = hard_evidence or __softEvidence->exists(node);
+
+    if (evidence && !__marks[node].first) {
       __marks[node].first = true;
 
       for (const auto par : __dag->parents(node)) {
@@ -102,7 +103,7 @@ namespace gum {
       }
     }
 
-    if (! hard_evidence && !__marks[node].second) {
+    if (!hard_evidence && !__marks[node].second) {
       __marks[node].second = true;
 
       for (const auto chi : __dag->children(node)) {
@@ -111,6 +112,5 @@ namespace gum {
     }
   }
 
-  
-  
+
 } /* namespace gum */

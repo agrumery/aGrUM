@@ -33,14 +33,14 @@ namespace gum {
   namespace learning {
 
     /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintDAG::setGraphAlone(const DiGraph &graph) {
+    INLINE void StructuralConstraintDAG::setGraphAlone(const DiGraph& graph) {
       // check that the digraph has no cycle
       DAG g;
 
       for (auto node : graph)
         g.addNode(node);
 
-      for (auto &arc : graph.arcs())
+      for (auto& arc : graph.arcs())
         g.addArc(arc.tail(), arc.head());
 
       _DAG__cycle_detector.setDAG(g);
@@ -79,30 +79,26 @@ namespace gum {
     }
 
     /// checks whether the constraints enable to add an arc
-    INLINE bool
-    StructuralConstraintDAG::checkModificationAlone(const ArcAddition &change) const
-        noexcept {
+    INLINE bool StructuralConstraintDAG::checkModificationAlone(
+        const ArcAddition& change) const noexcept {
       return checkArcAdditionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to remove an arc
-    INLINE bool
-    StructuralConstraintDAG::checkModificationAlone(const ArcDeletion &change) const
-        noexcept {
+    INLINE bool StructuralConstraintDAG::checkModificationAlone(
+        const ArcDeletion& change) const noexcept {
       return checkArcDeletionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to reverse an arc
-    INLINE bool
-    StructuralConstraintDAG::checkModificationAlone(const ArcReversal &change) const
-        noexcept {
+    INLINE bool StructuralConstraintDAG::checkModificationAlone(
+        const ArcReversal& change) const noexcept {
       return checkArcReversalAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to perform a graph change
-    INLINE bool
-    StructuralConstraintDAG::checkModificationAlone(const GraphChange &change) const
-        noexcept {
+    INLINE bool StructuralConstraintDAG::checkModificationAlone(
+        const GraphChange& change) const noexcept {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION:
           return checkArcAdditionAlone(change.node1(), change.node2());
@@ -114,43 +110,44 @@ namespace gum {
           return checkArcReversalAlone(change.node1(), change.node2());
 
         default:
-          GUM_ERROR(OperationNotAllowed, "edge modifications are not "
-                                         "supported by StructuralConstraintDAG");
+          GUM_ERROR(OperationNotAllowed,
+                    "edge modifications are not "
+                    "supported by StructuralConstraintDAG");
       }
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintDAG::modifyGraphAlone(const ArcAddition &change) {
+    StructuralConstraintDAG::modifyGraphAlone(const ArcAddition& change) {
       _DAG__cycle_detector.addArc(change.node1(), change.node2());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintDAG::modifyGraphAlone(const ArcDeletion &change) {
+    StructuralConstraintDAG::modifyGraphAlone(const ArcDeletion& change) {
       _DAG__cycle_detector.eraseArc(change.node1(), change.node2());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintDAG::modifyGraphAlone(const ArcReversal &change) {
+    StructuralConstraintDAG::modifyGraphAlone(const ArcReversal& change) {
       _DAG__cycle_detector.reverseArc(change.node1(), change.node2());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintDAG::modifyGraphAlone(const GraphChange &change) {
+    StructuralConstraintDAG::modifyGraphAlone(const GraphChange& change) {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION:
-          modifyGraphAlone(reinterpret_cast<const ArcAddition &>(change));
+          modifyGraphAlone(reinterpret_cast<const ArcAddition&>(change));
           break;
 
         case GraphChangeType::ARC_DELETION:
-          modifyGraphAlone(reinterpret_cast<const ArcDeletion &>(change));
+          modifyGraphAlone(reinterpret_cast<const ArcDeletion&>(change));
           break;
 
         case GraphChangeType::ARC_REVERSAL:
-          modifyGraphAlone(reinterpret_cast<const ArcReversal &>(change));
+          modifyGraphAlone(reinterpret_cast<const ArcReversal&>(change));
           break;
 
         default:
@@ -161,13 +158,13 @@ namespace gum {
 
     /// indicates whether a change will always violate the constraint
     INLINE bool
-    StructuralConstraintDAG::isAlwaysInvalidAlone(const GraphChange &) const
+    StructuralConstraintDAG::isAlwaysInvalidAlone(const GraphChange&) const
         noexcept {
       return false;
     }
 
     /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintDAG::setGraph(const DAG &graph) {
+    INLINE void StructuralConstraintDAG::setGraph(const DAG& graph) {
       constraints::setGraph(graph);
       _DAG__cycle_detector.setDAG(graph);
     }

@@ -54,13 +54,15 @@ namespace gum_tests {
       p.causalWeight(b, 0.4);
       p.causalWeight(d, 0.7);
 
-      TS_ASSERT_EQUALS(p.toString(),
-                       "a<0,1>=noisyORNet([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
+      TS_ASSERT_EQUALS(
+          p.toString(),
+          "a<0,1>=noisyORNet([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
 
       gum::MultiDimNoisyORNet<float> q(p);
-      TS_ASSERT_EQUALS(q.toString(),
-                       "a<0,1>=noisyORNet([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
+      TS_ASSERT_EQUALS(
+          q.toString(),
+          "a<0,1>=noisyORNet([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
     }
 
@@ -136,17 +138,17 @@ namespace gum_tests {
       p.causalWeight(competition, 0.9);
 
       gum::Instantiation i(p);
-      float witness[] = {0.9999,   0.0001,   0.09999,  0.90001,  0.29997,  0.70003,
-                         0.029997, 0.970003, 0.49995,  0.50005,  0.049995, 0.950005,
-                         0.149985, 0.850015, 0.014999, 0.985002, 0.69993,  0.30007,
-                         0.069993, 0.930007, 0.209979, 0.790021, 0.020998, 0.979002,
-                         0.349965, 0.650035, 0.034997, 0.965004, 0.104990, 0.895011,
-                         0.010499, 0.989501, 0.89991,  0.10009,  0.089991, 0.910009,
-                         0.269973, 0.730027, 0.026997, 0.973003, 0.449955, 0.550045,
-                         0.044996, 0.955005, 0.134987, 0.865014, 0.013499, 0.986501,
-                         0.629937, 0.370063, 0.062994, 0.937006, 0.188981, 0.811019,
-                         0.018898, 0.981101, 0.314969, 0.685032, 0.031497, 0.968503,
-                         0.094491, 0.905509, 0.009449, 0.990551};
+      float witness[] = {
+          0.9999,   0.0001,   0.09999,  0.90001,  0.29997,  0.70003,  0.029997,
+          0.970003, 0.49995,  0.50005,  0.049995, 0.950005, 0.149985, 0.850015,
+          0.014999, 0.985002, 0.69993,  0.30007,  0.069993, 0.930007, 0.209979,
+          0.790021, 0.020998, 0.979002, 0.349965, 0.650035, 0.034997, 0.965004,
+          0.104990, 0.895011, 0.010499, 0.989501, 0.89991,  0.10009,  0.089991,
+          0.910009, 0.269973, 0.730027, 0.026997, 0.973003, 0.449955, 0.550045,
+          0.044996, 0.955005, 0.134987, 0.865014, 0.013499, 0.986501, 0.629937,
+          0.370063, 0.062994, 0.937006, 0.188981, 0.811019, 0.018898, 0.981101,
+          0.314969, 0.685032, 0.031497, 0.968503, 0.094491, 0.905509, 0.009449,
+          0.990551};
 
       int j = 0;
 
@@ -186,22 +188,24 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8);
       bn.addWeightedArc(idCold, idFever, 0.4);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8), gum::InvalidArc);
+      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8),
+                       gum::InvalidArc);
 
-      const gum::Potential<float> &pOneMoreParent1 = bn.cpt(idOneMoreParent1);
+      const gum::Potential<float>& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       pOneMoreParent1.fillWith(std::vector<float>{0.2, 0.8});
 
-      const gum::Potential<float> &pOneMoreParent2 = bn.cpt(idOneMoreParent2);
+      const gum::Potential<float>& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
       pOneMoreParent2.fillWith(std::vector<float>{0.3, 0.7});
 
       bn.addArc(idOneMoreParent1, idOneMore);
       bn.addArc(idFever, idOneMore);
       bn.addArc(idOneMoreParent2, idOneMore);
-      const gum::Potential<float> &pOneMore = bn.cpt(idOneMore);
-      pOneMore.fillWith(std::vector<float>{0.1, 0.9, 0.8, 0.2, 0.1, 0.9, 0.8, 0.2,
-                                           0.1, 0.9, 0.8, 0.2, 0.1, 0.9, 0.8, 0.2});
+      const gum::Potential<float>& pOneMore = bn.cpt(idOneMore);
+      pOneMore.fillWith(std::vector<float>{0.1, 0.9, 0.8, 0.2, 0.1, 0.9, 0.8,
+                                           0.2, 0.1, 0.9, 0.8, 0.2, 0.1, 0.9,
+                                           0.8, 0.2});
 
-      const gum::Potential<float> &p = bn.cpt(idFever);
+      const gum::Potential<float>& p = bn.cpt(idFever);
 
       gum::Instantiation i(p);
       float witness[] = {1.0, 0.0, 0.1,  0.9,  0.2,  0.8,  0.02,  0.98,

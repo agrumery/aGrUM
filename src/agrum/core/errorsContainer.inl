@@ -29,19 +29,22 @@
 namespace gum {
 
   INLINE
-  void ErrorsContainer::Error(const std::wstring &filename, int line, int col,
-                              const wchar_t *msg) {
-    add(ParseError(true, narrow(std::wstring(msg)), narrow(filename), line, col));
+  void ErrorsContainer::Error(const std::wstring& filename, int line, int col,
+                              const wchar_t* msg) {
+    add(ParseError(true, narrow(std::wstring(msg)), narrow(filename), line,
+                   col));
   }
 
   INLINE
-  void ErrorsContainer::Warning(const std::wstring &filename, int line, int col,
-                                const wchar_t *msg) {
-    add(ParseError(false, narrow(std::wstring(msg)), narrow(filename), line, col));
+  void ErrorsContainer::Warning(const std::wstring& filename, int line, int col,
+                                const wchar_t* msg) {
+    add(ParseError(false, narrow(std::wstring(msg)), narrow(filename), line,
+                   col));
   }
 
   INLINE
-  void ErrorsContainer::Exception(const std::wstring &filename, const wchar_t *msg) {
+  void ErrorsContainer::Exception(const std::wstring& filename,
+                                  const wchar_t* msg) {
     add(ParseError(true, "Exception : " + narrow(std::wstring(msg)),
                    narrow(filename), 0, 0));
   }
@@ -57,20 +60,22 @@ namespace gum {
   }
 
   INLINE
-  void ErrorsContainer::addError(const std::string &msg, const std::string &filename,
-                                 int line, int col) {
+  void ErrorsContainer::addError(const std::string& msg,
+                                 const std::string& filename, int line,
+                                 int col) {
     add(ParseError(true, msg, filename, line, col));
   }
 
   INLINE
-  void ErrorsContainer::addWarning(const std::string &msg,
-                                   const std::string &filename, int line, int col) {
+  void ErrorsContainer::addWarning(const std::string& msg,
+                                   const std::string& filename, int line,
+                                   int col) {
     add(ParseError(false, msg, filename, line, col));
   }
 
   INLINE
-  void ErrorsContainer::addException(const std::string &msg,
-                                     const std::string &filename) {
+  void ErrorsContainer::addException(const std::string& msg,
+                                     const std::string& filename) {
     add(ParseError(true, msg, filename, 0, 0));
   }
 
@@ -78,7 +83,7 @@ namespace gum {
   int ErrorsContainer::count(void) const { return error_count + warning_count; }
 
   INLINE
-  void ErrorsContainer::syntheticResults(std::ostream &o) const {
+  void ErrorsContainer::syntheticResults(std::ostream& o) const {
     o << "Errors : " << error_count << std::endl;
     o << "Warnings : " << warning_count << std::endl;
   }
@@ -93,11 +98,13 @@ namespace gum {
   int ErrorsContainer::col(int i) const { return errors[i].column; }
 
   INLINE
-  std::wstring ErrorsContainer::msg(int i) const { return widen(errors[i].msg); }
+  std::wstring ErrorsContainer::msg(int i) const {
+    return widen(errors[i].msg);
+  }
 
   INLINE
   std::wstring ErrorsContainer::filename(int i) const {
     return widen(errors[i].filename);
   }
 
-} // namespace gum
+}  // namespace gum

@@ -44,7 +44,7 @@ namespace gum {
 
   /// constructor for an a priori non empty graph
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
-      UndiGraph *graph, const NodeProperty<Size> *modal, float ratio,
+      UndiGraph* graph, const NodeProperty<Size>* modal, float ratio,
       float threshold)
       : __graph(nullptr), __modalities(nullptr), __simplicial_set(0),
         __simplicial_ratio(ratio), __simplicial_threshold(threshold),
@@ -56,7 +56,7 @@ namespace gum {
 
   /// copy constructor
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
-      const DefaultEliminationSequenceStrategy &from)
+      const DefaultEliminationSequenceStrategy& from)
       : __graph(0), __modalities(0), __simplicial_set(0),
         __simplicial_ratio(from.__simplicial_ratio),
         __simplicial_threshold(from.__simplicial_threshold),
@@ -78,15 +78,13 @@ namespace gum {
   }
 
   /// sets a new graph to be triangulated
-  void
-  DefaultEliminationSequenceStrategy::setGraph(UndiGraph *graph,
-                                               const NodeProperty<Size> *modal) {
+  void DefaultEliminationSequenceStrategy::setGraph(
+      UndiGraph* graph, const NodeProperty<Size>* modal) {
     // check that both the graph and the modalities are different from 0
     // or else that both are equal to 0
     if ((!graph && modal) || (graph && !modal)) {
-      GUM_ERROR(
-          GraphError,
-          "DefaultEliminationSequenceStrategy needs valid graphs and domain sizes");
+      GUM_ERROR(GraphError, "DefaultEliminationSequenceStrategy needs valid "
+                            "graphs and domain sizes");
     }
 
     // check that each node has a domain size
@@ -160,7 +158,8 @@ namespace gum {
       float min_weight = iter_heuristic.val();
       NodeId removable_node = iter_heuristic.key();
 
-      for (++iter_heuristic; iter_heuristic != __log_weights.end(); ++iter_heuristic)
+      for (++iter_heuristic; iter_heuristic != __log_weights.end();
+           ++iter_heuristic)
         if (iter_heuristic.val() < min_weight) {
           removable_node = iter_heuristic.key();
           min_weight = iter_heuristic.val();
@@ -170,7 +169,8 @@ namespace gum {
     }
   }
 
-  /** @brief if the elimination sequence is able to compute fill-ins, we indicate
+  /** @brief if the elimination sequence is able to compute fill-ins, we
+   * indicate
    * whether we want this feature to be activated */
   void DefaultEliminationSequenceStrategy::askFillIns(bool do_it) {
     __provide_fill_ins = do_it;
@@ -202,7 +202,7 @@ namespace gum {
 
   /** @brief in case fill-ins are provided, this function returns the fill-ins
    * generated after the last node elimination */
-  const EdgeSet &DefaultEliminationSequenceStrategy::fillIns() {
+  const EdgeSet& DefaultEliminationSequenceStrategy::fillIns() {
     if (!__provide_fill_ins || !__simplicial_set)
       return EliminationSequenceStrategy::fillIns();
     else
@@ -211,7 +211,7 @@ namespace gum {
 
   /** @brief creates a new elimination sequence of the same type as the current
    * object, but this sequence contains only an empty graph */
-  DefaultEliminationSequenceStrategy *
+  DefaultEliminationSequenceStrategy*
   DefaultEliminationSequenceStrategy::newFactory() const {
     return new DefaultEliminationSequenceStrategy(__simplicial_ratio,
                                                   __simplicial_threshold);

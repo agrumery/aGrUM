@@ -36,8 +36,9 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE ScoreBD<IdSetAlloc, CountAlloc>::ScoreBD(
-        const RowFilter &filter, const std::vector<unsigned int> &var_modalities,
-        Apriori<IdSetAlloc, CountAlloc> &apriori)
+        const RowFilter& filter,
+        const std::vector<unsigned int>& var_modalities,
+        Apriori<IdSetAlloc, CountAlloc>& apriori)
         : Score<IdSetAlloc, CountAlloc>(filter, var_modalities, apriori) {
       // for debugging purposes
       GUM_CONSTRUCTOR(ScoreBD);
@@ -46,7 +47,7 @@ namespace gum {
     /// copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
     ScoreBD<IdSetAlloc, CountAlloc>::ScoreBD(
-        const ScoreBD<IdSetAlloc, CountAlloc> &from)
+        const ScoreBD<IdSetAlloc, CountAlloc>& from)
         : Score<IdSetAlloc, CountAlloc>(from), __gammalog2(from.__gammalog2),
           __internal_apriori(from.__internal_apriori) {
       // for debugging purposes
@@ -55,7 +56,8 @@ namespace gum {
 
     /// move constructor
     template <typename IdSetAlloc, typename CountAlloc>
-    ScoreBD<IdSetAlloc, CountAlloc>::ScoreBD(ScoreBD<IdSetAlloc, CountAlloc> &&from)
+    ScoreBD<IdSetAlloc, CountAlloc>::ScoreBD(
+        ScoreBD<IdSetAlloc, CountAlloc>&& from)
         : Score<IdSetAlloc, CountAlloc>(std::move(from)),
           __gammalog2(std::move(from.__gammalog2)),
           __internal_apriori(std::move(from.__internal_apriori)) {
@@ -65,7 +67,7 @@ namespace gum {
 
     /// virtual copy factory
     template <typename IdSetAlloc, typename CountAlloc>
-    ScoreBD<IdSetAlloc, CountAlloc> *
+    ScoreBD<IdSetAlloc, CountAlloc>*
     ScoreBD<IdSetAlloc, CountAlloc>::copyFactory() const {
       return new ScoreBD<IdSetAlloc, CountAlloc>(*this);
     }
@@ -80,15 +82,16 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template <typename IdSetAlloc, typename CountAlloc>
     bool ScoreBD<IdSetAlloc, CountAlloc>::isAprioriCompatible(
-        const std::string &apriori_type, float weight) {
+        const std::string& apriori_type, float weight) {
       if (apriori_type == AprioriNoAprioriType::type) {
         GUM_ERROR(IncompatibleScoreApriori, "The BD score requires an apriori");
       }
 
       if (weight != 0) {
-        GUM_ERROR(PossiblyIncompatibleScoreApriori,
-                  "The apriori is currently compatible with the BD score but if "
-                  "you change the weight, it may become incompatible");
+        GUM_ERROR(
+            PossiblyIncompatibleScoreApriori,
+            "The apriori is currently compatible with the BD score but if "
+            "you change the weight, it may become incompatible");
       }
 
       // apriori types unsupported by the type checker
@@ -101,7 +104,7 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE bool ScoreBD<IdSetAlloc, CountAlloc>::isAprioriCompatible(
-        const Apriori<IdSetAlloc, CountAlloc> &apriori) {
+        const Apriori<IdSetAlloc, CountAlloc>& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
@@ -113,7 +116,7 @@ namespace gum {
 
     /// returns the internal apriori of the score
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
+    INLINE const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
     ScoreBD<IdSetAlloc, CountAlloc>::internalApriori() const noexcept {
       return __internal_apriori;
     }
@@ -133,7 +136,7 @@ namespace gum {
       }
 
       // get the counts for all the targets and the conditioning nodes
-      const std::vector<float, CountAlloc> &N_ijk =
+      const std::vector<float, CountAlloc>& N_ijk =
           this->_getAllCounts(nodeset_index);
       const unsigned int targets_modal = N_ijk.size();
       float score = 0;
@@ -142,13 +145,13 @@ namespace gum {
       // without conditioning nodes
       if (this->_getConditioningNodes(nodeset_index)) {
         // get the count of the conditioning nodes
-        const std::vector<float, CountAlloc> &N_ij =
+        const std::vector<float, CountAlloc>& N_ij =
             this->_getConditioningCounts(nodeset_index);
         const unsigned int conditioning_modal = N_ij.size();
 
-        const std::vector<float, CountAlloc> &N_prime_ijk =
+        const std::vector<float, CountAlloc>& N_prime_ijk =
             this->_getAllApriori(nodeset_index);
-        const std::vector<float, CountAlloc> &N_prime_ij =
+        const std::vector<float, CountAlloc>& N_prime_ij =
             this->_getConditioningApriori(nodeset_index);
 
         // the BD score can be computed as follows:
@@ -157,14 +160,15 @@ namespace gum {
         //                             gammalog2 ( N'_ijk ) } ]
 
         for (unsigned int j = 0; j < conditioning_modal; ++j) {
-          score += __gammalog2(N_prime_ij[j]) - __gammalog2(N_ij[j] + N_prime_ij[j]);
+          score +=
+              __gammalog2(N_prime_ij[j]) - __gammalog2(N_ij[j] + N_prime_ij[j]);
         }
         for (unsigned int k = 0; k < targets_modal; ++k) {
-          score +=
-              __gammalog2(N_ijk[k] + N_prime_ijk[k]) - __gammalog2(N_prime_ijk[k]);
+          score += __gammalog2(N_ijk[k] + N_prime_ijk[k]) -
+                   __gammalog2(N_prime_ijk[k]);
         }
       } else {
-        const std::vector<float, CountAlloc> &N_prime_ijk =
+        const std::vector<float, CountAlloc>& N_prime_ijk =
             this->_getAllApriori(nodeset_index);
 
         // the BD score can be computed as follows:
@@ -174,8 +178,8 @@ namespace gum {
         float N = 0;
         float N_prime = 0;
         for (unsigned int k = 0; k < targets_modal; ++k) {
-          score +=
-              __gammalog2(N_ijk[k] + N_prime_ijk[k]) - __gammalog2(N_prime_ijk[k]);
+          score += __gammalog2(N_ijk[k] + N_prime_ijk[k]) -
+                   __gammalog2(N_prime_ijk[k]);
           N += N_ijk[k];
           N_prime += N_prime_ijk[k];
         }

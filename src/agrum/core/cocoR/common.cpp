@@ -30,11 +30,11 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 namespace gum {
 
-  wchar_t *coco_string_create(const wchar_t *value) {
+  wchar_t* coco_string_create(const wchar_t* value) {
     return coco_string_create(value, 0);
   }
 
-  wchar_t *coco_string_create(const wchar_t *value, int startIndex) {
+  wchar_t* coco_string_create(const wchar_t* value, int startIndex) {
     int valueLen = 0;
     int len = 0;
 
@@ -46,9 +46,10 @@ namespace gum {
     return coco_string_create(value, startIndex, len);
   }
 
-  wchar_t *coco_string_create(const wchar_t *value, int startIndex, int length) {
+  wchar_t* coco_string_create(const wchar_t* value, int startIndex,
+                              int length) {
     int len = 0;
-    wchar_t *data;
+    wchar_t* data;
 
     if (value) {
       len = length;
@@ -61,7 +62,7 @@ namespace gum {
     return data;
   }
 
-  wchar_t *coco_string_create_upper(const wchar_t *data) {
+  wchar_t* coco_string_create_upper(const wchar_t* data) {
     if (!data) {
       return nullptr;
     }
@@ -72,7 +73,7 @@ namespace gum {
       dataLen = wcslen(data);
     }
 
-    wchar_t *newData = new wchar_t[dataLen + 1];
+    wchar_t* newData = new wchar_t[dataLen + 1];
 
     for (int i = 0; i <= dataLen; i++) {
       if ((L'a' <= data[i]) && (data[i] <= L'z')) {
@@ -86,7 +87,7 @@ namespace gum {
     return newData;
   }
 
-  wchar_t *coco_string_create_lower(const wchar_t *data) {
+  wchar_t* coco_string_create_lower(const wchar_t* data) {
     if (!data) {
       return nullptr;
     }
@@ -95,13 +96,13 @@ namespace gum {
     return coco_string_create_lower(data, 0, dataLen);
   }
 
-  wchar_t *coco_string_create_lower(const wchar_t *data, int startIndex,
+  wchar_t* coco_string_create_lower(const wchar_t* data, int startIndex,
                                     int dataLen) {
     if (!data) {
       return nullptr;
     }
 
-    wchar_t *newData = new wchar_t[dataLen + 1];
+    wchar_t* newData = new wchar_t[dataLen + 1];
 
     for (int i = 0; i <= dataLen; i++) {
       wchar_t ch = data[startIndex + i];
@@ -117,8 +118,9 @@ namespace gum {
     return newData;
   }
 
-  wchar_t *coco_string_create_append(const wchar_t *data1, const wchar_t *data2) {
-    wchar_t *data;
+  wchar_t* coco_string_create_append(const wchar_t* data1,
+                                     const wchar_t* data2) {
+    wchar_t* data;
     int data1Len = 0;
     int data2Len = 0;
 
@@ -145,21 +147,22 @@ namespace gum {
     return data;
   }
 
-  wchar_t *coco_string_create_append(const wchar_t *target, const wchar_t appendix) {
+  wchar_t* coco_string_create_append(const wchar_t* target,
+                                     const wchar_t appendix) {
     int targetLen = coco_string_length(target);
-    wchar_t *data = new wchar_t[targetLen + 2];
+    wchar_t* data = new wchar_t[targetLen + 2];
     wcsncpy(data, target, targetLen);
     data[targetLen] = appendix;
     data[targetLen + 1] = 0;
     return data;
   }
 
-  void coco_string_delete(wchar_t *&data) {
+  void coco_string_delete(wchar_t*& data) {
     delete[] data;
     data = nullptr;
   }
 
-  int coco_string_length(const wchar_t *data) {
+  int coco_string_length(const wchar_t* data) {
     if (data) {
       return wcslen(data);
     }
@@ -167,14 +170,14 @@ namespace gum {
     return 0;
   }
 
-  bool coco_string_endswith(const wchar_t *data, const wchar_t *end) {
+  bool coco_string_endswith(const wchar_t* data, const wchar_t* end) {
     int dataLen = wcslen(data);
     int endLen = wcslen(end);
     return (endLen <= dataLen) && (wcscmp(data + dataLen - endLen, end) == 0);
   }
 
-  int coco_string_indexof(const wchar_t *data, const wchar_t value) {
-    const wchar_t *chr = wcschr(data, value);
+  int coco_string_indexof(const wchar_t* data, const wchar_t value) {
+    const wchar_t* chr = wcschr(data, value);
 
     if (chr) {
       return (chr - data);
@@ -183,8 +186,8 @@ namespace gum {
     return -1;
   }
 
-  int coco_string_lastindexof(const wchar_t *data, const wchar_t value) {
-    const wchar_t *chr = wcsrchr(data, value);
+  int coco_string_lastindexof(const wchar_t* data, const wchar_t value) {
+    const wchar_t* chr = wcsrchr(data, value);
 
     if (chr) {
       return (chr - data);
@@ -193,25 +196,25 @@ namespace gum {
     return -1;
   }
 
-  void coco_string_merge(wchar_t *&target, const wchar_t *appendix) {
+  void coco_string_merge(wchar_t*& target, const wchar_t* appendix) {
     if (!appendix) {
       return;
     }
 
-    wchar_t *data = coco_string_create_append(target, appendix);
+    wchar_t* data = coco_string_create_append(target, appendix);
     delete[] target;
     target = data;
   }
 
-  bool coco_string_equal(const wchar_t *data1, const wchar_t *data2) {
+  bool coco_string_equal(const wchar_t* data1, const wchar_t* data2) {
     return wcscmp(data1, data2) == 0;
   }
 
-  int coco_string_compareto(const wchar_t *data1, const wchar_t *data2) {
+  int coco_string_compareto(const wchar_t* data1, const wchar_t* data2) {
     return wcscmp(data1, data2);
   }
 
-  int coco_string_hash(const wchar_t *data) {
+  int coco_string_hash(const wchar_t* data) {
     int h = 0;
 
     if (!data) {
@@ -231,14 +234,14 @@ namespace gum {
   }
 
   // string handling, ascii character
-  wchar_t *coco_string_create(const char *value) {
+  wchar_t* coco_string_create(const char* value) {
     int len = 0;
 
     if (value) {
       len = strlen(value);
     }
 
-    wchar_t *data = new wchar_t[len + 1];
+    wchar_t* data = new wchar_t[len + 1];
 
     for (int i = 0; i < len; ++i) {
       data[i] = (wchar_t)value[i];
@@ -248,9 +251,9 @@ namespace gum {
     return data;
   }
 
-  char *coco_string_create_char(const wchar_t *value) {
+  char* coco_string_create_char(const wchar_t* value) {
     int len = coco_string_length(value);
-    char *res = new char[len + 1];
+    char* res = new char[len + 1];
 
     for (int i = 0; i < len; ++i) {
       res[i] = (char)value[i];
@@ -260,9 +263,9 @@ namespace gum {
     return res;
   }
 
-  void coco_string_delete(char *&data) {
+  void coco_string_delete(char*& data) {
     delete[] data;
     data = nullptr;
   }
 
-} // namespace gum
+}  // namespace gum

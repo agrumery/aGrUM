@@ -51,10 +51,12 @@ namespace gum {
     // ============================================================================
     /** @class DBTransformIdentity
      * @ingroup learning_group
-     * @brief The class for preprocessing a database without altering it (identity)
+     * @brief The class for preprocessing a database without altering it
+     *(identity)
      *
      * The idea of DBTransform is the following: upon initialization, a tabular
-     * database first creates its vector of DBRows (for instance by reading a CSV
+     * database first creates its vector of DBRows (for instance by reading a
+     *CSV
      * file). The DBCells of the database are filled automatically from the read
      * strings but these fillings may not always be the most appropriate (for
      * instance, for ensuring that all the DBCells of a given column of the
@@ -76,10 +78,10 @@ namespace gum {
       DBTransformIdentity();
 
       /// copy constructor
-      DBTransformIdentity(const DBTransformIdentity &);
+      DBTransformIdentity(const DBTransformIdentity&);
 
       /// move constructor
-      DBTransformIdentity(DBTransformIdentity &&);
+      DBTransformIdentity(DBTransformIdentity&&);
 
       /// destructor
       virtual ~DBTransformIdentity();
@@ -93,10 +95,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTransformIdentity &operator=(const DBTransformIdentity &);
+      DBTransformIdentity& operator=(const DBTransformIdentity&);
 
       /// move operator
-      DBTransformIdentity &operator=(DBTransformIdentity &&);
+      DBTransformIdentity& operator=(DBTransformIdentity&&);
 
       /// @}
 
@@ -108,7 +110,7 @@ namespace gum {
 
       /// transforms a vector of DBrows
       /** @return true if the transformation could be performed successfully. */
-      virtual bool transform(std::vector<DBRow> &db,
+      virtual bool transform(std::vector<DBRow>& db,
                              std::vector<std::string> miss) const;
 
       /// @}

@@ -68,7 +68,7 @@ namespace gum {
     * @param bn The Bayesian Network writen in output.
     * @throws IOError Raised if and I/O error occurs.
     */
-    virtual void write(std::ostream &output, const IBayesNet<GUM_SCALAR> &bn);
+    virtual void write(std::ostream& output, const IBayesNet<GUM_SCALAR>& bn);
 
     /**
     * Writes a Bayesian Network in the referenced file using the DSL format.
@@ -78,12 +78,12 @@ namespace gum {
     * @param bn The Bayesian Network writed in the file.
     * @throws IOError Raised if and I/O error occurs.
     */
-    virtual void write(std::string filePath, const IBayesNet<GUM_SCALAR> &bn);
+    virtual void write(std::string filePath, const IBayesNet<GUM_SCALAR>& bn);
 
     private:
     // Returns a bloc defining a variable in the DSL format.
-    std::string __variableBloc(const IBayesNet<GUM_SCALAR> &bn,
-                               const DiscreteVariable &var);
+    std::string __variableBloc(const IBayesNet<GUM_SCALAR>& bn,
+                               const DiscreteVariable& var);
   };
 
   extern template class gum::DSLWriter<float>;
@@ -92,4 +92,4 @@ namespace gum {
 
 #include "DSLWriter.tcc"
 
-#endif // DSLWRITER_H
+#endif  // DSLWRITER_H

@@ -27,11 +27,11 @@
 namespace gum_tests {
   class SequenceTestSuite : public CxxTest::TestSuite {
     private:
-    void fill(gum::Sequence<int> &seq) { seq << 1 << 3 << 5 << 2 << 4; }
+    void fill(gum::Sequence<int>& seq) { seq << 1 << 3 << 5 << 2 << 4; }
 
     public:
     void testConstructor1() {
-      gum::Sequence<int> *p_seq = nullptr;
+      gum::Sequence<int>* p_seq = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(p_seq = new gum::Sequence<int>());
 
       TS_GUM_ASSERT_THROWS_NOTHING(if (p_seq) delete (p_seq));
@@ -69,7 +69,7 @@ namespace gum_tests {
     }
 
     void testConstructor2() {
-      gum::Sequence<std::string> *p_seq = nullptr;
+      gum::Sequence<std::string>* p_seq = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(p_seq = new gum::Sequence<std::string>());
 
       TS_GUM_ASSERT_THROWS_NOTHING(if (p_seq) delete (p_seq));
@@ -134,7 +134,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(seq << 2);
       TS_GUM_ASSERT_THROWS_NOTHING(seq << 4);
 
-      gum::Sequence<int> *p_seq2 = nullptr;
+      gum::Sequence<int>* p_seq2 = nullptr;
       TS_ASSERT_EQUALS(seq.toString(), "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]");
       TS_GUM_ASSERT_THROWS_NOTHING(p_seq2 = new gum::Sequence<int>(seq));
       TS_ASSERT_EQUALS(p_seq2->toString(), "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]");
@@ -311,7 +311,8 @@ namespace gum_tests {
 
       n = 0;
 
-      for (gum::Sequence<int>::iterator it = seq.rbegin(); it != seq.rend(); --it) {
+      for (gum::Sequence<int>::iterator it = seq.rbegin(); it != seq.rend();
+           --it) {
         n *= 10;
         n += *it;
       }
@@ -332,7 +333,8 @@ namespace gum_tests {
 
       n = 0;
 
-      for (gum::Sequence<int>::iterator it = seq.rbegin(); it != seq.rend(); --it)
+      for (gum::Sequence<int>::iterator it = seq.rbegin(); it != seq.rend();
+           --it)
         n++;
 
       TS_ASSERT_EQUALS(n, 0);
@@ -340,7 +342,8 @@ namespace gum_tests {
       seq << 1 << 3 << 5 << 2 << 4;
       n = 0;
 
-      for (gum::Sequence<int>::iterator it = seq.begin(); it != seq.end(); ++it) {
+      for (gum::Sequence<int>::iterator it = seq.begin(); it != seq.end();
+           ++it) {
         n *= 10;
         n += *it;
       }
@@ -349,7 +352,8 @@ namespace gum_tests {
 
       n = 0;
 
-      for (gum::Sequence<int>::iterator it = seq.rbegin(); it != seq.rend(); --it) {
+      for (gum::Sequence<int>::iterator it = seq.rbegin(); it != seq.rend();
+           --it) {
         n *= 10;
         n += *it;
       }
@@ -378,7 +382,7 @@ namespace gum_tests {
       n = 0;
 
       for (gum::Sequence<std::string>::iterator_safe it =
-               seq.rbeginSafe(); // safe iterator needed here
+               seq.rbeginSafe();  // safe iterator needed here
            it != seq.rendSafe();
            --it)
         n++;
@@ -394,7 +398,7 @@ namespace gum_tests {
       n = 0;
 
       for (gum::Sequence<std::string>::iterator_safe it =
-               seq.beginSafe(); // safe iterator needed here
+               seq.beginSafe();  // safe iterator needed here
            it != seq.endSafe();
            ++it)
         n++;
@@ -419,7 +423,7 @@ namespace gum_tests {
       n = 0;
       std::string str;
 
-      for (const auto &s : seq)
+      for (const auto& s : seq)
         str += s;
 
       TS_ASSERT(str == "bbddffccee");
@@ -447,15 +451,15 @@ namespace gum_tests {
 
       int n = 0;
 
-      for (gum::Sequence<std::string>::iterator it = seq.begin(); it != seq.end();
-           ++it)
+      for (gum::Sequence<std::string>::iterator it = seq.begin();
+           it != seq.end(); ++it)
         n++;
 
       TS_ASSERT_EQUALS(n, 0);
       n = 0;
 
-      for (gum::Sequence<std::string>::iterator it = seq.rbegin(); it != seq.rend();
-           --it)
+      for (gum::Sequence<std::string>::iterator it = seq.rbegin();
+           it != seq.rend(); --it)
         n++;
 
       TS_ASSERT_EQUALS(n, 0);
@@ -465,16 +469,16 @@ namespace gum_tests {
       n = 0;
       std::string str;
 
-      for (gum::Sequence<std::string>::iterator it = seq.begin(); it != seq.end();
-           ++it) {
+      for (gum::Sequence<std::string>::iterator it = seq.begin();
+           it != seq.end(); ++it) {
         str += *it;
       }
 
       TS_ASSERT(str == "bbddffccee");
       str = "";
 
-      for (gum::Sequence<std::string>::iterator it = seq.rbegin(); it != seq.rend();
-           --it) {
+      for (gum::Sequence<std::string>::iterator it = seq.rbegin();
+           it != seq.rend(); --it) {
         str += *it;
       }
 
@@ -498,7 +502,7 @@ namespace gum_tests {
 
       seq.erase(1);
       TS_ASSERT(seq.size() == 1);
-      seq.erase(seq.beginSafe()); // safe iterator needed here
+      seq.erase(seq.beginSafe());  // safe iterator needed here
       TS_ASSERT(seq.size() == 0);
     }
 
@@ -519,7 +523,7 @@ namespace gum_tests {
 
       seq.erase(x);
       TS_ASSERT(seq.size() == 1);
-      seq.erase(seq.beginSafe()); // safe iterator needed here
+      seq.erase(seq.beginSafe());  // safe iterator needed here
       TS_ASSERT(seq.size() == 0);
     }
 
@@ -534,7 +538,7 @@ namespace gum_tests {
 
       seq.erase(x);
       TS_ASSERT(seq.size() == 1);
-      seq.erase(seq.beginSafe()); // safe iterator needed here
+      seq.erase(seq.beginSafe());  // safe iterator needed here
       TS_ASSERT(seq.size() == 0);
     }
 
@@ -549,7 +553,7 @@ namespace gum_tests {
 
       seq.erase(x);
       TS_ASSERT(seq.size() == 1);
-      seq.erase(seq.beginSafe()); // safe iterator needed here
+      seq.erase(seq.beginSafe());  // safe iterator needed here
       TS_ASSERT(seq.size() == 0);
     }
 
@@ -640,7 +644,7 @@ namespace gum_tests {
       int n = 0;
 
       for (auto it = seq.rbeginSafe(); it != seq.rendSafe();
-           --it) { // safe iterator needed here
+           --it) {  // safe iterator needed here
         n *= 10;
         n += *it;
       }
@@ -657,7 +661,7 @@ namespace gum_tests {
       n = 0;
 
       for (auto it = seq.beginSafe(); it != seq.endSafe();
-           ++it) { // safe iterator needed here
+           ++it) {  // safe iterator needed here
         n *= 10;
         n += *it;
       }

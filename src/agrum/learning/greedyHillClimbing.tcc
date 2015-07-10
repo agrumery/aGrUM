@@ -32,9 +32,10 @@ namespace gum {
 
     /// learns the structure of a Bayes net
     template <typename GRAPH_CHANGES_SELECTOR>
-    DAG GreedyHillClimbing::learnStructure(GRAPH_CHANGES_SELECTOR &selector,
-                                           const std::vector<unsigned int> &modal,
-                                           DAG dag) {
+    DAG
+    GreedyHillClimbing::learnStructure(GRAPH_CHANGES_SELECTOR& selector,
+                                       const std::vector<unsigned int>& modal,
+                                       DAG dag) {
       selector.setGraph(dag, modal);
 
       unsigned int nb_changes_applied = 1;
@@ -58,7 +59,7 @@ namespace gum {
 
           if (!(selector.empty(i)) && (selector.bestScore(i) > 0)) {
             // pick up the best change
-            const GraphChange &change = selector.bestChange(i);
+            const GraphChange& change = selector.bestChange(i);
 
             // perform the change
             switch (change.type()) {
@@ -102,8 +103,9 @@ namespace gum {
                 break;
 
               default:
-                GUM_ERROR(OperationNotAllowed,
-                          "edge modifications are not supported by local search");
+                GUM_ERROR(
+                    OperationNotAllowed,
+                    "edge modifications are not supported by local search");
             }
           }
         }
@@ -120,8 +122,9 @@ namespace gum {
 
       } while (nb_changes_applied && continueApproximationScheme(delta_score));
 
-      stopApproximationScheme(); // just to be sure of the approximationScheme has
-                                 // been notified of the end of looop
+      stopApproximationScheme();  // just to be sure of the approximationScheme
+                                  // has
+                                  // been notified of the end of looop
 
       return dag;
     }
@@ -130,11 +133,12 @@ namespace gum {
     template <typename GUM_SCALAR, typename GRAPH_CHANGES_SELECTOR,
               typename PARAM_ESTIMATOR, typename CELL_TRANSLATORS>
     BayesNet<GUM_SCALAR> GreedyHillClimbing::learnBN(
-        GRAPH_CHANGES_SELECTOR &selector, PARAM_ESTIMATOR &estimator,
-        const std::vector<std::string> &names,
-        const std::vector<unsigned int> &modal, const CELL_TRANSLATORS &translator,
-        DAG initial_dag) {
-      return DAG2BNLearner::createBN<GUM_SCALAR, PARAM_ESTIMATOR, CELL_TRANSLATORS>(
+        GRAPH_CHANGES_SELECTOR& selector, PARAM_ESTIMATOR& estimator,
+        const std::vector<std::string>& names,
+        const std::vector<unsigned int>& modal,
+        const CELL_TRANSLATORS& translator, DAG initial_dag) {
+      return DAG2BNLearner::createBN<GUM_SCALAR, PARAM_ESTIMATOR,
+                                     CELL_TRANSLATORS>(
           estimator, learnStructure(selector, modal, initial_dag), names, modal,
           translator);
     }

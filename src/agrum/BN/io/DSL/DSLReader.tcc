@@ -25,8 +25,8 @@
 namespace gum {
 
   template <typename GUM_SCALAR>
-  DSLReader<GUM_SCALAR>::DSLReader(BayesNet<GUM_SCALAR> *bn,
-                                   const std::string &filename)
+  DSLReader<GUM_SCALAR>::DSLReader(BayesNet<GUM_SCALAR>* bn,
+                                   const std::string& filename)
       : BNReader<GUM_SCALAR>(bn, filename) {
     GUM_CONSTRUCTOR(DSLReader);
     __bn = bn;
@@ -40,7 +40,7 @@ namespace gum {
     try {
       __scanner = new DSL::Scanner(__streamName.c_str());
       __parser = new DSL::Parser(__scanner);
-      __parser->setFactory((IBayesNetFactory *)__factory);
+      __parser->setFactory((IBayesNetFactory*)__factory);
     } catch (IOError e) {
       __ioerror = true;
     }
@@ -63,7 +63,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE DSL::Scanner &DSLReader<GUM_SCALAR>::scanner() {
+  INLINE DSL::Scanner& DSLReader<GUM_SCALAR>::scanner() {
     if (__ioerror) {
       GUM_ERROR(gum::IOError, "No such file " + streamName());
     }
@@ -72,7 +72,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE const std::string &DSLReader<GUM_SCALAR>::streamName() const {
+  INLINE const std::string& DSLReader<GUM_SCALAR>::streamName() const {
     return __streamName;
   }
 
@@ -81,7 +81,8 @@ namespace gum {
     return __traceScanning;
   }
 
-  template <typename GUM_SCALAR> INLINE void DSLReader<GUM_SCALAR>::trace(bool b) {
+  template <typename GUM_SCALAR>
+  INLINE void DSLReader<GUM_SCALAR>::trace(bool b) {
     __traceScanning = b;
     scanner().setTrace(b);
   }
@@ -96,7 +97,7 @@ namespace gum {
     if (!__parseDone) {
       try {
         __parser->Parse();
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
         return 1 + __parser->errors().error_count;
       }
@@ -146,7 +147,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void DSLReader<GUM_SCALAR>::showElegantErrors(std::ostream &o) {
+  INLINE void DSLReader<GUM_SCALAR>::showElegantErrors(std::ostream& o) {
     if (__parseDone)
       __parser->errors().elegantErrors(o);
     else {
@@ -155,7 +156,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void DSLReader<GUM_SCALAR>::showElegantErrorsAndWarnings(std::ostream &o) {
+  INLINE void
+  DSLReader<GUM_SCALAR>::showElegantErrorsAndWarnings(std::ostream& o) {
     if (__parseDone)
       __parser->errors().elegantErrorsAndWarnings(o);
     else {
@@ -164,7 +166,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void DSLReader<GUM_SCALAR>::showErrorsAndWarnings(std::ostream &o) {
+  INLINE void DSLReader<GUM_SCALAR>::showErrorsAndWarnings(std::ostream& o) {
     if (__parseDone)
       __parser->errors().simpleErrorsAndWarnings(o);
     else {
@@ -173,7 +175,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void DSLReader<GUM_SCALAR>::showErrorCounts(std::ostream &o) {
+  INLINE void DSLReader<GUM_SCALAR>::showErrorCounts(std::ostream& o) {
     if (__parseDone)
       __parser->errors().syntheticResults(o);
     else {
@@ -190,8 +192,8 @@ namespace gum {
   }
 
   /// @}
-} // namespace
+}  // namespace
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

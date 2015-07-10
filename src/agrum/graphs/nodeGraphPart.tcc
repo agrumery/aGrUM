@@ -31,24 +31,24 @@
 namespace gum {
 
   template <typename VAL>
-  INLINE NodeProperty<VAL> NodeGraphPart::nodesProperty(VAL (*f)(const NodeId &),
+  INLINE NodeProperty<VAL> NodeGraphPart::nodesProperty(VAL (*f)(const NodeId&),
                                                         Size size) const {
     return asNodeSet().hashMap(f, size);
   }
 
   template <typename VAL>
-  INLINE NodeProperty<VAL> NodeGraphPart::nodesProperty(const VAL &val,
+  INLINE NodeProperty<VAL> NodeGraphPart::nodesProperty(const VAL& val,
                                                         Size size) const {
     return asNodeSet().hashMap(val, size);
   }
 
   template <typename VAL>
-  INLINE List<VAL> NodeGraphPart::listMapNodes(VAL (*f)(const NodeId &)) const {
+  INLINE List<VAL> NodeGraphPart::listMapNodes(VAL (*f)(const NodeId&)) const {
     return asNodeSet().listMap(f);
   }
 
   template <typename T>
-  void NodeGraphPart::populateNodesFromProperty(const NodeProperty<T> &h) {
+  void NodeGraphPart::populateNodesFromProperty(const NodeProperty<T>& h) {
     clear();
 
     for (const auto iter = h.begin(); iter != h.end(); ++iter) {
@@ -64,5 +64,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on;

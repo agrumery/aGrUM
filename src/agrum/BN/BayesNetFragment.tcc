@@ -29,12 +29,13 @@
 
 namespace gum {
   template <typename GUM_SCALAR>
-  BayesNetFragment<GUM_SCALAR>::BayesNetFragment(const BayesNet<GUM_SCALAR> &bn)
+  BayesNetFragment<GUM_SCALAR>::BayesNetFragment(const BayesNet<GUM_SCALAR>& bn)
       : DiGraphListener(&bn.dag()), __bn(bn) {
     GUM_CONSTRUCTOR(BayesNetFragment);
   }
 
-  template <typename GUM_SCALAR> BayesNetFragment<GUM_SCALAR>::~BayesNetFragment() {
+  template <typename GUM_SCALAR>
+  BayesNetFragment<GUM_SCALAR>::~BayesNetFragment() {
     GUM_DESTRUCTOR(BayesNetFragment);
 
     for (auto node : nodes())
@@ -45,23 +46,24 @@ namespace gum {
   //============================================================
   // signals to keep consistency with the referred BayesNet
   template <typename GUM_SCALAR>
-  INLINE void BayesNetFragment<GUM_SCALAR>::whenNodeAdded(const void *src,
+  INLINE void BayesNetFragment<GUM_SCALAR>::whenNodeAdded(const void* src,
                                                           NodeId id) noexcept {
     // nothing to do
   }
   template <typename GUM_SCALAR>
-  INLINE void BayesNetFragment<GUM_SCALAR>::whenNodeDeleted(const void *src,
-                                                            NodeId id) noexcept {
+  INLINE void
+  BayesNetFragment<GUM_SCALAR>::whenNodeDeleted(const void* src,
+                                                NodeId id) noexcept {
     uninstallNode(id);
   }
   template <typename GUM_SCALAR>
-  INLINE void BayesNetFragment<GUM_SCALAR>::whenArcAdded(const void *src,
+  INLINE void BayesNetFragment<GUM_SCALAR>::whenArcAdded(const void* src,
                                                          NodeId from,
                                                          NodeId to) noexcept {
     // nothing to do
   }
   template <typename GUM_SCALAR>
-  INLINE void BayesNetFragment<GUM_SCALAR>::whenArcDeleted(const void *src,
+  INLINE void BayesNetFragment<GUM_SCALAR>::whenArcDeleted(const void* src,
                                                            NodeId from,
                                                            NodeId to) noexcept {
     if (dag().existsArc(from, to))
@@ -72,7 +74,7 @@ namespace gum {
   // IBayesNet interface : BayesNetFragment here is a decorator for the bn
 
   template <typename GUM_SCALAR>
-  INLINE const Potential<GUM_SCALAR> &
+  INLINE const Potential<GUM_SCALAR>&
   BayesNetFragment<GUM_SCALAR>::cpt(NodeId id) const {
     if (!isInstalledNode(id))
       GUM_ERROR(NotFound, id << " is not installed");
@@ -84,14 +86,14 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE const VariableNodeMap &
+  INLINE const VariableNodeMap&
   BayesNetFragment<GUM_SCALAR>::variableNodeMap() const {
     GUM_ERROR(FatalError,
               "Not implemented yet. please use referent bayesnet method");
   }
 
   template <typename GUM_SCALAR>
-  INLINE const DiscreteVariable &
+  INLINE const DiscreteVariable&
   BayesNetFragment<GUM_SCALAR>::variable(NodeId id) const {
     if (!isInstalledNode(id))
       GUM_ERROR(NotFound, id << " is not installed");
@@ -101,7 +103,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE NodeId
-      BayesNetFragment<GUM_SCALAR>::nodeId(const DiscreteVariable &var) const {
+  BayesNetFragment<GUM_SCALAR>::nodeId(const DiscreteVariable& var) const {
     NodeId id = __bn.nodeId(var);
 
     if (!isInstalledNode(id))
@@ -112,7 +114,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE NodeId
-      BayesNetFragment<GUM_SCALAR>::idFromName(const std::string &name) const {
+  BayesNetFragment<GUM_SCALAR>::idFromName(const std::string& name) const {
     NodeId id = __bn.idFromName(name);
 
     if (!isInstalledNode(id))
@@ -122,8 +124,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE const DiscreteVariable &
-  BayesNetFragment<GUM_SCALAR>::variableFromName(const std::string &name) const {
+  INLINE const DiscreteVariable& BayesNetFragment<GUM_SCALAR>::variableFromName(
+      const std::string& name) const {
     NodeId id = __bn.idFromName(name);
 
     if (!isInstalledNode(id))
@@ -143,7 +145,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   void BayesNetFragment<GUM_SCALAR>::installNode(NodeId id) {
     if (!__bn.dag().existsNode(id))
-      GUM_ERROR(NotFound, "Node " << id << " does not exist in referred BayesNet");
+      GUM_ERROR(NotFound, "Node " << id
+                                  << " does not exist in referred BayesNet");
 
     if (!isInstalledNode(id)) {
       this->_dag.addNode(id);
@@ -192,11 +195,11 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   void BayesNetFragment<GUM_SCALAR>::_installCPT(
-      NodeId id, const Potential<GUM_SCALAR> *pot) noexcept {
+      NodeId id, const Potential<GUM_SCALAR>* pot) noexcept {
     // topology
-    const auto &parents = dag().parents(id);
+    const auto& parents = dag().parents(id);
     for (auto node_it = parents.beginSafe(); node_it != parents.endSafe();
-         ++node_it) // safe iterator needed here
+         ++node_it)  // safe iterator needed here
       _uninstallArc(*node_it, id);
 
     for (Idx i = 1; i < pot->nbrDim(); i++) {
@@ -214,8 +217,9 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  void BayesNetFragment<GUM_SCALAR>::installCPT(NodeId id,
-                                                const Potential<GUM_SCALAR> *pot) {
+  void
+  BayesNetFragment<GUM_SCALAR>::installCPT(NodeId id,
+                                           const Potential<GUM_SCALAR>* pot) {
     if (!dag().existsNode(id))
       GUM_ERROR(NotFound, "Node " << id << " is not installed in the fragment");
 
@@ -225,7 +229,7 @@ namespace gum {
                     << variable(id).name() << ">");
     }
 
-    const NodeSet &parents = __bn.dag().parents(id);
+    const NodeSet& parents = __bn.dag().parents(id);
 
     for (Idx i = 1; i < pot->nbrDim(); i++) {
       if (!parents.contains(__bn.idFromName(pot->variable(i).name())))
@@ -249,7 +253,7 @@ namespace gum {
       _uninstallCPT(id);
 
       // re-create arcs from referred potential
-      const Potential<GUM_SCALAR> &pot = cpt(id);
+      const Potential<GUM_SCALAR>& pot = cpt(id);
 
       for (Idx i = 1; i < pot.nbrDim(); i++) {
         NodeId parent = __bn.idFromName(pot.variable(i).name());
@@ -261,15 +265,15 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  void
-  BayesNetFragment<GUM_SCALAR>::installMarginal(NodeId id,
-                                                const Potential<GUM_SCALAR> *pot) {
+  void BayesNetFragment<GUM_SCALAR>::installMarginal(
+      NodeId id, const Potential<GUM_SCALAR>* pot) {
     if (!isInstalledNode(id)) {
       GUM_ERROR(NotFound, "The node " << id << " is not part of this fragment");
     }
 
     if (pot->nbrDim() > 1) {
-      GUM_ERROR(OperationNotAllowed, "The potential is not a marginal :" << pot);
+      GUM_ERROR(OperationNotAllowed,
+                "The potential is not a marginal :" << pot);
     }
 
     if (&(pot->variable(0)) != &(__bn.variable(id))) {
@@ -286,8 +290,8 @@ namespace gum {
     if (!isInstalledNode(id))
       GUM_ERROR(NotFound, "The node " << id << " is not part of this fragment");
 
-    const auto &parents = dag().parents(id);
-    const auto &cpt = this->cpt(id);
+    const auto& parents = dag().parents(id);
+    const auto& cpt = this->cpt(id);
     NodeSet cpt_parents;
 
     for (Idx i = 1; i < cpt.nbrDim(); i++) {
@@ -328,7 +332,7 @@ namespace gum {
 
     try {
       bn_name = __bn.property("name");
-    } catch (NotFound &) {
+    } catch (NotFound&) {
       bn_name = "no_name";
     }
 
@@ -337,11 +341,12 @@ namespace gum {
     output << bn_name << "\" {" << std::endl;
     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];"
            << std::endl;
-    output << "  node [style=filled];" << std::endl << std::endl;
+    output << "  node [style=filled];" << std::endl
+           << std::endl;
 
     for (auto node : __bn.nodes()) {
-      output << "\"" << __bn.variable(node).name() << "\" [comment=\"" << node << ":"
-             << __bn.variable(node) << ", \"";
+      output << "\"" << __bn.variable(node).name() << "\" [comment=\"" << node
+             << ":" << __bn.variable(node) << ", \"";
 
       if (isInstalledNode(node)) {
         if (!checkConsistency(node)) {
@@ -380,4 +385,4 @@ namespace gum {
 
     return output.str();
   }
-} // gum
+}  // gum

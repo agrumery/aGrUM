@@ -40,15 +40,20 @@ namespace gum {
 
   namespace learning {
 
-    /* ========================================================================= */
-    /* ===                     CACHE 4 INDEP TEST CLASS                      === */
-    /* ========================================================================= */
+    /* =========================================================================
+     */
+    /* ===                     CACHE 4 INDEP TEST CLASS                      ===
+     */
+    /* =========================================================================
+     */
     /** @class Cache4Score
      * @brief a cache for caching scores in Indep Test classes (chi2, G2, etc.)
      * @ingroup learning_group
      *
-     * Caching previously computed scores is very important for learning algorithms
-     * because computing independence tests requires parsing the database and this
+     * Caching previously computed scores is very important for learning
+     *algorithms
+     * because computing independence tests requires parsing the database and
+     *this
      * is the most time consuming operation in learning. This class provides an
      * efficient cache that can significantly alleviate the scoring burden.
      */
@@ -63,10 +68,10 @@ namespace gum {
       Cache4IndepTest();
 
       /// copy constructor
-      Cache4IndepTest(const Cache4IndepTest &from);
+      Cache4IndepTest(const Cache4IndepTest& from);
 
       /// move constructor
-      Cache4IndepTest(Cache4IndepTest &&from);
+      Cache4IndepTest(Cache4IndepTest&& from);
 
       /// destructor
       ~Cache4IndepTest();
@@ -79,10 +84,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      Cache4IndepTest &operator=(const Cache4IndepTest &from);
+      Cache4IndepTest& operator=(const Cache4IndepTest& from);
 
       /// move operator
-      Cache4IndepTest &operator=(Cache4IndepTest &&from);
+      Cache4IndepTest& operator=(Cache4IndepTest&& from);
 
       /// @}
 
@@ -95,36 +100,37 @@ namespace gum {
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
       void insert(unsigned int var1, unsigned int var2,
-                  const std::vector<unsigned int> &conditioning_set, float score);
+                  const std::vector<unsigned int>& conditioning_set,
+                  float score);
 
       /// insert a new score into the cache
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
       template <typename Alloc>
       void insert(unsigned int var1, unsigned int var2,
-                  IdSet<Alloc> &conditioning_set, float score);
+                  IdSet<Alloc>& conditioning_set, float score);
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
       void erase(unsigned int var1, unsigned int var2,
-                 const std::vector<unsigned int> &conditioning_set);
+                 const std::vector<unsigned int>& conditioning_set);
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
       template <typename Alloc>
       void erase(unsigned int var1, unsigned int var2,
-                 const IdSet<Alloc> &conditioning_set);
+                 const IdSet<Alloc>& conditioning_set);
 
       /// indicates whether a given score exists
       bool exists(unsigned int var1, unsigned int var2,
-                  const std::vector<unsigned int> &conditioning_set);
+                  const std::vector<unsigned int>& conditioning_set);
 
       /// returns a given score
       /** @throws NotFound is raised if the score is not cached */
       float score(unsigned int var1, unsigned int var2,
-                  const std::vector<unsigned int> &conditioning_set);
+                  const std::vector<unsigned int>& conditioning_set);
 
       /// removes all the stored scores
       void clear();
@@ -133,7 +139,8 @@ namespace gum {
 
       private:
       /// the scores stored into the cache
-      HashTable<std::tuple<IdSet<>, unsigned int, unsigned int>, float> __scores;
+      HashTable<std::tuple<IdSet<>, unsigned int, unsigned int>, float>
+          __scores;
     };
 
   } /* namespace learning */

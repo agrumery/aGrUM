@@ -35,12 +35,12 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/DAGCycleDetector.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 
 namespace gum {
 
   /// sets the initial DAG from which changes shall be applied
-  void DAGCycleDetector::setDAG(const DAG &dag) {
+  void DAGCycleDetector::setDAG(const DAG& dag) {
     // sets the dag
     __dag = dag;
 
@@ -75,7 +75,7 @@ namespace gum {
       NodeId node = roots.front();
       NodeProperty<unsigned int> node_ancestors = __ancestors[node];
       node_ancestors.insert(node, 1);
-      const NodeSet &node_children = dag.children(node);
+      const NodeSet& node_children = dag.children(node);
       roots.popFront();
 
       for (const auto ch : node_children) {
@@ -100,7 +100,7 @@ namespace gum {
       NodeId node = leaves.front();
       NodeProperty<unsigned int> node_descendants = __descendants[node];
       node_descendants.insert(node, 1);
-      const NodeSet &node_parents = dag.parents(node);
+      const NodeSet& node_parents = dag.parents(node);
       leaves.popFront();
 
       for (const auto pa : node_parents) {
@@ -116,7 +116,7 @@ namespace gum {
 
   /// indicates whether a set of modifications would create a cycle
   bool DAGCycleDetector::hasCycleFromModifications(
-      const std::vector<Change> &modifs) const {
+      const std::vector<Change>& modifs) const {
     // first, we separate deletions and insertions (reversals are cut into
     // a deletion + an insertion) and we check that no insertion also exists
     // as a deletion (if so, we remove both operations). In addition, if
@@ -124,7 +124,7 @@ namespace gum {
     HashTable<Arc, unsigned int> deletions(modifs.size());
     HashTable<Arc, unsigned int> additions(modifs.size());
 
-    for (const auto &modif : modifs) {
+    for (const auto& modif : modifs) {
       Arc arc(modif.tail(), modif.head());
 
       switch (modif.type()) {
@@ -167,11 +167,11 @@ namespace gum {
       }
     }
 
-    for (auto iter = additions.beginSafe(); // safe iterator needed here
+    for (auto iter = additions.beginSafe();  // safe iterator needed here
          iter != additions.endSafe(); ++iter) {
       if (deletions.exists(iter.key())) {
-        unsigned int &nb_del = deletions[iter.key()];
-        unsigned int &nb_add = iter.val();
+        unsigned int& nb_del = deletions[iter.key()];
+        unsigned int& nb_add = iter.val();
 
         if (nb_del > nb_add) {
           additions.erase(iter);
@@ -189,7 +189,7 @@ namespace gum {
     // get the set of nodes involved in the modifications
     NodeSet extremities;
 
-    for (const auto &modif : modifs) {
+    for (const auto& modif : modifs) {
       extremities.insert(modif.tail());
       extremities.insert(modif.head());
     }
@@ -199,24 +199,26 @@ namespace gum {
     // keep track of all the children and parents of these nodes
     NodeProperty<NodeProperty<unsigned int>> ancestors, descendants;
 
-    for (const auto &modif : modifs) {
+    for (const auto& modif : modifs) {
       if (!ancestors.exists(modif.tail())) {
-        NodeProperty<unsigned int> &anc =
+        NodeProperty<unsigned int>& anc =
             ancestors.insert(modif.tail(), NodeProperty<unsigned int>()).second;
         __restrictWeightedSet(anc, __ancestors[modif.tail()], extremities);
 
-        NodeProperty<unsigned int> &desc =
-            descendants.insert(modif.tail(), NodeProperty<unsigned int>()).second;
+        NodeProperty<unsigned int>& desc =
+            descendants.insert(modif.tail(), NodeProperty<unsigned int>())
+                .second;
         __restrictWeightedSet(desc, __descendants[modif.tail()], extremities);
       }
 
       if (!ancestors.exists(modif.head())) {
-        NodeProperty<unsigned int> &anc =
+        NodeProperty<unsigned int>& anc =
             ancestors.insert(modif.head(), NodeProperty<unsigned int>()).second;
         __restrictWeightedSet(anc, __ancestors[modif.head()], extremities);
 
-        NodeProperty<unsigned int> &desc =
-            descendants.insert(modif.head(), NodeProperty<unsigned int>()).second;
+        NodeProperty<unsigned int>& desc =
+            descendants.insert(modif.head(), NodeProperty<unsigned int>())
+                .second;
         __restrictWeightedSet(desc, __descendants[modif.head()], extremities);
       }
     }
@@ -228,14 +230,16 @@ namespace gum {
     // leading to Y and its set of descendants. These numbers are equal to
     // the numbers found in descendants[X] * the numbers of paths leading
     // to X, i.e., descendants[T][X].
-    // By symmetry, the set of ancestors of nodes T in ( Y + descendants (Y) ) are
-    // updated by subtracting the number of paths leading to X and its ancestors.
+    // By symmetry, the set of ancestors of nodes T in ( Y + descendants (Y) )
+    // are
+    // updated by subtracting the number of paths leading to X and its
+    // ancestors.
     for (auto iter = deletions.cbegin(); iter != deletions.cend(); ++iter) {
-      const Arc &arc = iter.key();
+      const Arc& arc = iter.key();
       const NodeId tail = arc.tail();
-      const NodeProperty<unsigned int> &anc_tail = ancestors[tail];
+      const NodeProperty<unsigned int>& anc_tail = ancestors[tail];
       const NodeId head = arc.head();
-      const NodeProperty<unsigned int> &desc_head = descendants[head];
+      const NodeProperty<unsigned int>& desc_head = descendants[head];
 
       // update the set of descendants
       NodeProperty<unsigned int> set_to_del = desc_head;
@@ -259,25 +263,28 @@ namespace gum {
     }
 
     // now we apply all the additions of arcs (including the additions after
-    // arc reversals). After adding arc (X,Y), the set of ancestors T of Y and its
+    // arc reversals). After adding arc (X,Y), the set of ancestors T of Y and
+    // its
     // descendants shall be updated by adding the number of paths leading to
     // X and its ancestors, i.e., ancestors[X] * the number of paths leading
-    // to Y, i.e., ancestors[T][Y]. Similarly, the set of descendants of X and its
-    // ancestors should be updated by adding the number of paths leading to Y and
+    // to Y, i.e., ancestors[T][Y]. Similarly, the set of descendants of X and
+    // its
+    // ancestors should be updated by adding the number of paths leading to Y
+    // and
     // its descendants. Finally, an arc (X,Y) can be added if and
     // only if Y does not belong to the ancestor set of X
     for (auto iter = additions.cbegin(); iter != additions.cend(); ++iter) {
-      const Arc &arc = iter.key();
+      const Arc& arc = iter.key();
       NodeId tail = arc.tail();
       NodeId head = arc.head();
 
-      const NodeProperty<unsigned int> &anc_tail = ancestors[tail];
+      const NodeProperty<unsigned int>& anc_tail = ancestors[tail];
 
       if (anc_tail.exists(head)) {
         return true;
       }
 
-      const NodeProperty<unsigned int> &desc_head = descendants[head];
+      const NodeProperty<unsigned int>& desc_head = descendants[head];
 
       // update the set of ancestors
       NodeProperty<unsigned int> set_to_add = anc_tail;
@@ -304,7 +311,9 @@ namespace gum {
   }
 
   /// adds a new arc to the current DAG
-  void DAGCycleDetector::insertArc(NodeId tail, NodeId head) { addArc(tail, head); }
+  void DAGCycleDetector::insertArc(NodeId tail, NodeId head) {
+    addArc(tail, head);
+  }
   /// adds a new arc to the current DAG
   void DAGCycleDetector::addArc(NodeId tail, NodeId head) {
     // check that the arc does not already exist
@@ -313,15 +322,16 @@ namespace gum {
 
     // check that the arc would not create a cycle
     if (hasCycleFromAddition(tail, head)) {
-      GUM_ERROR(InvalidDirectedCycle, "the arc would create a directed into a DAG");
+      GUM_ERROR(InvalidDirectedCycle,
+                "the arc would create a directed into a DAG");
     }
 
     __dag.addArc(tail, head);
 
     // now we apply the addition of the arc as done in method
     // hasCycleFromModifications
-    const NodeProperty<unsigned int> &anc_tail = __ancestors[tail];
-    const NodeProperty<unsigned int> &desc_head = __descendants[head];
+    const NodeProperty<unsigned int>& anc_tail = __ancestors[tail];
+    const NodeProperty<unsigned int>& desc_head = __descendants[head];
 
     // update the set of ancestors
     NodeProperty<unsigned int> set_to_add = anc_tail;
@@ -354,8 +364,8 @@ namespace gum {
 
     // we apply the deletion of the arc as done in method
     // hasCycleFromModifications
-    const NodeProperty<unsigned int> &anc_tail = __ancestors[tail];
-    const NodeProperty<unsigned int> &desc_head = __descendants[head];
+    const NodeProperty<unsigned int>& anc_tail = __ancestors[tail];
+    const NodeProperty<unsigned int>& desc_head = __descendants[head];
 
     // update the set of descendants
     NodeProperty<unsigned int> set_to_del = desc_head;

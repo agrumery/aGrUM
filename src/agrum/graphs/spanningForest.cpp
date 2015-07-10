@@ -34,11 +34,11 @@ namespace gum {
 
   SpanningForest::~SpanningForest() { GUM_DESTRUCTOR(SpanningForest); }
 
-  SpanningForest::SpanningForest(const SpanningForest &toCopy) {
+  SpanningForest::SpanningForest(const SpanningForest& toCopy) {
     GUM_CONS_CPY(SpanningForest);
   }
 
-  SpanningForest &SpanningForest::operator=(const SpanningForest &toCopy) {
+  SpanningForest& SpanningForest::operator=(const SpanningForest& toCopy) {
     return *this;
   }
 

@@ -19,7 +19,8 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Definition of templatized reader of dat files for Factored Markov Decision
+ * @brief Definition of templatized reader of dat files for Factored Markov
+ *Decision
  *Process.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
@@ -35,8 +36,9 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   FMDPDatReader<GUM_SCALAR>::FMDPDatReader(
-      FactoredMarkovDecisionProcess<GUM_SCALAR> *fmdp, const std::string &filename,
-      MultiDimDecisionDiagramFactoryBase<GUM_SCALAR> *ddf)
+      FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp,
+      const std::string& filename,
+      MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* ddf)
       : FMDPReader<GUM_SCALAR>(fmdp, filename) {
 
     GUM_CONSTRUCTOR(FMDPDatReader);
@@ -52,7 +54,7 @@ namespace gum {
     try {
       __scanner = new MDPDAT::Scanner(__streamName.c_str());
       __parser = new MDPDAT::Parser(__scanner);
-      __parser->setFactory((AbstractFMDPFactory *)__factory);
+      __parser->setFactory((AbstractFMDPFactory*)__factory);
     } catch (IOError e) {
       __ioerror = true;
     }
@@ -75,7 +77,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE MDPDAT::Scanner &FMDPDatReader<GUM_SCALAR>::scanner() {
+  INLINE MDPDAT::Scanner& FMDPDatReader<GUM_SCALAR>::scanner() {
     if (__ioerror) {
       GUM_ERROR(gum::IOError, "No such file " + streamName());
     }
@@ -84,7 +86,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE const std::string &FMDPDatReader<GUM_SCALAR>::streamName() const {
+  INLINE const std::string& FMDPDatReader<GUM_SCALAR>::streamName() const {
     return __streamName;
   }
 
@@ -107,7 +109,7 @@ namespace gum {
     if (!__parseDone) {
       try {
         __parser->Parse();
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
         return 1 + __parser->errors().error_count;
       }
@@ -153,7 +155,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void FMDPDatReader<GUM_SCALAR>::showElegantErrors(std::ostream &o) {
+  INLINE void FMDPDatReader<GUM_SCALAR>::showElegantErrors(std::ostream& o) {
     if (__parseDone)
       __parser->errors().elegantErrors(o);
     else
@@ -162,7 +164,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE void
-  FMDPDatReader<GUM_SCALAR>::showElegantErrorsAndWarnings(std::ostream &o) {
+  FMDPDatReader<GUM_SCALAR>::showElegantErrorsAndWarnings(std::ostream& o) {
     if (__parseDone)
       __parser->errors().elegantErrorsAndWarnings(o);
     else
@@ -170,22 +172,24 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void FMDPDatReader<GUM_SCALAR>::showErrorCounts(std::ostream &o) {
+  INLINE void FMDPDatReader<GUM_SCALAR>::showErrorCounts(std::ostream& o) {
     if (__parseDone)
       __parser->errors().syntheticResults(o);
     else
       GUM_ERROR(OperationNotAllowed, "FMDPDat file not parsed yet");
   }
 
-  template <typename GUM_SCALAR> INLINE Size FMDPDatReader<GUM_SCALAR>::errors() {
+  template <typename GUM_SCALAR>
+  INLINE Size FMDPDatReader<GUM_SCALAR>::errors() {
     return (!__parseDone) ? (Size)0 : __parser->errors().error_count;
   }
 
-  template <typename GUM_SCALAR> INLINE Size FMDPDatReader<GUM_SCALAR>::warnings() {
+  template <typename GUM_SCALAR>
+  INLINE Size FMDPDatReader<GUM_SCALAR>::warnings() {
     return (!__parseDone) ? (Size)0 : __parser->errors().warning_count;
   }
 
   /// @}
-} // namespace
+}  // namespace
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

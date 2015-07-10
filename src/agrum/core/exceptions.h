@@ -24,7 +24,8 @@
  */
 #ifndef GUM_EXCEPTIONS_H
 #define GUM_EXCEPTIONS_H
-// WARNING : Do not include this file directlty : instead include <agrum/config.h>
+// WARNING : Do not include this file directlty : instead include
+// <agrum/config.h>
 
 #include <iostream>
 #include <iomanip>
@@ -34,44 +35,45 @@
 
 #ifdef NDEBUG
 #define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
-#define GUM_ERROR(type, msg)                                                        \
-  {                                                                                 \
-    std::ostringstream __error__str;                                                \
-    __error__str << msg;                                                            \
-    throw(type(__error__str.str()));                                                \
+#define GUM_ERROR(type, msg)                                                   \
+  {                                                                            \
+    std::ostringstream __error__str;                                           \
+    __error__str << msg;                                                       \
+    throw(type(__error__str.str()));                                           \
   }
-#define GUM_SHOWERROR(e)                                                            \
-  {                                                                                 \
-    std::cerr << __FILE__ << ":" << __LINE__ << ": " << (e).errorType() << " - "    \
-              << (e).errorContent() << std::endl;                                   \
+#define GUM_SHOWERROR(e)                                                       \
+  {                                                                            \
+    std::cerr << __FILE__ << ":" << __LINE__ << ": " << (e).errorType()        \
+              << " - " << (e).errorContent() << std::endl;                     \
   }
 #else
 #define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
-#define GUM_ERROR(type, msg)                                                        \
-  {                                                                                 \
-    std::ostringstream __error__str;                                                \
-    __error__str << msg;                                                            \
-    throw(type(                                                                     \
-        gum::__createMsg(__FILE__, __FUNCTION__, __LINE__, __error__str.str())));   \
+#define GUM_ERROR(type, msg)                                                   \
+  {                                                                            \
+    std::ostringstream __error__str;                                           \
+    __error__str << msg;                                                       \
+    throw(type(gum::__createMsg(__FILE__, __FUNCTION__, __LINE__,              \
+                                __error__str.str())));                         \
   }
-#define GUM_SHOWERROR(e)                                                            \
-  {                                                                                 \
-    std::cerr << __FILE__ << ":" << __LINE__ << ": " << (e).errorType() << " - "    \
-              << (e).errorContent() << std::endl;                                   \
-    std::cerr << (e).errorCallStack() << std::endl;                                 \
+#define GUM_SHOWERROR(e)                                                       \
+  {                                                                            \
+    std::cerr << __FILE__ << ":" << __LINE__ << ": " << (e).errorType()        \
+              << " - " << (e).errorContent() << std::endl;                     \
+    std::cerr << (e).errorCallStack() << std::endl;                            \
   }
-#endif // NDEBUG
+#endif  // NDEBUG
 
-#define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                       \
-  class TYPE : public SUPERCLASS {                                                  \
-    public:                                                                         \
-    TYPE(std::string aMsg, std::string aType = MSG) : SUPERCLASS(aMsg, aType){};    \
+#define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                  \
+  class TYPE : public SUPERCLASS {                                             \
+    public:                                                                    \
+    TYPE(std::string aMsg, std::string aType = MSG)                            \
+        : SUPERCLASS(aMsg, aType){};                                           \
   };
 
 namespace gum {
-  const std::string __createMsg(const std::string &filename,
-                                const std::string &function, const int line,
-                                const std::string &msg);
+  const std::string __createMsg(const std::string& filename,
+                                const std::string& function, const int line,
+                                const std::string& msg);
   /**
    * base class for all aGrUM's exceptions
    */
@@ -108,13 +110,15 @@ namespace gum {
   /// Exception : erreur (inconnue ?) fatale
   GUM_MAKE_ERROR(FatalError, Exception, "Fatal error")
   /// Exception : iterator does not point to any valid value
-  GUM_MAKE_ERROR(UndefinedIteratorValue, Exception, "Iterator's value is undefined")
+  GUM_MAKE_ERROR(UndefinedIteratorValue, Exception,
+                 "Iterator's value is undefined")
   /// Exception : iterator does not point to any valid key
   GUM_MAKE_ERROR(UndefinedIteratorKey, Exception, "Iterator's key is undefined")
   /// Exception : a pointer or a reference on a nullptr (0) object
   GUM_MAKE_ERROR(NullElement, Exception, "Null Element")
   /// Exception : a looked-for element could not be found
-  GUM_MAKE_ERROR(UndefinedElement, Exception, "could not find the so-called element")
+  GUM_MAKE_ERROR(UndefinedElement, Exception,
+                 "could not find the so-called element")
   /// Exception : problem with the size of a HashTable
   GUM_MAKE_ERROR(HashSize, Exception, "size not admissible in a HashTable")
   /// Exception : problem with size
@@ -125,9 +129,11 @@ namespace gum {
 
   /// Exception: the number of arguments passed to a function is not what was
   /// expected
-  GUM_MAKE_ERROR(InvalidArgumentsNumber, Exception,
-                 "the number of arguments passed differs from what was expected")
-  /// Exception: at least one argument passed to a function is not what was expected
+  GUM_MAKE_ERROR(
+      InvalidArgumentsNumber, Exception,
+      "the number of arguments passed differs from what was expected")
+  /// Exception: at least one argument passed to a function is not what was
+  /// expected
   GUM_MAKE_ERROR(InvalidArgument, Exception,
                  "at least one argument passed differs from what was expected")
 
@@ -137,7 +143,8 @@ namespace gum {
   GUM_MAKE_ERROR(FormatNotFound, IOError, "could not find the specified format")
 
   /// Exception : operation not allowed
-  GUM_MAKE_ERROR(OperationNotAllowed, Exception, "this operation is not allowed")
+  GUM_MAKE_ERROR(OperationNotAllowed, Exception,
+                 "this operation is not allowed")
   /// Exception : the element we looked for cannot be found
   GUM_MAKE_ERROR(NotFound, Exception, "could not find this object")
   ///////////////////////////////////
@@ -153,7 +160,8 @@ namespace gum {
   GUM_MAKE_ERROR(DuplicateElement, ReferenceError,
                  "A similar element already exists")
   /// Exception : a similar label already exists
-  GUM_MAKE_ERROR(DuplicateLabel, ReferenceError, "A similar label already exists")
+  GUM_MAKE_ERROR(DuplicateLabel, ReferenceError,
+                 "A similar label already exists")
   ///////////////////////////////////
   /// Exception base for graph error
   GUM_MAKE_ERROR(GraphError, Exception, "Graph error")
@@ -161,9 +169,11 @@ namespace gum {
   GUM_MAKE_ERROR(NoNeighbour, GraphError,
                  "No neighbour can be found to the given node")
   /// Exception : no parent for a given node was found
-  GUM_MAKE_ERROR(NoParent, GraphError, "No parent can be found w.r.t the given node")
+  GUM_MAKE_ERROR(NoParent, GraphError,
+                 "No parent can be found w.r.t the given node")
   /// Exception : no child for a given node was found
-  GUM_MAKE_ERROR(NoChild, GraphError, "No child can be found w.r.t the given node")
+  GUM_MAKE_ERROR(NoChild, GraphError,
+                 "No child can be found w.r.t the given node")
   /// Exception : there is something wrong with an edge
   GUM_MAKE_ERROR(InvalidEdge, GraphError, "the edge is not correct")
   /// Exception : there is something wrong with an arc
@@ -198,9 +208,10 @@ namespace gum {
   GUM_MAKE_ERROR(IncompatibleScoreApriori, LearningError,
                  "The score already "
                  "contains a different 'implicit' apriori")
-  GUM_MAKE_ERROR(PossiblyIncompatibleScoreApriori, LearningError,
-                 "Due to its weight, the apriori is currently compatible with the "
-                 "score but if you change the weight, it will become incompatible")
+  GUM_MAKE_ERROR(
+      PossiblyIncompatibleScoreApriori, LearningError,
+      "Due to its weight, the apriori is currently compatible with the "
+      "score but if you change the weight, it will become incompatible")
   GUM_MAKE_ERROR(MissingVariableInDatabase, LearningError,
                  "A name of variable is not found in the database")
   GUM_MAKE_ERROR(UnknownLabelInDatabase, LearningError,
@@ -213,7 +224,7 @@ namespace gum {
     Size _noCol;
 
     public:
-    SyntaxError(const std::string &aMsg, Size nol, Size noc,
+    SyntaxError(const std::string& aMsg, Size nol, Size noc,
                 std::string aType = "Syntax Error")
         : IOError(aMsg, aType), _noLine(nol), _noCol(noc){
 
@@ -222,11 +233,11 @@ namespace gum {
     Size col() const { return _noCol; };
     Size line() const { return _noLine; };
   };
-#define GUM_SYNTAX_ERROR(msg, line, column)                                         \
-  {                                                                                 \
-    std::ostringstream __error__str;                                                \
-    __error__str << msg;                                                            \
-    throw(gum::SyntaxError(__error__str.str(), line, column));                      \
+#define GUM_SYNTAX_ERROR(msg, line, column)                                    \
+  {                                                                            \
+    std::ostringstream __error__str;                                           \
+    __error__str << msg;                                                       \
+    throw(gum::SyntaxError(__error__str.str(), line, column));                 \
   }
 } /* namespace gum */
 

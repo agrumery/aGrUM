@@ -53,7 +53,8 @@ namespace gum {
    */
   template <typename GUM_SCALAR,
             template <class> class IApproximationPolicy = ExactPolicy>
-  class GeneralizedCNFWriter : public CNFWriter<GUM_SCALAR, IApproximationPolicy> {
+  class GeneralizedCNFWriter
+      : public CNFWriter<GUM_SCALAR, IApproximationPolicy> {
     public:
     /// @name Constructor & destructor
     /// @{
@@ -77,7 +78,7 @@ namespace gum {
      * @param bn The Bayesian Network writen in output.
      * @throws IOError Raised if and I/O error occurs.
      */
-    virtual void write(std::ostream &output, const IBayesNet<GUM_SCALAR> &bn);
+    virtual void write(std::ostream& output, const IBayesNet<GUM_SCALAR>& bn);
 
     /**
      * Writes a Bayesian Network in the referenced file using the BN format.
@@ -87,7 +88,7 @@ namespace gum {
      * @param bn The Bayesian Network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    virtual void write(std::string filePath, const IBayesNet<GUM_SCALAR> &bn);
+    virtual void write(std::string filePath, const IBayesNet<GUM_SCALAR>& bn);
   };
 
   extern template class GeneralizedCNFWriter<float>;
@@ -95,4 +96,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/io/cnf/GeneralizedCNFWriter.tcc>
-#endif // GUM_NET_WRITER_H
+#endif  // GUM_NET_WRITER_H

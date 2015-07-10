@@ -32,17 +32,17 @@ namespace gum_tests {
 
   class MultiDimBucketTestSuite : public CxxTest::TestSuite {
     private:
-    std::vector<gum::LabelizedVariable *> *__variables;
-    std::vector<gum::Potential<double> *> *__potentials;
+    std::vector<gum::LabelizedVariable*>* __variables;
+    std::vector<gum::Potential<double>*>* __potentials;
 
-    void __fillBucket(gum::MultiDimBucket<double> *bucket) {
+    void __fillBucket(gum::MultiDimBucket<double>* bucket) {
       for (size_t i = 0; i < 5; ++i) {
         bucket->add(__potentials->at(i));
       }
     }
 
     // Product must have variables
-    void __makeProduct(gum::Potential<double> &product) {
+    void __makeProduct(gum::Potential<double>& product) {
       gum::Potential<double> temp;
 
       for (size_t i = 0; i < 5; ++i) {
@@ -55,7 +55,7 @@ namespace gum_tests {
     public:
     void setUp() {
       gum::SimpleCPTGenerator<double> cptGenerator;
-      __variables = new std::vector<gum::LabelizedVariable *>();
+      __variables = new std::vector<gum::LabelizedVariable*>();
 
       for (gum::Size i = 0; i < 10; ++i) {
         std::stringstream sBuff;
@@ -64,7 +64,7 @@ namespace gum_tests {
             new gum::LabelizedVariable(sBuff.str(), "A binary variable", 2));
       }
 
-      __potentials = new std::vector<gum::Potential<double> *>();
+      __potentials = new std::vector<gum::Potential<double>*>();
 
       for (gum::Size i = 0; i < 5; ++i) {
         __potentials->push_back(
@@ -127,14 +127,14 @@ namespace gum_tests {
     }
 
     void testCreation() {
-      gum::MultiDimBucket<double> *bucket = 0;
+      gum::MultiDimBucket<double>* bucket = 0;
 
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>());
       TS_ASSERT_THROWS_NOTHING(delete bucket);
     }
 
     void testAddEraseTables() {
-      gum::MultiDimBucket<double> *bucket = 0;
+      gum::MultiDimBucket<double>* bucket = 0;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>());
 
       if (bucket != 0) {
@@ -162,7 +162,7 @@ namespace gum_tests {
     }
 
     void testComputation() {
-      gum::MultiDimBucket<double> *bucket = 0;
+      gum::MultiDimBucket<double>* bucket = 0;
       gum::Potential<double> product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>());
 
@@ -190,7 +190,7 @@ namespace gum_tests {
     }
 
     void testOnTheFly() {
-      gum::MultiDimBucket<double> *bucket = 0;
+      gum::MultiDimBucket<double>* bucket = 0;
       gum::Potential<double> product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>(0));
 
@@ -219,7 +219,7 @@ namespace gum_tests {
     }
 
     void testInstantiationsWithBuffer() {
-      gum::MultiDimBucket<double> *bucket = 0;
+      gum::MultiDimBucket<double>* bucket = 0;
       gum::Potential<double> product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>());
 
@@ -235,7 +235,7 @@ namespace gum_tests {
 
         TS_GUM_ASSERT_THROWS_NOTHING(__makeProduct(product));
 
-        gum::Instantiation *inst = 0;
+        gum::Instantiation* inst = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
 
         if (inst != 0) {
@@ -243,7 +243,8 @@ namespace gum_tests {
           TS_ASSERT(inst->isMaster(bucket->getMasterRef()));
 
           for (inst->setFirst(); !inst->end(); inst->inc()) {
-            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double)0.01);
+            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst),
+                            (double)0.01);
           }
 
           delete inst;
@@ -254,7 +255,7 @@ namespace gum_tests {
     }
 
     void testInstantiationsWithBufferAndAutoCompute() {
-      gum::MultiDimBucket<double> *bucket = 0;
+      gum::MultiDimBucket<double>* bucket = 0;
       gum::Potential<double> product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>());
 
@@ -268,7 +269,7 @@ namespace gum_tests {
 
         TS_GUM_ASSERT_THROWS_NOTHING(__makeProduct(product));
 
-        gum::Instantiation *inst = 0;
+        gum::Instantiation* inst = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
 
         if (inst != 0) {
@@ -276,7 +277,8 @@ namespace gum_tests {
           TS_ASSERT(inst->isMaster(bucket->getMasterRef()));
 
           for (inst->setFirst(); !inst->end(); inst->inc()) {
-            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double)0.01);
+            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst),
+                            (double)0.01);
           }
 
           delete inst;
@@ -287,7 +289,7 @@ namespace gum_tests {
     }
 
     void testInstantiationsOnTheFly() {
-      gum::MultiDimBucket<double> *bucket = 0;
+      gum::MultiDimBucket<double>* bucket = 0;
       gum::Potential<double> product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>(0));
 
@@ -303,7 +305,7 @@ namespace gum_tests {
 
         TS_GUM_ASSERT_THROWS_NOTHING(__makeProduct(product));
 
-        gum::Instantiation *inst = 0;
+        gum::Instantiation* inst = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
 
         if (inst != 0) {
@@ -311,7 +313,8 @@ namespace gum_tests {
           TS_ASSERT(inst->isMaster(bucket->getMasterRef()));
 
           for (inst->setFirst(); !inst->end(); inst->inc()) {
-            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double)0.01);
+            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst),
+                            (double)0.01);
           }
 
           delete inst;
@@ -322,7 +325,7 @@ namespace gum_tests {
     }
 
     void testBucketSizeChanges() {
-      gum::MultiDimBucket<double> *bucket = 0;
+      gum::MultiDimBucket<double>* bucket = 0;
       gum::Potential<double> product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>(0));
 
@@ -343,7 +346,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(bucket->realSize(), (gum::Size)0);
 
-        gum::Instantiation *inst = 0;
+        gum::Instantiation* inst = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
         TS_ASSERT(!bucket->bucketChanged());
 
@@ -352,7 +355,8 @@ namespace gum_tests {
           TS_ASSERT(inst->isMaster(bucket->getMasterRef()));
 
           for (inst->setFirst(); !inst->end(); inst->inc()) {
-            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double)0.01);
+            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst),
+                            (double)0.01);
             TS_ASSERT(!bucket->bucketChanged());
           }
 
@@ -368,7 +372,8 @@ namespace gum_tests {
           TS_ASSERT(inst->isMaster(bucket));
 
           for (inst->setFirst(); !inst->end(); inst->inc()) {
-            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double)0.01);
+            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst),
+                            (double)0.01);
           }
 
           delete inst;
@@ -379,7 +384,7 @@ namespace gum_tests {
     }
 
     void testAllVariables() {
-      gum::MultiDimBucket<double> *bucket = 0;
+      gum::MultiDimBucket<double>* bucket = 0;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket<double>(0));
 
       if (bucket != 0) {
@@ -394,8 +399,9 @@ namespace gum_tests {
               inBucket++;
             else
               outBucket++;
-        } catch (gum::Exception &e) {
-          std::cerr << std::endl << e.errorContent() << std::endl;
+        } catch (gum::Exception& e) {
+          std::cerr << std::endl
+                    << e.errorContent() << std::endl;
           TS_ASSERT(false);
         }
 
@@ -407,7 +413,7 @@ namespace gum_tests {
     }
 
     void testWithSmallBN() {
-      gum::BayesNet<float> *bn = new gum::BayesNet<float>();
+      gum::BayesNet<float>* bn = new gum::BayesNet<float>();
       gum::LabelizedVariable vc("c", "cloudy", 2), vs("s", "sprinklet", 2);
       gum::LabelizedVariable vr("r", "rain", 2), vw("w", "wet grass", 2);
       gum::Id c = bn->add(vc);
@@ -442,7 +448,7 @@ namespace gum_tests {
         bn->cpt(w).fillWith(wa);
       }
 
-      gum::Potential<float> *e_s = new gum::Potential<float>();
+      gum::Potential<float>* e_s = new gum::Potential<float>();
       {
         e_s->add(bn->variable(s));
         const float t[2] = {0., 1.};
@@ -450,7 +456,7 @@ namespace gum_tests {
         e_s->fillWith(sa);
       }
 
-      gum::Potential<float> *e_c = new gum::Potential<float>();
+      gum::Potential<float>* e_c = new gum::Potential<float>();
       {
         e_c->add(bn->variable(c));
         const float t[2] = {1., 0.};

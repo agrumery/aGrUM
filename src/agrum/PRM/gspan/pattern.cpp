@@ -28,24 +28,24 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/PRM/gspan/pattern.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
 namespace gum {
   namespace prm {
     namespace gspan {
 
-      Pattern::Pattern(const Pattern &source) : DiGraph(), __last(0) {
+      Pattern::Pattern(const Pattern& source) : DiGraph(), __last(0) {
         GUM_CONS_CPY(Pattern);
         NodeProperty<NodeId> node_map;
 
         for (NodeId node = 1; node <= source.size(); ++node) {
           node_map.insert(node,
-                          addNode(const_cast<LabelData &>(source.label(node))));
+                          addNode(const_cast<LabelData&>(source.label(node))));
         }
 
         for (const auto edge : source.code().codes)
           addArc(node_map[edge->i], node_map[edge->j],
-                 const_cast<LabelData &>(
+                 const_cast<LabelData&>(
                      source.label(node_map[edge->i], node_map[edge->j])));
       }
 
@@ -104,7 +104,7 @@ namespace gum {
 
         try {
           p.addArc(1, 2, label(u, v));
-        } catch (NotFound &) {
+        } catch (NotFound&) {
           p.addArc(1, 2, label(v, u));
         }
 
@@ -131,8 +131,8 @@ namespace gum {
         return false;
       }
 
-      bool Pattern::__rec(Pattern &p, Bijection<NodeId, NodeId> &node_map, NodeId u,
-                          NodeId v) {
+      bool Pattern::__rec(Pattern& p, Bijection<NodeId, NodeId>& node_map,
+                          NodeId u, NodeId v) {
         if (node_map.existsFirst(v)) {
           if (node_map.second(u) < node_map.second(v)) {
             // Invalid forward edge
@@ -147,18 +147,18 @@ namespace gum {
         }
 
         // Retrieving arc label data
-        LabelData *data = 0;
+        LabelData* data = 0;
 
         try {
           data = &(label(u, v));
-        } catch (NotFound &) {
+        } catch (NotFound&) {
           data = &(label(v, u));
         }
 
         // Adding arc
         try {
           p.addArc(node_map.second(u), node_map.second(v), *data);
-        } catch (OperationNotAllowed &) {
+        } catch (OperationNotAllowed&) {
           // Invalid neighbor
           if (node_map.second(u) < node_map.second(v)) {
             p.remove(node_map.second(v));
@@ -195,7 +195,7 @@ namespace gum {
         return false;
       }
 
-      bool Pattern::__not_rec(Pattern &p, Bijection<NodeId, NodeId> &node_map,
+      bool Pattern::__not_rec(Pattern& p, Bijection<NodeId, NodeId>& node_map,
                               NodeId a_u, NodeId a_v) {
         std::vector<std::pair<NodeId, NodeId>> stack;
         std::vector<size_t> rec_call;
@@ -238,8 +238,10 @@ namespace gum {
               if (node_map.second(u) < node_map.second(v)) {
                 // Invalid forward edge
                 go = false;
-              } else if ((p.existsArc(node_map.second(u), node_map.second(v))) or
-                         (p.existsArc(node_map.second(v), node_map.second(u)))) {
+              } else if ((p.existsArc(node_map.second(u),
+                                      node_map.second(v))) or
+                         (p.existsArc(node_map.second(v),
+                                      node_map.second(u)))) {
                 // Duplicate arc !
                 go = false;
               }
@@ -249,18 +251,18 @@ namespace gum {
 
             if (go) {
               // Retrieving arc label data
-              LabelData *data = 0;
+              LabelData* data = 0;
 
               try {
                 data = &(label(u, v));
-              } catch (NotFound &) {
+              } catch (NotFound&) {
                 data = &(label(v, u));
               }
 
               // Adding arc
               try {
                 p.addArc(node_map.second(u), node_map.second(v), *data);
-              } catch (OperationNotAllowed &) {
+              } catch (OperationNotAllowed&) {
                 // Invalid neighbor
                 if (node_map.second(u) < node_map.second(v)) {
                   p.remove(node_map.second(v));
@@ -283,12 +285,14 @@ namespace gum {
 
                   for (const auto node : r_path) {
                     for (const auto nei : children(node)) {
-                      stack.push_back(std::make_pair(node_map.first(node), nei));
+                      stack.push_back(
+                          std::make_pair(node_map.first(node), nei));
                       ++(rec_call.back());
                     }
 
                     for (const auto nei : parents(node)) {
-                      stack.push_back(std::make_pair(node_map.first(node), nei));
+                      stack.push_back(
+                          std::make_pair(node_map.first(node), nei));
                       ++(rec_call.back());
                     }
                   }

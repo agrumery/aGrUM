@@ -51,19 +51,20 @@ namespace gum_tests {
   class InfluenceDiagramTestSuite : public CxxTest::TestSuite {
 
     private:
-    void fillTopo(gum::InfluenceDiagram<float> &id, gum::List<gum::NodeId> &idList) {
+    void fillTopo(gum::InfluenceDiagram<float>& id,
+                  gum::List<gum::NodeId>& idList) {
       try {
-        idList.insert(id.addDecisionNode(*decisionVar1)); // 0
-        idList.insert(id.addDecisionNode(*decisionVar2)); // 1
-        idList.insert(id.addDecisionNode(*decisionVar3)); // 2
-        idList.insert(id.addDecisionNode(*decisionVar4)); // 3
-        idList.insert(id.addChanceNode(*chanceVar1));     // 4
-        idList.insert(id.addChanceNode(*chanceVar2));     // 5
-        idList.insert(id.addChanceNode(*chanceVar3));     // 6
-        idList.insert(id.addChanceNode(*chanceVar4));     // 7
-        idList.insert(id.addChanceNode(*chanceVar5));     // 8
-        idList.insert(id.addUtilityNode(*utilityVar1));   // 9
-        idList.insert(id.addUtilityNode(*utilityVar2));   // 10
+        idList.insert(id.addDecisionNode(*decisionVar1));  // 0
+        idList.insert(id.addDecisionNode(*decisionVar2));  // 1
+        idList.insert(id.addDecisionNode(*decisionVar3));  // 2
+        idList.insert(id.addDecisionNode(*decisionVar4));  // 3
+        idList.insert(id.addChanceNode(*chanceVar1));      // 4
+        idList.insert(id.addChanceNode(*chanceVar2));      // 5
+        idList.insert(id.addChanceNode(*chanceVar3));      // 6
+        idList.insert(id.addChanceNode(*chanceVar4));      // 7
+        idList.insert(id.addChanceNode(*chanceVar5));      // 8
+        idList.insert(id.addUtilityNode(*utilityVar1));    // 9
+        idList.insert(id.addUtilityNode(*utilityVar2));    // 10
 
         id.addArc(idList[0], idList[4]);
         id.addArc(idList[4], idList[9]);
@@ -78,17 +79,19 @@ namespace gum_tests {
         id.addArc(idList[8], idList[10]);
         id.addArc(idList[3], idList[10]);
 
-      } catch (gum::Exception &e) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+      } catch (gum::Exception& e) {
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
     }
 
-    void fill(gum::InfluenceDiagram<float> &id, gum::List<gum::NodeId> &idList) {
+    void fill(gum::InfluenceDiagram<float>& id,
+              gum::List<gum::NodeId>& idList) {
       fillTopo(id, idList);
 
       try {
-        const gum::Potential<float> &p1 = id.cpt(idList[4]);
+        const gum::Potential<float>& p1 = id.cpt(idList[4]);
         {
           // FILLING PARAMS
           const float t[4] = {0.2, 0.8, 0.5, 0.5};
@@ -97,7 +100,7 @@ namespace gum_tests {
           p1.fillWith(v);
         }
 
-        const gum::Potential<float> &p2 = id.cpt(idList[5]);
+        const gum::Potential<float>& p2 = id.cpt(idList[5]);
         {
           // FILLING PARAMS
           const float t[4] = {0.1, 0.9, 0.9, 0.1};
@@ -106,7 +109,7 @@ namespace gum_tests {
           p2.fillWith(v);
         }
 
-        const gum::Potential<float> &p3 = id.cpt(idList[6]);
+        const gum::Potential<float>& p3 = id.cpt(idList[6]);
         {
           // FILLING PARAMS
           const float t[4] = {0.35, 0.65, 0.19, 0.81};
@@ -115,7 +118,7 @@ namespace gum_tests {
           p3.fillWith(v);
         }
 
-        const gum::Potential<float> &p4 = id.cpt(idList[7]);
+        const gum::Potential<float>& p4 = id.cpt(idList[7]);
         {
           // FILLING PARAMS
           const float t[4] = {0.4, 0.6, 0.5, 0.5};
@@ -124,7 +127,7 @@ namespace gum_tests {
           p4.fillWith(v);
         }
 
-        const gum::Potential<float> &p5 = id.cpt(idList[8]);
+        const gum::Potential<float>& p5 = id.cpt(idList[8]);
         {
           // FILLING PARAMS
           const float t[8] = {0.4, 0.6, 0.8, 0.2, 0.4, 0.6, 0.3, 0.7};
@@ -133,7 +136,7 @@ namespace gum_tests {
           p5.fillWith(v);
         }
 
-        const gum::UtilityTable<float> &u1 = id.utility(idList[9]);
+        const gum::UtilityTable<float>& u1 = id.utility(idList[9]);
         {
           // FILLING PARAMS
           const float t[4] = {42, 69, 666, 84};
@@ -142,7 +145,7 @@ namespace gum_tests {
           u1.fillWith(v);
         }
 
-        const gum::UtilityTable<float> &u2 = id.utility(idList[10]);
+        const gum::UtilityTable<float>& u2 = id.utility(idList[10]);
         {
           // FILLING PARAMS
           const float t[4] = {42, -69, 666, 84};
@@ -150,18 +153,19 @@ namespace gum_tests {
           const std::vector<float> v(t, t + n);
           u2.fillWith(v);
         }
-      } catch (gum::Exception &e) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+      } catch (gum::Exception& e) {
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
     }
 
     public:
-    gum::LabelizedVariable *decisionVar1, *decisionVar2, *decisionVar3,
+    gum::LabelizedVariable* decisionVar1, *decisionVar2, *decisionVar3,
         *decisionVar4;
-    gum::LabelizedVariable *chanceVar1, *chanceVar2, *chanceVar3, *chanceVar4,
+    gum::LabelizedVariable* chanceVar1, *chanceVar2, *chanceVar3, *chanceVar4,
         *chanceVar5;
-    gum::LabelizedVariable *utilityVar1, *utilityVar2;
+    gum::LabelizedVariable* utilityVar1, *utilityVar2;
 
     void setUp() {
       decisionVar1 = new gum::LabelizedVariable("decisionVar1", "D1", 2);
@@ -192,8 +196,9 @@ namespace gum_tests {
     }
 
     void testConstructor() {
-      gum::InfluenceDiagram<float> *topology = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(topology = new gum::InfluenceDiagram<float>());
+      gum::InfluenceDiagram<float>* topology = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING(topology =
+                                       new gum::InfluenceDiagram<float>());
 
       TS_ASSERT_THROWS(topology->addArc(1, 2), gum::InvalidNode);
       gum::List<gum::NodeId> idList;
@@ -279,8 +284,9 @@ namespace gum_tests {
       gum::List<gum::NodeId> idList;
       TS_GUM_ASSERT_THROWS_NOTHING(fill(source, idList));
 
-      gum::InfluenceDiagram<float> *copy = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(copy = new gum::InfluenceDiagram<float>(source));
+      gum::InfluenceDiagram<float>* copy = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          copy = new gum::InfluenceDiagram<float>(source));
 
       TS_ASSERT_EQUALS(source.dag().size(), copy->dag().size());
       TS_ASSERT_EQUALS(source.dag().sizeArcs(), copy->dag().sizeArcs());
@@ -288,8 +294,8 @@ namespace gum_tests {
       for (const auto node : source.dag().nodes()) {
         TS_ASSERT(copy->dag().exists(node));
 
-        const gum::DiscreteVariable &srcVar = source.variable(node);
-        const gum::DiscreteVariable &cpVar = copy->variable(node);
+        const gum::DiscreteVariable& srcVar = source.variable(node);
+        const gum::DiscreteVariable& cpVar = copy->variable(node);
         TS_ASSERT_EQUALS(srcVar.name(), cpVar.name());
 
         if (srcVar.domainSize() == cpVar.domainSize()) {
@@ -303,9 +309,9 @@ namespace gum_tests {
         }
 
         if (source.isChanceNode(node)) {
-          const gum::Potential<float> &srcCPT = source.cpt(node);
+          const gum::Potential<float>& srcCPT = source.cpt(node);
 
-          const gum::Potential<float> &cpCPT = copy->cpt(node);
+          const gum::Potential<float>& cpCPT = copy->cpt(node);
 
           gum::Instantiation srcInst(srcCPT);
 
@@ -321,8 +327,8 @@ namespace gum_tests {
           }
 
         } else if (source.isUtilityNode(node)) {
-          const gum::UtilityTable<float> &srcUT = source.utility(node);
-          const gum::UtilityTable<float> &cpUT = copy->utility(node);
+          const gum::UtilityTable<float>& srcUT = source.utility(node);
+          const gum::UtilityTable<float>& cpUT = copy->utility(node);
 
           gum::Instantiation srcInst(srcUT);
           gum::Instantiation cpInst(cpUT);
@@ -347,11 +353,16 @@ namespace gum_tests {
       gum::InfluenceDiagram<float> id;
       gum::List<gum::NodeId> idList;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar1)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar3)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar3)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar5)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar1)));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          idList.insert(id.addDecisionNode(*decisionVar1)));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          idList.insert(id.addDecisionNode(*decisionVar3)));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          idList.insert(id.addChanceNode(*chanceVar3)));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          idList.insert(id.addChanceNode(*chanceVar5)));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          idList.insert(id.addUtilityNode(*utilityVar1)));
 
       TS_ASSERT_EQUALS(id.size(), (gum::Size)5);
       TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)5);
@@ -368,21 +379,21 @@ namespace gum_tests {
         }
       }
 
-      gum::LabelizedVariable *varPtr = nullptr;
+      gum::LabelizedVariable* varPtr = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-          varPtr = (gum::LabelizedVariable *)&id.variable(idList[0]));
+          varPtr = (gum::LabelizedVariable*)&id.variable(idList[0]));
       TS_ASSERT_EQUALS(*varPtr, *decisionVar1);
 
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&id.variable(idList[0])),
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[0])),
                        *decisionVar1);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&id.variable(idList[1])),
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[1])),
                        *decisionVar3);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&id.variable(idList[2])),
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[2])),
                        *chanceVar3);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&id.variable(idList[3])),
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[3])),
                        *chanceVar5);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&id.variable(idList[4])),
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[4])),
                        *utilityVar1);
     }
 
@@ -390,32 +401,37 @@ namespace gum_tests {
       gum::InfluenceDiagram<float> id;
       gum::List<gum::NodeId> idList;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar2)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar4)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar1)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar4)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar2)));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          idList.insert(id.addDecisionNode(*decisionVar2)));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          idList.insert(id.addDecisionNode(*decisionVar4)));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          idList.insert(id.addChanceNode(*chanceVar1)));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          idList.insert(id.addChanceNode(*chanceVar4)));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          idList.insert(id.addUtilityNode(*utilityVar2)));
 
       TS_ASSERT_EQUALS(id.size(), (gum::Size)5);
       TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)5);
 
-      gum::LabelizedVariable *varPtr = nullptr;
+      gum::LabelizedVariable* varPtr = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-          varPtr = (gum::LabelizedVariable *)&id.variable(idList[0]));
+          varPtr = (gum::LabelizedVariable*)&id.variable(idList[0]));
       TS_ASSERT_EQUALS(*varPtr, *decisionVar2);
 
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&id.variable(idList[0])),
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[0])),
                        *decisionVar2);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&id.variable(idList[1])),
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[1])),
                        *decisionVar4);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&id.variable(idList[2])),
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[2])),
                        *chanceVar1);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&id.variable(idList[3])),
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[3])),
                        *chanceVar4);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&id.variable(idList[4])),
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[4])),
                        *utilityVar2);
 
-      gum::LabelizedVariable *utilityVar3 =
+      gum::LabelizedVariable* utilityVar3 =
           new gum::LabelizedVariable("utilityVar3", "U3", 2);
       TS_ASSERT_THROWS(id.addUtilityNode(*utilityVar3), gum::InvalidArgument);
       delete utilityVar3;
@@ -425,11 +441,16 @@ namespace gum_tests {
       gum::InfluenceDiagram<float> id;
       gum::List<gum::NodeId> idList;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar2)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar4)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar1)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar4)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar2)));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          idList.insert(id.addDecisionNode(*decisionVar2)));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          idList.insert(id.addDecisionNode(*decisionVar4)));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          idList.insert(id.addChanceNode(*chanceVar1)));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          idList.insert(id.addChanceNode(*chanceVar4)));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          idList.insert(id.addUtilityNode(*utilityVar2)));
 
       TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[0], idList[2]));
       TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[2], idList[4]));
@@ -513,13 +534,15 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[4], idList[5])));
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[5], idList[1])));
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[1], idList[7])));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[3], idList[10])));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          id.eraseArc(gum::Arc(idList[3], idList[10])));
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[5], idList[2])));
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[1], idList[9])));
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[2], idList[6])));
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[6], idList[8])));
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[7], idList[8])));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[8], idList[10])));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          id.eraseArc(gum::Arc(idList[8], idList[10])));
 
       TS_ASSERT(!id.empty());
       TS_ASSERT(id.dag().emptyArcs());
@@ -572,8 +595,8 @@ namespace gum_tests {
       TS_ASSERT(id.dag().existsArc(idList[6], idList[8]));
       TS_ASSERT(id.dag().existsArc(idList[7], idList[8]));
 
-      gum::Size dmnSize_1 =
-          id.variable(idList[7]).domainSize() * id.variable(idList[6]).domainSize();
+      gum::Size dmnSize_1 = id.variable(idList[7]).domainSize() *
+                            id.variable(idList[6]).domainSize();
       dmnSize_1 *= id.variable(idList[8]).domainSize();
       TS_ASSERT_EQUALS(id.cpt(idList[8]).domainSize(), dmnSize_1);
 
@@ -592,7 +615,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(id.cpt(idList[8]).domainSize(), dmnSize_2);
 
       TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[6])));
-      TS_ASSERT_THROWS_ANYTHING(id.cpt(idList[8]).contains(id.variable(idList[7])));
+      TS_ASSERT_THROWS_ANYTHING(
+          id.cpt(idList[8]).contains(id.variable(idList[7])));
       TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[8])));
 
       // Testing coherence on utility table
@@ -600,8 +624,8 @@ namespace gum_tests {
       TS_ASSERT(id.dag().existsArc(idList[3], idList[10]));
       TS_ASSERT(id.dag().existsArc(idList[8], idList[10]));
 
-      gum::Size dmnSize_3 =
-          id.variable(idList[3]).domainSize() * id.variable(idList[8]).domainSize();
+      gum::Size dmnSize_3 = id.variable(idList[3]).domainSize() *
+                            id.variable(idList[8]).domainSize();
       dmnSize_3 *= id.variable(idList[10]).domainSize();
       TS_ASSERT_EQUALS(id.utility(idList[10]).domainSize(), dmnSize_3);
 
@@ -636,8 +660,8 @@ namespace gum_tests {
       TS_ASSERT(id.dag().existsArc(idList[6], idList[8]));
       TS_ASSERT(id.dag().existsArc(idList[7], idList[8]));
 
-      gum::Size dmnSize_1 =
-          id.variable(idList[7]).domainSize() * id.variable(idList[6]).domainSize();
+      gum::Size dmnSize_1 = id.variable(idList[7]).domainSize() *
+                            id.variable(idList[6]).domainSize();
       dmnSize_1 *= id.variable(idList[8]).domainSize();
       TS_ASSERT_EQUALS(id.cpt(idList[8]).domainSize(), dmnSize_1);
 
@@ -664,8 +688,8 @@ namespace gum_tests {
       TS_ASSERT(id.dag().existsArc(idList[3], idList[10]));
       TS_ASSERT(id.dag().existsArc(idList[8], idList[10]));
 
-      gum::Size dmnSize_3 =
-          id.variable(idList[3]).domainSize() * id.variable(idList[8]).domainSize();
+      gum::Size dmnSize_3 = id.variable(idList[3]).domainSize() *
+                            id.variable(idList[8]).domainSize();
       dmnSize_3 *= id.variable(idList[10]).domainSize();
       TS_ASSERT_EQUALS(id.utility(idList[10]).domainSize(), dmnSize_3);
 
@@ -673,7 +697,8 @@ namespace gum_tests {
       TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[8])));
       TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[10])));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[3], idList[10])));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          id.eraseArc(gum::Arc(idList[3], idList[10])));
 
       TS_ASSERT_EQUALS(id.dag().parents(idList[10]).size(), (gum::Size)1);
       TS_ASSERT(id.dag().existsArc(idList[8], idList[10]));
@@ -722,7 +747,8 @@ namespace gum_tests {
       TS_ASSERT(id.decisionOrderExists());
       TS_ASSERT_THROWS_NOTHING(id.getDecisionOrder());
       TS_ASSERT_THROWS_NOTHING(id.getPartialTemporalOrder());
-      gum::List<gum::NodeSet> partialTemporalOrder = id.getPartialTemporalOrder();
+      gum::List<gum::NodeSet> partialTemporalOrder =
+          id.getPartialTemporalOrder();
 
       gum::Size resultat[7][3] = {{8, 6, 4}, {3}, {7}, {1}, {2}, {5}, {0}};
       int i = 0;
@@ -764,26 +790,26 @@ namespace gum_tests {
       gum::LabelizedVariable uVar3("utilityVar3", "U3", 1);
       gum::LabelizedVariable uVar4("utilityVar4", "U4", 1);
 
-      idList.insert(id.addDecisionNode(dVar1)); // 0
-      idList.insert(id.addDecisionNode(dVar2)); // 1
-      idList.insert(id.addDecisionNode(dVar3)); // 2
-      idList.insert(id.addDecisionNode(dVar4)); // 3
-      idList.insert(id.addChanceNode(cVar1));   // 4
-      idList.insert(id.addChanceNode(cVar2));   // 5
-      idList.insert(id.addChanceNode(cVar3));   // 6
-      idList.insert(id.addChanceNode(cVar4));   // 7
-      idList.insert(id.addChanceNode(cVar5));   // 8
-      idList.insert(id.addChanceNode(cVar6));   // 9
-      idList.insert(id.addChanceNode(cVar7));   // 10
-      idList.insert(id.addChanceNode(cVar8));   // 11
-      idList.insert(id.addChanceNode(cVar9));   // 12
-      idList.insert(id.addChanceNode(cVar10));  // 13
-      idList.insert(id.addChanceNode(cVar11));  // 14
-      idList.insert(id.addChanceNode(cVar12));  // 15
-      idList.insert(id.addUtilityNode(uVar1));  // 16
-      idList.insert(id.addUtilityNode(uVar2));  // 17
-      idList.insert(id.addUtilityNode(uVar3));  // 18
-      idList.insert(id.addUtilityNode(uVar4));  // 19
+      idList.insert(id.addDecisionNode(dVar1));  // 0
+      idList.insert(id.addDecisionNode(dVar2));  // 1
+      idList.insert(id.addDecisionNode(dVar3));  // 2
+      idList.insert(id.addDecisionNode(dVar4));  // 3
+      idList.insert(id.addChanceNode(cVar1));    // 4
+      idList.insert(id.addChanceNode(cVar2));    // 5
+      idList.insert(id.addChanceNode(cVar3));    // 6
+      idList.insert(id.addChanceNode(cVar4));    // 7
+      idList.insert(id.addChanceNode(cVar5));    // 8
+      idList.insert(id.addChanceNode(cVar6));    // 9
+      idList.insert(id.addChanceNode(cVar7));    // 10
+      idList.insert(id.addChanceNode(cVar8));    // 11
+      idList.insert(id.addChanceNode(cVar9));    // 12
+      idList.insert(id.addChanceNode(cVar10));   // 13
+      idList.insert(id.addChanceNode(cVar11));   // 14
+      idList.insert(id.addChanceNode(cVar12));   // 15
+      idList.insert(id.addUtilityNode(uVar1));   // 16
+      idList.insert(id.addUtilityNode(uVar2));   // 17
+      idList.insert(id.addUtilityNode(uVar3));   // 18
+      idList.insert(id.addUtilityNode(uVar4));   // 19
 
       id.addArc(idList[4], idList[6]);
       id.addArc(idList[5], idList[6]);
@@ -837,7 +863,8 @@ namespace gum_tests {
       // For comparison with what readers will return
       dotfile = GET_PATH_STR("IDAfterMoralisation.dot");
 
-      std::ofstream moralOutput(dotfile.c_str(), std::ios::out | std::ios::trunc);
+      std::ofstream moralOutput(dotfile.c_str(),
+                                std::ios::out | std::ios::trunc);
 
       if (!moralOutput.good()) {
         GUM_ERROR(gum::IOError, "Stream states flags are not all unset.");

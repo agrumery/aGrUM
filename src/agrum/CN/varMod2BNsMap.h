@@ -20,7 +20,8 @@
 
 /**
  * @file
- * @brief Class used to store optimum IBayesNet during some inference algorithms.
+ * @brief Class used to store optimum IBayesNet during some inference
+ * algorithms.
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
 
@@ -41,7 +42,8 @@ namespace gum {
 
     /**
      * @class VarMod2BNsMap VarMod2BNsMap.h <agrum/CN/VarMod2BNsMap.h>
-     * @brief Class used to store optimum IBayesNet during some inference algorithms.
+     * @brief Class used to store optimum IBayesNet during some inference
+     * algorithms.
      * @ingroup cn_group
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
@@ -65,11 +67,13 @@ namespace gum {
       /** Map varKey - list(id) : get all optimal nets id from the given key :
        * variable, modality and min=0 ( or max=1 ). */
       varHashs _myVarHashs;
-      /** Map id - list(varKey) : get all variables, modalities associated to this
+      /** Map id - list(varKey) : get all variables, modalities associated to
+       * this
        * optimal net id. */
       hashVars _myHashVars;
 
-      /** Since all samples have the same structure, this will be used as default
+      /** Since all samples have the same structure, this will be used as
+       * default
        * initialization (copy constructor) for any sample. */
       std::vector<std::vector<std::vector<bool>>> _sampleDef;
 
@@ -81,7 +85,7 @@ namespace gum {
       std::hash<std::vector<bool>> _vectHash;
 
       /** A pointer to the CredalNet to be used. */
-      const CredalNet<GUM_SCALAR> *cnet;
+      const CredalNet<GUM_SCALAR>* cnet;
 
       public:
       /// @name Constructors / Destructors
@@ -93,9 +97,10 @@ namespace gum {
        *
        * @param cn The CredalNet to be used.
        */
-      VarMod2BNsMap(const CredalNet<GUM_SCALAR> &cn);
+      VarMod2BNsMap(const CredalNet<GUM_SCALAR>& cn);
 
-      /** Default constructor that should be used only by InferenceEngine since it
+      /** Default constructor that should be used only by InferenceEngine since
+       * it
        * has a member variable. */
       VarMod2BNsMap();
 
@@ -105,13 +110,16 @@ namespace gum {
       /// @}
 
       /**
-       * Insert for thread fusion. All inserted nets are optimums and none will be
+       * Insert for thread fusion. All inserted nets are optimums and none will
+       * be
        * deleted because a better one is being inserted.
        * @param bn The constant reference to the net to be inserted.
-       * @param key The constant reference to the key at which we will insert the
+       * @param key The constant reference to the key at which we will insert
+       * the
        * net.
        */
-      bool insert(const std::vector<bool> &bn, const std::vector<unsigned int> &key);
+      bool insert(const std::vector<bool>& bn,
+                  const std::vector<unsigned int>& key);
 
       /**
        * Thread insert.
@@ -120,7 +128,7 @@ namespace gum {
        * marginals.
        * @return \c True if the net was inserted, \c false otherwise.
        */
-      bool insert(const std::vector<unsigned int> &key, const bool isBetter);
+      bool insert(const std::vector<unsigned int>& key, const bool isBetter);
 
       /// @name Getters and setters
       /// @{
@@ -128,59 +136,64 @@ namespace gum {
       /**
        * Initialize __sampleDef from the CredalNet.
        *
-       * Shoud only be used by InferenceEngine to initialize it's member variable.
+       * Shoud only be used by InferenceEngine to initialize it's member
+       *variable.
        * @param cn The CredalNet to be used.
        */
-      void setCNet(const CredalNet<GUM_SCALAR> &cn);
+      void setCNet(const CredalNet<GUM_SCALAR>& cn);
 
       /**
        * %Set the current thread sample and it's hash.
        * @param sample The constant reference to the sample with structure.
        */
-      void
-      setCurrentSample(const std::vector<std::vector<std::vector<bool>>> &sample);
+      void setCurrentSample(
+          const std::vector<std::vector<std::vector<bool>>>& sample);
 
       /**
        * Get the current sample as a vector of bits without structure.
-       * @return The constant reference to the sampled IBayesNet without structure.
+       * @return The constant reference to the sampled IBayesNet without
+       * structure.
        */
-      const dBN &getCurrentSample();
+      const dBN& getCurrentSample();
 
       /**
        * Get the sample structure.
        * @return The constant reference to the sample structure.
        */
-      const std::vector<std::vector<std::vector<bool>>> &getSampleDef();
+      const std::vector<std::vector<std::vector<bool>>>& getSampleDef();
 
       /**
-       * Get optimum IBayesNet (s) without structure of the given variable, modality
+       * Get optimum IBayesNet (s) without structure of the given variable,
+       * modality
        * for min or max.
-       * @param key The constant reference to the variable, modality, min or max.
+       * @param key The constant reference to the variable, modality, min or
+       * max.
        * @return The constant vector of not yet constant pointers to the nets.
        */
-      const std::vector<dBN *>
-      getBNOptsFromKey(const std::vector<unsigned int> &key);
+      const std::vector<dBN*>
+      getBNOptsFromKey(const std::vector<unsigned int>& key);
 
       /**
-      * Get optimum IBayesNet (s) with structure of the given variable, modality for
+      * Get optimum IBayesNet (s) with structure of the given variable, modality
+      * for
       * min or max.
       * @param key The constant reference to the variable, modality, min or max.
       * @return The vector of not yet constant pointers to the nets.
       */
       std::vector<std::vector<std::vector<std::vector<bool>>>>
-      getFullBNOptsFromKey(const std::vector<unsigned int> &key);
+      getFullBNOptsFromKey(const std::vector<unsigned int>& key);
 
       /** Get the number of IBayesNet stored. */
       unsigned int getEntrySize() const;
 
       /// @}
 
-    }; // end of OptBN
+    };  // end of OptBN
 
     extern template class VarMod2BNsMap<float>;
     extern template class VarMod2BNsMap<double>;
-  } // credal namespace
-} // gum namespace
+  }  // credal namespace
+}  // gum namespace
 
 #include <agrum/CN/varMod2BNsMap.tcc>
 

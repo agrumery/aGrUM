@@ -23,9 +23,9 @@
 namespace CxxTest {
   class X11Gui : public GuiListener {
     public:
-    void enterGui(int &argc, char **argv) { parseCommandLine(argc, argv); }
+    void enterGui(int& argc, char** argv) { parseCommandLine(argc, argv); }
 
-    void enterWorld(const WorldDescription &wd) {
+    void enterWorld(const WorldDescription& wd) {
       openDisplay();
 
       if (_display) {
@@ -40,7 +40,7 @@ namespace CxxTest {
       }
     }
 
-    void guiEnterTest(const char *suiteName, const char *testName) {
+    void guiEnterTest(const char* suiteName, const char* testName) {
       if (_display) {
         ++_testsDone;
         setWindowName(suiteName, testName);
@@ -74,24 +74,24 @@ namespace CxxTest {
     }
 
     private:
-    const char *_programName;
-    Display *_display;
+    const char* _programName;
+    Display* _display;
     Window _window;
     unsigned _numTotalTests, _testsDone;
     char _strTotalTests[WorldDescription::MAX_STRLEN_TOTAL_TESTS];
-    const char *_foregroundName, *_backgroundName;
-    const char *_greenName, *_yellowName, *_redName;
+    const char* _foregroundName, *_backgroundName;
+    const char* _greenName, *_yellowName, *_redName;
     unsigned long _foreground, _background, _barColor;
     int _width, _height;
     GC _gc;
-    const char *_fontName;
+    const char* _fontName;
     XID _fontId;
-    XFontStruct *_fontInfo;
+    XFontStruct* _fontInfo;
     int _textHeight, _textDescent;
     long _eventMask;
     Colormap _colormap;
 
-    void parseCommandLine(int &argc, char **argv) {
+    void parseCommandLine(int& argc, char** argv) {
       _programName = argv[0];
 
       _fontName = 0;
@@ -127,7 +127,7 @@ namespace CxxTest {
       _background = getColor(_backgroundName);
     }
 
-    unsigned long getColor(const char *colorName) {
+    unsigned long getColor(const char* colorName) {
       XColor color;
       XParseColor(_display, _colormap, colorName, &color);
       XAllocColor(_display, _colormap, &color);
@@ -135,8 +135,8 @@ namespace CxxTest {
     }
 
     void createWindow() {
-      _window = XCreateSimpleWindow(_display, RootWindow(_display, 0), 0, 0, 1, 1, 0,
-                                    0, _background);
+      _window = XCreateSimpleWindow(_display, RootWindow(_display, 0), 0, 0, 1,
+                                    1, 0, 0, _background);
     }
 
     void createGc() { _gc = XCreateGC(_display, _window, 0, 0); }
@@ -169,7 +169,7 @@ namespace CxxTest {
       XSelectInput(_display, _window, _eventMask);
     }
 
-    void initializeBar(const WorldDescription &wd) {
+    void initializeBar(const WorldDescription& wd) {
       getTotalTests(wd);
       _testsDone = 0;
       _barColor = getColor(_greenName);
@@ -177,7 +177,7 @@ namespace CxxTest {
 
     void getTotalTests() { getTotalTests(tracker().world()); }
 
-    void getTotalTests(const WorldDescription &wd) {
+    void getTotalTests(const WorldDescription& wd) {
       _numTotalTests = wd.numTotalTests();
       wd.strTotalTests(_strTotalTests);
     }
@@ -185,7 +185,7 @@ namespace CxxTest {
     void centerWindow() {
       XMapWindow(_display, _window);
 
-      Screen *screen = XDefaultScreenOfDisplay(_display);
+      Screen* screen = XDefaultScreenOfDisplay(_display);
       int screenWidth = WidthOfScreen(screen);
       int screenHeight = HeightOfScreen(screen);
       int xCenter = screenWidth / 2;
@@ -207,10 +207,10 @@ namespace CxxTest {
         redraw();
     }
 
-    void setWindowName(const char *suiteName, const char *testName) {
-      unsigned length = strlen(_programName) + strlen(suiteName) + strlen(testName) +
-                        sizeof(" - ::()");
-      char *name = (char *)malloc(length);
+    void setWindowName(const char* suiteName, const char* testName) {
+      unsigned length = strlen(_programName) + strlen(suiteName) +
+                        strlen(testName) + sizeof(" - ::()");
+      char* name = (char*)malloc(length);
       sprintf(name, "%s - %s::%s()", _programName, suiteName, testName);
       XSetStandardProperties(_display, _window, name, 0, 0, 0, 0, 0);
       free(name);
@@ -255,8 +255,8 @@ namespace CxxTest {
     void drawPercentage() {
       XSetForeground(_display, _gc, _foreground);
 
-      char
-          str[sizeof("1000000000 of ") + sizeof(_strTotalTests) + sizeof(" (100%)")];
+      char str[sizeof("1000000000 of ") + sizeof(_strTotalTests) +
+               sizeof(" (100%)")];
       sprintf(str, "%u of %s (%u%%)", _testsDone, _strTotalTests,
               (_testsDone * 100) / _numTotalTests);
       unsigned len = strlen(str);
@@ -277,4 +277,4 @@ namespace CxxTest {
   };
 };
 
-#endif //__cxxtest__X11Gui_h__
+#endif  //__cxxtest__X11Gui_h__

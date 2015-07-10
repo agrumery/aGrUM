@@ -47,9 +47,8 @@ namespace gum {
   // @param cpt A reference on the CPT to fill.
 
   template <typename GUM_SCALAR>
-  void
-  SimpleCPTGenerator<GUM_SCALAR>::generateCPT(const Idx &varId,
-                                              const Potential<GUM_SCALAR> &cpt) {
+  void SimpleCPTGenerator<GUM_SCALAR>::generateCPT(
+      const Idx& varId, const Potential<GUM_SCALAR>& cpt) {
     std::vector<GUM_SCALAR> v;
 
     for (Size i = 0; i < cpt.domainSize(); ++i) {
@@ -61,14 +60,17 @@ namespace gum {
     varInst.add(cpt.variable(varId));
     Instantiation cptInst(cpt);
 
-    for (cptInst.setFirstOut(varInst); !cptInst.end(); cptInst.incOut(varInst)) {
+    for (cptInst.setFirstOut(varInst); !cptInst.end();
+         cptInst.incOut(varInst)) {
       GUM_SCALAR sum = (GUM_SCALAR)0;
 
-      for (cptInst.setFirstIn(varInst); !cptInst.end(); cptInst.incIn(varInst)) {
+      for (cptInst.setFirstIn(varInst); !cptInst.end();
+           cptInst.incIn(varInst)) {
         sum += cpt[cptInst];
       }
 
-      for (cptInst.setFirstIn(varInst); !cptInst.end(); cptInst.incIn(varInst)) {
+      for (cptInst.setFirstIn(varInst); !cptInst.end();
+           cptInst.incIn(varInst)) {
         cpt.set(cptInst, cpt[cptInst] / sum);
       }
 

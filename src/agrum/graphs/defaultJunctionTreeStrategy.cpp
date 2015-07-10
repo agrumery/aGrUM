@@ -44,15 +44,16 @@ namespace gum {
   }
 
   /// virtual copy constructor
-  DefaultJunctionTreeStrategy *DefaultJunctionTreeStrategy::newFactory() const {
+  DefaultJunctionTreeStrategy* DefaultJunctionTreeStrategy::newFactory() const {
     return new DefaultJunctionTreeStrategy;
   }
 
-  /// indicates whether the junction tree strategy needs fill-ins to work properly
+  /// indicates whether the junction tree strategy needs fill-ins to work
+  /// properly
   bool DefaultJunctionTreeStrategy::requiresFillIns() const { return false; }
 
   /// assign the triangulation to the junction tree strategy
-  void DefaultJunctionTreeStrategy::setTriangulation(StaticTriangulation *tr) {
+  void DefaultJunctionTreeStrategy::setTriangulation(StaticTriangulation* tr) {
     __triangulation = tr;
     __has_junction_tree = false;
     __junction_tree.clear();
@@ -60,7 +61,7 @@ namespace gum {
   }
 
   /// returns, for each node, the clique which was created by its deletion
-  const NodeProperty<NodeId> &DefaultJunctionTreeStrategy::createdCliques() {
+  const NodeProperty<NodeId>& DefaultJunctionTreeStrategy::createdCliques() {
     // compute the junction tree only if it does not already exist
     if (!__has_junction_tree)
       __computeJunctionTree();
@@ -79,7 +80,7 @@ namespace gum {
   }
 
   /// returns the junction tree asked by the triangulation
-  const CliqueGraph &DefaultJunctionTreeStrategy::junctionTree() {
+  const CliqueGraph& DefaultJunctionTreeStrategy::junctionTree() {
     // compute the junction tree only if it does not already exist
     if (!__has_junction_tree)
       __computeJunctionTree();
@@ -94,7 +95,7 @@ namespace gum {
       return;
 
     // get the elimination tree
-    const CliqueGraph &elim_tree = __triangulation->eliminationTree();
+    const CliqueGraph& elim_tree = __triangulation->eliminationTree();
 
     // copy the elimination tree into the junction tree
     __junction_tree = elim_tree;
@@ -108,7 +109,7 @@ namespace gum {
     // substituted by clique K of the elimination tree, and that clique J
     // (resp. K) was the jth (resp. kth) one created during the triangulation
     // process. Then, in the vector below, substitution[j] = k.
-    const std::vector<NodeId> &elim_order = __triangulation->eliminationOrder();
+    const std::vector<NodeId>& elim_order = __triangulation->eliminationOrder();
     std::vector<unsigned int> substitution(elim_order.size());
 
     for (unsigned int i = 0; i < substitution.size(); ++i)
@@ -116,7 +117,8 @@ namespace gum {
 
     // for all cliques C_i, from the last one created to the first one, check if
     // there exists a parent C_j (a neighbour created before C_i) such that
-    // |C_j| = |C_i| + 1 and such that the edge is not marked. In this case, this
+    // |C_j| = |C_i| + 1 and such that the edge is not marked. In this case,
+    // this
     // means that C_j contains C_i. Hence, we should remove C_i, and link all of
     // its neighbours to C_j. These links will be marked to true as no such
     // neighbour can be included in C_j (and conversely).
@@ -154,8 +156,10 @@ namespace gum {
     for (unsigned int i = 0; i < substitution.size(); ++i)
       substitution[i] = substitution[substitution[i]];
 
-    // using the transitive closure of vector substitution, compute for each node
-    // the clique of the junction tree that was created by its elimination during
+    // using the transitive closure of vector substitution, compute for each
+    // node
+    // the clique of the junction tree that was created by its elimination
+    // during
     // the triangulation
     for (unsigned int i = 0; i < elim_order.size(); ++i) {
       __node_2_junction_clique.insert(elim_order[i], substitution[i]);

@@ -35,9 +35,12 @@
 
 namespace gum {
 
-  /* =========================================================================== */
-  /* ===          BASE CLASS FOR MANIPULATING ALL UNDIRECTED GRAPHS          === */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===          BASE CLASS FOR MANIPULATING ALL UNDIRECTED GRAPHS          ===
+   */
+  /* ===========================================================================
+   */
   /** @class UndiGraph
    * @brief Base class for undirected graphs
    *
@@ -97,7 +100,8 @@ namespace gum {
    * g3.eraseNeighbours( 2 );
    * @endcode
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
 
   class UndiGraph : public virtual NodeGraphPart, public EdgeGraphPart {
     public:
@@ -118,7 +122,7 @@ namespace gum {
 
     /// copy constructor
     /** @param g the UndiGraph to copy */
-    UndiGraph(const UndiGraph &g);
+    UndiGraph(const UndiGraph& g);
 
     /// destructor
     virtual ~UndiGraph();
@@ -132,17 +136,17 @@ namespace gum {
 
     /// copy operator
     /** @param g the DiGraph to copy */
-    UndiGraph &operator=(const UndiGraph &g);
+    UndiGraph& operator=(const UndiGraph& g);
 
     /// tests whether two UndiGraphs are identical (same nodes, same edges)
     /** @param g the UndiGraph with which "this" is compared */
     // not virtual : it is a feature !!! :)
-    bool operator==(const UndiGraph &g) const;
+    bool operator==(const UndiGraph& g) const;
 
     /// tests whether two UndiGraphs are different
     /** @param g the UndiGraph with which "this" is compared */
     // not virtual : it is a feature !!! :)
-    bool operator!=(const UndiGraph &g) const;
+    bool operator!=(const UndiGraph& g) const;
 
     /// @}
 
@@ -159,7 +163,8 @@ namespace gum {
      * exception is raised.
      * @throw InvalidNode if first and/or second do not belong to the
      * graph nodes */
-    GUM_DEPRECATED(virtual void insertEdge(const NodeId first, const NodeId second));
+    GUM_DEPRECATED(virtual void insertEdge(const NodeId first,
+                                           const NodeId second));
     virtual void addEdge(const NodeId first, const NodeId second);
 
     /// remove a node and its adjacent edges from the graph
@@ -187,12 +192,12 @@ namespace gum {
   };
 
   /// for friendly displaying the content of undirected graphs
-  std::ostream &operator<<(std::ostream &, const UndiGraph &);
+  std::ostream& operator<<(std::ostream&, const UndiGraph&);
 
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
 #include <agrum/graphs/undiGraph.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 
 #endif /* GUM_UNDIGRAPH_H */

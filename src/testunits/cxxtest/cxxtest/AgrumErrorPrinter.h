@@ -12,7 +12,7 @@
 
 #ifndef _CXXTEST_HAVE_STD
 #define _CXXTEST_HAVE_STD
-#endif // _CXXTEST_HAVE_STD
+#endif  // _CXXTEST_HAVE_STD
 
 #include <cxxtest/StdValueTraits.h>
 
@@ -21,15 +21,15 @@
 
 #ifdef _CXXTEST_OLD_STD
 #include <iostream.h>
-#else // !_CXXTEST_OLD_STD
+#else  // !_CXXTEST_OLD_STD
 #include <iostream>
-#endif // _CXXTEST_OLD_STD
+#endif  // _CXXTEST_OLD_STD
 
 namespace CxxTest {
   class AgrumErrorPrinter : public AgrumErrorFormatter {
     public:
-    AgrumErrorPrinter(CXXTEST_STD(ostream) &o = CXXTEST_STD(cout),
-                      const char *preLine = ":", const char *postLine = "")
+    AgrumErrorPrinter(CXXTEST_STD(ostream)& o = CXXTEST_STD(cout),
+                      const char* preLine = ":", const char* postLine = "")
         : AgrumErrorFormatter(new Adapter(o), preLine, postLine) {}
     virtual ~AgrumErrorPrinter() { delete outputStream(); }
 
@@ -40,12 +40,14 @@ namespace CxxTest {
       public:
       Adapter(CXXTEST_STD(ostream) & o) : _o(o) {}
       void flush() { _o.flush(); }
-      OutputStream &operator<<(const char *s) {
+      OutputStream& operator<<(const char* s) {
         _o << s;
         return *this;
       }
-      OutputStream &operator<<(Manipulator m) { return OutputStream::operator<<(m); }
-      OutputStream &operator<<(unsigned i) {
+      OutputStream& operator<<(Manipulator m) {
+        return OutputStream::operator<<(m);
+      }
+      OutputStream& operator<<(unsigned i) {
         char s[1 + 3 * sizeof(unsigned)];
         numberToString(i, s);
         _o << s;
@@ -55,4 +57,4 @@ namespace CxxTest {
   };
 }
 
-#endif // __cxxtest__ErrorPrinter_h__
+#endif  // __cxxtest__ErrorPrinter_h__

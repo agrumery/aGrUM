@@ -35,7 +35,8 @@ namespace gum {
     INLINE DBCell::DBCell(float nb) : __float(nb) { GUM_CONSTRUCTOR(DBCell); }
 
     /// constructor for a string
-    INLINE DBCell::DBCell(const std::string &str) : __type(DBCell::EltType::STRING) {
+    INLINE DBCell::DBCell(const std::string& str)
+        : __type(DBCell::EltType::STRING) {
       // store the string into the static list of strings
       if (!__strings().existsFirst(str)) {
         __strings().insert(str, __string_max_index);
@@ -49,7 +50,7 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE DBCell::DBCell(const DBCell &from) : __type(from.__type) {
+    INLINE DBCell::DBCell(const DBCell& from) : __type(from.__type) {
       std::memcpy(&__float, &(from.__float), sizeof(Float));
 
       // for debugging
@@ -57,7 +58,7 @@ namespace gum {
     }
 
     /// move constructor
-    INLINE DBCell::DBCell(DBCell &&from) : __type(from.__type) {
+    INLINE DBCell::DBCell(DBCell&& from) : __type(from.__type) {
       std::memcpy(&__float, &(from.__float), sizeof(Float));
 
       // for debugging
@@ -68,7 +69,7 @@ namespace gum {
     INLINE DBCell::~DBCell() { GUM_DESTRUCTOR(DBCell); }
 
     /// copy operator
-    INLINE DBCell &DBCell::operator=(const DBCell &from) {
+    INLINE DBCell& DBCell::operator=(const DBCell& from) {
       if (this != &from) {
         __type = from.__type;
         std::memcpy(&__float, &(from.__float), sizeof(Float));
@@ -78,7 +79,7 @@ namespace gum {
     }
 
     /// move operator
-    INLINE DBCell &DBCell::operator=(DBCell &&from) {
+    INLINE DBCell& DBCell::operator=(DBCell&& from) {
       if (this != &from) {
         __type = from.__type;
         std::memcpy(&__float, &(from.__float), sizeof(Float));
@@ -87,15 +88,17 @@ namespace gum {
       return *this;
     }
 
-    /// unsafe set operator (assumes that the preceding type is of the same type)
-    INLINE DBCell &DBCell::operator=(float x) noexcept {
+    /// unsafe set operator (assumes that the preceding type is of the same
+    /// type)
+    INLINE DBCell& DBCell::operator=(float x) noexcept {
       __type = EltType::FLOAT;
       __float = x;
       return *this;
     }
 
-    /// unsafe set operator (assumes that the preceding type is of the same type)
-    INLINE DBCell &DBCell::operator=(const std::string &str) noexcept {
+    /// unsafe set operator (assumes that the preceding type is of the same
+    /// type)
+    INLINE DBCell& DBCell::operator=(const std::string& str) noexcept {
       if (!__strings().existsFirst(str)) {
         __strings().insert(str, __string_max_index);
         __int = __string_max_index;
@@ -128,18 +131,18 @@ namespace gum {
     }
 
     /// sets the content of the DBCell from a string
-    INLINE void DBCell::__setFloatFromStringSafe(const std::string &elt) {
+    INLINE void DBCell::__setFloatFromStringSafe(const std::string& elt) {
       __float = stof(elt);
       __type = EltType::FLOAT;
     }
 
     /// returns the DBcell as a string (without checking its type)
-    INLINE const std::string &DBCell::getString() const noexcept {
+    INLINE const std::string& DBCell::getString() const noexcept {
       return __strings().first(__int);
     }
 
     /// returns the DBcell as a string (safe with type checking)
-    INLINE const std::string &DBCell::getStringSafe() const {
+    INLINE const std::string& DBCell::getStringSafe() const {
       if (__type == EltType::STRING)
         return __strings().first(__int);
       else
@@ -158,12 +161,12 @@ namespace gum {
     }
 
     /// returns the DBcell as a string (without checking its type)
-    INLINE const std::string &DBCell::getString(unsigned int index) {
+    INLINE const std::string& DBCell::getString(unsigned int index) {
       return __strings().first(index);
     }
 
     /// unsafe set (assumes that the preceding type is of the same type)
-    INLINE void DBCell::setString(const std::string &str) {
+    INLINE void DBCell::setString(const std::string& str) {
       if (!__strings().existsFirst(str)) {
         __strings().insert(str, __string_max_index);
         __int = __string_max_index;
@@ -174,7 +177,7 @@ namespace gum {
     }
 
     /// sets the content of the DBCell (safe type checking)
-    INLINE void DBCell::setStringSafe(const std::string &str) {
+    INLINE void DBCell::setStringSafe(const std::string& str) {
       if (!__strings().existsFirst(str)) {
         __strings().insert(str, __string_max_index);
         __int = __string_max_index;
@@ -189,12 +192,12 @@ namespace gum {
     INLINE void DBCell::setMissingSafe() { __type = EltType::MISSING; }
 
     /// safely sets the content of the DBCell with the best possible type
-    INLINE void DBCell::setBestTypeSafe(const std::string &elt) {
+    INLINE void DBCell::setBestTypeSafe(const std::string& elt) {
       // try to convert the string into a float
       try {
         __setFloatFromStringSafe(elt);
         return;
-      } catch (std::invalid_argument &) {
+      } catch (std::invalid_argument&) {
       }
 
       // here, the best type is a string
@@ -217,7 +220,7 @@ namespace gum {
                 __float = stof(__strings().first(__int));
                 __type = EltType::FLOAT;
                 return true;
-              } catch (std::invalid_argument &) {
+              } catch (std::invalid_argument&) {
                 return false;
               }
 

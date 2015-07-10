@@ -44,9 +44,10 @@
 namespace gum {
 
   template <typename GUM_SCALAR>
-  GibbsKL<GUM_SCALAR>::GibbsKL(const IBayesNet<GUM_SCALAR> &P,
-                               const IBayesNet<GUM_SCALAR> &Q)
-      : KL<GUM_SCALAR>(P, Q), ApproximationScheme(), particle::Gibbs<GUM_SCALAR>(P) {
+  GibbsKL<GUM_SCALAR>::GibbsKL(const IBayesNet<GUM_SCALAR>& P,
+                               const IBayesNet<GUM_SCALAR>& Q)
+      : KL<GUM_SCALAR>(P, Q), ApproximationScheme(),
+        particle::Gibbs<GUM_SCALAR>(P) {
     GUM_CONSTRUCTOR(GibbsKL);
 
     setEpsilon(KL_DEFAULT_EPSILON);
@@ -58,7 +59,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  GibbsKL<GUM_SCALAR>::GibbsKL(const KL<GUM_SCALAR> &kl)
+  GibbsKL<GUM_SCALAR>::GibbsKL(const KL<GUM_SCALAR>& kl)
       : KL<GUM_SCALAR>(kl), ApproximationScheme(),
         particle::Gibbs<GUM_SCALAR>(kl.p()) {
     GUM_CONSTRUCTOR(GibbsKL);
@@ -84,7 +85,7 @@ namespace gum {
     initApproximationScheme();
 
     // map between particle() variables and _q variables (using name of vars)
-    HashTable<const DiscreteVariable *, const DiscreteVariable *> map;
+    HashTable<const DiscreteVariable*, const DiscreteVariable*> map;
 
     for (Idx ite = 0; ite < particle().nbrDim(); ++ite) {
       map.insert(&particle().variable(ite),
@@ -106,7 +107,7 @@ namespace gum {
 
     do {
       /// check_rate=false;
-      this->disableMinEpsilonRate(); // replace check_rate = false
+      this->disableMinEpsilonRate();  // replace check_rate = false
       nextParticle();
       updateApproximationScheme();
 
@@ -120,9 +121,9 @@ namespace gum {
         _hellinger += std::pow(std::sqrt(pp) - std::sqrt(pq), 2) / pp;
 
         if (pq != (GUM_SCALAR)0.0) {
-          _bhattacharya += std::sqrt(pq / pp); // std::sqrt(pp*pq)/pp
+          _bhattacharya += std::sqrt(pq / pp);  // std::sqrt(pp*pq)/pp
           /// check_rate=true;
-          this->enableMinEpsilonRate(); // replace check_rate=true;
+          this->enableMinEpsilonRate();  // replace check_rate=true;
           ratio = pq / pp;
           delta = (GUM_SCALAR)log2(ratio);
           _klPQ += delta;
@@ -133,7 +134,8 @@ namespace gum {
 
       if (pq != (GUM_SCALAR)0.0) {
         if (pp != (GUM_SCALAR)0.0) {
-          // if we are here, it is certain that delta and ratio have been computed
+          // if we are here, it is certain that delta and ratio have been
+          // computed
           // further lines above. (for now #112-113)
           _klQP += (GUM_SCALAR)(-delta * ratio);
         } else {
@@ -144,7 +146,7 @@ namespace gum {
       if (this->isEnabledMinEpsilonRate() /* replace check_rate */) {
         // delta is used as a temporary variable
         delta = _klPQ / nbrIterations();
-        error = (double) std::fabs(delta - oldPQ);
+        error = (double)std::fabs(delta - oldPQ);
         oldPQ = delta;
       }
     } while (continueApproximationScheme(error /*,check_rate*/));
@@ -155,5 +157,5 @@ namespace gum {
     _bhattacharya = -std::log(_bhattacharya);
   }
 
-} // namespace gum
+}  // namespace gum
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on;

@@ -20,7 +20,8 @@
 /** @file
  * @brief class for LOGIT implementation as multiDim
  *
- * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ *<{prenom.nom}_at_lip6.fr>
  */
 #ifndef GUM_MULTI_DIM_LOGIT_H
 #define GUM_MULTI_DIM_LOGIT_H
@@ -43,7 +44,8 @@ namespace gum {
    *     assumed to be of probability 0). But for optimization reason, we will
    *     never check if it is the case.
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   template <typename GUM_SCALAR>
 
   class MultiDimLogit : public MultiDimICIModel<GUM_SCALAR> {
@@ -60,15 +62,15 @@ namespace gum {
                   GUM_SCALAR default_weight = (GUM_SCALAR)0.0);
 
     ///
-    MultiDimLogit(const MultiDimLogit<GUM_SCALAR> &from);
+    MultiDimLogit(const MultiDimLogit<GUM_SCALAR>& from);
 
     /** Copy constructor using a bijection to swap variables from source.
     * @param bij First variables are new variables, seconds are in from.
     * @param from the copied instance
     */
     MultiDimLogit(
-        const Bijection<const DiscreteVariable *, const DiscreteVariable *> &bij,
-        const MultiDimLogit<GUM_SCALAR> &from);
+        const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+        const MultiDimLogit<GUM_SCALAR>& from);
 
     /// Destructor.
     virtual ~MultiDimLogit();
@@ -88,7 +90,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimContainer<GUM_SCALAR> *newFactory() const;
+    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -96,19 +98,22 @@ namespace gum {
     /// @{
 
     public:
-    virtual GUM_SCALAR get(const Instantiation &i) const;
+    virtual GUM_SCALAR get(const Instantiation& i) const;
 
     const std::string toString(void) const;
 
     /// returns the real name of the multiDimArray
     /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
-     * name that describes what they are in reality. For instance, a table stored
+     * name that describes what they are in reality. For instance, a table
+     * stored
      * in extension is a "MultiDimArray", one that stores only non zero elements
-     * is a "MultiDimSparseArray", and so on. These names are unique for each type
-     * of implementation and is used by the system to determine which is the best
+     * is a "MultiDimSparseArray", and so on. These names are unique for each
+     * type
+     * of implementation and is used by the system to determine which is the
+     * best
      * functions to use, say, when we wish to use operators such as operator+ on
      * two MultiDimImplementations */
-    virtual const std::string &name() const;
+    virtual const std::string& name() const;
 
     /// @}
   };
@@ -118,7 +123,8 @@ namespace gum {
 
   /// For friendly displaying the content of the array.
   template <typename GUM_SCALAR>
-  std::ostream &operator<<(std::ostream &s, const MultiDimLogit<GUM_SCALAR> &ag);
+  std::ostream& operator<<(std::ostream& s,
+                           const MultiDimLogit<GUM_SCALAR>& ag);
 
 } /* namespace gum */
 

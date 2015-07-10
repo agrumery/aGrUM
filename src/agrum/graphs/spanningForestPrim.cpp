@@ -30,8 +30,8 @@
 namespace gum {
 
   /// Default constructor
-  SpanningForestPrim::SpanningForestPrim(const UndiGraph *graph,
-                                         const EdgeProperty<float> *cost)
+  SpanningForestPrim::SpanningForestPrim(const UndiGraph* graph,
+                                         const EdgeProperty<float>* cost)
       : SpanningForest(), __graph(*graph), __costTable(*cost),
         __spanning_tree_cost(0), __require_computation(true) {
     if (!graph || !cost) {
@@ -43,7 +43,7 @@ namespace gum {
   }
 
   // copy constructor
-  SpanningForestPrim::SpanningForestPrim(const SpanningForestPrim &from)
+  SpanningForestPrim::SpanningForestPrim(const SpanningForestPrim& from)
       : SpanningForest(), __graph(from.__graph), __costTable(from.__costTable),
         __edgesToExplore(from.__edgesToExplore),
         __spanning_tree(from.__spanning_tree),
@@ -68,7 +68,7 @@ namespace gum {
   }
 
   /// Returns the edges in a min cost spanning forest
-  const EdgeSet &SpanningForestPrim::edgesInSpanningForest() {
+  const EdgeSet& SpanningForestPrim::edgesInSpanningForest() {
     if (__require_computation)
       __compute();
 
@@ -76,7 +76,7 @@ namespace gum {
   }
 
   /// Construct the spanning forest
-  const UndiGraph &SpanningForestPrim::spanningForest() {
+  const UndiGraph& SpanningForestPrim::spanningForest() {
     if (__require_computation)
       __compute();
 

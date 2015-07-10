@@ -135,7 +135,8 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(p[i], __is_min(i.val(a), i.val(b), i.val(c), i.val(d)));
+        TS_ASSERT_EQUALS(p[i],
+                         __is_min(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -149,7 +150,8 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(p[i], __is_max(i.val(a), i.val(b), i.val(c), i.val(d)));
+        TS_ASSERT_EQUALS(p[i],
+                         __is_max(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -163,7 +165,8 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(p[i], __is_count_2(i.val(a), i.val(b), i.val(c), i.val(d)));
+        TS_ASSERT_EQUALS(p[i],
+                         __is_count_2(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -221,7 +224,8 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(p[i], __is_and(i.val(a), i.val(b), i.val(c), i.val(d)));
+        TS_ASSERT_EQUALS(p[i],
+                         __is_and(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -235,10 +239,12 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(p[i], __is_min(i.val(a), i.val(b), i.val(c), i.val(d)));
+        TS_ASSERT_EQUALS(p[i],
+                         __is_min(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
 
-      // it is not allowed to change a value but can only be detected at the next
+      // it is not allowed to change a value but can only be detected at the
+      // next
       // access
       i.setFirst();
 
@@ -251,7 +257,7 @@ namespace gum_tests {
       gum::List<gum::NodeId> idList;
       gum::BayesNet<double> bn;
 
-      int nbr = 6; // nbr=nbr of parents
+      int nbr = 6;  // nbr=nbr of parents
 
       std::string str;
       const double t[4] = {0.1, 0.1, 0.1, 0.7};
@@ -278,7 +284,7 @@ namespace gum_tests {
           gum::Idx res;
 
           for (i.setFirst(); !i.end(); ++i) {
-            res = (gum::Idx)10000; // clearly arbitraty choosen
+            res = (gum::Idx)10000;  // clearly arbitraty choosen
 
             for (gum::Idx j = 1; j < i.nbrDim(); j++) {
               if (res > i.val(j))
@@ -302,12 +308,13 @@ namespace gum_tests {
         }
 
         try {
-          TS_ASSERT_EQUALS(inf.posterior(idList[0]).toString(),
-                           "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: "
-                           "0.144495 /<var1:3> :: 0.117649");
           TS_ASSERT_EQUALS(
-              inf.posterior(idList[1]).toString(),
-              "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 /<var2:3> :: 0.7");
+              inf.posterior(idList[0]).toString(),
+              "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: "
+              "0.144495 /<var1:3> :: 0.117649");
+          TS_ASSERT_EQUALS(inf.posterior(idList[1]).toString(),
+                           "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 "
+                           "/<var2:3> :: 0.7");
         } catch (gum::Exception e) {
           TS_ASSERT(false);
         }
@@ -324,12 +331,13 @@ namespace gum_tests {
         }
 
         try {
-          TS_ASSERT_EQUALS(inf.posterior(idList[0]).toString(),
-                           "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: "
-                           "0.144495 /<var1:3> :: 0.117649");
           TS_ASSERT_EQUALS(
-              inf.posterior(idList[1]).toString(),
-              "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 /<var2:3> :: 0.7");
+              inf.posterior(idList[0]).toString(),
+              "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: "
+              "0.144495 /<var1:3> :: 0.117649");
+          TS_ASSERT_EQUALS(inf.posterior(idList[1]).toString(),
+                           "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 "
+                           "/<var2:3> :: 0.7");
         } catch (gum::Exception e) {
           TS_ASSERT(false);
         }

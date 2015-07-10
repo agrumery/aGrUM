@@ -36,8 +36,9 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE ScoreK2<IdSetAlloc, CountAlloc>::ScoreK2(
-        const RowFilter &filter, const std::vector<unsigned int> &var_modalities,
-        Apriori<IdSetAlloc, CountAlloc> &apriori)
+        const RowFilter& filter,
+        const std::vector<unsigned int>& var_modalities,
+        Apriori<IdSetAlloc, CountAlloc>& apriori)
         : Score<IdSetAlloc, CountAlloc>(filter, var_modalities, apriori) {
       // for debugging purposes
       GUM_CONSTRUCTOR(ScoreK2);
@@ -46,7 +47,7 @@ namespace gum {
     /// copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
     ScoreK2<IdSetAlloc, CountAlloc>::ScoreK2(
-        const ScoreK2<IdSetAlloc, CountAlloc> &from)
+        const ScoreK2<IdSetAlloc, CountAlloc>& from)
         : Score<IdSetAlloc, CountAlloc>(from), __gammalog2(from.__gammalog2),
           __internal_apriori(from.__internal_apriori) {
       GUM_CONS_CPY(ScoreK2);
@@ -54,7 +55,8 @@ namespace gum {
 
     /// move constructor
     template <typename IdSetAlloc, typename CountAlloc>
-    ScoreK2<IdSetAlloc, CountAlloc>::ScoreK2(ScoreK2<IdSetAlloc, CountAlloc> &&from)
+    ScoreK2<IdSetAlloc, CountAlloc>::ScoreK2(
+        ScoreK2<IdSetAlloc, CountAlloc>&& from)
         : Score<IdSetAlloc, CountAlloc>(std::move(from)),
           __gammalog2(std::move(from.__gammalog2)),
           __internal_apriori(std::move(from.__internal_apriori)) {
@@ -63,7 +65,7 @@ namespace gum {
 
     /// virtual copy factory
     template <typename IdSetAlloc, typename CountAlloc>
-    ScoreK2<IdSetAlloc, CountAlloc> *
+    ScoreK2<IdSetAlloc, CountAlloc>*
     ScoreK2<IdSetAlloc, CountAlloc>::copyFactory() const {
       return new ScoreK2<IdSetAlloc, CountAlloc>(*this);
     }
@@ -78,24 +80,26 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template <typename IdSetAlloc, typename CountAlloc>
     bool ScoreK2<IdSetAlloc, CountAlloc>::isAprioriCompatible(
-        const std::string &apriori_type, float weight) {
+        const std::string& apriori_type, float weight) {
       // check that the apriori is compatible with the score
       if (apriori_type == AprioriNoAprioriType::type) {
         return true;
       }
 
       if (weight == 0) {
-        GUM_ERROR(PossiblyIncompatibleScoreApriori,
-                  "The apriori is currently compatible with the K2 score but if "
-                  "you change the weight, it will become incompatible");
+        GUM_ERROR(
+            PossiblyIncompatibleScoreApriori,
+            "The apriori is currently compatible with the K2 score but if "
+            "you change the weight, it will become incompatible");
       }
 
       // known incompatible aprioris
       if ((apriori_type == AprioriDirichletType::type) ||
           (apriori_type == AprioriSmoothingType::type)) {
-        GUM_ERROR(IncompatibleScoreApriori,
-                  "The K2 score already contains a different 'implicit' apriori."
-                  " Therefore, the learning will probably be meaningless.");
+        GUM_ERROR(
+            IncompatibleScoreApriori,
+            "The K2 score already contains a different 'implicit' apriori."
+            " Therefore, the learning will probably be meaningless.");
       }
 
       // apriori types unsupported by the type checker
@@ -108,7 +112,7 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE bool ScoreK2<IdSetAlloc, CountAlloc>::isAprioriCompatible(
-        const Apriori<IdSetAlloc, CountAlloc> &apriori) {
+        const Apriori<IdSetAlloc, CountAlloc>& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
@@ -120,7 +124,7 @@ namespace gum {
 
     /// returns the internal apriori of the score
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
+    INLINE const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
     ScoreK2<IdSetAlloc, CountAlloc>::internalApriori() const noexcept {
       return __internal_apriori;
     }
@@ -134,31 +138,31 @@ namespace gum {
       }
 
       // get the counts for all the targets and for the conditioning nodes
-      const std::vector<float, CountAlloc> &N_ijk =
+      const std::vector<float, CountAlloc>& N_ijk =
           this->_getAllCounts(nodeset_index);
       const unsigned int targets_modal = N_ijk.size();
       float score = 0;
 
       // get the nodes involved in the score as well as their modalities
-      const std::vector<unsigned int, IdSetAlloc> &all_nodes =
+      const std::vector<unsigned int, IdSetAlloc>& all_nodes =
           this->_getAllNodes(nodeset_index);
-      const std::vector<unsigned int, IdSetAlloc> *conditioning_nodes =
+      const std::vector<unsigned int, IdSetAlloc>* conditioning_nodes =
           this->_getConditioningNodes(nodeset_index);
-      const std::vector<unsigned int> &modalities = this->modalities();
+      const std::vector<unsigned int>& modalities = this->modalities();
 
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
       if (conditioning_nodes) {
-        const std::vector<float, CountAlloc> &N_ij =
+        const std::vector<float, CountAlloc>& N_ij =
             this->_getConditioningCounts(nodeset_index);
         const unsigned int conditioning_modal = N_ij.size();
 
         if (this->_apriori->weight()) {
           // the score to compute is that of BD with aprioris N'_ijk + 1
           // (the + 1 is here to take into account the internal apriori of K2)
-          const std::vector<float, CountAlloc> &N_prime_ijk =
+          const std::vector<float, CountAlloc>& N_prime_ijk =
               this->_getAllApriori(nodeset_index);
-          const std::vector<float, CountAlloc> &N_prime_ij =
+          const std::vector<float, CountAlloc>& N_prime_ij =
               this->_getConditioningApriori(nodeset_index);
 
           // the K2 score can be computed as follows:
@@ -204,7 +208,7 @@ namespace gum {
         // here, there are no conditioning nodes
 
         if (this->_apriori->weight()) {
-          const std::vector<float, CountAlloc> &N_prime_ijk =
+          const std::vector<float, CountAlloc>& N_prime_ijk =
               this->_getAllApriori(nodeset_index);
 
           // the score to compute is that of BD with aprioris N'_ijk + 1
@@ -212,7 +216,8 @@ namespace gum {
 
           // the BD score can be computed as follows:
           // gammalog2 ( N' + r_i ) - gammalog2 ( N + N' + r_i )
-          // + sum_k=1^ri { gammlog2 ( N_i + N'_i + 1 ) - gammalog2 ( N'_i + 1 ) }
+          // + sum_k=1^ri { gammlog2 ( N_i + N'_i + 1 ) - gammalog2 ( N'_i + 1 )
+          // }
           const float r_i = modalities[all_nodes.back()];
           float N = 0;
           float N_prime = 0;

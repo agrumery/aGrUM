@@ -39,7 +39,7 @@ namespace gum {
   /// copy constructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
   MultiDimCombineAndProject<GUM_SCALAR, TABLE>::MultiDimCombineAndProject(
-      const MultiDimCombineAndProject<GUM_SCALAR, TABLE> &) {
+      const MultiDimCombineAndProject<GUM_SCALAR, TABLE>&) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCombineAndProject);
   }

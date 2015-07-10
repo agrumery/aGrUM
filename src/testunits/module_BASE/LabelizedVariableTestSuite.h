@@ -73,13 +73,13 @@ namespace gum_tests {
       var1.changeLabel(1, "x");
       TS_ASSERT_EQUALS(var1.toString(), "var1<4,x,2,1>");
 
-      const gum::LabelizedVariable &var2 = var1;
+      const gum::LabelizedVariable& var2 = var1;
       TS_ASSERT_EQUALS(var2.toString(), "var1<4,x,2,1>");
       var2.changeLabel(1, "y");
       TS_ASSERT_EQUALS(var2.toString(), "var1<4,y,2,1>");
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          var1.changeLabel(1, "x")); // should be OK since label 1 is already "x"
+      TS_GUM_ASSERT_THROWS_NOTHING(var1.changeLabel(
+          1, "x"));  // should be OK since label 1 is already "x"
       TS_ASSERT_THROWS(var1.changeLabel(0, "x"), gum::DuplicateElement);
       TS_ASSERT_THROWS(var1.changeLabel(1000, "x"), gum::OutOfBounds);
     }

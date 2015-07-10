@@ -32,8 +32,8 @@ namespace gum {
 
   /// default constructor
   OrderedTriangulation::OrderedTriangulation(
-      const OrderedEliminationSequenceStrategy &elimSeq,
-      const JunctionTreeStrategy &JTStrategy, bool minimality)
+      const OrderedEliminationSequenceStrategy& elimSeq,
+      const JunctionTreeStrategy& JTStrategy, bool minimality)
       : StaticTriangulation(elimSeq, JTStrategy, minimality), __sequence(0) {
     // for debugging purposes
     GUM_CONSTRUCTOR(OrderedTriangulation);
@@ -41,10 +41,10 @@ namespace gum {
 
   /// constructor with a given graph
   OrderedTriangulation::OrderedTriangulation(
-      const UndiGraph *theGraph, const NodeProperty<Size> *dom,
-      const std::vector<NodeId> *sequence,
-      const OrderedEliminationSequenceStrategy &elimSeq,
-      const JunctionTreeStrategy &JTStrategy, bool minimality)
+      const UndiGraph* theGraph, const NodeProperty<Size>* dom,
+      const std::vector<NodeId>* sequence,
+      const OrderedEliminationSequenceStrategy& elimSeq,
+      const JunctionTreeStrategy& JTStrategy, bool minimality)
       : StaticTriangulation(theGraph, dom, elimSeq, JTStrategy, minimality),
         __sequence(sequence) {
     // for debugging purposes
@@ -58,9 +58,9 @@ namespace gum {
   }
 
   /// initialize the triangulation data structures for a new graph
-  void OrderedTriangulation::setGraph(const UndiGraph *graph,
-                                      const NodeProperty<Size> *modal,
-                                      const std::vector<NodeId> *sequence) {
+  void OrderedTriangulation::setGraph(const UndiGraph* graph,
+                                      const NodeProperty<Size>* modal,
+                                      const std::vector<NodeId>* sequence) {
     // check that the graph, the modalities and the sequence seem OK
     unsigned int nb = 0;
 
@@ -84,14 +84,14 @@ namespace gum {
   }
 
   /// virtual copy constructor
-  OrderedTriangulation *OrderedTriangulation::newFactory() const {
+  OrderedTriangulation* OrderedTriangulation::newFactory() const {
     return new OrderedTriangulation;
   }
 
   /// the function called to initialize the triangulation process
-  void OrderedTriangulation::_initTriangulation(UndiGraph &graph) {
-    OrderedEliminationSequenceStrategy *elim =
-        static_cast<OrderedEliminationSequenceStrategy *>(
+  void OrderedTriangulation::_initTriangulation(UndiGraph& graph) {
+    OrderedEliminationSequenceStrategy* elim =
+        static_cast<OrderedEliminationSequenceStrategy*>(
             _elimination_sequence_strategy);
     elim->setGraph(&graph, __sequence);
   }

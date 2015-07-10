@@ -27,7 +27,7 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/diGraph.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 
 namespace gum {
 
@@ -38,7 +38,7 @@ namespace gum {
     GUM_CONSTRUCTOR(DiGraph);
   }
 
-  DiGraph::DiGraph(const DiGraph &g) : NodeGraphPart(g), ArcGraphPart(g) {
+  DiGraph::DiGraph(const DiGraph& g) : NodeGraphPart(g), ArcGraphPart(g) {
     GUM_CONS_CPY(DiGraph);
   }
 
@@ -51,7 +51,7 @@ namespace gum {
     return s;
   }
 
-  const std::string DiGraph::toDot(const std::string &name) const {
+  const std::string DiGraph::toDot(const std::string& name) const {
     std::stringstream strBuff;
     std::string tab = "     ";
     strBuff << "digraph " << name << " {" << std::endl;
@@ -61,15 +61,16 @@ namespace gum {
 
     strBuff << std::endl;
 
-    for (const auto &arc : arcs())
+    for (const auto& arc : arcs())
       strBuff << tab << arc.tail() << " -> " << arc.head() << ";" << std::endl;
 
-    strBuff << "}" << std::endl << std::endl;
+    strBuff << "}" << std::endl
+            << std::endl;
     return strBuff.str();
   }
 
   /// for friendly displaying the content of directed graphs
-  std::ostream &operator<<(std::ostream &stream, const DiGraph &g) {
+  std::ostream& operator<<(std::ostream& stream, const DiGraph& g) {
     stream << g.toString();
     return stream;
   }

@@ -31,15 +31,16 @@ namespace gum {
     namespace gspan {
 
       template <typename GUM_SCALAR>
-      INLINE EdgeGrowth<GUM_SCALAR>::EdgeGrowth(NodeId a_u, LabelData *an_edge,
-                                                LabelData *a_l_v, NodeId a_v)
+      INLINE EdgeGrowth<GUM_SCALAR>::EdgeGrowth(NodeId a_u, LabelData* an_edge,
+                                                LabelData* a_l_v, NodeId a_v)
           : u(a_u), edge(an_edge), l_v(a_l_v), v(a_v),
             degree_list(new std::vector<NodeId>()) {
         GUM_CONSTRUCTOR(EdgeGrowth);
       }
 
       template <typename GUM_SCALAR>
-      INLINE EdgeGrowth<GUM_SCALAR>::EdgeGrowth(const EdgeGrowth<GUM_SCALAR> &from)
+      INLINE
+      EdgeGrowth<GUM_SCALAR>::EdgeGrowth(const EdgeGrowth<GUM_SCALAR>& from)
           : u(from.u), edge(from.edge), v(from.v), matches(from.matches),
             iso_graph(from.iso_graph), degree_list(0),
             max_indep_set(from.max_indep_set) {
@@ -50,7 +51,8 @@ namespace gum {
         }
       }
 
-      template <typename GUM_SCALAR> INLINE EdgeGrowth<GUM_SCALAR>::~EdgeGrowth() {
+      template <typename GUM_SCALAR>
+      INLINE EdgeGrowth<GUM_SCALAR>::~EdgeGrowth() {
         GUM_DESTRUCTOR(EdgeGrowth);
 
         if (degree_list != 0) {
@@ -66,12 +68,12 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void EdgeGrowth<GUM_SCALAR>::insert(Instance<GUM_SCALAR> *u,
-                                          Instance<GUM_SCALAR> *v) {
+      void EdgeGrowth<GUM_SCALAR>::insert(Instance<GUM_SCALAR>* u,
+                                          Instance<GUM_SCALAR>* v) {
         NodeId id = iso_graph.addNode();
         degree_list->push_back(id);
 
-        for (const auto &elt : matches) {
+        for (const auto& elt : matches) {
           if ((elt.second.first == u) or (elt.second.second == u) or
               (elt.second.first == v) or (elt.second.second == v)) {
             iso_graph.addEdge(elt.first, id);

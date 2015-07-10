@@ -33,19 +33,19 @@ namespace gum {
     DBTransform::DBTransform() { GUM_CONSTRUCTOR(DBTransform); }
 
     /// copy constructor
-    DBTransform::DBTransform(const DBTransform &) { GUM_CONS_CPY(DBTransform); }
+    DBTransform::DBTransform(const DBTransform&) { GUM_CONS_CPY(DBTransform); }
 
     /// move constructor
-    DBTransform::DBTransform(DBTransform &&) { GUM_CONS_MOV(DBTransform); }
+    DBTransform::DBTransform(DBTransform&&) { GUM_CONS_MOV(DBTransform); }
 
     /// destructor
     DBTransform::~DBTransform() { GUM_DESTRUCTOR(DBTransform); }
 
     /// copy operator
-    DBTransform &DBTransform::operator=(const DBTransform &) { return *this; }
+    DBTransform& DBTransform::operator=(const DBTransform&) { return *this; }
 
     /// move operator
-    DBTransform &DBTransform::operator=(DBTransform &&) { return *this; }
+    DBTransform& DBTransform::operator=(DBTransform&&) { return *this; }
 
   } /* namespace learning */
 

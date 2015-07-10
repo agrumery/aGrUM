@@ -20,7 +20,8 @@
 /** @file
  * @brief forall aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+*<{prenom.nom}_at_lip6.fr>
  */
 #include <sstream>
 // to ease parser in IDEs
@@ -36,7 +37,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Forall<GUM_SCALAR>::Forall(const Forall<GUM_SCALAR> &from)
+    INLINE Forall<GUM_SCALAR>::Forall(const Forall<GUM_SCALAR>& from)
         : MultiDimAggregator<GUM_SCALAR>(from) {
       __value = from.__value;
       GUM_CONS_CPY(Forall);
@@ -52,8 +53,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Idx Forall<GUM_SCALAR>::_folder(const DiscreteVariable &v, Idx i1, Idx i2,
-                                           bool &stop_iteration) const {
+    INLINE Idx Forall<GUM_SCALAR>::_folder(const DiscreteVariable& v, Idx i1,
+                                           Idx i2, bool& stop_iteration) const {
       if (i1 == __value) {
         return (Idx)1;
       } else {
@@ -73,13 +74,14 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE MultiDimContainer<GUM_SCALAR> *Forall<GUM_SCALAR>::newFactory() const {
+    INLINE MultiDimContainer<GUM_SCALAR>*
+    Forall<GUM_SCALAR>::newFactory() const {
       return new Forall<GUM_SCALAR>(__value);
       // GUM_ERROR( OperationNotAllowed,
       //            "This class doesn't contain an empty constructor" );
       // return 0;
     }
 
-  } // aggregator
-} // namespace gum
+  }  // aggregator
+}  // namespace gum
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

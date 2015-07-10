@@ -40,15 +40,17 @@ namespace gum_tests {
   class DAGTestSuite : public CxxTest::TestSuite {
 
     private:
-    static gum::Size simpleDoubleFunction(const gum::NodeId &aNodeId) {
+    static gum::Size simpleDoubleFunction(const gum::NodeId& aNodeId) {
       return aNodeId * 2;
     }
 
-    static gum::Size simpleArcMapFunction(const gum::Arc &anArc) {
+    static gum::Size simpleArcMapFunction(const gum::Arc& anArc) {
       return anArc.tail() + anArc.head();
     }
 
-    static gum::Size twistedMapFunction(const gum::NodeId &aNode) { throw(aNode); }
+    static gum::Size twistedMapFunction(const gum::NodeId& aNode) {
+      throw(aNode);
+    }
 
     gum::DAG buildGraph() {
       gum::DAG g;
@@ -72,7 +74,7 @@ namespace gum_tests {
     gum::NodeId id1, id2, id3, id4, id5;
 
     void testConstructor1() {
-      gum::DAG *graph = nullptr;
+      gum::DAG* graph = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING((graph = new gum::DAG()));
       TS_GUM_ASSERT_THROWS_NOTHING((delete (graph)));
     }
@@ -121,7 +123,7 @@ namespace gum_tests {
     void testCopyConstructor() {
       gum::DAG graph = buildGraph();
 
-      gum::DAG *copy = nullptr;
+      gum::DAG* copy = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(copy = new gum::DAG(graph));
       TS_ASSERT(graph == *copy);
       delete (copy);
@@ -290,7 +292,7 @@ namespace gum_tests {
       gum::Size sk = 0;
       gum::Size sv = 0;
 
-      for (const auto &elt : hashmap) {
+      for (const auto& elt : hashmap) {
         sk += elt.first;
         sv += elt.second;
       }
@@ -302,7 +304,8 @@ namespace gum_tests {
       gum::DAG graph = buildGraph();
 
       gum::NodeProperty<gum::Size> hashmap;
-      TS_ASSERT_THROWS_ANYTHING(hashmap = graph.nodesProperty(&twistedMapFunction));
+      TS_ASSERT_THROWS_ANYTHING(hashmap =
+                                    graph.nodesProperty(&twistedMapFunction));
 
       TS_ASSERT_EQUALS(hashmap.size(), (gum::Size)0);
     }
@@ -318,8 +321,8 @@ namespace gum_tests {
       for (auto iter = list.begin(); iter != list.end(); ++iter)
         s += *iter;
 
-      TS_ASSERT_EQUALS(s,
-                       (gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1));
+      TS_ASSERT_EQUALS(
+          s, (gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1));
     }
 
     void testHashMapArcs() {
@@ -331,7 +334,7 @@ namespace gum_tests {
       gum::Size sk = 0;
       gum::Size sv = 0;
 
-      for (const auto &elt : hashmap) {
+      for (const auto& elt : hashmap) {
         sk += elt.first.head() + elt.first.tail();
         sv += elt.second;
       }

@@ -34,18 +34,21 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    ReferenceSlot<GUM_SCALAR>::ReferenceSlot(const ReferenceSlot<GUM_SCALAR> &source)
+    ReferenceSlot<GUM_SCALAR>::ReferenceSlot(
+        const ReferenceSlot<GUM_SCALAR>& source)
         : ClassElement<GUM_SCALAR>(source), __slotType(source.__slotType),
           __isArray(source.__isArray) {
       GUM_CONS_CPY(ReferenceSlot);
-      GUM_ERROR(FatalError, "illegal call to gum::ReferenceSlot copy constructor.");
+      GUM_ERROR(FatalError,
+                "illegal call to gum::ReferenceSlot copy constructor.");
     }
 
     // Copy operator. Raise a FatalError.
     template <typename GUM_SCALAR>
-    ReferenceSlot<GUM_SCALAR> &ReferenceSlot<GUM_SCALAR>::
-    operator=(const ReferenceSlot<GUM_SCALAR> &from) {
-      GUM_ERROR(FatalError, "illegal call to gum::ReferenceSlot copy operator.");
+    ReferenceSlot<GUM_SCALAR>& ReferenceSlot<GUM_SCALAR>::
+    operator=(const ReferenceSlot<GUM_SCALAR>& from) {
+      GUM_ERROR(FatalError,
+                "illegal call to gum::ReferenceSlot copy operator.");
     }
 
     template <typename GUM_SCALAR>
@@ -55,12 +58,13 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE ClassElementContainer<GUM_SCALAR> &ReferenceSlot<GUM_SCALAR>::slotType() {
+    INLINE ClassElementContainer<GUM_SCALAR>&
+    ReferenceSlot<GUM_SCALAR>::slotType() {
       return __slotType;
     }
 
     template <typename GUM_SCALAR>
-    INLINE const ClassElementContainer<GUM_SCALAR> &
+    INLINE const ClassElementContainer<GUM_SCALAR>&
     ReferenceSlot<GUM_SCALAR>::slotType() const {
       return __slotType;
     }
@@ -71,32 +75,32 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Type<GUM_SCALAR> &ReferenceSlot<GUM_SCALAR>::type() {
+    INLINE Type<GUM_SCALAR>& ReferenceSlot<GUM_SCALAR>::type() {
       GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.");
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Type<GUM_SCALAR> &ReferenceSlot<GUM_SCALAR>::type() const {
+    INLINE const Type<GUM_SCALAR>& ReferenceSlot<GUM_SCALAR>::type() const {
       GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.");
     }
 
     template <typename GUM_SCALAR>
-    INLINE Potential<GUM_SCALAR> &ReferenceSlot<GUM_SCALAR>::cpf() {
+    INLINE Potential<GUM_SCALAR>& ReferenceSlot<GUM_SCALAR>::cpf() {
       GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.");
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Potential<GUM_SCALAR> &ReferenceSlot<GUM_SCALAR>::cpf() const {
+    INLINE const Potential<GUM_SCALAR>& ReferenceSlot<GUM_SCALAR>::cpf() const {
       GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.");
     }
 
     template <typename GUM_SCALAR>
     INLINE void
-    ReferenceSlot<GUM_SCALAR>::addParent(const ClassElement<GUM_SCALAR> &elt) {}
+    ReferenceSlot<GUM_SCALAR>::addParent(const ClassElement<GUM_SCALAR>& elt) {}
 
     template <typename GUM_SCALAR>
     INLINE void
-    ReferenceSlot<GUM_SCALAR>::addChild(const ClassElement<GUM_SCALAR> &elt) {}
+    ReferenceSlot<GUM_SCALAR>::addChild(const ClassElement<GUM_SCALAR>& elt) {}
 
   } /* namespace prm */
 } /* namespace gum */

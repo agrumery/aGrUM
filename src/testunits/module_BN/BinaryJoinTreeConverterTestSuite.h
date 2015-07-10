@@ -72,8 +72,9 @@ namespace gum_tests {
       roots << 9;
 
       try {
-        gum::CliqueGraph binTree = converter.convert(graph, domain_sizes, roots);
-      } catch (gum::Exception &e) {
+        gum::CliqueGraph binTree =
+            converter.convert(graph, domain_sizes, roots);
+      } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
       }
     }

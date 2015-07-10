@@ -24,7 +24,7 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/core/timer.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
 namespace gum {
 
@@ -33,14 +33,14 @@ namespace gum {
     reset();
   }
 
-  Timer::Timer(const Timer &from)
+  Timer::Timer(const Timer& from)
       : _start(from._start), _pause(from._pause), _sleeping(from._sleeping) {
     GUM_CONS_CPY(Timer);
   }
 
   Timer::~Timer() { GUM_DESTRUCTOR(Timer); }
 
-  Timer &Timer::operator=(const Timer &from) {
+  Timer& Timer::operator=(const Timer& from) {
     GUM_OP_CPY(Timer);
     _start = from._start;
     _pause = from._pause;

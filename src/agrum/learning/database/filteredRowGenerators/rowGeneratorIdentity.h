@@ -18,7 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A filtered row generator that returns exactly the rows it gets in input
+ * @brief A filtered row generator that returns exactly the rows it gets in
+ *input
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -47,10 +48,10 @@ namespace gum {
       RowGeneratorIdentity();
 
       /// copy constructor
-      RowGeneratorIdentity(const RowGeneratorIdentity &);
+      RowGeneratorIdentity(const RowGeneratorIdentity&);
 
       /// move constructor
-      RowGeneratorIdentity(RowGeneratorIdentity &&);
+      RowGeneratorIdentity(RowGeneratorIdentity&&);
 
       /// destructor
       ~RowGeneratorIdentity();
@@ -64,10 +65,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      RowGeneratorIdentity &operator=(const RowGeneratorIdentity &);
+      RowGeneratorIdentity& operator=(const RowGeneratorIdentity&);
 
       /// move operator
-      RowGeneratorIdentity &operator=(RowGeneratorIdentity &&);
+      RowGeneratorIdentity& operator=(RowGeneratorIdentity&&);
 
       /// @}
 
@@ -78,7 +79,7 @@ namespace gum {
       /// @{
 
       /// generates new lines from those the generator gets in input
-      FilteredRow &generate();
+      FilteredRow& generate();
 
       /// computes the rows it will provide in output
       unsigned int _computeRows();

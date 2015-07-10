@@ -23,14 +23,14 @@ namespace gum {
 
   /// protected copy
 
-  INLINE void Variable::_copy(const Variable &aRV) {
+  INLINE void Variable::_copy(const Variable& aRV) {
     __name = aRV.__name;
     __description = aRV.__description;
   }
 
   /// constructor
 
-  INLINE Variable::Variable(const std::string &aName, const std::string &aDesc)
+  INLINE Variable::Variable(const std::string& aName, const std::string& aDesc)
       : __name(aName), __description(aDesc) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Variable);
@@ -38,7 +38,7 @@ namespace gum {
 
   /// copy constructor
 
-  INLINE Variable::Variable(const Variable &aRV)
+  INLINE Variable::Variable(const Variable& aRV)
       : __name(aRV.__name), __description(aRV.__description) {
     // for debugging purposes
     GUM_CONS_CPY(Variable);
@@ -53,7 +53,7 @@ namespace gum {
 
   /// Copy operator
 
-  INLINE Variable &Variable::operator=(const Variable &aRV) {
+  INLINE Variable& Variable::operator=(const Variable& aRV) {
     // avoid self assignment
     if (this != &aRV)
       _copy(aRV);
@@ -63,34 +63,38 @@ namespace gum {
 
   /// sets the __name of the variable
 
-  INLINE void Variable::setName(const std::string &theValue) { __name = theValue; }
+  INLINE void Variable::setName(const std::string& theValue) {
+    __name = theValue;
+  }
 
   /// returns the __name of the variable
 
-  INLINE const std::string &Variable::name() const { return __name; }
+  INLINE const std::string& Variable::name() const { return __name; }
 
   /// sets the __description of the variable
 
-  INLINE void Variable::setDescription(const std::string &theValue) const {
+  INLINE void Variable::setDescription(const std::string& theValue) const {
     __description = theValue;
   }
 
   /// returns the __description of the variable
 
-  INLINE const std::string &Variable::description() const { return __description; }
+  INLINE const std::string& Variable::description() const {
+    return __description;
+  }
 
   /// equality operator
 
-  INLINE bool Variable::operator==(const Variable &aRV) const {
+  INLINE bool Variable::operator==(const Variable& aRV) const {
     return (__name == aRV.__name);
   }
 
   /// inequality operator
 
-  INLINE bool Variable::operator!=(const Variable &aRV) const {
+  INLINE bool Variable::operator!=(const Variable& aRV) const {
     return (!operator==(aRV));
   }
 
 } /* namespace gum */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

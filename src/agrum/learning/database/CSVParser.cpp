@@ -28,7 +28,7 @@ namespace gum {
 
   namespace learning {
 
-    CSVParser::CSVParser(std::istream &in, const std::string &delimiter,
+    CSVParser::CSVParser(std::istream& in, const std::string& delimiter,
                          const char commentmarker, const char quoteMarker)
         : __line(), __delimiter(delimiter), __spaces(" \t\r"),
           __delimiterPlusSpaces(__delimiter + __spaces), __noLine((Size)0),
@@ -46,9 +46,9 @@ namespace gum {
       }
     */
 
-    void CSVParser::__getNextTriplet(const std::string &str,
-                                     Size &first_letter_token, Size &next_token,
-                                     Size &last_letter_token, Size from) const {
+    void CSVParser::__getNextTriplet(const std::string& str,
+                                     Size& first_letter_token, Size& next_token,
+                                     Size& last_letter_token, Size from) const {
       first_letter_token = str.find_first_not_of(__spaces, from);
 
       if (first_letter_token == std::string::npos) {
@@ -60,7 +60,8 @@ namespace gum {
         last_letter_token = __correspondingQuoteMarker(str, first_letter_token);
 
         if (last_letter_token == std::string::npos)
-          GUM_SYNTAX_ERROR("String quote missing", noLine(), first_letter_token);
+          GUM_SYNTAX_ERROR("String quote missing", noLine(),
+                           first_letter_token);
 
         next_token = str.find_first_of(__delimiter, last_letter_token + 1);
         Size next_char = str.find_first_not_of(__spaces, last_letter_token + 1);
@@ -82,7 +83,7 @@ namespace gum {
       }
     }
 
-    void CSVParser::__tokenize(const std::string &s) {
+    void CSVParser::__tokenize(const std::string& s) {
       // looking for first commentMarker not in a string
       Size commentMarker = s.find_first_of(__commentMarker, 0);
       Size quoteMarker = s.find_first_of(__quoteMarker, 0);
@@ -94,7 +95,8 @@ namespace gum {
         if (quoteMarkerEnd == std::string::npos)
           GUM_SYNTAX_ERROR("String quote missing", noLine(), quoteMarker);
 
-        while (commentMarker < quoteMarkerEnd) { // the comment was in the quote
+        while (commentMarker <
+               quoteMarkerEnd) {  // the comment was in the quote
           commentMarker = s.find_first_of(__commentMarker, commentMarker + 1);
         }
 
@@ -105,7 +107,8 @@ namespace gum {
 
       Size counter = 0, first_letter_token, next_token, last_letter_token;
 
-      __getNextTriplet(str, first_letter_token, next_token, last_letter_token, 0);
+      __getNextTriplet(str, first_letter_token, next_token, last_letter_token,
+                       0);
 
       while (std::string::npos != first_letter_token &&
              std::string::npos != last_letter_token) {
@@ -145,6 +148,6 @@ namespace gum {
       __emptyData = false;
     }
 
-  } // namespace learning
+  }  // namespace learning
 
-} // namespace gum
+}  // namespace gum

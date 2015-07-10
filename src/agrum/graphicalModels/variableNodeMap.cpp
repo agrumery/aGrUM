@@ -39,7 +39,7 @@ namespace gum {
   VariableNodeMap::VariableNodeMap() { GUM_CONSTRUCTOR(VariableNodeMap); }
 
   // Copy constructor.
-  VariableNodeMap::VariableNodeMap(const VariableNodeMap &source) {
+  VariableNodeMap::VariableNodeMap(const VariableNodeMap& source) {
     GUM_CONS_CPY(VariableNodeMap);
 
     __copy(source);
@@ -53,7 +53,7 @@ namespace gum {
   }
 
   // Copy operator.
-  VariableNodeMap &VariableNodeMap::operator=(const VariableNodeMap &source) {
+  VariableNodeMap& VariableNodeMap::operator=(const VariableNodeMap& source) {
     clear();
     __copy(source);
 
@@ -73,7 +73,8 @@ namespace gum {
     std::stringstream stream;
 
     stream << "list of associations:" << std::endl;
-    stream << __nodes2vars << std::endl << std::endl;
+    stream << __nodes2vars << std::endl
+           << std::endl;
     stream << "list of variable names:" << std::endl;
     stream << __names2nodes << std::endl;
 
@@ -81,9 +82,9 @@ namespace gum {
   }
 
   /// do the copy
-  void VariableNodeMap::__copy(const VariableNodeMap &source) {
-    for (auto iter = source.__nodes2vars.begin(); iter != source.__nodes2vars.end();
-         ++iter)
+  void VariableNodeMap::__copy(const VariableNodeMap& source) {
+    for (auto iter = source.__nodes2vars.begin();
+         iter != source.__nodes2vars.end(); ++iter)
       __nodes2vars.insert(iter.first(), iter.second()->clone());
 
     // copy factory is used inside insert
@@ -92,7 +93,7 @@ namespace gum {
   }
 
   /// for friendly displaying the content of clique graphs
-  std::ostream &operator<<(std::ostream &stream, const VariableNodeMap &v) {
+  std::ostream& operator<<(std::ostream& stream, const VariableNodeMap& v) {
     stream << v.toString();
     return stream;
   }

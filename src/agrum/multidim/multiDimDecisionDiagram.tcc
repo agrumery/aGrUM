@@ -50,8 +50,9 @@ namespace gum {
   // Constructor with approximation initialisation
 
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
-  MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy>::MultiDimDecisionDiagram(
-      const MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy> &source)
+  MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy>::
+      MultiDimDecisionDiagram(const MultiDimDecisionDiagram<
+          GUM_SCALAR, IApproximationPolicy>& source)
       : MultiDimDecisionDiagramBase<GUM_SCALAR>(),
         IApproximationPolicy<GUM_SCALAR>(source) {
 
@@ -61,8 +62,8 @@ namespace gum {
   // Constructor with approximation initialisation
 
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
-  MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy>::MultiDimDecisionDiagram(
-      const IApproximationPolicy<GUM_SCALAR> &source)
+  MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy>::
+      MultiDimDecisionDiagram(const IApproximationPolicy<GUM_SCALAR>& source)
       : MultiDimDecisionDiagramBase<GUM_SCALAR>(),
         IApproximationPolicy<GUM_SCALAR>(source) {
 
@@ -91,8 +92,9 @@ namespace gum {
   // @return an empty clone of this object with the same type
 
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
-  MultiDimContainer<GUM_SCALAR> *
-  MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy>::newFactory() const {
+  MultiDimContainer<GUM_SCALAR>*
+  MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy>::newFactory()
+      const {
 
     return new MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy>(*this);
   }
@@ -100,11 +102,13 @@ namespace gum {
   // Returns a factory that used same approximation pattern
 
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
-  MultiDimDecisionDiagramFactoryBase<GUM_SCALAR> *
-  MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy>::getFactory() const {
+  MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>*
+  MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy>::getFactory()
+      const {
 
-    MultiDimDecisionDiagramFactory<GUM_SCALAR, IApproximationPolicy> *ret =
-        new MultiDimDecisionDiagramFactory<GUM_SCALAR, IApproximationPolicy>(*this);
+    MultiDimDecisionDiagramFactory<GUM_SCALAR, IApproximationPolicy>* ret =
+        new MultiDimDecisionDiagramFactory<GUM_SCALAR, IApproximationPolicy>(
+            *this);
 
     return ret;
   }
@@ -112,13 +116,13 @@ namespace gum {
   // Returns a factory that used same approximation pattern
 
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
-  MultiDimDecisionDiagramFactoryBase<GUM_SCALAR> *
+  MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>*
   MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy>::getFactory(
-      const ApproximationPolicy<GUM_SCALAR> &source) const {
+      const ApproximationPolicy<GUM_SCALAR>& source) const {
 
-    MultiDimDecisionDiagramFactory<GUM_SCALAR, IApproximationPolicy> *ret =
+    MultiDimDecisionDiagramFactory<GUM_SCALAR, IApproximationPolicy>* ret =
         new MultiDimDecisionDiagramFactory<GUM_SCALAR, IApproximationPolicy>(
-            dynamic_cast<const IApproximationPolicy<GUM_SCALAR> &>(source));
+            dynamic_cast<const IApproximationPolicy<GUM_SCALAR>&>(source));
 
     return ret;
   }

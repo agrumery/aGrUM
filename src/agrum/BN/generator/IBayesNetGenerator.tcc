@@ -20,7 +20,8 @@
 /** @file
  * @brief Source implementation of IBayesNetGenerator
  *
- * @author Christophe GONZALES, Pierre-Henri WUILLEMIN, Lionel TORTI and Ariele-Paolo
+ * @author Christophe GONZALES, Pierre-Henri WUILLEMIN, Lionel TORTI and
+ *Ariele-Paolo
  *MAESANO
  *
  */
@@ -42,7 +43,8 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed, " maxArcs value not possible ");
 
     if (maxModality < 2)
-      GUM_ERROR(OperationNotAllowed, " maxModality must be at least equal to two ");
+      GUM_ERROR(OperationNotAllowed,
+                " maxModality must be at least equal to two ");
 
     _maxArcs = maxArcs;
     _maxModality = maxModality;
@@ -60,11 +62,12 @@ namespace gum {
     for (auto node : _bayesNet.nodes())
       ICPTGenerator<GUM_SCALAR>::generateCPT(
           _bayesNet.cpt(node).pos(_bayesNet.variable(node)),
-          _bayesNet.cpt(node)); // TODO ASSERT THE LINE
+          _bayesNet.cpt(node));  // TODO ASSERT THE LINE
   }
 
   template <typename GUM_SCALAR, template <class> class ICPTGenerator>
-  INLINE Size IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::maxModality() const {
+  INLINE Size
+  IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::maxModality() const {
     return _maxModality;
   }
 
@@ -79,10 +82,11 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR, template <class> class ICPTGenerator>
-  INLINE void
-  IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::setMaxModality(Size maxModality) {
+  INLINE void IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::setMaxModality(
+      Size maxModality) {
     if (maxModality < 2)
-      GUM_ERROR(OperationNotAllowed, " maxModality must be at least equal to two ");
+      GUM_ERROR(OperationNotAllowed,
+                " maxModality must be at least equal to two ");
 
     _maxModality = maxModality;
   }

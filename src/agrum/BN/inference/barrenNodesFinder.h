@@ -35,46 +35,46 @@
 
 namespace gum {
 
-  
+
   /**
    * @class BarrenNodesFinder
    * @brief Detect barren nodes for inference in Bayesian networks
    */
   class BarrenNodesFinder {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
     /// default constructor
-    BarrenNodesFinder ( const DAG& dag );
+    BarrenNodesFinder(const DAG& dag);
 
     /// copy constructor
-    BarrenNodesFinder ( const BarrenNodesFinder& from );
+    BarrenNodesFinder(const BarrenNodesFinder& from);
 
     /// move constructor
-    BarrenNodesFinder ( BarrenNodesFinder&& from );
+    BarrenNodesFinder(BarrenNodesFinder&& from);
 
     /// destructor
-    ~BarrenNodesFinder ();
+    ~BarrenNodesFinder();
 
     /// @}
 
-    
+
     // ############################################################################
     /// @name Operators
     // ############################################################################
     /// @{
 
     /// copy operator
-    BarrenNodesFinder& operator= ( const BarrenNodesFinder& from );
+    BarrenNodesFinder& operator=(const BarrenNodesFinder& from);
 
     /// move operator
-    BarrenNodesFinder& operator= ( BarrenNodesFinder&& from );
+    BarrenNodesFinder& operator=(BarrenNodesFinder&& from);
 
     /// @}
-    
+
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -82,30 +82,28 @@ namespace gum {
     /// @{
 
     /// sets a new DAG
-    void setDAG ( const DAG& new_dag );
+    void setDAG(const DAG& new_dag);
 
     /// sets the observed nodes in the DAG
-    void setEvidence ( const NodeSet& observed_nodes );
+    void setEvidence(const NodeSet& observed_nodes);
 
     /// returns the set of barren nodes in the messages sent in a junction tree
-    ArcProperty<NodeSet> barrenNodes ( const CliqueGraph& junction_tree );
+    ArcProperty<NodeSet> barrenNodes(const CliqueGraph& junction_tree);
 
     /// returns the set of barren potentials in messages sent in a junction tree
     template <typename GUM_SCALAR>
-    ArcProperty<Set<const Potential<GUM_SCALAR>*> >
-    barrenPotentials ( const CliqueGraph& junction_tree,
-                       const IBayesNet<GUM_SCALAR>& bn );
+    ArcProperty<Set<const Potential<GUM_SCALAR>*>>
+    barrenPotentials(const CliqueGraph& junction_tree,
+                     const IBayesNet<GUM_SCALAR>& bn);
 
     /// @}
 
-  private:
-
+    private:
     /// the DAG on which we compute the barren nodes
-    const DAG *__dag;
+    const DAG* __dag;
 
     /// the set of observed nodes
     NodeSet __observed_nodes;
-    
   };
 
 
@@ -114,7 +112,7 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #include <agrum/BN/inference/barrenNodesFinder.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
 
 #include <agrum/BN/inference/barrenNodesFinder.tcc>

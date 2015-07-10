@@ -46,21 +46,21 @@ namespace gum {
   // Constant reference on the iterator pointing at the end of the Sequence
   // of variables.
   INLINE
-  const MultiDimInterface::iterator &MultiDimInterface::end() const {
+  const MultiDimInterface::iterator& MultiDimInterface::end() const {
     return variablesSequence().end();
   }
 
   // Constant reference on the iterator pointing at the rend of the Sequence
   // of variables.
   INLINE
-  const MultiDimInterface::iterator &MultiDimInterface::rend() const {
+  const MultiDimInterface::iterator& MultiDimInterface::rend() const {
     return variablesSequence().rend();
   }
 
   // Swap two variables in this multidim.
   INLINE
-  void MultiDimInterface::swap(const DiscreteVariable &x,
-                               const DiscreteVariable &y) {
+  void MultiDimInterface::swap(const DiscreteVariable& x,
+                               const DiscreteVariable& y) {
     if (not contains(x)) {
       GUM_ERROR(NotFound, "could not find the variable");
     }

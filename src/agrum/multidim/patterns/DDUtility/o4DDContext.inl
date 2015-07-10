@@ -2,9 +2,9 @@
  *    Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr *
  *                                                                                                                      *
- *   This program is free software; you can redistribute it and/or modify           *
- *   it under the terms of the GNU General Public License as published by       *
- *   the Free Software Foundation; either version 2 of the License, or              *
+ *   This program is free software; you can redistribute it and/or modify *
+ *   it under the terms of the GNU General Public License as published by *
+ *   the Free Software Foundation; either version 2 of the License, or *
  *   (at your option) any later version. *
  *                                                                                                                      *
  *   This program is distributed in the hope that it will be useful, *
@@ -12,10 +12,10 @@
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
  *   GNU General Public License for more details. *
  *                                                                                                                      *
- *   You should have received a copy of the GNU General Public License          *
+ *   You should have received a copy of the GNU General Public License *
  *   along with this program; if not, write to the *
  *   Free Software Foundation, Inc., *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.                      *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. *
  ********************************************************************************/
 
 #include <cmath>
@@ -56,7 +56,7 @@ namespace gum {
   // Inserts a new retrograde variable
 
   INLINE
-  void O4DDContext::addRetrogradeVar(const gum::DiscreteVariable *var) {
+  void O4DDContext::addRetrogradeVar(const gum::DiscreteVariable* var) {
     if (__varSeq.size() == __nbLogPrime)
       GUM_ERROR(gum::OperationNotAllowed, "Not enough prime log2 in database. "
                                           "Please add more in o4DDContext.cpp "
@@ -70,7 +70,7 @@ namespace gum {
   // Changes given variable modality
 
   INLINE
-  void O4DDContext::chgVarModality(const gum::DiscreteVariable *var,
+  void O4DDContext::chgVarModality(const gum::DiscreteVariable* var,
                                    gum::Idx newModality) {
     __retrogradeVarInstantiation[__varSeq.pos(var)] = newModality;
   }

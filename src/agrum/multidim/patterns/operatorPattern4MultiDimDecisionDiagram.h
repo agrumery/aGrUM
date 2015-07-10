@@ -43,47 +43,50 @@ namespace gum {
 #define GUM_MULTI_DIM_OPERATOR_TYPE T
 
   template <typename T>
-  MultiDimDecisionDiagramBase<T> *
-  GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimDecisionDiagramBase<T> *t1,
-                              const MultiDimDecisionDiagramBase<T> *t2) {
+  MultiDimDecisionDiagramBase<T>*
+  GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimDecisionDiagramBase<T>* t1,
+                              const MultiDimDecisionDiagramBase<T>* t2) {
 #endif
 
 #ifdef GUM_MULTI_DIM_OPERATOR_NAME_F
 #define GUM_MULTI_DIM_OPERATOR_TYPE T
 
     template <typename T>
-    MultiDimDecisionDiagramBase<T> *GUM_MULTI_DIM_OPERATOR_NAME_F(
-        const MultiDimDecisionDiagramBase<T> *t1,
-        const MultiDimDecisionDiagramBase<T> *t2,
-        const T (*f)(const T &, const T &)) {
+    MultiDimDecisionDiagramBase<T>* GUM_MULTI_DIM_OPERATOR_NAME_F(
+        const MultiDimDecisionDiagramBase<T>* t1,
+        const MultiDimDecisionDiagramBase<T>* t2,
+        const T (*f)(const T&, const T&)) {
 #endif
 
 #ifdef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME
 #define GUM_MULTI_DIM_OPERATOR_TYPE T
 
       template <typename T>
-      MultiDimImplementation<T> *GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME(
-          const MultiDimImplementation<T> *tt1,
-          const MultiDimImplementation<T> *tt2) {
-        const MultiDimDecisionDiagramBase<T> *t1 =
-            reinterpret_cast<const MultiDimDecisionDiagramBase<T> *>(tt1);
-        const MultiDimDecisionDiagramBase<T> *t2 =
-            reinterpret_cast<const MultiDimDecisionDiagramBase<T> *>(tt2);
+      MultiDimImplementation<T>*
+      GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME(
+          const MultiDimImplementation<T>* tt1,
+          const MultiDimImplementation<T>* tt2) {
+        const MultiDimDecisionDiagramBase<T>* t1 =
+            reinterpret_cast<const MultiDimDecisionDiagramBase<T>*>(tt1);
+        const MultiDimDecisionDiagramBase<T>* t2 =
+            reinterpret_cast<const MultiDimDecisionDiagramBase<T>*>(tt2);
 #endif
 
-        MultiDimDecisionDiagramBase<GUM_MULTI_DIM_OPERATOR_TYPE> *ret = nullptr;
+        MultiDimDecisionDiagramBase<GUM_MULTI_DIM_OPERATOR_TYPE>* ret = nullptr;
 
         if ((t1 == nullptr || t1->empty()) && (t2 == nullptr || t2->empty()))
           return ret;
 
         if (t1 == nullptr || t1->empty()) {
-          ret = reinterpret_cast<MultiDimDecisionDiagramBase<T> *>(t2->newFactory());
+          ret = reinterpret_cast<MultiDimDecisionDiagramBase<T>*>(
+              t2->newFactory());
           ret->copy(*t2);
           return ret;
         }
 
         if (t2 == nullptr || t2->empty()) {
-          ret = reinterpret_cast<MultiDimDecisionDiagramBase<T> *>(t1->newFactory());
+          ret = reinterpret_cast<MultiDimDecisionDiagramBase<T>*>(
+              t1->newFactory());
           ret->copy(*t1);
           return ret;
         }

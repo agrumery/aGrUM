@@ -40,7 +40,7 @@ namespace gum_tests {
       TS_ASSERT(handler.DBSize() == 10000);
       TS_ASSERT(handler.size() == 10000);
 
-      const gum::learning::DBRow &row = handler.row();
+      const gum::learning::DBRow& row = handler.row();
 
       for (unsigned int i = 0; i < row.size(); ++i) {
         TS_ASSERT(row[i].type() == gum::learning::DBCell::EltType::FLOAT);
@@ -78,7 +78,7 @@ namespace gum_tests {
       handler.reset();
 
       while (handler.hasRows()) {
-        const gum::learning::DBRow &row = handler.row();
+        const gum::learning::DBRow& row = handler.row();
 
         for (unsigned int i = 0; i < row.size(); ++i) {
           TS_ASSERT(row[i].type() == gum::learning::DBCell::EltType::FLOAT);
@@ -113,7 +113,7 @@ namespace gum_tests {
       try {
         gum::learning::DatabaseFromCSV database(
             GET_PATH_STR("notExistingDummyDatabse.csv"));
-      } catch (gum::IOError &e) {
+      } catch (gum::IOError& e) {
         TS_ASSERT(true);
         return;
       } catch (...) {

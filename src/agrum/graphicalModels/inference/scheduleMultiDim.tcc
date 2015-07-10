@@ -42,9 +42,9 @@ namespace gum {
 
   /// returns a mapping from id to multidimImplementations
   template <typename GUM_SCALAR>
-  HashTable<Id, const MultiDimImplementation<GUM_SCALAR> *> &
+  HashTable<Id, const MultiDimImplementation<GUM_SCALAR>*>&
   ScheduleMultiDim<GUM_SCALAR>::__id2multidim() {
-    static HashTable<Id, const MultiDimImplementation<GUM_SCALAR> *> __multidims;
+    static HashTable<Id, const MultiDimImplementation<GUM_SCALAR>*> __multidims;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static hashtable used here will be removed at the end of the
@@ -53,8 +53,8 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __debug__::__inc_deletion("HashTable", __FILE__, __LINE__, "destructor of",
-                                (void *)&__multidims);
+      __debug__::__inc_deletion("HashTable", __FILE__, __LINE__,
+                                "destructor of", (void*)&__multidims);
     }
 
 #endif /* NDEBUG */
@@ -63,9 +63,10 @@ namespace gum {
 
   /// returns the id corresponding to a given multidim
   template <typename GUM_SCALAR>
-  HashTable<const MultiDimImplementation<GUM_SCALAR> *, Id> &
+  HashTable<const MultiDimImplementation<GUM_SCALAR>*, Id>&
   ScheduleMultiDim<GUM_SCALAR>::__multidim2id() {
-    static HashTable<const MultiDimImplementation<GUM_SCALAR> *, Id> __multidim_ids;
+    static HashTable<const MultiDimImplementation<GUM_SCALAR>*, Id>
+        __multidim_ids;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static hashtable used here will be removed at the end of the
@@ -74,8 +75,8 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __debug__::__inc_deletion("HashTable", __FILE__, __LINE__, "destructor of",
-                                (void *)&__multidim_ids);
+      __debug__::__inc_deletion("HashTable", __FILE__, __LINE__,
+                                "destructor of", (void*)&__multidim_ids);
     }
 
 #endif /* NDEBUG */
@@ -84,7 +85,7 @@ namespace gum {
 
   /// returns a table indicating how many ScheduleMultiDim have the same id
   template <typename GUM_SCALAR>
-  HashTable<Id, unsigned int> &ScheduleMultiDim<GUM_SCALAR>::__id2refs() {
+  HashTable<Id, unsigned int>& ScheduleMultiDim<GUM_SCALAR>::__id2refs() {
     static HashTable<Id, unsigned int> __ids;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
@@ -94,8 +95,8 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __debug__::__inc_deletion("HashTable", __FILE__, __LINE__, "destructor of",
-                                (void *)&__ids);
+      __debug__::__inc_deletion("HashTable", __FILE__, __LINE__,
+                                "destructor of", (void*)&__ids);
     }
 
 #endif /* NDEBUG */
@@ -104,9 +105,9 @@ namespace gum {
 
   /// returns a table with the variables of the table corresponding to id
   template <typename GUM_SCALAR>
-  HashTable<Id, const Sequence<const DiscreteVariable *> *> &
+  HashTable<Id, const Sequence<const DiscreteVariable*>*>&
   ScheduleMultiDim<GUM_SCALAR>::__id2vars() {
-    static HashTable<Id, const Sequence<const DiscreteVariable *> *> __vars;
+    static HashTable<Id, const Sequence<const DiscreteVariable*>*> __vars;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static hashtable used here will be removed at the end of the
@@ -115,8 +116,8 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __debug__::__inc_deletion("HashTable", __FILE__, __LINE__, "destructor of",
-                                (void *)&__vars);
+      __debug__::__inc_deletion("HashTable", __FILE__, __LINE__,
+                                "destructor of", (void*)&__vars);
     }
 
 #endif /* NDEBUG */
@@ -125,7 +126,7 @@ namespace gum {
 
   /// returns a table with the domain size of the table corresponding to id
   template <typename GUM_SCALAR>
-  HashTable<Id, Size> &ScheduleMultiDim<GUM_SCALAR>::__id2size() {
+  HashTable<Id, Size>& ScheduleMultiDim<GUM_SCALAR>::__id2size() {
     static HashTable<Id, Size> __size;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
@@ -135,8 +136,8 @@ namespace gum {
 
     if (first_time) {
       first_time = false;
-      __debug__::__inc_deletion("HashTable", __FILE__, __LINE__, "destructor of",
-                                (void *)&__size);
+      __debug__::__inc_deletion("HashTable", __FILE__, __LINE__,
+                                "destructor of", (void*)&__size);
     }
 
 #endif /* NDEBUG */
@@ -146,7 +147,7 @@ namespace gum {
   /// constructs a ScheduleMultiDim containing an already built decorator
   template <typename GUM_SCALAR>
   ScheduleMultiDim<GUM_SCALAR>::ScheduleMultiDim(
-      const MultiDimImplementation<GUM_SCALAR> &multidim) {
+      const MultiDimImplementation<GUM_SCALAR>& multidim) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleMultiDim);
 
@@ -157,7 +158,7 @@ namespace gum {
       __id = __multidim2id().operator[](&multidim);
 
       // update the number of references of __id
-      HashTable<Id, unsigned int> &refs = __id2refs();
+      HashTable<Id, unsigned int>& refs = __id2refs();
       ++refs[__id];
     } else {
       // assign a new id to the implementation
@@ -171,8 +172,8 @@ namespace gum {
       __id2refs().insert(__id, 1);
 
       // store the variables of the multidim
-      const Sequence<const DiscreteVariable *> *vars =
-          new Sequence<const DiscreteVariable *>(multidim.variablesSequence());
+      const Sequence<const DiscreteVariable*>* vars =
+          new Sequence<const DiscreteVariable*>(multidim.variablesSequence());
       __id2vars().insert(__id, vars);
 
       // store the domain size of the multidim
@@ -183,11 +184,11 @@ namespace gum {
   /// constructs a ScheduleMultiDim containing an already built decorator
   template <typename GUM_SCALAR>
   ScheduleMultiDim<GUM_SCALAR>::ScheduleMultiDim(
-      const MultiDimDecorator<GUM_SCALAR> &multidim) {
+      const MultiDimDecorator<GUM_SCALAR>& multidim) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleMultiDim);
 
-    const MultiDimImplementation<GUM_SCALAR> *impl = multidim.content();
+    const MultiDimImplementation<GUM_SCALAR>* impl = multidim.content();
 
     // check whether the multidimImplementation has already been stored
 
@@ -196,7 +197,7 @@ namespace gum {
       __id = __multidim2id().operator[](impl);
 
       // update the number of references of __id
-      HashTable<Id, unsigned int> &refs = __id2refs();
+      HashTable<Id, unsigned int>& refs = __id2refs();
       ++refs[__id];
     } else {
       // assign a new id to the implementation
@@ -210,8 +211,8 @@ namespace gum {
       __id2refs().insert(__id, 1);
 
       // store the variables of the multidim
-      const Sequence<const DiscreteVariable *> *vars =
-          new Sequence<const DiscreteVariable *>(multidim.variablesSequence());
+      const Sequence<const DiscreteVariable*>* vars =
+          new Sequence<const DiscreteVariable*>(multidim.variablesSequence());
       __id2vars().insert(__id, vars);
 
       // store the domain size of the multidim
@@ -222,7 +223,7 @@ namespace gum {
   /// construct an (abstract) ScheduleMultiDim for a decorator yet to be built
   template <typename GUM_SCALAR>
   ScheduleMultiDim<GUM_SCALAR>::ScheduleMultiDim(
-      const Sequence<const DiscreteVariable *> &vars)
+      const Sequence<const DiscreteVariable*>& vars)
       : __id(__newId()) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleMultiDim);
@@ -231,8 +232,8 @@ namespace gum {
     __id2refs().insert(__id, 1);
 
     // store the variables of the multidim
-    const Sequence<const DiscreteVariable *> *new_vars =
-        new Sequence<const DiscreteVariable *>(vars);
+    const Sequence<const DiscreteVariable*>* new_vars =
+        new Sequence<const DiscreteVariable*>(vars);
     __id2vars().insert(__id, new_vars);
 
     // compute and store the domain size
@@ -247,24 +248,25 @@ namespace gum {
   /// copy constructor
   template <typename GUM_SCALAR>
   ScheduleMultiDim<GUM_SCALAR>::ScheduleMultiDim(
-      const ScheduleMultiDim<GUM_SCALAR> &from)
+      const ScheduleMultiDim<GUM_SCALAR>& from)
       : __id(from.__id) {
     // for debugging purposes
     GUM_CONS_CPY(ScheduleMultiDim);
 
     // update the number of references of __id
-    HashTable<Id, unsigned int> &refs = __id2refs();
+    HashTable<Id, unsigned int>& refs = __id2refs();
     ++refs[__id];
   }
 
   /// destructor
-  template <typename GUM_SCALAR> ScheduleMultiDim<GUM_SCALAR>::~ScheduleMultiDim() {
+  template <typename GUM_SCALAR>
+  ScheduleMultiDim<GUM_SCALAR>::~ScheduleMultiDim() {
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduleMultiDim);
 
     // get the number of scheduleMultiDims that reference the same id
-    HashTable<Id, unsigned int> &refs = __id2refs();
-    unsigned int &nb_refs = refs[__id];
+    HashTable<Id, unsigned int>& refs = __id2refs();
+    unsigned int& nb_refs = refs[__id];
 
     if (nb_refs == 1) {
       // remove the id and the multidimdecorator from the mappings
@@ -284,13 +286,13 @@ namespace gum {
 
   /// copy operator
   template <typename GUM_SCALAR>
-  ScheduleMultiDim<GUM_SCALAR> &ScheduleMultiDim<GUM_SCALAR>::
-  operator=(const ScheduleMultiDim<GUM_SCALAR> &from) {
+  ScheduleMultiDim<GUM_SCALAR>& ScheduleMultiDim<GUM_SCALAR>::
+  operator=(const ScheduleMultiDim<GUM_SCALAR>& from) {
     // avoid self assignment
     if (__id != from.__id) {
       // remove the old id
-      HashTable<Id, unsigned int> &refs = __id2refs();
-      unsigned int &nb_refs = refs[__id];
+      HashTable<Id, unsigned int>& refs = __id2refs();
+      unsigned int& nb_refs = refs[__id];
 
       if (nb_refs == 1) {
         // remove the id and the multidimdecorator from the mappings
@@ -318,38 +320,41 @@ namespace gum {
   /// checks whether two ScheduleMultiDim are related to the same table
   template <typename GUM_SCALAR>
   INLINE bool ScheduleMultiDim<GUM_SCALAR>::
-  operator==(const ScheduleMultiDim<GUM_SCALAR> &m) const {
+  operator==(const ScheduleMultiDim<GUM_SCALAR>& m) const {
     return (__id == m.__id);
   }
 
   /// checks whether two ScheduleMultiDim are related to different tables
   template <typename GUM_SCALAR>
   INLINE bool ScheduleMultiDim<GUM_SCALAR>::
-  operator!=(const ScheduleMultiDim<GUM_SCALAR> &m) const {
+  operator!=(const ScheduleMultiDim<GUM_SCALAR>& m) const {
     return (__id != m.__id);
   }
 
-  /// returns the multiDimImplementation actually contained in the ScheduleMultiDim
+  /// returns the multiDimImplementation actually contained in the
+  /// ScheduleMultiDim
   template <typename GUM_SCALAR>
-  INLINE const MultiDimImplementation<GUM_SCALAR> &
+  INLINE const MultiDimImplementation<GUM_SCALAR>&
   ScheduleMultiDim<GUM_SCALAR>::multiDim() const {
     return *(__id2multidim().operator[](__id));
   }
 
-  /// returns whether the ScheduleMultiDim contains a real multiDimImplementation
+  /// returns whether the ScheduleMultiDim contains a real
+  /// multiDimImplementation
   template <typename GUM_SCALAR>
   INLINE bool ScheduleMultiDim<GUM_SCALAR>::isAbstract() const {
     return !__id2multidim().exists(__id);
   }
 
   /// returns the id of the ScheduleMultiDim
-  template <typename GUM_SCALAR> INLINE Id ScheduleMultiDim<GUM_SCALAR>::id() const {
+  template <typename GUM_SCALAR>
+  INLINE Id ScheduleMultiDim<GUM_SCALAR>::id() const {
     return __id;
   }
 
   /// returns the set of variables involved in the multidim
   template <typename GUM_SCALAR>
-  INLINE const Sequence<const DiscreteVariable *> &
+  INLINE const Sequence<const DiscreteVariable*>&
   ScheduleMultiDim<GUM_SCALAR>::variablesSequence() const {
     return *(__id2vars().operator[](__id));
   }
@@ -363,7 +368,7 @@ namespace gum {
   /// sets a new multiDimImplementation inside the wrapper
   template <typename GUM_SCALAR>
   void ScheduleMultiDim<GUM_SCALAR>::setMultiDim(
-      const MultiDimImplementation<GUM_SCALAR> &m) {
+      const MultiDimImplementation<GUM_SCALAR>& m) {
     // check whether the same Multidimimplementation has not already been
     // wrapped with another ID. In this case, we shall throw a DuplicateElement
     // exception
@@ -376,10 +381,11 @@ namespace gum {
     } else {
       // here, the multidim has never been stored into a ScheduleMultiDim
 
-      // if the current ScheduleMultiDim already contained a multidimImplementation
+      // if the current ScheduleMultiDim already contained a
+      // multidimImplementation
       // we should remove it first and, then, add the new one
       if (__id2multidim().exists(__id)) {
-        const MultiDimImplementation<GUM_SCALAR> *impl =
+        const MultiDimImplementation<GUM_SCALAR>* impl =
             __id2multidim().operator[](__id);
 
         if (impl == &m)
@@ -396,9 +402,9 @@ namespace gum {
       __multidim2id().insert(&m, __id);
 
       // update the variables of the scheduleMultiDim
-      const Sequence<const DiscreteVariable *> &m_vars = m.variablesSequence();
-      Sequence<const DiscreteVariable *> *vars =
-          const_cast<Sequence<const DiscreteVariable *> *>(
+      const Sequence<const DiscreteVariable*>& m_vars = m.variablesSequence();
+      Sequence<const DiscreteVariable*>* vars =
+          const_cast<Sequence<const DiscreteVariable*>*>(
               __id2vars().operator[](__id));
       *vars = m_vars;
 
@@ -409,8 +415,8 @@ namespace gum {
 
   /// sets a new multiDimImplementation inside the wrapper
   template <typename GUM_SCALAR>
-  INLINE void
-  ScheduleMultiDim<GUM_SCALAR>::setMultiDim(const MultiDimDecorator<GUM_SCALAR> &m) {
+  INLINE void ScheduleMultiDim<GUM_SCALAR>::setMultiDim(
+      const MultiDimDecorator<GUM_SCALAR>& m) {
     setMultiDim(*(m.content()));
   }
 
@@ -424,7 +430,7 @@ namespace gum {
 
     try {
       str << __id2multidim().operator[](__id);
-    } catch (NotFound &) {
+    } catch (NotFound&) {
       str << __id;
     }
 

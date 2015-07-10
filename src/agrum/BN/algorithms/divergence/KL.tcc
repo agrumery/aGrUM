@@ -31,10 +31,11 @@
 
 namespace gum {
   template <typename GUM_SCALAR>
-  KL<GUM_SCALAR>::KL(const IBayesNet<GUM_SCALAR> &P, const IBayesNet<GUM_SCALAR> &Q)
+  KL<GUM_SCALAR>::KL(const IBayesNet<GUM_SCALAR>& P,
+                     const IBayesNet<GUM_SCALAR>& Q)
       : _p(P), _q(Q), _klPQ(0.0), _klQP(0.0), _errorPQ(0), _errorQP(0),
         __difficulty(Complexity::Heavy), __done(false) {
-    __checkCompatibility(); // may throw OperationNotAllowed
+    __checkCompatibility();  // may throw OperationNotAllowed
     GUM_CONSTRUCTOR(KL);
 
     double diff = _p.log10DomainSize();
@@ -48,10 +49,10 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  KL<GUM_SCALAR>::KL(const KL<GUM_SCALAR> &kl)
+  KL<GUM_SCALAR>::KL(const KL<GUM_SCALAR>& kl)
       : _p(kl._p), _q(kl._q), _klPQ(kl._klPQ), _klQP(kl._klQP),
-        _errorPQ(kl._errorPQ), _errorQP(kl._errorQP), __difficulty(kl.__difficulty),
-        __done(kl.__done) {
+        _errorPQ(kl._errorPQ), _errorQP(kl._errorQP),
+        __difficulty(kl.__difficulty), __done(kl.__done) {
     GUM_CONSTRUCTOR(KL);
   }
 
@@ -92,35 +93,35 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE const IBayesNet<GUM_SCALAR> &KL<GUM_SCALAR>::p(void) const {
+  INLINE const IBayesNet<GUM_SCALAR>& KL<GUM_SCALAR>::p(void) const {
     return _p;
   }
 
   template <typename GUM_SCALAR>
-  INLINE const IBayesNet<GUM_SCALAR> &KL<GUM_SCALAR>::q(void) const {
+  INLINE const IBayesNet<GUM_SCALAR>& KL<GUM_SCALAR>::q(void) const {
     return _q;
   }
 
   // check if the 2 BNs are compatible
-  template <typename GUM_SCALAR> bool KL<GUM_SCALAR>::__checkCompatibility() const {
+  template <typename GUM_SCALAR>
+  bool KL<GUM_SCALAR>::__checkCompatibility() const {
     for (auto node : _p.nodes()) {
-      const DiscreteVariable &vp = _p.variable(node);
+      const DiscreteVariable& vp = _p.variable(node);
 
       try {
-        const DiscreteVariable &vq = _q.variableFromName(vp.name());
+        const DiscreteVariable& vq = _q.variableFromName(vp.name());
 
         if (vp.domainSize() != vq.domainSize())
-          GUM_ERROR(
-              OperationNotAllowed,
-              "KL : the 2 BNs are not compatible (not the same domainSize for " +
-                  vp.name() + ")");
+          GUM_ERROR(OperationNotAllowed, "KL : the 2 BNs are not compatible "
+                                         "(not the same domainSize for " +
+                                             vp.name() + ")");
 
         for (Id i = 0; i < vp.domainSize(); i++) {
           try {
             vq[vp.label(i)];
             vp[vq.label(i)];
 
-          } catch (OutOfBounds &e) {
+          } catch (OutOfBounds& e) {
 
             GUM_ERROR(
                 OperationNotAllowed,
@@ -128,7 +129,7 @@ namespace gum {
                     vp.name() + ")");
           }
         }
-      } catch (NotFound &e) {
+      } catch (NotFound& e) {
 
         GUM_ERROR(OperationNotAllowed,
                   "KL : the 2 BNs are not compatible (not the same vars : " +
@@ -142,10 +143,11 @@ namespace gum {
                 "KL : the 2 BNs are not compatible (not the same size)");
 
     if (std::fabs(_p.log10DomainSize() - _q.log10DomainSize()) > 1e-14) {
-      GUM_ERROR(OperationNotAllowed,
-                "KL : the 2 BNs are not compatible (not the same domainSize) : p="
-                    << _p.log10DomainSize() << " q=" << _q.log10DomainSize()
-                    << " => " << _p.log10DomainSize() - _q.log10DomainSize());
+      GUM_ERROR(
+          OperationNotAllowed,
+          "KL : the 2 BNs are not compatible (not the same domainSize) : p="
+              << _p.log10DomainSize() << " q=" << _q.log10DomainSize() << " => "
+              << _p.log10DomainSize() - _q.log10DomainSize());
     }
 
     return true;
@@ -163,4 +165,4 @@ namespace gum {
   template <typename GUM_SCALAR> void KL<GUM_SCALAR>::_computeKL() {
     GUM_ERROR(OperationNotAllowed, "No default computations");
   }
-} // namespace gum
+}  // namespace gum

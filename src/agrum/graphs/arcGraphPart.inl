@@ -35,13 +35,14 @@ namespace gum {
 
   INLINE Size ArcGraphPart::nbrArcs() const { return sizeArcs(); }
 
-  INLINE const ArcSet &ArcGraphPart::arcs() const { return __arcs; }
+  INLINE const ArcSet& ArcGraphPart::arcs() const { return __arcs; }
 
-  INLINE bool ArcGraphPart::existsArc(const Arc &arc) const {
+  INLINE bool ArcGraphPart::existsArc(const Arc& arc) const {
     return __arcs.contains(arc);
   }
 
-  INLINE bool ArcGraphPart::existsArc(const NodeId tail, const NodeId head) const {
+  INLINE bool ArcGraphPart::existsArc(const NodeId tail,
+                                      const NodeId head) const {
     return __parents.exists(head) && __parents[head]->exists(tail);
   }
 
@@ -57,12 +58,12 @@ namespace gum {
     }
   }
 
-  INLINE const NodeSet &ArcGraphPart::parents(const NodeId id) const {
+  INLINE const NodeSet& ArcGraphPart::parents(const NodeId id) const {
     __checkParents(id);
     return *(__parents[id]);
   }
 
-  INLINE const NodeSet &ArcGraphPart::children(const NodeId id) const {
+  INLINE const NodeSet& ArcGraphPart::children(const NodeId id) const {
     __checkChildren(id);
     return *(__children[id]);
   }
@@ -73,7 +74,7 @@ namespace gum {
   }
 
   // deprecated
-  INLINE const ArcGraphPart::ArcIterator &ArcGraphPart::endArcs() const {
+  INLINE const ArcGraphPart::ArcIterator& ArcGraphPart::endArcs() const {
     return __arcs.end();
   }
 
@@ -92,7 +93,7 @@ namespace gum {
     GUM_EMIT2(onArcAdded, tail, head);
   }
 
-  INLINE void ArcGraphPart::eraseArc(const Arc &arc) {
+  INLINE void ArcGraphPart::eraseArc(const Arc& arc) {
     // ASSUMING tail and head exists in __parents anf __children
     // (if not, it is an error)
     if (existsArc(arc)) {
@@ -104,16 +105,16 @@ namespace gum {
     }
   }
 
-  INLINE void ArcGraphPart::_eraseSetOfArcs(const ArcSet &set) {
+  INLINE void ArcGraphPart::_eraseSetOfArcs(const ArcSet& set) {
     for (const auto arc : set)
       eraseArc(arc);
   }
 
   INLINE void ArcGraphPart::eraseParents(const NodeId id) {
     if (__parents.exists(id)) {
-      NodeSet &parents = *(__parents[id]);
+      NodeSet& parents = *(__parents[id]);
 
-      for (auto iter = parents.beginSafe(); // safe iterator needed here
+      for (auto iter = parents.beginSafe();  // safe iterator needed here
            iter != parents.endSafe(); ++iter) {
         // warning: use this erase so that you actually use the virtualized
         // arc removal function
@@ -124,9 +125,9 @@ namespace gum {
 
   INLINE void ArcGraphPart::eraseChildren(const NodeId id) {
     if (__children.exists(id)) {
-      NodeSet &children = *(__children[id]);
+      NodeSet& children = *(__children[id]);
 
-      for (auto iter = children.beginSafe(); // safe iterator needed here
+      for (auto iter = children.beginSafe();  // safe iterator needed here
            iter != children.endSafe(); ++iter) {
         // warning: use this erase so that you actually use the vritualized
         // arc removal function
@@ -135,16 +136,16 @@ namespace gum {
     }
   }
 
-  INLINE void ArcGraphPart::_unvirtualizedEraseSetOfArcs(const ArcSet &set) {
-    for (const auto &arc : set)
+  INLINE void ArcGraphPart::_unvirtualizedEraseSetOfArcs(const ArcSet& set) {
+    for (const auto& arc : set)
       ArcGraphPart::eraseArc(arc);
   }
 
   INLINE void ArcGraphPart::unvirtualizedEraseParents(const NodeId id) {
     if (__parents.exists(id)) {
-      NodeSet &parents = *(__parents[id]);
+      NodeSet& parents = *(__parents[id]);
 
-      for (auto iter = parents.beginSafe(); // safe iterator needed here
+      for (auto iter = parents.beginSafe();  // safe iterator needed here
            iter != parents.endSafe(); ++iter) {
         ArcGraphPart::eraseArc(Arc(*iter, id));
       }
@@ -153,20 +154,20 @@ namespace gum {
 
   INLINE void ArcGraphPart::unvirtualizedEraseChildren(const NodeId id) {
     if (__children.exists(id)) {
-      NodeSet &children = *(__children[id]);
+      NodeSet& children = *(__children[id]);
 
-      for (auto iter = children.beginSafe(); // safe iterator needed here
+      for (auto iter = children.beginSafe();  // safe iterator needed here
            iter != children.endSafe(); ++iter) {
         ArcGraphPart::eraseArc(Arc(id, *iter));
       }
     }
   }
 
-  INLINE bool ArcGraphPart::operator==(const ArcGraphPart &p) const {
+  INLINE bool ArcGraphPart::operator==(const ArcGraphPart& p) const {
     return __arcs == p.__arcs;
   }
 
-  INLINE bool ArcGraphPart::operator!=(const ArcGraphPart &p) const {
+  INLINE bool ArcGraphPart::operator!=(const ArcGraphPart& p) const {
     return __arcs != p.__arcs;
   }
 

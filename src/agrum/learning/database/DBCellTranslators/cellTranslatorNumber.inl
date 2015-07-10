@@ -30,7 +30,7 @@ namespace gum {
 
     /// copy constructor
     INLINE
-    CellTranslatorNumber::CellTranslatorNumber(const CellTranslatorNumber &from)
+    CellTranslatorNumber::CellTranslatorNumber(const CellTranslatorNumber& from)
         : DBCellTranslator<1, 1>(from), __max_value(from.__max_value),
           __values(from.__values), __check_database(from.__check_database) {
       if (from.__user_values != nullptr) {
@@ -39,7 +39,8 @@ namespace gum {
     }
 
     /// move constructor
-    INLINE CellTranslatorNumber::CellTranslatorNumber(CellTranslatorNumber &&from)
+    INLINE
+    CellTranslatorNumber::CellTranslatorNumber(CellTranslatorNumber&& from)
         : DBCellTranslator<1, 1>(std::move(from)),
           __max_value(std::move(from.__max_value)),
           __values(std::move(from.__values)),
@@ -50,7 +51,7 @@ namespace gum {
     }
 
     /// virtual copy constructor
-    INLINE CellTranslatorNumber *CellTranslatorNumber::copyFactory() {
+    INLINE CellTranslatorNumber* CellTranslatorNumber::copyFactory() {
       return new CellTranslatorNumber(*this);
     }
 
@@ -62,8 +63,8 @@ namespace gum {
     }
 
     /// copy operator
-    INLINE CellTranslatorNumber &CellTranslatorNumber::
-    operator=(const CellTranslatorNumber &from) {
+    INLINE CellTranslatorNumber& CellTranslatorNumber::
+    operator=(const CellTranslatorNumber& from) {
       if (this != &from) {
         DBCellTranslator<1, 1>::operator=(from);
         __max_value = from.__max_value;
@@ -81,8 +82,8 @@ namespace gum {
     }
 
     /// move operator
-    INLINE CellTranslatorNumber &CellTranslatorNumber::
-    operator=(CellTranslatorNumber &&from) {
+    INLINE CellTranslatorNumber& CellTranslatorNumber::
+    operator=(CellTranslatorNumber&& from) {
       if (this != &from) {
         DBCellTranslator<1, 1>::operator=(std::move(from));
         __max_value = std::move(from.__max_value);
@@ -115,7 +116,7 @@ namespace gum {
 
     /// add the number of modalities discovered in the database into a vector
     INLINE void
-    CellTranslatorNumber::modalities(std::vector<unsigned int> &modal) const
+    CellTranslatorNumber::modalities(std::vector<unsigned int>& modal) const
         noexcept {
       modal.push_back(__values.size());
     }
@@ -136,8 +137,8 @@ namespace gum {
 
     /// returns the name of the variable(s) the translator has processed
     INLINE void CellTranslatorNumber::variableNames(
-        const std::vector<std::string> &db_var,
-        std::vector<std::string> &output_vars) const {
+        const std::vector<std::string>& db_var,
+        std::vector<std::string>& output_vars) const {
       output_vars.push_back(db_var[_input_cols[0]]);
     }
 

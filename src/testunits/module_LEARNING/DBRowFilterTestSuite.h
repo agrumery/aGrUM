@@ -38,7 +38,7 @@ namespace gum_tests {
 
   class TruncatedGenerator : public gum::learning::FilteredRowGenerator {
     public:
-    gum::learning::FilteredRow &generate() {
+    gum::learning::FilteredRow& generate() {
       decreaseRemainingRows();
       return *_input_row;
     }
@@ -55,7 +55,7 @@ namespace gum_tests {
 
   class ThreeGenerator : public gum::learning::FilteredRowGenerator {
     public:
-    gum::learning::FilteredRow &generate() {
+    gum::learning::FilteredRow& generate() {
       decreaseRemainingRows();
       return *_input_row;
     }
@@ -64,7 +64,7 @@ namespace gum_tests {
 
   class TwoGenerator : public gum::learning::FilteredRowGenerator {
     public:
-    gum::learning::FilteredRow &generate() {
+    gum::learning::FilteredRow& generate() {
       decreaseRemainingRows();
       return *_input_row;
     }
@@ -76,8 +76,9 @@ namespace gum_tests {
     void test_asia1() {
       gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
 
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8>());
 
       auto generators =
           gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
@@ -101,8 +102,8 @@ namespace gum_tests {
 
       nb1 = 0;
       while (filter1.hasRows() && filter2.hasRows()) {
-        gum::learning::FilteredRow &row1 = filter1.row();
-        gum::learning::FilteredRow &row2 = filter2.row();
+        gum::learning::FilteredRow& row1 = filter1.row();
+        gum::learning::FilteredRow& row2 = filter2.row();
         TS_ASSERT(row1 == row2);
         ++nb1;
       }
@@ -113,8 +114,8 @@ namespace gum_tests {
       auto filter3(std::move(filter2));
       nb1 = 0;
       while (filter1.hasRows() && filter3.hasRows()) {
-        gum::learning::FilteredRow &row1 = filter1.row();
-        gum::learning::FilteredRow &row3 = filter3.row();
+        gum::learning::FilteredRow& row1 = filter1.row();
+        gum::learning::FilteredRow& row3 = filter3.row();
         TS_ASSERT(row1 == row3);
         ++nb1;
       }
@@ -124,8 +125,9 @@ namespace gum_tests {
     void test_asia2() {
       gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
 
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8>());
 
       auto generators = gum::learning::make_generators(
           TruncatedGenerator(), gum::learning::RowGeneratorIdentity());
@@ -139,7 +141,7 @@ namespace gum_tests {
           filter.row();
           ++nb1;
         }
-      } catch (gum::NotFound &) {
+      } catch (gum::NotFound&) {
       }
 
       TS_ASSERT(nb1 == 9500);
@@ -148,8 +150,9 @@ namespace gum_tests {
     void test_asia3() {
       gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
 
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8>());
 
       auto generators = gum::learning::make_generators(
           ThreeGenerator(), TruncatedGenerator(), TwoGenerator());
@@ -163,7 +166,7 @@ namespace gum_tests {
           filter.row();
           ++nb1;
         }
-      } catch (gum::NotFound &) {
+      } catch (gum::NotFound&) {
       }
 
       TS_ASSERT(nb1 == 19000);

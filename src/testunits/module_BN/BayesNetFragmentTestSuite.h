@@ -46,7 +46,7 @@ namespace gum_tests {
   class BayesNetFragmentTestSuite : public CxxTest::TestSuite {
 
     private:
-    void fill(gum::BayesNet<float> &bn) {
+    void fill(gum::BayesNet<float>& bn) {
       try {
         auto var1 = gum::LabelizedVariable("v1", "1", 2);
         auto var2 = gum::LabelizedVariable("v2", "2", 2);
@@ -70,8 +70,9 @@ namespace gum_tests {
         bn.addArc(bn.idFromName("v3"), bn.idFromName("v6"));
         bn.addArc(bn.idFromName("v4"), bn.idFromName("v5"));
 
-      } catch (gum::Exception &e) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+      } catch (gum::Exception& e) {
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
 
@@ -79,7 +80,7 @@ namespace gum_tests {
     }
 
     // the same BN but with no 4-->5
-    void fill2(gum::BayesNet<float> &bn, const gum::BayesNet<float> &source) {
+    void fill2(gum::BayesNet<float>& bn, const gum::BayesNet<float>& source) {
       try {
         auto var1 = gum::LabelizedVariable("v1", "1", 2);
         auto var2 = gum::LabelizedVariable("v2", "2", 2);
@@ -106,8 +107,8 @@ namespace gum_tests {
         // copy the cpt except for var5
         for (const auto node : bn.nodes())
           if (node != bn.idFromName("v5")) {
-            const gum::Potential<float> &pot = bn.cpt(node);
-            const gum::Potential<float> &src =
+            const gum::Potential<float>& pot = bn.cpt(node);
+            const gum::Potential<float>& src =
                 source.cpt(source.idFromName(bn.variable(node).name()));
             gum::Instantiation I(pot);
             gum::Instantiation J(src);
@@ -119,8 +120,9 @@ namespace gum_tests {
 
         gum::SimpleCPTGenerator<float> generator;
         generator.generateCPT(0, bn.cpt(bn.idFromName("v5")));
-      } catch (gum::Exception &e) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+      } catch (gum::Exception& e) {
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
     }
@@ -177,7 +179,8 @@ namespace gum_tests {
 
       // another test for ascendants
       gum::BayesNetFragment<float> frag2(bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(frag2.installAscendants(bn.idFromName("v5")));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          frag2.installAscendants(bn.idFromName("v5")));
       TS_ASSERT_EQUALS(frag2.size(), (gum::Size)5);
       TS_ASSERT_EQUALS(frag2.sizeArcs(), (gum::Size)6);
     }
@@ -232,7 +235,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(I.toString(), "<v1:0|v3:0|v6:0>");
 
       while (!I.end()) {
-        float p = bn.cpt(bn.idFromName("v1"))[I] * bn.cpt(bn.idFromName("v3"))[I] *
+        float p = bn.cpt(bn.idFromName("v1"))[I] *
+                  bn.cpt(bn.idFromName("v3"))[I] *
                   bn.cpt(bn.idFromName("v6"))[I];
         TS_ASSERT_DELTA(frag.jointProbability(I), p, 1e-5);
         TS_ASSERT_DELTA(frag.log2JointProbability(I), log2(p), 1e-5);
@@ -257,7 +261,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(count, frag.sizeArcs());
 
-      const auto &order = frag.topologicalOrder();
+      const auto& order = frag.topologicalOrder();
       TS_ASSERT_EQUALS(order.size(), gum::Size(3));
       TS_ASSERT_EQUALS(frag.variable(order.atPos(0)).name(), "v1");
       TS_ASSERT_EQUALS(frag.variable(order.atPos(1)).name(), "v3");
@@ -279,26 +283,34 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)4);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)3);
 
-      TS_ASSERT_EQUALS(frag.dag().parents(bn.idFromName("v5")).size(), (gum::Size)2);
-      TS_ASSERT(
-          !frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
-      TS_ASSERT(
-          frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
-      TS_ASSERT(
-          frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
+      TS_ASSERT_EQUALS(frag.dag().parents(bn.idFromName("v5")).size(),
+                       (gum::Size)2);
+      TS_ASSERT(!frag.dag()
+                     .parents(bn.idFromName("v5"))
+                     .contains(bn.idFromName("v1")));
+      TS_ASSERT(frag.dag()
+                    .parents(bn.idFromName("v5"))
+                    .contains(bn.idFromName("v2")));
+      TS_ASSERT(frag.dag()
+                    .parents(bn.idFromName("v5"))
+                    .contains(bn.idFromName("v3")));
 
       bn.eraseArc(gum::Arc(bn.idFromName("v2"), bn.idFromName("v5")));
 
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)4);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2);
 
-      TS_ASSERT_EQUALS(frag.dag().parents(bn.idFromName("v5")).size(), (gum::Size)1);
-      TS_ASSERT(
-          !frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
-      TS_ASSERT(
-          !frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
-      TS_ASSERT(
-          frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
+      TS_ASSERT_EQUALS(frag.dag().parents(bn.idFromName("v5")).size(),
+                       (gum::Size)1);
+      TS_ASSERT(!frag.dag()
+                     .parents(bn.idFromName("v5"))
+                     .contains(bn.idFromName("v1")));
+      TS_ASSERT(!frag.dag()
+                     .parents(bn.idFromName("v5"))
+                     .contains(bn.idFromName("v2")));
+      TS_ASSERT(frag.dag()
+                    .parents(bn.idFromName("v5"))
+                    .contains(bn.idFromName("v3")));
 
       // nothing should change here
       gum::BayesNet<float> bn2;
@@ -342,24 +354,25 @@ namespace gum_tests {
       gum::Potential<float> ev;
       ev << bn.variable(bn.idFromName("v3"));
       ev.fillWith(std::vector<float>({0.0, 1.0}));
-      gum::List<const gum::Potential<float> *> l{&ev};
+      gum::List<const gum::Potential<float>*> l{&ev};
       inf_complete.insertEvidence(l);
       inf_complete.makeInference();
-      const gum::Potential<float> &p1 = inf_complete.posterior(bn.idFromName("v6"));
+      const gum::Potential<float>& p1 =
+          inf_complete.posterior(bn.idFromName("v6"));
 
       // propagation in the fragment
       gum::BayesNetFragment<float> frag(bn);
-      frag.installAscendants(bn.idFromName("v6")); // 1->3->6
-      gum::Potential<float> *newV3 = new gum::Potential<float>();
+      frag.installAscendants(bn.idFromName("v6"));  // 1->3->6
+      gum::Potential<float>* newV3 = new gum::Potential<float>();
       (*newV3) << bn.variable(bn.idFromName("v3"));
       newV3->fillWith(std::vector<float>({0.0, 1.0}));
-      frag.installMarginal(frag.idFromName("v3"), newV3); // 1   3->6
+      frag.installMarginal(frag.idFromName("v3"), newV3);  // 1   3->6
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)3);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)1);
 
       gum::LazyPropagation<float> inf_frag(frag);
       inf_frag.makeInference();
-      const gum::Potential<float> &p2 = inf_frag.posterior(bn.idFromName("v6"));
+      const gum::Potential<float>& p2 = inf_frag.posterior(bn.idFromName("v6"));
 
       // comparison
       gum::Instantiation I(p1);
@@ -373,7 +386,7 @@ namespace gum_tests {
       gum::BayesNet<float> bn;
       fill(bn);
       gum::BayesNetFragment<float> frag(bn);
-      frag.installAscendants(bn.idFromName("v6")); // 1->3->6
+      frag.installAscendants(bn.idFromName("v6"));  // 1->3->6
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)3);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2);
 
@@ -392,16 +405,16 @@ namespace gum_tests {
 
       TS_ASSERT(!frag.checkConsistency());
 
-      gum::Potential<float> *newV5 = new gum::Potential<float>();
+      gum::Potential<float>* newV5 = new gum::Potential<float>();
       (*newV5) << bn.variable(bn.idFromName("v5"));
       newV5->fillWith(std::vector<float>({0.0, 0.0, 1.0}));
-      frag.installMarginal(frag.idFromName("v5"), newV5); // 1-->3-->6 5
+      frag.installMarginal(frag.idFromName("v5"), newV5);  // 1-->3-->6 5
       TS_ASSERT(frag.checkConsistency());
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)4);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2);
 
       frag.installAscendants(bn.idFromName("v4"));
-      TS_ASSERT(!frag.checkConsistency()); // V5 has now 2 parents : 4 and 2
+      TS_ASSERT(!frag.checkConsistency());  // V5 has now 2 parents : 4 and 2
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)6);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)6);
 
@@ -418,7 +431,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)5);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)4);
 
-      gum::Potential<float> *newV5bis = new gum::Potential<float>();
+      gum::Potential<float>* newV5bis = new gum::Potential<float>();
       (*newV5bis) << bn.variable(bn.idFromName("v5"))
                   << bn.variable(bn.idFromName("v2"))
                   << bn.variable(bn.idFromName("v3"));
@@ -443,12 +456,12 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)6);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)7);
 
-      gum::Potential<float> *newV5 = new gum::Potential<float>();
+      gum::Potential<float>* newV5 = new gum::Potential<float>();
       (*newV5) << bn.variable(bn.idFromName("v5"))
                << bn.variable(bn.idFromName("v2"))
                << bn.variable(bn.idFromName("v3"));
 
-      const gum::Potential<float> &pot2 = bn2.cpt(bn2.idFromName("v5"));
+      const gum::Potential<float>& pot2 = bn2.cpt(bn2.idFromName("v5"));
       gum::Instantiation I(pot2);
       gum::Instantiation J(*newV5);
 
@@ -465,11 +478,11 @@ namespace gum_tests {
 
       gum::LazyPropagation<float> ie2(bn2);
       ie2.makeInference();
-      const gum::Potential<float> &p2 = ie2.posterior(bn2.idFromName("v5"));
+      const gum::Potential<float>& p2 = ie2.posterior(bn2.idFromName("v5"));
 
       gum::LazyPropagation<float> ie(frag);
       ie.makeInference();
-      const gum::Potential<float> &p1 = ie.posterior(frag.idFromName("v5"));
+      const gum::Potential<float>& p1 = ie.posterior(frag.idFromName("v5"));
 
       // comparison
       gum::Instantiation II(p1);
@@ -479,4 +492,4 @@ namespace gum_tests {
         TS_ASSERT_DELTA(p1[II], p2[JJ], 1e-6);
     }
   };
-} // gum_tests
+}  // gum_tests

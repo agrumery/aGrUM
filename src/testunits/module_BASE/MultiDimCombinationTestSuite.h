@@ -37,7 +37,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitP(gum::Potential<float> &t) {
+    void randomInitP(gum::Potential<float>& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -45,20 +45,22 @@ namespace gum_tests {
     }
 
     // the function used to combine two tables
-    static gum::Potential<float> *addPotential(const gum::Potential<float> &t1,
-                                               const gum::Potential<float> &t2) {
+    static gum::Potential<float>*
+    addPotential(const gum::Potential<float>& t1,
+                 const gum::Potential<float>& t2) {
       return new gum::Potential<float>(t1 + t2);
     }
 
     // the function used to combine two tables
-    static gum::Potential<float> *multPotential(const gum::Potential<float> &t1,
-                                                const gum::Potential<float> &t2) {
+    static gum::Potential<float>*
+    multPotential(const gum::Potential<float>& t1,
+                  const gum::Potential<float>& t2) {
       return new gum::Potential<float>(t1 * t2);
     }
 
     public:
     void test_op_multidimArray() {
-      std::vector<gum::LabelizedVariable *> vars(10);
+      std::vector<gum::LabelizedVariable*> vars(10);
 
       for (unsigned int i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -77,11 +79,11 @@ namespace gum_tests {
       randomInitP(t2);
       randomInitP(t3);
 
-      gum::Potential<float> *t4, *t5, *t6;
+      gum::Potential<float>* t4, *t5, *t6;
       t4 = new gum::Potential<float>(t1 + t2);
       t5 = new gum::Potential<float>(t3 + *t4);
 
-      gum::Set<const gum::Potential<float> *> set;
+      gum::Set<const gum::Potential<float>*> set;
       set << &t1 << &t2 << &t3;
 
       gum::MultiDimCombinationDefault<float, gum::Potential> xxx(addPotential);

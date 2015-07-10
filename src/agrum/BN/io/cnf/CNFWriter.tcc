@@ -25,9 +25,11 @@
 
 namespace gum {
 
-  /* ============================================================================ */
-  /* ===                           GUM_BN_WRITER                              === */
-  /* ============================================================================ */
+  /* ============================================================================
+   */
+  /* ===                           GUM_BN_WRITER === */
+  /* ============================================================================
+   */
   // Default constructor.
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
   INLINE CNFWriter<GUM_SCALAR, IApproximationPolicy>::CNFWriter() {
@@ -42,4 +44,4 @@ namespace gum {
 
 } /*namespace gum */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

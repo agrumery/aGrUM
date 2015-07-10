@@ -167,8 +167,8 @@ namespace gum_tests {
           var2("var2", "second var", 2), var3("var3", "third var", 2);
       p1 << var1 << var2 << var3;
 
-      TS_ASSERT_EQUALS(p1.domainSize(),
-                       (var1.domainSize() * var2.domainSize() * var3.domainSize()));
+      TS_ASSERT_EQUALS(p1.domainSize(), (var1.domainSize() * var2.domainSize() *
+                                         var3.domainSize()));
     }
 
     void testAddAnyNumber() {

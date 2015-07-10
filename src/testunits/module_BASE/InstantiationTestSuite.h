@@ -30,7 +30,7 @@
 namespace gum_tests {
 
   class InstantiationTestSuite : public CxxTest::TestSuite {
-    gum::BayesNet<double> *bn;
+    gum::BayesNet<double>* bn;
     gum::Id i1, i2, i3, i4, i5;
 
     void setUp() {
@@ -192,7 +192,7 @@ namespace gum_tests {
       for (const auto node : bn->topologicalOrder())
         Order.add(bn->variable(node));
 
-      const gum::Potential<double> &pot = bn->cpt(i5);
+      const gum::Potential<double>& pot = bn->cpt(i5);
 
       gum::Instantiation inst(pot);
       gum::Instantiation instcomp(inst);
@@ -323,8 +323,8 @@ namespace gum_tests {
 
     private:
     // Builds a BN to test the inference
-    void fill(gum::BayesNet<double> &bn) {
-      const gum::Potential<double> &p1 = bn.cpt(i1);
+    void fill(gum::BayesNet<double>& bn) {
+      const gum::Potential<double>& p1 = bn.cpt(i1);
       {
         // FILLING PARAMS
         const double t[2] = {0.5, 0.5};
@@ -333,7 +333,7 @@ namespace gum_tests {
         p1.fillWith(v);
       }
 
-      const gum::Potential<double> &p2 = bn.cpt(i2);
+      const gum::Potential<double>& p2 = bn.cpt(i2);
       {
         // FILLING PARAMS
         const double t[2] = {0.3, 0.7};
@@ -342,7 +342,7 @@ namespace gum_tests {
         p2.fillWith(v);
       }
 
-      const gum::Potential<double> &p3 = bn.cpt(i3);
+      const gum::Potential<double>& p3 = bn.cpt(i3);
       {
         // FILLING PARAMS
         const double t[4] = {0.1, 0.9, 0.9, 0.1};
@@ -351,7 +351,7 @@ namespace gum_tests {
         p3.fillWith(v);
       }
 
-      const gum::Potential<double> &p4 = bn.cpt(i4);
+      const gum::Potential<double>& p4 = bn.cpt(i4);
       {
         // FILLING PARAMS
         const double t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
@@ -360,7 +360,7 @@ namespace gum_tests {
         p4.fillWith(v);
       }
 
-      const gum::Potential<double> &p5 = bn.cpt(i5);
+      const gum::Potential<double>& p5 = bn.cpt(i5);
       {
         // FILLING PARAMS
         const double t[16] = {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0,

@@ -78,7 +78,7 @@ namespace gum_tests {
 
       gum::SpanningForestPrim prim(&g, &cost);
 
-      const gum::UndiGraph &g2 = prim.spanningForest();
+      const gum::UndiGraph& g2 = prim.spanningForest();
       TS_ASSERT_EQUALS(g2.sizeNodes(), 12U);
       TS_ASSERT_EQUALS(g2.sizeEdges(), 9U);
       TS_ASSERT_EQUALS(g2.existsEdge(id1, id2), true);
@@ -93,11 +93,11 @@ namespace gum_tests {
 
       gum::SpanningForestPrim prim2(&g, &cost);
       TS_ASSERT_EQUALS(prim2.costOfSpanningForest(), 53);
-      const gum::EdgeSet &edges2 = prim2.edgesInSpanningForest();
+      const gum::EdgeSet& edges2 = prim2.edgesInSpanningForest();
       TS_ASSERT_EQUALS(edges2.size(), 9U);
 
       gum::SpanningForestPrim prim3(&g, &cost);
-      const gum::EdgeSet &edges3 = prim3.edgesInSpanningForest();
+      const gum::EdgeSet& edges3 = prim3.edgesInSpanningForest();
       TS_ASSERT_EQUALS(edges3.size(), 9U);
     }
   };

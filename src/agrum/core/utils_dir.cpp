@@ -31,7 +31,7 @@
 namespace gum {
 
   //! Return true if \a directory is a valid directory, false otherwise.
-  bool Directory::isDir(const std::string &directory) {
+  bool Directory::isDir(const std::string& directory) {
     return Directory(directory).isValid();
   }
 
@@ -39,13 +39,13 @@ namespace gum {
   Directory::Directory() : m_dirPtr(nullptr) { GUM_CONSTRUCTOR(Directory); }
 
   //! Contructor
-  Directory::Directory(const std::string &directory) : m_dirName(directory) {
+  Directory::Directory(const std::string& directory) : m_dirName(directory) {
     GUM_CONSTRUCTOR(Directory);
     m_dirPtr = opendir(m_dirName.c_str());
   }
 
   //! Contructor
-  Directory::Directory(const Directory &dir) : m_dirName(dir.m_dirName) {
+  Directory::Directory(const Directory& dir) : m_dirName(dir.m_dirName) {
     GUM_CONSTRUCTOR(Directory);
     m_dirPtr = opendir(m_dirName.c_str());
   }
@@ -70,7 +70,7 @@ namespace gum {
 
     rewinddir(m_dirPtr);
 
-    dirent *entry;
+    dirent* entry;
 
     while ((entry = readdir(m_dirPtr)))
       result.push_back(std::string(entry->d_name));
@@ -116,7 +116,7 @@ namespace gum {
     return result;
   }
 
-  Directory &Directory::operator=(const Directory &d) {
+  Directory& Directory::operator=(const Directory& d) {
     if (m_dirPtr != nullptr)
       closedir(m_dirPtr);
 
@@ -127,4 +127,4 @@ namespace gum {
     return *this;
   }
 
-} // END NAMESPACE GUM
+}  // END NAMESPACE GUM

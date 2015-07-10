@@ -36,14 +36,16 @@
 
 namespace gum {
 
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   /** @class StaticTriangulation
    * @brief base class for all non-incremental triangulation methods
    *
    * \ingroup graph_group
    *
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
 
   class StaticTriangulation : public Triangulation {
     public:
@@ -58,7 +60,7 @@ namespace gum {
      * note that we return a pointer as it enables subclasses to return
      * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++.*/
-    virtual StaticTriangulation *newFactory() const = 0;
+    virtual StaticTriangulation* newFactory() const = 0;
 
     /// destructor
     virtual ~StaticTriangulation();
@@ -71,10 +73,10 @@ namespace gum {
     /// @{
 
     /// returns the fill-ins added by the triangulation algorithm
-    const EdgeSet &fillIns();
+    const EdgeSet& fillIns();
 
     /// returns an elimination ordering compatible with the triangulated graph
-    const std::vector<NodeId> &eliminationOrder();
+    const std::vector<NodeId>& eliminationOrder();
 
     /** @brief returns the number of a given node in the elimination order
      * (0 = first node eliminated) */
@@ -82,32 +84,37 @@ namespace gum {
 
     /** @brief returns a table indicating, for each node, at which step it was
      * deleted by the triangulation process */
-    const NodeProperty<Idx> &reverseEliminationOrder();
+    const NodeProperty<Idx>& reverseEliminationOrder();
 
     /// returns the triangulated graph
-    const UndiGraph &triangulatedGraph();
+    const UndiGraph& triangulatedGraph();
 
     /// returns the elimination tree of a compatible ordering
-    const CliqueGraph &eliminationTree();
+    const CliqueGraph& eliminationTree();
 
     /// returns a compatible junction tree
-    const CliqueGraph &junctionTree();
+    const CliqueGraph& junctionTree();
 
     /** @brief returns the Id of the clique of the junction tree created by the
      * elimination of a given node during the triangulation process */
     NodeId createdJunctionTreeClique(const NodeId id);
 
-    /** @brief returns the Ids of the cliques of the junction tree created by the
+    /** @brief returns the Ids of the cliques of the junction tree created by
+     * the
      * elimination of the nodes */
-    const NodeProperty<NodeId> &createdJunctionTreeCliques();
+    const NodeProperty<NodeId>& createdJunctionTreeCliques();
 
     /// returns a junction tree of maximal prime subgraphs
-    /** @warning Actually, the cliques of the junction tree are guarranteed to be
-     * maximal prime subgraph of the original graph that was triangulated only if
-     * the triangulation performed is minimal (in the sense that removing any edge
-     * in the triangulated graph results in a nontriangulated graph). This can be
+    /** @warning Actually, the cliques of the junction tree are guarranteed to
+     * be
+     * maximal prime subgraph of the original graph that was triangulated only
+     * if
+     * the triangulation performed is minimal (in the sense that removing any
+     * edge
+     * in the triangulated graph results in a nontriangulated graph). This can
+     * be
      * ensured by requiring minimality of the triangulation. */
-    const CliqueGraph &maxPrimeSubgraphTree();
+    const CliqueGraph& maxPrimeSubgraphTree();
 
     /** @brief returns the Id of the maximal prime subgraph created by the
      * elimination of a given node during the triangulation process */
@@ -123,7 +130,7 @@ namespace gum {
     void setFillIns(bool);
 
     /// returns the graph to be triangulated
-    const UndiGraph *originalGraph() const;
+    const UndiGraph* originalGraph() const;
 
     /// @}
 
@@ -135,11 +142,12 @@ namespace gum {
 
     /// default constructor: without any graph
     /** @param elimSeq the elimination sequence used to triangulate the graph
-     * @param JTStrategy the junction tree strategy used to create junction trees
+     * @param JTStrategy the junction tree strategy used to create junction
+     * trees
      * @param minimality a Boolean indicating whether we should enforce that
      * the triangulation is minimal w.r.t. inclusion */
-    StaticTriangulation(const EliminationSequenceStrategy &elimSeq,
-                        const JunctionTreeStrategy &JTStrategy,
+    StaticTriangulation(const EliminationSequenceStrategy& elimSeq,
+                        const JunctionTreeStrategy& JTStrategy,
                         bool minimality = false);
 
     /// constructor with a given graph
@@ -147,14 +155,15 @@ namespace gum {
      * be eliminated
      * @param dom the domain sizes of the nodes to be eliminated
      * @param elimSeq the elimination sequence used to triangulate the graph
-     * @param JTStrategy the junction tree strategy used to create junction trees
+     * @param JTStrategy the junction tree strategy used to create junction
+     * trees
      * @param minimality a Boolean indicating whether we should enforce that
      * the triangulation is minimal w.r.t. inclusion
      * @warning note that, by aGrUM's rule, the graph and the modalities are not
      * copied but only referenced by the elimination sequence algorithm. */
-    StaticTriangulation(const UndiGraph *graph, const NodeProperty<Size> *dom,
-                        const EliminationSequenceStrategy &elimSeq,
-                        const JunctionTreeStrategy &JTStrategy,
+    StaticTriangulation(const UndiGraph* graph, const NodeProperty<Size>* dom,
+                        const EliminationSequenceStrategy& elimSeq,
+                        const JunctionTreeStrategy& JTStrategy,
                         bool minimality = false);
 
     /// @}
@@ -170,7 +179,7 @@ namespace gum {
      * @param modal the domain sizes of the nodes to be eliminated
      * @warning note that, by aGrUM's rule, the graph and the modalities are not
      * copied but only referenced by the elimination sequence algorithm. */
-    void _setGraph(const UndiGraph *gr, const NodeProperty<Size> *modal);
+    void _setGraph(const UndiGraph* gr, const NodeProperty<Size>* modal);
 
     /// the function called to initialize the triangulation process
     /** This function is called when the triangulation process starts and is
@@ -185,19 +194,19 @@ namespace gum {
      * should be used.
      * @param graph the very graph that is triangulated (this is a copy of
      * __original_graph) */
-    virtual void _initTriangulation(UndiGraph &graph) = 0;
+    virtual void _initTriangulation(UndiGraph& graph) = 0;
 
     /// @}
 
     /// the elimination sequence strategy used by the triangulation
-    EliminationSequenceStrategy *_elimination_sequence_strategy;
+    EliminationSequenceStrategy* _elimination_sequence_strategy;
 
     /// the junction tree strategy used by the triangulation
-    JunctionTreeStrategy *_junction_tree_strategy;
+    JunctionTreeStrategy* _junction_tree_strategy;
 
     private:
     /// the original graph (that which will be triangulated)
-    const UndiGraph *__original_graph;
+    const UndiGraph* __original_graph;
 
     /// the triangulated graph
     UndiGraph __triangulated_graph;
@@ -218,7 +227,7 @@ namespace gum {
     CliqueGraph __elim_tree;
 
     /// the junction tree computed by the algorithm
-    const CliqueGraph *__junction_tree;
+    const CliqueGraph* __junction_tree;
 
     /// the maximal prime subgraph junction tree computed from the junction tree
     CliqueGraph __max_prime_junction_tree;
@@ -268,25 +277,26 @@ namespace gum {
     /// computes the junction tree of the maximal prime subgraphs
     void __computeMaxPrimeJunctionTree();
 
-    /// removes redondant fill-ins and compute proper elimination cliques and order
+    /// removes redondant fill-ins and compute proper elimination cliques and
+    /// order
     void __computeRecursiveThinning();
 
     /// used for computing the junction tree of the maximal prime subgraphs
     void __computeMaxPrimeMergings(const NodeId node, const NodeId from,
-                                   std::vector<Arc> &merged_cliques,
-                                   NodeSet &mark) const;
+                                   std::vector<Arc>& merged_cliques,
+                                   NodeSet& mark) const;
 
     /// forbid copy constructor
-    StaticTriangulation(const StaticTriangulation &);
+    StaticTriangulation(const StaticTriangulation&);
 
     /// forbid copy operator
-    StaticTriangulation &operator=(const StaticTriangulation &);
+    StaticTriangulation& operator=(const StaticTriangulation&);
   };
 
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
 #include <agrum/graphs/triangulations/staticTriangulation.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
 #endif /* GUM_STATIC_TRIANGULATION_H */

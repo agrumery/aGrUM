@@ -31,9 +31,11 @@
 
 namespace gum {
 
-  /* ============================================================================ */
-  /* ===                           GUM_DSL_WRITTER                             === */
-  /* ============================================================================ */
+  /* ============================================================================
+   */
+  /* ===                           GUM_DSL_WRITTER === */
+  /* ============================================================================
+   */
   // Default constructor.
   template <typename GUM_SCALAR> INLINE DSLWriter<GUM_SCALAR>::DSLWriter() {
     GUM_CONSTRUCTOR(DSLWriter);
@@ -50,8 +52,8 @@ namespace gum {
    * @throws Raised if an I/O error occurs.
    */
   template <typename GUM_SCALAR>
-  void DSLWriter<GUM_SCALAR>::write(std::ostream &output,
-                                    const IBayesNet<GUM_SCALAR> &bn) {
+  void DSLWriter<GUM_SCALAR>::write(std::ostream& output,
+                                    const IBayesNet<GUM_SCALAR>& bn) {
     if (!output.good()) {
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
     }
@@ -59,7 +61,8 @@ namespace gum {
     output << "net " << bn.propertyWithDefault("name", "unnamedBN") << std::endl
            << "{" << std::endl;
 
-    output << "// property softwar aGrUM " << GUM_VERSION << std::endl << std::endl;
+    output << "// property softwar aGrUM " << GUM_VERSION << std::endl
+           << std::endl;
 
     for (auto node : bn.topologicalOrder()) {
       output << __variableBloc(bn, bn.variable(node));
@@ -83,7 +86,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   void DSLWriter<GUM_SCALAR>::write(std::string filePath,
-                                    const IBayesNet<GUM_SCALAR> &bn) {
+                                    const IBayesNet<GUM_SCALAR>& bn) {
     std::filebuf fb;
     fb.open(filePath.c_str(), std::ios::out);
     std::ostream output(&fb);
@@ -97,8 +100,9 @@ namespace gum {
    * Returns a bloc defining a variable in the DSL format.
    */
   template <typename GUM_SCALAR>
-  std::string DSLWriter<GUM_SCALAR>::__variableBloc(const IBayesNet<GUM_SCALAR> &bn,
-                                                    const DiscreteVariable &var) {
+  std::string
+  DSLWriter<GUM_SCALAR>::__variableBloc(const IBayesNet<GUM_SCALAR>& bn,
+                                        const DiscreteVariable& var) {
     NodeId id;
     gum::Size i = 0;
     std::ostringstream oss;
@@ -117,7 +121,7 @@ namespace gum {
     oss << "\t\t};\n";
 
     oss << "\t\tPARENTS = (";
-    const Sequence<const DiscreteVariable *> &tmp_vars =
+    const Sequence<const DiscreteVariable*>& tmp_vars =
         bn.cpt(id).variablesSequence();
 
     for (Idx i = tmp_vars.size() - 1; i > 0; i--) {
@@ -149,8 +153,8 @@ namespace gum {
     oss << "\t\t\tPROBABILITIES = (";
     i = 0;
 
-    for (Instantiation iter = bn.cpt(id).getMasterRef(); i < bn.cpt(id).domainSize();
-         ++iter) {
+    for (Instantiation iter = bn.cpt(id).getMasterRef();
+         i < bn.cpt(id).domainSize(); ++iter) {
       if (i != 0)
         oss << ", ";
 
@@ -172,5 +176,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on;

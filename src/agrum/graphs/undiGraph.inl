@@ -49,7 +49,7 @@ namespace gum {
     NodeGraphPart::clearNodes();
   }
 
-  INLINE UndiGraph &UndiGraph::operator=(const UndiGraph &g) {
+  INLINE UndiGraph& UndiGraph::operator=(const UndiGraph& g) {
     if (this != &g) {
       UndiGraph::clear();
       NodeGraphPart::operator=(g);
@@ -60,17 +60,18 @@ namespace gum {
   }
 
   INLINE void UndiGraph::eraseNode(const NodeId id) {
-    // warning: to remove the edges adjacent to id, use the unvirtualized versions
+    // warning: to remove the edges adjacent to id, use the unvirtualized
+    // versions
     // of edge removals
     EdgeGraphPart::unvirtualizedEraseNeighbours(id);
     NodeGraphPart::eraseNode(id);
   }
 
-  INLINE bool UndiGraph::operator==(const UndiGraph &p) const {
+  INLINE bool UndiGraph::operator==(const UndiGraph& p) const {
     return EdgeGraphPart::operator==(p) && NodeGraphPart::operator==(p);
   }
 
-  INLINE bool UndiGraph::operator!=(const UndiGraph &p) const {
+  INLINE bool UndiGraph::operator!=(const UndiGraph& p) const {
     return !operator==(p);
   }
 

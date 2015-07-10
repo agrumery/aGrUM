@@ -51,15 +51,15 @@ namespace gum {
 
   /// default constructor
   INLINE
-  NodeGraphPartIterator::NodeGraphPartIterator(const NodeGraphPart &nodes) noexcept
-      : _nodes(&nodes) {
+  NodeGraphPartIterator::NodeGraphPartIterator(
+      const NodeGraphPart& nodes) noexcept : _nodes(&nodes) {
     GUM_CONSTRUCTOR(NodeGraphPartIterator);
   }
 
   /// copy constructor
   INLINE
   NodeGraphPartIterator::NodeGraphPartIterator(
-      const NodeGraphPartIterator &it) noexcept : _nodes(it._nodes),
+      const NodeGraphPartIterator& it) noexcept : _nodes(it._nodes),
                                                   _pos(it._pos),
                                                   _valid(it._valid) {
     GUM_CONS_CPY(NodeGraphPartIterator);
@@ -67,10 +67,10 @@ namespace gum {
 
   /// move constructor
   INLINE
-  NodeGraphPartIterator::NodeGraphPartIterator(NodeGraphPartIterator &&it) noexcept
-      : _nodes(it._nodes),
-        _pos(it._pos),
-        _valid(it._valid) {
+  NodeGraphPartIterator::NodeGraphPartIterator(
+      NodeGraphPartIterator&& it) noexcept : _nodes(it._nodes),
+                                             _pos(it._pos),
+                                             _valid(it._valid) {
     GUM_CONS_MOV(NodeGraphPartIterator);
   }
 
@@ -80,8 +80,8 @@ namespace gum {
   }
 
   /// copy assignment operator
-  INLINE NodeGraphPartIterator &NodeGraphPartIterator::
-  operator=(const NodeGraphPartIterator &it) noexcept {
+  INLINE NodeGraphPartIterator& NodeGraphPartIterator::
+  operator=(const NodeGraphPartIterator& it) noexcept {
     _nodes = it._nodes;
     _pos = it._pos;
     _valid = it._valid;
@@ -91,8 +91,8 @@ namespace gum {
   }
 
   /// move assignment operator
-  INLINE NodeGraphPartIterator &NodeGraphPartIterator::
-  operator=(NodeGraphPartIterator &&it) noexcept {
+  INLINE NodeGraphPartIterator& NodeGraphPartIterator::
+  operator=(NodeGraphPartIterator&& it) noexcept {
     _nodes = it._nodes;
     _pos = it._pos;
     _valid = it._valid;
@@ -103,20 +103,21 @@ namespace gum {
 
   /// checks whether two iterators point toward the same node
   INLINE
-  bool NodeGraphPartIterator::operator==(const NodeGraphPartIterator &it) const
+  bool NodeGraphPartIterator::operator==(const NodeGraphPartIterator& it) const
       noexcept {
-    return ((_pos == it._pos) && (_valid == it._valid) && (_nodes == it._nodes));
+    return ((_pos == it._pos) && (_valid == it._valid) &&
+            (_nodes == it._nodes));
   }
 
   /// checks whether two iterators point toward different nodes
   INLINE
-  bool NodeGraphPartIterator::operator!=(const NodeGraphPartIterator &it) const
+  bool NodeGraphPartIterator::operator!=(const NodeGraphPartIterator& it) const
       noexcept {
     return !(operator==(it));
   }
 
   /// increment the iterator
-  INLINE NodeGraphPartIterator &NodeGraphPartIterator::operator++() noexcept {
+  INLINE NodeGraphPartIterator& NodeGraphPartIterator::operator++() noexcept {
     ++_pos;
     _validate();
     return *this;
@@ -147,9 +148,10 @@ namespace gum {
 
   /// default constructor
   INLINE
-  NodeGraphPartIteratorSafe::NodeGraphPartIteratorSafe(const NodeGraphPart &nodes)
+  NodeGraphPartIteratorSafe::NodeGraphPartIteratorSafe(
+      const NodeGraphPart& nodes)
       : NodeGraphPartIterator(nodes) {
-    GUM_CONNECT(*const_cast<NodeGraphPart *>(&nodes), onNodeDeleted, *this,
+    GUM_CONNECT(*const_cast<NodeGraphPart*>(&nodes), onNodeDeleted, *this,
                 NodeGraphPartIteratorSafe::whenNodeDeleted);
     GUM_CONSTRUCTOR(NodeGraphPartIteratorSafe);
   }
@@ -157,9 +159,9 @@ namespace gum {
   /// copy constructor
   INLINE
   NodeGraphPartIteratorSafe::NodeGraphPartIteratorSafe(
-      const NodeGraphPartIteratorSafe &it)
+      const NodeGraphPartIteratorSafe& it)
       : NodeGraphPartIterator(it) {
-    GUM_CONNECT(*const_cast<NodeGraphPart *>(_nodes), onNodeDeleted, *this,
+    GUM_CONNECT(*const_cast<NodeGraphPart*>(_nodes), onNodeDeleted, *this,
                 NodeGraphPartIteratorSafe::whenNodeDeleted);
     GUM_CONS_CPY(NodeGraphPartIteratorSafe);
   }
@@ -167,9 +169,9 @@ namespace gum {
   /// move constructor
   INLINE
   NodeGraphPartIteratorSafe::NodeGraphPartIteratorSafe(
-      NodeGraphPartIteratorSafe &&it)
+      NodeGraphPartIteratorSafe&& it)
       : NodeGraphPartIterator(std::move(it)) {
-    GUM_CONNECT(*const_cast<NodeGraphPart *>(_nodes), onNodeDeleted, *this,
+    GUM_CONNECT(*const_cast<NodeGraphPart*>(_nodes), onNodeDeleted, *this,
                 NodeGraphPartIteratorSafe::whenNodeDeleted);
     GUM_CONS_MOV(NodeGraphPartIteratorSafe);
   }
@@ -180,8 +182,8 @@ namespace gum {
   }
 
   /// copy assignment operator
-  INLINE NodeGraphPartIteratorSafe &NodeGraphPartIteratorSafe::
-  operator=(const NodeGraphPartIteratorSafe &it) {
+  INLINE NodeGraphPartIteratorSafe& NodeGraphPartIteratorSafe::
+  operator=(const NodeGraphPartIteratorSafe& it) {
     //  avoid self assignment
     if (&it != this) {
       NodeGraphPartIterator::operator=(it);
@@ -193,8 +195,8 @@ namespace gum {
   }
 
   /// move assignment operator
-  INLINE NodeGraphPartIteratorSafe &NodeGraphPartIteratorSafe::
-  operator=(NodeGraphPartIteratorSafe &&it) {
+  INLINE NodeGraphPartIteratorSafe& NodeGraphPartIteratorSafe::
+  operator=(NodeGraphPartIteratorSafe&& it) {
     //  avoid self assignment
     if (&it != this) {
       NodeGraphPartIterator::operator=(std::move(it));
@@ -207,7 +209,7 @@ namespace gum {
 
   //=================NODEGRAPHPART============================
 
-  INLINE NodeGraphPart &NodeGraphPart::operator=(const NodeGraphPart &p) {
+  INLINE NodeGraphPart& NodeGraphPart::operator=(const NodeGraphPart& p) {
     // avoid self assignment
     if (this != &p) {
       populateNodes(p);
@@ -222,7 +224,7 @@ namespace gum {
     // return the first hole if holes exist
     if (__holes && (!__holes->empty()))
       next = *(__holes->begin());
-    else // in other case
+    else  // in other case
       next = __bound;
 
     return next;
@@ -239,7 +241,8 @@ namespace gum {
 
   // warning: do not try to use function addNode ( const NodeId id ) within
   // function addNode(): as both functions are virtual, this may create
-  // bugs within the graphs hierarchy (i.e., virtual functions calling recursively
+  // bugs within the graphs hierarchy (i.e., virtual functions calling
+  // recursively
   // each other along the hierarchy) that are not easy to debug.
   INLINE NodeId NodeGraphPart::insertNode() { return addNode(); }
   INLINE NodeId NodeGraphPart::addNode() {
@@ -303,7 +306,7 @@ namespace gum {
 
   INLINE NodeGraphPartIteratorSafe NodeGraphPart::beginSafe() const {
     NodeGraphPartIteratorSafe it(*this);
-    it._validate(); // stop the iterator at the first not-in-holes
+    it._validate();  // stop the iterator at the first not-in-holes
     return it;
   }
 
@@ -311,21 +314,22 @@ namespace gum {
     __endIteratorSafe._setPos(__bound);
   }
 
-  INLINE const NodeGraphPartIteratorSafe &NodeGraphPart::endSafe() const noexcept {
+  INLINE const NodeGraphPartIteratorSafe& NodeGraphPart::endSafe() const
+      noexcept {
     return __endIteratorSafe;
   }
 
   INLINE NodeGraphPartIterator NodeGraphPart::begin() const noexcept {
     NodeGraphPartIterator it(*this);
-    it._validate(); // stop the iterator at the first not-in-holes
+    it._validate();  // stop the iterator at the first not-in-holes
     return it;
   }
 
-  INLINE const NodeGraphPartIterator &NodeGraphPart::end() const noexcept {
+  INLINE const NodeGraphPartIterator& NodeGraphPart::end() const noexcept {
     return __endIteratorSafe;
   }
 
-  INLINE bool NodeGraphPart::operator==(const NodeGraphPart &p) const {
+  INLINE bool NodeGraphPart::operator==(const NodeGraphPart& p) const {
     if (__bound != p.__bound)
       return false;
 
@@ -340,7 +344,7 @@ namespace gum {
     return true;
   }
 
-  INLINE bool NodeGraphPart::operator!=(const NodeGraphPart &p) const {
+  INLINE bool NodeGraphPart::operator!=(const NodeGraphPart& p) const {
     return !operator==(p);
   }
 
@@ -357,8 +361,8 @@ namespace gum {
     return son;
   }
 
-  INLINE const NodeGraphPart &NodeGraphPart::nodes() const {
-    return *(static_cast<const NodeGraphPart *>(this));
+  INLINE const NodeGraphPart& NodeGraphPart::nodes() const {
+    return *(static_cast<const NodeGraphPart*>(this));
   }
 
   INLINE bool NodeGraphPart::__inHoles(NodeId id) const {

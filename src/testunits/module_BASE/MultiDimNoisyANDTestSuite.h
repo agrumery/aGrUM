@@ -55,17 +55,20 @@ namespace gum_tests {
       // doing the right stuff :)
       TS_GUM_ASSERT_THROWS_NOTHING(p.causalWeight(b, 0.4));
       TS_GUM_ASSERT_THROWS_NOTHING(p.causalWeight(d, 0.7));
-      TS_ASSERT_EQUALS(p.toString(),
-                       "a<0,1>=noisyAND([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
+      TS_ASSERT_EQUALS(
+          p.toString(),
+          "a<0,1>=noisyAND([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
 
       gum::MultiDimNoisyAND<float> q(p);
-      TS_ASSERT_EQUALS(q.toString(),
-                       "a<0,1>=noisyAND([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
+      TS_ASSERT_EQUALS(
+          q.toString(),
+          "a<0,1>=noisyAND([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
 
       // trying a noisyAND with 0 as external weight (not allowed)
-      TS_ASSERT_THROWS(gum::MultiDimNoisyAND<float> qq(0.0), gum::InvalidArgument);
+      TS_ASSERT_THROWS(gum::MultiDimNoisyAND<float> qq(0.0),
+                       gum::InvalidArgument);
     }
 
     void testCompatibleWithHardAND() {
@@ -99,14 +102,15 @@ namespace gum_tests {
 
       gum::MultiDimNoisyAND<float> p(1.0);
       p << fever << malaria << flu
-        << cold; // malaria, flu and cold are causes of fever
+        << cold;  // malaria, flu and cold are causes of fever
       p.causalWeight(cold, 0.4);
       p.causalWeight(flu, 0.8);
       p.causalWeight(malaria, 0.9);
 
       gum::Instantiation i(p);
-      float witness[] = {0.988, 0.012, 0.892, 0.108, 0.952, 0.048, 0.568, 0.432,
-                         0.992, 0.008, 0.928, 0.072, 0.968, 0.032, 0.712, 0.288};
+      float witness[] = {0.988, 0.012, 0.892, 0.108, 0.952, 0.048,
+                         0.568, 0.432, 0.992, 0.008, 0.928, 0.072,
+                         0.968, 0.032, 0.712, 0.288};
 
       int j = 0;
 
@@ -186,7 +190,8 @@ namespace gum_tests {
       gum::NodeId idFlu = bn.add(flu);
       gum::NodeId idMalaria = bn.add(malaria);
       gum::NodeId idFever = 0;
-      TS_ASSERT_THROWS(idFever = bn.addNoisyAND(fever, 0.0), gum::InvalidArgument);
+      TS_ASSERT_THROWS(idFever = bn.addNoisyAND(fever, 0.0),
+                       gum::InvalidArgument);
       TS_GUM_ASSERT_THROWS_NOTHING(idFever = bn.addNoisyAND(fever, 0.999));
       gum::NodeId idOneMore = bn.add(oneMore);
       gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
@@ -196,29 +201,32 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8);
       bn.addWeightedArc(idCold, idFever, 0.4);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8), gum::InvalidArc);
+      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8),
+                       gum::InvalidArc);
 
-      const gum::Potential<float> &pOneMoreParent1 = bn.cpt(idOneMoreParent1);
+      const gum::Potential<float>& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
       pOneMoreParent1.fillWith(std::vector<float>{0.2, 0.8});
 
-      const gum::Potential<float> &pOneMoreParent2 = bn.cpt(idOneMoreParent2);
+      const gum::Potential<float>& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
       // FILLING PARAMS
       pOneMoreParent2.fillWith(std::vector<float>{0.3, 0.7});
 
       bn.addArc(idOneMoreParent1, idOneMore);
       bn.addArc(idFever, idOneMore);
       bn.addArc(idOneMoreParent2, idOneMore);
-      const gum::Potential<float> &pOneMore = bn.cpt(idOneMore);
+      const gum::Potential<float>& pOneMore = bn.cpt(idOneMore);
       // FILLING PARAMS
-      pOneMore.fillWith(std::vector<float>{0.1, 0.9, 0.8, 0.2, 0.1, 0.9, 0.8, 0.2,
-                                           0.1, 0.9, 0.8, 0.2, 0.1, 0.9, 0.8, 0.2});
+      pOneMore.fillWith(std::vector<float>{0.1, 0.9, 0.8, 0.2, 0.1, 0.9, 0.8,
+                                           0.2, 0.1, 0.9, 0.8, 0.2, 0.1, 0.9,
+                                           0.8, 0.2});
 
-      const gum::Potential<float> &p = bn.cpt(idFever);
+      const gum::Potential<float>& p = bn.cpt(idFever);
 
       gum::Instantiation i(p);
-      float witness[] = {0.988012, 0.011988, 0.892108, 0.107892, 0.952048, 0.047952,
-                         0.568432, 0.431568, 0.992008, 0.007992, 0.928072, 0.071928,
+      float witness[] = {0.988012, 0.011988, 0.892108, 0.107892,
+                         0.952048, 0.047952, 0.568432, 0.431568,
+                         0.992008, 0.007992, 0.928072, 0.071928,
                          0.968032, 0.031968, 0.712288, 0.287712};
 
       int j = 0;

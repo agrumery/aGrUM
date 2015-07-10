@@ -49,7 +49,7 @@ namespace gum {
     NodeGraphPart::clearNodes();
   }
 
-  INLINE DiGraph &DiGraph::operator=(const DiGraph &g) {
+  INLINE DiGraph& DiGraph::operator=(const DiGraph& g) {
     // avoid self assigment
     if (this != &g) {
       DiGraph::clear();
@@ -61,7 +61,8 @@ namespace gum {
   }
 
   INLINE void DiGraph::eraseNode(const NodeId id) {
-    // warning: to remove the arcs adjacent to id, use the unvirtualized versions
+    // warning: to remove the arcs adjacent to id, use the unvirtualized
+    // versions
     // of arc removals
     ArcGraphPart::unvirtualizedEraseParents(id);
     ArcGraphPart::unvirtualizedEraseChildren(id);
@@ -69,10 +70,12 @@ namespace gum {
     NodeGraphPart::eraseNode(id);
   }
 
-  INLINE bool DiGraph::operator==(const DiGraph &p) const {
+  INLINE bool DiGraph::operator==(const DiGraph& p) const {
     return ArcGraphPart::operator==(p) && NodeGraphPart::operator==(p);
   }
 
-  INLINE bool DiGraph::operator!=(const DiGraph &p) const { return !operator==(p); }
+  INLINE bool DiGraph::operator!=(const DiGraph& p) const {
+    return !operator==(p);
+  }
 
 } /* namespace gum */

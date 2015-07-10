@@ -18,7 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /**
- * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ * <{prenom.nom}_at_lip6.fr>
  */
 
 #include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
@@ -29,11 +30,13 @@ namespace gum {
   /// Default constructor
 
   template <typename GUM_SCALAR>
-  INLINE MultiDimNoisyAND<GUM_SCALAR>::MultiDimNoisyAND(GUM_SCALAR external_weight,
-                                                        GUM_SCALAR default_weight)
+  INLINE
+  MultiDimNoisyAND<GUM_SCALAR>::MultiDimNoisyAND(GUM_SCALAR external_weight,
+                                                 GUM_SCALAR default_weight)
       : MultiDimICIModel<GUM_SCALAR>(external_weight, default_weight) {
     if (external_weight == 0) {
-      GUM_ERROR(InvalidArgument, "external weight can not be null for a NoisyAND");
+      GUM_ERROR(InvalidArgument,
+                "external weight can not be null for a NoisyAND");
     }
 
     GUM_CONSTRUCTOR(MultiDimNoisyAND);
@@ -43,7 +46,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE MultiDimNoisyAND<GUM_SCALAR>::MultiDimNoisyAND(
-      const MultiDimNoisyAND<GUM_SCALAR> &from)
+      const MultiDimNoisyAND<GUM_SCALAR>& from)
       : MultiDimICIModel<GUM_SCALAR>(from) {
     GUM_CONS_CPY(MultiDimNoisyAND);
   }
@@ -52,8 +55,8 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE MultiDimNoisyAND<GUM_SCALAR>::MultiDimNoisyAND(
-      const Bijection<const DiscreteVariable *, const DiscreteVariable *> &bij,
-      const MultiDimNoisyAND<GUM_SCALAR> &from)
+      const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+      const MultiDimNoisyAND<GUM_SCALAR>& from)
       : MultiDimICIModel<GUM_SCALAR>(bij, from) {
     GUM_CONSTRUCTOR(MultiDimNoisyAND);
   }
@@ -66,12 +69,12 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  GUM_SCALAR MultiDimNoisyAND<GUM_SCALAR>::get(const Instantiation &i) const {
+  GUM_SCALAR MultiDimNoisyAND<GUM_SCALAR>::get(const Instantiation& i) const {
     if (this->nbrDim() < 1) {
       GUM_ERROR(OperationNotAllowed, "Not enough variable for a NoisyAND ");
     }
 
-    const DiscreteVariable &C = this->variable((Idx)0);
+    const DiscreteVariable& C = this->variable((Idx)0);
 
     if (i.val(C) > 1)
       return (GUM_SCALAR)0.0;
@@ -79,7 +82,7 @@ namespace gum {
     GUM_SCALAR fact = this->externalWeight();
 
     for (Idx j = 1; j < this->nbrDim(); j++) {
-      const DiscreteVariable &v = this->variable(j);
+      const DiscreteVariable& v = this->variable(j);
 
       if (i.val(v) == 0) {
         fact *= ((GUM_SCALAR)1.0 - this->causalWeight(v));
@@ -113,13 +116,13 @@ namespace gum {
   // For friendly displaying the content of the variable.
 
   template <typename GUM_SCALAR>
-  INLINE std::ostream &operator<<(std::ostream &s,
-                                  const MultiDimNoisyAND<GUM_SCALAR> &ag) {
+  INLINE std::ostream& operator<<(std::ostream& s,
+                                  const MultiDimNoisyAND<GUM_SCALAR>& ag) {
     return s << ag.toString();
   }
 
   template <typename GUM_SCALAR>
-  INLINE MultiDimContainer<GUM_SCALAR> *
+  INLINE MultiDimContainer<GUM_SCALAR>*
   MultiDimNoisyAND<GUM_SCALAR>::newFactory() const {
     return new MultiDimNoisyAND<GUM_SCALAR>(this->__external_weight,
                                             this->__default_weight);
@@ -130,7 +133,7 @@ namespace gum {
 
   // returns the name of the implementation
   template <typename GUM_SCALAR>
-  INLINE const std::string &MultiDimNoisyAND<GUM_SCALAR>::name() const {
+  INLINE const std::string& MultiDimNoisyAND<GUM_SCALAR>::name() const {
     static const std::string str = "MultiDimNoisyAND";
     return str;
   }

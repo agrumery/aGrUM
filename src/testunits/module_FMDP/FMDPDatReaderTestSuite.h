@@ -40,7 +40,7 @@ namespace gum_tests {
       gum::FactoredMarkovDecisionProcess<float> fmdp;
       gum::MultiDimDecisionDiagramFactory<float> ddf;
 
-      gum::FMDPDatReader<float> *reader = 0;
+      gum::FMDPDatReader<float>* reader = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
           reader = new gum::FMDPDatReader<float>(&fmdp, file, &ddf));

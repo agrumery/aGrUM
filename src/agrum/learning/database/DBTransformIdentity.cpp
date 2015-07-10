@@ -35,13 +35,13 @@ namespace gum {
     }
 
     /// copy constructor
-    DBTransformIdentity::DBTransformIdentity(const DBTransformIdentity &from)
+    DBTransformIdentity::DBTransformIdentity(const DBTransformIdentity& from)
         : DBTransform(from) {
       GUM_CONS_CPY(DBTransformIdentity);
     }
 
     /// move constructor
-    DBTransformIdentity::DBTransformIdentity(DBTransformIdentity &&from)
+    DBTransformIdentity::DBTransformIdentity(DBTransformIdentity&& from)
         : DBTransform(from) {
       GUM_CONS_MOV(DBTransformIdentity);
     }
@@ -52,20 +52,21 @@ namespace gum {
     }
 
     /// copy operator
-    DBTransformIdentity &DBTransformIdentity::
-    operator=(const DBTransformIdentity &from) {
+    DBTransformIdentity& DBTransformIdentity::
+    operator=(const DBTransformIdentity& from) {
       DBTransform::operator=(from);
       return *this;
     }
 
     /// move operator
-    DBTransformIdentity &DBTransformIdentity::operator=(DBTransformIdentity &&from) {
+    DBTransformIdentity& DBTransformIdentity::
+    operator=(DBTransformIdentity&& from) {
       DBTransform::operator=(std::move(from));
       return *this;
     }
 
     /// transforms a vector of DBrows
-    bool DBTransformIdentity::transform(std::vector<DBRow> &db,
+    bool DBTransformIdentity::transform(std::vector<DBRow>& db,
                                         std::vector<std::string> miss) const {
       return true;
     }

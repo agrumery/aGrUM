@@ -34,7 +34,8 @@ namespace gum_tests {
 
     public:
     void testCreation() {
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::DiscretizedVariable<int> v("var", "a var"));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::DiscretizedVariable<int> v("var", "a var"));
     }
 
     void testDiscreteVariableProperties() {
@@ -47,10 +48,11 @@ namespace gum_tests {
       v.setDescription("toto");
       TS_ASSERT_EQUALS(v.description(), "toto");
 
-      TS_ASSERT_EQUALS(v.varType(), gum::DiscreteVariable::VarType::Discretized);
+      TS_ASSERT_EQUALS(v.varType(),
+                       gum::DiscreteVariable::VarType::Discretized);
 
-      const gum::DiscretizedVariable<int> &w = v;
-      w.setDescription("Lol"); // change description does not change a variable
+      const gum::DiscretizedVariable<int>& w = v;
+      w.setDescription("Lol");  // change description does not change a variable
     }
 
     void testAddTicks() {
@@ -129,9 +131,14 @@ namespace gum_tests {
                 for (int n = 1; n < 7; n++) {
                   if ((i + j + k + l + m + n == 21) &&
                       (i * j * k * l * m * n == 720)) {
-                    gum::DiscretizedVariable<int> d("d", "Discretized variable");
-                    d.addTick(i).addTick(j).addTick(k).addTick(l).addTick(m).addTick(
-                        n);
+                    gum::DiscretizedVariable<int> d("d",
+                                                    "Discretized variable");
+                    d.addTick(i)
+                        .addTick(j)
+                        .addTick(k)
+                        .addTick(l)
+                        .addTick(m)
+                        .addTick(n);
                     TS_ASSERT_EQUALS(d.domainSize(), (gum::Size)5);
                     TS_ASSERT_EQUALS(d.toString(),
                                      "d<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>");

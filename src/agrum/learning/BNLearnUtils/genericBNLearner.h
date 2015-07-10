@@ -18,10 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A class for generic framework of learning algorithms that can easily be
+ * @brief A class for generic framework of learning algorithms that can easily
+ *be
  *used
  *
- * The pack currently contains K2, GreedyHillClimbing and LocalSearchWithTabuList
+ * The pack currently contains K2, GreedyHillClimbing and
+ *LocalSearchWithTabuList
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -99,14 +101,19 @@ namespace gum {
       /// an enumeration enabling to select easily the score we wish to use
       enum class ScoreType { AIC, BD, BDeu, BIC, K2, LOG2LIKELIHOOD };
 
-      /// an enumeration to select the type of parameter estimation we shall apply
+      /// an enumeration to select the type of parameter estimation we shall
+      /// apply
       enum class ParamEstimatorType { ML };
 
       /// an enumeration to select the apriori
       enum class AprioriType { NO_APRIORI, SMOOTHING, DIRICHLET_FROM_DATABASE };
 
       /// an enumeration to select easily the learning algorithm to use
-      enum class AlgoType { K2, GREEDY_HILL_CLIMBING, LOCAL_SEARCH_WITH_TABU_LIST };
+      enum class AlgoType {
+        K2,
+        GREEDY_HILL_CLIMBING,
+        LOCAL_SEARCH_WITH_TABU_LIST
+      };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -129,7 +136,7 @@ namespace gum {
          * in the BN will have 3 modalities, the first one being True, the
          * second one being False, and the third bein Big. */
         Database(std::string filename,
-                 const NodeProperty<Sequence<std::string>> &modalities,
+                 const NodeProperty<Sequence<std::string>>& modalities,
                  bool check_database = false);
 
         /// default constructor for the aprioris
@@ -139,7 +146,7 @@ namespace gum {
          * apriori database is the same as in the score/parameter database
          * read before creating the apriori. This is compulsory to have
          * aprioris that make sense. */
-        Database(std::string filename, Database &score_database);
+        Database(std::string filename, Database& score_database);
 
         /// default constructor for the aprioris
         /** We must ensure that, when reading the apriori database, if the
@@ -154,14 +161,14 @@ namespace gum {
          * if modalities = { 1 -> {True, False, Big} }, then the node of id 1
          * in the BN will have 3 modalities, the first one being True, the
          * second one being False, and the third bein Big. */
-        Database(std::string filename, Database &score_database,
-                 const NodeProperty<Sequence<std::string>> &modalities);
+        Database(std::string filename, Database& score_database,
+                 const NodeProperty<Sequence<std::string>>& modalities);
 
         /// copy constructor
-        Database(const Database &from);
+        Database(const Database& from);
 
         /// move constructor
-        Database(Database &&from);
+        Database(Database&& from);
 
         /// destructor
         ~Database();
@@ -174,10 +181,10 @@ namespace gum {
         /// @{
 
         /// copy operator
-        Database &operator=(const Database &from);
+        Database& operator=(const Database& from);
 
         /// move operator
-        Database &operator=(Database &&from);
+        Database& operator=(Database&& from);
 
         /// @}
 
@@ -189,20 +196,20 @@ namespace gum {
         /// returns the row filter
         DBRowFilter<DatabaseVectInRAM::Handler,
                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-                    FilteredRowGeneratorSet<RowGeneratorIdentity>> &
+                    FilteredRowGeneratorSet<RowGeneratorIdentity>>&
         rowFilter();
 
         /// returns the modalities of the variables
-        std::vector<unsigned int> &modalities() noexcept;
+        std::vector<unsigned int>& modalities() noexcept;
 
         /// returns the names of the variables in the database
-        const std::vector<std::string> &names() const noexcept;
+        const std::vector<std::string>& names() const noexcept;
 
         /// returns the node id corresponding to a variable name
-        NodeId idFromName(const std::string &var_name) const;
+        NodeId idFromName(const std::string& var_name) const;
 
         /// returns the variable name corresponding to a given node id
-        const std::string &nameFromId(NodeId id) const;
+        const std::string& nameFromId(NodeId id) const;
 
         /// returns the "raw" translators (needed for the aprioris)
         /** We must ensure that, when reading the apriori database, if the
@@ -211,7 +218,7 @@ namespace gum {
          * apriori database is the same as in the score/parameter database
          * read before creating the apriori. This is compulsory to have
          * aprioris that make sense. */
-        DBRowTranslatorSetDynamic<CellTranslatorUniversal> &rawTranslators();
+        DBRowTranslatorSetDynamic<CellTranslatorUniversal>& rawTranslators();
 
         /// @}
 
@@ -231,8 +238,8 @@ namespace gum {
         /// the filtered row that reads the database
         DBRowFilter<DatabaseVectInRAM::Handler,
                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-                    FilteredRowGeneratorSet<RowGeneratorIdentity>> *__row_filter{
-            nullptr};
+                    FilteredRowGeneratorSet<RowGeneratorIdentity>>*
+            __row_filter{nullptr};
 
         /// the modalities of the variables
         std::vector<unsigned int> __modalities;
@@ -261,12 +268,14 @@ namespace gum {
 
       /// default constructor
       /**
-       * read the database file for the score / parameter estimation and var names
+       * read the database file for the score / parameter estimation and var
+       * names
        */
-      genericBNLearner(const std::string &filename);
+      genericBNLearner(const std::string& filename);
 
       /**
-       * read the database file for the score / parameter estimation and var names
+       * read the database file for the score / parameter estimation and var
+       * names
        * @param modalities indicate for some nodes (not necessarily all the
        * nodes of the BN) which modalities they should have and in which
        * order these modalities should be stored into the nodes. For instance,
@@ -278,19 +287,20 @@ namespace gum {
        * parsing of the database will allow to determine which ones are really
        * necessary and will keep them in the order specified by the user
        * (NodeProperty modalities). If parse_database is set to false (the
-       * default), then the modalities specified by the user will be considered as
+       * default), then the modalities specified by the user will be considered
+       * as
        * being exactly those of the variables of the BN (as a consequence, if we
        * find other values in the database, an exception will be raised
        * during learning). */
-      genericBNLearner(const std::string &filename,
-                       const NodeProperty<Sequence<std::string>> &modalities,
+      genericBNLearner(const std::string& filename,
+                       const NodeProperty<Sequence<std::string>>& modalities,
                        bool parse_database = false);
 
       /// copy constructor
-      genericBNLearner(const genericBNLearner &);
+      genericBNLearner(const genericBNLearner&);
 
       /// move constructor
-      genericBNLearner(genericBNLearner &&);
+      genericBNLearner(genericBNLearner&&);
 
       /// destructor
       virtual ~genericBNLearner();
@@ -303,10 +313,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      genericBNLearner &operator=(const genericBNLearner &);
+      genericBNLearner& operator=(const genericBNLearner&);
 
       /// move operator
-      genericBNLearner &operator=(genericBNLearner &&);
+      genericBNLearner& operator=(genericBNLearner&&);
 
       /// @}
 
@@ -319,23 +329,23 @@ namespace gum {
       DAG learnDAG();
 
       /// sets an initial DAG structure
-      void setInitialDAG(const DAG &);
+      void setInitialDAG(const DAG&);
 
       /// returns the names of the variables in the database
-      const std::vector<std::string> &names() const;
+      const std::vector<std::string>& names() const;
 
       /// returns the names of the variables in the database
-      const std::vector<unsigned int> &modalities() noexcept;
+      const std::vector<unsigned int>& modalities() noexcept;
 
       /// returns the node id corresponding to a variable name
       /**
        * @throw MissingVariableInDatabase if a variable of the BN is not found
        * in the database.
        */
-      NodeId idFromName(const std::string &var_name) const;
+      NodeId idFromName(const std::string& var_name) const;
 
       /// returns the variable name corresponding to a given node id
-      const std::string &nameFromId(NodeId id) const;
+      const std::string& nameFromId(NodeId id) const;
 
       /// @}
 
@@ -382,7 +392,7 @@ namespace gum {
       void useAprioriSmoothing(float weight = -1);
 
       /// use the Dirichlet apriori
-      void useAprioriDirichlet(const std::string &filename);
+      void useAprioriDirichlet(const std::string& filename);
 
       /// @}
 
@@ -402,10 +412,10 @@ namespace gum {
                                       unsigned int nb_decrease = 2) noexcept;
 
       /// indicate that we wish to use K2
-      void useK2(const Sequence<NodeId> &order) noexcept;
+      void useK2(const Sequence<NodeId>& order) noexcept;
 
       /// indicate that we wish to use K2
-      void useK2(const std::vector<NodeId> &order) noexcept;
+      void useK2(const std::vector<NodeId>& order) noexcept;
 
       /// @}
 
@@ -418,40 +428,40 @@ namespace gum {
       void setMaxIndegree(unsigned int max_indegree);
 
       /// sets a partial order on the nodes
-      void setSliceOrder(const NodeProperty<unsigned int> &slice_order);
+      void setSliceOrder(const NodeProperty<unsigned int>& slice_order);
 
       /// assign a set of forbidden arcs
-      void setForbiddenArcs(const ArcSet &set);
+      void setForbiddenArcs(const ArcSet& set);
 
       /// @name assign a new forbidden arc
       /// @{
-      void addForbiddenArc(const Arc &arc);
+      void addForbiddenArc(const Arc& arc);
       void addForbiddenArc(const NodeId tail, const NodeId head);
-      void addForbiddenArc(const std::string &tail, const std::string &head);
+      void addForbiddenArc(const std::string& tail, const std::string& head);
       /// @}
 
       /// @name remove a forbidden arc
       /// @{
-      void eraseForbiddenArc(const Arc &arc);
+      void eraseForbiddenArc(const Arc& arc);
       void eraseForbiddenArc(const NodeId tail, const NodeId head);
-      void eraseForbiddenArc(const std::string &tail, const std::string &head);
+      void eraseForbiddenArc(const std::string& tail, const std::string& head);
       ///@}
 
       /// assign a set of forbidden arcs
-      void setMandatoryArcs(const ArcSet &set);
+      void setMandatoryArcs(const ArcSet& set);
 
       /// @name assign a new forbidden arc
       ///@{
-      void addMandatoryArc(const Arc &arc);
+      void addMandatoryArc(const Arc& arc);
       void addMandatoryArc(const NodeId tail, const NodeId head);
-      void addMandatoryArc(const std::string &tail, const std::string &head);
+      void addMandatoryArc(const std::string& tail, const std::string& head);
       ///@}
 
       /// @name remove a forbidden arc
       ///@{
-      void eraseMandatoryArc(const Arc &arc);
+      void eraseMandatoryArc(const Arc& arc);
       void eraseMandatoryArc(const NodeId tail, const NodeId head);
-      void eraseMandatoryArc(const std::string &tail, const std::string &head);
+      void eraseMandatoryArc(const std::string& tail, const std::string& head);
       /// @}
 
       ///@}
@@ -461,19 +471,19 @@ namespace gum {
       ScoreType __score_type{ScoreType::BDeu};
 
       /// the score used
-      Score<> *__score{nullptr};
+      Score<>* __score{nullptr};
 
       /// the type of the parameter estimator
       ParamEstimatorType __param_estimator_type{ParamEstimatorType::ML};
 
       /// the parameter estimator to use
-      ParamEstimator<> *__param_estimator{nullptr};
+      ParamEstimator<>* __param_estimator{nullptr};
 
       /// the a priori selected for the score and parameters
       AprioriType __apriori_type{AprioriType::NO_APRIORI};
 
       /// the apriori used
-      Apriori<> *__apriori{nullptr};
+      Apriori<>* __apriori{nullptr};
 
       /// the weight of the apriori
       float __apriori_weight{1.0f};
@@ -511,11 +521,12 @@ namespace gum {
       /// indicates the values the user specified for the translators
       NodeProperty<Sequence<std::string>> __user_modalities;
 
-      /// indicates whether we shall parse the database to update __user_modalities
+      /// indicates whether we shall parse the database to update
+      /// __user_modalities
       bool __modalities_parse_db{false};
 
       /// the database used by the Dirichlet a priori
-      Database *__apriori_database{nullptr};
+      Database* __apriori_database{nullptr};
 
       /// the filename for the Dirichlet a priori, if any
       std::string __apriori_dbname;
@@ -524,10 +535,10 @@ namespace gum {
       DAG __initial_dag;
 
       // the current algorithm as an approximationScheme
-      const ApproximationScheme *__current_algorithm{nullptr};
+      const ApproximationScheme* __current_algorithm{nullptr};
 
       /// reads a file and returns a databaseVectInRam
-      static DatabaseVectInRAM __readFile(const std::string &filename);
+      static DatabaseVectInRAM __readFile(const std::string& filename);
 
       /// create the apriori used for learning
       void __createApriori();
@@ -545,9 +556,12 @@ namespace gum {
       /** @returns true if the apriori is compatible with the score.
        * @throws IncompatibleScoreApriori is raised if the apriori is known to
        * be incompatible with the score. Such a case usually arises because the
-       * score already implicitly contains an apriori which should not be combined
-       * with the apriori passed in argument. aGrUM will nevertheless allow you to
-       * use this apriori with the score, but you should be warned that the result
+       * score already implicitly contains an apriori which should not be
+       * combined
+       * with the apriori passed in argument. aGrUM will nevertheless allow you
+       * to
+       * use this apriori with the score, but you should be warned that the
+       * result
        * of learning will most probably be meaningless.
        * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
        * apriori is incompatible with the score but, with its current weight, it
@@ -561,24 +575,26 @@ namespace gum {
       bool __checkScoreAprioriCompatibility();
 
       /// returns the type (as a string) of a given apriori
-      const std::string &__getAprioriType() const;
+      const std::string& __getAprioriType() const;
 
       public:
       // ##########################################################################
       /// @name redistribute signals AND implemenation of interface
       /// IApproximationSchemeConfiguration
       // ##########################################################################
-      // in order to not pollute the proper code of genericBNLearner, we directly
+      // in order to not pollute the proper code of genericBNLearner, we
+      // directly
       // implement those
       // very simples methods here.
       /// {@    /// distribute signals
-      INLINE void
-      setCurrentApproximationScheme(const ApproximationScheme *approximationScheme) {
+      INLINE void setCurrentApproximationScheme(
+          const ApproximationScheme* approximationScheme) {
         __current_algorithm = approximationScheme;
       }
 
-      INLINE void distributeProgress(const ApproximationScheme *approximationScheme,
-                                     Size pourcent, double error, double time) {
+      INLINE void
+      distributeProgress(const ApproximationScheme* approximationScheme,
+                         Size pourcent, double error, double time) {
         setCurrentApproximationScheme(approximationScheme);
 
         if (onProgress.hasListener())
@@ -586,7 +602,7 @@ namespace gum {
       };
 
       /// distribute signals
-      INLINE void distributeStop(const ApproximationScheme *approximationScheme,
+      INLINE void distributeStop(const ApproximationScheme* approximationScheme,
                                  std::string message) {
         setCurrentApproximationScheme(approximationScheme);
 
@@ -627,7 +643,8 @@ namespace gum {
         __local_search_with_tabu_list.enableEpsilon();
       };
 
-      /// @return true if stopping criterion on epsilon is enabled, false otherwise
+      /// @return true if stopping criterion on epsilon is enabled, false
+      /// otherwise
       bool isEnabledEpsilon() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->isEnabledEpsilon();
@@ -636,7 +653,8 @@ namespace gum {
       };
       /// @}
 
-      /// Given that we approximate f(t), stopping criterion on d/dt(|f(t+1)-f(t)|)
+      /// Given that we approximate f(t), stopping criterion on
+      /// d/dt(|f(t+1)-f(t)|)
       /// If the criterion was disabled it will be enabled
       /// @{
       /// @throw OutOfLowerBound if rate<0
@@ -756,7 +774,8 @@ namespace gum {
         __greedy_hill_climbing.enableMaxTime();
         __local_search_with_tabu_list.enableMaxTime();
       };
-      /// @return true if stopping criterion on timeout is enabled, false otherwise
+      /// @return true if stopping criterion on timeout is enabled, false
+      /// otherwise
       bool isEnabledMaxTime() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->isEnabledMaxTime();
@@ -835,7 +854,7 @@ namespace gum {
       };
 
       /// @throw OperationNotAllowed if scheme not performed or verbosity=false
-      const std::vector<double> &history() const {
+      const std::vector<double>& history() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->history();
         else

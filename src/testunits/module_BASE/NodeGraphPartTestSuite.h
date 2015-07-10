@@ -27,7 +27,9 @@ namespace gum_tests {
   class NodeGraphPartTestSuite : public CxxTest::TestSuite {
 
     public:
-    void testConstructor() { TS_GUM_ASSERT_THROWS_NOTHING(gum::NodeGraphPart ngp); }
+    void testConstructor() {
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::NodeGraphPart ngp);
+    }
 
     void testInsertion() {
       gum::NodeGraphPart ngp;
@@ -85,7 +87,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size)1);
       ngp.eraseNode(id4);
       __ForTestCopy(ngp);
-      TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size)0); // 2 last hole has vanished
+      TS_ASSERT_EQUALS(ngp.__sizeHoles(),
+                       (gum::Size)0);  // 2 last hole has vanished
     }
 
     void testInsertionForcee() {
@@ -152,7 +155,7 @@ namespace gum_tests {
       ngp.addNode(node);
       TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(node + 1));
       TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size(node)));
-      TS_ASSERT(ngp.nextNodeId() < node); // we fill one of the holes
+      TS_ASSERT(ngp.nextNodeId() < node);  // we fill one of the holes
       ngp.eraseNode(node);
       TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size(0)));
       TS_ASSERT_EQUALS(ngp.nextNodeId(), (gum::Size(0)));
@@ -191,7 +194,7 @@ namespace gum_tests {
       }
 
       gum::NodeGraphPartIteratorSafe safe_iter =
-          ngp.beginSafe(); // safe iterator needed here
+          ngp.beginSafe();  // safe iterator needed here
 
       for (gum::NodeGraphPartIterator iter = ngp.begin(); iter != ngp.end();
            ++iter, ++safe_iter) {
@@ -218,7 +221,7 @@ namespace gum_tests {
       unsigned int cpt = 0;
 
       for (gum::NodeGraphPartIteratorSafe iter =
-               nodeset.beginSafe(); // safe iterator needed here
+               nodeset.beginSafe();  // safe iterator needed here
            iter != nodeset.endSafe();
            ++iter) {
         if (cpt == 0) {
@@ -243,7 +246,7 @@ namespace gum_tests {
       unsigned int cpt = 0;
 
       for (gum::NodeGraphPartIteratorSafe
-               iter = nodeset.beginSafe(); // safe iterator needed here
+               iter = nodeset.beginSafe();  // safe iterator needed here
            iter != nodeset.endSafe();
            ++iter, ++cpt) {
         TS_GUM_ASSERT_THROWS_NOTHING(nodeset.eraseNode(*iter));
@@ -316,7 +319,7 @@ namespace gum_tests {
       }
     }
 
-    void __ForTestCopy(gum::NodeGraphPart &ngp) {
+    void __ForTestCopy(gum::NodeGraphPart& ngp) {
       gum::NodeGraphPart ngp2(ngp);
       TS_ASSERT_EQUALS(ngp.toString(), ngp2.toString());
 

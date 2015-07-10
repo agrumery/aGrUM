@@ -26,7 +26,7 @@ namespace CxxTest {
     if (currentAbortTestOnFail)
       throw AbortTest();
 
-#endif // _CXXTEST_HAVE_EH
+#endif  // _CXXTEST_HAVE_EH
   }
 
   //
@@ -41,21 +41,21 @@ namespace CxxTest {
   //
   // Some non-template functions
   //
-  void doTrace(const char *file, unsigned line, const char *message) {
+  void doTrace(const char* file, unsigned line, const char* message) {
     tracker().trace(file, line, message);
   }
 
-  void doWarn(const char *file, unsigned line, const char *message) {
+  void doWarn(const char* file, unsigned line, const char* message) {
     tracker().warning(file, line, message);
   }
 
-  void doFailTest(const char *file, unsigned line, const char *message) {
+  void doFailTest(const char* file, unsigned line, const char* message) {
     tracker().failedTest(file, line, message);
     TS_ABORT();
   }
 
-  void doFailAssert(const char *file, unsigned line, const char *expression,
-                    const char *message) {
+  void doFailAssert(const char* file, unsigned line, const char* expression,
+                    const char* message) {
     if (message)
       tracker().failedTest(file, line, message);
 
@@ -63,7 +63,7 @@ namespace CxxTest {
     TS_ABORT();
   }
 
-  bool sameData(const void *x, const void *y, unsigned size) {
+  bool sameData(const void* x, const void* y, unsigned size) {
     if (size == 0)
       return true;
 
@@ -73,8 +73,8 @@ namespace CxxTest {
     if (!x || !y)
       return false;
 
-    const char *cx = (const char *)x;
-    const char *cy = (const char *)y;
+    const char* cx = (const char*)x;
+    const char* cy = (const char*)y;
 
     while (size--)
       if (*cx++ != *cy++)
@@ -83,20 +83,23 @@ namespace CxxTest {
     return true;
   }
 
-  void doAssertSameData(const char *file, unsigned line, const char *xExpr,
-                        const void *x, const char *yExpr, const void *y,
-                        const char *sizeExpr, unsigned size, const char *message) {
+  void doAssertSameData(const char* file, unsigned line, const char* xExpr,
+                        const void* x, const char* yExpr, const void* y,
+                        const char* sizeExpr, unsigned size,
+                        const char* message) {
     if (!sameData(x, y, size)) {
       if (message)
         tracker().failedTest(file, line, message);
 
-      tracker().failedAssertSameData(file, line, xExpr, yExpr, sizeExpr, x, y, size);
+      tracker().failedAssertSameData(file, line, xExpr, yExpr, sizeExpr, x, y,
+                                     size);
       TS_ABORT();
     }
   }
 
-  void doFailAssertThrows(const char *file, unsigned line, const char *expr,
-                          const char *type, bool otherThrown, const char *message) {
+  void doFailAssertThrows(const char* file, unsigned line, const char* expr,
+                          const char* type, bool otherThrown,
+                          const char* message) {
     if (message)
       tracker().failedTest(file, line, message);
 
@@ -104,8 +107,8 @@ namespace CxxTest {
     TS_ABORT();
   }
 
-  void doFailAssertThrowsNot(const char *file, unsigned line, const char *expression,
-                             const char *message) {
+  void doFailAssertThrowsNot(const char* file, unsigned line,
+                             const char* expression, const char* message) {
     if (message)
       tracker().failedTest(file, line, message);
 
@@ -114,4 +117,4 @@ namespace CxxTest {
   }
 }
 
-#endif // __cxxtest__TestSuite_cpp__
+#endif  // __cxxtest__TestSuite_cpp__

@@ -36,17 +36,23 @@
 
 namespace gum {
 
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /* ===                         GUM_DISCRETE_VARIABLE                       === */
-  /* =========================================================================== */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
+  /* ===                         GUM_DISCRETE_VARIABLE                       ===
+   */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
   /** @class DiscreteVariable
    * @brief Base class for discrete random variable.
    * @ingroup multidim_group
    *
    * This class is used as an interface. */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
 
   class DiscreteVariable : public Variable {
     public:
@@ -59,7 +65,7 @@ namespace gum {
 
     /// Default constructor
 
-    DiscreteVariable(const std::string &aName, const std::string &aDesc);
+    DiscreteVariable(const std::string& aName, const std::string& aDesc);
 
     /// Copy constructor
 
@@ -69,7 +75,7 @@ namespace gum {
      *
      * @param aDRV the variable we copy
      */
-    DiscreteVariable(const DiscreteVariable &aDRV);
+    DiscreteVariable(const DiscreteVariable& aDRV);
 
     /// destructor
 
@@ -78,7 +84,7 @@ namespace gum {
     /// Copy Factory.
     /// @return Returns a pointer on a new copy of this.
 
-    virtual DiscreteVariable *clone() const = 0;
+    virtual DiscreteVariable* clone() const = 0;
 
     /// @}
 
@@ -118,14 +124,14 @@ namespace gum {
     /** @param aRV to be copied
      * @return a ref to *this */
 
-    DiscreteVariable &operator=(const DiscreteVariable &aRV);
+    DiscreteVariable& operator=(const DiscreteVariable& aRV);
 
     /// equality operator
-    virtual bool operator==(const DiscreteVariable &aRV) const;
+    virtual bool operator==(const DiscreteVariable& aRV) const;
 
     /// inequality operator
 
-    virtual bool operator!=(const DiscreteVariable &aRV) const;
+    virtual bool operator!=(const DiscreteVariable& aRV) const;
 
     /// @}
 
@@ -133,14 +139,14 @@ namespace gum {
     ///  @warning This operation may have different complexity in different
     /// subclasses.
     /// @throws NotFound
-    virtual Idx operator[](const std::string &label) const = 0;
-    virtual Idx index(const std::string &label) const = 0;
+    virtual Idx operator[](const std::string& label) const = 0;
+    virtual Idx index(const std::string& label) const = 0;
 
     /// string version of *this
-    const std::string toString() const ;
+    const std::string toString() const;
 
     /// string version of *this using description attribute instead of name.
-    const std::string toStringWithDescription() const ;
+    const std::string toStringWithDescription() const;
 
     /// string represent the domain of the variable
     virtual const std::string domain() const = 0;
@@ -152,7 +158,7 @@ namespace gum {
 
   /// for friendly displaying the content of the variable
 
-  std::ostream &operator<<(std::ostream &, const DiscreteVariable &);
+  std::ostream& operator<<(std::ostream&, const DiscreteVariable&);
 
 } /* namespace gum */
 

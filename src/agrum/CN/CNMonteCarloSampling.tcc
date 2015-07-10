@@ -6,9 +6,9 @@ namespace gum {
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
     CNMonteCarloSampling<GUM_SCALAR, BNInferenceEngine>::CNMonteCarloSampling(
-        const CredalNet<GUM_SCALAR> &credalNet)
-        : MultipleInferenceEngine<
-              GUM_SCALAR, BNInferenceEngine>::MultipleInferenceEngine(credalNet) {
+        const CredalNet<GUM_SCALAR>& credalNet)
+        : MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::
+              MultipleInferenceEngine(credalNet) {
       __infEs::_repetitiveInd = false;
       //__infEs::_iterStop = 1000;
       __infEs::_storeVertices = false;
@@ -24,7 +24,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
-    CNMonteCarloSampling<GUM_SCALAR, BNInferenceEngine>::~CNMonteCarloSampling() {
+    CNMonteCarloSampling<GUM_SCALAR,
+                         BNInferenceEngine>::~CNMonteCarloSampling() {
       GUM_DESTRUCTOR(CNMonteCarloSampling);
     }
 
@@ -34,7 +35,7 @@ namespace gum {
       if (__infEs::_repetitiveInd) {
         try {
           this->_repetitiveInit();
-        } catch (InvalidArgument &err) {
+        } catch (InvalidArgument& err) {
           GUM_SHOWERROR(err);
           __infEs::_repetitiveInd = false;
         }
@@ -47,9 +48,10 @@ namespace gum {
 
       __mcThreadDataCopy();
 
-      // don't put it after burnIn, it could stop with timeout : we want at least one
+      // don't put it after burnIn, it could stop with timeout : we want at
+      // least one
       // burnIn and one periodSize
-      GUM_SCALAR eps = 1.; // to validate testSuite ?
+      GUM_SCALAR eps = 1.;  // to validate testSuite ?
 
       /// auto bsize = this->burnIn();
       auto psize = this->periodSize();
@@ -59,8 +61,10 @@ namespace gum {
       /// this->burnIn() should be 0 therefor the first do ... while should be
       /// skipped
       if (remaining != 0) {
-        /// instead of doing the whole burnIn in one pass, we do it period by period
-        /// so we can test the timer ( done by continueApproximationScheme ) and exit
+        /// instead of doing the whole burnIn in one pass, we do it period by
+        /// period
+        /// so we can test the timer ( done by continueApproximationScheme ) and
+        /// exit
         /// during burnIn
         /// no error is thrown if we exit during burnIn ( although one should )
         do {
@@ -73,7 +77,7 @@ namespace gum {
           for (decltype(iters) iter = 0; iter < iters; iter++) {
             __threadInference();
             __threadUpdate();
-          } // end of : parallel periodSize
+          }  // end of : parallel periodSize
 
           this->updateApproximationScheme(iters);
 
@@ -97,13 +101,13 @@ namespace gum {
           for (decltype(psize) iter = 0; iter < psize; iter++) {
             __threadInference();
             __threadUpdate();
-          } // end of : parallel periodSize
+          }  // end of : parallel periodSize
 
           this->updateApproximationScheme(psize);
 
-          this->_updateMarginals(); // fusion threads + update margi
+          this->_updateMarginals();  // fusion threads + update margi
 
-          eps = this->_computeEpsilon(); // also updates oldMargi
+          eps = this->_computeEpsilon();  // also updates oldMargi
 
         } while (this->continueApproximationScheme(eps));
       }
@@ -121,7 +125,7 @@ namespace gum {
       }
 
       if (!this->_modal.empty()) {
-        this->_dynamicExpectations(); // work with any network
+        this->_dynamicExpectations();  // work with any network
       }
 
       /// GUM_TRACE ( this->messageApproximationScheme() );
@@ -134,10 +138,10 @@ namespace gum {
       // bool keepSample = false;
 
       if (this->_l_inferenceEngine[tId]->evidenceProbability() > 0) {
-        const DAG &tDag = this->_workingSet[tId]->dag();
+        const DAG& tDag = this->_workingSet[tId]->dag();
 
         for (auto node : tDag.nodes()) {
-          const Potential<GUM_SCALAR> &potential(
+          const Potential<GUM_SCALAR>& potential(
               this->_l_inferenceEngine[tId]->posterior(node));
           Instantiation ins(potential);
           std::vector<GUM_SCALAR> vertex;
@@ -147,12 +151,13 @@ namespace gum {
           }
 
           // true for redundancy elimination of node it credal set
-          // but since global marginals are only updated at the end of each period of
+          // but since global marginals are only updated at the end of each
+          // period of
           // approximationScheme, it is "useless" ( and expensive ) to check now
           this->_updateThread(node, vertex, false);
 
-        } // end of : for all nodes
-      }   // end of : if ( p(e) > 0 )
+        }  // end of : for all nodes
+      }    // end of : if ( p(e) > 0 )
     }
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
@@ -166,14 +171,15 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
-    void CNMonteCarloSampling<GUM_SCALAR,
-                              BNInferenceEngine>::__mcInitApproximationScheme() {
+    void
+    CNMonteCarloSampling<GUM_SCALAR,
+                         BNInferenceEngine>::__mcInitApproximationScheme() {
       // this->setEpsilon ( std::numeric_limits< GUM_SCALAR >::min() );
       /**
        * VERIFIER d/dt(e(t+1)-e(t))
        */
       this->setEpsilon(0.);
-      this->enableEpsilon(); // to be sure
+      this->enableEpsilon();  // to be sure
 
       this->disableMinEpsilonRate();
       this->disableMaxIter();
@@ -182,7 +188,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
-    void CNMonteCarloSampling<GUM_SCALAR, BNInferenceEngine>::__mcThreadDataCopy() {
+    void
+    CNMonteCarloSampling<GUM_SCALAR, BNInferenceEngine>::__mcThreadDataCopy() {
       int num_threads;
 #pragma omp parallel
       {
@@ -191,7 +198,8 @@ namespace gum {
 // implicit wait clause (don't put nowait)
 #pragma omp single
         {
-          // should we ask for max threads instead ( no differences here in practice
+          // should we ask for max threads instead ( no differences here in
+          // practice
           // )
           num_threads = getNumberOfRunningThreads();
 
@@ -201,14 +209,16 @@ namespace gum {
 
           // if ( __infEs::_storeBNOpt )
           // this->_l_sampledNet.resize ( num_threads );
-        } // end of : single region
+        }  // end of : single region
 
-        // we could put those below in a function in InferenceEngine, but let's keep
-        // this parallel region instead of breaking it and making another one to do
+        // we could put those below in a function in InferenceEngine, but let's
+        // keep
+        // this parallel region instead of breaking it and making another one to
+        // do
         // the same stuff in 2 places since :
         // !!! BNInferenceEngine still needs to be initialized here anyway !!!
 
-        BayesNet<GUM_SCALAR> *thread_bn = new BayesNet<GUM_SCALAR>();
+        BayesNet<GUM_SCALAR>* thread_bn = new BayesNet<GUM_SCALAR>();
 #pragma omp critical(Init)
         {
           // IBayesNet< GUM_SCALAR > * thread_bn = new IBayesNet< GUM_SCALAR
@@ -231,16 +241,16 @@ namespace gum {
           this->_l_marginalSets[this_thread] = this->_marginalSets;
         }
 
-        List<const Potential<GUM_SCALAR> *> *evi_list =
-            new List<const Potential<GUM_SCALAR> *>();
+        List<const Potential<GUM_SCALAR>*>* evi_list =
+            new List<const Potential<GUM_SCALAR>*>();
         this->_workingSetE[this_thread] = evi_list;
 
-        BNInferenceEngine *inference_engine =
+        BNInferenceEngine* inference_engine =
             new BNInferenceEngine(*(this->_workingSet[this_thread]));
         this->_l_inferenceEngine[this_thread] = inference_engine;
 
         if (__infEs::_storeBNOpt) {
-          VarMod2BNsMap<GUM_SCALAR> *threadOpt =
+          VarMod2BNsMap<GUM_SCALAR>* threadOpt =
               new VarMod2BNsMap<GUM_SCALAR>(*this->_credalNet);
           this->_l_optimalNet[this_thread] = threadOpt;
         }
@@ -248,8 +258,9 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
-    inline void CNMonteCarloSampling<GUM_SCALAR, BNInferenceEngine>::__binaryRep(
-        std::vector<bool> &toFill, const unsigned int value) const {
+    inline void
+    CNMonteCarloSampling<GUM_SCALAR, BNInferenceEngine>::__binaryRep(
+        std::vector<bool>& toFill, const unsigned int value) const {
       unsigned int n = value;
       auto tfsize = toFill.size();
 
@@ -264,10 +275,10 @@ namespace gum {
     inline void
     CNMonteCarloSampling<GUM_SCALAR, BNInferenceEngine>::__verticesSampling() {
       int this_thread = getThreadNumber();
-      IBayesNet<GUM_SCALAR> *working_bn = this->_workingSet[this_thread];
+      IBayesNet<GUM_SCALAR>* working_bn = this->_workingSet[this_thread];
 
       const typename Property<
-          std::vector<std::vector<std::vector<GUM_SCALAR>>>>::onNodes *cpt =
+          std::vector<std::vector<std::vector<GUM_SCALAR>>>>::onNodes* cpt =
           &this->_credalNet->credalNet_currentCpt();
 
       typedef std::vector<std::vector<std::vector<bool>>> dBN;
@@ -279,15 +290,15 @@ namespace gum {
       }
 
       if (__infEs::_repetitiveInd) {
-        const typename Property<std::vector<NodeId>>::onNodes &t0 =
+        const typename Property<std::vector<NodeId>>::onNodes& t0 =
             __infEs::_l_clusters[this_thread][0];
-        const typename Property<std::vector<NodeId>>::onNodes &t1 =
+        const typename Property<std::vector<NodeId>>::onNodes& t1 =
             __infEs::_l_clusters[this_thread][1];
 
-        for (const auto &elt : t0) {
+        for (const auto& elt : t0) {
           auto dSize = working_bn->variable(elt.first).domainSize();
-          Potential<GUM_SCALAR> *potential(
-              const_cast<Potential<GUM_SCALAR> *>(&working_bn->cpt(elt.first)));
+          Potential<GUM_SCALAR>* potential(
+              const_cast<Potential<GUM_SCALAR>*>(&working_bn->cpt(elt.first)));
           std::vector<GUM_SCALAR> var_cpt(potential->domainSize());
 
           Size pconfs = (*cpt)[elt.first].size();
@@ -303,7 +314,7 @@ namespace gum {
               var_cpt[pconf * dSize + mod] =
                   (*cpt)[elt.first][pconf][choosen_vertex][mod];
             }
-          } // end of : pconf
+          }  // end of : pconf
 
           potential->fillWith(var_cpt);
 
@@ -314,16 +325,17 @@ namespace gum {
               sample[elt.second[pos]] = sample[elt.first];
             }
 
-            Potential<GUM_SCALAR> *potential2(const_cast<Potential<GUM_SCALAR> *>(
-                &working_bn->cpt(elt.second[pos])));
+            Potential<GUM_SCALAR>* potential2(
+                const_cast<Potential<GUM_SCALAR>*>(
+                    &working_bn->cpt(elt.second[pos])));
             potential2->fillWith(var_cpt);
           }
         }
 
-        for (const auto &elt : t1) {
+        for (const auto& elt : t1) {
           auto dSize = working_bn->variable(elt.first).domainSize();
-          Potential<GUM_SCALAR> *potential(
-              const_cast<Potential<GUM_SCALAR> *>(&working_bn->cpt(elt.first)));
+          Potential<GUM_SCALAR>* potential(
+              const_cast<Potential<GUM_SCALAR>*>(&working_bn->cpt(elt.first)));
           std::vector<GUM_SCALAR> var_cpt(potential->domainSize());
 
           for (Size pconf = 0; pconf < (*cpt)[elt.first].size(); pconf++) {
@@ -337,7 +349,7 @@ namespace gum {
               var_cpt[pconf * dSize + mod] =
                   (*cpt)[elt.first][pconf][choosen_vertex][mod];
             }
-          } // end of : pconf
+          }  // end of : pconf
 
           potential->fillWith(var_cpt);
 
@@ -348,8 +360,9 @@ namespace gum {
               sample[elt.second[pos]] = sample[elt.first];
             }
 
-            Potential<GUM_SCALAR> *potential2(const_cast<Potential<GUM_SCALAR> *>(
-                &working_bn->cpt(elt.second[pos])));
+            Potential<GUM_SCALAR>* potential2(
+                const_cast<Potential<GUM_SCALAR>*>(
+                    &working_bn->cpt(elt.second[pos])));
             potential2->fillWith(var_cpt);
           }
         }
@@ -360,8 +373,8 @@ namespace gum {
       } else {
         for (auto node : working_bn->nodes()) {
           auto dSize = working_bn->variable(node).domainSize();
-          Potential<GUM_SCALAR> *potential(
-              const_cast<Potential<GUM_SCALAR> *>(&working_bn->cpt(node)));
+          Potential<GUM_SCALAR>* potential(
+              const_cast<Potential<GUM_SCALAR>*>(&working_bn->cpt(node)));
           std::vector<GUM_SCALAR> var_cpt(potential->domainSize());
 
           auto pConfs = (*cpt)[node].size();
@@ -378,7 +391,7 @@ namespace gum {
               var_cpt[pconf * dSize + mod] =
                   (*cpt)[node][pconf][choosen_vertex][mod];
             }
-          } // end of : pconf
+          }  // end of : pconf
 
           potential->fillWith(var_cpt);
         }
@@ -398,11 +411,12 @@ namespace gum {
 
       int this_thread = getThreadNumber();
 
-      BNInferenceEngine *inference_engine = this->_l_inferenceEngine[this_thread];
+      BNInferenceEngine* inference_engine =
+          this->_l_inferenceEngine[this_thread];
 
-      IBayesNet<GUM_SCALAR> *working_bn = this->_workingSet[this_thread];
+      IBayesNet<GUM_SCALAR>* working_bn = this->_workingSet[this_thread];
 
-      List<const Potential<GUM_SCALAR> *> *evi_list =
+      List<const Potential<GUM_SCALAR>*>* evi_list =
           this->_workingSetE[this_thread];
 
       if (evi_list->size() > 0) {
@@ -410,13 +424,13 @@ namespace gum {
         return;
       }
 
-      for (const auto &elt : this->_evidence) {
-        Potential<GUM_SCALAR> *p = new Potential<GUM_SCALAR>;
+      for (const auto& elt : this->_evidence) {
+        Potential<GUM_SCALAR>* p = new Potential<GUM_SCALAR>;
         (*p) << working_bn->variable(elt.first);
 
         try {
           p->fillWith(elt.second);
-        } catch (Exception &err) {
+        } catch (Exception& err) {
           GUM_SHOWERROR(err);
           throw(err);
         }
@@ -429,5 +443,5 @@ namespace gum {
       }
     }
 
-  } // namespace cn
+  }  // namespace cn
 }

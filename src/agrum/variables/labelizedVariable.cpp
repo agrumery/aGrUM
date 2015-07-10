@@ -24,21 +24,21 @@
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
-const std::string LabelizedVariable::domain(void) const {
-  std::stringstream s;
-  s << "<";
+  const std::string LabelizedVariable::domain(void) const {
+    std::stringstream s;
+    s << "<";
 
-  if (domainSize() > 0) {
-    s << label(0);
+    if (domainSize() > 0) {
+      s << label(0);
 
-    for (Idx i = 1; i < domainSize(); ++i) {
-      s << ",";
-      s << label(i);
+      for (Idx i = 1; i < domainSize(); ++i) {
+        s << ",";
+        s << label(i);
+      }
     }
+
+    s << ">";
+
+    return s.str();
   }
-
-  s << ">";
-
-  return s.str();
-}
-}// gum
+}  // gum

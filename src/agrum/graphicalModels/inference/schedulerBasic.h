@@ -42,14 +42,14 @@ namespace gum {
     SchedulerBasic();
 
     /// copy constructor
-    SchedulerBasic(const SchedulerBasic<GUM_SCALAR> &);
+    SchedulerBasic(const SchedulerBasic<GUM_SCALAR>&);
 
     /// destructor
     virtual ~SchedulerBasic();
 
     /// virtual constructor
     /** @return a new fresh SchedulerBasic */
-    SchedulerBasic<GUM_SCALAR> *newFactory() const;
+    SchedulerBasic<GUM_SCALAR>* newFactory() const;
 
     /// @}
 
@@ -60,25 +60,27 @@ namespace gum {
 
     /// execute all the operations of a given schedule
     /** @return a Boolean indicating whether all the schedule was performed */
-    bool execute(Schedule<GUM_SCALAR> &);
+    bool execute(Schedule<GUM_SCALAR>&);
 
     /// execute only k operations of a given schedule (default k = 1)
     /** If there are fewer than k operations in the schedule, then all those
      * operations are performed
      * @return a Boolean indicating whether the k operations (or all the
      * operations of the schedule) were performed */
-    bool execute(Schedule<GUM_SCALAR> &, unsigned int k);
+    bool execute(Schedule<GUM_SCALAR>&, unsigned int k);
 
-    /** @brief returns an estimation of the number of elementary operations needed
+    /** @brief returns an estimation of the number of elementary operations
+     * needed
      * to perform a given schedule */
-    float nbOperations(const Schedule<GUM_SCALAR> &) const;
+    float nbOperations(const Schedule<GUM_SCALAR>&) const;
 
-    /** @brief returns an estimation of the number of elementary operations needed
+    /** @brief returns an estimation of the number of elementary operations
+     *needed
      * to perform the k first ScheduleOperations of a given schedule
      *
      * If there are fewer than k operations in the schedule, then all those
      * operations are taken into account */
-    float nbOperations(const Schedule<GUM_SCALAR> &, unsigned int k) const;
+    float nbOperations(const Schedule<GUM_SCALAR>&, unsigned int k) const;
 
     /// returns the memory consumption used during the execution of a schedule
     /** Actually, this function does not return a precise account of the memory
@@ -88,7 +90,7 @@ namespace gum {
      * amount of memory used during the execution of the Schedule and the second
      * one is the amount of memory still used at the end of the execution of
      * the schedule */
-    std::pair<long, long> memoryUsage(const Schedule<GUM_SCALAR> &) const;
+    std::pair<long, long> memoryUsage(const Schedule<GUM_SCALAR>&) const;
 
     /** @brief returns the memory consumption used during the execution of the
      * k first ScheduleOperations of a given schedule
@@ -102,7 +104,7 @@ namespace gum {
      * amount of memory used during the execution of the Schedule and the second
      * one is the amount of memory still used at the end of the execution of
      * k first operations of the schedule */
-    std::pair<long, long> memoryUsage(const Schedule<GUM_SCALAR> &,
+    std::pair<long, long> memoryUsage(const Schedule<GUM_SCALAR>&,
                                       unsigned int k) const;
 
     /// @}

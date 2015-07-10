@@ -37,7 +37,7 @@ namespace gum {
     /// copy constructor
     template <typename Translator>
     DBRowTranslatorSetDynamic<Translator>::DBRowTranslatorSetDynamic(
-        const DBRowTranslatorSetDynamic<Translator> &from)
+        const DBRowTranslatorSetDynamic<Translator>& from)
         : __translators(from.__translators), __output_size(from.__output_size),
           __output_row(from.__output_row) {
       // create the translators
@@ -52,7 +52,7 @@ namespace gum {
     /// move constructor
     template <typename Translator>
     INLINE DBRowTranslatorSetDynamic<Translator>::DBRowTranslatorSetDynamic(
-        DBRowTranslatorSetDynamic<Translator> &&from)
+        DBRowTranslatorSetDynamic<Translator>&& from)
         : __translators(std::move(from.__translators)),
           __output_size(std::move(from.__output_size)),
           __output_row(std::move(from.__output_row)) {
@@ -87,8 +87,9 @@ namespace gum {
 
     /// copy operator
     template <typename Translator>
-    DBRowTranslatorSetDynamic<Translator> &DBRowTranslatorSetDynamic<Translator>::
-    operator=(const DBRowTranslatorSetDynamic<Translator> &from) {
+    DBRowTranslatorSetDynamic<Translator>&
+        DBRowTranslatorSetDynamic<Translator>::
+        operator=(const DBRowTranslatorSetDynamic<Translator>& from) {
       if (this != &from) {
         clear();
 
@@ -108,8 +109,9 @@ namespace gum {
 
     /// move operator
     template <typename Translator>
-    DBRowTranslatorSetDynamic<Translator> &DBRowTranslatorSetDynamic<Translator>::
-    operator=(DBRowTranslatorSetDynamic<Translator> &&from) {
+    DBRowTranslatorSetDynamic<Translator>&
+        DBRowTranslatorSetDynamic<Translator>::
+        operator=(DBRowTranslatorSetDynamic<Translator>&& from) {
       if (this != &from) {
         clear();
 
@@ -130,7 +132,8 @@ namespace gum {
     template <typename Cols, typename ColsIncr>
     void DBRowTranslatorSetDynamic<Translator>::insertTranslator(
         Cols deb_cols, unsigned int nb_times, ColsIncr incr) {
-      // we get the contents of deb_cols and incr and we will compute and set the
+      // we get the contents of deb_cols and incr and we will compute and set
+      // the
       // input columns by ourselves
       const unsigned int input_size =
           std::remove_reference<Translator>::type::input_size;
@@ -142,7 +145,7 @@ namespace gum {
       // now insert the translators
       for (unsigned int i = 0; i < nb_times; ++i) {
         // create the translator
-        Translator *new_translator = new Translator;
+        Translator* new_translator = new Translator;
         try {
           __translators.push_back(new_translator);
         } catch (...) {
@@ -157,8 +160,8 @@ namespace gum {
         __output_size += std::remove_reference<Translator>::type::output_size;
 
         // assign the input col
-        unsigned int *inputs =
-            const_cast<unsigned int *>(new_translator->inputCols());
+        unsigned int* inputs =
+            const_cast<unsigned int*>(new_translator->inputCols());
         std::memcpy(inputs, input_cols, input_size * sizeof(unsigned int));
         for (unsigned int j = 0; j < input_size; ++j) {
           inputs[j] = input_cols[j];
@@ -173,9 +176,10 @@ namespace gum {
     template <typename Translator>
     template <typename NewTranslator, typename Cols, typename ColsIncr>
     void DBRowTranslatorSetDynamic<Translator>::insertTranslator(
-        const NewTranslator &translator, Cols deb_cols, unsigned int nb_times,
+        const NewTranslator& translator, Cols deb_cols, unsigned int nb_times,
         ColsIncr incr) {
-      // we get the contents of deb_cols and incr and we will compute and set the
+      // we get the contents of deb_cols and incr and we will compute and set
+      // the
       // input columns by ourselves
       const unsigned int input_size =
           std::remove_reference<NewTranslator>::type::input_size;
@@ -187,7 +191,7 @@ namespace gum {
       // now insert the translators
       for (unsigned int i = 0; i < nb_times; ++i) {
         // create the translator
-        Translator *new_translator = new NewTranslator(translator);
+        Translator* new_translator = new NewTranslator(translator);
         try {
           __translators.push_back(new_translator);
         } catch (...) {
@@ -199,11 +203,12 @@ namespace gum {
         // assign its output columns and rowFilter
         new_translator->setOutputRow(__output_row);
         new_translator->setOutputCols(__output_size);
-        __output_size += std::remove_reference<NewTranslator>::type::output_size;
+        __output_size +=
+            std::remove_reference<NewTranslator>::type::output_size;
 
         // assign the input col
-        unsigned int *inputs =
-            const_cast<unsigned int *>(new_translator->inputCols());
+        unsigned int* inputs =
+            const_cast<unsigned int*>(new_translator->inputCols());
         std::memcpy(inputs, input_cols, input_size * sizeof(unsigned int));
         for (unsigned int j = 0; j < input_size; ++j) {
           inputs[j] = input_cols[j];
@@ -220,7 +225,7 @@ namespace gum {
         unsigned int deb_col, unsigned int nb_times, unsigned int increment) {
       for (unsigned int i = 0; i < nb_times; ++i) {
         // create the translator
-        Translator *new_translator = new Translator;
+        Translator* new_translator = new Translator;
         try {
           __translators.push_back(new_translator);
         } catch (...) {
@@ -235,8 +240,8 @@ namespace gum {
         __output_size += std::remove_reference<Translator>::type::output_size;
 
         // assign the input col
-        unsigned int *inputs =
-            const_cast<unsigned int *>(new_translator->inputCols());
+        unsigned int* inputs =
+            const_cast<unsigned int*>(new_translator->inputCols());
         for (unsigned int j = 0;
              j < std::remove_reference<Translator>::type::input_size; ++j) {
           inputs[j] = deb_col + j;
@@ -274,7 +279,8 @@ namespace gum {
     /// indicates whether one of the translators needs an initial parsing
     /// of the database to initialize itself
     template <typename Translator>
-    INLINE bool DBRowTranslatorSetDynamic<Translator>::requiresInitialization() const
+    INLINE bool
+    DBRowTranslatorSetDynamic<Translator>::requiresInitialization() const
         noexcept {
       for (auto translator : __translators) {
         if (translator->requiresInitialization())
@@ -283,10 +289,11 @@ namespace gum {
       return false;
     }
 
-    /// push back the number of modalities of the variables of the output columns
+    /// push back the number of modalities of the variables of the output
+    /// columns
     template <typename Translator>
     INLINE void DBRowTranslatorSetDynamic<Translator>::modalities(
-        std::vector<unsigned int> &modals) const {
+        std::vector<unsigned int>& modals) const {
       for (auto translator : __translators) {
         translator->modalities(modals);
       }
@@ -294,8 +301,8 @@ namespace gum {
 
     /// sets the input row that shall be read by all the cell translators
     template <typename Translator>
-    INLINE void
-    DBRowTranslatorSetDynamic<Translator>::setInputRow(const DBRow &row) noexcept {
+    INLINE void DBRowTranslatorSetDynamic<Translator>::setInputRow(
+        const DBRow& row) noexcept {
       for (auto translator : __translators) {
         translator->setInputRow(row);
       }
@@ -304,7 +311,8 @@ namespace gum {
 
     /// returns the current output row
     template <typename Translator>
-    INLINE FilteredRow &DBRowTranslatorSetDynamic<Translator>::outputRow() noexcept {
+    INLINE FilteredRow&
+    DBRowTranslatorSetDynamic<Translator>::outputRow() noexcept {
       return __output_row;
     }
 
@@ -331,7 +339,8 @@ namespace gum {
 
     /// returns the current input DBRow
     template <typename Translator>
-    INLINE const DBRow &DBRowTranslatorSetDynamic<Translator>::inputRow() const {
+    INLINE const DBRow&
+    DBRowTranslatorSetDynamic<Translator>::inputRow() const {
       if (__translators.empty())
         GUM_ERROR(UndefinedElement,
                   "There are no translators in the "
@@ -352,14 +361,14 @@ namespace gum {
 
     /// returns the size of the output of the cell translators
     template <typename Translator>
-    INLINE unsigned int DBRowTranslatorSetDynamic<Translator>::outputSize() const
-        noexcept {
+    INLINE unsigned int
+    DBRowTranslatorSetDynamic<Translator>::outputSize() const noexcept {
       return __output_size;
     }
 
     /// returns the ith translator
     template <typename Translator>
-    INLINE Translator &DBRowTranslatorSetDynamic<Translator>::
+    INLINE Translator& DBRowTranslatorSetDynamic<Translator>::
     operator[](unsigned int i) {
       if (__translators.size() <= i) {
         GUM_ERROR(NotFound, "the translator cannot be found");
@@ -369,7 +378,7 @@ namespace gum {
 
     /// returns the ith translator
     template <typename Translator>
-    INLINE const Translator &DBRowTranslatorSetDynamic<Translator>::
+    INLINE const Translator& DBRowTranslatorSetDynamic<Translator>::
     operator[](unsigned int i) const {
       if (__translators.size() <= i) {
         GUM_ERROR(NotFound, "the translator cannot be found");
@@ -379,8 +388,8 @@ namespace gum {
 
     /// returns the number of translators stored into the set
     template <typename Translator>
-    INLINE unsigned int DBRowTranslatorSetDynamic<Translator>::nbTranslators() const
-        noexcept {
+    INLINE unsigned int
+    DBRowTranslatorSetDynamic<Translator>::nbTranslators() const noexcept {
       return __translators.size();
     }
 

@@ -30,8 +30,8 @@ namespace gum {
 
     /// default constructor
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE
-    ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::ScoreInternalBDeuApriori() {
+    INLINE ScoreInternalBDeuApriori<IdSetAlloc,
+                                    CountAlloc>::ScoreInternalBDeuApriori() {
       GUM_CONSTRUCTOR(ScoreInternalBDeuApriori);
     }
 
@@ -39,8 +39,9 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE
     ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::ScoreInternalBDeuApriori(
-        const ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc> &from)
-        : ScoreInternalApriori<IdSetAlloc, CountAlloc>(from), __ess(from.__ess) {
+        const ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>& from)
+        : ScoreInternalApriori<IdSetAlloc, CountAlloc>(from),
+          __ess(from.__ess) {
       GUM_CONS_CPY(ScoreInternalBDeuApriori);
     }
 
@@ -48,7 +49,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE
     ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::ScoreInternalBDeuApriori(
-        ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc> &&from)
+        ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>&& from)
         : ScoreInternalApriori<IdSetAlloc, CountAlloc>(std::move(from)),
           __ess(std::move(from.__ess)) {
       GUM_CONS_MOV(ScoreInternalBDeuApriori);
@@ -56,7 +57,7 @@ namespace gum {
 
     /// virtual copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc> *
+    INLINE ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>*
     ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::copyFactory() const {
       return new ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>(*this);
     }
@@ -83,13 +84,14 @@ namespace gum {
 
     /// insert the internal score apriori into a set of countings
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::insertScoreApriori(
-        const std::vector<unsigned int> &modalities,
-        std::vector<std::vector<float, CountAlloc>> &counts,
+    INLINE void
+    ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::insertScoreApriori(
+        const std::vector<unsigned int>& modalities,
+        std::vector<std::vector<float, CountAlloc>>& counts,
         const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                    unsigned int> *> &target_nodesets,
+                                    unsigned int>*>& target_nodesets,
         const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                    unsigned int> *> &conditioning_nodesets) {
+                                    unsigned int>*>& conditioning_nodesets) {
       if (__ess == 0)
         return;
 
@@ -100,7 +102,7 @@ namespace gum {
           const float r_i = modalities[target_nodesets[i]->first.back()];
           float q_i = 1;
           if (conditioning_nodesets[i] != nullptr) {
-            const std::vector<unsigned int, IdSetAlloc> &cond =
+            const std::vector<unsigned int, IdSetAlloc>& cond =
                 conditioning_nodesets[i]->first;
             for (auto parent : cond) {
               q_i *= modalities[parent];
@@ -109,18 +111,18 @@ namespace gum {
 
           // put ess / (r_i * q_i)  into the countings for the targets
           const float target_weight = __ess / (r_i * q_i);
-          std::vector<float, CountAlloc> &countings =
+          std::vector<float, CountAlloc>& countings =
               counts[target_nodesets[i]->second];
-          for (auto &count : countings) {
+          for (auto& count : countings) {
             count += target_weight;
           }
 
           // put ess / q_i into the countings for the conditioning nodes
           if (conditioning_nodesets[i] != nullptr) {
             const float cond_weight = __ess / q_i;
-            std::vector<float, CountAlloc> &countings =
+            std::vector<float, CountAlloc>& countings =
                 counts[conditioning_nodesets[i]->second];
-            for (auto &count : countings) {
+            for (auto& count : countings) {
               count += cond_weight;
             }
           }

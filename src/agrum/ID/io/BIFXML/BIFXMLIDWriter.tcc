@@ -48,9 +48,8 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template <typename GUM_SCALAR>
-  INLINE void
-  BIFXMLIDWriter<GUM_SCALAR>::write(std::ostream &output,
-                                    const InfluenceDiagram<GUM_SCALAR> &infdiag) {
+  INLINE void BIFXMLIDWriter<GUM_SCALAR>::write(
+      std::ostream& output, const InfluenceDiagram<GUM_SCALAR>& infdiag) {
     if (!output.good()) {
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
     }
@@ -93,9 +92,8 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template <typename GUM_SCALAR>
-  INLINE void
-  BIFXMLIDWriter<GUM_SCALAR>::write(std::string filePath,
-                                    const InfluenceDiagram<GUM_SCALAR> &infdiag) {
+  INLINE void BIFXMLIDWriter<GUM_SCALAR>::write(
+      std::string filePath, const InfluenceDiagram<GUM_SCALAR>& infdiag) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
     write(output, infdiag);
@@ -122,11 +120,14 @@ namespace gum {
     str << "<!DOCTYPE BIF [" << std::endl;
     str << "\t<!ELEMENT BIF ( NETWORK )*>" << std::endl;
     str << "\t\t<!ATTLIST BIF VERSION CDATA #REQUIRED>" << std::endl;
-    str << "\t<!ELEMENT NETWORK ( NAME, ( PROPERTY | VARIABLE | DEFINITION )* )>" <<
+    str << "\t<!ELEMENT NETWORK ( NAME, ( PROPERTY | VARIABLE | DEFINITION )*
+    )>" <<
     std::endl;
     str << "\t<!ELEMENT NAME (#PCDATA)>" << std::endl;
-    str << "\t<!ELEMENT VARIABLE ( NAME, ( OUTCOME |  PROPERTY )* ) >" << std::endl;
-    str << "\t\t<!ATTLIST VARIABLE TYPE (nature|decision|utility) \"nature\">" <<
+    str << "\t<!ELEMENT VARIABLE ( NAME, ( OUTCOME |  PROPERTY )* ) >" <<
+    std::endl;
+    str << "\t\t<!ATTLIST VARIABLE TYPE (nature|decision|utility) \"nature\">"
+    <<
     std::endl;
     str << "\t<!ELEMENT OUTCOME (#PCDATA)>" << std::endl;
     str << "\t<!ELEMENT DEFINITION ( FOR | GIVEN | TABLE | PROPERTY )* >" <<
@@ -138,7 +139,8 @@ namespace gum {
     str << "]>" << std::endl;*/
 
     // BIF version Tag
-    str << std::endl << "<BIF VERSION=\"0.3\">" << std::endl;
+    str << std::endl
+        << "<BIF VERSION=\"0.3\">" << std::endl;
 
     // Network declaration
     str << "<NETWORK>" << std::endl;
@@ -151,7 +153,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   INLINE std::string
-  BIFXMLIDWriter<GUM_SCALAR>::__variableBloc(const DiscreteVariable &var,
+  BIFXMLIDWriter<GUM_SCALAR>::__variableBloc(const DiscreteVariable& var,
                                              int varType) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
@@ -205,7 +207,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   INLINE std::string BIFXMLIDWriter<GUM_SCALAR>::__variableDefinition(
-      const NodeId &varNodeId, const InfluenceDiagram<GUM_SCALAR> &infdiag) {
+      const NodeId& varNodeId, const InfluenceDiagram<GUM_SCALAR>& infdiag) {
     //<DEFINITION>
     //<FOR>var</FOR>
     //<GIVEN>conditional var</GIVEN>
@@ -273,5 +275,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on;

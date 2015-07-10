@@ -32,7 +32,8 @@ namespace gum {
 
   // Default Constructor
   template <typename GUM_SCALAR>
-  BayesNetInference<GUM_SCALAR>::BayesNetInference(const IBayesNet<GUM_SCALAR> &bn)
+  BayesNetInference<GUM_SCALAR>::BayesNetInference(
+      const IBayesNet<GUM_SCALAR>& bn)
       : __bayesNet(bn) {
     GUM_CONSTRUCTOR(BayesNetInference);
   }
@@ -42,8 +43,8 @@ namespace gum {
   BayesNetInference<GUM_SCALAR>::~BayesNetInference() {
     GUM_DESTRUCTOR(BayesNetInference);
     _invalidatePosteriors();
-    for(auto p : __garbages)
-      delete(p);
+    for (auto p : __garbages)
+      delete (p);
   }
 
   template <typename GUM_SCALAR>
@@ -57,7 +58,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  const Potential<GUM_SCALAR> &BayesNetInference<GUM_SCALAR>::posterior(NodeId id) {
+  const Potential<GUM_SCALAR>&
+  BayesNetInference<GUM_SCALAR>::posterior(NodeId id) {
     if (!_posteriors.exists(id)) {
       _posteriors.insert(id, new Potential<GUM_SCALAR>());
       _fillPosterior(id, *_posteriors[id]);
@@ -67,20 +69,20 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  const IBayesNet<GUM_SCALAR> &BayesNetInference<GUM_SCALAR>::bn() const {
+  const IBayesNet<GUM_SCALAR>& BayesNetInference<GUM_SCALAR>::bn() const {
     return __bayesNet;
   }
 
   template <typename GUM_SCALAR>
   void BayesNetInference<GUM_SCALAR>::addHardEvidence(NodeId id, Idx pos) {
-    List<const Potential<GUM_SCALAR> *> pot_list;
+    List<const Potential<GUM_SCALAR>*> pot_list;
 
-    const DiscreteVariable &v = __bayesNet.variable(id);
+    const DiscreteVariable& v = __bayesNet.variable(id);
 
     if (pos >= v.domainSize())
       GUM_ERROR(OutOfBounds, "Indice for variable " << id << " out of bounds.");
 
-    Potential<GUM_SCALAR> *po = new Potential<GUM_SCALAR>();
+    Potential<GUM_SCALAR>* po = new Potential<GUM_SCALAR>();
     (*po) << v;
     po->fill(GUM_SCALAR(0));
 

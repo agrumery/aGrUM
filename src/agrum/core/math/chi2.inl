@@ -30,8 +30,8 @@
 namespace gum {
 
   /// sets the conditioning nodes (useful for computing degrees of freedom)
-  INLINE void
-  Chi2::setConditioningNodes(const std::vector<unsigned int> &db_conditioning_ids) {
+  INLINE void Chi2::setConditioningNodes(
+      const std::vector<unsigned int>& db_conditioning_ids) {
     __conditioning_size = 1;
     for (unsigned int i = 0; i < db_conditioning_ids.size(); ++i) {
       __conditioning_size *= __modalities[db_conditioning_ids[i]];
@@ -40,26 +40,27 @@ namespace gum {
 
   /// returns the number of degrees of freedom
   INLINE unsigned long
-  Chi2::degreesOfFreedom(const std::pair<unsigned int, unsigned int> &pair) {
+  Chi2::degreesOfFreedom(const std::pair<unsigned int, unsigned int>& pair) {
     return (__conditioning_size * (__modalities[pair.first] - 1) *
             (__modalities[pair.second] - 1));
   }
 
   /// returns the number of degrees of freedom
-  INLINE unsigned long Chi2::degreesOfFreedom(unsigned int var1, unsigned int var2) {
+  INLINE unsigned long Chi2::degreesOfFreedom(unsigned int var1,
+                                              unsigned int var2) {
     return (__conditioning_size * (__modalities[var1] - 1) *
             (__modalities[var2] - 1));
   }
 
   /// computes the critical value according to the number of degrees of freedom
   ALWAYS_INLINE float
-  Chi2::criticalValue(const std::pair<unsigned int, unsigned int> &pair) {
+  Chi2::criticalValue(const std::pair<unsigned int, unsigned int>& pair) {
     unsigned long DF = degreesOfFreedom(pair);
 
     // try to see if the threshold is not already in cache
     try {
       return __critical_values[DF];
-    } catch (const Exception &) {
+    } catch (const Exception&) {
       // here we have to compute the threshold of the chi2
       // we use Gary Perlman's algorithm
       float value = __criticalValue(__confidence_proba, DF);
@@ -69,13 +70,14 @@ namespace gum {
   }
 
   /// computes the critical value according to the number of degrees of freedom
-  ALWAYS_INLINE float Chi2::criticalValue(unsigned int var1, unsigned int var2) {
+  ALWAYS_INLINE float Chi2::criticalValue(unsigned int var1,
+                                          unsigned int var2) {
     unsigned long DF = degreesOfFreedom(var1, var2);
 
     // try to see if the threshold is not already in cache
     try {
       return __critical_values[DF];
-    } catch (const Exception &) {
+    } catch (const Exception&) {
       // here we have to compute the threshold of the chi2
       // we use Gary Perlman's algorithm
       float value = __criticalValue(__confidence_proba, DF);

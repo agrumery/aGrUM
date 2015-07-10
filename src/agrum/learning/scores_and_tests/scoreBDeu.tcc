@@ -36,8 +36,9 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE ScoreBDeu<IdSetAlloc, CountAlloc>::ScoreBDeu(
-        const RowFilter &filter, const std::vector<unsigned int> &var_modalities,
-        Apriori<IdSetAlloc, CountAlloc> &apriori)
+        const RowFilter& filter,
+        const std::vector<unsigned int>& var_modalities,
+        Apriori<IdSetAlloc, CountAlloc>& apriori)
         : Score<IdSetAlloc, CountAlloc>(filter, var_modalities, apriori) {
       __internal_apriori.setEffectiveSampleSize(__ess);
       // for debugging purposes
@@ -47,7 +48,7 @@ namespace gum {
     /// copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
     ScoreBDeu<IdSetAlloc, CountAlloc>::ScoreBDeu(
-        const ScoreBDeu<IdSetAlloc, CountAlloc> &from)
+        const ScoreBDeu<IdSetAlloc, CountAlloc>& from)
         : Score<IdSetAlloc, CountAlloc>(from), __gammalog2(from.__gammalog2),
           __internal_apriori(from.__internal_apriori) {
       // for debugging purposes
@@ -57,7 +58,7 @@ namespace gum {
     /// move constructor
     template <typename IdSetAlloc, typename CountAlloc>
     ScoreBDeu<IdSetAlloc, CountAlloc>::ScoreBDeu(
-        ScoreBDeu<IdSetAlloc, CountAlloc> &&from)
+        ScoreBDeu<IdSetAlloc, CountAlloc>&& from)
         : Score<IdSetAlloc, CountAlloc>(std::move(from)),
           __gammalog2(std::move(from.__gammalog2)),
           __internal_apriori(std::move(from.__internal_apriori)) {
@@ -67,7 +68,7 @@ namespace gum {
 
     /// virtual copy factory
     template <typename IdSetAlloc, typename CountAlloc>
-    ScoreBDeu<IdSetAlloc, CountAlloc> *
+    ScoreBDeu<IdSetAlloc, CountAlloc>*
     ScoreBDeu<IdSetAlloc, CountAlloc>::copyFactory() const {
       return new ScoreBDeu<IdSetAlloc, CountAlloc>(*this);
     }
@@ -82,7 +83,7 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template <typename IdSetAlloc, typename CountAlloc>
     bool ScoreBDeu<IdSetAlloc, CountAlloc>::isAprioriCompatible(
-        const std::string &apriori_type, float weight) {
+        const std::string& apriori_type, float weight) {
       // check that the apriori is compatible with the score
       if (apriori_type == AprioriNoAprioriType::type) {
         return true;
@@ -112,7 +113,7 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE bool ScoreBDeu<IdSetAlloc, CountAlloc>::isAprioriCompatible(
-        const Apriori<IdSetAlloc, CountAlloc> &apriori) {
+        const Apriori<IdSetAlloc, CountAlloc>& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
@@ -124,7 +125,7 @@ namespace gum {
 
     /// returns the internal apriori of the score
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
+    INLINE const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
     ScoreBDeu<IdSetAlloc, CountAlloc>::internalApriori() const noexcept {
       return __internal_apriori;
     }
@@ -151,23 +152,23 @@ namespace gum {
       }
 
       // get the counts for all the targets and for the conditioning nodes
-      const std::vector<float, CountAlloc> &N_ijk =
+      const std::vector<float, CountAlloc>& N_ijk =
           this->_getAllCounts(nodeset_index);
       const unsigned int targets_modal = N_ijk.size();
       float score = 0;
 
       // get the nodes involved in the score as well as their modalities
-      const std::vector<unsigned int, IdSetAlloc> &all_nodes =
+      const std::vector<unsigned int, IdSetAlloc>& all_nodes =
           this->_getAllNodes(nodeset_index);
-      const std::vector<unsigned int, IdSetAlloc> *conditioning_nodes =
+      const std::vector<unsigned int, IdSetAlloc>* conditioning_nodes =
           this->_getConditioningNodes(nodeset_index);
-      const std::vector<unsigned int> &modalities = this->modalities();
+      const std::vector<unsigned int>& modalities = this->modalities();
 
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
       if (conditioning_nodes) {
         // get the count of the conditioning nodes
-        const std::vector<float, CountAlloc> &N_ij =
+        const std::vector<float, CountAlloc>& N_ij =
             this->_getConditioningCounts(nodeset_index);
         const unsigned int conditioning_modal = N_ij.size();
 
@@ -176,15 +177,16 @@ namespace gum {
           // N'_ijk + ESS / (r_i * q_i )
           // (the + ESS / (r_i * q_i ) is here to take into account the
           // internal apriori of K2)
-          const std::vector<float, CountAlloc> &N_prime_ijk =
+          const std::vector<float, CountAlloc>& N_prime_ijk =
               this->_getAllApriori(nodeset_index);
-          const std::vector<float, CountAlloc> &N_prime_ij =
+          const std::vector<float, CountAlloc>& N_prime_ij =
               this->_getConditioningApriori(nodeset_index);
 
           // the BDeu score can be computed as follows:
           // sum_j=1^qi [ gammalog2 ( N'_ij + ESS / q_i ) -
           //     gammalog2 ( N_ij + N'_ij + ESS / q_i )
-          //     + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk + ESS / (r_i * q_i ) ) -
+          //     + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk + ESS / (r_i * q_i ) )
+          //     -
           //     gammalog2 ( N'_ijk + ESS / (r_i * q_i ) ) } ]
           const float ess_qi = __ess / conditioning_modal;
           const float ess_riqi = ess_qi / modalities[all_nodes.back()];
@@ -201,7 +203,8 @@ namespace gum {
           // the BDeu score can be computed as follows:
           // qi * gammalog2 (ess / qi) - ri * qi * gammalog2 (ess / (ri * qi) )
           // - sum_j=1^qi [ gammalog2 ( N_ij + ess / qi ) ]
-          // + sum_j=1^qi sum_k=1^ri log [ gammalog2 ( N_ijk + ess / (ri * qi) ) ]
+          // + sum_j=1^qi sum_k=1^ri log [ gammalog2 ( N_ijk + ess / (ri * qi) )
+          // ]
 
           // precompute ess / qi and ess / ( ri * qi )
           const float ri = modalities[all_nodes.back()];
@@ -229,7 +232,7 @@ namespace gum {
         // here, there are no conditioning nodes
 
         if (this->_apriori->weight()) {
-          const std::vector<float, CountAlloc> &N_prime_ijk =
+          const std::vector<float, CountAlloc>& N_prime_ijk =
               this->_getAllApriori(nodeset_index);
 
           // the score to compute is that of BD with aprioris
@@ -254,7 +257,8 @@ namespace gum {
             N += N_ijk[k];
             N_prime += N_prime_ijk[k];
           }
-          score += __gammalog2(N_prime + __ess) - __gammalog2(N + N_prime + __ess);
+          score +=
+              __gammalog2(N_prime + __ess) - __gammalog2(N + N_prime + __ess);
         } else {
           // the BDeu score can be computed as follows:
           // gammalog2 ( ess ) - ri * gammalog2 ( ess / ri )

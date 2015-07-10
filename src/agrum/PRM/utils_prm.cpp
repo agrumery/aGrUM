@@ -23,45 +23,55 @@
 namespace gum {
   namespace prm {
 
-    MultiDimImplementation<std::string>* copyMultiDim( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                                          const MultiDimImplementation<std::string>& source ) {
+    MultiDimImplementation<std::string>* copyMultiDim(
+        const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+        const MultiDimImplementation<std::string>& source) {
       const MultiDimImplementation<std::string>* impl = &source;
       MultiDimImplementation<std::string>* p = 0;
 
       try {
-        if( dynamic_cast< const MultiDimReadOnly<std::string>* >( impl ) ) {
-          if( dynamic_cast< const aggregator::MultiDimAggregator<std::string>* >( impl ) ) {
-            p = static_cast<MultiDimImplementation<std::string>*>( impl->newFactory() );
+        if (dynamic_cast<const MultiDimReadOnly<std::string>*>(impl)) {
+          if (dynamic_cast<const aggregator::MultiDimAggregator<std::string>*>(
+                  impl)) {
+            p = static_cast<MultiDimImplementation<std::string>*>(
+                impl->newFactory());
 
-            for( MultiDimInterface::iterator iter = impl->begin(); iter != impl->end(); ++iter )
-              p->add( * ( bij.second( *iter ) ) );
+            for (MultiDimInterface::iterator iter = impl->begin();
+                 iter != impl->end(); ++iter)
+              p->add(*(bij.second(*iter)));
           } else {
-            GUM_ERROR( FatalError, "encountered an unexpected MultiDim implementation" );
+            GUM_ERROR(FatalError,
+                      "encountered an unexpected MultiDim implementation");
           }
         } else {
-          if( dynamic_cast< const MultiDimArray<std::string>* >( impl ) ) {
-            p = new MultiDimBijArray<std::string> ( bij, static_cast< const MultiDimArray<std::string>& >( *impl ) );
-          } else if( dynamic_cast<const MultiDimBijArray<std::string>*>( impl ) ) {
-            p = new MultiDimBijArray<std::string> ( bij, static_cast<const MultiDimBijArray<std::string>&>( *impl ) );
-          } else if( dynamic_cast< const MultiDimSparse<std::string>* >( impl ) ) {
-            GUM_ERROR( FatalError, "There is no MultiDimSparse in PRMs, normally..." );
+          if (dynamic_cast<const MultiDimArray<std::string>*>(impl)) {
+            p = new MultiDimBijArray<std::string>(
+                bij, static_cast<const MultiDimArray<std::string>&>(*impl));
+          } else if (dynamic_cast<const MultiDimBijArray<std::string>*>(impl)) {
+            p = new MultiDimBijArray<std::string>(
+                bij, static_cast<const MultiDimBijArray<std::string>&>(*impl));
+          } else if (dynamic_cast<const MultiDimSparse<std::string>*>(impl)) {
+            GUM_ERROR(FatalError,
+                      "There is no MultiDimSparse in PRMs, normally...");
           } else {
-            // Just need to make the copy using the bijection but we only use multidim array
-            GUM_ERROR( FatalError, "encountered an unexpected MultiDim implementation" );
+            // Just need to make the copy using the bijection but we only use
+            // multidim array
+            GUM_ERROR(FatalError,
+                      "encountered an unexpected MultiDim implementation");
           }
         }
 
         return p;
-      } catch( Exception& e ) {
-        if( p ) delete p;
+      } catch (Exception& e) {
+        if (p)
+          delete p;
 
-        throw ;
+        throw;
       }
     }
 
-// Decompose a string in a vector of strings using "." as separators.
-    void
-    decomposePath ( const std::string& path, std::vector<std::string>& v ) {
+    // Decompose a string in a vector of strings using "." as separators.
+    void decomposePath(const std::string& path, std::vector<std::string>& v) {
       size_t prev = 0;
       size_t length = 0;
       size_t idx_1 = path.find(".");
@@ -119,18 +129,21 @@ namespace gum {
     //          iter != toRemove.end(); ++iter)
     //       pool.erase( *iter );
     //     for (Set<const DiscreteVariable*>::iterator jter =
-    //          bucket->allVariables().begin(); jter != bucket->allVariables().end();
+    //          bucket->allVariables().begin(); jter !=
+    //          bucket->allVariables().end();
     //          ++jter )
     //     {
     //       try {
     //         if ((*jter) != var) bucket->add( **jter );
     //       } catch (NotFound&) {
-    //         // This can happen if since some DiscreteVariable are not represented
+    //         // This can happen if since some DiscreteVariable are not
+    //         represented
     //         // as nodes in the undigraph (parents of input nodes)
     //         bucket->add(**jter);
     //       }
     //     }
-    //     Potential<GUM_SCALAR>* bucket_pot = new Potential<GUM_SCALAR>( bucket );
+    //     Potential<GUM_SCALAR>* bucket_pot = new Potential<GUM_SCALAR>( bucket
+    //     );
     //     trash.insert( bucket_pot );
     //     pool.insert( bucket_pot );
     //   }

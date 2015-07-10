@@ -34,4 +34,4 @@
 #define SIGNALER_PATRON_ACCEPTED
 #include "signaler_with_args.pattern.h"
 
-#endif // SIGNALER1_H__
+#endif  // SIGNALER1_H__

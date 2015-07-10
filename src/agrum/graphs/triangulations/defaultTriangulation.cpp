@@ -32,16 +32,21 @@
 
 namespace gum {
 
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /* ===            DEFAULT TRIANGULATION ALGORITHM USED BY AGRUM            === */
-  /* =========================================================================== */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
+  /* ===            DEFAULT TRIANGULATION ALGORITHM USED BY AGRUM            ===
+   */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
 
   /// basic constructor. initialize the triangulation
 
-  DefaultTriangulation::DefaultTriangulation(const UndiGraph *theGraph,
-                                             const NodeProperty<Size> *modal,
+  DefaultTriangulation::DefaultTriangulation(const UndiGraph* theGraph,
+                                             const NodeProperty<Size>* modal,
                                              bool minimality, float theRatio,
                                              float theThreshold)
       : UnconstrainedTriangulation(theGraph, modal,
@@ -109,7 +114,7 @@ namespace gum {
 
   /// virtual copy constructor
 
-  DefaultTriangulation *DefaultTriangulation::newFactory() const {
+  DefaultTriangulation* DefaultTriangulation::newFactory() const {
     return new DefaultTriangulation;
   }
 

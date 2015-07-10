@@ -47,7 +47,7 @@ namespace gum_tests {
   class CompareInferencesTestSuite : public CxxTest::TestSuite {
     private:
     // Builds a BN to test the inference
-    void fill_bn1(gum::BayesNet<double> &bn) {
+    void fill_bn1(gum::BayesNet<double>& bn) {
       gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 2);
       gum::LabelizedVariable n4("4", "", 2), n5("5", "", 3);
 
@@ -64,7 +64,7 @@ namespace gum_tests {
       bn.addArc(i2, i4);
       bn.addArc(i2, i5);
 
-      const gum::Potential<double> &p1 = bn.cpt(i1);
+      const gum::Potential<double>& p1 = bn.cpt(i1);
       {
         const double t[2] = {0.2, 0.8};
         int n = 2;
@@ -72,7 +72,7 @@ namespace gum_tests {
         p1.fillWith(v);
       }
 
-      const gum::Potential<double> &p2 = bn.cpt(i2);
+      const gum::Potential<double>& p2 = bn.cpt(i2);
       {
         const double t[2] = {0.3, 0.7};
         int n = 2;
@@ -80,7 +80,7 @@ namespace gum_tests {
         p2.fillWith(v);
       }
 
-      const gum::Potential<double> &p3 = bn.cpt(i3);
+      const gum::Potential<double>& p3 = bn.cpt(i3);
       {
         const double t[4] = {0.1, 0.9, 0.9, 0.1};
         int n = 4;
@@ -88,7 +88,7 @@ namespace gum_tests {
         p3.fillWith(v);
       }
 
-      const gum::Potential<double> &p4 = bn.cpt(i4);
+      const gum::Potential<double>& p4 = bn.cpt(i4);
       {
         const double t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 0.75, 0.25};
         int n = 8;
@@ -96,7 +96,7 @@ namespace gum_tests {
         p4.fillWith(v);
       }
 
-      const gum::Potential<double> &p5 = bn.cpt(i5);
+      const gum::Potential<double>& p5 = bn.cpt(i5);
       {
         //         int n = 16;
         //
@@ -118,7 +118,7 @@ namespace gum_tests {
       }
     }
 
-    void fill_bn2(gum::BayesNet<double> &bn) {
+    void fill_bn2(gum::BayesNet<double>& bn) {
       gum::LabelizedVariable n1("1", "", 3), n2("2", "", 4), n3("3", "", 3);
 
       i1 = bn.add(n1);
@@ -126,7 +126,7 @@ namespace gum_tests {
 
       bn.addArc(i1, i2);
 
-      const gum::Potential<double> &p1 = bn.cpt(i1);
+      const gum::Potential<double>& p1 = bn.cpt(i1);
       {
         const double t[3] = {0.2, 0.7, 0.1};
         int n = 3;
@@ -134,13 +134,14 @@ namespace gum_tests {
         p1.fillWith(v);
       }
 
-      const gum::Potential<double> &p5 = bn.cpt(i5);
+      const gum::Potential<double>& p5 = bn.cpt(i5);
       {
         int n = 12;
         const double t[12] = {0.1, 0.2, 0.3, 0.4, 0.3, 0.2,
                               0.2, 0.3, 0.4, 0.3, 0.2, 0.1};
         /*
-        const double t[n] = {0.3, 0.6, 0.1, 0.5, 0.5,0.0, 0.5, 0.5,0.0, 1.0, 0.0,
+        const double t[n] = {0.3, 0.6, 0.1, 0.5, 0.5,0.0, 0.5, 0.5,0.0, 1.0,
+        0.0,
         0.0,
         0.4, 0.6, 0.0,0.5, 0.5,0.0, 0.5, 0.5,0.0, 0.0, 0.0,1.0
         };*/
@@ -150,7 +151,7 @@ namespace gum_tests {
     }
 
     public:
-    gum::BayesNet<double> *bn;
+    gum::BayesNet<double>* bn;
     gum::NodeId i1, i2, i3, i4, i5;
 
     void setUp() {
@@ -181,32 +182,34 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(inf_gibbs.makeInference());
 
       for (const auto i : bn->nodes()) {
-        const gum::Potential<double> &marginal_gibbs = inf_gibbs.posterior(i);
-        const gum::Potential<double> &marginal_ShaShe = inf_ShaShe.posterior(i);
-        const gum::Potential<double> &marginal_LazyProp = inf_LazyProp.posterior(i);
-        const gum::Potential<double> &marginal_ValElim = inf_ValElim.posterior(i);
-        const gum::Potential<double> &marginal_JT = inf_jt.posterior(i);
+        const gum::Potential<double>& marginal_gibbs = inf_gibbs.posterior(i);
+        const gum::Potential<double>& marginal_ShaShe = inf_ShaShe.posterior(i);
+        const gum::Potential<double>& marginal_LazyProp =
+            inf_LazyProp.posterior(i);
+        const gum::Potential<double>& marginal_ValElim =
+            inf_ValElim.posterior(i);
+        const gum::Potential<double>& marginal_JT = inf_jt.posterior(i);
 
         gum::Instantiation I;
         I << bn->variable(i);
 
         for (I.setFirst(); !I.end(); ++I) {
           TS_ASSERT_DELTA(marginal_gibbs[I], marginal_ShaShe[I],
-                          5e-3); // APPROX INFERENCE
+                          5e-3);  // APPROX INFERENCE
           TS_ASSERT_DELTA(marginal_LazyProp[I], marginal_ShaShe[I],
-                          1e-10); // EXACT INFERENCE
+                          1e-10);  // EXACT INFERENCE
           TS_ASSERT_DELTA(marginal_LazyProp[I], marginal_ValElim[I],
-                          1e-10); // EXACT INFERENCE
+                          1e-10);  // EXACT INFERENCE
           TS_ASSERT_DELTA(marginal_ShaShe[I], marginal_ValElim[I],
-                          1e-10); // EXACT INFERENCE
+                          1e-10);  // EXACT INFERENCE
           TS_ASSERT_DELTA(marginal_LazyProp[I], marginal_JT[I],
-                          1e-10); // EXACT INFERENCE
+                          1e-10);  // EXACT INFERENCE
         }
       }
     }
 
     void testMultipleInference() {
-      gum::BayesNet<float> *bn;
+      gum::BayesNet<float>* bn;
       gum::Id c, s, r, w;
 
       bn = new gum::BayesNet<float>();
@@ -224,7 +227,7 @@ namespace gum_tests {
       bn->addArc(s, w);
       bn->addArc(r, w);
 
-      gum::Potential<float> *e_i1, *e_i4;
+      gum::Potential<float>* e_i1, *e_i4;
       e_i1 = new gum::Potential<float>();
       (*e_i1) << bn->variable(c);
       e_i1->fill((float)0);
@@ -263,10 +266,10 @@ namespace gum_tests {
         bn->cpt(w).fillWith(wa);
       }
 
-      gum::List<gum::Potential<float> const *> list_pot =
-          gum::List<gum::Potential<float> const *>();
+      gum::List<gum::Potential<float> const*> list_pot =
+          gum::List<gum::Potential<float> const*>();
       {
-        gum::Potential<float> *pot = new gum::Potential<float>();
+        gum::Potential<float>* pot = new gum::Potential<float>();
         pot->add(bn->variable(s));
         const float t[2] = {0., 1.};
         const std::vector<float> sa(t, t + 2);
@@ -275,7 +278,7 @@ namespace gum_tests {
       }
 
       {
-        gum::Potential<float> *pot = new gum::Potential<float>();
+        gum::Potential<float>* pot = new gum::Potential<float>();
         pot->add(bn->variable(c));
         const float t[2] = {1., 0.};
         const std::vector<float> ca(t, t + 2);
@@ -288,7 +291,7 @@ namespace gum_tests {
         inf.setVerbosity(false);
         inf.makeInference();
         {
-          const gum::Potential<float> &p = inf.posterior(w);
+          const gum::Potential<float>& p = inf.posterior(w);
           gum::Instantiation I(p);
           TS_ASSERT_DELTA(p[I], 0.3529, 3e-2);
           ++I;
@@ -299,7 +302,7 @@ namespace gum_tests {
         inf.insertEvidence(list_pot);
         inf.makeInference();
         {
-          const gum::Potential<float> &p = inf.posterior(w);
+          const gum::Potential<float>& p = inf.posterior(w);
           gum::Instantiation I(p);
           TS_ASSERT_DELTA(p[I], 0.082, 1e-2);
           ++I;
@@ -311,7 +314,7 @@ namespace gum_tests {
         gum::JunctionTreeInference<float> inf(*bn);
         inf.makeInference();
         {
-          const gum::Potential<float> &p = inf.posterior(w);
+          const gum::Potential<float>& p = inf.posterior(w);
           gum::Instantiation I(p);
           TS_ASSERT_DELTA(p[I], 0.3529, 1e-7);
           ++I;
@@ -322,7 +325,7 @@ namespace gum_tests {
         inf.insertEvidence(list_pot);
         inf.makeInference();
         {
-          const gum::Potential<float> &p = inf.posterior(w);
+          const gum::Potential<float>& p = inf.posterior(w);
           gum::Instantiation I(p);
           TS_ASSERT_DELTA(p[I], 0.082, 1e-7);
           ++I;
@@ -334,7 +337,7 @@ namespace gum_tests {
         gum::LazyPropagation<float> inf(*bn);
         inf.makeInference();
         {
-          const gum::Potential<float> &p = inf.posterior(w);
+          const gum::Potential<float>& p = inf.posterior(w);
           gum::Instantiation I(p);
           TS_ASSERT_DELTA(p[I], 0.3529, 1e-7);
           ++I;
@@ -345,7 +348,7 @@ namespace gum_tests {
         inf.insertEvidence(list_pot);
         inf.makeInference();
         {
-          const gum::Potential<float> &p = inf.posterior(w);
+          const gum::Potential<float>& p = inf.posterior(w);
           gum::Instantiation I(p);
           TS_ASSERT_DELTA(p[I], 0.082, 1e-7);
           ++I;
@@ -357,7 +360,7 @@ namespace gum_tests {
         gum::ShaferShenoyInference<float> inf(*bn);
         inf.makeInference();
         {
-          const gum::Potential<float> &p = inf.posterior(w);
+          const gum::Potential<float>& p = inf.posterior(w);
           gum::Instantiation I(p);
           TS_ASSERT_DELTA(p[I], 0.3529, 1e-5);
           ++I;
@@ -368,7 +371,7 @@ namespace gum_tests {
         inf.insertEvidence(list_pot);
         inf.makeInference();
         {
-          const gum::Potential<float> &p = inf.posterior(w);
+          const gum::Potential<float>& p = inf.posterior(w);
           gum::Instantiation I(p);
           TS_ASSERT_DELTA(p[I], 0.082, 1e-7);
           ++I;
@@ -380,7 +383,7 @@ namespace gum_tests {
         gum::VariableElimination<float> inf(*bn);
         inf.makeInference();
         {
-          const gum::Potential<float> &p = inf.posterior(w);
+          const gum::Potential<float>& p = inf.posterior(w);
           gum::Instantiation I(p);
           TS_ASSERT_DELTA(p[I], 0.3529, 1e-5);
           ++I;
@@ -391,7 +394,7 @@ namespace gum_tests {
         inf.insertEvidence(list_pot);
         inf.makeInference();
         {
-          const gum::Potential<float> &p = inf.posterior(w);
+          const gum::Potential<float>& p = inf.posterior(w);
           gum::Instantiation I(p);
           TS_ASSERT_DELTA(p[I], 0.082, 1e-7);
           ++I;
@@ -412,7 +415,7 @@ namespace gum_tests {
 
       std::string file = GET_PATH_STR("alarm.bif");
 
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
 
       gum::BIFReader<float> reader(net, file);
 
@@ -437,8 +440,8 @@ namespace gum_tests {
           I << net->variable(node);
 
           for (I.setFirst(); !I.end(); ++I) {
-            TS_ASSERT_DELTA(infLazy.posterior(node)[I], infJT.posterior(node)[I],
-                            1e-6);
+            TS_ASSERT_DELTA(infLazy.posterior(node)[I],
+                            infJT.posterior(node)[I], 1e-6);
           }
         }
       }

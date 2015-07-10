@@ -51,10 +51,13 @@ namespace gum {
      *
      * Some scores include an apriori. For instance, the K2 score is a BD score
      * with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with a
-     * N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i is the
+     * N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i is
+     *the
      * domain size of the target variable and q_i is the domain size of the
-     * Cartesian product of its parents. The goal of the score's internal apriori
-     * classes is to enable to account for these aprioris outside the score, e.g.,
+     * Cartesian product of its parents. The goal of the score's internal
+     *apriori
+     * classes is to enable to account for these aprioris outside the score,
+     *e.g.,
      * when performing parameter estimation. It is important to note that, to be
      * meaningfull a structure + parameter learning requires that the same
      * aprioris are taken into account during structure learning and parameter
@@ -74,15 +77,16 @@ namespace gum {
       ScoreInternalK2Apriori();
 
       /// virtual copy constructor
-      virtual ScoreInternalK2Apriori<IdSetAlloc, CountAlloc> *
+      virtual ScoreInternalK2Apriori<IdSetAlloc, CountAlloc>*
       copyFactory() const final;
 
       /// copy constructor
       ScoreInternalK2Apriori(
-          const ScoreInternalK2Apriori<IdSetAlloc, CountAlloc> &from);
+          const ScoreInternalK2Apriori<IdSetAlloc, CountAlloc>& from);
 
       /// move constructor
-      ScoreInternalK2Apriori(ScoreInternalK2Apriori<IdSetAlloc, CountAlloc> &&from);
+      ScoreInternalK2Apriori(
+          ScoreInternalK2Apriori<IdSetAlloc, CountAlloc>&& from);
 
       /// destructor
       virtual ~ScoreInternalK2Apriori();
@@ -96,12 +100,13 @@ namespace gum {
 
       /// insert the internal score apriori into a set of countings
       virtual void insertScoreApriori(
-          const std::vector<unsigned int> &modalities,
-          std::vector<std::vector<float, CountAlloc>> &counts,
+          const std::vector<unsigned int>& modalities,
+          std::vector<std::vector<float, CountAlloc>>& counts,
           const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                      unsigned int> *> &target_nodesets,
-          const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                      unsigned int> *> &conditioning_nodesets) final;
+                                      unsigned int>*>& target_nodesets,
+          const std::vector<
+              std::pair<std::vector<unsigned int, IdSetAlloc>, unsigned int>*>&
+              conditioning_nodesets) final;
 
       /// @}
     };

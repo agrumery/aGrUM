@@ -44,7 +44,7 @@ namespace gum {
 
   // copies the content of aLDRV
 
-  INLINE void LabelizedVariable::_copy(const LabelizedVariable &aLDRV) {
+  INLINE void LabelizedVariable::_copy(const LabelizedVariable& aLDRV) {
     DiscreteVariable::_copy(aLDRV);
     __labels.clear();
     __labels = aLDRV.labels();
@@ -52,12 +52,13 @@ namespace gum {
 
   // returns the set of labels of the variable
 
-  INLINE const Sequence<std::string> &LabelizedVariable::labels() const {
+  INLINE const Sequence<std::string>& LabelizedVariable::labels() const {
     return __labels;
   }
 
   // add a label with a new index (we assume that we will NEVER remove a label)
-  INLINE LabelizedVariable &LabelizedVariable::addLabel(const std::string aLabel) {
+  INLINE LabelizedVariable&
+  LabelizedVariable::addLabel(const std::string aLabel) {
     __labels.insert(aLabel);
 
     return *this;
@@ -76,8 +77,8 @@ namespace gum {
 
   // Default constructor
 
-  INLINE LabelizedVariable::LabelizedVariable(const std::string &aName,
-                                              const std::string &aDesc,
+  INLINE LabelizedVariable::LabelizedVariable(const std::string& aName,
+                                              const std::string& aDesc,
                                               const int nbrLabel)
       : DiscreteVariable(aName, aDesc) {
     // for debugging purposes
@@ -93,7 +94,7 @@ namespace gum {
   // Copy constructor
 
   INLINE
-  LabelizedVariable::LabelizedVariable(const LabelizedVariable &aLDRV)
+  LabelizedVariable::LabelizedVariable(const LabelizedVariable& aLDRV)
       : DiscreteVariable(aLDRV), __labels(aLDRV.labels()) {
     // for debugging purposes
     GUM_CONSTRUCTOR(LabelizedVariable);
@@ -107,14 +108,14 @@ namespace gum {
   }
 
   INLINE
-  DiscreteVariable *LabelizedVariable::clone() const {
-    LabelizedVariable *varPtr = new LabelizedVariable(*this);
-    return (DiscreteVariable *)varPtr;
+  DiscreteVariable* LabelizedVariable::clone() const {
+    LabelizedVariable* varPtr = new LabelizedVariable(*this);
+    return (DiscreteVariable*)varPtr;
   }
 
   // copy operator
-  INLINE const LabelizedVariable &LabelizedVariable::
-  operator=(const LabelizedVariable &aLDRV) {
+  INLINE const LabelizedVariable& LabelizedVariable::
+  operator=(const LabelizedVariable& aLDRV) {
     // avoid self assignment
     if (&aLDRV != this) {
       _copy(aLDRV);
@@ -125,7 +126,7 @@ namespace gum {
 
   // indicates whether the variable already has the label passed in argument
 
-  INLINE bool LabelizedVariable::isLabel(const std::string &aLabel) const {
+  INLINE bool LabelizedVariable::isLabel(const std::string& aLabel) const {
     return __labels.exists(aLabel);
   }
 
@@ -140,11 +141,11 @@ namespace gum {
   }
 
   // returns the index of a given label
-  INLINE Idx LabelizedVariable::operator[](const std::string &aLabel) const {
+  INLINE Idx LabelizedVariable::operator[](const std::string& aLabel) const {
     return index(aLabel);
   }
 
-  INLINE Idx LabelizedVariable::index(const std::string &aLabel) const {
+  INLINE Idx LabelizedVariable::index(const std::string& aLabel) const {
     try {
       return __labels.pos(aLabel);
     } catch (...) {

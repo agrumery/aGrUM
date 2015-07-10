@@ -49,7 +49,7 @@ namespace gum {
      * Constructor
      * @param aContent implementation of utility table
      */
-    UtilityTable(MultiDimImplementation<GUM_SCALAR> *aContent);
+    UtilityTable(MultiDimImplementation<GUM_SCALAR>* aContent);
 
     /**
      * Destructor
@@ -61,7 +61,7 @@ namespace gum {
      *
      * @param toCopy utility to copy (with the same variables and content)
      */
-    UtilityTable(const UtilityTable<GUM_SCALAR> &toCopy);
+    UtilityTable(const UtilityTable<GUM_SCALAR>& toCopy);
 
     /**
      * Copy operator
@@ -69,7 +69,7 @@ namespace gum {
      * @param toCopy utility to copy (with the same variables and content)
      * @return the copy
      */
-    UtilityTable<GUM_SCALAR> &operator=(const UtilityTable<GUM_SCALAR> &toCopy);
+    UtilityTable<GUM_SCALAR>& operator=(const UtilityTable<GUM_SCALAR>& toCopy);
 
     /**
      * This method creates a clone of this object, withouth its content
@@ -84,7 +84,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual UtilityTable<GUM_SCALAR> *newFactory() const;
+    virtual UtilityTable<GUM_SCALAR>* newFactory() const;
 
     /**
      * This method modifies the current table in order to store the
@@ -93,7 +93,8 @@ namespace gum {
      * @param p1 an utility
      * @param p2 an utility
      */
-    void sum(const UtilityTable<GUM_SCALAR> &p1, const UtilityTable<GUM_SCALAR> &p2);
+    void sum(const UtilityTable<GUM_SCALAR>& p1,
+             const UtilityTable<GUM_SCALAR>& p2);
 
     /**
      * This method modifies the current table A in order to compute the
@@ -101,17 +102,19 @@ namespace gum {
      *
      * @param toAdd table to add in this table (B in the description)
      */
-    void sumBy(const UtilityTable<GUM_SCALAR> &toAdd);
+    void sumBy(const UtilityTable<GUM_SCALAR>& toAdd);
 
     /**
      * This method modifies the current table A in order to compute the
-     * result of the addition with all tables in B (\f$ A \leftarrow A + \sum_{u \in
+     * result of the addition with all tables in B (\f$ A \leftarrow A + \sum_{u
+     *\in
      *B} u \f$)
      *
      * @param utilitiesList tables to add in this table (B in the description)
-     * @warning we assume that every table in B contains a subset of variables in A
+     * @warning we assume that every table in B contains a subset of variables
+     *in A
      */
-    void sumBy(const List<UtilityTable<GUM_SCALAR> *> &utilitiesList);
+    void sumBy(const List<UtilityTable<GUM_SCALAR>*>& utilitiesList);
 
     /**
      * This method reduces the current table by maximization
@@ -120,10 +123,10 @@ namespace gum {
      * @return an utility table
      */
     UtilityTable<GUM_SCALAR>
-    reduceBy(const List<const DiscreteVariable *> &varList) const;
+    reduceBy(const List<const DiscreteVariable*>& varList) const;
 
     protected:
-    virtual void _swap(const DiscreteVariable *x, const DiscreteVariable *y);
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
 
     private:
   };

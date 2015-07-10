@@ -30,7 +30,7 @@ namespace gum {
 
     /// copy constructor
     INLINE
-    CellTranslatorString::CellTranslatorString(const CellTranslatorString &from)
+    CellTranslatorString::CellTranslatorString(const CellTranslatorString& from)
         : DBCellTranslator<1, 1>(from), __max_value(from.__max_value),
           __strings(from.__strings), __check_database(from.__check_database) {
       if (from.__user_values != nullptr) {
@@ -39,18 +39,20 @@ namespace gum {
     }
 
     /// move constructor
-    INLINE CellTranslatorString::CellTranslatorString(CellTranslatorString &&from)
+    INLINE
+    CellTranslatorString::CellTranslatorString(CellTranslatorString&& from)
         : DBCellTranslator<1, 1>(std::move(from)),
           __max_value(std::move(from.__max_value)),
           __strings(std::move(from.__strings)),
           __check_database(std::move(from.__check_database)) {
       if (from.__user_values != nullptr) {
-        __user_values = new Sequence<std::string>(std::move(*from.__user_values));
+        __user_values =
+            new Sequence<std::string>(std::move(*from.__user_values));
       }
     }
 
     /// virtual copy constructor
-    INLINE CellTranslatorString *CellTranslatorString::copyFactory() {
+    INLINE CellTranslatorString* CellTranslatorString::copyFactory() {
       return new CellTranslatorString(*this);
     }
 
@@ -62,8 +64,8 @@ namespace gum {
     }
 
     /// copy operator
-    INLINE CellTranslatorString &CellTranslatorString::
-    operator=(const CellTranslatorString &from) {
+    INLINE CellTranslatorString& CellTranslatorString::
+    operator=(const CellTranslatorString& from) {
       if (this != &from) {
         DBCellTranslator<1, 1>::operator=(from);
         __max_value = from.__max_value;
@@ -81,8 +83,8 @@ namespace gum {
     }
 
     /// move operator
-    INLINE CellTranslatorString &CellTranslatorString::
-    operator=(CellTranslatorString &&from) {
+    INLINE CellTranslatorString& CellTranslatorString::
+    operator=(CellTranslatorString&& from) {
       if (this != &from) {
         DBCellTranslator<1, 1>::operator=(std::move(from));
         __max_value = std::move(from.__max_value);
@@ -93,7 +95,8 @@ namespace gum {
           __user_values = nullptr;
         }
         if (from.__user_values != nullptr) {
-          __user_values = new Sequence<std::string>(std::move(*from.__user_values));
+          __user_values =
+              new Sequence<std::string>(std::move(*from.__user_values));
         }
       }
       return *this;
@@ -115,7 +118,7 @@ namespace gum {
 
     /// add the number of modalities discovered in the database into a vector
     INLINE void
-    CellTranslatorString::modalities(std::vector<unsigned int> &modal) const
+    CellTranslatorString::modalities(std::vector<unsigned int>& modal) const
         noexcept {
       modal.push_back(__max_value);
     }
@@ -136,8 +139,8 @@ namespace gum {
 
     /// returns the name of the variable(s) the translator has processed
     INLINE void CellTranslatorString::variableNames(
-        const std::vector<std::string> &db_var,
-        std::vector<std::string> &output_vars) const {
+        const std::vector<std::string>& db_var,
+        std::vector<std::string>& output_vars) const {
       output_vars.push_back(db_var[_input_cols[0]]);
     }
 

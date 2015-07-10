@@ -31,14 +31,14 @@
 
 namespace gum {
   template <typename GUM_SCALAR>
-  BruteForceKL<GUM_SCALAR>::BruteForceKL(const IBayesNet<GUM_SCALAR> &P,
-                                         const IBayesNet<GUM_SCALAR> &Q)
+  BruteForceKL<GUM_SCALAR>::BruteForceKL(const IBayesNet<GUM_SCALAR>& P,
+                                         const IBayesNet<GUM_SCALAR>& Q)
       : KL<GUM_SCALAR>(P, Q) {
     GUM_CONSTRUCTOR(BruteForceKL);
   }
 
   template <typename GUM_SCALAR>
-  BruteForceKL<GUM_SCALAR>::BruteForceKL(const KL<GUM_SCALAR> &kl)
+  BruteForceKL<GUM_SCALAR>::BruteForceKL(const KL<GUM_SCALAR>& kl)
       : KL<GUM_SCALAR>(kl) {
     GUM_CONSTRUCTOR(BruteForceKL);
   }
@@ -57,10 +57,11 @@ namespace gum {
     _q.completeInstantiation(Iq);
 
     // map between _p variables and _q variables (using name of vars)
-    HashTable<const DiscreteVariable *, const DiscreteVariable *> map;
+    HashTable<const DiscreteVariable*, const DiscreteVariable*> map;
 
     for (Idx ite = 0; ite < Ip.nbrDim(); ++ite) {
-      map.insert(&Ip.variable(ite), &_q.variableFromName(Ip.variable(ite).name()));
+      map.insert(&Ip.variable(ite),
+                 &_q.variableFromName(Ip.variable(ite).name()));
     }
 
     for (Ip.setFirst(); !Ip.end(); ++Ip) {
@@ -92,4 +93,4 @@ namespace gum {
     _bhattacharya = -std::log(_bhattacharya);
   }
 
-} // namespace gum
+}  // namespace gum

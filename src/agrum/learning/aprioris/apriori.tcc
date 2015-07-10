@@ -37,7 +37,7 @@ namespace gum {
     /// copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE Apriori<IdSetAlloc, CountAlloc>::Apriori(
-        const Apriori<IdSetAlloc, CountAlloc> &from)
+        const Apriori<IdSetAlloc, CountAlloc>& from)
         : _weight(from._weight), _modalities(from._modalities),
           _unapriori_counts(from._unapriori_counts),
           _target_nodesets(from._target_nodesets),
@@ -48,9 +48,10 @@ namespace gum {
 
     /// move constructor
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE
-    Apriori<IdSetAlloc, CountAlloc>::Apriori(Apriori<IdSetAlloc, CountAlloc> &&from)
-        : _weight(std::move(from._weight)), _modalities(std::move(from._modalities)),
+    INLINE Apriori<IdSetAlloc, CountAlloc>::Apriori(
+        Apriori<IdSetAlloc, CountAlloc>&& from)
+        : _weight(std::move(from._weight)),
+          _modalities(std::move(from._modalities)),
           _unapriori_counts(std::move(from._unapriori_counts)),
           _target_nodesets(std::move(from._target_nodesets)),
           _conditioning_nodesets(std::move(from._conditioning_nodesets)),
@@ -67,12 +68,12 @@ namespace gum {
     /// sets the parameters for the apriori
     template <typename IdSetAlloc, typename CountAlloc>
     void Apriori<IdSetAlloc, CountAlloc>::setParameters(
-        const std::vector<unsigned int> &modalities,
-        std::vector<std::vector<float, CountAlloc>> &counts,
+        const std::vector<unsigned int>& modalities,
+        std::vector<std::vector<float, CountAlloc>>& counts,
         const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                    unsigned int> *> &target_nodesets,
+                                    unsigned int>*>& target_nodesets,
         const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                    unsigned int> *> &conditioning_nodesets) {
+                                    unsigned int>*>& conditioning_nodesets) {
       if (_weight != 0) {
         _modalities = &modalities;
         _unapriori_counts = &counts;
@@ -120,7 +121,7 @@ namespace gum {
 
     /// returns the apriori vector for a given (conditioned) target set
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc> &
+    INLINE const std::vector<float, CountAlloc>&
     Apriori<IdSetAlloc, CountAlloc>::getAllApriori(unsigned int index) {
       if (_weight) {
         return _apriori_counts[_target_nodesets->operator[](index)->second];
@@ -133,10 +134,12 @@ namespace gum {
 
     /// returns the apriori vector for a conditioning set
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc> &
-    Apriori<IdSetAlloc, CountAlloc>::getConditioningApriori(unsigned int index) {
+    INLINE const std::vector<float, CountAlloc>&
+    Apriori<IdSetAlloc, CountAlloc>::getConditioningApriori(
+        unsigned int index) {
       if (_weight) {
-        return _apriori_counts[_conditioning_nodesets->operator[](index)->second];
+        return _apriori_counts[_conditioning_nodesets->operator[](index)
+                                   ->second];
       } else {
         GUM_ERROR(OperationNotAllowed,
                   "Scores and Parameter estimators should "

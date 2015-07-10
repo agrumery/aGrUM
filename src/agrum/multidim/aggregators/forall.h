@@ -20,7 +20,8 @@
 /** @file
  * @brief count aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+*<{prenom.nom}_at_lip6.fr>
  */
 #ifndef GUM_FORALL_AGGREGATOR_H
 #define GUM_FORALL_AGGREGATOR_H
@@ -55,7 +56,7 @@ namespace gum {
     class Forall : public MultiDimAggregator<GUM_SCALAR> {
       public:
       Forall(Idx value);
-      Forall(const Forall<GUM_SCALAR> &from);
+      Forall(const Forall<GUM_SCALAR>& from);
       virtual ~Forall();
 
       /**
@@ -71,14 +72,14 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<GUM_SCALAR> *newFactory() const;
+      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
       virtual std::string aggregatorName(void) const;
 
       protected:
       virtual Idx _neutralElt(void) const;
-      virtual Idx _folder(const DiscreteVariable &v, Idx i1, Idx i2,
-                          bool &stop_iteration) const;
+      virtual Idx _folder(const DiscreteVariable& v, Idx i1, Idx i2,
+                          bool& stop_iteration) const;
 
       private:
       Idx __value;
@@ -86,9 +87,9 @@ namespace gum {
 
     extern template class Forall<float>;
     extern template class Forall<double>;
-  } // aggregator
-} // gum
+  }  // aggregator
+}  // gum
 
 #include <agrum/multidim/aggregators/forall.tcc>
 
-#endif // GUM_FORALL_AGGREGATOR_H
+#endif  // GUM_FORALL_AGGREGATOR_H

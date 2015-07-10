@@ -41,7 +41,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInit(gum::MultiDimArray<float> *t) {
+    void randomInit(gum::MultiDimArray<float>* t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -51,7 +51,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitPointer(gum::MultiDimArray<float *> *t) {
+    void randomInitPointer(gum::MultiDimArray<float*>* t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -61,7 +61,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitP(gum::Potential<double> &t) {
+    void randomInitP(gum::Potential<double>& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -71,14 +71,14 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitPPointer(gum::Potential<double *> &t) {
+    void randomInitPPointer(gum::Potential<double*>& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
         t.set(i, new double((int)(((float)rand() / RAND_MAX) * 100000)));
     }
 
-    template <typename T> void pointerDelete(gum::MultiDimArray<T *> *t) {
+    template <typename T> void pointerDelete(gum::MultiDimArray<T*>* t) {
       if (t->variablesSequence().size()) {
         gum::Instantiation i(t);
 
@@ -90,7 +90,8 @@ namespace gum_tests {
       delete t;
     }
 
-    template <typename T> void pointerDelete(gum::MultiDimImplementation<T *> *t) {
+    template <typename T>
+    void pointerDelete(gum::MultiDimImplementation<T*>* t) {
       if (t->variablesSequence().size()) {
         gum::Instantiation i(t);
 
@@ -102,7 +103,7 @@ namespace gum_tests {
       delete t;
     }
 
-    template <typename T> void pointerDelete(gum::Potential<T *> *t) {
+    template <typename T> void pointerDelete(gum::Potential<T*>* t) {
       if (t->variablesSequence().size()) {
         gum::Instantiation i(t);
 
@@ -117,9 +118,10 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template <typename T>
-    bool equal(const gum::MultiDimImplementation<T *> &t1,
-               const gum::MultiDimImplementation<T *> &t2) {
-      if ((t1.nbrDim() == t2.nbrDim()) && (t1.domainSize() == t2.domainSize())) {
+    bool equal(const gum::MultiDimImplementation<T*>& t1,
+               const gum::MultiDimImplementation<T*>& t2) {
+      if ((t1.nbrDim() == t2.nbrDim()) &&
+          (t1.domainSize() == t2.domainSize())) {
         for (const auto var : t1)
           if (!t2.variablesSequence().exists(var))
             return false;
@@ -141,8 +143,9 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template <typename T>
-    bool equal(const gum::Potential<T *> &t1, const gum::Potential<T *> &t2) {
-      if ((t1.nbrDim() == t2.nbrDim()) && (t1.domainSize() == t2.domainSize())) {
+    bool equal(const gum::Potential<T*>& t1, const gum::Potential<T*>& t2) {
+      if ((t1.nbrDim() == t2.nbrDim()) &&
+          (t1.domainSize() == t2.domainSize())) {
         for (const auto var : t1)
           if (!t2.variablesSequence().exists(var))
             return false;
@@ -164,14 +167,15 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template <typename T>
-    gum::Potential<T> *manual_instantiate(
-        const gum::Potential<T> &t_in,
-        const gum::HashTable<const gum::DiscreteVariable *, gum::Idx> &inst_vars) {
+    gum::Potential<T>*
+    manual_instantiate(const gum::Potential<T>& t_in,
+                       const gum::HashTable<const gum::DiscreteVariable*,
+                                            gum::Idx>& inst_vars) {
 
       // construction of the output table
-      gum::Potential<T> *t_out = new gum::Potential<T>;
+      gum::Potential<T>* t_out = new gum::Potential<T>;
       gum::Instantiation partial_inst;
-      const gum::Sequence<const gum::DiscreteVariable *> &tin_vars =
+      const gum::Sequence<const gum::DiscreteVariable*>& tin_vars =
           t_in.variablesSequence();
       t_out->beginMultipleChanges();
 
@@ -183,7 +187,7 @@ namespace gum_tests {
 
       t_out->endMultipleChanges();
 
-      for (const auto &elt : inst_vars)
+      for (const auto& elt : inst_vars)
         partial_inst.chgVal(elt.first, elt.second);
 
       // fill the table
@@ -205,14 +209,15 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template <typename T>
-    gum::Potential<T *> *manual_instantiate(
-        const gum::Potential<T *> &t_in,
-        const gum::HashTable<const gum::DiscreteVariable *, gum::Idx> &inst_vars) {
+    gum::Potential<T*>*
+    manual_instantiate(const gum::Potential<T*>& t_in,
+                       const gum::HashTable<const gum::DiscreteVariable*,
+                                            gum::Idx>& inst_vars) {
 
       // construction of the output table
-      gum::Potential<T *> *t_out = new gum::Potential<T *>;
+      gum::Potential<T*>* t_out = new gum::Potential<T*>;
       gum::Instantiation partial_inst;
-      const gum::Sequence<const gum::DiscreteVariable *> &tin_vars =
+      const gum::Sequence<const gum::DiscreteVariable*>& tin_vars =
           t_in.variablesSequence();
       t_out->beginMultipleChanges();
 
@@ -224,7 +229,7 @@ namespace gum_tests {
 
       t_out->endMultipleChanges();
 
-      for (const auto &elt : inst_vars)
+      for (const auto& elt : inst_vars)
         partial_inst.chgVal(elt.first, elt.second);
 
       // fill the table
@@ -246,14 +251,15 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template <typename T>
-    gum::MultiDimArray<T> *manual_instantiate(
-        const gum::MultiDimArray<T> &t_in,
-        const gum::HashTable<const gum::DiscreteVariable *, gum::Idx> &inst_vars) {
+    gum::MultiDimArray<T>*
+    manual_instantiate(const gum::MultiDimArray<T>& t_in,
+                       const gum::HashTable<const gum::DiscreteVariable*,
+                                            gum::Idx>& inst_vars) {
 
       // construction of the output table
-      gum::MultiDimArray<T> *t_out = new gum::MultiDimArray<T>;
+      gum::MultiDimArray<T>* t_out = new gum::MultiDimArray<T>;
       gum::Instantiation partial_inst;
-      const gum::Sequence<const gum::DiscreteVariable *> &tin_vars =
+      const gum::Sequence<const gum::DiscreteVariable*>& tin_vars =
           t_in.variablesSequence();
       t_out->beginMultipleChanges();
 
@@ -265,7 +271,7 @@ namespace gum_tests {
 
       t_out->endMultipleChanges();
 
-      for (const auto &elt : inst_vars)
+      for (const auto& elt : inst_vars)
         partial_inst.chgVal(elt.first, elt.second);
 
       // fill the table
@@ -287,14 +293,15 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template <typename T>
-    gum::MultiDimArray<T *> *manual_instantiate(
-        const gum::MultiDimArray<T *> &t_in,
-        const gum::HashTable<const gum::DiscreteVariable *, gum::Idx> &inst_vars) {
+    gum::MultiDimArray<T*>*
+    manual_instantiate(const gum::MultiDimArray<T*>& t_in,
+                       const gum::HashTable<const gum::DiscreteVariable*,
+                                            gum::Idx>& inst_vars) {
 
       // construction of the output table
-      gum::MultiDimArray<T *> *t_out = new gum::MultiDimArray<T *>;
+      gum::MultiDimArray<T*>* t_out = new gum::MultiDimArray<T*>;
       gum::Instantiation partial_inst;
-      const gum::Sequence<const gum::DiscreteVariable *> &tin_vars =
+      const gum::Sequence<const gum::DiscreteVariable*>& tin_vars =
           t_in.variablesSequence();
       t_out->beginMultipleChanges();
 
@@ -306,7 +313,7 @@ namespace gum_tests {
 
       t_out->endMultipleChanges();
 
-      for (const auto &elt : inst_vars)
+      for (const auto& elt : inst_vars)
         partial_inst.chgVal(elt.first, elt.second);
 
       // fill the table
@@ -327,7 +334,7 @@ namespace gum_tests {
 
     public:
     void test_MultiDimArray() {
-      std::vector<gum::LabelizedVariable *> vars(10);
+      std::vector<gum::LabelizedVariable*> vars(10);
 
       for (unsigned int i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -342,17 +349,17 @@ namespace gum_tests {
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
 
-      gum::HashTable<const gum::DiscreteVariable *, gum::Idx> inst_set;
+      gum::HashTable<const gum::DiscreteVariable*, gum::Idx> inst_set;
       inst_set.insert(vars[2], 0);
       inst_set.insert(vars[3], 2);
       inst_set.insert(vars[5], 1);
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimArray<float> *t2 =
+      gum::MultiDimArray<float>* t2 =
           partialInstantiationMultiDimArray(&t1, inst_set);
 
-      gum::MultiDimArray<float> *t3 = manual_instantiate(t1, inst_set);
+      gum::MultiDimArray<float>* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(*t2 == *t3);
       delete t2;
@@ -385,7 +392,7 @@ namespace gum_tests {
     }
 
     void test_MultiDimImplementation() {
-      std::vector<gum::LabelizedVariable *> vars(10);
+      std::vector<gum::LabelizedVariable*> vars(10);
 
       for (unsigned int i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -400,17 +407,17 @@ namespace gum_tests {
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
 
-      gum::HashTable<const gum::DiscreteVariable *, gum::Idx> inst_set;
+      gum::HashTable<const gum::DiscreteVariable*, gum::Idx> inst_set;
       inst_set.insert(vars[2], 0);
       inst_set.insert(vars[3], 2);
       inst_set.insert(vars[5], 1);
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimImplementation<float> *t2 =
+      gum::MultiDimImplementation<float>* t2 =
           partialInstantiationMultiDimImplementation(&t1, inst_set);
 
-      gum::MultiDimArray<float> *t3 = manual_instantiate(t1, inst_set);
+      gum::MultiDimArray<float>* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(*t2 == *t3);
       delete t2;
@@ -443,7 +450,7 @@ namespace gum_tests {
     }
 
     void test_MultiDimArrayPointer() {
-      std::vector<gum::LabelizedVariable *> vars(10);
+      std::vector<gum::LabelizedVariable*> vars(10);
 
       for (unsigned int i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -452,23 +459,23 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::MultiDimArray<float *> t1;
+      gum::MultiDimArray<float*> t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitPointer(&t1);
 
-      gum::HashTable<const gum::DiscreteVariable *, gum::Idx> inst_set;
+      gum::HashTable<const gum::DiscreteVariable*, gum::Idx> inst_set;
       inst_set.insert(vars[2], 0);
       inst_set.insert(vars[3], 2);
       inst_set.insert(vars[5], 1);
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimArray<float *> *t2 =
+      gum::MultiDimArray<float*>* t2 =
           partialInstantiationMultiDimArray4Pointers(&t1, inst_set);
 
-      gum::MultiDimArray<float *> *t3 = manual_instantiate(t1, inst_set);
+      gum::MultiDimArray<float*>* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(equal(*t2, *t3));
       pointerDelete(t2);
@@ -501,7 +508,7 @@ namespace gum_tests {
     }
 
     void test_MultiDimImplementationPointer() {
-      std::vector<gum::LabelizedVariable *> vars(10);
+      std::vector<gum::LabelizedVariable*> vars(10);
 
       for (unsigned int i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -510,23 +517,23 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::MultiDimArray<float *> t1;
+      gum::MultiDimArray<float*> t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitPointer(&t1);
 
-      gum::HashTable<const gum::DiscreteVariable *, gum::Idx> inst_set;
+      gum::HashTable<const gum::DiscreteVariable*, gum::Idx> inst_set;
       inst_set.insert(vars[2], 0);
       inst_set.insert(vars[3], 2);
       inst_set.insert(vars[5], 1);
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimImplementation<float *> *t2 =
+      gum::MultiDimImplementation<float*>* t2 =
           partialInstantiationMultiDimImplementation4Pointers(&t1, inst_set);
 
-      gum::MultiDimArray<float *> *t3 = manual_instantiate(t1, inst_set);
+      gum::MultiDimArray<float*>* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(equal(*t2, *t3));
       pointerDelete(t2);
@@ -561,7 +568,7 @@ namespace gum_tests {
     void test_partialInstantiation_init() {
       gum::partialInstantiation4MultiDimInit<float>();
 
-      std::vector<gum::LabelizedVariable *> vars(10);
+      std::vector<gum::LabelizedVariable*> vars(10);
 
       for (unsigned int i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -576,15 +583,16 @@ namespace gum_tests {
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
 
-      gum::HashTable<const gum::DiscreteVariable *, gum::Idx> inst_set;
+      gum::HashTable<const gum::DiscreteVariable*, gum::Idx> inst_set;
       inst_set.insert(vars[2], 0);
       inst_set.insert(vars[3], 2);
       inst_set.insert(vars[5], 1);
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimImplementation<float> *t2 = partialInstantiation(t1, inst_set);
-      gum::MultiDimArray<float> *t3 = manual_instantiate(t1, inst_set);
+      gum::MultiDimImplementation<float>* t2 =
+          partialInstantiation(t1, inst_set);
+      gum::MultiDimArray<float>* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(*t2 == *t3);
       delete t2;
@@ -619,7 +627,7 @@ namespace gum_tests {
     void test_partialInstantiationPointer_init() {
       gum::pointerPartialInstantiation4MultiDimInit<float>();
 
-      std::vector<gum::LabelizedVariable *> vars(10);
+      std::vector<gum::LabelizedVariable*> vars(10);
 
       for (unsigned int i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -628,21 +636,22 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::MultiDimArray<float *> t1;
+      gum::MultiDimArray<float*> t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitPointer(&t1);
 
-      gum::HashTable<const gum::DiscreteVariable *, gum::Idx> inst_set;
+      gum::HashTable<const gum::DiscreteVariable*, gum::Idx> inst_set;
       inst_set.insert(vars[2], 0);
       inst_set.insert(vars[3], 2);
       inst_set.insert(vars[5], 1);
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimImplementation<float *> *t2 = partialInstantiation(t1, inst_set);
-      gum::MultiDimArray<float *> *t3 = manual_instantiate(t1, inst_set);
+      gum::MultiDimImplementation<float*>* t2 =
+          partialInstantiation(t1, inst_set);
+      gum::MultiDimArray<float*>* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(equal(*t2, *t3));
       pointerDelete(t2);
@@ -675,7 +684,7 @@ namespace gum_tests {
     }
 
     void test_potential() {
-      std::vector<gum::LabelizedVariable *> vars(10);
+      std::vector<gum::LabelizedVariable*> vars(10);
 
       for (unsigned int i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -690,16 +699,16 @@ namespace gum_tests {
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitP(t1);
 
-      gum::HashTable<const gum::DiscreteVariable *, gum::Idx> inst_set;
+      gum::HashTable<const gum::DiscreteVariable*, gum::Idx> inst_set;
       inst_set.insert(vars[2], 0);
       inst_set.insert(vars[3], 2);
       inst_set.insert(vars[5], 1);
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::Potential<double> *t2 =
+      gum::Potential<double>* t2 =
           new gum::Potential<double>(partialInstantiation(t1, inst_set));
-      gum::Potential<double> *t3 = manual_instantiate(t1, inst_set);
+      gum::Potential<double>* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(*t2 == *t3);
       delete t2;
@@ -732,7 +741,7 @@ namespace gum_tests {
     }
 
     void test_potential_pointer() {
-      std::vector<gum::LabelizedVariable *> vars(10);
+      std::vector<gum::LabelizedVariable*> vars(10);
 
       for (unsigned int i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -741,22 +750,22 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::Potential<double *> t1;
+      gum::Potential<double*> t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitPPointer(t1);
 
-      gum::HashTable<const gum::DiscreteVariable *, gum::Idx> inst_set;
+      gum::HashTable<const gum::DiscreteVariable*, gum::Idx> inst_set;
       inst_set.insert(vars[2], 0);
       inst_set.insert(vars[3], 2);
       inst_set.insert(vars[5], 1);
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::Potential<double *> *t2 =
-          new gum::Potential<double *>(partialInstantiation(t1, inst_set));
-      gum::Potential<double *> *t3 = manual_instantiate(t1, inst_set);
+      gum::Potential<double*>* t2 =
+          new gum::Potential<double*>(partialInstantiation(t1, inst_set));
+      gum::Potential<double*>* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(equal(*t2, *t3));
       pointerDelete(t2);
@@ -767,7 +776,7 @@ namespace gum_tests {
       inst_set.insert(vars[7], 0);
       inst_set.insert(vars[8], 2);
       inst_set.insert(vars[9], 3);
-      t2 = new gum::Potential<double *>(partialInstantiation(t1, inst_set));
+      t2 = new gum::Potential<double*>(partialInstantiation(t1, inst_set));
       t3 = manual_instantiate(t1, inst_set);
       TS_ASSERT(equal(*t2, *t3));
       pointerDelete(t2);
@@ -778,7 +787,7 @@ namespace gum_tests {
       inst_set.insert(vars[1], 0);
       inst_set.insert(vars[2], 2);
       inst_set.insert(vars[3], 3);
-      t2 = new gum::Potential<double *>(partialInstantiation(t1, inst_set));
+      t2 = new gum::Potential<double*>(partialInstantiation(t1, inst_set));
       t3 = manual_instantiate(t1, inst_set);
       TS_ASSERT(equal(*t2, *t3));
       pointerDelete(t2);
@@ -789,7 +798,7 @@ namespace gum_tests {
     }
 
     void test_multidimPartialInstantiation() {
-      std::vector<gum::LabelizedVariable *> vars(10);
+      std::vector<gum::LabelizedVariable*> vars(10);
 
       for (unsigned int i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -806,15 +815,15 @@ namespace gum_tests {
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitP(t1);
 
-      gum::HashTable<const gum::DiscreteVariable *, gum::Idx> inst_set;
+      gum::HashTable<const gum::DiscreteVariable*, gum::Idx> inst_set;
       inst_set.insert(vars[2], 0);
       inst_set.insert(vars[3], 2);
       inst_set.insert(vars[5], 1);
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::Potential<double> *t2 = MDPI.instantiate(t1, inst_set);
-      gum::Potential<double> *t3 = manual_instantiate(t1, inst_set);
+      gum::Potential<double>* t2 = MDPI.instantiate(t1, inst_set);
+      gum::Potential<double>* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(*t2 == *t3);
       delete t2;

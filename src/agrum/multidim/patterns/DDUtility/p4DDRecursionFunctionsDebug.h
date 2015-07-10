@@ -2,9 +2,9 @@
  *    Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr *
  *                                                                                                                      *
- *   This program is free software; you can redistribute it and/or modify           *
- *   it under the terms of the GNU General Public License as published by       *
- *   the Free Software Foundation; either version 2 of the License, or              *
+ *   This program is free software; you can redistribute it and/or modify *
+ *   it under the terms of the GNU General Public License as published by *
+ *   the Free Software Foundation; either version 2 of the License, or *
  *   (at your option) any later version. *
  *                                                                                                                      *
  *   This program is distributed in the hope that it will be useful, *
@@ -12,10 +12,10 @@
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
  *   GNU General Public License for more details. *
  *                                                                                                                      *
- *   You should have received a copy of the GNU General Public License          *
+ *   You should have received a copy of the GNU General Public License *
  *   along with this program; if not, write to the *
  *   Free Software Foundation, Inc., *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.                      *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. *
  ********************************************************************************/
 /**
 * @file
@@ -38,10 +38,11 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   NodeId GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-      const MultiDimDecisionDiagramBase<GUM_SCALAR> *oldDiagram,
-      MultiDimDecisionDiagramFactoryBase<GUM_SCALAR> *factory, NodeId currentNode,
-      bool delVarAscendant, HashTable<NodeId, NodeId> &explorationTable,
-      const Set<const DiscreteVariable *> &delVars, Idx nbOperation,
+      const MultiDimDecisionDiagramBase<GUM_SCALAR>* oldDiagram,
+      MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* factory,
+      NodeId currentNode, bool delVarAscendant,
+      HashTable<NodeId, NodeId>& explorationTable,
+      const Set<const DiscreteVariable*>& delVars, Idx nbOperation,
       std::string tabu) {
     tabu += "\t";
 
@@ -66,7 +67,8 @@ namespace gum {
       return resNode;
     }
 
-    if (delVarAscendant || delVars.exists(oldDiagram->nodeVariable(currentNode))) {
+    if (delVarAscendant ||
+        delVars.exists(oldDiagram->nodeVariable(currentNode))) {
       std::cout << tabu << "ELIMINATED VAR NODE." << std::endl;
 
       if (!delVarAscendant) {
@@ -87,13 +89,15 @@ namespace gum {
       while (sonIter != oldDiagram->nodeSons(currentNode)->end()) {
         if (*sonIter != 0) {
           std::cout << tabu << "Descente sur fils : " << *sonIter << std::endl;
-          NodeId sonValueNode = GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-              oldDiagram, factory, *sonIter, true, explorationTable, delVars,
-              nbOperation, tabu);
+          NodeId sonValueNode =
+              GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
+                  oldDiagram, factory, *sonIter, true, explorationTable,
+                  delVars, nbOperation, tabu);
           resValue = GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(
               resValue, factory->nodeValue(sonValueNode));
           nbExploredModalities++;
-          std::cout << tabu << "Fin descente sur fils : " << *sonIter << std::endl;
+          std::cout << tabu << "Fin descente sur fils : " << *sonIter
+                    << std::endl;
         }
 
         ++sonIter;
@@ -103,11 +107,12 @@ namespace gum {
         std::cout << tabu << "Descente sur fils par défaut" << std::endl;
         NodeId defaultSonValueNode =
             GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-                oldDiagram, factory, oldDiagram->nodeDefaultSon(currentNode), true,
-                explorationTable, delVars, nbOperation, tabu);
+                oldDiagram, factory, oldDiagram->nodeDefaultSon(currentNode),
+                true, explorationTable, delVars, nbOperation, tabu);
 
-        for (Idx i = 0; i < oldDiagram->nodeVariable(currentNode)->domainSize() -
-                                nbExploredModalities;
+        for (Idx i = 0;
+             i < oldDiagram->nodeVariable(currentNode)->domainSize() -
+                     nbExploredModalities;
              i++)
           resValue = GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(
               resValue, factory->nodeValue(defaultSonValueNode));
@@ -147,12 +152,14 @@ namespace gum {
            sonIter != oldDiagram->nodeSons(currentNode)->end(); ++sonIter) {
         if (*sonIter != 0) {
           std::cout << tabu << "Descente sur fils : " << *sonIter << std::endl;
-          NodeId sonValueNode = GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-              oldDiagram, factory, *sonIter, false, explorationTable, delVars,
-              nbOperation, tabu);
+          NodeId sonValueNode =
+              GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
+                  oldDiagram, factory, *sonIter, false, explorationTable,
+                  delVars, nbOperation, tabu);
           sonsMap[std::distance(oldDiagram->nodeSons(currentNode)->begin(),
                                 sonIter)] = sonValueNode;
-          std::cout << tabu << "Fin descente sur fils : " << *sonIter << std::endl;
+          std::cout << tabu << "Fin descente sur fils : " << *sonIter
+                    << std::endl;
         }
       }
 

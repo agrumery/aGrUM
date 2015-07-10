@@ -30,13 +30,15 @@
 #include <agrum/config.h>
 #include <agrum/core/math/chi2.h>
 
-// constants used by Gary Perlman for his code for computing chi2 critical values
-#define GUM_Z_MAX 6.0            // maximum meaningful z value
-#define GUM_CHI_EPSILON 0.000001 // accuracy of critchi approximation
-#define GUM_CHI_MAX 99999.0      // maximum chi square value
-#define GUM_LOG_SQRT_PI 0.5723649429247000870717135 // std::log (std::sqrt (pi))
-#define GUM_I_SQRT_PI 0.5641895835477562869480795   // 1 / std::sqrt (pi)
-#define GUM_BIGX 20.0                               // max value to represent exp (x)
+// constants used by Gary Perlman for his code for computing chi2 critical
+// values
+#define GUM_Z_MAX 6.0             // maximum meaningful z value
+#define GUM_CHI_EPSILON 0.000001  // accuracy of critchi approximation
+#define GUM_CHI_MAX 99999.0       // maximum chi square value
+#define GUM_LOG_SQRT_PI                                                        \
+  0.5723649429247000870717135                      // std::log (std::sqrt (pi))
+#define GUM_I_SQRT_PI 0.5641895835477562869480795  // 1 / std::sqrt (pi)
+#define GUM_BIGX 20.0  // max value to represent exp (x)
 #define gum__ex(x) (((x) < -GUM_BIGX) ? 0.0 : std::exp(x))
 
 /// include the inlined functions if necessary
@@ -47,7 +49,8 @@
 namespace gum {
 
   /// default constructor
-  Chi2::Chi2(const std::vector<unsigned int> &var_modalities, float confidence_proba)
+  Chi2::Chi2(const std::vector<unsigned int>& var_modalities,
+             float confidence_proba)
       : __modalities(var_modalities), __confidence_proba(confidence_proba) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Chi2);
@@ -72,7 +75,8 @@ namespace gum {
         x = 1.0;
       else if (y < 1.0) {
         w = y * y;
-        x = ((((((((0.000124818987 * w - 0.001075204047) * w + 0.005198775019) * w -
+        x = ((((((((0.000124818987 * w - 0.001075204047) * w + 0.005198775019) *
+                      w -
                   0.019198292004) *
                      w +
                  0.059054035642) *

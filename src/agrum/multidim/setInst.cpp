@@ -29,9 +29,9 @@
 
 namespace gum {
 
-  void SetInst::__init(MultiDimAdressable *master) {
+  void SetInst::__init(MultiDimAdressable* master) {
     // for speed issues
-    const Sequence<const DiscreteVariable *> &v = master->variablesSequence();
+    const Sequence<const DiscreteVariable*>& v = master->variablesSequence();
     __vars.resize(v.size());
     __vals.reserve(v.size());
     // fill the SetInst
@@ -44,22 +44,24 @@ namespace gum {
 
   /// constructor for a SetInst contained into a MultiDimInterface
 
-  SetInst::SetInst(MultiDimAdressable &d) : /*__master( 0 ),*/ __overflow(false) {
+  SetInst::SetInst(MultiDimAdressable& d)
+      : /*__master( 0 ),*/ __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
     __init(&d);
   }
 
-  SetInst::SetInst(const MultiDimAdressable &d)
+  SetInst::SetInst(const MultiDimAdressable& d)
       : /*__master( 0 ),*/ __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
-    __init(const_cast<MultiDimAdressable *>(&d));
+    __init(const_cast<MultiDimAdressable*>(&d));
   }
 
   /// constructor for a SetInst contained into a MultiDimInterface
 
-  SetInst::SetInst(MultiDimAdressable *d) : /*__master( 0 ),*/ __overflow(false) {
+  SetInst::SetInst(MultiDimAdressable* d)
+      : /*__master( 0 ),*/ __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
 
@@ -71,18 +73,18 @@ namespace gum {
   /** this constructor is needed in order to allow creation of SetInst(this)
    * in MultiDimAdressable and below */
 
-  SetInst::SetInst(const MultiDimAdressable *const_d)
+  SetInst::SetInst(const MultiDimAdressable* const_d)
       : /*__master( 0 ),*/ __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
 
     if (const_d)
-      __init(const_cast<MultiDimAdressable *>(const_d));
+      __init(const_cast<MultiDimAdressable*>(const_d));
   }
 
   /// copy constructor
 
-  SetInst::SetInst(const SetInst &aI)
+  SetInst::SetInst(const SetInst& aI)
       : /* MultiDimInterface(), __master( 0 ),*/ __overflow(false) {
     // for debugging purposes
     GUM_CONS_CPY(SetInst);
@@ -94,11 +96,11 @@ namespace gum {
     // if ( aI.__master && notifyMaster ) actAsSlave( *aI.__master );
   }
 
-  SetInst::SetInst(const Instantiation &aI)
+  SetInst::SetInst(const Instantiation& aI)
       : /* MultiDimInterface(), __master( 0 ),*/ __overflow(false) {
     // for debugging purposes
     GUM_CONS_CPY(SetInst);
-    const Sequence<const DiscreteVariable *> &v = aI.variablesSequence();
+    const Sequence<const DiscreteVariable*>& v = aI.variablesSequence();
     __vars.resize(v.size());
     //__vals.reserve( v.size() );
     // fill the SetInst
@@ -113,7 +115,7 @@ namespace gum {
   }
 
   // operator=
-  SetInst &SetInst::operator=(const SetInst &aI) {
+  SetInst& SetInst::operator=(const SetInst& aI) {
     /* if ( __master ) {
        if ( ! aI.isMaster( __master ) ) { // aI as the same master.
        if ( nbrDim()!=aI.nbrDim() ) GUM_ERROR( OperationNotAllowed, "in slave
@@ -121,7 +123,8 @@ namespace gum {
 
        for ( Idx i=0;i<nbrDim();i++ ) {
        if (( ! contains( aI.variable( i ) ) ) ||
-       ( ! aI.contains( variable( i ) ) ) ) GUM_ERROR( OperationNotAllowed, "in slave
+       ( ! aI.contains( variable( i ) ) ) ) GUM_ERROR( OperationNotAllowed, "in
+       slave
        SetInst" );
        }
        }
@@ -139,7 +142,8 @@ namespace gum {
     return *this;
   }
 
-  /// function is called by the master (if any) when changes arise in its vars list
+  /// function is called by the master (if any) when changes arise in its vars
+  /// list
 
   /*
      void SetInst::changeDimCommand
@@ -158,7 +162,8 @@ namespace gum {
   __add (*v[iter]);
   modif = true;
   }
-  // if we are a slave of a master, then we should update in the latter the pointer
+  // if we are a slave of a master, then we should update in the latter the
+  pointer
   // to the array's valued pointed to by the SetInst
   if (isSlave() && modif)
   __master->changeNotification(*this);
@@ -175,7 +180,7 @@ namespace gum {
 
     sstr << "<";
 
-    Sequence<const DiscreteVariable *>::iterator_safe iter = __vars.begin();
+    Sequence<const DiscreteVariable*>::iterator_safe iter = __vars.begin();
 
     if (iter != __vars.end()) {
       std::stringstream sstr2;
@@ -235,19 +240,19 @@ namespace gum {
 
   /// an operator for user-friendly displaying the content of a SetInst
 
-  std::ostream &operator<<(std::ostream &aStream, const SetInst &i) {
+  std::ostream& operator<<(std::ostream& aStream, const SetInst& i) {
     aStream << i.toString();
     return aStream;
   }
-  gum::SetInst &operator<<(gum::SetInst &inst, const gum::DiscreteVariable &i) {
+  gum::SetInst& operator<<(gum::SetInst& inst, const gum::DiscreteVariable& i) {
     inst.add(i);
     return inst;
   }
-  gum::SetInst &operator>>(gum::SetInst &inst, const gum::DiscreteVariable &i) {
+  gum::SetInst& operator>>(gum::SetInst& inst, const gum::DiscreteVariable& i) {
     inst.erase(i);
     return inst;
   }
 
 } /* namespace gum */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

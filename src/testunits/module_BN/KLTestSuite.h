@@ -47,21 +47,24 @@ namespace gum_tests {
     void testConstructor() {
       gum::BayesNet<float> net1;
       {
-        gum::BIFReader<float> reader(&net1, GET_PATH_STR("BIFReader_file2.bif"));
+        gum::BIFReader<float> reader(&net1,
+                                     GET_PATH_STR("BIFReader_file2.bif"));
         reader.trace(false);
         reader.proceed();
       }
 
       gum::BayesNet<float> net2;
       {
-        gum::BIFReader<float> reader(&net2, GET_PATH_STR("BIFReader_file3.bif"));
+        gum::BIFReader<float> reader(&net2,
+                                     GET_PATH_STR("BIFReader_file3.bif"));
         reader.trace(false);
         reader.proceed();
       }
 
       gum::BayesNet<float> net3;
       {
-        gum::BIFReader<float> reader(&net3, GET_PATH_STR("BIFReader_file4.bif"));
+        gum::BIFReader<float> reader(&net3,
+                                     GET_PATH_STR("BIFReader_file4.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -75,7 +78,8 @@ namespace gum_tests {
     void testDifficulty1() {
       gum::BayesNet<float> net2;
       {
-        gum::BIFReader<float> reader(&net2, GET_PATH_STR("BIFReader_file3.bif"));
+        gum::BIFReader<float> reader(&net2,
+                                     GET_PATH_STR("BIFReader_file3.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -97,7 +101,8 @@ namespace gum_tests {
     void testKLComputation() {
       gum::BayesNet<float> net3;
       {
-        gum::BIFReader<float> reader(&net3, GET_PATH_STR("BIFReader_file3.bif"));
+        gum::BIFReader<float> reader(&net3,
+                                     GET_PATH_STR("BIFReader_file3.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -112,7 +117,8 @@ namespace gum_tests {
 
       gum::BayesNet<float> net4;
       {
-        gum::BIFReader<float> reader(&net4, GET_PATH_STR("BIFReader_file4.bif"));
+        gum::BIFReader<float> reader(&net4,
+                                     GET_PATH_STR("BIFReader_file4.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -189,4 +195,4 @@ namespace gum_tests {
       // GUM_TRACE_VAR( kl.history() );
     }
   };
-} // gum_tests
+}  // gum_tests

@@ -46,20 +46,20 @@ namespace gum_tests {
 
   class BIFXMLIDWriterTestSuite : public CxxTest::TestSuite {
     private:
-    void fillTopo(gum::InfluenceDiagram<double> &infDiag,
-                  gum::List<gum::NodeId> &idList) {
+    void fillTopo(gum::InfluenceDiagram<double>& infDiag,
+                  gum::List<gum::NodeId>& idList) {
       try {
-        idList.insert(infDiag.addDecisionNode(*decisionVar1)); // 0
-        idList.insert(infDiag.addDecisionNode(*decisionVar2)); // 1
-        idList.insert(infDiag.addDecisionNode(*decisionVar3)); // 2
-        idList.insert(infDiag.addDecisionNode(*decisionVar4)); // 3
-        idList.insert(infDiag.addChanceNode(*chanceVar1));     // 4
-        idList.insert(infDiag.addChanceNode(*chanceVar2));     // 5
-        idList.insert(infDiag.addChanceNode(*chanceVar3));     // 6
-        idList.insert(infDiag.addChanceNode(*chanceVar4));     // 7
-        idList.insert(infDiag.addChanceNode(*chanceVar5));     // 8
-        idList.insert(infDiag.addUtilityNode(*utilityVar1));   // 9
-        idList.insert(infDiag.addUtilityNode(*utilityVar2));   // 10
+        idList.insert(infDiag.addDecisionNode(*decisionVar1));  // 0
+        idList.insert(infDiag.addDecisionNode(*decisionVar2));  // 1
+        idList.insert(infDiag.addDecisionNode(*decisionVar3));  // 2
+        idList.insert(infDiag.addDecisionNode(*decisionVar4));  // 3
+        idList.insert(infDiag.addChanceNode(*chanceVar1));      // 4
+        idList.insert(infDiag.addChanceNode(*chanceVar2));      // 5
+        idList.insert(infDiag.addChanceNode(*chanceVar3));      // 6
+        idList.insert(infDiag.addChanceNode(*chanceVar4));      // 7
+        idList.insert(infDiag.addChanceNode(*chanceVar5));      // 8
+        idList.insert(infDiag.addUtilityNode(*utilityVar1));    // 9
+        idList.insert(infDiag.addUtilityNode(*utilityVar2));    // 10
 
         infDiag.addArc(idList[0], idList[4]);
         infDiag.addArc(idList[4], idList[9]);
@@ -74,18 +74,19 @@ namespace gum_tests {
         infDiag.addArc(idList[8], idList[10]);
         infDiag.addArc(idList[3], idList[10]);
 
-      } catch (gum::Exception &e) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+      } catch (gum::Exception& e) {
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
     }
 
-    void fill(gum::InfluenceDiagram<double> &infDiag,
-              gum::List<gum::NodeId> &idList) {
+    void fill(gum::InfluenceDiagram<double>& infDiag,
+              gum::List<gum::NodeId>& idList) {
       fillTopo(infDiag, idList);
 
       try {
-        const gum::Potential<double> &p1 = infDiag.cpt(idList[4]);
+        const gum::Potential<double>& p1 = infDiag.cpt(idList[4]);
         {
           // FILLING PARAMS
           const double t[4] = {0.2, 0.8, 0.5, 0.5};
@@ -94,7 +95,7 @@ namespace gum_tests {
           p1.fillWith(v);
         }
 
-        const gum::Potential<double> &p2 = infDiag.cpt(idList[5]);
+        const gum::Potential<double>& p2 = infDiag.cpt(idList[5]);
         {
           // FILLING PARAMS
           const double t[4] = {0.1, 0.9, 0.9, 0.1};
@@ -103,7 +104,7 @@ namespace gum_tests {
           p2.fillWith(v);
         }
 
-        const gum::Potential<double> &p3 = infDiag.cpt(idList[6]);
+        const gum::Potential<double>& p3 = infDiag.cpt(idList[6]);
         {
           // FILLING PARAMS
           const double t[4] = {0.35, 0.65, 0.19, 0.81};
@@ -112,7 +113,7 @@ namespace gum_tests {
           p3.fillWith(v);
         }
 
-        const gum::Potential<double> &p4 = infDiag.cpt(idList[7]);
+        const gum::Potential<double>& p4 = infDiag.cpt(idList[7]);
         {
           // FILLING PARAMS
           const double t[4] = {0.4, 0.6, 0.5, 0.5};
@@ -121,7 +122,7 @@ namespace gum_tests {
           p4.fillWith(v);
         }
 
-        const gum::Potential<double> &p5 = infDiag.cpt(idList[8]);
+        const gum::Potential<double>& p5 = infDiag.cpt(idList[8]);
         {
           // FILLING PARAMS
           const double t[8] = {0.4, 0.6, 0.8, 0.2, 0.4, 0.6, 0.3, 0.7};
@@ -130,7 +131,7 @@ namespace gum_tests {
           p5.fillWith(v);
         }
 
-        const gum::UtilityTable<double> &u1 = infDiag.utility(idList[9]);
+        const gum::UtilityTable<double>& u1 = infDiag.utility(idList[9]);
         {
           // FILLING PARAMS
           const double t[4] = {42, 69, 666, 84};
@@ -139,7 +140,7 @@ namespace gum_tests {
           u1.fillWith(v);
         }
 
-        const gum::UtilityTable<double> &u2 = infDiag.utility(idList[10]);
+        const gum::UtilityTable<double>& u2 = infDiag.utility(idList[10]);
         {
           // FILLING PARAMS
           const double t[4] = {42, -69, 666, 84};
@@ -147,20 +148,21 @@ namespace gum_tests {
           const std::vector<double> v(t, t + n);
           u2.fillWith(v);
         }
-      } catch (gum::Exception &e) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+      } catch (gum::Exception& e) {
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
     }
 
     public:
-    gum::InfluenceDiagram<double> *id;
-    gum::List<gum::NodeId> *idListPtr;
-    gum::LabelizedVariable *decisionVar1, *decisionVar2, *decisionVar3,
+    gum::InfluenceDiagram<double>* id;
+    gum::List<gum::NodeId>* idListPtr;
+    gum::LabelizedVariable* decisionVar1, *decisionVar2, *decisionVar3,
         *decisionVar4;
-    gum::LabelizedVariable *chanceVar1, *chanceVar2, *chanceVar3, *chanceVar4,
+    gum::LabelizedVariable* chanceVar1, *chanceVar2, *chanceVar3, *chanceVar4,
         *chanceVar5;
-    gum::LabelizedVariable *utilityVar1, *utilityVar2;
+    gum::LabelizedVariable* utilityVar1, *utilityVar2;
 
     void setUp() {
       id = new gum::InfluenceDiagram<double>();
@@ -198,7 +200,7 @@ namespace gum_tests {
     }
 
     void testConstuctor() {
-      gum::BIFXMLIDWriter<double> *writer = nullptr;
+      gum::BIFXMLIDWriter<double>* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLIDWriter<double>());
       delete writer;
     }

@@ -33,7 +33,7 @@ namespace gum {
     }
 
     INLINE
-    NameGenerator::NameGenerator(const NameGenerator &source)
+    NameGenerator::NameGenerator(const NameGenerator& source)
         : __counters(source.__counters) {
       GUM_CONS_CPY(NameGenerator);
     }
@@ -42,7 +42,7 @@ namespace gum {
     NameGenerator::~NameGenerator() { GUM_DESTRUCTOR(NameGenerator); }
 
     INLINE
-    NameGenerator &NameGenerator::operator=(const NameGenerator &source) {
+    NameGenerator& NameGenerator::operator=(const NameGenerator& source) {
       __counters = source.__counters;
       return *this;
     }

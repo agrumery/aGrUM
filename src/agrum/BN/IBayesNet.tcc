@@ -56,14 +56,14 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  IBayesNet<GUM_SCALAR>::IBayesNet(const IBayesNet<GUM_SCALAR> &source)
+  IBayesNet<GUM_SCALAR>::IBayesNet(const IBayesNet<GUM_SCALAR>& source)
       : DAGmodel(source) {
     GUM_CONS_CPY(IBayesNet);
   }
 
   template <typename GUM_SCALAR>
-  IBayesNet<GUM_SCALAR> &IBayesNet<GUM_SCALAR>::
-  operator=(const IBayesNet<GUM_SCALAR> &source) {
+  IBayesNet<GUM_SCALAR>& IBayesNet<GUM_SCALAR>::
+  operator=(const IBayesNet<GUM_SCALAR>& source) {
     if (this != &source) {
       DAGmodel::operator=(source);
     }
@@ -96,8 +96,8 @@ namespace gum {
     double dSize = log10DomainSize();
 
     for (auto node : nodes()) {
-      param += ((const MultiDimImplementation<GUM_SCALAR> &)cpt(node).getMasterRef())
-                   .realSize();
+      param += ((const MultiDimImplementation<GUM_SCALAR>&)cpt(node)
+                    .getMasterRef()).realSize();
     }
 
     double compressionRatio = log10(1.0 * param) - dSize;
@@ -131,7 +131,7 @@ namespace gum {
 
     try {
       bn_name = this->property("name");
-    } catch (NotFound &) {
+    } catch (NotFound&) {
       bn_name = "no_name";
     }
 
@@ -165,10 +165,12 @@ namespace gum {
     return output.str();
   }
 
-  /// Compute a parameter of the joint probability for the BN (given an instantiation
+  /// Compute a parameter of the joint probability for the BN (given an
+  /// instantiation
   /// of the vars)
   template <typename GUM_SCALAR>
-  GUM_SCALAR IBayesNet<GUM_SCALAR>::jointProbability(const Instantiation &i) const {
+  GUM_SCALAR
+  IBayesNet<GUM_SCALAR>::jointProbability(const Instantiation& i) const {
     GUM_SCALAR value = (GUM_SCALAR)1.0;
 
     GUM_SCALAR tmp;
@@ -184,11 +186,12 @@ namespace gum {
     return value;
   }
 
-  /// Compute a parameter of the joint probability for the BN (given an instantiation
+  /// Compute a parameter of the joint probability for the BN (given an
+  /// instantiation
   /// of the vars)
   template <typename GUM_SCALAR>
   GUM_SCALAR
-  IBayesNet<GUM_SCALAR>::log2JointProbability(const Instantiation &i) const {
+  IBayesNet<GUM_SCALAR>::log2JointProbability(const Instantiation& i) const {
     GUM_SCALAR value = (GUM_SCALAR)0.0;
 
     GUM_SCALAR tmp;
@@ -205,7 +208,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  bool IBayesNet<GUM_SCALAR>::operator==(const IBayesNet &from) const {
+  bool IBayesNet<GUM_SCALAR>::operator==(const IBayesNet& from) const {
     if (size() != from.size()) {
       return false;
     }
@@ -215,13 +218,13 @@ namespace gum {
     }
 
     // alignment of variables between the 2 BNs
-    Bijection<const DiscreteVariable *, const DiscreteVariable *> alignment;
+    Bijection<const DiscreteVariable*, const DiscreteVariable*> alignment;
 
     for (auto node : nodes()) {
       try {
         alignment.insert(&variable(node),
                          &from.variableFromName(variable(node).name()));
-      } catch (NotFound &e) {
+      } catch (NotFound& e) {
         // a name is not found in from
         return false;
       }
@@ -243,12 +246,12 @@ namespace gum {
 
       for (i.setFirst(); not i.end(); i.inc()) {
         for (Idx indice = 0; indice < cpt(node).nbrDim(); ++indice) {
-          const DiscreteVariable *p = &(i.variable(indice));
+          const DiscreteVariable* p = &(i.variable(indice));
           j.chgVal(*(alignment.second(p)), i.val(*p));
         }
 
-        if (std::pow(cpt(node).get(i) - from.cpt(fromnode).get(j), (GUM_SCALAR)2) >
-            (GUM_SCALAR)1e-6) {
+        if (std::pow(cpt(node).get(i) - from.cpt(fromnode).get(j),
+                     (GUM_SCALAR)2) > (GUM_SCALAR)1e-6) {
           return false;
         }
       }
@@ -258,13 +261,13 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  bool IBayesNet<GUM_SCALAR>::operator!=(const IBayesNet &from) const {
+  bool IBayesNet<GUM_SCALAR>::operator!=(const IBayesNet& from) const {
     return not this->operator==(from);
   }
 
   template <typename GUM_SCALAR>
-  INLINE std::ostream &operator<<(std::ostream &output,
-                                  const IBayesNet<GUM_SCALAR> &bn) {
+  INLINE std::ostream& operator<<(std::ostream& output,
+                                  const IBayesNet<GUM_SCALAR>& bn) {
     output << bn.toString();
     return output;
   }

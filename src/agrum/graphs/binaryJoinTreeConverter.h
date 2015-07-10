@@ -60,24 +60,25 @@ namespace gum {
      * optimize the combination of the potentials contained in the cliques.
      * @throws InvalidNode exception is thrown if some roots do not belong to
      * JT or if several roots belong to the same connected component.
-     * @warning If you do not pass in argument a root for each connected component,
+     * @warning If you do not pass in argument a root for each connected
+     * component,
      * then for those with unspecified roots, an arbitrary root will be computed
      * and used for the binarization. */
-    virtual CliqueGraph convert(const CliqueGraph &JT,
-                                const NodeProperty<unsigned int> &domain_sizes,
-                                const NodeSet &roots) = 0;
+    virtual CliqueGraph convert(const CliqueGraph& JT,
+                                const NodeProperty<unsigned int>& domain_sizes,
+                                const NodeSet& roots) = 0;
 
     /// returns all the roots considered for all the connected components
-    virtual const NodeSet &roots() const = 0;
+    virtual const NodeSet& roots() const = 0;
 
     /// @}
 
     private:
     /// forbid copy constructor
-    BinaryJoinTreeConverter(const BinaryJoinTreeConverter &);
+    BinaryJoinTreeConverter(const BinaryJoinTreeConverter&);
 
     /// forbid copy operator
-    BinaryJoinTreeConverter &operator=(const BinaryJoinTreeConverter &);
+    BinaryJoinTreeConverter& operator=(const BinaryJoinTreeConverter&);
   };
 
 } /* namespace gum */

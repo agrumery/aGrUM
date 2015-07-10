@@ -54,8 +54,9 @@ namespace gum_tests {
     void test_k2_asia() {
       gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
 
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8>());
 
       auto generators =
           gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
@@ -68,7 +69,8 @@ namespace gum_tests {
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<> score(filter, modalities, apriori);
 
-      gum::learning::StructuralConstraintDAG struct_constraint(modalities.size());
+      gum::learning::StructuralConstraintDAG struct_constraint(
+          modalities.size());
 
       gum::learning::ParamEstimatorML<> estimator(filter, modalities, apriori);
 
@@ -77,8 +79,8 @@ namespace gum_tests {
         order[i] = i;
       }
 
-      gum::learning::GraphChangesGenerator4K2<decltype(struct_constraint)> op_set(
-          struct_constraint);
+      gum::learning::GraphChangesGenerator4K2<decltype(struct_constraint)>
+          op_set(struct_constraint);
 
       gum::learning::GraphChangesSelector4DiGraph<
           decltype(score), decltype(struct_constraint), decltype(op_set)>
@@ -90,15 +92,15 @@ namespace gum_tests {
 
       try {
         gum::BayesNet<float> bn =
-            k2.learnBN(selector, estimator, database.variableNames(), modalities,
-                       filter.translatorSet());
+            k2.learnBN(selector, estimator, database.variableNames(),
+                       modalities, filter.translatorSet());
 
         gum::BayesNet<double> bn2 =
             k2.learnBN<double>(selector, estimator, database.variableNames(),
                                modalities, filter.translatorSet());
         TS_ASSERT(bn.dag().arcs().size() == 8);
         TS_ASSERT(bn2.dag().arcs().size() == 8);
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
       }
     }
@@ -112,7 +114,8 @@ namespace gum_tests {
                                 gum::learning::Col<0>, 8 > () );
 
       auto generators =
-        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity ()
+    );
 
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
@@ -136,7 +139,8 @@ namespace gum_tests {
 
       gum::learning::K2 k2;
 
-      gum::BayesNet<float> bn = k2.learnBN ( score, struct_constraint, estimator,
+      gum::BayesNet<float> bn = k2.learnBN ( score, struct_constraint,
+    estimator,
                                              database.variableNames (),
                                              modalities, order );
 

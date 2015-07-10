@@ -30,9 +30,12 @@
 
 namespace gum {
 
-  /* =========================================================================== */
-  /* ===             BASIC TRIANGULATION ALGORITHM USED BY AGRUM             === */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===             BASIC TRIANGULATION ALGORITHM USED BY AGRUM             ===
+   */
+  /* ===========================================================================
+   */
   /** @class DefaultTriangulation
    * @brief The default triangulation algorithm used by aGrUM
    *
@@ -46,10 +49,13 @@ namespace gum {
    * # then an elimination tree is computed from this triangulated graph
    * # finally, a junction tree is derived from the elimination tree
    *
-   * The triangulation step first tries to remove simplicial nodes, that is, nodes
-   * that belong to only one clique. Then almost simplicial nodes of low width are
+   * The triangulation step first tries to remove simplicial nodes, that is,
+   *nodes
+   * that belong to only one clique. Then almost simplicial nodes of low width
+   *are
    * removed (almost simplicial nodes are nodes such that all but one of their
-   * neighbours form a clique). Then quasi simplicial nodes are removed, that is,
+   * neighbours form a clique). Then quasi simplicial nodes are removed, that
+   *is,
    * nodes such that the ratio of the number of fill-ins to add to form a clique
    * by the number of edges in a clique is small. Then nodes that create cliques
    * of small weight are removed.
@@ -57,9 +63,11 @@ namespace gum {
    * The transformation from the elimination tree to the join tree is performed
    * bottom-up. Each time a node of the elimination tree is identified to be a
    * sub-clique, it is removed and all of its parents but one are linked to the
-   * latter. The identification of sub-cliques is very fast (comparison of 2 ints).
+   * latter. The identification of sub-cliques is very fast (comparison of 2
+   *ints).
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   class DefaultTriangulation : public UnconstrainedTriangulation {
     public:
     // ############################################################################
@@ -69,8 +77,8 @@ namespace gum {
 
     /// basic constructor. initialize the triangulation
 
-    explicit DefaultTriangulation(const UndiGraph *graph,
-                                  const NodeProperty<Size> *modal,
+    explicit DefaultTriangulation(const UndiGraph* graph,
+                                  const NodeProperty<Size>* modal,
                                   bool minimality = false,
                                   float theRatio = GUM_QUASI_RATIO,
                                   float theThreshold = GUM_WEIGHT_THRESHOLD);
@@ -97,7 +105,7 @@ namespace gum {
      * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++.*/
 
-    virtual DefaultTriangulation *newFactory() const;
+    virtual DefaultTriangulation* newFactory() const;
 
     /// @}
 
@@ -115,7 +123,7 @@ namespace gum {
 
     /// copy operator
 
-    DefaultTriangulation &operator=(const DefaultTriangulation &);
+    DefaultTriangulation& operator=(const DefaultTriangulation&);
 
     /// @}
 

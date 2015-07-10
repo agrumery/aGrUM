@@ -31,7 +31,7 @@ namespace gum {
     GUM_CONSTRUCTOR(DAGmodel);
   }
 
-  DAGmodel::DAGmodel(const DAGmodel &from)
+  DAGmodel::DAGmodel(const DAGmodel& from)
       : _dag(from._dag), __mutableMoralGraph(nullptr),
         __mutableTopologicalOrder(nullptr), __propertiesMap(nullptr) {
     GUM_CONS_CPY(DAGmodel);
@@ -72,7 +72,8 @@ namespace gum {
       roots.pop_back();
 
       while (dag.children(__mutableTopologicalOrder->back()).size()) {
-        NodeId child = *(dag.children(__mutableTopologicalOrder->back()).begin());
+        NodeId child =
+            *(dag.children(__mutableTopologicalOrder->back()).begin());
         dag.eraseArc(Arc(__mutableTopologicalOrder->back(), child));
 
         if (dag.parents(child).empty())
@@ -95,7 +96,7 @@ namespace gum {
 
     // marry the parents
     for (const auto node : nodes()) {
-      const NodeSet &parents = dag().parents(node);
+      const NodeSet& parents = dag().parents(node);
 
       for (auto it1 = parents.begin(); it1 != parents.end(); ++it1) {
         auto it2 = it1;
@@ -108,7 +109,7 @@ namespace gum {
     }
   }
 
-  DAGmodel &DAGmodel::operator=(const DAGmodel &source) {
+  DAGmodel& DAGmodel::operator=(const DAGmodel& source) {
     if (this != &source) {
       if (__propertiesMap) {
         delete __propertiesMap;
@@ -136,8 +137,9 @@ namespace gum {
     return *this;
   }
 
-  const UndiGraph &DAGmodel::moralGraph(bool clear) const {
-    if (clear || (__mutableMoralGraph == nullptr)) { // we have to call _moralGraph
+  const UndiGraph& DAGmodel::moralGraph(bool clear) const {
+    if (clear ||
+        (__mutableMoralGraph == nullptr)) {  // we have to call _moralGraph
       if (__mutableMoralGraph == nullptr) {
         __mutableMoralGraph = new UndiGraph();
       } else {
@@ -151,9 +153,9 @@ namespace gum {
     return *__mutableMoralGraph;
   }
 
-  const Sequence<NodeId> &DAGmodel::topologicalOrder(bool clear) const {
+  const Sequence<NodeId>& DAGmodel::topologicalOrder(bool clear) const {
     if (clear || (__mutableTopologicalOrder ==
-                  nullptr)) { // we have to call _topologicalOrder
+                  nullptr)) {  // we have to call _topologicalOrder
       if (__mutableTopologicalOrder == nullptr) {
         __mutableTopologicalOrder = new Sequence<NodeId>();
       } else {

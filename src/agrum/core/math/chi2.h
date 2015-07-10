@@ -35,9 +35,12 @@
 
 namespace gum {
 
-  /* ========================================================================= */
-  /* ===                             CHI2 CLASS                            === */
-  /* ========================================================================= */
+  /* =========================================================================
+   */
+  /* ===                             CHI2 CLASS                            ===
+   */
+  /* =========================================================================
+   */
   class Chi2 {
     public:
     // ##########################################################################
@@ -46,7 +49,7 @@ namespace gum {
     /// @{
 
     /// default constructor
-    Chi2(const std::vector<unsigned int> &var_modalities,
+    Chi2(const std::vector<unsigned int>& var_modalities,
          float confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA);
 
     /// destructor
@@ -60,17 +63,20 @@ namespace gum {
     /// @{
 
     /// sets the conditioning nodes (useful for computing degrees of freedom)
-    void setConditioningNodes(const std::vector<unsigned int> &db_conditioning_ids);
+    void
+    setConditioningNodes(const std::vector<unsigned int>& db_conditioning_ids);
 
-    /// computes the critical value according to the number of degrees of freedom
-    float criticalValue(const std::pair<unsigned int, unsigned int> &pair);
+    /// computes the critical value according to the number of degrees of
+    /// freedom
+    float criticalValue(const std::pair<unsigned int, unsigned int>& pair);
 
-    /// computes the critical value according to the number of degrees of freedom
+    /// computes the critical value according to the number of degrees of
+    /// freedom
     float criticalValue(unsigned int var1, unsigned int var2);
 
     /// returns the number of degrees of freedom
     unsigned long
-    degreesOfFreedom(const std::pair<unsigned int, unsigned int> &pair);
+    degreesOfFreedom(const std::pair<unsigned int, unsigned int>& pair);
 
     /// returns the number of degrees of freedom
     unsigned long degreesOfFreedom(unsigned int var1, unsigned int var2);
@@ -82,7 +88,7 @@ namespace gum {
 
     private:
     /// the modalities of the random variables
-    const std::vector<unsigned int> &__modalities;
+    const std::vector<unsigned int>& __modalities;
 
     /// the confidence probability used for critical values
     float __confidence_proba;
@@ -118,10 +124,10 @@ namespace gum {
     static double __probaZValue(double z);
 
     /// prevent copy constructor
-    Chi2(const Chi2 &) = delete;
+    Chi2(const Chi2&) = delete;
 
     /// prevent copy operator
-    Chi2 &operator=(const Chi2 &) = delete;
+    Chi2& operator=(const Chi2&) = delete;
   };
 
 } /* namespace gum */

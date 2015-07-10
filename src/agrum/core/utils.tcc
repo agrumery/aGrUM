@@ -25,12 +25,13 @@
 
 namespace std {
 
-  template <typename T> ostream &operator<<(ostream &stream, const vector<T> &val) {
+  template <typename T>
+  ostream& operator<<(ostream& stream, const vector<T>& val) {
     bool deja = false;
     stream << "[";
 
-    for (typename vector<T>::const_iterator iter = val.begin(); iter != val.end();
-         ++iter, deja = true) {
+    for (typename vector<T>::const_iterator iter = val.begin();
+         iter != val.end(); ++iter, deja = true) {
       if (deja)
         stream << " , ";
 
@@ -43,11 +44,11 @@ namespace std {
   }
 
   template <typename T1, typename T2>
-  ostream &operator<<(ostream &stream, const pair<T1, T2> &val) {
+  ostream& operator<<(ostream& stream, const pair<T1, T2>& val) {
     stream << "(" << val.first << "," << val.second << ")";
     return stream;
   }
 
 } /* namespace std */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

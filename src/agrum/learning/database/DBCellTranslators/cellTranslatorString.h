@@ -51,39 +51,50 @@ namespace gum {
       /// @{
 
       /// default constructor
-      /** @param values The user can specify the values which the cell translator
+      /** @param values The user can specify the values which the cell
+       * translator
        * should expect. If none is specified, the cell translator will determine
-       * the values stored in the database by parsing it. If values are specified
-       * and check_database is set to false, then the translator will assume that
-       * the sequence of values specified is exactly what it shall translate and,
-       * therefore, it will not parse the database to initialize itself. However,
-       * if some value encountered during translations does not belong to sequence
+       * the values stored in the database by parsing it. If values are
+       * specified
+       * and check_database is set to false, then the translator will assume
+       * that
+       * the sequence of values specified is exactly what it shall translate
+       * and,
+       * therefore, it will not parse the database to initialize itself.
+       * However,
+       * if some value encountered during translations does not belong to
+       * sequence
        * values, an exception will be raised during those translations. So,
-       * be sure to give exactly the values the translator should encounter. Also
+       * be sure to give exactly the values the translator should encounter.
+       * Also
        * beware that the domain size of the variable the translator will process
        * is usually determined by asking the translator how many values it
-       * encountered, so avoid providing values that do not exist in the database
+       * encountered, so avoid providing values that do not exist in the
+       * database
        * (else this will certainly make scorings/independence tests incorrect).
-       * If sequence "values" is specified and check_database is set to true, then
+       * If sequence "values" is specified and check_database is set to true,
+       * then
        * the translator will initialize itself by parsing the database and will
-       * handle only those values it encountered in the database; sequence values
+       * handle only those values it encountered in the database; sequence
+       * values
        * will then only be used to specifiy the order in which the values
        * encountered in the database will appear in the set of values of the
        * variable at the end of the learning. This feature proves particularly
        * useful for learning non-stationary Bayesian networks.
        * @param check_database indicates whether we shall parse the database to
        * initialize the translator. */
-      CellTranslatorString(Sequence<std::string> values = Sequence<std::string>(),
-                           bool check_database = true);
+      CellTranslatorString(
+          Sequence<std::string> values = Sequence<std::string>(),
+          bool check_database = true);
 
       /// copy constructor
-      CellTranslatorString(const CellTranslatorString &from);
+      CellTranslatorString(const CellTranslatorString& from);
 
       /// move constructor
-      CellTranslatorString(CellTranslatorString &&from);
+      CellTranslatorString(CellTranslatorString&& from);
 
       /// virtual copy constructor
-      virtual CellTranslatorString *copyFactory() final;
+      virtual CellTranslatorString* copyFactory() final;
 
       /// destructor
       virtual ~CellTranslatorString();
@@ -97,10 +108,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      CellTranslatorString &operator=(const CellTranslatorString &from);
+      CellTranslatorString& operator=(const CellTranslatorString& from);
 
       /// move operator
-      CellTranslatorString &operator=(CellTranslatorString &&from);
+      CellTranslatorString& operator=(CellTranslatorString&& from);
 
       /// @}
 
@@ -122,45 +133,58 @@ namespace gum {
       void postInitialize();
 
       /// add the number of modalities discovered in the database into a vector
-      void modalities(std::vector<unsigned int> &modal) const noexcept;
+      void modalities(std::vector<unsigned int>& modal) const noexcept;
 
       /// returns whether the translator needs a DB parsing to initialize itself
       bool requiresInitialization() const noexcept;
 
       /// returns a given value as stored within the database
-      std::string translateBack(unsigned int col, unsigned int translated_val) const;
+      std::string translateBack(unsigned int col,
+                                unsigned int translated_val) const;
 
       /// returns the name of the variable(s) the translator has processed
-      void variableNames(const std::vector<std::string> &db_var,
-                         std::vector<std::string> &output_vars) const;
+      void variableNames(const std::vector<std::string>& db_var,
+                         std::vector<std::string>& output_vars) const;
 
-      /// specify the set of possible values (to do before creating the row filter)
-      /** @param values The user can specify the values which the cell translator
+      /// specify the set of possible values (to do before creating the row
+      /// filter)
+      /** @param values The user can specify the values which the cell
+       * translator
        * should expect. If none is specified, the cell translator will determine
-       * the values stored in the database by parsing it. If values are specified
-       * and check_database is set to false, then the translator will assume that
-       * the sequence of values specified is exactly what it shall translate and,
-       * therefore, it will not parse the database to initialize itself. However,
-       * if some value encountered during translations does not belong to sequence
+       * the values stored in the database by parsing it. If values are
+       * specified
+       * and check_database is set to false, then the translator will assume
+       * that
+       * the sequence of values specified is exactly what it shall translate
+       * and,
+       * therefore, it will not parse the database to initialize itself.
+       * However,
+       * if some value encountered during translations does not belong to
+       * sequence
        * values, an exception will be raised during those translations. So,
-       * be sure to give exactly the values the translator should encounter. Also
+       * be sure to give exactly the values the translator should encounter.
+       * Also
        * beware that the domain size of the variable the translator will process
        * is usually determined by asking the translator how many values it
-       * encountered, so avoid providing values that do not exist in the database
+       * encountered, so avoid providing values that do not exist in the
+       * database
        * (else this will certainly make scorings/independence tests incorrect).
-       * If sequence "values" is specified and check_database is set to true, then
+       * If sequence "values" is specified and check_database is set to true,
+       * then
        * the translator will initialize itself by parsing the database and will
-       * handle only those values it encountered in the database; sequence values
+       * handle only those values it encountered in the database; sequence
+       * values
        * will then only be used to specifiy the order in which the values
        * encountered in the database will appear in the set of values of the
        * variable at the end of the learning. This feature proves particularly
        * useful for learning non-stationary Bayesian networks.
        * @param check_database indicates whether we shall parse the database to
        * initialize the translator.
-       * @warning this method should be used before the translator is copied into
+       * @warning this method should be used before the translator is copied
+       * into
        * the DBRowFilter, i.e., before the latter is created (as the creation of
        * the row filter induces the parsing of the database). */
-      void setUserValues(const Sequence<std::string> &values,
+      void setUserValues(const Sequence<std::string>& values,
                          bool check_database = true);
 
       /// @}
@@ -173,7 +197,7 @@ namespace gum {
       Bijection<int, unsigned int> __strings;
 
       /// the sequence of values specified by the user
-      Sequence<std::string> *__user_values{nullptr};
+      Sequence<std::string>* __user_values{nullptr};
 
       /// indicates whether the translator shall be initialized by DB parsing
       bool __check_database{true};

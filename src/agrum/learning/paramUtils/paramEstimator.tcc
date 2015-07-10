@@ -33,9 +33,11 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE ParamEstimator<IdSetAlloc, CountAlloc>::ParamEstimator(
-        const RowFilter &filter, const std::vector<unsigned int> &var_modalities,
-        Apriori<IdSetAlloc, CountAlloc> &apriori,
-        const ScoreInternalApriori<IdSetAlloc, CountAlloc> &score_internal_apriori)
+        const RowFilter& filter,
+        const std::vector<unsigned int>& var_modalities,
+        Apriori<IdSetAlloc, CountAlloc>& apriori,
+        const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
+            score_internal_apriori)
         : Counter<IdSetAlloc, CountAlloc>(filter, var_modalities),
           _apriori(&apriori),
           _score_internal_apriori(score_internal_apriori.copyFactory()) {
@@ -45,7 +47,7 @@ namespace gum {
     /// copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
     ParamEstimator<IdSetAlloc, CountAlloc>::ParamEstimator(
-        const ParamEstimator<IdSetAlloc, CountAlloc> &from)
+        const ParamEstimator<IdSetAlloc, CountAlloc>& from)
         : Counter<IdSetAlloc, CountAlloc>(from), _apriori(from._apriori),
           _score_internal_apriori(from._score_internal_apriori->copyFactory()),
           _is_normalized(from._is_normalized),
@@ -57,7 +59,7 @@ namespace gum {
     /// move constructor
     template <typename IdSetAlloc, typename CountAlloc>
     ParamEstimator<IdSetAlloc, CountAlloc>::ParamEstimator(
-        ParamEstimator<IdSetAlloc, CountAlloc> &&from)
+        ParamEstimator<IdSetAlloc, CountAlloc>&& from)
         : Counter<IdSetAlloc, CountAlloc>(std::move(from)),
           _apriori(std::move(from._apriori)),
           _score_internal_apriori(std::move(from._score_internal_apriori)),
@@ -87,7 +89,7 @@ namespace gum {
     /// add a new target variable plus some conditioning vars
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE unsigned int ParamEstimator<IdSetAlloc, CountAlloc>::addNodeSet(
-        unsigned int var, const std::vector<unsigned int> &conditioning_ids) {
+        unsigned int var, const std::vector<unsigned int>& conditioning_ids) {
       _is_normalized.push_back(false);
       return Counter<IdSetAlloc, CountAlloc>::addNodeSet(var, conditioning_ids);
     }
@@ -103,17 +105,16 @@ namespace gum {
 
     /// sets the CPT's parameters corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void
-    ParamEstimator<IdSetAlloc, CountAlloc>::setParameters(unsigned int nodeset_index,
-                                                          Potential<float> &pot) {
-      const std::vector<float, CountAlloc> &normalized_counts =
+    INLINE void ParamEstimator<IdSetAlloc, CountAlloc>::setParameters(
+        unsigned int nodeset_index, Potential<float>& pot) {
+      const std::vector<float, CountAlloc>& normalized_counts =
           parameters(nodeset_index);
       pot.fillWith(normalized_counts);
     }
 
     /// returns the apriori vector for a given (conditioned) target set
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc> &
+    INLINE const std::vector<float, CountAlloc>&
     ParamEstimator<IdSetAlloc, CountAlloc>::_getAllApriori(unsigned int index) {
       if (!__apriori_computed) {
         _apriori->setParameters(
@@ -128,7 +129,7 @@ namespace gum {
 
     /// returns the apriori vector for a conditioning set
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc> &
+    INLINE const std::vector<float, CountAlloc>&
     ParamEstimator<IdSetAlloc, CountAlloc>::_getConditioningApriori(
         unsigned int index) {
       if (!__apriori_computed) {

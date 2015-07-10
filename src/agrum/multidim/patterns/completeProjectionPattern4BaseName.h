@@ -38,35 +38,36 @@ namespace gum {
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR
   template <typename GUM_SCALAR>
   GUM_SCALAR GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(
-      const MultiDimImplementation<GUM_SCALAR> *table,
-      Instantiation *instantiation = 0) {
+      const MultiDimImplementation<GUM_SCALAR>* table,
+      Instantiation* instantiation = 0) {
 #endif
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR *
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
     template <typename GUM_SCALAR>
-    GUM_SCALAR *GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME(
-        const MultiDimImplementation<GUM_SCALAR *> *table,
-        Instantiation *instantiation = 0) {
+    GUM_SCALAR* GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME(
+        const MultiDimImplementation<GUM_SCALAR*>* table,
+        Instantiation* instantiation = 0) {
 #endif
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME_F
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR
       template <typename GUM_SCALAR>
       GUM_SCALAR GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME_F(
-          const MultiDimImplementation<GUM_SCALAR> *table,
-          GUM_SCALAR (*f)(const GUM_SCALAR &, const GUM_SCALAR &),
-          Instantiation *instantiation = 0) {
+          const MultiDimImplementation<GUM_SCALAR>* table,
+          GUM_SCALAR (*f)(const GUM_SCALAR&, const GUM_SCALAR&),
+          Instantiation* instantiation = 0) {
 #endif
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME_F
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR *
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
         template <typename GUM_SCALAR>
-        GUM_SCALAR *GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME_F(
-            const MultiDimImplementation<GUM_SCALAR *> *table,
-            GUM_SCALAR *(*f)(const GUM_SCALAR const *, const GUM_SCALAR const *)) {
+        GUM_SCALAR* GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME_F(
+            const MultiDimImplementation<GUM_SCALAR*>* table,
+            GUM_SCALAR* (*f)(const GUM_SCALAR const*,
+                             const GUM_SCALAR const*)) {
           Instantiation* instantiation = 0 ) {
 #endif
 
@@ -99,7 +100,7 @@ namespace gum {
               // put the table's variables into the instantiation
               instantiation->forgetMaster();
               instantiation->clear();
-              const Sequence<const DiscreteVariable *> &table_vars =
+              const Sequence<const DiscreteVariable*>& table_vars =
                   table->variablesSequence();
 
               for (const auto var : table_vars)

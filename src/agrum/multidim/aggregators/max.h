@@ -20,7 +20,8 @@
 /** @file
  * @brief max aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+*<{prenom.nom}_at_lip6.fr>
  */
 #ifndef GUM_MAX_AGGREGATOR_H
 #define GUM_MAX_AGGREGATOR_H
@@ -46,7 +47,8 @@ namespace gum {
     *
     * @see MultiDimAggregator for more details of implementations
     *
-    * Note that a <tt>Max</tt> aggregator with a binary aggregator variable is the
+    * Note that a <tt>Max</tt> aggregator with a binary aggregator variable is
+    *the
     *\f$ \exists \neq 0\f$ aggregator.
     */
     /* ============================================================================
@@ -56,7 +58,7 @@ namespace gum {
     class Max : public MultiDimAggregator<GUM_SCALAR> {
       public:
       Max();
-      Max(const Max<GUM_SCALAR> &from);
+      Max(const Max<GUM_SCALAR>& from);
       virtual ~Max();
 
       /**
@@ -72,21 +74,21 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<GUM_SCALAR> *newFactory() const;
+      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
       virtual std::string aggregatorName(void) const;
 
       protected:
       virtual Idx _neutralElt(void) const;
-      virtual Idx _folder(const DiscreteVariable &v, Idx i1, Idx i2,
-                          bool &stop_iteration) const;
+      virtual Idx _folder(const DiscreteVariable& v, Idx i1, Idx i2,
+                          bool& stop_iteration) const;
     };
 
     extern template class Max<float>;
     extern template class Max<double>;
-  } // aggregator
-} // gum
+  }  // aggregator
+}  // gum
 
 #include <agrum/multidim/aggregators/max.tcc>
 
-#endif // GUM_MAX_AGGREGATOR_H
+#endif  // GUM_MAX_AGGREGATOR_H

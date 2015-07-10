@@ -65,15 +65,15 @@ namespace gum_tests {
     std::string __mess;
 
     public:
-    simpleListenerForGHC(gum::ApproximationScheme &sch)
+    simpleListenerForGHC(gum::ApproximationScheme& sch)
         : gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
 
-    void whenProgress(const void *buffer, gum::Size a, double b, double c) {
+    void whenProgress(const void* buffer, gum::Size a, double b, double c) {
       __nbr++;
       std::cout << __nbr << ": error = " << b << std::endl;
     }
 
-    void whenStop(const void *buffer, std::string s) { __mess = s; }
+    void whenStop(const void* buffer, std::string s) { __mess = s; }
 
     int getNbr() { return __nbr; }
 
@@ -87,7 +87,8 @@ namespace gum_tests {
 
       gum::learning::DBRowTranslatorSetDynamic<
           gum::learning::CellTranslatorCompactIntId> translators;
-      translators.insertTranslator(gum::learning::Col<0>(), database.nbVariables());
+      translators.insertTranslator(gum::learning::Col<0>(),
+                                   database.nbVariables());
 
       // auto translators = gum::learning::make_translators
       //  ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
@@ -122,8 +123,8 @@ namespace gum_tests {
 
       gum::learning::StructuralConstraintIndegree constraint1;
       constraint1.setMaxIndegree(6);
-      static_cast<gum::learning::StructuralConstraintIndegree &>(struct_constraint) =
-          constraint1;
+      static_cast<gum::learning::StructuralConstraintIndegree&>(
+          struct_constraint) = constraint1;
 
       gum::learning::ParamEstimatorML<> estimator(filter, modalities, apriori,
                                                   score.internalApriori());
@@ -197,8 +198,8 @@ namespace gum_tests {
 
       gum::learning::StructuralConstraintIndegree constraint1;
       constraint1.setMaxIndegree(6);
-      static_cast<gum::learning::StructuralConstraintIndegree &>(struct_constraint) =
-          constraint1;
+      static_cast<gum::learning::StructuralConstraintIndegree&>(
+          struct_constraint) = constraint1;
 
       gum::learning::ParamEstimatorML<> estimator(filter, modalities, apriori,
                                                   score.internalApriori());
@@ -224,7 +225,7 @@ namespace gum_tests {
       const std::string s0 = "0";
       const std::string s1 = "1";
       for (unsigned int i = 0; i < database.nbVariables(); ++i) {
-        const gum::DiscreteVariable &var = bn.variable(i);
+        const gum::DiscreteVariable& var = bn.variable(i);
         TS_ASSERT(var.label(0) == s0);
         TS_ASSERT(var.label(1) == s1);
       }
@@ -280,8 +281,8 @@ namespace gum_tests {
 
       gum::learning::StructuralConstraintIndegree constraint1;
       constraint1.setMaxIndegree(6);
-      static_cast<gum::learning::StructuralConstraintIndegree &>(struct_constraint) =
-          constraint1;
+      static_cast<gum::learning::StructuralConstraintIndegree&>(
+          struct_constraint) = constraint1;
 
       gum::learning::ParamEstimatorML<> estimator(filter, modalities, apriori,
                                                   score.internalApriori());
@@ -306,7 +307,7 @@ namespace gum_tests {
       const std::string s2 = "2";
       gum::Set<unsigned int> seq{1, 10, 11, 14};
       for (unsigned int i = 0; i < database.nbVariables(); ++i) {
-        const gum::DiscreteVariable &var = bn.variable(i);
+        const gum::DiscreteVariable& var = bn.variable(i);
         TS_ASSERT(var.label(0) == s0);
         TS_ASSERT(var.label(1) == s1);
         if (seq.exists(i)) {
@@ -327,7 +328,8 @@ namespace gum_tests {
 
       gum::learning::DBRowTranslatorSetDynamic<
           gum::learning::CellTranslatorUniversal> translators;
-      translators.insertTranslator(gum::learning::Col<0>(), database.nbVariables());
+      translators.insertTranslator(gum::learning::Col<0>(),
+                                   database.nbVariables());
       translators[1].setUserValues(gum::Sequence<float>{0, 1, 2}, false);
       translators[10].setUserValues(gum::Sequence<float>{0, 1, 2}, false);
       translators[11].setUserValues(gum::Sequence<float>{0, 1, 2}, false);
@@ -366,8 +368,8 @@ namespace gum_tests {
 
       gum::learning::StructuralConstraintIndegree constraint1;
       constraint1.setMaxIndegree(6);
-      static_cast<gum::learning::StructuralConstraintIndegree &>(struct_constraint) =
-          constraint1;
+      static_cast<gum::learning::StructuralConstraintIndegree&>(
+          struct_constraint) = constraint1;
 
       gum::learning::ParamEstimatorML<> estimator(filter, modalities, apriori,
                                                   score.internalApriori());
@@ -392,7 +394,7 @@ namespace gum_tests {
       const std::string s2 = "2";
       gum::Set<unsigned int> seq{1, 10, 11, 14};
       for (auto i : seq) {
-        const gum::DiscreteVariable &var = bn.variable(i);
+        const gum::DiscreteVariable& var = bn.variable(i);
         TS_ASSERT(var.label(0) == s0);
         TS_ASSERT(var.label(1) == s1);
         TS_ASSERT(var.label(2) == s2);
@@ -409,8 +411,9 @@ namespace gum_tests {
     void xtest_alarm1() {
       gum::learning::DatabaseFromCSV database(MY_ALARM);
 
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 37>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 37>());
 
       auto generators =
           gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
@@ -442,7 +445,7 @@ namespace gum_tests {
         gum::DAG bn = search.learnStructure(selector, modalities);
         std::cout << timer.step() << " : " << std::endl;
         std::cout << bn << std::endl;
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
       }
     }
@@ -450,8 +453,9 @@ namespace gum_tests {
     void xtest_alarm1bis() {
       gum::learning::DatabaseFromCSV database(MY_ALARM);
 
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorNumber, gum::learning::Col<0>, 37>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorNumber,
+                                gum::learning::Col<0>, 37>());
 
       auto generators =
           gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
@@ -483,7 +487,7 @@ namespace gum_tests {
         gum::DAG bn = search.learnStructure(selector, modalities);
         std::cout << timer.step() << " : " << std::endl;
         std::cout << bn << std::endl;
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
       }
     }
@@ -491,8 +495,9 @@ namespace gum_tests {
     void xtest_alarm1ter() {
       gum::learning::DatabaseFromCSV database(MY_ALARM);
 
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorUniversal, gum::learning::Col<0>, 37>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorUniversal,
+                                gum::learning::Col<0>, 37>());
 
       auto generators =
           gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
@@ -524,7 +529,7 @@ namespace gum_tests {
         gum::DAG bn = search.learnStructure(selector, modalities);
         std::cout << timer.step() << " : " << std::endl;
         std::cout << bn << std::endl;
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
       }
     }
@@ -567,7 +572,7 @@ namespace gum_tests {
         gum::DAG bn = search.learnStructure(selector, modalities);
         std::cout << timer.step() << " : " << std::endl;
         std::cout << bn << std::endl;
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
       }
     }
@@ -575,8 +580,8 @@ namespace gum_tests {
     void xtest_alarm3() {
       gum::learning::DatabaseFromCSV database(MY_ALARM);
 
-      gum::learning::DBRowTranslatorSetDynamic<gum::learning::DBCellTranslator<1, 1>>
-          translators;
+      gum::learning::DBRowTranslatorSetDynamic<
+          gum::learning::DBCellTranslator<1, 1>> translators;
       translators.insertTranslator(gum::learning::CellTranslatorCompactIntId(),
                                    gum::learning::Col<0>(),
                                    database.content()[0].size());
@@ -611,7 +616,7 @@ namespace gum_tests {
         gum::DAG bn = search.learnStructure(selector, modalities);
         std::cout << timer.step() << " : " << std::endl;
         std::cout << bn << std::endl;
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
       }
     }
@@ -619,8 +624,8 @@ namespace gum_tests {
     void xtest_alarm4() {
       gum::learning::DatabaseFromCSV database(MY_ALARM);
 
-      gum::learning::DBRowTranslatorSetDynamic<gum::learning::DBCellTranslator<1, 1>>
-          translators;
+      gum::learning::DBRowTranslatorSetDynamic<
+          gum::learning::DBCellTranslator<1, 1>> translators;
       translators.insertTranslator(gum::learning::CellTranslatorCompactIntId(),
                                    gum::learning::Col<0>(),
                                    database.content()[0].size());
@@ -640,8 +645,8 @@ namespace gum_tests {
 
       gum::learning::ParamEstimatorML<> estimator(filter, modalities, apriori);
 
-      gum::learning::GraphChangesGeneratorOnSubDiGraph<decltype(struct_constraint)>
-          op_set(struct_constraint);
+      gum::learning::GraphChangesGeneratorOnSubDiGraph<decltype(
+          struct_constraint)> op_set(struct_constraint);
 
       gum::NodeSet targets{0, 1, 2};
       op_set.setTargets(targets);
@@ -660,10 +665,10 @@ namespace gum_tests {
         std::cout << bn_dag << std::endl;
 
         gum::BayesNet<float> bn =
-            search.learnBN(selector, estimator, database.variableNames(), modalities,
-                           filter.translatorSet());
+            search.learnBN(selector, estimator, database.variableNames(),
+                           modalities, filter.translatorSet());
 
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
       }
     }

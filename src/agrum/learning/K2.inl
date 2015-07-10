@@ -33,13 +33,15 @@ namespace gum {
     INLINE K2::K2() { GUM_CONSTRUCTOR(learning::K2); }
 
     /// copy constructor
-    INLINE K2::K2(const K2 &from) : GreedyHillClimbing(from), __order(from.__order) {
+    INLINE K2::K2(const K2& from)
+        : GreedyHillClimbing(from), __order(from.__order) {
       GUM_CONS_CPY(learning::K2);
     }
 
     /// move constructor
-    INLINE K2::K2(K2 &&from)
-        : GreedyHillClimbing(std::move(from)), __order(std::move(from.__order)) {
+    INLINE K2::K2(K2&& from)
+        : GreedyHillClimbing(std::move(from)),
+          __order(std::move(from.__order)) {
       GUM_CONS_MOV(learning::K2);
     }
 
@@ -47,7 +49,7 @@ namespace gum {
     INLINE K2::~K2() { GUM_DESTRUCTOR(learning::K2); }
 
     /// copy operator
-    INLINE K2 &K2::operator=(const K2 &from) {
+    INLINE K2& K2::operator=(const K2& from) {
       if (this != &from) {
         GreedyHillClimbing::operator=(from);
         __order = from.__order;
@@ -56,7 +58,7 @@ namespace gum {
     }
 
     /// move operator
-    INLINE K2 &K2::operator=(K2 &&from) {
+    INLINE K2& K2::operator=(K2&& from) {
       if (this != &from) {
         GreedyHillClimbing::operator=(std::move(from));
         __order = std::move(from.__order);
@@ -65,10 +67,10 @@ namespace gum {
     }
 
     /// sets the order on the variables
-    INLINE void K2::setOrder(const Sequence<NodeId> &order) { __order = order; }
+    INLINE void K2::setOrder(const Sequence<NodeId>& order) { __order = order; }
 
     /// sets the order on the variables
-    INLINE void K2::setOrder(const std::vector<NodeId> &order) {
+    INLINE void K2::setOrder(const std::vector<NodeId>& order) {
       __order.clear();
       for (const auto node : order) {
         __order.insert(node);
@@ -76,14 +78,17 @@ namespace gum {
     }
 
     /// returns the current order
-    INLINE const Sequence<NodeId> &K2::order() const noexcept { return __order; }
+    INLINE const Sequence<NodeId>& K2::order() const noexcept {
+      return __order;
+    }
 
     /** @brief checks that the order passed to K2 is coherent with the variables
      * as specified by their modalities */
-    INLINE void K2::__checkOrder(const std::vector<unsigned int> &modal) {
+    INLINE void K2::__checkOrder(const std::vector<unsigned int>& modal) {
       if (modal.size() != __order.size()) {
-        GUM_ERROR(InvalidArgument, "the number of elements in the order given "
-                                   "to K2 is not the same as the number of nodes");
+        GUM_ERROR(InvalidArgument,
+                  "the number of elements in the order given "
+                  "to K2 is not the same as the number of nodes");
       }
       bool order_ok = true;
       for (const auto node : __order) {
@@ -99,7 +104,7 @@ namespace gum {
     }
 
     /// returns the approximation policy of the learning algorithm
-    INLINE ApproximationScheme &K2::approximationScheme() {
+    INLINE ApproximationScheme& K2::approximationScheme() {
       return GreedyHillClimbing::approximationScheme();
     }
 

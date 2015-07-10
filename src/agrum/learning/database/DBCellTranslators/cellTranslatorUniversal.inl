@@ -30,7 +30,7 @@ namespace gum {
 
     /// copy constructor
     INLINE CellTranslatorUniversal::CellTranslatorUniversal(
-        const CellTranslatorUniversal &from)
+        const CellTranslatorUniversal& from)
         : DBCellTranslator<1, 1>(from), __max_value(from.__max_value),
           __numbers(from.__numbers), __strings(from.__strings),
           __check_database(from.__check_database) {
@@ -45,10 +45,12 @@ namespace gum {
 
     /// move constructor
     INLINE
-    CellTranslatorUniversal::CellTranslatorUniversal(CellTranslatorUniversal &&from)
+    CellTranslatorUniversal::CellTranslatorUniversal(
+        CellTranslatorUniversal&& from)
         : DBCellTranslator<1, 1>(std::move(from)),
           __max_value(std::move(from.__max_value)),
-          __numbers(std::move(from.__numbers)), __strings(std::move(from.__strings)),
+          __numbers(std::move(from.__numbers)),
+          __strings(std::move(from.__strings)),
           __check_database(std::move(from.__check_database)) {
       if (from.__str_user_values != nullptr) {
         __str_user_values =
@@ -56,12 +58,13 @@ namespace gum {
       }
 
       if (from.__num_user_values != nullptr) {
-        __num_user_values = new Sequence<float>(std::move(*from.__num_user_values));
+        __num_user_values =
+            new Sequence<float>(std::move(*from.__num_user_values));
       }
     }
 
     /// virtual copy constructor
-    INLINE CellTranslatorUniversal *CellTranslatorUniversal::copyFactory() {
+    INLINE CellTranslatorUniversal* CellTranslatorUniversal::copyFactory() {
       return new CellTranslatorUniversal(*this);
     }
 
@@ -77,8 +80,8 @@ namespace gum {
     }
 
     /// copy operator
-    INLINE CellTranslatorUniversal &CellTranslatorUniversal::
-    operator=(const CellTranslatorUniversal &from) {
+    INLINE CellTranslatorUniversal& CellTranslatorUniversal::
+    operator=(const CellTranslatorUniversal& from) {
       if (this != &from) {
         DBCellTranslator<1, 1>::operator=(from);
         __max_value = from.__max_value;
@@ -97,7 +100,8 @@ namespace gum {
         }
 
         if (from.__str_user_values != nullptr) {
-          __str_user_values = new Sequence<std::string>(*from.__str_user_values);
+          __str_user_values =
+              new Sequence<std::string>(*from.__str_user_values);
         }
 
         if (from.__num_user_values != nullptr) {
@@ -109,8 +113,8 @@ namespace gum {
     }
 
     /// move operator
-    INLINE CellTranslatorUniversal &CellTranslatorUniversal::
-    operator=(CellTranslatorUniversal &&from) {
+    INLINE CellTranslatorUniversal& CellTranslatorUniversal::
+    operator=(CellTranslatorUniversal&& from) {
       if (this != &from) {
         DBCellTranslator<1, 1>::operator=(std::move(from));
         __max_value = std::move(from.__max_value);
@@ -182,13 +186,14 @@ namespace gum {
 
     /// add the number of modalities discovered in the database into a vector
     INLINE void
-    CellTranslatorUniversal::modalities(std::vector<unsigned int> &modal) const
+    CellTranslatorUniversal::modalities(std::vector<unsigned int>& modal) const
         noexcept {
       modal.push_back(__max_value);
     }
 
     /// returns whether the translator needs a DB parsing to initialize itself
-    INLINE bool CellTranslatorUniversal::requiresInitialization() const noexcept {
+    INLINE bool CellTranslatorUniversal::requiresInitialization() const
+        noexcept {
       return __check_database;
     }
 
@@ -208,19 +213,19 @@ namespace gum {
 
     /// returns the name of the variable(s) the translator has processed
     INLINE void CellTranslatorUniversal::variableNames(
-        const std::vector<std::string> &db_var,
-        std::vector<std::string> &output_vars) const {
+        const std::vector<std::string>& db_var,
+        std::vector<std::string>& output_vars) const {
       output_vars.push_back(db_var[_input_cols[0]]);
     }
 
     /// returns the set of translations for string values in the database
-    INLINE const Bijection<int, unsigned int> &
+    INLINE const Bijection<int, unsigned int>&
     CellTranslatorUniversal::stringTranslations() const noexcept {
       return __strings;
     }
 
     /// returns the set of translations for number values in the database
-    INLINE const Bijection<float, unsigned int> &
+    INLINE const Bijection<float, unsigned int>&
     CellTranslatorUniversal::numberTranslations() const noexcept {
       return __numbers;
     }

@@ -32,13 +32,13 @@ namespace gum {
     INLINE Cache4Score::Cache4Score() { GUM_CONSTRUCTOR(Cache4Score); }
 
     /// copy constructor
-    INLINE Cache4Score::Cache4Score(const Cache4Score &from)
+    INLINE Cache4Score::Cache4Score(const Cache4Score& from)
         : __scores(from.__scores) {
       GUM_CONS_CPY(Cache4Score);
     }
 
     /// move constructor
-    INLINE Cache4Score::Cache4Score(Cache4Score &&from)
+    INLINE Cache4Score::Cache4Score(Cache4Score&& from)
         : __scores(std::move(from.__scores)) {
       GUM_CONS_MOV(Cache4Score);
     }
@@ -47,7 +47,7 @@ namespace gum {
     INLINE Cache4Score::~Cache4Score() { GUM_DESTRUCTOR(Cache4Score); }
 
     /// copy operator
-    INLINE Cache4Score &Cache4Score::operator=(const Cache4Score &from) {
+    INLINE Cache4Score& Cache4Score::operator=(const Cache4Score& from) {
       if (&from != this) {
         __scores = from.__scores;
       }
@@ -55,7 +55,7 @@ namespace gum {
     }
 
     /// move operator
-    INLINE Cache4Score &Cache4Score::operator=(Cache4Score &&from) {
+    INLINE Cache4Score& Cache4Score::operator=(Cache4Score&& from) {
       if (&from != this) {
         __scores = std::move(from.__scores);
       }
@@ -65,7 +65,7 @@ namespace gum {
     /// insert a new score into the cache
     INLINE void
     Cache4Score::insert(unsigned int var,
-                        const std::vector<unsigned int> &conditioning_set,
+                        const std::vector<unsigned int>& conditioning_set,
                         float score) {
       __scores.insert(
           std::pair<IdSet<>, unsigned int>(IdSet<>(conditioning_set, 0), var),
@@ -74,7 +74,8 @@ namespace gum {
 
     /// insert a new score into the cache
     template <typename Alloc>
-    INLINE void Cache4Score::insert(unsigned int var, IdSet<Alloc> &conditioning_set,
+    INLINE void Cache4Score::insert(unsigned int var,
+                                    IdSet<Alloc>& conditioning_set,
                                     float score) {
       __scores.insert(
           std::pair<IdSet<>, unsigned int>(IdSet<>(conditioning_set), var),
@@ -84,7 +85,7 @@ namespace gum {
     /// removes a score (if it exists)
     INLINE void
     Cache4Score::erase(unsigned int var,
-                       const std::vector<unsigned int> &conditioning_set) {
+                       const std::vector<unsigned int>& conditioning_set) {
       __scores.erase(
           std::pair<IdSet<>, unsigned int>(IdSet<>(conditioning_set, 0), var));
     }
@@ -92,14 +93,14 @@ namespace gum {
     /// removes a score (if it exists)
     template <typename Alloc>
     INLINE void Cache4Score::erase(unsigned int var,
-                                   const IdSet<Alloc> &conditioning_set) {
+                                   const IdSet<Alloc>& conditioning_set) {
       __scores.erase(std::pair<IdSet<>, unsigned int>(conditioning_set, var));
     }
 
     /// indicates whether a given score exists
     INLINE bool
     Cache4Score::exists(unsigned int var,
-                        const std::vector<unsigned int> &conditioning_set) {
+                        const std::vector<unsigned int>& conditioning_set) {
       return __scores.exists(
           std::pair<IdSet<>, unsigned int>(IdSet<>(conditioning_set, 0), var));
     }
@@ -107,9 +108,9 @@ namespace gum {
     /// returns a given score
     INLINE float
     Cache4Score::score(unsigned int var,
-                       const std::vector<unsigned int> &conditioning_set) {
-      return __scores[std::pair<IdSet<>, unsigned int>(IdSet<>(conditioning_set, 0),
-                                                       var)];
+                       const std::vector<unsigned int>& conditioning_set) {
+      return __scores[std::pair<IdSet<>, unsigned int>(
+          IdSet<>(conditioning_set, 0), var)];
     }
 
     /// removes all the stored scores

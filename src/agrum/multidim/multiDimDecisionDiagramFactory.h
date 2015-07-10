@@ -40,7 +40,8 @@ namespace gum {
   class MultiDimDecisionDiagram;
 
   /**
-   * @class MultiDimDecisionDiagramFactoryBase multiDimDecisionDiagramFactoryBase.h
+   * @class MultiDimDecisionDiagramFactoryBase
+   *multiDimDecisionDiagramFactoryBase.h
    *<agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
    * @brief Class implementingting an algebraic decision diagram factory
    * @ingroup multidim_group
@@ -67,11 +68,12 @@ namespace gum {
      * clone constructor.
      * @arg md is used for initialize approximation policy
      */
-    MultiDimDecisionDiagramFactory(const IApproximationPolicy<GUM_SCALAR> &md);
+    MultiDimDecisionDiagramFactory(const IApproximationPolicy<GUM_SCALAR>& md);
 
     /**
      * Destructor.
-     * @warning : this will not destroy properties on node. They have to be removed
+     * @warning : this will not destroy properties on node. They have to be
+     * removed
      * on multidim destruction
      */
     ~MultiDimDecisionDiagramFactory();
@@ -81,12 +83,13 @@ namespace gum {
     /**
      * Returns the multidimDecisionDiagram made
      */
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *
+    MultiDimDecisionDiagramBase<GUM_SCALAR>*
     getMultiDimDecisionDiagram(bool fillWithDefaultArc = true,
-                               GUM_SCALAR defaultValue = 0, bool doCompress = false);
+                               GUM_SCALAR defaultValue = 0,
+                               bool doCompress = false);
 
     /// Convert value to approximation representation
-    inline GUM_SCALAR fromExact(const GUM_SCALAR &value) const {
+    inline GUM_SCALAR fromExact(const GUM_SCALAR& value) const {
       return IApproximationPolicy<GUM_SCALAR>::fromExact(value);
     };
 

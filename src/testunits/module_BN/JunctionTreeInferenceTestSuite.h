@@ -41,9 +41,9 @@ namespace gum_tests {
 
   class JunctionTreeInferenceTestSuite : public CxxTest::TestSuite {
     public:
-    gum::BayesNet<float> *bn;
+    gum::BayesNet<float>* bn;
     gum::Id i1, i2, i3, i4, i5;
-    gum::Potential<float> *e_i1, *e_i4;
+    gum::Potential<float>* e_i1, *e_i4;
 
     void setUp() {
       bn = new gum::BayesNet<float>();
@@ -89,8 +89,9 @@ namespace gum_tests {
     void testCreationAndInference() {
       fill(*bn);
       // Testing the inference
-      gum::JunctionTreeInference<float> *inf = 0;
-      TS_ASSERT_THROWS_NOTHING(inf = new gum::JunctionTreeInference<float>(*bn));
+      gum::JunctionTreeInference<float>* inf = 0;
+      TS_ASSERT_THROWS_NOTHING(inf =
+                                   new gum::JunctionTreeInference<float>(*bn));
       TS_ASSERT_THROWS_NOTHING(inf->makeInference());
 
       if (inf != 0) {
@@ -112,7 +113,7 @@ namespace gum_tests {
 
     void testMarginalWithEvidence() {
       fill(*bn);
-      gum::List<const gum::Potential<float> *> e_list;
+      gum::List<const gum::Potential<float>*> e_list;
       e_list.insert(e_i1);
       e_list.insert(e_i4);
 
@@ -156,7 +157,7 @@ namespace gum_tests {
       nodeset.insert(2);
       nodeset.insert(4);
 
-      gum::Potential<float> *pot = 0;
+      gum::Potential<float>* pot = 0;
       TS_ASSERT_THROWS_NOTHING(pot = inf.joint(nodeset));
 
       if (pot)
@@ -182,8 +183,8 @@ namespace gum_tests {
 
     private:
     // Builds a BN to test the inference
-    void fill(gum::BayesNet<float> &bn) {
-      const gum::Potential<float> &p1 = bn.cpt(i1);
+    void fill(gum::BayesNet<float>& bn) {
+      const gum::Potential<float>& p1 = bn.cpt(i1);
       {
         // FILLING PARAMS
         const float t[2] = {0.2, 0.8};
@@ -192,7 +193,7 @@ namespace gum_tests {
         p1.fillWith(v);
       }
 
-      const gum::Potential<float> &p2 = bn.cpt(i2);
+      const gum::Potential<float>& p2 = bn.cpt(i2);
       {
         // FILLING PARAMS
         const float t[2] = {0.3, 0.7};
@@ -201,7 +202,7 @@ namespace gum_tests {
         p2.fillWith(v);
       }
 
-      const gum::Potential<float> &p3 = bn.cpt(i3);
+      const gum::Potential<float>& p3 = bn.cpt(i3);
       {
         // FILLING PARAMS
         const float t[4] = {0.1, 0.9, 0.9, 0.1};
@@ -210,7 +211,7 @@ namespace gum_tests {
         p3.fillWith(v);
       }
 
-      const gum::Potential<float> &p4 = bn.cpt(i4);
+      const gum::Potential<float>& p4 = bn.cpt(i4);
       {
         // FILLING PARAMS
         const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
@@ -219,7 +220,7 @@ namespace gum_tests {
         p4.fillWith(v);
       }
 
-      const gum::Potential<float> &p5 = bn.cpt(i5);
+      const gum::Potential<float>& p5 = bn.cpt(i5);
       {
         // FILLING PARAMS
         const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,
@@ -233,7 +234,7 @@ namespace gum_tests {
     }
 
     // Uncomment this to have some outputs.
-    void printProba(const gum::Potential<float> &) {
+    void printProba(const gum::Potential<float>&) {
       // gum::Instantiation inst(p);
 
       // for (inst.setFirst(); !inst.end(); ++inst)

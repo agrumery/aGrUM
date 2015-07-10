@@ -18,7 +18,7 @@ namespace CxxTest {
     return '?';
   }
 
-  const char *byteToHex(unsigned char byte) {
+  const char* byteToHex(unsigned char byte) {
     static char asHex[3];
     asHex[0] = digitToChar(byte >> 4);
     asHex[1] = digitToChar(byte & 0x0F);
@@ -26,7 +26,7 @@ namespace CxxTest {
     return asHex;
   }
 
-  char *copyString(char *dst, const char *src) {
+  char* copyString(char* dst, const char* src) {
     while ((*dst = *src) != '\0') {
       ++dst;
       ++src;
@@ -35,7 +35,7 @@ namespace CxxTest {
     return dst;
   }
 
-  bool stringsEqual(const char *s1, const char *s2) {
+  bool stringsEqual(const char* s1, const char* s2) {
     char c;
 
     while ((c = *s1++) == *s2++)
@@ -45,7 +45,7 @@ namespace CxxTest {
     return false;
   }
 
-  char *charToString(unsigned long c, char *s) {
+  char* charToString(unsigned long c, char* s) {
     switch (c) {
       case '\\':
         return copyString(s, "\\\\");
@@ -92,12 +92,12 @@ namespace CxxTest {
     }
   }
 
-  char *charToString(char c, char *s) {
-    return charToString((unsigned long)(unsigned char) c, s);
+  char* charToString(char c, char* s) {
+    return charToString((unsigned long)(unsigned char)c, s);
   }
 
-  char *bytesToString(const unsigned char *bytes, unsigned numBytes,
-                      unsigned maxBytes, char *s) {
+  char* bytesToString(const unsigned char* bytes, unsigned numBytes,
+                      unsigned maxBytes, char* s) {
     bool truncate = (numBytes > maxBytes);
 
     if (truncate)
@@ -124,7 +124,7 @@ namespace CxxTest {
     return digits;
   }
 
-  char *ValueTraits<const double>::doNegative(double &t) {
+  char* ValueTraits<const double>::doNegative(double& t) {
     if (t >= 0)
       return _asString;
 
@@ -134,7 +134,7 @@ namespace CxxTest {
   }
 
   void ValueTraits<const double>::hugeNumber(double t) {
-    char *s = doNegative(t);
+    char* s = doNegative(t);
     s = doubleToString(t, s, 0, 1);
     s = copyString(s, ".");
     s = doubleToString(t, s, 1, DIGITS_ON_RIGHT);
@@ -143,7 +143,7 @@ namespace CxxTest {
   }
 
   void ValueTraits<const double>::normalNumber(double t) {
-    char *s = doNegative(t);
+    char* s = doNegative(t);
     s = doubleToString(t, s);
     s = copyString(s, ".");
 
@@ -151,11 +151,11 @@ namespace CxxTest {
       s = numberToString((unsigned)(t *= BASE) % BASE, s);
   }
 
-  char *ValueTraits<const double>::doubleToString(double t, char *s, unsigned skip,
-                                                  unsigned max) {
+  char* ValueTraits<const double>::doubleToString(double t, char* s,
+                                                  unsigned skip, unsigned max) {
     return numberToString<double>(t, s, BASE, skip, max);
   }
-#endif // !CXXTEST_USER_VALUE_TRAITS
+#endif  // !CXXTEST_USER_VALUE_TRAITS
 }
 
-#endif // __cxxtest__ValueTraits_cpp__
+#endif  // __cxxtest__ValueTraits_cpp__

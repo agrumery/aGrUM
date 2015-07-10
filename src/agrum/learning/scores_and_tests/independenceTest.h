@@ -23,10 +23,12 @@
  * The class should be used as follows: first, to speed-up computations, you
  * should consider computing all the independence tests you need in one pass. To
  * do so, use the appropriate addNodeSet methods. These will compute everything
- * you need. The addNodeSet methods where you do not specify a set of conditioning
+ * you need. The addNodeSet methods where you do not specify a set of
+ *conditioning
  * nodes assume that this set is empty. Once the computations have been
  * performed, use method _getAllCounts and _getConditioningCounts to get the
- * observed countings if you are developping a new independence test class, or use
+ * observed countings if you are developping a new independence test class, or
+ *use
  * method score to get the computed score of the test if you are an end user.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
@@ -41,18 +43,24 @@ namespace gum {
 
   namespace learning {
 
-    /* ========================================================================= */
-    /* ===                      INDEPENDENCE TEST CLASS                      === */
-    /* ========================================================================= */
+    /* =========================================================================
+     */
+    /* ===                      INDEPENDENCE TEST CLASS                      ===
+     */
+    /* =========================================================================
+     */
     /** @class IndependenceTest
      * @brief the abstract class for all the independence tests
      * @ingroup learning_group
      *
      * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the independence tests you need in one pass.
+     * should consider computing all the independence tests you need in one
+     *pass.
      * To do so, use the appropriate addNodeSet methods. These will compute
-     * everything you need. The addNodeSet methods where you do not specify a set
-     * of conditioning nodes assume that this set is empty. Once the computations
+     * everything you need. The addNodeSet methods where you do not specify a
+     *set
+     * of conditioning nodes assume that this set is empty. Once the
+     *computations
      * have been performed, use method _getAllCounts and _getConditioningCounts
      * to get the observed countings if you are developping a new independence
      * test class, or use method score to get the computed score of the test if
@@ -68,10 +76,11 @@ namespace gum {
 
       /// default constructor
       /** @param filter the row filter that will be used to read the database
-       * @param var_modalities the domain sizes of the variables in the database */
+       * @param var_modalities the domain sizes of the variables in the database
+       */
       template <typename RowFilter>
-      IndependenceTest(const RowFilter &filter,
-                       const std::vector<unsigned int> &var_modalities);
+      IndependenceTest(const RowFilter& filter,
+                       const std::vector<unsigned int>& var_modalities);
 
       /// destructor
       virtual ~IndependenceTest();
@@ -90,9 +99,11 @@ namespace gum {
        * filtered rows produced by the database cell filters
        * @return the index of the produced counting vector: the user should use
        * class IndependenceTest to compute in one pass several independence
-       * tests. These and their corresponding countings in the database are stored
+       * tests. These and their corresponding countings in the database are
+       * stored
        * into a vector and the value returned by method addNodeSet is the index
-       * of the counts in this vector. The user shall pass this index as argument
+       * of the counts in this vector. The user shall pass this index as
+       * argument
        * to methods _getAllCounts and _getConditioningCounts to get the observed
        * countings of (var2,var1) [in this order] and var2 respectively. */
       unsigned int addNodeSet(unsigned int var1, unsigned int var2);
@@ -109,14 +120,39 @@ namespace gum {
        * argument to methods _getAllCounts and _getConditioningCounts to get the
        * observed countings of (vars.second, vars.first) [in this order] and
        * vars.second respectively. */
-      unsigned int addNodeSet(const std::pair<unsigned int, unsigned int> &vars);
+      unsigned int
+      addNodeSet(const std::pair<unsigned int, unsigned int>& vars);
 
       /// add a target conditioned by other variables to be counted
       /** @param var1 represents the index of the target variable in the
        * filtered rows produced by the database cell filters
-       * @param var2 represents the index of the last conditioning variable in the
+       * @param var2 represents the index of the last conditioning variable in
+       * the
        * filtered rows produced by the database cell filters
-       * @param conditioning_ids the indices of the variables of the conditioning
+       * @param conditioning_ids the indices of the variables of the
+       * conditioning
+       * set in the filtered rows (minus var2, which is subsequently
+       * apended to it).
+       * @return the index of the produced counting vector: the user should use
+       * class IndependenceTest to compute in one pass several independence
+       * tests. These and their corresponding countings in the database are
+       * stored into a vector and the value returned by method addNodeSet is the
+       * index of the counts in this vector. The user shall pass this index as
+       * argument to methods _getAllCounts and _getConditioningCounts to get the
+       * countings of (conditioning_ids, var2, var1) [in this order] and
+       * (conditioning_ids, var2) [in this order] respectively. */
+      unsigned int
+      addNodeSet(unsigned int var1, unsigned int var2,
+                 const std::vector<unsigned int>& conditioning_ids);
+
+      /// add a target conditioned by other variables to be counted
+      /** @param var1 represents the index of the target variable in the
+       * filtered rows produced by the database cell filters
+       * @param var2 represents the index of the last conditioning variable in
+       * the
+       * filtered rows produced by the database cell filters
+       * @param conditioning_ids the indices of the variables of the
+       * conditioning
        * set in the filtered rows (minus var2, which is subsequently
        * apended to it).
        * @return the index of the produced counting vector: the user should use
@@ -128,32 +164,14 @@ namespace gum {
        * countings of (conditioning_ids, var2, var1) [in this order] and
        * (conditioning_ids, var2) [in this order] respectively. */
       unsigned int addNodeSet(unsigned int var1, unsigned int var2,
-                              const std::vector<unsigned int> &conditioning_ids);
-
-      /// add a target conditioned by other variables to be counted
-      /** @param var1 represents the index of the target variable in the
-       * filtered rows produced by the database cell filters
-       * @param var2 represents the index of the last conditioning variable in the
-       * filtered rows produced by the database cell filters
-       * @param conditioning_ids the indices of the variables of the conditioning
-       * set in the filtered rows (minus var2, which is subsequently
-       * apended to it).
-       * @return the index of the produced counting vector: the user should use
-       * class IndependenceTest to compute in one pass several independence
-       * tests. These and their corresponding countings in the database are
-       * stored into a vector and the value returned by method addNodeSet is the
-       * index of the counts in this vector. The user shall pass this index as
-       * argument to methods _getAllCounts and _getConditioningCounts to get the
-       * countings of (conditioning_ids, var2, var1) [in this order] and
-       * (conditioning_ids, var2) [in this order] respectively. */
-      unsigned int addNodeSet(unsigned int var1, unsigned int var2,
-                              std::vector<unsigned int> &&conditioning_ids);
+                              std::vector<unsigned int>&& conditioning_ids);
 
       /// add a target conditioned by other variables to be counted
       /** @param vars represents the index of the target variable (first) in the
        * filtered rows produced by the database cell filters, and the index
        * of the last conditioning variable (second)
-       * @param conditioning_ids the indices of the variables of the conditioning
+       * @param conditioning_ids the indices of the variables of the
+       * conditioning
        * set in the filtered rows (minus vars.second which is appended to it)
        * @return the index of the produced counting vector: the user should use
        * class IndependenceTest to compute in one pass several independence
@@ -164,14 +182,16 @@ namespace gum {
        * observed countings of (conditioning_ids, vars.second, vars.first) [in
        * this order] and (conditioning_ids, vars.second) [in this order]
        * respectively. */
-      unsigned int addNodeSet(const std::pair<unsigned int, unsigned int> &vars,
-                              const std::vector<unsigned int> &conditioning_ids);
+      unsigned int
+      addNodeSet(const std::pair<unsigned int, unsigned int>& vars,
+                 const std::vector<unsigned int>& conditioning_ids);
 
       /// add a target conditioned by other variables to be counted
       /** @param vars represents the index of the target variable (first) in the
        * filtered rows produced by the database cell filters, and the index
        * of the last conditioning variable (second)
-       * @param conditioning_ids the indices of the variables of the conditioning
+       * @param conditioning_ids the indices of the variables of the
+       * conditioning
        * set in the filtered rows (minus vars.second which is appended to it)
        * @return the index of the produced counting vector: the user should use
        * class IndependenceTest to compute in one pass several independence
@@ -182,8 +202,8 @@ namespace gum {
        * observed countings of (conditioning_ids, vars.second, vars.first) [in
        * this order] and (conditioning_ids, vars.second) [in this order]
        * respectively. */
-      unsigned int addNodeSet(const std::pair<unsigned int, unsigned int> &vars,
-                              std::vector<unsigned int> &&conditioning_ids);
+      unsigned int addNodeSet(const std::pair<unsigned int, unsigned int>& vars,
+                              std::vector<unsigned int>&& conditioning_ids);
 
       /// clears all the data structures from memory
       void clear();
@@ -220,10 +240,12 @@ namespace gum {
       /** This method returns the observtion countings for the set of variables
        * whose index was returned by method addNodeSet or addNodeSet. If the
        * set was conditioned, the countings correspond to the target variables
-       * @b and the conditioning variables. If you wish to get only the countings
+       * @b and the conditioning variables. If you wish to get only the
+       * countings
        * for the conditioning variables, prefer using method countConditioning.
        * @warning the dimensions of the vector are as follows: first come the
-       * nodes of the conditioning set (in the order in which they were specified
+       * nodes of the conditioning set (in the order in which they were
+       * specified
        * when callind addNodeset, and then the target nodes.
        * @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
@@ -274,11 +296,12 @@ namespace gum {
       // ##########################################################################
 
       /// prevent copy constructor
-      IndependenceTest(const IndependenceTest<IdSetAlloc, CountAlloc> &) = delete;
+      IndependenceTest(const IndependenceTest<IdSetAlloc, CountAlloc>&) =
+          delete;
 
       /// prevent copy operator
-      IndependenceTest &
-      operator=(const IndependenceTest<IdSetAlloc, CountAlloc> &) = delete;
+      IndependenceTest&
+      operator=(const IndependenceTest<IdSetAlloc, CountAlloc>&) = delete;
     };
 
   } /* namespace learning */

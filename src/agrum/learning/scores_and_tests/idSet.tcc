@@ -57,7 +57,7 @@ namespace gum {
     /// default constructor
     template <typename Alloc>
     template <typename OtherAlloc>
-    INLINE IdSet<Alloc>::IdSet(const std::vector<unsigned int, OtherAlloc> &ids,
+    INLINE IdSet<Alloc>::IdSet(const std::vector<unsigned int, OtherAlloc>& ids,
                                unsigned int sz)
         : __ids(ids), __size(sz) {
       GUM_CONSTRUCTOR(IdSet);
@@ -66,7 +66,7 @@ namespace gum {
 
     /// copy constructor
     template <typename Alloc>
-    INLINE IdSet<Alloc>::IdSet(const IdSet<Alloc> &from)
+    INLINE IdSet<Alloc>::IdSet(const IdSet<Alloc>& from)
         : __ids(from.__ids), __size(from.__size) {
       GUM_CONS_CPY(IdSet);
     }
@@ -74,7 +74,7 @@ namespace gum {
     /// generalized copy constructor
     template <typename Alloc>
     template <typename OtherAlloc>
-    INLINE IdSet<Alloc>::IdSet(const IdSet<OtherAlloc> &from)
+    INLINE IdSet<Alloc>::IdSet(const IdSet<OtherAlloc>& from)
         : __size(from.__size) {
       __ids.reserve(from.__ids.size());
 
@@ -87,7 +87,7 @@ namespace gum {
 
     /// move constructor
     template <typename Alloc>
-    INLINE IdSet<Alloc>::IdSet(IdSet<Alloc> &&from)
+    INLINE IdSet<Alloc>::IdSet(IdSet<Alloc>&& from)
         : __ids(std::move(from.__ids)), __size(from.__size) {
       GUM_CONS_MOV(IdSet);
     }
@@ -99,7 +99,7 @@ namespace gum {
 
     /// copy operator
     template <typename Alloc>
-    INLINE IdSet<Alloc> &IdSet<Alloc>::operator=(const IdSet<Alloc> &from) {
+    INLINE IdSet<Alloc>& IdSet<Alloc>::operator=(const IdSet<Alloc>& from) {
       if (this != &from) {
         __ids = from.__ids;
         __size = from.__size;
@@ -111,7 +111,8 @@ namespace gum {
     /// generalized copy operator
     template <typename Alloc>
     template <typename OtherAlloc>
-    INLINE IdSet<Alloc> &IdSet<Alloc>::operator=(const IdSet<OtherAlloc> &from) {
+    INLINE IdSet<Alloc>& IdSet<Alloc>::
+    operator=(const IdSet<OtherAlloc>& from) {
       __ids.clear();
 
       for (auto id : from.__ids) {
@@ -125,7 +126,7 @@ namespace gum {
 
     /// move operator
     template <typename Alloc>
-    INLINE IdSet<Alloc> &IdSet<Alloc>::operator=(IdSet<Alloc> &&from) {
+    INLINE IdSet<Alloc>& IdSet<Alloc>::operator=(IdSet<Alloc>&& from) {
       if (this != &from) {
         __ids = std::move(from.__ids);
         __size = from.__size;
@@ -136,13 +137,14 @@ namespace gum {
 
     /// returns the id stored at a given index
     template <typename Alloc>
-    INLINE unsigned int IdSet<Alloc>::operator[](unsigned int index) const noexcept {
+    INLINE unsigned int IdSet<Alloc>::operator[](unsigned int index) const
+        noexcept {
       return __ids[index];
     }
 
     /// inserts a new element into the set
     template <typename Alloc>
-    INLINE IdSet<Alloc> &IdSet<Alloc>::operator<<(unsigned int id) {
+    INLINE IdSet<Alloc>& IdSet<Alloc>::operator<<(unsigned int id) {
       unsigned int min_index = 0, max_index = __ids.size();
       unsigned int middle;
 
@@ -172,7 +174,7 @@ namespace gum {
     /// returns true if both sets are equal
     template <typename Alloc>
     template <typename OtherAlloc>
-    INLINE bool IdSet<Alloc>::operator==(const IdSet<OtherAlloc> &from) const
+    INLINE bool IdSet<Alloc>::operator==(const IdSet<OtherAlloc>& from) const
         noexcept {
       unsigned int sz = __ids.size();
 
@@ -190,14 +192,14 @@ namespace gum {
     /// returns true if the sets differ
     template <typename Alloc>
     template <typename OtherAlloc>
-    INLINE bool IdSet<Alloc>::operator!=(const IdSet<OtherAlloc> &from) const
+    INLINE bool IdSet<Alloc>::operator!=(const IdSet<OtherAlloc>& from) const
         noexcept {
       return !operator==(from);
     }
 
     /// returns the set of ids contained in the object
     template <typename Alloc>
-    INLINE const std::vector<unsigned int, Alloc> &IdSet<Alloc>::ids() const
+    INLINE const std::vector<unsigned int, Alloc>& IdSet<Alloc>::ids() const
         noexcept {
       return __ids;
     }
@@ -215,7 +217,8 @@ namespace gum {
     }
 
     /// returns the content of the set as a string
-    template <typename Alloc> std::string IdSet<Alloc>::toString() const noexcept {
+    template <typename Alloc>
+    std::string IdSet<Alloc>::toString() const noexcept {
       std::stringstream str;
 
       str << '{';
@@ -238,7 +241,7 @@ namespace gum {
     /// indicates wether the current object is a subset of 'otherset'
     template <typename Alloc>
     template <typename OtherAlloc>
-    INLINE bool IdSet<Alloc>::isSubset(const IdSet<OtherAlloc> &otherset) const
+    INLINE bool IdSet<Alloc>::isSubset(const IdSet<OtherAlloc>& otherset) const
         noexcept {
       unsigned int min_index = 0, max_index = otherset.__ids.size();
 
@@ -271,7 +274,7 @@ namespace gum {
 
     // the display operator
     template <typename Alloc>
-    std::ostream &operator<<(std::ostream &stream, const IdSet<Alloc> &idset) {
+    std::ostream& operator<<(std::ostream& stream, const IdSet<Alloc>& idset) {
       return stream << idset.toString();
     }
 
@@ -280,9 +283,9 @@ namespace gum {
   // the hash function for idSets
   template <typename Alloc>
   Size HashFunc<learning::IdSet<Alloc>>::
-  operator()(const learning::IdSet<Alloc> &key) const {
+  operator()(const learning::IdSet<Alloc>& key) const {
     Size h = 0;
-    const std::vector<unsigned int, Alloc> &vect = key.ids();
+    const std::vector<unsigned int, Alloc>& vect = key.ids();
 
     for (size_t i = 0; i < vect.size(); ++i)
       h += i * vect[i];
@@ -293,10 +296,10 @@ namespace gum {
   /// the hash function for pairs (idSet,unsigned int)
   template <typename Alloc>
   Size HashFunc<std::pair<learning::IdSet<Alloc>, unsigned int>>::
-  operator()(const std::pair<learning::IdSet<Alloc>, unsigned int> &key) const {
+  operator()(const std::pair<learning::IdSet<Alloc>, unsigned int>& key) const {
     Size h = 0;
     size_t i;
-    const std::vector<unsigned int, Alloc> &vect = key.first.ids();
+    const std::vector<unsigned int, Alloc>& vect = key.first.ids();
 
     for (i = 0; i < vect.size(); ++i)
       h += i * vect[i];
@@ -308,12 +311,13 @@ namespace gum {
 
   /// the hash function for pairs (idSet,unsigned int)
   template <typename Alloc>
-  Size HashFunc<std::tuple<learning::IdSet<Alloc>, unsigned int, unsigned int>>::
-  operator()(const std::tuple<learning::IdSet<Alloc>, unsigned int,
-                              unsigned int> &key) const {
+  Size
+      HashFunc<std::tuple<learning::IdSet<Alloc>, unsigned int, unsigned int>>::
+      operator()(const std::tuple<learning::IdSet<Alloc>, unsigned int,
+                                  unsigned int>& key) const {
     Size h = 0;
     size_t i;
-    const std::vector<unsigned int, Alloc> &vect = std::get<0>(key).ids();
+    const std::vector<unsigned int, Alloc>& vect = std::get<0>(key).ids();
 
     for (i = 0; i < vect.size(); ++i)
       h += i * vect[i];

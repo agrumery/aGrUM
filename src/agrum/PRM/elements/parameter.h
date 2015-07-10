@@ -36,95 +36,90 @@ namespace gum {
      * @class Parameter parameter.h <agrum/PRM/parameter.h>
      * @brief Parameter is a member of a Class in a PRM.
      *
-     * @see PRM PRMFactory Class ClassElement 
+     * @see PRM PRMFactory Class ClassElement
      * @ingroup prm_group
      */
-    template<typename GUM_SCALAR>
-    class Parameter: public ClassElement<GUM_SCALAR> {
+    template <typename GUM_SCALAR>
+    class Parameter : public ClassElement<GUM_SCALAR> {
       public:
+      enum ParameterType { INT, REAL };
 
-        enum ParameterType {
-          INT,
-          REAL
-        };
+      // ========================================================================
+      /// @name Constructor & destructor.
+      // ========================================================================
+      /// @{
 
-        // ========================================================================
-        /// @name Constructor & destructor.
-        // ========================================================================
-        /// @{
+      /**
+       * @brief Constructor used by gum::Class.
+       *
+       * @param name
+       * @param type
+       * @param impl value
+       */
+      Parameter(const std::string& name, ParameterType type, GUM_SCALAR value);
 
-        /**
-         * @brief Constructor used by gum::Class.
-         *
-         * @param name 
-         * @param type 
-         * @param impl value 
-         */
-        Parameter ( const std::string& name, ParameterType type, GUM_SCALAR value );
+      /// Destructor.
+      virtual ~Parameter();
 
-        /// Destructor.
-        virtual ~Parameter();
+      /// @}
+      // ========================================================================
+      /// @name Getters & setters
+      // ========================================================================
+      /// @{
 
-        /// @}
-        // ========================================================================
-        /// @name Getters & setters
-        // ========================================================================
-        /// @{
+      /// See gum::ClassElement::elt_type().
+      virtual typename ClassElement<GUM_SCALAR>::ClassElementType
+      elt_type() const;
 
-        /// See gum::ClassElement::elt_type().
-        virtual typename ClassElement<GUM_SCALAR>::ClassElementType elt_type() const;
+      GUM_SCALAR value() const;
 
-        GUM_SCALAR value() const;
+      void value(GUM_SCALAR value);
 
-        void value( GUM_SCALAR value );
+      ParameterType valueType() const;
 
-        ParameterType valueType() const;
+      /// See gum::ClassElement::type().
+      virtual Type<GUM_SCALAR>& type();
 
-        /// See gum::ClassElement::type().
-        virtual Type<GUM_SCALAR>& type();
+      /// See gum::ClassElement::type().
+      virtual const Type<GUM_SCALAR>& type() const;
 
-        /// See gum::ClassElement::type().
-        virtual const Type<GUM_SCALAR>& type() const;
+      /// See gum::ClassElement::cpf().
+      virtual Potential<GUM_SCALAR>& cpf();
 
-        /// See gum::ClassElement::cpf().
-        virtual Potential<GUM_SCALAR>& cpf();
+      /// See gum::ClassElement::cpf().
+      virtual const Potential<GUM_SCALAR>& cpf() const;
 
-        /// See gum::ClassElement::cpf().
-        virtual const Potential<GUM_SCALAR>& cpf() const;
+      /// See gum::ClassElement::addParent().
+      void addParent(const gum::prm::ClassElement<GUM_SCALAR>&);
 
-        /// See gum::ClassElement::addParent().
-        void addParent(const gum::prm::ClassElement<GUM_SCALAR>&);
+      /// See gum::ClassElement::addChild().
+      void addChild(const gum::prm::ClassElement<GUM_SCALAR>&);
 
-        /// See gum::ClassElement::addChild().
-        void addChild(const gum::prm::ClassElement<GUM_SCALAR>&);
-
-        /// @}
+      /// @}
       protected:
+      /// Copy constructor. Don't use it.
+      Parameter(const Parameter<GUM_SCALAR>& source);
 
-        /// Copy constructor. Don't use it.
-        Parameter ( const Parameter<GUM_SCALAR>& source );
-
-        /// Copy operator. Don't use it.
-        Parameter& operator= ( const Parameter<GUM_SCALAR>& from );
+      /// Copy operator. Don't use it.
+      Parameter& operator=(const Parameter<GUM_SCALAR>& from);
 
       private:
-        // ========================================================================
-        /// @name Private members
-        // ========================================================================
-        /// @{
+      // ========================================================================
+      /// @name Private members
+      // ========================================================================
+      /// @{
 
-        ParameterType __type;
+      ParameterType __type;
 
-        GUM_SCALAR __value;
+      GUM_SCALAR __value;
 
-        /// @}
+      /// @}
     };
 
     extern template class Parameter<double>;
   } /* namespace prm */
-} // namespace gum
+}  // namespace gum
 
 #include <agrum/PRM/elements/parameter.tcc>
 
 #endif /* GUM_PARAMETER_H */
-

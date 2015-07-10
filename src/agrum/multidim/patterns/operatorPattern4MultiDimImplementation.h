@@ -33,9 +33,9 @@ namespace gum {
 
 #ifdef GUM_MULTI_DIM_OPERATOR_NAME
   template <typename T>
-  MultiDimImplementation<T> *
-  GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation<T> &impl1,
-                              const MultiDimImplementation<T> &impl2) {
+  MultiDimImplementation<T>*
+  GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation<T>& impl1,
+                              const MultiDimImplementation<T>& impl2) {
 #endif
 
     typename OperatorRegister4MultiDim<T>::OperatorPtr func;
@@ -46,7 +46,7 @@ namespace gum {
       // try to find +(impl1,impl2) in the register
       func = OperatorRegister4MultiDim<T>::Register().get(
           GUM_MULTI_DIM_OPERATOR_FUNC_NAME, impl1.name(), impl2.name());
-    } catch (NotFound &) {
+    } catch (NotFound&) {
 
 #ifdef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
 
@@ -59,11 +59,12 @@ namespace gum {
         func = OperatorRegister4MultiDim<T>::Register().get(
             GUM_MULTI_DIM_OPERATOR_FUNC_NAME, impl2.name(), impl1.name());
         swapped_names = true;
-      } catch (NotFound &) {
+      } catch (NotFound&) {
 #endif /* GUM_MULTI_DIM_SYMMETRIC_OPERATOR */
 
         func = OperatorRegister4MultiDim<T>::Register().get(
-            GUM_MULTI_DIM_OPERATOR_FUNC_NAME, impl1.basename(), impl2.basename());
+            GUM_MULTI_DIM_OPERATOR_FUNC_NAME, impl1.basename(),
+            impl2.basename());
 
 #ifdef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
       }

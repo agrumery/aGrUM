@@ -36,8 +36,9 @@ namespace gum_tests {
     void test_aic() {
       gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
 
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8>());
 
       auto generators =
           gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
@@ -51,12 +52,13 @@ namespace gum_tests {
       apriori.setWeight(0);
       gum::learning::ScoreAIC<> score(filter, modalities, apriori);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreAIC<>::isAprioriCompatible(
-          gum::learning::AprioriSmoothing<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::learning::ScoreAIC<>::isAprioriCompatible(
+              gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(
           gum::learning::ScoreAIC<>::isAprioriCompatible(apriori));
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          score.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score.isAprioriCompatible(
+          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score.isAprioriCompatible(apriori));
 
       unsigned int id1 = score.addNodeSet(3);
@@ -100,8 +102,9 @@ namespace gum_tests {
 
     void test_cache() {
       gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8>());
       auto generators =
           gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
       auto filter =
@@ -134,8 +137,9 @@ namespace gum_tests {
 
     void test_clearcache() {
       gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8>());
       auto generators =
           gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
       auto filter =

@@ -21,7 +21,7 @@
 #include <iostream>
 #include <string>
 
-#include <cstdlib> // rand
+#include <cstdlib>  // rand
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
@@ -46,7 +46,7 @@ namespace gum_tests {
     private:
     protected:
     public:
-    gum::credal::CredalNet<double> *cn;
+    gum::credal::CredalNet<double>* cn;
 
     void initCNet() {
 #ifdef _OPENMP
@@ -109,9 +109,9 @@ namespace gum_tests {
       initCNet();
 
       std::vector<gum::NodeId> ids;
-      ids.push_back(cn->addNode("A", 3)); // id 0
-      ids.push_back(cn->addNode("B", 3)); // id 1
-      ids.push_back(cn->addNode("C", 3)); // id 2
+      ids.push_back(cn->addNode("A", 3));  // id 0
+      ids.push_back(cn->addNode("B", 3));  // id 1
+      ids.push_back(cn->addNode("C", 3));  // id 2
 
       TS_ASSERT_EQUALS(ids[0], 0U);
       TS_ASSERT_EQUALS(ids[1], 1U);
@@ -124,16 +124,17 @@ namespace gum_tests {
       std::vector<std::vector<gum::credal::lp::LpInterface<double>>> lps(3);
       std::vector<std::vector<std::vector<std::vector<double>>>> lps_sols(3);
 
-      lps[0] = std::vector<gum::credal::lp::LpInterface<double>>(1); // A lp
+      lps[0] = std::vector<gum::credal::lp::LpInterface<double>>(1);  // A lp
       lps_sols[0] = std::vector<std::vector<std::vector<double>>>(1);
 
-      lps[1] = std::vector<gum::credal::lp::LpInterface<double>>(1); // B lp
+      lps[1] = std::vector<gum::credal::lp::LpInterface<double>>(1);  // B lp
       lps_sols[1] = std::vector<std::vector<std::vector<double>>>(1);
 
-      lps[2] = std::vector<gum::credal::lp::LpInterface<double>>(9); // C lps
+      lps[2] = std::vector<gum::credal::lp::LpInterface<double>>(9);  // C lps
       lps_sols[2] = std::vector<std::vector<std::vector<double>>>(9);
 
-      /// A - intervals ( not a linear - vacuous mixture, i.e. exists i : max Pxi +
+      /// A - intervals ( not a linear - vacuous mixture, i.e. exists i : max
+      /// Pxi +
       /// sum_(j != i) min Pxj != 1 )
       std::vector<gum::credal::lp::LpCol> A = lps[0][0].addCols(3);
 
@@ -141,14 +142,15 @@ namespace gum_tests {
       lps[0][0].addRow(0.1 <= A[0] <= 0.7);
       lps[0][0].addRow(0.1 <= A[1] <= 0.5);
       lps[0][0].addRow(0.1 <= A[2] <= 0.6);
-      lps[0][0].addSumIsOne(); // positivity constraints are obviously redundant
+      lps[0][0]
+          .addSumIsOne();  // positivity constraints are obviously redundant
 
       lps_sols[0][0] = {{7. / 10, 1. / 5, 1. / 10},
                         {7. / 10, 1. / 10, 1. / 5},
                         {3. / 10, 1. / 10, 3. / 5},
                         {2. / 5, 1. / 2, 1. / 10},
                         {1. / 10, 1. / 2, 2. / 5},
-                        {1. / 10, 3. / 10, 3. / 5}}; // A lp solution
+                        {1. / 10, 3. / 10, 3. / 5}};  // A lp solution
 
       /// B : x1 = x2, x0 >= x1
       A = lps[1][0].addCols(3);
@@ -157,7 +159,7 @@ namespace gum_tests {
       lps[1][0].addRow(A[1] <= A[0]);
       lps[1][0].addProba();
 
-      lps_sols[1][0] = {{1. / 3, 1. / 3, 1. / 3}, {1, 0, 0}}; // B lp solution
+      lps_sols[1][0] = {{1. / 3, 1. / 3, 1. / 3}, {1, 0, 0}};  // B lp solution
 
       /// C
       /// C : ins idx = 0, A:0 B:0
@@ -169,7 +171,7 @@ namespace gum_tests {
 
       lps_sols[2][0] = {{1. / 4, 1. / 2, 1. / 4},
                         {0, 0, 1},
-                        {0, 1. / 2, 1. / 2}}; // C lp solution A:0 B:0
+                        {0, 1. / 2, 1. / 2}};  // C lp solution A:0 B:0
 
       /// C : ins idx = 1, A:1 B:0
       /// 2 * x0 + x1 <= x2 written as x0 + x1 <= x2 - x0
@@ -182,7 +184,7 @@ namespace gum_tests {
       lps_sols[2][1] = {{0, 1. / 2, 1. / 2},
                         {1. / 5, 1. / 5, 3. / 5},
                         {3. / 10, 0, 7. / 10},
-                        {0, 0, 1}}; // C lp solution A:1 B:0
+                        {0, 0, 1}};  // C lp solution A:1 B:0
 
       /// C : ins idx = 2, A:2 B:0
       /// 0.5 * x0 + 0.5 * x1 = x2 ( i.e. x0 + x1 = 2 * x2 )
@@ -192,14 +194,15 @@ namespace gum_tests {
       lps[2][2].addProba();
 
       lps_sols[2][2] = {{2. / 3, 0, 1. / 3},
-                        {0, 2. / 3, 1. / 3}}; // C lp solution A:2 B:0
+                        {0, 2. / 3, 1. / 3}};  // C lp solution A:2 B:0
 
       /// C : ins idx = 3, A:0 B:1
       /// vacuous
       A = lps[2][3].addCols(3);
       lps[2][3].addProba();
 
-      lps_sols[2][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}; // C lp solution A:0 B:1
+      lps_sols[2][3] = {
+          {1, 0, 0}, {0, 1, 0}, {0, 0, 1}};  // C lp solution A:0 B:1
 
       /// C : ins idx = 4, A:1 B:1
       /// x0 <= x1 <= x2
@@ -210,7 +213,7 @@ namespace gum_tests {
       lps[2][4].addRow(2 * A[1] <= A[0]);
       lps[2][4].addProba();
 
-      lps_sols[2][4] = {{0, 0, 1}}; // C lp solution A:1 B:1
+      lps_sols[2][4] = {{0, 0, 1}};  // C lp solution A:1 B:1
 
       /// C : ins idx = 5, A:2 B:1
       /// at least 2 times x2 than x1 and 2 times x1 than x0
@@ -223,7 +226,7 @@ namespace gum_tests {
 
       lps_sols[2][5] = {{1. / 7, 2. / 7, 4. / 7},
                         {0, 1. / 3, 2. / 3},
-                        {0, 0, 1}}; // C lp solution A:2 B:1
+                        {0, 0, 1}};  // C lp solution A:2 B:1
 
       /// C : ins idx = 6, A:0 B:2
       /// x2 - x1 <= x0
@@ -234,14 +237,15 @@ namespace gum_tests {
       lps_sols[2][6] = {{1, 0, 0},
                         {1. / 2, 0, 1. / 2},
                         {0, 1. / 2, 1. / 2},
-                        {0, 1, 0}}; // C lp solution A:0 B:2
+                        {0, 1, 0}};  // C lp solution A:0 B:2
 
       /// C : ins idx = 7, A:1 B:2
       /// vacuous
       A = lps[2][7].addCols(3);
       lps[2][7].addProba();
 
-      lps_sols[2][7] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}; // C lp solution A:1 B:2
+      lps_sols[2][7] = {
+          {1, 0, 0}, {0, 1, 0}, {0, 0, 1}};  // C lp solution A:1 B:2
 
       /// C : ins idx = 8, A:2 B:2
       /// x2 = 1 / 3 * x0 + 2 / 3 * x1
@@ -251,11 +255,11 @@ namespace gum_tests {
       lps[2][8].addProba();
 
       lps_sols[2][8] = {{3. / 4, 0, 1. / 4},
-                        {0, 3. / 5, 2. / 5}}; // C lp solution A:2 B:2
+                        {0, 3. / 5, 2. / 5}};  // C lp solution A:2 B:2
 
       /// compute solutions, check bijection
 
-      for (const auto &id : ids) {
+      for (const auto& id : ids) {
         gum::Instantiation ins(cn->instantiation(id));
         ins.setFirst();
 
@@ -263,14 +267,14 @@ namespace gum_tests {
 
         while (!ins.end()) {
           std::vector<std::vector<double>> vertices(
-              lps[id][entry].solve()); // we solve the lp
+              lps[id][entry].solve());  // we solve the lp
 
           gum::Size sols_size(lps_sols[id][entry].size());
           TS_ASSERT_EQUALS(vertices.size(), sols_size);
 
           std::vector<bool> checked(sols_size, false);
 
-          for (const auto &vertex : vertices) {
+          for (const auto& vertex : vertices) {
             for (gum::Size sol = 0; sol < sols_size; sol++) {
               bool eq = true;
 
@@ -299,9 +303,9 @@ namespace gum_tests {
 
           cn->setCPT(id, ins, vertices);
 
-          ins += cn->domainSize(id); // next instantiation without taking into
-                                     // account the head variable; ins increased by
-                                     // cardinality of head variable
+          ins += cn->domainSize(id);  // next instantiation without taking into
+          // account the head variable; ins increased by
+          // cardinality of head variable
           entry++;
         }
       }
@@ -309,6 +313,6 @@ namespace gum_tests {
       clearCNet();
     }
 
-  }; // end of class CredalNetTestSuite
+  };  // end of class CredalNetTestSuite
 
-} // end of namespace gum_tests
+}  // end of namespace gum_tests

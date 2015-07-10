@@ -30,33 +30,36 @@ namespace gum {
 
     /// default constructor
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE ScoreInternalApriori<IdSetAlloc, CountAlloc>::ScoreInternalApriori() {
+    INLINE
+    ScoreInternalApriori<IdSetAlloc, CountAlloc>::ScoreInternalApriori() {
       GUM_CONSTRUCTOR(ScoreInternalApriori);
     }
 
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE ScoreInternalApriori<IdSetAlloc, CountAlloc>::~ScoreInternalApriori() {
+    INLINE
+        ScoreInternalApriori<IdSetAlloc, CountAlloc>::~ScoreInternalApriori() {
       GUM_DESTRUCTOR(ScoreInternalApriori);
     }
 
     /// copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE ScoreInternalApriori<IdSetAlloc, CountAlloc>::ScoreInternalApriori(
-        const ScoreInternalApriori &from) {
+        const ScoreInternalApriori& from) {
       GUM_CONS_CPY(ScoreInternalApriori);
     }
 
     /// move constructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE ScoreInternalApriori<IdSetAlloc, CountAlloc>::ScoreInternalApriori(
-        ScoreInternalApriori &&from) {
+        ScoreInternalApriori&& from) {
       GUM_CONS_MOV(ScoreInternalApriori);
     }
 
     /// indicates whether the apriori is potentially informative
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE bool ScoreInternalApriori<IdSetAlloc, CountAlloc>::isInformative() const {
+    INLINE bool
+    ScoreInternalApriori<IdSetAlloc, CountAlloc>::isInformative() const {
       return true;
     }
 

@@ -29,10 +29,11 @@
 #include <agrum/core/hashFunc.h>
 
 namespace gum {
-  template <> class HashFunc<gum::Set<int>> : public HashFuncBase<gum::Set<int>> {
+  template <>
+  class HashFunc<gum::Set<int>> : public HashFuncBase<gum::Set<int>> {
     public:
     /// computes the hashed value of a key
-    Size operator()(const gum::Set<int> &key) const {
+    Size operator()(const gum::Set<int>& key) const {
       return ((key.size() * gum::HashFuncConst::gold) & _hash_mask);
     }
   };
@@ -65,7 +66,7 @@ namespace gum_tests {
       TS_ASSERT(queue1.contains("AAA") == true);
       TS_ASSERT(queue1.contains("ZZZ") == false);
 
-      const std::string &str = queue1.top();
+      const std::string& str = queue1.top();
       TS_ASSERT(str == "CCC");
       TS_ASSERT(queue1.topPriority() == 2);
 
@@ -92,11 +93,12 @@ namespace gum_tests {
       queue1.resize(10);
       TS_ASSERT(queue1.capacity() == 10);
 
-      const gum::HashTable<std::string, gum::Size> &vals = queue1.allValues();
+      const gum::HashTable<std::string, gum::Size>& vals = queue1.allValues();
       TS_ASSERT(vals.size() == 4);
 
-      gum::PriorityQueue<std::string> queue10{std::pair<std::string, int>("aa", 3),
-                                              std::pair<std::string, int>("bb", 2)};
+      gum::PriorityQueue<std::string> queue10{
+          std::pair<std::string, int>("aa", 3),
+          std::pair<std::string, int>("bb", 2)};
       TS_ASSERT(queue10.size() == 2);
       TS_ASSERT(queue10.top() == "bb");
     }
@@ -136,9 +138,10 @@ namespace gum_tests {
     }
 
     void testMoveGen() {
-      gum::PriorityQueue<std::string> queue1{std::pair<std::string, int>("a", 3),
-                                             std::pair<std::string, int>("b", 1),
-                                             std::pair<std::string, int>("c", 10)};
+      gum::PriorityQueue<std::string> queue1{
+          std::pair<std::string, int>("a", 3),
+          std::pair<std::string, int>("b", 1),
+          std::pair<std::string, int>("c", 10)};
 
       gum::PriorityQueue<std::string, int, std::less<int>, MyAlloc<int>> queue3;
       queue3 = queue1;
@@ -163,7 +166,8 @@ namespace gum_tests {
       TS_ASSERT(queue5.topPriority() == 1);
       TS_ASSERT(queue5.size() == 3);
 
-      gum::PriorityQueue<std::string> queue6{std::pair<std::string, int>("a", 1)};
+      gum::PriorityQueue<std::string> queue6{
+          std::pair<std::string, int>("a", 1)};
       queue6 = std::move(queue2);
       TS_ASSERT(queue6.top() == "b");
       TS_ASSERT(queue6.topPriority() == 1);
@@ -220,7 +224,7 @@ namespace gum_tests {
       queue1.resize(10);
       TS_ASSERT(queue1.capacity() == 10);
 
-      const gum::HashTable<int, gum::Size> &vals = queue1.allValues();
+      const gum::HashTable<int, gum::Size>& vals = queue1.allValues();
       TS_ASSERT(vals.size() == 4);
     }
 
@@ -265,7 +269,7 @@ namespace gum_tests {
       queue2.erase("AAA");
       TS_ASSERT(queue2.size() == 3);
 
-      const std::string &str1 = queue2[0];
+      const std::string& str1 = queue2[0];
       TS_ASSERT(str1 == "BBB");
     }
 
@@ -296,7 +300,7 @@ namespace gum_tests {
       TS_ASSERT(queue1.contains(set1) == true);
       TS_ASSERT(queue1.contains(set6) == false);
 
-      const gum::Set<int> &str = queue1.top();
+      const gum::Set<int>& str = queue1.top();
       TS_ASSERT(str == set3);
       TS_ASSERT(queue1.topPriority() == 2);
 
@@ -324,7 +328,7 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(queue1.insert(set1, 10), gum::DuplicateElement);
 
-      const gum::HashTable<gum::Set<int>, gum::Size> &vals = queue1.allValues();
+      const gum::HashTable<gum::Set<int>, gum::Size>& vals = queue1.allValues();
       TS_ASSERT(vals.size() == 4);
 
       queue1.clear();
@@ -358,8 +362,8 @@ namespace gum_tests {
       queue2.erase(set1);
       TS_ASSERT(queue2.size() == 3);
 
-      const gum::Set<int> &str3 = queue2[0];
-      const gum::Set<int> &str4 = queue2[1];
+      const gum::Set<int>& str3 = queue2[0];
+      const gum::Set<int>& str4 = queue2[1];
       TS_ASSERT(str3 == set2);
       TS_ASSERT(str4 == set4);
     }
@@ -385,7 +389,7 @@ namespace gum_tests {
       TS_ASSERT(queue1.contains("AAA") == true);
       TS_ASSERT(queue1.contains("ZZZ") == false);
 
-      const std::string &str = queue1.top();
+      const std::string& str = queue1.top();
       TS_ASSERT(str == "CCC");
       TS_ASSERT(queue1.topPriority() == 2);
 
@@ -410,7 +414,7 @@ namespace gum_tests {
       queue1.resize(10);
       TS_ASSERT(queue1.capacity() == 10);
 
-      const gum::HashTable<std::string, std::vector<gum::Size>> &vals =
+      const gum::HashTable<std::string, std::vector<gum::Size>>& vals =
           queue1.allValues();
       TS_ASSERT(vals.size() == 4);
     }
@@ -457,8 +461,8 @@ namespace gum_tests {
       queue2.erase("AAA");
       TS_ASSERT(queue2.size() == 2);
 
-      const std::string &str1 = queue2[0];
-      const std::string &str2 = queue2[1];
+      const std::string& str1 = queue2[0];
+      const std::string& str2 = queue2[1];
       TS_ASSERT(str1 == "BBB");
       TS_ASSERT(str2 == "DDD");
     }
@@ -491,7 +495,7 @@ namespace gum_tests {
       TS_ASSERT(queue1.contains(set1) == true);
       TS_ASSERT(queue1.contains(set6) == false);
 
-      const gum::Set<int> &str = queue1.top();
+      const gum::Set<int>& str = queue1.top();
       TS_ASSERT(str == set3);
       TS_ASSERT(queue1.topPriority() == 2);
 
@@ -516,7 +520,7 @@ namespace gum_tests {
       queue1.resize(10);
       TS_ASSERT(queue1.capacity() == 10);
 
-      const gum::HashTable<gum::Set<int>, std::vector<gum::Size>> &vals =
+      const gum::HashTable<gum::Set<int>, std::vector<gum::Size>>& vals =
           queue1.allValues();
       TS_ASSERT(vals.size() == 4);
 
@@ -552,8 +556,8 @@ namespace gum_tests {
       queue2.erase(set1);
       TS_ASSERT(queue2.size() == 2);
 
-      const gum::Set<int> &str3 = queue2[0];
-      const gum::Set<int> &str4 = queue2[1];
+      const gum::Set<int>& str3 = queue2[0];
+      const gum::Set<int>& str4 = queue2[1];
       TS_ASSERT(str3 == set2);
       TS_ASSERT(str4 == set4);
     }
@@ -569,7 +573,8 @@ namespace gum_tests {
       TS_ASSERT(queue3.topPriority() == 1);
       TS_ASSERT(queue3.size() == 3);
 
-      gum::MultiPriorityQueue<int, int, std::less<int>, MyAlloc<int>> queue4(queue1);
+      gum::MultiPriorityQueue<int, int, std::less<int>, MyAlloc<int>> queue4(
+          queue1);
       TS_ASSERT(queue4.top() == 2);
       TS_ASSERT(queue4.topPriority() == 1);
       TS_ASSERT(queue4.size() == 3);

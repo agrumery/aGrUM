@@ -43,19 +43,25 @@ namespace gum {
 
   namespace learning {
 
-    /* ========================================================================= */
-    /* ===                       PARAM ESTIMATOR CLASS                       === */
-    /* ========================================================================= */
+    /* =========================================================================
+     */
+    /* ===                       PARAM ESTIMATOR CLASS                       ===
+     */
+    /* =========================================================================
+     */
     /** @class ParamEstimator
      * @brief The base class for estimating parameters of CPTs
      * @ingroup learning_group
      *
      * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the parameters you need in one pass. To do so,
+     * should consider computing all the parameters you need in one pass. To do
+     *so,
      * use the appropriate addNodeSet methods. These will compute everything you
-     * need. The addNodeSet methods where you do not specify a set of conditioning
+     * need. The addNodeSet methods where you do not specify a set of
+     *conditioning
      * nodes assume that this set is empty. Once the computations have been
-     * performed, use methods _getAllCounts and _getConditioningCounts to retrieve
+     * performed, use methods _getAllCounts and _getConditioningCounts to
+     *retrieve
      * the parameters of interest.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
@@ -73,14 +79,14 @@ namespace gum {
        * @param apriori the a priori that is taken into account in the
        * score/countings */
       template <typename RowFilter>
-      ParamEstimator(const RowFilter &filter,
-                     const std::vector<unsigned int> &var_modalities,
-                     Apriori<IdSetAlloc, CountAlloc> &apriori,
-                     const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
+      ParamEstimator(const RowFilter& filter,
+                     const std::vector<unsigned int>& var_modalities,
+                     Apriori<IdSetAlloc, CountAlloc>& apriori,
+                     const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
                          score_internal_apriori);
 
       /// virtual copy factory
-      virtual ParamEstimator<IdSetAlloc, CountAlloc> *copyFactory() const = 0;
+      virtual ParamEstimator<IdSetAlloc, CountAlloc>* copyFactory() const = 0;
 
       /// destructor
       virtual ~ParamEstimator();
@@ -94,30 +100,39 @@ namespace gum {
 
       /// add a new CPT with a single variable to be estimated
       /** @param var represents the index of the variable in the filtered rows
-       * produced by the database cell filters whose observations shall be counted
+       * produced by the database cell filters whose observations shall be
+       * counted
        * @return the index of the produced counting vector: the user should use
        * class ParamEstimator to compute in one pass several CPT's parameters.
        * These and their corresponding countings in the database are stored
-       * into a vector and the value returned by method addNodeSet is the index of
-       * the observed countings of "var" in this vector. The user shall pass this
-       * index as argument to methods _getAllCounts and _getConditioningCounts to
+       * into a vector and the value returned by method addNodeSet is the index
+       * of
+       * the observed countings of "var" in this vector. The user shall pass
+       * this
+       * index as argument to methods _getAllCounts and _getConditioningCounts
+       * to
        * get the corresponding counting vectors. */
       unsigned int addNodeSet(unsigned int var);
 
       /// add a new target variable plus some conditioning vars
       /** @param var represents the index of the target variable in the filtered
        * rows produced by the database cell filters
-       * @param conditioning_ids the indices of the variables of the conditioning
+       * @param conditioning_ids the indices of the variables of the
+       * conditioning
        * set in the filtered rows
        * @return the index of the produced counting vector: the user should use
        * class ParamEstimator to compute in one pass several CPT's parameters.
        * These and their corresponding countings in the database are stored
-       * into a vector and the value returned by method addNodeSet is the index of
-       * the observed countings of "var" in this vector. The user shall pass this
-       * index as argument to methods _getAllCounts and _getConditioningCounts to
+       * into a vector and the value returned by method addNodeSet is the index
+       * of
+       * the observed countings of "var" in this vector. The user shall pass
+       * this
+       * index as argument to methods _getAllCounts and _getConditioningCounts
+       * to
        * get the corresponding counting vectors. */
-      unsigned int addNodeSet(unsigned int var,
-                              const std::vector<unsigned int> &conditioning_ids);
+      unsigned int
+      addNodeSet(unsigned int var,
+                 const std::vector<unsigned int>& conditioning_ids);
 
       /// clears all the data structures from memory
       void clear();
@@ -127,25 +142,26 @@ namespace gum {
 
       /// returns the CPT's parameters corresponding to a given nodeset
       /** The vector contains the parameters of an n-dimensional CPT. The
-       * distribution of the dimensions of the CPT within the vector is as follows:
+       * distribution of the dimensions of the CPT within the vector is as
+       * follows:
        * first, there are the conditioning nodes (in the order in which they
        * were specified) and, then, the target node. */
-      virtual const std::vector<float, CountAlloc> &
+      virtual const std::vector<float, CountAlloc>&
       parameters(unsigned int nodeset_index) = 0;
 
       /// sets the CPT's parameters corresponding to a given nodeset
       /** The order of the variables in the potential and in the nodeset
        * are assumed to be identical */
-      void setParameters(unsigned int nodeset_index, Potential<float> &pot);
+      void setParameters(unsigned int nodeset_index, Potential<float>& pot);
 
       /// @}
 
       protected:
       /// the a priori used by the score
-      Apriori<IdSetAlloc, CountAlloc> *_apriori;
+      Apriori<IdSetAlloc, CountAlloc>* _apriori;
 
       /// the score that was use for structure learning (used for its apriori)
-      ScoreInternalApriori<IdSetAlloc, CountAlloc> *_score_internal_apriori;
+      ScoreInternalApriori<IdSetAlloc, CountAlloc>* _score_internal_apriori;
 
       /// indicate whether we have already normalized the parameters
       std::vector<bool> _is_normalized;
@@ -154,10 +170,12 @@ namespace gum {
       /** This method returns the observtion countings for the set of variables
        * whose index was returned by method addNodeSet. If the
        * set was conditioned, the countings correspond to the target variables
-       * @b and the conditioning variables. If you wish to get only the countings
+       * @b and the conditioning variables. If you wish to get only the
+       * countings
        * for the conditioning variables, prefer using method countConditioning.
        * @warning the dimensions of the vector are as follows: first come the
-       * nodes of the conditioning set (in the order in which they were specified
+       * nodes of the conditioning set (in the order in which they were
+       * specified
        * when callind addNodeset, and then the target nodes.
        * @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
@@ -180,26 +198,28 @@ namespace gum {
       /** This method returns the observation countings for the set of variables
        * whose index was returned by method addNodeSet. If the
        * set was conditioned, the countings correspond to the target variables
-       * @b and the conditioning variables. If you wish to get only the countings
+       * @b and the conditioning variables. If you wish to get only the
+       * countings
        * for the conditioning variables, prefer using method
        * _getConditioningApriori.
        * @warning the dimensions of the vector are as follows: first come the
-       * nodes of the conditioning set (in the order in which they were specified
+       * nodes of the conditioning set (in the order in which they were
+       * specified
        * when callind addNodeset, and then the target nodes. */
-      const std::vector<float, CountAlloc> &_getAllApriori(unsigned int index);
+      const std::vector<float, CountAlloc>& _getAllApriori(unsigned int index);
 
       /// returns the apriori vector for a conditioning set
-      const std::vector<float, CountAlloc> &
+      const std::vector<float, CountAlloc>&
       _getConditioningApriori(unsigned int index);
 
       /// if needed insert the score apriori into the countings
       void _insertScoreApriori();
 
       /// copy constructor
-      ParamEstimator(const ParamEstimator<IdSetAlloc, CountAlloc> &);
+      ParamEstimator(const ParamEstimator<IdSetAlloc, CountAlloc>&);
 
       /// move constructor
-      ParamEstimator(ParamEstimator<IdSetAlloc, CountAlloc> &&);
+      ParamEstimator(ParamEstimator<IdSetAlloc, CountAlloc>&&);
 
       private:
       /// has the a priori been computed
@@ -212,8 +232,8 @@ namespace gum {
       // ##########################################################################
 
       /// prevent copy operator
-      ParamEstimator<IdSetAlloc, CountAlloc> &
-      operator=(const ParamEstimator<IdSetAlloc, CountAlloc> &) = delete;
+      ParamEstimator<IdSetAlloc, CountAlloc>&
+      operator=(const ParamEstimator<IdSetAlloc, CountAlloc>&) = delete;
     };
 
   } /* namespace learning */

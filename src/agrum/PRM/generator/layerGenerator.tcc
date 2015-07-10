@@ -29,7 +29,7 @@ namespace gum {
   namespace prm {
 
     template <typename GUM_SCALAR>
-    PRM<GUM_SCALAR> *LayerGenerator<GUM_SCALAR>::generate() {
+    PRM<GUM_SCALAR>* LayerGenerator<GUM_SCALAR>::generate() {
       if (__layers.size() == 0) {
         GUM_ERROR(OperationNotAllowed,
                   "cannot generate a layered PRM<GUM_SCALAR> without layers");
@@ -45,8 +45,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    std::string
-    LayerGenerator<GUM_SCALAR>::__generateType(PRMFactory<GUM_SCALAR> &factory) {
+    std::string LayerGenerator<GUM_SCALAR>::__generateType(
+        PRMFactory<GUM_SCALAR>& factory) {
       std::string name = this->_name_gen.nextName(PRMObject::PRMType::TYPE);
       factory.startDiscreteType(name);
 
@@ -62,8 +62,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void LayerGenerator<GUM_SCALAR>::__generateInterfaces(
-        PRMFactory<GUM_SCALAR> &f, const std::string &type,
-        std::vector<LayerGenerator<GUM_SCALAR>::MyData> &l) {
+        PRMFactory<GUM_SCALAR>& f, const std::string& type,
+        std::vector<LayerGenerator<GUM_SCALAR>::MyData>& l) {
       for (Size lvl = 0; lvl < __layers.size(); ++lvl) {
         l.push_back(LayerGenerator<GUM_SCALAR>::MyData());
         l[lvl].i = this->_name_gen.nextName(PRMObject::PRMType::INTERFACE);
@@ -92,9 +92,9 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void LayerGenerator<GUM_SCALAR>::__generateClasses(
-        PRMFactory<GUM_SCALAR> &f, const std::string &type,
-        std::vector<LayerGenerator<GUM_SCALAR>::MyData> &l) {
-      const Set<NodeId> *parents = 0;
+        PRMFactory<GUM_SCALAR>& f, const std::string& type,
+        std::vector<LayerGenerator<GUM_SCALAR>::MyData>& l) {
+      const Set<NodeId>* parents = 0;
       Size size = 0;
       GUM_SCALAR sum = 0.0;
       Set<std::string> i;
@@ -103,7 +103,8 @@ namespace gum {
         i.insert(l[lvl].i);
 
         for (Size c = 0; c < __layers[lvl].c; ++c) {
-          l[lvl].c.push_back(this->_name_gen.nextName(PRMObject::PRMType::CLASS));
+          l[lvl].c.push_back(
+              this->_name_gen.nextName(PRMObject::PRMType::CLASS));
           f.startClass(l[lvl].c.back(), "", &i);
 
           if (lvl)
@@ -166,8 +167,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void LayerGenerator<GUM_SCALAR>::__generateClassDag(
-        Size lvl, DAG &dag, Bijection<std::string, NodeId> &names,
-        std::vector<LayerGenerator<GUM_SCALAR>::MyData> &l) {
+        Size lvl, DAG& dag, Bijection<std::string, NodeId>& names,
+        std::vector<LayerGenerator<GUM_SCALAR>::MyData>& l) {
       float density = __layers[lvl].inner_density * RAND_MAX;
       std::vector<NodeId> nodes;
       NodeId id = 0;
@@ -215,8 +216,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void LayerGenerator<GUM_SCALAR>::__generateSystem(
-        PRMFactory<GUM_SCALAR> &factory,
-        std::vector<LayerGenerator<GUM_SCALAR>::MyData> &l) {
+        PRMFactory<GUM_SCALAR>& factory,
+        std::vector<LayerGenerator<GUM_SCALAR>::MyData>& l) {
       factory.startSystem(this->_name_gen.nextName(PRMObject::PRMType::SYSTEM));
       std::vector<std::vector<std::string>> o(__layers.size());
       std::string name;
@@ -241,8 +242,8 @@ namespace gum {
                 ref2add.push_back(*iter);
 
             if (ref2add.empty())
-              factory.setReferenceSlot(chain.str(),
-                                       o[lvl - 1][std::rand() % o[lvl - 1].size()]);
+              factory.setReferenceSlot(
+                  chain.str(), o[lvl - 1][std::rand() % o[lvl - 1].size()]);
 
             while (ref2add.size() > getMaxParents()) {
               idx = std::rand() % ref2add.size();
@@ -268,7 +269,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE LayerGenerator<GUM_SCALAR>::LayerGenerator(
-        const LayerGenerator<GUM_SCALAR> &source)
+        const LayerGenerator<GUM_SCALAR>& source)
         : __layers(source.__layers), __domain_size(source.__domain_size),
           __max_parents(source.__max_parents) {
       GUM_CONS_CPY(LayerGenerator);
@@ -280,8 +281,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE LayerGenerator<GUM_SCALAR> &LayerGenerator<GUM_SCALAR>::
-    operator=(const LayerGenerator<GUM_SCALAR> &source) {
+    INLINE LayerGenerator<GUM_SCALAR>& LayerGenerator<GUM_SCALAR>::
+    operator=(const LayerGenerator<GUM_SCALAR>& source) {
       __layers = source.__layers;
       __domain_size = source.__domain_size;
       __max_parents = source.__max_parents;
@@ -310,18 +311,18 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void LayerGenerator<GUM_SCALAR>::setLayers(
-        const std::vector<LayerGenerator<GUM_SCALAR>::LayerData> &v) {
+        const std::vector<LayerGenerator<GUM_SCALAR>::LayerData>& v) {
       __layers = v;
     }
 
     template <typename GUM_SCALAR>
-    INLINE std::vector<typename LayerGenerator<GUM_SCALAR>::LayerData> &
+    INLINE std::vector<typename LayerGenerator<GUM_SCALAR>::LayerData>&
     LayerGenerator<GUM_SCALAR>::getLayer() {
       return __layers;
     }
 
     template <typename GUM_SCALAR>
-    INLINE const std::vector<typename LayerGenerator<GUM_SCALAR>::LayerData> &
+    INLINE const std::vector<typename LayerGenerator<GUM_SCALAR>::LayerData>&
     LayerGenerator<GUM_SCALAR>::getLayer() const {
       return __layers;
     }

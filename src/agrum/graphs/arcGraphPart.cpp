@@ -27,7 +27,7 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/arcGraphPart.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 #include "graphElements.h"
 
 namespace gum {
@@ -38,30 +38,30 @@ namespace gum {
     GUM_CONSTRUCTOR(ArcGraphPart);
   }
 
-  ArcGraphPart::ArcGraphPart(const ArcGraphPart &s) : __arcs(s.__arcs) {
+  ArcGraphPart::ArcGraphPart(const ArcGraphPart& s) : __arcs(s.__arcs) {
     GUM_CONS_CPY(ArcGraphPart);
 
     // copy the sets of parents
-    const NodeProperty<NodeSet *> &pars = s.__parents;
+    const NodeProperty<NodeSet*>& pars = s.__parents;
     __parents.resize(pars.capacity());
 
-    for (const auto &elt : pars) {
-      NodeSet *newpar = new NodeSet(*elt.second);
+    for (const auto& elt : pars) {
+      NodeSet* newpar = new NodeSet(*elt.second);
       __parents.insert(elt.first, newpar);
     }
 
     // copy the sets of children
-    const NodeProperty<NodeSet *> &children = s.__children;
+    const NodeProperty<NodeSet*>& children = s.__children;
     __children.resize(children.capacity());
 
-    for (const auto &elt : children) {
-      NodeSet *newchildren = new NodeSet(*elt.second);
+    for (const auto& elt : children) {
+      NodeSet* newchildren = new NodeSet(*elt.second);
       __children.insert(elt.first, newchildren);
     }
 
     // send signals to indicate that there are new arcs
     if (onArcAdded.hasListener()) {
-      for (const auto &arc : __arcs) {
+      for (const auto& arc : __arcs) {
         GUM_EMIT2(onArcAdded, arc.tail(), arc.head());
       }
     }
@@ -74,12 +74,12 @@ namespace gum {
   }
 
   void ArcGraphPart::clearArcs() {
-    for (const auto &elt : __parents)
+    for (const auto& elt : __parents)
       delete elt.second;
 
     __parents.clear();
 
-    for (const auto &elt : __children)
+    for (const auto& elt : __children)
       delete elt.second;
 
     __children.clear();
@@ -89,14 +89,14 @@ namespace gum {
       ArcSet tmp = __arcs;
       __arcs.clear();
 
-      for (const auto &arc : tmp)
+      for (const auto& arc : tmp)
         GUM_EMIT2(onArcDeleted, arc.tail(), arc.head());
     } else {
       __arcs.clear();
     }
   }
 
-  ArcGraphPart &ArcGraphPart::operator=(const ArcGraphPart &s) {
+  ArcGraphPart& ArcGraphPart::operator=(const ArcGraphPart& s) {
     // avoid self assignment
     if (this != &s) {
       // copy the arcs
@@ -106,21 +106,21 @@ namespace gum {
       // copy the sets of parents
       __parents.resize(s.__parents.capacity());
 
-      for (const auto &elt : s.__parents) {
-        NodeSet *newpar = new NodeSet(*elt.second);
+      for (const auto& elt : s.__parents) {
+        NodeSet* newpar = new NodeSet(*elt.second);
         __parents.insert(elt.first, newpar);
       }
 
       // copy the sets of children
       __children.resize(s.__children.capacity());
 
-      for (const auto &elt : s.__children) {
-        NodeSet *newchildren = new NodeSet(*elt.second);
+      for (const auto& elt : s.__children) {
+        NodeSet* newchildren = new NodeSet(*elt.second);
         __children.insert(elt.first, newchildren);
       }
 
       if (onArcAdded.hasListener()) {
-        for (const auto &arc : __arcs) {
+        for (const auto& arc : __arcs) {
           GUM_EMIT2(onArcAdded, arc.tail(), arc.head());
         }
       }
@@ -134,7 +134,7 @@ namespace gum {
     bool first = true;
     s << "{";
 
-    for (const auto &arc : __arcs) {
+    for (const auto& arc : __arcs) {
       if (first) {
         first = false;
       } else {
@@ -168,8 +168,8 @@ namespace gum {
       // check the parents
 
       for (const auto new_one : parents(current)) {
-        if (mark.exists(new_one)) // if this node is already marked, do not
-          continue;               // check it again
+        if (mark.exists(new_one))  // if this node is already marked, do not
+          continue;                // check it again
 
         mark.insert(new_one, current);
 
@@ -209,7 +209,7 @@ namespace gum {
 
       // check the parents
       for (const auto new_one : parents(current)) {
-        if (mark.exists(new_one)) // the node has already been visited
+        if (mark.exists(new_one))  // the node has already been visited
           continue;
 
         mark.insert(new_one, current);
@@ -231,7 +231,7 @@ namespace gum {
       // check the children
       for (const auto new_one : children(current)) {
 
-        if (mark.exists(new_one)) // the node has already been visited
+        if (mark.exists(new_one))  // the node has already been visited
           continue;
 
         mark.insert(new_one, current);
@@ -254,7 +254,7 @@ namespace gum {
     GUM_ERROR(NotFound, "no path found");
   }
 
-  std::ostream &operator<<(std::ostream &stream, const ArcGraphPart &set) {
+  std::ostream& operator<<(std::ostream& stream, const ArcGraphPart& set) {
     stream << set.toString();
     return stream;
   }

@@ -33,7 +33,7 @@ namespace gum_tests {
   class HashTableTestSuite : public CxxTest::TestSuite {
     public:
     void testConstructor() {
-      gum::HashTable<int, int> *table = nullptr;
+      gum::HashTable<int, int>* table = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING((table = new gum::HashTable<int, int>()));
       TS_GUM_ASSERT_THROWS_NOTHING(delete table);
 
@@ -175,7 +175,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(table.size(), (gum::Size)6);
 
       gum::HashTable<int, std::string>::iterator_safe iter =
-          table.beginSafe(); // safe iterator needed here
+          table.beginSafe();  // safe iterator needed here
 
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter));
       TS_ASSERT_EQUALS(table.size(), (gum::Size)5);
@@ -186,7 +186,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter));
       TS_ASSERT_EQUALS(table.size(), (gum::Size)4);
 
-      iter = table.beginSafe(); // safe iterator needed here
+      iter = table.beginSafe();  // safe iterator needed here
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter));
       TS_ASSERT_EQUALS(table.size(), (gum::Size)3);
 
@@ -225,26 +225,37 @@ namespace gum_tests {
     void testEraseAllVal() {
       gum::HashTable<int, std::string> table;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(1, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(2, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(3, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(4, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(5, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(6, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(7, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(8, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(9, "Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          table.insert(1, "Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          table.insert(2, "Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          table.insert(3, "Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          table.insert(4, "Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          table.insert(5, "Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          table.insert(6, "Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          table.insert(7, "Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          table.insert(8, "Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          table.insert(9, "Space, the final frontiere"));
 
       TS_GUM_ASSERT_THROWS_NOTHING(table.insert(10, "foo"));
       TS_GUM_ASSERT_THROWS_NOTHING(table.insert(11, "bar"));
 
       TS_ASSERT_EQUALS(table.size(), (gum::Size)11);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseAllVal("Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          table.eraseAllVal("Space, the final frontiere"));
 
       TS_ASSERT_EQUALS(table.size(), (gum::Size)2);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseAllVal("Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          table.eraseAllVal("Space, the final frontiere"));
       TS_ASSERT_EQUALS(table.size(), (gum::Size)2);
     }
 
@@ -504,7 +515,7 @@ namespace gum_tests {
         expected.insert(t1[i]);
       }
 
-      for (const auto &elt : t1)
+      for (const auto& elt : t1)
         obtained.insert(elt.second);
 
       TS_ASSERT_EQUALS(expected.size(), obtained.size());
@@ -524,7 +535,7 @@ namespace gum_tests {
         expected.insert(t1[i]);
       }
 
-      for (const auto &elt : t1)
+      for (const auto& elt : t1)
         obtained.insert(elt.second);
 
       TS_ASSERT_EQUALS(expected.size(), obtained.size());
@@ -664,7 +675,7 @@ namespace gum_tests {
         int k = 0;
 
         for (auto iter = table.cbeginSafe(); iter != table.cendSafe();
-             ++iter) { // safe iterator needed here
+             ++iter) {  // safe iterator needed here
           s = iter.val();
           k += iter.key();
         }
@@ -674,7 +685,7 @@ namespace gum_tests {
         k = 0;
 
         for (auto iter = table.beginSafe(); iter != table.endSafe();
-             ++iter) { // safe iterator needed here
+             ++iter) {  // safe iterator needed here
           s = iter.val();
           k += iter.key();
         }
@@ -701,7 +712,7 @@ namespace gum_tests {
 
         k = 0;
 
-        for (const auto &elt : table) {
+        for (const auto& elt : table) {
           s = elt.second;
           k += elt.first;
         }
@@ -711,9 +722,9 @@ namespace gum_tests {
         gum::HashTableConstIterator<int, std::string> iter1 = table.cbegin();
         gum::HashTableIterator<int, std::string> iter2 = table.begin();
         gum::HashTableConstIteratorSafe<int, std::string> iter3 =
-            table.cbeginSafe(); // safe iterator needed here
+            table.cbeginSafe();  // safe iterator needed here
         gum::HashTableIteratorSafe<int, std::string> iter4 =
-            table.beginSafe(); // safe iterator needed here
+            table.beginSafe();  // safe iterator needed here
 
         // TS_ASSERT ( *iter1 == *iter2 );
         // TS_ASSERT ( *iter3 == *iter4 );
@@ -736,7 +747,7 @@ namespace gum_tests {
     }
 
     private:
-    void fill(gum::HashTable<int, std::string> &table) {
+    void fill(gum::HashTable<int, std::string>& table) {
       table.insert(1, "a");
       table.insert(2, "b");
       table.insert(3, "c");
@@ -745,13 +756,13 @@ namespace gum_tests {
       table.insert(6, "f");
     }
 
-    void fillEven(gum::HashTable<int, std::string> &table) {
+    void fillEven(gum::HashTable<int, std::string>& table) {
       table.insert(2, "b");
       table.insert(4, "d");
       table.insert(6, "f");
     }
 
-    void fillOdd(gum::HashTable<int, std::string> &table) {
+    void fillOdd(gum::HashTable<int, std::string>& table) {
       table.insert(1, "a");
       table.insert(3, "c");
       table.insert(5, "e");
@@ -786,9 +797,11 @@ namespace gum_tests {
       return unionTable;
     }
 
-    static std::string mappingTestFunc_1(const std::string &s) { return s + ".foo"; }
+    static std::string mappingTestFunc_1(const std::string& s) {
+      return s + ".foo";
+    }
 
-    static std::string mappingTestFunc_2(std::string &s) { return s + ".bar"; }
+    static std::string mappingTestFunc_2(std::string& s) { return s + ".bar"; }
 
     static std::string mappingTestFunc_3(std::string s) { return s + ".42"; }
 

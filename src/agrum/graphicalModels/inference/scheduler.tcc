@@ -37,7 +37,7 @@ namespace gum {
 
   /// copy constructor
   template <typename GUM_SCALAR>
-  Scheduler<GUM_SCALAR>::Scheduler(const Scheduler<GUM_SCALAR> &from) {
+  Scheduler<GUM_SCALAR>::Scheduler(const Scheduler<GUM_SCALAR>& from) {
     // for debugging purposes
     GUM_CONS_CPY(Scheduler);
   }

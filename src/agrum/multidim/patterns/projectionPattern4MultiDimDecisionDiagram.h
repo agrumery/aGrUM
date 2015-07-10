@@ -33,7 +33,8 @@
 #include <agrum/multidim/patterns/DDUtility/DDModeMacro.h>
 namespace gum {
 
-/// a specialized function for projecting a multiDimDecisionDiagram over a subset of
+/// a specialized function for projecting a multiDimDecisionDiagram over a
+/// subset of
 /// its vars
 
 #ifdef GUM_DECISION_DIAGRAM_PROJECTION_NAME
@@ -41,9 +42,9 @@ namespace gum {
 #define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
 
   template <typename GUM_SCALAR>
-  MultiDimDecisionDiagramBase<GUM_SCALAR> *GUM_DECISION_DIAGRAM_PROJECTION_NAME(
-      const MultiDimDecisionDiagramBase<GUM_SCALAR> *table,
-      const Set<const DiscreteVariable *> &delVars) {
+  MultiDimDecisionDiagramBase<GUM_SCALAR>* GUM_DECISION_DIAGRAM_PROJECTION_NAME(
+      const MultiDimDecisionDiagramBase<GUM_SCALAR>* table,
+      const Set<const DiscreteVariable*>& delVars) {
 
 #endif
 
@@ -52,18 +53,20 @@ namespace gum {
 #define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
 
     template <typename GUM_SCALAR>
-    MultiDimImplementation<GUM_SCALAR> *
+    MultiDimImplementation<GUM_SCALAR>*
     GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME(
-        const MultiDimImplementation<GUM_SCALAR> *ttable,
-        const Set<const DiscreteVariable *> &delVars) {
+        const MultiDimImplementation<GUM_SCALAR>* ttable,
+        const Set<const DiscreteVariable*>& delVars) {
 
-      const MultiDimDecisionDiagramBase<GUM_SCALAR> *table =
-          reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR> *>(ttable);
+      const MultiDimDecisionDiagramBase<GUM_SCALAR>* table =
+          reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
+              ttable);
 
 #endif
-      MultiDimDecisionDiagramFactoryBase<GUM_SCALAR> *factory = table->getFactory();
+      MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* factory =
+          table->getFactory();
       factory->setMultiDimDecisionDiagram(table);
-      Sequence<const DiscreteVariable *> varSeq = table->variablesSequence();
+      Sequence<const DiscreteVariable*> varSeq = table->variablesSequence();
 
       auto endSeqIter = varSeq.rbegin();
       bool modified = true;
@@ -90,7 +93,7 @@ namespace gum {
         --endSeqIter;
       }
 
-      MultiDimDecisionDiagramBase<GUM_MULTI_DIM_PROJECTION_TYPE> *ret =
+      MultiDimDecisionDiagramBase<GUM_MULTI_DIM_PROJECTION_TYPE>* ret =
           factory->getMultiDimDecisionDiagram();
       factory->clear();
 
@@ -106,11 +109,12 @@ namespace gum {
 
 #ifdef P4DDDEBUG
       factory->setRootNode(GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-          ret, factory, ret->root(), false, explorationTable, delVars, nbOperation,
-          ""));
+          ret, factory, ret->root(), false, explorationTable, delVars,
+          nbOperation, ""));
 #else
   factory->setRootNode(GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-      ret, factory, ret->root(), false, explorationTable, delVars, nbOperation));
+      ret, factory, ret->root(), false, explorationTable, delVars,
+      nbOperation));
 #endif
       delete ret;
       ret = factory->getMultiDimDecisionDiagram();

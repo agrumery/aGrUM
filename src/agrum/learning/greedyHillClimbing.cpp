@@ -39,13 +39,13 @@ namespace gum {
     }
 
     /// copy constructor
-    GreedyHillClimbing::GreedyHillClimbing(const GreedyHillClimbing &from)
+    GreedyHillClimbing::GreedyHillClimbing(const GreedyHillClimbing& from)
         : ApproximationScheme(from) {
       GUM_CONS_CPY(learning::GreedyHillClimbing);
     }
 
     /// move constructor
-    GreedyHillClimbing::GreedyHillClimbing(GreedyHillClimbing &&from)
+    GreedyHillClimbing::GreedyHillClimbing(GreedyHillClimbing&& from)
         : ApproximationScheme(std::move(from)) {
       GUM_CONS_MOV(learning::GreedyHillClimbing);
     }
@@ -56,20 +56,23 @@ namespace gum {
     }
 
     /// copy operator
-    GreedyHillClimbing &GreedyHillClimbing::
-    operator=(const GreedyHillClimbing &from) {
+    GreedyHillClimbing& GreedyHillClimbing::
+    operator=(const GreedyHillClimbing& from) {
       ApproximationScheme::operator=(from);
       return *this;
     }
 
     /// move operator
-    GreedyHillClimbing &GreedyHillClimbing::operator=(GreedyHillClimbing &&from) {
+    GreedyHillClimbing& GreedyHillClimbing::
+    operator=(GreedyHillClimbing&& from) {
       ApproximationScheme::operator=(std::move(from));
       return *this;
     }
 
     /// returns the approximation policy of the learning algorithm
-    ApproximationScheme &GreedyHillClimbing::approximationScheme() { return *this; }
+    ApproximationScheme& GreedyHillClimbing::approximationScheme() {
+      return *this;
+    }
 
   } /* namespace learning */
 

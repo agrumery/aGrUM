@@ -63,11 +63,13 @@ namespace gum {
   }
 
   /**
-   * Call this from anywhere (parallel region or not). By default, it is the number
+   * Call this from anywhere (parallel region or not). By default, it is the
+   *number
    *of threads launched in any parallel region.
    *
    * It should return the number of logical processors by default, i.e.
-   *omp_get_num_procs(). If setNumberOfThreads(number) was called, it will return the
+   *omp_get_num_procs(). If setNumberOfThreads(number) was called, it will
+   *return the
    *choosen number.
    *
    * @return The maximum number of threads at any time.
@@ -121,7 +123,8 @@ namespace gum {
   }
 
   /**
-   * Nested parallelism, i.e. parallel activity within another parallel activity :
+   * Nested parallelism, i.e. parallel activity within another parallel activity
+   * :
    * threads creating more threads. Off by default.
    * @param value \c True if nested parallelism should be activated, \c False
    * otherwise.
@@ -130,8 +133,9 @@ namespace gum {
 #ifdef _OPENMP
     omp_set_nested(((value == true) ? 1 : 0));
 #else
-    GUM_ERROR(OperationNotAllowed, "openMP was not enabled at compilation (and you "
-                                   "asked for nested parallelism !)");
+    GUM_ERROR(OperationNotAllowed,
+              "openMP was not enabled at compilation (and you "
+              "asked for nested parallelism !)");
 #endif
   }
 
@@ -148,7 +152,8 @@ namespace gum {
   }
 
   /**
-   * Automatically adjust the number of running threads within a parallel region.
+   * Automatically adjust the number of running threads within a parallel
+   * region.
    * Desactivated by default.
    * @param value \c True if dynamic thread number should be used, \c False
    * otherwise.
@@ -157,9 +162,10 @@ namespace gum {
 #ifdef _OPENMP
     omp_set_dynamic(((value == true) ? 1 : 0));
 #else
-    GUM_ERROR(OperationNotAllowed, "openMP was not enabled at compilation (and you "
-                                   "asked for dynamic adjustment of the number of "
-                                   "threads !)");
+    GUM_ERROR(OperationNotAllowed,
+              "openMP was not enabled at compilation (and you "
+              "asked for dynamic adjustment of the number of "
+              "threads !)");
 #endif
   }
 

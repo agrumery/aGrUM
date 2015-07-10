@@ -30,7 +30,7 @@ namespace gum {
   /// returns an elimination ordering compatible with the triangulated graph
 
   INLINE
-  const std::vector<NodeId> &StaticTriangulation::eliminationOrder() {
+  const std::vector<NodeId>& StaticTriangulation::eliminationOrder() {
     if (!__has_triangulation)
       __triangulate();
 
@@ -52,7 +52,8 @@ namespace gum {
    * (0 = first node eliminated) */
 
   INLINE
-  const NodeProperty<unsigned int> &StaticTriangulation::reverseEliminationOrder() {
+  const NodeProperty<unsigned int>&
+  StaticTriangulation::reverseEliminationOrder() {
     if (!__has_triangulation)
       __triangulate();
 
@@ -62,7 +63,7 @@ namespace gum {
   /// returns the elimination tree of a compatible ordering
 
   INLINE
-  const CliqueGraph &StaticTriangulation::eliminationTree() {
+  const CliqueGraph& StaticTriangulation::eliminationTree() {
     if (!__has_elimination_tree)
       __computeEliminationTree();
 
@@ -72,7 +73,7 @@ namespace gum {
   /// returns a compatible junction tree
 
   INLINE
-  const CliqueGraph &StaticTriangulation::junctionTree() {
+  const CliqueGraph& StaticTriangulation::junctionTree() {
     // checks if junctionTree already exists
     if (!__has_junction_tree) {
       __junction_tree = &(_junction_tree_strategy->junctionTree());
@@ -85,7 +86,7 @@ namespace gum {
   /// returns a junction tree of maximal prime subgraphs
 
   INLINE
-  const CliqueGraph &StaticTriangulation::maxPrimeSubgraphTree() {
+  const CliqueGraph& StaticTriangulation::maxPrimeSubgraphTree() {
     if (!__has_max_prime_junction_tree)
       __computeMaxPrimeJunctionTree();
 
@@ -115,7 +116,8 @@ namespace gum {
    * elimination of the nodes */
 
   INLINE
-  const NodeProperty<NodeId> &StaticTriangulation::createdJunctionTreeCliques() {
+  const NodeProperty<NodeId>&
+  StaticTriangulation::createdJunctionTreeCliques() {
     return _junction_tree_strategy->createdCliques();
   }
 
@@ -130,7 +132,7 @@ namespace gum {
   /// returns the graph to be triangulated
 
   INLINE
-  const UndiGraph *StaticTriangulation::originalGraph() const {
+  const UndiGraph* StaticTriangulation::originalGraph() const {
     return __original_graph;
   }
 

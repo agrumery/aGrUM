@@ -40,17 +40,23 @@ namespace gum {
 
   namespace learning {
 
-    /* ========================================================================= */
-    /* ===                     PARAM ESTIMATOR ML CLASS                      === */
-    /* ========================================================================= */
+    /* =========================================================================
+     */
+    /* ===                     PARAM ESTIMATOR ML CLASS                      ===
+     */
+    /* =========================================================================
+     */
     /** @class ParamEstimatorML
-     * @brief The class for estimating parameters of CPTs using Maximum Likelihood
+     * @brief The class for estimating parameters of CPTs using Maximum
+     *Likelihood
      * @ingroup learning_group
      *
      * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the parameters you need in one pass. To do so,
+     * should consider computing all the parameters you need in one pass. To do
+     *so,
      * use the appropriate addNodeSet methods. These will compute everything you
-     * need. The addNodeSet methods where you do not specify a set of conditioning
+     * need. The addNodeSet methods where you do not specify a set of
+     *conditioning
      * nodes assume that this set is empty. Once the computations have been
      * performed, use method parameters to retrieve the parameters of interest.
      */
@@ -65,23 +71,24 @@ namespace gum {
 
       /// default constructor
       /** @param filter the row filter that will be used to read the database
-       * @param var_modalities the domain sizes of the variables in the database */
+       * @param var_modalities the domain sizes of the variables in the database
+       */
       template <typename RowFilter>
-      ParamEstimatorML(const RowFilter &filter,
-                       const std::vector<unsigned int> &var_modalities,
-                       Apriori<IdSetAlloc, CountAlloc> &apriori,
-                       const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
-                           score_internal_apriori =
-                               ScoreInternalNoApriori<IdSetAlloc, CountAlloc>());
+      ParamEstimatorML(const RowFilter& filter,
+                       const std::vector<unsigned int>& var_modalities,
+                       Apriori<IdSetAlloc, CountAlloc>& apriori,
+                       const ScoreInternalApriori<
+                           IdSetAlloc, CountAlloc>& score_internal_apriori =
+                           ScoreInternalNoApriori<IdSetAlloc, CountAlloc>());
 
       /// copy constructor
-      ParamEstimatorML(const ParamEstimatorML<IdSetAlloc, CountAlloc> &);
+      ParamEstimatorML(const ParamEstimatorML<IdSetAlloc, CountAlloc>&);
 
       /// move constructor
-      ParamEstimatorML(ParamEstimatorML<IdSetAlloc, CountAlloc> &&);
+      ParamEstimatorML(ParamEstimatorML<IdSetAlloc, CountAlloc>&&);
 
       /// virtual copy factory
-      virtual ParamEstimatorML<IdSetAlloc, CountAlloc> *copyFactory() const;
+      virtual ParamEstimatorML<IdSetAlloc, CountAlloc>* copyFactory() const;
 
       /// destructor
       virtual ~ParamEstimatorML();
@@ -95,12 +102,14 @@ namespace gum {
 
       /// returns the CPT's parameters corresponding to a given nodeset
       /** The vector contains the parameters of an n-dimensional CPT. The
-       * distribution of the dimensions of the CPT within the vector is as follows:
+       * distribution of the dimensions of the CPT within the vector is as
+       * follows:
        * first, there are the conditioning nodes (in the order in which they
        * were specified) and, then, the target node.
        * @throw CPTError is raised if some values of the conditioning sets were
        * not observed in the database. */
-      const std::vector<float, CountAlloc> &parameters(unsigned int nodeset_index);
+      const std::vector<float, CountAlloc>&
+      parameters(unsigned int nodeset_index);
 
       /// @}
     };

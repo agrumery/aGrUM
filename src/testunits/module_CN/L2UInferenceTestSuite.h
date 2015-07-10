@@ -50,27 +50,27 @@ namespace gum_tests {
 
     protected:
     public:
-    L2UListener(gum::ApproximationScheme &aS)
+    L2UListener(gum::ApproximationScheme& aS)
         : gum::ApproximationSchemeListener(aS), __nbr(0), __msg(""){};
 
-    void whenProgress(const void *buffer, const gum::Size a, const double b,
+    void whenProgress(const void* buffer, const gum::Size a, const double b,
                       const double c) {
       __nbr++;
     }
 
-    void whenStop(const void *buffer, const std::string s) { __msg = s; }
+    void whenStop(const void* buffer, const std::string s) { __msg = s; }
 
     int nbr() { return __nbr; }
 
-    std::string &msg() { return __msg; }
-  }; // end of : class l2uListener
+    std::string& msg() { return __msg; }
+  };  // end of : class l2uListener
 
   ////////////////////////////////////////////////////////////////
   class L2UInferenceTestSuite : public CxxTest::TestSuite {
     private:
     protected:
     public:
-    gum::credal::CredalNet<double> *cn;
+    gum::credal::CredalNet<double>* cn;
 
     // not dynamic (2U network - fast)
     void initCNet() {
@@ -97,11 +97,13 @@ namespace gum_tests {
       gum::setNumberOfThreads(1);
 #endif
       gum::BayesNet<double> monBNa;
-      gum::BIFReader<double> readera(&monBNa, GET_PATH_STR("cn/dbn_bin_min.bif"));
+      gum::BIFReader<double> readera(&monBNa,
+                                     GET_PATH_STR("cn/dbn_bin_min.bif"));
       readera.proceed();
 
       gum::BayesNet<double> monBNb;
-      gum::BIFReader<double> readerb(&monBNb, GET_PATH_STR("cn/dbn_bin_max.bif"));
+      gum::BIFReader<double> readerb(&monBNb,
+                                     GET_PATH_STR("cn/dbn_bin_max.bif"));
       readerb.proceed();
 
       cn = new gum::credal::CredalNet<double>(monBNa, monBNb);
@@ -122,13 +124,13 @@ namespace gum_tests {
       // evidence from file
       try {
         lp.insertEvidenceFile(GET_PATH_STR("cn/L2U.evi"));
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
       }
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
       }
 
@@ -143,13 +145,13 @@ namespace gum_tests {
 
       try {
         lp.insertEvidence(eviMap);
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
       }
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
       }
 
@@ -162,7 +164,7 @@ namespace gum_tests {
       try {
         for (const auto node : cn->current_bn().nodes())
           modals[cn->current_bn().variable(node).name()] = binaryModal;
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
       }
 
@@ -174,7 +176,7 @@ namespace gum_tests {
 
       try {
         lp.makeInference();
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
       }
 
@@ -185,18 +187,18 @@ namespace gum_tests {
           // double e_inf = lp.expectationMin ( node_idIt );
           // double e_sup = lp.expectationMax ( node_idIt );
         }
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
       }
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
       }
 
       clearCNet();
-    } // end of : testL2UInference (2U network)
+    }  // end of : testL2UInference (2U network)
 
     // dynamic (dynaCheese) - strong indep
     void testL2UInferenceD() {
@@ -212,7 +214,7 @@ namespace gum_tests {
       // evidence from file
       try {
         lp.insertEvidenceFile(GET_PATH_STR("cn/dbn_bin_evi.evi"));
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
       }
 
@@ -225,7 +227,7 @@ namespace gum_tests {
 
       try {
         lp.makeInference();
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
       }
 
@@ -236,7 +238,7 @@ namespace gum_tests {
           // double e_inf = lp.expectationMin ( node_idIt );
           // double e_sup = lp.expectationMax ( node_idIt );
         }
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
       }
 
@@ -252,20 +254,22 @@ namespace gum_tests {
                 //std::vector< double >  ekm_sup ( mcs.dynamicExpMax ( "km" ) );
                 //std::vector< double >  elo_inf ( mcs.dynamicExpMin ( "lo" ) );
                 //std::vector< double >  elo_sup ( mcs.dynamicExpMax ( "lo" ) );
-                //std::vector< double >  etemp_inf ( lp.dynamicExpMin ( "temp" ) );
-                //std::vector< double >  etemp_sup ( lp.dynamicExpMax ( "temp" ) );
+                //std::vector< double >  etemp_inf ( lp.dynamicExpMin ( "temp" )
+         );
+                //std::vector< double >  etemp_sup ( lp.dynamicExpMax ( "temp" )
+         );
               } catch ( gum::Exception & e ) {
                 TS_ASSERT ( false );
               }*/
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
       }
 
       clearCNet();
-    } // end of : testL2UInferenceD
+    }  // end of : testL2UInferenceD
 
     // with dynamic network
     void testL2UListener() {
@@ -276,7 +280,7 @@ namespace gum_tests {
       // evidence from file
       try {
         lp.insertEvidenceFile(GET_PATH_STR("cn/dbn_bin_evi.evi"));
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
       }
 
@@ -285,7 +289,7 @@ namespace gum_tests {
 
       try {
         lp.makeInference();
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
       }
 
@@ -295,13 +299,13 @@ namespace gum_tests {
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
       }
 
       clearCNet();
-    } // end of : testL2UListener
+    }  // end of : testL2UListener
 
-  }; // end of : class L2UInferenceTestSuite
+  };  // end of : class L2UInferenceTestSuite
 
-} // end of : namespace gum_tests
+}  // end of : namespace gum_tests

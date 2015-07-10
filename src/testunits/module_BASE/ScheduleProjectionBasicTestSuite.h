@@ -31,22 +31,22 @@
 
 namespace gum_tests {
 
-  static gum::MultiDimImplementation<float> *
-  schedule_proj_mysum(const gum::MultiDimImplementation<float> &t,
-                      const gum::Set<const gum::DiscreteVariable *> &del_vars) {
+  static gum::MultiDimImplementation<float>*
+  schedule_proj_mysum(const gum::MultiDimImplementation<float>& t,
+                      const gum::Set<const gum::DiscreteVariable*>& del_vars) {
     return projectSumMultiDimArray(&t, del_vars);
   }
 
-  static gum::MultiDimImplementation<float> *
-  schedule_proj_mymin(const gum::MultiDimImplementation<float> &t,
-                      const gum::Set<const gum::DiscreteVariable *> &del_vars) {
+  static gum::MultiDimImplementation<float>*
+  schedule_proj_mymin(const gum::MultiDimImplementation<float>& t,
+                      const gum::Set<const gum::DiscreteVariable*>& del_vars) {
     return projectMinMultiDimArray(&t, del_vars);
   }
 
   class ScheduleProjectionBasicTestSuite : public CxxTest::TestSuite {
     public:
     void test_construct1() {
-      std::vector<gum::LabelizedVariable *> vars(10);
+      std::vector<gum::LabelizedVariable*> vars(10);
 
       for (unsigned int i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -59,7 +59,7 @@ namespace gum_tests {
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
-      gum::Set<const gum::DiscreteVariable *> proj_set;
+      gum::Set<const gum::DiscreteVariable*> proj_set;
       proj_set.insert(vars[2]);
       proj_set.insert(vars[3]);
       proj_set.insert(vars[6]);
@@ -67,24 +67,24 @@ namespace gum_tests {
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
       proj_set.insert(vars[8]);
-      gum::Set<const gum::DiscreteVariable *> del_vars;
+      gum::Set<const gum::DiscreteVariable*> del_vars;
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
 
       gum::MultiDimProjection<float, gum::MultiDimImplementation> mymultiproj(
           schedule_proj_mysum);
-      gum::MultiDimImplementation<float> *t2 =
+      gum::MultiDimImplementation<float>* t2 =
           mymultiproj.project(*(t1.content()), del_vars);
 
       gum::ScheduleProjectionBasic<float> myproj(schedule_proj_mysum);
       gum::Schedule<float> schedule;
       gum::ScheduleMultiDim<float> tt2 = myproj.project(t1, del_vars, schedule);
-      const gum::NodeSet &available = schedule.availableOperations();
+      const gum::NodeSet& available = schedule.availableOperations();
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-                 available.beginSafe(); // safe iterator needed here
+                 available.beginSafe();  // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -106,7 +106,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-                 available.beginSafe(); // safe iterator needed here
+                 available.beginSafe();  // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -122,7 +122,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-                 available.beginSafe(); // safe iterator needed here
+                 available.beginSafe();  // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -130,7 +130,8 @@ namespace gum_tests {
       }
 
       TS_ASSERT(tt2.multiDim() == *t2);
-      TS_ASSERT(myproj.nbOperations(*(t1.content()), del_vars, schedule) == dom);
+      TS_ASSERT(myproj.nbOperations(*(t1.content()), del_vars, schedule) ==
+                dom);
       gum::ScheduleDeleteMultiDim<float> del4(tt2);
       del4.execute();
 
@@ -139,7 +140,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-                 available.beginSafe(); // safe iterator needed here
+                 available.beginSafe();  // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -151,12 +152,12 @@ namespace gum_tests {
       gum::ScheduleDeleteMultiDim<float> del5(tt2);
       del5.execute();
 
-      gum::ScheduleProjectionBasic<float> *yyy = myproj.newFactory();
+      gum::ScheduleProjectionBasic<float>* yyy = myproj.newFactory();
       tt2 = yyy->project(t3, del_vars, schedule);
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-                 available.beginSafe(); // safe iterator needed here
+                 available.beginSafe();  // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -176,7 +177,7 @@ namespace gum_tests {
     }
 
     void test_construct2() {
-      std::vector<gum::LabelizedVariable *> vars(10);
+      std::vector<gum::LabelizedVariable*> vars(10);
 
       for (unsigned int i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -189,7 +190,7 @@ namespace gum_tests {
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
-      gum::Set<const gum::DiscreteVariable *> proj_set;
+      gum::Set<const gum::DiscreteVariable*> proj_set;
       proj_set.insert(vars[2]);
       proj_set.insert(vars[3]);
       proj_set.insert(vars[6]);
@@ -197,7 +198,7 @@ namespace gum_tests {
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
       proj_set.insert(vars[8]);
-      gum::Set<const gum::DiscreteVariable *> del_vars;
+      gum::Set<const gum::DiscreteVariable*> del_vars;
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
@@ -220,7 +221,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInit(gum::Potential<float> *t) {
+    void randomInit(gum::Potential<float>* t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)

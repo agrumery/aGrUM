@@ -41,18 +41,23 @@ namespace gum {
 
   namespace learning {
 
-    /* ========================================================================= */
-    /* ===                      INDEP TEST CHI2 CLASS                        === */
-    /* ========================================================================= */
+    /* =========================================================================
+     */
+    /* ===                      INDEP TEST CHI2 CLASS                        ===
+     */
+    /* =========================================================================
+     */
     /** @class IndepTestChi2
      * @brief the class for computing Chi2 independence test scores
      * @ingroup learning_group
      *
      * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the independence tests you need in one pass.
+     * should consider computing all the independence tests you need in one
+     *pass.
      * To do so, use the appropriate addNodeSet methods. These will compute
      * everything you need. Use method score to retrieve the scores related to
-     * the independence test that were computed. See the IndependenceTest class for
+     * the independence test that were computed. See the IndependenceTest class
+     *for
      * details.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
@@ -66,10 +71,11 @@ namespace gum {
 
       /// default constructor
       /** @param filter the row filter that will be used to read the database
-       * @param var_modalities the domain sizes of the variables in the database */
+       * @param var_modalities the domain sizes of the variables in the database
+       */
       template <typename RowFilter>
-      IndepTestChi2(const RowFilter &filter,
-                    const std::vector<unsigned int> &var_modalities);
+      IndepTestChi2(const RowFilter& filter,
+                    const std::vector<unsigned int>& var_modalities);
 
       /// destructor
       ~IndepTestChi2();

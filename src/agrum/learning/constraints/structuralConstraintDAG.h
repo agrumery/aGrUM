@@ -37,13 +37,15 @@ namespace gum {
     /** @class StructuralConstraintDAG
      * @brief The base class for structural constraints imposed by DAGs
      *
-     * This base should always be a virtual parents of the structural constraints
+     * This base should always be a virtual parents of the structural
+     *constraints
      * classes. This will allow to combine different constraints into a single
      * class
      * @ingroup learning_group
      */
     class StructuralConstraintDAG
-        : public virtual StructuralConstraintSetStatic<StructuralConstraintDiGraph> {
+        : public virtual StructuralConstraintSetStatic<
+              StructuralConstraintDiGraph> {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -57,13 +59,13 @@ namespace gum {
       StructuralConstraintDAG(unsigned int nb_nodes);
 
       /// constructor starting with a given graph
-      StructuralConstraintDAG(const DAG &graph);
+      StructuralConstraintDAG(const DAG& graph);
 
       /// copy constructor
-      StructuralConstraintDAG(const StructuralConstraintDAG &from);
+      StructuralConstraintDAG(const StructuralConstraintDAG& from);
 
       /// move constructor
-      StructuralConstraintDAG(StructuralConstraintDAG &&from);
+      StructuralConstraintDAG(StructuralConstraintDAG&& from);
 
       /// destructor
       virtual ~StructuralConstraintDAG();
@@ -76,10 +78,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      StructuralConstraintDAG &operator=(const StructuralConstraintDAG &from);
+      StructuralConstraintDAG& operator=(const StructuralConstraintDAG& from);
 
       /// move operator
-      StructuralConstraintDAG &operator=(StructuralConstraintDAG &&from);
+      StructuralConstraintDAG& operator=(StructuralConstraintDAG&& from);
 
       /// @}
 
@@ -89,7 +91,7 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which we will perform checkings
-      void setGraphAlone(const DiGraph &graph);
+      void setGraphAlone(const DiGraph& graph);
 
       /// sets a new empty graph from which we will perform checkings
       void setGraphAlone(unsigned int nb_nodes);
@@ -99,32 +101,35 @@ namespace gum {
        * particular, no exception is raised.
        * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
        * or y does not belong to the graph nodes
-       * @throws InvalidDirectedCycle exception is thrown if any (directed) cycle
+       * @throws InvalidDirectedCycle exception is thrown if any (directed)
+       * cycle
        * is created by the arc addition. */
-      void modifyGraphAlone(const ArcAddition &change);
+      void modifyGraphAlone(const ArcAddition& change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If a nonexisting arc is removed, nothing is done. In
        * particular, no exception is raised. */
-      void modifyGraphAlone(const ArcDeletion &change);
+      void modifyGraphAlone(const ArcDeletion& change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
        * is removed, nothing is done. In particular, no exception is raised.
        * @throws InvalidNode exception is thrown if at least one extremity of
        * the arc does not belong to the graph nodes
-       * @throws InvalidDirectedCycle exception is thrown if any (directed) cycle
+       * @throws InvalidDirectedCycle exception is thrown if any (directed)
+       * cycle
        * is created by the arc reversal. */
-      void modifyGraphAlone(const ArcReversal &change);
+      void modifyGraphAlone(const ArcReversal& change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
        * is removed, nothing is done. In particular, no exception is raised.
        * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
        * or y does not belong to the graph nodes
-       * @throws InvalidDirectedCycle exception is thrown if any (directed) cycle
+       * @throws InvalidDirectedCycle exception is thrown if any (directed)
+       * cycle
        * is created by an arc addition or reversal. */
-      void modifyGraphAlone(const GraphChange &change);
+      void modifyGraphAlone(const GraphChange& change);
 
       /// indicates whether a change will always violate the constraint
       /** Some learning algorithms need examine several times whether a given
@@ -132,17 +137,20 @@ namespace gum {
        * addition is considered, the learning algorithm may discard this change
        * because it violates the structural constraint (e.g., if the latter
        * enforces a DAG structure, this arc addition might induce a directed
-       * cycle), but, later on, other arc removal may induce that the arc addition
+       * cycle), but, later on, other arc removal may induce that the arc
+       * addition
        * is now possible. Such change is thus not always invalid. Conversely,
        * there are changes that can be discarded once and for all. For instance,
-       * in a 2TBN structure, it is always impossible to add a backward-time arc.
+       * in a 2TBN structure, it is always impossible to add a backward-time
+       * arc.
        * Such graph changes are always invalid and are therefore tagged as such
        * by the isAlwaysInvalid method. */
-      bool isAlwaysInvalidAlone(const GraphChange &change) const noexcept;
+      bool isAlwaysInvalidAlone(const GraphChange& change) const noexcept;
 
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
-       * graph and the arc does not already exist and would not create a cycle */
+       * graph and the arc does not already exist and would not create a cycle
+       */
       bool checkArcAdditionAlone(NodeId x, NodeId y) const noexcept;
 
       /// checks whether the constraints enable to remove arc (x,y)
@@ -157,16 +165,16 @@ namespace gum {
       /// checks whether the constraints enable to add an arc
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist. */
-      bool checkModificationAlone(const ArcAddition &change) const noexcept;
+      bool checkModificationAlone(const ArcAddition& change) const noexcept;
 
       /// checks whether the constraints enable to remove an arc
       /** an arc can be removed if and only if the arc exists. */
-      bool checkModificationAlone(const ArcDeletion &change) const noexcept;
+      bool checkModificationAlone(const ArcDeletion& change) const noexcept;
 
       /// checks whether the constraints enable to reverse an arc
       /** An arc can be reversed if, after deleting arc (x,y), the addition of
        * arc (y,x) does not induce a directed cycle. */
-      bool checkModificationAlone(const ArcReversal &change) const noexcept;
+      bool checkModificationAlone(const ArcReversal& change) const noexcept;
 
       /// checks whether the constraints enable to perform a graph change
       /** an arc can be added if and only if its extremal nodes belong to the
@@ -174,10 +182,10 @@ namespace gum {
        * An arc can be removed if and only if the arc exists.
        * An arc can be reversed if, after deleting arc (x,y), the addition of
        * arc (y,x) does not induce a directed cycle. */
-      bool checkModificationAlone(const GraphChange &change) const noexcept;
+      bool checkModificationAlone(const GraphChange& change) const noexcept;
 
       /// sets a new graph from which we will perform checkings
-      void setGraph(const DAG &graph);
+      void setGraph(const DAG& graph);
 
       /// sets a new empty graph from which we will perform checkings
       void setGraph(unsigned int nb_nodes);

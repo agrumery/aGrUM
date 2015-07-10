@@ -27,281 +27,275 @@
 
 namespace gum_tests {
 
-  class MultiDimFormulaTestSuite: public CxxTest::TestSuite {
+  class MultiDimFormulaTestSuite : public CxxTest::TestSuite {
 
     public:
-      void setUp() {
+    void setUp() {}
 
+    void tearDown() {}
+
+    void testConstantInt() {
+      try {
+        // Arrange
+        std::string eq = "1";
+        double expected = 1;
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void tearDown() {
-
+    void testConstantFloat() {
+      try {
+        // Arrange
+        std::string eq = "0.99";
+        double expected = 0.99;
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void testConstantInt() {
-        try {
-          // Arrange
-          std::string eq = "1";
-          double expected = 1;
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
+    void testMultiplication() {
+      try {
+        // Arrange
+        std::string eq = "10 * 2";
+        double expected = 20.0;
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void testConstantFloat() {
-        try {
-          // Arrange
-          std::string eq = "0.99";
-          double expected = 0.99;
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
+    void testDivision() {
+      try {
+        // Arrange
+        std::string eq = "10 / 2";
+        double expected = 5.0;
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void testMultiplication() {
-        try {
-          // Arrange
-          std::string eq = "10 * 2";
-          double expected = 20.0;
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
+    void testAddition() {
+      try {
+        // Arrange
+        std::string eq = "10 + 2";
+        double expected = 12.0;
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void testDivision() {
-        try {
-          // Arrange
-          std::string eq = "10 / 2";
-          double expected = 5.0;
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
+    void testSubstraction() {
+      try {
+        // Arrange
+        std::string eq = "10 - 2";
+        double expected = 8.0;
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void testAddition() {
-        try {
-          // Arrange
-          std::string eq = "10 + 2";
-          double expected = 12.0;
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
+    void testSimplePriority1() {
+      try {
+        // Arrange
+        std::string eq = "10 - 2 * 5";
+        double expected = 0.0;
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void testSubstraction() {
-        try {
-          // Arrange
-          std::string eq = "10 - 2";
-          double expected = 8.0;
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
+    void testSimplePriority2() {
+      try {
+        // Arrange
+        std::string eq = "10 * 2 - 5";
+        double expected = 15.0;
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void testSimplePriority1() {
-        try {
-          // Arrange
-          std::string eq = "10 - 2 * 5";
-          double expected = 0.0;
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
+    void testComplexPriority() {
+      try {
+        // Arrange
+        std::string eq = "5 + ( ( 1 + 2 ) * 4 ) - 3";
+        double expected = 14.0;
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void testSimplePriority2() {
-        try {
-          // Arrange
-          std::string eq = "10 * 2 - 5";
-          double expected = 15.0;
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
+    void testMinusSign() {
+      try {
+        // Arrange
+        std::string eq = "-3";
+        double expected = -3.0;
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void testComplexPriority() {
-        try {
-          // Arrange
-          std::string eq = "5 + ( ( 1 + 2 ) * 4 ) - 3";
-          double expected = 14.0;
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
+    void testExp() {
+      try {
+        // Arrange
+        std::string eq = "exp(0.001)";
+        double expected = 1.0010005;
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void testMinusSign() {
-        try {
-          // Arrange
-          std::string eq = "-3";
-          double expected = -3.0;
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
+    void testLog() {
+      try {
+        // Arrange
+        std::string eq = "1 + log(1)";
+        double expected = 1;
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void testExp() {
-        try {
-          // Arrange
-          std::string eq = "exp(0.001)";
-          double expected = 1.0010005;
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
+    void testLn() {
+      try {
+        // Arrange
+        std::string eq = "2 + ln(1)";
+        double expected = 2;
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void testLog() {
-        try {
-          // Arrange
-          std::string eq = "1 + log(1)";
-          double expected = 1;
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
+    void testSqrt() {
+      try {
+        // Arrange
+        std::string eq = "1 + sqrt(4)";
+        double expected = 3;
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void testLn() {
-        try {
-          // Arrange
-          std::string eq = "2 + ln(1)";
-          double expected = 2;
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
+    void testPow() {
+      try {
+        // Arrange
+        std::string eq = "1 + pow(2,2)";
+        double expected = 5;
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void testSqrt() {
-        try {
-          // Arrange
-          std::string eq = "1 + sqrt(4)";
-          double expected = 3;
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
+    void testGoal() {
+      try {
+        // Arrange
+        std::string eq = "1-exp(-0.001*2)";
+        double expected = 1 - std::exp(-0.001 * 2);
+        gum::Formula formula(eq);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
+    }
 
-      void testPow() {
-        try {
-          // Arrange
-          std::string eq = "1 + pow(2,2)";
-          double expected = 5;
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
+    void testVariables() {
+      try {
+        // Arrange
+        double lambda = 0.001;
+        double t = 2;
+        double unused = 10;
+        std::string eq = "1-exp(-lambda*t)";
+        double expected = 1 - std::exp(-lambda * t);
+        gum::Formula formula(eq);
+        formula.variables().insert("lambda", lambda);
+        formula.variables().insert("t", t);
+        formula.variables().insert("unused", unused);
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
+        // Assert
+        TS_ASSERT(formula.variables().exists("lambda"));
+        TS_ASSERT(formula.variables().exists("t"));
+        TS_ASSERT(formula.variables().exists("unused"));
+        TS_ASSERT_DELTA(formula.result(), expected, 1e-6);
+      } catch (gum::Exception& e) {
+        TS_ASSERT(false);
       }
-
-      void testGoal() {
-        try {
-          // Arrange
-          std::string eq = "1-exp(-0.001*2)";
-          double expected = 1 - std::exp(-0.001 * 2);
-          gum::Formula formula(eq);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
-          // Assert
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
-      }
-
-      void testVariables() {
-        try {
-          // Arrange
-          double lambda = 0.001;
-          double t = 2;
-          double unused = 10;
-          std::string eq = "1-exp(-lambda*t)";
-          double expected = 1 - std::exp(-lambda* t);
-          gum::Formula formula(eq);
-          formula.variables().insert("lambda", lambda);
-          formula.variables().insert("t", t);
-          formula.variables().insert("unused", unused);
-          // Act
-          TS_GUM_ASSERT_THROWS_NOTHING(formula.result());
-          // Assert
-          TS_ASSERT( formula.variables().exists("lambda") );
-          TS_ASSERT( formula.variables().exists("t") );
-          TS_ASSERT( formula.variables().exists("unused") );
-          TS_ASSERT_DELTA( formula.result(), expected, 1e-6 );
-        } catch (gum::Exception& e) {
-          TS_ASSERT( false );
-        }
-      }
-
-
+    }
   };
 }

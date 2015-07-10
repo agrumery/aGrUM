@@ -29,17 +29,17 @@ namespace gum {
 
     // Returns the name of this object.
     INLINE
-    const std::string &PRMObject::name() const { return __name; }
+    const std::string& PRMObject::name() const { return __name; }
 
     // To PRMObject are equal if they have the same name (which is unique).
     INLINE
-    bool PRMObject::operator==(const PRMObject &obj) const {
+    bool PRMObject::operator==(const PRMObject& obj) const {
       return __name == obj.name();
     }
 
     // To PRMObject are equal if they have the same name (which is unique).
     INLINE
-    bool PRMObject::operator!=(const PRMObject &obj) const {
+    bool PRMObject::operator!=(const PRMObject& obj) const {
       return __name != obj.name();
     }
 

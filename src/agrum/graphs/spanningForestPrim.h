@@ -31,12 +31,14 @@
 
 namespace gum {
 
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   /** @class SpanningForestPrim
    * @brief The Prim algorithm for computing min cost spanning trees or forests
    *
    * Binary heap implementation : O(E log(V)) */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   class SpanningForestPrim : public SpanningForest {
     public:
     // ############################################################################
@@ -45,18 +47,21 @@ namespace gum {
     /// @{
 
     /// Default constructor
-    /** Note that this algorithm takes into account the fact that the graph given
+    /** Note that this algorithm takes into account the fact that the graph
+     * given
      * in input is not connected (that, is, it may contain several connected
      * components)
      * @param graph the graph the spanning forest of which we look for
      * @param costTable the cost for each edge of graph
      * @warning note that, by aGrUM's rule, the graph and the costs are not
      * copied but only referenced by the elimination sequence algorithm.
-     * @throws GraphError if the grand and/or the cost table are null pointers */
-    SpanningForestPrim(const UndiGraph *graph, const EdgeProperty<float> *costTable);
+     * @throws GraphError if the grand and/or the cost table are null pointers
+     */
+    SpanningForestPrim(const UndiGraph* graph,
+                       const EdgeProperty<float>* costTable);
 
     /// Copy constructor
-    SpanningForestPrim(const SpanningForestPrim &toCopy);
+    SpanningForestPrim(const SpanningForestPrim& toCopy);
 
     /// Destructor
     virtual ~SpanningForestPrim();
@@ -70,11 +75,11 @@ namespace gum {
 
     /// Returns the edges in a min cost spanning forest
     /** @returns edges in the spanning forest */
-    const EdgeSet &edgesInSpanningForest();
+    const EdgeSet& edgesInSpanningForest();
 
     /// Construct the spanning forest
     /** @return the spanning forest */
-    const UndiGraph &spanningForest();
+    const UndiGraph& spanningForest();
 
     /// Returns the cost of the spanning forest
     /** @return cost of the spanning forest */
@@ -84,10 +89,10 @@ namespace gum {
 
     private:
     /// the graph the spanning tree of which we wish to compute
-    const UndiGraph &__graph;
+    const UndiGraph& __graph;
 
     /// the costs of the edges
-    const EdgeProperty<float> &__costTable;
+    const EdgeProperty<float>& __costTable;
 
     /// the next edges that may be added to the spanning tree
     PriorityQueue<Edge, float> __edgesToExplore;
@@ -111,7 +116,7 @@ namespace gum {
     void __exploreNode(const NodeId id);
 
     /// Copy operator: private to prevent using it
-    SpanningForestPrim &operator=(const SpanningForestPrim &toCopy);
+    SpanningForestPrim& operator=(const SpanningForestPrim& toCopy);
   };
 
 } /* namespace gum */

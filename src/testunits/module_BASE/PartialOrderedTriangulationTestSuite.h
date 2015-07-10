@@ -69,13 +69,13 @@ namespace gum_tests {
       gum::PartialOrderedTriangulation triang;
 
       triang.setGraph(&graph, &dom, &partial_order);
-      const gum::UndiGraph &gr2 = triang.triangulatedGraph();
+      const gum::UndiGraph& gr2 = triang.triangulatedGraph();
       TS_ASSERT_EQUALS(gr2.sizeNodes(), 8U);
       TS_ASSERT_EQUALS(gr2.sizeEdges(), 14U);
 
       triang.clear();
       triang.setGraph(&graph, &dom, &partial_order);
-      const gum::UndiGraph &gr3 = triang.triangulatedGraph();
+      const gum::UndiGraph& gr3 = triang.triangulatedGraph();
       TS_ASSERT_EQUALS(gr3.sizeNodes(), 8U);
       TS_ASSERT_EQUALS(gr3.sizeEdges(), 14U);
 
@@ -90,10 +90,10 @@ namespace gum_tests {
 
       triang.setGraph(&graph, &dom, &partial_order);
 
-      const gum::UndiGraph &gr5 = triang.triangulatedGraph();
+      const gum::UndiGraph& gr5 = triang.triangulatedGraph();
       TS_ASSERT_EQUALS(gr5.sizeNodes(), 8U);
       TS_ASSERT_EQUALS(gr5.sizeEdges(), 23U);
-      const gum::EdgeSet &edges2 = triang.fillIns();
+      const gum::EdgeSet& edges2 = triang.fillIns();
       TS_ASSERT_EQUALS(edges2.size(), 9U);
       TS_ASSERT_EQUALS(edges2.exists(gum::Edge(20, 80)), true);
       TS_ASSERT_EQUALS(edges2.exists(gum::Edge(40, 80)), true);
@@ -104,12 +104,12 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(edges2.exists(gum::Edge(70, 80)), true);
       TS_ASSERT_EQUALS(edges2.exists(gum::Edge(60, 70)), true);
       TS_ASSERT_EQUALS(edges2.exists(gum::Edge(60, 80)), true);
-      const gum::CliqueGraph &JT = triang.junctionTree();
+      const gum::CliqueGraph& JT = triang.junctionTree();
       TS_ASSERT_EQUALS(JT.sizeNodes(), 3U);
       TS_ASSERT_EQUALS(JT.sizeEdges(), 2U);
-      const gum::NodeSet &clique1 = JT.clique(0);
-      const gum::NodeSet &clique2 = JT.clique(1);
-      const gum::NodeSet &clique3 = JT.clique(3);
+      const gum::NodeSet& clique1 = JT.clique(0);
+      const gum::NodeSet& clique2 = JT.clique(1);
+      const gum::NodeSet& clique3 = JT.clique(3);
       gum::NodeSet cc1, cc2, cc3;
       cc1 << 10 << 20 << 30 << 40 << 80;
       cc2 << 20 << 30 << 40 << 50 << 70 << 80;
@@ -129,10 +129,10 @@ namespace gum_tests {
       graph.eraseEdge(gum::Edge(20, 50));
 
       triang.setGraph(&graph, &dom, &partial_order);
-      const gum::UndiGraph &gr4 = triang.triangulatedGraph();
+      const gum::UndiGraph& gr4 = triang.triangulatedGraph();
       TS_ASSERT_EQUALS(gr4.sizeNodes(), 8U);
       TS_ASSERT_EQUALS(gr4.sizeEdges(), 14U);
-      const gum::EdgeSet &edges = triang.fillIns();
+      const gum::EdgeSet& edges = triang.fillIns();
       TS_ASSERT_EQUALS(edges.size(), 1U);
       TS_ASSERT_EQUALS(*(edges.begin()), gum::Edge(20, 50));
     }
@@ -177,7 +177,7 @@ namespace gum_tests {
       gum::PartialOrderedTriangulation triang;
 
       triang.setGraph(&graph, &dom, &partial_order);
-      const gum::UndiGraph &gr2 = triang.triangulatedGraph();
+      const gum::UndiGraph& gr2 = triang.triangulatedGraph();
       TS_ASSERT_EQUALS(gr2.sizeNodes(), 8U);
       TS_ASSERT_EQUALS(gr2.sizeEdges(), 14U);
     }
@@ -209,21 +209,21 @@ namespace gum_tests {
       gum::PartialOrderedTriangulation triang;
 
       triang.setGraph(&graph, &dom, &partial_order);
-      const gum::CliqueGraph &elim = triang.eliminationTree();
+      const gum::CliqueGraph& elim = triang.eliminationTree();
       TS_ASSERT_EQUALS(elim.sizeNodes(), 8U);
       TS_ASSERT_EQUALS(elim.sizeEdges(), 7U);
 
-      const gum::CliqueGraph &JT = triang.junctionTree();
+      const gum::CliqueGraph& JT = triang.junctionTree();
       TS_ASSERT_EQUALS(JT.sizeNodes(), 6U);
       TS_ASSERT_EQUALS(JT.sizeEdges(), 5U);
 
-      const gum::UndiGraph &gr = triang.triangulatedGraph();
+      const gum::UndiGraph& gr = triang.triangulatedGraph();
       TS_ASSERT_EQUALS(gr.sizeNodes(), 8U);
       TS_ASSERT_EQUALS(gr.sizeEdges(), 13U);
     }
 
     private:
-    void createClique(gum::UndiGraph &graph, const gum::NodeSet &clique) {
+    void createClique(gum::UndiGraph& graph, const gum::NodeSet& clique) {
       for (auto iter = clique.begin(); iter != clique.end(); ++iter) {
         auto iter2 = iter;
 

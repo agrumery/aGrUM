@@ -25,20 +25,20 @@
 namespace CxxTest {
   class Win32Gui : public GuiListener {
     public:
-    void enterGui(int &argc, char **argv) { parseCommandLine(argc, argv); }
+    void enterGui(int& argc, char** argv) { parseCommandLine(argc, argv); }
 
-    void enterWorld(const WorldDescription &wd) {
+    void enterWorld(const WorldDescription& wd) {
       getTotalTests(wd);
       _testsDone = 0;
       startGuiThread();
     }
 
-    void guiEnterSuite(const char *suiteName) {
+    void guiEnterSuite(const char* suiteName) {
       showSuiteName(suiteName);
       reset(_suiteStart);
     }
 
-    void guiEnterTest(const char *suiteName, const char *testName) {
+    void guiEnterTest(const char* suiteName, const char* testName) {
       ++_testsDone;
       setTestCaption(suiteName, testName);
       showTestName(testName);
@@ -72,7 +72,7 @@ namespace CxxTest {
     }
 
     private:
-    const char *_title;
+    const char* _title;
     bool _startMinimized, _keep;
     HANDLE _gui;
     WNDCLASSEX _windowClass;
@@ -97,7 +97,7 @@ namespace CxxTest {
     DWORD _worldStart, _suiteStart, _testStart;
     char _timeString[sizeof("00:00:00")];
 
-    void parseCommandLine(int argc, char **argv) {
+    void parseCommandLine(int argc, char** argv) {
       _startMinimized = _keep = false;
       _title = argv[0];
 
@@ -113,7 +113,7 @@ namespace CxxTest {
 
     void getTotalTests() { getTotalTests(tracker().world()); }
 
-    void getTotalTests(const WorldDescription &wd) {
+    void getTotalTests(const WorldDescription& wd) {
       _numTotalTests = wd.numTotalTests();
       wd.strTotalTests(_strTotalTests);
     }
@@ -127,7 +127,7 @@ namespace CxxTest {
     }
 
     static DWORD WINAPI guiThread(LPVOID parameter) {
-      ((Win32Gui *)parameter)->gui();
+      ((Win32Gui*)parameter)->gui();
       return 0;
     }
 
@@ -163,7 +163,8 @@ namespace CxxTest {
     }
 
     void createMainWindow() {
-      _mainWindow = createWindow(_windowClass.lpszClassName, WS_OVERLAPPEDWINDOW);
+      _mainWindow =
+          createWindow(_windowClass.lpszClassName, WS_OVERLAPPEDWINDOW);
     }
 
     void initCommonControls() {
@@ -182,14 +183,14 @@ namespace CxxTest {
     }
 
     void createProgressBar() {
-      _progressBar = createWindow(PROGRESS_CLASS, WS_CHILD | WS_VISIBLE | PBS_SMOOTH,
-                                  _mainWindow);
+      _progressBar = createWindow(
+          PROGRESS_CLASS, WS_CHILD | WS_VISIBLE | PBS_SMOOTH, _mainWindow);
 
 #ifdef PBM_SETRANGE32
       progressBarMessage(PBM_SETRANGE32, 0, _numTotalTests);
-#else  // No PBM_SETRANGE32, use PBM_SETRANGE
+#else   // No PBM_SETRANGE32, use PBM_SETRANGE
       progressBarMessage(PBM_SETRANGE, 0, MAKELPARAM(0, (WORD)_numTotalTests));
-#endif // PBM_SETRANGE32
+#endif  // PBM_SETRANGE32
       progressBarMessage(PBM_SETPOS, 0);
       progressBarMessage(PBM_SETSTEP, 1);
       greenBar();
@@ -197,7 +198,8 @@ namespace CxxTest {
     }
 
     void createStatusBar() {
-      _statusBar = createWindow(STATUSCLASSNAME, WS_CHILD | WS_VISIBLE, _mainWindow);
+      _statusBar =
+          createWindow(STATUSCLASSNAME, WS_CHILD | WS_VISIBLE, _mainWindow);
       setRatios(4, 1, 3, 1, 3, 1);
     }
 
@@ -213,12 +215,14 @@ namespace CxxTest {
       _statusOffsets[STATUS_WORLD_TIME] = (_statusTotal += worldTimeRatio);
     }
 
-    HWND createWindow(LPCTSTR className, DWORD style, HWND parent = (HWND) nullptr) {
+    HWND createWindow(LPCTSTR className, DWORD style,
+                      HWND parent = (HWND) nullptr) {
       return CreateWindow(className, nullptr, style, 0, 0, 0, 0, parent,
                           (HMENU) nullptr, (HINSTANCE) nullptr, (LPVOID) this);
     }
 
-    void progressBarMessage(UINT message, WPARAM wParam = 0, LPARAM lParam = 0) {
+    void progressBarMessage(UINT message, WPARAM wParam = 0,
+                            LPARAM lParam = 0) {
       SendMessage(_progressBar, message, wParam, lParam);
     }
 
@@ -244,16 +248,17 @@ namespace CxxTest {
                    yCenter - (windowHeight / 2), windowWidth, windowHeight, 0);
     }
 
-    void getScreenArea(RECT &area) {
+    void getScreenArea(RECT& area) {
       if (!getScreenAreaWithoutTaskbar(area))
         getWholeScreenArea(area);
     }
 
-    bool getScreenAreaWithoutTaskbar(RECT &area) {
-      return (SystemParametersInfo(SPI_GETWORKAREA, sizeof(RECT), &area, 0) != 0);
+    bool getScreenAreaWithoutTaskbar(RECT& area) {
+      return (SystemParametersInfo(SPI_GETWORKAREA, sizeof(RECT), &area, 0) !=
+              0);
     }
 
-    void getWholeScreenArea(RECT &area) {
+    void getWholeScreenArea(RECT& area) {
       area.left = area.top = 0;
       area.right = GetSystemMetrics(SM_CXSCREEN);
       area.bottom = GetSystemMetrics(SM_CYSCREEN);
@@ -275,7 +280,7 @@ namespace CxxTest {
       SetTimer(_mainWindow, TIMER_ID, TIMER_DELAY, 0);
     }
 
-    void reset(DWORD &tick) { tick = GetTickCount(); }
+    void reset(DWORD& tick) { tick = GetTickCount(); }
 
     void startTests() { SetEvent(_canStartTests); }
 
@@ -288,11 +293,11 @@ namespace CxxTest {
     }
 
     static LRESULT CALLBACK
-        windowProcedure(HWND window, UINT message, WPARAM wParam, LPARAM lParam) {
+    windowProcedure(HWND window, UINT message, WPARAM wParam, LPARAM lParam) {
       if (message == WM_CREATE)
         setUp(window, (LPCREATESTRUCT)lParam);
 
-      Win32Gui *that = (Win32Gui *)GetWindowLong(window, GWL_USERDATA);
+      Win32Gui* that = (Win32Gui*)GetWindowLong(window, GWL_USERDATA);
       return that->handle(window, message, wParam, lParam);
     }
 
@@ -334,7 +339,8 @@ namespace CxxTest {
       LONG progressHeight = height - statusHeight;
 
       SetWindowPos(_progressBar, HWND_TOP, 0, 0, width, progressHeight, 0);
-      SetWindowPos(_statusBar, HWND_TOP, 0, progressHeight, width, statusHeight, 0);
+      SetWindowPos(_statusBar, HWND_TOP, 0, progressHeight, width, statusHeight,
+                   0);
       setStatusParts(width - resizeGripWidth);
     }
 
@@ -345,7 +351,8 @@ namespace CxxTest {
       statusBarMessage(SB_SETPARTS, STATUS_TOTAL_PARTS, _statusWidths);
     }
 
-    void statusBarMessage(UINT message, WPARAM wParam = 0, const void *lParam = 0) {
+    void statusBarMessage(UINT message, WPARAM wParam = 0,
+                          const void* lParam = 0) {
       SendMessage(_statusBar, message, wParam, (LPARAM)lParam);
     }
 
@@ -358,27 +365,28 @@ namespace CxxTest {
     void setColor(BYTE red, BYTE green, BYTE blue) {
       progressBarMessage(PBM_SETBARCOLOR, 0, RGB(red, green, blue));
     }
-#else  // !PBM_SETBARCOLOR
+#else   // !PBM_SETBARCOLOR
     void setColor(BYTE, BYTE, BYTE) {}
-#endif // PBM_SETBARCOLOR
+#endif  // PBM_SETBARCOLOR
 
     void setIcon(LPCTSTR icon) {
-      SendMessage(_mainWindow, WM_SETICON, ICON_BIG, (LPARAM)loadStandardIcon(icon));
+      SendMessage(_mainWindow, WM_SETICON, ICON_BIG,
+                  (LPARAM)loadStandardIcon(icon));
     }
 
     HICON loadStandardIcon(LPCTSTR icon) {
       return LoadIcon((HINSTANCE) nullptr, icon);
     }
 
-    void setTestCaption(const char *suiteName, const char *testName) {
+    void setTestCaption(const char* suiteName, const char* testName) {
       setCaption(suiteName, "::", testName, "()");
     }
 
-    void setCaption(const char *a = "", const char *b = "", const char *c = "",
-                    const char *d = "") {
+    void setCaption(const char* a = "", const char* b = "", const char* c = "",
+                    const char* d = "") {
       unsigned length = lstrlenA(_title) + sizeof(" - ") + lstrlenA(a) +
                         lstrlenA(b) + lstrlenA(c) + lstrlenA(d);
-      char *name = allocate(length);
+      char* name = allocate(length);
       lstrcpyA(name, _title);
       lstrcatA(name, " - ");
       lstrcatA(name, a);
@@ -389,11 +397,11 @@ namespace CxxTest {
       deallocate(name);
     }
 
-    void showSuiteName(const char *suiteName) {
+    void showSuiteName(const char* suiteName) {
       setStatusPart(STATUS_SUITE_NAME, suiteName);
     }
 
-    void showTestName(const char *testName) {
+    void showTestName(const char* testName) {
       setStatusPart(STATUS_TEST_NAME, testName);
     }
 
@@ -439,7 +447,7 @@ namespace CxxTest {
       setSummaryCaption();
     }
 
-    void setStatusPart(unsigned part, const char *text) {
+    void setStatusPart(unsigned part, const char* text) {
       statusBarMessage(SB_SETTEXTA, part, text);
     }
 
@@ -452,11 +460,11 @@ namespace CxxTest {
       setRatios(0, 0, 0, 0, 1, 1);
       resizeControls();
 
-      const char *tests = (_numTotalTests == 1) ? "test" : "tests";
+      const char* tests = (_numTotalTests == 1) ? "test" : "tests";
 
       if (tracker().failedTests())
-        wsprintfA(_statusTestsDone, "Failed %u of %s %s", tracker().failedTests(),
-                  _strTotalTests, tests);
+        wsprintfA(_statusTestsDone, "Failed %u of %s %s",
+                  tracker().failedTests(), _strTotalTests, tests);
       else
         wsprintfA(_statusTestsDone, "%s %s passed", _strTotalTests, tests);
 
@@ -465,12 +473,12 @@ namespace CxxTest {
 
     void setSummaryCaption() { setCaption(_statusTestsDone); }
 
-    char *allocate(unsigned length) {
-      return (char *)HeapAlloc(GetProcessHeap(), 0, length);
+    char* allocate(unsigned length) {
+      return (char*)HeapAlloc(GetProcessHeap(), 0, length);
     }
 
-    void deallocate(char *data) { HeapFree(GetProcessHeap(), 0, data); }
+    void deallocate(char* data) { HeapFree(GetProcessHeap(), 0, data); }
   };
 };
 
-#endif // __cxxtest__Win32Gui_h__
+#endif  // __cxxtest__Win32Gui_h__

@@ -51,9 +51,13 @@ namespace gum {
   }
 
   /// returns log2 ( gamma (x) ) for x >= 0
-  ALWAYS_INLINE float GammaLog2::operator()(float x) const { return gammaLog2(x); }
+  ALWAYS_INLINE float GammaLog2::operator()(float x) const {
+    return gammaLog2(x);
+  }
 
   /// sets whether we need more precision for small values
-  INLINE void GammaLog2::setPrecision(bool prec) { __requires_precision = prec; }
+  INLINE void GammaLog2::setPrecision(bool prec) {
+    __requires_precision = prec;
+  }
 
 } /* namespace gum */

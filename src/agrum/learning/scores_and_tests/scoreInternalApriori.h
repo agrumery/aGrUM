@@ -49,10 +49,13 @@ namespace gum {
      *
      * Some scores include an apriori. For instance, the K2 score is a BD score
      * with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with a
-     * N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i is the
+     * N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i is
+     *the
      * domain size of the target variable and q_i is the domain size of the
-     * Cartesian product of its parents. The goal of the score's internal apriori
-     * classes is to enable to account for these aprioris outside the score, e.g.,
+     * Cartesian product of its parents. The goal of the score's internal
+     *apriori
+     * classes is to enable to account for these aprioris outside the score,
+     *e.g.,
      * when performing parameter estimation. It is important to note that, to be
      * meaningfull a structure + parameter learning requires that the same
      * aprioris are taken into account during structure learning and parameter
@@ -71,7 +74,8 @@ namespace gum {
       ScoreInternalApriori();
 
       /// virtual copy constructor
-      virtual ScoreInternalApriori<IdSetAlloc, CountAlloc> *copyFactory() const = 0;
+      virtual ScoreInternalApriori<IdSetAlloc, CountAlloc>*
+      copyFactory() const = 0;
 
       /// destructor
       virtual ~ScoreInternalApriori();
@@ -85,16 +89,18 @@ namespace gum {
 
       /// insert the internal score apriori into a set of countings
       virtual void insertScoreApriori(
-          const std::vector<unsigned int> &modalities,
-          std::vector<std::vector<float, CountAlloc>> &counts,
+          const std::vector<unsigned int>& modalities,
+          std::vector<std::vector<float, CountAlloc>>& counts,
           const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                      unsigned int> *> &target_nodesets,
-          const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                      unsigned int> *> &conditioning_nodesets) = 0;
+                                      unsigned int>*>& target_nodesets,
+          const std::vector<
+              std::pair<std::vector<unsigned int, IdSetAlloc>, unsigned int>*>&
+              conditioning_nodesets) = 0;
 
       /// indicates whether the apriori is potentially informative
       /** Basically, only the NoApriori is uninformative. However, it may happen
-       * that, under some circonstances, an apriori, which is usually not equal to
+       * that, under some circonstances, an apriori, which is usually not equal
+       * to
        * the NoApriori, becomes equal to it. In this case, if the apriori can
        * detect this case, it shall informa the classes that use it that it is
        * temporarily uninformative. These classes will then be able to speed-up
@@ -106,10 +112,11 @@ namespace gum {
 
       protected:
       /// copy constructor
-      ScoreInternalApriori(const ScoreInternalApriori<IdSetAlloc, CountAlloc> &from);
+      ScoreInternalApriori(
+          const ScoreInternalApriori<IdSetAlloc, CountAlloc>& from);
 
       /// move constructor
-      ScoreInternalApriori(ScoreInternalApriori<IdSetAlloc, CountAlloc> &&from);
+      ScoreInternalApriori(ScoreInternalApriori<IdSetAlloc, CountAlloc>&& from);
     };
 
   } /* namespace learning */

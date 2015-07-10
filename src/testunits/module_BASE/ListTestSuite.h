@@ -248,7 +248,7 @@ namespace gum_tests {
       for (int i = 0; i < 6; i++)
         list.insert(i);
 
-      auto iter = list.beginSafe(); // safe iterator needed here
+      auto iter = list.beginSafe();  // safe iterator needed here
 
       list.erase(iter);
 
@@ -264,31 +264,31 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(list.size(), (gum::Size)4);
 
-      iter = list.endSafe(); // safe iterator needed here
+      iter = list.endSafe();  // safe iterator needed here
 
       list.erase(iter);
 
       TS_ASSERT_EQUALS(list.size(), (gum::Size)4);
 
-      iter = list.rendSafe(); // safe iterator needed here
+      iter = list.rendSafe();  // safe iterator needed here
 
       list.erase(iter);
 
       TS_ASSERT_EQUALS(list.size(), (gum::Size)4);
 
-      iter = list.rbeginSafe(); // safe iterator needed here
+      iter = list.rbeginSafe();  // safe iterator needed here
 
       list.erase(iter);
 
       TS_ASSERT_EQUALS(list.size(), (gum::Size)3);
 
-      iter = list.beginSafe(); // safe iterator needed here
+      iter = list.beginSafe();  // safe iterator needed here
 
       list.erase(++iter);
 
       TS_ASSERT_EQUALS(list.size(), (gum::Size)2);
 
-      iter = list.rbeginSafe(); // safe iterator needed here
+      iter = list.rbeginSafe();  // safe iterator needed here
 
       list.erase(--iter);
 
@@ -297,27 +297,27 @@ namespace gum_tests {
 
     void testIteratorStep() {
       gum::List<int> list{1, 2, 3, 4, 5, 6};
-      auto iter = list.beginSafe(); // safe iterator needed here
+      auto iter = list.beginSafe();  // safe iterator needed here
       list.erase(iter);
       TS_ASSERT_EQUALS(list.size(), (gum::Size)5);
 
-      iter = list.rbeginSafe(); // safe iterator needed here
+      iter = list.rbeginSafe();  // safe iterator needed here
       list.erase(iter);
       TS_ASSERT_EQUALS(list.size(), (gum::Size)4);
 
-      auto iter2 = list.cbeginSafe(); // safe iterator needed here
+      auto iter2 = list.cbeginSafe();  // safe iterator needed here
       list.erase(iter2);
       TS_ASSERT_EQUALS(list.size(), (gum::Size)3);
 
-      iter2 = list.crbeginSafe(); // safe iterator needed here
+      iter2 = list.crbeginSafe();  // safe iterator needed here
       list.erase(iter2);
       TS_ASSERT_EQUALS(list.size(), (gum::Size)2);
 
-      iter2 = list.beginSafe(); // safe iterator needed here
+      iter2 = list.beginSafe();  // safe iterator needed here
       list.erase(iter2);
       TS_ASSERT_EQUALS(list.size(), (gum::Size)1);
 
-      iter2 = list.crbeginSafe(); // safe iterator needed here
+      iter2 = list.crbeginSafe();  // safe iterator needed here
       list.erase(iter2);
       TS_ASSERT_EQUALS(list.size(), (gum::Size)0);
     }

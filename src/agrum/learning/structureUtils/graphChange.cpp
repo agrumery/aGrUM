@@ -30,7 +30,7 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/learning/structureUtils/graphChange.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 
 namespace gum {
 
@@ -102,32 +102,32 @@ namespace gum {
     }
 
     /// a \c << operator for GraphChanges
-    std::ostream &operator<<(std::ostream &stream, const GraphChange &change) {
+    std::ostream& operator<<(std::ostream& stream, const GraphChange& change) {
       return stream << change.toString();
     }
 
     /// a \c << operator for ArcAddition
-    std::ostream &operator<<(std::ostream &stream, const ArcAddition &change) {
+    std::ostream& operator<<(std::ostream& stream, const ArcAddition& change) {
       return stream << change.toString();
     }
 
     /// a \c << operator for ArcDeletion
-    std::ostream &operator<<(std::ostream &stream, const ArcDeletion &change) {
+    std::ostream& operator<<(std::ostream& stream, const ArcDeletion& change) {
       return stream << change.toString();
     }
 
     /// a \c << operator for ArcReversal
-    std::ostream &operator<<(std::ostream &stream, const ArcReversal &change) {
+    std::ostream& operator<<(std::ostream& stream, const ArcReversal& change) {
       return stream << change.toString();
     }
 
     /// a \c << operator for EdgeAddition
-    std::ostream &operator<<(std::ostream &stream, const EdgeAddition &change) {
+    std::ostream& operator<<(std::ostream& stream, const EdgeAddition& change) {
       return stream << change.toString();
     }
 
     /// a \c << operator for EdgeDeletion
-    std::ostream &operator<<(std::ostream &stream, const EdgeDeletion &change) {
+    std::ostream& operator<<(std::ostream& stream, const EdgeDeletion& change) {
       return stream << change.toString();
     }
 

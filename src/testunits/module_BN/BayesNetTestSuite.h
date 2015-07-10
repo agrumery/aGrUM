@@ -46,7 +46,7 @@ namespace gum_tests {
   class BayesNetTestSuite : public CxxTest::TestSuite {
 
     private:
-    void fillTopo(gum::BayesNet<float> &bn, gum::List<gum::NodeId> &idList) {
+    void fillTopo(gum::BayesNet<float>& bn, gum::List<gum::NodeId>& idList) {
       try {
         idList.insert(bn.add(*var1));
         idList.insert(bn.add(*var2));
@@ -61,13 +61,14 @@ namespace gum_tests {
         bn.addArc(idList[3], idList[4]);
         bn.addArc(idList[1], idList[4]);
 
-      } catch (gum::Exception &e) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+      } catch (gum::Exception& e) {
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
     }
 
-    void fill(gum::BayesNet<float> &bn, gum::List<gum::NodeId> &idList) {
+    void fill(gum::BayesNet<float>& bn, gum::List<gum::NodeId>& idList) {
       fillTopo(bn, idList);
 
       try {
@@ -78,21 +79,22 @@ namespace gum_tests {
 
         bn.cpt(idList[2]).fillWith(std::vector<float>{0.1, 0.9, 0.9, 0.1});
 
-        bn.cpt(idList[3])
-            .fillWith(std::vector<float>{0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0});
+        bn.cpt(idList[3]).fillWith(
+            std::vector<float>{0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0});
 
         bn.cpt(idList[4]).fillWith(std::vector<float>{
-            0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0, 0.4, 0.6,
-            0.0, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0});
+            0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0, 0.4,
+            0.6, 0.0, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0});
 
-      } catch (gum::Exception &e) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+      } catch (gum::Exception& e) {
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
     }
 
-    gum::UndiGraph getRealMoralGraph(const gum::BayesNet<float> &bn,
-                                     const gum::List<gum::NodeId> &idList) {
+    gum::UndiGraph getRealMoralGraph(const gum::BayesNet<float>& bn,
+                                     const gum::List<gum::NodeId>& idList) {
       gum::UndiGraph graph;
       graph.populateNodes(bn.dag());
 
@@ -110,7 +112,7 @@ namespace gum_tests {
     }
 
     public:
-    gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
+    gum::LabelizedVariable* var1, *var2, *var3, *var4, *var5;
 
     void setUp() {
       var1 = new gum::LabelizedVariable("var1", "1", 2);
@@ -129,7 +131,7 @@ namespace gum_tests {
     }
 
     void testConstructor() {
-      gum::BayesNet<float> *topology = nullptr;
+      gum::BayesNet<float>* topology = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(topology = new gum::BayesNet<float>());
       TS_ASSERT_EQUALS(topology->size(), (gum::Idx)0);
       TS_ASSERT_EQUALS(topology->sizeArcs(), (gum::Idx)0);
@@ -142,9 +144,10 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(topology->add(*var1), gum::DuplicateLabel);
 
-      TS_ASSERT_EQUALS(topology->toString(), "BN{nodes: 5, arcs: 6, domainSize: 48, "
-                                             "parameters: 40, compression ratio: "
-                                             "16% }");
+      TS_ASSERT_EQUALS(topology->toString(),
+                       "BN{nodes: 5, arcs: 6, domainSize: 48, "
+                       "parameters: 40, compression ratio: "
+                       "16% }");
       TS_ASSERT_EQUALS(topology->size(), (gum::Idx)5);
       TS_ASSERT_EQUALS(topology->sizeArcs(), (gum::Idx)6);
       TS_ASSERT_EQUALS(topology->dim(), (gum::Idx)24);
@@ -156,7 +159,7 @@ namespace gum_tests {
       gum::List<gum::NodeId> idList;
       TS_GUM_ASSERT_THROWS_NOTHING(fill(source, idList));
 
-      gum::BayesNet<float> *copy = nullptr;
+      gum::BayesNet<float>* copy = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(copy = new gum::BayesNet<float>(source));
 
       TS_ASSERT_EQUALS(source.dag().size(), copy->dag().size());
@@ -167,8 +170,8 @@ namespace gum_tests {
       for (const auto node : dag.nodes()) {
         TS_ASSERT(copy->dag().exists(node));
 
-        const gum::DiscreteVariable &srcVar = source.variable(node);
-        const gum::DiscreteVariable &cpVar = copy->variable(node);
+        const gum::DiscreteVariable& srcVar = source.variable(node);
+        const gum::DiscreteVariable& cpVar = copy->variable(node);
         TS_ASSERT_EQUALS(srcVar.name(), cpVar.name());
 
         if (srcVar.domainSize() == cpVar.domainSize()) {
@@ -184,8 +187,8 @@ namespace gum_tests {
           TS_ASSERT(copy->dag().existsArc(gum::Arc(parent, node)));
         }
 
-        const gum::Potential<float> &srcCPT = source.cpt(node);
-        const gum::Potential<float> &cpCPT = copy->cpt(node);
+        const gum::Potential<float>& srcCPT = source.cpt(node);
+        const gum::Potential<float>& cpCPT = copy->cpt(node);
 
         gum::Instantiation srcInst(srcCPT);
         gum::Instantiation cpInst(cpCPT);
@@ -221,8 +224,8 @@ namespace gum_tests {
       for (const auto node : dag.nodes()) {
         TS_ASSERT(copy.dag().exists(node));
 
-        const gum::DiscreteVariable &srcVar = source.variable(node);
-        const gum::DiscreteVariable &cpVar = copy.variable(node);
+        const gum::DiscreteVariable& srcVar = source.variable(node);
+        const gum::DiscreteVariable& cpVar = copy.variable(node);
         TS_ASSERT_EQUALS(srcVar.name(), cpVar.name());
 
         if (srcVar.domainSize() == cpVar.domainSize()) {
@@ -238,8 +241,8 @@ namespace gum_tests {
           TS_ASSERT(copy.dag().existsArc(gum::Arc(parent, node)));
         }
 
-        const gum::Potential<float> &srcCPT = source.cpt(node);
-        const gum::Potential<float> &cpCPT = copy.cpt(node);
+        const gum::Potential<float>& srcCPT = source.cpt(node);
+        const gum::Potential<float>& cpCPT = copy.cpt(node);
         gum::Instantiation srcInst(srcCPT);
         gum::Instantiation cpInst(cpCPT);
 
@@ -295,17 +298,22 @@ namespace gum_tests {
         }
       }
 
-      gum::LabelizedVariable *varPtr = nullptr;
+      gum::LabelizedVariable* varPtr = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-          varPtr = (gum::LabelizedVariable *)&bn.variable(idList[0]));
+          varPtr = (gum::LabelizedVariable*)&bn.variable(idList[0]));
       TS_ASSERT_EQUALS(*varPtr, *var1);
 
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&bn.variable(idList[0])), *var1);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&bn.variable(idList[1])), *var2);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&bn.variable(idList[2])), *var3);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&bn.variable(idList[3])), *var4);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&bn.variable(idList[4])), *var5);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&bn.variable(idList[0])),
+                       *var1);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&bn.variable(idList[1])),
+                       *var2);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&bn.variable(idList[2])),
+                       *var3);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&bn.variable(idList[3])),
+                       *var4);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&bn.variable(idList[4])),
+                       *var5);
     }
 
     void testInsertion_2() {
@@ -321,16 +329,21 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)5);
       TS_ASSERT_EQUALS(bn.dag().size(), (gum::Size)5);
 
-      gum::LabelizedVariable *varPtr = nullptr;
+      gum::LabelizedVariable* varPtr = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-          varPtr = (gum::LabelizedVariable *)&bn.variable(idList[0]));
+          varPtr = (gum::LabelizedVariable*)&bn.variable(idList[0]));
       TS_ASSERT_EQUALS(*varPtr, *var1);
 
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&bn.variable(idList[0])), *var1);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&bn.variable(idList[1])), *var2);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&bn.variable(idList[2])), *var3);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&bn.variable(idList[3])), *var4);
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable *)&bn.variable(idList[4])), *var5);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&bn.variable(idList[0])),
+                       *var1);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&bn.variable(idList[1])),
+                       *var2);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&bn.variable(idList[2])),
+                       *var3);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&bn.variable(idList[3])),
+                       *var4);
+      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&bn.variable(idList[4])),
+                       *var5);
     }
 
     void testIterations() {
@@ -514,8 +527,8 @@ namespace gum_tests {
       TS_ASSERT(bn.dag().existsArc(idList[0], idList[3]));
       TS_ASSERT(bn.dag().existsArc(idList[1], idList[3]));
 
-      gum::Size dmnSize_1 =
-          bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
+      gum::Size dmnSize_1 = bn.variable(idList[0]).domainSize() *
+                            bn.variable(idList[1]).domainSize();
       dmnSize_1 *= bn.variable(idList[3]).domainSize();
       TS_ASSERT_EQUALS(bn.cpt(idList[3]).domainSize(), dmnSize_1);
 
@@ -534,7 +547,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.cpt(idList[3]).domainSize(), dmnSize_2);
 
       TS_ASSERT(bn.cpt(idList[3]).contains(bn.variable(idList[0])));
-      TS_ASSERT_THROWS_ANYTHING(bn.cpt(idList[3]).contains(bn.variable(idList[1])));
+      TS_ASSERT_THROWS_ANYTHING(
+          bn.cpt(idList[3]).contains(bn.variable(idList[1])));
       TS_ASSERT(bn.cpt(idList[3]).contains(bn.variable(idList[3])));
     }
 
@@ -548,8 +562,8 @@ namespace gum_tests {
       TS_ASSERT(bn.dag().existsArc(idList[0], idList[3]));
       TS_ASSERT(bn.dag().existsArc(idList[1], idList[3]));
 
-      gum::Size dmnSize_1 =
-          bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
+      gum::Size dmnSize_1 = bn.variable(idList[0]).domainSize() *
+                            bn.variable(idList[1]).domainSize();
       dmnSize_1 *= bn.variable(idList[3]).domainSize();
       TS_ASSERT_EQUALS(bn.cpt(idList[3]).domainSize(), dmnSize_1);
 
@@ -603,11 +617,11 @@ namespace gum_tests {
     }
 
     void testCopyAndEqualityOperators() {
-      gum::BayesNet<float> *bn_1 = new gum::BayesNet<float>();
+      gum::BayesNet<float>* bn_1 = new gum::BayesNet<float>();
       gum::SimpleBayesNetGenerator<float> generator(20, 30, 4);
       generator.generateBN(*bn_1);
 
-      gum::BayesNet<float> *bn_2 = new gum::BayesNet<float>();
+      gum::BayesNet<float>* bn_2 = new gum::BayesNet<float>();
 
       generator.generateBN(*bn_2);
 
@@ -738,10 +752,10 @@ namespace gum_tests {
       fill(bn, idList);
 
       TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1<0,1>");
-      TS_ASSERT_THROWS_NOTHING(dynamic_cast<const gum::LabelizedVariable &>(
+      TS_ASSERT_THROWS_NOTHING(dynamic_cast<const gum::LabelizedVariable&>(
                                    bn.variable(0)).changeLabel(0, "x"));
       TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1<x,1>");
     }
   };
 
-} // tests
+}  // tests

@@ -20,7 +20,8 @@
 /** @file
  * @brief count aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+*<{prenom.nom}_at_lip6.fr>
  */
 #ifndef GUM_AND_AGGREGATOR_H
 #define GUM_AND_AGGREGATOR_H
@@ -46,7 +47,8 @@ namespace gum {
     *
     * @see MultiDimAggregator for more details of implementations
     *
-    * Note that a <tt>And(i)</tt> aggregator should have a binary aggregator variable
+    * Note that a <tt>And(i)</tt> aggregator should have a binary aggregator
+    *variable
     *since only 0 and 1 indexes are adressed...
     */
     /* ============================================================================
@@ -56,7 +58,7 @@ namespace gum {
     class And : public MultiDimAggregator<GUM_SCALAR> {
       public:
       And();
-      And(const And<GUM_SCALAR> &from);
+      And(const And<GUM_SCALAR>& from);
       virtual ~And();
 
       /**
@@ -72,14 +74,14 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<GUM_SCALAR> *newFactory() const;
+      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
       virtual std::string aggregatorName(void) const;
 
       protected:
       virtual Idx _neutralElt(void) const;
-      virtual Idx _folder(const DiscreteVariable &v, Idx i1, Idx i2,
-                          bool &stop_iteration) const;
+      virtual Idx _folder(const DiscreteVariable& v, Idx i1, Idx i2,
+                          bool& stop_iteration) const;
 
       private:
       Idx __value;
@@ -87,9 +89,9 @@ namespace gum {
 
     extern template class And<float>;
     extern template class And<double>;
-  } // aggregator
-} // gum
+  }  // aggregator
+}  // gum
 
 #include <agrum/multidim/aggregators/and.tcc>
 
-#endif // GUM_AND_AGGREGATOR_H
+#endif  // GUM_AND_AGGREGATOR_H

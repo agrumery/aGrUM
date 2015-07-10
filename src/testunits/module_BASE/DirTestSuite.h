@@ -127,24 +127,30 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(entries.size(), (unsigned int)3);
       TS_ASSERT(find(entries.begin(), entries.end(), ".") != entries.end());
       TS_ASSERT(find(entries.begin(), entries.end(), "..") != entries.end());
-      TS_ASSERT(find(entries.begin(), entries.end(), "file1.txt") != entries.end());
+      TS_ASSERT(find(entries.begin(), entries.end(), "file1.txt") !=
+                entries.end());
 
       gum::Directory d5("../dir/dir2/");
       entries = d5.entries();
       TS_ASSERT_EQUALS(entries.size(), (unsigned int)4);
       TS_ASSERT(find(entries.begin(), entries.end(), ".") != entries.end());
       TS_ASSERT(find(entries.begin(), entries.end(), "..") != entries.end());
-      TS_ASSERT(find(entries.begin(), entries.end(), "file1.txt") != entries.end());
-      TS_ASSERT(find(entries.begin(), entries.end(), "file2.txt") != entries.end());
+      TS_ASSERT(find(entries.begin(), entries.end(), "file1.txt") !=
+                entries.end());
+      TS_ASSERT(find(entries.begin(), entries.end(), "file2.txt") !=
+                entries.end());
 
       gum::Directory d6("./dir1/../dir3/");
       entries = d6.entries();
       TS_ASSERT_EQUALS(entries.size(), (unsigned int)5);
       TS_ASSERT(find(entries.begin(), entries.end(), ".") != entries.end());
       TS_ASSERT(find(entries.begin(), entries.end(), "..") != entries.end());
-      TS_ASSERT(find(entries.begin(), entries.end(), "file1.txt") != entries.end());
-      TS_ASSERT(find(entries.begin(), entries.end(), "file2.txt") != entries.end());
-      TS_ASSERT(find(entries.begin(), entries.end(), "file3.txt") != entries.end());
+      TS_ASSERT(find(entries.begin(), entries.end(), "file1.txt") !=
+                entries.end());
+      TS_ASSERT(find(entries.begin(), entries.end(), "file2.txt") !=
+                entries.end());
+      TS_ASSERT(find(entries.begin(), entries.end(), "file3.txt") !=
+                entries.end());
     }
 
     void testParent() {
@@ -160,4 +166,4 @@ namespace gum_tests {
     }
   };
 
-} // namespace gum_tests
+}  // namespace gum_tests

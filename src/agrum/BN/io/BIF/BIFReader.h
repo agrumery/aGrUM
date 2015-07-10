@@ -27,7 +27,8 @@
 class aSimpleListener : public gum::Listener {
 public:
   void whenLoading(const void *buffer,int percent) {
-  // percent goes from 0 to 100 (whenLoading is called at most once for each integer
+  // percent goes from 0 to 100 (whenLoading is called at most once for each
+integer
 between 0 and 100
     // percent=200 recieved when End Of File.
  }
@@ -72,7 +73,7 @@ between 0 and 100
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER
 #include <agrum/BN/io/BIF/cocoR/Parser.h>
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
   /**
@@ -118,15 +119,15 @@ namespace gum {
    */
   template <typename GUM_SCALAR> class BIFReader : public BNReader<GUM_SCALAR> {
     public:
-    BIFReader(BayesNet<GUM_SCALAR> *bn, const std::string &filename);
+    BIFReader(BayesNet<GUM_SCALAR>* bn, const std::string& filename);
     ~BIFReader();
 
     /// Direct access to BIF scanner (mandatory for listener connection)
     /// @throws IOError if file not exists
-    BIF::Scanner &scanner();
+    BIF::Scanner& scanner();
 
     /// name of readen file
-    const std::string &streamName() const;
+    const std::string& streamName() const;
 
     /// accessor to trace function (just write the number of parser line)
     bool trace(void) const;
@@ -155,35 +156,36 @@ namespace gum {
     std::string errMsg(unsigned int i);
 
     /// send on std::cerr the list of errors
-    void showElegantErrors(std::ostream &o = std::cerr);
+    void showElegantErrors(std::ostream& o = std::cerr);
 
     /// send on std::cerr the list of errors or warnings
-    void showElegantErrorsAndWarnings(std::ostream &o = std::cerr);
+    void showElegantErrorsAndWarnings(std::ostream& o = std::cerr);
 
     /// send on std::cerr the number of errors and the number of warnings
-    void showErrorCounts(std::ostream &o = std::cerr);
+    void showErrorCounts(std::ostream& o = std::cerr);
     /// @}
 
     protected:
-    BayesNet<GUM_SCALAR> *__bn;
-    BayesNetFactory<GUM_SCALAR> *__factory;
-    BIF::Scanner *__scanner;
-    BIF::Parser *__parser;
+    BayesNet<GUM_SCALAR>* __bn;
+    BayesNetFactory<GUM_SCALAR>* __factory;
+    BIF::Scanner* __scanner;
+    BIF::Parser* __parser;
 
     std::string __streamName;
     bool __traceScanning;
     bool __parseDone;
 
-    // a boolean to throw the ioerror not in the constructor but in the proceed()
+    // a boolean to throw the ioerror not in the constructor but in the
+    // proceed()
     bool __ioerror;
   };
 
   extern template class BIFReader<float>;
   extern template class BIFReader<double>;
-} // namespace gum
+}  // namespace gum
 
 #include <agrum/BN/io/BIF/BIFReader.tcc>
 
-#endif // BIF_READER_H
+#endif  // BIF_READER_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

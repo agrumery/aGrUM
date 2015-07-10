@@ -9,36 +9,42 @@ namespace gum {
 
       LpCol::LpCol(unsigned int id) : __id(id) { GUM_CONSTRUCTOR(LpCol); }
 
-      LpCol::LpCol(const LpCol &col) : __id(col.__id) { GUM_CONS_CPY(LpCol); }
+      LpCol::LpCol(const LpCol& col) : __id(col.__id) { GUM_CONS_CPY(LpCol); }
 
       LpCol::~LpCol() { GUM_DESTRUCTOR(LpCol); }
 
       unsigned int LpCol::id() const { return __id; }
 
-      bool LpCol::operator<(const LpCol &col) const { return (__id < col.id()); }
+      bool LpCol::operator<(const LpCol& col) const {
+        return (__id < col.id());
+      }
 
-      bool LpCol::operator==(const LpCol &col) const { return (__id == col.id()); }
+      bool LpCol::operator==(const LpCol& col) const {
+        return (__id == col.id());
+      }
 
-      bool LpCol::operator!=(const LpCol &col) const { return (__id != col.id()); }
+      bool LpCol::operator!=(const LpCol& col) const {
+        return (__id != col.id());
+      }
 
-      LpCol &LpCol::operator=(const LpCol &col) {
+      LpCol& LpCol::operator=(const LpCol& col) {
         __id = col.__id;
 
         return *this;
       }
 
-      std::ostream &operator<<(std::ostream &out, const LpCol &col) {
+      std::ostream& operator<<(std::ostream& out, const LpCol& col) {
         out << col.toString();
         return out;
       }
 
       std::string LpCol::toString() const { return "V" + std::to_string(__id); }
-    } // end of lp
+    }  // end of lp
 
-  } // end of credal
+  }  // end of credal
 
   INLINE Size HashFunc<credal::lp::LpCol>::
-  operator()(const credal::lp::LpCol &key) const {
+  operator()(const credal::lp::LpCol& key) const {
     return (((Size)key.id()) * gum::HashFuncConst::gold) & _hash_mask;
   }
 
@@ -51,13 +57,14 @@ namespace gum {
 
       LpExpr::LpExpr()
           : __ileft(false), __imiddle(false), __iright(false), __lValue(0.),
-            __mValue(0.), __rValue(0.), __lCoeffs(new HashTable<LpCol, double>()),
+            __mValue(0.), __rValue(0.),
+            __lCoeffs(new HashTable<LpCol, double>()),
             __mCoeffs(new HashTable<LpCol, double>()),
             __rCoeffs(new HashTable<LpCol, double>()) {
         GUM_CONSTRUCTOR(LpExpr);
       }
 
-      LpExpr::LpExpr(const LpExpr &expr)
+      LpExpr::LpExpr(const LpExpr& expr)
           : __ileft(expr.__ileft), __imiddle(expr.__imiddle),
             __iright(expr.__iright), __lValue(expr.__lValue),
             __mValue(expr.__mValue), __rValue(expr.__rValue),
@@ -67,7 +74,7 @@ namespace gum {
         GUM_CONS_CPY(LpExpr);
       }
 
-      LpExpr::LpExpr(const LpExpr &expr, bool copyLeft, bool copyMiddle,
+      LpExpr::LpExpr(const LpExpr& expr, bool copyLeft, bool copyMiddle,
                      bool copyRight)
           : __ileft(false), __imiddle(false), __iright(false), __lValue(0.),
             __mValue(0.), __rValue(0.), __lCoeffs(nullptr), __mCoeffs(nullptr),
@@ -96,7 +103,7 @@ namespace gum {
         GUM_CONS_CPY(LpExpr);
       }
 
-      LpExpr::LpExpr(LpExpr &&expr)
+      LpExpr::LpExpr(LpExpr&& expr)
           : __ileft(expr.__ileft), __imiddle(expr.__imiddle),
             __iright(expr.__iright), __lValue(expr.__lValue),
             __mValue(expr.__mValue), __rValue(expr.__rValue),
@@ -109,7 +116,8 @@ namespace gum {
         GUM_CONS_CPY(LpExpr);
       }
 
-      LpExpr::LpExpr(LpExpr &&expr, bool copyLeft, bool copyMiddle, bool copyRight)
+      LpExpr::LpExpr(LpExpr&& expr, bool copyLeft, bool copyMiddle,
+                     bool copyRight)
           : __ileft(false), __imiddle(false), __iright(false), __lValue(0.),
             __mValue(0.), __rValue(0.), __lCoeffs(nullptr), __mCoeffs(nullptr),
             __rCoeffs(nullptr) {
@@ -145,7 +153,7 @@ namespace gum {
         GUM_DESTRUCTOR(LpExpr);
       }
 
-      LpExpr &LpExpr::operator=(const LpCol &rhs) {
+      LpExpr& LpExpr::operator=(const LpCol& rhs) {
         clear();
 
         __mCoeffs->insert(rhs, 1.);
@@ -154,7 +162,7 @@ namespace gum {
         return *this;
       }
 
-      LpExpr &LpExpr::operator=(const LpExpr &rhs) {
+      LpExpr& LpExpr::operator=(const LpExpr& rhs) {
         /// self assignment check to avoid hashTable copies
         if (this == &rhs)
           return *this;
@@ -174,7 +182,7 @@ namespace gum {
         return *this;
       }
 
-      LpExpr &LpExpr::operator=(LpExpr &&rhs) {
+      LpExpr& LpExpr::operator=(LpExpr&& rhs) {
         /// self assignment check to avoid hashTable copies
         if (this == &rhs)
           return *this;
@@ -194,7 +202,7 @@ namespace gum {
         return *this;
       }
 
-      template <typename SCALAR> LpExpr &LpExpr::operator=(const SCALAR &rhs) {
+      template <typename SCALAR> LpExpr& LpExpr::operator=(const SCALAR& rhs) {
         clear();
 
         __mValue = rhs;
@@ -203,7 +211,7 @@ namespace gum {
         return *this;
       }
 
-      LpExpr &LpExpr::operator+=(const LpCol &rhs) {
+      LpExpr& LpExpr::operator+=(const LpCol& rhs) {
         if (__ileft || __iright)
           GUM_ERROR(OperationNotAllowed,
                     "expr::operator+= (expr) : <= present on one side of expr");
@@ -216,16 +224,15 @@ namespace gum {
         return *this;
       }
 
-      LpExpr &LpExpr::operator+=(const LpExpr &rhs) {
+      LpExpr& LpExpr::operator+=(const LpExpr& rhs) {
         if (__ileft || __iright || rhs.__ileft || rhs.__iright)
-          GUM_ERROR(
-              OperationNotAllowed,
-              "expr::operator+= (rhs) : <= present on one side of rhs and/or expr");
+          GUM_ERROR(OperationNotAllowed, "expr::operator+= (rhs) : <= present "
+                                         "on one side of rhs and/or expr");
 
         if (!__imiddle)
           __imiddle = true;
 
-        for (const auto &elt : *rhs.__mCoeffs)
+        for (const auto& elt : *rhs.__mCoeffs)
           __mCoeffs->getWithDefault(elt.first, 0.) += elt.second;
 
         __mValue += rhs.__mValue;
@@ -233,11 +240,10 @@ namespace gum {
         return *this;
       }
 
-      LpExpr &LpExpr::operator+=(LpExpr &&rhs) {
+      LpExpr& LpExpr::operator+=(LpExpr&& rhs) {
         if (__ileft || __iright || rhs.__ileft || rhs.__iright)
-          GUM_ERROR(
-              OperationNotAllowed,
-              "expr::operator+= (rhs) : <= present on one side of rhs and/or expr");
+          GUM_ERROR(OperationNotAllowed, "expr::operator+= (rhs) : <= present "
+                                         "on one side of rhs and/or expr");
 
         if (!__imiddle) {
           __imiddle = true;
@@ -249,7 +255,7 @@ namespace gum {
           return *this;
         }
 
-        for (const auto &elt : *rhs.__mCoeffs)
+        for (const auto& elt : *rhs.__mCoeffs)
           __mCoeffs->getWithDefault(elt.first, 0.) += elt.second;
 
         __mValue += rhs.__mValue;
@@ -257,7 +263,7 @@ namespace gum {
         return *this;
       }
 
-      template <typename T> LpExpr &LpExpr::operator+=(const T &rhs) {
+      template <typename T> LpExpr& LpExpr::operator+=(const T& rhs) {
         if (__ileft || __iright)
           GUM_ERROR(OperationNotAllowed,
                     "expr::operator+= (expr) : <= present on one side of expr");
@@ -270,7 +276,7 @@ namespace gum {
         return *this;
       }
 
-      LpExpr &LpExpr::operator-=(const LpCol &rhs) {
+      LpExpr& LpExpr::operator-=(const LpCol& rhs) {
         if (__ileft || __iright)
           GUM_ERROR(OperationNotAllowed,
                     "expr::operator-= (rhs) : <= present in one of expr");
@@ -283,15 +289,16 @@ namespace gum {
         return *this;
       }
 
-      LpExpr &LpExpr::operator-=(const LpExpr &rhs) {
+      LpExpr& LpExpr::operator-=(const LpExpr& rhs) {
         if (__ileft || __iright || rhs.__ileft || rhs.__iright)
-          GUM_ERROR(OperationNotAllowed,
-                    "expr::operator-= (rhs) : <= present in one of rhs and/or expr");
+          GUM_ERROR(
+              OperationNotAllowed,
+              "expr::operator-= (rhs) : <= present in one of rhs and/or expr");
 
         if (!__imiddle)
           __imiddle = true;
 
-        for (const auto &elt : *rhs.__mCoeffs)
+        for (const auto& elt : *rhs.__mCoeffs)
           __mCoeffs->getWithDefault(elt.first, 0.) -= elt.second;
 
         __mValue -= rhs.__mValue;
@@ -299,7 +306,7 @@ namespace gum {
         return *this;
       }
 
-      template <typename T> LpExpr &LpExpr::operator-=(const T &rhs) {
+      template <typename T> LpExpr& LpExpr::operator-=(const T& rhs) {
         if (__ileft || __iright)
           GUM_ERROR(OperationNotAllowed,
                     "expr::operator-= (rhs) : <= present in one of expr");
@@ -312,12 +319,12 @@ namespace gum {
         return *this;
       }
 
-      std::ostream &operator<<(std::ostream &out, const LpExpr &expr) {
+      std::ostream& operator<<(std::ostream& out, const LpExpr& expr) {
         out << expr.toString();
         return out;
       }
 
-      void LpExpr::__addSide(const LpCol &from) {
+      void LpExpr::__addSide(const LpCol& from) {
         if (!__ileft) {
           __lCoeffs->insert(from, 1.);
           __ileft = true;
@@ -328,22 +335,21 @@ namespace gum {
           __rCoeffs->insert(from, 1.);
           __iright = true;
         } else
-          GUM_ERROR(
-              OperationNotAllowed,
-              "LpExpr::setSide ( const LpCol & from ) : too many <= ; no free side");
+          GUM_ERROR(OperationNotAllowed, "LpExpr::setSide ( const LpCol & from "
+                                         ") : too many <= ; no free side");
       }
 
-      void LpExpr::__addSide(const LpExpr &from) {
+      void LpExpr::__addSide(const LpExpr& from) {
         if (__ileft && __iright && from.__imiddle)
-          GUM_ERROR(
-              OperationNotAllowed,
-              "LpExpr::setSide ( const LpCol & from ) : too many <= ; no free side");
+          GUM_ERROR(OperationNotAllowed, "LpExpr::setSide ( const LpCol & from "
+                                         ") : too many <= ; no free side");
 
         /// nothing to do, from is an empty LpExpr
         if (!from.__imiddle)
           return;
 
-        /// from only has middle side : this should be empty or has left side, or has
+        /// from only has middle side : this should be empty or has left side,
+        /// or has
         /// left and middle side
         if (!from.__ileft && !from.__iright) {
           if (!__ileft) {
@@ -368,10 +374,12 @@ namespace gum {
 
             return;
           } else
-            GUM_ERROR(OperationNotAllowed, "LpExpr::setSide ( const LpCol & from ) "
-                                           ": too many <= ; no free side");
+            GUM_ERROR(OperationNotAllowed,
+                      "LpExpr::setSide ( const LpCol & from ) "
+                      ": too many <= ; no free side");
         }
-        /// from has left and middle side : this should be empty or has left side
+        /// from has left and middle side : this should be empty or has left
+        /// side
         else if (from.__ileft && !from.__iright) {
           if (!__ileft) {
 
@@ -395,37 +403,38 @@ namespace gum {
 
             return;
           } else
-            GUM_ERROR(OperationNotAllowed, "LpExpr::setSide ( const LpCol & from ) "
-                                           ": too many <= ; no free side");
+            GUM_ERROR(OperationNotAllowed,
+                      "LpExpr::setSide ( const LpCol & from ) "
+                      ": too many <= ; no free side");
         }
         /// from has left, middle and right side : this should be empty
         /// to be exhaustive
         else if (from.__ileft && from.__iright) {
           if (__ileft || __imiddle || __iright)
-            GUM_ERROR(OperationNotAllowed, "LpExpr::setSide ( const LpCol & from ) "
-                                           ": too many <= ; no free side");
+            GUM_ERROR(OperationNotAllowed,
+                      "LpExpr::setSide ( const LpCol & from ) "
+                      ": too many <= ; no free side");
 
           *this = from;
 
           return;
         } else
-          GUM_ERROR(
-              OperationNotAllowed,
-              "LpExpr::setSide ( const LpCol & from ) : too many <= ; no free side");
+          GUM_ERROR(OperationNotAllowed, "LpExpr::setSide ( const LpCol & from "
+                                         ") : too many <= ; no free side");
       }
 
-      void LpExpr::__addSide(LpExpr &&from) {
+      void LpExpr::__addSide(LpExpr&& from) {
         /// std::cout << from;
         if (__ileft && __iright && from.__imiddle)
-          GUM_ERROR(
-              OperationNotAllowed,
-              "LpExpr::setSide ( const LpCol & from ) : too many <= ; no free side");
+          GUM_ERROR(OperationNotAllowed, "LpExpr::setSide ( const LpCol & from "
+                                         ") : too many <= ; no free side");
 
         /// nothing to do, from is an empty LpExpr
         if (!from.__imiddle)
           return;
 
-        /// from only has middle side : this should be empty or has left side, or has
+        /// from only has middle side : this should be empty or has left side,
+        /// or has
         /// left and middle side
         if (!from.__ileft && !from.__iright) {
           if (!__ileft) {
@@ -451,10 +460,12 @@ namespace gum {
 
             return;
           } else
-            GUM_ERROR(OperationNotAllowed, "LpExpr::setSide ( const LpCol & from ) "
-                                           ": too many <= ; no free side");
+            GUM_ERROR(OperationNotAllowed,
+                      "LpExpr::setSide ( const LpCol & from ) "
+                      ": too many <= ; no free side");
         }
-        /// from has left and middle side : this should be empty or has left side
+        /// from has left and middle side : this should be empty or has left
+        /// side
         else if (from.__ileft && !from.__iright) {
           if (!__ileft) {
             ///* __lCoeffs = * from.__lCoeffs;
@@ -482,26 +493,27 @@ namespace gum {
 
             return;
           } else
-            GUM_ERROR(OperationNotAllowed, "LpExpr::setSide ( const LpCol & from ) "
-                                           ": too many <= ; no free side");
+            GUM_ERROR(OperationNotAllowed,
+                      "LpExpr::setSide ( const LpCol & from ) "
+                      ": too many <= ; no free side");
         }
         /// from has left, middle and right side : this should be empty
         /// to be exhaustive
         else if (from.__ileft && from.__iright) {
           if (__ileft || __imiddle || __iright)
-            GUM_ERROR(OperationNotAllowed, "LpExpr::setSide ( const LpCol & from ) "
-                                           ": too many <= ; no free side");
+            GUM_ERROR(OperationNotAllowed,
+                      "LpExpr::setSide ( const LpCol & from ) "
+                      ": too many <= ; no free side");
 
           *this = std::move(from);
 
           return;
         } else
-          GUM_ERROR(
-              OperationNotAllowed,
-              "LpExpr::setSide ( const LpCol & from ) : too many <= ; no free side");
+          GUM_ERROR(OperationNotAllowed, "LpExpr::setSide ( const LpCol & from "
+                                         ") : too many <= ; no free side");
       }
 
-      template <typename SCALAR> void LpExpr::__addSide(const SCALAR &from) {
+      template <typename SCALAR> void LpExpr::__addSide(const SCALAR& from) {
         if (!__ileft) {
           __lValue = from;
           __ileft = true;
@@ -512,9 +524,8 @@ namespace gum {
           __rValue = from;
           __iright = true;
         } else
-          GUM_ERROR(
-              OperationNotAllowed,
-              "LpExpr::setSide ( const LpCol & from ) : too many <= ; no free side");
+          GUM_ERROR(OperationNotAllowed, "LpExpr::setSide ( const LpCol & from "
+                                         ") : too many <= ; no free side");
       }
 
       void LpExpr::clear() {
@@ -534,27 +545,31 @@ namespace gum {
       std::string LpExpr::toString() const {
         std::ostringstream s;
 
-        s << std::endl << "left side : " << std::endl;
+        s << std::endl
+          << "left side : " << std::endl;
 
         if (__lCoeffs != nullptr)
-          for (const auto &elt : *__lCoeffs)
+          for (const auto& elt : *__lCoeffs)
             s << elt.first.toString() << " " << elt.second << " | ";
 
-        s << std::endl << "middle side : " << std::endl;
+        s << std::endl
+          << "middle side : " << std::endl;
 
         if (__mCoeffs != nullptr)
-          for (const auto &elt : *__mCoeffs)
+          for (const auto& elt : *__mCoeffs)
             s << elt.first.toString() << " " << elt.second << " | ";
 
-        s << std::endl << "right side : " << std::endl;
+        s << std::endl
+          << "right side : " << std::endl;
 
         if (__rCoeffs != nullptr)
-          for (const auto &elt : *__rCoeffs)
+          for (const auto& elt : *__rCoeffs)
             s << elt.first.toString() << " " << elt.second << " | ";
 
-        s << std::endl << "lvalue : " << __lValue << std::endl
-          << "mvalue : " << __mValue << std::endl << "rvalue : " << __rValue
-          << std::endl;
+        s << std::endl
+          << "lvalue : " << __lValue << std::endl
+          << "mvalue : " << __mValue << std::endl
+          << "rvalue : " << __rValue << std::endl;
 
         s << std::endl;
 
@@ -565,13 +580,13 @@ namespace gum {
       * class LpRow
       */
 
-      LpRow::LpRow(const LpExpr &expr, const std::vector<LpCol> &cols)
+      LpRow::LpRow(const LpExpr& expr, const std::vector<LpCol>& cols)
           : __coeffs(nullptr) {
         // we write 0 <= Ax + b from Ex + f <= Cx + d
         if (expr.__ileft && !expr.__iright) {
           __coeffs = new HashTable<LpCol, double>(*expr.__mCoeffs);
 
-          for (const auto &col : cols) {
+          for (const auto& col : cols) {
             double col_coeff = 0.;
 
             // from left side to middle side : 0 <= middle - left
@@ -585,7 +600,7 @@ namespace gum {
         } else if (expr.__iright && !expr.__ileft) {
           __coeffs = new HashTable<LpCol, double>(*expr.__rCoeffs);
 
-          for (const auto &col : cols) {
+          for (const auto& col : cols) {
             double col_coeff = 0;
 
             // from middle side to right side : 0 <= right - middle
@@ -602,21 +617,22 @@ namespace gum {
                               << "is not a valid inequality; no <= detected");
 
         if (__coeffs->size() == 0)
-          GUM_ERROR(OperationNotAllowed, "expr : " << expr.toString()
-                                                   << "is not a valid inequality; "
-                                                      "no variable in inequality, "
-                                                      "only constants");
+          GUM_ERROR(OperationNotAllowed,
+                    "expr : " << expr.toString()
+                              << "is not a valid inequality; "
+                                 "no variable in inequality, "
+                                 "only constants");
 
         GUM_CONSTRUCTOR(LpRow);
       }
 
-      LpRow::LpRow(LpExpr &&expr, const std::vector<LpCol> &cols)
+      LpRow::LpRow(LpExpr&& expr, const std::vector<LpCol>& cols)
           : __coeffs(nullptr) {
         /// we write 0 <= Ax + b from Ex + f <= Cx + d
         if (expr.__ileft && !expr.__iright) {
           swap(__coeffs, expr.__mCoeffs);
 
-          for (const auto &col : cols) {
+          for (const auto& col : cols) {
             double col_coeff = 0;
 
             if (expr.__lCoeffs->exists(col))
@@ -629,7 +645,7 @@ namespace gum {
         } else if (expr.__iright && !expr.__ileft) {
           swap(__coeffs, expr.__rCoeffs);
 
-          for (const auto &col : cols) {
+          for (const auto& col : cols) {
             double col_coeff = 0;
 
             if (expr.__mCoeffs->exists(col))
@@ -645,21 +661,22 @@ namespace gum {
                               << "is not a valid inequality; no <= detected");
 
         if (__coeffs->size() == 0)
-          GUM_ERROR(OperationNotAllowed, "expr : " << expr.toString()
-                                                   << "is not a valid inequality; "
-                                                      "no variable in inequality, "
-                                                      "only constants");
+          GUM_ERROR(OperationNotAllowed,
+                    "expr : " << expr.toString()
+                              << "is not a valid inequality; "
+                                 "no variable in inequality, "
+                                 "only constants");
 
         GUM_CONSTRUCTOR(LpRow);
       }
 
-      LpRow::LpRow(const LpRow &row)
+      LpRow::LpRow(const LpRow& row)
           : __cste(row.__cste),
             __coeffs(new HashTable<LpCol, double>(*row.__coeffs)) {
         GUM_CONS_CPY(LpRow);
       }
 
-      LpRow::LpRow(LpRow &&row) : __cste(row.__cste), __coeffs(row.__coeffs) {
+      LpRow::LpRow(LpRow&& row) : __cste(row.__cste), __coeffs(row.__coeffs) {
         row.__coeffs = nullptr;
 
         GUM_CONS_CPY(LpRow);
@@ -671,19 +688,19 @@ namespace gum {
         GUM_DESTRUCTOR(LpRow);
       }
 
-      LpRow &LpRow::operator=(const LpRow &row) {
+      LpRow& LpRow::operator=(const LpRow& row) {
         __cste = row.__cste;
         *__coeffs = *row.__coeffs;
         return *this;
       }
 
-      LpRow &LpRow::operator=(LpRow &&row) {
+      LpRow& LpRow::operator=(LpRow&& row) {
         __cste = row.__cste;
         swap(__coeffs, row.__coeffs);
         return *this;
       }
 
-      std::ostream &operator<<(std::ostream &out, const LpRow &row) {
+      std::ostream& operator<<(std::ostream& out, const LpRow& row) {
         out << row.toString();
         return out;
       }
@@ -694,7 +711,7 @@ namespace gum {
         s << "0 <= " << __cste;
 
         if (__coeffs != nullptr) {
-          for (const auto &elt : *__coeffs) {
+          for (const auto& elt : *__coeffs) {
             if (elt.second > 0) {
               if (elt.second != 1) {
                 s << " +" << elt.second << "*" << elt.first.toString();
@@ -726,7 +743,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      LpInterface<GUM_SCALAR>::LpInterface(const LpInterface<GUM_SCALAR> &from)
+      LpInterface<GUM_SCALAR>::LpInterface(const LpInterface<GUM_SCALAR>& from)
           : __cols(from.__cols), __positivity(from.__positivity),
             __sumIsOne(from.__sumIsOne) {
         __rows.resize(from.__rows.size());
@@ -738,7 +755,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      LpInterface<GUM_SCALAR>::LpInterface(LpInterface<GUM_SCALAR> &&from)
+      LpInterface<GUM_SCALAR>::LpInterface(LpInterface<GUM_SCALAR>&& from)
           : __positivity(from.__positivity), __sumIsOne(from.__sumIsOne) {
         __rows.swap(from.__rows);
         __cols.swap(from.__cols);
@@ -753,10 +770,10 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      LpInterface<GUM_SCALAR> &LpInterface<GUM_SCALAR>::
-      operator=(const LpInterface<GUM_SCALAR> &from) {
+      LpInterface<GUM_SCALAR>& LpInterface<GUM_SCALAR>::
+      operator=(const LpInterface<GUM_SCALAR>& from) {
         /// faster than clear (), delete only rows
-        for (const auto &row : __rows)
+        for (const auto& row : __rows)
           delete row;
 
         __rows.clear();
@@ -775,8 +792,8 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      LpInterface<GUM_SCALAR> &LpInterface<GUM_SCALAR>::
-      operator=(LpInterface<GUM_SCALAR> &&from) {
+      LpInterface<GUM_SCALAR>& LpInterface<GUM_SCALAR>::
+      operator=(LpInterface<GUM_SCALAR>&& from) {
         __rows.swap(from.__rows);
         __cols.swap(from.__cols);
 
@@ -787,7 +804,7 @@ namespace gum {
       }
 
       template <typename T>
-      std::ostream &operator<<(std::ostream &out, const LpInterface<T> &lpi) {
+      std::ostream& operator<<(std::ostream& out, const LpInterface<T>& lpi) {
         out << lpi.toString();
         return out;
       }
@@ -801,11 +818,13 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      std::vector<LpCol> LpInterface<GUM_SCALAR>::addCols(const unsigned int &cols) {
+      std::vector<LpCol>
+      LpInterface<GUM_SCALAR>::addCols(const unsigned int& cols) {
         if (cols < 1)
-          GUM_ERROR(OperationNotAllowed, "LpInterface::addCols ( cols ) : cols "
-                                         "needs must be equal or greater than 1 : "
-                                             << cols << " < 1");
+          GUM_ERROR(OperationNotAllowed,
+                    "LpInterface::addCols ( cols ) : cols "
+                    "needs must be equal or greater than 1 : "
+                        << cols << " < 1");
 
         for (unsigned int i = 0; i < cols; i++) {
           __cols.push_back(LpCol(__cols.size()));
@@ -815,35 +834,37 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void LpInterface<GUM_SCALAR>::addRow(const LpExpr &expr) {
+      void LpInterface<GUM_SCALAR>::addRow(const LpExpr& expr) {
         if (!expr.__ileft && !expr.__iright)
-          GUM_ERROR(OperationNotAllowed, "addRow ( const LpExpr & expr ) : expr : "
-                                             << expr.toString()
-                                             << "is not an inequality.");
+          GUM_ERROR(OperationNotAllowed,
+                    "addRow ( const LpExpr & expr ) : expr : "
+                        << expr.toString() << "is not an inequality.");
 
-        if ((expr.__ileft && !expr.__iright) || (!expr.__ileft && expr.__iright)) {
+        if ((expr.__ileft && !expr.__iright) ||
+            (!expr.__ileft && expr.__iright)) {
           __rows.push_back(new LpRow(expr, __cols));
         } else {
           LpExpr lexpr(expr, true, true, false);
           LpExpr rexpr(expr, false, true, true);
 
-          __rows.push_back(
-              new LpRow(std::move(lexpr),
-                        __cols)); /// lexpr not used anymore, use move constructor
-          __rows.push_back(
-              new LpRow(std::move(rexpr),
-                        __cols)); /// rexpr not used anymore, use move constructor
+          __rows.push_back(new LpRow(
+              std::move(lexpr),
+              __cols));  /// lexpr not used anymore, use move constructor
+          __rows.push_back(new LpRow(
+              std::move(rexpr),
+              __cols));  /// rexpr not used anymore, use move constructor
         }
       }
 
       template <typename GUM_SCALAR>
-      void LpInterface<GUM_SCALAR>::addRow(LpExpr &&expr) {
+      void LpInterface<GUM_SCALAR>::addRow(LpExpr&& expr) {
         if (!expr.__ileft && !expr.__iright)
-          GUM_ERROR(OperationNotAllowed, "addRow ( const LpExpr & expr ) : expr : "
-                                             << expr.toString()
-                                             << "is not an inequality.");
+          GUM_ERROR(OperationNotAllowed,
+                    "addRow ( const LpExpr & expr ) : expr : "
+                        << expr.toString() << "is not an inequality.");
 
-        if ((expr.__ileft && !expr.__iright) || (!expr.__ileft && expr.__iright)) {
+        if ((expr.__ileft && !expr.__iright) ||
+            (!expr.__ileft && expr.__iright)) {
           __rows.push_back(new LpRow(std::move(expr), __cols));
         } else {
           LpExpr lexpr(std::move(expr), true, true, false);
@@ -857,32 +878,34 @@ namespace gum {
           rexpr.__mValue = lexpr.__mValue;
           rexpr.__imiddle = true;
 
-          __rows.push_back(
-              new LpRow(std::move(lexpr),
-                        __cols)); /// lexpr not used anymore, use move constructor
-          __rows.push_back(
-              new LpRow(std::move(rexpr),
-                        __cols)); /// rexpr not used anymore, use move constructor
+          __rows.push_back(new LpRow(
+              std::move(lexpr),
+              __cols));  /// lexpr not used anymore, use move constructor
+          __rows.push_back(new LpRow(
+              std::move(rexpr),
+              __cols));  /// rexpr not used anymore, use move constructor
         }
       }
 
-      template <typename GUM_SCALAR> void LpInterface<GUM_SCALAR>::addPositivity() {
+      template <typename GUM_SCALAR>
+      void LpInterface<GUM_SCALAR>::addPositivity() {
         if (__positivity)
           return;
 
-        for (const auto &col : __cols)
+        for (const auto& col : __cols)
           addRow(0 <= col);
 
         __positivity = true;
       }
 
-      template <typename GUM_SCALAR> void LpInterface<GUM_SCALAR>::addSumIsOne() {
+      template <typename GUM_SCALAR>
+      void LpInterface<GUM_SCALAR>::addSumIsOne() {
         if (__sumIsOne)
           return;
 
         LpExpr expr;
 
-        for (const auto &col : __cols)
+        for (const auto& col : __cols)
           expr += col;
 
         addRow(1 <= std::move(expr) <= 1);
@@ -906,7 +929,7 @@ namespace gum {
         // addSumIsOne();
         LpExpr expr;
 
-        for (const auto &col : __cols) {
+        for (const auto& col : __cols) {
           addRow(0 <= col);
           expr += col;
         }
@@ -925,12 +948,12 @@ namespace gum {
 
         std::vector<std::vector<GUM_SCALAR>> lrsMatrix;
 
-        for (const auto &row : __rows) {
+        for (const auto& row : __rows) {
           std::vector<GUM_SCALAR> expandedRow(__cols.size() + 1, 0);
 
           expandedRow[0] = row->__cste;
 
-          for (const auto &elt : *row->__coeffs)
+          for (const auto& elt : *row->__coeffs)
             expandedRow[elt.first.id() + 1] = elt.second;
 
           lrsMatrix.push_back(expandedRow);
@@ -952,28 +975,33 @@ namespace gum {
       std::string LpInterface<GUM_SCALAR>::toString() const {
         std::ostringstream s;
 
-        s << std::endl << std::endl << "Variables : " << std::endl;
+        s << std::endl
+          << std::endl
+          << "Variables : " << std::endl;
 
-        for (const auto &col : __cols)
+        for (const auto& col : __cols)
           s << " " << col.toString();
 
         s << std::endl;
 
-        for (const auto &row : __rows)
-          s << std::endl << row->toString();
+        for (const auto& row : __rows)
+          s << std::endl
+            << row->toString();
 
-        s << std::endl << std::endl;
+        s << std::endl
+          << std::endl;
 
         return s.str();
       }
 
       template <typename GUM_SCALAR> void LpInterface<GUM_SCALAR>::clear() {
-        for (const auto &row : __rows)
+        for (const auto& row : __rows)
           delete row;
 
         __rows.clear();
-        __rows.shrink_to_fit(); /// to really clear content memory, otherwise we have
-                                /// to wait for (*this) destruction ???
+        __rows.shrink_to_fit();  /// to really clear content memory, otherwise
+                                 /// we have
+                                 /// to wait for (*this) destruction ???
         /// checked with sizeof( __rows ) + sizeof( LpRow ) * __rows.capacity()
 
         __cols.clear();
@@ -984,7 +1012,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR> void LpInterface<GUM_SCALAR>::clearRows() {
-        for (const auto &row : __rows)
+        for (const auto& row : __rows)
           delete row;
 
         __rows.clear();
@@ -995,21 +1023,22 @@ namespace gum {
       }
 
       ///////////////////////////////////////////////////////
-      void swap(HashTable<LpCol, double> *&a, HashTable<LpCol, double> *&b) {
-        HashTable<LpCol, double> *tmp(a);
+      void swap(HashTable<LpCol, double>*& a, HashTable<LpCol, double>*& b) {
+        HashTable<LpCol, double>* tmp(a);
         a = b;
         b = tmp;
       }
 
       ///////////////////////////////////////////////////////
-      template <typename T2> LpExpr operator+(LpExpr &&lhs, const T2 &rhs) {
+      template <typename T2> LpExpr operator+(LpExpr&& lhs, const T2& rhs) {
         LpExpr expr = std::move(lhs);
         expr += rhs;
 
         return expr;
       }
 
-      template <typename T2> LpExpr operator+(const LpExpr &lhs, const T2 &rhs) {
+      template <typename T2>
+      LpExpr operator+(const LpExpr& lhs, const T2& rhs) {
         LpExpr expr(lhs);
         expr += rhs;
 
@@ -1017,7 +1046,7 @@ namespace gum {
       }
 
       template <typename T1, forbidden_type<T1, LpExpr>>
-      LpExpr operator+(const T1 &lhs, LpExpr &&rhs) {
+      LpExpr operator+(const T1& lhs, LpExpr&& rhs) {
         LpExpr expr = std::move(rhs);
         ;
         expr += lhs;
@@ -1026,7 +1055,7 @@ namespace gum {
       }
 
       template <typename T1, forbidden_type<T1, LpExpr>>
-      LpExpr operator+(const T1 &lhs, LpExpr &rhs) {
+      LpExpr operator+(const T1& lhs, LpExpr& rhs) {
         LpExpr expr(rhs);
         expr += lhs;
 
@@ -1034,7 +1063,7 @@ namespace gum {
       }
 
       template <typename T2, forbidden_type<T2, LpExpr>>
-      LpExpr operator+(const LpCol &lhs, const T2 &rhs) {
+      LpExpr operator+(const LpCol& lhs, const T2& rhs) {
         LpExpr expr;
         expr += lhs;
         expr += rhs;
@@ -1042,8 +1071,9 @@ namespace gum {
         return expr;
       }
 
-      template <typename T1, forbidden_type<T1, LpExpr>, forbidden_type<T1, LpCol>>
-      LpExpr operator+(const T1 &lhs, const LpCol &rhs) {
+      template <typename T1, forbidden_type<T1, LpExpr>,
+                forbidden_type<T1, LpCol>>
+      LpExpr operator+(const T1& lhs, const LpCol& rhs) {
         LpExpr expr;
         expr += rhs;
         expr += lhs;
@@ -1052,14 +1082,15 @@ namespace gum {
       }
 
       ///////////////////////////////////////////////////////
-      template <typename T2> LpExpr operator-(LpExpr &&lhs, const T2 &rhs) {
+      template <typename T2> LpExpr operator-(LpExpr&& lhs, const T2& rhs) {
         LpExpr expr = std::move(lhs);
         expr -= rhs;
 
         return expr;
       }
 
-      template <typename T2> LpExpr operator-(const LpExpr &lhs, const T2 &rhs) {
+      template <typename T2>
+      LpExpr operator-(const LpExpr& lhs, const T2& rhs) {
         LpExpr expr(lhs);
         expr -= rhs;
 
@@ -1067,7 +1098,7 @@ namespace gum {
       }
 
       template <typename T1, forbidden_type<T1, LpExpr>>
-      LpExpr operator-(const T1 &lhs, LpExpr &&rhs) {
+      LpExpr operator-(const T1& lhs, LpExpr&& rhs) {
         LpExpr expr;
         expr += std::move(rhs);
         ;
@@ -1077,7 +1108,7 @@ namespace gum {
       }
 
       template <typename T1, forbidden_type<T1, LpExpr>>
-      LpExpr operator-(const T1 &lhs, LpExpr &rhs) {
+      LpExpr operator-(const T1& lhs, LpExpr& rhs) {
         LpExpr expr;
         expr += rhs;
         expr -= lhs;
@@ -1086,7 +1117,7 @@ namespace gum {
       }
 
       template <typename T2, forbidden_type<T2, LpExpr>>
-      LpExpr operator-(const LpCol &lhs, const T2 &rhs) {
+      LpExpr operator-(const LpCol& lhs, const T2& rhs) {
         LpExpr expr;
         expr += lhs;
         expr -= rhs;
@@ -1094,8 +1125,9 @@ namespace gum {
         return expr;
       }
 
-      template <typename T1, forbidden_type<T1, LpExpr>, forbidden_type<T1, LpCol>>
-      LpExpr operator-(const T1 &lhs, const LpCol &rhs) {
+      template <typename T1, forbidden_type<T1, LpExpr>,
+                forbidden_type<T1, LpCol>>
+      LpExpr operator-(const T1& lhs, const LpCol& rhs) {
         LpExpr expr;
         expr += rhs;
         expr -= lhs;
@@ -1105,7 +1137,7 @@ namespace gum {
 
       ///////////////////////////////////////////////////////
       template <typename SCALAR>
-      INLINE LpExpr LpExpr::multiply(const SCALAR &lhs, const LpCol &rhs) {
+      INLINE LpExpr LpExpr::multiply(const SCALAR& lhs, const LpCol& rhs) {
         LpExpr expr;
         expr.__mCoeffs->insert(rhs, lhs);
         expr.__imiddle = true;
@@ -1113,18 +1145,18 @@ namespace gum {
       }
 
       template <typename SCALAR>
-      LpExpr operator*(const SCALAR &lhs, const LpCol &rhs) {
+      LpExpr operator*(const SCALAR& lhs, const LpCol& rhs) {
         return LpExpr::multiply(lhs, rhs);
       }
 
       template <typename SCALAR>
-      LpExpr operator*(const LpCol &lhs, const SCALAR &rhs) {
+      LpExpr operator*(const LpCol& lhs, const SCALAR& rhs) {
         return LpExpr::multiply(rhs, lhs);
       }
 
       ///////////////////////////////////////////////////////
       template <typename T1, typename T2>
-      INLINE LpExpr LpExpr::lessThan(T1 &&lhs, T2 &&rhs) {
+      INLINE LpExpr LpExpr::lessThan(T1&& lhs, T2&& rhs) {
         LpExpr expr;
         expr.__addSide(std::forward<T1>(lhs));
         expr.__addSide(std::forward<T2>(rhs));
@@ -1132,46 +1164,48 @@ namespace gum {
       }
 
       // const lvalue
-      template <typename T2> LpExpr operator<=(const LpExpr &lhs, T2 &&rhs) {
+      template <typename T2> LpExpr operator<=(const LpExpr& lhs, T2&& rhs) {
         return LpExpr::lessThan(lhs, std::forward<T2>(rhs));
       }
 
-      template <typename T2> LpExpr operator<=(const LpCol &lhs, T2 &&rhs) {
+      template <typename T2> LpExpr operator<=(const LpCol& lhs, T2&& rhs) {
         return LpExpr::lessThan(lhs, std::forward<T2>(rhs));
       }
 
-      template <typename T1, forbidden_type<T1, LpExpr &>,
-                forbidden_type<T1, LpCol &>>
-      LpExpr operator<=(T1 &&lhs, const LpExpr &rhs) {
+      template <typename T1, forbidden_type<T1, LpExpr&>,
+                forbidden_type<T1, LpCol&>>
+      LpExpr operator<=(T1&& lhs, const LpExpr& rhs) {
         return LpExpr::lessThan(std::forward<T1>(lhs), rhs);
       }
 
-      template <typename T1, forbidden_type<T1, LpExpr &>,
-                forbidden_type<T1, LpCol &>>
-      LpExpr operator<=(T1 &&lhs, const LpCol &rhs) {
+      template <typename T1, forbidden_type<T1, LpExpr&>,
+                forbidden_type<T1, LpCol&>>
+      LpExpr operator<=(T1&& lhs, const LpCol& rhs) {
         return LpExpr::lessThan(std::forward<T1>(lhs), rhs);
       }
 
       // rvaue
-      template <typename T2> LpExpr operator<=(LpExpr &&lhs, T2 &&rhs) {
+      template <typename T2> LpExpr operator<=(LpExpr&& lhs, T2&& rhs) {
         return LpExpr::lessThan(std::move(lhs), std::forward<T2>(rhs));
       }
 
-      template <typename T2> LpExpr operator<=(LpCol &&lhs, T2 &&rhs) {
+      template <typename T2> LpExpr operator<=(LpCol&& lhs, T2&& rhs) {
         return LpExpr::lessThan(std::move(lhs), std::forward<T2>(rhs));
       }
 
-      template <typename T1, forbidden_type<T1, LpExpr>, forbidden_type<T1, LpCol>>
-      LpExpr operator<=(T1 &&lhs, LpExpr &&rhs) {
+      template <typename T1, forbidden_type<T1, LpExpr>,
+                forbidden_type<T1, LpCol>>
+      LpExpr operator<=(T1&& lhs, LpExpr&& rhs) {
         return LpExpr::lessThan(std::forward<T1>(lhs), std::move(rhs));
       }
 
-      template <typename T1, forbidden_type<T1, LpExpr>, forbidden_type<T1, LpCol>>
-      LpExpr operator<=(T1 &&lhs, LpCol &&rhs) {
+      template <typename T1, forbidden_type<T1, LpExpr>,
+                forbidden_type<T1, LpCol>>
+      LpExpr operator<=(T1&& lhs, LpCol&& rhs) {
         return LpExpr::lessThan(std::forward<T1>(lhs), std::move(rhs));
       }
-    } // namespace lp
+    }  // namespace lp
 
-  } // namespace cn
+  }  // namespace cn
 
-} // namespace gum
+}  // namespace gum

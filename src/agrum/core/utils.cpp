@@ -24,9 +24,10 @@
 namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  bool Memcmp(const void *const _in, const void *const _out, unsigned long size) {
-    unsigned char *in = (unsigned char *)_in;
-    unsigned char *out = (unsigned char *)_out;
+  bool Memcmp(const void* const _in, const void* const _out,
+              unsigned long size) {
+    unsigned char* in = (unsigned char*)_in;
+    unsigned char* out = (unsigned char*)_out;
 
     for (unsigned long i = 0; i < size; ++i)
       if (*(in++) != *(out++))
@@ -41,6 +42,6 @@ namespace gum {
 #endif
   }
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace gum */

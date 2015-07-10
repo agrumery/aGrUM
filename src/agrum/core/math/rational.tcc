@@ -3,13 +3,13 @@
 namespace gum {
 
   template <typename GUM_SCALAR>
-  void Rational<GUM_SCALAR>::testRationalAlgorithms(const unsigned int &iters) {
+  void Rational<GUM_SCALAR>::testRationalAlgorithms(const unsigned int& iters) {
     std::cout << " TESTING RATIONAL ALGORITHMS " << std::endl;
     std::cout.precision(10);
 
-    std::cout << std::setw(10) << std::left << "iter" << std::setw(20) << std::left
-              << "number" << std::setw(35) << std::left << "farey" << std::setw(35)
-              << std::left << "continued" << std::endl;
+    std::cout << std::setw(10) << std::left << "iter" << std::setw(20)
+              << std::left << "number" << std::setw(35) << std::left << "farey"
+              << std::setw(35) << std::left << "continued" << std::endl;
 
     double zero = 1e-6;
     double PRECISION = 1000000;
@@ -77,7 +77,8 @@ namespace gum {
 
     /////////////////////////////////////////////////////////////////////////
 
-    // 1 <= number <= 100 ( don't call farey, it will go through all farey rationals
+    // 1 <= number <= 100 ( don't call farey, it will go through all farey
+    // rationals
     // until den_max is met, which is 1000000 )
     double fmin = 1.0, fmax = 100.0;
 
@@ -98,9 +99,10 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  void Rational<GUM_SCALAR>::farey(long int &numerator, long int &denominator,
-                                   const GUM_SCALAR &number, const long int &den_max,
-                                   const double &zero) {
+  void Rational<GUM_SCALAR>::farey(long int& numerator, long int& denominator,
+                                   const GUM_SCALAR& number,
+                                   const long int& den_max,
+                                   const double& zero) {
     bool isNegative = (number < 0) ? true : false;
     GUM_SCALAR pnumber = (isNegative) ? -number : number;
 
@@ -152,13 +154,13 @@ namespace gum {
       denominator = b;
       return;
     }
-  } /// end of farey func
+  }  /// end of farey func
 
   template <typename GUM_SCALAR>
-  void Rational<GUM_SCALAR>::continuedFracFirst(long int &numerator,
-                                                long int &denominator,
-                                                const GUM_SCALAR &number,
-                                                const double &zero) {
+  void Rational<GUM_SCALAR>::continuedFracFirst(long int& numerator,
+                                                long int& denominator,
+                                                const GUM_SCALAR& number,
+                                                const double& zero) {
     const GUM_SCALAR pnumber = (number > 0) ? number : -number;
 
     /// reciprocal over iterations
@@ -177,7 +179,8 @@ namespace gum {
     double delta, delta_tmp;
 
     /// we find all convergents until we found a best one
-    /// since we look for a delta < zero, we can start looking for semi-convergents
+    /// since we look for a delta < zero, we can start looking for
+    /// semi-convergents
     /// when we found a convergent with delta < zero, and look for the
     /// semi-convergents before
     while (true) {
@@ -197,12 +200,13 @@ namespace gum {
         break;
 
       rnumber = 1. / (rnumber - a.back());
-    } /// end of while
+    }  /// end of while
 
     if (a.size() < 2)
       return;
 
-    /// we can start looking at the semi-convergents made of the last two convergents
+    /// we can start looking at the semi-convergents made of the last two
+    /// convergents
     /// before the one within precision zero of number found previously
     unsigned int i = p.size() - 2;
     /// the last convergent has already been computed previously : end of for is
@@ -228,7 +232,8 @@ namespace gum {
       return;
     }
 
-    // next semi-convergents until next convergent from smaller denominator to bigger
+    // next semi-convergents until next convergent from smaller denominator to
+    // bigger
     // denominator
     for (n = (a[i - 1] + 2) / 2; n < a[i - 1]; ++n) {
       p_tmp = n * p[i] + p[i - 1];
@@ -241,20 +246,20 @@ namespace gum {
         denominator = q_tmp;
         return;
       }
-    } /// end of for
+    }  /// end of for
 
     ///} // end of for
   }
 
   template <typename GUM_SCALAR>
-  void Rational<GUM_SCALAR>::continuedFracBest(long int &numerator,
-                                               long int &denominator,
-                                               const GUM_SCALAR &number,
-                                               const long int &den_max) {
+  void Rational<GUM_SCALAR>::continuedFracBest(long int& numerator,
+                                               long int& denominator,
+                                               const GUM_SCALAR& number,
+                                               const long int& den_max) {
     const GUM_SCALAR pnumber = (number > 0) ? number : -number;
 
-    const unsigned long int denMax =
-        (unsigned long int)den_max; /// signed and unsigned comparison resolution ...
+    const unsigned long int denMax = (unsigned long int)
+        den_max;  /// signed and unsigned comparison resolution ...
 
     /// reciprocal over iterations
     GUM_SCALAR rnumber = pnumber;
@@ -288,7 +293,7 @@ namespace gum {
         break;
 
       rnumber = 1. / (rnumber - a.back());
-    } /// end of while
+    }  /// end of while
 
     if (a.size() < 2 || q.back() == denMax || p.back() == denMax) {
       numerator = (number > 0) ? p.back() : -p.back();
@@ -296,7 +301,8 @@ namespace gum {
       return;
     }
 
-    /// we can start looking at the semi-convergents made of the last two convergents
+    /// we can start looking at the semi-convergents made of the last two
+    /// convergents
     /// before the one within precision zero of number found previously
     unsigned int i = p.size() - 1;
 
@@ -314,7 +320,7 @@ namespace gum {
       numerator = (number > 0) ? p_tmp : -p_tmp;
       denominator = q_tmp;
       return;
-    } // end of for
+    }  // end of for
 
     // Test n = a[i-1]/2
     n = a[i - 1] / 2;
@@ -335,4 +341,4 @@ namespace gum {
     ///}
   }
 
-} // end of gum namespace
+}  // end of gum namespace

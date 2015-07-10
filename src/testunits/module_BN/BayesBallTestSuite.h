@@ -36,7 +36,7 @@ namespace gum_tests {
     void tearDown() {}
 
     void testCreation() {
-      gum::BayesBall *balls = 0;
+      gum::BayesBall* balls = 0;
       TS_ASSERT_THROWS_NOTHING(balls = new gum::BayesBall());
 
       TS_ASSERT_THROWS_NOTHING(if (balls != 0) delete balls);
@@ -45,7 +45,7 @@ namespace gum_tests {
     void testRequisiteNodes() {
       gum::BayesBall balls;
       gum::SimpleBayesNetGenerator<float> gen(50, 200, 2);
-      gum::BayesNet<float> *bn = new gum::BayesNet<float>();
+      gum::BayesNet<float>* bn = new gum::BayesNet<float>();
       gen.generateBN(*bn);
       gum::Set<gum::NodeId> requisite;
 
@@ -61,8 +61,8 @@ namespace gum_tests {
       for (gum::Idx j = 24; j > 19; --j)
         query.insert(nodes_seq.atPos(j));
 
-      TS_ASSERT_THROWS_NOTHING(
-                               balls.requisiteNodes(bn->dag(), query, hardEvidence, softEvidence, requisite));
+      TS_ASSERT_THROWS_NOTHING(balls.requisiteNodes(
+          bn->dag(), query, hardEvidence, softEvidence, requisite));
 
       TS_ASSERT(requisite.size() >= 5);
 

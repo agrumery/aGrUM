@@ -18,7 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A class that transforms DBCell into compact ints (to speed-up learning)
+ * @brief A class that transforms DBCell into compact ints (to speed-up
+ *learning)
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -30,31 +31,31 @@ namespace gum {
     /// transforms a vector of DBrows to unify the types of its columns
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     bool DBTransformCompactInt::transform(
-        DBRowFilter<DBHandler, TranslatorSet, GeneratorSet> &filter) const {
+        DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>& filter) const {
       // put the filter at the beginning of the database
       filter.reset();
 
       // get the handler of the database
-      DBHandler &handler = filter.handler();
+      DBHandler& handler = filter.handler();
 
       // parse the database
       try {
         while (filter.hasRows()) {
           // get the initial row
-          DBRow &input_row = handler.row();
+          DBRow& input_row = handler.row();
 
           // get the row as converted by the cell translators
-          FilteredRow &output_row = filter.row();
+          FilteredRow& output_row = filter.row();
 
           // assign the output row to the intput
           for (unsigned int i = 0, size = input_row.size(); i < size; ++i) {
             input_row[i].setFloat(output_row[i]);
           }
         }
-      } catch (NotFound &) {
-      } // NotFound is raised if the row filter does not
-        // produce any output row for the last rows of
-        // the database
+      } catch (NotFound&) {
+      }  // NotFound is raised if the row filter does not
+      // produce any output row for the last rows of
+      // the database
 
       return true;
     }

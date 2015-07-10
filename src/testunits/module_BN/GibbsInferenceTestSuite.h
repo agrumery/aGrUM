@@ -46,12 +46,12 @@ namespace gum_tests {
     std::string __mess;
 
     public:
-    aSimpleGibbsListener(gum::ApproximationScheme &sch)
+    aSimpleGibbsListener(gum::ApproximationScheme& sch)
         : gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
-    void whenProgress(const void *buffer, gum::Size a, double b, double c) {
+    void whenProgress(const void* buffer, gum::Size a, double b, double c) {
       __nbr++;
     }
-    void whenStop(const void *buffer, std::string s) { __mess = s; }
+    void whenStop(const void* buffer, std::string s) { __mess = s; }
 
     int getNbr() { return __nbr; }
     std::string getMess() { return __mess; }
@@ -59,9 +59,9 @@ namespace gum_tests {
 
   class GibbsInferenceTestSuite : public CxxTest::TestSuite {
     public:
-    gum::BayesNet<float> *bn;
+    gum::BayesNet<float>* bn;
     gum::Id i1, i2, i3, i4, i5;
-    gum::Potential<float> *e_i1, *e_i4;
+    gum::Potential<float>* e_i1, *e_i4;
 
     void setUp() {
       bn = new gum::BayesNet<float>();
@@ -104,7 +104,7 @@ namespace gum_tests {
     }
 
     void testFill() {
-      const gum::Potential<float> &p1 = bn->cpt(i1);
+      const gum::Potential<float>& p1 = bn->cpt(i1);
       TS_ASSERT(p1.nbrDim() == 1);
 
       {
@@ -115,7 +115,7 @@ namespace gum_tests {
         p1.fillWith(v);
       }
 
-      const gum::Potential<float> &p2 = bn->cpt(i2);
+      const gum::Potential<float>& p2 = bn->cpt(i2);
       TS_ASSERT(p2.nbrDim() == 1);
 
       {
@@ -126,7 +126,7 @@ namespace gum_tests {
         p2.fillWith(v);
       }
 
-      const gum::Potential<float> &p3 = bn->cpt(i3);
+      const gum::Potential<float>& p3 = bn->cpt(i3);
       TS_ASSERT(p3.nbrDim() == 2);
       {
         // FILLING PARAMS
@@ -144,7 +144,7 @@ namespace gum_tests {
           TS_ASSERT_DELTA(p[j], 1.0, 1e-5);
       }
 
-      const gum::Potential<float> &p4 = bn->cpt(i4);
+      const gum::Potential<float>& p4 = bn->cpt(i4);
       TS_ASSERT(p4.nbrDim() == 3);
       {
         // FILLING PARAMS
@@ -162,7 +162,7 @@ namespace gum_tests {
           TS_ASSERT_DELTA(p[j], 1.0, 1e-5);
       }
 
-      const gum::Potential<float> &p5 = bn->cpt(i5);
+      const gum::Potential<float>& p5 = bn->cpt(i5);
       TS_ASSERT(p5.nbrDim() == 4);
       {
         // FILLING PARAMS
@@ -212,14 +212,14 @@ namespace gum_tests {
       }
 
       try {
-        const gum::Potential<float> &posterior = inf.posterior(i1);
+        const gum::Potential<float>& posterior = inf.posterior(i1);
         printPotential(posterior);
       } catch (gum::Exception e) {
         TS_ASSERT(false);
       }
 
       try {
-        const gum::Potential<float> &posterior = inf.posterior(i2);
+        const gum::Potential<float>& posterior = inf.posterior(i2);
         printPotential(posterior);
       } catch (gum::Exception e) {
         std::cerr << e.errorContent() << std::endl;
@@ -227,21 +227,21 @@ namespace gum_tests {
       }
 
       try {
-        const gum::Potential<float> &posterior = inf.posterior(i3);
+        const gum::Potential<float>& posterior = inf.posterior(i3);
         printPotential(posterior);
       } catch (gum::Exception e) {
         TS_ASSERT(false);
       }
 
       try {
-        const gum::Potential<float> &posterior = inf.posterior(i4);
+        const gum::Potential<float>& posterior = inf.posterior(i4);
         printPotential(posterior);
       } catch (gum::Exception e) {
         TS_ASSERT(false);
       }
 
       try {
-        const gum::Potential<float> &posterior = inf.posterior(i5);
+        const gum::Potential<float>& posterior = inf.posterior(i5);
         printPotential(posterior);
       } catch (gum::Exception e) {
         TS_ASSERT(false);
@@ -250,7 +250,7 @@ namespace gum_tests {
 
     void testGibbsInf_3() {
       fill(*bn);
-      gum::List<const gum::Potential<float> *> e_list;
+      gum::List<const gum::Potential<float>*> e_list;
       e_list.insert(e_i1);
       e_list.insert(e_i4);
 
@@ -260,7 +260,8 @@ namespace gum_tests {
       try {
         inf.insertEvidence(e_list);
       } catch (gum::Exception e) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         TS_ASSERT(false);
       }
 
@@ -272,35 +273,35 @@ namespace gum_tests {
       }
 
       try {
-        const gum::Potential<float> &posterior = inf.posterior(i1);
+        const gum::Potential<float>& posterior = inf.posterior(i1);
         printPotential(posterior);
       } catch (gum::Exception e) {
         TS_ASSERT(false);
       }
 
       try {
-        const gum::Potential<float> &posterior = inf.posterior(i2);
+        const gum::Potential<float>& posterior = inf.posterior(i2);
         printPotential(posterior);
       } catch (gum::Exception e) {
         TS_ASSERT(false);
       }
 
       try {
-        const gum::Potential<float> &posterior = inf.posterior(i3);
+        const gum::Potential<float>& posterior = inf.posterior(i3);
         printPotential(posterior);
       } catch (gum::Exception e) {
         TS_ASSERT(false);
       }
 
       try {
-        const gum::Potential<float> &posterior = inf.posterior(i4);
+        const gum::Potential<float>& posterior = inf.posterior(i4);
         printPotential(posterior);
       } catch (gum::Exception e) {
         TS_ASSERT(false);
       }
 
       try {
-        const gum::Potential<float> &posterior = inf.posterior(i5);
+        const gum::Potential<float>& posterior = inf.posterior(i5);
         printPotential(posterior);
       } catch (gum::Exception e) {
         TS_ASSERT(false);
@@ -309,7 +310,7 @@ namespace gum_tests {
 
     void testGibbsInfListener() {
       fill(*bn);
-      gum::List<const gum::Potential<float> *> e_list;
+      gum::List<const gum::Potential<float>*> e_list;
       e_list.insert(e_i1);
       e_list.insert(e_i4);
 
@@ -331,8 +332,8 @@ namespace gum_tests {
 
     private:
     // Builds a BN to test the inference
-    void fill(gum::BayesNet<float> &bn) {
-      const gum::Potential<float> &p1 = bn.cpt(i1);
+    void fill(gum::BayesNet<float>& bn) {
+      const gum::Potential<float>& p1 = bn.cpt(i1);
       {
         // FILLING PARAMS
         const float t[2] = {0.2, 0.8};
@@ -341,7 +342,7 @@ namespace gum_tests {
         p1.fillWith(v);
       }
 
-      const gum::Potential<float> &p2 = bn.cpt(i2);
+      const gum::Potential<float>& p2 = bn.cpt(i2);
       {
         // FILLING PARAMS
         const float t[2] = {0.3, 0.7};
@@ -350,7 +351,7 @@ namespace gum_tests {
         p2.fillWith(v);
       }
 
-      const gum::Potential<float> &p3 = bn.cpt(i3);
+      const gum::Potential<float>& p3 = bn.cpt(i3);
       {
         // FILLING PARAMS
         const float t[4] = {0.1, 0.9, 0.9, 0.1};
@@ -359,7 +360,7 @@ namespace gum_tests {
         p3.fillWith(v);
       }
 
-      const gum::Potential<float> &p4 = bn.cpt(i4);
+      const gum::Potential<float>& p4 = bn.cpt(i4);
       {
         // FILLING PARAMS
         const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
@@ -368,7 +369,7 @@ namespace gum_tests {
         p4.fillWith(v);
       }
 
-      const gum::Potential<float> &p5 = bn.cpt(i5);
+      const gum::Potential<float>& p5 = bn.cpt(i5);
       {
         // FILLING PARAMS
         const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,
@@ -382,7 +383,7 @@ namespace gum_tests {
     }
 
     // Uncomment this to have some outputs.
-    void printPotential(const gum::Potential<float> &) {
+    void printPotential(const gum::Potential<float>&) {
       // gum::Instantiation inst(p);
 
       // for (inst.setFirst(); !inst.end(); ++inst)

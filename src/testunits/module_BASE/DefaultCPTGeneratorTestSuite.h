@@ -31,35 +31,39 @@ namespace gum_tests {
   class SimpleCPTGeneratorTestSuite : public CxxTest::TestSuite {
     public:
     // Binary variables
-    gum::LabelizedVariable *binVar1;
-    gum::LabelizedVariable *binVar2;
-    gum::LabelizedVariable *binVar3;
-    gum::LabelizedVariable *binVar4;
+    gum::LabelizedVariable* binVar1;
+    gum::LabelizedVariable* binVar2;
+    gum::LabelizedVariable* binVar3;
+    gum::LabelizedVariable* binVar4;
 
-    gum::Potential<float> *rootPot1F;
-    gum::Potential<double> *rootPot1D;
+    gum::Potential<float>* rootPot1F;
+    gum::Potential<double>* rootPot1D;
 
-    gum::Potential<float> *pot1F;
-    gum::Potential<double> *pot1D;
+    gum::Potential<float>* pot1F;
+    gum::Potential<double>* pot1D;
 
-    gum::Potential<float> *pot2F;
-    gum::Potential<double> *pot2D;
+    gum::Potential<float>* pot2F;
+    gum::Potential<double>* pot2D;
 
     // n-ary variables
-    gum::LabelizedVariable *nVar1;
-    gum::LabelizedVariable *nVar2;
-    gum::LabelizedVariable *nVar3;
-    gum::LabelizedVariable *nVar4;
-    gum::LabelizedVariable *nVar5;
+    gum::LabelizedVariable* nVar1;
+    gum::LabelizedVariable* nVar2;
+    gum::LabelizedVariable* nVar3;
+    gum::LabelizedVariable* nVar4;
+    gum::LabelizedVariable* nVar5;
 
-    gum::Potential<float> *pot3F;
-    gum::Potential<double> *pot3D;
+    gum::Potential<float>* pot3F;
+    gum::Potential<double>* pot3D;
 
     void setUp() {
-      binVar1 = new gum::LabelizedVariable("binVar1", "Binary Variable number 1");
-      binVar2 = new gum::LabelizedVariable("binVar2", "Binary Variable number 2");
-      binVar3 = new gum::LabelizedVariable("binVar3", "Binary Variable number 3");
-      binVar4 = new gum::LabelizedVariable("binVar4", "Binary Variable number 4");
+      binVar1 =
+          new gum::LabelizedVariable("binVar1", "Binary Variable number 1");
+      binVar2 =
+          new gum::LabelizedVariable("binVar2", "Binary Variable number 2");
+      binVar3 =
+          new gum::LabelizedVariable("binVar3", "Binary Variable number 3");
+      binVar4 =
+          new gum::LabelizedVariable("binVar4", "Binary Variable number 4");
 
       rootPot1F = new gum::Potential<float>();
       rootPot1F->add(*binVar1);
@@ -134,8 +138,9 @@ namespace gum_tests {
     }
 
     void testCreationDeletion() {
-      gum::SimpleCPTGenerator<float> *aCptGen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(aCptGen = new gum::SimpleCPTGenerator<float>());
+      gum::SimpleCPTGenerator<float>* aCptGen = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING(aCptGen =
+                                       new gum::SimpleCPTGenerator<float>());
       TS_GUM_ASSERT_THROWS_NOTHING(delete aCptGen);
     }
 
@@ -193,7 +198,8 @@ namespace gum_tests {
         float sum = (float)0;
 
         for (inst.setFirstIn(instVar1); !inst.end(); inst.incIn(instVar1)) {
-          TS_ASSERT(((*pot1F)[inst] >= (float)0) && ((*pot1F)[inst] <= (float)1));
+          TS_ASSERT(((*pot1F)[inst] >= (float)0) &&
+                    ((*pot1F)[inst] <= (float)1));
           sum += (*pot1F)[inst];
         }
 
@@ -222,7 +228,8 @@ namespace gum_tests {
         float sum = (float)0;
 
         for (inst.setFirstIn(instVar1); !inst.end(); inst.incIn(instVar1)) {
-          TS_ASSERT(((*pot2F)[inst] >= (float)0) && ((*pot2F)[inst] <= (float)1));
+          TS_ASSERT(((*pot2F)[inst] >= (float)0) &&
+                    ((*pot2F)[inst] <= (float)1));
           sum += (*pot2F)[inst];
         }
 
@@ -304,7 +311,8 @@ namespace gum_tests {
     // Testing with 4 parents, with domain size > 2
     void testNAryVariableFloat_2() {
       gum::SimpleCPTGenerator<float> cptGen;
-      TS_GUM_ASSERT_THROWS_NOTHING(cptGen.generateCPT(pot3F->pos(*nVar3), *pot3F));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          cptGen.generateCPT(pot3F->pos(*nVar3), *pot3F));
       gum::Instantiation instVar3;
       instVar3.add(*nVar3);
       gum::Instantiation inst(*pot3F);
@@ -346,7 +354,8 @@ namespace gum_tests {
     // Testing with 4 parents, with domain size > 2
     void testNAryVariableDouble_2() {
       gum::SimpleCPTGenerator<double> cptGen;
-      TS_GUM_ASSERT_THROWS_NOTHING(cptGen.generateCPT(pot3D->pos(*nVar3), *pot3D));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          cptGen.generateCPT(pot3D->pos(*nVar3), *pot3D));
 
       gum::Instantiation instVar3;
       instVar3.add(*nVar3);

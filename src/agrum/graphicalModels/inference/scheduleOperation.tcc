@@ -41,7 +41,7 @@ namespace gum {
   /// copy constructor
   template <typename GUM_SCALAR>
   ScheduleOperation<GUM_SCALAR>::ScheduleOperation(
-      const ScheduleOperation<GUM_SCALAR> &from)
+      const ScheduleOperation<GUM_SCALAR>& from)
       : __type(from.__type), __id(from.__id) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleOperation);
@@ -56,8 +56,8 @@ namespace gum {
 
   /// copy operator
   template <typename GUM_SCALAR>
-  INLINE ScheduleOperation<GUM_SCALAR> &ScheduleOperation<GUM_SCALAR>::
-  operator=(const ScheduleOperation<GUM_SCALAR> &from) {
+  INLINE ScheduleOperation<GUM_SCALAR>& ScheduleOperation<GUM_SCALAR>::
+  operator=(const ScheduleOperation<GUM_SCALAR>& from) {
     __type = from.__type;
     __id = from.__id;
     return *this;

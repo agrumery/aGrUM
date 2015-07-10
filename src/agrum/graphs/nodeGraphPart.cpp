@@ -27,7 +27,7 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/nodeGraphPart.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 
 namespace gum {
 
@@ -40,8 +40,9 @@ namespace gum {
     __updateEndIteratorSafe();
   }
 
-  NodeGraphPart::NodeGraphPart(const NodeGraphPart &s)
-      : __holes_size(s.__holes_size), __holes_resize_policy(s.__holes_resize_policy),
+  NodeGraphPart::NodeGraphPart(const NodeGraphPart& s)
+      : __holes_size(s.__holes_size),
+        __holes_resize_policy(s.__holes_resize_policy),
         __endIteratorSafe(*this), __bound(s.__bound) {
     __holes = 0;
 
@@ -60,8 +61,8 @@ namespace gum {
     GUM_DESTRUCTOR(NodeGraphPart);
   }
 
-  void NodeGraphPart::populateNodes(const NodeGraphPart &s) {
-    clear(); // "virtual" flush of the nodes set
+  void NodeGraphPart::populateNodes(const NodeGraphPart& s) {
+    clear();  // "virtual" flush of the nodes set
     __holes_size = s.__holes_size;
     __holes_resize_policy = s.__holes_resize_policy;
 
@@ -83,7 +84,8 @@ namespace gum {
 
       if (__holes) {
         while (__holes->contains(__bound - 1)) {
-          // a bunch of holes to remove. We do not use inHoles for optimisation :
+          // a bunch of holes to remove. We do not use inHoles for optimisation
+          // :
           // not to repeat the test if (__holes) each time
           __holes->erase(--__bound);
         }
@@ -125,7 +127,7 @@ namespace gum {
     return s.str();
   }
 
-  std::ostream &operator<<(std::ostream &stream, const NodeGraphPart &set) {
+  std::ostream& operator<<(std::ostream& stream, const NodeGraphPart& set) {
     stream << set.toString();
     return stream;
   }
@@ -133,7 +135,7 @@ namespace gum {
   void NodeGraphPart::insertNode(const NodeId id) { addNode(id); }
   void NodeGraphPart::addNode(const NodeId id) {
     if (id >= __bound) {
-      if (id > __bound) { // we have to add holes
+      if (id > __bound) {  // we have to add holes
         if (!__holes)
           __holes = new NodeSet();
 
@@ -145,7 +147,7 @@ namespace gum {
 
       __updateEndIteratorSafe();
     } else {
-      if (__inHoles(id)) { // we fill a hole
+      if (__inHoles(id)) {  // we fill a hole
         __eraseHole(id);
       } else {
         GUM_ERROR(DuplicateElement, "Id " << id << " is already used");
@@ -173,12 +175,12 @@ namespace gum {
     __holes = 0;
   }
 
-  void NodeGraphPartIteratorSafe::whenNodeDeleted(const void *src, NodeId id) {
-    if (id == _pos) { // we just deleted the _pos in NodeGraphPart
+  void NodeGraphPartIteratorSafe::whenNodeDeleted(const void* src, NodeId id) {
+    if (id == _pos) {  // we just deleted the _pos in NodeGraphPart
       _valid = false;
     }
 
-    if (_pos >= _nodes->bound()) { // moreover, it was the last position
+    if (_pos >= _nodes->bound()) {  // moreover, it was the last position
       _pos = _nodes->bound();
       _valid = false;
     }

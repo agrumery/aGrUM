@@ -33,39 +33,39 @@ namespace gum_tests {
     public:
     struct MyCounter : public gum::learning::Counter<> {
       template <typename RowFilter>
-      MyCounter(const RowFilter &filter,
-                const std::vector<unsigned int> &var_modalities)
+      MyCounter(const RowFilter& filter,
+                const std::vector<unsigned int>& var_modalities)
           : gum::learning::Counter<>(filter, var_modalities) {}
 
-      const std::vector<float> &getAllCounts(unsigned int index) {
+      const std::vector<float>& getAllCounts(unsigned int index) {
         return gum::learning::Counter<>::_getAllCounts(index);
       }
 
-      const std::vector<float> &getConditioningCounts(unsigned int index) {
+      const std::vector<float>& getConditioningCounts(unsigned int index) {
         return gum::learning::Counter<>::_getConditioningCounts(index);
       }
 
-      std::vector<std::vector<float>> &getCounts() noexcept {
+      std::vector<std::vector<float>>& getCounts() noexcept {
         return gum::learning::Counter<>::_getCounts();
       }
 
-      const std::vector<unsigned int> &getAllNodes(unsigned int index) const
+      const std::vector<unsigned int>& getAllNodes(unsigned int index) const
           noexcept {
         return gum::learning::Counter<>::_getAllNodes(index);
       }
 
-      const std::vector<std::pair<std::vector<unsigned int>, unsigned int> *> &
+      const std::vector<std::pair<std::vector<unsigned int>, unsigned int>*>&
       getAllNodes() const noexcept {
         return gum::learning::Counter<>::_getAllNodes();
       }
 
       /// returns the conditioning nodes (nullptr if there are no such nodes)
-      const std::vector<unsigned int> *getConditioningNodes(unsigned int index) const
-          noexcept {
+      const std::vector<unsigned int>*
+      getConditioningNodes(unsigned int index) const noexcept {
         return gum::learning::Counter<>::_getConditioningNodes(index);
       }
 
-      const std::vector<std::pair<std::vector<unsigned int>, unsigned int> *> &
+      const std::vector<std::pair<std::vector<unsigned int>, unsigned int>*>&
       getConditioningNodes() const noexcept {
         return gum::learning::Counter<>::_getConditioningNodes();
       }
@@ -74,8 +74,9 @@ namespace gum_tests {
     void test1() {
       gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
 
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8>());
 
       auto generators =
           gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
@@ -96,9 +97,9 @@ namespace gum_tests {
         unsigned int id2 = counter.addNodeSet(1);
         unsigned int id3 = counter.addNodeSet(0, set2);
 
-        const std::vector<float> &vect1 = counter.getAllCounts(id1);
-        const std::vector<float> &vect2 = counter.getAllCounts(id2);
-        const std::vector<float> &vect3 = counter.getAllCounts(id3);
+        const std::vector<float>& vect1 = counter.getAllCounts(id1);
+        const std::vector<float>& vect2 = counter.getAllCounts(id2);
+        const std::vector<float>& vect3 = counter.getAllCounts(id3);
 
         TS_ASSERT(vect1[0] == 5028);
         TS_ASSERT(vect1[1] == 4972);
@@ -150,16 +151,16 @@ namespace gum_tests {
         TS_ASSERT(compare_vect3(vectx, counter.getAllCounts(id4), {3, 2, 1}));
         TS_ASSERT(compare_vect3(vectx, counter.getAllCounts(id5), {1, 3, 2}));
 
-        TS_ASSERT(
-            compare_vect3(vecty, counter.getConditioningCounts(id1), {1, 2, 3}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter.getConditioningCounts(id2), {2, 1, 3}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter.getConditioningCounts(id3), {3, 1, 2}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter.getConditioningCounts(id4), {3, 2, 1}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter.getConditioningCounts(id5), {1, 3, 2}));
+        TS_ASSERT(compare_vect3(vecty, counter.getConditioningCounts(id1),
+                                {1, 2, 3}));
+        TS_ASSERT(compare_vect3(vecty, counter.getConditioningCounts(id2),
+                                {2, 1, 3}));
+        TS_ASSERT(compare_vect3(vecty, counter.getConditioningCounts(id3),
+                                {3, 1, 2}));
+        TS_ASSERT(compare_vect3(vecty, counter.getConditioningCounts(id4),
+                                {3, 2, 1}));
+        TS_ASSERT(compare_vect3(vecty, counter.getConditioningCounts(id5),
+                                {1, 3, 2}));
       }
 
       counter.clear();
@@ -185,16 +186,16 @@ namespace gum_tests {
         TS_ASSERT(compare_vect3(vectx, counter2.getAllCounts(id4), {3, 2, 1}));
         TS_ASSERT(compare_vect3(vectx, counter2.getAllCounts(id5), {1, 3, 2}));
 
-        TS_ASSERT(
-            compare_vect3(vecty, counter2.getConditioningCounts(id1), {1, 2, 3}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter2.getConditioningCounts(id2), {2, 1, 3}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter2.getConditioningCounts(id3), {3, 1, 2}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter2.getConditioningCounts(id4), {3, 2, 1}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter2.getConditioningCounts(id5), {1, 3, 2}));
+        TS_ASSERT(compare_vect3(vecty, counter2.getConditioningCounts(id1),
+                                {1, 2, 3}));
+        TS_ASSERT(compare_vect3(vecty, counter2.getConditioningCounts(id2),
+                                {2, 1, 3}));
+        TS_ASSERT(compare_vect3(vecty, counter2.getConditioningCounts(id3),
+                                {3, 1, 2}));
+        TS_ASSERT(compare_vect3(vecty, counter2.getConditioningCounts(id4),
+                                {3, 2, 1}));
+        TS_ASSERT(compare_vect3(vecty, counter2.getConditioningCounts(id5),
+                                {1, 3, 2}));
 
         MyCounter counter3(counter2);
 
@@ -204,16 +205,16 @@ namespace gum_tests {
         TS_ASSERT(compare_vect3(vectx, counter3.getAllCounts(id4), {3, 2, 1}));
         TS_ASSERT(compare_vect3(vectx, counter3.getAllCounts(id5), {1, 3, 2}));
 
-        TS_ASSERT(
-            compare_vect3(vecty, counter3.getConditioningCounts(id1), {1, 2, 3}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter3.getConditioningCounts(id2), {2, 1, 3}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter3.getConditioningCounts(id3), {3, 1, 2}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter3.getConditioningCounts(id4), {3, 2, 1}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter3.getConditioningCounts(id5), {1, 3, 2}));
+        TS_ASSERT(compare_vect3(vecty, counter3.getConditioningCounts(id1),
+                                {1, 2, 3}));
+        TS_ASSERT(compare_vect3(vecty, counter3.getConditioningCounts(id2),
+                                {2, 1, 3}));
+        TS_ASSERT(compare_vect3(vecty, counter3.getConditioningCounts(id3),
+                                {3, 1, 2}));
+        TS_ASSERT(compare_vect3(vecty, counter3.getConditioningCounts(id4),
+                                {3, 2, 1}));
+        TS_ASSERT(compare_vect3(vecty, counter3.getConditioningCounts(id5),
+                                {1, 3, 2}));
 
         MyCounter counter4(std::move(counter2));
 
@@ -223,16 +224,16 @@ namespace gum_tests {
         TS_ASSERT(compare_vect3(vectx, counter4.getAllCounts(id4), {3, 2, 1}));
         TS_ASSERT(compare_vect3(vectx, counter4.getAllCounts(id5), {1, 3, 2}));
 
-        TS_ASSERT(
-            compare_vect3(vecty, counter4.getConditioningCounts(id1), {1, 2, 3}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter4.getConditioningCounts(id2), {2, 1, 3}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter4.getConditioningCounts(id3), {3, 1, 2}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter4.getConditioningCounts(id4), {3, 2, 1}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter4.getConditioningCounts(id5), {1, 3, 2}));
+        TS_ASSERT(compare_vect3(vecty, counter4.getConditioningCounts(id1),
+                                {1, 2, 3}));
+        TS_ASSERT(compare_vect3(vecty, counter4.getConditioningCounts(id2),
+                                {2, 1, 3}));
+        TS_ASSERT(compare_vect3(vecty, counter4.getConditioningCounts(id3),
+                                {3, 1, 2}));
+        TS_ASSERT(compare_vect3(vecty, counter4.getConditioningCounts(id4),
+                                {3, 2, 1}));
+        TS_ASSERT(compare_vect3(vecty, counter4.getConditioningCounts(id5),
+                                {1, 3, 2}));
       }
 
       counter.clear();
@@ -258,21 +259,22 @@ namespace gum_tests {
         TS_ASSERT(compare_vect3(vectx, counter2.getAllCounts(id4), {3, 2, 1}));
         TS_ASSERT(compare_vect3(vectx, counter2.getAllCounts(id5), {1, 3, 2}));
 
-        TS_ASSERT(
-            compare_vect3(vecty, counter2.getConditioningCounts(id1), {1, 2, 3}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter2.getConditioningCounts(id2), {2, 1, 3}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter2.getConditioningCounts(id3), {3, 1, 2}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter2.getConditioningCounts(id4), {3, 2, 1}));
-        TS_ASSERT(
-            compare_vect3(vecty, counter2.getConditioningCounts(id5), {1, 3, 2}));
+        TS_ASSERT(compare_vect3(vecty, counter2.getConditioningCounts(id1),
+                                {1, 2, 3}));
+        TS_ASSERT(compare_vect3(vecty, counter2.getConditioningCounts(id2),
+                                {2, 1, 3}));
+        TS_ASSERT(compare_vect3(vecty, counter2.getConditioningCounts(id3),
+                                {3, 1, 2}));
+        TS_ASSERT(compare_vect3(vecty, counter2.getConditioningCounts(id4),
+                                {3, 2, 1}));
+        TS_ASSERT(compare_vect3(vecty, counter2.getConditioningCounts(id5),
+                                {1, 3, 2}));
       }
     }
 
-    bool compare_vect3(const std::vector<float> &v1, const std::vector<float> &v2,
-                       const std::vector<unsigned int> &order) {
+    bool compare_vect3(const std::vector<float>& v1,
+                       const std::vector<float>& v2,
+                       const std::vector<unsigned int>& order) {
       unsigned int index1, index2;
       for (unsigned int k = 0; k < 2; ++k) {
         for (unsigned int j = 0; j < 2; ++j) {
@@ -289,8 +291,9 @@ namespace gum_tests {
       return true;
     }
 
-    bool compare_vect2(const std::vector<float> &v1, const std::vector<float> &v2,
-                       const std::vector<unsigned int> &order) {
+    bool compare_vect2(const std::vector<float>& v1,
+                       const std::vector<float>& v2,
+                       const std::vector<unsigned int>& order) {
       unsigned int index1, index2;
       for (unsigned int j = 0; j < 2; ++j) {
         for (unsigned int i = 0; i < 2; ++i) {

@@ -41,27 +41,29 @@ namespace gum {
     }
 
     /// constructor starting with an empty graph with a given number of nodes
-    StructuralConstraintDiGraph::StructuralConstraintDiGraph(unsigned int nb_nodes) {
+    StructuralConstraintDiGraph::StructuralConstraintDiGraph(
+        unsigned int nb_nodes) {
       setGraph(nb_nodes);
       GUM_CONSTRUCTOR(StructuralConstraintDiGraph);
     }
 
     /// constructor starting with a given graph
-    StructuralConstraintDiGraph::StructuralConstraintDiGraph(const DiGraph &graph) {
+    StructuralConstraintDiGraph::StructuralConstraintDiGraph(
+        const DiGraph& graph) {
       setGraph(graph);
       GUM_CONSTRUCTOR(StructuralConstraintDiGraph);
     }
 
     /// copy constructor
     StructuralConstraintDiGraph::StructuralConstraintDiGraph(
-        const StructuralConstraintDiGraph &from)
+        const StructuralConstraintDiGraph& from)
         : _DiGraph__graph(from._DiGraph__graph) {
       GUM_CONS_CPY(StructuralConstraintDiGraph);
     }
 
     /// move constructor
     StructuralConstraintDiGraph::StructuralConstraintDiGraph(
-        StructuralConstraintDiGraph &&from)
+        StructuralConstraintDiGraph&& from)
         : _DiGraph__graph(std::move(from._DiGraph__graph)) {
       GUM_CONS_MOV(StructuralConstraintDiGraph);
     }
@@ -72,8 +74,8 @@ namespace gum {
     }
 
     /// copy operator
-    StructuralConstraintDiGraph &StructuralConstraintDiGraph::
-    operator=(const StructuralConstraintDiGraph &from) {
+    StructuralConstraintDiGraph& StructuralConstraintDiGraph::
+    operator=(const StructuralConstraintDiGraph& from) {
       if (this != &from) {
         _DiGraph__graph = from._DiGraph__graph;
       }
@@ -81,8 +83,8 @@ namespace gum {
     }
 
     /// move operator
-    StructuralConstraintDiGraph &StructuralConstraintDiGraph::
-    operator=(StructuralConstraintDiGraph &&from) {
+    StructuralConstraintDiGraph& StructuralConstraintDiGraph::
+    operator=(StructuralConstraintDiGraph&& from) {
       if (this != &from) {
         _DiGraph__graph = std::move(from._DiGraph__graph);
       }

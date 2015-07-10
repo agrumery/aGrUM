@@ -68,9 +68,9 @@ namespace gum {
      * @param marg of the inference before changing size
      */
     virtual void disturbReducCPT(NodeId varIdi, NodeId varIdj,
-                                 BayesNet<GUM_SCALAR> &bayesNet,
-                                 Potential<GUM_SCALAR> &cptCopy,
-                                 Potential<GUM_SCALAR> &marg) = 0;
+                                 BayesNet<GUM_SCALAR>& bayesNet,
+                                 Potential<GUM_SCALAR>& cptCopy,
+                                 Potential<GUM_SCALAR>& marg) = 0;
 
     /**
      * Generates a CPT using floats.
@@ -81,8 +81,8 @@ namespace gum {
      * @param variation degree of variation from the initial probability
      */
     virtual void disturbAugmCPT(NodeId varIdi, NodeId varIdj,
-                                BayesNet<GUM_SCALAR> &bayesNet,
-                                Potential<GUM_SCALAR> &cptCopy,
+                                BayesNet<GUM_SCALAR>& bayesNet,
+                                Potential<GUM_SCALAR>& cptCopy,
                                 GUM_SCALAR variation) = 0;
   };
 
@@ -92,4 +92,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/generator/ICPTDisturber.tcc>
-#endif // GUM_I_CPT_DISTURBER_H
+#endif  // GUM_I_CPT_DISTURBER_H

@@ -60,8 +60,10 @@
  * node8 = node1.child(gum::GUM_BIN_TREE_RIGHT_CHILD);
  *
  * // remove links between parents and children
- * node1.eraseLeftLink ();  // there is no more connection between node1 and node2
- * node1.eraseRightLink (); // there is no more connection between node1 and node3
+ * node1.eraseLeftLink ();  // there is no more connection between node1 and
+ *node2
+ * node1.eraseRightLink (); // there is no more connection between node1 and
+ *node3
  * node2.eraseLink ( gum::GUM_BIN_TREE_LEFT_CHILD);  // erase (node2,node4)
  * node2.eraseLink ( gum::GUM_BIN_TREE_RIGHT_CHILD); // erase (node2;node5)
  * @endcode
@@ -77,18 +79,28 @@
 namespace gum {
 
   /// the direction of a given edge in a binary tree
-  enum class BinTreeDir : char { LEFT_CHILD = 0, RIGHT_CHILD = 1, NO_PARENT = 2 };
+  enum class BinTreeDir : char {
+    LEFT_CHILD = 0,
+    RIGHT_CHILD = 1,
+    NO_PARENT = 2
+  };
 
-  /* =========================================================================== */
-  /* ===                   GENERIC NODE FOR A BINARY TREE                    === */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===                   GENERIC NODE FOR A BINARY TREE                    ===
+   */
+  /* ===========================================================================
+   */
   /** @class BinTreeNode
    * @brief Nodes of a binary trees
    * @ingroup basicstruct_group
-   * BinTreeNode is the base class for nodes of binary trees. It is equipped with
-   * the material to add nodes to or remove them from the tree. The class ensures
+   * BinTreeNode is the base class for nodes of binary trees. It is equipped
+   *with
+   * the material to add nodes to or remove them from the tree. The class
+   *ensures
    * that trees are always a coherent structure, that is, it is not possible to
-   * have a node X having, say, a left child, and this child having no parent or a
+   * have a node X having, say, a left child, and this child having no parent or
+   *a
    * parent different from X.
    * @par Usage example:
    * @code
@@ -111,7 +123,8 @@ namespace gum {
    * BinTreeNode<int>* node5 = node2.insertRightChild (4 );
    *
    * BinTreeNode<int>* node6 = node4.insertChild ( 5, GUM_BIN_TREE_LEFT_CHILD );
-   * BinTreeNode<int>* node7 = node4.insertChild ( 6, GUM_BIN_TREE_RIGHT_CHILD );
+   * BinTreeNode<int>* node7 = node4.insertChild ( 6, GUM_BIN_TREE_RIGHT_CHILD
+   *);
    *
    * BinTreeNode<int> node8 (55), node9(44);
    * node3.insertChild ( node8, GUM_BIN_TREE_LEFT_CHILD );
@@ -131,7 +144,8 @@ namespace gum {
    * node2.eraseLink ( gum::GUM_BIN_TREE_RIGHT_CHILD); // erase (node2;node5)
    * @endcode
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   template <typename Val> class BinTreeNode {
     public:
     // ############################################################################
@@ -141,7 +155,7 @@ namespace gum {
 
     /// basic constructor: a node without parent nor children
 
-    BinTreeNode(const Val &v);
+    BinTreeNode(const Val& v);
 
     /** @brief copy constructor: creates a new disconnected node with the same
      * value as "from"
@@ -149,7 +163,7 @@ namespace gum {
      * @warning Although the new node contains the same value as from, it has
      * no parent, nor any children, even if from has some. */
 
-    BinTreeNode(const BinTreeNode<Val> &from);
+    BinTreeNode(const BinTreeNode<Val>& from);
 
     /// destructor
     /** in addition to removing the node, this method updates appropriately
@@ -165,13 +179,14 @@ namespace gum {
     /// @{
 
     /** @brief copy operator: copy the value of from into this. However, this
-     * does not change the current connections (parents and children) of this. */
+     * does not change the current connections (parents and children) of this.
+     */
 
-    BinTreeNode<Val> &operator=(const BinTreeNode<Val> &from);
+    BinTreeNode<Val>& operator=(const BinTreeNode<Val>& from);
 
     /// alias for method value
 
-    Val &operator*();
+    Val& operator*();
 
     /// @}
 
@@ -182,27 +197,31 @@ namespace gum {
 
     /// returns the value stored in a node of the binary search tree
 
-    Val &value();
+    Val& value();
 
     /// returns the given child of a node
-    /** @warning if the child does not exists, the method returns a 0 pointer. */
+    /** @warning if the child does not exists, the method returns a 0 pointer.
+     */
 
-    BinTreeNode<Val> *child(BinTreeDir dir) const;
-
-    /// returns the given child of a node
-    /** @warning if the child does not exists, the method returns a 0 pointer. */
-
-    BinTreeNode<Val> *leftChild() const;
+    BinTreeNode<Val>* child(BinTreeDir dir) const;
 
     /// returns the given child of a node
-    /** @warning if the child does not exists, the method returns a 0 pointer. */
+    /** @warning if the child does not exists, the method returns a 0 pointer.
+     */
 
-    BinTreeNode<Val> *rightChild() const;
+    BinTreeNode<Val>* leftChild() const;
+
+    /// returns the given child of a node
+    /** @warning if the child does not exists, the method returns a 0 pointer.
+     */
+
+    BinTreeNode<Val>* rightChild() const;
 
     /// returns the parent of a node
-    /** @warning if the parent does not exists, the method returns a 0 pointer. */
+    /** @warning if the parent does not exists, the method returns a 0 pointer.
+     */
 
-    BinTreeNode<Val> *parent() const;
+    BinTreeNode<Val>* parent() const;
 
     /// returns the direction of the edge parent->current node, if any
 
@@ -214,38 +233,38 @@ namespace gum {
      * @returns a pointer on the new created child
      * @throw DuplicateElement if the current node had already a left child */
 
-    BinTreeNode<Val> *insertLeftChild(const Val &);
+    BinTreeNode<Val>* insertLeftChild(const Val&);
 
     /// adds a new left child to the current node
     /** @throw DuplicateElement if the current node had already a left child or
      * if new_child already has a parent */
 
-    void insertLeftChild(BinTreeNode<Val> &new_child);
+    void insertLeftChild(BinTreeNode<Val>& new_child);
 
     /// adds a new right child to the current node
     /**  @returns a pointer on the new created child
      * @throw DuplicateElement if the current node had already a left child */
 
-    BinTreeNode<Val> *insertRightChild(const Val &);
+    BinTreeNode<Val>* insertRightChild(const Val&);
 
     /// adds a new right child to the current node
     /** @throw DuplicateElement if the current node had already a left child or
      * if new_child already has a parent */
 
-    void insertRightChild(BinTreeNode<Val> &new_child);
+    void insertRightChild(BinTreeNode<Val>& new_child);
 
     /// adds a new child to the current node
     /**  @returns a pointer on the new created child
      * @throw DuplicateElement if the current node had already a child in the
      * child_dir subtree */
 
-    BinTreeNode<Val> *insertChild(const Val &, BinTreeDir child_dir);
+    BinTreeNode<Val>* insertChild(const Val&, BinTreeDir child_dir);
 
     /// adds a new child to the current node
     /** @throw DuplicateElement if the current node had already a child in the
      * child_dir direction or if new_child already has a parent */
 
-    void insertChild(BinTreeNode<Val> &new_child, BinTreeDir child_dir);
+    void insertChild(BinTreeNode<Val>& new_child, BinTreeDir child_dir);
 
     /// remove the link between the current node and its left child
     /** Note that only the link is removed, i.e., the left child is not removed
@@ -273,17 +292,17 @@ namespace gum {
     /// returns the leftmost node of the current tree
     /** if there is no left child, the method returns this */
 
-    BinTreeNode<Val> *leftmostNode() const;
+    BinTreeNode<Val>* leftmostNode() const;
 
     /// returns the rightmost node of the current tree
     /** if there is no right child, the method returns this */
 
-    BinTreeNode<Val> *rightmostNode() const;
+    BinTreeNode<Val>* rightmostNode() const;
 
     /// returns the top ancestor of the current tree
     /** if the current node has no parent, the the method returns this */
 
-    BinTreeNode<Val> *root() const;
+    BinTreeNode<Val>* root() const;
 
     /// @}
 
@@ -292,13 +311,13 @@ namespace gum {
     Val _val;
 
     /// the parent of the node
-    BinTreeNode<Val> *_parent;
+    BinTreeNode<Val>* _parent;
 
     /// the direction to follow from the parent to reach the current node
     BinTreeDir _parent_dir;
 
     /// the children of the current node
-    BinTreeNode<Val> *_children[2];
+    BinTreeNode<Val>* _children[2];
   };
 
 } /* namespace gum */

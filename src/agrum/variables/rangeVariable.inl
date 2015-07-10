@@ -31,7 +31,7 @@ namespace gum {
 
   // Copy Factory.
   // @return Returns a pointer on a new copy of this.
-  INLINE DiscreteVariable *RangeVariable::clone() const {
+  INLINE DiscreteVariable* RangeVariable::clone() const {
     return new RangeVariable(*this);
   }
 
@@ -58,11 +58,11 @@ namespace gum {
     return double(__minBound + indice);
   }
 
-  INLINE Idx RangeVariable::operator[](const std::string &aLabel) const {
+  INLINE Idx RangeVariable::operator[](const std::string& aLabel) const {
     return index(aLabel);
   }
 
-  INLINE Idx RangeVariable::index(const std::string &aLabel) const {
+  INLINE Idx RangeVariable::index(const std::string& aLabel) const {
     std::istringstream i(aLabel);
     Idx res;
 
@@ -97,7 +97,7 @@ namespace gum {
   // Copy operator
   // @param aRV to be copied
   // @return a ref to *this
-  INLINE RangeVariable &RangeVariable::operator=(const RangeVariable &aRV) {
+  INLINE RangeVariable& RangeVariable::operator=(const RangeVariable& aRV) {
     __minBound = aRV.__minBound;
     __maxBound = aRV.__maxBound;
     return *this;

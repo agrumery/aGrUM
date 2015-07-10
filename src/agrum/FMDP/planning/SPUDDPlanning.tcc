@@ -54,7 +54,7 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   INLINE SPUDDPlanning<GUM_SCALAR>::SPUDDPlanning(
-      FactoredMarkovDecisionProcess<GUM_SCALAR> *fmdp, GUM_SCALAR epsilon) {
+      FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon) {
 
     GUM_CONSTRUCTOR(SPUDDPlanning);
     __epsilon = epsilon;
@@ -64,7 +64,8 @@ namespace gum {
   // ===========================================================================
   // Default destructor
   // ===========================================================================
-  template <typename GUM_SCALAR> INLINE SPUDDPlanning<GUM_SCALAR>::~SPUDDPlanning() {
+  template <typename GUM_SCALAR>
+  INLINE SPUDDPlanning<GUM_SCALAR>::~SPUDDPlanning() {
 
     GUM_DESTRUCTOR(SPUDDPlanning);
   }
@@ -81,7 +82,7 @@ namespace gum {
   // Makes a spudd planning on FMDP
   // ===========================================================================
   template <typename GUM_SCALAR>
-  MultiDimDecisionDiagramBase<GUM_SCALAR> *
+  MultiDimDecisionDiagramBase<GUM_SCALAR>*
   SPUDDPlanning<GUM_SCALAR>::makePlanning() {
 
     // *****************************************************************************************
@@ -97,14 +98,15 @@ namespace gum {
 
     // *****************************************************************************************
     // Initialisation of Vold, Vnew and Vtemp
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vold =
-        reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold =
+        reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
             __fmdp->reward()->newFactory());
-    Vold->copy(*reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
-                   __fmdp->reward()));
+    Vold->copy(
+        *reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
+            __fmdp->reward()));
 
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vnew = nullptr;
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vtemp = nullptr;
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vnew = nullptr;
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vtemp = nullptr;
 
     Idx nbIte = 0;
 
@@ -118,22 +120,23 @@ namespace gum {
       // *****************************************************************************************
       // Loop reset
       __fmdp->resetActionsIterator();
-      //         Set< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VactionCollector;
-      HashTable<Idx, MultiDimDecisionDiagramBase<GUM_SCALAR> *> VactionCollector;
+      //         Set< MultiDimDecisionDiagramBase< GUM_SCALAR >* >
+      //         VactionCollector;
+      HashTable<Idx, MultiDimDecisionDiagramBase<GUM_SCALAR>*> VactionCollector;
 
-      Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
+      Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
           Vold->newFactory());
       Vnew->copyAndReassign(Vold, __fmdp->main2prime());
 
 #ifdef O4DDWITHORDER
-      Sequence<const DiscreteVariable *> elVarSeq;
+      Sequence<const DiscreteVariable*> elVarSeq;
 #else
-      Sequence<const DiscreteVariable *> elVarSeq = Vnew->variablesSequence();
+      Sequence<const DiscreteVariable*> elVarSeq = Vnew->variablesSequence();
 #endif
       __fmdp->resetVariablesIterator();
 
       while (__fmdp->hasVariable()) {
-        const DiscreteVariable *var = __fmdp->variable();
+        const DiscreteVariable* var = __fmdp->variable();
 
         if (!elVarSeq.exists(var)) {
           elVarSeq << var;
@@ -174,7 +177,7 @@ namespace gum {
       // *****************************************************************************************
       // Then we compare new value function and the old one
 
-      MultiDimDecisionDiagramBase<GUM_SCALAR> *deltaV =
+      MultiDimDecisionDiagramBase<GUM_SCALAR>* deltaV =
           subtract2MultiDimDecisionDiagrams(Vnew, Vold);
       gap = 0;
 
@@ -186,7 +189,8 @@ namespace gum {
 
       delete deltaV;
 
-      //         std::cout << " ------------------- Fin itération n° " << nbIte <<
+      //         std::cout << " ------------------- Fin itération n° " << nbIte
+      //         <<
       //         std::endl << " Gap : " << gap << " - ValueMapSize : " <<
       //         Vnew->valuesMap().size() <<  std::endl;
       // *****************************************************************************************
@@ -206,15 +210,15 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   void SPUDDPlanning<GUM_SCALAR>::__evalPolicy(
-      const MultiDimDecisionDiagramBase<GUM_SCALAR> *V) {
+      const MultiDimDecisionDiagramBase<GUM_SCALAR>* V) {
 
     // *****************************************************************************************
     // We have to do one last step to get best policy
     // *****************************************************************************************
-    MultiDimDecisionDiagramBase<std::pair<double, long>> *Vamnew =
+    MultiDimDecisionDiagramBase<std::pair<double, long>>* Vamnew =
         __argMaxValueFunction(V);
 
-    MultiDimDecisionDiagramFactory<Idx> *factory =
+    MultiDimDecisionDiagramFactory<Idx>* factory =
         new MultiDimDecisionDiagramFactory<Idx>();
     factory->setVariablesSequence(Vamnew->variablesSequence());
     HashTable<NodeId, NodeId> explorationTable;
@@ -222,7 +226,7 @@ namespace gum {
                                        explorationTable);
     delete Vamnew;
 
-    MultiDimDecisionDiagramBase<Idx> *optimalPolicy =
+    MultiDimDecisionDiagramBase<Idx>* optimalPolicy =
         factory->getMultiDimDecisionDiagram(false, 0, true);
 
     __displayOptimalPolicy(optimalPolicy);
@@ -235,44 +239,47 @@ namespace gum {
   // Evals the value function for current fmdp action
   // ===========================================================================
   template <typename GUM_SCALAR>
-  MultiDimDecisionDiagramBase<GUM_SCALAR> *
+  MultiDimDecisionDiagramBase<GUM_SCALAR>*
   SPUDDPlanning<GUM_SCALAR>::__evalActionValue(
-      const MultiDimDecisionDiagramBase<GUM_SCALAR> *Vold,
-      Sequence<const DiscreteVariable *> &elVarSeq) {
+      const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold,
+      Sequence<const DiscreteVariable*>& elVarSeq) {
 
     // *****************************************************************************************
     // Initialisation
     //     __fmdp->resetVariablesIterator();
 
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vaction =
-        reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vaction =
+        reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
             Vold->newFactory());
     Vaction->copy(*Vold);
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vtemp = nullptr;
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vtemp = nullptr;
 
     // *****************************************************************************************
     // To evaluate action value function, we multiply old main value function by
     // transition table
     // of each variable
     //     while ( __fmdp->hasVariable() ) {
-    for (SequenceIteratorSafe<const DiscreteVariable *> varIter =
+    for (SequenceIteratorSafe<const DiscreteVariable*> varIter =
              elVarSeq.rbeginSafe();
          varIter != elVarSeq.rendSafe(); --varIter) {
       // ***************************************************************************************
       // Multiplication of Vaction by current variable's CPT
       Vtemp = Vaction;
       //         Vaction = multiply2MultiDimDecisionDiagrams(  Vaction,
-      //         reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
+      //         reinterpret_cast<const
+      //         MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
       //         __fmdp->transition() ) );
       Vaction = multiply2MultiDimDecisionDiagrams(
-          Vaction, reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
-                       __fmdp->transition(__fmdp->main2prime().first(*varIter))));
+          Vaction,
+          reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
+              __fmdp->transition(__fmdp->main2prime().first(*varIter))));
       delete Vtemp;
 
       // ***************************************************************************************
-      // Projection of Vaction on current var by summing on each of its modalities
+      // Projection of Vaction on current var by summing on each of its
+      // modalities
       Vtemp = Vaction;
-      Set<const DiscreteVariable *> varSet;
+      Set<const DiscreteVariable*> varSet;
       //         varSet << __fmdp->variable();
       varSet << *varIter;
       Vaction = projectSumMultiDimDecisionDiagram(Vaction, varSet);
@@ -288,21 +295,22 @@ namespace gum {
   // Updates the value function by multiplying by discount and adding reward
   // ===========================================================================
   template <typename GUM_SCALAR>
-  MultiDimDecisionDiagramBase<GUM_SCALAR> *SPUDDPlanning<GUM_SCALAR>::__addReward(
-      const MultiDimDecisionDiagramBase<GUM_SCALAR> *Vold) {
+  MultiDimDecisionDiagramBase<GUM_SCALAR>*
+  SPUDDPlanning<GUM_SCALAR>::__addReward(
+      const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold) {
 
     // *****************************************************************************************
     // ... we multiply the result by the discount factor, ...
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vnew =
-        reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vnew =
+        reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
             Vold->newFactory());
     Vnew->multiplyByScalar(Vold, __fmdp->discount());
 
     // *****************************************************************************************
     // ... and finally add reward
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vtemp = Vnew;
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vtemp = Vnew;
     Vnew = add2MultiDimDecisionDiagrams(
-        reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
+        reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
             __fmdp->reward()),
         Vtemp);
 
@@ -324,28 +332,29 @@ namespace gum {
   // of the so far computed value function
   // ===========================================================================
   template <typename GUM_SCALAR>
-  MultiDimDecisionDiagramBase<std::pair<double, long>> *
+  MultiDimDecisionDiagramBase<std::pair<double, long>>*
   SPUDDPlanning<GUM_SCALAR>::__argMaxValueFunction(
-      const MultiDimDecisionDiagramBase<GUM_SCALAR> *V) {
+      const MultiDimDecisionDiagramBase<GUM_SCALAR>* V) {
 
     // *****************************************************************************************
     // Loop reset
     __fmdp->resetActionsIterator();
-    Bijection<Idx, MultiDimDecisionDiagramBase<GUM_SCALAR> *> VactionCollector;
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vnew =
-        reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR> *>(V->newFactory());
+    Bijection<Idx, MultiDimDecisionDiagramBase<GUM_SCALAR>*> VactionCollector;
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vnew =
+        reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
+            V->newFactory());
     Vnew->copyAndReassign(V, __fmdp->main2prime());
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vtemp;
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vtemp;
 
 #ifdef O4DDWITHORDER
-    Sequence<const DiscreteVariable *> elVarSeq;
+    Sequence<const DiscreteVariable*> elVarSeq;
 #else
-    Sequence<const DiscreteVariable *> elVarSeq = Vnew->variablesSequence();
+    Sequence<const DiscreteVariable*> elVarSeq = Vnew->variablesSequence();
 #endif
     __fmdp->resetVariablesIterator();
 
     while (__fmdp->hasVariable()) {
-      const DiscreteVariable *var = __fmdp->variable();
+      const DiscreteVariable* var = __fmdp->variable();
 
       if (!elVarSeq.exists(var)) {
         elVarSeq << var;
@@ -358,10 +367,10 @@ namespace gum {
     // For each action
     while (__fmdp->hasAction()) {
 
-      MultiDimDecisionDiagramBase<GUM_SCALAR> *Vaction =
+      MultiDimDecisionDiagramBase<GUM_SCALAR>* Vaction =
           __evalActionValue(Vnew, elVarSeq);
 
-      Vtemp = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
+      Vtemp = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
           Vaction->newFactory());
       Vtemp->multiplyByScalar(Vaction, __fmdp->discount());
       delete Vaction;
@@ -369,7 +378,7 @@ namespace gum {
 
       Vtemp = Vaction;
       Vaction = add2MultiDimDecisionDiagrams(
-          reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
+          reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
               __fmdp->reward()),
           Vaction);
       delete Vtemp;
@@ -379,18 +388,21 @@ namespace gum {
     }
 
     delete Vnew;
-    MultiDimDecisionDiagramBase<std::pair<double, long>> *Vamnew = nullptr;
+    MultiDimDecisionDiagramBase<std::pair<double, long>>* Vamnew = nullptr;
 
-    //     for ( BijectionIteratorSafe< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR
+    //     for ( BijectionIteratorSafe< Idx, MultiDimDecisionDiagramBase<
+    //     GUM_SCALAR
     //     >* > VActionsIter = VactionCollector.begin(); VActionsIter !=
     //     VactionCollector.end(); ++VActionsIter ) {
     for (Idx acta = 1; acta < VactionCollector.size() + 1; acta++) {
-      //         MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamaction
-      //         = __createArgMaxCopy( VActionsIter.second(), VActionsIter.first() );
-      MultiDimDecisionDiagramBase<std::pair<double, long>> *Vamaction =
+      //         MultiDimDecisionDiagramBase< std::pair< double, long > >*
+      //         Vamaction
+      //         = __createArgMaxCopy( VActionsIter.second(),
+      //         VActionsIter.first() );
+      MultiDimDecisionDiagramBase<std::pair<double, long>>* Vamaction =
           __createArgMaxCopy(VactionCollector.second(acta), acta);
       delete VactionCollector.second(acta);
-      MultiDimDecisionDiagramBase<std::pair<double, long>> *Vamtemp = Vamnew;
+      MultiDimDecisionDiagramBase<std::pair<double, long>>* Vamtemp = Vamnew;
       Vamnew = __argMaxOn2MultiDimDecisionDiagrams(Vamnew, Vamaction);
       delete Vamtemp;
       delete Vamaction;
@@ -405,11 +417,11 @@ namespace gum {
   // is bind this diagram (given in parameter).
   // ===========================================================================
   template <typename GUM_SCALAR>
-  MultiDimDecisionDiagramBase<std::pair<double, long>> *
+  MultiDimDecisionDiagramBase<std::pair<double, long>>*
   SPUDDPlanning<GUM_SCALAR>::__createArgMaxCopy(
-      const MultiDimDecisionDiagramBase<GUM_SCALAR> *Vaction, Idx actionId) {
+      const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vaction, Idx actionId) {
 
-    MultiDimDecisionDiagramBase<std::pair<double, long>> *amcpy =
+    MultiDimDecisionDiagramBase<std::pair<double, long>>* amcpy =
         new MultiDimDecisionDiagram<std::pair<double, long>>();
 
     amcpy->beginInstantiation();
@@ -417,7 +429,8 @@ namespace gum {
     amcpy->setVariableSequence(Vaction->variablesSequence());
 
     amcpy->setDiagramNodes(Vaction->nodesMap());
-    Bijection<NodeId, std::pair<double, long>> amvm(Vaction->valuesMap().size());
+    Bijection<NodeId, std::pair<double, long>> amvm(
+        Vaction->valuesMap().size());
 
     for (BijectionIterator<NodeId, GUM_SCALAR> valueIter =
              Vaction->valuesMap().begin();
@@ -450,9 +463,10 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   NodeId SPUDDPlanning<GUM_SCALAR>::__makeOptimalPolicyDecisionDiagram(
-      const MultiDimDecisionDiagramBase<std::pair<double, long>> *V,
-      const NodeId &currentNode, MultiDimDecisionDiagramFactoryBase<Idx> *factory,
-      HashTable<NodeId, NodeId> &explorationTable) {
+      const MultiDimDecisionDiagramBase<std::pair<double, long>>* V,
+      const NodeId& currentNode,
+      MultiDimDecisionDiagramFactoryBase<Idx>* factory,
+      HashTable<NodeId, NodeId>& explorationTable) {
 
     std::vector<NodeId> sonsMap(V->unsafeNodeSons(currentNode)->size(), 0);
 
@@ -466,7 +480,8 @@ namespace gum {
           sonId = explorationTable[*sonIter];
         else {
           if (V->isTerminalNode(*sonIter))
-            sonId = factory->addTerminalNode(V->unsafeNodeValue(*sonIter).second);
+            sonId =
+                factory->addTerminalNode(V->unsafeNodeValue(*sonIter).second);
           else
             sonId = __makeOptimalPolicyDecisionDiagram(V, *sonIter, factory,
                                                        explorationTable);
@@ -491,8 +506,8 @@ namespace gum {
           defaultSonId =
               factory->addTerminalNode(V->unsafeNodeValue(defaultSon).second);
         else
-          defaultSonId = __makeOptimalPolicyDecisionDiagram(V, defaultSon, factory,
-                                                            explorationTable);
+          defaultSonId = __makeOptimalPolicyDecisionDiagram(
+              V, defaultSon, factory, explorationTable);
 
         explorationTable.insert(defaultSon, defaultSonId);
       }
@@ -531,7 +546,7 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   void SPUDDPlanning<GUM_SCALAR>::__displayOptimalPolicy(
-      MultiDimDecisionDiagramBase<Idx> *op) {
+      MultiDimDecisionDiagramBase<Idx>* op) {
     // *****************************************************************************************
     // And eventually we display the result
     // *****************************************************************************************
@@ -572,22 +587,27 @@ namespace gum {
           }
 
           if (op->hasNodeDefaultSon(node))
-            defaultarcstream << tab << node << " -> " << op->nodeDefaultSon(node)
+            defaultarcstream << tab << node << " -> "
+                             << op->nodeDefaultSon(node)
                              << " [color=\"#ff0000\"]"
                              << ";" << std::endl;
         }
       }
     }
 
-    output << terminalStream.str() << std::endl << nonTerminalStream.str()
-           << std::endl << arcstream.str() << std::endl << defaultarcstream.str()
-           << std::endl << std::endl << "}" << std::endl;
+    output << terminalStream.str() << std::endl
+           << nonTerminalStream.str() << std::endl
+           << arcstream.str() << std::endl
+           << defaultarcstream.str() << std::endl
+           << std::endl
+           << "}" << std::endl;
   }
 
   /* **************************************************************************************************
    * **/
   /* ** **/
-  /* **                                                        Analyse Methods **/
+  /* **                                                        Analyse Methods
+   * **/
   /* ** **/
   /* **************************************************************************************************
    * **/
@@ -596,7 +616,7 @@ namespace gum {
   // Called for evaluation on algorithm
   // ===========================================================================
   template <typename GUM_SCALAR>
-  MultiDimDecisionDiagramBase<GUM_SCALAR> *
+  MultiDimDecisionDiagramBase<GUM_SCALAR>*
   SPUDDPlanning<GUM_SCALAR>::makePlanningAlgoEvaluation(
       const std::string saveFilesName, Idx mode) {
 
@@ -612,14 +632,15 @@ namespace gum {
 
     // *****************************************************************************************
     // Initialisation of Vold, Vnew and Vtemp
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vold =
-        reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold =
+        reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
             __fmdp->reward()->newFactory());
-    Vold->copy(*reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
-                   __fmdp->reward()));
+    Vold->copy(
+        *reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
+            __fmdp->reward()));
 
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vnew = nullptr;
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vtemp = nullptr;
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vnew = nullptr;
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vtemp = nullptr;
 
     Idx nbIte = 0;
 
@@ -633,9 +654,9 @@ namespace gum {
       // *****************************************************************************************
       // Loop reset
       __fmdp->resetActionsIterator();
-      Set<MultiDimDecisionDiagramBase<GUM_SCALAR> *> VactionCollector;
+      Set<MultiDimDecisionDiagramBase<GUM_SCALAR>*> VactionCollector;
 
-      Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
+      Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
           Vold->newFactory());
       Vnew->copyAndReassign(Vold, __fmdp->main2prime());
 
@@ -643,7 +664,8 @@ namespace gum {
       // For each action
       while (__fmdp->hasAction()) {
 
-        // std::cout << " ------------ Evaluation Nouvelle Action " << std::endl;
+        // std::cout << " ------------ Evaluation Nouvelle Action " <<
+        // std::endl;
         VactionCollector.insert(
             __evalActionValueAlgoEvaluation(Vnew, saveFilesName, mode));
         // std::cout << " Fin Evaluation" << std::endl;
@@ -684,7 +706,7 @@ namespace gum {
                                       << " does not open correctly");
       }
 
-      for (const auto &Vaction : VactionCollector) {
+      for (const auto& Vaction : VactionCollector) {
 
         if (Vnew != nullptr)
           nbNodeT1 = Vnew->nodesMap().size();
@@ -730,7 +752,7 @@ namespace gum {
 
         if (sensDirect) {
           time.reset();
-          MultiDimDecisionDiagramBase<GUM_SCALAR> *Vind =
+          MultiDimDecisionDiagramBase<GUM_SCALAR>* Vind =
               maximize2MultiDimDecisionDiagrams(Vaction, Vnew);
           nbFinalNodeIndirect = Vind->nodesMap().size();
           iterationTimeIndirect = time.step();
@@ -743,7 +765,7 @@ namespace gum {
           iterationTime = iterationTimeDirect;
         } else {
           time.reset();
-          MultiDimDecisionDiagramBase<GUM_SCALAR> *Vind =
+          MultiDimDecisionDiagramBase<GUM_SCALAR>* Vind =
               maximize2MultiDimDecisionDiagrams(Vnew, Vaction);
           nbFinalNodeDirect = Vind->nodesMap().size();
           iterationTimeDirect = time.step();
@@ -760,15 +782,13 @@ namespace gum {
         delete Vtemp;
         delete Vaction;
 
-        __traceAlgoSaveFile << nbNodeT1 << "\t" << nbNodeT2 << "\t"
-                            << nbRetroVarDirect << "\t"
-                            << tailleEspaceRetrogradeDirect << "\t"
-                            << nbFinalNodeDirect << "\t" << iterationTimeDirect
-                            << "\t" << nbRetroVarIndirect << "\t"
-                            << tailleEspaceRetrogradeIndirect << "\t"
-                            << nbFinalNodeIndirect << "\t" << iterationTimeIndirect
-                            << "\t" << sensDirect << "\t" << iterationTime << "\t"
-                            << totalTime << std::endl;
+        __traceAlgoSaveFile
+            << nbNodeT1 << "\t" << nbNodeT2 << "\t" << nbRetroVarDirect << "\t"
+            << tailleEspaceRetrogradeDirect << "\t" << nbFinalNodeDirect << "\t"
+            << iterationTimeDirect << "\t" << nbRetroVarIndirect << "\t"
+            << tailleEspaceRetrogradeIndirect << "\t" << nbFinalNodeIndirect
+            << "\t" << iterationTimeIndirect << "\t" << sensDirect << "\t"
+            << iterationTime << "\t" << totalTime << std::endl;
       }
 
       __traceAlgoSaveFile.close();
@@ -785,7 +805,7 @@ namespace gum {
       // *****************************************************************************************
       // Then we compare new value function and the old one
 
-      MultiDimDecisionDiagramBase<GUM_SCALAR> *deltaV =
+      MultiDimDecisionDiagramBase<GUM_SCALAR>* deltaV =
           subtract2MultiDimDecisionDiagrams(Vnew, Vold);
       gap = 0;
 
@@ -799,7 +819,8 @@ namespace gum {
 
       // std::cout << "*************************************************" <<
       // std::endl << " Essai : " << saveFilesName << std::endl << "
-      // ------------------- Fin itération n° " << nbIte << std::endl << " Gap : " <<
+      // ------------------- Fin itération n° " << nbIte << std::endl << " Gap :
+      // " <<
       // gap << std::endl;
       // ****************************************************************************************
       // And eventually we update pointers for next loop
@@ -815,18 +836,18 @@ namespace gum {
   // Evals the value function for current fmdp action
   // ===========================================================================
   template <typename GUM_SCALAR>
-  MultiDimDecisionDiagramBase<GUM_SCALAR> *
+  MultiDimDecisionDiagramBase<GUM_SCALAR>*
   SPUDDPlanning<GUM_SCALAR>::__evalActionValueAlgoEvaluation(
-      const MultiDimDecisionDiagramBase<GUM_SCALAR> *Vold,
+      const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold,
       const std::string saveFilesName, Idx mode) {
 
     __fmdp->resetVariablesIterator();
 
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vaction =
-        reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vaction =
+        reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
             Vold->newFactory());
     Vaction->copy(*Vold);
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vtemp = nullptr;
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vtemp = nullptr;
 
     Idx nbNodeT1;
     Idx nbNodeT2;
@@ -845,8 +866,8 @@ namespace gum {
 
     std::string actionName = __fmdp->actionName(__fmdp->actionIterId());
     std::stringstream traceFileName;
-    traceFileName << "./Trace/" << actionName << "/" << saveFilesName << "." << mode
-                  << ".log";
+    traceFileName << "./Trace/" << actionName << "/" << saveFilesName << "."
+                  << mode << ".log";
     __traceAlgoSaveFile.open(traceFileName.str().c_str(),
                              std::ios::out | std::ios::app);
 
@@ -863,14 +884,15 @@ namespace gum {
     while (__fmdp->hasVariable()) {
 
       // Multiplication of Vaction by current variable's CPT
-      const MultiDimDecisionDiagramBase<GUM_SCALAR> *cpt =
-          reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
+      const MultiDimDecisionDiagramBase<GUM_SCALAR>* cpt =
+          reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
               __fmdp->transition());
 
       nbNodeT1 = Vaction->nodesMap().size();
       nbNodeT2 = cpt->nodesMap().size();
 
-      std::pair<Idx, Idx> resEvalRetro = __evalNbRetrogradeEvaluation(Vaction, cpt);
+      std::pair<Idx, Idx> resEvalRetro =
+          __evalNbRetrogradeEvaluation(Vaction, cpt);
       nbRetroVarDirect = resEvalRetro.first;
       tailleEspaceRetrogradeDirect = resEvalRetro.second;
 
@@ -906,7 +928,7 @@ namespace gum {
 
       if (sensDirect) {
         time.reset();
-        MultiDimDecisionDiagramBase<GUM_SCALAR> *Vind =
+        MultiDimDecisionDiagramBase<GUM_SCALAR>* Vind =
             multiply2MultiDimDecisionDiagrams(cpt, Vaction);
         nbFinalNodeIndirect = Vind->nodesMap().size();
         iterationTimeIndirect = time.step();
@@ -919,7 +941,7 @@ namespace gum {
         iterationTime = iterationTimeDirect;
       } else {
         time.reset();
-        MultiDimDecisionDiagramBase<GUM_SCALAR> *Vind =
+        MultiDimDecisionDiagramBase<GUM_SCALAR>* Vind =
             multiply2MultiDimDecisionDiagrams(Vaction, cpt);
         nbFinalNodeDirect = Vind->nodesMap().size();
         iterationTimeDirect = time.step();
@@ -935,20 +957,21 @@ namespace gum {
       delete Vtemp;
 
       Vtemp = Vaction;
-      Set<const DiscreteVariable *> varSet;
+      Set<const DiscreteVariable*> varSet;
       varSet << __fmdp->variable();
       Vaction = projectSumMultiDimDecisionDiagram(Vaction, varSet);
       delete Vtemp;
       totalTime += time.step();
 
-      __traceAlgoSaveFile << nbNodeT1 << "\t" << nbNodeT2 << "\t" << nbRetroVarDirect
-                          << "\t" << tailleEspaceRetrogradeDirect << "\t"
-                          << nbFinalNodeDirect << "\t" << iterationTimeDirect << "\t"
-                          << nbRetroVarIndirect << "\t"
+      __traceAlgoSaveFile << nbNodeT1 << "\t" << nbNodeT2 << "\t"
+                          << nbRetroVarDirect << "\t"
+                          << tailleEspaceRetrogradeDirect << "\t"
+                          << nbFinalNodeDirect << "\t" << iterationTimeDirect
+                          << "\t" << nbRetroVarIndirect << "\t"
                           << tailleEspaceRetrogradeIndirect << "\t"
-                          << nbFinalNodeIndirect << "\t" << iterationTimeIndirect
-                          << "\t" << sensDirect << "\t" << iterationTime << "\t"
-                          << totalTime << std::endl;
+                          << nbFinalNodeIndirect << "\t"
+                          << iterationTimeIndirect << "\t" << sensDirect << "\t"
+                          << iterationTime << "\t" << totalTime << std::endl;
 
       __fmdp->nextVariable();
     }
@@ -964,21 +987,21 @@ namespace gum {
   // Updates the value function by multiplying by discount and adding reward
   // ===========================================================================
   template <typename GUM_SCALAR>
-  MultiDimDecisionDiagramBase<GUM_SCALAR> *
+  MultiDimDecisionDiagramBase<GUM_SCALAR>*
   SPUDDPlanning<GUM_SCALAR>::__addRewardAlgoEvaluation(
-      const MultiDimDecisionDiagramBase<GUM_SCALAR> *Vold,
+      const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold,
       const std::string saveFilesName, Idx mode) {
 
     // *****************************************************************************************
     // ... we multiply the result by the discount factor, ...
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vnew =
-        reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vnew =
+        reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
             Vold->newFactory());
     Vnew->multiplyByScalar(Vold, __fmdp->discount());
 
     // *****************************************************************************************
     // ... and finally add reward
-    MultiDimDecisionDiagramBase<GUM_SCALAR> *Vtemp = Vnew;
+    MultiDimDecisionDiagramBase<GUM_SCALAR>* Vtemp = Vnew;
 
     Idx nbNodeT1;
     Idx nbNodeT2;
@@ -995,7 +1018,8 @@ namespace gum {
     double totalTime = 0;
 
     std::stringstream traceFileName;
-    traceFileName << "./Trace/AddReward/" << saveFilesName << "." << mode << ".log";
+    traceFileName << "./Trace/AddReward/" << saveFilesName << "." << mode
+                  << ".log";
     __traceAlgoSaveFile.open(traceFileName.str().c_str(),
                              std::ios::out | std::ios::app);
 
@@ -1004,8 +1028,8 @@ namespace gum {
       return nullptr;
     }
 
-    const MultiDimDecisionDiagramBase<GUM_SCALAR> *reward =
-        reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR> *>(
+    const MultiDimDecisionDiagramBase<GUM_SCALAR>* reward =
+        reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
             __fmdp->reward());
 
     if (Vnew != nullptr)
@@ -1015,7 +1039,8 @@ namespace gum {
 
     nbNodeT2 = reward->nodesMap().size();
 
-    std::pair<Idx, Idx> resEvalRetro = __evalNbRetrogradeEvaluation(Vnew, reward);
+    std::pair<Idx, Idx> resEvalRetro =
+        __evalNbRetrogradeEvaluation(Vnew, reward);
     nbRetroVarDirect = resEvalRetro.first;
     tailleEspaceRetrogradeDirect = resEvalRetro.second;
 
@@ -1050,7 +1075,7 @@ namespace gum {
 
     if (sensDirect) {
       time.reset();
-      MultiDimDecisionDiagramBase<GUM_SCALAR> *Vind =
+      MultiDimDecisionDiagramBase<GUM_SCALAR>* Vind =
           add2MultiDimDecisionDiagrams(reward, Vnew);
       nbFinalNodeIndirect = Vind->nodesMap().size();
       iterationTimeIndirect = time.step();
@@ -1062,7 +1087,7 @@ namespace gum {
       iterationTimeDirect = time.step();
     } else {
       time.reset();
-      MultiDimDecisionDiagramBase<GUM_SCALAR> *Vind =
+      MultiDimDecisionDiagramBase<GUM_SCALAR>* Vind =
           add2MultiDimDecisionDiagrams(Vnew, reward);
       nbFinalNodeDirect = Vind->nodesMap().size();
       iterationTimeDirect = time.step();
@@ -1076,10 +1101,11 @@ namespace gum {
 
     totalTime += time.step();
 
-    __traceAlgoSaveFile << nbNodeT1 << "\t" << nbNodeT2 << "\t" << nbRetroVarDirect
-                        << "\t" << tailleEspaceRetrogradeDirect << "\t"
-                        << nbFinalNodeDirect << "\t" << iterationTimeDirect << "\t"
-                        << nbRetroVarIndirect << "\t"
+    __traceAlgoSaveFile << nbNodeT1 << "\t" << nbNodeT2 << "\t"
+                        << nbRetroVarDirect << "\t"
+                        << tailleEspaceRetrogradeDirect << "\t"
+                        << nbFinalNodeDirect << "\t" << iterationTimeDirect
+                        << "\t" << nbRetroVarIndirect << "\t"
                         << tailleEspaceRetrogradeIndirect << "\t"
                         << nbFinalNodeIndirect << "\t" << iterationTimeIndirect
                         << "\t" << totalTime << std::endl;
@@ -1096,8 +1122,8 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   std::pair<Idx, Idx> SPUDDPlanning<GUM_SCALAR>::__evalNbRetrogradeEvaluation(
-      const MultiDimDecisionDiagramBase<GUM_SCALAR> *dD1,
-      const MultiDimDecisionDiagramBase<GUM_SCALAR> *dD2) {
+      const MultiDimDecisionDiagramBase<GUM_SCALAR>* dD1,
+      const MultiDimDecisionDiagramBase<GUM_SCALAR>* dD2) {
 
     std::pair<Idx, Idx> res;
 
@@ -1110,12 +1136,12 @@ namespace gum {
     // *****************************************************************************
     // First we determine the new var sequence
 
-    Sequence<const DiscreteVariable *> dD1VarSeq = dD1->variablesSequence();
-    Sequence<const DiscreteVariable *> dD2VarSeq = dD2->variablesSequence();
-    Sequence<const DiscreteVariable *> fusVarSeq;
+    Sequence<const DiscreteVariable*> dD1VarSeq = dD1->variablesSequence();
+    Sequence<const DiscreteVariable*> dD2VarSeq = dD2->variablesSequence();
+    Sequence<const DiscreteVariable*> fusVarSeq;
 
-    SequenceIterator<const DiscreteVariable *> iterS1 = dD1VarSeq.begin();
-    SequenceIterator<const DiscreteVariable *> iterS2 = dD2VarSeq.begin();
+    SequenceIterator<const DiscreteVariable*> iterS1 = dD1VarSeq.begin();
+    SequenceIterator<const DiscreteVariable*> iterS2 = dD2VarSeq.begin();
 
     while (iterS1 != dD1VarSeq.end() || iterS2 != dD2VarSeq.end()) {
       if (iterS1 == dD1VarSeq.end()) {
@@ -1177,11 +1203,13 @@ namespace gum {
 // ===========================================================================
 
 #define GUM_MULTI_DIM_OPERATOR(x, y) x.first > y.first ? x : y
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION DecisionDiagramRecur4argMax
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION                          \
+  DecisionDiagramRecur4argMax
 
 #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
 #ifdef O4DDWITHORDER
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION DecisionDiagramGoDown4argMax
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION                        \
+  DecisionDiagramGoDown4argMax
 #ifdef O4DDDEBUG
 #include <agrum/multidim/patterns/DDUtility/o4DDWithOrderRecursionFunctionsDebug.h>
 #else
@@ -1189,9 +1217,9 @@ namespace gum {
 #endif
 #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION
 #else
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION                   \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION              \
   DecisionDiagramGoDownOnLeader4argMax
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION                 \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION            \
   DecisionDiagramGoDownOnFollower4argMax
 #ifdef O4DDDEBUG
 #include <agrum/multidim/patterns/DDUtility/o4DDWithoutOrderRecursionFunctionsDebug.h>
@@ -1204,12 +1232,12 @@ namespace gum {
 #undef GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
 
 template <typename GUM_SCALAR>
-gum::MultiDimDecisionDiagramBase<std::pair<double, long>> *
+gum::MultiDimDecisionDiagramBase<std::pair<double, long>>*
 gum::SPUDDPlanning<GUM_SCALAR>::__argMaxOn2MultiDimDecisionDiagrams(
-    const gum::MultiDimDecisionDiagramBase<std::pair<double, long>> *Vaction1,
-    const gum::MultiDimDecisionDiagramBase<std::pair<double, long>> *Vaction2) {
+    const gum::MultiDimDecisionDiagramBase<std::pair<double, long>>* Vaction1,
+    const gum::MultiDimDecisionDiagramBase<std::pair<double, long>>* Vaction2) {
 
-  gum::MultiDimDecisionDiagramBase<std::pair<double, long>> *ret = nullptr;
+  gum::MultiDimDecisionDiagramBase<std::pair<double, long>>* ret = nullptr;
 
   if ((Vaction1 == nullptr || Vaction1->empty()) &&
       (Vaction2 == nullptr || Vaction2->empty()))
@@ -1217,7 +1245,7 @@ gum::SPUDDPlanning<GUM_SCALAR>::__argMaxOn2MultiDimDecisionDiagrams(
 
   if (Vaction1 == nullptr || Vaction1->empty()) {
     ret = reinterpret_cast<
-        gum::MultiDimDecisionDiagramBase<std::pair<double, long>> *>(
+        gum::MultiDimDecisionDiagramBase<std::pair<double, long>>*>(
         Vaction2->newFactory());
     ret->copy(*Vaction2);
     return ret;
@@ -1225,7 +1253,7 @@ gum::SPUDDPlanning<GUM_SCALAR>::__argMaxOn2MultiDimDecisionDiagrams(
 
   if (Vaction2 == nullptr || Vaction2->empty()) {
     ret = reinterpret_cast<
-        gum::MultiDimDecisionDiagramBase<std::pair<double, long>> *>(
+        gum::MultiDimDecisionDiagramBase<std::pair<double, long>>*>(
         Vaction1->newFactory());
     ret->copy(*Vaction1);
     return ret;
@@ -1253,11 +1281,13 @@ gum::SPUDDPlanning<GUM_SCALAR>::__argMaxOn2MultiDimDecisionDiagrams(
 // ===========================================================================
 
 #define GUM_MULTI_DIM_OPERATOR(x, y) T(x.first - y.first, x.second - y.second)
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION DecisionDiagramRecur4difPol
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION                          \
+  DecisionDiagramRecur4difPol
 
 #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
 #ifdef O4DDWITHORDER
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION DecisionDiagramGoDown4difPol
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION                        \
+  DecisionDiagramGoDown4difPol
 #ifdef O4DDDEBUG
 #include <agrum/multidim/patterns/DDUtility/o4DDWithOrderRecursionFunctionsDebug.h>
 #else
@@ -1265,9 +1295,9 @@ gum::SPUDDPlanning<GUM_SCALAR>::__argMaxOn2MultiDimDecisionDiagrams(
 #endif
 #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION
 #else
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION                   \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION              \
   DecisionDiagramGoDownOnLeader4difPol
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION                 \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION            \
   DecisionDiagramGoDownOnFollower4difPol
 #ifdef O4DDDEBUG
 #include <agrum/multidim/patterns/DDUtility/o4DDWithoutOrderRecursionFunctionsDebug.h>
@@ -1280,12 +1310,12 @@ gum::SPUDDPlanning<GUM_SCALAR>::__argMaxOn2MultiDimDecisionDiagrams(
 #undef GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
 
 template <typename GUM_SCALAR>
-gum::MultiDimDecisionDiagramBase<std::pair<double, long>> *
+gum::MultiDimDecisionDiagramBase<std::pair<double, long>>*
 gum::SPUDDPlanning<GUM_SCALAR>::__differenceOnPolicy(
-    const gum::MultiDimDecisionDiagramBase<std::pair<double, long>> *Vaction1,
-    const gum::MultiDimDecisionDiagramBase<std::pair<double, long>> *Vaction2) {
+    const gum::MultiDimDecisionDiagramBase<std::pair<double, long>>* Vaction1,
+    const gum::MultiDimDecisionDiagramBase<std::pair<double, long>>* Vaction2) {
 
-  gum::MultiDimDecisionDiagramBase<std::pair<double, long>> *ret = nullptr;
+  gum::MultiDimDecisionDiagramBase<std::pair<double, long>>* ret = nullptr;
 
   if ((Vaction1 == nullptr || Vaction1->empty()) &&
       (Vaction2 == nullptr || Vaction2->empty()))
@@ -1293,7 +1323,7 @@ gum::SPUDDPlanning<GUM_SCALAR>::__differenceOnPolicy(
 
   if (Vaction1 == nullptr || Vaction1->empty()) {
     ret = reinterpret_cast<
-        gum::MultiDimDecisionDiagramBase<std::pair<double, long>> *>(
+        gum::MultiDimDecisionDiagramBase<std::pair<double, long>>*>(
         Vaction2->newFactory());
     ret->copy(*Vaction2);
     return ret;
@@ -1301,7 +1331,7 @@ gum::SPUDDPlanning<GUM_SCALAR>::__differenceOnPolicy(
 
   if (Vaction2 == nullptr || Vaction2->empty()) {
     ret = reinterpret_cast<
-        gum::MultiDimDecisionDiagramBase<std::pair<double, long>> *>(
+        gum::MultiDimDecisionDiagramBase<std::pair<double, long>>*>(
         Vaction1->newFactory());
     ret->copy(*Vaction1);
     return ret;

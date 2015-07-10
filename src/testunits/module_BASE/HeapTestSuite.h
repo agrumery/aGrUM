@@ -151,7 +151,7 @@ namespace gum_tests {
 
     class SetCmp {
       public:
-      bool operator()(const gum::Set<int> &x, const gum::Set<int> &y) const {
+      bool operator()(const gum::Set<int>& x, const gum::Set<int>& y) const {
         return x.size() < y.size();
       }
     };

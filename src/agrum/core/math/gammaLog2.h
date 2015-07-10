@@ -48,11 +48,12 @@ namespace gum {
         : __requires_precision{requires_precision} {}
 
     /// copy constructor
-    GammaLog2(const GammaLog2 &from)
+    GammaLog2(const GammaLog2& from)
         : __requires_precision{from.__requires_precision} {}
 
     /// move constructor
-    GammaLog2(GammaLog2 &&from) : __requires_precision{from.__requires_precision} {}
+    GammaLog2(GammaLog2&& from)
+        : __requires_precision{from.__requires_precision} {}
 
     /// destructor
     ~GammaLog2() {}
@@ -102,6 +103,6 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/math/gammaLog2.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
 #endif /* GUM_GAMMA_LOG2_H */

@@ -51,15 +51,15 @@ namespace gum_tests {
   class InfluenceDiagramInferenceTestSuite : public CxxTest::TestSuite {
 
     private:
-    void fillTopoOilWildcater(gum::InfluenceDiagram<float> &id,
-                              gum::List<gum::NodeId> &idList) {
+    void fillTopoOilWildcater(gum::InfluenceDiagram<float>& id,
+                              gum::List<gum::NodeId>& idList) {
       try {
-        idList.insert(id.addDecisionNode(*TestVar));           // 0
-        idList.insert(id.addDecisionNode(*DrillVar));          // 1
-        idList.insert(id.addChanceNode(*ResultTestVar));       // 2
-        idList.insert(id.addChanceNode(*OilAmountVar));        // 3
-        idList.insert(id.addUtilityNode(*TestUtilityVar));     // 4
-        idList.insert(id.addUtilityNode(*DrillingUtilityVar)); // 5
+        idList.insert(id.addDecisionNode(*TestVar));            // 0
+        idList.insert(id.addDecisionNode(*DrillVar));           // 1
+        idList.insert(id.addChanceNode(*ResultTestVar));        // 2
+        idList.insert(id.addChanceNode(*OilAmountVar));         // 3
+        idList.insert(id.addUtilityNode(*TestUtilityVar));      // 4
+        idList.insert(id.addUtilityNode(*DrillingUtilityVar));  // 5
 
         id.addArc(idList[0], idList[4]);
         id.addArc(idList[0], idList[2]);
@@ -69,18 +69,19 @@ namespace gum_tests {
         id.addArc(idList[3], idList[2]);
         id.addArc(idList[3], idList[5]);
 
-      } catch (gum::Exception &e) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+      } catch (gum::Exception& e) {
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
     }
 
-    void fillwithOilWildcater(gum::InfluenceDiagram<float> &id,
-                              gum::List<gum::NodeId> &idList) {
+    void fillwithOilWildcater(gum::InfluenceDiagram<float>& id,
+                              gum::List<gum::NodeId>& idList) {
       fillTopoOilWildcater(id, idList);
 
       try {
-        const gum::Potential<float> &PO = id.cpt(idList[3]);
+        const gum::Potential<float>& PO = id.cpt(idList[3]);
         {
           // FILLING PARAMS
           const float t[3] = {0.5, 0.3, 0.2};
@@ -89,17 +90,18 @@ namespace gum_tests {
           PO.fillWith(v);
         }
 
-        const gum::Potential<float> &PRTO = id.cpt(idList[2]);
+        const gum::Potential<float>& PRTO = id.cpt(idList[2]);
         {
           // FILLING PARAMS
-          const float t[24] = {0.6, 0.3, 0.1, 0, 0,   0,   0,   1, 0.3, 0.4, 0.3, 0,
-                               0,   0,   0,   1, 0.1, 0.4, 0.5, 0, 0,   0,   0,   1};
+          const float t[24] = {0.6, 0.3, 0.1, 0, 0, 0, 0, 1,
+                               0.3, 0.4, 0.3, 0, 0, 0, 0, 1,
+                               0.1, 0.4, 0.5, 0, 0, 0, 0, 1};
           int n = 24;
           const std::vector<float> v(t, t + n);
           PRTO.fillWith(v);
         }
 
-        const gum::UtilityTable<float> &UTUT = id.utility(idList[4]);
+        const gum::UtilityTable<float>& UTUT = id.utility(idList[4]);
         {
           // FILLING PARAMS
           const float t[2] = {-10, 0};
@@ -108,7 +110,7 @@ namespace gum_tests {
           UTUT.fillWith(v);
         }
 
-        const gum::UtilityTable<float> &UTUD = id.utility(idList[5]);
+        const gum::UtilityTable<float>& UTUD = id.utility(idList[5]);
         {
           // FILLING PARAMS
           const float t[6] = {-70, 0, 50, 0, 200, 0};
@@ -117,27 +119,28 @@ namespace gum_tests {
           UTUD.fillWith(v);
         }
 
-      } catch (gum::Exception &e) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+      } catch (gum::Exception& e) {
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
     }
 
-    void fillTopoDecAsia(gum::InfluenceDiagram<float> &id,
-                         gum::List<gum::NodeId> &idList) {
+    void fillTopoDecAsia(gum::InfluenceDiagram<float>& id,
+                         gum::List<gum::NodeId>& idList) {
       try {
-        idList.insert(id.addDecisionNode(*HospitalizeVar));           // 0
-        idList.insert(id.addDecisionNode(*TakeXRayVar));              // 1
-        idList.insert(id.addChanceNode(*SmokingVar));                 // 2
-        idList.insert(id.addChanceNode(*BronchitisVar));              // 3
-        idList.insert(id.addChanceNode(*LungCancerVar));              // 4
-        idList.insert(id.addChanceNode(*EitherVar));                  // 5
-        idList.insert(id.addChanceNode(*DyspnoeaVar));                // 6
-        idList.insert(id.addChanceNode(*PositiveXRayVar));            // 7
-        idList.insert(id.addChanceNode(*TubercolisisVar));            // 8
-        idList.insert(id.addChanceNode(*VisitAsiaVar));               // 9
-        idList.insert(id.addUtilityNode(*HospitalizationUtilityVar)); // 10
-        idList.insert(id.addUtilityNode(*TakingXRayUtilityVar));      // 11
+        idList.insert(id.addDecisionNode(*HospitalizeVar));            // 0
+        idList.insert(id.addDecisionNode(*TakeXRayVar));               // 1
+        idList.insert(id.addChanceNode(*SmokingVar));                  // 2
+        idList.insert(id.addChanceNode(*BronchitisVar));               // 3
+        idList.insert(id.addChanceNode(*LungCancerVar));               // 4
+        idList.insert(id.addChanceNode(*EitherVar));                   // 5
+        idList.insert(id.addChanceNode(*DyspnoeaVar));                 // 6
+        idList.insert(id.addChanceNode(*PositiveXRayVar));             // 7
+        idList.insert(id.addChanceNode(*TubercolisisVar));             // 8
+        idList.insert(id.addChanceNode(*VisitAsiaVar));                // 9
+        idList.insert(id.addUtilityNode(*HospitalizationUtilityVar));  // 10
+        idList.insert(id.addUtilityNode(*TakingXRayUtilityVar));       // 11
 
         id.addArc(idList[0], idList[10]);
         id.addArc(idList[0], idList[1]);
@@ -162,18 +165,19 @@ namespace gum_tests {
 
         id.addArc(idList[9], idList[8]);
 
-      } catch (gum::Exception &e) {
-        std::cerr << std::endl << e.errorCallStack() << std::endl;
+      } catch (gum::Exception& e) {
+        std::cerr << std::endl
+                  << e.errorCallStack() << std::endl;
         throw;
       }
     }
 
-    void fillwithDecAsia(gum::InfluenceDiagram<float> &id,
-                         gum::List<gum::NodeId> &idList) {
+    void fillwithDecAsia(gum::InfluenceDiagram<float>& id,
+                         gum::List<gum::NodeId>& idList) {
       fillTopoDecAsia(id, idList);
 
       try {
-        const gum::Potential<float> &PA = id.cpt(idList[9]);
+        const gum::Potential<float>& PA = id.cpt(idList[9]);
         {
           // FILLING PARAMS
           const float t[2] = {0.01, 0.99};
@@ -182,7 +186,7 @@ namespace gum_tests {
           PA.fillWith(v);
         }
 
-        const gum::Potential<float> &PL = id.cpt(idList[4]);
+        const gum::Potential<float>& PL = id.cpt(idList[4]);
         {
           // FILLING PARAMS
           const float t[4] = {0.1, 0.9, 0.01, 0.99};
@@ -191,7 +195,7 @@ namespace gum_tests {
           PL.fillWith(v);
         }
 
-        const gum::Potential<float> &PB = id.cpt(idList[3]);
+        const gum::Potential<float>& PB = id.cpt(idList[3]);
         {
           // FILLING PARAMS
           const float t[4] = {0.6, 0.4, 0.3, 0.7};
@@ -200,7 +204,7 @@ namespace gum_tests {
           PB.fillWith(v);
         }
 
-        const gum::Potential<float> &PS = id.cpt(idList[2]);
+        const gum::Potential<float>& PS = id.cpt(idList[2]);
         {
           // FILLING PARAMS
           const float t[2] = {0.5, 0.5};
@@ -209,7 +213,7 @@ namespace gum_tests {
           PS.fillWith(v);
         }
 
-        const gum::Potential<float> &PD = id.cpt(idList[6]);
+        const gum::Potential<float>& PD = id.cpt(idList[6]);
         {
           // FILLING PARAMS
           const float t[8] = {0.9, 0.1, 0.7, 0.3, 0.8, 0.2, 0.1, 0.9};
@@ -218,7 +222,7 @@ namespace gum_tests {
           PD.fillWith(v);
         }
 
-        const gum::Potential<float> &PTu = id.cpt(idList[8]);
+        const gum::Potential<float>& PTu = id.cpt(idList[8]);
         {
           // FILLING PARAMS
           const float t[4] = {0.05, 0.95, 0.01, 0.99};
@@ -227,7 +231,7 @@ namespace gum_tests {
           PTu.fillWith(v);
         }
 
-        const gum::Potential<float> &PE = id.cpt(idList[5]);
+        const gum::Potential<float>& PE = id.cpt(idList[5]);
         {
           // FILLING PARAMS
           const float t[8] = {1, 0, 1, 0, 1, 0, 0, 1};
@@ -236,7 +240,7 @@ namespace gum_tests {
           PE.fillWith(v);
         }
 
-        const gum::Potential<float> &PPXR = id.cpt(idList[7]);
+        const gum::Potential<float>& PPXR = id.cpt(idList[7]);
         {
           // FILLING PARAMS
           const float t[8] = {0.98, 0.02, 0.5, 0.5, 0.05, 0.95, 0.5, 0.5};
@@ -245,7 +249,7 @@ namespace gum_tests {
           PPXR.fillWith(v);
         }
 
-        const gum::UtilityTable<float> &UTUH = id.utility(idList[10]);
+        const gum::UtilityTable<float>& UTUH = id.utility(idList[10]);
         {
           // FILLING PARAMS
           const float t[8] = {180, 2, 120, 4, 160, 0, 15, 40};
@@ -254,7 +258,7 @@ namespace gum_tests {
           UTUH.fillWith(v);
         }
 
-        const gum::UtilityTable<float> &UTUTXR = id.utility(idList[11]);
+        const gum::UtilityTable<float>& UTUTXR = id.utility(idList[11]);
         {
           // FILLING PARAMS
           const float t[4] = {0, 10, 1, 10};
@@ -263,23 +267,25 @@ namespace gum_tests {
           UTUTXR.fillWith(v);
         }
 
-      } catch (gum::Exception &e) {
-        std::cerr << std::endl << e.errorContent() << std::endl;
+      } catch (gum::Exception& e) {
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
     }
 
     public:
     // OilWildcater test variable
-    gum::LabelizedVariable *TestVar, *DrillVar;
-    gum::LabelizedVariable *ResultTestVar, *OilAmountVar;
-    gum::LabelizedVariable *TestUtilityVar, *DrillingUtilityVar;
+    gum::LabelizedVariable* TestVar, *DrillVar;
+    gum::LabelizedVariable* ResultTestVar, *OilAmountVar;
+    gum::LabelizedVariable* TestUtilityVar, *DrillingUtilityVar;
 
     // Dec-Asia test variable
-    gum::LabelizedVariable *HospitalizeVar, *TakeXRayVar;
-    gum::LabelizedVariable *SmokingVar, *BronchitisVar, *LungCancerVar, *EitherVar,
-        *DyspnoeaVar, *PositiveXRayVar, *TubercolisisVar, *VisitAsiaVar;
-    gum::LabelizedVariable *HospitalizationUtilityVar, *TakingXRayUtilityVar;
+    gum::LabelizedVariable* HospitalizeVar, *TakeXRayVar;
+    gum::LabelizedVariable* SmokingVar, *BronchitisVar, *LungCancerVar,
+        *EitherVar, *DyspnoeaVar, *PositiveXRayVar, *TubercolisisVar,
+        *VisitAsiaVar;
+    gum::LabelizedVariable* HospitalizationUtilityVar, *TakingXRayUtilityVar;
 
     void setUp() {
       TestVar = new gum::LabelizedVariable("T", "Test", 2);
@@ -301,7 +307,8 @@ namespace gum_tests {
       OilAmountVar->addLabel("Dry");
       OilAmountVar->addLabel("Wet");
       OilAmountVar->addLabel("Soak");
-      TestUtilityVar = new gum::LabelizedVariable("Ut", "Utility of Testing", 1);
+      TestUtilityVar =
+          new gum::LabelizedVariable("Ut", "Utility of Testing", 1);
       DrillingUtilityVar =
           new gum::LabelizedVariable("Ud", "Utility of Drilling", 1);
 
@@ -325,8 +332,8 @@ namespace gum_tests {
       LungCancerVar->eraseLabels();
       LungCancerVar->addLabel("Yes");
       LungCancerVar->addLabel("No");
-      EitherVar =
-          new gum::LabelizedVariable("E", "Either tuberculosis or lung cancer?", 2);
+      EitherVar = new gum::LabelizedVariable(
+          "E", "Either tuberculosis or lung cancer?", 2);
       EitherVar->eraseLabels();
       EitherVar->addLabel("Yes");
       EitherVar->addLabel("No");
@@ -375,12 +382,13 @@ namespace gum_tests {
     }
 
     void testConstructor() {
-      gum::InfluenceDiagram<float> *topology = nullptr;
+      gum::InfluenceDiagram<float>* topology = nullptr;
       gum::List<gum::NodeId> idList;
-      TS_GUM_ASSERT_THROWS_NOTHING(topology = new gum::InfluenceDiagram<float>());
+      TS_GUM_ASSERT_THROWS_NOTHING(topology =
+                                       new gum::InfluenceDiagram<float>());
       TS_GUM_ASSERT_THROWS_NOTHING(fillwithDecAsia(*topology, idList));
 
-      gum::InfluenceDiagramInference<float> *dIDI = nullptr;
+      gum::InfluenceDiagramInference<float>* dIDI = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
           dIDI = new gum::InfluenceDiagramInference<float>(*topology));
       TS_GUM_ASSERT_THROWS_NOTHING(delete dIDI);
@@ -412,26 +420,26 @@ namespace gum_tests {
       gum::LabelizedVariable uVar3("utilityVar3", "U3", 1);
       gum::LabelizedVariable uVar4("utilityVar4", "U4", 1);
 
-      idList.insert(id.addDecisionNode(dVar1)); // 0
-      idList.insert(id.addDecisionNode(dVar2)); // 1
-      idList.insert(id.addDecisionNode(dVar3)); // 2
-      idList.insert(id.addDecisionNode(dVar4)); // 3
-      idList.insert(id.addChanceNode(cVar1));   // 4
-      idList.insert(id.addChanceNode(cVar2));   // 5
-      idList.insert(id.addChanceNode(cVar3));   // 6
-      idList.insert(id.addChanceNode(cVar4));   // 7
-      idList.insert(id.addChanceNode(cVar5));   // 8
-      idList.insert(id.addChanceNode(cVar6));   // 9
-      idList.insert(id.addChanceNode(cVar7));   // 10
-      idList.insert(id.addChanceNode(cVar8));   // 11
-      idList.insert(id.addChanceNode(cVar9));   // 12
-      idList.insert(id.addChanceNode(cVar10));  // 13
-      idList.insert(id.addChanceNode(cVar11));  // 14
-      idList.insert(id.addChanceNode(cVar12));  // 15
-      idList.insert(id.addUtilityNode(uVar1));  // 16
-      idList.insert(id.addUtilityNode(uVar2));  // 17
-      idList.insert(id.addUtilityNode(uVar3));  // 18
-      idList.insert(id.addUtilityNode(uVar4));  // 19
+      idList.insert(id.addDecisionNode(dVar1));  // 0
+      idList.insert(id.addDecisionNode(dVar2));  // 1
+      idList.insert(id.addDecisionNode(dVar3));  // 2
+      idList.insert(id.addDecisionNode(dVar4));  // 3
+      idList.insert(id.addChanceNode(cVar1));    // 4
+      idList.insert(id.addChanceNode(cVar2));    // 5
+      idList.insert(id.addChanceNode(cVar3));    // 6
+      idList.insert(id.addChanceNode(cVar4));    // 7
+      idList.insert(id.addChanceNode(cVar5));    // 8
+      idList.insert(id.addChanceNode(cVar6));    // 9
+      idList.insert(id.addChanceNode(cVar7));    // 10
+      idList.insert(id.addChanceNode(cVar8));    // 11
+      idList.insert(id.addChanceNode(cVar9));    // 12
+      idList.insert(id.addChanceNode(cVar10));   // 13
+      idList.insert(id.addChanceNode(cVar11));   // 14
+      idList.insert(id.addChanceNode(cVar12));   // 15
+      idList.insert(id.addUtilityNode(uVar1));   // 16
+      idList.insert(id.addUtilityNode(uVar2));   // 17
+      idList.insert(id.addUtilityNode(uVar3));   // 18
+      idList.insert(id.addUtilityNode(uVar4));   // 19
 
       id.addArc(idList[4], idList[6]);
       id.addArc(idList[5], idList[6]);
@@ -467,12 +475,12 @@ namespace gum_tests {
     }
 
     void testInferenceWithOilWildCater() {
-      gum::InfluenceDiagram<float> *topology = nullptr;
+      gum::InfluenceDiagram<float>* topology = nullptr;
       gum::List<gum::NodeId> idList;
       topology = new gum::InfluenceDiagram<float>();
       fillwithOilWildcater(*topology, idList);
 
-      gum::InfluenceDiagramInference<float> *dIDI = nullptr;
+      gum::InfluenceDiagramInference<float>* dIDI = nullptr;
       dIDI = new gum::InfluenceDiagramInference<float>(*topology);
 
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference());
@@ -482,13 +490,13 @@ namespace gum_tests {
     }
 
     void testInferenceWithDecAsia() {
-      gum::InfluenceDiagram<float> *topology = nullptr;
+      gum::InfluenceDiagram<float>* topology = nullptr;
       gum::List<gum::NodeId> idList;
       topology = new gum::InfluenceDiagram<float>();
       fillwithDecAsia(*topology, idList);
       gum::NullStream devnull;
 
-      gum::InfluenceDiagramInference<float> *dIDI = nullptr;
+      gum::InfluenceDiagramInference<float>* dIDI = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
           dIDI = new gum::InfluenceDiagramInference<float>(*topology));
 
@@ -499,7 +507,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference());
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->getMEU());
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->getBestDecisionChoice(idList[0]));
-      TS_ASSERT_THROWS(dIDI->getBestDecisionChoice(idList[2]), gum::InvalidNode);
+      TS_ASSERT_THROWS(dIDI->getBestDecisionChoice(idList[2]),
+                       gum::InvalidNode);
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->displayResult());
 
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference());
@@ -510,14 +519,15 @@ namespace gum_tests {
     }
 
     void testInferenceWithOilWildCaterAndEvidence() {
-      gum::InfluenceDiagram<float> *topology = new gum::InfluenceDiagram<float>();
+      gum::InfluenceDiagram<float>* topology =
+          new gum::InfluenceDiagram<float>();
       gum::List<gum::NodeId> idList;
       fillwithOilWildcater(*topology, idList);
 
-      gum::Potential<float> *evidence1 = new gum::Potential<float>();
-      gum::Potential<float> *evidence2 = new gum::Potential<float>();
+      gum::Potential<float>* evidence1 = new gum::Potential<float>();
+      gum::Potential<float>* evidence2 = new gum::Potential<float>();
 
-      gum::List<const gum::Potential<float> *> e_list;
+      gum::List<const gum::Potential<float>*> e_list;
       e_list.insert(evidence1);
       e_list.insert(evidence2);
 

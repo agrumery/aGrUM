@@ -55,8 +55,8 @@ namespace gum {
 
     /// @{
     /// Default constructor
-    RangeVariable(const std::string &aName, const std::string &aDesc, Idx minVal = 0,
-                  Idx maxVal = 1);
+    RangeVariable(const std::string& aName, const std::string& aDesc,
+                  Idx minVal = 0, Idx maxVal = 1);
 
     /** Copy Constructor.
      *
@@ -64,14 +64,14 @@ namespace gum {
      *
      * @param aDRV the variable we copy
      */
-    RangeVariable(const RangeVariable &aDRV);
+    RangeVariable(const RangeVariable& aDRV);
 
     /// destructor
     virtual ~RangeVariable();
 
     /// Copy Factory.
     /// @return Returns a pointer on a new copy of this.
-    virtual DiscreteVariable *clone() const;
+    virtual DiscreteVariable* clone() const;
 
     /// @}
 
@@ -125,8 +125,8 @@ namespace gum {
      * @return the modality index from the label
      * @throw NotFound
      */
-    virtual Idx operator[](const std::string &) const;
-    virtual Idx index(const std::string &) const;
+    virtual Idx operator[](const std::string&) const;
+    virtual Idx index(const std::string&) const;
 
     /// @}
 
@@ -136,7 +136,7 @@ namespace gum {
      * Copy operator
      * @param aRV to be copied
      * @return a ref to *this */
-    RangeVariable &operator=(const RangeVariable &aRV);
+    RangeVariable& operator=(const RangeVariable& aRV);
 
     /// @}
 

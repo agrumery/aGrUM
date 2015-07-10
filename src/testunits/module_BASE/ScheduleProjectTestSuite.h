@@ -32,7 +32,7 @@ namespace gum_tests {
   class ScheduleProjectTestSuite : public CxxTest::TestSuite {
     public:
     void test_construct() {
-      std::vector<gum::LabelizedVariable *> vars(10);
+      std::vector<gum::LabelizedVariable*> vars(10);
 
       for (unsigned int i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -45,18 +45,18 @@ namespace gum_tests {
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       randomInit(pot1);
       gum::ScheduleMultiDim<float> f1(pot1);
-      gum::Set<const gum::DiscreteVariable *> del_vars;
+      gum::Set<const gum::DiscreteVariable*> del_vars;
       del_vars << vars[0] << vars[3];
 
       gum::ScheduleProject<float> myproj(f1, del_vars, gum::projectMax);
-      const gum::ScheduleMultiDim<float> &res = myproj.result();
+      const gum::ScheduleMultiDim<float>& res = myproj.result();
       TS_ASSERT(res.isAbstract());
 
       TS_ASSERT(myproj.nbOperations() == 16);
       std::pair<long, long> xxx = myproj.memoryUsage();
       TS_ASSERT(xxx.first == 4);
 
-      gum::Sequence<const gum::ScheduleMultiDim<float> *> multidims =
+      gum::Sequence<const gum::ScheduleMultiDim<float>*> multidims =
           myproj.multiDimArgs();
       TS_ASSERT(multidims.size() == 1);
       TS_ASSERT(*(multidims.atPos(0)) == f1);
@@ -74,18 +74,18 @@ namespace gum_tests {
       myproj.execute();
       TS_ASSERT(!res.isAbstract());
       TS_ASSERT(!myproj2.result().isAbstract());
-      gum::Potential<float> *res2 = proj(pot1, del_vars, 0);
+      gum::Potential<float>* res2 = proj(pot1, del_vars, 0);
       TS_ASSERT(*(res2->content()) == res.multiDim());
 
       gum::ScheduleProject<float> myproj3(f1, del_vars, gum::projectMin);
       TS_ASSERT(myproj3 != myproj);
-      const gum::ScheduleMultiDim<float> &res3 = myproj3.result();
+      const gum::ScheduleMultiDim<float>& res3 = myproj3.result();
       TS_ASSERT(res3.isAbstract());
       myproj3 = myproj;
       myproj3.execute();
       TS_ASSERT(res3.multiDim() == res.multiDim());
 
-      gum::ScheduleProject<float> *myproj4 = myproj3.newFactory();
+      gum::ScheduleProject<float>* myproj4 = myproj3.newFactory();
       TS_ASSERT(*myproj4 == myproj3);
       delete myproj4;
 
@@ -100,7 +100,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInit(gum::Potential<float> &t) {
+    void randomInit(gum::Potential<float>& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -108,12 +108,12 @@ namespace gum_tests {
     }
 
     // projection of a table over a set
-    gum::Potential<float> *
-    proj(const gum::Potential<float> &table,
-         const gum::Set<const gum::DiscreteVariable *> &del_vars,
+    gum::Potential<float>*
+    proj(const gum::Potential<float>& table,
+         const gum::Set<const gum::DiscreteVariable*>& del_vars,
          float neutral_elt) {
-      gum::Potential<float> *result = new gum::Potential<float>;
-      const gum::Sequence<const gum::DiscreteVariable *> &vars =
+      gum::Potential<float>* result = new gum::Potential<float>;
+      const gum::Sequence<const gum::DiscreteVariable*>& vars =
           table.variablesSequence();
       result->beginMultipleChanges();
 

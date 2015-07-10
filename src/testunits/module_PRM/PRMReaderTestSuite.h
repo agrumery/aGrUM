@@ -38,15 +38,16 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(res, 0);
 
-      gum::prm::PRM<double> *prm = nullptr;
+      gum::prm::PRM<double>* prm = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
       TS_ASSERT(prm != nullptr);
 
       delete (prm);
     }
 
-    void /*test*/ Regression1() { // error when attribute defined with interface as
-                                  // type
+    void /*test*/ Regression1() {  // error when attribute defined with
+                                   // interface as
+                                   // type
       gum::prm::o3prm::O3prmReader<double> reader;
       int res;
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -57,7 +58,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(res, 0);
 
-      gum::prm::PRM<double> *prm = nullptr;
+      gum::prm::PRM<double>* prm = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
       TS_ASSERT(prm != nullptr);
       delete (prm);
@@ -73,7 +74,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(res, 0);
 
-      gum::prm::PRM<double> *prm = nullptr;
+      gum::prm::PRM<double>* prm = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
       TS_ASSERT(prm != nullptr);
 
@@ -81,4 +82,4 @@ namespace gum_tests {
     }
   };
 
-} // namespace gum_tests
+}  // namespace gum_tests

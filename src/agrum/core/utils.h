@@ -45,15 +45,17 @@ namespace std {
 
   // used ,e.g., for hashtables
   template <typename T1, typename T2>
-  ostream &operator<<(ostream &stream, const pair<T1, T2> &val);
+  ostream& operator<<(ostream& stream, const pair<T1, T2>& val);
 
-  template <typename T> ostream &operator<<(ostream &stream, const vector<T> &val);
+  template <typename T>
+  ostream& operator<<(ostream& stream, const vector<T>& val);
 
 } /* namespace std */
 
 namespace gum {
 
-  /** forbidden_type<T1,T2> return the "int" type if T1 and T2 are the same type,
+  /** forbidden_type<T1,T2> return the "int" type if T1 and T2 are the same
+   *type,
    *else nothing.
    * Use it as a guard in template specification :
    *
@@ -73,20 +75,21 @@ namespace gum {
   };
 
   /// cross-platform replacement for memcmp. returns true if OK
-  bool Memcmp(const void *const _in, const void *const _out, unsigned long size);
+  bool Memcmp(const void* const _in, const void* const _out,
+              unsigned long size);
 
   /// for debug purpose
   void __atexit(void);
 
   /// indicate whether two elements are (almost) different or not
   template <typename T> struct AlmostDifferent {
-    bool operator()(const T &t1, const T &t2) {
+    bool operator()(const T& t1, const T& t2) {
       return ((t1 > t2 + (T)0.000001) || (t2 > t1 + (T)0.000001));
     }
   };
 
-  template <typename T> struct AlmostDifferent<T *> {
-    bool operator()(const T *t1, const T *t2) { return (t1 != t2); }
+  template <typename T> struct AlmostDifferent<T*> {
+    bool operator()(const T* t1, const T* t2) { return (t1 != t2); }
   };
 
 } /* namespace gum */

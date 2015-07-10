@@ -36,9 +36,9 @@ namespace gum_tests {
   class DFSCodeTestSuite : public CxxTest::TestSuite {
 
     private:
-    gum::prm::gspan::DFSCode *alpha;
-    gum::prm::gspan::DFSCode *beta;
-    gum::prm::gspan::DFSCode *gamma;
+    gum::prm::gspan::DFSCode* alpha;
+    gum::prm::gspan::DFSCode* beta;
+    gum::prm::gspan::DFSCode* gamma;
 
     int X;
     int Y;
@@ -147,21 +147,24 @@ namespace gum_tests {
     void testAlphaPrint() {
       TS_ASSERT_THROWS_NOTHING({
         std::stringstream ss;
-        ss << std::endl << (*alpha) << std::endl;
+        ss << std::endl
+           << (*alpha) << std::endl;
       });
     }
 
     void testBetaPrint() {
       TS_ASSERT_THROWS_NOTHING({
         std::stringstream ss;
-        ss << std::endl << (*beta) << std::endl;
+        ss << std::endl
+           << (*beta) << std::endl;
       });
     }
 
     void testGammaPrint() {
       TS_ASSERT_THROWS_NOTHING({
         std::stringstream ss;
-        ss << std::endl << (*gamma) << std::endl;
+        ss << std::endl
+           << (*gamma) << std::endl;
       });
     }
   };

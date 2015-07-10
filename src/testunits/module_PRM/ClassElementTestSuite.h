@@ -29,7 +29,7 @@
 
 /**
  * This class is used to test gum::prm::ClassElement, since it is an abstrac
- * class, tests defined here should be called by each sub class of 
+ * class, tests defined here should be called by each sub class of
  * gum::prm::ClassElement.
  */
 namespace gum_tests {
@@ -38,8 +38,7 @@ namespace gum_tests {
     typedef gum::prm::ClassElement<double> ClassElt;
 
     public:
-
-    void testIsReferenceSlot(const ClassElt &elt, bool expected) {
+    void testIsReferenceSlot(const ClassElt& elt, bool expected) {
       // Arrange
       // Act
       bool actual = ClassElt::isReferenceSlot(elt);
@@ -47,7 +46,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(actual, expected);
     }
 
-    void testIsAttribute(const ClassElt &elt, bool expected) {
+    void testIsAttribute(const ClassElt& elt, bool expected) {
       // Arrange
       // Act
       bool actual = ClassElt::isAttribute(elt);
@@ -55,7 +54,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(actual, expected);
     }
 
-    void testIsSlotChain(const ClassElt &elt, bool expected) {
+    void testIsSlotChain(const ClassElt& elt, bool expected) {
       // Arrange
       // Act
       bool actual = ClassElt::isSlotChain(elt);
@@ -63,7 +62,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(actual, expected);
     }
 
-    void testSetNodeId(ClassElt &elt) {
+    void testSetNodeId(ClassElt& elt) {
       // Arrange
       auto old_id = elt.id();
       auto new_id = old_id + 1;
@@ -74,7 +73,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(new_id, elt.id());
     }
 
-    void test_obj_type(const ClassElt &elt) {
+    void test_obj_type(const ClassElt& elt) {
       // Arrange
       auto expected = gum::prm::PRMObject::PRMType::CLASS_ELT;
       // Act
@@ -83,19 +82,18 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(expected, actual);
     }
 
-    void testSafeName(const ClassElt &elt) {
+    void testSafeName(const ClassElt& elt) {
       // Arrange
       std::string expected;
-      if ( ClassElt::isReferenceSlot( elt ) ) { 
-        expected = gum::prm::PRMObject::LEFT_CAST()
-          + static_cast<const gum::prm::ReferenceSlot<double>&>(elt).slotType().name()
-          + gum::prm::PRMObject::RIGHT_CAST()
-          + elt.name();
+      if (ClassElt::isReferenceSlot(elt)) {
+        expected = gum::prm::PRMObject::LEFT_CAST() +
+                   static_cast<const gum::prm::ReferenceSlot<double>&>(elt)
+                       .slotType()
+                       .name() +
+                   gum::prm::PRMObject::RIGHT_CAST() + elt.name();
       } else {
-        expected = gum::prm::PRMObject::LEFT_CAST()
-          + elt.type().name()
-          + gum::prm::PRMObject::RIGHT_CAST()
-          + elt.name();
+        expected = gum::prm::PRMObject::LEFT_CAST() + elt.type().name() +
+                   gum::prm::PRMObject::RIGHT_CAST() + elt.name();
       }
       // Act
       auto actual = elt.safeName();
@@ -103,7 +101,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(expected, actual);
     }
 
-    void testCast_NotAllowed(const ClassElt &elt) {
+    void testCast_NotAllowed(const ClassElt& elt) {
       // Arrange
       gum::LabelizedVariable foo{"foo", "A dummy variable"};
       gum::prm::Type<double> bar{foo};
@@ -111,30 +109,25 @@ namespace gum_tests {
       try {
         TS_ASSERT_THROWS(elt.cast(bar), gum::OperationNotAllowed);
       } catch (gum::OperationNotAllowed& e) {
-
       }
     }
 
-    void testCast(const ClassElt &elt, const gum::prm::Type<double> &type) {
+    void testCast(const ClassElt& elt, const gum::prm::Type<double>& type) {
       try {
-      // Arrange
-      auto expected = gum::prm::PRMObject::LEFT_CAST()
-        + type.name()
-        + gum::prm::PRMObject::RIGHT_CAST()
-        + elt.name();
-      std::string actual;
-      // Act
-      TS_ASSERT_THROWS_NOTHING(actual = elt.cast(type));
-      // Assert
-      TS_ASSERT_EQUALS(expected, actual);
-      } catch (gum::OperationNotAllowed &e) {
+        // Arrange
+        auto expected = gum::prm::PRMObject::LEFT_CAST() + type.name() +
+                        gum::prm::PRMObject::RIGHT_CAST() + elt.name();
+        std::string actual;
+        // Act
+        TS_ASSERT_THROWS_NOTHING(actual = elt.cast(type));
+        // Assert
+        TS_ASSERT_EQUALS(expected, actual);
+      } catch (gum::OperationNotAllowed& e) {
         TS_FAIL("Exception raised");
       }
     }
-
-
   };
 
-} // gum_tests
+}  // gum_tests
 
-#endif // GUM_CLASSELEMENT_TEST_SUITE_H
+#endif  // GUM_CLASSELEMENT_TEST_SUITE_H

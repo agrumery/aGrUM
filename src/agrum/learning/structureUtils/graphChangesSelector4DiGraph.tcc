@@ -36,8 +36,9 @@ namespace gum {
               typename GRAPH_CHANGES_GENERATOR>
     INLINE GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
                                         GRAPH_CHANGES_GENERATOR>::
-        GraphChangesSelector4DiGraph(SCORE &score, STRUCTURAL_CONSTRAINT &constraint,
-                                     GRAPH_CHANGES_GENERATOR &changes_generator)
+        GraphChangesSelector4DiGraph(SCORE& score,
+                                     STRUCTURAL_CONSTRAINT& constraint,
+                                     GRAPH_CHANGES_GENERATOR& changes_generator)
         : __score(&score), __constraint(&constraint),
           __changes_generator(&changes_generator) {
       __parents.reserve(32);
@@ -50,12 +51,13 @@ namespace gum {
     GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
                                  GRAPH_CHANGES_GENERATOR>::
         GraphChangesSelector4DiGraph(const GraphChangesSelector4DiGraph<
-            SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR> &from)
+            SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR>& from)
         : __score(from.__score), __constraint(from.__constraint),
-          __changes_generator(from.__changes_generator), __changes(from.__changes),
-          __change_scores(from.__change_scores),
+          __changes_generator(from.__changes_generator),
+          __changes(from.__changes), __change_scores(from.__change_scores),
           __change_queue_per_node(from.__change_queue_per_node),
-          __node_queue(from.__node_queue), __illegal_changes(from.__illegal_changes),
+          __node_queue(from.__node_queue),
+          __illegal_changes(from.__illegal_changes),
           __node_current_scores(from.__node_current_scores),
           __parents(from.__parents), __queues_valid(from.__queues_valid),
           __queues_to_update(from.__queues_to_update) {
@@ -69,7 +71,7 @@ namespace gum {
     GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
                                  GRAPH_CHANGES_GENERATOR>::
         GraphChangesSelector4DiGraph(GraphChangesSelector4DiGraph<
-            SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR> &&from)
+            SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR>&& from)
         : __score(std::move(from.__score)),
           __constraint(std::move(from.__constraint)),
           __changes_generator(std::move(from.__changes_generator)),
@@ -99,11 +101,11 @@ namespace gum {
     template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
     GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
-                                 GRAPH_CHANGES_GENERATOR> &
+                                 GRAPH_CHANGES_GENERATOR>&
         GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
                                      GRAPH_CHANGES_GENERATOR>::
         operator=(const GraphChangesSelector4DiGraph<
-            SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR> &from) {
+            SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR>& from) {
       if (this != &from) {
         __score = from.__score;
         __constraint = from.__constraint;
@@ -126,11 +128,11 @@ namespace gum {
     template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
     GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
-                                 GRAPH_CHANGES_GENERATOR> &
+                                 GRAPH_CHANGES_GENERATOR>&
         GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
                                      GRAPH_CHANGES_GENERATOR>::
-        operator=(GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
-                                               GRAPH_CHANGES_GENERATOR> &&from) {
+        operator=(GraphChangesSelector4DiGraph<
+            SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR>&& from) {
       if (this != &from) {
         __score = std::move(from.__score);
         __constraint = std::move(from.__constraint);
@@ -156,7 +158,7 @@ namespace gum {
         SCORE, STRUCTURAL_CONSTRAINT,
         GRAPH_CHANGES_GENERATOR>::__addScoreToCompute(unsigned int change_index)
         const {
-      const GraphChange &change = __changes[change_index];
+      const GraphChange& change = __changes[change_index];
 
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION: {
@@ -169,7 +171,7 @@ namespace gum {
           // remove arc ( node1 -> node2 )
           {
             std::vector<unsigned int> parents = __parents[change.node2()];
-            for (auto &par : parents) {
+            for (auto& par : parents) {
               if (par == change.node1()) {
                 par = *(parents.rbegin());
                 parents.pop_back();
@@ -190,7 +192,7 @@ namespace gum {
 
         case GraphChangeType::ARC_DELETION: {
           std::vector<unsigned int> parents = __parents[change.node2()];
-          for (auto &par : parents) {
+          for (auto& par : parents) {
             if (par == change.node1()) {
               par = *(parents.rbegin());
               parents.pop_back();
@@ -222,17 +224,17 @@ namespace gum {
               typename GRAPH_CHANGES_GENERATOR>
     INLINE bool GraphChangesSelector4DiGraph<
         SCORE, STRUCTURAL_CONSTRAINT,
-        GRAPH_CHANGES_GENERATOR>::isChangeValid(const GraphChange &change) const {
+        GRAPH_CHANGES_GENERATOR>::isChangeValid(const GraphChange& change)
+        const {
       return __constraint->checkModification(change);
     }
 
     /// sets the graph from which scores are computed
     template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    void GraphChangesSelector4DiGraph<
-        SCORE, STRUCTURAL_CONSTRAINT,
-        GRAPH_CHANGES_GENERATOR>::setGraph(DiGraph &graph,
-                                           const std::vector<unsigned int> &modal) {
+    void GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
+                                      GRAPH_CHANGES_GENERATOR>::
+        setGraph(DiGraph& graph, const std::vector<unsigned int>& modal) {
       // fill the DAG with all the missing nodes
       unsigned int nb_nodes = modal.size();
       for (unsigned int i = 0; i < nb_nodes; ++i) {
@@ -249,14 +251,16 @@ namespace gum {
       }
 
       // __constraint is the constraint used by the selector to restrict the set
-      // of applicable changes. However, the generator may have a different set of
+      // of applicable changes. However, the generator may have a different set
+      // of
       // constraints (e.g., a constraintSliceOrder needs be tested only by the
       // generator because the changes returned by the generator will always
       // statisfy this constraint, hence the selector needs not test this
       // constraint). Therefore, if the selector and generator have different
-      // constraints, both should use method setGraph() to initialize themselves.
+      // constraints, both should use method setGraph() to initialize
+      // themselves.
       __constraint->setGraph(graph);
-      if (reinterpret_cast<STRUCTURAL_CONSTRAINT *>(
+      if (reinterpret_cast<STRUCTURAL_CONSTRAINT*>(
               &(__changes_generator->constraint())) != __constraint) {
         __changes_generator->constraint().setGraph(graph);
       }
@@ -268,7 +272,7 @@ namespace gum {
       __parents.clear();
       __parents.resize(nb_nodes);
       for (unsigned int i = 0; i < nb_nodes; ++i) {
-        const NodeSet &dag_parents = graph.parents(i);
+        const NodeSet& dag_parents = graph.parents(i);
         if (dag_parents.size()) {
           __parents[i].resize(dag_parents.size());
           unsigned int j = 0;
@@ -292,7 +296,7 @@ namespace gum {
       // compute all the possible changes
       __changes.clear();
       __changes.resize(nb_nodes);
-      for (const auto &change : *__changes_generator) {
+      for (const auto& change : *__changes_generator) {
         __changes << change;
       }
       __changes_generator->notifyGetCompleted();
@@ -318,19 +322,22 @@ namespace gum {
       __change_queue_per_node.resize(nb_nodes);
       for (unsigned int i = 0, j = 0; i < __changes.size(); ++i) {
         if (!__illegal_changes.exists(i)) {
-          const GraphChange &change = __changes[i];
+          const GraphChange& change = __changes[i];
 
           if (change.type() == GraphChangeType::ARC_REVERSAL) {
-            float delta2 = __score->score(j) - __node_current_scores[change.node2()];
+            float delta2 =
+                __score->score(j) - __node_current_scores[change.node2()];
             ++j;
-            float delta1 = __score->score(j) - __node_current_scores[change.node1()];
+            float delta1 =
+                __score->score(j) - __node_current_scores[change.node1()];
             float delta = delta1 + delta2;
             __change_scores[i].first = delta1;
             __change_scores[i].second = delta2;
             __change_queue_per_node[change.node1()].insert(i, delta);
             __change_queue_per_node[change.node2()].insert(i, delta);
           } else {
-            float delta = __score->score(j) - __node_current_scores[change.node2()];
+            float delta =
+                __score->score(j) - __node_current_scores[change.node2()];
             __change_scores[i].second = delta;
             __change_queue_per_node[change.node2()].insert(i, delta);
           }
@@ -354,30 +361,32 @@ namespace gum {
     /// put a change into the illegal set
     template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    INLINE void GraphChangesSelector4DiGraph<
-        SCORE, STRUCTURAL_CONSTRAINT,
-        GRAPH_CHANGES_GENERATOR>::__invalidateChange(unsigned int change_index) {
-      const GraphChange &change = __changes[change_index];
+    INLINE void GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
+                                             GRAPH_CHANGES_GENERATOR>::
+        __invalidateChange(unsigned int change_index) {
+      const GraphChange& change = __changes[change_index];
       if (change.type() == GraphChangeType::ARC_REVERSAL) {
         // remove the tail change from its priority queue
-        PriorityQueue<unsigned int, float, std::greater<float>> &queue1 =
+        PriorityQueue<unsigned int, float, std::greater<float>>& queue1 =
             __change_queue_per_node[change.node1()];
         queue1.erase(change_index);
 
         // recompute the top priority for the changes of the head
-        const float new_priority = queue1.empty() ? std::numeric_limits<float>::min()
-                                                  : queue1.topPriority();
+        const float new_priority = queue1.empty()
+                                       ? std::numeric_limits<float>::min()
+                                       : queue1.topPriority();
         __node_queue.setPriority(change.node1(), new_priority);
       }
 
       // remove the head change from its priority queue
-      PriorityQueue<unsigned int, float, std::greater<float>> &queue2 =
+      PriorityQueue<unsigned int, float, std::greater<float>>& queue2 =
           __change_queue_per_node[change.node2()];
       queue2.erase(change_index);
 
       // recompute the top priority for the changes of the head
-      const float new_priority =
-          queue2.empty() ? std::numeric_limits<float>::min() : queue2.topPriority();
+      const float new_priority = queue2.empty()
+                                     ? std::numeric_limits<float>::min()
+                                     : queue2.topPriority();
       __node_queue.setPriority(change.node2(), new_priority);
 
       // put the change into the illegal set
@@ -392,7 +401,7 @@ namespace gum {
       // put into the illegal change set all the top elements of the different
       // queues that are not valid anymore
       if (!__queues_valid) {
-        for (auto &queue : __change_queue_per_node) {
+        for (auto& queue : __change_queue_per_node) {
           while (!queue.empty() && !__isChangeValid(queue.top())) {
             __invalidateChange(queue.top());
           }
@@ -403,16 +412,18 @@ namespace gum {
       return __node_queue.topPriority() == std::numeric_limits<float>::min();
     }
 
-    /// indicates whether the selector still contain graph changes in the ith queue
+    /// indicates whether the selector still contain graph changes in the ith
+    /// queue
     template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
     INLINE bool
     GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
-                                 GRAPH_CHANGES_GENERATOR>::empty(unsigned int i) {
+                                 GRAPH_CHANGES_GENERATOR>::empty(unsigned int
+                                                                     i) {
       // put into the illegal change set all the top elements of the different
       // queues that are not valid anymore
       if (!__queues_valid) {
-        for (auto &queue : __change_queue_per_node) {
+        for (auto& queue : __change_queue_per_node) {
           while (!queue.empty() && !__isChangeValid(queue.top())) {
             __invalidateChange(queue.top());
           }
@@ -426,8 +437,9 @@ namespace gum {
     /// returns the best graph change to examine
     template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    INLINE const GraphChange &GraphChangesSelector4DiGraph<
-        SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR>::bestChange() {
+    INLINE const GraphChange&
+    GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::bestChange() {
       if (!empty())
         return __changes[__change_queue_per_node[__node_queue.top()].top()];
       else
@@ -437,7 +449,7 @@ namespace gum {
     /// returns the best graph change to examine in the ith queue
     template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    INLINE const GraphChange &GraphChangesSelector4DiGraph<
+    INLINE const GraphChange& GraphChangesSelector4DiGraph<
         SCORE, STRUCTURAL_CONSTRAINT,
         GRAPH_CHANGES_GENERATOR>::bestChange(unsigned int i) {
       GUM_ASSERT(i < __change_queue_per_node.size());
@@ -450,8 +462,9 @@ namespace gum {
     /// return the score of the best graph change
     template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    INLINE float GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
-                                              GRAPH_CHANGES_GENERATOR>::bestScore() {
+    INLINE float
+    GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::bestScore() {
       if (!empty())
         return __change_queue_per_node[__node_queue.top()].topPriority();
       else
@@ -474,14 +487,13 @@ namespace gum {
     /// remove the now legal changes from the illegal set
     template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    INLINE void GraphChangesSelector4DiGraph<
-        SCORE, STRUCTURAL_CONSTRAINT,
-        GRAPH_CHANGES_GENERATOR>::__illegal2LegalChanges(Set<unsigned int> &
-                                                             changes_to_recompute) {
+    INLINE void GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
+                                             GRAPH_CHANGES_GENERATOR>::
+        __illegal2LegalChanges(Set<unsigned int>& changes_to_recompute) {
       for (auto iter = __illegal_changes.beginSafe();
            iter != __illegal_changes.endSafe(); ++iter) {
         if (__isChangeValid(*iter)) {
-          const GraphChange &change = __changes[*iter];
+          const GraphChange& change = __changes[*iter];
           if (change.type() == GraphChangeType::ARC_REVERSAL) {
             __change_queue_per_node[change.node1()].insert(
                 *iter, std::numeric_limits<float>::min());
@@ -500,11 +512,12 @@ namespace gum {
               typename GRAPH_CHANGES_GENERATOR>
     INLINE void GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
                                              GRAPH_CHANGES_GENERATOR>::
-        __findLegalChangesNeedingUpdate(Set<unsigned int> &changes_to_recompute,
+        __findLegalChangesNeedingUpdate(Set<unsigned int>& changes_to_recompute,
                                         NodeId target_node) {
-      const HashTable<unsigned int, Size> &changes =
+      const HashTable<unsigned int, Size>& changes =
           __change_queue_per_node[target_node].allValues();
-      for (auto iter = changes.cbeginSafe(); iter != changes.cendSafe(); ++iter) {
+      for (auto iter = changes.cbeginSafe(); iter != changes.cendSafe();
+           ++iter) {
         if (!changes_to_recompute.exists(iter.key())) {
           if (__isChangeValid(iter.key())) {
             changes_to_recompute.insert(iter.key());
@@ -518,10 +531,9 @@ namespace gum {
     /// perform the necessary updates of the scores
     template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    INLINE void GraphChangesSelector4DiGraph<
-        SCORE, STRUCTURAL_CONSTRAINT,
-        GRAPH_CHANGES_GENERATOR>::__updateScores(const Set<unsigned int> &
-                                                     changes_to_recompute) {
+    INLINE void GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
+                                             GRAPH_CHANGES_GENERATOR>::
+        __updateScores(const Set<unsigned int>& changes_to_recompute) {
       // prepare the computations of the cores
       __score->clear();
       for (const auto change_index : changes_to_recompute) {
@@ -532,7 +544,7 @@ namespace gum {
       unsigned int j = 0;
       Set<unsigned int> modified_nodes(changes_to_recompute.size());
       for (const auto change_index : changes_to_recompute) {
-        const GraphChange &change = __changes[change_index];
+        const GraphChange& change = __changes[change_index];
         if (change.type() == GraphChangeType::ARC_REVERSAL) {
           // get the scores of both the tail and the head
           const float delta2 =
@@ -547,8 +559,10 @@ namespace gum {
           __change_scores[change_index].second = delta2;
 
           // update the queues
-          __change_queue_per_node[change.node1()].setPriority(change_index, delta);
-          __change_queue_per_node[change.node2()].setPriority(change_index, delta);
+          __change_queue_per_node[change.node1()].setPriority(change_index,
+                                                              delta);
+          __change_queue_per_node[change.node2()].setPriority(change_index,
+                                                              delta);
 
           // indicate which queues were modified
           modified_nodes.insert(change.node1());
@@ -562,7 +576,8 @@ namespace gum {
           __change_scores[change_index].second = delta;
 
           // update the head queue
-          __change_queue_per_node[change.node2()].setPriority(change_index, delta);
+          __change_queue_per_node[change.node2()].setPriority(change_index,
+                                                              delta);
 
           // indicate which queue was modified
           modified_nodes.insert(change.node2());
@@ -573,20 +588,21 @@ namespace gum {
 
       // update the node queue
       for (auto node : modified_nodes) {
-        __node_queue.setPriority(node,
-                                 __change_queue_per_node[node].empty()
-                                     ? std::numeric_limits<float>::min()
-                                     : __change_queue_per_node[node].topPriority());
+        __node_queue.setPriority(
+            node, __change_queue_per_node[node].empty()
+                      ? std::numeric_limits<float>::min()
+                      : __change_queue_per_node[node].topPriority());
       }
     }
 
     /// get from the graph change generator a new set of changes
     template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    INLINE void GraphChangesSelector4DiGraph<
-        SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR>::__getNewChanges() {
+    INLINE void
+    GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::__getNewChanges() {
       // ask the graph change generator for all its available changes
-      for (const auto &change : *__changes_generator) {
+      for (const auto& change : *__changes_generator) {
         // check that the change does not already exist
         if (!__changes.exists(change)) {
           // add the new change. To make the addition simple, we put the new
@@ -594,8 +610,9 @@ namespace gum {
           // function will put the legal changes again in the queues
           __illegal_changes.insert(__changes.size());
           __changes << change;
-          __change_scores.push_back(std::pair<float, float>(
-              std::numeric_limits<float>::min(), std::numeric_limits<float>::min()));
+          __change_scores.push_back(
+              std::pair<float, float>(std::numeric_limits<float>::min(),
+                                      std::numeric_limits<float>::min()));
         }
       }
 
@@ -608,7 +625,7 @@ namespace gum {
               typename GRAPH_CHANGES_GENERATOR>
     INLINE void GraphChangesSelector4DiGraph<
         SCORE, STRUCTURAL_CONSTRAINT,
-        GRAPH_CHANGES_GENERATOR>::applyChange(const GraphChange &change) {
+        GRAPH_CHANGES_GENERATOR>::applyChange(const GraphChange& change) {
       // first, we get the index of the change
       unsigned change_index = __changes.pos(change);
 
@@ -622,16 +639,17 @@ namespace gum {
           __parents[change.node2()].push_back(change.node1());
 
           // inform the constraint that the graph has been modified
-          __constraint->modifyGraph(static_cast<const ArcAddition &>(change));
-          if (reinterpret_cast<STRUCTURAL_CONSTRAINT *>(
+          __constraint->modifyGraph(static_cast<const ArcAddition&>(change));
+          if (reinterpret_cast<STRUCTURAL_CONSTRAINT*>(
                   &(__changes_generator->constraint())) != __constraint) {
             __changes_generator->constraint().modifyGraph(
-                static_cast<const ArcAddition &>(change));
+                static_cast<const ArcAddition&>(change));
           }
 
           // get new possible changes from the graph change generator
           // warning: put the next 3 lines before calling __illegal2LegalChanges
-          __changes_generator->modifyGraph(static_cast<const ArcAddition &>(change));
+          __changes_generator->modifyGraph(
+              static_cast<const ArcAddition&>(change));
           __getNewChanges();
 
           // check whether some illegal changes can be put into the valid queues
@@ -645,8 +663,8 @@ namespace gum {
           // update the current score
           __node_current_scores[change.node2()] +=
               __change_scores[change_index].second;
-          std::vector<unsigned int> &parents = __parents[change.node2()];
-          for (auto &par : parents) {
+          std::vector<unsigned int>& parents = __parents[change.node2()];
+          for (auto& par : parents) {
             if (par == change.node1()) {
               par = *(parents.rbegin());
               parents.pop_back();
@@ -655,16 +673,17 @@ namespace gum {
           }
 
           // inform the constraint that the graph has been modified
-          __constraint->modifyGraph(static_cast<const ArcDeletion &>(change));
-          if (reinterpret_cast<STRUCTURAL_CONSTRAINT *>(
+          __constraint->modifyGraph(static_cast<const ArcDeletion&>(change));
+          if (reinterpret_cast<STRUCTURAL_CONSTRAINT*>(
                   &(__changes_generator->constraint())) != __constraint) {
             __changes_generator->constraint().modifyGraph(
-                static_cast<const ArcDeletion &>(change));
+                static_cast<const ArcDeletion&>(change));
           }
 
           // get new possible changes from the graph change generator
           // warning: put the next 3 lines before calling __illegal2LegalChanges
-          __changes_generator->modifyGraph(static_cast<const ArcDeletion &>(change));
+          __changes_generator->modifyGraph(
+              static_cast<const ArcDeletion&>(change));
           __getNewChanges();
 
           // check whether some illegal changes can be put into the valid queues
@@ -681,8 +700,8 @@ namespace gum {
           __node_current_scores[change.node2()] +=
               __change_scores[change_index].second;
           __parents[change.node1()].push_back(change.node2());
-          std::vector<unsigned int> &parents = __parents[change.node2()];
-          for (auto &par : parents) {
+          std::vector<unsigned int>& parents = __parents[change.node2()];
+          for (auto& par : parents) {
             if (par == change.node1()) {
               par = *(parents.rbegin());
               parents.pop_back();
@@ -691,16 +710,17 @@ namespace gum {
           }
 
           // inform the constraint that the graph has been modified
-          __constraint->modifyGraph(static_cast<const ArcReversal &>(change));
-          if (reinterpret_cast<STRUCTURAL_CONSTRAINT *>(
+          __constraint->modifyGraph(static_cast<const ArcReversal&>(change));
+          if (reinterpret_cast<STRUCTURAL_CONSTRAINT*>(
                   &(__changes_generator->constraint())) != __constraint) {
             __changes_generator->constraint().modifyGraph(
-                static_cast<const ArcReversal &>(change));
+                static_cast<const ArcReversal&>(change));
           }
 
           // get new possible changes from the graph change generator
           // warning: put the next 3 lines before calling __illegal2LegalChanges
-          __changes_generator->modifyGraph(static_cast<const ArcReversal &>(change));
+          __changes_generator->modifyGraph(
+              static_cast<const ArcReversal&>(change));
           __getNewChanges();
 
           // check whether some illegal changes can be put into the valid queues
@@ -721,10 +741,9 @@ namespace gum {
     /// applies several changes at a time
     template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
-    INLINE void GraphChangesSelector4DiGraph<
-        SCORE, STRUCTURAL_CONSTRAINT,
-        GRAPH_CHANGES_GENERATOR>::applyChangeWithoutScoreUpdate(const GraphChange &
-                                                                    change) {
+    INLINE void GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
+                                             GRAPH_CHANGES_GENERATOR>::
+        applyChangeWithoutScoreUpdate(const GraphChange& change) {
       // first, we get the index of the change
       unsigned change_index = __changes.pos(change);
 
@@ -737,22 +756,24 @@ namespace gum {
           __parents[change.node2()].push_back(change.node1());
 
           // inform the constraint that the graph has been modified
-          __constraint->modifyGraph(static_cast<const ArcAddition &>(change));
-          if (reinterpret_cast<STRUCTURAL_CONSTRAINT *>(
+          __constraint->modifyGraph(static_cast<const ArcAddition&>(change));
+          if (reinterpret_cast<STRUCTURAL_CONSTRAINT*>(
                   &(__changes_generator->constraint())) != __constraint) {
             __changes_generator->constraint().modifyGraph(
-                static_cast<const ArcAddition &>(change));
+                static_cast<const ArcAddition&>(change));
           }
 
           // get new possible changes from the graph change generator
           // warning: put the next 3 lines before calling __illegal2LegalChanges
-          __changes_generator->modifyGraph(static_cast<const ArcAddition &>(change));
+          __changes_generator->modifyGraph(
+              static_cast<const ArcAddition&>(change));
           __getNewChanges();
 
           // indicate that we have just applied the change
           __invalidateChange(change_index);
 
-          // indicate that the queue to which the change belongs needs be updated
+          // indicate that the queue to which the change belongs needs be
+          // updated
           __queues_to_update.insert(change.node2());
         } break;
 
@@ -760,8 +781,8 @@ namespace gum {
           // update the current score
           __node_current_scores[change.node2()] +=
               __change_scores[change_index].second;
-          std::vector<unsigned int> &parents = __parents[change.node2()];
-          for (auto &par : parents) {
+          std::vector<unsigned int>& parents = __parents[change.node2()];
+          for (auto& par : parents) {
             if (par == change.node1()) {
               par = *(parents.rbegin());
               parents.pop_back();
@@ -770,22 +791,24 @@ namespace gum {
           }
 
           // inform the constraint that the graph has been modified
-          __constraint->modifyGraph(static_cast<const ArcDeletion &>(change));
-          if (reinterpret_cast<STRUCTURAL_CONSTRAINT *>(
+          __constraint->modifyGraph(static_cast<const ArcDeletion&>(change));
+          if (reinterpret_cast<STRUCTURAL_CONSTRAINT*>(
                   &(__changes_generator->constraint())) != __constraint) {
             __changes_generator->constraint().modifyGraph(
-                static_cast<const ArcDeletion &>(change));
+                static_cast<const ArcDeletion&>(change));
           }
 
           // get new possible changes from the graph change generator
           // warning: put the next 3 lines before calling __illegal2LegalChanges
-          __changes_generator->modifyGraph(static_cast<const ArcDeletion &>(change));
+          __changes_generator->modifyGraph(
+              static_cast<const ArcDeletion&>(change));
           __getNewChanges();
 
           // indicate that we have just applied the change
           __invalidateChange(change_index);
 
-          // indicate that the queue to which the change belongs needs be updated
+          // indicate that the queue to which the change belongs needs be
+          // updated
           __queues_to_update.insert(change.node2());
         } break;
 
@@ -796,8 +819,8 @@ namespace gum {
           __node_current_scores[change.node2()] +=
               __change_scores[change_index].second;
           __parents[change.node1()].push_back(change.node2());
-          std::vector<unsigned int> &parents = __parents[change.node2()];
-          for (auto &par : parents) {
+          std::vector<unsigned int>& parents = __parents[change.node2()];
+          for (auto& par : parents) {
             if (par == change.node1()) {
               par = *(parents.rbegin());
               parents.pop_back();
@@ -806,22 +829,24 @@ namespace gum {
           }
 
           // inform the constraint that the graph has been modified
-          __constraint->modifyGraph(static_cast<const ArcReversal &>(change));
-          if (reinterpret_cast<STRUCTURAL_CONSTRAINT *>(
+          __constraint->modifyGraph(static_cast<const ArcReversal&>(change));
+          if (reinterpret_cast<STRUCTURAL_CONSTRAINT*>(
                   &(__changes_generator->constraint())) != __constraint) {
             __changes_generator->constraint().modifyGraph(
-                static_cast<const ArcReversal &>(change));
+                static_cast<const ArcReversal&>(change));
           }
 
           // get new possible changes from the graph change generator
           // warning: put the next 3 lines before calling __illegal2LegalChanges
-          __changes_generator->modifyGraph(static_cast<const ArcReversal &>(change));
+          __changes_generator->modifyGraph(
+              static_cast<const ArcReversal&>(change));
           __getNewChanges();
 
           // indicate that we have just applied the change
           __invalidateChange(change_index);
 
-          // indicate that the queue to which the change belongs needs be updated
+          // indicate that the queue to which the change belongs needs be
+          // updated
           __queues_to_update.insert(change.node1());
           __queues_to_update.insert(change.node2());
         } break;
@@ -849,14 +874,14 @@ namespace gum {
 
       // update the scores that need be updated
       Set<unsigned int> changes_to_recompute;
-      for (const auto &node : __queues_to_update) {
+      for (const auto& node : __queues_to_update) {
         __findLegalChangesNeedingUpdate(changes_to_recompute, node);
       }
       __queues_to_update.clear();
 
       // put the previously illegal changes that are now legal into their queues
       for (const auto change_index : new_legal_changes) {
-        const GraphChange &change = __changes[change_index];
+        const GraphChange& change = __changes[change_index];
         if (change.type() == GraphChangeType::ARC_REVERSAL) {
           __change_queue_per_node[change.node1()].insert(
               change_index, std::numeric_limits<float>::min());
@@ -877,9 +902,9 @@ namespace gum {
     template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
     INLINE std::vector<std::pair<unsigned int, float>>
-    GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
-                                 GRAPH_CHANGES_GENERATOR>::nodesSortedByBestScore()
-        const {
+    GraphChangesSelector4DiGraph<
+        SCORE, STRUCTURAL_CONSTRAINT,
+        GRAPH_CHANGES_GENERATOR>::nodesSortedByBestScore() const {
       std::vector<std::pair<unsigned int, float>> result(__node_queue.size());
       for (unsigned int i = 0; i < __node_queue.size(); ++i) {
         result[i].first = __node_queue[i];
@@ -887,8 +912,8 @@ namespace gum {
       }
 
       std::sort(result.begin(), result.end(),
-                [](const std::pair<unsigned int, float> &a,
-                   const std::pair<unsigned int, float> &b)
+                [](const std::pair<unsigned int, float>& a,
+                   const std::pair<unsigned int, float>& b)
                     -> bool { return a.second > b.second; });
 
       return result;
@@ -898,9 +923,9 @@ namespace gum {
     template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
     INLINE std::vector<std::pair<unsigned int, float>>
-    GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
-                                 GRAPH_CHANGES_GENERATOR>::nodesUnsortedWithScore()
-        const {
+    GraphChangesSelector4DiGraph<
+        SCORE, STRUCTURAL_CONSTRAINT,
+        GRAPH_CHANGES_GENERATOR>::nodesUnsortedWithScore() const {
       std::vector<std::pair<unsigned int, float>> result(__node_queue.size());
       for (unsigned int i = 0; i < __node_queue.size(); ++i) {
         result[i].first = __node_queue[i];
@@ -914,10 +939,10 @@ namespace gum {
     template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
     INLINE typename GraphChangesSelector4DiGraph<
-        SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR>::GeneratorType &
-    GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
-                                 GRAPH_CHANGES_GENERATOR>::graphChangeGenerator()
-        const noexcept {
+        SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR>::GeneratorType&
+    GraphChangesSelector4DiGraph<
+        SCORE, STRUCTURAL_CONSTRAINT,
+        GRAPH_CHANGES_GENERATOR>::graphChangeGenerator() const noexcept {
       return *__changes_generator;
     }
 

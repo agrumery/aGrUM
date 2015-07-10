@@ -53,7 +53,7 @@ namespace gum {
     }
 
     /// constructor starting with a given graph
-    StructuralConstraintDAG::StructuralConstraintDAG(const DAG &graph) {
+    StructuralConstraintDAG::StructuralConstraintDAG(const DAG& graph) {
       StructuralConstraintDiGraph::setGraph(graph);
       _DAG__cycle_detector.setDAG(graph);
 
@@ -62,14 +62,15 @@ namespace gum {
 
     /// copy constructor
     StructuralConstraintDAG::StructuralConstraintDAG(
-        const StructuralConstraintDAG &from)
+        const StructuralConstraintDAG& from)
         : StructuralConstraintDiGraph(from),
           _DAG__cycle_detector(from._DAG__cycle_detector) {
       GUM_CONS_CPY(StructuralConstraintDAG);
     }
 
     /// move constructor
-    StructuralConstraintDAG::StructuralConstraintDAG(StructuralConstraintDAG &&from)
+    StructuralConstraintDAG::StructuralConstraintDAG(
+        StructuralConstraintDAG&& from)
         : StructuralConstraintDiGraph(std::move(from)),
           _DAG__cycle_detector(std::move(from._DAG__cycle_detector)) {
       GUM_CONS_MOV(StructuralConstraintDAG);
@@ -81,8 +82,8 @@ namespace gum {
     }
 
     /// copy operator
-    StructuralConstraintDAG &StructuralConstraintDAG::
-    operator=(const StructuralConstraintDAG &from) {
+    StructuralConstraintDAG& StructuralConstraintDAG::
+    operator=(const StructuralConstraintDAG& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(from);
         _DAG__cycle_detector = from._DAG__cycle_detector;
@@ -91,8 +92,8 @@ namespace gum {
     }
 
     /// move operator
-    StructuralConstraintDAG &StructuralConstraintDAG::
-    operator=(StructuralConstraintDAG &&from) {
+    StructuralConstraintDAG& StructuralConstraintDAG::
+    operator=(StructuralConstraintDAG&& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(std::move(from));
         _DAG__cycle_detector = std::move(from._DAG__cycle_detector);

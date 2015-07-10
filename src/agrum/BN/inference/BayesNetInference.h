@@ -44,7 +44,7 @@ namespace gum {
     /**
      * Default constructor
      */
-    BayesNetInference(const IBayesNet<GUM_SCALAR> &bn);
+    BayesNetInference(const IBayesNet<GUM_SCALAR>& bn);
 
     /**
      * Destructor.
@@ -67,7 +67,7 @@ namespace gum {
      * @throw NotFound Raised if no variable matches id.
      * @throw OperationNotAllowed Raised if the inference can not be done.
      */
-    virtual const Potential<GUM_SCALAR> &posterior(NodeId id);
+    virtual const Potential<GUM_SCALAR>& posterior(NodeId id);
 
     /**
      * Insert new evidence in the inference.
@@ -80,7 +80,7 @@ namespace gum {
      *variable.
      */
     virtual void
-    insertEvidence(const List<const Potential<GUM_SCALAR> *> &pot_list) = 0;
+    insertEvidence(const List<const Potential<GUM_SCALAR>*>& pot_list) = 0;
 
     /**
      * Insert a new hard evidence in the inference
@@ -94,7 +94,7 @@ namespace gum {
      *
      * @warning the potential has to be deleted aterward.
      */
-    virtual void eraseEvidence(const Potential<GUM_SCALAR> *e) = 0;
+    virtual void eraseEvidence(const Potential<GUM_SCALAR>* e) = 0;
 
     /**
      * Remove all evidence from the graph.
@@ -104,24 +104,28 @@ namespace gum {
     /**
      * Returns a constant reference over the IBayesNet on which this class work.
      */
-    const IBayesNet<GUM_SCALAR> &bn() const;
+    const IBayesNet<GUM_SCALAR>& bn() const;
 
     protected:
     /**
      * @brief Fill the potential with the computed posterior
      *
-     * This method is called when a BayesNetInference user ask for the posterior of
+     * This method is called when a BayesNetInference user ask for the posterior
+     *of
      * a given variable.
      *
-     * The reference "posterior" is a reference over an empty Potential, it doesn't
-     * even contains a reference over the variable's DiscreteVariable (don't forget
+     * The reference "posterior" is a reference over an empty Potential, it
+     *doesn't
+     * even contains a reference over the variable's DiscreteVariable (don't
+     *forget
      * to add it!).
      *
      * @param id The variable's id.
      * @param posterior The completely empty potential to fill.
      * @throw ElementNotFound Raised if no variable matches id.
      */
-    virtual void _fillPosterior(NodeId id, Potential<GUM_SCALAR> &posterior) = 0;
+    virtual void _fillPosterior(NodeId id,
+                                Potential<GUM_SCALAR>& posterior) = 0;
 
     /**
      * Invalidate the set of posterior kept here.
@@ -131,17 +135,18 @@ namespace gum {
     /**
      * Mapping between posterior and __bayesNet's nodes.
      */
-    NodeProperty<Potential<GUM_SCALAR> *> _posteriors;
+    NodeProperty<Potential<GUM_SCALAR>*> _posteriors;
 
     private:
     /**
      * The Bayes net we wish to perform inference on.
      */
-    const IBayesNet<GUM_SCALAR> &__bayesNet;
+    const IBayesNet<GUM_SCALAR>& __bayesNet;
 
-    // list of potential created by internal methods (addHardEvidence for instance)
+    // list of potential created by internal methods (addHardEvidence for
+    // instance)
     // to be deleted during the destruction of the inference
-    List<const Potential<GUM_SCALAR> *> __garbages;
+    List<const Potential<GUM_SCALAR>*> __garbages;
   };
 
   extern template class BayesNetInference<float>;

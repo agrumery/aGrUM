@@ -43,9 +43,10 @@ namespace gum {
         if (values.empty()) {
           __check_database = true;
         } else {
-          // if we do not want to parse the database, store all the values directly
+          // if we do not want to parse the database, store all the values
+          // directly
           DBCell cell;
-          for (const auto &str : values) {
+          for (const auto& str : values) {
             cell.setStringSafe(str);
             __strings.insert(cell.getStringIndex(), __max_value);
             ++__max_value;
@@ -68,7 +69,7 @@ namespace gum {
         std::vector<std::pair<unsigned int, unsigned int>> user_vals;
         for (unsigned int i = 0; i < __max_value; ++i) {
           const unsigned int str_index = __strings.first(i);
-          const std::string &str = DBCell::getString(str_index);
+          const std::string& str = DBCell::getString(str_index);
           if (__user_values->exists(str)) {
             user_vals.push_back(std::pair<unsigned int, unsigned int>(
                 str_index, __user_values->pos(str)));
@@ -79,14 +80,14 @@ namespace gum {
 
         // reorder user_vals in increasing order of the second argument
         std::sort(user_vals.begin(), user_vals.end(),
-                  [](const std::pair<unsigned int, unsigned int> &elt1,
-                     const std::pair<unsigned int, unsigned int> &elt2)
+                  [](const std::pair<unsigned int, unsigned int>& elt1,
+                     const std::pair<unsigned int, unsigned int>& elt2)
                       -> bool { return elt1.second < elt2.second; });
 
         // restore in the appropriate order the element of __strings
         __strings.clear();
         __max_value = 0;
-        for (const auto &str : user_vals) {
+        for (const auto& str : user_vals) {
           __strings.insert(str.first, __max_value);
           ++__max_value;
         }
@@ -101,9 +102,11 @@ namespace gum {
       }
     }
 
-    /// specify the set of possible values (to do before creating the row filter)
-    void CellTranslatorString::setUserValues(const Sequence<std::string> &values,
-                                             bool check_database) {
+    /// specify the set of possible values (to do before creating the row
+    /// filter)
+    void
+    CellTranslatorString::setUserValues(const Sequence<std::string>& values,
+                                        bool check_database) {
       // clear all current data
       __strings.clear();
       __max_value = 0;
@@ -119,9 +122,10 @@ namespace gum {
         if (values.empty()) {
           __check_database = true;
         } else {
-          // if we do not want to parse the database, store all the values directly
+          // if we do not want to parse the database, store all the values
+          // directly
           DBCell cell;
-          for (const auto &str : values) {
+          for (const auto& str : values) {
             cell.setStringSafe(str);
             __strings.insert(cell.getStringIndex(), __max_value);
             ++__max_value;

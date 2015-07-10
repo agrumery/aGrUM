@@ -31,9 +31,11 @@
 
 namespace gum {
 
-  /* =========================================================================== */
-  /* ===                   GUM_HASH_FUNC_BASE IMPLEMENTATION                  ===*/
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===                   GUM_HASH_FUNC_BASE IMPLEMENTATION ===*/
+  /* ===========================================================================
+   */
 
   /// update the hash function to take into account a resize of the hash table
   template <typename Key> INLINE void HashFuncBase<Key>::resize(Size new_size) {
@@ -52,12 +54,15 @@ namespace gum {
     return _hash_size;
   }
 
-  /* =========================================================================== */
-  /* ===                 GUM_HASH_FUNC_SMALL_KEY IMPLEMENTATION               ===*/
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===                 GUM_HASH_FUNC_SMALL_KEY IMPLEMENTATION ===*/
+  /* ===========================================================================
+   */
 
   /// update the hash function to take into account a resize of the hash table
-  template <typename Key> INLINE void HashFuncSmallKey<Key>::resize(Size new_size) {
+  template <typename Key>
+  INLINE void HashFuncSmallKey<Key>::resize(Size new_size) {
     static_assert(std::is_integral<Key>::value &&
                       sizeof(Key) <= sizeof(unsigned long),
                   "Error: using HashFuncSmallKey for a key which cannot be "
@@ -69,13 +74,15 @@ namespace gum {
   /// returns a hashed key for hash tables the keys of which are represented
   /// by "small" integers
   template <typename Key>
-  INLINE Size HashFuncSmallKey<Key>::operator()(const Key &key) const {
+  INLINE Size HashFuncSmallKey<Key>::operator()(const Key& key) const {
     return (((unsigned long)key * HashFuncConst::gold) >> _right_shift);
   }
 
-  /* =========================================================================== */
-  /* ===              GUM_HASH_FUNC_SMALL_CAST_KEY IMPLEMENTATION             ===*/
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===              GUM_HASH_FUNC_SMALL_CAST_KEY IMPLEMENTATION ===*/
+  /* ===========================================================================
+   */
 
   /// basic constructor
   template <typename Key>
@@ -95,21 +102,24 @@ namespace gum {
 
   /// returns the value of a key as an unsigned long
   template <typename Key>
-  INLINE Size HashFuncSmallCastKey<Key>::castToSize(const Key &key) const {
-    return *((unsigned long *)(&key)) & _small_key_mask;
+  INLINE Size HashFuncSmallCastKey<Key>::castToSize(const Key& key) const {
+    return *((unsigned long*)(&key)) & _small_key_mask;
   }
 
   /// returns a hashed key for hash tables the keys of which are represented
   /// by "small" integers
   template <typename Key>
-  INLINE Size HashFuncSmallCastKey<Key>::operator()(const Key &key) const {
-    return (((*((unsigned long *)(&key)) & _small_key_mask) * HashFuncConst::gold) >>
-            _right_shift);
+  INLINE Size HashFuncSmallCastKey<Key>::operator()(const Key& key) const {
+    return (
+        ((*((unsigned long*)(&key)) & _small_key_mask) * HashFuncConst::gold) >>
+        _right_shift);
   }
 
-  /* =========================================================================== */
-  /* ===             GUM_HASH_FUNC_MEDIUM_CAST_KEY IMPLEMENTATION             ===*/
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===             GUM_HASH_FUNC_MEDIUM_CAST_KEY IMPLEMENTATION ===*/
+  /* ===========================================================================
+   */
 
   /// update the hash function to take into account a resize of the hash table
   template <typename Key>
@@ -123,20 +133,22 @@ namespace gum {
 
   /// returns the value of a key as an unsigned long
   template <typename Key>
-  INLINE Size HashFuncMediumCastKey<Key>::castToSize(const Key &key) const {
-    return *((unsigned long *)(&key));
+  INLINE Size HashFuncMediumCastKey<Key>::castToSize(const Key& key) const {
+    return *((unsigned long*)(&key));
   }
 
   /// returns a hashed key for hash tables the keys of which are represented
   /// by "small" integers
   template <typename Key>
-  INLINE Size HashFuncMediumCastKey<Key>::operator()(const Key &key) const {
-    return ((*((unsigned long *)(&key)) * HashFuncConst::gold) >> _right_shift);
+  INLINE Size HashFuncMediumCastKey<Key>::operator()(const Key& key) const {
+    return ((*((unsigned long*)(&key)) * HashFuncConst::gold) >> _right_shift);
   }
 
-  /* =========================================================================== */
-  /* ===             GUM_HASH_FUNC_LARGE_CAST_KEY IMPLEMENTATION             ===*/
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===             GUM_HASH_FUNC_LARGE_CAST_KEY IMPLEMENTATION ===*/
+  /* ===========================================================================
+   */
 
   /// update the hash function to take into account a resize of the hash table
   template <typename Key>
@@ -150,22 +162,25 @@ namespace gum {
 
   /// returns the value of a key as an unsigned long
   template <typename Key>
-  INLINE Size HashFuncLargeCastKey<Key>::castToSize(const Key &key) const {
-    const unsigned long *ptr = reinterpret_cast<const unsigned long *>(&key);
+  INLINE Size HashFuncLargeCastKey<Key>::castToSize(const Key& key) const {
+    const unsigned long* ptr = reinterpret_cast<const unsigned long*>(&key);
     return ptr[0] ^ ptr[1];
   }
 
   /// returns a hashed key for hash tables the keys of which are represented
   /// by "small" integers
   template <typename Key>
-  INLINE Size HashFuncLargeCastKey<Key>::operator()(const Key &key) const {
-    const unsigned long *ptr = reinterpret_cast<const unsigned long *>(&key);
+  INLINE Size HashFuncLargeCastKey<Key>::operator()(const Key& key) const {
+    const unsigned long* ptr = reinterpret_cast<const unsigned long*>(&key);
     return ((ptr[0] ^ ptr[1]) * HashFuncConst::gold) >> _right_shift;
   }
 
-  /* =========================================================================== */
-  /* ===              GUM_HASH_FUNC_SMALL_KEY_PAIR IMPLEMENTATION            === */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===              GUM_HASH_FUNC_SMALL_KEY_PAIR IMPLEMENTATION            ===
+   */
+  /* ===========================================================================
+   */
 
   /// update the hash function to take into account a resize of the hash table
   template <typename Key1, typename Key2>
@@ -179,23 +194,26 @@ namespace gum {
                   "Error: using HashFuncSmallKeyPair for key2 which cannot be "
                   "converted (without narrowing) into a long int");
     HashFuncBase<std::pair<Key1, Key2>>::resize(new_size);
-    _right_shift =
-        HashFuncConst::offset - HashFuncBase<std::pair<Key1, Key2>>::_hash_log2_size;
+    _right_shift = HashFuncConst::offset -
+                   HashFuncBase<std::pair<Key1, Key2>>::_hash_log2_size;
   }
 
   /// returns a hashed key for hash tables the keys of which are represented
   /// by pairs of "small" integers
   template <typename Key1, typename Key2>
   INLINE Size HashFuncSmallKeyPair<Key1, Key2>::
-  operator()(const std::pair<Key1, Key2> &key) const {
+  operator()(const std::pair<Key1, Key2>& key) const {
     return (((unsigned long)key.first * HashFuncConst::gold +
              (unsigned long)key.second * HashFuncConst::pi) >>
             _right_shift);
   }
 
-  /* =========================================================================== */
-  /* ===              GUM_HASH_FUNC_CAST_KEY_PAIR IMPLEMENTATION             === */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===              GUM_HASH_FUNC_CAST_KEY_PAIR IMPLEMENTATION             ===
+   */
+  /* ===========================================================================
+   */
 
   /// update the hash function to take into account a resize of the hash table
   template <typename Key1, typename Key2, typename Func1, typename Func2>
@@ -204,15 +222,15 @@ namespace gum {
     __func1.resize(new_size);
     __func2.resize(new_size);
     HashFuncBase<std::pair<Key1, Key2>>::resize(new_size);
-    _right_shift =
-        HashFuncConst::offset - HashFuncBase<std::pair<Key1, Key2>>::_hash_log2_size;
+    _right_shift = HashFuncConst::offset -
+                   HashFuncBase<std::pair<Key1, Key2>>::_hash_log2_size;
   }
 
   /// returns a hashed key for hash tables the keys of which are represented
   /// by pairs of "small" integers
   template <typename Key1, typename Key2, typename Func1, typename Func2>
   INLINE Size HashFuncAllCastKeyPair<Key1, Key2, Func1, Func2>::
-  operator()(const std::pair<Key1, Key2> &key) const {
+  operator()(const std::pair<Key1, Key2>& key) const {
     return (__func1.castToSize(key.first) * HashFuncConst::gold +
             __func2.castToSize(key.second) * HashFuncConst::pi) >>
            _right_shift;
@@ -221,11 +239,12 @@ namespace gum {
   /// returns a hashed key for hash tables the keys of which are represented
   /// by RefPtr<Type>
   template <typename Type>
-  INLINE Size HashFunc<RefPtr<Type>>::operator()(const RefPtr<Type> &key) const {
+  INLINE Size HashFunc<RefPtr<Type>>::
+  operator()(const RefPtr<Type>& key) const {
     static_assert(sizeof(RefPtr<Type>) == sizeof(long),
                   "Error: HashFunc<Type*> assumes that pointers have a size "
                   "equal to a long integer");
-    return HashFunc<unsigned int *>::operator()(key.__refCountPtr());
+    return HashFunc<unsigned int*>::operator()(key.__refCountPtr());
   }
 
 } /* namespace gum */

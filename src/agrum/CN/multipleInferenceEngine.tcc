@@ -5,8 +5,8 @@ namespace gum {
   namespace credal {
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
-    MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::MultipleInferenceEngine(
-        const CredalNet<GUM_SCALAR> &credalNet)
+    MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::
+        MultipleInferenceEngine(const CredalNet<GUM_SCALAR>& credalNet)
         : InferenceEngine<GUM_SCALAR>::InferenceEngine(credalNet) {
       GUM_CONSTRUCTOR(MultipleInferenceEngine);
     }
@@ -20,7 +20,7 @@ namespace gum {
     template <typename GUM_SCALAR, class BNInferenceEngine>
     inline void
     MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::_initThreadsData(
-        const unsigned int &num_threads, const bool __storeVertices,
+        const unsigned int& num_threads, const bool __storeVertices,
         const bool __storeBNOpt) {
       _workingSet.clear();
       _workingSet.resize(num_threads, nullptr);
@@ -65,8 +65,8 @@ namespace gum {
     template <typename GUM_SCALAR, class BNInferenceEngine>
     inline bool
     MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::_updateThread(
-        const NodeId &id, const std::vector<GUM_SCALAR> &vertex,
-        const bool &elimRedund) {
+        const NodeId& id, const std::vector<GUM_SCALAR>& vertex,
+        const bool& elimRedund) {
       int tId = getThreadNumber();
 
       // save E(X) if we don't save vertices
@@ -88,14 +88,16 @@ namespace gum {
           if (exp < _l_expectationMin[tId][id])
             _l_expectationMin[tId][id] = exp;
         }
-      } // end of : if modal (map) not empty
+      }  // end of : if modal (map) not empty
 
       bool newOne = false;
       bool added = false;
       bool result = false;
-      // for burn in, we need to keep checking on local marginals and not global ones
+      // for burn in, we need to keep checking on local marginals and not global
+      // ones
       // (faster inference)
-      // we also don't want to store dbn for observed variables since there will be a
+      // we also don't want to store dbn for observed variables since there will
+      // be a
       // huge number of them (probably all of them).
       Size vsize = vertex.size();
 
@@ -132,7 +134,8 @@ namespace gum {
                    vertex[mod] == _l_marginalMax[tId][id][mod]) {
           newOne = true;
 
-          if (__infE::_storeBNOpt && vertex[mod] == _l_marginalMin[tId][id][mod] &&
+          if (__infE::_storeBNOpt &&
+              vertex[mod] == _l_marginalMin[tId][id][mod] &&
               !__infE::_evidence.exists(id)) {
             std::vector<unsigned int> key(3);
             key[0] = id;
@@ -143,7 +146,8 @@ namespace gum {
               result = true;
           }
 
-          if (__infE::_storeBNOpt && vertex[mod] == _l_marginalMax[tId][id][mod] &&
+          if (__infE::_storeBNOpt &&
+              vertex[mod] == _l_marginalMax[tId][id][mod] &&
               !__infE::_evidence.exists(id)) {
             std::vector<unsigned int> key(3);
             key[0] = id;
@@ -171,12 +175,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
-    inline void
-    MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::__updateThreadCredalSets(
-        const NodeId &id, const std::vector<GUM_SCALAR> &vertex,
-        const bool &elimRedund) {
+    inline void MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::
+        __updateThreadCredalSets(const NodeId& id,
+                                 const std::vector<GUM_SCALAR>& vertex,
+                                 const bool& elimRedund) {
       int tId = getThreadNumber();
-      auto &nodeCredalSet = _l_marginalSets[tId][id];
+      auto& nodeCredalSet = _l_marginalSets[tId][id];
       Size dsize = vertex.size();
 
       bool eq = true;
@@ -202,28 +206,32 @@ namespace gum {
       } else
         return;
 
-      /// we need this because of the next lambda return contidion fabs ( *minIt -
+      /// we need this because of the next lambda return contidion fabs ( *minIt
+      /// -
       /// *maxIt ) > 1e-6 which never happens if there is only one vertice
       if (nodeCredalSet.size() == 1)
         return;
 
-      // check that the point and all previously added ones are not inside the actual
+      // check that the point and all previously added ones are not inside the
+      // actual
       // polytope
-      auto itEnd = std::remove_if(nodeCredalSet.begin(), nodeCredalSet.end(),
-                                  [&](const std::vector<GUM_SCALAR> &v) -> bool {
-        for (auto jt = v.cbegin(), jtEnd = v.cend(),
-                  minIt = _l_marginalMin[tId][id].cbegin(),
-                  minItEnd = _l_marginalMin[tId][id].cend(),
-                  maxIt = _l_marginalMax[tId][id].cbegin(),
-                  maxItEnd = _l_marginalMax[tId][id].cend();
-             jt != jtEnd && minIt != minItEnd && maxIt != maxItEnd;
-             ++jt, ++minIt, ++maxIt) {
-          if ((std::fabs(*jt - *minIt) < 1e-6 || std::fabs(*jt - *maxIt) < 1e-6) &&
-              std::fabs(*minIt - *maxIt) > 1e-6)
-            return false;
-        }
-        return true;
-      });
+      auto itEnd = std::remove_if(
+          nodeCredalSet.begin(), nodeCredalSet.end(),
+          [&](const std::vector<GUM_SCALAR>& v) -> bool {
+            for (auto jt = v.cbegin(), jtEnd = v.cend(),
+                      minIt = _l_marginalMin[tId][id].cbegin(),
+                      minItEnd = _l_marginalMin[tId][id].cend(),
+                      maxIt = _l_marginalMax[tId][id].cbegin(),
+                      maxItEnd = _l_marginalMax[tId][id].cend();
+                 jt != jtEnd && minIt != minItEnd && maxIt != maxItEnd;
+                 ++jt, ++minIt, ++maxIt) {
+              if ((std::fabs(*jt - *minIt) < 1e-6 ||
+                   std::fabs(*jt - *maxIt) < 1e-6) &&
+                  std::fabs(*minIt - *maxIt) > 1e-6)
+                return false;
+            }
+            return true;
+          });
 
       nodeCredalSet.erase(itEnd, nodeCredalSet.end());
 
@@ -232,14 +240,15 @@ namespace gum {
         return;
 
       // there may be points not inside the polytope but on one of it's facet,
-      // meaning it's still a convex combination of vertices of this facet. Here we
+      // meaning it's still a convex combination of vertices of this facet. Here
+      // we
       // need lrs.
       auto setSize = nodeCredalSet.size();
 
       LRSWrapper<GUM_SCALAR> lrsWrapper;
       lrsWrapper.setUpV(dsize, setSize);
 
-      for (const auto &vtx : nodeCredalSet)
+      for (const auto& vtx : nodeCredalSet)
         lrsWrapper.fillV(vtx);
 
       lrsWrapper.elimRedundVrep();
@@ -270,10 +279,10 @@ namespace gum {
 
               if (_l_marginalMax[tId][i][j] > this->_marginalMax[i][j])
                 this->_marginalMax[i][j] = _l_marginalMax[tId][i][j];
-            } // end of : all threads
-          }   // end of : all modalities
-        }     // end of : all variables
-      }       // end of : parallel region
+            }  // end of : all threads
+          }    // end of : all modalities
+        }      // end of : all variables
+      }        // end of : parallel region
     }
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
@@ -307,7 +316,7 @@ namespace gum {
             this->_oldMarginalMin[i][j] = this->_marginalMin[i][j];
             this->_oldMarginalMax[i][j] = this->_marginalMax[i][j];
           }
-        } // end of : all variables
+        }  // end of : all variables
 
 #pragma omp critical(epsilon_max)
         {
@@ -315,13 +324,13 @@ namespace gum {
           eps = (eps < tEps) ? tEps : eps;
         }
 
-      } // end of : parallel region
+      }  // end of : parallel region
       return eps;
     }
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
-    void
-    MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::_updateOldMarginals() {
+    void MultipleInferenceEngine<GUM_SCALAR,
+                                 BNInferenceEngine>::_updateOldMarginals() {
 #pragma omp parallel
       {
         int threadId = getThreadNumber();
@@ -342,14 +351,15 @@ namespace gum {
 
               if (_l_marginalMax[tId][i][j] > this->_oldMarginalMax[i][j])
                 this->_oldMarginalMax[i][j] = _l_marginalMax[tId][i][j];
-            } // end of : all threads
-          }   // end of : all modalities
-        }     // end of : all variables
-      }       // end of : parallel region
+            }  // end of : all threads
+          }    // end of : all modalities
+        }      // end of : all variables
+      }        // end of : parallel region
     }
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
-    void MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::_verticesFusion() {
+    void
+    MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::_verticesFusion() {
       // don't create threads if there are no vertices saved
       if (!__infE::_storeVertices)
         return;
@@ -367,20 +377,22 @@ namespace gum {
 
           // go through all threads
           for (Size tId = 0; tId < tsize; tId++) {
-            auto &nodeThreadCredalSet = _l_marginalSets[tId][i];
+            auto& nodeThreadCredalSet = _l_marginalSets[tId][i];
 
             // for each vertex, if we are at any opt marginal, add it to the set
-            for (const auto &vtx : nodeThreadCredalSet) {
+            for (const auto& vtx : nodeThreadCredalSet) {
               // we run redundancy elimination at each step
-              // because there could be 100000 threads and the set will be so huge
+              // because there could be 100000 threads and the set will be so
+              // huge
               // ...
               // BUT not if vertices are of dimension 2 ! opt check and equality
               // should be enough
-              __infE::_updateCredalSets(i, vtx, (vtx.size() > 2) ? true : false);
-            } // end of : nodeThreadCredalSet
-          }   // end of : all threads
-        }     // end of : all variables
-      }       // end of : parallel region
+              __infE::_updateCredalSets(i, vtx,
+                                        (vtx.size() > 2) ? true : false);
+            }  // end of : nodeThreadCredalSet
+          }    // end of : all threads
+        }      // end of : all variables
+      }        // end of : parallel region
     }
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
@@ -403,7 +415,8 @@ namespace gum {
             for (Size i = 0; i < nsize; i++) {
               std::string var_name = _workingSet[threadId]->variable(i).name();
               auto delim = var_name.find_first_of("_");
-              std::string time_step = var_name.substr(delim + 1, var_name.size());
+              std::string time_step =
+                  var_name.substr(delim + 1, var_name.size());
               var_name = var_name.substr(0, delim);
 
               if (!_l_modal[threadId].exists(var_name))
@@ -411,7 +424,7 @@ namespace gum {
 
               Size setsize = __infE::_marginalSets[i].size();
 
-              for (const auto &vertex : __infE::_marginalSets[i]) {
+              for (const auto& vertex : __infE::_marginalSets[i]) {
                 GUM_SCALAR exp = 0;
                 Size vsize = vertex.size();
 
@@ -424,9 +437,9 @@ namespace gum {
                 if (exp < __infE::_expectationMin[i])
                   __infE::_expectationMin[i] = exp;
               }
-            } // end of : each variable parallel for
-          }   // end of : if this thread has modals
-        }     // end of parallel region
+            }  // end of : each variable parallel for
+          }    // end of : if this thread has modals
+        }      // end of parallel region
         return;
       }
 
@@ -456,10 +469,10 @@ namespace gum {
 
               if (_l_expectationMin[tId][i] < this->_expectationMin[i])
                 this->_expectationMin[i] = _l_expectationMin[tId][i];
-            } // end of : each thread
-          }   // end of : each variable
-        }     // end of : if modals not empty
-      }       // end of : parallel region
+            }  // end of : each thread
+          }    // end of : each variable
+        }      // end of : if modals not empty
+      }        // end of : parallel region
     }
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
@@ -490,7 +503,7 @@ namespace gum {
 
           for (Size tId = 0; tId < tsize; tId++) {
             if (_l_marginalMin[tId][i][j] == this->_marginalMin[i][j]) {
-              const std::vector<dBN *> &tOpts =
+              const std::vector<dBN*>& tOpts =
                   _l_optimalNet[tId]->getBNOptsFromKey(keymin);
               Size osize = tOpts.size();
 
@@ -500,7 +513,7 @@ namespace gum {
             }
 
             if (_l_marginalMax[tId][i][j] == this->_marginalMax[i][j]) {
-              const std::vector<dBN *> &tOpts =
+              const std::vector<dBN*>& tOpts =
                   _l_optimalNet[tId]->getBNOptsFromKey(keymax);
               Size osize = tOpts.size();
 
@@ -508,13 +521,14 @@ namespace gum {
                 __infE::_dbnOpt.insert(*tOpts[bn], keymax);
               }
             }
-          } // end of : all threads
-        }   // end of : all modalities
-      }     // end of : all variables
+          }  // end of : all threads
+        }    // end of : all modalities
+      }      // end of : all variables
     }
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
-    void MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::eraseAllEvidence() {
+    void
+    MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::eraseAllEvidence() {
       __infE::eraseAllEvidence();
       Size tsize = _workingSet.size();
 
@@ -541,7 +555,8 @@ namespace gum {
           delete _l_inferenceEngine[bn];
       }
 
-      // this is important, those will be resized with the correct number of threads.
+      // this is important, those will be resized with the correct number of
+      // threads.
 
       _workingSet.clear();
       _workingSetE.clear();

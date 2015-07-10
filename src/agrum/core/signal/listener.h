@@ -45,12 +45,12 @@ namespace gum {
     class ISignaler {
       public:
       virtual ~ISignaler(){};
-      virtual void detachFromTarget(Listener *target) = 0;
-      virtual void duplicateTarget(const Listener *oldtarget,
-                                   Listener *newtarget) = 0;
+      virtual void detachFromTarget(Listener* target) = 0;
+      virtual void duplicateTarget(const Listener* oldtarget,
+                                   Listener* newtarget) = 0;
       virtual bool hasListener(void) = 0;
     };
-  } // namespace sig
+  }  // namespace sig
 
   /** @class Listener
    * @brief every class who would catch signal from signaler should derive
@@ -61,12 +61,12 @@ namespace gum {
     private:
     // typedef ListBase<__sig__::ISignaler*> Senders_list;
     // typedef ListBucket<__sig__::ISignaler*> Senders_bucket;
-    typedef std::vector<__sig__::ISignaler *> Senders_list;
+    typedef std::vector<__sig__::ISignaler*> Senders_list;
 
     public:
     Listener() { GUM_CONSTRUCTOR(Listener); };
 
-    Listener(const Listener &l) {
+    Listener(const Listener& l) {
       GUM_CONS_CPY(Listener);
 
       /*for ( const Senders_bucket* it = l.__senders.frontBucket ();
@@ -94,11 +94,11 @@ namespace gum {
       __senders.clear();
     };
 
-    inline void attachSignal__(__sig__::ISignaler *sender) {
+    inline void attachSignal__(__sig__::ISignaler* sender) {
       __senders.push_back(sender);
     };
 
-    inline void detachSignal__(__sig__::ISignaler *sender) {
+    inline void detachSignal__(__sig__::ISignaler* sender) {
       //__senders.eraseByVal ( sender );
       auto del = std::remove(__senders.begin(), __senders.end(), sender);
 
@@ -109,9 +109,9 @@ namespace gum {
     private:
     Senders_list __senders;
   };
-} // namespace gum
+}  // namespace gum
 
-#define GUM_CONNECT(sender, signal, receiver, target)                               \
+#define GUM_CONNECT(sender, signal, receiver, target)                          \
   (sender).signal.attach(&(receiver), &target)
 
-#endif // GUM_LISTENER_H__
+#endif  // GUM_LISTENER_H__

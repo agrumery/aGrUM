@@ -44,7 +44,7 @@ namespace gum {
   /** @brief a function used to mark the nodes belonging to a given
    * connected component */
   void BinaryJoinTreeConverterDefault::__markConnectedComponent(
-      const CliqueGraph &JT, NodeId root, NodeProperty<bool> &mark) const {
+      const CliqueGraph& JT, NodeId root, NodeProperty<bool>& mark) const {
     // we mark the nodes in a depth first search manner. To avoid a recursive
     // algorithm, use a vector to simulate a stack of nodes to inspect.
     // stack => depth first search
@@ -78,8 +78,8 @@ namespace gum {
 
   /// returns the domain size of the union of two cliques
   float BinaryJoinTreeConverterDefault::__combinedSize(
-      const NodeSet &nodes1, const NodeSet &nodes2,
-      const NodeProperty<Size> &domain_sizes) const {
+      const NodeSet& nodes1, const NodeSet& nodes2,
+      const NodeProperty<Size>& domain_sizes) const {
     float result = 1;
 
     for (const auto node : nodes1)
@@ -93,15 +93,17 @@ namespace gum {
   }
 
   /// returns all the roots considered for all the connected components
-  const NodeSet &BinaryJoinTreeConverterDefault::roots() const { return __roots; }
+  const NodeSet& BinaryJoinTreeConverterDefault::roots() const {
+    return __roots;
+  }
 
   /// convert a clique and its adjacent cliques into a binary join tree
   void BinaryJoinTreeConverterDefault::__convertClique(
-      CliqueGraph &JT, NodeId clique, NodeId from,
-      const NodeProperty<Size> &domain_sizes) const {
+      CliqueGraph& JT, NodeId clique, NodeId from,
+      const NodeProperty<Size>& domain_sizes) const {
     // get the neighbors of clique. If there are fewer than 3 neighbors,
     // there is nothing to do
-    const NodeSet &neighbors = JT.neighbours(clique);
+    const NodeSet& neighbors = JT.neighbours(clique);
 
     if (neighbors.size() <= 2)
       return;
@@ -125,7 +127,8 @@ namespace gum {
     std::vector<bool> is_cliques_relevant(cliques.size(), true);
 
     // for each pair of cliques (i,j), compute the size of the clique that would
-    // result from the combination of clique i with clique j and store the result
+    // result from the combination of clique i with clique j and store the
+    // result
     // into a priorityQueue
     std::pair<unsigned int, unsigned int> pair;
 
@@ -133,17 +136,19 @@ namespace gum {
 
     for (unsigned int i = 0; i < cliques.size(); ++i) {
       pair.first = i;
-      const NodeSet &nodes1 = JT.separator(cliques[i], clique);
+      const NodeSet& nodes1 = JT.separator(cliques[i], clique);
 
       for (unsigned int j = i + 1; j < cliques.size(); ++j) {
         pair.second = j;
-        queue.insert(pair, __combinedSize(nodes1, JT.separator(cliques[j], clique),
-                                          domain_sizes));
+        queue.insert(pair,
+                     __combinedSize(nodes1, JT.separator(cliques[j], clique),
+                                    domain_sizes));
       }
     }
 
     // now parse the priority queue: the top element (i,j) gives the combination
-    // to perform. When the result R has been computed, substitute i by R, remove
+    // to perform. When the result R has been computed, substitute i by R,
+    // remove
     // table j and recompute all the priorities of all the pairs (R,k) still
     // available.
     for (unsigned int k = 2; k < cliques.size(); ++k) {
@@ -154,8 +159,8 @@ namespace gum {
 
       // create a new clique that will become adjacent to ti and tj
       // and remove the edges between ti, tj and clique
-      const NodeSet &nodes1 = JT.separator(cliques[ti], clique);
-      const NodeSet &nodes2 = JT.separator(cliques[tj], clique);
+      const NodeSet& nodes1 = JT.separator(cliques[ti], clique);
+      const NodeSet& nodes2 = JT.separator(cliques[tj], clique);
       NodeId new_node = JT.addNode(nodes1 + nodes2);
       JT.addEdge(cliques[ti], new_node);
       JT.addEdge(cliques[tj], new_node);
@@ -165,7 +170,8 @@ namespace gum {
 
       // substitute cliques[pair.first] by the result
       cliques[ti] = new_node;
-      is_cliques_relevant[tj] = false; // now tj is no more a neighbor of clique
+      is_cliques_relevant[tj] =
+          false;  // now tj is no more a neighbor of clique
 
       // remove all the pairs involving tj in the priority queue
 
@@ -187,7 +193,7 @@ namespace gum {
 
       // update the "combined" size of all the pairs involving "new_node"
       {
-        const NodeSet &nodes1 = JT.separator(cliques[ti], clique);
+        const NodeSet& nodes1 = JT.separator(cliques[ti], clique);
         pair.second = ti;
         float newsize;
 
@@ -216,8 +222,8 @@ namespace gum {
 
   /// convert a whole connected component into a binary join tree
   void BinaryJoinTreeConverterDefault::__convertConnectedComponent(
-      CliqueGraph &JT, NodeId current_node, NodeId from,
-      const NodeProperty<Size> &domain_sizes, NodeProperty<bool> &mark) const {
+      CliqueGraph& JT, NodeId current_node, NodeId from,
+      const NodeProperty<Size>& domain_sizes, NodeProperty<bool>& mark) const {
     // first, indicate that the node has been marked (this avoids looping
     // if JT is not a tree
     mark[current_node] = true;
@@ -225,7 +231,8 @@ namespace gum {
     // parse all the neighbors except nodes already converted and convert them
     for (const auto neigh : JT.neighbours(current_node)) {
       if (!mark[neigh]) {
-        __convertConnectedComponent(JT, neigh, current_node, domain_sizes, mark);
+        __convertConnectedComponent(JT, neigh, current_node, domain_sizes,
+                                    mark);
       }
     }
 
@@ -234,15 +241,15 @@ namespace gum {
   }
 
   /// computes the binary join tree
-  CliqueGraph
-  BinaryJoinTreeConverterDefault::convert(const CliqueGraph &JT,
-                                          const NodeProperty<Size> &domain_sizes,
-                                          const NodeSet &specified_roots) {
+  CliqueGraph BinaryJoinTreeConverterDefault::convert(
+      const CliqueGraph& JT, const NodeProperty<Size>& domain_sizes,
+      const NodeSet& specified_roots) {
     // first, we copy the current clique graph. By default, this is what we
     // will return
     CliqueGraph binJT = JT;
 
-    // check that there is no connected component without a root. In such a case,
+    // check that there is no connected component without a root. In such a
+    // case,
     // assign an arbitrary root to it
     __roots = specified_roots;
 
@@ -254,16 +261,15 @@ namespace gum {
       // in this case, this means that more than one root has been specified
       // for a given connected component
       if (mark[root])
-        GUM_ERROR(
-            InvalidNode,
-            "several roots have been specified for a given connected component");
+        GUM_ERROR(InvalidNode, "several roots have been specified for a given "
+                               "connected component");
 
       __markConnectedComponent(JT, root, mark);
     }
 
     // check that all nodes have been marked. If this is not the case, then
     // this means that we need to add new roots
-    for (const auto &elt : mark)
+    for (const auto& elt : mark)
       if (!elt.second) {
         __roots << elt.first;
         __markConnectedComponent(JT, elt.first, mark);

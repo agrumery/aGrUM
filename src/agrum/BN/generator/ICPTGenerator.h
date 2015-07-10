@@ -20,7 +20,8 @@
 /** @file
  * @brief Interface-like class for generating Conditional Probability Tables.
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN and Ariele-Paolo
+ *MAESANO
  */
 #ifndef GUM_I_CPT_GENERATOR_H
 #define GUM_I_CPT_GENERATOR_H
@@ -62,7 +63,8 @@ namespace gum {
      * @param varId The variable id of the CPT owner.
      * @param cpt A reference on the CPT to fill.
      */
-    virtual void generateCPT(const Idx &varId, const Potential<GUM_SCALAR> &cpt) = 0;
+    virtual void generateCPT(const Idx& varId,
+                             const Potential<GUM_SCALAR>& cpt) = 0;
     /// @}
   };
 

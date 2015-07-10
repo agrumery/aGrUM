@@ -36,8 +36,9 @@ namespace gum_tests {
     void test_BDeu() {
       gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
 
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8>());
 
       auto generators =
           gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
@@ -51,18 +52,21 @@ namespace gum_tests {
       gum::learning::AprioriSmoothing<> apriori2;
       gum::learning::ScoreBDeu<> score(filter, modalities, apriori);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu<>::isAprioriCompatible(
-          gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::learning::ScoreBDeu<>::isAprioriCompatible(
+              gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(
           gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori));
-      TS_ASSERT_THROWS(gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori2),
-                       gum::IncompatibleScoreApriori);
+      TS_ASSERT_THROWS(
+          gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori2),
+          gum::IncompatibleScoreApriori);
       TS_ASSERT_THROWS(gum::learning::ScoreBDeu<>::isAprioriCompatible(
                            gum::learning::AprioriSmoothing<>::type::type),
                        gum::IncompatibleScoreApriori);
       apriori2.setWeight(0);
-      TS_ASSERT_THROWS(gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori2),
-                       gum::PossiblyIncompatibleScoreApriori);
+      TS_ASSERT_THROWS(
+          gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori2),
+          gum::PossiblyIncompatibleScoreApriori);
 
       // to test, we exploit the fact that if the effective sample size is
       // equal to ri * qi, then score BDeu = score K2
@@ -113,8 +117,9 @@ namespace gum_tests {
 
     void test_cache() {
       gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8>());
       auto generators =
           gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
       auto filter =
@@ -142,8 +147,9 @@ namespace gum_tests {
 
     void test_clearcache() {
       gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8>());
       auto generators =
           gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
       auto filter =

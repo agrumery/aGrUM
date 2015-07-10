@@ -21,7 +21,8 @@
  * @brief Base class for random variable.
  *
  * Basically wrapper for a string name and description.
- * This class is used as an interface. So the constructor/destructor is protected.
+ * This class is used as an interface. So the constructor/destructor is
+ *protected.
  * @author Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_VARIABLE_H
@@ -38,18 +39,24 @@ namespace gum {
 
   /// for friendly displaying the content of the variable
 
-  std::ostream &operator<<(std::ostream &s, const Variable &LDRV);
+  std::ostream& operator<<(std::ostream& s, const Variable& LDRV);
 
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /* ===                            GUM_VARIABLE                             === */
-  /* =========================================================================== */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
+  /* ===                            GUM_VARIABLE                             ===
+   */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
   /** @class Variable
    * @brief Base class for every random variable.
    * @ingroup multidim_group
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
 
   class Variable {
     public:
@@ -65,7 +72,7 @@ namespace gum {
     /// Copy Factory.
     /// @return Returns a pointer on a new copy of this.
 
-    virtual Variable *clone() const = 0;
+    virtual Variable* clone() const = 0;
 
     /// @}
 
@@ -78,15 +85,15 @@ namespace gum {
     /** @param aRV to be copied
      * @return a const ref to *this */
 
-    Variable &operator=(const Variable &aRV);
+    Variable& operator=(const Variable& aRV);
 
     /// equality operator
 
-    virtual bool operator==(const Variable &aRV) const;
+    virtual bool operator==(const Variable& aRV) const;
 
     /// inequality operator
 
-    virtual bool operator!=(const Variable &aRV) const;
+    virtual bool operator!=(const Variable& aRV) const;
 
     /// @}
 
@@ -98,21 +105,21 @@ namespace gum {
     /// sets the name of the variable
     /** @param theValue */
 
-    void setName(const std::string &theValue);
+    void setName(const std::string& theValue);
 
     /// returns the name of the variable
 
-    const std::string &name() const;
+    const std::string& name() const;
 
     /// sets the description of the variable
     /// @warning since __description is mutable, setDescription() is const
     /** @param theValue */
 
-    void setDescription(const std::string &theValue) const;
+    void setDescription(const std::string& theValue) const;
 
     /// returns the description of the variable
 
-    const std::string &description() const;
+    const std::string& description() const;
 
     /// @}
 
@@ -123,18 +130,18 @@ namespace gum {
     /// protected copy
     /** @param aRV to be copied */
 
-    void _copy(const Variable &aRV);
+    void _copy(const Variable& aRV);
 
     /// constructor
     /** @param aName name of the variable
      * @param aDesc description of the variable */
 
-    Variable(const std::string &aName, const std::string &aDesc);
+    Variable(const std::string& aName, const std::string& aDesc);
 
     /// copy constructor
     /** @param aRV the variable we copy */
 
-    Variable(const Variable &aRV);
+    Variable(const Variable& aRV);
 
     private:
     /// the name of the variable

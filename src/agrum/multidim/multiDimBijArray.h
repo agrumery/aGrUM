@@ -35,14 +35,15 @@
 namespace gum {
 
   /**
-   * @class MultiDimBijArray "multiDimBijArray.h" <agrum/multidim/multiDimBijArray.h>
+   * @class MultiDimBijArray "multiDimBijArray.h"
+   * <agrum/multidim/multiDimBijArray.h>
    * @brief Decorator of a MultiDimArray, using a bijection over the variables.
    * @ingroup multidim_group
    */
   template <typename GUM_SCALAR>
   class MultiDimBijArray : public MultiDimWithOffset<GUM_SCALAR> {
     public:
-    typedef Bijection<const DiscreteVariable *, const DiscreteVariable *>
+    typedef Bijection<const DiscreteVariable*, const DiscreteVariable*>
         VarBijection;
 
     // ############################################################################
@@ -54,22 +55,23 @@ namespace gum {
     /// @throw OperationNotAllowed If decorator's content is not a MultiDimArray
     ///                            raise an OperationNotAllowed
 
-    MultiDimBijArray(const VarBijection &bijection,
-                     const MultiDimArray<GUM_SCALAR> &array);
+    MultiDimBijArray(const VarBijection& bijection,
+                     const MultiDimArray<GUM_SCALAR>& array);
 
     /// Gets the content of decorator and uses its implementation.
     /// @throw OperationNotAllowed If decorator's content is not a MultiDimArray
     ///                            raise an OperationNotAllowed
 
-    MultiDimBijArray(const VarBijection &bijection,
-                     const MultiDimBijArray<GUM_SCALAR> &array);
+    MultiDimBijArray(const VarBijection& bijection,
+                     const MultiDimBijArray<GUM_SCALAR>& array);
 
     /// copy constructor
-    /** The newly created matrix contains the same variables and the same values as
+    /** The newly created matrix contains the same variables and the same values
+     * as
      * from, but no instantiation is associated to it.
      * @param from the multidimensional matrix we copy into this */
 
-    MultiDimBijArray(const MultiDimBijArray<GUM_SCALAR> &from);
+    MultiDimBijArray(const MultiDimBijArray<GUM_SCALAR>& from);
 
     /// destructor
     /** Note that, when the multidimensional array is removed from memory, its
@@ -95,7 +97,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimBijArray<GUM_SCALAR> *newFactory() const;
+    virtual MultiDimBijArray<GUM_SCALAR>* newFactory() const;
 
     // ############################################################################
     /// @name Operators
@@ -107,16 +109,16 @@ namespace gum {
      * @param from
      * @throw OperationNotAllowed You can't change a readonly structure
      */
-    MultiDimBijArray<GUM_SCALAR> &
-    operator=(const MultiDimBijArray<GUM_SCALAR> &from);
+    MultiDimBijArray<GUM_SCALAR>&
+    operator=(const MultiDimBijArray<GUM_SCALAR>& from);
 
     /// @}
 
     /// Returns the real name of this implementation
-    virtual const std::string &name() const;
+    virtual const std::string& name() const;
 
     /// Returns the value pointed by i.
-    virtual GUM_SCALAR get(const Instantiation &i) const;
+    virtual GUM_SCALAR get(const Instantiation& i) const;
 
     /**
      * This will raise an exception:  read only structure
@@ -125,7 +127,7 @@ namespace gum {
      * @param value
      * @throw OperationNotAllowed You can't change a readonly structure
      */
-    virtual void set(const Instantiation &i, const GUM_SCALAR &value) const;
+    virtual void set(const Instantiation& i, const GUM_SCALAR& value) const;
 
     /**
      * This will raise an exception: you can't change the variables in a
@@ -133,7 +135,7 @@ namespace gum {
      * @param v The variable not added.
      * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
      */
-    virtual void add(const DiscreteVariable &v);
+    virtual void add(const DiscreteVariable& v);
 
     /**
      * This will raise an exception: you can't change the variables in a
@@ -141,7 +143,7 @@ namespace gum {
      * @param v The variable not added.
      * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
      */
-    virtual void erase(const DiscreteVariable &v);
+    virtual void erase(const DiscreteVariable& v);
 
     /// This function is used for compute @see compressionRatio().
     /// @return the real number of parameters used for this table.
@@ -152,7 +154,7 @@ namespace gum {
      * @param d the value changed
      * @throw OperationNotAllowed You can't change data.
      */
-    virtual void fill(const GUM_SCALAR &d) const;
+    virtual void fill(const GUM_SCALAR& d) const;
 
     /**
      * This will raise an exception: you can't change the variables in a
@@ -160,24 +162,24 @@ namespace gum {
      * @param v The variable not added.
      * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
      */
-    virtual void fillWith(const std::vector<GUM_SCALAR> &v) const;
+    virtual void fillWith(const std::vector<GUM_SCALAR>& v) const;
 
     protected:
-    virtual GUM_SCALAR &_get(const Instantiation &i) const;
+    virtual GUM_SCALAR& _get(const Instantiation& i) const;
 
     /// synchronise content after MultipleChanges
     virtual void _commitMultipleChanges(void);
 
-    virtual void _swap(const DiscreteVariable *x, const DiscreteVariable *y);
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
 
     private:
     /// the true data.
-    const MultiDimArray<GUM_SCALAR> &__array;
+    const MultiDimArray<GUM_SCALAR>& __array;
 
     std::string __name;
   };
-} // namespace gum
+}  // namespace gum
 
 #include <agrum/multidim/multiDimBijArray.tcc>
 
-#endif // GUM_MULTIDIMBIJARRAY_H
+#endif  // GUM_MULTIDIMBIJARRAY_H

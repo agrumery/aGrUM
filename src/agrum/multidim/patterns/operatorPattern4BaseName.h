@@ -37,44 +37,45 @@ namespace gum {
 #ifdef GUM_MULTI_DIM_OPERATOR_NAME
 #define GUM_MULTI_DIM_OPERATOR_TYPE T
   template <typename T>
-  MultiDimImplementation<T> *
-  GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation<T> *t1,
-                              const MultiDimImplementation<T> *t2) {
+  MultiDimImplementation<T>*
+  GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation<T>* t1,
+                              const MultiDimImplementation<T>* t2) {
 #endif
 
 #ifdef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
 #define GUM_MULTI_DIM_OPERATOR_TYPE T *
     template <typename T>
-    MultiDimImplementation<T *> *GUM_MULTI_DIM_OPERATOR_POINTER_NAME(
-        const MultiDimImplementation<T *> *t1,
-        const MultiDimImplementation<T *> *t2) {
+    MultiDimImplementation<T*>* GUM_MULTI_DIM_OPERATOR_POINTER_NAME(
+        const MultiDimImplementation<T*>* t1,
+        const MultiDimImplementation<T*>* t2) {
 #endif
 
 #ifdef GUM_MULTI_DIM_OPERATOR_NAME_F
 #define GUM_MULTI_DIM_OPERATOR_TYPE T
       template <typename T>
-      MultiDimImplementation<T> *GUM_MULTI_DIM_OPERATOR_NAME_F(
-          const MultiDimImplementation<T> *t1, const MultiDimImplementation<T> *t2,
-          const T (*f)(const T &, const T &)) {
+      MultiDimImplementation<T>* GUM_MULTI_DIM_OPERATOR_NAME_F(
+          const MultiDimImplementation<T>* t1,
+          const MultiDimImplementation<T>* t2,
+          const T (*f)(const T&, const T&)) {
 #endif
 
 #ifdef GUM_MULTI_DIM_OPERATOR_POINTER_NAME_F
 #define GUM_MULTI_DIM_OPERATOR_TYPE T *
         template <typename T>
-        MultiDimImplementation<T *> *GUM_MULTI_DIM_OPERATOR_POINTER_NAME_F(
-            const MultiDimImplementation<T *> *t1,
-            const MultiDimImplementation<T *> *t2,
-            const T (*f)(const T *, const T *)) {
+        MultiDimImplementation<T*>* GUM_MULTI_DIM_OPERATOR_POINTER_NAME_F(
+            const MultiDimImplementation<T*>* t1,
+            const MultiDimImplementation<T*>* t2,
+            const T (*f)(const T*, const T*)) {
 #endif
 
           // get the variables of the tables
-          const Sequence<const DiscreteVariable *> &t1_vars =
+          const Sequence<const DiscreteVariable*>& t1_vars =
               t1->variablesSequence();
-          const Sequence<const DiscreteVariable *> &t2_vars =
+          const Sequence<const DiscreteVariable*>& t2_vars =
               t2->variablesSequence();
 
           // get the domain size of the tables' variables
-          HashTable<const DiscreteVariable *, Idx> t1_offsets;
+          HashTable<const DiscreteVariable*, Idx> t1_offsets;
           {
             Idx current_offset = 1;
 
@@ -83,7 +84,7 @@ namespace gum {
               current_offset *= var->domainSize();
             }
           }
-          HashTable<const DiscreteVariable *, Idx> t2_offsets;
+          HashTable<const DiscreteVariable*, Idx> t2_offsets;
           {
             Idx current_offset = 1;
 
@@ -93,24 +94,29 @@ namespace gum {
             }
           }
 
-          // we divide the variables of t1 and t2 into 3 separate sets: those that
-          // belong only to t1 (variables t1_alone_xxx), those that belong only to t2
+          // we divide the variables of t1 and t2 into 3 separate sets: those
+          // that
+          // belong only to t1 (variables t1_alone_xxx), those that belong only
+          // to t2
           // (variables t2_alone_xxx) and those that belong to both tables
-          // (variables t1_and_t2_xxx). For each set, we get the variables of the
+          // (variables t1_and_t2_xxx). For each set, we get the variables of
+          // the
           // table (txxx_var) and the domain size of the variable
-          // (txxx_domain). In addition, we compute the domain size of the Cartesian
-          // product of the variables in each of the 3 sets. Given these data, we
+          // (txxx_domain). In addition, we compute the domain size of the
+          // Cartesian
+          // product of the variables in each of the 3 sets. Given these data,
+          // we
           // will
           // be able to parse both t1, t2 and the result table t1+t2.
-          std::vector<const DiscreteVariable *> t1_alone_var;
+          std::vector<const DiscreteVariable*> t1_alone_var;
           std::vector<Idx> t1_alone_domain;
           Idx t1_alone_domain_size = 1;
 
-          std::vector<const DiscreteVariable *> t2_alone_var;
+          std::vector<const DiscreteVariable*> t2_alone_var;
           std::vector<Idx> t2_alone_domain;
           Idx t2_alone_domain_size = 1;
 
-          std::vector<const DiscreteVariable *> t1_and_t2_var;
+          std::vector<const DiscreteVariable*> t1_and_t2_var;
           std::vector<Idx> t1_and_t2_domain;
           Idx t1_and_t2_domain_size = 1;
 
@@ -134,8 +140,10 @@ namespace gum {
               }
           }
 
-          // a Boolean indicating whether the variables that t1 and t2 have in common
-          // are the first variables and are in the same order. When this is true,
+          // a Boolean indicating whether the variables that t1 and t2 have in
+          // common
+          // are the first variables and are in the same order. When this is
+          // true,
           // computations can be performed faster
           bool t1_and_t2_begin_vars = false;
 
@@ -152,7 +160,8 @@ namespace gum {
               nb_t1_t2_vars = 0;
 
               for (auto iter = t2_vars.begin();
-                   nb_t1_t2_vars != t1_and_t2_var.size(); ++iter, ++nb_t1_t2_vars)
+                   nb_t1_t2_vars != t1_and_t2_var.size();
+                   ++iter, ++nb_t1_t2_vars)
                 if (*iter != t1_and_t2_var[nb_t1_t2_vars])
                   break;
 
@@ -161,14 +170,18 @@ namespace gum {
             }
           }
 
-          // when we will parse t1 and t2 to fill the result table t1+t2, we will use
+          // when we will parse t1 and t2 to fill the result table t1+t2, we
+          // will use
           // variables txxx_value : at the beginning they are initialized to the
           // domain
-          // size of the variables (which are, themselves initialized to 0). Each
+          // size of the variables (which are, themselves initialized to 0).
+          // Each
           // time we
-          // increment a variable, its corresponding txxx_value is decreased by 1.
+          // increment a variable, its corresponding txxx_value is decreased by
+          // 1.
           // When
-          // the latter is equal to 0, this means that the variable itself should be
+          // the latter is equal to 0, this means that the variable itself
+          // should be
           // reinitialized to 0 as well and that the next variable of the table
           // should be
           // increased (that is, this is similar to increasing 9 to 10).
@@ -178,11 +191,14 @@ namespace gum {
 
           // create a table "result" containing all the variables: the first
           // variables
-          // are those that belong to both t1 and t2. The next variables are those
+          // are those that belong to both t1 and t2. The next variables are
+          // those
           // that
-          // belong to t2 but not to t1. Finally, the last variables are those that
-          // belong to t1 but not t2. This order will be used in the next for loops.
-          MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE> *result =
+          // belong to t2 but not to t1. Finally, the last variables are those
+          // that
+          // belong to t1 but not t2. This order will be used in the next for
+          // loops.
+          MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>* result =
               new MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>;
           result->beginMultipleChanges();
 
@@ -201,15 +217,18 @@ namespace gum {
           result->endMultipleChanges();
 
           // here we fill result. The idea is to use 3 loops. The innermost loop
-          // corresponds to the variables that belongs both to t1 and t2. The middle
+          // corresponds to the variables that belongs both to t1 and t2. The
+          // middle
           // loop to the variables that belong to t2 but not to t1. Finally, the
-          // outer loop corresponds to the variables that belong to t1 but not t2.
+          // outer loop corresponds to the variables that belong to t1 but not
+          // t2.
           Idx result_offset = 0;
           Instantiation t2_inst(t2);
           Instantiation t1_inst(t1);
           Instantiation t1_alone_begin_inst(t1);
 
-          // test if all the variables in common in t1 and t2 are the first variables
+          // test if all the variables in common in t1 and t2 are the first
+          // variables
           // and are in the same order. In this case, we can speed-up the
           // incrementation
           // processes
@@ -222,9 +241,9 @@ namespace gum {
                 t1_inst = t1_alone_begin_inst;
 
                 for (Idx z = 0; z < t1_and_t2_domain_size; ++z) {
-                  result->unsafeSet(
-                      result_offset,
-                      GUM_MULTI_DIM_OPERATOR(t1->get(t1_inst), t2->get(t2_inst)));
+                  result->unsafeSet(result_offset,
+                                    GUM_MULTI_DIM_OPERATOR(t1->get(t1_inst),
+                                                           t2->get(t2_inst)));
 
                   ++result_offset;
 
@@ -243,9 +262,9 @@ namespace gum {
                 t1_inst = t1_alone_begin_inst;
 
                 for (Idx z = 0; z < t1_and_t2_domain_size; ++z) {
-                  result->unsafeSet(
-                      result_offset,
-                      GUM_MULTI_DIM_OPERATOR(t1->get(t1_inst), t2->get(t2_inst)));
+                  result->unsafeSet(result_offset,
+                                    GUM_MULTI_DIM_OPERATOR(t1->get(t1_inst),
+                                                           t2->get(t2_inst)));
 
                   ++result_offset;
 

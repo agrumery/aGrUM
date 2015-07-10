@@ -32,7 +32,7 @@ namespace gum {
       DFSCode::DFSCode() { GUM_CONSTRUCTOR(DFSCode); }
 
       INLINE
-      DFSCode::DFSCode(const DFSCode &source) {
+      DFSCode::DFSCode(const DFSCode& source) {
         GUM_CONS_CPY(DFSCode);
 
         for (const auto code : source.codes)
@@ -48,7 +48,7 @@ namespace gum {
       }
 
       INLINE
-      DFSCode &DFSCode::operator=(const DFSCode &source) {
+      DFSCode& DFSCode::operator=(const DFSCode& source) {
         for (const auto item : codes)
           delete item;
 
@@ -59,7 +59,7 @@ namespace gum {
       }
 
       INLINE
-      bool DFSCode::operator==(const DFSCode &from) const {
+      bool DFSCode::operator==(const DFSCode& from) const {
         if (codes.size() == from.codes.size()) {
           for (size_t idx = 0; idx < codes.size(); ++idx) {
             if ((*codes[idx]) != (*codes[idx])) {
@@ -74,7 +74,7 @@ namespace gum {
       }
 
       INLINE
-      bool DFSCode::operator!=(const DFSCode &from) const {
+      bool DFSCode::operator!=(const DFSCode& from) const {
         if (codes.size() == from.codes.size()) {
           for (size_t idx = 0; idx < codes.size(); ++idx) {
             if ((*codes[idx]) != (*codes[idx])) {
@@ -89,15 +89,15 @@ namespace gum {
       }
 
       INLINE
-      bool DFSCode::operator<(const DFSCode &from) const {
+      bool DFSCode::operator<(const DFSCode& from) const {
         DFSCode::const_iterator iter = codes.begin();
         DFSCode::const_iterator jter = from.codes.begin();
 
         for (; (iter != codes.end()) and (jter != from.codes.end());
              ++iter, ++jter) {
           if ((**iter) != (**jter)) {
-            EdgeCode &alpha = **iter;
-            EdgeCode &beta = **jter;
+            EdgeCode& alpha = **iter;
+            EdgeCode& beta = **jter;
 
             if (alpha.isBackward()) {
               if (beta.isForward()) {
@@ -140,7 +140,7 @@ namespace gum {
       }
 
       INLINE
-      bool DFSCode::operator<=(const DFSCode &from) const {
+      bool DFSCode::operator<=(const DFSCode& from) const {
         DFSCode::const_iterator iter = codes.begin();
         DFSCode::const_iterator jter = from.codes.begin();
 
@@ -156,7 +156,8 @@ namespace gum {
             //   } else if ( alpha.j < beta.j ) {
             //     // beta is a backward edge
             //     return true;
-            //   } else if ( (alpha.j == beta.j) and (alpha.l_ij < beta.l_ij) ) {
+            //   } else if ( (alpha.j == beta.j) and (alpha.l_ij < beta.l_ij) )
+            //   {
             //     return true;
             //   }
             //   return false;

@@ -31,7 +31,7 @@
 namespace gum {
 
   /// copy operator
-  INLINE CliqueGraph &CliqueGraph::operator=(const CliqueGraph &g) {
+  INLINE CliqueGraph& CliqueGraph::operator=(const CliqueGraph& g) {
     if (this != &g) {
       UndiGraph::operator=(g);
       __cliques = g.__cliques;
@@ -58,7 +58,7 @@ namespace gum {
 
   /// removes an edge (and its separator) from the clique graph
 
-  INLINE void CliqueGraph::eraseEdge(const Edge &edge) {
+  INLINE void CliqueGraph::eraseEdge(const Edge& edge) {
     if (existsEdge(edge)) {
       __separators.erase(edge);
       UndiGraph::eraseEdge(edge);
@@ -67,10 +67,10 @@ namespace gum {
 
   /// adds a new clique to the graph
 
-  INLINE NodeId CliqueGraph::insertNode(const NodeSet &clique) {
+  INLINE NodeId CliqueGraph::insertNode(const NodeSet& clique) {
     return addNode(clique);
   }
-  INLINE NodeId CliqueGraph::addNode(const NodeSet &clique) {
+  INLINE NodeId CliqueGraph::addNode(const NodeSet& clique) {
     // create the new node in the graph
     NodeId new_node = UndiGraph::addNode();
 
@@ -84,10 +84,10 @@ namespace gum {
 
   /// adds a new clique to the graph
 
-  INLINE void CliqueGraph::insertNode(const NodeId id, const NodeSet &clique) {
+  INLINE void CliqueGraph::insertNode(const NodeId id, const NodeSet& clique) {
     addNode(id, clique);
   }
-  INLINE void CliqueGraph::addNode(const NodeId id, const NodeSet &clique) {
+  INLINE void CliqueGraph::addNode(const NodeId id, const NodeSet& clique) {
     // create the new node in the graph
     UndiGraph::addNode(id);
 
@@ -108,7 +108,7 @@ namespace gum {
     // remove the separators
     auto nei = neighbours(id);
     for (auto iter = nei.beginSafe(); iter != nei.endSafe();
-         ++iter) // safe iterator needed here
+         ++iter)  // safe iterator needed here
       eraseEdge(Edge(*iter, id));
 
     // erase the clique set
@@ -120,14 +120,15 @@ namespace gum {
 
   /// returns the set of nodes included into a given clique
 
-  INLINE const NodeSet &CliqueGraph::clique(const NodeId clique) const {
+  INLINE const NodeSet& CliqueGraph::clique(const NodeId clique) const {
     return __cliques[clique];
   }
 
-  /// returns the id of a clique containing the node the id of which is in argument
+  /// returns the id of a clique containing the node the id of which is in
+  /// argument
 
   INLINE NodeId CliqueGraph::container(const NodeId id) const {
-    for (const auto &elt : __cliques)
+    for (const auto& elt : __cliques)
       if (elt.second.contains(id))
         return elt.first;
 
@@ -141,9 +142,11 @@ namespace gum {
       __separators[Edge(nei, id1)] = __cliques[id1] * __cliques[nei];
   }
 
-  /// changes the set of nodes included into a given clique and returns the new set
+  /// changes the set of nodes included into a given clique and returns the new
+  /// set
 
-  INLINE void CliqueGraph::setClique(const NodeId id, const NodeSet &new_clique) {
+  INLINE void CliqueGraph::setClique(const NodeId id,
+                                     const NodeSet& new_clique) {
     // get the current clique set
     __cliques[id] = new_clique;
     __updateSeparators(id);
@@ -151,13 +154,13 @@ namespace gum {
 
   /// returns the separator included in a given edge
 
-  INLINE const NodeSet &CliqueGraph::separator(const Edge &edge) const {
+  INLINE const NodeSet& CliqueGraph::separator(const Edge& edge) const {
     return __separators[edge];
   }
 
   /// returns the separator included in an edge specified by its extremities
 
-  INLINE const NodeSet &CliqueGraph::separator(const NodeId node1,
+  INLINE const NodeSet& CliqueGraph::separator(const NodeId node1,
                                                const NodeId node2) const {
     return separator(Edge(node1, node2));
   }
@@ -168,7 +171,8 @@ namespace gum {
     return (!hasUndirectedCycle() && hasRunningIntersection());
   }
 
-  /// removes all the nodes from the graph (as well as their adjacent edges/arcs)
+  /// removes all the nodes from the graph (as well as their adjacent
+  /// edges/arcs)
 
   INLINE void CliqueGraph::clear() {
     UndiGraph::clear();
@@ -185,7 +189,7 @@ namespace gum {
 
   /// checks whether two clique graphs are different
 
-  INLINE bool CliqueGraph::operator!=(const CliqueGraph &from) const {
+  INLINE bool CliqueGraph::operator!=(const CliqueGraph& from) const {
     return (!operator==(from));
   }
 

@@ -67,7 +67,7 @@ namespace gum_tests {
 
       triang.setGraph(&graph, &dom, &sequence);
 
-      const gum::UndiGraph &gr2 = triang.triangulatedGraph();
+      const gum::UndiGraph& gr2 = triang.triangulatedGraph();
 
       TS_ASSERT_EQUALS(gr2.sizeNodes(), 8U);
 
@@ -77,7 +77,7 @@ namespace gum_tests {
 
       triang.setGraph(&graph, &dom, &sequence);
 
-      const gum::UndiGraph &gr3 = triang.triangulatedGraph();
+      const gum::UndiGraph& gr3 = triang.triangulatedGraph();
 
       TS_ASSERT_EQUALS(gr3.sizeNodes(), 8U);
 
@@ -90,13 +90,13 @@ namespace gum_tests {
 
       triang.setGraph(&graph, &dom, &sequence);
 
-      const gum::UndiGraph &gr5 = triang.triangulatedGraph();
+      const gum::UndiGraph& gr5 = triang.triangulatedGraph();
 
       TS_ASSERT_EQUALS(gr5.sizeNodes(), 8U);
 
       TS_ASSERT_EQUALS(gr5.sizeEdges(), 23U);
 
-      const gum::EdgeSet &edges2 = triang.fillIns();
+      const gum::EdgeSet& edges2 = triang.fillIns();
 
       TS_ASSERT_EQUALS(edges2.size(), 9U);
 
@@ -118,17 +118,17 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(edges2.exists(gum::Edge(60, 80)), true);
 
-      const gum::CliqueGraph &JT = triang.junctionTree();
+      const gum::CliqueGraph& JT = triang.junctionTree();
 
       TS_ASSERT_EQUALS(JT.sizeNodes(), 3U);
 
       TS_ASSERT_EQUALS(JT.sizeEdges(), 2U);
 
-      const gum::NodeSet &clique1 = JT.clique(0);
+      const gum::NodeSet& clique1 = JT.clique(0);
 
-      const gum::NodeSet &clique2 = JT.clique(1);
+      const gum::NodeSet& clique2 = JT.clique(1);
 
-      const gum::NodeSet &clique3 = JT.clique(3);
+      const gum::NodeSet& clique3 = JT.clique(3);
 
       gum::NodeSet cc1, cc2, cc3;
 
@@ -151,13 +151,13 @@ namespace gum_tests {
 
       triang.setGraph(&graph, &dom, &sequence);
 
-      const gum::UndiGraph &gr4 = triang.triangulatedGraph();
+      const gum::UndiGraph& gr4 = triang.triangulatedGraph();
 
       TS_ASSERT_EQUALS(gr4.sizeNodes(), 8U);
 
       TS_ASSERT_EQUALS(gr4.sizeEdges(), 14U);
 
-      const gum::EdgeSet &edges = triang.fillIns();
+      const gum::EdgeSet& edges = triang.fillIns();
 
       TS_ASSERT_EQUALS(edges.size(), 1U);
 
@@ -189,19 +189,19 @@ namespace gum_tests {
 
       triang.setGraph(&graph, &dom, &sequence);
 
-      const gum::CliqueGraph &elim = triang.eliminationTree();
+      const gum::CliqueGraph& elim = triang.eliminationTree();
 
       TS_ASSERT_EQUALS(elim.sizeNodes(), 8U);
 
       TS_ASSERT_EQUALS(elim.sizeEdges(), 7U);
 
-      const gum::CliqueGraph &JT = triang.junctionTree();
+      const gum::CliqueGraph& JT = triang.junctionTree();
 
       TS_ASSERT_EQUALS(JT.sizeNodes(), 6U);
 
       TS_ASSERT_EQUALS(JT.sizeEdges(), 5U);
 
-      const gum::UndiGraph &gr = triang.triangulatedGraph();
+      const gum::UndiGraph& gr = triang.triangulatedGraph();
 
       TS_ASSERT_EQUALS(gr.sizeNodes(), 8U);
 
@@ -209,7 +209,7 @@ namespace gum_tests {
     }
 
     private:
-    void createClique(gum::UndiGraph &graph, const gum::NodeSet &clique) {
+    void createClique(gum::UndiGraph& graph, const gum::NodeSet& clique) {
       for (auto iter = clique.begin(); iter != clique.end(); ++iter) {
         auto iter2 = iter;
 

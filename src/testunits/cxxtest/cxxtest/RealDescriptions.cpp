@@ -13,14 +13,17 @@
 namespace CxxTest {
   RealTestDescription::RealTestDescription() {}
 
-  RealTestDescription::RealTestDescription(List &argList, SuiteDescription &argSuite,
+  RealTestDescription::RealTestDescription(List& argList,
+                                           SuiteDescription& argSuite,
                                            unsigned argLine,
-                                           const char *argTestName) {
+                                           const char* argTestName) {
     initialize(argList, argSuite, argLine, argTestName);
   }
 
-  void RealTestDescription::initialize(List &argList, SuiteDescription &argSuite,
-                                       unsigned argLine, const char *argTestName) {
+  void RealTestDescription::initialize(List& argList,
+                                       SuiteDescription& argSuite,
+                                       unsigned argLine,
+                                       const char* argTestName) {
     _suite = &argSuite;
     _line = argLine;
     _testName = argTestName;
@@ -31,7 +34,7 @@ namespace CxxTest {
     if (!suite())
       return false;
 
-    for (GlobalFixture *gf = GlobalFixture::firstGlobalFixture(); gf != 0;
+    for (GlobalFixture* gf = GlobalFixture::firstGlobalFixture(); gf != 0;
          gf = gf->nextGlobalFixture()) {
       bool ok;
       _TS_TRY { ok = gf->setUp(); }
@@ -45,8 +48,8 @@ namespace CxxTest {
 
     _TS_TRY {
 
-      _TSM_ASSERT_THROWS_NOTHING(file(), line(), "Exception thrown from setUp()",
-                                 suite()->setUp());
+      _TSM_ASSERT_THROWS_NOTHING(
+          file(), line(), "Exception thrown from setUp()", suite()->setUp());
     }
     _TS_CATCH_ABORT({ return false; });
 
@@ -58,12 +61,13 @@ namespace CxxTest {
       return false;
 
     _TS_TRY {
-      _TSM_ASSERT_THROWS_NOTHING(file(), line(), "Exception thrown from tearDown()",
+      _TSM_ASSERT_THROWS_NOTHING(file(), line(),
+                                 "Exception thrown from tearDown()",
                                  suite()->tearDown());
     }
     _TS_CATCH_ABORT({ return false; });
 
-    for (GlobalFixture *gf = GlobalFixture::lastGlobalFixture(); gf != 0;
+    for (GlobalFixture* gf = GlobalFixture::lastGlobalFixture(); gf != 0;
          gf = gf->prevGlobalFixture()) {
       bool ok;
       _TS_TRY { ok = gf->tearDown(); }
@@ -78,23 +82,25 @@ namespace CxxTest {
     return true;
   }
 
-  const char *RealTestDescription::file() const { return _suite->file(); }
+  const char* RealTestDescription::file() const { return _suite->file(); }
 
   unsigned RealTestDescription::line() const { return _line; }
 
-  const char *RealTestDescription::testName() const { return _testName; }
+  const char* RealTestDescription::testName() const { return _testName; }
 
-  const char *RealTestDescription::suiteName() const { return _suite->suiteName(); }
-
-  TestDescription *RealTestDescription::next() {
-    return (RealTestDescription *)Link::next();
+  const char* RealTestDescription::suiteName() const {
+    return _suite->suiteName();
   }
 
-  const TestDescription *RealTestDescription::next() const {
-    return (const RealTestDescription *)Link::next();
+  TestDescription* RealTestDescription::next() {
+    return (RealTestDescription*)Link::next();
   }
 
-  TestSuite *RealTestDescription::suite() const { return _suite->suite(); }
+  const TestDescription* RealTestDescription::next() const {
+    return (const RealTestDescription*)Link::next();
+  }
+
+  TestSuite* RealTestDescription::suite() const { return _suite->suite(); }
 
   void RealTestDescription::run() {
     _TS_TRY { runTest(); }
@@ -104,14 +110,16 @@ namespace CxxTest {
 
   RealSuiteDescription::RealSuiteDescription() {}
 
-  RealSuiteDescription::RealSuiteDescription(const char *argFile, unsigned argLine,
-                                             const char *argSuiteName,
-                                             List &argTests) {
+  RealSuiteDescription::RealSuiteDescription(const char* argFile,
+                                             unsigned argLine,
+                                             const char* argSuiteName,
+                                             List& argTests) {
     initialize(argFile, argLine, argSuiteName, argTests);
   }
 
-  void RealSuiteDescription::initialize(const char *argFile, unsigned argLine,
-                                        const char *argSuiteName, List &argTests) {
+  void RealSuiteDescription::initialize(const char* argFile, unsigned argLine,
+                                        const char* argSuiteName,
+                                        List& argTests) {
     _file = argFile;
     _line = argLine;
     _suiteName = argSuiteName;
@@ -120,8 +128,8 @@ namespace CxxTest {
     attach(_suites);
   }
 
-  const char *RealSuiteDescription::file() const {
-    const char *s = _file + strlen(_file);
+  const char* RealSuiteDescription::file() const {
+    const char* s = _file + strlen(_file);
 
     while (s != _file) {
       if (*s == '/' || *s == '\\')
@@ -135,34 +143,35 @@ namespace CxxTest {
 
   unsigned RealSuiteDescription::line() const { return _line; }
 
-  const char *RealSuiteDescription::suiteName() const { return _suiteName; }
+  const char* RealSuiteDescription::suiteName() const { return _suiteName; }
 
-  TestDescription *RealSuiteDescription::firstTest() {
-    return (RealTestDescription *)_tests->head();
+  TestDescription* RealSuiteDescription::firstTest() {
+    return (RealTestDescription*)_tests->head();
   }
 
-  const TestDescription *RealSuiteDescription::firstTest() const {
-    return (const RealTestDescription *)_tests->head();
+  const TestDescription* RealSuiteDescription::firstTest() const {
+    return (const RealTestDescription*)_tests->head();
   }
 
-  SuiteDescription *RealSuiteDescription::next() {
-    return (RealSuiteDescription *)Link::next();
+  SuiteDescription* RealSuiteDescription::next() {
+    return (RealSuiteDescription*)Link::next();
   }
 
-  const SuiteDescription *RealSuiteDescription::next() const {
-    return (const RealSuiteDescription *)Link::next();
+  const SuiteDescription* RealSuiteDescription::next() const {
+    return (const RealSuiteDescription*)Link::next();
   }
 
   unsigned RealSuiteDescription::numTests() const { return _tests->size(); }
 
-  const TestDescription &RealSuiteDescription::testDescription(unsigned i) const {
-    return *(RealTestDescription *)_tests->nth(i);
+  const TestDescription&
+  RealSuiteDescription::testDescription(unsigned i) const {
+    return *(RealTestDescription*)_tests->nth(i);
   }
 
   void RealSuiteDescription::activateAllTests() { _tests->activateAll(); }
 
-  bool RealSuiteDescription::leaveOnly(const char *testName) {
-    for (TestDescription *td = firstTest(); td != 0; td = td->next()) {
+  bool RealSuiteDescription::leaveOnly(const char* testName) {
+    for (TestDescription* td = firstTest(); td != 0; td = td->next()) {
       if (stringsEqual(td->testName(), testName)) {
         _tests->leaveOnly(*td);
         return true;
@@ -174,26 +183,27 @@ namespace CxxTest {
 
   StaticSuiteDescription::StaticSuiteDescription() {}
 
-  StaticSuiteDescription::StaticSuiteDescription(const char *argFile,
+  StaticSuiteDescription::StaticSuiteDescription(const char* argFile,
                                                  unsigned argLine,
-                                                 const char *argSuiteName,
-                                                 TestSuite &argSuite, List &argTests)
+                                                 const char* argSuiteName,
+                                                 TestSuite& argSuite,
+                                                 List& argTests)
       : RealSuiteDescription(argFile, argLine, argSuiteName, argTests) {
     doInitialize(argSuite);
   }
 
-  void StaticSuiteDescription::initialize(const char *argFile, unsigned argLine,
-                                          const char *argSuiteName,
-                                          TestSuite &argSuite, List &argTests) {
+  void StaticSuiteDescription::initialize(const char* argFile, unsigned argLine,
+                                          const char* argSuiteName,
+                                          TestSuite& argSuite, List& argTests) {
     RealSuiteDescription::initialize(argFile, argLine, argSuiteName, argTests);
     doInitialize(argSuite);
   }
 
-  void StaticSuiteDescription::doInitialize(TestSuite &argSuite) {
+  void StaticSuiteDescription::doInitialize(TestSuite& argSuite) {
     _suite = &argSuite;
   }
 
-  TestSuite *StaticSuiteDescription::suite() const { return _suite; }
+  TestSuite* StaticSuiteDescription::suite() const { return _suite; }
 
   bool StaticSuiteDescription::setUp() { return true; }
 
@@ -202,15 +212,15 @@ namespace CxxTest {
   CommonDynamicSuiteDescription::CommonDynamicSuiteDescription() {}
 
   CommonDynamicSuiteDescription::CommonDynamicSuiteDescription(
-      const char *argFile, unsigned argLine, const char *argSuiteName,
-      List &argTests, unsigned argCreateLine, unsigned argDestroyLine)
+      const char* argFile, unsigned argLine, const char* argSuiteName,
+      List& argTests, unsigned argCreateLine, unsigned argDestroyLine)
       : RealSuiteDescription(argFile, argLine, argSuiteName, argTests) {
     doInitialize(argCreateLine, argDestroyLine);
   }
 
   void CommonDynamicSuiteDescription::initialize(
-      const char *argFile, unsigned argLine, const char *argSuiteName,
-      List &argTests, unsigned argCreateLine, unsigned argDestroyLine) {
+      const char* argFile, unsigned argLine, const char* argSuiteName,
+      List& argTests, unsigned argCreateLine, unsigned argDestroyLine) {
     RealSuiteDescription::initialize(argFile, argLine, argSuiteName, argTests);
     doInitialize(argCreateLine, argDestroyLine);
   }
@@ -221,40 +231,44 @@ namespace CxxTest {
     _destroyLine = argDestroyLine;
   }
 
-  List &RealWorldDescription::suites() { return RealSuiteDescription::_suites; }
+  List& RealWorldDescription::suites() { return RealSuiteDescription::_suites; }
 
-  unsigned RealWorldDescription::numSuites(void) const { return suites().size(); }
+  unsigned RealWorldDescription::numSuites(void) const {
+    return suites().size();
+  }
 
   unsigned RealWorldDescription::numTotalTests(void) const {
     unsigned count = 0;
 
-    for (const SuiteDescription *sd = firstSuite(); sd != 0; sd = sd->next())
+    for (const SuiteDescription* sd = firstSuite(); sd != 0; sd = sd->next())
       count += sd->numTests();
 
     return count;
   }
 
-  SuiteDescription *RealWorldDescription::firstSuite() {
-    return (RealSuiteDescription *)suites().head();
+  SuiteDescription* RealWorldDescription::firstSuite() {
+    return (RealSuiteDescription*)suites().head();
   }
 
-  const SuiteDescription *RealWorldDescription::firstSuite() const {
-    return (const RealSuiteDescription *)suites().head();
+  const SuiteDescription* RealWorldDescription::firstSuite() const {
+    return (const RealSuiteDescription*)suites().head();
   }
 
-  const SuiteDescription &RealWorldDescription::suiteDescription(unsigned i) const {
-    return *(const RealSuiteDescription *)suites().nth(i);
+  const SuiteDescription&
+  RealWorldDescription::suiteDescription(unsigned i) const {
+    return *(const RealSuiteDescription*)suites().nth(i);
   }
 
   void RealWorldDescription::activateAllTests() {
     suites().activateAll();
 
-    for (SuiteDescription *sd = firstSuite(); sd != 0; sd = sd->next())
+    for (SuiteDescription* sd = firstSuite(); sd != 0; sd = sd->next())
       sd->activateAllTests();
   }
 
-  bool RealWorldDescription::leaveOnly(const char *suiteName, const char *testName) {
-    for (SuiteDescription *sd = firstSuite(); sd != 0; sd = sd->next()) {
+  bool RealWorldDescription::leaveOnly(const char* suiteName,
+                                       const char* testName) {
+    for (SuiteDescription* sd = firstSuite(); sd != 0; sd = sd->next()) {
       if (stringsEqual(sd->suiteName(), suiteName)) {
         if (testName)
           if (!sd->leaveOnly(testName))
@@ -270,7 +284,7 @@ namespace CxxTest {
   }
 
   bool RealWorldDescription::setUp() {
-    for (GlobalFixture *gf = GlobalFixture::firstGlobalFixture(); gf != 0;
+    for (GlobalFixture* gf = GlobalFixture::firstGlobalFixture(); gf != 0;
          gf = gf->nextGlobalFixture()) {
       bool ok;
       _TS_TRY { ok = gf->setUpWorld(); }
@@ -286,7 +300,7 @@ namespace CxxTest {
   }
 
   bool RealWorldDescription::tearDown() {
-    for (GlobalFixture *gf = GlobalFixture::lastGlobalFixture(); gf != 0;
+    for (GlobalFixture* gf = GlobalFixture::lastGlobalFixture(); gf != 0;
          gf = gf->prevGlobalFixture()) {
       bool ok;
       _TS_TRY { ok = gf->tearDownWorld(); }
@@ -301,15 +315,15 @@ namespace CxxTest {
     return true;
   }
 
-  void RealWorldDescription::reportError(const char *message) {
+  void RealWorldDescription::reportError(const char* message) {
     doWarn(__FILE__, 5, message);
   }
 
   void activateAllTests() { RealWorldDescription().activateAllTests(); }
 
-  bool leaveOnly(const char *suiteName, const char *testName) {
+  bool leaveOnly(const char* suiteName, const char* testName) {
     return RealWorldDescription().leaveOnly(suiteName, testName);
   }
 }
 
-#endif // __cxxtest__RealDescriptions_cpp__
+#endif  // __cxxtest__RealDescriptions_cpp__

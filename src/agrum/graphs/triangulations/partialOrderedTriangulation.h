@@ -19,9 +19,11 @@
  ***************************************************************************/
 /** @file
  * @brief class for graph triangulations for which we enforce a given partial
- * ordering on the nodes eliminations, that is, the set of all the nodes is divided
+ * ordering on the nodes eliminations, that is, the set of all the nodes is
+ *divided
  * into several subsets. Within each subset, any ordering can be chosen. But all
- * the nodes of the first subset must be eliminated before the nodes of the second,
+ * the nodes of the first subset must be eliminated before the nodes of the
+ *second,
  * which must be eliminated before those of the third subset, and so on.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
@@ -35,19 +37,23 @@
 
 namespace gum {
 
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   /** @class PartialOrderedTriangulation
    * @brief class for graph triangulations for which we enforce a given partial
    * ordering on the nodes eliminations, that is, the set of all the nodes is
-   * divided into several subsets. Within each subset, any ordering can be chosen.
-   * But all the nodes of the first subset must be eliminated before the nodes of
+   * divided into several subsets. Within each subset, any ordering can be
+   *chosen.
+   * But all the nodes of the first subset must be eliminated before the nodes
+   *of
    * the second, which must be eliminated before those of the third subset, and
    * so on.
    *
    * \ingroup graph_group
    *
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   class PartialOrderedTriangulation : public StaticTriangulation {
     public:
     // ############################################################################
@@ -57,13 +63,14 @@ namespace gum {
 
     /// default constructor
     /** @param elimSeq the elimination sequence used to triangulate the graph
-     * @param JTStrategy the junction tree strategy used to create junction trees
+     * @param JTStrategy the junction tree strategy used to create junction
+     * trees
      * @param minimality a Boolean indicating whether we should enforce that
      * the triangulation is minimal w.r.t. inclusion */
     PartialOrderedTriangulation(
-        const PartialOrderedEliminationSequenceStrategy &elimSeq =
+        const PartialOrderedEliminationSequenceStrategy& elimSeq =
             DefaultPartialOrderedEliminationSequenceStrategy(),
-        const JunctionTreeStrategy &JTStrategy = DefaultJunctionTreeStrategy(),
+        const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
         bool minimality = false);
 
     /// constructor with a given graph
@@ -73,17 +80,18 @@ namespace gum {
      * @param partial_order the list of the subsets constituting the partial
      * ordering
      * @param elimSeq the elimination sequence used to triangulate the graph
-     * @param JTStrategy the junction tree strategy used to create junction trees
+     * @param JTStrategy the junction tree strategy used to create junction
+     * trees
      * @param minimality a Boolean indicating whether we should enforce that
      * the triangulation is minimal w.r.t. inclusion
      * @warning note that, by aGrUM's rule, the graph and the modalities are not
      * copied but only referenced by the elimination sequence algorithm. */
     PartialOrderedTriangulation(
-        const UndiGraph *graph, const NodeProperty<Size> *dom,
-        const List<NodeSet> *partial_order,
-        const PartialOrderedEliminationSequenceStrategy &elimSeq =
+        const UndiGraph* graph, const NodeProperty<Size>* dom,
+        const List<NodeSet>* partial_order,
+        const PartialOrderedEliminationSequenceStrategy& elimSeq =
             DefaultPartialOrderedEliminationSequenceStrategy(),
-        const JunctionTreeStrategy &JTStrategy = DefaultJunctionTreeStrategy(),
+        const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
         bool minimality = false);
 
     /** @brief returns a fresh triangulation (over an empty graph) of the same
@@ -92,7 +100,7 @@ namespace gum {
      * note that we return a pointer as it enables subclasses to return
      * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++.*/
-    virtual PartialOrderedTriangulation *newFactory() const;
+    virtual PartialOrderedTriangulation* newFactory() const;
 
     /// destructor
     virtual ~PartialOrderedTriangulation();
@@ -112,8 +120,8 @@ namespace gum {
      * ordering
      * @warning note that, by aGrUM's rule, the graph and the sequence are not
      * copied but only referenced by the elimination sequence algorithm. */
-    virtual void setGraph(const UndiGraph *graph, const NodeProperty<Size> *dom,
-                          const List<NodeSet> *partial_order);
+    virtual void setGraph(const UndiGraph* graph, const NodeProperty<Size>* dom,
+                          const List<NodeSet>* partial_order);
 
     /// @}
 
@@ -128,22 +136,22 @@ namespace gum {
      * elimination sequence class).
      * @param graph the very graph that is triangulated (this is a copy of
      * __original_graph) */
-    void _initTriangulation(UndiGraph &graph);
+    void _initTriangulation(UndiGraph& graph);
 
     /// the modalities of the nodes
-    const NodeProperty<Size> *__modalities;
+    const NodeProperty<Size>* __modalities;
 
     /// the partial ordering to apply to eliminate nodes
-    const List<NodeSet> *__partial_order;
+    const List<NodeSet>* __partial_order;
 
     /// @}
 
     private:
     /// forbid copy constructor
-    PartialOrderedTriangulation(const PartialOrderedTriangulation &);
+    PartialOrderedTriangulation(const PartialOrderedTriangulation&);
 
     /// forbid copy operator
-    PartialOrderedTriangulation &operator=(const PartialOrderedTriangulation &);
+    PartialOrderedTriangulation& operator=(const PartialOrderedTriangulation&);
   };
 
 } /* namespace gum */

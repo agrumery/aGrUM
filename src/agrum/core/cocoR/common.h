@@ -70,34 +70,35 @@ Coco/R itself) does not fall under the GNU General Public License.
 namespace gum {
 
   /// string handling, wide character
-  wchar_t *coco_string_create(const wchar_t *value);
-  wchar_t *coco_string_create(const wchar_t *value, int startIndex);
-  wchar_t *coco_string_create(const wchar_t *value, int startIndex, int length);
-  wchar_t *coco_string_create_upper(const wchar_t *data);
-  wchar_t *coco_string_create_lower(const wchar_t *data);
-  wchar_t *coco_string_create_lower(const wchar_t *data, int startIndex,
+  wchar_t* coco_string_create(const wchar_t* value);
+  wchar_t* coco_string_create(const wchar_t* value, int startIndex);
+  wchar_t* coco_string_create(const wchar_t* value, int startIndex, int length);
+  wchar_t* coco_string_create_upper(const wchar_t* data);
+  wchar_t* coco_string_create_lower(const wchar_t* data);
+  wchar_t* coco_string_create_lower(const wchar_t* data, int startIndex,
                                     int dataLen);
-  wchar_t *coco_string_create_append(const wchar_t *data1, const wchar_t *data2);
-  wchar_t *coco_string_create_append(const wchar_t *data, const wchar_t value);
-  void coco_string_delete(wchar_t *&data);
-  int coco_string_length(const wchar_t *data);
-  bool coco_string_endswith(const wchar_t *data, const wchar_t *value);
-  int coco_string_indexof(const wchar_t *data, const wchar_t value);
-  int coco_string_lastindexof(const wchar_t *data, const wchar_t value);
-  void coco_string_merge(wchar_t *&data, const wchar_t *value);
-  bool coco_string_equal(const wchar_t *data1, const wchar_t *data2);
-  int coco_string_compareto(const wchar_t *data1, const wchar_t *data2);
-  int coco_string_hash(const wchar_t *data);
+  wchar_t* coco_string_create_append(const wchar_t* data1,
+                                     const wchar_t* data2);
+  wchar_t* coco_string_create_append(const wchar_t* data, const wchar_t value);
+  void coco_string_delete(wchar_t*& data);
+  int coco_string_length(const wchar_t* data);
+  bool coco_string_endswith(const wchar_t* data, const wchar_t* value);
+  int coco_string_indexof(const wchar_t* data, const wchar_t value);
+  int coco_string_lastindexof(const wchar_t* data, const wchar_t value);
+  void coco_string_merge(wchar_t*& data, const wchar_t* value);
+  bool coco_string_equal(const wchar_t* data1, const wchar_t* data2);
+  int coco_string_compareto(const wchar_t* data1, const wchar_t* data2);
+  int coco_string_hash(const wchar_t* data);
 
   /// string handling, ascii character
-  wchar_t *coco_string_create(const char *value);
-  char *coco_string_create_char(const wchar_t *value);
-  void coco_string_delete(char *&data);
+  wchar_t* coco_string_create(const char* value);
+  char* coco_string_create_char(const wchar_t* value);
+  void coco_string_delete(char*& data);
 
   /// CocoR uses unicode, thus use this to cast string in wstring.
-  inline std::wstring widen(const std::string &str) {
+  inline std::wstring widen(const std::string& str) {
     std::wostringstream wstm;
-    const std::ctype<wchar_t> &ctfacet =
+    const std::ctype<wchar_t>& ctfacet =
         std::use_facet<std::ctype<wchar_t>>(wstm.getloc());
 
     for (size_t i = 0; i < str.size(); ++i)
@@ -107,9 +108,10 @@ namespace gum {
   }
 
   /// CocoR uses unicode, thus use this to cast wstring in string.
-  inline std::string narrow(const std::wstring &str) {
+  inline std::string narrow(const std::wstring& str) {
     std::ostringstream stm;
-    const std::ctype<char> &ctfacet = std::use_facet<std::ctype<char>>(stm.getloc());
+    const std::ctype<char>& ctfacet =
+        std::use_facet<std::ctype<char>>(stm.getloc());
 
     for (size_t i = 0; i < str.size(); ++i)
       stm << ctfacet.narrow(str[i], 0);
@@ -117,14 +119,14 @@ namespace gum {
     return stm.str();
   }
 
-  inline float coco_atof(const wchar_t *c) {
+  inline float coco_atof(const wchar_t* c) {
     float res;
     std::istringstream istr(narrow(c));
     istr.imbue(std::locale("C"));
     istr >> res;
     return res;
   }
-  inline int coco_atoi(const wchar_t *c) {
+  inline int coco_atoi(const wchar_t* c) {
     int res;
     std::istringstream istr(narrow(c));
     istr.imbue(std::locale("C"));
@@ -132,6 +134,6 @@ namespace gum {
     return res;
   }
 
-} // namespace gum
+}  // namespace gum
 
-#endif // COCO_R_COMMON_H
+#endif  // COCO_R_COMMON_H

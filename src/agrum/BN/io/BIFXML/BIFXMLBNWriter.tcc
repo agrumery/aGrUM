@@ -48,8 +48,9 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template <typename GUM_SCALAR>
-  INLINE void BIFXMLBNWriter<GUM_SCALAR>::write(std::ostream &output,
-                                                const IBayesNet<GUM_SCALAR> &bn) {
+  INLINE void
+  BIFXMLBNWriter<GUM_SCALAR>::write(std::ostream& output,
+                                    const IBayesNet<GUM_SCALAR>& bn) {
     if (!output.good()) {
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
     }
@@ -87,8 +88,9 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template <typename GUM_SCALAR>
-  INLINE void BIFXMLBNWriter<GUM_SCALAR>::write(std::string filePath,
-                                                const IBayesNet<GUM_SCALAR> &bn) {
+  INLINE void
+  BIFXMLBNWriter<GUM_SCALAR>::write(std::string filePath,
+                                    const IBayesNet<GUM_SCALAR>& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
     write(output, bn);
@@ -105,7 +107,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   INLINE std::string
-  BIFXMLBNWriter<GUM_SCALAR>::__heading(const IBayesNet<GUM_SCALAR> &bn) {
+  BIFXMLBNWriter<GUM_SCALAR>::__heading(const IBayesNet<GUM_SCALAR>& bn) {
     std::stringstream str;
 
     // Header for every xml
@@ -116,11 +118,14 @@ namespace gum {
     str << "<!DOCTYPE BIF [" << std::endl;
     str << "\t<!ELEMENT BIF ( NETWORK )*>" << std::endl;
     str << "\t\t<!ATTLIST BIF VERSION CDATA #REQUIRED>" << std::endl;
-    str << "\t<!ELEMENT NETWORK ( NAME, ( PROPERTY | VARIABLE | DEFINITION )* )>" <<
+    str << "\t<!ELEMENT NETWORK ( NAME, ( PROPERTY | VARIABLE | DEFINITION )*
+    )>" <<
     std::endl;
     str << "\t<!ELEMENT NAME (#PCDATA)>" << std::endl;
-    str << "\t<!ELEMENT VARIABLE ( NAME, ( OUTCOME |  PROPERTY )* ) >" << std::endl;
-    str << "\t\t<!ATTLIST VARIABLE TYPE (nature|decision|utility) \"nature\">" <<
+    str << "\t<!ELEMENT VARIABLE ( NAME, ( OUTCOME |  PROPERTY )* ) >" <<
+    std::endl;
+    str << "\t\t<!ATTLIST VARIABLE TYPE (nature|decision|utility) \"nature\">"
+    <<
     std::endl;
     str << "\t<!ELEMENT OUTCOME (#PCDATA)>" << std::endl;
     str << "\t<!ELEMENT DEFINITION ( FOR | GIVEN | TABLE | PROPERTY )* >" <<
@@ -132,13 +137,15 @@ namespace gum {
     str << "]>" << std::endl;*/
 
     // BIF version Tag
-    str << std::endl << "<BIF VERSION=\"0.3\">" << std::endl;
+    str << std::endl
+        << "<BIF VERSION=\"0.3\">" << std::endl;
 
     // Network declaration
     str << "<NETWORK>" << std::endl;
     str << "<NAME>" << bn.propertyWithDefault("name", "unnamedBN") << "</NAME>"
         << std::endl;
-    str << "<PROPERTY> software aGrUM " << GUM_VERSION << "</PROPERTY>" << std::endl;
+    str << "<PROPERTY> software aGrUM " << GUM_VERSION << "</PROPERTY>"
+        << std::endl;
 
     return str.str();
   }
@@ -148,7 +155,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   INLINE std::string
-  BIFXMLBNWriter<GUM_SCALAR>::__variableBloc(const DiscreteVariable &var) {
+  BIFXMLBNWriter<GUM_SCALAR>::__variableBloc(const DiscreteVariable& var) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
     //<OUTCOME>outcome1</OUTCOME>
@@ -179,9 +186,8 @@ namespace gum {
    * Returns a bloc defining a variable's CPT in the BIF format.
    */
   template <typename GUM_SCALAR>
-  INLINE std::string
-  BIFXMLBNWriter<GUM_SCALAR>::__variableDefinition(const NodeId &varNodeId,
-                                                   const IBayesNet<GUM_SCALAR> &bn) {
+  INLINE std::string BIFXMLBNWriter<GUM_SCALAR>::__variableDefinition(
+      const NodeId& varNodeId, const IBayesNet<GUM_SCALAR>& bn) {
     //<DEFINITION>
     //<FOR>var</FOR>
     //<GIVEN>conditional var</GIVEN>
@@ -196,9 +202,10 @@ namespace gum {
     str << "\t<FOR>" << bn.variable(varNodeId).name() << "</FOR>" << std::endl;
 
     // Table
-    // For historical reason, the code is not the same betwen bIXML for BN and for ID
+    // For historical reason, the code is not the same betwen bIXML for BN and
+    // for ID
     // ...
-    const Potential<GUM_SCALAR> &cpt = bn.cpt(varNodeId);
+    const Potential<GUM_SCALAR>& cpt = bn.cpt(varNodeId);
 
     // Conditional Parents
     for (Idx i = 1; i < cpt.nbrDim(); i++)
@@ -214,14 +221,16 @@ namespace gum {
 
     for (inst.setFirst(); !inst.end(); inst.inc()) {
       if (inst.val(0) == 0)
-        str << std::endl << "\t\t";
+        str << std::endl
+            << "\t\t";
       else
         str << " ";
 
-      str << cpt[inst]; //"<!-- "<<inst<<" -->"<<std::endl;
+      str << cpt[inst];  //"<!-- "<<inst<<" -->"<<std::endl;
     }
 
-    str << std::endl << "\t</TABLE>" << std::endl;
+    str << std::endl
+        << "\t</TABLE>" << std::endl;
 
     // Closing tag
     str << "</DEFINITION>" << std::endl;
@@ -244,4 +253,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

@@ -20,7 +20,8 @@
 /** @file
  * @brief A pack of learning algorithms that can easily be used
  *
- * The pack currently contains K2, GreedyHillClimbing and LocalSearchWithTabuList
+ * The pack currently contains K2, GreedyHillClimbing and
+ *LocalSearchWithTabuList
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -38,39 +39,41 @@ namespace gum {
 
   namespace learning {
     template <typename GUM_SCALAR>
-    BNLearner<GUM_SCALAR>::BNLearner(const std::string &filename)
+    BNLearner<GUM_SCALAR>::BNLearner(const std::string& filename)
         : genericBNLearner(filename) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     template <typename GUM_SCALAR>
     BNLearner<GUM_SCALAR>::BNLearner(
-        const std::string &filename,
-        const NodeProperty<Sequence<std::string>> &modalities, bool parse_database)
+        const std::string& filename,
+        const NodeProperty<Sequence<std::string>>& modalities,
+        bool parse_database)
         : genericBNLearner(filename, modalities, parse_database) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     template <typename GUM_SCALAR>
-    BNLearner<GUM_SCALAR>::BNLearner(const std::string &filename,
-                                     const gum::BayesNet<GUM_SCALAR> &src,
+    BNLearner<GUM_SCALAR>::BNLearner(const std::string& filename,
+                                     const gum::BayesNet<GUM_SCALAR>& src,
                                      bool parse_database)
-        : BNLearner(filename, BNLearner<GUM_SCALAR>::__labelsFromBN(filename, src),
+        : BNLearner(filename,
+                    BNLearner<GUM_SCALAR>::__labelsFromBN(filename, src),
                     parse_database) {
       // GUM_CONSTRUCTOR in BNLearner(filename,modalities,parse_database)
     }
 
     /// copy constructor
     template <typename GUM_SCALAR>
-    BNLearner<GUM_SCALAR>::BNLearner(const BNLearner<GUM_SCALAR> &src)
-        : genericBNLearner(static_cast<const genericBNLearner &>(src)) {
+    BNLearner<GUM_SCALAR>::BNLearner(const BNLearner<GUM_SCALAR>& src)
+        : genericBNLearner(static_cast<const genericBNLearner&>(src)) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     /// move constructor
     template <typename GUM_SCALAR>
-    BNLearner<GUM_SCALAR>::BNLearner(BNLearner<GUM_SCALAR> &&src)
-        : genericBNLearner(static_cast<genericBNLearner &&>(src)) {
+    BNLearner<GUM_SCALAR>::BNLearner(BNLearner<GUM_SCALAR>&& src)
+        : genericBNLearner(static_cast<genericBNLearner&&>(src)) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
@@ -88,19 +91,19 @@ namespace gum {
 
     /// copy operator
     template <typename GUM_SCALAR>
-    BNLearner<GUM_SCALAR> &BNLearner<GUM_SCALAR>::
-    operator=(const BNLearner<GUM_SCALAR> &src) {
-      static_cast<genericBNLearner *>(this)->operator=(
-          static_cast<const genericBNLearner &>(src));
+    BNLearner<GUM_SCALAR>& BNLearner<GUM_SCALAR>::
+    operator=(const BNLearner<GUM_SCALAR>& src) {
+      static_cast<genericBNLearner*>(this)->operator=(
+          static_cast<const genericBNLearner&>(src));
       return *this;
     }
 
     /// move operator
     template <typename GUM_SCALAR>
-    BNLearner<GUM_SCALAR> &BNLearner<GUM_SCALAR>::
-    operator=(BNLearner<GUM_SCALAR> &&src) {
-      static_cast<genericBNLearner *>(this)->operator=(
-          static_cast<genericBNLearner &&>(src));
+    BNLearner<GUM_SCALAR>& BNLearner<GUM_SCALAR>::
+    operator=(BNLearner<GUM_SCALAR>&& src) {
+      static_cast<genericBNLearner*>(this)->operator=(
+          static_cast<genericBNLearner&&>(src));
       return *this;
     }
 
@@ -122,7 +125,7 @@ namespace gum {
     /// learns a BN (its parameters) when its structure is known
     template <typename GUM_SCALAR>
     BayesNet<GUM_SCALAR>
-    BNLearner<GUM_SCALAR>::learnParameters(const DAG &dag,
+    BNLearner<GUM_SCALAR>::learnParameters(const DAG& dag,
                                            bool take_into_account_score) {
       // create the apriori and the estimator
       __createApriori();
@@ -138,7 +141,7 @@ namespace gum {
     /// learns a BN (its parameters) when its structure is known
     template <typename GUM_SCALAR>
     BayesNet<GUM_SCALAR>
-    BNLearner<GUM_SCALAR>::learnParameters(const BayesNet<GUM_SCALAR> &bn,
+    BNLearner<GUM_SCALAR>::learnParameters(const BayesNet<GUM_SCALAR>& bn,
                                            bool take_into_account_score) {
       // create the apriori and the estimator
       __createApriori();
@@ -161,7 +164,7 @@ namespace gum {
         newDAG.addNode(new_id);
       }
 
-      for (const auto &arc : bn.arcs()) {
+      for (const auto& arc : bn.arcs()) {
         newDAG.addArc(mapIds[arc.tail()], mapIds[arc.head()]);
       }
 
@@ -174,8 +177,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     NodeProperty<Sequence<std::string>>
-    BNLearner<GUM_SCALAR>::__labelsFromBN(const std::string &filename,
-                                          const BayesNet<GUM_SCALAR> &src) {
+    BNLearner<GUM_SCALAR>::__labelsFromBN(const std::string& filename,
+                                          const BayesNet<GUM_SCALAR>& src) {
       std::ifstream in(filename, std::ifstream::in);
 
       if ((in.rdstate() & std::ifstream::failbit) != 0) {
@@ -195,7 +198,7 @@ namespace gum {
 
           for (gum::Size i = 0; i < src.variable(graphId).domainSize(); ++i)
             modals[col].insert(src.variable(graphId).label(i));
-        } catch (const gum::NotFound &e) {
+        } catch (const gum::NotFound& e) {
           // no problem : a colonne which is not in the BN...
         }
       }

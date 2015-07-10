@@ -20,7 +20,8 @@
 /** @file
  * @brief exists aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+*<{prenom.nom}_at_lip6.fr>
  */
 #include <sstream>
 // to ease parser in IDEs
@@ -36,7 +37,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Or<GUM_SCALAR>::Or(const Or<GUM_SCALAR> &from)
+    INLINE Or<GUM_SCALAR>::Or(const Or<GUM_SCALAR>& from)
         : MultiDimAggregator<GUM_SCALAR>(from) {
       GUM_CONS_CPY(Or);
     }
@@ -45,13 +46,14 @@ namespace gum {
       GUM_DESTRUCTOR(Or);
     }
 
-    template <typename GUM_SCALAR> INLINE Idx Or<GUM_SCALAR>::_neutralElt() const {
+    template <typename GUM_SCALAR>
+    INLINE Idx Or<GUM_SCALAR>::_neutralElt() const {
       return (Idx)0;
     }
 
     template <typename GUM_SCALAR>
-    INLINE Idx Or<GUM_SCALAR>::_folder(const DiscreteVariable &v, Idx i1, Idx i2,
-                                       bool &stop_iteration) const {
+    INLINE Idx Or<GUM_SCALAR>::_folder(const DiscreteVariable& v, Idx i1,
+                                       Idx i2, bool& stop_iteration) const {
       if (i1 != 1) {
         return (Idx)0;
       } else {
@@ -66,9 +68,9 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE MultiDimContainer<GUM_SCALAR> *Or<GUM_SCALAR>::newFactory() const {
+    INLINE MultiDimContainer<GUM_SCALAR>* Or<GUM_SCALAR>::newFactory() const {
       return new Or<GUM_SCALAR>();
     }
 
-  } // namespace aggregator
-} // namespace gum
+  }  // namespace aggregator
+}  // namespace gum

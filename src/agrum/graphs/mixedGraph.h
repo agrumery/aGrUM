@@ -35,9 +35,12 @@
 
 namespace gum {
 
-  /* =========================================================================== */
-  /* ===      BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS    === */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===      BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS    ===
+   */
+  /* ===========================================================================
+   */
   /** @class MixedGraph
    * @brief Base class for mixed graphs
    *
@@ -115,7 +118,8 @@ namespace gum {
    * g3.eraseNeighbours( 2 );
    * @endcode
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
 
   class MixedGraph : public virtual UndiGraph, public virtual DiGraph {
     public:
@@ -140,7 +144,7 @@ namespace gum {
 
     /// copy constructor
     /** @param g the MixedGraph to copy */
-    MixedGraph(const MixedGraph &g);
+    MixedGraph(const MixedGraph& g);
 
     /// destructor
     virtual ~MixedGraph();
@@ -154,17 +158,17 @@ namespace gum {
 
     /// copy operator
     /** @param g the MixedGraph to copy */
-    MixedGraph &operator=(const MixedGraph &g);
+    MixedGraph& operator=(const MixedGraph& g);
 
     /// tests whether two MixedGraphs are identical (same nodes, arcs and edges)
     /** @param g the MixedGraph with which "this" is compared */
     // not virtual : it is a feature !!! :)
-    bool operator==(const MixedGraph &g) const;
+    bool operator==(const MixedGraph& g) const;
 
     /// tests whether two MixedGraphs are different
     /** @param g the MixedGraph with which "this" is compared */
     // not virtual : it is a feature !!! :)
-    bool operator!=(const MixedGraph &g) const;
+    bool operator!=(const MixedGraph& g) const;
 
     /// @}
 
@@ -211,12 +215,12 @@ namespace gum {
   };
 
   /// for friendly displaying the content of directed graphs
-  std::ostream &operator<<(std::ostream &, const MixedGraph &);
+  std::ostream& operator<<(std::ostream&, const MixedGraph&);
 
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
 #include <agrum/graphs/mixedGraph.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 
 #endif /* GUM_MIXEDGRAPH_H */

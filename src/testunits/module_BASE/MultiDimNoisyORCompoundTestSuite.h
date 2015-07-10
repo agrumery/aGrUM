@@ -137,17 +137,17 @@ namespace gum_tests {
       p.causalWeight(competition, 0.9);
 
       gum::Instantiation i(p);
-      float witness[] = {0.9999,   0.0001,   0.1,      0.9,      0.3,      0.7,
-                         0.030003, 0.969997, 0.5,      0.5,      0.050005, 0.949995,
-                         0.150015, 0.849985, 0.015003, 0.984997, 0.7,      0.3,
-                         0.070007, 0.929993, 0.210021, 0.789979, 0.021004, 0.978996,
-                         0.350035, 0.649965, 0.035007, 0.964993, 0.105021, 0.894979,
-                         0.010503, 0.989496, 0.9,      0.1,      0.090009, 0.909991,
-                         0.270027, 0.729973, 0.027005, 0.972995, 0.450045, 0.549955,
-                         0.045009, 0.954991, 0.135027, 0.864973, 0.013504, 0.986496,
-                         0.630063, 0.369937, 0.063013, 0.936987, 0.189038, 0.810962,
-                         0.018906, 0.981094, 0.315063, 0.684937, 0.031509, 0.968491,
-                         0.094528, 0.905472, 0.009454, 0.990546};
+      float witness[] = {
+          0.9999,   0.0001,   0.1,      0.9,      0.3,      0.7,      0.030003,
+          0.969997, 0.5,      0.5,      0.050005, 0.949995, 0.150015, 0.849985,
+          0.015003, 0.984997, 0.7,      0.3,      0.070007, 0.929993, 0.210021,
+          0.789979, 0.021004, 0.978996, 0.350035, 0.649965, 0.035007, 0.964993,
+          0.105021, 0.894979, 0.010503, 0.989496, 0.9,      0.1,      0.090009,
+          0.909991, 0.270027, 0.729973, 0.027005, 0.972995, 0.450045, 0.549955,
+          0.045009, 0.954991, 0.135027, 0.864973, 0.013504, 0.986496, 0.630063,
+          0.369937, 0.063013, 0.936987, 0.189038, 0.810962, 0.018906, 0.981094,
+          0.315063, 0.684937, 0.031509, 0.968491, 0.094528, 0.905472, 0.009454,
+          0.990546};
 
       int j = 0;
 
@@ -187,25 +187,27 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8);
       bn.addWeightedArc(idCold, idFever, 0.4);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8), gum::InvalidArc);
+      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8),
+                       gum::InvalidArc);
 
-      const gum::Potential<float> &pOneMoreParent1 = bn.cpt(idOneMoreParent1);
+      const gum::Potential<float>& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
       pOneMoreParent1.fillWith(std::vector<float>{0.2, 0.8});
 
-      const gum::Potential<float> &pOneMoreParent2 = bn.cpt(idOneMoreParent2);
+      const gum::Potential<float>& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
       // FILLING PARAMS
       pOneMoreParent2.fillWith(std::vector<float>{0.3, 0.7});
 
       bn.addArc(idOneMoreParent1, idOneMore);
       bn.addArc(idFever, idOneMore);
       bn.addArc(idOneMoreParent2, idOneMore);
-      const gum::Potential<float> &pOneMore = bn.cpt(idOneMore);
+      const gum::Potential<float>& pOneMore = bn.cpt(idOneMore);
       // FILLING PARAMS
-      pOneMore.fillWith(std::vector<float>{0.1, 0.9, 0.8, 0.2, 0.1, 0.9, 0.8, 0.2,
-                                           0.1, 0.9, 0.8, 0.2, 0.1, 0.9, 0.8, 0.2});
+      pOneMore.fillWith(std::vector<float>{0.1, 0.9, 0.8, 0.2, 0.1, 0.9, 0.8,
+                                           0.2, 0.1, 0.9, 0.8, 0.2, 0.1, 0.9,
+                                           0.8, 0.2});
 
-      const gum::Potential<float> &p = bn.cpt(idFever);
+      const gum::Potential<float>& p = bn.cpt(idFever);
 
       gum::Instantiation i(p);
       float witness[] = {1.0, 0.0, 0.1,  0.9,  0.2,  0.8,  0.02,  0.98,

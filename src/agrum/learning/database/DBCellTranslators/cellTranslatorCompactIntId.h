@@ -46,7 +46,8 @@ namespace gum {
      * @brief An identity function cell translator on integers that assumes the
      * integers it reads forms a compact (interval { 0 ,..., n } )
      *
-     * @warning If you are unsure that the integers that the cell translator will
+     * @warning If you are unsure that the integers that the cell translator
+     *will
      * parse form an interval { 0 ,..., n }, then, prefer using class
      * CellTranslatorNumber. The latter class is slower but safer.
      */
@@ -61,7 +62,8 @@ namespace gum {
       /// default constructor
       /** @param By default, CellTranslatorCompactIntId parses the database at
        * initialization to check that its values actually form an interval
-       * { 0 ,..., n }. If this is not the case, it raises an exception. However,
+       * { 0 ,..., n }. If this is not the case, it raises an exception.
+       * However,
        * there exist cases where this check is unncessary (for instance in the
        * BNLearner class) and, by setting check_database to false, we avoid
        * this unnecessary step.
@@ -71,13 +73,13 @@ namespace gum {
       CellTranslatorCompactIntId(bool check_database = true);
 
       /// copy constructor
-      CellTranslatorCompactIntId(const CellTranslatorCompactIntId &from);
+      CellTranslatorCompactIntId(const CellTranslatorCompactIntId& from);
 
       /// move constructor
-      CellTranslatorCompactIntId(CellTranslatorCompactIntId &&from);
+      CellTranslatorCompactIntId(CellTranslatorCompactIntId&& from);
 
       /// virtual copy constructor
-      virtual CellTranslatorCompactIntId *copyFactory() final;
+      virtual CellTranslatorCompactIntId* copyFactory() final;
 
       /// destructor
       virtual ~CellTranslatorCompactIntId();
@@ -91,10 +93,11 @@ namespace gum {
       /// @{
 
       /// copy operator
-      CellTranslatorCompactIntId &operator=(const CellTranslatorCompactIntId &from);
+      CellTranslatorCompactIntId&
+      operator=(const CellTranslatorCompactIntId& from);
 
       /// move operator
-      CellTranslatorCompactIntId &operator=(CellTranslatorCompactIntId &&from);
+      CellTranslatorCompactIntId& operator=(CellTranslatorCompactIntId&& from);
 
       /// @}
 
@@ -116,17 +119,18 @@ namespace gum {
       void postInitialize();
 
       /// add the number of modalities discovered in the database into a vector
-      void modalities(std::vector<unsigned int> &modal) const noexcept;
+      void modalities(std::vector<unsigned int>& modal) const noexcept;
 
       /// returns whether the translator needs a DB parsing to initialize itself
       bool requiresInitialization() const noexcept;
 
       /// returns a given value as stored within the database
-      std::string translateBack(unsigned int col, unsigned int translated_val) const;
+      std::string translateBack(unsigned int col,
+                                unsigned int translated_val) const;
 
       /// returns the name of the variable(s) the translator has processed
-      void variableNames(const std::vector<std::string> &db_var,
-                         std::vector<std::string> &output_vars) const;
+      void variableNames(const std::vector<std::string>& db_var,
+                         std::vector<std::string>& output_vars) const;
 
       /// @}
 

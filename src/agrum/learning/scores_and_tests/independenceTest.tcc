@@ -35,7 +35,8 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE IndependenceTest<IdSetAlloc, CountAlloc>::IndependenceTest(
-        const RowFilter &filter, const std::vector<unsigned int> &var_modalities)
+        const RowFilter& filter,
+        const std::vector<unsigned int>& var_modalities)
         : Counter<IdSetAlloc, CountAlloc>(filter, var_modalities) {
       GUM_CONSTRUCTOR(IndependenceTest);
     }
@@ -58,7 +59,7 @@ namespace gum {
           __is_cached_score.push_back(true);
           __cached_score.push_back(score);
           return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
-        } catch (const NotFound &) {
+        } catch (const NotFound&) {
         }
       }
 
@@ -87,7 +88,7 @@ namespace gum {
     /// add a new pair of target unconditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE unsigned int IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
-        const std::pair<unsigned int, unsigned int> &vars) {
+        const std::pair<unsigned int, unsigned int>& vars) {
       return addNodeSet(vars.first, vars.second);
     }
 
@@ -95,14 +96,14 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE unsigned int IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
         unsigned int var1, unsigned int var2,
-        const std::vector<unsigned int> &conditioning_ids) {
+        const std::vector<unsigned int>& conditioning_ids) {
       if (__use_cache) {
         try {
           float score = __cache.score(var1, var2, conditioning_ids);
           __is_cached_score.push_back(true);
           __cached_score.push_back(score);
           return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
-        } catch (const NotFound &) {
+        } catch (const NotFound&) {
         }
       }
 
@@ -110,7 +111,8 @@ namespace gum {
       // size of the database (basically, if there are fewer than an average
       // of 5 observations per parameter in the database, the independence
       // test will be incorrect)
-      unsigned long cpt_size = this->_modalities[var1] * this->_modalities[var2] * 5;
+      unsigned long cpt_size =
+          this->_modalities[var1] * this->_modalities[var2] * 5;
       for (auto node : conditioning_ids) {
         cpt_size *= this->_modalities[node];
       }
@@ -122,8 +124,8 @@ namespace gum {
 
       __is_cached_score.push_back(false);
       __cached_score.push_back(0);
-      const unsigned int index =
-          Counter<IdSetAlloc, CountAlloc>::addNodeSet(var1, var2, conditioning_ids);
+      const unsigned int index = Counter<IdSetAlloc, CountAlloc>::addNodeSet(
+          var1, var2, conditioning_ids);
 
       __is_cached_score.push_back(false);
       __cached_score.push_back(0);
@@ -134,8 +136,8 @@ namespace gum {
     /// add a new pair of target conditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE unsigned int IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
-        const std::pair<unsigned int, unsigned int> &vars,
-        const std::vector<unsigned int> &conditioning_ids) {
+        const std::pair<unsigned int, unsigned int>& vars,
+        const std::vector<unsigned int>& conditioning_ids) {
       return addNodeSet(vars.first, vars.second, conditioning_ids);
     }
 
@@ -143,14 +145,14 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE unsigned int IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
         unsigned int var1, unsigned int var2,
-        std::vector<unsigned int> &&conditioning_ids) {
+        std::vector<unsigned int>&& conditioning_ids) {
       if (__use_cache) {
         try {
           float score = __cache.score(var1, var2, conditioning_ids);
           __is_cached_score.push_back(true);
           __cached_score.push_back(score);
           return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
-        } catch (const NotFound &) {
+        } catch (const NotFound&) {
         }
       }
 
@@ -158,7 +160,8 @@ namespace gum {
       // size of the database (basically, if there are fewer than an average
       // of 5 observations per parameter in the database, the independence
       // test will be incorrect)
-      unsigned long cpt_size = this->_modalities[var1] * this->_modalities[var2] * 5;
+      unsigned long cpt_size =
+          this->_modalities[var1] * this->_modalities[var2] * 5;
       for (auto node : conditioning_ids) {
         cpt_size *= this->_modalities[node];
       }
@@ -170,20 +173,21 @@ namespace gum {
 
       __is_cached_score.push_back(false);
       __cached_score.push_back(0);
-      const unsigned int index =
-          Counter<IdSetAlloc, CountAlloc>::addNodeSet(var1, var2, conditioning_ids);
+      const unsigned int index = Counter<IdSetAlloc, CountAlloc>::addNodeSet(
+          var1, var2, conditioning_ids);
 
       __is_cached_score.push_back(false);
       __cached_score.push_back(0);
-      Counter<IdSetAlloc, CountAlloc>::addNodeSet(var1, std::move(conditioning_ids));
+      Counter<IdSetAlloc, CountAlloc>::addNodeSet(var1,
+                                                  std::move(conditioning_ids));
       return index;
     }
 
     /// add a new pair of target conditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE unsigned int IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
-        const std::pair<unsigned int, unsigned int> &vars,
-        std::vector<unsigned int> &&conditioning_ids) {
+        const std::pair<unsigned int, unsigned int>& vars,
+        std::vector<unsigned int>&& conditioning_ids) {
       return addNodeSet(vars.first, vars.second, std::move(conditioning_ids));
     }
 
@@ -207,7 +211,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE void IndependenceTest<IdSetAlloc, CountAlloc>::_insertIntoCache(
         unsigned int nodeset_index, float score) {
-      const std::vector<unsigned int, IdSetAlloc> &all_nodes =
+      const std::vector<unsigned int, IdSetAlloc>& all_nodes =
           _getAllNodes(nodeset_index);
       std::vector<unsigned int, IdSetAlloc> conditioning_nodes =
           *(_getConditioningNodes(nodeset_index));
@@ -216,14 +220,15 @@ namespace gum {
       if (!conditioning_nodes.empty()) {
         try {
           __cache.insert(all_nodes[all_nodes.size() - 1],
-                         all_nodes[all_nodes.size() - 2], conditioning_nodes, score);
-        } catch (const gum::DuplicateElement &) {
+                         all_nodes[all_nodes.size() - 2], conditioning_nodes,
+                         score);
+        } catch (const gum::DuplicateElement&) {
         }
       } else {
         try {
           __cache.insert(all_nodes[0], all_nodes[1], __empty_conditioning_set,
                          score);
-        } catch (const gum::DuplicateElement &) {
+        } catch (const gum::DuplicateElement&) {
         }
       }
     }

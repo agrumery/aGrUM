@@ -33,7 +33,7 @@ namespace gum_tests {
   class ScheduleCliqueStoreMultiDimTestSuite : public CxxTest::TestSuite {
     public:
     void test_construct() {
-      std::vector<gum::LabelizedVariable *> vars(10);
+      std::vector<gum::LabelizedVariable*> vars(10);
 
       for (unsigned int i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -49,7 +49,8 @@ namespace gum_tests {
       pot2 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       gum::ScheduleMultiDim<float> f2(pot2);
 
-      gum::NodeProperty<gum::Set<const gum::MultiDimImplementation<float> *>> set;
+      gum::NodeProperty<gum::Set<const gum::MultiDimImplementation<float>*>>
+          set;
       TS_ASSERT(set.size() == 0);
       gum::ScheduleCliqueStoreMultiDim<float> store1(f1, set, 3);
       gum::ScheduleCliqueStoreMultiDim<float> store2(f2, set, 3);
@@ -62,7 +63,7 @@ namespace gum_tests {
       std::pair<long, long> xxx = store1.memoryUsage();
       TS_ASSERT(xxx.first == 0);
 
-      gum::Sequence<const gum::ScheduleMultiDim<float> *> seq =
+      gum::Sequence<const gum::ScheduleMultiDim<float>*> seq =
           store1.multiDimArgs();
       TS_ASSERT(seq.size() == 1);
       TS_ASSERT(*(seq.atPos(0)) == f1);
@@ -86,7 +87,7 @@ namespace gum_tests {
       TS_ASSERT(store4.type() ==
                 gum::ScheduleOperation<float>::Type::CLIQUE_STORE_MULTIDIM);
 
-      gum::ScheduleCliqueStoreMultiDim<float> *store5 = store4.newFactory();
+      gum::ScheduleCliqueStoreMultiDim<float>* store5 = store4.newFactory();
       TS_ASSERT(*store5 == store4);
       delete store5;
 

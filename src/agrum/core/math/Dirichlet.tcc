@@ -29,7 +29,7 @@ namespace gum {
   /// returns a sample from the Dirichlet distribution
   template <class URNG>
   INLINE Dirichlet::result_type Dirichlet::
-  operator()(URNG &generator, const Dirichlet::param_type &parm) {
+  operator()(URNG& generator, const Dirichlet::param_type& parm) {
     unsigned int size = parm.size();
     result_type res(size);
     float sum = 0.0f;

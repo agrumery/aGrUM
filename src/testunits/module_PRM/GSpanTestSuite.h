@@ -29,9 +29,9 @@ namespace gum_tests {
 
   class GSpanTestSuite : public CxxTest::TestSuite {
     private:
-    gum::prm::o3prm::O3prmReader<double> *__driver;
+    gum::prm::o3prm::O3prmReader<double>* __driver;
     std::string dot_dir;
-    gum::prm::gspan::InterfaceGraph<double> *ig;
+    gum::prm::gspan::InterfaceGraph<double>* ig;
 
     void local__setUp() {
       __driver = new gum::prm::o3prm::O3prmReader<double>();
@@ -76,7 +76,7 @@ namespace gum_tests {
 
     void testTree() {
       local__setUp();
-      gum::prm::GSpan<double> *gspan = nullptr;
+      gum::prm::GSpan<double>* gspan = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
           gspan = new gum::prm::GSpan<double>(*(__driver->prm()),
                                               __driver->prm()->system("m")));
@@ -91,4 +91,4 @@ namespace gum_tests {
     }
   };
 
-} // tests
+}  // tests

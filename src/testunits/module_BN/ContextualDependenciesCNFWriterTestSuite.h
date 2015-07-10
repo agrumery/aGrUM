@@ -41,7 +41,7 @@ namespace gum_tests {
 
   class ContextualDependenciesCNFWriterTestSuite : public CxxTest::TestSuite {
     public:
-    gum::BayesNet<double> *bn;
+    gum::BayesNet<double>* bn;
     gum::Id i1, i2, i3, i4, i5;
 
     void setUp() {
@@ -69,15 +69,16 @@ namespace gum_tests {
     void tearDown() { delete bn; }
 
     void testConstuctor() {
-      gum::ContextualDependenciesCNFWriter<double> *writer = nullptr;
+      gum::ContextualDependenciesCNFWriter<double>* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
           writer = new gum::ContextualDependenciesCNFWriter<double>());
       delete writer;
     }
 
     void testConstuctor_With_Aproximation() {
-      typedef gum::ContextualDependenciesCNFWriter<double, gum::ExactPolicy> typCNF;
-      typCNF *writer = nullptr;
+      typedef gum::ContextualDependenciesCNFWriter<double, gum::ExactPolicy>
+          typCNF;
+      typCNF* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new typCNF());
       //   writer->setEpsilon( 0.2 );
       //         writer->setLowLimit ( 0 );
@@ -93,8 +94,8 @@ namespace gum_tests {
     }
 
     void testWriter_ostream_With_Approximation() {
-      gum::ContextualDependenciesCNFWriter<double, gum::LinearApproximationPolicy>
-          writer;
+      gum::ContextualDependenciesCNFWriter<
+          double, gum::LinearApproximationPolicy> writer;
       writer.setEpsilon(0.2);
       writer.setLowLimit(0);
       writer.setHighLimit(1);
@@ -114,20 +115,20 @@ namespace gum_tests {
       try {
         writer.write(file, *bn);
         // TS_ASSERT(false);
-      } catch (gum::IOError &e) {
+      } catch (gum::IOError& e) {
         TS_ASSERT(true);
       }
     }
 
     void testWriter_string_With_Approximation() {
-      gum::ContextualDependenciesCNFWriter<double, gum::LinearApproximationPolicy>
-          writer;
+      gum::ContextualDependenciesCNFWriter<
+          double, gum::LinearApproximationPolicy> writer;
 
       writer.setEpsilon(0.2);
       writer.setLowLimit(0);
       writer.setHighLimit(1);
-      std::string file =
-          GET_PATH_STR("ContextualDependenciesCNFWriter_TestFile_Approximation.cnf");
+      std::string file = GET_PATH_STR(
+          "ContextualDependenciesCNFWriter_TestFile_Approximation.cnf");
 
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
 
@@ -137,15 +138,15 @@ namespace gum_tests {
       try {
         writer.write(file, *bn);
         // TS_ASSERT(false);
-      } catch (gum::IOError &e) {
+      } catch (gum::IOError& e) {
         TS_ASSERT(true);
       }
     }
 
     private:
     // Builds a BN to test the inference
-    void fill(gum::BayesNet<double> &bn) {
-      const gum::Potential<double> &p1 = bn.cpt(i1);
+    void fill(gum::BayesNet<double>& bn) {
+      const gum::Potential<double>& p1 = bn.cpt(i1);
       {
         // FILLING PARAMS
         const double t[2] = {0.5, 0.5};
@@ -154,7 +155,7 @@ namespace gum_tests {
         p1.fillWith(v);
       }
 
-      const gum::Potential<double> &p2 = bn.cpt(i2);
+      const gum::Potential<double>& p2 = bn.cpt(i2);
       {
         // FILLING PARAMS
         const double t[2] = {0.3, 0.7};
@@ -163,7 +164,7 @@ namespace gum_tests {
         p2.fillWith(v);
       }
 
-      const gum::Potential<double> &p3 = bn.cpt(i3);
+      const gum::Potential<double>& p3 = bn.cpt(i3);
       {
         // FILLING PARAMS
         const double t[4] = {0.1, 0.9, 0.9, 0.1};
@@ -172,7 +173,7 @@ namespace gum_tests {
         p3.fillWith(v);
       }
 
-      const gum::Potential<double> &p4 = bn.cpt(i4);
+      const gum::Potential<double>& p4 = bn.cpt(i4);
       {
         // FILLING PARAMS
         const double t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
@@ -181,7 +182,7 @@ namespace gum_tests {
         p4.fillWith(v);
       }
 
-      const gum::Potential<double> &p5 = bn.cpt(i5);
+      const gum::Potential<double>& p5 = bn.cpt(i5);
       {
         // FILLING PARAMS
         const double t[16] = {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0,

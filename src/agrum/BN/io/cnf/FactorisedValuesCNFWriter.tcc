@@ -25,13 +25,16 @@
 
 namespace gum {
 
-  /* ============================================================================ */
-  /* ===                           GUM_BN_WRITER                              === */
-  /* ============================================================================ */
+  /* ============================================================================
+   */
+  /* ===                           GUM_BN_WRITER === */
+  /* ============================================================================
+   */
   // Default constructor.
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
-  INLINE FactorisedValuesCNFWriter<
-      GUM_SCALAR, IApproximationPolicy>::FactorisedValuesCNFWriter() {
+  INLINE
+  FactorisedValuesCNFWriter<GUM_SCALAR,
+                            IApproximationPolicy>::FactorisedValuesCNFWriter() {
     GUM_CONSTRUCTOR(FactorisedValuesCNFWriter);
   }
 
@@ -49,8 +52,9 @@ namespace gum {
   // @param bn The Bayesian Network writen in output.
   // @throws Raised if an I/O error occurs.
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
-  INLINE void FactorisedValuesCNFWriter<GUM_SCALAR, IApproximationPolicy>::write(
-      std::ostream &output, const IBayesNet<GUM_SCALAR> &bn) {
+  INLINE void
+  FactorisedValuesCNFWriter<GUM_SCALAR, IApproximationPolicy>::write(
+      std::ostream& output, const IBayesNet<GUM_SCALAR>& bn) {
     if (!output.good())
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
 
@@ -64,7 +68,7 @@ namespace gum {
 
     Idx clause = 0;
     std::stringstream clausstr;
-    gum::HashTable<std::string, Idx> vartable; // key name::label val num;
+    gum::HashTable<std::string, Idx> vartable;  // key name::label val num;
     gum::HashTable<std::string, Idx> protable;
 
     for (auto node : bn.nodes()) {
@@ -75,7 +79,7 @@ namespace gum {
         strfile << num << "::" << str.str() << "\n";
       }
 
-      const Potential<GUM_SCALAR> &cpt = bn.cpt(node);
+      const Potential<GUM_SCALAR>& cpt = bn.cpt(node);
 
       Instantiation inst(cpt);
 
@@ -96,8 +100,8 @@ namespace gum {
       std::stringstream str0, str2;
 
       for (Idx i = 0; i < bn.variable(node).domainSize(); i++) {
-        std::stringstream
-            stri; //= bn.variable(iter).name()+"_"+ bn.variable(iter).label( i ) ;
+        std::stringstream stri;  //= bn.variable(iter).name()+"_"+
+                                 //bn.variable(iter).label( i ) ;
         stri << bn.variable(node).name() << "_" << bn.variable(node).label(i);
         str0 << vartable[stri.str()] << " ";
       }
@@ -105,7 +109,7 @@ namespace gum {
       str0 << "0\n";
       clause++;
       clausstr << str0.str();
-      const Potential<GUM_SCALAR> &cpt = bn.cpt(node);
+      const Potential<GUM_SCALAR>& cpt = bn.cpt(node);
       Instantiation inst(cpt);
 
       for (inst.setFirst(); !inst.end(); ++inst) {
@@ -131,8 +135,8 @@ namespace gum {
       clausstr << str2.str();
     }
 
-    output << "p cnf " << num + numparam << " " << clause << "\n" << clausstr.str()
-           << std::endl;
+    output << "p cnf " << num + numparam << " " << clause << "\n"
+           << clausstr.str() << std::endl;
     output.flush();
   }
 
@@ -144,8 +148,9 @@ namespace gum {
   // @param bn The Bayesian Network writed in the file.
   // @throws Raised if an I/O error occurs.
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
-  INLINE void FactorisedValuesCNFWriter<GUM_SCALAR, IApproximationPolicy>::write(
-      std::string filePath, const IBayesNet<GUM_SCALAR> &bn) {
+  INLINE void
+  FactorisedValuesCNFWriter<GUM_SCALAR, IApproximationPolicy>::write(
+      std::string filePath, const IBayesNet<GUM_SCALAR>& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
     std::ofstream outputvar((filePath + ".var").c_str(), std::ios_base::trunc);
 
@@ -165,11 +170,11 @@ namespace gum {
 
     Idx clause = 0;
     std::stringstream clausstr;
-    gum::HashTable<std::string, Idx> vartable; // key name::label val num;
+    gum::HashTable<std::string, Idx> vartable;  // key name::label val num;
     gum::HashTable<std::string, Idx> protable;
 
     for (auto node : bn.nodes()) {
-      const auto &var = bn.variable(node);
+      const auto& var = bn.variable(node);
 
       for (Idx i = 0; i < var.domainSize(); i++) {
         std::stringstream str;
@@ -178,7 +183,7 @@ namespace gum {
         strfile << num << "::" << str.str() << "\n";
       }
 
-      const Potential<GUM_SCALAR> &cpt = bn.cpt(node);
+      const Potential<GUM_SCALAR>& cpt = bn.cpt(node);
 
       Instantiation inst(cpt);
 
@@ -200,8 +205,8 @@ namespace gum {
       std::stringstream str0, str2;
 
       for (Idx i = 0; i < bn.variable(node).domainSize(); i++) {
-        std::stringstream
-            stri; //= bn.variable(iter).name()+"_"+ bn.variable(iter).label( i ) ;
+        std::stringstream stri;  //= bn.variable(iter).name()+"_"+
+                                 //bn.variable(iter).label( i ) ;
         stri << bn.variable(node).name() << "_" << bn.variable(node).label(i);
         str0 << vartable[stri.str()] << " ";
       }
@@ -209,7 +214,7 @@ namespace gum {
       str0 << "0\n";
       clause++;
       clausstr << str0.str();
-      const Potential<GUM_SCALAR> &cpt = bn.cpt(node);
+      const Potential<GUM_SCALAR>& cpt = bn.cpt(node);
       Instantiation inst(cpt);
 
       for (inst.setFirst(); !inst.end(); ++inst) {
@@ -235,8 +240,8 @@ namespace gum {
       clausstr << str2.str();
     }
 
-    output << "p cnf " << num + numparam << " " << clause << "\n" << clausstr.str()
-           << std::endl;
+    output << "p cnf " << num + numparam << " " << clause << "\n"
+           << clausstr.str() << std::endl;
     output.flush();
     outputvar << strfile.str() << strfile2.str();
     outputvar.flush();
@@ -253,7 +258,8 @@ namespace gum {
   // Returns a bloc defining a variable's CPT in the BN format.
   /*  template<typename GUM_SCALAR> INLINE
       std::string
-      OCNFWriter<GUM_SCALAR>::__variableCPT( const Potential<GUM_SCALAR>& cpt ) {
+      OCNFWriter<GUM_SCALAR>::__variableCPT( const Potential<GUM_SCALAR>& cpt )
+    {
         std::stringstream str;
         str << "";
         return str.str();
@@ -281,5 +287,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

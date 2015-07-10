@@ -43,7 +43,7 @@ namespace gum_tests {
 
   class ShaferShenoyInferenceBNTestSuite : public CxxTest::TestSuite {
     public:
-    gum::BayesNet<float> *bn;
+    gum::BayesNet<float>* bn;
     gum::Id i1, i2, i3, i4, i5;
 
     void setUp() {
@@ -69,7 +69,7 @@ namespace gum_tests {
     void tearDown() { delete bn; }
 
     void testFill() {
-      const gum::Potential<float> &p1 = bn->cpt(i1);
+      const gum::Potential<float>& p1 = bn->cpt(i1);
       TS_ASSERT(p1.nbrDim() == 1);
 
       {
@@ -80,7 +80,7 @@ namespace gum_tests {
         p1.fillWith(v);
       }
 
-      const gum::Potential<float> &p2 = bn->cpt(i2);
+      const gum::Potential<float>& p2 = bn->cpt(i2);
       TS_ASSERT(p2.nbrDim() == 1);
 
       {
@@ -91,7 +91,7 @@ namespace gum_tests {
         p2.fillWith(v);
       }
 
-      const gum::Potential<float> &p3 = bn->cpt(i3);
+      const gum::Potential<float>& p3 = bn->cpt(i3);
       TS_ASSERT(p3.nbrDim() == 2);
       {
         // FILLING PARAMS
@@ -109,7 +109,7 @@ namespace gum_tests {
           TS_ASSERT_DELTA(p[j], 1.0, 1e-5);
       }
 
-      const gum::Potential<float> &p4 = bn->cpt(i4);
+      const gum::Potential<float>& p4 = bn->cpt(i4);
       TS_ASSERT(p4.nbrDim() == 3);
       {
         // FILLING PARAMS
@@ -127,7 +127,7 @@ namespace gum_tests {
           TS_ASSERT_DELTA(p[j], 1.0, 1e-5);
       }
 
-      const gum::Potential<float> &p5 = bn->cpt(i5);
+      const gum::Potential<float>& p5 = bn->cpt(i5);
       TS_ASSERT(p5.nbrDim() == 4);
       {
         // FILLING PARAMS
@@ -154,8 +154,9 @@ namespace gum_tests {
       try {
         fill(*bn);
         // Testing the inference
-        gum::ShaferShenoyInference<float> *inf = 0;
-        TS_ASSERT_THROWS_NOTHING(inf = new gum::ShaferShenoyInference<float>(*bn));
+        gum::ShaferShenoyInference<float>* inf = 0;
+        TS_ASSERT_THROWS_NOTHING(
+            inf = new gum::ShaferShenoyInference<float>(*bn));
         TS_ASSERT_THROWS_NOTHING(inf->makeInference());
 
         if (inf != 0) {
@@ -163,7 +164,8 @@ namespace gum_tests {
         }
       } catch (gum::Exception e) {
         TS_ASSERT(false);
-        std::cerr << std::endl << e.errorContent() << std::endl;
+        std::cerr << std::endl
+                  << e.errorContent() << std::endl;
         throw;
       }
     }
@@ -182,7 +184,7 @@ namespace gum_tests {
 
     void testMarginalWithEvidence() {
       fill(*bn);
-      gum::List<const gum::Potential<float> *> e_list;
+      gum::List<const gum::Potential<float>*> e_list;
       e_list.insert(&(bn->cpt(i1)));
       e_list.insert(&(bn->cpt(i2)));
 
@@ -206,10 +208,10 @@ namespace gum_tests {
       for (int i = 0; i < trial_nb; ++i) {
         gum::SimpleBayesNetGenerator<float> bnGen(10, density[i]);
 
-        gum::BayesNet<float> *bayesNet = new gum::BayesNet<float>();
+        gum::BayesNet<float>* bayesNet = new gum::BayesNet<float>();
         bnGen.generateBN(*bayesNet);
 
-        gum::ShaferShenoyInference<float> *inf = nullptr;
+        gum::ShaferShenoyInference<float>* inf = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING(
             inf = new gum::ShaferShenoyInference<float>(*bayesNet));
 
@@ -223,8 +225,8 @@ namespace gum_tests {
 
     private:
     // Builds a BN to tst the inference
-    void fill(gum::BayesNet<float> &bn) {
-      const gum::Potential<float> &p1 = bn.cpt(i1);
+    void fill(gum::BayesNet<float>& bn) {
+      const gum::Potential<float>& p1 = bn.cpt(i1);
       {
         // FILLING PARAMS
         const float t[2] = {0.2, 0.8};
@@ -233,7 +235,7 @@ namespace gum_tests {
         p1.fillWith(v);
       }
 
-      const gum::Potential<float> &p2 = bn.cpt(i2);
+      const gum::Potential<float>& p2 = bn.cpt(i2);
       {
         // FILLING PARAMS
         const float t[2] = {0.3, 0.7};
@@ -242,7 +244,7 @@ namespace gum_tests {
         p2.fillWith(v);
       }
 
-      const gum::Potential<float> &p3 = bn.cpt(i3);
+      const gum::Potential<float>& p3 = bn.cpt(i3);
       {
         // FILLING PARAMS
         const float t[4] = {0.1, 0.9, 0.9, 0.1};
@@ -251,7 +253,7 @@ namespace gum_tests {
         p3.fillWith(v);
       }
 
-      const gum::Potential<float> &p4 = bn.cpt(i4);
+      const gum::Potential<float>& p4 = bn.cpt(i4);
       {
         // FILLING PARAMS
         const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
@@ -260,7 +262,7 @@ namespace gum_tests {
         p4.fillWith(v);
       }
 
-      const gum::Potential<float> &p5 = bn.cpt(i5);
+      const gum::Potential<float>& p5 = bn.cpt(i5);
       {
         // FILLING PARAMS
         const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,
@@ -274,7 +276,7 @@ namespace gum_tests {
     }
 
     // Uncomment this to have some outputs.
-    void printProba(const gum::Potential<float> &) {
+    void printProba(const gum::Potential<float>&) {
       // for (inst.setFirst(); !inst.end(); ++inst)
       //{
       //  std::cerr << inst<<" : " <<p[inst] << std::endl;

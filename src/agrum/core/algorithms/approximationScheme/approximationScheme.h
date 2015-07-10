@@ -20,7 +20,8 @@
 
 /**
  * @file
- * @brief This file contains general scheme for iteratively convergent algorithms
+ * @brief This file contains general scheme for iteratively convergent
+ *algorithms
  * ApproximationSettings provides as well 2 signals :
  *   - onProgress(int pourcent,double error)
  *   - onStop(std::string message)
@@ -48,7 +49,8 @@ namespace gum {
    *      // this loop can stop with ApproximationSchemeSTATE::Epsilon,
    ApproximationSchemeSTATE::Rate, ApproximationSchemeSTATE::Limit
    *      do {
-   *      // compute new values and a GUM_SCALAR error representing the progress in
+   *      // compute new values and a GUM_SCALAR error representing the progress
+   in
    this step.
    *        updateApproximationScheme();
    *        compute state of the approximation
@@ -121,11 +123,13 @@ namespace gum {
     void disableEpsilon() { _enabled_eps = false; }
     /// Enable stopping criterion on epsilon
     void enableEpsilon() { _enabled_eps = true; }
-    /// @return true if stopping criterion on epsilon is enabled, false otherwise
+    /// @return true if stopping criterion on epsilon is enabled, false
+    /// otherwise
     bool isEnabledEpsilon() const { return _enabled_eps; }
     /// @}
 
-    /// Given that we approximate f(t), stopping criterion on d/dt(|f(t+1)-f(t)|)
+    /// Given that we approximate f(t), stopping criterion on
+    /// d/dt(|f(t+1)-f(t)|)
     /// If the criterion was disabled it will be enabled
     /// @{
     /// @throw OutOfLowerBound if rate<0
@@ -201,7 +205,8 @@ namespace gum {
     void disableMaxTime() { _enabled_max_time = false; }
     /// Enable stopping criterion on timeout
     void enableMaxTime() { _enabled_max_time = true; }
-    /// @return true if stopping criterion on timeout is enabled, false otherwise
+    /// @return true if stopping criterion on timeout is enabled, false
+    /// otherwise
     bool isEnabledMaxTime() const { return _enabled_max_time; }
     /// @}
 
@@ -259,7 +264,7 @@ namespace gum {
     };
 
     /// @throw OperationNotAllowed if scheme not performed or verbosity=false
-    const std::vector<double> &history() const {
+    const std::vector<double>& history() const {
       if (stateApproximationScheme() == ApproximationSchemeSTATE::Undefined) {
         GUM_ERROR(OperationNotAllowed,
                   "state of the approximation scheme is udefined");
@@ -298,7 +303,9 @@ namespace gum {
     }
 
     /// update the scheme w.r.t the new error and incr steps
-    void updateApproximationScheme(unsigned int incr = 1) { _current_step += incr; }
+    void updateApproximationScheme(unsigned int incr = 1) {
+      _current_step += incr;
+    }
 
     Size remainingBurnIn() {
       if (_burn_in > _current_step) {
@@ -315,7 +322,8 @@ namespace gum {
       }
     }
 
-    /// update the scheme w.r.t the new error. Test the stopping criterions that are
+    /// update the scheme w.r.t the new error. Test the stopping criterions that
+    /// are
     /// enabled
     /// @throw OperationNotAllowed if stat!=ApproximationSchemeSTATE::Continue
     /// @return false if state become != ApproximationSchemeSTATE::Continue
@@ -353,8 +361,9 @@ namespace gum {
       }
 
       _last_epsilon = _current_epsilon;
-      _current_epsilon = error; // eps rate isEnabled needs it so affectation was
-                                // moved from eps isEnabled below
+      _current_epsilon =
+          error;  // eps rate isEnabled needs it so affectation was
+                  // moved from eps isEnabled below
 
       if (_enabled_eps) {
         if (_current_epsilon <= _eps) {
@@ -364,13 +373,16 @@ namespace gum {
       }
 
       if (_last_epsilon >= 0.) {
-        if (_current_epsilon > .0) { // ! _current_epsilon can be 0. AND epsilon
-                                     // isEnabled can be disabled !
+        if (_current_epsilon >
+            .0) {  // ! _current_epsilon can be 0. AND epsilon
+                   // isEnabled can be disabled !
           _current_rate =
               std::fabs((_current_epsilon - _last_epsilon) / _current_epsilon);
         }
-        // limit with current eps ---> 0 is | 1 - ( last_eps / 0 ) | ---> infinity
-        // the else means a return false if we isEnabled the rate below, as we would
+        // limit with current eps ---> 0 is | 1 - ( last_eps / 0 ) | --->
+        // infinity
+        // the else means a return false if we isEnabled the rate below, as we
+        // would
         // have returned false if epsilon isEnabled was enabled
         else {
           _current_rate = _min_rate_eps;
@@ -386,8 +398,8 @@ namespace gum {
 
       if (stateApproximationScheme() == ApproximationSchemeSTATE::Continue) {
         if (onProgress.hasListener()) {
-          GUM_EMIT3(onProgress, (_current_step * 100) / _max_iter, _current_epsilon,
-                    timer_step);
+          GUM_EMIT3(onProgress, (_current_step * 100) / _max_iter,
+                    _current_epsilon, timer_step);
         }
 
         return true;
@@ -453,5 +465,5 @@ namespace gum {
 
     bool _verbosity;
   };
-} // namespace gum
-#endif // GUM_APPROXIMATION_SCHEME_H
+}  // namespace gum
+#endif  // GUM_APPROXIMATION_SCHEME_H

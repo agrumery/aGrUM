@@ -8,7 +8,7 @@
 
 #ifdef _MSC_VER
 #pragma warning(push, 1)
-#endif // _MSC_VER
+#endif  // _MSC_VER
 
 #include <complex>
 #include <deque>
@@ -20,6 +20,6 @@
 
 #ifdef _MSC_VER
 #pragma warning(pop)
-#endif // _MSC_VER
+#endif  // _MSC_VER
 
-#endif // __cxxtest_StdHeaders_h__
+#endif  // __cxxtest_StdHeaders_h__

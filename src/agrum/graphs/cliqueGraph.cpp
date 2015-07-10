@@ -27,34 +27,42 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/cliqueGraph.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
 
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /* ===                  IMPLEMENTATION OF GUM_CLIQUE_GRAPH                 === */
-  /* =========================================================================== */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
+  /* ===                  IMPLEMENTATION OF GUM_CLIQUE_GRAPH                 ===
+   */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
 
   /// basic constructor: creates an empty xsclique graph
 
   CliqueGraph::CliqueGraph(Size nodes_size, bool nodes_resize_policy,
                            Size edges_size, bool edges_resize_policy)
       : NodeGraphPart(nodes_size, nodes_resize_policy),
-        UndiGraph(nodes_size, nodes_resize_policy, edges_size, edges_resize_policy) {
+        UndiGraph(nodes_size, nodes_resize_policy, edges_size,
+                  edges_resize_policy) {
     // for debugging purposes
     GUM_CONSTRUCTOR(CliqueGraph);
   }
 
   /// copy constructor
 
-  CliqueGraph::CliqueGraph(const CliqueGraph &from)
-      : NodeGraphPart(from), // needed because NodeGraphPart is a virtual inherited
-        UndiGraph(from),     // class (see C++ FAQ Lite #25.12 for details)
-        __cliques(from.__cliques), __separators(from.__separators) {
+  CliqueGraph::CliqueGraph(const CliqueGraph& from)
+      : NodeGraphPart(
+            from),        // needed because NodeGraphPart is a virtual inherited
+        UndiGraph(from),  // class (see C++ FAQ Lite #25.12 for details)
+        __cliques(from.__cliques),
+        __separators(from.__separators) {
     // for debugging purposes
     GUM_CONS_CPY(CliqueGraph);
   }
@@ -70,12 +78,15 @@ namespace gum {
 
   std::vector<NodeId> CliqueGraph::containerPath(const NodeId node1,
                                                  const NodeId node2) const {
-    // get a path from a __clique containing node1 to a __clique containing node2
-    std::vector<NodeId> path = undirectedPath(container(node1), container(node2));
+    // get a path from a __clique containing node1 to a __clique containing
+    // node2
+    std::vector<NodeId> path =
+        undirectedPath(container(node1), container(node2));
 
     // it may happen that the path contains several nodes containing node1 and
     // node2. Hence we shall remove the superfluous nodes
-    while ((path.size() >= 2) && (clique(path[path.size() - 2]).contains(node2)))
+    while ((path.size() >= 2) &&
+           (clique(path[path.size() - 2]).contains(node2)))
       path.pop_back();
 
     while ((path.size() >= 2) && (clique(path[1]).contains(node1)))
@@ -84,12 +95,13 @@ namespace gum {
     return path;
   }
 
-  /// changes the set of nodes included into a given clique and returns the new set
+  /// changes the set of nodes included into a given clique and returns the new
+  /// set
   /// @throw DuplicateElement if node_id already is in clique_id
 
   void CliqueGraph::addToClique(const NodeId clique_id, const NodeId node_id) {
     // get the current clique set
-    NodeSet &clique = __cliques[clique_id];
+    NodeSet& clique = __cliques[clique_id];
 
     // check if the node already exists, in which case throw an exception
     if (clique.contains(node_id)) {
@@ -106,9 +118,10 @@ namespace gum {
 
   /// remove a node from a __clique
 
-  void CliqueGraph::eraseFromClique(const NodeId clique_id, const NodeId node_id) {
+  void CliqueGraph::eraseFromClique(const NodeId clique_id,
+                                    const NodeId node_id) {
     // get the current __clique set
-    NodeSet &clique = __cliques[clique_id];
+    NodeSet& clique = __cliques[clique_id];
 
     // check if the node does not exist, in which case throw an exception
     if (clique.contains(node_id)) {
@@ -128,10 +141,10 @@ namespace gum {
 
   bool CliqueGraph::__runningIntersectionDFS(
       const NodeId clique, const NodeId from,
-      CliqueGraph::__RunningIntersect &infos_DFS) const {
+      CliqueGraph::__RunningIntersect& infos_DFS) const {
     // check that no node in the clique belongs to the set of nodes belonging to
     // other connected components of the cliqueGraph
-    const NodeSet &nodes_clique = __cliques[clique];
+    const NodeSet& nodes_clique = __cliques[clique];
 
     for (const auto node : nodes_clique)
       if (infos_DFS.nodes_other_components.contains(node))
@@ -164,7 +177,7 @@ namespace gum {
         // update the list of forbidden nodes in the DFS, i.e., the nodes that
         // belong to the clique but not to the separator
         const Edge edge(otherID, clique);
-        const NodeSet &from_separ = __separators[edge];
+        const NodeSet& from_separ = __separators[edge];
 
         for (const auto node : nodes_clique) {
           if (!from_separ.contains(node))
@@ -188,7 +201,8 @@ namespace gum {
         }
       }
 
-    // when a node is terminal, i.e., it has at most one neighbour, add its nodes
+    // when a node is terminal, i.e., it has at most one neighbour, add its
+    // nodes
     // to the nodes forbidden by the DFS. It will prevent non adjacent extremal
     // cliques to contain the same node while this one does not belong to any
     // separator
@@ -222,7 +236,8 @@ namespace gum {
         if (!__runningIntersectionDFS(DFSnode, DFSnode, infos_DFS))
           return false;
 
-        // the nodes that were seen during the DFS belong to a connected component
+        // the nodes that were seen during the DFS belong to a connected
+        // component
         // that is different from the connected components of the subsequent DFS
         for (const auto node : infos_DFS.nodes_DFS_seen)
           if (!infos_DFS.nodes_other_components.contains(node))
@@ -231,7 +246,7 @@ namespace gum {
 
     // check that no clique requires an additional chain to guarantee the
     // running intersection property
-    for (const auto &elt : infos_DFS.cliques_DFS_chain)
+    for (const auto& elt : infos_DFS.cliques_DFS_chain)
       if (!elt.second.empty())
         return false;
 
@@ -240,13 +255,13 @@ namespace gum {
 
   /// checks whether two __clique graphs are equal
 
-  bool CliqueGraph::operator==(const CliqueGraph &from) const {
+  bool CliqueGraph::operator==(const CliqueGraph& from) const {
     // check if both graphical structures are identical
     if (UndiGraph::operator!=(from))
       return false;
 
     // check if the __cliques are identical
-    for (const auto &elt : __cliques)
+    for (const auto& elt : __cliques)
       if (elt.second != from.__cliques[elt.first])
         return false;
 
@@ -258,7 +273,8 @@ namespace gum {
     stream << "list of nodes:" << std::endl;
 
     for (const auto node : nodes()) {
-      stream << " -- node: " << node << std::endl << "    clique:";
+      stream << " -- node: " << node << std::endl
+             << "    clique:";
 
       for (const auto cliq : clique(node))
         stream << "  " << cliq;
@@ -274,7 +290,7 @@ namespace gum {
     return stream.str();
   }
 
-  const std::string expandClique(const NodeSet &clique) {
+  const std::string expandClique(const NodeSet& clique) {
     std::stringstream stream;
     bool first = true;
 
@@ -293,7 +309,8 @@ namespace gum {
 
     return stream.str();
   }
-  const std::string expandSeparator(const NodeSet &clique1, const NodeSet &clique2) {
+  const std::string expandSeparator(const NodeSet& clique1,
+                                    const NodeSet& clique2) {
     std::stringstream stream;
 
     stream << '"';
@@ -342,10 +359,12 @@ namespace gum {
 
     // separator as nodes
     for (auto edge : edges()) {
-      stream << "  " << expandSeparator(clique(edge.first()), clique(edge.second()))
-             << " [label=" << expandClique(separator(edge))
-             << ",shape=box,fillcolor=\"palegreen\",style=\"filled\",fontsize=8,"
-                "width=0,height=0];" << std::endl;
+      stream
+          << "  "
+          << expandSeparator(clique(edge.first()), clique(edge.second()))
+          << " [label=" << expandClique(separator(edge))
+          << ",shape=box,fillcolor=\"palegreen\",style=\"filled\",fontsize=8,"
+             "width=0,height=0];" << std::endl;
     }
 
     stream << std::endl;
@@ -353,8 +372,8 @@ namespace gum {
     // edges now as c1--sep--c2
     for (auto edge : edges())
       stream << "  " << expandClique(clique(edge.first())) << "--"
-             << expandSeparator(clique(edge.first()), clique(edge.second())) << "--"
-             << expandClique(clique(edge.second())) << ";" << std::endl;
+             << expandSeparator(clique(edge.first()), clique(edge.second()))
+             << "--" << expandClique(clique(edge.second())) << ";" << std::endl;
 
     stream << "}" << std::endl;
 
@@ -363,7 +382,7 @@ namespace gum {
 
   /// a << operator for CliqueGraph
 
-  std::ostream &operator<<(std::ostream &stream, const CliqueGraph &graph) {
+  std::ostream& operator<<(std::ostream& stream, const CliqueGraph& graph) {
     stream << graph.toString();
     return stream;
   }

@@ -21,7 +21,8 @@
  * @file
  * @brief Headers of gum::MultiDimImplementation.
  *
- * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ *<{prenom.nom}_at_lip6.fr>
  */
 #ifndef GUM_MULTI_DIM_IMPLEMENTATION_H
 #define GUM_MULTI_DIM_IMPLEMENTATION_H
@@ -34,17 +35,23 @@
 
 namespace gum {
 
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /* ===                    GUM_MULTI_DIM_IMPLEMENTATION                     === */
-  /* =========================================================================== */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
+  /* ===                    GUM_MULTI_DIM_IMPLEMENTATION                     ===
+   */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
   /**
    * @class MultiDimImplementation
    * @brief Abstract base class for all multi dimensionnal implementations
    * @ingroup multidim_group
    *
-   * The gum::MultiDimImplementation is an abstract class for all multidimensional
+   * The gum::MultiDimImplementation is an abstract class for all
+   *multidimensional
    * implementation of container of GUM_SCALAR. Its purpose is to implement
    * base algorithms with no regard to how the storage is done (tree, matrix...)
    *
@@ -55,7 +62,8 @@ namespace gum {
    *print
    * a gum::MultiDimImplementation.
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   template <typename GUM_SCALAR>
 
   class MultiDimImplementation : public MultiDimContainer<GUM_SCALAR> {
@@ -71,7 +79,7 @@ namespace gum {
 
     /// Copy constructor.
 
-    MultiDimImplementation(const MultiDimImplementation<GUM_SCALAR> &from);
+    MultiDimImplementation(const MultiDimImplementation<GUM_SCALAR>& from);
 
     /// Destructor.
 
@@ -92,7 +100,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimContainer<GUM_SCALAR> *newFactory() const = 0;
+    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -103,21 +111,26 @@ namespace gum {
 
     // see gum::MultiDimInterface
 
-    virtual const Sequence<const DiscreteVariable *> &variablesSequence(void) const;
+    virtual const Sequence<const DiscreteVariable*>&
+    variablesSequence(void) const;
 
     /// returns the real name of the multiDim implementation
     /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
-     * name that describes what they are in reality. For instance, a table stored
+     * name that describes what they are in reality. For instance, a table
+     * stored
      * in extension is a "MultiDimArray", one that stores only non zero elements
-     * is a "MultiDimSparseArray", and so on. These names are unique for each type
-     * of implementation and is used by the system to determine which is the best
+     * is a "MultiDimSparseArray", and so on. These names are unique for each
+     * type
+     * of implementation and is used by the system to determine which is the
+     * best
      * functions to use, say, when we wish to use operators such as operator+ on
      * two MultiDimImplementations */
-    virtual const std::string &name() const = 0;
+    virtual const std::string& name() const = 0;
 
-    /** @brief the "basename" used by default when no specialized operator has been
+    /** @brief the "basename" used by default when no specialized operator has
+     * been
      * defined for a given pair of MultiDims */
-    const std::string &basename() const;
+    const std::string& basename() const;
 
     /// @}
 
@@ -128,11 +141,11 @@ namespace gum {
 
     /// See gum::MultiDimInterface::add(const DiscreteVariable& v)
 
-    virtual void add(const DiscreteVariable &v);
+    virtual void add(const DiscreteVariable& v);
 
     /// See gum::MultiDimInterface::erase(const DiscreteVariable& v)
 
-    virtual void erase(const DiscreteVariable &v);
+    virtual void erase(const DiscreteVariable& v);
 
     /// See gum::MultiDimInterface::nbrDim()
 
@@ -143,7 +156,8 @@ namespace gum {
     virtual Size domainSize() const;
 
     /**
-     * Returns the real number of parameters used for this table. This function is
+     * Returns the real number of parameters used for this table. This function
+     *is
      * used by the compressionRatio() method.
      *
      * @see compressionRatio()
@@ -159,7 +173,8 @@ namespace gum {
      * both methods are virtual and should be surcharge if a subclass has a
      * special policies about memory management.
      *
-     * @warning This compression ratio is not exactly the memory compression ratio.
+     * @warning This compression ratio is not exactly the memory compression
+     *ratio.
      *          It is computed in terms of number of parameters.
      */
 
@@ -167,13 +182,13 @@ namespace gum {
 
     /// See gum::MultiDimInterface::variable(Idx i)
 
-    const DiscreteVariable &variable(Idx i) const;
+    const DiscreteVariable& variable(Idx i) const;
 
-    Idx pos(const DiscreteVariable &v) const;
+    Idx pos(const DiscreteVariable& v) const;
 
     /// See gum::MultiDimInterface::contains(const DiscreteVariable& v)
 
-    bool contains(const DiscreteVariable &v) const;
+    bool contains(const DiscreteVariable& v) const;
 
     /// See gum::MultiDimInterface::clear()
 
@@ -186,13 +201,13 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    virtual MultiDimAdressable &getMasterRef(void);
+    virtual MultiDimAdressable& getMasterRef(void);
 
-    virtual const MultiDimAdressable &getMasterRef(void) const;
+    virtual const MultiDimAdressable& getMasterRef(void) const;
 
-    virtual bool registerSlave(Instantiation &i);
+    virtual bool registerSlave(Instantiation& i);
 
-    virtual bool unregisterSlave(Instantiation &i);
+    virtual bool unregisterSlave(Instantiation& i);
 
     /// @}
 
@@ -208,13 +223,13 @@ namespace gum {
     /// See gum::MultiDimContainer::endMultipleChanges().
 
     virtual void endMultipleChanges(void);
-    virtual void endMultipleChanges(const GUM_SCALAR &);
+    virtual void endMultipleChanges(const GUM_SCALAR&);
 
     protected:
     /// Synchronize content after MultipleChanges.
 
     virtual void _commitMultipleChanges(void);
-    virtual void _commitMultipleChanges(const GUM_SCALAR &);
+    virtual void _commitMultipleChanges(const GUM_SCALAR&);
 
     /// Get the actual change method of *this.
 
@@ -226,24 +241,25 @@ namespace gum {
 
     /// Returns a constant reference over the list of slaved instantiations.
 
-    const List<Instantiation *> &_slaves() const;
+    const List<Instantiation*>& _slaves() const;
 
     /// @brief Replace variable x by y.
     /// Technically this should be call by any subclass overloading this method
     /// to proceed with the changes in this class containers.
 
-    virtual void _swap(const DiscreteVariable *x, const DiscreteVariable *y) = 0;
+    virtual void _swap(const DiscreteVariable* x,
+                       const DiscreteVariable* y) = 0;
 
     /// @}
 
     private:
     // list of discrete variables (dimensions)
 
-    Sequence<const DiscreteVariable *> __vars;
+    Sequence<const DiscreteVariable*> __vars;
 
     // list of instantiations of the tuples (sequences) of variables
 
-    List<Instantiation *> __slaveInstantiations;
+    List<Instantiation*> __slaveInstantiations;
 
     enum class __InternalChangeMethod : char { DIRECT_CHANGE, MULTIPLE_CHANGE };
 
@@ -261,8 +277,8 @@ namespace gum {
   /// For friendly displaying the content of the array.
 
   template <typename GUM_SCALAR>
-  std::ostream &operator<<(std::ostream &,
-                           const MultiDimImplementation<GUM_SCALAR> &);
+  std::ostream& operator<<(std::ostream&,
+                           const MultiDimImplementation<GUM_SCALAR>&);
 
 } /* namespace gum */
 

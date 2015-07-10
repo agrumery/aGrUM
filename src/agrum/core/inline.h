@@ -42,7 +42,8 @@
 #define INLINE inline
 
 #define ENFORCED_INLINE inline
-// ENFORCED_INLINE is a stronger version of the inline, using __forceinline on MSVC,
+// ENFORCED_INLINE is a stronger version of the inline, using __forceinline on
+// MSVC,
 // but it still doesn't use GCC's always_inline. This is useful in (common)
 // situations where MSVC needs forceinline
 // but GCC is still doing fine with just inline.
@@ -53,15 +54,19 @@
 #define ENFORCED_INLINE inline
 #endif
 
-// ALWAYS_INLINE is the strongest, it has the effect of making the function inline
+// ALWAYS_INLINE is the strongest, it has the effect of making the function
+// inline
 // and adding every possible
-// attribute to maximize inlining. This should only be used when really necessary: in
+// attribute to maximize inlining. This should only be used when really
+// necessary: in
 // particular,
-// it uses __attribute__((always_inline)) on GCC, which most of the time is useless
+// it uses __attribute__((always_inline)) on GCC, which most of the time is
+// useless
 // and can severely harm compile times.
 // FIXME with the always_inline attribute,
 // gcc 3.4.x reports the following compilation error:
-//   Eval.h:91: sorry, unimplemented: inlining failed in call to '...' : function
+//   Eval.h:91: sorry, unimplemented: inlining failed in call to '...' :
+//   function
 //   body not available
 // (from eigen library)
 #if GNUC_AT_LEAST(4, 0)

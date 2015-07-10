@@ -64,7 +64,7 @@ namespace gum_tests {
       __traceAlgoSaveFile << fmdp.show();
       __traceAlgoSaveFile.close();
 
-      gum::MultiDimDecisionDiagramBase<double> *res = nullptr;
+      gum::MultiDimDecisionDiagramBase<double>* res = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(res = inf.makePlanning());
       delete res;
     }

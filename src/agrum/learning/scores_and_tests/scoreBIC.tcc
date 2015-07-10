@@ -36,8 +36,9 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE ScoreBIC<IdSetAlloc, CountAlloc>::ScoreBIC(
-        const RowFilter &filter, const std::vector<unsigned int> &var_modalities,
-        Apriori<IdSetAlloc, CountAlloc> &apriori)
+        const RowFilter& filter,
+        const std::vector<unsigned int>& var_modalities,
+        Apriori<IdSetAlloc, CountAlloc>& apriori)
         : Score<IdSetAlloc, CountAlloc>(filter, var_modalities, apriori) {
       // for debugging purposes
       GUM_CONSTRUCTOR(ScoreBIC);
@@ -46,7 +47,7 @@ namespace gum {
     /// copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
     ScoreBIC<IdSetAlloc, CountAlloc>::ScoreBIC(
-        const ScoreBIC<IdSetAlloc, CountAlloc> &from)
+        const ScoreBIC<IdSetAlloc, CountAlloc>& from)
         : Score<IdSetAlloc, CountAlloc>(from),
           __internal_apriori(from.__internal_apriori) {
       // for debugging purposes
@@ -56,7 +57,7 @@ namespace gum {
     /// move constructor
     template <typename IdSetAlloc, typename CountAlloc>
     ScoreBIC<IdSetAlloc, CountAlloc>::ScoreBIC(
-        ScoreBIC<IdSetAlloc, CountAlloc> &&from)
+        ScoreBIC<IdSetAlloc, CountAlloc>&& from)
         : Score<IdSetAlloc, CountAlloc>(std::move(from)),
           __internal_apriori(std::move(from.__internal_apriori)) {
       // for debugging purposes
@@ -65,7 +66,7 @@ namespace gum {
 
     /// virtual copy factory
     template <typename IdSetAlloc, typename CountAlloc>
-    ScoreBIC<IdSetAlloc, CountAlloc> *
+    ScoreBIC<IdSetAlloc, CountAlloc>*
     ScoreBIC<IdSetAlloc, CountAlloc>::copyFactory() const {
       return new ScoreBIC<IdSetAlloc, CountAlloc>(*this);
     }
@@ -80,7 +81,7 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template <typename IdSetAlloc, typename CountAlloc>
     bool ScoreBIC<IdSetAlloc, CountAlloc>::isAprioriCompatible(
-        const std::string &apriori_type, float weight) {
+        const std::string& apriori_type, float weight) {
       // check that the apriori is compatible with the score
       if ((apriori_type == AprioriDirichletType::type) ||
           (apriori_type == AprioriSmoothingType::type) ||
@@ -98,7 +99,7 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE bool ScoreBIC<IdSetAlloc, CountAlloc>::isAprioriCompatible(
-        const Apriori<IdSetAlloc, CountAlloc> &apriori) {
+        const Apriori<IdSetAlloc, CountAlloc>& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
@@ -110,7 +111,7 @@ namespace gum {
 
     /// returns the internal apriori of the score
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
+    INLINE const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
     ScoreBIC<IdSetAlloc, CountAlloc>::internalApriori() const noexcept {
       return __internal_apriori;
     }
@@ -124,35 +125,36 @@ namespace gum {
       }
 
       // get the counts for all the targets and for the conditioning nodes
-      const std::vector<float, CountAlloc> &N_ijk =
+      const std::vector<float, CountAlloc>& N_ijk =
           this->_getAllCounts(nodeset_index);
       const unsigned int targets_modal = N_ijk.size();
       float score = 0;
 
       // get the nodes involved in the score as well as their modalities
-      const std::vector<unsigned int, IdSetAlloc> &all_nodes =
+      const std::vector<unsigned int, IdSetAlloc>& all_nodes =
           this->_getAllNodes(nodeset_index);
-      const std::vector<unsigned int, IdSetAlloc> *conditioning_nodes =
+      const std::vector<unsigned int, IdSetAlloc>* conditioning_nodes =
           this->_getConditioningNodes(nodeset_index);
-      const std::vector<unsigned int> &modalities = this->modalities();
+      const std::vector<unsigned int>& modalities = this->modalities();
 
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
       if (conditioning_nodes) {
         // get the counts for the conditioning nodes
-        const std::vector<float, CountAlloc> &N_ij =
+        const std::vector<float, CountAlloc>& N_ij =
             this->_getConditioningCounts(nodeset_index);
         const unsigned int conditioning_modal = N_ij.size();
 
-        // initialize the score: this should be the penalty of the BIC score, i.e.,
+        // initialize the score: this should be the penalty of the BIC score,
+        // i.e.,
         // -(ri-1 ) * qi * .5 * log ( N + N' )
         const float penalty =
             conditioning_modal * (modalities[all_nodes.back()] - 1);
 
         if (this->_apriori->weight()) {
-          const std::vector<float, CountAlloc> &N_prime_ijk =
+          const std::vector<float, CountAlloc>& N_prime_ijk =
               this->_getAllApriori(nodeset_index);
-          const std::vector<float, CountAlloc> &N_prime_ij =
+          const std::vector<float, CountAlloc>& N_prime_ij =
               this->_getConditioningApriori(nodeset_index);
 
           // compute the score: it remains to compute the log likelihood, i.e.,
@@ -210,12 +212,13 @@ namespace gum {
       } else {
         // here, there are no conditioning nodes
 
-        // initialize the score: this should be the penalty of the AIC score, i.e.,
+        // initialize the score: this should be the penalty of the AIC score,
+        // i.e.,
         // -(ri-1 )
         const float penalty = modalities[all_nodes.back()] - 1;
 
         if (this->_apriori->weight()) {
-          const std::vector<float, CountAlloc> &N_prime_ijk =
+          const std::vector<float, CountAlloc>& N_prime_ijk =
               this->_getAllApriori(nodeset_index);
 
           // compute the score: it remains to compute the log likelihood, i.e.,

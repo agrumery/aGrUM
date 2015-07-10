@@ -20,17 +20,18 @@ s
 
 namespace gum {
   ApproximationSchemeListener::ApproximationSchemeListener(
-      IApproximationSchemeConfiguration &sch)
+      IApproximationSchemeConfiguration& sch)
       : __sch(sch) {
     GUM_CONSTRUCTOR(ApproximationSchemeListener);
 
     GUM_CONNECT((__sch), onProgress, (*this),
                 ApproximationSchemeListener::whenProgress);
-    GUM_CONNECT((__sch), onStop, (*this), ApproximationSchemeListener::whenStop);
+    GUM_CONNECT((__sch), onStop, (*this),
+                ApproximationSchemeListener::whenStop);
   }
 
   ApproximationSchemeListener::ApproximationSchemeListener(
-      const ApproximationSchemeListener &other)
+      const ApproximationSchemeListener& other)
       : __sch(other.__sch) {
     GUM_CONS_CPY(ApproximationSchemeListener);
     GUM_ERROR(OperationNotAllowed,
@@ -41,8 +42,8 @@ namespace gum {
     GUM_DESTRUCTOR(ApproximationSchemeListener);
   }
 
-  ApproximationSchemeListener &ApproximationSchemeListener::
-  operator=(const ApproximationSchemeListener &other) {
+  ApproximationSchemeListener& ApproximationSchemeListener::
+  operator=(const ApproximationSchemeListener& other) {
     GUM_CONS_CPY(ApproximationSchemeListener);
     GUM_ERROR(OperationNotAllowed,
               "No copy constructor for ApproximationSchemeListener");

@@ -39,15 +39,17 @@ namespace gum_tests {
   class UndiGraphTestSuite : public CxxTest::TestSuite {
 
     private:
-    static gum::Size simpleDoubleFunction(const gum::NodeId &aNodeId) {
+    static gum::Size simpleDoubleFunction(const gum::NodeId& aNodeId) {
       return aNodeId * 2;
     }
 
-    static gum::Size simpleEdgeMapFunction(const gum::Edge &anEdge) {
+    static gum::Size simpleEdgeMapFunction(const gum::Edge& anEdge) {
       return anEdge.first() + anEdge.second();
     }
 
-    static gum::Size twistedMapFunction(const gum::NodeId &aNode) { throw(aNode); }
+    static gum::Size twistedMapFunction(const gum::NodeId& aNode) {
+      throw(aNode);
+    }
 
     gum::UndiGraph buildGraph() {
       gum::UndiGraph g;
@@ -71,7 +73,7 @@ namespace gum_tests {
     gum::NodeId id1, id2, id3, id4, id5;
 
     void testConstructor1() {
-      gum::UndiGraph *graph = nullptr;
+      gum::UndiGraph* graph = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING((graph = new gum::UndiGraph()));
       TS_GUM_ASSERT_THROWS_NOTHING(delete (graph));
     }
@@ -97,7 +99,7 @@ namespace gum_tests {
     void testCopyConstructor() {
       gum::UndiGraph graph = buildGraph();
 
-      gum::UndiGraph *copy = nullptr;
+      gum::UndiGraph* copy = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING((copy = new gum::UndiGraph(graph)));
       TS_ASSERT(graph == *copy);
       delete (copy);
@@ -279,8 +281,8 @@ namespace gum_tests {
 
       gum::Size s = 0;
 
-      for (gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end();
-           ++iter) {
+      for (gum::List<gum::Size>::iterator iter = list.begin();
+           iter != list.end(); ++iter) {
         s += *iter;
       }
 
@@ -306,7 +308,7 @@ namespace gum_tests {
       gum::Size sk = 0;
       gum::Size sv = 0;
 
-      for (const auto &elt : hashmap) {
+      for (const auto& elt : hashmap) {
         sk += elt.first;
         sv += elt.second;
       }
@@ -318,7 +320,8 @@ namespace gum_tests {
       gum::UndiGraph graph = buildGraph();
 
       gum::NodeProperty<gum::Size> hashmap;
-      TS_ASSERT_THROWS_ANYTHING(hashmap = graph.nodesProperty(&twistedMapFunction));
+      TS_ASSERT_THROWS_ANYTHING(hashmap =
+                                    graph.nodesProperty(&twistedMapFunction));
 
       TS_ASSERT_EQUALS(hashmap.size(), (gum::Size)0);
     }
@@ -331,13 +334,13 @@ namespace gum_tests {
 
       gum::Size s = 0;
 
-      for (gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end();
-           ++iter) {
+      for (gum::List<gum::Size>::iterator iter = list.begin();
+           iter != list.end(); ++iter) {
         s += *iter;
       }
 
-      TS_ASSERT_EQUALS(s,
-                       (gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1));
+      TS_ASSERT_EQUALS(
+          s, (gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1));
     }
 
     void testHashMapEdges() {
@@ -350,7 +353,7 @@ namespace gum_tests {
       gum::Size sk = 0;
       gum::Size sv = 0;
 
-      for (const auto &elt : hashmap) {
+      for (const auto& elt : hashmap) {
         sv += elt.second;
         sk += elt.first.first() + elt.first.second();
       }

@@ -43,8 +43,9 @@ namespace gum {
         if (values.empty()) {
           __check_database = true;
         } else {
-          // if we do not want to parse the database, store all the values directly
-          for (const auto &val : values) {
+          // if we do not want to parse the database, store all the values
+          // directly
+          for (const auto& val : values) {
             __values.insert(val, __max_value);
             ++__max_value;
           }
@@ -76,14 +77,14 @@ namespace gum {
 
         // reorder user_vals in increasing order of the second argument
         std::sort(user_vals.begin(), user_vals.end(),
-                  [](const std::pair<float, unsigned int> &elt1,
-                     const std::pair<float, unsigned int> &elt2)
+                  [](const std::pair<float, unsigned int>& elt1,
+                     const std::pair<float, unsigned int>& elt2)
                       -> bool { return elt1.second < elt2.second; });
 
         // restore in the appropriate order the element of __strings
         __values.clear();
         __max_value = 0;
-        for (const auto &val : user_vals) {
+        for (const auto& val : user_vals) {
           __values.insert(val.first, __max_value);
           ++__max_value;
         }
@@ -98,8 +99,9 @@ namespace gum {
       }
     }
 
-    /// specify the set of possible values (to do before creating the row filter)
-    void CellTranslatorNumber::setUserValues(const Sequence<float> &values,
+    /// specify the set of possible values (to do before creating the row
+    /// filter)
+    void CellTranslatorNumber::setUserValues(const Sequence<float>& values,
                                              bool check_database) {
       // clear all current data
       __values.clear();
@@ -116,8 +118,9 @@ namespace gum {
         if (values.empty()) {
           __check_database = true;
         } else {
-          // if we do not want to parse the database, store all the values directly
-          for (const auto &val : values) {
+          // if we do not want to parse the database, store all the values
+          // directly
+          for (const auto& val : values) {
             __values.insert(val, __max_value);
             ++__max_value;
           }

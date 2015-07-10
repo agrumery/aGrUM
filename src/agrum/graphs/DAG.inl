@@ -30,7 +30,7 @@
 
 namespace gum {
 
-  INLINE DAG &DAG::operator=(const DAG &g) {
+  INLINE DAG& DAG::operator=(const DAG& g) {
     // avoid self assignment
     if (this != &g) {
       DiGraph::operator=(g);

@@ -30,10 +30,12 @@
 
 namespace gum {
 
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   /** @class SpanningForest
    * @brief Base class for computing min cost spanning trees or forests */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   class SpanningForest {
     public:
     // ############################################################################
@@ -53,11 +55,11 @@ namespace gum {
 
     /// Returns the edges in a min cost spanning forest
     /** @returns edges in the spanning forest */
-    virtual const EdgeSet &edgesInSpanningForest() = 0;
+    virtual const EdgeSet& edgesInSpanningForest() = 0;
 
     /// Construct the spanning forest
     /** @return the spanning forest */
-    virtual const UndiGraph &spanningForest() = 0;
+    virtual const UndiGraph& spanningForest() = 0;
 
     /// Returns the cost of the spanning forest
     /** @return cost of the spanning forest */
@@ -77,12 +79,12 @@ namespace gum {
     SpanningForest();
 
     /// Copy constructor
-    SpanningForest(const SpanningForest &toCopy);
+    SpanningForest(const SpanningForest& toCopy);
 
     /// Copy operator
     /** avoid copying the interface from scratch: this would prevent, in
      * particular, that a Prim algorithm be initialized by a Kruskal algo. */
-    SpanningForest &operator=(const SpanningForest &toCopy);
+    SpanningForest& operator=(const SpanningForest& toCopy);
 
     /// @}
   };

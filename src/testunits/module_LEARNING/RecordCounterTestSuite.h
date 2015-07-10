@@ -34,8 +34,9 @@ namespace gum_tests {
     void test1() {
       gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
 
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8>());
 
       auto generators =
           gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
@@ -58,9 +59,9 @@ namespace gum_tests {
 
         counter.count();
 
-        const std::vector<float> &vect1 = counter.getCounts(id1);
-        const std::vector<float> &vect2 = counter.getCounts(id2);
-        const std::vector<float> &vect3 = counter.getCounts(id3);
+        const std::vector<float>& vect1 = counter.getCounts(id1);
+        const std::vector<float>& vect2 = counter.getCounts(id2);
+        const std::vector<float>& vect3 = counter.getCounts(id3);
 
         TS_ASSERT(vect1[0] == 5028);
         TS_ASSERT(vect1[1] == 4972);
@@ -158,8 +159,9 @@ namespace gum_tests {
     void test_copy_move() {
       gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
 
-      auto translators = gum::learning::make_translators(gum::learning::Create<
-          gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8>());
+      auto translators = gum::learning::make_translators(
+          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8>());
 
       auto generators =
           gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
@@ -184,9 +186,9 @@ namespace gum_tests {
 
         gum::learning::RecordCounter<> counter2(counter);
 
-        const std::vector<float> &vect1 = counter2.getCounts(id1);
-        const std::vector<float> &vect2 = counter2.getCounts(id2);
-        const std::vector<float> &vect3 = counter2.getCounts(id3);
+        const std::vector<float>& vect1 = counter2.getCounts(id1);
+        const std::vector<float>& vect2 = counter2.getCounts(id2);
+        const std::vector<float>& vect3 = counter2.getCounts(id3);
 
         TS_ASSERT(vect1[0] == 5028);
         TS_ASSERT(vect1[1] == 4972);
@@ -200,9 +202,9 @@ namespace gum_tests {
 
         gum::learning::RecordCounter<> counter3(std::move(counter2));
 
-        const std::vector<float> &vvect1 = counter3.getCounts(id1);
-        const std::vector<float> &vvect2 = counter3.getCounts(id2);
-        const std::vector<float> &vvect3 = counter3.getCounts(id3);
+        const std::vector<float>& vvect1 = counter3.getCounts(id1);
+        const std::vector<float>& vvect2 = counter3.getCounts(id2);
+        const std::vector<float>& vvect3 = counter3.getCounts(id3);
 
         TS_ASSERT(vvect1[0] == 5028);
         TS_ASSERT(vvect1[1] == 4972);
@@ -266,8 +268,9 @@ namespace gum_tests {
       }
     }
 
-    bool compare_vect3(const std::vector<float> &v1, const std::vector<float> &v2,
-                       const std::vector<unsigned int> &order) {
+    bool compare_vect3(const std::vector<float>& v1,
+                       const std::vector<float>& v2,
+                       const std::vector<unsigned int>& order) {
       unsigned int index1, index2;
       for (unsigned int k = 0; k < 2; ++k) {
         for (unsigned int j = 0; j < 2; ++j) {
@@ -284,8 +287,9 @@ namespace gum_tests {
       return true;
     }
 
-    bool compare_vect2(const std::vector<float> &v1, const std::vector<float> &v2,
-                       const std::vector<unsigned int> &order) {
+    bool compare_vect2(const std::vector<float>& v1,
+                       const std::vector<float>& v2,
+                       const std::vector<unsigned int>& order) {
       unsigned int index1, index2;
       for (unsigned int j = 0; j < 2; ++j) {
         for (unsigned int i = 0; i < 2; ++i) {

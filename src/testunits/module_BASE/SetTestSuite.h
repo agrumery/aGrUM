@@ -33,7 +33,7 @@ namespace gum_tests {
   class SetTestSuite : public CxxTest::TestSuite {
     public:
     void testConstructor() {
-      gum::Set<int> *set = nullptr;
+      gum::Set<int>* set = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(set = new gum::Set<int>());
       TS_GUM_ASSERT_THROWS_NOTHING(delete set);
 
@@ -214,7 +214,7 @@ namespace gum_tests {
       fill(set);
       TS_ASSERT_EQUALS(set.size(), (gum::Size)6);
 
-      auto iter = set.beginSafe(); // safe iterator needed here
+      auto iter = set.beginSafe();  // safe iterator needed here
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter));
       TS_ASSERT_EQUALS(set.size(), (gum::Size)5);
 
@@ -234,7 +234,7 @@ namespace gum_tests {
       gum::Set<int, MyAlloc<int>> set2;
       fill(set2);
       TS_ASSERT(set2.size() == 6);
-      iter = set2.beginSafe(); // safe iterator needed here
+      iter = set2.beginSafe();  // safe iterator needed here
       TS_GUM_ASSERT_THROWS_NOTHING(set2.erase(iter));
       TS_ASSERT(set2.size() == 5);
     }
@@ -442,7 +442,8 @@ namespace gum_tests {
 
       gum::Set<int> obtained;
 
-      for (gum::Set<int>::iterator iter = t1.begin(); iter != t1.end(); ++iter) {
+      for (gum::Set<int>::iterator iter = t1.begin(); iter != t1.end();
+           ++iter) {
         obtained.insert(*iter);
       }
 
@@ -450,7 +451,8 @@ namespace gum_tests {
 
       gum::Set<int> obtained2;
 
-      for (gum::Set<int>::iterator iter = t1.begin(); iter != t1.end(); ++iter) {
+      for (gum::Set<int>::iterator iter = t1.begin(); iter != t1.end();
+           ++iter) {
         obtained2.insert(*iter);
       }
 
@@ -513,7 +515,8 @@ namespace gum_tests {
       TS_ASSERT(t1 == obtained);
       obtained.clear();
 
-      for (gum::Set<int>::iterator iter = t1.begin(); iter != t1.end(); ++iter) {
+      for (gum::Set<int>::iterator iter = t1.begin(); iter != t1.end();
+           ++iter) {
         obtained.insert(*iter);
       }
 
@@ -558,7 +561,7 @@ namespace gum_tests {
 
     private:
     template <typename Alloc = std::allocator<int>>
-    void fill(gum::Set<int, Alloc> &set) {
+    void fill(gum::Set<int, Alloc>& set) {
       set.insert(1);
       set.insert(2);
       set.insert(3);
@@ -567,19 +570,19 @@ namespace gum_tests {
       set.insert(6);
     }
 
-    void fillEven(gum::Set<int> &set) {
+    void fillEven(gum::Set<int>& set) {
       set.insert(2);
       set.insert(4);
       set.insert(6);
     }
 
-    void fillOdd(gum::Set<int> &set) {
+    void fillOdd(gum::Set<int>& set) {
       set.insert(1);
       set.insert(3);
       set.insert(5);
     }
 
-    gum::Set<int> getIntersection(gum::Set<int> &set) {
+    gum::Set<int> getIntersection(gum::Set<int>& set) {
       gum::Set<int> full;
       fill(full);
       gum::Set<int> inter;
@@ -593,7 +596,7 @@ namespace gum_tests {
       return inter;
     }
 
-    gum::Set<int> getUnion(gum::Set<int> &set) {
+    gum::Set<int> getUnion(gum::Set<int>& set) {
       gum::Set<int> full;
       fill(full);
       gum::Set<int> unionSet;
@@ -607,9 +610,11 @@ namespace gum_tests {
       return unionSet;
     }
 
-    static std::string mappingTestFunc_1(const std::string &s) { return s + ".foo"; }
+    static std::string mappingTestFunc_1(const std::string& s) {
+      return s + ".foo";
+    }
 
-    static std::string mappingTestFunc_2(std::string &s) { return s + ".bar"; }
+    static std::string mappingTestFunc_2(std::string& s) { return s + ".bar"; }
 
     static std::string mappingTestFunc_3(std::string s) { return s + ".42"; }
   };

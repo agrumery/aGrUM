@@ -35,18 +35,22 @@
 
 namespace gum {
 
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                 Implementation of gumSplayBinaryNode                 === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+  /* ============================================================================
+   */
+  /* ============================================================================
+   */
+  /* ===                 Implementation of gumSplayBinaryNode === */
+  /* ============================================================================
+   */
+  /* ============================================================================
+   */
 
   /// a function used to perform copies of HashTableLists
 
   template <class Element>
   INLINE void SplayBinaryNode<Element>::_copy(
-      const SplayBinaryNode<Element> &from,
-      HashTable<Element, SplayBinaryNode<Element> *> &addr) {
+      const SplayBinaryNode<Element>& from,
+      HashTable<Element, SplayBinaryNode<Element>*>& addr) {
     if (addr.exists(from.elt))
       addr[from.elt] = this;
     else
@@ -77,8 +81,8 @@ namespace gum {
 
   template <class Element>
   INLINE SplayBinaryNode<Element>::SplayBinaryNode(
-      const Element &e, HashTable<Element, SplayBinaryNode<Element> *> &addr,
-      SplayBinaryNode *g, SplayBinaryNode *d, SplayBinaryNode *p)
+      const Element& e, HashTable<Element, SplayBinaryNode<Element>*>& addr,
+      SplayBinaryNode* g, SplayBinaryNode* d, SplayBinaryNode* p)
       : elt(e), size(1), fg(g), fd(d), pere(p) {
     if (addr.exists(elt))
       addr[elt] = this;
@@ -93,8 +97,8 @@ namespace gum {
 
   template <class Element>
   INLINE SplayBinaryNode<Element>::SplayBinaryNode(
-      const SplayBinaryNode<Element> &from,
-      HashTable<Element, SplayBinaryNode<Element> *> &addr) {
+      const SplayBinaryNode<Element>& from,
+      HashTable<Element, SplayBinaryNode<Element>*>& addr) {
     _copy(from, addr);
     // for debugging purposes
     GUM_CONSTRUCTOR(SplayBinaryNode);
@@ -117,7 +121,7 @@ namespace gum {
   /// Perform a right rotation, returns the node
 
   template <class Element>
-  INLINE SplayBinaryNode<Element> *SplayBinaryNode<Element>::zig() {
+  INLINE SplayBinaryNode<Element>* SplayBinaryNode<Element>::zig() {
     Size size_;
     // Must be called on a node with a father
     GUM_ASSERT(pere != 0);
@@ -129,7 +133,7 @@ namespace gum {
 
     fd = pere;
 
-    SplayBinaryNode<Element> *p = fd->pere;
+    SplayBinaryNode<Element>* p = fd->pere;
 
     fd->pere = this;
 
@@ -172,7 +176,7 @@ namespace gum {
   /// Perform a left rotation, returns the node
 
   template <class Element>
-  INLINE SplayBinaryNode<Element> *SplayBinaryNode<Element>::zag() {
+  INLINE SplayBinaryNode<Element>* SplayBinaryNode<Element>::zag() {
     Size size_;
     // Must be call on a node with a father
     GUM_ASSERT(pere != 0);
@@ -184,7 +188,7 @@ namespace gum {
 
     fg = pere;
 
-    SplayBinaryNode<Element> *p = fg->pere;
+    SplayBinaryNode<Element>* p = fg->pere;
 
     fg->pere = this;
 
@@ -226,12 +230,12 @@ namespace gum {
   /// Perform a splay rotation, the node return is the root
 
   template <class Element>
-  INLINE SplayBinaryNode<Element> *SplayBinaryNode<Element>::splay() {
-    SplayBinaryNode<Element> *gdp;
+  INLINE SplayBinaryNode<Element>* SplayBinaryNode<Element>::splay() {
+    SplayBinaryNode<Element>* gdp;
 
     while (pere) {
       // While this node isn't the root
-      gdp = pere->pere; // gdp can be nullptr
+      gdp = pere->pere;  // gdp can be nullptr
 
       if (!gdp) {
         if (this == pere->fg) {
@@ -265,18 +269,18 @@ namespace gum {
       }
     }
 
-    return this; // for compiler satisfaction
+    return this;  // for compiler satisfaction
   }
 
   /// Concatenation of two threes
 
   template <class Element>
-  INLINE SplayBinaryNode<Element> *SplayBinaryNode<Element>::join(
-      const SplayBinaryNode<Element> *e,
-      HashTable<Element, SplayBinaryNode<Element> *> &addr) {
-    SplayBinaryNode<Element> *b = new SplayBinaryNode<Element>(*e, addr);
+  INLINE SplayBinaryNode<Element>* SplayBinaryNode<Element>::join(
+      const SplayBinaryNode<Element>* e,
+      HashTable<Element, SplayBinaryNode<Element>*>& addr) {
+    SplayBinaryNode<Element>* b = new SplayBinaryNode<Element>(*e, addr);
     GUM_ASSERT(b != 0);
-    SplayBinaryNode<Element> *act = this;
+    SplayBinaryNode<Element>* act = this;
 
     for (; act->fd; act = act->fd)
       ;
@@ -301,7 +305,8 @@ namespace gum {
 
   /// Get the position of the node
 
-  template <class Element> INLINE int SplayBinaryNode<Element>::position() const {
+  template <class Element>
+  INLINE int SplayBinaryNode<Element>::position() const {
     if (!pere) {
       // I'm the root
       if (fg)
@@ -330,7 +335,7 @@ namespace gum {
   /// Get the element in the node
 
   template <class Element>
-  INLINE const Element &SplayBinaryNode<Element>::getElement() const {
+  INLINE const Element& SplayBinaryNode<Element>::getElement() const {
     return elt;
   }
 
@@ -340,7 +345,8 @@ namespace gum {
    */
 
   template <class Element>
-  INLINE const SplayBinaryNode<Element> *SplayBinaryNode<Element>::getFg() const {
+  INLINE const SplayBinaryNode<Element>*
+  SplayBinaryNode<Element>::getFg() const {
     return fg;
   }
 
@@ -350,20 +356,25 @@ namespace gum {
    */
 
   template <class Element>
-  INLINE const SplayBinaryNode<Element> *SplayBinaryNode<Element>::getFd() const {
+  INLINE const SplayBinaryNode<Element>*
+  SplayBinaryNode<Element>::getFd() const {
     return fd;
   }
 
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                     Implementation of SplayTree                      === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+  /* ============================================================================
+   */
+  /* ============================================================================
+   */
+  /* ===                     Implementation of SplayTree === */
+  /* ============================================================================
+   */
+  /* ============================================================================
+   */
 
   /// a function used to perform copies
 
   template <class Element>
-  INLINE void SplayTree<Element>::_copy(const SplayTree<Element> &from) {
+  INLINE void SplayTree<Element>::_copy(const SplayTree<Element>& from) {
     if (from.root) {
       root = new SplayBinaryNode<Element>(*from.root, addr);
     } else {
@@ -373,7 +384,9 @@ namespace gum {
 
   /// basic constructor, make an empty splay tree
 
-  template <class Element> INLINE SplayTree<Element>::SplayTree() : root(0), addr() {
+  template <class Element>
+  INLINE SplayTree<Element>::SplayTree()
+      : root(0), addr() {
     // for debugging purposes
     GUM_CONSTRUCTOR(SplayTree);
   }
@@ -384,7 +397,7 @@ namespace gum {
    */
 
   template <class Element>
-  INLINE SplayTree<Element>::SplayTree(const Element &e)
+  INLINE SplayTree<Element>::SplayTree(const Element& e)
       : root(0), addr() {
     root = new SplayBinaryNode<Element>(e, addr);
     // for debugging purposes
@@ -394,7 +407,7 @@ namespace gum {
   /// copy constructor
 
   template <class Element>
-  INLINE SplayTree<Element>::SplayTree(const SplayTree &from)
+  INLINE SplayTree<Element>::SplayTree(const SplayTree& from)
       : addr() {
     _copy(from);
     // for debugging purposes
@@ -404,8 +417,8 @@ namespace gum {
   /// Assignment operator
 
   template <class Element>
-  INLINE SplayTree<Element> &SplayTree<Element>::
-  operator=(const SplayTree<Element> &from) {
+  INLINE SplayTree<Element>& SplayTree<Element>::
+  operator=(const SplayTree<Element>& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes
@@ -436,7 +449,7 @@ namespace gum {
   /// Get the element at the position n
 
   template <class Element>
-  Element &SplayTree<Element>::operator[](const unsigned int i) {
+  Element& SplayTree<Element>::operator[](const unsigned int i) {
     int val = i;
 
     if (!root) {
@@ -446,7 +459,7 @@ namespace gum {
     } else {
       // The element exists
       // Find it
-      SplayBinaryNode<Element> *act = root;
+      SplayBinaryNode<Element>* act = root;
       int pos_act = val - 1;
       bool next = true;
 
@@ -473,7 +486,7 @@ namespace gum {
   }
 
   template <class Element>
-  const Element &SplayTree<Element>::operator[](const unsigned int i) const {
+  const Element& SplayTree<Element>::operator[](const unsigned int i) const {
     int val = i;
 
     if (!root) {
@@ -483,7 +496,7 @@ namespace gum {
     } else {
       // The element exists
       // Find it
-      SplayBinaryNode<Element> *act = root;
+      SplayBinaryNode<Element>* act = root;
       int pos_act = val - 1;
       bool next = true;
 
@@ -511,8 +524,8 @@ namespace gum {
 
   /// Get the first element
 
-  template <class Element> INLINE Element &SplayTree<Element>::front() {
-    SplayBinaryNode<Element> *act = root;
+  template <class Element> INLINE Element& SplayTree<Element>::front() {
+    SplayBinaryNode<Element>* act = root;
 
     if (!root) {
       GUM_ERROR(NotFound, "The splay tree is empty");
@@ -529,8 +542,8 @@ namespace gum {
 
   /// Get the last element
 
-  template <class Element> INLINE Element &SplayTree<Element>::back() {
-    SplayBinaryNode<Element> *act = root;
+  template <class Element> INLINE Element& SplayTree<Element>::back() {
+    SplayBinaryNode<Element>* act = root;
 
     if (!root) {
       GUM_ERROR(NotFound, "The splay tree is empty");
@@ -548,7 +561,7 @@ namespace gum {
   /// Remove the first element
 
   template <class Element> INLINE void SplayTree<Element>::popFront() {
-    SplayBinaryNode<Element> *act = root;
+    SplayBinaryNode<Element>* act = root;
 
     if (root) {
       if (root->fg)
@@ -571,7 +584,7 @@ namespace gum {
   /// Remove the last element
 
   template <class Element> INLINE void SplayTree<Element>::popBack() {
-    SplayBinaryNode<Element> *act = root;
+    SplayBinaryNode<Element>* act = root;
 
     if (root) {
       if (root->fd)
@@ -594,8 +607,8 @@ namespace gum {
   /// Add an element in the first position
 
   template <class Element>
-  INLINE void SplayTree<Element>::pushFront(const Element &e) {
-    SplayBinaryNode<Element> *act = root;
+  INLINE void SplayTree<Element>::pushFront(const Element& e) {
+    SplayBinaryNode<Element>* act = root;
 
     if (root) {
       if (root->fg)
@@ -613,8 +626,8 @@ namespace gum {
   /// Add an element in the last position
 
   template <class Element>
-  INLINE void SplayTree<Element>::pushBack(const Element &e) {
-    SplayBinaryNode<Element> *act = root;
+  INLINE void SplayTree<Element>::pushBack(const Element& e) {
+    SplayBinaryNode<Element>* act = root;
 
     if (root) {
       if (root->fd)
@@ -631,8 +644,9 @@ namespace gum {
 
   /// Add an element to the tree
 
-  template <class Element> INLINE void SplayTree<Element>::insert(const Element &e) {
-    SplayBinaryNode<Element> *act = root;
+  template <class Element>
+  INLINE void SplayTree<Element>::insert(const Element& e) {
+    SplayBinaryNode<Element>* act = root;
 
     if (!root) {
       root = new SplayBinaryNode<Element>(e, addr);
@@ -657,7 +671,7 @@ namespace gum {
    */
 
   template <class Element>
-  INLINE void SplayTree<Element>::join(const SplayTree<Element> &s) {
+  INLINE void SplayTree<Element>::join(const SplayTree<Element>& s) {
     if (s.root) {
       if (root) {
         root = root->join(s.root, addr);
@@ -671,8 +685,8 @@ namespace gum {
 
   template <class Element>
   INLINE static void
-  removeInfo(const SplayBinaryNode<Element> *e,
-             HashTable<Element, SplayBinaryNode<Element> *> &addr) {
+  removeInfo(const SplayBinaryNode<Element>* e,
+             HashTable<Element, SplayBinaryNode<Element>*>& addr) {
     GUM_ASSERT(addr.exists(e->getElement()));
     addr.erase(e->getElement());
 
@@ -703,7 +717,7 @@ namespace gum {
       return s;
     } else {
       // We will find the node at position i
-      SplayBinaryNode<Element> *act = root;
+      SplayBinaryNode<Element>* act = root;
       int pos = root->position();
 
       while (pos != i) {
@@ -752,7 +766,7 @@ namespace gum {
   /// Split the tree at the element
 
   template <typename Element>
-  INLINE SplayTree<Element> SplayTree<Element>::split_by_val(const Element &e) {
+  INLINE SplayTree<Element> SplayTree<Element>::split_by_val(const Element& e) {
     GUM_ASSERT(root != 0);
 
     if (!addr.exists(e)) {
@@ -760,7 +774,7 @@ namespace gum {
     }
 
     // We will find the node at position i
-    SplayBinaryNode<Element> *act = addr[e];
+    SplayBinaryNode<Element>* act = addr[e];
 
     // We reorganize the tree
     act->splay();
@@ -804,14 +818,15 @@ namespace gum {
   /// Test if the tree contains the element
 
   template <class Element>
-  INLINE bool SplayTree<Element>::contains(const Element &e) const {
+  INLINE bool SplayTree<Element>::contains(const Element& e) const {
     return addr.exists(e);
   }
 
   /// Display the node
 
   template <typename Element>
-  std::ostream &operator<<(std::ostream &out, const SplayBinaryNode<Element> &e) {
+  std::ostream& operator<<(std::ostream& out,
+                           const SplayBinaryNode<Element>& e) {
     if (e.fg)
       out << *e.fg << ",";
 
@@ -826,7 +841,8 @@ namespace gum {
   /// Display the tree
 
   template <typename Element>
-  INLINE std::ostream &operator<<(std::ostream &out, const SplayTree<Element> &s) {
+  INLINE std::ostream& operator<<(std::ostream& out,
+                                  const SplayTree<Element>& s) {
     out << "|[";
 
     if (s.root)

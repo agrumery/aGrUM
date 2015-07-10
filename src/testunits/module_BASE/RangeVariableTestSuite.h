@@ -66,7 +66,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var1.label(1), "4");
       TS_ASSERT_EQUALS(var1["4"], (gum::Idx)1);
 
-      gum::DiscreteVariable &v = var1;
+      gum::DiscreteVariable& v = var1;
 
       TS_ASSERT_EQUALS(v.label(1), "4");
       TS_ASSERT_EQUALS(v["4"], (gum::Idx)1);

@@ -46,8 +46,8 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   void SimpleCPTDisturber<GUM_SCALAR>::disturbReducCPT(
-      NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR> &bayesNet,
-      Potential<GUM_SCALAR> &cptCopy, Potential<GUM_SCALAR> &marg) {
+      NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet,
+      Potential<GUM_SCALAR>& cptCopy, Potential<GUM_SCALAR>& marg) {
     Instantiation i(cptCopy);
     Instantiation iCopy(cptCopy);
     Instantiation imarg(marg);
@@ -71,10 +71,9 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  void SimpleCPTDisturber<GUM_SCALAR>::disturbAugmCPT(NodeId varIdi, NodeId varIdj,
-                                                      BayesNet<GUM_SCALAR> &bayesNet,
-                                                      Potential<GUM_SCALAR> &cptCopy,
-                                                      GUM_SCALAR variation) {
+  void SimpleCPTDisturber<GUM_SCALAR>::disturbAugmCPT(
+      NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet,
+      Potential<GUM_SCALAR>& cptCopy, GUM_SCALAR variation) {
     Instantiation i(cptCopy);
     Instantiation iCopy(cptCopy);
     iCopy.forgetMaster();
@@ -87,7 +86,7 @@ namespace gum {
         bayesNet.cpt(varIdj)
             .set(iCopy, cptCopy.get(i) +
                             (GUM_SCALAR)(rand() % (Size)(variation * 100000)) /
-                                100000); // TODO better to do here
+                                100000);  // TODO better to do here
       }
     }
 

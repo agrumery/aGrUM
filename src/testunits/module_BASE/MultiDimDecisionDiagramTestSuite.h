@@ -42,10 +42,10 @@ namespace gum_tests {
   class MultiDimDecisionDiagramTestSuite : public CxxTest::TestSuite {
 
     private:
-    void __fillFactory(gum::MultiDimDecisionDiagramFactoryBase<float> *factory,
-                       gum::List<gum::NodeId> *idList) {
+    void __fillFactory(gum::MultiDimDecisionDiagramFactoryBase<float>* factory,
+                       gum::List<gum::NodeId>* idList) {
 
-      gum::Sequence<const gum::DiscreteVariable *> varseq;
+      gum::Sequence<const gum::DiscreteVariable*> varseq;
       varseq.insert(Cprimevar);
       varseq.insert(Cvar);
       varseq.insert(PLvar);
@@ -56,27 +56,27 @@ namespace gum_tests {
       varseq.insert(BOvar);
       factory->setVariablesSequence(varseq);
 
-      idList->insert(factory->addNonTerminalNode(Cprimevar)); // 0
-      idList->insert(factory->addNonTerminalNode(Cvar));      // 1
-      idList->insert(factory->addNonTerminalNode(PLvar));     // 2
-      idList->insert(factory->addNonTerminalNode(APUvar));    // 3
-      idList->insert(factory->addNonTerminalNode(BPUvar));    // 4
-      idList->insert(factory->addNonTerminalNode(ADRvar));    // 5
-      idList->insert(factory->addNonTerminalNode(BDRvar));    // 6
-      idList->insert(factory->addNonTerminalNode(BOvar));     // 7
+      idList->insert(factory->addNonTerminalNode(Cprimevar));  // 0
+      idList->insert(factory->addNonTerminalNode(Cvar));       // 1
+      idList->insert(factory->addNonTerminalNode(PLvar));      // 2
+      idList->insert(factory->addNonTerminalNode(APUvar));     // 3
+      idList->insert(factory->addNonTerminalNode(BPUvar));     // 4
+      idList->insert(factory->addNonTerminalNode(ADRvar));     // 5
+      idList->insert(factory->addNonTerminalNode(BDRvar));     // 6
+      idList->insert(factory->addNonTerminalNode(BOvar));      // 7
 
-      idList->insert(factory->addNonTerminalNode(Cvar));   // 8
-      idList->insert(factory->addNonTerminalNode(PLvar));  // 9
-      idList->insert(factory->addNonTerminalNode(APUvar)); // 10
-      idList->insert(factory->addNonTerminalNode(BPUvar)); // 11
-      idList->insert(factory->addNonTerminalNode(ADRvar)); // 12
-      idList->insert(factory->addNonTerminalNode(BDRvar)); // 13
-      idList->insert(factory->addNonTerminalNode(BOvar));  // 14
+      idList->insert(factory->addNonTerminalNode(Cvar));    // 8
+      idList->insert(factory->addNonTerminalNode(PLvar));   // 9
+      idList->insert(factory->addNonTerminalNode(APUvar));  // 10
+      idList->insert(factory->addNonTerminalNode(BPUvar));  // 11
+      idList->insert(factory->addNonTerminalNode(ADRvar));  // 12
+      idList->insert(factory->addNonTerminalNode(BDRvar));  // 13
+      idList->insert(factory->addNonTerminalNode(BOvar));   // 14
 
-      idList->insert(factory->addTerminalNode(0));  // 15
-      idList->insert(factory->addTerminalNode(10)); // 16
-      idList->insert(factory->addTerminalNode(9));  // 17
-      idList->insert(factory->addTerminalNode(1));  // 18
+      idList->insert(factory->addTerminalNode(0));   // 15
+      idList->insert(factory->addTerminalNode(10));  // 16
+      idList->insert(factory->addTerminalNode(9));   // 17
+      idList->insert(factory->addTerminalNode(1));   // 18
 
       factory->addArc((*idList)[0], (*idList)[1], 1);
       factory->addArc((*idList)[0], (*idList)[8], 0);
@@ -113,8 +113,8 @@ namespace gum_tests {
     }
 
     public:
-    gum::LabelizedVariable *Cvar, *PLvar, *APUvar, *BPUvar, *ADRvar, *BDRvar, *BOvar,
-        *Cprimevar;
+    gum::LabelizedVariable* Cvar, *PLvar, *APUvar, *BPUvar, *ADRvar, *BDRvar,
+        *BOvar, *Cprimevar;
 
     void setUp() {
       Cvar = new gum::LabelizedVariable("C", "C", 2);
@@ -140,7 +140,8 @@ namespace gum_tests {
 
     /**
      * *************************************************************************************/
-    /**  Test sur la construction, le remplissage et la destruction d'une factory  */
+    /**  Test sur la construction, le remplissage et la destruction d'une
+     * factory  */
     /**
      * *************************************************************************************/
     void testFactorySimpleCreation() {
@@ -148,7 +149,7 @@ namespace gum_tests {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
-      gum::MultiDimDecisionDiagramFactory<float> *factory = nullptr;
+      gum::MultiDimDecisionDiagramFactory<float>* factory = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
           factory = new gum::MultiDimDecisionDiagramFactory<float>());
@@ -176,7 +177,7 @@ namespace gum_tests {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
-      gum::MultiDimDecisionDiagramFactory<float> *factory =
+      gum::MultiDimDecisionDiagramFactory<float>* factory =
           new gum::MultiDimDecisionDiagramFactory<float>();
       gum::List<gum::NodeId> idList;
       __fillFactory(factory, &idList);
@@ -185,7 +186,8 @@ namespace gum_tests {
       // Test sur les fonctions d'ajout et retrait de noeud
       // *********************************************************************
 
-      // Ajout d'un noeud terminal ayant la même valeur qu'un autre noeud terminal
+      // Ajout d'un noeud terminal ayant la même valeur qu'un autre noeud
+      // terminal
       // (la factory doit renvoyer l'id de ce node)
       TS_ASSERT_EQUALS(factory->addTerminalNode(10), idList[16]);
       // factory->showProperties();
@@ -208,19 +210,24 @@ namespace gum_tests {
       // Test d'ajout d'un arc ayant pour départ un noeud inexistant (doit lever
       // l'exception gum::NotFound)
       // (le noeud 15 a été détruit un peu plus haut)
-      TS_ASSERT_THROWS(factory->addArc(idList[15], idList[1], 2), gum::NotFound);
+      TS_ASSERT_THROWS(factory->addArc(idList[15], idList[1], 2),
+                       gum::NotFound);
 
       // Test d'ajout d'un arc ayant pour départ un noeud terminal (doit lever
       // l'exception gum::InvalidNode
       // vu que les noeuds terminaux sont ... terminaux)
-      TS_ASSERT_THROWS(factory->addArc(idList[16], idList[1], 3), gum::InvalidNode);
+      TS_ASSERT_THROWS(factory->addArc(idList[16], idList[1], 3),
+                       gum::InvalidNode);
 
-      // Test d'ajout d'un arc entre 2 noeuds déjà reliés par un autre arc de valeur
+      // Test d'ajout d'un arc entre 2 noeuds déjà reliés par un autre arc de
+      // valeur
       // différente(doit lever aucune exception)
-      // TS_GUM_ASSERT_THROWS_NOTHING ( factory->addArc ( idList[8], idList[18], 0 )
+      // TS_GUM_ASSERT_THROWS_NOTHING ( factory->addArc ( idList[8], idList[18],
+      // 0 )
       // );
 
-      // Test d'ajout d'un arc entre 2 noeuds déjà reliés par un autre arc de valeur
+      // Test d'ajout d'un arc entre 2 noeuds déjà reliés par un autre arc de
+      // valeur
       // égale(doit lever aucune exception)
       TS_ASSERT_THROWS(factory->addArc(idList[8], idList[18], 1),
                        gum::DuplicateElement);
@@ -239,48 +246,61 @@ namespace gum_tests {
       // idList[18], 4 ) );
       // factory->showProperties();
 
-      // Test de retrait d'un arc après une tentative ayant eu pour but d'ajouter un
+      // Test de retrait d'un arc après une tentative ayant eu pour but
+      // d'ajouter un
       // autre arc reliant les deux noeuds
       TS_GUM_ASSERT_THROWS_NOTHING(factory->eraseArc(idList[8], idList[18]));
 
-      // Test de retrait de retrait de l'arc qui violait la contrainte d'ordre et
+      // Test de retrait de retrait de l'arc qui violait la contrainte d'ordre
+      // et
       // donc n'existe pas
-      TS_ASSERT_THROWS(factory->eraseArc(idList[8], idList[1]), gum::InvalidArc);
+      TS_ASSERT_THROWS(factory->eraseArc(idList[8], idList[1]),
+                       gum::InvalidArc);
 
       // Test de retrait d'un arc dont un des noeuds n'existe plus (doit lever
       // l'exception InvalidArc)
-      TS_ASSERT_THROWS(factory->eraseArc(idList[15], idList[1]), gum::InvalidArc);
-      TS_ASSERT_THROWS(factory->eraseArc(idList[16], idList[1]), gum::InvalidArc);
+      TS_ASSERT_THROWS(factory->eraseArc(idList[15], idList[1]),
+                       gum::InvalidArc);
+      TS_ASSERT_THROWS(factory->eraseArc(idList[16], idList[1]),
+                       gum::InvalidArc);
 
       // *********************************************************************
       // Test sur les fonctions d'ajout et retrait d'arc par defaut
       // *********************************************************************
 
       // Test d'ajout d'un arc par défaut sans risque
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addDefaultArc(idList[5], idList[7]));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          factory->addDefaultArc(idList[5], idList[7]));
       // factory->showProperties();
 
-      // Test d'ajout d'un arc par défaut ayant pour départ un noeud inexistant (doit
+      // Test d'ajout d'un arc par défaut ayant pour départ un noeud inexistant
+      // (doit
       // lever l'exception gum::InvalidNode)
       // (le noeud 15 a été détruit un peu plus haut
-      TS_ASSERT_THROWS(factory->addDefaultArc(idList[15], idList[1]), gum::NotFound);
+      TS_ASSERT_THROWS(factory->addDefaultArc(idList[15], idList[1]),
+                       gum::NotFound);
 
-      // Test d'ajout d'un arc par défaut ayant pour départ un noeud terminal (doit
+      // Test d'ajout d'un arc par défaut ayant pour départ un noeud terminal
+      // (doit
       // lever l'exception gum::OperationNotAllowed
       // vu que les noeuds terminaux sont ... terminaux)
       TS_ASSERT_THROWS(factory->addDefaultArc(idList[16], idList[1]),
                        gum::InvalidNode);
 
-      // Test d'ajout d'un arc par défaut entre 2 noeuds déjà reliés par un autre arc
+      // Test d'ajout d'un arc par défaut entre 2 noeuds déjà reliés par un
+      // autre arc
       // (doit rien lever)
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addDefaultArc(idList[0], idList[1]));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          factory->addDefaultArc(idList[0], idList[1]));
 
-      // Test d'ajout d'un arc par défaut entre 2 noeuds déjà reliés par un autre arc
+      // Test d'ajout d'un arc par défaut entre 2 noeuds déjà reliés par un
+      // autre arc
       // par defaut(doit lever DuplicateElement)
       TS_ASSERT_THROWS(factory->addDefaultArc(idList[0], idList[3]),
                        gum::DuplicateElement);
 
-      // Test d'ajout d'un arc par défaut qui viole l'ordre sur les variables (doit
+      // Test d'ajout d'un arc par défaut qui viole l'ordre sur les variables
+      // (doit
       // lever l'exception InvalidArc)
       TS_ASSERT_THROWS(factory->addDefaultArc(idList[8], idList[1]),
                        gum::OperationNotAllowed);
@@ -298,7 +318,7 @@ namespace gum_tests {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
-      gum::MultiDimDecisionDiagramFactoryBase<float> *factory =
+      gum::MultiDimDecisionDiagramFactoryBase<float>* factory =
           new gum::MultiDimDecisionDiagramFactory<float>();
       gum::List<gum::NodeId> idList;
       __fillFactory(factory, &idList);
@@ -307,7 +327,7 @@ namespace gum_tests {
       // *********************************************************************
       // Appel au multidim
       // *********************************************************************
-      gum::MultiDimDecisionDiagramBase<float> *container = nullptr;
+      gum::MultiDimDecisionDiagramBase<float>* container = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(container =
                                        factory->getMultiDimDecisionDiagram());
 
@@ -334,12 +354,12 @@ namespace gum_tests {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
-      gum::MultiDimDecisionDiagramFactory<float> *factory =
+      gum::MultiDimDecisionDiagramFactory<float>* factory =
           new gum::MultiDimDecisionDiagramFactory<float>();
       gum::List<gum::NodeId> idList;
       __fillFactory(factory, &idList);
 
-      gum::MultiDimDecisionDiagramBase<float> *container = nullptr;
+      gum::MultiDimDecisionDiagramBase<float>* container = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(container =
                                        factory->getMultiDimDecisionDiagram());
 
@@ -349,7 +369,7 @@ namespace gum_tests {
       // Test variablesSequence(), et si toutes les variables sont
       // accesoirement bien présentent
       // *********************************************************************
-      gum::Sequence<const gum::DiscreteVariable *> varSeq;
+      gum::Sequence<const gum::DiscreteVariable*> varSeq;
       TS_GUM_ASSERT_THROWS_NOTHING(varSeq = container->variablesSequence());
       TS_ASSERT_EQUALS(varSeq.exists(Cprimevar), true);
       TS_ASSERT_EQUALS(varSeq.exists(Cvar), true);
@@ -520,7 +540,7 @@ namespace gum_tests {
       // *********************************************************************
       // Test swap()
       // *********************************************************************
-      gum::LabelizedVariable *lv =
+      gum::LabelizedVariable* lv =
           new gum::LabelizedVariable("Test", "Cornichon", 2);
       TS_ASSERT_THROWS(container->swap(*Cvar, *lv), gum::OperationNotAllowed);
       delete lv;
@@ -533,12 +553,12 @@ namespace gum_tests {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
-      gum::MultiDimDecisionDiagramFactory<float> *factory =
+      gum::MultiDimDecisionDiagramFactory<float>* factory =
           new gum::MultiDimDecisionDiagramFactory<float>();
       gum::List<gum::NodeId> idList;
       __fillFactory(factory, &idList);
 
-      gum::MultiDimDecisionDiagramBase<float> *container = nullptr;
+      gum::MultiDimDecisionDiagramBase<float>* container = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(container =
                                        factory->getMultiDimDecisionDiagram());
 
@@ -547,7 +567,7 @@ namespace gum_tests {
       // *********************************************************************
       // Test add(), erase()
       // *********************************************************************
-      gum::LabelizedVariable *lv =
+      gum::LabelizedVariable* lv =
           new gum::LabelizedVariable("Test", "Cornichon", 2);
 
       TS_ASSERT_THROWS(container->add(*lv), gum::OperationNotAllowed);
@@ -585,16 +605,16 @@ namespace gum_tests {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
-      gum::MultiDimDecisionDiagramFactory<float> *factory =
+      gum::MultiDimDecisionDiagramFactory<float>* factory =
           new gum::MultiDimDecisionDiagramFactory<float>();
       gum::List<gum::NodeId> idList;
       __fillFactory(factory, &idList);
 
-      gum::MultiDimDecisionDiagramBase<float> *container = nullptr;
+      gum::MultiDimDecisionDiagramBase<float>* container = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(container =
                                        factory->getMultiDimDecisionDiagram());
 
-      gum::MultiDimDecisionDiagramBase<float> *container2 = nullptr;
+      gum::MultiDimDecisionDiagramBase<float>* container2 = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(container2 =
                                        factory->getMultiDimDecisionDiagram());
 
@@ -602,7 +622,8 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(container->copy(*container2), gum::OperationNotAllowed);
 
-      TS_ASSERT_THROWS(container->copyFrom(*container2), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(container->copyFrom(*container2),
+                       gum::OperationNotAllowed);
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete container);
       TS_GUM_ASSERT_THROWS_NOTHING(delete container2);
@@ -613,12 +634,12 @@ namespace gum_tests {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
-      gum::MultiDimDecisionDiagramFactory<float> *factory =
+      gum::MultiDimDecisionDiagramFactory<float>* factory =
           new gum::MultiDimDecisionDiagramFactory<float>();
       gum::List<gum::NodeId> idList;
       __fillFactory(factory, &idList);
 
-      gum::MultiDimDecisionDiagramBase<float> *container = nullptr;
+      gum::MultiDimDecisionDiagramBase<float>* container = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(container =
                                        factory->getMultiDimDecisionDiagram());
 
@@ -627,7 +648,7 @@ namespace gum_tests {
       // *********************************************************************
       // Tests
       // *********************************************************************
-      gum::LabelizedVariable *Banditovar =
+      gum::LabelizedVariable* Banditovar =
           new gum::LabelizedVariable("Bandito", "Desperado", 2);
 
       // Test is terminal node
@@ -665,7 +686,8 @@ namespace gum_tests {
 
       // Test is in diagram variable
       TS_GUM_ASSERT_THROWS_NOTHING(container->isInDiagramVariable(Cprimevar));
-      //~ TS_ASSERT_EQUALS( container->isInDiagramVariable( Banditovar ), nullptr );
+      //~ TS_ASSERT_EQUALS( container->isInDiagramVariable( Banditovar ),
+      //nullptr );
 
       // *********************************************************************
       // Cleaning
@@ -679,23 +701,23 @@ namespace gum_tests {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
-      gum::MultiDimDecisionDiagramFactory<float> *factory =
+      gum::MultiDimDecisionDiagramFactory<float>* factory =
           new gum::MultiDimDecisionDiagramFactory<float>();
       gum::List<gum::NodeId> idList;
       __fillFactory(factory, &idList);
 
-      gum::MultiDimDecisionDiagramBase<float> *container = nullptr;
+      gum::MultiDimDecisionDiagramBase<float>* container = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(container =
                                        factory->getMultiDimDecisionDiagram());
 
-      gum::MultiDimDecisionDiagramBase<float> *container2 = nullptr;
+      gum::MultiDimDecisionDiagramBase<float>* container2 = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(container2 =
                                        factory->getMultiDimDecisionDiagram());
 
       factory->eraseArc(3, 6);
       factory->addArc(3, 16, 0);
 
-      gum::MultiDimDecisionDiagramBase<float> *container3 = nullptr;
+      gum::MultiDimDecisionDiagramBase<float>* container3 = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(container3 =
                                        factory->getMultiDimDecisionDiagram());
 
@@ -729,12 +751,12 @@ namespace gum_tests {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
-      gum::MultiDimDecisionDiagramFactory<float> *factory =
+      gum::MultiDimDecisionDiagramFactory<float>* factory =
           new gum::MultiDimDecisionDiagramFactory<float>();
       gum::List<gum::NodeId> idList;
       __fillFactory(factory, &idList);
 
-      gum::MultiDimDecisionDiagramBase<float> *container = nullptr;
+      gum::MultiDimDecisionDiagramBase<float>* container = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(container =
                                        factory->getMultiDimDecisionDiagram());
 
@@ -765,8 +787,9 @@ namespace gum_tests {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
-      gum::MultiDimDecisionDiagramFactory<float, gum::LinearApproximationPolicy> *
-          factory = new gum::MultiDimDecisionDiagramFactory<
+      gum::MultiDimDecisionDiagramFactory<
+          float, gum::LinearApproximationPolicy>* factory =
+          new gum::MultiDimDecisionDiagramFactory<
               float, gum::LinearApproximationPolicy>();
 
       factory->setLowLimit(0);
@@ -776,7 +799,7 @@ namespace gum_tests {
       gum::List<gum::NodeId> idList;
       __fillFactory(factory, &idList);
 
-      gum::MultiDimDecisionDiagramBase<float> *container = nullptr;
+      gum::MultiDimDecisionDiagramBase<float>* container = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(container =
                                        factory->getMultiDimDecisionDiagram());
 

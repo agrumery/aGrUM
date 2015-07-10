@@ -39,13 +39,14 @@ namespace gum_tests {
       std::string file = GET_PATH_STR("DSL/DSLReader_file1.txt");
       gum::BayesNet<float> net;
 
-      gum::DSLReader<float> *reader = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::DSLReader<float>(&net, file));
+      gum::DSLReader<float>* reader = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(reader =
+                                       new gum::DSLReader<float>(&net, file));
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
     }
     void testRead_file1() {
       std::string file = GET_PATH_STR("DSL/DSLReader_file1.txt");
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::DSLReader<float> reader(net, file);
 
       reader.trace(false);
@@ -65,7 +66,7 @@ namespace gum_tests {
     }
     void testRead_file2_float() {
       std::string file = GET_PATH_STR("DSL/DSLReader_file2.txt");
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::DSLReader<float> reader(net, file);
       int nbrErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
@@ -86,11 +87,11 @@ namespace gum_tests {
           else
             node_2 = node;
 
-        const gum::DiscreteVariable &var_1 = net->variable(node_1);
+        const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
         TS_ASSERT_EQUALS(var_1.name(), "n1");
         TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2);
-        const gum::Potential<float> &proba_1 = net->cpt(node_1);
+        const gum::Potential<float>& proba_1 = net->cpt(node_1);
         TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2);
         gum::Instantiation inst_1(proba_1);
         inst_1.setFirst();
@@ -98,10 +99,10 @@ namespace gum_tests {
         inst_1.setLast();
         TS_ASSERT(abs((proba_1[inst_1] - 0.8)) < 0.001);
 
-        const gum::DiscreteVariable &var_2 = net->variable(node_2);
+        const gum::DiscreteVariable& var_2 = net->variable(node_2);
         TS_ASSERT_EQUALS(var_2.name(), "n2");
         TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2);
-        const gum::Potential<float> &proba_2 = net->cpt(node_2);
+        const gum::Potential<float>& proba_2 = net->cpt(node_2);
         TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2);
         gum::Instantiation inst_2(proba_2);
         inst_2.setFirst();
@@ -114,7 +115,7 @@ namespace gum_tests {
     }
     void testRead_file2_double() {
       std::string file = GET_PATH_STR("DSL/DSLReader_file2.txt");
-      gum::BayesNet<double> *net = new gum::BayesNet<double>();
+      gum::BayesNet<double>* net = new gum::BayesNet<double>();
       gum::DSLReader<double> reader(net, file);
 
       int nbrErr = 0;
@@ -135,11 +136,11 @@ namespace gum_tests {
           else
             node_2 = node;
 
-        const gum::DiscreteVariable &var_1 = net->variable(node_1);
+        const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
         TS_ASSERT_EQUALS(var_1.name(), "n1");
         TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2);
-        const gum::Potential<double> &proba_1 = net->cpt(node_1);
+        const gum::Potential<double>& proba_1 = net->cpt(node_1);
         TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2);
         gum::Instantiation inst_1(proba_1);
         inst_1.setFirst();
@@ -147,10 +148,10 @@ namespace gum_tests {
         inst_1.setLast();
         TS_ASSERT(abs((proba_1[inst_1] - 0.8)) < 0.001);
 
-        const gum::DiscreteVariable &var_2 = net->variable(node_2);
+        const gum::DiscreteVariable& var_2 = net->variable(node_2);
         TS_ASSERT_EQUALS(var_2.name(), "n2");
         TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2);
-        const gum::Potential<double> &proba_2 = net->cpt(node_2);
+        const gum::Potential<double>& proba_2 = net->cpt(node_2);
         TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2);
         gum::Instantiation inst_2(proba_2);
         inst_2.setFirst();
@@ -163,7 +164,7 @@ namespace gum_tests {
     }
     void testRead_file3() {
       std::string file = GET_PATH_STR("DSL/DSLReader_file3.txt");
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::DSLReader<float> reader(net, file);
       int nbrErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
@@ -182,7 +183,7 @@ namespace gum_tests {
     }
     void testRead_file_completeDSL() {
       std::string file = GET_PATH_STR("DSL/Ling.dsl");
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::DSLReader<float> reader(net, file);
       int nbrErr = 0;
       reader.trace(true);
@@ -202,7 +203,7 @@ namespace gum_tests {
     }
     void testAlarm() {
       std::string file = GET_PATH_STR("DSL/alarm.dsl");
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::DSLReader<float> reader(net, file);
 
       int nbrErr = 0;
@@ -222,12 +223,12 @@ namespace gum_tests {
       TS_ASSERT(idMap.exists("LVFAILURE"));
 
       if (idMap.exists("HISTORY") and idMap.exists("LVFAILURE")) {
-        const gum::DiscreteVariable &history = net->variable(idMap["HISTORY"]);
+        const gum::DiscreteVariable& history = net->variable(idMap["HISTORY"]);
         TS_ASSERT_EQUALS(history.domainSize(), (gum::Size)2);
         TS_ASSERT_EQUALS(history.label(0), "TRUE");
         TS_ASSERT_EQUALS(history.label(1), "FALSE");
         TS_ASSERT(net->dag().existsArc(idMap["LVFAILURE"], idMap["HISTORY"]));
-        const gum::Potential<float> &historyCPT = net->cpt(idMap["HISTORY"]);
+        const gum::Potential<float>& historyCPT = net->cpt(idMap["HISTORY"]);
         TS_ASSERT_EQUALS(historyCPT.domainSize(), (gum::Size)4);
         TS_ASSERT(historyCPT.contains(net->variable(idMap["HISTORY"])));
         TS_ASSERT(historyCPT.contains(net->variable(idMap["LVFAILURE"])));
@@ -256,13 +257,13 @@ namespace gum_tests {
       TS_ASSERT(idMap.exists("HRBP"));
 
       if (idMap.exists("ERRLOWOUTPUT") and idMap.exists("HRBP")) {
-        const gum::DiscreteVariable &errlowoutput =
+        const gum::DiscreteVariable& errlowoutput =
             net->variable(idMap["ERRLOWOUTPUT"]);
         TS_ASSERT_EQUALS(errlowoutput.domainSize(), (gum::Size)2);
         TS_ASSERT_EQUALS(errlowoutput.label(0), "TRUE");
         TS_ASSERT_EQUALS(errlowoutput.label(1), "FALSE");
         TS_ASSERT(net->dag().existsArc(idMap["ERRLOWOUTPUT"], idMap["HRBP"]));
-        const gum::Potential<float> &errlowoutputCPT =
+        const gum::Potential<float>& errlowoutputCPT =
             net->cpt(idMap["ERRLOWOUTPUT"]);
         TS_ASSERT_EQUALS(errlowoutputCPT.domainSize(), (gum::Size)2);
         TS_ASSERT(errlowoutputCPT.contains(errlowoutput));
@@ -281,10 +282,12 @@ namespace gum_tests {
 
       if (idMap.exists("LVEDVOLUME") and idMap.exists("HYPOVOLEMIA") and
           idMap.exists("LVFAILURE")) {
-        const gum::DiscreteVariable &lvedvolume = net->variable(idMap["LVEDVOLUME"]);
-        const gum::DiscreteVariable &hypovolemia =
+        const gum::DiscreteVariable& lvedvolume =
+            net->variable(idMap["LVEDVOLUME"]);
+        const gum::DiscreteVariable& hypovolemia =
             net->variable(idMap["HYPOVOLEMIA"]);
-        const gum::DiscreteVariable &lvfailure = net->variable(idMap["LVFAILURE"]);
+        const gum::DiscreteVariable& lvfailure =
+            net->variable(idMap["LVFAILURE"]);
         // checking label order
         TS_ASSERT_EQUALS(lvedvolume.label(0), "LOW");
         TS_ASSERT_EQUALS(lvedvolume.label(1), "NORMAL");
@@ -293,7 +296,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(hypovolemia.label(1), "FALSE");
         TS_ASSERT_EQUALS(lvfailure.label(0), "TRUE");
         TS_ASSERT_EQUALS(lvfailure.label(1), "FALSE");
-        const gum::Potential<float> &cpt = net->cpt(idMap["LVEDVOLUME"]);
+        const gum::Potential<float>& cpt = net->cpt(idMap["LVEDVOLUME"]);
         gum::Instantiation inst(cpt);
         gum::Instantiation var_inst;
         var_inst << lvedvolume;
@@ -302,7 +305,8 @@ namespace gum_tests {
         float array_1[] = {0.95, 0.04, 0.01};
         size_t i = 0;
 
-        for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
+        for (inst.setFirstIn(var_inst); !inst.end();
+             inst.incIn(var_inst), ++i) {
           TS_ASSERT_DELTA(cpt[inst], array_1[i], 0.001);
         }
 
@@ -311,7 +315,8 @@ namespace gum_tests {
         float array_2[] = {0.98, 0.01, 0.01};
         i = 0;
 
-        for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
+        for (inst.setFirstIn(var_inst); !inst.end();
+             inst.incIn(var_inst), ++i) {
           TS_ASSERT_DELTA(cpt[inst], array_2[i], 0.001);
         }
 
@@ -320,7 +325,8 @@ namespace gum_tests {
         float array_3[] = {0.01, 0.09, 0.9};
         i = 0;
 
-        for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
+        for (inst.setFirstIn(var_inst); !inst.end();
+             inst.incIn(var_inst), ++i) {
           TS_ASSERT_DELTA(cpt[inst], array_3[i], 0.001);
         }
 
@@ -329,7 +335,8 @@ namespace gum_tests {
         float array_4[] = {0.05, 0.9, 0.05};
         i = 0;
 
-        for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
+        for (inst.setFirstIn(var_inst); !inst.end();
+             inst.incIn(var_inst), ++i) {
           TS_ASSERT_DELTA(cpt[inst], array_4[i], 0.001);
         }
       }
@@ -338,7 +345,7 @@ namespace gum_tests {
     }
     void testUnexisting() {
       std::string file = "Schmurtz";
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       TS_GUM_ASSERT_THROWS_NOTHING(gum::DSLReader<float> reader(net, file));
       gum::DSLReader<float> reader(net, file);
       TS_ASSERT_THROWS(reader.proceed(), gum::IOError);
@@ -348,7 +355,7 @@ namespace gum_tests {
     }
     void testBarley() {
       std::string file = GET_PATH_STR("DSL/Barley.dsl");
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::DSLReader<float> reader(net, file);
       int nbrErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
@@ -361,7 +368,7 @@ namespace gum_tests {
     }
     void testCarpo() {
       std::string file = GET_PATH_STR("DSL/carpo.dsl");
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::DSLReader<float> reader(net, file);
       int nbrErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
@@ -374,7 +381,7 @@ namespace gum_tests {
     }
     void testDiabetes() {
       std::string file = GET_PATH_STR("DSL/Diabetes.dsl");
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::DSLReader<float> reader(net, file);
       int nbrErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
@@ -387,7 +394,7 @@ namespace gum_tests {
     }
     void testHailfinder() {
       std::string file = GET_PATH_STR("DSL/hailfinder.dsl");
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::DSLReader<float> reader(net, file);
       int nbrErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
@@ -400,7 +407,7 @@ namespace gum_tests {
     }
     void testInsurance() {
       std::string file = GET_PATH_STR("DSL/insurance.dsl");
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::DSLReader<float> reader(net, file);
       int nbrErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
@@ -413,7 +420,7 @@ namespace gum_tests {
     }
     void testLink() {
       std::string file = GET_PATH_STR("DSL/Link.dsl");
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::DSLReader<float> reader(net, file);
       int nbrErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
@@ -424,11 +431,12 @@ namespace gum_tests {
       if (net)
         delete net;
     }
-    // Mildew is not readable (because of the VERY LARGE FLOAT_LIST in foto_4 (at
+    // Mildew is not readable (because of the VERY LARGE FLOAT_LIST in foto_4
+    // (at
     // least))...
     void Mildew() {
       std::string file = GET_PATH_STR("DSL/Mildew.dsl");
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::DSLReader<float> reader(net, file);
       int nbrErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
@@ -441,7 +449,7 @@ namespace gum_tests {
     }
     void testMunin1() {
       std::string file = GET_PATH_STR("DSL/Munin1.dsl");
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::DSLReader<float> reader(net, file);
       int nbrErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
@@ -454,7 +462,7 @@ namespace gum_tests {
     }
     void testPigs() {
       std::string file = GET_PATH_STR("DSL/Pigs.dsl");
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::DSLReader<float> reader(net, file);
       int nbrErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
@@ -467,7 +475,7 @@ namespace gum_tests {
     }
     void testWater() {
       std::string file = GET_PATH_STR("DSL/Water.dsl");
-      gum::BayesNet<float> *net = new gum::BayesNet<float>();
+      gum::BayesNet<float>* net = new gum::BayesNet<float>();
       gum::DSLReader<float> reader(net, file);
       int nbrErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());

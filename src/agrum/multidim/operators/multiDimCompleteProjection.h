@@ -44,12 +44,12 @@ namespace gum {
     /// @{
 
     /// default constructor
-    MultiDimCompleteProjection(GUM_SCALAR (*proj)(const TABLE<GUM_SCALAR> &,
-                                                  Instantiation *));
+    MultiDimCompleteProjection(GUM_SCALAR (*proj)(const TABLE<GUM_SCALAR>&,
+                                                  Instantiation*));
 
     /// copy constructor
     MultiDimCompleteProjection(
-        const MultiDimCompleteProjection<GUM_SCALAR, TABLE> &);
+        const MultiDimCompleteProjection<GUM_SCALAR, TABLE>&);
 
     /// destructor
     virtual ~MultiDimCompleteProjection();
@@ -57,7 +57,7 @@ namespace gum {
     /// virtual constructor
     /** @return a new fresh MultiDimCombinator with the same projection
      * function. */
-    virtual MultiDimCompleteProjection<GUM_SCALAR, TABLE> *newFactory() const;
+    virtual MultiDimCompleteProjection<GUM_SCALAR, TABLE>* newFactory() const;
 
     /// @}
 
@@ -67,27 +67,27 @@ namespace gum {
     /// @{
 
     /// creates and returns the projection of the table over all of its vars
-    GUM_SCALAR project(const TABLE<GUM_SCALAR> &table,
-                       Instantiation *instantiation = 0);
+    GUM_SCALAR project(const TABLE<GUM_SCALAR>& table,
+                       Instantiation* instantiation = 0);
 
     /// changes the function used for projecting TABLES
-    void setProjectFunction(GUM_SCALAR (*proj)(const TABLE<GUM_SCALAR> &,
-                                               Instantiation *));
+    void setProjectFunction(GUM_SCALAR (*proj)(const TABLE<GUM_SCALAR>&,
+                                               Instantiation*));
 
     /// returns the projection function currently used by the projector
     GUM_SCALAR(*projectFunction())
-    (const TABLE<GUM_SCALAR> &, Instantiation *);
+    (const TABLE<GUM_SCALAR>&, Instantiation*);
 
     /// @}
 
     protected:
     /// the projection function actually used
-    GUM_SCALAR (*_proj)(const TABLE<GUM_SCALAR> &, Instantiation *);
+    GUM_SCALAR (*_proj)(const TABLE<GUM_SCALAR>&, Instantiation*);
 
     private:
     /// forbid copy operators
-    MultiDimCompleteProjection<GUM_SCALAR, TABLE> &
-    operator=(const MultiDimCompleteProjection<GUM_SCALAR, TABLE> &);
+    MultiDimCompleteProjection<GUM_SCALAR, TABLE>&
+    operator=(const MultiDimCompleteProjection<GUM_SCALAR, TABLE>&);
   };
 
 } /* namespace gum */

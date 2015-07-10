@@ -32,18 +32,17 @@ namespace gum {
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template <typename GUM_SCALAR, template <class> class ICPTGenerator,
             template <class> class ICPTDisturber>
-  INLINE MaxInducedWidthMCBayesNetGenerator<
-      GUM_SCALAR, ICPTGenerator,
-      ICPTDisturber>::MaxInducedWidthMCBayesNetGenerator(Size nbrNodes, Size maxArcs,
-                                                         Size max_modality,
-                                                         Size maxInducedWidth,
-                                                         Idx iteration, Idx p, Idx q)
+  INLINE
+  MaxInducedWidthMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::
+      MaxInducedWidthMCBayesNetGenerator(Size nbrNodes, Size maxArcs,
+                                         Size max_modality,
+                                         Size maxInducedWidth, Idx iteration,
+                                         Idx p, Idx q)
       : MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>(
             nbrNodes, maxArcs, max_modality, iteration, p, q) {
     if (maxInducedWidth == 0)
-      GUM_ERROR(
-          OperationNotAllowed,
-          "maxInducedWidth must be at least equal to 1 to have a connexe graph");
+      GUM_ERROR(OperationNotAllowed, "maxInducedWidth must be at least equal "
+                                     "to 1 to have a connexe graph");
 
     _maxlog10InducedWidth = maxInducedWidth;
     GUM_CONSTRUCTOR(MaxInducedWidthMCBayesNetGenerator);
@@ -54,8 +53,8 @@ namespace gum {
   INLINE
   MaxInducedWidthMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::
       MaxInducedWidthMCBayesNetGenerator(BayesNet<GUM_SCALAR> bayesNet,
-                                         Size maxInducedWidth, Idx iteration, Idx p,
-                                         Idx q)
+                                         Size maxInducedWidth, Idx iteration,
+                                         Idx p, Idx q)
       : MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>(
             bayesNet, iteration, p, q) {
     _maxlog10InducedWidth = maxInducedWidth;
@@ -95,7 +94,8 @@ namespace gum {
     for (auto node : this->_bayesNet.nodes())
       __modalitiesMap.insert(
           node,
-          IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.variable(node)
+          IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.variable(
+                                                                       node)
               .domainSize());
 
     DefaultTriangulation tri(&(this->_bayesNet.moralGraph()), &__modalitiesMap);
@@ -119,9 +119,8 @@ namespace gum {
       GUM_SCALAR, ICPTGenerator,
       ICPTDisturber>::setMaxlog10InducedWidth(Size maxlog10InducedWidth) {
     if (maxlog10InducedWidth == 0)
-      GUM_ERROR(
-          OperationNotAllowed,
-          "maxInducedWidth must be at least equal to 1 to have a connexe graph");
+      GUM_ERROR(OperationNotAllowed, "maxInducedWidth must be at least equal "
+                                     "to 1 to have a connexe graph");
 
     _maxlog10InducedWidth = maxlog10InducedWidth;
   }

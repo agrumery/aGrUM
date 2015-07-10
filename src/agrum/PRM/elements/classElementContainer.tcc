@@ -32,14 +32,14 @@ namespace gum {
   namespace prm {
     template <typename GUM_SCALAR>
     void ClassElementContainer<GUM_SCALAR>::_copyIOFlags(
-        const ClassElementContainer<GUM_SCALAR> &c) {
-      for (const auto &flag : c.__IOFlags)
+        const ClassElementContainer<GUM_SCALAR>& c) {
+      for (const auto& flag : c.__IOFlags)
         _setIOFlag(get(flag.first), flag.second);
     }
 
     template <typename GUM_SCALAR>
-    INLINE
-    ClassElementContainer<GUM_SCALAR>::ClassElementContainer(const std::string &name)
+    INLINE ClassElementContainer<GUM_SCALAR>::ClassElementContainer(
+        const std::string& name)
         : PRMObject(name) {
       GUM_CONSTRUCTOR(ClassElementContainer);
     }
@@ -50,14 +50,16 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE ClassElementContainer<GUM_SCALAR> &ClassElementContainer<GUM_SCALAR>::
-    operator=(const ClassElementContainer<GUM_SCALAR> &source) {
-      GUM_ERROR(FatalError, "illegal call to ClassElementContainer copy operator");
+    INLINE ClassElementContainer<GUM_SCALAR>&
+        ClassElementContainer<GUM_SCALAR>::
+        operator=(const ClassElementContainer<GUM_SCALAR>& source) {
+      GUM_ERROR(FatalError,
+                "illegal call to ClassElementContainer copy operator");
     }
 
     template <typename GUM_SCALAR>
     INLINE ClassElementContainer<GUM_SCALAR>::ClassElementContainer(
-        const ClassElementContainer<GUM_SCALAR> &source)
+        const ClassElementContainer<GUM_SCALAR>& source)
         : PRMObject(source) {
       GUM_CONS_CPY(ClassElementContainer);
       GUM_ERROR(FatalError,
@@ -66,51 +68,54 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool ClassElementContainer<GUM_SCALAR>::isInputNode(
-        const ClassElement<GUM_SCALAR> &elt) const {
+        const ClassElement<GUM_SCALAR>& elt) const {
       try {
         return _getIOFlag(elt).first;
-      } catch (NotFound &) {
+      } catch (NotFound&) {
         return false;
       }
     }
 
     template <typename GUM_SCALAR>
     INLINE void ClassElementContainer<GUM_SCALAR>::setInputNode(
-        const ClassElement<GUM_SCALAR> &elt, bool b) {
+        const ClassElement<GUM_SCALAR>& elt, bool b) {
       if (not exists(elt.safeName())) {
-        GUM_ERROR(NotFound, ": <" + elt.safeName() + "> is not in <" + name() + ">");
+        GUM_ERROR(NotFound,
+                  ": <" + elt.safeName() + "> is not in <" + name() + ">");
       } else if (ClassElement<GUM_SCALAR>::isAttribute(elt) or
                  ClassElement<GUM_SCALAR>::isAggregate(elt)) {
         try {
           _getIOFlag(elt).first = b;
-        } catch (NotFound &) {
+        } catch (NotFound&) {
           _setIOFlag(elt, std::make_pair(b, false));
         }
       } else {
-        GUM_ERROR(WrongClassElement, "given id is not an Attribute or an Aggregate");
+        GUM_ERROR(WrongClassElement,
+                  "given id is not an Attribute or an Aggregate");
       }
     }
 
     template <typename GUM_SCALAR>
     INLINE bool ClassElementContainer<GUM_SCALAR>::isOutputNode(
-        const ClassElement<GUM_SCALAR> &elt) const {
+        const ClassElement<GUM_SCALAR>& elt) const {
       try {
         return _getIOFlag(elt).second;
-      } catch (NotFound &) {
+      } catch (NotFound&) {
         return false;
       }
     }
 
     template <typename GUM_SCALAR>
     INLINE void ClassElementContainer<GUM_SCALAR>::setOutputNode(
-        const ClassElement<GUM_SCALAR> &elt, bool b) {
+        const ClassElement<GUM_SCALAR>& elt, bool b) {
       if (not exists(elt.safeName())) {
-        GUM_ERROR(NotFound, "<" + elt.safeName() + "> is not in <" + name() + ">");
+        GUM_ERROR(NotFound,
+                  "<" + elt.safeName() + "> is not in <" + name() + ">");
       } else if (ClassElement<GUM_SCALAR>::isAttribute(elt) or
                  ClassElement<GUM_SCALAR>::isAggregate(elt)) {
         try {
           _getIOFlag(elt).second = b;
-        } catch (NotFound &) {
+        } catch (NotFound&) {
           _setIOFlag(elt, std::make_pair(false, b));
         }
 
@@ -118,46 +123,45 @@ namespace gum {
           _updateDescendants(elt);
         }
       } else {
-        GUM_ERROR(
-            WrongClassElement,
-            "given ClassElement<GUM_SCALAR> is not an Attribute or an Aggregate");
+        GUM_ERROR(WrongClassElement, "given ClassElement<GUM_SCALAR> is not an "
+                                     "Attribute or an Aggregate");
       }
     }
 
     template <typename GUM_SCALAR>
     INLINE bool ClassElementContainer<GUM_SCALAR>::isInnerNode(
-        const ClassElement<GUM_SCALAR> &elt) const {
+        const ClassElement<GUM_SCALAR>& elt) const {
       try {
         return not(_getIOFlag(elt).first or _getIOFlag(elt).second);
-      } catch (NotFound &) {
+      } catch (NotFound&) {
         return true;
       }
     }
 
     template <typename GUM_SCALAR>
     INLINE bool ClassElementContainer<GUM_SCALAR>::isSuperTypeOf(
-        const ClassElementContainer<GUM_SCALAR> &cec) const {
+        const ClassElementContainer<GUM_SCALAR>& cec) const {
       return cec.isSubTypeOf(*this);
     }
 
     template <typename GUM_SCALAR>
-    INLINE std::pair<bool, bool> &ClassElementContainer<GUM_SCALAR>::_getIOFlag(
-        const ClassElement<GUM_SCALAR> &elt) {
+    INLINE std::pair<bool, bool>& ClassElementContainer<GUM_SCALAR>::_getIOFlag(
+        const ClassElement<GUM_SCALAR>& elt) {
       try {
         return __IOFlags[elt.safeName()];
-      } catch (NotFound &) {
+      } catch (NotFound&) {
         GUM_ERROR(NotFound,
                   "this ClassElement<GUM_SCALAR> does not have any IO flags");
       }
     }
 
     template <typename GUM_SCALAR>
-    INLINE const std::pair<bool, bool> &
+    INLINE const std::pair<bool, bool>&
     ClassElementContainer<GUM_SCALAR>::_getIOFlag(
-        const ClassElement<GUM_SCALAR> &elt) const {
+        const ClassElement<GUM_SCALAR>& elt) const {
       try {
         return __IOFlags[elt.safeName()];
-      } catch (NotFound &) {
+      } catch (NotFound&) {
         GUM_ERROR(NotFound,
                   "this ClassElement<GUM_SCALAR> does not have any IO flags");
       }
@@ -165,10 +169,11 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void ClassElementContainer<GUM_SCALAR>::_setIOFlag(
-        const ClassElement<GUM_SCALAR> &elt, const std::pair<bool, bool> &flags) {
+        const ClassElement<GUM_SCALAR>& elt,
+        const std::pair<bool, bool>& flags) {
       try {
         __IOFlags[elt.safeName()] = flags;
-      } catch (NotFound &) {
+      } catch (NotFound&) {
         __IOFlags.insert(elt.safeName(), flags);
       }
     }
@@ -180,27 +185,27 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE bool
-    ClassElementContainer<GUM_SCALAR>::exists(const std::string &name) const {
+    ClassElementContainer<GUM_SCALAR>::exists(const std::string& name) const {
       try {
         get(name);
         return true;
-      } catch (NotFound &) {
+      } catch (NotFound&) {
         return false;
       }
     }
 
     template <typename GUM_SCALAR>
     INLINE bool ClassElementContainer<GUM_SCALAR>::belongsTo(
-        const ClassElement<GUM_SCALAR> &elt) const {
+        const ClassElement<GUM_SCALAR>& elt) const {
       try {
         return &elt == &(get(elt.safeName()));
-      } catch (NotFound &) {
+      } catch (NotFound&) {
         return false;
       }
     }
 
     template <typename GUM_SCALAR>
-    INLINE const DAG &ClassElementContainer<GUM_SCALAR>::dag() const {
+    INLINE const DAG& ClassElementContainer<GUM_SCALAR>::dag() const {
       return _dag();
     }
 
@@ -208,9 +213,9 @@ namespace gum {
 } /* namespace gum */
 
 template <typename GUM_SCALAR>
-std::ostream &
-operator<<(std::ostream &output,
-           const gum::prm::ClassElementContainer<GUM_SCALAR> &container) {
+std::ostream&
+operator<<(std::ostream& output,
+           const gum::prm::ClassElementContainer<GUM_SCALAR>& container) {
   std::string tab = "  ";
   output << "digraph \"" << container.name() << "\" {" << std::endl;
 

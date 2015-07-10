@@ -36,7 +36,8 @@ namespace gum {
     namespace o3prm {
 
       template <typename GUM_SCALAR>
-      void O3prmReader<GUM_SCALAR>::setClassPath(const std::string &class_path) {
+      void
+      O3prmReader<GUM_SCALAR>::setClassPath(const std::string& class_path) {
         size_t i = 0;
         size_t j = class_path.find(';');
 
@@ -55,21 +56,24 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void O3prmReader<GUM_SCALAR>::addClassPath(const std::string &class_path) {
+      void
+      O3prmReader<GUM_SCALAR>::addClassPath(const std::string& class_path) {
         if (class_path[class_path.size() - 1] == '/')
           __class_path.push_back(class_path);
         else
           __class_path.push_back(class_path + '/');
       }
 
-      template <typename GUM_SCALAR> INLINE O3prmReader<GUM_SCALAR>::O3prmReader() {
+      template <typename GUM_SCALAR>
+      INLINE O3prmReader<GUM_SCALAR>::O3prmReader() {
         GUM_CONSTRUCTOR(O3prmReader);
         __parseDone = false;
         __prmTake = false;
         __parser = nullptr;
       }
 
-      template <typename GUM_SCALAR> INLINE O3prmReader<GUM_SCALAR>::~O3prmReader() {
+      template <typename GUM_SCALAR>
+      INLINE O3prmReader<GUM_SCALAR>::~O3prmReader() {
         GUM_DESTRUCTOR(O3prmReader);
 
         if (__parseDone)
@@ -80,13 +84,13 @@ namespace gum {
           delete __factory.prm();
       }
 
-      template<typename GUM_SCALAR> INLINE
-      int
-      O3prmReader<GUM_SCALAR>::readFile ( const std::string& file, const std::string& package ) {
+      template <typename GUM_SCALAR>
+      INLINE int O3prmReader<GUM_SCALAR>::readFile(const std::string& file,
+                                                   const std::string& package) {
         try {
-          size_t lastSlashIndex = file.find_last_of ( '/' );
+          size_t lastSlashIndex = file.find_last_of('/');
 
-          Directory dir ( file.substr ( 0, lastSlashIndex + 1 ) );
+          Directory dir(file.substr(0, lastSlashIndex + 1));
 
           if (!dir.isValid()) {
             __errors.addException("directory doesn't exist.", dir.path());
@@ -100,35 +104,35 @@ namespace gum {
             return __errors.count();
           }
 
-          std::string file_content = __readFile( absFilename );
+          std::string file_content = __readFile(absFilename);
 
-          unsigned char *buffer = new unsigned char[file_content.length()+1];
-          strcpy( (char *)buffer, file_content.c_str() );
-          Scanner s( buffer, file_content.length()+1, absFilename );
+          unsigned char* buffer = new unsigned char[file_content.length() + 1];
+          strcpy((char*)buffer, file_content.c_str());
+          Scanner s(buffer, file_content.length() + 1, absFilename);
 
-          if ( ! __parseDone ) {
-            __parser = new Parser ( &s );
-            __parser->setFactory ( &__factory );
-            __parser->setClassPath ( __class_path );
+          if (!__parseDone) {
+            __parser = new Parser(&s);
+            __parser->setFactory(&__factory);
+            __parser->setClassPath(__class_path);
           } else {
             __parser->scanner = &s;
           }
 
-          __parser->setCurrentDirectory ( dir.absolutePath() );
-          __parser->addImport ( absFilename );
+          __parser->setCurrentDirectory(dir.absolutePath());
+          __parser->addImport(absFilename);
 
           if (package.length() > 0) {
             __factory.pushPackage(package);
             __parser->Parse();
             __factory.popPackage();
-          }   else {
+          } else {
             __parser->Parse();
           }
 
           __parseDone = true;
 
           __errors += __parser->errors();
-        } catch (gum::Exception &e) {
+        } catch (gum::Exception& e) {
           __errors.addException(e.errorContent(), file);
           return __errors.count();
         }
@@ -137,8 +141,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      std::string
-      O3prmReader<GUM_SCALAR>::__readFile( const std::string& file ) {
+      std::string O3prmReader<GUM_SCALAR>::__readFile(const std::string& file) {
         // read entire file into string
         std::ifstream is(file, std::ifstream::binary);
         if (is) {
@@ -148,7 +151,7 @@ namespace gum {
           is.seekg(0, is.beg);
 
           std::string str;
-          str.resize(length, ' '); // reserve space
+          str.resize(length, ' ');  // reserve space
           char* begin = &*str.begin();
 
           is.read(begin, length);
@@ -156,14 +159,14 @@ namespace gum {
 
           return str;
         }
-        GUM_ERROR( OperationNotAllowed, "Could not open file" );
+        GUM_ERROR(OperationNotAllowed, "Could not open file");
       }
 
       template <typename GUM_SCALAR>
-      INLINE int O3prmReader<GUM_SCALAR>::readString(const std::string &st) {
+      INLINE int O3prmReader<GUM_SCALAR>::readString(const std::string& st) {
         // errors += parser.errors
         try {
-          Scanner s((unsigned char *)st.c_str(), (int)(st.size()));
+          Scanner s((unsigned char*)st.c_str(), (int)(st.size()));
           __parser = new Parser(&s);
           __parser->setFactory(&__factory);
           __parser->setClassPath(__class_path);
@@ -171,7 +174,7 @@ namespace gum {
           __parser->Parse();
           __parseDone = true;
           __errors += __parser->errors();
-        } catch (gum::Exception &e) {
+        } catch (gum::Exception& e) {
           __errors.addException(e.errorContent(), "");
         }
 
@@ -179,24 +182,27 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE gum::prm::PRM<GUM_SCALAR> *O3prmReader<GUM_SCALAR>::prm() {
+      INLINE gum::prm::PRM<GUM_SCALAR>* O3prmReader<GUM_SCALAR>::prm() {
         __prmTake = true;
         return __factory.prm();
       }
 
       template <typename GUM_SCALAR>
-      INLINE const gum::prm::PRM<GUM_SCALAR> *O3prmReader<GUM_SCALAR>::prm() const {
+      INLINE const gum::prm::PRM<GUM_SCALAR>*
+      O3prmReader<GUM_SCALAR>::prm() const {
         return __factory.prm();
       }
 
       /// publishing Errors API
       template <typename GUM_SCALAR>
-      INLINE unsigned int O3prmReader<GUM_SCALAR>::errLine(unsigned int i) const {
+      INLINE unsigned int
+      O3prmReader<GUM_SCALAR>::errLine(unsigned int i) const {
         return __errors.line(i);
       }
 
       template <typename GUM_SCALAR>
-      INLINE unsigned int O3prmReader<GUM_SCALAR>::errCol(unsigned int i) const {
+      INLINE unsigned int
+      O3prmReader<GUM_SCALAR>::errCol(unsigned int i) const {
         return __errors.col(i);
       }
 
@@ -217,18 +223,20 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE void O3prmReader<GUM_SCALAR>::showElegantErrors(std::ostream &o) const {
+      INLINE void
+      O3prmReader<GUM_SCALAR>::showElegantErrors(std::ostream& o) const {
         __errors.elegantErrors(o);
       }
 
       template <typename GUM_SCALAR>
-      INLINE void
-      O3prmReader<GUM_SCALAR>::showElegantErrorsAndWarnings(std::ostream &o) const {
+      INLINE void O3prmReader<GUM_SCALAR>::showElegantErrorsAndWarnings(
+          std::ostream& o) const {
         __errors.elegantErrorsAndWarnings(o);
       }
 
       template <typename GUM_SCALAR>
-      INLINE void O3prmReader<GUM_SCALAR>::showErrorCounts(std::ostream &o) const {
+      INLINE void
+      O3prmReader<GUM_SCALAR>::showErrorCounts(std::ostream& o) const {
         __errors.syntheticResults(o);
       }
 
@@ -243,7 +251,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE const ErrorsContainer &
+      INLINE const ErrorsContainer&
       O3prmReader<GUM_SCALAR>::errorsContainer() const {
         return __errors;
       }

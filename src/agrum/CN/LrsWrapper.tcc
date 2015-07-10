@@ -35,27 +35,27 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    const unsigned int &LRSWrapper<GUM_SCALAR>::getVerticesNumber() const {
+    const unsigned int& LRSWrapper<GUM_SCALAR>::getVerticesNumber() const {
       return __vertices;
     }
 
     template <typename GUM_SCALAR>
-    const GUM_SCALAR &LRSWrapper<GUM_SCALAR>::getVolume() const {
+    const GUM_SCALAR& LRSWrapper<GUM_SCALAR>::getVolume() const {
       if (__volume != 0)
         return __volume;
       else
-        GUM_ERROR(OperationNotAllowed, "LRSWrapper< GUM_SCALAR >::getVolume () : "
-                                       "volume computation was not asked for this "
-                                       "credal set, call computeVolume() from a "
-                                       "V-representation.");
+        GUM_ERROR(OperationNotAllowed,
+                  "LRSWrapper< GUM_SCALAR >::getVolume () : "
+                  "volume computation was not asked for this "
+                  "credal set, call computeVolume() from a "
+                  "V-representation.");
     }
 
     template <typename GUM_SCALAR>
-    void LRSWrapper<GUM_SCALAR>::setUpH(const unsigned int &card) {
+    void LRSWrapper<GUM_SCALAR>::setUpH(const unsigned int& card) {
       if (card < 2)
-        GUM_ERROR(
-            OperationNotAllowed,
-            "LRSWrapper< GUM_SCALAR >::setUpH : cardinality must be at least 2");
+        GUM_ERROR(OperationNotAllowed, "LRSWrapper< GUM_SCALAR >::setUpH : "
+                                       "cardinality must be at least 2");
 
       tearDown();
 
@@ -78,16 +78,16 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void LRSWrapper<GUM_SCALAR>::setUpV(const unsigned int &card,
-                                        const unsigned int &vertices) {
+    void LRSWrapper<GUM_SCALAR>::setUpV(const unsigned int& card,
+                                        const unsigned int& vertices) {
       if (card < 2)
-        GUM_ERROR(
-            OperationNotAllowed,
-            "LRSWrapper< GUM_SCALAR >::setUpV : cardinality must be at least 2");
+        GUM_ERROR(OperationNotAllowed, "LRSWrapper< GUM_SCALAR >::setUpV : "
+                                       "cardinality must be at least 2");
 
       if (vertices < 2)
-        GUM_ERROR(OperationNotAllowed, "LRSWrapper< GUM_SCALAR >::setUpV : vertices "
-                                       "must be at least 2 to build a polytope");
+        GUM_ERROR(OperationNotAllowed,
+                  "LRSWrapper< GUM_SCALAR >::setUpV : vertices "
+                  "must be at least 2 to build a polytope");
 
       tearDown();
 
@@ -139,10 +139,11 @@ namespace gum {
         __state = __states::Hup;
       else if (__state == __states::V2Hready) {
         __state = __states::Vup;
-        GUM_ERROR(OperationNotAllowed,
-                  "LRSWrapper< GUM_SCALAR >::nextHInput : only for H-representation "
-                  "as input. Previous state was : "
-                      << __setUpStateNames[static_cast<int>(__state)]);
+        GUM_ERROR(
+            OperationNotAllowed,
+            "LRSWrapper< GUM_SCALAR >::nextHInput : only for H-representation "
+            "as input. Previous state was : "
+                << __setUpStateNames[static_cast<int>(__state)]);
       } else {
         __input.clear();
         __state = __states::none;
@@ -152,13 +153,15 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void LRSWrapper<GUM_SCALAR>::fillH(const GUM_SCALAR &min, const GUM_SCALAR &max,
-                                       const unsigned int &modal) {
+    void LRSWrapper<GUM_SCALAR>::fillH(const GUM_SCALAR& min,
+                                       const GUM_SCALAR& max,
+                                       const unsigned int& modal) {
       if (__state != __states::Hup)
-        GUM_ERROR(OperationNotAllowed,
-                  "LRSWrapper< GUM_SCALAR >::fillH : setUpH or nextInput has not "
-                  "been called or H-representation is complete, current state is : "
-                      << __setUpStateNames[static_cast<int>(__state)]);
+        GUM_ERROR(
+            OperationNotAllowed,
+            "LRSWrapper< GUM_SCALAR >::fillH : setUpH or nextInput has not "
+            "been called or H-representation is complete, current state is : "
+                << __setUpStateNames[static_cast<int>(__state)]);
 
       if (modal >= __card)
         GUM_ERROR(OutOfBounds, "LRSWrapper< GUM_SCALAR >::fillH : modality is "
@@ -181,17 +184,19 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::fillMatrix(
-        const std::vector<std::vector<GUM_SCALAR>> &matrix) {
+        const std::vector<std::vector<GUM_SCALAR>>& matrix) {
       if (__state != __states::Hup)
-        GUM_ERROR(OperationNotAllowed,
-                  "LRSWrapper< GUM_SCALAR >::fillH : setUpH or nextInput has not "
-                  "been called or H-representation is complete, current state is : "
-                      << __setUpStateNames[static_cast<int>(__state)]);
+        GUM_ERROR(
+            OperationNotAllowed,
+            "LRSWrapper< GUM_SCALAR >::fillH : setUpH or nextInput has not "
+            "been called or H-representation is complete, current state is : "
+                << __setUpStateNames[static_cast<int>(__state)]);
 
       if (matrix[0].size() - 1 != __card)
         GUM_ERROR(OutOfBounds, "LRSWrapper< GUM_SCALAR >::fillMatrix : size is "
                                "different than cardinality : "
-                                   << (matrix[0].size() - 1) << " != " << __card);
+                                   << (matrix[0].size() - 1)
+                                   << " != " << __card);
 
       __input = matrix;
 
@@ -203,21 +208,23 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void LRSWrapper<GUM_SCALAR>::fillV(const std::vector<GUM_SCALAR> &vertex) {
+    void LRSWrapper<GUM_SCALAR>::fillV(const std::vector<GUM_SCALAR>& vertex) {
       if (__state != __states::Vup)
-        GUM_ERROR(OperationNotAllowed,
-                  "LRSWrapper< GUM_SCALAR >::fillV : setUpV or nextInput has not "
-                  "been called or V-representation is complete, current state is : "
-                      << __setUpStateNames[static_cast<int>(__state)]);
+        GUM_ERROR(
+            OperationNotAllowed,
+            "LRSWrapper< GUM_SCALAR >::fillV : setUpV or nextInput has not "
+            "been called or V-representation is complete, current state is : "
+                << __setUpStateNames[static_cast<int>(__state)]);
 
       if (__insertedVertices.size() == __vertices)
-        GUM_ERROR(OutOfBounds,
-                  "LRSWrapper< GUM_SCALAR >::fillV : input is already full with "
-                      << __vertices << " vertices.");
+        GUM_ERROR(
+            OutOfBounds,
+            "LRSWrapper< GUM_SCALAR >::fillV : input is already full with "
+                << __vertices << " vertices.");
 
       bool eq = true;
 
-      for (const auto &v : __insertedVertices) {
+      for (const auto& v : __insertedVertices) {
         eq = true;
 
         for (decltype(__card) mod = 0; mod < __card; mod++)
@@ -229,7 +236,8 @@ namespace gum {
         if (eq) {
           __vertices--;
           return;
-          // GUM_ERROR ( DuplicateElement, "LRSWrapper< GUM_SCALAR >::fillV : vertex
+          // GUM_ERROR ( DuplicateElement, "LRSWrapper< GUM_SCALAR >::fillV :
+          // vertex
           // already present : " << vertex );
         }
       }
@@ -247,12 +255,14 @@ namespace gum {
 
     template <typename GUM_SCALAR> void LRSWrapper<GUM_SCALAR>::H2V() {
       if (__state != __states::H2Vready)
-        GUM_ERROR(OperationNotAllowed,
-                  "LRSWrapper< GUM_SCALAR >::H2V : fillH has not been called with "
-                  "all modalities, current state is still : "
-                      << __setUpStateNames[static_cast<int>(__state)]);
+        GUM_ERROR(
+            OperationNotAllowed,
+            "LRSWrapper< GUM_SCALAR >::H2V : fillH has not been called with "
+            "all modalities, current state is still : "
+                << __setUpStateNames[static_cast<int>(__state)]);
 
-      // check that we have a credal set and not a precise point probability, i.e.
+      // check that we have a credal set and not a precise point probability,
+      // i.e.
       // sum of vertex elements is close to one ( floating type precision )
       GUM_SCALAR sum = 0;
 
@@ -290,8 +300,9 @@ namespace gum {
               __coutOn();
               /*for ( decltype(Q->n) i = 0; i < Q->n; i++ )
                 pmp ("", output[i]);*/
-              GUM_ERROR(FatalError, "LRSWrapper< GUM_SCALAR >::H2V : asked for "
-                                    "Q-hull computation or not reading a vertex !");
+              GUM_ERROR(FatalError,
+                        "LRSWrapper< GUM_SCALAR >::H2V : asked for "
+                        "Q-hull computation or not reading a vertex !");
             } else
               for (decltype(__dat->n) i = 1, end = __dat->n; i < end; i++)
                 __getLRSWrapperOutput(__lrsOutput[i], __lrsOutput[0], Num, Den);
@@ -317,19 +328,22 @@ namespace gum {
 
     template <typename GUM_SCALAR> void LRSWrapper<GUM_SCALAR>::V2H() {
       if (!__state == __states::V2Hready)
-        GUM_ERROR(OperationNotAllowed, "LRSWrapper< GUM_SCALAR >::V2H : fillV has "
-                                       "not been called with all vertices, current "
-                                       "state is still : "
-                                           << __setUpStateNames[__state]);
+        GUM_ERROR(OperationNotAllowed,
+                  "LRSWrapper< GUM_SCALAR >::V2H : fillV has "
+                  "not been called with all vertices, current "
+                  "state is still : "
+                      << __setUpStateNames[__state]);
     }
 
-    template <typename GUM_SCALAR> void LRSWrapper<GUM_SCALAR>::computeVolume() {
+    template <typename GUM_SCALAR>
+    void LRSWrapper<GUM_SCALAR>::computeVolume() {
       if (!__state == __states::V2Hready)
-        GUM_ERROR(OperationNotAllowed, "LRSWrapper< GUM_SCALAR >::computeVolume : "
-                                       "volume is only for V-representation or "
-                                       "fillV has not been called with all "
-                                       "vertices, current state is still : "
-                                           << __setUpStateNames[__state]);
+        GUM_ERROR(OperationNotAllowed,
+                  "LRSWrapper< GUM_SCALAR >::computeVolume : "
+                  "volume is only for V-representation or "
+                  "fillV has not been called with all "
+                  "vertices, current state is still : "
+                      << __setUpStateNames[__state]);
 
       __coutOff();
 
@@ -375,25 +389,28 @@ namespace gum {
       __coutOn();
     }
 
-    template <typename GUM_SCALAR> void LRSWrapper<GUM_SCALAR>::elimRedundVrep() {
+    template <typename GUM_SCALAR>
+    void LRSWrapper<GUM_SCALAR>::elimRedundVrep() {
       if (__state != __states::V2Hready)
-        GUM_ERROR(OperationNotAllowed,
-                  "LRSWrapper< GUM_SCALAR >::elimRedundVrep : only for "
-                  "V-representation or fillV has not been called with all vertices, "
-                  "current state is still : "
-                      << __setUpStateNames[static_cast<int>(__state)]);
+        GUM_ERROR(
+            OperationNotAllowed,
+            "LRSWrapper< GUM_SCALAR >::elimRedundVrep : only for "
+            "V-representation or fillV has not been called with all vertices, "
+            "current state is still : "
+                << __setUpStateNames[static_cast<int>(__state)]);
 
       __coutOff();
 
       __initLrs();
 
-      long *redineq; /* redineq[i]=0 if ineq i non-red,1 if red,2 linearity  */
+      long* redineq; /* redineq[i]=0 if ineq i non-red,1 if red,2 linearity  */
 
       /*********************************************************************************/
       /* Test each row of the dictionary to see if it is redundant */
       /*********************************************************************************/
 
-      /* note some of these may have been changed in getting initial dictionary */
+      /* note some of these may have been changed in getting initial dictionary
+       */
       auto m = __dic->m_A;
       auto d = __dic->d;
       /* number of linearities in input */ /* should be 0 ! */
@@ -401,7 +418,7 @@ namespace gum {
       auto lastdv = __dat->lastdv;
 
       /* linearities are not considered for redundancy */
-      redineq = (long int *)calloc((m + 1), sizeof(long));
+      redineq = (long int*)calloc((m + 1), sizeof(long));
 
       for (decltype(nlinearity) i = 0; i < nlinearity; i++)
         redineq[__dat->linearity[i]] = 2L;
@@ -409,11 +426,13 @@ namespace gum {
       /* rows 0..lastdv are cost, decision variables, or linearities  */
       /* other rows need to be tested                                */
 
-      for (decltype(m + d) index = lastdv + 1, end = m + d; index <= end; index++) {
+      for (decltype(m + d) index = lastdv + 1, end = m + d; index <= end;
+           index++) {
         /* input inequality number of current index             */
         auto ineq =
-            __dat->inequality[index - lastdv]; /* the input inequality number corr.
-                                                  to this index */
+            __dat->inequality[index -
+                              lastdv]; /* the input inequality number corr.
+                                          to this index */
 
         redineq[ineq] = checkindex(__dic, __dat, index);
       }
@@ -432,7 +451,8 @@ namespace gum {
       */
 
       //__vertices = nredund;
-      //__output = std::vector< std::vector< GUM_SCALAR > > ( nredund, std::vector<
+      //__output = std::vector< std::vector< GUM_SCALAR > > ( nredund,
+      //std::vector<
       // GUM_SCALAR > ( __dat->n - 1 ) );
 
       for (decltype(m) i = 1; i <= m; i++)
@@ -448,10 +468,9 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void
-    LRSWrapper<GUM_SCALAR>::__getLRSWrapperOutput(lrs_mp Nin, lrs_mp Din,
-                                                  std::vector<long int> &Num,
-                                                  std::vector<long int> &Den) const {
+    void LRSWrapper<GUM_SCALAR>::__getLRSWrapperOutput(
+        lrs_mp Nin, lrs_mp Din, std::vector<long int>& Num,
+        std::vector<long int>& Den) const {
 
       long int Nsize = (Nin[0] > 0) ? Nin[0] : -Nin[0];
       long int Dsize = (Din[0] > 0) ? Din[0] : -Din[0];
@@ -510,9 +529,10 @@ namespace gum {
     template <typename GUM_SCALAR> void LRSWrapper<GUM_SCALAR>::__fill() const {
       auto cols = __input[0].size();
 
-      long int *num = new long int[cols]; // ISO C++ forbids variable length array,
-                                          // we need to do this instead
-      long int *den = new long int[cols];
+      long int* num =
+          new long int[cols];  // ISO C++ forbids variable length array,
+                               // we need to do this instead
+      long int* den = new long int[cols];
 
       auto rows = __input.size();
 
@@ -530,7 +550,7 @@ namespace gum {
         /* GE is inequality, EQ is equation */
         /* 1L, 0L respectively */
         lrs_set_row(__dic, __dat, row + 1, num, den,
-                    1L); // do NOT forget this + 1 on row
+                    1L);  // do NOT forget this + 1 on row
       }
 
       delete[] num;
@@ -539,10 +559,11 @@ namespace gum {
 
     template <typename GUM_SCALAR> void LRSWrapper<GUM_SCALAR>::__initLrs() {
       if (__state != __states::H2Vready && __state != __states::V2Hready)
-        GUM_ERROR(OperationNotAllowed,
-                  "LRSWrapper< GUM_SCALAR >::__initLrs : not ready, current state "
-                  "is still : "
-                      << __setUpStateNames[static_cast<int>(__state)]);
+        GUM_ERROR(
+            OperationNotAllowed,
+            "LRSWrapper< GUM_SCALAR >::__initLrs : not ready, current state "
+            "is still : "
+                << __setUpStateNames[static_cast<int>(__state)]);
 
       //__coutOff();
 
@@ -589,8 +610,9 @@ namespace gum {
       /* Pivot to a starting dictionary */
       if (!lrs_getfirstbasis(&__dic, __dat, &__Lin, 0L)) {
         __coutOn();
-        GUM_ERROR(FatalError,
-                  "LRSWrapper< GUM_SCALAR >::__initLrs : failed lrs_getfirstbasis");
+        GUM_ERROR(
+            FatalError,
+            "LRSWrapper< GUM_SCALAR >::__initLrs : failed lrs_getfirstbasis");
       }
 
       /* There may have been column redundancy */
@@ -601,8 +623,8 @@ namespace gum {
       if (__dat->nredundcol > 0) {
         __coutOn();
 
-        for (decltype(__dat->nredundcol) col = 0, end = __dat->nredundcol; col < end;
-             col++)
+        for (decltype(__dat->nredundcol) col = 0, end = __dat->nredundcol;
+             col < end; col++)
           lrs_printoutput(__dat, __Lin[col]);
 
         GUM_ERROR(FatalError,
@@ -625,7 +647,8 @@ namespace gum {
       __coutOn();
     }
 
-    template <typename GUM_SCALAR> void LRSWrapper<GUM_SCALAR>::__coutOff() const {
+    template <typename GUM_SCALAR>
+    void LRSWrapper<GUM_SCALAR>::__coutOff() const {
       fflush(stdout);
       __oldCout = dup(1);
 
@@ -634,11 +657,12 @@ namespace gum {
       close(new_cout);
     }
 
-    template <typename GUM_SCALAR> void LRSWrapper<GUM_SCALAR>::__coutOn() const {
+    template <typename GUM_SCALAR>
+    void LRSWrapper<GUM_SCALAR>::__coutOn() const {
       fflush(stdout);
       dup2(__oldCout, 1);
       close(__oldCout);
     }
 
-  } // end of credal namespace
-} // end of gum namespace
+  }  // end of credal namespace
+}  // end of gum namespace

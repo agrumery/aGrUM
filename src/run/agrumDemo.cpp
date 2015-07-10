@@ -27,7 +27,7 @@
 
 gum::BayesNet<double> buildBN() {
   gum::BayesNet<double> bn;
-#define createBoolVar(s)                                                            \
+#define createBoolVar(s)                                                       \
   gum::LabelizedVariable(s, s, 0).addLabel("false").addLabel("true");
   auto s = createBoolVar("smoking?");
   auto l = createBoolVar("lung_cancer?");
@@ -67,7 +67,7 @@ std::vector<std::string> loadNames(std::string filename) {
 }
 
 gum::BayesNet<double> learnParameters(std::string filename,
-                                      const gum::BayesNet<double> &src,
+                                      const gum::BayesNet<double>& src,
                                       double smoothing = 1.0) {
   auto names = loadNames(GET_PATH_STR("asia.csv"));
 
@@ -81,7 +81,7 @@ gum::BayesNet<double> learnParameters(std::string filename,
 
       for (gum::Size i = 0; i < src.variable(graphId).domainSize(); ++i)
         modals[col].insert(src.variable(graphId).label(i));
-    } catch (const gum::NotFound &e) {
+    } catch (const gum::NotFound& e) {
       // no problem : a colonne which is not in the BN...
     }
   }
@@ -93,11 +93,11 @@ gum::BayesNet<double> learnParameters(std::string filename,
   return learner.learnParameters<double>(src);
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   try {
     auto bn = buildBN();
     auto bn2 = learnParameters(GET_PATH_STR("asia3.csv"), bn, 1.0);
-  } catch (const gum::Exception &e) {
+  } catch (const gum::Exception& e) {
     GUM_SHOWERROR(e);
   }
 }

@@ -27,7 +27,8 @@ namespace gum {
     GUM_CONSTRUCTOR(MultiDimAdressable);
   }
 
-  INLINE MultiDimAdressable::MultiDimAdressable(const MultiDimAdressable &from) {
+  INLINE
+  MultiDimAdressable::MultiDimAdressable(const MultiDimAdressable& from) {
     GUM_CONS_CPY(MultiDimAdressable);
   }
 

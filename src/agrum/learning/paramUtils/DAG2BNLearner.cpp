@@ -34,12 +34,12 @@ namespace gum {
     DAG2BNLearner::DAG2BNLearner() { GUM_CONSTRUCTOR(learning::DAG2BNLearner); }
 
     /// copy constructor
-    DAG2BNLearner::DAG2BNLearner(const DAG2BNLearner &from) {
+    DAG2BNLearner::DAG2BNLearner(const DAG2BNLearner& from) {
       GUM_CONS_CPY(learning::DAG2BNLearner);
     }
 
     /// move constructor
-    DAG2BNLearner::DAG2BNLearner(DAG2BNLearner &&from) {
+    DAG2BNLearner::DAG2BNLearner(DAG2BNLearner&& from) {
       GUM_CONS_MOV(learning::DAG2BNLearner);
     }
 

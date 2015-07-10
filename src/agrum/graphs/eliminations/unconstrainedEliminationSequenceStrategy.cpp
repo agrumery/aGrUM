@@ -18,7 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Base Class for all elimination sequence algorithms that require only the
+ * @brief Base Class for all elimination sequence algorithms that require only
+ *the
  * graph to be triangulated and the nodes domain sizes to produce the node
  * elimination ordering.
  *
@@ -37,8 +38,9 @@ namespace gum {
   }
 
   /// copy constructor
-  UnconstrainedEliminationSequenceStrategy::UnconstrainedEliminationSequenceStrategy(
-      const UnconstrainedEliminationSequenceStrategy &) {
+  UnconstrainedEliminationSequenceStrategy::
+      UnconstrainedEliminationSequenceStrategy(
+          const UnconstrainedEliminationSequenceStrategy&) {
     // for debugging purposes
     GUM_CONS_CPY(UnconstrainedEliminationSequenceStrategy);
   }

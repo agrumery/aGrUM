@@ -56,67 +56,73 @@ namespace gum {
 
       // virtual PRM<GUM_SCALAR>* prm() const=0;
       virtual PRMObject::PRMType currentType() const = 0;
-      virtual PRMObject *getCurrent() = 0;
-      virtual const PRMObject *getCurrent() const = 0;
-      virtual PRMObject *closeCurrent() = 0;
+      virtual PRMObject* getCurrent() = 0;
+      virtual const PRMObject* getCurrent() const = 0;
+      virtual PRMObject* closeCurrent() = 0;
       virtual std::string currentPackage() const = 0;
       // Class<GUM_SCALAR>& retrieveClass ( const std::string& name )=0;
       // Type<GUM_SCALAR>& retrieveType ( const std::string& name )=0;
       // Type<GUM_SCALAR>& retrieveCommonType ( const
       // std::vector<ClassElement<GUM_SCALAR>*>& elts )=0;
-      virtual void pushPackage(const std::string &name) = 0;
+      virtual void pushPackage(const std::string& name) = 0;
       virtual std::string popPackage() = 0;
-      virtual void addImport ( const std::string& name ) = 0;
-      virtual void startDiscreteType ( const std::string& name, std::string super = "" ) = 0;
-      virtual void addLabel ( const std::string& l, std::string extends = "" ) = 0;
+      virtual void addImport(const std::string& name) = 0;
+      virtual void startDiscreteType(const std::string& name,
+                                     std::string super = "") = 0;
+      virtual void addLabel(const std::string& l, std::string extends = "") = 0;
       virtual void endDiscreteType() = 0;
-      virtual void startClass(const std::string &c, const std::string &extends = "",
-                              const Set<std::string> *implements = nullptr) = 0;
+      virtual void startClass(const std::string& c,
+                              const std::string& extends = "",
+                              const Set<std::string>* implements = nullptr) = 0;
       virtual void endClass() = 0;
-      virtual void startInterface(const std::string &i,
-                                  const std::string &extends = "") = 0;
-      virtual void addAttribute(const std::string &type,
-                                const std::string &name) = 0;
+      virtual void startInterface(const std::string& i,
+                                  const std::string& extends = "") = 0;
+      virtual void addAttribute(const std::string& type,
+                                const std::string& name) = 0;
       virtual void endInterface() = 0;
-      //virtual void addAttribute ( Attribute<GUM_SCALAR>* attr ) =0;
-      virtual void startAttribute ( const std::string& type, const std::string& name ) = 0;
-      virtual void addParent ( const std::string& name ) = 0;
-      virtual void setRawCPFByFloatLines ( const std::vector<float>& array ) = 0;
-      virtual void setRawCPFByFloatColumns ( const std::vector<float>& array ) = 0;
-      virtual void setCPFByFloatRule ( const std::vector<std::string>& labels, const std::vector<float>& values ) = 0;
-      virtual void setRawCPFByColumns( const std::vector<std::string>& array ) = 0;
-      virtual void setRawCPFByLines( const std::vector<std::string>& array ) = 0;
+      // virtual void addAttribute ( Attribute<GUM_SCALAR>* attr ) =0;
+      virtual void startAttribute(const std::string& type,
+                                  const std::string& name) = 0;
+      virtual void addParent(const std::string& name) = 0;
+      virtual void setRawCPFByFloatLines(const std::vector<float>& array) = 0;
+      virtual void setRawCPFByFloatColumns(const std::vector<float>& array) = 0;
+      virtual void setCPFByFloatRule(const std::vector<std::string>& labels,
+                                     const std::vector<float>& values) = 0;
+      virtual void
+      setRawCPFByColumns(const std::vector<std::string>& array) = 0;
+      virtual void setRawCPFByLines(const std::vector<std::string>& array) = 0;
       virtual void endAttribute() = 0;
-      virtual void addParameter ( const std::string& type,
-                                  const std::string& name,
-                                  double value) = 0;
-      virtual void addAggregator ( const std::string& name,
-                                   const std::string& agg_type,
-                                   const std::vector<std::string>& chains,
-                                   const std::vector<std::string>& params ) = 0;
-      virtual void addNoisyOrCompound ( const std::string& name,
-                                        const std::vector<std::string>& chains,
-                                        const std::vector<float>& numbers,
-                                        float leak,
-                                        const std::vector<std::string>& label ) = 0;
-      virtual void addReferenceSlot ( const std::string& type,
-                                      const std::string& name,
-                                      bool isArray ) = 0;
-      virtual void startSystem ( const std::string& name ) = 0;
+      virtual void addParameter(const std::string& type,
+                                const std::string& name, double value) = 0;
+      virtual void addAggregator(const std::string& name,
+                                 const std::string& agg_type,
+                                 const std::vector<std::string>& chains,
+                                 const std::vector<std::string>& params) = 0;
+      virtual void
+      addNoisyOrCompound(const std::string& name,
+                         const std::vector<std::string>& chains,
+                         const std::vector<float>& numbers, float leak,
+                         const std::vector<std::string>& label) = 0;
+      virtual void addReferenceSlot(const std::string& type,
+                                    const std::string& name, bool isArray) = 0;
+      virtual void startSystem(const std::string& name) = 0;
       virtual void endSystem() = 0;
-      virtual void addInstance ( const std::string& type, const std::string& name ) = 0;
-      virtual void addInstance( const std::string& type,
-                                const std::string& name,
-                                const HashTable<std::string, double>& params ) = 0;
-      virtual void addArray ( const std::string& type, const std::string& name, Size size ) = 0;
-      virtual void incArray ( const std::string& l_i, const std::string& r_i ) = 0;
-      virtual void setReferenceSlot ( const std::string& left_instance,
-                                      const std::string& left_reference,
-                                      const std::string& right_instance ) = 0;
-      virtual void setReferenceSlot ( const std::string& l_i, const std::string& r_i ) = 0;
+      virtual void addInstance(const std::string& type,
+                               const std::string& name) = 0;
+      virtual void
+      addInstance(const std::string& type, const std::string& name,
+                  const HashTable<std::string, double>& params) = 0;
+      virtual void addArray(const std::string& type, const std::string& name,
+                            Size size) = 0;
+      virtual void incArray(const std::string& l_i, const std::string& r_i) = 0;
+      virtual void setReferenceSlot(const std::string& left_instance,
+                                    const std::string& left_reference,
+                                    const std::string& right_instance) = 0;
+      virtual void setReferenceSlot(const std::string& l_i,
+                                    const std::string& r_i) = 0;
 
-      virtual bool isClassOrInterface ( const std::string& type ) const = 0;
-      virtual bool isArrayInCurrentSystem ( const std::string& name ) const = 0;
+      virtual bool isClassOrInterface(const std::string& type) const = 0;
+      virtual bool isArrayInCurrentSystem(const std::string& name) const = 0;
     };
   } /* namespace prm */
 } /* namespace gum */

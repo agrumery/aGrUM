@@ -41,10 +41,13 @@ namespace gum {
      * thus essentially a container for a vector of integers. But to each row is
      * assigned a weight, which accounts for the weight of the row's observation
      * during the learning. Usually, this weight is equal to 1 but some row
-     * generators may change this value. For instance, Expected-Maximization (EM)
-     * generators will most certainly assign weights that are real number strictly
+     * generators may change this value. For instance, Expected-Maximization
+     *(EM)
+     * generators will most certainly assign weights that are real number
+     *strictly
      * smaller than 1. Finally, database rows may have unobserved columns. The
-     * FilteredRow also accounts for that and contains a field counting the number
+     * FilteredRow also accounts for that and contains a field counting the
+     *number
      * of unobserved values. This can be used, for instance, by generators that
      * discard non-fully observed rows.
      */
@@ -57,16 +60,16 @@ namespace gum {
       /// @{
 
       /// returns the filtered row as a vector of integers
-      std::vector<unsigned int> &row() noexcept { return __row; }
+      std::vector<unsigned int>& row() noexcept { return __row; }
 
       /// returns a reference on the weight of the row
-      float &weight() noexcept { return __weight; }
+      float& weight() noexcept { return __weight; }
 
       /// returns the weight of the row
       float weight() const noexcept { return __weight; }
 
       /// returns a reference on the number of unobserved values
-      unsigned int &unobserved() noexcept { return __nb_unobserved; }
+      unsigned int& unobserved() noexcept { return __nb_unobserved; }
 
       /// returns the number of unobserved values
       unsigned int unobserved() const noexcept { return __nb_unobserved; }
@@ -74,7 +77,9 @@ namespace gum {
       /// returns the value at the ith column
       /** by convention, unobserved columns should have value
        * std::numeric_limits<unsigned int>::max () */
-      unsigned int operator[](unsigned int i) const noexcept { return __row[i]; }
+      unsigned int operator[](unsigned int i) const noexcept {
+        return __row[i];
+      }
 
       /// @}
 
@@ -85,13 +90,14 @@ namespace gum {
       /// @{
 
       /// tests whether two rows are identical
-      bool operator==(const FilteredRow &from) {
+      bool operator==(const FilteredRow& from) {
         return ((__weight == from.__weight) &&
-                (__nb_unobserved == from.__nb_unobserved) && (__row == from.__row));
+                (__nb_unobserved == from.__nb_unobserved) &&
+                (__row == from.__row));
       }
 
       /// tests whether two rows are different
-      bool operator!=(const FilteredRow &from) { return !operator==(from); }
+      bool operator!=(const FilteredRow& from) { return !operator==(from); }
 
       /// @}
 

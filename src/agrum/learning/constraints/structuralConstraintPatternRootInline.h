@@ -22,86 +22,90 @@
 // files (see StructuralConstraintDiGraph to see how it should be included).
 // This concerns only StructuralConstraints that do not derive from other
 // StructuralConstraints, i.e., that do not derive from public virtual
-// StructuralConstraintSetStatic<...>. Such a class is StructuralConstraintDiGraph.
+// StructuralConstraintSetStatic<...>. Such a class is
+// StructuralConstraintDiGraph.
 // If your class derives from anoter constraint, include file
 // StructuralConstraintPatternInline.h instead.
 
 #ifdef GUM_CONSTRAINT_CLASS_NAME
 
 /// sets a new graph from which we will perform checkings
-INLINE void GUM_CONSTRAINT_CLASS_NAME::setGraph(const DiGraph &graph) {
+INLINE void GUM_CONSTRAINT_CLASS_NAME::setGraph(const DiGraph& graph) {
   setGraphAlone(graph);
 }
 
 /// notify the constraint of a modification of the graph
-INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const ArcAddition &change) {
+INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const ArcAddition& change) {
   modifyGraphAlone(change);
 }
 
 /// notify the constraint of a modification of the graph
-INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const ArcDeletion &change) {
+INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const ArcDeletion& change) {
   modifyGraphAlone(change);
 }
 
 /// notify the constraint of a modification of the graph
-INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const ArcReversal &change) {
+INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const ArcReversal& change) {
   modifyGraphAlone(change);
 }
 
 /// notify the constraint of a modification of the graph
-INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const GraphChange &change) {
+INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const GraphChange& change) {
   modifyGraphAlone(change);
 }
 
 /// checks whether the constraints enable to add arc (x,y)
-INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcAddition(NodeId x, NodeId y) const
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcAddition(NodeId x,
+                                                        NodeId y) const
     noexcept {
   return checkArcAdditionAlone(x, y);
 }
 
 /// checks whether the constraints enable to remove arc (x,y)
-INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcDeletion(NodeId x, NodeId y) const
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcDeletion(NodeId x,
+                                                        NodeId y) const
     noexcept {
   return checkArcDeletionAlone(x, y);
 }
 
 /// checks whether the constraints enable to reverse arc (x,y)
-INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcReversal(NodeId x, NodeId y) const
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcReversal(NodeId x,
+                                                        NodeId y) const
     noexcept {
   return checkArcReversalAlone(x, y);
 }
 
 /// checks whether the constraints enable to add an arc
 INLINE bool
-GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcAddition &change) const
+GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcAddition& change) const
     noexcept {
   return checkModificationAlone(change);
 }
 
 /// checks whether the constraints enable to remove an arc
 INLINE bool
-GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcDeletion &change) const
+GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcDeletion& change) const
     noexcept {
   return checkModificationAlone(change);
 }
 
 /// checks whether the constraints enable to reverse an arc
 INLINE bool
-GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcReversal &change) const
+GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcReversal& change) const
     noexcept {
   return checkModificationAlone(change);
 }
 
 /// checks whether the constraints enable to perform a graph change
 INLINE bool
-GUM_CONSTRAINT_CLASS_NAME::checkModification(const GraphChange &change) const
+GUM_CONSTRAINT_CLASS_NAME::checkModification(const GraphChange& change) const
     noexcept {
   return checkModificationAlone(change);
 }
 
 /// indicates whether a change will always violate the constraint
 INLINE bool
-GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid(const GraphChange &change) const
+GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid(const GraphChange& change) const
     noexcept {
   return isAlwaysInvalidAlone(change);
 }

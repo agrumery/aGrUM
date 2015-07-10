@@ -24,9 +24,9 @@
 
 namespace gum {
 
-  void Instantiation::__init(MultiDimAdressable *master) {
+  void Instantiation::__init(MultiDimAdressable* master) {
     // for speed issues
-    const Sequence<const DiscreteVariable *> &v = master->variablesSequence();
+    const Sequence<const DiscreteVariable*>& v = master->variablesSequence();
     __vars.resize(v.size());
     __vals.reserve(v.size());
     // fill the instantiation
@@ -40,23 +40,23 @@ namespace gum {
 
   /// constructor for a Instantiation contained into a MultiDimInterface
 
-  Instantiation::Instantiation(MultiDimAdressable &d)
+  Instantiation::Instantiation(MultiDimAdressable& d)
       : __master(0), __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Instantiation);
     __init(&d);
   }
 
-  Instantiation::Instantiation(const MultiDimAdressable &d)
+  Instantiation::Instantiation(const MultiDimAdressable& d)
       : __master(0), __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Instantiation);
-    __init(const_cast<MultiDimAdressable *>(&d));
+    __init(const_cast<MultiDimAdressable*>(&d));
   }
 
   /// constructor for a Instantiation contained into a MultiDimInterface
 
-  Instantiation::Instantiation(MultiDimAdressable *d)
+  Instantiation::Instantiation(MultiDimAdressable* d)
       : __master(0), __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Instantiation);
@@ -66,21 +66,22 @@ namespace gum {
   }
 
   /// constructor for a Instantiation contained into a MultiDimInterface
-  /** this constructor is needed in order to allow creation of Instantiation(this)
+  /** this constructor is needed in order to allow creation of
+   * Instantiation(this)
    * in MultiDimAdressable and below */
 
-  Instantiation::Instantiation(const MultiDimAdressable *const_d)
+  Instantiation::Instantiation(const MultiDimAdressable* const_d)
       : __master(0), __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Instantiation);
 
     if (const_d)
-      __init(const_cast<MultiDimAdressable *>(const_d));
+      __init(const_cast<MultiDimAdressable*>(const_d));
   }
 
   /// copy constructor
 
-  Instantiation::Instantiation(const Instantiation &aI, const bool notifyMaster)
+  Instantiation::Instantiation(const Instantiation& aI, const bool notifyMaster)
       : MultiDimInterface(), __master(0), __overflow(false) {
     // for debugging purposes
     GUM_CONS_CPY(Instantiation);
@@ -94,9 +95,9 @@ namespace gum {
   }
 
   // operator=
-  Instantiation &Instantiation::operator=(const Instantiation &aI) {
+  Instantiation& Instantiation::operator=(const Instantiation& aI) {
     if (__master) {
-      if (!aI.isMaster(__master)) { // aI as the same master.
+      if (!aI.isMaster(__master)) {  // aI as the same master.
         if (nbrDim() != aI.nbrDim()) {
           GUM_ERROR(OperationNotAllowed, "in slave Instantiation");
         }
@@ -159,33 +160,35 @@ namespace gum {
   }
 
   void Instantiation::setValsFrom(
-      const HashTable<const DiscreteVariable *, const DiscreteVariable *> &map,
-      const Instantiation &external) {
-    for (const auto &elt : map) {
-      const DiscreteVariable &var = *elt.second;
+      const HashTable<const DiscreteVariable*, const DiscreteVariable*>& map,
+      const Instantiation& external) {
+    for (const auto& elt : map) {
+      const DiscreteVariable& var = *elt.second;
 
       try {
         Idx val = external.val(*elt.first);
 
         try {
           chgVal(var, val);
-        } catch (NotFound &) {
-          GUM_ERROR(NotFound, var.name() << " : missing variable in instantiation");
+        } catch (NotFound&) {
+          GUM_ERROR(NotFound, var.name()
+                                  << " : missing variable in instantiation");
         }
-      } catch (NotFound &) {
-        GUM_ERROR(NotFound, var.name()
-                                << " : missing variable in external instantiation");
+      } catch (NotFound&) {
+        GUM_ERROR(NotFound,
+                  var.name()
+                      << " : missing variable in external instantiation");
       }
     }
   }
 
   /// an operator for user-friendly displaying the content of a Instantiation
 
-  std::ostream &operator<<(std::ostream &aStream, const Instantiation &i) {
+  std::ostream& operator<<(std::ostream& aStream, const Instantiation& i) {
     aStream << i.toString();
     return aStream;
   }
 
 } /* namespace gum */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

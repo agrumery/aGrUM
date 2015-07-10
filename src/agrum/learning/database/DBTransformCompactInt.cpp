@@ -18,7 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A class that transforms DBCell into compact ints (to speed-up learning)
+ * @brief A class that transforms DBCell into compact ints (to speed-up
+ *learning)
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -35,12 +36,13 @@ namespace gum {
     }
 
     /// copy constructor
-    DBTransformCompactInt::DBTransformCompactInt(const DBTransformCompactInt &from) {
+    DBTransformCompactInt::DBTransformCompactInt(
+        const DBTransformCompactInt& from) {
       GUM_CONS_CPY(DBTransformCompactInt);
     }
 
     /// move constructor
-    DBTransformCompactInt::DBTransformCompactInt(DBTransformCompactInt &&from) {
+    DBTransformCompactInt::DBTransformCompactInt(DBTransformCompactInt&& from) {
       GUM_CONS_MOV(DBTransformCompactInt);
     }
 
@@ -50,14 +52,14 @@ namespace gum {
     }
 
     /// copy operator
-    DBTransformCompactInt &DBTransformCompactInt::
-    operator=(const DBTransformCompactInt &) {
+    DBTransformCompactInt& DBTransformCompactInt::
+    operator=(const DBTransformCompactInt&) {
       return *this;
     }
 
     /// move operator
-    DBTransformCompactInt &DBTransformCompactInt::
-    operator=(DBTransformCompactInt &&) {
+    DBTransformCompactInt& DBTransformCompactInt::
+    operator=(DBTransformCompactInt&&) {
       return *this;
     }
 

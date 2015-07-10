@@ -33,8 +33,9 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE Score<IdSetAlloc, CountAlloc>::Score(
-        const RowFilter &filter, const std::vector<unsigned int> &var_modalities,
-        Apriori<IdSetAlloc, CountAlloc> &apriori)
+        const RowFilter& filter,
+        const std::vector<unsigned int>& var_modalities,
+        Apriori<IdSetAlloc, CountAlloc>& apriori)
         : Counter<IdSetAlloc, CountAlloc>(filter, var_modalities),
           _apriori(&apriori) {
       GUM_CONSTRUCTOR(Score);
@@ -42,7 +43,8 @@ namespace gum {
 
     /// copy constructor: to be used by the virtual copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
-    Score<IdSetAlloc, CountAlloc>::Score(const Score<IdSetAlloc, CountAlloc> &from)
+    Score<IdSetAlloc, CountAlloc>::Score(
+        const Score<IdSetAlloc, CountAlloc>& from)
         : Counter<IdSetAlloc, CountAlloc>(from), _apriori(from._apriori),
           __cache(from.__cache), __use_cache(from.__use_cache),
           __is_cached_score(from.__is_cached_score),
@@ -53,7 +55,7 @@ namespace gum {
 
     /// move constructor
     template <typename IdSetAlloc, typename CountAlloc>
-    Score<IdSetAlloc, CountAlloc>::Score(Score<IdSetAlloc, CountAlloc> &&from)
+    Score<IdSetAlloc, CountAlloc>::Score(Score<IdSetAlloc, CountAlloc>&& from)
         : Counter<IdSetAlloc, CountAlloc>(std::move(from)),
           _apriori(std::move(from._apriori)), __cache(std::move(from.__cache)),
           __use_cache(std::move(from.__use_cache)),
@@ -71,14 +73,15 @@ namespace gum {
 
     /// add a new single variable to be counted
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE unsigned int Score<IdSetAlloc, CountAlloc>::addNodeSet(unsigned int var) {
+    INLINE unsigned int
+    Score<IdSetAlloc, CountAlloc>::addNodeSet(unsigned int var) {
       if (__use_cache) {
         try {
           float score = __cache.score(var, __empty_conditioning_set);
           __is_cached_score.push_back(true);
           __cached_score.push_back(score);
           return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
-        } catch (const NotFound &) {
+        } catch (const NotFound&) {
         }
       }
 
@@ -91,14 +94,14 @@ namespace gum {
     /// add a new target variable plus some conditioning vars
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE unsigned int Score<IdSetAlloc, CountAlloc>::addNodeSet(
-        unsigned int var, const std::vector<unsigned int> &conditioning_ids) {
+        unsigned int var, const std::vector<unsigned int>& conditioning_ids) {
       if (__use_cache) {
         try {
           float score = __cache.score(var, conditioning_ids);
           __is_cached_score.push_back(true);
           __cached_score.push_back(score);
           return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
-        } catch (const NotFound &) {
+        } catch (const NotFound&) {
         }
       }
 
@@ -131,30 +134,29 @@ namespace gum {
     INLINE void
     Score<IdSetAlloc, CountAlloc>::_insertIntoCache(unsigned int nodeset_index,
                                                     float score) {
-      const std::vector<unsigned int, IdSetAlloc> &all_nodes =
+      const std::vector<unsigned int, IdSetAlloc>& all_nodes =
           _getAllNodes(nodeset_index);
-      const std::vector<unsigned int, IdSetAlloc> *conditioning_nodes =
+      const std::vector<unsigned int, IdSetAlloc>* conditioning_nodes =
           _getConditioningNodes(nodeset_index);
 
       if (conditioning_nodes != nullptr) {
         try {
           __cache.insert(all_nodes[all_nodes.size() - 1], *conditioning_nodes,
                          score);
-        } catch (const gum::DuplicateElement &) {
+        } catch (const gum::DuplicateElement&) {
         }
       } else {
         try {
           __cache.insert(all_nodes[0], __empty_conditioning_set, score);
-        } catch (const gum::DuplicateElement &) {
+        } catch (const gum::DuplicateElement&) {
         }
       }
     }
 
     /// returns a cached score
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE float
-    Score<IdSetAlloc, CountAlloc>::_cachedScore(unsigned int nodeset_index) const
-        noexcept {
+    INLINE float Score<IdSetAlloc, CountAlloc>::_cachedScore(
+        unsigned int nodeset_index) const noexcept {
       return __cached_score[nodeset_index];
     }
 
@@ -181,7 +183,7 @@ namespace gum {
 
     /// returns the apriori vector for a given (conditioned) target set
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc> &
+    INLINE const std::vector<float, CountAlloc>&
     Score<IdSetAlloc, CountAlloc>::_getAllApriori(unsigned int index) {
       if (!__apriori_computed) {
         _apriori->setParameters(
@@ -196,7 +198,7 @@ namespace gum {
 
     /// returns the apriori vector for a conditioning set
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE const std::vector<float, CountAlloc> &
+    INLINE const std::vector<float, CountAlloc>&
     Score<IdSetAlloc, CountAlloc>::_getConditioningApriori(unsigned int index) {
       if (!__apriori_computed) {
         _apriori->setParameters(

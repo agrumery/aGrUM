@@ -2,9 +2,9 @@
  *    Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr *
  *                                                                                                                      *
- *   This program is free software; you can redistribute it and/or modify           *
- *   it under the terms of the GNU General Public License as published by       *
- *   the Free Software Foundation; either version 2 of the License, or              *
+ *   This program is free software; you can redistribute it and/or modify *
+ *   it under the terms of the GNU General Public License as published by *
+ *   the Free Software Foundation; either version 2 of the License, or *
  *   (at your option) any later version. *
  *                                                                                                                      *
  *   This program is distributed in the hope that it will be useful, *
@@ -12,10 +12,10 @@
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
  *   GNU General Public License for more details. *
  *                                                                                                                      *
- *   You should have received a copy of the GNU General Public License          *
+ *   You should have received a copy of the GNU General Public License *
  *   along with this program; if not, write to the *
  *   Free Software Foundation, Inc., *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.                      *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. *
  ********************************************************************************/
 /**
 * @file
@@ -89,18 +89,18 @@ namespace gum {
     /// @{
 
     /// Returns true if variable is retrograde
-    bool isRetrogradeVar(const gum::DiscreteVariable *var) const {
+    bool isRetrogradeVar(const gum::DiscreteVariable* var) const {
       return __varSeq.exists(var);
     };
 
     /// Inserts a new retrograde variable
-    void addRetrogradeVar(const gum::DiscreteVariable *var);
+    void addRetrogradeVar(const gum::DiscreteVariable* var);
 
     /// Changes given variable modality
-    void chgVarModality(const gum::DiscreteVariable *var, gum::Idx newModality);
+    void chgVarModality(const gum::DiscreteVariable* var, gum::Idx newModality);
 
     /// Returns true if variable is retrograde
-    gum::Idx variableModality(const gum::DiscreteVariable *var) const {
+    gum::Idx variableModality(const gum::DiscreteVariable* var) const {
       return __retrogradeVarInstantiation[__varSeq.pos(var)];
     };
 
@@ -122,16 +122,18 @@ namespace gum {
     double __DD2PrimeLog;
 
     /// Variable sequence for faster indexation
-    gum::Sequence<const gum::DiscreteVariable *> __varSeq;
+    gum::Sequence<const gum::DiscreteVariable*> __varSeq;
 
-    /// Vector containing for each retrograde variable its current modality (starting
+    /// Vector containing for each retrograde variable its current modality
+    /// (starting
     /// from 0 meaning no instantiation done)
     std::vector<gum::Idx> __retrogradeVarInstantiation;
 
     /// vector containing for each variable its associated log2 prime number.
     std::vector<double> __var2PrimeLog;
 
-    //      /// Based on Goedl's factorization on prime number, a unique key matching
+    //      /// Based on Goedl's factorization on prime number, a unique key
+    //      matching
     //      current o4DDContext
     //      double __contextKey;
 
@@ -147,4 +149,4 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 //========================================================================
 
-#endif // O4DDCONTEXT_H
+#endif  // O4DDCONTEXT_H

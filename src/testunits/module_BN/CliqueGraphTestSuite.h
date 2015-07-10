@@ -44,8 +44,8 @@ namespace gum_tests {
 
   class CliqueGraphTestSuite : public CxxTest::TestSuite {
     private:
-    void fillSets(gum::NodeSet &A, gum::NodeSet &B, gum::NodeSet &C, gum::NodeSet &D,
-                  gum::NodeSet &E) {
+    void fillSets(gum::NodeSet& A, gum::NodeSet& B, gum::NodeSet& C,
+                  gum::NodeSet& D, gum::NodeSet& E) {
       A << 1 << 2;
       B << 2 << 3 << 4;
       C << 3 << 4 << 5;
@@ -53,7 +53,7 @@ namespace gum_tests {
       E << 2 << 4 << 5;
     }
 
-    void fillG1(gum::CliqueGraph &graph) {
+    void fillG1(gum::CliqueGraph& graph) {
       gum::NodeSet A, B, C, D, E;
       fillSets(A, B, C, D, E);
 
@@ -67,7 +67,7 @@ namespace gum_tests {
       graph.addEdge(2, 4);
     }
 
-    void fillG2(gum::CliqueGraph &graph) {
+    void fillG2(gum::CliqueGraph& graph) {
       gum::NodeSet A, B, C, D, E;
       fillSets(A, B, C, D, E);
 
@@ -83,7 +83,7 @@ namespace gum_tests {
       graph.addEdge(1, 3);
     }
 
-    void fillG3(gum::CliqueGraph &graph) {
+    void fillG3(gum::CliqueGraph& graph) {
       gum::NodeSet A, B, C, D, E;
       fillSets(A, B, C, D, E);
 
@@ -103,7 +103,7 @@ namespace gum_tests {
     void teardDown() {}
 
     void testConstructor() {
-      gum::CliqueGraph *graph = nullptr;
+      gum::CliqueGraph* graph = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING((graph = new gum::CliqueGraph()));
       TS_GUM_ASSERT_THROWS_NOTHING(delete graph);
     };
@@ -200,9 +200,9 @@ namespace gum_tests {
       fillG2(g2);
       fillG3(g3);
 
-      gum::CliqueGraph *copy1 = nullptr;
-      gum::CliqueGraph *copy2 = nullptr;
-      gum::CliqueGraph *copy3 = nullptr;
+      gum::CliqueGraph* copy1 = nullptr;
+      gum::CliqueGraph* copy2 = nullptr;
+      gum::CliqueGraph* copy3 = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING((copy1 = new gum::CliqueGraph(g1)));
       TS_GUM_ASSERT_THROWS_NOTHING((copy2 = new gum::CliqueGraph(g2)));
@@ -235,7 +235,7 @@ namespace gum_tests {
 
       try {
         g1.hasRunningIntersection();
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
       }
 
@@ -479,7 +479,7 @@ namespace gum_tests {
       fillG1(graph);
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.clique(1));
-      const gum::NodeSet &clique = graph.clique(1);
+      const gum::NodeSet& clique = graph.clique(1);
 
       TS_ASSERT_EQUALS(clique.size(), (gum::Size)2);
       TS_ASSERT(clique.contains(1));
@@ -623,7 +623,7 @@ namespace gum_tests {
 
       try {
         vec = graph.undirectedPath(1, 4);
-      } catch (gum::Exception &e) {
+      } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
       }
 
@@ -685,31 +685,31 @@ namespace gum_tests {
     void testRunningIntProp() {
       gum::CliqueGraph g;
 
-      gum::NodeSet n1; // ABC
+      gum::NodeSet n1;  // ABC
       n1.insert((gum::NodeId)1);
       n1.insert((gum::NodeId)2);
       n1.insert((gum::NodeId)3);
       g.addNode((gum::NodeId)1, n1);
 
-      gum::NodeSet n2; // BCD
+      gum::NodeSet n2;  // BCD
       n2.insert((gum::NodeId)2);
       n2.insert((gum::NodeId)3);
       n2.insert((gum::NodeId)4);
       g.addNode((gum::NodeId)2, n2);
 
-      gum::NodeSet n3; // CDE
+      gum::NodeSet n3;  // CDE
       n3.insert((gum::NodeId)3);
       n3.insert((gum::NodeId)4);
       n3.insert((gum::NodeId)5);
       g.addNode((gum::NodeId)3, n3);
 
-      gum::NodeSet n4; // ADE
+      gum::NodeSet n4;  // ADE
       n4.insert((gum::NodeId)4);
       n4.insert((gum::NodeId)5);
       n4.insert((gum::NodeId)1);
       g.addNode((gum::NodeId)4, n4);
 
-      gum::NodeSet n5; // ABE
+      gum::NodeSet n5;  // ABE
       n5.insert((gum::NodeId)5);
       n5.insert((gum::NodeId)1);
       n5.insert((gum::NodeId)2);

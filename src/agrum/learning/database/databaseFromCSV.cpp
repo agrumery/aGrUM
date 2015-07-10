@@ -40,13 +40,11 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    DatabaseFromCSV::DatabaseFromCSV(const std::string filename,
-                                     bool fileContainsNames,
-                                     const DBTransform &transform,
-                                     const std::string delimiter,
-                                     const char commentmarker,
-                                     const char quoteMarker,
-                                     const std::vector<std::string> missingVal) {
+    DatabaseFromCSV::DatabaseFromCSV(
+        const std::string filename, bool fileContainsNames,
+        const DBTransform& transform, const std::string delimiter,
+        const char commentmarker, const char quoteMarker,
+        const std::vector<std::string> missingVal) {
       // open the file and create the CSVParser that will parse it
       std::ifstream in(filename, std::ifstream::in);
 
@@ -63,11 +61,11 @@ namespace gum {
       }
 
       // use the CSVParser to fill the vector of DBRows
-      std::vector<DBRow> &vect = _content();
+      std::vector<DBRow>& vect = _content();
 
       while (parser.next()) {
         // read a new line in the input file and convert it into a DBRow
-        const std::vector<std::string> &row = parser.current();
+        const std::vector<std::string>& row = parser.current();
 
         DBRow new_row(row.size());
 
@@ -84,7 +82,7 @@ namespace gum {
 
       // if the names of the variables have not been set yet, do it
       if (!fileContainsNames && vect.size() && vect[0].size()) {
-        std::vector<std::string> &names = _variableNames();
+        std::vector<std::string>& names = _variableNames();
         names.resize(vect[0].size());
 
         for (unsigned int i = 0; i < names.size(); ++i) {

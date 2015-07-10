@@ -56,20 +56,18 @@ namespace gum {
      * Fill requisite with the requisite nodes in dag given a query and hard
      * evidences.
      */
-    void requisiteNodes(const DAG& dag,
-                        const NodeSet& query,
+    void requisiteNodes(const DAG& dag, const NodeSet& query,
                         const NodeSet& hardEvidence,
-                        const NodeSet& softEvidence,
-                        NodeSet& requisite);
+                        const NodeSet& softEvidence, NodeSet& requisite);
 
-    /// update a set of potentials, keeping only those d-connected with query variables
+    /// update a set of potentials, keeping only those d-connected with query
+    /// variables
     template <typename GUM_SCALAR, template <typename> class TABLE>
-    void relevantPotentials ( const IBayesNet<GUM_SCALAR>& bn,
-                              const NodeSet& query,
-                              const NodeSet& hardEvidence,
-                              const NodeSet& softEvidence,
-                              Set<const TABLE<GUM_SCALAR>*>& potentials );
-    
+    void relevantPotentials(const IBayesNet<GUM_SCALAR>& bn,
+                            const NodeSet& query, const NodeSet& hardEvidence,
+                            const NodeSet& softEvidence,
+                            Set<const TABLE<GUM_SCALAR>*>& potentials);
+
     private:
     /// Call this when a node receive the ball from one of his child.
     void __fromChild(NodeId node);
@@ -84,20 +82,20 @@ namespace gum {
     NodeProperty<std::pair<bool, bool>> __marks;
 
     /// the dag on which we perform the ball bouncing
-    const DAG *__dag;
+    const DAG* __dag;
 
     /// the set of hard evidence
-    const NodeSet *__hardEvidence;
+    const NodeSet* __hardEvidence;
 
     /// the set of soft evidence
-    const NodeSet *__softEvidence;    
+    const NodeSet* __softEvidence;
   };
-  
+
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
 #include <agrum/BN/inference/BayesBall.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
 #include <agrum/BN/inference/BayesBall.tcc>
 

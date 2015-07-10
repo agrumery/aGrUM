@@ -50,13 +50,13 @@ namespace gum {
     /** @warning the table is stored by copy into the ScheduleDeleteMultiDim.
      * This is actually compulsory for the appropriate use of
      * ScheduleCombination classes */
-    ScheduleDeleteMultiDim(const ScheduleMultiDim<GUM_SCALAR> &table);
+    ScheduleDeleteMultiDim(const ScheduleMultiDim<GUM_SCALAR>& table);
 
     /// copy constructor
-    ScheduleDeleteMultiDim(const ScheduleDeleteMultiDim<GUM_SCALAR> &);
+    ScheduleDeleteMultiDim(const ScheduleDeleteMultiDim<GUM_SCALAR>&);
 
     /// virtual copy constructor: creates a clone of the operation
-    virtual ScheduleDeleteMultiDim<GUM_SCALAR> *newFactory() const;
+    virtual ScheduleDeleteMultiDim<GUM_SCALAR>* newFactory() const;
 
     /// destructor
     virtual ~ScheduleDeleteMultiDim();
@@ -69,18 +69,18 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ScheduleDeleteMultiDim<GUM_SCALAR> &
-    operator=(const ScheduleDeleteMultiDim<GUM_SCALAR> &);
+    ScheduleDeleteMultiDim<GUM_SCALAR>&
+    operator=(const ScheduleDeleteMultiDim<GUM_SCALAR>&);
 
     /// operator ==
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator==(const ScheduleOperation<GUM_SCALAR> &) const;
+    bool operator==(const ScheduleOperation<GUM_SCALAR>&) const;
 
     /// operator !=
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator!=(const ScheduleOperation<GUM_SCALAR> &) const;
+    bool operator!=(const ScheduleOperation<GUM_SCALAR>&) const;
 
     /// @}
 
@@ -102,15 +102,17 @@ namespace gum {
      * of the tables involved in the operation.
      * @return a pair of memory consumption: the first one is the maximum
      * amount of memory used during the operation and the second one is the
-     * amount of memory still used at the end of the function ( the memory used by
+     * amount of memory still used at the end of the function ( the memory used
+     * by
      * the resulting table ) */
     std::pair<long, long> memoryUsage() const;
 
     /// returns the set of multidims passed in argument to the operation
-    const Sequence<const ScheduleMultiDim<GUM_SCALAR> *> &multiDimArgs() const;
+    const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimArgs() const;
 
     /// returns the set of multidims that should be the result of the operation
-    const Sequence<const ScheduleMultiDim<GUM_SCALAR> *> &multiDimResults() const;
+    const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
+    multiDimResults() const;
 
     /// displays the content of the operation
     std::string toString() const;
@@ -122,7 +124,7 @@ namespace gum {
     ScheduleMultiDim<GUM_SCALAR> __table;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence<const ScheduleMultiDim<GUM_SCALAR> *> *__args;
+    mutable Sequence<const ScheduleMultiDim<GUM_SCALAR>*>* __args;
   };
 
 } /* namespace gum */

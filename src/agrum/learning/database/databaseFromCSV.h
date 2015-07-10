@@ -54,7 +54,8 @@ namespace gum {
      * which case, we just indicate in the arguments passed to the constructor
      * which strings represent these missing data. If the CSV file does not
      * contain names for its columns, the DatabaseFromCSV creates some (those
-     * are "node X", where X is the number of the column, the first column having
+     * are "node X", where X is the number of the column, the first column
+     * having
      * number 0).
      */
     class DatabaseFromCSV : public DatabaseVectInRAM {
@@ -69,26 +70,29 @@ namespace gum {
       /// @{
 
       /// default constructor
-      /** Class DatabaseFromCSV first reads a database from a CSV file and stores
+      /** Class DatabaseFromCSV first reads a database from a CSV file and
+       * stores
        * its content into a DatabaseVectInRAM. Then, the database is accessed as
        * a standard DatabaseVectInRAM. The CSV file may contain missing data, in
        * which case, we just indicate in the arguments passed to the constructor
        * which strings represent these missing data. If the CSV file does not
        * contain names for its columns, the DatabaseFromCSV creates some (those
-       * are "node X", where X is the number of the column, the first column having
+       * are "node X", where X is the number of the column, the first column
+       * having
        * number 0). */
       DatabaseFromCSV(const std::string filename, bool fileContainsNames = true,
-                      const DBTransform &transform = DBTransformIdentity(),
+                      const DBTransform& transform = DBTransformIdentity(),
                       const std::string delimiter = ",",
-                      const char commentmarker = '#', const char quoteMarker = '"',
+                      const char commentmarker = '#',
+                      const char quoteMarker = '"',
                       const std::vector<std::string> missingVal = {"?", "N/A",
                                                                    "n/a"});
 
       /// copy constructor
-      DatabaseFromCSV(const DatabaseFromCSV &from);
+      DatabaseFromCSV(const DatabaseFromCSV& from);
 
       /// move constructor
-      DatabaseFromCSV(DatabaseFromCSV &&from);
+      DatabaseFromCSV(DatabaseFromCSV&& from);
 
       /// destructor
       virtual ~DatabaseFromCSV();
@@ -101,10 +105,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DatabaseFromCSV &operator=(const DatabaseFromCSV &from);
+      DatabaseFromCSV& operator=(const DatabaseFromCSV& from);
 
       /// move constructor
-      DatabaseFromCSV &operator=(DatabaseFromCSV &&from);
+      DatabaseFromCSV& operator=(DatabaseFromCSV&& from);
 
       /// @}
     };

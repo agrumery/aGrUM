@@ -18,7 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Class for fast parsing of CSV file (never more than one line in application
+ * @brief Class for fast parsing of CSV file (never more than one line in
+ application
  memory)
  *
  * Typical use :
@@ -52,7 +53,7 @@ namespace gum {
 
     class CSVParser {
       public:
-      CSVParser(std::istream &in, const std::string &delimiter = ",",
+      CSVParser(std::istream& in, const std::string& delimiter = ",",
                 const char commentmarker = '#', const char quoteMarker = '"');
       virtual ~CSVParser();
 
@@ -68,7 +69,7 @@ namespace gum {
        *
        * @throw gum::NullElement if there is no data
        */
-      const std::vector<std::string> &current() const;
+      const std::vector<std::string>& current() const;
 
       /**
        * return the current noLine of parser line
@@ -76,11 +77,11 @@ namespace gum {
       const Size noLine() const;
 
       private:
-      void __getNextTriplet(const std::string &str, Size &first_letter_token,
-                            Size &next_token, Size &last_letter_token,
+      void __getNextTriplet(const std::string& str, Size& first_letter_token,
+                            Size& next_token, Size& last_letter_token,
                             Size from) const;
-      void __tokenize(const std::string &str);
-      Size __correspondingQuoteMarker(const std::string &str, Size pos) const;
+      void __tokenize(const std::string& str);
+      Size __correspondingQuoteMarker(const std::string& str, Size pos) const;
 
       std::string __line;
       std::string __delimiter;
@@ -89,17 +90,17 @@ namespace gum {
       Size __noLine;
       char __commentMarker;
       char __quoteMarker;
-      std::istream &__in;
+      std::istream& __in;
       std::vector<std::string> __data;
       bool __emptyData;
     };
 
-  } // namespace learning
+  }  // namespace learning
 
-} // namespace gum
+}  // namespace gum
 
 #ifndef GUM_NO_INLINE
 #include <agrum/learning/database/CSVParser.inl>
 #endif /* GUM_NO_INLINE */
 
-#endif // GUM_CSVPARSER_H
+#endif  // GUM_CSVPARSER_H

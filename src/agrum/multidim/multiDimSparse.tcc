@@ -23,7 +23,7 @@ namespace gum {
   /// Default constructor: creates an empty null dimensional matrix
 
   template <typename GUM_SCALAR>
-  MultiDimSparse<GUM_SCALAR>::MultiDimSparse(const GUM_SCALAR &default_value)
+  MultiDimSparse<GUM_SCALAR>::MultiDimSparse(const GUM_SCALAR& default_value)
       : MultiDimWithOffset<GUM_SCALAR>(), _default(default_value) {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimSparse);
@@ -32,7 +32,8 @@ namespace gum {
   /// copy constructor
 
   template <typename GUM_SCALAR>
-  MultiDimSparse<GUM_SCALAR>::MultiDimSparse(const MultiDimSparse<GUM_SCALAR> &from)
+  MultiDimSparse<GUM_SCALAR>::MultiDimSparse(
+      const MultiDimSparse<GUM_SCALAR>& from)
       : MultiDimWithOffset<GUM_SCALAR>(from), _params(from._params),
         _default(from._default) {
     // for debugging purposes
@@ -50,7 +51,8 @@ namespace gum {
   /// data access operator
 
   template <typename GUM_SCALAR>
-  INLINE GUM_SCALAR MultiDimSparse<GUM_SCALAR>::get(const Instantiation &i) const {
+  INLINE GUM_SCALAR
+  MultiDimSparse<GUM_SCALAR>::get(const Instantiation& i) const {
     Size key;
 
     if (i.isMaster(this)) {
@@ -63,8 +65,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void MultiDimSparse<GUM_SCALAR>::set(const Instantiation &i,
-                                              const GUM_SCALAR &value) const {
+  INLINE void MultiDimSparse<GUM_SCALAR>::set(const Instantiation& i,
+                                              const GUM_SCALAR& value) const {
     Size key;
 
     if (i.isMaster(this)) {
@@ -83,7 +85,7 @@ namespace gum {
   /// add a new dimension, needed for updating the _offsets & _gaps
 
   template <typename GUM_SCALAR>
-  INLINE void MultiDimSparse<GUM_SCALAR>::add(const DiscreteVariable &v) {
+  INLINE void MultiDimSparse<GUM_SCALAR>::add(const DiscreteVariable& v) {
     MultiDimWithOffset<GUM_SCALAR>::add(v);
 
     //@todo : anything better than that !
@@ -93,7 +95,7 @@ namespace gum {
   /// removes a dimension, needed for updating the _offsets & _gaps
 
   template <typename GUM_SCALAR>
-  INLINE void MultiDimSparse<GUM_SCALAR>::erase(const DiscreteVariable &v) {
+  INLINE void MultiDimSparse<GUM_SCALAR>::erase(const DiscreteVariable& v) {
     MultiDimWithOffset<GUM_SCALAR>::erase(v);
 
     //@todo : anything better than that !
@@ -109,7 +111,7 @@ namespace gum {
 
   // fill the array with the arg
   template <typename GUM_SCALAR>
-  INLINE void MultiDimSparse<GUM_SCALAR>::fill(const GUM_SCALAR &d) const {
+  INLINE void MultiDimSparse<GUM_SCALAR>::fill(const GUM_SCALAR& d) const {
     _params.clear();
     _default = d;
   }
@@ -120,21 +122,21 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE MultiDimContainer<GUM_SCALAR> *
+  INLINE MultiDimContainer<GUM_SCALAR>*
   MultiDimSparse<GUM_SCALAR>::newFactory() const {
     return new MultiDimSparse<GUM_SCALAR>(_default);
   }
 
   // returns the name of the implementation
   template <typename GUM_SCALAR>
-  INLINE const std::string &MultiDimSparse<GUM_SCALAR>::name() const {
+  INLINE const std::string& MultiDimSparse<GUM_SCALAR>::name() const {
     static const std::string str = "MultiDimSparse";
     return str;
   }
 
   template <typename GUM_SCALAR>
-  INLINE void MultiDimSparse<GUM_SCALAR>::_swap(const DiscreteVariable *x,
-                                                const DiscreteVariable *y) {
+  INLINE void MultiDimSparse<GUM_SCALAR>::_swap(const DiscreteVariable* x,
+                                                const DiscreteVariable* y) {
     MultiDimImplementation<GUM_SCALAR>::_swap(x, y);
   }
 

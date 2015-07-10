@@ -30,20 +30,18 @@ namespace gum {
   namespace prm {
 
     template <typename GUM_SCALAR>
-    Type<GUM_SCALAR>::Type(const DiscreteVariable &var)
-        : PRMObject(var.name()), __var(var.clone()), __super(0), __label_map(0) {
+    Type<GUM_SCALAR>::Type(const DiscreteVariable& var)
+        : PRMObject(var.name()), __var(var.clone()), __super(0),
+          __label_map(0) {
       GUM_CONSTRUCTOR(Type);
     }
 
     template <typename GUM_SCALAR>
-    Type<GUM_SCALAR>::Type(Type<GUM_SCALAR> &super_type,
-                           const std::vector<Idx> &label_map,
-                           const DiscreteVariable &var)
-        : PRMObject(var.name()),
-          __var(var.clone()),
-          __super(&super_type),
-          __label_map(new std::vector<Idx>(label_map)) 
-    {
+    Type<GUM_SCALAR>::Type(Type<GUM_SCALAR>& super_type,
+                           const std::vector<Idx>& label_map,
+                           const DiscreteVariable& var)
+        : PRMObject(var.name()), __var(var.clone()), __super(&super_type),
+          __label_map(new std::vector<Idx>(label_map)) {
       GUM_CONSTRUCTOR(Type);
 
       if (not __isValid()) {
@@ -54,7 +52,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    Type<GUM_SCALAR>::Type(const Type<GUM_SCALAR> &from)
+    Type<GUM_SCALAR>::Type(const Type<GUM_SCALAR>& from)
         : PRMObject(from), __var(from.__var->clone()), __super(from.__super),
           __label_map(0) {
       GUM_CONS_CPY(Type);
@@ -64,8 +62,7 @@ namespace gum {
       }
     }
 
-    template <typename GUM_SCALAR>
-    Type<GUM_SCALAR>::~Type() {
+    template <typename GUM_SCALAR> Type<GUM_SCALAR>::~Type() {
       GUM_DESTRUCTOR(Type);
       delete __var;
       if (__label_map) {
@@ -74,7 +71,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    bool Type<GUM_SCALAR>::isSubTypeOf(const Type<GUM_SCALAR> &super) const {
+    bool Type<GUM_SCALAR>::isSubTypeOf(const Type<GUM_SCALAR>& super) const {
       if ((*this) == super) {
         return true;
       } else if (__super) {
@@ -103,7 +100,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Type<GUM_SCALAR> &Type<GUM_SCALAR>::super() {
+    INLINE Type<GUM_SCALAR>& Type<GUM_SCALAR>::super() {
       if (__super) {
         return *__super;
       } else {
@@ -112,32 +109,32 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE DiscreteVariable &Type<GUM_SCALAR>::variable() {
+    INLINE DiscreteVariable& Type<GUM_SCALAR>::variable() {
       return *__var;
     }
 
     template <typename GUM_SCALAR>
-    INLINE const DiscreteVariable &Type<GUM_SCALAR>::variable() const {
+    INLINE const DiscreteVariable& Type<GUM_SCALAR>::variable() const {
       return *__var;
     }
 
     template <typename GUM_SCALAR>
-    INLINE DiscreteVariable &Type<GUM_SCALAR>::operator*() {
+    INLINE DiscreteVariable& Type<GUM_SCALAR>::operator*() {
       return *__var;
     }
 
     template <typename GUM_SCALAR>
-    INLINE const DiscreteVariable &Type<GUM_SCALAR>::operator*() const {
+    INLINE const DiscreteVariable& Type<GUM_SCALAR>::operator*() const {
       return *__var;
     }
 
     template <typename GUM_SCALAR>
-    INLINE DiscreteVariable *Type<GUM_SCALAR>::operator->() {
+    INLINE DiscreteVariable* Type<GUM_SCALAR>::operator->() {
       return __var;
     }
 
     template <typename GUM_SCALAR>
-    INLINE DiscreteVariable const *Type<GUM_SCALAR>::operator->() const {
+    INLINE DiscreteVariable const* Type<GUM_SCALAR>::operator->() const {
       return __var;
     }
 
@@ -147,12 +144,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const std::string &Type<GUM_SCALAR>::name() const {
+    INLINE const std::string& Type<GUM_SCALAR>::name() const {
       return PRMObject::name();
     }
 
     template <typename GUM_SCALAR>
-    INLINE const Type<GUM_SCALAR> &Type<GUM_SCALAR>::super() const {
+    INLINE const Type<GUM_SCALAR>& Type<GUM_SCALAR>::super() const {
       if (__super) {
         return *__super;
       } else {
@@ -161,12 +158,13 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE void Type<GUM_SCALAR>::setSuper(Type<GUM_SCALAR> &t) {
+    INLINE void Type<GUM_SCALAR>::setSuper(Type<GUM_SCALAR>& t) {
       try {
         if (t != super()) {
-          GUM_ERROR(WrongType, "The given type is not a valid super type for this Type");
+          GUM_ERROR(WrongType,
+                    "The given type is not a valid super type for this Type");
         }
-      } catch (NotFound &) {
+      } catch (NotFound&) {
         GUM_ERROR(OperationNotAllowed, "This Type has no super Type");
       }
 
@@ -174,7 +172,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const std::vector<Idx> &Type<GUM_SCALAR>::label_map() const {
+    INLINE const std::vector<Idx>& Type<GUM_SCALAR>::label_map() const {
       if (__label_map) {
         return *__label_map;
       } else {
@@ -182,22 +180,24 @@ namespace gum {
       }
     }
 
-    template <typename GUM_SCALAR> INLINE bool Type<GUM_SCALAR>::isSubType() const {
+    template <typename GUM_SCALAR>
+    INLINE bool Type<GUM_SCALAR>::isSubType() const {
       return __super;
     }
 
     template <typename GUM_SCALAR>
-    INLINE bool Type<GUM_SCALAR>::isSuperTypeOf(const Type<GUM_SCALAR> &t) const {
+    INLINE bool
+    Type<GUM_SCALAR>::isSuperTypeOf(const Type<GUM_SCALAR>& t) const {
       return t.isSubTypeOf(*this);
     }
 
     template <typename GUM_SCALAR>
-    INLINE bool Type<GUM_SCALAR>::operator==(const PRMObject &obj) const {
+    INLINE bool Type<GUM_SCALAR>::operator==(const PRMObject& obj) const {
       return name() == obj.name();
     }
 
     template <typename GUM_SCALAR>
-    INLINE bool Type<GUM_SCALAR>::operator!=(const PRMObject &obj) const {
+    INLINE bool Type<GUM_SCALAR>::operator!=(const PRMObject& obj) const {
       return name() != obj.name();
     }
 

@@ -39,7 +39,7 @@ namespace gum {
       }
 
       INLINE
-      EdgeCode::EdgeCode(const EdgeCode &source)
+      EdgeCode::EdgeCode(const EdgeCode& source)
           : i(source.i), j(source.j), l_i(source.l_i), l_ij(source.l_ij),
             l_j(source.l_j), name(source.name) {
         GUM_CONS_CPY(EdgeCode);
@@ -55,7 +55,7 @@ namespace gum {
       bool EdgeCode::isBackward() const { return i > j; }
 
       INLINE
-      EdgeCode &EdgeCode::operator=(const EdgeCode &source) {
+      EdgeCode& EdgeCode::operator=(const EdgeCode& source) {
         i = source.i;
         j = source.j;
         l_i = source.l_i;
@@ -65,28 +65,30 @@ namespace gum {
       }
 
       INLINE
-      bool EdgeCode::operator==(const EdgeCode &code) const {
+      bool EdgeCode::operator==(const EdgeCode& code) const {
         return ((i == code.i) and (j == code.j) and (l_i == code.l_i) and
                 (l_ij == code.l_ij) and (l_j == code.l_j));
       }
 
       INLINE
-      bool EdgeCode::operator!=(const EdgeCode &code) const {
+      bool EdgeCode::operator!=(const EdgeCode& code) const {
         return ((i != code.i) or (j != code.j) or (l_i != code.l_i) or
                 (l_ij != code.l_ij) or (l_j != code.l_j));
       }
 
       INLINE
-      bool EdgeCode::operator<(const EdgeCode &code) const {
+      bool EdgeCode::operator<(const EdgeCode& code) const {
         if ((i == code.i) and (j == code.j)) {
-          return (l_i < code.l_i) or ((l_i == code.l_i) and (l_ij < code.l_ij)) or
-                 ((l_i == code.l_i) and (l_ij == code.l_ij) and (l_j < code.l_j));
+          return (l_i < code.l_i) or
+                 ((l_i == code.l_i) and (l_ij < code.l_ij)) or
+                 ((l_i == code.l_i) and (l_ij == code.l_ij) and
+                  (l_j < code.l_j));
         } else {
           return ((i == code.i) and (j < code.j)) or
                  ((i < code.j) and (j == code.i));
         }
       }
 
-    } // namespace gspan
-  }   // namespage prm
-} // namespace gum
+    }  // namespace gspan
+  }    // namespage prm
+}  // namespace gum

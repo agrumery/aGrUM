@@ -94,8 +94,8 @@
 #define changesign(a) (*(a) = -*(a))
 #define copy(a, b) ((a)[0] = (b)[0])
 #define decint(a, b) *(a) = *(a) - *(b)
-#define divint(a, b, c)                                                             \
-  *(c) = *(a) / *(b);                                                               \
+#define divint(a, b, c)                                                        \
+  *(c) = *(a) / *(b);                                                          \
   *(a) = *(a) % *(b)
 #define exactdivint(a, b, c) *(c) = *(a) / *(b);
 #define greater(a, b) (*(a) > *(b))
@@ -122,10 +122,10 @@
 #include <signal.h>
 #include <stdlib.h> /* labs */
 #include <unistd.h>
-#define errcheck(s, e)                                                              \
-  if ((long)(e) == -1L) {                                                           \
-    perror(s);                                                                      \
-    exit(1);                                                                        \
+#define errcheck(s, e)                                                         \
+  if ((long)(e) == -1L) {                                                      \
+    perror(s);                                                                 \
+    exit(1);                                                                   \
   }
 #endif
 
@@ -140,9 +140,9 @@ void ptimes();
 /*************/
 
 typedef long lrs_mp[1]; /* type lrs_mp holds one long integer */
-typedef long *lrs_mp_t;
-typedef long **lrs_mp_vector;
-typedef long ***lrs_mp_matrix;
+typedef long* lrs_mp_t;
+typedef long** lrs_mp_vector;
+typedef long*** lrs_mp_matrix;
 
 /*********************/
 /*global variables   */
@@ -152,15 +152,15 @@ typedef long ***lrs_mp_matrix;
 extern long lrs_digits;        /* max permitted no. of digits   */
 extern long lrs_record_digits; /* this is the biggest acheived so far.     */
 
-extern FILE *lrs_ifp; /* input file pointer       */
-extern FILE *lrs_ofp; /* output file pointer      */
+extern FILE* lrs_ifp; /* input file pointer       */
+extern FILE* lrs_ofp; /* output file pointer      */
 
 /*********************************************************/
 /* Initialization and allocation procedures - must use!  */
 /******************************************************* */
 
-long lrs_mp_init(long dec_digits, FILE *lrs_ifp,
-                 FILE *lrs_ofp); /* max number of decimal digits, fps   */
+long lrs_mp_init(long dec_digits, FILE* lrs_ifp,
+                 FILE* lrs_ofp); /* max number of decimal digits, fps   */
 
 #define lrs_alloc_mp(a)
 #define lrs_clear_mp(a)
@@ -180,11 +180,12 @@ void lrs_clear_mp_matrix(lrs_mp_matrix a, long m, long n);
 /******************************************************* */
 void atomp(const char s[], lrs_mp a); /* convert string to lrs_mp integer */
 long compare(lrs_mp a, lrs_mp b);     /* a ? b and returns -1,0,1 for <,=,> */
-void gcd(lrs_mp u, lrs_mp v); /* returns u=gcd(u,v) destroying v                */
-void mptodouble(lrs_mp a, double *x); /* convert lrs_mp to double */
+void gcd(lrs_mp u, lrs_mp v); /* returns u=gcd(u,v) destroying v */
+void mptodouble(lrs_mp a, double* x); /* convert lrs_mp to double */
 long mptoi(lrs_mp a);                 /* convert lrs_mp to long integer */
-void pmp(char name[], lrs_mp a); /* print the long precision integer a             */
-void prat(const char name[], lrs_mp Nt, lrs_mp Dt); /* reduce and print  Nt/Dt */
+void pmp(char name[], lrs_mp a); /* print the long precision integer a */
+void prat(const char name[], lrs_mp Nt,
+          lrs_mp Dt);  /* reduce and print  Nt/Dt */
 void readmp(lrs_mp a); /* read an integer and convert to lrs_mp          */
 long readrat(lrs_mp Na,
              lrs_mp Da); /* read a rational or int and convert to lrs_mp   */
@@ -203,16 +204,17 @@ long comprod(lrs_mp Na, lrs_mp Nb, lrs_mp Nc,
 void divrat(lrs_mp Na, lrs_mp Da, lrs_mp Nb, lrs_mp Db, lrs_mp Nc, lrs_mp Dc);
 /* computes Nc/Dc = (Na/Da) /( Nb/Db ) and reduce */
 void getfactorial(lrs_mp factorial, long k); /* compute k factorial in lrs_mp */
-void linrat(lrs_mp Na, lrs_mp Da, long ka, lrs_mp Nb, lrs_mp Db, long kb, lrs_mp Nc,
-            lrs_mp Dc);
-void lcm(lrs_mp a, lrs_mp b); /* a = least common multiple of a, b; b is saved  */
+void linrat(lrs_mp Na, lrs_mp Da, long ka, lrs_mp Nb, lrs_mp Db, long kb,
+            lrs_mp Nc, lrs_mp Dc);
+void lcm(lrs_mp a,
+         lrs_mp b); /* a = least common multiple of a, b; b is saved  */
 void mulrat(lrs_mp Na, lrs_mp Da, lrs_mp Nb, lrs_mp Db, lrs_mp Nc, lrs_mp Dc);
 /* computes Nc/Dc=(Na/Da)*(Nb/Db) and reduce      */
 long myrandom(long num,
               long nrange); /* return a random number in range 0..nrange-1    */
 void notimpl(char s[]);     /* bail out - help!                               */
 void rattodouble(lrs_mp a, lrs_mp b,
-                 double *x); /* convert lrs_mp rational to double              */
+                 double* x); /* convert lrs_mp rational to double */
 void reduceint(lrs_mp Na, lrs_mp Da); /* divide Na by Da and return it */
 void reducearray(lrs_mp_vector p,
                  long n); /* find gcd of p[0]..p[n-1] and divide through by */
@@ -222,13 +224,13 @@ void scalerat(lrs_mp Na, lrs_mp Da, long ka); /* scales rational by ka */
 /* Miscellaneous functions        */
 /******************************** */
 
-void lrs_getdigits(long *a, long *b); /* send digit information to user */
+void lrs_getdigits(long* a, long* b); /* send digit information to user */
 
-void stringcpy(char *s, char *t); /* copy t to s pointer version */
+void stringcpy(char* s, char* t); /* copy t to s pointer version */
 
-void *calloc();
-void *malloc();
-void *xcalloc(long n, long s, long l, char *f);
+void* calloc();
+void* malloc();
+void* xcalloc(long n, long s, long l, char* f);
 
 void lrs_default_digits_overflow();
 

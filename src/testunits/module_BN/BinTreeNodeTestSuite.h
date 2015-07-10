@@ -28,7 +28,7 @@ namespace gum_tests {
   class binTreeNodeTestSuite : public CxxTest::TestSuite {
     public:
     void testConstructors() {
-      gum::BinTreeNode<int> *node = 0;
+      gum::BinTreeNode<int>* node = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(node = new gum::BinTreeNode<int>(33));
       TS_ASSERT(node->value() == 33);
@@ -76,16 +76,16 @@ namespace gum_tests {
       TS_ASSERT(node.leftChild()->leftChild() == 0);
       TS_ASSERT(node.leftChild()->rightChild() == 0);
 
-      gum::BinTreeNode<int> *node4 = node2.insertLeftChild(3);
-      gum::BinTreeNode<int> *node5 = node2.insertRightChild(5);
+      gum::BinTreeNode<int>* node4 = node2.insertLeftChild(3);
+      gum::BinTreeNode<int>* node5 = node2.insertRightChild(5);
       TS_ASSERT(node2.leftChild() == node4);
       TS_ASSERT(node2.rightChild() == node5);
       TS_ASSERT(node4->parent() == &node2);
       TS_ASSERT(node5->parent() == &node2);
 
-      gum::BinTreeNode<int> *node6 =
+      gum::BinTreeNode<int>* node6 =
           node4->insertChild(6, gum::BinTreeDir::LEFT_CHILD);
-      gum::BinTreeNode<int> *node7 = new gum::BinTreeNode<int>(8);
+      gum::BinTreeNode<int>* node7 = new gum::BinTreeNode<int>(8);
       node4->insertChild(*node7, gum::BinTreeDir::RIGHT_CHILD);
 
       delete (node4);

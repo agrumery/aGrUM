@@ -33,7 +33,7 @@ namespace gum_tests {
   class ScheduleSeparatorStoreMultiDimTestSuite : public CxxTest::TestSuite {
     public:
     void test_construct() {
-      std::vector<gum::LabelizedVariable *> vars(10);
+      std::vector<gum::LabelizedVariable*> vars(10);
 
       for (unsigned int i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -49,11 +49,14 @@ namespace gum_tests {
       pot2 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       gum::ScheduleMultiDim<float> f2(pot2);
 
-      gum::ArcProperty<gum::Set<const gum::MultiDimImplementation<float> *>> set;
+      gum::ArcProperty<gum::Set<const gum::MultiDimImplementation<float>*>> set;
       TS_ASSERT(set.size() == 0);
-      gum::ScheduleSeparatorStoreMultiDim<float> store1(f1, set, gum::Arc(3, 2));
-      gum::ScheduleSeparatorStoreMultiDim<float> store2(f2, set, gum::Arc(3, 2));
-      gum::ScheduleSeparatorStoreMultiDim<float> store3(f2, set, gum::Arc(2, 3));
+      gum::ScheduleSeparatorStoreMultiDim<float> store1(f1, set,
+                                                        gum::Arc(3, 2));
+      gum::ScheduleSeparatorStoreMultiDim<float> store2(f2, set,
+                                                        gum::Arc(3, 2));
+      gum::ScheduleSeparatorStoreMultiDim<float> store3(f2, set,
+                                                        gum::Arc(2, 3));
       TS_ASSERT(store1 != store2);
       TS_ASSERT(store2 != store3);
       TS_ASSERT(!(store2 == store3));
@@ -62,7 +65,7 @@ namespace gum_tests {
       std::pair<long, long> xxx = store1.memoryUsage();
       TS_ASSERT(xxx.first == 0);
 
-      gum::Sequence<const gum::ScheduleMultiDim<float> *> seq =
+      gum::Sequence<const gum::ScheduleMultiDim<float>*> seq =
           store1.multiDimArgs();
       TS_ASSERT(seq.size() == 1);
       TS_ASSERT(*(seq.atPos(0)) == f1);
@@ -74,7 +77,8 @@ namespace gum_tests {
       TS_ASSERT(set.size() == 2);
 
       std::stringstream s;
-      s << "store ( " << f1.toString() << ", separator " << gum::Arc(3, 2) << " )";
+      s << "store ( " << f1.toString() << ", separator " << gum::Arc(3, 2)
+        << " )";
       TS_ASSERT(store1.toString() == s.str());
 
       gum::ScheduleSeparatorStoreMultiDim<float> store4(store3);
@@ -86,7 +90,7 @@ namespace gum_tests {
       TS_ASSERT(store4.type() ==
                 gum::ScheduleOperation<float>::Type::SEPARATOR_STORE_MULTIDIM);
 
-      gum::ScheduleSeparatorStoreMultiDim<float> *store5 = store4.newFactory();
+      gum::ScheduleSeparatorStoreMultiDim<float>* store5 = store4.newFactory();
       TS_ASSERT(*store5 == store4);
       delete store5;
 

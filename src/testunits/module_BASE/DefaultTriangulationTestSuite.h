@@ -43,7 +43,7 @@ namespace gum_tests {
 
   class DefaultTriangulationTestSuite : public CxxTest::TestSuite {
     public:
-    gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
+    gum::LabelizedVariable* var1, *var2, *var3, *var4, *var5;
 
     void setUp() {
       var1 = new gum::LabelizedVariable("var1", "1");
@@ -66,7 +66,7 @@ namespace gum_tests {
       gum::List<gum::NodeId> idList;
 
       fill(topo, idList);
-      const gum::UndiGraph &undiGraph = topo.moralGraph();
+      const gum::UndiGraph& undiGraph = topo.moralGraph();
       gum::NodeProperty<gum::Size> modalities;
 
       // Builds a hashTable where the keys are the id of the variable,
@@ -75,7 +75,7 @@ namespace gum_tests {
       for (const auto node : topo.nodes())
         modalities.insert(node, topo.variable(node).domainSize());
 
-      gum::DefaultTriangulation *triangle = nullptr;
+      gum::DefaultTriangulation* triangle = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
           triangle = new gum::DefaultTriangulation(&undiGraph, &modalities));
@@ -83,7 +83,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(triangle->triangulatedGraph());
 
       TS_ASSERT_EQUALS(triangle->maxLog10CliqueDomainSize(),
-                       log10(16)); // clique of 4 binary variables
+                       log10(16));  // clique of 4 binary variables
 
       TS_GUM_ASSERT_THROWS_NOTHING(if (triangle) delete triangle);
     };
@@ -104,7 +104,7 @@ namespace gum_tests {
       for (const auto node : topo.nodes())
         modalities.insert(node, topo.variable(node).domainSize());
 
-      gum::DefaultTriangulation *triangle = nullptr;
+      gum::DefaultTriangulation* triangle = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
           triangle = new gum::DefaultTriangulation(&undiGraph, &modalities));
@@ -117,15 +117,18 @@ namespace gum_tests {
     };
 
     void xxtestBIFtriangulation1(void) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_PATH_STR("Barley.bif")));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          __triangulate_bif(GET_PATH_STR("Barley.bif")));
     };
 
     void xxtestBIFtriangulation1bis(void) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_PATH_STR("alarm.bif")));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          __triangulate_bif(GET_PATH_STR("alarm.bif")));
     };
 
     void xxtestBIFtriangulation2(void) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_PATH_STR("carpo.bif")));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          __triangulate_bif(GET_PATH_STR("carpo.bif")));
     };
 
     void xxtestBIFtriangulation3(void) {
@@ -133,7 +136,8 @@ namespace gum_tests {
     };
 
     void xxtestBIFtriangulation4(void) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_PATH_STR("Water.bif")));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          __triangulate_bif(GET_PATH_STR("Water.bif")));
     };
 
     void xxtestBIFtriangulation5(void) {
@@ -141,11 +145,13 @@ namespace gum_tests {
     };
 
     void xxtestBIFtriangulation6(void) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_PATH_STR("Mildew.bif")));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          __triangulate_bif(GET_PATH_STR("Mildew.bif")));
     };
 
     void xxtestBIFtriangulation7(void) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_PATH_STR("Munin1.bif")));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          __triangulate_bif(GET_PATH_STR("Munin1.bif")));
     };
 
     void xxtestBIFtriangulation8(void) {
@@ -154,11 +160,13 @@ namespace gum_tests {
     };
 
     void xxtestBIFtriangulation9(void) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_PATH_STR("Diabetes.bif")));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          __triangulate_bif(GET_PATH_STR("Diabetes.bif")));
     };
 
     void xxtestBIFtriangulation10(void) {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_PATH_STR("insurance.bif")));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          __triangulate_bif(GET_PATH_STR("insurance.bif")));
     };
 
     void testTriangulatedGraph1() {
@@ -189,7 +197,7 @@ namespace gum_tests {
 
       triang.setGraph(&graph, &dom);
 
-      const gum::UndiGraph &gr2 = triang.triangulatedGraph();
+      const gum::UndiGraph& gr2 = triang.triangulatedGraph();
 
       TS_ASSERT_EQUALS(gr2.sizeNodes(), 8U);
 
@@ -199,7 +207,7 @@ namespace gum_tests {
 
       triang.setGraph(&graph, &dom);
 
-      const gum::UndiGraph &gr3 = triang.triangulatedGraph();
+      const gum::UndiGraph& gr3 = triang.triangulatedGraph();
 
       TS_ASSERT_EQUALS(gr3.sizeNodes(), 8U);
 
@@ -209,13 +217,13 @@ namespace gum_tests {
 
       triang.setGraph(&graph, &dom);
 
-      const gum::UndiGraph &gr4 = triang.triangulatedGraph();
+      const gum::UndiGraph& gr4 = triang.triangulatedGraph();
 
       TS_ASSERT_EQUALS(gr4.sizeNodes(), 8U);
 
       TS_ASSERT_EQUALS(gr4.sizeEdges(), 14U);
 
-      const gum::EdgeSet &edges = triang.fillIns();
+      const gum::EdgeSet& edges = triang.fillIns();
 
       TS_ASSERT_EQUALS(edges.size(), 1U);
 
@@ -242,19 +250,19 @@ namespace gum_tests {
 
       triang.setGraph(&graph, &dom);
 
-      const gum::CliqueGraph &elim = triang.eliminationTree();
+      const gum::CliqueGraph& elim = triang.eliminationTree();
 
       TS_ASSERT_EQUALS(elim.sizeNodes(), 8U);
 
       TS_ASSERT_EQUALS(elim.sizeEdges(), 7U);
 
-      const gum::CliqueGraph &JT = triang.junctionTree();
+      const gum::CliqueGraph& JT = triang.junctionTree();
 
       TS_ASSERT_EQUALS(JT.sizeNodes(), 6U);
 
       TS_ASSERT_EQUALS(JT.sizeEdges(), 5U);
 
-      const gum::UndiGraph &gr = triang.triangulatedGraph();
+      const gum::UndiGraph& gr = triang.triangulatedGraph();
 
       TS_ASSERT_EQUALS(gr.sizeNodes(), 8U);
 
@@ -262,7 +270,7 @@ namespace gum_tests {
     }
 
     private:
-    void createClique(gum::UndiGraph &graph, const gum::NodeSet &clique) {
+    void createClique(gum::UndiGraph& graph, const gum::NodeSet& clique) {
       for (auto iter = clique.begin(); iter != clique.end(); ++iter) {
         auto iter2 = iter;
 
@@ -274,7 +282,7 @@ namespace gum_tests {
     }
 
     void __triangulate_bif(std::string file) {
-      gum::BayesNet<float> *bn = new gum::BayesNet<float>();
+      gum::BayesNet<float>* bn = new gum::BayesNet<float>();
       gum::BIFReader<float> reader(bn, file);
       reader.trace(false);
 
@@ -286,7 +294,7 @@ namespace gum_tests {
         delete (bn);
     };
 
-    void fill(gum::BayesNet<float> &topo, gum::List<gum::NodeId> &idList) {
+    void fill(gum::BayesNet<float>& topo, gum::List<gum::NodeId>& idList) {
       idList.clear();
       idList.insert(topo.add(*var1));
       idList.insert(topo.add(*var2));
@@ -302,7 +310,7 @@ namespace gum_tests {
       topo.addArc(idList[1], idList[4]);
     };
 
-    gum::UndiGraph getRealMoralGraph(const gum::List<gum::NodeId> &idList) {
+    gum::UndiGraph getRealMoralGraph(const gum::List<gum::NodeId>& idList) {
       gum::UndiGraph graph;
       /*
         idList.clear();

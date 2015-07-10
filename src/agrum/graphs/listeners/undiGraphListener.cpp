@@ -27,36 +27,39 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/listeners/undiGraphListener.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 
 namespace gum {
 
-  UndiGraphListener::UndiGraphListener(const UndiGraphListener &d) {
+  UndiGraphListener::UndiGraphListener(const UndiGraphListener& d) {
     GUM_CONS_CPY(UndiGraphListener);
     GUM_ERROR(OperationNotAllowed, "No copy constructor for UndiGraphListener");
   }
 
-  UndiGraphListener &UndiGraphListener::operator=(const UndiGraphListener &d) {
+  UndiGraphListener& UndiGraphListener::operator=(const UndiGraphListener& d) {
     GUM_OP_CPY(UndiGraphListener);
     GUM_ERROR(OperationNotAllowed, "No copy operator for UndiGraphListener");
   }
 
-  UndiGraphListener::UndiGraphListener(UndiGraph *g) {
+  UndiGraphListener::UndiGraphListener(UndiGraph* g) {
     if (!g) {
-      GUM_ERROR(OperationNotAllowed, "A graph listener need a graph to listen to");
+      GUM_ERROR(OperationNotAllowed,
+                "A graph listener need a graph to listen to");
     }
 
     GUM_CONSTRUCTOR(UndiGraphListener);
     _graph = g;
 
-    GUM_CONNECT((*_graph), onNodeAdded, (*this), UndiGraphListener::whenNodeAdded);
+    GUM_CONNECT((*_graph), onNodeAdded, (*this),
+                UndiGraphListener::whenNodeAdded);
     GUM_CONNECT((*_graph), onNodeDeleted, (*this),
                 UndiGraphListener::whenNodeDeleted);
-    GUM_CONNECT((*_graph), onEdgeAdded, (*this), UndiGraphListener::whenEdgeAdded);
+    GUM_CONNECT((*_graph), onEdgeAdded, (*this),
+                UndiGraphListener::whenEdgeAdded);
     GUM_CONNECT((*_graph), onEdgeDeleted, (*this),
                 UndiGraphListener::whenEdgeDeleted);
   }
 
   UndiGraphListener::~UndiGraphListener() { GUM_DESTRUCTOR(UndiGraphListener); }
 
-} // namespace gum
+}  // namespace gum

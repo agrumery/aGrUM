@@ -21,4 +21,4 @@ namespace CxxTest {
   };
 }
 
-#endif // __cxxtest__YesNoRunner_h__
+#endif  // __cxxtest__YesNoRunner_h__
