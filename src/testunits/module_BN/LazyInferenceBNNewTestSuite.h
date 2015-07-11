@@ -357,8 +357,8 @@ namespace gum_tests {
     }
 
     
-   void testAlarm2 () {
-      std::string file = GET_PATH_STR("alarm.bif");
+   void testAsia2 () {
+      std::string file = GET_PATH_STR("asia3.bif");
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader(&bn, file);
       int nbrErr = 0;
@@ -371,26 +371,51 @@ namespace gum_tests {
         gum::Potential<float> ev_pot;
         ev_pot << variable;
         ev_pot.fill((float)0);
-        gum::List<const gum::Potential<float>*> evidences;
-        evidences.insert ( &ev_pot );
-
+ 
         gum::Instantiation inst (ev_pot);
         for ( inst.setFirst (); ! inst.end (); ++inst ) {
           ev_pot.set(inst, (float) 1 );
-          gum::LazyPropagation<float> inf1 (bn);
-          gum::LazyPropagationOld<float> inf2 (bn);
-          TS_ASSERT_THROWS_NOTHING(inf1.insertEvidence(evidences));
-          TS_ASSERT_THROWS_NOTHING(inf2.insertEvidence(evidences));
-          TS_ASSERT_THROWS_NOTHING(inf1.makeInference());
-          TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
-          for ( auto node : bn.dag() ) {
-            TS_ASSERT( equalPotentials ( inf1.posterior(node),
-                                         inf2.posterior(node) ) );
+
+          for ( auto node2 : bn.dag () ) {
+            if ( node2 > node ) {
+              const auto& variable2 = bn.variable ( node2 );
+              gum::Potential<float> ev_pot2;
+              ev_pot2 << variable2;
+              ev_pot2.fill((float)0);
+
+              gum::List<const gum::Potential<float>*> evidences;
+              evidences.insert ( &ev_pot );
+              evidences.insert ( &ev_pot2 );
+              // std::cout << "hard ev: " << node << "  " << node2 << std::endl;
+
+              gum::Instantiation inst2 (ev_pot2);
+              for ( inst2.setFirst (); ! inst2.end (); ++inst2 ) {
+                ev_pot2.set(inst2, (float) 1 );
+              
+                gum::LazyPropagation<float> inf1 (bn);
+                gum::LazyPropagationOld<float> inf2 (bn);
+                TS_ASSERT_THROWS_NOTHING(inf1.insertEvidence(evidences));
+                TS_ASSERT_THROWS_NOTHING(inf2.insertEvidence(evidences));
+                TS_ASSERT_THROWS_NOTHING(inf1.makeInference());
+                TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
+
+              
+                for ( auto xnode : bn.dag() ) {
+                  // std::cout << "node : " << xnode << " : ";
+                  // std::cout << "    " << inf1.posterior(xnode) << std::endl
+                  //           << "    " << inf2.posterior(xnode) << std::endl;
+
+                  TS_ASSERT( equalPotentials ( inf1.posterior(xnode),
+                                               inf2.posterior(xnode) ) );
+                }
+                ev_pot2.set(inst2, (float) 0 );
+              }
+            }
           }
+          
           ev_pot.set(inst, (float) 0 );
         }
       }
-      
    }
     
     private:
