@@ -106,7 +106,7 @@ namespace gum {
 
     void __dumpObjects( void ) {
       unsigned int nb_err = 0;
-      int total_size = 0;
+      double total_size = 0.0;
 
       char fillChar = '_';
       int widthColLibelle = 50;
@@ -148,7 +148,7 @@ namespace gum {
                << " | ";
 
         if ( size > 0 )
-          total_size += zeCreatedObjs * size;
+          total_size += zeCreatedObjs * (size/1024.0);
 
         try {
           zeDeletedObjts = __deletion()[xx->first];
@@ -225,8 +225,8 @@ namespace gum {
 
       std::cout << "| " << std::setw( widthColLibelle ) << "total "
                 << " | "
-                << std::setw( widthColSizeOf + widthColItemsNumber * 2 - 4 )
-                << total_size << " octet(s)    "
+                << std::fixed  <<std::setw( widthColSizeOf + widthColItemsNumber * 2 - 4 )<< std::setprecision( 2 )
+                << total_size << " Ko          "
                 << "|" << std::endl;
 
       std::cout << std::setfill( '=' ) << "|"
