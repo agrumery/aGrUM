@@ -235,6 +235,42 @@ namespace gum_tests {
       //@TODO : test computations and not only good behaviour
     }
 
+
+    void testAsia () {
+      std::string file = GET_PATH_STR("asia.bif");
+      gum::BayesNet<float> bn;
+      gum::BIFReader<float> reader(&bn, file);
+      int nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+
+      for ( auto node : bn.dag () ) {
+        const auto& variable = bn.variable ( node );
+        gum::Potential<float> ev_pot;
+        ev_pot << variable;
+        ev_pot.fill((float)0);
+        gum::List<const gum::Potential<float>*> evidences;
+        evidences.insert ( &ev_pot );
+
+        gum::Instantiation inst (ev_pot);
+        for ( inst.setFirst (); ! inst.end (); ++inst ) {
+          ev_pot.set(inst, (float) 1 );
+          gum::LazyPropagation<float> inf1 (bn);
+          gum::LazyPropagationOld<float> inf2 (bn);
+          TS_ASSERT_THROWS_NOTHING(inf1.insertEvidence(evidences));
+          TS_ASSERT_THROWS_NOTHING(inf2.insertEvidence(evidences));
+          TS_ASSERT_THROWS_NOTHING(inf1.makeInference());
+          TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
+          for ( auto node : bn.dag() ) {
+            TS_ASSERT( equalPotentials ( inf1.posterior(node),
+                                         inf2.posterior(node) ) );
+          }
+          ev_pot.set(inst, (float) 0 );
+        }
+      }
+      
+    }
     
 
     void testAlarm () {
@@ -320,6 +356,42 @@ namespace gum_tests {
       
     }
 
+    
+   void testAlarm2 () {
+      std::string file = GET_PATH_STR("alarm.bif");
+      gum::BayesNet<float> bn;
+      gum::BIFReader<float> reader(&bn, file);
+      int nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+
+      for ( auto node : bn.dag () ) {
+        const auto& variable = bn.variable ( node );
+        gum::Potential<float> ev_pot;
+        ev_pot << variable;
+        ev_pot.fill((float)0);
+        gum::List<const gum::Potential<float>*> evidences;
+        evidences.insert ( &ev_pot );
+
+        gum::Instantiation inst (ev_pot);
+        for ( inst.setFirst (); ! inst.end (); ++inst ) {
+          ev_pot.set(inst, (float) 1 );
+          gum::LazyPropagation<float> inf1 (bn);
+          gum::LazyPropagationOld<float> inf2 (bn);
+          TS_ASSERT_THROWS_NOTHING(inf1.insertEvidence(evidences));
+          TS_ASSERT_THROWS_NOTHING(inf2.insertEvidence(evidences));
+          TS_ASSERT_THROWS_NOTHING(inf1.makeInference());
+          TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
+          for ( auto node : bn.dag() ) {
+            TS_ASSERT( equalPotentials ( inf1.posterior(node),
+                                         inf2.posterior(node) ) );
+          }
+          ev_pot.set(inst, (float) 0 );
+        }
+      }
+      
+   }
     
     private:
     // Builds a BN to test the inference

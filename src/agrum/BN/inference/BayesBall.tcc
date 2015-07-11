@@ -112,9 +112,6 @@ namespace gum {
         nodes_to_visit.popFront ();
 
         if ( __hardEvidence->exists(node) ) {
-          // mark its top so that it will be included in the end into
-          // the set of requisite nodes
-          __marks[node].first = true;
           continue;
         }
 
