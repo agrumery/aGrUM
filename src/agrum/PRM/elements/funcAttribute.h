@@ -62,27 +62,27 @@ namespace gum {
        *of this FuncAttribute.
        *             it will be deleted after the call of ~FuncAttribute.
        */
-      FuncAttribute(const std::string& name, const Type<GUM_SCALAR>& type,
-                    MultiDimImplementation<GUM_SCALAR>* impl =
-                        new MultiDimArray<GUM_SCALAR>());
+      FuncAttribute( const std::string& name, const Type<GUM_SCALAR>& type,
+                     MultiDimImplementation<GUM_SCALAR>* impl =
+                         new MultiDimArray<GUM_SCALAR>() );
 
       /// Destructor.
       virtual ~FuncAttribute();
 
       /// See gum::ClassElement::_addParent().
-      virtual void addParent(const ClassElement<GUM_SCALAR>& elt);
+      virtual void addParent( const ClassElement<GUM_SCALAR>& elt );
 
       /// See gum::ClassElement::_addChild().
-      virtual void addChild(const ClassElement<GUM_SCALAR>& elt);
+      virtual void addChild( const ClassElement<GUM_SCALAR>& elt );
 
       protected:
       /// Copy constructor. Don't use it.
-      FuncAttribute(const FuncAttribute& source);
+      FuncAttribute( const FuncAttribute& source );
 
       /// Copy operator. Don't use it.
-      FuncAttribute& operator=(const FuncAttribute& from);
+      FuncAttribute& operator=( const FuncAttribute& from );
 
-      virtual void _setCpf(Potential<GUM_SCALAR>* cpf);
+      virtual void _setCpf( Potential<GUM_SCALAR>* cpf );
     };
 
     extern template class FuncAttribute<double>;

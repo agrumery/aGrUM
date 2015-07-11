@@ -31,7 +31,7 @@ namespace gum {
     /// transforms a vector of DBrows to unify the types of its columns
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     bool DBTransformCompactInt::transform(
-        DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>& filter) const {
+        DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>& filter ) const {
       // put the filter at the beginning of the database
       filter.reset();
 
@@ -40,7 +40,7 @@ namespace gum {
 
       // parse the database
       try {
-        while (filter.hasRows()) {
+        while ( filter.hasRows() ) {
           // get the initial row
           DBRow& input_row = handler.row();
 
@@ -48,11 +48,11 @@ namespace gum {
           FilteredRow& output_row = filter.row();
 
           // assign the output row to the intput
-          for (unsigned int i = 0, size = input_row.size(); i < size; ++i) {
-            input_row[i].setFloat(output_row[i]);
+          for ( unsigned int i = 0, size = input_row.size(); i < size; ++i ) {
+            input_row[i].setFloat( output_row[i] );
           }
         }
-      } catch (NotFound&) {
+      } catch ( NotFound& ) {
       }  // NotFound is raised if the row filter does not
       // produce any output row for the last rows of
       // the database

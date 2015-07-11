@@ -3,7 +3,7 @@
 
 #include "signaler.h"
 
-#define MAKE_NAME(nom) nom##7
+#define MAKE_NAME( nom ) nom##7
 #define LIST_DECL_CLASSES                                                      \
   class type1, class type2, class type3, class type4, class type5,             \
       class type6, class type7
@@ -13,8 +13,8 @@
       type7 arg7
 #define LIST_ARGS arg1, arg2, arg3, arg4, arg5, arg6, arg7
 
-#define GUM_EMIT7(signal, arg1, arg2, arg3, arg4, arg5, arg6, arg7)            \
-  this->signal(this, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+#define GUM_EMIT7( signal, arg1, arg2, arg3, arg4, arg5, arg6, arg7 )          \
+  this->signal( this, arg1, arg2, arg3, arg4, arg5, arg6, arg7 )
 
 #define SIGNALER_PATRON_ACCEPTED
 #include "signaler_with_args.pattern.h"

@@ -58,13 +58,13 @@ namespace gum {
 
       /// Default constructor.
       /// @param i The Instance<GUM_SCALAR> decorated by this InstanceBayesNet.
-      InstanceBayesNet(const Instance<GUM_SCALAR>& i);
+      InstanceBayesNet( const Instance<GUM_SCALAR>& i );
 
       /// Copy constructor.
-      InstanceBayesNet(const InstanceBayesNet& from);
+      InstanceBayesNet( const InstanceBayesNet& from );
 
       /// Copy operator.
-      InstanceBayesNet& operator=(const InstanceBayesNet& from);
+      InstanceBayesNet& operator=( const InstanceBayesNet& from );
 
       /// Destructor.
       virtual ~InstanceBayesNet();
@@ -76,23 +76,23 @@ namespace gum {
       /// @{
 
       /// See gum::IBaseBayesNet::cpt().
-      virtual const Potential<GUM_SCALAR>& cpt(NodeId varId) const;
+      virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
 
       /// See gum::IBaseBayesNet::variableNodeMap().
       virtual const VariableNodeMap& variableNodeMap() const;
 
       /// See gum::IBaseBayesNet::variable().
-      virtual const DiscreteVariable& variable(NodeId id) const;
+      virtual const DiscreteVariable& variable( NodeId id ) const;
 
       /// See gum::IBaseBayesNet::nodeId().
-      virtual NodeId nodeId(const DiscreteVariable& var) const;
+      virtual NodeId nodeId( const DiscreteVariable& var ) const;
 
       /// See gum::IBaseBayesNet::idFromName().
-      virtual NodeId idFromName(const std::string& name) const;
+      virtual NodeId idFromName( const std::string& name ) const;
 
       /// See gum::IBaseBayesNet::variableFromName().
       virtual const DiscreteVariable&
-      variableFromName(const std::string& name) const;
+      variableFromName( const std::string& name ) const;
 
       const NodeProperty<Size>& modalities() const;
 
@@ -102,7 +102,7 @@ namespace gum {
       // ===========================================================================
       /// @{
       /// @return Returns a dot representation of this IBayesNet.
-      virtual std::string toDot(void) const;
+      virtual std::string toDot( void ) const;
 
       /// @}
       private:
@@ -113,16 +113,16 @@ namespace gum {
       /// Private getter with type checking in case the id is not a formal
       /// Attribute<GUM_SCALAR>.
       /// @throw NotFound Raised if id is not a formal attribute.
-      const ClassElement<GUM_SCALAR>& __get(NodeId id) const;
+      const ClassElement<GUM_SCALAR>& __get( NodeId id ) const;
 
-      const ClassElement<GUM_SCALAR>& __get(const std::string& name) const;
+      const ClassElement<GUM_SCALAR>& __get( const std::string& name ) const;
 
       /// The ClassElementContainer decorated by this.
       const Instance<GUM_SCALAR>* __inst;
 
       mutable NodeProperty<Size> __modalities;
 
-      void __init(const Instance<GUM_SCALAR>& i);
+      void __init( const Instance<GUM_SCALAR>& i );
     };
 
     extern template class InstanceBayesNet<double>;

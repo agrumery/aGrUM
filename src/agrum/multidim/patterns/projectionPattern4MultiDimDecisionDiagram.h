@@ -44,7 +44,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   MultiDimDecisionDiagramBase<GUM_SCALAR>* GUM_DECISION_DIAGRAM_PROJECTION_NAME(
       const MultiDimDecisionDiagramBase<GUM_SCALAR>* table,
-      const Set<const DiscreteVariable*>& delVars) {
+      const Set<const DiscreteVariable*>& delVars ) {
 
 #endif
 
@@ -56,33 +56,34 @@ namespace gum {
     MultiDimImplementation<GUM_SCALAR>*
     GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME(
         const MultiDimImplementation<GUM_SCALAR>* ttable,
-        const Set<const DiscreteVariable*>& delVars) {
+        const Set<const DiscreteVariable*>& delVars ) {
 
       const MultiDimDecisionDiagramBase<GUM_SCALAR>* table =
           reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
-              ttable);
+              ttable );
 
 #endif
       MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* factory =
           table->getFactory();
-      factory->setMultiDimDecisionDiagram(table);
+      factory->setMultiDimDecisionDiagram( table );
       Sequence<const DiscreteVariable*> varSeq = table->variablesSequence();
 
       auto endSeqIter = varSeq.rbegin();
       bool modified = true;
 
-      while (modified && endSeqIter != varSeq.rend()) {
+      while ( modified && endSeqIter != varSeq.rend() ) {
         auto varIter = varSeq.begin();
         auto nextVarIter = varIter;
         modified = false;
 
-        while (varIter != endSeqIter) {
+        while ( varIter != endSeqIter ) {
           ++nextVarIter;
 
-          if (nextVarIter != varSeq.end()) {
-            if (delVars.exists(*varIter) && !delVars.exists(*nextVarIter)) {
-              factory->swap(*varIter, *nextVarIter);
-              varSeq.swap(varSeq.pos(*varIter), varSeq.pos(*nextVarIter));
+          if ( nextVarIter != varSeq.end() ) {
+            if ( delVars.exists( *varIter ) &&
+                 !delVars.exists( *nextVarIter ) ) {
+              factory->swap( *varIter, *nextVarIter );
+              varSeq.swap( varSeq.pos( *varIter ), varSeq.pos( *nextVarIter ) );
               modified = true;
             }
           }
@@ -97,24 +98,25 @@ namespace gum {
           factory->getMultiDimDecisionDiagram();
       factory->clear();
 
-      for (const auto var : delVars)
-        varSeq.erase(var);
+      for ( const auto var : delVars )
+        varSeq.erase( var );
 
-      factory->setVariablesSequence(varSeq);
+      factory->setVariablesSequence( varSeq );
       HashTable<NodeId, NodeId> explorationTable;
       Idx nbOperation = 1;
 
-      for (const auto var : delVars)
+      for ( const auto var : delVars )
         nbOperation *= var->domainSize();
 
 #ifdef P4DDDEBUG
-      factory->setRootNode(GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-          ret, factory, ret->root(), false, explorationTable, delVars,
-          nbOperation, ""));
+      factory->setRootNode(
+          GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
+              ret, factory, ret->root(), false, explorationTable, delVars,
+              nbOperation, "" ) );
 #else
-  factory->setRootNode(GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
+  factory->setRootNode( GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
       ret, factory, ret->root(), false, explorationTable, delVars,
-      nbOperation));
+      nbOperation ) );
 #endif
       delete ret;
       ret = factory->getMultiDimDecisionDiagram();

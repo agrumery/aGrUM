@@ -64,7 +64,7 @@ namespace gum {
        * read the database file for the score / parameter estimation and var
        * names
        */
-      BNLearner(const std::string& filename);
+      BNLearner( const std::string& filename );
 
       /**
        * read the database file for the score / parameter estimation and var
@@ -85,9 +85,9 @@ namespace gum {
        * being exactly those of the variables of the BN (as a consequence, if we
        * find other values in the database, an exception will be raised
        * during learning). */
-      BNLearner(const std::string& filename,
-                const NodeProperty<Sequence<std::string>>& modalities,
-                bool parse_database = false);
+      BNLearner( const std::string& filename,
+                 const NodeProperty<Sequence<std::string>>& modalities,
+                 bool parse_database = false );
 
       /**
        * wrapper for BNLearner (filename,modalities,parse_database) using a bn
@@ -95,15 +95,15 @@ namespace gum {
        *find those
        * modalities.
        **/
-      BNLearner(const std::string& filename,
-                const gum::BayesNet<GUM_SCALAR>& src,
-                bool parse_database = false);
+      BNLearner( const std::string& filename,
+                 const gum::BayesNet<GUM_SCALAR>& src,
+                 bool parse_database = false );
 
       /// copy constructor
-      BNLearner(const BNLearner&);
+      BNLearner( const BNLearner& );
 
       /// move constructor
-      BNLearner(BNLearner&&);
+      BNLearner( BNLearner&& );
 
       /// destructor
       virtual ~BNLearner();
@@ -116,10 +116,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      BNLearner& operator=(const BNLearner&);
+      BNLearner& operator=( const BNLearner& );
 
       /// move operator
-      BNLearner& operator=(BNLearner&&);
+      BNLearner& operator=( BNLearner&& );
 
       /// @}
 
@@ -137,8 +137,8 @@ namespace gum {
        * by
        * methods useAprioriXXX () + the implicit apriori of the score, else we
        * just take into account the apriori specified by useAprioriXXX () */
-      BayesNet<GUM_SCALAR> learnParameters(const DAG& dag,
-                                           bool take_into_account_score = true);
+      BayesNet<GUM_SCALAR>
+      learnParameters( const DAG& dag, bool take_into_account_score = true );
 
       /// learns a BN (its parameters) when its structure is known
       /** @param dag the structure of the Bayesian network
@@ -157,14 +157,15 @@ namespace gum {
        * @throw UnknownLabelInDatabase if a label is found in the databast that
        * do not correpond to the variable.
        */
-      BayesNet<GUM_SCALAR> learnParameters(const BayesNet<GUM_SCALAR>& bn,
-                                           bool take_into_account_score = true);
+      BayesNet<GUM_SCALAR>
+      learnParameters( const BayesNet<GUM_SCALAR>& bn,
+                       bool take_into_account_score = true );
 
       private:
       /// read the first line of a file to find column names
       NodeProperty<Sequence<std::string>>
-      __labelsFromBN(const std::string& filename,
-                     const BayesNet<GUM_SCALAR>& src);
+      __labelsFromBN( const std::string& filename,
+                      const BayesNet<GUM_SCALAR>& src );
     };
 
   } /* namespace learning */

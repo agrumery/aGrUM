@@ -33,25 +33,25 @@ namespace gum {
   // Default Constructor
   template <typename GUM_SCALAR>
   BayesNetInference<GUM_SCALAR>::BayesNetInference(
-      const IBayesNet<GUM_SCALAR>& bn)
-      : __bayesNet(bn) {
-    GUM_CONSTRUCTOR(BayesNetInference);
+      const IBayesNet<GUM_SCALAR>& bn )
+      : __bayesNet( bn ) {
+    GUM_CONSTRUCTOR( BayesNetInference );
   }
 
   // Destructor
   template <typename GUM_SCALAR>
   BayesNetInference<GUM_SCALAR>::~BayesNetInference() {
-    GUM_DESTRUCTOR(BayesNetInference);
+    GUM_DESTRUCTOR( BayesNetInference );
     _invalidatePosteriors();
-    for (auto p : __garbages)
-      delete (p);
+    for ( auto p : __garbages )
+      delete ( p );
   }
 
   template <typename GUM_SCALAR>
   void BayesNetInference<GUM_SCALAR>::_invalidatePosteriors() {
-    for (auto it : _posteriors) {
-      if (it.second != nullptr)
-        delete (it.second);
+    for ( auto it : _posteriors ) {
+      if ( it.second != nullptr )
+        delete ( it.second );
     }
 
     _posteriors.clear();
@@ -59,10 +59,10 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   const Potential<GUM_SCALAR>&
-  BayesNetInference<GUM_SCALAR>::posterior(NodeId id) {
-    if (!_posteriors.exists(id)) {
-      _posteriors.insert(id, new Potential<GUM_SCALAR>());
-      _fillPosterior(id, *_posteriors[id]);
+  BayesNetInference<GUM_SCALAR>::posterior( NodeId id ) {
+    if ( !_posteriors.exists( id ) ) {
+      _posteriors.insert( id, new Potential<GUM_SCALAR>() );
+      _fillPosterior( id, *_posteriors[id] );
     }
 
     return *_posteriors[id];
@@ -74,27 +74,28 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  void BayesNetInference<GUM_SCALAR>::addHardEvidence(NodeId id, Idx pos) {
+  void BayesNetInference<GUM_SCALAR>::addHardEvidence( NodeId id, Idx pos ) {
     List<const Potential<GUM_SCALAR>*> pot_list;
 
-    const DiscreteVariable& v = __bayesNet.variable(id);
+    const DiscreteVariable& v = __bayesNet.variable( id );
 
-    if (pos >= v.domainSize())
-      GUM_ERROR(OutOfBounds, "Indice for variable " << id << " out of bounds.");
+    if ( pos >= v.domainSize() )
+      GUM_ERROR( OutOfBounds, "Indice for variable " << id
+                                                     << " out of bounds." );
 
     Potential<GUM_SCALAR>* po = new Potential<GUM_SCALAR>();
-    (*po) << v;
-    po->fill(GUM_SCALAR(0));
+    ( *po ) << v;
+    po->fill( GUM_SCALAR( 0 ) );
 
-    Instantiation I(*po);
-    I.chgVal(v, pos);
-    po->set(I, GUM_SCALAR(1));
+    Instantiation I( *po );
+    I.chgVal( v, pos );
+    po->set( I, GUM_SCALAR( 1 ) );
 
-    pot_list.insert(po);
-    insertEvidence(pot_list);
+    pot_list.insert( po );
+    insertEvidence( pot_list );
 
     // remember to free it
-    __garbages.insert(po);
+    __garbages.insert( po );
   }
 
 } /* namespace gum */

@@ -56,7 +56,7 @@ namespace gum {
      *greater
      *than 1 ).
      */
-    static void testRationalAlgorithms(const unsigned int& iters = 10);
+    static void testRationalAlgorithms( const unsigned int& iters = 10 );
 
     /// @name Real approximation by rational
     /// @{
@@ -81,10 +81,10 @@ namespace gum {
      *1e-6
      *by default.
      */
-    static void farey(long int& numerator, long int& denominator,
-                      const GUM_SCALAR& number,
-                      const long int& den_max = 1000000,
-                      const double& zero = 1e-6);
+    static void farey( long int& numerator, long int& denominator,
+                       const GUM_SCALAR& number,
+                       const long int& den_max = 1000000,
+                       const double& zero = 1e-6 );
 
     /**
      * Find the first best rational approximation ( the one with the smallest
@@ -110,9 +110,9 @@ namespace gum {
      *1e-6
      *by default.
      */
-    static void continuedFracFirst(long int& numerator, long int& denominator,
-                                   const GUM_SCALAR& number,
-                                   const double& zero = 1e-6);
+    static void continuedFracFirst( long int& numerator, long int& denominator,
+                                    const GUM_SCALAR& number,
+                                    const double& zero = 1e-6 );
 
     /**
      * Find the best rational approximation -- not the first -- to a given (
@@ -131,9 +131,9 @@ namespace gum {
      * @param den_max The constant highest authorized denominator. 1000000 by
      *default.
      */
-    static void continuedFracBest(long int& numerator, long int& denominator,
-                                  const GUM_SCALAR& number,
-                                  const long int& den_max = 1000000);
+    static void continuedFracBest( long int& numerator, long int& denominator,
+                                   const GUM_SCALAR& number,
+                                   const long int& den_max = 1000000 );
 
     /// @}
 

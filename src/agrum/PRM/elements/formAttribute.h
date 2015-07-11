@@ -45,26 +45,26 @@ namespace gum {
     template <typename GUM_SCALAR>
     class FormAttribute : public Attribute<GUM_SCALAR> {
       public:
-      FormAttribute(const Class<GUM_SCALAR>& c, const std::string& name,
-                    const Type<GUM_SCALAR>& type,
-                    MultiDimImplementation<std::string>* impl =
-                        new MultiDimArray<std::string>());
+      FormAttribute( const Class<GUM_SCALAR>& c, const std::string& name,
+                     const Type<GUM_SCALAR>& type,
+                     MultiDimImplementation<std::string>* impl =
+                         new MultiDimArray<std::string>() );
 
       virtual ~FormAttribute();
 
       /// See gum::prm::Attribute.
       virtual Attribute<GUM_SCALAR>*
-      newFactory(const Class<GUM_SCALAR>& c) const;
+      newFactory( const Class<GUM_SCALAR>& c ) const;
 
       /// See gum::prm::Attribute.
       virtual Attribute<GUM_SCALAR>*
-      copy(Bijection<const DiscreteVariable*, const DiscreteVariable*> bij)
+      copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij )
           const;
 
       /// See gum::prm::Attribute.
-      virtual void copyCpf(const Bijection<const DiscreteVariable*,
-                                           const DiscreteVariable*>& bif,
-                           const Attribute<GUM_SCALAR>& source);
+      virtual void copyCpf( const Bijection<const DiscreteVariable*,
+                                            const DiscreteVariable*>& bif,
+                            const Attribute<GUM_SCALAR>& source );
 
       /// See gum::prm::Attribute.
       virtual typename ClassElement<GUM_SCALAR>::ClassElementType
@@ -80,32 +80,32 @@ namespace gum {
       virtual const Potential<GUM_SCALAR>& cpf() const;
 
       /// See gum::prm::Attribute.
-      virtual void addParent(const ClassElement<GUM_SCALAR>& elt);
+      virtual void addParent( const ClassElement<GUM_SCALAR>& elt );
 
       /// See gum::prm::Attribute.
-      virtual void addChild(const ClassElement<GUM_SCALAR>& elt);
+      virtual void addChild( const ClassElement<GUM_SCALAR>& elt );
 
       /// See gum::prm::Attribute.
       virtual Attribute<GUM_SCALAR>* getCastDescendant() const;
 
       /// See gum::prm::Attribute.
-      virtual void setAsCastDescendant(Attribute<GUM_SCALAR>* attr);
-      virtual void becomeCastDescendant(Type<GUM_SCALAR>& subtype);
+      virtual void setAsCastDescendant( Attribute<GUM_SCALAR>* attr );
+      virtual void becomeCastDescendant( Type<GUM_SCALAR>& subtype );
 
       virtual MultiDimImplementation<std::string>& formulas();
       virtual const MultiDimImplementation<std::string>& formulas() const;
 
       /// Swap old_type with new_type in the ClassElement cpt.
-      virtual void swap(const Type<GUM_SCALAR>& old_type,
-                        const Type<GUM_SCALAR>& new_type);
+      virtual void swap( const Type<GUM_SCALAR>& old_type,
+                         const Type<GUM_SCALAR>& new_type );
 
       protected:
       virtual Type<GUM_SCALAR>* _type();
-      virtual void _type(Type<GUM_SCALAR>* t);
+      virtual void _type( Type<GUM_SCALAR>* t );
 
       private:
-      FormAttribute(const FormAttribute& source);
-      FormAttribute& operator=(const FormAttribute& source);
+      FormAttribute( const FormAttribute& source );
+      FormAttribute& operator=( const FormAttribute& source );
 
       /// The random variable type of this attribute
       Type<GUM_SCALAR>* __type;

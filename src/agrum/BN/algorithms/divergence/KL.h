@@ -63,19 +63,19 @@ namespace gum {
   */
   template <typename GUM_SCALAR> class KL {
 // difficulty is chosen w.r.t the log10DomainSize of the BN
-#define GAP_COMPLEXITY_KL_HEAVY_DIFFICULT double(12.0)
-#define GAP_COMPLEXITY_KL_DIFFICULT_CORRECT double(7.0)
+#define GAP_COMPLEXITY_KL_HEAVY_DIFFICULT double( 12.0 )
+#define GAP_COMPLEXITY_KL_DIFFICULT_CORRECT double( 7.0 )
     public:
     /** constructor must give 2 BNs
      * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize
      * or
      * compatible node sets.
      */
-    KL(const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q);
+    KL( const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q );
 
     /** copy constructor
      */
-    KL(const KL<GUM_SCALAR>& kl);
+    KL( const KL<GUM_SCALAR>& kl );
 
     /** destructor */
     ~KL();
@@ -113,16 +113,16 @@ namespace gum {
     double bhattacharya();
 
     /// @return p
-    const IBayesNet<GUM_SCALAR>& p(void) const;
+    const IBayesNet<GUM_SCALAR>& p( void ) const;
 
     /// @return q
-    const IBayesNet<GUM_SCALAR>& q(void) const;
+    const IBayesNet<GUM_SCALAR>& q( void ) const;
     /// @}
 
     protected:
     // should be pure virtual but using KL directly is a way to delay the choice
     // between different computation scheme (@see BruteForceKL)
-    virtual void _computeKL(void);
+    virtual void _computeKL( void );
     void _process();
 
     const IBayesNet<GUM_SCALAR>& _p;

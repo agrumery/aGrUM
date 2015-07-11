@@ -51,7 +51,7 @@ namespace gum {
       /// Default constructor.
       PRMGenerator();
       /// Copy constructor.
-      PRMGenerator(const PRMGenerator& source);
+      PRMGenerator( const PRMGenerator& source );
       /// Destructor.
       virtual ~PRMGenerator();
 
@@ -62,7 +62,7 @@ namespace gum {
       /// @{
 
       /// Defines the NameGenerator used by this generator.
-      void setNameGenerator(const NameGenerator& name_gen);
+      void setNameGenerator( const NameGenerator& name_gen );
 
       /// Returns the NameGenerator used by this generator.
       const NameGenerator& getNameGenerator() const;

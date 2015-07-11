@@ -31,7 +31,7 @@ namespace gum {
 
   INLINE
   const std::vector<NodeId>& StaticTriangulation::eliminationOrder() {
-    if (!__has_triangulation)
+    if ( !__has_triangulation )
       __triangulate();
 
     return __elim_order;
@@ -41,8 +41,8 @@ namespace gum {
    * (0 = first node eliminated) */
 
   INLINE
-  unsigned int StaticTriangulation::eliminationOrder(const NodeId id) {
-    if (!__has_triangulation)
+  unsigned int StaticTriangulation::eliminationOrder( const NodeId id ) {
+    if ( !__has_triangulation )
       __triangulate();
 
     return __reverse_elim_order[id];
@@ -54,7 +54,7 @@ namespace gum {
   INLINE
   const NodeProperty<unsigned int>&
   StaticTriangulation::reverseEliminationOrder() {
-    if (!__has_triangulation)
+    if ( !__has_triangulation )
       __triangulate();
 
     return __reverse_elim_order;
@@ -64,7 +64,7 @@ namespace gum {
 
   INLINE
   const CliqueGraph& StaticTriangulation::eliminationTree() {
-    if (!__has_elimination_tree)
+    if ( !__has_elimination_tree )
       __computeEliminationTree();
 
     return __elim_tree;
@@ -75,8 +75,8 @@ namespace gum {
   INLINE
   const CliqueGraph& StaticTriangulation::junctionTree() {
     // checks if junctionTree already exists
-    if (!__has_junction_tree) {
-      __junction_tree = &(_junction_tree_strategy->junctionTree());
+    if ( !__has_junction_tree ) {
+      __junction_tree = &( _junction_tree_strategy->junctionTree() );
       __has_junction_tree = true;
     }
 
@@ -87,7 +87,7 @@ namespace gum {
 
   INLINE
   const CliqueGraph& StaticTriangulation::maxPrimeSubgraphTree() {
-    if (!__has_max_prime_junction_tree)
+    if ( !__has_max_prime_junction_tree )
       __computeMaxPrimeJunctionTree();
 
     return __max_prime_junction_tree;
@@ -97,8 +97,8 @@ namespace gum {
    * elimination of a given node during the triangulation process */
 
   INLINE
-  NodeId StaticTriangulation::createdMaxPrimeSubgraph(const NodeId id) {
-    if (!__has_max_prime_junction_tree)
+  NodeId StaticTriangulation::createdMaxPrimeSubgraph( const NodeId id ) {
+    if ( !__has_max_prime_junction_tree )
       __computeMaxPrimeJunctionTree();
 
     return __node_2_max_prime_clique[id];
@@ -108,8 +108,8 @@ namespace gum {
    * elimination of a given node during the triangulation process */
 
   INLINE
-  NodeId StaticTriangulation::createdJunctionTreeClique(const NodeId id) {
-    return _junction_tree_strategy->createdClique(id);
+  NodeId StaticTriangulation::createdJunctionTreeClique( const NodeId id ) {
+    return _junction_tree_strategy->createdClique( id );
   }
 
   /** @brief returns the Ids of the cliques of the junction tree created by the
@@ -124,9 +124,9 @@ namespace gum {
   /// sets/unset the fill-ins storage in the standard triangulation procedure
 
   INLINE
-  void StaticTriangulation::setFillIns(bool b) {
+  void StaticTriangulation::setFillIns( bool b ) {
     __we_want_fill_ins = b;
-    _elimination_sequence_strategy->askFillIns(b);
+    _elimination_sequence_strategy->askFillIns( b );
   }
 
   /// returns the graph to be triangulated

@@ -29,23 +29,23 @@ namespace gum_tests {
 
     MyAlloc() noexcept {}
 
-    template <typename U> MyAlloc(const MyAlloc<U>&) noexcept {}
+    template <typename U> MyAlloc( const MyAlloc<U>& ) noexcept {}
 
-    T* allocate(std::size_t num) {
+    T* allocate( std::size_t num ) {
       ++MyAllocCount::allocs;
-      return static_cast<T*>(::operator new(num * sizeof(T)));
+      return static_cast<T*>(::operator new( num * sizeof( T ) ) );
     }
 
-    void deallocate(T* p, std::size_t num) {
+    void deallocate( T* p, std::size_t num ) {
       ++MyAllocCount::deallocs;
-      ::operator delete(p);
+      ::operator delete( p );
     }
 
-    template <typename... Args> void construct(T* p, Args... args) {
-      ::new (p) T(std::forward<Args>(args)...);
+    template <typename... Args> void construct( T* p, Args... args ) {
+      ::new ( p ) T( std::forward<Args>( args )... );
     }
 
-    void destroy(T* p) { p->~T(); }
+    void destroy( T* p ) { p->~T(); }
   };
 
 } /* namespace gum_tests */

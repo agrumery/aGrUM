@@ -32,7 +32,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_formula_COCO_PARSER_H__)
+#if !defined( gum_formula_COCO_PARSER_H__ )
 #define gum_formula_COCO_PARSER_H__
 
 #include <algorithm>
@@ -72,12 +72,12 @@ namespace gum {
       int errDist;
       int minErrDist;
 
-      void SynErr(int n);
+      void SynErr( int n );
       void Get();
-      void Expect(int n);
-      bool StartOf(int s);
-      void ExpectWeak(int n, int follow);
-      bool WeakSeparator(int n, int syFol, int repFol);
+      void Expect( int n );
+      bool StartOf( int s );
+      void ExpectWeak( int n, int follow );
+      bool WeakSeparator( int n, int syFol, int repFol );
 
       ErrorsContainer __errors;
 
@@ -91,7 +91,7 @@ namespace gum {
       gum::Formula* __formula;
 
       public:
-      void formula(gum::Formula* f) { __formula = f; }
+      void formula( gum::Formula* f ) { __formula = f; }
 
       gum::Formula& formula() { return *__formula; }
 
@@ -105,11 +105,11 @@ namespace gum {
 
       //________________________
 
-      Parser(Scanner* scanner);
+      Parser( Scanner* scanner );
       ~Parser();
-      void SemErr(const wchar_t* msg);
-      void SynErr(const std::wstring& filename, int line, int col, int n);
-      void Warning(const wchar_t* msg);
+      void SemErr( const wchar_t* msg );
+      void SynErr( const std::wstring& filename, int line, int col, int n );
+      void Warning( const wchar_t* msg );
       const ErrorsContainer& errors() const;
 
       void EVAL();

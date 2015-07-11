@@ -56,7 +56,8 @@ namespace gum {
        * @param type
        * @param impl value
        */
-      Parameter(const std::string& name, ParameterType type, GUM_SCALAR value);
+      Parameter( const std::string& name, ParameterType type,
+                 GUM_SCALAR value );
 
       /// Destructor.
       virtual ~Parameter();
@@ -73,7 +74,7 @@ namespace gum {
 
       GUM_SCALAR value() const;
 
-      void value(GUM_SCALAR value);
+      void value( GUM_SCALAR value );
 
       ParameterType valueType() const;
 
@@ -90,18 +91,18 @@ namespace gum {
       virtual const Potential<GUM_SCALAR>& cpf() const;
 
       /// See gum::ClassElement::addParent().
-      void addParent(const gum::prm::ClassElement<GUM_SCALAR>&);
+      void addParent( const gum::prm::ClassElement<GUM_SCALAR>& );
 
       /// See gum::ClassElement::addChild().
-      void addChild(const gum::prm::ClassElement<GUM_SCALAR>&);
+      void addChild( const gum::prm::ClassElement<GUM_SCALAR>& );
 
       /// @}
       protected:
       /// Copy constructor. Don't use it.
-      Parameter(const Parameter<GUM_SCALAR>& source);
+      Parameter( const Parameter<GUM_SCALAR>& source );
 
       /// Copy operator. Don't use it.
-      Parameter& operator=(const Parameter<GUM_SCALAR>& from);
+      Parameter& operator=( const Parameter<GUM_SCALAR>& from );
 
       private:
       // ========================================================================

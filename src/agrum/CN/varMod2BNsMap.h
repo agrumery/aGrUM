@@ -97,7 +97,7 @@ namespace gum {
        *
        * @param cn The CredalNet to be used.
        */
-      VarMod2BNsMap(const CredalNet<GUM_SCALAR>& cn);
+      VarMod2BNsMap( const CredalNet<GUM_SCALAR>& cn );
 
       /** Default constructor that should be used only by InferenceEngine since
        * it
@@ -118,8 +118,8 @@ namespace gum {
        * the
        * net.
        */
-      bool insert(const std::vector<bool>& bn,
-                  const std::vector<unsigned int>& key);
+      bool insert( const std::vector<bool>& bn,
+                   const std::vector<unsigned int>& key );
 
       /**
        * Thread insert.
@@ -128,7 +128,7 @@ namespace gum {
        * marginals.
        * @return \c True if the net was inserted, \c false otherwise.
        */
-      bool insert(const std::vector<unsigned int>& key, const bool isBetter);
+      bool insert( const std::vector<unsigned int>& key, const bool isBetter );
 
       /// @name Getters and setters
       /// @{
@@ -140,14 +140,14 @@ namespace gum {
        *variable.
        * @param cn The CredalNet to be used.
        */
-      void setCNet(const CredalNet<GUM_SCALAR>& cn);
+      void setCNet( const CredalNet<GUM_SCALAR>& cn );
 
       /**
        * %Set the current thread sample and it's hash.
        * @param sample The constant reference to the sample with structure.
        */
       void setCurrentSample(
-          const std::vector<std::vector<std::vector<bool>>>& sample);
+          const std::vector<std::vector<std::vector<bool>>>& sample );
 
       /**
        * Get the current sample as a vector of bits without structure.
@@ -171,7 +171,7 @@ namespace gum {
        * @return The constant vector of not yet constant pointers to the nets.
        */
       const std::vector<dBN*>
-      getBNOptsFromKey(const std::vector<unsigned int>& key);
+      getBNOptsFromKey( const std::vector<unsigned int>& key );
 
       /**
       * Get optimum IBayesNet (s) with structure of the given variable, modality
@@ -181,7 +181,7 @@ namespace gum {
       * @return The vector of not yet constant pointers to the nets.
       */
       std::vector<std::vector<std::vector<std::vector<bool>>>>
-      getFullBNOptsFromKey(const std::vector<unsigned int>& key);
+      getFullBNOptsFromKey( const std::vector<unsigned int>& key );
 
       /** Get the number of IBayesNet stored. */
       unsigned int getEntrySize() const;

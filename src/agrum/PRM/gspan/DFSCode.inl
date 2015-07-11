@@ -29,40 +29,40 @@ namespace gum {
     namespace gspan {
 
       INLINE
-      DFSCode::DFSCode() { GUM_CONSTRUCTOR(DFSCode); }
+      DFSCode::DFSCode() { GUM_CONSTRUCTOR( DFSCode ); }
 
       INLINE
-      DFSCode::DFSCode(const DFSCode& source) {
-        GUM_CONS_CPY(DFSCode);
+      DFSCode::DFSCode( const DFSCode& source ) {
+        GUM_CONS_CPY( DFSCode );
 
-        for (const auto code : source.codes)
-          codes.push_back(new EdgeCode(*code));
+        for ( const auto code : source.codes )
+          codes.push_back( new EdgeCode( *code ) );
       }
 
       INLINE
       DFSCode::~DFSCode() {
-        GUM_DESTRUCTOR(DFSCode);
+        GUM_DESTRUCTOR( DFSCode );
 
-        for (const auto item : codes)
+        for ( const auto item : codes )
           delete item;
       }
 
       INLINE
-      DFSCode& DFSCode::operator=(const DFSCode& source) {
-        for (const auto item : codes)
+      DFSCode& DFSCode::operator=( const DFSCode& source ) {
+        for ( const auto item : codes )
           delete item;
 
-        for (const auto srcitem : source.codes)
-          codes.push_back(new EdgeCode(*srcitem));
+        for ( const auto srcitem : source.codes )
+          codes.push_back( new EdgeCode( *srcitem ) );
 
         return *this;
       }
 
       INLINE
-      bool DFSCode::operator==(const DFSCode& from) const {
-        if (codes.size() == from.codes.size()) {
-          for (size_t idx = 0; idx < codes.size(); ++idx) {
-            if ((*codes[idx]) != (*codes[idx])) {
+      bool DFSCode::operator==( const DFSCode& from ) const {
+        if ( codes.size() == from.codes.size() ) {
+          for ( size_t idx = 0; idx < codes.size(); ++idx ) {
+            if ( ( *codes[idx] ) != ( *codes[idx] ) ) {
               return false;
             }
           }
@@ -74,10 +74,10 @@ namespace gum {
       }
 
       INLINE
-      bool DFSCode::operator!=(const DFSCode& from) const {
-        if (codes.size() == from.codes.size()) {
-          for (size_t idx = 0; idx < codes.size(); ++idx) {
-            if ((*codes[idx]) != (*codes[idx])) {
+      bool DFSCode::operator!=( const DFSCode& from ) const {
+        if ( codes.size() == from.codes.size() ) {
+          for ( size_t idx = 0; idx < codes.size(); ++idx ) {
+            if ( ( *codes[idx] ) != ( *codes[idx] ) ) {
               return true;
             }
           }
@@ -89,41 +89,42 @@ namespace gum {
       }
 
       INLINE
-      bool DFSCode::operator<(const DFSCode& from) const {
+      bool DFSCode::operator<( const DFSCode& from ) const {
         DFSCode::const_iterator iter = codes.begin();
         DFSCode::const_iterator jter = from.codes.begin();
 
-        for (; (iter != codes.end()) and (jter != from.codes.end());
-             ++iter, ++jter) {
-          if ((**iter) != (**jter)) {
+        for ( ; ( iter != codes.end() ) and ( jter != from.codes.end() );
+              ++iter, ++jter ) {
+          if ( ( **iter ) != ( **jter ) ) {
             EdgeCode& alpha = **iter;
             EdgeCode& beta = **jter;
 
-            if (alpha.isBackward()) {
-              if (beta.isForward()) {
+            if ( alpha.isBackward() ) {
+              if ( beta.isForward() ) {
                 return true;
-              } else if (alpha.j < beta.j) {
+              } else if ( alpha.j < beta.j ) {
                 // beta is a backward edge
                 return true;
-              } else if ((alpha.j == beta.j) and (alpha.l_ij < beta.l_ij)) {
+              } else if ( ( alpha.j == beta.j ) and
+                          ( alpha.l_ij < beta.l_ij ) ) {
                 return true;
               }
 
               return false;
             } else {
               // alpha is a forward edge
-              if (beta.isBackward()) {
+              if ( beta.isBackward() ) {
                 return false;
-              } else if (beta.i < alpha.i) {
+              } else if ( beta.i < alpha.i ) {
                 // Beta is a forward edge
                 return true;
-              } else if (beta.i == alpha.i) {
-                if (alpha.l_i < beta.l_i) {
+              } else if ( beta.i == alpha.i ) {
+                if ( alpha.l_i < beta.l_i ) {
                   return true;
-                } else if (alpha.l_i == beta.l_i) {
-                  if (alpha.l_ij < beta.l_ij) {
+                } else if ( alpha.l_i == beta.l_i ) {
+                  if ( alpha.l_ij < beta.l_ij ) {
                     return true;
-                  } else if (alpha.l_ij == beta.l_ij) {
+                  } else if ( alpha.l_ij == beta.l_ij ) {
                     return alpha.l_j < beta.l_j;
                   }
                 }
@@ -132,7 +133,7 @@ namespace gum {
               return false;
             }
 
-            return (**iter) < (**jter);
+            return ( **iter ) < ( **jter );
           }
         }
 
@@ -140,14 +141,14 @@ namespace gum {
       }
 
       INLINE
-      bool DFSCode::operator<=(const DFSCode& from) const {
+      bool DFSCode::operator<=( const DFSCode& from ) const {
         DFSCode::const_iterator iter = codes.begin();
         DFSCode::const_iterator jter = from.codes.begin();
 
-        for (; (iter != codes.end()) and (jter != from.codes.end());
-             ++iter, ++jter) {
-          if ((**iter) != (**jter)) {
-            return (**iter) < (**jter);
+        for ( ; ( iter != codes.end() ) and ( jter != from.codes.end() );
+              ++iter, ++jter ) {
+          if ( ( **iter ) != ( **jter ) ) {
+            return ( **iter ) < ( **jter );
             // EdgeCode& alpha = **iter;
             // EdgeCode& beta = **jter;
             // if ( alpha.isBackward() ) {

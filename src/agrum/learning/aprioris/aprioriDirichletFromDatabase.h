@@ -58,7 +58,7 @@ namespace gum {
       template <typename RowFilter>
       AprioriDirichletFromDatabase(
           const RowFilter& filter,
-          const std::vector<unsigned int>& var_modalities);
+          const std::vector<unsigned int>& var_modalities );
 
       /// virtual copy constructor
       virtual AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>*
@@ -78,7 +78,7 @@ namespace gum {
       virtual void compute() final;
 
       /// indicates whether an apriori is of a certain type
-      virtual bool isOfType(const std::string& type) final;
+      virtual bool isOfType( const std::string& type ) final;
 
       /// returns the type of the apriori
       virtual const std::string& getType() const noexcept final;
@@ -88,15 +88,16 @@ namespace gum {
       protected:
       /// copy constructor
       AprioriDirichletFromDatabase(
-          const AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>& from);
+          const AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>& from );
 
       /// move constructor
       AprioriDirichletFromDatabase(
-          AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>&& from);
+          AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>&& from );
 
       /// prevent copy operator
-      AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>& operator=(
-          const AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>&) = delete;
+      AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>&
+      operator=( const AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>& ) =
+          delete;
     };
 
   } /* namespace learning */

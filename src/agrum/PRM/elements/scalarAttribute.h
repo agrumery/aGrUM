@@ -75,9 +75,9 @@ namespace gum {
        * of this Attribute.
        *             it will be deleted after the call of ~Attribute.
        */
-      ScalarAttribute(const std::string& name, const Type<GUM_SCALAR>& type,
-                      MultiDimImplementation<GUM_SCALAR>* impl =
-                          new MultiDimArray<GUM_SCALAR>());
+      ScalarAttribute( const std::string& name, const Type<GUM_SCALAR>& type,
+                       MultiDimImplementation<GUM_SCALAR>* impl =
+                           new MultiDimArray<GUM_SCALAR>() );
 
       /**
        * @brief Constructor used by gum::Instance.
@@ -108,14 +108,14 @@ namespace gum {
       /// @{
 
       virtual Attribute<GUM_SCALAR>*
-      newFactory(const Class<GUM_SCALAR>& c) const;
+      newFactory( const Class<GUM_SCALAR>& c ) const;
       virtual Attribute<GUM_SCALAR>*
-      copy(Bijection<const DiscreteVariable*, const DiscreteVariable*> bij)
+      copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij )
           const;
 
-      virtual void copyCpf(const Bijection<const DiscreteVariable*,
-                                           const DiscreteVariable*>& bif,
-                           const Attribute<GUM_SCALAR>& source);
+      virtual void copyCpf( const Bijection<const DiscreteVariable*,
+                                            const DiscreteVariable*>& bif,
+                            const Attribute<GUM_SCALAR>& source );
 
       /// See gum::ClassElement::elt_type().
       virtual typename ClassElement<GUM_SCALAR>::ClassElementType
@@ -131,29 +131,29 @@ namespace gum {
       virtual const Potential<GUM_SCALAR>& cpf() const;
 
       /// See gum::ClassElement::_addParent().
-      virtual void addParent(const ClassElement<GUM_SCALAR>& elt);
+      virtual void addParent( const ClassElement<GUM_SCALAR>& elt );
 
       /// See gum::ClassElement::_addChild().
-      virtual void addChild(const ClassElement<GUM_SCALAR>& elt);
+      virtual void addChild( const ClassElement<GUM_SCALAR>& elt );
 
       virtual Attribute<GUM_SCALAR>* getCastDescendant() const;
-      virtual void setAsCastDescendant(Attribute<GUM_SCALAR>* attr);
-      virtual void becomeCastDescendant(Type<GUM_SCALAR>& subtype);
+      virtual void setAsCastDescendant( Attribute<GUM_SCALAR>* attr );
+      virtual void becomeCastDescendant( Type<GUM_SCALAR>& subtype );
 
       /// Swap old_type with new_type in the ClassElement cpt.
-      virtual void swap(const Type<GUM_SCALAR>& old_type,
-                        const Type<GUM_SCALAR>& new_type);
+      virtual void swap( const Type<GUM_SCALAR>& old_type,
+                         const Type<GUM_SCALAR>& new_type );
 
       /// @}
       protected:
       /// Copy constructor. Don't use it.
-      ScalarAttribute(const ScalarAttribute& source);
+      ScalarAttribute( const ScalarAttribute& source );
 
       /// Copy operator. Don't use it.
-      ScalarAttribute& operator=(const ScalarAttribute& from);
+      ScalarAttribute& operator=( const ScalarAttribute& from );
 
       virtual Type<GUM_SCALAR>* _type();
-      virtual void _type(Type<GUM_SCALAR>* t);
+      virtual void _type( Type<GUM_SCALAR>* t );
 
       private:
       // ========================================================================

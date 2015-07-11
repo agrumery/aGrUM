@@ -30,53 +30,54 @@ namespace gum_tests {
     public:
     void testClassWithoutSystem() {
       gum::BayesNet<double> bn;
-      gum::O3prmBNReader<double> reader(&bn, GET_PATH_STR("o3prm/Asia.o3prm"));
+      gum::O3prmBNReader<double> reader( &bn,
+                                         GET_PATH_STR( "o3prm/Asia.o3prm" ) );
       int res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      TS_ASSERT_EQUALS(res, 1);  // no system
-      TS_ASSERT_EQUALS(bn.size(), (gum::Size)8);
+      TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
+      TS_ASSERT_EQUALS( res, 1 );  // no system
+      TS_ASSERT_EQUALS( bn.size(), (gum::Size)8 );
     }
 
     void testClassesWithSystem() {
       gum::BayesNet<double> bn;
       gum::O3prmBNReader<double> reader(
-          &bn, GET_PATH_STR("o3prm/AsiaClassAndSystemWithTwoClasses.o3prm"),
-          "Asia");
+          &bn, GET_PATH_STR( "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" ),
+          "Asia" );
       int res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      TS_ASSERT_EQUALS(res, 0);
-      TS_ASSERT_EQUALS(bn.size(), (gum::Size)8);
+      TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
+      TS_ASSERT_EQUALS( res, 0 );
+      TS_ASSERT_EQUALS( bn.size(), (gum::Size)8 );
     }
 
     void testWithError() {
       gum::BayesNet<double> bn;
       gum::O3prmBNReader<double> reader(
-          &bn, GET_PATH_STR("o3prm/DoesNotExists.o3prm"), "Asia");
+          &bn, GET_PATH_STR( "o3prm/DoesNotExists.o3prm" ), "Asia" );
       int res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      TS_ASSERT_EQUALS(res, 1);                         // file not found
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)1);  // file not found
-      TS_ASSERT_EQUALS(bn.size(), (gum::Size)0);
+      TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
+      TS_ASSERT_EQUALS( res, 1 );                         // file not found
+      TS_ASSERT_EQUALS( reader.errors(), (gum::Size)1 );  // file not found
+      TS_ASSERT_EQUALS( bn.size(), (gum::Size)0 );
 
 
       gum::O3prmBNReader<double> reader2(
-          &bn, GET_PATH_STR("o3prm/AsiaWithError.o3prm"), "Asia");
+          &bn, GET_PATH_STR( "o3prm/AsiaWithError.o3prm" ), "Asia" );
       res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
-          res = reader2.proceed())  // class plop not existing
-      TS_ASSERT_EQUALS(reader2.errors(),
-                       (gum::Size)2);  // class plop not existing
-      TS_ASSERT_EQUALS(bn.size(), (gum::Size)0);
+          res = reader2.proceed() )  // class plop not existing
+      TS_ASSERT_EQUALS( reader2.errors(),
+                        (gum::Size)2 );  // class plop not existing
+      TS_ASSERT_EQUALS( bn.size(), (gum::Size)0 );
     }
 
     void testWithCplxFile() {
       gum::BayesNet<double> bn;
       gum::O3prmBNReader<double> reader(
-          &bn, GET_PATH_STR("o3prm/inference.o3prm"), "aSys");
+          &bn, GET_PATH_STR( "o3prm/inference.o3prm" ), "aSys" );
       int res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      TS_ASSERT_EQUALS(res, 0);
-      TS_ASSERT_EQUALS(bn.size(), (gum::Size)72);
+      TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
+      TS_ASSERT_EQUALS( res, 0 );
+      TS_ASSERT_EQUALS( bn.size(), (gum::Size)72 );
     }
   };
 }  // namespace gum_tests

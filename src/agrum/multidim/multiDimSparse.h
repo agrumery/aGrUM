@@ -61,7 +61,7 @@ namespace gum {
 
     /// Default constructor: creates an empty null dimensional matrix
 
-    MultiDimSparse(const GUM_SCALAR& default_value);
+    MultiDimSparse( const GUM_SCALAR& default_value );
 
     /// copy constructor
     /** The newly created matrix contains the same variables and the same values
@@ -69,7 +69,7 @@ namespace gum {
      * from, but no instantiation is associated to it.
      * @param from the multidimensional matrix we copy into this */
 
-    MultiDimSparse(const MultiDimSparse<GUM_SCALAR>& from);
+    MultiDimSparse( const MultiDimSparse<GUM_SCALAR>& from );
 
     /// destructor
     /** Note that, when the multidimensional array is removed from memory, its
@@ -103,7 +103,7 @@ namespace gum {
     /** @param from the multidimensional matrix we copy into this */
 
     MultiDimSparse<GUM_SCALAR>&
-    operator=(const MultiDimSparse<GUM_SCALAR>& from);
+    operator=( const MultiDimSparse<GUM_SCALAR>& from );
     /// @}
 
     /// add a new dimension
@@ -111,7 +111,7 @@ namespace gum {
      * @throw DuplicateElement
      */
 
-    void add(const DiscreteVariable& v);
+    void add( const DiscreteVariable& v );
 
     /// removes a dimension
     /** If the variable does not belong to the MultiDimBase, then this method
@@ -122,13 +122,13 @@ namespace gum {
      * @throw OperationNotAllowed
      */
 
-    void erase(const DiscreteVariable& v);
+    void erase( const DiscreteVariable& v );
 
     /// fill the table with d
-    virtual void fill(const GUM_SCALAR& d) const;
+    virtual void fill( const GUM_SCALAR& d ) const;
 
-    virtual GUM_SCALAR get(const Instantiation& i) const;
-    virtual void set(const Instantiation& i, const GUM_SCALAR& value) const;
+    virtual GUM_SCALAR get( const Instantiation& i ) const;
+    virtual void set( const Instantiation& i, const GUM_SCALAR& value ) const;
 
     /// returns the real name of the multiDimArray
     /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
@@ -155,17 +155,17 @@ namespace gum {
     mutable GUM_SCALAR _default;
 
     /// synchronise content after MultipleChanges
-    virtual void _commitMultipleChanges(void);
+    virtual void _commitMultipleChanges( void );
 
     /// forbiden r/w access to values
     /** @param i an Instantiation
      * @throw OperationNotAllowed
      */
-    virtual GUM_SCALAR& _get(const Instantiation& i) const {
-      GUM_ERROR(OperationNotAllowed, "No (unconst) access to an aggregator");
+    virtual GUM_SCALAR& _get( const Instantiation& i ) const {
+      GUM_ERROR( OperationNotAllowed, "No (unconst) access to an aggregator" );
     };
 
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+    virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
   };
 
 } /* namespace gum */

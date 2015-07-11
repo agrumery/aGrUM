@@ -66,14 +66,14 @@ namespace gum {
     /// the base class indicating the possible changes
     class Change {
       public:
-      Change(ChangeType type, NodeId tail, NodeId head) noexcept;
-      Change(const Change& from) noexcept;
-      Change(Change&& from) noexcept;
+      Change( ChangeType type, NodeId tail, NodeId head ) noexcept;
+      Change( const Change& from ) noexcept;
+      Change( Change&& from ) noexcept;
       virtual ~Change() noexcept;
 
       protected:
-      Change& operator=(const Change& from) noexcept;
-      Change& operator=(Change&& from) noexcept;
+      Change& operator=( const Change& from ) noexcept;
+      Change& operator=( Change&& from ) noexcept;
 
       public:
       // ##########################################################################
@@ -114,13 +114,13 @@ namespace gum {
       // ##########################################################################
       /// @{
       /// default constructor
-      ArcAdd(NodeId tail, NodeId head) noexcept;
+      ArcAdd( NodeId tail, NodeId head ) noexcept;
 
       /// copy constructor
-      ArcAdd(const ArcAdd& from) noexcept;
+      ArcAdd( const ArcAdd& from ) noexcept;
 
       /// move constructor
-      ArcAdd(ArcAdd&& from) noexcept;
+      ArcAdd( ArcAdd&& from ) noexcept;
 
       /// destructor
       ~ArcAdd() noexcept;
@@ -133,10 +133,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ArcAdd& operator=(const ArcAdd& from) noexcept;
+      ArcAdd& operator=( const ArcAdd& from ) noexcept;
 
       /// move operator
-      ArcAdd& operator=(ArcAdd&& from) noexcept;
+      ArcAdd& operator=( ArcAdd&& from ) noexcept;
 
       /// @}
     };
@@ -152,13 +152,13 @@ namespace gum {
       // ##########################################################################
       /// @{
       /// default constructor
-      ArcDel(NodeId tail, NodeId head) noexcept;
+      ArcDel( NodeId tail, NodeId head ) noexcept;
 
       /// copy constructor
-      ArcDel(const ArcDel& from) noexcept;
+      ArcDel( const ArcDel& from ) noexcept;
 
       /// move constructor
-      ArcDel(ArcDel&& from) noexcept;
+      ArcDel( ArcDel&& from ) noexcept;
 
       /// destructor
       ~ArcDel() noexcept;
@@ -171,10 +171,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ArcDel& operator=(const ArcDel& from) noexcept;
+      ArcDel& operator=( const ArcDel& from ) noexcept;
 
       /// move operator
-      ArcDel& operator=(ArcDel&& from) noexcept;
+      ArcDel& operator=( ArcDel&& from ) noexcept;
 
       /// @}
     };
@@ -190,13 +190,13 @@ namespace gum {
       // ##########################################################################
       /// @{
       /// default constructor
-      ArcReverse(NodeId tail, NodeId head) noexcept;
+      ArcReverse( NodeId tail, NodeId head ) noexcept;
 
       /// copy constructor
-      ArcReverse(const ArcReverse& from) noexcept;
+      ArcReverse( const ArcReverse& from ) noexcept;
 
       /// move constructor
-      ArcReverse(ArcReverse&& from) noexcept;
+      ArcReverse( ArcReverse&& from ) noexcept;
 
       /// destructor
       ~ArcReverse() noexcept;
@@ -209,10 +209,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ArcReverse& operator=(const ArcReverse& from) noexcept;
+      ArcReverse& operator=( const ArcReverse& from ) noexcept;
 
       /// move operator
-      ArcReverse& operator=(ArcReverse&& from) noexcept;
+      ArcReverse& operator=( ArcReverse&& from ) noexcept;
 
       /// @}
     };
@@ -228,10 +228,10 @@ namespace gum {
     DAGCycleDetector() noexcept;
 
     /// copy constructor
-    DAGCycleDetector(const DAGCycleDetector& from);
+    DAGCycleDetector( const DAGCycleDetector& from );
 
     /// move constructor
-    DAGCycleDetector(DAGCycleDetector&& from);
+    DAGCycleDetector( DAGCycleDetector&& from );
 
     /// destructor
     ~DAGCycleDetector();
@@ -244,18 +244,18 @@ namespace gum {
     /// @{
 
     /// copy operator
-    DAGCycleDetector& operator=(const DAGCycleDetector& from);
+    DAGCycleDetector& operator=( const DAGCycleDetector& from );
 
     /// move operator
-    DAGCycleDetector& operator=(DAGCycleDetector&& from);
+    DAGCycleDetector& operator=( DAGCycleDetector&& from );
 
     /// check the equality between two DAGCycleDetectors
     /** used essentally for debugging purposes */
-    bool operator==(const DAGCycleDetector& from) const;
+    bool operator==( const DAGCycleDetector& from ) const;
 
     /// check the inequality between two DAGCycleDetectors
     /** used essentally for debugging purposes */
-    bool operator!=(const DAGCycleDetector& from) const;
+    bool operator!=( const DAGCycleDetector& from ) const;
 
     /// @}
 
@@ -265,36 +265,36 @@ namespace gum {
     /// @{
 
     /// sets the initial DAG from which changes shall be applied
-    void setDAG(const DAG& dag);
+    void setDAG( const DAG& dag );
 
     /// adds a new arc to the current DAG
     /** worst case complexity: O(h^2) where h is the height of the DAG
      * @throws InvalidDirectedCycle if the arc would create a cycle in the dag
      */
-    GUM_DEPRECATED(void insertArc(NodeId x, NodeId y));
-    void addArc(NodeId x, NodeId y);
+    GUM_DEPRECATED( void insertArc( NodeId x, NodeId y ) );
+    void addArc( NodeId x, NodeId y );
 
     /// removes an arc from the current DAG
     /** worst case complexity: O(h^2) where h is the height of the DAG */
-    void eraseArc(NodeId x, NodeId y);
+    void eraseArc( NodeId x, NodeId y );
 
     /// reverses an arc from the DAG
     /**  worst case complexity: O(h^2) where h is the height of the DAG
      * @throws InvalidDirectedCycle if the arc reversal would create a cycle
      * in the dag */
-    void reverseArc(NodeId x, NodeId y);
+    void reverseArc( NodeId x, NodeId y );
 
     /// indicates whether an arc addition would create a cycle
     /** worst case complexity: O(1) */
-    bool hasCycleFromAddition(NodeId x, NodeId y) const noexcept;
+    bool hasCycleFromAddition( NodeId x, NodeId y ) const noexcept;
 
     /// indicates wether an arc reversal would create a cycle
     /** worst case complexity: O(1) */
-    bool hasCycleFromReversal(NodeId x, NodeId y) const noexcept;
+    bool hasCycleFromReversal( NodeId x, NodeId y ) const noexcept;
 
     /// indicates whether an arc deletion would create a cycle
     /** worst case complexity: O(1) */
-    bool hasCycleFromDeletion(NodeId x, NodeId y) const noexcept;
+    bool hasCycleFromDeletion( NodeId x, NodeId y ) const noexcept;
 
     /// indicates whether a set of modifications would create a cycle
     /** the Boolean returned corresponds to the existence (or not) of a cycle
@@ -304,7 +304,7 @@ namespace gum {
      * final
      * graph obtained does not contains a cycle (due to the deletion) and
      * the method will thus return false. */
-    bool hasCycleFromModifications(const std::vector<Change>& modifs) const;
+    bool hasCycleFromModifications( const std::vector<Change>& modifs ) const;
 
     /// @}
 
@@ -321,22 +321,22 @@ namespace gum {
     NodeProperty<NodeProperty<unsigned int>> __descendants;
 
     /// adds a weighted nodeset to another (weights are added)
-    void __addWeightedSet(NodeProperty<unsigned int>& nodeset,
-                          const NodeProperty<unsigned int>& set_to_add,
-                          unsigned int multiplier) const;
+    void __addWeightedSet( NodeProperty<unsigned int>& nodeset,
+                           const NodeProperty<unsigned int>& set_to_add,
+                           unsigned int multiplier ) const;
 
     /// removes a weighted nodeset from another (weights are subtracted)
-    void __delWeightedSet(NodeProperty<unsigned int>& nodeset,
-                          const NodeProperty<unsigned int>& set_to_del,
-                          unsigned int multiplier) const;
+    void __delWeightedSet( NodeProperty<unsigned int>& nodeset,
+                           const NodeProperty<unsigned int>& set_to_del,
+                           unsigned int multiplier ) const;
 
     /** @brief put into a weighted nodeset the nodes of another weighted set
      * that
      * belong to a set of arc extremities */
     void
-    __restrictWeightedSet(NodeProperty<unsigned int>& result_set,
-                          const NodeProperty<unsigned int>& set_to_restrict,
-                          const NodeSet& extrmities) const;
+    __restrictWeightedSet( NodeProperty<unsigned int>& result_set,
+                           const NodeProperty<unsigned int>& set_to_restrict,
+                           const NodeSet& extrmities ) const;
   };
 
 } /* namespace gum */

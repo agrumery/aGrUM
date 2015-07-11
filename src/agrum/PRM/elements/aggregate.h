@@ -83,27 +83,27 @@ namespace gum {
        *
        * @throw Raise NotFound exception if no matches is found.
        */
-      static AggregateType str2enum(const std::string& str) {
-        if (str == "min" || str == "MIN" || str == "Min") {
+      static AggregateType str2enum( const std::string& str ) {
+        if ( str == "min" || str == "MIN" || str == "Min" ) {
           return AggregateType::MIN;
-        } else if (str == "max" || str == "MAX" || str == "Max") {
+        } else if ( str == "max" || str == "MAX" || str == "Max" ) {
           return AggregateType::MAX;
-        } else if (str == "mean" || str == "MEAN" || str == "Mean") {
+        } else if ( str == "mean" || str == "MEAN" || str == "Mean" ) {
           return AggregateType::MEAN;
-        } else if (str == "count" || str == "COUNT" || str == "Count") {
+        } else if ( str == "count" || str == "COUNT" || str == "Count" ) {
           return AggregateType::COUNT;
-        } else if (str == "exists" || str == "EXISTS" || str == "Exists") {
+        } else if ( str == "exists" || str == "EXISTS" || str == "Exists" ) {
           return AggregateType::EXISTS;
-        } else if (str == "or" || str == "OR" || str == "Or") {
+        } else if ( str == "or" || str == "OR" || str == "Or" ) {
           return AggregateType::OR;
-        } else if (str == "and" || str == "AND" || str == "And") {
+        } else if ( str == "and" || str == "AND" || str == "And" ) {
           return AggregateType::AND;
-        } else if (str == "forall" || str == "FORALL" || str == "ForAll") {
+        } else if ( str == "forall" || str == "FORALL" || str == "ForAll" ) {
           return AggregateType::FORALL;
         } else {
           std::string msg = "Unknown aggregate: ";
-          msg.append(str);
-          GUM_ERROR(NotFound, msg);
+          msg.append( str );
+          GUM_ERROR( NotFound, msg );
         }
       }
 
@@ -120,8 +120,8 @@ namespace gum {
        * @param rvType The random variable type of this aggregate, which is
        * copied.
        */
-      Aggregate(const std::string& name, AggregateType aggType,
-                const Type<GUM_SCALAR>& rvType);
+      Aggregate( const std::string& name, AggregateType aggType,
+                 const Type<GUM_SCALAR>& rvType );
 
       /**
        * Default constructor.
@@ -131,8 +131,8 @@ namespace gum {
        * copied.
        * @param label The index of the label on which this aggregate applies.
        */
-      Aggregate(const std::string& name, AggregateType aggType,
-                const Type<GUM_SCALAR>& rvType, Idx label);
+      Aggregate( const std::string& name, AggregateType aggType,
+                 const Type<GUM_SCALAR>& rvType, Idx label );
 
       /// Destructor.
       virtual ~Aggregate();
@@ -158,10 +158,10 @@ namespace gum {
       Idx label() const;
 
       /// See gum::ClassElement::_addParent().
-      virtual void addParent(const ClassElement<GUM_SCALAR>& elt);
+      virtual void addParent( const ClassElement<GUM_SCALAR>& elt );
 
       /// See gum::ClassElement::_addChild().
-      virtual void addChild(const ClassElement<GUM_SCALAR>& elt);
+      virtual void addChild( const ClassElement<GUM_SCALAR>& elt );
 
       /// See gum::ClassElement::type().
       virtual Type<GUM_SCALAR>& type();
@@ -201,10 +201,10 @@ namespace gum {
       /// @{
 
       /// Copy constructor. Don't use it.
-      Aggregate(const Aggregate& source);
+      Aggregate( const Aggregate& source );
 
       /// Copy operator. Don't use it.
-      Aggregate& operator=(const Aggregate& source);
+      Aggregate& operator=( const Aggregate& source );
 
       /// @}
       // ========================================================================

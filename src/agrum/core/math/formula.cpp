@@ -35,32 +35,32 @@ namespace gum {
    ***************************************************************************/
 
   // Helper function for debuging
-  void print_stack(std::stack<FormulaPart> s) {
+  void print_stack( std::stack<FormulaPart> s ) {
     std::cout << std::endl;
     std::list<FormulaPart> l;
-    while (not s.empty()) {
-      l.push_front(s.top());
+    while ( not s.empty() ) {
+      l.push_front( s.top() );
       s.pop();
     }
 
     std::cout << "Stack: ";
-    for (const auto& elt : l) {
+    for ( const auto& elt : l ) {
       std::cout << elt.str() << " ";
     }
     std::cout << std::endl;
   }
 
   // Helper function for debuging
-  void print_output(std::vector<FormulaPart> v) {
+  void print_output( std::vector<FormulaPart> v ) {
     std::cout << "Output: ";
-    for (const auto& elt : v) {
+    for ( const auto& elt : v ) {
       std::cout << elt.str() << " ";
     }
     std::cout << std::endl;
   }
 
-  std::string func2str(FormulaPart::token_function func) {
-    switch (func) {
+  std::string func2str( FormulaPart::token_function func ) {
+    switch ( func ) {
       case FormulaPart::token_function::exp: {
         return "exp";
       }
@@ -79,39 +79,40 @@ namespace gum {
       case FormulaPart::token_function::nil: {
         return "nil";
       }
-      default: { GUM_ERROR(OperationNotAllowed, "unknown function"); }
+      default: { GUM_ERROR( OperationNotAllowed, "unknown function" ); }
     }
   }
 
   FormulaPart::FormulaPart()
-      : type(token_type::NIL), number(NAN), character('\0'), function(nil) {
-    GUM_CONSTRUCTOR(FormulaPart);
+      : type( token_type::NIL ), number( NAN ), character( '\0' ),
+        function( nil ) {
+    GUM_CONSTRUCTOR( FormulaPart );
   }
 
-  FormulaPart::FormulaPart(token_type t, double n)
-      : type(t), number(n), character('\0'), function(nil) {
-    GUM_CONSTRUCTOR(FormulaPart);
+  FormulaPart::FormulaPart( token_type t, double n )
+      : type( t ), number( n ), character( '\0' ), function( nil ) {
+    GUM_CONSTRUCTOR( FormulaPart );
   }
 
-  FormulaPart::FormulaPart(token_type t, char c)
-      : type(t), number(NAN), character(c), function(nil) {
-    GUM_CONSTRUCTOR(FormulaPart);
+  FormulaPart::FormulaPart( token_type t, char c )
+      : type( t ), number( NAN ), character( c ), function( nil ) {
+    GUM_CONSTRUCTOR( FormulaPart );
   }
 
-  FormulaPart::FormulaPart(token_type t, token_function func)
-      : type(t), number(NAN), character('\0'), function(func) {
-    GUM_CONSTRUCTOR(FormulaPart);
+  FormulaPart::FormulaPart( token_type t, token_function func )
+      : type( t ), number( NAN ), character( '\0' ), function( func ) {
+    GUM_CONSTRUCTOR( FormulaPart );
   }
 
-  FormulaPart::FormulaPart(const FormulaPart& source)
-      : type(source.type), number(source.number), character(source.character),
-        function(source.function) {
-    GUM_CONS_CPY(FormulaPart);
+  FormulaPart::FormulaPart( const FormulaPart& source )
+      : type( source.type ), number( source.number ),
+        character( source.character ), function( source.function ) {
+    GUM_CONS_CPY( FormulaPart );
   }
 
-  FormulaPart::~FormulaPart() { GUM_DESTRUCTOR(FormulaPart); }
+  FormulaPart::~FormulaPart() { GUM_DESTRUCTOR( FormulaPart ); }
 
-  FormulaPart& FormulaPart::operator=(const FormulaPart& source) {
+  FormulaPart& FormulaPart::operator=( const FormulaPart& source ) {
     type = source.type;
     number = source.number;
     character = source.character;
@@ -122,7 +123,7 @@ namespace gum {
 
   std::string FormulaPart::str() const {
     std::ostringstream s;
-    switch (type) {
+    switch ( type ) {
       case token_type::NUMBER: {
         s << number;
         break;
@@ -130,7 +131,7 @@ namespace gum {
 
       case token_type::PARENTHESIS:
       case token_type::OPERATOR: {
-        if (character == '\0') {
+        if ( character == '\0' ) {
           s << "\\0";
         } else {
           s << character;
@@ -139,17 +140,17 @@ namespace gum {
       }
 
       case token_type::FUNCTION: {
-        s << func2str(function);
+        s << func2str( function );
         break;
       }
 
-      default: { GUM_ERROR(OperationNotAllowed, "unknown type"); }
+      default: { GUM_ERROR( OperationNotAllowed, "unknown type" ); }
     }
     return s.str();
   }
 
   bool FormulaPart::isLeftAssociative() const {
-    switch (character) {
+    switch ( character ) {
       case '+':
       case '-':
       case '*':
@@ -164,12 +165,12 @@ namespace gum {
         return false;
       }
 
-      default: { GUM_ERROR(OperationNotAllowed, "A - not an operator"); }
+      default: { GUM_ERROR( OperationNotAllowed, "A - not an operator" ); }
     }
   }
 
   bool FormulaPart::isRightAssociative() const {
-    switch (character) {
+    switch ( character ) {
       case '_': {
         return false;
       }
@@ -178,7 +179,7 @@ namespace gum {
   }
 
   int FormulaPart::precedence() const {
-    switch (character) {
+    switch ( character ) {
       case '+':
       case '-': {
         return 2;
@@ -197,12 +198,12 @@ namespace gum {
         return 5;
       }
 
-      default: { GUM_ERROR(OperationNotAllowed, "B - not an operator"); }
+      default: { GUM_ERROR( OperationNotAllowed, "B - not an operator" ); }
     }
   }
 
   size_t FormulaPart::argc() const {
-    switch (type) {
+    switch ( type ) {
       case OPERATOR: {
         return __operator_argc();
       }
@@ -212,13 +213,13 @@ namespace gum {
       }
 
       default: {
-        GUM_ERROR(OperationNotAllowed, "expecting a function or an operator");
+        GUM_ERROR( OperationNotAllowed, "expecting a function or an operator" );
       }
     }
   }
 
   size_t FormulaPart::__operator_argc() const {
-    switch (character) {
+    switch ( character ) {
       case '_': {
         return (size_t)1;
       }
@@ -230,12 +231,12 @@ namespace gum {
         return (size_t)2;
       }
 
-      default: { GUM_ERROR(OperationNotAllowed, "C - not an operator"); }
+      default: { GUM_ERROR( OperationNotAllowed, "C - not an operator" ); }
     }
   }
 
   size_t FormulaPart::__function_argc() const {
-    switch (function) {
+    switch ( function ) {
       case FormulaPart::token_function::exp: {
         return 1;
       }
@@ -252,14 +253,14 @@ namespace gum {
         return 1;
       }
       // case FormulaPart::token_function::nil: { return "nil"; }
-      default: { GUM_ERROR(OperationNotAllowed, "unknown function"); }
+      default: { GUM_ERROR( OperationNotAllowed, "unknown function" ); }
     }
   }
 
   /// Args are backwards !
   double
-  FormulaPart::__operator_eval(const std::vector<FormulaPart>& args) const {
-    switch (character) {
+  FormulaPart::__operator_eval( const std::vector<FormulaPart>& args ) const {
+    switch ( character ) {
       case '+': {
         return args[1].number + args[0].number;
       }
@@ -277,53 +278,55 @@ namespace gum {
       }
 
       case '^': {
-        return std::pow(args[1].number, args[0].number);
+        return std::pow( args[1].number, args[0].number );
       }
 
       case '_': {
         return 0 - args[0].number;
       }
 
-      default: { GUM_ERROR(OperationNotAllowed, "D - not an operator"); }
+      default: { GUM_ERROR( OperationNotAllowed, "D - not an operator" ); }
     }
   }
 
   /// Args are backwards !
   double
-  FormulaPart::__function_eval(const std::vector<FormulaPart>& args) const {
-    switch (function) {
+  FormulaPart::__function_eval( const std::vector<FormulaPart>& args ) const {
+    switch ( function ) {
       case FormulaPart::token_function::exp: {
-        return std::exp(args[0].number);
+        return std::exp( args[0].number );
       }
       case FormulaPart::token_function::log: {
-        return std::log(args[0].number);
+        return std::log( args[0].number );
       }
       case FormulaPart::token_function::ln: {
-        return std::log2(args[0].number);
+        return std::log2( args[0].number );
       }
       case FormulaPart::token_function::pow: {
-        return std::pow(args[1].number, args[0].number);
+        return std::pow( args[1].number, args[0].number );
       }
       case FormulaPart::token_function::sqrt: {
-        return std::sqrt(args[0].number);
+        return std::sqrt( args[0].number );
       }
       // case FormulaPart::token_function::nil: { return "nil"; }
-      default: { GUM_ERROR(OperationNotAllowed, "unknown function"); }
+      default: { GUM_ERROR( OperationNotAllowed, "unknown function" ); }
     }
   }
 
   /// Args are backwards !
-  FormulaPart FormulaPart::eval(const std::vector<FormulaPart>& args) const {
-    switch (type) {
+  FormulaPart FormulaPart::eval( const std::vector<FormulaPart>& args ) const {
+    switch ( type ) {
       case OPERATOR: {
-        return FormulaPart(token_type::NUMBER, __operator_eval(args));
+        return FormulaPart( token_type::NUMBER, __operator_eval( args ) );
       }
 
       case FUNCTION: {
-        return FormulaPart(token_type::NUMBER, __function_eval(args));
+        return FormulaPart( token_type::NUMBER, __function_eval( args ) );
       }
 
-      default: { GUM_ERROR(OperationNotAllowed, "cannot evaluate expression"); }
+      default: {
+        GUM_ERROR( OperationNotAllowed, "cannot evaluate expression" );
+      }
     }
   }
 
@@ -331,34 +334,34 @@ namespace gum {
    *                            Class Formula                                *
    ***************************************************************************/
 
-  Formula::Formula(const std::string& f)
-      : __formula(f),
-        __scanner(new gum::formula::Scanner((unsigned char*)__formula.c_str(),
-                                            (int)__formula.size())),
-        __parser(new gum::formula::Parser(__scanner)),
-        __last_token(FormulaPart()) {
-    GUM_CONSTRUCTOR(Formula);
-    __parser->formula(this);
+  Formula::Formula( const std::string& f )
+      : __formula( f ),
+        __scanner( new gum::formula::Scanner( (unsigned char*)__formula.c_str(),
+                                              (int)__formula.size() ) ),
+        __parser( new gum::formula::Parser( __scanner ) ),
+        __last_token( FormulaPart() ) {
+    GUM_CONSTRUCTOR( Formula );
+    __parser->formula( this );
   }
 
-  Formula::Formula(const Formula& source)
-      : __formula(source.__formula),
-        __scanner(new gum::formula::Scanner((unsigned char*)__formula.c_str(),
-                                            (int)__formula.size())),
-        __parser(new gum::formula::Parser(__scanner)),
-        __last_token(source.__last_token), __output(source.__output),
-        __stack(source.__stack) {
-    GUM_CONS_CPY(Formula);
-    __parser->formula(this);
+  Formula::Formula( const Formula& source )
+      : __formula( source.__formula ),
+        __scanner( new gum::formula::Scanner( (unsigned char*)__formula.c_str(),
+                                              (int)__formula.size() ) ),
+        __parser( new gum::formula::Parser( __scanner ) ),
+        __last_token( source.__last_token ), __output( source.__output ),
+        __stack( source.__stack ) {
+    GUM_CONS_CPY( Formula );
+    __parser->formula( this );
   }
 
   Formula::~Formula() {
-    GUM_DESTRUCTOR(Formula);
+    GUM_DESTRUCTOR( Formula );
     delete __parser;
     delete __scanner;
   }
 
-  Formula& Formula::operator=(const Formula& source) {
+  Formula& Formula::operator=( const Formula& source ) {
     __output = source.__output;
     __stack = source.__stack;
     return *this;
@@ -369,83 +372,83 @@ namespace gum {
     __parser->Parse();
 
     std::stack<FormulaPart> stack;
-    if (output().empty()) {
-      GUM_ERROR(OperationNotAllowed, "no output found");
+    if ( output().empty() ) {
+      GUM_ERROR( OperationNotAllowed, "no output found" );
     }
 
-    for (auto item : output()) {
+    for ( auto item : output() ) {
 
 
-      switch (item.type) {
+      switch ( item.type ) {
         case FormulaPart::token_type::NUMBER: {
-          stack.push(item);
+          stack.push( item );
           break;
         }
 
         case FormulaPart::token_type::OPERATOR:
         case FormulaPart::token_type::FUNCTION: {
-          __reduceOperatorOrFunction(item, stack);
+          __reduceOperatorOrFunction( item, stack );
           break;
         }
 
         default: {
-          GUM_ERROR(OperationNotAllowed,
-                    "expecting numbers, operators or functions");
+          GUM_ERROR( OperationNotAllowed,
+                     "expecting numbers, operators or functions" );
         }
       }
     }
 
-    if (stack.size() != 1) {
+    if ( stack.size() != 1 ) {
 
-      GUM_ERROR(OperationNotAllowed, "too many inputs");
+      GUM_ERROR( OperationNotAllowed, "too many inputs" );
 
-    } else if (stack.top().type != FormulaPart::token_type::NUMBER) {
+    } else if ( stack.top().type != FormulaPart::token_type::NUMBER ) {
 
-      GUM_ERROR(OperationNotAllowed, "too many inputs");
+      GUM_ERROR( OperationNotAllowed, "too many inputs" );
     }
     return stack.top().number;
   }
 
-  void Formula::push_number(const double& v) {
-    FormulaPart t(FormulaPart::token_type::NUMBER, v);
-    __push_output(t);
+  void Formula::push_number( const double& v ) {
+    FormulaPart t( FormulaPart::token_type::NUMBER, v );
+    __push_output( t );
   }
 
-  bool Formula::__popOperator(FormulaPart o) {
+  bool Formula::__popOperator( FormulaPart o ) {
 
-    if (stack().empty() or
-        stack().top().type != FormulaPart::token_type::OPERATOR) {
+    if ( stack().empty() or
+         stack().top().type != FormulaPart::token_type::OPERATOR ) {
       return false;
     }
 
-    if (o.isLeftAssociative() and
-        o.precedence() <= stack().top().precedence()) {
+    if ( o.isLeftAssociative() and
+         o.precedence() <= stack().top().precedence() ) {
       return true;
     }
 
-    if (o.isRightAssociative() and
-        o.precedence() < stack().top().precedence()) {
+    if ( o.isRightAssociative() and
+         o.precedence() < stack().top().precedence() ) {
       return true;
     }
 
     return false;
   }
 
-  void Formula::push_operator(char o) {
+  void Formula::push_operator( char o ) {
 
-    if (__isUnaryOperator(o)) {
+    if ( __isUnaryOperator( o ) ) {
 
-      __push_unaryOperator(o);
+      __push_unaryOperator( o );
 
     } else {
 
-      FormulaPart t(FormulaPart::token_type::OPERATOR, o);
-      __push_operator(t);
+      FormulaPart t( FormulaPart::token_type::OPERATOR, o );
+      __push_operator( t );
     }
   }
 
-  bool Formula::__isUnaryOperator(char o) {
-    switch (__last_token.type) {
+  bool Formula::__isUnaryOperator( char o ) {
+    switch ( __last_token.type ) {
 
       case FormulaPart::token_type::OPERATOR:
       case FormulaPart::token_type::NIL:
@@ -461,86 +464,86 @@ namespace gum {
     }
   }
 
-  void Formula::__push_unaryOperator(char o) {
+  void Formula::__push_unaryOperator( char o ) {
 
     // Only unary operator is the negative sign -
-    FormulaPart t(FormulaPart::token_type::OPERATOR, '_');
-    __push_operator(t);
+    FormulaPart t( FormulaPart::token_type::OPERATOR, '_' );
+    __push_operator( t );
   }
 
-  void Formula::__push_operator(FormulaPart t) {
+  void Formula::__push_operator( FormulaPart t ) {
 
-    while (__popOperator(t)) {
-      __push_output(stack().top());
+    while ( __popOperator( t ) ) {
+      __push_output( stack().top() );
       stack().pop();
     }
 
-    __push_stack(t);
+    __push_stack( t );
   }
 
   void Formula::push_leftParenthesis() {
 
-    FormulaPart t(FormulaPart::token_type::PARENTHESIS, '(');
-    __push_stack(t);
+    FormulaPart t( FormulaPart::token_type::PARENTHESIS, '(' );
+    __push_stack( t );
   }
 
   void Formula::push_rightParenthesis() {
 
-    while ((not stack().empty()) and (stack().top().character != '(')) {
-      __push_output(stack().top());
+    while ( ( not stack().empty() ) and ( stack().top().character != '(' ) ) {
+      __push_output( stack().top() );
       stack().pop();
     }
 
-    if (stack().empty()) {
+    if ( stack().empty() ) {
 
-      GUM_ERROR(OperationNotAllowed, "expecting '('");
+      GUM_ERROR( OperationNotAllowed, "expecting '('" );
 
-    } else if (stack().top().character != '(') {
+    } else if ( stack().top().character != '(' ) {
 
-      GUM_ERROR(OperationNotAllowed, "expecting '('");
+      GUM_ERROR( OperationNotAllowed, "expecting '('" );
     }
 
     stack().pop();
 
-    if (stack().top().type == FormulaPart::token_type::FUNCTION) {
+    if ( stack().top().type == FormulaPart::token_type::FUNCTION ) {
 
-      __push_output(stack().top());
+      __push_output( stack().top() );
       stack().pop();
     }
-    __last_token = FormulaPart(FormulaPart::token_type::PARENTHESIS, ')');
+    __last_token = FormulaPart( FormulaPart::token_type::PARENTHESIS, ')' );
   }
 
   void Formula::finalize() {
 
-    while (not stack().empty()) {
+    while ( not stack().empty() ) {
 
-      if (stack().top().character == '(') {
+      if ( stack().top().character == '(' ) {
 
-        GUM_ERROR(OperationNotAllowed, "expecting ')'");
+        GUM_ERROR( OperationNotAllowed, "expecting ')'" );
       }
 
-      __push_output(stack().top());
+      __push_output( stack().top() );
       stack().pop();
     }
   }
 
   void
-  Formula::__reduceOperatorOrFunction(FormulaPart item,
-                                      std::stack<FormulaPart>& stack) const {
+  Formula::__reduceOperatorOrFunction( FormulaPart item,
+                                       std::stack<FormulaPart>& stack ) const {
 
     std::vector<FormulaPart> args;
 
-    if (stack.size() < item.argc()) {
-      GUM_ERROR(OperationNotAllowed, "not enought inputs ");
+    if ( stack.size() < item.argc() ) {
+      GUM_ERROR( OperationNotAllowed, "not enought inputs " );
     }
 
-    while (item.argc() > args.size()) {
+    while ( item.argc() > args.size() ) {
 
-      args.push_back(stack.top());
+      args.push_back( stack.top() );
       stack.pop();
     }
 
-    stack.push(item.eval(args));
+    stack.push( item.eval( args ) );
   }
 
   std::vector<FormulaPart>& Formula::output() { return __output; }
@@ -551,65 +554,65 @@ namespace gum {
 
   const std::stack<FormulaPart>& Formula::stack() const { return __stack; }
 
-  void Formula::__push_output(FormulaPart t) {
-    __output.push_back(t);
+  void Formula::__push_output( FormulaPart t ) {
+    __output.push_back( t );
     __last_token = t;
   }
 
-  void Formula::__push_stack(FormulaPart t) {
-    __stack.push(t);
+  void Formula::__push_stack( FormulaPart t ) {
+    __stack.push( t );
     __last_token = t;
   }
 
-  void Formula::push_function(const std::string& func) {
+  void Formula::push_function( const std::string& func ) {
 
-    if (func == "exp") {
+    if ( func == "exp" ) {
 
-      FormulaPart t(FormulaPart::token_type::FUNCTION,
-                    FormulaPart::token_function::exp);
-      __push_stack(t);
+      FormulaPart t( FormulaPart::token_type::FUNCTION,
+                     FormulaPart::token_function::exp );
+      __push_stack( t );
 
-    } else if (func == "log") {
+    } else if ( func == "log" ) {
 
-      FormulaPart t(FormulaPart::token_type::FUNCTION,
-                    FormulaPart::token_function::log);
-      __push_stack(t);
+      FormulaPart t( FormulaPart::token_type::FUNCTION,
+                     FormulaPart::token_function::log );
+      __push_stack( t );
 
-    } else if (func == "ln") {
+    } else if ( func == "ln" ) {
 
-      FormulaPart t(FormulaPart::token_type::FUNCTION,
-                    FormulaPart::token_function::ln);
-      __push_stack(t);
+      FormulaPart t( FormulaPart::token_type::FUNCTION,
+                     FormulaPart::token_function::ln );
+      __push_stack( t );
 
-    } else if (func == "pow") {
+    } else if ( func == "pow" ) {
 
-      FormulaPart t(FormulaPart::token_type::FUNCTION,
-                    FormulaPart::token_function::pow);
-      __push_stack(t);
+      FormulaPart t( FormulaPart::token_type::FUNCTION,
+                     FormulaPart::token_function::pow );
+      __push_stack( t );
 
-    } else if (func == "sqrt") {
+    } else if ( func == "sqrt" ) {
 
-      FormulaPart t(FormulaPart::token_type::FUNCTION,
-                    FormulaPart::token_function::sqrt);
-      __push_stack(t);
+      FormulaPart t( FormulaPart::token_type::FUNCTION,
+                     FormulaPart::token_function::sqrt );
+      __push_stack( t );
 
     } else {
 
-      GUM_ERROR(OperationNotAllowed, "unknown function");
+      GUM_ERROR( OperationNotAllowed, "unknown function" );
     }
   }
 
   void Formula::push_comma() {
-    while ((not stack().empty()) and (stack().top().character != '(')) {
-      __push_output(stack().top());
+    while ( ( not stack().empty() ) and ( stack().top().character != '(' ) ) {
+      __push_output( stack().top() );
       stack().pop();
     }
 
-    if (stack().empty() or stack().top().character != '(') {
-      GUM_ERROR(OperationNotAllowed, "expecting a '('");
+    if ( stack().empty() or stack().top().character != '(' ) {
+      GUM_ERROR( OperationNotAllowed, "expecting a '('" );
     }
 
-    __last_token = FormulaPart(FormulaPart::token_type::ARG_SEP, ',');
+    __last_token = FormulaPart( FormulaPart::token_type::ARG_SEP, ',' );
   }
 
   HashTable<std::string, double>& Formula::variables() { return __variables; }
@@ -618,32 +621,32 @@ namespace gum {
     return __variables;
   }
 
-  void Formula::push_variable(const std::string& var) {
+  void Formula::push_variable( const std::string& var ) {
 
-    if (__variables.exists(var)) {
+    if ( __variables.exists( var ) ) {
 
-      push_number(__variables[var]);
+      push_number( __variables[var] );
 
     } else {
 
-      GUM_ERROR(OperationNotAllowed, "unknonw variable");
+      GUM_ERROR( OperationNotAllowed, "unknonw variable" );
     }
   }
 
-  void Formula::push_identifier(const std::string& ident) {
+  void Formula::push_identifier( const std::string& ident ) {
     try {
 
-      push_function(ident);
+      push_function( ident );
 
-    } catch (OperationNotAllowed& error) {
+    } catch ( OperationNotAllowed& error ) {
 
       try {
 
-        push_variable(ident);
+        push_variable( ident );
 
-      } catch (OperationNotAllowed& error) {
+      } catch ( OperationNotAllowed& error ) {
 
-        GUM_ERROR(OperationNotAllowed, "unknown identifier");
+        GUM_ERROR( OperationNotAllowed, "unknown identifier" );
       }
     }
   }

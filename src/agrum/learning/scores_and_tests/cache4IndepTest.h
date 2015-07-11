@@ -68,10 +68,10 @@ namespace gum {
       Cache4IndepTest();
 
       /// copy constructor
-      Cache4IndepTest(const Cache4IndepTest& from);
+      Cache4IndepTest( const Cache4IndepTest& from );
 
       /// move constructor
-      Cache4IndepTest(Cache4IndepTest&& from);
+      Cache4IndepTest( Cache4IndepTest&& from );
 
       /// destructor
       ~Cache4IndepTest();
@@ -84,10 +84,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      Cache4IndepTest& operator=(const Cache4IndepTest& from);
+      Cache4IndepTest& operator=( const Cache4IndepTest& from );
 
       /// move operator
-      Cache4IndepTest& operator=(Cache4IndepTest&& from);
+      Cache4IndepTest& operator=( Cache4IndepTest&& from );
 
       /// @}
 
@@ -99,38 +99,38 @@ namespace gum {
       /// insert a new score into the cache
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
-      void insert(unsigned int var1, unsigned int var2,
-                  const std::vector<unsigned int>& conditioning_set,
-                  float score);
+      void insert( unsigned int var1, unsigned int var2,
+                   const std::vector<unsigned int>& conditioning_set,
+                   float score );
 
       /// insert a new score into the cache
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
       template <typename Alloc>
-      void insert(unsigned int var1, unsigned int var2,
-                  IdSet<Alloc>& conditioning_set, float score);
+      void insert( unsigned int var1, unsigned int var2,
+                   IdSet<Alloc>& conditioning_set, float score );
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
-      void erase(unsigned int var1, unsigned int var2,
-                 const std::vector<unsigned int>& conditioning_set);
+      void erase( unsigned int var1, unsigned int var2,
+                  const std::vector<unsigned int>& conditioning_set );
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
       template <typename Alloc>
-      void erase(unsigned int var1, unsigned int var2,
-                 const IdSet<Alloc>& conditioning_set);
+      void erase( unsigned int var1, unsigned int var2,
+                  const IdSet<Alloc>& conditioning_set );
 
       /// indicates whether a given score exists
-      bool exists(unsigned int var1, unsigned int var2,
-                  const std::vector<unsigned int>& conditioning_set);
+      bool exists( unsigned int var1, unsigned int var2,
+                   const std::vector<unsigned int>& conditioning_set );
 
       /// returns a given score
       /** @throws NotFound is raised if the score is not cached */
-      float score(unsigned int var1, unsigned int var2,
-                  const std::vector<unsigned int>& conditioning_set);
+      float score( unsigned int var1, unsigned int var2,
+                   const std::vector<unsigned int>& conditioning_set );
 
       /// removes all the stored scores
       void clear();

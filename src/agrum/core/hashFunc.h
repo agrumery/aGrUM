@@ -43,7 +43,7 @@ namespace gum {
    * this restriction. Function __hashTableLog2 thus returns the size in
    * bits - 1 necessary to store the smallest power of 2 greater than or
    * equal nb. */
-  unsigned int __hashTableLog2(const Size& nb);
+  unsigned int __hashTableLog2( const Size& nb );
 
   /* Hash functions are of the form [M * ((k * A) mod 1)], where [] stands for
    * the
@@ -139,10 +139,10 @@ namespace gum {
      * hashtable.
      * @throw HashSize
      */
-    virtual void resize(Size s);
+    virtual void resize( Size s );
 
     /// computes the hashed value of a key
-    virtual Size operator()(const Key&) const = 0;
+    virtual Size operator()( const Key& ) const = 0;
 
     /// returns the hash table size as known by the hash function
     Size size() const noexcept;
@@ -173,10 +173,10 @@ namespace gum {
     public:
     /// update the hash function to take into account a resize of the hash table
     /** @throw HashSize */
-    void resize(Size);
+    void resize( Size );
 
     /// computes the hashed value of a key
-    Size operator()(const Key&) const;
+    Size operator()( const Key& ) const;
 
     using HashFuncBase<Key>::size;
 
@@ -195,13 +195,13 @@ namespace gum {
 
     /// update the hash function to take into account a resize of the hash table
     /** @throw HashSize */
-    void resize(Size);
+    void resize( Size );
 
     /// returns the value of a key as an unsigned long
-    Size castToSize(const Key&) const;
+    Size castToSize( const Key& ) const;
 
     /// computes the hashed value of a key
-    Size operator()(const Key&) const;
+    Size operator()( const Key& ) const;
 
     protected:
     // the number of right shift to perform to get correct hashed values
@@ -220,13 +220,13 @@ namespace gum {
     public:
     /// update the hash function to take into account a resize of the hash table
     /** @throw HashSize */
-    void resize(Size);
+    void resize( Size );
 
     /// computes the hashed value of a key
-    Size operator()(const Key&) const;
+    Size operator()( const Key& ) const;
 
     /// returns the value of a key as an unsigned long
-    Size castToSize(const Key&) const;
+    Size castToSize( const Key& ) const;
 
     using HashFuncBase<Key>::size;
 
@@ -242,13 +242,13 @@ namespace gum {
     public:
     /// update the hash function to take into account a resize of the hash table
     /** @throw HashSize */
-    void resize(Size);
+    void resize( Size );
 
     /// returns the value of a key as an unsigned long
-    Size castToSize(const Key&) const;
+    Size castToSize( const Key& ) const;
 
     /// computes the hashed value of a key
-    Size operator()(const Key&) const;
+    Size operator()( const Key& ) const;
 
     using HashFuncBase<Key>::size;
 
@@ -262,8 +262,8 @@ namespace gum {
    * unsigned longs */
   template <typename T> struct HashFuncCastKey {
     using type = typename std::conditional<
-        sizeof(T) < sizeof(long), HashFuncSmallCastKey<T>,
-        typename std::conditional<sizeof(T) == 2 * sizeof(long),
+        sizeof( T ) < sizeof( long ), HashFuncSmallCastKey<T>,
+        typename std::conditional<sizeof( T ) == 2 * sizeof( long ),
                                   HashFuncLargeCastKey<T>,
                                   HashFuncMediumCastKey<T>>::type>::type;
   };
@@ -274,10 +274,10 @@ namespace gum {
     public:
     /// update the hash function to take into account a resize of the hash table
     /** @throw HashSize */
-    void resize(Size);
+    void resize( Size );
 
     /// computes the hashed value of a key
-    Size operator()(const std::pair<Key1, Key2>&) const;
+    Size operator()( const std::pair<Key1, Key2>& ) const;
 
     protected:
     // the number of right shift to perform to get correct hashed values
@@ -292,10 +292,10 @@ namespace gum {
     public:
     /// update the hash function to take into account a resize of the hash table
     /** @throw HashSize */
-    void resize(Size);
+    void resize( Size );
 
     /// computes the hashed value of a key
-    Size operator()(const std::pair<Key1, Key2>&) const;
+    Size operator()( const std::pair<Key1, Key2>& ) const;
 
     protected:
     /// the number of right shift to perform to get correct hashed values
@@ -383,13 +383,13 @@ namespace gum {
   class HashFunc<RefPtr<Type>> : public HashFunc<unsigned int*> {
     public:
     /// computes the hashed value of a key
-    Size operator()(const RefPtr<Type>& key) const;
+    Size operator()( const RefPtr<Type>& key ) const;
   };
 
   template <> class HashFunc<std::string> : public HashFuncBase<std::string> {
     public:
     /// computes the hashed value of a key
-    Size operator()(const std::string& key) const;
+    Size operator()( const std::string& key ) const;
   };
 
   template <>
@@ -397,20 +397,20 @@ namespace gum {
       : public HashFuncBase<std::pair<std::string, std::string>> {
     public:
     /// computes the hashed value of a key
-    Size operator()(const std::pair<std::string, std::string>& key) const;
+    Size operator()( const std::pair<std::string, std::string>& key ) const;
   };
 
   template <>
   class HashFunc<std::vector<Idx>> : public HashFuncBase<std::vector<Idx>> {
     public:
     /// computes the hashed value of a key
-    Size operator()(const std::vector<Idx>& key) const;
+    Size operator()( const std::vector<Idx>& key ) const;
   };
 
   template <> class HashFunc<Debug> : public HashFuncBase<Debug> {
     public:
     /// computes the hashed value of a key
-    Size operator()(const Debug& key) const;
+    Size operator()( const Debug& key ) const;
   };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

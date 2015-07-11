@@ -54,19 +54,19 @@ namespace gum {
     }
 
     // returns the node id corresponding to a variable name
-    INLINE NodeId
-    genericBNLearner::Database::idFromName(const std::string& var_name) const {
+    INLINE NodeId genericBNLearner::Database::idFromName(
+        const std::string& var_name ) const {
       try {
-        return __name2nodeId.second(const_cast<std::string&>(var_name));
-      } catch (gum::NotFound) {
-        GUM_ERROR(MissingVariableInDatabase, "for variable " << var_name);
+        return __name2nodeId.second( const_cast<std::string&>( var_name ) );
+      } catch ( gum::NotFound ) {
+        GUM_ERROR( MissingVariableInDatabase, "for variable " << var_name );
       }
     }
 
     // returns the variable name corresponding to a given node id
     INLINE const std::string&
-    genericBNLearner::Database::nameFromId(NodeId id) const {
-      return __name2nodeId.first(id);
+    genericBNLearner::Database::nameFromId( NodeId id ) const {
+      return __name2nodeId.first( id );
     }
 
     // returns the "raw" translators (needed for the aprioris)
@@ -79,17 +79,17 @@ namespace gum {
 
     // returns the node id corresponding to a variable name
     INLINE NodeId
-    genericBNLearner::idFromName(const std::string& var_name) const {
-      return __score_database.idFromName(var_name);
+    genericBNLearner::idFromName( const std::string& var_name ) const {
+      return __score_database.idFromName( var_name );
     }
 
     // returns the variable name corresponding to a given node id
-    INLINE const std::string& genericBNLearner::nameFromId(NodeId id) const {
-      return __score_database.nameFromId(id);
+    INLINE const std::string& genericBNLearner::nameFromId( NodeId id ) const {
+      return __score_database.nameFromId( id );
     }
 
     // sets an initial DAG structure
-    INLINE void genericBNLearner::setInitialDAG(const DAG& dag) {
+    INLINE void genericBNLearner::setInitialDAG( const DAG& dag ) {
       __initial_dag = dag;
     }
 
@@ -130,22 +130,22 @@ namespace gum {
     }
 
     // sets the max indegree
-    INLINE void genericBNLearner::setMaxIndegree(unsigned int max_indegree) {
-      __constraint_Indegree.setMaxIndegree(max_indegree);
+    INLINE void genericBNLearner::setMaxIndegree( unsigned int max_indegree ) {
+      __constraint_Indegree.setMaxIndegree( max_indegree );
     }
 
     // indicate that we wish to use a K2 algorithm
     INLINE void
-    genericBNLearner::useK2(const Sequence<NodeId>& order) noexcept {
+    genericBNLearner::useK2( const Sequence<NodeId>& order ) noexcept {
       __selected_algo = AlgoType::K2;
-      __K2.setOrder(order);
+      __K2.setOrder( order );
     }
 
     // indicate that we wish to use a K2 algorithm
     INLINE void
-    genericBNLearner::useK2(const std::vector<NodeId>& order) noexcept {
+    genericBNLearner::useK2( const std::vector<NodeId>& order ) noexcept {
       __selected_algo = AlgoType::K2;
-      __K2.setOrder(order);
+      __K2.setOrder( order );
     }
 
     // indicate that we wish to use a greedy hill climbing algorithm
@@ -155,100 +155,100 @@ namespace gum {
 
     // indicate that we wish to use a local search with tabu list
     INLINE void genericBNLearner::useLocalSearchWithTabuList(
-        unsigned int tabu_size, unsigned int nb_decrease) noexcept {
+        unsigned int tabu_size, unsigned int nb_decrease ) noexcept {
       __selected_algo = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
-      __constraint_TabuList.setTabuListSize(tabu_size);
-      __local_search_with_tabu_list.setMaxNbDecreasingChanges(nb_decrease);
+      __constraint_TabuList.setTabuListSize( tabu_size );
+      __local_search_with_tabu_list.setMaxNbDecreasingChanges( nb_decrease );
     }
 
     // assign a set of forbidden arcs
-    INLINE void genericBNLearner::setForbiddenArcs(const ArcSet& set) {
-      __constraint_ForbiddenArcs.setArcs(set);
+    INLINE void genericBNLearner::setForbiddenArcs( const ArcSet& set ) {
+      __constraint_ForbiddenArcs.setArcs( set );
     }
 
     // assign a new forbidden arc
-    INLINE void genericBNLearner::addForbiddenArc(const Arc& arc) {
-      __constraint_ForbiddenArcs.addArc(arc);
+    INLINE void genericBNLearner::addForbiddenArc( const Arc& arc ) {
+      __constraint_ForbiddenArcs.addArc( arc );
     }
 
     // remove a forbidden arc
-    INLINE void genericBNLearner::eraseForbiddenArc(const Arc& arc) {
-      __constraint_ForbiddenArcs.eraseArc(arc);
+    INLINE void genericBNLearner::eraseForbiddenArc( const Arc& arc ) {
+      __constraint_ForbiddenArcs.eraseArc( arc );
     }
 
     // assign a new forbidden arc
-    INLINE void genericBNLearner::addForbiddenArc(const NodeId tail,
-                                                  const NodeId head) {
-      addForbiddenArc(Arc(tail, head));
+    INLINE void genericBNLearner::addForbiddenArc( const NodeId tail,
+                                                   const NodeId head ) {
+      addForbiddenArc( Arc( tail, head ) );
     }
 
     // remove a forbidden arc
-    INLINE void genericBNLearner::eraseForbiddenArc(const NodeId tail,
-                                                    const NodeId head) {
-      eraseForbiddenArc(Arc(tail, head));
+    INLINE void genericBNLearner::eraseForbiddenArc( const NodeId tail,
+                                                     const NodeId head ) {
+      eraseForbiddenArc( Arc( tail, head ) );
     }
 
     // assign a new forbidden arc
-    INLINE void genericBNLearner::addForbiddenArc(const std::string& tail,
-                                                  const std::string& head) {
-      addForbiddenArc(Arc(idFromName(tail), idFromName(head)));
+    INLINE void genericBNLearner::addForbiddenArc( const std::string& tail,
+                                                   const std::string& head ) {
+      addForbiddenArc( Arc( idFromName( tail ), idFromName( head ) ) );
     }
 
     // remove a forbidden arc
-    INLINE void genericBNLearner::eraseForbiddenArc(const std::string& tail,
-                                                    const std::string& head) {
-      eraseForbiddenArc(Arc(idFromName(tail), idFromName(head)));
+    INLINE void genericBNLearner::eraseForbiddenArc( const std::string& tail,
+                                                     const std::string& head ) {
+      eraseForbiddenArc( Arc( idFromName( tail ), idFromName( head ) ) );
     }
 
     // assign a set of forbidden arcs
-    INLINE void genericBNLearner::setMandatoryArcs(const ArcSet& set) {
-      __constraint_MandatoryArcs.setArcs(set);
+    INLINE void genericBNLearner::setMandatoryArcs( const ArcSet& set ) {
+      __constraint_MandatoryArcs.setArcs( set );
     }
 
     // assign a new forbidden arc
-    INLINE void genericBNLearner::addMandatoryArc(const Arc& arc) {
-      __constraint_MandatoryArcs.addArc(arc);
+    INLINE void genericBNLearner::addMandatoryArc( const Arc& arc ) {
+      __constraint_MandatoryArcs.addArc( arc );
     }
 
     // remove a forbidden arc
-    INLINE void genericBNLearner::eraseMandatoryArc(const Arc& arc) {
-      __constraint_MandatoryArcs.eraseArc(arc);
+    INLINE void genericBNLearner::eraseMandatoryArc( const Arc& arc ) {
+      __constraint_MandatoryArcs.eraseArc( arc );
     }
 
     // assign a new forbidden arc
-    INLINE void genericBNLearner::addMandatoryArc(const std::string& tail,
-                                                  const std::string& head) {
-      addMandatoryArc(Arc(idFromName(tail), idFromName(head)));
+    INLINE void genericBNLearner::addMandatoryArc( const std::string& tail,
+                                                   const std::string& head ) {
+      addMandatoryArc( Arc( idFromName( tail ), idFromName( head ) ) );
     }
 
     // remove a forbidden arc
-    INLINE void genericBNLearner::eraseMandatoryArc(const std::string& tail,
-                                                    const std::string& head) {
-      eraseMandatoryArc(Arc(idFromName(tail), idFromName(head)));
+    INLINE void genericBNLearner::eraseMandatoryArc( const std::string& tail,
+                                                     const std::string& head ) {
+      eraseMandatoryArc( Arc( idFromName( tail ), idFromName( head ) ) );
     }
 
     // assign a new forbidden arc
-    INLINE void genericBNLearner::addMandatoryArc(const NodeId tail,
-                                                  const NodeId head) {
-      addMandatoryArc(Arc(tail, head));
+    INLINE void genericBNLearner::addMandatoryArc( const NodeId tail,
+                                                   const NodeId head ) {
+      addMandatoryArc( Arc( tail, head ) );
     }
 
     // remove a forbidden arc
-    INLINE void genericBNLearner::eraseMandatoryArc(const NodeId tail,
-                                                    const NodeId head) {
-      eraseMandatoryArc(Arc(tail, head));
+    INLINE void genericBNLearner::eraseMandatoryArc( const NodeId tail,
+                                                     const NodeId head ) {
+      eraseMandatoryArc( Arc( tail, head ) );
     }
 
     // sets a partial order on the nodes
     INLINE void genericBNLearner::setSliceOrder(
-        const NodeProperty<unsigned int>& slice_order) {
+        const NodeProperty<unsigned int>& slice_order ) {
       __constraint_SliceOrder = slice_order;
     }
 
     // sets the apriori weight
-    INLINE void genericBNLearner::setAprioriWeight(float weight) {
-      if (weight < 0) {
-        GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive");
+    INLINE void genericBNLearner::setAprioriWeight( float weight ) {
+      if ( weight < 0 ) {
+        GUM_ERROR( OutOfBounds, "the weight of the apriori must be positive" );
       }
 
       __apriori_weight = weight;
@@ -262,11 +262,11 @@ namespace gum {
     }
 
     // use the apriori smoothing
-    INLINE void genericBNLearner::useAprioriSmoothing(float weight) {
+    INLINE void genericBNLearner::useAprioriSmoothing( float weight ) {
       __apriori_type = AprioriType::SMOOTHING;
 
-      if (weight >= 0) {
-        setAprioriWeight(weight);
+      if ( weight >= 0 ) {
+        setAprioriWeight( weight );
       }
 
       __checkScoreAprioriCompatibility();
@@ -274,7 +274,7 @@ namespace gum {
 
     // use the Dirichlet apriori
     INLINE void
-    genericBNLearner::useAprioriDirichlet(const std::string& filename) {
+    genericBNLearner::useAprioriDirichlet( const std::string& filename ) {
       __apriori_dbname = filename;
       __apriori_type = AprioriType::DIRICHLET_FROM_DATABASE;
       __checkScoreAprioriCompatibility();
@@ -282,7 +282,7 @@ namespace gum {
 
     // returns the type (as a string) of a given apriori
     INLINE const std::string& genericBNLearner::__getAprioriType() const {
-      switch (__apriori_type) {
+      switch ( __apriori_type ) {
         case AprioriType::NO_APRIORI:
           return AprioriNoApriori<>::type::type;
 
@@ -293,8 +293,9 @@ namespace gum {
           return AprioriDirichletFromDatabase<>::type::type;
 
         default:
-          GUM_ERROR(OperationNotAllowed, "genericBNLearner getAprioriType does "
-                                         "not support yet this apriori");
+          GUM_ERROR( OperationNotAllowed,
+                     "genericBNLearner getAprioriType does "
+                     "not support yet this apriori" );
       }
     }
 

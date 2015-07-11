@@ -30,22 +30,22 @@
 /// @{
 
 /// sets a new graph from which we will perform checkings
-void setGraph(const UndiGraph& graph);
+void setGraph( const UndiGraph& graph );
 
 /// notify the constraint of a modification of the graph
 /** @warning If an already existing edge is added nothing is done. In
  * particular, no exception is raised. */
-void modifyGraph(const EdgeAddition& change);
+void modifyGraph( const EdgeAddition& change );
 
 /// notify the constraint of a modification of the graph
 /** @warning If a nonexisting edge is removed, nothing is done. In
  * particular, no exception is raised. */
-void modifyGraph(const EdgeDeletion& change);
+void modifyGraph( const EdgeDeletion& change );
 
 /// notify the constraint of a modification of the graph
 /** @warning If an already existing edge is added, or if a nonexisting edge
  * is removed, nothing is done. In particular, no exception is raised. */
-void modifyGraph(const GraphChange& change);
+void modifyGraph( const GraphChange& change );
 
 /// indicates whether a change will always violate the constraint
 /** Some learning algorithms need examine several times whether a given
@@ -58,22 +58,22 @@ void modifyGraph(const GraphChange& change);
  * in a 2TBN structure, it is always impossible to add a backward-time arc.
  * Such graph changes are always invalid and are therefore tagged as such
  * by the isAlwaysInvalid method. */
-bool isAlwaysInvalid(const GraphChange& change) const noexcept;
+bool isAlwaysInvalid( const GraphChange& change ) const noexcept;
 
 /// checks whether the constraints enable to add edge (x,y)
-bool checkEdgeAddition(NodeId x, NodeId y) const noexcept;
+bool checkEdgeAddition( NodeId x, NodeId y ) const noexcept;
 
 /// checks whether the constraints enable to remove edge (x,y)
-bool checkEdgeDeletion(NodeId x, NodeId y) const noexcept;
+bool checkEdgeDeletion( NodeId x, NodeId y ) const noexcept;
 
 /// checks whether the constraints enable to add an edge
-bool checkModification(const EdgeAddition& change) const noexcept;
+bool checkModification( const EdgeAddition& change ) const noexcept;
 
 /// checks whether the constraints enable to remove an edge
-bool checkModification(const EdgeDeletion& change) const noexcept;
+bool checkModification( const EdgeDeletion& change ) const noexcept;
 
 /// checks whether the constraints enable to perform a graph change
-bool checkModification(const GraphChange& change) const noexcept;
+bool checkModification( const GraphChange& change ) const noexcept;
 
 /// @}
 

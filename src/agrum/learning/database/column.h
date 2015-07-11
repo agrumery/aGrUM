@@ -54,7 +54,7 @@ namespace gum {
       static constexpr unsigned int size = 1;
 
       /// saves the column into an array
-      static void toArray(unsigned int array[]) noexcept { *array = Idx; }
+      static void toArray( unsigned int array[] ) noexcept { *array = Idx; }
 
       /// to display the content of the column
       std::string toString() const noexcept {
@@ -83,12 +83,12 @@ namespace gum {
      */
     template <int Idx, int... NextIdx> struct Col : public Col<NextIdx...> {
       /// the number of columns specified by this class
-      static constexpr unsigned int size = 1 + sizeof...(NextIdx);
+      static constexpr unsigned int size = 1 + sizeof...( NextIdx );
 
       /// saves the columns into an array of integers
-      static void toArray(unsigned int array[]) noexcept {
+      static void toArray( unsigned int array[] ) noexcept {
         *array = Idx;
-        Col<NextIdx...>::toArray(array + 1);
+        Col<NextIdx...>::toArray( array + 1 );
       }
 
       /// to display the content of the columns

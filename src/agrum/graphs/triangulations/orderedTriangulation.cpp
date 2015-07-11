@@ -33,10 +33,11 @@ namespace gum {
   /// default constructor
   OrderedTriangulation::OrderedTriangulation(
       const OrderedEliminationSequenceStrategy& elimSeq,
-      const JunctionTreeStrategy& JTStrategy, bool minimality)
-      : StaticTriangulation(elimSeq, JTStrategy, minimality), __sequence(0) {
+      const JunctionTreeStrategy& JTStrategy, bool minimality )
+      : StaticTriangulation( elimSeq, JTStrategy, minimality ),
+        __sequence( 0 ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR(OrderedTriangulation);
+    GUM_CONSTRUCTOR( OrderedTriangulation );
   }
 
   /// constructor with a given graph
@@ -44,41 +45,41 @@ namespace gum {
       const UndiGraph* theGraph, const NodeProperty<Size>* dom,
       const std::vector<NodeId>* sequence,
       const OrderedEliminationSequenceStrategy& elimSeq,
-      const JunctionTreeStrategy& JTStrategy, bool minimality)
-      : StaticTriangulation(theGraph, dom, elimSeq, JTStrategy, minimality),
-        __sequence(sequence) {
+      const JunctionTreeStrategy& JTStrategy, bool minimality )
+      : StaticTriangulation( theGraph, dom, elimSeq, JTStrategy, minimality ),
+        __sequence( sequence ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR(OrderedTriangulation);
+    GUM_CONSTRUCTOR( OrderedTriangulation );
   }
 
   /// destructor
   OrderedTriangulation::~OrderedTriangulation() {
     // for debugging purposes
-    GUM_DESTRUCTOR(OrderedTriangulation);
+    GUM_DESTRUCTOR( OrderedTriangulation );
   }
 
   /// initialize the triangulation data structures for a new graph
-  void OrderedTriangulation::setGraph(const UndiGraph* graph,
-                                      const NodeProperty<Size>* modal,
-                                      const std::vector<NodeId>* sequence) {
+  void OrderedTriangulation::setGraph( const UndiGraph* graph,
+                                       const NodeProperty<Size>* modal,
+                                       const std::vector<NodeId>* sequence ) {
     // check that the graph, the modalities and the sequence seem OK
     unsigned int nb = 0;
 
-    if (graph)
+    if ( graph )
       ++nb;
 
-    if (modal)
+    if ( modal )
       ++nb;
 
-    if (sequence)
+    if ( sequence )
       ++nb;
 
-    if ((nb != 0) && (nb != 3)) {
-      GUM_ERROR(GraphError, "OrderedTriangulation requires valid "
-                            "graphs, modalities and elimination orderings");
+    if ( ( nb != 0 ) && ( nb != 3 ) ) {
+      GUM_ERROR( GraphError, "OrderedTriangulation requires valid "
+                             "graphs, modalities and elimination orderings" );
     }
 
-    StaticTriangulation::_setGraph(graph, modal);
+    StaticTriangulation::_setGraph( graph, modal );
 
     __sequence = sequence;
   }
@@ -89,11 +90,11 @@ namespace gum {
   }
 
   /// the function called to initialize the triangulation process
-  void OrderedTriangulation::_initTriangulation(UndiGraph& graph) {
+  void OrderedTriangulation::_initTriangulation( UndiGraph& graph ) {
     OrderedEliminationSequenceStrategy* elim =
         static_cast<OrderedEliminationSequenceStrategy*>(
-            _elimination_sequence_strategy);
-    elim->setGraph(&graph, __sequence);
+            _elimination_sequence_strategy );
+    elim->setGraph( &graph, __sequence );
   }
 
 } /* namespace gum */

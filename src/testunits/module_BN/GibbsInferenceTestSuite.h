@@ -46,12 +46,12 @@ namespace gum_tests {
     std::string __mess;
 
     public:
-    aSimpleGibbsListener(gum::ApproximationScheme& sch)
-        : gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
-    void whenProgress(const void* buffer, gum::Size a, double b, double c) {
+    aSimpleGibbsListener( gum::ApproximationScheme& sch )
+        : gum::ApproximationSchemeListener( sch ), __nbr( 0 ), __mess( "" ){};
+    void whenProgress( const void* buffer, gum::Size a, double b, double c ) {
       __nbr++;
     }
-    void whenStop(const void* buffer, std::string s) { __mess = s; }
+    void whenStop( const void* buffer, std::string s ) { __mess = s; }
 
     int getNbr() { return __nbr; }
     std::string getMess() { return __mess; }
@@ -66,35 +66,36 @@ namespace gum_tests {
     void setUp() {
       bn = new gum::BayesNet<float>();
 
-      gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 2);
-      gum::LabelizedVariable n4("4", "", 2), n5("5", "", 3);
+      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),
+          n3( "3", "", 2 );
+      gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
 
-      i1 = bn->add(n1);
-      i2 = bn->add(n2);
-      i3 = bn->add(n3);
-      i4 = bn->add(n4);
-      i5 = bn->add(n5);
+      i1 = bn->add( n1 );
+      i2 = bn->add( n2 );
+      i3 = bn->add( n3 );
+      i4 = bn->add( n4 );
+      i5 = bn->add( n5 );
 
-      bn->addArc(i1, i3);
-      bn->addArc(i1, i4);
-      bn->addArc(i3, i5);
-      bn->addArc(i4, i5);
-      bn->addArc(i2, i4);
-      bn->addArc(i2, i5);
+      bn->addArc( i1, i3 );
+      bn->addArc( i1, i4 );
+      bn->addArc( i3, i5 );
+      bn->addArc( i4, i5 );
+      bn->addArc( i2, i4 );
+      bn->addArc( i2, i5 );
 
       e_i1 = new gum::Potential<float>();
-      (*e_i1) << bn->variable(i1);
-      e_i1->fill((float)0);
-      gum::Instantiation inst_1(*e_i1);
-      inst_1.chgVal(bn->variable(i1), 0);
-      e_i1->set(inst_1, (float)1);
+      ( *e_i1 ) << bn->variable( i1 );
+      e_i1->fill( (float)0 );
+      gum::Instantiation inst_1( *e_i1 );
+      inst_1.chgVal( bn->variable( i1 ), 0 );
+      e_i1->set( inst_1, (float)1 );
 
       e_i4 = new gum::Potential<float>();
-      (*e_i4) << bn->variable(i4);
-      e_i4->fill((float)0);
-      gum::Instantiation inst_4(*e_i4);
-      inst_4.chgVal(bn->variable(i4), 1);
-      e_i4->set(inst_4, (float)1);
+      ( *e_i4 ) << bn->variable( i4 );
+      e_i4->fill( (float)0 );
+      gum::Instantiation inst_4( *e_i4 );
+      inst_4.chgVal( bn->variable( i4 ), 1 );
+      e_i4->set( inst_4, (float)1 );
     }
 
     void tearDown() {
@@ -104,82 +105,82 @@ namespace gum_tests {
     }
 
     void testFill() {
-      const gum::Potential<float>& p1 = bn->cpt(i1);
-      TS_ASSERT(p1.nbrDim() == 1);
+      const gum::Potential<float>& p1 = bn->cpt( i1 );
+      TS_ASSERT( p1.nbrDim() == 1 );
 
       {
         // FILLING PARAMS
         const float t[2] = {0.2, 0.8};
         int n = 2;
-        const std::vector<float> v(t, t + n);
-        p1.fillWith(v);
+        const std::vector<float> v( t, t + n );
+        p1.fillWith( v );
       }
 
-      const gum::Potential<float>& p2 = bn->cpt(i2);
-      TS_ASSERT(p2.nbrDim() == 1);
+      const gum::Potential<float>& p2 = bn->cpt( i2 );
+      TS_ASSERT( p2.nbrDim() == 1 );
 
       {
         // FILLING PARAMS
         const float t[2] = {0.3, 0.7};
         int n = 2;
-        const std::vector<float> v(t, t + n);
-        p2.fillWith(v);
+        const std::vector<float> v( t, t + n );
+        p2.fillWith( v );
       }
 
-      const gum::Potential<float>& p3 = bn->cpt(i3);
-      TS_ASSERT(p3.nbrDim() == 2);
+      const gum::Potential<float>& p3 = bn->cpt( i3 );
+      TS_ASSERT( p3.nbrDim() == 2 );
       {
         // FILLING PARAMS
         const float t[4] = {0.1, 0.9, 0.9, 0.1};
         int n = 4;
-        const std::vector<float> v(t, t + n);
-        p3.fillWith(v);
+        const std::vector<float> v( t, t + n );
+        p3.fillWith( v );
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Potential<float> p(new gum::MultiDimArray<float>());
-        p << bn->variable(i1);
-        p.marginalize(p3);
+        gum::Potential<float> p( new gum::MultiDimArray<float>() );
+        p << bn->variable( i1 );
+        p.marginalize( p3 );
 
-        for (gum::Instantiation j(p); !j.end(); ++j)
-          TS_ASSERT_DELTA(p[j], 1.0, 1e-5);
+        for ( gum::Instantiation j( p ); !j.end(); ++j )
+          TS_ASSERT_DELTA( p[j], 1.0, 1e-5 );
       }
 
-      const gum::Potential<float>& p4 = bn->cpt(i4);
-      TS_ASSERT(p4.nbrDim() == 3);
+      const gum::Potential<float>& p4 = bn->cpt( i4 );
+      TS_ASSERT( p4.nbrDim() == 3 );
       {
         // FILLING PARAMS
         const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
         int n = 8;
-        const std::vector<float> v(t, t + n);
-        p4.fillWith(v);
+        const std::vector<float> v( t, t + n );
+        p4.fillWith( v );
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Potential<float> p(new gum::MultiDimArray<float>());
-        p << bn->variable(i1) << bn->variable(i2);
-        p.marginalize(p4);
+        gum::Potential<float> p( new gum::MultiDimArray<float>() );
+        p << bn->variable( i1 ) << bn->variable( i2 );
+        p.marginalize( p4 );
 
-        for (gum::Instantiation j(p); !j.end(); ++j)
-          TS_ASSERT_DELTA(p[j], 1.0, 1e-5);
+        for ( gum::Instantiation j( p ); !j.end(); ++j )
+          TS_ASSERT_DELTA( p[j], 1.0, 1e-5 );
       }
 
-      const gum::Potential<float>& p5 = bn->cpt(i5);
-      TS_ASSERT(p5.nbrDim() == 4);
+      const gum::Potential<float>& p5 = bn->cpt( i5 );
+      TS_ASSERT( p5.nbrDim() == 4 );
       {
         // FILLING PARAMS
         const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,
                              0.0, 1.0, 0.0, 0.0, 0.4, 0.6, 0.0, 0.5,
                              0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0};
         int n = 24;
-        const std::vector<float> v(t, t + n);
-        p5.fillWith(v);
+        const std::vector<float> v( t, t + n );
+        p5.fillWith( v );
 
         // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-        gum::Potential<float> p(new gum::MultiDimArray<float>());
-        p << bn->variable(i4) << bn->variable(i2) << bn->variable(i3);
-        p.marginalize(p5);
+        gum::Potential<float> p( new gum::MultiDimArray<float>() );
+        p << bn->variable( i4 ) << bn->variable( i2 ) << bn->variable( i3 );
+        p.marginalize( p5 );
 
-        for (gum::Instantiation j(p); !j.end(); ++j) {
-          TS_ASSERT_DELTA(p[j], 1.0, 1e-5);
+        for ( gum::Instantiation j( p ); !j.end(); ++j ) {
+          TS_ASSERT_DELTA( p[j], 1.0, 1e-5 );
         }
       }
     }
@@ -200,190 +201,190 @@ namespace gum_tests {
     }
 
     void testGibbsInf_2() {
-      fill(*bn);
-      gum::GibbsInference<float> inf(*bn);
-      inf.setVerbosity(false);
+      fill( *bn );
+      gum::GibbsInference<float> inf( *bn );
+      inf.setVerbosity( false );
 
       try {
         // Testing the inference
         inf.makeInference();
-      } catch (gum::Exception e) {
-        TS_ASSERT(false);
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
       }
 
       try {
-        const gum::Potential<float>& posterior = inf.posterior(i1);
-        printPotential(posterior);
-      } catch (gum::Exception e) {
-        TS_ASSERT(false);
+        const gum::Potential<float>& posterior = inf.posterior( i1 );
+        printPotential( posterior );
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
       }
 
       try {
-        const gum::Potential<float>& posterior = inf.posterior(i2);
-        printPotential(posterior);
-      } catch (gum::Exception e) {
+        const gum::Potential<float>& posterior = inf.posterior( i2 );
+        printPotential( posterior );
+      } catch ( gum::Exception e ) {
         std::cerr << e.errorContent() << std::endl;
-        TS_ASSERT(false);
+        TS_ASSERT( false );
       }
 
       try {
-        const gum::Potential<float>& posterior = inf.posterior(i3);
-        printPotential(posterior);
-      } catch (gum::Exception e) {
-        TS_ASSERT(false);
+        const gum::Potential<float>& posterior = inf.posterior( i3 );
+        printPotential( posterior );
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
       }
 
       try {
-        const gum::Potential<float>& posterior = inf.posterior(i4);
-        printPotential(posterior);
-      } catch (gum::Exception e) {
-        TS_ASSERT(false);
+        const gum::Potential<float>& posterior = inf.posterior( i4 );
+        printPotential( posterior );
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
       }
 
       try {
-        const gum::Potential<float>& posterior = inf.posterior(i5);
-        printPotential(posterior);
-      } catch (gum::Exception e) {
-        TS_ASSERT(false);
+        const gum::Potential<float>& posterior = inf.posterior( i5 );
+        printPotential( posterior );
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
       }
     }
 
     void testGibbsInf_3() {
-      fill(*bn);
+      fill( *bn );
       gum::List<const gum::Potential<float>*> e_list;
-      e_list.insert(e_i1);
-      e_list.insert(e_i4);
+      e_list.insert( e_i1 );
+      e_list.insert( e_i4 );
 
-      gum::GibbsInference<float> inf(*bn);
-      inf.setVerbosity(false);
+      gum::GibbsInference<float> inf( *bn );
+      inf.setVerbosity( false );
 
       try {
-        inf.insertEvidence(e_list);
-      } catch (gum::Exception e) {
+        inf.insertEvidence( e_list );
+      } catch ( gum::Exception e ) {
         std::cerr << std::endl
                   << e.errorContent() << std::endl;
-        TS_ASSERT(false);
+        TS_ASSERT( false );
       }
 
       try {
         // Testing the inference
         inf.makeInference();
-      } catch (gum::Exception e) {
-        TS_ASSERT(false);
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
       }
 
       try {
-        const gum::Potential<float>& posterior = inf.posterior(i1);
-        printPotential(posterior);
-      } catch (gum::Exception e) {
-        TS_ASSERT(false);
+        const gum::Potential<float>& posterior = inf.posterior( i1 );
+        printPotential( posterior );
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
       }
 
       try {
-        const gum::Potential<float>& posterior = inf.posterior(i2);
-        printPotential(posterior);
-      } catch (gum::Exception e) {
-        TS_ASSERT(false);
+        const gum::Potential<float>& posterior = inf.posterior( i2 );
+        printPotential( posterior );
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
       }
 
       try {
-        const gum::Potential<float>& posterior = inf.posterior(i3);
-        printPotential(posterior);
-      } catch (gum::Exception e) {
-        TS_ASSERT(false);
+        const gum::Potential<float>& posterior = inf.posterior( i3 );
+        printPotential( posterior );
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
       }
 
       try {
-        const gum::Potential<float>& posterior = inf.posterior(i4);
-        printPotential(posterior);
-      } catch (gum::Exception e) {
-        TS_ASSERT(false);
+        const gum::Potential<float>& posterior = inf.posterior( i4 );
+        printPotential( posterior );
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
       }
 
       try {
-        const gum::Potential<float>& posterior = inf.posterior(i5);
-        printPotential(posterior);
-      } catch (gum::Exception e) {
-        TS_ASSERT(false);
+        const gum::Potential<float>& posterior = inf.posterior( i5 );
+        printPotential( posterior );
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
       }
     }
 
     void testGibbsInfListener() {
-      fill(*bn);
+      fill( *bn );
       gum::List<const gum::Potential<float>*> e_list;
-      e_list.insert(e_i1);
-      e_list.insert(e_i4);
+      e_list.insert( e_i1 );
+      e_list.insert( e_i4 );
 
-      gum::GibbsInference<float> inf(*bn);
+      gum::GibbsInference<float> inf( *bn );
 
-      aSimpleGibbsListener agsl(inf);
+      aSimpleGibbsListener agsl( inf );
 
       try {
         // Testing the inference
         inf.makeInference();
-      } catch (gum::Exception e) {
-        TS_ASSERT(false);
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
       }
 
-      TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize() + inf.burnIn(),
-                       inf.nbrIterations());
-      TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""));
+      TS_ASSERT_EQUALS( agsl.getNbr() * inf.periodSize() + inf.burnIn(),
+                        inf.nbrIterations() );
+      TS_ASSERT_DIFFERS( agsl.getMess(), std::string( "" ) );
     }
 
     private:
     // Builds a BN to test the inference
-    void fill(gum::BayesNet<float>& bn) {
-      const gum::Potential<float>& p1 = bn.cpt(i1);
+    void fill( gum::BayesNet<float>& bn ) {
+      const gum::Potential<float>& p1 = bn.cpt( i1 );
       {
         // FILLING PARAMS
         const float t[2] = {0.2, 0.8};
         int n = 2;
-        const std::vector<float> v(t, t + n);
-        p1.fillWith(v);
+        const std::vector<float> v( t, t + n );
+        p1.fillWith( v );
       }
 
-      const gum::Potential<float>& p2 = bn.cpt(i2);
+      const gum::Potential<float>& p2 = bn.cpt( i2 );
       {
         // FILLING PARAMS
         const float t[2] = {0.3, 0.7};
         int n = 2;
-        const std::vector<float> v(t, t + n);
-        p2.fillWith(v);
+        const std::vector<float> v( t, t + n );
+        p2.fillWith( v );
       }
 
-      const gum::Potential<float>& p3 = bn.cpt(i3);
+      const gum::Potential<float>& p3 = bn.cpt( i3 );
       {
         // FILLING PARAMS
         const float t[4] = {0.1, 0.9, 0.9, 0.1};
         int n = 4;
-        const std::vector<float> v(t, t + n);
-        p3.fillWith(v);
+        const std::vector<float> v( t, t + n );
+        p3.fillWith( v );
       }
 
-      const gum::Potential<float>& p4 = bn.cpt(i4);
+      const gum::Potential<float>& p4 = bn.cpt( i4 );
       {
         // FILLING PARAMS
         const float t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
         int n = 8;
-        const std::vector<float> v(t, t + n);
-        p4.fillWith(v);
+        const std::vector<float> v( t, t + n );
+        p4.fillWith( v );
       }
 
-      const gum::Potential<float>& p5 = bn.cpt(i5);
+      const gum::Potential<float>& p5 = bn.cpt( i5 );
       {
         // FILLING PARAMS
         const float t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,
                              0.0, 1.0, 0.0, 0.0, 0.4, 0.6, 0.0, 0.5,
                              0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0};
         int n = 24;
-        const std::vector<float> v(t, t + n);
-        p5.fillWith(v);
+        const std::vector<float> v( t, t + n );
+        p5.fillWith( v );
         // printPotential(p5);
       }
     }
 
     // Uncomment this to have some outputs.
-    void printPotential(const gum::Potential<float>&) {
+    void printPotential( const gum::Potential<float>& ) {
       // gum::Instantiation inst(p);
 
       // for (inst.setFirst(); !inst.end(); ++inst)

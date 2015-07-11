@@ -32,14 +32,14 @@ namespace gum {
    * Default constructor.
    */
   template <typename GUM_SCALAR> INLINE IDWriter<GUM_SCALAR>::IDWriter() {
-    GUM_CONSTRUCTOR(IDWriter);
+    GUM_CONSTRUCTOR( IDWriter );
   }
 
   /*
    * Default destructor.
    */
   template <typename GUM_SCALAR> INLINE IDWriter<GUM_SCALAR>::~IDWriter() {
-    GUM_DESTRUCTOR(IDWriter);
+    GUM_DESTRUCTOR( IDWriter );
   }
 
 } /* namespace gum */

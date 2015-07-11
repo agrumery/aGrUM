@@ -45,10 +45,10 @@ namespace gum {
     class ISignaler {
       public:
       virtual ~ISignaler(){};
-      virtual void detachFromTarget(Listener* target) = 0;
-      virtual void duplicateTarget(const Listener* oldtarget,
-                                   Listener* newtarget) = 0;
-      virtual bool hasListener(void) = 0;
+      virtual void detachFromTarget( Listener* target ) = 0;
+      virtual void duplicateTarget( const Listener* oldtarget,
+                                    Listener* newtarget ) = 0;
+      virtual bool hasListener( void ) = 0;
     };
   }  // namespace sig
 
@@ -64,46 +64,46 @@ namespace gum {
     typedef std::vector<__sig__::ISignaler*> Senders_list;
 
     public:
-    Listener() { GUM_CONSTRUCTOR(Listener); };
+    Listener() { GUM_CONSTRUCTOR( Listener ); };
 
-    Listener(const Listener& l) {
-      GUM_CONS_CPY(Listener);
+    Listener( const Listener& l ) {
+      GUM_CONS_CPY( Listener );
 
       /*for ( const Senders_bucket* it = l.__senders.frontBucket ();
             it ; it = it->next() ) {
         ( **it )->duplicateTarget( &l, this );
         __senders.pushBack( **it );
       }*/
-      for (const auto el : __senders) {
-        el->duplicateTarget(&l, this);
+      for ( const auto el : __senders ) {
+        el->duplicateTarget( &l, this );
       };
     };
 
     virtual ~Listener() {
-      GUM_DESTRUCTOR(Listener);
+      GUM_DESTRUCTOR( Listener );
       /*
             for ( const Senders_bucket* it = __senders.frontBucket ();
                   it; it = it->next() ) {
               ( **it )->detachFromTarget( this );
             }*/
 
-      for (const auto el : __senders) {
-        el->detachFromTarget(this);
+      for ( const auto el : __senders ) {
+        el->detachFromTarget( this );
       }
 
       __senders.clear();
     };
 
-    inline void attachSignal__(__sig__::ISignaler* sender) {
-      __senders.push_back(sender);
+    inline void attachSignal__( __sig__::ISignaler* sender ) {
+      __senders.push_back( sender );
     };
 
-    inline void detachSignal__(__sig__::ISignaler* sender) {
+    inline void detachSignal__( __sig__::ISignaler* sender ) {
       //__senders.eraseByVal ( sender );
-      auto del = std::remove(__senders.begin(), __senders.end(), sender);
+      auto del = std::remove( __senders.begin(), __senders.end(), sender );
 
-      if (del != __senders.end())
-        __senders.erase(del, __senders.end());
+      if ( del != __senders.end() )
+        __senders.erase( del, __senders.end() );
     };
 
     private:
@@ -111,7 +111,7 @@ namespace gum {
   };
 }  // namespace gum
 
-#define GUM_CONNECT(sender, signal, receiver, target)                          \
-  (sender).signal.attach(&(receiver), &target)
+#define GUM_CONNECT( sender, signal, receiver, target )                        \
+  ( sender ).signal.attach( &( receiver ), &target )
 
 #endif  // GUM_LISTENER_H__

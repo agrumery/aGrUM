@@ -202,8 +202,8 @@ namespace gum {
       __StructuralConstraintSetStatic();
 
       /// copy constructor
-      __StructuralConstraintSetStatic(const __StructuralConstraintSetStatic<
-          CONSTRAINT1, OTHER_CONSTRAINTS...>&);
+      __StructuralConstraintSetStatic( const __StructuralConstraintSetStatic<
+          CONSTRAINT1, OTHER_CONSTRAINTS...>& );
 
       /// destructor
       ~__StructuralConstraintSetStatic();
@@ -217,8 +217,8 @@ namespace gum {
 
       /// copy operator
       __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>&
-      operator=(const __StructuralConstraintSetStatic<CONSTRAINT1,
-                                                      OTHER_CONSTRAINTS...>&);
+      operator=( const __StructuralConstraintSetStatic<CONSTRAINT1,
+                                                       OTHER_CONSTRAINTS...>& );
 
       /// @}
 
@@ -228,43 +228,43 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which we will perform checkings
-      void setGraph(const DiGraph& graph);
+      void setGraph( const DiGraph& graph );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const ArcAddition& change);
+      void modifyGraph( const ArcAddition& change );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const ArcDeletion& change);
+      void modifyGraph( const ArcDeletion& change );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const ArcReversal& change);
+      void modifyGraph( const ArcReversal& change );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const GraphChange& change);
+      void modifyGraph( const GraphChange& change );
 
       /// indicates whether a change will always violate the constraint
-      bool isAlwaysInvalid(const GraphChange& change) const noexcept;
+      bool isAlwaysInvalid( const GraphChange& change ) const noexcept;
 
       /// checks whether the constraints enable to add arc (x,y)
-      bool checkArcAddition(NodeId x, NodeId y) const noexcept;
+      bool checkArcAddition( NodeId x, NodeId y ) const noexcept;
 
       /// checks whether the constraints enable to remove arc (x,y)
-      bool checkArcDeletion(NodeId x, NodeId y) const noexcept;
+      bool checkArcDeletion( NodeId x, NodeId y ) const noexcept;
 
       /// checks whether the constraints enable to reverse arc (x,y)
-      bool checkArcReversal(NodeId x, NodeId y) const noexcept;
+      bool checkArcReversal( NodeId x, NodeId y ) const noexcept;
 
       /// checks whether the constraints enable to add an arc
-      bool checkModification(const ArcAddition& change) const noexcept;
+      bool checkModification( const ArcAddition& change ) const noexcept;
 
       /// checks whether the constraints enable to remove an arc
-      bool checkModification(const ArcDeletion& change) const noexcept;
+      bool checkModification( const ArcDeletion& change ) const noexcept;
 
       /// checks whether the constraints enable to reverse an arc
-      bool checkModification(const ArcReversal& change) const noexcept;
+      bool checkModification( const ArcReversal& change ) const noexcept;
 
       /// checks whether the constraints enable to perform a graph change
-      bool checkModification(const GraphChange& change) const noexcept;
+      bool checkModification( const GraphChange& change ) const noexcept;
 
       /// @}
     };
@@ -309,7 +309,7 @@ namespace gum {
 
       /// copy constructor
       __StructuralConstraintSetStatic(
-          const __StructuralConstraintSetStatic<CONSTRAINT>&);
+          const __StructuralConstraintSetStatic<CONSTRAINT>& );
 
       /// destructor
       ~__StructuralConstraintSetStatic();
@@ -323,7 +323,7 @@ namespace gum {
 
       /// copy operator
       __StructuralConstraintSetStatic<CONSTRAINT>&
-      operator=(const __StructuralConstraintSetStatic<CONSTRAINT>&);
+      operator=( const __StructuralConstraintSetStatic<CONSTRAINT>& );
 
       /// @}
 
@@ -333,43 +333,43 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which we will perform checkings
-      void setGraph(const DiGraph& graph);
+      void setGraph( const DiGraph& graph );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const ArcAddition& change);
+      void modifyGraph( const ArcAddition& change );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const ArcDeletion& change);
+      void modifyGraph( const ArcDeletion& change );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const ArcReversal& change);
+      void modifyGraph( const ArcReversal& change );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const GraphChange& change);
+      void modifyGraph( const GraphChange& change );
 
       /// indicates whether a change will always violate the constraint
-      bool isAlwaysInvalid(const GraphChange& change) const noexcept;
+      bool isAlwaysInvalid( const GraphChange& change ) const noexcept;
 
       /// checks whether the constraints enable to add arc (x,y)
-      bool checkArcAddition(NodeId x, NodeId y) const noexcept;
+      bool checkArcAddition( NodeId x, NodeId y ) const noexcept;
 
       /// checks whether the constraints enable to remove arc (x,y)
-      bool checkArcDeletion(NodeId x, NodeId y) const noexcept;
+      bool checkArcDeletion( NodeId x, NodeId y ) const noexcept;
 
       /// checks whether the constraints enable to reverse arc (x,y)
-      bool checkArcReversal(NodeId x, NodeId y) const noexcept;
+      bool checkArcReversal( NodeId x, NodeId y ) const noexcept;
 
       /// checks whether the constraints enable to add an arc
-      bool checkModification(const ArcAddition& change) const noexcept;
+      bool checkModification( const ArcAddition& change ) const noexcept;
 
       /// checks whether the constraints enable to remove an arc
-      bool checkModification(const ArcDeletion& change) const noexcept;
+      bool checkModification( const ArcDeletion& change ) const noexcept;
 
       /// checks whether the constraints enable to reverse an arc
-      bool checkModification(const ArcReversal& change) const noexcept;
+      bool checkModification( const ArcReversal& change ) const noexcept;
 
       /// checks whether the constraints enable to perform a graph change
-      bool checkModification(const GraphChange& change) const noexcept;
+      bool checkModification( const GraphChange& change ) const noexcept;
 
       /// @}
     };
@@ -420,8 +420,8 @@ namespace gum {
       StructuralConstraintSetStatic();
 
       /// copy constructor
-      StructuralConstraintSetStatic(const StructuralConstraintSetStatic<
-          CONSTRAINT1, OTHER_CONSTRAINTS...>&);
+      StructuralConstraintSetStatic( const StructuralConstraintSetStatic<
+          CONSTRAINT1, OTHER_CONSTRAINTS...>& );
 
       /// destructor
       ~StructuralConstraintSetStatic();
@@ -435,8 +435,8 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>&
-      operator=(const StructuralConstraintSetStatic<CONSTRAINT1,
-                                                    OTHER_CONSTRAINTS...>&);
+      operator=( const StructuralConstraintSetStatic<CONSTRAINT1,
+                                                     OTHER_CONSTRAINTS...>& );
 
       /// @}
 
@@ -446,43 +446,43 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which we will perform checkings
-      void setGraph(const DiGraph& graph);
+      void setGraph( const DiGraph& graph );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const ArcAddition& change);
+      void modifyGraph( const ArcAddition& change );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const ArcDeletion& change);
+      void modifyGraph( const ArcDeletion& change );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const ArcReversal& change);
+      void modifyGraph( const ArcReversal& change );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const GraphChange& change);
+      void modifyGraph( const GraphChange& change );
 
       /// indicates whether a change will always violate the constraint
-      bool isAlwaysInvalid(const GraphChange& change) const noexcept;
+      bool isAlwaysInvalid( const GraphChange& change ) const noexcept;
 
       /// checks whether the constraints enable to add arc (x,y)
-      bool checkArcAddition(NodeId x, NodeId y) const noexcept;
+      bool checkArcAddition( NodeId x, NodeId y ) const noexcept;
 
       /// checks whether the constraints enable to remove arc (x,y)
-      bool checkArcDeletion(NodeId x, NodeId y) const noexcept;
+      bool checkArcDeletion( NodeId x, NodeId y ) const noexcept;
 
       /// checks whether the constraints enable to reverse arc (x,y)
-      bool checkArcReversal(NodeId x, NodeId y) const noexcept;
+      bool checkArcReversal( NodeId x, NodeId y ) const noexcept;
 
       /// checks whether the constraints enable to add an arc
-      bool checkModification(const ArcAddition& change) const noexcept;
+      bool checkModification( const ArcAddition& change ) const noexcept;
 
       /// checks whether the constraints enable to remove an arc
-      bool checkModification(const ArcDeletion& change) const noexcept;
+      bool checkModification( const ArcDeletion& change ) const noexcept;
 
       /// checks whether the constraints enable to reverse an arc
-      bool checkModification(const ArcReversal& change) const noexcept;
+      bool checkModification( const ArcReversal& change ) const noexcept;
 
       /// checks whether the constraints enable to perform a graph change
-      bool checkModification(const GraphChange& change) const noexcept;
+      bool checkModification( const GraphChange& change ) const noexcept;
 
       /// @}
     };
@@ -507,7 +507,7 @@ namespace gum {
 
       /// copy constructor
       StructuralConstraintSetStatic(
-          const StructuralConstraintSetStatic<CONSTRAINT>&);
+          const StructuralConstraintSetStatic<CONSTRAINT>& );
 
       /// destructor
       ~StructuralConstraintSetStatic();
@@ -521,7 +521,7 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintSetStatic<CONSTRAINT>&
-      operator=(const StructuralConstraintSetStatic<CONSTRAINT>&);
+      operator=( const StructuralConstraintSetStatic<CONSTRAINT>& );
 
       /// @}
 
@@ -531,43 +531,43 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which we will perform checkings
-      void setGraph(const DiGraph& graph);
+      void setGraph( const DiGraph& graph );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const ArcAddition& change);
+      void modifyGraph( const ArcAddition& change );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const ArcDeletion& change);
+      void modifyGraph( const ArcDeletion& change );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const ArcReversal& change);
+      void modifyGraph( const ArcReversal& change );
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph(const GraphChange& change);
+      void modifyGraph( const GraphChange& change );
 
       /// indicates whether a change will always violate the constraint
-      bool isAlwaysInvalid(const GraphChange& change) const noexcept;
+      bool isAlwaysInvalid( const GraphChange& change ) const noexcept;
 
       /// checks whether the constraints enable to add arc (x,y)
-      bool checkArcAddition(NodeId x, NodeId y) const noexcept;
+      bool checkArcAddition( NodeId x, NodeId y ) const noexcept;
 
       /// checks whether the constraints enable to remove arc (x,y)
-      bool checkArcDeletion(NodeId x, NodeId y) const noexcept;
+      bool checkArcDeletion( NodeId x, NodeId y ) const noexcept;
 
       /// checks whether the constraints enable to reverse arc (x,y)
-      bool checkArcReversal(NodeId x, NodeId y) const noexcept;
+      bool checkArcReversal( NodeId x, NodeId y ) const noexcept;
 
       /// checks whether the constraints enable to add an arc
-      bool checkModification(const ArcAddition& change) const noexcept;
+      bool checkModification( const ArcAddition& change ) const noexcept;
 
       /// checks whether the constraints enable to remove an arc
-      bool checkModification(const ArcDeletion& change) const noexcept;
+      bool checkModification( const ArcDeletion& change ) const noexcept;
 
       /// checks whether the constraints enable to reverse an arc
-      bool checkModification(const ArcReversal& change) const noexcept;
+      bool checkModification( const ArcReversal& change ) const noexcept;
 
       /// checks whether the constraints enable to perform a graph change
-      bool checkModification(const GraphChange& change) const noexcept;
+      bool checkModification( const GraphChange& change ) const noexcept;
 
       /// @}
     };

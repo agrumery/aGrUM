@@ -31,21 +31,21 @@
 namespace gum {
 
   template <typename VAL>
-  INLINE ArcProperty<VAL> ArcGraphPart::arcsProperty(VAL (*f)(const Arc&),
-                                                     Size size) const {
-    return __arcs.hashMap(f, size);
+  INLINE ArcProperty<VAL> ArcGraphPart::arcsProperty( VAL ( *f )( const Arc& ),
+                                                      Size size ) const {
+    return __arcs.hashMap( f, size );
   }
 
   template <typename VAL>
-  INLINE ArcProperty<VAL> ArcGraphPart::arcsProperty(const VAL& val,
-                                                     Size size) const {
-    return __arcs.hashMap(val, size);
+  INLINE ArcProperty<VAL> ArcGraphPart::arcsProperty( const VAL& val,
+                                                      Size size ) const {
+    return __arcs.hashMap( val, size );
   }
 
   /// a method to create a list of Assent from a node list
   template <typename VAL>
-  INLINE List<VAL> ArcGraphPart::listMapArcs(VAL (*f)(const Arc&)) const {
-    return __arcs.listMap(f);
+  INLINE List<VAL> ArcGraphPart::listMapArcs( VAL ( *f )( const Arc& ) ) const {
+    return __arcs.listMap( f );
   }
 
 } /* namespace gum */

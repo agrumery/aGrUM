@@ -67,10 +67,10 @@ namespace gum {
      * @param cptCopy copy of the CPT before changing size
      * @param marg of the inference before changing size
      */
-    virtual void disturbReducCPT(NodeId varIdi, NodeId varIdj,
-                                 BayesNet<GUM_SCALAR>& bayesNet,
-                                 Potential<GUM_SCALAR>& cptCopy,
-                                 Potential<GUM_SCALAR>& marg) = 0;
+    virtual void disturbReducCPT( NodeId varIdi, NodeId varIdj,
+                                  BayesNet<GUM_SCALAR>& bayesNet,
+                                  Potential<GUM_SCALAR>& cptCopy,
+                                  Potential<GUM_SCALAR>& marg ) = 0;
 
     /**
      * Generates a CPT using floats.
@@ -80,10 +80,10 @@ namespace gum {
      * @param cptCopy copy of the CPT before changing size
      * @param variation degree of variation from the initial probability
      */
-    virtual void disturbAugmCPT(NodeId varIdi, NodeId varIdj,
-                                BayesNet<GUM_SCALAR>& bayesNet,
-                                Potential<GUM_SCALAR>& cptCopy,
-                                GUM_SCALAR variation) = 0;
+    virtual void disturbAugmCPT( NodeId varIdi, NodeId varIdj,
+                                 BayesNet<GUM_SCALAR>& bayesNet,
+                                 Potential<GUM_SCALAR>& cptCopy,
+                                 GUM_SCALAR variation ) = 0;
   };
 
   extern template class ICPTDisturber<float>;

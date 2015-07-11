@@ -33,10 +33,10 @@ namespace gum {
     /// learns the structure of a Bayes net
     template <typename GRAPH_CHANGES_SELECTOR>
     DAG
-    GreedyHillClimbing::learnStructure(GRAPH_CHANGES_SELECTOR& selector,
-                                       const std::vector<unsigned int>& modal,
-                                       DAG dag) {
-      selector.setGraph(dag, modal);
+    GreedyHillClimbing::learnStructure( GRAPH_CHANGES_SELECTOR& selector,
+                                        const std::vector<unsigned int>& modal,
+                                        DAG dag ) {
+      selector.setGraph( dag, modal );
 
       unsigned int nb_changes_applied = 1;
       float delta_score;
@@ -45,7 +45,7 @@ namespace gum {
 
       // a vector that indicates which queues have valid scores, i.e., scores
       // that were not invalidated by previously applied changes
-      std::vector<bool> impacted_queues(dag.size(), false);
+      std::vector<bool> impacted_queues( dag.size(), false );
 
       do {
         nb_changes_applied = 0;
@@ -54,49 +54,49 @@ namespace gum {
         std::vector<std::pair<unsigned int, float>> ordered_queues =
             selector.nodesSortedByBestScore();
 
-        for (unsigned int j = 0; j < dag.size(); ++j) {
+        for ( unsigned int j = 0; j < dag.size(); ++j ) {
           unsigned int i = ordered_queues[j].first;
 
-          if (!(selector.empty(i)) && (selector.bestScore(i) > 0)) {
+          if ( !( selector.empty( i ) ) && ( selector.bestScore( i ) > 0 ) ) {
             // pick up the best change
-            const GraphChange& change = selector.bestChange(i);
+            const GraphChange& change = selector.bestChange( i );
 
             // perform the change
-            switch (change.type()) {
+            switch ( change.type() ) {
               case GraphChangeType::ARC_ADDITION:
-                if (!impacted_queues[change.node2()] &&
-                    selector.isChangeValid(change)) {
-                  delta_score += selector.bestScore(i);
-                  dag.addArc(change.node1(), change.node2());
+                if ( !impacted_queues[change.node2()] &&
+                     selector.isChangeValid( change ) ) {
+                  delta_score += selector.bestScore( i );
+                  dag.addArc( change.node1(), change.node2() );
                   impacted_queues[change.node2()] = true;
-                  selector.applyChangeWithoutScoreUpdate(change);
+                  selector.applyChangeWithoutScoreUpdate( change );
                   ++nb_changes_applied;
                 }
 
                 break;
 
               case GraphChangeType::ARC_DELETION:
-                if (!impacted_queues[change.node2()] &&
-                    selector.isChangeValid(change)) {
-                  delta_score += selector.bestScore(i);
-                  dag.eraseArc(Arc(change.node1(), change.node2()));
+                if ( !impacted_queues[change.node2()] &&
+                     selector.isChangeValid( change ) ) {
+                  delta_score += selector.bestScore( i );
+                  dag.eraseArc( Arc( change.node1(), change.node2() ) );
                   impacted_queues[change.node2()] = true;
-                  selector.applyChangeWithoutScoreUpdate(change);
+                  selector.applyChangeWithoutScoreUpdate( change );
                   ++nb_changes_applied;
                 }
 
                 break;
 
               case GraphChangeType::ARC_REVERSAL:
-                if ((!impacted_queues[change.node1()]) &&
-                    (!impacted_queues[change.node2()]) &&
-                    selector.isChangeValid(change)) {
-                  delta_score += selector.bestScore(i);
-                  dag.eraseArc(Arc(change.node1(), change.node2()));
-                  dag.addArc(change.node2(), change.node1());
+                if ( ( !impacted_queues[change.node1()] ) &&
+                     ( !impacted_queues[change.node2()] ) &&
+                     selector.isChangeValid( change ) ) {
+                  delta_score += selector.bestScore( i );
+                  dag.eraseArc( Arc( change.node1(), change.node2() ) );
+                  dag.addArc( change.node2(), change.node1() );
                   impacted_queues[change.node1()] = true;
                   impacted_queues[change.node2()] = true;
-                  selector.applyChangeWithoutScoreUpdate(change);
+                  selector.applyChangeWithoutScoreUpdate( change );
                   ++nb_changes_applied;
                 }
 
@@ -105,7 +105,7 @@ namespace gum {
               default:
                 GUM_ERROR(
                     OperationNotAllowed,
-                    "edge modifications are not supported by local search");
+                    "edge modifications are not supported by local search" );
             }
           }
         }
@@ -113,14 +113,15 @@ namespace gum {
         selector.updateScoresAfterAppliedChanges();
 
         // reset the impacted queue and applied changes structures
-        for (auto iter = impacted_queues.begin(); iter != impacted_queues.end();
-             ++iter) {
+        for ( auto iter = impacted_queues.begin();
+              iter != impacted_queues.end(); ++iter ) {
           *iter = false;
         }
 
-        updateApproximationScheme(nb_changes_applied);
+        updateApproximationScheme( nb_changes_applied );
 
-      } while (nb_changes_applied && continueApproximationScheme(delta_score));
+      } while ( nb_changes_applied &&
+                continueApproximationScheme( delta_score ) );
 
       stopApproximationScheme();  // just to be sure of the approximationScheme
                                   // has
@@ -136,11 +137,11 @@ namespace gum {
         GRAPH_CHANGES_SELECTOR& selector, PARAM_ESTIMATOR& estimator,
         const std::vector<std::string>& names,
         const std::vector<unsigned int>& modal,
-        const CELL_TRANSLATORS& translator, DAG initial_dag) {
+        const CELL_TRANSLATORS& translator, DAG initial_dag ) {
       return DAG2BNLearner::createBN<GUM_SCALAR, PARAM_ESTIMATOR,
                                      CELL_TRANSLATORS>(
-          estimator, learnStructure(selector, modal, initial_dag), names, modal,
-          translator);
+          estimator, learnStructure( selector, modal, initial_dag ), names,
+          modal, translator );
     }
 
   } /* namespace learning */

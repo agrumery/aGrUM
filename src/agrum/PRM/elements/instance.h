@@ -77,7 +77,7 @@ namespace gum {
        * However neither of their children or parents are updated (i.e.
        * DiscreteVariable pointers are inconsistent).
        */
-      Instance<GUM_SCALAR>(const std::string& name, Class<GUM_SCALAR>& type);
+      Instance<GUM_SCALAR>( const std::string& name, Class<GUM_SCALAR>& type );
 
       /// Destructor.
       virtual ~Instance<GUM_SCALAR>();
@@ -107,13 +107,13 @@ namespace gum {
        * Returns true if id matches an Attribute<GUM_SCALAR> in this
        * Instance<GUM_SCALAR>.
        */
-      bool exists(NodeId id) const;
+      bool exists( NodeId id ) const;
 
       /**
        * Returns true if name matches an Attribute<GUM_SCALAR> in this
        * Instance<GUM_SCALAR>.
        */
-      bool exists(const std::string& name) const;
+      bool exists( const std::string& name ) const;
 
       /**
        * @brief Getter on an Attribute<GUM_SCALAR> of this Instance<GUM_SCALAR>.
@@ -129,7 +129,7 @@ namespace gum {
        *
        * @throw NotFound Raised if no Attribute<GUM_SCALAR> matches name.
        */
-      Attribute<GUM_SCALAR>& get(NodeId id);
+      Attribute<GUM_SCALAR>& get( NodeId id );
 
       /**
        * @brief Given a name returns the related Attribute<GUM_SCALAR>.
@@ -139,7 +139,7 @@ namespace gum {
        *
        * @throw NotFound Raised if there is no Attribute<GUM_SCALAR> named n.
        */
-      Attribute<GUM_SCALAR>& get(const std::string& name);
+      Attribute<GUM_SCALAR>& get( const std::string& name );
 
       /**
        * @brief Getter on an Attribute<GUM_SCALAR> of this Instance<GUM_SCALAR>.
@@ -155,7 +155,7 @@ namespace gum {
        *
        * @throw NotFound Raised if no Attribute<GUM_SCALAR> matches name.
        */
-      const Attribute<GUM_SCALAR>& get(NodeId id) const;
+      const Attribute<GUM_SCALAR>& get( NodeId id ) const;
 
       /**
        * @brief Given a name returns the related ClassElement.
@@ -165,7 +165,7 @@ namespace gum {
        *
        * @throw NotFound Raised if there is no ClassElement named n.
        */
-      const Attribute<GUM_SCALAR>& get(const std::string& name) const;
+      const Attribute<GUM_SCALAR>& get( const std::string& name ) const;
 
       /**
        * Returns the number of attributes in this Instance<GUM_SCALAR>.
@@ -239,7 +239,7 @@ namespace gum {
        *                  reference's type.
        * @throw NotFound If there is no ClassElement given id.
        */
-      void add(NodeId id, Instance<GUM_SCALAR>& instance);
+      void add( NodeId id, Instance<GUM_SCALAR>& instance );
 
       /**
        * @brief Fast access to the first instance in a ReferenceSlot or
@@ -256,7 +256,7 @@ namespace gum {
        * @throw UndefinedElement Raised if no Instance<GUM_SCALAR> are
        *referenced by id.
        */
-      const Instance<GUM_SCALAR>& getInstance(NodeId id) const;
+      const Instance<GUM_SCALAR>& getInstance( NodeId id ) const;
 
       /**
        * @brief Returns the Set of Instance<GUM_SCALAR> referenced by id.
@@ -267,7 +267,7 @@ namespace gum {
        *
        * @throw NotFound If there is no ClassElement given id.
        */
-      const Set<Instance<GUM_SCALAR>*>& getInstances(NodeId id) const;
+      const Set<Instance<GUM_SCALAR>*>& getInstances( NodeId id ) const;
 
       /**
        * Returns true if id has at least one referring Attribute<GUM_SCALAR>.
@@ -275,19 +275,19 @@ namespace gum {
        * @return returns true if is has at least one referring
        * Attribute<GUM_SCALAR>.
        */
-      bool hasRefAttr(NodeId id) const;
+      bool hasRefAttr( NodeId id ) const;
 
       /**
        * @brief Returns a vector of pairs of refering attributes of id.
        */
       std::vector<std::pair<Instance<GUM_SCALAR>*, std::string>>&
-      getRefAttr(NodeId id);
+      getRefAttr( NodeId id );
 
       /**
        * @brief Returns a vector of pairs of refering attributes of id.
        */
       const std::vector<std::pair<Instance<GUM_SCALAR>*, std::string>>&
-      getRefAttr(NodeId id) const;
+      getRefAttr( NodeId id ) const;
 
       /// @}
       // ========================================================================
@@ -329,21 +329,21 @@ namespace gum {
       class RefIterator {
 
         public:
-        RefIterator(Set<Instance<GUM_SCALAR>*>& set);
+        RefIterator( Set<Instance<GUM_SCALAR>*>& set );
 
-        RefIterator(const RefIterator& from);
+        RefIterator( const RefIterator& from );
 
         ~RefIterator();
 
-        RefIterator& operator=(const RefIterator& from);
+        RefIterator& operator=( const RefIterator& from );
 
         RefIterator& operator++();
 
         bool isEnd() const;
 
-        bool operator!=(const RefIterator& from) const;
+        bool operator!=( const RefIterator& from ) const;
 
-        bool operator==(const RefIterator& from) const;
+        bool operator==( const RefIterator& from ) const;
 
         Instance<GUM_SCALAR>& operator*() const;
         Instance<GUM_SCALAR>* operator->() const;
@@ -368,7 +368,7 @@ namespace gum {
        * @throw WrongClassElement Raised if id is neither a ReferenceSlot or
        *                          SlotChain<GUM_SCALAR>.
        */
-      RefIterator begin(NodeId id);
+      RefIterator begin( NodeId id );
 
       /**
        * Nested class to iterate over ReferenceSlot and SlotChain<GUM_SCALAR>
@@ -376,21 +376,21 @@ namespace gum {
        */
       class RefConstIterator {
         public:
-        RefConstIterator(const Set<Instance<GUM_SCALAR>*>& set);
+        RefConstIterator( const Set<Instance<GUM_SCALAR>*>& set );
 
-        RefConstIterator(const RefConstIterator& from);
+        RefConstIterator( const RefConstIterator& from );
 
         ~RefConstIterator();
 
-        RefConstIterator& operator=(const RefConstIterator& from);
+        RefConstIterator& operator=( const RefConstIterator& from );
 
         RefConstIterator& operator++();
 
         bool isEnd() const;
 
-        bool operator!=(const RefConstIterator& from) const;
+        bool operator!=( const RefConstIterator& from ) const;
 
-        bool operator==(const RefConstIterator& from) const;
+        bool operator==( const RefConstIterator& from ) const;
 
         const Instance<GUM_SCALAR>& operator*() const;
         const Instance<GUM_SCALAR>* operator->() const;
@@ -415,7 +415,7 @@ namespace gum {
        * @throw WrongClassElement Raised if id is neither a ReferenceSlot or
        * SlotChain<GUM_SCALAR>.
        */
-      RefConstIterator begin(NodeId id) const;
+      RefConstIterator begin( NodeId id ) const;
 
       typedef typename NodeProperty<
           std::vector<std::pair<Instance<GUM_SCALAR>*, std::string>>*>::iterator
@@ -433,10 +433,10 @@ namespace gum {
       /// @}
       private:
       /// Copy constructor.
-      Instance<GUM_SCALAR>(const Instance<GUM_SCALAR>& source);
+      Instance<GUM_SCALAR>( const Instance<GUM_SCALAR>& source );
 
       /// Copy operator. Don't use it.
-      Instance<GUM_SCALAR>& operator=(const Class<GUM_SCALAR>& from);
+      Instance<GUM_SCALAR>& operator=( const Class<GUM_SCALAR>& from );
 
       // ========================================================================
       /// @name Private instantiation methods.
@@ -444,11 +444,11 @@ namespace gum {
       /// @{
 
       /// Used at construction to instantiate aggregates.
-      void __copyAggregates(Aggregate<GUM_SCALAR>* source);
+      void __copyAggregates( Aggregate<GUM_SCALAR>* source );
 
       /// Used at construction to instantiate attributes.
       /// @param source An attribute in __type.
-      void __copyAttribute(Attribute<GUM_SCALAR>* source);
+      void __copyAttribute( Attribute<GUM_SCALAR>* source );
 
       /**
        * @brief Add i as the inverse instantiation of name.
@@ -462,7 +462,7 @@ namespace gum {
        *                          SlotChain<GUM_SCALAR>.
        * @throw TypeError Raised if i is not a valid subtype for name.
        */
-      void __addInverse(const std::string& name, Instance<GUM_SCALAR>* i);
+      void __addInverse( const std::string& name, Instance<GUM_SCALAR>* i );
 
       /**
        * @brief Starts this instance instantiations.
@@ -477,39 +477,39 @@ namespace gum {
        * @param visited A Set to prevent any unnecessary call to
        *__instantiate().
        */
-      void __instantiate(Set<Instance<GUM_SCALAR>*> visited);
+      void __instantiate( Set<Instance<GUM_SCALAR>*> visited );
 
       /// This instantiate the corresponding aggregate.
-      void __instantiateAggregate(NodeId id);
+      void __instantiateAggregate( NodeId id );
 
       /// This instantiate the corresponding attribute.
-      void __instantiateAttribute(NodeId id);
+      void __instantiateAttribute( NodeId id );
 
       /// This instantiate a parent of given node.
-      void __instantiateParent(NodeId child, NodeId parent);
+      void __instantiateParent( NodeId child, NodeId parent );
 
       /// This instantiate a child of given node.
-      void __instantiateChild(NodeId child, NodeId parent);
+      void __instantiateChild( NodeId child, NodeId parent );
 
       /// @brief Retrieve all instances referred by sc.
       /// @param sc A slot chain of this instance's type.
       /// @throw NotFound Raised if a reference in sc is not instantiated.
-      void __instantiateSlotChain(SlotChain<GUM_SCALAR>* sc);
+      void __instantiateSlotChain( SlotChain<GUM_SCALAR>* sc );
 
       /// @brief Copy the content of an Attribute<GUM_SCALAR> from its
       /// Class<GUM_SCALAR> counterpart.
       /// @param attr An Attribute<GUM_SCALAR> of this Instance<GUM_SCALAR>.
       /// @throw OperationNotAllowed If the MultiDimImplementation is of an
       /// unknown type.
-      void __copyAttributeCPF(Attribute<GUM_SCALAR>* attr);
+      void __copyAttributeCPF( Attribute<GUM_SCALAR>* attr );
 
       /// @brief Add this as a referring instance over the attribute pointed by
       /// sc
       ///        in i.
       /// @param sc A slot chain pointing over an attribute in i.
       /// @param i An instance holding an attribute pointed by sc.
-      void __addReferingInstance(SlotChain<GUM_SCALAR>* sc,
-                                 Instance<GUM_SCALAR>* i);
+      void __addReferingInstance( SlotChain<GUM_SCALAR>* sc,
+                                  Instance<GUM_SCALAR>* i );
 
       /// @}
       // ========================================================================

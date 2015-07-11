@@ -95,7 +95,7 @@ namespace gum {
      *
      * @param s a sequence containing the variable (wich will be the referent )
      */
-    void setVariablesSequence(Sequence<const DiscreteVariable*> s);
+    void setVariablesSequence( Sequence<const DiscreteVariable*> s );
 
     // ===========================================================================
     /// @name Nodes manipulation methods.
@@ -105,7 +105,7 @@ namespace gum {
     /**
      * Sets root node of decision diagram
      */
-    void setRootNode(const NodeId nody);
+    void setRootNode( const NodeId nody );
 
     /**
      * Adds a variable and its associate non terminal node. The id of the new
@@ -117,8 +117,8 @@ namespace gum {
      * @return the id of the added variable.
      */
     ///@{
-    NodeId addNonTerminalNode(const DiscreteVariable* var);
-    NodeId unsafeAddNonTerminalNode(const DiscreteVariable* var);
+    NodeId addNonTerminalNode( const DiscreteVariable* var );
+    NodeId unsafeAddNonTerminalNode( const DiscreteVariable* var );
     ///@}
 
     /**
@@ -133,13 +133,13 @@ namespace gum {
      * Returns the id of that node
      */
     ///@{
-    NodeId addNonTerminalNodeWithArcs(const DiscreteVariable* var,
-                                      const std::vector<NodeId>& nodeArcMap,
-                                      NodeId defaultArcTo = 0);
+    NodeId addNonTerminalNodeWithArcs( const DiscreteVariable* var,
+                                       const std::vector<NodeId>& nodeArcMap,
+                                       NodeId defaultArcTo = 0 );
     NodeId
-    unsafeAddNonTerminalNodeWithArcs(const DiscreteVariable* var,
-                                     const std::vector<NodeId>& nodeArcMap,
-                                     NodeId defaultArcTo = 0);
+    unsafeAddNonTerminalNodeWithArcs( const DiscreteVariable* var,
+                                      const std::vector<NodeId>& nodeArcMap,
+                                      NodeId defaultArcTo = 0 );
     ///@}
 
     /**
@@ -151,9 +151,9 @@ namespace gum {
      * and his nodeid
      */
     std::pair<bool, NodeId>
-    checkredundancy(const DiscreteVariable* var,
-                    const std::vector<NodeId>& nodeArcMap,
-                    NodeId defaultArcTo = 0);
+    checkredundancy( const DiscreteVariable* var,
+                     const std::vector<NodeId>& nodeArcMap,
+                     NodeId defaultArcTo = 0 );
 
     /**
      * Adds a value and it's associate terminal node. The id of the new
@@ -166,7 +166,7 @@ namespace gum {
      *return
      *instead.
      */
-    NodeId addTerminalNode(const GUM_SCALAR& value);
+    NodeId addTerminalNode( const GUM_SCALAR& value );
 
     /**
      * Erases a node from the diagram
@@ -175,7 +175,7 @@ namespace gum {
      * @param id The id of the variable to erase.
      * @throw NotFound if node isn't in diagram
      */
-    void eraseNode(NodeId id);
+    void eraseNode( NodeId id );
 
     /// @}
 
@@ -197,13 +197,14 @@ namespace gum {
      */
     ///@{
     /// @deprecated use addArc instead
-    GUM_DEPRECATED(void insertArc(NodeId from, NodeId to, Idx modality));
+    GUM_DEPRECATED( void insertArc( NodeId from, NodeId to, Idx modality ) );
 
     /// @deprecated use addArc instead
-    GUM_DEPRECATED(void unsafeInsertArc(NodeId from, NodeId to, Idx modality));
+    GUM_DEPRECATED( void unsafeInsertArc( NodeId from, NodeId to,
+                                          Idx modality ) );
 
-    void addArc(NodeId from, NodeId to, Idx modality);
-    void unsafeAddArc(NodeId from, NodeId to, Idx modality);
+    void addArc( NodeId from, NodeId to, Idx modality );
+    void unsafeAddArc( NodeId from, NodeId to, Idx modality );
     ///@}
 
     /**
@@ -216,10 +217,10 @@ namespace gum {
      * @throw OperationNotAllowed if arc doesn't respect variable order property
      * @throw DuplicateElement if another arc linking those nodes already exists
      */
-    GUM_DEPRECATED(void insertDefaultArc(NodeId from, NodeId to));
-    GUM_DEPRECATED(void unsafeInsertDefaultArc(NodeId from, NodeId to));
-    void addDefaultArc(NodeId from, NodeId to);
-    void unsafeAddDefaultArc(NodeId from, NodeId to);
+    GUM_DEPRECATED( void insertDefaultArc( NodeId from, NodeId to ) );
+    GUM_DEPRECATED( void unsafeInsertDefaultArc( NodeId from, NodeId to ) );
+    void addDefaultArc( NodeId from, NodeId to );
+    void unsafeAddDefaultArc( NodeId from, NodeId to );
 
     /**
      * Erases an arc in the DD
@@ -235,7 +236,7 @@ namespace gum {
      *will erase all of them .
      * If you want to erase a specific one, use eraseSpecificArc
      */
-    void eraseArc(NodeId from, NodeId to);
+    void eraseArc( NodeId from, NodeId to );
 
     /**
      * Erases an arc in the DD
@@ -245,7 +246,7 @@ namespace gum {
      * @param modality the modality corresponding to the to delete arc
      * @throw InvalidArc If arc does not exist
      */
-    void eraseSpecificArc(NodeId from, NodeId to, Idx modality);
+    void eraseSpecificArc( NodeId from, NodeId to, Idx modality );
 
     /// @}
 
@@ -263,7 +264,7 @@ namespace gum {
      * Returns the value of associated node if its a terminal one
      * @throw NotFound if it's not a terminal node
      */
-    GUM_SCALAR nodeValue(NodeId node);
+    GUM_SCALAR nodeValue( NodeId node );
 
     /// @}
 
@@ -271,20 +272,20 @@ namespace gum {
      * Returns the multidimDecisionDiagram made
      */
     virtual MultiDimDecisionDiagramBase<GUM_SCALAR>*
-    getMultiDimDecisionDiagram(bool fillWithDefaultArc = true,
-                               GUM_SCALAR defaultValue = 0,
-                               bool doCompress = false) = 0;
+    getMultiDimDecisionDiagram( bool fillWithDefaultArc = true,
+                                GUM_SCALAR defaultValue = 0,
+                                bool doCompress = false ) = 0;
 
     /**
      * Sets the factory from an already existing diagram
      */
     void setMultiDimDecisionDiagram(
-        const MultiDimDecisionDiagramBase<GUM_SCALAR>* source);
+        const MultiDimDecisionDiagramBase<GUM_SCALAR>* source );
 
     /**
      * Swaps two variables in the build on diagram
      */
-    void swap(const DiscreteVariable* x, const DiscreteVariable* y);
+    void swap( const DiscreteVariable* x, const DiscreteVariable* y );
 
     /**
      * Resets the factory

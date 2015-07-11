@@ -227,7 +227,7 @@ namespace gum {
     * @param notifyMaster whether or not notify master if exits
      */
 
-    Instantiation(const Instantiation& aI, const bool notifyMaster = true);
+    Instantiation( const Instantiation& aI, const bool notifyMaster = true );
 
     /**
      * @brief Copy operator.
@@ -239,7 +239,7 @@ namespace gum {
      * If this is not a slave, copies aI.
      * @throw OperationNotAllowed
      */
-    Instantiation& operator=(const Instantiation& aI);
+    Instantiation& operator=( const Instantiation& aI );
 
     /**
      * @brief Constructor for a Instantiation of all the variables of a
@@ -260,7 +260,7 @@ namespace gum {
      * @param aMD the array the variables of which are those of the
      *Instantiation
      */
-    Instantiation(MultiDimAdressable& aMD);
+    Instantiation( MultiDimAdressable& aMD );
 
     /**
      * @brief Constructor for a Instantiation of all the variables of a
@@ -281,7 +281,7 @@ namespace gum {
      * @param aMD the array the variables of which are those of the
      *Instantiation
      */
-    Instantiation(const MultiDimAdressable& aMD);
+    Instantiation( const MultiDimAdressable& aMD );
 
     /**
      * @brief Constructor for a Instantiation of all the variables of a
@@ -302,7 +302,7 @@ namespace gum {
      * @param aMD the array the variables of which are those of the
      *Instantiation
      */
-    Instantiation(MultiDimAdressable* aMD);
+    Instantiation( MultiDimAdressable* aMD );
 
     /**
      * @brief Constructor for a Instantiation of all the variables of a
@@ -323,7 +323,7 @@ namespace gum {
      * @param aMD the array the variables of which are those of the
      *Instantiation
      */
-    Instantiation(const MultiDimAdressable* aMD);
+    Instantiation( const MultiDimAdressable* aMD );
 
     /// Destructor.
     ~Instantiation();
@@ -361,7 +361,7 @@ namespace gum {
      * @throw DuplicateElement
      * @throw OperationNotAllowed
      */
-    void add(const DiscreteVariable& v);
+    void add( const DiscreteVariable& v );
 
     /**
      * @brief Removes a variable from the Instantiation.
@@ -378,7 +378,7 @@ namespace gum {
      * @throw NotFound
      * @throw OperationNotAllowed Raised if the instantiation is a slave.
      */
-    void erase(const DiscreteVariable& v);
+    void erase( const DiscreteVariable& v );
 
     /**
      * @brief Erase all variables from an Instantiation
@@ -393,7 +393,7 @@ namespace gum {
      * Returns the position of the variable v.
      * @throw NotFound Raised if v does not belong to the instantiation.
      */
-    Idx pos(const DiscreteVariable& v) const;
+    Idx pos( const DiscreteVariable& v ) const;
 
     /**
      * Returns the current value of the variable at position i.
@@ -408,7 +408,7 @@ namespace gum {
      * @param i The index of the variable.
      * @throw NotFound Raised if the element cannot be found.
      */
-    Idx val(Idx i) const;
+    Idx val( Idx i ) const;
 
     /**
      * Returns the current value of a given variable.
@@ -423,7 +423,7 @@ namespace gum {
      * @param var The variable the value of which we wish to know.
      * @throw NotFound Raised it var does not belong to the instantiation.
      */
-    Idx val(const DiscreteVariable& var) const;
+    Idx val( const DiscreteVariable& var ) const;
 
     /**
      * Returns the current value of a given variable.
@@ -439,7 +439,7 @@ namespace gum {
      * @throw NotFound Raised if var does not belong to the instantiation.
      */
 
-    Idx valFromPtr(const DiscreteVariable* pvar) const;
+    Idx valFromPtr( const DiscreteVariable* pvar ) const;
 
     /**
      * Returns the variable at position i in the tuple.
@@ -448,7 +448,7 @@ namespace gum {
      * @throw NotFound Raised if the element cannot be found.
      */
 
-    const DiscreteVariable& variable(Idx i) const;
+    const DiscreteVariable& variable( Idx i ) const;
 
     /**
      * @brief Assign newval to variable v in the Instantiation.
@@ -471,7 +471,7 @@ namespace gum {
      * @throw OutOfBound Raised if newval is not a possible value for v.
      */
 
-    Instantiation& chgVal(const DiscreteVariable& v, Idx newval);
+    Instantiation& chgVal( const DiscreteVariable& v, Idx newval );
 
     /**
      * @brief Assign newval to variable v in the Instantiation.
@@ -494,7 +494,7 @@ namespace gum {
      * @throw OutOfBound Raised if newval is not a possible value for v.
      */
 
-    Instantiation& chgVal(const DiscreteVariable* v, Idx newval);
+    Instantiation& chgVal( const DiscreteVariable* v, Idx newval );
 
     /**
      * @brief Assign newval to variable at position varPos in the Instantiation.
@@ -516,7 +516,7 @@ namespace gum {
      *        the variable
      */
 
-    Instantiation& chgVal(Idx varPos, Idx newval);
+    Instantiation& chgVal( Idx varPos, Idx newval );
 
     /**
      * @brief Assign the values from i in the Instantiation.
@@ -543,7 +543,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      */
 
-    Instantiation& setVals(const Instantiation& i);
+    Instantiation& setVals( const Instantiation& i );
 
     /**
      * @brief Assign the values of external in *this, using map as a bijection
@@ -559,7 +559,7 @@ namespace gum {
      */
     void setValsFrom(
         const HashTable<const DiscreteVariable*, const DiscreteVariable*>& map,
-        const Instantiation& external);
+        const Instantiation& external );
 
     /**
      * Indicates whether a given variable belongs to the Instantiation.
@@ -567,7 +567,7 @@ namespace gum {
      * @param v The variable for which the test is made.
      * @return Returns true if v is in the Instantiation.
      */
-    bool contains(const DiscreteVariable& v) const;
+    bool contains( const DiscreteVariable& v ) const;
 
     /**
      * Indicates whether a given variable belongs to the Instantiation.
@@ -575,13 +575,13 @@ namespace gum {
      * @param v A pointer on the variable for which the test is made.
      * @return Returns true if *v is in the Instantiation.
      */
-    bool contains(const DiscreteVariable* v) const;
+    bool contains( const DiscreteVariable* v ) const;
 
     /// Returns the sequence of DiscreteVariable of this instantiation.
     const Sequence<const DiscreteVariable*>& variablesSequence() const;
 
     /// Returns true if the instantiation is empty.
-    virtual bool empty(void) const;
+    virtual bool empty( void ) const;
 
     /// @}
 
@@ -762,7 +762,7 @@ namespace gum {
      *setLast().
      */
 
-    void incIn(const Instantiation& i);
+    void incIn( const Instantiation& i );
 
     /**
      * @brief Operator -- for the variables in i.
@@ -789,7 +789,7 @@ namespace gum {
      *setLast().
      */
 
-    void decIn(const Instantiation& i);
+    void decIn( const Instantiation& i );
 
     /**
      * @brief Operator ++ for the variables not in i.
@@ -817,7 +817,7 @@ namespace gum {
      *setLast().
      */
 
-    void incOut(const Instantiation& i);
+    void incOut( const Instantiation& i );
 
     /**
      * @brief Operator -- for the variables not in i.
@@ -845,7 +845,7 @@ namespace gum {
      *setLast().
      */
 
-    void decOut(const Instantiation& i);
+    void decOut( const Instantiation& i );
 
     /**
      * @brief Operator ++ for vars which are not v.
@@ -867,7 +867,7 @@ namespace gum {
      * setLast().
      */
 
-    void incNotVar(const DiscreteVariable& v);
+    void incNotVar( const DiscreteVariable& v );
 
     /**
      * @brief Operator -- for vars which are not v.
@@ -889,7 +889,7 @@ namespace gum {
      * setLast().
      */
 
-    void decNotVar(const DiscreteVariable& v);
+    void decNotVar( const DiscreteVariable& v );
 
     /**
      * @brief Operator ++ for variable v only.
@@ -907,7 +907,7 @@ namespace gum {
      *Instantiation.
      */
 
-    void incVar(const DiscreteVariable& v);
+    void incVar( const DiscreteVariable& v );
 
     /**
      * @brief Operator -- for variable v only.
@@ -925,7 +925,7 @@ namespace gum {
      *Instantiation.
      */
 
-    void decVar(const DiscreteVariable& v);
+    void decVar( const DiscreteVariable& v );
 
     /// @}
 
@@ -973,7 +973,7 @@ namespace gum {
      * overFlow flag.
      */
 
-    void setFirstIn(const Instantiation& i);
+    void setFirstIn( const Instantiation& i );
 
     /**
      * @brief Assign the last values in the Instantiation for the variables in
@@ -991,7 +991,7 @@ namespace gum {
      * overFlow flag.
      */
 
-    void setLastIn(const Instantiation& i);
+    void setLastIn( const Instantiation& i );
 
     /**
      * @brief Assign the first values in the Instantiation for the variables not
@@ -1008,7 +1008,7 @@ namespace gum {
      * overFlow flag.
      */
 
-    void setFirstOut(const Instantiation& i);
+    void setFirstOut( const Instantiation& i );
 
     /**
      * @brief Assign the last values in the Instantiation for the variables not
@@ -1024,7 +1024,7 @@ namespace gum {
      * overFlow flag.
      */
 
-    void setLastOut(const Instantiation& i);
+    void setLastOut( const Instantiation& i );
 
     /**
      * @brief Assign the first values to variables different of v.
@@ -1037,7 +1037,7 @@ namespace gum {
      * the overFlow flag.
      */
 
-    void setFirstNotVar(const DiscreteVariable& v);
+    void setFirstNotVar( const DiscreteVariable& v );
 
     /**
      * @brief  Assign the last values to variables different of v.
@@ -1050,7 +1050,7 @@ namespace gum {
      * the overFlow flag.
      */
 
-    void setLastNotVar(const DiscreteVariable& v);
+    void setLastNotVar( const DiscreteVariable& v );
 
     /**
      * @brief Assign the first value in the Instantiation for var v.
@@ -1063,7 +1063,7 @@ namespace gum {
      * the overFlow flag.
      */
 
-    void setFirstVar(const DiscreteVariable& v);
+    void setFirstVar( const DiscreteVariable& v );
 
     /**
      * @brief Assign the last value in the Instantiation for var v.
@@ -1076,7 +1076,7 @@ namespace gum {
      * the overFlow flag.
      */
 
-    void setLastVar(const DiscreteVariable& v);
+    void setLastVar( const DiscreteVariable& v );
 
     /// @}
 
@@ -1102,7 +1102,7 @@ namespace gum {
      *master.
      */
 
-    bool actAsSlave(MultiDimAdressable& aMD);
+    bool actAsSlave( MultiDimAdressable& aMD );
 
     /**
      * Deassociate the master gum::MultiDimAdressable, if any.
@@ -1117,11 +1117,11 @@ namespace gum {
 
     /// Indicates whether m is the master of this instantiation.
 
-    bool isMaster(const MultiDimAdressable* m) const;
+    bool isMaster( const MultiDimAdressable* m ) const;
 
     /// Indicates whether m is the master of this instantiation.
 
-    bool isMaster(const MultiDimAdressable& m) const;
+    bool isMaster( const MultiDimAdressable& m ) const;
 
     /**
      * @brief Force the variables sequence to be the same as the master one.
@@ -1134,7 +1134,7 @@ namespace gum {
      *instantiation.
      */
 
-    void synchronizeWithMaster(const MultiDimAdressable* m);
+    void synchronizeWithMaster( const MultiDimAdressable* m );
 
     /**
      * Call __add by master.
@@ -1145,7 +1145,8 @@ namespace gum {
      *instantiation.
      */
 
-    void addWithMaster(const MultiDimAdressable* m, const DiscreteVariable& v);
+    void addWithMaster( const MultiDimAdressable* m,
+                        const DiscreteVariable& v );
 
     /**
      * Call __erase by master.
@@ -1156,8 +1157,8 @@ namespace gum {
      *instantiation.
      */
 
-    void eraseWithMaster(const MultiDimAdressable* m,
-                         const DiscreteVariable& v);
+    void eraseWithMaster( const MultiDimAdressable* m,
+                          const DiscreteVariable& v );
 
     /// @}
 
@@ -1176,11 +1177,11 @@ namespace gum {
 
     /// Calls depl times inc().
 
-    Instantiation& operator+=(Id depl);
+    Instantiation& operator+=( Id depl );
 
     /// Calls depl times dec()
 
-    Instantiation& operator-=(Id depl);
+    Instantiation& operator-=( Id depl );
 
     /// @}
 
@@ -1208,19 +1209,19 @@ namespace gum {
      * @throw OperationNotAllowed if slave instantiation
      */
 
-    void reorder(const Sequence<const DiscreteVariable*>& v);
+    void reorder( const Sequence<const DiscreteVariable*>& v );
 
     /**
      * Calls reorder(const Sequence<const DiscreteVariable*>&) with
      * i.variablesSequence()
      */
 
-    void reorder(const Instantiation& i);
+    void reorder( const Instantiation& i );
     /// @}
 
     protected:
     /// Replace x by y.
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+    virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
 
     private:
     /**
@@ -1250,7 +1251,7 @@ namespace gum {
 
     /// swap 2 vars in the Instantiation
 
-    void __swap(Idx i, Idx j);
+    void __swap( Idx i, Idx j );
 
     /**
      *  modifies internally the value of a given variable of the sequence
@@ -1258,7 +1259,7 @@ namespace gum {
      *  informs its master MultiDimAdressable of the modification
      */
 
-    void __chgVal(Idx varPos, Idx newVal);
+    void __chgVal( Idx varPos, Idx newVal );
 
     /**
      *  adds a new var to the sequence of vars
@@ -1280,7 +1281,7 @@ namespace gum {
      *  @throw DuplicateElement
      */
 
-    void __add(const DiscreteVariable& v);
+    void __add( const DiscreteVariable& v );
 
     /**
      *  removes a variable from the sequence of vars
@@ -1295,7 +1296,7 @@ namespace gum {
      *  removeDim instead.
      */
 
-    void __erase(const DiscreteVariable& v);
+    void __erase( const DiscreteVariable& v );
 
     /**
      *  This function is called by the master (if any) when changes arise in its
@@ -1305,11 +1306,11 @@ namespace gum {
      *  @param v the new vars list
      */
 
-    void __notifiedDimChanged(const Sequence<const DiscreteVariable*>& v);
+    void __notifiedDimChanged( const Sequence<const DiscreteVariable*>& v );
 
     /// initialisation (same in 4 constructors)
 
-    void __init(MultiDimAdressable* master);
+    void __init( MultiDimAdressable* master );
 
     /**
      * @brief Reorder vars of this instantiation giving the order in v.
@@ -1320,12 +1321,12 @@ namespace gum {
      * The variables only in v are ignored.
      */
 
-    void __reorder(const Sequence<const DiscreteVariable*>& v);
+    void __reorder( const Sequence<const DiscreteVariable*>& v );
   };
 
   /// Print information of the instantiation in the stream.
 
-  std::ostream& operator<<(std::ostream&, const Instantiation&);
+  std::ostream& operator<<( std::ostream&, const Instantiation& );
 
 } /* namespace gum */
 

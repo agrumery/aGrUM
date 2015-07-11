@@ -92,7 +92,7 @@ namespace gum {
 
   template <typename Val, typename Cmp, typename Alloc> class Heap;
   template <typename Val, typename Cmp, typename Alloc>
-  std::ostream& operator<<(std::ostream&, const Heap<Val, Cmp, Alloc>&);
+  std::ostream& operator<<( std::ostream&, const Heap<Val, Cmp, Alloc>& );
 
   /* ===========================================================================
    */
@@ -194,20 +194,21 @@ namespace gum {
      * be nearer than e2 to the top of the heap.
      * @param capacity the size of the internal data structures containing the
      * elements (could be for instance vectors or hashtables) */
-    explicit Heap(Cmp compare = Cmp(),
-                  Size capacity = GUM_HEAP_DEFAULT_CAPACITY);
+    explicit Heap( Cmp compare = Cmp(),
+                   Size capacity = GUM_HEAP_DEFAULT_CAPACITY );
 
     /// initializer list constructor
-    explicit Heap(std::initializer_list<Val> list);
+    explicit Heap( std::initializer_list<Val> list );
 
     /// copy constructor
-    Heap(const Heap<Val, Cmp, Alloc>& from);
+    Heap( const Heap<Val, Cmp, Alloc>& from );
 
     /// generalized copy constructor
-    template <typename OtherAlloc> Heap(const Heap<Val, Cmp, OtherAlloc>& from);
+    template <typename OtherAlloc>
+    Heap( const Heap<Val, Cmp, OtherAlloc>& from );
 
     /// move constructor
-    Heap(Heap<Val, Cmp, Alloc>&& from) noexcept;
+    Heap( Heap<Val, Cmp, Alloc>&& from ) noexcept;
 
     /// destructor
     ~Heap();
@@ -224,7 +225,7 @@ namespace gum {
      * memory
      * is available), the operator guarantees that the heap stays in a coherent
      * state. Actually, the heap becomes empty. An exception is then thrown. */
-    Heap<Val, Cmp, Alloc>& operator=(const Heap<Val, Cmp, Alloc>&);
+    Heap<Val, Cmp, Alloc>& operator=( const Heap<Val, Cmp, Alloc>& );
 
     /// generalized copy operator
     /** When a problem occurs during the copy (for instance when not enough
@@ -232,19 +233,19 @@ namespace gum {
      * is available), the operator guarantees that the heap stays in a coherent
      * state. Actually, the heap becomes empty. An exception is then thrown. */
     template <typename OtherAlloc>
-    Heap<Val, Cmp, Alloc>& operator=(const Heap<Val, Cmp, OtherAlloc>&);
+    Heap<Val, Cmp, Alloc>& operator=( const Heap<Val, Cmp, OtherAlloc>& );
 
     /// move operator
     /** When a problem occurs during the copy (for instance when not enough
      * memory
      * is available), the operator guarantees that the heap stays in a coherent
      * state. Actually, the heap becomes empty. An exception is then thrown. */
-    Heap<Val, Cmp, Alloc>& operator=(Heap<Val, Cmp, Alloc>&&) noexcept;
+    Heap<Val, Cmp, Alloc>& operator=( Heap<Val, Cmp, Alloc>&& ) noexcept;
 
     /// returns the element at index index_elt from the heap
     /** @throw NotFound exception is thrown if there is no element
      * at position "index_elt". */
-    const Val& operator[](Size index_elt) const;
+    const Val& operator[]( Size index_elt ) const;
 
     /// @}
 
@@ -284,7 +285,7 @@ namespace gum {
      * incrementing the index by 1 each time we jump to another node, we get a
      * unique index for each element. This is precisely what the index passed in
      * argument of the function represents. */
-    void eraseByPos(Size index);
+    void eraseByPos( Size index );
 
     /// removes a given element from the heap (but does not return it)
     /** If the element cannot be found, the function returns without throwing
@@ -293,17 +294,17 @@ namespace gum {
      * @param val the element we wish to remove. If the heap contains several
      * times
      * this element, then the one with the smallest index is removed. */
-    void erase(const Val& val);
+    void erase( const Val& val );
 
     /// inserts a new element (actually a copy) in the heap and returns its
     /// index
-    Size insert(const Val& val);
+    Size insert( const Val& val );
 
     /// inserts a new element (by moving it) in the heap and returns its index
-    Size insert(Val&& val);
+    Size insert( Val&& val );
 
     /// emplace a new element in the heap and returns its index
-    template <typename... Args> Size emplace(Args&&... args);
+    template <typename... Args> Size emplace( Args&&... args );
 
     /// returns the number of elements in the heap
     Size size() const noexcept;
@@ -312,7 +313,7 @@ namespace gum {
     bool empty() const noexcept;
 
     /// indicates whether the heap contains a given value
-    bool contains(const Val&) const;
+    bool contains( const Val& ) const;
 
     /// displays the content of the heap
 
@@ -331,7 +332,7 @@ namespace gum {
     /// changes the size of the the internal structure storing the heap
     /** If the new size does not enable the heap to contain the elements it
      * currently contains, then the resizing does not occur. */
-    void resize(Size new_size);
+    void resize( Size new_size );
 
     /// @}
 

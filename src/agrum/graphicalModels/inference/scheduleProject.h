@@ -50,14 +50,14 @@ namespace gum {
 
     /// default constructor
     /** @warning table and del_vars are passed by copy */
-    ScheduleProject(const ScheduleMultiDim<GUM_SCALAR>& table,
-                    const Set<const DiscreteVariable*>& del_vars,
-                    MultiDimImplementation<GUM_SCALAR>* (*project)(
-                        const MultiDimImplementation<GUM_SCALAR>&,
-                        const Set<const DiscreteVariable*>&));
+    ScheduleProject( const ScheduleMultiDim<GUM_SCALAR>& table,
+                     const Set<const DiscreteVariable*>& del_vars,
+                     MultiDimImplementation<GUM_SCALAR>* ( *project )(
+                         const MultiDimImplementation<GUM_SCALAR>&,
+                         const Set<const DiscreteVariable*>& ) );
 
     /// copy constructor
-    ScheduleProject(const ScheduleProject<GUM_SCALAR>&);
+    ScheduleProject( const ScheduleProject<GUM_SCALAR>& );
 
     /// virtual copy constructor: creates a clone of the operation
     virtual ScheduleProject<GUM_SCALAR>* newFactory() const;
@@ -73,17 +73,18 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ScheduleProject<GUM_SCALAR>& operator=(const ScheduleProject<GUM_SCALAR>&);
+    ScheduleProject<GUM_SCALAR>&
+    operator=( const ScheduleProject<GUM_SCALAR>& );
 
     /// operator ==
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator==(const ScheduleOperation<GUM_SCALAR>&) const;
+    bool operator==( const ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// operator !=
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator!=(const ScheduleOperation<GUM_SCALAR>&) const;
+    bool operator!=( const ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// @}
 
@@ -143,9 +144,9 @@ namespace gum {
     mutable Sequence<const ScheduleMultiDim<GUM_SCALAR>*>* __results;
 
     /// the projection operator
-    MultiDimImplementation<GUM_SCALAR>* (*__project)(
+    MultiDimImplementation<GUM_SCALAR>* ( *__project )(
         const MultiDimImplementation<GUM_SCALAR>&,
-        const Set<const DiscreteVariable*>&);
+        const Set<const DiscreteVariable*>& );
   };
 
 } /* namespace gum */

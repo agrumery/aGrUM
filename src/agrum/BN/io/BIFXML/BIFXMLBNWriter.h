@@ -79,8 +79,8 @@ namespace gum {
      * @param infdiag The bayes net writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::ostream& output,
-                       const IBayesNet<GUM_SCALAR>& infdiag);
+    virtual void write( std::ostream& output,
+                        const IBayesNet<GUM_SCALAR>& infdiag );
 
     /**
      * Writes an bayes net in the file referenced by filePath.
@@ -91,14 +91,14 @@ namespace gum {
      * @param infdiag The bayes net writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::string filePath,
-                       const IBayesNet<GUM_SCALAR>& infdiag);
+    virtual void write( std::string filePath,
+                        const IBayesNet<GUM_SCALAR>& infdiag );
 
     private:
     /**
      * Returns the header of the BIF file.
      */
-    std::string __heading(const IBayesNet<GUM_SCALAR>& bn);
+    std::string __heading( const IBayesNet<GUM_SCALAR>& bn );
 
     /**
      * Returns the end of the BIF file.
@@ -108,14 +108,14 @@ namespace gum {
     /**
      * Returns a bloc defining a variable in the BIF format.
      */
-    std::string __variableBloc(const DiscreteVariable& var);
+    std::string __variableBloc( const DiscreteVariable& var );
 
     /**
      * Returns a bloc defining a variable's table (if she has) in the BIF
      * format.
      */
-    std::string __variableDefinition(const NodeId& varNodeId,
-                                     const IBayesNet<GUM_SCALAR>& infdiag);
+    std::string __variableDefinition( const NodeId& varNodeId,
+                                      const IBayesNet<GUM_SCALAR>& infdiag );
   };
 
   extern template class BIFXMLBNWriter<float>;

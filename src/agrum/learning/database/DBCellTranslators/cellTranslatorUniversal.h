@@ -82,8 +82,8 @@ namespace gum {
        * useful for learning non-stationary Bayesian networks.
        * @param check_database indicates whether we shall parse the database to
        * initialize the translator. */
-      CellTranslatorUniversal(Sequence<float> values = Sequence<float>(),
-                              bool check_database = true);
+      CellTranslatorUniversal( Sequence<float> values = Sequence<float>(),
+                               bool check_database = true );
 
       /// default constructor
       /** @param values The user can specify the values which the cell
@@ -118,14 +118,14 @@ namespace gum {
        * useful for learning non-stationary Bayesian networks.
        * @param check_database indicates whether we shall parse the database to
        * initialize the translator. */
-      CellTranslatorUniversal(Sequence<std::string> values,
-                              bool check_database = true);
+      CellTranslatorUniversal( Sequence<std::string> values,
+                               bool check_database = true );
 
       /// copy constructor
-      CellTranslatorUniversal(const CellTranslatorUniversal& from);
+      CellTranslatorUniversal( const CellTranslatorUniversal& from );
 
       /// move constructor
-      CellTranslatorUniversal(CellTranslatorUniversal&& from);
+      CellTranslatorUniversal( CellTranslatorUniversal&& from );
 
       /// virtual copy constructor
       virtual CellTranslatorUniversal* copyFactory() final;
@@ -142,10 +142,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      CellTranslatorUniversal& operator=(const CellTranslatorUniversal& from);
+      CellTranslatorUniversal& operator=( const CellTranslatorUniversal& from );
 
       /// move operator
-      CellTranslatorUniversal& operator=(CellTranslatorUniversal&& from);
+      CellTranslatorUniversal& operator=( CellTranslatorUniversal&& from );
 
       /// @}
 
@@ -167,18 +167,18 @@ namespace gum {
       void postInitialize();
 
       /// add the number of modalities discovered in the database into a vector
-      void modalities(std::vector<unsigned int>& modal) const noexcept;
+      void modalities( std::vector<unsigned int>& modal ) const noexcept;
 
       /// returns whether the translator needs a DB parsing to initialize itself
       bool requiresInitialization() const noexcept;
 
       /// returns a given value as stored within the database
-      std::string translateBack(unsigned int col,
-                                unsigned int translated_val) const;
+      std::string translateBack( unsigned int col,
+                                 unsigned int translated_val ) const;
 
       /// returns the name of the variable(s) the translator has processed
-      void variableNames(const std::vector<std::string>& db_var,
-                         std::vector<std::string>& output_vars) const;
+      void variableNames( const std::vector<std::string>& db_var,
+                          std::vector<std::string>& output_vars ) const;
 
       /// specify the set of possible values (to do before creating the row
       /// filter)
@@ -218,8 +218,8 @@ namespace gum {
        * into
        * the DBRowFilter, i.e., before the latter is created (as the creation of
        * the row filter induces the parsing of the database). */
-      void setUserValues(const Sequence<float>& values,
-                         bool check_database = true);
+      void setUserValues( const Sequence<float>& values,
+                          bool check_database = true );
 
       /// specify the set of possible values (to do before creating the row
       /// filter)
@@ -259,8 +259,8 @@ namespace gum {
        * into
        * the DBRowFilter, i.e., before the latter is created (as the creation of
        * the row filter induces the parsing of the database). */
-      void setUserValues(const Sequence<std::string>& values,
-                         bool check_database = true);
+      void setUserValues( const Sequence<std::string>& values,
+                          bool check_database = true );
 
       /// returns the set of translations for string values in the database
       const Bijection<int, unsigned int>& stringTranslations() const noexcept;

@@ -70,13 +70,13 @@ namespace gum {
        * @warning Note that if you set check_database to false, method
        * modalities () will raise an exception because the modalities are
        * computed at initialization by parsing the database */
-      CellTranslatorCompactIntId(bool check_database = true);
+      CellTranslatorCompactIntId( bool check_database = true );
 
       /// copy constructor
-      CellTranslatorCompactIntId(const CellTranslatorCompactIntId& from);
+      CellTranslatorCompactIntId( const CellTranslatorCompactIntId& from );
 
       /// move constructor
-      CellTranslatorCompactIntId(CellTranslatorCompactIntId&& from);
+      CellTranslatorCompactIntId( CellTranslatorCompactIntId&& from );
 
       /// virtual copy constructor
       virtual CellTranslatorCompactIntId* copyFactory() final;
@@ -94,10 +94,11 @@ namespace gum {
 
       /// copy operator
       CellTranslatorCompactIntId&
-      operator=(const CellTranslatorCompactIntId& from);
+      operator=( const CellTranslatorCompactIntId& from );
 
       /// move operator
-      CellTranslatorCompactIntId& operator=(CellTranslatorCompactIntId&& from);
+      CellTranslatorCompactIntId&
+      operator=( CellTranslatorCompactIntId&& from );
 
       /// @}
 
@@ -119,18 +120,18 @@ namespace gum {
       void postInitialize();
 
       /// add the number of modalities discovered in the database into a vector
-      void modalities(std::vector<unsigned int>& modal) const noexcept;
+      void modalities( std::vector<unsigned int>& modal ) const noexcept;
 
       /// returns whether the translator needs a DB parsing to initialize itself
       bool requiresInitialization() const noexcept;
 
       /// returns a given value as stored within the database
-      std::string translateBack(unsigned int col,
-                                unsigned int translated_val) const;
+      std::string translateBack( unsigned int col,
+                                 unsigned int translated_val ) const;
 
       /// returns the name of the variable(s) the translator has processed
-      void variableNames(const std::vector<std::string>& db_var,
-                         std::vector<std::string>& output_vars) const;
+      void variableNames( const std::vector<std::string>& db_var,
+                          std::vector<std::string>& output_vars ) const;
 
       /// @}
 

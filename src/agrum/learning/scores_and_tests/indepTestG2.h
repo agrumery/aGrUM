@@ -72,8 +72,8 @@ namespace gum {
        * @param var_modalities the domain sizes of the variables in the database
        */
       template <typename RowFilter>
-      IndepTestG2(const RowFilter& filter,
-                  const std::vector<unsigned int>& var_modalities);
+      IndepTestG2( const RowFilter& filter,
+                   const std::vector<unsigned int>& var_modalities );
 
       /// destructor
       ~IndepTestG2();
@@ -95,7 +95,7 @@ namespace gum {
        * summations mentioned above. Therefore, any positive result should
        * reflect a dependence whereas negative results should reflect
        * independences. */
-      float score(unsigned int nodeset_index);
+      float score( unsigned int nodeset_index );
 
       /// @}
 

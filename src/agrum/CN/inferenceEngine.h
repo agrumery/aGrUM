@@ -200,8 +200,8 @@ namespace gum {
        * @param id The id of the node to be updated
        * @param vertex A (potential) vertex of the node credal set
        */
-      inline void _updateExpectations(const NodeId& id,
-                                      const std::vector<GUM_SCALAR>& vertex);
+      inline void _updateExpectations( const NodeId& id,
+                                       const std::vector<GUM_SCALAR>& vertex );
 
       /**
        * @deprecated Use _updateCredalSets ( LrsWrapper without intput/output
@@ -218,9 +218,9 @@ namespace gum {
        * @param vertex A (potential) vertex of the node credal set
        * @param elimRedund remove redundant vertex (inside a facet)
        */
-      GUM_DEPRECATED(inline void _updateCredalSetsWithFiles(
+      GUM_DEPRECATED( inline void _updateCredalSetsWithFiles(
           const NodeId& id, const std::vector<GUM_SCALAR>& vertex,
-          const bool& elimRedund = false));
+          const bool& elimRedund = false ) );
 
       /**
        * Given a node id and one of it's possible vertex, update it's credal
@@ -233,9 +233,9 @@ namespace gum {
        * @param vertex A (potential) vertex of the node credal set
        * @param elimRedund remove redundant vertex (inside a facet)
        */
-      inline void _updateCredalSets(const NodeId& id,
-                                    const std::vector<GUM_SCALAR>& vertex,
-                                    const bool& elimRedund = false);
+      inline void _updateCredalSets( const NodeId& id,
+                                     const std::vector<GUM_SCALAR>& vertex,
+                                     const bool& elimRedund = false );
 
       /// @}
 
@@ -257,7 +257,7 @@ namespace gum {
        *
        * @param credalNet The credal net to be used with this inference engine.
        */
-      InferenceEngine(const CredalNet<GUM_SCALAR>& credalNet);
+      InferenceEngine( const CredalNet<GUM_SCALAR>& credalNet );
       /**
        * Destructor.
        */
@@ -302,18 +302,18 @@ namespace gum {
        * false
        * otherwise. Only usefull with dynamic networks.
        */
-      void setRepetitiveInd(const bool repetitive);
+      void setRepetitiveInd( const bool repetitive );
 
       /**
        * @param value \c True if vertices are to be stored, false otherwise.
        */
-      void storeVertices(const bool value);
+      void storeVertices( const bool value );
       /**
        * @param value \c True if optimal bayesian networks are to be stored for
        * each
        * variable and each modality.
        */
-      void storeBNOpt(const bool value);
+      void storeBNOpt( const bool value );
 
       /**
        * Get the current independence status.
@@ -344,46 +344,46 @@ namespace gum {
        * Insert variables modalities from file to compute expectations.
        * @param path The path to the modalities file.
        */
-      void insertModalsFile(const std::string& path);
+      void insertModalsFile( const std::string& path );
 
       /**
        * Insert variables modalities from map to compute expectations.
        * @param modals The map variable name - modalities.
        */
       void insertModals(
-          const std::map<std::string, std::vector<GUM_SCALAR>>& modals);
+          const std::map<std::string, std::vector<GUM_SCALAR>>& modals );
 
       /**
        * Insert evidence from file.
        * @param path The path to the evidence file.
        */
-      virtual void insertEvidenceFile(const std::string& path);
+      virtual void insertEvidenceFile( const std::string& path );
 
       /**
        * Insert evidence from map.
        * @param eviMap The map variable name - likelihood.
        */
       void insertEvidence(
-          const std::map<std::string, std::vector<GUM_SCALAR>>& eviMap);
+          const std::map<std::string, std::vector<GUM_SCALAR>>& eviMap );
 
       /**
        * Insert evidence from Property.
        * @param evidence The on nodes Property containing likelihoods.
        */
       void
-      insertEvidence(const NodeProperty<std::vector<GUM_SCALAR>>& evidence);
+      insertEvidence( const NodeProperty<std::vector<GUM_SCALAR>>& evidence );
 
       /**
        * Insert query variables states from file.
        * @param path The path to the query file.
        */
-      void insertQueryFile(const std::string& path);
+      void insertQueryFile( const std::string& path );
 
       /**
        * Insert query variables and states from Property.
        * @param query The on nodes Property containing queried variables states.
        */
-      void insertQuery(const NodeProperty<std::vector<bool>>& query);
+      void insertQuery( const NodeProperty<std::vector<bool>>& query );
 
       /// @}
 
@@ -403,14 +403,14 @@ namespace gum {
        * @param id The node id which lower marginals we want.
        * @return A constant reference to this node lower marginals.
        */
-      const std::vector<GUM_SCALAR>& marginalMin(const NodeId id) const;
+      const std::vector<GUM_SCALAR>& marginalMin( const NodeId id ) const;
 
       /**
        * Get the upper marginals of a given node id.
        * @param id The node id which upper marginals we want.
        * @return A constant reference to this node upper marginals.
        */
-      const std::vector<GUM_SCALAR>& marginalMax(const NodeId id) const;
+      const std::vector<GUM_SCALAR>& marginalMax( const NodeId id ) const;
 
       /**
        * Get the lower marginals of a given variable name.
@@ -418,7 +418,7 @@ namespace gum {
        * @return A constant reference to this variable lower marginals.
        */
       const std::vector<GUM_SCALAR>&
-      marginalMin(const std::string& varName) const;
+      marginalMin( const std::string& varName ) const;
 
       /**
        * Get the upper marginals of a given variable name.
@@ -426,35 +426,35 @@ namespace gum {
        * @return A constant reference to this variable upper marginals.
        */
       const std::vector<GUM_SCALAR>&
-      marginalMax(const std::string& varName) const;
+      marginalMax( const std::string& varName ) const;
 
       /**
        * Get the lower expectation of a given node id.
        * @param id The node id which lower expectation we want.
        * @return A constant reference to this node lower expectation.
        */
-      const GUM_SCALAR& expectationMin(const NodeId id) const;
+      const GUM_SCALAR& expectationMin( const NodeId id ) const;
 
       /**
        * Get the upper expectation of a given node id.
        * @param id The node id which upper expectation we want.
        * @return A constant reference to this node upper expectation.
        */
-      const GUM_SCALAR& expectationMax(const NodeId id) const;
+      const GUM_SCALAR& expectationMax( const NodeId id ) const;
 
       /**
        * Get the lower expectation of a given variable name.
        * @param varName The variable name which lower expectation we want.
        * @return A constant reference to this variable lower expectation.
        */
-      const GUM_SCALAR& expectationMin(const std::string& varName) const;
+      const GUM_SCALAR& expectationMin( const std::string& varName ) const;
 
       /**
        * Get the upper expectation of a given variable name.
        * @param varName The variable name which upper expectation we want.
        * @return A constant reference to this variable upper expectation.
        */
-      const GUM_SCALAR& expectationMax(const std::string& varName) const;
+      const GUM_SCALAR& expectationMax( const std::string& varName ) const;
 
       /**
        * Get the lower dynamic expectation of a given variable prefix (without
@@ -468,7 +468,7 @@ namespace gum {
        * steps.
        */
       const std::vector<GUM_SCALAR>&
-      dynamicExpMin(const std::string& varName) const;
+      dynamicExpMin( const std::string& varName ) const;
 
       /**
        * Get the upper dynamic expectation of a given variable prefix (without
@@ -482,7 +482,7 @@ namespace gum {
        * steps.
        */
       const std::vector<GUM_SCALAR>&
-      dynamicExpMax(const std::string& varName) const;
+      dynamicExpMax( const std::string& varName ) const;
 
       /**
        * Get the vertice of a given node id.
@@ -490,25 +490,25 @@ namespace gum {
        * @return A constant reference to this node vertice.
        */
       const std::vector<std::vector<GUM_SCALAR>>&
-      vertices(const NodeId id) const;
+      vertices( const NodeId id ) const;
 
       /**
        * Saves marginals to file.
        * @param path The path to the file to be used.
        */
-      void saveMarginals(const std::string& path) const;
+      void saveMarginals( const std::string& path ) const;
 
       /**
        * Saves expectations to file.
        *  @param path The path to the file to be used.
        */
-      void saveExpectations(const std::string& path) const;
+      void saveExpectations( const std::string& path ) const;
 
       /**
        * Saves vertices to file.
        * @param path The path to the file to be used.
        */
-      void saveVertices(const std::string& path) const;
+      void saveVertices( const std::string& path ) const;
 
       /**
        * Compute dynamic expectations.

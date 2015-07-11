@@ -52,13 +52,12 @@ namespace gum {
    *logical processors (x2 is a good all-around value).
    * @param number The number of threads to be used.
    */
-  inline void setNumberOfThreads(unsigned int number) {
+  inline void setNumberOfThreads( unsigned int number ) {
 #ifdef _OPENMP
-    omp_set_num_threads(number);
+    omp_set_num_threads( number );
 #else
-    GUM_ERROR(
-        OperationNotAllowed,
-        "openMP was not enabled at compilation (or you asked for 0 threads !)");
+    GUM_ERROR( OperationNotAllowed, "openMP was not enabled at compilation (or "
+                                    "you asked for 0 threads !)" );
 #endif
   }
 
@@ -129,13 +128,13 @@ namespace gum {
    * @param value \c True if nested parallelism should be activated, \c False
    * otherwise.
    */
-  inline void setNestedParallelism(bool value) {
+  inline void setNestedParallelism( bool value ) {
 #ifdef _OPENMP
-    omp_set_nested(((value == true) ? 1 : 0));
+    omp_set_nested( ( ( value == true ) ? 1 : 0 ) );
 #else
-    GUM_ERROR(OperationNotAllowed,
-              "openMP was not enabled at compilation (and you "
-              "asked for nested parallelism !)");
+    GUM_ERROR( OperationNotAllowed,
+               "openMP was not enabled at compilation (and you "
+               "asked for nested parallelism !)" );
 #endif
   }
 
@@ -145,7 +144,7 @@ namespace gum {
    */
   inline bool getNestedParallelism() {
 #ifdef _OPENMP
-    return ((omp_get_nested() == 0) ? false : true);
+    return ( ( omp_get_nested() == 0 ) ? false : true );
 #else
     return false;
 #endif
@@ -158,14 +157,14 @@ namespace gum {
    * @param value \c True if dynamic thread number should be used, \c False
    * otherwise.
    */
-  inline void setDynamicThreadsNumber(bool value) {
+  inline void setDynamicThreadsNumber( bool value ) {
 #ifdef _OPENMP
-    omp_set_dynamic(((value == true) ? 1 : 0));
+    omp_set_dynamic( ( ( value == true ) ? 1 : 0 ) );
 #else
-    GUM_ERROR(OperationNotAllowed,
-              "openMP was not enabled at compilation (and you "
-              "asked for dynamic adjustment of the number of "
-              "threads !)");
+    GUM_ERROR( OperationNotAllowed,
+               "openMP was not enabled at compilation (and you "
+               "asked for dynamic adjustment of the number of "
+               "threads !)" );
 #endif
   }
 
@@ -175,7 +174,7 @@ namespace gum {
    */
   inline bool getDynamicThreadsNumber() {
 #ifdef _OPENMP
-    return ((omp_get_dynamic() == 0) ? false : true);
+    return ( ( omp_get_dynamic() == 0 ) ? false : true );
 #else
     return false;
 #endif

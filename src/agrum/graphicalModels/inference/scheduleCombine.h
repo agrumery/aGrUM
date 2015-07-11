@@ -49,14 +49,14 @@ namespace gum {
     /** @warning tables 1 and 2 are stored by copy into the ScheduleCombine.
      * This is actually compulsory for the appropriate use of
      * ScheduleCombination classes */
-    ScheduleCombine(const ScheduleMultiDim<GUM_SCALAR>& table1,
-                    const ScheduleMultiDim<GUM_SCALAR>& table2,
-                    MultiDimImplementation<GUM_SCALAR>* (*combine)(
-                        const MultiDimImplementation<GUM_SCALAR>&,
-                        const MultiDimImplementation<GUM_SCALAR>&));
+    ScheduleCombine( const ScheduleMultiDim<GUM_SCALAR>& table1,
+                     const ScheduleMultiDim<GUM_SCALAR>& table2,
+                     MultiDimImplementation<GUM_SCALAR>* ( *combine )(
+                         const MultiDimImplementation<GUM_SCALAR>&,
+                         const MultiDimImplementation<GUM_SCALAR>& ) );
 
     /// copy constructor
-    ScheduleCombine(const ScheduleCombine<GUM_SCALAR>&);
+    ScheduleCombine( const ScheduleCombine<GUM_SCALAR>& );
 
     /// virtual copy constructor: creates a clone of the operation
     virtual ScheduleCombine<GUM_SCALAR>* newFactory() const;
@@ -72,17 +72,18 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ScheduleCombine<GUM_SCALAR>& operator=(const ScheduleCombine<GUM_SCALAR>&);
+    ScheduleCombine<GUM_SCALAR>&
+    operator=( const ScheduleCombine<GUM_SCALAR>& );
 
     /// operator ==
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    INLINE bool operator==(const ScheduleOperation<GUM_SCALAR>&) const;
+    INLINE bool operator==( const ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// operator !=
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    INLINE bool operator!=(const ScheduleOperation<GUM_SCALAR>&) const;
+    INLINE bool operator!=( const ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// @}
 
@@ -143,9 +144,9 @@ namespace gum {
     mutable Sequence<const ScheduleMultiDim<GUM_SCALAR>*>* __results;
 
     /// the function actually used to perform the combination
-    MultiDimImplementation<GUM_SCALAR>* (*__combine)(
+    MultiDimImplementation<GUM_SCALAR>* ( *__combine )(
         const MultiDimImplementation<GUM_SCALAR>&,
-        const MultiDimImplementation<GUM_SCALAR>&);
+        const MultiDimImplementation<GUM_SCALAR>& );
   };
 
 } /* namespace gum */

@@ -34,22 +34,22 @@ namespace gum {
   PartialOrderedEliminationSequenceStrategy::
       PartialOrderedEliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_CONSTRUCTOR(PartialOrderedEliminationSequenceStrategy);
+    GUM_CONSTRUCTOR( PartialOrderedEliminationSequenceStrategy );
   }
 
   /// copy constructor
   PartialOrderedEliminationSequenceStrategy::
       PartialOrderedEliminationSequenceStrategy(
-          const PartialOrderedEliminationSequenceStrategy&) {
+          const PartialOrderedEliminationSequenceStrategy& ) {
     // for debugging purposes
-    GUM_CONS_CPY(PartialOrderedEliminationSequenceStrategy);
+    GUM_CONS_CPY( PartialOrderedEliminationSequenceStrategy );
   }
 
   /// destructor
   PartialOrderedEliminationSequenceStrategy::
       ~PartialOrderedEliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_DESTRUCTOR(PartialOrderedEliminationSequenceStrategy);
+    GUM_DESTRUCTOR( PartialOrderedEliminationSequenceStrategy );
   }
 
 } /* namespace gum */

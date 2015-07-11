@@ -34,54 +34,54 @@ namespace gum {
     template <typename RowFilter>
     INLINE IndepTestChi2<IdSetAlloc, CountAlloc>::IndepTestChi2(
         const RowFilter& filter,
-        const std::vector<unsigned int>& var_modalities)
-        : IndependenceTest<IdSetAlloc, CountAlloc>(filter, var_modalities),
-          __chi2(var_modalities) {
+        const std::vector<unsigned int>& var_modalities )
+        : IndependenceTest<IdSetAlloc, CountAlloc>( filter, var_modalities ),
+          __chi2( var_modalities ) {
       // for debugging purposes
-      GUM_CONSTRUCTOR(IndepTestChi2);
+      GUM_CONSTRUCTOR( IndepTestChi2 );
     }
 
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE IndepTestChi2<IdSetAlloc, CountAlloc>::~IndepTestChi2() {
       // for debugging purposes
-      GUM_DESTRUCTOR(IndepTestChi2);
+      GUM_DESTRUCTOR( IndepTestChi2 );
     }
 
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
     float
-    IndepTestChi2<IdSetAlloc, CountAlloc>::score(unsigned int nodeset_index) {
+    IndepTestChi2<IdSetAlloc, CountAlloc>::score( unsigned int nodeset_index ) {
       // if the score has already been computed, get its value
-      if (this->_isInCache(nodeset_index)) {
-        return this->_cachedScore(nodeset_index);
+      if ( this->_isInCache( nodeset_index ) ) {
+        return this->_cachedScore( nodeset_index );
       }
 
       // get the nodes involved in the score as well as their modalities
       const std::vector<unsigned int, IdSetAlloc>& all_nodes =
-          this->_getAllNodes(nodeset_index);
+          this->_getAllNodes( nodeset_index );
       const std::vector<unsigned int, IdSetAlloc>* conditioning_nodes =
-          this->_getConditioningNodes(nodeset_index + 1);
+          this->_getConditioningNodes( nodeset_index + 1 );
       const std::vector<unsigned int>& modals = this->modalities();
 
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
-      if (conditioning_nodes != nullptr) {
+      if ( conditioning_nodes != nullptr ) {
         // indicate to the chi2 distribution the set of conditioning nodes
-        __chi2.setConditioningNodes(*conditioning_nodes);
+        __chi2.setConditioningNodes( *conditioning_nodes );
 
         // now, perform sum_X sum_Y sum_Z ( #ZYX - #ZX * #ZY / #Z )^2 /
         // (#ZX * #ZY / #Z )
 
         // get the counts for all the targets and for the conditioning nodes
         const std::vector<float, CountAlloc>& Nzyx =
-            this->_getAllCounts(nodeset_index);
+            this->_getAllCounts( nodeset_index );
         const std::vector<float, CountAlloc>& Nzy =
-            this->_getConditioningCounts(nodeset_index);
+            this->_getConditioningCounts( nodeset_index );
         const std::vector<float, CountAlloc>& Nzx =
-            this->_getAllCounts(nodeset_index + 1);
+            this->_getAllCounts( nodeset_index + 1 );
         const std::vector<float, CountAlloc>& Nz =
-            this->_getConditioningCounts(nodeset_index + 1);
+            this->_getConditioningCounts( nodeset_index + 1 );
 
         const unsigned int Z_size = Nz.size();
         const unsigned int Y_size = modals[all_nodes[all_nodes.size() - 2]];
@@ -89,16 +89,16 @@ namespace gum {
 
         float score = 0;
 
-        for (unsigned int x = 0, beg_zx = 0, zyx = 0; x < X_size;
-             ++x, beg_zx += Z_size) {
-          for (unsigned int y = 0, zy = 0, zx = beg_zx; y < Y_size;
-               ++y, zx = beg_zx) {
-            for (unsigned int z = 0; z < Z_size; ++z, ++zy, ++zx, ++zyx) {
-              if (Nz[z]) {
-                const float tmp1 = (Nzy[zy] * Nzx[zx]) / Nz[z];
-                if (tmp1) {
+        for ( unsigned int x = 0, beg_zx = 0, zyx = 0; x < X_size;
+              ++x, beg_zx += Z_size ) {
+          for ( unsigned int y = 0, zy = 0, zx = beg_zx; y < Y_size;
+                ++y, zx = beg_zx ) {
+            for ( unsigned int z = 0; z < Z_size; ++z, ++zy, ++zx, ++zyx ) {
+              if ( Nz[z] ) {
+                const float tmp1 = ( Nzy[zy] * Nzx[zx] ) / Nz[z];
+                if ( tmp1 ) {
                   const float tmp2 = Nzyx[zyx] - tmp1;
-                  score += (tmp2 * tmp2) / tmp1;
+                  score += ( tmp2 * tmp2 ) / tmp1;
                 }
               }
             }
@@ -110,12 +110,12 @@ namespace gum {
         // for the Chi2 distribution and assign as the score of
         // (score - alpha ) / alpha, where alpha is the critical value
         const float alpha = __chi2.criticalValue(
-            all_nodes[all_nodes.size() - 1], all_nodes[all_nodes.size() - 2]);
-        score = (score - alpha) / alpha;
+            all_nodes[all_nodes.size() - 1], all_nodes[all_nodes.size() - 2] );
+        score = ( score - alpha ) / alpha;
 
         // shall we put the score into the cache?
-        if (this->_isUsingCache()) {
-          this->_insertIntoCache(nodeset_index, score);
+        if ( this->_isUsingCache() ) {
+          this->_insertIntoCache( nodeset_index, score );
         }
 
         return score;
@@ -123,36 +123,36 @@ namespace gum {
         // here, there is no conditioning set
 
         // indicate to the chi2 distribution the set of conditioning nodes
-        __chi2.setConditioningNodes(__empty_set);
+        __chi2.setConditioningNodes( __empty_set );
 
         // now, perform sum_X sum_Y ( #XY - (#X * #Y) / N )^2 / (#X * #Y )/N
 
         // get the counts for all the targets and for the conditioning nodes
         const std::vector<float, CountAlloc>& Nyx =
-            this->_getAllCounts(nodeset_index);
+            this->_getAllCounts( nodeset_index );
         const std::vector<float, CountAlloc>& Ny =
-            this->_getConditioningCounts(nodeset_index);
+            this->_getConditioningCounts( nodeset_index );
         const std::vector<float, CountAlloc>& Nx =
-            this->_getAllCounts(nodeset_index + 1);
+            this->_getAllCounts( nodeset_index + 1 );
 
         const unsigned int Y_size = Ny.size();
         const unsigned int X_size = Nx.size();
 
         // count N
         float N = 0;
-        for (unsigned int i = 0; i < Nx.size(); ++i) {
+        for ( unsigned int i = 0; i < Nx.size(); ++i ) {
           N += Nx[i];
         }
 
         float score = 0;
 
-        for (unsigned int x = 0, yx = 0; x < X_size; ++x) {
+        for ( unsigned int x = 0, yx = 0; x < X_size; ++x ) {
           const float tmp_Nx = Nx[x];
-          for (unsigned int y = 0; y < Y_size; ++y, ++yx) {
-            const float tmp1 = (tmp_Nx * Ny[y]) / N;
-            if (tmp1) {
+          for ( unsigned int y = 0; y < Y_size; ++y, ++yx ) {
+            const float tmp1 = ( tmp_Nx * Ny[y] ) / N;
+            if ( tmp1 ) {
               const float tmp2 = Nyx[yx] - tmp1;
-              score += (tmp2 * tmp2) / tmp1;
+              score += ( tmp2 * tmp2 ) / tmp1;
             }
           }
         }
@@ -162,12 +162,12 @@ namespace gum {
         // for the Chi2 distribution and assign as the score of
         // (score - alpha ) / alpha, where alpha is the critical value
         const float alpha = __chi2.criticalValue(
-            all_nodes[all_nodes.size() - 1], all_nodes[all_nodes.size() - 2]);
-        score = (score - alpha) / alpha;
+            all_nodes[all_nodes.size() - 1], all_nodes[all_nodes.size() - 2] );
+        score = ( score - alpha ) / alpha;
 
         // shall we put the score into the cache?
-        if (this->_isUsingCache()) {
-          this->_insertIntoCache(nodeset_index, score);
+        if ( this->_isUsingCache() ) {
+          this->_insertIntoCache( nodeset_index, score );
         }
 
         return score;

@@ -85,7 +85,7 @@ namespace gum {
     const CliqueGraph& junctionTree();
 
     /// assign the triangulation to the junction tree strategy
-    void setTriangulation(StaticTriangulation* triangulation);
+    void setTriangulation( StaticTriangulation* triangulation );
 
     /** @brief returns, for each node, the clique of the junction tree which was
      * created by its deletion */
@@ -93,7 +93,7 @@ namespace gum {
 
     /** @brief returns the Id of the clique of the junction tree created by the
      * elimination of a given node during the triangulation process */
-    NodeId createdClique(const NodeId id);
+    NodeId createdClique( const NodeId id );
 
     /// resets the current junction tree strategy data structures
     void clear();

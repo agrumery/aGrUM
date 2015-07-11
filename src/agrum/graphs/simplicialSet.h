@@ -101,11 +101,11 @@ namespace gum {
      * the SimplicialSet, but rather it is only referenced within it.
      * @throws OperationNotAllowed exception is thrown if the graph, the
      * log_modalities or the log_weights are null pointers. */
-    explicit SimplicialSet(UndiGraph* graph,
-                           const NodeProperty<float>* log_modalities,
-                           NodeProperty<float>* log_weights,
-                           float theRatio = GUM_QUASI_RATIO,
-                           float theThreshold = GUM_WEIGHT_THRESHOLD);
+    explicit SimplicialSet( UndiGraph* graph,
+                            const NodeProperty<float>* log_modalities,
+                            NodeProperty<float>* log_weights,
+                            float theRatio = GUM_QUASI_RATIO,
+                            float theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// copy constructor
     /** The constructor tries to make a copy of simplicial_from. In addition, it
@@ -146,9 +146,9 @@ namespace gum {
      * @throws OperationNotAllowed exception is thrown if the graph, the
      * log_modalities or the log_weights are null pointers, or if these data are
      * different from those stored into simplicial_from */
-    SimplicialSet(const SimplicialSet& simplicial_from, UndiGraph* graph,
-                  const NodeProperty<float>* log_modalities,
-                  NodeProperty<float>* log_weights, bool avoid_check = false);
+    SimplicialSet( const SimplicialSet& simplicial_from, UndiGraph* graph,
+                   const NodeProperty<float>* log_modalities,
+                   NodeProperty<float>* log_weights, bool avoid_check = false );
 
     /// destructor
     ~SimplicialSet();
@@ -163,7 +163,7 @@ namespace gum {
     /// adds the necessary edges so that node 'id' and its neighbours form a
     /// clique
     /** @param id the node which will form, with its neighbours, a clique */
-    void makeClique(const NodeId id);
+    void makeClique( const NodeId id );
 
     /// removes a node and its adjacent edges from the underlying graph
     /** The node should form a clique with its neighbours.
@@ -171,20 +171,20 @@ namespace gum {
      * clique that will be removed
      * @throw NotFound exception is thrown if the node cannot be found
      * in the graph or if it is not a clique. */
-    void eraseClique(const NodeId id);
+    void eraseClique( const NodeId id );
 
     /// removes a node and its adjacent edges from the underlying graph
     /** @param id the id of the node which, along with its adjacent edges, will
      * be removed
      * @throw NotFound exception is thrown if the node cannot be found
      * in the graph. */
-    void eraseNode(const NodeId id);
+    void eraseNode( const NodeId id );
 
     /// removes an edge from the graph and recomputes the simplicial set
     /** @param edge the edge to be removed
      * @warning if the edge does not exist, nothing is done. In particular, no
      * exception is thrown. */
-    void eraseEdge(const Edge& edge);
+    void eraseEdge( const Edge& edge );
 
     /// adds a new edge to the graph and recomputes the simplicial set
     /** @param first the id of one extremal node of the new inserted edge
@@ -193,14 +193,14 @@ namespace gum {
      * exception is raised.
      * @throw InvalidNode if first and/or second do not belong to the
      * graph nodes */
-    GUM_DEPRECATED(void insertEdge(NodeId first, NodeId second));
-    void addEdge(NodeId first, NodeId second);
+    GUM_DEPRECATED( void insertEdge( NodeId first, NodeId second ) );
+    void addEdge( NodeId first, NodeId second );
 
     /// indicates whether a given node is a simplicial node
     /** A simplicial node is a node such that the latter and its neighbours form
      * a clique.
      * @param id the ID of the node the simpliciality of which we test */
-    bool isSimplicial(const NodeId id);
+    bool isSimplicial( const NodeId id );
 
     /// indicates whether there exists a simplicial node
     /** A simplicial node is a node such that the latter and its neighbours form
@@ -244,7 +244,7 @@ namespace gum {
      * fill-ins added to the graph. When on_off is false, the fill-ins are not
      * computed. Note that, to produce a correct result, you should call
      * setFillIns before any modification to the graph. */
-    void setFillIns(bool on_off);
+    void setFillIns( bool on_off );
 
     /// returns the set of all the fill-ins added to the graph so far
     const EdgeSet& fillIns() const;
@@ -275,10 +275,10 @@ namespace gum {
      * that an argument is passed as a pointer means that it is not copied
      * within
      * the SimplicialSet, but rather it is only referenced within it. */
-    void setGraph(UndiGraph* graph, const NodeProperty<float>* log_modalities,
-                  NodeProperty<float>* log_weights,
-                  float theRatio = GUM_QUASI_RATIO,
-                  float theThreshold = GUM_WEIGHT_THRESHOLD);
+    void setGraph( UndiGraph* graph, const NodeProperty<float>* log_modalities,
+                   NodeProperty<float>* log_weights,
+                   float theRatio = GUM_QUASI_RATIO,
+                   float theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// @}
 
@@ -351,7 +351,7 @@ namespace gum {
 
     /** @brief put node id in the correct simplicial/almost simplicial/quasi
      * simplicial list */
-    void __updateList(const NodeId id);
+    void __updateList( const NodeId id );
 
     /// put all the nodes in their appropriate list
     void __updateAllNodes();
@@ -370,7 +370,7 @@ namespace gum {
      * updated
      * by several Simplicial sets whereas the number of triangles and the number
      * of joined neighbours would not be shared. */
-    SimplicialSet& operator=(const SimplicialSet&);
+    SimplicialSet& operator=( const SimplicialSet& );
 
     /// prevent the default copy constructor
     /** If we did not prevent this operator to be used, we would be in a mess
@@ -378,7 +378,7 @@ namespace gum {
      * updated
      * by several Simplicial sets whereas the number of triangles and the number
      * of joined neighbours would not be shared. */
-    SimplicialSet(const SimplicialSet&);
+    SimplicialSet( const SimplicialSet& );
   };
 
 } /* namespace gum */

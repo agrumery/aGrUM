@@ -51,12 +51,12 @@ namespace gum {
       FilteredRowGeneratorSet() noexcept {}
 
       /// copy constructor
-      FilteredRowGeneratorSet(const FilteredRowGeneratorSet<>& from) noexcept
-          : __input_row(from.__input_row) {}
+      FilteredRowGeneratorSet( const FilteredRowGeneratorSet<>& from ) noexcept
+          : __input_row( from.__input_row ) {}
 
       /// move constructor
-      FilteredRowGeneratorSet(FilteredRowGeneratorSet<>&& from) noexcept
-          : __input_row(from.__input_row) {}
+      FilteredRowGeneratorSet( FilteredRowGeneratorSet<>&& from ) noexcept
+          : __input_row( from.__input_row ) {}
 
       /// destructor
       ~FilteredRowGeneratorSet() noexcept {}
@@ -71,13 +71,13 @@ namespace gum {
 
       /// copy operator
       FilteredRowGeneratorSet<>&
-      operator=(const FilteredRowGeneratorSet<>& from) {
+      operator=( const FilteredRowGeneratorSet<>& from ) {
         __input_row = from.__input_row;
         return *this;
       }
 
       /// move operator
-      FilteredRowGeneratorSet<>& operator=(FilteredRowGeneratorSet<>&& from) {
+      FilteredRowGeneratorSet<>& operator=( FilteredRowGeneratorSet<>&& from ) {
         __input_row = from.__input_row;
         return *this;
       }
@@ -95,7 +95,7 @@ namespace gum {
 
       /// sets the filtered row used as input to generate new output filtered
       /// rows
-      bool setInputRow(FilteredRow& row) noexcept {
+      bool setInputRow( FilteredRow& row ) noexcept {
         __input_row = &row;
         return true;
       }
@@ -159,15 +159,15 @@ namespace gum {
       /// default constructor
       FilteredRowGeneratorSet(
           const Generator& first_generator,
-          const OtherGenerators&... next_generators) noexcept;
+          const OtherGenerators&... next_generators ) noexcept;
 
       /// copy constructor
       FilteredRowGeneratorSet(
-          const FilteredRowGeneratorSet<Generator, OtherGenerators...>& from);
+          const FilteredRowGeneratorSet<Generator, OtherGenerators...>& from );
 
       /// move constructor
-      FilteredRowGeneratorSet(FilteredRowGeneratorSet<
-          Generator, OtherGenerators...>&& from) noexcept;
+      FilteredRowGeneratorSet( FilteredRowGeneratorSet<
+          Generator, OtherGenerators...>&& from ) noexcept;
 
       /// destructor
       ~FilteredRowGeneratorSet() noexcept;
@@ -181,12 +181,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      FilteredRowGeneratorSet<Generator, OtherGenerators...>&
-      operator=(const FilteredRowGeneratorSet<Generator, OtherGenerators...>&);
+      FilteredRowGeneratorSet<Generator, OtherGenerators...>& operator=(
+          const FilteredRowGeneratorSet<Generator, OtherGenerators...>& );
 
       /// move operator
       FilteredRowGeneratorSet<Generator, OtherGenerators...>&
-      operator=(FilteredRowGeneratorSet<Generator, OtherGenerators...>&&);
+      operator=( FilteredRowGeneratorSet<Generator, OtherGenerators...>&& );
 
       /// @}
 
@@ -201,7 +201,7 @@ namespace gum {
       bool hasRows() noexcept;
 
       /// sets the input row from which the generator will create new rows
-      bool setInputRow(FilteredRow& row) noexcept;
+      bool setInputRow( FilteredRow& row ) noexcept;
 
       /// generate new rows from the input row
       FilteredRow& generate();
@@ -236,8 +236,8 @@ namespace gum {
      */
     template <typename... Args>
     constexpr FilteredRowGeneratorSet<Args...>
-    make_generators(const Args&... args) {
-      return FilteredRowGeneratorSet<Args...>(args...);
+    make_generators( const Args&... args ) {
+      return FilteredRowGeneratorSet<Args...>( args... );
     }
 
   } /* namespace learning */

@@ -43,35 +43,35 @@ namespace gum {
   namespace DSL {
 
 
-    void Parser::SynErr(int n) {
-      if (errDist >= minErrDist)
-        SynErr(scanner->filename(), la->line, la->col, n);
+    void Parser::SynErr( int n ) {
+      if ( errDist >= minErrDist )
+        SynErr( scanner->filename(), la->line, la->col, n );
 
       errDist = 0;
     }
 
 
-    const ErrorsContainer& Parser::errors(void) const { return __errors; }
+    const ErrorsContainer& Parser::errors( void ) const { return __errors; }
 
     void Parser::Get() {
-      for (;;) {
+      for ( ;; ) {
         t = la;
         la = scanner->Scan();
 
-        if (la->kind <= maxT) {
+        if ( la->kind <= maxT ) {
           ++errDist;
           break;
         }
 
 
-        if (dummyToken != t) {
+        if ( dummyToken != t ) {
           dummyToken->kind = t->kind;
           dummyToken->pos = t->pos;
           dummyToken->col = t->col;
           dummyToken->line = t->line;
           dummyToken->next = NULL;
-          coco_string_delete(dummyToken->val);
-          dummyToken->val = coco_string_create(t->val);
+          coco_string_delete( dummyToken->val );
+          dummyToken->val = coco_string_create( t->val );
           t = dummyToken;
         }
 
@@ -79,39 +79,39 @@ namespace gum {
       }
     }
 
-    void Parser::Expect(int n) {
-      if (la->kind == n)
+    void Parser::Expect( int n ) {
+      if ( la->kind == n )
         Get();
       else {
-        SynErr(n);
+        SynErr( n );
       }
     }
 
-    void Parser::ExpectWeak(int n, int follow) {
-      if (la->kind == n)
+    void Parser::ExpectWeak( int n, int follow ) {
+      if ( la->kind == n )
         Get();
       else {
-        SynErr(n);
+        SynErr( n );
 
-        while (!StartOf(follow))
+        while ( !StartOf( follow ) )
           Get();
       }
     }
 
-    bool Parser::WeakSeparator(int n, int syFol, int repFol) {
-      if (la->kind == n) {
+    bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
+      if ( la->kind == n ) {
         Get();
         return true;
-      } else if (StartOf(repFol)) {
+      } else if ( StartOf( repFol ) ) {
         return false;
       } else {
-        SynErr(n);
+        SynErr( n );
 
-        while (!(StartOf(syFol) || StartOf(repFol) || StartOf(0))) {
+        while ( !( StartOf( syFol ) || StartOf( repFol ) || StartOf( 0 ) ) ) {
           Get();
         }
 
-        return StartOf(syFol);
+        return StartOf( syFol );
       }
     }
 
@@ -119,109 +119,109 @@ namespace gum {
       std::string name_of_network;
       factory().startNetworkDeclaration();
 
-      Expect(6 /* "net" */);
-      if (la->kind == _ident) {
-        IDENT(name_of_network);
-      } else if (la->kind == _string) {
-        STRING(name_of_network);
+      Expect( 6 /* "net" */ );
+      if ( la->kind == _ident ) {
+        IDENT( name_of_network );
+      } else if ( la->kind == _string ) {
+        STRING( name_of_network );
       } else
-        SynErr(34);
-      factory().addNetworkProperty("name", name_of_network);
-      Expect(7 /* "{" */);
+        SynErr( 34 );
+      factory().addNetworkProperty( "name", name_of_network );
+      Expect( 7 /* "{" */ );
       factory().endNetworkDeclaration();
-      if (la->kind == 20 /* "HEADER" */) {
+      if ( la->kind == 20 /* "HEADER" */ ) {
         HEADER_PART();
       }
-      if (la->kind == 21 /* "CREATION" */) {
+      if ( la->kind == 21 /* "CREATION" */ ) {
         CREATION_PART();
       }
-      if (la->kind == 10 /* "NUMSAMPLES" */) {
+      if ( la->kind == 10 /* "NUMSAMPLES" */ ) {
         NUM_SAMPLES();
       }
-      if (la->kind == 15 /* "SCREEN" */) {
+      if ( la->kind == 15 /* "SCREEN" */ ) {
         SCREEN_PART();
       }
-      if (la->kind == 22 /* "WINDOWPOSITION" */) {
+      if ( la->kind == 22 /* "WINDOWPOSITION" */ ) {
         WINDOWPOSITION_PART();
       }
-      if (la->kind == 11 /* "BKCOLOR" */) {
+      if ( la->kind == 11 /* "BKCOLOR" */ ) {
         BK_COLOR();
       }
-      if (la->kind == 16 /* "USER_PROPERTIES" */) {
+      if ( la->kind == 16 /* "USER_PROPERTIES" */ ) {
         USER_PROPERTIES_PART();
       }
-      if (la->kind == 17 /* "DOCUMENTATION" */) {
+      if ( la->kind == 17 /* "DOCUMENTATION" */ ) {
         DOCUMENTATION_PART();
       }
-      if (la->kind == 12 /* "SHOWAS" */) {
+      if ( la->kind == 12 /* "SHOWAS" */ ) {
         SHOW_AS();
       }
-      while (la->kind == 13 /* "node" */) {
+      while ( la->kind == 13 /* "node" */ ) {
         NODE();
       }
-      if (la->kind == 19 /* "OBSERVATION_COST" */) {
+      if ( la->kind == 19 /* "OBSERVATION_COST" */ ) {
         OBSERVATION_COST_PART();
       }
-      Expect(8 /* "}" */);
-      Expect(9 /* ";" */);
+      Expect( 8 /* "}" */ );
+      Expect( 9 /* ";" */ );
     }
 
-    void Parser::IDENT(std::string& name) {
-      Expect(_ident);
-      name = narrow(t->val);
+    void Parser::IDENT( std::string& name ) {
+      Expect( _ident );
+      name = narrow( t->val );
     }
 
-    void Parser::STRING(std::string& str) {
-      Expect(_string);
-      str = narrow(t->val);
+    void Parser::STRING( std::string& str ) {
+      Expect( _string );
+      str = narrow( t->val );
     }
 
     void Parser::HEADER_PART() {
-      Expect(20 /* "HEADER" */);
+      Expect( 20 /* "HEADER" */ );
       BLOC_PART();
     }
 
     void Parser::CREATION_PART() {
-      Expect(21 /* "CREATION" */);
+      Expect( 21 /* "CREATION" */ );
       BLOC_PART();
     }
 
     void Parser::NUM_SAMPLES() {
-      Expect(10 /* "NUMSAMPLES" */);
-      Expect(_integer);
-      Expect(9 /* ";" */);
+      Expect( 10 /* "NUMSAMPLES" */ );
+      Expect( _integer );
+      Expect( 9 /* ";" */ );
     }
 
     void Parser::SCREEN_PART() {
-      Expect(15 /* "SCREEN" */);
+      Expect( 15 /* "SCREEN" */ );
       BLOC_PART();
     }
 
     void Parser::WINDOWPOSITION_PART() {
-      Expect(22 /* "WINDOWPOSITION" */);
+      Expect( 22 /* "WINDOWPOSITION" */ );
       BLOC_PART();
     }
 
     void Parser::BK_COLOR() {
-      Expect(11 /* "BKCOLOR" */);
-      Expect(_integer);
-      Expect(9 /* ";" */);
+      Expect( 11 /* "BKCOLOR" */ );
+      Expect( _integer );
+      Expect( 9 /* ";" */ );
     }
 
     void Parser::USER_PROPERTIES_PART() {
-      Expect(16 /* "USER_PROPERTIES" */);
+      Expect( 16 /* "USER_PROPERTIES" */ );
       BLOC_PART();
     }
 
     void Parser::DOCUMENTATION_PART() {
-      Expect(17 /* "DOCUMENTATION" */);
+      Expect( 17 /* "DOCUMENTATION" */ );
       BLOC_PART();
     }
 
     void Parser::SHOW_AS() {
-      Expect(12 /* "SHOWAS" */);
-      Expect(_integer);
-      Expect(9 /* ";" */);
+      Expect( 12 /* "SHOWAS" */ );
+      Expect( _integer );
+      Expect( 9 /* ";" */ );
     }
 
     void Parser::NODE() {
@@ -229,233 +229,235 @@ namespace gum {
       std::vector<std::string> parents;
       int nbrMod = 0;
 
-      Expect(13 /* "node" */);
-      IDENT(var);
-      Expect(7 /* "{" */);
-      Expect(14 /* "TYPE" */);
-      Expect(_ident);
-      Expect(9 /* ";" */);
+      Expect( 13 /* "node" */ );
+      IDENT( var );
+      Expect( 7 /* "{" */ );
+      Expect( 14 /* "TYPE" */ );
+      Expect( _ident );
+      Expect( 9 /* ";" */ );
       HEADER();
-      if (la->kind == 15 /* "SCREEN" */) {
+      if ( la->kind == 15 /* "SCREEN" */ ) {
         SCREEN_PART();
       }
-      if (la->kind == 16 /* "USER_PROPERTIES" */) {
+      if ( la->kind == 16 /* "USER_PROPERTIES" */ ) {
         USER_PROPERTIES_PART();
       }
-      if (la->kind == 17 /* "DOCUMENTATION" */) {
+      if ( la->kind == 17 /* "DOCUMENTATION" */ ) {
         DOCUMENTATION_PART();
       }
-      PARENTS(parents);
-      VARIABLE_DEFINITION(nbrMod, var, parents);
-      if (la->kind == 18 /* "EXTRA_DEFINITION" */) {
+      PARENTS( parents );
+      VARIABLE_DEFINITION( nbrMod, var, parents );
+      if ( la->kind == 18 /* "EXTRA_DEFINITION" */ ) {
         EXTRA_DEFINITION_PART();
       }
-      Expect(8 /* "}" */);
-      Expect(9 /* ";" */);
+      Expect( 8 /* "}" */ );
+      Expect( 9 /* ";" */ );
     }
 
     void Parser::OBSERVATION_COST_PART() {
-      Expect(19 /* "OBSERVATION_COST" */);
+      Expect( 19 /* "OBSERVATION_COST" */ );
       BLOC_PART();
     }
 
     void Parser::HEADER() {
       std::string content;
-      Expect(20 /* "HEADER" */);
-      Expect(7 /* "{" */);
-      Expect(23 /* "ID" */);
-      Expect(_ident);
-      Expect(9 /* ";" */);
-      Expect(24 /* "NAME" */);
-      Expect(_string);
-      Expect(9 /* ";" */);
-      Expect(8 /* "}" */);
-      Expect(9 /* ";" */);
+      Expect( 20 /* "HEADER" */ );
+      Expect( 7 /* "{" */ );
+      Expect( 23 /* "ID" */ );
+      Expect( _ident );
+      Expect( 9 /* ";" */ );
+      Expect( 24 /* "NAME" */ );
+      Expect( _string );
+      Expect( 9 /* ";" */ );
+      Expect( 8 /* "}" */ );
+      Expect( 9 /* ";" */ );
     }
 
-    void Parser::PARENTS(std::vector<std::string>& parents) {
-      Expect(25 /* "PARENTS" */);
-      Expect(26 /* "(" */);
-      if (la->kind == _ident) {
-        PARENTS_LIST(parents);
+    void Parser::PARENTS( std::vector<std::string>& parents ) {
+      Expect( 25 /* "PARENTS" */ );
+      Expect( 26 /* "(" */ );
+      if ( la->kind == _ident ) {
+        PARENTS_LIST( parents );
       }
-      Expect(27 /* ")" */);
-      Expect(9 /* ";" */);
+      Expect( 27 /* ")" */ );
+      Expect( 9 /* ";" */ );
     }
 
-    void Parser::VARIABLE_DEFINITION(int& nbrMod, std::string& var,
-                                     const std::vector<std::string>& parents) {
-      Expect(29 /* "DEFINITION" */);
-      Expect(7 /* "{" */);
-      Expect(30 /* "NAMESTATES" */);
-      Expect(26 /* "(" */);
-      TRY(factory().startVariableDeclaration());
-      TRY(factory().variableName(var));
+    void
+    Parser::VARIABLE_DEFINITION( int& nbrMod, std::string& var,
+                                 const std::vector<std::string>& parents ) {
+      Expect( 29 /* "DEFINITION" */ );
+      Expect( 7 /* "{" */ );
+      Expect( 30 /* "NAMESTATES" */ );
+      Expect( 26 /* "(" */ );
+      TRY( factory().startVariableDeclaration() );
+      TRY( factory().variableName( var ) );
 
-      MODALITY_LIST(nbrMod);
-      Expect(27 /* ")" */);
-      Expect(9 /* ";" */);
-      TRY(factory().endVariableDeclaration());
+      MODALITY_LIST( nbrMod );
+      Expect( 27 /* ")" */ );
+      Expect( 9 /* ";" */ );
+      TRY( factory().endVariableDeclaration() );
       gum::Size i;
-      TRY(factory().startParentsDeclaration(var));
+      TRY( factory().startParentsDeclaration( var ) );
 
-      for (i = 0; i < parents.size(); i++) {
-        TRY(factory().variableId(parents[i]));
-        TRY(factory().addParent(parents[i]));
+      for ( i = 0; i < parents.size(); i++ ) {
+        TRY( factory().variableId( parents[i] ) );
+        TRY( factory().addParent( parents[i] ) );
       }
 
-      TRY(factory().endParentsDeclaration());
+      TRY( factory().endParentsDeclaration() );
 
-      PROBA(var, parents);
+      PROBA( var, parents );
       int nbr = 0;
-      TRY(nbr = factory().varInBN(factory().variableId(var)).domainSize());
-      if (nbrMod < nbr)
-        SemErr("Too much modalities for variable " + var);
-      if (nbrMod > nbr)
-        SemErr("Too many modalities for variable " + var);
+      TRY( nbr =
+               factory().varInBN( factory().variableId( var ) ).domainSize() );
+      if ( nbrMod < nbr )
+        SemErr( "Too much modalities for variable " + var );
+      if ( nbrMod > nbr )
+        SemErr( "Too many modalities for variable " + var );
 
-      Expect(8 /* "}" */);
-      Expect(9 /* ";" */);
+      Expect( 8 /* "}" */ );
+      Expect( 9 /* ";" */ );
     }
 
     void Parser::EXTRA_DEFINITION_PART() {
-      Expect(18 /* "EXTRA_DEFINITION" */);
+      Expect( 18 /* "EXTRA_DEFINITION" */ );
       BLOC_PART();
     }
 
     void Parser::BLOC_PART() {
-      Expect(7 /* "{" */);
-      while (StartOf(1)) {
-        if (StartOf(2)) {
+      Expect( 7 /* "{" */ );
+      while ( StartOf( 1 ) ) {
+        if ( StartOf( 2 ) ) {
           Get();
         } else {
           BLOC_PART();
         }
       }
-      Expect(8 /* "}" */);
-      Expect(9 /* ";" */);
+      Expect( 8 /* "}" */ );
+      Expect( 9 /* ";" */ );
     }
 
-    void Parser::PARENTS_LIST(std::vector<std::string>& parents) {
+    void Parser::PARENTS_LIST( std::vector<std::string>& parents ) {
       std::string parent;
 
-      IDENT(parent);
-      parents.push_back(parent);
-      while (la->kind == 28 /* "," */) {
+      IDENT( parent );
+      parents.push_back( parent );
+      while ( la->kind == 28 /* "," */ ) {
         Get();
-        IDENT(parent);
-        parents.push_back(parent);
+        IDENT( parent );
+        parents.push_back( parent );
       }
     }
 
-    void Parser::MODALITY_LIST(int& nbrMod) {
+    void Parser::MODALITY_LIST( int& nbrMod ) {
       std::string label;
-      IDENT_OR_INTEGER(label);
-      if ((label == "") && (nbrMod == 0))
-        SemErr("Not enough modalities for a discrete variable");
-      TRY(factory().addModality(label));
+      IDENT_OR_INTEGER( label );
+      if ( ( label == "" ) && ( nbrMod == 0 ) )
+        SemErr( "Not enough modalities for a discrete variable" );
+      TRY( factory().addModality( label ) );
       nbrMod++;
 
-      if (la->kind == 28 /* "," */) {
+      if ( la->kind == 28 /* "," */ ) {
         Get();
-        MODALITY_LIST(nbrMod);
+        MODALITY_LIST( nbrMod );
       }
     }
 
-    void Parser::PROBA(const std::string& var,
-                       const std::vector<std::string>& parents) {
-      Expect(31 /* "PROBABILITIES" */);
-      Expect(26 /* "(" */);
-      RAW_PROBA(var, parents);
-      Expect(27 /* ")" */);
-      Expect(9 /* ";" */);
+    void Parser::PROBA( const std::string& var,
+                        const std::vector<std::string>& parents ) {
+      Expect( 31 /* "PROBABILITIES" */ );
+      Expect( 26 /* "(" */ );
+      RAW_PROBA( var, parents );
+      Expect( 27 /* ")" */ );
+      Expect( 9 /* ";" */ );
     }
 
-    void Parser::IDENT_OR_INTEGER(std::string& name) {
-      if (la->kind == _ident) {
-        IDENT(name);
-      } else if (la->kind == _integer) {
+    void Parser::IDENT_OR_INTEGER( std::string& name ) {
+      if ( la->kind == _ident ) {
+        IDENT( name );
+      } else if ( la->kind == _integer ) {
         Get();
-        name = narrow(t->val);
+        name = narrow( t->val );
       } else
-        SynErr(35);
+        SynErr( 35 );
     }
 
-    void Parser::RAW_PROBA(const std::string& var,
-                           const std::vector<std::string>& parents) {
+    void Parser::RAW_PROBA( const std::string& var,
+                            const std::vector<std::string>& parents ) {
       std::vector<float> v;
       std::vector<float> prob;
       gum::Size i, j, k;
       gum::Size res, max, nbLabels;
 
-      res = factory().varInBN(factory().variableId(var)).domainSize();
+      res = factory().varInBN( factory().variableId( var ) ).domainSize();
 
-      for (i = 0; i < parents.size(); i++) {
-        res =
-            res *
-            (factory().varInBN(factory().variableId(parents[i])).domainSize());
+      for ( i = 0; i < parents.size(); i++ ) {
+        res = res * ( factory()
+                          .varInBN( factory().variableId( parents[i] ) )
+                          .domainSize() );
       }
 
       // v.resize(res);
       // prob	.resize(res);
 
 
-      FLOAT_LIST(v);
-      nbLabels = factory().varInBN(factory().variableId(var)).domainSize();
+      FLOAT_LIST( v );
+      nbLabels = factory().varInBN( factory().variableId( var ) ).domainSize();
       max = res / nbLabels;
 
       j = 0;
       k = 0;
-      for (i = 0; i < res; i++) {
-        if (i % max == 0) {
-          prob.push_back(v[k]);
+      for ( i = 0; i < res; i++ ) {
+        if ( i % max == 0 ) {
+          prob.push_back( v[k] );
           k++;
           j = 1;
         } else {
-          prob.push_back(v[j * nbLabels + k - 1]);
+          prob.push_back( v[j * nbLabels + k - 1] );
           j++;
         }
       }
 
-      TRY(factory().startRawProbabilityDeclaration(var));
+      TRY( factory().startRawProbabilityDeclaration( var ) );
       gum::Size s = (gum::Size)0;
-      TRY(s = factory().cptDomainSize(factory().variableId(var)));
-      if ((int)prob.size() < (int)s) {
-        Warning("Not enough data for cpt of node " + var);
+      TRY( s = factory().cptDomainSize( factory().variableId( var ) ) );
+      if ( (int)prob.size() < (int)s ) {
+        Warning( "Not enough data for cpt of node " + var );
       }
-      if ((int)prob.size() > (int)s) {
-        Warning("Too many data for cpt of node " + var);
+      if ( (int)prob.size() > (int)s ) {
+        Warning( "Too many data for cpt of node " + var );
       }
-      TRY(factory().rawConditionalTable(prob));
-      TRY(factory().endRawProbabilityDeclaration());
+      TRY( factory().rawConditionalTable( prob ) );
+      TRY( factory().endRawProbabilityDeclaration() );
     }
 
-    void Parser::FLOAT_LIST(std::vector<float>& v) {
+    void Parser::FLOAT_LIST( std::vector<float>& v ) {
       float value;
-      FLOAT(value);
-      v.push_back(value);
-      while (StartOf(3)) {
-        if (la->kind == 28 /* "," */ || la->kind == 32 /* "|" */) {
-          if (la->kind == 28 /* "," */) {
+      FLOAT( value );
+      v.push_back( value );
+      while ( StartOf( 3 ) ) {
+        if ( la->kind == 28 /* "," */ || la->kind == 32 /* "|" */ ) {
+          if ( la->kind == 28 /* "," */ ) {
             Get();
           } else {
             Get();
           }
         }
-        FLOAT(value);
-        v.push_back(value);
+        FLOAT( value );
+        v.push_back( value );
       }
     }
 
-    void Parser::FLOAT(float& val) {
-      if (la->kind == _number) {
+    void Parser::FLOAT( float& val ) {
+      if ( la->kind == _number ) {
         Get();
-        val = coco_atof(t->val);
-      } else if (la->kind == _integer) {
+        val = coco_atof( t->val );
+      } else if ( la->kind == _integer ) {
         Get();
-        val = coco_atoi(t->val);
+        val = coco_atoi( t->val );
       } else
-        SynErr(36);
+        SynErr( 36 );
     }
 
 
@@ -466,7 +468,7 @@ namespace gum {
     // the methods Init and Destroy.
 
     template <typename T> struct ParserInitExistsRecognizer {
-      template <typename U, void (U::*)() = &U::Init>
+      template <typename U, void ( U::* )() = &U::Init>
       struct ExistsIfInitIsDefinedMarker {};
 
       struct InitIsMissingType {
@@ -479,19 +481,20 @@ namespace gum {
       };
 
       // exists always
-      template <typename U> static InitIsMissingType is_here(...);
+      template <typename U> static InitIsMissingType is_here( ... );
 
       // exist only if ExistsIfInitIsDefinedMarker is defined
       template <typename U>
-      static InitExistsType is_here(ExistsIfInitIsDefinedMarker<U>*);
+      static InitExistsType is_here( ExistsIfInitIsDefinedMarker<U>* );
 
       enum {
-        InitExists = (sizeof(is_here<T>(NULL)) == sizeof(InitExistsType))
+        InitExists =
+            ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) )
       };
     };
 
     template <typename T> struct ParserDestroyExistsRecognizer {
-      template <typename U, void (U::*)() = &U::Destroy>
+      template <typename U, void ( U::* )() = &U::Destroy>
       struct ExistsIfDestroyIsDefinedMarker {};
 
       struct DestroyIsMissingType {
@@ -504,14 +507,15 @@ namespace gum {
       };
 
       // exists always
-      template <typename U> static DestroyIsMissingType is_here(...);
+      template <typename U> static DestroyIsMissingType is_here( ... );
 
       // exist only if ExistsIfDestroyIsDefinedMarker is defined
       template <typename U>
-      static DestroyExistsType is_here(ExistsIfDestroyIsDefinedMarker<U>*);
+      static DestroyExistsType is_here( ExistsIfDestroyIsDefinedMarker<U>* );
 
       enum {
-        DestroyExists = (sizeof(is_here<T>(NULL)) == sizeof(DestroyExistsType))
+        DestroyExists =
+            ( sizeof( is_here<T>( NULL ) ) == sizeof( DestroyExistsType ) )
       };
     };
 
@@ -522,14 +526,14 @@ namespace gum {
     // missing
     template <typename T, bool = ParserInitExistsRecognizer<T>::InitExists>
     struct ParserInitCaller {
-      static void CallInit(T* t) {
+      static void CallInit( T* t ) {
         // nothing to do
       }
     };
 
     // True case of the ParserInitCaller, gets used if the Init method exists
     template <typename T> struct ParserInitCaller<T, true> {
-      static void CallInit(T* t) { t->Init(); }
+      static void CallInit( T* t ) { t->Init(); }
     };
 
     // Generic case of the ParserDestroyCaller, gets used if the Destroy method
@@ -537,7 +541,7 @@ namespace gum {
     template <typename T,
               bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
     struct ParserDestroyCaller {
-      static void CallDestroy(T* t) {
+      static void CallDestroy( T* t ) {
         // nothing to do
       }
     };
@@ -545,21 +549,21 @@ namespace gum {
     // True case of the ParserDestroyCaller, gets used if the Destroy method
     // exists
     template <typename T> struct ParserDestroyCaller<T, true> {
-      static void CallDestroy(T* t) { t->Destroy(); }
+      static void CallDestroy( T* t ) { t->Destroy(); }
     };
     void Parser::Parse() {
       t = NULL;
       la = dummyToken = new Token();
-      la->val = coco_string_create(L"Dummy Token");
+      la->val = coco_string_create( L"Dummy Token" );
       Get();
       DSL();
-      Expect(0);
+      Expect( 0 );
     }
 
-    Parser::Parser(Scanner* scanner) {
+    Parser::Parser( Scanner* scanner ) {
       maxT = 33;
 
-      ParserInitCaller<Parser>::CallInit(this);
+      ParserInitCaller<Parser>::CallInit( this );
       dummyToken = NULL;
       t = la = NULL;
       minErrDist = 2;
@@ -567,7 +571,7 @@ namespace gum {
       this->scanner = scanner;
     }
 
-    bool Parser::StartOf(int s) {
+    bool Parser::StartOf( int s ) {
       const bool T = true;
       const bool x = false;
 
@@ -586,149 +590,149 @@ namespace gum {
     }
 
     Parser::~Parser() {
-      ParserDestroyCaller<Parser>::CallDestroy(this);
+      ParserDestroyCaller<Parser>::CallDestroy( this );
       delete dummyToken;
     }
-    void Parser::SemErr(const wchar_t* msg) {
-      if (errDist >= minErrDist)
-        __errors.Error(scanner->filename(), t->line, t->col, msg);
+    void Parser::SemErr( const wchar_t* msg ) {
+      if ( errDist >= minErrDist )
+        __errors.Error( scanner->filename(), t->line, t->col, msg );
 
       errDist = 0;
     }
 
-    void Parser::Warning(const wchar_t* msg) {
-      __errors.Warning(scanner->filename(), t->line, t->col, msg);
+    void Parser::Warning( const wchar_t* msg ) {
+      __errors.Warning( scanner->filename(), t->line, t->col, msg );
     }
 
-    void Parser::SynErr(const std::wstring& filename, int line, int col,
-                        int n) {
+    void Parser::SynErr( const std::wstring& filename, int line, int col,
+                         int n ) {
       wchar_t* s;
 
-      switch (n) {
+      switch ( n ) {
         case 0:
-          s = coco_string_create(L"EOF expected");
+          s = coco_string_create( L"EOF expected" );
           break;
         case 1:
-          s = coco_string_create(L"ident expected");
+          s = coco_string_create( L"ident expected" );
           break;
         case 2:
-          s = coco_string_create(L"integer expected");
+          s = coco_string_create( L"integer expected" );
           break;
         case 3:
-          s = coco_string_create(L"number expected");
+          s = coco_string_create( L"number expected" );
           break;
         case 4:
-          s = coco_string_create(L"string expected");
+          s = coco_string_create( L"string expected" );
           break;
         case 5:
-          s = coco_string_create(L"largestring expected");
+          s = coco_string_create( L"largestring expected" );
           break;
         case 6:
-          s = coco_string_create(L"\"net\" expected");
+          s = coco_string_create( L"\"net\" expected" );
           break;
         case 7:
-          s = coco_string_create(L"\"{\" expected");
+          s = coco_string_create( L"\"{\" expected" );
           break;
         case 8:
-          s = coco_string_create(L"\"}\" expected");
+          s = coco_string_create( L"\"}\" expected" );
           break;
         case 9:
-          s = coco_string_create(L"\";\" expected");
+          s = coco_string_create( L"\";\" expected" );
           break;
         case 10:
-          s = coco_string_create(L"\"NUMSAMPLES\" expected");
+          s = coco_string_create( L"\"NUMSAMPLES\" expected" );
           break;
         case 11:
-          s = coco_string_create(L"\"BKCOLOR\" expected");
+          s = coco_string_create( L"\"BKCOLOR\" expected" );
           break;
         case 12:
-          s = coco_string_create(L"\"SHOWAS\" expected");
+          s = coco_string_create( L"\"SHOWAS\" expected" );
           break;
         case 13:
-          s = coco_string_create(L"\"node\" expected");
+          s = coco_string_create( L"\"node\" expected" );
           break;
         case 14:
-          s = coco_string_create(L"\"TYPE\" expected");
+          s = coco_string_create( L"\"TYPE\" expected" );
           break;
         case 15:
-          s = coco_string_create(L"\"SCREEN\" expected");
+          s = coco_string_create( L"\"SCREEN\" expected" );
           break;
         case 16:
-          s = coco_string_create(L"\"USER_PROPERTIES\" expected");
+          s = coco_string_create( L"\"USER_PROPERTIES\" expected" );
           break;
         case 17:
-          s = coco_string_create(L"\"DOCUMENTATION\" expected");
+          s = coco_string_create( L"\"DOCUMENTATION\" expected" );
           break;
         case 18:
-          s = coco_string_create(L"\"EXTRA_DEFINITION\" expected");
+          s = coco_string_create( L"\"EXTRA_DEFINITION\" expected" );
           break;
         case 19:
-          s = coco_string_create(L"\"OBSERVATION_COST\" expected");
+          s = coco_string_create( L"\"OBSERVATION_COST\" expected" );
           break;
         case 20:
-          s = coco_string_create(L"\"HEADER\" expected");
+          s = coco_string_create( L"\"HEADER\" expected" );
           break;
         case 21:
-          s = coco_string_create(L"\"CREATION\" expected");
+          s = coco_string_create( L"\"CREATION\" expected" );
           break;
         case 22:
-          s = coco_string_create(L"\"WINDOWPOSITION\" expected");
+          s = coco_string_create( L"\"WINDOWPOSITION\" expected" );
           break;
         case 23:
-          s = coco_string_create(L"\"ID\" expected");
+          s = coco_string_create( L"\"ID\" expected" );
           break;
         case 24:
-          s = coco_string_create(L"\"NAME\" expected");
+          s = coco_string_create( L"\"NAME\" expected" );
           break;
         case 25:
-          s = coco_string_create(L"\"PARENTS\" expected");
+          s = coco_string_create( L"\"PARENTS\" expected" );
           break;
         case 26:
-          s = coco_string_create(L"\"(\" expected");
+          s = coco_string_create( L"\"(\" expected" );
           break;
         case 27:
-          s = coco_string_create(L"\")\" expected");
+          s = coco_string_create( L"\")\" expected" );
           break;
         case 28:
-          s = coco_string_create(L"\",\" expected");
+          s = coco_string_create( L"\",\" expected" );
           break;
         case 29:
-          s = coco_string_create(L"\"DEFINITION\" expected");
+          s = coco_string_create( L"\"DEFINITION\" expected" );
           break;
         case 30:
-          s = coco_string_create(L"\"NAMESTATES\" expected");
+          s = coco_string_create( L"\"NAMESTATES\" expected" );
           break;
         case 31:
-          s = coco_string_create(L"\"PROBABILITIES\" expected");
+          s = coco_string_create( L"\"PROBABILITIES\" expected" );
           break;
         case 32:
-          s = coco_string_create(L"\"|\" expected");
+          s = coco_string_create( L"\"|\" expected" );
           break;
         case 33:
-          s = coco_string_create(L"??? expected");
+          s = coco_string_create( L"??? expected" );
           break;
         case 34:
-          s = coco_string_create(L"invalid DSL");
+          s = coco_string_create( L"invalid DSL" );
           break;
         case 35:
-          s = coco_string_create(L"invalid IDENT_OR_INTEGER");
+          s = coco_string_create( L"invalid IDENT_OR_INTEGER" );
           break;
         case 36:
-          s = coco_string_create(L"invalid FLOAT");
+          s = coco_string_create( L"invalid FLOAT" );
           break;
 
 
         default: {
           wchar_t format[20];
-          coco_swprintf(format, 20, L"error %d", n);
-          s = coco_string_create(format);
+          coco_swprintf( format, 20, L"error %d", n );
+          s = coco_string_create( format );
         } break;
       }
 
       // wprintf(L"-- line %d col %d: %ls\n", line, col, s);
-      std::wstring ss = L"Syntax error : " + std::wstring(s);
-      __errors.Error(filename, line, col, ss.c_str());
-      coco_string_delete(s);
+      std::wstring ss = L"Syntax error : " + std::wstring( s );
+      __errors.Error( filename, line, col, ss.c_str() );
+      coco_string_delete( s );
     }
 
   }  // namespace

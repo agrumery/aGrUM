@@ -77,17 +77,17 @@ namespace gum {
 
     /// basic constructor. initialize the triangulation
 
-    explicit DefaultTriangulation(const UndiGraph* graph,
-                                  const NodeProperty<Size>* modal,
-                                  bool minimality = false,
-                                  float theRatio = GUM_QUASI_RATIO,
-                                  float theThreshold = GUM_WEIGHT_THRESHOLD);
+    explicit DefaultTriangulation( const UndiGraph* graph,
+                                   const NodeProperty<Size>* modal,
+                                   bool minimality = false,
+                                   float theRatio = GUM_QUASI_RATIO,
+                                   float theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// default constructor: initialize the triangulation for an empty graph
 
-    explicit DefaultTriangulation(bool minimality = false,
-                                  double theRatio = GUM_QUASI_RATIO,
-                                  double theThreshold = GUM_WEIGHT_THRESHOLD);
+    explicit DefaultTriangulation( bool minimality = false,
+                                   double theRatio = GUM_QUASI_RATIO,
+                                   double theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// copy constructor
 
@@ -123,7 +123,7 @@ namespace gum {
 
     /// copy operator
 
-    DefaultTriangulation& operator=(const DefaultTriangulation&);
+    DefaultTriangulation& operator=( const DefaultTriangulation& );
 
     /// @}
 

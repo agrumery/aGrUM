@@ -43,16 +43,16 @@ namespace gum {
      */
     class BNLearnerListener : public ApproximationSchemeListener {
       public:
-      BNLearnerListener(genericBNLearner* bnl, ApproximationScheme& sch);
+      BNLearnerListener( genericBNLearner* bnl, ApproximationScheme& sch );
       virtual ~BNLearnerListener();
 
-      virtual void whenProgress(const void* src, Size pourcent, double error,
-                                double time) final;
-      virtual void whenStop(const void* src, std::string message) final;
+      virtual void whenProgress( const void* src, Size pourcent, double error,
+                                 double time ) final;
+      virtual void whenStop( const void* src, std::string message ) final;
 
       private:
-      BNLearnerListener(const BNLearnerListener& other);
-      BNLearnerListener& operator=(const BNLearnerListener& other);
+      BNLearnerListener( const BNLearnerListener& other );
+      BNLearnerListener& operator=( const BNLearnerListener& other );
 
       genericBNLearner* __bnlearner;
     };

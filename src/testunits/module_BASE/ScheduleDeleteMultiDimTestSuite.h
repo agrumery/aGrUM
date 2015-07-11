@@ -34,57 +34,57 @@ namespace gum_tests {
   class ScheduleDeleteMultiDimTestSuite : public CxxTest::TestSuite {
     public:
     void test_construct() {
-      std::vector<gum::LabelizedVariable*> vars(10);
+      std::vector<gum::LabelizedVariable*> vars( 10 );
 
-      for (unsigned int i = 0; i < 10; ++i) {
+      for ( unsigned int i = 0; i < 10; ++i ) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 2);
+        vars[i] = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
-      pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
-      randomInit(pot1);
-      gum::ScheduleMultiDim<float> f1(pot1);
+      pot1 << *( vars[0] ) << *( vars[2] ) << *( vars[3] ) << *( vars[4] );
+      randomInit( pot1 );
+      gum::ScheduleMultiDim<float> f1( pot1 );
       gum::Set<const gum::DiscreteVariable*> del_vars;
       del_vars << vars[0] << vars[3];
-      gum::ScheduleProject<float> myproj(f1, del_vars, gum::projectMax);
+      gum::ScheduleProject<float> myproj( f1, del_vars, gum::projectMax );
       const gum::ScheduleMultiDim<float>& res = myproj.result();
 
-      gum::ScheduleDeleteMultiDim<float> del1(f1);
-      gum::ScheduleDeleteMultiDim<float> del2(res);
-      gum::ScheduleDeleteMultiDim<float> del3(del2);
-      TS_ASSERT(!(del1 == del2));
-      TS_ASSERT(del1 != del2);
-      TS_ASSERT_THROWS(del2.execute(), gum::NotFound);
+      gum::ScheduleDeleteMultiDim<float> del1( f1 );
+      gum::ScheduleDeleteMultiDim<float> del2( res );
+      gum::ScheduleDeleteMultiDim<float> del3( del2 );
+      TS_ASSERT( !( del1 == del2 ) );
+      TS_ASSERT( del1 != del2 );
+      TS_ASSERT_THROWS( del2.execute(), gum::NotFound );
       myproj.execute();
-      TS_GUM_ASSERT_THROWS_NOTHING(del2.execute());
-      TS_ASSERT_THROWS(del3.execute(), gum::NotFound);
+      TS_GUM_ASSERT_THROWS_NOTHING( del2.execute() );
+      TS_ASSERT_THROWS( del3.execute(), gum::NotFound );
 
-      TS_ASSERT(del1.nbOperations() == 1);
+      TS_ASSERT( del1.nbOperations() == 1 );
       std::pair<long, long> xxx = del1.memoryUsage();
-      TS_ASSERT(xxx.first == -16);
-      TS_ASSERT(xxx.second == -16);
+      TS_ASSERT( xxx.first == -16 );
+      TS_ASSERT( xxx.second == -16 );
 
       gum::Sequence<const gum::ScheduleMultiDim<float>*> seq =
           del2.multiDimArgs();
-      TS_ASSERT(seq.size() == 1);
-      TS_ASSERT(*(seq.atPos(0)) == res);
+      TS_ASSERT( seq.size() == 1 );
+      TS_ASSERT( *( seq.atPos( 0 ) ) == res );
 
       del3 = del1;
-      TS_ASSERT(del1 == del3);
-      TS_ASSERT(del3 != del2);
+      TS_ASSERT( del1 == del3 );
+      TS_ASSERT( del3 != del2 );
 
       std::stringstream s;
       s << "delete ( " << f1.toString() << " )";
-      TS_ASSERT(s.str() == del1.toString());
+      TS_ASSERT( s.str() == del1.toString() );
 
       gum::ScheduleDeleteMultiDim<float>* del4 = del3.newFactory();
-      TS_ASSERT(*del4 == del3);
+      TS_ASSERT( *del4 == del3 );
       delete del4;
 
-      for (unsigned int i = 0; i < vars.size(); ++i)
+      for ( unsigned int i = 0; i < vars.size(); ++i )
         delete vars[i];
     }
 
@@ -92,11 +92,11 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInit(gum::Potential<float>& t) {
-      gum::Instantiation i(t);
+    void randomInit( gum::Potential<float>& t ) {
+      gum::Instantiation i( t );
 
-      for (i.setFirst(); !i.end(); ++i)
-        t.set(i, (int)(gum::randomProba() * 100000));
+      for ( i.setFirst(); !i.end(); ++i )
+        t.set( i, (int)( gum::randomProba() * 100000 ) );
     }
   };
 

@@ -56,10 +56,10 @@ namespace gum {
       /// Default constructor.
       /// @param prm The PRM<GUM_SCALAR> for which this
       /// ClassDependencyGraph<GUM_SCALAR> is constructed.
-      ClassDependencyGraph(const PRM<GUM_SCALAR>& prm);
+      ClassDependencyGraph( const PRM<GUM_SCALAR>& prm );
 
       /// Copy constructor.
-      ClassDependencyGraph(const ClassDependencyGraph<GUM_SCALAR>& source);
+      ClassDependencyGraph( const ClassDependencyGraph<GUM_SCALAR>& source );
 
       /// Destructor.
       ~ClassDependencyGraph();
@@ -78,7 +78,7 @@ namespace gum {
       /// node
       /// id in the ClassDependencyGraph<GUM_SCALAR>.
       /// @throw NotFound Raised if no nodes matches id.
-      const EltPair& get(NodeId id) const;
+      const EltPair& get( NodeId id ) const;
 
       /// @brief Returns the NodeId assign to the given ClassElement<GUM_SCALAR>
       /// of a
@@ -87,8 +87,8 @@ namespace gum {
       /// because
       /// inherited ClassElement<GUM_SCALAR> are shared in the inheritance
       /// hierarchy.
-      NodeId get(const ClassElementContainer<GUM_SCALAR>& c,
-                 const ClassElement<GUM_SCALAR>& elt) const;
+      NodeId get( const ClassElementContainer<GUM_SCALAR>& c,
+                  const ClassElement<GUM_SCALAR>& elt ) const;
 
       /// Returns a mapping between the ClassDependencyGraph<GUM_SCALAR>'s nodes
       /// and
@@ -99,15 +99,15 @@ namespace gum {
       /// @}
       private:
       /// Build the class dependency graph.
-      void __buildGraph(const PRM<GUM_SCALAR>& prm);
+      void __buildGraph( const PRM<GUM_SCALAR>& prm );
 
       /// Add nodes in __graph while updating consequently all the mappings.
-      void __addNode(const ClassElementContainer<GUM_SCALAR>* c,
-                     const ClassElement<GUM_SCALAR>& elt);
+      void __addNode( const ClassElementContainer<GUM_SCALAR>* c,
+                      const ClassElement<GUM_SCALAR>& elt );
 
       /// Add arcs in __graph.
-      void __addArcs(const ClassElementContainer<GUM_SCALAR>& c, NodeId node,
-                     HashTable<const ClassElement<GUM_SCALAR>*, NodeId>& map);
+      void __addArcs( const ClassElementContainer<GUM_SCALAR>& c, NodeId node,
+                      HashTable<const ClassElement<GUM_SCALAR>*, NodeId>& map );
 
       /// The graph itself.
       DAG __graph;

@@ -55,8 +55,8 @@ namespace gum {
      * @param dom the domain sizes of the nodes to be eliminated
      * @warning note that, by aGrUM's rule, the graph and the modalities are not
      * copied but only referenced by the elimination sequence algorithm. */
-    virtual void setGraph(const UndiGraph* theGraph,
-                          const NodeProperty<Size>* modal);
+    virtual void setGraph( const UndiGraph* theGraph,
+                           const NodeProperty<Size>* modal );
 
     /** @brief returns a fresh triangulation (over an empty graph) of the same
      * type as the current object
@@ -85,7 +85,7 @@ namespace gum {
      * the triangulation is minimal w.r.t. inclusion */
     UnconstrainedTriangulation(
         const UnconstrainedEliminationSequenceStrategy& elimSeq,
-        const JunctionTreeStrategy& JTStrategy, bool minimality = false);
+        const JunctionTreeStrategy& JTStrategy, bool minimality = false );
 
     /// constructor with a given graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
@@ -101,7 +101,7 @@ namespace gum {
     UnconstrainedTriangulation(
         const UndiGraph* graph, const NodeProperty<Size>* dom,
         const UnconstrainedEliminationSequenceStrategy& elimSeq,
-        const JunctionTreeStrategy& JTStrategy, bool minimality = false);
+        const JunctionTreeStrategy& JTStrategy, bool minimality = false );
 
     /// the function called to initialize the triangulation process
     /** This function is called when the triangulation process starts and is
@@ -113,16 +113,16 @@ namespace gum {
      * elimination sequence class).
      * @param graph the very graph that is triangulated (this is a copy of
      * __original_graph) */
-    void _initTriangulation(UndiGraph& graph);
+    void _initTriangulation( UndiGraph& graph );
 
     /// @}
 
     private:
     /// forbid copy constructor
-    UnconstrainedTriangulation(const UnconstrainedTriangulation&);
+    UnconstrainedTriangulation( const UnconstrainedTriangulation& );
 
     /// forbid copy operator
-    UnconstrainedTriangulation& operator=(const UnconstrainedTriangulation&);
+    UnconstrainedTriangulation& operator=( const UnconstrainedTriangulation& );
   };
 
 } /* namespace gum */

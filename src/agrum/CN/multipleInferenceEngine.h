@@ -85,9 +85,9 @@ namespace gum {
        *false otherwise and by default.
        */
       inline void
-      __updateThreadCredalSets(const NodeId& id,
-                               const std::vector<GUM_SCALAR>& vertex,
-                               const bool& elimRedund);
+      __updateThreadCredalSets( const NodeId& id,
+                                const std::vector<GUM_SCALAR>& vertex,
+                                const bool& elimRedund );
 
       protected:
       /** Threads lower marginals, one per thread. */
@@ -135,9 +135,9 @@ namespace gum {
        *false
        *otherwise.
        */
-      void _initThreadsData(const unsigned int& num_threads,
-                            const bool __storeVertices,
-                            const bool __storeBNOpt);
+      void _initThreadsData( const unsigned int& num_threads,
+                             const bool __storeVertices,
+                             const bool __storeBNOpt );
 
       /// @}
 
@@ -155,9 +155,9 @@ namespace gum {
        *false otherwise and by default.
        * @return \c True if the IBayesNet is kept (for now), \c False otherwise.
        */
-      inline bool _updateThread(const NodeId& id,
-                                const std::vector<GUM_SCALAR>& vertex,
-                                const bool& elimRedund = false);
+      inline bool _updateThread( const NodeId& id,
+                                 const std::vector<GUM_SCALAR>& vertex,
+                                 const bool& elimRedund = false );
 
       /**
        * @brief Fusion of threads marginals.
@@ -202,7 +202,7 @@ namespace gum {
        * Constructor.
        * @param credalNet The CredalNet to be used.
        */
-      MultipleInferenceEngine(const CredalNet<GUM_SCALAR>& credalNet);
+      MultipleInferenceEngine( const CredalNet<GUM_SCALAR>& credalNet );
 
       /** Destructor. */
       virtual ~MultipleInferenceEngine();

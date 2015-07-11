@@ -32,34 +32,35 @@ namespace gum {
 
     /// default constructor
     DBTransformCompactInt::DBTransformCompactInt() {
-      GUM_CONSTRUCTOR(DBTransformCompactInt);
+      GUM_CONSTRUCTOR( DBTransformCompactInt );
     }
 
     /// copy constructor
     DBTransformCompactInt::DBTransformCompactInt(
-        const DBTransformCompactInt& from) {
-      GUM_CONS_CPY(DBTransformCompactInt);
+        const DBTransformCompactInt& from ) {
+      GUM_CONS_CPY( DBTransformCompactInt );
     }
 
     /// move constructor
-    DBTransformCompactInt::DBTransformCompactInt(DBTransformCompactInt&& from) {
-      GUM_CONS_MOV(DBTransformCompactInt);
+    DBTransformCompactInt::DBTransformCompactInt(
+        DBTransformCompactInt&& from ) {
+      GUM_CONS_MOV( DBTransformCompactInt );
     }
 
     /// destructor
     DBTransformCompactInt::~DBTransformCompactInt() {
-      GUM_DESTRUCTOR(DBTransformCompactInt);
+      GUM_DESTRUCTOR( DBTransformCompactInt );
     }
 
     /// copy operator
     DBTransformCompactInt& DBTransformCompactInt::
-    operator=(const DBTransformCompactInt&) {
+    operator=( const DBTransformCompactInt& ) {
       return *this;
     }
 
     /// move operator
     DBTransformCompactInt& DBTransformCompactInt::
-    operator=(DBTransformCompactInt&&) {
+    operator=( DBTransformCompactInt&& ) {
       return *this;
     }
 

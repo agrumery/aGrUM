@@ -64,12 +64,12 @@ namespace gum {
        * @throw DupplicateElement Raised if c contains already an element with
        *                          the same name.
        */
-      ClassElement(const std::string& name);
+      ClassElement( const std::string& name );
 
       /**
        * Copy constructor.
        */
-      ClassElement(const ClassElement& source);
+      ClassElement( const ClassElement& source );
 
       /**
        * Destructor of this class.
@@ -90,8 +90,8 @@ namespace gum {
         prm_parameter
       };
 
-      static std::string enum2str(ClassElementType type) {
-        switch (type) {
+      static std::string enum2str( ClassElementType type ) {
+        switch ( type ) {
           case prm_attribute:
             return "prm_attribute";
 
@@ -110,27 +110,27 @@ namespace gum {
       }
 
       /// Returns true if obj_ptr is of type ReferenceSlot.
-      static INLINE bool isReferenceSlot(const ClassElement& elt) {
+      static INLINE bool isReferenceSlot( const ClassElement& elt ) {
         return elt.elt_type() == prm_refslot;
       }
 
       /// Returns true if obj_ptr is of type Attribute.
-      static INLINE bool isAttribute(const ClassElement& elt) {
+      static INLINE bool isAttribute( const ClassElement& elt ) {
         return elt.elt_type() == prm_attribute;
       }
 
       /// Return true if obj is of type Aggregate
-      static INLINE bool isAggregate(const ClassElement& elt) {
+      static INLINE bool isAggregate( const ClassElement& elt ) {
         return elt.elt_type() == prm_aggregate;
       }
 
       /// Return true if obj is of type SlotChain
-      static INLINE bool isSlotChain(const ClassElement& elt) {
+      static INLINE bool isSlotChain( const ClassElement& elt ) {
         return elt.elt_type() == prm_slotchain;
       }
 
       /// Return true if obj is of type Parameter
-      static INLINE bool isParameter(const ClassElement& elt) {
+      static INLINE bool isParameter( const ClassElement& elt ) {
         return elt.elt_type() == prm_parameter;
       }
 
@@ -144,7 +144,7 @@ namespace gum {
       NodeId id() const;
 
       /// Used to assign the id of this element.
-      virtual void setId(NodeId id);
+      virtual void setId( NodeId id );
 
       /**
        * @brief Add a parent to this element.
@@ -152,7 +152,7 @@ namespace gum {
        * This method is called by gum::Class when en parent is added
        * to this elememnt.
        */
-      virtual void addParent(const ClassElement& elt) = 0;
+      virtual void addParent( const ClassElement& elt ) = 0;
 
       /**
        * @brief Add a child to this element.
@@ -160,7 +160,7 @@ namespace gum {
        * This methos is called by gum::Class when a child is added
        * to this element.
        */
-      virtual void addChild(const ClassElement& elt) = 0;
+      virtual void addChild( const ClassElement& elt ) = 0;
 
       /// @see gum::PRMObject::obj_type().
       virtual typename PRMObject::PRMType obj_type() const;
@@ -209,7 +209,7 @@ namespace gum {
        * @param t The type in which we want to cast this ClassElement.
        * @throw OperationNotAllowed If the cast is impossible.
        */
-      virtual std::string cast(const Type<GUM_SCALAR>& t) const;
+      virtual std::string cast( const Type<GUM_SCALAR>& t ) const;
 
       // /**
       //  * Return a reference over the gum::Potential of this class element.

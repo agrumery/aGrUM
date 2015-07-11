@@ -35,43 +35,44 @@ namespace gum {
   UnconstrainedTriangulation::UnconstrainedTriangulation(
       const UndiGraph* theGraph, const NodeProperty<Size>* modal,
       const UnconstrainedEliminationSequenceStrategy& elimSeq,
-      const JunctionTreeStrategy& JTStrategy, bool minimality)
-      : StaticTriangulation(theGraph, modal, elimSeq, JTStrategy, minimality) {
+      const JunctionTreeStrategy& JTStrategy, bool minimality )
+      : StaticTriangulation( theGraph, modal, elimSeq, JTStrategy,
+                             minimality ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR(UnconstrainedTriangulation);
+    GUM_CONSTRUCTOR( UnconstrainedTriangulation );
   }
 
   /// default constructor
 
   UnconstrainedTriangulation::UnconstrainedTriangulation(
       const UnconstrainedEliminationSequenceStrategy& elimSeq,
-      const JunctionTreeStrategy& JTStrategy, bool minimality)
-      : StaticTriangulation(elimSeq, JTStrategy, minimality) {
+      const JunctionTreeStrategy& JTStrategy, bool minimality )
+      : StaticTriangulation( elimSeq, JTStrategy, minimality ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR(UnconstrainedTriangulation);
+    GUM_CONSTRUCTOR( UnconstrainedTriangulation );
   }
 
   /// destructor
 
   UnconstrainedTriangulation::~UnconstrainedTriangulation() {
     // for debugging purposes
-    GUM_DESTRUCTOR(UnconstrainedTriangulation);
+    GUM_DESTRUCTOR( UnconstrainedTriangulation );
   }
 
   /// initialize the triangulation algorithm for a new graph
 
-  void UnconstrainedTriangulation::setGraph(const UndiGraph* theGraph,
-                                            const NodeProperty<Size>* modal) {
-    StaticTriangulation::_setGraph(theGraph, modal);
+  void UnconstrainedTriangulation::setGraph( const UndiGraph* theGraph,
+                                             const NodeProperty<Size>* modal ) {
+    StaticTriangulation::_setGraph( theGraph, modal );
   }
 
   /// the function called to initialize the triangulation process
 
-  void UnconstrainedTriangulation::_initTriangulation(UndiGraph& graph) {
+  void UnconstrainedTriangulation::_initTriangulation( UndiGraph& graph ) {
     UnconstrainedEliminationSequenceStrategy* elim =
         static_cast<UnconstrainedEliminationSequenceStrategy*>(
-            _elimination_sequence_strategy);
-    elim->setGraph(&graph, &modalities());
+            _elimination_sequence_strategy );
+    elim->setGraph( &graph, &modalities() );
   }
 
 } /* namespace gum */

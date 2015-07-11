@@ -77,7 +77,7 @@ namespace gum {
       /// returns the value at the ith column
       /** by convention, unobserved columns should have value
        * std::numeric_limits<unsigned int>::max () */
-      unsigned int operator[](unsigned int i) const noexcept {
+      unsigned int operator[]( unsigned int i ) const noexcept {
         return __row[i];
       }
 
@@ -90,14 +90,14 @@ namespace gum {
       /// @{
 
       /// tests whether two rows are identical
-      bool operator==(const FilteredRow& from) {
-        return ((__weight == from.__weight) &&
-                (__nb_unobserved == from.__nb_unobserved) &&
-                (__row == from.__row));
+      bool operator==( const FilteredRow& from ) {
+        return ( ( __weight == from.__weight ) &&
+                 ( __nb_unobserved == from.__nb_unobserved ) &&
+                 ( __row == from.__row ) );
       }
 
       /// tests whether two rows are different
-      bool operator!=(const FilteredRow& from) { return !operator==(from); }
+      bool operator!=( const FilteredRow& from ) { return !operator==( from ); }
 
       /// @}
 

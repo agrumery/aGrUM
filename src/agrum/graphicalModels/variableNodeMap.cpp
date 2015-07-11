@@ -36,32 +36,32 @@
 namespace gum {
 
   // Default constructor.
-  VariableNodeMap::VariableNodeMap() { GUM_CONSTRUCTOR(VariableNodeMap); }
+  VariableNodeMap::VariableNodeMap() { GUM_CONSTRUCTOR( VariableNodeMap ); }
 
   // Copy constructor.
-  VariableNodeMap::VariableNodeMap(const VariableNodeMap& source) {
-    GUM_CONS_CPY(VariableNodeMap);
+  VariableNodeMap::VariableNodeMap( const VariableNodeMap& source ) {
+    GUM_CONS_CPY( VariableNodeMap );
 
-    __copy(source);
+    __copy( source );
   }
 
   // Destructor
   VariableNodeMap::~VariableNodeMap() {
-    GUM_DESTRUCTOR(VariableNodeMap);
+    GUM_DESTRUCTOR( VariableNodeMap );
 
     clear();
   }
 
   // Copy operator.
-  VariableNodeMap& VariableNodeMap::operator=(const VariableNodeMap& source) {
+  VariableNodeMap& VariableNodeMap::operator=( const VariableNodeMap& source ) {
     clear();
-    __copy(source);
+    __copy( source );
 
     return *this;
   }
 
-  void VariableNodeMap::clear(void) {
-    for (auto iter = __nodes2vars.begin(); iter != __nodes2vars.end(); ++iter)
+  void VariableNodeMap::clear( void ) {
+    for ( auto iter = __nodes2vars.begin(); iter != __nodes2vars.end(); ++iter )
       delete iter.second();
 
     __nodes2vars.clear();
@@ -82,10 +82,10 @@ namespace gum {
   }
 
   /// do the copy
-  void VariableNodeMap::__copy(const VariableNodeMap& source) {
-    for (auto iter = source.__nodes2vars.begin();
-         iter != source.__nodes2vars.end(); ++iter)
-      __nodes2vars.insert(iter.first(), iter.second()->clone());
+  void VariableNodeMap::__copy( const VariableNodeMap& source ) {
+    for ( auto iter = source.__nodes2vars.begin();
+          iter != source.__nodes2vars.end(); ++iter )
+      __nodes2vars.insert( iter.first(), iter.second()->clone() );
 
     // copy factory is used inside insert
 
@@ -93,7 +93,7 @@ namespace gum {
   }
 
   /// for friendly displaying the content of clique graphs
-  std::ostream& operator<<(std::ostream& stream, const VariableNodeMap& v) {
+  std::ostream& operator<<( std::ostream& stream, const VariableNodeMap& v ) {
     stream << v.toString();
     return stream;
   }

@@ -53,10 +53,10 @@ namespace gum {
         public:
         friend class DFSTree<GUM_SCALAR>;
         /// Constructor.
-        EdgeGrowth(NodeId a_u, LabelData* an_edge, LabelData* a_l_v,
-                   NodeId a_v = 0);
+        EdgeGrowth( NodeId a_u, LabelData* an_edge, LabelData* a_l_v,
+                    NodeId a_v = 0 );
         /// Copy constructor.
-        EdgeGrowth(const EdgeGrowth& from);
+        EdgeGrowth( const EdgeGrowth& from );
         /// Destructor.
         ~EdgeGrowth();
         /// The NodeId of the node from which we grow an edge.
@@ -72,7 +72,7 @@ namespace gum {
         /// otherwise 0 is assigned (recall that subscripts start from 1)
         NodeId v;
         /// Add the pair (u,v) as a match for the current growth.
-        void insert(Instance<GUM_SCALAR>* u, Instance<GUM_SCALAR>* v);
+        void insert( Instance<GUM_SCALAR>* u, Instance<GUM_SCALAR>* v );
         /// The mapping between the u and v for each match in the interface
         /// graph.
         NodeProperty<std::pair<Instance<GUM_SCALAR>*, Instance<GUM_SCALAR>*>>
@@ -90,8 +90,8 @@ namespace gum {
       };
 
       template <typename GUM_SCALAR>
-      std::ostream& operator<<(std::ostream& out,
-                               const EdgeGrowth<GUM_SCALAR>& edge);
+      std::ostream& operator<<( std::ostream& out,
+                                const EdgeGrowth<GUM_SCALAR>& edge );
 
       extern template class EdgeGrowth<double>;
     } /* namespace gspan */

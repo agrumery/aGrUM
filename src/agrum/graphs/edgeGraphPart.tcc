@@ -31,20 +31,21 @@
 namespace gum {
 
   template <typename VAL>
-  INLINE EdgeProperty<VAL> EdgeGraphPart::edgesProperty(VAL (*f)(const Edge&),
-                                                        Size size) const {
-    return __edges.hashMap(f, size);
+  INLINE EdgeProperty<VAL>
+  EdgeGraphPart::edgesProperty( VAL ( *f )( const Edge& ), Size size ) const {
+    return __edges.hashMap( f, size );
   }
 
   template <typename VAL>
-  INLINE EdgeProperty<VAL> EdgeGraphPart::edgesProperty(const VAL& val,
-                                                        Size size) const {
-    return __edges.hashMap(val, size);
+  INLINE EdgeProperty<VAL> EdgeGraphPart::edgesProperty( const VAL& val,
+                                                         Size size ) const {
+    return __edges.hashMap( val, size );
   }
 
   template <typename VAL>
-  INLINE List<VAL> EdgeGraphPart::listMapEdges(VAL (*f)(const Edge&)) const {
-    return __edges.listMap(f);
+  INLINE List<VAL>
+  EdgeGraphPart::listMapEdges( VAL ( *f )( const Edge& ) ) const {
+    return __edges.listMap( f );
   }
 
 } /* namespace gum */

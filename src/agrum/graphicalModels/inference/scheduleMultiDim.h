@@ -107,20 +107,20 @@ namespace gum {
     /// @{
 
     /// constructs a ScheduleMultiDim containing an already built implementation
-    ScheduleMultiDim(const MultiDimImplementation<GUM_SCALAR>&);
+    ScheduleMultiDim( const MultiDimImplementation<GUM_SCALAR>& );
 
     /// constructs a ScheduleMultiDim containing an already built implementation
-    ScheduleMultiDim(const MultiDimDecorator<GUM_SCALAR>&);
+    ScheduleMultiDim( const MultiDimDecorator<GUM_SCALAR>& );
 
     /// construct a ScheduleMultiDim for an implementation yet to be built
     /** The ScheduleMultiDim created is abstract, i.e., it does not contain a
      * proper MultiDimImplementation yet. However, the variables of the latter
      * need be known to optimize inference processes
      * @warning the sequence of variables is copied into the wrapper. */
-    ScheduleMultiDim(const Sequence<const DiscreteVariable*>& vars);
+    ScheduleMultiDim( const Sequence<const DiscreteVariable*>& vars );
 
     /// copy constructor
-    ScheduleMultiDim(const ScheduleMultiDim<GUM_SCALAR>&);
+    ScheduleMultiDim( const ScheduleMultiDim<GUM_SCALAR>& );
 
     /// destructor
     ~ScheduleMultiDim();
@@ -135,13 +135,13 @@ namespace gum {
 
     /// copy operator
     ScheduleMultiDim<GUM_SCALAR>&
-    operator=(const ScheduleMultiDim<GUM_SCALAR>&);
+    operator=( const ScheduleMultiDim<GUM_SCALAR>& );
 
     /// checks whether two ScheduleMultiDim are related to the same table
-    bool operator==(const ScheduleMultiDim<GUM_SCALAR>&) const;
+    bool operator==( const ScheduleMultiDim<GUM_SCALAR>& ) const;
 
     /// checks whether two ScheduleMultiDim are related to different tables
-    bool operator!=(const ScheduleMultiDim<GUM_SCALAR>&) const;
+    bool operator!=( const ScheduleMultiDim<GUM_SCALAR>& ) const;
 
     /// @}
 
@@ -181,12 +181,12 @@ namespace gum {
     /** @throws DuplicateElement exception is thrown if the
      * MultiDimImplementation
      * has already been wrapped in a ScheduleMultiDim with another id */
-    void setMultiDim(const MultiDimImplementation<GUM_SCALAR>&);
+    void setMultiDim( const MultiDimImplementation<GUM_SCALAR>& );
 
     /// sets a new multiDimDecorator inside the wrapper
     /** @throws DuplicateElement exception is thrown if the MultiDimDecorator
      * has already been wrapped in a ScheduleMultiDim with another id */
-    void setMultiDim(const MultiDimDecorator<GUM_SCALAR>&);
+    void setMultiDim( const MultiDimDecorator<GUM_SCALAR>& );
 
     /// displays the content of the multidim
     std::string toString() const;

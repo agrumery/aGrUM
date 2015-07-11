@@ -31,49 +31,50 @@ namespace gum {
     /// creates a wrapper to execute a translator on a given set of columns
     template <class Translator, typename Cols>
     INLINE
-    CreateOnce<Translator, Cols>::CreateOnce(const Translator& translator,
-                                             const Cols& s)
-        : __translator(translator) {
+    CreateOnce<Translator, Cols>::CreateOnce( const Translator& translator,
+                                              const Cols& s )
+        : __translator( translator ) {
       // check that the number of columns in "s" matches what the translator
       // is waiting for
       static_assert(
           Translator::input_size == Cols::size,
-          "the number of columns is not compatible with the translator");
-      static_assert(std::is_base_of<BaseDBCellTranslator, Translator>::value,
-                    "Error: you should pass only CellTranslators to Create<>");
+          "the number of columns is not compatible with the translator" );
+      static_assert(
+          std::is_base_of<BaseDBCellTranslator, Translator>::value,
+          "Error: you should pass only CellTranslators to Create<>" );
 
-      GUM_CONSTRUCTOR(CreateOnce);
+      GUM_CONSTRUCTOR( CreateOnce );
 
-      __translator.setInputCols(s);
+      __translator.setInputCols( s );
     }
 
     /// copy constructor
     template <class Translator, typename Cols>
     INLINE CreateOnce<Translator, Cols>::CreateOnce(
-        const CreateOnce<Translator, Cols>& call)
-        : __translator(call.__translator) {
-      GUM_CONS_CPY(CreateOnce);
+        const CreateOnce<Translator, Cols>& call )
+        : __translator( call.__translator ) {
+      GUM_CONS_CPY( CreateOnce );
     }
 
     /// move constructor
     template <class Translator, typename Cols>
     INLINE CreateOnce<Translator, Cols>::CreateOnce(
-        CreateOnce<Translator, Cols>&& call)
-        : __translator(std::move(call.__translator)) {
-      GUM_CONS_MOV(CreateOnce);
+        CreateOnce<Translator, Cols>&& call )
+        : __translator( std::move( call.__translator ) ) {
+      GUM_CONS_MOV( CreateOnce );
     }
 
     /// destructor
     template <class Translator, typename Cols>
     INLINE CreateOnce<Translator, Cols>::~CreateOnce() noexcept {
-      GUM_DESTRUCTOR(CreateOnce);
+      GUM_DESTRUCTOR( CreateOnce );
     }
 
     /// copy operator
     template <class Translator, typename Cols>
     INLINE CreateOnce<Translator, Cols>& CreateOnce<Translator, Cols>::
-    operator=(const CreateOnce<Translator, Cols>& call) {
-      if (this != &call) {
+    operator=( const CreateOnce<Translator, Cols>& call ) {
+      if ( this != &call ) {
         __translator = call.__translator;
       }
       return *this;
@@ -82,9 +83,9 @@ namespace gum {
     /// move operator
     template <class Translator, typename Cols>
     INLINE CreateOnce<Translator, Cols>& CreateOnce<Translator, Cols>::
-    operator=(CreateOnce<Translator, Cols>&& call) {
-      if (this != &call) {
-        __translator = std::move(call.__translator);
+    operator=( CreateOnce<Translator, Cols>&& call ) {
+      if ( this != &call ) {
+        __translator = std::move( call.__translator );
       }
       return *this;
     }
@@ -92,23 +93,23 @@ namespace gum {
     /// sets the row that will be read by the translator
     template <class Translator, typename Cols>
     INLINE void
-    CreateOnce<Translator, Cols>::setInputRow(const DBRow& row) noexcept {
-      __translator.setInputRow(row);
+    CreateOnce<Translator, Cols>::setInputRow( const DBRow& row ) noexcept {
+      __translator.setInputRow( row );
     }
 
     /// sets the row to which the output will be written by the translator
     template <class Translator, typename Cols>
     INLINE void
-    CreateOnce<Translator, Cols>::setOutputRow(FilteredRow& row) noexcept {
-      __translator.setOutputRow(row);
+    CreateOnce<Translator, Cols>::setOutputRow( FilteredRow& row ) noexcept {
+      __translator.setOutputRow( row );
     }
 
     /** @brief sets the columns of the output vector which will be written
      * by the translator */
     template <class Translator, typename Cols>
     INLINE void CreateOnce<Translator, Cols>::setOutputCols(
-        unsigned int first_col) noexcept {
-      __translator.setOutputCols(first_col);
+        unsigned int first_col ) noexcept {
+      __translator.setOutputCols( first_col );
     }
 
     /// returns the translator that does all the job
@@ -133,8 +134,8 @@ namespace gum {
     /// back-translate a given output (i.e., returns its input)
     template <class Translator, typename Cols>
     INLINE std::string CreateOnce<Translator, Cols>::translateBack(
-        unsigned int col, unsigned int translated_val) const {
-      return __translator.translateBack(col, translated_val);
+        unsigned int col, unsigned int translated_val ) const {
+      return __translator.translateBack( col, translated_val );
     }
 
     /// initialize the cell filters by parsing once the database
@@ -161,8 +162,8 @@ namespace gum {
     /// columns
     template <class Translator, typename Cols>
     INLINE void CreateOnce<Translator, Cols>::modalities(
-        std::vector<unsigned int>& modals) const {
-      __translator.modalities(modals);
+        std::vector<unsigned int>& modals ) const {
+      __translator.modalities( modals );
     }
 
     /// returns the current input DBRow
@@ -206,32 +207,33 @@ namespace gum {
     template <typename Translator, typename Cols, int nb_times,
               typename ColsIncr>
     INLINE Create<Translator, Cols, nb_times, ColsIncr>::Create() {
-      GUM_CONSTRUCTOR(Create);
+      GUM_CONSTRUCTOR( Create );
     }
 
     /// copy constructor
     template <typename Translator, typename Cols, int nb_times,
               typename ColsIncr>
     INLINE Create<Translator, Cols, nb_times, ColsIncr>::Create(
-        const Create<Translator, Cols, nb_times, ColsIncr>& call)
-        : CurrentTranslator(call), NextTranslators(call) {
-      GUM_CONS_CPY(Create);
+        const Create<Translator, Cols, nb_times, ColsIncr>& call )
+        : CurrentTranslator( call ), NextTranslators( call ) {
+      GUM_CONS_CPY( Create );
     }
 
     /// move constructor
     template <typename Translator, typename Cols, int nb_times,
               typename ColsIncr>
     INLINE Create<Translator, Cols, nb_times, ColsIncr>::Create(
-        Create<Translator, Cols, nb_times, ColsIncr>&& call)
-        : CurrentTranslator(std::move(call)), NextTranslators(std::move(call)) {
-      GUM_CONS_MOV(Create);
+        Create<Translator, Cols, nb_times, ColsIncr>&& call )
+        : CurrentTranslator( std::move( call ) ),
+          NextTranslators( std::move( call ) ) {
+      GUM_CONS_MOV( Create );
     }
 
     /// destructor
     template <typename Translator, typename Cols, int nb_times,
               typename ColsIncr>
     INLINE Create<Translator, Cols, nb_times, ColsIncr>::~Create() noexcept {
-      GUM_DESTRUCTOR(Create);
+      GUM_DESTRUCTOR( Create );
     }
 
     /// copy operator
@@ -239,10 +241,10 @@ namespace gum {
               typename ColsIncr>
     INLINE Create<Translator, Cols, nb_times, ColsIncr>&
         Create<Translator, Cols, nb_times, ColsIncr>::
-        operator=(const Create<Translator, Cols, nb_times, ColsIncr>& from) {
-      if (this != &from) {
-        CurrentTranslator::operator=(from);
-        NextTranslators::operator=(from);
+        operator=( const Create<Translator, Cols, nb_times, ColsIncr>& from ) {
+      if ( this != &from ) {
+        CurrentTranslator::operator=( from );
+        NextTranslators::operator=( from );
       }
       return *this;
     }
@@ -252,10 +254,10 @@ namespace gum {
               typename ColsIncr>
     INLINE Create<Translator, Cols, nb_times, ColsIncr>&
         Create<Translator, Cols, nb_times, ColsIncr>::
-        operator=(Create<Translator, Cols, nb_times, ColsIncr>&& from) {
-      if (this != &from) {
-        CurrentTranslator::operator=(std::move(from));
-        NextTranslators::operator=(std::move(from));
+        operator=( Create<Translator, Cols, nb_times, ColsIncr>&& from ) {
+      if ( this != &from ) {
+        CurrentTranslator::operator=( std::move( from ) );
+        NextTranslators::operator=( std::move( from ) );
       }
       return *this;
     }
@@ -265,27 +267,27 @@ namespace gum {
     template <typename Translator, typename Cols, int nb_times,
               typename ColsIncr>
     INLINE void Create<Translator, Cols, nb_times, ColsIncr>::setOutputCols(
-        unsigned int first_col) noexcept {
-      CurrentTranslator::setOutputCols(first_col);
-      NextTranslators::setOutputCols(first_col + Translator::output_size);
+        unsigned int first_col ) noexcept {
+      CurrentTranslator::setOutputCols( first_col );
+      NextTranslators::setOutputCols( first_col + Translator::output_size );
     }
 
     /// sets the input row which will be read by the translator
     template <typename Translator, typename Cols, int nb_times,
               typename ColsIncr>
     INLINE void Create<Translator, Cols, nb_times, ColsIncr>::setInputRow(
-        const DBRow& row) noexcept {
-      CurrentTranslator::setInputRow(row);
-      NextTranslators::setInputRow(row);
+        const DBRow& row ) noexcept {
+      CurrentTranslator::setInputRow( row );
+      NextTranslators::setInputRow( row );
     }
 
     /// sets the row to which the translator will write its output
     template <typename Translator, typename Cols, int nb_times,
               typename ColsIncr>
     INLINE void Create<Translator, Cols, nb_times, ColsIncr>::setOutputRow(
-        FilteredRow& row) noexcept {
-      CurrentTranslator::setOutputRow(row);
-      NextTranslators::setOutputRow(row);
+        FilteredRow& row ) noexcept {
+      CurrentTranslator::setOutputRow( row );
+      NextTranslators::setOutputRow( row );
     }
 
     /// returns the current input DBRow
@@ -326,12 +328,12 @@ namespace gum {
               typename ColsIncr>
     INLINE std::string
     Create<Translator, Cols, nb_times, ColsIncr>::translateBack(
-        unsigned int col, unsigned int translated_val) const {
-      if (col < Translator::output_size) {
-        return CurrentTranslator::translateBack(col, translated_val);
+        unsigned int col, unsigned int translated_val ) const {
+      if ( col < Translator::output_size ) {
+        return CurrentTranslator::translateBack( col, translated_val );
       } else {
-        return NextTranslators::translateBack(col - Translator::output_size,
-                                              translated_val);
+        return NextTranslators::translateBack( col - Translator::output_size,
+                                               translated_val );
       }
     }
 
@@ -368,9 +370,9 @@ namespace gum {
     template <typename Translator, typename Cols, int nb_times,
               typename ColsIncr>
     INLINE void Create<Translator, Cols, nb_times, ColsIncr>::modalities(
-        std::vector<unsigned int>& modals) const {
-      CurrentTranslator::modalities(modals);
-      NextTranslators::modalities(modals);
+        std::vector<unsigned int>& modals ) const {
+      CurrentTranslator::modalities( modals );
+      NextTranslators::modalities( modals );
     }
 
     /// returns the size of the input for the cell translators

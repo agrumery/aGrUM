@@ -59,7 +59,7 @@ namespace gum {
      * create/destroy
      * the BN from inside the reader.
      */
-    BNReader(BayesNet<GUM_SCALAR>* bn, const std::string& filename);
+    BNReader( BayesNet<GUM_SCALAR>* bn, const std::string& filename );
 
     /**
      * Default destructor.

@@ -126,15 +126,15 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GraphChangesGenerator4DiGraph(STRUCT_CONSTRAINT& constraint);
+      GraphChangesGenerator4DiGraph( STRUCT_CONSTRAINT& constraint );
 
       /// copy constructor
       GraphChangesGenerator4DiGraph(
-          const GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>& from);
+          const GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>& from );
 
       /// move operator
       GraphChangesGenerator4DiGraph(
-          GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>&& from);
+          GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>&& from );
 
       /// destructor
       virtual ~GraphChangesGenerator4DiGraph();
@@ -148,11 +148,11 @@ namespace gum {
 
       /// copy operator
       GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>&
-      operator=(const GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>& from);
+      operator=( const GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>& from );
 
       /// move operator
       GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>&
-      operator=(GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>&& from);
+      operator=( GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>&& from );
 
       /// @}
 
@@ -179,19 +179,19 @@ namespace gum {
 
       /// sets a new graph from which the generator will compute possible
       /// changes
-      void setGraph(const DiGraph& graph);
+      void setGraph( const DiGraph& graph );
 
       /// notify the generator of a change applied to the graph
-      void modifyGraph(const ArcAddition& change);
+      void modifyGraph( const ArcAddition& change );
 
       /// notify the generator of a change applied to the graph
-      void modifyGraph(const ArcDeletion& change);
+      void modifyGraph( const ArcDeletion& change );
 
       /// notify the generator of a change applied to the graph
-      void modifyGraph(const ArcReversal& change);
+      void modifyGraph( const ArcReversal& change );
 
       /// notify the generator of a change applied to the graph
-      void modifyGraph(const GraphChange& change);
+      void modifyGraph( const GraphChange& change );
 
       /// empty the set of possible change operators that can be applied
       void clearChanges() noexcept;
@@ -200,7 +200,7 @@ namespace gum {
       void notifyGetCompleted();
 
       /// sets the maximum number of threads used to compute the set of changes
-      void setMaxNbThreads(unsigned int nb) noexcept;
+      void setMaxNbThreads( unsigned int nb ) noexcept;
 
       /// @}
 
@@ -219,7 +219,7 @@ namespace gum {
 
       private:
 /// the max number of threads authorized
-#if defined(_OPENMP) && defined(NDEBUG)
+#if defined( _OPENMP ) && defined( NDEBUG )
       unsigned int __max_threads_number{getMaxNumberOfThreads()};
 #else
       unsigned int __max_threads_number{1};

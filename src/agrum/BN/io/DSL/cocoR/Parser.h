@@ -32,7 +32,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_DSL_COCO_PARSER_H__)
+#if !defined( gum_DSL_COCO_PARSER_H__ )
 #define gum_DSL_COCO_PARSER_H__
 
 #include <agrum/core/cast_unicode.h>
@@ -41,11 +41,11 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <agrum/BN/BayesNetFactory.h>
 
 #undef TRY
-#define TRY(inst)                                                              \
+#define TRY( inst )                                                            \
   try {                                                                        \
     inst;                                                                      \
-  } catch (gum::Exception & e) {                                               \
-    SemErr(e.errorType());                                                     \
+  } catch ( gum::Exception & e ) {                                             \
+    SemErr( e.errorType() );                                                   \
   }
 
 #include <iostream>
@@ -73,12 +73,12 @@ namespace gum {
       int errDist;
       int minErrDist;
 
-      void SynErr(int n);
+      void SynErr( int n );
       void Get();
-      void Expect(int n);
-      bool StartOf(int s);
-      void ExpectWeak(int n, int follow);
-      bool WeakSeparator(int n, int syFol, int repFol);
+      void Expect( int n );
+      bool StartOf( int s );
+      void ExpectWeak( int n, int follow );
+      bool WeakSeparator( int n, int syFol, int repFol );
 
       ErrorsContainer __errors;
 
@@ -90,41 +90,44 @@ namespace gum {
 
       gum::IBayesNetFactory* __factory;
 
-      void setFactory(gum::IBayesNetFactory* f) { __factory = f; }
+      void setFactory( gum::IBayesNetFactory* f ) { __factory = f; }
 
-      gum::IBayesNetFactory& factory(void) {
-        if (__factory)
+      gum::IBayesNetFactory& factory( void ) {
+        if ( __factory )
           return *__factory;
-        GUM_ERROR(gum::OperationNotAllowed,
-                  "Please set a factory for scanning DSL file...");
+        GUM_ERROR( gum::OperationNotAllowed,
+                   "Please set a factory for scanning DSL file..." );
       }
 
-      void SemErr(std::string s) { SemErr(widen(s).c_str()); }
+      void SemErr( std::string s ) { SemErr( widen( s ).c_str() ); }
 
-      void Warning(std::string s) { Warning(widen("Warning : " + s).c_str()); }
+      void Warning( std::string s ) {
+        Warning( widen( "Warning : " + s ).c_str() );
+      }
 
-      void __checkSizeOfProbabilityAssignation(const std::vector<float>& v,
-                                               const std::string& var,
-                                               int res) {
-        if ((int)v.size() < res)
-          Warning("Not enough data in probability assignation for node " + var);
-        if ((int)v.size() > res)
-          Warning("Too many data in probability assignation for node " + var);
+      void __checkSizeOfProbabilityAssignation( const std::vector<float>& v,
+                                                const std::string& var,
+                                                int res ) {
+        if ( (int)v.size() < res )
+          Warning( "Not enough data in probability assignation for node " +
+                   var );
+        if ( (int)v.size() > res )
+          Warning( "Too many data in probability assignation for node " + var );
       }
 
 
       //=====================
 
-      Parser(Scanner* scanner);
+      Parser( Scanner* scanner );
       ~Parser();
-      void SemErr(const wchar_t* msg);
-      void SynErr(const std::wstring& filename, int line, int col, int n);
-      void Warning(const wchar_t* msg);
+      void SemErr( const wchar_t* msg );
+      void SynErr( const std::wstring& filename, int line, int col, int n );
+      void Warning( const wchar_t* msg );
       const ErrorsContainer& errors() const;
 
       void DSL();
-      void IDENT(std::string& name);
-      void STRING(std::string& str);
+      void IDENT( std::string& name );
+      void STRING( std::string& str );
       void HEADER_PART();
       void CREATION_PART();
       void NUM_SAMPLES();
@@ -137,20 +140,20 @@ namespace gum {
       void NODE();
       void OBSERVATION_COST_PART();
       void HEADER();
-      void PARENTS(std::vector<std::string>& parents);
-      void VARIABLE_DEFINITION(int& nbrMod, std::string& var,
-                               const std::vector<std::string>& parents);
+      void PARENTS( std::vector<std::string>& parents );
+      void VARIABLE_DEFINITION( int& nbrMod, std::string& var,
+                                const std::vector<std::string>& parents );
       void EXTRA_DEFINITION_PART();
       void BLOC_PART();
-      void PARENTS_LIST(std::vector<std::string>& parents);
-      void MODALITY_LIST(int& nbrMod);
-      void PROBA(const std::string& var,
-                 const std::vector<std::string>& parents);
-      void IDENT_OR_INTEGER(std::string& name);
-      void RAW_PROBA(const std::string& var,
-                     const std::vector<std::string>& parents);
-      void FLOAT_LIST(std::vector<float>& v);
-      void FLOAT(float& val);
+      void PARENTS_LIST( std::vector<std::string>& parents );
+      void MODALITY_LIST( int& nbrMod );
+      void PROBA( const std::string& var,
+                  const std::vector<std::string>& parents );
+      void IDENT_OR_INTEGER( std::string& name );
+      void RAW_PROBA( const std::string& var,
+                      const std::vector<std::string>& parents );
+      void FLOAT_LIST( std::vector<float>& v );
+      void FLOAT( float& val );
 
       void Parse();
 

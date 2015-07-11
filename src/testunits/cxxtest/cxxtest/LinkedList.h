@@ -20,10 +20,10 @@ namespace CxxTest {
 
     bool empty() const;
     unsigned size() const;
-    Link* nth(unsigned n);
+    Link* nth( unsigned n );
 
     void activateAll();
-    void leaveOnly(const Link& link);
+    void leaveOnly( const Link& link );
   };
 
   class Link {
@@ -32,7 +32,7 @@ namespace CxxTest {
     virtual ~Link();
 
     bool active() const;
-    void setActive(bool value = true);
+    void setActive( bool value = true );
 
     Link* justNext();
     Link* justPrev();
@@ -45,16 +45,16 @@ namespace CxxTest {
     virtual bool setUp() = 0;
     virtual bool tearDown() = 0;
 
-    void attach(List& l);
-    void detach(List& l);
+    void attach( List& l );
+    void detach( List& l );
 
     private:
     Link* _next;
     Link* _prev;
     bool _active;
 
-    Link(const Link&);
-    Link& operator=(const Link&);
+    Link( const Link& );
+    Link& operator=( const Link& );
   };
 }
 

@@ -77,15 +77,16 @@ namespace gum {
       /// @{
 
       /// default constructor
-      RecordCounterThreadBase(const std::vector<unsigned int>& var_modalities);
+      RecordCounterThreadBase(
+          const std::vector<unsigned int>& var_modalities );
 
       /// copy constructor
       RecordCounterThreadBase(
-          const RecordCounterThreadBase<IdSetAlloc, CountAlloc>& from);
+          const RecordCounterThreadBase<IdSetAlloc, CountAlloc>& from );
 
       /// move operator
       RecordCounterThreadBase(
-          RecordCounterThreadBase<IdSetAlloc, CountAlloc>&& from);
+          RecordCounterThreadBase<IdSetAlloc, CountAlloc>&& from );
 
       /// virtual copy constructor
       virtual RecordCounterThreadBase<IdSetAlloc, CountAlloc>*
@@ -103,7 +104,8 @@ namespace gum {
 
       /// adds a new target nodeset to be counted
       /** @return the id of the nodeset counter created */
-      unsigned int addNodeSet(const std::vector<unsigned int, IdSetAlloc>& ids);
+      unsigned int
+      addNodeSet( const std::vector<unsigned int, IdSetAlloc>& ids );
 
       /// remove all the current target nodesets
       void clearNodeSets() noexcept;
@@ -115,12 +117,12 @@ namespace gum {
       virtual unsigned long DBSize() noexcept = 0;
 
       /// sets the interval of records on which countings should be performed
-      virtual void setRange(unsigned long min_index,
-                            unsigned long max_index) = 0;
+      virtual void setRange( unsigned long min_index,
+                             unsigned long max_index ) = 0;
 
       /// returns the countings for the nodeset specified in argument
       const std::vector<float, CountAlloc>&
-      getCounts(unsigned int nodeset_id) const noexcept;
+      getCounts( unsigned int nodeset_id ) const noexcept;
 
       /// @}
 
@@ -173,16 +175,16 @@ namespace gum {
       /// @{
 
       /// default constructor
-      RecordCounterThread(const RowFilter& filter,
-                          const std::vector<unsigned int>& var_modalities);
+      RecordCounterThread( const RowFilter& filter,
+                           const std::vector<unsigned int>& var_modalities );
 
       /// copy constructor
       RecordCounterThread(
-          const RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc>& from);
+          const RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc>& from );
 
       /// move operator
       RecordCounterThread(
-          RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc>&& from);
+          RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc>&& from );
 
       /// virtual copy constructor
       virtual RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc>*
@@ -215,7 +217,7 @@ namespace gum {
       unsigned long DBSize() noexcept;
 
       /// sets the interval of records on which countings should be performed
-      void setRange(unsigned long min_index, unsigned long max_index);
+      void setRange( unsigned long min_index, unsigned long max_index );
 
       /// returns the filter used for the countings
       RowFilter& filter() noexcept;
@@ -253,14 +255,14 @@ namespace gum {
 
       /// default constructor
       template <typename RowFilter>
-      RecordCounter(const RowFilter& filter,
-                    const std::vector<unsigned int>& var_modalities);
+      RecordCounter( const RowFilter& filter,
+                     const std::vector<unsigned int>& var_modalities );
 
       /// copy constructor
-      RecordCounter(const RecordCounter<IdSetAlloc, CountAlloc>& from);
+      RecordCounter( const RecordCounter<IdSetAlloc, CountAlloc>& from );
 
       /// move constructor
-      RecordCounter(RecordCounter<IdSetAlloc, CountAlloc>&& from);
+      RecordCounter( RecordCounter<IdSetAlloc, CountAlloc>&& from );
 
       /// destructor
       ~RecordCounter();
@@ -273,7 +275,8 @@ namespace gum {
       /// @{
 
       /// add a new nodeset to count
-      unsigned int addNodeSet(const std::vector<unsigned int, IdSetAlloc>& ids);
+      unsigned int
+      addNodeSet( const std::vector<unsigned int, IdSetAlloc>& ids );
 
       /// returns the size of the database
       unsigned long DBSize() noexcept;
@@ -298,8 +301,8 @@ namespace gum {
       void count();
 
       /// returns the counts performed for a given idSet
-      const std::vector<float, CountAlloc>& getCounts(unsigned int idset) const
-          noexcept;
+      const std::vector<float, CountAlloc>&
+      getCounts( unsigned int idset ) const noexcept;
 
       /// resets the counter, i.e., remove all its sets of ids and counting
       /// vectors
@@ -309,7 +312,7 @@ namespace gum {
       const std::vector<unsigned int>& modalities() const;
 
       /// sets the maximum number of threads used to perform countings
-      void setMaxNbThreads(unsigned int nb) noexcept;
+      void setMaxNbThreads( unsigned int nb ) noexcept;
 
       /// @}
 
@@ -393,7 +396,7 @@ namespace gum {
       unsigned int __nb_thread_counters{0};
 
 /// the max number of threads authorized
-#if defined(_OPENMP) && defined(NDEBUG)
+#if defined( _OPENMP ) && defined( NDEBUG )
       unsigned int __max_threads_number{getMaxNumberOfThreads()};
 #else
       unsigned int __max_threads_number{1};
@@ -406,7 +409,7 @@ namespace gum {
       void __computeSubsets();
 
       // computes the countings of one subset from those of its superset
-      void __countOneSubset(unsigned int i);
+      void __countOneSubset( unsigned int i );
 
       /// returns the counting performed
       std::vector<std::vector<float, CountAlloc>>& __getCounts() noexcept;

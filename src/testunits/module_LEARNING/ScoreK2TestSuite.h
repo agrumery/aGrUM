@@ -34,141 +34,143 @@ namespace gum_tests {
   class ScoreK2TestSuite : public CxxTest::TestSuite {
     public:
     void test_k2() {
-      gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
+      gum::learning::DatabaseFromCSV database( GET_PATH_STR( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>());
+                                gum::learning::Col<0>, 8>() );
 
-      auto generators =
-          gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
+      auto generators = gum::learning::make_generators(
+          gum::learning::RowGeneratorIdentity() );
 
-      auto filter =
-          gum::learning::make_DB_row_filter(database, translators, generators);
+      auto filter = gum::learning::make_DB_row_filter( database, translators,
+                                                       generators );
 
       std::vector<unsigned int> modalities = filter.modalities();
 
       gum::learning::AprioriNoApriori<> apriori;
       gum::learning::AprioriSmoothing<> apriori2;
-      gum::learning::ScoreK2<> score(filter, modalities, apriori);
+      gum::learning::ScoreK2<> score( filter, modalities, apriori );
 
       TS_GUM_ASSERT_THROWS_NOTHING(
           gum::learning::ScoreK2<>::isAprioriCompatible(
-              gum::learning::AprioriNoApriori<>::type::type));
+              gum::learning::AprioriNoApriori<>::type::type ) );
       TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::learning::ScoreK2<>::isAprioriCompatible(apriori));
-      TS_ASSERT_THROWS(gum::learning::ScoreK2<>::isAprioriCompatible(apriori2),
-                       gum::IncompatibleScoreApriori);
-      TS_ASSERT_THROWS(gum::learning::ScoreK2<>::isAprioriCompatible(
-                           gum::learning::AprioriSmoothing<>::type::type),
-                       gum::IncompatibleScoreApriori);
-      apriori2.setWeight(0);
-      TS_ASSERT_THROWS(gum::learning::ScoreK2<>::isAprioriCompatible(apriori2),
-                       gum::PossiblyIncompatibleScoreApriori);
+          gum::learning::ScoreK2<>::isAprioriCompatible( apriori ) );
+      TS_ASSERT_THROWS(
+          gum::learning::ScoreK2<>::isAprioriCompatible( apriori2 ),
+          gum::IncompatibleScoreApriori );
+      TS_ASSERT_THROWS( gum::learning::ScoreK2<>::isAprioriCompatible(
+                            gum::learning::AprioriSmoothing<>::type::type ),
+                        gum::IncompatibleScoreApriori );
+      apriori2.setWeight( 0 );
+      TS_ASSERT_THROWS(
+          gum::learning::ScoreK2<>::isAprioriCompatible( apriori2 ),
+          gum::PossiblyIncompatibleScoreApriori );
 
-      unsigned int id1 = score.addNodeSet(3);
-      unsigned int id2 = score.addNodeSet(1);
-      TS_ASSERT(fabs(score.score(id1) + 996.781) <= 0.01);
-      TS_ASSERT(fabs(score.score(id2) + 3030.73) <= 0.01);
-
-      score.clear();
-      id1 = score.addNodeSet(0);
-      id2 = score.addNodeSet(2);
-      TS_ASSERT(fabs(score.score(id1) + 10006.1) <= 0.01);
-      TS_ASSERT(fabs(score.score(id2) + 9935.8) <= 0.01);
+      unsigned int id1 = score.addNodeSet( 3 );
+      unsigned int id2 = score.addNodeSet( 1 );
+      TS_ASSERT( fabs( score.score( id1 ) + 996.781 ) <= 0.01 );
+      TS_ASSERT( fabs( score.score( id2 ) + 3030.73 ) <= 0.01 );
 
       score.clear();
-      id1 = score.addNodeSet(3, std::vector<unsigned int>{4});
-      id2 = score.addNodeSet(1, std::vector<unsigned int>{4});
-      TS_ASSERT(fabs(score.score(id1) + 991.062) <= 0.01);
-      TS_ASSERT(fabs(score.score(id2) + 3030.55) <= 0.01);
+      id1 = score.addNodeSet( 0 );
+      id2 = score.addNodeSet( 2 );
+      TS_ASSERT( fabs( score.score( id1 ) + 10006.1 ) <= 0.01 );
+      TS_ASSERT( fabs( score.score( id2 ) + 9935.8 ) <= 0.01 );
 
       score.clear();
-      id1 = score.addNodeSet(3, std::vector<unsigned int>{1, 2});
-      TS_ASSERT(fabs(score.score(id1) + 1014.4) <= 0.01);
+      id1 = score.addNodeSet( 3, std::vector<unsigned int>{4} );
+      id2 = score.addNodeSet( 1, std::vector<unsigned int>{4} );
+      TS_ASSERT( fabs( score.score( id1 ) + 991.062 ) <= 0.01 );
+      TS_ASSERT( fabs( score.score( id2 ) + 3030.55 ) <= 0.01 );
+
+      score.clear();
+      id1 = score.addNodeSet( 3, std::vector<unsigned int>{1, 2} );
+      TS_ASSERT( fabs( score.score( id1 ) + 1014.4 ) <= 0.01 );
 
       unsigned int id3, id4, id5, id6, id7;
       score.clear();
-      id1 = score.addNodeSet(3);
-      id2 = score.addNodeSet(1);
-      id3 = score.addNodeSet(3, std::vector<unsigned int>{1, 2});
-      id4 = score.addNodeSet(2);
-      id5 = score.addNodeSet(3, std::vector<unsigned int>{4});
-      id6 = score.addNodeSet(2);
-      id7 = score.addNodeSet(3, std::vector<unsigned int>{4});
-      TS_ASSERT(fabs(score.score(id1) + 996.781) <= 0.01);
-      TS_ASSERT(fabs(score.score(id2) + 3030.73) <= 0.01);
-      TS_ASSERT(fabs(score.score(id3) + 1014.4) <= 0.01);
-      TS_ASSERT(fabs(score.score(id4) + 9935.8) <= 0.01);
-      TS_ASSERT(fabs(score.score(id5) + 991.062) <= 0.01);
-      TS_ASSERT(fabs(score.score(id6) + 9935.8) <= 0.01);
-      TS_ASSERT(fabs(score.score(id7) + 991.062) <= 0.01);
+      id1 = score.addNodeSet( 3 );
+      id2 = score.addNodeSet( 1 );
+      id3 = score.addNodeSet( 3, std::vector<unsigned int>{1, 2} );
+      id4 = score.addNodeSet( 2 );
+      id5 = score.addNodeSet( 3, std::vector<unsigned int>{4} );
+      id6 = score.addNodeSet( 2 );
+      id7 = score.addNodeSet( 3, std::vector<unsigned int>{4} );
+      TS_ASSERT( fabs( score.score( id1 ) + 996.781 ) <= 0.01 );
+      TS_ASSERT( fabs( score.score( id2 ) + 3030.73 ) <= 0.01 );
+      TS_ASSERT( fabs( score.score( id3 ) + 1014.4 ) <= 0.01 );
+      TS_ASSERT( fabs( score.score( id4 ) + 9935.8 ) <= 0.01 );
+      TS_ASSERT( fabs( score.score( id5 ) + 991.062 ) <= 0.01 );
+      TS_ASSERT( fabs( score.score( id6 ) + 9935.8 ) <= 0.01 );
+      TS_ASSERT( fabs( score.score( id7 ) + 991.062 ) <= 0.01 );
     }
 
     void test_cache() {
-      gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
+      gum::learning::DatabaseFromCSV database( GET_PATH_STR( "asia.csv" ) );
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>());
-      auto generators =
-          gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
-      auto filter =
-          gum::learning::make_DB_row_filter(database, translators, generators);
+                                gum::learning::Col<0>, 8>() );
+      auto generators = gum::learning::make_generators(
+          gum::learning::RowGeneratorIdentity() );
+      auto filter = gum::learning::make_DB_row_filter( database, translators,
+                                                       generators );
       std::vector<unsigned int> modalities = filter.modalities();
       gum::learning::AprioriNoApriori<> apriori;
-      gum::learning::ScoreK2<> score(filter, modalities, apriori);
+      gum::learning::ScoreK2<> score( filter, modalities, apriori );
       // score.useCache ( false );
 
       unsigned int id1, id2, id3, id4, id5, id6, id7;
-      for (unsigned int i = 0; i < 10000; ++i) {
+      for ( unsigned int i = 0; i < 10000; ++i ) {
         score.clear();
-        id1 = score.addNodeSet(3);
-        id2 = score.addNodeSet(1);
-        id3 = score.addNodeSet(3, std::vector<unsigned int>{1, 2});
-        id4 = score.addNodeSet(2);
-        id5 = score.addNodeSet(3, std::vector<unsigned int>{4});
-        id6 = score.addNodeSet(2);
-        id7 = score.addNodeSet(3, std::vector<unsigned int>{4});
-        TS_ASSERT(fabs(score.score(id1) + 996.781) <= 0.01);
-        TS_ASSERT(fabs(score.score(id2) + 3030.73) <= 0.01);
-        TS_ASSERT(fabs(score.score(id3) + 1014.4) <= 0.01);
-        TS_ASSERT(fabs(score.score(id4) + 9935.8) <= 0.01);
-        TS_ASSERT(fabs(score.score(id5) + 991.062) <= 0.01);
-        TS_ASSERT(fabs(score.score(id6) + 9935.8) <= 0.01);
-        TS_ASSERT(fabs(score.score(id7) + 991.062) <= 0.01);
+        id1 = score.addNodeSet( 3 );
+        id2 = score.addNodeSet( 1 );
+        id3 = score.addNodeSet( 3, std::vector<unsigned int>{1, 2} );
+        id4 = score.addNodeSet( 2 );
+        id5 = score.addNodeSet( 3, std::vector<unsigned int>{4} );
+        id6 = score.addNodeSet( 2 );
+        id7 = score.addNodeSet( 3, std::vector<unsigned int>{4} );
+        TS_ASSERT( fabs( score.score( id1 ) + 996.781 ) <= 0.01 );
+        TS_ASSERT( fabs( score.score( id2 ) + 3030.73 ) <= 0.01 );
+        TS_ASSERT( fabs( score.score( id3 ) + 1014.4 ) <= 0.01 );
+        TS_ASSERT( fabs( score.score( id4 ) + 9935.8 ) <= 0.01 );
+        TS_ASSERT( fabs( score.score( id5 ) + 991.062 ) <= 0.01 );
+        TS_ASSERT( fabs( score.score( id6 ) + 9935.8 ) <= 0.01 );
+        TS_ASSERT( fabs( score.score( id7 ) + 991.062 ) <= 0.01 );
       }
     }
 
     void test_clearcache() {
-      gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
+      gum::learning::DatabaseFromCSV database( GET_PATH_STR( "asia.csv" ) );
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>());
-      auto generators =
-          gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
-      auto filter =
-          gum::learning::make_DB_row_filter(database, translators, generators);
+                                gum::learning::Col<0>, 8>() );
+      auto generators = gum::learning::make_generators(
+          gum::learning::RowGeneratorIdentity() );
+      auto filter = gum::learning::make_DB_row_filter( database, translators,
+                                                       generators );
       std::vector<unsigned int> modalities = filter.modalities();
       gum::learning::AprioriNoApriori<> apriori;
-      gum::learning::ScoreK2<> score(filter, modalities, apriori);
+      gum::learning::ScoreK2<> score( filter, modalities, apriori );
 
       unsigned int id1, id2, id3, id4, id5, id6, id7;
-      for (unsigned int i = 0; i < 4; ++i) {
+      for ( unsigned int i = 0; i < 4; ++i ) {
         score.clearCache();
-        id1 = score.addNodeSet(3);
-        id2 = score.addNodeSet(1);
-        id3 = score.addNodeSet(3, std::vector<unsigned int>{1, 2});
-        id4 = score.addNodeSet(2);
-        id5 = score.addNodeSet(3, std::vector<unsigned int>{4});
-        id6 = score.addNodeSet(2);
-        id7 = score.addNodeSet(3, std::vector<unsigned int>{4});
-        TS_ASSERT(fabs(score.score(id1) + 996.781) <= 0.01);
-        TS_ASSERT(fabs(score.score(id2) + 3030.73) <= 0.01);
-        TS_ASSERT(fabs(score.score(id3) + 1014.4) <= 0.01);
-        TS_ASSERT(fabs(score.score(id4) + 9935.8) <= 0.01);
-        TS_ASSERT(fabs(score.score(id5) + 991.062) <= 0.01);
-        TS_ASSERT(fabs(score.score(id6) + 9935.8) <= 0.01);
-        TS_ASSERT(fabs(score.score(id7) + 991.062) <= 0.01);
+        id1 = score.addNodeSet( 3 );
+        id2 = score.addNodeSet( 1 );
+        id3 = score.addNodeSet( 3, std::vector<unsigned int>{1, 2} );
+        id4 = score.addNodeSet( 2 );
+        id5 = score.addNodeSet( 3, std::vector<unsigned int>{4} );
+        id6 = score.addNodeSet( 2 );
+        id7 = score.addNodeSet( 3, std::vector<unsigned int>{4} );
+        TS_ASSERT( fabs( score.score( id1 ) + 996.781 ) <= 0.01 );
+        TS_ASSERT( fabs( score.score( id2 ) + 3030.73 ) <= 0.01 );
+        TS_ASSERT( fabs( score.score( id3 ) + 1014.4 ) <= 0.01 );
+        TS_ASSERT( fabs( score.score( id4 ) + 9935.8 ) <= 0.01 );
+        TS_ASSERT( fabs( score.score( id5 ) + 991.062 ) <= 0.01 );
+        TS_ASSERT( fabs( score.score( id6 ) + 9935.8 ) <= 0.01 );
+        TS_ASSERT( fabs( score.score( id7 ) + 991.062 ) <= 0.01 );
       }
     }
   };

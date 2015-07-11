@@ -47,23 +47,23 @@ namespace gum {
    * projectMax on multiDimDecorators. This operator will take care to
    * select this function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
-  GUM_SCALAR projectMaxMultiDimArray(const MultiDimArray<GUM_SCALAR>* table,
-                                     Instantiation* instantiation = 0);
+  GUM_SCALAR projectMaxMultiDimArray( const MultiDimArray<GUM_SCALAR>* table,
+                                      Instantiation* instantiation = 0 );
 
   template <typename GUM_SCALAR>
   GUM_SCALAR
-  projectMaxMultiDimArray(const MultiDimImplementation<GUM_SCALAR>* table,
-                          Instantiation* instantiation = 0);
+  projectMaxMultiDimArray( const MultiDimImplementation<GUM_SCALAR>* table,
+                           Instantiation* instantiation = 0 );
 
   template <typename GUM_SCALAR>
   GUM_SCALAR*
-  projectMaxMultiDimArray4Pointers(const MultiDimArray<GUM_SCALAR*>* table,
-                                   Instantiation* instantiation = 0);
+  projectMaxMultiDimArray4Pointers( const MultiDimArray<GUM_SCALAR*>* table,
+                                    Instantiation* instantiation = 0 );
 
   template <typename GUM_SCALAR>
   GUM_SCALAR* projectMaxMultiDimArray4Pointers(
       const MultiDimImplementation<GUM_SCALAR*>* table,
-      Instantiation* instantiation = 0);
+      Instantiation* instantiation = 0 );
 
   /// a specialized function for projecting a multiDimArray using a Min operator
   /** The function projects a table over all its variables and, thus, returns
@@ -77,23 +77,23 @@ namespace gum {
    * projectMin on multiDimDecorators. This operator will take care to
    * select this function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
-  GUM_SCALAR projectMinMultiDimArray(const MultiDimArray<GUM_SCALAR>* table,
-                                     Instantiation* instantiation = 0);
+  GUM_SCALAR projectMinMultiDimArray( const MultiDimArray<GUM_SCALAR>* table,
+                                      Instantiation* instantiation = 0 );
 
   template <typename GUM_SCALAR>
   GUM_SCALAR
-  projectMinMultiDimArray(const MultiDimImplementation<GUM_SCALAR>* table,
-                          Instantiation* instantiation = 0);
+  projectMinMultiDimArray( const MultiDimImplementation<GUM_SCALAR>* table,
+                           Instantiation* instantiation = 0 );
 
   template <typename GUM_SCALAR>
   GUM_SCALAR*
-  projectMinMultiDimArray4Pointers(const MultiDimArray<GUM_SCALAR*>* table,
-                                   Instantiation* instantiation = 0);
+  projectMinMultiDimArray4Pointers( const MultiDimArray<GUM_SCALAR*>* table,
+                                    Instantiation* instantiation = 0 );
 
   template <typename GUM_SCALAR>
   GUM_SCALAR* projectMinMultiDimArray4Pointers(
       const MultiDimImplementation<GUM_SCALAR*>* table,
-      Instantiation* instantiation = 0);
+      Instantiation* instantiation = 0 );
 
   /// a specialized function for projecting a multiDimArray using a Sum operator
   /** The function projects a table over all its variables and, thus, returns
@@ -110,23 +110,23 @@ namespace gum {
    * projectSum on multiDimDecorators. This operator will take care to
    * select this function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
-  GUM_SCALAR projectSumMultiDimArray(const MultiDimArray<GUM_SCALAR>* table,
-                                     Instantiation* instantiation = 0);
+  GUM_SCALAR projectSumMultiDimArray( const MultiDimArray<GUM_SCALAR>* table,
+                                      Instantiation* instantiation = 0 );
 
   template <typename GUM_SCALAR>
   GUM_SCALAR
-  projectSumMultiDimArray(const MultiDimImplementation<GUM_SCALAR>* table,
-                          Instantiation* instantiation = 0);
+  projectSumMultiDimArray( const MultiDimImplementation<GUM_SCALAR>* table,
+                           Instantiation* instantiation = 0 );
 
   template <typename GUM_SCALAR>
   GUM_SCALAR*
-  projectSumMultiDimArray4Pointers(const MultiDimArray<GUM_SCALAR*>* table,
-                                   Instantiation* instantiation = 0);
+  projectSumMultiDimArray4Pointers( const MultiDimArray<GUM_SCALAR*>* table,
+                                    Instantiation* instantiation = 0 );
 
   template <typename GUM_SCALAR>
   GUM_SCALAR* projectSumMultiDimArray4Pointers(
       const MultiDimImplementation<GUM_SCALAR*>* table,
-      Instantiation* instantiation = 0);
+      Instantiation* instantiation = 0 );
 
   /// a function for projecting a multiDimArray using a Product operator
   /** The function projects a table over all its variables and, thus, returns
@@ -143,67 +143,68 @@ namespace gum {
    * projectProduct on multiDimDecorators. This operator will take care to
    * select this function if it is appropriate for your projection. */
   template <typename GUM_SCALAR>
-  GUM_SCALAR projectProductMultiDimArray(const MultiDimArray<GUM_SCALAR>* table,
-                                         Instantiation* instantiation = 0);
+  GUM_SCALAR
+  projectProductMultiDimArray( const MultiDimArray<GUM_SCALAR>* table,
+                               Instantiation* instantiation = 0 );
 
   template <typename GUM_SCALAR>
   GUM_SCALAR
-  projectProductMultiDimArray(const MultiDimImplementation<GUM_SCALAR>* table,
-                              Instantiation* instantiation = 0);
+  projectProductMultiDimArray( const MultiDimImplementation<GUM_SCALAR>* table,
+                               Instantiation* instantiation = 0 );
 
   template <typename GUM_SCALAR>
   GUM_SCALAR*
-  projectProductMultiDimArray4Pointers(const MultiDimArray<GUM_SCALAR*>* table,
-                                       Instantiation* instantiation = 0);
+  projectProductMultiDimArray4Pointers( const MultiDimArray<GUM_SCALAR*>* table,
+                                        Instantiation* instantiation = 0 );
 
   template <typename GUM_SCALAR>
   GUM_SCALAR* projectProductMultiDimArray4Pointers(
       const MultiDimImplementation<GUM_SCALAR*>* table,
-      Instantiation* instantiation = 0);
+      Instantiation* instantiation = 0 );
 
   // the operators that should be used to select appropriately the functions
   // to project multiDimDecorators
 
   /// the function to be used to project a MultiDimImplementation using a Max
   template <typename GUM_SCALAR>
-  GUM_SCALAR projectMax(const MultiDimImplementation<GUM_SCALAR>& table,
-                        Instantiation* instantiation = 0);
+  GUM_SCALAR projectMax( const MultiDimImplementation<GUM_SCALAR>& table,
+                         Instantiation* instantiation = 0 );
 
   /// the function to be used to project a MultiDimDecorator using a Max
   template <typename GUM_SCALAR>
-  GUM_SCALAR projectMax(const MultiDimDecorator<GUM_SCALAR>&,
-                        Instantiation* instantiation = 0);
+  GUM_SCALAR projectMax( const MultiDimDecorator<GUM_SCALAR>&,
+                         Instantiation* instantiation = 0 );
 
   /// the function to be used to project a MultiDimImplementation using a Min
   template <typename GUM_SCALAR>
-  GUM_SCALAR projectMin(const MultiDimImplementation<GUM_SCALAR>& table,
-                        Instantiation* instantiation = 0);
+  GUM_SCALAR projectMin( const MultiDimImplementation<GUM_SCALAR>& table,
+                         Instantiation* instantiation = 0 );
 
   /// the function to be used to project a MultiDimDecorator using a Min
   template <typename GUM_SCALAR>
-  GUM_SCALAR projectMin(const MultiDimDecorator<GUM_SCALAR>&,
-                        Instantiation* instantiation = 0);
+  GUM_SCALAR projectMin( const MultiDimDecorator<GUM_SCALAR>&,
+                         Instantiation* instantiation = 0 );
 
   /// the function to be used to project a MultiDimImplementation using a sum
   template <typename GUM_SCALAR>
-  GUM_SCALAR projectSum(const MultiDimImplementation<GUM_SCALAR>& table,
-                        Instantiation* instantiation = 0);
+  GUM_SCALAR projectSum( const MultiDimImplementation<GUM_SCALAR>& table,
+                         Instantiation* instantiation = 0 );
 
   /// the function to be used to project a MultiDimDecorator using a sum
   template <typename GUM_SCALAR>
-  GUM_SCALAR projectSum(const MultiDimDecorator<GUM_SCALAR>&,
-                        Instantiation* instantiation = 0);
+  GUM_SCALAR projectSum( const MultiDimDecorator<GUM_SCALAR>&,
+                         Instantiation* instantiation = 0 );
 
   /// the function to be used to project a MultiDimImplementation using a
   /// Product
   template <typename GUM_SCALAR>
-  GUM_SCALAR projectProduct(const MultiDimImplementation<GUM_SCALAR>& table,
-                            Instantiation* instantiation = 0);
+  GUM_SCALAR projectProduct( const MultiDimImplementation<GUM_SCALAR>& table,
+                             Instantiation* instantiation = 0 );
 
   /// the function to be used to project a MultiDimDecorator using a Product
   template <typename GUM_SCALAR>
-  GUM_SCALAR projectProduct(const MultiDimDecorator<GUM_SCALAR>&,
-                            Instantiation* instantiation = 0);
+  GUM_SCALAR projectProduct( const MultiDimDecorator<GUM_SCALAR>&,
+                             Instantiation* instantiation = 0 );
 
   //
   // DO NOT FORGET TO REGISTER YOUR PROJECTION FUNCTIONS AT THE END OF FILE

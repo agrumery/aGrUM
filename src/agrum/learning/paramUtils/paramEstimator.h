@@ -79,11 +79,11 @@ namespace gum {
        * @param apriori the a priori that is taken into account in the
        * score/countings */
       template <typename RowFilter>
-      ParamEstimator(const RowFilter& filter,
-                     const std::vector<unsigned int>& var_modalities,
-                     Apriori<IdSetAlloc, CountAlloc>& apriori,
-                     const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
-                         score_internal_apriori);
+      ParamEstimator( const RowFilter& filter,
+                      const std::vector<unsigned int>& var_modalities,
+                      Apriori<IdSetAlloc, CountAlloc>& apriori,
+                      const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
+                          score_internal_apriori );
 
       /// virtual copy factory
       virtual ParamEstimator<IdSetAlloc, CountAlloc>* copyFactory() const = 0;
@@ -112,7 +112,7 @@ namespace gum {
        * index as argument to methods _getAllCounts and _getConditioningCounts
        * to
        * get the corresponding counting vectors. */
-      unsigned int addNodeSet(unsigned int var);
+      unsigned int addNodeSet( unsigned int var );
 
       /// add a new target variable plus some conditioning vars
       /** @param var represents the index of the target variable in the filtered
@@ -131,8 +131,8 @@ namespace gum {
        * to
        * get the corresponding counting vectors. */
       unsigned int
-      addNodeSet(unsigned int var,
-                 const std::vector<unsigned int>& conditioning_ids);
+      addNodeSet( unsigned int var,
+                  const std::vector<unsigned int>& conditioning_ids );
 
       /// clears all the data structures from memory
       void clear();
@@ -147,12 +147,12 @@ namespace gum {
        * first, there are the conditioning nodes (in the order in which they
        * were specified) and, then, the target node. */
       virtual const std::vector<float, CountAlloc>&
-      parameters(unsigned int nodeset_index) = 0;
+      parameters( unsigned int nodeset_index ) = 0;
 
       /// sets the CPT's parameters corresponding to a given nodeset
       /** The order of the variables in the potential and in the nodeset
        * are assumed to be identical */
-      void setParameters(unsigned int nodeset_index, Potential<float>& pot);
+      void setParameters( unsigned int nodeset_index, Potential<float>& pot );
 
       /// @}
 
@@ -206,20 +206,21 @@ namespace gum {
        * nodes of the conditioning set (in the order in which they were
        * specified
        * when callind addNodeset, and then the target nodes. */
-      const std::vector<float, CountAlloc>& _getAllApriori(unsigned int index);
+      const std::vector<float, CountAlloc>&
+      _getAllApriori( unsigned int index );
 
       /// returns the apriori vector for a conditioning set
       const std::vector<float, CountAlloc>&
-      _getConditioningApriori(unsigned int index);
+      _getConditioningApriori( unsigned int index );
 
       /// if needed insert the score apriori into the countings
       void _insertScoreApriori();
 
       /// copy constructor
-      ParamEstimator(const ParamEstimator<IdSetAlloc, CountAlloc>&);
+      ParamEstimator( const ParamEstimator<IdSetAlloc, CountAlloc>& );
 
       /// move constructor
-      ParamEstimator(ParamEstimator<IdSetAlloc, CountAlloc>&&);
+      ParamEstimator( ParamEstimator<IdSetAlloc, CountAlloc>&& );
 
       private:
       /// has the a priori been computed
@@ -233,7 +234,7 @@ namespace gum {
 
       /// prevent copy operator
       ParamEstimator<IdSetAlloc, CountAlloc>&
-      operator=(const ParamEstimator<IdSetAlloc, CountAlloc>&) = delete;
+      operator=( const ParamEstimator<IdSetAlloc, CountAlloc>& ) = delete;
     };
 
   } /* namespace learning */

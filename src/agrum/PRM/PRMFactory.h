@@ -81,10 +81,10 @@ namespace gum {
       PRMFactory();
 
       /// Copy constructor. Don't use it.
-      PRMFactory(const PRMFactory& from) = delete;
+      PRMFactory( const PRMFactory& from ) = delete;
 
       /// Copy operator. Don't use it.
-      PRMFactory& operator=(const PRMFactory& from) = delete;
+      PRMFactory& operator=( const PRMFactory& from ) = delete;
       /**
        * Destructor.
        */
@@ -143,7 +143,7 @@ namespace gum {
        * @return the Class<GUM_SCALAR> with the given name.
        * @throw NotFound if no Class<GUM_SCALAR> matches the given name.
        */
-      Class<GUM_SCALAR>& retrieveClass(const std::string& name);
+      Class<GUM_SCALAR>& retrieveClass( const std::string& name );
 
       /**
        * @brief Returns a reference over a Type<GUM_SCALAR> given its name.
@@ -153,7 +153,7 @@ namespace gum {
        * @return the Type<GUM_SCALAR> with the given name.
        * @throw NotFound if no Type<GUM_SCALAR> matches the given name.
        */
-      Type<GUM_SCALAR>& retrieveType(const std::string& name);
+      Type<GUM_SCALAR>& retrieveType( const std::string& name );
 
 
       /* @brief Retrieve the common Type<GUM_SCALAR> of a vector of
@@ -180,7 +180,7 @@ namespace gum {
        *                 ClassElement<GUM_SCALAR> in elts.
        */
       Type<GUM_SCALAR>&
-      retrieveCommonType(const std::vector<ClassElement<GUM_SCALAR>*>& elts);
+      retrieveCommonType( const std::vector<ClassElement<GUM_SCALAR>*>& elts );
 
       ///@}
       // ======================================================================
@@ -196,7 +196,7 @@ namespace gum {
        *
        * @param name The name of the package for all further objects.
        */
-      virtual void pushPackage(const std::string& name) override;
+      virtual void pushPackage( const std::string& name ) override;
 
       /**
        * @brief Pop the current package from the package stack.
@@ -224,7 +224,7 @@ namespace gum {
        *
        * @param name The name of the package for all further objects.
        */
-      virtual void addImport(const std::string& name) override;
+      virtual void addImport( const std::string& name ) override;
 
       /// @}
       // ======================================================================
@@ -241,8 +241,8 @@ namespace gum {
        * @throw DuplicateElement Raised if an object with the same name
        *                         already exists.
        */
-      virtual void startDiscreteType(const std::string& name,
-                                     std::string super = "") override;
+      virtual void startDiscreteType( const std::string& name,
+                                      std::string super = "" ) override;
 
       /**
        * Add a label to the current discrete type.
@@ -260,8 +260,8 @@ namespace gum {
        *current
        *                 type's super type.
        */
-      virtual void addLabel(const std::string& l,
-                            std::string extends = "") override;
+      virtual void addLabel( const std::string& l,
+                             std::string extends = "" ) override;
 
       /**
        * End the current discrete type declaration.
@@ -275,9 +275,9 @@ namespace gum {
 
       ///@name several checks for parsers
       /// @{
-      virtual bool isClassOrInterface(const std::string& type) const override;
+      virtual bool isClassOrInterface( const std::string& type ) const override;
       virtual bool
-      isArrayInCurrentSystem(const std::string& name) const override;
+      isArrayInCurrentSystem( const std::string& name ) const override;
       /// @}
 
 
@@ -297,8 +297,8 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void
-      startClass(const std::string& c, const std::string& extends = "",
-                 const Set<std::string>* implements = nullptr) override;
+      startClass( const std::string& c, const std::string& extends = "",
+                  const Set<std::string>* implements = nullptr ) override;
 
       /**
        * Tells the factory that we finished a class declaration.
@@ -327,15 +327,15 @@ namespace gum {
        * @throw NotFound Raised if extends does not match any declared
        *                 Interface<GUM_SCALAR>.
        */
-      virtual void startInterface(const std::string& i,
-                                  const std::string& extends = "") override;
+      virtual void startInterface( const std::string& i,
+                                   const std::string& extends = "" ) override;
 
       /**
        * @brief Add an attribute to an interface.
        *
        */
-      virtual void addAttribute(const std::string& type,
-                                const std::string& name) override;
+      virtual void addAttribute( const std::string& type,
+                                 const std::string& name ) override;
 
       /**
        * Tells the factory that we finished an interface declaration.
@@ -369,14 +369,14 @@ namespace gum {
        * @throw NotFound Raised if one of the DiscreteVariable in attr CPT does
        *                 not match any ClassElement<GUM_SCALAR> in this.
        */
-      virtual void addAttribute(Attribute<GUM_SCALAR>* attr);
+      virtual void addAttribute( Attribute<GUM_SCALAR>* attr );
 
       /**
        * Tells the factory that we start an attribute declaration.
        * @throw FatalError Raised if the given operation is illegal.
        */
-      virtual void startAttribute(const std::string& type,
-                                  const std::string& name) override;
+      virtual void startAttribute( const std::string& type,
+                                   const std::string& name ) override;
 
       /**
        * Tells the factory that we add a parent to the current declared
@@ -386,7 +386,7 @@ namespace gum {
        * reference in it.
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      virtual void addParent(const std::string& name) override;
+      virtual void addParent( const std::string& name ) override;
 
       /**
        * Gives the factory the CPF in its raw form.
@@ -407,7 +407,7 @@ namespace gum {
        *
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      void setRawCPFByLines(const std::vector<GUM_SCALAR>& array);
+      void setRawCPFByLines( const std::vector<GUM_SCALAR>& array );
 
       /**
        * @brief Not implemented!
@@ -431,7 +431,7 @@ namespace gum {
        *
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      void setRawCPFByColumns(const std::vector<GUM_SCALAR>& array);
+      void setRawCPFByColumns( const std::vector<GUM_SCALAR>& array );
 
       /**
        * Fills the CPF using a rule.
@@ -445,8 +445,8 @@ namespace gum {
        * @param values The probability values of the current attribute given
        *               the values in parenst.
        */
-      virtual void setCPFByRule(const std::vector<std::string>& labels,
-                                const std::vector<GUM_SCALAR>& values);
+      virtual void setCPFByRule( const std::vector<std::string>& labels,
+                                 const std::vector<GUM_SCALAR>& values );
 
       /**
        * Tells the factory that we finished declaring an attribute.
@@ -471,8 +471,8 @@ namespace gum {
        * @param name The name of this parameter.
        * @param value The label used as default value for this parameter.
        */
-      void addParameter(const std::string& type, const std::string& name,
-                        double value) override;
+      void addParameter( const std::string& type, const std::string& name,
+                         double value ) override;
       /// @}
       // ======================================================================
       /// @name Aggregator and function construction methods.
@@ -503,9 +503,9 @@ namespace gum {
        *                  are not of the good type.
        */
       virtual void
-      addAggregator(const std::string& name, const std::string& agg_type,
-                    const std::vector<std::string>& chains,
-                    const std::vector<std::string>& params) override;
+      addAggregator( const std::string& name, const std::string& agg_type,
+                     const std::vector<std::string>& chains,
+                     const std::vector<std::string>& params ) override;
 
       /**
        * @brief Add a compound noisy-or as an Attribute<GUM_SCALAR> to the
@@ -531,10 +531,10 @@ namespace gum {
        *                            invalid.
        */
       virtual void
-      addNoisyOrCompound(const std::string& name,
-                         const std::vector<std::string>& chains,
-                         const std::vector<float>& numbers, float leak,
-                         const std::vector<std::string>& label) override;
+      addNoisyOrCompound( const std::string& name,
+                          const std::vector<std::string>& chains,
+                          const std::vector<float>& numbers, float leak,
+                          const std::vector<std::string>& label ) override;
       /// @}
       // ======================================================================
       /// @name ReferenceSlot<GUM_SCALAR> construction methods.
@@ -545,9 +545,9 @@ namespace gum {
        * Tells the factory that we started declaring a slot.
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      virtual void addReferenceSlot(const std::string& type,
-                                    const std::string& name,
-                                    bool isArray) override;
+      virtual void addReferenceSlot( const std::string& type,
+                                     const std::string& name,
+                                     bool isArray ) override;
 
       /// @}
       // ======================================================================
@@ -559,7 +559,7 @@ namespace gum {
        * Tells the factory that we started declaring a model.
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      virtual void startSystem(const std::string& name) override;
+      virtual void startSystem( const std::string& name ) override;
 
       /**
        * Tells the factory that we finished declaring a model.
@@ -570,14 +570,14 @@ namespace gum {
       /**
        * Add an instance to the model.
        */
-      virtual void addInstance(const std::string& type,
-                               const std::string& name) override;
+      virtual void addInstance( const std::string& type,
+                                const std::string& name ) override;
 
       /**
        * Add an instance with params as values of type's parameters.
        */
-      void addInstance(const std::string& type, const std::string& name,
-                       const HashTable<std::string, double>& params) override;
+      void addInstance( const std::string& type, const std::string& name,
+                        const HashTable<std::string, double>& params ) override;
 
       /**
        * Creates an array with the given number of instances of the given type.
@@ -585,14 +585,14 @@ namespace gum {
        * suffix "[i]",
        * with "i" being the position of the instance in the array.
        */
-      virtual void addArray(const std::string& type, const std::string& name,
-                            Size size) override;
+      virtual void addArray( const std::string& type, const std::string& name,
+                             Size size ) override;
 
       /**
        * Add an instance to an array.
        */
-      virtual void incArray(const std::string& l_i,
-                            const std::string& r_i) override;
+      virtual void incArray( const std::string& l_i,
+                             const std::string& r_i ) override;
 
       /**
        * @brief Instantiate a reference in the current model.
@@ -608,9 +608,10 @@ namespace gum {
        * @param right_instance The name of an instance or an array of instances
        *                       in the model.
        */
-      virtual void setReferenceSlot(const std::string& left_instance,
-                                    const std::string& left_reference,
-                                    const std::string& right_instance) override;
+      virtual void
+      setReferenceSlot( const std::string& left_instance,
+                        const std::string& left_reference,
+                        const std::string& right_instance ) override;
 
       /**
        * @brief Instantiate a reference in the current model.
@@ -626,8 +627,8 @@ namespace gum {
        * @param r_i The name of an instance or an array of instances in the
        *model.
        */
-      virtual void setReferenceSlot(const std::string& l_i,
-                                    const std::string& r_i) override;
+      virtual void setReferenceSlot( const std::string& l_i,
+                                     const std::string& r_i ) override;
 
       /// @}
 
@@ -654,7 +655,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void
-      setRawCPFByFloatLines(const std::vector<float>& array) override;
+      setRawCPFByFloatLines( const std::vector<float>& array ) override;
 
       /**
        * @brief Not implemented!
@@ -679,13 +680,13 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void
-      setRawCPFByFloatColumns(const std::vector<float>& array) override;
+      setRawCPFByFloatColumns( const std::vector<float>& array ) override;
 
 
       virtual void
-      setRawCPFByColumns(const std::vector<std::string>& array) override;
+      setRawCPFByColumns( const std::vector<std::string>& array ) override;
       virtual void
-      setRawCPFByLines(const std::vector<std::string>& array) override;
+      setRawCPFByLines( const std::vector<std::string>& array ) override;
 
       /**
        * Fills the CPF using a rule.
@@ -699,13 +700,14 @@ namespace gum {
        * @param values The probability values of the current attribute given
        *               the values in parenst.
        */
-      virtual void setCPFByFloatRule(const std::vector<std::string>& labels,
-                                     const std::vector<float>& values) override;
+      virtual void
+      setCPFByFloatRule( const std::vector<std::string>& labels,
+                         const std::vector<float>& values ) override;
       /// @}
       private:
       /// Decompose a string in v using dots ('.') as delimiters.
-      void __fill_sc_in_vector(std::vector<std::string>& v,
-                               const std::string& str);
+      void __fill_sc_in_vector( std::vector<std::string>& v,
+                                const std::string& str );
 
       // ======================================================================
       ///  @name Private methods for type checking and exception handling.
@@ -713,19 +715,19 @@ namespace gum {
       /// @{
 
       /// Adds __prefix to str iff __prefix != ""
-      std::string __addPrefix(const std::string& str) const;
+      std::string __addPrefix( const std::string& str ) const;
 
       /// Return a pointer on a PRMObject at __stack.size() - i position after
       /// checking the type of the object given obj_type.
       /// @throw FactoryInvalidState Raised if the stack isn't consistent with
       /// the
       //                             current declaration.
-      PRMObject* __checkStack(Idx i, PRMObject::PRMType obj_type);
+      PRMObject* __checkStack( Idx i, PRMObject::PRMType obj_type );
 
       ClassElement<GUM_SCALAR>* __checkStack(
-          Idx i, typename ClassElement<GUM_SCALAR>::ClassElementType obj_type);
+          Idx i, typename ClassElement<GUM_SCALAR>::ClassElementType obj_type );
 
-      ClassElementContainer<GUM_SCALAR>* __checkStackContainter(Idx i);
+      ClassElementContainer<GUM_SCALAR>* __checkStackContainter( Idx i );
 
       /// @}
       // ======================================================================
@@ -749,21 +751,22 @@ namespace gum {
       /// In the case a local name is used multiple time, it's preferable to
       /// use it's full name.
       /// @throw OperationNotAllowed If the type is undeclared.
-      Type<GUM_SCALAR>* __retrieveType(const std::string& name) const;
+      Type<GUM_SCALAR>* __retrieveType( const std::string& name ) const;
 
       /// Returns a pointer on a class given it's name. Used when building
       /// models, meaning that the class name can either be local (need to
       /// add the current prefix) or global (no prefix needed).
       /// @throw NotFound If no class matching the name is found.
       /// @see PRMFactory::__retrieveType
-      Class<GUM_SCALAR>* __retrieveClass(const std::string& name) const;
+      Class<GUM_SCALAR>* __retrieveClass( const std::string& name ) const;
 
       /// Returns a pointer on an interface given it's name. Used when building
       /// models, meaning that the interface name can either be local (need to
       /// add the current prefix) or global (no prefix needed).
       /// @throw NotFound If no class matching the name is found.
       /// @see PRMFactory::__retrieveType
-      Interface<GUM_SCALAR>* __retrieveInterface(const std::string& name) const;
+      Interface<GUM_SCALAR>*
+      __retrieveInterface( const std::string& name ) const;
 
       /// @}
       // ======================================================================
@@ -780,8 +783,8 @@ namespace gum {
       ///         be built.
       ///
       SlotChain<GUM_SCALAR>*
-      __buildSlotChain(ClassElementContainer<GUM_SCALAR>* start,
-                       const std::string& name);
+      __buildSlotChain( ClassElementContainer<GUM_SCALAR>* start,
+                        const std::string& name );
 
       /// @brief Retrieve inputs for an Aggregate.
       ///
@@ -802,9 +805,9 @@ namespace gum {
       /// @throw NotFound Raised if a name in chains does not match a legal
       ///                 SlotChain<GUM_SCALAR> or an existing
       ///                 ClassElement<GUM_SCALAR> in c.
-      bool __retrieveInputs(Class<GUM_SCALAR>* c,
-                            const std::vector<std::string>& chains,
-                            std::vector<ClassElement<GUM_SCALAR>*>& inputs);
+      bool __retrieveInputs( Class<GUM_SCALAR>* c,
+                             const std::vector<std::string>& chains,
+                             std::vector<ClassElement<GUM_SCALAR>*>& inputs );
 
       /// @brief Retrieve the common Type<GUM_SCALAR> of a vector of
       /// ClassElement<GUM_SCALAR>.
@@ -828,8 +831,8 @@ namespace gum {
       ///                          without a Type<GUM_SCALAR>.
       /// @throw NotFound Raised if there exists no common super type of all
       ///                 ClassElement<GUM_SCALAR> in elts.
-      Type<GUM_SCALAR>*
-      __retrieveCommonType(const std::vector<ClassElement<GUM_SCALAR>*>& elts);
+      Type<GUM_SCALAR>* __retrieveCommonType(
+          const std::vector<ClassElement<GUM_SCALAR>*>& elts );
 
       /// @brief Returns the inheritance depth of a Type<GUM_SCALAR>.
       ///
@@ -838,10 +841,10 @@ namespace gum {
       ///
       /// @param t The Type<GUM_SCALAR> for which we compute its depth.
       /// @return Returns the depth of t.
-      int __typeDepth(const Type<GUM_SCALAR>* t);
+      int __typeDepth( const Type<GUM_SCALAR>* t );
 
       /// Check if c implements correctly all his interfaces.
-      void __checkInterfaceImplementation(Class<GUM_SCALAR>* c);
+      void __checkInterfaceImplementation( Class<GUM_SCALAR>* c );
 
       /// @}
       // ======================================================================
@@ -851,34 +854,34 @@ namespace gum {
       /// @{
 
       /// Adds a instance to the current model.
-      void __addInstance(Class<GUM_SCALAR>* type, const std::string& name);
+      void __addInstance( Class<GUM_SCALAR>* type, const std::string& name );
 
       /// Builds all SlotChain<GUM_SCALAR><Instance<GUM_SCALAR>> in the given
       /// model.
       /// @throw OperationNotAllowed If reference slots are left un affected
-      void __buildSlotChains(System<GUM_SCALAR>* model);
+      void __buildSlotChains( System<GUM_SCALAR>* model );
 
       /// Builds all Aggregates CPF in the given model.
       /// This must be called after all the slot chains have been generated.
-      void __buildAggregateCPF(System<GUM_SCALAR>* model);
+      void __buildAggregateCPF( System<GUM_SCALAR>* model );
 
       /// Instantiate a slot chain in the given instance
-      void __instantiateSlotChain(System<GUM_SCALAR>* model,
-                                  Instance<GUM_SCALAR>* inst,
-                                  ReferenceSlot<GUM_SCALAR>* ref,
-                                  SlotChain<GUM_SCALAR>* sc);
+      void __instantiateSlotChain( System<GUM_SCALAR>* model,
+                                   Instance<GUM_SCALAR>* inst,
+                                   ReferenceSlot<GUM_SCALAR>* ref,
+                                   SlotChain<GUM_SCALAR>* sc );
 
-      void __incrementByColumn(Attribute<GUM_SCALAR>* a, std::vector<Size>& pos,
-                               Instantiation& inst);
+      void __incrementByColumn( Attribute<GUM_SCALAR>* a,
+                                std::vector<Size>& pos, Instantiation& inst );
 
       /// Fill seq with the sequence of instance build using inst as the
       /// instantiation of sc->__class and seeking each instantiation of
       /// reference in sc.
       /// @¶eturn Returns the name of the corresponding SlotChain<GUM_SCALAR>.
       std::string
-      __retrieveInstanceSequence(Instance<GUM_SCALAR>* inst,
-                                 Sequence<Instance<GUM_SCALAR>*>& seq,
-                                 SlotChain<GUM_SCALAR>* sc);
+      __retrieveInstanceSequence( Instance<GUM_SCALAR>* inst,
+                                  Sequence<Instance<GUM_SCALAR>*>& seq,
+                                  SlotChain<GUM_SCALAR>* sc );
 
       /// @}
       // ======================================================================

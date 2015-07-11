@@ -94,8 +94,8 @@ namespace gum {
        * passing argument (i.e. big enough to represent \c value)
        * @param value The constant integer we want to binarize.
        */
-      inline void __binaryRep(std::vector<bool>& toFill,
-                              const unsigned int value) const;
+      inline void __binaryRep( std::vector<bool>& toFill,
+                               const unsigned int value ) const;
 
       /// @}
 
@@ -107,7 +107,7 @@ namespace gum {
        * Constructor.
        * @param credalNet The CredalNet to be used by the algorithm.
        */
-      CNMonteCarloSampling(const CredalNet<GUM_SCALAR>& credalNet);
+      CNMonteCarloSampling( const CredalNet<GUM_SCALAR>& credalNet );
       /** Destructor. */
       virtual ~CNMonteCarloSampling();
       /// @}
@@ -122,8 +122,8 @@ namespace gum {
 
       /// unsigned int notOptDelete;
 
-      virtual void insertEvidenceFile(const std::string& path) {
-        InferenceEngine<GUM_SCALAR>::insertEvidenceFile(path);
+      virtual void insertEvidenceFile( const std::string& path ) {
+        InferenceEngine<GUM_SCALAR>::insertEvidenceFile( path );
       };
 
       protected:

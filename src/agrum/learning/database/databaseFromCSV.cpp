@@ -44,18 +44,18 @@ namespace gum {
         const std::string filename, bool fileContainsNames,
         const DBTransform& transform, const std::string delimiter,
         const char commentmarker, const char quoteMarker,
-        const std::vector<std::string> missingVal) {
+        const std::vector<std::string> missingVal ) {
       // open the file and create the CSVParser that will parse it
-      std::ifstream in(filename, std::ifstream::in);
+      std::ifstream in( filename, std::ifstream::in );
 
-      if ((in.rdstate() & std::ifstream::failbit) != 0) {
-        GUM_ERROR(IOError, "File " << filename << " not found");
+      if ( ( in.rdstate() & std::ifstream::failbit ) != 0 ) {
+        GUM_ERROR( IOError, "File " << filename << " not found" );
       }
 
-      CSVParser parser(in, delimiter, commentmarker, quoteMarker);
+      CSVParser parser( in, delimiter, commentmarker, quoteMarker );
 
       // if the first line contains names, store them
-      if (fileContainsNames) {
+      if ( fileContainsNames ) {
         parser.next();
         _variableNames() = parser.current();
       }
@@ -63,29 +63,29 @@ namespace gum {
       // use the CSVParser to fill the vector of DBRows
       std::vector<DBRow>& vect = _content();
 
-      while (parser.next()) {
+      while ( parser.next() ) {
         // read a new line in the input file and convert it into a DBRow
         const std::vector<std::string>& row = parser.current();
 
-        DBRow new_row(row.size());
+        DBRow new_row( row.size() );
 
-        for (unsigned int i = 0; i < row.size(); ++i) {
-          new_row[i].setBestTypeSafe(row[i]);
+        for ( unsigned int i = 0; i < row.size(); ++i ) {
+          new_row[i].setBestTypeSafe( row[i] );
         }
 
         // add the result into
-        vect.push_back(new_row);
+        vect.push_back( new_row );
       }
 
       // if we wish to apply a DBTransform to preprocess the database
-      transform.transform(vect, missingVal);
+      transform.transform( vect, missingVal );
 
       // if the names of the variables have not been set yet, do it
-      if (!fileContainsNames && vect.size() && vect[0].size()) {
+      if ( !fileContainsNames && vect.size() && vect[0].size() ) {
         std::vector<std::string>& names = _variableNames();
-        names.resize(vect[0].size());
+        names.resize( vect[0].size() );
 
-        for (unsigned int i = 0; i < names.size(); ++i) {
+        for ( unsigned int i = 0; i < names.size(); ++i ) {
           std::stringstream s;
           s << "node " << i;
           names[i] = s.str();
@@ -93,7 +93,7 @@ namespace gum {
       }
 
       // for debugging purposes
-      GUM_CONSTRUCTOR(DatabaseFromCSV);
+      GUM_CONSTRUCTOR( DatabaseFromCSV );
     }
 
   } /* namespace learning */

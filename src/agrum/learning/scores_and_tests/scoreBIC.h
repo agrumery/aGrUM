@@ -75,15 +75,15 @@ namespace gum {
        * @param var_modalities the domain sizes of the variables in the database
        */
       template <typename RowFilter>
-      ScoreBIC(const RowFilter& filter,
-               const std::vector<unsigned int>& var_modalities,
-               Apriori<IdSetAlloc, CountAlloc>& apriori);
+      ScoreBIC( const RowFilter& filter,
+                const std::vector<unsigned int>& var_modalities,
+                Apriori<IdSetAlloc, CountAlloc>& apriori );
 
       /// copy constructor
-      ScoreBIC(const ScoreBIC<IdSetAlloc, CountAlloc>&);
+      ScoreBIC( const ScoreBIC<IdSetAlloc, CountAlloc>& );
 
       /// move constructor
-      ScoreBIC(ScoreBIC<IdSetAlloc, CountAlloc>&&);
+      ScoreBIC( ScoreBIC<IdSetAlloc, CountAlloc>&& );
 
       /// virtual copy factory
       virtual ScoreBIC<IdSetAlloc, CountAlloc>* copyFactory() const;
@@ -99,7 +99,7 @@ namespace gum {
       /// @{
 
       /// returns the score corresponding to a given nodeset
-      float score(unsigned int nodeset_index);
+      float score( unsigned int nodeset_index );
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score
@@ -143,8 +143,8 @@ namespace gum {
        * @throws InvalidArgument is raised if the apriori is not handled yet by
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
-      static bool isAprioriCompatible(const std::string& apriori_type,
-                                      float weight = 1.0f);
+      static bool isAprioriCompatible( const std::string& apriori_type,
+                                       float weight = 1.0f );
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score
@@ -167,7 +167,7 @@ namespace gum {
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
       static bool
-      isAprioriCompatible(const Apriori<IdSetAlloc, CountAlloc>& apriori);
+      isAprioriCompatible( const Apriori<IdSetAlloc, CountAlloc>& apriori );
 
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD

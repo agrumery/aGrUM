@@ -63,11 +63,12 @@ namespace gum {
     /**
      * Default constructor.
      */
-    VariableElimination(const IBayesNet<GUM_SCALAR>& bn);
+    VariableElimination( const IBayesNet<GUM_SCALAR>& bn );
 
-    VariableElimination(const VariableElimination<GUM_SCALAR>& source) = delete;
+    VariableElimination( const VariableElimination<GUM_SCALAR>& source ) =
+        delete;
     VariableElimination&
-    operator=(const VariableElimination<GUM_SCALAR>& source) = delete;
+    operator=( const VariableElimination<GUM_SCALAR>& source ) = delete;
 
     /**
      * Destructor.
@@ -103,12 +104,12 @@ namespace gum {
      * it is replaced by the new evidence in pot_list.
      */
     virtual void
-    insertEvidence(const List<const Potential<GUM_SCALAR>*>& pot_list);
+    insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list );
 
     /**
      * Remove a given evidence from the graph.
      */
-    virtual void eraseEvidence(const Potential<GUM_SCALAR>* e);
+    virtual void eraseEvidence( const Potential<GUM_SCALAR>* e );
 
     /**
      * Remove all evidence from the graph.
@@ -133,7 +134,7 @@ namespace gum {
      *
      * This method checks that all nodes present in the BN are in elim.
      */
-    void setEliminiationOrder(const std::vector<NodeId>& elim);
+    void setEliminiationOrder( const std::vector<NodeId>& elim );
 
     /**
      * @brief Eliminate nodes in elim_order using pool as initial potential
@@ -146,9 +147,9 @@ namespace gum {
      *             Results are stored in it also.
      * @param trash The Set of Potential to delete after use of those in pool.
      */
-    void eliminateNodes(const std::vector<NodeId>& elim_order,
-                        Set<Potential<GUM_SCALAR>*>& pool,
-                        Set<Potential<GUM_SCALAR>*>& trash);
+    void eliminateNodes( const std::vector<NodeId>& elim_order,
+                         Set<Potential<GUM_SCALAR>*>& pool,
+                         Set<Potential<GUM_SCALAR>*>& trash );
 
     /// @}
 
@@ -160,7 +161,7 @@ namespace gum {
      * @param marginal the potential to fill
      * @throw ElementNotFound Raised if no variable matches id.
      */
-    virtual void _fillPosterior(NodeId id, Potential<GUM_SCALAR>& marginal);
+    virtual void _fillPosterior( NodeId id, Potential<GUM_SCALAR>& marginal );
 
     private:
     /// Mapping between nodes and their evidences.
@@ -184,8 +185,8 @@ namespace gum {
     /// Fills the bucket with all the potentials in pool containing id and
     /// insert it in pool as a Potential after removing all the potentials
     /// already in it. If you don't understand, read the code...
-    void __eliminateNode(NodeId id, Set<Potential<GUM_SCALAR>*>& pool,
-                         Set<Potential<GUM_SCALAR>*>& trash);
+    void __eliminateNode( NodeId id, Set<Potential<GUM_SCALAR>*>& pool,
+                          Set<Potential<GUM_SCALAR>*>& trash );
   };
 
   extern template class VariableElimination<float>;

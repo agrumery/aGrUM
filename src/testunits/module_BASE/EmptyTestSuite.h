@@ -26,6 +26,6 @@ namespace gum_tests {
 
   class EmptyTestSuite : public CxxTest::TestSuite {
     public:
-    void test1() { TS_ASSERT(true); }
+    void test1() { TS_ASSERT( true ); }
   };
 }

@@ -38,12 +38,12 @@ namespace gum {
    */
   // Default constructor.
   template <typename GUM_SCALAR> INLINE DSLWriter<GUM_SCALAR>::DSLWriter() {
-    GUM_CONSTRUCTOR(DSLWriter);
+    GUM_CONSTRUCTOR( DSLWriter );
   }
 
   // Default destructor.
   template <typename GUM_SCALAR> INLINE DSLWriter<GUM_SCALAR>::~DSLWriter() {
-    GUM_DESTRUCTOR(DSLWriter);
+    GUM_DESTRUCTOR( DSLWriter );
   }
 
   /** Writes a Bayesian Network in the output stream using the DSL format.
@@ -52,28 +52,29 @@ namespace gum {
    * @throws Raised if an I/O error occurs.
    */
   template <typename GUM_SCALAR>
-  void DSLWriter<GUM_SCALAR>::write(std::ostream& output,
-                                    const IBayesNet<GUM_SCALAR>& bn) {
-    if (!output.good()) {
-      GUM_ERROR(IOError, "Stream states flags are not all unset.");
+  void DSLWriter<GUM_SCALAR>::write( std::ostream& output,
+                                     const IBayesNet<GUM_SCALAR>& bn ) {
+    if ( !output.good() ) {
+      GUM_ERROR( IOError, "Stream states flags are not all unset." );
     }
 
-    output << "net " << bn.propertyWithDefault("name", "unnamedBN") << std::endl
+    output << "net " << bn.propertyWithDefault( "name", "unnamedBN" )
+           << std::endl
            << "{" << std::endl;
 
     output << "// property softwar aGrUM " << GUM_VERSION << std::endl
            << std::endl;
 
-    for (auto node : bn.topologicalOrder()) {
-      output << __variableBloc(bn, bn.variable(node));
+    for ( auto node : bn.topologicalOrder() ) {
+      output << __variableBloc( bn, bn.variable( node ) );
     }
 
     output << "};";
 
     output.flush();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writting in the ostream failed.");
+    if ( output.fail() ) {
+      GUM_ERROR( IOError, "Writting in the ostream failed." );
     }
   }
 
@@ -85,13 +86,13 @@ namespace gum {
    * @throws Raised if an I/O error occurs.
    */
   template <typename GUM_SCALAR>
-  void DSLWriter<GUM_SCALAR>::write(std::string filePath,
-                                    const IBayesNet<GUM_SCALAR>& bn) {
+  void DSLWriter<GUM_SCALAR>::write( std::string filePath,
+                                     const IBayesNet<GUM_SCALAR>& bn ) {
     std::filebuf fb;
-    fb.open(filePath.c_str(), std::ios::out);
-    std::ostream output(&fb);
+    fb.open( filePath.c_str(), std::ios::out );
+    std::ostream output( &fb );
 
-    write(output, bn);
+    write( output, bn );
 
     fb.close();
   }
@@ -101,15 +102,15 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   std::string
-  DSLWriter<GUM_SCALAR>::__variableBloc(const IBayesNet<GUM_SCALAR>& bn,
-                                        const DiscreteVariable& var) {
+  DSLWriter<GUM_SCALAR>::__variableBloc( const IBayesNet<GUM_SCALAR>& bn,
+                                         const DiscreteVariable& var ) {
     NodeId id;
     gum::Size i = 0;
     std::ostringstream oss;
 
-    std::string val("");
+    std::string val( "" );
 
-    id = bn.idFromName(var.name());
+    id = bn.idFromName( var.name() );
 
     oss << "\tnode " << var.name() << "\n\t{\n";
 
@@ -122,10 +123,10 @@ namespace gum {
 
     oss << "\t\tPARENTS = (";
     const Sequence<const DiscreteVariable*>& tmp_vars =
-        bn.cpt(id).variablesSequence();
+        bn.cpt( id ).variablesSequence();
 
-    for (Idx i = tmp_vars.size() - 1; i > 0; i--) {
-      if (i < tmp_vars.size() - 1)
+    for ( Idx i = tmp_vars.size() - 1; i > 0; i-- ) {
+      if ( i < tmp_vars.size() - 1 )
         oss << ", ";
 
       oss << tmp_vars[i]->name();
@@ -138,11 +139,11 @@ namespace gum {
     ////////////////////////////
     oss << "\t\t\tNAMESTATES = (";
 
-    for (i = 0; i < var.domainSize(); i++) {
-      if (i != 0)
+    for ( i = 0; i < var.domainSize(); i++ ) {
+      if ( i != 0 )
         oss << ", ";
 
-      oss << var.label(i);
+      oss << var.label( i );
     }
 
     oss << ");\n";
@@ -153,12 +154,12 @@ namespace gum {
     oss << "\t\t\tPROBABILITIES = (";
     i = 0;
 
-    for (Instantiation iter = bn.cpt(id).getMasterRef();
-         i < bn.cpt(id).domainSize(); ++iter) {
-      if (i != 0)
+    for ( Instantiation iter = bn.cpt( id ).getMasterRef();
+          i < bn.cpt( id ).domainSize(); ++iter ) {
+      if ( i != 0 )
         oss << ", ";
 
-      oss << bn.cpt(id)[iter];
+      oss << bn.cpt( id )[iter];
 
       i++;
     }

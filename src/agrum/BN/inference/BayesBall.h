@@ -56,24 +56,24 @@ namespace gum {
      * Fill requisite with the requisite nodes in dag given a query and hard
      * evidences.
      */
-    void requisiteNodes(const DAG& dag, const NodeSet& query,
-                        const NodeSet& hardEvidence,
-                        const NodeSet& softEvidence, NodeSet& requisite);
+    void requisiteNodes( const DAG& dag, const NodeSet& query,
+                         const NodeSet& hardEvidence,
+                         const NodeSet& softEvidence, NodeSet& requisite );
 
     /// update a set of potentials, keeping only those d-connected with query
     /// variables
     template <typename GUM_SCALAR, template <typename> class TABLE>
-    void relevantPotentials(const IBayesNet<GUM_SCALAR>& bn,
-                            const NodeSet& query, const NodeSet& hardEvidence,
-                            const NodeSet& softEvidence,
-                            Set<const TABLE<GUM_SCALAR>*>& potentials);
+    void relevantPotentials( const IBayesNet<GUM_SCALAR>& bn,
+                             const NodeSet& query, const NodeSet& hardEvidence,
+                             const NodeSet& softEvidence,
+                             Set<const TABLE<GUM_SCALAR>*>& potentials );
 
     private:
     /// Call this when a node receive the ball from one of his child.
-    void __fromChild(NodeId node);
+    void __fromChild( NodeId node );
 
     /// Call this when a node reveive the ball from one of this parents.
-    void __fromParent(NodeId node);
+    void __fromParent( NodeId node );
 
     /// Top and bottom flags for each nodes.
     // HashTable< NodeId, std::pair<bool, bool> > __marks;

@@ -52,10 +52,11 @@ namespace gum {
         const ScheduleMultiDim<GUM_SCALAR>& table,
         NodeProperty<Set<const MultiDimImplementation<GUM_SCALAR>*>>&
             clique_tables,
-        NodeId clique);
+        NodeId clique );
 
     /// copy constructor
-    ScheduleCliqueStoreMultiDim(const ScheduleCliqueStoreMultiDim<GUM_SCALAR>&);
+    ScheduleCliqueStoreMultiDim(
+        const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& );
 
     /// virtual copy constructor: creates a clone of the operation
     virtual ScheduleCliqueStoreMultiDim<GUM_SCALAR>* newFactory() const;
@@ -72,17 +73,17 @@ namespace gum {
 
     /// copy operator
     ScheduleCliqueStoreMultiDim<GUM_SCALAR>&
-    operator=(const ScheduleCliqueStoreMultiDim<GUM_SCALAR>&);
+    operator=( const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& );
 
     /// operator ==
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator==(const ScheduleOperation<GUM_SCALAR>&) const;
+    bool operator==( const ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// operator !=
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator!=(const ScheduleOperation<GUM_SCALAR>&) const;
+    bool operator!=( const ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// @}
 

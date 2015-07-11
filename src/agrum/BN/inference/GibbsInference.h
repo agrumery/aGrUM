@@ -48,7 +48,7 @@ namespace gum {
     /**
      * Default constructor
      */
-    GibbsInference(const IBayesNet<GUM_SCALAR>& BN);
+    GibbsInference( const IBayesNet<GUM_SCALAR>& BN );
 
     /**
      * Destructor.
@@ -66,12 +66,12 @@ namespace gum {
      * evidence w.r.t. this node is inserted, the old evidence is removed.
      */
     virtual void
-    insertEvidence(const List<const Potential<GUM_SCALAR>*>& pot_list);
+    insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list );
 
     /**
      * Remove a given evidence from the graph.
      */
-    virtual void eraseEvidence(const Potential<GUM_SCALAR>* e);
+    virtual void eraseEvidence( const Potential<GUM_SCALAR>* e );
 
     /**
      * Remove all evidence from the graph.
@@ -97,7 +97,7 @@ namespace gum {
      * @param posterior the potential to fill
      * @throw ElementNotFound Raised if no variable matches id.
      */
-    virtual void _fillPosterior(NodeId id, Potential<GUM_SCALAR>& posterior);
+    virtual void _fillPosterior( NodeId id, Potential<GUM_SCALAR>& posterior );
 
     private:
     /// inference flag
@@ -109,7 +109,7 @@ namespace gum {
     void __unsetRequiredInference();
     void __initStats();
     void __updateStats_without_err();
-    double __updateStats_with_err(Size nbr);
+    double __updateStats_with_err( Size nbr );
   };
 
   extern template class GibbsInference<float>;

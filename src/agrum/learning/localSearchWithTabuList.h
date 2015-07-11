@@ -66,10 +66,10 @@ namespace gum {
       LocalSearchWithTabuList();
 
       /// copy constructor
-      LocalSearchWithTabuList(const LocalSearchWithTabuList& from);
+      LocalSearchWithTabuList( const LocalSearchWithTabuList& from );
 
       /// move constructor
-      LocalSearchWithTabuList(LocalSearchWithTabuList&& from);
+      LocalSearchWithTabuList( LocalSearchWithTabuList&& from );
 
       /// destructor
       virtual ~LocalSearchWithTabuList();
@@ -82,10 +82,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      LocalSearchWithTabuList& operator=(const LocalSearchWithTabuList& from);
+      LocalSearchWithTabuList& operator=( const LocalSearchWithTabuList& from );
 
       /// move operator
-      LocalSearchWithTabuList& operator=(LocalSearchWithTabuList&& from);
+      LocalSearchWithTabuList& operator=( LocalSearchWithTabuList&& from );
 
       /// @}
 
@@ -99,7 +99,7 @@ namespace gum {
 
       /// set the max number of changes decreasing the score that we allow to
       /// apply
-      void setMaxNbDecreasingChanges(unsigned int nb);
+      void setMaxNbDecreasingChanges( unsigned int nb );
 
       /// learns the structure of a Bayes net
       /** @param A selector class that computes the best changes that can be
@@ -111,18 +111,18 @@ namespace gum {
        * database
        * @param initial_dag the DAG we start from for our learning */
       template <typename GRAPH_CHANGES_SELECTOR>
-      DAG learnStructure(GRAPH_CHANGES_SELECTOR& selector,
-                         const std::vector<unsigned int>& modal,
-                         DAG initial_dag = DAG());
+      DAG learnStructure( GRAPH_CHANGES_SELECTOR& selector,
+                          const std::vector<unsigned int>& modal,
+                          DAG initial_dag = DAG() );
 
       /// learns the structure and the parameters of a BN
       template <typename GUM_SCALAR = float, typename GRAPH_CHANGES_SELECTOR,
                 typename PARAM_ESTIMATOR, typename CELL_TRANSLATORS>
       BayesNet<GUM_SCALAR>
-      learnBN(GRAPH_CHANGES_SELECTOR& selector, PARAM_ESTIMATOR& estimator,
-              const std::vector<std::string>& names,
-              const std::vector<unsigned int>& modal,
-              const CELL_TRANSLATORS& translator, DAG initial_dag = DAG());
+      learnBN( GRAPH_CHANGES_SELECTOR& selector, PARAM_ESTIMATOR& estimator,
+               const std::vector<std::string>& names,
+               const std::vector<unsigned int>& modal,
+               const CELL_TRANSLATORS& translator, DAG initial_dag = DAG() );
 
       /// @}
 

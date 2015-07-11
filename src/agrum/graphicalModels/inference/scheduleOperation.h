@@ -72,12 +72,12 @@ namespace gum {
     /// operator ==
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    virtual bool operator==(const ScheduleOperation<GUM_SCALAR>&) const = 0;
+    virtual bool operator==( const ScheduleOperation<GUM_SCALAR>& ) const = 0;
 
     /// operator !=
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    virtual bool operator!=(const ScheduleOperation<GUM_SCALAR>&) const = 0;
+    virtual bool operator!=( const ScheduleOperation<GUM_SCALAR>& ) const = 0;
 
     /// @}
 
@@ -125,14 +125,14 @@ namespace gum {
 
     protected:
     /// default constructor
-    ScheduleOperation(Type t);
+    ScheduleOperation( Type t );
 
     /// copy constructor
-    ScheduleOperation(const ScheduleOperation<GUM_SCALAR>& from);
+    ScheduleOperation( const ScheduleOperation<GUM_SCALAR>& from );
 
     /// copy operator
     ScheduleOperation<GUM_SCALAR>&
-    operator=(const ScheduleOperation<GUM_SCALAR>&);
+    operator=( const ScheduleOperation<GUM_SCALAR>& );
 
     private:
     /// the name of the operation to perform

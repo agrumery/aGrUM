@@ -7,7 +7,7 @@ Standard: Cpp11
 Cpp11BracedListStyle: true
 IndentCaseLabels: true
 NamespaceIndentation: All
-SpacesInParentheses: false
+SpacesInParentheses: true
 BreakBeforeBraces: Attach
 AlwaysBreakTemplateDeclarations: false
 ColumnLimit: 80

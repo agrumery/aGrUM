@@ -51,15 +51,15 @@ namespace gum {
     token_function function;
 
     FormulaPart();
-    FormulaPart(token_type t, double n);
-    FormulaPart(token_type t, char c);
-    FormulaPart(token_type t, token_function);
+    FormulaPart( token_type t, double n );
+    FormulaPart( token_type t, char c );
+    FormulaPart( token_type t, token_function );
 
-    FormulaPart(const FormulaPart& source);
+    FormulaPart( const FormulaPart& source );
 
     ~FormulaPart();
 
-    FormulaPart& operator=(const FormulaPart& source);
+    FormulaPart& operator=( const FormulaPart& source );
 
     std::string str() const;
 
@@ -72,12 +72,12 @@ namespace gum {
     size_t argc() const;
 
     /// Args are backwards !
-    FormulaPart eval(const std::vector<FormulaPart>& args) const;
+    FormulaPart eval( const std::vector<FormulaPart>& args ) const;
 
     private:
     /// Args are backwards !
-    double __operator_eval(const std::vector<FormulaPart>& args) const;
-    double __function_eval(const std::vector<FormulaPart>& args) const;
+    double __operator_eval( const std::vector<FormulaPart>& args ) const;
+    double __function_eval( const std::vector<FormulaPart>& args ) const;
 
     size_t __operator_argc() const;
     size_t __function_argc() const;
@@ -90,11 +90,11 @@ namespace gum {
   class Formula {
 
     public:
-    Formula(const std::string& f);
-    Formula(const Formula& source);
+    Formula( const std::string& f );
+    Formula( const Formula& source );
     ~Formula();
 
-    Formula& operator=(const Formula& source);
+    Formula& operator=( const Formula& source );
 
     HashTable<std::string, double>& variables();
 
@@ -102,20 +102,20 @@ namespace gum {
 
     double result() const;
 
-    void push_number(const double& v);
+    void push_number( const double& v );
 
-    void push_operator(char o);
+    void push_operator( char o );
 
     void push_leftParenthesis();
 
     void push_rightParenthesis();
 
-    void push_function(const std::string& func);
+    void push_function( const std::string& func );
 
-    void push_variable(const std::string& var);
+    void push_variable( const std::string& var );
 
     /// Use this if you don't know is ident is a function or a variable.
-    void push_identifier(const std::string& ident);
+    void push_identifier( const std::string& ident );
 
     void push_comma();
 
@@ -139,20 +139,20 @@ namespace gum {
     std::stack<FormulaPart>& stack();
     const std::stack<FormulaPart>& stack() const;
 
-    bool __popOperator(FormulaPart o);
+    bool __popOperator( FormulaPart o );
 
-    void __reduceOperatorOrFunction(FormulaPart item,
-                                    std::stack<FormulaPart>& stack) const;
+    void __reduceOperatorOrFunction( FormulaPart item,
+                                     std::stack<FormulaPart>& stack ) const;
 
-    void __push_unaryOperator(char o);
+    void __push_unaryOperator( char o );
 
-    void __push_operator(FormulaPart t);
+    void __push_operator( FormulaPart t );
 
-    bool __isUnaryOperator(char o);
+    bool __isUnaryOperator( char o );
 
-    void __push_output(FormulaPart t);
+    void __push_output( FormulaPart t );
 
-    void __push_stack(FormulaPart t);
+    void __push_stack( FormulaPart t );
   };
 
 } /* namespace gum */

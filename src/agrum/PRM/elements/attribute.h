@@ -62,7 +62,7 @@ namespace gum {
       /// @name Constructors & destructor
       // ========================================================================
       /// @{
-      Attribute(const std::string& name);
+      Attribute( const std::string& name );
 
       /// Destructor.
       virtual ~Attribute();
@@ -73,13 +73,14 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      virtual Attribute* newFactory(const Class<GUM_SCALAR>& c) const = 0;
-      virtual Attribute* copy(Bijection<const DiscreteVariable*,
-                                        const DiscreteVariable*> bij) const = 0;
+      virtual Attribute* newFactory( const Class<GUM_SCALAR>& c ) const = 0;
+      virtual Attribute*
+      copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij )
+          const = 0;
 
-      virtual void copyCpf(const Bijection<const DiscreteVariable*,
-                                           const DiscreteVariable*>& bif,
-                           const Attribute<GUM_SCALAR>& source) = 0;
+      virtual void copyCpf( const Bijection<const DiscreteVariable*,
+                                            const DiscreteVariable*>& bif,
+                            const Attribute<GUM_SCALAR>& source ) = 0;
 
       /// See gum::ClassElement::elt_type().
       virtual typename ClassElement<GUM_SCALAR>::ClassElementType
@@ -95,10 +96,10 @@ namespace gum {
       virtual const Potential<GUM_SCALAR>& cpf() const = 0;
 
       /// See gum::ClassElement::_addParent().
-      virtual void addParent(const ClassElement<GUM_SCALAR>& elt) = 0;
+      virtual void addParent( const ClassElement<GUM_SCALAR>& elt ) = 0;
 
       /// See gum::ClassElement::_addChild().
-      virtual void addChild(const ClassElement<GUM_SCALAR>& elt) = 0;
+      virtual void addChild( const ClassElement<GUM_SCALAR>& elt ) = 0;
 
       /**
        * @brief Returns a proper cast descendant of this Attribute.
@@ -145,30 +146,30 @@ namespace gum {
        *descendant of
        *                  this Attribute's Type<GUM_SCALAR>.
        */
-      virtual void setAsCastDescendant(Attribute<GUM_SCALAR>* attr) = 0;
+      virtual void setAsCastDescendant( Attribute<GUM_SCALAR>* attr ) = 0;
 
       /**
        * @brief Change this attribute to be a cast descendant of a an attribute
        * with type
        *        subtype.
        */
-      virtual void becomeCastDescendant(Type<GUM_SCALAR>& subtype) = 0;
+      virtual void becomeCastDescendant( Type<GUM_SCALAR>& subtype ) = 0;
 
       /// Swap old_type with new_type in the ClassElement cpt.
-      virtual void swap(const Type<GUM_SCALAR>& old_type,
-                        const Type<GUM_SCALAR>& new_type) = 0;
+      virtual void swap( const Type<GUM_SCALAR>& old_type,
+                         const Type<GUM_SCALAR>& new_type ) = 0;
 
       /// Set this as overload of source (necessayr to preserver internal
       /// pointers for MultiDims).
-      virtual void overload(Attribute<GUM_SCALAR>* source);
+      virtual void overload( Attribute<GUM_SCALAR>* source );
 
       /// @}
 
       protected:
-      Attribute(const Attribute<GUM_SCALAR>& source);
+      Attribute( const Attribute<GUM_SCALAR>& source );
 
       virtual Type<GUM_SCALAR>* _type() = 0;
-      virtual void _type(Type<GUM_SCALAR>* t) = 0;
+      virtual void _type( Type<GUM_SCALAR>* t ) = 0;
     };
 
     extern template class Attribute<double>;

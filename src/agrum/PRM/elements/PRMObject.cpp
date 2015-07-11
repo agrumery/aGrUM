@@ -37,22 +37,22 @@ namespace gum {
     // Constructor.
     // @param type The type of this object.
     // ==========================================================================
-    PRMObject::PRMObject(const std::string& name) : __name(name) {
-      GUM_CONSTRUCTOR(PRMObject);
+    PRMObject::PRMObject( const std::string& name ) : __name( name ) {
+      GUM_CONSTRUCTOR( PRMObject );
     }
     // ==========================================================================
     // Copy constructor.
     // ==========================================================================
-    PRMObject::PRMObject(const PRMObject& source) : __name(source.__name) {
-      GUM_CONS_CPY(PRMObject);
+    PRMObject::PRMObject( const PRMObject& source ) : __name( source.__name ) {
+      GUM_CONS_CPY( PRMObject );
     }
     // ==========================================================================
     // Destructor.
     // ==========================================================================
-    PRMObject::~PRMObject() { GUM_DESTRUCTOR(PRMObject); }
+    PRMObject::~PRMObject() { GUM_DESTRUCTOR( PRMObject ); }
 
     // Copy operator.
-    PRMObject& PRMObject::operator=(const PRMObject& source) {
+    PRMObject& PRMObject::operator=( const PRMObject& source ) {
       __name = source.__name;
       return *this;
     }
@@ -60,8 +60,8 @@ namespace gum {
     // ==========================================================================
     // For printing Type easily.
     // ==========================================================================
-    std::ostream& operator<<(std::ostream& out, PRMObject::PRMType obj_type) {
-      return (out << PRMObject::enum2str(obj_type));
+    std::ostream& operator<<( std::ostream& out, PRMObject::PRMType obj_type ) {
+      return ( out << PRMObject::enum2str( obj_type ) );
     }
     // ==========================================================================
   } /* namespace prm */

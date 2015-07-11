@@ -26,13 +26,13 @@
 namespace std {
 
   template <typename T>
-  ostream& operator<<(ostream& stream, const vector<T>& val) {
+  ostream& operator<<( ostream& stream, const vector<T>& val ) {
     bool deja = false;
     stream << "[";
 
-    for (typename vector<T>::const_iterator iter = val.begin();
-         iter != val.end(); ++iter, deja = true) {
-      if (deja)
+    for ( typename vector<T>::const_iterator iter = val.begin();
+          iter != val.end(); ++iter, deja = true ) {
+      if ( deja )
         stream << " , ";
 
       stream << *iter;
@@ -44,7 +44,7 @@ namespace std {
   }
 
   template <typename T1, typename T2>
-  ostream& operator<<(ostream& stream, const pair<T1, T2>& val) {
+  ostream& operator<<( ostream& stream, const pair<T1, T2>& val ) {
     stream << "(" << val.first << "," << val.second << ")";
     return stream;
   }

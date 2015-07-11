@@ -32,32 +32,32 @@ namespace gum {
 
   /// default constructor
   template <typename GUM_SCALAR>
-  ScheduleOperation<GUM_SCALAR>::ScheduleOperation(Type t)
-      : __type(t), __id(__newId()) {
+  ScheduleOperation<GUM_SCALAR>::ScheduleOperation( Type t )
+      : __type( t ), __id( __newId() ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR(ScheduleOperation);
+    GUM_CONSTRUCTOR( ScheduleOperation );
   }
 
   /// copy constructor
   template <typename GUM_SCALAR>
   ScheduleOperation<GUM_SCALAR>::ScheduleOperation(
-      const ScheduleOperation<GUM_SCALAR>& from)
-      : __type(from.__type), __id(from.__id) {
+      const ScheduleOperation<GUM_SCALAR>& from )
+      : __type( from.__type ), __id( from.__id ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR(ScheduleOperation);
+    GUM_CONSTRUCTOR( ScheduleOperation );
   }
 
   /// destructor
   template <typename GUM_SCALAR>
   ScheduleOperation<GUM_SCALAR>::~ScheduleOperation() {
     // for debugging purposes
-    GUM_DESTRUCTOR(ScheduleOperation);
+    GUM_DESTRUCTOR( ScheduleOperation );
   }
 
   /// copy operator
   template <typename GUM_SCALAR>
   INLINE ScheduleOperation<GUM_SCALAR>& ScheduleOperation<GUM_SCALAR>::
-  operator=(const ScheduleOperation<GUM_SCALAR>& from) {
+  operator=( const ScheduleOperation<GUM_SCALAR>& from ) {
     __type = from.__type;
     __id = from.__id;
     return *this;

@@ -106,7 +106,7 @@ namespace gum {
      * @throw OperationNotAllowed if this object is non mutable.
      */
 
-    virtual void add(const DiscreteVariable& v) = 0;
+    virtual void add( const DiscreteVariable& v ) = 0;
 
     /**
      * @brief Removes a var from the variables of the multidimensional matrix.
@@ -118,7 +118,7 @@ namespace gum {
      * @throw NotFound is v does not belong to this
      */
 
-    virtual void erase(const DiscreteVariable& v) = 0;
+    virtual void erase( const DiscreteVariable& v ) = 0;
 
     /// Returns a const ref to the sequence of DiscreteVariable*.
 
@@ -130,22 +130,22 @@ namespace gum {
      * @throw NotFound
      */
 
-    virtual const DiscreteVariable& variable(Idx i) const = 0;
+    virtual const DiscreteVariable& variable( Idx i ) const = 0;
 
     /**
      * Returns the index of a var.
      * @throw NotFound
      */
 
-    virtual Idx pos(const DiscreteVariable& v) const = 0;
+    virtual Idx pos( const DiscreteVariable& v ) const = 0;
 
     /// Returns true if var is in *this.
 
-    virtual bool contains(const DiscreteVariable& v) const = 0;
+    virtual bool contains( const DiscreteVariable& v ) const = 0;
 
     /// Returns true if no var is in *this.
 
-    virtual bool empty(void) const = 0;
+    virtual bool empty( void ) const = 0;
 
     /**
      * @brief Swap two variables in this multidim.
@@ -158,7 +158,7 @@ namespace gum {
      * @throw OperationNotAllowed If y and x are not interchangeable.
      * @throw DuplicateElement If y is already in this MultiDim.
      */
-    void swap(const DiscreteVariable& x, const DiscreteVariable& y);
+    void swap( const DiscreteVariable& x, const DiscreteVariable& y );
 
     /// @}
 
@@ -192,8 +192,8 @@ namespace gum {
      *        swapping between x and y.
      * This is called only when everything have been checked.
      */
-    virtual void _swap(const DiscreteVariable* x,
-                       const DiscreteVariable* y) = 0;
+    virtual void _swap( const DiscreteVariable* x,
+                        const DiscreteVariable* y ) = 0;
   };
 
   /**
@@ -218,8 +218,8 @@ namespace gum {
    * @ingroup multidim_group
    */
 
-  MultiDimInterface& operator<<(MultiDimInterface& c,
-                                const DiscreteVariable& v);
+  MultiDimInterface& operator<<( MultiDimInterface& c,
+                                 const DiscreteVariable& v );
 
   /**
    * @brief Removes a var from the variables of the MutliDimAdressing.
@@ -230,8 +230,8 @@ namespace gum {
    * @ingroup multidim_group
    */
 
-  MultiDimInterface& operator>>(MultiDimInterface& c,
-                                const DiscreteVariable& v);
+  MultiDimInterface& operator>>( MultiDimInterface& c,
+                                 const DiscreteVariable& v );
 
 } /* namespace gum */
 

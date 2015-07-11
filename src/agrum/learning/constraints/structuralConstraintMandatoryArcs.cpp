@@ -37,40 +37,41 @@ namespace gum {
 
     /// default constructor
     StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs() {
-      GUM_CONSTRUCTOR(StructuralConstraintMandatoryArcs);
+      GUM_CONSTRUCTOR( StructuralConstraintMandatoryArcs );
     }
 
     /// constructor starting with a given graph
     StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
-        const DiGraph& graph) {
-      setGraph(graph);
-      GUM_CONSTRUCTOR(StructuralConstraintMandatoryArcs);
+        const DiGraph& graph ) {
+      setGraph( graph );
+      GUM_CONSTRUCTOR( StructuralConstraintMandatoryArcs );
     }
 
     /// copy constructor
     StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
-        const StructuralConstraintMandatoryArcs& from)
-        : _MandatoryArcs__mandatory_arcs(from._MandatoryArcs__mandatory_arcs) {
-      GUM_CONS_CPY(StructuralConstraintMandatoryArcs);
+        const StructuralConstraintMandatoryArcs& from )
+        : _MandatoryArcs__mandatory_arcs(
+              from._MandatoryArcs__mandatory_arcs ) {
+      GUM_CONS_CPY( StructuralConstraintMandatoryArcs );
     }
 
     /// move constructor
     StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
-        StructuralConstraintMandatoryArcs&& from)
+        StructuralConstraintMandatoryArcs&& from )
         : _MandatoryArcs__mandatory_arcs(
-              std::move(from._MandatoryArcs__mandatory_arcs)) {
-      GUM_CONS_MOV(StructuralConstraintMandatoryArcs);
+              std::move( from._MandatoryArcs__mandatory_arcs ) ) {
+      GUM_CONS_MOV( StructuralConstraintMandatoryArcs );
     }
 
     /// destructor
     StructuralConstraintMandatoryArcs::~StructuralConstraintMandatoryArcs() {
-      GUM_DESTRUCTOR(StructuralConstraintMandatoryArcs);
+      GUM_DESTRUCTOR( StructuralConstraintMandatoryArcs );
     }
 
     /// copy operator
     StructuralConstraintMandatoryArcs& StructuralConstraintMandatoryArcs::
-    operator=(const StructuralConstraintMandatoryArcs& from) {
-      if (this != &from) {
+    operator=( const StructuralConstraintMandatoryArcs& from ) {
+      if ( this != &from ) {
         _MandatoryArcs__mandatory_arcs = from._MandatoryArcs__mandatory_arcs;
       }
       return *this;
@@ -78,10 +79,10 @@ namespace gum {
 
     /// move operator
     StructuralConstraintMandatoryArcs& StructuralConstraintMandatoryArcs::
-    operator=(StructuralConstraintMandatoryArcs&& from) {
-      if (this != &from) {
+    operator=( StructuralConstraintMandatoryArcs&& from ) {
+      if ( this != &from ) {
         _MandatoryArcs__mandatory_arcs =
-            std::move(from._MandatoryArcs__mandatory_arcs);
+            std::move( from._MandatoryArcs__mandatory_arcs );
       }
       return *this;
     }

@@ -85,13 +85,13 @@ namespace gum {
        * initialize the translator. */
       CellTranslatorString(
           Sequence<std::string> values = Sequence<std::string>(),
-          bool check_database = true);
+          bool check_database = true );
 
       /// copy constructor
-      CellTranslatorString(const CellTranslatorString& from);
+      CellTranslatorString( const CellTranslatorString& from );
 
       /// move constructor
-      CellTranslatorString(CellTranslatorString&& from);
+      CellTranslatorString( CellTranslatorString&& from );
 
       /// virtual copy constructor
       virtual CellTranslatorString* copyFactory() final;
@@ -108,10 +108,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      CellTranslatorString& operator=(const CellTranslatorString& from);
+      CellTranslatorString& operator=( const CellTranslatorString& from );
 
       /// move operator
-      CellTranslatorString& operator=(CellTranslatorString&& from);
+      CellTranslatorString& operator=( CellTranslatorString&& from );
 
       /// @}
 
@@ -133,18 +133,18 @@ namespace gum {
       void postInitialize();
 
       /// add the number of modalities discovered in the database into a vector
-      void modalities(std::vector<unsigned int>& modal) const noexcept;
+      void modalities( std::vector<unsigned int>& modal ) const noexcept;
 
       /// returns whether the translator needs a DB parsing to initialize itself
       bool requiresInitialization() const noexcept;
 
       /// returns a given value as stored within the database
-      std::string translateBack(unsigned int col,
-                                unsigned int translated_val) const;
+      std::string translateBack( unsigned int col,
+                                 unsigned int translated_val ) const;
 
       /// returns the name of the variable(s) the translator has processed
-      void variableNames(const std::vector<std::string>& db_var,
-                         std::vector<std::string>& output_vars) const;
+      void variableNames( const std::vector<std::string>& db_var,
+                          std::vector<std::string>& output_vars ) const;
 
       /// specify the set of possible values (to do before creating the row
       /// filter)
@@ -184,8 +184,8 @@ namespace gum {
        * into
        * the DBRowFilter, i.e., before the latter is created (as the creation of
        * the row filter induces the parsing of the database). */
-      void setUserValues(const Sequence<std::string>& values,
-                         bool check_database = true);
+      void setUserValues( const Sequence<std::string>& values,
+                          bool check_database = true );
 
       /// @}
 

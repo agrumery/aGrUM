@@ -56,8 +56,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     class Exists : public MultiDimAggregator<GUM_SCALAR> {
       public:
-      Exists(Idx value);
-      Exists(const Exists<GUM_SCALAR>& from);
+      Exists( Idx value );
+      Exists( const Exists<GUM_SCALAR>& from );
       virtual ~Exists();
 
       /**
@@ -75,12 +75,12 @@ namespace gum {
        */
       virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
-      virtual std::string aggregatorName(void) const;
+      virtual std::string aggregatorName( void ) const;
 
       protected:
-      virtual Idx _neutralElt(void) const;
-      virtual Idx _folder(const DiscreteVariable& v, Idx i1, Idx i2,
-                          bool& stop_iteration) const;
+      virtual Idx _neutralElt( void ) const;
+      virtual Idx _folder( const DiscreteVariable& v, Idx i1, Idx i2,
+                           bool& stop_iteration ) const;
 
       private:
       Idx __value;

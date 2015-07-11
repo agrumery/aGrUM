@@ -15,7 +15,7 @@ namespace CxxTest {
     YesNoRunner() {}
 
     int run() {
-      TestRunner::runAllTests(*this);
+      TestRunner::runAllTests( *this );
       return tracker().failedTests();
     }
   };

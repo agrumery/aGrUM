@@ -115,14 +115,14 @@ namespace gum {
      * @param nodes_resize_policy the resizing policy of this hash table
      * @param edges_size the size of the hash table used to store all the edges
      * @param edges_resize_policy the resizing policy of this hash table */
-    explicit UndiGraph(Size nodes_size = HashTableConst::default_size,
-                       bool nodes_resize_policy = true,
-                       Size edges_size = HashTableConst::default_size,
-                       bool edges_resize_policy = true);
+    explicit UndiGraph( Size nodes_size = HashTableConst::default_size,
+                        bool nodes_resize_policy = true,
+                        Size edges_size = HashTableConst::default_size,
+                        bool edges_resize_policy = true );
 
     /// copy constructor
     /** @param g the UndiGraph to copy */
-    UndiGraph(const UndiGraph& g);
+    UndiGraph( const UndiGraph& g );
 
     /// destructor
     virtual ~UndiGraph();
@@ -136,17 +136,17 @@ namespace gum {
 
     /// copy operator
     /** @param g the DiGraph to copy */
-    UndiGraph& operator=(const UndiGraph& g);
+    UndiGraph& operator=( const UndiGraph& g );
 
     /// tests whether two UndiGraphs are identical (same nodes, same edges)
     /** @param g the UndiGraph with which "this" is compared */
     // not virtual : it is a feature !!! :)
-    bool operator==(const UndiGraph& g) const;
+    bool operator==( const UndiGraph& g ) const;
 
     /// tests whether two UndiGraphs are different
     /** @param g the UndiGraph with which "this" is compared */
     // not virtual : it is a feature !!! :)
-    bool operator!=(const UndiGraph& g) const;
+    bool operator!=( const UndiGraph& g ) const;
 
     /// @}
 
@@ -163,15 +163,15 @@ namespace gum {
      * exception is raised.
      * @throw InvalidNode if first and/or second do not belong to the
      * graph nodes */
-    GUM_DEPRECATED(virtual void insertEdge(const NodeId first,
-                                           const NodeId second));
-    virtual void addEdge(const NodeId first, const NodeId second);
+    GUM_DEPRECATED( virtual void insertEdge( const NodeId first,
+                                             const NodeId second ) );
+    virtual void addEdge( const NodeId first, const NodeId second );
 
     /// remove a node and its adjacent edges from the graph
     /** @param id the id of the node to be removed
      * @warning if the node does not exist, nothing is done. In particular, no
      * exception is raised.*/
-    virtual void eraseNode(const NodeId id);
+    virtual void eraseNode( const NodeId id );
 
     /// removes all the nodes and edges from the graph
     virtual void clear();
@@ -186,13 +186,13 @@ namespace gum {
     bool hasUndirectedCycle() const;
 
     /// returns the partial graph formed by the nodes given in parameter
-    virtual UndiGraph partialUndiGraph(NodeSet nodesSet);
+    virtual UndiGraph partialUndiGraph( NodeSet nodesSet );
 
     /// @}
   };
 
   /// for friendly displaying the content of undirected graphs
-  std::ostream& operator<<(std::ostream&, const UndiGraph&);
+  std::ostream& operator<<( std::ostream&, const UndiGraph& );
 
 } /* namespace gum */
 

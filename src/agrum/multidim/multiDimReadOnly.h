@@ -51,7 +51,7 @@ namespace gum {
 
     /// Copy constructor.
 
-    MultiDimReadOnly(const MultiDimReadOnly<GUM_SCALAR>& from);
+    MultiDimReadOnly( const MultiDimReadOnly<GUM_SCALAR>& from );
 
     /// Destructor.
 
@@ -81,18 +81,18 @@ namespace gum {
 
     /// @throw OperationNotAllowed Raised because this is a read only table.
 
-    virtual void set(const Instantiation& i, const GUM_SCALAR& value) const;
+    virtual void set( const Instantiation& i, const GUM_SCALAR& value ) const;
 
     /// @throw OperationNotAllowed Raised because this is a read only table.
 
-    virtual void fill(const GUM_SCALAR&) const;
+    virtual void fill( const GUM_SCALAR& ) const;
 
     /// @}
 
     protected:
     /// @throw OperationNotAllowed Raised because this is a read only table.
 
-    virtual GUM_SCALAR& _get(const Instantiation& i) const;
+    virtual GUM_SCALAR& _get( const Instantiation& i ) const;
   };
 } /* namespace gum */
 

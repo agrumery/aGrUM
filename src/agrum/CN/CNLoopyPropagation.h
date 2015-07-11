@@ -94,7 +94,7 @@ namespace gum {
        * %Set the inference type.
        * @param inft The choosen \c InferenceType.
        */
-      void inferenceType(InferenceType inft);
+      void inferenceType( InferenceType inft );
 
       /**
        * Get the inference type.
@@ -122,7 +122,7 @@ namespace gum {
        * This one is easier to read but harder for scripts to parse.
        * @param path The path to the file to save marginals.
        */
-      void saveInference(const std::string& path);
+      void saveInference( const std::string& path );
 
       /// @}
 
@@ -132,7 +132,7 @@ namespace gum {
        * Constructor.
        * @param cnet The CredalNet to be used with this algorithm.
        */
-      CNLoopyPropagation(const CredalNet<GUM_SCALAR>& cnet);
+      CNLoopyPropagation( const CredalNet<GUM_SCALAR>& cnet );
       /** Destructor. */
       virtual ~CNLoopyPropagation();
       /// @}
@@ -166,9 +166,9 @@ namespace gum {
        * @param demanding_parent The constant node id of the node receiving the
        * message.
        */
-      void _msgL(
-          const NodeId X,
-          const NodeId demanding_parent);  // allways sent from X to demanding_X
+      void _msgL( const NodeId X,
+                  const NodeId
+                      demanding_parent );  // allways sent from X to demanding_X
 
       /**
        * Used by _msgL. Compute the final message for the given parent's message
@@ -190,10 +190,10 @@ namespace gum {
        * @param den_max The reference to the previously computed upper
        * denominator.
        */
-      void _compute_ext(GUM_SCALAR& msg_l_min, GUM_SCALAR& msg_l_max,
-                        std::vector<GUM_SCALAR>& lx, GUM_SCALAR& num_min,
-                        GUM_SCALAR& num_max, GUM_SCALAR& den_min,
-                        GUM_SCALAR& den_max);
+      void _compute_ext( GUM_SCALAR& msg_l_min, GUM_SCALAR& msg_l_max,
+                         std::vector<GUM_SCALAR>& lx, GUM_SCALAR& num_min,
+                         GUM_SCALAR& num_max, GUM_SCALAR& den_min,
+                         GUM_SCALAR& den_max );
 
       /**
        * Used by _msgL. Compute the numerators & denominators for the given
@@ -212,10 +212,10 @@ namespace gum {
        * the CPT
        * of the one sending the message ( first parent, second ... ).
        */
-      void _compute_ext(std::vector<std::vector<GUM_SCALAR>>& combi_msg_p,
-                        const NodeId& id, GUM_SCALAR& msg_l_min,
-                        GUM_SCALAR& msg_l_max, std::vector<GUM_SCALAR>& lx,
-                        const Idx& pos);
+      void _compute_ext( std::vector<std::vector<GUM_SCALAR>>& combi_msg_p,
+                         const NodeId& id, GUM_SCALAR& msg_l_min,
+                         GUM_SCALAR& msg_l_max, std::vector<GUM_SCALAR>& lx,
+                         const Idx& pos );
 
       /**
        * Used by _msgL. Enumerate parent's messages.
@@ -234,10 +234,10 @@ namespace gum {
        * of the one sending the message ( first parent, second ... ).
        */
       void
-      _enum_combi(std::vector<std::vector<std::vector<GUM_SCALAR>>>& msgs_p,
-                  const NodeId& id, GUM_SCALAR& msg_l_min,
-                  GUM_SCALAR& msg_l_max, std::vector<GUM_SCALAR>& lx,
-                  const Idx& pos);
+      _enum_combi( std::vector<std::vector<std::vector<GUM_SCALAR>>>& msgs_p,
+                   const NodeId& id, GUM_SCALAR& msg_l_min,
+                   GUM_SCALAR& msg_l_max, std::vector<GUM_SCALAR>& lx,
+                   const Idx& pos );
 
       /**
        * Sends a message to one's child, i.e. X is sending a message to a
@@ -246,7 +246,7 @@ namespace gum {
        * @param demanding_child The constant node id of the node receiving the
        * message.
        */
-      void _msgP(const NodeId X, const NodeId demanding_child);
+      void _msgP( const NodeId X, const NodeId demanding_child );
 
       /**
        * Used by _msgP. Enumerate parent's messages.
@@ -261,9 +261,9 @@ namespace gum {
        * be sent.
        */
       void
-      _enum_combi(std::vector<std::vector<std::vector<GUM_SCALAR>>>& msgs_p,
-                  const NodeId& id, GUM_SCALAR& msg_p_min,
-                  GUM_SCALAR& msg_p_max);
+      _enum_combi( std::vector<std::vector<std::vector<GUM_SCALAR>>>& msgs_p,
+                   const NodeId& id, GUM_SCALAR& msg_p_min,
+                   GUM_SCALAR& msg_p_max );
 
       /**
        * Used by _msgP. Marginalisation.
@@ -276,12 +276,12 @@ namespace gum {
        * message to
        * be sent.
        */
-      void _compute_ext(std::vector<std::vector<GUM_SCALAR>>& combi_msg_p,
-                        const NodeId& id, GUM_SCALAR& msg_p_min,
-                        GUM_SCALAR& msg_p_max);
+      void _compute_ext( std::vector<std::vector<GUM_SCALAR>>& combi_msg_p,
+                         const NodeId& id, GUM_SCALAR& msg_p_min,
+                         GUM_SCALAR& msg_p_max );
 
       /** Get the last messages from one's parents and children. */
-      void _refreshLMsPIs(bool refreshIndic = false);
+      void _refreshLMsPIs( bool refreshIndic = false );
 
       /**
        * Compute epsilon.
@@ -368,8 +368,8 @@ namespace gum {
       // typedef const CredalNet< GUM_SCALAR > * (infE::*cnfunc) ();
       // cnfunc getCN = &infE::getCN;
       public:
-      virtual void insertEvidenceFile(const std::string& path) {
-        InferenceEngine<GUM_SCALAR>::insertEvidenceFile(path);
+      virtual void insertEvidenceFile( const std::string& path ) {
+        InferenceEngine<GUM_SCALAR>::insertEvidenceFile( path );
       };
     };
 

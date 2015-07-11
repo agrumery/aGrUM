@@ -22,7 +22,7 @@ namespace CxxTest {
   TestSuite* DummySuiteDescription::suite() const { return 0; }
   unsigned DummySuiteDescription::numTests() const { return 0; }
   const TestDescription&
-  DummySuiteDescription::testDescription(unsigned) const {
+  DummySuiteDescription::testDescription( unsigned ) const {
     return _test;
   }
   SuiteDescription* DummySuiteDescription::next() { return 0; }
@@ -30,7 +30,7 @@ namespace CxxTest {
   const SuiteDescription* DummySuiteDescription::next() const { return 0; }
   const TestDescription* DummySuiteDescription::firstTest() const { return 0; }
   void DummySuiteDescription::activateAllTests() {}
-  bool DummySuiteDescription::leaveOnly(const char* /*testName*/) {
+  bool DummySuiteDescription::leaveOnly( const char* /*testName*/ ) {
     return false;
   }
 
@@ -39,10 +39,10 @@ namespace CxxTest {
 
   DummyWorldDescription::DummyWorldDescription() : _suite() {}
 
-  unsigned DummyWorldDescription::numSuites(void) const { return 0; }
-  unsigned DummyWorldDescription::numTotalTests(void) const { return 0; }
+  unsigned DummyWorldDescription::numSuites( void ) const { return 0; }
+  unsigned DummyWorldDescription::numTotalTests( void ) const { return 0; }
   const SuiteDescription&
-  DummyWorldDescription::suiteDescription(unsigned) const {
+  DummyWorldDescription::suiteDescription( unsigned ) const {
     return _suite;
   }
   SuiteDescription* DummyWorldDescription::firstSuite() { return 0; }
@@ -50,8 +50,8 @@ namespace CxxTest {
     return 0;
   }
   void DummyWorldDescription::activateAllTests() {}
-  bool DummyWorldDescription::leaveOnly(const char* /*suiteName*/,
-                                        const char* /*testName*/) {
+  bool DummyWorldDescription::leaveOnly( const char* /*suiteName*/,
+                                         const char* /*testName*/ ) {
     return false;
   }
 

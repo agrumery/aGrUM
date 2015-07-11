@@ -36,14 +36,14 @@ namespace gum {
   // Set DD1 diagram current explored Node
 
   INLINE
-  void O4DDContext::setDD1Node(gum::NodeId exploredNode) {
+  void O4DDContext::setDD1Node( gum::NodeId exploredNode ) {
     __DD1ExploredNode = exploredNode;
   }
 
   // Set DD2 diagram current explored Node
 
   INLINE
-  void O4DDContext::setDD2Node(gum::NodeId exploredNode) {
+  void O4DDContext::setDD2Node( gum::NodeId exploredNode ) {
     __DD2ExploredNode = exploredNode;
   }
 
@@ -56,23 +56,24 @@ namespace gum {
   // Inserts a new retrograde variable
 
   INLINE
-  void O4DDContext::addRetrogradeVar(const gum::DiscreteVariable* var) {
-    if (__varSeq.size() == __nbLogPrime)
-      GUM_ERROR(gum::OperationNotAllowed, "Not enough prime log2 in database. "
-                                          "Please add more in o4DDContext.cpp "
-                                          "files.");
+  void O4DDContext::addRetrogradeVar( const gum::DiscreteVariable* var ) {
+    if ( __varSeq.size() == __nbLogPrime )
+      GUM_ERROR( gum::OperationNotAllowed, "Not enough prime log2 in database. "
+                                           "Please add more in o4DDContext.cpp "
+                                           "files." );
 
-    __varSeq.insert(var);
-    __retrogradeVarInstantiation.push_back(0);
-    __var2PrimeLog.push_back(__logPrime[__nbLogPrime - __varSeq.pos(var) - 3]);
+    __varSeq.insert( var );
+    __retrogradeVarInstantiation.push_back( 0 );
+    __var2PrimeLog.push_back(
+        __logPrime[__nbLogPrime - __varSeq.pos( var ) - 3] );
   }
 
   // Changes given variable modality
 
   INLINE
-  void O4DDContext::chgVarModality(const gum::DiscreteVariable* var,
-                                   gum::Idx newModality) {
-    __retrogradeVarInstantiation[__varSeq.pos(var)] = newModality;
+  void O4DDContext::chgVarModality( const gum::DiscreteVariable* var,
+                                    gum::Idx newModality ) {
+    __retrogradeVarInstantiation[__varSeq.pos( var )] = newModality;
   }
 
   // Updates o4DDContextKey
@@ -82,7 +83,7 @@ namespace gum {
     double o4DDContextKey =
         __DD1ExploredNode * __DD1PrimeLog + __DD2ExploredNode * __DD2PrimeLog;
 
-    for (Idx i = 0; i < __retrogradeVarInstantiation.size(); i++)
+    for ( Idx i = 0; i < __retrogradeVarInstantiation.size(); i++ )
       o4DDContextKey += __retrogradeVarInstantiation[i] * __var2PrimeLog[i];
 
     return o4DDContextKey;

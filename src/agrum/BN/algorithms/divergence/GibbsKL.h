@@ -82,11 +82,11 @@ namespace gum {
      * or
      * compatible node sets.
      */
-    GibbsKL(const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q);
+    GibbsKL( const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q );
 
     /** copy constructor
      */
-    GibbsKL(const KL<GUM_SCALAR>& kl);
+    GibbsKL( const KL<GUM_SCALAR>& kl );
 
     /** destructor */
     ~GibbsKL();
@@ -97,7 +97,7 @@ namespace gum {
     using particle::Gibbs<GUM_SCALAR>::bn;
 
     protected:
-    void _computeKL(void);
+    void _computeKL( void );
 
     using KL<GUM_SCALAR>::_p;
     using KL<GUM_SCALAR>::_q;

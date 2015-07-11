@@ -46,7 +46,7 @@ namespace gum {
 
   /// for friendly displaying the content of the variable
 
-  std::ostream& operator<<(std::ostream& s, const DiscreteVariable& DRV) {
+  std::ostream& operator<<( std::ostream& s, const DiscreteVariable& DRV ) {
     s << DRV.toString();
     return s;
   }

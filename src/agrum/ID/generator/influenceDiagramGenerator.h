@@ -68,7 +68,7 @@ namespace gum {
      * The cptGenerator will be erased when the destructor is called.
      * @param cptGenerator The policy used to generate CPT.
      */
-    InfluenceDiagramGenerator(ICPTGenerator<GUM_SCALAR>* cptGenerator);
+    InfluenceDiagramGenerator( ICPTGenerator<GUM_SCALAR>* cptGenerator );
 
     /**
      * Use this constructor if you want to use a different policy for generating
@@ -76,7 +76,7 @@ namespace gum {
      * The utGenerator will be erased when the destructor is called.
      * @param utGenerator The policy used to generate UT.
      */
-    InfluenceDiagramGenerator(UTGenerator* utGenerator);
+    InfluenceDiagramGenerator( UTGenerator* utGenerator );
 
     /**
      * Use this constructor if you want to use a different policy for generating
@@ -86,8 +86,8 @@ namespace gum {
      * @param cptGenerator The policy used to generate CPT.
      * @param utGenerator The policy used to generate UT.
      */
-    InfluenceDiagramGenerator(ICPTGenerator<GUM_SCALAR>* cptGenerator,
-                              UTGenerator* utGenerator);
+    InfluenceDiagramGenerator( ICPTGenerator<GUM_SCALAR>* cptGenerator,
+                               UTGenerator* utGenerator );
 
     /**
      * Destructor.
@@ -108,15 +108,15 @@ namespace gum {
      * @param max_modality Each DRV has from 2 to max_modality modalities
      * @return A IDs randomly generated.
      */
-    InfluenceDiagram<GUM_SCALAR>* generateID(Size nbrNodes, float arcDensity,
-                                             float chanceNodeDensity,
-                                             float utilityNodeDensity,
-                                             int max_modality = 2);
+    InfluenceDiagram<GUM_SCALAR>* generateID( Size nbrNodes, float arcDensity,
+                                              float chanceNodeDensity,
+                                              float utilityNodeDensity,
+                                              int max_modality = 2 );
 
     /// @}
     private:
     // Check if a temporal order exists and creates ones if not
-    void __checkTemporalOrder(InfluenceDiagram<GUM_SCALAR>* infdiag);
+    void __checkTemporalOrder( InfluenceDiagram<GUM_SCALAR>* infdiag );
     // The Conditional Probability Table generator
     ICPTGenerator<GUM_SCALAR>* __cptGenerator;
     // The Utility Table generator

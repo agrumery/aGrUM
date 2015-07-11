@@ -56,9 +56,9 @@ namespace gum {
   template <typename GUM_SCALAR> class PartialInstantiationRegister4MultiDim {
     public:
     /// the type of functions used by the register
-    typedef MultiDimImplementation<GUM_SCALAR>* (*PartialInstantiationPtr)(
+    typedef MultiDimImplementation<GUM_SCALAR>* ( *PartialInstantiationPtr )(
         const MultiDimImplementation<GUM_SCALAR>*,
-        const HashTable<const DiscreteVariable*, Idx>&);
+        const HashTable<const DiscreteVariable*, Idx>& );
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -83,9 +83,9 @@ namespace gum {
      * type \e type_multidim, it should be declared as taking in argument
      * two MultiDimImplementations. This constraint is imposed by the C++ typing
      * system */
-    void insert(const std::string& instantiation_func_name,
-                const std::string& type_multidim,
-                PartialInstantiationPtr newFunction);
+    void insert( const std::string& instantiation_func_name,
+                 const std::string& type_multidim,
+                 PartialInstantiationPtr newFunction );
 
     /// removes a given entry from the register
     /** removes the function, if any, that performs the instantiation described
@@ -97,8 +97,8 @@ namespace gum {
      * @param type_multidim the \e real type of the multiDim taken in argument
      * by
      * the function to remove */
-    void erase(const std::string& instantiation_func_name,
-               const std::string& type_multidim);
+    void erase( const std::string& instantiation_func_name,
+                const std::string& type_multidim );
 
     /// indicates whether a given entry exists in the register
     /** indicates if the register contains a function that performs the
@@ -109,8 +109,8 @@ namespace gum {
      * @param type_multidim the \e real type of the multiDim taken in argument
      * by
      * the function we look for */
-    bool exists(const std::string& instantiation_func_name,
-                const std::string& type_multidim) const;
+    bool exists( const std::string& instantiation_func_name,
+                 const std::string& type_multidim ) const;
 
     /** @brief returns the specialized partial instantiation operator assigned
      *to
@@ -127,8 +127,8 @@ namespace gum {
      * the function we look for
      * @throws NotFound exception is thrown if the operator we look for does not
      * exist within this register. */
-    PartialInstantiationPtr get(const std::string& instantiation_func_name,
-                                const std::string& type_multidim) const;
+    PartialInstantiationPtr get( const std::string& instantiation_func_name,
+                                 const std::string& type_multidim ) const;
 
     /// @}
 
@@ -155,7 +155,7 @@ namespace gum {
 
     /// copy operator: never to be used
     PartialInstantiationRegister4MultiDim(
-        const PartialInstantiationRegister4MultiDim&);
+        const PartialInstantiationRegister4MultiDim& );
 
     /// destructor
     ~PartialInstantiationRegister4MultiDim();
@@ -184,7 +184,7 @@ namespace gum {
       const std::string& instantiation_func_name,
       const std::string& type_multidim,
       typename PartialInstantiationRegister4MultiDim<
-          GUM_SCALAR>::PartialInstantiationPtr function);
+          GUM_SCALAR>::PartialInstantiationPtr function );
 
   // a display operator for PartialInstantiationPtrs
 

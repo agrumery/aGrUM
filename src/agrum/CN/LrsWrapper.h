@@ -68,7 +68,7 @@
 #endif
 /* ************ */
 
-#define enumStringify(name) #name
+#define enumStringify( name ) #name
 
 namespace gum {
   namespace credal {
@@ -120,11 +120,11 @@ namespace gum {
        * avoid
        * making - invisible - mistakes. */
       enum class __states : char {
-        none = char(0),
-        Hup = char(1),
-        Vup = char(2),
-        H2Vready = char(3),
-        V2Hready = char(4),
+        none = char( 0 ),
+        Hup = char( 1 ),
+        Vup = char( 2 ),
+        H2Vready = char( 3 ),
+        V2Hready = char( 4 ),
       };
 
       /** @brief The current state of the LrsWrapper. */
@@ -136,11 +136,11 @@ namespace gum {
       /** @brief To print an enum field name instead of it's value. Used with
        * GUM_ERROR. */
       const char* __setUpStateNames[5] = {
-          enumStringify(__states::none),
-          enumStringify(__states::nHup),
-          enumStringify(__states::nVup),
-          enumStringify(__states::nH2Vready),
-          enumStringify(__states::nV2Hready),
+          enumStringify( __states::none ),
+          enumStringify( __states::nHup ),
+          enumStringify( __states::nVup ),
+          enumStringify( __states::nH2Vready ),
+          enumStringify( __states::nV2Hready ),
       };
 
       /**
@@ -223,9 +223,9 @@ namespace gum {
        * @param Num Output integer numerators.
        * @param Den Output integer denominators.
        */
-      void __getLRSWrapperOutput(lrs_mp Nin, lrs_mp Din,
-                                 std::vector<long int>& Num,
-                                 std::vector<long int>& Den) const;
+      void __getLRSWrapperOutput( lrs_mp Nin, lrs_mp Din,
+                                  std::vector<long int>& Num,
+                                  std::vector<long int>& Den ) const;
 
       /// @}
 
@@ -297,7 +297,7 @@ namespace gum {
        *\c __state to \c __states::Hup.
        * @param card A constant reference to the cardinality of the variable.
        */
-      void setUpH(const unsigned int& card);
+      void setUpH( const unsigned int& card );
 
       /**
        * @brief %Sets up a V-representation.
@@ -309,7 +309,7 @@ namespace gum {
        * @param vertices A constant reference to the number of vertices of the
        *polytope.
        */
-      void setUpV(const unsigned int& card, const unsigned int& vertices);
+      void setUpV( const unsigned int& card, const unsigned int& vertices );
 
       /**
        * @brief Reset the wrapper as if it was built.
@@ -349,8 +349,8 @@ namespace gum {
        * @param max The upper value of p(X=modal | .).
        * @param modal The modality on which we put constraints.
        */
-      void fillH(const GUM_SCALAR& min, const GUM_SCALAR& max,
-                 const unsigned int& modal);
+      void fillH( const GUM_SCALAR& min, const GUM_SCALAR& max,
+                  const unsigned int& modal );
 
       /**
        * @brief Fill the H-representation from the matrix given in argument.
@@ -359,7 +359,7 @@ namespace gum {
        *+ Ax,
        *A is the matrix, each column the coefficient of the variable in x.
        */
-      void fillMatrix(const std::vector<std::vector<GUM_SCALAR>>& matrix);
+      void fillMatrix( const std::vector<std::vector<GUM_SCALAR>>& matrix );
 
       /**
        * @brief Creates the V-representation of a polytope by adding a vertex to
@@ -369,7 +369,7 @@ namespace gum {
        * @param vertex The vertex we wish to add to the V-representation of the
        *polytope.
        */
-      void fillV(const std::vector<GUM_SCALAR>& vertex);
+      void fillV( const std::vector<GUM_SCALAR>& vertex );
 
       /// @}
 

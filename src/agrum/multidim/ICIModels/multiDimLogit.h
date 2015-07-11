@@ -58,11 +58,11 @@ namespace gum {
     /** Default constructor.
      * default_weight is 0 for logit model.
      **/
-    MultiDimLogit(GUM_SCALAR external_weight,
-                  GUM_SCALAR default_weight = (GUM_SCALAR)0.0);
+    MultiDimLogit( GUM_SCALAR external_weight,
+                   GUM_SCALAR default_weight = (GUM_SCALAR)0.0 );
 
     ///
-    MultiDimLogit(const MultiDimLogit<GUM_SCALAR>& from);
+    MultiDimLogit( const MultiDimLogit<GUM_SCALAR>& from );
 
     /** Copy constructor using a bijection to swap variables from source.
     * @param bij First variables are new variables, seconds are in from.
@@ -70,7 +70,7 @@ namespace gum {
     */
     MultiDimLogit(
         const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-        const MultiDimLogit<GUM_SCALAR>& from);
+        const MultiDimLogit<GUM_SCALAR>& from );
 
     /// Destructor.
     virtual ~MultiDimLogit();
@@ -98,9 +98,9 @@ namespace gum {
     /// @{
 
     public:
-    virtual GUM_SCALAR get(const Instantiation& i) const;
+    virtual GUM_SCALAR get( const Instantiation& i ) const;
 
-    const std::string toString(void) const;
+    const std::string toString( void ) const;
 
     /// returns the real name of the multiDimArray
     /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
@@ -123,8 +123,8 @@ namespace gum {
 
   /// For friendly displaying the content of the array.
   template <typename GUM_SCALAR>
-  std::ostream& operator<<(std::ostream& s,
-                           const MultiDimLogit<GUM_SCALAR>& ag);
+  std::ostream& operator<<( std::ostream& s,
+                            const MultiDimLogit<GUM_SCALAR>& ag );
 
 } /* namespace gum */
 

@@ -75,7 +75,7 @@ namespace gum {
       /// Default constructor.
 
       MultiDimAggregator();
-      MultiDimAggregator(const MultiDimAggregator<GUM_SCALAR>& from);
+      MultiDimAggregator( const MultiDimAggregator<GUM_SCALAR>& from );
 
       /// Destructor.
 
@@ -104,26 +104,26 @@ namespace gum {
       /// @{
 
       public:
-      virtual GUM_SCALAR get(const Instantiation& i) const;
+      virtual GUM_SCALAR get( const Instantiation& i ) const;
 
-      virtual std::string aggregatorName(void) const = 0;
-      const std::string toString(void) const;
+      virtual std::string aggregatorName( void ) const = 0;
+      const std::string toString( void ) const;
 
-      virtual void changeNotification(gum::Instantiation&,
-                                      const gum::DiscreteVariable*,
-                                      const gum::Idx&, const gum::Idx&){};
+      virtual void changeNotification( gum::Instantiation&,
+                                       const gum::DiscreteVariable*,
+                                       const gum::Idx&, const gum::Idx& ){};
 
-      virtual void setFirstNotification(gum::Instantiation&){};
+      virtual void setFirstNotification( gum::Instantiation& ){};
 
-      virtual void setLastNotification(gum::Instantiation&){};
+      virtual void setLastNotification( gum::Instantiation& ){};
 
-      virtual void setIncNotification(gum::Instantiation&){};
+      virtual void setIncNotification( gum::Instantiation& ){};
 
-      virtual void setDecNotification(gum::Instantiation&){};
+      virtual void setDecNotification( gum::Instantiation& ){};
 
-      virtual void setChangeNotification(gum::Instantiation&){};
+      virtual void setChangeNotification( gum::Instantiation& ){};
 
-      const std::string toString(const gum::Instantiation* i) const {
+      const std::string toString( const gum::Instantiation* i ) const {
         return i->toString();
       };
 
@@ -150,15 +150,16 @@ namespace gum {
       /// @}
       protected:
       /// _neutralElt() is the result value for the first application of _folder
-      virtual Idx _neutralElt(void) const = 0;
+      virtual Idx _neutralElt( void ) const = 0;
 
       /// _folder is applied on value i1 for variable v. the actual result for
       /// precedent applications is i2.
       /// @return the new result for applications up to v.
-      virtual Idx _folder(const DiscreteVariable& v, Idx i1, Idx i2,
-                          bool& stop_iteration) const = 0;
+      virtual Idx _folder( const DiscreteVariable& v, Idx i1, Idx i2,
+                           bool& stop_iteration ) const = 0;
 
-      virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+      virtual void _swap( const DiscreteVariable* x,
+                          const DiscreteVariable* y );
     };
 
     extern template class MultiDimAggregator<float>;
@@ -166,8 +167,8 @@ namespace gum {
 
     /// For friendly displaying the content of the array.
     template <typename GUM_SCALAR>
-    std::ostream& operator<<(std::ostream& s,
-                             const MultiDimAggregator<GUM_SCALAR>& ag);
+    std::ostream& operator<<( std::ostream& s,
+                              const MultiDimAggregator<GUM_SCALAR>& ag );
 
   } /* namespace aggregator */
 } /* namespace gum */

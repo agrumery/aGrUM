@@ -33,17 +33,17 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE Max<GUM_SCALAR>::Max()
         : MultiDimAggregator<GUM_SCALAR>() {
-      GUM_CONSTRUCTOR(Max)
+      GUM_CONSTRUCTOR( Max )
     }
 
     template <typename GUM_SCALAR>
-    INLINE Max<GUM_SCALAR>::Max(const Max<GUM_SCALAR>& from)
-        : MultiDimAggregator<GUM_SCALAR>(from) {
-      GUM_CONS_CPY(Max);
+    INLINE Max<GUM_SCALAR>::Max( const Max<GUM_SCALAR>& from )
+        : MultiDimAggregator<GUM_SCALAR>( from ) {
+      GUM_CONS_CPY( Max );
     }
 
     template <typename GUM_SCALAR> INLINE Max<GUM_SCALAR>::~Max() {
-      GUM_DESTRUCTOR(Max);
+      GUM_DESTRUCTOR( Max );
     }
 
     template <typename GUM_SCALAR>
@@ -52,13 +52,13 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Idx Max<GUM_SCALAR>::_folder(const DiscreteVariable& v, Idx i1,
-                                        Idx i2, bool& stop_iteration) const {
-      return (i1 > i2) ? i1 : i2;
+    INLINE Idx Max<GUM_SCALAR>::_folder( const DiscreteVariable& v, Idx i1,
+                                         Idx i2, bool& stop_iteration ) const {
+      return ( i1 > i2 ) ? i1 : i2;
     }
 
     template <typename GUM_SCALAR>
-    INLINE std::string Max<GUM_SCALAR>::aggregatorName(void) const {
+    INLINE std::string Max<GUM_SCALAR>::aggregatorName( void ) const {
       return "max";
     }
 

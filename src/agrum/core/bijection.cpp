@@ -38,16 +38,16 @@ namespace gum {
   BijectionIteratorStaticEnd::endSafe4Statics() {
     static bool first_time = true;
 
-    if (first_time) {
+    if ( first_time ) {
       first_time = false;
       __BijectionIterEndSafe = new BijectionIteratorSafe<int, int>;
 #ifndef NDEBUG
-      __debug__::__dec_creation("BijectionIteratorSafe",
-                                "__bijection_static_end", 0,
-                                "static variable correction", 0);
-      __debug__::__dec_creation("HashTableConstIteratorSafe",
-                                "__bijection_static_end", 0,
-                                "static variable correction", 0);
+      __debug__::__dec_creation( "BijectionIteratorSafe",
+                                 "__bijection_static_end", 0,
+                                 "static variable correction", 0 );
+      __debug__::__dec_creation( "HashTableConstIteratorSafe",
+                                 "__bijection_static_end", 0,
+                                 "static variable correction", 0 );
 #endif
     }
 
@@ -58,15 +58,15 @@ namespace gum {
   const BijectionIterator<int, int>* BijectionIteratorStaticEnd::end4Statics() {
     static bool first_time = true;
 
-    if (first_time) {
+    if ( first_time ) {
       first_time = false;
       __BijectionIterEnd = new BijectionIterator<int, int>;
 #ifndef NDEBUG
-      __debug__::__dec_creation("BijectionIterator", "__bijection_static_end",
-                                0, "static variable correction", 0);
-      __debug__::__dec_creation("HashTableConstIterator",
-                                "__bijection_static_end", 0,
-                                "static variable correction", 0);
+      __debug__::__dec_creation( "BijectionIterator", "__bijection_static_end",
+                                 0, "static variable correction", 0 );
+      __debug__::__dec_creation( "HashTableConstIterator",
+                                 "__bijection_static_end", 0,
+                                 "static variable correction", 0 );
 #endif
     }
 

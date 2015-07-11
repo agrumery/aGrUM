@@ -55,16 +55,16 @@ namespace gum {
       DBCell();
 
       /// constructor for a number
-      DBCell(float nb);
+      DBCell( float nb );
 
       /// constructor for a string
-      DBCell(const std::string& str);
+      DBCell( const std::string& str );
 
       /// copy constructor
-      DBCell(const DBCell& from);
+      DBCell( const DBCell& from );
 
       /// move constructor
-      DBCell(DBCell&& from);
+      DBCell( DBCell&& from );
 
       /// destructor
       ~DBCell();
@@ -78,18 +78,18 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBCell& operator=(const DBCell& from);
+      DBCell& operator=( const DBCell& from );
 
       /// move operator
-      DBCell& operator=(DBCell&& from);
+      DBCell& operator=( DBCell&& from );
 
       /// unsafe set operator (assumes that the preceding type is of the same
       /// type)
-      DBCell& operator=(float x) noexcept;
+      DBCell& operator=( float x ) noexcept;
 
       /// unsafe set operator (assumes that the preceding type is of the same
       /// type)
-      DBCell& operator=(const std::string& x) noexcept;
+      DBCell& operator=( const std::string& x ) noexcept;
 
       /// @}
 
@@ -109,10 +109,10 @@ namespace gum {
       float getFloatSafe() const;
 
       /// unsafe set (assumes that the preceding type is of the same type)
-      void setFloat(float x);
+      void setFloat( float x );
 
       /// sets the content of the DBCell (safe type checking)
-      void setFloatSafe(float elt);
+      void setFloatSafe( float elt );
 
       /// returns the DBcell as a string (without checking its type)
       /** @warning this method is unsafe: it assumes that you know the
@@ -135,13 +135,13 @@ namespace gum {
       int getStringIndexSafe() const;
 
       /// strings are stored into a static bijection. Get its ith string
-      static const std::string& getString(unsigned int index);
+      static const std::string& getString( unsigned int index );
 
       /// unsafe set (assumes that the preceding type is of the same type)
-      void setString(const std::string& x);
+      void setString( const std::string& x );
 
       /// sets the content of the DBCell (safe type checking)
-      void setStringSafe(const std::string& elt);
+      void setStringSafe( const std::string& elt );
 
       /// sets the DBCell as a missing element
       void setMissingSafe();
@@ -150,23 +150,23 @@ namespace gum {
       /** This method is used to parse the string passed in argument and
        * estimate which internal type is the most appropriate for the DBCell.
        * Then it fills the DBCell with this type. */
-      void setBestTypeSafe(const std::string& elt);
+      void setBestTypeSafe( const std::string& elt );
 
       /** @brief safely sets the content of the DBCell with the preceding type
        * or,
        * if this is not possible, with the best possible type */
-      void setAgainTypeSafe(const std::string& elt);
+      void setAgainTypeSafe( const std::string& elt );
 
       /// returns the current type of the DBCell
       EltType type() const noexcept;
 
       /// try to convert the content of the DBCell into another type
-      bool convertType(EltType);
+      bool convertType( EltType );
 
       /// @}
 
       private:
-      using Float = typename std::conditional<sizeof(float) >= sizeof(int),
+      using Float = typename std::conditional<sizeof( float ) >= sizeof( int ),
                                               float, double>::type;
 
       /// the real type of the last element read from the database
@@ -186,7 +186,7 @@ namespace gum {
 
       /// sets the content of the DBCell from a string
       /** @throws std::invalid_argument if the string cannot be converted */
-      void __setFloatFromStringSafe(const std::string& str);
+      void __setFloatFromStringSafe( const std::string& str );
     };
 
   } /* namespace learning */

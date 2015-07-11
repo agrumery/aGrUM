@@ -68,7 +68,8 @@ namespace gum {
      * clone constructor.
      * @arg md is used for initialize approximation policy
      */
-    MultiDimDecisionDiagramFactory(const IApproximationPolicy<GUM_SCALAR>& md);
+    MultiDimDecisionDiagramFactory(
+        const IApproximationPolicy<GUM_SCALAR>& md );
 
     /**
      * Destructor.
@@ -84,17 +85,17 @@ namespace gum {
      * Returns the multidimDecisionDiagram made
      */
     MultiDimDecisionDiagramBase<GUM_SCALAR>*
-    getMultiDimDecisionDiagram(bool fillWithDefaultArc = true,
-                               GUM_SCALAR defaultValue = 0,
-                               bool doCompress = false);
+    getMultiDimDecisionDiagram( bool fillWithDefaultArc = true,
+                                GUM_SCALAR defaultValue = 0,
+                                bool doCompress = false );
 
     /// Convert value to approximation representation
-    inline GUM_SCALAR fromExact(const GUM_SCALAR& value) const {
-      return IApproximationPolicy<GUM_SCALAR>::fromExact(value);
+    inline GUM_SCALAR fromExact( const GUM_SCALAR& value ) const {
+      return IApproximationPolicy<GUM_SCALAR>::fromExact( value );
     };
 
     private:
-    void __mergedNode(NodeId from, NodeId to);
+    void __mergedNode( NodeId from, NodeId to );
   };
 
 } /* namespace gum */

@@ -32,39 +32,39 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE
     ScoreInternalNoApriori<IdSetAlloc, CountAlloc>::ScoreInternalNoApriori() {
-      GUM_CONSTRUCTOR(ScoreInternalNoApriori);
+      GUM_CONSTRUCTOR( ScoreInternalNoApriori );
     }
 
     /// copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE
     ScoreInternalNoApriori<IdSetAlloc, CountAlloc>::ScoreInternalNoApriori(
-        const ScoreInternalNoApriori<IdSetAlloc, CountAlloc>& from)
-        : ScoreInternalApriori<IdSetAlloc, CountAlloc>(from) {
-      GUM_CONS_CPY(ScoreInternalNoApriori);
+        const ScoreInternalNoApriori<IdSetAlloc, CountAlloc>& from )
+        : ScoreInternalApriori<IdSetAlloc, CountAlloc>( from ) {
+      GUM_CONS_CPY( ScoreInternalNoApriori );
     }
 
     /// move constructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE
     ScoreInternalNoApriori<IdSetAlloc, CountAlloc>::ScoreInternalNoApriori(
-        ScoreInternalNoApriori<IdSetAlloc, CountAlloc>&& from)
-        : ScoreInternalApriori<IdSetAlloc, CountAlloc>(std::move(from)) {
-      GUM_CONS_MOV(ScoreInternalNoApriori);
+        ScoreInternalNoApriori<IdSetAlloc, CountAlloc>&& from )
+        : ScoreInternalApriori<IdSetAlloc, CountAlloc>( std::move( from ) ) {
+      GUM_CONS_MOV( ScoreInternalNoApriori );
     }
 
     /// virtual copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE ScoreInternalNoApriori<IdSetAlloc, CountAlloc>*
     ScoreInternalNoApriori<IdSetAlloc, CountAlloc>::copyFactory() const {
-      return new ScoreInternalNoApriori<IdSetAlloc, CountAlloc>(*this);
+      return new ScoreInternalNoApriori<IdSetAlloc, CountAlloc>( *this );
     }
 
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE ScoreInternalNoApriori<IdSetAlloc,
                                   CountAlloc>::~ScoreInternalNoApriori() {
-      GUM_DESTRUCTOR(ScoreInternalNoApriori);
+      GUM_DESTRUCTOR( ScoreInternalNoApriori );
     }
 
     /// insert the internal score apriori into a set of countings
@@ -76,7 +76,7 @@ namespace gum {
         const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
                                     unsigned int>*>& target_nodesets,
         const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                    unsigned int>*>& conditioning_nodesets) {}
+                                    unsigned int>*>& conditioning_nodesets ) {}
 
     /// indicates whether the apriori is potentially informative
     template <typename IdSetAlloc, typename CountAlloc>

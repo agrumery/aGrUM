@@ -33,14 +33,14 @@ namespace gum {
 
   Triangulation::Triangulation() {
     // for debugging purposes
-    GUM_CONSTRUCTOR(Triangulation);
+    GUM_CONSTRUCTOR( Triangulation );
   }
 
   /// destructor
 
   Triangulation::~Triangulation() {
     // for debugging purposes
-    GUM_DESTRUCTOR(Triangulation);
+    GUM_DESTRUCTOR( Triangulation );
   }
 
   double Triangulation::maxLog10CliqueDomainSize() {
@@ -48,13 +48,13 @@ namespace gum {
     double dSize;
     const JunctionTree& jt = junctionTree();
 
-    for (const auto cl : jt.nodes()) {
+    for ( const auto cl : jt.nodes() ) {
       dSize = 0.0;
 
-      for (const auto nod : jt.clique(cl))
-        dSize += std::log10(_modalities[nod]);
+      for ( const auto nod : jt.clique( cl ) )
+        dSize += std::log10( _modalities[nod] );
 
-      if (res < dSize)
+      if ( res < dSize )
         res = dSize;
     }
 

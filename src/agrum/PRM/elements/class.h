@@ -67,14 +67,14 @@ namespace gum {
        * Default constructor.
        * @param name The class name.
        */
-      Class(const std::string& name);
+      Class( const std::string& name );
 
       /**
        * Constructor for building a subclass of super.
        * @param name The subclass name.
        * @param super The super Class<GUM_SCALAR> of this.
        */
-      Class(const std::string& name, Class<GUM_SCALAR>& super);
+      Class( const std::string& name, Class<GUM_SCALAR>& super );
 
       /**
        * Constructor for building a Class<GUM_SCALAR> implementing several each
@@ -83,7 +83,7 @@ namespace gum {
        * @param name The sub class name.
        * @param set The Set of implemented interfaces.
        */
-      Class(const std::string& name, const Set<Interface<GUM_SCALAR>*>& set);
+      Class( const std::string& name, const Set<Interface<GUM_SCALAR>*>& set );
 
       /**
        * Constructor for building a subclass of super and implementing each
@@ -92,11 +92,11 @@ namespace gum {
        * @param super The super Class<GUM_SCALAR> of this.
        * @param set The Set of implemented interfaces.
        */
-      Class(const std::string& name, Class<GUM_SCALAR>& super,
-            const Set<Interface<GUM_SCALAR>*>& set);
+      Class( const std::string& name, Class<GUM_SCALAR>& super,
+             const Set<Interface<GUM_SCALAR>*>& set );
 
       /// Copy constructor.
-      Class(const Class<GUM_SCALAR>& source);
+      Class( const Class<GUM_SCALAR>& source );
 
       /// Destructor.
       virtual ~Class();
@@ -110,10 +110,10 @@ namespace gum {
       /// @{
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(NodeId).
-      ClassElement<GUM_SCALAR>& get(NodeId id);
+      ClassElement<GUM_SCALAR>& get( NodeId id );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(NodeId).
-      const ClassElement<GUM_SCALAR>& get(NodeId id) const;
+      const ClassElement<GUM_SCALAR>& get( NodeId id ) const;
 
       /// @}
       // ========================================================================
@@ -133,24 +133,24 @@ namespace gum {
        * Attribute<GUM_SCALAR>
        *                 in this Class<GUM_SCALAR>.
        */
-      bool isCastDescendant(const std::string& safe_name) const;
+      bool isCastDescendant( const std::string& safe_name ) const;
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
-      ClassElement<GUM_SCALAR>& get(const std::string& name);
+      ClassElement<GUM_SCALAR>& get( const std::string& name );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
-      const ClassElement<GUM_SCALAR>& get(const std::string& name) const;
+      const ClassElement<GUM_SCALAR>& get( const std::string& name ) const;
 
       /// See gum::prm::add(ClassElement<GUM_SCALAR>*).
-      virtual NodeId add(ClassElement<GUM_SCALAR>* elt);
+      virtual NodeId add( ClassElement<GUM_SCALAR>* elt );
 
       /// See gum::prm::overload(ClassElement<GUM_SCALAR>*).
-      virtual NodeId overload(ClassElement<GUM_SCALAR>* elt);
+      virtual NodeId overload( ClassElement<GUM_SCALAR>* elt );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::addArc().
-      virtual void addArc(const std::string& tail, const std::string& head);
+      virtual void addArc( const std::string& tail, const std::string& head );
 
       /**
        * Returns the set of Attribute<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -218,7 +218,7 @@ namespace gum {
        * @return Returns true if this Class<GUM_SCALAR> is a subclass of cec.
        */
       virtual bool
-      isSubTypeOf(const ClassElementContainer<GUM_SCALAR>& cec) const;
+      isSubTypeOf( const ClassElementContainer<GUM_SCALAR>& cec ) const;
 
       /**
        * @brief Returns the super Class<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -248,18 +248,19 @@ namespace gum {
       /// @{
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](NodeId).
-      ClassElement<GUM_SCALAR>& operator[](NodeId id);
+      ClassElement<GUM_SCALAR>& operator[]( NodeId id );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](NodeId).
-      const ClassElement<GUM_SCALAR>& operator[](NodeId id) const;
+      const ClassElement<GUM_SCALAR>& operator[]( NodeId id ) const;
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
-      ClassElement<GUM_SCALAR>& operator[](const std::string& name);
+      ClassElement<GUM_SCALAR>& operator[]( const std::string& name );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
-      const ClassElement<GUM_SCALAR>& operator[](const std::string& name) const;
+      const ClassElement<GUM_SCALAR>&
+      operator[]( const std::string& name ) const;
 
       /// @}
       protected:
@@ -271,15 +272,15 @@ namespace gum {
       virtual DAG& _dag();
 
       /// Fills set with all the subtypes of this Class<GUM_SCALAR>.
-      void _findAllSubtypes(Set<ClassElementContainer<GUM_SCALAR>*>& set);
+      void _findAllSubtypes( Set<ClassElementContainer<GUM_SCALAR>*>& set );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>(const
       /// ClassElement<GUM_SCALAR>&).
-      void _updateDescendants(const ClassElement<GUM_SCALAR>& elt);
+      void _updateDescendants( const ClassElement<GUM_SCALAR>& elt );
 
       private:
       /// Copy operator. Don't use it.
-      Class<GUM_SCALAR>& operator=(const Class<GUM_SCALAR>& source);
+      Class<GUM_SCALAR>& operator=( const Class<GUM_SCALAR>& source );
 
       /// Proceed with the copy of c in this.
       // void __copyClass<GUM_SCALAR>(const Class<GUM_SCALAR>& c);
@@ -323,12 +324,12 @@ namespace gum {
       Set<Parameter<GUM_SCALAR>*> __parameters;
 
       /// Recursively adds cast descendant of attr in this Class<GUM_SCALAR>.
-      void __addCastDescendants(Attribute<GUM_SCALAR>* attr);
+      void __addCastDescendants( Attribute<GUM_SCALAR>* attr );
 
       /// Recursively adds cast descendant from start to end in this
       /// Class<GUM_SCALAR>.
-      void __addCastDescendants(Attribute<GUM_SCALAR>* start,
-                                Attribute<GUM_SCALAR>* end);
+      void __addCastDescendants( Attribute<GUM_SCALAR>* start,
+                                 Attribute<GUM_SCALAR>* end );
 
       /// @}
       // ========================================================================
@@ -351,11 +352,11 @@ namespace gum {
       Set<Class<GUM_SCALAR>*> __extensions;
 
       /// Proceed with the copy when this inherits c.
-      void __inheritClass(const Class<GUM_SCALAR>& c);
+      void __inheritClass( const Class<GUM_SCALAR>& c );
 
       /// Check if elt is present in an implementation. If it is, its IO flags
       /// are updated.
-      void __addIOInterfaceFlags(ClassElement<GUM_SCALAR>* elt);
+      void __addIOInterfaceFlags( ClassElement<GUM_SCALAR>* elt );
 
       /// This method is called when a sub-Class<GUM_SCALAR> of this
       /// Class<GUM_SCALAR> is created.
@@ -363,27 +364,28 @@ namespace gum {
       /// of this.
       /// @throw DuplicateElement Raised if c is already a sub-Class<GUM_SCALAR>
       /// of this.
-      void __addExtension(Class<GUM_SCALAR>* c);
+      void __addExtension( Class<GUM_SCALAR>* c );
 
       /// Return true of overloaded can be overload by overloader.
-      bool __checkOverloadLegality(const ClassElement<GUM_SCALAR>* overloaded,
-                                   const ClassElement<GUM_SCALAR>* overloader);
+      bool
+      __checkOverloadLegality( const ClassElement<GUM_SCALAR>* overloaded,
+                               const ClassElement<GUM_SCALAR>* overloader );
 
       /// Overloads an attribute.
-      void __overloadAttribute(Attribute<GUM_SCALAR>* overloader,
-                               Attribute<GUM_SCALAR>* overloaded);
+      void __overloadAttribute( Attribute<GUM_SCALAR>* overloader,
+                                Attribute<GUM_SCALAR>* overloaded );
 
       /// Overloads an aggregate.
-      void __overloadAggregate(Aggregate<GUM_SCALAR>* overloader,
-                               ClassElement<GUM_SCALAR>* overloaded);
+      void __overloadAggregate( Aggregate<GUM_SCALAR>* overloader,
+                                ClassElement<GUM_SCALAR>* overloaded );
 
       /// Overloads a reference slot.
-      void __overloadReference(ReferenceSlot<GUM_SCALAR>* overloader,
-                               ReferenceSlot<GUM_SCALAR>* overloaded);
+      void __overloadReference( ReferenceSlot<GUM_SCALAR>* overloader,
+                                ReferenceSlot<GUM_SCALAR>* overloaded );
 
       /// Overloads a parameter.
-      void __overloadParameter(Parameter<GUM_SCALAR>* overloader,
-                               Parameter<GUM_SCALAR>* overloaded);
+      void __overloadParameter( Parameter<GUM_SCALAR>* overloader,
+                                Parameter<GUM_SCALAR>* overloaded );
 
       /// @}
     };

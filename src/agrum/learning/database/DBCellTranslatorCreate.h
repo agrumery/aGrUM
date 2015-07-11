@@ -84,14 +84,14 @@ namespace gum {
       /** The set of columns given in argument corresponds to the columns
        * required by the translator to execute @b once. If you wish to apply the
        * translator several times, use class Create instead. */
-      CreateOnce(const Translator& translator = Translator(),
-                 const Cols& s = Cols());
+      CreateOnce( const Translator& translator = Translator(),
+                  const Cols& s = Cols() );
 
       /// copy constructor
-      CreateOnce(const CreateOnce<Translator, Cols>& call);
+      CreateOnce( const CreateOnce<Translator, Cols>& call );
 
       /// move constructor
-      CreateOnce(CreateOnce<Translator, Cols>&& call);
+      CreateOnce( CreateOnce<Translator, Cols>&& call );
 
       /// destructor
       ~CreateOnce() noexcept;
@@ -106,11 +106,11 @@ namespace gum {
 
       /// copy operator
       CreateOnce<Translator, Cols>&
-      operator=(const CreateOnce<Translator, Cols>& from);
+      operator=( const CreateOnce<Translator, Cols>& from );
 
       /// move operator
       CreateOnce<Translator, Cols>&
-      operator=(CreateOnce<Translator, Cols>&& from);
+      operator=( CreateOnce<Translator, Cols>&& from );
 
       /// @}
 
@@ -121,14 +121,14 @@ namespace gum {
       /// @{
 
       /// sets the row that will be read by the translator
-      void setInputRow(const DBRow& row) noexcept;
+      void setInputRow( const DBRow& row ) noexcept;
 
       /// sets the row to which the output will be written by the translator
-      void setOutputRow(FilteredRow& row) noexcept;
+      void setOutputRow( FilteredRow& row ) noexcept;
 
       /** @brief sets the columns of the output vector which will be written
        * by the translator */
-      void setOutputCols(unsigned int first_col) noexcept;
+      void setOutputCols( unsigned int first_col ) noexcept;
 
       /// returns the current input DBRow
       const DBRow& inputRow() const noexcept;
@@ -154,8 +154,8 @@ namespace gum {
        * @param translated_val the value in _output_cols of which we want to
        * know the original value (that which was actually read from the
        * database) */
-      std::string translateBack(unsigned int col,
-                                unsigned int translated_val) const;
+      std::string translateBack( unsigned int col,
+                                 unsigned int translated_val ) const;
 
       /// initialize the cell filters by parsing once the database
       /** If initialization is required, this method is called for each row
@@ -172,7 +172,7 @@ namespace gum {
 
       /// push back the number of modalities of the variables of the output
       /// columns
-      void modalities(std::vector<unsigned int>& modals) const;
+      void modalities( std::vector<unsigned int>& modals ) const;
 
       /// returns the size of the input for this cell translator
       unsigned int inputSize() const noexcept;
@@ -256,10 +256,10 @@ namespace gum {
       Create();
 
       /// copy constructor
-      Create(const Create<Translator, Cols, nb_times, ColsIncr>& call);
+      Create( const Create<Translator, Cols, nb_times, ColsIncr>& call );
 
       /// move constructor
-      Create(Create<Translator, Cols, nb_times, ColsIncr>&& call);
+      Create( Create<Translator, Cols, nb_times, ColsIncr>&& call );
 
       /// destructor
       ~Create() noexcept;
@@ -274,11 +274,11 @@ namespace gum {
 
       /// copy operator
       Create<Translator, Cols, nb_times, ColsIncr>&
-      operator=(const Create<Translator, Cols, nb_times, ColsIncr>& from);
+      operator=( const Create<Translator, Cols, nb_times, ColsIncr>& from );
 
       /// move operator
       Create<Translator, Cols, nb_times, ColsIncr>&
-      operator=(Create<Translator, Cols, nb_times, ColsIncr>&& from);
+      operator=( Create<Translator, Cols, nb_times, ColsIncr>&& from );
 
       /// @}
 
@@ -290,13 +290,13 @@ namespace gum {
 
       /// sets the output columns written by all the applications of the
       /// translator
-      void setOutputCols(unsigned int first_col) noexcept;
+      void setOutputCols( unsigned int first_col ) noexcept;
 
       /// sets the input row which will be read by the translator
-      void setInputRow(const DBRow& row) noexcept;
+      void setInputRow( const DBRow& row ) noexcept;
 
       /// sets the row to which the translator will write its output
-      void setOutputRow(FilteredRow& row) noexcept;
+      void setOutputRow( FilteredRow& row ) noexcept;
 
       /// returns the current input DBRow
       const DBRow& inputRow() const noexcept;
@@ -316,8 +316,8 @@ namespace gum {
        * @param translated_val the value in _output_cols of which we want to
        * know the original value (that which was actually read from the
        * database) */
-      std::string translateBack(unsigned int col,
-                                unsigned int translated_val) const;
+      std::string translateBack( unsigned int col,
+                                 unsigned int translated_val ) const;
 
       /// initialize the cell filters by parsing once the database
       void initialize();
@@ -332,7 +332,7 @@ namespace gum {
 
       /// push back the number of modalities of the variables of the output
       /// columns
-      void modalities(std::vector<unsigned int>& modals) const;
+      void modalities( std::vector<unsigned int>& modals ) const;
 
       /// returns the size of the input for the cell translators
       unsigned int inputSize() const noexcept;
@@ -349,17 +349,17 @@ namespace gum {
     template <typename Translator, typename Cols, typename ColsIncr>
     class Create<Translator, Cols, 0, ColsIncr> {
       public:
-      void setOutputCols(unsigned int) noexcept {}
-      void setInputRow(const DBRow&) noexcept {}
-      void setOutputRow(FilteredRow&) noexcept {}
+      void setOutputCols( unsigned int ) noexcept {}
+      void setInputRow( const DBRow& ) noexcept {}
+      void setOutputRow( FilteredRow& ) noexcept {}
       void translate() noexcept {}
       void initialize() noexcept {}
       void postInitialize() noexcept {}
       bool requiresInitialization() const noexcept { return false; }
-      void modalities(std::vector<unsigned int>&) const {}
-      std::string translateBack(unsigned int, unsigned int) const {
-        GUM_ERROR(UndefinedElement, "the set of translators does not contain "
-                                    "the column to be translated back");
+      void modalities( std::vector<unsigned int>& ) const {}
+      std::string translateBack( unsigned int, unsigned int ) const {
+        GUM_ERROR( UndefinedElement, "the set of translators does not contain "
+                                     "the column to be translated back" );
       }
     };
 

@@ -49,8 +49,8 @@ namespace gum {
       /// @{
 
       /// Default constructor.
-      GroundedInference(const PRM<GUM_SCALAR>& prm,
-                        const System<GUM_SCALAR>& system);
+      GroundedInference( const PRM<GUM_SCALAR>& prm,
+                         const System<GUM_SCALAR>& system );
 
       /// Destructor.
       virtual ~GroundedInference();
@@ -80,7 +80,7 @@ namespace gum {
        *                            SystemBayesNet of this class.
        * @todo BayesNetInference should have copy constructors.
        */
-      void setBNInference(BayesNetInference<GUM_SCALAR>* bn_inf);
+      void setBNInference( BayesNetInference<GUM_SCALAR>* bn_inf );
 
       virtual std::string name() const;
 
@@ -94,20 +94,20 @@ namespace gum {
       /// This method is called whenever an evidence is added, but AFTER
       /// any processing made by PRMInference.
       virtual void
-      _evidenceAdded(const typename PRMInference<GUM_SCALAR>::Chain& chain);
+      _evidenceAdded( const typename PRMInference<GUM_SCALAR>::Chain& chain );
 
       /// This method is called whenever an evidence is removed, but BEFORE
       /// any processing made by PRMInference.
       virtual void
-      _evidenceRemoved(const typename PRMInference<GUM_SCALAR>::Chain& chain);
+      _evidenceRemoved( const typename PRMInference<GUM_SCALAR>::Chain& chain );
 
       /// @brief Generic method to compute the marginal of given element.
       /// @param chain
       /// @param m CPF filled with the marginal of elt. It is initialized
       ///          properly.
       virtual void
-      _marginal(const typename PRMInference<GUM_SCALAR>::Chain& chain,
-                Potential<GUM_SCALAR>& m);
+      _marginal( const typename PRMInference<GUM_SCALAR>::Chain& chain,
+                 Potential<GUM_SCALAR>& m );
 
       /// @brief Generic method to compute the marginal of given element.
       /// @param queries Set of pairs of Instance and Attribute.
@@ -115,15 +115,15 @@ namespace gum {
       ///          initialized properly.
       virtual void _joint(
           const std::vector<typename PRMInference<GUM_SCALAR>::Chain>& queries,
-          Potential<GUM_SCALAR>& j);
+          Potential<GUM_SCALAR>& j );
 
       /// @}
       private:
       /// Copy constructor.
-      GroundedInference(const GroundedInference& source);
+      GroundedInference( const GroundedInference& source );
 
       /// Copy operator.
-      GroundedInference& operator=(const GroundedInference& source);
+      GroundedInference& operator=( const GroundedInference& source );
 
       /// The bayesnet inference engine used by this class.
       BayesNetInference<GUM_SCALAR>* __inf;

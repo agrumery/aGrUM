@@ -84,10 +84,10 @@ namespace gum {
       FilteredRowGenerator() noexcept;
 
       /// copy constructor
-      FilteredRowGenerator(const FilteredRowGenerator& from) noexcept;
+      FilteredRowGenerator( const FilteredRowGenerator& from ) noexcept;
 
       /// move constructor
-      FilteredRowGenerator(FilteredRowGenerator&& from) noexcept;
+      FilteredRowGenerator( FilteredRowGenerator&& from ) noexcept;
 
       /// destructor
       virtual ~FilteredRowGenerator() noexcept;
@@ -101,10 +101,10 @@ namespace gum {
       /// @{
 
       /// copy constructor
-      FilteredRowGenerator& operator=(const FilteredRowGenerator&) noexcept;
+      FilteredRowGenerator& operator=( const FilteredRowGenerator& ) noexcept;
 
       /// move constructor
-      FilteredRowGenerator& operator=(FilteredRowGenerator&&) noexcept;
+      FilteredRowGenerator& operator=( FilteredRowGenerator&& ) noexcept;
 
       /// @}
 
@@ -119,7 +119,7 @@ namespace gum {
       bool hasRows() noexcept;
 
       /// sets the input row from which the generator will create new rows
-      void setInputRow(FilteredRow& row) noexcept;
+      void setInputRow( FilteredRow& row ) noexcept;
 
       /// generate new rows from the input row
       virtual FilteredRow& generate() = 0;

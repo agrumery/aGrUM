@@ -72,18 +72,19 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowFilter(const DBHandler& handler, const TranslatorSet& translator_set,
-                  const GeneratorSet& generator_set,
-                  unsigned long initialization_range =
-                      std::numeric_limits<unsigned long>::max()) noexcept;
+      DBRowFilter( const DBHandler& handler,
+                   const TranslatorSet& translator_set,
+                   const GeneratorSet& generator_set,
+                   unsigned long initialization_range =
+                       std::numeric_limits<unsigned long>::max() ) noexcept;
 
       /// copy constructor
-      DBRowFilter(const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
-                      filter) noexcept;
+      DBRowFilter( const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
+                       filter ) noexcept;
 
       /// move constructor
-      DBRowFilter(DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&&
-                      filter) noexcept;
+      DBRowFilter( DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&&
+                       filter ) noexcept;
 
       /// destructor
       virtual ~DBRowFilter() noexcept;
@@ -98,11 +99,11 @@ namespace gum {
 
       /// copy operator
       DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
-      operator=(const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&);
+      operator=( const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>& );
 
       /// move operator
       DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
-      operator=(DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&&);
+      operator=( DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&& );
 
       /// @}
 
@@ -203,7 +204,7 @@ namespace gum {
       /** @param db_range the number of rows to parse in the database to
        * initialize the cell filters. If db_range is larger than the size of the
        * database, then the whole database is parsed. */
-      void __initCellFilters(unsigned long db_range);
+      void __initCellFilters( unsigned long db_range );
     };
 
     /// a helper used to easily create a DBRowFilter
@@ -227,14 +228,14 @@ namespace gum {
     template <typename Database, typename TranslatorSet, typename GeneratorSet>
     constexpr DBRowFilter<typename Database::Handler, TranslatorSet,
                           GeneratorSet>
-    make_DB_row_filter(const Database& database,
-                       const TranslatorSet& translator_set,
-                       const GeneratorSet& generator_set,
-                       unsigned long initialization_range =
-                           std::numeric_limits<unsigned long>::max()) {
+    make_DB_row_filter( const Database& database,
+                        const TranslatorSet& translator_set,
+                        const GeneratorSet& generator_set,
+                        unsigned long initialization_range =
+                            std::numeric_limits<unsigned long>::max() ) {
       return DBRowFilter<typename Database::Handler, TranslatorSet,
-                         GeneratorSet>(database.handler(), translator_set,
-                                       generator_set, initialization_range);
+                         GeneratorSet>( database.handler(), translator_set,
+                                        generator_set, initialization_range );
     }
 
   } /* namespace learning */

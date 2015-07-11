@@ -60,8 +60,8 @@ namespace gum {
     /**
     * Default constructor
     */
-    SPUDDPlanning(FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp,
-                  GUM_SCALAR epsilon = 0.00001);
+    SPUDDPlanning( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp,
+                   GUM_SCALAR epsilon = 0.00001 );
 
     /**
     * Default destructor
@@ -83,21 +83,21 @@ namespace gum {
     /**
      * Evals the policy corresponding to the given value function
      */
-    void __evalPolicy(const MultiDimDecisionDiagramBase<GUM_SCALAR>* V);
+    void __evalPolicy( const MultiDimDecisionDiagramBase<GUM_SCALAR>* V );
 
     /**
      * Evals value function for a given action
      */
     MultiDimDecisionDiagramBase<GUM_SCALAR>*
-    __evalActionValue(const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold,
-                      Sequence<const DiscreteVariable*>& elVarSeq);
+    __evalActionValue( const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold,
+                       Sequence<const DiscreteVariable*>& elVarSeq );
 
     /**
      * Evals final value function by multiplying by discount reward and adding
      * reward
      */
     MultiDimDecisionDiagramBase<GUM_SCALAR>*
-    __addReward(const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold);
+    __addReward( const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold );
 
     /// @}
     // ==========================================================================
@@ -110,7 +110,7 @@ namespace gum {
      * Method to eval the efficiency of makePlanning algorithm
      */
     MultiDimDecisionDiagramBase<GUM_SCALAR>*
-    makePlanningAlgoEvaluation(const std::string saveFilesName, Idx mode = 1);
+    makePlanningAlgoEvaluation( const std::string saveFilesName, Idx mode = 1 );
 
     private:
     /**
@@ -118,7 +118,7 @@ namespace gum {
      */
     MultiDimDecisionDiagramBase<GUM_SCALAR>* __evalActionValueAlgoEvaluation(
         const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold,
-        const std::string saveFilesName, Idx mode);
+        const std::string saveFilesName, Idx mode );
 
     /**
      * Method to eval addition the multiplication by discount reward and the
@@ -127,14 +127,14 @@ namespace gum {
      */
     MultiDimDecisionDiagramBase<GUM_SCALAR>* __addRewardAlgoEvaluation(
         const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold,
-        const std::string saveFilesName, Idx mode);
+        const std::string saveFilesName, Idx mode );
 
     /**
      * Evals the policy corresponding to the given value function
      */
     std::pair<Idx, Idx> __evalNbRetrogradeEvaluation(
         const MultiDimDecisionDiagramBase<GUM_SCALAR>* t1,
-        const MultiDimDecisionDiagramBase<GUM_SCALAR>* t2);
+        const MultiDimDecisionDiagramBase<GUM_SCALAR>* t2 );
 
     /// @}
     // ==========================================================================
@@ -148,7 +148,7 @@ namespace gum {
      * the so far computed value function
       */
     MultiDimDecisionDiagramBase<std::pair<double, long>>*
-    __argMaxValueFunction(const MultiDimDecisionDiagramBase<GUM_SCALAR>* V);
+    __argMaxValueFunction( const MultiDimDecisionDiagramBase<GUM_SCALAR>* V );
 
     /**
      * Creates a copy of given in parameter decision diagram and replaces leaves
@@ -157,8 +157,8 @@ namespace gum {
      * action to which is bind this diagram (given in parameter).
      */
     MultiDimDecisionDiagramBase<std::pair<double, long>>*
-    __createArgMaxCopy(const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vaction,
-                       Idx actionId);
+    __createArgMaxCopy( const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vaction,
+                        Idx actionId );
 
     /**
      * Once final V is computed upon arg max on last Vactions, this function
@@ -177,12 +177,12 @@ namespace gum {
         const MultiDimDecisionDiagramBase<std::pair<double, long>>* V,
         const gum::NodeId& currentNode,
         MultiDimDecisionDiagramFactoryBase<Idx>* factory,
-        HashTable<NodeId, NodeId>& explorationTable);
+        HashTable<NodeId, NodeId>& explorationTable );
 
     /**
      * Displays the optimal computed policy diagram
      */
-    void __displayOptimalPolicy(MultiDimDecisionDiagramBase<Idx>* op);
+    void __displayOptimalPolicy( MultiDimDecisionDiagramBase<Idx>* op );
 
     /**
      * Computed arg max of two vactions given in parameter
@@ -190,14 +190,14 @@ namespace gum {
     MultiDimDecisionDiagramBase<std::pair<double, long>>*
     __argMaxOn2MultiDimDecisionDiagrams(
         const MultiDimDecisionDiagramBase<std::pair<double, long>>* Vaction1,
-        const MultiDimDecisionDiagramBase<std::pair<double, long>>* Vaction2);
+        const MultiDimDecisionDiagramBase<std::pair<double, long>>* Vaction2 );
 
     /**
      * Computed arg max of two vactions given in parameter
      */
     MultiDimDecisionDiagramBase<std::pair<double, long>>* __differenceOnPolicy(
         const MultiDimDecisionDiagramBase<std::pair<double, long>>* Vaction1,
-        const MultiDimDecisionDiagramBase<std::pair<double, long>>* Vaction2);
+        const MultiDimDecisionDiagramBase<std::pair<double, long>>* Vaction2 );
 
     /// @}
 

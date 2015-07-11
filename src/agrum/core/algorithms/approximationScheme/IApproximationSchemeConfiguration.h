@@ -61,18 +61,18 @@ namespace gum {
     /// Constructors and Destructors
     /// @{
     IApproximationSchemeConfiguration() {
-      GUM_CONSTRUCTOR(IApproximationSchemeConfiguration);
+      GUM_CONSTRUCTOR( IApproximationSchemeConfiguration );
     };
 
     ~IApproximationSchemeConfiguration() {
-      GUM_DESTRUCTOR(IApproximationSchemeConfiguration);
+      GUM_DESTRUCTOR( IApproximationSchemeConfiguration );
     };
     /// @}
 
     std::string messageApproximationScheme() const {
       std::stringstream s;
 
-      switch (stateApproximationScheme()) {
+      switch ( stateApproximationScheme() ) {
         case ApproximationSchemeSTATE::Continue:
           s << "in progress";
           break;
@@ -109,10 +109,10 @@ namespace gum {
     /// If the criterion was disabled it will be enabled
     /// @{
     /// @throw OutOfLowerBound if eps<0
-    virtual void setEpsilon(double eps) = 0;
+    virtual void setEpsilon( double eps ) = 0;
 
     /// Get the value of epsilon
-    virtual double epsilon(void) const = 0;
+    virtual double epsilon( void ) const = 0;
 
     /// Disable stopping criterion on epsilon
     virtual void disableEpsilon() = 0;
@@ -128,10 +128,10 @@ namespace gum {
     /// If the criterion was disabled it will be enabled
     /// @{
     /// @throw OutOfLowerBound if rate<0
-    virtual void setMinEpsilonRate(double rate) = 0;
+    virtual void setMinEpsilonRate( double rate ) = 0;
 
     /// Get the value of the minimal epsilon rate
-    virtual double minEpsilonRate(void) const = 0;
+    virtual double minEpsilonRate( void ) const = 0;
 
     /// Disable stopping criterion on epsilon rate
     virtual void disableMinEpsilonRate() = 0;
@@ -147,10 +147,10 @@ namespace gum {
     /// If the criterion was disabled it will be enabled
     /// @param max The maximum number of iterations
     /// @throw OutOfLowerBound if max<=1
-    virtual void setMaxIter(Size max) = 0;
+    virtual void setMaxIter( Size max ) = 0;
 
     /// @return the criterion on number of iterations
-    virtual Size maxIter(void) const = 0;
+    virtual Size maxIter( void ) const = 0;
 
     /// Disable stopping criterion on max iterations
     virtual void disableMaxIter() = 0;
@@ -167,13 +167,13 @@ namespace gum {
     /// @throw OutOfLowerBound if timeout<=0.0
     /** timeout is time in second (double).
     */
-    virtual void setMaxTime(double timeout) = 0;
+    virtual void setMaxTime( double timeout ) = 0;
 
     /// returns the timeout (in seconds)
-    virtual double maxTime(void) const = 0;
+    virtual double maxTime( void ) const = 0;
 
     /// get the current running time in second (double)
-    virtual double currentTime(void) const = 0;
+    virtual double currentTime( void ) const = 0;
 
     /// Disable stopping criterion on timeout
     virtual void disableMaxTime() = 0;
@@ -187,25 +187,25 @@ namespace gum {
     /// how many samples between 2 stopping isEnableds
     /// @{
     /// @throw OutOfLowerBound if p<1
-    virtual void setPeriodSize(Size p) = 0;
+    virtual void setPeriodSize( Size p ) = 0;
 
-    virtual Size periodSize(void) const = 0;
+    virtual Size periodSize( void ) const = 0;
     /// @}
 
     /// size of burn in on number of iteration
     /// @{
 
     /// @throw OutOfLowerBound if b<1
-    virtual void setBurnIn(Size b) = 0;
+    virtual void setBurnIn( Size b ) = 0;
 
-    virtual Size burnIn(void) const = 0;
+    virtual Size burnIn( void ) const = 0;
     /// @}
 
     /// verbosity
     /// @{
-    virtual void setVerbosity(bool v) = 0;
+    virtual void setVerbosity( bool v ) = 0;
 
-    virtual bool verbosity(void) const = 0;
+    virtual bool verbosity( void ) const = 0;
     /// @}
 
     /// history
@@ -221,8 +221,8 @@ namespace gum {
     /// @}
 
     // @name transmission of configuration
-    void copyConfiguration(const IApproximationSchemeConfiguration& cfg) {
-      GUM_TRACE("COPYING CONFIGURATION");
+    void copyConfiguration( const IApproximationSchemeConfiguration& cfg ) {
+      GUM_TRACE( "COPYING CONFIGURATION" );
     }
   };
 }  // namespace gum

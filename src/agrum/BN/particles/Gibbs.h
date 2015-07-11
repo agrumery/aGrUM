@@ -45,7 +45,7 @@ namespace gum {
       /**
        * Default constructor
        */
-      Gibbs(const IBayesNet<GUM_SCALAR>& BN);
+      Gibbs( const IBayesNet<GUM_SCALAR>& BN );
 
       /**
        * Destructor.
@@ -62,12 +62,12 @@ namespace gum {
           * evidence w.r.t. this node is onserted, the old evidence is removed.
           */
       virtual void
-      insertEvidence(const List<const Potential<GUM_SCALAR>*>& pot_list);
+      insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list );
 
       /**
        * Remove a given evidence from the graph.
        */
-      virtual void eraseEvidence(const Potential<GUM_SCALAR>* e);
+      virtual void eraseEvidence( const Potential<GUM_SCALAR>* e );
 
       /**
        * Remove all evidence from the graph.
@@ -88,7 +88,7 @@ namespace gum {
 
       /// getters and setters
       /// @{
-      void setNbrDrawnBySample(Size s);
+      void setNbrDrawnBySample( Size s );
       Size nbrDrawnBySample();
 
       const Instantiation& particle();
@@ -97,10 +97,10 @@ namespace gum {
       ///@}
 
       private:
-      void __setValVar(NodeId id, Idx choice);
+      void __setValVar( NodeId id, Idx choice );
 
-      void __drawVar(NodeId id);
-      void __GibbsSample(NodeId id);
+      void __drawVar( NodeId id );
+      void __GibbsSample( NodeId id );
       void __MonteCarloSample();
 
       Size __nbr_drawn_by_sample;

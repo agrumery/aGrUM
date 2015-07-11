@@ -65,7 +65,7 @@ namespace gum {
      * Default constructor.
      */
     IBayesNet();
-    IBayesNet(std::string name);
+    IBayesNet( std::string name );
 
     /**
      * Destructor.
@@ -75,12 +75,12 @@ namespace gum {
     /**
      * Copy constructor.
      */
-    IBayesNet(const IBayesNet<GUM_SCALAR>& source);
+    IBayesNet( const IBayesNet<GUM_SCALAR>& source );
 
     /**
      * Copy operator.
      */
-    IBayesNet<GUM_SCALAR>& operator=(const IBayesNet<GUM_SCALAR>& source);
+    IBayesNet<GUM_SCALAR>& operator=( const IBayesNet<GUM_SCALAR>& source );
 
     /// @}
     // ===========================================================================
@@ -93,7 +93,7 @@ namespace gum {
     *
     * @throw NotFound If no variable's id matches varId.
     */
-    virtual const Potential<GUM_SCALAR>& cpt(NodeId varId) const = 0;
+    virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const = 0;
 
     /**
     * Returns a constant reference to the VariableNodeMap of thisBN
@@ -105,21 +105,21 @@ namespace gum {
     *
     * @throw NotFound If no variable's id matches varId.
     */
-    virtual const DiscreteVariable& variable(NodeId id) const = 0;
+    virtual const DiscreteVariable& variable( NodeId id ) const = 0;
 
     /**
     * Return id node from discrete var pointer.
     *
     * @throw NotFound If no variable matches var.
     */
-    virtual NodeId nodeId(const DiscreteVariable& var) const = 0;
+    virtual NodeId nodeId( const DiscreteVariable& var ) const = 0;
 
     /**
      * Getter by name
      *
      * @throw NotFound if no such name exists in the graph.
      */
-    virtual NodeId idFromName(const std::string& name) const = 0;
+    virtual NodeId idFromName( const std::string& name ) const = 0;
 
     /**
      * Getter by name
@@ -127,7 +127,7 @@ namespace gum {
      * @throw NotFound if no such name exists in the graph.
      */
     virtual const DiscreteVariable&
-    variableFromName(const std::string& name) const = 0;
+    variableFromName( const std::string& name ) const = 0;
     /// @}
 
     // ===========================================================================
@@ -139,13 +139,13 @@ namespace gum {
     /// instantiation of the vars)
     /// @warning a variable not present in the instantiation is assumed to be
     /// instantiated to 0.
-    GUM_SCALAR jointProbability(const Instantiation& i) const;
+    GUM_SCALAR jointProbability( const Instantiation& i ) const;
 
     /// Compute a parameter of the log joint probability for the BN (given an
     /// instantiation of the vars)
     /// @warning a variable not present in the instantiation is assumed to be
     /// instantiated to 0.
-    GUM_SCALAR log2JointProbability(const Instantiation& i) const;
+    GUM_SCALAR log2JointProbability( const Instantiation& i ) const;
 
     ///
     /// @}
@@ -158,10 +158,10 @@ namespace gum {
      *
      * @return true if the src and this are equal.
      */
-    bool operator==(const IBayesNet<GUM_SCALAR>& src) const;
+    bool operator==( const IBayesNet<GUM_SCALAR>& src ) const;
 
     /// @return Returns false if the src and this are equal.
-    bool operator!=(const IBayesNet<GUM_SCALAR>& src) const;
+    bool operator!=( const IBayesNet<GUM_SCALAR>& src ) const;
 
     /**
      * Returns the dimension (the number of free parameters) in this bayes net.
@@ -176,10 +176,10 @@ namespace gum {
     Idx dim() const;
 
     /// @return Returns a dot representation of this IBayesNet.
-    virtual std::string toDot(void) const;
+    virtual std::string toDot( void ) const;
 
     /// @return Returns a string representation of this IBayesNet.
-    std::string toString(void) const;
+    std::string toString( void ) const;
   };
 
   extern template class IBayesNet<float>;
@@ -187,8 +187,8 @@ namespace gum {
 
   /// Prints map's DAG in output using the Graphviz-dot format.
   template <typename GUM_SCALAR>
-  std::ostream& operator<<(std::ostream& output,
-                           const IBayesNet<GUM_SCALAR>& map);
+  std::ostream& operator<<( std::ostream& output,
+                            const IBayesNet<GUM_SCALAR>& map );
 
 } /* namespace gum */
 

@@ -57,11 +57,11 @@ namespace gum {
     /// Default constructor.
 
     ///@throw gum::InvalidArgument if external_weight is null.
-    MultiDimNoisyAND(GUM_SCALAR external_weight,
-                     GUM_SCALAR default_weight = (GUM_SCALAR)1.0);
+    MultiDimNoisyAND( GUM_SCALAR external_weight,
+                      GUM_SCALAR default_weight = (GUM_SCALAR)1.0 );
 
     ///
-    MultiDimNoisyAND(const MultiDimNoisyAND<GUM_SCALAR>& from);
+    MultiDimNoisyAND( const MultiDimNoisyAND<GUM_SCALAR>& from );
 
     /** Copy constructor using a bijection to swap variables from source.
     * @param bij First variables are new variables, seconds are in from.
@@ -70,7 +70,7 @@ namespace gum {
 
     MultiDimNoisyAND(
         const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-        const MultiDimNoisyAND<GUM_SCALAR>& from);
+        const MultiDimNoisyAND<GUM_SCALAR>& from );
 
     /// Destructor.
 
@@ -99,9 +99,9 @@ namespace gum {
     /// @{
 
     public:
-    virtual GUM_SCALAR get(const Instantiation& i) const;
+    virtual GUM_SCALAR get( const Instantiation& i ) const;
 
-    const std::string toString(void) const;
+    const std::string toString( void ) const;
 
     /// returns the real name of the multiDimArray
     /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
@@ -124,8 +124,8 @@ namespace gum {
 
   /// For friendly displaying the content of the array.
   template <typename GUM_SCALAR>
-  std::ostream& operator<<(std::ostream& s,
-                           const MultiDimNoisyAND<GUM_SCALAR>& ag);
+  std::ostream& operator<<( std::ostream& s,
+                            const MultiDimNoisyAND<GUM_SCALAR>& ag );
 
 } /* namespace gum */
 

@@ -95,7 +95,7 @@ namespace gum {
     //~ * @warning You can only copy a factory if its current state is NONE or
     //~ *          NETWORK.
     //~ * @throw OperationNotAllowed Raised if the state of source is not NONE
-    //or
+    // or
     //~ *                            NETWORK.
     //~ */
     //~ FMDPFactory ( const FMDPFactory<GUM_SCALAR>& source );
@@ -122,7 +122,8 @@ namespace gum {
 
     /// Returns a constant reference on a variable given it's name.
     /// @throw NotFound Raised if no variable matches the name.
-    virtual const DiscreteVariable* variable(const std::string& name) const = 0;
+    virtual const DiscreteVariable*
+    variable( const std::string& name ) const = 0;
 
     /// @}
     // ==========================================================================
@@ -134,8 +135,8 @@ namespace gum {
     virtual void startPropertyDeclaration() = 0;
 
     /// Tells the factory to add a property to the current fmdp.
-    virtual void addProperty(const std::string& propName,
-                             const std::string& propValue) = 0;
+    virtual void addProperty( const std::string& propName,
+                              const std::string& propValue ) = 0;
 
     /// Tells the factory that we're out of a property declaration.
     virtual void endPropertyDeclaration() = 0;
@@ -152,13 +153,13 @@ namespace gum {
     /// Tells the factory the current variable's name.
     /// @throw DuplicateElement Raised if a variable with the same name already
     ///                         exist.
-    virtual void variableName(const std::string& name) = 0;
+    virtual void variableName( const std::string& name ) = 0;
 
     /// Tells the factory the current variable's description.
-    virtual void variableDescription(const std::string& desc) = 0;
+    virtual void variableDescription( const std::string& desc ) = 0;
 
     /// Adds a modality to the current variable.
-    virtual void addModality(const std::string& name) = 0;
+    virtual void addModality( const std::string& name ) = 0;
 
     /// Tells the factory that we're out of a variable declaration.
     /// @throw UndefinedElement Raised if the variable isn't defined (or not
@@ -175,7 +176,7 @@ namespace gum {
     virtual void startActionDeclaration() = 0;
 
     /// Tells the factory to add an action to the current fmdp.
-    virtual void addAction(const std::string& action) = 0;
+    virtual void addAction( const std::string& action ) = 0;
 
     /// Tells the factory that we're out of an action declaration.
     virtual void endActionDeclaration() = 0;
@@ -190,13 +191,13 @@ namespace gum {
     virtual void startTransitionDeclaration() = 0;
 
     /// Tells the factory to add a transition table to the current fmdp.
-    virtual void addTransition(const std::string& var,
-                               const MultiDimAdressable* transition) = 0;
+    virtual void addTransition( const std::string& var,
+                                const MultiDimAdressable* transition ) = 0;
 
     /// Tells the factory to add a transition table to the current fmdp.
     /// This transition table will be extracted from incorporated
     /// multiDimDecisionDiagram.
-    virtual void addTransition(const std::string& var) = 0;
+    virtual void addTransition( const std::string& var ) = 0;
 
     /// Tells the factory that we're out of a transition declaration.
     virtual void endTransitionDeclaration() = 0;
@@ -211,7 +212,7 @@ namespace gum {
     virtual void startCostDeclaration() = 0;
 
     /// Tells the factory to add a cost table to the current fmdp.
-    virtual void addCost(const MultiDimAdressable* cost) = 0;
+    virtual void addCost( const MultiDimAdressable* cost ) = 0;
 
     /// Tells the factory to add current decision diagram it has as a cost
     /// table.
@@ -233,10 +234,10 @@ namespace gum {
     /// global
     /// reward diagram is an operation between
     /// simplier decision diagram..
-    virtual void setOperationModeOn(std::string operationType) = 0;
+    virtual void setOperationModeOn( std::string operationType ) = 0;
 
     /// Tells the factory to add a reward table to the current fmdp.
-    virtual void addReward(const MultiDimAdressable* reward) = 0;
+    virtual void addReward( const MultiDimAdressable* reward ) = 0;
 
     /// Tells the factory to add current decision diagram it has as a reward
     /// table.
@@ -255,7 +256,7 @@ namespace gum {
     virtual void startDiscountDeclaration() = 0;
 
     /// Tells the factory to add a cost table to the current fmdp.
-    virtual void addDiscount(float discount) = 0;
+    virtual void addDiscount( float discount ) = 0;
 
     /// Tells the factory that we're out of a cost declaration.
     virtual void endDiscountDeclaration() = 0;
@@ -269,13 +270,13 @@ namespace gum {
     /// @{
 
     /// Insert in diagram a non terminal node
-    virtual NodeId addNonTerminalNode(std::string name_of_var) = 0;
+    virtual NodeId addNonTerminalNode( std::string name_of_var ) = 0;
 
     /// Insert in diagram a terminal node
-    virtual NodeId addTerminalNode(float value) = 0;
+    virtual NodeId addTerminalNode( float value ) = 0;
 
     /// Insert in diagram an arc
-    virtual void insertArc(NodeId from, NodeId to, Idx modality) = 0;
+    virtual void insertArc( NodeId from, NodeId to, Idx modality ) = 0;
 
     /// @}
 

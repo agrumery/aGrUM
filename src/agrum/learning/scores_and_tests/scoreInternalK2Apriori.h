@@ -82,11 +82,11 @@ namespace gum {
 
       /// copy constructor
       ScoreInternalK2Apriori(
-          const ScoreInternalK2Apriori<IdSetAlloc, CountAlloc>& from);
+          const ScoreInternalK2Apriori<IdSetAlloc, CountAlloc>& from );
 
       /// move constructor
       ScoreInternalK2Apriori(
-          ScoreInternalK2Apriori<IdSetAlloc, CountAlloc>&& from);
+          ScoreInternalK2Apriori<IdSetAlloc, CountAlloc>&& from );
 
       /// destructor
       virtual ~ScoreInternalK2Apriori();
@@ -106,7 +106,7 @@ namespace gum {
                                       unsigned int>*>& target_nodesets,
           const std::vector<
               std::pair<std::vector<unsigned int, IdSetAlloc>, unsigned int>*>&
-              conditioning_nodesets) final;
+              conditioning_nodesets ) final;
 
       /// @}
     };

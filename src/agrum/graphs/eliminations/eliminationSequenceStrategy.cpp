@@ -37,13 +37,13 @@ namespace gum {
   // an empty fill-ins set returned by default when we ask for a fill-ins set
   const EdgeSet& EliminationSequenceStrategy::__empty_fill_ins() {
     static bool first_use = true;
-    if (first_use) {
+    if ( first_use ) {
       first_use = false;
 #ifndef NDEBUG
-      __debug__::__dec_creation("Set", "__empty_edge_set", 0,
-                                "static variable correction", 0);
-      __debug__::__dec_creation("HashTable", "__empty_edge_set", 0,
-                                "static variable correction", 0);
+      __debug__::__dec_creation( "Set", "__empty_edge_set", 0,
+                                 "static variable correction", 0 );
+      __debug__::__dec_creation( "HashTable", "__empty_edge_set", 0,
+                                 "static variable correction", 0 );
 #endif
     }
     static EdgeSet empty_fill_ins;
@@ -54,24 +54,24 @@ namespace gum {
   /// default constructor
   EliminationSequenceStrategy::EliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_CONSTRUCTOR(EliminationSequenceStrategy);
+    GUM_CONSTRUCTOR( EliminationSequenceStrategy );
   }
 
   /// copy constructor
   EliminationSequenceStrategy::EliminationSequenceStrategy(
-      const EliminationSequenceStrategy&) {
+      const EliminationSequenceStrategy& ) {
     // for debugging purposes
-    GUM_CONS_CPY(EliminationSequenceStrategy);
+    GUM_CONS_CPY( EliminationSequenceStrategy );
   }
 
   /// destructor
   EliminationSequenceStrategy::~EliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_DESTRUCTOR(EliminationSequenceStrategy);
+    GUM_DESTRUCTOR( EliminationSequenceStrategy );
   }
 
   /// performs all the graph/fill-ins updates provided
-  void EliminationSequenceStrategy::eliminationUpdate(const NodeId node) {}
+  void EliminationSequenceStrategy::eliminationUpdate( const NodeId node ) {}
 
   /** @brief in case fill-ins are provided, this function returns the fill-ins
    * due to all the nodes eliminated so far */

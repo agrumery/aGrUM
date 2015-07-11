@@ -81,7 +81,7 @@ namespace gum {
      * nbrNodes *(nbrNodes -1) /2 and if the maximum of modality is lower than
      * 2.
      */
-    IBayesNetGenerator(Size nbrNodes, Size maxArcs, Size maxModality);
+    IBayesNetGenerator( Size nbrNodes, Size maxArcs, Size maxModality );
 
     /**
      * Destructor.
@@ -101,7 +101,7 @@ namespace gum {
     * @return null but modify inputed empty Bayesian Network
     */
 
-    virtual void generateBN(BayesNet<GUM_SCALAR>& bayesNet) = 0;
+    virtual void generateBN( BayesNet<GUM_SCALAR>& bayesNet ) = 0;
 
     /**
      * function that insert random values in the CPT of each nodes according to
@@ -147,17 +147,17 @@ namespace gum {
     /**
     * Modifies the value of the number of nodes imposed on the BayesGenerator
     */
-    void setNbrNodes(Size nbrNodes);
+    void setNbrNodes( Size nbrNodes );
 
     /**
     * Modifies the value of the number of nodes imposed on the BayesGenerator
     */
-    void setMaxArcs(Size maxArcs);
+    void setMaxArcs( Size maxArcs );
 
     /**
     * Modifies the value of the number of nodes imposed on the BayesGenerator
     */
-    void setMaxModality(Size maxModality);
+    void setMaxModality( Size maxModality );
 
     /// @}
     protected:

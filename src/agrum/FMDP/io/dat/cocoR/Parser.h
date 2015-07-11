@@ -32,7 +32,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_MDPDAT_COCO_PARSER_H__)
+#if !defined( gum_MDPDAT_COCO_PARSER_H__ )
 #define gum_MDPDAT_COCO_PARSER_H__
 
 #include <agrum/core/cast_unicode.h>
@@ -40,11 +40,11 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <agrum/FMDP/IFMDPFactory.h>
 // =====================================================================
 #undef TRY
-#define TRY(inst)                                                              \
+#define TRY( inst )                                                            \
   try {                                                                        \
     inst;                                                                      \
-  } catch (gum::Exception & e) {                                               \
-    SemErr(e.errorType());                                                     \
+  } catch ( gum::Exception & e ) {                                             \
+    SemErr( e.errorType() );                                                   \
   }
 
 #include <iostream>
@@ -74,12 +74,12 @@ namespace gum {
       int errDist;
       int minErrDist;
 
-      void SynErr(int n);
+      void SynErr( int n );
       void Get();
-      void Expect(int n);
-      bool StartOf(int s);
-      void ExpectWeak(int n, int follow);
-      bool WeakSeparator(int n, int syFol, int repFol);
+      void Expect( int n );
+      bool StartOf( int s );
+      void ExpectWeak( int n, int follow );
+      bool WeakSeparator( int n, int syFol, int repFol );
 
       ErrorsContainer __errors;
 
@@ -106,13 +106,13 @@ namespace gum {
       // *************************************************************************************
 
       /// Sets the main factory
-      void setFactory(gum::AbstractFMDPFactory* f) { __factory = f; }
+      void setFactory( gum::AbstractFMDPFactory* f ) { __factory = f; }
 
-      gum::AbstractFMDPFactory& factory(void) {
-        if (__factory)
+      gum::AbstractFMDPFactory& factory( void ) {
+        if ( __factory )
           return *__factory;
-        GUM_ERROR(gum::OperationNotAllowed,
-                  "Please set a factory for scanning BIF file...");
+        GUM_ERROR( gum::OperationNotAllowed,
+                   "Please set a factory for scanning BIF file..." );
       }
 
       bool IsFollowedByIdent() {
@@ -120,20 +120,22 @@ namespace gum {
         return la->kind == _lpar && next->kind == _ident;
       }
 
-      void SemErr(std::string s) { SemErr(widen(s).c_str()); }
+      void SemErr( std::string s ) { SemErr( widen( s ).c_str() ); }
 
-      void Warning(std::string s) { Warning(widen("Warning : " + s).c_str()); }
+      void Warning( std::string s ) {
+        Warning( widen( "Warning : " + s ).c_str() );
+      }
 
 
       // ===================================================================================================
       // CHARACTERS DEFINITION
       // ===================================================================================================
 
-      Parser(Scanner* scanner);
+      Parser( Scanner* scanner );
       ~Parser();
-      void SemErr(const wchar_t* msg);
-      void SynErr(const std::wstring& filename, int line, int col, int n);
-      void Warning(const wchar_t* msg);
+      void SemErr( const wchar_t* msg );
+      void SynErr( const std::wstring& filename, int line, int col, int n );
+      void Warning( const wchar_t* msg );
       const ErrorsContainer& errors() const;
 
       void MDPDAT();
@@ -143,18 +145,18 @@ namespace gum {
       void DISCOUNT();
       void TOLERANCE();
       void VARIABLE();
-      void IDENT(std::string& name);
+      void IDENT( std::string& name );
       void MODALITY_LIST();
-      void IDENT_OR_INTEGER(std::string& name);
-      void STRING(std::string& str);
-      void FLOAT(float& val);
+      void IDENT_OR_INTEGER( std::string& name );
+      void STRING( std::string& str );
+      void FLOAT( float& val );
       void TRANSITION_DECISION_DIAGRAM();
       void COST_DECISION_DIAGRAM();
       void SUB_TRANSITION_DECISION_DIAGRAM();
       void TRANSITION_LEAF();
       void SUB_DECISION_DIAGRAM();
       void LEAF();
-      void OPERAND(std::string& op);
+      void OPERAND( std::string& op );
 
       void Parse();
 

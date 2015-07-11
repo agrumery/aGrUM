@@ -69,18 +69,18 @@ namespace gum {
      * or
      * compatible node sets.
      */
-    BruteForceKL(const IBayesNet<GUM_SCALAR>& P,
-                 const IBayesNet<GUM_SCALAR>& Q);
+    BruteForceKL( const IBayesNet<GUM_SCALAR>& P,
+                  const IBayesNet<GUM_SCALAR>& Q );
 
     /** copy constructor
      */
-    BruteForceKL(const KL<GUM_SCALAR>& kl);
+    BruteForceKL( const KL<GUM_SCALAR>& kl );
 
     /** destructor */
     virtual ~BruteForceKL();
 
     protected:
-    void _computeKL(void);
+    void _computeKL( void );
 
     using KL<GUM_SCALAR>::_p;
     using KL<GUM_SCALAR>::_q;

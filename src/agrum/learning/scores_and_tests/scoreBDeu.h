@@ -97,15 +97,15 @@ namespace gum {
        * Dirichlet (BD) formula to include the sum of the two aprioris into the
        * score. */
       template <typename RowFilter>
-      ScoreBDeu(const RowFilter& filter,
-                const std::vector<unsigned int>& var_modalities,
-                Apriori<IdSetAlloc, CountAlloc>& apriori);
+      ScoreBDeu( const RowFilter& filter,
+                 const std::vector<unsigned int>& var_modalities,
+                 Apriori<IdSetAlloc, CountAlloc>& apriori );
 
       /// copy constructor
-      ScoreBDeu(const ScoreBDeu<IdSetAlloc, CountAlloc>&);
+      ScoreBDeu( const ScoreBDeu<IdSetAlloc, CountAlloc>& );
 
       /// move constructor
-      ScoreBDeu(ScoreBDeu<IdSetAlloc, CountAlloc>&&);
+      ScoreBDeu( ScoreBDeu<IdSetAlloc, CountAlloc>&& );
 
       /// virtual copy factory
       virtual ScoreBDeu<IdSetAlloc, CountAlloc>* copyFactory() const;
@@ -121,7 +121,7 @@ namespace gum {
       /// @{
 
       /// returns the log2(BDeu score) corresponding to a given nodeset
-      float score(unsigned int nodeset_index);
+      float score( unsigned int nodeset_index );
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score
@@ -171,8 +171,8 @@ namespace gum {
        * @throws InvalidArgument is raised if the apriori is not handled yet by
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
-      static bool isAprioriCompatible(const std::string& apriori_type,
-                                      float weight = 1.0f);
+      static bool isAprioriCompatible( const std::string& apriori_type,
+                                       float weight = 1.0f );
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score
@@ -198,7 +198,7 @@ namespace gum {
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
       static bool
-      isAprioriCompatible(const Apriori<IdSetAlloc, CountAlloc>& apriori);
+      isAprioriCompatible( const Apriori<IdSetAlloc, CountAlloc>& apriori );
 
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD
@@ -220,7 +220,7 @@ namespace gum {
       internalApriori() const noexcept final;
 
       /// sets the effective sample size of the internal apriori
-      void setEffectiveSampleSize(float ess);
+      void setEffectiveSampleSize( float ess );
 
       /// @}
 

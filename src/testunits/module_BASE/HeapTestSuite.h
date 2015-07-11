@@ -30,67 +30,67 @@ namespace gum_tests {
     void testConstructor() {
       gum::Heap<int> heap1;
 
-      heap1.insert(8);
-      heap1.emplace(10);
-      heap1.insert(2);
-      heap1.insert(23);
-      heap1.insert(24);
-      heap1.insert(10);
-      heap1.insert(10);
+      heap1.insert( 8 );
+      heap1.emplace( 10 );
+      heap1.insert( 2 );
+      heap1.insert( 23 );
+      heap1.insert( 24 );
+      heap1.insert( 10 );
+      heap1.insert( 10 );
 
-      TS_ASSERT(heap1.top() == 2);
+      TS_ASSERT( heap1.top() == 2 );
       heap1.pop();
-      TS_ASSERT(heap1.top() == 8);
+      TS_ASSERT( heap1.top() == 8 );
       heap1.eraseTop();
-      TS_ASSERT(heap1.top() == 10);
+      TS_ASSERT( heap1.top() == 10 );
       heap1.eraseTop();
-      TS_ASSERT(heap1.top() == 10);
+      TS_ASSERT( heap1.top() == 10 );
 
-      TS_ASSERT(heap1.size() == 4);
-      TS_ASSERT(heap1.empty() == false);
-      TS_ASSERT(heap1.contains(8) == false);
-      TS_ASSERT(heap1.contains(23) == true);
-      TS_ASSERT(heap1.contains(10) == true);
+      TS_ASSERT( heap1.size() == 4 );
+      TS_ASSERT( heap1.empty() == false );
+      TS_ASSERT( heap1.contains( 8 ) == false );
+      TS_ASSERT( heap1.contains( 23 ) == true );
+      TS_ASSERT( heap1.contains( 10 ) == true );
 
-      heap1.erase(10);
-      TS_ASSERT(heap1.size() == 3);
-      TS_GUM_ASSERT_THROWS_NOTHING(heap1.erase(150));
+      heap1.erase( 10 );
+      TS_ASSERT( heap1.size() == 3 );
+      TS_GUM_ASSERT_THROWS_NOTHING( heap1.erase( 150 ) );
 
-      heap1.eraseByPos(0);
-      TS_ASSERT(heap1.top() == 23);
+      heap1.eraseByPos( 0 );
+      TS_ASSERT( heap1.top() == 23 );
     }
 
     void testConstructor2() {
       gum::Heap<int, std::greater<int>> heap1;
 
-      heap1.insert(8);
-      heap1.insert(10);
-      heap1.insert(2);
-      heap1.insert(23);
-      heap1.insert(24);
-      heap1.insert(10);
-      heap1.insert(10);
+      heap1.insert( 8 );
+      heap1.insert( 10 );
+      heap1.insert( 2 );
+      heap1.insert( 23 );
+      heap1.insert( 24 );
+      heap1.insert( 10 );
+      heap1.insert( 10 );
 
-      TS_ASSERT(heap1.top() == 24);
+      TS_ASSERT( heap1.top() == 24 );
       heap1.pop();
-      TS_ASSERT(heap1.top() == 23);
+      TS_ASSERT( heap1.top() == 23 );
       heap1.eraseTop();
-      TS_ASSERT(heap1.top() == 10);
+      TS_ASSERT( heap1.top() == 10 );
       heap1.eraseTop();
-      TS_ASSERT(heap1.top() == 10);
+      TS_ASSERT( heap1.top() == 10 );
 
-      TS_ASSERT(heap1.size() == 4);
-      TS_ASSERT(heap1.empty() == false);
-      TS_ASSERT(heap1.contains(23) == false);
-      TS_ASSERT(heap1.contains(2) == true);
-      TS_ASSERT(heap1.contains(8) == true);
+      TS_ASSERT( heap1.size() == 4 );
+      TS_ASSERT( heap1.empty() == false );
+      TS_ASSERT( heap1.contains( 23 ) == false );
+      TS_ASSERT( heap1.contains( 2 ) == true );
+      TS_ASSERT( heap1.contains( 8 ) == true );
 
-      heap1.erase(10);
-      TS_ASSERT(heap1.size() == 3);
-      TS_GUM_ASSERT_THROWS_NOTHING(heap1.erase(150));
+      heap1.erase( 10 );
+      TS_ASSERT( heap1.size() == 3 );
+      TS_GUM_ASSERT_THROWS_NOTHING( heap1.erase( 150 ) );
 
-      heap1.eraseByPos(0);
-      TS_ASSERT(heap1.top() == 8);
+      heap1.eraseByPos( 0 );
+      TS_ASSERT( heap1.top() == 8 );
     }
 
     void testMoves() {
@@ -98,60 +98,60 @@ namespace gum_tests {
       gum::Heap<int, std::greater<int>> heap2{3, 9};
       gum::Heap<int, std::greater<int>> heap3{1, 10, 20};
 
-      gum::Heap<int, std::greater<int>> heap4 = std::move(heap3);
-      heap3 = std::move(heap2);
-      heap2 = std::move(heap1);
-      TS_ASSERT(heap2.size() == 4);
-      TS_ASSERT(heap2.top() == 5);
+      gum::Heap<int, std::greater<int>> heap4 = std::move( heap3 );
+      heap3 = std::move( heap2 );
+      heap2 = std::move( heap1 );
+      TS_ASSERT( heap2.size() == 4 );
+      TS_ASSERT( heap2.top() == 5 );
     }
 
     void testCopy() {
       gum::Heap<int> heap1;
-      heap1.insert(8);
-      heap1.insert(10);
-      heap1.insert(2);
-      heap1.insert(23);
-      heap1.insert(24);
-      heap1.insert(10);
-      heap1.insert(10);
+      heap1.insert( 8 );
+      heap1.insert( 10 );
+      heap1.insert( 2 );
+      heap1.insert( 23 );
+      heap1.insert( 24 );
+      heap1.insert( 10 );
+      heap1.insert( 10 );
 
       gum::Heap<int> heap2;
-      heap2.insert(8);
-      heap2.insert(50);
-      heap2.insert(20);
+      heap2.insert( 8 );
+      heap2.insert( 50 );
+      heap2.insert( 20 );
 
       heap2 = heap1;
-      TS_ASSERT(heap2.size() == heap1.size());
+      TS_ASSERT( heap2.size() == heap1.size() );
 
-      gum::Heap<int> heap3(heap1);
-      TS_ASSERT(heap3.size() == heap1.size());
+      gum::Heap<int> heap3( heap1 );
+      TS_ASSERT( heap3.size() == heap1.size() );
     }
 
     void testErase() {
       gum::Heap<int> heap1;
 
-      heap1.insert(8);
-      heap1.insert(10);
-      heap1.insert(2);
-      heap1.insert(23);
-      heap1.insert(24);
-      heap1.insert(10);
-      heap1.insert(10);
+      heap1.insert( 8 );
+      heap1.insert( 10 );
+      heap1.insert( 2 );
+      heap1.insert( 23 );
+      heap1.insert( 24 );
+      heap1.insert( 10 );
+      heap1.insert( 10 );
 
-      heap1.eraseByPos(0);
-      TS_ASSERT(heap1.top() == 8);
-      TS_GUM_ASSERT_THROWS_NOTHING(heap1.eraseByPos(150));
-      TS_ASSERT(heap1.size() == 6);
-      heap1.eraseByPos(4);
-      TS_ASSERT(heap1.size() == 5);
-      heap1.eraseByPos(4);
-      TS_ASSERT(heap1.size() == 4);
-      TS_ASSERT(heap1.contains(24) == false);
+      heap1.eraseByPos( 0 );
+      TS_ASSERT( heap1.top() == 8 );
+      TS_GUM_ASSERT_THROWS_NOTHING( heap1.eraseByPos( 150 ) );
+      TS_ASSERT( heap1.size() == 6 );
+      heap1.eraseByPos( 4 );
+      TS_ASSERT( heap1.size() == 5 );
+      heap1.eraseByPos( 4 );
+      TS_ASSERT( heap1.size() == 4 );
+      TS_ASSERT( heap1.contains( 24 ) == false );
     }
 
     class SetCmp {
       public:
-      bool operator()(const gum::Set<int>& x, const gum::Set<int>& y) const {
+      bool operator()( const gum::Set<int>& x, const gum::Set<int>& y ) const {
         return x.size() < y.size();
       }
     };
@@ -160,51 +160,51 @@ namespace gum_tests {
       gum::Heap<gum::Set<int>, SetCmp> heap1;
 
       gum::Set<int> s1, s2, s3, s4, s5;
-      s1.insert(1);
-      s2.insert(1);
-      s2.insert(2);
-      s3.insert(1);
-      s3.insert(2);
-      s3.insert(3);
-      s4.insert(1);
-      s4.insert(2);
-      s4.insert(3);
-      s4.insert(4);
-      s5.insert(1);
-      s5.insert(2);
-      s5.insert(3);
-      s5.insert(4);
-      s5.insert(5);
+      s1.insert( 1 );
+      s2.insert( 1 );
+      s2.insert( 2 );
+      s3.insert( 1 );
+      s3.insert( 2 );
+      s3.insert( 3 );
+      s4.insert( 1 );
+      s4.insert( 2 );
+      s4.insert( 3 );
+      s4.insert( 4 );
+      s5.insert( 1 );
+      s5.insert( 2 );
+      s5.insert( 3 );
+      s5.insert( 4 );
+      s5.insert( 5 );
 
-      heap1.insert(s4);
-      heap1.insert(s2);
-      heap1.insert(s1);
-      heap1.insert(s3);
-      heap1.insert(s2);
-      heap1.insert(s2);
-      heap1.insert(s5);
+      heap1.insert( s4 );
+      heap1.insert( s2 );
+      heap1.insert( s1 );
+      heap1.insert( s3 );
+      heap1.insert( s2 );
+      heap1.insert( s2 );
+      heap1.insert( s5 );
 
-      TS_ASSERT(heap1.top() == s1);
+      TS_ASSERT( heap1.top() == s1 );
       heap1.pop();
-      TS_ASSERT(heap1.top() == s2);
+      TS_ASSERT( heap1.top() == s2 );
       heap1.eraseTop();
-      TS_ASSERT(heap1.top() == s2);
+      TS_ASSERT( heap1.top() == s2 );
       heap1.eraseTop();
-      TS_ASSERT(heap1.top() == s2);
+      TS_ASSERT( heap1.top() == s2 );
 
-      TS_ASSERT(heap1.size() == 4);
-      TS_ASSERT(heap1.empty() == false);
-      TS_ASSERT(heap1.contains(s1) == false);
-      TS_ASSERT(heap1.contains(s4) == true);
-      TS_ASSERT(heap1.contains(s5) == true);
+      TS_ASSERT( heap1.size() == 4 );
+      TS_ASSERT( heap1.empty() == false );
+      TS_ASSERT( heap1.contains( s1 ) == false );
+      TS_ASSERT( heap1.contains( s4 ) == true );
+      TS_ASSERT( heap1.contains( s5 ) == true );
 
       gum::Set<int> s6;
-      heap1.erase(s2);
-      TS_ASSERT(heap1.size() == 3);
-      TS_GUM_ASSERT_THROWS_NOTHING(heap1.erase(s6));
+      heap1.erase( s2 );
+      TS_ASSERT( heap1.size() == 3 );
+      TS_GUM_ASSERT_THROWS_NOTHING( heap1.erase( s6 ) );
 
-      heap1.eraseByPos(0);
-      TS_ASSERT(heap1.top() == s4);
+      heap1.eraseByPos( 0 );
+      TS_ASSERT( heap1.top() == s4 );
     }
   };
 

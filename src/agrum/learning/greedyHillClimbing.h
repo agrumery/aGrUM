@@ -62,10 +62,10 @@ namespace gum {
       GreedyHillClimbing();
 
       /// copy constructor
-      GreedyHillClimbing(const GreedyHillClimbing& from);
+      GreedyHillClimbing( const GreedyHillClimbing& from );
 
       /// move constructor
-      GreedyHillClimbing(GreedyHillClimbing&& from);
+      GreedyHillClimbing( GreedyHillClimbing&& from );
 
       /// destructor
       ~GreedyHillClimbing();
@@ -78,10 +78,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GreedyHillClimbing& operator=(const GreedyHillClimbing& from);
+      GreedyHillClimbing& operator=( const GreedyHillClimbing& from );
 
       /// move operator
-      GreedyHillClimbing& operator=(GreedyHillClimbing&& from);
+      GreedyHillClimbing& operator=( GreedyHillClimbing&& from );
 
       /// @}
 
@@ -105,18 +105,18 @@ namespace gum {
        * allow to apply
        * @param initial_dag the DAG we start from for our learning */
       template <typename GRAPH_CHANGES_SELECTOR>
-      DAG learnStructure(GRAPH_CHANGES_SELECTOR& selector,
-                         const std::vector<unsigned int>& modal,
-                         DAG initial_dag = DAG());
+      DAG learnStructure( GRAPH_CHANGES_SELECTOR& selector,
+                          const std::vector<unsigned int>& modal,
+                          DAG initial_dag = DAG() );
 
       /// learns the structure and the parameters of a BN
       template <typename GUM_SCALAR = float, typename GRAPH_CHANGES_SELECTOR,
                 typename PARAM_ESTIMATOR, typename CELL_TRANSLATORS>
       BayesNet<GUM_SCALAR>
-      learnBN(GRAPH_CHANGES_SELECTOR& selector, PARAM_ESTIMATOR& estimator,
-              const std::vector<std::string>& names,
-              const std::vector<unsigned int>& modal,
-              const CELL_TRANSLATORS& translator, DAG initial_dag = DAG());
+      learnBN( GRAPH_CHANGES_SELECTOR& selector, PARAM_ESTIMATOR& estimator,
+               const std::vector<std::string>& names,
+               const std::vector<unsigned int>& modal,
+               const CELL_TRANSLATORS& translator, DAG initial_dag = DAG() );
 
       /// @}
     };

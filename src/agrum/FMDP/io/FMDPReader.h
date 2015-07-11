@@ -61,8 +61,8 @@ namespace gum {
      * to create/destroy
      * the FMDP from inside the reader.
      */
-    FMDPReader(FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp,
-               const std::string& filename);
+    FMDPReader( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp,
+                const std::string& filename );
 
     /**
      * Default destructor.

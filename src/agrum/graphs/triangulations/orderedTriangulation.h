@@ -60,7 +60,7 @@ namespace gum {
         const OrderedEliminationSequenceStrategy& elimSeq =
             OrderedEliminationSequenceStrategy(),
         const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
-        bool minimality = false);
+        bool minimality = false );
 
     /// constructor with a given graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
@@ -80,7 +80,7 @@ namespace gum {
         const OrderedEliminationSequenceStrategy& elimSeq =
             OrderedEliminationSequenceStrategy(),
         const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
-        bool minimality = false);
+        bool minimality = false );
 
     /** @brief returns a fresh triangulation (over an empty graph) of the same
      * type as the current object
@@ -107,8 +107,9 @@ namespace gum {
      * @param sequence  the order in which the nodes should be eliminated
      * @warning note that, by aGrUM's rule, the graph and the sequence are not
      * copied but only referenced by the elimination sequence algorithm. */
-    virtual void setGraph(const UndiGraph* graph, const NodeProperty<Size>* dom,
-                          const std::vector<NodeId>* sequence);
+    virtual void setGraph( const UndiGraph* graph,
+                           const NodeProperty<Size>* dom,
+                           const std::vector<NodeId>* sequence );
 
     /// @}
 
@@ -123,7 +124,7 @@ namespace gum {
      * elimination sequence class).
      * @param graph the very graph that is triangulated (this is a copy of
      * __original_graph) */
-    void _initTriangulation(UndiGraph& graph);
+    void _initTriangulation( UndiGraph& graph );
 
     /// the elimination sequence to apply
     const std::vector<NodeId>* __sequence;
@@ -132,10 +133,10 @@ namespace gum {
 
     private:
     /// forbid copy constructor
-    OrderedTriangulation(const OrderedTriangulation&);
+    OrderedTriangulation( const OrderedTriangulation& );
 
     /// forbid copy operator
-    OrderedTriangulation& operator=(const OrderedTriangulation&);
+    OrderedTriangulation& operator=( const OrderedTriangulation& );
   };
 
 } /* namespace gum */

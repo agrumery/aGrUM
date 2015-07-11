@@ -34,46 +34,46 @@ namespace gum {
   namespace prm {
     namespace gspan {
 
-      Pattern::Pattern(const Pattern& source) : DiGraph(), __last(0) {
-        GUM_CONS_CPY(Pattern);
+      Pattern::Pattern( const Pattern& source ) : DiGraph(), __last( 0 ) {
+        GUM_CONS_CPY( Pattern );
         NodeProperty<NodeId> node_map;
 
-        for (NodeId node = 1; node <= source.size(); ++node) {
-          node_map.insert(node,
-                          addNode(const_cast<LabelData&>(source.label(node))));
+        for ( NodeId node = 1; node <= source.size(); ++node ) {
+          node_map.insert(
+              node, addNode( const_cast<LabelData&>( source.label( node ) ) ) );
         }
 
-        for (const auto edge : source.code().codes)
-          addArc(node_map[edge->i], node_map[edge->j],
-                 const_cast<LabelData&>(
-                     source.label(node_map[edge->i], node_map[edge->j])));
+        for ( const auto edge : source.code().codes )
+          addArc( node_map[edge->i], node_map[edge->j],
+                  const_cast<LabelData&>(
+                      source.label( node_map[edge->i], node_map[edge->j] ) ) );
       }
 
       bool Pattern::isMinimal() {
-        for (const auto node : nodes()) {
-          for (const auto next : parents(node)) {
-            Size u = label(node).id;
-            Size v = label(next).id;
-            EdgeCode edge_code(1, 2, u, label(next, node).id, v);
+        for ( const auto node : nodes() ) {
+          for ( const auto next : parents( node ) ) {
+            Size u = label( node ).id;
+            Size v = label( next ).id;
+            EdgeCode edge_code( 1, 2, u, label( next, node ).id, v );
 
-            if (edge_code < *(code().codes.front())) {
+            if ( edge_code < *( code().codes.front() ) ) {
               return false;
-            } else if (edge_code == (*code().codes.front())) {
-              if (__expandCodeIsMinimal(node, next)) {
+            } else if ( edge_code == ( *code().codes.front() ) ) {
+              if ( __expandCodeIsMinimal( node, next ) ) {
                 return false;
               }
             }
           }
 
-          for (const auto next : children(node)) {
-            Size u = label(node).id;
-            Size v = label(next).id;
-            EdgeCode edge_code(1, 2, u, label(node, next).id, v);
+          for ( const auto next : children( node ) ) {
+            Size u = label( node ).id;
+            Size v = label( next ).id;
+            EdgeCode edge_code( 1, 2, u, label( node, next ).id, v );
 
-            if (edge_code < *(code().codes.front())) {
+            if ( edge_code < *( code().codes.front() ) ) {
               return false;
-            } else if (edge_code == (*code().codes.front())) {
-              if (__expandCodeIsMinimal(node, next)) {
+            } else if ( edge_code == ( *code().codes.front() ) ) {
+              if ( __expandCodeIsMinimal( node, next ) ) {
                 return false;
               }
             }
@@ -83,86 +83,88 @@ namespace gum {
         return true;
       }
 
-      std::string Pattern::toDot(size_t name) const {
+      std::string Pattern::toDot( size_t name ) const {
         std::stringstream sBuff;
         sBuff << "digraph " << name << " {\n";
 
-        for (const auto arc : arcs()) {
-          sBuff << label(arc.tail()).id << " -> ";
-          sBuff << label(arc.head()).id << ";\n";
+        for ( const auto arc : arcs() ) {
+          sBuff << label( arc.tail() ).id << " -> ";
+          sBuff << label( arc.head() ).id << ";\n";
         }
 
         sBuff << "}\n";
         return sBuff.str();
       }
 
-      bool Pattern::__expandCodeIsMinimal(NodeId u, NodeId v) {
+      bool Pattern::__expandCodeIsMinimal( NodeId u, NodeId v ) {
         Bijection<NodeId, NodeId> node_map;
         Pattern p;
-        node_map.insert(u, p.addNode(label(u)));
-        node_map.insert(v, p.addNode(label(v)));
+        node_map.insert( u, p.addNode( label( u ) ) );
+        node_map.insert( v, p.addNode( label( v ) ) );
 
         try {
-          p.addArc(1, 2, label(u, v));
-        } catch (NotFound&) {
-          p.addArc(1, 2, label(v, u));
+          p.addArc( 1, 2, label( u, v ) );
+        } catch ( NotFound& ) {
+          p.addArc( 1, 2, label( v, u ) );
         }
 
-        for (const auto nei : children(u))
-          if (nei != v)
-            if (__rec(p, node_map, u, nei))
+        for ( const auto nei : children( u ) )
+          if ( nei != v )
+            if ( __rec( p, node_map, u, nei ) )
               return true;
 
-        for (const auto nei : parents(u))
-          if (nei != v)
-            if (__rec(p, node_map, u, nei))
+        for ( const auto nei : parents( u ) )
+          if ( nei != v )
+            if ( __rec( p, node_map, u, nei ) )
               return true;
 
-        for (const auto nei : children(v))
-          if (nei != u)
-            if (__rec(p, node_map, v, nei))
+        for ( const auto nei : children( v ) )
+          if ( nei != u )
+            if ( __rec( p, node_map, v, nei ) )
               return true;
 
-        for (const auto nei : parents(v))
-          if (nei != u)
-            if (__rec(p, node_map, v, nei))
+        for ( const auto nei : parents( v ) )
+          if ( nei != u )
+            if ( __rec( p, node_map, v, nei ) )
               return true;
 
         return false;
       }
 
-      bool Pattern::__rec(Pattern& p, Bijection<NodeId, NodeId>& node_map,
-                          NodeId u, NodeId v) {
-        if (node_map.existsFirst(v)) {
-          if (node_map.second(u) < node_map.second(v)) {
+      bool Pattern::__rec( Pattern& p, Bijection<NodeId, NodeId>& node_map,
+                           NodeId u, NodeId v ) {
+        if ( node_map.existsFirst( v ) ) {
+          if ( node_map.second( u ) < node_map.second( v ) ) {
             // Invalid forward edge
             return false;
-          } else if ((p.existsArc(node_map.second(u), node_map.second(v))) or
-                     (p.existsArc(node_map.second(v), node_map.second(u)))) {
+          } else if ( ( p.existsArc( node_map.second( u ),
+                                     node_map.second( v ) ) ) or
+                      ( p.existsArc( node_map.second( v ),
+                                     node_map.second( u ) ) ) ) {
             // Duplicate arc !
             return false;
           }
         } else {
-          node_map.insert(v, p.addNode(label(v)));
+          node_map.insert( v, p.addNode( label( v ) ) );
         }
 
         // Retrieving arc label data
         LabelData* data = 0;
 
         try {
-          data = &(label(u, v));
-        } catch (NotFound&) {
-          data = &(label(v, u));
+          data = &( label( u, v ) );
+        } catch ( NotFound& ) {
+          data = &( label( v, u ) );
         }
 
         // Adding arc
         try {
-          p.addArc(node_map.second(u), node_map.second(v), *data);
-        } catch (OperationNotAllowed&) {
+          p.addArc( node_map.second( u ), node_map.second( v ), *data );
+        } catch ( OperationNotAllowed& ) {
           // Invalid neighbor
-          if (node_map.second(u) < node_map.second(v)) {
-            p.remove(node_map.second(v));
-            node_map.eraseFirst(v);
+          if ( node_map.second( u ) < node_map.second( v ) ) {
+            p.remove( node_map.second( v ) );
+            node_map.eraseFirst( v );
           }
 
           return false;
@@ -171,135 +173,136 @@ namespace gum {
         // Check if this is minimal or if equal find another growth
         size_t depth = p.code().codes.size() - 1;
 
-        if (*(p.code().codes.back()) < *(code().codes[depth])) {
+        if ( *( p.code().codes.back() ) < *( code().codes[depth] ) ) {
           return true;
-        } else if (*(p.code().codes.back()) == *(code().codes[depth])) {
+        } else if ( *( p.code().codes.back() ) == *( code().codes[depth] ) ) {
           std::list<NodeId> r_path;
-          p.rightmostPath(r_path);
+          p.rightmostPath( r_path );
 
-          for (const auto node : r_path) {
-            for (const auto nei : children(node_map.first(node)))
-              if (__rec(p, node_map, node_map.first(node), nei))
+          for ( const auto node : r_path ) {
+            for ( const auto nei : children( node_map.first( node ) ) )
+              if ( __rec( p, node_map, node_map.first( node ), nei ) )
                 return true;
 
-            for (const auto nei : parents(node_map.first(node)))
-              if (__rec(p, node_map, node_map.first(node), nei))
+            for ( const auto nei : parents( node_map.first( node ) ) )
+              if ( __rec( p, node_map, node_map.first( node ), nei ) )
                 return true;
           }
         }
 
-        if (p.code().codes.back()->isForward())
-          node_map.eraseFirst(v);
+        if ( p.code().codes.back()->isForward() )
+          node_map.eraseFirst( v );
 
         p.pop_back();
         return false;
       }
 
-      bool Pattern::__not_rec(Pattern& p, Bijection<NodeId, NodeId>& node_map,
-                              NodeId a_u, NodeId a_v) {
+      bool Pattern::__not_rec( Pattern& p, Bijection<NodeId, NodeId>& node_map,
+                               NodeId a_u, NodeId a_v ) {
         std::vector<std::pair<NodeId, NodeId>> stack;
         std::vector<size_t> rec_call;
-        stack.push_back(std::make_pair(a_u, a_v));
+        stack.push_back( std::make_pair( a_u, a_v ) );
         NodeId u = 0;
         NodeId v = 0;
         bool go = true;
 
-        while (not stack.empty()) {
+        while ( not stack.empty() ) {
           ///////////////////////////////////
           std::stringstream stack_str;
           stack_str << "(";
 
-          for (size_t idx = 0; idx < stack.size(); ++idx) {
+          for ( size_t idx = 0; idx < stack.size(); ++idx ) {
             stack_str << stack[idx] << ", ";
           }
 
-          GUM_TRACE_VAR(stack_str.str());
-          GUM_TRACE_VAR(code());
-          GUM_TRACE_VAR(p.code());
-          GUM_TRACE_VAR(node_map.size());
+          GUM_TRACE_VAR( stack_str.str() );
+          GUM_TRACE_VAR( code() );
+          GUM_TRACE_VAR( p.code() );
+          GUM_TRACE_VAR( node_map.size() );
           std::stringstream sBuff;
 
-          for (auto iter = node_map.begin(); iter != node_map.end(); ++iter)
+          for ( auto iter = node_map.begin(); iter != node_map.end(); ++iter )
             sBuff << "(" << iter.first() << ", " << iter.second() << ") ";
 
-          GUM_TRACE(sBuff.str());
-          GUM_TRACE_VAR(stack.back().first);
-          GUM_TRACE_VAR(stack.back().second);
+          GUM_TRACE( sBuff.str() );
+          GUM_TRACE_VAR( stack.back().first );
+          GUM_TRACE_VAR( stack.back().second );
           ///////////////////////////////////
           go = true;
           u = stack.back().first;
           v = stack.back().second;
           stack.pop_back();
 
-          if ((u == 0) and (v == 0)) {
+          if ( ( u == 0 ) and ( v == 0 ) ) {
             p.pop_back();
           } else {
-            if (node_map.existsFirst(v)) {
-              if (node_map.second(u) < node_map.second(v)) {
+            if ( node_map.existsFirst( v ) ) {
+              if ( node_map.second( u ) < node_map.second( v ) ) {
                 // Invalid forward edge
                 go = false;
-              } else if ((p.existsArc(node_map.second(u),
-                                      node_map.second(v))) or
-                         (p.existsArc(node_map.second(v),
-                                      node_map.second(u)))) {
+              } else if ( ( p.existsArc( node_map.second( u ),
+                                         node_map.second( v ) ) ) or
+                          ( p.existsArc( node_map.second( v ),
+                                         node_map.second( u ) ) ) ) {
                 // Duplicate arc !
                 go = false;
               }
             } else {
-              node_map.insert(v, p.addNode(label(v)));
+              node_map.insert( v, p.addNode( label( v ) ) );
             }
 
-            if (go) {
+            if ( go ) {
               // Retrieving arc label data
               LabelData* data = 0;
 
               try {
-                data = &(label(u, v));
-              } catch (NotFound&) {
-                data = &(label(v, u));
+                data = &( label( u, v ) );
+              } catch ( NotFound& ) {
+                data = &( label( v, u ) );
               }
 
               // Adding arc
               try {
-                p.addArc(node_map.second(u), node_map.second(v), *data);
-              } catch (OperationNotAllowed&) {
+                p.addArc( node_map.second( u ), node_map.second( v ), *data );
+              } catch ( OperationNotAllowed& ) {
                 // Invalid neighbor
-                if (node_map.second(u) < node_map.second(v)) {
-                  p.remove(node_map.second(v));
-                  node_map.eraseFirst(v);
+                if ( node_map.second( u ) < node_map.second( v ) ) {
+                  p.remove( node_map.second( v ) );
+                  node_map.eraseFirst( v );
                 }
 
                 go = false;
               }
 
-              if (go) {
+              if ( go ) {
                 // Check if this is minimal or if equal find another growth
                 size_t depth = p.code().codes.size() - 1;
 
-                if (*(p.code().codes.back()) < *(code().codes[depth])) {
+                if ( *( p.code().codes.back() ) < *( code().codes[depth] ) ) {
                   return true;
-                } else if (*(p.code().codes.back()) == *(code().codes[depth])) {
+                } else if ( *( p.code().codes.back() ) ==
+                            *( code().codes[depth] ) ) {
                   std::list<NodeId> r_path;
-                  p.rightmostPath(r_path);
-                  stack.push_back(std::make_pair((NodeId)0, (NodeId)0));
+                  p.rightmostPath( r_path );
+                  stack.push_back( std::make_pair( (NodeId)0, (NodeId)0 ) );
 
-                  for (const auto node : r_path) {
-                    for (const auto nei : children(node)) {
+                  for ( const auto node : r_path ) {
+                    for ( const auto nei : children( node ) ) {
                       stack.push_back(
-                          std::make_pair(node_map.first(node), nei));
-                      ++(rec_call.back());
+                          std::make_pair( node_map.first( node ), nei ) );
+                      ++( rec_call.back() );
                     }
 
-                    for (const auto nei : parents(node)) {
+                    for ( const auto nei : parents( node ) ) {
                       stack.push_back(
-                          std::make_pair(node_map.first(node), nei));
-                      ++(rec_call.back());
+                          std::make_pair( node_map.first( node ), nei ) );
+                      ++( rec_call.back() );
                     }
                   }
                 }
 
-                if (p.code().codes.back()->isForward())
-                  node_map.eraseFirst(v);
+                if ( p.code().codes.back()->isForward() )
+                  node_map.eraseFirst( v );
               }
             }
           }

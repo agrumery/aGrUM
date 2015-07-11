@@ -79,12 +79,12 @@ namespace gum {
     SpanningForest();
 
     /// Copy constructor
-    SpanningForest(const SpanningForest& toCopy);
+    SpanningForest( const SpanningForest& toCopy );
 
     /// Copy operator
     /** avoid copying the interface from scratch: this would prevent, in
      * particular, that a Prim algorithm be initialized by a Kruskal algo. */
-    SpanningForest& operator=(const SpanningForest& toCopy);
+    SpanningForest& operator=( const SpanningForest& toCopy );
 
     /// @}
   };

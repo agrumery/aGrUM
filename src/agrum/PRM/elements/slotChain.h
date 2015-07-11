@@ -87,8 +87,8 @@ namespace gum {
        * @throw WrongClassElement<GUM_SCALAR> Raised contains invalid
        *ClassElement<GUM_SCALAR>.
        */
-      SlotChain(const std::string& name,
-                const Sequence<ClassElement<GUM_SCALAR>*>& chain);
+      SlotChain( const std::string& name,
+                 const Sequence<ClassElement<GUM_SCALAR>*>& chain );
 
       /** @brief Tweak constructor.
        *
@@ -106,15 +106,15 @@ namespace gum {
        * @throw WrongClassElement<GUM_SCALAR> Raised contains invalid
        *ClassElement<GUM_SCALAR>.
        */
-      SlotChain(Sequence<ClassElement<GUM_SCALAR>*>* chain,
-                const std::string& name);
+      SlotChain( Sequence<ClassElement<GUM_SCALAR>*>* chain,
+                 const std::string& name );
 
       /**
        * Copy constructor.
        *
        * This creates a copy of the slot chain.
        */
-      SlotChain(const SlotChain& source);
+      SlotChain( const SlotChain& source );
 
       /// Destructor.
       virtual ~SlotChain();
@@ -170,15 +170,15 @@ namespace gum {
       const Sequence<ClassElement<GUM_SCALAR>*>& chain() const;
 
       /// See gum::ClassElement<GUM_SCALAR>::_addParent().
-      virtual void addParent(const ClassElement<GUM_SCALAR>& elt);
+      virtual void addParent( const ClassElement<GUM_SCALAR>& elt );
 
       /// See gum::ClassElement<GUM_SCALAR>::_addChild().
-      virtual void addChild(const ClassElement<GUM_SCALAR>& elt);
+      virtual void addChild( const ClassElement<GUM_SCALAR>& elt );
 
       /// @}
       private:
       /// Copy operator. Don't use it.
-      SlotChain& operator=(const SlotChain& source);
+      SlotChain& operator=( const SlotChain& source );
 
       // ========================================================================
       /// @name Private members of SlotChain.

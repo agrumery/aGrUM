@@ -40,15 +40,15 @@ namespace gum {
    * @param exponent The unsigned long integer exponent used which will hold the
    * result afterward.
    */
-  inline void intPow(const unsigned long& base, unsigned long& exponent) {
-    if (exponent == 0) {
+  inline void intPow( const unsigned long& base, unsigned long& exponent ) {
+    if ( exponent == 0 ) {
       exponent = 1;
       return;
     }
 
     unsigned long out = base;
 
-    for (unsigned long i = 1; i < exponent; i++)
+    for ( unsigned long i = 1; i < exponent; i++ )
       out *= base;
 
     exponent = out;
@@ -60,7 +60,7 @@ namespace gum {
    * @param exponent The unsigned long integer exponent used to compute \f$
    *2^{exponent} \f$ which will hold the result of afterward.
    */
-  inline void int2Pow(unsigned long& exponent) {
+  inline void int2Pow( unsigned long& exponent ) {
     unsigned long base = 1;
     base <<= exponent;
     exponent = base;
@@ -82,9 +82,9 @@ namespace gum {
    *the
    *maximum number those bits can represent, i.e. \f$ 2^{num\_bits} \f$.
    */
-  inline void superiorPow(const unsigned long& card, unsigned long& num_bits,
-                          unsigned long& new_card) {
-    if (card <= 0) {
+  inline void superiorPow( const unsigned long& card, unsigned long& num_bits,
+                           unsigned long& new_card ) {
+    if ( card <= 0 ) {
       num_bits = 0;
       new_card = 1;
       return;
@@ -93,7 +93,7 @@ namespace gum {
     num_bits = 1;
     new_card = 2;
 
-    while (new_card < card) {
+    while ( new_card < card ) {
       new_card *= 2;
       num_bits++;
     }

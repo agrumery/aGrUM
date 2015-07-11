@@ -30,7 +30,7 @@ namespace gum {
   namespace prm {
     namespace gspan {
 
-      std::ostream& operator<<(std::ostream& out, const LabelData& data) {
+      std::ostream& operator<<( std::ostream& out, const LabelData& data ) {
         out << data.l;
         return out;
       }
@@ -38,26 +38,27 @@ namespace gum {
       // LabelData
 
       INLINE
-      LabelData::LabelData() : id(0) { GUM_CONSTRUCTOR(LabelData); }
+      LabelData::LabelData() : id( 0 ) { GUM_CONSTRUCTOR( LabelData ); }
 
       INLINE
-      LabelData::LabelData(const LabelData& from) : id(from.id), l(from.l) {
-        GUM_CONS_CPY(LabelData);
+      LabelData::LabelData( const LabelData& from )
+          : id( from.id ), l( from.l ) {
+        GUM_CONS_CPY( LabelData );
       }
 
       INLINE
-      LabelData::~LabelData() { GUM_DESTRUCTOR(LabelData); }
+      LabelData::~LabelData() { GUM_DESTRUCTOR( LabelData ); }
 
       INLINE
-      bool LabelData::operator==(const LabelData& from) const {
-        return (id == from.id) and (l == from.l) and
-               (tree_width == from.tree_width);
+      bool LabelData::operator==( const LabelData& from ) const {
+        return ( id == from.id ) and ( l == from.l ) and
+               ( tree_width == from.tree_width );
       }
 
       INLINE
-      bool LabelData::operator!=(const LabelData& from) const {
-        return (id != from.id) and (l != from.l) and
-               (tree_width != from.tree_width);
+      bool LabelData::operator!=( const LabelData& from ) const {
+        return ( id != from.id ) and ( l != from.l ) and
+               ( tree_width != from.tree_width );
       }
 
       template class NodeData<double>;

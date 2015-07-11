@@ -32,7 +32,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_net_COCO_SCANNER_H__)
+#if !defined( gum_net_COCO_SCANNER_H__ )
 #define gum_net_COCO_SCANNER_H__
 
 #include <limits.h>
@@ -87,26 +87,26 @@ namespace gum {
       bool CanSeek();  // true if stream can be seeked otherwise false
 
       public:
-      int GetPercent(void);
+      int GetPercent( void );
 
       static const int EoF = COCO_WCHAR_MAX + 1;
 
-      Buffer(FILE* s, bool isUserStream);
-      Buffer(const unsigned char* buf, int len);
-      Buffer(Buffer* b);
+      Buffer( FILE* s, bool isUserStream );
+      Buffer( const unsigned char* buf, int len );
+      Buffer( Buffer* b );
       virtual ~Buffer();
 
       virtual void Close();
       virtual int Read();
       virtual int Peek();
-      virtual wchar_t* GetString(int beg, int end);
+      virtual wchar_t* GetString( int beg, int end );
       virtual int GetPos();
-      virtual void SetPos(int value);
+      virtual void SetPos( int value );
     };
 
     class UTF8Buffer : public Buffer {
       public:
-      UTF8Buffer(Buffer* b) : Buffer(b){};
+      UTF8Buffer( Buffer* b ) : Buffer( b ){};
       virtual int Read();
     };
 
@@ -119,7 +119,7 @@ namespace gum {
         public:
         int key, val;
         Elem* next;
-        Elem(int key, int val) {
+        Elem( int key, int val ) {
           this->key = key;
           this->val = val;
           next = NULL;
@@ -131,13 +131,13 @@ namespace gum {
       public:
       StartStates() {
         tab = new Elem* [128];
-        memset(tab, 0, 128 * sizeof(Elem*));
+        memset( tab, 0, 128 * sizeof( Elem* ) );
       }
       virtual ~StartStates() {
-        for (int i = 0; i < 128; ++i) {
+        for ( int i = 0; i < 128; ++i ) {
           Elem* e = tab[i];
 
-          while (e != NULL) {
+          while ( e != NULL ) {
             Elem* next = e->next;
             delete e;
             e = next;
@@ -147,17 +147,17 @@ namespace gum {
         delete[] tab;
       }
 
-      void set(int key, int val) {
-        Elem* e = new Elem(key, val);
-        int k = ((unsigned int)key) % 128;
+      void set( int key, int val ) {
+        Elem* e = new Elem( key, val );
+        int k = ( (unsigned int)key ) % 128;
         e->next = tab[k];
         tab[k] = e;
       }
 
-      int state(int key) {
-        Elem* e = tab[((unsigned int)key) % 128];
+      int state( int key ) {
+        Elem* e = tab[( (unsigned int)key ) % 128];
 
-        while (e != NULL && e->key != key)
+        while ( e != NULL && e->key != key )
           e = e->next;
 
         return e == NULL ? 0 : e->val;
@@ -174,12 +174,12 @@ namespace gum {
         wchar_t* key;
         int val;
         Elem* next;
-        Elem(const wchar_t* key, int val) {
-          this->key = coco_string_create(key);
+        Elem( const wchar_t* key, int val ) {
+          this->key = coco_string_create( key );
           this->val = val;
           next = NULL;
         }
-        virtual ~Elem() { coco_string_delete(key); }
+        virtual ~Elem() { coco_string_delete( key ); }
       };
 
       Elem** tab;
@@ -187,13 +187,13 @@ namespace gum {
       public:
       KeywordMap() {
         tab = new Elem* [128];
-        memset(tab, 0, 128 * sizeof(Elem*));
+        memset( tab, 0, 128 * sizeof( Elem* ) );
       }
       virtual ~KeywordMap() {
-        for (int i = 0; i < 128; ++i) {
+        for ( int i = 0; i < 128; ++i ) {
           Elem* e = tab[i];
 
-          while (e != NULL) {
+          while ( e != NULL ) {
             Elem* next = e->next;
             delete e;
             e = next;
@@ -203,17 +203,17 @@ namespace gum {
         delete[] tab;
       }
 
-      void set(const wchar_t* key, int val) {
-        Elem* e = new Elem(key, val);
-        int k = coco_string_hash(key) % 128;
+      void set( const wchar_t* key, int val ) {
+        Elem* e = new Elem( key, val );
+        int k = coco_string_hash( key ) % 128;
         e->next = tab[k];
         tab[k] = e;
       }
 
-      int get(const wchar_t* key, int defaultVal) {
-        Elem* e = tab[coco_string_hash(key) % 128];
+      int get( const wchar_t* key, int defaultVal ) {
+        Elem* e = tab[coco_string_hash( key ) % 128];
 
-        while (e != NULL && !coco_string_equal(e->key, key))
+        while ( e != NULL && !coco_string_equal( e->key, key ) )
           e = e->next;
 
         return e == NULL ? defaultVal : e->val;
@@ -257,7 +257,7 @@ namespace gum {
 
       void CreateHeapBlock();
       Token* CreateToken();
-      void AppendVal(Token* t);
+      void AppendVal( Token* t );
       void SetScannerBehindT();
 
       void Init();
@@ -274,16 +274,16 @@ namespace gum {
 
       Buffer* buffer;  // scanner buffer
 
-      Scanner(const unsigned char* buf, int len,
-              std::string filename = "anonymous buffer", bool trace = false);
-      Scanner(const char* fileName, bool trace = false);
-      Scanner(const wchar_t* fileName, bool trace = false);
-      Scanner(FILE* s, bool trace = false);
+      Scanner( const unsigned char* buf, int len,
+               std::string filename = "anonymous buffer", bool trace = false );
+      Scanner( const char* fileName, bool trace = false );
+      Scanner( const wchar_t* fileName, bool trace = false );
+      Scanner( FILE* s, bool trace = false );
       ~Scanner();
 
-      void setTrace(bool b) { __trace = b; }
+      void setTrace( bool b ) { __trace = b; }
 
-      void Load(const wchar_t* fileName);
+      void Load( const wchar_t* fileName );
       Token* Scan();
       Token* Peek();
       void ResetPeek();

@@ -85,37 +85,37 @@ namespace gum {
        * @param name The name of a possible Type<GUM_SCALAR> in this PRM.
        * @return Returns true if name names a Type<GUM_SCALAR> in this PRM.
        */
-      bool isType(const std::string name) const;
+      bool isType( const std::string name ) const;
 
       /**
        * @param name The name of a possible Class<GUM_SCALAR> in this PRM.
        * @return Returns true if name names a Class<GUM_SCALAR> in this PRM.
        */
-      bool isClass(const std::string name) const;
+      bool isClass( const std::string name ) const;
 
       /**
        * @param name The name of a possible Interface<GUM_SCALAR> in this PRM.
        * @return Returns true if name names a Interface<GUM_SCALAR> in this PRM.
        */
-      bool isInterface(const std::string name) const;
+      bool isInterface( const std::string name ) const;
 
       /**
        * @param name The name of a possible System<GUM_SCALAR> in this PRM.
        * @return Returns true if name names a System<GUM_SCALAR> in this PRM.
        */
-      bool isSystem(const std::string name) const;
+      bool isSystem( const std::string name ) const;
 
       /**
        * Returns a constant reference on a Type<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no type is found with the given name.
        */
-      Type<GUM_SCALAR>& type(const std::string& name);
+      Type<GUM_SCALAR>& type( const std::string& name );
 
       /**
        * Returns a constant reference on a Type<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no type is found with the given name.
        */
-      const Type<GUM_SCALAR>& type(const std::string& name) const;
+      const Type<GUM_SCALAR>& type( const std::string& name ) const;
 
       /**
        * Returns the Set of all Type<GUM_SCALAR> in this PRM.
@@ -126,13 +126,13 @@ namespace gum {
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      Class<GUM_SCALAR>& getClass(const std::string& name);
+      Class<GUM_SCALAR>& getClass( const std::string& name );
 
       /**
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      const Class<GUM_SCALAR>& getClass(const std::string& name) const;
+      const Class<GUM_SCALAR>& getClass( const std::string& name ) const;
 
       /**
        * Returns the Set of all Class<GUM_SCALAR> in this PRM.
@@ -143,13 +143,13 @@ namespace gum {
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      Interface<GUM_SCALAR>& interface(const std::string& name);
+      Interface<GUM_SCALAR>& interface( const std::string& name );
 
       /**
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      const Interface<GUM_SCALAR>& interface(const std::string& name) const;
+      const Interface<GUM_SCALAR>& interface( const std::string& name ) const;
 
       /**
        * Returns the Set of all Class<GUM_SCALAR> in this PRM.
@@ -160,13 +160,13 @@ namespace gum {
        * Returns a constant reference on a System<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no model is found with the given name.
        */
-      System<GUM_SCALAR>& system(const std::string& name);
+      System<GUM_SCALAR>& system( const std::string& name );
 
       /**
        * Returns a constant reference on a System<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no model is found with the given name.
        */
-      const System<GUM_SCALAR>& system(const std::string& name) const;
+      const System<GUM_SCALAR>& system( const std::string& name ) const;
 
       /**
        * Returns the Set of all Systems in this PRM.
@@ -183,12 +183,12 @@ namespace gum {
       /**
        * Copy constructor. Not Implemented.
        */
-      PRM(const PRM<GUM_SCALAR>& source);
+      PRM( const PRM<GUM_SCALAR>& source );
 
       /**
        * Copy operator. Not Implemented.
        */
-      PRM<GUM_SCALAR>& operator=(const PRM<GUM_SCALAR>& source);
+      PRM<GUM_SCALAR>& operator=( const PRM<GUM_SCALAR>& source );
 
       /// Add the built-in types in the PRM
       void __addBuiltInTypes();

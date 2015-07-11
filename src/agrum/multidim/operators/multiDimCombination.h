@@ -94,7 +94,7 @@ namespace gum {
     MultiDimCombination();
 
     /// copy constructor
-    MultiDimCombination(const MultiDimCombination<GUM_SCALAR, TABLE>&);
+    MultiDimCombination( const MultiDimCombination<GUM_SCALAR, TABLE>& );
 
     /// destructor
     virtual ~MultiDimCombination();
@@ -119,24 +119,24 @@ namespace gum {
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements */
     virtual TABLE<GUM_SCALAR>*
-    combine(const Set<const TABLE<GUM_SCALAR>*>& set) = 0;
-    virtual void combine(TABLE<GUM_SCALAR>& container,
-                         const Set<const TABLE<GUM_SCALAR>*>& set) = 0;
+    combine( const Set<const TABLE<GUM_SCALAR>*>& set ) = 0;
+    virtual void combine( TABLE<GUM_SCALAR>& container,
+                          const Set<const TABLE<GUM_SCALAR>*>& set ) = 0;
 
     /// changes the function used for combining two TABLES
-    virtual void setCombineFunction(TABLE<GUM_SCALAR>* (*combine)(
-        const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>&)) = 0;
+    virtual void setCombineFunction( TABLE<GUM_SCALAR>* ( *combine )(
+        const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) ) = 0;
 
     /// returns the combination function currently used by the combinator
-    virtual TABLE<GUM_SCALAR>* (*combineFunction())(
-        const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>&) = 0;
+    virtual TABLE<GUM_SCALAR>* ( *combineFunction() )(
+        const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) = 0;
 
     /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination */
     virtual float
-    nbOperations(const Set<const TABLE<GUM_SCALAR>*>& set) const = 0;
+    nbOperations( const Set<const TABLE<GUM_SCALAR>*>& set ) const = 0;
     virtual float nbOperations(
-        const Set<const Sequence<const DiscreteVariable*>*>& set) const = 0;
+        const Set<const Sequence<const DiscreteVariable*>*>& set ) const = 0;
 
     /// returns the memory consumption used during the combination
     /** Actually, this function does not return a precise account of the memory
@@ -148,16 +148,16 @@ namespace gum {
      * by
      * the resulting table ) */
     virtual std::pair<long, long>
-    memoryUsage(const Set<const TABLE<GUM_SCALAR>*>& set) const = 0;
+    memoryUsage( const Set<const TABLE<GUM_SCALAR>*>& set ) const = 0;
     virtual std::pair<long, long> memoryUsage(
-        const Set<const Sequence<const DiscreteVariable*>*>& set) const = 0;
+        const Set<const Sequence<const DiscreteVariable*>*>& set ) const = 0;
 
     /// @}
 
     private:
     /// forbid copy operators
     MultiDimCombination<GUM_SCALAR, TABLE>&
-    operator=(const MultiDimCombination<GUM_SCALAR, TABLE>&);
+    operator=( const MultiDimCombination<GUM_SCALAR, TABLE>& );
   };
 
 } /* namespace gum */

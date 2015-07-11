@@ -78,13 +78,13 @@ namespace gum {
      * don't forget to @ref __validate it (@see NodeGraphPart::beginNodes()
      *code)
      **/
-    NodeGraphPartIterator(const NodeGraphPart& nodes) noexcept;
+    NodeGraphPartIterator( const NodeGraphPart& nodes ) noexcept;
 
     /// copy constructor
-    NodeGraphPartIterator(const NodeGraphPartIterator& it) noexcept;
+    NodeGraphPartIterator( const NodeGraphPartIterator& it ) noexcept;
 
     /// move constructor
-    NodeGraphPartIterator(NodeGraphPartIterator&& it) noexcept;
+    NodeGraphPartIterator( NodeGraphPartIterator&& it ) noexcept;
 
     /// destructor
     virtual ~NodeGraphPartIterator() noexcept;
@@ -97,32 +97,33 @@ namespace gum {
     /// @{
 
     /// copy assignment operator
-    NodeGraphPartIterator& operator=(const NodeGraphPartIterator& it) noexcept;
+    NodeGraphPartIterator&
+    operator=( const NodeGraphPartIterator& it ) noexcept;
 
     /// move assignment operator
-    NodeGraphPartIterator& operator=(NodeGraphPartIterator&& it) noexcept;
+    NodeGraphPartIterator& operator=( NodeGraphPartIterator&& it ) noexcept;
 
     /// checks whether two iterators point toward the same node
-    bool operator==(const NodeGraphPartIterator& it) const noexcept;
+    bool operator==( const NodeGraphPartIterator& it ) const noexcept;
 
     /// checks whether two iterators point toward different nodes
-    bool operator!=(const NodeGraphPartIterator& it) const noexcept;
+    bool operator!=( const NodeGraphPartIterator& it ) const noexcept;
 
     /// increment the iterator
     NodeGraphPartIterator& operator++() noexcept;
 
     /// dereferencing operator
-    value_type operator*(void) const;
+    value_type operator*( void ) const;
 
     /// @}
 
     protected:
     /** @brief this function is used by @ref NodeGraphPart to update
      * @ref NodeGraphPart::__endIterator */
-    void _setPos(NodeId id) noexcept;
+    void _setPos( NodeId id ) noexcept;
 
     /// ensure that the nodeId is either end() either a valid NodeId
-    void _validate(void) noexcept;
+    void _validate( void ) noexcept;
 
     /// the nodegraphpart on which points the iterator
     const NodeGraphPart* _nodes;
@@ -165,13 +166,13 @@ namespace gum {
      * don't forget to @ref __validate it (@see NodeGraphPart::beginNodes()
      *code)
      **/
-    NodeGraphPartIteratorSafe(const NodeGraphPart& nodes);
+    NodeGraphPartIteratorSafe( const NodeGraphPart& nodes );
 
     /// copy constructor
-    NodeGraphPartIteratorSafe(const NodeGraphPartIteratorSafe& it);
+    NodeGraphPartIteratorSafe( const NodeGraphPartIteratorSafe& it );
 
     /// move constructor
-    NodeGraphPartIteratorSafe(NodeGraphPartIteratorSafe&& it);
+    NodeGraphPartIteratorSafe( NodeGraphPartIteratorSafe&& it );
 
     /// destructor
     ~NodeGraphPartIteratorSafe();
@@ -184,10 +185,10 @@ namespace gum {
     /// @{
 
     /// copy assignment operator
-    NodeGraphPartIteratorSafe& operator=(const NodeGraphPartIteratorSafe& it);
+    NodeGraphPartIteratorSafe& operator=( const NodeGraphPartIteratorSafe& it );
 
     /// move assignment operator
-    NodeGraphPartIteratorSafe& operator=(NodeGraphPartIteratorSafe&& it);
+    NodeGraphPartIteratorSafe& operator=( NodeGraphPartIteratorSafe&& it );
 
     /// @}
 
@@ -201,7 +202,7 @@ namespace gum {
      * @param src the NodeGraphPart
      * @param id id of deleted node
      */
-    void whenNodeDeleted(const void* src, NodeId id);
+    void whenNodeDeleted( const void* src, NodeId id );
 
     /// @}
   };
@@ -293,12 +294,12 @@ namespace gum {
      * set of holes is most often very small.
      * @param holes_size the size of the hash table used to store all holes
      * @param holes_resize_policy the resizing policy of this hash table**/
-    explicit NodeGraphPart(Size holes_size = HashTableConst::default_size,
-                           bool holes_resize_policy = true);
+    explicit NodeGraphPart( Size holes_size = HashTableConst::default_size,
+                            bool holes_resize_policy = true );
 
     /// copy constructor
     /** @param s the NodeGraphPart to be copied */
-    NodeGraphPart(const NodeGraphPart& s);
+    NodeGraphPart( const NodeGraphPart& s );
 
     /// destructor
     virtual ~NodeGraphPart();
@@ -312,15 +313,15 @@ namespace gum {
 
     /// copy operator
     /** @param p the NodeGraphPart to be copied */
-    NodeGraphPart& operator=(const NodeGraphPart& p);
+    NodeGraphPart& operator=( const NodeGraphPart& p );
 
     /// check whether two NodeGraphParts contain the same nodes
     /** @param p the NodeGraphPart to be compared with "this" */
-    bool operator==(const NodeGraphPart& p) const;
+    bool operator==( const NodeGraphPart& p ) const;
 
     /// check whether two NodeGraphParts contain different nodes
     /** @param p the NodeGraphPart to be compared with "this" */
-    bool operator!=(const NodeGraphPart& p) const;
+    bool operator!=( const NodeGraphPart& p ) const;
 
     /// @}
 
@@ -333,13 +334,13 @@ namespace gum {
     /** populateNodes should basically be the preferred way to insert nodes with
      * IDs not selected by the internal idFactory.
      * @param s the NodeGraphPart to be copied */
-    void populateNodes(const NodeGraphPart& s);
+    void populateNodes( const NodeGraphPart& s );
 
     /// populateNodesFromProperty clears *this and fills it with the keys of "h"
     /** populateNodes should basically be the preferred way to insert nodes with
      * IDs not selected by the internal idFactory. */
     template <typename T>
-    void populateNodesFromProperty(const NodeProperty<T>& h);
+    void populateNodesFromProperty( const NodeProperty<T>& h );
 
     /** returns a new node id, not yet used by any node
      * @warning a code like @code id=nextId();insertNode(id); @endcode is
@@ -349,7 +350,7 @@ namespace gum {
 
     /// insert a new node and return its id
     /** @return the id chosen by the internal idFactory */
-    GUM_DEPRECATED(virtual NodeId insertNode());
+    GUM_DEPRECATED( virtual NodeId insertNode() );
     virtual NodeId addNode();
 
     /// try to insert a node with the given id
@@ -357,21 +358,21 @@ namespace gum {
      * @ref populateNodes or @ref populateNodesFromProperty when possible
      * @throws DuplicateElement exception if the id already exists
      */
-    GUM_DEPRECATED(virtual void insertNode(const NodeId id));
-    virtual void addNode(const NodeId id);
+    GUM_DEPRECATED( virtual void insertNode( const NodeId id ) );
+    virtual void addNode( const NodeId id );
 
     /// erase the node with the given id
     /** If the NodeGraphPart does not contain the nodeId, then nothing is done.
      * In
      * particular, no exception is raised. However, the signal onNodeDeleted is
      * fired only if a node is effectively removed. */
-    virtual void eraseNode(const NodeId id);
+    virtual void eraseNode( const NodeId id );
 
     /// returns true iff the NodeGraphPart contains the given nodeId
-    bool existsNode(const NodeId id) const;
+    bool existsNode( const NodeId id ) const;
 
     /// alias for @ref existsNode
-    bool exists(const NodeId id) const;
+    bool exists( const NodeId id ) const;
 
     /// indicates whether there exists nodes in the NodeGraphPart
     bool emptyNodes() const;
@@ -437,8 +438,8 @@ namespace gum {
      * method
      * will assign it for you. */
     template <typename VAL>
-    NodeProperty<VAL> nodesProperty(VAL (*f)(const NodeId&),
-                                    Size size = 0) const;
+    NodeProperty<VAL> nodesProperty( VAL ( *f )( const NodeId& ),
+                                     Size size = 0 ) const;
 
     /// a method to create a hashMap with key:NodeId and value:VAL
     /** for all nodes, the value stored is a. This method is a wrapper of the
@@ -452,13 +453,13 @@ namespace gum {
      * method
      * will assign it for you. */
     template <typename VAL>
-    NodeProperty<VAL> nodesProperty(const VAL& a, Size size = 0) const;
+    NodeProperty<VAL> nodesProperty( const VAL& a, Size size = 0 ) const;
 
     /** @brief a method to create a list of VAL from a set of nodes
      * (using for every nodee, say x, the VAL f(x))
      * @param f a function assigning a VAL to any node */
     template <typename VAL>
-    List<VAL> listMapNodes(VAL (*f)(const NodeId&)) const;
+    List<VAL> listMapNodes( VAL ( *f )( const NodeId& ) ) const;
 
     /// @}
 
@@ -474,15 +475,15 @@ namespace gum {
     void __updateEndIteratorSafe();
 
     /// code for clearing nodes (called twice)
-    void __clearNodes(void);
+    void __clearNodes( void );
 
     /// to delete hole.
     /// @warning the hole is assumed to be existing.
-    void __eraseHole(NodeId id);
+    void __eraseHole( NodeId id );
 
     /// to add a hole.
     /// @warning id is assumed not to be already a hole
-    void __addHole(NodeId id);
+    void __addHole( NodeId id );
 
     // ############################################################################
     /// @name Introspection
@@ -490,7 +491,7 @@ namespace gum {
     /// @{
 
     /// @return true if id is part of __holes
-    bool __inHoles(NodeId id) const;
+    bool __inHoles( NodeId id ) const;
 
     /// @return the size of __holes
     Size __sizeHoles() const;
@@ -516,7 +517,7 @@ namespace gum {
   };
 
   /// for friendly displaying the content of node set
-  std::ostream& operator<<(std::ostream&, const NodeGraphPart&);
+  std::ostream& operator<<( std::ostream&, const NodeGraphPart& );
 
 } /* namespace gum */
 

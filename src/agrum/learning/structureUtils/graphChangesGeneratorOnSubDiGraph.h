@@ -104,15 +104,15 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GraphChangesGeneratorOnSubDiGraph(STRUCT_CONSTRAINT& constraint);
+      GraphChangesGeneratorOnSubDiGraph( STRUCT_CONSTRAINT& constraint );
 
       /// copy constructor
       GraphChangesGeneratorOnSubDiGraph(
-          const GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>& from);
+          const GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>& from );
 
       /// move operator
       GraphChangesGeneratorOnSubDiGraph(
-          GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>&& from);
+          GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>&& from );
 
       /// destructor
       virtual ~GraphChangesGeneratorOnSubDiGraph();
@@ -126,11 +126,11 @@ namespace gum {
 
       /// copy operator
       GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>& operator=(
-          const GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>& from);
+          const GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>& from );
 
       /// move operator
       GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>&
-      operator=(GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>&& from);
+      operator=( GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>&& from );
 
       /// @}
 
@@ -156,40 +156,40 @@ namespace gum {
       STRUCT_CONSTRAINT& constraint() const noexcept;
 
       /// sets a new graph from which the operator will compute possible changes
-      void setGraph(const DiGraph& graph);
+      void setGraph( const DiGraph& graph );
 
       /// assign a set of target nodes
-      void setTargets(const NodeSet& nodes);
+      void setTargets( const NodeSet& nodes );
 
       /// adds a new target node
-      void addTarget(NodeId node);
+      void addTarget( NodeId node );
 
       /// removes a target
-      void eraseTarget(NodeId node);
+      void eraseTarget( NodeId node );
 
       /// assign a set of "tail" nodes
-      void setTails(const NodeSet& nodes);
+      void setTails( const NodeSet& nodes );
 
       /// assign a set of "tail" nodes from 0 to nb_nodes - 1
-      void setTails(unsigned int nb_nodes);
+      void setTails( unsigned int nb_nodes );
 
       /// adds a new "tail" node
-      void addTail(NodeId node);
+      void addTail( NodeId node );
 
       /// removes a tail node
-      void eraseTail(NodeId node);
+      void eraseTail( NodeId node );
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph(const ArcAddition& change);
+      void modifyGraph( const ArcAddition& change );
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph(const ArcDeletion& change);
+      void modifyGraph( const ArcDeletion& change );
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph(const ArcReversal& change);
+      void modifyGraph( const ArcReversal& change );
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph(const GraphChange& change);
+      void modifyGraph( const GraphChange& change );
 
       /// empty the set of possible change operators that can be applied
       void clearChanges() noexcept;
@@ -198,7 +198,7 @@ namespace gum {
       void notifyGetCompleted();
 
       /// sets the maximum number of threads used to compute the set of changes
-      void setMaxNbThreads(unsigned int nb) noexcept;
+      void setMaxNbThreads( unsigned int nb ) noexcept;
 
       /// @}
 
@@ -220,7 +220,7 @@ namespace gum {
 
       private:
 /// the max number of threads authorized
-#if defined(_OPENMP) && defined(NDEBUG)
+#if defined( _OPENMP ) && defined( NDEBUG )
       unsigned int __max_threads_number{getMaxNumberOfThreads()};
 #else
       unsigned int __max_threads_number{1};

@@ -94,8 +94,8 @@ namespace gum {
   class MultiPriorityQueue;
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   std::ostream&
-  operator<<(std::ostream&,
-             const MultiPriorityQueue<Val, Priority, Cmp, Alloc>&);
+  operator<<( std::ostream&,
+              const MultiPriorityQueue<Val, Priority, Cmp, Alloc>& );
 
   /* ===========================================================================
    */
@@ -202,24 +202,24 @@ namespace gum {
      * elements (could be for instance vectors or hashtables) */
     explicit MultiPriorityQueue(
         Cmp compare = Cmp(),
-        Size capacity = GUM_MULTIPLE_PRIORITY_QUEUE_DEFAULT_CAPACITY);
+        Size capacity = GUM_MULTIPLE_PRIORITY_QUEUE_DEFAULT_CAPACITY );
 
     /// initializer list constructor
     /** The elements of the initializer list are pairs <Val,Priority>.
      * The comparison function is the default one, i.e., std::less<Priority>. */
     explicit MultiPriorityQueue(
-        std::initializer_list<std::pair<Val, Priority>> list);
+        std::initializer_list<std::pair<Val, Priority>> list );
 
     /// copy constructor
-    MultiPriorityQueue(const MultiPriorityQueue<Val, Priority, Cmp, Alloc>&);
+    MultiPriorityQueue( const MultiPriorityQueue<Val, Priority, Cmp, Alloc>& );
 
     /// generalized copy constructor
     template <typename OtherAlloc>
     MultiPriorityQueue(
-        const MultiPriorityQueue<Val, Priority, Cmp, OtherAlloc>&);
+        const MultiPriorityQueue<Val, Priority, Cmp, OtherAlloc>& );
 
     /// move constructor
-    MultiPriorityQueue(MultiPriorityQueue<Val, Priority, Cmp, Alloc>&&);
+    MultiPriorityQueue( MultiPriorityQueue<Val, Priority, Cmp, Alloc>&& );
 
     /// destructor
     ~MultiPriorityQueue();
@@ -238,7 +238,7 @@ namespace gum {
      * state. Actually, the priority queue becomes empty. An exception is then
      * thrown. */
     MultiPriorityQueue<Val, Priority, Cmp, Alloc>&
-    operator=(const MultiPriorityQueue<Val, Priority, Cmp, Alloc>&);
+    operator=( const MultiPriorityQueue<Val, Priority, Cmp, Alloc>& );
 
     /// generalized copy operator
     /** When a problem occurs during the copy (for instance when not enough
@@ -248,15 +248,15 @@ namespace gum {
      * thrown. */
     template <typename OtherAlloc>
     MultiPriorityQueue<Val, Priority, Cmp, Alloc>&
-    operator=(const MultiPriorityQueue<Val, Priority, Cmp, OtherAlloc>&);
+    operator=( const MultiPriorityQueue<Val, Priority, Cmp, OtherAlloc>& );
 
     /// move operator
     MultiPriorityQueue<Val, Priority, Cmp, Alloc>&
-    operator=(MultiPriorityQueue<Val, Priority, Cmp, Alloc>&&);
+    operator=( MultiPriorityQueue<Val, Priority, Cmp, Alloc>&& );
 
     /// returns the element at index "index_elt" from the priority queue
     /** @throw NotFound exception is thrown if the element does not exist */
-    const Val& operator[](Size index_elt) const;
+    const Val& operator[]( Size index_elt ) const;
 
     /// @}
 
@@ -272,7 +272,7 @@ namespace gum {
     bool empty() const noexcept;
 
     /// indicates whether the priority queue contains a given value
-    bool contains(const Val&) const;
+    bool contains( const Val& ) const;
 
     /// returns the element at the top of the priority queue
     /** @throw NotFound exception is thrown if the queue is empty */
@@ -289,19 +289,19 @@ namespace gum {
     /// inserts a new (a copy) element in the priority queue
     /** @return the index of the element inserted into the priority queue (see
      * method eraseByPos for more details about the index) */
-    Size insert(const Val& val, const Priority& priority);
+    Size insert( const Val& val, const Priority& priority );
 
     /// inserts (by move) a new element in the priority queue
     /** @return the index of the element inserted into the priority queue (see
      * method eraseByPos for more details about the index) */
-    Size insert(Val&& val, Priority&& priority);
+    Size insert( Val&& val, Priority&& priority );
 
     /// emplace a new element into the priority queue
     /** @return the index of the element inserted into the priority queue (see
      * method eraseByPos for more details about the index)
      * @throw DuplicateElement exception is thrown if the element already exists
      */
-    template <typename... Args> Size emplace(Args&&... args);
+    template <typename... Args> Size emplace( Args&&... args );
 
     /// removes the top of the priority queue (but does not return it)
     /** If the heap is empty, it does nothing (in particular, it does not throw
@@ -326,7 +326,7 @@ namespace gum {
      * incrementing the index by 1 each time we jump to another node, we get a
      * unique index for each element. This is precisely what the index passed in
      * argument of the function represents. */
-    void eraseByPos(Size index);
+    void eraseByPos( Size index );
 
     /// removes a given element from the priority queue (but does not return it)
     /** If the element cannot be found, the function returns without throwing
@@ -334,25 +334,25 @@ namespace gum {
      * exception.
      * @param val the element we wish to remove. If the queue contains several
      * times this element, then the one with the smallest index is removed. */
-    void erase(const Val& val);
+    void erase( const Val& val );
 
     /// modifies the priority of the element at position "index" of the queue
     /** @throw NotFound If the element cannot be found */
-    Size setPriorityByPos(Size index, const Priority& new_priority);
+    Size setPriorityByPos( Size index, const Priority& new_priority );
 
     /// modifies the priority of the element at position "index" of the queue
     /** @throw NotFound If the element cannot be found */
-    Size setPriorityByPos(Size index, Priority&& new_priority);
+    Size setPriorityByPos( Size index, Priority&& new_priority );
 
     /// modifies the priority of each instance of a given element
     /** @throw NotFound If the element cannot be found */
-    void setPriority(const Val& elt, const Priority& new_priority);
+    void setPriority( const Val& elt, const Priority& new_priority );
 
     /// returns the priority of an instance of the value passed in argument
     /** Of course, this method is really meaningful only when there is only one
      * instance of the given element within the PriorityQueue.
      * @throw NotFound If the element cannot be found */
-    const Priority& priority(const Val& elt) const;
+    const Priority& priority( const Val& elt ) const;
 
     /// removes all the elements from the queue
     void clear();
@@ -377,7 +377,7 @@ namespace gum {
     Size capacity() const noexcept;
 
     /// changes the size of the internal structure storing the priority queue
-    void resize(Size new_size);
+    void resize( Size new_size );
 
     /// @}
 

@@ -47,32 +47,32 @@ namespace gum {
    * multiDimDecorators. This operator will take care to select this function
    * if it is appropriate for your addition. */
   template <typename T>
-  MultiDimArray<T>* add2MultiDimArrays(const MultiDimArray<T>* t1,
-                                       const MultiDimArray<T>* t2);
+  MultiDimArray<T>* add2MultiDimArrays( const MultiDimArray<T>* t1,
+                                        const MultiDimArray<T>* t2 );
 
   template <typename T>
   MultiDimImplementation<T>*
-  add2MultiDimArrays(const MultiDimImplementation<T>* t1,
-                     const MultiDimImplementation<T>* t2);
+  add2MultiDimArrays( const MultiDimImplementation<T>* t1,
+                      const MultiDimImplementation<T>* t2 );
 
   template <typename T>
-  MultiDimArray<T*>* add2MultiDimArrays4Pointers(const MultiDimArray<T*>* t1,
-                                                 const MultiDimArray<T*>* t2);
+  MultiDimArray<T*>* add2MultiDimArrays4Pointers( const MultiDimArray<T*>* t1,
+                                                  const MultiDimArray<T*>* t2 );
 
   template <typename T>
   MultiDimImplementation<T*>*
-  add2MultiDimArrays4Pointers(const MultiDimImplementation<T*>* t1,
-                              const MultiDimImplementation<T*>* t2);
+  add2MultiDimArrays4Pointers( const MultiDimImplementation<T*>* t1,
+                               const MultiDimImplementation<T*>* t2 );
 
   template <typename T>
   MultiDimDecisionDiagramBase<T>*
-  add2MultiDimDecisionDiagrams(const MultiDimDecisionDiagramBase<T>* t1,
-                               const MultiDimDecisionDiagramBase<T>* t2);
+  add2MultiDimDecisionDiagrams( const MultiDimDecisionDiagramBase<T>* t1,
+                                const MultiDimDecisionDiagramBase<T>* t2 );
 
   template <typename T>
   MultiDimImplementation<T>*
-  add2MultiDimDecisionDiagrams(const MultiDimImplementation<T>* t1,
-                               const MultiDimImplementation<T>* t2);
+  add2MultiDimDecisionDiagrams( const MultiDimImplementation<T>* t1,
+                                const MultiDimImplementation<T>* t2 );
 
   /// a specialized function for subtracting two multiDimArrays
   /** The function produces a tensorial subtraction of t2 from t1, that is, if
@@ -86,33 +86,33 @@ namespace gum {
    * multiDimDecorators. This operator will take care to select this function
    * if it is appropriate for your subtraction. */
   template <typename T>
-  MultiDimArray<T>* subtract2MultiDimArrays(const MultiDimArray<T>* t1,
-                                            const MultiDimArray<T>* t2);
+  MultiDimArray<T>* subtract2MultiDimArrays( const MultiDimArray<T>* t1,
+                                             const MultiDimArray<T>* t2 );
 
   template <typename T>
   MultiDimImplementation<T>*
-  subtract2MultiDimArrays(const MultiDimImplementation<T>* t1,
-                          const MultiDimImplementation<T>* t2);
+  subtract2MultiDimArrays( const MultiDimImplementation<T>* t1,
+                           const MultiDimImplementation<T>* t2 );
 
   template <typename T>
   MultiDimArray<T*>*
-  subtract2MultiDimArrays4Pointers(const MultiDimArray<T*>* t1,
-                                   const MultiDimArray<T*>* t2);
+  subtract2MultiDimArrays4Pointers( const MultiDimArray<T*>* t1,
+                                    const MultiDimArray<T*>* t2 );
 
   template <typename T>
   MultiDimImplementation<T*>*
-  subtract2MultiDimArrays4Pointers(const MultiDimImplementation<T*>* t1,
-                                   const MultiDimImplementation<T*>* t2);
+  subtract2MultiDimArrays4Pointers( const MultiDimImplementation<T*>* t1,
+                                    const MultiDimImplementation<T*>* t2 );
 
   template <typename T>
   MultiDimDecisionDiagramBase<T>*
-  subtract2MultiDimDecisionDiagrams(const MultiDimDecisionDiagramBase<T>* t1,
-                                    const MultiDimDecisionDiagramBase<T>* t2);
+  subtract2MultiDimDecisionDiagrams( const MultiDimDecisionDiagramBase<T>* t1,
+                                     const MultiDimDecisionDiagramBase<T>* t2 );
 
   template <typename T>
   MultiDimImplementation<T>*
-  subtract2MultiDimDecisionDiagrams(const MultiDimImplementation<T>* t1,
-                                    const MultiDimImplementation<T>* t2);
+  subtract2MultiDimDecisionDiagrams( const MultiDimImplementation<T>* t1,
+                                     const MultiDimImplementation<T>* t2 );
 
   /// a specialized function for multiplying two multiDimArrays
   /** The function produces a tensorial product of t2 from t1, that is, if t1
@@ -125,33 +125,33 @@ namespace gum {
    * multiDimDecorators. This operator will take care to select this function
    * if it is appropriate for your multiplication. */
   template <typename T>
-  MultiDimArray<T>* multiply2MultiDimArrays(const MultiDimArray<T>* t1,
-                                            const MultiDimArray<T>* t2);
+  MultiDimArray<T>* multiply2MultiDimArrays( const MultiDimArray<T>* t1,
+                                             const MultiDimArray<T>* t2 );
 
   template <typename T>
   MultiDimImplementation<T>*
-  multiply2MultiDimArrays(const MultiDimImplementation<T>* t1,
-                          const MultiDimImplementation<T>* t2);
+  multiply2MultiDimArrays( const MultiDimImplementation<T>* t1,
+                           const MultiDimImplementation<T>* t2 );
 
   template <typename T>
   MultiDimArray<T*>*
-  multiply2MultiDimArrays4Pointers(const MultiDimArray<T*>* t1,
-                                   const MultiDimArray<T*>* t2);
+  multiply2MultiDimArrays4Pointers( const MultiDimArray<T*>* t1,
+                                    const MultiDimArray<T*>* t2 );
 
   template <typename T>
   MultiDimImplementation<T*>*
-  multiply2MultiDimArrays4Pointers(const MultiDimImplementation<T*>* t1,
-                                   const MultiDimImplementation<T*>* t2);
+  multiply2MultiDimArrays4Pointers( const MultiDimImplementation<T*>* t1,
+                                    const MultiDimImplementation<T*>* t2 );
 
   template <typename T>
   MultiDimDecisionDiagramBase<T>*
-  multiply2MultiDimDecisionDiagrams(const MultiDimDecisionDiagramBase<T>* t1,
-                                    const MultiDimDecisionDiagramBase<T>* t2);
+  multiply2MultiDimDecisionDiagrams( const MultiDimDecisionDiagramBase<T>* t1,
+                                     const MultiDimDecisionDiagramBase<T>* t2 );
 
   template <typename T>
   MultiDimImplementation<T>*
-  multiply2MultiDimDecisionDiagrams(const MultiDimImplementation<T>* t1,
-                                    const MultiDimImplementation<T>* t2);
+  multiply2MultiDimDecisionDiagrams( const MultiDimImplementation<T>* t1,
+                                     const MultiDimImplementation<T>* t2 );
 
   /// a specialized function for dividing two multiDimArrays
   /** The function produces a tensorial division of t1 by t2, that is, if t1
@@ -164,33 +164,33 @@ namespace gum {
    * multiDimDecorators. This operator will take care to select this function
    * if it is appropriate for your division. */
   template <typename T>
-  MultiDimArray<T>* divide2MultiDimArrays(const MultiDimArray<T>* t1,
-                                          const MultiDimArray<T>* t2);
+  MultiDimArray<T>* divide2MultiDimArrays( const MultiDimArray<T>* t1,
+                                           const MultiDimArray<T>* t2 );
 
   template <typename T>
   MultiDimImplementation<T>*
-  divide2MultiDimArrays(const MultiDimImplementation<T>* t1,
-                        const MultiDimImplementation<T>* t2);
+  divide2MultiDimArrays( const MultiDimImplementation<T>* t1,
+                         const MultiDimImplementation<T>* t2 );
 
   template <typename T>
   MultiDimArray<T*>*
-  divide2MultiDimArrays4Pointers(const MultiDimArray<T*>* t1,
-                                 const MultiDimArray<T*>* t2);
+  divide2MultiDimArrays4Pointers( const MultiDimArray<T*>* t1,
+                                  const MultiDimArray<T*>* t2 );
 
   template <typename T>
   MultiDimImplementation<T*>*
-  divide2MultiDimArrays4Pointers(const MultiDimImplementation<T*>* t1,
-                                 const MultiDimImplementation<T*>* t2);
+  divide2MultiDimArrays4Pointers( const MultiDimImplementation<T*>* t1,
+                                  const MultiDimImplementation<T*>* t2 );
 
   template <typename T>
   MultiDimDecisionDiagramBase<T>*
-  divide2MultiDimDecisionDiagrams(const MultiDimDecisionDiagramBase<T>* t1,
-                                  const MultiDimDecisionDiagramBase<T>* t2);
+  divide2MultiDimDecisionDiagrams( const MultiDimDecisionDiagramBase<T>* t1,
+                                   const MultiDimDecisionDiagramBase<T>* t2 );
 
   template <typename T>
   MultiDimImplementation<T>*
-  divide2MultiDimDecisionDiagrams(const MultiDimImplementation<T>* t1,
-                                  const MultiDimImplementation<T>* t2);
+  divide2MultiDimDecisionDiagrams( const MultiDimImplementation<T>* t1,
+                                   const MultiDimImplementation<T>* t2 );
 
   /// a specialized function for compare value from two
   /// multiDimDecisionDiagramBases
@@ -209,13 +209,13 @@ namespace gum {
    */
   template <typename T>
   MultiDimDecisionDiagramBase<T>*
-  maximise2MultiDimDecisionDiagrams(const MultiDimDecisionDiagramBase<T>* t1,
-                                    const MultiDimDecisionDiagramBase<T>* t2);
+  maximise2MultiDimDecisionDiagrams( const MultiDimDecisionDiagramBase<T>* t1,
+                                     const MultiDimDecisionDiagramBase<T>* t2 );
 
   template <typename T>
   MultiDimImplementation<T>*
-  maximise2MultiDimDecisionDiagrams(const MultiDimImplementation<T>* t1,
-                                    const MultiDimImplementation<T>* t2);
+  maximise2MultiDimDecisionDiagrams( const MultiDimImplementation<T>* t1,
+                                     const MultiDimImplementation<T>* t2 );
 
   /// a specialized function for functionally combining two multiDimArrays
   /** The function produces a tensorial functional combination of t1 and t2,
@@ -242,43 +242,43 @@ namespace gum {
 
   /// the function to be used to add two MultiDimImplementations
   template <typename T>
-  MultiDimImplementation<T>* operator+(const MultiDimImplementation<T>&,
-                                       const MultiDimImplementation<T>&);
+  MultiDimImplementation<T>* operator+( const MultiDimImplementation<T>&,
+                                        const MultiDimImplementation<T>& );
 
   /// the function to be used to add two MultiDimDecorators
   template <typename T>
-  MultiDimImplementation<T>* operator+(const MultiDimDecorator<T>&,
-                                       const MultiDimDecorator<T>&);
+  MultiDimImplementation<T>* operator+( const MultiDimDecorator<T>&,
+                                        const MultiDimDecorator<T>& );
 
   /// the function to be used to subtract two MultiDimImplementations
   template <typename T>
-  MultiDimImplementation<T>* operator-(const MultiDimImplementation<T>&,
-                                       const MultiDimImplementation<T>&);
+  MultiDimImplementation<T>* operator-( const MultiDimImplementation<T>&,
+                                        const MultiDimImplementation<T>& );
 
   /// the function to be used to subtract two MultiDimDecorators
   template <typename T>
-  MultiDimImplementation<T>* operator-(const MultiDimDecorator<T>&,
-                                       const MultiDimDecorator<T>&);
+  MultiDimImplementation<T>* operator-( const MultiDimDecorator<T>&,
+                                        const MultiDimDecorator<T>& );
 
   /// the function to be used to multiply two MultiDimImplementations
   template <typename T>
-  MultiDimImplementation<T>* operator*(const MultiDimImplementation<T>&,
-                                       const MultiDimImplementation<T>&);
+  MultiDimImplementation<T>* operator*( const MultiDimImplementation<T>&,
+                                        const MultiDimImplementation<T>& );
 
   /// the function to be used to multiply two MultiDimDecorators
   template <typename T>
-  MultiDimImplementation<T>* operator*(const MultiDimDecorator<T>&,
-                                       const MultiDimDecorator<T>&);
+  MultiDimImplementation<T>* operator*( const MultiDimDecorator<T>&,
+                                        const MultiDimDecorator<T>& );
 
   /// the function to be used to divide two MultiDimImplementations
   template <typename T>
-  MultiDimImplementation<T>* operator/(const MultiDimImplementation<T>&,
-                                       const MultiDimImplementation<T>&);
+  MultiDimImplementation<T>* operator/( const MultiDimImplementation<T>&,
+                                        const MultiDimImplementation<T>& );
 
   /// the function to be used to divide two MultiDimDecorators
   template <typename T>
-  MultiDimImplementation<T>* operator/(const MultiDimDecorator<T>&,
-                                       const MultiDimDecorator<T>&);
+  MultiDimImplementation<T>* operator/( const MultiDimDecorator<T>&,
+                                        const MultiDimDecorator<T>& );
 
   //
   // DO NOT FORGET TO REGISTER YOUR BINARY FUNCTIONS AT THE END OF FILE

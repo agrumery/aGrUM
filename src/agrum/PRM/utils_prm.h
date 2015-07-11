@@ -158,7 +158,7 @@ namespace gum {
     typedef float prm_float;
 
     /// Decompose a string in a vector of strings using "." as separators.
-    void decomposePath(const std::string& path, std::vector<std::string>& v);
+    void decomposePath( const std::string& path, std::vector<std::string>& v );
 
     /**
      * @brief Returns a copy of a Potential after applying a bijection over the
@@ -186,15 +186,15 @@ namespace gum {
     template <typename GUM_SCALAR>
     Potential<GUM_SCALAR>* copyPotential(
         const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-        const Potential<GUM_SCALAR>& source);
+        const Potential<GUM_SCALAR>& source );
 
     template <typename GUM_SCALAR>
-    Potential<GUM_SCALAR>* multPotential(const Potential<GUM_SCALAR>& t1,
-                                         const Potential<GUM_SCALAR>& t2);
+    Potential<GUM_SCALAR>* multPotential( const Potential<GUM_SCALAR>& t1,
+                                          const Potential<GUM_SCALAR>& t2 );
 
     MultiDimImplementation<std::string>* copyMultiDim(
         const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-        const MultiDimImplementation<std::string>& source);
+        const MultiDimImplementation<std::string>& source );
     /**
      * @brief Proceeds with the elimination of var in pool.
      * @param var The variable eliminated from every potentials in pool.
@@ -203,9 +203,9 @@ namespace gum {
      *              delete later.
      */
     template <typename GUM_SCALAR>
-    void eliminateNode(const DiscreteVariable* var,
-                       Set<Potential<GUM_SCALAR>*>& pool,
-                       Set<Potential<GUM_SCALAR>*>& trash);
+    void eliminateNode( const DiscreteVariable* var,
+                        Set<Potential<GUM_SCALAR>*>& pool,
+                        Set<Potential<GUM_SCALAR>*>& trash );
 
   } /* namespace prm */
 } /* namespace gum */

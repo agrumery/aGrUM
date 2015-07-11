@@ -66,13 +66,13 @@ namespace gum {
       /// @{
 
       /// sets the weight of the a priori (kind of effective sample size)
-      virtual void setWeight(float weight);
+      virtual void setWeight( float weight );
 
       /// returns the weight assigned to the apriori
       float weight() const noexcept;
 
       /// indicates whether an apriori is of a certain type
-      virtual bool isOfType(const std::string& type) = 0;
+      virtual bool isOfType( const std::string& type ) = 0;
 
       /// returns the type of the apriori
       virtual const std::string& getType() const noexcept = 0;
@@ -84,17 +84,17 @@ namespace gum {
           const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
                                       unsigned int>*>& target_nodesets,
           const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
-                                      unsigned int>*>& conditioning_nodesets);
+                                      unsigned int>*>& conditioning_nodesets );
 
       /// compute the apriori into a given set of counts
       virtual void compute() = 0;
 
       /// returns the apriori vector for a given (conditioned) target set
-      const std::vector<float, CountAlloc>& getAllApriori(unsigned int index);
+      const std::vector<float, CountAlloc>& getAllApriori( unsigned int index );
 
       /// returns the apriori vector for a conditioning set
       const std::vector<float, CountAlloc>&
-      getConditioningApriori(unsigned int index);
+      getConditioningApriori( unsigned int index );
 
       /// @}
 
@@ -132,10 +132,10 @@ namespace gum {
       std::vector<std::vector<float, CountAlloc>> _apriori_counts;
 
       /// copy constructor
-      Apriori(const Apriori<IdSetAlloc, CountAlloc>& from);
+      Apriori( const Apriori<IdSetAlloc, CountAlloc>& from );
 
       /// move constructor
-      Apriori(Apriori<IdSetAlloc, CountAlloc>&& from);
+      Apriori( Apriori<IdSetAlloc, CountAlloc>&& from );
 
       private:
       // ##########################################################################
@@ -143,7 +143,7 @@ namespace gum {
 
       /// prevent copy operator
       Apriori<IdSetAlloc, CountAlloc>&
-      operator=(const Apriori<IdSetAlloc, CountAlloc>&) = delete;
+      operator=( const Apriori<IdSetAlloc, CountAlloc>& ) = delete;
     };
 
   } /* namespace learning */

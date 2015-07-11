@@ -74,18 +74,18 @@ namespace gum {
        * @param var_modalities the domain sizes of the variables in the database
        */
       template <typename RowFilter>
-      ParamEstimatorML(const RowFilter& filter,
-                       const std::vector<unsigned int>& var_modalities,
-                       Apriori<IdSetAlloc, CountAlloc>& apriori,
-                       const ScoreInternalApriori<
-                           IdSetAlloc, CountAlloc>& score_internal_apriori =
-                           ScoreInternalNoApriori<IdSetAlloc, CountAlloc>());
+      ParamEstimatorML( const RowFilter& filter,
+                        const std::vector<unsigned int>& var_modalities,
+                        Apriori<IdSetAlloc, CountAlloc>& apriori,
+                        const ScoreInternalApriori<
+                            IdSetAlloc, CountAlloc>& score_internal_apriori =
+                            ScoreInternalNoApriori<IdSetAlloc, CountAlloc>() );
 
       /// copy constructor
-      ParamEstimatorML(const ParamEstimatorML<IdSetAlloc, CountAlloc>&);
+      ParamEstimatorML( const ParamEstimatorML<IdSetAlloc, CountAlloc>& );
 
       /// move constructor
-      ParamEstimatorML(ParamEstimatorML<IdSetAlloc, CountAlloc>&&);
+      ParamEstimatorML( ParamEstimatorML<IdSetAlloc, CountAlloc>&& );
 
       /// virtual copy factory
       virtual ParamEstimatorML<IdSetAlloc, CountAlloc>* copyFactory() const;
@@ -109,7 +109,7 @@ namespace gum {
        * @throw CPTError is raised if some values of the conditioning sets were
        * not observed in the database. */
       const std::vector<float, CountAlloc>&
-      parameters(unsigned int nodeset_index);
+      parameters( unsigned int nodeset_index );
 
       /// @}
     };

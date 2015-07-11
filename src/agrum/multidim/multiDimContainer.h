@@ -100,7 +100,7 @@ namespace gum {
 
     /// Copy constructor.
 
-    MultiDimContainer(const MultiDimContainer<GUM_SCALAR>& src);
+    MultiDimContainer( const MultiDimContainer<GUM_SCALAR>& src );
 
     /// Destructor.
 
@@ -121,7 +121,7 @@ namespace gum {
      * instantiation.
      */
 
-    virtual void set(const Instantiation& i, const GUM_SCALAR& value) const;
+    virtual void set( const Instantiation& i, const GUM_SCALAR& value ) const;
 
     /**
      * Returns the value pointed by i.
@@ -131,7 +131,7 @@ namespace gum {
      * instantiation.
      */
 
-    virtual GUM_SCALAR get(const Instantiation& i) const;
+    virtual GUM_SCALAR get( const Instantiation& i ) const;
 
     /**
      * An [] operator using a Instantiation as argument.
@@ -144,14 +144,14 @@ namespace gum {
      * @return Returns the adressed (GUM_SCALAR) value.
      */
 
-    GUM_SCALAR operator[](const Instantiation& i) const;
+    GUM_SCALAR operator[]( const Instantiation& i ) const;
 
     /**
      * Fill the table with d.
      * @param d The value used to fill this gum::MultiDimContainer.
      */
 
-    virtual void fill(const GUM_SCALAR& d) const = 0;
+    virtual void fill( const GUM_SCALAR& d ) const = 0;
 
     /**
      * @brief Automatically fills this gum::MultiDimContainer with the values in
@@ -172,7 +172,7 @@ namespace gum {
      *                  domain size.
      */
 
-    virtual void fillWith(const std::vector<GUM_SCALAR>& v) const;
+    virtual void fillWith( const std::vector<GUM_SCALAR>& v ) const;
 
     /// @}
 
@@ -196,15 +196,15 @@ namespace gum {
      *                            than this gum::MultiDimContainer.
      */
 
-    virtual void copyFrom(const MultiDimContainer<GUM_SCALAR>& src,
-                          Instantiation* p_i = (Instantiation*)0) const;
+    virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src,
+                           Instantiation* p_i = (Instantiation*)0 ) const;
 
     /**
      * Removes all variables in this gum::MultiDimContainer and copy the content
      * of src, variables included.
      */
 
-    virtual void copy(const MultiDimContainer<GUM_SCALAR>& src);
+    virtual void copy( const MultiDimContainer<GUM_SCALAR>& src );
 
     /**
      * This method creates a clone of this object, withouth its content
@@ -234,15 +234,15 @@ namespace gum {
 
     /// Display the internal representation of i.
 
-    virtual const std::string toString(const Instantiation* i) const = 0;
+    virtual const std::string toString( const Instantiation* i ) const = 0;
 
     /// Test if this potential is equal to p.
 
-    bool operator==(const MultiDimContainer<GUM_SCALAR>& p) const;
+    bool operator==( const MultiDimContainer<GUM_SCALAR>& p ) const;
 
     /// Test if this potential is different of p.
 
-    bool operator!=(const MultiDimContainer<GUM_SCALAR>& p) const;
+    bool operator!=( const MultiDimContainer<GUM_SCALAR>& p ) const;
 
     /// @}
 
@@ -258,15 +258,15 @@ namespace gum {
      * changes.
      */
 
-    virtual void beginMultipleChanges(void) = 0;
+    virtual void beginMultipleChanges( void ) = 0;
 
     /**
      * @brief Call this method after doing important changes in this
      *        gum::MultiDimContainer.
      */
 
-    virtual void endMultipleChanges(void) = 0;
-    virtual void endMultipleChanges(const GUM_SCALAR&) = 0;
+    virtual void endMultipleChanges( void ) = 0;
+    virtual void endMultipleChanges( const GUM_SCALAR& ) = 0;
 
     /// @}
 
@@ -284,7 +284,7 @@ namespace gum {
      * @param i The instantiation used to find the data.
      */
 
-    virtual GUM_SCALAR& _get(const Instantiation& i) const = 0;
+    virtual GUM_SCALAR& _get( const Instantiation& i ) const = 0;
   };
 } /* namespace gum */
 

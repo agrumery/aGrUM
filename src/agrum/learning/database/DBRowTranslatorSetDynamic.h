@@ -86,10 +86,10 @@ namespace gum {
 
       /// copy constructor
       DBRowTranslatorSetDynamic(
-          const DBRowTranslatorSetDynamic<Translator>& from);
+          const DBRowTranslatorSetDynamic<Translator>& from );
 
       /// move constructor
-      DBRowTranslatorSetDynamic(DBRowTranslatorSetDynamic<Translator>&& from);
+      DBRowTranslatorSetDynamic( DBRowTranslatorSetDynamic<Translator>&& from );
 
       /// destructor
       ~DBRowTranslatorSetDynamic() noexcept;
@@ -104,21 +104,21 @@ namespace gum {
 
       /// copy operator
       DBRowTranslatorSetDynamic<Translator>&
-      operator=(const DBRowTranslatorSetDynamic<Translator>&);
+      operator=( const DBRowTranslatorSetDynamic<Translator>& );
 
       /// move operator
       DBRowTranslatorSetDynamic<Translator>&
-      operator=(DBRowTranslatorSetDynamic<Translator>&&);
+      operator=( DBRowTranslatorSetDynamic<Translator>&& );
 
       /// returns the ith translator
       /** @throws NotFound is raised if there are fewer than i translators in
        * the translator set */
-      Translator& operator[](unsigned int i);
+      Translator& operator[]( unsigned int i );
 
       /// returns the ith translator
       /** @throws NotFound is raised if there are fewer than i translators in
        * the translator set */
-      const Translator& operator[](unsigned int i) const;
+      const Translator& operator[]( unsigned int i ) const;
 
       /// @}
 
@@ -135,8 +135,8 @@ namespace gum {
        * from deb_cols by applying increment ColsIncr. */
       template <typename Cols,
                 typename ColsIncr = typename Make_Default_Incr<Cols>::type>
-      void insertTranslator(Cols deb_cols = Cols(), unsigned int nb_times = 1,
-                            ColsIncr incr = ColsIncr());
+      void insertTranslator( Cols deb_cols = Cols(), unsigned int nb_times = 1,
+                             ColsIncr incr = ColsIncr() );
 
       /// inserts new translators at the end of the set
       /** insert a new translator that will read columns deb_cols. If we wish to
@@ -145,9 +145,9 @@ namespace gum {
        * from deb_cols by applying increment ColsIncr. */
       template <typename NewTranslator, typename Cols,
                 typename ColsIncr = typename Make_Default_Incr<Cols>::type>
-      void insertTranslator(const NewTranslator& translator,
-                            Cols deb_cols = Cols(), unsigned int nb_times = 1,
-                            ColsIncr incr = ColsIncr());
+      void insertTranslator( const NewTranslator& translator,
+                             Cols deb_cols = Cols(), unsigned int nb_times = 1,
+                             ColsIncr incr = ColsIncr() );
 
       /// inserts new translators at the end of the set
       /** insert a new translator that will read only one column, namely
@@ -155,8 +155,8 @@ namespace gum {
        * If we wish to insert several translators, use an nb_times different
        * from 1. In this case, the other translators will read columns of the
        * database deduced from deb_col by applying increment "increment". */
-      void insertTranslator(unsigned int deb_col, unsigned int nb_times = 1,
-                            unsigned int increment = 1);
+      void insertTranslator( unsigned int deb_col, unsigned int nb_times = 1,
+                             unsigned int increment = 1 );
 
       /// execute all the translations on the current database row
       void translate();
@@ -176,10 +176,10 @@ namespace gum {
 
       /// push back the number of modalities of the variables of the output
       /// columns
-      void modalities(std::vector<unsigned int>& modals) const;
+      void modalities( std::vector<unsigned int>& modals ) const;
 
       /// sets the input row that shall be read by all the cell translators
-      void setInputRow(const DBRow& row) noexcept;
+      void setInputRow( const DBRow& row ) noexcept;
 
       /// returns the current input DBRow
       const DBRow& inputRow() const;
@@ -191,8 +191,8 @@ namespace gum {
       void clear() noexcept;
 
       /// returns the name of the jth value of the ith column
-      std::string translateBack(unsigned int col,
-                                unsigned int translated_val) const;
+      std::string translateBack( unsigned int col,
+                                 unsigned int translated_val ) const;
 
       /// returns the size of the input as used by the cell translators
       unsigned int inputSize() const noexcept;

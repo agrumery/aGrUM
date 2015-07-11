@@ -68,7 +68,8 @@ namespace gum {
     * @param maxArcs The number of maximum arcs imposed on the generator.
     * @param maxModality Each DRV has from 2 to maxModality modalities
     */
-    SimpleBayesNetGenerator(Size nbrNodes, Size maxArcs, Size maxModality = 2);
+    SimpleBayesNetGenerator( Size nbrNodes, Size maxArcs,
+                             Size maxModality = 2 );
 
     /**
      * Destructor.
@@ -85,7 +86,7 @@ namespace gum {
      * @param bayesNet Bayesian Network to be completed after initialisation
      * @return null but modify inputed Bayesian Network
      */
-    void generateBN(BayesNet<GUM_SCALAR>& bayesNet);
+    void generateBN( BayesNet<GUM_SCALAR>& bayesNet );
 
     /// @}
   }; /* class SimpleBayesNetGenerator */

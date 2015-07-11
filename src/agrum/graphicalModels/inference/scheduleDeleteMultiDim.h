@@ -50,10 +50,10 @@ namespace gum {
     /** @warning the table is stored by copy into the ScheduleDeleteMultiDim.
      * This is actually compulsory for the appropriate use of
      * ScheduleCombination classes */
-    ScheduleDeleteMultiDim(const ScheduleMultiDim<GUM_SCALAR>& table);
+    ScheduleDeleteMultiDim( const ScheduleMultiDim<GUM_SCALAR>& table );
 
     /// copy constructor
-    ScheduleDeleteMultiDim(const ScheduleDeleteMultiDim<GUM_SCALAR>&);
+    ScheduleDeleteMultiDim( const ScheduleDeleteMultiDim<GUM_SCALAR>& );
 
     /// virtual copy constructor: creates a clone of the operation
     virtual ScheduleDeleteMultiDim<GUM_SCALAR>* newFactory() const;
@@ -70,17 +70,17 @@ namespace gum {
 
     /// copy operator
     ScheduleDeleteMultiDim<GUM_SCALAR>&
-    operator=(const ScheduleDeleteMultiDim<GUM_SCALAR>&);
+    operator=( const ScheduleDeleteMultiDim<GUM_SCALAR>& );
 
     /// operator ==
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator==(const ScheduleOperation<GUM_SCALAR>&) const;
+    bool operator==( const ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// operator !=
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator!=(const ScheduleOperation<GUM_SCALAR>&) const;
+    bool operator!=( const ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// @}
 

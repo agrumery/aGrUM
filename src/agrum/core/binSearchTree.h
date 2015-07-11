@@ -71,11 +71,11 @@ namespace gum {
      * for the binary tree to have multiple instances of the same value within
      * the tree. */
 
-    explicit BinSearchTree(bool uniqueness_policy = false);
+    explicit BinSearchTree( bool uniqueness_policy = false );
 
     /// copy constructor
 
-    BinSearchTree(const BinSearchTree<Val, Cmp, Node>& from);
+    BinSearchTree( const BinSearchTree<Val, Cmp, Node>& from );
 
     /// destructor
 
@@ -91,7 +91,7 @@ namespace gum {
     /// copy operator
 
     BinSearchTree<Val, Cmp, Node>&
-    operator=(const BinSearchTree<Val, Cmp, Node>& from);
+    operator=( const BinSearchTree<Val, Cmp, Node>& from );
 
     ///@}
 
@@ -158,24 +158,24 @@ namespace gum {
      * @throw DuplicateElement exception is raised if the binary tree already
      * contains the value and the uniqueness property is set to true */
 
-    const Val& insert(const Val& val);
+    const Val& insert( const Val& val );
 
     /// erase the leftmost node with the given (key,val) pair
     /**
      * @throws NotFound if we could not find the node
      */
 
-    void erase(const Val& val);
+    void erase( const Val& val );
 
     /// erase the node pointed to by the iterator
     /** if we could not find the node, then nothing happens. In particular, no
      * exception is raised. */
 
-    void erase(const iterator& iter);
+    void erase( const iterator& iter );
 
     /// indicates whether the BinSearchTree contains the value
 
-    bool contains(const Val&) const;
+    bool contains( const Val& ) const;
 
     /// removes all the elements from the BinSearchTree
 
@@ -216,7 +216,7 @@ namespace gum {
      * ensures that elements inserted from now on do not already belong to the
      * tree. */
 
-    void setUniquenessPolicy(const bool new_policy);
+    void setUniquenessPolicy( const bool new_policy );
 
     /// @}
 
@@ -261,40 +261,40 @@ namespace gum {
      * @param parent is the node that should be the parent of the copy
      * @param dir the direction of the edge parent->copy */
 
-    Node* _copy(Node* root_from, Node* parent = 0,
-                BinTreeDir dir = BinTreeDir::LEFT_CHILD);
+    Node* _copy( Node* root_from, Node* parent = 0,
+                 BinTreeDir dir = BinTreeDir::LEFT_CHILD );
 
     /// returns the smallest node w.r.t. order Cmp in the subtree rooted at node
 
-    Node* _minNode(Node* node) const;
+    Node* _minNode( Node* node ) const;
 
     /// returns the greatest node w.r.t. order Cmp in the subtree rooted at node
 
-    Node* _maxNode(Node* node) const;
+    Node* _maxNode( Node* node ) const;
 
     /// returns the next node according to weak ordering Cmp
 
-    Node* _succNode(Node* node) const;
+    Node* _succNode( Node* node ) const;
 
     /// returns the previous node according to weak ordering Cmp
 
-    Node* _prevNode(Node* node) const;
+    Node* _prevNode( Node* node ) const;
 
     /// returns the node containing a given value (0 if the value cannot be
     /// found)
 
-    Node* _getNode(const Val&) const;
+    Node* _getNode( const Val& ) const;
 
     /// a method for recursively destroying a subtree of the BinSearchTree
     /** note that this method does not update the iterators pointing to nodes
      * of the subtree. These should be cleared before _deleteSubTree is called.
      */
 
-    void _deleteSubTree(Node* node);
+    void _deleteSubTree( Node* node );
 
     /// erase the node passed in argument
 
-    virtual void _erase(Node* node);
+    virtual void _erase( Node* node );
 
     /** @brief creates a copy of the value, insert it in the tree and returns
      * the copy value
@@ -308,12 +308,12 @@ namespace gum {
      * @throw DuplicateElement exception is raised if the binary tree already
      * contains the value and the uniqueness property is set to true */
 
-    virtual Node* _insert(const Val& val);
+    virtual Node* _insert( const Val& val );
 
     private:
     /// update all iterators when a given node is deleted
 
-    void __updateEraseIterators(Node* node);
+    void __updateEraseIterators( Node* node );
   };
 
   /* ===========================================================================
@@ -340,7 +340,7 @@ namespace gum {
 
     /// copy constructor: creates an iterator pointing toward the same tree
 
-    BinSearchTreeIterator(const BinSearchTreeIterator<Val, Cmp, Node>& from);
+    BinSearchTreeIterator( const BinSearchTreeIterator<Val, Cmp, Node>& from );
 
     /// destructor
 
@@ -356,7 +356,7 @@ namespace gum {
     /// copy operator
 
     BinSearchTreeIterator<Val, Cmp, Node>&
-    operator=(const BinSearchTreeIterator<Val, Cmp, Node>& from);
+    operator=( const BinSearchTreeIterator<Val, Cmp, Node>& from );
 
     /// returns the value pointed to by the iterator
     /** @throw UndefinedIteratorValue exception is raised if the iterator does
@@ -393,11 +393,11 @@ namespace gum {
 
     /// checks whether two iterators are pointing toward different elements
 
-    bool operator!=(const BinSearchTreeIterator<Val, Cmp, Node>& from) const;
+    bool operator!=( const BinSearchTreeIterator<Val, Cmp, Node>& from ) const;
 
     /// checks whether two iterators are pointing toward the same element
 
-    bool operator==(const BinSearchTreeIterator<Val, Cmp, Node>& from) const;
+    bool operator==( const BinSearchTreeIterator<Val, Cmp, Node>& from ) const;
 
     ///@}
 
@@ -462,8 +462,8 @@ namespace gum {
      * make it point toward one tree and, if needed, add it to the set of
      * iterators of the tree */
 
-    void _initialize(const BinSearchTree<Val, Cmp, Node>* tree,
-                     const Node* current_node, bool add_to_iterator_list);
+    void _initialize( const BinSearchTree<Val, Cmp, Node>* tree,
+                      const Node* current_node, bool add_to_iterator_list );
 
     /// a method to detach the current iterator from its tree's iterator's list
 

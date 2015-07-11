@@ -31,113 +31,114 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     INLINE void
-    StructuralConstraintMandatoryArcs::setGraphAlone(const DiGraph& graph) {}
+    StructuralConstraintMandatoryArcs::setGraphAlone( const DiGraph& graph ) {}
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraintMandatoryArcs::checkArcAdditionAlone(
-        NodeId x, NodeId y) const noexcept {
+        NodeId x, NodeId y ) const noexcept {
       return true;
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool StructuralConstraintMandatoryArcs::checkArcDeletionAlone(
-        NodeId x, NodeId y) const noexcept {
-      return !_MandatoryArcs__mandatory_arcs.exists(Arc(x, y));
+        NodeId x, NodeId y ) const noexcept {
+      return !_MandatoryArcs__mandatory_arcs.exists( Arc( x, y ) );
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool StructuralConstraintMandatoryArcs::checkArcReversalAlone(
-        NodeId x, NodeId y) const noexcept {
-      return !_MandatoryArcs__mandatory_arcs.exists(Arc(x, y));
+        NodeId x, NodeId y ) const noexcept {
+      return !_MandatoryArcs__mandatory_arcs.exists( Arc( x, y ) );
     }
 
     /// checks whether the constraints enable to add an arc
     INLINE bool StructuralConstraintMandatoryArcs::checkModificationAlone(
-        const ArcAddition& change) const noexcept {
-      return checkArcAdditionAlone(change.node1(), change.node2());
+        const ArcAddition& change ) const noexcept {
+      return checkArcAdditionAlone( change.node1(), change.node2() );
     }
 
     /// checks whether the constraints enable to remove an arc
     INLINE bool StructuralConstraintMandatoryArcs::checkModificationAlone(
-        const ArcDeletion& change) const noexcept {
-      return checkArcDeletionAlone(change.node1(), change.node2());
+        const ArcDeletion& change ) const noexcept {
+      return checkArcDeletionAlone( change.node1(), change.node2() );
     }
 
     /// checks whether the constraints enable to reverse an arc
     INLINE bool StructuralConstraintMandatoryArcs::checkModificationAlone(
-        const ArcReversal& change) const noexcept {
-      return checkArcReversalAlone(change.node1(), change.node2());
+        const ArcReversal& change ) const noexcept {
+      return checkArcReversalAlone( change.node1(), change.node2() );
     }
 
     /// checks whether the constraints enable to perform a graph change
     INLINE bool StructuralConstraintMandatoryArcs::checkModificationAlone(
-        const GraphChange& change) const noexcept {
-      switch (change.type()) {
+        const GraphChange& change ) const noexcept {
+      switch ( change.type() ) {
         case GraphChangeType::ARC_ADDITION:
-          return checkArcAdditionAlone(change.node1(), change.node2());
+          return checkArcAdditionAlone( change.node1(), change.node2() );
 
         case GraphChangeType::ARC_DELETION:
-          return checkArcDeletionAlone(change.node1(), change.node2());
+          return checkArcDeletionAlone( change.node1(), change.node2() );
 
         case GraphChangeType::ARC_REVERSAL:
-          return checkArcReversalAlone(change.node1(), change.node2());
+          return checkArcReversalAlone( change.node1(), change.node2() );
 
         default:
-          GUM_ERROR(OperationNotAllowed,
-                    "edge modifications are not "
-                    "supported by StructuralConstraintMandatoryArcs");
+          GUM_ERROR( OperationNotAllowed,
+                     "edge modifications are not "
+                     "supported by StructuralConstraintMandatoryArcs" );
       }
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintMandatoryArcs::modifyGraphAlone(
-        const ArcAddition& change) {}
+        const ArcAddition& change ) {}
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintMandatoryArcs::modifyGraphAlone(
-        const ArcDeletion& change) {}
+        const ArcDeletion& change ) {}
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintMandatoryArcs::modifyGraphAlone(
-        const ArcReversal& change) {}
+        const ArcReversal& change ) {}
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintMandatoryArcs::modifyGraphAlone(
-        const GraphChange& change) {}
+        const GraphChange& change ) {}
 
     /// indicates whether a change will always violate the constraint
     INLINE bool StructuralConstraintMandatoryArcs::isAlwaysInvalidAlone(
-        const GraphChange& change) const noexcept {
-      switch (change.type()) {
+        const GraphChange& change ) const noexcept {
+      switch ( change.type() ) {
         case GraphChangeType::ARC_ADDITION:
           return false;
 
         case GraphChangeType::ARC_DELETION:
-          return !checkArcDeletionAlone(change.node1(), change.node2());
+          return !checkArcDeletionAlone( change.node1(), change.node2() );
 
         case GraphChangeType::ARC_REVERSAL:
-          return !checkArcReversalAlone(change.node1(), change.node2());
+          return !checkArcReversalAlone( change.node1(), change.node2() );
 
         default:
-          GUM_ERROR(OperationNotAllowed,
-                    "edge modifications are not supported "
-                    "by StructuralConstraintMandatoryArcs");
+          GUM_ERROR( OperationNotAllowed,
+                     "edge modifications are not supported "
+                     "by StructuralConstraintMandatoryArcs" );
       }
     }
 
     /// assign a set of forbidden arcs
-    INLINE void StructuralConstraintMandatoryArcs::setArcs(const ArcSet& set) {
+    INLINE void
+    StructuralConstraintMandatoryArcs::setArcs( const ArcSet& set ) {
       _MandatoryArcs__mandatory_arcs = set;
     }
 
     /// assign a new forbidden arc
-    INLINE void StructuralConstraintMandatoryArcs::addArc(const Arc& arc) {
-      _MandatoryArcs__mandatory_arcs.insert(arc);
+    INLINE void StructuralConstraintMandatoryArcs::addArc( const Arc& arc ) {
+      _MandatoryArcs__mandatory_arcs.insert( arc );
     }
 
     /// remove a forbidden arc
-    INLINE void StructuralConstraintMandatoryArcs::eraseArc(const Arc& arc) {
-      _MandatoryArcs__mandatory_arcs.erase(arc);
+    INLINE void StructuralConstraintMandatoryArcs::eraseArc( const Arc& arc ) {
+      _MandatoryArcs__mandatory_arcs.erase( arc );
     }
 
     /// returns the set of mandatory arcs

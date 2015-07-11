@@ -30,14 +30,14 @@
 
 #include <agrum/multidim/partialInstantiationRegister4MultiDim.h>
 
-#define GUM_MULTI_DIM_DECORATOR_PARTIAL_INST(NAME)                             \
+#define GUM_MULTI_DIM_DECORATOR_PARTIAL_INST( NAME )                           \
   namespace gum {                                                              \
     template <typename GUM_SCALAR>                                             \
     MultiDimImplementation<GUM_SCALAR>*                                        \
-    NAME(const MultiDimDecorator<GUM_SCALAR>& table,                           \
-         const HashTable<const DiscreteVariable*, Idx>& inst_vars) {           \
+    NAME( const MultiDimDecorator<GUM_SCALAR>& table,                          \
+          const HashTable<const DiscreteVariable*, Idx>& inst_vars ) {         \
       const MultiDimImplementation<GUM_SCALAR>* impl = table.content();        \
-      return NAME(*impl, inst_vars);                                           \
+      return NAME( *impl, inst_vars );                                         \
     }                                                                          \
   }
 
@@ -84,7 +84,7 @@
 #undef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
 
 /// the function to be used to partially instantiate a MultiDimDecorator
-GUM_MULTI_DIM_DECORATOR_PARTIAL_INST(partialInstantiation)
+GUM_MULTI_DIM_DECORATOR_PARTIAL_INST( partialInstantiation )
 
 //
 // DO NOT FORGET TO REGISTER YOUR BINARY FUNCTIONS
@@ -96,20 +96,20 @@ namespace gum {
   template <typename GUM_SCALAR> void partialInstantiation4MultiDimInit() {
     static bool first_init = true;
 
-    if (first_init) {
+    if ( first_init ) {
       first_init = false;
 
-      std::string MultiDimArrayString("MultiDimArray");
-      std::string MultiDimDecisionDiagramString("MultiDimDecisionDiagram");
-      std::string BaseNameString("MultiDimImplementation");
+      std::string MultiDimArrayString( "MultiDimArray" );
+      std::string MultiDimDecisionDiagramString( "MultiDimDecisionDiagram" );
+      std::string BaseNameString( "MultiDimImplementation" );
 
       // register base functions for multiDimArrays
       registerPartialInstantiation<GUM_SCALAR>(
-          "i", MultiDimArrayString, &partialInstantiationMultiDimArray);
+          "i", MultiDimArrayString, &partialInstantiationMultiDimArray );
 
       // register default basename functions
       registerPartialInstantiation<GUM_SCALAR>(
-          "i", BaseNameString, &partialInstantiationMultiDimImplementation);
+          "i", BaseNameString, &partialInstantiationMultiDimImplementation );
     }
   }
 
@@ -118,21 +118,21 @@ namespace gum {
   void pointerPartialInstantiation4MultiDimInit() {
     static bool first_init = true;
 
-    if (first_init) {
+    if ( first_init ) {
       first_init = false;
 
-      std::string MultiDimArrayString("MultiDimArray");
-      std::string BaseNameString("MultiDimImplementation");
+      std::string MultiDimArrayString( "MultiDimArray" );
+      std::string BaseNameString( "MultiDimImplementation" );
 
       // register base functions for multiDimArrays
       registerPartialInstantiation<GUM_SCALAR*>(
           "i", MultiDimArrayString,
-          &partialInstantiationMultiDimArray4Pointers);
+          &partialInstantiationMultiDimArray4Pointers );
 
       // register default basename functions
       registerPartialInstantiation<GUM_SCALAR*>(
           "i", BaseNameString,
-          &partialInstantiationMultiDimImplementation4Pointers);
+          &partialInstantiationMultiDimImplementation4Pointers );
     }
   }
 

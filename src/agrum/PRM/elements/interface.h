@@ -62,17 +62,17 @@ namespace gum {
        * Default constructor.
        * @param name The interface name.
        */
-      Interface(const std::string& name);
+      Interface( const std::string& name );
 
       /**
        * Constructor for building a subclass of super.
        * @param name The sub-interface name.
        * @param super The super Interface of this.
        */
-      Interface(const std::string& name, Interface& super);
+      Interface( const std::string& name, Interface& super );
 
       /// Copy constructor.
-      Interface(const Interface& source);
+      Interface( const Interface& source );
 
       /// Destructor.
       virtual ~Interface();
@@ -87,10 +87,10 @@ namespace gum {
       virtual typename PRMObject::PRMType obj_type() const;
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(NodeId).
-      virtual ClassElement<GUM_SCALAR>& get(NodeId id);
+      virtual ClassElement<GUM_SCALAR>& get( NodeId id );
 
       /// Se gum::prm::ClassElementContainer<GUM_SCALAR>::get(NodeId).
-      virtual const ClassElement<GUM_SCALAR>& get(NodeId id) const;
+      virtual const ClassElement<GUM_SCALAR>& get( NodeId id ) const;
 
       /**
        * @brief An Interfance doesn't have any arc, this will raise an
@@ -101,7 +101,7 @@ namespace gum {
        * @throw OperationNotAllowed Systematically throws an
        *OperationNotAllowed.
        */
-      void addArc(const std::string& tail, const std::string& head);
+      void addArc( const std::string& tail, const std::string& head );
 
       /// @}
       // ========================================================================
@@ -111,12 +111,12 @@ namespace gum {
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
-      virtual ClassElement<GUM_SCALAR>& get(const std::string& name);
+      virtual ClassElement<GUM_SCALAR>& get( const std::string& name );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
       virtual const ClassElement<GUM_SCALAR>&
-      get(const std::string& name) const;
+      get( const std::string& name ) const;
 
       /**
        * Returns the set of Attribute<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -133,7 +133,7 @@ namespace gum {
 
       /// See
       /// gum::prm::ClassElementContainer<GUM_SCALAR>::add(ClassElement<GUM_SCALAR>*).
-      NodeId add(ClassElement<GUM_SCALAR>* elt);
+      NodeId add( ClassElement<GUM_SCALAR>* elt );
 
       /**
        * @brief Add a new ClassElement<GUM_SCALAR> which overload an inherited
@@ -164,7 +164,7 @@ namespace gum {
        *found.
        * @throw OperationNotAllowed Raised if the overloading is impossible.
        */
-      NodeId overload(ClassElement<GUM_SCALAR>* elt);
+      NodeId overload( ClassElement<GUM_SCALAR>* elt );
 
       // /**
       //  * @brief Remove a ClassElement<GUM_SCALAR> from this
@@ -220,7 +220,7 @@ namespace gum {
        * @return Returns true if this Class<GUM_SCALAR> is a subclass of cec.
        */
       virtual bool
-      isSubTypeOf(const ClassElementContainer<GUM_SCALAR>& cec) const;
+      isSubTypeOf( const ClassElementContainer<GUM_SCALAR>& cec ) const;
 
       /**
        * @brief Returns the superInterface of this Interface.
@@ -253,18 +253,19 @@ namespace gum {
       /// @{
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](NodeId).
-      ClassElement<GUM_SCALAR>& operator[](NodeId id);
+      ClassElement<GUM_SCALAR>& operator[]( NodeId id );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](NodeId).
-      const ClassElement<GUM_SCALAR>& operator[](NodeId id) const;
+      const ClassElement<GUM_SCALAR>& operator[]( NodeId id ) const;
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
-      ClassElement<GUM_SCALAR>& operator[](const std::string& name);
+      ClassElement<GUM_SCALAR>& operator[]( const std::string& name );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
-      const ClassElement<GUM_SCALAR>& operator[](const std::string& name) const;
+      const ClassElement<GUM_SCALAR>&
+      operator[]( const std::string& name ) const;
 
       /// @}
       // ========================================================================
@@ -293,18 +294,18 @@ namespace gum {
       /// Fills set with all the subtypes of this Interface, this includes
       /// extensions
       /// and implementations.
-      void _findAllSubtypes(Set<ClassElementContainer<GUM_SCALAR>*>& set);
+      void _findAllSubtypes( Set<ClassElementContainer<GUM_SCALAR>*>& set );
 
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>(const
       /// ClassElement<GUM_SCALAR>&).
-      void _updateDescendants(const ClassElement<GUM_SCALAR>& elt);
+      void _updateDescendants( const ClassElement<GUM_SCALAR>& elt );
 
       private:
       /// Copy operator. Don't use it.
-      Interface& operator=(const Interface& source);
+      Interface& operator=( const Interface& source );
 
       /// Proceed with the copy of i in this.
-      void __inheritInterface(const Interface& i);
+      void __inheritInterface( const Interface& i );
 
       // ========================================================================
       /// @name Graphical model members
@@ -353,7 +354,7 @@ namespace gum {
       /// Add an Class<GUM_SCALAR> to the set of Class<GUM_SCALAR> which
       /// implements
       /// this Interface.
-      void __addImplementation(Class<GUM_SCALAR>* c);
+      void __addImplementation( Class<GUM_SCALAR>* c );
 
       /// The set of Class<GUM_SCALAR> which implements this Interface.
       Set<Interface*> __extensions;
@@ -361,19 +362,20 @@ namespace gum {
       /// Add an Class<GUM_SCALAR> to the set of Class<GUM_SCALAR> which
       /// implements
       /// this Interface.
-      void __addExtension(Interface* c);
+      void __addExtension( Interface* c );
 
-      bool __checkOverloadLegality(const ClassElement<GUM_SCALAR>* overloaded,
-                                   const ClassElement<GUM_SCALAR>* overloader);
+      bool
+      __checkOverloadLegality( const ClassElement<GUM_SCALAR>* overloaded,
+                               const ClassElement<GUM_SCALAR>* overloader );
 
-      void __overloadAttribute(Attribute<GUM_SCALAR>* overloader,
-                               Attribute<GUM_SCALAR>* overloaded);
+      void __overloadAttribute( Attribute<GUM_SCALAR>* overloader,
+                                Attribute<GUM_SCALAR>* overloaded );
 
-      void __overloadReferenceSlot(ReferenceSlot<GUM_SCALAR>* overloader,
-                                   ReferenceSlot<GUM_SCALAR>* overloaded);
+      void __overloadReferenceSlot( ReferenceSlot<GUM_SCALAR>* overloader,
+                                    ReferenceSlot<GUM_SCALAR>* overloaded );
 
-      void __addCastDescendants(Attribute<GUM_SCALAR>* start,
-                                Attribute<GUM_SCALAR>* end);
+      void __addCastDescendants( Attribute<GUM_SCALAR>* start,
+                                 Attribute<GUM_SCALAR>* end );
 
       /// @}
     };

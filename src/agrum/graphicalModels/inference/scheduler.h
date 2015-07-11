@@ -42,7 +42,7 @@ namespace gum {
     Scheduler();
 
     /// copy constructor
-    Scheduler(const Scheduler<GUM_SCALAR>&);
+    Scheduler( const Scheduler<GUM_SCALAR>& );
 
     /// destructor
     virtual ~Scheduler();
@@ -60,19 +60,19 @@ namespace gum {
 
     /// execute all the operations of a given schedule
     /** @return a Boolean indicating whether all the schedule was performed */
-    virtual bool execute(Schedule<GUM_SCALAR>&) = 0;
+    virtual bool execute( Schedule<GUM_SCALAR>& ) = 0;
 
     /// execute only k operations of a given schedule (default k = 1)
     /** If there are fewer than k operations in the schedule, then all those
      * operations are performed
      * @return a Boolean indicating whether the k operations (or all the
      * operations of the schedule) were performed */
-    virtual bool execute(Schedule<GUM_SCALAR>&, unsigned int k) = 0;
+    virtual bool execute( Schedule<GUM_SCALAR>&, unsigned int k ) = 0;
 
     /** @brief returns an estimation of the number of elementary operations
      * needed
      * to perform a given schedule */
-    virtual float nbOperations(const Schedule<GUM_SCALAR>&) const = 0;
+    virtual float nbOperations( const Schedule<GUM_SCALAR>& ) const = 0;
 
     /** @brief returns an estimation of the number of elementary operations
      *needed
@@ -80,8 +80,8 @@ namespace gum {
      *
      * If there are fewer than k operations in the schedule, then all those
      * operations are taken into account */
-    virtual float nbOperations(const Schedule<GUM_SCALAR>&,
-                               unsigned int k) const = 0;
+    virtual float nbOperations( const Schedule<GUM_SCALAR>&,
+                                unsigned int k ) const = 0;
 
     /// returns the memory consumption used during the execution of a schedule
     /** Actually, this function does not return a precise account of the memory
@@ -92,7 +92,7 @@ namespace gum {
      * one is the amount of memory still used at the end of the execution of
      * the schedule */
     virtual std::pair<long, long>
-    memoryUsage(const Schedule<GUM_SCALAR>&) const = 0;
+    memoryUsage( const Schedule<GUM_SCALAR>& ) const = 0;
 
     /** @brief returns the memory consumption used during the execution of the
      * k first ScheduleOperations of a given schedule
@@ -106,8 +106,8 @@ namespace gum {
      * amount of memory used during the execution of the Schedule and the second
      * one is the amount of memory still used at the end of the execution of
      * k first operations of the schedule */
-    virtual std::pair<long, long> memoryUsage(const Schedule<GUM_SCALAR>&,
-                                              unsigned int k) const = 0;
+    virtual std::pair<long, long> memoryUsage( const Schedule<GUM_SCALAR>&,
+                                               unsigned int k ) const = 0;
 
     /// @}
   };

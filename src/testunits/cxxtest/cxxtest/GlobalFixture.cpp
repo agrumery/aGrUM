@@ -9,8 +9,8 @@ namespace CxxTest {
   bool GlobalFixture::setUp() { return true; }
   bool GlobalFixture::tearDown() { return true; }
 
-  GlobalFixture::GlobalFixture() { attach(_list); }
-  GlobalFixture::~GlobalFixture() { detach(_list); }
+  GlobalFixture::GlobalFixture() { attach( _list ); }
+  GlobalFixture::~GlobalFixture() { detach( _list ); }
 
   GlobalFixture* GlobalFixture::firstGlobalFixture() {
     return (GlobalFixture*)_list.head();

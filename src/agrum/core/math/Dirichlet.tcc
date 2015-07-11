@@ -29,18 +29,19 @@ namespace gum {
   /// returns a sample from the Dirichlet distribution
   template <class URNG>
   INLINE Dirichlet::result_type Dirichlet::
-  operator()(URNG& generator, const Dirichlet::param_type& parm) {
+  operator()( URNG& generator, const Dirichlet::param_type& parm ) {
     unsigned int size = parm.size();
-    result_type res(size);
+    result_type res( size );
     float sum = 0.0f;
-    while (sum == 0.0f) {
-      for (unsigned int i = 0; i < size; ++i) {
-        __gamma.param(std::gamma_distribution<float>::param_type(parm[i], 1));
-        res[i] = __gamma(generator);
+    while ( sum == 0.0f ) {
+      for ( unsigned int i = 0; i < size; ++i ) {
+        __gamma.param(
+            std::gamma_distribution<float>::param_type( parm[i], 1 ) );
+        res[i] = __gamma( generator );
         sum += res[i];
       }
     }
-    for (unsigned int i = 0; i < size; ++i) {
+    for ( unsigned int i = 0; i < size; ++i ) {
       res[i] /= sum;
     }
     return res;

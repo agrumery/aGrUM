@@ -44,10 +44,10 @@ namespace gum_tests {
 
     void generateLayer1(
         gum::Size nb_class, gum::Size depth,
-        std::vector<gum::prm::LayerGenerator<double>::LayerData>& v) {
+        std::vector<gum::prm::LayerGenerator<double>::LayerData>& v ) {
       try {
-        for (gum::Size lvl = 0; lvl < depth; ++lvl) {
-          v.push_back(gum::prm::LayerGenerator<double>::LayerData());
+        for ( gum::Size lvl = 0; lvl < depth; ++lvl ) {
+          v.push_back( gum::prm::LayerGenerator<double>::LayerData() );
           v[lvl].a = 10;
           v[lvl].g = 2;
           v[lvl].c = nb_class;
@@ -55,17 +55,17 @@ namespace gum_tests {
           v[lvl].inner_density = 0.2;
           v[lvl].outter_density = 0.05;
         }
-      } catch (gum::Exception& e) {
-        TS_ASSERT(false);
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
       }
     }
 
     void generateLayer2(
         gum::Size nb_class, gum::Size depth,
-        std::vector<gum::prm::LayerGenerator<double>::LayerData>& v) {
+        std::vector<gum::prm::LayerGenerator<double>::LayerData>& v ) {
       try {
-        for (gum::Size lvl = 0; lvl < depth; ++lvl) {
-          v.push_back(gum::prm::LayerGenerator<double>::LayerData());
+        for ( gum::Size lvl = 0; lvl < depth; ++lvl ) {
+          v.push_back( gum::prm::LayerGenerator<double>::LayerData() );
           v[lvl].a = 10;
           v[lvl].g = 2;
           v[lvl].c = nb_class;
@@ -73,17 +73,17 @@ namespace gum_tests {
           v[lvl].inner_density = 0.2;
           v[lvl].outter_density = 0.05;
         }
-      } catch (gum::Exception& e) {
-        TS_ASSERT(false);
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
       }
     }
 
     void generateLayer3(
         gum::Size nb_class, gum::Size depth,
-        std::vector<gum::prm::LayerGenerator<double>::LayerData>& v) {
+        std::vector<gum::prm::LayerGenerator<double>::LayerData>& v ) {
       try {
-        for (gum::Size lvl = 0; lvl < depth; ++lvl) {
-          v.push_back(gum::prm::LayerGenerator<double>::LayerData());
+        for ( gum::Size lvl = 0; lvl < depth; ++lvl ) {
+          v.push_back( gum::prm::LayerGenerator<double>::LayerData() );
           v[lvl].a = 10;
           v[lvl].g = 2;
           v[lvl].c = nb_class;
@@ -91,126 +91,126 @@ namespace gum_tests {
           v[lvl].inner_density = 0.2;
           v[lvl].outter_density = 0.05;
         }
-      } catch (gum::Exception& e) {
-        TS_ASSERT(false);
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
       }
     }
 
     const gum::prm::Instance<double>&
-    pickInstance(const gum::prm::System<double>& sys) {
+    pickInstance( const gum::prm::System<double>& sys ) {
       gum::Sequence<const gum::prm::Instance<double>*> seq;
 
-      for (gum::prm::System<double>::const_iterator iter = sys.begin();
-           iter != sys.end(); ++iter)
-        seq.insert(iter.val());
+      for ( gum::prm::System<double>::const_iterator iter = sys.begin();
+            iter != sys.end(); ++iter )
+        seq.insert( iter.val() );
 
-      return *(seq.atPos(std::rand() % seq.size()));
+      return *( seq.atPos( std::rand() % seq.size() ) );
     }
 
     const gum::prm::Attribute<double>&
-    pickAttribute(const gum::prm::Instance<double>& i) {
+    pickAttribute( const gum::prm::Instance<double>& i ) {
       gum::Sequence<const gum::prm::Attribute<double>*> seq;
 
-      for (gum::prm::Instance<double>::const_iterator iter = i.begin();
-           iter != i.end(); ++iter)
-        seq.insert(iter.val());
+      for ( gum::prm::Instance<double>::const_iterator iter = i.begin();
+            iter != i.end(); ++iter )
+        seq.insert( iter.val() );
 
-      return *(seq.atPos(std::rand() % seq.size()));
+      return *( seq.atPos( std::rand() % seq.size() ) );
     }
 
     void testStructuredInference_gen1() {
       try {
         std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
-        generateLayer1(5, 2, layers);
+        generateLayer1( 5, 2, layers );
         gum::prm::ClusteredLayerGenerator<double> generator;
-        generator.setClusterRatio(1.0);
-        generator.setLayers(layers);
-        generator.setDomainSize(2);
-        generator.setMaxParents(5);
+        generator.setClusterRatio( 1.0 );
+        generator.setLayers( layers );
+        generator.setDomainSize( 2 );
+        generator.setMaxParents( 5 );
         gum::prm::PRM<double>* prm = generator.generate();
         gum::prm::System<double>& sys =
-            prm->system((**(prm->systems().begin())).name());
-        gum::prm::StructuredInference<double> inf(*prm, sys);
-        inf.setPatternMining(false);
-        const gum::prm::Instance<double>& i = pickInstance(sys);
-        const gum::prm::Attribute<double>& a = pickAttribute(i);
-        gum::prm::PRMInference<double>::Chain chain = std::make_pair(&i, &a);
+            prm->system( ( **( prm->systems().begin() ) ).name() );
+        gum::prm::StructuredInference<double> inf( *prm, sys );
+        inf.setPatternMining( false );
+        const gum::prm::Instance<double>& i = pickInstance( sys );
+        const gum::prm::Attribute<double>& a = pickAttribute( i );
+        gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a );
         gum::Potential<double> m;
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING( inf.marginal( chain, m ) );
         double sum = 0.0;
-        gum::Instantiation inst(m);
+        gum::Instantiation inst( m );
 
-        for (inst.setFirst(); not inst.end(); inst.inc())
-          sum += m.get(inst);
+        for ( inst.setFirst(); not inst.end(); inst.inc() )
+          sum += m.get( inst );
 
-        TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+        TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
         delete prm;
-      } catch (gum::Exception& e) {
-        TS_ASSERT(false);
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
       }
     }
 
     void testStructuredInference_gen2() {
       try {
         std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
-        generateLayer2(5, 2, layers);
+        generateLayer2( 5, 2, layers );
         gum::prm::ClusteredLayerGenerator<double> generator;
-        generator.setClusterRatio(1.0);
-        generator.setLayers(layers);
-        generator.setDomainSize(2);
-        generator.setMaxParents(5);
+        generator.setClusterRatio( 1.0 );
+        generator.setLayers( layers );
+        generator.setDomainSize( 2 );
+        generator.setMaxParents( 5 );
         gum::prm::PRM<double>* prm = generator.generate();
         gum::prm::System<double>& sys =
-            prm->system((**(prm->systems().begin())).name());
-        gum::prm::StructuredInference<double> inf(*prm, sys);
-        inf.setPatternMining(false);
-        const gum::prm::Instance<double>& i = pickInstance(sys);
-        const gum::prm::Attribute<double>& a = pickAttribute(i);
-        gum::prm::PRMInference<double>::Chain chain = std::make_pair(&i, &a);
+            prm->system( ( **( prm->systems().begin() ) ).name() );
+        gum::prm::StructuredInference<double> inf( *prm, sys );
+        inf.setPatternMining( false );
+        const gum::prm::Instance<double>& i = pickInstance( sys );
+        const gum::prm::Attribute<double>& a = pickAttribute( i );
+        gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a );
         gum::Potential<double> m;
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING( inf.marginal( chain, m ) );
         double sum = 0.0;
-        gum::Instantiation inst(m);
+        gum::Instantiation inst( m );
 
-        for (inst.setFirst(); not inst.end(); inst.inc())
-          sum += m.get(inst);
+        for ( inst.setFirst(); not inst.end(); inst.inc() )
+          sum += m.get( inst );
 
-        TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+        TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
         delete prm;
-      } catch (gum::Exception& e) {
-        TS_ASSERT(false);
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
       }
     }
 
     void testStructuredInference_gen3() {
       try {
         std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
-        generateLayer3(5, 2, layers);
+        generateLayer3( 5, 2, layers );
         gum::prm::ClusteredLayerGenerator<double> generator;
-        generator.setClusterRatio(1.0);
-        generator.setLayers(layers);
-        generator.setDomainSize(2);
-        generator.setMaxParents(5);
+        generator.setClusterRatio( 1.0 );
+        generator.setLayers( layers );
+        generator.setDomainSize( 2 );
+        generator.setMaxParents( 5 );
         gum::prm::PRM<double>* prm = generator.generate();
         gum::prm::System<double>& sys =
-            prm->system((**(prm->systems().begin())).name());
-        gum::prm::StructuredInference<double> inf(*prm, sys);
-        inf.setPatternMining(false);
-        const gum::prm::Instance<double>& i = pickInstance(sys);
-        const gum::prm::Attribute<double>& a = pickAttribute(i);
-        gum::prm::PRMInference<double>::Chain chain = std::make_pair(&i, &a);
+            prm->system( ( **( prm->systems().begin() ) ).name() );
+        gum::prm::StructuredInference<double> inf( *prm, sys );
+        inf.setPatternMining( false );
+        const gum::prm::Instance<double>& i = pickInstance( sys );
+        const gum::prm::Attribute<double>& a = pickAttribute( i );
+        gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a );
         gum::Potential<double> m;
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING( inf.marginal( chain, m ) );
         double sum = 0.0;
-        gum::Instantiation inst(m);
+        gum::Instantiation inst( m );
 
-        for (inst.setFirst(); not inst.end(); inst.inc())
-          sum += m.get(inst);
+        for ( inst.setFirst(); not inst.end(); inst.inc() )
+          sum += m.get( inst );
 
-        TS_ASSERT_DELTA(sum, 1.0, 1e-6);
+        TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
         delete prm;
-      } catch (gum::Exception& e) {
-        TS_ASSERT(false);
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
       }
     }
 

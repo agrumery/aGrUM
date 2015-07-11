@@ -155,7 +155,7 @@ namespace gum {
 
     /// basic constructor: a node without parent nor children
 
-    BinTreeNode(const Val& v);
+    BinTreeNode( const Val& v );
 
     /** @brief copy constructor: creates a new disconnected node with the same
      * value as "from"
@@ -163,7 +163,7 @@ namespace gum {
      * @warning Although the new node contains the same value as from, it has
      * no parent, nor any children, even if from has some. */
 
-    BinTreeNode(const BinTreeNode<Val>& from);
+    BinTreeNode( const BinTreeNode<Val>& from );
 
     /// destructor
     /** in addition to removing the node, this method updates appropriately
@@ -182,7 +182,7 @@ namespace gum {
      * does not change the current connections (parents and children) of this.
      */
 
-    BinTreeNode<Val>& operator=(const BinTreeNode<Val>& from);
+    BinTreeNode<Val>& operator=( const BinTreeNode<Val>& from );
 
     /// alias for method value
 
@@ -203,7 +203,7 @@ namespace gum {
     /** @warning if the child does not exists, the method returns a 0 pointer.
      */
 
-    BinTreeNode<Val>* child(BinTreeDir dir) const;
+    BinTreeNode<Val>* child( BinTreeDir dir ) const;
 
     /// returns the given child of a node
     /** @warning if the child does not exists, the method returns a 0 pointer.
@@ -233,38 +233,38 @@ namespace gum {
      * @returns a pointer on the new created child
      * @throw DuplicateElement if the current node had already a left child */
 
-    BinTreeNode<Val>* insertLeftChild(const Val&);
+    BinTreeNode<Val>* insertLeftChild( const Val& );
 
     /// adds a new left child to the current node
     /** @throw DuplicateElement if the current node had already a left child or
      * if new_child already has a parent */
 
-    void insertLeftChild(BinTreeNode<Val>& new_child);
+    void insertLeftChild( BinTreeNode<Val>& new_child );
 
     /// adds a new right child to the current node
     /**  @returns a pointer on the new created child
      * @throw DuplicateElement if the current node had already a left child */
 
-    BinTreeNode<Val>* insertRightChild(const Val&);
+    BinTreeNode<Val>* insertRightChild( const Val& );
 
     /// adds a new right child to the current node
     /** @throw DuplicateElement if the current node had already a left child or
      * if new_child already has a parent */
 
-    void insertRightChild(BinTreeNode<Val>& new_child);
+    void insertRightChild( BinTreeNode<Val>& new_child );
 
     /// adds a new child to the current node
     /**  @returns a pointer on the new created child
      * @throw DuplicateElement if the current node had already a child in the
      * child_dir subtree */
 
-    BinTreeNode<Val>* insertChild(const Val&, BinTreeDir child_dir);
+    BinTreeNode<Val>* insertChild( const Val&, BinTreeDir child_dir );
 
     /// adds a new child to the current node
     /** @throw DuplicateElement if the current node had already a child in the
      * child_dir direction or if new_child already has a parent */
 
-    void insertChild(BinTreeNode<Val>& new_child, BinTreeDir child_dir);
+    void insertChild( BinTreeNode<Val>& new_child, BinTreeDir child_dir );
 
     /// remove the link between the current node and its left child
     /** Note that only the link is removed, i.e., the left child is not removed
@@ -287,7 +287,7 @@ namespace gum {
      * itself nor, a fortiori, its subtree. If the child does not exist, the
      * method does nothing. In particular, it does not raise any exception. */
 
-    void eraseLink(BinTreeDir tree_dir);
+    void eraseLink( BinTreeDir tree_dir );
 
     /// returns the leftmost node of the current tree
     /** if there is no left child, the method returns this */

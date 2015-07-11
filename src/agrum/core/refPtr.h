@@ -71,7 +71,7 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
   template <typename Val> class RefPtr;
-  template <typename Val> void swap(RefPtr<Val>&, RefPtr<Val>&);
+  template <typename Val> void swap( RefPtr<Val>&, RefPtr<Val>& );
 
   template <typename Val> class HashFunc;
 #endif
@@ -139,7 +139,7 @@ namespace gum {
   template <typename Val> class RefPtr {
     public:
     /// swap the contents of two RefPtr
-    friend void swap<>(RefPtr<Val>&, RefPtr<Val>&);
+    friend void swap<>( RefPtr<Val>&, RefPtr<Val>& );
 
     // ############################################################################
     /// @name Constructors / Destructors
@@ -171,17 +171,17 @@ namespace gum {
      * structure
      * cannot be set properly. */
 
-    explicit RefPtr(Val* val = 0);
+    explicit RefPtr( Val* val = 0 );
 
     /// copy constructor
     /** @param from the smart pointer we wish to make a copy */
 
-    RefPtr(const RefPtr<Val>& from);
+    RefPtr( const RefPtr<Val>& from );
 
     /// copy constructor for downcastable pointers
     /** @param from the smart pointer we wish to make a copy */
 
-    template <typename DownVal> RefPtr(const RefPtr<DownVal>& from);
+    template <typename DownVal> RefPtr( const RefPtr<DownVal>& from );
 
     /** @brief destructor: decrements the ref count and deletes if necessary
      * the dumb pointer */
@@ -234,7 +234,7 @@ namespace gum {
      * as from.
      * @param from the smart pointer we wish to make a copy */
 
-    RefPtr<Val>& operator=(const RefPtr<Val>& from);
+    RefPtr<Val>& operator=( const RefPtr<Val>& from );
 
     /// copy operator
     /** operator= may throw exceptions when the dumb pointer previously pointed
@@ -248,7 +248,7 @@ namespace gum {
      * the 0 pointer.
      * @param from the dumb pointer we wish to encapsulate */
 
-    RefPtr<Val>& operator=(Val* from);
+    RefPtr<Val>& operator=( Val* from );
 
     /// copy operator for downcastable pointers
     /** operator= may throw exceptions when the dumb pointer previously pointed
@@ -263,7 +263,7 @@ namespace gum {
      * @param from the smart pointer we wish to make a copy */
 
     template <typename DownVal>
-    RefPtr<Val>& operator=(const RefPtr<DownVal>& from);
+    RefPtr<Val>& operator=( const RefPtr<DownVal>& from );
 
     /// checks whether two RefPtr<Val> are smart pointers for the same element.
     /** "Pointing toward the same element" is a little ambiguous: it does not
@@ -277,7 +277,7 @@ namespace gum {
      * point
      * toward the same Val instance (but the converse is false). */
 
-    bool operator==(const RefPtr<Val>& from) const;
+    bool operator==( const RefPtr<Val>& from ) const;
 
     /// checks whether two RefPtr<Val> are smart pointers for different elements
     /** returns true if either the dumb pointers the smart pointers encapsulate
@@ -286,7 +286,7 @@ namespace gum {
      * pointers
      * are not related through copy operators) */
 
-    bool operator!=(const RefPtr<Val>& from) const;
+    bool operator!=( const RefPtr<Val>& from ) const;
 
     /// dereferencing operator
     /** This operator allows developers to write code like
@@ -334,7 +334,7 @@ namespace gum {
     unsigned int* __refcount;
 
     /// a function to remove the content of the smart pointer, if any
-    void __destroy(unsigned int*, Val*);
+    void __destroy( unsigned int*, Val* );
 
     /// a function to return the refcount pointer
     unsigned int* __refCountPtr() const;

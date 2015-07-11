@@ -83,9 +83,9 @@ namespace gum {
        * @param apriori the a priori that is taken into account in the
        * score/countings */
       template <typename RowFilter>
-      Score(const RowFilter& filter,
-            const std::vector<unsigned int>& var_modalities,
-            Apriori<IdSetAlloc, CountAlloc>& apriori);
+      Score( const RowFilter& filter,
+             const std::vector<unsigned int>& var_modalities,
+             Apriori<IdSetAlloc, CountAlloc>& apriori );
 
       /// virtual copy factory
       virtual Score<IdSetAlloc, CountAlloc>* copyFactory() const = 0;
@@ -114,7 +114,7 @@ namespace gum {
        * this
        * index as argument to methods _getAllCounts to get the corresponding
        * counting vector. */
-      unsigned int addNodeSet(unsigned int var);
+      unsigned int addNodeSet( unsigned int var );
 
       /// add a new target variable plus some conditioning vars
       /** @param var represents the index of the target variable in the filtered
@@ -132,8 +132,8 @@ namespace gum {
        * (conditioning_ids,vars) [in this order] and conditioning_ids
        * respectively. */
       unsigned int
-      addNodeSet(unsigned int var,
-                 const std::vector<unsigned int>& conditioning_ids);
+      addNodeSet( unsigned int var,
+                  const std::vector<unsigned int>& conditioning_ids );
 
       /// clears all the data structures from memory
       void clear();
@@ -142,7 +142,7 @@ namespace gum {
       void clearCache();
 
       /// turn on/off the use of a cache of the previously computed score
-      void useCache(bool on_off) noexcept;
+      void useCache( bool on_off ) noexcept;
 
       /// returns the modalities of the variables
       using Counter<IdSetAlloc, CountAlloc>::modalities;
@@ -151,7 +151,7 @@ namespace gum {
       using Counter<IdSetAlloc, CountAlloc>::setMaxNbThreads;
 
       /// returns the score corresponding to a given nodeset
-      virtual float score(unsigned int nodeset_index) = 0;
+      virtual float score( unsigned int nodeset_index ) = 0;
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score
@@ -230,29 +230,30 @@ namespace gum {
        * nodes of the conditioning set (in the order in which they were
        * specified
        * when callind addNodeset, and then the target nodes. */
-      const std::vector<float, CountAlloc>& _getAllApriori(unsigned int index);
+      const std::vector<float, CountAlloc>&
+      _getAllApriori( unsigned int index );
 
       /// returns the apriori vector for a conditioning set
       const std::vector<float, CountAlloc>&
-      _getConditioningApriori(unsigned int index);
+      _getConditioningApriori( unsigned int index );
 
       /// indicates whether a score belongs to the cache
-      bool _isInCache(unsigned int nodeset_index) const noexcept;
+      bool _isInCache( unsigned int nodeset_index ) const noexcept;
 
       /// inserts a new score into the cache
-      void _insertIntoCache(unsigned int nodeset_index, float score);
+      void _insertIntoCache( unsigned int nodeset_index, float score );
 
       /// returns a cached score
-      float _cachedScore(unsigned int nodeset_index) const noexcept;
+      float _cachedScore( unsigned int nodeset_index ) const noexcept;
 
       /// indicates whether we use the cache or not
       bool _isUsingCache() const noexcept;
 
       /// copy constructor: to be used by the virtual copy constructor
-      Score(const Score<IdSetAlloc, CountAlloc>&);
+      Score( const Score<IdSetAlloc, CountAlloc>& );
 
       /// move constructor: to be used by the descendants in the hierarchy
-      Score(Score<IdSetAlloc, CountAlloc>&&);
+      Score( Score<IdSetAlloc, CountAlloc>&& );
 
       private:
       /// a cache for the previously computed scores
@@ -278,7 +279,7 @@ namespace gum {
 
       /// prevent copy operator
       Score<IdSetAlloc, CountAlloc>&
-      operator=(const Score<IdSetAlloc, CountAlloc>&) = delete;
+      operator=( const Score<IdSetAlloc, CountAlloc>& ) = delete;
     };
 
   } /* namespace learning */

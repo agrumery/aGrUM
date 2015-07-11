@@ -66,9 +66,9 @@ namespace gum {
        * @param type The type of this reference slot.
        * @param isArray Determine if this reference slot is multiple or not.
        */
-      ReferenceSlot(const std::string& name,
-                    ClassElementContainer<GUM_SCALAR>& type,
-                    bool isArray = false);
+      ReferenceSlot( const std::string& name,
+                     ClassElementContainer<GUM_SCALAR>& type,
+                     bool isArray = false );
 
       /**
        * Destructor.
@@ -105,10 +105,10 @@ namespace gum {
       bool isArray() const;
 
       /// See gum::ClassElement::addParent().
-      virtual void addParent(const ClassElement<GUM_SCALAR>& elt);
+      virtual void addParent( const ClassElement<GUM_SCALAR>& elt );
 
       /// See gum::ClassElement::addChild().
-      virtual void addChild(const ClassElement<GUM_SCALAR>& elt);
+      virtual void addChild( const ClassElement<GUM_SCALAR>& elt );
 
       /// @}
       // ========================================================================
@@ -140,10 +140,10 @@ namespace gum {
       // @{
 
       /// Copy constructor. Don't use it.
-      ReferenceSlot(const ReferenceSlot& source);
+      ReferenceSlot( const ReferenceSlot& source );
 
       /// Copy operator. Don't use it.
-      ReferenceSlot& operator=(const ReferenceSlot& from);
+      ReferenceSlot& operator=( const ReferenceSlot& from );
 
       /// @}
       // ========================================================================

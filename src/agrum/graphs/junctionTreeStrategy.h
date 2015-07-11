@@ -87,7 +87,7 @@ namespace gum {
     virtual const CliqueGraph& junctionTree() = 0;
 
     /// assign the triangulation to the junction tree strategy
-    virtual void setTriangulation(StaticTriangulation* triangulation) = 0;
+    virtual void setTriangulation( StaticTriangulation* triangulation ) = 0;
 
     /** @brief returns, for each node, the clique of the junction tree which was
      * created by its deletion */
@@ -95,7 +95,7 @@ namespace gum {
 
     /** @brief returns the Id of the clique of the junction tree created by the
      * elimination of a given node during the triangulation process */
-    virtual NodeId createdClique(const NodeId id) = 0;
+    virtual NodeId createdClique( const NodeId id ) = 0;
 
     /// resets the current junction tree strategy data structures
     virtual void clear() = 0;

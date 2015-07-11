@@ -42,128 +42,132 @@ namespace gum {
       MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* factory,
       NodeId currentNode, bool delVarAscendant,
       HashTable<NodeId, NodeId>& explorationTable,
-      const Set<const DiscreteVariable*>& delVars, Idx nbOperation) {
+      const Set<const DiscreteVariable*>& delVars, Idx nbOperation ) {
 
-    if (oldDiagram->isTerminalNode(currentNode)) {
-      GUM_SCALAR resValue = oldDiagram->unsafeNodeValue(currentNode);
+    if ( oldDiagram->isTerminalNode( currentNode ) ) {
+      GUM_SCALAR resValue = oldDiagram->unsafeNodeValue( currentNode );
 
-      for (Idx i = 1; i < nbOperation; i++)
+      for ( Idx i = 1; i < nbOperation; i++ )
         resValue = GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(
-            resValue, oldDiagram->unsafeNodeValue(currentNode));
+            resValue, oldDiagram->unsafeNodeValue( currentNode ) );
 
-      return factory->addTerminalNode(resValue);
+      return factory->addTerminalNode( resValue );
     }
 
-    if (delVarAscendant ||
-        delVars.exists(oldDiagram->unsafeNodeVariable(currentNode))) {
+    if ( delVarAscendant ||
+         delVars.exists( oldDiagram->unsafeNodeVariable( currentNode ) ) ) {
 
-      if (!delVarAscendant) {
-        if (explorationTable.exists(currentNode))
+      if ( !delVarAscendant ) {
+        if ( explorationTable.exists( currentNode ) )
           return explorationTable[currentNode];
       }
 
-      nbOperation /= oldDiagram->unsafeNodeVariable(currentNode)->domainSize();
+      nbOperation /=
+          oldDiagram->unsafeNodeVariable( currentNode )->domainSize();
       Idx nbExploredModalities = 0;
       std::vector<NodeId>::const_iterator sonIter =
-          oldDiagram->unsafeNodeSons(currentNode)->begin();
+          oldDiagram->unsafeNodeSons( currentNode )->begin();
       GUM_SCALAR resValue = GUM_MULTI_DIM_PROJECTION_NEUTRAL;
 
-      while (sonIter != oldDiagram->unsafeNodeSons(currentNode)->end()) {
-        if (*sonIter != 0) {
+      while ( sonIter != oldDiagram->unsafeNodeSons( currentNode )->end() ) {
+        if ( *sonIter != 0 ) {
           NodeId sonValueNode =
               GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
                   oldDiagram, factory, *sonIter, true, explorationTable,
-                  delVars, nbOperation);
+                  delVars, nbOperation );
           resValue = GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(
-              resValue, factory->nodeValue(sonValueNode));
+              resValue, factory->nodeValue( sonValueNode ) );
           nbExploredModalities++;
         }
 
         ++sonIter;
       }
 
-      if (oldDiagram->unsafeHasNodeDefaultSon(currentNode)) {
+      if ( oldDiagram->unsafeHasNodeDefaultSon( currentNode ) ) {
         NodeId defaultSonValueNode =
             GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
                 oldDiagram, factory,
-                oldDiagram->unsafeNodeDefaultSon(currentNode), true,
-                explorationTable, delVars, nbOperation);
+                oldDiagram->unsafeNodeDefaultSon( currentNode ), true,
+                explorationTable, delVars, nbOperation );
 
-        for (Idx i = 0;
-             i < oldDiagram->unsafeNodeVariable(currentNode)->domainSize() -
-                     nbExploredModalities;
-             i++)
+        for ( Idx i = 0;
+              i < oldDiagram->unsafeNodeVariable( currentNode )->domainSize() -
+                      nbExploredModalities;
+              i++ )
           resValue = GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(
-              resValue, factory->nodeValue(defaultSonValueNode));
+              resValue, factory->nodeValue( defaultSonValueNode ) );
       }
 
-      nbOperation *= oldDiagram->unsafeNodeVariable(currentNode)->domainSize();
+      nbOperation *=
+          oldDiagram->unsafeNodeVariable( currentNode )->domainSize();
 
-      NodeId resNode = factory->addTerminalNode(resValue);
+      NodeId resNode = factory->addTerminalNode( resValue );
 
-      if (!delVarAscendant)
-        explorationTable.insert(currentNode, resNode);
+      if ( !delVarAscendant )
+        explorationTable.insert( currentNode, resNode );
 
       return resNode;
 
     } else {
 
-      if (explorationTable.exists(currentNode))
+      if ( explorationTable.exists( currentNode ) )
         return explorationTable[currentNode];
 
       std::vector<NodeId> sonsMap(
-          oldDiagram->unsafeNodeVariable(currentNode)->domainSize(), 0);
+          oldDiagram->unsafeNodeVariable( currentNode )->domainSize(), 0 );
 
-      for (std::vector<NodeId>::const_iterator sonIter =
-               oldDiagram->unsafeNodeSons(currentNode)->begin();
-           sonIter != oldDiagram->unsafeNodeSons(currentNode)->end();
-           ++sonIter) {
-        if (*sonIter != 0) {
+      for ( std::vector<NodeId>::const_iterator sonIter =
+                oldDiagram->unsafeNodeSons( currentNode )->begin();
+            sonIter != oldDiagram->unsafeNodeSons( currentNode )->end();
+            ++sonIter ) {
+        if ( *sonIter != 0 ) {
           NodeId sonValueNode =
               GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
                   oldDiagram, factory, *sonIter, false, explorationTable,
-                  delVars, nbOperation);
+                  delVars, nbOperation );
           sonsMap[std::distance(
-              oldDiagram->unsafeNodeSons(currentNode)->begin(), sonIter)] =
+              oldDiagram->unsafeNodeSons( currentNode )->begin(), sonIter )] =
               sonValueNode;
         }
       }
 
       NodeId defaultSon = 0;
 
-      if (oldDiagram->unsafeHasNodeDefaultSon(currentNode)) {
+      if ( oldDiagram->unsafeHasNodeDefaultSon( currentNode ) ) {
         defaultSon = GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-            oldDiagram, factory, oldDiagram->unsafeNodeDefaultSon(currentNode),
-            false, explorationTable, delVars, nbOperation);
+            oldDiagram, factory,
+            oldDiagram->unsafeNodeDefaultSon( currentNode ), false,
+            explorationTable, delVars, nbOperation );
       }
 
-      if (defaultSon != 0) {
+      if ( defaultSon != 0 ) {
         Idx nbDefault = 0;
 
-        for (std::vector<NodeId>::iterator iterArcMap = sonsMap.begin();
-             iterArcMap != sonsMap.end(); ++iterArcMap) {
-          if (*iterArcMap == 0)
+        for ( std::vector<NodeId>::iterator iterArcMap = sonsMap.begin();
+              iterArcMap != sonsMap.end(); ++iterArcMap ) {
+          if ( *iterArcMap == 0 )
             ++nbDefault;
 
-          if (*iterArcMap == defaultSon) {
+          if ( *iterArcMap == defaultSon ) {
             ++nbDefault;
-            sonsMap[std::distance(sonsMap.begin(), iterArcMap)] = 0;
+            sonsMap[std::distance( sonsMap.begin(), iterArcMap )] = 0;
           }
         }
 
-        if (nbDefault == 1)
-          for (std::vector<NodeId>::iterator iterArcMap = sonsMap.begin();
-               iterArcMap != sonsMap.end(); ++iterArcMap)
-            if (*iterArcMap == 0) {
-              sonsMap[std::distance(sonsMap.begin(), iterArcMap)] = defaultSon;
+        if ( nbDefault == 1 )
+          for ( std::vector<NodeId>::iterator iterArcMap = sonsMap.begin();
+                iterArcMap != sonsMap.end(); ++iterArcMap )
+            if ( *iterArcMap == 0 ) {
+              sonsMap[std::distance( sonsMap.begin(), iterArcMap )] =
+                  defaultSon;
               defaultSon = 0;
               break;
             }
       }
 
       NodeId resNode = factory->unsafeAddNonTerminalNodeWithArcs(
-          oldDiagram->unsafeNodeVariable(currentNode), sonsMap, defaultSon);
-      explorationTable.insert(currentNode, resNode);
+          oldDiagram->unsafeNodeVariable( currentNode ), sonsMap, defaultSon );
+      explorationTable.insert( currentNode, resNode );
       return resNode;
     }
   }

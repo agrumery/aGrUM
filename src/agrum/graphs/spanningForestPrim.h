@@ -57,11 +57,11 @@ namespace gum {
      * copied but only referenced by the elimination sequence algorithm.
      * @throws GraphError if the grand and/or the cost table are null pointers
      */
-    SpanningForestPrim(const UndiGraph* graph,
-                       const EdgeProperty<float>* costTable);
+    SpanningForestPrim( const UndiGraph* graph,
+                        const EdgeProperty<float>* costTable );
 
     /// Copy constructor
-    SpanningForestPrim(const SpanningForestPrim& toCopy);
+    SpanningForestPrim( const SpanningForestPrim& toCopy );
 
     /// Destructor
     virtual ~SpanningForestPrim();
@@ -110,13 +110,13 @@ namespace gum {
     void __compute();
 
     /// compute a spanning tree in a given connected component of __graph
-    void __computeInAComponent(const NodeId id);
+    void __computeInAComponent( const NodeId id );
 
     /// explore the neighborhood of a node belonging to the spanning tree
-    void __exploreNode(const NodeId id);
+    void __exploreNode( const NodeId id );
 
     /// Copy operator: private to prevent using it
-    SpanningForestPrim& operator=(const SpanningForestPrim& toCopy);
+    SpanningForestPrim& operator=( const SpanningForestPrim& toCopy );
   };
 
 } /* namespace gum */

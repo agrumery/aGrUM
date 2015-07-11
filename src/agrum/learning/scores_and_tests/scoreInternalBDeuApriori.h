@@ -71,11 +71,11 @@ namespace gum {
 
       /// copy constructor
       ScoreInternalBDeuApriori(
-          const ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>& from);
+          const ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>& from );
 
       /// move constructor
       ScoreInternalBDeuApriori(
-          ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>&& from);
+          ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>&& from );
 
       /// destructor
       virtual ~ScoreInternalBDeuApriori();
@@ -95,10 +95,10 @@ namespace gum {
                                       unsigned int>*>& target_nodesets,
           const std::vector<
               std::pair<std::vector<unsigned int, IdSetAlloc>, unsigned int>*>&
-              conditioning_nodesets) final;
+              conditioning_nodesets ) final;
 
       /// sets the effective sample size of the internal apriori
-      void setEffectiveSampleSize(float ess);
+      void setEffectiveSampleSize( float ess );
 
       /// @}
 

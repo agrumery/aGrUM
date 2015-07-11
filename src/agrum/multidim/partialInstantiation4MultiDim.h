@@ -49,23 +49,23 @@ namespace gum {
   template <typename GUM_SCALAR>
   MultiDimArray<GUM_SCALAR>* partialInstantiationMultiDimArray(
       const MultiDimArray<GUM_SCALAR>* table,
-      const HashTable<const DiscreteVariable*, Idx>& inst_vars);
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
   template <typename GUM_SCALAR>
   MultiDimImplementation<GUM_SCALAR>* partialInstantiationMultiDimArray(
       const MultiDimImplementation<GUM_SCALAR>* table,
-      const HashTable<const DiscreteVariable*, Idx>& inst_vars);
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
   template <typename GUM_SCALAR>
   MultiDimArray<GUM_SCALAR*>* partialInstantiationMultiDimArray4Pointers(
       const MultiDimArray<GUM_SCALAR*>* table,
-      const HashTable<const DiscreteVariable*, Idx>& inst_vars);
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
   template <typename GUM_SCALAR>
   MultiDimImplementation<GUM_SCALAR*>*
   partialInstantiationMultiDimArray4Pointers(
       const MultiDimImplementation<GUM_SCALAR*>* table,
-      const HashTable<const DiscreteVariable*, Idx>& inst_vars);
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
   // the operators that should be used to select appropriately the functions
   // to instantiate multiDimDecorators
@@ -74,13 +74,13 @@ namespace gum {
   template <typename GUM_SCALAR>
   MultiDimImplementation<GUM_SCALAR>* partialInstantiation(
       const MultiDimImplementation<GUM_SCALAR>& table,
-      const HashTable<const DiscreteVariable*, Idx>& inst_vars);
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
   /// the function to be used to instantiate a MultiDimDecorator
   template <typename GUM_SCALAR>
   MultiDimImplementation<GUM_SCALAR>* partialInstantiation(
       const MultiDimDecorator<GUM_SCALAR>& table,
-      const HashTable<const DiscreteVariable*, Idx>& inst_vars);
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
   //
   // DO NOT FORGET TO REGISTER YOUR PARTIAL INSTANTIATION FUNCTIONS AT THE END

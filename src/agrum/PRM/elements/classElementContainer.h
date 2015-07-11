@@ -69,7 +69,7 @@ namespace gum {
       /// @{
 
       /// Default constructor.
-      ClassElementContainer(const std::string& name);
+      ClassElementContainer( const std::string& name );
 
       /// Destructor.
       virtual ~ClassElementContainer();
@@ -85,14 +85,14 @@ namespace gum {
        * @param elt A ClassElement<GUM_SCALAR>.
        * @return true if elt beglons to this ClassElementContainer.
        */
-      virtual bool belongsTo(const ClassElement<GUM_SCALAR>& elt) const;
+      virtual bool belongsTo( const ClassElement<GUM_SCALAR>& elt ) const;
 
       /**
        * Returns true if a member with the given name exists in this
        * ClassElementContainer or
        * in the ClassElementContainer hierarchy.
        */
-      virtual bool exists(const std::string& name) const;
+      virtual bool exists( const std::string& name ) const;
 
       /**
        * Getter on a member of this ClassElementContainer.
@@ -100,7 +100,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual ClassElement<GUM_SCALAR>& get(const std::string& name) = 0;
+      virtual ClassElement<GUM_SCALAR>& get( const std::string& name ) = 0;
 
       /**
        * Constant getter on a member of this ClassElementContainer.
@@ -109,7 +109,7 @@ namespace gum {
        * @throw NotFound Raised if no attribute matches name.
        */
       virtual const ClassElement<GUM_SCALAR>&
-      get(const std::string& name) const = 0;
+      get( const std::string& name ) const = 0;
 
       /**
        * @brief Add a ClassElement<GUM_SCALAR> to this ClassElementContainer.
@@ -137,7 +137,7 @@ namespace gum {
        * @throw DuplicateElement Raised if elt's name is already used in this
        *class.
        */
-      virtual NodeId add(ClassElement<GUM_SCALAR>* elt) = 0;
+      virtual NodeId add( ClassElement<GUM_SCALAR>* elt ) = 0;
 
       /**
        * @brief Add a ClassElement<GUM_SCALAR> which overload an inherited
@@ -168,12 +168,13 @@ namespace gum {
        *
        * @throw OperationNotAllowed Raised if  overloading is illegal.
        */
-      virtual NodeId overload(ClassElement<GUM_SCALAR>* elt) = 0;
+      virtual NodeId overload( ClassElement<GUM_SCALAR>* elt ) = 0;
 
       /**
        * Add an arc between two ClassElement<GUM_SCALAR>.
        */
-      virtual void addArc(const std::string& tail, const std::string& head) = 0;
+      virtual void addArc( const std::string& tail,
+                           const std::string& head ) = 0;
 
       /**
        * @brief Returns true if the node is an input node.
@@ -186,7 +187,7 @@ namespace gum {
        * @param elt A ClassElement<GUM_SCALAR>.
        * @return Returns true if id is an input node.
        */
-      virtual bool isInputNode(const ClassElement<GUM_SCALAR>& elt) const;
+      virtual bool isInputNode( const ClassElement<GUM_SCALAR>& elt ) const;
 
       /**
        * @brief Set the input flag value of id at b.
@@ -205,7 +206,7 @@ namespace gum {
        * @throw WrongClassElement Raised if NodeId is neither an Attribute nor
        *                          an Aggregate.
        */
-      virtual void setInputNode(const ClassElement<GUM_SCALAR>& elt, bool b);
+      virtual void setInputNode( const ClassElement<GUM_SCALAR>& elt, bool b );
 
       /**
        * @brief Returns true if the node is an output node.
@@ -218,7 +219,7 @@ namespace gum {
        * @param elt A ClassElement<GUM_SCALAR>.
        * @return Returns true if id is an input node.
        */
-      virtual bool isOutputNode(const ClassElement<GUM_SCALAR>& elt) const;
+      virtual bool isOutputNode( const ClassElement<GUM_SCALAR>& elt ) const;
 
       /**
        * @brief Set the output flag value of id at b.
@@ -237,7 +238,7 @@ namespace gum {
        * @throw WrongClassElement Raised if NodeId is neither an Attribute nor
        *                          an Aggregate.
        */
-      virtual void setOutputNode(const ClassElement<GUM_SCALAR>& elt, bool b);
+      virtual void setOutputNode( const ClassElement<GUM_SCALAR>& elt, bool b );
 
       /**
        * @brief Returns true if the node is an inner node.
@@ -256,7 +257,7 @@ namespace gum {
        * @throw WrongClassElement Raised if NodeId is neither an Attribute nor
        *                          an Aggregate.
        */
-      virtual bool isInnerNode(const ClassElement<GUM_SCALAR>& elt) const;
+      virtual bool isInnerNode( const ClassElement<GUM_SCALAR>& elt ) const;
       /// @}
       // ========================================================================
       /// @name Graphical operator
@@ -286,7 +287,7 @@ namespace gum {
        * @param id A NodeId.
        * @return true if id matches a ClassElement<GUM_SCALAR>.
        */
-      virtual bool exists(NodeId id) const;
+      virtual bool exists( NodeId id ) const;
 
       /**
        * Getter on a member of this ClassElementContainer.
@@ -294,7 +295,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual ClassElement<GUM_SCALAR>& get(NodeId id) = 0;
+      virtual ClassElement<GUM_SCALAR>& get( NodeId id ) = 0;
 
       /**
        * Constant getter on a member of this ClassElementContainer.
@@ -302,7 +303,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual const ClassElement<GUM_SCALAR>& get(NodeId id) const = 0;
+      virtual const ClassElement<GUM_SCALAR>& get( NodeId id ) const = 0;
 
       /// @}
       // ========================================================================
@@ -316,7 +317,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual ClassElement<GUM_SCALAR>& operator[](NodeId id) = 0;
+      virtual ClassElement<GUM_SCALAR>& operator[]( NodeId id ) = 0;
 
       /**
        * Constant getter on a member of this ClassElementContainer.
@@ -324,7 +325,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual const ClassElement<GUM_SCALAR>& operator[](NodeId id) const = 0;
+      virtual const ClassElement<GUM_SCALAR>& operator[]( NodeId id ) const = 0;
 
       /**
        * Getter on a member of this ClassElementContainer.
@@ -332,7 +333,8 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual ClassElement<GUM_SCALAR>& operator[](const std::string& name) = 0;
+      virtual ClassElement<GUM_SCALAR>&
+      operator[]( const std::string& name ) = 0;
 
       /**
        * Constant getter on a member of this ClassElementContainer.
@@ -341,7 +343,7 @@ namespace gum {
        * @throw NotFound Raised if no attribute matches name.
        */
       virtual const ClassElement<GUM_SCALAR>&
-      operator[](const std::string& name) const = 0;
+      operator[]( const std::string& name ) const = 0;
 
       /// @}
       // ========================================================================
@@ -355,7 +357,7 @@ namespace gum {
        * @param cec
        * @return return true if this ClassElementContainer is a subtype of cec.
        */
-      virtual bool isSubTypeOf(const ClassElementContainer& cec) const = 0;
+      virtual bool isSubTypeOf( const ClassElementContainer& cec ) const = 0;
 
       /**
        * @brief Test if this ClassElementContainer is a super type of cec.
@@ -366,16 +368,16 @@ namespace gum {
        * @return return true if this ClassElementContainer is a super type of
        *cec.
        */
-      virtual bool isSuperTypeOf(const ClassElementContainer& cec) const;
+      virtual bool isSuperTypeOf( const ClassElementContainer& cec ) const;
 
       /// @}
 
       protected:
       /// Copy operator. Don't use it.
-      ClassElementContainer& operator=(const ClassElementContainer& source);
+      ClassElementContainer& operator=( const ClassElementContainer& source );
 
       /// Copy constructor. Don't use it.
-      ClassElementContainer(const ClassElementContainer& source);
+      ClassElementContainer( const ClassElementContainer& source );
 
       virtual const DAG& _dag() const = 0;
 
@@ -386,33 +388,33 @@ namespace gum {
       /// Fills set with all the subtypes of this Interface, this includes
       /// extensions
       /// and implementations.
-      virtual void _findAllSubtypes(Set<ClassElementContainer*>& set) = 0;
+      virtual void _findAllSubtypes( Set<ClassElementContainer*>& set ) = 0;
 
       /// Returns the IO flags of a ClassElement<GUM_SCALAR>.
       /// @param elt The ClassElement<GUM_SCALAR>.
       /// @return elt's IO flags.
       /// @throw NotFound Raised if elt does not have any IO flags.
       virtual std::pair<bool, bool>&
-      _getIOFlag(const ClassElement<GUM_SCALAR>& elt);
+      _getIOFlag( const ClassElement<GUM_SCALAR>& elt );
 
       /// Returns the IO flags of a ClassElement<GUM_SCALAR>.
       /// @param elt The ClassElement<GUM_SCALAR>.
       /// @return elt's IO flags.
       /// @throw NotFound Raised if elt does not have any IO flags.
       virtual const std::pair<bool, bool>&
-      _getIOFlag(const ClassElement<GUM_SCALAR>& elt) const;
+      _getIOFlag( const ClassElement<GUM_SCALAR>& elt ) const;
 
       /// Defines the IO flags of a ClassElement<GUM_SCALAR>.
       /// @param elt The ClassElement<GUM_SCALAR>.
       /// @param flags The IO flags of elt. Overwrite any existing flags.
       /// @return elt's IO flags.
       /// @throw NotFound Raised if elt does not have any IO flags.
-      virtual void _setIOFlag(const ClassElement<GUM_SCALAR>& elt,
-                              const std::pair<bool, bool>& flags);
+      virtual void _setIOFlag( const ClassElement<GUM_SCALAR>& elt,
+                               const std::pair<bool, bool>& flags );
 
       /// Copy the IO Flags of c in this ClassElementContainer.
       /// @param c A ClassElementContainer.
-      virtual void _copyIOFlags(const ClassElementContainer& c);
+      virtual void _copyIOFlags( const ClassElementContainer& c );
 
       /// When a ClassElement<GUM_SCALAR> becomes an Output node we must update
       /// any
@@ -421,7 +423,8 @@ namespace gum {
       /// Note that after its declaration, input flags can not be changed and
       /// output flags can only become true.
       /// @param elt A ClassElement<GUM_SCALAR>.
-      virtual void _updateDescendants(const ClassElement<GUM_SCALAR>& elt) = 0;
+      virtual void
+      _updateDescendants( const ClassElement<GUM_SCALAR>& elt ) = 0;
 
       private:
       /// input / output flags, useful when inheriting or copying.
@@ -437,8 +440,8 @@ namespace gum {
 /// Output in the graphviz-dot format.
 template <typename GUM_SCALAR>
 std::ostream&
-operator<<(std::ostream& output,
-           const gum::prm::ClassElementContainer<GUM_SCALAR>& container);
+operator<<( std::ostream& output,
+            const gum::prm::ClassElementContainer<GUM_SCALAR>& container );
 
 #include <agrum/PRM/elements/classElementContainer.tcc>
 

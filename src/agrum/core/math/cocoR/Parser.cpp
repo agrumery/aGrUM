@@ -43,35 +43,35 @@ namespace gum {
   namespace formula {
 
 
-    void Parser::SynErr(int n) {
-      if (errDist >= minErrDist)
-        SynErr(scanner->filename(), la->line, la->col, n);
+    void Parser::SynErr( int n ) {
+      if ( errDist >= minErrDist )
+        SynErr( scanner->filename(), la->line, la->col, n );
 
       errDist = 0;
     }
 
 
-    const ErrorsContainer& Parser::errors(void) const { return __errors; }
+    const ErrorsContainer& Parser::errors( void ) const { return __errors; }
 
     void Parser::Get() {
-      for (;;) {
+      for ( ;; ) {
         t = la;
         la = scanner->Scan();
 
-        if (la->kind <= maxT) {
+        if ( la->kind <= maxT ) {
           ++errDist;
           break;
         }
 
 
-        if (dummyToken != t) {
+        if ( dummyToken != t ) {
           dummyToken->kind = t->kind;
           dummyToken->pos = t->pos;
           dummyToken->col = t->col;
           dummyToken->line = t->line;
           dummyToken->next = NULL;
-          coco_string_delete(dummyToken->val);
-          dummyToken->val = coco_string_create(t->val);
+          coco_string_delete( dummyToken->val );
+          dummyToken->val = coco_string_create( t->val );
           t = dummyToken;
         }
 
@@ -79,65 +79,65 @@ namespace gum {
       }
     }
 
-    void Parser::Expect(int n) {
-      if (la->kind == n)
+    void Parser::Expect( int n ) {
+      if ( la->kind == n )
         Get();
       else {
-        SynErr(n);
+        SynErr( n );
       }
     }
 
-    void Parser::ExpectWeak(int n, int follow) {
-      if (la->kind == n)
+    void Parser::ExpectWeak( int n, int follow ) {
+      if ( la->kind == n )
         Get();
       else {
-        SynErr(n);
+        SynErr( n );
 
-        while (!StartOf(follow))
+        while ( !StartOf( follow ) )
           Get();
       }
     }
 
-    bool Parser::WeakSeparator(int n, int syFol, int repFol) {
-      if (la->kind == n) {
+    bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
+      if ( la->kind == n ) {
         Get();
         return true;
-      } else if (StartOf(repFol)) {
+      } else if ( StartOf( repFol ) ) {
         return false;
       } else {
-        SynErr(n);
+        SynErr( n );
 
-        while (!(StartOf(syFol) || StartOf(repFol) || StartOf(0))) {
+        while ( !( StartOf( syFol ) || StartOf( repFol ) || StartOf( 0 ) ) ) {
           Get();
         }
 
-        return StartOf(syFol);
+        return StartOf( syFol );
       }
     }
 
     void Parser::EVAL() {
       expression();
-      while (StartOf(1)) {
+      while ( StartOf( 1 ) ) {
         expression();
       }
       __formula->finalize();
     }
 
     void Parser::expression() {
-      switch (la->kind) {
+      switch ( la->kind ) {
         case _integer: {
           Get();
-          __formula->push_number((double)coco_atoi(t->val));
+          __formula->push_number( (double)coco_atoi( t->val ) );
           break;
         }
         case _float: {
           Get();
-          __formula->push_number((double)coco_atof(t->val));
+          __formula->push_number( (double)coco_atof( t->val ) );
           break;
         }
         case _operator: {
           Get();
-          __formula->push_operator(narrow(t->val)[0]);
+          __formula->push_operator( narrow( t->val )[0] );
           break;
         }
         case 6 /* "(" */: {
@@ -152,7 +152,7 @@ namespace gum {
         }
         case _ident: {
           Get();
-          __formula->push_identifier(narrow(t->val));
+          __formula->push_identifier( narrow( t->val ) );
           break;
         }
         case 8 /* "," */: {
@@ -161,7 +161,7 @@ namespace gum {
           break;
         }
         default:
-          SynErr(10);
+          SynErr( 10 );
           break;
       }
     }
@@ -174,7 +174,7 @@ namespace gum {
     // the methods Init and Destroy.
 
     template <typename T> struct ParserInitExistsRecognizer {
-      template <typename U, void (U::*)() = &U::Init>
+      template <typename U, void ( U::* )() = &U::Init>
       struct ExistsIfInitIsDefinedMarker {};
 
       struct InitIsMissingType {
@@ -187,19 +187,20 @@ namespace gum {
       };
 
       // exists always
-      template <typename U> static InitIsMissingType is_here(...);
+      template <typename U> static InitIsMissingType is_here( ... );
 
       // exist only if ExistsIfInitIsDefinedMarker is defined
       template <typename U>
-      static InitExistsType is_here(ExistsIfInitIsDefinedMarker<U>*);
+      static InitExistsType is_here( ExistsIfInitIsDefinedMarker<U>* );
 
       enum {
-        InitExists = (sizeof(is_here<T>(NULL)) == sizeof(InitExistsType))
+        InitExists =
+            ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) )
       };
     };
 
     template <typename T> struct ParserDestroyExistsRecognizer {
-      template <typename U, void (U::*)() = &U::Destroy>
+      template <typename U, void ( U::* )() = &U::Destroy>
       struct ExistsIfDestroyIsDefinedMarker {};
 
       struct DestroyIsMissingType {
@@ -212,14 +213,15 @@ namespace gum {
       };
 
       // exists always
-      template <typename U> static DestroyIsMissingType is_here(...);
+      template <typename U> static DestroyIsMissingType is_here( ... );
 
       // exist only if ExistsIfDestroyIsDefinedMarker is defined
       template <typename U>
-      static DestroyExistsType is_here(ExistsIfDestroyIsDefinedMarker<U>*);
+      static DestroyExistsType is_here( ExistsIfDestroyIsDefinedMarker<U>* );
 
       enum {
-        DestroyExists = (sizeof(is_here<T>(NULL)) == sizeof(DestroyExistsType))
+        DestroyExists =
+            ( sizeof( is_here<T>( NULL ) ) == sizeof( DestroyExistsType ) )
       };
     };
 
@@ -230,14 +232,14 @@ namespace gum {
     // missing
     template <typename T, bool = ParserInitExistsRecognizer<T>::InitExists>
     struct ParserInitCaller {
-      static void CallInit(T* t) {
+      static void CallInit( T* t ) {
         // nothing to do
       }
     };
 
     // True case of the ParserInitCaller, gets used if the Init method exists
     template <typename T> struct ParserInitCaller<T, true> {
-      static void CallInit(T* t) { t->Init(); }
+      static void CallInit( T* t ) { t->Init(); }
     };
 
     // Generic case of the ParserDestroyCaller, gets used if the Destroy method
@@ -245,7 +247,7 @@ namespace gum {
     template <typename T,
               bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
     struct ParserDestroyCaller {
-      static void CallDestroy(T* t) {
+      static void CallDestroy( T* t ) {
         // nothing to do
       }
     };
@@ -253,20 +255,20 @@ namespace gum {
     // True case of the ParserDestroyCaller, gets used if the Destroy method
     // exists
     template <typename T> struct ParserDestroyCaller<T, true> {
-      static void CallDestroy(T* t) { t->Destroy(); }
+      static void CallDestroy( T* t ) { t->Destroy(); }
     };
     void Parser::Parse() {
       t = NULL;
       la = dummyToken = new Token();
-      la->val = coco_string_create(L"Dummy Token");
+      la->val = coco_string_create( L"Dummy Token" );
       Get();
       EVAL();
     }
 
-    Parser::Parser(Scanner* scanner) {
+    Parser::Parser( Scanner* scanner ) {
       maxT = 9;
 
-      ParserInitCaller<Parser>::CallInit(this);
+      ParserInitCaller<Parser>::CallInit( this );
       dummyToken = NULL;
       t = la = NULL;
       minErrDist = 2;
@@ -274,7 +276,7 @@ namespace gum {
       this->scanner = scanner;
     }
 
-    bool Parser::StartOf(int s) {
+    bool Parser::StartOf( int s ) {
       const bool T = true;
       const bool x = false;
 
@@ -286,71 +288,71 @@ namespace gum {
     }
 
     Parser::~Parser() {
-      ParserDestroyCaller<Parser>::CallDestroy(this);
+      ParserDestroyCaller<Parser>::CallDestroy( this );
       delete dummyToken;
     }
-    void Parser::SemErr(const wchar_t* msg) {
-      if (errDist >= minErrDist)
-        __errors.Error(scanner->filename(), t->line, t->col, msg);
+    void Parser::SemErr( const wchar_t* msg ) {
+      if ( errDist >= minErrDist )
+        __errors.Error( scanner->filename(), t->line, t->col, msg );
 
       errDist = 0;
     }
 
-    void Parser::Warning(const wchar_t* msg) {
-      __errors.Warning(scanner->filename(), t->line, t->col, msg);
+    void Parser::Warning( const wchar_t* msg ) {
+      __errors.Warning( scanner->filename(), t->line, t->col, msg );
     }
 
-    void Parser::SynErr(const std::wstring& filename, int line, int col,
-                        int n) {
+    void Parser::SynErr( const std::wstring& filename, int line, int col,
+                         int n ) {
       wchar_t* s;
 
-      switch (n) {
+      switch ( n ) {
         case 0:
-          s = coco_string_create(L"EOF expected");
+          s = coco_string_create( L"EOF expected" );
           break;
         case 1:
-          s = coco_string_create(L"integer expected");
+          s = coco_string_create( L"integer expected" );
           break;
         case 2:
-          s = coco_string_create(L"float expected");
+          s = coco_string_create( L"float expected" );
           break;
         case 3:
-          s = coco_string_create(L"operator expected");
+          s = coco_string_create( L"operator expected" );
           break;
         case 4:
-          s = coco_string_create(L"eol expected");
+          s = coco_string_create( L"eol expected" );
           break;
         case 5:
-          s = coco_string_create(L"ident expected");
+          s = coco_string_create( L"ident expected" );
           break;
         case 6:
-          s = coco_string_create(L"\"(\" expected");
+          s = coco_string_create( L"\"(\" expected" );
           break;
         case 7:
-          s = coco_string_create(L"\")\" expected");
+          s = coco_string_create( L"\")\" expected" );
           break;
         case 8:
-          s = coco_string_create(L"\",\" expected");
+          s = coco_string_create( L"\",\" expected" );
           break;
         case 9:
-          s = coco_string_create(L"??? expected");
+          s = coco_string_create( L"??? expected" );
           break;
         case 10:
-          s = coco_string_create(L"invalid expression");
+          s = coco_string_create( L"invalid expression" );
           break;
 
 
         default: {
           wchar_t format[20];
-          coco_swprintf(format, 20, L"error %d", n);
-          s = coco_string_create(format);
+          coco_swprintf( format, 20, L"error %d", n );
+          s = coco_string_create( format );
         } break;
       }
 
       // wprintf(L"-- line %d col %d: %ls\n", line, col, s);
-      std::wstring ss = L"Syntax error : " + std::wstring(s);
-      __errors.Error(filename, line, col, ss.c_str());
-      coco_string_delete(s);
+      std::wstring ss = L"Syntax error : " + std::wstring( s );
+      __errors.Error( filename, line, col, ss.c_str() );
+      coco_string_delete( s );
     }
 
   }  // namespace

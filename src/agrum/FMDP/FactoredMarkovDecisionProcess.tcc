@@ -45,8 +45,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE
   FactoredMarkovDecisionProcess<GUM_SCALAR>::FactoredMarkovDecisionProcess()
-      : __varIter(__varSeq) {
-    GUM_CONSTRUCTOR(FactoredMarkovDecisionProcess);
+      : __varIter( __varSeq ) {
+    GUM_CONSTRUCTOR( FactoredMarkovDecisionProcess );
     __defaultCostTable = nullptr;
     __defaultRewardTable = nullptr;
     __discount = 0;
@@ -61,39 +61,39 @@ namespace gum {
   template <typename GUM_SCALAR>
   FactoredMarkovDecisionProcess<GUM_SCALAR>::~FactoredMarkovDecisionProcess() {
 
-    GUM_DESTRUCTOR(FactoredMarkovDecisionProcess);
+    GUM_DESTRUCTOR( FactoredMarkovDecisionProcess );
 
     /// Table which give for each action a table containing variables transition
     /// cpt
-    for (const auto& action : __actionTransitionTable) {
-      for (const auto& elt : *action.second)
+    for ( const auto& action : __actionTransitionTable ) {
+      for ( const auto& elt : *action.second )
         delete elt.second;
 
       delete action.second;
     }
 
-    if (__defaultCostTable != nullptr)
+    if ( __defaultCostTable != nullptr )
       delete __defaultCostTable;
 
-    for (const auto& action : __actionCostTable)
+    for ( const auto& action : __actionCostTable )
       delete action.second;
 
-    for (BijectionIterator<Idx, const std::string*> actIter =
-             __actionMap.begin();
-         actIter != __actionMap.end(); ++actIter)
+    for ( BijectionIterator<Idx, const std::string*> actIter =
+              __actionMap.begin();
+          actIter != __actionMap.end(); ++actIter )
       delete actIter.second();
 
-    if (__defaultRewardTable != nullptr)
+    if ( __defaultRewardTable != nullptr )
       delete __defaultRewardTable;
 
-    for (const auto& elt : __defaultTransitionTable) {
-      if (elt.second != nullptr)
+    for ( const auto& elt : __defaultTransitionTable ) {
+      if ( elt.second != nullptr )
         delete elt.second;
 
       delete elt.first;
     }
 
-    for (const auto& primed : __primedVariablesSet)
+    for ( const auto& primed : __primedVariablesSet )
       delete primed;
   }
 
@@ -111,16 +111,16 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   INLINE void FactoredMarkovDecisionProcess<GUM_SCALAR>::addVariable(
-      const DiscreteVariable* var) {
+      const DiscreteVariable* var ) {
 
-    if (__defaultTransitionTable.exists(var))
-      GUM_ERROR(DuplicateElement, " Variable "
-                                      << var->name()
-                                      << " has already been inserted in FMDP.");
+    if ( __defaultTransitionTable.exists( var ) )
+      GUM_ERROR( DuplicateElement,
+                 " Variable " << var->name()
+                              << " has already been inserted in FMDP." );
 
-    __defaultTransitionTable.insert(var, nullptr);
+    __defaultTransitionTable.insert( var, nullptr );
 
-    __varSeq.insert(var);
+    __varSeq.insert( var );
   }
 
   // ===========================================================================
@@ -129,15 +129,15 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   INLINE void FactoredMarkovDecisionProcess<GUM_SCALAR>::addPrimedVariable(
-      const DiscreteVariable* var, const DiscreteVariable* mainVar) {
+      const DiscreteVariable* var, const DiscreteVariable* mainVar ) {
 
-    if (__primedVariablesSet.exists(var))
-      GUM_ERROR(DuplicateElement, " Variable "
-                                      << var->name()
-                                      << " has already been inserted in FMDP.");
+    if ( __primedVariablesSet.exists( var ) )
+      GUM_ERROR( DuplicateElement,
+                 " Variable " << var->name()
+                              << " has already been inserted in FMDP." );
 
-    __primedVariablesSet.insert(var);
-    __main2primed.insert(mainVar, var);
+    __primedVariablesSet.insert( var );
+    __main2primed.insert( mainVar, var );
   }
 
   // ===========================================================================
@@ -146,26 +146,26 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   INLINE void FactoredMarkovDecisionProcess<GUM_SCALAR>::addAction(
-      const std::string& action) {
+      const std::string& action ) {
 
-    for (BijectionIterator<Idx, const std::string*> actIter =
-             __actionMap.begin();
-         actIter != __actionMap.end(); ++actIter)
-      if (*(actIter.second()) == action) {
-        GUM_ERROR(DuplicateElement,
-                  " Action " << action
-                             << " has already been inserted in FMDP.");
+    for ( BijectionIterator<Idx, const std::string*> actIter =
+              __actionMap.begin();
+          actIter != __actionMap.end(); ++actIter )
+      if ( *( actIter.second() ) == action ) {
+        GUM_ERROR( DuplicateElement,
+                   " Action " << action
+                              << " has already been inserted in FMDP." );
       }
 
     Idx newActionId = __nextActionId;
     ++__nextActionId;
-    __actionMap.insert(newActionId, new std::string(action));
+    __actionMap.insert( newActionId, new std::string( action ) );
 
     __actionTransitionTable.insert(
         newActionId,
         new HashTable<const DiscreteVariable*,
-                      const MultiDimImplementation<GUM_SCALAR>*>());
-    __actionCostTable.insert(newActionId, nullptr);
+                      const MultiDimImplementation<GUM_SCALAR>*>() );
+    __actionCostTable.insert( newActionId, nullptr );
   }
 
   // ===========================================================================
@@ -178,21 +178,21 @@ namespace gum {
   INLINE void FactoredMarkovDecisionProcess<GUM_SCALAR>::addTransitionForAction(
       const DiscreteVariable* var,
       const MultiDimImplementation<GUM_SCALAR>* transition,
-      const std::string& action) {
+      const std::string& action ) {
 
-    Idx actionId = __actionId(action);
+    Idx actionId = __actionId( action );
 
-    if (!__defaultTransitionTable.exists(var))
-      GUM_ERROR(NotFound, " Variable " << var->name()
-                                       << " has not been declared before.");
+    if ( !__defaultTransitionTable.exists( var ) )
+      GUM_ERROR( NotFound, " Variable " << var->name()
+                                        << " has not been declared before." );
 
-    if (__actionTransitionTable[actionId]->exists(var))
-      GUM_ERROR(DuplicateElement, " Variable "
-                                      << var->name()
-                                      << " already has a transition table in "
-                                      << actionId << " table.");
+    if ( __actionTransitionTable[actionId]->exists( var ) )
+      GUM_ERROR( DuplicateElement, " Variable "
+                                       << var->name()
+                                       << " already has a transition table in "
+                                       << actionId << " table." );
 
-    __actionTransitionTable[actionId]->insert(var, transition);
+    __actionTransitionTable[actionId]->insert( var, transition );
   }
 
   // ===========================================================================
@@ -203,18 +203,18 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void FactoredMarkovDecisionProcess<GUM_SCALAR>::addTransition(
       const DiscreteVariable* var,
-      const MultiDimImplementation<GUM_SCALAR>* transition) {
+      const MultiDimImplementation<GUM_SCALAR>* transition ) {
 
-    if (!__defaultTransitionTable.exists(var))
-      GUM_ERROR(NotFound, " Variable " << var->name()
-                                       << " has not been declared before.");
+    if ( !__defaultTransitionTable.exists( var ) )
+      GUM_ERROR( NotFound, " Variable " << var->name()
+                                        << " has not been declared before." );
 
-    if (__defaultTransitionTable[var] != nullptr)
-      GUM_ERROR(DuplicateElement,
-                " Variable " << var->name()
-                             << " already has a default transition table");
+    if ( __defaultTransitionTable[var] != nullptr )
+      GUM_ERROR( DuplicateElement,
+                 " Variable " << var->name()
+                              << " already has a default transition table" );
 
-    __defaultTransitionTable.insert(var, transition);
+    __defaultTransitionTable.insert( var, transition );
   }
 
   // ===========================================================================
@@ -225,15 +225,15 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void FactoredMarkovDecisionProcess<GUM_SCALAR>::addCostForAction(
       const MultiDimImplementation<GUM_SCALAR>* cost,
-      const std::string& action) {
+      const std::string& action ) {
 
-    Idx actionId = __actionId(action);
+    Idx actionId = __actionId( action );
 
-    if (__actionCostTable[actionId] != nullptr)
-      GUM_ERROR(DuplicateElement, " Action " << action
-                                             << " already has a cost table");
+    if ( __actionCostTable[actionId] != nullptr )
+      GUM_ERROR( DuplicateElement, " Action " << action
+                                              << " already has a cost table" );
 
-    __actionCostTable.insert(actionId, cost);
+    __actionCostTable.insert( actionId, cost );
   }
 
   // ===========================================================================
@@ -242,10 +242,10 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   INLINE void FactoredMarkovDecisionProcess<GUM_SCALAR>::addCost(
-      const MultiDimImplementation<GUM_SCALAR>* cost) {
+      const MultiDimImplementation<GUM_SCALAR>* cost ) {
 
-    if (__defaultCostTable != nullptr)
-      GUM_ERROR(DuplicateElement, " Default cost table already specified ");
+    if ( __defaultCostTable != nullptr )
+      GUM_ERROR( DuplicateElement, " Default cost table already specified " );
 
     __defaultCostTable = cost;
   }
@@ -256,10 +256,10 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   INLINE void FactoredMarkovDecisionProcess<GUM_SCALAR>::addReward(
-      const MultiDimImplementation<GUM_SCALAR>* reward) {
+      const MultiDimImplementation<GUM_SCALAR>* reward ) {
 
-    if (__defaultRewardTable != nullptr)
-      GUM_ERROR(DuplicateElement, " Default reward table already specified ");
+    if ( __defaultRewardTable != nullptr )
+      GUM_ERROR( DuplicateElement, " Default reward table already specified " );
 
     __defaultRewardTable = reward;
   }
@@ -268,8 +268,8 @@ namespace gum {
   // Precises the discount factor for that mdp
   // ===========================================================================
   template <typename GUM_SCALAR>
-  INLINE void
-  FactoredMarkovDecisionProcess<GUM_SCALAR>::addDiscount(GUM_SCALAR discount) {
+  INLINE void FactoredMarkovDecisionProcess<GUM_SCALAR>::addDiscount(
+      GUM_SCALAR discount ) {
     __discount = discount;
   }
 
@@ -337,12 +337,13 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   INLINE const std::string
-  FactoredMarkovDecisionProcess<GUM_SCALAR>::actionName(Idx actionId) const {
+  FactoredMarkovDecisionProcess<GUM_SCALAR>::actionName( Idx actionId ) const {
 
-    if (!__actionMap.existsFirst(actionId))
-      GUM_ERROR(NotFound, "No action with " << actionId << " as identifiant.");
+    if ( !__actionMap.existsFirst( actionId ) )
+      GUM_ERROR( NotFound, "No action with " << actionId
+                                             << " as identifiant." );
 
-    const std::string* ret = __actionMap.second(actionId);
+    const std::string* ret = __actionMap.second( actionId );
     return *ret;
   }
 
@@ -371,7 +372,7 @@ namespace gum {
   INLINE const DiscreteVariable*
   FactoredMarkovDecisionProcess<GUM_SCALAR>::variable() const {
     //       return __main2primed.second( __varIter.key() );
-    return __main2primed.second(*__varIter);
+    return __main2primed.second( *__varIter );
   }
 
   // ===========================================================================
@@ -391,8 +392,8 @@ namespace gum {
   INLINE const MultiDimImplementation<GUM_SCALAR>*
   FactoredMarkovDecisionProcess<GUM_SCALAR>::transition() const {
 
-    if ((__actionIter.val())->exists(*__varIter))
-      return (*(__actionIter.val()))[*__varIter];
+    if ( ( __actionIter.val() )->exists( *__varIter ) )
+      return ( *( __actionIter.val() ) )[*__varIter];
     else
       return __defaultTransitionTable[*__varIter];
   }
@@ -403,10 +404,10 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE const MultiDimImplementation<GUM_SCALAR>*
   FactoredMarkovDecisionProcess<GUM_SCALAR>::transition(
-      const DiscreteVariable* v) const {
+      const DiscreteVariable* v ) const {
 
-    if ((__actionIter.val())->exists(v))
-      return (*(__actionIter.val()))[v];
+    if ( ( __actionIter.val() )->exists( v ) )
+      return ( *( __actionIter.val() ) )[v];
     else
       return __defaultTransitionTable[v];
   }
@@ -434,22 +435,22 @@ namespace gum {
 
     std::stringstream fmdpCore;
 
-    for (const auto& action : __actionTransitionTable) {
-      for (const auto& elt : *action.second) {
+    for ( const auto& action : __actionTransitionTable ) {
+      for ( const auto& elt : *action.second ) {
         std::stringstream graphName;
-        graphName << " ACTION : " << actionName(action.first)
+        graphName << " ACTION : " << actionName( action.first )
                   << " VARIABLE : " << elt.first->name();
         fmdpCore
             << std::endl
             << reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
-                   elt.second)->toDot(graphName.str());
+                   elt.second )->toDot( graphName.str() );
       }
     }
 
     fmdpCore
         << std::endl
         << reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
-               __defaultRewardTable)->toDot("REWARD");
+               __defaultRewardTable )->toDot( "REWARD" );
     return fmdpCore.str();
   }
 
@@ -466,16 +467,16 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   INLINE const Idx& FactoredMarkovDecisionProcess<GUM_SCALAR>::__actionId(
-      const std::string& action) const {
+      const std::string& action ) const {
 
-    for (BijectionIterator<Idx, const std::string*> actIter =
-             __actionMap.begin();
-         actIter != __actionMap.end(); ++actIter)
-      if (*(actIter.second()) == action) {
+    for ( BijectionIterator<Idx, const std::string*> actIter =
+              __actionMap.begin();
+          actIter != __actionMap.end(); ++actIter )
+      if ( *( actIter.second() ) == action ) {
         return actIter.first();
       }
 
-    GUM_ERROR(NotFound, " Action " << action
-                                   << " has not been declared before.");
+    GUM_ERROR( NotFound, " Action " << action
+                                    << " has not been declared before." );
   }
 }

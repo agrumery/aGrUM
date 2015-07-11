@@ -29,7 +29,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   INLINE BIFXMLIDWriter<GUM_SCALAR>::BIFXMLIDWriter() {
-    GUM_CONSTRUCTOR(BIFXMLIDWriter);
+    GUM_CONSTRUCTOR( BIFXMLIDWriter );
   }
 
   /*
@@ -37,7 +37,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   INLINE BIFXMLIDWriter<GUM_SCALAR>::~BIFXMLIDWriter() {
-    GUM_DESTRUCTOR(BIFXMLIDWriter);
+    GUM_DESTRUCTOR( BIFXMLIDWriter );
   }
 
   /*
@@ -49,36 +49,37 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   INLINE void BIFXMLIDWriter<GUM_SCALAR>::write(
-      std::ostream& output, const InfluenceDiagram<GUM_SCALAR>& infdiag) {
-    if (!output.good()) {
-      GUM_ERROR(IOError, "Stream states flags are not all unset.");
+      std::ostream& output, const InfluenceDiagram<GUM_SCALAR>& infdiag ) {
+    if ( !output.good() ) {
+      GUM_ERROR( IOError, "Stream states flags are not all unset." );
     }
 
     output << __heading() << std::endl;
     output << "<!-- Variables -->" << std::endl;
 
-    for (const auto node : infdiag.nodes()) {
+    for ( const auto node : infdiag.nodes() ) {
       int nodeType = 1;
 
-      if (infdiag.isChanceNode(node))
+      if ( infdiag.isChanceNode( node ) )
         nodeType = 2;
-      else if (infdiag.isUtilityNode(node))
+      else if ( infdiag.isUtilityNode( node ) )
         nodeType = 3;
 
-      output << __variableBloc(infdiag.variable(node), nodeType) << std::endl;
+      output << __variableBloc( infdiag.variable( node ), nodeType )
+             << std::endl;
     }
 
     output << "<!-- Probability distributions -->" << std::endl;
 
-    for (const auto node : infdiag.nodes())
-      output << __variableDefinition(node, infdiag);
+    for ( const auto node : infdiag.nodes() )
+      output << __variableDefinition( node, infdiag );
 
     output << std::endl;
     output << __documentend();
     output.flush();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writting in the ostream failed.");
+    if ( output.fail() ) {
+      GUM_ERROR( IOError, "Writting in the ostream failed." );
     }
   }
 
@@ -93,15 +94,15 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   INLINE void BIFXMLIDWriter<GUM_SCALAR>::write(
-      std::string filePath, const InfluenceDiagram<GUM_SCALAR>& infdiag) {
-    std::ofstream output(filePath.c_str(), std::ios_base::trunc);
+      std::string filePath, const InfluenceDiagram<GUM_SCALAR>& infdiag ) {
+    std::ofstream output( filePath.c_str(), std::ios_base::trunc );
 
-    write(output, infdiag);
+    write( output, infdiag );
 
     output.close();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writting in the ostream failed.");
+    if ( output.fail() ) {
+      GUM_ERROR( IOError, "Writting in the ostream failed." );
     }
   }
 
@@ -153,8 +154,8 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   INLINE std::string
-  BIFXMLIDWriter<GUM_SCALAR>::__variableBloc(const DiscreteVariable& var,
-                                             int varType) {
+  BIFXMLIDWriter<GUM_SCALAR>::__variableBloc( const DiscreteVariable& var,
+                                              int varType ) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
     //<OUTCOME>outcome1</OUTCOME>
@@ -167,7 +168,7 @@ namespace gum {
     // Declaration of variable and his type
     str << "<VARIABLE TYPE=\"";
 
-    switch (varType) {
+    switch ( varType ) {
 
       case 1:
         str << "decision";
@@ -193,8 +194,8 @@ namespace gum {
 
     // Outcomes
 
-    for (Idx i = 0; i < var.domainSize(); i++)
-      str << "\t<OUTCOME>" << var.label(i) << "</OUTCOME>" << std::endl;
+    for ( Idx i = 0; i < var.domainSize(); i++ )
+      str << "\t<OUTCOME>" << var.label( i ) << "</OUTCOME>" << std::endl;
 
     //     //Closing tag
     str << "</VARIABLE>" << std::endl;
@@ -207,7 +208,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   INLINE std::string BIFXMLIDWriter<GUM_SCALAR>::__variableDefinition(
-      const NodeId& varNodeId, const InfluenceDiagram<GUM_SCALAR>& infdiag) {
+      const NodeId& varNodeId, const InfluenceDiagram<GUM_SCALAR>& infdiag ) {
     //<DEFINITION>
     //<FOR>var</FOR>
     //<GIVEN>conditional var</GIVEN>
@@ -215,40 +216,40 @@ namespace gum {
     //</DEFINITION>
     std::stringstream str;
 
-    if (!((infdiag.isDecisionNode(varNodeId)) &&
-          (infdiag.dag().parents(varNodeId).empty()))) {
+    if ( !( ( infdiag.isDecisionNode( varNodeId ) ) &&
+            ( infdiag.dag().parents( varNodeId ).empty() ) ) ) {
       // Declaration
       str << "<DEFINITION>" << std::endl;
 
       // Variable
-      str << "\t<FOR>" << infdiag.variable(varNodeId).name() << "</FOR>"
+      str << "\t<FOR>" << infdiag.variable( varNodeId ).name() << "</FOR>"
           << std::endl;
 
       // Conditional Parents
       List<std::string> parentList;
 
-      for (const auto par : infdiag.dag().parents(varNodeId))
-        parentList.pushBack(infdiag.variable(par).name());
+      for ( const auto par : infdiag.dag().parents( varNodeId ) )
+        parentList.pushBack( infdiag.variable( par ).name() );
 
-      for (List<std::string>::iterator parentListIte = parentList.rbegin();
-           parentListIte != parentList.rend(); --parentListIte)
-        str << "\t<GIVEN>" << (*parentListIte) << "</GIVEN>" << std::endl;
+      for ( List<std::string>::iterator parentListIte = parentList.rbegin();
+            parentListIte != parentList.rend(); --parentListIte )
+        str << "\t<GIVEN>" << ( *parentListIte ) << "</GIVEN>" << std::endl;
 
-      if (infdiag.isChanceNode(varNodeId)) {
-        Instantiation inst(infdiag.cpt(varNodeId));
+      if ( infdiag.isChanceNode( varNodeId ) ) {
+        Instantiation inst( infdiag.cpt( varNodeId ) );
         str << "\t<TABLE>";
 
-        for (inst.setFirst(); !inst.end(); inst.inc())
-          str << infdiag.cpt(varNodeId)[inst] << " ";
+        for ( inst.setFirst(); !inst.end(); inst.inc() )
+          str << infdiag.cpt( varNodeId )[inst] << " ";
 
         str << "</TABLE>" << std::endl;
-      } else if (infdiag.isUtilityNode(varNodeId)) {
+      } else if ( infdiag.isUtilityNode( varNodeId ) ) {
         // Values
-        Instantiation inst(infdiag.utility(varNodeId));
+        Instantiation inst( infdiag.utility( varNodeId ) );
         str << "\t<TABLE>";
 
-        for (inst.setFirst(); !inst.end(); inst.inc())
-          str << infdiag.utility(varNodeId)[inst] << " ";
+        for ( inst.setFirst(); !inst.end(); inst.inc() )
+          str << infdiag.utility( varNodeId )[inst] << " ";
 
         str << "</TABLE>" << std::endl;
       }

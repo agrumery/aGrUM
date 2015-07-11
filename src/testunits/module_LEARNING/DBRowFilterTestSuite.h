@@ -43,7 +43,7 @@ namespace gum_tests {
       return *_input_row;
     }
     inline unsigned int _computeRows() {
-      if (nb) {
+      if ( nb ) {
         --nb;
         return 1;
       } else
@@ -74,102 +74,102 @@ namespace gum_tests {
   class DBRowTestSuite : public CxxTest::TestSuite {
     public:
     void test_asia1() {
-      gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
+      gum::learning::DatabaseFromCSV database( GET_PATH_STR( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>());
+                                gum::learning::Col<0>, 8>() );
 
-      auto generators =
-          gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
+      auto generators = gum::learning::make_generators(
+          gum::learning::RowGeneratorIdentity() );
 
-      auto filter1 =
-          gum::learning::make_DB_row_filter(database, translators, generators);
+      auto filter1 = gum::learning::make_DB_row_filter( database, translators,
+                                                        generators );
 
       unsigned nb1 = 0;
-      while (filter1.hasRows()) {
+      while ( filter1.hasRows() ) {
         ++nb1;
         filter1.row();
       }
-      TS_ASSERT(nb1 == 10000);
+      TS_ASSERT( nb1 == 10000 );
 
       auto filter2 = filter1;
-      TS_ASSERT(filter1.hasRows() == false);
-      TS_ASSERT(filter2.hasRows() == false);
+      TS_ASSERT( filter1.hasRows() == false );
+      TS_ASSERT( filter2.hasRows() == false );
 
       filter1.reset();
       filter2.reset();
 
       nb1 = 0;
-      while (filter1.hasRows() && filter2.hasRows()) {
+      while ( filter1.hasRows() && filter2.hasRows() ) {
         gum::learning::FilteredRow& row1 = filter1.row();
         gum::learning::FilteredRow& row2 = filter2.row();
-        TS_ASSERT(row1 == row2);
+        TS_ASSERT( row1 == row2 );
         ++nb1;
       }
-      TS_ASSERT(nb1 == 10000);
+      TS_ASSERT( nb1 == 10000 );
 
       filter1.reset();
       filter2.reset();
-      auto filter3(std::move(filter2));
+      auto filter3( std::move( filter2 ) );
       nb1 = 0;
-      while (filter1.hasRows() && filter3.hasRows()) {
+      while ( filter1.hasRows() && filter3.hasRows() ) {
         gum::learning::FilteredRow& row1 = filter1.row();
         gum::learning::FilteredRow& row3 = filter3.row();
-        TS_ASSERT(row1 == row3);
+        TS_ASSERT( row1 == row3 );
         ++nb1;
       }
-      TS_ASSERT(nb1 == 10000);
+      TS_ASSERT( nb1 == 10000 );
     }
 
     void test_asia2() {
-      gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
+      gum::learning::DatabaseFromCSV database( GET_PATH_STR( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>());
+                                gum::learning::Col<0>, 8>() );
 
       auto generators = gum::learning::make_generators(
-          TruncatedGenerator(), gum::learning::RowGeneratorIdentity());
+          TruncatedGenerator(), gum::learning::RowGeneratorIdentity() );
 
-      auto filter =
-          gum::learning::make_DB_row_filter(database, translators, generators);
+      auto filter = gum::learning::make_DB_row_filter( database, translators,
+                                                       generators );
 
       unsigned nb1 = 0;
       try {
-        while (filter.hasRows()) {
+        while ( filter.hasRows() ) {
           filter.row();
           ++nb1;
         }
-      } catch (gum::NotFound&) {
+      } catch ( gum::NotFound& ) {
       }
 
-      TS_ASSERT(nb1 == 9500);
+      TS_ASSERT( nb1 == 9500 );
     }
 
     void test_asia3() {
-      gum::learning::DatabaseFromCSV database(GET_PATH_STR("asia.csv"));
+      gum::learning::DatabaseFromCSV database( GET_PATH_STR( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>());
+                                gum::learning::Col<0>, 8>() );
 
       auto generators = gum::learning::make_generators(
-          ThreeGenerator(), TruncatedGenerator(), TwoGenerator());
+          ThreeGenerator(), TruncatedGenerator(), TwoGenerator() );
 
-      auto filter =
-          gum::learning::make_DB_row_filter(database, translators, generators);
+      auto filter = gum::learning::make_DB_row_filter( database, translators,
+                                                       generators );
 
       unsigned nb1 = 0;
       try {
-        while (filter.hasRows()) {
+        while ( filter.hasRows() ) {
           filter.row();
           ++nb1;
         }
-      } catch (gum::NotFound&) {
+      } catch ( gum::NotFound& ) {
       }
 
-      TS_ASSERT(nb1 == 19000);
+      TS_ASSERT( nb1 == 19000 );
     }
   };
 

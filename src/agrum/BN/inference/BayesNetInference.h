@@ -44,7 +44,7 @@ namespace gum {
     /**
      * Default constructor
      */
-    BayesNetInference(const IBayesNet<GUM_SCALAR>& bn);
+    BayesNetInference( const IBayesNet<GUM_SCALAR>& bn );
 
     /**
      * Destructor.
@@ -67,7 +67,7 @@ namespace gum {
      * @throw NotFound Raised if no variable matches id.
      * @throw OperationNotAllowed Raised if the inference can not be done.
      */
-    virtual const Potential<GUM_SCALAR>& posterior(NodeId id);
+    virtual const Potential<GUM_SCALAR>& posterior( NodeId id );
 
     /**
      * Insert new evidence in the inference.
@@ -80,21 +80,21 @@ namespace gum {
      *variable.
      */
     virtual void
-    insertEvidence(const List<const Potential<GUM_SCALAR>*>& pot_list) = 0;
+    insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list ) = 0;
 
     /**
      * Insert a new hard evidence in the inference
      *
      * @throw OutOfBound if val is not in the domainSize of node id
      */
-    void addHardEvidence(const NodeId id, const Idx val);
+    void addHardEvidence( const NodeId id, const Idx val );
 
     /**
      * Remove a given evidence from the graph.
      *
      * @warning the potential has to be deleted aterward.
      */
-    virtual void eraseEvidence(const Potential<GUM_SCALAR>* e) = 0;
+    virtual void eraseEvidence( const Potential<GUM_SCALAR>* e ) = 0;
 
     /**
      * Remove all evidence from the graph.
@@ -124,8 +124,8 @@ namespace gum {
      * @param posterior The completely empty potential to fill.
      * @throw ElementNotFound Raised if no variable matches id.
      */
-    virtual void _fillPosterior(NodeId id,
-                                Potential<GUM_SCALAR>& posterior) = 0;
+    virtual void _fillPosterior( NodeId id,
+                                 Potential<GUM_SCALAR>& posterior ) = 0;
 
     /**
      * Invalidate the set of posterior kept here.

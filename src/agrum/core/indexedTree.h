@@ -58,28 +58,28 @@ namespace gum {
 
     /// creates a tree with one node without data
 
-    IndexedTree(Data* data = 0);
+    IndexedTree( Data* data = 0 );
 
     /// creates a tree with one node (with or without data)
     /** the parameters are inserted directly into the tree, i.e., no copy is
      * performed. For copies of key and data to occur, use the constructor
      * with const& parameters. */
 
-    IndexedTree(const Key& theKey, Data* data = 0);
+    IndexedTree( const Key& theKey, Data* data = 0 );
 
     /// creates a tree with one node with data
     /** the key and data are copied into the tree. If you do not want any copy,
      * use the constructor with the pointers parameters. */
 
-    IndexedTree(const Key& theKey, const Data& data);
+    IndexedTree( const Key& theKey, const Data& data );
 
     /// copy constructor
 
-    IndexedTree(const IndexedTree<Key, Data>& from);
+    IndexedTree( const IndexedTree<Key, Data>& from );
 
     /// copy operator
 
-    IndexedTree<Key, Data>& operator=(const IndexedTree<Key, Data>& from);
+    IndexedTree<Key, Data>& operator=( const IndexedTree<Key, Data>& from );
 
     /// destructor
 
@@ -98,7 +98,7 @@ namespace gum {
      * like
      * the value of the to be updated, use function setNode instead. */
 
-    void insertNode(const std::vector<Key>& index, const Data* data);
+    void insertNode( const std::vector<Key>& index, const Data* data );
 
     /// adds a new node into the tree
     /** @throw DuplicateElement exception is thrown if a node with an identical
@@ -106,27 +106,27 @@ namespace gum {
      * like
      * the value of the to be updated, use function setNode instead. */
 
-    void insertNode(const std::vector<Key>& index, const Data& data);
+    void insertNode( const std::vector<Key>& index, const Data& data );
 
     /// updates the value of a node (or adds it if it does not already exist)
 
-    void setNode(const std::vector<Key>& index, Data* data);
+    void setNode( const std::vector<Key>& index, Data* data );
 
     /// updates the value of a node (or adds it if it does not already exist)
 
-    void setNode(const std::vector<Key>& index, const Data& data);
+    void setNode( const std::vector<Key>& index, const Data& data );
 
     /// returns the value of a given node of the tree
     /** @throw NotFound exception is thrown if the so-called value
      * cannot be found in the tree. */
 
-    Data& getData(const std::vector<Key>& index) const;
+    Data& getData( const std::vector<Key>& index ) const;
 
     /// returns a given node of the tree
     /** @throw NotFound exception is thrown if the node we look for cannot
      * be found in the tree. */
 
-    IndexedTree<Key, Data>& getNode(const std::vector<Key>& index);
+    IndexedTree<Key, Data>& getNode( const std::vector<Key>& index );
 
     /// @}
 
@@ -146,7 +146,7 @@ namespace gum {
 
   /// necessary for the hashtable operator <<
   template <typename Key, typename Data>
-  std::ostream& operator<<(std::ostream&, const IndexedTree<Key, Data>&);
+  std::ostream& operator<<( std::ostream&, const IndexedTree<Key, Data>& );
 
 } /* namespace gum */
 

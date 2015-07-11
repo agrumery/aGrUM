@@ -36,9 +36,8 @@ namespace gum {
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR
   template <typename GUM_SCALAR>
-  GUM_SCALAR
-  GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(const MultiDimArray<GUM_SCALAR>* table,
-                                         Instantiation* instantiation) {
+  GUM_SCALAR GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(
+      const MultiDimArray<GUM_SCALAR>* table, Instantiation* instantiation ) {
 #endif
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME
@@ -46,7 +45,8 @@ namespace gum {
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
     template <typename GUM_SCALAR>
     GUM_SCALAR* GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME(
-        const MultiDimArray<GUM_SCALAR*>* table, Instantiation* instantiation) {
+        const MultiDimArray<GUM_SCALAR*>* table,
+        Instantiation* instantiation ) {
 #endif
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME_F
@@ -54,8 +54,8 @@ namespace gum {
       template <typename GUM_SCALAR>
       GUM_SCALAR GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME_F(
           const MultiDimArray<GUM_SCALAR>* table,
-          GUM_SCALAR (*f)(const GUM_SCALAR&, const GUM_SCALAR&),
-          Instantiation* instantiation) {
+          GUM_SCALAR ( *f )( const GUM_SCALAR&, const GUM_SCALAR& ),
+          Instantiation* instantiation ) {
 #endif
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME_F
@@ -64,8 +64,9 @@ namespace gum {
         template <typename GUM_SCALAR>
         GUM_SCALAR* GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME_F(
             const MultiDimArray<GUM_SCALAR*>* table,
-            GUM_SCALAR* (*f)(const GUM_SCALAR const*, const GUM_SCALAR const*),
-            Instantiation* instantiation) {
+            GUM_SCALAR* ( *f )( const GUM_SCALAR const*,
+                                const GUM_SCALAR const* ),
+            Instantiation* instantiation ) {
 #endif
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME
@@ -73,9 +74,9 @@ namespace gum {
           template <typename GUM_SCALAR>
           GUM_SCALAR GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME(
               const MultiDimImplementation<GUM_SCALAR>* ttable,
-              Instantiation* instantiation) {
+              Instantiation* instantiation ) {
             const MultiDimArray<GUM_SCALAR>* table =
-                reinterpret_cast<const MultiDimArray<GUM_SCALAR>*>(ttable);
+                reinterpret_cast<const MultiDimArray<GUM_SCALAR>*>( ttable );
 #endif
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME
@@ -85,9 +86,9 @@ namespace gum {
             GUM_SCALAR*
             GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME(
                 const MultiDimImplementation<GUM_SCALAR*>* ttable,
-                Instantiation* instantiation) {
+                Instantiation* instantiation ) {
               const MultiDimArray<GUM_SCALAR*>* table =
-                  reinterpret_cast<const MultiDimArray<GUM_SCALAR*>*>(ttable);
+                  reinterpret_cast<const MultiDimArray<GUM_SCALAR*>*>( ttable );
 #endif
 
               // first, compute the domain size of the table:
@@ -97,23 +98,23 @@ namespace gum {
               // neutral element
               GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* ptable =
                   const_cast<GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE*>(
-                      &(table->unsafeGet(0)));
+                      &( table->unsafeGet( 0 ) ) );
               GUM_SCALAR current_val =
                   GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL;
 
-              if (instantiation) {
+              if ( instantiation ) {
                 GUM_SCALAR old_val = current_val;
                 GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* current_ptr = ptable;
                 GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* deb_ptr = ptable;
 
-                for (Size i = 0; i < nb_elt; ++i, ++ptable) {
+                for ( Size i = 0; i < nb_elt; ++i, ++ptable ) {
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
-                  GUM_MULTI_DIM_COMPLETE_PROJECTION(&current_val, *ptable);
+                  GUM_MULTI_DIM_COMPLETE_PROJECTION( &current_val, *ptable );
 #else
-      GUM_MULTI_DIM_COMPLETE_PROJECTION(current_val, *ptable);
+      GUM_MULTI_DIM_COMPLETE_PROJECTION( current_val, *ptable );
 #endif
 
-                  if (current_val != old_val) {
+                  if ( current_val != old_val ) {
                     old_val = current_val;
                     current_ptr = ptable;
                   }
@@ -125,11 +126,11 @@ namespace gum {
                 const Sequence<const DiscreteVariable*>& table_vars =
                     table->variablesSequence();
 
-                for (const auto var : table_vars)
-                  instantiation->add(*var);
+                for ( const auto var : table_vars )
+                  instantiation->add( *var );
 
                 // return the result
-                table->fromOffset(*instantiation, current_ptr - deb_ptr);
+                table->fromOffset( *instantiation, current_ptr - deb_ptr );
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
                 return *current_ptr;
 #else
@@ -140,10 +141,10 @@ namespace gum {
                 GUM_SCALAR old_val = current_val;
                 GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* current_ptr = ptable;
 
-                for (Size i = 0; i < nb_elt; ++i, ++ptable) {
-                  GUM_MULTI_DIM_COMPLETE_PROJECTION(&current_val, *ptable);
+                for ( Size i = 0; i < nb_elt; ++i, ++ptable ) {
+                  GUM_MULTI_DIM_COMPLETE_PROJECTION( &current_val, *ptable );
 
-                  if (current_val != old_val) {
+                  if ( current_val != old_val ) {
                     old_val = current_val;
                     current_ptr = ptable;
                   }
@@ -152,8 +153,8 @@ namespace gum {
                 return *current_ptr;
 #else
 
-    for (Size i = 0; i < nb_elt; ++i, ++ptable) {
-      GUM_MULTI_DIM_COMPLETE_PROJECTION(current_val, *ptable);
+    for ( Size i = 0; i < nb_elt; ++i, ++ptable ) {
+      GUM_MULTI_DIM_COMPLETE_PROJECTION( current_val, *ptable );
     }
 
     return current_val;

@@ -71,10 +71,10 @@ namespace gum {
 
       /// Returns a pointer on type boolean.
       static Type* boolean() {
-        LabelizedVariable var("boolean", "Boolean variable", 0);
-        var.addLabel("false");
-        var.addLabel("true");
-        return new Type(var);
+        LabelizedVariable var( "boolean", "Boolean variable", 0 );
+        var.addLabel( "false" );
+        var.addLabel( "true" );
+        return new Type( var );
       }
 
       /// @}
@@ -87,21 +87,21 @@ namespace gum {
        * Default Constructor.
        * A copy is made of var.
        */
-      Type(const DiscreteVariable& var);
+      Type( const DiscreteVariable& var );
 
       /**
        * Sub type constructor.
        * A copy is made of var.
        * @throw OperationNotAllowed Raised if label_map is invalid.
        */
-      Type(Type& super_type, const std::vector<Idx>& label_map,
-           const DiscreteVariable& var);
+      Type( Type& super_type, const std::vector<Idx>& label_map,
+            const DiscreteVariable& var );
 
       /**
        * Copy constructor.
        * The DiscreteVariable is copied.
        */
-      Type(const Type& from);
+      Type( const Type& from );
 
       /**
        * Destructor.
@@ -149,12 +149,12 @@ namespace gum {
       /**
        * Equality operator.
        */
-      bool operator==(const PRMObject& from) const;
+      bool operator==( const PRMObject& from ) const;
 
       /**
        * Difference operator.
        */
-      bool operator!=(const PRMObject& from) const;
+      bool operator!=( const PRMObject& from ) const;
 
       /// @}
       // ==========================================================================
@@ -182,12 +182,12 @@ namespace gum {
        * Note that two types that are equal are also subtypes,
        * if a == b then a.isSubTypeOf(b) == b.isSubTypeOf(a) == true.
        */
-      bool isSubTypeOf(const Type& super) const;
+      bool isSubTypeOf( const Type& super ) const;
 
       /**
        * Returns true if this is a super type of t.
        */
-      bool isSuperTypeOf(const Type& t) const;
+      bool isSuperTypeOf( const Type& t ) const;
 
       /**
        * Returns the super type of this type.
@@ -216,7 +216,7 @@ namespace gum {
        * @throw OperationNotAllowed If this Type has no super.
        * @throw TypeError If t is not equal to this Type super.
        */
-      void setSuper(Type& t);
+      void setSuper( Type& t );
 
       /**
        * Returns the vector in which the i-th element is the Idx of the super
@@ -236,7 +236,7 @@ namespace gum {
       /**
        * Copy operator. Not implemented.
        */
-      Type& operator=(const Type& from);
+      Type& operator=( const Type& from );
 
       /// @}
       // ==========================================================================

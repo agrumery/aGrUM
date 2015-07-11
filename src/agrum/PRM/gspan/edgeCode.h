@@ -58,13 +58,13 @@ namespace gum {
          * @param l_ij The label of the edge in the code.
          * @param l_j The label of the second node in the code.
          */
-        EdgeCode(Size i, Size j, Size l_i, Size l_ij, Size l_j);
+        EdgeCode( Size i, Size j, Size l_i, Size l_ij, Size l_j );
 
         /**
          * Copy constructor.
          * @param source The copied EdgeCode.
          */
-        EdgeCode(const EdgeCode& source);
+        EdgeCode( const EdgeCode& source );
 
         /// Destructor.
         ~EdgeCode();
@@ -104,28 +104,28 @@ namespace gum {
          * @param source The copied EdgeCode.
          * @return Returns *this after the copy.
          */
-        EdgeCode& operator=(const EdgeCode& source);
+        EdgeCode& operator=( const EdgeCode& source );
 
         /**
          * Equality operator.
          * @param code The code tested for equality with this.
          * @return Returns true if this and code are equal.
          */
-        bool operator==(const EdgeCode& code) const;
+        bool operator==( const EdgeCode& code ) const;
 
         /**
          * Difference operator.
          * @param code The code tested for difference with this.
          * @return Returns true if this and code are different.
          */
-        bool operator!=(const EdgeCode& code) const;
+        bool operator!=( const EdgeCode& code ) const;
 
         /**
          * Lesser than operator.
          * @param code The code on which the test is made.
          * @return Returns true if this is lesser than code.
          */
-        bool operator<(const EdgeCode& code) const;
+        bool operator<( const EdgeCode& code ) const;
       };
 
       /**
@@ -134,7 +134,7 @@ namespace gum {
        * @param code The printed EdgeCode.
        * @return Returns out after printing code in it.
        */
-      std::ostream& operator<<(std::ostream& out, const EdgeCode& code);
+      std::ostream& operator<<( std::ostream& out, const EdgeCode& code );
 
     } /* namespace gspan */
   }   /* namespace prm */

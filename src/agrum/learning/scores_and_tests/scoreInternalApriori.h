@@ -95,7 +95,7 @@ namespace gum {
                                       unsigned int>*>& target_nodesets,
           const std::vector<
               std::pair<std::vector<unsigned int, IdSetAlloc>, unsigned int>*>&
-              conditioning_nodesets) = 0;
+              conditioning_nodesets ) = 0;
 
       /// indicates whether the apriori is potentially informative
       /** Basically, only the NoApriori is uninformative. However, it may happen
@@ -113,10 +113,11 @@ namespace gum {
       protected:
       /// copy constructor
       ScoreInternalApriori(
-          const ScoreInternalApriori<IdSetAlloc, CountAlloc>& from);
+          const ScoreInternalApriori<IdSetAlloc, CountAlloc>& from );
 
       /// move constructor
-      ScoreInternalApriori(ScoreInternalApriori<IdSetAlloc, CountAlloc>&& from);
+      ScoreInternalApriori(
+          ScoreInternalApriori<IdSetAlloc, CountAlloc>&& from );
     };
 
   } /* namespace learning */

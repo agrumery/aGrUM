@@ -36,7 +36,7 @@ namespace CxxTest {
     virtual TestSuite* suite() const = 0;
 
     virtual unsigned numTests() const = 0;
-    virtual const TestDescription& testDescription(unsigned /*i*/) const = 0;
+    virtual const TestDescription& testDescription( unsigned /*i*/ ) const = 0;
 
     virtual TestDescription* firstTest() = 0;
     virtual const TestDescription* firstTest() const = 0;
@@ -44,26 +44,27 @@ namespace CxxTest {
     virtual const SuiteDescription* next() const = 0;
 
     virtual void activateAllTests() = 0;
-    virtual bool leaveOnly(const char* /*testName*/) = 0;
+    virtual bool leaveOnly( const char* /*testName*/ ) = 0;
   };
 
   class WorldDescription : public Link {
     public:
     virtual ~WorldDescription();
 
-    virtual unsigned numSuites(void) const = 0;
-    virtual unsigned numTotalTests(void) const = 0;
-    virtual const SuiteDescription& suiteDescription(unsigned /*i*/) const = 0;
+    virtual unsigned numSuites( void ) const = 0;
+    virtual unsigned numTotalTests( void ) const = 0;
+    virtual const SuiteDescription&
+    suiteDescription( unsigned /*i*/ ) const = 0;
 
     enum { MAX_STRLEN_TOTAL_TESTS = 32 };
-    char* strTotalTests(char* /*buffer*/) const;
+    char* strTotalTests( char* /*buffer*/ ) const;
 
     virtual SuiteDescription* firstSuite() = 0;
     virtual const SuiteDescription* firstSuite() const = 0;
 
     virtual void activateAllTests() = 0;
-    virtual bool leaveOnly(const char* /*suiteName*/,
-                           const char* /*testName*/ = 0) = 0;
+    virtual bool leaveOnly( const char* /*suiteName*/,
+                            const char* /*testName*/ = 0 ) = 0;
   };
 }
 

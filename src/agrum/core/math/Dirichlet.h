@@ -56,13 +56,13 @@ namespace gum {
     /// @{
 
     /// default constructor
-    Dirichlet(const param_type& params, unsigned int seed = 0);
+    Dirichlet( const param_type& params, unsigned int seed = 0 );
 
     /// copy constructor
-    Dirichlet(const Dirichlet& from);
+    Dirichlet( const Dirichlet& from );
 
     /// move constructor
-    Dirichlet(Dirichlet&& from);
+    Dirichlet( Dirichlet&& from );
 
     /// destructor
     ~Dirichlet();
@@ -75,10 +75,10 @@ namespace gum {
     /// @{
 
     /// copy operator
-    Dirichlet& operator=(const Dirichlet& from);
+    Dirichlet& operator=( const Dirichlet& from );
 
     /// move operator
-    Dirichlet& operator=(Dirichlet&& from);
+    Dirichlet& operator=( Dirichlet&& from );
 
     /// returns a sample from the Dirichlet distribution
     result_type operator()();
@@ -86,7 +86,7 @@ namespace gum {
     /// returns a sample from the Dirichlet distribution
     /** @param parm An object representing the distribution's parameters,
      * obtained by a call to member function param. */
-    result_type operator()(const param_type& parm);
+    result_type operator()( const param_type& parm );
 
     /// returns a sample from the Dirichlet distribution
     /** @param generator A uniform random number generator object, used as the
@@ -95,7 +95,7 @@ namespace gum {
      * @param parm An object representing the distribution's parameters,
      * obtained by a call to member function param. */
     template <class URNG>
-    result_type operator()(URNG& generator, const param_type& parm);
+    result_type operator()( URNG& generator, const param_type& parm );
 
     /// @}
 
@@ -110,7 +110,7 @@ namespace gum {
     /// sets the parameters of the distribution
     /** @param parm An object representing the distribution's parameters,
      * obtained by a call to member function param. */
-    void param(const param_type& parm);
+    void param( const param_type& parm );
 
     /** @brief Returns the greatest lower bound of the range of values returned
      * by operator() */

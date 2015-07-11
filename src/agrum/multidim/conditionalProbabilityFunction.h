@@ -70,12 +70,12 @@ namespace gum {
      * The content will be deleted with this class.
      * @param content The implementation used for representing the CPF.
      */
-    CPF(MultiDimImplementation<GUM_SCALAR>* content);
+    CPF( MultiDimImplementation<GUM_SCALAR>* content );
 
     /**
      * Copy constructor.
      */
-    CPF(const CPF<GUM_SCALAR>& from);
+    CPF( const CPF<GUM_SCALAR>& from );
 
     /**
      * Destructor.
@@ -107,7 +107,7 @@ namespace gum {
      * @param var The new conditioned variable added.
      * @throw DuplicateElement
      */
-    virtual void add(const DiscreteVariable& var);
+    virtual void add( const DiscreteVariable& var );
 
     /**
      *  Removes a dimension.
@@ -115,7 +115,7 @@ namespace gum {
      *  @throws NotFound If var isn't in this.
      *  @throws OperationNotAllowed If var can't be removed.
      */
-    virtual void erase(const DiscreteVariable& var);
+    virtual void erase( const DiscreteVariable& var );
 
     /**
      * Adds a conditioning variable.
@@ -124,13 +124,13 @@ namespace gum {
      *               otherwise it is added as a conditioning variable.
      * @throw DuplicateElement
      */
-    void add(const DiscreteVariable& var, bool isConditioned);
+    void add( const DiscreteVariable& var, bool isConditioned );
 
     /**
     * Returns true if the variable is a conditioned variable.
     * @param var The variable that is tested.
      */
-    bool isConditioned(const DiscreteVariable& var) const;
+    bool isConditioned( const DiscreteVariable& var ) const;
 
     /**
      * Returns a Instantiation initialized
@@ -203,12 +203,12 @@ namespace gum {
      *
      * @return Returns a string with the content of this CPF.
      */
-    virtual const std::string toString(const Instantiation* i) const;
+    virtual const std::string toString( const Instantiation* i ) const;
 
     /// @}
 
     protected:
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+    virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
 
     private:
     // Used to no if a given is conditioned or not (if _cond[var] == true then

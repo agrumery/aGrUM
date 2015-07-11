@@ -73,13 +73,13 @@ namespace gum {
   // dummy classes that will enable discriminate without overhead between
   // scalars and non-scalars operators * and ->
   template <bool gen> struct BijectionIteratorGet {
-    template <typename T> INLINE static const T& op_second(const T* x) {
+    template <typename T> INLINE static const T& op_second( const T* x ) {
       return *x;
     }
   };
 
   template <> struct BijectionIteratorGet<true> {
-    template <typename T> INLINE static const T& op_second(const T& x) {
+    template <typename T> INLINE static const T& op_second( const T& x ) {
       return x;
     }
   };
@@ -134,24 +134,24 @@ namespace gum {
 
     private:
     /// Default constructor: creates a bijection without any association
-    BijectionImplementation(Size size, bool resize_policy);
+    BijectionImplementation( Size size, bool resize_policy );
 
     /// initializer list constructor
-    BijectionImplementation(std::initializer_list<std::pair<T1, T2>> list);
+    BijectionImplementation( std::initializer_list<std::pair<T1, T2>> list );
 
     /// Copy constructor
     /** @param toCopy Bijection to copy */
     BijectionImplementation(
-        const BijectionImplementation<T1, T2, Alloc, Gen>& toCopy);
+        const BijectionImplementation<T1, T2, Alloc, Gen>& toCopy );
 
     /// generalized copy constructor
     template <typename OtherAlloc>
     BijectionImplementation(
-        const BijectionImplementation<T1, T2, OtherAlloc, Gen>& toCopy);
+        const BijectionImplementation<T1, T2, OtherAlloc, Gen>& toCopy );
 
     /// move constructor
     BijectionImplementation(
-        BijectionImplementation<T1, T2, Alloc, Gen>&& from) noexcept;
+        BijectionImplementation<T1, T2, Alloc, Gen>&& from ) noexcept;
 
     public:
     // ############################################################################
@@ -168,18 +168,18 @@ namespace gum {
     /// Copy operator
     /** @param toCopy Bijection to copy */
     BijectionImplementation<T1, T2, Alloc, Gen>&
-    operator=(const BijectionImplementation<T1, T2, Alloc, Gen>& toCopy);
+    operator=( const BijectionImplementation<T1, T2, Alloc, Gen>& toCopy );
 
     /// generalized copy operator
     /** @param toCopy Bijection to copy */
     template <typename OtherAlloc>
     BijectionImplementation<T1, T2, Alloc, Gen>&
-    operator=(const BijectionImplementation<T1, T2, OtherAlloc, Gen>& toCopy);
+    operator=( const BijectionImplementation<T1, T2, OtherAlloc, Gen>& toCopy );
 
     /// move operator
     /** @param toCopy Bijection to move */
     BijectionImplementation<T1, T2, Alloc, Gen>&
-    operator=(BijectionImplementation<T1, T2, Alloc, Gen>&& toCopy);
+    operator=( BijectionImplementation<T1, T2, Alloc, Gen>&& toCopy );
 
     public:
     // ############################################################################
@@ -398,37 +398,37 @@ namespace gum {
 
     /// returns the value associated to the element passed in argument
     /** @throws NotFound exception is thrown if the element cannot be found. */
-    const T1& first(const T2& second) const;
+    const T1& first( const T2& second ) const;
 
     /** @brief Same method as first, but if the value is not found, a default
      * value is inserted into the bijection */
-    const T1& firstWithDefault(const T2& second, const T1& default_val) const;
+    const T1& firstWithDefault( const T2& second, const T1& default_val ) const;
 
     /// returns the value associated to the element passed in argument
     /** @throws NotFound exception is thrown if the element cannot be found. */
-    const T2& second(const T1& first) const;
+    const T2& second( const T1& first ) const;
 
     /** @brief Same method as second, but if the value is not found, a default
      * value is inserted into the bijection */
-    const T2& secondWithDefault(const T1& first, const T2& default_val) const;
+    const T2& secondWithDefault( const T1& first, const T2& default_val ) const;
 
     /// Test whether the bijection contains the "first" value
-    bool existsFirst(const T1& first) const;
+    bool existsFirst( const T1& first ) const;
 
     /// Test whether the bijection contains the "second" value
-    bool existsSecond(const T2& second) const;
+    bool existsSecond( const T2& second ) const;
 
     /// inserts a new association in the bijection
     /** Note that what is actually inserted into the bijection is a copy of
      * the pair (first,second)
      * @throws DuplicateElement exception is thrown if the association
      * already exists */
-    void insert(const T1& first, const T2& second);
+    void insert( const T1& first, const T2& second );
 
     /// inserts a new association in the bijection
     /** @throws DuplicateElement exception is thrown if the association
      * already exists */
-    void insert(T1&& first, T2&& second);
+    void insert( T1&& first, T2&& second );
 
     /// emplace a new element in the bijection
     /** emplace is a method that allows to construct directly an element of
@@ -436,7 +436,7 @@ namespace gum {
      * @param args the arguments passed to the constructor
      * @throws DuplicateElement exception is thrown if the association
      * already exists  */
-    template <typename... Args> void emplace(Args&&... args);
+    template <typename... Args> void emplace( Args&&... args );
 
     /// removes all the associations from the bijection
     void clear();
@@ -450,12 +450,12 @@ namespace gum {
     /// erases an association containing the given first element
     /** If the element cannot be found, nothing is done. In particular, no
      * exception is raised. */
-    void eraseFirst(const T1& first);
+    void eraseFirst( const T1& first );
 
     /// erase an association containing the given second element
     /** If the element cannot be found, nothing is done. In particular, no
      * exception is raised. */
-    void eraseSecond(const T2& second);
+    void eraseSecond( const T2& second );
 
     /// friendly displays the content of the CliqueGraph
     std::string toString() const;
@@ -471,11 +471,11 @@ namespace gum {
     Size capacity() const noexcept;
 
     /// similar to the hashtable's resize
-    void resize(Size new_size);
+    void resize( Size new_size );
 
     /// enables the user to change dynamically the resizing policy
     /** @sa HashTable's setResizePolicy */
-    void setResizePolicy(const bool new_policy) noexcept;
+    void setResizePolicy( const bool new_policy ) noexcept;
 
     /// returns the current resizing policy
     /** @sa HashTable's resizePolicy */
@@ -510,14 +510,14 @@ namespace gum {
      * this
      * is not the case, use function clear() before calling __copy. */
     template <typename OtherAlloc>
-    void __copy(const HashTable<T1, T2*, OtherAlloc>& f2s);
+    void __copy( const HashTable<T1, T2*, OtherAlloc>& f2s );
 
     /// inserts a new association into the bijection
-    typename HashTable12::value_type* __insert(const T1& first,
-                                               const T2& second);
+    typename HashTable12::value_type* __insert( const T1& first,
+                                                const T2& second );
 
     /// inserts a new association into the bijection
-    typename HashTable12::value_type* __insert(T1&& first, T2&& second);
+    typename HashTable12::value_type* __insert( T1&& first, T2&& second );
   };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -570,25 +570,25 @@ namespace gum {
 
     private:
     /// Default constructor: creates a bijection without association
-    BijectionImplementation(Size size, bool resize_policy);
+    BijectionImplementation( Size size, bool resize_policy );
 
     /// initializer list constructor
-    BijectionImplementation(std::initializer_list<std::pair<T1, T2>> list);
+    BijectionImplementation( std::initializer_list<std::pair<T1, T2>> list );
 
     /// Copy constructor
     /** @param toCopy Bijection to copy */
     BijectionImplementation(
-        const BijectionImplementation<T1, T2, Alloc, true>& toCopy);
+        const BijectionImplementation<T1, T2, Alloc, true>& toCopy );
 
     /// Generalized copy constructor
     /** @param toCopy Bijection to copy */
     template <typename OtherAlloc>
     BijectionImplementation(
-        const BijectionImplementation<T1, T2, OtherAlloc, true>& toCopy);
+        const BijectionImplementation<T1, T2, OtherAlloc, true>& toCopy );
 
     /// move constructor
     BijectionImplementation(
-        BijectionImplementation<T1, T2, Alloc, true>&& from) noexcept;
+        BijectionImplementation<T1, T2, Alloc, true>&& from ) noexcept;
 
     public:
     // ############################################################################
@@ -605,17 +605,17 @@ namespace gum {
     /// Copy operator
     /** @param toCopy Bijection to copy */
     BijectionImplementation<T1, T2, Alloc, true>&
-    operator=(const BijectionImplementation<T1, T2, Alloc, true>& toCopy);
+    operator=( const BijectionImplementation<T1, T2, Alloc, true>& toCopy );
 
     /// Generalized copy operator
     /** @param toCopy Bijection to copy */
     template <typename OtherAlloc>
-    BijectionImplementation<T1, T2, Alloc, true>&
-    operator=(const BijectionImplementation<T1, T2, OtherAlloc, true>& toCopy);
+    BijectionImplementation<T1, T2, Alloc, true>& operator=(
+        const BijectionImplementation<T1, T2, OtherAlloc, true>& toCopy );
 
     /// move operator
     BijectionImplementation<T1, T2, Alloc, true>&
-    operator=(BijectionImplementation<T1, T2, Alloc, true>&& from);
+    operator=( BijectionImplementation<T1, T2, Alloc, true>&& from );
 
     public:
     // ############################################################################
@@ -834,30 +834,30 @@ namespace gum {
 
     /// returns the value associated to the element passed in argument
     /** @throws NotFound exception is thrown if the element cannot be found. */
-    const T1& first(const T2 second) const;
+    const T1& first( const T2 second ) const;
 
     /** @brief Same method as first, but if the value is not found, a default
      * value is inserted into the bijection */
-    const T1& firstWithDefault(const T2 second, const T1 default_val) const;
+    const T1& firstWithDefault( const T2 second, const T1 default_val ) const;
 
     /// returns the value associated to the element passed in argument
     /** @throws NotFound exception is thrown if the element cannot be found. */
-    const T2& second(const T1 first) const;
+    const T2& second( const T1 first ) const;
 
     /** @brief Same method as second, but if the value is not found, a default
      * value is inserted into the bijection */
-    const T2& secondWithDefault(const T1 first, const T2 default_val) const;
+    const T2& secondWithDefault( const T1 first, const T2 default_val ) const;
 
     /// Test whether the bijection contains the "first" value
-    bool existsFirst(const T1 first) const;
+    bool existsFirst( const T1 first ) const;
 
     /// Test whether the bijection contains the "second" value
-    bool existsSecond(const T2 second) const;
+    bool existsSecond( const T2 second ) const;
 
     /// inserts a new association in the bijection
     /**@throws DuplicateElement exception is thrown if the association
      * already exists */
-    void insert(const T1 first, const T2 second);
+    void insert( const T1 first, const T2 second );
 
     /// emplace a new element in the bijection
     /** emplace is a method that allows to construct directly an element of
@@ -865,7 +865,7 @@ namespace gum {
      * @param args the arguments passed to the constructor
      * @throws DuplicateElement exception is thrown if the association
      * already exists  */
-    template <typename... Args> void emplace(Args&&... args);
+    template <typename... Args> void emplace( Args&&... args );
 
     /// removes all the associations from the bijection
     void clear();
@@ -879,12 +879,12 @@ namespace gum {
     /// erases an association containing the given first element
     /** If the element cannot be found, nothing is done. In particular, no
      * exception is raised. */
-    void eraseFirst(const T1 first);
+    void eraseFirst( const T1 first );
 
     /// erase an association containing the given second element
     /** If the element cannot be found, nothing is done. In particular, no
      * exception is raised. */
-    void eraseSecond(const T2 second);
+    void eraseSecond( const T2 second );
 
     /// friendly displays the content of the bijection
     std::string toString() const;
@@ -900,11 +900,11 @@ namespace gum {
     Size capacity() const noexcept;
 
     /// similar to the hashtable's resize
-    void resize(Size new_size);
+    void resize( Size new_size );
 
     /// enables the user to change dynamically the resizing policy
     /** @sa HashTable's setResizePolicy */
-    void setResizePolicy(const bool new_policy) noexcept;
+    void setResizePolicy( const bool new_policy ) noexcept;
 
     /// returns the current resizing policy
     /** @sa HashTable's resizePolicy */
@@ -934,10 +934,10 @@ namespace gum {
      * this
      * is not the case, use function clear() before calling __copy. */
     template <typename OtherAlloc>
-    void __copy(const HashTable<T1, T2, OtherAlloc>& f2s);
+    void __copy( const HashTable<T1, T2, OtherAlloc>& f2s );
 
     /// inserts a new association in the bijection
-    void __insert(const T1 first, const T2 second);
+    void __insert( const T1 first, const T2 second );
   };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
@@ -982,23 +982,23 @@ namespace gum {
     /// @{
 
     /// Default constructor: creates a bijection without any association
-    Bijection(Size size = HashTableConst::default_size,
-              bool resize_policy = HashTableConst::default_resize_policy);
+    Bijection( Size size = HashTableConst::default_size,
+               bool resize_policy = HashTableConst::default_resize_policy );
 
     /// initializer list constructor
-    Bijection(std::initializer_list<std::pair<T1, T2>> list);
+    Bijection( std::initializer_list<std::pair<T1, T2>> list );
 
     /// Copy constructor
     /** @param toCopy Bijection to copy */
-    Bijection(const Bijection<T1, T2, Alloc>& toCopy);
+    Bijection( const Bijection<T1, T2, Alloc>& toCopy );
 
     /// Generalized copy constructor
     /** @param toCopy Bijection to copy */
     template <typename OtherAlloc>
-    Bijection(const Bijection<T1, T2, OtherAlloc>& toCopy);
+    Bijection( const Bijection<T1, T2, OtherAlloc>& toCopy );
 
     /// move constructor
-    Bijection(Bijection<T1, T2, Alloc>&& from) noexcept;
+    Bijection( Bijection<T1, T2, Alloc>&& from ) noexcept;
 
     /// destructor
     ~Bijection();
@@ -1011,15 +1011,16 @@ namespace gum {
     /// @{
 
     /// copy operator
-    Bijection<T1, T2, Alloc>& operator=(const Bijection<T1, T2, Alloc>& toCopy);
+    Bijection<T1, T2, Alloc>&
+    operator=( const Bijection<T1, T2, Alloc>& toCopy );
 
     /// generalized copy operator
     template <typename OtherAlloc>
     Bijection<T1, T2, Alloc>&
-    operator=(const Bijection<T1, T2, OtherAlloc>& toCopy);
+    operator=( const Bijection<T1, T2, OtherAlloc>& toCopy );
 
     /// move operator
-    Bijection<T1, T2, Alloc>& operator=(Bijection<T1, T2, Alloc>&& bij);
+    Bijection<T1, T2, Alloc>& operator=( Bijection<T1, T2, Alloc>&& bij );
 
     /// @}
   };
@@ -1067,7 +1068,7 @@ namespace gum {
      */
     template <typename Alloc, bool Gen>
     BijectionIteratorSafe(
-        const BijectionImplementation<T1, T2, Alloc, Gen>& bijection);
+        const BijectionImplementation<T1, T2, Alloc, Gen>& bijection );
 
     public:
     // ############################################################################
@@ -1080,13 +1081,13 @@ namespace gum {
 
     /// Default constructor
     template <typename Alloc>
-    BijectionIteratorSafe(const Bijection<T1, T2, Alloc>& bijection);
+    BijectionIteratorSafe( const Bijection<T1, T2, Alloc>& bijection );
 
     /// Copy constructor
-    BijectionIteratorSafe(const BijectionIteratorSafe<T1, T2>& from);
+    BijectionIteratorSafe( const BijectionIteratorSafe<T1, T2>& from );
 
     /// move constructor
-    BijectionIteratorSafe(BijectionIteratorSafe<T1, T2>&& from) noexcept;
+    BijectionIteratorSafe( BijectionIteratorSafe<T1, T2>&& from ) noexcept;
 
     /// Destructor
     ~BijectionIteratorSafe() noexcept;
@@ -1100,11 +1101,11 @@ namespace gum {
 
     /// Copy operator
     BijectionIteratorSafe<T1, T2>&
-    operator=(const BijectionIteratorSafe<T1, T2>& toCopy);
+    operator=( const BijectionIteratorSafe<T1, T2>& toCopy );
 
     /// move operator
     BijectionIteratorSafe<T1, T2>&
-    operator=(BijectionIteratorSafe<T1, T2>&& toCopy) noexcept;
+    operator=( BijectionIteratorSafe<T1, T2>&& toCopy ) noexcept;
 
     /// Go to the next association (if it exists)
     /** @warning if the iterator points to end(), nothing is done */
@@ -1114,20 +1115,20 @@ namespace gum {
     /** @warning if the iterator points to end(), nothing is done. If there are
      * nb or fewer elements to parse to reach the end of the bijection, then
      * this method makes the iterator point to end () */
-    BijectionIteratorSafe<T1, T2>& operator+=(unsigned int nb) noexcept;
+    BijectionIteratorSafe<T1, T2>& operator+=( unsigned int nb ) noexcept;
 
     /// returns a new iterator
     /** @warning if the iterator points to end(), the resulting iterator also
      * points to end (). If there are nb or fewer elements to parse to reach the
      * end of the bijection, then the resulting iterator points to end () */
-    BijectionIteratorSafe<T1, T2> operator+(unsigned int nb) noexcept;
+    BijectionIteratorSafe<T1, T2> operator+( unsigned int nb ) noexcept;
 
     /// Comparison of iterators
-    bool operator!=(const BijectionIteratorSafe<T1, T2>& toCompare) const
+    bool operator!=( const BijectionIteratorSafe<T1, T2>& toCompare ) const
         noexcept;
 
     /// Comparison of iterators
-    bool operator==(const BijectionIteratorSafe<T1, T2>& toCompare) const
+    bool operator==( const BijectionIteratorSafe<T1, T2>& toCompare ) const
         noexcept;
 
     /// @}
@@ -1205,7 +1206,7 @@ namespace gum {
      */
     template <typename Alloc, bool Gen>
     BijectionIterator(
-        const BijectionImplementation<T1, T2, Alloc, Gen>& bijection);
+        const BijectionImplementation<T1, T2, Alloc, Gen>& bijection );
 
     public:
     // ############################################################################
@@ -1218,13 +1219,13 @@ namespace gum {
 
     /// Default constructor
     template <typename Alloc>
-    BijectionIterator(const Bijection<T1, T2, Alloc>& bijection);
+    BijectionIterator( const Bijection<T1, T2, Alloc>& bijection );
 
     /// Copy constructor
-    BijectionIterator(const BijectionIterator<T1, T2>& from);
+    BijectionIterator( const BijectionIterator<T1, T2>& from );
 
     /// move constructor
-    BijectionIterator(BijectionIterator<T1, T2>&& from) noexcept;
+    BijectionIterator( BijectionIterator<T1, T2>&& from ) noexcept;
 
     /// Destructor
     ~BijectionIterator() noexcept;
@@ -1238,11 +1239,11 @@ namespace gum {
 
     /// Copy operator
     BijectionIterator<T1, T2>&
-    operator=(const BijectionIterator<T1, T2>& toCopy);
+    operator=( const BijectionIterator<T1, T2>& toCopy );
 
     /// move operator
     BijectionIterator<T1, T2>&
-    operator=(BijectionIterator<T1, T2>&& toCopy) noexcept;
+    operator=( BijectionIterator<T1, T2>&& toCopy ) noexcept;
 
     /// Go to the next association (if it exists)
     /** @warning if the iterator points to end(), nothing is done */
@@ -1252,19 +1253,21 @@ namespace gum {
     /** @warning if the iterator points to end(), nothing is done. If there are
      * nb or fewer elements to parse to reach the end of the bijection, then
      * this method makes the iterator point to end () */
-    BijectionIterator<T1, T2>& operator+=(unsigned int nb) noexcept;
+    BijectionIterator<T1, T2>& operator+=( unsigned int nb ) noexcept;
 
     /// returns a new iterator
     /** @warning if the iterator points to end(), the resulting iterator also
      * points to end (). If there are nb or fewer elements to parse to reach the
      * end of the bijection, then the resulting iterator points to end () */
-    BijectionIterator<T1, T2> operator+(unsigned int nb) noexcept;
+    BijectionIterator<T1, T2> operator+( unsigned int nb ) noexcept;
 
     /// Comparison of iterators
-    bool operator!=(const BijectionIterator<T1, T2>& toCompare) const noexcept;
+    bool operator!=( const BijectionIterator<T1, T2>& toCompare ) const
+        noexcept;
 
     /// Comparison of iterators
-    bool operator==(const BijectionIterator<T1, T2>& toCompare) const noexcept;
+    bool operator==( const BijectionIterator<T1, T2>& toCompare ) const
+        noexcept;
 
     /// @}
 
@@ -1300,7 +1303,7 @@ namespace gum {
 
   /// for friendly displaying the content of bijections
   template <typename T1, typename T2, typename Alloc>
-  std::ostream& operator<<(std::ostream&, const Bijection<T1, T2, Alloc>&);
+  std::ostream& operator<<( std::ostream&, const Bijection<T1, T2, Alloc>& );
 
 } /* namespace gum */
 

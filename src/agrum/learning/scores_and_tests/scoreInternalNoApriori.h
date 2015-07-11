@@ -82,11 +82,11 @@ namespace gum {
 
       /// copy constructor
       ScoreInternalNoApriori(
-          const ScoreInternalNoApriori<IdSetAlloc, CountAlloc>& from);
+          const ScoreInternalNoApriori<IdSetAlloc, CountAlloc>& from );
 
       /// move constructor
       ScoreInternalNoApriori(
-          ScoreInternalNoApriori<IdSetAlloc, CountAlloc>&& from);
+          ScoreInternalNoApriori<IdSetAlloc, CountAlloc>&& from );
 
       /// destructor
       virtual ~ScoreInternalNoApriori();
@@ -106,7 +106,7 @@ namespace gum {
                                       unsigned int>*>& target_nodesets,
           const std::vector<
               std::pair<std::vector<unsigned int, IdSetAlloc>, unsigned int>*>&
-              conditioning_nodesets) final;
+              conditioning_nodesets ) final;
 
       /// indicates whether the apriori is potentially informative
       virtual bool isInformative() const final;

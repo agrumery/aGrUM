@@ -56,11 +56,11 @@ namespace gum {
       /// Default constructor.
       NameGenerator();
       /// Copy constructor.
-      NameGenerator(const NameGenerator& source);
+      NameGenerator( const NameGenerator& source );
       /// Destructor.
       virtual ~NameGenerator();
       /// Affectation operator
-      NameGenerator& operator=(const NameGenerator& source);
+      NameGenerator& operator=( const NameGenerator& source );
 
       /// @}
       // ========================================================================
@@ -69,7 +69,7 @@ namespace gum {
       /// @{
 
       /// Returns the next name w.r.t. the given Type.
-      std::string nextName(PRMObject::PRMType type);
+      std::string nextName( PRMObject::PRMType type );
 
       /// @}
       private:

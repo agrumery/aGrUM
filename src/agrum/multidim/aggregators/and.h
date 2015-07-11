@@ -58,7 +58,7 @@ namespace gum {
     class And : public MultiDimAggregator<GUM_SCALAR> {
       public:
       And();
-      And(const And<GUM_SCALAR>& from);
+      And( const And<GUM_SCALAR>& from );
       virtual ~And();
 
       /**
@@ -76,12 +76,12 @@ namespace gum {
        */
       virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
-      virtual std::string aggregatorName(void) const;
+      virtual std::string aggregatorName( void ) const;
 
       protected:
-      virtual Idx _neutralElt(void) const;
-      virtual Idx _folder(const DiscreteVariable& v, Idx i1, Idx i2,
-                          bool& stop_iteration) const;
+      virtual Idx _neutralElt( void ) const;
+      virtual Idx _folder( const DiscreteVariable& v, Idx i1, Idx i2,
+                           bool& stop_iteration ) const;
 
       private:
       Idx __value;

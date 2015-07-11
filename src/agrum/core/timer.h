@@ -56,7 +56,7 @@ namespace gum {
     /**
      * Copy constructor
      */
-    Timer(const Timer&);
+    Timer( const Timer& );
 
     /**
      * Destructor
@@ -73,7 +73,7 @@ namespace gum {
     /**
      * copy operator
      */
-    Timer& operator=(const Timer&);
+    Timer& operator=( const Timer& );
 
     /// @}
 
