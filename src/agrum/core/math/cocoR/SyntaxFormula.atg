@@ -1,0 +1,121 @@
+/// Deplacer dans agrum/core/math/formula (pareil pour les tests)
+
+
+//##############################################################################
+//
+//                               HEADERS
+//
+//##############################################################################
+
+#include <algorithm>
+#include <cmath>
+#include <fstream>
+#include <list>
+#include <sstream>
+#include <stack>
+#include <string>
+#include <vector>
+
+#include <agrum/core/utils_dir.h>
+#include <agrum/core/math/formula.h>
+
+
+//##############################################################################
+//
+//                             class Parser
+//
+//##############################################################################
+
+COMPILER EVAL
+
+private:
+  gum::Formula* __formula;
+
+public:
+  void formula( gum::Formula* f ) {
+    __formula = f;
+  }
+
+  gum::Formula& formula() { 
+    return *__formula; 
+  }
+
+  const gum::Formula& formula() const {
+    return *__formula; 
+  }
+
+//##############################################################################
+//
+//                              SCANNER RULES
+//
+//##############################################################################
+
+//________________________
+CHARACTERS
+letter = 'A'..'Z' + 'a'..'z'+ '_' .
+digit  = '0'..'9'.
+eol    = '\n'.
+
+//________________________
+TOKENS
+integer     =  digit {digit}.
+float       =  digit {digit} '.' digit {digit}. // [ ('E'|'e') ['+'|'-'] digit {digit} ].
+operator    = '+'|'-'|'*'|'/'|'^'|'<'|'>'.
+eol         = '\n'.
+ident       = letter {letter | digit | '_' | '.'}.
+
+// // Bernouilli distributions
+// bernoulli = "bernoulli".
+// binomial = "binomial".
+// geometric = "geometric".
+// negative_binomial = "negative_binomial".
+// 
+// // Rate-based distributions
+// poisson = "poisson".
+// exponential = "exponential".
+// gamma = "gamma".
+// weibull = "weibull".
+// extreme_value = "extreme_value".
+// 
+// // Related to Normal distributions
+// normal = "normal".
+// lognormal = "lognormal".
+// chi_squared = "chi_squared".
+// cauchy = "cauchy".
+// fisher_f = "fisher_f".
+// student_t = "student_t".
+// 
+// // Piecewise distribuntions
+// discrete = "discrete".
+// piecewise_constant = "piecewise_constant".
+// piecewise_linear = "piecewise_linear".
+
+//________________________
+IGNORE '\r' + eol + '\t'
+
+$checkEOF=false // disable the end of file check
+
+//##############################################################################
+//
+//                              PARSER RULES
+//
+//##############################################################################
+
+PRODUCTIONS
+
+//________________________
+EVAL =  
+  (expression { expression }) (. __formula->finalize(); .)
+  .                           
+
+expression =
+    integer              (. __formula->push_number((double)coco_atoi(t->val)); .)
+    | float              (. __formula->push_number((double)coco_atof(t->val)); .)
+    | operator           (. __formula->push_operator(narrow(t->val)[0]); .)
+    | '('                (. __formula->push_leftParenthesis(); .)
+    | ')'                (. __formula->push_rightParenthesis(); .)
+    | ident              (. __formula->push_identifier(narrow(t->val)); .)
+    | ','                (. __formula->push_comma(); .)
+  .
+
+END EVAL.

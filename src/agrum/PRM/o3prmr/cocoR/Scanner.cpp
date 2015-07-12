@@ -258,9 +258,9 @@ int UTF8Buffer::Read() {
   return ch;
 }
 
-Scanner::Scanner( const unsigned char* buf, int len,bool trace ) {
+Scanner::Scanner(const unsigned char* buf, int len, std::string filename, bool trace) {
   buffer = new Buffer( buf, len );
-  __filenamne=L"anonymous buffer";
+  __filenamne=widen( filename.c_str() );
   __trace=trace;
   Init();
 }
@@ -345,7 +345,7 @@ void Scanner::Init() {
 	keywords.set(L"default", 13);
 	keywords.set(L"SVED", 19);
 	keywords.set(L"SVE", 20);
-	keywords.set(L"GND", 21);
+	keywords.set(L"GRD", 21);
 	keywords.set(L"VE", 22);
 	keywords.set(L"VEBB", 23);
 	keywords.set(L"lazy", 24);

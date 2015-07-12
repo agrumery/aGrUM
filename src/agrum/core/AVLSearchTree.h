@@ -35,25 +35,33 @@ namespace gum {
 
   template <typename Val, class Cmp> class AVLSearchTree;
 
-  /* =========================================================================== */
-  /* ===                  NODES FOR AVL BINARY SEARCH TREES                  === */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===                  NODES FOR AVL BINARY SEARCH TREES                  ===
+   */
+  /* ===========================================================================
+   */
   /** @class BinTreeNode4AVL
    * @brief Binary tree nodes with additional fields for use in AVL binary
    * search trees
    * @ingroup basicstruct_group
    * BinTreeNode4AVL is the node class used in AVL binary search trees. It is
-   * equipped with the material to add nodes to or remove them from the tree. The
-   * class ensures that trees are always a coherent structure, that is, it is not
-   * possible to have a node X having, say, a left child, and this child having no
+   * equipped with the material to add nodes to or remove them from the tree.
+   *The
+   * class ensures that trees are always a coherent structure, that is, it is
+   *not
+   * possible to have a node X having, say, a left child, and this child having
+   *no
    * parent or a parent different from X. The class also provides some functions
    * to balance the tree (balance, left and right rotations). However, the class
    * @b DOES @b NOT balances by itself the tree after insertions/deletions of
    * nodes. Balancing trees is indeed quite simple and efficient when we can
-   * guarantee that new nodes inserted have no children. This property is enforced
+   * guarantee that new nodes inserted have no children. This property is
+   *enforced
    * within AVL search trees but cannot be enforced within the class
    * BinTreeNode4AVL. Hence, balancing is delegated to the AVLSearchTree class.
-   * For the same reason, the __height field of the nodes MUST be computed by the
+   * For the same reason, the __height field of the nodes MUST be computed by
+   *the
    * AVLSearchTree class.
    * @par Usage example:
    * @code
@@ -75,8 +83,10 @@ namespace gum {
    * BinTreeNode4AVL<int>* node4 = node2.insertLeftChild ( 3 );
    * BinTreeNode4AVL<int>* node5 = node2.insertRightChild (4 );
    *
-   * BinTreeNode4AVL<int>* node6 = node4.insertChild (5,GUM_BIN_TREE_LEFT_CHILD);
-   * BinTreeNode4AVL<int>* node7 = node4.insertChild (6,GUM_BIN_TREE_RIGHT_CHILD);
+   * BinTreeNode4AVL<int>* node6 = node4.insertChild
+   *(5,GUM_BIN_TREE_LEFT_CHILD);
+   * BinTreeNode4AVL<int>* node7 = node4.insertChild
+   *(6,GUM_BIN_TREE_RIGHT_CHILD);
    *
    * BinTreeNode4AVL<int> node8 (55), node9(44);
    * node3.insertChild ( node8, GUM_BIN_TREE_LEFT_CHILD );
@@ -96,7 +106,8 @@ namespace gum {
    * node2.eraseLink ( gum::GUM_BIN_TREE_RIGHT_CHILD); // erase (node2;node5)
    * @endcode
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
 
   template <typename Val> class BinTreeNode4AVL : private BinTreeNode<Val> {
     public:
@@ -107,7 +118,7 @@ namespace gum {
 
     /// basic constructor: a node without parent nor children
 
-    BinTreeNode4AVL(const Val &v);
+    BinTreeNode4AVL( const Val& v );
 
     /** @brief copy constructor: creates a new disconnected node with the same
      * value and height as "from"
@@ -115,7 +126,7 @@ namespace gum {
      * @warning Although the new node contains the same value as "from", it has
      * no parent, nor any children, even when "from" has some. */
 
-    BinTreeNode4AVL(const BinTreeNode4AVL<Val> &from);
+    BinTreeNode4AVL( const BinTreeNode4AVL<Val>& from );
 
     /// destructor
     /** in addition to removing the node, this method updates appropriately
@@ -131,13 +142,14 @@ namespace gum {
     /// @{
 
     /** @brief copy operator: copy the value of from into this. However, this
-     * does not change the current connections (parents and children) of this. */
+     * does not change the current connections (parents and children) of this.
+     */
 
-    BinTreeNode4AVL<Val> &operator=(const BinTreeNode4AVL<Val> &from);
+    BinTreeNode4AVL<Val>& operator=( const BinTreeNode4AVL<Val>& from );
 
     /// alias for method value
 
-    Val &operator*();
+    Val& operator*();
 
     /// @}
 
@@ -148,27 +160,31 @@ namespace gum {
 
     /// returns the value stored in a node of the binary search tree
 
-    Val &value();
+    Val& value();
 
     /// returns the given child of a node
-    /** @warning if the child does not exists, the method returns a 0 pointer. */
+    /** @warning if the child does not exists, the method returns a 0 pointer.
+     */
 
-    BinTreeNode4AVL<Val> *child(BinTreeDir dir) const;
-
-    /// returns the given child of a node
-    /** @warning if the child does not exists, the method returns a 0 pointer. */
-
-    BinTreeNode4AVL<Val> *leftChild() const;
+    BinTreeNode4AVL<Val>* child( BinTreeDir dir ) const;
 
     /// returns the given child of a node
-    /** @warning if the child does not exists, the method returns a 0 pointer. */
+    /** @warning if the child does not exists, the method returns a 0 pointer.
+     */
 
-    BinTreeNode4AVL<Val> *rightChild() const;
+    BinTreeNode4AVL<Val>* leftChild() const;
+
+    /// returns the given child of a node
+    /** @warning if the child does not exists, the method returns a 0 pointer.
+     */
+
+    BinTreeNode4AVL<Val>* rightChild() const;
 
     /// returns the parent of a node
-    /** @warning if the parent does not exists, the method returns a 0 pointer. */
+    /** @warning if the parent does not exists, the method returns a 0 pointer.
+     */
 
-    BinTreeNode4AVL<Val> *parent() const;
+    BinTreeNode4AVL<Val>* parent() const;
 
     /// returns the direction of the edge parent->current node, if any
 
@@ -180,38 +196,38 @@ namespace gum {
      * @returns a pointer on the new created child
      * @throw DuplicateElement if the current node had already a left child */
 
-    BinTreeNode4AVL<Val> *insertLeftChild(const Val &);
+    BinTreeNode4AVL<Val>* insertLeftChild( const Val& );
 
     /// adds a new left child to the current node
     /** @throw DuplicateElement if the current node had already a left child or
      * if new_child already has a parent */
 
-    void insertLeftChild(BinTreeNode4AVL<Val> &new_child);
+    void insertLeftChild( BinTreeNode4AVL<Val>& new_child );
 
     /// adds a new right child to the current node
     /**  @returns a pointer on the new created child
      * @throw DuplicateElement if the current node had already a left child */
 
-    BinTreeNode4AVL<Val> *insertRightChild(const Val &);
+    BinTreeNode4AVL<Val>* insertRightChild( const Val& );
 
     /// adds a new right child to the current node
     /** @throw DuplicateElement if the current node had already a left child or
      * if new_child already has a parent */
 
-    void insertRightChild(BinTreeNode4AVL<Val> &new_child);
+    void insertRightChild( BinTreeNode4AVL<Val>& new_child );
 
     /// adds a new child to the current node
     /**  @returns a pointer on the new created child
      * @throw DuplicateElement if the current node had already a child in the
      * child_dir subtree */
 
-    BinTreeNode4AVL<Val> *insertChild(const Val &, BinTreeDir child_dir);
+    BinTreeNode4AVL<Val>* insertChild( const Val&, BinTreeDir child_dir );
 
     /// adds a new child to the current node
     /** @throw DuplicateElement if the current node had already a child in the
      * child_dir direction or if new_child already has a parent */
 
-    void insertChild(BinTreeNode4AVL<Val> &new_child, BinTreeDir child_dir);
+    void insertChild( BinTreeNode4AVL<Val>& new_child, BinTreeDir child_dir );
 
     /// remove the link between the current node and its left child
     /** Note that only the link is removed, i.e., the left child is not removed
@@ -234,22 +250,22 @@ namespace gum {
      * itself nor, a fortiori, its subtree. If the child does not exist, the
      * method does nothing. In particular, it does not raise any exception. */
 
-    void eraseLink(BinTreeDir tree_dir);
+    void eraseLink( BinTreeDir tree_dir );
 
     /// returns the leftmost node of the current tree
     /** if there is no left child, the method returns this */
 
-    BinTreeNode4AVL<Val> *leftmostNode() const;
+    BinTreeNode4AVL<Val>* leftmostNode() const;
 
     /// returns the rightmost node of the current tree
     /** if there is no right child, the method returns this */
 
-    BinTreeNode4AVL<Val> *rightmostNode() const;
+    BinTreeNode4AVL<Val>* rightmostNode() const;
 
     /// returns the top ancestor of the current tree
     /** if the current node has no parent, the method returns this */
 
-    BinTreeNode4AVL<Val> *root() const;
+    BinTreeNode4AVL<Val>* root() const;
 
     /// @}
 
@@ -265,13 +281,13 @@ namespace gum {
     /** the rotation is performed assuming that the current node is the root
      * of the tree to be rotated */
 
-    BinTreeNode4AVL<Val> *__rightRotation();
+    BinTreeNode4AVL<Val>* __rightRotation();
 
     /// left rotation
     /** the rotation is performed assuming that the current node is the root
      * of the tree to be rotated */
 
-    BinTreeNode4AVL<Val> *__leftRotation();
+    BinTreeNode4AVL<Val>* __leftRotation();
 
     /// balance the whole tree, starting from the current node
     /** the balance is performed the usual way in AVL trees starting from the
@@ -283,20 +299,27 @@ namespace gum {
      * # when inserting new nodes, those have no children
      *
      * As such, these restrictions hold in binary search trees.
-     * @return either the new root of the whole tree if this one may have changed
+     * @return either the new root of the whole tree if this one may have
+     *changed
      * or 0 if we are certain that the new root equals the old root. */
 
-    BinTreeNode4AVL<Val> *__balance();
+    BinTreeNode4AVL<Val>* __balance();
   };
 
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /* ===                        AVL BINARY SEARCH TREE                       === */
-  /* =========================================================================== */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
+  /* ===                        AVL BINARY SEARCH TREE                       ===
+   */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
   /** @class AVLSearchTree
    * @brief generic binary search trees */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
 
   template <typename Val, class Cmp = std::less<Val>>
 
@@ -311,15 +334,16 @@ namespace gum {
     ///@{
 
     /// basic constructor: returns an empty binary search tree
-    /** @param uniqueness_policy allows (false) or disables (true) the possibility
+    /** @param uniqueness_policy allows (false) or disables (true) the
+     * possibility
      * for the binary tree to have multiple instances of the same value within
      * the tree. */
 
-    explicit AVLSearchTree(bool uniqueness_policy = false);
+    explicit AVLSearchTree( bool uniqueness_policy = false );
 
     /// copy constructor
 
-    AVLSearchTree(const AVLSearchTree<Val, Cmp> &from);
+    AVLSearchTree( const AVLSearchTree<Val, Cmp>& from );
 
     /// destructor
 
@@ -334,7 +358,7 @@ namespace gum {
 
     /// copy operator
 
-    AVLSearchTree<Val, Cmp> &operator=(const AVLSearchTree<Val, Cmp> &from);
+    AVLSearchTree<Val, Cmp>& operator=( const AVLSearchTree<Val, Cmp>& from );
 
     ///@}
 
@@ -384,12 +408,13 @@ namespace gum {
     protected:
     /// erase the node passed in argument
 
-    void _erase(Node *node);
+    void _erase( Node* node );
 
     /** @brief creates a copy of the value, insert it in the tree and returns
      * the copy value
      *
-     * When elements are inserted into binary search trees, this is actually copies
+     * When elements are inserted into binary search trees, this is actually
+     *copies
      * that are inserted. Thus, the method returns the node containing the newly
      * created copy, so that the user may reference the new copy.
      * @warning this method is actually the implementation of method insert. It
@@ -397,13 +422,13 @@ namespace gum {
      * @throw DuplicateElement exception is raised if the binary tree already
      * contains the value and the uniqueness property is set to true */
 
-    Node *_insert(const Val &val);
+    Node* _insert( const Val& val );
   };
 
   /// for friendly displaying the content of AVLSearchTree
 
   template <typename Val, class Cmp>
-  std::ostream &operator<<(std::ostream &, const AVLSearchTree<Val, Cmp> &);
+  std::ostream& operator<<( std::ostream&, const AVLSearchTree<Val, Cmp>& );
 
 } /* namespace gum */
 

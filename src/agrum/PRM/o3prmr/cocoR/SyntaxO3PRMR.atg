@@ -91,7 +91,10 @@ Command = ( Observe |
 
 //=====================
 Observe =   (. std::string left_value, right_value; .)
-          IdentArray<left_value> '=' word (. right_value = gum::narrow(t->val); .)
+          IdentArray<left_value> '='(
+            word (. right_value = gum::narrow(t->val); .)
+            | float (. right_value = std::to_string(coco_atof(t->val)); .)
+          )
           ';' (. __currentSession->addObserve(t->line, left_value, right_value); .) .
 
 //=====================
@@ -110,7 +113,7 @@ Query = '?'       (. std::string s; .)
         .
 
 //=====================
-SetEngine = engine ( "SVED" | "SVE" | "GND" ) (. __currentSession->addSetEngine( t->line, gum::narrow(t->val) ); .) ';'.
+SetEngine = engine ( "SVED" | "SVE" | "GRD" ) (. __currentSession->addSetEngine( t->line, gum::narrow(t->val) ); .) ';'.
 
 //=====================
 SetGrdEngine = grd_engine ( "VE" | "VEBB" | "lazy" ) (. __currentSession->addSetGndEngine( t->line, gum::narrow(t->val) ); .) ';'.

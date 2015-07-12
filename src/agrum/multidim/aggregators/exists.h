@@ -20,7 +20,8 @@
 /** @file
  * @brief count aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+*<{prenom.nom}_at_lip6.fr>
  */
 #ifndef GUM_EXISTS_AGGREGATOR_H
 #define GUM_EXISTS_AGGREGATOR_H
@@ -55,8 +56,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     class Exists : public MultiDimAggregator<GUM_SCALAR> {
       public:
-      Exists(Idx value);
-      Exists(const Exists<GUM_SCALAR> &from);
+      Exists( Idx value );
+      Exists( const Exists<GUM_SCALAR>& from );
       virtual ~Exists();
 
       /**
@@ -72,14 +73,14 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<GUM_SCALAR> *newFactory() const;
+      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
-      virtual std::string aggregatorName(void) const;
+      virtual std::string aggregatorName( void ) const;
 
       protected:
-      virtual Idx _neutralElt(void) const;
-      virtual Idx _folder(const DiscreteVariable &v, Idx i1, Idx i2,
-                          bool &stop_iteration) const;
+      virtual Idx _neutralElt( void ) const;
+      virtual Idx _folder( const DiscreteVariable& v, Idx i1, Idx i2,
+                           bool& stop_iteration ) const;
 
       private:
       Idx __value;
@@ -87,9 +88,9 @@ namespace gum {
 
     extern template class Exists<float>;
     extern template class Exists<double>;
-  } // aggregator
-} // gum
+  }  // aggregator
+}  // gum
 
 #include <agrum/multidim/aggregators/exists.tcc>
 
-#endif // GUM_EXISTS_AGGREGATOR_H
+#endif  // GUM_EXISTS_AGGREGATOR_H

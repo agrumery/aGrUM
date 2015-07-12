@@ -50,7 +50,7 @@ namespace gum {
         /// Constructor.
         LabelData();
         /// Copy constructor.
-        LabelData(const LabelData &from);
+        LabelData( const LabelData& from );
         /// Destructor.
         ~LabelData();
         /// An unique identifier for this label.
@@ -60,9 +60,9 @@ namespace gum {
         /// The size in terms of tree width of the given label.
         unsigned long tree_width;
         /// Equality operator.
-        bool operator==(const LabelData &from) const;
+        bool operator==( const LabelData& from ) const;
         /// Difference operator.
-        bool operator!=(const LabelData &from) const;
+        bool operator!=( const LabelData& from ) const;
       };
 
       /**
@@ -71,7 +71,7 @@ namespace gum {
        * @param data The data printed.
        * @return Returns out.
        */
-      std::ostream &operator<<(std::ostream &out, const LabelData &data);
+      std::ostream& operator<<( std::ostream& out, const LabelData& data );
 
       /**
        * @struct NodeData<GUM_SCALAR> interfaceGraph.h
@@ -83,17 +83,17 @@ namespace gum {
         /// Constructor.
         NodeData<GUM_SCALAR>();
         /// Copy Constructor.
-        NodeData<GUM_SCALAR>(const NodeData<GUM_SCALAR> &from);
+        NodeData<GUM_SCALAR>( const NodeData<GUM_SCALAR>& from );
         /// Destructor.
         ~NodeData<GUM_SCALAR>();
         /// The instance represented by this node.
-        Instance<GUM_SCALAR> *n;
+        Instance<GUM_SCALAR>* n;
         /// The label of this node.
-        LabelData *l;
+        LabelData* l;
         /// Equality operator.
-        bool operator==(const NodeData<GUM_SCALAR> &from) const;
+        bool operator==( const NodeData<GUM_SCALAR>& from ) const;
         /// Difference operator.
-        bool operator!=(const NodeData<GUM_SCALAR> &from) const;
+        bool operator!=( const NodeData<GUM_SCALAR>& from ) const;
       };
 
       /**
@@ -103,7 +103,8 @@ namespace gum {
        * @return Returns out.
        */
       template <typename GUM_SCALAR>
-      std::ostream &operator<<(std::ostream &out, const NodeData<GUM_SCALAR> &data);
+      std::ostream& operator<<( std::ostream& out,
+                                const NodeData<GUM_SCALAR>& data );
 
       /**
        * @struct EdgeData<GUM_SCALAR> interfaceGraph.h
@@ -115,23 +116,23 @@ namespace gum {
         /// Constructor.
         EdgeData();
         /// Copy constructor.
-        EdgeData(const EdgeData<GUM_SCALAR> &from);
+        EdgeData( const EdgeData<GUM_SCALAR>& from );
         /// Destructor.
         ~EdgeData();
         /// One of the two instance represented by this edge.
-        Instance<GUM_SCALAR> *u;
+        Instance<GUM_SCALAR>* u;
         /// The label data of u.
-        LabelData *l_u;
+        LabelData* l_u;
         /// The other instance represented by thus edge
-        Instance<GUM_SCALAR> *v;
+        Instance<GUM_SCALAR>* v;
         /// The label data of v.
-        LabelData *l_v;
+        LabelData* l_v;
         /// The labal data of this edge.
-        LabelData *l;
+        LabelData* l;
         /// Equality operator.
-        bool operator==(const EdgeData<GUM_SCALAR> &from) const;
+        bool operator==( const EdgeData<GUM_SCALAR>& from ) const;
         /// Difference operator.
-        bool operator!=(const EdgeData<GUM_SCALAR> &from) const;
+        bool operator!=( const EdgeData<GUM_SCALAR>& from ) const;
       };
 
       /**
@@ -141,21 +142,26 @@ namespace gum {
        * @return Returns out.
        */
       template <typename GUM_SCALAR>
-      std::ostream &operator<<(std::ostream &out, const EdgeData<GUM_SCALAR> &data);
+      std::ostream& operator<<( std::ostream& out,
+                                const EdgeData<GUM_SCALAR>& data );
 
       /**
-       * @class InterfaceGraph interfaceGraph.h <agrum/PRM/gspan/interfaceGraph.h>
+       * @class InterfaceGraph interfaceGraph.h
+       *<agrum/PRM/gspan/interfaceGraph.h>
        *
        * @brief This class represent the interface graph of a given
        *gum::prm::System<GUM_SCALAR>.
        *
        * An interface graph is a labelled graph over the instances of a
        *gum::prm::System<GUM_SCALAR>,
-       * where there exists an edge between two instance i and j if and only if their
+       * where there exists an edge between two instance i and j if and only if
+       *their
        * shared interface is nonempty.
        *
-       * Labels assigned to edges and nodes in the interface graph are technically
-       * strings, however since we need a linear oder each label is assigned a unique
+       * Labels assigned to edges and nodes in the interface graph are
+       *technically
+       * strings, however since we need a linear oder each label is assigned a
+       *unique
        * id.
        *
        */
@@ -164,103 +170,108 @@ namespace gum {
 
         public:
         /// Default constructor.
-        InterfaceGraph(const System<GUM_SCALAR> &sys);
+        InterfaceGraph( const System<GUM_SCALAR>& sys );
 
         /// Copy constructor, proceeds with a shallow copy so for friends only.
-        InterfaceGraph(const InterfaceGraph &source);
+        InterfaceGraph( const InterfaceGraph& source );
 
         /// Copy operator.
-        InterfaceGraph &operator=(const InterfaceGraph &source);
+        InterfaceGraph& operator=( const InterfaceGraph& source );
 
         /// Destructor.
         ~InterfaceGraph();
 
         /// Returns the graph of this interface graph
-        UndiGraph &graph();
+        UndiGraph& graph();
 
         /// Returns the graph of this interface graph
-        const UndiGraph &graph() const;
+        const UndiGraph& graph() const;
 
-        /// Returns the bijection between LabelData and their string representation.
-        Bijection<Idx, LabelData *> &labels();
+        /// Returns the bijection between LabelData and their string
+        /// representation.
+        Bijection<Idx, LabelData*>& labels();
 
-        /// Returns the bijection between LabelData and their string representation.
-        const Bijection<Idx, LabelData *> &labels() const;
+        /// Returns the bijection between LabelData and their string
+        /// representation.
+        const Bijection<Idx, LabelData*>& labels() const;
 
         /// Returns the number of node or edges labelled by l.
-        Size size(const LabelData *l) const;
+        Size size( const LabelData* l ) const;
 
         /// Returns the set of nodes labelled by l.
-        Set<NodeData<GUM_SCALAR> *> &nodes(const LabelData *l);
+        Set<NodeData<GUM_SCALAR>*>& nodes( const LabelData* l );
 
         /// Returns the set of nodes labelled by l.
-        const Set<NodeData<GUM_SCALAR> *> &nodes(const LabelData *l) const;
+        const Set<NodeData<GUM_SCALAR>*>& nodes( const LabelData* l ) const;
 
         /// Returns the set of nodes labelled by l.
-        Set<EdgeData<GUM_SCALAR> *> &edges(const LabelData *l);
+        Set<EdgeData<GUM_SCALAR>*>& edges( const LabelData* l );
 
         /// Returns the set of nodes labelled by l.
-        const Set<EdgeData<GUM_SCALAR> *> &edges(const LabelData *l) const;
+        const Set<EdgeData<GUM_SCALAR>*>& edges( const LabelData* l ) const;
 
         /// Returns a label given its id
-        LabelData *label(Idx id);
+        LabelData* label( Idx id );
 
         /// Returns the id of i in this interface graph
-        NodeId id(const Instance<GUM_SCALAR> &i) const;
+        NodeId id( const Instance<GUM_SCALAR>& i ) const;
 
         /// Returns the id of i in this interface graph
-        NodeId id(const Instance<GUM_SCALAR> *i) const;
+        NodeId id( const Instance<GUM_SCALAR>* i ) const;
 
         /// Returns data about a node.
         /// @throw NotFound
-        NodeData<GUM_SCALAR> &node(const Instance<GUM_SCALAR> *i);
+        NodeData<GUM_SCALAR>& node( const Instance<GUM_SCALAR>* i );
 
         /// Returns data about a node.
         /// @throw NotFound
-        const NodeData<GUM_SCALAR> &node(const Instance<GUM_SCALAR> *i) const;
+        const NodeData<GUM_SCALAR>& node( const Instance<GUM_SCALAR>* i ) const;
 
         /// Returns data about a node.
         /// @throw NotFound
-        NodeData<GUM_SCALAR> &node(NodeId id);
+        NodeData<GUM_SCALAR>& node( NodeId id );
 
         /// Returns data about a node.
         /// @throw NotFound
-        const NodeData<GUM_SCALAR> &node(NodeId id) const;
+        const NodeData<GUM_SCALAR>& node( NodeId id ) const;
 
         /// Returns data about an edge.
         /// @throw NotFound
-        EdgeData<GUM_SCALAR> &edge(NodeId u, NodeId v);
+        EdgeData<GUM_SCALAR>& edge( NodeId u, NodeId v );
 
         /// Returns data about an edge.
         /// @throw NotFound
-        const EdgeData<GUM_SCALAR> &edge(NodeId u, NodeId v) const;
+        const EdgeData<GUM_SCALAR>& edge( NodeId u, NodeId v ) const;
 
         private:
-        /// The gum::prm::System<GUM_SCALAR> represented by this interface graph.
-        const System<GUM_SCALAR> *__sys;
+        /// The gum::prm::System<GUM_SCALAR> represented by this interface
+        /// graph.
+        const System<GUM_SCALAR>* __sys;
 
         /// The interface graph.
         UndiGraph __graph;
 
         /// Data associated with a node in __graph.
-        NodeProperty<NodeData<GUM_SCALAR> *> __nodes;
+        NodeProperty<NodeData<GUM_SCALAR>*> __nodes;
 
         /// Mapping between Instance<GUM_SCALAR> dans their NodeId in __graph.
-        HashTable<Instance<GUM_SCALAR> *, NodeId> __idMap;
+        HashTable<Instance<GUM_SCALAR>*, NodeId> __idMap;
 
         /// Data associated with edges in __graph.
-        EdgeProperty<EdgeData<GUM_SCALAR> *> __edges;
+        EdgeProperty<EdgeData<GUM_SCALAR>*> __edges;
 
         /// Bijection between labels and their ids.
-        Bijection<Idx, LabelData *> *__labels;
+        Bijection<Idx, LabelData*>* __labels;
 
-        /// Mapping between a LabelData and the set of NodeData<GUM_SCALAR> with that
+        /// Mapping between a LabelData and the set of NodeData<GUM_SCALAR> with
+        /// that
         /// label.
-        HashTable<LabelData *, Set<NodeData<GUM_SCALAR> *> *> __nodeMap;
+        HashTable<LabelData*, Set<NodeData<GUM_SCALAR>*>*> __nodeMap;
 
-        /// Mapping between a LabelData and the set of EdgeData<GUM_SCALAR> with that
+        /// Mapping between a LabelData and the set of EdgeData<GUM_SCALAR> with
+        /// that
         /// label.
-        HashTable<LabelData *, Set<EdgeData<GUM_SCALAR> *> *> __edgeMap;
+        HashTable<LabelData*, Set<EdgeData<GUM_SCALAR>*>*> __edgeMap;
 
         /// A counter used of assigning ids to labels.
         Idx __counter;
@@ -270,13 +281,13 @@ namespace gum {
 
         /// Compute the label of node and add it to __labels if it does not
         /// exists yet. Update node with the correct label's id.
-        void __label(NodeData<GUM_SCALAR> *node,
-                     HashTable<std::string, LabelData *> &label_map);
+        void __label( NodeData<GUM_SCALAR>* node,
+                      HashTable<std::string, LabelData*>& label_map );
 
         /// Compute the label of edge and add it to __labels if it does not
         /// exists yet. Update edge with the correct label's id.
-        void __label(EdgeData<GUM_SCALAR> *edge,
-                     HashTable<std::string, LabelData *> &label_map);
+        void __label( EdgeData<GUM_SCALAR>* edge,
+                      HashTable<std::string, LabelData*>& label_map );
       };
 
       extern template class NodeData<double>;

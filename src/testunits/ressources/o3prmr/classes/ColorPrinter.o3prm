@@ -22,8 +22,8 @@
 // Author: Lionel Torti.
 // ============================================================================
 
-package classes;
-
+import classes.types;
+import classes.Room;
 import classes.Printer;
 
 class ColorPrinter implements Printer {

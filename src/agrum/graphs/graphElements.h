@@ -24,7 +24,8 @@
   \page graph_page How to use the graph classes?
 
   The basic idea of the implementation of graphs in aGrUM is to leave it "as
-  pure as possible". Hence graphs consist of integers (@ref gum::NodeId) and binary
+  pure as possible". Hence graphs consist of integers (@ref gum::NodeId) and
+  binary
   relations between them (Edge, Arc).
 
   \section graph_sec_1 graph hierarchy
@@ -33,7 +34,8 @@
   @ref gum::Edge.
 
   In aGrUM,
-  - 3 classes wrap these 3 sets : @ref gum::NodeGraphPart, @ref gum::ArcGraphPart
+  - 3 classes wrap these 3 sets : @ref gum::NodeGraphPart, @ref
+  gum::ArcGraphPart
   and @ref gum::EdgeGraphPart
   (resp. wrapping @ref gum::NodeSet, @ref gum::ArcSet and @ref gum::EdgeSet,
   3 typedefs of Set),
@@ -82,7 +84,8 @@
   <h4>Iterators</h4>
 
   @ref gum::NodeSet, @ref gum::EdgeSet and @ref gum::ArcSet have their own
-  iterators (see @ref gum::NodeSetIterator etc.). However aGrUM gives specialized
+  iterators (see @ref gum::NodeSetIterator etc.). However aGrUM gives
+  specialized
   iterators for graphs. These iterators are herited from the different 3 graphs
   part and may be (or not) a <i>typedef</i> for set iterators. We encourage to
   use these iterators when iterating on a graph.
@@ -113,7 +116,8 @@
 
   Properties are the way to put (dynamic) informations within nodes, edges and
   arcs. Properties are just HashTable in which keys are @ref gum::NodeId, Edge
-  or Arc. NodeProperty, ArcProperty and EdgeProperty are the names of these classes.
+  or Arc. NodeProperty, ArcProperty and EdgeProperty are the names of these
+  classes.
   @code
   gum::UndiGraph g;
   gum::NodeProperty<bool> is_id_odd=g.nodesProperty( false );
@@ -174,7 +178,8 @@
 
     const gum::NodeSet& set=;
     for ( const auto new_one : g.children( current )) {
-        if ( mark[new_one]!=0 ) continue; // if this node is already marked, continue
+        if ( mark[new_one]!=0 ) continue; // if this node is already marked,
+  continue
         mark[new_one]=current;
         if ( new_one==n2 ) break; // if we reach n2, stop.
 
@@ -196,16 +201,22 @@
  * "directed/undirected" term may be misleading although in practice this
  * will probably result in how these edges will be drawn. In fact, a more
  * appropriate term would be "symmetric/asymmetric edges": an Arc is an edge in
- * which the extremities have different status whereas in an Edge the role of the
- * extremities is symmetric. For instance, in an arrow, one node is near the head
+ * which the extremities have different status whereas in an Edge the role of
+ *the
+ * extremities is symmetric. For instance, in an arrow, one node is near the
+ *head
  * and the other one is farther, hence these nodes have different status and
  * swapping the nodes results in reversing the direction of the arrow. Thus, the
  * nodes in an arrow can be thought of as asymmetric and the arrow's graphical
- * representation contains a pointed extremity so as to account for this asymmetry.
+ * representation contains a pointed extremity so as to account for this
+ *asymmetry.
  * Conversely, in a Markov Random Field, an edge between two nodes, x and y,
- * means that x and y are probabilistically dependent of one another. This being a
- * symmetrical relation, there is no difference between edge (x,y) and edge (y,x).
- * Thus, it can be represented by an Edge and, graphically, by an undirected edge.
+ * means that x and y are probabilistically dependent of one another. This being
+ *a
+ * symmetrical relation, there is no difference between edge (x,y) and edge
+ *(y,x).
+ * Thus, it can be represented by an Edge and, graphically, by an undirected
+ *edge.
  *
  * @par Usage example:
  * @code
@@ -262,11 +273,16 @@ namespace gum {
    */
   typedef unsigned int NodeId;
 
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /* ===                       GENERIC UNDIRECTED EDGES                      === */
-  /* =========================================================================== */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
+  /* ===                       GENERIC UNDIRECTED EDGES                      ===
+   */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
   /** @class Edge
    * @brief The base class for all undirected edges.
    * \ingroup graph_group
@@ -275,7 +291,8 @@ namespace gum {
    * graph. By undirected edge, we mean a symmetric edge, i.e., an edge in which
    * the order of the nodes is unimportant. For instance, in Markov Random
    * fields, an edge between two nodes, x and y, means that x and y are
-   * probabilistically dependent of one another. This being a symmetrical relation,
+   * probabilistically dependent of one another. This being a symmetrical
+   *relation,
    * there is no difference between edge (x,y) and edge (y,x). Thus, it can be
    * represented by an undirected edge and, in aGrUM, by an Edge.
    * @par Usage example:
@@ -301,7 +318,8 @@ namespace gum {
    * cerr << edge1 << endl;
    * @endcode
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
 
   class Edge {
     public:
@@ -313,10 +331,10 @@ namespace gum {
     /// constructs a new edge (aN1,aN2)
     /** @param aN1 the ID of the first extremal node
      * @param aN2 the ID of the second extremal node */
-    Edge(NodeId aN1, NodeId aN2);
+    Edge( NodeId aN1, NodeId aN2 );
 
     /// copy constructor
-    Edge(const Edge &src);
+    Edge( const Edge& src );
 
     /// destructor
     ~Edge();
@@ -332,7 +350,7 @@ namespace gum {
     bool isDirected() const;
 
     /// returns an extremal node of an edge given the ID of the other one
-    NodeId other(NodeId id) const;
+    NodeId other( NodeId id ) const;
 
     /// returns one extremal node ID (whichever one it is is unspecified)
     NodeId first() const;
@@ -348,17 +366,17 @@ namespace gum {
     /// @{
 
     /// copy operator
-    Edge &operator=(const Edge &src);
+    Edge& operator=( const Edge& src );
 
     /// checks whether two undirected edges are equal
     /** Two Edge are equal if they have the same extremal nodes, whetever their
      * order. For instance (3,4) == (4,3). */
-    bool operator==(const Edge &src) const;
+    bool operator==( const Edge& src ) const;
 
     /// checks whether two undirected edges are different
     /** Two Edge are different if at least one extremal node of an edge is not
      * an extremal node of the other edge. For instance, (4,5) != (5,6). */
-    bool operator!=(const Edge &src) const;
+    bool operator!=( const Edge& src ) const;
 
     /// @}
 
@@ -367,21 +385,31 @@ namespace gum {
     NodeId n1, n2;
   };
 
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /* ===                        GENERIC DIRECTED EDGES                       === */
-  /* =========================================================================== */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
+  /* ===                        GENERIC DIRECTED EDGES                       ===
+   */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
   /** @class Arc
    * @brief The base class for all directed edges
    * \ingroup graph_group
    *
-   * This class is used as a basis for manipulating all directed edges (i.e., edges
-   * in which the order of the nodes is meaningful). For instance, in an arrow, one
+   * This class is used as a basis for manipulating all directed edges (i.e.,
+   *edges
+   * in which the order of the nodes is meaningful). For instance, in an arrow,
+   *one
    * node is near the head and the other one is farther, hence these nodes have
-   * different status and swapping the nodes results in reversing the direction of
-   * the arrow. Thus, the nodes in an arrow can be thought of as asymmetric and the
-   * arrow's graphical representation contains a pointed extremity so as to account
+   * different status and swapping the nodes results in reversing the direction
+   *of
+   * the arrow. Thus, the nodes in an arrow can be thought of as asymmetric and
+   *the
+   * arrow's graphical representation contains a pointed extremity so as to
+   *account
    * for this asymmetry. In aGrUM, the latter is taken into account by Arc.
    * @par Usage example:
    * @code
@@ -402,7 +430,8 @@ namespace gum {
    * cerr << arc1 << endl;
    * @endcode
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
 
   class Arc {
     public:
@@ -413,10 +442,10 @@ namespace gum {
 
     /// basic constructor. Creates tail -> head.
     /** @warning the order in which the nodes are passed is important */
-    Arc(NodeId tail, NodeId head);
+    Arc( NodeId tail, NodeId head );
 
     /// copy constructor
-    Arc(const Arc &src);
+    Arc( const Arc& src );
 
     /// destructor
     ~Arc();
@@ -438,7 +467,7 @@ namespace gum {
     bool isDirected() const;
 
     /// returns an extremal node of an edge given the ID of the other one
-    NodeId other(NodeId id) const;
+    NodeId other( NodeId id ) const;
 
     /// returns one extremal node ID (whichever one it is is unspecified)
     NodeId first() const;
@@ -454,17 +483,18 @@ namespace gum {
     /// @{
 
     /// copy operator
-    Arc &operator=(const Arc &src);
+    Arc& operator=( const Arc& src );
 
     /// checks whether two arcs are equal
     /** Two arcs are considered equal if they have the same head and tail
      * (by same we mean they have the same ID). */
-    bool operator==(const Arc &src) const;
+    bool operator==( const Arc& src ) const;
 
     /// check if two arcs are different
-    /** Two arcs are considered different if they have different head and/or tail
+    /** Two arcs are considered different if they have different head and/or
+     * tail
      * (by different we mean they have different ID). */
-    bool operator!=(const Arc &src) const;
+    bool operator!=( const Arc& src ) const;
 
     /// @}
 
@@ -473,10 +503,10 @@ namespace gum {
     NodeId n1, n2;
 
     /// modifies the tail of the arc
-    void __setTail(NodeId id);
+    void __setTail( NodeId id );
 
     /// modifies the head of the arc
-    void __setHead(NodeId id);
+    void __setHead( NodeId id );
 
     /// reverses the direction of the arc
     void operator-();
@@ -487,29 +517,31 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-  template <> class HashFunc<Edge> : public HashFuncSmallKeyPair<NodeId, NodeId> {
+  template <>
+  class HashFunc<Edge> : public HashFuncSmallKeyPair<NodeId, NodeId> {
     public:
     /**
      * @throw HashSize
      */
-    Size operator()(const Edge &key) const;
+    Size operator()( const Edge& key ) const;
 
     private:
     mutable std::pair<NodeId, NodeId> pair;
   };
 
-  template <> class HashFunc<Arc> : public HashFuncSmallKeyPair<NodeId, NodeId> {
+  template <>
+  class HashFunc<Arc> : public HashFuncSmallKeyPair<NodeId, NodeId> {
     public:
     /**
      * @throw HashSize
      */
-    Size operator()(const Arc &key) const;
+    Size operator()( const Arc& key ) const;
 
     private:
     mutable std::pair<NodeId, NodeId> pair;
   };
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
   /** \ingroup graph_group
    * @{
@@ -529,16 +561,18 @@ namespace gum {
    * @brief Property on graph elements
    *
    * @{
-   * @deprecated C++11 allows now partial specification of template using "using".
+   * @deprecated C++11 allows now partial specification of template using
+   *"using".
    *The
-   * old definitions Property VAL::onNodes are now obsolete. Please use NodeProperty
+   * old definitions Property VAL::onNodes are now obsolete. Please use
+   *NodeProperty
    *VAL
    **/
 
   template <class VAL> struct Property {
-    typedef HashTable<NodeId, VAL> GUM_DEPRECATED(onNodes);
-    typedef HashTable<Edge, VAL> GUM_DEPRECATED(onEdges);
-    typedef HashTable<Arc, VAL> GUM_DEPRECATED(onArcs);
+    typedef HashTable<NodeId, VAL> GUM_DEPRECATED( onNodes );
+    typedef HashTable<Edge, VAL> GUM_DEPRECATED( onEdges );
+    typedef HashTable<Arc, VAL> GUM_DEPRECATED( onArcs );
   };
   /// @}
 
@@ -549,10 +583,10 @@ namespace gum {
   /// @}
 
   /// to friendly display an edge
-  std::ostream &operator<<(std::ostream &stream, const Edge &edge);
+  std::ostream& operator<<( std::ostream& stream, const Edge& edge );
 
   /// to friendly display an arc
-  std::ostream &operator<<(std::ostream &stream, const Arc &arc);
+  std::ostream& operator<<( std::ostream& stream, const Arc& arc );
 
 } /* namespace gum */
 
@@ -560,4 +594,4 @@ namespace gum {
 #include <agrum/graphs/graphElements.inl>
 #endif /* GUM_NO_INLINE */
 
-#endif // GUM_GRAPHELEMENTS_H
+#endif  // GUM_GRAPHELEMENTS_H

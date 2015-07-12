@@ -2241,6 +2241,19 @@ class DiscreteVariable(Variable):
         return _pyAgrum.DiscreteVariable___str__(self)
 
 
+<<<<<<< HEAD
+=======
+    def toStringWithDescription(self):
+        """toStringWithDescription(DiscreteVariable self) -> std::string const"""
+        return _pyAgrum.DiscreteVariable_toStringWithDescription(self)
+
+
+    def domain(self):
+        """domain(DiscreteVariable self) -> std::string const"""
+        return _pyAgrum.DiscreteVariable_domain(self)
+
+
+>>>>>>> master
     def __getitem__(self,label):   # adding the y() function here
         return self.index(label)
 
@@ -2344,6 +2357,11 @@ class LabelizedVariable(DiscreteVariable):
         """varType(LabelizedVariable self) -> gum::DiscreteVariable::VarType"""
         return _pyAgrum.LabelizedVariable_varType(self)
 
+
+    def domain(self):
+        """domain(LabelizedVariable self) -> std::string const"""
+        return _pyAgrum.LabelizedVariable_domain(self)
+
 LabelizedVariable_swigregister = _pyAgrum.LabelizedVariable_swigregister
 LabelizedVariable_swigregister(LabelizedVariable)
 
@@ -2429,9 +2447,9 @@ class RangeVariable(DiscreteVariable):
         return _pyAgrum.RangeVariable_index(self, arg2)
 
 
-    def __str__(self):
-        """__str__(RangeVariable self) -> std::string const"""
-        return _pyAgrum.RangeVariable___str__(self)
+    def domain(self):
+        """domain(RangeVariable self) -> std::string const"""
+        return _pyAgrum.RangeVariable_domain(self)
 
 RangeVariable_swigregister = _pyAgrum.RangeVariable_swigregister
 RangeVariable_swigregister(RangeVariable)
@@ -3631,6 +3649,11 @@ class DiscretizedVariable_double(DiscreteVariable):
         return _pyAgrum.DiscretizedVariable_double_domainSize(self)
 
 
+    def domain(self):
+        """domain(DiscretizedVariable_double self) -> std::string const"""
+        return _pyAgrum.DiscretizedVariable_double_domain(self)
+
+
     def tick(self, i):
         """tick(DiscretizedVariable_double self, gum::Idx i) -> double const &"""
         return _pyAgrum.DiscretizedVariable_double_tick(self, i)
@@ -4372,11 +4395,6 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_variableNodeMap(self)
 
 
-    def toDot(self):
-        """toDot(BayesNet_double self) -> std::string"""
-        return _pyAgrum.BayesNet_double_toDot(self)
-
-
     def add(self, *args):
         """
         add(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
@@ -4745,6 +4763,9 @@ class LazyPropagation_double(BayesNetInference_double):
         __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, LazyPropagation_double, name)
     __repr__ = _swig_repr
+    FIND_RELEVANT_ALL = _pyAgrum.LazyPropagation_double_FIND_RELEVANT_ALL
+    FIND_RELEVANT_D_SEPARATION = _pyAgrum.LazyPropagation_double_FIND_RELEVANT_D_SEPARATION
+    FIND_RELEVANT_D_SEPARATION2 = _pyAgrum.LazyPropagation_double_FIND_RELEVANT_D_SEPARATION2
 
     def __init__(self, *args):
         """
@@ -4796,6 +4817,16 @@ class LazyPropagation_double(BayesNetInference_double):
         makeInference(LazyPropagation_double self, bool force_inference)
         """
         return _pyAgrum.LazyPropagation_double_makeInference(self, *args)
+
+
+    def clearInference(self):
+        """clearInference(LazyPropagation_double self)"""
+        return _pyAgrum.LazyPropagation_double_clearInference(self)
+
+
+    def setFindRelevantPotentialsType(self, type):
+        """setFindRelevantPotentialsType(LazyPropagation_double self, gum::LazyPropagation< double >::FindRelevantPotentialsType type)"""
+        return _pyAgrum.LazyPropagation_double_setFindRelevantPotentialsType(self, type)
 
 
     def evidenceProbability(self):
@@ -6074,6 +6105,21 @@ class BNLearner_double(_object):
     def messageApproximationScheme(self):
         """messageApproximationScheme(BNLearner_double self) -> std::string"""
         return _pyAgrum.BNLearner_double_messageApproximationScheme(self)
+
+
+    def setMaxTime(self, timeout):
+        """setMaxTime(BNLearner_double self, double timeout)"""
+        return _pyAgrum.BNLearner_double_setMaxTime(self, timeout)
+
+
+    def maxTime(self):
+        """maxTime(BNLearner_double self) -> double"""
+        return _pyAgrum.BNLearner_double_maxTime(self)
+
+
+    def currentTime(self):
+        """currentTime(BNLearner_double self) -> double"""
+        return _pyAgrum.BNLearner_double_currentTime(self)
 
 
     def learnDAG(self):

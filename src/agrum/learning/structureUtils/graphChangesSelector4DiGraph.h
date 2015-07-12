@@ -56,16 +56,17 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GraphChangesSelector4DiGraph(SCORE &score, STRUCTURAL_CONSTRAINT &constraint,
-                                   GRAPH_CHANGES_GENERATOR &changes_generator);
+      GraphChangesSelector4DiGraph(
+          SCORE& score, STRUCTURAL_CONSTRAINT& constraint,
+          GRAPH_CHANGES_GENERATOR& changes_generator );
 
       /// copy constructor
-      GraphChangesSelector4DiGraph(const GraphChangesSelector4DiGraph<
-          SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR> &from);
+      GraphChangesSelector4DiGraph( const GraphChangesSelector4DiGraph<
+          SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR>& from );
 
       /// move constructor
-      GraphChangesSelector4DiGraph(GraphChangesSelector4DiGraph<
-          SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR> &&from);
+      GraphChangesSelector4DiGraph( GraphChangesSelector4DiGraph<
+          SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR>&& from );
 
       /// destructor
       ~GraphChangesSelector4DiGraph();
@@ -79,15 +80,15 @@ namespace gum {
 
       /// copy operator
       GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
-                                   GRAPH_CHANGES_GENERATOR> &
-      operator=(const GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
-                                                   GRAPH_CHANGES_GENERATOR> &from);
+                                   GRAPH_CHANGES_GENERATOR>&
+      operator=( const GraphChangesSelector4DiGraph<
+          SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR>& from );
 
       /// move operator
       GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
-                                   GRAPH_CHANGES_GENERATOR> &
-      operator=(GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
-                                             GRAPH_CHANGES_GENERATOR> &&from);
+                                   GRAPH_CHANGES_GENERATOR>&
+      operator=( GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
+                                              GRAPH_CHANGES_GENERATOR>&& from );
 
       /// @}
 
@@ -97,18 +98,19 @@ namespace gum {
       /// @{
 
       /// returns the generator used by the selector
-      GeneratorType &graphChangeGenerator() const noexcept;
+      GeneratorType& graphChangeGenerator() const noexcept;
 
       /// indicates whether the selector still contains graph changes
       bool empty();
 
-      /** @brief indicates whether the selector contains graph changes related to
+      /** @brief indicates whether the selector contains graph changes related
+       * to
        * the ith node */
-      bool empty(unsigned int i);
+      bool empty( unsigned int i );
 
       /// returns the best graph change to examine
       /** @throws NotFound exception is thrown if the selector is empty */
-      const GraphChange &bestChange();
+      const GraphChange& bestChange();
 
       /// returns the best graph change to examine related to the ith node
       /** The selector computes not only the best change possible but also the
@@ -116,7 +118,7 @@ namespace gum {
        * allows to get the change that is considered the best for modifying the
        * parents' set of the ith node.
        * @throws NotFound exception is thrown if the selector is empty */
-      const GraphChange &bestChange(unsigned int i);
+      const GraphChange& bestChange( unsigned int i );
 
       /// return the score of the best graph change
       /** @throws NotFound exception is thrown if the selector is empty */
@@ -128,10 +130,10 @@ namespace gum {
        * allows to get the score of the change that is considered the best for
        * modifying the parents' set of the ith node.
        * @throws NotFound exception is thrown if the selector is empty */
-      float bestScore(unsigned int i);
+      float bestScore( unsigned int i );
 
       /// indicate to the selector that a change has been applied
-      void applyChange(const GraphChange &change);
+      void applyChange( const GraphChange& change );
 
       /// indicate to the selector that one of serveral changes has been applied
       /** This function is to be used rather than applyChange when we wish to
@@ -140,7 +142,7 @@ namespace gum {
        * we shall compute the scores with function
        * updateScoresAfterAppliedChanges (). See class GreedyHillClimbing for
        * an illustration of the use of this method. */
-      void applyChangeWithoutScoreUpdate(const GraphChange &change);
+      void applyChangeWithoutScoreUpdate( const GraphChange& change );
 
       /// recompute all the scores after the application of several changes
       /** This method needs COMPULSORILY be used after applications of
@@ -150,28 +152,30 @@ namespace gum {
       void updateScoresAfterAppliedChanges();
 
       /// indicates whether a given change is valid or not
-      bool isChangeValid(const GraphChange &change) const;
+      bool isChangeValid( const GraphChange& change ) const;
 
       /// sets the graph from which scores are computed
-      void setGraph(DiGraph &graph, const std::vector<unsigned int> &modal);
+      void setGraph( DiGraph& graph, const std::vector<unsigned int>& modal );
 
       /// returns the set of queues sorted by decreasing top priority
-      std::vector<std::pair<unsigned int, float>> nodesSortedByBestScore() const;
+      std::vector<std::pair<unsigned int, float>>
+      nodesSortedByBestScore() const;
 
       /// returns the set of queues top priorities
-      std::vector<std::pair<unsigned int, float>> nodesUnsortedWithScore() const;
+      std::vector<std::pair<unsigned int, float>>
+      nodesUnsortedWithScore() const;
 
       /// @}
 
       private:
       /// the scoring function
-      SCORE *__score;
+      SCORE* __score;
 
       /// the set of constraints used to determine valid changes
-      STRUCTURAL_CONSTRAINT *__constraint;
+      STRUCTURAL_CONSTRAINT* __constraint;
 
       /// the generator that returns the set of possible changes
-      GRAPH_CHANGES_GENERATOR *__changes_generator;
+      GRAPH_CHANGES_GENERATOR* __changes_generator;
 
       /// a sequence containing all the possible changes
       Sequence<GraphChange> __changes;
@@ -180,7 +184,8 @@ namespace gum {
       /** the scores are indexed by their index in sequence __changes */
       std::vector<std::pair<float, float>> __change_scores;
 
-      /// for each node, a priority queue sorting GraphChanges by decreasing score
+      /// for each node, a priority queue sorting GraphChanges by decreasing
+      /// score
       /** within each queue, the changes are determined by their index in
        * sequence __changes. */
       std::vector<PriorityQueue<unsigned int, float, std::greater<float>>>
@@ -189,7 +194,8 @@ namespace gum {
       /// a global priority queue indicating for each node its best score
       PriorityQueue<unsigned int, float, std::greater<float>> __node_queue;
 
-      /// the set of changes known to be currently illegal (due to the constraints)
+      /// the set of changes known to be currently illegal (due to the
+      /// constraints)
       /** within each queue, the changes are determined by their index in
        * sequence __changes. */
       Set<unsigned int> __illegal_changes;
@@ -200,30 +206,32 @@ namespace gum {
       /// the set of parents of each node (speeds-up score computations)
       std::vector<std::vector<unsigned int>> __parents;
 
-      /// indicates whether we need to recompute whether the queue is empty or not
+      /// indicates whether we need to recompute whether the queue is empty or
+      /// not
       bool __queues_valid{false};
 
       /// the set of queues to update when applying several changes
       Set<unsigned int> __queues_to_update;
 
       /// prepare the next pack of  score computations
-      void __addScoreToCompute(unsigned int change_index) const;
+      void __addScoreToCompute( unsigned int change_index ) const;
 
       /// indicates whether a given change is valid or not
-      bool __isChangeValid(unsigned int index) const;
+      bool __isChangeValid( unsigned int index ) const;
 
       /// put a change into the illegal set
-      void __invalidateChange(unsigned int change_index);
+      void __invalidateChange( unsigned int change_index );
 
       /// remove the now legal changes from the illegal set
-      void __illegal2LegalChanges(Set<unsigned int> &changes_to_recompute);
+      void __illegal2LegalChanges( Set<unsigned int>& changes_to_recompute );
 
       /// finds the changes that are affected by a given node modification
-      void __findLegalChangesNeedingUpdate(Set<unsigned int> &changes_to_recompute,
-                                           NodeId target_node);
+      void
+      __findLegalChangesNeedingUpdate( Set<unsigned int>& changes_to_recompute,
+                                       NodeId target_node );
 
       /// perform the necessary updates of the scores
-      void __updateScores(const Set<unsigned int> &changes_to_recompute);
+      void __updateScores( const Set<unsigned int>& changes_to_recompute );
 
       /// get from the graph change generator a new set of changes
       void __getNewChanges();

@@ -31,29 +31,38 @@
 
  \section inst_sec_1 Basic principles
 
- MultiDims (see also gum::MultiDimInterface, gum::Potential, gum::CPF, etc ...) are
+ MultiDims (see also gum::MultiDimInterface, gum::Potential, gum::CPF, etc ...)
+ are
  aGrUM's
  multidimensional tables and instantiations (@ref gum::Instantiation) are smart
  iterators
  over these tables. Since MultDims are containers over random discrete variables
- (see gum::DiscreteVariable) we need when iterating over a MultiDim to indicate which
- variable and which label of this variable we are on. Instantiations does exactly
+ (see gum::DiscreteVariable) we need when iterating over a MultiDim to indicate
+ which
+ variable and which label of this variable we are on. Instantiations does
+ exactly
  that:
  when you change the value of variable in an instantiation you change the label
  you're
  looking at in the MultiDim.
 
- If you look at the MultiDim class hierarchy you will see that instantiation are a
+ If you look at the MultiDim class hierarchy you will see that instantiation are
+ a
  subclass of gum::MultiDimInterface, this is because instantiations behaves as
  one-dimension
- multidimensional table with one value per variable, the value being the index of the
- instantiated label. This imply that you can use an instantiation independently of a
+ multidimensional table with one value per variable, the value being the index
+ of the
+ instantiated label. This imply that you can use an instantiation independently
+ of a
  MultiDim.
 
- When a instantiation is meant to be used on a MultiDim it is better to register it
+ When a instantiation is meant to be used on a MultiDim it is better to register
+ it
  to
- the MultiDim but there is one restriction: an instantiation can be registered in one
- (and only one) MultiDim if they share the same variables than the instantiation.
+ the MultiDim but there is one restriction: an instantiation can be registered
+ in one
+ (and only one) MultiDim if they share the same variables than the
+ instantiation.
  Be careful: in the multidim hierarchy two variables are equal if they are their
  memory address are equal.
 
@@ -66,8 +75,10 @@
 
  When registered to a MultiDim finding a value in a table and other computation
  are optimized. For example, the complexity of iterating over a MultiDim with a
- registered instantiation will be in O(k), if it is not registered the complexity
- will be in O(n*k). With n being the number of variables in the MultiDim, and k the
+ registered instantiation will be in O(k), if it is not registered the
+ complexity
+ will be in O(n*k). With n being the number of variables in the MultiDim, and k
+ the
  Cartesian product of the variables domain's.
 
  Why should you use non-registered instantiation? Because they allow to iterate
@@ -81,21 +92,27 @@
  i2 variables, makink a projection of i2 on all variables of i1 will be done by
  i1.chgValIn (i2).
 
- When incrementing a Instantiation, one does not know the variables order used for
+ When incrementing a Instantiation, one does not know the variables order used
+ for
  this incrementation. Typically assuming that two hypermatrices
  t1 and t2 are defined on the same set of variables, and that there are two
  instantiations i1 (registered on t1) and i2 (on t2), then write
- @code for (i1.setFirst (), i2.setFirst ();! i1.end (); i1 ++, i2 ++) t1 [i1] = t2
+ @code for (i1.setFirst (), i2.setFirst ();! i1.end (); i1 ++, i2 ++) t1 [i1] =
+ t2
  [i2]; @endcode
- will not create a copy of t2 in t1, because the variables may not be incremented
+ will not create a copy of t2 in t1, because the variables may not be
+ incremented
  in the same order
 
- There is a way to force the increment: i1.incIn(i2) allows you to increase i1 in
+ There is a way to force the increment: i1.incIn(i2) allows you to increase i1
+ in
  the same order as i2. Hence make a copy of the table is:
- @code for (i1 . setFirst (), i2.setFirst ();! i1.end (); i1.incIn (i2), i2 ++) t1
+ @code for (i1 . setFirst (), i2.setFirst ();! i1.end (); i1.incIn (i2), i2 ++)
+ t1
  [i1] = t2 [i2]; @endcode
 
- There are other cases where it may be intersting to force the order of operations,
+ There are other cases where it may be intersting to force the order of
+ operations,
  the only thing to remember is that the methods that ends with In
  do not use the same order as their version without In.
 
@@ -134,38 +151,49 @@ namespace gum {
 
   class MultiDimAdressable;
 
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                           GUM_INSTANTIATION                          === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+  /* ============================================================================
+   */
+  /* ============================================================================
+   */
+  /* ===                           GUM_INSTANTIATION === */
+  /* ============================================================================
+   */
+  /* ============================================================================
+   */
   /**
    * @class Instantiation instantiation.h agrum/multidim/instantiation.h
    * @brief Class for assigning/browsing values to tuples of discrete variables.
    * @ingroup multidim_group
    *
    * Instantiation is designed to assign values to tuples of variables and to
-   * efficiently loop over values of subsets of variables. This class can be used in
+   * efficiently loop over values of subsets of variables. This class can be
+   *used in
    * two different flavors:
    *
    * # the tuple of variables in the Instantiation is related to a
-   * multidimensional array and, when we loop over the possible values of the tuple,
+   * multidimensional array and, when we loop over the possible values of the
+   *tuple,
    * we also loop at the same time over the corresponding values in the array.
    * # the tuple of variables in the Instantiation is not related to a
-   * multidimensional array and we can loop over the possible values of the tuple
+   * multidimensional array and we can loop over the possible values of the
+   *tuple
    * without looping over values fo any array.
    *
    * a Instantiation can be associated/deassociated to a given multidimensional
-   * array using the gum::MultiDimAdressable::registerSlave(Instantiation& i) and
+   * array using the gum::MultiDimAdressable::registerSlave(Instantiation& i)
+   *and
    * gum::MultiDimAdressable::unregisterSlave functions. Note that, to be
    * registrable, the Instantiation must have precisely the same variables as
    * the array. As a consequence, adding or removing a variable from a
    * Instantiation associated to an array will unregister it. This behavior
    * is compulsory as, if it were still associated, it would not be possible
-   * to retrieve a correct value of the array given a value of the Instantiation.
+   * to retrieve a correct value of the array given a value of the
+   *Instantiation.
    * For instance, if M[A,B,C] is an array indexed by Boolean variables A,B,C,
-   * Which value of M should be returned if B=0 and C=0? We do not know for sure as
-   * we do not know the value of A. Note also that, at any time, you can unregister
+   * Which value of M should be returned if B=0 and C=0? We do not know for sure
+   *as
+   * we do not know the value of A. Note also that, at any time, you can
+   *unregister
    * a Instantiation from its master multidimensional array and you can ask to
    * associate it (provided the tuple of variable match).
    *
@@ -188,16 +216,18 @@ namespace gum {
      * @brief Copy constructor.
      *
      * Note that the Instantiation is by default associated to the same
-     * MultiDimAdressable as aI. This means that looping over values of the tuple
+     * MultiDimAdressable as aI. This means that looping over values of the
+    *tuple
      * will induce looping over the values of the MultiDimAdressable. Similarly,
-     * the value of the tuple is that of aI, and, if the Instantiation is slaved,
+     * the value of the tuple is that of aI, and, if the Instantiation is
+    *slaved,
      * its master is notified of the value of the Instantiation if notifyMaster
      * is true.
      * @param aI the Instantiation we copy
     * @param notifyMaster whether or not notify master if exits
      */
 
-    Instantiation(const Instantiation &aI, const bool notifyMaster = true);
+    Instantiation( const Instantiation& aI, const bool notifyMaster = true );
 
     /**
      * @brief Copy operator.
@@ -209,7 +239,7 @@ namespace gum {
      * If this is not a slave, copies aI.
      * @throw OperationNotAllowed
      */
-    Instantiation &operator=(const Instantiation &aI);
+    Instantiation& operator=( const Instantiation& aI );
 
     /**
      * @brief Constructor for a Instantiation of all the variables of a
@@ -219,15 +249,18 @@ namespace gum {
      * (actually, they are shared in memory). All the variables of aMD belong to
      * the tuple of variables to be instantiated.
      *
-     * Note that the Instantiation is by default associated to aMD, i.e., looping
+     * Note that the Instantiation is by default associated to aMD, i.e.,
+     *looping
      * over values of the tuple will induce looping over the values of aMD. The
      * value given to the tuple is the first possible value, that is, (0,...,0).
-     * If the Instantiation is slaved, its master is notified of the value of the
+     * If the Instantiation is slaved, its master is notified of the value of
+     *the
      * Instantiation.
      *
-     * @param aMD the array the variables of which are those of the Instantiation
+     * @param aMD the array the variables of which are those of the
+     *Instantiation
      */
-    Instantiation(MultiDimAdressable &aMD);
+    Instantiation( MultiDimAdressable& aMD );
 
     /**
      * @brief Constructor for a Instantiation of all the variables of a
@@ -237,15 +270,18 @@ namespace gum {
      * (actually, they are shared in memory). All the variables of aMD belong to
      * the tuple of variables to be instantiated.
      *
-     * Note that the Instantiation is by default associated to aMD, i.e., looping
+     * Note that the Instantiation is by default associated to aMD, i.e.,
+     *looping
      * over values of the tuple will induce looping over the values of aMD. The
      * value given to the tuple is the first possible value, that is, (0,...,0).
-     * If the Instantiation is slaved, its master is notified of the value of the
+     * If the Instantiation is slaved, its master is notified of the value of
+     *the
      * Instantiation.
      *
-     * @param aMD the array the variables of which are those of the Instantiation
+     * @param aMD the array the variables of which are those of the
+     *Instantiation
      */
-    Instantiation(const MultiDimAdressable &aMD);
+    Instantiation( const MultiDimAdressable& aMD );
 
     /**
      * @brief Constructor for a Instantiation of all the variables of a
@@ -255,15 +291,18 @@ namespace gum {
      * (actually, they are shared in memory). All the variables of aMD belong to
      * the tuple of variables to be instantiated.
      *
-     * Note that the Instantiation is by default associated to aMD, i.e., looping
+     * Note that the Instantiation is by default associated to aMD, i.e.,
+     *looping
      * over values of the tuple will induce looping over the values of aMD. The
      * value given to the tuple is the first possible value, that is, (0,...,0).
-     * If the Instantiation is slaved, its master is notified of the value of the
+     * If the Instantiation is slaved, its master is notified of the value of
+     *the
      * Instantiation.
      *
-     * @param aMD the array the variables of which are those of the Instantiation
+     * @param aMD the array the variables of which are those of the
+     *Instantiation
      */
-    Instantiation(MultiDimAdressable *aMD);
+    Instantiation( MultiDimAdressable* aMD );
 
     /**
      * @brief Constructor for a Instantiation of all the variables of a
@@ -273,15 +312,18 @@ namespace gum {
      * (actually, they are shared in memory). All the variables of aMD belong to
      * the tuple of variables to be instantiated.
      *
-     * Note that the Instantiation is by default associated to aMD, i.e., looping
+     * Note that the Instantiation is by default associated to aMD, i.e.,
+     *looping
      * over values of the tuple will induce looping over the values of aMD. The
      * value given to the tuple is the first possible value, that is, (0,...,0).
-     * If the Instantiation is slaved, its master is notified of the value of the
+     * If the Instantiation is slaved, its master is notified of the value of
+     *the
      * Instantiation.
      *
-     * @param aMD the array the variables of which are those of the Instantiation
+     * @param aMD the array the variables of which are those of the
+     *Instantiation
      */
-    Instantiation(const MultiDimAdressable *aMD);
+    Instantiation( const MultiDimAdressable* aMD );
 
     /// Destructor.
     ~Instantiation();
@@ -303,34 +345,40 @@ namespace gum {
      * then DuplicateElement is thrown in this case. The
      * value of the new variable is set to that of index 0, that is, the first
      * possible value for the variable.
-     * Since an instantiation must share the same set of variables with his master
+     * Since an instantiation must share the same set of variables with his
+     *master
      * an OperationNotAllowed is raised if you try to add a variable of a slaved
      * instantiation.
      *
      * @param v the new var
-     * @warning variable v is known to the Instantiation only by a pointer to it.
-     *          As a result, this is not a copy of v that is used by Instantiation
-     *          But rather v itself. As such, v should never be deleted from memory
+     * @warning variable v is known to the Instantiation only by a pointer to
+     *it.
+     *          As a result, this is not a copy of v that is used by
+     *Instantiation
+     *          But rather v itself. As such, v should never be deleted from
+     *memory
      *          until the Instantiation is removed.
      * @throw DuplicateElement
      * @throw OperationNotAllowed
      */
-    void add(const DiscreteVariable &v);
+    void add( const DiscreteVariable& v );
 
     /**
      * @brief Removes a variable from the Instantiation.
      *
      * If variable v does not belong to the Instantiation tuple of variables,
      * then NotFound is thrown.
-     * Since an instantiation must share the same set of variables with his master
-     * an OperationNotAllowed is raised if you try to remove a variable of a slaved
+     * Since an instantiation must share the same set of variables with his
+     *master
+     * an OperationNotAllowed is raised if you try to remove a variable of a
+     *slaved
      * instantiation.
      *
      * @param v the variable to be erased from the tuple
      * @throw NotFound
      * @throw OperationNotAllowed Raised if the instantiation is a slave.
      */
-    void erase(const DiscreteVariable &v);
+    void erase( const DiscreteVariable& v );
 
     /**
      * @brief Erase all variables from an Instantiation
@@ -345,47 +393,53 @@ namespace gum {
      * Returns the position of the variable v.
      * @throw NotFound Raised if v does not belong to the instantiation.
      */
-    Idx pos(const DiscreteVariable &v) const;
+    Idx pos( const DiscreteVariable& v ) const;
 
     /**
      * Returns the current value of the variable at position i.
      *
-     * @warning For speed issues, the function does not actually check whether the
+     * @warning For speed issues, the function does not actually check whether
+     *the
      *          overflow flag is set before returning the current value of the
-     *          variable as, usually, it is not necessary. If need be, use function
+     *          variable as, usually, it is not necessary. If need be, use
+     *function
      *          inOverflow() to check.
      *
      * @param i The index of the variable.
      * @throw NotFound Raised if the element cannot be found.
      */
-    Idx val(Idx i) const;
+    Idx val( Idx i ) const;
 
     /**
      * Returns the current value of a given variable.
      *
-     * @warning For speed issues, the function does not actually check whether the
+     * @warning For speed issues, the function does not actually check whether
+     *the
      *          overflow flag is set before returning the current value of the
-     *          variable as, usually, it is not necessary. If need be, use function
+     *          variable as, usually, it is not necessary. If need be, use
+     *function
      *          inOverflow() to check.
      *
      * @param var The variable the value of which we wish to know.
      * @throw NotFound Raised it var does not belong to the instantiation.
      */
-    Idx val(const DiscreteVariable &var) const;
+    Idx val( const DiscreteVariable& var ) const;
 
     /**
      * Returns the current value of a given variable.
      *
-     * @warning For speed issues, the function does not actually check whether the
+     * @warning For speed issues, the function does not actually check whether
+     *the
      *          overflow flag is set before returning the current value of the
-     *          variable as, usually, it is not necessary. If need be, use function
+     *          variable as, usually, it is not necessary. If need be, use
+     *function
      *          inOverflow() to check.
      *
      * @param pvar a pointer to the variable the value of which we wish to know
      * @throw NotFound Raised if var does not belong to the instantiation.
      */
 
-    Idx valFromPtr(const DiscreteVariable *pvar) const;
+    Idx valFromPtr( const DiscreteVariable* pvar ) const;
 
     /**
      * Returns the variable at position i in the tuple.
@@ -394,7 +448,7 @@ namespace gum {
      * @throw NotFound Raised if the element cannot be found.
      */
 
-    const DiscreteVariable &variable(Idx i) const;
+    const DiscreteVariable& variable( Idx i ) const;
 
     /**
      * @brief Assign newval to variable v in the Instantiation.
@@ -404,16 +458,20 @@ namespace gum {
      * overflow flag.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The index of the value assigned (consider the values of v as
-     *               an array indexed from 0 to n of values (which might be anything
-     *               from real numbers to strings, etc). Parameter newval indicates
+     * @param newval The index of the value assigned (consider the values of v
+     *as
+     *               an array indexed from 0 to n of values (which might be
+     *anything
+     *               from real numbers to strings, etc). Parameter newval
+     *indicates
      *               the index in this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
-     * @throw NotFound Raised if variable v does not belong to the instantiation.
+     * @throw NotFound Raised if variable v does not belong to the
+     *instantiation.
      * @throw OutOfBound Raised if newval is not a possible value for v.
      */
 
-    Instantiation &chgVal(const DiscreteVariable &v, Idx newval);
+    Instantiation& chgVal( const DiscreteVariable& v, Idx newval );
 
     /**
      * @brief Assign newval to variable v in the Instantiation.
@@ -423,16 +481,20 @@ namespace gum {
      * overflow flag.
      *
      * @param v The variable whose value is assigned.
-     * @param newval The index of the value assigned (consider the values of v as
-     *               an array indexed from 0 to n of values (which might be anything
-     *               from real numbers to strings, etc). Parameter newval indicates
+     * @param newval The index of the value assigned (consider the values of v
+     *as
+     *               an array indexed from 0 to n of values (which might be
+     *anything
+     *               from real numbers to strings, etc). Parameter newval
+     *indicates
      *               the index in this array of the new value taken by v.
      * @return Returns a reference to *this in order to chain the chgVal.
-     * @throw NotFound Raised if variable v does not belong to the instantiation.
+     * @throw NotFound Raised if variable v does not belong to the
+     *instantiation.
      * @throw OutOfBound Raised if newval is not a possible value for v.
      */
 
-    Instantiation &chgVal(const DiscreteVariable *v, Idx newval);
+    Instantiation& chgVal( const DiscreteVariable* v, Idx newval );
 
     /**
      * @brief Assign newval to variable at position varPos in the Instantiation.
@@ -454,12 +516,13 @@ namespace gum {
      *        the variable
      */
 
-    Instantiation &chgVal(Idx varPos, Idx newval);
+    Instantiation& chgVal( Idx varPos, Idx newval );
 
     /**
      * @brief Assign the values from i in the Instantiation.
      *
-     * For any variable in i and in *this, value of the variable in i is assigned
+     * For any variable in i and in *this, value of the variable in i is
+     *assigned
      * to the variable in *this.
      *
      * In addition of modifying the value of the variables in *this, the
@@ -468,9 +531,11 @@ namespace gum {
      *
      * If no variables in i matches, then no value is changed.
      *
-     * @warning Variables has to be "the same". Therefore chgValIn is usefull in a
+     * @warning Variables has to be "the same". Therefore chgValIn is usefull in
+     *a
      *same domain variables (for instance a BN).
-     * However two identical variables will not be recognized as same (for instance
+     * However two identical variables will not be recognized as same (for
+     *instance
      *between 2 BNs).
      * @see Instantiation::setValsFrom for this kind of utilisation.
      *
@@ -478,7 +543,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      */
 
-    Instantiation &setVals(const Instantiation &i);
+    Instantiation& setVals( const Instantiation& i );
 
     /**
      * @brief Assign the values of external in *this, using map as a bijection
@@ -488,12 +553,13 @@ namespace gum {
      * @param map keys are variables in external
      * @param external An instantiation used to change the values in j.
      *
-     * @throw NotFound Raised if a variable in external does not point to a variable
+     * @throw NotFound Raised if a variable in external does not point to a
+     *variable
      *in *this or in external.
      */
     void setValsFrom(
-        const HashTable<const DiscreteVariable *, const DiscreteVariable *> &map,
-        const Instantiation &external);
+        const HashTable<const DiscreteVariable*, const DiscreteVariable*>& map,
+        const Instantiation& external );
 
     /**
      * Indicates whether a given variable belongs to the Instantiation.
@@ -501,7 +567,7 @@ namespace gum {
      * @param v The variable for which the test is made.
      * @return Returns true if v is in the Instantiation.
      */
-    bool contains(const DiscreteVariable &v) const;
+    bool contains( const DiscreteVariable& v ) const;
 
     /**
      * Indicates whether a given variable belongs to the Instantiation.
@@ -509,13 +575,13 @@ namespace gum {
      * @param v A pointer on the variable for which the test is made.
      * @return Returns true if *v is in the Instantiation.
      */
-    bool contains(const DiscreteVariable *v) const;
+    bool contains( const DiscreteVariable* v ) const;
 
     /// Returns the sequence of DiscreteVariable of this instantiation.
-    const Sequence<const DiscreteVariable *> &variablesSequence() const;
+    const Sequence<const DiscreteVariable*>& variablesSequence() const;
 
     /// Returns true if the instantiation is empty.
-    virtual bool empty(void) const;
+    virtual bool empty( void ) const;
 
     /// @}
 
@@ -525,7 +591,8 @@ namespace gum {
     /// @{
 
     /**
-     * @brief Indicates whether the current value of the tuple is correct or not.
+     * @brief Indicates whether the current value of the tuple is correct or
+     *not.
      *
      * The function inOverflow() is used to flag overflowed operation (for
      * instance, ++ on the last value or -- on the first value will produce an
@@ -547,7 +614,8 @@ namespace gum {
      *
      * When we use multiple inner loops w.r.t. a given Instantiation, it may
      * happen that one inner loop reaches the end() of the Instantiation while
-     * the outer loops do not have reached it. This means that the inner loop has
+     * the outer loops do not have reached it. This means that the inner loop
+     *has
      * toggled the overflow flag. To enable the other loops to go on, we must
      * unset this flag using function unsetOverflow(). For instance, assume that
      * Prob represents probability P(b|a,c), then normalizing this proba can be
@@ -629,8 +697,10 @@ namespace gum {
      * is related to a gum::MultiDimAdressable, then the corresponding value in
      * the latter is updated. If we already reached the end() or the rend() of
      * the possible values, function inc() will perform nothing (this prevents
-     * looping inadvertently several times within the same loop). To unset the end
-     * flag, use functions unsetOverflow(), unsetEnd() or one of the setFirst() or
+     * looping inadvertently several times within the same loop). To unset the
+     *end
+     * flag, use functions unsetOverflow(), unsetEnd() or one of the setFirst()
+     *or
      * setLast().
      *
      * Usage example:
@@ -674,19 +744,25 @@ namespace gum {
      * then the corresponding value in the latter is updated.
      *
      * Note also that this operator
-     * never throws an exception when it reaches the end of the possible values of
-     * the tuple of variables of the Instantiation. To know if we reached the end,
-     * use function end(). Finally, let us mention that the value of instantiation i
+     * never throws an exception when it reaches the end of the possible values
+     *of
+     * the tuple of variables of the Instantiation. To know if we reached the
+     *end,
+     * use function end(). Finally, let us mention that the value of
+     *instantiation i
      * is not taken into account, that is, only the variables belonging to i are
-     * taken into account. The next value of *this is thus computed w.r.t. to the
-     * current value of *this. If we already reached the end() or the rend() of the
-     * possible values, function incIn() will perform nothing (this prevents looping
+     * taken into account. The next value of *this is thus computed w.r.t. to
+     *the
+     * current value of *this. If we already reached the end() or the rend() of
+     *the
+     * possible values, function incIn() will perform nothing (this prevents
+     *looping
      * inadvertently several times within the same loop). To unset the end flag,
      * use functions unsetOverflow(), unsetEnd() or one of the setFirst() or
      *setLast().
      */
 
-    void incIn(const Instantiation &i);
+    void incIn( const Instantiation& i );
 
     /**
      * @brief Operator -- for the variables in i.
@@ -695,19 +771,25 @@ namespace gum {
      * then the corresponding value in the latter is updated.
      *
      * Note also that this operator
-     * never throws an exception when it reaches the end of the possible values of
-     * the tuple of variables of the Instantiation. To know if we reached the end,
-     * use function end(). Finally, let us mention that the value of instantiation i
+     * never throws an exception when it reaches the end of the possible values
+     *of
+     * the tuple of variables of the Instantiation. To know if we reached the
+     *end,
+     * use function end(). Finally, let us mention that the value of
+     *instantiation i
      * is not taken into account, that is, only the variables belonging to i are
-     * taken into account. The next value of *this is thus computed w.r.t. to the
-     * current value of *this. If we already reached the end() or the rend() of the
-     * possible values, function incIn() will perform nothing (this prevents looping
+     * taken into account. The next value of *this is thus computed w.r.t. to
+     *the
+     * current value of *this. If we already reached the end() or the rend() of
+     *the
+     * possible values, function incIn() will perform nothing (this prevents
+     *looping
      * inadvertently several times within the same loop). To unset the end flag,
      * use functions unsetOverflow(), unsetEnd() or one of the setFirst() or
      *setLast().
      */
 
-    void decIn(const Instantiation &i);
+    void decIn( const Instantiation& i );
 
     /**
      * @brief Operator ++ for the variables not in i.
@@ -716,54 +798,76 @@ namespace gum {
      * then the corresponding value in the latter is updated.
      *
      * Note also that this operator
-     * never throws an exception when it reaches the end of the possible values of
-     * the tuple of variables of the Instantiation. To know if we reached the end,
-     * use function end(). Finally, let us mention that the value of instantiation i
-     * is not taken into account, that is, only the variables not belonging to i are
-     * taken into account. The next value of *this is thus computed w.r.t. to the
-     * current value of *this. If we already reached the end() or the rend() of the
-     * possible values, function incerr() will perform nothing (this prevents looping
+     * never throws an exception when it reaches the end of the possible values
+     *of
+     * the tuple of variables of the Instantiation. To know if we reached the
+     *end,
+     * use function end(). Finally, let us mention that the value of
+     *instantiation i
+     * is not taken into account, that is, only the variables not belonging to i
+     *are
+     * taken into account. The next value of *this is thus computed w.r.t. to
+     *the
+     * current value of *this. If we already reached the end() or the rend() of
+     *the
+     * possible values, function incerr() will perform nothing (this prevents
+     *looping
      * inadvertently several times within the same loop). To unset the end flag,
      * use functions unsetOverflow(), unsetEnd() or one of the setFirst() or
      *setLast().
      */
 
-    void incOut(const Instantiation &i);
+    void incOut( const Instantiation& i );
 
     /**
      * @brief Operator -- for the variables not in i.
      *
-     * Note that, if the Instantiation is related to a MultiDimAdressable, then the
-     * corresponding value in the latter is updated. Note also that this operator
-     * never throws an exception when it reaches the end of the possible values of
-     * the tuple of variables of the Instantiation. To know if we reached the end,
-     * use function end(). Finally, let us mention that the value of instantiation i
-     * is not taken into account, that is, only the variables not belonging to i are
-     * taken into account. The next value of *this is thus computed w.r.t. to the
-     * current value of *this. If we already reached the end() or the rend() of the
-     * possible values, function incerr() will perform nothing (this prevents looping
+     * Note that, if the Instantiation is related to a MultiDimAdressable, then
+     *the
+     * corresponding value in the latter is updated. Note also that this
+     *operator
+     * never throws an exception when it reaches the end of the possible values
+     *of
+     * the tuple of variables of the Instantiation. To know if we reached the
+     *end,
+     * use function end(). Finally, let us mention that the value of
+     *instantiation i
+     * is not taken into account, that is, only the variables not belonging to i
+     *are
+     * taken into account. The next value of *this is thus computed w.r.t. to
+     *the
+     * current value of *this. If we already reached the end() or the rend() of
+     *the
+     * possible values, function incerr() will perform nothing (this prevents
+     *looping
      * inadvertently several times within the same loop). To unset the end flag,
      * use functions unsetOverflow(), unsetEnd() or one of the setFirst() or
      *setLast().
      */
 
-    void decOut(const Instantiation &i);
+    void decOut( const Instantiation& i );
 
     /**
      * @brief Operator ++ for vars which are not v.
      *
-     * Note that, if the Instantiation is related to a MultiDimAdressable, then the
-     * corresponding value in the latter is updated. Note also that this operator
-     * never throws an exception when it reaches the end of the possible values of
-     * the tuple of variables of the Instantiation. To know if we reached the end,
+     * Note that, if the Instantiation is related to a MultiDimAdressable, then
+     *the
+     * corresponding value in the latter is updated. Note also that this
+     *operator
+     * never throws an exception when it reaches the end of the possible values
+     *of
+     * the tuple of variables of the Instantiation. To know if we reached the
+     *end,
      * use function end(). If we already reached the end() or the rend() of the
      * possible values, function incNotVar() will perform nothing (this prevents
-     * looping inadvertently several times within the same loop). To unset the end
-     * flag, use functions unsetOverflow(), unsetEnd() or one of the setFirst() or
+     * looping inadvertently several times within the same loop). To unset the
+     *end
+     * flag, use functions unsetOverflow(), unsetEnd() or one of the setFirst()
+     *or
      * setLast().
      */
 
-    void incNotVar(const DiscreteVariable &v);
+    void incNotVar( const DiscreteVariable& v );
 
     /**
      * @brief Operator -- for vars which are not v.
@@ -772,21 +876,26 @@ namespace gum {
      * then the corresponding value in the latter is updated.
      *
      * Note also that this operator
-     * never throws an exception when it reaches the end of the possible values of
-     * the tuple of variables of the Instantiation. To know if we reached the end,
+     * never throws an exception when it reaches the end of the possible values
+     *of
+     * the tuple of variables of the Instantiation. To know if we reached the
+     *end,
      * use function end(). If we already reached the end() or the rend() of the
      * possible values, function incNotVar() will perform nothing (this prevents
-     * looping inadvertently several times within the same loop). To unset the end
-     * flag, use functions unsetOverflow(), unsetEnd() or one of the setFirst() or
+     * looping inadvertently several times within the same loop). To unset the
+     *end
+     * flag, use functions unsetOverflow(), unsetEnd() or one of the setFirst()
+     *or
      * setLast().
      */
 
-    void decNotVar(const DiscreteVariable &v);
+    void decNotVar( const DiscreteVariable& v );
 
     /**
      * @brief Operator ++ for variable v only.
      *
-     * This function increment only variable v. Trying to increment the last possible
+     * This function increment only variable v. Trying to increment the last
+     *possible
      * value results in an overflow (no exception is thrown in this case).
      * If we already reached the end() or the rend() of the possible
      * values, function incVar() will perform nothing (this prevents looping
@@ -794,15 +903,17 @@ namespace gum {
      * use functions unsetOverflow(), unsetEnd() or one of the setFirst() or
      *setLast().
      *
-     * @throw NotFound Raised if variable v does not belong to the Instantiation.
+     * @throw NotFound Raised if variable v does not belong to the
+     *Instantiation.
      */
 
-    void incVar(const DiscreteVariable &v);
+    void incVar( const DiscreteVariable& v );
 
     /**
      * @brief Operator -- for variable v only.
      *
-     * This function decrement only variable v. Trying to decrement the last possible
+     * This function decrement only variable v. Trying to decrement the last
+     *possible
      * value results in an overflow (no exception is thrown in this case).
      * If we already reached the end() or the rend() of the possible
      * values, function incVar() will perform nothing (this prevents looping
@@ -810,10 +921,11 @@ namespace gum {
      * use functions unsetOverflow(), unsetEnd() or one of the setFirst() or
      *setLast().
      *
-     * @throw NotFound Raised if variable v does not belong to the Instantiation.
+     * @throw NotFound Raised if variable v does not belong to the
+     *Instantiation.
      */
 
-    void decVar(const DiscreteVariable &v);
+    void decVar( const DiscreteVariable& v );
 
     /// @}
 
@@ -825,9 +937,11 @@ namespace gum {
     /**
      * @brief Assign the first values to the tuple of the Instantiation.
      *
-     * Note that, if the Instantiation is related to a gum::MultiDimAdressable, then
+     * Note that, if the Instantiation is related to a gum::MultiDimAdressable,
+     *then
      *the
-     * corresponding value in the latter is updated. This function naturally unsets
+     * corresponding value in the latter is updated. This function naturally
+     *unsets
      * the overFlow flag.
      */
 
@@ -836,33 +950,40 @@ namespace gum {
     /**
      * @brief Assign the last values in the Instantiation.
      *
-     * Note that, if the Instantiation is related to a gum::MultiDimAdressable, then
+     * Note that, if the Instantiation is related to a gum::MultiDimAdressable,
+     *then
      *the
-     * corresponding value in the latter is updated. This function naturally unsets
+     * corresponding value in the latter is updated. This function naturally
+     *unsets
      * the overFlow flag.
      */
 
     void setLast();
 
     /**
-     * @brief Assign the first values in the Instantiation for the variables in i.
+     * @brief Assign the first values in the Instantiation for the variables in
+     *i.
      *
-     * Note that, if the Instantiation is related to a MultiDimAdressable, then the
+     * Note that, if the Instantiation is related to a MultiDimAdressable, then
+     *the
      * corresponding value in the latter is updated. Note also that the value of
      * instantiation i is not taken into account, that is, only the variables
-     * not belonging to i are taken into account. This function naturally unsets the
+     * not belonging to i are taken into account. This function naturally unsets
+     *the
      * overFlow flag.
      */
 
-    void setFirstIn(const Instantiation &i);
+    void setFirstIn( const Instantiation& i );
 
     /**
-     * @brief Assign the last values in the Instantiation for the variables in i.
+     * @brief Assign the last values in the Instantiation for the variables in
+     *i.
      *
      * Where Di is the domain size of variable i in the Instantiation) for the i
      *vars.
      *
-     * Note that, if the Instantiation is related to a gum::MultiDimAdressable, then
+     * Note that, if the Instantiation is related to a gum::MultiDimAdressable,
+     *then
      *the
      * corresponding value in the latter is updated. Note also that the value of
      * instantiation i is not taken into account, that is, only the variables
@@ -870,78 +991,92 @@ namespace gum {
      * overFlow flag.
      */
 
-    void setLastIn(const Instantiation &i);
+    void setLastIn( const Instantiation& i );
 
     /**
-     * @brief Assign the first values in the Instantiation for the variables not in
+     * @brief Assign the first values in the Instantiation for the variables not
+     *in
      *i.
      *
-     * Note that, if the Instantiation is related to a qum::MultiDimAdressable, then
+     * Note that, if the Instantiation is related to a qum::MultiDimAdressable,
+     *then
      *the
      * corresponding value in the latter is updated. Note also that the value of
      * instantiation i is not taken into account, that is, only the variables
-     * not belonging to i are taken into account. This function naturally unsets the
+     * not belonging to i are taken into account. This function naturally unsets
+     *the
      * overFlow flag.
      */
 
-    void setFirstOut(const Instantiation &i);
+    void setFirstOut( const Instantiation& i );
 
     /**
-     * @brief Assign the last values in the Instantiation for the variables not in i.
+     * @brief Assign the last values in the Instantiation for the variables not
+     *in i.
      *
-     * Note that, if the Instantiation is related to a gum::MultiDimAdressable, then
+     * Note that, if the Instantiation is related to a gum::MultiDimAdressable,
+     *then
      *the
      * corresponding value in the latter is updated. Note also that the value of
      * instantiation i is not taken into account, that is, only the variables
-     * not belonging to i are taken into account. This function naturally unsets the
+     * not belonging to i are taken into account. This function naturally unsets
+     *the
      * overFlow flag.
      */
 
-    void setLastOut(const Instantiation &i);
+    void setLastOut( const Instantiation& i );
 
     /**
      * @brief Assign the first values to variables different of v.
      *
-     * Note that, if the Instantiation is related to a gum::MultiDimAdressable, then
+     * Note that, if the Instantiation is related to a gum::MultiDimAdressable,
+     *then
      *the
-     * corresponding value in the latter is updated. This function naturally unsets
+     * corresponding value in the latter is updated. This function naturally
+     *unsets
      * the overFlow flag.
      */
 
-    void setFirstNotVar(const DiscreteVariable &v);
+    void setFirstNotVar( const DiscreteVariable& v );
 
     /**
      * @brief  Assign the last values to variables different of v.
      *
-     * Note that, if the Instantiation is related to a gum::MultiDimAdressable, then
+     * Note that, if the Instantiation is related to a gum::MultiDimAdressable,
+     *then
      *the
-     * corresponding value in the latter is updated. This function naturally unsets
+     * corresponding value in the latter is updated. This function naturally
+     *unsets
      * the overFlow flag.
      */
 
-    void setLastNotVar(const DiscreteVariable &v);
+    void setLastNotVar( const DiscreteVariable& v );
 
     /**
      * @brief Assign the first value in the Instantiation for var v.
      *
-     * Note that, if the Instantiation is related to a gum::MultiDimAdressable, then
+     * Note that, if the Instantiation is related to a gum::MultiDimAdressable,
+     *then
      *the
-     * corresponding value in the latter is updated. This function naturally unsets
+     * corresponding value in the latter is updated. This function naturally
+     *unsets
      * the overFlow flag.
      */
 
-    void setFirstVar(const DiscreteVariable &v);
+    void setFirstVar( const DiscreteVariable& v );
 
     /**
      * @brief Assign the last value in the Instantiation for var v.
      *
-     * Note that, if the Instantiation is related to a gum::MultiDimAdressable, then
+     * Note that, if the Instantiation is related to a gum::MultiDimAdressable,
+     *then
      *the
-     * corresponding value in the latter is updated. This function naturally unsets
+     * corresponding value in the latter is updated. This function naturally
+     *unsets
      * the overFlow flag.
      */
 
-    void setLastVar(const DiscreteVariable &v);
+    void setLastVar( const DiscreteVariable& v );
 
     /// @}
 
@@ -954,17 +1089,20 @@ namespace gum {
      * @brief Tries to register the Instantiation to a gum::MultiDimAdressable.
      *
      * The function will actually register the Instantiation if and only if it
-     * has precisely the same variables as the gum::MultiDimAdressable (by precisely,
-     * we mean a physical equality, that is, the variables are at the same places
+     * has precisely the same variables as the gum::MultiDimAdressable (by
+     *precisely,
+     * we mean a physical equality, that is, the variables are at the same
+     *places
      * in memory).
      *
      * @param aMD the multidimensional array which will be the master of *this
      * @returns true if and only if the Instantiation has been associated
      *          successfully to aMD.
-     * @throw OperationNotAllowed Raised if this instantiation has already a master.
+     * @throw OperationNotAllowed Raised if this instantiation has already a
+     *master.
      */
 
-    bool actAsSlave(MultiDimAdressable &aMD);
+    bool actAsSlave( MultiDimAdressable& aMD );
 
     /**
      * Deassociate the master gum::MultiDimAdressable, if any.
@@ -979,11 +1117,11 @@ namespace gum {
 
     /// Indicates whether m is the master of this instantiation.
 
-    bool isMaster(const MultiDimAdressable *m) const;
+    bool isMaster( const MultiDimAdressable* m ) const;
 
     /// Indicates whether m is the master of this instantiation.
 
-    bool isMaster(const MultiDimAdressable &m) const;
+    bool isMaster( const MultiDimAdressable& m ) const;
 
     /**
      * @brief Force the variables sequence to be the same as the master one.
@@ -992,10 +1130,11 @@ namespace gum {
      * friend class gum::MultiDimAdressable.
      *
      * @param m The master of this instantiation.
-     * @throw OperationNotAllowed Raised if m is not the master of instantiation.
+     * @throw OperationNotAllowed Raised if m is not the master of
+     *instantiation.
      */
 
-    void synchronizeWithMaster(const MultiDimAdressable *m);
+    void synchronizeWithMaster( const MultiDimAdressable* m );
 
     /**
      * Call __add by master.
@@ -1006,7 +1145,8 @@ namespace gum {
      *instantiation.
      */
 
-    void addWithMaster(const MultiDimAdressable *m, const DiscreteVariable &v);
+    void addWithMaster( const MultiDimAdressable* m,
+                        const DiscreteVariable& v );
 
     /**
      * Call __erase by master.
@@ -1017,7 +1157,8 @@ namespace gum {
      *instantiation.
      */
 
-    void eraseWithMaster(const MultiDimAdressable *m, const DiscreteVariable &v);
+    void eraseWithMaster( const MultiDimAdressable* m,
+                          const DiscreteVariable& v );
 
     /// @}
 
@@ -1028,19 +1169,19 @@ namespace gum {
 
     /// Alias of inc().
 
-    Instantiation &operator++();
+    Instantiation& operator++();
 
     /// Alias of dec().
 
-    Instantiation &operator--();
+    Instantiation& operator--();
 
     /// Calls depl times inc().
 
-    Instantiation &operator+=(Id depl);
+    Instantiation& operator+=( Id depl );
 
     /// Calls depl times dec()
 
-    Instantiation &operator-=(Id depl);
+    Instantiation& operator-=( Id depl );
 
     /// @}
 
@@ -1068,19 +1209,19 @@ namespace gum {
      * @throw OperationNotAllowed if slave instantiation
      */
 
-    void reorder(const Sequence<const DiscreteVariable *> &v);
+    void reorder( const Sequence<const DiscreteVariable*>& v );
 
     /**
      * Calls reorder(const Sequence<const DiscreteVariable*>&) with
      * i.variablesSequence()
      */
 
-    void reorder(const Instantiation &i);
+    void reorder( const Instantiation& i );
     /// @}
 
     protected:
     /// Replace x by y.
-    virtual void _swap(const DiscreteVariable *x, const DiscreteVariable *y);
+    virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
 
     private:
     /**
@@ -1088,11 +1229,11 @@ namespace gum {
      * instantiated.
      */
 
-    MultiDimAdressable *__master;
+    MultiDimAdressable* __master;
 
     /// The tuple of variables to be instantiated.
 
-    Sequence<const DiscreteVariable *> __vars;
+    Sequence<const DiscreteVariable*> __vars;
 
     /// The current instantiation: the value of the tuple.
 
@@ -1110,7 +1251,7 @@ namespace gum {
 
     /// swap 2 vars in the Instantiation
 
-    void __swap(Idx i, Idx j);
+    void __swap( Idx i, Idx j );
 
     /**
      *  modifies internally the value of a given variable of the sequence
@@ -1118,39 +1259,44 @@ namespace gum {
      *  informs its master MultiDimAdressable of the modification
      */
 
-    void __chgVal(Idx varPos, Idx newVal);
+    void __chgVal( Idx varPos, Idx newVal );
 
     /**
      *  adds a new var to the sequence of vars
      *  If variable v already belongs to the Instantiation tuple of variables,
-     *  then nothing is done. In particular, no exception is thrown in this case.
+     *  then nothing is done. In particular, no exception is thrown in this
+     * case.
      *  @param v the new var
      *  @ warning note that this function does not deassociate the Instantiation
      *  from its master MultiDimAdressable, if any. To do so, use function
      *  add instead.
      *  @warning this function does not notify the master MultiDimAdressable,
      *  if any. Use in addition function chgVal or __chgVal if need be.
-     *  @warning variable v is known to the Instantiation only by a pointer to it.
+     *  @warning variable v is known to the Instantiation only by a pointer to
+     * it.
      *  As a result, this is not a copy of v that is used by Instantiation but
-     *  rather v itself. As such, v should never be deleted from memory until the
+     *  rather v itself. As such, v should never be deleted from memory until
+     * the
      *  Instantiation is removed.
      *  @throw DuplicateElement
      */
 
-    void __add(const DiscreteVariable &v);
+    void __add( const DiscreteVariable& v );
 
     /**
      *  removes a variable from the sequence of vars
      *  If variable v does not belong to the Instantiation tuple of variables,
-     *  then nothing is done. In particular, no exception is thrown in this case.
+     *  then nothing is done. In particular, no exception is thrown in this
+     * case.
      *  @param v the variable to be erased from the tuple
-     *  @warning this function does not notify the master MultiDimAdressable, if any.
+     *  @warning this function does not notify the master MultiDimAdressable, if
+     * any.
      *  @warning note that this function does not deassociate the Instantiation
      *  from its master MultiDimAdressable, if any. To do so, use function
      *  removeDim instead.
      */
 
-    void __erase(const DiscreteVariable &v);
+    void __erase( const DiscreteVariable& v );
 
     /**
      *  This function is called by the master (if any) when changes arise in its
@@ -1160,11 +1306,11 @@ namespace gum {
      *  @param v the new vars list
      */
 
-    void __notifiedDimChanged(const Sequence<const DiscreteVariable *> &v);
+    void __notifiedDimChanged( const Sequence<const DiscreteVariable*>& v );
 
     /// initialisation (same in 4 constructors)
 
-    void __init(MultiDimAdressable *master);
+    void __init( MultiDimAdressable* master );
 
     /**
      * @brief Reorder vars of this instantiation giving the order in v.
@@ -1175,12 +1321,12 @@ namespace gum {
      * The variables only in v are ignored.
      */
 
-    void __reorder(const Sequence<const DiscreteVariable *> &v);
+    void __reorder( const Sequence<const DiscreteVariable*>& v );
   };
 
   /// Print information of the instantiation in the stream.
 
-  std::ostream &operator<<(std::ostream &, const Instantiation &);
+  std::ostream& operator<<( std::ostream&, const Instantiation& );
 
 } /* namespace gum */
 

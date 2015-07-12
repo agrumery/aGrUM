@@ -34,14 +34,17 @@ namespace gum {
   /**
   * BruteForceKL computes exactly the KL divergence betweens 2 BNs.
   *
-  * BruteForceKL should be used only if difficulty() gives an estimation ( KL_CORRECT
+  * BruteForceKL should be used only if difficulty() gives an estimation (
+  *KL_CORRECT
   *) of the needed time.
   * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
   *computations are made once. The second is for free :)
-  * BruteForce allows as well to compute in the same time the Hellinger distance (\f$
+  * BruteForce allows as well to compute in the same time the Hellinger distance
+  *(\f$
   *\sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001).
   *
-  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL
+  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a
+  *case, KL
   *keeps working but trace this error (errorPQ() and errorQP())?  *
   *
   * @warning This BruteForceKL should be use only if
@@ -62,20 +65,22 @@ namespace gum {
   template <typename GUM_SCALAR> class BruteForceKL : public KL<GUM_SCALAR> {
     public:
     /** constructor must give 2 BNs
-     * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or
+     * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize
+     * or
      * compatible node sets.
      */
-    BruteForceKL(const IBayesNet<GUM_SCALAR> &P, const IBayesNet<GUM_SCALAR> &Q);
+    BruteForceKL( const IBayesNet<GUM_SCALAR>& P,
+                  const IBayesNet<GUM_SCALAR>& Q );
 
     /** copy constructor
      */
-    BruteForceKL(const KL<GUM_SCALAR> &kl);
+    BruteForceKL( const KL<GUM_SCALAR>& kl );
 
     /** destructor */
     virtual ~BruteForceKL();
 
     protected:
-    void _computeKL(void);
+    void _computeKL( void );
 
     using KL<GUM_SCALAR>::_p;
     using KL<GUM_SCALAR>::_q;
@@ -91,8 +96,8 @@ namespace gum {
 
   extern template class BruteForceKL<float>;
   extern template class BruteForceKL<double>;
-} // namespace gum
+}  // namespace gum
 
 #include <agrum/BN/algorithms/divergence/bruteForceKL.tcc>
 
-#endif // GUM_BRUTE_FORCE_KL_H
+#endif  // GUM_BRUTE_FORCE_KL_H

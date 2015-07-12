@@ -15,10 +15,10 @@ namespace CxxTest {
     YesNoRunner() {}
 
     int run() {
-      TestRunner::runAllTests(*this);
+      TestRunner::runAllTests( *this );
       return tracker().failedTests();
     }
   };
 }
 
-#endif // __cxxtest__YesNoRunner_h__
+#endif  // __cxxtest__YesNoRunner_h__

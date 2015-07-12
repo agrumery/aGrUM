@@ -51,7 +51,7 @@ namespace gum {
       virtual iterator begin() const = 0;
 
       /// returns an (unsafe) iterator on the end of the list of operators
-      virtual const iterator &end() const = 0;
+      virtual const iterator& end() const = 0;
 
       /// @}
 
@@ -61,19 +61,19 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which the operator will compute possible changes
-      virtual void setGraph(const DiGraph &graph) = 0;
+      virtual void setGraph( const DiGraph& graph ) = 0;
 
       /// notify the operator set of a change applied to the graph
-      virtual void modifyGraph(const ArcAddition &change) = 0;
+      virtual void modifyGraph( const ArcAddition& change ) = 0;
 
       /// notify the operator set of a change applied to the graph
-      virtual void modifyGraph(const ArcDeletion &change) = 0;
+      virtual void modifyGraph( const ArcDeletion& change ) = 0;
 
       /// notify the operator set of a change applied to the graph
-      virtual void modifyGraph(const ArcReversal &change) = 0;
+      virtual void modifyGraph( const ArcReversal& change ) = 0;
 
       /// notify the operator set of a change applied to the graph
-      virtual void modifyGraph(const GraphChange &change) = 0;
+      virtual void modifyGraph( const GraphChange& change ) = 0;
 
       /// empty the set of possible change operators that can be applied
       virtual void clearChanges() noexcept = 0;

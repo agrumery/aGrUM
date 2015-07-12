@@ -1,0 +1,10 @@
+import system;
+
+request MyRequest {
+    engine SVE;
+    ? system.MySystem.asia.lungCancer;
+
+    system.MySystem.asia.positiveXRay = true;
+    
+    ? system.MySystem.asia.lungCancer;
+}

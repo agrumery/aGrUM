@@ -83,7 +83,8 @@ namespace gum {
      * @param bn The Bayesian Network writen in output.
      * @throws IOError Raised if and I/O error occurs.
      */
-    virtual void write(std::ostream &output, const IBayesNet<GUM_SCALAR> &bn) = 0;
+    virtual void write( std::ostream& output,
+                        const IBayesNet<GUM_SCALAR>& bn ) = 0;
 
     /**
      * Writes a Bayesian Network in the referenced file using the BN format.
@@ -93,10 +94,11 @@ namespace gum {
      * @param bn The Bayesian Network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    virtual void write(std::string filePath, const IBayesNet<GUM_SCALAR> &bn) = 0;
+    virtual void write( std::string filePath,
+                        const IBayesNet<GUM_SCALAR>& bn ) = 0;
 
-    inline GUM_SCALAR fromExact(const GUM_SCALAR &value) const {
-      return IApproximationPolicy<GUM_SCALAR>::fromExact(value);
+    inline GUM_SCALAR fromExact( const GUM_SCALAR& value ) const {
+      return IApproximationPolicy<GUM_SCALAR>::fromExact( value );
     }
   };
 
@@ -105,4 +107,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/io/cnf/CNFWriter.tcc>
-#endif // GUM_NET_WRITER_H
+#endif  // GUM_NET_WRITER_H

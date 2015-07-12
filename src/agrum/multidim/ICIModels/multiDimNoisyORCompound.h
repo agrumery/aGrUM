@@ -20,7 +20,8 @@
 /** @file
  * @brief class for multiDimNoisyORCompound
  *
- * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ *<{prenom.nom}_at_lip6.fr>
  */
 #ifndef GUM_MULTI_DIM_NOISY_OR_COMPOUND_H
 #define GUM_MULTI_DIM_NOISY_OR_COMPOUND_H
@@ -29,11 +30,16 @@
 
 namespace gum {
 
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /* ===                       GUM_MULTI_DIM_NOISYOR_COMPOU                  === */
-  /* =========================================================================== */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
+  /* ===                       GUM_MULTI_DIM_NOISYOR_COMPOU                  ===
+   */
+  /* ===========================================================================
+   */
+  /* ===========================================================================
+   */
   /** @class MultiDimNoisyORCompound
    * @brief Noisy OR representation
    * @ingroup multidim_group
@@ -47,7 +53,8 @@ namespace gum {
    *     assumed to be of probability 0). But for optimization reason, we will
    *     never check if it is the case.
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   template <typename GUM_SCALAR>
 
   class MultiDimNoisyORCompound : public MultiDimICIModel<GUM_SCALAR> {
@@ -59,9 +66,9 @@ namespace gum {
 
     /// Default constructor.
 
-    MultiDimNoisyORCompound(GUM_SCALAR external_weight,
-                            GUM_SCALAR default_weight = (GUM_SCALAR)1.0);
-    MultiDimNoisyORCompound(const MultiDimNoisyORCompound<GUM_SCALAR> &from);
+    MultiDimNoisyORCompound( GUM_SCALAR external_weight,
+                             GUM_SCALAR default_weight = (GUM_SCALAR)1.0 );
+    MultiDimNoisyORCompound( const MultiDimNoisyORCompound<GUM_SCALAR>& from );
 
     /** Copy constructor using a bijection to swap variables from source.
     * @param bij First variables are new variables, seconds are in from.
@@ -69,8 +76,8 @@ namespace gum {
     */
 
     MultiDimNoisyORCompound(
-        const Bijection<const DiscreteVariable *, const DiscreteVariable *> &bij,
-        const MultiDimNoisyORCompound<GUM_SCALAR> &from);
+        const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+        const MultiDimNoisyORCompound<GUM_SCALAR>& from );
 
     /// Destructor.
 
@@ -91,7 +98,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimContainer<GUM_SCALAR> *newFactory() const;
+    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -99,19 +106,22 @@ namespace gum {
     /// @{
 
     public:
-    virtual GUM_SCALAR get(const Instantiation &i) const;
+    virtual GUM_SCALAR get( const Instantiation& i ) const;
 
-    const std::string toString(void) const;
+    const std::string toString( void ) const;
 
     /// returns the real name of the multiDimArray
     /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
-     * name that describes what they are in reality. For instance, a table stored
+     * name that describes what they are in reality. For instance, a table
+     * stored
      * in extension is a "MultiDimArray", one that stores only non zero elements
-     * is a "MultiDimSparseArray", and so on. These names are unique for each type
-     * of implementation and is used by the system to determine which is the best
+     * is a "MultiDimSparseArray", and so on. These names are unique for each
+     * type
+     * of implementation and is used by the system to determine which is the
+     * best
      * functions to use, say, when we wish to use operators such as operator+ on
      * two MultiDimImplementations */
-    virtual const std::string &name() const;
+    virtual const std::string& name() const;
 
     /// @}
   };
@@ -121,8 +131,8 @@ namespace gum {
 
   /// For friendly displaying the content of the array.
   template <typename GUM_SCALAR>
-  std::ostream &operator<<(std::ostream &s,
-                           const MultiDimNoisyORCompound<GUM_SCALAR> &ag);
+  std::ostream& operator<<( std::ostream& s,
+                            const MultiDimNoisyORCompound<GUM_SCALAR>& ag );
 
 } /* namespace gum */
 

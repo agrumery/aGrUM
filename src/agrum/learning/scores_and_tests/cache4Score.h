@@ -40,16 +40,20 @@ namespace gum {
 
   namespace learning {
 
-    /* ========================================================================= */
-    /* ===                        CACHE 4 SCORE CLASS                        === */
-    /* ========================================================================= */
+    /* =========================================================================
+     */
+    /* ===                        CACHE 4 SCORE CLASS                        ===
+     */
+    /* =========================================================================
+     */
     /** @class Cache4Score
      * @brief a cache for caching scores in Score classes (BIC, BDeu, K2, etc.)
      * @ingroup learning_group
      *
      * Caching previously computed scores is very important for learning
      * algorithms because computing a score requires parsing the database and
-     * this is the most time consuming operation in learning. This class provides
+     * this is the most time consuming operation in learning. This class
+     *provides
      * an efficient cache that can significantly alleviate the scoring burden.
      */
     class Cache4Score {
@@ -63,10 +67,10 @@ namespace gum {
       Cache4Score();
 
       /// copy constructor
-      Cache4Score(const Cache4Score &from);
+      Cache4Score( const Cache4Score& from );
 
       /// move constructor
-      Cache4Score(Cache4Score &&from);
+      Cache4Score( Cache4Score&& from );
 
       /// destructor
       ~Cache4Score();
@@ -79,10 +83,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      Cache4Score &operator=(const Cache4Score &from);
+      Cache4Score& operator=( const Cache4Score& from );
 
       /// move operator
-      Cache4Score &operator=(Cache4Score &&from);
+      Cache4Score& operator=( Cache4Score&& from );
 
       /// @}
 
@@ -94,35 +98,37 @@ namespace gum {
       /// insert a new score into the cache
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
-      void insert(unsigned int var,
-                  const std::vector<unsigned int> &conditioning_set, float score);
+      void insert( unsigned int var,
+                   const std::vector<unsigned int>& conditioning_set,
+                   float score );
 
       /// insert a new score into the cache
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
       template <typename Alloc>
-      void insert(unsigned int var, IdSet<Alloc> &conditioning_set, float score);
+      void insert( unsigned int var, IdSet<Alloc>& conditioning_set,
+                   float score );
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
-      void erase(unsigned int var,
-                 const std::vector<unsigned int> &conditioning_set);
+      void erase( unsigned int var,
+                  const std::vector<unsigned int>& conditioning_set );
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
       template <typename Alloc>
-      void erase(unsigned int var, const IdSet<Alloc> &conditioning_set);
+      void erase( unsigned int var, const IdSet<Alloc>& conditioning_set );
 
       /// indicates whether a given score exists
-      bool exists(unsigned int var,
-                  const std::vector<unsigned int> &conditioning_set);
+      bool exists( unsigned int var,
+                   const std::vector<unsigned int>& conditioning_set );
 
       /// returns a given score
       /** @throws NotFound is raised if the score is not cached */
-      float score(unsigned int var,
-                  const std::vector<unsigned int> &conditioning_set);
+      float score( unsigned int var,
+                   const std::vector<unsigned int>& conditioning_set );
 
       /// removes all the stored scores
       void clear();

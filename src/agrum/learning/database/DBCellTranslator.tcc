@@ -31,85 +31,89 @@ namespace gum {
 
     /// default constructor
     template <int Nb_inputs, int Nb_outputs>
-    INLINE DBCellTranslator<Nb_inputs, Nb_outputs>::DBCellTranslator() noexcept {
-      GUM_CONSTRUCTOR(DBCellTranslator);
+    INLINE
+    DBCellTranslator<Nb_inputs, Nb_outputs>::DBCellTranslator() noexcept {
+      GUM_CONSTRUCTOR( DBCellTranslator );
     }
 
     /// copy constructor
     template <int Nb_inputs, int Nb_outputs>
     INLINE DBCellTranslator<Nb_inputs, Nb_outputs>::DBCellTranslator(
-        const DBCellTranslator<Nb_inputs, Nb_outputs> &translator) noexcept
-        : _input_row(translator._input_row),
-          _output_row(translator._output_row) {
-      GUM_CONS_CPY(DBCellTranslator);
+        const DBCellTranslator<Nb_inputs, Nb_outputs>& translator ) noexcept
+        : _input_row( translator._input_row ),
+          _output_row( translator._output_row ) {
+      GUM_CONS_CPY( DBCellTranslator );
 
-      memcpy(_input_cols, translator._input_cols, Nb_inputs * sizeof(unsigned int));
-      memcpy(_output_cols, translator._output_cols,
-             Nb_outputs * sizeof(unsigned int));
+      memcpy( _input_cols, translator._input_cols,
+              Nb_inputs * sizeof( unsigned int ) );
+      memcpy( _output_cols, translator._output_cols,
+              Nb_outputs * sizeof( unsigned int ) );
     }
 
     /// move constructor
     template <int Nb_inputs, int Nb_outputs>
     INLINE DBCellTranslator<Nb_inputs, Nb_outputs>::DBCellTranslator(
-        DBCellTranslator<Nb_inputs, Nb_outputs> &&translator) noexcept
-        : _input_row(translator._input_row),
-          _output_row(translator._output_row) {
-      GUM_CONS_MOV(DBCellTranslator);
+        DBCellTranslator<Nb_inputs, Nb_outputs>&& translator ) noexcept
+        : _input_row( translator._input_row ),
+          _output_row( translator._output_row ) {
+      GUM_CONS_MOV( DBCellTranslator );
 
-      memcpy(_input_cols, translator._input_cols, Nb_inputs * sizeof(unsigned int));
-      memcpy(_output_cols, translator._output_cols,
-             Nb_outputs * sizeof(unsigned int));
+      memcpy( _input_cols, translator._input_cols,
+              Nb_inputs * sizeof( unsigned int ) );
+      memcpy( _output_cols, translator._output_cols,
+              Nb_outputs * sizeof( unsigned int ) );
     }
 
     /// destructor
     template <int Nb_inputs, int Nb_outputs>
-    INLINE DBCellTranslator<Nb_inputs, Nb_outputs>::~DBCellTranslator() noexcept {
-      GUM_DESTRUCTOR(DBCellTranslator);
+    INLINE
+        DBCellTranslator<Nb_inputs, Nb_outputs>::~DBCellTranslator() noexcept {
+      GUM_DESTRUCTOR( DBCellTranslator );
     }
 
     /// copy operator
     template <int Nb_inputs, int Nb_outputs>
-    INLINE DBCellTranslator<Nb_inputs, Nb_outputs> &
+    INLINE DBCellTranslator<Nb_inputs, Nb_outputs>&
         DBCellTranslator<Nb_inputs, Nb_outputs>::
-        operator=(const DBCellTranslator<Nb_inputs, Nb_outputs> &translator) {
-      if (this != &translator) {
+        operator=( const DBCellTranslator<Nb_inputs, Nb_outputs>& translator ) {
+      if ( this != &translator ) {
         _input_row = translator._input_row;
         _output_row = translator._output_row;
-        memcpy(_input_cols, translator._input_cols,
-               Nb_inputs * sizeof(unsigned int));
-        memcpy(_output_cols, translator._output_cols,
-               Nb_outputs * sizeof(unsigned int));
+        memcpy( _input_cols, translator._input_cols,
+                Nb_inputs * sizeof( unsigned int ) );
+        memcpy( _output_cols, translator._output_cols,
+                Nb_outputs * sizeof( unsigned int ) );
       }
       return *this;
     }
 
     /// move operator
     template <int Nb_inputs, int Nb_outputs>
-    INLINE DBCellTranslator<Nb_inputs, Nb_outputs> &
+    INLINE DBCellTranslator<Nb_inputs, Nb_outputs>&
         DBCellTranslator<Nb_inputs, Nb_outputs>::
-        operator=(DBCellTranslator<Nb_inputs, Nb_outputs> &&translator) {
-      if (this != &translator) {
+        operator=( DBCellTranslator<Nb_inputs, Nb_outputs>&& translator ) {
+      if ( this != &translator ) {
         _input_row = translator._input_row;
         _output_row = translator._output_row;
-        memcpy(_input_cols, translator._input_cols,
-               Nb_inputs * sizeof(unsigned int));
-        memcpy(_output_cols, translator._output_cols,
-               Nb_outputs * sizeof(unsigned int));
+        memcpy( _input_cols, translator._input_cols,
+                Nb_inputs * sizeof( unsigned int ) );
+        memcpy( _output_cols, translator._output_cols,
+                Nb_outputs * sizeof( unsigned int ) );
       }
       return *this;
     }
 
     /// sets a new DBRow to translate
     template <int Nb_inputs, int Nb_outputs>
-    INLINE void
-    DBCellTranslator<Nb_inputs, Nb_outputs>::setInputRow(const DBRow &row) noexcept {
+    INLINE void DBCellTranslator<Nb_inputs, Nb_outputs>::setInputRow(
+        const DBRow& row ) noexcept {
       _input_row = &row;
     }
 
     /// sets a new FilteredRow to which the translator will write its output
     template <int Nb_inputs, int Nb_outputs>
     INLINE void DBCellTranslator<Nb_inputs, Nb_outputs>::setOutputRow(
-        FilteredRow &row) noexcept {
+        FilteredRow& row ) noexcept {
       _output_row = &row;
     }
 
@@ -117,88 +121,91 @@ namespace gum {
     template <int Nb_inputs, int Nb_outputs>
     template <int Col1, int... OtherCols>
     INLINE void DBCellTranslator<Nb_inputs, Nb_outputs>::setInputCols(
-        const Col<Col1, OtherCols...> &) noexcept {
-      static_assert(sizeof...(OtherCols)+1 == Nb_inputs,
-                    "you set a wrong number of translator's input columns");
-      Col<Col1, OtherCols...>::toArray(_input_cols);
+        const Col<Col1, OtherCols...>& ) noexcept {
+      static_assert( sizeof...( OtherCols ) + 1 == Nb_inputs,
+                     "you set a wrong number of translator's input columns" );
+      Col<Col1, OtherCols...>::toArray( _input_cols );
     }
 
     /// sets the output FilteredRow's columns written by the translator
     template <int Nb_inputs, int Nb_outputs>
     INLINE void DBCellTranslator<Nb_inputs, Nb_outputs>::setOutputCols(
-        unsigned int start) noexcept {
-      for (unsigned int i = 0; i < Nb_outputs; ++i) {
+        unsigned int start ) noexcept {
+      for ( unsigned int i = 0; i < Nb_outputs; ++i ) {
         _output_cols[i] = start + i;
       }
     }
 
     /// returns the current input DBRow
     template <int Nb_inputs, int Nb_outputs>
-    INLINE const DBRow &DBCellTranslator<Nb_inputs, Nb_outputs>::inputRow() const
-        noexcept {
+    INLINE const DBRow&
+    DBCellTranslator<Nb_inputs, Nb_outputs>::inputRow() const noexcept {
       return *_input_row;
     }
 
     /// returns the current output FilteredRow
     template <int Nb_inputs, int Nb_outputs>
-    INLINE FilteredRow &
+    INLINE FilteredRow&
     DBCellTranslator<Nb_inputs, Nb_outputs>::outputFilteredRow() noexcept {
       return *_output_row;
     }
 
     /// returns the row of unsigned int of the current output FilteredRow
     template <int Nb_inputs, int Nb_outputs>
-    INLINE std::vector<unsigned int> &
+    INLINE std::vector<unsigned int>&
     DBCellTranslator<Nb_inputs, Nb_outputs>::outputRow() noexcept {
       return _output_row->row();
     }
 
     /// returns the set of input DBRow's columns used by the translator
     template <int Nb_inputs, int Nb_outputs>
-    INLINE const unsigned int *
+    INLINE const unsigned int*
     DBCellTranslator<Nb_inputs, Nb_outputs>::inputCols() const noexcept {
       return _input_cols;
     }
 
-    /// returns the set of output FilteredRow's columns written by the translator
+    /// returns the set of output FilteredRow's columns written by the
+    /// translator
     template <int Nb_inputs, int Nb_outputs>
-    INLINE const unsigned int *
+    INLINE const unsigned int*
     DBCellTranslator<Nb_inputs, Nb_outputs>::outputCols() const noexcept {
       return _output_cols;
     }
 
     /// returns the DBCell read at the ith input column of translator
     template <int Nb_inputs, int Nb_outputs>
-    INLINE const DBCell &
-    DBCellTranslator<Nb_inputs, Nb_outputs>::in(unsigned int i) const noexcept {
-      return _input_row->operator[](_input_cols[i]);
+    INLINE const DBCell&
+    DBCellTranslator<Nb_inputs, Nb_outputs>::in( unsigned int i ) const
+        noexcept {
+      return _input_row->operator[]( _input_cols[i] );
     }
 
     /// returns the FilteredRow cell corresponding to the ith output column
     template <int Nb_inputs, int Nb_outputs>
-    INLINE unsigned int &
-    DBCellTranslator<Nb_inputs, Nb_outputs>::out(unsigned int i) noexcept {
+    INLINE unsigned int&
+    DBCellTranslator<Nb_inputs, Nb_outputs>::out( unsigned int i ) noexcept {
       return _output_row->row()[_output_cols[i]];
     }
 
     /// returns the size of the input for this cell translator
     template <int Nb_inputs, int Nb_outputs>
-    INLINE unsigned int DBCellTranslator<Nb_inputs, Nb_outputs>::inputSize() const
-        noexcept {
+    INLINE unsigned int
+    DBCellTranslator<Nb_inputs, Nb_outputs>::inputSize() const noexcept {
       return Nb_inputs;
     }
 
     /// returns the size of the output for this cell translator
     template <int Nb_inputs, int Nb_outputs>
-    INLINE unsigned int DBCellTranslator<Nb_inputs, Nb_outputs>::outputSize() const
-        noexcept {
+    INLINE unsigned int
+    DBCellTranslator<Nb_inputs, Nb_outputs>::outputSize() const noexcept {
       return Nb_outputs;
     }
 
     /// for friendly displaying the content of translators
     template <int Nb_inputs, int Nb_outputs>
-    std::ostream &operator<<(std::ostream &stream,
-                             const DBCellTranslator<Nb_inputs, Nb_outputs> &tr) {
+    std::ostream&
+    operator<<( std::ostream& stream,
+                const DBCellTranslator<Nb_inputs, Nb_outputs>& tr ) {
       stream << tr.toString();
       return stream;
     }

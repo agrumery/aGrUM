@@ -54,7 +54,7 @@ namespace gum {
       static constexpr unsigned int size = 1;
 
       /// saves the column into an array
-      static void toArray(unsigned int array[]) noexcept { *array = Idx; }
+      static void toArray( unsigned int array[] ) noexcept { *array = Idx; }
 
       /// to display the content of the column
       std::string toString() const noexcept {
@@ -70,7 +70,8 @@ namespace gum {
      * @brief A generic class to specify columns in a database
      * @ingroup learning_group
      *
-     * Learning algorithms use row filters to read the content of tabular databases
+     * Learning algorithms use row filters to read the content of tabular
+     *databases
      * (like CSVs or MySQL databases). These row filters use translators and
      * generators. The former translate the "generic" content of the columns of
      * the database into integer-encoded contents. To specify on which columns
@@ -82,12 +83,12 @@ namespace gum {
      */
     template <int Idx, int... NextIdx> struct Col : public Col<NextIdx...> {
       /// the number of columns specified by this class
-      static constexpr unsigned int size = 1 + sizeof...(NextIdx);
+      static constexpr unsigned int size = 1 + sizeof...( NextIdx );
 
       /// saves the columns into an array of integers
-      static void toArray(unsigned int array[]) noexcept {
+      static void toArray( unsigned int array[] ) noexcept {
         *array = Idx;
-        Col<NextIdx...>::toArray(array + 1);
+        Col<NextIdx...>::toArray( array + 1 );
       }
 
       /// to display the content of the columns
@@ -151,7 +152,9 @@ namespace gum {
     template <typename> struct Make_Default_Incr;
 
     // the specialization of Make_Default_Incr for 1 column
-    template <int Idx> struct Make_Default_Incr<Col<Idx>> { using type = Col<1>; };
+    template <int Idx> struct Make_Default_Incr<Col<Idx>> {
+      using type = Col<1>;
+    };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
@@ -169,7 +172,8 @@ namespace gum {
     struct Make_Default_Incr<Col<Idx, NextIdx...>>
         : public Make_Default_Incr<Col<NextIdx...>> {
       using NextDefaultIncr = Make_Default_Incr<Col<NextIdx...>>;
-      using type = typename ConcatCols<Col<1>, typename NextDefaultIncr::type>::type;
+      using type =
+          typename ConcatCols<Col<1>, typename NextDefaultIncr::type>::type;
     };
 
     /** @class Incr

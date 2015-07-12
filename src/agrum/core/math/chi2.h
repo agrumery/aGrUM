@@ -35,9 +35,12 @@
 
 namespace gum {
 
-  /* ========================================================================= */
-  /* ===                             CHI2 CLASS                            === */
-  /* ========================================================================= */
+  /* =========================================================================
+   */
+  /* ===                             CHI2 CLASS                            ===
+   */
+  /* =========================================================================
+   */
   class Chi2 {
     public:
     // ##########################################################################
@@ -46,8 +49,8 @@ namespace gum {
     /// @{
 
     /// default constructor
-    Chi2(const std::vector<unsigned int> &var_modalities,
-         float confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA);
+    Chi2( const std::vector<unsigned int>& var_modalities,
+          float confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA );
 
     /// destructor
     ~Chi2();
@@ -60,29 +63,32 @@ namespace gum {
     /// @{
 
     /// sets the conditioning nodes (useful for computing degrees of freedom)
-    void setConditioningNodes(const std::vector<unsigned int> &db_conditioning_ids);
+    void setConditioningNodes(
+        const std::vector<unsigned int>& db_conditioning_ids );
 
-    /// computes the critical value according to the number of degrees of freedom
-    float criticalValue(const std::pair<unsigned int, unsigned int> &pair);
+    /// computes the critical value according to the number of degrees of
+    /// freedom
+    float criticalValue( const std::pair<unsigned int, unsigned int>& pair );
 
-    /// computes the critical value according to the number of degrees of freedom
-    float criticalValue(unsigned int var1, unsigned int var2);
+    /// computes the critical value according to the number of degrees of
+    /// freedom
+    float criticalValue( unsigned int var1, unsigned int var2 );
 
     /// returns the number of degrees of freedom
     unsigned long
-    degreesOfFreedom(const std::pair<unsigned int, unsigned int> &pair);
+    degreesOfFreedom( const std::pair<unsigned int, unsigned int>& pair );
 
     /// returns the number of degrees of freedom
-    unsigned long degreesOfFreedom(unsigned int var1, unsigned int var2);
+    unsigned long degreesOfFreedom( unsigned int var1, unsigned int var2 );
 
     /// modifies the confidence proba
-    void setConfidenceProba(float new_proba);
+    void setConfidenceProba( float new_proba );
 
     /// @}
 
     private:
     /// the modalities of the random variables
-    const std::vector<unsigned int> &__modalities;
+    const std::vector<unsigned int>& __modalities;
 
     /// the confidence probability used for critical values
     float __confidence_proba;
@@ -95,7 +101,7 @@ namespace gum {
 
     /// computes the critical value of a given chi2 test (used by the cache)
     /** This code has been written by Gary Perlman */
-    static double __criticalValue(double proba, unsigned long df);
+    static double __criticalValue( double proba, unsigned long df );
 
     /// computes the probability of chi2 value
     /** This code has been written by Gary Perlman.
@@ -105,7 +111,7 @@ namespace gum {
      * Collected Algorithms for the CACM 1967 p. 243
      * Updated for rounding errors based on remark in
      * ACM TOMS June 1985, page 185 */
-    static double __probaChi2(double x, unsigned long df);
+    static double __probaChi2( double x, unsigned long df );
 
     /// computes the probability of normal z value
     /** This code has been written by Gary Perlman.
@@ -115,13 +121,13 @@ namespace gum {
      * Note:
      * This routine has six digit accuracy, so it is only useful for absolute
      * z values < 6.  For z values >= to 6.0, __probaZValue() returns 0.0. */
-    static double __probaZValue(double z);
+    static double __probaZValue( double z );
 
     /// prevent copy constructor
-    Chi2(const Chi2 &) = delete;
+    Chi2( const Chi2& ) = delete;
 
     /// prevent copy operator
-    Chi2 &operator=(const Chi2 &) = delete;
+    Chi2& operator=( const Chi2& ) = delete;
   };
 
 } /* namespace gum */

@@ -42,7 +42,8 @@ namespace gum {
      * @class ClassElement classElement.h <agrum/PRM/classElement.h>
      * @brief Abstract class representing an element of PRM class.
      *
-     * All class elements are nodes in the class's DAG and a unique name in their
+     * All class elements are nodes in the class's DAG and a unique name in
+     *their
      * class.
      *
      * @ingroup prm_group
@@ -63,12 +64,12 @@ namespace gum {
        * @throw DupplicateElement Raised if c contains already an element with
        *                          the same name.
        */
-      ClassElement(const std::string &name);
+      ClassElement( const std::string& name );
 
       /**
        * Copy constructor.
        */
-      ClassElement(const ClassElement &source);
+      ClassElement( const ClassElement& source );
 
       /**
        * Destructor of this class.
@@ -85,11 +86,12 @@ namespace gum {
         prm_attribute,
         prm_aggregate,
         prm_refslot,
-        prm_slotchain
+        prm_slotchain,
+        prm_parameter
       };
 
-      static std::string enum2str(ClassElementType type) {
-        switch (type) {
+      static std::string enum2str( ClassElementType type ) {
+        switch ( type ) {
           case prm_attribute:
             return "prm_attribute";
 
@@ -108,23 +110,28 @@ namespace gum {
       }
 
       /// Returns true if obj_ptr is of type ReferenceSlot.
-      static INLINE bool isReferenceSlot(const ClassElement &elt) {
+      static INLINE bool isReferenceSlot( const ClassElement& elt ) {
         return elt.elt_type() == prm_refslot;
       }
 
       /// Returns true if obj_ptr is of type Attribute.
-      static INLINE bool isAttribute(const ClassElement &elt) {
+      static INLINE bool isAttribute( const ClassElement& elt ) {
         return elt.elt_type() == prm_attribute;
       }
 
       /// Return true if obj is of type Aggregate
-      static INLINE bool isAggregate(const ClassElement &elt) {
+      static INLINE bool isAggregate( const ClassElement& elt ) {
         return elt.elt_type() == prm_aggregate;
       }
 
       /// Return true if obj is of type SlotChain
-      static INLINE bool isSlotChain(const ClassElement &elt) {
+      static INLINE bool isSlotChain( const ClassElement& elt ) {
         return elt.elt_type() == prm_slotchain;
+      }
+
+      /// Return true if obj is of type Parameter
+      static INLINE bool isParameter( const ClassElement& elt ) {
+        return elt.elt_type() == prm_parameter;
       }
 
       /// @}
@@ -137,7 +144,7 @@ namespace gum {
       NodeId id() const;
 
       /// Used to assign the id of this element.
-      virtual void setId(NodeId id);
+      virtual void setId( NodeId id );
 
       /**
        * @brief Add a parent to this element.
@@ -145,7 +152,7 @@ namespace gum {
        * This method is called by gum::Class when en parent is added
        * to this elememnt.
        */
-      virtual void addParent(const ClassElement &elt) = 0;
+      virtual void addParent( const ClassElement& elt ) = 0;
 
       /**
        * @brief Add a child to this element.
@@ -153,7 +160,7 @@ namespace gum {
        * This methos is called by gum::Class when a child is added
        * to this element.
        */
-      virtual void addChild(const ClassElement &elt) = 0;
+      virtual void addChild( const ClassElement& elt ) = 0;
 
       /// @see gum::PRMObject::obj_type().
       virtual typename PRMObject::PRMType obj_type() const;
@@ -170,26 +177,31 @@ namespace gum {
       /**
        * Return a reference over the gum::Type of this class element.
        * @throw OperationNotAllowed Raised if this class element doesn't have
-       *                            any gum::Potential (like a gum::ReferenceSlot).
+       *                            any gum::Potential (like a
+       * gum::ReferenceSlot).
        */
-      virtual Type<GUM_SCALAR> &type() = 0;
+      virtual Type<GUM_SCALAR>& type() = 0;
 
       /**
        * Return a constant reference over the gum::Type of this class element.
        * @throw OperationNotAllowed Raised if this class element doesn't have
-       *                            any gum::Potential (like a gum::ReferenceSlot).
+       *                            any gum::Potential (like a
+       * gum::ReferenceSlot).
        */
-      virtual const Type<GUM_SCALAR> &type() const = 0;
+      virtual const Type<GUM_SCALAR>& type() const = 0;
+
 
       /**
        * @brief Returns the safe name of this ClassElement, if any.
        *
-       * This will only work if this ClassElement is an Attribute or an Aggregate.
+       * This will only work if this ClassElement is an Attribute or an
+       *Aggregate.
        * @return Returns the safe name of this ClassElement.
        *
-       * @throw NotFound& Raised if this ClassElement does not have any safe name.
+       * @throw NotFound& Raised if this ClassElement does not have any safe
+       *name.
        */
-      const std::string &safeName() const;
+      const std::string& safeName() const;
 
       /**
        * @brief Returns the name of the cast descendant with Type t of this
@@ -197,21 +209,24 @@ namespace gum {
        * @param t The type in which we want to cast this ClassElement.
        * @throw OperationNotAllowed If the cast is impossible.
        */
-      virtual std::string cast(const Type<GUM_SCALAR> &t) const;
+      virtual std::string cast( const Type<GUM_SCALAR>& t ) const;
+
+      // /**
+      //  * Return a reference over the gum::Potential of this class element.
+      //  * @throw OperationNotAllowed Raised if this class element doesn't have
+      //  *                            any gum::Potential (like a
+      //  gum::ReferenceSlot).
+      //  */
+      // virtual Potential<GUM_SCALAR>& cpf() = 0;
 
       /**
-       * Return a reference over the gum::Potential of this class element.
-       * @throw OperationNotAllowed Raised if this class element doesn't have
-       *                            any gum::Potential (like a gum::ReferenceSlot).
-       */
-      virtual Potential<GUM_SCALAR> &cpf() = 0;
-
-      /**
-       * Return a constant reference over the gum::Potential of this class element.
+       * Return a constant reference over the gum::Potential of this class
+       * element.
        * @throw OperationNotAllowed Raised if the class element doesn't have
-       *                            any gum::Potential (like a gum::ReferenceSlot).
+       *                            any gum::Potential (like a
+       * gum::ReferenceSlot).
        */
-      virtual const Potential<GUM_SCALAR> &cpf() const = 0;
+      virtual const Potential<GUM_SCALAR>& cpf() const = 0;
 
       /// @}
       protected:
@@ -225,7 +240,7 @@ namespace gum {
 
     extern template class ClassElement<double>;
   } /* namespace prm */
-} // namespace gum
+}  // namespace gum
 
 #include <agrum/PRM/elements/classElement.tcc>
 

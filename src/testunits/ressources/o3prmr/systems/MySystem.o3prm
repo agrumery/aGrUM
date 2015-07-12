@@ -1,0 +1,82 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}@lip6.fr                                                  *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+// ============================================================================
+// Tis file contains basic PRM classes for testing purpose.
+// Author: Lionel Torti.
+// ============================================================================
+
+import classes.PowerSupply;
+import classes.Room;
+import classes.Computer;
+import classes.SafeComputer;
+import classes.BWPrinter;
+import classes.ColorPrinter;
+import classes.ParamComputer;
+
+system MySystem {
+  PowerSupply pow;
+  Room r;
+
+  BWPrinter[6] bw_printers;
+
+  ColorPrinter[2] color_printers;
+
+  bw_printers.room = r;
+  color_printers.room = r;
+
+  r.power = pow;
+
+  Computer c1;
+  Computer c2;
+
+  c1.room = r;
+  c2.room = r;
+
+  c1.printers = bw_printers;
+  c2.printers = bw_printers;
+
+  c1.printers += color_printers;
+  c2.printers += color_printers;
+
+  SafeComputer c3;
+  SafeComputer c4;
+
+  c3.room = r;
+  c4.room = r;
+
+  c3.printers = bw_printers;
+  c4.printers = bw_printers;
+
+  c3.printers += color_printers;
+  c4.printers += color_printers;
+
+  ParamComputer pc1;
+  ParamComputer pc2(lambda=0.999,t=10);
+
+  pc1.room = r;
+  pc2.room = r;
+
+  pc1.printers += bw_printers;
+  pc2.printers += bw_printers;
+
+  pc1.printers += color_printers;
+  pc2.printers += color_printers;
+}
+

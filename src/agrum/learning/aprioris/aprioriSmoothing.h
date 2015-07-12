@@ -53,7 +53,7 @@ namespace gum {
       AprioriSmoothing();
 
       /// virtual copy constructor
-      virtual AprioriSmoothing<IdSetAlloc, CountAlloc> *copyFactory() const;
+      virtual AprioriSmoothing<IdSetAlloc, CountAlloc>* copyFactory() const;
 
       /// destructor
       virtual ~AprioriSmoothing();
@@ -69,23 +69,23 @@ namespace gum {
       virtual void compute() final;
 
       /// indicates whether an apriori is of a certain type
-      virtual bool isOfType(const std::string &type) final;
+      virtual bool isOfType( const std::string& type ) final;
 
       /// returns the type of the apriori
-      virtual const std::string &getType() const noexcept final;
+      virtual const std::string& getType() const noexcept final;
 
       /// @}
 
       protected:
       /// copy constructor
-      AprioriSmoothing(const AprioriSmoothing<IdSetAlloc, CountAlloc> &from);
+      AprioriSmoothing( const AprioriSmoothing<IdSetAlloc, CountAlloc>& from );
 
       /// move constructor
-      AprioriSmoothing(AprioriSmoothing<IdSetAlloc, CountAlloc> &&from);
+      AprioriSmoothing( AprioriSmoothing<IdSetAlloc, CountAlloc>&& from );
 
       /// prevent copy operator
-      AprioriSmoothing<IdSetAlloc, CountAlloc> &
-      operator=(const AprioriSmoothing<IdSetAlloc, CountAlloc> &) = delete;
+      AprioriSmoothing<IdSetAlloc, CountAlloc>&
+      operator=( const AprioriSmoothing<IdSetAlloc, CountAlloc>& ) = delete;
     };
 
   } /* namespace learning */

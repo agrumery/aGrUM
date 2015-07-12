@@ -73,7 +73,7 @@ namespace gum {
      * Default constructor.
      * @param bayesNet The Bayesian Network used for the inference.
      */
-    ShaferShenoyInference(const IBayesNet<GUM_SCALAR> &bayesNet);
+    ShaferShenoyInference( const IBayesNet<GUM_SCALAR>& bayesNet );
 
     /**
      * Destructor.
@@ -90,10 +90,11 @@ namespace gum {
     virtual void makeInference();
 
     /// @see gum::BayesNetInference::insertEvidence().
-    virtual void insertEvidence(const List<const Potential<GUM_SCALAR> *> &pot_list);
+    virtual void
+    insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list );
 
     /// @see gum::BayesNetInference::eraseEvidence().
-    virtual void eraseEvidence(const Potential<GUM_SCALAR> *);
+    virtual void eraseEvidence( const Potential<GUM_SCALAR>* );
 
     /// @see gum::BayesNetInference::eraseAllEvidence().
     virtual void eraseAllEvidence();
@@ -105,11 +106,11 @@ namespace gum {
     /// @{
 
     /// Returns the Triangulation used by this class.
-    Triangulation &triangulation();
+    Triangulation& triangulation();
 
     protected:
     /// @see gum::BayesNetInference::_fillPosterior().
-    virtual void _fillPosterior(NodeId id, Potential<GUM_SCALAR> &posterior);
+    virtual void _fillPosterior( NodeId id, Potential<GUM_SCALAR>& posterior );
 
     private:
     // ====================================================================
@@ -118,10 +119,10 @@ namespace gum {
     /// @{
 
     /// The triangulation algorithm.
-    Triangulation *__triangulation;
+    Triangulation* __triangulation;
 
     /// The set of dummies sparse matrix created.
-    Set<Potential<GUM_SCALAR> *> __dummies;
+    Set<Potential<GUM_SCALAR>*> __dummies;
 
     /// @}
     // ====================================================================
@@ -132,11 +133,11 @@ namespace gum {
     /// Mapping of the nodes with the clique used to put their CPT
     NodeProperty<NodeId> __node2CliqueMap;
 
-    NodeProperty<CliqueProp<GUM_SCALAR> *> __clique_prop;
+    NodeProperty<CliqueProp<GUM_SCALAR>*> __clique_prop;
 
     /// Mapping of an arc and the message which transited from pair.first to
     /// pair.second
-    ArcProperty<MultiDimBucket<GUM_SCALAR> *> __messagesMap;
+    ArcProperty<MultiDimBucket<GUM_SCALAR>*> __messagesMap;
 
     /// @}
     // ====================================================================
@@ -145,13 +146,14 @@ namespace gum {
     /// @{
 
     /// @return Returns the list of neighbours of a given clique
-    const NodeSet &__getNeighbours(NodeId cliqueId);
+    const NodeSet& __getNeighbours( NodeId cliqueId );
 
     /// @return Returns a separator given two adjacent cliques
-    const NodeSet &__getSeparator(NodeId clique_1, NodeId clique_2);
+    const NodeSet& __getSeparator( NodeId clique_1, NodeId clique_2 );
 
     /// @return Returns the clique in which the node's cpt must be stored
-    NodeId __getClique(const std::vector<NodeId> &eliminationOrder, NodeId id);
+    NodeId __getClique( const std::vector<NodeId>& eliminationOrder,
+                        NodeId id );
 
     /// @}
     // ====================================================================
@@ -168,33 +170,33 @@ namespace gum {
     void __addEvidences();
 
     /// Starting collect w.r.t. a clique
-    void __collectFromClique(NodeId source);
+    void __collectFromClique( NodeId source );
 
     /// Collecting phase of the inference
-    bool __collect(NodeId source, NodeId current);
+    bool __collect( NodeId source, NodeId current );
 
     /// Starting diffusion w.r.t. a clique
-    void __diffuseFromClique(NodeId source);
+    void __diffuseFromClique( NodeId source );
 
     /// Diffusing phase of the inference
-    void __diffuse(NodeId source, NodeId current, bool recompute);
+    void __diffuse( NodeId source, NodeId current, bool recompute );
 
     /// Create and saves the message from key.first to key.second in the
     /// __messagesMap.
-    void __sendMessage(NodeId tail, NodeId head);
+    void __sendMessage( NodeId tail, NodeId head );
 
     /// Return true if the message from source to dest exists
-    bool __messageExists(NodeId source, NodeId dest);
+    bool __messageExists( NodeId source, NodeId dest );
 
     /// Removes all diffused message sent by cliqueId
-    void __removeDiffusedMessages(NodeId cliqueId);
+    void __removeDiffusedMessages( NodeId cliqueId );
 
     /// Returns a pointer over a "dummy" potential, which is a CPT filled with
     /// one MultiDimSparse filled with 1. This is used by empty cliques.
     /// @param cliqueId The NodeId of the cliqueId for which we build a dummy
     /// potential.
     /// @return A pointer over the dummy bucket.
-    Potential<GUM_SCALAR> *__makeDummyPotential(NodeId cliqueId);
+    Potential<GUM_SCALAR>* __makeDummyPotential( NodeId cliqueId );
 
     /// @}
   };
@@ -209,21 +211,21 @@ namespace gum {
     public:
     /// Default constructor.
     /// @param id the id of this clique on which this properties holds.
-    CliqueProp(NodeId id);
+    CliqueProp( NodeId id );
 
     /// Destructor.
     ~CliqueProp();
 
     /// Returns the name of this clique.
-    const std::string &name() const;
+    const std::string& name() const;
 
     /// Add a variable to this clique
     /// @param v The variable added.
-    void addVariable(const DiscreteVariable &v);
+    void addVariable( const DiscreteVariable& v );
 
     /// Add a potential to this clique
     /// @param cpt v's cpt.
-    void addPotential(const Potential<GUM_SCALAR> &cpt);
+    void addPotential( const Potential<GUM_SCALAR>& cpt );
 
     /// @brief Add an evidence on a variable in this clique.
     /// This method will remove any previous evidence on the given variable.
@@ -232,41 +234,43 @@ namespace gum {
     /// @throw NotFound Raised if the evidence is on a variable not present
     ///        in this clique.
     /// @throw OperationNotAllowed If the evidence isn't valid.
-    void addEvidence(const Potential<GUM_SCALAR> &evidence);
+    void addEvidence( const Potential<GUM_SCALAR>& evidence );
 
     /// Removes all the evidences containing v
-    void removeEvidence(const DiscreteVariable &v);
+    void removeEvidence( const DiscreteVariable& v );
 
     /// Remove all the evidences
     void removeAllEvidence();
 
-    /// @return Returns the mapping of evidences on the variables in this clique.
-    const HashTable<const DiscreteVariable *, const Potential<GUM_SCALAR> *> &
+    /// @return Returns the mapping of evidences on the variables in this
+    /// clique.
+    const HashTable<const DiscreteVariable*, const Potential<GUM_SCALAR>*>&
     evidences() const;
 
     /// @return Returns the bucket of this Clique
-    MultiDimBucket<GUM_SCALAR> &bucket();
+    MultiDimBucket<GUM_SCALAR>& bucket();
 
     /// @return Returns the bucket of this Clique
-    const MultiDimBucket<GUM_SCALAR> &bucket() const;
+    const MultiDimBucket<GUM_SCALAR>& bucket() const;
 
     /// Flag to know if this clique has been collected.
     bool isCollected;
 
     private:
     /// Evidences on the variables in this clique
-    HashTable<const DiscreteVariable *, const Potential<GUM_SCALAR> *> __evidences;
+    HashTable<const DiscreteVariable*, const Potential<GUM_SCALAR>*>
+        __evidences;
 
     /// The bucket of this clique with evidences
-    MultiDimBucket<GUM_SCALAR> *__potential;
+    MultiDimBucket<GUM_SCALAR>* __potential;
 
     /// The bucket of the variables without the evidences
-    MultiDimBucket<GUM_SCALAR> *__varsPotential;
+    MultiDimBucket<GUM_SCALAR>* __varsPotential;
 
     /// The name of the clique.
     std::string __name;
   };
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
   extern template class ShaferShenoyInference<float>;
   extern template class ShaferShenoyInference<double>;

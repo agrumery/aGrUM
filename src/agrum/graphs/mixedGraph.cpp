@@ -27,31 +27,33 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/mixedGraph.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 
 namespace gum {
 
-  MixedGraph::MixedGraph(Size nodes_size, bool nodes_resize_policy, Size arcs_size,
-                         bool arcs_resize_policy, Size edges_size,
-                         bool edges_resize_policy)
-      : // Note that we need to initialize the NodeGraphPart by ourselves because
+  MixedGraph::MixedGraph( Size nodes_size, bool nodes_resize_policy,
+                          Size arcs_size, bool arcs_resize_policy,
+                          Size edges_size,
+                          bool edges_resize_policy )
+      :  // Note that we need to initialize the NodeGraphPart by ourselves
+         // because
         // it is a virtual inherited class (see C++ FAQ Lite #25.12 for details)
-        NodeGraphPart(nodes_size, nodes_resize_policy),
-        UndiGraph(edges_size, edges_resize_policy),
-        DiGraph(arcs_size, arcs_resize_policy) {
+        NodeGraphPart( nodes_size, nodes_resize_policy ),
+        UndiGraph( edges_size, edges_resize_policy ),
+        DiGraph( arcs_size, arcs_resize_policy ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR(MixedGraph);
+    GUM_CONSTRUCTOR( MixedGraph );
   }
 
-  MixedGraph::MixedGraph(const MixedGraph &g)
-      : NodeGraphPart(g), UndiGraph(g), DiGraph(g) {
+  MixedGraph::MixedGraph( const MixedGraph& g )
+      : NodeGraphPart( g ), UndiGraph( g ), DiGraph( g ) {
     // for debugging purposes
-    GUM_CONS_CPY(MixedGraph);
+    GUM_CONS_CPY( MixedGraph );
   }
 
   MixedGraph::~MixedGraph() {
     // for debugging purposes
-    GUM_DESTRUCTOR(MixedGraph);
+    GUM_DESTRUCTOR( MixedGraph );
   }
 
   const std::string MixedGraph::toString() const {
@@ -63,152 +65,152 @@ namespace gum {
     return s;
   }
 
-  const std::vector<NodeId> MixedGraph::mixedOrientedPath(const NodeId n1,
-                                                          const NodeId n2) const {
+  const std::vector<NodeId>
+  MixedGraph::mixedOrientedPath( const NodeId n1, const NodeId n2 ) const {
     // not recursive version => use a FIFO for simulating the recursion
     List<NodeId> nodeFIFO;
-    nodeFIFO.pushBack(n2);
+    nodeFIFO.pushBack( n2 );
 
     // mark[node] = successor if visited, else mark[node] does not exist
     NodeProperty<NodeId> mark;
-    mark.insert(n2, n2);
+    mark.insert( n2, n2 );
 
     NodeId current;
 
-    while (!nodeFIFO.empty()) {
+    while ( !nodeFIFO.empty() ) {
       current = nodeFIFO.front();
       nodeFIFO.popFront();
 
       // check the neighbours
-      for (const auto new_one : neighbours(current)) {
-        if (mark.exists(new_one)) // if the node has already been visited
-          continue;               // do not check it again
+      for ( const auto new_one : neighbours( current ) ) {
+        if ( mark.exists( new_one ) )  // if the node has already been visited
+          continue;                    // do not check it again
 
-        mark.insert(new_one, current);
+        mark.insert( new_one, current );
 
-        if (new_one == n1) {
+        if ( new_one == n1 ) {
           std::vector<NodeId> v;
 
-          for (current = n1; current != n2; current = mark[current])
-            v.push_back(current);
+          for ( current = n1; current != n2; current = mark[current] )
+            v.push_back( current );
 
-          v.push_back(n2);
+          v.push_back( n2 );
 
           return v;
         }
 
-        nodeFIFO.pushBack(new_one);
+        nodeFIFO.pushBack( new_one );
       }
 
       // check the parents
-      for (const auto new_one : parents(current)) {
-        if (mark.exists(new_one)) // if this node is already marked, do not
-          continue;               // check it again
+      for ( const auto new_one : parents( current ) ) {
+        if ( mark.exists( new_one ) )  // if this node is already marked, do not
+          continue;                    // check it again
 
-        mark.insert(new_one, current);
+        mark.insert( new_one, current );
 
-        if (new_one == n1) {
+        if ( new_one == n1 ) {
           std::vector<NodeId> v;
 
-          for (current = n1; current != n2; current = mark[current])
-            v.push_back(current);
+          for ( current = n1; current != n2; current = mark[current] )
+            v.push_back( current );
 
-          v.push_back(n2);
+          v.push_back( n2 );
 
           return v;
         }
 
-        nodeFIFO.pushBack(new_one);
+        nodeFIFO.pushBack( new_one );
       }
     }
 
-    GUM_ERROR(NotFound, "no path found");
+    GUM_ERROR( NotFound, "no path found" );
   }
 
-  const std::vector<NodeId> MixedGraph::mixedUnorientedPath(const NodeId n1,
-                                                            const NodeId n2) const {
+  const std::vector<NodeId>
+  MixedGraph::mixedUnorientedPath( const NodeId n1, const NodeId n2 ) const {
     // not recursive version => use a FIFO for simulating the recursion
     List<NodeId> nodeFIFO;
-    nodeFIFO.pushBack(n2);
+    nodeFIFO.pushBack( n2 );
 
     // mark[node] = successor if visited, else mark[node] does not exist
     NodeProperty<NodeId> mark;
-    mark.insert(n2, n2);
+    mark.insert( n2, n2 );
 
     NodeId current;
 
-    while (!nodeFIFO.empty()) {
+    while ( !nodeFIFO.empty() ) {
       current = nodeFIFO.front();
       nodeFIFO.popFront();
 
       // check the neighbours
-      for (const auto new_one : neighbours(current)) {
-        if (mark.exists(new_one)) // if the node has already been visited
-          continue;               // do not check it again
+      for ( const auto new_one : neighbours( current ) ) {
+        if ( mark.exists( new_one ) )  // if the node has already been visited
+          continue;                    // do not check it again
 
-        mark.insert(new_one, current);
+        mark.insert( new_one, current );
 
-        if (new_one == n1) {
+        if ( new_one == n1 ) {
           std::vector<NodeId> v;
 
-          for (current = n1; current != n2; current = mark[current])
-            v.push_back(current);
+          for ( current = n1; current != n2; current = mark[current] )
+            v.push_back( current );
 
-          v.push_back(n2);
+          v.push_back( n2 );
 
           return v;
         }
 
-        nodeFIFO.pushBack(new_one);
+        nodeFIFO.pushBack( new_one );
       }
 
       // check the parents
-      for (const auto new_one : parents(current)) {
-        if (mark.exists(new_one)) // the node has already been visited
+      for ( const auto new_one : parents( current ) ) {
+        if ( mark.exists( new_one ) )  // the node has already been visited
           continue;
 
-        mark.insert(new_one, current);
+        mark.insert( new_one, current );
 
-        if (new_one == n1) {
+        if ( new_one == n1 ) {
           std::vector<NodeId> v;
 
-          for (current = n1; current != n2; current = mark[current])
-            v.push_back(current);
+          for ( current = n1; current != n2; current = mark[current] )
+            v.push_back( current );
 
-          v.push_back(n2);
+          v.push_back( n2 );
 
           return v;
         }
 
-        nodeFIFO.pushBack(new_one);
+        nodeFIFO.pushBack( new_one );
       }
 
       // check the children
-      for (const auto new_one : children(current)) {
-        if (mark.exists(new_one)) // the node has already been visited
+      for ( const auto new_one : children( current ) ) {
+        if ( mark.exists( new_one ) )  // the node has already been visited
           continue;
 
-        mark.insert(new_one, current);
+        mark.insert( new_one, current );
 
-        if (new_one == n1) {
+        if ( new_one == n1 ) {
           std::vector<NodeId> v;
 
-          for (current = n1; current != n2; current = mark[current])
-            v.push_back(current);
+          for ( current = n1; current != n2; current = mark[current] )
+            v.push_back( current );
 
-          v.push_back(n2);
+          v.push_back( n2 );
           return v;
         }
 
-        nodeFIFO.pushBack(new_one);
+        nodeFIFO.pushBack( new_one );
       }
     }
 
-    GUM_ERROR(NotFound, "no path found");
+    GUM_ERROR( NotFound, "no path found" );
   }
 
   /// for friendly displaying the content of directed graphs
-  std::ostream &operator<<(std::ostream &stream, const MixedGraph &g) {
+  std::ostream& operator<<( std::ostream& stream, const MixedGraph& g ) {
     stream << g.toString();
     return stream;
   }

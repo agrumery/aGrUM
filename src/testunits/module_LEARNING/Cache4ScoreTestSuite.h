@@ -36,35 +36,35 @@ namespace gum_tests {
       std::vector<unsigned int> v3;
       std::vector<unsigned int> v4{1};
 
-      cache.insert(10, v1, 1.5);
-      TS_ASSERT_THROWS(cache.insert(10, v1, 2.5), gum::DuplicateElement);
-      TS_ASSERT_THROWS(cache.insert(10, v2, 3.5), gum::DuplicateElement);
-      TS_GUM_ASSERT_THROWS_NOTHING(cache.insert(11, v2, 4.5));
-      cache.insert(10, v3, 5);
-      cache.insert(1, v4, 7);
+      cache.insert( 10, v1, 1.5 );
+      TS_ASSERT_THROWS( cache.insert( 10, v1, 2.5 ), gum::DuplicateElement );
+      TS_ASSERT_THROWS( cache.insert( 10, v2, 3.5 ), gum::DuplicateElement );
+      TS_GUM_ASSERT_THROWS_NOTHING( cache.insert( 11, v2, 4.5 ) );
+      cache.insert( 10, v3, 5 );
+      cache.insert( 1, v4, 7 );
 
-      TS_ASSERT(cache.score(10, v2) == 1.5);
-      TS_ASSERT(cache.score(11, v1) == 4.5);
-      TS_ASSERT_THROWS(cache.score(12, v3), gum::NotFound);
-      TS_ASSERT(cache.score(10, v3) == 5);
-      TS_ASSERT(cache.score(1, v4) == 7);
+      TS_ASSERT( cache.score( 10, v2 ) == 1.5 );
+      TS_ASSERT( cache.score( 11, v1 ) == 4.5 );
+      TS_ASSERT_THROWS( cache.score( 12, v3 ), gum::NotFound );
+      TS_ASSERT( cache.score( 10, v3 ) == 5 );
+      TS_ASSERT( cache.score( 1, v4 ) == 7 );
 
       cache.clear();
-      TS_ASSERT_THROWS(cache.score(10, v2), gum::NotFound);
-      TS_ASSERT_THROWS(cache.score(12, v3), gum::NotFound);
+      TS_ASSERT_THROWS( cache.score( 10, v2 ), gum::NotFound );
+      TS_ASSERT_THROWS( cache.score( 12, v3 ), gum::NotFound );
 
-      cache.insert(10, v1, 1.5);
-      TS_ASSERT_THROWS(cache.insert(10, v1, 2.5), gum::DuplicateElement);
-      TS_ASSERT_THROWS(cache.insert(10, v2, 3.5), gum::DuplicateElement);
-      TS_GUM_ASSERT_THROWS_NOTHING(cache.insert(11, v2, 4.5));
-      cache.insert(10, v3, 5);
-      cache.insert(1, v4, 7);
+      cache.insert( 10, v1, 1.5 );
+      TS_ASSERT_THROWS( cache.insert( 10, v1, 2.5 ), gum::DuplicateElement );
+      TS_ASSERT_THROWS( cache.insert( 10, v2, 3.5 ), gum::DuplicateElement );
+      TS_GUM_ASSERT_THROWS_NOTHING( cache.insert( 11, v2, 4.5 ) );
+      cache.insert( 10, v3, 5 );
+      cache.insert( 1, v4, 7 );
 
-      TS_ASSERT(cache.score(10, v2) == 1.5);
-      TS_ASSERT(cache.score(11, v1) == 4.5);
-      TS_ASSERT_THROWS(cache.score(12, v3), gum::NotFound);
-      TS_ASSERT(cache.score(10, v3) == 5);
-      TS_ASSERT(cache.score(1, v4) == 7);
+      TS_ASSERT( cache.score( 10, v2 ) == 1.5 );
+      TS_ASSERT( cache.score( 11, v1 ) == 4.5 );
+      TS_ASSERT_THROWS( cache.score( 12, v3 ), gum::NotFound );
+      TS_ASSERT( cache.score( 10, v3 ) == 5 );
+      TS_ASSERT( cache.score( 1, v4 ) == 7 );
     }
   };
 

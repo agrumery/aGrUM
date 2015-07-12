@@ -30,23 +30,23 @@
 
 namespace gum {
 
-#define GCC_STR(s) #s
-#define GCC_JOINSTR(x, y) GCC_STR(x##y)
+#define GCC_STR( s ) #s
+#define GCC_JOINSTR( x, y ) GCC_STR( x##y )
 
-#if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 405
-#define GCC_DIAG_DO_PRAGMA(x) _Pragma(#x)
-#define GCC_DIAG_PRAGMA(x) GCC_DIAG_DO_PRAGMA(GCC diagnostic x)
-#if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 406
-#define GCC_DIAG_OFF(x)                                                             \
-  GCC_DIAG_PRAGMA(push) GCC_DIAG_PRAGMA(ignored GCC_JOINSTR(-W, x))
-#define GCC_DIAG_ON(x) GCC_DIAG_PRAGMA(pop)
+#if ( ( __GNUC__ * 100 ) + __GNUC_MINOR__ ) >= 405
+#define GCC_DIAG_DO_PRAGMA( x ) _Pragma( #x )
+#define GCC_DIAG_PRAGMA( x ) GCC_DIAG_DO_PRAGMA( GCC diagnostic x )
+#if ( ( __GNUC__ * 100 ) + __GNUC_MINOR__ ) >= 406
+#define GCC_DIAG_OFF( x )                                                      \
+  GCC_DIAG_PRAGMA( push ) GCC_DIAG_PRAGMA( ignored GCC_JOINSTR( -W, x ) )
+#define GCC_DIAG_ON( x ) GCC_DIAG_PRAGMA( pop )
 #else
-#define GCC_DIAG_OFF(x) GCC_DIAG_PRAGMA(ignored GCC_JOINSTR(-W, x))
-#define GCC_DIAG_ON(x) GCC_DIAG_PRAGMA(warning GCC_JOINSTR(-W, x))
+#define GCC_DIAG_OFF( x ) GCC_DIAG_PRAGMA( ignored GCC_JOINSTR( -W, x ) )
+#define GCC_DIAG_ON( x ) GCC_DIAG_PRAGMA( warning GCC_JOINSTR( -W, x ) )
 #endif
 #else
-#define GCC_DIAG_OFF(x)
-#define GCC_DIAG_ON(x)
+#define GCC_DIAG_OFF( x )
+#define GCC_DIAG_ON( x )
 #endif
 
   // GCC_DIAG_OFF(strict-aliasing)
@@ -70,13 +70,13 @@ namespace gum {
   static const ListConstIteratorSafe<Debug> __static_list_end_safe;
   static const ListConstIterator<Debug> __static_list_end;
 
-  static constexpr const void *__get_list_end_safe() {
+  static constexpr const void* __get_list_end_safe() {
     return &__static_list_end_safe;
   }
-  static constexpr const void *__get_list_end() { return &__static_list_end; }
+  static constexpr const void* __get_list_end() { return &__static_list_end; }
 
-  const void *const __list_end_safe = __get_list_end_safe();
-  const void *const __list_end = __get_list_end();
+  const void* const __list_end_safe = __get_list_end_safe();
+  const void* const __list_end = __get_list_end();
 
   // to optimize compile-link time, provide the usual lists
   template class List<bool>;

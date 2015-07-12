@@ -18,7 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A class unifying the type of the DBCells for each column of the database
+ * @brief A class unifying the type of the DBCells for each column of the
+ *database
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -56,10 +57,10 @@ namespace gum {
       DBTransformUnifier();
 
       /// copy constructor
-      DBTransformUnifier(const DBTransformUnifier &);
+      DBTransformUnifier( const DBTransformUnifier& );
 
       /// move constructor
-      DBTransformUnifier(DBTransformUnifier &&);
+      DBTransformUnifier( DBTransformUnifier&& );
 
       /// destructor
       virtual ~DBTransformUnifier();
@@ -73,10 +74,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTransformUnifier &operator=(const DBTransformUnifier &);
+      DBTransformUnifier& operator=( const DBTransformUnifier& );
 
       /// move operator
-      DBTransformUnifier &operator=(DBTransformUnifier &&);
+      DBTransformUnifier& operator=( DBTransformUnifier&& );
 
       /// @}
 
@@ -87,13 +88,13 @@ namespace gum {
       /// @{
 
       /// indicates whether a BDCell contains a missing value
-      bool isMissing(const DBCell &cell, const std::vector<std::string> &miss) const
-          noexcept;
+      bool isMissing( const DBCell& cell,
+                      const std::vector<std::string>& miss ) const noexcept;
 
       /// transforms a vector of DBrows to unify the types of its columns
       /** @return true if the unification could be performed successfully. */
-      bool transform(std::vector<DBRow> &db,
-                     std::vector<std::string> miss = {"?", "N/A", "n/a"}) const;
+      bool transform( std::vector<DBRow>& db, std::vector<std::string> miss = {
+                                                  "?", "N/A", "n/a"} ) const;
 
       /// @}
     };

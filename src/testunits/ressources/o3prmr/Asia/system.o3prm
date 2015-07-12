@@ -1,0 +1,5 @@
+import Asia;
+
+system Asia {
+    Asia asia;
+}

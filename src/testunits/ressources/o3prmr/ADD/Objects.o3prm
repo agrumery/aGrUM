@@ -1,0 +1,29 @@
+import ADD;
+
+system exemple_ADD {
+
+  Leaf be1 (lambda= 0.002);
+  Leaf be2 (lambda= 0.002);
+  Leaf be3 (lambda= 0.001);
+  Leaf be4 (lambda= 0.002);
+  Leaf be5 (lambda= 0.002);
+
+  AndGate g1;
+  g1.inputs += be1;
+  g1.inputs += be2;
+
+  AndGate g2;
+  g2.inputs += be2;
+  g2.inputs += be3;
+
+  k_nGate g3;
+  g3.inputs += be3;
+  g3.inputs += be4;
+  g3.inputs += be5;
+
+  OrGate top ;
+  top.inputs += g1 ;
+  top.inputs += g2 ;
+  top.inputs += g3 ;
+
+}

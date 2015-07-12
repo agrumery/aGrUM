@@ -48,17 +48,22 @@ namespace gum {
 
   namespace learning {
 
-    /* ========================================================================= */
-    /* ===                            SCORE CLASS                            === */
-    /* ========================================================================= */
+    /* =========================================================================
+     */
+    /* ===                            SCORE CLASS                            ===
+     */
+    /* =========================================================================
+     */
     /** @class Score
-     * @brief The base class for all the scores used for learning (BIC, BDeu, etc)
+     * @brief The base class for all the scores used for learning (BIC, BDeu,
+     *etc)
      * @ingroup learning_group
      *
      * The class should be used as follows: first, to speed-up computations, you
      * should consider computing all the scores you need in one pass. To do so,
      * use the appropriate addNodeSet methods. These will compute everything you
-     * need. The addNodeSet methods where you do not specify a set of conditioning
+     * need. The addNodeSet methods where you do not specify a set of
+     *conditioning
      * nodes assume that this set is empty. Once the computations have been
      * performed, use method _getAllCounts and _getConditioningCounts to get the
      * observed countings if you are developping a new score class, or use
@@ -78,11 +83,12 @@ namespace gum {
        * @param apriori the a priori that is taken into account in the
        * score/countings */
       template <typename RowFilter>
-      Score(const RowFilter &filter, const std::vector<unsigned int> &var_modalities,
-            Apriori<IdSetAlloc, CountAlloc> &apriori);
+      Score( const RowFilter& filter,
+             const std::vector<unsigned int>& var_modalities,
+             Apriori<IdSetAlloc, CountAlloc>& apriori );
 
       /// virtual copy factory
-      virtual Score<IdSetAlloc, CountAlloc> *copyFactory() const = 0;
+      virtual Score<IdSetAlloc, CountAlloc>* copyFactory() const = 0;
 
       /// destructor
       virtual ~Score();
@@ -96,20 +102,25 @@ namespace gum {
 
       /// add a new single variable to be counted
       /** @param var represents the index of the variable in the filtered rows
-       * produced by the database cell filters whose observations shall be counted
+       * produced by the database cell filters whose observations shall be
+       * counted
        * @return the index of the produced counting vector: the user should use
        * class Score to compute in one pass several scores or independence
-       * tests. These and their corresponding countings in the database are stored
-       * into a vector and the value returned by method addNodeSet is the index of
-       * the observed countings of "var" in this vector. The user shall pass this
+       * tests. These and their corresponding countings in the database are
+       * stored
+       * into a vector and the value returned by method addNodeSet is the index
+       * of
+       * the observed countings of "var" in this vector. The user shall pass
+       * this
        * index as argument to methods _getAllCounts to get the corresponding
        * counting vector. */
-      unsigned int addNodeSet(unsigned int var);
+      unsigned int addNodeSet( unsigned int var );
 
       /// add a new target variable plus some conditioning vars
       /** @param var represents the index of the target variable in the filtered
        * rows produced by the database cell filters
-       * @param conditioning_ids the indices of the variables of the conditioning
+       * @param conditioning_ids the indices of the variables of the
+       * conditioning
        * set in the filtered rows
        * @return the index of the produced counting vector: the user should use
        * class Score to compute in one pass several scores or independence
@@ -120,8 +131,9 @@ namespace gum {
        * _getConditioningCounts to get the counting vectors of
        * (conditioning_ids,vars) [in this order] and conditioning_ids
        * respectively. */
-      unsigned int addNodeSet(unsigned int var,
-                              const std::vector<unsigned int> &conditioning_ids);
+      unsigned int
+      addNodeSet( unsigned int var,
+                  const std::vector<unsigned int>& conditioning_ids );
 
       /// clears all the data structures from memory
       void clear();
@@ -130,7 +142,7 @@ namespace gum {
       void clearCache();
 
       /// turn on/off the use of a cache of the previously computed score
-      void useCache(bool on_off) noexcept;
+      void useCache( bool on_off ) noexcept;
 
       /// returns the modalities of the variables
       using Counter<IdSetAlloc, CountAlloc>::modalities;
@@ -139,29 +151,36 @@ namespace gum {
       using Counter<IdSetAlloc, CountAlloc>::setMaxNbThreads;
 
       /// returns the score corresponding to a given nodeset
-      virtual float score(unsigned int nodeset_index) = 0;
+      virtual float score( unsigned int nodeset_index ) = 0;
 
-      /// indicates whether the apriori is compatible (meaningful) with the score
+      /// indicates whether the apriori is compatible (meaningful) with the
+      /// score
       /** The combination of some scores and aprioris can be meaningless. For
        * instance, adding a Dirichlet apriori to the K2 score is not very
-       * meaningful since K2 corresonds to a BD score with a 1-smoothing apriori.
+       * meaningful since K2 corresonds to a BD score with a 1-smoothing
+       * apriori.
        * aGrUM allows you to perform such combination, but yuou can check with
        * method isAprioriCompatible () whether the result the score will give
        * you is meaningful or not. */
       virtual bool isAprioriCompatible() const = 0;
 
       /// returns the internal apriori of the score
-      /** Some scores include an apriori. For instance, the K2 score is a BD score
+      /** Some scores include an apriori. For instance, the K2 score is a BD
+       * score
        * with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with a
        * N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i is
-       * the domain size of the target variable and q_i is the domain size of the
-       * Cartesian product of its parents. The goal of the score's internal apriori
+       * the domain size of the target variable and q_i is the domain size of
+       * the
+       * Cartesian product of its parents. The goal of the score's internal
+       * apriori
        * classes is to enable to account for these aprioris outside the score,
-       * e.g., when performing parameter estimation. It is important to note that,
-       * to be meaningfull a structure + parameter learning requires that the same
+       * e.g., when performing parameter estimation. It is important to note
+       * that,
+       * to be meaningfull a structure + parameter learning requires that the
+       * same
        * aprioris are taken into account during structure learning and parameter
        * learning. */
-      virtual const ScoreInternalApriori<IdSetAlloc, CountAlloc> &
+      virtual const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
       internalApriori() const noexcept = 0;
 
       /// @}
@@ -171,17 +190,19 @@ namespace gum {
       const float _1log2{M_LOG2E};
 
       /// the a priori used by the score
-      Apriori<IdSetAlloc, CountAlloc> *_apriori;
+      Apriori<IdSetAlloc, CountAlloc>* _apriori;
 
       /// returns the counting vector for a given (conditioned) target set
       /** This method returns the observation countings for the set of variables
        * whose index was returned by method addNodeSet or addNodeSet. If the
        * set was conditioned, the countings correspond to the target variables
-       * @b and the conditioning variables. If you wish to get only the countings
+       * @b and the conditioning variables. If you wish to get only the
+       * countings
        * for the conditioning variables, prefer using method
        * _getConditioningCounts.
        * @warning the dimensions of the vector are as follows: first come the
-       * nodes of the conditioning set (in the order in which they were specified
+       * nodes of the conditioning set (in the order in which they were
+       * specified
        * when callind addNodeset, and then the target nodes. */
       using Counter<IdSetAlloc, CountAlloc>::_getAllCounts;
 
@@ -201,35 +222,38 @@ namespace gum {
       /** This method returns the observation countings for the set of variables
        * whose index was returned by method addNodeSet or addNodeSet. If the
        * set was conditioned, the countings correspond to the target variables
-       * @b and the conditioning variables. If you wish to get only the countings
+       * @b and the conditioning variables. If you wish to get only the
+       * countings
        * for the conditioning variables, prefer using method
        * _getConditioningApriori.
        * @warning the dimensions of the vector are as follows: first come the
-       * nodes of the conditioning set (in the order in which they were specified
+       * nodes of the conditioning set (in the order in which they were
+       * specified
        * when callind addNodeset, and then the target nodes. */
-      const std::vector<float, CountAlloc> &_getAllApriori(unsigned int index);
+      const std::vector<float, CountAlloc>&
+      _getAllApriori( unsigned int index );
 
       /// returns the apriori vector for a conditioning set
-      const std::vector<float, CountAlloc> &
-      _getConditioningApriori(unsigned int index);
+      const std::vector<float, CountAlloc>&
+      _getConditioningApriori( unsigned int index );
 
       /// indicates whether a score belongs to the cache
-      bool _isInCache(unsigned int nodeset_index) const noexcept;
+      bool _isInCache( unsigned int nodeset_index ) const noexcept;
 
       /// inserts a new score into the cache
-      void _insertIntoCache(unsigned int nodeset_index, float score);
+      void _insertIntoCache( unsigned int nodeset_index, float score );
 
       /// returns a cached score
-      float _cachedScore(unsigned int nodeset_index) const noexcept;
+      float _cachedScore( unsigned int nodeset_index ) const noexcept;
 
       /// indicates whether we use the cache or not
       bool _isUsingCache() const noexcept;
 
       /// copy constructor: to be used by the virtual copy constructor
-      Score(const Score<IdSetAlloc, CountAlloc> &);
+      Score( const Score<IdSetAlloc, CountAlloc>& );
 
       /// move constructor: to be used by the descendants in the hierarchy
-      Score(Score<IdSetAlloc, CountAlloc> &&);
+      Score( Score<IdSetAlloc, CountAlloc>&& );
 
       private:
       /// a cache for the previously computed scores
@@ -254,8 +278,8 @@ namespace gum {
       // ##########################################################################
 
       /// prevent copy operator
-      Score<IdSetAlloc, CountAlloc> &
-      operator=(const Score<IdSetAlloc, CountAlloc> &) = delete;
+      Score<IdSetAlloc, CountAlloc>&
+      operator=( const Score<IdSetAlloc, CountAlloc>& ) = delete;
     };
 
   } /* namespace learning */

@@ -36,16 +36,20 @@
 
 namespace gum {
 
-  /* =========================================================================== */
-  /* ===           BASE CLASS FOR MANIPULATING ALL DIRECTED GRAPHS           === */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===           BASE CLASS FOR MANIPULATING ALL DIRECTED GRAPHS           ===
+   */
+  /* ===========================================================================
+   */
   /** @class DiGraph
    * @brief Base class for all oriented graphs
    *
    * \ingroup graph_group
    *
    *
-   * This is the base class for graphs containing directed edges (so-called arcs)
+   * This is the base class for graphs containing directed edges (so-called
+   *arcs)
    * *
    * @par Usage example:
    * @code
@@ -98,7 +102,8 @@ namespace gum {
    * g3.eraseParents( 2 );
    * @endcode
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   class DiGraph : public virtual NodeGraphPart, public ArcGraphPart {
     public:
     // ############################################################################
@@ -111,14 +116,14 @@ namespace gum {
      * @param nodes_resize_policy the resizing policy of this hash table
      * @param arcs_size the size of the hash table used to store all the arcs
      * @param arcs_resize_policy the resizing policy of this hash table */
-    explicit DiGraph(Size nodes_size = HashTableConst::default_size,
-                     bool nodes_resize_policy = true,
-                     Size arcs_size = HashTableConst::default_size,
-                     bool arcs_resize_policy = true);
+    explicit DiGraph( Size nodes_size = HashTableConst::default_size,
+                      bool nodes_resize_policy = true,
+                      Size arcs_size = HashTableConst::default_size,
+                      bool arcs_resize_policy = true );
 
     /// copy constructor
     /** @param g the DiGraph to copy */
-    DiGraph(const DiGraph &g);
+    DiGraph( const DiGraph& g );
 
     /// destructor
     virtual ~DiGraph();
@@ -132,17 +137,17 @@ namespace gum {
 
     /// copy operator
     /** @param g the DiGraph to copy */
-    DiGraph &operator=(const DiGraph &g);
+    DiGraph& operator=( const DiGraph& g );
 
     /// tests whether two DiGraphs are identical (same nodes, same arcs)
     /** @param g the DiGraph with which "this" is compared */
     // not virtual : it is a feature !!! :)
-    bool operator==(const DiGraph &g) const;
+    bool operator==( const DiGraph& g ) const;
 
     /// tests whether two DiGraphs are different
     /** @param g the DiGraph with which "this" is compared */
     // not virtual : it is a feature !!! :)
-    bool operator!=(const DiGraph &g) const;
+    bool operator!=( const DiGraph& g ) const;
 
     /// @}
 
@@ -157,14 +162,15 @@ namespace gum {
      * @warning if the arc already exists, nothing is done. In particular, no
      * exception is raised.
      * @throw InvalidNode if head or tail does not belong to the graph nodes */
-    GUM_DEPRECATED(virtual void insertArc(const NodeId tail, const NodeId head));
-    virtual void addArc(const NodeId tail, const NodeId head);
+    GUM_DEPRECATED( virtual void insertArc( const NodeId tail,
+                                            const NodeId head ) );
+    virtual void addArc( const NodeId tail, const NodeId head );
 
     /// remove a node and its adjacent arcs from the graph
     /** @param id the id of the node to be removed
      * @warning if the node does not exist, nothing is done. In particular, no
      * exception is raised.*/
-    virtual void eraseNode(const NodeId id);
+    virtual void eraseNode( const NodeId id );
 
     /// removes all the nodes and arcs from the graph
     virtual void clear();
@@ -175,16 +181,16 @@ namespace gum {
     /// to friendly display the content of the graph in the DOT syntax
     /** @param name The graph name in the dot syntax. Default is G.
      * @return Returns a string describing the graph in the dot syntax */
-    virtual const std::string toDot(const std::string &name = "G") const;
+    virtual const std::string toDot( const std::string& name = "G" ) const;
   };
 
   /// for friendly displaying the content of directed graphs
-  std::ostream &operator<<(std::ostream &, const DiGraph &);
+  std::ostream& operator<<( std::ostream&, const DiGraph& );
 
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
 #include <agrum/graphs/diGraph.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 
 #endif /* GUM_DIGRAPH_H */

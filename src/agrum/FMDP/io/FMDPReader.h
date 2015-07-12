@@ -36,14 +36,17 @@
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 
 namespace gum {
-  /* ============================================================================ */
-  /* ===                               READERS                                === */
-  /* ============================================================================ */
+  /* ============================================================================
+   */
+  /* ===                               READERS === */
+  /* ============================================================================
+   */
   /**
    * @class FMDPReader
    * @brief Pure virtual class for reading a FMDP from a file.
    * @ingroup fmdp_group
-   * Every class used to read the content of a Factored Markov Decision Process from
+   * Every class used to read the content of a Factored Markov Decision Process
+   * from
    * a stream,
    * or a file must be a subclass of FMDPReader.
    */
@@ -53,12 +56,13 @@ namespace gum {
      * Constructor
      * A reader is defined for reading a defined file. Hence the 2 args of the
      * constructor.
-     * Note that the FMDP has to be built outside the reader. There is no delegation
+     * Note that the FMDP has to be built outside the reader. There is no
+     * delegation
      * to create/destroy
      * the FMDP from inside the reader.
      */
-    FMDPReader(FactoredMarkovDecisionProcess<GUM_SCALAR> *fmdp,
-               const std::string &filename);
+    FMDPReader( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp,
+                const std::string& filename );
 
     /**
      * Default destructor.
@@ -66,7 +70,8 @@ namespace gum {
     virtual ~FMDPReader();
 
     /**
-     * Reads a Factored Markov Decision Process from the file referenced by filePath
+     * Reads a Factored Markov Decision Process from the file referenced by
+     * filePath
      * into`
      * parameter fmdp.
      * @return Returns the number of error during the parsing (0 if none).
@@ -81,4 +86,4 @@ namespace gum {
 
 #include <agrum/FMDP/io/FMDPReader.tcc>
 
-#endif // GUM_FMDP_READER_H
+#endif  // GUM_FMDP_READER_H

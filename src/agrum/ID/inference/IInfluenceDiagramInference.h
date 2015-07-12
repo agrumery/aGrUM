@@ -44,7 +44,7 @@ namespace gum {
     /**
      * Default constructor
      */
-    IInfluenceDiagramInference(const InfluenceDiagram<GUM_SCALAR> &infDiag);
+    IInfluenceDiagramInference( const InfluenceDiagram<GUM_SCALAR>& infDiag );
 
     /**
      * Destructor.
@@ -63,13 +63,13 @@ namespace gum {
      * @throw OperationNotAllowed Raised if an evidence is over more than one
      * variable.
      */
-    virtual void
-    insertEvidence(const List<const Potential<GUM_SCALAR> *> &evidenceList) = 0;
+    virtual void insertEvidence(
+        const List<const Potential<GUM_SCALAR>*>& evidenceList ) = 0;
 
     /**
      * Remove a given evidence from the graph.
      */
-    virtual void eraseEvidence(const Potential<GUM_SCALAR> *evidence) = 0;
+    virtual void eraseEvidence( const Potential<GUM_SCALAR>* evidence ) = 0;
 
     /**
      * Remove all evidence from the graph.
@@ -77,10 +77,11 @@ namespace gum {
     virtual void eraseAllEvidence() = 0;
 
     /**
-     * Returns a constant reference over the InfluenceDiagram on which this class
+     * Returns a constant reference over the InfluenceDiagram on which this
+     * class
      * work.
      */
-    const InfluenceDiagram<GUM_SCALAR> &influenceDiagram() const;
+    const InfluenceDiagram<GUM_SCALAR>& influenceDiagram() const;
 
     /**
      * Returns maximum expected utility obtained from inference
@@ -89,19 +90,20 @@ namespace gum {
     virtual GUM_SCALAR getMEU() = 0;
 
     /**
-     * Returns best choice for decision variable given in parameter ( based upon MEU
+     * Returns best choice for decision variable given in parameter ( based upon
+     * MEU
      * criteria )
      * @param decisionId the id of the decision variable
      * @throw OperationNotAllowed if no inference have yet been made
      * @throw InvalidNode if node given in parmaeter is not a decision node
      */
-    virtual Idx getBestDecisionChoice(NodeId decisionId) = 0;
+    virtual Idx getBestDecisionChoice( NodeId decisionId ) = 0;
 
     protected:
     /**
      * The Bayes net we wish to perform inference on.
      */
-    const InfluenceDiagram<GUM_SCALAR> &__infDiag;
+    const InfluenceDiagram<GUM_SCALAR>& __infDiag;
   };
 
 } /* namespace gum */

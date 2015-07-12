@@ -40,6 +40,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
+#include <locale.h>
 
 #include <agrum/core/signal/signaler1.h>
 #include <agrum/core/cocoR/common.h>
@@ -251,7 +252,7 @@ class Scanner {
 
     Buffer* buffer;   // scanner buffer
 
-    Scanner( const unsigned char* buf, int len,bool trace=false );
+    Scanner( const unsigned char* buf, int len, std::string filename="anonymous buffer", bool trace=false );
     Scanner( const char* fileName,bool trace=false );
     Scanner( const wchar_t* fileName,bool trace=false );
     Scanner( FILE* s,bool trace=false );

@@ -39,14 +39,17 @@ namespace gum {
      * Generators take as input a filtered row resulting either from the
      * translation of the database cells from a set of CellFilters or from other
      * generators, and they output new filtered rows. An identity generator will
-     * therefore return only one row which will correspond to the same filtered row
+     * therefore return only one row which will correspond to the same filtered
+     *row
      * as given in input, whereas an EM generator will fill the holes in the row
      * and produce several rows as output (one for each filling possible, with
      * their corresponding weight).
      *
      * All filtered row generators should derive from this class. It takes care
-     * of the interaction with the database. As such, the user who wish to create
-     * a new generator, say for instance, one that outputs 3 times the input row,
+     * of the interaction with the database. As such, the user who wish to
+     *create
+     * a new generator, say for instance, one that outputs 3 times the input
+     *row,
      * just has to define the following class:
      * @code
      * class DuplicateGenerator : public FilteredRowGenerator {
@@ -81,10 +84,10 @@ namespace gum {
       FilteredRowGenerator() noexcept;
 
       /// copy constructor
-      FilteredRowGenerator(const FilteredRowGenerator &from) noexcept;
+      FilteredRowGenerator( const FilteredRowGenerator& from ) noexcept;
 
       /// move constructor
-      FilteredRowGenerator(FilteredRowGenerator &&from) noexcept;
+      FilteredRowGenerator( FilteredRowGenerator&& from ) noexcept;
 
       /// destructor
       virtual ~FilteredRowGenerator() noexcept;
@@ -98,10 +101,10 @@ namespace gum {
       /// @{
 
       /// copy constructor
-      FilteredRowGenerator &operator=(const FilteredRowGenerator &) noexcept;
+      FilteredRowGenerator& operator=( const FilteredRowGenerator& ) noexcept;
 
       /// move constructor
-      FilteredRowGenerator &operator=(FilteredRowGenerator &&) noexcept;
+      FilteredRowGenerator& operator=( FilteredRowGenerator&& ) noexcept;
 
       /// @}
 
@@ -111,14 +114,15 @@ namespace gum {
 
       /// @{
 
-      /// returns true if there are still rows that can be output by the RowFilter
+      /// returns true if there are still rows that can be output by the
+      /// RowFilter
       bool hasRows() noexcept;
 
       /// sets the input row from which the generator will create new rows
-      void setInputRow(FilteredRow &row) noexcept;
+      void setInputRow( FilteredRow& row ) noexcept;
 
       /// generate new rows from the input row
-      virtual FilteredRow &generate() = 0;
+      virtual FilteredRow& generate() = 0;
 
       /// decrease the number of remaining output rows
       void decreaseRemainingRows() noexcept;
@@ -133,9 +137,10 @@ namespace gum {
 
       protected:
       /// the row used as input to generate the output FilteredRows
-      FilteredRow *_input_row{nullptr};
+      FilteredRow* _input_row{nullptr};
 
-      /// the number of output rows still to retrieve through the generate method
+      /// the number of output rows still to retrieve through the generate
+      /// method
       unsigned int _nb_remaining_output_rows{0};
     };
 

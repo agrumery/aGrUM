@@ -25,17 +25,19 @@
 
 namespace gum {
 
-  /* ============================================================================ */
-  /* ===                           GUM_BN_WRITER                              === */
-  /* ============================================================================ */
+  /* ============================================================================
+   */
+  /* ===                           GUM_BN_WRITER === */
+  /* ============================================================================
+   */
   // Default constructor.
   template <typename GUM_SCALAR> INLINE NetWriter<GUM_SCALAR>::NetWriter() {
-    GUM_CONSTRUCTOR(NetWriter);
+    GUM_CONSTRUCTOR( NetWriter );
   }
 
   // Default destructor.
   template <typename GUM_SCALAR> INLINE NetWriter<GUM_SCALAR>::~NetWriter() {
-    GUM_DESTRUCTOR(NetWriter);
+    GUM_DESTRUCTOR( NetWriter );
   }
 
   //
@@ -45,25 +47,25 @@ namespace gum {
   // @param bn The Bayesian Network writen in output.
   // @throws Raised if an I/O error occurs.
   template <typename GUM_SCALAR>
-  INLINE void NetWriter<GUM_SCALAR>::write(std::ostream &output,
-                                           const IBayesNet<GUM_SCALAR> &bn) {
-    if (!output.good())
-      GUM_ERROR(IOError, "Stream states flags are not all unset.");
+  INLINE void NetWriter<GUM_SCALAR>::write( std::ostream& output,
+                                            const IBayesNet<GUM_SCALAR>& bn ) {
+    if ( !output.good() )
+      GUM_ERROR( IOError, "Stream states flags are not all unset." );
 
-    output << __header(bn) << std::endl;
+    output << __header( bn ) << std::endl;
 
-    for (auto node : bn.nodes())
-      output << __variableBloc(bn.variable(node)) << std::endl;
+    for ( auto node : bn.nodes() )
+      output << __variableBloc( bn.variable( node ) ) << std::endl;
 
-    for (auto node : bn.nodes())
-      output << __variableCPT(bn.cpt(node));
+    for ( auto node : bn.nodes() )
+      output << __variableCPT( bn.cpt( node ) );
 
     output << std::endl;
 
     output.flush();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writting in the ostream failed.");
+    if ( output.fail() ) {
+      GUM_ERROR( IOError, "Writting in the ostream failed." );
     }
   }
 
@@ -75,91 +77,94 @@ namespace gum {
   // @param bn The Bayesian Network writed in the file.
   // @throws Raised if an I/O error occurs.
   template <typename GUM_SCALAR>
-  INLINE void NetWriter<GUM_SCALAR>::write(std::string filePath,
-                                           const IBayesNet<GUM_SCALAR> &bn) {
-    std::ofstream output(filePath.c_str(), std::ios_base::trunc);
+  INLINE void NetWriter<GUM_SCALAR>::write( std::string filePath,
+                                            const IBayesNet<GUM_SCALAR>& bn ) {
+    std::ofstream output( filePath.c_str(), std::ios_base::trunc );
 
-    if (!output.good()) {
-      GUM_ERROR(IOError, "Stream states flags are not all unset.");
+    if ( !output.good() ) {
+      GUM_ERROR( IOError, "Stream states flags are not all unset." );
     }
 
-    output << __header(bn) << std::endl;
+    output << __header( bn ) << std::endl;
 
-    for (auto node : bn.nodes())
-      output << __variableBloc(bn.variable(node)) << std::endl;
+    for ( auto node : bn.nodes() )
+      output << __variableBloc( bn.variable( node ) ) << std::endl;
 
-    for (auto node : bn.nodes())
-      output << __variableCPT(bn.cpt(node));
+    for ( auto node : bn.nodes() )
+      output << __variableCPT( bn.cpt( node ) );
 
     output << std::endl;
 
     output.flush();
     output.close();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writting in the ostream failed.");
+    if ( output.fail() ) {
+      GUM_ERROR( IOError, "Writting in the ostream failed." );
     }
   }
 
   // Returns a bloc defining a variable's CPT in the BN format.
   template <typename GUM_SCALAR>
   INLINE std::string
-  NetWriter<GUM_SCALAR>::__variableCPT(const Potential<GUM_SCALAR> &cpt) {
+  NetWriter<GUM_SCALAR>::__variableCPT( const Potential<GUM_SCALAR>& cpt ) {
     std::stringstream str;
-    std::string tab = "   "; // poor tabulation
+    std::string tab = "   ";  // poor tabulation
 
-    if (cpt.nbrDim() == 1) {
-      Instantiation inst(cpt);
-      str << "potential (" << cpt.variable(0).name() << ") {" << std::endl << tab
-          << "data = ( ";
+    if ( cpt.nbrDim() == 1 ) {
+      Instantiation inst( cpt );
+      str << "potential (" << cpt.variable( 0 ).name() << ") {" << std::endl
+          << tab << "data = ( ";
 
-      for (inst.setFirst(); !inst.end(); ++inst) {
+      for ( inst.setFirst(); !inst.end(); ++inst ) {
         str << " " << cpt[inst];
       }
 
-      str << ");" << std::endl << "}" << std::endl;
-    } else if (cpt.domainSize() > 1) {
+      str << ");" << std::endl
+          << "}" << std::endl;
+    } else if ( cpt.domainSize() > 1 ) {
       // Instantiation inst( cpt );
-      Instantiation condVars; // Instantiation on the conditioning variables
-      const Sequence<const DiscreteVariable *> &varsSeq = cpt.variablesSequence();
-      str << "potential ( " << (varsSeq[(Idx)0])->name() << " | ";
+      Instantiation condVars;  // Instantiation on the conditioning variables
+      const Sequence<const DiscreteVariable*>& varsSeq =
+          cpt.variablesSequence();
+      str << "potential ( " << ( varsSeq[(Idx)0] )->name() << " | ";
 
-      for (Idx i = 0; i < varsSeq.size(); i++) {
-        if (i != 0)
+      for ( Idx i = 0; i < varsSeq.size(); i++ ) {
+        if ( i != 0 )
           str << varsSeq[i]->name() << "   ";
 
-        condVars << *(varsSeq[i]);
+        condVars << *( varsSeq[i] );
       }
 
       // condVars << *( varsSeq[(Idx)0] );
-      str << ") {" << std::endl << tab << "data = ";
+      str << ") {" << std::endl
+          << tab << "data = ";
 
-      for (condVars.setFirst(); !condVars.end(); ++condVars) {
+      for ( condVars.setFirst(); !condVars.end(); ++condVars ) {
 
         // Writing the probabilities of the variable
-        if (condVars.valFromPtr(varsSeq[(Idx)0]) !=
-                (varsSeq[(Idx)0])->domainSize() - 1 &&
-            condVars.valFromPtr(varsSeq[(Idx)0]) != 0) {
+        if ( condVars.valFromPtr( varsSeq[(Idx)0] ) !=
+                 ( varsSeq[(Idx)0] )->domainSize() - 1 &&
+             condVars.valFromPtr( varsSeq[(Idx)0] ) != 0 ) {
           str << tab << cpt[condVars];
         } else {
           bool notend = false;
 
-          for (Idx i = 0; i < condVars.nbrDim(); i++) {
-            if (condVars.val(condVars.variable(i)) == 0) {
+          for ( Idx i = 0; i < condVars.nbrDim(); i++ ) {
+            if ( condVars.val( condVars.variable( i ) ) == 0 ) {
               notend = true;
-              str << (i == 0 ? "\n   " : "") << "(";
+              str << ( i == 0 ? "\n   " : "" ) << "(";
             } else
               break;
           }
 
           str << tab << cpt[condVars];
 
-          if (!notend) {
-            for (Idx i = 0; i < condVars.nbrDim(); i++) {
+          if ( !notend ) {
+            for ( Idx i = 0; i < condVars.nbrDim(); i++ ) {
 
-              if (condVars.val(condVars.variable(i)) ==
-                  condVars.variable(i).domainSize() - 1)
-                str << ")" << (i == condVars.nbrDim() - 1 ? ";" : "");
+              if ( condVars.val( condVars.variable( i ) ) ==
+                   condVars.variable( i ).domainSize() - 1 )
+                str << ")" << ( i == condVars.nbrDim() - 1 ? ";" : "" );
               else
                 break;
             }
@@ -177,11 +182,12 @@ namespace gum {
   // Returns the header of the BN file.
   template <typename GUM_SCALAR>
   INLINE std::string
-  NetWriter<GUM_SCALAR>::__header(const IBayesNet<GUM_SCALAR> &bn) {
+  NetWriter<GUM_SCALAR>::__header( const IBayesNet<GUM_SCALAR>& bn ) {
     std::stringstream str;
-    std::string tab = "   "; // poor tabulation
-    str << std::endl << "net {" << std::endl;
-    str << "  name = " << bn.propertyWithDefault("name", "unnamedBN") << ";"
+    std::string tab = "   ";  // poor tabulation
+    str << std::endl
+        << "net {" << std::endl;
+    str << "  name = " << bn.propertyWithDefault( "name", "unnamedBN" ) << ";"
         << std::endl;
     str << "  software = \"aGrUM " << GUM_VERSION << "\";" << std::endl;
     str << "  node_size = (50 50);" << std::endl;
@@ -192,14 +198,14 @@ namespace gum {
   // Returns a bloc defining a variable in the BN format.
   template <typename GUM_SCALAR>
   INLINE std::string
-  NetWriter<GUM_SCALAR>::__variableBloc(const DiscreteVariable &var) {
+  NetWriter<GUM_SCALAR>::__variableBloc( const DiscreteVariable& var ) {
     std::stringstream str;
-    std::string tab = "   "; // poor tabulation
+    std::string tab = "   ";  // poor tabulation
     str << "node " << var.name() << " {" << std::endl;
     str << tab << "states = (";
 
-    for (Idx i = 0; i < var.domainSize(); i++) {
-      str << var.label(i) << " ";
+    for ( Idx i = 0; i < var.domainSize(); i++ ) {
+      str << var.label( i ) << " ";
     }
 
     str << ");" << std::endl;
@@ -212,4 +218,4 @@ namespace gum {
   }
 } /* namespace gum */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

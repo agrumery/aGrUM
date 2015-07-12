@@ -25,43 +25,63 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#ifndef NDEBUG
+#include <agrum/core/debug.h>
+#endif
+
 #include <agrum/core/bijection.h>
 
 namespace gum {
 
   // creates (if needed) and returns the safe iterator __BijectionIterEndSafe
-  const BijectionIteratorSafe<int, int> *
+  const BijectionIteratorSafe<int, int>*
   BijectionIteratorStaticEnd::endSafe4Statics() {
     static bool first_time = true;
 
-    if (first_time) {
+    if ( first_time ) {
       first_time = false;
       __BijectionIterEndSafe = new BijectionIteratorSafe<int, int>;
+#ifndef NDEBUG
+      __debug__::__dec_creation( "BijectionIteratorSafe",
+                                 "__bijection_static_end", 0,
+                                 "static variable correction", 0 );
+      __debug__::__dec_creation( "HashTableConstIteratorSafe",
+                                 "__bijection_static_end", 0,
+                                 "static variable correction", 0 );
+#endif
     }
 
     return __BijectionIterEndSafe;
   }
 
   // creates (if needed) and returns the unsafe iterator __BijectionIterEnd
-  const BijectionIterator<int, int> *BijectionIteratorStaticEnd::end4Statics() {
+  const BijectionIterator<int, int>* BijectionIteratorStaticEnd::end4Statics() {
     static bool first_time = true;
 
-    if (first_time) {
+    if ( first_time ) {
       first_time = false;
       __BijectionIterEnd = new BijectionIterator<int, int>;
+#ifndef NDEBUG
+      __debug__::__dec_creation( "BijectionIterator", "__bijection_static_end",
+                                 0, "static variable correction", 0 );
+      __debug__::__dec_creation( "HashTableConstIterator",
+                                 "__bijection_static_end", 0,
+                                 "static variable correction", 0 );
+#endif
     }
 
     return __BijectionIterEnd;
   }
 
   // create the end iterator for all Bijections
-  const BijectionIteratorSafe<int, int> *
+  const BijectionIteratorSafe<int, int>*
       BijectionIteratorStaticEnd::__BijectionIterEndSafe =
           BijectionIteratorStaticEnd::endSafe4Statics();
 
   // create the end iterator for all Bijections
-  const BijectionIterator<int, int> *BijectionIteratorStaticEnd::__BijectionIterEnd =
-      BijectionIteratorStaticEnd::end4Statics();
+  const BijectionIterator<int, int>*
+      BijectionIteratorStaticEnd::__BijectionIterEnd =
+          BijectionIteratorStaticEnd::end4Statics();
 
 } /* namespace gum */
 

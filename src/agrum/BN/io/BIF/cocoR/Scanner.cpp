@@ -257,9 +257,9 @@ int UTF8Buffer::Read() {
   return ch;
 }
 
-Scanner::Scanner( const unsigned char* buf, int len,bool trace ) {
+Scanner::Scanner(const unsigned char* buf, int len, std::string filename, bool trace) {
   buffer = new Buffer( buf, len );
-  __filenamne=L"anonymous buffer";
+  __filenamne=widen( filename.c_str() );
   __trace=trace;
   Init();
 }

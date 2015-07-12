@@ -188,8 +188,13 @@ void Parser::Observe() {
 		std::string left_value, right_value; 
 		IdentArray(left_value);
 		Expect(18 /* "=" */);
-		Expect(_word);
-		right_value = gum::narrow(t->val); 
+		if (la->kind == _word) {
+			Get();
+			right_value = gum::narrow(t->val); 
+		} else if (la->kind == _float) {
+			Get();
+			right_value = std::to_string(coco_atof(t->val)); 
+		} else SynErr(35);
 		Expect(15 /* ";" */);
 		__currentSession->addObserve(t->line, left_value, right_value); 
 }
@@ -221,9 +226,9 @@ void Parser::SetEngine() {
 			Get();
 		} else if (la->kind == 20 /* "SVE" */) {
 			Get();
-		} else if (la->kind == 21 /* "GND" */) {
+		} else if (la->kind == 21 /* "GRD" */) {
 			Get();
-		} else SynErr(35);
+		} else SynErr(36);
 		__currentSession->addSetEngine( t->line, gum::narrow(t->val) ); 
 		Expect(15 /* ";" */);
 }
@@ -236,7 +241,7 @@ void Parser::SetGrdEngine() {
 			Get();
 		} else if (la->kind == 24 /* "lazy" */) {
 			Get();
-		} else SynErr(36);
+		} else SynErr(37);
 		__currentSession->addSetGndEngine( t->line, gum::narrow(t->val) ); 
 		Expect(15 /* ";" */);
 }
@@ -428,7 +433,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 18: s = coco_string_create(L"\"=\" expected"); break;
 			case 19: s = coco_string_create(L"\"SVED\" expected"); break;
 			case 20: s = coco_string_create(L"\"SVE\" expected"); break;
-			case 21: s = coco_string_create(L"\"GND\" expected"); break;
+			case 21: s = coco_string_create(L"\"GRD\" expected"); break;
 			case 22: s = coco_string_create(L"\"VE\" expected"); break;
 			case 23: s = coco_string_create(L"\"VEBB\" expected"); break;
 			case 24: s = coco_string_create(L"\"lazy\" expected"); break;
@@ -442,8 +447,9 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 			case 32: s = coco_string_create(L"invalid o3prmr"); break;
 			case 33: s = coco_string_create(L"this symbol not expected in RequestBloc"); break;
 			case 34: s = coco_string_create(L"invalid Command"); break;
-			case 35: s = coco_string_create(L"invalid SetEngine"); break;
-			case 36: s = coco_string_create(L"invalid SetGrdEngine"); break;
+			case 35: s = coco_string_create(L"invalid Observe"); break;
+			case 36: s = coco_string_create(L"invalid SetEngine"); break;
+			case 37: s = coco_string_create(L"invalid SetGrdEngine"); break;
 
 
     default: {

@@ -22,8 +22,7 @@
 // Author: Lionel Torti.
 // ============================================================================
 
-package classes;
-
+import classes.types;
 import classes.Room;
 
 interface Equipment {

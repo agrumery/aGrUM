@@ -20,7 +20,8 @@
 /** @file
  * @brief Or aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+*<{prenom.nom}_at_lip6.fr>
  */
 #include <agrum/multidim/aggregators/or.h>
 

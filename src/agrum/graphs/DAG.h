@@ -29,9 +29,12 @@
 
 namespace gum {
 
-  /* =========================================================================== */
-  /* ===      BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS    === */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===      BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS    ===
+   */
+  /* ===========================================================================
+   */
   /** @class DAG
    * @brief Base class for dag
    *
@@ -94,7 +97,8 @@ namespace gum {
    *
    * @endcode
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   class DAG : public DiGraph {
     public:
     // ############################################################################
@@ -109,14 +113,14 @@ namespace gum {
      * @param arcs_size the size of the hash table used to store all the arcs
      * @param arcs_resize_policy the resizing policy of this hash table
      */
-    explicit DAG(Size nodes_size = HashTableConst::default_size,
-                 bool nodes_resize_policy = true,
-                 Size arcs_size = HashTableConst::default_size,
-                 bool arcs_resize_policy = true);
+    explicit DAG( Size nodes_size = HashTableConst::default_size,
+                  bool nodes_resize_policy = true,
+                  Size arcs_size = HashTableConst::default_size,
+                  bool arcs_resize_policy = true );
 
     /// copy constructor
     /** @param g the DAG to copy */
-    DAG(const DAG &g);
+    DAG( const DAG& g );
 
     /// destructor
     virtual ~DAG();
@@ -130,7 +134,7 @@ namespace gum {
 
     /// copy operator
     /** @param g the DAG to copy */
-    DAG &operator=(const DAG &g);
+    DAG& operator=( const DAG& g );
 
     /// @}
 
@@ -146,23 +150,25 @@ namespace gum {
      * @warning if the arc already exists, nothing is done. In particular, no
      * exception is raised.
      * @throw InvalidNode if head or tail does not belong to the graph nodes
-     * @throw InvalidDirectedCycle if any (directed) cycle is created by this arc.
+     * @throw InvalidDirectedCycle if any (directed) cycle is created by this
+     * arc.
      * @warning Unfortunately, this means that insertArc is not in constant
      * time anymore.
      */
-    GUM_DEPRECATED(virtual void insertArc(const NodeId tail, const NodeId head));
-    virtual void addArc(const NodeId tail, const NodeId head);
+    GUM_DEPRECATED( virtual void insertArc( const NodeId tail,
+                                            const NodeId head ) );
+    virtual void addArc( const NodeId tail, const NodeId head );
     /// @}
 
     private:
     /// checks whether there exists a directed path from \e from to \e to
-    bool __hasDirectedPath(const NodeId from, const NodeId to);
+    bool __hasDirectedPath( const NodeId from, const NodeId to );
   };
 
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
 #include <agrum/graphs/DAG.inl>
-#endif // GUM_NOINLINE
+#endif  // GUM_NOINLINE
 
 #endif /* GUM_DAG_H */

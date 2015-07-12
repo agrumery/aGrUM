@@ -47,7 +47,8 @@ namespace gum {
    * @ingroup id_group
    *
    * This class export an influence diagram into an XML files, using BIF format
-   * See http://www-2.cs.cmu.edu/afs/cs/user/fgcozman/www/Research/InterchangeFormat/
+   * See
+   *http://www-2.cs.cmu.edu/afs/cs/user/fgcozman/www/Research/InterchangeFormat/
    * for information about this format.
    *
    */
@@ -79,8 +80,8 @@ namespace gum {
      * @param infdiag The influence diagram writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::ostream &output,
-                       const InfluenceDiagram<GUM_SCALAR> &infdiag);
+    virtual void write( std::ostream& output,
+                        const InfluenceDiagram<GUM_SCALAR>& infdiag );
 
     /**
      * Writes an Influence Diagram in the file referenced by filePath.
@@ -91,8 +92,8 @@ namespace gum {
      * @param infdiag The Influence Diagram writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::string filePath,
-                       const InfluenceDiagram<GUM_SCALAR> &infdiag);
+    virtual void write( std::string filePath,
+                        const InfluenceDiagram<GUM_SCALAR>& infdiag );
 
     private:
     /**
@@ -108,15 +109,17 @@ namespace gum {
     /**
      * Returns a bloc defining a variable in the BIF format.
      */
-    std::string __variableBloc(const DiscreteVariable &var, int nodeType);
+    std::string __variableBloc( const DiscreteVariable& var, int nodeType );
 
     /**
-     * Returns a bloc defining a variable's table (if she has) in the BIF format.
+     * Returns a bloc defining a variable's table (if she has) in the BIF
+     * format.
      */
-    std::string __variableDefinition(const NodeId &varNodeId,
-                                     const InfluenceDiagram<GUM_SCALAR> &infdiag);
+    std::string
+    __variableDefinition( const NodeId& varNodeId,
+                          const InfluenceDiagram<GUM_SCALAR>& infdiag );
   };
 } /* namespace gum */
 
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.tcc>
-#endif // GUM_BIF_XML_ID_WRITER_H
+#endif  // GUM_BIF_XML_ID_WRITER_H
