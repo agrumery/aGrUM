@@ -405,6 +405,68 @@ namespace gum_tests {
                 ev_pot2.set( inst2, (float)1 );
 
                 gum::LazyPropagation<float> inf1( bn );
+                gum::JunctionTreeInference<float> inf2( bn );
+                TS_ASSERT_THROWS_NOTHING( inf1.insertEvidence( evidences ) );
+                TS_ASSERT_THROWS_NOTHING( inf2.insertEvidence( evidences ) );
+                TS_ASSERT_THROWS_NOTHING( inf1.makeInference() );
+                TS_ASSERT_THROWS_NOTHING( inf2.makeInference() );
+
+
+                for ( auto xnode : bn.dag() ) {
+                  // std::cout << "node : " << xnode << " : ";
+                  // std::cout << "    " << inf1.posterior(xnode) << std::endl
+                  //           << "    " << inf2.posterior(xnode) << std::endl;
+
+                  TS_ASSERT( equalPotentials( inf1.posterior( xnode ),
+                                              inf2.posterior( xnode ) ) );
+                }
+                ev_pot2.set( inst2, (float)0 );
+              }
+            }
+          }
+
+          ev_pot.set( inst, (float)0 );
+        }
+      }
+    }
+
+
+    void testAsia3() {
+      std::string file = GET_PATH_STR( "asia3.bif" );
+      gum::BayesNet<float> bn;
+      gum::BIFReader<float> reader( &bn, file );
+      int nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
+      TS_ASSERT( nbrErr == 0 );
+      TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
+
+      for ( auto node : bn.dag() ) {
+        const auto& variable = bn.variable( node );
+        gum::Potential<float> ev_pot;
+        ev_pot << variable;
+        ev_pot.fill( (float)0 );
+
+        gum::Instantiation inst( ev_pot );
+        for ( inst.setFirst(); !inst.end(); ++inst ) {
+          ev_pot.set( inst, (float)1 );
+
+          for ( auto node2 : bn.dag() ) {
+            if ( node2 > node ) {
+              const auto& variable2 = bn.variable( node2 );
+              gum::Potential<float> ev_pot2;
+              ev_pot2 << variable2;
+              ev_pot2.fill( (float)0 );
+
+              gum::List<const gum::Potential<float>*> evidences;
+              evidences.insert( &ev_pot );
+              evidences.insert( &ev_pot2 );
+              // std::cout << "hard ev: " << node << "  " << node2 << std::endl;
+
+              gum::Instantiation inst2( ev_pot2 );
+              for ( inst2.setFirst(); !inst2.end(); ++inst2 ) {
+                ev_pot2.set( inst2, (float)1 );
+
+                gum::LazyPropagation<float> inf1( bn );
                 inf1.setFindRelevantPotentialsType( gum::LazyPropagation<float>::FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION );
                 gum::JunctionTreeInference<float> inf2( bn );
                 TS_ASSERT_THROWS_NOTHING( inf1.insertEvidence( evidences ) );
@@ -430,6 +492,8 @@ namespace gum_tests {
         }
       }
     }
+
+    
 
     private:
     // Builds a BN to test the inference

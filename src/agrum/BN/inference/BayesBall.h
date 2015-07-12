@@ -21,7 +21,7 @@
  * @file
  * @brief Header of the BayesBall class.
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN
+ * @author Lionel TORTI and Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_BAYESBALLS_H
@@ -56,39 +56,21 @@ namespace gum {
      * Fill requisite with the requisite nodes in dag given a query and hard
      * evidences.
      */
-    void requisiteNodes( const DAG& dag, const NodeSet& query,
+    void requisiteNodes( const DAG& dag,
+                         const NodeSet& query,
                          const NodeSet& hardEvidence,
-                         const NodeSet& softEvidence, NodeSet& requisite );
+                         const NodeSet& softEvidence,
+                         NodeSet& requisite );
 
     /// update a set of potentials, keeping only those d-connected with query
     /// variables
     template <typename GUM_SCALAR, template <typename> class TABLE>
     void relevantPotentials( const IBayesNet<GUM_SCALAR>& bn,
-                             const NodeSet& query, const NodeSet& hardEvidence,
+                             const NodeSet& query,
+                             const NodeSet& hardEvidence,
                              const NodeSet& softEvidence,
                              Set<const TABLE<GUM_SCALAR>*>& potentials );
 
-    private:
-    /// Call this when a node receive the ball from one of his child.
-    void __fromChild( NodeId node, NodeSet& hard_ev_visited );
-
-    /// Call this when a node reveive the ball from one of this parents.
-    void __fromParent( NodeId node, NodeSet& hard_ev_visited );
-
-    /// Top and bottom flags for each nodes.
-    // HashTable< NodeId, std::pair<bool, bool> > __marks;
-    // first element of the pair: top mark
-    // second element of the pair: bottom mark
-    NodeProperty<std::pair<bool, bool>> __marks;
-
-    /// the dag on which we perform the ball bouncing
-    const DAG* __dag;
-
-    /// the set of hard evidence
-    const NodeSet* __hardEvidence;
-
-    /// the set of soft evidence
-    const NodeSet* __softEvidence;
   };
 
 } /* namespace gum */
