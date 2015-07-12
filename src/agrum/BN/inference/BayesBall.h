@@ -70,10 +70,10 @@ namespace gum {
 
     private:
     /// Call this when a node receive the ball from one of his child.
-    void __fromChild( NodeId node );
+    void __fromChild( NodeId node, NodeSet& hard_ev_visited );
 
     /// Call this when a node reveive the ball from one of this parents.
-    void __fromParent( NodeId node );
+    void __fromParent( NodeId node, NodeSet& hard_ev_visited );
 
     /// Top and bottom flags for each nodes.
     // HashTable< NodeId, std::pair<bool, bool> > __marks;

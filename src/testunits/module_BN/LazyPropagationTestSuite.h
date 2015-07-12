@@ -405,6 +405,7 @@ namespace gum_tests {
                 ev_pot2.set( inst2, (float)1 );
 
                 gum::LazyPropagation<float> inf1( bn );
+                inf1.setFindRelevantPotentialsType( gum::LazyPropagation<float>::FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION );
                 gum::JunctionTreeInference<float> inf2( bn );
                 TS_ASSERT_THROWS_NOTHING( inf1.insertEvidence( evidences ) );
                 TS_ASSERT_THROWS_NOTHING( inf2.insertEvidence( evidences ) );
