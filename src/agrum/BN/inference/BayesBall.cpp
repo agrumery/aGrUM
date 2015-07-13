@@ -36,6 +36,9 @@ namespace gum {
                                   const NodeSet& hardEvidence,
                                   const NodeSet& softEvidence,
                                   NodeSet& requisite ) {
+    // for the moment, no node is requisite
+    requisite.clear ();
+    
     // create the marks (top = first and bottom = second )
     NodeProperty<std::pair<bool, bool>> marks ( dag.size() );
     const std::pair<bool, bool> empty_mark( false, false );

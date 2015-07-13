@@ -45,8 +45,9 @@ namespace gum {
     /// combinations
     enum FindRelevantPotentialsType {
       FIND_RELEVANT_ALL,
-      FIND_RELEVANT_D_SEPARATION,
-      FIND_RELEVANT_D_SEPARATION2
+      FIND_RELEVANT_D_SEPARATION,  // BayesBall requisite nodes -> potentials
+      FIND_RELEVANT_D_SEPARATION2, // BayesBall requisite potentials (directly)
+      FIND_RELEVANT_D_SEPARATION3  // Koller & Friedman 2009 requisite potentials
     };
 
 
@@ -284,6 +285,12 @@ namespace gum {
      * combined
      * to produce a message on a separator */
     void __findRelevantPotentialsWithdSeparation2(
+        __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars );
+
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined
+     * to produce a message on a separator */
+    void __findRelevantPotentialsWithdSeparation3(
         __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars );
 
     /** @brief update a set of potentials: the remaining are those to be

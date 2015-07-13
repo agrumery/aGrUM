@@ -28,6 +28,7 @@
 #include <agrum/multidim/instantiation.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/BayesBall.h>
+#include <agrum/BN/inference/dSeparation.h>
 #include <agrum/multidim/operators/multiDimProjection.h>
 #include <agrum/multidim/operators/multiDimCombineAndProjectDefault.h>
 #include <agrum/graphs/binaryJoinTreeConverterDefault.h>
@@ -425,6 +426,12 @@ namespace gum {
                 GUM_SCALAR>::__findRelevantPotentialsWithdSeparation;
         break;
 
+      case FIND_RELEVANT_D_SEPARATION3:
+        __findRelevantPotentials =
+            &LazyPropagation<
+                GUM_SCALAR>::__findRelevantPotentialsWithdSeparation3;
+        break;
+
       case FIND_RELEVANT_ALL:
         __findRelevantPotentials =
             &LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsGetAll;
@@ -496,6 +503,25 @@ namespace gum {
     BayesBall bb;
     bb.relevantPotentials( this->bn(), kept_ids, __hard_evidence_nodes,
                            __soft_evidence_nodes, pot_list );
+  }
+
+  
+  // find the potentials d-connected to a set of variables
+  template <typename GUM_SCALAR>
+  INLINE void
+  LazyPropagation<GUM_SCALAR>::__findRelevantPotentialsWithdSeparation3(
+      __PotentialSet& pot_list, Set<const DiscreteVariable*>& kept_vars ) {
+    // find the node ids of the kept variables
+    NodeSet kept_ids;
+    const auto& bn = this->bn();
+    for ( const auto var : kept_vars ) {
+      kept_ids.insert( bn.nodeId( *var ) );
+    }
+
+    // determine the set of potentials d-connected with the kept variables
+    dSeparation dsep;
+    dsep.relevantPotentials( this->bn(), kept_ids, __hard_evidence_nodes,
+                             __soft_evidence_nodes, pot_list );
   }
 
 
