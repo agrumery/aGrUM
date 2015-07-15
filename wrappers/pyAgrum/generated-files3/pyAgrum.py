@@ -104,7 +104,6 @@ except:
     weakref_proxy = lambda x: x
 
 
-
 import numpy
 
 class PythonBNListener(_object):
@@ -2250,7 +2249,6 @@ class DiscreteVariable(Variable):
         """domain(DiscreteVariable self) -> std::string const"""
         return _pyAgrum.DiscreteVariable_domain(self)
 
-
     def __getitem__(self,label):   # adding the y() function here
         return self.index(label)
 
@@ -2312,7 +2310,6 @@ class LabelizedVariable(DiscreteVariable):
     def isLabel(self, aLabel: 'std::string const &') -> "bool":
         """isLabel(LabelizedVariable self, std::string const & aLabel) -> bool"""
         return _pyAgrum.LabelizedVariable_isLabel(self, aLabel)
-
 
     def addLabel(self,*args):
       _pyAgrum.LabelizedVariable_addLabel(self,*args)
@@ -3611,7 +3608,6 @@ class DiscretizedVariable_double(DiscreteVariable):
         """isTick(DiscretizedVariable_double self, double const & aTick) -> bool"""
         return _pyAgrum.DiscretizedVariable_double_isTick(self, aTick)
 
-
     def addTick(self,*args):
       _pyAgrum.DiscretizedVariable_double_addTick(self,*args)
       return self
@@ -3764,7 +3760,6 @@ class Potential_double(_object):
             self.this.append(this)
         except:
             self.this = this
-
         self._notSync=True
 
 
@@ -3801,7 +3796,6 @@ class Potential_double(_object):
         """sum(Potential_double self) -> double const"""
         return _pyAgrum.Potential_double_sum(self)
 
-
     def variablesSequence(self):
         varlist = []
         for i in range(0, self.nbrDim()):
@@ -3834,7 +3828,6 @@ class Potential_double(_object):
         else:
             return self
 
-
     def __fill_distrib__(self):
       if not hasattr(self,'_notSync'):
         self._notSync=True
@@ -3861,14 +3854,13 @@ class Potential_double(_object):
         self.__distrib__.shape = tuple(self._var_dims)
 
 
-
     def __indexfromdict__(self, id_dict):
         index = []
         for name, dim in zip(self._var_names, self._var_dims):
             if name in id_dict:
                 id_value = id_dict[name]
                 if isinstance(id_value, str):
-    # id_value is a label of a LabelizedVar
+                    # id_value is a label of a LabelizedVar
                     i = self._var_names.index(name)
                     var = self.variable(len(self._var_names) - 1 - i)
                     id_value = var[id_value]
@@ -3888,16 +3880,13 @@ class Potential_double(_object):
         """
         return _pyAgrum.Potential_double___str__(self, *args)
 
-
     def tolist(self):
         self.__fill_distrib__()
         return self.__distrib__.tolist()
 
 
-
     def toarray(self):
         return numpy.array(self.tolist())
-
 
 
     def __getitem__(self, id):
@@ -3909,7 +3898,6 @@ class Potential_double(_object):
         else:
             id_slice = id
         return self.__distrib__[id_slice]
-
 
 
     def __setitem__(self, id, value):
@@ -3924,12 +3912,10 @@ class Potential_double(_object):
         self.fillWith(self.__distrib__.reshape(self.__distrib__.size).tolist())
 
 
-
     @property
     def var_names(self):
         self.__fill_distrib__()
         return self._var_names
-
 
 
     @property
@@ -3947,7 +3933,6 @@ class Potential_double(_object):
     def set(self, i: 'Instantiation', value: 'double const &') -> "void":
         """set(Potential_double self, Instantiation i, double const & value)"""
         val = _pyAgrum.Potential_double_set(self, i, value)
-
         self._notSync=True
 
 
@@ -3992,7 +3977,6 @@ class Potential_double(_object):
     def remove(self, var: 'DiscreteVariable') -> "void":
         """remove(Potential_double self, DiscreteVariable var)"""
         val = _pyAgrum.Potential_double_remove(self, var)
-
         self._notSync=True
 
 
@@ -4002,7 +3986,6 @@ class Potential_double(_object):
     def add(self, v: 'DiscreteVariable') -> "void":
         """add(Potential_double self, DiscreteVariable v)"""
         val = _pyAgrum.Potential_double_add(self, v)
-
         self._notSync=True
 
 
@@ -4032,7 +4015,6 @@ class UtilityTable_double(_object):
             self.this.append(this)
         except:
             self.this = this
-
         self._notSync=True
 
 
@@ -4059,7 +4041,6 @@ class UtilityTable_double(_object):
     def reduceBy(self, varList: 'gum::List< gum::DiscreteVariable const * > const &') -> "gum::UtilityTable< double >":
         """reduceBy(UtilityTable_double self, gum::List< gum::DiscreteVariable const * > const & varList) -> UtilityTable_double"""
         return _pyAgrum.UtilityTable_double_reduceBy(self, varList)
-
 
     def variablesSequence(self):
         varlist = []
@@ -4093,7 +4074,6 @@ class UtilityTable_double(_object):
         else:
             return self
 
-
     def __fill_distrib__(self):
       if not hasattr(self,'_notSync'):
         self._notSync=True
@@ -4120,14 +4100,13 @@ class UtilityTable_double(_object):
         self.__distrib__.shape = tuple(self._var_dims)
 
 
-
     def __indexfromdict__(self, id_dict):
         index = []
         for name, dim in zip(self._var_names, self._var_dims):
             if name in id_dict:
                 id_value = id_dict[name]
                 if isinstance(id_value, str):
-    # id_value is a label of a LabelizedVar
+                    # id_value is a label of a LabelizedVar
                     i = self._var_names.index(name)
                     var = self.variable(len(self._var_names) - 1 - i)
                     id_value = var[id_value]
@@ -4144,16 +4123,13 @@ class UtilityTable_double(_object):
         """__str__(UtilityTable_double self) -> char const *"""
         return _pyAgrum.UtilityTable_double___str__(self)
 
-
     def tolist(self):
         self.__fill_distrib__()
         return self.__distrib__.tolist()
 
 
-
     def toarray(self):
         return numpy.array(self.tolist())
-
 
 
     def __getitem__(self, id):
@@ -4165,7 +4141,6 @@ class UtilityTable_double(_object):
         else:
             id_slice = id
         return self.__distrib__[id_slice]
-
 
 
     def __setitem__(self, id, value):
@@ -4180,12 +4155,10 @@ class UtilityTable_double(_object):
         self.fillWith(self.__distrib__.reshape(self.__distrib__.size).tolist())
 
 
-
     @property
     def var_names(self):
         self.__fill_distrib__()
         return self._var_names
-
 
 
     @property
@@ -4203,7 +4176,6 @@ class UtilityTable_double(_object):
     def set(self, i: 'Instantiation', value: 'double const &') -> "void":
         """set(UtilityTable_double self, Instantiation i, double const & value)"""
         val = _pyAgrum.UtilityTable_double_set(self, i, value)
-
         self._notSync=True
 
 
@@ -4248,7 +4220,6 @@ class UtilityTable_double(_object):
     def remove(self, var: 'DiscreteVariable') -> "void":
         """remove(UtilityTable_double self, DiscreteVariable var)"""
         val = _pyAgrum.UtilityTable_double_remove(self, var)
-
         self._notSync=True
 
 
@@ -4258,7 +4229,6 @@ class UtilityTable_double(_object):
     def add(self, v: 'DiscreteVariable') -> "void":
         """add(UtilityTable_double self, DiscreteVariable v)"""
         val = _pyAgrum.UtilityTable_double_add(self, v)
-
         self._notSync=True
 
 
@@ -4380,7 +4350,6 @@ class BayesNet_double(IBayesNet_double):
     def cpt(self, varId: 'gum::NodeId') -> "gum::Potential< double > const &":
         """cpt(BayesNet_double self, gum::NodeId varId) -> Potential_double"""
         val = _pyAgrum.BayesNet_double_cpt(self, varId)
-
         val.__fill_distrib__()
 
 
@@ -4605,6 +4574,14 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_loadNET(self, *args)
 
 
+    def loadPRM(self, *args) -> "bool":
+        """
+        loadPRM(BayesNet_double self, std::string name, PyObject * l) -> bool
+        loadPRM(BayesNet_double self, std::string name) -> bool
+        """
+        return _pyAgrum.BayesNet_double_loadPRM(self, *args)
+
+
     def saveNET(self, name: 'std::string') -> "void":
         """saveNET(BayesNet_double self, std::string name)"""
         return _pyAgrum.BayesNet_double_saveNET(self, name)
@@ -4646,7 +4623,6 @@ class BayesNetInference_double(_object):
     def posterior(self, id: 'gum::NodeId') -> "gum::Potential< double > const &":
         """posterior(BayesNetInference_double self, gum::NodeId id) -> Potential_double"""
         val = _pyAgrum.BayesNetInference_double_posterior(self, id)
-
         val.__fill_distrib__()
 
 
@@ -4677,14 +4653,13 @@ class BayesNetInference_double(_object):
         """bn(BayesNetInference_double self) -> IBayesNet_double"""
         return _pyAgrum.BayesNetInference_double_bn(self)
 
-
     def setEvidence(self, evidces):
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
         bn = self.bn()
 
 
-    # set evidences
+        # set evidences
         self.list_pot = []
         try:
           items=evidces.iteritems()
@@ -4704,7 +4679,7 @@ class BayesNetInference_double(_object):
             pot.add(var)
             if isinstance(evidce, (int, float, str)):
                 pot[:] = 0
-    # determine the var type
+                # determine the var type
                 try:
                     cast_var = var.toLabelizedVar()
                     if isinstance(evidce, int):
@@ -5730,7 +5705,6 @@ class InfluenceDiagram_double(DAGmodel):
     def cpt(self, varId: 'gum::NodeId') -> "gum::Potential< double > const &":
         """cpt(InfluenceDiagram_double self, gum::NodeId varId) -> Potential_double"""
         val = _pyAgrum.InfluenceDiagram_double_cpt(self, varId)
-
         val.__fill_distrib__()
 
 
@@ -5740,7 +5714,6 @@ class InfluenceDiagram_double(DAGmodel):
     def utility(self, varId: 'gum::NodeId') -> "gum::UtilityTable< double > const &":
         """utility(InfluenceDiagram_double self, gum::NodeId varId) -> UtilityTable_double"""
         val = _pyAgrum.InfluenceDiagram_double_utility(self, varId)
-
         val.__fill_distrib__()
 
 
@@ -5981,13 +5954,12 @@ class InfluenceDiagramInference_double(_object):
         """influenceDiagram(InfluenceDiagramInference_double self) -> InfluenceDiagram_double"""
         return _pyAgrum.InfluenceDiagramInference_double_influenceDiagram(self)
 
-
     def setEvidence(self, evidces):
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
         bn = self.influenceDiagram()
 
-    # set evidences
+        # set evidences
         self.list_pot = []
 
         try:
@@ -6008,7 +5980,7 @@ class InfluenceDiagramInference_double(_object):
             pot.add(var)
             if isinstance(evidce, (int, float, str)):
                 pot[:] = 0
-    # determine the var type
+                # determine the var type
                 try:
                     cast_var = var.toLabelizedVar()
                     if isinstance(evidce, int):
@@ -6261,7 +6233,6 @@ class BNLearner_double(_object):
 
 BNLearner_double_swigregister = _pyAgrum.BNLearner_double_swigregister
 BNLearner_double_swigregister(BNLearner_double)
-
 
 Potential = Potential_double
 UtilityTable = UtilityTable_double

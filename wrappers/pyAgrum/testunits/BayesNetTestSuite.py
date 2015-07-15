@@ -1,5 +1,5 @@
 # -*- encoding: UTF-8 -*-
-import pyAgrum as gum 
+import pyAgrum as gum
 
 import unittest
 from pyAgrumTestSuite import pyAgrumTestCase
@@ -136,11 +136,11 @@ class TestFeatures(BayesNetTestCase):
         self.fillTopo(bn, idList)
         topoOrder = bn.topologicalOrder()
         self.assertEqual(len(topoOrder), 5)
-        
-    def testChangeLabel(self):      
+
+    def testChangeLabel(self):
         bn = gum.BayesNet()
         res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'))
-        
+
         self.assertEqual(str(bn.variable(0)),"HISTORY<TRUE,FALSE>")
         bn.variable(0).toLabelizedVar().changeLabel(0,"toto")
         self.assertEqual(str(bn.variable(0)),"HISTORY<toto,FALSE>")
@@ -148,7 +148,7 @@ class TestFeatures(BayesNetTestCase):
 
 
 
-class TestBIF(BayesNetTestCase):
+class TestLoadBN(BayesNetTestCase):
 
     def listen(self, percent):
         if not percent>100:
@@ -283,6 +283,10 @@ class TestBIF(BayesNetTestCase):
         self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),
 																		[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
+    def testO3PRMLoad(self):
+        bn=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/o3prm/Asia.o3prm'),[])
+        self.assertEqual(bn.size(),8)
+
 
 ts = unittest.TestSuite()
 ts.addTest(TestConstructors('testConstructor'))
@@ -293,12 +297,13 @@ ts.addTest(TestInsertions('testEraseArcs'))
 ts.addTest(TestFeatures('testMoralGraph'))
 ts.addTest(TestFeatures('testTopologicalOrder'))
 ts.addTest(TestFeatures('testChangeLabel'))
-ts.addTest(TestBIF('testSimpleBIFLoad'))
-ts.addTest(TestBIF('testSimpleBIFLoadWithoutListener'))
-ts.addTest(TestBIF('testListBIFLoad'))
-ts.addTest(TestBIF('testTupleBIFLoad'))
-ts.addTest(TestBIF('testSimpleDSLLoad'))
-ts.addTest(TestBIF('testSimpleDSLLoadWithoutListener'))
-ts.addTest(TestBIF('testListDSLLoad'))
-ts.addTest(TestBIF('testTupleDSLLoad'))
-ts.addTest(TestBIF('testTupleDSLLoad'))
+ts.addTest(TestLoadBN('testSimpleBIFLoad'))
+ts.addTest(TestLoadBN('testSimpleBIFLoadWithoutListener'))
+ts.addTest(TestLoadBN('testListBIFLoad'))
+ts.addTest(TestLoadBN('testTupleBIFLoad'))
+ts.addTest(TestLoadBN('testSimpleDSLLoad'))
+ts.addTest(TestLoadBN('testSimpleDSLLoadWithoutListener'))
+ts.addTest(TestLoadBN('testListDSLLoad'))
+ts.addTest(TestLoadBN('testTupleDSLLoad'))
+ts.addTest(TestLoadBN('testTupleDSLLoad'))
+ts.addTest(TestLoadBN('testO3PRMLoad'))
