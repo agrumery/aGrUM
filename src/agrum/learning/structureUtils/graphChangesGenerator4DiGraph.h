@@ -23,8 +23,10 @@
  *
  * Structure learning algorithm try different modifications of the graph. Class
  * GraphChangesGenerator4DiGraph provides a simple way to compute those that we
- * wish to perform. For instance, in the basic LocalSearch algorithm for learning
- * directed graphs, one may expect that all possible arc additions, deletions and
+ * wish to perform. For instance, in the basic LocalSearch algorithm for
+ *learning
+ * directed graphs, one may expect that all possible arc additions, deletions
+ *and
  * reversals can be applied and GraphChangesGenerator4DiGraph provides exactly
  * this set of operations. However, there may be cases where we would like to
  * apply these operators, say, only on a subgraph. In this case, we should use
@@ -71,14 +73,17 @@ namespace gum {
      * @brief The basic class for computing the next graph changes possible in a
      * structure learning algorithm
      *
-     * Structure learning algorithm try different modifications of the graph. Class
+     * Structure learning algorithm try different modifications of the graph.
+     *Class
      * GraphChangesGenerator4DiGraph provides a simple way to compute those that
      * we wish to perform. For instance, in the basic LocalSearch algorithm for
      * learning directed graphs, one may expect that all possible arc additions,
      * deletions and reversals can be applied and GraphChangesGenerator4DiGraph
-     * provides exactly this set of operations. However, there may be cases where
+     * provides exactly this set of operations. However, there may be cases
+     *where
      * we would like to apply these operators, say, only on a subgraph. In this
-     * case, we should use the derived class of GraphChangesGenerator4DiGraph named
+     * case, we should use the derived class of GraphChangesGenerator4DiGraph
+     *named
      * GraphChangesGeneratorOnSubDiGraph. Anyway, all the search generators
      * should have the following minimal methods:
      *   - void setGraph ( const DiGraph& ) : assigns a new graph as a starting
@@ -87,7 +92,8 @@ namespace gum {
      *     that the graph has been changed and that we need to compute the new
      *     operators that result from this change
      *   - void clearChanges () : empty the set of possible changes
-     *   - methods begin () and end () that return iterators allowing to parse the
+     *   - methods begin () and end () that return iterators allowing to parse
+     *the
      *     available set of changes.
      *
      * Basically, the idea is to use method setGraph at the beginning of the
@@ -95,7 +101,8 @@ namespace gum {
      * Then, parse this set using a for ( auto iter = generator.begin ();
      * iter != generator.end (); ++iter ) loop and compute the scores
      * induced by these changes. When this is done, flush the generator by
-     * calling method clearChanges. Then iterate changes and after each new change
+     * calling method clearChanges. Then iterate changes and after each new
+     *change
      * applied, used again the iterator for loop, and so on. Note that, whenever
      * you execute method modifyGraph, this will automatically flush the current
      * list of changes and put into the list only the changes that are affected
@@ -104,7 +111,8 @@ namespace gum {
      * @ingroup learning_group
      */
     template <typename STRUCT_CONSTRAINT>
-    class GraphChangesGenerator4DiGraph : public IGraphChangesGenerator4DiGraph {
+    class GraphChangesGenerator4DiGraph
+        : public IGraphChangesGenerator4DiGraph {
       public:
       /// the iterator for parsing the list of possible graph change operators
       using iterator = typename Set<GraphChange>::const_iterator;
@@ -118,15 +126,15 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GraphChangesGenerator4DiGraph(STRUCT_CONSTRAINT &constraint);
+      GraphChangesGenerator4DiGraph( STRUCT_CONSTRAINT& constraint );
 
       /// copy constructor
       GraphChangesGenerator4DiGraph(
-          const GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT> &from);
+          const GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>& from );
 
       /// move operator
       GraphChangesGenerator4DiGraph(
-          GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT> &&from);
+          GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>&& from );
 
       /// destructor
       virtual ~GraphChangesGenerator4DiGraph();
@@ -139,12 +147,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT> &
-      operator=(const GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT> &from);
+      GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>&
+      operator=( const GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>& from );
 
       /// move operator
-      GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT> &
-      operator=(GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT> &&from);
+      GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>&
+      operator=( GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>&& from );
 
       /// @}
 
@@ -157,7 +165,7 @@ namespace gum {
       iterator begin() const;
 
       /// returns an (unsafe) iterator on the end of the list of operators
-      const iterator &end() const;
+      const iterator& end() const;
 
       /// @}
 
@@ -167,22 +175,23 @@ namespace gum {
       /// @{
 
       /// returns the constraint that is used by the generator
-      STRUCT_CONSTRAINT &constraint() const noexcept;
+      STRUCT_CONSTRAINT& constraint() const noexcept;
 
-      /// sets a new graph from which the generator will compute possible changes
-      void setGraph(const DiGraph &graph);
-
-      /// notify the generator of a change applied to the graph
-      void modifyGraph(const ArcAddition &change);
+      /// sets a new graph from which the generator will compute possible
+      /// changes
+      void setGraph( const DiGraph& graph );
 
       /// notify the generator of a change applied to the graph
-      void modifyGraph(const ArcDeletion &change);
+      void modifyGraph( const ArcAddition& change );
 
       /// notify the generator of a change applied to the graph
-      void modifyGraph(const ArcReversal &change);
+      void modifyGraph( const ArcDeletion& change );
 
       /// notify the generator of a change applied to the graph
-      void modifyGraph(const GraphChange &change);
+      void modifyGraph( const ArcReversal& change );
+
+      /// notify the generator of a change applied to the graph
+      void modifyGraph( const GraphChange& change );
 
       /// empty the set of possible change operators that can be applied
       void clearChanges() noexcept;
@@ -191,7 +200,7 @@ namespace gum {
       void notifyGetCompleted();
 
       /// sets the maximum number of threads used to compute the set of changes
-      void setMaxNbThreads(unsigned int nb) noexcept;
+      void setMaxNbThreads( unsigned int nb ) noexcept;
 
       /// @}
 
@@ -200,7 +209,7 @@ namespace gum {
       DiGraph _graph;
 
       /// the structural constraint used to restrict the changes
-      STRUCT_CONSTRAINT *_constraint;
+      STRUCT_CONSTRAINT* _constraint;
 
       /// the current set of graph changes
       Set<GraphChange> _legal_changes;
@@ -210,7 +219,7 @@ namespace gum {
 
       private:
 /// the max number of threads authorized
-#if defined(_OPENMP) && defined(NDEBUG)
+#if defined( _OPENMP ) && defined( NDEBUG )
       unsigned int __max_threads_number{getMaxNumberOfThreads()};
 #else
       unsigned int __max_threads_number{1};

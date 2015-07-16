@@ -31,31 +31,32 @@
 namespace gum {
 
   //! Return true if \a directory is a valid directory, false otherwise.
-  bool Directory::isDir(const std::string &directory) {
-    return Directory(directory).isValid();
+  bool Directory::isDir( const std::string& directory ) {
+    return Directory( directory ).isValid();
   }
 
   //! Contructor
-  Directory::Directory() : m_dirPtr(nullptr) { GUM_CONSTRUCTOR(Directory); }
+  Directory::Directory() : m_dirPtr( nullptr ) { GUM_CONSTRUCTOR( Directory ); }
 
   //! Contructor
-  Directory::Directory(const std::string &directory) : m_dirName(directory) {
-    GUM_CONSTRUCTOR(Directory);
-    m_dirPtr = opendir(m_dirName.c_str());
+  Directory::Directory( const std::string& directory )
+      : m_dirName( directory ) {
+    GUM_CONSTRUCTOR( Directory );
+    m_dirPtr = opendir( m_dirName.c_str() );
   }
 
   //! Contructor
-  Directory::Directory(const Directory &dir) : m_dirName(dir.m_dirName) {
-    GUM_CONSTRUCTOR(Directory);
-    m_dirPtr = opendir(m_dirName.c_str());
+  Directory::Directory( const Directory& dir ) : m_dirName( dir.m_dirName ) {
+    GUM_CONSTRUCTOR( Directory );
+    m_dirPtr = opendir( m_dirName.c_str() );
   }
 
   //! Destructor
   Directory::~Directory() {
-    GUM_DESTRUCTOR(Directory);
+    GUM_DESTRUCTOR( Directory );
 
-    if (m_dirPtr != nullptr)
-      closedir(m_dirPtr);
+    if ( m_dirPtr != nullptr )
+      closedir( m_dirPtr );
   }
 
   //! Return true if directory has been opened, false otherwise.
@@ -65,25 +66,25 @@ namespace gum {
   std::vector<std::string> Directory::entries() const {
     std::vector<std::string> result;
 
-    if (!isValid())
+    if ( !isValid() )
       return result;
 
-    rewinddir(m_dirPtr);
+    rewinddir( m_dirPtr );
 
-    dirent *entry;
+    dirent* entry;
 
-    while ((entry = readdir(m_dirPtr)))
-      result.push_back(std::string(entry->d_name));
+    while ( ( entry = readdir( m_dirPtr ) ) )
+      result.push_back( std::string( entry->d_name ) );
 
     return result;
   }
 
   //! Return directory parent.
   Directory Directory::parent() const {
-    if (!isValid())
+    if ( !isValid() )
       return Directory();
 
-    return Directory(m_dirName + "../");
+    return Directory( m_dirName + "../" );
   }
 
   //! Return directory path.
@@ -93,38 +94,38 @@ namespace gum {
   std::string Directory::absolutePath() const {
     std::string result;
 
-    if (!isValid())
+    if ( !isValid() )
       return result;
 
     char oldWD[255];
 
-    if (getcwd(oldWD, 255) == nullptr)
+    if ( getcwd( oldWD, 255 ) == nullptr )
       return result;
 
-    if (chdir(m_dirName.c_str()) != 0)
+    if ( chdir( m_dirName.c_str() ) != 0 )
       return result;
 
     char absPath[255];
 
-    if (getcwd(absPath, 254) != nullptr)
-      result = std::string(absPath) + '/';
+    if ( getcwd( absPath, 254 ) != nullptr )
+      result = std::string( absPath ) + '/';
 
-    if (chdir(oldWD) != 0)
+    if ( chdir( oldWD ) != 0 )
       std::cerr << "Warning : Could not go to previous working directory. ("
                 << __FILE__ << ":" << __LINE__ << ")" << std::endl;
 
     return result;
   }
 
-  Directory &Directory::operator=(const Directory &d) {
-    if (m_dirPtr != nullptr)
-      closedir(m_dirPtr);
+  Directory& Directory::operator=( const Directory& d ) {
+    if ( m_dirPtr != nullptr )
+      closedir( m_dirPtr );
 
     m_dirName = d.m_dirName;
 
-    m_dirPtr = opendir(m_dirName.c_str());
+    m_dirPtr = opendir( m_dirName.c_str() );
 
     return *this;
   }
 
-} // END NAMESPACE GUM
+}  // END NAMESPACE GUM

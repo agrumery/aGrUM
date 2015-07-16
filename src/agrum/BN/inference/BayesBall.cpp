@@ -27,90 +27,89 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/BN/inference/BayesBall.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
 namespace gum {
 
-  void BayesBall::requisiteNodes(const DAG &dag,
-                                 const NodeSet& query,
-                                 const NodeSet& hardEvidence,
-                                 const NodeSet& softEvidence,
-                                 NodeSet& requisite) {
- 
-    // save the parameters so as to avoid passing them in arguments to
-    // the recursive functions
-    __dag = &dag;
-    __hardEvidence = &hardEvidence;
-    __softEvidence = &softEvidence;
-
-    // create the marks (top and bottom) so that we won't have to test their
-    // existence in the recursive functions
-    __marks.clear();
-    __marks.resize ( dag.size () );
-    const std::pair<bool, bool> empty_mark (false, false);
-    for ( const auto node : dag ) __marks.insert ( node, empty_mark );
+  void BayesBall::requisiteNodes( const DAG& dag,
+                                  const NodeSet& query,
+                                  const NodeSet& hardEvidence,
+                                  const NodeSet& softEvidence,
+                                  NodeSet& requisite ) {
+    // for the moment, no node is requisite
+    requisite.clear ();
     
-    // perform the ball bouncing
+    // create the marks (top = first and bottom = second )
+    NodeProperty<std::pair<bool, bool>> marks ( dag.size() );
+    const std::pair<bool, bool> empty_mark( false, false );
+
+    // indicate that we will send the ball to all the query nodes (as children):
+    // in list nodes_to_visit, the first element is the next node to send the
+    // ball to and the Boolean indicates whether we shall reach it from one of
+    // its children (true) or from one parent (false)
+    List<std::pair<NodeId, bool>> nodes_to_visit;
     for ( const auto node : query ) {
-      __fromChild ( node );
+      nodes_to_visit.insert( std::pair<NodeId, bool>( node, true ) );
     }
 
-    // the requisite nodes are those whose top mark (the first one) is set to true
-    for ( const auto node : dag ) {
-      if ( __marks[node].first ) {
-        requisite.insert(node);
+    // perform the bouncing ball until there is no node in the graph to send
+    // the ball to
+    while ( ! nodes_to_visit.empty() ) {
+      // get the next node to visit
+      NodeId node = nodes_to_visit.front().first;
+
+      // if the marks of the node do not exist, create them
+      if ( ! marks.exists( node ) )
+        marks.insert( node, empty_mark );
+
+      // bounce the ball toward the neighbors
+      if ( nodes_to_visit.front().second ) {  // visit from a child
+        nodes_to_visit.popFront();
+        requisite.insert ( node );
+
+        if ( hardEvidence.exists( node ) ) {
+          continue;
+        }
+
+        if ( not marks[node].first ) {
+          marks[node].first = true;  // top marked
+          for ( const auto par : dag.parents( node ) ) {
+            nodes_to_visit.insert( std::pair<NodeId, bool>( par, true ) );
+          }
+        }
+
+        if ( not marks[node].second ) {
+          marks[node].second = true;  // bottom marked
+          for ( const auto chi : dag.children( node ) ) {
+            nodes_to_visit.insert( std::pair<NodeId, bool>( chi, false ) );
+          }
+        }
+      }
+      else {  // visit from a parent
+        nodes_to_visit.popFront();
+
+        const bool is_hard_evidence = hardEvidence.exists( node );
+        const bool is_evidence = is_hard_evidence or softEvidence.exists( node );
+
+        if ( is_evidence && ! marks[node].first ) {
+          marks[node].first = true;
+          requisite.insert ( node );
+
+          for ( const auto par : dag.parents( node ) ) {
+            nodes_to_visit.insert( std::pair<NodeId, bool>( par, true ) );
+          }
+        }
+
+        if ( ! is_hard_evidence && ! marks[node].second ) {
+          marks[node].second = true;
+
+          for ( const auto chi : dag.children( node ) ) {
+            nodes_to_visit.insert( std::pair<NodeId, bool>( chi, false ) );
+          }
+        }
       }
     }
   }
-  
 
-  void BayesBall::__fromChild ( NodeId node ) {
-    if ( __hardEvidence->exists(node) ) {
-      // mark its top so that it will be included in the end into
-      // the set of requisite nodes
-      __marks[node].first = true;
-      return;
-    }
-      
-    if ( not __marks[node].first ) {
-      __marks[node].first = true; // top marked
 
-      for (const auto par : __dag->parents(node)) {
-        __fromChild(par);
-      }
-    }
-
-    if (not __marks[node].second) {
-      __marks[node].second = true; // bottom marked
-
-      for (const auto chi : __dag->children(node)) {
-        __fromParent(chi);
-      }
-    }
-  }
-
-  
-  void BayesBall::__fromParent(NodeId node) {
-    const bool hard_evidence = __hardEvidence->exists(node);
-    const bool evidence = hard_evidence or __softEvidence->exists ( node );
-    
-    if ( evidence && ! __marks[node].first ) {
-      __marks[node].first = true;
-
-      for (const auto par : __dag->parents(node)) {
-        __fromChild(par);
-      }
-    }
-
-    if (! hard_evidence && !__marks[node].second) {
-      __marks[node].second = true;
-
-      for (const auto chi : __dag->children(node)) {
-        __fromParent(chi);
-      }
-    }
-  }
-
-  
-  
 } /* namespace gum */

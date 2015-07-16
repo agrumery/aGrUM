@@ -1,6 +1,7 @@
 # A Python Library to create a Progress Bar.
 # from http://snipperize.todayclose.com/snippet/py/Creating-a-Progress-Bar-in-Console--14251/
 # modified by Pierre-Henri Wuillemin (feb 2011)
+from __future__ import print_function
 import sys
 
 class ProgressBar:
@@ -89,7 +90,8 @@ class ProgressBar:
         Display bar if needed
         """
         if self.hasChanged:
-            print('\r', self.bar,end="",flush=True)
+            print('\r', self.bar,end="")
+            sys.stdout.flush()
             self.hasChanged=False
 
 

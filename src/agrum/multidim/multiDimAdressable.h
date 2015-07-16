@@ -24,7 +24,8 @@
  * MultiDimAdressable is the abstract base class for all multi dimensionnal
  * adressable. Its purpose is to deal with slave Instantiation and notification
  *
- * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ *<{prenom.nom}_at_lip6.fr>
  */
 
 #ifndef GUM_MULTIDIM_ADRESSABLE_H
@@ -39,20 +40,26 @@
 
 namespace gum {
 
-  /* ============================================================================ */
-  /* ============================================================================ */
-  /* ===                             GUM_MULTI_DIM_ADRESSABLE                 === */
-  /* ============================================================================ */
-  /* ============================================================================ */
+  /* ============================================================================
+   */
+  /* ============================================================================
+   */
+  /* ===                             GUM_MULTI_DIM_ADRESSABLE === */
+  /* ============================================================================
+   */
+  /* ============================================================================
+   */
   /**
    * @class MultiDimAdressable
    * @brief Abstract base class for all multi dimensionnal addressable.
    * @ingroup multidim_group
    *
    * MultiDimAdressable is the abstract base class for all multi dimensionnal
-   * adressable. Its purpose is to deal with slave Instantiation and notification.
+   * adressable. Its purpose is to deal with slave Instantiation and
+   *notification.
    */
-  /* ============================================================================ */
+  /* ============================================================================
+   */
 
   class MultiDimAdressable : public MultiDimInterface {
     public:
@@ -67,7 +74,7 @@ namespace gum {
 
     /// Copy constructor.
 
-    MultiDimAdressable(const MultiDimAdressable &from);
+    MultiDimAdressable( const MultiDimAdressable& from );
 
     /// Destructor.
 
@@ -82,17 +89,18 @@ namespace gum {
 
     /*
      * Register i as a slave of this gum::MultiDimAdressable.
-     * @return Returns true if i becomes a slave of this gum::MultiDimAdressable.
+     * @return Returns true if i becomes a slave of this
+     * gum::MultiDimAdressable.
      */
 
-    virtual bool registerSlave(Instantiation &i) = 0;
+    virtual bool registerSlave( Instantiation& i ) = 0;
 
     /**
      * Unregister i as a slave of this gum::MultiDimAdressable.
      * @return Returns true, whatever happens.
      */
 
-    virtual bool unregisterSlave(Instantiation &i) = 0;
+    virtual bool unregisterSlave( Instantiation& i ) = 0;
 
     /**
      * Listen to change in a given Instantiation.
@@ -102,59 +110,59 @@ namespace gum {
     * @param newval The changed value.
      */
 
-    virtual void changeNotification(Instantiation &i,
-                                    const DiscreteVariable *const var,
-                                    const Idx &oldval, const Idx &newval) = 0;
+    virtual void changeNotification( Instantiation& i,
+                                     const DiscreteVariable* const var,
+                                     const Idx& oldval, const Idx& newval ) = 0;
 
     /**
      * Listen to setFirst in a given Instantiation.
      * @param i The Instantiation.
      */
 
-    virtual void setFirstNotification(Instantiation &i) = 0;
+    virtual void setFirstNotification( Instantiation& i ) = 0;
 
     /**
      * Listen to setLast in a given Instantiation.
      * @param i The Instantiation.
      */
 
-    virtual void setLastNotification(Instantiation &i) = 0;
+    virtual void setLastNotification( Instantiation& i ) = 0;
 
     /**
      * Listen to increment in a given Instantiation.
      * @param i The Instantiation
      */
 
-    virtual void setIncNotification(Instantiation &i) = 0;
+    virtual void setIncNotification( Instantiation& i ) = 0;
 
     /**
      * Listen to increment in each recorded Instantiation.
      * @param i The Instantiation
      */
 
-    virtual void setDecNotification(Instantiation &i) = 0;
+    virtual void setDecNotification( Instantiation& i ) = 0;
 
     /// Listen to an assignment of a value in a Instantiation.
     // ===========================================================================
-    virtual void setChangeNotification(Instantiation &i) = 0;
+    virtual void setChangeNotification( Instantiation& i ) = 0;
 
     /**
      * In order to insure the dereference for decorators, we need to virtualize
      * the access to master pointer.
      */
 
-    virtual MultiDimAdressable &getMasterRef(void) = 0;
+    virtual MultiDimAdressable& getMasterRef( void ) = 0;
 
     /**
      * In order to insure the dereference for decorators, we need to virtualize
      * the access to master pointer.
      */
 
-    virtual const MultiDimAdressable &getMasterRef(void) const = 0;
+    virtual const MultiDimAdressable& getMasterRef( void ) const = 0;
 
     /// String representation of internal data about i in this.
 
-    virtual const std::string toString(const Instantiation *i) const = 0;
+    virtual const std::string toString( const Instantiation* i ) const = 0;
 
     /// @}
   };

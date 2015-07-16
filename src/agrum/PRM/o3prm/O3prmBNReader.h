@@ -42,16 +42,16 @@ namespace gum {
   template <typename GUM_SCALAR>
   class O3prmBNReader : public BNReader<GUM_SCALAR> {
     public:
-    O3prmBNReader(BayesNet<GUM_SCALAR>* bn, const std::string& filename);
-    O3prmBNReader(BayesNet<GUM_SCALAR>* bn, const std::string& filename,
-                  const std::string& entityName);
+    O3prmBNReader( BayesNet<GUM_SCALAR>* bn, const std::string& filename );
+    O3prmBNReader( BayesNet<GUM_SCALAR>* bn, const std::string& filename,
+                   const std::string& entityName );
 
     ~O3prmBNReader();
 
     /// parse.
     /// @return the number of detected errors and warnings
     /// @throws IOError if file not exists
-    int proceed(void);
+    int proceed( void );
 
     /// @{
     /// publishing Errors API
@@ -62,27 +62,27 @@ namespace gum {
     Size warnings() { return __errors.warning_count; }
 
     /// line of ith error or warning
-    unsigned int errLine(unsigned int i) { return __errors.error(i).line; }
+    unsigned int errLine( unsigned int i ) { return __errors.error( i ).line; }
     /// col of ith error or warning
-    unsigned int errCol(unsigned int i) { return __errors.error(i).column; }
+    unsigned int errCol( unsigned int i ) { return __errors.error( i ).column; }
     /// type of ith error or warning
-    bool errIsError(unsigned int i) { return __errors.error(i).is_error; }
+    bool errIsError( unsigned int i ) { return __errors.error( i ).is_error; }
     /// message of ith error or warning
-    std::string errMsg(unsigned int i) { return __errors.error(i).msg; }
+    std::string errMsg( unsigned int i ) { return __errors.error( i ).msg; }
 
     /// send on std::cerr the list of errors
-    void showElegantErrors(std::ostream& o = std::cerr) {
-      __errors.elegantErrors(o);
+    void showElegantErrors( std::ostream& o = std::cerr ) {
+      __errors.elegantErrors( o );
     }
 
     /// send on std::cerr the list of errors or warnings
-    void showElegantErrorsAndWarnings(std::ostream& o = std::cerr) {
-      __errors.elegantErrorsAndWarnings(o);
+    void showElegantErrorsAndWarnings( std::ostream& o = std::cerr ) {
+      __errors.elegantErrorsAndWarnings( o );
     }
 
     /// send on std::cerr the number of errors and the number of warnings
-    void showErrorCounts(std::ostream& o = std::cerr) {
-      __errors.syntheticResults(o);
+    void showErrorCounts( std::ostream& o = std::cerr ) {
+      __errors.syntheticResults( o );
     }
     /// @}
 
@@ -93,12 +93,12 @@ namespace gum {
     BayesNet<GUM_SCALAR>* __bn;
     ErrorsContainer __errors;
 
-    void __generateBN(prm::System<GUM_SCALAR>& system);
-    static std::string __getVariableName(const std::string& path,
-                                         const std::string& type,
-                                         const std::string& name);
-    static std::string __getEntityName(const std::string& filename);
-    static std::string __getInstanceName(const std::string& classname);
+    void __generateBN( prm::System<GUM_SCALAR>& system );
+    static std::string __getVariableName( const std::string& path,
+                                          const std::string& type,
+                                          const std::string& name );
+    static std::string __getEntityName( const std::string& filename );
+    static std::string __getInstanceName( const std::string& classname );
   };
 
   extern template class O3prmBNReader<double>;

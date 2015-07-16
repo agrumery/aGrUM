@@ -82,7 +82,8 @@ act install release -d ~/usr
 
 \page using_agrum Using aGrUM
 
-As a build system, aGrUM uses CMake (http://www.cmake.org). A minimal project with
+As a build system, aGrUM uses CMake (http://www.cmake.org). A minimal project
+with
 agrum should look like this (for a project foo):
 - in the project folder, a sub-folder src,
 - in src folder, your *.{cpp|h|etc.} files
@@ -176,10 +177,11 @@ namespace gum {
     namespace lp {}
   }
 
-  /// namespace for all particles for approximation inference based on simulation
+  /// namespace for all particles for approximation inference based on
+  /// simulation
   namespace particle {}
 
   /// namespace for all probabilistic relational models entities
   namespace prm {}
 }
-#endif // CONFIG_H
+#endif  // CONFIG_H

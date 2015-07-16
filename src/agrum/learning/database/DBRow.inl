@@ -33,34 +33,35 @@ namespace gum {
     INLINE DBRow::DBRow() {}
 
     /// constructor with a given size for the row
-    INLINE DBRow::DBRow(unsigned int size, const DBCell &default_cell, float weight)
-        : _row(size, default_cell), _weight(weight) {}
+    INLINE DBRow::DBRow( unsigned int size, const DBCell& default_cell,
+                         float weight )
+        : _row( size, default_cell ), _weight( weight ) {}
 
     /// initializer list constructor
-    INLINE DBRow::DBRow(std::initializer_list<DBCell> &list) : _row(list) {}
+    INLINE DBRow::DBRow( std::initializer_list<DBCell>& list ) : _row( list ) {}
 
     /// initializer from a vector of cells
-    INLINE DBRow::DBRow(const std::vector<DBCell> &cells, float weight)
-        : _row(cells), _weight(weight) {}
+    INLINE DBRow::DBRow( const std::vector<DBCell>& cells, float weight )
+        : _row( cells ), _weight( weight ) {}
 
     /// initializer from a vector of cells
-    INLINE DBRow::DBRow(std::vector<DBCell> &&cells, float weight)
-        : _row(std::move(cells)), _weight(weight) {}
+    INLINE DBRow::DBRow( std::vector<DBCell>&& cells, float weight )
+        : _row( std::move( cells ) ), _weight( weight ) {}
 
     /// copy operator
-    INLINE DBRow::DBRow(const DBRow &from)
-        : _row(from._row), _weight(from._weight) {}
+    INLINE DBRow::DBRow( const DBRow& from )
+        : _row( from._row ), _weight( from._weight ) {}
 
     /// move operator
-    INLINE DBRow::DBRow(DBRow &&from)
-        : _row(std::move(from._row)), _weight(from._weight) {}
+    INLINE DBRow::DBRow( DBRow&& from )
+        : _row( std::move( from._row ) ), _weight( from._weight ) {}
 
     /// destructor
     INLINE DBRow::~DBRow() {}
 
     /// copy operator
-    INLINE DBRow &DBRow::operator=(const DBRow &from) {
-      if (this != &from) {
+    INLINE DBRow& DBRow::operator=( const DBRow& from ) {
+      if ( this != &from ) {
         _row = from._row;
         _weight = from._weight;
       }
@@ -68,48 +69,56 @@ namespace gum {
     }
 
     /// move operator
-    INLINE DBRow &DBRow::operator=(DBRow &&from) {
-      if (this != &from) {
-        _row = std::move(from._row);
+    INLINE DBRow& DBRow::operator=( DBRow&& from ) {
+      if ( this != &from ) {
+        _row = std::move( from._row );
         _weight = from._weight;
       }
       return *this;
     }
 
     /// returns the ith DBCell of the row
-    INLINE DBCell &DBRow::operator[](unsigned int i) { return _row[i]; }
+    INLINE DBCell& DBRow::operator[]( unsigned int i ) { return _row[i]; }
 
     /// returns the ith DBCell of the row
-    INLINE const DBCell &DBRow::operator[](unsigned int i) const { return _row[i]; }
+    INLINE const DBCell& DBRow::operator[]( unsigned int i ) const {
+      return _row[i];
+    }
 
     /// returns the current row
-    INLINE const std::vector<DBCell> &DBRow::row() const noexcept { return _row; }
+    INLINE const std::vector<DBCell>& DBRow::row() const noexcept {
+      return _row;
+    }
 
     /// returns the current row
-    INLINE std::vector<DBCell> &DBRow::row() noexcept { return _row; }
+    INLINE std::vector<DBCell>& DBRow::row() noexcept { return _row; }
 
     /// returns the weight
-    INLINE const float &DBRow::weight() const noexcept { return _weight; }
+    INLINE const float& DBRow::weight() const noexcept { return _weight; }
 
     /// returns the weight
-    INLINE float &DBRow::weight() noexcept { return _weight; }
+    INLINE float& DBRow::weight() noexcept { return _weight; }
 
     /// sets a new row
-    INLINE void DBRow::setRow(const std::vector<DBCell> &new_row) { _row = new_row; }
+    INLINE void DBRow::setRow( const std::vector<DBCell>& new_row ) {
+      _row = new_row;
+    }
 
     /// sets a new row
-    INLINE void DBRow::setRow(std::vector<DBCell> &&new_row) {
-      _row = std::move(new_row);
+    INLINE void DBRow::setRow( std::vector<DBCell>&& new_row ) {
+      _row = std::move( new_row );
     }
 
     /// sets a new weight
-    INLINE void DBRow::setWeight(float new_weight) { _weight = new_weight; }
+    INLINE void DBRow::setWeight( float new_weight ) { _weight = new_weight; }
 
     /// returns the size of the row
     INLINE unsigned int DBRow::size() const noexcept { return _row.size(); }
 
     /// resize a given row
-    INLINE void DBRow::resize(unsigned int new_size) { _row.resize(new_size); }
+    INLINE void DBRow::resize( unsigned int new_size ) {
+      _row.resize( new_size );
+    }
 
   } /* namespace learning */
 

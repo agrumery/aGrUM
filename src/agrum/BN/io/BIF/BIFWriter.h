@@ -78,7 +78,7 @@ namespace gum {
      * @param bn The Bayesian Network writen in output.
      * @throws IOError Raised if and I/O error occurs.
      */
-    virtual void write(std::ostream &output, const IBayesNet<GUM_SCALAR> &bn);
+    virtual void write( std::ostream& output, const IBayesNet<GUM_SCALAR>& bn );
 
     /**
      * Writes a Bayesian Network in the referenced file using the BIF format.
@@ -88,21 +88,22 @@ namespace gum {
      * @param bn The Bayesian Network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    virtual void write(std::string filePath, const IBayesNet<GUM_SCALAR> &bn);
+    virtual void write( std::string filePath, const IBayesNet<GUM_SCALAR>& bn );
 
     private:
     // Returns the header of the BIF file.
-    std::string __header(const IBayesNet<GUM_SCALAR> &bn);
+    std::string __header( const IBayesNet<GUM_SCALAR>& bn );
 
     // Returns a bloc defining a variable in the BIF format.
-    std::string __variableBloc(const DiscreteVariable &var);
+    std::string __variableBloc( const DiscreteVariable& var );
 
     // Returns a bloc defining a variable's CPT in the BIF format.
-    std::string __variableCPT(const Potential<GUM_SCALAR> &cpt);
+    std::string __variableCPT( const Potential<GUM_SCALAR>& cpt );
 
     // Returns the modalities labels of the variables in varsSeq
-    std::string __variablesLabels(const Sequence<const DiscreteVariable *> &varsSeq,
-                                  const Instantiation &inst);
+    std::string
+    __variablesLabels( const Sequence<const DiscreteVariable*>& varsSeq,
+                       const Instantiation& inst );
   };
 
   extern template class BIFWriter<float>;
@@ -110,4 +111,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/io/BIF/BIFWriter.tcc>
-#endif // GUM_BIF_WRITER_H
+#endif  // GUM_BIF_WRITER_H

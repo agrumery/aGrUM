@@ -2239,6 +2239,16 @@ class DiscreteVariable(Variable):
         """__str__(DiscreteVariable self) -> std::string const"""
         return _pyAgrum.DiscreteVariable___str__(self)
 
+
+    def toStringWithDescription(self) -> "std::string const":
+        """toStringWithDescription(DiscreteVariable self) -> std::string const"""
+        return _pyAgrum.DiscreteVariable_toStringWithDescription(self)
+
+
+    def domain(self) -> "std::string const":
+        """domain(DiscreteVariable self) -> std::string const"""
+        return _pyAgrum.DiscreteVariable_domain(self)
+
     def __getitem__(self,label):   # adding the y() function here
         return self.index(label)
 
@@ -2341,6 +2351,11 @@ class LabelizedVariable(DiscreteVariable):
         """varType(LabelizedVariable self) -> gum::DiscreteVariable::VarType"""
         return _pyAgrum.LabelizedVariable_varType(self)
 
+
+    def domain(self) -> "std::string const":
+        """domain(LabelizedVariable self) -> std::string const"""
+        return _pyAgrum.LabelizedVariable_domain(self)
+
 LabelizedVariable_swigregister = _pyAgrum.LabelizedVariable_swigregister
 LabelizedVariable_swigregister(LabelizedVariable)
 
@@ -2426,9 +2441,9 @@ class RangeVariable(DiscreteVariable):
         return _pyAgrum.RangeVariable_index(self, arg2)
 
 
-    def __str__(self) -> "std::string const":
-        """__str__(RangeVariable self) -> std::string const"""
-        return _pyAgrum.RangeVariable___str__(self)
+    def domain(self) -> "std::string const":
+        """domain(RangeVariable self) -> std::string const"""
+        return _pyAgrum.RangeVariable_domain(self)
 
 RangeVariable_swigregister = _pyAgrum.RangeVariable_swigregister
 RangeVariable_swigregister(RangeVariable)
@@ -3627,6 +3642,11 @@ class DiscretizedVariable_double(DiscreteVariable):
         return _pyAgrum.DiscretizedVariable_double_domainSize(self)
 
 
+    def domain(self) -> "std::string const":
+        """domain(DiscretizedVariable_double self) -> std::string const"""
+        return _pyAgrum.DiscretizedVariable_double_domain(self)
+
+
     def tick(self, i: 'gum::Idx') -> "double const &":
         """tick(DiscretizedVariable_double self, gum::Idx i) -> double const &"""
         return _pyAgrum.DiscretizedVariable_double_tick(self, i)
@@ -4341,11 +4361,6 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_variableNodeMap(self)
 
 
-    def toDot(self) -> "std::string":
-        """toDot(BayesNet_double self) -> std::string"""
-        return _pyAgrum.BayesNet_double_toDot(self)
-
-
     def add(self, *args) -> "gum::NodeId":
         """
         add(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
@@ -4559,6 +4574,14 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_loadNET(self, *args)
 
 
+    def loadPRM(self, *args) -> "bool":
+        """
+        loadPRM(BayesNet_double self, std::string name, PyObject * l) -> bool
+        loadPRM(BayesNet_double self, std::string name) -> bool
+        """
+        return _pyAgrum.BayesNet_double_loadPRM(self, *args)
+
+
     def saveNET(self, name: 'std::string') -> "void":
         """saveNET(BayesNet_double self, std::string name)"""
         return _pyAgrum.BayesNet_double_saveNET(self, name)
@@ -4712,6 +4735,9 @@ class LazyPropagation_double(BayesNetInference_double):
         __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, LazyPropagation_double, name)
     __repr__ = _swig_repr
+    FIND_RELEVANT_ALL = _pyAgrum.LazyPropagation_double_FIND_RELEVANT_ALL
+    FIND_RELEVANT_D_SEPARATION = _pyAgrum.LazyPropagation_double_FIND_RELEVANT_D_SEPARATION
+    FIND_RELEVANT_D_SEPARATION2 = _pyAgrum.LazyPropagation_double_FIND_RELEVANT_D_SEPARATION2
 
     def __init__(self, *args):
         """
@@ -4763,6 +4789,16 @@ class LazyPropagation_double(BayesNetInference_double):
         makeInference(LazyPropagation_double self, bool force_inference)
         """
         return _pyAgrum.LazyPropagation_double_makeInference(self, *args)
+
+
+    def clearInference(self) -> "void":
+        """clearInference(LazyPropagation_double self)"""
+        return _pyAgrum.LazyPropagation_double_clearInference(self)
+
+
+    def setFindRelevantPotentialsType(self, type: 'gum::LazyPropagation< double >::FindRelevantPotentialsType') -> "void":
+        """setFindRelevantPotentialsType(LazyPropagation_double self, gum::LazyPropagation< double >::FindRelevantPotentialsType type)"""
+        return _pyAgrum.LazyPropagation_double_setFindRelevantPotentialsType(self, type)
 
 
     def evidenceProbability(self) -> "double":

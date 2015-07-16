@@ -40,45 +40,47 @@ namespace gum {
    * if table is a MultiDimArray defined over A,B,C,D and if inst_vars =
    * {<A=a1>,<C=c2>}, then the function returns a table over B,D defined as
    * table (a1,B,c2,D).
-   * @return function partialInstantiationMultiDimArray allocates on the heap the
+   * @return function partialInstantiationMultiDimArray allocates on the heap
+   * the
    * new T multiDimArray and returns it
    * @warning In practice, do not use this function but rather operator/function
    * partialInstantiation on multiDimDecorators. This operator will take care to
    * select this function if it is appropriate for your instantiation. */
   template <typename GUM_SCALAR>
-  MultiDimArray<GUM_SCALAR> *partialInstantiationMultiDimArray(
-      const MultiDimArray<GUM_SCALAR> *table,
-      const HashTable<const DiscreteVariable *, Idx> &inst_vars);
+  MultiDimArray<GUM_SCALAR>* partialInstantiationMultiDimArray(
+      const MultiDimArray<GUM_SCALAR>* table,
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
   template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR> *partialInstantiationMultiDimArray(
-      const MultiDimImplementation<GUM_SCALAR> *table,
-      const HashTable<const DiscreteVariable *, Idx> &inst_vars);
+  MultiDimImplementation<GUM_SCALAR>* partialInstantiationMultiDimArray(
+      const MultiDimImplementation<GUM_SCALAR>* table,
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
   template <typename GUM_SCALAR>
-  MultiDimArray<GUM_SCALAR *> *partialInstantiationMultiDimArray4Pointers(
-      const MultiDimArray<GUM_SCALAR *> *table,
-      const HashTable<const DiscreteVariable *, Idx> &inst_vars);
+  MultiDimArray<GUM_SCALAR*>* partialInstantiationMultiDimArray4Pointers(
+      const MultiDimArray<GUM_SCALAR*>* table,
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
   template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR *> *partialInstantiationMultiDimArray4Pointers(
-      const MultiDimImplementation<GUM_SCALAR *> *table,
-      const HashTable<const DiscreteVariable *, Idx> &inst_vars);
+  MultiDimImplementation<GUM_SCALAR*>*
+  partialInstantiationMultiDimArray4Pointers(
+      const MultiDimImplementation<GUM_SCALAR*>* table,
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
   // the operators that should be used to select appropriately the functions
   // to instantiate multiDimDecorators
 
   /// the function to be used to instantiate a MultiDimImplementation
   template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR> *
-  partialInstantiation(const MultiDimImplementation<GUM_SCALAR> &table,
-                       const HashTable<const DiscreteVariable *, Idx> &inst_vars);
+  MultiDimImplementation<GUM_SCALAR>* partialInstantiation(
+      const MultiDimImplementation<GUM_SCALAR>& table,
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
   /// the function to be used to instantiate a MultiDimDecorator
   template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR> *
-  partialInstantiation(const MultiDimDecorator<GUM_SCALAR> &table,
-                       const HashTable<const DiscreteVariable *, Idx> &inst_vars);
+  MultiDimImplementation<GUM_SCALAR>* partialInstantiation(
+      const MultiDimDecorator<GUM_SCALAR>& table,
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
   //
   // DO NOT FORGET TO REGISTER YOUR PARTIAL INSTANTIATION FUNCTIONS AT THE END
@@ -91,7 +93,8 @@ namespace gum {
 
   /** @brief the function used to register all the instantiations on
    * multidimImplementations over pointers types */
-  template <typename GUM_SCALAR> void pointerPartialInstantiation4MultiDimInit();
+  template <typename GUM_SCALAR>
+  void pointerPartialInstantiation4MultiDimInit();
 
   /// a class used to register instantiation functions over non-pointers types
   /** This class is of course completely redundant with function
@@ -99,11 +102,14 @@ namespace gum {
    * function partialInstantiation4MultiDimInit for pointer types: C++ allows
    * partial specialization of templated classes (e.g., create different
    * implementations for C<T> and C<T*>) but it does not allows partial
-   * specialization for functions. Hence, by creating a class the primary purpose
-   * of which is to run function partialInstantiation4MultiDimInit, we allow this
+   * specialization for functions. Hence, by creating a class the primary
+   * purpose
+   * of which is to run function partialInstantiation4MultiDimInit, we allow
+   * this
    * partial specialization. This is most effective to produce different codes
    * for pointer types and non-pointer types. */
-  template <typename GUM_SCALAR> struct PartialInstantiation4MultiDimInitialize {
+  template <typename GUM_SCALAR>
+  struct PartialInstantiation4MultiDimInitialize {
     void init() { partialInstantiation4MultiDimInit<GUM_SCALAR>(); };
   };
 
@@ -111,15 +117,17 @@ namespace gum {
   /** This class is of course completely redundant with function
    * pointerPartialInstantiation4MultiDimInit. Its aim is to enable different
    * implementations of the instantiation functions for multidims depending in
-   * whether these multidim contain pointers or not. Actually, C++ allows partial
+   * whether these multidim contain pointers or not. Actually, C++ allows
+   * partial
    * specialization of templated classes (e.g., create different implementations
    * for C<T> and C<T*>) but it does not allows partial specialization for
-   * functions. Hence, by creating a class the primary purpose of which is to run
+   * functions. Hence, by creating a class the primary purpose of which is to
+   * run
    * function partialInstantiation4MultiDimInit or
    * pointerPartialInstantiation4MultiDimInit, we allow this
    * partial specialization to obtain. */
   template <typename GUM_SCALAR>
-  struct PartialInstantiation4MultiDimInitialize<GUM_SCALAR *> {
+  struct PartialInstantiation4MultiDimInitialize<GUM_SCALAR*> {
     void init() { pointerPartialInstantiation4MultiDimInit<GUM_SCALAR>(); };
   };
 

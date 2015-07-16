@@ -35,38 +35,38 @@
 
 namespace gum {
 
-  ParseError::ParseError(bool is_error, const std::string &msg, int line)
-      : is_error(is_error), line(line), column(-1), msg(msg), filename(""),
-        code("") {}
+  ParseError::ParseError( bool is_error, const std::string& msg, int line )
+      : is_error( is_error ), line( line ), column( -1 ), msg( msg ),
+        filename( "" ), code( "" ) {}
 
-  ParseError::ParseError(bool is_error, const std::string &msg,
-                         const std::string &filename, int line, int col)
-      : is_error(is_error), line(line), column(col), msg(msg), filename(filename),
-        code("") {}
+  ParseError::ParseError( bool is_error, const std::string& msg,
+                          const std::string& filename, int line, int col )
+      : is_error( is_error ), line( line ), column( col ), msg( msg ),
+        filename( filename ), code( "" ) {}
 
-  ParseError::ParseError(bool is_error, const std::string &msg,
-                         const std::string &filename, const std::string &code,
-                         int line, int col)
-      : is_error(is_error), line(line), column(col), msg(msg), filename(filename),
-        code(code) {}
+  ParseError::ParseError( bool is_error, const std::string& msg,
+                          const std::string& filename, const std::string& code,
+                          int line, int col )
+      : is_error( is_error ), line( line ), column( col ), msg( msg ),
+        filename( filename ), code( code ) {}
 
-  ParseError::ParseError(const ParseError &err) {
+  ParseError::ParseError( const ParseError& err ) {
     is_error = err.is_error;
     line = err.line;
-    column = err.column; // default 0
+    column = err.column;  // default 0
     msg = err.msg;
-    filename = err.filename; // default ""
-    code == err.code;        // default ""
+    filename = err.filename;  // default ""
+    code == err.code;         // default ""
   }
 
-  ParseError ParseError::operator=(const ParseError &err) {
-    if (this != &err) {
+  ParseError ParseError::operator=( const ParseError& err ) {
+    if ( this != &err ) {
       is_error = err.is_error;
       line = err.line;
-      column = err.column; // default 0
+      column = err.column;  // default 0
       msg = err.msg;
-      filename = err.filename; // default ""
-      code == err.code;        // default ""
+      filename = err.filename;  // default ""
+      code == err.code;         // default ""
     }
 
     return *this;
@@ -76,85 +76,88 @@ namespace gum {
   std::string ParseError::toString() const {
     std::ostringstream s;
 
-    if (!filename.empty())
+    if ( !filename.empty() )
       s << filename << ":";
 
-    if (line > 0)
+    if ( line > 0 )
       s << line << ": ";
 
-    if (column > 0)
+    if ( column > 0 )
       s << column << " : ";
 
-    s << (is_error ? "error" : "warning") << " : " << msg;
+    s << ( is_error ? "error" : "warning" ) << " : " << msg;
 
     return s.str();
   }
 
   ///
   std::string ParseError::toElegantString() const {
-    std::cout<<toString()<<std::endl;
+    std::cout << toString() << std::endl;
 
-    if (code.empty()) {
-      std::ifstream ifs(filename.c_str());
+    if ( code.empty() ) {
+      std::ifstream ifs( filename.c_str() );
 
-      for (int i = 0; i < line; i++)
-        std::getline(ifs, code);
+      for ( int i = 0; i < line; i++ )
+        std::getline( ifs, code );
     }
 
     std::ostringstream s;
 
     s << code << "\n";
 
-    if (column > 0)
-      s << std::string(column - 1, ' ') << "^";
+    if ( column > 0 )
+      s << std::string( column - 1, ' ' ) << "^";
 
     return s.str();
   }
 
   /// Return the i-th error.
   /// May throw an exception if i >= count().
-  ParseError ErrorsContainer::error(int i) const {
-    if (count() > i)
-      return errors[i]; // May throw an error if i >= count().
+  ParseError ErrorsContainer::error( int i ) const {
+    if ( count() > i )
+      return errors[i];  // May throw an error if i >= count().
     else {
-      GUM_ERROR(OutOfBounds, "Index out of bound.");
+      GUM_ERROR( OutOfBounds, "Index out of bound." );
     }
   }
 
   ParseError ErrorsContainer::last() const {
-    if (count() > 0)
+    if ( count() > 0 )
       return errors[count() - 1];
     else {
-      GUM_ERROR(OutOfBounds, "Index out of bound.");
+      GUM_ERROR( OutOfBounds, "Index out of bound." );
     }
   }
 
-  /* ************************************************************************** */
+  /* **************************************************************************
+   */
 
   ErrorsContainer::ErrorsContainer() {
     error_count = 0;
     warning_count = 0;
   }
 
-  ErrorsContainer::ErrorsContainer(const ErrorsContainer &cont) {
+  ErrorsContainer::ErrorsContainer( const ErrorsContainer& cont ) {
     error_count = cont.error_count;
     warning_count = cont.warning_count;
     errors.clear();
     errors = cont.errors;
   }
 
-  ErrorsContainer ErrorsContainer::operator+(const ErrorsContainer &cont) const {
+  ErrorsContainer ErrorsContainer::
+  operator+( const ErrorsContainer& cont ) const {
     ErrorsContainer newCont;
 
     newCont.error_count = this->error_count + cont.error_count;
     newCont.warning_count = this->warning_count + cont.warning_count;
-    std::copy(this->errors.begin(), this->errors.end(), newCont.errors.begin());
-    std::copy(cont.errors.begin(), cont.errors.end(), newCont.errors.end());
+    std::copy( this->errors.begin(), this->errors.end(),
+               newCont.errors.begin() );
+    std::copy( cont.errors.begin(), cont.errors.end(), newCont.errors.end() );
 
     return newCont;
   }
 
-  ErrorsContainer ErrorsContainer::operator=(const ErrorsContainer &cont) {
+  ErrorsContainer ErrorsContainer::operator=( const ErrorsContainer& cont ) {
     error_count = cont.error_count;
     warning_count = cont.warning_count;
     errors.clear();
@@ -163,56 +166,56 @@ namespace gum {
     return *this;
   }
 
-  ErrorsContainer ErrorsContainer::operator+=(const ErrorsContainer &cont) {
+  ErrorsContainer ErrorsContainer::operator+=( const ErrorsContainer& cont ) {
     error_count += cont.error_count;
     warning_count += cont.warning_count;
 
-    for (int i = 0; i < cont.count(); i++)
-      errors.push_back(cont.error(i));
+    for ( int i = 0; i < cont.count(); i++ )
+      errors.push_back( cont.error( i ) );
 
     return *this;
   }
 
-  void ErrorsContainer::simpleErrors(std::ostream &o) const {
-    if (count() == 0)
+  void ErrorsContainer::simpleErrors( std::ostream& o ) const {
+    if ( count() == 0 )
       return;
 
-    for (int i = 0; i < count(); i++) {
-      if (error(i).is_error)
-        o << error(i).toString() << std::endl;
+    for ( int i = 0; i < count(); i++ ) {
+      if ( error( i ).is_error )
+        o << error( i ).toString() << std::endl;
     }
   }
 
-  void ErrorsContainer::simpleErrorsAndWarnings(std::ostream &o) const {
-    if (count() == 0)
+  void ErrorsContainer::simpleErrorsAndWarnings( std::ostream& o ) const {
+    if ( count() == 0 )
       return;
 
-    for (int i = 0; i < count(); i++)
-      o << error(i).toString() << std::endl;
+    for ( int i = 0; i < count(); i++ )
+      o << error( i ).toString() << std::endl;
   }
 
-  void ErrorsContainer::elegantErrors(std::ostream &o) const {
-    if (count() == 0)
+  void ErrorsContainer::elegantErrors( std::ostream& o ) const {
+    if ( count() == 0 )
       return;
 
-    for (int i = 0; i < count(); i++) {
-      if (error(i).is_error) {
-        o << error(i).toElegantString();
+    for ( int i = 0; i < count(); i++ ) {
+      if ( error( i ).is_error ) {
+        o << error( i ).toElegantString();
         o << std::endl;
       }
     }
   }
 
-  void ErrorsContainer::elegantErrorsAndWarnings(std::ostream &o) const {
-    if (count() == 0)
+  void ErrorsContainer::elegantErrorsAndWarnings( std::ostream& o ) const {
+    if ( count() == 0 )
       return;
 
-    for (int i = 0; i < count(); i++) {
-      o << error(i).toElegantString();
+    for ( int i = 0; i < count(); i++ ) {
+      o << error( i ).toElegantString();
       o << std::endl;
     }
   }
 
-} // namespace gum
+}  // namespace gum
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

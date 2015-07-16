@@ -42,13 +42,16 @@ namespace gum {
     Bijection<std::string, int>& DBCell::__strings() {
 #ifndef NDEBUG
       static bool first_time = true;
-      if (first_time) {
+      if ( first_time ) {
         first_time = false;
-        __debug__::__dec_creation("Bijection", "__strings", 0, "BCell string bijection", 0);
-        __debug__::__dec_creation("BijectionImplementation", "__strings", 0,
-            "BCell string bijection", 0);
-        __debug__::__dec_creation("HashTable", "__strings", 0, "BCell string bijection", 0);
-        __debug__::__dec_creation("HashTable", "__strings", 0, "BCell string bijection", 0);
+        __debug__::__dec_creation( "Bijection", "__strings", 0,
+                                   "BCell string bijection", 0 );
+        __debug__::__dec_creation( "BijectionImplementation", "__strings", 0,
+                                   "BCell string bijection", 0 );
+        __debug__::__dec_creation( "HashTable", "__strings", 0,
+                                   "BCell string bijection", 0 );
+        __debug__::__dec_creation( "HashTable", "__strings", 0,
+                                   "BCell string bijection", 0 );
       }
 #endif
       static Bijection<std::string, int> strings;
@@ -56,32 +59,32 @@ namespace gum {
     }
 
     /// safely sets the content of the DBCell with the best possible type
-    void DBCell::setAgainTypeSafe(const std::string &elt) {
+    void DBCell::setAgainTypeSafe( const std::string& elt ) {
       // try first to set the DBCell with the current type
-      switch (__type) {
+      switch ( __type ) {
         case EltType::FLOAT:
           // try to convert the string into a float
           try {
-            __setFloatFromStringSafe(elt);
+            __setFloatFromStringSafe( elt );
             return;
-          } catch (std::invalid_argument &) {
+          } catch ( std::invalid_argument& ) {
           }
           break;
 
         case EltType::STRING:
           // here, the best type is a string
-          setString(elt);
+          setString( elt );
           return;
 
         case EltType::MISSING:
           break;
 
         default:
-          GUM_ERROR(TypeError, "type not handled in DBCell copy constructor");
+          GUM_ERROR( TypeError, "type not handled in DBCell copy constructor" );
       }
 
       // here, set the content of the DBCell with the best type
-      setBestTypeSafe(elt);
+      setBestTypeSafe( elt );
     }
 
   } /* namespace learning */

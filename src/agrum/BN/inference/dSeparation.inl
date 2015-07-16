@@ -17,8 +17,50 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief d-separation analysis (as described in Koller & Friedman 2009)
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 
-#include <agrum/BN/inference/lazyPropagationOld.h>
+namespace gum {
 
-template class gum::LazyPropagationOld<float>;
-template class gum::LazyPropagationOld<double>;
+  
+  // default constructor
+  INLINE dSeparation::dSeparation () {
+    GUM_CONSTRUCTOR ( dSeparation );
+  }
+
+  
+  // copy constructor
+  INLINE dSeparation::dSeparation ( const dSeparation& from ) {
+    GUM_CONS_CPY ( dSeparation );
+  }
+  
+
+  // move constructor
+  INLINE dSeparation::dSeparation ( dSeparation&& from ) {
+    GUM_CONS_MOV ( dSeparation );
+  }
+  
+
+  // destructor
+  INLINE dSeparation::~dSeparation () {
+    GUM_DESTRUCTOR ( dSeparation );
+  }
+
+
+  // copy operator
+  INLINE dSeparation& dSeparation::operator= ( const dSeparation& from ) {
+    return *this;
+  }
+
+
+  // move operator
+  INLINE dSeparation& dSeparation::operator= ( dSeparation&& from ) {
+    return *this;
+  }
+
+
+} /* namespace gum */

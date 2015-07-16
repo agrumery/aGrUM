@@ -18,7 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A filtered row generator that returns exactly the rows it gets in input
+ * @brief A filtered row generator that returns exactly the rows it gets in
+ *input
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -38,37 +39,38 @@ namespace gum {
 
     /// default constructor
     RowGeneratorIdentity::RowGeneratorIdentity() {
-      GUM_CONSTRUCTOR(RowGeneratorIdentity);
+      GUM_CONSTRUCTOR( RowGeneratorIdentity );
     }
 
     /// copy constructor
-    RowGeneratorIdentity::RowGeneratorIdentity(const RowGeneratorIdentity &from)
-        : FilteredRowGenerator(from) {
-      GUM_CONS_CPY(RowGeneratorIdentity);
+    RowGeneratorIdentity::RowGeneratorIdentity(
+        const RowGeneratorIdentity& from )
+        : FilteredRowGenerator( from ) {
+      GUM_CONS_CPY( RowGeneratorIdentity );
     }
 
     /// move constructor
-    RowGeneratorIdentity::RowGeneratorIdentity(RowGeneratorIdentity &&from)
-        : FilteredRowGenerator(std::move(from)) {
-      GUM_CONS_MOV(RowGeneratorIdentity);
+    RowGeneratorIdentity::RowGeneratorIdentity( RowGeneratorIdentity&& from )
+        : FilteredRowGenerator( std::move( from ) ) {
+      GUM_CONS_MOV( RowGeneratorIdentity );
     }
 
     /// destructor
     RowGeneratorIdentity::~RowGeneratorIdentity() {
-      GUM_DESTRUCTOR(RowGeneratorIdentity);
+      GUM_DESTRUCTOR( RowGeneratorIdentity );
     }
 
     /// copy operator
-    RowGeneratorIdentity &RowGeneratorIdentity::
-    operator=(const RowGeneratorIdentity &from) {
-      FilteredRowGenerator::operator=(from);
+    RowGeneratorIdentity& RowGeneratorIdentity::
+    operator=( const RowGeneratorIdentity& from ) {
+      FilteredRowGenerator::operator=( from );
       return *this;
     }
 
     /// move operator
-    RowGeneratorIdentity &RowGeneratorIdentity::
-    operator=(RowGeneratorIdentity &&from) {
-      FilteredRowGenerator::operator=(std::move(from));
+    RowGeneratorIdentity& RowGeneratorIdentity::
+    operator=( RowGeneratorIdentity&& from ) {
+      FilteredRowGenerator::operator=( std::move( from ) );
       return *this;
     }
 

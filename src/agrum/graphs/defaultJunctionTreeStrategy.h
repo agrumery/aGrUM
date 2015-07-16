@@ -31,7 +31,8 @@
 
 namespace gum {
 
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   /** @class DefaultJunctionTreeStrategy
    * @brief An algorithm producing a junction given the elimination tree
    * produced by a triangulation algorithm
@@ -39,7 +40,8 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
   class DefaultJunctionTreeStrategy : public JunctionTreeStrategy {
     public:
     // ############################################################################
@@ -54,7 +56,7 @@ namespace gum {
     virtual ~DefaultJunctionTreeStrategy();
 
     /// virtual copy constructor
-    virtual DefaultJunctionTreeStrategy *newFactory() const;
+    virtual DefaultJunctionTreeStrategy* newFactory() const;
 
     /// @}
 
@@ -63,8 +65,10 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// indicates whether the junction tree strategy needs fill-ins to work properly
-    /** If the junctionTreeStrategy needs fill-ins to work properly, its assigned
+    /// indicates whether the junction tree strategy needs fill-ins to work
+    /// properly
+    /** If the junctionTreeStrategy needs fill-ins to work properly, its
+     * assigned
      * triangulation instance (see method setTriangulation) will be commited to
      * compute them. */
     bool requiresFillIns() const;
@@ -75,20 +79,21 @@ namespace gum {
      * needs to compute correctly the junction tree. For instance, it may asks
      * for a triangulated graph or an elimination tree, or even the order of
      * elimination of the nodes, etc. All these data are available from the
-     * triangulation class. Knowing these data, the junctionTreeStrategy computes
+     * triangulation class. Knowing these data, the junctionTreeStrategy
+     * computes
      * and returns a junction tree corresponding to the triangulated graph. */
-    const CliqueGraph &junctionTree();
+    const CliqueGraph& junctionTree();
 
     /// assign the triangulation to the junction tree strategy
-    void setTriangulation(StaticTriangulation *triangulation);
+    void setTriangulation( StaticTriangulation* triangulation );
 
     /** @brief returns, for each node, the clique of the junction tree which was
      * created by its deletion */
-    const NodeProperty<NodeId> &createdCliques();
+    const NodeProperty<NodeId>& createdCliques();
 
     /** @brief returns the Id of the clique of the junction tree created by the
      * elimination of a given node during the triangulation process */
-    NodeId createdClique(const NodeId id);
+    NodeId createdClique( const NodeId id );
 
     /// resets the current junction tree strategy data structures
     void clear();
@@ -97,7 +102,7 @@ namespace gum {
 
     private:
     /// the triangulation to which the junction tree is associated
-    StaticTriangulation *__triangulation;
+    StaticTriangulation* __triangulation;
 
     /// a boolean indicating whether the junction tree has been constructed
     bool __has_junction_tree;

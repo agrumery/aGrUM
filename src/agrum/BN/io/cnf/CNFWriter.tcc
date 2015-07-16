@@ -25,21 +25,23 @@
 
 namespace gum {
 
-  /* ============================================================================ */
-  /* ===                           GUM_BN_WRITER                              === */
-  /* ============================================================================ */
+  /* ============================================================================
+   */
+  /* ===                           GUM_BN_WRITER === */
+  /* ============================================================================
+   */
   // Default constructor.
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
   INLINE CNFWriter<GUM_SCALAR, IApproximationPolicy>::CNFWriter() {
-    GUM_CONSTRUCTOR(CNFWriter);
+    GUM_CONSTRUCTOR( CNFWriter );
   }
 
   // Default destructor.
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
   INLINE CNFWriter<GUM_SCALAR, IApproximationPolicy>::~CNFWriter() {
-    GUM_DESTRUCTOR(CNFWriter);
+    GUM_DESTRUCTOR( CNFWriter );
   }
 
 } /*namespace gum */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

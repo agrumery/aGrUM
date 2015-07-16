@@ -22,15 +22,15 @@
 namespace gum {
 
   INLINE
-  double randomProba() { return ((double)rand()) / ((double)RAND_MAX); }
+  double randomProba() { return ( (double)rand() ) / ( (double)RAND_MAX ); }
 
   INLINE
-  void initRandom(unsigned int init) {
-    if (init) {
-      srand(init);
-      randomGeneratorSeed(init);
+  void initRandom( unsigned int init ) {
+    if ( init ) {
+      srand( init );
+      randomGeneratorSeed( init );
     } else {
-      srand(randomGeneratorSeed());
+      srand( randomGeneratorSeed() );
     }
   }
 

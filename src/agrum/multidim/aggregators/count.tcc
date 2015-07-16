@@ -20,7 +20,8 @@
 /** @file
  * @brief count aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+*<{prenom.nom}_at_lip6.fr>
  */
 #include <sstream>
 // to ease parser in IDEs
@@ -30,20 +31,20 @@ namespace gum {
 
   namespace aggregator {
     template <typename GUM_SCALAR>
-    INLINE Count<GUM_SCALAR>::Count(Idx value)
-        : MultiDimAggregator<GUM_SCALAR>(), __value(value) {
-      GUM_CONSTRUCTOR(Count)
+    INLINE Count<GUM_SCALAR>::Count( Idx value )
+        : MultiDimAggregator<GUM_SCALAR>(), __value( value ) {
+      GUM_CONSTRUCTOR( Count )
     }
 
     template <typename GUM_SCALAR>
-    INLINE Count<GUM_SCALAR>::Count(const Count<GUM_SCALAR> &from)
-        : MultiDimAggregator<GUM_SCALAR>(from) {
+    INLINE Count<GUM_SCALAR>::Count( const Count<GUM_SCALAR>& from )
+        : MultiDimAggregator<GUM_SCALAR>( from ) {
       __value = from.__value;
-      GUM_CONS_CPY(Count);
+      GUM_CONS_CPY( Count );
     }
 
     template <typename GUM_SCALAR> INLINE Count<GUM_SCALAR>::~Count() {
-      GUM_DESTRUCTOR(Count);
+      GUM_DESTRUCTOR( Count );
     }
 
     template <typename GUM_SCALAR>
@@ -52,26 +53,28 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Idx Count<GUM_SCALAR>::_folder(const DiscreteVariable &v, Idx i1, Idx i2,
-                                          bool &stop_iteration) const {
-      return (i1 == __value) ? 1 + i2 : i2;
+    INLINE Idx
+    Count<GUM_SCALAR>::_folder( const DiscreteVariable& v, Idx i1, Idx i2,
+                                bool& stop_iteration ) const {
+      return ( i1 == __value ) ? 1 + i2 : i2;
     }
 
     template <typename GUM_SCALAR>
-    INLINE std::string Count<GUM_SCALAR>::aggregatorName(void) const {
+    INLINE std::string Count<GUM_SCALAR>::aggregatorName( void ) const {
       std::stringstream ss;
       ss << "count[" << __value << "]";
       return ss.str();
     }
 
     template <typename GUM_SCALAR>
-    INLINE MultiDimContainer<GUM_SCALAR> *Count<GUM_SCALAR>::newFactory() const {
-      return new Count<GUM_SCALAR>(__value);
+    INLINE MultiDimContainer<GUM_SCALAR>*
+    Count<GUM_SCALAR>::newFactory() const {
+      return new Count<GUM_SCALAR>( __value );
       // GUM_ERROR( OperationNotAllowed,
       //            "This class doesn't contain an empty constructor" );
       // return 0;
     }
 
-  } // aggregator
-} // namespace gum
+  }  // aggregator
+}  // namespace gum
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

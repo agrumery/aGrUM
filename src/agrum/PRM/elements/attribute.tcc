@@ -27,31 +27,25 @@
 namespace gum {
   namespace prm {
 
-    template<typename GUM_SCALAR>
-    Attribute<GUM_SCALAR>::Attribute(const std::string& name) :
-      ClassElement<GUM_SCALAR>( name )
-    {
+    template <typename GUM_SCALAR>
+    Attribute<GUM_SCALAR>::Attribute( const std::string& name )
+        : ClassElement<GUM_SCALAR>( name ) {
       GUM_CONSTRUCTOR( Attribute );
     }
 
-    template<typename GUM_SCALAR>
-    Attribute<GUM_SCALAR>::Attribute(const Attribute& source) :
-      ClassElement<GUM_SCALAR>( source ) 
-    {
+    template <typename GUM_SCALAR>
+    Attribute<GUM_SCALAR>::Attribute( const Attribute& source )
+        : ClassElement<GUM_SCALAR>( source ) {
       GUM_CONS_CPY( Attribute );
       GUM_ERROR( OperationNotAllowed, "Cannot copy Attributes" );
     }
 
-    template<typename GUM_SCALAR>
-    Attribute<GUM_SCALAR>::~Attribute() 
-    {
+    template <typename GUM_SCALAR> Attribute<GUM_SCALAR>::~Attribute() {
       GUM_DESTRUCTOR( Attribute );
     }
 
-    template<typename GUM_SCALAR>
-    void
-    Attribute<GUM_SCALAR>::overload(Attribute<GUM_SCALAR>* source)
-    {
+    template <typename GUM_SCALAR>
+    void Attribute<GUM_SCALAR>::overload( Attribute<GUM_SCALAR>* source ) {
       auto old_type = this->_type();
       this->_type( source->_type() );
       source->_type( old_type );

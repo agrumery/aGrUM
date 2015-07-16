@@ -18,7 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <climits>
-// WARNING : Do not include this file directlty : instead include <agrum/config.h>
+// WARNING : Do not include this file directlty : instead include
+// <agrum/config.h>
 
 #ifndef GUM_TYPES_H
 #define GUM_TYPES_H

@@ -24,7 +24,8 @@
  *
  * This file provides class Heap that implements a classic heap. Elements are
  * sorted according to a weak order which is < by default, i.e., the top element
- * of the heap is the smallest element and the more to the bottom the greater the
+ * of the heap is the smallest element and the more to the bottom the greater
+ *the
  * element.
  * @par Usage example:
  * @code
@@ -91,21 +92,26 @@ namespace gum {
 
   template <typename Val, typename Cmp, typename Alloc> class Heap;
   template <typename Val, typename Cmp, typename Alloc>
-  std::ostream &operator<<(std::ostream &, const Heap<Val, Cmp, Alloc> &);
+  std::ostream& operator<<( std::ostream&, const Heap<Val, Cmp, Alloc>& );
 
-  /* =========================================================================== */
-  /* ===                      SIMPLE HEAP DATA STRUCTURE                     === */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
+  /* ===                      SIMPLE HEAP DATA STRUCTURE                     ===
+   */
+  /* ===========================================================================
+   */
   /** @class Heap
    * @brief Heap data structure
    * @ingroup basicstruct_group
    *
    * This structure is a basic heap data structure, i.e., it is a container in
-   * which elements are sorted according to a weak ordering. Given this ordering,
+   * which elements are sorted according to a weak ordering. Given this
+   *ordering,
    * we do have access in O(1) to the "smallest" element contained by the
    * structure. Insertions and deletions of elements are processed in O(ln n),
    * where n is the number of elements in the heap. In addition to the classical
-   * pop, top and push functions, Heap provide direct accessors to the elements in
+   * pop, top and push functions, Heap provide direct accessors to the elements
+   *in
    * the heap (see operator[]). However, these can only be accessed in read-only
    * mode.
    * @par Usage example:
@@ -154,7 +160,8 @@ namespace gum {
    * heap1.contains (24);
    * @endcode
    */
-  /* =========================================================================== */
+  /* ===========================================================================
+   */
 
   template <typename Val, typename Cmp = std::less<Val>,
             typename Alloc = std::allocator<Val>>
@@ -163,10 +170,10 @@ namespace gum {
     /// types for STL compliance
     /// @{
     using value_type = Val;
-    using reference = Val &;
-    using const_reference = const Val &;
-    using pointer = Val *;
-    using const_pointer = const Val *;
+    using reference = Val&;
+    using const_reference = const Val&;
+    using pointer = Val*;
+    using const_pointer = const Val*;
     using size_type = std::size_t;
     using difference_type = std::ptrdiff_t;
     using allocator_type = Alloc;
@@ -180,24 +187,28 @@ namespace gum {
     /// @{
 
     /// basic constructor. Creates an empty heap
-    /** @param compare a function taking two elements in argument, say e1 and e2,
-     * and returning a Boolean indicating wether e1 < e2, i.e., whether e1 should
+    /** @param compare a function taking two elements in argument, say e1 and
+     * e2,
+     * and returning a Boolean indicating wether e1 < e2, i.e., whether e1
+     * should
      * be nearer than e2 to the top of the heap.
      * @param capacity the size of the internal data structures containing the
      * elements (could be for instance vectors or hashtables) */
-    explicit Heap(Cmp compare = Cmp(), Size capacity = GUM_HEAP_DEFAULT_CAPACITY);
+    explicit Heap( Cmp compare = Cmp(),
+                   Size capacity = GUM_HEAP_DEFAULT_CAPACITY );
 
     /// initializer list constructor
-    explicit Heap(std::initializer_list<Val> list);
+    explicit Heap( std::initializer_list<Val> list );
 
     /// copy constructor
-    Heap(const Heap<Val, Cmp, Alloc> &from);
+    Heap( const Heap<Val, Cmp, Alloc>& from );
 
     /// generalized copy constructor
-    template <typename OtherAlloc> Heap(const Heap<Val, Cmp, OtherAlloc> &from);
+    template <typename OtherAlloc>
+    Heap( const Heap<Val, Cmp, OtherAlloc>& from );
 
     /// move constructor
-    Heap(Heap<Val, Cmp, Alloc> &&from) noexcept;
+    Heap( Heap<Val, Cmp, Alloc>&& from ) noexcept;
 
     /// destructor
     ~Heap();
@@ -210,28 +221,31 @@ namespace gum {
     /// @{
 
     /// copy operator
-    /** When a problem occurs during the copy (for instance when not enough memory
+    /** When a problem occurs during the copy (for instance when not enough
+     * memory
      * is available), the operator guarantees that the heap stays in a coherent
      * state. Actually, the heap becomes empty. An exception is then thrown. */
-    Heap<Val, Cmp, Alloc> &operator=(const Heap<Val, Cmp, Alloc> &);
+    Heap<Val, Cmp, Alloc>& operator=( const Heap<Val, Cmp, Alloc>& );
 
     /// generalized copy operator
-    /** When a problem occurs during the copy (for instance when not enough memory
+    /** When a problem occurs during the copy (for instance when not enough
+     * memory
      * is available), the operator guarantees that the heap stays in a coherent
      * state. Actually, the heap becomes empty. An exception is then thrown. */
     template <typename OtherAlloc>
-    Heap<Val, Cmp, Alloc> &operator=(const Heap<Val, Cmp, OtherAlloc> &);
+    Heap<Val, Cmp, Alloc>& operator=( const Heap<Val, Cmp, OtherAlloc>& );
 
     /// move operator
-    /** When a problem occurs during the copy (for instance when not enough memory
+    /** When a problem occurs during the copy (for instance when not enough
+     * memory
      * is available), the operator guarantees that the heap stays in a coherent
      * state. Actually, the heap becomes empty. An exception is then thrown. */
-    Heap<Val, Cmp, Alloc> &operator=(Heap<Val, Cmp, Alloc> &&) noexcept;
+    Heap<Val, Cmp, Alloc>& operator=( Heap<Val, Cmp, Alloc>&& ) noexcept;
 
     /// returns the element at index index_elt from the heap
     /** @throw NotFound exception is thrown if there is no element
      * at position "index_elt". */
-    const Val &operator[](Size index_elt) const;
+    const Val& operator[]( Size index_elt ) const;
 
     /// @}
 
@@ -242,7 +256,7 @@ namespace gum {
 
     /// returns the element at the top of the heap
     /** @throw NotFound exception is thrown if the heap is empty */
-    const Val &top() const;
+    const Val& top() const;
 
     /// removes the top element from the heap and return it
     /** @throw NotFound exception is thrown if the heap is empty */
@@ -254,34 +268,43 @@ namespace gum {
     void eraseTop();
 
     /// removes the element positioned at "index" from the heap
-    /** If the element cannot be found, the function returns without throwing any
+    /** If the element cannot be found, the function returns without throwing
+     * any
      * exception.
-     * @param index represents the position of the element to be removed. This is
-     * computed as follows: suppose that the heap is a complete binary tree, that
-     * is, a binary tree where all levels are completely filled except, maybe, the
-     * last one and, in this case, the elements of this level are all to the left
-     * of the tree. Then parsing the tree from top to bottom and, for each level,
+     * @param index represents the position of the element to be removed. This
+     * is
+     * computed as follows: suppose that the heap is a complete binary tree,
+     * that
+     * is, a binary tree where all levels are completely filled except, maybe,
+     * the
+     * last one and, in this case, the elements of this level are all to the
+     * left
+     * of the tree. Then parsing the tree from top to bottom and, for each
+     * level,
      * from left to right, and assigning index 0 to the root of the tree and,
      * incrementing the index by 1 each time we jump to another node, we get a
      * unique index for each element. This is precisely what the index passed in
      * argument of the function represents. */
-    void eraseByPos(Size index);
+    void eraseByPos( Size index );
 
     /// removes a given element from the heap (but does not return it)
-    /** If the element cannot be found, the function returns without throwing any
+    /** If the element cannot be found, the function returns without throwing
+     * any
      * exception.
-     * @param val the element we wish to remove. If the heap contains several times
+     * @param val the element we wish to remove. If the heap contains several
+     * times
      * this element, then the one with the smallest index is removed. */
-    void erase(const Val &val);
+    void erase( const Val& val );
 
-    /// inserts a new element (actually a copy) in the heap and returns its index
-    Size insert(const Val &val);
+    /// inserts a new element (actually a copy) in the heap and returns its
+    /// index
+    Size insert( const Val& val );
 
     /// inserts a new element (by moving it) in the heap and returns its index
-    Size insert(Val &&val);
+    Size insert( Val&& val );
 
     /// emplace a new element in the heap and returns its index
-    template <typename... Args> Size emplace(Args &&... args);
+    template <typename... Args> Size emplace( Args&&... args );
 
     /// returns the number of elements in the heap
     Size size() const noexcept;
@@ -290,7 +313,7 @@ namespace gum {
     bool empty() const noexcept;
 
     /// indicates whether the heap contains a given value
-    bool contains(const Val &) const;
+    bool contains( const Val& ) const;
 
     /// displays the content of the heap
 
@@ -309,7 +332,7 @@ namespace gum {
     /// changes the size of the the internal structure storing the heap
     /** If the new size does not enable the heap to contain the elements it
      * currently contains, then the resizing does not occur. */
-    void resize(Size new_size);
+    void resize( Size new_size );
 
     /// @}
 

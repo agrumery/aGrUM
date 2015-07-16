@@ -20,7 +20,8 @@
 /** @file
  * @brief min aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+*<{prenom.nom}_at_lip6.fr>
  */
 
 // to ease parser in IDEs
@@ -36,42 +37,43 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE Min<GUM_SCALAR>::Min()
         : MultiDimAggregator<GUM_SCALAR>() {
-      GUM_CONSTRUCTOR(Min)
+      GUM_CONSTRUCTOR( Min )
     }
 
     /// Default constructor
 
     template <typename GUM_SCALAR>
-    INLINE Min<GUM_SCALAR>::Min(const Min<GUM_SCALAR> &from)
-        : MultiDimAggregator<GUM_SCALAR>(from) {
-      GUM_CONS_CPY(Min);
+    INLINE Min<GUM_SCALAR>::Min( const Min<GUM_SCALAR>& from )
+        : MultiDimAggregator<GUM_SCALAR>( from ) {
+      GUM_CONS_CPY( Min );
     }
 
     /// destructor
 
     template <typename GUM_SCALAR> INLINE Min<GUM_SCALAR>::~Min() {
-      GUM_DESTRUCTOR(Min);
+      GUM_DESTRUCTOR( Min );
     }
 
-    template <typename GUM_SCALAR> INLINE Idx Min<GUM_SCALAR>::_neutralElt() const {
+    template <typename GUM_SCALAR>
+    INLINE Idx Min<GUM_SCALAR>::_neutralElt() const {
       return (Idx)100000;
-    } // clearly arbitrary choosen
+    }  // clearly arbitrary choosen
 
     template <typename GUM_SCALAR>
-    INLINE Idx Min<GUM_SCALAR>::_folder(const DiscreteVariable &v, Idx i1, Idx i2,
-                                        bool &stop_iteration) const {
-      return (i1 < i2) ? i1 : i2;
+    INLINE Idx Min<GUM_SCALAR>::_folder( const DiscreteVariable& v, Idx i1,
+                                         Idx i2, bool& stop_iteration ) const {
+      return ( i1 < i2 ) ? i1 : i2;
     }
 
     template <typename GUM_SCALAR>
-    INLINE std::string Min<GUM_SCALAR>::aggregatorName(void) const {
+    INLINE std::string Min<GUM_SCALAR>::aggregatorName( void ) const {
       return "min";
     }
 
     template <typename GUM_SCALAR>
-    INLINE MultiDimContainer<GUM_SCALAR> *Min<GUM_SCALAR>::newFactory() const {
+    INLINE MultiDimContainer<GUM_SCALAR>* Min<GUM_SCALAR>::newFactory() const {
       return new Min<GUM_SCALAR>;
     }
 
-  } // aggregator
-} // namespace gum
+  }  // aggregator
+}  // namespace gum

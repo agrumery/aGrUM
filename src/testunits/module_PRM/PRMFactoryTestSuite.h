@@ -29,166 +29,167 @@
 namespace gum_tests {
   class PRMFactoryTestSuite : public CxxTest::TestSuite {
     public:
+    void testInit() {
+      gum::prm::PRMFactory<double> f;
+      delete f.prm();
+    }
 
-      void testInit() {
-        gum::prm::PRMFactory<double > f;
-        delete f.prm();
+    void testAddParameter() {
+      try {
+
+        gum::prm::PRMFactory<double> f;
+        auto prm = f.prm();
+
+        f.startClass( "MyClass" );
+        f.addParameter( "real", "lambda", 0.001 );
+        f.endClass();
+
+        const auto& c = prm->getClass( "MyClass" );
+        TS_ASSERT( 1 == c.parameters().size() );
+        const auto& elt = c.get( "lambda" );
+        TS_ASSERT( gum::prm::ClassElement<double>::isParameter( elt ) );
+        const auto& lambda =
+            static_cast<const gum::prm::Parameter<double>&>( elt );
+        TS_ASSERT( lambda.valueType() == gum::prm::Parameter<double>::REAL );
+        TS_ASSERT( lambda.value() == 0.001 );
+
+        delete prm;
+
+      } catch ( gum::Exception& e ) {
+        std::cout << e.errorType() << std::endl;
+        std::cout << e.errorContent() << std::endl;
+        std::cout << e.errorCallStack() << std::endl;
+
+        TS_ASSERT( false );
       }
+    }
 
-      void testAddParameter() {
-        try {
+    void testParameterSubClass() {
+      try {
 
-          gum::prm::PRMFactory<double > f;
-          auto prm = f.prm();
+        gum::prm::PRMFactory<double> f;
+        auto prm = f.prm();
 
-          f.startClass("MyClass");
-          f.addParameter("real", "lambda", 0.001);
-          f.endClass();
+        f.startClass( "MyClass" );
+        f.addParameter( "real", "lambda", 0.001 );
+        f.endClass();
 
-          const auto& c = prm->getClass("MyClass"); 
-          TS_ASSERT( 1 == c.parameters().size() );
-          const auto& elt = c.get("lambda");
-          TS_ASSERT( gum::prm::ClassElement<double>::isParameter(elt) );
-          const auto& lambda = static_cast< const gum::prm::Parameter<double>& >(elt);
-          TS_ASSERT( lambda.valueType() == gum::prm::Parameter<double>::REAL );
-          TS_ASSERT( lambda.value() == 0.001 );
+        TS_ASSERT( prm->classes().size() == 1 );
 
-          delete prm;
+        f.startSystem( "MySystem" );
+        f.addInstance( "MyClass", "i" );
+        f.endSystem();
 
-        } catch (gum::Exception& e) {
-          std::cout << e.errorType() << std::endl;
-          std::cout << e.errorContent() << std::endl;
-          std::cout << e.errorCallStack() << std::endl;
+        TS_ASSERT( prm->classes().size() == 2 );
 
-          TS_ASSERT( false );
-        }
+        const auto& super_c = prm->getClass( "MyClass" );
+        const auto& c = prm->getClass( "MyClass<lambda=0.001>" );
+
+        TS_ASSERT( c.isSubTypeOf( super_c ) );
+
+        TS_ASSERT( 1 == c.parameters().size() );
+        const auto& elt = c.get( "lambda" );
+        TS_ASSERT( gum::prm::ClassElement<double>::isParameter( elt ) );
+        const auto& lambda =
+            static_cast<const gum::prm::Parameter<double>&>( elt );
+        TS_ASSERT( lambda.valueType() == gum::prm::Parameter<double>::REAL );
+        TS_ASSERT( lambda.value() == 0.001 );
+
+        delete prm;
+
+      } catch ( gum::Exception& e ) {
+        std::cout << e.errorType() << std::endl;
+        std::cout << e.errorContent() << std::endl;
+        std::cout << e.errorCallStack() << std::endl;
+
+        TS_ASSERT( false );
       }
+    }
 
-      void testParameterSubClass() {
-        try {
+    void testParameterInstantiation() {
+      try {
 
-          gum::prm::PRMFactory<double> f;
-          auto prm = f.prm();
+        gum::prm::PRMFactory<double> f;
+        auto prm = f.prm();
 
-          f.startClass("MyClass");
-          f.addParameter("real", "lambda", 0.001);
-          f.endClass();
+        f.startClass( "MyClass" );
+        f.addParameter( "real", "lambda", 0.001 );
+        f.endClass();
 
-          TS_ASSERT( prm->classes().size() == 1 );
+        f.startSystem( "MySystem" );
+        f.addInstance( "MyClass", "i" );
+        f.endSystem();
 
-          f.startSystem("MySystem");
-          f.addInstance("MyClass", "i");
-          f.endSystem();
+        const auto& s = prm->system( "MySystem" );
 
-          TS_ASSERT( prm->classes().size() == 2 );
+        TS_ASSERT( s.exists( "i" ) );
 
-          const auto& super_c = prm->getClass("MyClass");
-          const auto& c = prm->getClass("MyClass<lambda=0.001>");
+        const auto& i = s.get( "i" );
 
-          TS_ASSERT( c.isSubTypeOf(super_c) );
+        const auto& c = prm->getClass( "MyClass<lambda=0.001>" );
+        TS_ASSERT( c == i.type() );
 
-          TS_ASSERT( 1 == c.parameters().size() );
-          const auto& elt = c.get("lambda");
-          TS_ASSERT( gum::prm::ClassElement<double>::isParameter(elt) );
-          const auto& lambda = static_cast<const gum::prm::Parameter<double>&>(elt);
-          TS_ASSERT( lambda.valueType() == gum::prm::Parameter<double>::REAL );
-          TS_ASSERT( lambda.value() == 0.001 );
+        delete prm;
 
-          delete prm;
+      } catch ( gum::Exception& e ) {
+        std::cout << e.errorType() << std::endl;
+        std::cout << e.errorContent() << std::endl;
+        std::cout << e.errorCallStack() << std::endl;
 
-        } catch (gum::Exception& e) {
-          std::cout << e.errorType() << std::endl;
-          std::cout << e.errorContent() << std::endl;
-          std::cout << e.errorCallStack() << std::endl;
-
-          TS_ASSERT( false );
-        }
+        TS_ASSERT( false );
       }
+    }
 
-      void testParameterInstantiation() {
-        try {
+    void testParameterSpecificInstantiation() {
+      try {
 
-          gum::prm::PRMFactory<double> f;
-          auto prm = f.prm();
+        gum::prm::PRMFactory<double> f;
+        auto prm = f.prm();
 
-          f.startClass("MyClass");
-          f.addParameter("real", "lambda", 0.001);
-          f.endClass();
+        f.startClass( "MyClass" );
+        f.addParameter( "real", "lambda", 0.001 );
+        f.endClass();
 
-          f.startSystem("MySystem");
-          f.addInstance("MyClass", "i");
-          f.endSystem();
 
-          const auto& s = prm->system("MySystem");
+        f.startSystem( "MySystem" );
+        gum::HashTable<std::string, double> params;
+        params.insert( "lambda", 0.009 );
+        f.addInstance( "MyClass", "i", params );
+        f.addInstance( "MyClass", "j" );
+        f.addInstance( "MyClass", "k", params );
 
-          TS_ASSERT( s.exists("i") );
+        TS_ASSERT( prm->classes().size() == 3 );
 
-          const auto& i = s.get("i");
+        f.endSystem();
+        const auto& s = prm->system( "MySystem" );
 
-          const auto& c = prm->getClass("MyClass<lambda=0.001>");
-          TS_ASSERT( c == i.type() );
+        TS_ASSERT( s.exists( "i" ) );
 
-          delete prm;
+        const auto& i = s.get( "i" );
+        const auto& j = s.get( "j" );
+        const auto& k = s.get( "k" );
 
-        } catch (gum::Exception& e) {
-          std::cout << e.errorType() << std::endl;
-          std::cout << e.errorContent() << std::endl;
-          std::cout << e.errorCallStack() << std::endl;
+        const auto& super_c = prm->getClass( "MyClass" );
+        const auto& c = prm->getClass( "MyClass<lambda=0.009>" );
 
-          TS_ASSERT( false );
-        }
+        const auto& c_default = prm->getClass( "MyClass<lambda=0.001>" );
+
+        TS_ASSERT( c.isSubTypeOf( super_c ) );
+        TS_ASSERT( c == i.type() );
+        TS_ASSERT( c == k.type() );
+
+        TS_ASSERT( c_default.isSubTypeOf( super_c ) );
+        TS_ASSERT( c_default == j.type() );
+
+        delete prm;
+
+      } catch ( gum::Exception& e ) {
+        std::cout << e.errorType() << std::endl;
+        std::cout << e.errorContent() << std::endl;
+        std::cout << e.errorCallStack() << std::endl;
+
+        TS_ASSERT( false );
       }
-
-      void testParameterSpecificInstantiation() {
-        try {
-
-          gum::prm::PRMFactory<double> f;
-          auto prm = f.prm();
-
-          f.startClass("MyClass");
-          f.addParameter("real", "lambda", 0.001);
-          f.endClass();
-
-
-          f.startSystem("MySystem");
-          gum::HashTable<std::string, double> params;
-          params.insert("lambda", 0.009);
-          f.addInstance("MyClass", "i", params);
-          f.addInstance("MyClass", "j");
-          f.addInstance("MyClass", "k", params);
-
-          TS_ASSERT( prm->classes().size() == 3 );
-
-          f.endSystem();
-          const auto& s = prm->system("MySystem");
-
-          TS_ASSERT( s.exists("i") );
-
-          const auto& i = s.get("i");
-          const auto& j = s.get("j");
-          const auto& k = s.get("k");
-
-          const auto& super_c = prm->getClass("MyClass");
-          const auto& c = prm->getClass("MyClass<lambda=0.009>");
-
-          const auto& c_default = prm->getClass("MyClass<lambda=0.001>");
-
-          TS_ASSERT( c.isSubTypeOf(super_c) );
-          TS_ASSERT( c == i.type() );
-          TS_ASSERT( c == k.type() );
-
-          TS_ASSERT( c_default.isSubTypeOf(super_c) );
-          TS_ASSERT( c_default == j.type() );
-
-          delete prm;
-
-        } catch (gum::Exception& e) {
-          std::cout << e.errorType() << std::endl;
-          std::cout << e.errorContent() << std::endl;
-          std::cout << e.errorCallStack() << std::endl;
-
-          TS_ASSERT( false );
-        }
-      }
+    }
   };
-}//gum_tests
+}  // gum_tests

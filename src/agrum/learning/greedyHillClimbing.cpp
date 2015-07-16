@@ -31,45 +31,48 @@ namespace gum {
 
     /// default constructor
     GreedyHillClimbing::GreedyHillClimbing() {
-      setEpsilon(0);
+      setEpsilon( 0 );
       disableMinEpsilonRate();
       disableMaxIter();
       disableMaxTime();
-      GUM_CONSTRUCTOR(learning::GreedyHillClimbing);
+      GUM_CONSTRUCTOR( GreedyHillClimbing );
     }
 
     /// copy constructor
-    GreedyHillClimbing::GreedyHillClimbing(const GreedyHillClimbing &from)
-        : ApproximationScheme(from) {
-      GUM_CONS_CPY(learning::GreedyHillClimbing);
+    GreedyHillClimbing::GreedyHillClimbing( const GreedyHillClimbing& from )
+        : ApproximationScheme( from ) {
+      GUM_CONS_CPY( GreedyHillClimbing );
     }
 
     /// move constructor
-    GreedyHillClimbing::GreedyHillClimbing(GreedyHillClimbing &&from)
-        : ApproximationScheme(std::move(from)) {
-      GUM_CONS_MOV(learning::GreedyHillClimbing);
+    GreedyHillClimbing::GreedyHillClimbing( GreedyHillClimbing&& from )
+        : ApproximationScheme( std::move( from ) ) {
+      GUM_CONS_MOV( GreedyHillClimbing );
     }
 
     /// destructor
     GreedyHillClimbing::~GreedyHillClimbing() {
-      GUM_DESTRUCTOR(learning::GreedyHillClimbing);
+      GUM_DESTRUCTOR( GreedyHillClimbing );
     }
 
     /// copy operator
-    GreedyHillClimbing &GreedyHillClimbing::
-    operator=(const GreedyHillClimbing &from) {
-      ApproximationScheme::operator=(from);
+    GreedyHillClimbing& GreedyHillClimbing::
+    operator=( const GreedyHillClimbing& from ) {
+      ApproximationScheme::operator=( from );
       return *this;
     }
 
     /// move operator
-    GreedyHillClimbing &GreedyHillClimbing::operator=(GreedyHillClimbing &&from) {
-      ApproximationScheme::operator=(std::move(from));
+    GreedyHillClimbing& GreedyHillClimbing::
+    operator=( GreedyHillClimbing&& from ) {
+      ApproximationScheme::operator=( std::move( from ) );
       return *this;
     }
 
     /// returns the approximation policy of the learning algorithm
-    ApproximationScheme &GreedyHillClimbing::approximationScheme() { return *this; }
+    ApproximationScheme& GreedyHillClimbing::approximationScheme() {
+      return *this;
+    }
 
   } /* namespace learning */
 

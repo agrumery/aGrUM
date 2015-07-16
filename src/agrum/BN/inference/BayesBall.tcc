@@ -27,38 +27,34 @@
 
 namespace gum {
 
-  
+
   // update a set of potentials, keeping only those d-connected with
   // query variables
   template <typename GUM_SCALAR, template <typename> class TABLE>
-  void
-  BayesBall::relevantPotentials ( const IBayesNet<GUM_SCALAR>& bn,
-                                  const NodeSet& query,
-                                  const NodeSet& hardEvidence,
-                                  const NodeSet& softEvidence,
-                                  Set<const TABLE<GUM_SCALAR>*>& potentials ) {
-    // save the parameters so as to avoid passing them in arguments to
-    // the recursive functions
-    __dag = &( bn.dag () );
-    __hardEvidence = &hardEvidence;
-    __softEvidence = &softEvidence;
+  void BayesBall::relevantPotentials(
+      const IBayesNet<GUM_SCALAR>& bn,
+      const NodeSet& query,
+      const NodeSet& hardEvidence,
+      const NodeSet& softEvidence,
+      Set<const TABLE<GUM_SCALAR>*>& potentials ) {
+    const DAG& dag = bn.dag (); 
+    
+    // create the marks (top = first and bottom = second)
+    NodeProperty<std::pair<bool, bool>> marks;
+    marks.resize( dag.size() );
+    const std::pair<bool, bool> empty_mark( false, false );
 
-    // create the marks (top and bottom) so that we won't have to test their
-    // existence in the recursive functions
-    __marks.clear();
-    __marks.resize ( __dag->size () );
-    const std::pair<bool, bool> empty_mark (false, false);
-   
-    /// for relevant potentials: indicate which tables contain a variable (nodeId)
-    HashTable<NodeId, Set<const TABLE<GUM_SCALAR>*> > __node2potentials;
+    /// for relevant potentials: indicate which tables contain a variable
+    /// (nodeId)
+    HashTable<NodeId, Set<const TABLE<GUM_SCALAR>*>> node2potentials;
     for ( const auto pot : potentials ) {
-      const Sequence<const DiscreteVariable *>& vars = pot->variablesSequence();
+      const Sequence<const DiscreteVariable*>& vars = pot->variablesSequence();
       for ( const auto var : vars ) {
-        const NodeId id = bn.nodeId ( *var );
-        if ( ! __node2potentials.exists ( id ) ) {
-          __node2potentials.insert ( id, Set<const TABLE<GUM_SCALAR>*> () );
+        const NodeId id = bn.nodeId( *var );
+        if ( ! node2potentials.exists( id ) ) {
+          node2potentials.insert( id, Set<const TABLE<GUM_SCALAR>*>() );
         }
-        __node2potentials[id].insert ( pot );
+        node2potentials[id].insert( pot );
       }
     }
 
@@ -66,91 +62,89 @@ namespace gum {
     // in list nodes_to_visit, the first element is the next node to send the
     // ball to and the Boolean indicates whether we shall reach it from one of
     // its children (true) or from one parent (false)
-    List<std::pair<NodeId,bool>> nodes_to_visit;
+    List<std::pair<NodeId, bool>> nodes_to_visit;
     for ( const auto node : query ) {
-      nodes_to_visit.insert ( std::pair<NodeId,bool> ( node, true ) );
+      nodes_to_visit.insert( std::pair<NodeId, bool>( node, true ) );
     }
 
     // perform the bouncing ball until __node2potentials becomes empty (which
     // means that we have reached all the potentials and, therefore, those
-    // are d-connected to query) or until there is no node in the graph to send the
-    // ball to
-    while ( ! nodes_to_visit.empty () && ! __node2potentials.empty () ) {
+    // are d-connected to query) or until there is no node in the graph to send
+    // the ball to
+    while ( ! nodes_to_visit.empty() && ! node2potentials.empty() ) {
       // get the next node to visit
       NodeId node = nodes_to_visit.front().first;
 
       // if the marks of the node do not exist, create them
-      if ( ! __marks.exists ( node ) ) 
-        __marks.insert ( node, empty_mark );
+      if ( ! marks.exists( node ) )
+        marks.insert( node, empty_mark );
 
       // if the node belongs to the query, update __node2potentials: remove all
       // the potentials containing the node
-      if ( __node2potentials.exists ( node ) ) {
-        auto& pot_set = __node2potentials[node];
+      if ( node2potentials.exists( node ) ) {
+        auto& pot_set = node2potentials[node];
         for ( const auto pot : pot_set ) {
           const auto& vars = pot->variablesSequence();
           for ( const auto var : vars ) {
-            const NodeId id = bn.nodeId ( *var );
+            const NodeId id = bn.nodeId( *var );
             if ( id != node ) {
-              __node2potentials[id].erase ( pot );
-              if ( __node2potentials[id].empty () ) {
-                __node2potentials.erase ( id );
+              node2potentials[id].erase( pot );
+              if ( node2potentials[id].empty() ) {
+                node2potentials.erase( id );
               }
             }
           }
         }
-        __node2potentials.erase ( node );
+        node2potentials.erase( node );
 
         // if __node2potentials is empty, no need to go on: all the potentials
         // are d-connected to the query
-        if ( __node2potentials.empty () ) return;
+        if ( node2potentials.empty() )
+          return;
       }
 
-      
-      // bounce the ball toward the neighbors
-      if ( nodes_to_visit.front().second ) { // visit from a child
-        nodes_to_visit.popFront ();
 
-        if ( __hardEvidence->exists(node) ) {
-          // mark its top so that it will be included in the end into
-          // the set of requisite nodes
-          __marks[node].first = true;
+      // bounce the ball toward the neighbors
+      if ( nodes_to_visit.front().second ) {  // visit from a child
+        nodes_to_visit.popFront();
+
+        if ( hardEvidence.exists( node ) ) {
           continue;
         }
 
-        if ( not __marks[node].first ) {
-          __marks[node].first = true; // top marked
-          for (const auto par : __dag->parents(node)) {
-            nodes_to_visit.insert ( std::pair<NodeId,bool> ( par, true ) );
+        if ( not marks[node].first ) {
+          marks[node].first = true;  // top marked
+          for ( const auto par : dag.parents( node ) ) {
+            nodes_to_visit.insert( std::pair<NodeId, bool>( par, true ) );
           }
         }
 
-        if (not __marks[node].second) {
-          __marks[node].second = true; // bottom marked
-          for (const auto chi : __dag->children(node)) {
-            nodes_to_visit.insert ( std::pair<NodeId,bool> ( chi, false ) );
+        if ( not marks[node].second ) {
+          marks[node].second = true;  // bottom marked
+          for ( const auto chi : dag.children( node ) ) {
+            nodes_to_visit.insert( std::pair<NodeId, bool>( chi, false ) );
           }
         }
       }
-      else { // visit from a parent
-        nodes_to_visit.popFront ();
+      else {  // visit from a parent
+        nodes_to_visit.popFront();
 
-        const bool hard_evidence = __hardEvidence->exists(node);
-        const bool evidence = hard_evidence or __softEvidence->exists ( node );
-    
-        if ( evidence && ! __marks[node].first ) {
-          __marks[node].first = true;
+        const bool is_hard_evidence = hardEvidence.exists( node );
+        const bool is_evidence = is_hard_evidence or softEvidence.exists( node );
 
-          for (const auto par : __dag->parents(node)) {
-            nodes_to_visit.insert ( std::pair<NodeId,bool> ( par, true ) );
+        if ( is_evidence && ! marks[node].first ) {
+          marks[node].first = true;
+
+          for ( const auto par : dag.parents( node ) ) {
+            nodes_to_visit.insert( std::pair<NodeId, bool>( par, true ) );
           }
         }
 
-        if (! hard_evidence && !__marks[node].second) {
-          __marks[node].second = true;
+        if ( ! is_hard_evidence && ! marks[node].second ) {
+          marks[node].second = true;
 
-          for (const auto chi : __dag->children(node)) {
-            nodes_to_visit.insert ( std::pair<NodeId,bool> ( chi, false ) );
+          for ( const auto chi : dag.children( node ) ) {
+            nodes_to_visit.insert( std::pair<NodeId, bool>( chi, false ) );
           }
         }
       }
@@ -159,13 +153,12 @@ namespace gum {
 
     // here, all the potentials that belong to __node2potentials are d-separated
     // from the query
-    for ( const auto elt : __node2potentials ) {
+    for ( const auto elt : node2potentials ) {
       for ( const auto pot : elt.second ) {
-        potentials.erase ( pot );
+        potentials.erase( pot );
       }
     }
-    
   }
 
-  
+
 } /* namespace gum */

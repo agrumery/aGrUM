@@ -68,14 +68,15 @@
 #endif
 /* ************ */
 
-#define enumStringify(name) #name
+#define enumStringify( name ) #name
 
 namespace gum {
   namespace credal {
 
     /**
      * @class LRSWrapper LrsWrapper.h <agrum/CN/LrsWrapper.h>
-     * @brief Class template acting as a wrapper for Lexicographic Reverse Search by
+     * @brief Class template acting as a wrapper for Lexicographic Reverse
+     * Search by
      * David Avis.
      * @ingroup cn_group
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
@@ -86,10 +87,12 @@ namespace gum {
       /** @brief Shortcut for dynamic matrix using vectors. */
       typedef typename std::vector<std::vector<GUM_SCALAR>> matrix;
 
-      /** @brief Input matrix - either a V-representation or an H-representation. */
+      /** @brief Input matrix - either a V-representation or an
+       * H-representation. */
       matrix __input;
 
-      /** @brief Output matrix - either a V-representation or an H-representation. */
+      /** @brief Output matrix - either a V-representation or an
+       * H-representation. */
       matrix __output;
 
       /** @brief Cardinality of the variable. */
@@ -102,7 +105,8 @@ namespace gum {
       /** @brief The number of vertices of the polytope. */
       unsigned int __vertices;
 
-      /** @brief To keep track of inserted vertices and total. When set is full, the
+      /** @brief To keep track of inserted vertices and total. When set is full,
+       * the
        * state changes from up to ready. */
       std::vector<std::vector<GUM_SCALAR>> __insertedVertices;
 
@@ -110,15 +114,17 @@ namespace gum {
        * probability, there is no need to use lrs. */
       std::vector<GUM_SCALAR> __vertex;
 
-      /** @enum __states The possible states of the LrsWrapper. Some functions will
-       * throw an exception if the state is not correct. It allows the user to avoid
+      /** @enum __states The possible states of the LrsWrapper. Some functions
+       * will
+       * throw an exception if the state is not correct. It allows the user to
+       * avoid
        * making - invisible - mistakes. */
       enum class __states : char {
-        none = char(0),
-        Hup = char(1),
-        Vup = char(2),
-        H2Vready = char(3),
-        V2Hready = char(4),
+        none = char( 0 ),
+        Hup = char( 1 ),
+        Vup = char( 2 ),
+        H2Vready = char( 3 ),
+        V2Hready = char( 4 ),
       };
 
       /** @brief The current state of the LrsWrapper. */
@@ -129,10 +135,12 @@ namespace gum {
 
       /** @brief To print an enum field name instead of it's value. Used with
        * GUM_ERROR. */
-      const char *__setUpStateNames[5] = {
-          enumStringify(__states::none),      enumStringify(__states::nHup),
-          enumStringify(__states::nVup),      enumStringify(__states::nH2Vready),
-          enumStringify(__states::nV2Hready),
+      const char* __setUpStateNames[5] = {
+          enumStringify( __states::none ),
+          enumStringify( __states::nHup ),
+          enumStringify( __states::nVup ),
+          enumStringify( __states::nH2Vready ),
+          enumStringify( __states::nV2Hready ),
       };
 
       /**
@@ -149,12 +157,13 @@ namespace gum {
       /// @{
 
       /** @brief Structure for holding current dictionary and indices of lrs. */
-      lrs_dic *__dic;
+      lrs_dic* __dic;
 
       /** @brief Structure for holding static problem data of lrs.*/
-      lrs_dat *__dat;
+      lrs_dat* __dat;
 
-      /** @brief One line of output of lrs : aither a ray, a vertex, a facet or a
+      /** @brief One line of output of lrs : aither a ray, a vertex, a facet or
+       * a
        * linearity. */
       lrs_mp_vector __lrsOutput;
 
@@ -214,8 +223,9 @@ namespace gum {
        * @param Num Output integer numerators.
        * @param Den Output integer denominators.
        */
-      void __getLRSWrapperOutput(lrs_mp Nin, lrs_mp Din, std::vector<long int> &Num,
-                                 std::vector<long int> &Den) const;
+      void __getLRSWrapperOutput( lrs_mp Nin, lrs_mp Din,
+                                  std::vector<long int>& Num,
+                                  std::vector<long int>& Den ) const;
 
       /// @}
 
@@ -242,19 +252,19 @@ namespace gum {
        * @brief Get the intput matrix of the problem.
        * @return A constant reference to the \c __intput matrix.
        */
-      const matrix &getInput() const;
+      const matrix& getInput() const;
 
       /**
        * @brief Get the output matrix solution of the problem.
        * @return A constant reference to the \c __output matrix.
        */
-      const matrix &getOutput() const;
+      const matrix& getOutput() const;
 
       /**
        * @brief Get the number of vertices of this polytope.
        * @return A constant reference to the number of vertices \c __vertices.
        */
-      const unsigned int &getVerticesNumber() const;
+      const unsigned int& getVerticesNumber() const;
 
       /**
        * @brief Get the volume of the polytope that has been computed.
@@ -262,15 +272,17 @@ namespace gum {
        * @warning Volume can only be computed using V-representation.
        *H-representation volume computation is not predictable.
        *
-       * @warning Probabilistic polytopes are not full dimensional : they lie in the
+       * @warning Probabilistic polytopes are not full dimensional : they lie in
+       *the
        *simplex' hyper plane,
-       * therefor a pseudo-volume will be computed by projecting the polytope. The
+       * therefor a pseudo-volume will be computed by projecting the polytope.
+       *The
        *projection used is the
        * lexicographically smallest coordinate subspace.
        *
        * @return A constant reference to the polytope volume.
        */
-      const GUM_SCALAR &getVolume() const;
+      const GUM_SCALAR& getVolume() const;
 
       /// @}
 
@@ -280,33 +292,37 @@ namespace gum {
       /**
        * @brief %Sets up an H-representation.
        *
-       * Initialize input matrix \c __input to correct dimensions and wrapper state
+       * Initialize input matrix \c __input to correct dimensions and wrapper
+       *state
        *\c __state to \c __states::Hup.
        * @param card A constant reference to the cardinality of the variable.
        */
-      void setUpH(const unsigned int &card);
+      void setUpH( const unsigned int& card );
 
       /**
        * @brief %Sets up a V-representation.
        *
-       * Initialize input matrix \c __input to correct dimensions and wrapper state
+       * Initialize input matrix \c __input to correct dimensions and wrapper
+       *state
        *\c __state to \c __states::Vup.
        * @param card A constant reference to the cardinality of the variable.
        * @param vertices A constant reference to the number of vertices of the
        *polytope.
        */
-      void setUpV(const unsigned int &card, const unsigned int &vertices);
+      void setUpV( const unsigned int& card, const unsigned int& vertices );
 
       /**
        * @brief Reset the wrapper as if it was built.
        *
-       * Reset wrapper state \c __state to \c __states::none and clear all member
+       * Reset wrapper state \c __state to \c __states::none and clear all
+       *member
        *datas.
        */
       void tearDown();
 
       /**
-       * @brief Reset the wrapper for next computation for a H-representation with
+       * @brief Reset the wrapper for next computation for a H-representation
+       *with
        *the same
        * variable cardinality and number of inequalities. Usefull when creating
        *credal networks
@@ -325,32 +341,35 @@ namespace gum {
       /// @{
 
       /**
-       * @brief Creates the H-representation of min <= p(X=modal | .) <= max and add
+       * @brief Creates the H-representation of min <= p(X=modal | .) <= max and
+       *add
        *it to the problem input \c __input.
        *
        * @param min The lower value of p(X=modal | .).
        * @param max The upper value of p(X=modal | .).
        * @param modal The modality on which we put constraints.
        */
-      void fillH(const GUM_SCALAR &min, const GUM_SCALAR &max,
-                 const unsigned int &modal);
+      void fillH( const GUM_SCALAR& min, const GUM_SCALAR& max,
+                  const unsigned int& modal );
 
       /**
        * @brief Fill the H-representation from the matrix given in argument.
        *
-       * @param matrix The H-representation of the polytope of the form 0 <= -b + Ax,
+       * @param matrix The H-representation of the polytope of the form 0 <= -b
+       *+ Ax,
        *A is the matrix, each column the coefficient of the variable in x.
        */
-      void fillMatrix(const std::vector<std::vector<GUM_SCALAR>> &matrix);
+      void fillMatrix( const std::vector<std::vector<GUM_SCALAR>>& matrix );
 
       /**
-       * @brief Creates the V-representation of a polytope by adding a vertex to the
+       * @brief Creates the V-representation of a polytope by adding a vertex to
+       *the
        *problem input \c __input.
        *
        * @param vertex The vertex we wish to add to the V-representation of the
        *polytope.
        */
-      void fillV(const std::vector<GUM_SCALAR> &vertex);
+      void fillV( const std::vector<GUM_SCALAR>& vertex );
 
       /// @}
 
@@ -360,7 +379,8 @@ namespace gum {
       /**
        * @brief H-representation to V-representation.
        *
-       * Computes the V-representation of a polytope, i.e. it's vertices, from it's
+       * Computes the V-representation of a polytope, i.e. it's vertices, from
+       *it's
        *H-representation, i.e. the hyper-plan inequalities.
        */
       void H2V();
@@ -375,14 +395,17 @@ namespace gum {
       void V2H();
 
       /**
-       * @brief Computes a polytope ( pseudo ) volume from it's V-representation.
+       * @brief Computes a polytope ( pseudo ) volume from it's
+       *V-representation.
        *
        * @warning Volume can only be computed using V-representation.
        *H-representation volume computation is not predictable.
        *
-       * @warning Probabilistic polytopes are not full dimensional : they lie in the
+       * @warning Probabilistic polytopes are not full dimensional : they lie in
+       *the
        *simplex' hyper plane,
-       * therefor a pseudo-volume will be computed by projecting the polytope. The
+       * therefor a pseudo-volume will be computed by projecting the polytope.
+       *The
        *projection used is the
        * lexicographically smallest coordinate subspace.
        */
@@ -403,8 +426,8 @@ namespace gum {
       /// @}
     };
 
-  } // end of credal namespace
-} // end of gum namespace
+  }  // end of credal namespace
+}  // end of gum namespace
 
 #include <agrum/CN/LrsWrapper.tcc>
 

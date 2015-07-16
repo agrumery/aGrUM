@@ -56,7 +56,7 @@ namespace gum {
     /**
      * Copy constructor
      */
-    Timer(const Timer &);
+    Timer( const Timer& );
 
     /**
      * Destructor
@@ -73,7 +73,7 @@ namespace gum {
     /**
      * copy operator
      */
-    Timer &operator=(const Timer &);
+    Timer& operator=( const Timer& );
 
     /// @}
 
@@ -120,6 +120,6 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/timer.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
-#endif // GUM_TIMER_H
+#endif  // GUM_TIMER_H

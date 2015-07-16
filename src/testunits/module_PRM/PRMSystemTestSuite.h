@@ -29,382 +29,389 @@
 
 /**
  * This class is used to test gum::prm::ClassElement, since it is an abstrac
- * class, tests defined here should be called by each sub class of 
+ * class, tests defined here should be called by each sub class of
  * gum::prm::ClassElement.
  */
 namespace gum_tests {
 
   class PRMSystemTestSuite : public CxxTest::TestSuite {
     private:
-      typedef gum::prm::System<double> System;
-      typedef gum::prm::Instance<double> Instance;
-      typedef gum::prm::Class<double> Class;
-      typedef gum::prm::Type<double> Type;
-      typedef gum::prm::ScalarAttribute<double> Attribute;
-      typedef gum::prm::ReferenceSlot<double> Reference;
-      typedef gum::prm::SlotChain<double> SlotChain;
+    typedef gum::prm::System<double> System;
+    typedef gum::prm::Instance<double> Instance;
+    typedef gum::prm::Class<double> Class;
+    typedef gum::prm::Type<double> Type;
+    typedef gum::prm::ScalarAttribute<double> Attribute;
+    typedef gum::prm::ReferenceSlot<double> Reference;
+    typedef gum::prm::SlotChain<double> SlotChain;
 
-      Type *__boolean;
-      Class *__asia;
-      gum::HashTable<std::string, gum::NodeId> *__nodeMap;
+    Type* __boolean;
+    Class* __asia;
+    gum::HashTable<std::string, gum::NodeId>* __nodeMap;
 
     public:
+    void setUp() {
+      __boolean = Type::boolean();
+      __nodeMap = new gum::HashTable<std::string, gum::NodeId>();
+      __asia = new Class( "asia" );
+      __buildAsiaBN();
+    }
 
-      void setUp() {
-        __boolean = Type::boolean();
-        __nodeMap = new gum::HashTable<std::string, gum::NodeId>();
-        __asia = new Class("asia");
-        __buildAsiaBN();
-      }
+    void tearDown() {
+      delete __boolean;
+      delete __nodeMap;
+      delete __asia;
+    }
 
-      void tearDown() {
-        delete __boolean;
-        delete __nodeMap;
-        delete __asia;
-      }
+    void __buildAsiaBN() {
+      __visitToAsia();
+      __tuberculosis();
+      __smoking();
+      __lungCancer();
+      __bronchitis();
+      __tubOrCancer();
+      __positiveXRay();
+      __dyspnea();
+    }
 
-      void __buildAsiaBN() {
-        __visitToAsia();
-        __tuberculosis();
-        __smoking();
-        __lungCancer();
-        __bronchitis();
-        __tubOrCancer();
-        __positiveXRay();
-        __dyspnea();
-      }
+    void __visitToAsia() {
+      std::string name = "visitToAsia";
+      auto attr = new Attribute( name, *__boolean );
+      auto id = __asia->add( attr );
+      std::vector<double> values{0.99, 0.01};
+      attr->cpf().fillWith( values );
+      __nodeMap->insert( name, id );
+    }
 
-      void __visitToAsia() {
-        std::string name = "visitToAsia";
-        auto attr = new Attribute(name, *__boolean);
-        auto id = __asia->add( attr );
-        std::vector<double> values { 0.99, 0.01 };
-        attr->cpf().fillWith( values );
-        __nodeMap->insert( name, id );
-      }
+    void __tuberculosis() {
+      std::string name = "tuberculosis";
+      auto attr = new Attribute( name, *__boolean );
+      auto id = __asia->add( attr );
+      __asia->addArc( "visitToAsia", "tuberculosis" );
+      std::vector<double> values{0.99, 0.95, 0.01, 0.05};
+      attr->cpf().fillWith( values );
+      __nodeMap->insert( name, id );
+    }
 
-      void __tuberculosis() {
-        std::string name = "tuberculosis";
-        auto attr = new Attribute(name, *__boolean);
-        auto id = __asia->add( attr );
-        __asia->addArc( "visitToAsia", "tuberculosis" );
-        std::vector<double> values { 0.99, 0.95, 0.01, 0.05 };
-        attr->cpf().fillWith( values );
-        __nodeMap->insert( name, id );
-      }
+    void __smoking() {
+      std::string name = "smoking";
+      auto attr = new Attribute( name, *__boolean );
+      auto id = __asia->add( attr );
+      std::vector<double> values{0.50, 0.50};
+      attr->cpf().fillWith( values );
+      __nodeMap->insert( name, id );
+    }
 
-      void __smoking() {
-        std::string name = "smoking";
-        auto attr = new Attribute(name, *__boolean);
-        auto id = __asia->add( attr );
-        std::vector<double> values { 0.50, 0.50 };
-        attr->cpf().fillWith( values );
-        __nodeMap->insert( name, id );
-      }
+    void __lungCancer() {
+      std::string name = "lungCancer";
+      auto attr = new Attribute( name, *__boolean );
+      auto id = __asia->add( attr );
+      __asia->addArc( "smoking", "lungCancer" );
+      std::vector<double> values{0.99, 0.90, 0.01, 0.10};
+      attr->cpf().fillWith( values );
+      __nodeMap->insert( name, id );
+    }
 
-      void __lungCancer() {
-        std::string name = "lungCancer";
-        auto attr = new Attribute(name, *__boolean);
-        auto id = __asia->add( attr );
-        __asia->addArc( "smoking", "lungCancer" );
-        std::vector<double> values { 0.99, 0.90, 0.01, 0.10 };
-        attr->cpf().fillWith( values );
-        __nodeMap->insert( name, id );
-      }
+    void __bronchitis() {
+      std::string name = "bronchitis";
+      auto attr = new Attribute( name, *__boolean );
+      auto id = __asia->add( attr );
+      __asia->addArc( "smoking", "bronchitis" );
+      std::vector<double> values{0.70, 0.40, 0.30, 0.60};
+      attr->cpf().fillWith( values );
+      __nodeMap->insert( name, id );
+    }
 
-      void __bronchitis() {
-        std::string name = "bronchitis";
-        auto attr = new Attribute(name, *__boolean);
-        auto id = __asia->add( attr );
-        __asia->addArc( "smoking", "bronchitis" );
-        std::vector<double> values { 0.70, 0.40, 0.30, 0.60 };
-        attr->cpf().fillWith( values );
-        __nodeMap->insert( name, id );
-      }
+    void __tubOrCancer() {
+      std::string name = "tubOrCancer";
+      auto attr = new Attribute( name, *__boolean );
+      auto id = __asia->add( attr );
+      __asia->addArc( "tuberculosis", "tubOrCancer" );
+      __asia->addArc( "lungCancer", "tubOrCancer" );
+      std::vector<double> values{1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
+      attr->cpf().fillWith( values );
+      __nodeMap->insert( name, id );
+    }
 
-      void __tubOrCancer() {
-        std::string name = "tubOrCancer";
-        auto attr = new Attribute(name, *__boolean);
-        auto id = __asia->add( attr );
-        __asia->addArc( "tuberculosis", "tubOrCancer" );
-        __asia->addArc( "lungCancer", "tubOrCancer" );
-        std::vector<double> values { 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0 };
-        attr->cpf().fillWith( values );
-        __nodeMap->insert( name, id );
-      }
+    void __positiveXRay() {
+      std::string name = "positiveXRay";
+      auto attr = new Attribute( name, *__boolean );
+      auto id = __asia->add( attr );
+      __asia->addArc( "tubOrCancer", "positiveXRay" );
+      std::vector<double> values{0.95, 0.02, 0.05, 0.98};
+      attr->cpf().fillWith( values );
+      __nodeMap->insert( name, id );
+    }
 
-      void __positiveXRay() {
-        std::string name = "positiveXRay";
-        auto attr = new Attribute(name, *__boolean);
-        auto id = __asia->add( attr );
-        __asia->addArc( "tubOrCancer", "positiveXRay" );
-        std::vector<double> values { 0.95, 0.02, 0.05, 0.98 };
-        attr->cpf().fillWith( values );
-        __nodeMap->insert( name, id );
-      }
+    void __dyspnea() {
+      std::string name = "dyspnea";
+      auto attr = new Attribute( name, *__boolean );
+      auto id = __asia->add( attr );
+      __asia->addArc( "tubOrCancer", "dyspnea" );
+      __asia->addArc( "bronchitis", "dyspnea" );
+      std::vector<double> values{0.9, 0.2, 0.3, 0.1, 0.1, 0.8, 0.7, 0.9};
+      attr->cpf().fillWith( values );
+      __nodeMap->insert( name, id );
+    }
 
-      void __dyspnea() {
-        std::string name = "dyspnea";
-        auto attr = new Attribute(name, *__boolean);
-        auto id = __asia->add( attr );
-        __asia->addArc( "tubOrCancer", "dyspnea" );
-        __asia->addArc( "bronchitis", "dyspnea" );
-        std::vector<double> values { 0.9, 0.2, 0.3, 0.1, 0.1, 0.8, 0.7, 0.9 };
-        attr->cpf().fillWith( values );
-        __nodeMap->insert( name, id );
-      }
+    void testClassConstruction() {
+      TS_ASSERT_EQUALS( __asia->attributes().size(), (gum::Size)8 );
+    }
 
-      void testClassConstruction() {
-        TS_ASSERT_EQUALS( __asia->attributes().size(), (gum::Size) 8);
-      }
+    void testAddInstance() {
+      // Arrange
+      System sys( "asia" );
+      auto inst = new Instance( "asia", *__asia );
+      // Act
+      TS_ASSERT_THROWS_NOTHING( sys.add( inst ) );
+      // Assert
+      TS_ASSERT( sys.exists( "asia" ) );
+      TS_ASSERT( sys.isInstantiated( *__asia ) );
+      TS_ASSERT_EQUALS( sys.size(), (gum::Size)1 );
+    }
 
-      void testAddInstance() {
-        // Arrange
-        System sys("asia");
-        auto inst = new Instance("asia", *__asia);
-        // Act
-        TS_ASSERT_THROWS_NOTHING( sys.add( inst ) );
-        // Assert
-        TS_ASSERT( sys.exists( "asia" ) );
-        TS_ASSERT( sys.isInstantiated( *__asia ) );
-        TS_ASSERT_EQUALS( sys.size(), (gum::Size) 1 );
-      }
+    void testInstatiate() {
+      // Arrange
+      System sys( "asia" );
+      auto inst = new Instance( "asia", *__asia );
+      sys.add( inst );
+      // Act
+      TS_ASSERT_THROWS_NOTHING( sys.instantiate() );
+      // Assert
+      TS_ASSERT( sys.exists( "asia" ) );
+      TS_ASSERT( sys.isInstantiated( *__asia ) );
+      TS_ASSERT_EQUALS( sys.size(), (gum::Size)1 );
+    }
 
-      void testInstatiate() {
-        // Arrange
-        System sys("asia");
-        auto inst = new Instance("asia", *__asia);
-        sys.add( inst );
-        // Act
-        TS_ASSERT_THROWS_NOTHING( sys.instantiate() );
-        // Assert
-        TS_ASSERT( sys.exists( "asia" ) );
-        TS_ASSERT( sys.isInstantiated( *__asia ) );
-        TS_ASSERT_EQUALS( sys.size(), (gum::Size) 1 );
-      }
+    void testGroundBN() {
+      // Arrange
+      System sys( "asia" );
+      auto inst = new Instance( "asia", *__asia );
+      sys.add( inst );
+      sys.instantiate();
+      auto bn = new gum::BayesNet<double>( "asia" );
+      gum::BayesNetFactory<double> factory( bn );
+      // Act
+      TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
+      // Assert
+      TS_ASSERT_EQUALS( bn->size(), (gum::Size)8 );
+      TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size)8 );
+      delete bn;
+    }
 
-      void testGroundBN() {
-        // Arrange
-        System sys("asia");
-        auto inst = new Instance("asia", *__asia);
-        sys.add( inst );
-        sys.instantiate();
-        auto bn = new gum::BayesNet<double>("asia");
-        gum::BayesNetFactory<double> factory( bn );
-        // Act
-        TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
-        // Assert
-        TS_ASSERT_EQUALS( bn->size(), (gum::Size) 8 );
-        TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size) 8 );
-        delete bn;
-      }
+    void testVisitToAsiaId() {
+      // Arrange
+      System sys( "asia" );
+      auto inst = new Instance( "asia", *__asia );
+      sys.add( inst );
+      sys.instantiate();
+      auto bn = new gum::BayesNet<double>( "asia" );
+      gum::BayesNetFactory<double> factory( bn );
+      sys.groundedBN( factory );
+      // Act
+      TS_ASSERT_THROWS_NOTHING( bn->idFromName( "asia.(boolean)visitToAsia" ) );
+      // Assert
+      delete bn;
+    }
 
-      void testVisitToAsiaId() {
-        // Arrange
-        System sys("asia");
-        auto inst = new Instance("asia", *__asia);
-        sys.add( inst );
-        sys.instantiate();
-        auto bn = new gum::BayesNet<double>("asia");
-        gum::BayesNetFactory<double> factory( bn );
-        sys.groundedBN( factory );
-        // Act
-        TS_ASSERT_THROWS_NOTHING( bn->idFromName( "asia.(boolean)visitToAsia" ) );
-        // Assert
-        delete bn;
+    void testVisitToAsia() {
+      // Arrange
+      System sys( "asia" );
+      auto inst = new Instance( "asia", *__asia );
+      sys.add( inst );
+      sys.instantiate();
+      auto bn = new gum::BayesNet<double>( "asia" );
+      gum::BayesNetFactory<double> factory( bn );
+      sys.groundedBN( factory );
+      auto id = bn->idFromName( "asia.(boolean)visitToAsia" );
+      std::vector<double> values;
+      const auto& cpf = __asia->get( "visitToAsia" ).cpf();
+      gum::Potential<double> const* cpt = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( cpt = &( bn->cpt( id ) ) );
+      // Assert
+      gum::Instantiation i( cpf );
+      gum::Instantiation j( cpt );
+      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+            i.inc(), j.inc() ) {
+        TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
+      delete bn;
+    }
 
-      void testVisitToAsia() {
-        // Arrange
-        System sys("asia");
-        auto inst = new Instance("asia", *__asia);
-        sys.add( inst );
-        sys.instantiate();
-        auto bn = new gum::BayesNet<double>("asia");
-        gum::BayesNetFactory<double> factory( bn );
-        sys.groundedBN( factory );
-        auto id = bn->idFromName( "asia.(boolean)visitToAsia" );
-        std::vector<double> values;
-        const auto &cpf = __asia->get( "visitToAsia" ).cpf();
-        gum::Potential<double> const  *cpt = nullptr;
-        // Act
-        TS_ASSERT_THROWS_NOTHING( cpt = &(bn->cpt( id )) );
-        // Assert
-        gum::Instantiation i(cpf);
-        gum::Instantiation j(cpt);
-        for (i.begin(), j.begin(); not (i.end() or j.end()); i.inc(), j.inc()) {
-          TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
-        }
-        delete bn;
+    void testTuberculosis() {
+      // Arrange
+      System sys( "asia" );
+      auto inst = new Instance( "asia", *__asia );
+      sys.add( inst );
+      sys.instantiate();
+      auto bn = new gum::BayesNet<double>( "asia" );
+      gum::BayesNetFactory<double> factory( bn );
+      sys.groundedBN( factory );
+      auto id = bn->idFromName( "asia.(boolean)tuberculosis" );
+      std::vector<double> values;
+      const auto& cpf = __asia->get( "tuberculosis" ).cpf();
+      gum::Potential<double> const* cpt = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( cpt = &( bn->cpt( id ) ) );
+      // Assert
+      gum::Instantiation i( cpf );
+      gum::Instantiation j( cpt );
+      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+            i.inc(), j.inc() ) {
+        TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
+      delete bn;
+    }
 
-      void testTuberculosis() {
-        // Arrange
-        System sys("asia");
-        auto inst = new Instance("asia", *__asia);
-        sys.add( inst );
-        sys.instantiate();
-        auto bn = new gum::BayesNet<double>("asia");
-        gum::BayesNetFactory<double> factory( bn );
-        sys.groundedBN( factory );
-        auto id = bn->idFromName( "asia.(boolean)tuberculosis" );
-        std::vector<double> values;
-        const auto &cpf = __asia->get( "tuberculosis" ).cpf();
-        gum::Potential<double> const  *cpt = nullptr;
-        // Act
-        TS_ASSERT_THROWS_NOTHING( cpt = &(bn->cpt( id )) );
-        // Assert
-        gum::Instantiation i(cpf);
-        gum::Instantiation j(cpt);
-        for (i.begin(), j.begin(); not (i.end() or j.end()); i.inc(), j.inc()) {
-          TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
-        }
-        delete bn;
+    void testSmoking() {
+      // Arrange
+      System sys( "asia" );
+      auto inst = new Instance( "asia", *__asia );
+      sys.add( inst );
+      sys.instantiate();
+      auto bn = new gum::BayesNet<double>( "asia" );
+      gum::BayesNetFactory<double> factory( bn );
+      sys.groundedBN( factory );
+      auto id = bn->idFromName( "asia.(boolean)smoking" );
+      std::vector<double> values;
+      const auto& cpf = __asia->get( "smoking" ).cpf();
+      gum::Potential<double> const* cpt = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( cpt = &( bn->cpt( id ) ) );
+      // Assert
+      gum::Instantiation i( cpf );
+      gum::Instantiation j( cpt );
+      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+            i.inc(), j.inc() ) {
+        TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
+      delete bn;
+    }
 
-      void testSmoking() {
-        // Arrange
-        System sys("asia");
-        auto inst = new Instance("asia", *__asia);
-        sys.add( inst );
-        sys.instantiate();
-        auto bn = new gum::BayesNet<double>("asia");
-        gum::BayesNetFactory<double> factory( bn );
-        sys.groundedBN( factory );
-        auto id = bn->idFromName( "asia.(boolean)smoking" );
-        std::vector<double> values;
-        const auto &cpf = __asia->get( "smoking" ).cpf();
-        gum::Potential<double> const  *cpt = nullptr;
-        // Act
-        TS_ASSERT_THROWS_NOTHING( cpt = &(bn->cpt( id )) );
-        // Assert
-        gum::Instantiation i(cpf);
-        gum::Instantiation j(cpt);
-        for (i.begin(), j.begin(); not (i.end() or j.end()); i.inc(), j.inc()) {
-          TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
-        }
-        delete bn;
+    void testLungCancer() {
+      // Arrange
+      System sys( "asia" );
+      auto inst = new Instance( "asia", *__asia );
+      sys.add( inst );
+      sys.instantiate();
+      auto bn = new gum::BayesNet<double>( "asia" );
+      gum::BayesNetFactory<double> factory( bn );
+      sys.groundedBN( factory );
+      auto id = bn->idFromName( "asia.(boolean)lungCancer" );
+      std::vector<double> values;
+      const auto& cpf = __asia->get( "lungCancer" ).cpf();
+      gum::Potential<double> const* cpt = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( cpt = &( bn->cpt( id ) ) );
+      // Assert
+      gum::Instantiation i( cpf );
+      gum::Instantiation j( cpt );
+      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+            i.inc(), j.inc() ) {
+        TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
+      delete bn;
+    }
 
-      void testLungCancer() {
-        // Arrange
-        System sys("asia");
-        auto inst = new Instance("asia", *__asia);
-        sys.add( inst );
-        sys.instantiate();
-        auto bn = new gum::BayesNet<double>("asia");
-        gum::BayesNetFactory<double> factory( bn );
-        sys.groundedBN( factory );
-        auto id = bn->idFromName( "asia.(boolean)lungCancer" );
-        std::vector<double> values;
-        const auto &cpf = __asia->get( "lungCancer" ).cpf();
-        gum::Potential<double> const  *cpt = nullptr;
-        // Act
-        TS_ASSERT_THROWS_NOTHING( cpt = &(bn->cpt( id )) );
-        // Assert
-        gum::Instantiation i(cpf);
-        gum::Instantiation j(cpt);
-        for (i.begin(), j.begin(); not (i.end() or j.end()); i.inc(), j.inc()) {
-          TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
-        }
-        delete bn;
+    void testBronchitis() {
+      // Arrange
+      System sys( "asia" );
+      auto inst = new Instance( "asia", *__asia );
+      sys.add( inst );
+      sys.instantiate();
+      auto bn = new gum::BayesNet<double>( "asia" );
+      gum::BayesNetFactory<double> factory( bn );
+      sys.groundedBN( factory );
+      auto id = bn->idFromName( "asia.(boolean)bronchitis" );
+      std::vector<double> values;
+      const auto& cpf = __asia->get( "bronchitis" ).cpf();
+      gum::Potential<double> const* cpt = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( cpt = &( bn->cpt( id ) ) );
+      // Assert
+      gum::Instantiation i( cpf );
+      gum::Instantiation j( cpt );
+      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+            i.inc(), j.inc() ) {
+        TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
+      delete bn;
+    }
 
-      void testBronchitis() {
-        // Arrange
-        System sys("asia");
-        auto inst = new Instance("asia", *__asia);
-        sys.add( inst );
-        sys.instantiate();
-        auto bn = new gum::BayesNet<double>("asia");
-        gum::BayesNetFactory<double> factory( bn );
-        sys.groundedBN( factory );
-        auto id = bn->idFromName( "asia.(boolean)bronchitis" );
-        std::vector<double> values;
-        const auto &cpf = __asia->get( "bronchitis" ).cpf();
-        gum::Potential<double> const  *cpt = nullptr;
-        // Act
-        TS_ASSERT_THROWS_NOTHING( cpt = &(bn->cpt( id )) );
-        // Assert
-        gum::Instantiation i(cpf);
-        gum::Instantiation j(cpt);
-        for (i.begin(), j.begin(); not (i.end() or j.end()); i.inc(), j.inc()) {
-          TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
-        }
-        delete bn;
+    void testTubOrCancer() {
+      // Arrange
+      System sys( "asia" );
+      auto inst = new Instance( "asia", *__asia );
+      sys.add( inst );
+      sys.instantiate();
+      auto bn = new gum::BayesNet<double>( "asia" );
+      gum::BayesNetFactory<double> factory( bn );
+      sys.groundedBN( factory );
+      auto id = bn->idFromName( "asia.(boolean)tubOrCancer" );
+      std::vector<double> values;
+      const auto& cpf = __asia->get( "tubOrCancer" ).cpf();
+      gum::Potential<double> const* cpt = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( cpt = &( bn->cpt( id ) ) );
+      // Assert
+      gum::Instantiation i( cpf );
+      gum::Instantiation j( cpt );
+      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+            i.inc(), j.inc() ) {
+        TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
+      delete bn;
+    }
 
-      void testTubOrCancer() {
-        // Arrange
-        System sys("asia");
-        auto inst = new Instance("asia", *__asia);
-        sys.add( inst );
-        sys.instantiate();
-        auto bn = new gum::BayesNet<double>("asia");
-        gum::BayesNetFactory<double> factory( bn );
-        sys.groundedBN( factory );
-        auto id = bn->idFromName( "asia.(boolean)tubOrCancer" );
-        std::vector<double> values;
-        const auto &cpf = __asia->get( "tubOrCancer" ).cpf();
-        gum::Potential<double> const  *cpt = nullptr;
-        // Act
-        TS_ASSERT_THROWS_NOTHING( cpt = &(bn->cpt( id )) );
-        // Assert
-        gum::Instantiation i(cpf);
-        gum::Instantiation j(cpt);
-        for (i.begin(), j.begin(); not (i.end() or j.end()); i.inc(), j.inc()) {
-          TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
-        }
-        delete bn;
+    void testPositiveXRay() {
+      // Arrange
+      System sys( "asia" );
+      auto inst = new Instance( "asia", *__asia );
+      sys.add( inst );
+      sys.instantiate();
+      auto bn = new gum::BayesNet<double>( "asia" );
+      gum::BayesNetFactory<double> factory( bn );
+      sys.groundedBN( factory );
+      auto id = bn->idFromName( "asia.(boolean)positiveXRay" );
+      std::vector<double> values;
+      const auto& cpf = __asia->get( "positiveXRay" ).cpf();
+      gum::Potential<double> const* cpt = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( cpt = &( bn->cpt( id ) ) );
+      // Assert
+      gum::Instantiation i( cpf );
+      gum::Instantiation j( cpt );
+      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+            i.inc(), j.inc() ) {
+        TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
+      delete bn;
+    }
 
-      void testPositiveXRay() {
-        // Arrange
-        System sys("asia");
-        auto inst = new Instance("asia", *__asia);
-        sys.add( inst );
-        sys.instantiate();
-        auto bn = new gum::BayesNet<double>("asia");
-        gum::BayesNetFactory<double> factory( bn );
-        sys.groundedBN( factory );
-        auto id = bn->idFromName( "asia.(boolean)positiveXRay" );
-        std::vector<double> values;
-        const auto &cpf = __asia->get( "positiveXRay" ).cpf();
-        gum::Potential<double> const  *cpt = nullptr;
-        // Act
-        TS_ASSERT_THROWS_NOTHING( cpt = &(bn->cpt( id )) );
-        // Assert
-        gum::Instantiation i(cpf);
-        gum::Instantiation j(cpt);
-        for (i.begin(), j.begin(); not (i.end() or j.end()); i.inc(), j.inc()) {
-          TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
-        }
-        delete bn;
+    void testDyspnea() {
+      // Arrange
+      System sys( "asia" );
+      auto inst = new Instance( "asia", *__asia );
+      sys.add( inst );
+      sys.instantiate();
+      auto bn = new gum::BayesNet<double>( "asia" );
+      gum::BayesNetFactory<double> factory( bn );
+      sys.groundedBN( factory );
+      auto id = bn->idFromName( "asia.(boolean)dyspnea" );
+      std::vector<double> values;
+      const auto& cpf = __asia->get( "dyspnea" ).cpf();
+      gum::Potential<double> const* cpt = nullptr;
+      // Act
+      TS_ASSERT_THROWS_NOTHING( cpt = &( bn->cpt( id ) ) );
+      // Assert
+      gum::Instantiation i( cpf );
+      gum::Instantiation j( cpt );
+      for ( i.begin(), j.begin(); not( i.end() or j.end() );
+            i.inc(), j.inc() ) {
+        TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
       }
-
-      void testDyspnea() {
-        // Arrange
-        System sys("asia");
-        auto inst = new Instance("asia", *__asia);
-        sys.add( inst );
-        sys.instantiate();
-        auto bn = new gum::BayesNet<double>("asia");
-        gum::BayesNetFactory<double> factory( bn );
-        sys.groundedBN( factory );
-        auto id = bn->idFromName( "asia.(boolean)dyspnea" );
-        std::vector<double> values;
-        const auto &cpf = __asia->get( "dyspnea" ).cpf();
-        gum::Potential<double> const  *cpt = nullptr;
-        // Act
-        TS_ASSERT_THROWS_NOTHING( cpt = &(bn->cpt( id )) );
-        // Assert
-        gum::Instantiation i(cpf);
-        gum::Instantiation j(cpt);
-        for (i.begin(), j.begin(); not (i.end() or j.end()); i.inc(), j.inc()) {
-          TS_ASSERT_EQUALS( cpf.get( i ), cpt->get( j ) );
-        }
-        delete bn;
-      }
+      delete bn;
+    }
   };
 
-} // gum_tests
+}  // gum_tests

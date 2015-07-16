@@ -28,13 +28,13 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/PRM/gspan/edgeCode.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
 namespace gum {
   namespace prm {
     namespace gspan {
 
-      std::ostream &operator<<(std::ostream &out, const EdgeCode &code) {
+      std::ostream& operator<<( std::ostream& out, const EdgeCode& code ) {
         out << "(" << code.i << ", " << code.j << ", " << code.l_i << ", ";
         out << code.l_ij << ", " << code.l_j << ")";
         return out;

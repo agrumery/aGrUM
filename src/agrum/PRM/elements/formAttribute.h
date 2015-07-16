@@ -38,90 +38,95 @@ namespace gum {
      * @class FormAttribute formAttribute.h <agrum/PRM/elements/formAttribute.h>
      * @brief FormAttribute is a member of a Class in a PRM.
      *
-     * @see PRM PRMFactory Class ClassElement Type<GUM_SCALAR> Potential Attribute
+     * @see PRM PRMFactory Class ClassElement Type<GUM_SCALAR> Potential
+     *Attribute
      * @ingroup prm_group
      */
-    template<typename GUM_SCALAR>
-    class FormAttribute: public Attribute<GUM_SCALAR> {
+    template <typename GUM_SCALAR>
+    class FormAttribute : public Attribute<GUM_SCALAR> {
       public:
+      FormAttribute( const Class<GUM_SCALAR>& c, const std::string& name,
+                     const Type<GUM_SCALAR>& type,
+                     MultiDimImplementation<std::string>* impl =
+                         new MultiDimArray<std::string>() );
 
-        FormAttribute( const Class<GUM_SCALAR>& c,
-                       const std::string & name,
-                       const Type<GUM_SCALAR> & type,
-                       MultiDimImplementation<std::string>* impl = new MultiDimArray<std::string>() );
-  
-        virtual ~FormAttribute();
-        
-        /// See gum::prm::Attribute.
-        virtual Attribute<GUM_SCALAR>* newFactory(const Class<GUM_SCALAR>& c) const;
+      virtual ~FormAttribute();
 
-        /// See gum::prm::Attribute.
-        virtual Attribute<GUM_SCALAR>* copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij ) const;
+      /// See gum::prm::Attribute.
+      virtual Attribute<GUM_SCALAR>*
+      newFactory( const Class<GUM_SCALAR>& c ) const;
 
-        /// See gum::prm::Attribute.
-        virtual void copyCpf( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bif,
-                              const Attribute<GUM_SCALAR> & source);
+      /// See gum::prm::Attribute.
+      virtual Attribute<GUM_SCALAR>*
+      copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij )
+          const;
 
-        /// See gum::prm::Attribute.
-        virtual typename ClassElement<GUM_SCALAR>::ClassElementType elt_type() const;
+      /// See gum::prm::Attribute.
+      virtual void copyCpf( const Bijection<const DiscreteVariable*,
+                                            const DiscreteVariable*>& bif,
+                            const Attribute<GUM_SCALAR>& source );
 
-        /// See gum::prm::Attribute.
-        virtual Type<GUM_SCALAR>& type();
+      /// See gum::prm::Attribute.
+      virtual typename ClassElement<GUM_SCALAR>::ClassElementType
+      elt_type() const;
 
-        /// See gum::prm::Attribute.
-        virtual const Type<GUM_SCALAR>& type() const;
+      /// See gum::prm::Attribute.
+      virtual Type<GUM_SCALAR>& type();
 
-        /// See gum::prm::Attribute.
-        virtual const Potential<GUM_SCALAR>& cpf() const;
+      /// See gum::prm::Attribute.
+      virtual const Type<GUM_SCALAR>& type() const;
 
-        /// See gum::prm::Attribute.
-        virtual void addParent ( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::prm::Attribute.
+      virtual const Potential<GUM_SCALAR>& cpf() const;
 
-        /// See gum::prm::Attribute.
-        virtual void addChild ( const ClassElement<GUM_SCALAR>& elt );
+      /// See gum::prm::Attribute.
+      virtual void addParent( const ClassElement<GUM_SCALAR>& elt );
 
-        /// See gum::prm::Attribute.
-        virtual Attribute<GUM_SCALAR>* getCastDescendant() const;
+      /// See gum::prm::Attribute.
+      virtual void addChild( const ClassElement<GUM_SCALAR>& elt );
 
-        /// See gum::prm::Attribute.
-        virtual void setAsCastDescendant ( Attribute<GUM_SCALAR>* attr );
-        virtual void becomeCastDescendant( Type<GUM_SCALAR> &subtype );
+      /// See gum::prm::Attribute.
+      virtual Attribute<GUM_SCALAR>* getCastDescendant() const;
 
-        virtual MultiDimImplementation< std::string > & formulas();
-        virtual const MultiDimImplementation< std::string > & formulas() const;
+      /// See gum::prm::Attribute.
+      virtual void setAsCastDescendant( Attribute<GUM_SCALAR>* attr );
+      virtual void becomeCastDescendant( Type<GUM_SCALAR>& subtype );
 
-        /// Swap old_type with new_type in the ClassElement cpt.
-        virtual void swap(const Type<GUM_SCALAR>& old_type, const Type<GUM_SCALAR>& new_type);
+      virtual MultiDimImplementation<std::string>& formulas();
+      virtual const MultiDimImplementation<std::string>& formulas() const;
+
+      /// Swap old_type with new_type in the ClassElement cpt.
+      virtual void swap( const Type<GUM_SCALAR>& old_type,
+                         const Type<GUM_SCALAR>& new_type );
 
       protected:
-        virtual Type<GUM_SCALAR>* _type();
-        virtual void _type( Type<GUM_SCALAR>* t );
+      virtual Type<GUM_SCALAR>* _type();
+      virtual void _type( Type<GUM_SCALAR>* t );
 
       private:
-        FormAttribute( const FormAttribute& source);
-        FormAttribute& operator=(const FormAttribute& source);
+      FormAttribute( const FormAttribute& source );
+      FormAttribute& operator=( const FormAttribute& source );
 
-        /// The random variable type of this attribute
-        Type<GUM_SCALAR>* __type;
+      /// The random variable type of this attribute
+      Type<GUM_SCALAR>* __type;
 
-        /// A pointer on the Potential of this attribute
-        mutable Potential<GUM_SCALAR>* __cpf;
-    
-        /// A pointer on the Potential of this attribute
-        MultiDimImplementation<std::string>* __formulas;
+      /// A pointer on the Potential of this attribute
+      mutable Potential<GUM_SCALAR>* __cpf;
 
-        /// A pointe toward the class of this attribute
-        const Class<GUM_SCALAR> * __class;
+      /// A pointer on the Potential of this attribute
+      MultiDimImplementation<std::string>* __formulas;
 
-        void __fillCpf() const;
+      /// A pointe toward the class of this attribute
+      const Class<GUM_SCALAR>* __class;
+
+      void __fillCpf() const;
     };
 
     extern template class FormAttribute<double>;
 
   } /* namespace prm */
-} // namespace gum
+}  // namespace gum
 
 #include <agrum/PRM/elements/formAttribute.tcc>
 
 #endif /* GUM_ATTRIBUTE_H */
-

@@ -29,12 +29,12 @@ namespace gum {
 
   // Default constructor.
   template <typename GUM_SCALAR> ICPTGenerator<GUM_SCALAR>::ICPTGenerator() {
-    GUM_CONSTRUCTOR(ICPTGenerator);
+    GUM_CONSTRUCTOR( ICPTGenerator );
   }
 
   // Destructor.
   template <typename GUM_SCALAR> ICPTGenerator<GUM_SCALAR>::~ICPTGenerator() {
-    GUM_DESTRUCTOR(ICPTGenerator);
+    GUM_DESTRUCTOR( ICPTGenerator );
   }
 
 } /* namespace gum */

@@ -20,7 +20,8 @@
 /** @file
  * @brief min aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+*<{prenom.nom}_at_lip6.fr>
  */
 #ifndef GUM_MIN_AGGREGATOR_H
 #define GUM_MIN_AGGREGATOR_H
@@ -53,7 +54,7 @@ namespace gum {
     class Min : public MultiDimAggregator<GUM_SCALAR> {
       public:
       Min();
-      Min(const Min<GUM_SCALAR> &from);
+      Min( const Min<GUM_SCALAR>& from );
       virtual ~Min();
 
       /**
@@ -69,21 +70,21 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<GUM_SCALAR> *newFactory() const;
+      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
-      virtual std::string aggregatorName(void) const;
+      virtual std::string aggregatorName( void ) const;
 
       protected:
-      virtual Idx _neutralElt(void) const;
-      virtual Idx _folder(const DiscreteVariable &v, Idx i1, Idx i2,
-                          bool &stop_iteration) const;
+      virtual Idx _neutralElt( void ) const;
+      virtual Idx _folder( const DiscreteVariable& v, Idx i1, Idx i2,
+                           bool& stop_iteration ) const;
     };
 
     extern template class Min<float>;
     extern template class Min<double>;
-  } // aggregator
-} // gum
+  }  // aggregator
+}  // gum
 
 #include <agrum/multidim/aggregators/min.tcc>
 
-#endif // GUM_MIN_AGGREGATOR_H
+#endif  // GUM_MIN_AGGREGATOR_H
