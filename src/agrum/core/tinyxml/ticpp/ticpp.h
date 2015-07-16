@@ -985,7 +985,7 @@ It will take care of the conversion and throwing the exception.
     @endcode
     @return Pointer the duplicate node.
     */
-    std::auto_ptr<Node> Clone() const;
+    std::unique_ptr<Node> Clone() const;
 
     /**
     Accept a hierchical visit the nodes in the TinyXML DOM.
