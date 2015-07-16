@@ -35,9 +35,6 @@ namespace gum {
       Pattern::~Pattern() { GUM_DESTRUCTOR(Pattern); }
 
       INLINE
-      NodeId Pattern::insertNode(LabelData &l) { return addNode(l); }
-
-      INLINE
       NodeId Pattern::addNode(LabelData &l) {
         DiGraph::addNode(size() + 1);
         __node_map.insert(size(), &l);
@@ -114,9 +111,6 @@ namespace gum {
           GUM_ERROR(NotFound, "arc not found in this Pattern");
         }
       }
-
-      INLINE
-      void Pattern::insertArc(NodeId i, NodeId j, LabelData &l) { addArc(i, j, l); }
 
       INLINE
       void Pattern::addArc(NodeId i, NodeId j, LabelData &l) {

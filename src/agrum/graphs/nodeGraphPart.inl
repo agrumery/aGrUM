@@ -241,7 +241,6 @@ namespace gum {
   // function addNode(): as both functions are virtual, this may create
   // bugs within the graphs hierarchy (i.e., virtual functions calling recursively
   // each other along the hierarchy) that are not easy to debug.
-  INLINE NodeId NodeGraphPart::insertNode() { return addNode(); }
   INLINE NodeId NodeGraphPart::addNode() {
     NodeId newNode;
 

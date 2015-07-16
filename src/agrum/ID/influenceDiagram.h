@@ -291,17 +291,6 @@ namespace gum {
     void addArc(NodeId tail, NodeId head);
 
     /**
-     * Add an arc in the ID, and update diagram's potential nodes cpt if necessary.
-     *
-     * @param head and
-     * @param tail as NodeId
-     * @throw InvalidEdge If arc.tail and/or arc.head are not in the ID.
-     * @throw InvalidEdge if tail is a utility node
-     * @deprecated This function has been deprecated. Please use @ref addArc instead
-     */
-    GUM_DEPRECATED(void insertArc(NodeId tail, NodeId head));
-
-    /**
      * Removes an arc in the ID, and update diagram's potential nodes cpt if
      *necessary.
      *

@@ -240,8 +240,8 @@ namespace gum {
         std::vector<NodeId> degree_list;
         NodeProperty<Sequence<Instance<GUM_SCALAR> *> *> &p_iso_map =
             __data[&p]->iso_map;
-        typename Property<std::pair<Instance<GUM_SCALAR> *,
-                                    Instance<GUM_SCALAR> *>>::onNodes::iterator_safe
+        typename NodeProperty<std::pair<Instance<GUM_SCALAR> *,
+                                    Instance<GUM_SCALAR> *>>::iterator_safe
             match;
         // Using p information to build child's isomorphism graph
         NodeId id = 0;

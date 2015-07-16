@@ -29,9 +29,6 @@
 
 namespace gum {
 
-  INLINE void DiGraph::insertArc(const NodeId tail, const NodeId head) {
-    addArc(tail, head);
-  }
   INLINE void DiGraph::addArc(const NodeId tail, const NodeId head) {
     if (!exists(head)) {
       GUM_ERROR(InvalidNode, "head node");

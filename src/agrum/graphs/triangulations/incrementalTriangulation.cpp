@@ -159,10 +159,6 @@ namespace gum {
 
   /// adds a new node to the graph (and update the internal structures)
 
-  void IncrementalTriangulation::insertNode(const NodeId node, Size modal) {
-    addNode(node, modal);
-  }
-
   void IncrementalTriangulation::addNode(const NodeId node, Size modal) {
     // check if the node already exists
     if (__graph.existsNode(node))
@@ -412,10 +408,6 @@ namespace gum {
   }
 
   /// adds a new edge to the graph (the join tree may need a triangulation update)
-  void IncrementalTriangulation::insertEdge(const NodeId X, const NodeId Y) {
-    addEdge(X, Y);
-  }
-
   void IncrementalTriangulation::addEdge(const NodeId X, const NodeId Y) {
     // check that the edge exist
     if ((X == Y) || !__graph.existsNode(X) || !__graph.existsNode(Y) ||

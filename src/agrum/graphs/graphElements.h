@@ -527,21 +527,7 @@ namespace gum {
   /** \ingroup graph_group
    * @{
    * @brief Property on graph elements
-   *
-   * @{
-   * @deprecated C++11 allows now partial specification of template using "using".
-   *The
-   * old definitions Property VAL::onNodes are now obsolete. Please use NodeProperty
-   *VAL
    **/
-
-  template <class VAL> struct Property {
-    typedef HashTable<NodeId, VAL> GUM_DEPRECATED(onNodes);
-    typedef HashTable<Edge, VAL> GUM_DEPRECATED(onEdges);
-    typedef HashTable<Arc, VAL> GUM_DEPRECATED(onArcs);
-  };
-  /// @}
-
   template <class VAL> using NodeProperty = HashTable<NodeId, VAL>;
   template <class VAL> using EdgeProperty = HashTable<Edge, VAL>;
   template <class VAL> using ArcProperty = HashTable<Arc, VAL>;

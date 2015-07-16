@@ -304,8 +304,6 @@ namespace gum {
   }
 
   /// adds a new arc to the current DAG
-  void DAGCycleDetector::insertArc(NodeId tail, NodeId head) { addArc(tail, head); }
-  /// adds a new arc to the current DAG
   void DAGCycleDetector::addArc(NodeId tail, NodeId head) {
     // check that the arc does not already exist
     if (__dag.existsArc(tail, head))

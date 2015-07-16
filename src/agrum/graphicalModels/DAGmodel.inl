@@ -64,26 +64,6 @@ namespace gum {
   const DAG &DAGmodel::dag() const { return _dag; }
 
   INLINE
-  const DAG::NodeIterator DAGmodel::beginNodes() const { // deprecated
-    return dag().begin();
-  }
-
-  INLINE
-  const DAG::NodeIterator DAGmodel::endNodes() const { // deprecated
-    return dag().end();
-  }
-
-  INLINE
-  const DAG::ArcIterator DAGmodel::beginArcs() const { // deprecated
-    return dag().arcs().begin();
-  }
-
-  INLINE
-  const DAG::ArcIterator &DAGmodel::endArcs() const { // deprecated
-    return dag().arcs().end();
-  }
-
-  INLINE
   HashTable<std::string, std::string> &DAGmodel::__properties() const {
     if (__propertiesMap == nullptr) {
       __propertiesMap = new HashTable<std::string, std::string>();
@@ -119,9 +99,6 @@ namespace gum {
 
   INLINE
   Size DAGmodel::sizeArcs() const { return _dag.sizeArcs(); }
-
-  INLINE
-  Size DAGmodel::nbrArcs() const { return _dag.sizeArcs(); }
 
   INLINE const ArcSet &DAGmodel::arcs() const { return _dag.arcs(); }
 

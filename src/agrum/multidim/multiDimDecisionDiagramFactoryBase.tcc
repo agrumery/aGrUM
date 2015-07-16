@@ -355,13 +355,6 @@ namespace gum {
   //*****************************************************************************/
 
   template <typename GUM_SCALAR>
-  void MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>::insertArc(NodeId from,
-                                                                 NodeId to,
-                                                                 Idx value) {
-    addArc(from, to, value);
-  }
-
-  template <typename GUM_SCALAR>
   void MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>::addArc(NodeId from, NodeId to,
                                                               Idx value) {
 
@@ -403,19 +396,6 @@ namespace gum {
       }
 
     unsafeAddArc(from, to, value);
-  }
-
-  // Adds a default arc in the DD
-  // @param from and
-  // @param to as NodeId
-  // @throw NotFound If from and/or tail are not in the DD.
-  // @throw InvalidNode if head is a terminal node
-  // @throw OperationNotAllowed arc doesn't respect variable order property
-  // @throw DuplicateElement if another arc linking those nodes already exists
-  template <typename GUM_SCALAR>
-  void MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>::insertDefaultArc(NodeId from,
-                                                                        NodeId to) {
-    addDefaultArc(from, to);
   }
 
   template <typename GUM_SCALAR>
@@ -1056,12 +1036,6 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>::unsafeInsertArc(
-      NodeId from, NodeId to, Idx value) {
-    unsafeAddArc(from, to, value);
-  }
-
-  template <typename GUM_SCALAR>
   INLINE void MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>::unsafeAddArc(
       NodeId from, NodeId to, Idx value) {
 
@@ -1072,13 +1046,6 @@ namespace gum {
 
     (*_arcMap[from])[value] = to;
     (*_varUsedModalitiesMap[_varMap[from]])[value]++;
-  }
-
-  template <typename GUM_SCALAR>
-  INLINE void
-  MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>::unsafeInsertDefaultArc(NodeId from,
-                                                                         NodeId to) {
-    unsafeAddDefaultArc(from, to);
   }
 
   template <typename GUM_SCALAR>

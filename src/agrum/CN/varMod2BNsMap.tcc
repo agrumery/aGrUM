@@ -22,9 +22,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void VarMod2BNsMap<GUM_SCALAR>::setCNet(const CredalNet<GUM_SCALAR> &cn) {
-      const typename Property<
-          std::vector<std::vector<std::vector<GUM_SCALAR>>>>::onNodes *cpt =
-          &cn.credalNet_currentCpt();
+      auto *cpt = &cn.credalNet_currentCpt();
       auto nNodes = cpt->size();
       _sampleDef.resize(nNodes);
 

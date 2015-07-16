@@ -42,8 +42,8 @@ namespace gum {
    * ArcGraphPart arcs1,arcs2,arcs3;
    *
    * // insert elements into arcs1
-   * arcs1.insertArc( 2,3 );
-   * arcs1.insertArc( 5,3 );
+   * arcs1.addArc( 2,3 );
+   * arcs1.addArc( 5,3 );
    *
    * // copy arcs1 into arcs2
    * arcs2=arcs1;
@@ -129,7 +129,6 @@ namespace gum {
      * @param head the id of the head of the new arc to be inserted
      * @warning if the arc already exists, nothing is done. In particular, no
      * exception is raised. */
-    GUM_DEPRECATED(virtual void insertArc(const NodeId tail, const NodeId head));
     virtual void addArc(const NodeId tail, const NodeId head);
 
     /// removes an arc from the ArcGraphPart
@@ -153,12 +152,6 @@ namespace gum {
 
     /// removes all the arcs from the ArcGraphPart
     void clearArcs();
-
-    /// indicates the number of arcs stored within the ArcGraphPart
-    /**
-     * @deprecated Please use sizeArcs
-     */
-    GUM_DEPRECATED(Size nbrArcs() const);
 
     /// indicates the number of arcs stored within the ArcGraphPart
     Size sizeArcs() const;
@@ -205,14 +198,6 @@ namespace gum {
     /// same function as eraseChildren but without any virtual call to an erase
     /** @param id the node whose outgoing arcs will be removed */
     void unvirtualizedEraseChildren(const NodeId id);
-
-    /// returns an iterator to parse the set of arcs contained in the ArcGraphPart
-    /// @deprecated please use arcs().begin()
-    GUM_DEPRECATED(ArcIterator beginArcs() const);
-
-    /// returns the end iterator to parse the set of arcs
-    /// @deprecated please use arcs().end()
-    GUM_DEPRECATED(const ArcIterator &endArcs() const);
 
     /// to friendly display the content of the ArcGraphPart
     const std::string toString() const;

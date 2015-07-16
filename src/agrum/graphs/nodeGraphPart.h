@@ -337,14 +337,13 @@ namespace gum {
     template <typename T> void populateNodesFromProperty(const NodeProperty<T> &h);
 
     /** returns a new node id, not yet used by any node
-     * @warning a code like @code id=nextId();insertNode(id); @endcode is
+     * @warning a code like @code id=nextNodeId();addNode(id); @endcode is
      * basically not thread safe !!
      * @return a node id not yet used by any node within the NodeGraphPart */
     NodeId nextNodeId() const;
 
     /// insert a new node and return its id
     /** @return the id chosen by the internal idFactory */
-    GUM_DEPRECATED(virtual NodeId insertNode());
     virtual NodeId addNode();
 
     /// try to insert a node with the given id
@@ -352,7 +351,6 @@ namespace gum {
      * @ref populateNodes or @ref populateNodesFromProperty when possible
      * @throws DuplicateElement exception if the id already exists
      */
-    GUM_DEPRECATED(virtual void insertNode(const NodeId id));
     virtual void addNode(const NodeId id);
 
     /// erase the node with the given id

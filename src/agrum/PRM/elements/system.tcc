@@ -55,12 +55,6 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void System<GUM_SCALAR>::insertArc(const std::string &u_name,
-                                       const std::string &v_name,
-                                       const std::string &ref_name) {
-      addArc(u_name, v_name, ref_name);
-    }
-    template <typename GUM_SCALAR>
     void System<GUM_SCALAR>::addArc(const std::string &u_name,
                                     const std::string &v_name,
                                     const std::string &ref_name) {

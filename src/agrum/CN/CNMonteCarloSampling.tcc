@@ -266,9 +266,7 @@ namespace gum {
       int this_thread = getThreadNumber();
       IBayesNet<GUM_SCALAR> *working_bn = this->_workingSet[this_thread];
 
-      const typename Property<
-          std::vector<std::vector<std::vector<GUM_SCALAR>>>>::onNodes *cpt =
-          &this->_credalNet->credalNet_currentCpt();
+      const auto cpt = &this->_credalNet->credalNet_currentCpt();
 
       typedef std::vector<std::vector<std::vector<bool>>> dBN;
 
@@ -279,10 +277,8 @@ namespace gum {
       }
 
       if (__infEs::_repetitiveInd) {
-        const typename Property<std::vector<NodeId>>::onNodes &t0 =
-            __infEs::_l_clusters[this_thread][0];
-        const typename Property<std::vector<NodeId>>::onNodes &t1 =
-            __infEs::_l_clusters[this_thread][1];
+        const auto &t0 = __infEs::_l_clusters[this_thread][0];
+        const auto &t1 = __infEs::_l_clusters[this_thread][1];
 
         for (const auto &elt : t0) {
           auto dSize = working_bn->variable(elt.first).domainSize();

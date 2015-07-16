@@ -38,7 +38,7 @@ namespace gum {
    * \ingroup graph_group
    *
    *
-   * This is the base class for Directed Acyclic Graph : insertArc may throw a
+   * This is the base class for Directed Acyclic Graph : addArc may throw a
    * DirectedCycle if any (directed) cycle is created by this arc.
    *
    * @par exemple de code
@@ -147,10 +147,9 @@ namespace gum {
      * exception is raised.
      * @throw InvalidNode if head or tail does not belong to the graph nodes
      * @throw InvalidDirectedCycle if any (directed) cycle is created by this arc.
-     * @warning Unfortunately, this means that insertArc is not in constant
+     * @warning Unfortunately, this means that addArc is not in constant
      * time anymore.
      */
-    GUM_DEPRECATED(virtual void insertArc(const NodeId tail, const NodeId head));
     virtual void addArc(const NodeId tail, const NodeId head);
     /// @}
 

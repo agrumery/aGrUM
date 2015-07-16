@@ -158,17 +158,6 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::addVariable(const DiscreteVariable &var) {
-    return add(var);
-  }
-
-  template <typename GUM_SCALAR>
-  INLINE NodeId BayesNet<GUM_SCALAR>::addVariable(
-      const DiscreteVariable &var, MultiDimImplementation<GUM_SCALAR> *aContent) {
-    return add(var, aContent);
-  }
-
-  template <typename GUM_SCALAR>
   INLINE NodeId BayesNet<GUM_SCALAR>::idFromName(const std::string &name) const {
     return __varMap.idFromName(name);
   }
@@ -187,11 +176,6 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE const VariableNodeMap &BayesNet<GUM_SCALAR>::variableNodeMap() const {
     return __varMap;
-  }
-
-  template <typename GUM_SCALAR>
-  INLINE void BayesNet<GUM_SCALAR>::eraseVariable(NodeId varId) {
-    erase(varId);
   }
 
   template <typename GUM_SCALAR>
@@ -214,11 +198,6 @@ namespace gum {
       __varMap.erase(varId);
       this->_dag.eraseNode(varId);
     }
-  }
-
-  template <typename GUM_SCALAR>
-  INLINE void BayesNet<GUM_SCALAR>::insertArc(NodeId tail, NodeId head) {
-    addArc(tail, head);
   }
 
   template <typename GUM_SCALAR>
@@ -390,12 +369,6 @@ namespace gum {
       BayesNet<GUM_SCALAR>::addNoisyORNet(const DiscreteVariable &var,
                                           GUM_SCALAR external_weight, NodeId id) {
     return add(var, new MultiDimNoisyORNet<GUM_SCALAR>(external_weight), id);
-  }
-
-  template <typename GUM_SCALAR>
-  void BayesNet<GUM_SCALAR>::insertWeightedArc(NodeId tail, NodeId head,
-                                               GUM_SCALAR causalWeight) {
-    addWeightedArc(tail, head, causalWeight);
   }
 
   template <typename GUM_SCALAR>

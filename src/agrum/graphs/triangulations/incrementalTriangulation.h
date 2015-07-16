@@ -87,11 +87,9 @@ namespace gum {
     /// @{
 
     /// updates the triangulated graph using the modif list
-
     void updateTriangulation();
 
     /// adds a new node to the graph
-    GUM_DEPRECATED(void insertNode(const NodeId node, Size modal));
     void addNode(const NodeId node, Size modal);
 
     /** @brief removes a node from the graph (the join tree may need a
@@ -100,8 +98,6 @@ namespace gum {
 
     /** @brief adds a new edge to the graph (the join tree may need a
      * triangulation update) */
-
-    GUM_DEPRECATED(void insertEdge(const NodeId X, const NodeId Y));
     void addEdge(const NodeId X, const NodeId Y);
 
     /// removes an edge from the graph (the join tree may need a retriangulation)

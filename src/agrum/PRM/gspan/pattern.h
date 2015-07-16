@@ -89,7 +89,6 @@ namespace gum {
          * @brief Insert a node with the given LabelData.
          * @returns The NodeId assigned to the inserted node.
          */
-        GUM_DEPRECATED(NodeId insertNode(LabelData &l));
         NodeId addNode(LabelData &l);
 
         /// Returns the LabelData assigned to node.
@@ -129,7 +128,6 @@ namespace gum {
          * @throw OperationNotAllowed Raised if the neighborhood restriction
          *                            is not respected.
          */
-        GUM_DEPRECATED(void insertArc(NodeId i, NodeId j, LabelData &l));
         void addArc(NodeId i, NodeId j, LabelData &l);
 
         /// Returns true if id is a node in this Pattern.

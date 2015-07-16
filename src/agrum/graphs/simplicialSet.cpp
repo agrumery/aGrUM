@@ -516,10 +516,6 @@ namespace gum {
   }
 
   /// adds a new edge to the __graph and recomputes the simplicial set
-
-  void SimplicialSet::insertEdge(NodeId node1, NodeId node2) {
-    addEdge(node1, node2);
-  }
   void SimplicialSet::addEdge(NodeId node1, NodeId node2) {
     // if the edge already exists, do nothing
     Edge edge(node1, node2);

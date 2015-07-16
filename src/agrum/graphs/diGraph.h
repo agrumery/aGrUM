@@ -61,7 +61,7 @@ namespace gum {
    * g1.addArc( i2,i3 );
    *
    * //throw an InvalidNode
-   * // g1.insertArc( i1+i2+i3,i1 );
+   * // g1.addArc( i1+i2+i3,i1 );
    *
    * // copying graphs
    * DiGraph g3 = g1;
@@ -157,7 +157,6 @@ namespace gum {
      * @warning if the arc already exists, nothing is done. In particular, no
      * exception is raised.
      * @throw InvalidNode if head or tail does not belong to the graph nodes */
-    GUM_DEPRECATED(virtual void insertArc(const NodeId tail, const NodeId head));
     virtual void addArc(const NodeId tail, const NodeId head);
 
     /// remove a node and its adjacent arcs from the graph
