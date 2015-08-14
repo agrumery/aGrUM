@@ -54,7 +54,8 @@ namespace gum {
   }
 
   // Destructor.
-  template <typename GUM_SCALAR> INLINE CPF<GUM_SCALAR>::~CPF() {
+  template <typename GUM_SCALAR>
+  INLINE CPF<GUM_SCALAR>::~CPF() {
     GUM_DESTRUCTOR( CPF );
     delete __condMap;
   }
@@ -109,9 +110,9 @@ namespace gum {
 
     for ( HashTable<const DiscreteVariable*, bool>::iterator_safe iter =
               __condMap->beginSafe();
-          iter != __condMap->endSafe(); ++iter ) {
-      if ( iter.val() )
-        inst.add( *( iter.key() ) );
+          iter != __condMap->endSafe();
+          ++iter ) {
+      if ( iter.val() ) inst.add( *( iter.key() ) );
     }
 
     return inst;
@@ -128,9 +129,9 @@ namespace gum {
 
     for ( HashTable<const DiscreteVariable*, bool>::iterator_safe iter =
               __condMap->beginSafe();
-          iter != __condMap->endSafe(); ++iter ) {
-      if ( iter.val() )
-        inst.add( *( iter.key() ) );
+          iter != __condMap->endSafe();
+          ++iter ) {
+      if ( iter.val() ) inst.add( *( iter.key() ) );
     }
 
     return inst;
@@ -147,9 +148,9 @@ namespace gum {
 
     for ( HashTable<const DiscreteVariable*, bool>::iterator_safe iter =
               __condMap->beginSafe();
-          iter != __condMap->endSafe(); ++iter ) {
-      if ( !iter.val() )
-        inst.add( *( iter.key() ) );
+          iter != __condMap->endSafe();
+          ++iter ) {
+      if ( !iter.val() ) inst.add( *( iter.key() ) );
     }
 
     return inst;
@@ -166,9 +167,9 @@ namespace gum {
 
     for ( HashTableIteratorSafe<const DiscreteVariable*, bool> iter =
               __condMap->beginSafe();
-          iter != __condMap->endSafe(); ++iter ) {
-      if ( !iter.val() )
-        inst.add( *( iter.key() ) );
+          iter != __condMap->endSafe();
+          ++iter ) {
+      if ( !iter.val() ) inst.add( *( iter.key() ) );
     }
 
     return inst;
@@ -191,7 +192,8 @@ namespace gum {
 
     for ( HashTable<const DiscreteVariable*, bool>::iterator_safe iter =
               __condMap->beginSafe();
-          iter != __condMap->endSafe(); ++iter ) {
+          iter != __condMap->endSafe();
+          ++iter ) {
       if ( iter.val() ) {
         left << i->val( *( iter.key() ) ) << " ";
       } else {

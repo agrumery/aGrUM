@@ -75,7 +75,8 @@ namespace gum {
        * of this Attribute.
        *             it will be deleted after the call of ~Attribute.
        */
-      ScalarAttribute( const std::string& name, const Type<GUM_SCALAR>& type,
+      ScalarAttribute( const std::string& name,
+                       const Type<GUM_SCALAR>& type,
                        MultiDimImplementation<GUM_SCALAR>* impl =
                            new MultiDimArray<GUM_SCALAR>() );
 

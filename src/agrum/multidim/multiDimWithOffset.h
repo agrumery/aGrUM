@@ -35,15 +35,11 @@
 #include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
-  /* ============================================================================
-   */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
+  /* =========================================================================*/
   /* ===                    GUM_MULTI_DIM_WITH_OFFSET === */
-  /* ============================================================================
-   */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
+  /* =========================================================================*/
   /**
    * @class MultiDimWithOffset
    * @brief Abstract class for Multidimensional matrix stored as an array in
@@ -148,7 +144,8 @@ namespace gum {
     /// See gum::MultiDimAdressable::changeNotification().
     virtual void changeNotification( Instantiation& i,
                                      const DiscreteVariable* const var,
-                                     const Idx& oldval, const Idx& newval );
+                                     const Idx& oldval,
+                                     const Idx& newval );
 
     /// See gum::MultiDimAdressable::setChangeNotification().
     virtual void setChangeNotification( Instantiation& i );

@@ -101,7 +101,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  void Rational<GUM_SCALAR>::farey( long int& numerator, long int& denominator,
+  void Rational<GUM_SCALAR>::farey( long int& numerator,
+                                    long int& denominator,
                                     const GUM_SCALAR& number,
                                     const long int& den_max,
                                     const double& zero ) {
@@ -198,14 +199,12 @@ namespace gum {
         break;
       }
 
-      if ( std::fabs( rnumber - a.back() ) < 1e-6 )
-        break;
+      if ( std::fabs( rnumber - a.back() ) < 1e-6 ) break;
 
       rnumber = 1. / ( rnumber - a.back() );
     }  /// end of while
 
-    if ( a.size() < 2 )
-      return;
+    if ( a.size() < 2 ) return;
 
     /// we can start looking at the semi-convergents made of the last two
     /// convergents
@@ -285,14 +284,12 @@ namespace gum {
       p_tmp = a.back() * p.back() + p[p.size() - 2];
       q_tmp = a.back() * q.back() + q[q.size() - 2];
 
-      if ( q_tmp > denMax || p_tmp > denMax )
-        break;
+      if ( q_tmp > denMax || p_tmp > denMax ) break;
 
       p.push_back( p_tmp );
       q.push_back( q_tmp );
 
-      if ( std::fabs( rnumber - a.back() ) < 1e-6 )
-        break;
+      if ( std::fabs( rnumber - a.back() ) < 1e-6 ) break;
 
       rnumber = 1. / ( rnumber - a.back() );
     }  /// end of while
@@ -316,8 +313,7 @@ namespace gum {
       p_tmp = n * p[i] + p[i - 1];
       q_tmp = n * q[i] + q[i - 1];
 
-      if ( q_tmp > denMax || p_tmp > denMax )
-        continue;
+      if ( q_tmp > denMax || p_tmp > denMax ) continue;
 
       numerator = ( number > 0 ) ? p_tmp : -p_tmp;
       denominator = q_tmp;

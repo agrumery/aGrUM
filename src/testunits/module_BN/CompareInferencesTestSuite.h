@@ -139,8 +139,8 @@ namespace gum_tests {
       const gum::Potential<double>& p5 = bn.cpt( i5 );
       {
         int n = 12;
-        const double t[12] = {0.1, 0.2, 0.3, 0.4, 0.3, 0.2,
-                              0.2, 0.3, 0.4, 0.3, 0.2, 0.1};
+        const double t[12] = {
+            0.1, 0.2, 0.3, 0.4, 0.3, 0.2, 0.2, 0.3, 0.4, 0.3, 0.2, 0.1};
         /*
         const double t[n] = {0.3, 0.6, 0.1, 0.5, 0.5,0.0, 0.5, 0.5,0.0, 1.0,
         0.0,
@@ -197,15 +197,20 @@ namespace gum_tests {
         I << bn->variable( i );
 
         for ( I.setFirst(); !I.end(); ++I ) {
-          TS_ASSERT_DELTA( marginal_gibbs[I], marginal_ShaShe[I],
+          TS_ASSERT_DELTA( marginal_gibbs[I],
+                           marginal_ShaShe[I],
                            5e-3 );  // APPROX INFERENCE
-          TS_ASSERT_DELTA( marginal_LazyProp[I], marginal_ShaShe[I],
+          TS_ASSERT_DELTA( marginal_LazyProp[I],
+                           marginal_ShaShe[I],
                            1e-10 );  // EXACT INFERENCE
-          TS_ASSERT_DELTA( marginal_LazyProp[I], marginal_ValElim[I],
+          TS_ASSERT_DELTA( marginal_LazyProp[I],
+                           marginal_ValElim[I],
                            1e-10 );  // EXACT INFERENCE
-          TS_ASSERT_DELTA( marginal_ShaShe[I], marginal_ValElim[I],
+          TS_ASSERT_DELTA( marginal_ShaShe[I],
+                           marginal_ValElim[I],
                            1e-10 );  // EXACT INFERENCE
-          TS_ASSERT_DELTA( marginal_LazyProp[I], marginal_JT[I],
+          TS_ASSERT_DELTA( marginal_LazyProp[I],
+                           marginal_JT[I],
                            1e-10 );  // EXACT INFERENCE
         }
       }
@@ -444,7 +449,8 @@ namespace gum_tests {
 
           for ( I.setFirst(); !I.end(); ++I ) {
             TS_ASSERT_DELTA( infLazy.posterior( node )[I],
-                             infJT.posterior( node )[I], 1e-6 );
+                             infJT.posterior( node )[I],
+                             1e-6 );
           }
         }
       }

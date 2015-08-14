@@ -77,22 +77,26 @@ class TiXmlString {
   static const size_type npos;  // = -1;
 
   // TiXmlString empty constructor
-  TiXmlString() : rep_( &nullrep_ ) {}
+  TiXmlString()
+      : rep_( &nullrep_ ) {}
 
   // TiXmlString copy constructor
-  TiXmlString( const TiXmlString& copy ) : rep_( 0 ) {
+  TiXmlString( const TiXmlString& copy )
+      : rep_( 0 ) {
     init( copy.length() );
     memcpy( start(), copy.data(), length() );
   }
 
   // TiXmlString constructor, based on a string
-  TIXML_EXPLICIT TiXmlString( const char* copy ) : rep_( 0 ) {
+  TIXML_EXPLICIT TiXmlString( const char* copy )
+      : rep_( 0 ) {
     init( static_cast<size_type>( strlen( copy ) ) );
     memcpy( start(), copy, length() );
   }
 
   // TiXmlString constructor, based on a string
-  TIXML_EXPLICIT TiXmlString( const char* str, size_type len ) : rep_( 0 ) {
+  TIXML_EXPLICIT TiXmlString( const char* str, size_type len )
+      : rep_( 0 ) {
     init( len );
     memcpy( start(), str, len );
   }
@@ -159,12 +163,10 @@ class TiXmlString {
   // find a char in a string from an offset. Return TiXmlString::npos if not
   // found
   size_type find( char tofind, size_type offset ) const {
-    if ( offset >= length() )
-      return npos;
+    if ( offset >= length() ) return npos;
 
     for ( const char* p = c_str() + offset; *p != '\0'; ++p ) {
-      if ( *p == tofind )
-        return static_cast<size_type>( p - c_str() );
+      if ( *p == tofind ) return static_cast<size_type>( p - c_str() );
     }
 
     return npos;

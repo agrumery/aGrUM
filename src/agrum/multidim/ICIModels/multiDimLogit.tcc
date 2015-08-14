@@ -70,8 +70,7 @@ namespace gum {
 
     const DiscreteVariable& C = this->variable( (Idx)0 );
 
-    if ( i.val( C ) > 1 )
-      return (GUM_SCALAR)0.0;
+    if ( i.val( C ) > 1 ) return (GUM_SCALAR)0.0;
 
     GUM_SCALAR fact = this->externalWeight();
 
@@ -99,8 +98,7 @@ namespace gum {
       if ( c != GUM_SCALAR( 0 ) ) {
         s << " ";
 
-        if ( c > 0 )
-          s << "+";
+        if ( c > 0 ) s << "+";
 
         s << this->causalWeight(
                  MultiDimImplementation<GUM_SCALAR>::variable( i ) ) << "*"

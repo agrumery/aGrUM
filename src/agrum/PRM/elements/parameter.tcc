@@ -29,16 +29,20 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     Parameter<GUM_SCALAR>::Parameter( const std::string& name,
-                                      ParameterType type, GUM_SCALAR value )
-        : ClassElement<GUM_SCALAR>( name ), __type( type ), __value( value ) {
+                                      ParameterType type,
+                                      GUM_SCALAR value )
+        : ClassElement<GUM_SCALAR>( name )
+        , __type( type )
+        , __value( value ) {
       GUM_CONSTRUCTOR( Parameter );
       this->_safeName = name;
     }
 
     template <typename GUM_SCALAR>
     Parameter<GUM_SCALAR>::Parameter( const Parameter<GUM_SCALAR>& source )
-        : ClassElement<GUM_SCALAR>( source.name() ),
-          __type( source.valueType() ), __value( source.value() ) {
+        : ClassElement<GUM_SCALAR>( source.name() )
+        , __type( source.valueType() )
+        , __value( source.value() ) {
       GUM_ERROR( OperationNotAllowed, "cannot copy Paramter<GUM_SCALAR" );
     }
 
@@ -48,7 +52,8 @@ namespace gum {
       GUM_ERROR( OperationNotAllowed, "cannot copy Paramter<GUM_SCALAR" );
     }
 
-    template <typename GUM_SCALAR> Parameter<GUM_SCALAR>::~Parameter() {
+    template <typename GUM_SCALAR>
+    Parameter<GUM_SCALAR>::~Parameter() {
       GUM_DESTRUCTOR( Parameter );
     }
 

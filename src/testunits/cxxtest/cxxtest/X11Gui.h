@@ -137,15 +137,14 @@ namespace CxxTest {
     }
 
     void createWindow() {
-      _window = XCreateSimpleWindow( _display, RootWindow( _display, 0 ), 0, 0,
-                                     1, 1, 0, 0, _background );
+      _window = XCreateSimpleWindow(
+          _display, RootWindow( _display, 0 ), 0, 0, 1, 1, 0, 0, _background );
     }
 
     void createGc() { _gc = XCreateGC( _display, _window, 0, 0 ); }
 
     void createFont() {
-      if ( !loadFont() )
-        useDefaultFont();
+      if ( !loadFont() ) useDefaultFont();
 
       getFontInfo();
       _textHeight = _fontInfo->ascent + _fontInfo->descent;
@@ -153,8 +152,7 @@ namespace CxxTest {
     }
 
     bool loadFont() {
-      if ( !_fontName )
-        return false;
+      if ( !_fontName ) return false;
 
       _fontId = XLoadFont( _display, _fontName );
       return ( XSetFont( _display, _gc, _fontId ) == Success );
@@ -196,8 +194,12 @@ namespace CxxTest {
       _width = ( screenWidth * 4 ) / 5;
       _height = screenHeight / 14;
 
-      XMoveResizeWindow( _display, _window, xCenter - ( _width / 2 ),
-                         yCenter - ( _height / 2 ), _width, _height );
+      XMoveResizeWindow( _display,
+                         _window,
+                         xCenter - ( _width / 2 ),
+                         yCenter - ( _height / 2 ),
+                         _width,
+                         _height );
     }
 
     void processEvents() {
@@ -240,13 +242,12 @@ namespace CxxTest {
       XFillRectangle( _display, _window, _gc, 0, 0, barWidth, _height );
 
       XSetForeground( _display, _gc, _background );
-      XFillRectangle( _display, _window, _gc, barWidth, 0,
-                      _width + 1 - barWidth, _height );
+      XFillRectangle(
+          _display, _window, _gc, barWidth, 0, _width + 1 - barWidth, _height );
     }
 
     void drawDividers() {
-      if ( _width / _numTotalTests < 5 )
-        return;
+      if ( _width / _numTotalTests < 5 ) return;
 
       for ( unsigned i = 1; i < _testsDone; ++i ) {
         int x = ( _width * i ) / _numTotalTests;
@@ -259,14 +260,22 @@ namespace CxxTest {
 
       char str[sizeof( "1000000000 of " ) + sizeof( _strTotalTests ) +
                sizeof( " (100%)" )];
-      sprintf( str, "%u of %s (%u%%)", _testsDone, _strTotalTests,
+      sprintf( str,
+               "%u of %s (%u%%)",
+               _testsDone,
+               _strTotalTests,
                ( _testsDone * 100 ) / _numTotalTests );
       unsigned len = strlen( str );
 
       int textWidth = XTextWidth( _fontInfo, str, len );
 
-      XDrawString( _display, _window, _gc, ( _width - textWidth ) / 2,
-                   ( ( _height + _textHeight ) / 2 ) - _textDescent, str, len );
+      XDrawString( _display,
+                   _window,
+                   _gc,
+                   ( _width - textWidth ) / 2,
+                   ( ( _height + _textHeight ) / 2 ) - _textDescent,
+                   str,
+                   len );
     }
 
     void flush() { XFlush( _display ); }

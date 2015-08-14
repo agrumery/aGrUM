@@ -13,10 +13,14 @@ namespace CxxTest {
   class RealTestDescription : public TestDescription {
     public:
     RealTestDescription();
-    RealTestDescription( List& argList, SuiteDescription& argSuite,
-                         unsigned argLine, const char* argTestName );
-    void initialize( List& argList, SuiteDescription& argSuite,
-                     unsigned argLine, const char* argTestName );
+    RealTestDescription( List& argList,
+                         SuiteDescription& argSuite,
+                         unsigned argLine,
+                         const char* argTestName );
+    void initialize( List& argList,
+                     SuiteDescription& argSuite,
+                     unsigned argLine,
+                     const char* argTestName );
 
     const char* file() const;
     unsigned line() const;
@@ -46,11 +50,15 @@ namespace CxxTest {
   class RealSuiteDescription : public SuiteDescription {
     public:
     RealSuiteDescription();
-    RealSuiteDescription( const char* argFile, unsigned argLine,
-                          const char* argSuiteName, List& argTests );
+    RealSuiteDescription( const char* argFile,
+                          unsigned argLine,
+                          const char* argSuiteName,
+                          List& argTests );
 
-    void initialize( const char* argFile, unsigned argLine,
-                     const char* argSuiteName, List& argTests );
+    void initialize( const char* argFile,
+                     unsigned argLine,
+                     const char* argSuiteName,
+                     List& argTests );
 
     const char* file() const;
     unsigned line() const;
@@ -83,12 +91,16 @@ namespace CxxTest {
   class StaticSuiteDescription : public RealSuiteDescription {
     public:
     StaticSuiteDescription();
-    StaticSuiteDescription( const char* argFile, unsigned argLine,
-                            const char* argSuiteName, TestSuite& argSuite,
+    StaticSuiteDescription( const char* argFile,
+                            unsigned argLine,
+                            const char* argSuiteName,
+                            TestSuite& argSuite,
                             List& argTests );
 
-    void initialize( const char* argFile, unsigned argLine,
-                     const char* argSuiteName, TestSuite& argSuite,
+    void initialize( const char* argFile,
+                     unsigned argLine,
+                     const char* argSuiteName,
+                     TestSuite& argSuite,
                      List& argTests );
     TestSuite* suite() const;
 
@@ -107,14 +119,19 @@ namespace CxxTest {
   class CommonDynamicSuiteDescription : public RealSuiteDescription {
     public:
     CommonDynamicSuiteDescription();
-    CommonDynamicSuiteDescription( const char* argFile, unsigned argLine,
-                                   const char* argSuiteName, List& argTests,
+    CommonDynamicSuiteDescription( const char* argFile,
+                                   unsigned argLine,
+                                   const char* argSuiteName,
+                                   List& argTests,
                                    unsigned argCreateLine,
                                    unsigned argDestroyLine );
 
-    void initialize( const char* argFile, unsigned argLine,
-                     const char* argSuiteName, List& argTests,
-                     unsigned argCreateLine, unsigned argDestroyLine );
+    void initialize( const char* argFile,
+                     unsigned argLine,
+                     const char* argSuiteName,
+                     List& argTests,
+                     unsigned argCreateLine,
+                     unsigned argDestroyLine );
 
     protected:
     unsigned _createLine, _destroyLine;
@@ -127,21 +144,34 @@ namespace CxxTest {
   class DynamicSuiteDescription : public CommonDynamicSuiteDescription {
     public:
     DynamicSuiteDescription() {}
-    DynamicSuiteDescription( const char* argFile, unsigned argLine,
-                             const char* argSuiteName, List& argTests,
-                             S*& argSuite, unsigned argCreateLine,
+    DynamicSuiteDescription( const char* argFile,
+                             unsigned argLine,
+                             const char* argSuiteName,
+                             List& argTests,
+                             S*& argSuite,
+                             unsigned argCreateLine,
                              unsigned argDestroyLine )
-        : CommonDynamicSuiteDescription( argFile, argLine, argSuiteName,
-                                         argTests, argCreateLine,
+        : CommonDynamicSuiteDescription( argFile,
+                                         argLine,
+                                         argSuiteName,
+                                         argTests,
+                                         argCreateLine,
                                          argDestroyLine ) {
       _suite = &argSuite;
     }
 
-    void initialize( const char* argFile, unsigned argLine,
-                     const char* argSuiteName, List& argTests, S*& argSuite,
-                     unsigned argCreateLine, unsigned argDestroyLine ) {
-      CommonDynamicSuiteDescription::initialize( argFile, argLine, argSuiteName,
-                                                 argTests, argCreateLine,
+    void initialize( const char* argFile,
+                     unsigned argLine,
+                     const char* argSuiteName,
+                     List& argTests,
+                     S*& argSuite,
+                     unsigned argCreateLine,
+                     unsigned argDestroyLine ) {
+      CommonDynamicSuiteDescription::initialize( argFile,
+                                                 argLine,
+                                                 argSuiteName,
+                                                 argTests,
+                                                 argCreateLine,
                                                  argDestroyLine );
       _suite = &argSuite;
     }
@@ -166,9 +196,11 @@ namespace CxxTest {
     S** _suite;
   };
 
-  template <class S> bool DynamicSuiteDescription<S>::setUp() {
+  template <class S>
+  bool DynamicSuiteDescription<S>::setUp() {
     _TS_TRY {
-      _TSM_ASSERT_THROWS_NOTHING( file(), _createLine,
+      _TSM_ASSERT_THROWS_NOTHING( file(),
+                                  _createLine,
                                   "Exception thrown from createSuite()",
                                   createSuite() );
       _TSM_ASSERT( file(), _createLine, "createSuite() failed", suite() != 0 );
@@ -178,13 +210,13 @@ namespace CxxTest {
     return ( suite() != 0 );
   }
 
-  template <class S> bool DynamicSuiteDescription<S>::tearDown() {
-    if ( !_suite )
-      return true;
+  template <class S>
+  bool DynamicSuiteDescription<S>::tearDown() {
+    if ( !_suite ) return true;
 
     _TS_TRY {
-      _TSM_ASSERT_THROWS_NOTHING( file(), _destroyLine, "destroySuite() failed",
-                                  destroySuite() );
+      _TSM_ASSERT_THROWS_NOTHING(
+          file(), _destroyLine, "destroySuite() failed", destroySuite() );
     }
     _TS_CATCH_ABORT( { return false; } );
 

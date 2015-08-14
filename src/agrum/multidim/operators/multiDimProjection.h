@@ -111,7 +111,8 @@ namespace gum {
      * result is an empty table. */
     TABLE<GUM_SCALAR>* project( const TABLE<GUM_SCALAR>& table,
                                 const Set<const DiscreteVariable*>& del_vars );
-    void project( TABLE<GUM_SCALAR>& container, const TABLE<GUM_SCALAR>& table,
+    void project( TABLE<GUM_SCALAR>& container,
+                  const TABLE<GUM_SCALAR>& table,
                   const Set<const TABLE<GUM_SCALAR>*>& del_vars );
 
     /// changes the function used for projecting TABLES

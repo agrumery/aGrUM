@@ -32,7 +32,8 @@ namespace gum {
   namespace aggregator {
     template <typename GUM_SCALAR>
     INLINE Forall<GUM_SCALAR>::Forall( Idx value )
-        : MultiDimAggregator<GUM_SCALAR>(), __value( value ) {
+        : MultiDimAggregator<GUM_SCALAR>()
+        , __value( value ) {
       GUM_CONSTRUCTOR( Forall )
     }
 
@@ -43,7 +44,8 @@ namespace gum {
       GUM_CONS_CPY( Forall );
     }
 
-    template <typename GUM_SCALAR> INLINE Forall<GUM_SCALAR>::~Forall() {
+    template <typename GUM_SCALAR>
+    INLINE Forall<GUM_SCALAR>::~Forall() {
       GUM_DESTRUCTOR( Forall );
     }
 
@@ -53,9 +55,10 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Idx
-    Forall<GUM_SCALAR>::_folder( const DiscreteVariable& v, Idx i1, Idx i2,
-                                 bool& stop_iteration ) const {
+    INLINE Idx Forall<GUM_SCALAR>::_folder( const DiscreteVariable& v,
+                                            Idx i1,
+                                            Idx i2,
+                                            bool& stop_iteration ) const {
       if ( i1 == __value ) {
         return (Idx)1;
       } else {

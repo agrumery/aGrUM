@@ -38,13 +38,16 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR> class MultiDimDecisionDiagramBase;
+  template <typename GUM_SCALAR>
+  class MultiDimDecisionDiagramBase;
 
   /**
-   * @class MultiDimDecisionDiagramFactoryBase multiDimDecisionDiagramFactoryBase.h
+   * @class MultiDimDecisionDiagramFactoryBase
+   *multiDimDecisionDiagramFactoryBase.h
    *<agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
    * @brief Class implementingting an algebraic decision diagram factory
-   * Can work either with checks on variables to ensure order property is respected
+   * Can work either with checks on variables to ensure order property is
+   *respected
    *in diagram or without (NoVariableCheckMode)
    * @ingroup multidim_group
    *
@@ -68,7 +71,8 @@ namespace gum {
     /**
      * Destructor.
      * @warning Since getMultiDimDecisionDiagram does a copy of DecisionDiagram
-     * deleting this factory will not destroy properties on node of any instantiated
+     * deleting this factory will not destroy properties on node of any
+     * instantiated
      * DecisionDiagram.
      */
     virtual ~MultiDimDecisionDiagramFactoryBase();
@@ -81,9 +85,10 @@ namespace gum {
     /// @{
 
     /**
-     * Returns the sequence of variables on which is based the diagram construction
+     * Returns the sequence of variables on which is based the diagram
+     * construction
      */
-    const Sequence<const DiscreteVariable *> &variablesSequence();
+    const Sequence<const DiscreteVariable*>& variablesSequence();
 
     /**
      * To be done before any insertion of node linked to variable.
@@ -91,7 +96,7 @@ namespace gum {
      *
      * @param s a sequence containing the variable (wich will be the referent )
      */
-    void setVariablesSequence(Sequence<const DiscreteVariable *> s);
+    void setVariablesSequence( Sequence<const DiscreteVariable*> s );
 
     // ===========================================================================
     /// @name Nodes manipulation methods.
@@ -101,48 +106,55 @@ namespace gum {
     /**
      * Sets root node of decision diagram
      */
-    void setRootNode(const NodeId nody);
+    void setRootNode( const NodeId nody );
 
     /**
      * Adds a variable and its associate non terminal node. The id of the new
      * variable is automatically generated.
      *
      * @param var The variable added by copy.
-     * @throw OperationNotAllowed if no sequence of variable have yet been specified
+     * @throw OperationNotAllowed if no sequence of variable have yet been
+     *specified
      * @return the id of the added variable.
      */
     ///@{
-    NodeId addNonTerminalNode(const DiscreteVariable *var);
-    NodeId unsafeAddNonTerminalNode(const DiscreteVariable *var);
+    NodeId addNonTerminalNode( const DiscreteVariable* var );
+    NodeId unsafeAddNonTerminalNode( const DiscreteVariable* var );
     ///@}
 
     /**
      * Adds a non-terminal node in the diagram linked to given variable.
-     * Inserts also arc between that node and mentionned node in the given hashtable
+     * Inserts also arc between that node and mentionned node in the given
+     * hashtable
      * @param var the variable added by copy
      * @param nodeArcMap the variables to link
      * @param defaultArcTo the variable to link by default (optional)
-     * @throw OperationNotAllowed if no sequence of variable have yet been specified
+     * @throw OperationNotAllowed if no sequence of variable have yet been
+     * specified
      * Returns the id of that node
      */
     ///@{
-    NodeId addNonTerminalNodeWithArcs(const DiscreteVariable *var,
-                                      const std::vector<NodeId> &nodeArcMap,
-                                      NodeId defaultArcTo = 0);
-    NodeId unsafeAddNonTerminalNodeWithArcs(const DiscreteVariable *var,
-                                            const std::vector<NodeId> &nodeArcMap,
-                                            NodeId defaultArcTo = 0);
+    NodeId addNonTerminalNodeWithArcs( const DiscreteVariable* var,
+                                       const std::vector<NodeId>& nodeArcMap,
+                                       NodeId defaultArcTo = 0 );
+    NodeId
+    unsafeAddNonTerminalNodeWithArcs( const DiscreteVariable* var,
+                                      const std::vector<NodeId>& nodeArcMap,
+                                      NodeId defaultArcTo = 0 );
     ///@}
 
     /**
-     * Checks if a node with same variable, same sons and same default son does not
+     * Checks if a node with same variable, same sons and same default son does
+     * not
      * already exists in diagram
-     * returns a pair constituing of a boolean that indicates if such a node exists,
+     * returns a pair constituing of a boolean that indicates if such a node
+     * exists,
      * and his nodeid
      */
-    std::pair<bool, NodeId> checkredundancy(const DiscreteVariable *var,
-                                            const std::vector<NodeId> &nodeArcMap,
-                                            NodeId defaultArcTo = 0);
+    std::pair<bool, NodeId>
+    checkredundancy( const DiscreteVariable* var,
+                     const std::vector<NodeId>& nodeArcMap,
+                     NodeId defaultArcTo = 0 );
 
     /**
      * Adds a value and it's associate terminal node. The id of the new
@@ -151,10 +163,11 @@ namespace gum {
      * @param value The value added by copy.
      * @return the id of the added variable.
      *
-     * If a terminal node with such value already exists, its value will be return
+     * If a terminal node with such value already exists, its value will be
+     *return
      *instead.
      */
-    NodeId addTerminalNode(const GUM_SCALAR &value);
+    NodeId addTerminalNode( const GUM_SCALAR& value );
 
     /**
      * Erases a node from the diagram
@@ -163,7 +176,7 @@ namespace gum {
      * @param id The id of the variable to erase.
      * @throw NotFound if node isn't in diagram
      */
-    void eraseNode(NodeId id);
+    void eraseNode( NodeId id );
 
     /// @}
 
@@ -184,8 +197,8 @@ namespace gum {
      * @throw DuplicateElement if another arc linking those nodes already exists
      */
     ///@{
-    void addArc(NodeId from, NodeId to, Idx modality);
-    void unsafeAddArc(NodeId from, NodeId to, Idx modality);
+    void addArc( NodeId from, NodeId to, Idx modality );
+    void unsafeAddArc( NodeId from, NodeId to, Idx modality );
     ///@}
 
     /**
@@ -198,8 +211,8 @@ namespace gum {
      * @throw OperationNotAllowed if arc doesn't respect variable order property
      * @throw DuplicateElement if another arc linking those nodes already exists
      */
-    void addDefaultArc(NodeId from, NodeId to);
-    void unsafeAddDefaultArc(NodeId from, NodeId to);
+    void addDefaultArc( NodeId from, NodeId to );
+    void unsafeAddDefaultArc( NodeId from, NodeId to );
 
     /**
      * Erases an arc in the DD
@@ -207,13 +220,15 @@ namespace gum {
      * @param from and
      * @param to as NodeId
      * @throw InvalidArc If arc does not exist
-     * @warning due to the possibility that several arc with different value have the
+     * @warning due to the possibility that several arc with different value
+     *have the
      *same from and to,
-     * if several arcs have different value but same parent and child, this method
+     * if several arcs have different value but same parent and child, this
+     *method
      *will erase all of them .
      * If you want to erase a specific one, use eraseSpecificArc
      */
-    void eraseArc(NodeId from, NodeId to);
+    void eraseArc( NodeId from, NodeId to );
 
     /**
      * Erases an arc in the DD
@@ -223,7 +238,7 @@ namespace gum {
      * @param modality the modality corresponding to the to delete arc
      * @throw InvalidArc If arc does not exist
      */
-    void eraseSpecificArc(NodeId from, NodeId to, Idx modality);
+    void eraseSpecificArc( NodeId from, NodeId to, Idx modality );
 
     /// @}
 
@@ -241,28 +256,28 @@ namespace gum {
      * Returns the value of associated node if its a terminal one
      * @throw NotFound if it's not a terminal node
      */
-    GUM_SCALAR nodeValue(NodeId node);
+    GUM_SCALAR nodeValue( NodeId node );
 
     /// @}
 
     /**
      * Returns the multidimDecisionDiagram made
      */
-    virtual MultiDimDecisionDiagramBase<GUM_SCALAR> *
-    getMultiDimDecisionDiagram(bool fillWithDefaultArc = true,
-                               GUM_SCALAR defaultValue = 0,
-                               bool doCompress = false) = 0;
+    virtual MultiDimDecisionDiagramBase<GUM_SCALAR>*
+    getMultiDimDecisionDiagram( bool fillWithDefaultArc = true,
+                                GUM_SCALAR defaultValue = 0,
+                                bool doCompress = false ) = 0;
 
     /**
      * Sets the factory from an already existing diagram
      */
     void setMultiDimDecisionDiagram(
-        const MultiDimDecisionDiagramBase<GUM_SCALAR> *source);
+        const MultiDimDecisionDiagramBase<GUM_SCALAR>* source );
 
     /**
      * Swaps two variables in the build on diagram
      */
-    void swap(const DiscreteVariable *x, const DiscreteVariable *y);
+    void swap( const DiscreteVariable* x, const DiscreteVariable* y );
 
     /**
      * Resets the factory
@@ -285,34 +300,34 @@ namespace gum {
     /**
      * Finds an order of variable compatible to the diagram
      */
-    Sequence<const DiscreteVariable *> _findVariableOrder();
+    Sequence<const DiscreteVariable*> _findVariableOrder();
 
     /// Boolean precising if we are in check on variable mode or not
     bool _noVariableCheckMode;
 
     /// The order of variables in the diagram
-    Sequence<const DiscreteVariable *> _varsSeq;
+    Sequence<const DiscreteVariable*> _varsSeq;
 
     /// The algebraic decision diagram model
     DiGraph _model;
 
     /// Mapping between id and variable
-    NodeProperty<const DiscreteVariable *> _varMap;
+    NodeProperty<const DiscreteVariable*> _varMap;
 
     /// Mapping between terminal nodes and their values
     Bijection<NodeId, GUM_SCALAR> _valueMap;
 
     /// Mapping between variable's values and associated node
-    NodeProperty<std::vector<NodeId> *> _arcMap;
+    NodeProperty<std::vector<NodeId>*> _arcMap;
 
     /// Mapping between variable's values and associated node
     NodeProperty<NodeId> _defaultArcMap;
 
     /// Mapping between variable and nodes tied to this var
-    HashTable<const DiscreteVariable *, List<NodeId> *> _var2NodeIdMap;
+    HashTable<const DiscreteVariable*, List<NodeId>*> _var2NodeIdMap;
 
     /// Mapping between variable and nodes tied to this var
-    HashTable<const DiscreteVariable *, std::vector<Idx> *> _varUsedModalitiesMap;
+    HashTable<const DiscreteVariable*, std::vector<Idx>*> _varUsedModalitiesMap;
 
     /// NodeId of decision diagram root node
     NodeId _rootId;

@@ -76,13 +76,14 @@ namespace gum_tests {
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>() );
+                                gum::learning::Col<0>,
+                                8>() );
 
       auto generators = gum::learning::make_generators(
           gum::learning::RowGeneratorIdentity() );
 
-      auto filter = gum::learning::make_DB_row_filter( database, translators,
-                                                       generators );
+      auto filter = gum::learning::make_DB_row_filter(
+          database, translators, generators );
 
       std::vector<unsigned int> modalities( 8, 2 );
 
@@ -156,16 +157,16 @@ namespace gum_tests {
         TS_ASSERT(
             compare_vect3( vectx, counter.getAllCounts( id5 ), {1, 3, 2} ) );
 
-        TS_ASSERT( compare_vect3( vecty, counter.getConditioningCounts( id1 ),
-                                  {1, 2, 3} ) );
-        TS_ASSERT( compare_vect3( vecty, counter.getConditioningCounts( id2 ),
-                                  {2, 1, 3} ) );
-        TS_ASSERT( compare_vect3( vecty, counter.getConditioningCounts( id3 ),
-                                  {3, 1, 2} ) );
-        TS_ASSERT( compare_vect3( vecty, counter.getConditioningCounts( id4 ),
-                                  {3, 2, 1} ) );
-        TS_ASSERT( compare_vect3( vecty, counter.getConditioningCounts( id5 ),
-                                  {1, 3, 2} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter.getConditioningCounts( id1 ), {1, 2, 3} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter.getConditioningCounts( id2 ), {2, 1, 3} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter.getConditioningCounts( id3 ), {3, 1, 2} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter.getConditioningCounts( id4 ), {3, 2, 1} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter.getConditioningCounts( id5 ), {1, 3, 2} ) );
       }
 
       counter.clear();
@@ -196,16 +197,16 @@ namespace gum_tests {
         TS_ASSERT(
             compare_vect3( vectx, counter2.getAllCounts( id5 ), {1, 3, 2} ) );
 
-        TS_ASSERT( compare_vect3( vecty, counter2.getConditioningCounts( id1 ),
-                                  {1, 2, 3} ) );
-        TS_ASSERT( compare_vect3( vecty, counter2.getConditioningCounts( id2 ),
-                                  {2, 1, 3} ) );
-        TS_ASSERT( compare_vect3( vecty, counter2.getConditioningCounts( id3 ),
-                                  {3, 1, 2} ) );
-        TS_ASSERT( compare_vect3( vecty, counter2.getConditioningCounts( id4 ),
-                                  {3, 2, 1} ) );
-        TS_ASSERT( compare_vect3( vecty, counter2.getConditioningCounts( id5 ),
-                                  {1, 3, 2} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter2.getConditioningCounts( id1 ), {1, 2, 3} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter2.getConditioningCounts( id2 ), {2, 1, 3} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter2.getConditioningCounts( id3 ), {3, 1, 2} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter2.getConditioningCounts( id4 ), {3, 2, 1} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter2.getConditioningCounts( id5 ), {1, 3, 2} ) );
 
         MyCounter counter3( counter2 );
 
@@ -220,16 +221,16 @@ namespace gum_tests {
         TS_ASSERT(
             compare_vect3( vectx, counter3.getAllCounts( id5 ), {1, 3, 2} ) );
 
-        TS_ASSERT( compare_vect3( vecty, counter3.getConditioningCounts( id1 ),
-                                  {1, 2, 3} ) );
-        TS_ASSERT( compare_vect3( vecty, counter3.getConditioningCounts( id2 ),
-                                  {2, 1, 3} ) );
-        TS_ASSERT( compare_vect3( vecty, counter3.getConditioningCounts( id3 ),
-                                  {3, 1, 2} ) );
-        TS_ASSERT( compare_vect3( vecty, counter3.getConditioningCounts( id4 ),
-                                  {3, 2, 1} ) );
-        TS_ASSERT( compare_vect3( vecty, counter3.getConditioningCounts( id5 ),
-                                  {1, 3, 2} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter3.getConditioningCounts( id1 ), {1, 2, 3} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter3.getConditioningCounts( id2 ), {2, 1, 3} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter3.getConditioningCounts( id3 ), {3, 1, 2} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter3.getConditioningCounts( id4 ), {3, 2, 1} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter3.getConditioningCounts( id5 ), {1, 3, 2} ) );
 
         MyCounter counter4( std::move( counter2 ) );
 
@@ -244,16 +245,16 @@ namespace gum_tests {
         TS_ASSERT(
             compare_vect3( vectx, counter4.getAllCounts( id5 ), {1, 3, 2} ) );
 
-        TS_ASSERT( compare_vect3( vecty, counter4.getConditioningCounts( id1 ),
-                                  {1, 2, 3} ) );
-        TS_ASSERT( compare_vect3( vecty, counter4.getConditioningCounts( id2 ),
-                                  {2, 1, 3} ) );
-        TS_ASSERT( compare_vect3( vecty, counter4.getConditioningCounts( id3 ),
-                                  {3, 1, 2} ) );
-        TS_ASSERT( compare_vect3( vecty, counter4.getConditioningCounts( id4 ),
-                                  {3, 2, 1} ) );
-        TS_ASSERT( compare_vect3( vecty, counter4.getConditioningCounts( id5 ),
-                                  {1, 3, 2} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter4.getConditioningCounts( id1 ), {1, 2, 3} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter4.getConditioningCounts( id2 ), {2, 1, 3} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter4.getConditioningCounts( id3 ), {3, 1, 2} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter4.getConditioningCounts( id4 ), {3, 2, 1} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter4.getConditioningCounts( id5 ), {1, 3, 2} ) );
       }
 
       counter.clear();
@@ -284,16 +285,16 @@ namespace gum_tests {
         TS_ASSERT(
             compare_vect3( vectx, counter2.getAllCounts( id5 ), {1, 3, 2} ) );
 
-        TS_ASSERT( compare_vect3( vecty, counter2.getConditioningCounts( id1 ),
-                                  {1, 2, 3} ) );
-        TS_ASSERT( compare_vect3( vecty, counter2.getConditioningCounts( id2 ),
-                                  {2, 1, 3} ) );
-        TS_ASSERT( compare_vect3( vecty, counter2.getConditioningCounts( id3 ),
-                                  {3, 1, 2} ) );
-        TS_ASSERT( compare_vect3( vecty, counter2.getConditioningCounts( id4 ),
-                                  {3, 2, 1} ) );
-        TS_ASSERT( compare_vect3( vecty, counter2.getConditioningCounts( id5 ),
-                                  {1, 3, 2} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter2.getConditioningCounts( id1 ), {1, 2, 3} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter2.getConditioningCounts( id2 ), {2, 1, 3} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter2.getConditioningCounts( id3 ), {3, 1, 2} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter2.getConditioningCounts( id4 ), {3, 2, 1} ) );
+        TS_ASSERT( compare_vect3(
+            vecty, counter2.getConditioningCounts( id5 ), {1, 3, 2} ) );
       }
     }
 
@@ -308,8 +309,7 @@ namespace gum_tests {
             index1 = i * ( 1 << ( order[0] - 1 ) ) +
                      j * ( 1 << ( order[1] - 1 ) ) +
                      k * ( 1 << ( order[2] - 1 ) );
-            if ( v1[index1] != v2[index2] )
-              return false;
+            if ( v1[index1] != v2[index2] ) return false;
           }
         }
       }
@@ -326,8 +326,7 @@ namespace gum_tests {
           index2 = i + j * 2;
           index1 =
               i * ( 1 << ( order[0] - 1 ) ) + j * ( 1 << ( order[1] - 1 ) );
-          if ( v1[index1] != v2[index2] )
-            return false;
+          if ( v1[index1] != v2[index2] ) return false;
         }
       }
 

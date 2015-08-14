@@ -41,9 +41,11 @@ namespace gum {
     template <typename STRUCT_CONSTRAINT>
     GraphChangesGenerator4K2<STRUCT_CONSTRAINT>::GraphChangesGenerator4K2(
         const GraphChangesGenerator4K2& from )
-        : _graph( from._graph ), _constraint( from._constraint ),
-          _order( from._order ), _legal_changes( from._legal_changes ),
-          __max_threads_number( from.__max_threads_number ) {
+        : _graph( from._graph )
+        , _constraint( from._constraint )
+        , _order( from._order )
+        , _legal_changes( from._legal_changes )
+        , __max_threads_number( from.__max_threads_number ) {
       GUM_CONS_CPY( GraphChangesGenerator4K2 );
     }
 
@@ -51,10 +53,11 @@ namespace gum {
     template <typename STRUCT_CONSTRAINT>
     GraphChangesGenerator4K2<STRUCT_CONSTRAINT>::GraphChangesGenerator4K2(
         GraphChangesGenerator4K2&& from )
-        : _graph( std::move( from._graph ) ), _constraint( from._constraint ),
-          _order( std::move( from._order ) ),
-          _legal_changes( std::move( from._legal_changes ) ),
-          __max_threads_number( from.__max_threads_number ) {
+        : _graph( std::move( from._graph ) )
+        , _constraint( from._constraint )
+        , _order( std::move( from._order ) )
+        , _legal_changes( std::move( from._legal_changes ) )
+        , __max_threads_number( from.__max_threads_number ) {
       GUM_CONS_MOV( GraphChangesGenerator4K2 );
     }
 
@@ -224,8 +227,7 @@ namespace gum {
     template <typename STRUCT_CONSTRAINT>
     INLINE void
     GraphChangesGenerator4K2<STRUCT_CONSTRAINT>::notifyGetCompleted() {
-      if ( _legal_changes.size() )
-        _legal_changes.clear();
+      if ( _legal_changes.size() ) _legal_changes.clear();
     }
 
     /// sets the maximum number of threads used to perform countings
@@ -233,8 +235,7 @@ namespace gum {
     INLINE void GraphChangesGenerator4K2<STRUCT_CONSTRAINT>::setMaxNbThreads(
         unsigned int nb ) noexcept {
 #if defined( _OPENMP ) && defined( NDEBUG )
-      if ( nb == 0 )
-        nb = getMaxNumberOfThreads();
+      if ( nb == 0 ) nb = getMaxNumberOfThreads();
       __max_threads_number = nb;
 #else
       __max_threads_number = 1;

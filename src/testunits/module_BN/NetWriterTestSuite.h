@@ -166,8 +166,22 @@ namespace gum_tests {
       const gum::Potential<double>& p5 = bn.cpt( i5 );
       {
         // FILLING PARAMS
-        const double t[16] = {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0,
-                              0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0};
+        const double t[16] = {1.0,
+                              0.0,
+                              0.0,
+                              1.0,
+                              0.0,
+                              1.0,
+                              0.0,
+                              1.0,
+                              0.0,
+                              1.0,
+                              0.0,
+                              1.0,
+                              0.0,
+                              1.0,
+                              0.0,
+                              1.0};
 
         int n = 16;
         const std::vector<double> v( t, t + n );

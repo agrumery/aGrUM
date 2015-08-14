@@ -36,10 +36,12 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
     // the general type for sets of filtered row generators
-    template <typename... Generators> class FilteredRowGeneratorSet;
+    template <typename... Generators>
+    class FilteredRowGeneratorSet;
 
     // the end of the recurive definition of sets of filtered row generators
-    template <> class FilteredRowGeneratorSet<> {
+    template <>
+    class FilteredRowGeneratorSet<> {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -166,8 +168,9 @@ namespace gum {
           const FilteredRowGeneratorSet<Generator, OtherGenerators...>& from );
 
       /// move constructor
-      FilteredRowGeneratorSet( FilteredRowGeneratorSet<
-          Generator, OtherGenerators...>&& from ) noexcept;
+      FilteredRowGeneratorSet(
+          FilteredRowGeneratorSet<Generator, OtherGenerators...>&&
+              from ) noexcept;
 
       /// destructor
       ~FilteredRowGeneratorSet() noexcept;

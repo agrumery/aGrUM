@@ -42,7 +42,8 @@ namespace gum {
       GUM_CONS_CPY( Or );
     }
 
-    template <typename GUM_SCALAR> INLINE Or<GUM_SCALAR>::~Or() {
+    template <typename GUM_SCALAR>
+    INLINE Or<GUM_SCALAR>::~Or() {
       GUM_DESTRUCTOR( Or );
     }
 
@@ -52,8 +53,10 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Idx Or<GUM_SCALAR>::_folder( const DiscreteVariable& v, Idx i1,
-                                        Idx i2, bool& stop_iteration ) const {
+    INLINE Idx Or<GUM_SCALAR>::_folder( const DiscreteVariable& v,
+                                        Idx i1,
+                                        Idx i2,
+                                        bool& stop_iteration ) const {
       if ( i1 != 1 ) {
         return (Idx)0;
       } else {

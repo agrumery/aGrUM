@@ -73,7 +73,8 @@ namespace gum {
      * methods are also inlined, otherwise, methods' calls induce virtual
      * function overheads.
      */
-    template <typename Translator> class DBRowTranslatorSetDynamic {
+    template <typename Translator>
+    class DBRowTranslatorSetDynamic {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -135,7 +136,8 @@ namespace gum {
        * from deb_cols by applying increment ColsIncr. */
       template <typename Cols,
                 typename ColsIncr = typename Make_Default_Incr<Cols>::type>
-      void insertTranslator( Cols deb_cols = Cols(), unsigned int nb_times = 1,
+      void insertTranslator( Cols deb_cols = Cols(),
+                             unsigned int nb_times = 1,
                              ColsIncr incr = ColsIncr() );
 
       /// inserts new translators at the end of the set
@@ -143,10 +145,12 @@ namespace gum {
        * insert several translators, use an nb_times different from 1. In this
        * case, the other translators will read columns of the database deduced
        * from deb_cols by applying increment ColsIncr. */
-      template <typename NewTranslator, typename Cols,
+      template <typename NewTranslator,
+                typename Cols,
                 typename ColsIncr = typename Make_Default_Incr<Cols>::type>
       void insertTranslator( const NewTranslator& translator,
-                             Cols deb_cols = Cols(), unsigned int nb_times = 1,
+                             Cols deb_cols = Cols(),
+                             unsigned int nb_times = 1,
                              ColsIncr incr = ColsIncr() );
 
       /// inserts new translators at the end of the set
@@ -155,7 +159,8 @@ namespace gum {
        * If we wish to insert several translators, use an nb_times different
        * from 1. In this case, the other translators will read columns of the
        * database deduced from deb_col by applying increment "increment". */
-      void insertTranslator( unsigned int deb_col, unsigned int nb_times = 1,
+      void insertTranslator( unsigned int deb_col,
+                             unsigned int nb_times = 1,
                              unsigned int increment = 1 );
 
       /// execute all the translations on the current database row

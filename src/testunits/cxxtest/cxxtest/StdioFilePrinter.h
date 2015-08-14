@@ -14,7 +14,8 @@
 namespace CxxTest {
   class StdioFilePrinter : public ErrorFormatter {
     public:
-    StdioFilePrinter( FILE* o, const char* preLine = ":",
+    StdioFilePrinter( FILE* o,
+                      const char* preLine = ":",
                       const char* postLine = "" )
         : ErrorFormatter( new Adapter( o ), preLine, postLine ) {}
     virtual ~StdioFilePrinter() { delete outputStream(); }
@@ -27,7 +28,8 @@ namespace CxxTest {
       FILE* _o;
 
       public:
-      Adapter( FILE* o ) : _o( o ) {}
+      Adapter( FILE* o )
+          : _o( o ) {}
       void flush() { fflush( _o ); }
       OutputStream& operator<<( unsigned i ) {
         fprintf( _o, "%u", i );

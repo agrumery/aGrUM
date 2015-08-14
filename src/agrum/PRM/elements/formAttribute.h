@@ -45,7 +45,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     class FormAttribute : public Attribute<GUM_SCALAR> {
       public:
-      FormAttribute( const Class<GUM_SCALAR>& c, const std::string& name,
+      FormAttribute( const Class<GUM_SCALAR>& c,
+                     const std::string& name,
                      const Type<GUM_SCALAR>& type,
                      MultiDimImplementation<std::string>* impl =
                          new MultiDimArray<std::string>() );

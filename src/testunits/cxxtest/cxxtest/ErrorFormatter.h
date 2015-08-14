@@ -33,10 +33,14 @@ namespace CxxTest {
 
   class ErrorFormatter : public TestListener {
     public:
-    ErrorFormatter( OutputStream* o, const char* preLine = ":",
+    ErrorFormatter( OutputStream* o,
+                    const char* preLine = ":",
                     const char* postLine = "" )
-        : _dotting( true ), _reported( false ), _o( o ), _preLine( preLine ),
-          _postLine( postLine ) {}
+        : _dotting( true )
+        , _reported( false )
+        , _o( o )
+        , _preLine( preLine )
+        , _postLine( postLine ) {}
 
     int run() {
       TestRunner::runAllTests( *this );
@@ -94,21 +98,29 @@ namespace CxxTest {
       stop( file, line ) << "Error: Test failed: " << expression << endl;
     }
 
-    void failedAssert( const char* file, unsigned line,
-                       const char* expression ) {
+    void
+    failedAssert( const char* file, unsigned line, const char* expression ) {
       stop( file, line ) << "Error: Assertion failed: " << expression << endl;
     }
 
-    void failedAssertEquals( const char* file, unsigned line, const char* xStr,
-                             const char* yStr, const char* x, const char* y ) {
+    void failedAssertEquals( const char* file,
+                             unsigned line,
+                             const char* xStr,
+                             const char* yStr,
+                             const char* x,
+                             const char* y ) {
       stop( file, line ) << "Error: Expected (" << xStr << " == " << yStr
                          << "), found (" << x << " != " << y << ")" << endl;
     }
 
-    void failedAssertSameData( const char* file, unsigned line,
-                               const char* xStr, const char* yStr,
-                               const char* sizeStr, const void* x,
-                               const void* y, unsigned size ) {
+    void failedAssertSameData( const char* file,
+                               unsigned line,
+                               const char* xStr,
+                               const char* yStr,
+                               const char* sizeStr,
+                               const void* x,
+                               const void* y,
+                               unsigned size ) {
       stop( file, line ) << "Error: Expected " << sizeStr << " (" << size
                          << ") bytes to be equal at (" << xStr << ") and ("
                          << yStr << "), found:" << endl;
@@ -117,53 +129,74 @@ namespace CxxTest {
       dump( y, size );
     }
 
-    void failedAssertDelta( const char* file, unsigned line, const char* xStr,
-                            const char* yStr, const char* dStr, const char* x,
-                            const char* y, const char* d ) {
+    void failedAssertDelta( const char* file,
+                            unsigned line,
+                            const char* xStr,
+                            const char* yStr,
+                            const char* dStr,
+                            const char* x,
+                            const char* y,
+                            const char* d ) {
       stop( file, line ) << "Error: Expected (" << xStr << " == " << yStr
                          << ") up to " << dStr << " (" << d << "), found (" << x
                          << " != " << y << ")" << endl;
     }
 
-    void failedAssertDiffers( const char* file, unsigned line, const char* xStr,
-                              const char* yStr, const char* value ) {
+    void failedAssertDiffers( const char* file,
+                              unsigned line,
+                              const char* xStr,
+                              const char* yStr,
+                              const char* value ) {
       stop( file, line ) << "Error: Expected (" << xStr << " != " << yStr
                          << "), found (" << value << ")" << endl;
     }
 
-    void failedAssertLessThan( const char* file, unsigned line,
-                               const char* xStr, const char* yStr,
-                               const char* x, const char* y ) {
+    void failedAssertLessThan( const char* file,
+                               unsigned line,
+                               const char* xStr,
+                               const char* yStr,
+                               const char* x,
+                               const char* y ) {
       stop( file, line ) << "Error: Expected (" << xStr << " < " << yStr
                          << "), found (" << x << " >= " << y << ")" << endl;
     }
 
-    void failedAssertLessThanEquals( const char* file, unsigned line,
-                                     const char* xStr, const char* yStr,
-                                     const char* x, const char* y ) {
+    void failedAssertLessThanEquals( const char* file,
+                                     unsigned line,
+                                     const char* xStr,
+                                     const char* yStr,
+                                     const char* x,
+                                     const char* y ) {
       stop( file, line ) << "Error: Expected (" << xStr << " <= " << yStr
                          << "), found (" << x << " > " << y << ")" << endl;
     }
 
-    void failedAssertRelation( const char* file, unsigned line,
-                               const char* relation, const char* xStr,
-                               const char* yStr, const char* x,
+    void failedAssertRelation( const char* file,
+                               unsigned line,
+                               const char* relation,
+                               const char* xStr,
+                               const char* yStr,
+                               const char* x,
                                const char* y ) {
       stop( file, line ) << "Error: Expected " << relation << "( " << xStr
                          << ", " << yStr << " ), found !" << relation << "( "
                          << x << ", " << y << " )" << endl;
     }
 
-    void failedAssertPredicate( const char* file, unsigned line,
-                                const char* predicate, const char* xStr,
+    void failedAssertPredicate( const char* file,
+                                unsigned line,
+                                const char* predicate,
+                                const char* xStr,
                                 const char* x ) {
       stop( file, line ) << "Error: Expected " << predicate << "( " << xStr
                          << " ), found !" << predicate << "( " << x << " )"
                          << endl;
     }
 
-    void failedAssertThrows( const char* file, unsigned line,
-                             const char* expression, const char* type,
+    void failedAssertThrows( const char* file,
+                             unsigned line,
+                             const char* expression,
+                             const char* type,
                              bool otherThrown ) {
       stop( file, line ) << "Error: Expected (" << expression << ") to throw ("
                          << type << ") but it "
@@ -171,7 +204,8 @@ namespace CxxTest {
                                           : "didn't throw" ) << endl;
     }
 
-    void failedAssertThrowsNot( const char* file, unsigned line,
+    void failedAssertThrowsNot( const char* file,
+                                unsigned line,
                                 const char* expression ) {
       stop( file, line ) << "Error: Expected (" << expression
                          << ") not to throw, but it did" << endl;
@@ -198,8 +232,7 @@ namespace CxxTest {
     }
 
     void reportTest( void ) {
-      if ( _reported )
-        return;
+      if ( _reported ) return;
 
       ( *_o ) << "In " << tracker().suite().suiteName()
               << "::" << tracker().test().testName() << ":" << endl;
@@ -218,8 +251,7 @@ namespace CxxTest {
     void dumpBuffer( const void* buffer, unsigned size ) {
       unsigned dumpSize = size;
 
-      if ( maxDumpSize() && dumpSize > maxDumpSize() )
-        dumpSize = maxDumpSize();
+      if ( maxDumpSize() && dumpSize > maxDumpSize() ) dumpSize = maxDumpSize();
 
       const unsigned char* p = (const unsigned char*)buffer;
       ( *_o ) << "   { ";
@@ -227,8 +259,7 @@ namespace CxxTest {
       for ( unsigned i = 0; i < dumpSize; ++i )
         ( *_o ) << byteToHex( *p++ ) << " ";
 
-      if ( dumpSize < size )
-        ( *_o ) << "... ";
+      if ( dumpSize < size ) ( *_o ) << "... ";
 
       ( *_o ) << "}" << endl;
     }

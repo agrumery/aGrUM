@@ -54,7 +54,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE InstanceBayesNet<GUM_SCALAR>::InstanceBayesNet(
         const Instance<GUM_SCALAR>& i )
-        : IBayesNet<GUM_SCALAR>(), __inst( &i ) {
+        : IBayesNet<GUM_SCALAR>()
+        , __inst( &i ) {
       GUM_CONSTRUCTOR( InstanceBayesNet );
       __init( i );
     }
@@ -62,8 +63,9 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE InstanceBayesNet<GUM_SCALAR>::InstanceBayesNet(
         const InstanceBayesNet& from )
-        : IBayesNet<GUM_SCALAR>( from ), __varNodeMap( from.__varNodeMap ),
-          __inst( from.__inst ) {
+        : IBayesNet<GUM_SCALAR>( from )
+        , __varNodeMap( from.__varNodeMap )
+        , __inst( from.__inst ) {
       GUM_CONS_CPY( InstanceBayesNet );
     }
 

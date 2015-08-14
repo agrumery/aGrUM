@@ -107,7 +107,8 @@ namespace gum {
 
       class UTF8Buffer : public Buffer {
         public:
-        UTF8Buffer( Buffer* b ) : Buffer( b ){};
+        UTF8Buffer( Buffer* b )
+            : Buffer( b ){};
         virtual int Read();
       };
 
@@ -275,7 +276,8 @@ namespace gum {
 
         Buffer* buffer;  // scanner buffer
 
-        Scanner( const unsigned char* buf, int len,
+        Scanner( const unsigned char* buf,
+                 int len,
                  std::string filename = "anonymous buffer",
                  bool trace = false );
         Scanner( const char* fileName, bool trace = false );

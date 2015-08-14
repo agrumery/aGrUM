@@ -38,11 +38,12 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE Apriori<IdSetAlloc, CountAlloc>::Apriori(
         const Apriori<IdSetAlloc, CountAlloc>& from )
-        : _weight( from._weight ), _modalities( from._modalities ),
-          _unapriori_counts( from._unapriori_counts ),
-          _target_nodesets( from._target_nodesets ),
-          _conditioning_nodesets( from._conditioning_nodesets ),
-          _apriori_counts( from._apriori_counts ) {
+        : _weight( from._weight )
+        , _modalities( from._modalities )
+        , _unapriori_counts( from._unapriori_counts )
+        , _target_nodesets( from._target_nodesets )
+        , _conditioning_nodesets( from._conditioning_nodesets )
+        , _apriori_counts( from._apriori_counts ) {
       GUM_CONS_CPY( Apriori );
     }
 
@@ -50,12 +51,12 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE Apriori<IdSetAlloc, CountAlloc>::Apriori(
         Apriori<IdSetAlloc, CountAlloc>&& from )
-        : _weight( std::move( from._weight ) ),
-          _modalities( std::move( from._modalities ) ),
-          _unapriori_counts( std::move( from._unapriori_counts ) ),
-          _target_nodesets( std::move( from._target_nodesets ) ),
-          _conditioning_nodesets( std::move( from._conditioning_nodesets ) ),
-          _apriori_counts( std::move( from._apriori_counts ) ) {
+        : _weight( std::move( from._weight ) )
+        , _modalities( std::move( from._modalities ) )
+        , _unapriori_counts( std::move( from._unapriori_counts ) )
+        , _target_nodesets( std::move( from._target_nodesets ) )
+        , _conditioning_nodesets( std::move( from._conditioning_nodesets ) )
+        , _apriori_counts( std::move( from._apriori_counts ) ) {
       GUM_CONS_MOV( Apriori );
     }
 

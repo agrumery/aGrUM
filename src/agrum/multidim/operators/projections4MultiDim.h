@@ -169,7 +169,8 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   MultiDimArray<GUM_SCALAR>* ProjectFuncMultiDimArray(
-      const MultiDimArray<GUM_SCALAR>* t1, const MultiDimArray<GUM_SCALAR>* t2,
+      const MultiDimArray<GUM_SCALAR>* t1,
+      const MultiDimArray<GUM_SCALAR>* t2,
       const GUM_SCALAR ( *f )( const GUM_SCALAR&, const GUM_SCALAR& ) );
 
   template <typename GUM_SCALAR>
@@ -336,11 +337,13 @@ namespace gum {
 
   /** @brief the function used to register all the projection operators on
    * multidimImplementations over non-pointers types */
-  template <typename GUM_SCALAR> void projections4MultiDimInit();
+  template <typename GUM_SCALAR>
+  void projections4MultiDimInit();
 
   /** @brief the function used to register all the projections on
    * multidimImplementations over pointers types */
-  template <typename GUM_SCALAR> void pointerProjections4MultiDimInit();
+  template <typename GUM_SCALAR>
+  void pointerProjections4MultiDimInit();
 
   /// a class used to register projections over non-pointers types
   /** This class is of course completely redundant with function
@@ -353,7 +356,8 @@ namespace gum {
    * projections4MultiDimInit, we allow this partial specialization. This is
    * most effective to produce different codes for pointer types and non-pointer
    * types. */
-  template <typename GUM_SCALAR> struct Projections4MultiDimInitialize {
+  template <typename GUM_SCALAR>
+  struct Projections4MultiDimInitialize {
     void init() { projections4MultiDimInit<GUM_SCALAR>(); };
   };
 

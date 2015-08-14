@@ -61,7 +61,8 @@ namespace gum {
   template <typename T>
   NodeId GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION(
       NonOrderedOperatorData<T>& opData,
-      const DiscreteVariable* leaderParentVar, std::string tabu ) {
+      const DiscreteVariable* leaderParentVar,
+      std::string tabu ) {
 
     GUM_TRACE( tabu << std::setprecision( 20 ) << "PRUNNING EVALUATION : " );
     GUM_TRACE( tabu << std::setprecision( 20 )
@@ -151,8 +152,7 @@ namespace gum {
               const std::vector<Idx>* usedModalities =
                   opData.DD2->variableUsedModalities( preneededVar );
 
-              if ( usedModalities == nullptr )
-                continue;
+              if ( usedModalities == nullptr ) continue;
 
               GUM_TRACE( tabu
                          << std::setprecision( 20 )
@@ -206,8 +206,8 @@ namespace gum {
                   nodeCount[defaultSon] += defaultDomainSize;
               }
 
-              newNode = insertNonTerminalNode( opData, preneededVar, sonsIds,
-                                               defaultSon, nodeCount );
+              newNode = insertNonTerminalNode(
+                  opData, preneededVar, sonsIds, defaultSon, nodeCount );
 
               GUM_TRACE( tabu << std::setprecision( 20 )
                               << "KEY INSERTION : " );
@@ -367,8 +367,11 @@ namespace gum {
         }
 
         newNode = insertNonTerminalNode(
-            opData, opData.DD1->nodeVariable( leaderCurrentNode ), sonsIds,
-            defaultSon, nodeCount );
+            opData,
+            opData.DD1->nodeVariable( leaderCurrentNode ),
+            sonsIds,
+            defaultSon,
+            nodeCount );
 
         GUM_TRACE( tabu << std::setprecision( 20 ) << "KEY INSERTION : " );
         opData.conti.setDD1Node( leaderCurrentNode );
@@ -399,7 +402,8 @@ namespace gum {
   template <typename T>
   NodeId GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION(
       NonOrderedOperatorData<T>& opData,
-      const DiscreteVariable* leaderParentVar, std::string tabu ) {
+      const DiscreteVariable* leaderParentVar,
+      std::string tabu ) {
 
     NodeId newNode = 0;
     GUM_TRACE( tabu << std::setprecision( 20 )
@@ -499,9 +503,12 @@ namespace gum {
 
     // ********************************************************************************************************
     // And we finally add this node to our resulting graph
-    newNode = insertNonTerminalNode(
-        opData, opData.DD1->nodeVariable( leaderCurrentNode ), sonsIds,
-        defaultSon, nodeCount );
+    newNode =
+        insertNonTerminalNode( opData,
+                               opData.DD1->nodeVariable( leaderCurrentNode ),
+                               sonsIds,
+                               defaultSon,
+                               nodeCount );
 
     GUM_TRACE( tabu << std::setprecision( 20 ) << "KEY INSERTION : " );
     opData.conti.setDD1Node( leaderCurrentNode );
@@ -530,7 +537,8 @@ namespace gum {
   template <typename T>
   NodeId GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION(
       NonOrderedOperatorData<T>& opData,
-      const DiscreteVariable* leaderParentVar, std::string tabu ) {
+      const DiscreteVariable* leaderParentVar,
+      std::string tabu ) {
 
     GUM_TRACE( tabu << std::setprecision( 20 )
                     << "GoDownFollower - Noeud leader : "
@@ -646,8 +654,8 @@ namespace gum {
       }
 
       // And we had this node to our graph
-      newNode = insertNonTerminalNode( opData, followerCurrentVar, sonsIds,
-                                       defaultSon, nodeCount );
+      newNode = insertNonTerminalNode(
+          opData, followerCurrentVar, sonsIds, defaultSon, nodeCount );
 
       GUM_TRACE( tabu << std::setprecision( 20 ) << "KEY INSERTION : " );
       opData.conti.setDD2Node( followerCurrentNode );

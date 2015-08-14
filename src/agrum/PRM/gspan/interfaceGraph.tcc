@@ -32,17 +32,20 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE NodeData<GUM_SCALAR>::NodeData()
-          : n( 0 ), l( 0 ) {
+          : n( 0 )
+          , l( 0 ) {
         GUM_CONSTRUCTOR( NodeData );
       }
 
       template <typename GUM_SCALAR>
       INLINE NodeData<GUM_SCALAR>::NodeData( const NodeData<GUM_SCALAR>& from )
-          : n( from.n ), l( from.l ) {
+          : n( from.n )
+          , l( from.l ) {
         GUM_CONS_CPY( NodeData );
       }
 
-      template <typename GUM_SCALAR> INLINE NodeData<GUM_SCALAR>::~NodeData() {
+      template <typename GUM_SCALAR>
+      INLINE NodeData<GUM_SCALAR>::~NodeData() {
         GUM_DESTRUCTOR( NodeData );
       }
 
@@ -62,17 +65,22 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE EdgeData<GUM_SCALAR>::EdgeData()
-          : u( 0 ), v( 0 ), l( 0 ) {
+          : u( 0 )
+          , v( 0 )
+          , l( 0 ) {
         GUM_CONSTRUCTOR( EdgeData );
       }
 
       template <typename GUM_SCALAR>
       INLINE EdgeData<GUM_SCALAR>::EdgeData( const EdgeData<GUM_SCALAR>& from )
-          : u( from.u ), v( from.v ), l( from.l ) {
+          : u( from.u )
+          , v( from.v )
+          , l( from.l ) {
         GUM_CONS_CPY( EdgeData );
       }
 
-      template <typename GUM_SCALAR> INLINE EdgeData<GUM_SCALAR>::~EdgeData() {
+      template <typename GUM_SCALAR>
+      INLINE EdgeData<GUM_SCALAR>::~EdgeData() {
         GUM_DESTRUCTOR( EdgeData );
       }
 
@@ -95,8 +103,10 @@ namespace gum {
       template <typename GUM_SCALAR>
       InterfaceGraph<GUM_SCALAR>::InterfaceGraph(
           const System<GUM_SCALAR>& sys )
-          : __sys( &sys ), __labels( new Bijection<Idx, LabelData*>() ),
-            __counter( 0 ), __erase_flag( true ) {
+          : __sys( &sys )
+          , __labels( new Bijection<Idx, LabelData*>() )
+          , __counter( 0 )
+          , __erase_flag( true ) {
         GUM_CONSTRUCTOR( InterfaceGraph );
         HashTable<std::string, LabelData*> label_map;
 
@@ -141,12 +151,16 @@ namespace gum {
       template <typename GUM_SCALAR>
       InterfaceGraph<GUM_SCALAR>::InterfaceGraph(
           const InterfaceGraph<GUM_SCALAR>& source )
-          : __sys( source.__sys ), __graph( source.__graph ),
-            __nodes( source.__nodes ), __idMap( source.__idMap ),
-            __edges( source.__edges ),
-            __labels( new Bijection<Idx, LabelData*>( *( source.__labels ) ) ),
-            __nodeMap( source.__nodeMap ), __edgeMap( source.__edgeMap ),
-            __counter( source.__counter ), __erase_flag( false ) {
+          : __sys( source.__sys )
+          , __graph( source.__graph )
+          , __nodes( source.__nodes )
+          , __idMap( source.__idMap )
+          , __edges( source.__edges )
+          , __labels( new Bijection<Idx, LabelData*>( *( source.__labels ) ) )
+          , __nodeMap( source.__nodeMap )
+          , __edgeMap( source.__edgeMap )
+          , __counter( source.__counter )
+          , __erase_flag( false ) {
         GUM_CONS_CPY( InterfaceGraph );
       }
 

@@ -44,9 +44,11 @@ namespace gum {
           _output_row( translator._output_row ) {
       GUM_CONS_CPY( DBCellTranslator );
 
-      memcpy( _input_cols, translator._input_cols,
+      memcpy( _input_cols,
+              translator._input_cols,
               Nb_inputs * sizeof( unsigned int ) );
-      memcpy( _output_cols, translator._output_cols,
+      memcpy( _output_cols,
+              translator._output_cols,
               Nb_outputs * sizeof( unsigned int ) );
     }
 
@@ -58,9 +60,11 @@ namespace gum {
           _output_row( translator._output_row ) {
       GUM_CONS_MOV( DBCellTranslator );
 
-      memcpy( _input_cols, translator._input_cols,
+      memcpy( _input_cols,
+              translator._input_cols,
               Nb_inputs * sizeof( unsigned int ) );
-      memcpy( _output_cols, translator._output_cols,
+      memcpy( _output_cols,
+              translator._output_cols,
               Nb_outputs * sizeof( unsigned int ) );
     }
 
@@ -79,9 +83,11 @@ namespace gum {
       if ( this != &translator ) {
         _input_row = translator._input_row;
         _output_row = translator._output_row;
-        memcpy( _input_cols, translator._input_cols,
+        memcpy( _input_cols,
+                translator._input_cols,
                 Nb_inputs * sizeof( unsigned int ) );
-        memcpy( _output_cols, translator._output_cols,
+        memcpy( _output_cols,
+                translator._output_cols,
                 Nb_outputs * sizeof( unsigned int ) );
       }
       return *this;
@@ -95,9 +101,11 @@ namespace gum {
       if ( this != &translator ) {
         _input_row = translator._input_row;
         _output_row = translator._output_row;
-        memcpy( _input_cols, translator._input_cols,
+        memcpy( _input_cols,
+                translator._input_cols,
                 Nb_inputs * sizeof( unsigned int ) );
-        memcpy( _output_cols, translator._output_cols,
+        memcpy( _output_cols,
+                translator._output_cols,
                 Nb_outputs * sizeof( unsigned int ) );
       }
       return *this;

@@ -138,25 +138,31 @@ namespace gum {
 
       /// @{
 
-      void __eliminateNodes( const Instance<GUM_SCALAR>* query, NodeId id,
-                             BucketSet& pool, BucketSet& trash );
+      void __eliminateNodes( const Instance<GUM_SCALAR>* query,
+                             NodeId id,
+                             BucketSet& pool,
+                             BucketSet& trash );
 
       void
       __eliminateNodesDownward( const Instance<GUM_SCALAR>* from,
-                                const Instance<GUM_SCALAR>* i, BucketSet& pool,
+                                const Instance<GUM_SCALAR>* i,
+                                BucketSet& pool,
                                 BucketSet& trash,
                                 List<const Instance<GUM_SCALAR>*>& elim_list,
                                 Set<const Instance<GUM_SCALAR>*>& ignore );
 
       void __eliminateNodesUpward( const Instance<GUM_SCALAR>* i,
-                                   BucketSet& pool, BucketSet& trash,
+                                   BucketSet& pool,
+                                   BucketSet& trash,
                                    List<const Instance<GUM_SCALAR>*>& elim_list,
                                    Set<const Instance<GUM_SCALAR>*>& ignore );
 
       void __eliminateNodesWithEvidence( const Instance<GUM_SCALAR>* i,
-                                         BucketSet& pool, BucketSet& trash );
+                                         BucketSet& pool,
+                                         BucketSet& trash );
 
-      void __insertLiftedNodes( const Instance<GUM_SCALAR>* i, BucketSet& pool,
+      void __insertLiftedNodes( const Instance<GUM_SCALAR>* i,
+                                BucketSet& pool,
                                 BucketSet& trash );
 
       /// Returns true if second can be eliminated before first.
@@ -185,7 +191,8 @@ namespace gum {
                              List<const Instance<GUM_SCALAR>*>& elim_list,
                              List<const Instance<GUM_SCALAR>*>& reduced_list,
                              Set<const Instance<GUM_SCALAR>*>& ignore,
-                             BucketSet& pool, BucketSet& trash );
+                             BucketSet& pool,
+                             BucketSet& trash );
 
       std::string __trim( const std::string& s );
       /// @}

@@ -48,7 +48,8 @@ namespace gum {
   }
 
   /// destructor
-  template <typename GUM_SCALAR> SchedulerBasic<GUM_SCALAR>::~SchedulerBasic() {
+  template <typename GUM_SCALAR>
+  SchedulerBasic<GUM_SCALAR>::~SchedulerBasic() {
     // for debugging purposes
     GUM_DESTRUCTOR( SchedulerBasic );
   }
@@ -66,7 +67,8 @@ namespace gum {
 
     while ( !available.empty() ) {
       for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();
-            iter != available.endSafe(); ++iter ) {
+            iter != available.endSafe();
+            ++iter ) {
         schedule.execute( *iter );
       }
     }
@@ -82,7 +84,8 @@ namespace gum {
 
     while ( !available.empty() && k ) {
       for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();
-            iter != available.endSafe() && k; ++iter, --k ) {
+            iter != available.endSafe() && k;
+            ++iter, --k ) {
         schedule.execute( *iter );
       }
     }
@@ -101,14 +104,16 @@ namespace gum {
 
     while ( !available.empty() ) {
       for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();
-            iter != available.endSafe(); ++iter ) {
+            iter != available.endSafe();
+            ++iter ) {
         NodeId id = *iter;
         nb_operations += schedule.nbOperations( id );
         const NodeSet& children = dag.children( id );
 
         for ( typename NodeSet::const_iterator_safe iter_children =
                   children.beginSafe();
-              iter_children != children.endSafe(); ++iter_children ) {
+              iter_children != children.endSafe();
+              ++iter_children ) {
           if ( dag.parents( *iter_children ).size() == 1 ) {
             available.insert( *iter_children );
           }
@@ -133,14 +138,16 @@ namespace gum {
 
     while ( !available.empty() && k ) {
       for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();
-            iter != available.endSafe() && k; ++iter, --k ) {
+            iter != available.endSafe() && k;
+            ++iter, --k ) {
         NodeId id = *iter;
         nb_operations += schedule.nbOperations( id );
         const NodeSet& children = dag.children( id );
 
         for ( typename NodeSet::const_iterator_safe iter_children =
                   children.beginSafe();
-              iter_children != children.endSafe(); ++iter_children ) {
+              iter_children != children.endSafe();
+              ++iter_children ) {
           if ( dag.parents( *iter_children ).size() == 1 ) {
             available.insert( *iter_children );
           }
@@ -165,7 +172,8 @@ namespace gum {
 
     while ( !available.empty() ) {
       for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();
-            iter != available.endSafe(); ++iter ) {
+            iter != available.endSafe();
+            ++iter ) {
         NodeId id = *iter;
 
         std::pair<long, long> mem_op = schedule.memoryUsage( id );
@@ -186,7 +194,8 @@ namespace gum {
 
         for ( typename NodeSet::const_iterator_safe iter_children =
                   children.beginSafe();
-              iter_children != children.endSafe(); ++iter_children ) {
+              iter_children != children.endSafe();
+              ++iter_children ) {
           if ( dag.parents( *iter_children ).size() == 1 ) {
             available.insert( *iter_children );
           }
@@ -213,7 +222,8 @@ namespace gum {
 
     while ( !available.empty() && k ) {
       for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();
-            iter != available.endSafe() && k; ++iter, --k ) {
+            iter != available.endSafe() && k;
+            ++iter, --k ) {
         NodeId id = *iter;
 
         std::pair<long, long> mem_op = schedule.memoryUsage( id );
@@ -234,7 +244,8 @@ namespace gum {
 
         for ( typename NodeSet::const_iterator_safe iter_children =
                   children.beginSafe();
-              iter_children != children.endSafe(); ++iter_children ) {
+              iter_children != children.endSafe();
+              ++iter_children ) {
           if ( dag.parents( *iter_children ).size() == 1 ) {
             available.insert( *iter_children );
           }

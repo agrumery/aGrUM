@@ -43,7 +43,8 @@ namespace gum {
   class O3prmBNReader : public BNReader<GUM_SCALAR> {
     public:
     O3prmBNReader( BayesNet<GUM_SCALAR>* bn, const std::string& filename );
-    O3prmBNReader( BayesNet<GUM_SCALAR>* bn, const std::string& filename,
+    O3prmBNReader( BayesNet<GUM_SCALAR>* bn,
+                   const std::string& filename,
                    const std::string& entityName );
 
     ~O3prmBNReader();

@@ -34,39 +34,42 @@
 
 
 namespace gum {
-  
-  // Fill 'requisite' with the requisite nodes in dag given a query and evidence.
+
+  // Fill 'requisite' with the requisite nodes in dag given a query and
+  // evidence.
   void dSeparation::requisiteNodes( const DAG& dag,
                                     const NodeSet& query,
                                     const NodeSet& hardEvidence,
                                     const NodeSet& softEvidence,
                                     NodeSet& requisite ) {
     // for the moment, no node is requisite
-    requisite.clear ();
-    
+    requisite.clear();
+
     // mark the set of ancestors of the evidence
-    NodeSet ev_ancestors ( dag.size() );
+    NodeSet ev_ancestors( dag.size() );
     {
       List<NodeId> anc_to_visit;
-      for ( const auto node : hardEvidence ) anc_to_visit.insert ( node );
-      for ( const auto node : softEvidence ) anc_to_visit.insert ( node );
-      while ( ! anc_to_visit.empty () ) {
-        const NodeId node = anc_to_visit.front ();
-        anc_to_visit.popFront ();
+      for ( const auto node : hardEvidence )
+        anc_to_visit.insert( node );
+      for ( const auto node : softEvidence )
+        anc_to_visit.insert( node );
+      while ( !anc_to_visit.empty() ) {
+        const NodeId node = anc_to_visit.front();
+        anc_to_visit.popFront();
 
-        if ( ! ev_ancestors.exists ( node ) ) {
-          ev_ancestors.insert ( node );
-          for ( const auto par : dag.parents ( node ) ) {
-            anc_to_visit.insert ( par );
+        if ( !ev_ancestors.exists( node ) ) {
+          ev_ancestors.insert( node );
+          for ( const auto par : dag.parents( node ) ) {
+            anc_to_visit.insert( par );
           }
         }
       }
     }
-    
+
     // create the marks indicating that we have visited a node
-    NodeSet visited_from_child  ( dag.size() );
-    NodeSet visited_from_parent ( dag.size() );
- 
+    NodeSet visited_from_child( dag.size() );
+    NodeSet visited_from_parent( dag.size() );
+
     // indicate that we will send the ball to all the query nodes (as children):
     // in list nodes_to_visit, the first element is the next node to send the
     // ball to and the Boolean indicates whether we shall reach it from one of
@@ -78,7 +81,7 @@ namespace gum {
 
     // perform the bouncing ball until there is no node in the graph to send
     // the ball to
-    while ( ! nodes_to_visit.empty() ) {
+    while ( !nodes_to_visit.empty() ) {
       // get the next node to visit
       const NodeId node = nodes_to_visit.front().first;
       const bool direction = nodes_to_visit.front().second;
@@ -87,28 +90,27 @@ namespace gum {
       // check if the node has not already been visited in the same direction
       bool already_visited;
       if ( direction ) {
-        already_visited = visited_from_child.exists ( node );
-        if ( ! already_visited ) {
-          visited_from_child.insert ( node );
+        already_visited = visited_from_child.exists( node );
+        if ( !already_visited ) {
+          visited_from_child.insert( node );
         }
-      }
-      else {
-        already_visited = visited_from_parent.exists ( node );
-        if ( ! already_visited ) {
-          visited_from_parent.insert ( node );
+      } else {
+        already_visited = visited_from_parent.exists( node );
+        if ( !already_visited ) {
+          visited_from_parent.insert( node );
         }
       }
 
       // if this is the first time we meet the node, then visit it
-      if ( ! already_visited ) {
+      if ( !already_visited ) {
         // mark the node as reachable if this is not a hard evidence
         const bool is_hard_evidence = hardEvidence.exists( node );
-        if ( ! is_hard_evidence ) {
-          requisite.insert ( node );
+        if ( !is_hard_evidence ) {
+          requisite.insert( node );
         }
-        
+
         // bounce the ball toward the neighbors
-        if ( direction && ! is_hard_evidence ) { // visit from a child
+        if ( direction && !is_hard_evidence ) {  // visit from a child
           // visit the parents
           for ( const auto par : dag.parents( node ) ) {
             nodes_to_visit.insert( std::pair<NodeId, bool>( par, true ) );
@@ -118,15 +120,14 @@ namespace gum {
           for ( const auto chi : dag.children( node ) ) {
             nodes_to_visit.insert( std::pair<NodeId, bool>( chi, false ) );
           }
-        }
-        else {  // visit from a parent
-          if ( ! hardEvidence.exists( node ) ) {
+        } else {  // visit from a parent
+          if ( !hardEvidence.exists( node ) ) {
             // visit the children
             for ( const auto chi : dag.children( node ) ) {
               nodes_to_visit.insert( std::pair<NodeId, bool>( chi, false ) );
             }
           }
-          if ( ev_ancestors.exists ( node ) ) {
+          if ( ev_ancestors.exists( node ) ) {
             // visit the parents
             for ( const auto par : dag.parents( node ) ) {
               nodes_to_visit.insert( std::pair<NodeId, bool>( par, true ) );
@@ -137,7 +138,5 @@ namespace gum {
     }
   }
 
-
-       
 
 } /* namespace gum */

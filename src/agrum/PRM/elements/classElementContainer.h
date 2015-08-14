@@ -40,8 +40,10 @@
 namespace gum {
   namespace prm {
 
-    template <typename GUM_SCALAR> class Class;
-    template <typename GUM_SCALAR> class Interface;
+    template <typename GUM_SCALAR>
+    class Class;
+    template <typename GUM_SCALAR>
+    class Interface;
     class ClassElementContainterIterator;
     class ClassElementContainterConstIterator;
 

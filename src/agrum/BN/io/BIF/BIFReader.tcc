@@ -52,20 +52,18 @@ namespace gum {
     }
   }
 
-  template <typename GUM_SCALAR> BIFReader<GUM_SCALAR>::~BIFReader() {
+  template <typename GUM_SCALAR>
+  BIFReader<GUM_SCALAR>::~BIFReader() {
     GUM_DESTRUCTOR( BIFReader );
 
     if ( !__ioerror ) {
       // this could lead to memory leak !!
-      if ( __parser )
-        delete ( __parser );
+      if ( __parser ) delete ( __parser );
 
-      if ( __scanner )
-        delete ( __scanner );
+      if ( __scanner ) delete ( __scanner );
     }
 
-    if ( __factory )
-      delete ( __factory );
+    if ( __factory ) delete ( __factory );
   }
 
   template <typename GUM_SCALAR>
@@ -93,7 +91,8 @@ namespace gum {
     scanner().setTrace( b );
   }
 
-  template <typename GUM_SCALAR> int BIFReader<GUM_SCALAR>::proceed( void ) {
+  template <typename GUM_SCALAR>
+  int BIFReader<GUM_SCALAR>::proceed( void ) {
     if ( __ioerror ) {
       GUM_ERROR( gum::IOError, "No such file " + streamName() );
     }
@@ -178,11 +177,13 @@ namespace gum {
     }
   }
 
-  template <typename GUM_SCALAR> INLINE Size BIFReader<GUM_SCALAR>::errors() {
+  template <typename GUM_SCALAR>
+  INLINE Size BIFReader<GUM_SCALAR>::errors() {
     return ( !__parseDone ) ? (Size)0 : __parser->errors().error_count;
   }
 
-  template <typename GUM_SCALAR> INLINE Size BIFReader<GUM_SCALAR>::warnings() {
+  template <typename GUM_SCALAR>
+  INLINE Size BIFReader<GUM_SCALAR>::warnings() {
     return ( !__parseDone ) ? (Size)0 : __parser->errors().warning_count;
   }
 

@@ -46,11 +46,9 @@ namespace gum_tests {
       gum::Idx tmp;
       tmp = b;
 
-      if ( tmp > c )
-        tmp = c;
+      if ( tmp > c ) tmp = c;
 
-      if ( tmp > d )
-        tmp = d;
+      if ( tmp > d ) tmp = d;
 
       return ( tmp == a ) ? (float)1 : (float)0;
     }
@@ -59,11 +57,9 @@ namespace gum_tests {
       gum::Idx tmp;
       tmp = b;
 
-      if ( tmp < c )
-        tmp = c;
+      if ( tmp < c ) tmp = c;
 
-      if ( tmp < d )
-        tmp = d;
+      if ( tmp < d ) tmp = d;
 
       return ( tmp == a ) ? (float)1 : (float)0;
     }
@@ -72,14 +68,11 @@ namespace gum_tests {
       gum::Idx tmp;
       tmp = (gum::Idx)0;
 
-      if ( b == (gum::Idx)2 )
-        tmp++;
+      if ( b == (gum::Idx)2 ) tmp++;
 
-      if ( c == (gum::Idx)2 )
-        tmp++;
+      if ( c == (gum::Idx)2 ) tmp++;
 
-      if ( d == (gum::Idx)2 )
-        tmp++;
+      if ( d == (gum::Idx)2 ) tmp++;
 
       return ( tmp == a ) ? (float)1 : (float)0;
     }
@@ -169,8 +162,9 @@ namespace gum_tests {
       gum::Instantiation i( p );
 
       for ( i.setFirst(); !i.end(); ++i ) {
-        TS_ASSERT_EQUALS( p[i], __is_count_2( i.val( a ), i.val( b ),
-                                              i.val( c ), i.val( d ) ) );
+        TS_ASSERT_EQUALS(
+            p[i],
+            __is_count_2( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
       }
     }
 
@@ -185,8 +179,9 @@ namespace gum_tests {
       gum::Instantiation i( p );
 
       for ( i.setFirst(); !i.end(); ++i ) {
-        TS_ASSERT_EQUALS( p[i], __is_forall_2( i.val( a ), i.val( b ),
-                                               i.val( c ), i.val( d ) ) );
+        TS_ASSERT_EQUALS(
+            p[i],
+            __is_forall_2( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
       }
     }
 
@@ -201,8 +196,9 @@ namespace gum_tests {
       gum::Instantiation i( p );
 
       for ( i.setFirst(); !i.end(); ++i ) {
-        TS_ASSERT_EQUALS( p[i], __is_exists_2( i.val( a ), i.val( b ),
-                                               i.val( c ), i.val( d ) ) );
+        TS_ASSERT_EQUALS(
+            p[i],
+            __is_exists_2( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
       }
     }
 
@@ -294,8 +290,7 @@ namespace gum_tests {
             res = (gum::Idx)10000;  // clearly arbitraty choosen
 
             for ( gum::Idx j = 1; j < i.nbrDim(); j++ ) {
-              if ( res > i.val( j ) )
-                res = i.val( j );
+              if ( res > i.val( j ) ) res = i.val( j );
             }
 
             TS_ASSERT_EQUALS( bn.cpt( idList[0] )[i],

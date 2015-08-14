@@ -70,15 +70,15 @@ namespace gum {
 
         // put the neighbors onto the stack
         for ( const auto neigh : JT.neighbours( current_node ) )
-          if ( !mark[neigh] )
-            nodes_to_inspect.push_back( neigh );
+          if ( !mark[neigh] ) nodes_to_inspect.push_back( neigh );
       }
     }
   }
 
   /// returns the domain size of the union of two cliques
   float BinaryJoinTreeConverterDefault::__combinedSize(
-      const NodeSet& nodes1, const NodeSet& nodes2,
+      const NodeSet& nodes1,
+      const NodeSet& nodes2,
       const NodeProperty<Size>& domain_sizes ) const {
     float result = 1;
 
@@ -86,8 +86,7 @@ namespace gum {
       result *= domain_sizes[node];
 
     for ( const auto node : nodes2 )
-      if ( !nodes1.exists( node ) )
-        result *= domain_sizes[node];
+      if ( !nodes1.exists( node ) ) result *= domain_sizes[node];
 
     return result;
   }
@@ -99,17 +98,17 @@ namespace gum {
 
   /// convert a clique and its adjacent cliques into a binary join tree
   void BinaryJoinTreeConverterDefault::__convertClique(
-      CliqueGraph& JT, NodeId clique, NodeId from,
+      CliqueGraph& JT,
+      NodeId clique,
+      NodeId from,
       const NodeProperty<Size>& domain_sizes ) const {
     // get the neighbors of clique. If there are fewer than 3 neighbors,
     // there is nothing to do
     const NodeSet& neighbors = JT.neighbours( clique );
 
-    if ( neighbors.size() <= 2 )
-      return;
+    if ( neighbors.size() <= 2 ) return;
 
-    if ( ( neighbors.size() == 3 ) && ( clique != from ) )
-      return;
+    if ( ( neighbors.size() == 3 ) && ( clique != from ) ) return;
 
     // here we need to transform the neighbors into a binary tree
     // create a vector with all the ids of the cliques to combine
@@ -117,8 +116,7 @@ namespace gum {
     cliques.reserve( neighbors.size() );
 
     for ( const auto nei : neighbors )
-      if ( nei != from )
-        cliques.push_back( nei );
+      if ( nei != from ) cliques.push_back( nei );
 
     // create a vector indicating wether the elements in cliques contain
     // relevant information or not (during the execution of the for
@@ -140,9 +138,10 @@ namespace gum {
 
       for ( unsigned int j = i + 1; j < cliques.size(); ++j ) {
         pair.second = j;
-        queue.insert( pair, __combinedSize( nodes1,
-                                            JT.separator( cliques[j], clique ),
-                                            domain_sizes ) );
+        queue.insert( pair,
+                      __combinedSize( nodes1,
+                                      JT.separator( cliques[j], clique ),
+                                      domain_sizes ) );
       }
     }
 
@@ -222,8 +221,11 @@ namespace gum {
 
   /// convert a whole connected component into a binary join tree
   void BinaryJoinTreeConverterDefault::__convertConnectedComponent(
-      CliqueGraph& JT, NodeId current_node, NodeId from,
-      const NodeProperty<Size>& domain_sizes, NodeProperty<bool>& mark ) const {
+      CliqueGraph& JT,
+      NodeId current_node,
+      NodeId from,
+      const NodeProperty<Size>& domain_sizes,
+      NodeProperty<bool>& mark ) const {
     // first, indicate that the node has been marked (this avoids looping
     // if JT is not a tree
     mark[current_node] = true;
@@ -231,8 +233,8 @@ namespace gum {
     // parse all the neighbors except nodes already converted and convert them
     for ( const auto neigh : JT.neighbours( current_node ) ) {
       if ( !mark[neigh] ) {
-        __convertConnectedComponent( JT, neigh, current_node, domain_sizes,
-                                     mark );
+        __convertConnectedComponent(
+            JT, neigh, current_node, domain_sizes, mark );
       }
     }
 
@@ -242,7 +244,8 @@ namespace gum {
 
   /// computes the binary join tree
   CliqueGraph BinaryJoinTreeConverterDefault::convert(
-      const CliqueGraph& JT, const NodeProperty<Size>& domain_sizes,
+      const CliqueGraph& JT,
+      const NodeProperty<Size>& domain_sizes,
       const NodeSet& specified_roots ) {
     // first, we copy the current clique graph. By default, this is what we
     // will return
@@ -261,8 +264,9 @@ namespace gum {
       // in this case, this means that more than one root has been specified
       // for a given connected component
       if ( mark[root] )
-        GUM_ERROR( InvalidNode, "several roots have been specified for a given "
-                                "connected component" );
+        GUM_ERROR( InvalidNode,
+                   "several roots have been specified for a given "
+                   "connected component" );
 
       __markConnectedComponent( JT, root, mark );
     }

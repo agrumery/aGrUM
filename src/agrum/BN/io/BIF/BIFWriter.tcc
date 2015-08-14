@@ -25,18 +25,18 @@
 
 namespace gum {
 
-  /* ============================================================================
-   */
-  /* ===                           GUM_BIF_WRITER === */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
+  /* ===                           GUM_BIF_WRITER                         === */
+  /* =========================================================================*/
   // Default constructor.
-  template <typename GUM_SCALAR> INLINE BIFWriter<GUM_SCALAR>::BIFWriter() {
+  template <typename GUM_SCALAR>
+  INLINE BIFWriter<GUM_SCALAR>::BIFWriter() {
     GUM_CONSTRUCTOR( BIFWriter );
   }
 
   // Default destructor.
-  template <typename GUM_SCALAR> INLINE BIFWriter<GUM_SCALAR>::~BIFWriter() {
+  template <typename GUM_SCALAR>
+  INLINE BIFWriter<GUM_SCALAR>::~BIFWriter() {
     GUM_DESTRUCTOR( BIFWriter );
   }
 

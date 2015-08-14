@@ -41,10 +41,16 @@ namespace gum {
   class ParseError {
     public:
     ParseError( bool is_error, const std::string& msg, int line );
-    ParseError( bool is_error, const std::string& msg,
-                const std::string& filename, int line, int col = 0 );
-    ParseError( bool is_error, const std::string& msg,
-                const std::string& filename, const std::string& code, int line,
+    ParseError( bool is_error,
+                const std::string& msg,
+                const std::string& filename,
+                int line,
+                int col = 0 );
+    ParseError( bool is_error,
+                const std::string& msg,
+                const std::string& filename,
+                const std::string& code,
+                int line,
                 int col = 0 );
     ParseError( const ParseError& cont );
 
@@ -83,11 +89,15 @@ namespace gum {
     ParseError last() const;
 
     /// Add an error.
-    void addError( const std::string& msg, const std::string& filename,
-                   int line, int col );
+    void addError( const std::string& msg,
+                   const std::string& filename,
+                   int line,
+                   int col );
     /// Add a warning.
-    void addWarning( const std::string& msg, const std::string& filename,
-                     int line, int col );
+    void addWarning( const std::string& msg,
+                     const std::string& filename,
+                     int line,
+                     int col );
     /// Add an exception.
     void addException( const std::string& msg, const std::string& filename );
 
@@ -102,9 +112,13 @@ namespace gum {
     void elegantErrorsAndWarnings( std::ostream& o ) const;
 
     // Use by coco/R
-    void Error( const std::wstring& filename, int line, int col,
+    void Error( const std::wstring& filename,
+                int line,
+                int col,
                 const wchar_t* msg );
-    void Warning( const std::wstring& filename, int line, int col,
+    void Warning( const std::wstring& filename,
+                  int line,
+                  int col,
                   const wchar_t* msg );
     void Exception( const std::wstring& filename, const wchar_t* msg );
 

@@ -43,8 +43,9 @@ namespace gum {
   /// default constructor
   template <typename GUM_SCALAR>
   GibbsInference<GUM_SCALAR>::GibbsInference( const IBayesNet<GUM_SCALAR>& BN )
-      : ApproximationScheme(), BayesNetInference<GUM_SCALAR>( BN ),
-        particle::Gibbs<GUM_SCALAR>( BN ) {
+      : ApproximationScheme()
+      , BayesNetInference<GUM_SCALAR>( BN )
+      , particle::Gibbs<GUM_SCALAR>( BN ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( GibbsInference );
 
@@ -165,15 +166,15 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void GibbsInference<GUM_SCALAR>::_fillPosterior(
       NodeId id, Potential<GUM_SCALAR>& posterior ) {
-    if ( isInferenceRequired() )
-      makeInference();
+    if ( isInferenceRequired() ) makeInference();
 
     posterior = *( __sampling_nbr[id] );
     posterior.normalize();
   }
 
   INLINE
-  void add_and_instancie( Instantiation& I, const DiscreteVariable& v,
+  void add_and_instancie( Instantiation& I,
+                          const DiscreteVariable& v,
                           const Instantiation& __current_sample ) {
     try {
       I << v;
@@ -186,8 +187,7 @@ namespace gum {
   /// Returns the probability of the variables.
   template <typename GUM_SCALAR>
   void GibbsInference<GUM_SCALAR>::makeInference() {
-    if ( !isInferenceRequired() )
-      return;
+    if ( !isInferenceRequired() ) return;
 
     __initStats();
     initParticle();

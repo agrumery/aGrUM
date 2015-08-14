@@ -39,7 +39,8 @@ namespace gum {
      * @ingroup bn_group
      *
      */
-    template <typename GUM_SCALAR> class Gibbs {
+    template <typename GUM_SCALAR>
+    class Gibbs {
 
       public:
       /**

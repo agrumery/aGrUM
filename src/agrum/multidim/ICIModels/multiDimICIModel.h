@@ -102,7 +102,8 @@ namespace gum {
     // instantiation
     virtual void changeNotification( gum::Instantiation&,
                                      const gum::DiscreteVariable*,
-                                     const gum::Idx&, const gum::Idx& ){};
+                                     const gum::Idx&,
+                                     const gum::Idx& ){};
 
     virtual void setFirstNotification( gum::Instantiation& ){};
 

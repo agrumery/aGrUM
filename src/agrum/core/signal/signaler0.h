@@ -45,7 +45,8 @@ namespace gum {
 
       BasicSignaler0() { GUM_CONSTRUCTOR( BasicSignaler0 ); }
 
-      BasicSignaler0( const BasicSignaler0& s ) : ISignaler( s ) {
+      BasicSignaler0( const BasicSignaler0& s )
+          : ISignaler( s ) {
         GUM_CONS_CPY( BasicSignaler0 );
 
         for ( const auto el : _connectors ) {
@@ -69,8 +70,8 @@ namespace gum {
       bool hasListener( void ) { return ( !( _connectors.empty() ) ); };
 
       void detach( Listener* target ) {
-        auto it = std::find_if( _connectors.begin(), _connectors.end(),
-                                __find_target( target ) );
+        auto it = std::find_if(
+            _connectors.begin(), _connectors.end(), __find_target( target ) );
 
         while ( it != _connectors.end() ) {
           delete *it;
@@ -85,8 +86,8 @@ namespace gum {
       friend class Listener;
 
       void _detachFromTarget( Listener* target ) {
-        auto it = std::find_if( _connectors.begin(), _connectors.end(),
-                                __find_target( target ) );
+        auto it = std::find_if(
+            _connectors.begin(), _connectors.end(), __find_target( target ) );
 
         while ( it != _connectors.end() ) {
           delete *it;
@@ -97,7 +98,8 @@ namespace gum {
       };
 
       void _duplicateTarget( const Listener* oldtarget, Listener* newtarget ) {
-        auto it = std::find_if( _connectors.begin(), _connectors.end(),
+        auto it = std::find_if( _connectors.begin(),
+                                _connectors.end(),
                                 __find_target( oldtarget ) );
 
         while ( it != _connectors.end() ) {
@@ -135,7 +137,8 @@ namespace gum {
         __action = action;
       }
 
-      Connector0( const Connector0<TargetClass>* src ) : IConnector0( src ) {
+      Connector0( const Connector0<TargetClass>* src )
+          : IConnector0( src ) {
         GUM_CONS_CPY( Connector0 );
       }
 
@@ -174,7 +177,8 @@ namespace gum {
     public:
     Signaler0() { GUM_CONSTRUCTOR( Signaler0 ); }
 
-    Signaler0( const Signaler0& s ) : __sig__::BasicSignaler0( s ) {
+    Signaler0( const Signaler0& s )
+        : __sig__::BasicSignaler0( s ) {
       GUM_CONS_CPY( Signaler0 );
     }
 

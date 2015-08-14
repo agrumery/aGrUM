@@ -48,8 +48,8 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE ScoreAIC<IdSetAlloc, CountAlloc>::ScoreAIC(
         const ScoreAIC<IdSetAlloc, CountAlloc>& from )
-        : Score<IdSetAlloc, CountAlloc>( from ),
-          __internal_apriori( from.__internal_apriori ) {
+        : Score<IdSetAlloc, CountAlloc>( from )
+        , __internal_apriori( from.__internal_apriori ) {
       // for debugging purposes
       GUM_CONS_CPY( ScoreAIC );
     }
@@ -58,8 +58,8 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE ScoreAIC<IdSetAlloc, CountAlloc>::ScoreAIC(
         ScoreAIC<IdSetAlloc, CountAlloc>&& from )
-        : Score<IdSetAlloc, CountAlloc>( std::move( from ) ),
-          __internal_apriori( std::move( from.__internal_apriori ) ) {
+        : Score<IdSetAlloc, CountAlloc>( std::move( from ) )
+        , __internal_apriori( std::move( from.__internal_apriori ) ) {
       // for debugging purposes
       GUM_CONS_MOV( ScoreAIC );
     }

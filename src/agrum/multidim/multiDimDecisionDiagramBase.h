@@ -41,7 +41,8 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR> class MultiDimDecisionDiagramFactoryBase;
+  template <typename GUM_SCALAR>
+  class MultiDimDecisionDiagramFactoryBase;
 
   /**
    * @class MultiDimDecisionDiagramBase multiDimDecisionDiagramBase.h
@@ -148,7 +149,8 @@ namespace gum {
      */
     virtual void changeNotification( Instantiation& i,
                                      const DiscreteVariable* var,
-                                     const Idx& oldval, const Idx& newval );
+                                     const Idx& oldval,
+                                     const Idx& newval );
 
     /**
      * Listen to setFirst in a given Instantiation
@@ -460,8 +462,9 @@ namespace gum {
      * not
      * in instanciation mode
      */
-    void setVarUsedModalitiesMap( const HashTable<
-        const DiscreteVariable*, std::vector<Idx>*> varUsedModalitiesMap );
+    void setVarUsedModalitiesMap(
+        const HashTable<const DiscreteVariable*, std::vector<Idx>*>
+            varUsedModalitiesMap );
 
     /**
      * Binds once and for all nodes to variables.

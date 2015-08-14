@@ -32,7 +32,8 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    INLINE GraphChange::GraphChange( GraphChangeType type, NodeId node1,
+    INLINE GraphChange::GraphChange( GraphChangeType type,
+                                     NodeId node1,
                                      NodeId node2 ) noexcept : __type{type},
                                                                __node1{node1},
                                                                __node2{node2} {

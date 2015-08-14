@@ -31,14 +31,18 @@
 
 namespace gum {
 
-  DiGraph::DiGraph( Size nodes_size, bool nodes_resize_policy, Size arcs_size,
+  DiGraph::DiGraph( Size nodes_size,
+                    bool nodes_resize_policy,
+                    Size arcs_size,
                     bool arcs_resize_policy )
-      : NodeGraphPart( nodes_size, nodes_resize_policy ),
-        ArcGraphPart( arcs_size, arcs_resize_policy ) {
+      : NodeGraphPart( nodes_size, nodes_resize_policy )
+      , ArcGraphPart( arcs_size, arcs_resize_policy ) {
     GUM_CONSTRUCTOR( DiGraph );
   }
 
-  DiGraph::DiGraph( const DiGraph& g ) : NodeGraphPart( g ), ArcGraphPart( g ) {
+  DiGraph::DiGraph( const DiGraph& g )
+      : NodeGraphPart( g )
+      , ArcGraphPart( g ) {
     GUM_CONS_CPY( DiGraph );
   }
 

@@ -40,10 +40,10 @@ namespace gum {
     if ( first_use ) {
       first_use = false;
 #ifndef NDEBUG
-      __debug__::__dec_creation( "Set", "__empty_edge_set", 0,
-                                 "static variable correction", 0 );
-      __debug__::__dec_creation( "HashTable", "__empty_edge_set", 0,
-                                 "static variable correction", 0 );
+      __debug__::__dec_creation(
+          "Set", "__empty_edge_set", 0, "static variable correction", 0 );
+      __debug__::__dec_creation(
+          "HashTable", "__empty_edge_set", 0, "static variable correction", 0 );
 #endif
     }
     static EdgeSet empty_fill_ins;

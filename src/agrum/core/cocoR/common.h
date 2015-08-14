@@ -72,12 +72,12 @@ namespace gum {
   /// string handling, wide character
   wchar_t* coco_string_create( const wchar_t* value );
   wchar_t* coco_string_create( const wchar_t* value, int startIndex );
-  wchar_t* coco_string_create( const wchar_t* value, int startIndex,
-                               int length );
+  wchar_t*
+  coco_string_create( const wchar_t* value, int startIndex, int length );
   wchar_t* coco_string_create_upper( const wchar_t* data );
   wchar_t* coco_string_create_lower( const wchar_t* data );
-  wchar_t* coco_string_create_lower( const wchar_t* data, int startIndex,
-                                     int dataLen );
+  wchar_t*
+  coco_string_create_lower( const wchar_t* data, int startIndex, int dataLen );
   wchar_t* coco_string_create_append( const wchar_t* data1,
                                       const wchar_t* data2 );
   wchar_t* coco_string_create_append( const wchar_t* data,

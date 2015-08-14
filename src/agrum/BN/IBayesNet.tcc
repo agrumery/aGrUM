@@ -71,11 +71,13 @@ namespace gum {
     return *this;
   }
 
-  template <typename GUM_SCALAR> IBayesNet<GUM_SCALAR>::~IBayesNet() {
+  template <typename GUM_SCALAR>
+  IBayesNet<GUM_SCALAR>::~IBayesNet() {
     GUM_DESTRUCTOR( IBayesNet );
   }
 
-  template <typename GUM_SCALAR> Idx IBayesNet<GUM_SCALAR>::dim() const {
+  template <typename GUM_SCALAR>
+  Idx IBayesNet<GUM_SCALAR>::dim() const {
     Idx dim = 0;
 
     for ( auto node : nodes() ) {

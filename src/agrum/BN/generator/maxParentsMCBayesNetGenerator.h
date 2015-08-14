@@ -108,9 +108,12 @@ namespace gum {
     * "use
     * of p and q" )
     */
-    MaxParentsMCBayesNetGenerator( Size nbrNodes, Size maxArcs,
-                                   Size maxModality = 2, Size maxParents = 1,
-                                   Idx iteration = 5000, Idx p = 30,
+    MaxParentsMCBayesNetGenerator( Size nbrNodes,
+                                   Size maxArcs,
+                                   Size maxModality = 2,
+                                   Size maxParents = 1,
+                                   Idx iteration = 5000,
+                                   Idx p = 30,
                                    Idx q = 40 );
 
     /**
@@ -133,8 +136,10 @@ namespace gum {
     * of p and q" )
     */
     MaxParentsMCBayesNetGenerator( BayesNet<GUM_SCALAR> bayesNet,
-                                   Size maxParents = 2, Idx iteration = 5000,
-                                   Idx p = 30, Idx q = 40 );
+                                   Size maxParents = 2,
+                                   Idx iteration = 5000,
+                                   Idx p = 30,
+                                   Idx q = 40 );
 
     /**
      * Destructor.

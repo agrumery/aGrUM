@@ -45,9 +45,10 @@ namespace gum {
     /// combinations
     enum FindRelevantPotentialsType {
       FIND_RELEVANT_ALL,
-      FIND_RELEVANT_D_SEPARATION,  // BayesBall requisite nodes -> potentials
-      FIND_RELEVANT_D_SEPARATION2, // BayesBall requisite potentials (directly)
-      FIND_RELEVANT_D_SEPARATION3  // Koller & Friedman 2009 requisite potentials
+      FIND_RELEVANT_D_SEPARATION,   // BayesBall requisite nodes -> potentials
+      FIND_RELEVANT_D_SEPARATION2,  // BayesBall requisite potentials (directly)
+      FIND_RELEVANT_D_SEPARATION3   // Koller & Friedman 2009 requisite
+                                    // potentials
     };
 
 

@@ -33,21 +33,26 @@ namespace gum {
   /// default constructor
   PartialOrderedTriangulation::PartialOrderedTriangulation(
       const PartialOrderedEliminationSequenceStrategy& elimSeq,
-      const JunctionTreeStrategy& JTStrategy, bool minimality )
-      : StaticTriangulation( elimSeq, JTStrategy, minimality ),
-        __modalities( 0 ), __partial_order( 0 ) {
+      const JunctionTreeStrategy& JTStrategy,
+      bool minimality )
+      : StaticTriangulation( elimSeq, JTStrategy, minimality )
+      , __modalities( 0 )
+      , __partial_order( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( PartialOrderedTriangulation );
   }
 
   /// constructor with a given graph
   PartialOrderedTriangulation::PartialOrderedTriangulation(
-      const UndiGraph* theGraph, const NodeProperty<Size>* dom,
+      const UndiGraph* theGraph,
+      const NodeProperty<Size>* dom,
       const List<NodeSet>* partial_order,
       const PartialOrderedEliminationSequenceStrategy& elimSeq,
-      const JunctionTreeStrategy& JTStrategy, bool minimality )
-      : StaticTriangulation( theGraph, dom, elimSeq, JTStrategy, minimality ),
-        __modalities( dom ), __partial_order( partial_order ) {
+      const JunctionTreeStrategy& JTStrategy,
+      bool minimality )
+      : StaticTriangulation( theGraph, dom, elimSeq, JTStrategy, minimality )
+      , __modalities( dom )
+      , __partial_order( partial_order ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( PartialOrderedTriangulation );
   }
@@ -66,18 +71,16 @@ namespace gum {
     // check that the graph, the modalities and the sequence seem OK
     unsigned char nb = 0;
 
-    if ( graph )
-      ++nb;
+    if ( graph ) ++nb;
 
-    if ( modal )
-      ++nb;
+    if ( modal ) ++nb;
 
-    if ( partial_order )
-      ++nb;
+    if ( partial_order ) ++nb;
 
     if ( ( nb != 0 ) && ( nb != 3 ) ) {
-      GUM_ERROR( GraphError, "PartialOrderedTriangulation requires valid "
-                             "graphs, modalities and elimination orderings" );
+      GUM_ERROR( GraphError,
+                 "PartialOrderedTriangulation requires valid "
+                 "graphs, modalities and elimination orderings" );
     }
 
     StaticTriangulation::_setGraph( graph, modal );

@@ -84,29 +84,42 @@ namespace gum {
   }
 
   FormulaPart::FormulaPart()
-      : type( token_type::NIL ), number( NAN ), character( '\0' ),
-        function( nil ) {
+      : type( token_type::NIL )
+      , number( NAN )
+      , character( '\0' )
+      , function( nil ) {
     GUM_CONSTRUCTOR( FormulaPart );
   }
 
   FormulaPart::FormulaPart( token_type t, double n )
-      : type( t ), number( n ), character( '\0' ), function( nil ) {
+      : type( t )
+      , number( n )
+      , character( '\0' )
+      , function( nil ) {
     GUM_CONSTRUCTOR( FormulaPart );
   }
 
   FormulaPart::FormulaPart( token_type t, char c )
-      : type( t ), number( NAN ), character( c ), function( nil ) {
+      : type( t )
+      , number( NAN )
+      , character( c )
+      , function( nil ) {
     GUM_CONSTRUCTOR( FormulaPart );
   }
 
   FormulaPart::FormulaPart( token_type t, token_function func )
-      : type( t ), number( NAN ), character( '\0' ), function( func ) {
+      : type( t )
+      , number( NAN )
+      , character( '\0' )
+      , function( func ) {
     GUM_CONSTRUCTOR( FormulaPart );
   }
 
   FormulaPart::FormulaPart( const FormulaPart& source )
-      : type( source.type ), number( source.number ),
-        character( source.character ), function( source.function ) {
+      : type( source.type )
+      , number( source.number )
+      , character( source.character )
+      , function( source.function ) {
     GUM_CONS_CPY( FormulaPart );
   }
 
@@ -335,22 +348,23 @@ namespace gum {
    ***************************************************************************/
 
   Formula::Formula( const std::string& f )
-      : __formula( f ),
-        __scanner( new gum::formula::Scanner( (unsigned char*)__formula.c_str(),
-                                              (int)__formula.size() ) ),
-        __parser( new gum::formula::Parser( __scanner ) ),
-        __last_token( FormulaPart() ) {
+      : __formula( f )
+      , __scanner( new gum::formula::Scanner( (unsigned char*)__formula.c_str(),
+                                              (int)__formula.size() ) )
+      , __parser( new gum::formula::Parser( __scanner ) )
+      , __last_token( FormulaPart() ) {
     GUM_CONSTRUCTOR( Formula );
     __parser->formula( this );
   }
 
   Formula::Formula( const Formula& source )
-      : __formula( source.__formula ),
-        __scanner( new gum::formula::Scanner( (unsigned char*)__formula.c_str(),
-                                              (int)__formula.size() ) ),
-        __parser( new gum::formula::Parser( __scanner ) ),
-        __last_token( source.__last_token ), __output( source.__output ),
-        __stack( source.__stack ) {
+      : __formula( source.__formula )
+      , __scanner( new gum::formula::Scanner( (unsigned char*)__formula.c_str(),
+                                              (int)__formula.size() ) )
+      , __parser( new gum::formula::Parser( __scanner ) )
+      , __last_token( source.__last_token )
+      , __output( source.__output )
+      , __stack( source.__stack ) {
     GUM_CONS_CPY( Formula );
     __parser->formula( this );
   }

@@ -24,8 +24,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   MultiDimBijArray<GUM_SCALAR>::MultiDimBijArray(
       const MultiDimBijArray<GUM_SCALAR>& from )
-      : MultiDimWithOffset<GUM_SCALAR>(), __array( from.__array ),
-        __name( from.__name ) {
+      : MultiDimWithOffset<GUM_SCALAR>()
+      , __array( from.__array )
+      , __name( from.__name ) {
     GUM_CONS_CPY( MultiDimBijArray );
 
     for ( MultiDimInterface::iterator iter = from.begin(); iter != from.end();
@@ -37,8 +38,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   MultiDimBijArray<GUM_SCALAR>::MultiDimBijArray(
       const VarBijection& bijection, const MultiDimArray<GUM_SCALAR>& array )
-      : MultiDimWithOffset<GUM_SCALAR>(), __array( array ),
-        __name( "MultiDimBijArray" ) {
+      : MultiDimWithOffset<GUM_SCALAR>()
+      , __array( array )
+      , __name( "MultiDimBijArray" ) {
     GUM_CONSTRUCTOR( MultiDimBijArray );
 
     for ( MultiDimInterface::iterator iter = array.begin(); iter != array.end();
@@ -50,8 +52,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   MultiDimBijArray<GUM_SCALAR>::MultiDimBijArray(
       const VarBijection& bijection, const MultiDimBijArray<GUM_SCALAR>& array )
-      : MultiDimWithOffset<GUM_SCALAR>(), __array( array.__array ),
-        __name( "MultiDimBijArray" ) {
+      : MultiDimWithOffset<GUM_SCALAR>()
+      , __array( array.__array )
+      , __name( "MultiDimBijArray" ) {
     GUM_CONSTRUCTOR( MultiDimBijArray );
 
     for ( MultiDimInterface::iterator iter = array.begin(); iter != array.end();

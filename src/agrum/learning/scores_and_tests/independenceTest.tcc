@@ -95,7 +95,8 @@ namespace gum {
     /// add a new pair of target conditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE unsigned int IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
-        unsigned int var1, unsigned int var2,
+        unsigned int var1,
+        unsigned int var2,
         const std::vector<unsigned int>& conditioning_ids ) {
       if ( __use_cache ) {
         try {
@@ -144,7 +145,8 @@ namespace gum {
     /// add a new pair of target conditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE unsigned int IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
-        unsigned int var1, unsigned int var2,
+        unsigned int var1,
+        unsigned int var2,
         std::vector<unsigned int>&& conditioning_ids ) {
       if ( __use_cache ) {
         try {
@@ -188,8 +190,8 @@ namespace gum {
     INLINE unsigned int IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
         const std::pair<unsigned int, unsigned int>& vars,
         std::vector<unsigned int>&& conditioning_ids ) {
-      return addNodeSet( vars.first, vars.second,
-                         std::move( conditioning_ids ) );
+      return addNodeSet(
+          vars.first, vars.second, std::move( conditioning_ids ) );
     }
 
     /// clears all the data structures from memory
@@ -221,14 +223,15 @@ namespace gum {
       if ( !conditioning_nodes.empty() ) {
         try {
           __cache.insert( all_nodes[all_nodes.size() - 1],
-                          all_nodes[all_nodes.size() - 2], conditioning_nodes,
+                          all_nodes[all_nodes.size() - 2],
+                          conditioning_nodes,
                           score );
         } catch ( const gum::DuplicateElement& ) {
         }
       } else {
         try {
-          __cache.insert( all_nodes[0], all_nodes[1], __empty_conditioning_set,
-                          score );
+          __cache.insert(
+              all_nodes[0], all_nodes[1], __empty_conditioning_set, score );
         } catch ( const gum::DuplicateElement& ) {
         }
       }
@@ -252,8 +255,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE void
     IndependenceTest<IdSetAlloc, CountAlloc>::useCache( bool on_off ) noexcept {
-      if ( !on_off )
-        clear();
+      if ( !on_off ) clear();
       __use_cache = on_off;
     }
 

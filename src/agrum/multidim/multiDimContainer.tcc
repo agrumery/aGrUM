@@ -107,7 +107,8 @@ namespace gum {
           var_iterator;
 
       for ( var_iterator iter = variablesSequence().beginSafe();
-            iter != variablesSequence().endSafe(); ++iter ) {
+            iter != variablesSequence().endSafe();
+            ++iter ) {
         if ( !p.variablesSequence().exists( *iter ) ) {
           return false;
         }

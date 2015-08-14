@@ -41,7 +41,8 @@ namespace gum {
    * @ingroup multidim_group
    *
    */
-  template <typename GUM_SCALAR> class ApproximationPolicy {
+  template <typename GUM_SCALAR>
+  class ApproximationPolicy {
 
     public:
     // ===========================================================================

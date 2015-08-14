@@ -392,7 +392,8 @@ namespace gum_tests {
       n = 0;
 
       for ( gum::Sequence<std::string>::iterator_safe it = seq.rbegin();
-            it != seq.rend(); --it )
+            it != seq.rend();
+            --it )
         n++;
 
       TS_ASSERT_EQUALS( n, 0 );
@@ -408,7 +409,8 @@ namespace gum_tests {
       n = 0;
 
       for ( gum::Sequence<std::string>::iterator_safe it = seq.begin();
-            it != seq.end(); ++it )
+            it != seq.end();
+            ++it )
         n++;
 
       TS_ASSERT_EQUALS( n, 0 );
@@ -432,7 +434,8 @@ namespace gum_tests {
       str = "";
 
       for ( gum::Sequence<std::string>::iterator_safe it = seq.rbegin();
-            it != seq.rend(); --it ) {
+            it != seq.rend();
+            --it ) {
         str += *it;
       }
 
@@ -453,14 +456,16 @@ namespace gum_tests {
       int n = 0;
 
       for ( gum::Sequence<std::string>::iterator it = seq.begin();
-            it != seq.end(); ++it )
+            it != seq.end();
+            ++it )
         n++;
 
       TS_ASSERT_EQUALS( n, 0 );
       n = 0;
 
       for ( gum::Sequence<std::string>::iterator it = seq.rbegin();
-            it != seq.rend(); --it )
+            it != seq.rend();
+            --it )
         n++;
 
       TS_ASSERT_EQUALS( n, 0 );
@@ -471,7 +476,8 @@ namespace gum_tests {
       std::string str;
 
       for ( gum::Sequence<std::string>::iterator it = seq.begin();
-            it != seq.end(); ++it ) {
+            it != seq.end();
+            ++it ) {
         str += *it;
       }
 
@@ -479,7 +485,8 @@ namespace gum_tests {
       str = "";
 
       for ( gum::Sequence<std::string>::iterator it = seq.rbegin();
-            it != seq.rend(); --it ) {
+            it != seq.rend();
+            --it ) {
         str += *it;
       }
 

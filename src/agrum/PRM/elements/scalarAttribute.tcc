@@ -36,10 +36,12 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     ScalarAttribute<GUM_SCALAR>::ScalarAttribute(
-        const std::string& name, const Type<GUM_SCALAR>& type,
+        const std::string& name,
+        const Type<GUM_SCALAR>& type,
         MultiDimImplementation<GUM_SCALAR>* impl )
-        : Attribute<GUM_SCALAR>( name ), __type( new Type<GUM_SCALAR>( type ) ),
-          __cpf( new Potential<GUM_SCALAR>( impl ) ) {
+        : Attribute<GUM_SCALAR>( name )
+        , __type( new Type<GUM_SCALAR>( type ) )
+        , __cpf( new Potential<GUM_SCALAR>( impl ) ) {
       GUM_CONSTRUCTOR( ScalarAttribute );
       __cpf->add( __type->variable() );
 
@@ -50,7 +52,9 @@ namespace gum {
     template <typename GUM_SCALAR>
     ScalarAttribute<GUM_SCALAR>::ScalarAttribute(
         const ScalarAttribute<GUM_SCALAR>& source )
-        : Attribute<GUM_SCALAR>( source ), __type( 0 ), __cpf( 0 ) {
+        : Attribute<GUM_SCALAR>( source )
+        , __type( 0 )
+        , __cpf( 0 ) {
       GUM_CONS_CPY( ScalarAttribute );
       GUM_ERROR(
           FatalError,
@@ -70,8 +74,8 @@ namespace gum {
         const Class<GUM_SCALAR>& c ) const {
       auto impl = static_cast<MultiDimImplementation<GUM_SCALAR>*>(
           this->cpf().content()->newFactory() );
-      return new ScalarAttribute<GUM_SCALAR>( this->name(), this->type(),
-                                              impl );
+      return new ScalarAttribute<GUM_SCALAR>(
+          this->name(), this->type(), impl );
     }
 
     template <typename GUM_SCALAR>

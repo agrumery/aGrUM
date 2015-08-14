@@ -133,8 +133,8 @@ namespace gum_tests {
       gum::ScheduleCombine<float> comb13( result12, f4, schedule_sched_myadd );
       comb13.execute();
       const gum::ScheduleMultiDim<float>& result13 = comb13.result();
-      gum::ScheduleCombine<float> comb14( result11, result13,
-                                          schedule_sched_myadd );
+      gum::ScheduleCombine<float> comb14(
+          result11, result13, schedule_sched_myadd );
       comb14.execute();
       const gum::ScheduleMultiDim<float>& result14 = comb14.result();
 
@@ -244,8 +244,8 @@ namespace gum_tests {
       gum::ScheduleCombine<float> comb13( result12, f4, schedule_sched_myadd );
       comb13.execute();
       const gum::ScheduleMultiDim<float>& result13 = comb13.result();
-      gum::ScheduleCombine<float> comb14( result11, result13,
-                                          schedule_sched_myadd );
+      gum::ScheduleCombine<float> comb14(
+          result11, result13, schedule_sched_myadd );
       comb14.execute();
       const gum::ScheduleMultiDim<float>& result14 = comb14.result();
 
@@ -354,8 +354,8 @@ namespace gum_tests {
       gum::ScheduleCombine<float> comb13( result12, f4, schedule_sched_myadd );
       comb13.execute();
       const gum::ScheduleMultiDim<float>& result13 = comb13.result();
-      gum::ScheduleCombine<float> comb14( result11, result13,
-                                          schedule_sched_myadd );
+      gum::ScheduleCombine<float> comb14(
+          result11, result13, schedule_sched_myadd );
       comb14.execute();
       const gum::ScheduleMultiDim<float>& result14 = comb14.result();
 

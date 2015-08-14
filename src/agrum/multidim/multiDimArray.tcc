@@ -35,13 +35,15 @@ namespace gum {
   template <typename GUM_SCALAR>
   MultiDimArray<GUM_SCALAR>::MultiDimArray(
       const MultiDimArray<GUM_SCALAR>& src )
-      : MultiDimWithOffset<GUM_SCALAR>( src ), _values( src._values ) {
+      : MultiDimWithOffset<GUM_SCALAR>( src )
+      , _values( src._values ) {
     // for debugging purposes
     GUM_CONS_CPY( MultiDimArray );
   }
 
   /// destructor
-  template <typename GUM_SCALAR> MultiDimArray<GUM_SCALAR>::~MultiDimArray() {
+  template <typename GUM_SCALAR>
+  MultiDimArray<GUM_SCALAR>::~MultiDimArray() {
     // for debugging purposes
     GUM_DESTRUCTOR( MultiDimArray );
     // no need to unregister all slaves as it will be done by MultiDimWithOffset
@@ -76,8 +78,7 @@ namespace gum {
     Idx pos = variables.pos( &v );  // throw a NotFound if necessary
 
     if ( variables.size() == 1 ) {
-      if ( !this->_isInMultipleChangeMethod() )
-        _values.clear();
+      if ( !this->_isInMultipleChangeMethod() ) _values.clear();
     } else {
       Size v_size = v.domainSize();
       Size size = this->domainSize();
@@ -135,8 +136,7 @@ namespace gum {
   // fill the array with the arg
   template <typename GUM_SCALAR>
   INLINE void MultiDimArray<GUM_SCALAR>::fill( const GUM_SCALAR& d ) const {
-    if ( !this->empty() )
-      std::fill( _values.begin(), _values.end(), d );
+    if ( !this->empty() ) std::fill( _values.begin(), _values.end(), d );
   }
 
   // virtual constructor

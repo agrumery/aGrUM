@@ -36,7 +36,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     Gibbs<GUM_SCALAR>::Gibbs( const IBayesNet<GUM_SCALAR>& BN )
-        : __nbr_drawn_by_sample( DEFAULT_DRAWN ), __bayesNet( BN ) {
+        : __nbr_drawn_by_sample( DEFAULT_DRAWN )
+        , __bayesNet( BN ) {
       GUM_CONSTRUCTOR( Gibbs );
 
       BN.completeInstantiation( __particle );
@@ -71,7 +72,8 @@ namespace gum {
       }
     }
 
-    template <typename GUM_SCALAR> Gibbs<GUM_SCALAR>::~Gibbs() {
+    template <typename GUM_SCALAR>
+    Gibbs<GUM_SCALAR>::~Gibbs() {
       GUM_DESTRUCTOR( Gibbs );
 
       for ( auto& elt : __sampling_idx )
@@ -104,7 +106,8 @@ namespace gum {
       // the others : CPTs of its children
 
       for ( std::vector<NodeId>::iterator iter = __node_children[id]->begin();
-            iter != __node_children[id]->end(); iter++ ) {
+            iter != __node_children[id]->end();
+            iter++ ) {
         __cpt_idx[*iter]->chgVal( v, choice );
       }
     }
@@ -144,14 +147,14 @@ namespace gum {
         s += proba[I];
 
       if ( s == (GUM_SCALAR)0 ) {
-        GUM_ERROR( FatalError, "A normalisation factor is 0 in node "
-                                   << id << " (" << v << ") : " << proba );
+        GUM_ERROR( FatalError,
+                   "A normalisation factor is 0 in node " << id << " (" << v
+                                                          << ") : " << proba );
       }
 
       // draw value
       for ( I.setFirst(); !I.end(); I.inc() ) {
-        if ( proba[I] == (GUM_SCALAR)0 )
-          continue;
+        if ( proba[I] == (GUM_SCALAR)0 ) continue;
 
         choice = I.val( v );
 
@@ -202,7 +205,8 @@ namespace gum {
         }
 
         for ( std::vector<NodeId>::iterator iter = __node_children[id]->begin();
-              iter != __node_children[id]->end(); iter++ ) {
+              iter != __node_children[id]->end();
+              iter++ ) {
           tmp = __cpt_idx[*iter];
           tmp->chgVal( v, current_mod_id );
           // posterior[posterior_idx]*=( value=this->bn().cpt( *iter )[*tmp] );
@@ -231,11 +235,9 @@ namespace gum {
 
       NodeId id = this->bn().nodeId( *( vars.atPos( 0 ) ) );
 
-      if ( __evidences.exists( id ) )
-        __evidences.erase( id );
+      if ( __evidences.exists( id ) ) __evidences.erase( id );
 
-      if ( __hard_evidences.exists( id ) )
-        __hard_evidences.erase( id );
+      if ( __hard_evidences.exists( id ) ) __hard_evidences.erase( id );
     }
 
     /// remove all evidence from the graph
@@ -251,7 +253,8 @@ namespace gum {
         const List<const Potential<GUM_SCALAR>*>& pot_list ) {
       for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter =
                 pot_list.cbeginSafe();
-            iter != pot_list.cendSafe(); ++iter ) {
+            iter != pot_list.cendSafe();
+            ++iter ) {
         // check that the evidence is given w.r.t.only one random variable
         const Potential<GUM_SCALAR>& pot = **iter;
         const Sequence<const DiscreteVariable*>& vars = pot.variablesSequence();
@@ -324,7 +327,8 @@ namespace gum {
       }
     }
 
-    template <typename GUM_SCALAR> void Gibbs<GUM_SCALAR>::initParticle() {
+    template <typename GUM_SCALAR>
+    void Gibbs<GUM_SCALAR>::initParticle() {
       __nodes_array.clear();
       // nodes to be drawn : not the ones with hard evidence
 
@@ -352,12 +356,14 @@ namespace gum {
       }
     }
 
-    template <typename GUM_SCALAR> void Gibbs<GUM_SCALAR>::nextParticle() {
+    template <typename GUM_SCALAR>
+    void Gibbs<GUM_SCALAR>::nextParticle() {
       // GENERATE NEXT SAMPLE
       if ( __nbr_drawn_by_sample == 0 ) {
         // we want to draw all the node always in the same order
         for ( std::vector<NodeId>::iterator it = __nodes_array.begin();
-              it != __nodes_array.end(); ++it ) {
+              it != __nodes_array.end();
+              ++it ) {
           __GibbsSample( *it );
         }
       } else if ( __nbr_of_iterations ==

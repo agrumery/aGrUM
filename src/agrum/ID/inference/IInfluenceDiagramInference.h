@@ -39,7 +39,8 @@ namespace gum {
    * @ingroup id_group
    *
    */
-  template <typename GUM_SCALAR> class IInfluenceDiagramInference {
+  template <typename GUM_SCALAR>
+  class IInfluenceDiagramInference {
     public:
     /**
      * Default constructor

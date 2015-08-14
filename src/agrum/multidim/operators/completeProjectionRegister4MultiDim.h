@@ -38,7 +38,8 @@
 namespace gum {
 
   // the base object used by the projections
-  template <typename GUM_SCALAR> class MultiDimImplementation;
+  template <typename GUM_SCALAR>
+  class MultiDimImplementation;
 
   /* ===========================================================================
    */
@@ -54,7 +55,8 @@ namespace gum {
    * @ingroup multidim_group */
   /* ===========================================================================
    */
-  template <typename GUM_SCALAR> class CompleteProjectionRegister4MultiDim {
+  template <typename GUM_SCALAR>
+  class CompleteProjectionRegister4MultiDim {
     public:
     /// the type of functions used by the register
     typedef GUM_SCALAR ( *CompleteProjectionPtr )(

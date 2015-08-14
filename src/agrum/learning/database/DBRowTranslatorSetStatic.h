@@ -87,16 +87,19 @@ namespace gum {
       bool requiresInitialization() const noexcept { return false; }
       void modalities( std::vector<unsigned int>& ) const noexcept {}
       std::string translateBack( unsigned int, unsigned int ) const {
-        GUM_ERROR( NotFound, "the variable could not be translated back: it "
-                             "was not found by the translator" );
+        GUM_ERROR( NotFound,
+                   "the variable could not be translated back: it "
+                   "was not found by the translator" );
       }
     };
 
     /** @brief the implementation of the wrapper of Create<>s (used to
      * translate the cells of a DBRow) */
-    template <int OUTPUT_SIZE, typename Translator,
+    template <int OUTPUT_SIZE,
+              typename Translator,
               typename... OtherTranslators>
-    class BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator,
+    class BasicDBRowTranslatorSetStatic<OUTPUT_SIZE,
+                                        Translator,
                                         OtherTranslators...>
         : public BasicDBRowTranslatorSetStatic<
               OUTPUT_SIZE +
@@ -127,12 +130,16 @@ namespace gum {
           const OtherTranslators&... next_translators );
 
       /// copy constructor
-      BasicDBRowTranslatorSetStatic( const BasicDBRowTranslatorSetStatic<
-          OUTPUT_SIZE, Translator, OtherTranslators...>& from );
+      BasicDBRowTranslatorSetStatic(
+          const BasicDBRowTranslatorSetStatic<OUTPUT_SIZE,
+                                              Translator,
+                                              OtherTranslators...>& from );
 
       /// move constructor
-      BasicDBRowTranslatorSetStatic( BasicDBRowTranslatorSetStatic<
-          OUTPUT_SIZE, Translator, OtherTranslators...>&& from );
+      BasicDBRowTranslatorSetStatic(
+          BasicDBRowTranslatorSetStatic<OUTPUT_SIZE,
+                                        Translator,
+                                        OtherTranslators...>&& from );
 
       public:
       /// destructor
@@ -148,15 +155,19 @@ namespace gum {
 
       protected:
       /// copy operator
-      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator,
+      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE,
+                                    Translator,
                                     OtherTranslators...>&
-      operator=( const BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator,
+      operator=( const BasicDBRowTranslatorSetStatic<OUTPUT_SIZE,
+                                                     Translator,
                                                      OtherTranslators...>& );
 
       /// move operator
-      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator,
+      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE,
+                                    Translator,
                                     OtherTranslators...>&
-      operator=( BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator,
+      operator=( BasicDBRowTranslatorSetStatic<OUTPUT_SIZE,
+                                               Translator,
                                                OtherTranslators...>&& );
 
       /// @}
@@ -217,7 +228,8 @@ namespace gum {
 
       /// only DBRowTranslatorSetStatics can create
       /// BasicDBRowTranslatorSetStatics
-      template <typename... Translators> friend class DBRowTranslatorSetStatic;
+      template <typename... Translators>
+      friend class DBRowTranslatorSetStatic;
     };
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS

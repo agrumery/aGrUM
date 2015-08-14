@@ -31,16 +31,11 @@
 namespace gum {
 
   namespace aggregator {
-
-    /* ============================================================================
-     */
-    /* ============================================================================
-     */
+    /* =========================================================================*/
+    /* =========================================================================*/
     /* ===                     GUM_MAX_AGGREGATOR                     === */
-    /* ============================================================================
-     */
-    /* ============================================================================
-     */
+    /* =========================================================================*/
+    /* =========================================================================*/
     /** @class Exists
     * @brief exists aggregator
     * @ingroup multidim_group
@@ -50,8 +45,7 @@ namespace gum {
     * Note that a <tt>Exists(i)</tt> aggregator should have a binary aggregator
     *variable since only 0 and 1 indexes are adressed...
     */
-    /* ============================================================================
-     */
+    /* =========================================================================*/
 
     template <typename GUM_SCALAR>
     class Exists : public MultiDimAggregator<GUM_SCALAR> {
@@ -79,7 +73,9 @@ namespace gum {
 
       protected:
       virtual Idx _neutralElt( void ) const;
-      virtual Idx _folder( const DiscreteVariable& v, Idx i1, Idx i2,
+      virtual Idx _folder( const DiscreteVariable& v,
+                           Idx i1,
+                           Idx i2,
                            bool& stop_iteration ) const;
 
       private:

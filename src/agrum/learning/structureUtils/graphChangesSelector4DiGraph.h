@@ -43,7 +43,8 @@ namespace gum {
      * directed structure learning search algorithms.
      * @ingroup learning_group
      */
-    template <typename SCORE, typename STRUCTURAL_CONSTRAINT,
+    template <typename SCORE,
+              typename STRUCTURAL_CONSTRAINT,
               typename GRAPH_CHANGES_GENERATOR>
     class GraphChangesSelector4DiGraph {
       public:
@@ -57,16 +58,21 @@ namespace gum {
 
       /// default constructor
       GraphChangesSelector4DiGraph(
-          SCORE& score, STRUCTURAL_CONSTRAINT& constraint,
+          SCORE& score,
+          STRUCTURAL_CONSTRAINT& constraint,
           GRAPH_CHANGES_GENERATOR& changes_generator );
 
       /// copy constructor
-      GraphChangesSelector4DiGraph( const GraphChangesSelector4DiGraph<
-          SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR>& from );
+      GraphChangesSelector4DiGraph(
+          const GraphChangesSelector4DiGraph<SCORE,
+                                             STRUCTURAL_CONSTRAINT,
+                                             GRAPH_CHANGES_GENERATOR>& from );
 
       /// move constructor
-      GraphChangesSelector4DiGraph( GraphChangesSelector4DiGraph<
-          SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR>&& from );
+      GraphChangesSelector4DiGraph(
+          GraphChangesSelector4DiGraph<SCORE,
+                                       STRUCTURAL_CONSTRAINT,
+                                       GRAPH_CHANGES_GENERATOR>&& from );
 
       /// destructor
       ~GraphChangesSelector4DiGraph();
@@ -79,15 +85,20 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
+      GraphChangesSelector4DiGraph<SCORE,
+                                   STRUCTURAL_CONSTRAINT,
                                    GRAPH_CHANGES_GENERATOR>&
-      operator=( const GraphChangesSelector4DiGraph<
-          SCORE, STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR>& from );
+      operator=(
+          const GraphChangesSelector4DiGraph<SCORE,
+                                             STRUCTURAL_CONSTRAINT,
+                                             GRAPH_CHANGES_GENERATOR>& from );
 
       /// move operator
-      GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
+      GraphChangesSelector4DiGraph<SCORE,
+                                   STRUCTURAL_CONSTRAINT,
                                    GRAPH_CHANGES_GENERATOR>&
-      operator=( GraphChangesSelector4DiGraph<SCORE, STRUCTURAL_CONSTRAINT,
+      operator=( GraphChangesSelector4DiGraph<SCORE,
+                                              STRUCTURAL_CONSTRAINT,
                                               GRAPH_CHANGES_GENERATOR>&& from );
 
       /// @}

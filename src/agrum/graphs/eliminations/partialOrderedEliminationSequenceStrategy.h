@@ -85,7 +85,8 @@ namespace gum {
      * @param subsets the list of the subsets constituting the partial ordering
      * @warning note that, by aGrUM's rule, the graph and the sequence are not
      * copied but only referenced by the elimination sequence algorithm. */
-    virtual void setGraph( UndiGraph* graph, const NodeProperty<Size>* dom,
+    virtual void setGraph( UndiGraph* graph,
+                           const NodeProperty<Size>* dom,
                            const List<NodeSet>* subsets ) = 0;
 
     /// @}

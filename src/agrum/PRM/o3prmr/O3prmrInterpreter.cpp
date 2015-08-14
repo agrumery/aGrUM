@@ -51,10 +51,14 @@ namespace gum {
 
       /// This constructor create an empty context.
       O3prmrInterpreter::O3prmrInterpreter()
-          : m_context( new O3prmrContext<double>() ),
-            m_reader( new o3prm::O3prmReader<double>() ), m_bn( 0 ), m_inf( 0 ),
-            m_syntax_flag( false ), m_verbose( false ), m_log( std::cout ),
-            m_current_line( -1 ) {}
+          : m_context( new O3prmrContext<double>() )
+          , m_reader( new o3prm::O3prmReader<double>() )
+          , m_bn( 0 )
+          , m_inf( 0 )
+          , m_syntax_flag( false )
+          , m_verbose( false )
+          , m_log( std::cout )
+          , m_current_line( -1 ) {}
 
       /// Destructor. Delete current context.
       O3prmrInterpreter::~O3prmrInterpreter() {
@@ -225,12 +229,10 @@ namespace gum {
         p.Parse();
         m_errors = p.errors();
 
-        if ( errors() > 0 )
-          return false;
+        if ( errors() > 0 ) return false;
 
         // On vérifie la sémantique.
-        if ( !checkSemantic( &c ) )
-          return false;
+        if ( !checkSemantic( &c ) ) return false;
 
         if ( isInSyntaxMode() )
           return true;
@@ -250,8 +252,7 @@ namespace gum {
                 << std::flush;
 
         // Don't parse if any syntax errors.
-        if ( errors() > 0 )
-          return false;
+        if ( errors() > 0 ) return false;
 
         // For each session
         std::vector<O3prmrSession<double>*> sessions = c->sessions();
@@ -323,8 +324,7 @@ namespace gum {
        * */
       bool O3prmrInterpreter::checkSemantic( O3prmrContext<double>* context ) {
         // Don't parse if any syntax errors.
-        if ( errors() > 0 )
-          return false;
+        if ( errors() > 0 ) return false;
 
         // On importe tous les systèmes.
         for ( const auto command : context->imports() ) {
@@ -332,12 +332,10 @@ namespace gum {
           // if import doen't succed stop here unless syntax mode is activated.
           bool succeed = import( context, command->value );
 
-          if ( !succeed && !isInSyntaxMode() )
-            return false;
+          if ( !succeed && !isInSyntaxMode() ) return false;
 
           // En cas de succès, on met à jour le contexte global
-          if ( succeed )
-            m_context->addImport( *command );
+          if ( succeed ) m_context->addImport( *command );
         }
 
         if ( m_verbose )
@@ -811,8 +809,7 @@ namespace gum {
         const typename PRMInference<double>::Chain& chain = command->chain;
 
         // Generate the inference engine if it doesn't exist.
-        if ( !m_inf )
-          generateInfEngine( *( command->system ) );
+        if ( !m_inf ) generateInfEngine( *( command->system ) );
 
         // Prevent from something
         if ( m_inf->hasEvidence( chain ) )
@@ -973,13 +970,11 @@ namespace gum {
           m_bn = new BayesNet<double>();
           BayesNetFactory<double> bn_factory( m_bn );
 
-          if ( m_verbose )
-            m_log << "(Grounding the network... " << std::flush;
+          if ( m_verbose ) m_log << "(Grounding the network... " << std::flush;
 
           sys.groundedBN( bn_factory );
 
-          if ( m_verbose )
-            m_log << "Finished)" << std::flush;
+          if ( m_verbose ) m_log << "Finished)" << std::flush;
 
           if ( m_bn_engine == "VE" ) {
             bn_inf = new VariableElimination<double>( *m_bn );
@@ -1003,8 +998,7 @@ namespace gum {
           m_inf = new SVE<double>( *( prm() ), sys );
         }
 
-        if ( m_verbose )
-          m_log << "Finished." << std::endl;
+        if ( m_verbose ) m_log << "Finished." << std::endl;
       }
 
       /* **************************************************************************
@@ -1021,8 +1015,7 @@ namespace gum {
 
       ///
       ParseError O3prmrInterpreter::error( int i ) const {
-        if ( i >= count() )
-          throw "Index out of bound.";
+        if ( i >= count() ) throw "Index out of bound.";
 
         return m_errors.error( i );
       }
@@ -1055,16 +1048,14 @@ namespace gum {
       void O3prmrInterpreter::addError( std::string msg ) {
         m_errors.addError( msg, m_context->filename(), m_current_line, 0 );
 
-        if ( m_verbose )
-          m_log << m_errors.last().toString() << std::endl;
+        if ( m_verbose ) m_log << m_errors.last().toString() << std::endl;
       }
 
       ///
       void O3prmrInterpreter::addWarning( std::string msg ) {
         m_errors.addWarning( msg, m_context->filename(), m_current_line, 0 );
 
-        if ( m_verbose )
-          m_log << m_errors.last().toString() << std::endl;
+        if ( m_verbose ) m_log << m_errors.last().toString() << std::endl;
       }
 
     }  // namespace o3prmr

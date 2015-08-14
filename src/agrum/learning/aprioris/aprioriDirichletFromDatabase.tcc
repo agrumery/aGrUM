@@ -44,8 +44,8 @@ namespace gum {
     INLINE AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>::
         AprioriDirichletFromDatabase(
             const AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>& from )
-        : Apriori<IdSetAlloc, CountAlloc>( from ),
-          Counter<IdSetAlloc, CountAlloc>( from ) {
+        : Apriori<IdSetAlloc, CountAlloc>( from )
+        , Counter<IdSetAlloc, CountAlloc>( from ) {
       GUM_CONS_CPY( AprioriDirichletFromDatabase );
     }
 
@@ -54,8 +54,8 @@ namespace gum {
     INLINE AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>::
         AprioriDirichletFromDatabase(
             AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>&& from )
-        : Apriori<IdSetAlloc, CountAlloc>( std::move( from ) ),
-          Counter<IdSetAlloc, CountAlloc>( std::move( from ) ) {
+        : Apriori<IdSetAlloc, CountAlloc>( std::move( from ) )
+        , Counter<IdSetAlloc, CountAlloc>( std::move( from ) ) {
       GUM_CONS_MOV( AprioriDirichletFromDatabase );
     }
 
@@ -68,8 +68,8 @@ namespace gum {
 
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE AprioriDirichletFromDatabase<
-        IdSetAlloc, CountAlloc>::~AprioriDirichletFromDatabase() {
+    INLINE AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>::
+        ~AprioriDirichletFromDatabase() {
       GUM_DESTRUCTOR( AprioriDirichletFromDatabase );
     }
 

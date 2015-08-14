@@ -71,15 +71,13 @@ namespace gum_tests {
       void whenEdgeAdded( const void*, gum::NodeId f, gum::NodeId s ) {
         __nbrEdges++;
 
-        if ( __isOn )
-          GUM_TRACE( f << "--" << s << "(" << __nbrEdges << ")" );
+        if ( __isOn ) GUM_TRACE( f << "--" << s << "(" << __nbrEdges << ")" );
       }
 
       void whenEdgeDeleted( const void*, gum::NodeId f, gum::NodeId s ) {
         __nbrEdges--;
 
-        if ( __isOn )
-          GUM_TRACE( f << "--" << s << "(" << __nbrEdges << ")" );
+        if ( __isOn ) GUM_TRACE( f << "--" << s << "(" << __nbrEdges << ")" );
       }
 
       const int nodes() const { return __nbrNode; }
@@ -98,7 +96,8 @@ namespace gum_tests {
       int __nbrNode, __nbrArcs;
 
       public:
-      DiGraphCounter( gum::DiGraph* g ) : gum::DiGraphListener( g ) {
+      DiGraphCounter( gum::DiGraph* g )
+          : gum::DiGraphListener( g ) {
         __nbrNode = __nbrArcs = 0;
       }
 
@@ -124,7 +123,8 @@ namespace gum_tests {
       int __nbrNode, __nbrEdges;
 
       public:
-      UndiGraphCounter( gum::UndiGraph* g ) : gum::UndiGraphListener( g ) {
+      UndiGraphCounter( gum::UndiGraph* g )
+          : gum::UndiGraphListener( g ) {
         __nbrNode = __nbrEdges = 0;
       }
 
@@ -150,7 +150,8 @@ namespace gum_tests {
       int __nbrNode, __nbrArcs, __nbrEdges;
 
       public:
-      MixedGraphCounter( gum::MixedGraph* g ) : gum::MixedGraphListener( g ) {
+      MixedGraphCounter( gum::MixedGraph* g )
+          : gum::MixedGraphListener( g ) {
         __nbrNode = __nbrArcs = __nbrEdges = 0;
       }
 

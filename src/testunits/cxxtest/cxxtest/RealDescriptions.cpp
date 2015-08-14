@@ -31,8 +31,7 @@ namespace CxxTest {
   }
 
   bool RealTestDescription::setUp() {
-    if ( !suite() )
-      return false;
+    if ( !suite() ) return false;
 
     for ( GlobalFixture* gf = GlobalFixture::firstGlobalFixture(); gf != 0;
           gf = gf->nextGlobalFixture() ) {
@@ -57,11 +56,11 @@ namespace CxxTest {
   }
 
   bool RealTestDescription::tearDown() {
-    if ( !suite() )
-      return false;
+    if ( !suite() ) return false;
 
     _TS_TRY {
-      _TSM_ASSERT_THROWS_NOTHING( file(), line(),
+      _TSM_ASSERT_THROWS_NOTHING( file(),
+                                  line(),
                                   "Exception thrown from tearDown()",
                                   suite()->tearDown() );
     }
@@ -117,7 +116,8 @@ namespace CxxTest {
     initialize( argFile, argLine, argSuiteName, argTests );
   }
 
-  void RealSuiteDescription::initialize( const char* argFile, unsigned argLine,
+  void RealSuiteDescription::initialize( const char* argFile,
+                                         unsigned argLine,
                                          const char* argSuiteName,
                                          List& argTests ) {
     _file = argFile;
@@ -132,8 +132,7 @@ namespace CxxTest {
     const char* s = _file + strlen( _file );
 
     while ( s != _file ) {
-      if ( *s == '/' || *s == '\\' )
-        return s + 1;
+      if ( *s == '/' || *s == '\\' ) return s + 1;
 
       s--;
     }
@@ -197,8 +196,8 @@ namespace CxxTest {
                                            const char* argSuiteName,
                                            TestSuite& argSuite,
                                            List& argTests ) {
-    RealSuiteDescription::initialize( argFile, argLine, argSuiteName,
-                                      argTests );
+    RealSuiteDescription::initialize(
+        argFile, argLine, argSuiteName, argTests );
     doInitialize( argSuite );
   }
 
@@ -215,17 +214,24 @@ namespace CxxTest {
   CommonDynamicSuiteDescription::CommonDynamicSuiteDescription() {}
 
   CommonDynamicSuiteDescription::CommonDynamicSuiteDescription(
-      const char* argFile, unsigned argLine, const char* argSuiteName,
-      List& argTests, unsigned argCreateLine, unsigned argDestroyLine )
+      const char* argFile,
+      unsigned argLine,
+      const char* argSuiteName,
+      List& argTests,
+      unsigned argCreateLine,
+      unsigned argDestroyLine )
       : RealSuiteDescription( argFile, argLine, argSuiteName, argTests ) {
     doInitialize( argCreateLine, argDestroyLine );
   }
 
-  void CommonDynamicSuiteDescription::initialize(
-      const char* argFile, unsigned argLine, const char* argSuiteName,
-      List& argTests, unsigned argCreateLine, unsigned argDestroyLine ) {
-    RealSuiteDescription::initialize( argFile, argLine, argSuiteName,
-                                      argTests );
+  void CommonDynamicSuiteDescription::initialize( const char* argFile,
+                                                  unsigned argLine,
+                                                  const char* argSuiteName,
+                                                  List& argTests,
+                                                  unsigned argCreateLine,
+                                                  unsigned argDestroyLine ) {
+    RealSuiteDescription::initialize(
+        argFile, argLine, argSuiteName, argTests );
     doInitialize( argCreateLine, argDestroyLine );
   }
 
@@ -275,8 +281,7 @@ namespace CxxTest {
     for ( SuiteDescription* sd = firstSuite(); sd != 0; sd = sd->next() ) {
       if ( stringsEqual( sd->suiteName(), suiteName ) ) {
         if ( testName )
-          if ( !sd->leaveOnly( testName ) )
-            return false;
+          if ( !sd->leaveOnly( testName ) ) return false;
 
         suites().leaveOnly( *sd );
 

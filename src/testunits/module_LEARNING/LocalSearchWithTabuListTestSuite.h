@@ -59,7 +59,8 @@ namespace gum_tests {
 
       auto translators1 = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>() );
+                                gum::learning::Col<0>,
+                                8>() );
 
       // auto translators = translators1;
 
@@ -72,13 +73,13 @@ namespace gum_tests {
 
       auto generators = generators1;
 
-      auto filter1 = gum::learning::make_DB_row_filter( database, translators,
-                                                        generators );
+      auto filter1 = gum::learning::make_DB_row_filter(
+          database, translators, generators );
 
       auto filter = filter1;
 
-      auto filter2 = gum::learning::make_DB_row_filter( database, translators,
-                                                        generators1 );
+      auto filter2 = gum::learning::make_DB_row_filter(
+          database, translators, generators1 );
 
       filter = std::move( filter2 );
 
@@ -102,26 +103,32 @@ namespace gum_tests {
       struct_constraint.setSliceOrder( slices );
       struct_constraint.setDefaultSlice( 1 );
 
-      gum::learning::ParamEstimatorML<> estimator( filter, modalities,
-                                                   apriori );
+      gum::learning::ParamEstimatorML<> estimator(
+          filter, modalities, apriori );
 
       gum::learning::GraphChangesGenerator4DiGraph<decltype(
           struct_constraint )> op_set( struct_constraint );
 
-      gum::learning::GraphChangesSelector4DiGraph<
-          decltype( score ), decltype( struct_constraint ), decltype( op_set )>
+      gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
+                                                  decltype( struct_constraint ),
+                                                  decltype( op_set )>
           selector( score, struct_constraint, op_set );
 
       gum::learning::LocalSearchWithTabuList search;
       search.setMaxNbDecreasingChanges( 2 );
 
       try {
-        gum::BayesNet<float> bn =
-            search.learnBN( selector, estimator, database.variableNames(),
-                            modalities, filter.translatorSet() );
-        gum::BayesNet<double> bn2 = search.learnBN<double>(
-            selector, estimator, database.variableNames(), modalities,
-            filter.translatorSet() );
+        gum::BayesNet<float> bn = search.learnBN( selector,
+                                                  estimator,
+                                                  database.variableNames(),
+                                                  modalities,
+                                                  filter.translatorSet() );
+        gum::BayesNet<double> bn2 =
+            search.learnBN<double>( selector,
+                                    estimator,
+                                    database.variableNames(),
+                                    modalities,
+                                    filter.translatorSet() );
         TS_ASSERT( bn.dag().arcs().size() == 11 );
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
@@ -133,12 +140,13 @@ namespace gum_tests {
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 37>() );
+                                gum::learning::Col<0>,
+                                37>() );
 
       auto generators = gum::learning::make_generators(
           gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter( database, translators,
-                                                       generators );
+      auto filter = gum::learning::make_DB_row_filter(
+          database, translators, generators );
 
       std::vector<unsigned int> modalities = filter.modalities();
 
@@ -161,14 +169,15 @@ namespace gum_tests {
       struct_constraint.setSliceOrder( slices );
       struct_constraint.setDefaultSlice( 1 );
 
-      gum::learning::ParamEstimatorML<> estimator( filter, modalities,
-                                                   apriori );
+      gum::learning::ParamEstimatorML<> estimator(
+          filter, modalities, apriori );
 
       gum::learning::GraphChangesGenerator4DiGraph<decltype(
           struct_constraint )> op_set( struct_constraint );
 
-      gum::learning::GraphChangesSelector4DiGraph<
-          decltype( score ), decltype( struct_constraint ), decltype( op_set )>
+      gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
+                                                  decltype( struct_constraint ),
+                                                  decltype( op_set )>
           selector( score, struct_constraint, op_set );
 
       gum::learning::LocalSearchWithTabuList search;
@@ -189,12 +198,13 @@ namespace gum_tests {
       gum::learning::DBRowTranslatorSetDynamic<
           gum::learning::CellTranslatorCompactIntId> translators;
       translators.insertTranslator( gum::learning::CellTranslatorCompactIntId(),
-                                    gum::learning::Col<0>(), 37 );
+                                    gum::learning::Col<0>(),
+                                    37 );
 
       auto generators = gum::learning::make_generators(
           gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter( database, translators,
-                                                       generators );
+      auto filter = gum::learning::make_DB_row_filter(
+          database, translators, generators );
 
       std::vector<unsigned int> modalities = filter.modalities();
 
@@ -217,14 +227,15 @@ namespace gum_tests {
       struct_constraint.setSliceOrder( slices );
       struct_constraint.setDefaultSlice( 1 );
 
-      gum::learning::ParamEstimatorML<> estimator( filter, modalities,
-                                                   apriori );
+      gum::learning::ParamEstimatorML<> estimator(
+          filter, modalities, apriori );
 
       gum::learning::GraphChangesGenerator4DiGraph<decltype(
           struct_constraint )> op_set( struct_constraint );
 
-      gum::learning::GraphChangesSelector4DiGraph<
-          decltype( score ), decltype( struct_constraint ), decltype( op_set )>
+      gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
+                                                  decltype( struct_constraint ),
+                                                  decltype( op_set )>
           selector( score, struct_constraint, op_set );
 
       gum::learning::LocalSearchWithTabuList search;
@@ -245,12 +256,13 @@ namespace gum_tests {
       gum::learning::DBRowTranslatorSetDynamic<
           gum::learning::DBCellTranslator<1, 1>> translators;
       translators.insertTranslator( gum::learning::CellTranslatorCompactIntId(),
-                                    gum::learning::Col<0>(), 37 );
+                                    gum::learning::Col<0>(),
+                                    37 );
 
       auto generators = gum::learning::make_generators(
           gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter( database, translators,
-                                                       generators );
+      auto filter = gum::learning::make_DB_row_filter(
+          database, translators, generators );
 
       std::vector<unsigned int> modalities = filter.modalities();
 
@@ -274,14 +286,15 @@ namespace gum_tests {
       struct_constraint.setDefaultSlice( 1 );
 
       apriori.setWeight( 0 );
-      gum::learning::ParamEstimatorML<> estimator( filter, modalities,
-                                                   apriori );
+      gum::learning::ParamEstimatorML<> estimator(
+          filter, modalities, apriori );
 
       gum::learning::GraphChangesGenerator4DiGraph<decltype(
           struct_constraint )> op_set( struct_constraint );
 
-      gum::learning::GraphChangesSelector4DiGraph<
-          decltype( score ), decltype( struct_constraint ), decltype( op_set )>
+      gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
+                                                  decltype( struct_constraint ),
+                                                  decltype( op_set )>
           selector( score, struct_constraint, op_set );
 
       gum::learning::LocalSearchWithTabuList search;

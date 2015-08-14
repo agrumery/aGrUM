@@ -20,8 +20,7 @@ namespace CxxTest {
   char* WorldDescription::strTotalTests( char* s ) const {
     char* p = numberToString( numTotalTests(), s );
 
-    if ( numTotalTests() <= 1 )
-      return s;
+    if ( numTotalTests() <= 1 ) return s;
 
     unsigned n = numTotalTests();
     unsigned numFactors = 0;
@@ -33,23 +32,22 @@ namespace CxxTest {
       for ( power = 0; ( n % factor ) == 0; n /= factor )
         ++power;
 
-      if ( !power )
-        continue;
+      if ( !power ) continue;
 
       p = numberToString(
           factor, copyString( p, ( numFactors == 0 ) ? " = " : " * " ) );
 
-      if ( power > 1 )
-        p = numberToString( power, copyString( p, "^" ) );
+      if ( power > 1 ) p = numberToString( power, copyString( p, "^" ) );
 
       ++numFactors;
     }
 
     if ( n > 1 ) {
       if ( !numFactors )
-        copyString( p, tracker().failedTests() ? " :(" : tracker().warnings()
-                                                             ? " :|"
-                                                             : " :)" );
+        copyString( p,
+                    tracker().failedTests() ? " :(" : tracker().warnings()
+                                                          ? " :|"
+                                                          : " :)" );
       else
         numberToString( n, copyString( p, " * " ) );
     }

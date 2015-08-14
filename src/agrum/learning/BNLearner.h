@@ -51,7 +51,8 @@ namespace gum {
      * LocalSearchWithTabuList
      * @ingroup learning_group
      */
-    template <typename GUM_SCALAR> class BNLearner : public genericBNLearner {
+    template <typename GUM_SCALAR>
+    class BNLearner : public genericBNLearner {
 
       public:
       // ##########################################################################

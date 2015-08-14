@@ -41,11 +41,14 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-  template <typename T1, typename T2> class BijectionIteratorSafe;
-  template <typename T1, typename T2> class BijectionIterator;
+  template <typename T1, typename T2>
+  class BijectionIteratorSafe;
+  template <typename T1, typename T2>
+  class BijectionIterator;
   template <typename T1, typename T2, typename Alloc, bool>
   class BijectionImplementation;
-  template <typename T1, typename T2, typename Alloc> class Bijection;
+  template <typename T1, typename T2, typename Alloc>
+  class Bijection;
 
   // a class used to create the static iterator used by Bijections. The aim of
   // using this class rather than just creating __BijectionIterEnd as a global
@@ -72,14 +75,18 @@ namespace gum {
 
   // dummy classes that will enable discriminate without overhead between
   // scalars and non-scalars operators * and ->
-  template <bool gen> struct BijectionIteratorGet {
-    template <typename T> INLINE static const T& op_second( const T* x ) {
+  template <bool gen>
+  struct BijectionIteratorGet {
+    template <typename T>
+    INLINE static const T& op_second( const T* x ) {
       return *x;
     }
   };
 
-  template <> struct BijectionIteratorGet<true> {
-    template <typename T> INLINE static const T& op_second( const T& x ) {
+  template <>
+  struct BijectionIteratorGet<true> {
+    template <typename T>
+    INLINE static const T& op_second( const T& x ) {
       return x;
     }
   };
@@ -436,7 +443,8 @@ namespace gum {
      * @param args the arguments passed to the constructor
      * @throws DuplicateElement exception is thrown if the association
      * already exists  */
-    template <typename... Args> void emplace( Args&&... args );
+    template <typename... Args>
+    void emplace( Args&&... args );
 
     /// removes all the associations from the bijection
     void clear();
@@ -865,7 +873,8 @@ namespace gum {
      * @param args the arguments passed to the constructor
      * @throws DuplicateElement exception is thrown if the association
      * already exists  */
-    template <typename... Args> void emplace( Args&&... args );
+    template <typename... Args>
+    void emplace( Args&&... args );
 
     /// removes all the associations from the bijection
     void clear();
@@ -944,7 +953,9 @@ namespace gum {
 
   template <typename T1, typename T2, typename Alloc = std::allocator<T2>>
   class Bijection
-      : public BijectionImplementation<T1, T2, Alloc,
+      : public BijectionImplementation<T1,
+                                       T2,
+                                       Alloc,
                                        std::is_scalar<T1>::value &&
                                            std::is_scalar<T2>::value> {
     public:
@@ -973,8 +984,11 @@ namespace gum {
     /// @}
 
     using Implementation =
-        BijectionImplementation<T1, T2, Alloc, std::is_scalar<T1>::value &&
-                                                   std::is_scalar<T2>::value>;
+        BijectionImplementation<T1,
+                                T2,
+                                Alloc,
+                                std::is_scalar<T1>::value &&
+                                    std::is_scalar<T2>::value>;
 
     // ############################################################################
     /// @name Constructors/destructors
@@ -1035,7 +1049,8 @@ namespace gum {
    * @brief Safe iterators for bijection
    * @ingroup basicstruct_group
    */
-  template <typename T1, typename T2> class BijectionIteratorSafe {
+  template <typename T1, typename T2>
+  class BijectionIteratorSafe {
 
     template <typename TT1, typename TT2, typename Alloc, bool>
     friend class BijectionImplementation;
@@ -1173,7 +1188,8 @@ namespace gum {
    * @brief Unsafe iterators for bijection
    * @ingroup basicstruct_group
    */
-  template <typename T1, typename T2> class BijectionIterator {
+  template <typename T1, typename T2>
+  class BijectionIterator {
 
     template <typename TT1, typename TT2, typename Alloc, bool>
     friend class BijectionImplementation;

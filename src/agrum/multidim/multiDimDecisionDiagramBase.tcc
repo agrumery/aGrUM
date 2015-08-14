@@ -48,8 +48,10 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE MultiDimDecisionDiagramBase<GUM_SCALAR>::MultiDimDecisionDiagramBase()
-      : MultiDimReadOnly<GUM_SCALAR>(), __name( "MultiDimDecisionDiagram" ),
-        __isInstanciated( false ), __instanciationModeOn( false ) {
+      : MultiDimReadOnly<GUM_SCALAR>()
+      , __name( "MultiDimDecisionDiagram" )
+      , __isInstanciated( false )
+      , __instanciationModeOn( false ) {
     GUM_CONSTRUCTOR( MultiDimDecisionDiagramBase );
   }
 
@@ -58,9 +60,10 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE MultiDimDecisionDiagramBase<GUM_SCALAR>::MultiDimDecisionDiagramBase(
       const MultiDimDecisionDiagramBase<GUM_SCALAR>& source )
-      : MultiDimReadOnly<GUM_SCALAR>( source ),
-        __name( "MultiDimDecisionDiagram" ), __isInstanciated( false ),
-        __instanciationModeOn( false ) {
+      : MultiDimReadOnly<GUM_SCALAR>( source )
+      , __name( "MultiDimDecisionDiagram" )
+      , __isInstanciated( false )
+      , __instanciationModeOn( false ) {
     GUM_CONSTRUCTOR( MultiDimDecisionDiagramBase );
     this->copy( source );
   }
@@ -74,7 +77,8 @@ namespace gum {
     GUM_DESTRUCTOR( MultiDimDecisionDiagramBase );
 
     for ( auto iter_node = __graph.nodes().beginSafe();
-          iter_node != __graph.nodes().endSafe(); ++iter_node ) {
+          iter_node != __graph.nodes().endSafe();
+          ++iter_node ) {
       if ( *iter_node != 0 )
         if ( !__valueMap.existsFirst( *iter_node ) &&
              __arcMap[*iter_node] != nullptr )
@@ -83,13 +87,15 @@ namespace gum {
 
     for ( HashTableIteratorSafe<const DiscreteVariable*, List<NodeId>*> iter =
               __var2NodeIdMap.beginSafe();
-          iter != __var2NodeIdMap.endSafe(); ++iter )
+          iter != __var2NodeIdMap.endSafe();
+          ++iter )
       delete iter.val();
 
     for (
         HashTableIteratorSafe<const DiscreteVariable*, std::vector<Idx>*> iter =
             __varUsedModalitiesMap.beginSafe();
-        iter != __varUsedModalitiesMap.endSafe(); ++iter )
+        iter != __varUsedModalitiesMap.endSafe();
+        ++iter )
       delete iter.val();
   }
 
@@ -208,7 +214,9 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE void MultiDimDecisionDiagramBase<GUM_SCALAR>::changeNotification(
-      Instantiation& i, const DiscreteVariable* var, const Idx& oldval,
+      Instantiation& i,
+      const DiscreteVariable* var,
+      const Idx& oldval,
       const Idx& newval ) {}
 
   // Listen to setFirst in a given Instantiation
@@ -271,7 +279,8 @@ namespace gum {
     __defaultArcMap.resize( source.nodesMap().size() );
 
     for ( auto iter_node = __graph.nodes().beginSafe();
-          iter_node != __graph.nodes().endSafe(); ++iter_node ) {
+          iter_node != __graph.nodes().endSafe();
+          ++iter_node ) {
       if ( *iter_node != 0 && !source.isTerminalNode( *iter_node ) ) {
 
         __variableMap.insert( *iter_node, source.nodeVariable( *iter_node ) );
@@ -288,8 +297,9 @@ namespace gum {
               new std::vector<Idx>( *( source.variableUsedModalities(
                   source.nodeVariable( *iter_node ) ) ) ) );
 
-        __arcMap.insert( *iter_node, new std::vector<NodeId>(
-                                         *( source.nodeSons( *iter_node ) ) ) );
+        __arcMap.insert(
+            *iter_node,
+            new std::vector<NodeId>( *( source.nodeSons( *iter_node ) ) ) );
 
         if ( source.hasNodeDefaultSon( *iter_node ) )
           __defaultArcMap.insert( *iter_node,
@@ -299,8 +309,7 @@ namespace gum {
 
     this->setRoot( source.root() );
 
-    if ( fullInstanciation )
-      this->endInstantiation();
+    if ( fullInstanciation ) this->endInstantiation();
   }
 
   // Removes all variables in this Container and copy content from src, variable
@@ -336,7 +345,8 @@ namespace gum {
 
     for ( SequenceIteratorSafe<const DiscreteVariable*> seqIter =
               source->variablesSequence().beginSafe();
-          seqIter != source->variablesSequence().endSafe(); ++seqIter )
+          seqIter != source->variablesSequence().endSafe();
+          ++seqIter )
       primeVarSeq.insert( old2new.second( *seqIter ) );
 
     this->setVariableSequence( primeVarSeq );
@@ -359,7 +369,8 @@ namespace gum {
     __defaultArcMap.resize( source->nodesMap().size() );
 
     for ( auto nodeIter = source->nodesMap().beginSafe();
-          nodeIter != source->nodesMap().endSafe(); ++nodeIter ) {
+          nodeIter != source->nodesMap().endSafe();
+          ++nodeIter ) {
 
       if ( *nodeIter != 0 && !source->isTerminalNode( *nodeIter ) ) {
 
@@ -443,7 +454,8 @@ namespace gum {
     std::string tab = "  ";
 
     for ( auto iter_node = __graph.nodes().beginSafe();
-          iter_node != __graph.nodes().endSafe(); ++iter_node ) {
+          iter_node != __graph.nodes().endSafe();
+          ++iter_node ) {
       if ( *iter_node != 0 ) {
         if ( isTerminalNode( *iter_node ) ) {
           terminalStream << tab << *iter_node << ";" << tab << *iter_node
@@ -460,7 +472,8 @@ namespace gum {
           if ( __arcMap[*iter_node] != nullptr ) {
             for ( std::vector<NodeId>::iterator sonIter =
                       __arcMap[*iter_node]->begin();
-                  sonIter != __arcMap[*iter_node]->end(); ++sonIter )
+                  sonIter != __arcMap[*iter_node]->end();
+                  ++sonIter )
               if ( *sonIter != 0 )
                 arcstream << tab << *iter_node << " -> " << *sonIter
                           << " [label=\""
@@ -572,8 +585,7 @@ namespace gum {
   MultiDimDecisionDiagramBase<GUM_SCALAR>::variableNodes(
       const DiscreteVariable* v ) const {
 
-    if ( !__var2NodeIdMap.exists( v ) )
-      return nullptr;
+    if ( !__var2NodeIdMap.exists( v ) ) return nullptr;
 
     return __var2NodeIdMap[v];
   }
@@ -587,8 +599,7 @@ namespace gum {
   MultiDimDecisionDiagramBase<GUM_SCALAR>::variableUsedModalities(
       const DiscreteVariable* v ) const {
 
-    if ( !__varUsedModalitiesMap.exists( v ) )
-      return nullptr;
+    if ( !__varUsedModalitiesMap.exists( v ) ) return nullptr;
 
     return __varUsedModalitiesMap[v];
   }
@@ -632,8 +643,7 @@ namespace gum {
   INLINE const std::vector<NodeId>*
   MultiDimDecisionDiagramBase<GUM_SCALAR>::unsafeNodeSons( NodeId n ) const {
 
-    if ( !__arcMap.exists( n ) )
-      return nullptr;
+    if ( !__arcMap.exists( n ) ) return nullptr;
 
     return __arcMap[n];
   }
@@ -713,26 +723,30 @@ namespace gum {
       HashTable<NodeId, Set<const DiscreteVariable*>*>*
           retrogradeVariablesTable ) const {
 
-    if ( this->__variableMap.empty() )
-      return;
+    if ( this->__variableMap.empty() ) return;
 
     HashTable<NodeId, Set<const DiscreteVariable*>*>* preceedingVariablesTable =
         new HashTable<NodeId, Set<const DiscreteVariable*>*>();
     __makePreceedingVariablesLists( preceedingVariablesTable );
 
     List<NodeId>* visitedNodes = new List<NodeId>();
-    __findRetorgradeVariables( varsSeq, this->__root, retrogradeVariablesTable,
-                               preceedingVariablesTable, visitedNodes );
+    __findRetorgradeVariables( varsSeq,
+                               this->__root,
+                               retrogradeVariablesTable,
+                               preceedingVariablesTable,
+                               visitedNodes );
     delete visitedNodes;
 
     for ( HashTableIteratorSafe<NodeId, Set<const DiscreteVariable*>*> iterH =
               retrogradeVariablesTable->beginSafe();
-          iterH != retrogradeVariablesTable->endSafe(); ++iterH ) {
+          iterH != retrogradeVariablesTable->endSafe();
+          ++iterH ) {
       Set<const DiscreteVariable*> finalSet = *( iterH.val() );
 
       for ( SetIteratorSafe<const DiscreteVariable*> iterS =
                 finalSet.beginSafe();
-            iterS != finalSet.endSafe(); ++iterS )
+            iterS != finalSet.endSafe();
+            ++iterS )
         if ( varsSeq->pos( *iterS ) >=
              varsSeq->pos( this->nodeVariable( iterH.key() ) ) )
           ( iterH.val() )->erase( *iterS );
@@ -788,7 +802,8 @@ namespace gum {
 
     for ( HashTableIteratorSafe<NodeId, Set<const DiscreteVariable*>*> iterH =
               preceedingVariablesTable->beginSafe();
-          iterH != preceedingVariablesTable->endSafe(); ++iterH )
+          iterH != preceedingVariablesTable->endSafe();
+          ++iterH )
       delete iterH.val();
 
     delete preceedingVariablesTable;
@@ -810,23 +825,25 @@ namespace gum {
 
     for ( BijectionIteratorSafe<NodeId, GUM_SCALAR> valueIter =
               __valueMap.beginSafe();
-          valueIter != __valueMap.endSafe(); ++valueIter ) {
+          valueIter != __valueMap.endSafe();
+          ++valueIter ) {
       GUM_SCALAR tempVal = valueIter.second() * factor;
 
       if ( newValueMap.existsSecond( tempVal ) ) {
         NodeId nody = newValueMap.first( tempVal );
 
         for ( auto iter_node = __graph.nodes().beginSafe();
-              iter_node != __graph.nodes().endSafe(); ++iter_node )
+              iter_node != __graph.nodes().endSafe();
+              ++iter_node )
           if ( *iter_node != 0 && !isTerminalNode( *iter_node ) ) {
             if ( !__arcMap.exists( *iter_node ) )
               std::cout << "OW! OW! : " << *iter_node << std::endl;
 
             for ( std::vector<NodeId>::iterator sonsIter =
                       __arcMap[*iter_node]->begin();
-                  sonsIter != __arcMap[*iter_node]->end(); ++sonsIter )
-              if ( *sonsIter == valueIter.first() )
-                *sonsIter = nody;
+                  sonsIter != __arcMap[*iter_node]->end();
+                  ++sonsIter )
+              if ( *sonsIter == valueIter.first() ) *sonsIter = nody;
 
             if ( __defaultArcMap.exists( *iter_node ) &&
                  __defaultArcMap[*iter_node] == valueIter.first() ) {
@@ -890,7 +907,8 @@ namespace gum {
 
     for ( Sequence<const DiscreteVariable*>::iterator_safe iter =
               varList.beginSafe();
-          iter != varList.endSafe(); ++iter )
+          iter != varList.endSafe();
+          ++iter )
       MultiDimImplementation<GUM_SCALAR>::add( **iter );
   }
 
@@ -938,7 +956,8 @@ namespace gum {
 
     for ( HashTableConstIteratorSafe<const DiscreteVariable*, List<NodeId>*>
               varIter = var2NodeMap.beginSafe();
-          varIter != var2NodeMap.endSafe(); ++varIter )
+          varIter != var2NodeMap.endSafe();
+          ++varIter )
       __var2NodeIdMap.insert( varIter.key(),
                               new List<NodeId>( *( varIter.val() ) ) );
   }
@@ -960,7 +979,8 @@ namespace gum {
 
     for ( HashTableConstIteratorSafe<const DiscreteVariable*, std::vector<Idx>*>
               varIter = varUsedModalitiesMap.beginSafe();
-          varIter != varUsedModalitiesMap.endSafe(); ++varIter )
+          varIter != varUsedModalitiesMap.endSafe();
+          ++varIter )
       __varUsedModalitiesMap.insert(
           varIter.key(), new std::vector<Idx>( *( varIter.val() ) ) );
   }
@@ -997,7 +1017,8 @@ namespace gum {
 
     for ( HashTableConstIteratorSafe<NodeId, std::vector<NodeId>*> arcIter =
               arcMap.beginSafe();
-          arcIter != arcMap.endSafe(); ++arcIter )
+          arcIter != arcMap.endSafe();
+          ++arcIter )
       __arcMap.insert( arcIter.key(),
                        new std::vector<NodeId>( *( arcIter.val() ) ) );
   }
@@ -1068,7 +1089,8 @@ namespace gum {
 
         for ( std::vector<NodeId>::iterator arcIter =
                   __arcMap[currentNode]->begin();
-              arcIter != __arcMap[currentNode]->end(); arcIter++ ) {
+              arcIter != __arcMap[currentNode]->end();
+              arcIter++ ) {
 
           if ( *arcIter != 0 && !this->isTerminalNode( *arcIter ) ) {
 
@@ -1084,15 +1106,17 @@ namespace gum {
 
             } else
               preceedingVariablesTable->insert(
-                  *arcIter, new Set<const DiscreteVariable*>( *( (
-                                *preceedingVariablesTable )[currentNode] ) ) );
+                  *arcIter,
+                  new Set<const DiscreteVariable*>(
+                      *( ( *preceedingVariablesTable )[currentNode] ) ) );
 
             ( *preceedingVariablesTable )[*arcIter]->insert(
                 __variableMap[currentNode] );
 
             if ( !fifo.contains( *arcIter ) )
-              fifo.insert( *arcIter, this->variablesSequence().pos(
-                                         __variableMap[*arcIter] ) );
+              fifo.insert(
+                  *arcIter,
+                  this->variablesSequence().pos( __variableMap[*arcIter] ) );
           }
         }
 
@@ -1113,15 +1137,17 @@ namespace gum {
 
           } else
             preceedingVariablesTable->insert(
-                defaultSon, new Set<const DiscreteVariable*>( *( (
-                                *preceedingVariablesTable )[currentNode] ) ) );
+                defaultSon,
+                new Set<const DiscreteVariable*>(
+                    *( ( *preceedingVariablesTable )[currentNode] ) ) );
 
           ( *preceedingVariablesTable )[defaultSon]->insert(
               __variableMap[currentNode] );
 
           if ( !fifo.contains( defaultSon ) )
-            fifo.insert( defaultSon, this->variablesSequence().pos(
-                                         __variableMap[defaultSon] ) );
+            fifo.insert(
+                defaultSon,
+                this->variablesSequence().pos( __variableMap[defaultSon] ) );
         }
       }
     }
@@ -1146,14 +1172,17 @@ namespace gum {
 
     for ( std::vector<NodeId>::iterator sonsIter =
               __arcMap[currentNode]->begin();
-          sonsIter != __arcMap[currentNode]->end(); sonsIter++ ) {
+          sonsIter != __arcMap[currentNode]->end();
+          sonsIter++ ) {
 
       if ( *sonsIter != 0 && !this->isTerminalNode( *sonsIter ) ) {
 
         if ( !visitedNodes->exists( *sonsIter ) )
-          this->__findRetorgradeVariables(
-              varsSeq, *sonsIter, retrogradeVarTable, preceedingVariablesTable,
-              visitedNodes );
+          this->__findRetorgradeVariables( varsSeq,
+                                           *sonsIter,
+                                           retrogradeVarTable,
+                                           preceedingVariablesTable,
+                                           visitedNodes );
 
         Set<const DiscreteVariable*>* setTemp = currentVarSet;
         currentVarSet = new Set<const DiscreteVariable*>(
@@ -1168,9 +1197,11 @@ namespace gum {
       NodeId defaultSon = this->nodeDefaultSon( currentNode );
 
       if ( !visitedNodes->exists( defaultSon ) )
-        this->__findRetorgradeVariables(
-            varsSeq, defaultSon, retrogradeVarTable, preceedingVariablesTable,
-            visitedNodes );
+        this->__findRetorgradeVariables( varsSeq,
+                                         defaultSon,
+                                         retrogradeVarTable,
+                                         preceedingVariablesTable,
+                                         visitedNodes );
 
       Set<const DiscreteVariable*>* setTemp = currentVarSet;
       currentVarSet = new Set<const DiscreteVariable*>(

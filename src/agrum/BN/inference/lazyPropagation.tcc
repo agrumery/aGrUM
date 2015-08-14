@@ -60,7 +60,8 @@ namespace gum {
   // initialization function
   template <typename GUM_SCALAR>
   INLINE void LazyPropagation<GUM_SCALAR>::__initialize(
-      const IBayesNet<GUM_SCALAR>& BN, StaticTriangulation& triangulation,
+      const IBayesNet<GUM_SCALAR>& BN,
+      StaticTriangulation& triangulation,
       const NodeProperty<Size>& modalities ) {
     const JunctionTree& triang_jt = triangulation.junctionTree();
     BinaryJoinTreeConverterDefault bon_converter;
@@ -95,8 +96,9 @@ namespace gum {
       // parents)
       // eliminated => the clique created during its elmination contains iter
       // and all of its parents => it can contain iter's potential
-      __node_to_clique.insert( node, triangulation.createdJunctionTreeClique(
-                                         first_eliminated_node ) );
+      __node_to_clique.insert(
+          node,
+          triangulation.createdJunctionTreeClique( first_eliminated_node ) );
     }
 
     // create empty potential lists into the cliques of the joint tree as well
@@ -180,8 +182,8 @@ namespace gum {
     }
 
     // initialize the __triangulation algorithm
-    OrderedTriangulation triangulation( &( this->bn().moralGraph() ),
-                                        &modalities, &elim_order );
+    OrderedTriangulation triangulation(
+        &( this->bn().moralGraph() ), &modalities, &elim_order );
     __initialize( this->bn(), triangulation, modalities );
   }
 
@@ -251,8 +253,7 @@ namespace gum {
     this->_invalidatePosteriors();
 
     // if the evidence does not exist, do nothing
-    if ( !__evidences.contains( pot ) )
-      return;
+    if ( !__evidences.contains( pot ) ) return;
 
     // get the variable involved in pot and indicate that this variable did
     // not receive any evidence
@@ -347,8 +348,7 @@ namespace gum {
     for ( i.setFirst(); !i.end(); i.inc() ) {
       if ( pot->operator[]( i ) != 0 ) {
         ++nb_non_zeros;
-        if ( nb_non_zeros > 1 )
-          return false;
+        if ( nb_non_zeros > 1 ) return false;
       }
     }
 
@@ -466,8 +466,11 @@ namespace gum {
     // determine the set of potentials d-connected with the kept variables
     NodeSet requisite_nodes;
     BayesBall bb;
-    bb.requisiteNodes( this->bn().dag(), kept_ids, __hard_evidence_nodes,
-                       __soft_evidence_nodes, requisite_nodes );
+    bb.requisiteNodes( this->bn().dag(),
+                       kept_ids,
+                       __hard_evidence_nodes,
+                       __soft_evidence_nodes,
+                       requisite_nodes );
     for ( auto iter = pot_list.beginSafe(); iter != pot_list.endSafe();
           ++iter ) {
       const Sequence<const DiscreteVariable*>& vars =
@@ -501,11 +504,14 @@ namespace gum {
 
     // determine the set of potentials d-connected with the kept variables
     BayesBall bb;
-    bb.relevantPotentials( this->bn(), kept_ids, __hard_evidence_nodes,
-                           __soft_evidence_nodes, pot_list );
+    bb.relevantPotentials( this->bn(),
+                           kept_ids,
+                           __hard_evidence_nodes,
+                           __soft_evidence_nodes,
+                           pot_list );
   }
 
-  
+
   // find the potentials d-connected to a set of variables
   template <typename GUM_SCALAR>
   INLINE void
@@ -520,8 +526,11 @@ namespace gum {
 
     // determine the set of potentials d-connected with the kept variables
     dSeparation dsep;
-    dsep.relevantPotentials( this->bn(), kept_ids, __hard_evidence_nodes,
-                             __soft_evidence_nodes, pot_list );
+    dsep.relevantPotentials( this->bn(),
+                             kept_ids,
+                             __hard_evidence_nodes,
+                             __soft_evidence_nodes,
+                             pot_list );
   }
 
 
@@ -595,7 +604,8 @@ namespace gum {
   // remove variables del_vars from the list of potentials pot_list
   template <typename GUM_SCALAR>
   INLINE void LazyPropagation<GUM_SCALAR>::__marginalizeOut(
-      __PotentialSet& pot_list, Set<const DiscreteVariable*>& del_vars,
+      __PotentialSet& pot_list,
+      Set<const DiscreteVariable*>& del_vars,
       Set<const DiscreteVariable*>& kept_vars ) {
     // use d-separation analysis to check which potentials shall be combined
     ( this->*__findRelevantPotentials )( pot_list, kept_vars );
@@ -614,7 +624,8 @@ namespace gum {
     // set of potentials created during inference. In addition, remove all the
     // potentials that have no dimension
     for ( auto iter_pot = new_pot_list.beginSafe();
-          iter_pot != new_pot_list.endSafe(); ++iter_pot ) {
+          iter_pot != new_pot_list.endSafe();
+          ++iter_pot ) {
       if ( ( *iter_pot )->variablesSequence().size() == 0 ) {
         // as we have already marginalized out variables that received evidence,
         // it may be the case that, after combining and projecting, some
@@ -752,8 +763,7 @@ namespace gum {
     __collected_cliques[id] = true;
 
     for ( const auto other : __JT->neighbours( id ) )
-      if ( other != from )
-        __collect( other, id );
+      if ( other != from ) __collect( other, id );
 
     if ( id != from ) {
       __produceMessage( id, from );
@@ -769,8 +779,7 @@ namespace gum {
     NodeId clique = __node_to_clique[id];
 
     // check if we really need to perform an inference
-    if ( !force_collect && __collected_cliques[clique] )
-      return;
+    if ( !force_collect && __collected_cliques[clique] ) return;
 
     // clean-up the area that will receive the __collect
     __setRequiredInference( clique, clique );
@@ -813,8 +822,7 @@ namespace gum {
     } else if ( __diffused_cliques[clique] )
       return;
 
-    if ( !__collected_cliques[clique] )
-      __collect( clique, false );
+    if ( !__collected_cliques[clique] ) __collect( clique, false );
 
     __diffusion( clique, clique );
   }
@@ -858,13 +866,11 @@ namespace gum {
 
     // perform the __collect in all connected components of the junction tree
     for ( const auto& elt : __collected_cliques )
-      if ( !elt.second )
-        __collect( elt.first, elt.first );
+      if ( !elt.second ) __collect( elt.first, elt.first );
 
     // perform the __diffusion in all connected components of the junction tree
     for ( const auto& elt : __diffused_cliques )
-      if ( !elt.second )
-        __diffusion( elt.first, elt.first );
+      if ( !elt.second ) __diffusion( elt.first, elt.first );
 
     // indicate that we performed the inference with root =
     // __collected_cliques.begin()
@@ -1035,7 +1041,8 @@ namespace gum {
 
     for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter =
               clique_pot.cbeginSafe();
-          iter != clique_pot.cendSafe(); ++iter ) {
+          iter != clique_pot.cendSafe();
+          ++iter ) {
       pot_list.insert( *iter );
     }
 
@@ -1045,7 +1052,8 @@ namespace gum {
 
     for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter =
               evidence_list.cbeginSafe();
-          iter != evidence_list.cendSafe(); ++iter ) {
+          iter != evidence_list.cendSafe();
+          ++iter ) {
       pot_list.insert( *iter );
     }
 

@@ -34,8 +34,9 @@ namespace gum {
   }
 
   Timer::Timer( const Timer& from )
-      : _start( from._start ), _pause( from._pause ),
-        _sleeping( from._sleeping ) {
+      : _start( from._start )
+      , _pause( from._pause )
+      , _sleeping( from._sleeping ) {
     GUM_CONS_CPY( Timer );
   }
 

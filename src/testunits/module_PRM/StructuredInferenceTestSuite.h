@@ -33,7 +33,6 @@
 
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
-
 namespace gum_tests {
 
   class StructuredInferenceTestSuite : public CxxTest::TestSuite {
@@ -43,7 +42,8 @@ namespace gum_tests {
     }
 
     void generateLayer1(
-        gum::Size nb_class, gum::Size depth,
+        gum::Size nb_class,
+        gum::Size depth,
         std::vector<gum::prm::LayerGenerator<double>::LayerData>& v ) {
       try {
         for ( gum::Size lvl = 0; lvl < depth; ++lvl ) {
@@ -61,7 +61,8 @@ namespace gum_tests {
     }
 
     void generateLayer2(
-        gum::Size nb_class, gum::Size depth,
+        gum::Size nb_class,
+        gum::Size depth,
         std::vector<gum::prm::LayerGenerator<double>::LayerData>& v ) {
       try {
         for ( gum::Size lvl = 0; lvl < depth; ++lvl ) {
@@ -79,7 +80,8 @@ namespace gum_tests {
     }
 
     void generateLayer3(
-        gum::Size nb_class, gum::Size depth,
+        gum::Size nb_class,
+        gum::Size depth,
         std::vector<gum::prm::LayerGenerator<double>::LayerData>& v ) {
       try {
         for ( gum::Size lvl = 0; lvl < depth; ++lvl ) {
@@ -101,7 +103,8 @@ namespace gum_tests {
       gum::Sequence<const gum::prm::Instance<double>*> seq;
 
       for ( gum::prm::System<double>::const_iterator iter = sys.begin();
-            iter != sys.end(); ++iter )
+            iter != sys.end();
+            ++iter )
         seq.insert( iter.val() );
 
       return *( seq.atPos( std::rand() % seq.size() ) );
@@ -112,7 +115,8 @@ namespace gum_tests {
       gum::Sequence<const gum::prm::Attribute<double>*> seq;
 
       for ( gum::prm::Instance<double>::const_iterator iter = i.begin();
-            iter != i.end(); ++iter )
+            iter != i.end();
+            ++iter )
         seq.insert( iter.val() );
 
       return *( seq.atPos( std::rand() % seq.size() ) );

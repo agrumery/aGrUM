@@ -37,7 +37,8 @@ namespace gum {
    */
 
   /// default constructor: the iterator points toward nothing
-  template <typename Key> INLINE SetIteratorSafe<Key>::SetIteratorSafe() {
+  template <typename Key>
+  INLINE SetIteratorSafe<Key>::SetIteratorSafe() {
     GUM_CONSTRUCTOR( SetIteratorSafe );
   }
 
@@ -162,7 +163,8 @@ namespace gum {
 
   /** @brief makes the iterator point toward nothing (in particular, it is not
    * related anymore to its current set) */
-  template <typename Key> INLINE void SetIteratorSafe<Key>::clear() noexcept {
+  template <typename Key>
+  INLINE void SetIteratorSafe<Key>::clear() noexcept {
     __ht_iter.clear();
   }
 
@@ -174,7 +176,8 @@ namespace gum {
    */
 
   /// default constructor: the iterator points toward nothing
-  template <typename Key> INLINE SetIterator<Key>::SetIterator() noexcept {
+  template <typename Key>
+  INLINE SetIterator<Key>::SetIterator() noexcept {
     GUM_CONSTRUCTOR( SetIterator );
   }
 
@@ -203,7 +206,8 @@ namespace gum {
   }
 
   /// destructor
-  template <typename Key> INLINE SetIterator<Key>::~SetIterator() noexcept {
+  template <typename Key>
+  INLINE SetIterator<Key>::~SetIterator() noexcept {
     GUM_DESTRUCTOR( SetIterator );
   }
 
@@ -281,7 +285,8 @@ namespace gum {
 
   /** @brief makes the iterator point toward nothing (in particular, it is not
    * related anymore to its current set) */
-  template <typename Key> INLINE void SetIterator<Key>::clear() noexcept {
+  template <typename Key>
+  INLINE void SetIterator<Key>::clear() noexcept {
     __ht_iter.clear();
   }
 
@@ -325,8 +330,8 @@ namespace gum {
   INLINE Set<Key, Alloc>::Set( Size capacity, bool resize_policy )
       :  // create the hash table without key uniqueness policy (as we will
          // check
-        // ourselves the uniqueness of Keys before inserting new elements)
-        __inside( capacity, resize_policy, false ) {
+      // ourselves the uniqueness of Keys before inserting new elements)
+      __inside( capacity, resize_policy, false ) {
     GUM_CONSTRUCTOR( Set );
 
     // make sure the end() iterator is constructed properly
@@ -383,12 +388,14 @@ namespace gum {
   }
 
   /// destructor
-  template <typename Key, typename Alloc> INLINE Set<Key, Alloc>::Set::~Set() {
+  template <typename Key, typename Alloc>
+  INLINE Set<Key, Alloc>::Set::~Set() {
     GUM_DESTRUCTOR( Set );
   }
 
   /// removes all the elements, if any, from the set
-  template <typename Key, typename Alloc> INLINE void Set<Key, Alloc>::clear() {
+  template <typename Key, typename Alloc>
+  INLINE void Set<Key, Alloc>::clear() {
     // first we remove all the elements from the hashtable actually containing
     // the elements of the set. Note that, doing so, all the hashtable iterators
     // will be updated as well. In turn, this will imply that, whenever an
@@ -477,14 +484,13 @@ namespace gum {
     const HashTable<Key, bool, OtherAlloc>& h2 = s2.__inside;
 
     // check whether both sets have the same number of elements
-    if ( size() != h2.size() )
-      return false;
+    if ( size() != h2.size() ) return false;
 
     // check the content of the sets
     for ( HashTableConstIterator<Key, bool> iter = __inside.cbegin();
-          iter != __inside.cend(); ++iter ) {
-      if ( !h2.exists( iter.key() ) )
-        return false;
+          iter != __inside.cend();
+          ++iter ) {
+      if ( !h2.exists( iter.key() ) ) return false;
     }
 
     return true;
@@ -715,15 +721,15 @@ namespace gum {
 
     if ( size() < h2.size() ) {
       for ( HashTableConstIterator<Key, bool> iter = __inside.cbegin();
-            iter != __inside.cend(); ++iter ) {
-        if ( h2.exists( iter.key() ) )
-          h_r.insert( iter.key(), true );
+            iter != __inside.cend();
+            ++iter ) {
+        if ( h2.exists( iter.key() ) ) h_r.insert( iter.key(), true );
       }
     } else {
       for ( HashTableConstIterator<Key, bool> iter = h2.cbegin();
-            iter != h2.cend(); ++iter ) {
-        if ( __inside.exists( iter.key() ) )
-          h_r.insert( iter.key(), true );
+            iter != h2.cend();
+            ++iter ) {
+        if ( __inside.exists( iter.key() ) ) h_r.insert( iter.key(), true );
       }
     }
 
@@ -740,9 +746,9 @@ namespace gum {
     HashTable<Key, bool, Alloc>& h_r = res.__inside;
 
     for ( HashTableConstIterator<Key, bool> iter = h2.cbegin();
-          iter != h2.cend(); ++iter ) {
-      if ( !h_r.exists( iter.key() ) )
-        h_r.insert( iter.key(), true );
+          iter != h2.cend();
+          ++iter ) {
+      if ( !h_r.exists( iter.key() ) ) h_r.insert( iter.key(), true );
     }
 
     return res;
@@ -758,9 +764,9 @@ namespace gum {
     HashTable<Key, bool, Alloc>& h_r = res.__inside;
 
     for ( HashTableConstIterator<Key, bool> iter = __inside.cbegin();
-          iter != __inside.cend(); ++iter )
-      if ( !h2.exists( iter.key() ) )
-        h_r.insert( iter.key(), true );
+          iter != __inside.cend();
+          ++iter )
+      if ( !h2.exists( iter.key() ) ) h_r.insert( iter.key(), true );
 
     return res;
   }
@@ -803,15 +809,15 @@ namespace gum {
     // determine the proper size of the hashtable
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without resizing
-    if ( size == 0 )
-      size = std::max( 2UL, __inside.size() / 2 );
+    if ( size == 0 ) size = std::max( 2UL, __inside.size() / 2 );
 
     // create a new table
     HashTable<Key, NewKey, NewAlloc> table( size );
 
     // fill the new hash table
     for ( HashTableConstIterator<Key, bool> iter = __inside.cbegin();
-          iter != __inside.cend(); ++iter ) {
+          iter != __inside.cend();
+          ++iter ) {
       table.insert( iter.key(), f( iter.key() ) );
     }
 
@@ -826,15 +832,15 @@ namespace gum {
     // determine the proper size of the hashtable
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without resizing
-    if ( size == 0 )
-      size = std::max( 2UL, __inside.size() / 2 );
+    if ( size == 0 ) size = std::max( 2UL, __inside.size() / 2 );
 
     // create a new table
     HashTable<Key, NewKey, NewAlloc> table( size );
 
     // fill the new hash table
     for ( HashTableConstIterator<Key, bool> iter = __inside.cbegin();
-          iter != __inside.cend(); ++iter ) {
+          iter != __inside.cend();
+          ++iter ) {
       table.insert( iter.key(), val );
     }
 
@@ -851,7 +857,8 @@ namespace gum {
 
     // fill the new list
     for ( HashTableConstIterator<Key, bool> iter = __inside.cbegin();
-          iter != __inside.cend(); ++iter ) {
+          iter != __inside.cend();
+          ++iter ) {
       list.pushBack( f( iter.key() ) );
     }
 

@@ -78,7 +78,8 @@ namespace gum_tests {
         t.set( i, new float( (int)( ( (float)rand() / RAND_MAX ) * 100000 ) ) );
     }
 
-    template <typename T> void pointerDelete( gum::MultiDimArray<T*>* t ) {
+    template <typename T>
+    void pointerDelete( gum::MultiDimArray<T*>* t ) {
       if ( t->variablesSequence().size() ) {
         gum::Instantiation i( t );
 
@@ -103,7 +104,8 @@ namespace gum_tests {
       delete t;
     }
 
-    template <typename T> void pointerDelete( gum::Potential<T*>* t ) {
+    template <typename T>
+    void pointerDelete( gum::Potential<T*>* t ) {
       if ( t->variablesSequence().size() ) {
         gum::Instantiation i( t );
 
@@ -185,8 +187,7 @@ namespace gum_tests {
           inst1.variablesSequence();
 
       for ( const auto var : vars )
-        if ( inst1.val( *var ) != inst2.val( *var ) )
-          return false;
+        if ( inst1.val( *var ) != inst2.val( *var ) ) return false;
 
       return true;
     }

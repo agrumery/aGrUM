@@ -49,7 +49,8 @@ namespace gum {
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      */
 
-    template <typename GUM_SCALAR> class VarMod2BNsMap {
+    template <typename GUM_SCALAR>
+    class VarMod2BNsMap {
       private:
       typedef std::vector<bool> dBN;
 

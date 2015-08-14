@@ -34,11 +34,14 @@ namespace gum {
 
   // classes provided/used by this header
 
-  template <typename Val, class Cmp, class Node> class BinSearchTree;
+  template <typename Val, class Cmp, class Node>
+  class BinSearchTree;
 
-  template <typename Val, class Cmp, class Node> class BinSearchTreeIterator;
+  template <typename Val, class Cmp, class Node>
+  class BinSearchTreeIterator;
 
-  template <typename Val, class Cmp> class AVLSearchTree;
+  template <typename Val, class Cmp>
+  class AVLSearchTree;
 
   /* ===========================================================================
    */
@@ -261,7 +264,8 @@ namespace gum {
      * @param parent is the node that should be the parent of the copy
      * @param dir the direction of the edge parent->copy */
 
-    Node* _copy( Node* root_from, Node* parent = 0,
+    Node* _copy( Node* root_from,
+                 Node* parent = 0,
                  BinTreeDir dir = BinTreeDir::LEFT_CHILD );
 
     /// returns the smallest node w.r.t. order Cmp in the subtree rooted at node
@@ -327,7 +331,8 @@ namespace gum {
   /* ===========================================================================
    */
 
-  template <typename Val, class Cmp, class Node> class BinSearchTreeIterator {
+  template <typename Val, class Cmp, class Node>
+  class BinSearchTreeIterator {
     public:
     // ############################################################################
     /// constructors / destructors
@@ -463,7 +468,8 @@ namespace gum {
      * iterators of the tree */
 
     void _initialize( const BinSearchTree<Val, Cmp, Node>* tree,
-                      const Node* current_node, bool add_to_iterator_list );
+                      const Node* current_node,
+                      bool add_to_iterator_list );
 
     /// a method to detach the current iterator from its tree's iterator's list
 

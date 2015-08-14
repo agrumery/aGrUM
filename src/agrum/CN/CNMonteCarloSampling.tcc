@@ -204,8 +204,8 @@ namespace gum {
           // )
           num_threads = getNumberOfRunningThreads();
 
-          this->_initThreadsData( num_threads, __infEs::_storeVertices,
-                                  __infEs::_storeBNOpt );
+          this->_initThreadsData(
+              num_threads, __infEs::_storeVertices, __infEs::_storeBNOpt );
           this->_l_inferenceEngine.resize( num_threads, nullptr );
 
           // if ( __infEs::_storeBNOpt )
@@ -288,9 +288,9 @@ namespace gum {
         sample = dBN( this->_l_optimalNet[this_thread]->getSampleDef() );
       }
 
-      if (__infEs::_repetitiveInd) {
-        const auto &t0 = __infEs::_l_clusters[this_thread][0];
-        const auto &t1 = __infEs::_l_clusters[this_thread][1];
+      if ( __infEs::_repetitiveInd ) {
+        const auto& t0 = __infEs::_l_clusters[this_thread][0];
+        const auto& t1 = __infEs::_l_clusters[this_thread][1];
 
         for ( const auto& elt : t0 ) {
           auto dSize = working_bn->variable( elt.first ).domainSize();

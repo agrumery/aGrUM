@@ -161,7 +161,8 @@ namespace gum {
      * the triangulation is minimal w.r.t. inclusion
      * @warning note that, by aGrUM's rule, the graph and the modalities are not
      * copied but only referenced by the elimination sequence algorithm. */
-    StaticTriangulation( const UndiGraph* graph, const NodeProperty<Size>* dom,
+    StaticTriangulation( const UndiGraph* graph,
+                         const NodeProperty<Size>* dom,
                          const EliminationSequenceStrategy& elimSeq,
                          const JunctionTreeStrategy& JTStrategy,
                          bool minimality = false );
@@ -282,7 +283,8 @@ namespace gum {
     void __computeRecursiveThinning();
 
     /// used for computing the junction tree of the maximal prime subgraphs
-    void __computeMaxPrimeMergings( const NodeId node, const NodeId from,
+    void __computeMaxPrimeMergings( const NodeId node,
+                                    const NodeId from,
                                     std::vector<Arc>& merged_cliques,
                                     NodeSet& mark ) const;
 

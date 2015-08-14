@@ -56,7 +56,8 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   BayesNet<GUM_SCALAR>::BayesNet( const BayesNet<GUM_SCALAR>& source )
-      : IBayesNet<GUM_SCALAR>( source ), __varMap( source.__varMap ) {
+      : IBayesNet<GUM_SCALAR>( source )
+      , __varMap( source.__varMap ) {
     GUM_CONS_CPY( BayesNet );
 
     __copyPotentials( source );
@@ -76,7 +77,8 @@ namespace gum {
     return *this;
   }
 
-  template <typename GUM_SCALAR> BayesNet<GUM_SCALAR>::~BayesNet() {
+  template <typename GUM_SCALAR>
+  BayesNet<GUM_SCALAR>::~BayesNet() {
     GUM_DESTRUCTOR( BayesNet );
 
     for ( auto p : __probaMap ) {
@@ -186,8 +188,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void BayesNet<GUM_SCALAR>::erase(const DiscreteVariable &var) {
-    erase(__varMap.get(var));
+  INLINE void BayesNet<GUM_SCALAR>::erase( const DiscreteVariable& var ) {
+    erase( __varMap.get( var ) );
   }
 
   template <typename GUM_SCALAR>
@@ -209,8 +211,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void BayesNet<GUM_SCALAR>::addArc(NodeId tail, NodeId head) {
-    this->_dag.addArc(tail, head);
+  INLINE void BayesNet<GUM_SCALAR>::addArc( NodeId tail, NodeId head ) {
+    this->_dag.addArc( tail, head );
     // Add parent in the child's CPT
     ( *( __probaMap[head] ) ) << variable( tail );
   }
@@ -352,23 +354,23 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId
-  BayesNet<GUM_SCALAR>::addNoisyOR( const DiscreteVariable& var,
-                                    GUM_SCALAR external_weight, NodeId id ) {
+  INLINE NodeId BayesNet<GUM_SCALAR>::addNoisyOR( const DiscreteVariable& var,
+                                                  GUM_SCALAR external_weight,
+                                                  NodeId id ) {
     return addNoisyORCompound( var, external_weight, id );
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId
-  BayesNet<GUM_SCALAR>::addNoisyAND( const DiscreteVariable& var,
-                                     GUM_SCALAR external_weight, NodeId id ) {
+  INLINE NodeId BayesNet<GUM_SCALAR>::addNoisyAND( const DiscreteVariable& var,
+                                                   GUM_SCALAR external_weight,
+                                                   NodeId id ) {
     return add( var, new MultiDimNoisyAND<GUM_SCALAR>( external_weight ), id );
   }
 
   template <typename GUM_SCALAR>
-  INLINE NodeId
-  BayesNet<GUM_SCALAR>::addLogit( const DiscreteVariable& var,
-                                  GUM_SCALAR external_weight, NodeId id ) {
+  INLINE NodeId BayesNet<GUM_SCALAR>::addLogit( const DiscreteVariable& var,
+                                                GUM_SCALAR external_weight,
+                                                NodeId id ) {
     return add( var, new MultiDimLogit<GUM_SCALAR>( external_weight ), id );
   }
 
@@ -377,22 +379,24 @@ namespace gum {
   BayesNet<GUM_SCALAR>::addNoisyORCompound( const DiscreteVariable& var,
                                             GUM_SCALAR external_weight,
                                             NodeId id ) {
-    return add( var, new MultiDimNoisyORCompound<GUM_SCALAR>( external_weight ),
-                id );
+    return add(
+        var, new MultiDimNoisyORCompound<GUM_SCALAR>( external_weight ), id );
   }
 
   template <typename GUM_SCALAR>
   INLINE NodeId
   BayesNet<GUM_SCALAR>::addNoisyORNet( const DiscreteVariable& var,
-                                       GUM_SCALAR external_weight, NodeId id ) {
-    return add( var, new MultiDimNoisyORNet<GUM_SCALAR>( external_weight ),
-                id );
+                                       GUM_SCALAR external_weight,
+                                       NodeId id ) {
+    return add(
+        var, new MultiDimNoisyORNet<GUM_SCALAR>( external_weight ), id );
   }
 
   template <typename GUM_SCALAR>
-  void BayesNet<GUM_SCALAR>::addWeightedArc(NodeId tail, NodeId head,
-                                            GUM_SCALAR causalWeight) {
-    const MultiDimAdressable &content = cpt(head).getMasterRef();
+  void BayesNet<GUM_SCALAR>::addWeightedArc( NodeId tail,
+                                             NodeId head,
+                                             GUM_SCALAR causalWeight ) {
+    const MultiDimAdressable& content = cpt( head ).getMasterRef();
 
     const MultiDimICIModel<GUM_SCALAR>* CImodel =
         dynamic_cast<const MultiDimICIModel<GUM_SCALAR>*>( &content );
@@ -403,9 +407,9 @@ namespace gum {
 
       CImodel->causalWeight( variable( tail ), causalWeight );
     } else {
-      GUM_ERROR( InvalidArc, "Head variable ("
-                                 << variable( head ).name()
-                                 << ") is not a CIModel variable !" );
+      GUM_ERROR( InvalidArc,
+                 "Head variable (" << variable( head ).name()
+                                   << ") is not a CIModel variable !" );
     }
   }
 
@@ -463,7 +467,8 @@ namespace gum {
     }
   }
 
-  template <typename GUM_SCALAR> void BayesNet<GUM_SCALAR>::generateCPTs() {
+  template <typename GUM_SCALAR>
+  void BayesNet<GUM_SCALAR>::generateCPTs() {
     SimpleCPTGenerator<GUM_SCALAR> generator;
 
     for ( auto node : nodes() ) {

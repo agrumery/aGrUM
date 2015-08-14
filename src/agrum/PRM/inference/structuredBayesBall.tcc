@@ -112,7 +112,8 @@ namespace gum {
 
             for ( const auto inst : i->getInstances( n ) )
               __fromChild(
-                  inst, inst->get( __getSC( i, n ).lastElt().safeName() ).id(),
+                  inst,
+                  inst->get( __getSC( i, n ).lastElt().safeName() ).id(),
                   marks );
           }
 
@@ -200,9 +201,11 @@ namespace gum {
         // Out of i.
         try {
           for ( auto iter = i->getRefAttr( n ).begin();
-                iter != i->getRefAttr( n ).end(); ++iter )
+                iter != i->getRefAttr( n ).end();
+                ++iter )
             __fromParent( iter->first,
-                          iter->first->type().get( iter->second ).id(), marks );
+                          iter->first->type().get( iter->second ).id(),
+                          marks );
         } catch ( NotFound& ) {
           // Not an inverse sc
         }
@@ -221,8 +224,7 @@ namespace gum {
         Set<NodeId>* req_set = new Set<NodeId>();
 
         for ( const auto& elt2 : *elt.second )
-          if ( elt2.second.first )
-            req_set->insert( elt2.first );
+          if ( elt2.second.first ) req_set->insert( elt2.first );
 
         req_map.insert( elt.first, req_set );
       }
@@ -231,8 +233,7 @@ namespace gum {
       Set<const Instance<GUM_SCALAR>*> to_remove;
 
       for ( const auto& elt : req_map )
-        if ( elt.second->size() == 0 )
-          to_remove.insert( elt.first );
+        if ( elt.second->size() == 0 ) to_remove.insert( elt.first );
 
       for ( const auto remo : to_remove ) {
         delete req_map[remo];
@@ -244,16 +245,18 @@ namespace gum {
         std::string key = __buildHashKey( elt.first, *elt.second );
 
         if ( __reqMap.exists( key ) ) {
-          __keyMap.insert( elt.first, std::pair<std::string, Set<NodeId>*>(
-                                          key, __reqMap[key].first ) );
+          __keyMap.insert( elt.first,
+                           std::pair<std::string, Set<NodeId>*>(
+                               key, __reqMap[key].first ) );
           __reqMap[key].second += 1;
           delete elt.second;
           req_map[elt.first] = 0;
         } else {
           __reqMap.insert( key,
                            std::pair<Set<NodeId>*, Size>( elt.second, 1 ) );
-          __keyMap.insert( elt.first, std::pair<std::string, Set<NodeId>*>(
-                                          key, elt.second ) );
+          __keyMap.insert(
+              elt.first,
+              std::pair<std::string, Set<NodeId>*>( key, elt.second ) );
         }
       }
     }
@@ -265,8 +268,7 @@ namespace gum {
       sBuff << i->type().name();
 
       for ( const auto node : i->type().dag().nodes() )
-        if ( req_nodes.exists( node ) )
-          sBuff << "-" << node;
+        if ( req_nodes.exists( node ) ) sBuff << "-" << node;
 
       return sBuff.str();
     }

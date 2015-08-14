@@ -149,12 +149,18 @@ namespace gum {
   // templates provided by this header
   // ==============================================================================
 
-  template <typename Val> class ListBucket;
-  template <typename Val> class ListIterator;
-  template <typename Val> class ListConstIterator;
-  template <typename Val> class ListIteratorSafe;
-  template <typename Val> class ListConstIteratorSafe;
-  template <typename Val, typename Alloc> class List;
+  template <typename Val>
+  class ListBucket;
+  template <typename Val>
+  class ListIterator;
+  template <typename Val>
+  class ListConstIterator;
+  template <typename Val>
+  class ListIteratorSafe;
+  template <typename Val>
+  class ListConstIteratorSafe;
+  template <typename Val, typename Alloc>
+  class List;
 
 #ifndef SWIG  // SWIG cannot read these lines
   /// an << operator for List
@@ -190,7 +196,8 @@ namespace gum {
    * @warning Values stored in buckets are ALWAYS COPIES. */
   /* ===========================================================================
    */
-  template <typename Val> class ListBucket {
+  template <typename Val>
+  class ListBucket {
     private:
     /// a dummy type for the emplace constructor
     /** this type is used to prevent the list emplace (int) to compile */
@@ -212,7 +219,8 @@ namespace gum {
     explicit ListBucket( Val&& v ) noexcept;
 
     /// emplace (universal) constructor
-    template <typename... Args> explicit ListBucket( Emplace, Args&&... args );
+    template <typename... Args>
+    explicit ListBucket( Emplace, Args&&... args );
 
     /// copy constructor
     ListBucket( const ListBucket<Val>& src );
@@ -270,7 +278,8 @@ namespace gum {
     private:
     // all the list containers and iterators should be able to access the
     // buckets
-    template <typename T, typename A> friend class List;
+    template <typename T, typename A>
+    friend class List;
     friend class ListIterator<Val>;
     friend class ListConstIterator<Val>;
     friend class ListIteratorSafe<Val>;
@@ -403,7 +412,8 @@ namespace gum {
    * List<float> flist = list2.map (f);
    * @endcode
    */
-  template <typename Val, typename Alloc = std::allocator<Val>> class List {
+  template <typename Val, typename Alloc = std::allocator<Val>>
+  class List {
     public:
     /// types for STL compliance
     /// @{
@@ -452,7 +462,8 @@ namespace gum {
     List( const List<Val, Alloc>& src );
 
     /// generalized copy constructor
-    template <typename OtherAlloc> List( const List<Val, OtherAlloc>& src );
+    template <typename OtherAlloc>
+    List( const List<Val, OtherAlloc>& src );
 
     /// move constructor
     List( List<Val, Alloc>&& src );
@@ -681,14 +692,16 @@ namespace gum {
 
     /// an alias for pushFront used for STL compliance
     /** defining push_front allows using, for instance, FrontInserters */
-    template <typename... Args> Val& push_front( Args&&... args );
+    template <typename... Args>
+    Val& push_front( Args&&... args );
 
     /// emplace elements at the beginning of the chained list
     /** emplace is a method that allows to construct directly an element of
      * type Val by passing to its constructor all the arguments it needs
      * @param args the arguments passed to the constructor
      * @return a reference on the copy inserted into the list */
-    template <typename... Args> Val& emplaceFront( Args&&... args );
+    template <typename... Args>
+    Val& emplaceFront( Args&&... args );
 
     /// inserts a new element (a copy) at the end of the chained list.
     /** The value passed in argument is not actually inserted into the list:
@@ -706,14 +719,16 @@ namespace gum {
 
     /// an alias for pushBack used for STL compliance
     /** defining push_back allows using, for instance, BackInserters */
-    template <typename... Args> Val& push_back( Args&&... args );
+    template <typename... Args>
+    Val& push_back( Args&&... args );
 
     /// emplace elements at the end of the chained list
     /** emplace is a method that allows to construct directly an element of
      * type Val by passing to its constructor all the arguments it needs
      * @param args the arguments passed to the constructor
      * @return a reference on the copy inserted into the list */
-    template <typename... Args> Val& emplaceBack( Args&&... args );
+    template <typename... Args>
+    Val& emplaceBack( Args&&... args );
 
     /// inserts a new element at the end of the chained list (alias of pushBack)
     /** @return a reference on the copy inserted into the list.
@@ -745,28 +760,32 @@ namespace gum {
     /** @return a reference on the copy inserted into the list.
      * @warning Note that \e val is not actually inserted into the list. Rather,
      * it is a copy of val that is inserted. */
-    Val& insert( const const_iterator_safe& iter, const Val& val,
+    Val& insert( const const_iterator_safe& iter,
+                 const Val& val,
                  location place = location::BEFORE );
 
     /// inserts an rvalue before or after a given iterator
     /** @return a reference on the copy inserted into the list.
      * @warning Note that \e val is not actually inserted into the list. Rather,
      * it is a copy of val that is inserted. */
-    Val& insert( const const_iterator_safe& iter, Val&& val,
+    Val& insert( const const_iterator_safe& iter,
+                 Val&& val,
                  location place = location::BEFORE );
 
     /// inserts a new element before or after a given iterator
     /** @return a reference on the copy inserted into the list.
      * @warning Note that \e val is not actually inserted into the list. Rather,
      * it is a copy of val that is inserted. */
-    Val& insert( const const_iterator& iter, const Val& val,
+    Val& insert( const const_iterator& iter,
+                 const Val& val,
                  location place = location::BEFORE );
 
     /// inserts an rvalue before or after a given iterator
     /** @return a reference on the copy inserted into the list.
      * @warning Note that \e val is not actually inserted into the list. Rather,
      * it is a copy of val that is inserted. */
-    Val& insert( const const_iterator& iter, Val&& val,
+    Val& insert( const const_iterator& iter,
+                 Val&& val,
                  location place = location::BEFORE );
 
     /// emplace a new element before a given iterator
@@ -1048,12 +1067,14 @@ namespace gum {
 
     /// inserts a new bucket before or after the location pointed to by an
     /// iterator
-    Val& __insert( const const_iterator_safe& iter, ListBucket<Val>* new_elt,
+    Val& __insert( const const_iterator_safe& iter,
+                   ListBucket<Val>* new_elt,
                    location place );
 
     /// inserts a new bucket before or after the location pointed to by an
     /// iterator
-    Val& __insert( const const_iterator& iter, ListBucket<Val>* new_elt,
+    Val& __insert( const const_iterator& iter,
+                   ListBucket<Val>* new_elt,
                    location place );
 
     /// ListIterator should be a friend to optimize access to elements
@@ -1116,7 +1137,8 @@ namespace gum {
    *   cerr << iter->size() << endl;
    * @endcode
    */
-  template <typename Val> class ListConstIterator {
+  template <typename Val>
+  class ListConstIterator {
     public:
     /// types for STL compliance
     /// @{
@@ -1241,7 +1263,8 @@ namespace gum {
     private:
     /** class List must be a friend because it uses the getBucket method
      * to speed up some processes. */
-    template <typename T, typename A> friend class List;
+    template <typename T, typename A>
+    friend class List;
 
     /// the bucket in the chained list pointed to by the iterator
     ListBucket<Val>* __bucket{nullptr};
@@ -1308,7 +1331,8 @@ namespace gum {
    *   cerr << iter->size() << endl;
    * @endcode
    */
-  template <typename Val> class ListIterator : public ListConstIterator<Val> {
+  template <typename Val>
+  class ListIterator : public ListConstIterator<Val> {
     public:
     /// types for STL compliance
     /// @{
@@ -1468,7 +1492,8 @@ namespace gum {
    *   cerr << iter->size() << endl;
    * @endcode
    */
-  template <typename Val> class ListConstIteratorSafe {
+  template <typename Val>
+  class ListConstIteratorSafe {
     public:
     /// types for STL compliance
     /// @{
@@ -1601,7 +1626,8 @@ namespace gum {
     private:
     /** class List must be a friend because it uses the getBucket method
      * to speed up some processes. */
-    template <typename T, typename A> friend class List;
+    template <typename T, typename A>
+    friend class List;
     friend class ListConstIterator<Val>;
 
     /// the list the iterator is pointing to
@@ -1807,10 +1833,14 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   // constructor and destructor for the iterator that represents end and rend
-  template <> ListConstIteratorSafe<Debug>::ListConstIteratorSafe() noexcept;
-  template <> ListConstIteratorSafe<Debug>::~ListConstIteratorSafe();
-  template <> ListConstIterator<Debug>::ListConstIterator() noexcept;
-  template <> ListConstIterator<Debug>::~ListConstIterator() noexcept;
+  template <>
+  ListConstIteratorSafe<Debug>::ListConstIteratorSafe() noexcept;
+  template <>
+  ListConstIteratorSafe<Debug>::~ListConstIteratorSafe();
+  template <>
+  ListConstIterator<Debug>::ListConstIterator() noexcept;
+  template <>
+  ListConstIterator<Debug>::~ListConstIterator() noexcept;
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 } /* namespace gum */

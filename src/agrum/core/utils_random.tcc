@@ -27,8 +27,7 @@ namespace gum {
   /// @param n is the number of modalities for the ditribution
   template <typename GUM_SCALAR>
   std::vector<GUM_SCALAR> randomDistribution( Size n ) {
-    if ( n < 2 )
-      n = 2;
+    if ( n < 2 ) n = 2;
 
     std::vector<GUM_SCALAR> v( n );
     GUM_SCALAR s;

@@ -26,39 +26,35 @@
 
 namespace gum {
 
-  
+
   // default constructor
-  INLINE dSeparation::dSeparation () {
-    GUM_CONSTRUCTOR ( dSeparation );
+  INLINE dSeparation::dSeparation() { GUM_CONSTRUCTOR( dSeparation ); }
+
+
+  // copy constructor
+  INLINE dSeparation::dSeparation( const dSeparation& from ) {
+    GUM_CONS_CPY( dSeparation );
   }
 
-  
-  // copy constructor
-  INLINE dSeparation::dSeparation ( const dSeparation& from ) {
-    GUM_CONS_CPY ( dSeparation );
-  }
-  
 
   // move constructor
-  INLINE dSeparation::dSeparation ( dSeparation&& from ) {
-    GUM_CONS_MOV ( dSeparation );
+  INLINE dSeparation::dSeparation( dSeparation&& from ) {
+    GUM_CONS_MOV( dSeparation );
   }
-  
+
 
   // destructor
-  INLINE dSeparation::~dSeparation () {
-    GUM_DESTRUCTOR ( dSeparation );
-  }
+  INLINE dSeparation::~dSeparation() { GUM_DESTRUCTOR( dSeparation ); }
 
 
   // copy operator
-  INLINE dSeparation& dSeparation::operator= ( const dSeparation& from ) {
+  INLINE dSeparation& dSeparation::operator=( const dSeparation& from ) {
     return *this;
   }
 
 
   // move operator
-  INLINE dSeparation& dSeparation::operator= ( dSeparation&& from ) {
+  INLINE dSeparation& dSeparation::operator=( dSeparation&& from ) {
     return *this;
   }
 

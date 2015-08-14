@@ -35,28 +35,32 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     Interface<GUM_SCALAR>::Interface( const std::string& name )
-        : ClassElementContainer<GUM_SCALAR>( name ), __super( 0 ) {
+        : ClassElementContainer<GUM_SCALAR>( name )
+        , __super( 0 ) {
       GUM_CONSTRUCTOR( Interface );
     }
 
     template <typename GUM_SCALAR>
     Interface<GUM_SCALAR>::Interface( const std::string& name,
                                       Interface<GUM_SCALAR>& super )
-        : ClassElementContainer<GUM_SCALAR>( name ), __dag( super.__dag ),
-          __super( &super ) {
+        : ClassElementContainer<GUM_SCALAR>( name )
+        , __dag( super.__dag )
+        , __super( &super ) {
       GUM_CONSTRUCTOR( Interface );
       __inheritInterface( super );
     }
 
     template <typename GUM_SCALAR>
     Interface<GUM_SCALAR>::Interface( const Interface<GUM_SCALAR>& source )
-        : ClassElementContainer<GUM_SCALAR>( source.name() ),
-          __dag( source.__dag ), __super( source.__super ) {
+        : ClassElementContainer<GUM_SCALAR>( source.name() )
+        , __dag( source.__dag )
+        , __super( source.__super ) {
       GUM_CONS_CPY( Interface );
       GUM_ERROR( FatalError, "don't copy an interface" );
     }
 
-    template <typename GUM_SCALAR> Interface<GUM_SCALAR>::~Interface() {
+    template <typename GUM_SCALAR>
+    Interface<GUM_SCALAR>::~Interface() {
       GUM_DESTRUCTOR( Interface );
 
       for ( const auto& elt : __nodeIdMap ) {
@@ -295,8 +299,7 @@ namespace gum {
           const Interface* current = this;
 
           while ( current != 0 ) {
-            if ( current == &( cec ) )
-              return true;
+            if ( current == &( cec ) ) return true;
 
             current = current->__super;
           }
@@ -314,16 +317,14 @@ namespace gum {
     void Interface<GUM_SCALAR>::_updateDescendants(
         const ClassElement<GUM_SCALAR>& elt ) {
       for ( const auto ext : __extensions )
-        if ( !ext->isOutputNode( elt ) )
-          ext->setOutputNode( elt, true );
+        if ( !ext->isOutputNode( elt ) ) ext->setOutputNode( elt, true );
 
       for ( const auto impl : __implementations ) {
         // Because of cyclic dependencies we must use a reinterpret cast.
         ClassElementContainer<GUM_SCALAR>* c =
             reinterpret_cast<ClassElementContainer<GUM_SCALAR>*>( impl );
 
-        if ( not c->isOutputNode( elt ) )
-          c->setOutputNode( elt, true );
+        if ( not c->isOutputNode( elt ) ) c->setOutputNode( elt, true );
       }
     }
 
@@ -418,7 +419,8 @@ namespace gum {
       return __dag;
     }
 
-    template <typename GUM_SCALAR> INLINE DAG& Interface<GUM_SCALAR>::_dag() {
+    template <typename GUM_SCALAR>
+    INLINE DAG& Interface<GUM_SCALAR>::_dag() {
       return __dag;
     }
 

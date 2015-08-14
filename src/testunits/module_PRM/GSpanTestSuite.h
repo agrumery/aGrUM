@@ -49,8 +49,7 @@ namespace gum_tests {
     void local__tearDown() {
       delete ig;
 
-      if ( __driver->prm() != nullptr )
-        delete __driver->prm();
+      if ( __driver->prm() != nullptr ) delete __driver->prm();
 
       delete __driver;
     }
@@ -61,8 +60,7 @@ namespace gum_tests {
       driver.readFile( GET_PATH_STR( "o3prm/specialprinters.o3prm" ) );
       TS_ASSERT( driver.prm() != nullptr );
 
-      if ( driver.prm() != nullptr )
-        delete driver.prm();
+      if ( driver.prm() != nullptr ) delete driver.prm();
     }
 
     void testInterfaceGraph() {

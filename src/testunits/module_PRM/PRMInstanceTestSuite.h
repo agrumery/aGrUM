@@ -307,7 +307,6 @@ namespace gum_tests {
     /// Reference
     /// @{
 
-
     /// @}
   };
 

@@ -53,8 +53,10 @@ namespace gum {
 
     class CSVParser {
       public:
-      CSVParser( std::istream& in, const std::string& delimiter = ",",
-                 const char commentmarker = '#', const char quoteMarker = '"' );
+      CSVParser( std::istream& in,
+                 const std::string& delimiter = ",",
+                 const char commentmarker = '#',
+                 const char quoteMarker = '"' );
       virtual ~CSVParser();
 
       /**
@@ -77,8 +79,10 @@ namespace gum {
       const Size noLine() const;
 
       private:
-      void __getNextTriplet( const std::string& str, Size& first_letter_token,
-                             Size& next_token, Size& last_letter_token,
+      void __getNextTriplet( const std::string& str,
+                             Size& first_letter_token,
+                             Size& next_token,
+                             Size& last_letter_token,
                              Size from ) const;
       void __tokenize( const std::string& str );
       Size __correspondingQuoteMarker( const std::string& str, Size pos ) const;

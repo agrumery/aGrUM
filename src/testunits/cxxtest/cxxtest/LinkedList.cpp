@@ -72,11 +72,13 @@ namespace CxxTest {
 
   void List::leaveOnly( const Link& link ) {
     for ( Link* l = head(); l != 0; l = l->next() )
-      if ( l != &link )
-        l->setActive( false );
+      if ( l != &link ) l->setActive( false );
   }
 
-  Link::Link() : _next( 0 ), _prev( 0 ), _active( true ) {}
+  Link::Link()
+      : _next( 0 )
+      , _prev( 0 )
+      , _active( true ) {}
 
   Link::~Link() {}
 
@@ -125,14 +127,12 @@ namespace CxxTest {
   }
 
   void Link::attach( List& l ) {
-    if ( l._tail )
-      l._tail->_next = this;
+    if ( l._tail ) l._tail->_next = this;
 
     _prev = l._tail;
     _next = 0;
 
-    if ( l._head == 0 )
-      l._head = this;
+    if ( l._head == 0 ) l._head = this;
 
     l._tail = this;
   }

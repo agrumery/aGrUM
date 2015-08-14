@@ -84,7 +84,8 @@ namespace gum {
   /// do the copy
   void VariableNodeMap::__copy( const VariableNodeMap& source ) {
     for ( auto iter = source.__nodes2vars.begin();
-          iter != source.__nodes2vars.end(); ++iter )
+          iter != source.__nodes2vars.end();
+          ++iter )
       __nodes2vars.insert( iter.first(), iter.second()->clone() );
 
     // copy factory is used inside insert

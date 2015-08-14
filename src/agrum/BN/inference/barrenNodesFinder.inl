@@ -31,7 +31,8 @@ namespace gum {
 
   /// copy constructor
   INLINE BarrenNodesFinder::BarrenNodesFinder( const BarrenNodesFinder& from )
-      : __dag( from.__dag ), __observed_nodes( from.__observed_nodes ) {
+      : __dag( from.__dag )
+      , __observed_nodes( from.__observed_nodes ) {
     // for debugging purposes
     GUM_CONS_CPY( BarrenNodesFinder );
   }
@@ -39,8 +40,8 @@ namespace gum {
 
   /// move constructor
   INLINE BarrenNodesFinder::BarrenNodesFinder( BarrenNodesFinder&& from )
-      : __dag( from.__dag ),
-        __observed_nodes( std::move( from.__observed_nodes ) ) {
+      : __dag( from.__dag )
+      , __observed_nodes( std::move( from.__observed_nodes ) ) {
     // for debugging purposes
     GUM_CONS_MOV( BarrenNodesFinder );
   }

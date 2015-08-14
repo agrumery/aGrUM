@@ -118,8 +118,9 @@ namespace gum {
           // check that all conditioning nodes have strictly positive counts
           for ( unsigned int j = 0; j < conditioning_size; ++j ) {
             if ( N_ij[j] + N_prime_ij[j] == 0 ) {
-              GUM_ERROR( CPTError, "A conditioning set has a value that never "
-                                   "appears in the database" );
+              GUM_ERROR( CPTError,
+                         "A conditioning set has a value that never "
+                         "appears in the database" );
             }
           }
 
@@ -134,8 +135,9 @@ namespace gum {
           // check that all conditioning nodes have strictly positive counts
           for ( unsigned int j = 0; j < conditioning_size; ++j ) {
             if ( !N_ij[j] ) {
-              GUM_ERROR( CPTError, "A conditioning set has a value that never "
-                                   "appears in the database" );
+              GUM_ERROR( CPTError,
+                         "A conditioning set has a value that never "
+                         "appears in the database" );
             }
           }
 

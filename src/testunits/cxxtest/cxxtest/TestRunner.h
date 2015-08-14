@@ -19,15 +19,16 @@ namespace CxxTest {
       tracker().setListener( &listener );
       _TS_TRY { TestRunner().runWorld(); }
       _TS_LAST_CATCH( {
-        tracker().failedTest( __FILE__, __LINE__,
-                              "Exception thrown from world" );
+        tracker().failedTest(
+            __FILE__, __LINE__, "Exception thrown from world" );
       } );
       tracker().setListener( 0 );
     }
 
     static void runAllTests( TestListener* listener ) {
       if ( listener ) {
-        listener->warning( __FILE__, __LINE__,
+        listener->warning( __FILE__,
+                           __LINE__,
                            "Deprecated; Use runAllTests( TestListener & )" );
         runAllTests( *listener );
       }
@@ -42,8 +43,7 @@ namespace CxxTest {
 
       if ( wd.setUp() ) {
         for ( SuiteDescription* sd = wd.firstSuite(); sd; sd = sd->next() )
-          if ( sd->active() )
-            runSuite( *sd );
+          if ( sd->active() ) runSuite( *sd );
 
         wd.tearDown();
       }
@@ -58,8 +58,7 @@ namespace CxxTest {
 
       if ( sd.setUp() ) {
         for ( TestDescription* td = sd.firstTest(); td; td = td->next() )
-          if ( td->active() )
-            runTest( *td );
+          if ( td->active() ) runTest( *td );
 
         sd.tearDown();
       }
@@ -104,7 +103,8 @@ namespace CxxTest {
 
     class WorldGuard : public StateGuard {
       public:
-      WorldGuard() : StateGuard() {
+      WorldGuard()
+          : StateGuard() {
 #ifdef _CXXTEST_HAVE_EH
         setAbortTestOnFail( CXXTEST_DEFAULT_ABORT );
 #endif  // _CXXTEST_HAVE_EH

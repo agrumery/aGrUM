@@ -48,7 +48,8 @@ namespace gum {
    * and to describe for specific actions a different table.
    */
 
-  template <typename GUM_SCALAR> class FactoredMarkovDecisionProcess {
+  template <typename GUM_SCALAR>
+  class FactoredMarkovDecisionProcess {
 
     public:
     // ===========================================================================
@@ -245,8 +246,9 @@ namespace gum {
 
     /// Table which give for each action a table containing variables transition
     /// cpt
-    HashTable<Idx, HashTable<const DiscreteVariable*,
-                             const MultiDimImplementation<GUM_SCALAR>*>*>
+    HashTable<Idx,
+              HashTable<const DiscreteVariable*,
+                        const MultiDimImplementation<GUM_SCALAR>*>*>
         __actionTransitionTable;
 
     /// default cost table
@@ -272,9 +274,9 @@ namespace gum {
 
     /// Iterator on actions
     HashTableConstIterator<
-        Idx, HashTable<const DiscreteVariable*,
-                       const MultiDimImplementation<GUM_SCALAR>*>*>
-        __actionIter;
+        Idx,
+        HashTable<const DiscreteVariable*,
+                  const MultiDimImplementation<GUM_SCALAR>*>*> __actionIter;
   };
 } /* namespace gum */
 

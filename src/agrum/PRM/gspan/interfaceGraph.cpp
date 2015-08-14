@@ -38,11 +38,15 @@ namespace gum {
       // LabelData
 
       INLINE
-      LabelData::LabelData() : id( 0 ) { GUM_CONSTRUCTOR( LabelData ); }
+      LabelData::LabelData()
+          : id( 0 ) {
+        GUM_CONSTRUCTOR( LabelData );
+      }
 
       INLINE
       LabelData::LabelData( const LabelData& from )
-          : id( from.id ), l( from.l ) {
+          : id( from.id )
+          , l( from.l ) {
         GUM_CONS_CPY( LabelData );
       }
 

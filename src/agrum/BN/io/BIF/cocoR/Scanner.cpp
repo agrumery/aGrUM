@@ -79,8 +79,7 @@ namespace gum {
         bufPos =
             0;  // index 0 is already after the file, thus Pos = 0 is invalid
 
-      if ( bufLen == fileLen && CanSeek() )
-        Close();
+      if ( bufLen == fileLen && CanSeek() ) Close();
     }
 
     Buffer::Buffer( Buffer* b ) {
@@ -267,7 +266,9 @@ namespace gum {
       return ch;
     }
 
-    Scanner::Scanner( const unsigned char* buf, int len, std::string filename,
+    Scanner::Scanner( const unsigned char* buf,
+                      int len,
+                      std::string filename,
                       bool trace ) {
       buffer = new Buffer( buf, len );
       __filenamne = widen( filename.c_str() );
@@ -317,11 +318,9 @@ namespace gum {
         firstHeap = cur;
       }
 
-      if ( tval )
-        delete[] tval;
+      if ( tval ) delete[] tval;
 
-      if ( buffer )
-        delete buffer;
+      if ( buffer ) delete buffer;
     }
 
     void Scanner::Init() {
@@ -435,8 +434,7 @@ namespace gum {
 
         // replace isolated '\r' by '\n' in order to make
         // eol handling uniform across Windows, Unix and Mac
-        if ( ch == L'\r' && buffer->Peek() != L'\n' )
-          ch = EOL;
+        if ( ch == L'\r' && buffer->Peek() != L'\n' ) ch = EOL;
 
         if ( ch == EOL ) { /*if (__trace) std::cout<<line<<std::endl;*/
           line++;

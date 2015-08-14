@@ -38,9 +38,9 @@ namespace gum {
         Apriori<IdSetAlloc, CountAlloc>& apriori,
         const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
             score_internal_apriori )
-        : Counter<IdSetAlloc, CountAlloc>( filter, var_modalities ),
-          _apriori( &apriori ),
-          _score_internal_apriori( score_internal_apriori.copyFactory() ) {
+        : Counter<IdSetAlloc, CountAlloc>( filter, var_modalities )
+        , _apriori( &apriori )
+        , _score_internal_apriori( score_internal_apriori.copyFactory() ) {
       GUM_CONSTRUCTOR( ParamEstimator );
     }
 
@@ -48,12 +48,12 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     ParamEstimator<IdSetAlloc, CountAlloc>::ParamEstimator(
         const ParamEstimator<IdSetAlloc, CountAlloc>& from )
-        : Counter<IdSetAlloc, CountAlloc>( from ), _apriori( from._apriori ),
-          _score_internal_apriori(
-              from._score_internal_apriori->copyFactory() ),
-          _is_normalized( from._is_normalized ),
-          __apriori_computed( from.__apriori_computed ),
-          __score_apriori_inserted( from.__score_apriori_inserted ) {
+        : Counter<IdSetAlloc, CountAlloc>( from )
+        , _apriori( from._apriori )
+        , _score_internal_apriori( from._score_internal_apriori->copyFactory() )
+        , _is_normalized( from._is_normalized )
+        , __apriori_computed( from.__apriori_computed )
+        , __score_apriori_inserted( from.__score_apriori_inserted ) {
       GUM_CONS_CPY( ParamEstimator );
     }
 
@@ -61,12 +61,12 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     ParamEstimator<IdSetAlloc, CountAlloc>::ParamEstimator(
         ParamEstimator<IdSetAlloc, CountAlloc>&& from )
-        : Counter<IdSetAlloc, CountAlloc>( std::move( from ) ),
-          _apriori( std::move( from._apriori ) ),
-          _score_internal_apriori( std::move( from._score_internal_apriori ) ),
-          _is_normalized( std::move( from._is_normalized ) ),
-          __apriori_computed( std::move( from.__apriori_computed ) ),
-          __score_apriori_inserted(
+        : Counter<IdSetAlloc, CountAlloc>( std::move( from ) )
+        , _apriori( std::move( from._apriori ) )
+        , _score_internal_apriori( std::move( from._score_internal_apriori ) )
+        , _is_normalized( std::move( from._is_normalized ) )
+        , __apriori_computed( std::move( from.__apriori_computed ) )
+        , __score_apriori_inserted(
               std::move( from.__score_apriori_inserted ) ) {
       from._score_internal_apriori = nullptr;
       GUM_CONS_MOV( ParamEstimator );
@@ -75,8 +75,7 @@ namespace gum {
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE ParamEstimator<IdSetAlloc, CountAlloc>::~ParamEstimator() {
-      if ( _score_internal_apriori != nullptr )
-        delete _score_internal_apriori;
+      if ( _score_internal_apriori != nullptr ) delete _score_internal_apriori;
       GUM_DESTRUCTOR( ParamEstimator );
     }
 
@@ -121,9 +120,10 @@ namespace gum {
     ParamEstimator<IdSetAlloc, CountAlloc>::_getAllApriori(
         unsigned int index ) {
       if ( !__apriori_computed ) {
-        _apriori->setParameters(
-            this->_modalities, Counter<IdSetAlloc, CountAlloc>::_getCounts(),
-            this->_target_nodesets, this->_conditioning_nodesets );
+        _apriori->setParameters( this->_modalities,
+                                 Counter<IdSetAlloc, CountAlloc>::_getCounts(),
+                                 this->_target_nodesets,
+                                 this->_conditioning_nodesets );
         _apriori->compute();
         __apriori_computed = true;
       }
@@ -137,9 +137,10 @@ namespace gum {
     ParamEstimator<IdSetAlloc, CountAlloc>::_getConditioningApriori(
         unsigned int index ) {
       if ( !__apriori_computed ) {
-        _apriori->setParameters(
-            this->_modalities, Counter<IdSetAlloc, CountAlloc>::_getCounts(),
-            this->_target_nodesets, this->_conditioning_nodesets );
+        _apriori->setParameters( this->_modalities,
+                                 Counter<IdSetAlloc, CountAlloc>::_getCounts(),
+                                 this->_target_nodesets,
+                                 this->_conditioning_nodesets );
         _apriori->compute();
         __apriori_computed = true;
       }

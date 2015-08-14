@@ -111,12 +111,23 @@ namespace gum {
 #ifdef P4DDDEBUG
       factory->setRootNode(
           GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-              ret, factory, ret->root(), false, explorationTable, delVars,
-              nbOperation, "" ) );
+              ret,
+              factory,
+              ret->root(),
+              false,
+              explorationTable,
+              delVars,
+              nbOperation,
+              "" ) );
 #else
-  factory->setRootNode( GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-      ret, factory, ret->root(), false, explorationTable, delVars,
-      nbOperation ) );
+  factory->setRootNode(
+      GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION( ret,
+                                                            factory,
+                                                            ret->root(),
+                                                            false,
+                                                            explorationTable,
+                                                            delVars,
+                                                            nbOperation ) );
 #endif
       delete ret;
       ret = factory->getMultiDimDecisionDiagram();

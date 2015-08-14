@@ -65,8 +65,7 @@ namespace gum_tests {
       file2.clear();
       file2.seekg( 0, std::ios::beg );
 
-      if ( c1 != c2 )
-        return false;
+      if ( c1 != c2 ) return false;
 
       //---------- compare two files line by line ------------------//
       char string1[256], string2[256];
@@ -75,8 +74,7 @@ namespace gum_tests {
         file1.getline( string1, 256 );
         file2.getline( string2, 256 );
         j++;
-        if ( strcmp( string1, string2 ) != 0 )
-          return false;
+        if ( strcmp( string1, string2 ) != 0 ) return false;
       }
 
       return true;

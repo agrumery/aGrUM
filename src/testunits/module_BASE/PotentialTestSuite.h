@@ -151,8 +151,7 @@ namespace gum_tests {
         int nbr_err = 0;
 
         for ( j.setFirst(); !j.end(); ++j )
-          if ( p3[j] != j.val( c ) * j.val( d ) )
-            nbr_err++;
+          if ( p3[j] != j.val( c ) * j.val( d ) ) nbr_err++;
 
         TS_ASSERT_EQUALS( nbr_err, 0 );
 

@@ -35,7 +35,8 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR> class ScheduleOperation {
+  template <typename GUM_SCALAR>
+  class ScheduleOperation {
     public:
     /// the currently supported types of operations
     enum class Type : char {

@@ -32,7 +32,8 @@ namespace gum {
     INLINE DBCell::DBCell() { GUM_CONSTRUCTOR( DBCell ); }
 
     /// constructor for a number
-    INLINE DBCell::DBCell( float nb ) : __float( nb ) {
+    INLINE DBCell::DBCell( float nb )
+        : __float( nb ) {
       GUM_CONSTRUCTOR( DBCell );
     }
 
@@ -52,7 +53,8 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE DBCell::DBCell( const DBCell& from ) : __type( from.__type ) {
+    INLINE DBCell::DBCell( const DBCell& from )
+        : __type( from.__type ) {
       std::memcpy( &__float, &( from.__float ), sizeof( Float ) );
 
       // for debugging
@@ -60,7 +62,8 @@ namespace gum {
     }
 
     /// move constructor
-    INLINE DBCell::DBCell( DBCell&& from ) : __type( from.__type ) {
+    INLINE DBCell::DBCell( DBCell&& from )
+        : __type( from.__type ) {
       std::memcpy( &__float, &( from.__float ), sizeof( Float ) );
 
       // for debugging
@@ -211,8 +214,7 @@ namespace gum {
 
     /// try to convert the content of the DBCell into another type
     INLINE bool DBCell::convertType( EltType new_type ) {
-      if ( new_type == __type )
-        return true;
+      if ( new_type == __type ) return true;
       switch ( new_type ) {
         // ===================================
         case FLOAT:

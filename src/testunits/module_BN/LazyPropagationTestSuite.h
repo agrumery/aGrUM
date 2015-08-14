@@ -166,7 +166,6 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING( inf.posterior( i4 ) );
       TS_ASSERT_THROWS_NOTHING( inf.posterior( i5 ) );
 
-
       TS_ASSERT( equalPotentials( inf.posterior( i1 ), infX.posterior( i1 ) ) );
       TS_ASSERT( equalPotentials( inf.posterior( i2 ), infX.posterior( i2 ) ) );
       TS_ASSERT( equalPotentials( inf.posterior( i3 ), infX.posterior( i3 ) ) );
@@ -175,7 +174,6 @@ namespace gum_tests {
 
       gum::LazyPropagation<float> inf2( *bn );
       gum::JunctionTreeInference<float> inf2X( *bn );
-
 
       /* addHardEvidece : memore leak */
       TS_ASSERT_THROWS_NOTHING( inf2.addHardEvidence( i1, 0 ) );
@@ -221,8 +219,7 @@ namespace gum_tests {
       gum::Potential<float>* pot = 0;
       TS_ASSERT_THROWS_NOTHING( pot = inf.joint( nodeset ) );
 
-      if ( pot )
-        delete pot;
+      if ( pot ) delete pot;
     }
 
     // testing information methods
@@ -241,7 +238,6 @@ namespace gum_tests {
 
       //@TODO : test computations and not only good behaviour
     }
-
 
     void testAsia() {
       std::string file = GET_PATH_STR( "asia.bif" );
@@ -277,7 +273,6 @@ namespace gum_tests {
         }
       }
     }
-
 
     void testAlarm() {
       std::string file = GET_PATH_STR( "alarm.bif" );
@@ -356,7 +351,6 @@ namespace gum_tests {
             equalPotentials( inf1.posterior( node ), inf5.posterior( node ) ) );
       }
 
-
       for ( auto node : bn.dag() ) {
         inf1.clearInference();
         TS_ASSERT_THROWS_NOTHING( inf1.posterior( node ) );
@@ -367,7 +361,6 @@ namespace gum_tests {
       for ( auto pot : evidences )
         delete pot;
     }
-
 
     void testAsia2() {
       std::string file = GET_PATH_STR( "asia3.bif" );
@@ -411,7 +404,6 @@ namespace gum_tests {
                 TS_ASSERT_THROWS_NOTHING( inf1.makeInference() );
                 TS_ASSERT_THROWS_NOTHING( inf2.makeInference() );
 
-
                 for ( auto xnode : bn.dag() ) {
                   // std::cout << "node : " << xnode << " : ";
                   // std::cout << "    " << inf1.posterior(xnode) << std::endl
@@ -429,7 +421,6 @@ namespace gum_tests {
         }
       }
     }
-
 
     void testAsia3() {
       std::string file = GET_PATH_STR( "asia3.bif" );
@@ -467,13 +458,14 @@ namespace gum_tests {
                 ev_pot2.set( inst2, (float)1 );
 
                 gum::LazyPropagation<float> inf1( bn );
-                inf1.setFindRelevantPotentialsType( gum::LazyPropagation<float>::FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION );
+                inf1.setFindRelevantPotentialsType(
+                    gum::LazyPropagation<float>::FindRelevantPotentialsType::
+                        FIND_RELEVANT_D_SEPARATION );
                 gum::JunctionTreeInference<float> inf2( bn );
                 TS_ASSERT_THROWS_NOTHING( inf1.insertEvidence( evidences ) );
                 TS_ASSERT_THROWS_NOTHING( inf2.insertEvidence( evidences ) );
                 TS_ASSERT_THROWS_NOTHING( inf1.makeInference() );
                 TS_ASSERT_THROWS_NOTHING( inf2.makeInference() );
-
 
                 for ( auto xnode : bn.dag() ) {
                   // std::cout << "node : " << xnode << " : ";
@@ -529,13 +521,14 @@ namespace gum_tests {
                 ev_pot2.set( inst2, (float)1 );
 
                 gum::LazyPropagation<float> inf1( bn );
-                inf1.setFindRelevantPotentialsType( gum::LazyPropagation<float>::FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION2 );
+                inf1.setFindRelevantPotentialsType(
+                    gum::LazyPropagation<float>::FindRelevantPotentialsType::
+                        FIND_RELEVANT_D_SEPARATION2 );
                 gum::LazyPropagation<float> inf2( bn );
                 TS_ASSERT_THROWS_NOTHING( inf1.insertEvidence( evidences ) );
                 TS_ASSERT_THROWS_NOTHING( inf2.insertEvidence( evidences ) );
                 TS_ASSERT_THROWS_NOTHING( inf1.makeInference() );
                 TS_ASSERT_THROWS_NOTHING( inf2.makeInference() );
-
 
                 for ( auto xnode : bn.dag() ) {
                   // std::cout << "node : " << xnode << " : ";
@@ -554,7 +547,6 @@ namespace gum_tests {
         }
       }
     }
-
 
     private:
     // Builds a BN to test the inference

@@ -344,8 +344,7 @@ namespace gum_tests {
         }
       }
 
-      if ( copy )
-        delete copy;
+      if ( copy ) delete copy;
     }
 
     void testInsertion_1() {

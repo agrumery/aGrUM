@@ -31,7 +31,9 @@ namespace gum {
     ApproximationSchemeListener( IApproximationSchemeConfiguration& sch );
     virtual ~ApproximationSchemeListener();
 
-    virtual void whenProgress( const void* src, Size pourcent, double error,
+    virtual void whenProgress( const void* src,
+                               Size pourcent,
+                               double error,
                                double time ) = 0;
     virtual void whenStop( const void* src, std::string message ) = 0;
 

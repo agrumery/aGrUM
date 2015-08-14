@@ -46,11 +46,13 @@ namespace gum {
 
   /// basic constructor: creates an empty xsclique graph
 
-  CliqueGraph::CliqueGraph( Size nodes_size, bool nodes_resize_policy,
-                            Size edges_size, bool edges_resize_policy )
-      : NodeGraphPart( nodes_size, nodes_resize_policy ),
-        UndiGraph( nodes_size, nodes_resize_policy, edges_size,
-                   edges_resize_policy ) {
+  CliqueGraph::CliqueGraph( Size nodes_size,
+                            bool nodes_resize_policy,
+                            Size edges_size,
+                            bool edges_resize_policy )
+      : NodeGraphPart( nodes_size, nodes_resize_policy )
+      , UndiGraph(
+            nodes_size, nodes_resize_policy, edges_size, edges_resize_policy ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( CliqueGraph );
   }
@@ -58,11 +60,12 @@ namespace gum {
   /// copy constructor
 
   CliqueGraph::CliqueGraph( const CliqueGraph& from )
-      : NodeGraphPart(
-            from ),  // needed because NodeGraphPart is a virtual inherited
-        UndiGraph( from ),  // class (see C++ FAQ Lite #25.12 for details)
-        __cliques( from.__cliques ),
-        __separators( from.__separators ) {
+      : NodeGraphPart( from )
+      ,  // needed because NodeGraphPart is a virtual inherited
+      UndiGraph( from )
+      ,  // class (see C++ FAQ Lite #25.12 for details)
+      __cliques( from.__cliques )
+      , __separators( from.__separators ) {
     // for debugging purposes
     GUM_CONS_CPY( CliqueGraph );
   }
@@ -141,15 +144,15 @@ namespace gum {
   /// DFS function for computing whether the running intersection property holds
 
   bool CliqueGraph::__runningIntersectionDFS(
-      const NodeId clique, const NodeId from,
+      const NodeId clique,
+      const NodeId from,
       CliqueGraph::__RunningIntersect& infos_DFS ) const {
     // check that no node in the clique belongs to the set of nodes belonging to
     // other connected components of the cliqueGraph
     const NodeSet& nodes_clique = __cliques[clique];
 
     for ( const auto node : nodes_clique )
-      if ( infos_DFS.nodes_other_components.contains( node ) )
-        return false;
+      if ( infos_DFS.nodes_other_components.contains( node ) ) return false;
 
     // update the structure that keeps track of the cliques that still require
     // chains to access some of their nodes
@@ -159,8 +162,7 @@ namespace gum {
 
     // if the clique had already been visited, no need to see its neighbours
     // or to update the list of visited nodes
-    if ( infos_DFS.visited_cliques.contains( clique ) )
-      return true;
+    if ( infos_DFS.visited_cliques.contains( clique ) ) return true;
 
     // update the list of nodes visited during the DFS
     for ( const auto node : nodes_clique )
@@ -248,8 +250,7 @@ namespace gum {
     // check that no clique requires an additional chain to guarantee the
     // running intersection property
     for ( const auto& elt : infos_DFS.cliques_DFS_chain )
-      if ( !elt.second.empty() )
-        return false;
+      if ( !elt.second.empty() ) return false;
 
     return true;
   }
@@ -258,13 +259,11 @@ namespace gum {
 
   bool CliqueGraph::operator==( const CliqueGraph& from ) const {
     // check if both graphical structures are identical
-    if ( UndiGraph::operator!=( from ) )
-      return false;
+    if ( UndiGraph::operator!=( from ) ) return false;
 
     // check if the __cliques are identical
     for ( const auto& elt : __cliques )
-      if ( elt.second != from.__cliques[elt.first] )
-        return false;
+      if ( elt.second != from.__cliques[elt.first] ) return false;
 
     return true;
   }

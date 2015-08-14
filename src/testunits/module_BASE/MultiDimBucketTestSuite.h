@@ -188,8 +188,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( bucket->nbrDim(), product.nbrDim() );
 
         for ( inst.setFirst(); !inst.end(); inst.inc() ) {
-          TS_ASSERT_DELTA( bucket->get( inst ), product.get( inst ),
-                           (double)0.01 );
+          TS_ASSERT_DELTA(
+              bucket->get( inst ), product.get( inst ), (double)0.01 );
         }
 
         delete bucket;
@@ -218,8 +218,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( bucket->realSize(), (gum::Size)0 );
 
         for ( inst.setFirst(); !inst.end(); inst.inc() ) {
-          TS_ASSERT_DELTA( bucket->get( inst ), product.get( inst ),
-                           (double)0.01 );
+          TS_ASSERT_DELTA(
+              bucket->get( inst ), product.get( inst ), (double)0.01 );
         }
 
         delete bucket;
@@ -252,8 +252,8 @@ namespace gum_tests {
           TS_ASSERT( inst->isMaster( bucket->getMasterRef() ) );
 
           for ( inst->setFirst(); !inst->end(); inst->inc() ) {
-            TS_ASSERT_DELTA( bucket->get( *inst ), product.get( *inst ),
-                             (double)0.01 );
+            TS_ASSERT_DELTA(
+                bucket->get( *inst ), product.get( *inst ), (double)0.01 );
           }
 
           delete inst;
@@ -287,8 +287,8 @@ namespace gum_tests {
           TS_ASSERT( inst->isMaster( bucket->getMasterRef() ) );
 
           for ( inst->setFirst(); !inst->end(); inst->inc() ) {
-            TS_ASSERT_DELTA( bucket->get( *inst ), product.get( *inst ),
-                             (double)0.01 );
+            TS_ASSERT_DELTA(
+                bucket->get( *inst ), product.get( *inst ), (double)0.01 );
           }
 
           delete inst;
@@ -324,8 +324,8 @@ namespace gum_tests {
           TS_ASSERT( inst->isMaster( bucket->getMasterRef() ) );
 
           for ( inst->setFirst(); !inst->end(); inst->inc() ) {
-            TS_ASSERT_DELTA( bucket->get( *inst ), product.get( *inst ),
-                             (double)0.01 );
+            TS_ASSERT_DELTA(
+                bucket->get( *inst ), product.get( *inst ), (double)0.01 );
           }
 
           delete inst;
@@ -367,8 +367,8 @@ namespace gum_tests {
           TS_ASSERT( inst->isMaster( bucket->getMasterRef() ) );
 
           for ( inst->setFirst(); !inst->end(); inst->inc() ) {
-            TS_ASSERT_DELTA( bucket->get( *inst ), product.get( *inst ),
-                             (double)0.01 );
+            TS_ASSERT_DELTA(
+                bucket->get( *inst ), product.get( *inst ), (double)0.01 );
             TS_ASSERT( !bucket->bucketChanged() );
           }
 
@@ -385,8 +385,8 @@ namespace gum_tests {
           TS_ASSERT( inst->isMaster( bucket ) );
 
           for ( inst->setFirst(); !inst->end(); inst->inc() ) {
-            TS_ASSERT_DELTA( bucket->get( *inst ), product.get( *inst ),
-                             (double)0.01 );
+            TS_ASSERT_DELTA(
+                bucket->get( *inst ), product.get( *inst ), (double)0.01 );
           }
 
           delete inst;

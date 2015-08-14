@@ -33,21 +33,24 @@ namespace gum {
   /// default constructor
   OrderedTriangulation::OrderedTriangulation(
       const OrderedEliminationSequenceStrategy& elimSeq,
-      const JunctionTreeStrategy& JTStrategy, bool minimality )
-      : StaticTriangulation( elimSeq, JTStrategy, minimality ),
-        __sequence( 0 ) {
+      const JunctionTreeStrategy& JTStrategy,
+      bool minimality )
+      : StaticTriangulation( elimSeq, JTStrategy, minimality )
+      , __sequence( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( OrderedTriangulation );
   }
 
   /// constructor with a given graph
   OrderedTriangulation::OrderedTriangulation(
-      const UndiGraph* theGraph, const NodeProperty<Size>* dom,
+      const UndiGraph* theGraph,
+      const NodeProperty<Size>* dom,
       const std::vector<NodeId>* sequence,
       const OrderedEliminationSequenceStrategy& elimSeq,
-      const JunctionTreeStrategy& JTStrategy, bool minimality )
-      : StaticTriangulation( theGraph, dom, elimSeq, JTStrategy, minimality ),
-        __sequence( sequence ) {
+      const JunctionTreeStrategy& JTStrategy,
+      bool minimality )
+      : StaticTriangulation( theGraph, dom, elimSeq, JTStrategy, minimality )
+      , __sequence( sequence ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( OrderedTriangulation );
   }
@@ -65,18 +68,16 @@ namespace gum {
     // check that the graph, the modalities and the sequence seem OK
     unsigned int nb = 0;
 
-    if ( graph )
-      ++nb;
+    if ( graph ) ++nb;
 
-    if ( modal )
-      ++nb;
+    if ( modal ) ++nb;
 
-    if ( sequence )
-      ++nb;
+    if ( sequence ) ++nb;
 
     if ( ( nb != 0 ) && ( nb != 3 ) ) {
-      GUM_ERROR( GraphError, "OrderedTriangulation requires valid "
-                             "graphs, modalities and elimination orderings" );
+      GUM_ERROR( GraphError,
+                 "OrderedTriangulation requires valid "
+                 "graphs, modalities and elimination orderings" );
     }
 
     StaticTriangulation::_setGraph( graph, modal );

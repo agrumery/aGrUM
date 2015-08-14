@@ -47,7 +47,8 @@ namespace gum {
 
   namespace learning {
 
-    template <typename IdSetAlloc, typename CountAlloc> class Counter;
+    template <typename IdSetAlloc, typename CountAlloc>
+    class Counter;
 
     /* =========================================================================
      */
@@ -317,7 +318,8 @@ namespace gum {
       /// @}
 
       private:
-      template <typename I, typename C> friend class Counter;
+      template <typename I, typename C>
+      friend class Counter;
 
       /// the modalities of the variables
       const std::vector<unsigned int>* __modalities{nullptr};

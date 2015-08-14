@@ -34,8 +34,8 @@ namespace gum {
   INLINE
   SimpleBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::SimpleBayesNetGenerator(
       Size nbrNodes, Size maxArcs, Size maxModality )
-      : IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>( nbrNodes, maxArcs,
-                                                       maxModality ) {
+      : IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>(
+            nbrNodes, maxArcs, maxModality ) {
     GUM_CONSTRUCTOR( SimpleBayesNetGenerator );
   }
 
@@ -72,7 +72,8 @@ namespace gum {
     int nb_mod;
 
     for ( Size i = 0;
-          i < IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes; ++i ) {
+          i < IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes;
+          ++i ) {
       strBuff << "n" << i;
       nb_mod =
           ( IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_maxModality == 2 )
@@ -96,9 +97,11 @@ namespace gum {
     float p = density * (float)RAND_MAX;
 
     for ( Size i = 0;
-          i < IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes; ++i )
+          i < IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes;
+          ++i )
       for ( Size j = i + 1;
-            j < IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes; ++j )
+            j < IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes;
+            ++j )
         if ( ( (float)rand() ) < p )
           IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addArc(
               map[i], map[j] );

@@ -40,7 +40,8 @@ namespace gum {
       GUM_ERROR( OperationNotAllowed, "Cannot copy Attributes" );
     }
 
-    template <typename GUM_SCALAR> Attribute<GUM_SCALAR>::~Attribute() {
+    template <typename GUM_SCALAR>
+    Attribute<GUM_SCALAR>::~Attribute() {
       GUM_DESTRUCTOR( Attribute );
     }
 

@@ -50,14 +50,16 @@ namespace gum {
     GUM_CONSTRUCTOR( DiGraphListener );
     _graph = const_cast<DiGraph*>( g );
 
-    GUM_CONNECT( ( *_graph ), onNodeAdded, ( *this ),
-                 DiGraphListener::whenNodeAdded );
-    GUM_CONNECT( ( *_graph ), onNodeDeleted, ( *this ),
+    GUM_CONNECT(
+        ( *_graph ), onNodeAdded, ( *this ), DiGraphListener::whenNodeAdded );
+    GUM_CONNECT( ( *_graph ),
+                 onNodeDeleted,
+                 ( *this ),
                  DiGraphListener::whenNodeDeleted );
-    GUM_CONNECT( ( *_graph ), onArcAdded, ( *this ),
-                 DiGraphListener::whenArcAdded );
-    GUM_CONNECT( ( *_graph ), onArcDeleted, ( *this ),
-                 DiGraphListener::whenArcDeleted );
+    GUM_CONNECT(
+        ( *_graph ), onArcAdded, ( *this ), DiGraphListener::whenArcAdded );
+    GUM_CONNECT(
+        ( *_graph ), onArcDeleted, ( *this ), DiGraphListener::whenArcDeleted );
   }
 
   DiGraphListener::~DiGraphListener() { GUM_DESTRUCTOR( DiGraphListener ); }

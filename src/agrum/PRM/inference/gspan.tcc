@@ -29,7 +29,8 @@
 namespace gum {
   namespace prm {
 
-    template <typename GUM_SCALAR> void GSpan<GUM_SCALAR>::discoverPatterns() {
+    template <typename GUM_SCALAR>
+    void GSpan<GUM_SCALAR>::discoverPatterns() {
       Timer t;
       __sortNodesAndEdges();
       gspan::InterfaceGraph<GUM_SCALAR> graph( *__graph );
@@ -54,7 +55,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     void GSpan<GUM_SCALAR>::__sortNodesAndEdges() {
       for ( auto iter = __graph->labels().begin();
-            iter != __graph->labels().end(); ++iter ) {
+            iter != __graph->labels().end();
+            ++iter ) {
         try {
           if ( __graph->nodes( iter.second() ).size() >= 2 ) {
             __cost.insert(
@@ -217,18 +219,21 @@ namespace gum {
 
           for ( std::list<NodeId>::const_reverse_iterator child =
                     children->rbegin();
-                child != children->rend(); ++child )
+                child != children->rend();
+                ++child )
             stack.push_back( &( __tree.pattern( *child ) ) );
         }
       }
     }
 
-    template <typename GUM_SCALAR> void GSpan<GUM_SCALAR>::__sortPatterns() {
+    template <typename GUM_SCALAR>
+    void GSpan<GUM_SCALAR>::__sortPatterns() {
       // First we put all the patterns in __patterns.
       std::vector<NodeId> stack;
 
       for ( std::list<NodeId>::reverse_iterator root = tree().roots().rbegin();
-            root != tree().roots().rend(); ++root )
+            root != tree().roots().rend();
+            ++root )
         stack.push_back( *root );
 
       NodeId id = 0;
@@ -241,7 +246,8 @@ namespace gum {
         children = &( tree().children( tree().pattern( id ) ) );
 
         for ( std::list<NodeId>::reverse_iterator child = children->rbegin();
-              child != children->rend(); ++child )
+              child != children->rend();
+              ++child )
           stack.push_back( *child );
       }
 
@@ -355,12 +361,14 @@ namespace gum {
     GSpan<GUM_SCALAR>::GSpan( const PRM<GUM_SCALAR>& prm,
                               const System<GUM_SCALAR>& sys,
                               gspan::SearchStrategy<GUM_SCALAR>* strategy )
-        : __graph( new gspan::InterfaceGraph<GUM_SCALAR>( sys ) ),
-          __tree( *__graph, strategy ), __depth_stop( INT_MAX ) {
+        : __graph( new gspan::InterfaceGraph<GUM_SCALAR>( sys ) )
+        , __tree( *__graph, strategy )
+        , __depth_stop( INT_MAX ) {
       GUM_CONSTRUCTOR( GSpan );
     }
 
-    template <typename GUM_SCALAR> INLINE GSpan<GUM_SCALAR>::~GSpan() {
+    template <typename GUM_SCALAR>
+    INLINE GSpan<GUM_SCALAR>::~GSpan() {
       GUM_DESTRUCTOR( GSpan );
 
       for ( const auto& elt : __matched_instances )

@@ -97,8 +97,8 @@ namespace gum_tests {
       gum::ScheduleCombine<float> comb13( result12, f4, schedule_comb_myadd );
       comb13.execute();
       const gum::ScheduleMultiDim<float>& result13 = comb13.result();
-      gum::ScheduleCombine<float> comb14( result11, result13,
-                                          schedule_comb_myadd );
+      gum::ScheduleCombine<float> comb14(
+          result11, result13, schedule_comb_myadd );
       comb14.execute();
       const gum::ScheduleMultiDim<float>& result14 = comb14.result();
 

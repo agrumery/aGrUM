@@ -176,8 +176,12 @@ namespace gum {
      * probability_p_q
      * "use of p and q" )
      */
-    MCBayesNetGenerator( Size nbrNodes, Size maxArcs, Idx maxModality = 2,
-                         Size iteration = 5000, Idx p = 30, Idx q = 40 );
+    MCBayesNetGenerator( Size nbrNodes,
+                         Size maxArcs,
+                         Idx maxModality = 2,
+                         Size iteration = 5000,
+                         Idx p = 30,
+                         Idx q = 40 );
 
     /**
     * Constructor.
@@ -193,8 +197,10 @@ namespace gum {
     * @param q probability for the change of the state (see \ref probability_p_q
     * )
     */
-    MCBayesNetGenerator( BayesNet<GUM_SCALAR> bayesNet, Size iteration = 5000,
-                         Idx p = 30, Idx q = 40 );
+    MCBayesNetGenerator( BayesNet<GUM_SCALAR> bayesNet,
+                         Size iteration = 5000,
+                         Idx p = 30,
+                         Idx q = 40 );
 
     /**
     * Destructor.
@@ -377,8 +383,8 @@ namespace gum {
      *existence of an oriented path between node i and node j avoiding passing
      *through nodes listed in excluded.
      **/
-    bool __directedPath( const NodeId tail, const NodeId head,
-                         NodeSet& excluded );
+    bool
+    __directedPath( const NodeId tail, const NodeId head, NodeSet& excluded );
 
     /**
      * The function that randomly choose two nodes of the graph.

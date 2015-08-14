@@ -46,8 +46,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   GibbsKL<GUM_SCALAR>::GibbsKL( const IBayesNet<GUM_SCALAR>& P,
                                 const IBayesNet<GUM_SCALAR>& Q )
-      : KL<GUM_SCALAR>( P, Q ), ApproximationScheme(),
-        particle::Gibbs<GUM_SCALAR>( P ) {
+      : KL<GUM_SCALAR>( P, Q )
+      , ApproximationScheme()
+      , particle::Gibbs<GUM_SCALAR>( P ) {
     GUM_CONSTRUCTOR( GibbsKL );
 
     setEpsilon( KL_DEFAULT_EPSILON );
@@ -60,8 +61,9 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   GibbsKL<GUM_SCALAR>::GibbsKL( const KL<GUM_SCALAR>& kl )
-      : KL<GUM_SCALAR>( kl ), ApproximationScheme(),
-        particle::Gibbs<GUM_SCALAR>( kl.p() ) {
+      : KL<GUM_SCALAR>( kl )
+      , ApproximationScheme()
+      , particle::Gibbs<GUM_SCALAR>( kl.p() ) {
     GUM_CONSTRUCTOR( GibbsKL );
 
     setEpsilon( KL_DEFAULT_EPSILON );
@@ -72,11 +74,13 @@ namespace gum {
     setPeriodSize( KL_DEFAULT_PERIOD_SIZE );
   }
 
-  template <typename GUM_SCALAR> GibbsKL<GUM_SCALAR>::~GibbsKL() {
+  template <typename GUM_SCALAR>
+  GibbsKL<GUM_SCALAR>::~GibbsKL() {
     GUM_DESTRUCTOR( GibbsKL );
   }
 
-  template <typename GUM_SCALAR> void GibbsKL<GUM_SCALAR>::_computeKL() {
+  template <typename GUM_SCALAR>
+  void GibbsKL<GUM_SCALAR>::_computeKL() {
 
     gum::Instantiation Iq;
     _q.completeInstantiation( Iq );

@@ -105,8 +105,10 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph and the sequence are not
      * copied but only referenced by the elimination sequence algorithm. */
     DefaultPartialOrderedEliminationSequenceStrategy(
-        UndiGraph* graph, const NodeProperty<Size>* dom,
-        const List<NodeSet>* subsets, float ratio = GUM_QUASI_RATIO,
+        UndiGraph* graph,
+        const NodeProperty<Size>* dom,
+        const List<NodeSet>* subsets,
+        float ratio = GUM_QUASI_RATIO,
         float threshold = GUM_WEIGHT_THRESHOLD );
 
     /// copy constructor
@@ -140,7 +142,8 @@ namespace gum {
      * @param subsets the list of the subsets constituting the partial ordering
      * @warning note that, by aGrUM's rule, the graph and the sequence are not
      * copied but only referenced by the elimination sequence algorithm. */
-    void setGraph( UndiGraph* graph, const NodeProperty<Size>* dom,
+    void setGraph( UndiGraph* graph,
+                   const NodeProperty<Size>* dom,
                    const List<NodeSet>* subsets );
 
     /// clears the sequence (to prepare, for instance, a new elimination

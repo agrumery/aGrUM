@@ -39,37 +39,37 @@ namespace gum {
    * @ingroup bn_group
    */
   class dSeparation {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
     /// default constructor
-    dSeparation ();
+    dSeparation();
 
     /// copy constructor
-    dSeparation ( const dSeparation& from );
+    dSeparation( const dSeparation& from );
 
     /// move constructor
-    dSeparation ( dSeparation&& from );
+    dSeparation( dSeparation&& from );
 
     /// destructor
-    ~dSeparation ();
+    ~dSeparation();
 
     /// @}
 
-    
+
     // ############################################################################
     /// @name Operators
     // ############################################################################
     /// @{
 
     /// copy operator
-    dSeparation& operator= ( const dSeparation& from );
+    dSeparation& operator=( const dSeparation& from );
 
     /// move operator
-    dSeparation& operator= ( dSeparation&& from );
+    dSeparation& operator=( dSeparation&& from );
 
     /// @}
 
@@ -101,9 +101,8 @@ namespace gum {
                              Set<const TABLE<GUM_SCALAR>*>& potentials );
 
     /// @}
-    
   };
-  
+
 
 } /* namespace gum */
 

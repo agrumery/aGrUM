@@ -292,8 +292,7 @@ namespace gum_tests {
 
       gum::LazyPropagation<float> inf( *bn );
 
-      if ( bn != 0 )
-        delete ( bn );
+      if ( bn != 0 ) delete ( bn );
     };
 
     void fill( gum::BayesNet<float>& topo, gum::List<gum::NodeId>& idList ) {

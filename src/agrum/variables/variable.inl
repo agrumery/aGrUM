@@ -32,7 +32,8 @@ namespace gum {
 
   INLINE Variable::Variable( const std::string& aName,
                              const std::string& aDesc )
-      : __name( aName ), __description( aDesc ) {
+      : __name( aName )
+      , __description( aDesc ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Variable );
   }
@@ -40,7 +41,8 @@ namespace gum {
   /// copy constructor
 
   INLINE Variable::Variable( const Variable& aRV )
-      : __name( aRV.__name ), __description( aRV.__description ) {
+      : __name( aRV.__name )
+      , __description( aRV.__description ) {
     // for debugging purposes
     GUM_CONS_CPY( Variable );
   }
@@ -56,8 +58,7 @@ namespace gum {
 
   INLINE Variable& Variable::operator=( const Variable& aRV ) {
     // avoid self assignment
-    if ( this != &aRV )
-      _copy( aRV );
+    if ( this != &aRV ) _copy( aRV );
 
     return *this;
   }

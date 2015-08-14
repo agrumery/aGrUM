@@ -70,10 +70,13 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-  template <typename Val> class RefPtr;
-  template <typename Val> void swap( RefPtr<Val>&, RefPtr<Val>& );
+  template <typename Val>
+  class RefPtr;
+  template <typename Val>
+  void swap( RefPtr<Val>&, RefPtr<Val>& );
 
-  template <typename Val> class HashFunc;
+  template <typename Val>
+  class HashFunc;
 #endif
 
   /* ===========================================================================
@@ -136,7 +139,8 @@ namespace gum {
   /* ===========================================================================
    */
 
-  template <typename Val> class RefPtr {
+  template <typename Val>
+  class RefPtr {
     public:
     /// swap the contents of two RefPtr
     friend void swap<>( RefPtr<Val>&, RefPtr<Val>& );
@@ -181,7 +185,8 @@ namespace gum {
     /// copy constructor for downcastable pointers
     /** @param from the smart pointer we wish to make a copy */
 
-    template <typename DownVal> RefPtr( const RefPtr<DownVal>& from );
+    template <typename DownVal>
+    RefPtr( const RefPtr<DownVal>& from );
 
     /** @brief destructor: decrements the ref count and deletes if necessary
      * the dumb pointer */
@@ -321,11 +326,13 @@ namespace gum {
     private:
     /// a friend to allow downcastings
 
-    template <typename T> friend class RefPtr;
+    template <typename T>
+    friend class RefPtr;
 
     /// a friend for hashing quickly ref pointers
 
-    template <typename T> friend class HashFunc;
+    template <typename T>
+    friend class HashFunc;
 
     /// the dumb pointer encapsulated into the "smart" pointer
     Val* __val;

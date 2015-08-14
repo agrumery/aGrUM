@@ -61,7 +61,8 @@ namespace gum {
    * operations of the schedule can be performed. It is up to the user to check
    * this (function schedulePossible () may help here).
    */
-  template <typename GUM_SCALAR> class Schedule {
+  template <typename GUM_SCALAR>
+  class Schedule {
     public:
     /// to identify correctly the ids that correspond to ScheduleOperation ids
     typedef Id OperationId;

@@ -106,8 +106,8 @@ namespace gum {
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
       template <typename Alloc>
-      void insert( unsigned int var, IdSet<Alloc>& conditioning_set,
-                   float score );
+      void
+      insert( unsigned int var, IdSet<Alloc>& conditioning_set, float score );
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no

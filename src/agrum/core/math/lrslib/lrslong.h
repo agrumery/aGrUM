@@ -94,8 +94,8 @@
 #define changesign( a ) ( *( a ) = -*( a ) )
 #define copy( a, b ) ( ( a )[0] = ( b )[0] )
 #define decint( a, b ) *( a ) = *( a ) - *( b )
-#define divint( a, b, c )                                                      \
-  *( c ) = *( a ) / *( b );                                                    \
+#define divint( a, b, c )   \
+  *( c ) = *( a ) / *( b ); \
   *( a ) = *( a ) % *( b )
 #define exactdivint( a, b, c ) *( c ) = *( a ) / *( b );
 #define greater( a, b ) ( *( a ) > *( b ) )
@@ -115,7 +115,7 @@
  *  convert between decimal and machine (longword digits). Notice lovely
  *  implementation of ceiling function :-)
  */
-#define DEC2DIG( d )                                                           \
+#define DEC2DIG( d ) \
   ( ( d ) % BASE_DIG ? ( d ) / BASE_DIG + 1 : ( d ) / BASE_DIG )
 #define DIG2DEC( d ) ( (d)*BASE_DIG )
 
@@ -123,10 +123,10 @@
 #include <signal.h>
 #include <stdlib.h> /* labs */
 #include <unistd.h>
-#define errcheck( s, e )                                                       \
-  if ( (long)( e ) == -1L ) {                                                  \
-    perror( s );                                                               \
-    exit( 1 );                                                                 \
+#define errcheck( s, e )      \
+  if ( (long)( e ) == -1L ) { \
+    perror( s );              \
+    exit( 1 );                \
   }
 #endif
 
@@ -160,7 +160,8 @@ extern FILE* lrs_ofp; /* output file pointer      */
 /* Initialization and allocation procedures - must use!  */
 /******************************************************* */
 
-long lrs_mp_init( long dec_digits, FILE* lrs_ifp,
+long lrs_mp_init( long dec_digits,
+                  FILE* lrs_ifp,
                   FILE* lrs_ofp ); /* max number of decimal digits, fps   */
 
 #define lrs_alloc_mp( a )
@@ -185,7 +186,8 @@ void gcd( lrs_mp u, lrs_mp v );         /* returns u=gcd(u,v) destroying v */
 void mptodouble( lrs_mp a, double* x ); /* convert lrs_mp to double */
 long mptoi( lrs_mp a );                 /* convert lrs_mp to long integer */
 void pmp( char name[], lrs_mp a );      /* print the long precision integer a */
-void prat( const char name[], lrs_mp Nt,
+void prat( const char name[],
+           lrs_mp Nt,
            lrs_mp Dt );  /* reduce and print  Nt/Dt */
 void readmp( lrs_mp a ); /* read an integer and convert to lrs_mp          */
 long readrat( lrs_mp Na,
@@ -197,17 +199,26 @@ void reduce( lrs_mp Na, lrs_mp Da ); /* reduces Na Da by gcd(Na,Da) */
 /* should be independent of mp implementation            */
 /******************************************************* */
 
-void atoaa( const char in[], char num[],
+void atoaa( const char in[],
+            char num[],
             char den[] ); /* convert rational string in to num/den strings  */
 long atos( char s[] );    /* convert s to integer                           */
-long comprod( lrs_mp Na, lrs_mp Nb, lrs_mp Nc,
+long comprod( lrs_mp Na,
+              lrs_mp Nb,
+              lrs_mp Nc,
               lrs_mp Nd ); /* +1 if Na*Nb > Nc*Nd,-1 if Na*Nb > Nc*Nd else 0 */
 void divrat( lrs_mp Na, lrs_mp Da, lrs_mp Nb, lrs_mp Db, lrs_mp Nc, lrs_mp Dc );
 /* computes Nc/Dc = (Na/Da) /( Nb/Db ) and reduce */
 void getfactorial( lrs_mp factorial,
                    long k ); /* compute k factorial in lrs_mp */
-void linrat( lrs_mp Na, lrs_mp Da, long ka, lrs_mp Nb, lrs_mp Db, long kb,
-             lrs_mp Nc, lrs_mp Dc );
+void linrat( lrs_mp Na,
+             lrs_mp Da,
+             long ka,
+             lrs_mp Nb,
+             lrs_mp Db,
+             long kb,
+             lrs_mp Nc,
+             lrs_mp Dc );
 void lcm( lrs_mp a,
           lrs_mp b ); /* a = least common multiple of a, b; b is saved  */
 void mulrat( lrs_mp Na, lrs_mp Da, lrs_mp Nb, lrs_mp Db, lrs_mp Nc, lrs_mp Dc );
@@ -215,7 +226,8 @@ void mulrat( lrs_mp Na, lrs_mp Da, lrs_mp Nb, lrs_mp Db, lrs_mp Nc, lrs_mp Dc );
 long myrandom( long num,
                long nrange ); /* return a random number in range 0..nrange-1 */
 void notimpl( char s[] ); /* bail out - help!                               */
-void rattodouble( lrs_mp a, lrs_mp b,
+void rattodouble( lrs_mp a,
+                  lrs_mp b,
                   double* x );          /* convert lrs_mp rational to double */
 void reduceint( lrs_mp Na, lrs_mp Da ); /* divide Na by Da and return it */
 void reducearray( lrs_mp_vector p,

@@ -44,7 +44,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     PRMInference<GUM_SCALAR>::PRMInference(
         const PRMInference<GUM_SCALAR>& source )
-        : _prm( source._prm ), _sys( source._sys ) {
+        : _prm( source._prm )
+        , _sys( source._sys ) {
       GUM_CONS_CPY( PRMInference );
 
       for ( const auto& elt : source.__evidences ) {
@@ -128,8 +129,9 @@ namespace gum {
 
         _evidenceAdded( chain );
       } else {
-        GUM_ERROR( NotFound, "the given Attribute does not belong to this "
-                             "Instance<GUM_SCALAR>." );
+        GUM_ERROR( NotFound,
+                   "the given Attribute does not belong to this "
+                   "Instance<GUM_SCALAR>." );
       }
     }
 
@@ -137,7 +139,8 @@ namespace gum {
     INLINE
     PRMInference<GUM_SCALAR>::PRMInference( const PRM<GUM_SCALAR>& prm,
                                             const System<GUM_SCALAR>& system )
-        : _prm( &prm ), _sys( &system ) {
+        : _prm( &prm )
+        , _sys( &system ) {
       GUM_CONSTRUCTOR( PRMInference );
     }
 

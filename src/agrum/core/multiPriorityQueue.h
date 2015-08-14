@@ -159,7 +159,8 @@ namespace gum {
    */
   /* ===========================================================================
    */
-  template <typename Val, typename Priority = int,
+  template <typename Val,
+            typename Priority = int,
             typename Cmp = std::less<Priority>,
             typename Alloc = std::allocator<Val>>
   class MultiPriorityQueue {
@@ -301,7 +302,8 @@ namespace gum {
      * method eraseByPos for more details about the index)
      * @throw DuplicateElement exception is thrown if the element already exists
      */
-    template <typename... Args> Size emplace( Args&&... args );
+    template <typename... Args>
+    Size emplace( Args&&... args );
 
     /// removes the top of the priority queue (but does not return it)
     /** If the heap is empty, it does nothing (in particular, it does not throw

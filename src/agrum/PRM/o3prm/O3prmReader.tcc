@@ -77,11 +77,9 @@ namespace gum {
         GUM_DESTRUCTOR( O3prmReader );
 
         if ( __parseDone )
-          if ( __parser != nullptr )
-            delete __parser;
+          if ( __parser != nullptr ) delete __parser;
 
-        if ( !__prmTake )
-          delete __factory.prm();
+        if ( !__prmTake ) delete __factory.prm();
       }
 
       template <typename GUM_SCALAR>

@@ -58,8 +58,7 @@ namespace CxxTest {
     }
 
     void redBar() {
-      if ( _startMinimized && _mainWindow->isMinimized() )
-        showNormal();
+      if ( _startMinimized && _mainWindow->isMinimized() ) showNormal();
 
       setColor( 255, 0, 0 );
 
@@ -208,16 +207,15 @@ namespace CxxTest {
       int windowWidth = ( desktop->width() * 4 ) / 5;
       int windowHeight = _mainWindow->height();
       _mainWindow->setGeometry( xCenter - ( windowWidth / 2 ),
-                                yCenter - ( windowHeight / 2 ), windowWidth,
+                                yCenter - ( windowHeight / 2 ),
+                                windowWidth,
                                 windowHeight );
     }
 
     bool keep() {
-      if ( !_keep )
-        return false;
+      if ( !_keep ) return false;
 
-      if ( !_startMinimized )
-        return true;
+      if ( !_startMinimized ) return true;
 
       return ( _mainWindow == _application->activeWindow() );
     }

@@ -34,7 +34,8 @@ namespace gum {
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   MultiPriorityQueue<Val, Priority, Cmp, Alloc>::MultiPriorityQueue(
       Cmp compare, Size capacity )
-      : __indices( capacity >> 1, true, false ), __cmp( compare ) {
+      : __indices( capacity >> 1, true, false )
+      , __cmp( compare ) {
     __heap.reserve( capacity );
 
     // for debugging purposes
@@ -60,8 +61,10 @@ namespace gum {
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   MultiPriorityQueue<Val, Priority, Cmp, Alloc>::MultiPriorityQueue(
       const MultiPriorityQueue<Val, Priority, Cmp, Alloc>& from )
-      : __heap( from.__heap ), __indices( from.__indices ),
-        __nb_elements( from.__nb_elements ), __cmp( from.__cmp ) {
+      : __heap( from.__heap )
+      , __indices( from.__indices )
+      , __nb_elements( from.__nb_elements )
+      , __cmp( from.__cmp ) {
     // for debugging purposes
     GUM_CONS_CPY( MultiPriorityQueue );
 
@@ -80,8 +83,9 @@ namespace gum {
   template <typename OtherAlloc>
   MultiPriorityQueue<Val, Priority, Cmp, Alloc>::MultiPriorityQueue(
       const MultiPriorityQueue<Val, Priority, Cmp, OtherAlloc>& from )
-      : __indices( from.__indices ), __nb_elements( from.__nb_elements ),
-        __cmp( from.__cmp ) {
+      : __indices( from.__indices )
+      , __nb_elements( from.__nb_elements )
+      , __cmp( from.__cmp ) {
     // for debugging purposes
     GUM_CONS_CPY( MultiPriorityQueue );
 
@@ -105,10 +109,10 @@ namespace gum {
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   MultiPriorityQueue<Val, Priority, Cmp, Alloc>::MultiPriorityQueue(
       MultiPriorityQueue<Val, Priority, Cmp, Alloc>&& from )
-      : __heap( std::move( from.__heap ) ),
-        __indices( std::move( from.__indices ) ),
-        __nb_elements( std::move( from.__nb_elements ) ),
-        __cmp( std::move( from.__cmp ) ) {
+      : __heap( std::move( from.__heap ) )
+      , __indices( std::move( from.__indices ) )
+      , __nb_elements( std::move( from.__nb_elements ) )
+      , __cmp( std::move( from.__cmp ) ) {
     // for debugging purposes
     GUM_CONS_MOV( MultiPriorityQueue );
   }
@@ -256,8 +260,7 @@ namespace gum {
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   INLINE void
   MultiPriorityQueue<Val, Priority, Cmp, Alloc>::resize( Size new_size ) {
-    if ( new_size < __nb_elements )
-      return;
+    if ( new_size < __nb_elements ) return;
 
     __heap.reserve( new_size );
     __indices.resize( new_size / 2 );
@@ -274,8 +277,7 @@ namespace gum {
   /// removes the element at index elt from the priority queue
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   void MultiPriorityQueue<Val, Priority, Cmp, Alloc>::eraseByPos( Size index ) {
-    if ( index >= __nb_elements )
-      return;
+    if ( index >= __nb_elements ) return;
 
     // remove the element from the hashtable
     const Val& del_val = *( __heap[index].second );
@@ -297,8 +299,7 @@ namespace gum {
     __heap.pop_back();
     --__nb_elements;
 
-    if ( !__nb_elements || ( index == __nb_elements ) )
-      return;
+    if ( !__nb_elements || ( index == __nb_elements ) ) return;
 
     // restore the heap property
     Size i = index;
@@ -311,8 +312,7 @@ namespace gum {
         ++j;
 
       // if "last" is lower than heap[j], "last" must be stored at index i
-      if ( __cmp( last.first, __heap[j].first ) )
-        break;
+      if ( __cmp( last.first, __heap[j].first ) ) break;
 
       // else pull up the jth node
       __heap[i] = std::move( __heap[j] );
@@ -542,8 +542,7 @@ namespace gum {
     stream << "[";
 
     for ( Size i = 0; i != __nb_elements; ++i, deja = true ) {
-      if ( deja )
-        stream << " , ";
+      if ( deja ) stream << " , ";
 
       stream << "(" << __heap[i].first << " , " << *( __heap[i].second ) << ")";
     }
@@ -590,8 +589,7 @@ namespace gum {
         ++j;
 
       // if "val" is lower than heap[j], "val" must be stored at index i
-      if ( __cmp( new_priority, __heap[j].first ) )
-        break;
+      if ( __cmp( new_priority, __heap[j].first ) ) break;
 
       // else pull up the jth node
       __heap[i] = std::move( __heap[j] );
@@ -655,8 +653,7 @@ namespace gum {
         ++j;
 
       // if "val" is lower than heap[j], "val" must be stored at index i
-      if ( __cmp( new_priority, __heap[j].first ) )
-        break;
+      if ( __cmp( new_priority, __heap[j].first ) ) break;
 
       // else pull up the jth node
       __heap[i] = std::move( __heap[j] );

@@ -11,7 +11,8 @@
 namespace CxxTest {
   class GuiListener : public TestListener {
     public:
-    GuiListener() : _state( GREEN_BAR ) {}
+    GuiListener()
+        : _state( GREEN_BAR ) {}
     virtual ~GuiListener() {}
 
     virtual void runGui( int& argc, char** argv, TestListener& listener ) {
@@ -49,79 +50,109 @@ namespace CxxTest {
     void leaveSuite( const SuiteDescription& ) {}
     void leaveWorld( const WorldDescription& ) {}
 
-    void warning( const char* /*file*/, unsigned /*line*/,
+    void warning( const char* /*file*/,
+                  unsigned /*line*/,
                   const char* /*expression*/ ) {
       yellowBarSafe();
     }
 
-    void failedTest( const char* /*file*/, unsigned /*line*/,
+    void failedTest( const char* /*file*/,
+                     unsigned /*line*/,
                      const char* /*expression*/ ) {
       redBarSafe();
     }
 
-    void failedAssert( const char* /*file*/, unsigned /*line*/,
+    void failedAssert( const char* /*file*/,
+                       unsigned /*line*/,
                        const char* /*expression*/ ) {
       redBarSafe();
     }
 
-    void failedAssertEquals( const char* /*file*/, unsigned /*line*/,
-                             const char* /*xStr*/, const char* /*yStr*/,
-                             const char* /*x*/, const char* /*y*/ ) {
+    void failedAssertEquals( const char* /*file*/,
+                             unsigned /*line*/,
+                             const char* /*xStr*/,
+                             const char* /*yStr*/,
+                             const char* /*x*/,
+                             const char* /*y*/ ) {
       redBarSafe();
     }
 
-    void failedAssertSameData( const char* /*file*/, unsigned /*line*/,
-                               const char* /*xStr*/, const char* /*yStr*/,
-                               const char* /*sizeStr*/, const void* /*x*/,
-                               const void* /*y*/, unsigned /*size*/ ) {
+    void failedAssertSameData( const char* /*file*/,
+                               unsigned /*line*/,
+                               const char* /*xStr*/,
+                               const char* /*yStr*/,
+                               const char* /*sizeStr*/,
+                               const void* /*x*/,
+                               const void* /*y*/,
+                               unsigned /*size*/ ) {
       redBarSafe();
     }
 
-    void failedAssertDelta( const char* /*file*/, unsigned /*line*/,
-                            const char* /*xStr*/, const char* /*yStr*/,
-                            const char* /*dStr*/, const char* /*x*/,
-                            const char* /*y*/, const char* /*d*/ ) {
+    void failedAssertDelta( const char* /*file*/,
+                            unsigned /*line*/,
+                            const char* /*xStr*/,
+                            const char* /*yStr*/,
+                            const char* /*dStr*/,
+                            const char* /*x*/,
+                            const char* /*y*/,
+                            const char* /*d*/ ) {
       redBarSafe();
     }
 
-    void failedAssertDiffers( const char* /*file*/, unsigned /*line*/,
-                              const char* /*xStr*/, const char* /*yStr*/,
+    void failedAssertDiffers( const char* /*file*/,
+                              unsigned /*line*/,
+                              const char* /*xStr*/,
+                              const char* /*yStr*/,
                               const char* /*value*/ ) {
       redBarSafe();
     }
 
-    void failedAssertLessThan( const char* /*file*/, unsigned /*line*/,
-                               const char* /*xStr*/, const char* /*yStr*/,
-                               const char* /*x*/, const char* /*y*/ ) {
-      redBarSafe();
-    }
-
-    void failedAssertLessThanEquals( const char* /*file*/, unsigned /*line*/,
-                                     const char* /*xStr*/, const char* /*yStr*/,
-                                     const char* /*x*/, const char* /*y*/ ) {
-      redBarSafe();
-    }
-
-    void failedAssertPredicate( const char* /*file*/, unsigned /*line*/,
-                                const char* /*predicate*/, const char* /*xStr*/,
-                                const char* /*x*/ ) {
-      redBarSafe();
-    }
-
-    void failedAssertRelation( const char* /*file*/, unsigned /*line*/,
-                               const char* /*relation*/, const char* /*xStr*/,
-                               const char* /*yStr*/, const char* /*x*/,
+    void failedAssertLessThan( const char* /*file*/,
+                               unsigned /*line*/,
+                               const char* /*xStr*/,
+                               const char* /*yStr*/,
+                               const char* /*x*/,
                                const char* /*y*/ ) {
       redBarSafe();
     }
 
-    void failedAssertThrows( const char* /*file*/, unsigned /*line*/,
-                             const char* /*expression*/, const char* /*type*/,
+    void failedAssertLessThanEquals( const char* /*file*/,
+                                     unsigned /*line*/,
+                                     const char* /*xStr*/,
+                                     const char* /*yStr*/,
+                                     const char* /*x*/,
+                                     const char* /*y*/ ) {
+      redBarSafe();
+    }
+
+    void failedAssertPredicate( const char* /*file*/,
+                                unsigned /*line*/,
+                                const char* /*predicate*/,
+                                const char* /*xStr*/,
+                                const char* /*x*/ ) {
+      redBarSafe();
+    }
+
+    void failedAssertRelation( const char* /*file*/,
+                               unsigned /*line*/,
+                               const char* /*relation*/,
+                               const char* /*xStr*/,
+                               const char* /*yStr*/,
+                               const char* /*x*/,
+                               const char* /*y*/ ) {
+      redBarSafe();
+    }
+
+    void failedAssertThrows( const char* /*file*/,
+                             unsigned /*line*/,
+                             const char* /*expression*/,
+                             const char* /*type*/,
                              bool /*otherThrown*/ ) {
       redBarSafe();
     }
 
-    void failedAssertThrowsNot( const char* /*file*/, unsigned /*line*/,
+    void failedAssertThrowsNot( const char* /*file*/,
+                                unsigned /*line*/,
                                 const char* /*expression*/ ) {
       redBarSafe();
     }
@@ -145,14 +176,17 @@ namespace CxxTest {
     enum { GREEN_BAR, YELLOW_BAR, RED_BAR } _state;
   };
 
-  template <class GuiT, class TuiT> class GuiTuiRunner : public TeeListener {
+  template <class GuiT, class TuiT>
+  class GuiTuiRunner : public TeeListener {
     int& _argc;
     char** _argv;
     GuiT _gui;
     TuiT _tui;
 
     public:
-    GuiTuiRunner( int& argc, char** argv ) : _argc( argc ), _argv( argv ) {
+    GuiTuiRunner( int& argc, char** argv )
+        : _argc( argc )
+        , _argv( argv ) {
       setFirst( _gui );
       setSecond( _tui );
     }

@@ -71,8 +71,7 @@ namespace gum {
 
     const DiscreteVariable& C = this->variable( (Idx)0 );
 
-    if ( i.val( C ) > 1 )
-      return (GUM_SCALAR)0.0;
+    if ( i.val( C ) > 1 ) return (GUM_SCALAR)0.0;
 
     GUM_SCALAR ratio = (GUM_SCALAR)1.0 - this->externalWeight();
 

@@ -192,7 +192,8 @@ namespace gum {
      */
     void changeNotification( Instantiation& i,
                              const DiscreteVariable* const var,
-                             const Idx& oldval, const Idx& newval );
+                             const Idx& oldval,
+                             const Idx& newval );
 
     /**
      * listen to an assignment of a value in a Instantiation

@@ -78,13 +78,14 @@ namespace gum_tests {
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>() );
+                                gum::learning::Col<0>,
+                                8>() );
 
       auto generators = gum::learning::make_generators(
           gum::learning::RowGeneratorIdentity() );
 
-      auto filter1 = gum::learning::make_DB_row_filter( database, translators,
-                                                        generators );
+      auto filter1 = gum::learning::make_DB_row_filter(
+          database, translators, generators );
 
       unsigned nb1 = 0;
       while ( filter1.hasRows() ) {
@@ -127,13 +128,14 @@ namespace gum_tests {
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>() );
+                                gum::learning::Col<0>,
+                                8>() );
 
       auto generators = gum::learning::make_generators(
           TruncatedGenerator(), gum::learning::RowGeneratorIdentity() );
 
-      auto filter = gum::learning::make_DB_row_filter( database, translators,
-                                                       generators );
+      auto filter = gum::learning::make_DB_row_filter(
+          database, translators, generators );
 
       unsigned nb1 = 0;
       try {
@@ -152,13 +154,14 @@ namespace gum_tests {
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>() );
+                                gum::learning::Col<0>,
+                                8>() );
 
       auto generators = gum::learning::make_generators(
           ThreeGenerator(), TruncatedGenerator(), TwoGenerator() );
 
-      auto filter = gum::learning::make_DB_row_filter( database, translators,
-                                                       generators );
+      auto filter = gum::learning::make_DB_row_filter(
+          database, translators, generators );
 
       unsigned nb1 = 0;
       try {

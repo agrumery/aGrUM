@@ -40,8 +40,8 @@ namespace gum {
     /// copy constructor
     INLINE LocalSearchWithTabuList::LocalSearchWithTabuList(
         const LocalSearchWithTabuList& from )
-        : ApproximationScheme( from ),
-          __MaxNbDecreasing( from.__MaxNbDecreasing ) {
+        : ApproximationScheme( from )
+        , __MaxNbDecreasing( from.__MaxNbDecreasing ) {
       GUM_CONS_CPY( LocalSearchWithTabuList );
     }
 
@@ -49,8 +49,8 @@ namespace gum {
     INLINE
     LocalSearchWithTabuList::LocalSearchWithTabuList(
         LocalSearchWithTabuList&& from )
-        : ApproximationScheme( std::move( from ) ),
-          __MaxNbDecreasing( std::move( from.__MaxNbDecreasing ) ) {
+        : ApproximationScheme( std::move( from ) )
+        , __MaxNbDecreasing( std::move( from.__MaxNbDecreasing ) ) {
       GUM_CONS_MOV( LocalSearchWithTabuList );
     }
 

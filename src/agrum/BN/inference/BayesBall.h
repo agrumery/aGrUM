@@ -58,7 +58,7 @@ namespace gum {
     ~BayesBall();
 
     /// @}
-    
+
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -87,7 +87,6 @@ namespace gum {
                              Set<const TABLE<GUM_SCALAR>*>& potentials );
 
     /// @}
-
   };
 
 } /* namespace gum */

@@ -39,19 +39,25 @@ namespace gum_tests {
     }
 
     private:
-#define DELTA_DIFFERS( a, b )                                                  \
+#define DELTA_DIFFERS( a, b ) \
   ( ( a ) < ( b ) ) ? ( ( b ) - ( a ) > 1e-6 ) : ( ( a ) - ( b ) > 1e-6 )
     bool matchedRandomValues( void ) {
       gum::initRandom( GUM_RANDOMSEED );
 
       std::vector<double> v1 = gum::randomDistribution<double>( 10 );
-      std::vector<double> ref1{0.134374,  0.145089,  0.120114, 0.0426642,
-                               0.193954,  0.0435726, 0.138849, 0.100258,
-                               0.0060166, 0.0751083};
+      std::vector<double> ref1{0.134374,
+                               0.145089,
+                               0.120114,
+                               0.0426642,
+                               0.193954,
+                               0.0435726,
+                               0.138849,
+                               0.100258,
+                               0.0060166,
+                               0.0751083};
 
       for ( int i = 0; i < 10; i++ ) {
-        if ( DELTA_DIFFERS( v1[i], ref1[i] ) )
-          return false;
+        if ( DELTA_DIFFERS( v1[i], ref1[i] ) ) return false;
       }
 
       // just to be  sure
@@ -69,8 +75,7 @@ namespace gum_tests {
           0.00550434, 0.0686738,  0.0175179, 0.0471658, 0.0274975,   0.0193232};
 
       for ( int i = 0; i < 30; i++ ) {
-        if ( DELTA_DIFFERS( v2[i], ref2[i] ) )
-          return false;
+        if ( DELTA_DIFFERS( v2[i], ref2[i] ) ) return false;
       }
 
       return true;

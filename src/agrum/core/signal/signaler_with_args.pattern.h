@@ -28,7 +28,8 @@ namespace gum {
 
   namespace __sig__ {
 
-    template <LIST_DECL_CLASSES> class MAKE_NAME( IConnector ) {
+    template <LIST_DECL_CLASSES>
+    class MAKE_NAME( IConnector ) {
       public:
       virtual ~MAKE_NAME( IConnector )() {}
 

@@ -14,7 +14,8 @@ namespace CxxTest {
   TestDescription* DummyTestDescription::next() { return 0; }
   const TestDescription* DummyTestDescription::next() const { return 0; }
 
-  DummySuiteDescription::DummySuiteDescription() : _test() {}
+  DummySuiteDescription::DummySuiteDescription()
+      : _test() {}
 
   const char* DummySuiteDescription::file() const { return "<no file>"; }
   unsigned DummySuiteDescription::line() const { return 0; }
@@ -37,7 +38,8 @@ namespace CxxTest {
   bool DummySuiteDescription::setUp() { return true; }
   bool DummySuiteDescription::tearDown() { return true; }
 
-  DummyWorldDescription::DummyWorldDescription() : _suite() {}
+  DummyWorldDescription::DummyWorldDescription()
+      : _suite() {}
 
   unsigned DummyWorldDescription::numSuites( void ) const { return 0; }
   unsigned DummyWorldDescription::numTotalTests( void ) const { return 0; }

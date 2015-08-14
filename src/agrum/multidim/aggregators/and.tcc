@@ -42,7 +42,8 @@ namespace gum {
       GUM_CONS_CPY( And );
     }
 
-    template <typename GUM_SCALAR> INLINE And<GUM_SCALAR>::~And() {
+    template <typename GUM_SCALAR>
+    INLINE And<GUM_SCALAR>::~And() {
       GUM_DESTRUCTOR( And );
     }
 
@@ -52,8 +53,10 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Idx And<GUM_SCALAR>::_folder( const DiscreteVariable& v, Idx i1,
-                                         Idx i2, bool& stop_iteration ) const {
+    INLINE Idx And<GUM_SCALAR>::_folder( const DiscreteVariable& v,
+                                         Idx i1,
+                                         Idx i2,
+                                         bool& stop_iteration ) const {
       if ( i1 == 1 ) {
         return (Idx)1;
       } else {

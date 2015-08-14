@@ -28,22 +28,19 @@
 #include <agrum/core/indexedTree.h>
 
 namespace gum {
-
-  /* ============================================================================
-   */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
+  /* =========================================================================*/
   /* ===       IMPLEMENTATION OF NODES FOR GENERIC TREE (DATA) STRUCTURE === */
-  /* ============================================================================
-   */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
+  /* =========================================================================*/
 
   /// creates a tree with one node (with or without data)
 
   template <typename Key, typename Data>
   IndexedTree<Key, Data>::IndexedTree( const Key& theKey, Data* theData )
-      : key( theKey ), data( theData ), parent( 0 ) {
+      : key( theKey )
+      , data( theData )
+      , parent( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( IndexedTree );
   }
@@ -52,7 +49,8 @@ namespace gum {
 
   template <typename Key, typename Data>
   IndexedTree<Key, Data>::IndexedTree( Data* theData )
-      : data( theData ), parent( 0 ) {
+      : data( theData )
+      , parent( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( IndexedTree );
   }
@@ -61,7 +59,9 @@ namespace gum {
 
   template <typename Key, typename Data>
   IndexedTree<Key, Data>::IndexedTree( const Key& theKey, const Data& theData )
-      : key( theKey ), data( new Data( theData ) ), parent( 0 ) {
+      : key( theKey )
+      , data( new Data( theData ) )
+      , parent( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( IndexedTree );
   }
@@ -70,25 +70,26 @@ namespace gum {
 
   template <typename Key, typename Data>
   IndexedTree<Key, Data>::IndexedTree( const IndexedTree<Key, Data>& from )
-      : key( from.key ), data( 0 ), parent( 0 ) {
+      : key( from.key )
+      , data( 0 )
+      , parent( 0 ) {
     // for debugging purposes
     GUM_CONS_CPY( IndexedTree );
 
     try {
       // create the data of the node
-      if ( from.data )
-        data = new Data( *from.data );
+      if ( from.data ) data = new Data( *from.data );
 
       // create and link properly the children
       children = from.children;
 
       for ( HashTableIteratorSafe<Key, IndexedTree<Key, Data>> iter =
                 children.begin();
-            iter != children.end(); ++iter )
+            iter != children.end();
+            ++iter )
         iter->parent = this;
     } catch ( ... ) {
-      if ( data )
-        delete data;
+      if ( data ) delete data;
 
       children.clear();
 
@@ -109,8 +110,7 @@ namespace gum {
       try {
         key = from.key;
 
-        if ( data )
-          delete data;
+        if ( data ) delete data;
 
         if ( from.data )
           data = new Data( *from.data );
@@ -121,11 +121,11 @@ namespace gum {
 
         for ( HashTableIteratorSafe<Key, IndexedTree<Key, Data>> iter =
                   children.begin();
-              iter != children.end(); ++iter )
+              iter != children.end();
+              ++iter )
           iter->parent = this;
       } catch ( ... ) {
-        if ( data )
-          delete data;
+        if ( data ) delete data;
 
         children.clear();
 
@@ -143,8 +143,7 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR( IndexedTree );
 
-    if ( data )
-      delete data;
+    if ( data ) delete data;
   }
 
   /// adds a new node into the tree
@@ -292,8 +291,7 @@ namespace gum {
       if ( current_node->children.exists( index[i] ) ) {
         IndexedTree<Key, Data>* node = current_node->children[index[i]];
 
-        if ( node->data )
-          delete node->data;
+        if ( node->data ) delete node->data;
 
         node->data = theData;
       } else {
@@ -306,8 +304,7 @@ namespace gum {
     } else {
       // here, the node to be set is the root of the tree (so it does already
       // exist
-      if ( data )
-        delete data;
+      if ( data ) delete data;
 
       data = theData;
     }
@@ -350,8 +347,7 @@ namespace gum {
       if ( current_node->children.exists( index[i] ) ) {
         IndexedTree<Key, Data>* node = current_node->children[index[i]];
 
-        if ( node->data )
-          delete node->data;
+        if ( node->data ) delete node->data;
 
         node->data = new Data( theData );
       } else {
@@ -364,8 +360,7 @@ namespace gum {
     } else {
       // here, the node to be set is the root of the tree (so it does already
       // exist
-      if ( data )
-        delete data;
+      if ( data ) delete data;
 
       data = new Data( theData );
     }

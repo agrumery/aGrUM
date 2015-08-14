@@ -40,8 +40,8 @@ namespace gum {
     INLINE
     ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::ScoreInternalBDeuApriori(
         const ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>& from )
-        : ScoreInternalApriori<IdSetAlloc, CountAlloc>( from ),
-          __ess( from.__ess ) {
+        : ScoreInternalApriori<IdSetAlloc, CountAlloc>( from )
+        , __ess( from.__ess ) {
       GUM_CONS_CPY( ScoreInternalBDeuApriori );
     }
 
@@ -50,8 +50,8 @@ namespace gum {
     INLINE
     ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::ScoreInternalBDeuApriori(
         ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>&& from )
-        : ScoreInternalApriori<IdSetAlloc, CountAlloc>( std::move( from ) ),
-          __ess( std::move( from.__ess ) ) {
+        : ScoreInternalApriori<IdSetAlloc, CountAlloc>( std::move( from ) )
+        , __ess( std::move( from.__ess ) ) {
       GUM_CONS_MOV( ScoreInternalBDeuApriori );
     }
 
@@ -75,8 +75,9 @@ namespace gum {
     ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::setEffectiveSampleSize(
         float ess ) {
       if ( ess < 0 ) {
-        GUM_ERROR( OutOfBounds, "The effective sample size of the BDeu's "
-                                "internal apriori shall be positive" );
+        GUM_ERROR( OutOfBounds,
+                   "The effective sample size of the BDeu's "
+                   "internal apriori shall be positive" );
       } else {
         __ess = ess;
       }
@@ -92,8 +93,7 @@ namespace gum {
                                     unsigned int>*>& target_nodesets,
         const std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
                                     unsigned int>*>& conditioning_nodesets ) {
-      if ( __ess == 0 )
-        return;
+      if ( __ess == 0 ) return;
 
       const unsigned int size = target_nodesets.size();
       for ( unsigned int i = 0; i < size; ++i ) {

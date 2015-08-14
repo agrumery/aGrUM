@@ -38,7 +38,8 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR> class BayesNetFactory;
+  template <typename GUM_SCALAR>
+  class BayesNetFactory;
 
   /**
    * @class BayesNet BayesNet.h <agrum/BN/BayesNet.h>
@@ -53,7 +54,8 @@ namespace gum {
    * Don't forget that you can print a BayesNet using
    * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
    */
-  template <typename GUM_SCALAR> class BayesNet : public IBayesNet<GUM_SCALAR> {
+  template <typename GUM_SCALAR>
+  class BayesNet : public IBayesNet<GUM_SCALAR> {
 
     friend class BayesNetFactory<GUM_SCALAR>;
 
@@ -151,7 +153,8 @@ namespace gum {
      * @throws DuplicateElement if id is already used
      */
     NodeId add( const DiscreteVariable& variable,
-                MultiDimImplementation<GUM_SCALAR>* aContent, NodeId id );
+                MultiDimImplementation<GUM_SCALAR>* aContent,
+                NodeId id );
 
     /**
      * Erase a Variable from the network and remove the variable from
@@ -309,11 +312,14 @@ namespace gum {
      * @{
      */
     NodeId addNoisyOR( const DiscreteVariable& variable,
-                       GUM_SCALAR externalWeight, NodeId id );
+                       GUM_SCALAR externalWeight,
+                       NodeId id );
     NodeId addNoisyORNet( const DiscreteVariable& variable,
-                          GUM_SCALAR externalWeight, NodeId id );
+                          GUM_SCALAR externalWeight,
+                          NodeId id );
     NodeId addNoisyORCompound( const DiscreteVariable& variable,
-                               GUM_SCALAR externalWeight, NodeId id );
+                               GUM_SCALAR externalWeight,
+                               NodeId id );
     /** @} */
 
     /**
@@ -327,7 +333,8 @@ namespace gum {
      * @return the id of the added variable.
      */
     NodeId addNoisyAND( const DiscreteVariable& variable,
-                        GUM_SCALAR externalWeight, NodeId id );
+                        GUM_SCALAR externalWeight,
+                        NodeId id );
 
     /**
      * Add a variable, its associate node and a noisyAND implementation. The id
@@ -353,7 +360,8 @@ namespace gum {
      * @return the id of the added variable.
      */
     NodeId addLogit( const DiscreteVariable& variable,
-                     GUM_SCALAR externalWeight, NodeId id );
+                     GUM_SCALAR externalWeight,
+                     NodeId id );
 
     /**
      * Add a variable, its associate node and a Logit implementation. The id of

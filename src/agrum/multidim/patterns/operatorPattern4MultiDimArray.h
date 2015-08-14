@@ -51,7 +51,8 @@ namespace gum {
 #define GUM_MULTI_DIM_OPERATOR_TYPE T
       template <typename T>
       MultiDimArray<T>* GUM_MULTI_DIM_OPERATOR_NAME_F(
-          const MultiDimArray<T>* t1, const MultiDimArray<T>* t2,
+          const MultiDimArray<T>* t1,
+          const MultiDimArray<T>* t2,
           const T ( *f )( const T&, const T& ) ) {
 #endif
 
@@ -59,7 +60,8 @@ namespace gum {
 #define GUM_MULTI_DIM_OPERATOR_TYPE T *
         template <typename T>
         MultiDimArray<T*>* GUM_MULTI_DIM_OPERATOR_POINTER_NAME_F(
-            const MultiDimArray<T*>* t1, const MultiDimArray<T*>* t2,
+            const MultiDimArray<T*>* t1,
+            const MultiDimArray<T*>* t2,
             const T* ( *f )( const T*, const T* ) ) {
 #endif
 
@@ -187,8 +189,7 @@ namespace gum {
                 for ( auto iter = t1_vars.begin();
                       nb_t1_t2_vars != t1_and_t2_vars.size();
                       ++iter, ++nb_t1_t2_vars )
-                  if ( *iter != t1_and_t2_vars[nb_t1_t2_vars] )
-                    break;
+                  if ( *iter != t1_and_t2_vars[nb_t1_t2_vars] ) break;
 
                 if ( nb_t1_t2_vars == t1_and_t2_vars.size() ) {
                   nb_t1_t2_vars = 0;
@@ -196,8 +197,7 @@ namespace gum {
                   for ( auto iter = t2_vars.begin();
                         nb_t1_t2_vars != t1_and_t2_vars.size();
                         ++iter, ++nb_t1_t2_vars )
-                    if ( *iter != t1_and_t2_vars[nb_t1_t2_vars] )
-                      break;
+                    if ( *iter != t1_and_t2_vars[nb_t1_t2_vars] ) break;
 
                   if ( nb_t1_t2_vars == t1_and_t2_vars.size() ) {
                     t1_and_t2_begin_vars = true;
@@ -269,16 +269,13 @@ namespace gum {
               result->beginMultipleChanges();
 
               for ( const auto var : t1_vars )
-                if ( t2_vars.exists( var ) )
-                  *result << *var;
+                if ( t2_vars.exists( var ) ) *result << *var;
 
               for ( const auto var : t2_vars )
-                if ( !t1_vars.exists( var ) )
-                  *result << *var;
+                if ( !t1_vars.exists( var ) ) *result << *var;
 
               for ( const auto var : t1_vars )
-                if ( !t2_vars.exists( var ) )
-                  *result << *var;
+                if ( !t2_vars.exists( var ) ) *result << *var;
 
               result->endMultipleChanges();
 

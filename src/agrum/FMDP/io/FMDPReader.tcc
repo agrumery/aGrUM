@@ -25,12 +25,9 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
-
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   /* ===                           GUM_FMDP_WRITTER === */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   template <typename GUM_SCALAR>
   INLINE FMDPReader<GUM_SCALAR>::FMDPReader(
       FactoredMarkovDecisionProcess<GUM_SCALAR>* FMDP,
@@ -38,7 +35,8 @@ namespace gum {
     GUM_CONSTRUCTOR( FMDPReader );
   }
 
-  template <typename GUM_SCALAR> INLINE FMDPReader<GUM_SCALAR>::~FMDPReader() {
+  template <typename GUM_SCALAR>
+  INLINE FMDPReader<GUM_SCALAR>::~FMDPReader() {
     GUM_DESTRUCTOR( FMDPReader );
   }
 

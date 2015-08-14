@@ -41,7 +41,8 @@ namespace gum {
      *
      * A Class Dependency Graph does listen to changes in it's PRM<GUM_SCALAR>.
      */
-    template <typename GUM_SCALAR> class ClassDependencyGraph {
+    template <typename GUM_SCALAR>
+    class ClassDependencyGraph {
 
       public:
       /// Association between a class element and it's holding class.
@@ -106,7 +107,8 @@ namespace gum {
                       const ClassElement<GUM_SCALAR>& elt );
 
       /// Add arcs in __graph.
-      void __addArcs( const ClassElementContainer<GUM_SCALAR>& c, NodeId node,
+      void __addArcs( const ClassElementContainer<GUM_SCALAR>& c,
+                      NodeId node,
                       HashTable<const ClassElement<GUM_SCALAR>*, NodeId>& map );
 
       /// The graph itself.

@@ -103,8 +103,9 @@ namespace gum {
           break;
 
         default:
-          GUM_ERROR( OperationNotAllowed, "arc modifications are not supported "
-                                          "by StructuralConstraintUndiGraph" );
+          GUM_ERROR( OperationNotAllowed,
+                     "arc modifications are not supported "
+                     "by StructuralConstraintUndiGraph" );
       }
     }
 

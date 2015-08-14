@@ -37,8 +37,8 @@ namespace gum {
     INLINE Counter<IdSetAlloc, CountAlloc>::Counter(
         const RowFilter& filter,
         const std::vector<unsigned int>& var_modalities )
-        : _modalities( var_modalities ),
-          _record_counter( filter, var_modalities ) {
+        : _modalities( var_modalities )
+        , _record_counter( filter, var_modalities ) {
       // for debugging purposes
       GUM_CONSTRUCTOR( Counter );
     }
@@ -47,9 +47,9 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     Counter<IdSetAlloc, CountAlloc>::Counter(
         const Counter<IdSetAlloc, CountAlloc>& from )
-        : _modalities( from._modalities ),
-          _counts_computed( from._counts_computed ),
-          _record_counter( from._record_counter ) {
+        : _modalities( from._modalities )
+        , _counts_computed( from._counts_computed )
+        , _record_counter( from._record_counter ) {
       // copy the target nodesets
       _target_nodesets.reserve( from._target_nodesets.size() );
       for ( const auto set : from._target_nodesets ) {
@@ -81,7 +81,8 @@ namespace gum {
       const std::vector<const std::vector<unsigned int, IdSetAlloc>*>&
           from_nodesets = from._record_counter.__nodesets;
       for ( unsigned int i = 0, j = 0, size = from._target_nodesets.size();
-            i < size; ++i ) {
+            i < size;
+            ++i ) {
         if ( from._target_nodesets[i] != nullptr ) {
           while ( from_nodesets[j] != &( from._target_nodesets[i]->first ) ) {
             ++j;
@@ -89,9 +90,10 @@ namespace gum {
           nodesets[j] = &( _target_nodesets[i]->first );
         }
       }
-      for ( unsigned int i = 0, j = 0,
-                         size = from._conditioning_nodesets.size();
-            i < size; ++i ) {
+      for (
+          unsigned int i = 0, j = 0, size = from._conditioning_nodesets.size();
+          i < size;
+          ++i ) {
         if ( from._conditioning_nodesets[i] != nullptr ) {
           while ( from_nodesets[j] !=
                   &( from._conditioning_nodesets[i]->first ) ) {
@@ -109,11 +111,11 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     Counter<IdSetAlloc, CountAlloc>::Counter(
         Counter<IdSetAlloc, CountAlloc>&& from )
-        : _modalities( from._modalities ),
-          _counts_computed( std::move( from._counts_computed ) ),
-          _record_counter( std::move( from._record_counter ) ),
-          _target_nodesets( std::move( from._target_nodesets ) ),
-          _conditioning_nodesets( std::move( from._conditioning_nodesets ) ) {
+        : _modalities( from._modalities )
+        , _counts_computed( std::move( from._counts_computed ) )
+        , _record_counter( std::move( from._record_counter ) )
+        , _target_nodesets( std::move( from._target_nodesets ) )
+        , _conditioning_nodesets( std::move( from._conditioning_nodesets ) ) {
       from._target_nodesets.clear();
       from._conditioning_nodesets.clear();
 
@@ -267,7 +269,8 @@ namespace gum {
     /// add a new pair of target conditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE unsigned int Counter<IdSetAlloc, CountAlloc>::addNodeSet(
-        unsigned int var1, unsigned int var2,
+        unsigned int var1,
+        unsigned int var2,
         const std::vector<unsigned int>& conditioning_ids ) {
       // if the conditioning set is empty, perform the unconditional addNodeSet
       if ( !conditioning_ids.size() ) {
@@ -303,7 +306,8 @@ namespace gum {
     /// add a new pair of target conditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE unsigned int Counter<IdSetAlloc, CountAlloc>::addNodeSet(
-        unsigned int var1, unsigned int var2,
+        unsigned int var1,
+        unsigned int var2,
         std::vector<unsigned int>&& conditioning_ids ) {
       // if the conditioning set is empty, perform the unconditional addNodeSet
       if ( !conditioning_ids.size() ) {
@@ -416,11 +420,9 @@ namespace gum {
       _record_counter.clearNodeSets();
 
       for ( auto set : _target_nodesets )
-        if ( set )
-          delete set;
+        if ( set ) delete set;
       for ( auto set : _conditioning_nodesets )
-        if ( set )
-          delete set;
+        if ( set ) delete set;
       _target_nodesets.clear();
       _conditioning_nodesets.clear();
       _counts_computed = false;
@@ -437,8 +439,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const std::vector<float, CountAlloc>&
     Counter<IdSetAlloc, CountAlloc>::_getAllCounts( unsigned int index ) {
-      if ( !_counts_computed )
-        _count();
+      if ( !_counts_computed ) _count();
       return _record_counter.getCounts( _target_nodesets[index]->second );
     }
 
@@ -447,8 +448,7 @@ namespace gum {
     INLINE const std::vector<float, CountAlloc>&
     Counter<IdSetAlloc, CountAlloc>::_getConditioningCounts(
         unsigned int index ) {
-      if ( !_counts_computed )
-        _count();
+      if ( !_counts_computed ) _count();
       return _record_counter.getCounts( _conditioning_nodesets[index]->second );
     }
 
@@ -490,8 +490,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE std::vector<std::vector<float, CountAlloc>>&
     Counter<IdSetAlloc, CountAlloc>::_getCounts() noexcept {
-      if ( !_counts_computed )
-        _count();
+      if ( !_counts_computed ) _count();
       return _record_counter.__getCounts();
     }
 

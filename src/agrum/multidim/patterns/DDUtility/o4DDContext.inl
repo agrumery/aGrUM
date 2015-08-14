@@ -58,9 +58,10 @@ namespace gum {
   INLINE
   void O4DDContext::addRetrogradeVar( const gum::DiscreteVariable* var ) {
     if ( __varSeq.size() == __nbLogPrime )
-      GUM_ERROR( gum::OperationNotAllowed, "Not enough prime log2 in database. "
-                                           "Please add more in o4DDContext.cpp "
-                                           "files." );
+      GUM_ERROR( gum::OperationNotAllowed,
+                 "Not enough prime log2 in database. "
+                 "Please add more in o4DDContext.cpp "
+                 "files." );
 
     __varSeq.insert( var );
     __retrogradeVarInstantiation.push_back( 0 );

@@ -32,7 +32,8 @@ namespace gum {
     /// default constructor
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::DBRowFilter(
-        const DBHandler& handler, const TranslatorSet& translator_set,
+        const DBHandler& handler,
+        const TranslatorSet& translator_set,
         const GeneratorSet& generator_set,
         unsigned long initialization_range ) noexcept
         : __handler( handler ),
@@ -66,7 +67,8 @@ namespace gum {
 
     /// destructor
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
-    INLINE DBRowFilter<DBHandler, TranslatorSet,
+    INLINE DBRowFilter<DBHandler,
+                       TranslatorSet,
                        GeneratorSet>::~DBRowFilter() noexcept {
       GUM_DESTRUCTOR( DBRowFilter );
     }

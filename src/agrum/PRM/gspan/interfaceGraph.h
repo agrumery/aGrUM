@@ -38,7 +38,8 @@
 
 namespace gum {
   namespace prm {
-    template <typename GUM_SCALAR> class GSpan;
+    template <typename GUM_SCALAR>
+    class GSpan;
 
     namespace gspan {
 
@@ -78,7 +79,8 @@ namespace gum {
        * <agrum/PRM/gspan/interfaceGraph.h>
        * Inner class to handle data about nodes in __graph.
        */
-      template <typename GUM_SCALAR> class NodeData {
+      template <typename GUM_SCALAR>
+      class NodeData {
         public:
         /// Constructor.
         NodeData<GUM_SCALAR>();
@@ -111,7 +113,8 @@ namespace gum {
        * <agrum/PRM/gspan/interfaceGraph.h>
        * Inner class to handle data about edges in __graph.
        */
-      template <typename GUM_SCALAR> class EdgeData {
+      template <typename GUM_SCALAR>
+      class EdgeData {
         public:
         /// Constructor.
         EdgeData();
@@ -165,7 +168,8 @@ namespace gum {
        * id.
        *
        */
-      template <typename GUM_SCALAR> class InterfaceGraph {
+      template <typename GUM_SCALAR>
+      class InterfaceGraph {
         friend class gum::prm::GSpan<GUM_SCALAR>;
 
         public:

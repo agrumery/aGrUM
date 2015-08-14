@@ -44,8 +44,11 @@ namespace gum_tests {
 
   class CliqueGraphTestSuite : public CxxTest::TestSuite {
     private:
-    void fillSets( gum::NodeSet& A, gum::NodeSet& B, gum::NodeSet& C,
-                   gum::NodeSet& D, gum::NodeSet& E ) {
+    void fillSets( gum::NodeSet& A,
+                   gum::NodeSet& B,
+                   gum::NodeSet& C,
+                   gum::NodeSet& D,
+                   gum::NodeSet& E ) {
       A << 1 << 2;
       B << 2 << 3 << 4;
       C << 3 << 4 << 5;

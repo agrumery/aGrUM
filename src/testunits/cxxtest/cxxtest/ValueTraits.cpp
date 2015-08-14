@@ -9,11 +9,9 @@ namespace CxxTest {
   //
 
   char digitToChar( unsigned digit ) {
-    if ( digit < 10 )
-      return (char)( '0' + digit );
+    if ( digit < 10 ) return (char)( '0' + digit );
 
-    if ( digit <= 10 + 'Z' - 'A' )
-      return (char)( 'A' + digit - 10 );
+    if ( digit <= 10 + 'Z' - 'A' ) return (char)( 'A' + digit - 10 );
 
     return '?';
   }
@@ -39,8 +37,7 @@ namespace CxxTest {
     char c;
 
     while ( ( c = *s1++ ) == *s2++ )
-      if ( c == '\0' )
-        return true;
+      if ( c == '\0' ) return true;
 
     return false;
   }
@@ -96,20 +93,20 @@ namespace CxxTest {
     return charToString( (unsigned long)(unsigned char)c, s );
   }
 
-  char* bytesToString( const unsigned char* bytes, unsigned numBytes,
-                       unsigned maxBytes, char* s ) {
+  char* bytesToString( const unsigned char* bytes,
+                       unsigned numBytes,
+                       unsigned maxBytes,
+                       char* s ) {
     bool truncate = ( numBytes > maxBytes );
 
-    if ( truncate )
-      numBytes = maxBytes;
+    if ( truncate ) numBytes = maxBytes;
 
     s = copyString( s, "{ " );
 
     for ( unsigned i = 0; i < numBytes; ++i, ++bytes )
       s = copyString( copyString( s, byteToHex( *bytes ) ), " " );
 
-    if ( truncate )
-      s = copyString( s, "..." );
+    if ( truncate ) s = copyString( s, "..." );
 
     return copyString( s, " }" );
   }
@@ -125,8 +122,7 @@ namespace CxxTest {
   }
 
   char* ValueTraits<const double>::doNegative( double& t ) {
-    if ( t >= 0 )
-      return _asString;
+    if ( t >= 0 ) return _asString;
 
     _asString[0] = '-';
     t = -t;
@@ -151,7 +147,8 @@ namespace CxxTest {
       s = numberToString( (unsigned)( t *= BASE ) % BASE, s );
   }
 
-  char* ValueTraits<const double>::doubleToString( double t, char* s,
+  char* ValueTraits<const double>::doubleToString( double t,
+                                                   char* s,
                                                    unsigned skip,
                                                    unsigned max ) {
     return numberToString<double>( t, s, BASE, skip, max );

@@ -30,23 +30,24 @@ namespace gum {
 
   /// default constructor
   INLINE Dirichlet::Dirichlet( const param_type& params, unsigned int seed )
-      : __generator( seed ? seed : gum::randomGeneratorSeed() ),
-        __params( params ) {
+      : __generator( seed ? seed : gum::randomGeneratorSeed() )
+      , __params( params ) {
     GUM_CONSTRUCTOR( Dirichlet );
   }
 
   /// copy constructor
   INLINE Dirichlet::Dirichlet( const Dirichlet& from )
-      : __generator( from.__generator ), __gamma( from.__gamma ),
-        __params( from.__params ) {
+      : __generator( from.__generator )
+      , __gamma( from.__gamma )
+      , __params( from.__params ) {
     GUM_CONS_CPY( Dirichlet );
   }
 
   /// move constructor
   INLINE Dirichlet::Dirichlet( Dirichlet&& from )
-      : __generator( std::move( from.__generator ) ),
-        __gamma( std::move( from.__gamma ) ),
-        __params( std::move( from.__params ) ) {
+      : __generator( std::move( from.__generator ) )
+      , __gamma( std::move( from.__gamma ) )
+      , __params( std::move( from.__params ) ) {
     GUM_CONS_MOV( Dirichlet );
   }
 

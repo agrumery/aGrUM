@@ -73,10 +73,12 @@ namespace gum {
       /// @{
 
       /// create a BN
-      template <typename GUM_SCALAR = float, typename PARAM_ESTIMATOR,
+      template <typename GUM_SCALAR = float,
+                typename PARAM_ESTIMATOR,
                 typename CELL_TRANSLATORS>
       static BayesNet<GUM_SCALAR>
-      createBN( PARAM_ESTIMATOR& estimator, const DAG& dag,
+      createBN( PARAM_ESTIMATOR& estimator,
+                const DAG& dag,
                 const std::vector<std::string>& names,
                 const std::vector<unsigned int>& modal,
                 const CELL_TRANSLATORS& translator );

@@ -46,35 +46,66 @@ namespace CxxTest {
     void trace( const char* file, unsigned line, const char* expression );
     void warning( const char* file, unsigned line, const char* expression );
     void failedTest( const char* file, unsigned line, const char* expression );
-    void failedAssert( const char* file, unsigned line,
-                       const char* expression );
-    void failedAssertEquals( const char* file, unsigned line, const char* xStr,
-                             const char* yStr, const char* x, const char* y );
-    void failedAssertSameData( const char* file, unsigned line,
-                               const char* xStr, const char* yStr,
-                               const char* sizeStr, const void* x,
-                               const void* y, unsigned size );
-    void failedAssertDelta( const char* file, unsigned line, const char* xStr,
-                            const char* yStr, const char* dStr, const char* x,
-                            const char* y, const char* d );
-    void failedAssertDiffers( const char* file, unsigned line, const char* xStr,
-                              const char* yStr, const char* value );
-    void failedAssertLessThan( const char* file, unsigned line,
-                               const char* xStr, const char* yStr,
-                               const char* x, const char* y );
-    void failedAssertLessThanEquals( const char* file, unsigned line,
-                                     const char* xStr, const char* yStr,
-                                     const char* x, const char* y );
-    void failedAssertPredicate( const char* file, unsigned line,
-                                const char* predicate, const char* xStr,
+    void
+    failedAssert( const char* file, unsigned line, const char* expression );
+    void failedAssertEquals( const char* file,
+                             unsigned line,
+                             const char* xStr,
+                             const char* yStr,
+                             const char* x,
+                             const char* y );
+    void failedAssertSameData( const char* file,
+                               unsigned line,
+                               const char* xStr,
+                               const char* yStr,
+                               const char* sizeStr,
+                               const void* x,
+                               const void* y,
+                               unsigned size );
+    void failedAssertDelta( const char* file,
+                            unsigned line,
+                            const char* xStr,
+                            const char* yStr,
+                            const char* dStr,
+                            const char* x,
+                            const char* y,
+                            const char* d );
+    void failedAssertDiffers( const char* file,
+                              unsigned line,
+                              const char* xStr,
+                              const char* yStr,
+                              const char* value );
+    void failedAssertLessThan( const char* file,
+                               unsigned line,
+                               const char* xStr,
+                               const char* yStr,
+                               const char* x,
+                               const char* y );
+    void failedAssertLessThanEquals( const char* file,
+                                     unsigned line,
+                                     const char* xStr,
+                                     const char* yStr,
+                                     const char* x,
+                                     const char* y );
+    void failedAssertPredicate( const char* file,
+                                unsigned line,
+                                const char* predicate,
+                                const char* xStr,
                                 const char* x );
-    void failedAssertRelation( const char* file, unsigned line,
-                               const char* relation, const char* xStr,
-                               const char* yStr, const char* x, const char* y );
-    void failedAssertThrows( const char* file, unsigned line,
-                             const char* expression, const char* type,
+    void failedAssertRelation( const char* file,
+                               unsigned line,
+                               const char* relation,
+                               const char* xStr,
+                               const char* yStr,
+                               const char* x,
+                               const char* y );
+    void failedAssertThrows( const char* file,
+                             unsigned line,
+                             const char* expression,
+                             const char* type,
                              bool otherThrown );
-    void failedAssertThrowsNot( const char* file, unsigned line,
+    void failedAssertThrowsNot( const char* file,
+                                unsigned line,
                                 const char* expression );
 
     private:

@@ -21,15 +21,20 @@ namespace gum_tests {
   unsigned int MyAllocCount::allocs{0};
   unsigned int MyAllocCount::deallocs{0};
 
-  template <typename T> class MyAlloc : public MyAllocCount {
+  template <typename T>
+  class MyAlloc : public MyAllocCount {
     public:
     using value_type = T;
 
-    template <typename _Tp1> struct rebind { typedef MyAlloc<_Tp1> other; };
+    template <typename _Tp1>
+    struct rebind {
+      typedef MyAlloc<_Tp1> other;
+    };
 
     MyAlloc() noexcept {}
 
-    template <typename U> MyAlloc( const MyAlloc<U>& ) noexcept {}
+    template <typename U>
+    MyAlloc( const MyAlloc<U>& ) noexcept {}
 
     T* allocate( std::size_t num ) {
       ++MyAllocCount::allocs;
@@ -41,7 +46,8 @@ namespace gum_tests {
       ::operator delete( p );
     }
 
-    template <typename... Args> void construct( T* p, Args... args ) {
+    template <typename... Args>
+    void construct( T* p, Args... args ) {
       ::new ( p ) T( std::forward<Args>( args )... );
     }
 

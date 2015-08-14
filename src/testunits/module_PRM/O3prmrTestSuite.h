@@ -25,7 +25,6 @@
 
 #include <agrum/PRM/o3prmr/O3prmrInterpreter.h>
 
-
 namespace gum_tests {
 
   class O3prmrTestSuite : public CxxTest::TestSuite {
@@ -59,7 +58,6 @@ namespace gum_tests {
       }
     }
 
-
     void testParseFile2() {
       try {
         gum::prm::o3prmr::O3prmrInterpreter* si =
@@ -80,7 +78,6 @@ namespace gum_tests {
       }
     }
 
-
     void testInference() {
       try {
         gum::prm::o3prmr::O3prmrInterpreter* si =
@@ -100,7 +97,6 @@ namespace gum_tests {
         TS_ASSERT( false );
       }
     }
-
 
     void testObserve() {
       try {

@@ -29,13 +29,15 @@ namespace gum {
   namespace prm {
 
     // Default constructor.
-    template <typename GUM_SCALAR> PRM<GUM_SCALAR>::PRM() {
+    template <typename GUM_SCALAR>
+    PRM<GUM_SCALAR>::PRM() {
       GUM_CONSTRUCTOR( PRM );
       __addBuiltInTypes();
     }
 
     // Destructor.
-    template <typename GUM_SCALAR> PRM<GUM_SCALAR>::~PRM() {
+    template <typename GUM_SCALAR>
+    PRM<GUM_SCALAR>::~PRM() {
       GUM_DESTRUCTOR( PRM );
       __classMap.clear();
       __typeMap.clear();
@@ -55,7 +57,8 @@ namespace gum {
     }
 
     // Add the built-in types in the PRM
-    template <typename GUM_SCALAR> void PRM<GUM_SCALAR>::__addBuiltInTypes() {
+    template <typename GUM_SCALAR>
+    void PRM<GUM_SCALAR>::__addBuiltInTypes() {
       LabelizedVariable var( "boolean", "built-in type", 0 );
       var.addLabel( "false" );
       var.addLabel( "true" );

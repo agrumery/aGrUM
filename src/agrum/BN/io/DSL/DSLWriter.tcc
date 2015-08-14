@@ -30,19 +30,18 @@
 #include <agrum/BN/io/DSL/DSLWriter.h>
 
 namespace gum {
-
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   /* ===                           GUM_DSL_WRITTER === */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   // Default constructor.
-  template <typename GUM_SCALAR> INLINE DSLWriter<GUM_SCALAR>::DSLWriter() {
+  template <typename GUM_SCALAR>
+  INLINE DSLWriter<GUM_SCALAR>::DSLWriter() {
     GUM_CONSTRUCTOR( DSLWriter );
   }
 
   // Default destructor.
-  template <typename GUM_SCALAR> INLINE DSLWriter<GUM_SCALAR>::~DSLWriter() {
+  template <typename GUM_SCALAR>
+  INLINE DSLWriter<GUM_SCALAR>::~DSLWriter() {
     GUM_DESTRUCTOR( DSLWriter );
   }
 
@@ -126,8 +125,7 @@ namespace gum {
         bn.cpt( id ).variablesSequence();
 
     for ( Idx i = tmp_vars.size() - 1; i > 0; i-- ) {
-      if ( i < tmp_vars.size() - 1 )
-        oss << ", ";
+      if ( i < tmp_vars.size() - 1 ) oss << ", ";
 
       oss << tmp_vars[i]->name();
     }
@@ -140,8 +138,7 @@ namespace gum {
     oss << "\t\t\tNAMESTATES = (";
 
     for ( i = 0; i < var.domainSize(); i++ ) {
-      if ( i != 0 )
-        oss << ", ";
+      if ( i != 0 ) oss << ", ";
 
       oss << var.label( i );
     }
@@ -155,9 +152,9 @@ namespace gum {
     i = 0;
 
     for ( Instantiation iter = bn.cpt( id ).getMasterRef();
-          i < bn.cpt( id ).domainSize(); ++iter ) {
-      if ( i != 0 )
-        oss << ", ";
+          i < bn.cpt( id ).domainSize();
+          ++iter ) {
+      if ( i != 0 ) oss << ", ";
 
       oss << bn.cpt( id )[iter];
 

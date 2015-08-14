@@ -42,7 +42,8 @@ namespace gum {
       GUM_CONS_CPY( Max );
     }
 
-    template <typename GUM_SCALAR> INLINE Max<GUM_SCALAR>::~Max() {
+    template <typename GUM_SCALAR>
+    INLINE Max<GUM_SCALAR>::~Max() {
       GUM_DESTRUCTOR( Max );
     }
 
@@ -52,8 +53,10 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Idx Max<GUM_SCALAR>::_folder( const DiscreteVariable& v, Idx i1,
-                                         Idx i2, bool& stop_iteration ) const {
+    INLINE Idx Max<GUM_SCALAR>::_folder( const DiscreteVariable& v,
+                                         Idx i1,
+                                         Idx i2,
+                                         bool& stop_iteration ) const {
       return ( i1 > i2 ) ? i1 : i2;
     }
 

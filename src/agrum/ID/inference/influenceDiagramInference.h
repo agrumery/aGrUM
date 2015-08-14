@@ -45,7 +45,8 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR> class CliqueProperties;
+  template <typename GUM_SCALAR>
+  class CliqueProperties;
 
   /**
    * @class InfluenceDiagramInference influenceDiagramInference.h
@@ -232,7 +233,8 @@ namespace gum {
   /// @class CliqueProperties
   /// Private class to keep clique's properties.
   /// It used MultiDimBucket to compute the cliques potentials.
-  template <typename GUM_SCALAR> class CliqueProperties {
+  template <typename GUM_SCALAR>
+  class CliqueProperties {
     public:
     /// Default constructor.
     /// @param id the id of this clique on which this properties holds.

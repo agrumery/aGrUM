@@ -351,8 +351,7 @@ namespace gum {
                 result_domain_size *= var->domainSize();
                 result_varSeq << var;
               } else {
-                if ( found_proj_var )
-                  has_before_incr = true;
+                if ( found_proj_var ) has_before_incr = true;
               }
             }
 

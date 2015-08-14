@@ -66,8 +66,7 @@ namespace gum {
 
   INLINE void LabelizedVariable::changeLabel( Idx pos,
                                               const std::string aLabel ) const {
-    if ( __labels[pos] == aLabel )
-      return;
+    if ( __labels[pos] == aLabel ) return;
 
     if ( isLabel( aLabel ) )
       GUM_ERROR( DuplicateElement, "Label '" << aLabel << "' already exists" );
@@ -95,7 +94,8 @@ namespace gum {
 
   INLINE
   LabelizedVariable::LabelizedVariable( const LabelizedVariable& aLDRV )
-      : DiscreteVariable( aLDRV ), __labels( aLDRV.labels() ) {
+      : DiscreteVariable( aLDRV )
+      , __labels( aLDRV.labels() ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( LabelizedVariable );
   }
@@ -149,8 +149,9 @@ namespace gum {
     try {
       return __labels.pos( aLabel );
     } catch ( ... ) {
-      GUM_ERROR( OutOfBounds, "label '" << aLabel << "' is unknown in "
-                                        << this->toString() );
+      GUM_ERROR( OutOfBounds,
+                 "label '" << aLabel << "' is unknown in "
+                           << this->toString() );
     }
   }
 

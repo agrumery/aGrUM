@@ -103,8 +103,7 @@ namespace gum_tests {
       result->beginMultipleChanges();
 
       for ( const auto var : vars )
-        if ( !del_vars.exists( var ) )
-          *result << *var;
+        if ( !del_vars.exists( var ) ) *result << *var;
 
       result->endMultipleChanges();
       result->fill( neutral_elt );

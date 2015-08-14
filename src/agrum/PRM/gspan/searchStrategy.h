@@ -48,10 +48,12 @@
 namespace gum {
   namespace prm {
 
-    template <typename GUM_SCALAR> class GSpan;
+    template <typename GUM_SCALAR>
+    class GSpan;
 
     namespace gspan {
-      template <typename GUM_SCALAR> class DFSTree;
+      template <typename GUM_SCALAR>
+      class DFSTree;
 
       /**
        * @class SearchStrategy<GUM_SCALAR> DFSTree.h <agrum/PRM/gspan/DFSTree.h>
@@ -61,7 +63,8 @@ namespace gum {
        * works as a stack regarding adding and removing informations about the
        *growths.
        */
-      template <typename GUM_SCALAR> class SearchStrategy {
+      template <typename GUM_SCALAR>
+      class SearchStrategy {
 
         public:
         // =========================================================================
@@ -92,7 +95,8 @@ namespace gum {
 
         virtual bool accept_root( const Pattern* r ) = 0;
 
-        virtual bool accept_growth( const Pattern* parent, const Pattern* child,
+        virtual bool accept_growth( const Pattern* parent,
+                                    const Pattern* child,
                                     const EdgeGrowth<GUM_SCALAR>& growth ) = 0;
 
         virtual bool operator()( LabelData* i, LabelData* j ) = 0;
@@ -141,7 +145,8 @@ namespace gum {
 
         virtual bool accept_root( const Pattern* r );
 
-        virtual bool accept_growth( const Pattern* parent, const Pattern* child,
+        virtual bool accept_growth( const Pattern* parent,
+                                    const Pattern* child,
                                     const EdgeGrowth<GUM_SCALAR>& growth );
 
         virtual bool operator()( LabelData* i, LabelData* j );
@@ -189,7 +194,8 @@ namespace gum {
 
         virtual bool accept_root( const Pattern* r );
 
-        virtual bool accept_growth( const Pattern* parent, const Pattern* child,
+        virtual bool accept_growth( const Pattern* parent,
+                                    const Pattern* child,
                                     const EdgeGrowth<GUM_SCALAR>& growth );
 
         virtual bool operator()( LabelData* i, LabelData* j );
@@ -276,7 +282,8 @@ namespace gum {
 
         virtual bool accept_root( const Pattern* r );
 
-        virtual bool accept_growth( const Pattern* parent, const Pattern* child,
+        virtual bool accept_growth( const Pattern* parent,
+                                    const Pattern* child,
                                     const EdgeGrowth<GUM_SCALAR>& growth );
 
         virtual bool operator()( LabelData* i, LabelData* j );

@@ -71,7 +71,8 @@ namespace gum {
      * @param cptCopy copy of the CPT before reduction.
      * @param marg of the inference before reduction on the node varIdi.
      */
-    virtual void disturbReducCPT( NodeId varIdi, NodeId varIdj,
+    virtual void disturbReducCPT( NodeId varIdi,
+                                  NodeId varIdj,
                                   BayesNet<GUM_SCALAR>& bayesNet,
                                   Potential<GUM_SCALAR>& cptCopy,
                                   Potential<GUM_SCALAR>& marg );
@@ -84,7 +85,8 @@ namespace gum {
      * @param cptCopy copy of the CPT before augmentation.
      * @param variation degree of variation from the initial probability.
      */
-    virtual void disturbAugmCPT( NodeId varIdi, NodeId varIdj,
+    virtual void disturbAugmCPT( NodeId varIdi,
+                                 NodeId varIdj,
                                  BayesNet<GUM_SCALAR>& bayesNet,
                                  Potential<GUM_SCALAR>& cptCopy,
                                  GUM_SCALAR variation );

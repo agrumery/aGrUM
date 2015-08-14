@@ -37,7 +37,8 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR> class VEWithBB;
+  template <typename GUM_SCALAR>
+  class VEWithBB;
   /**
    * @class VariableElimination variableElimination.h
    *<agrum/BN/inference/variableElimination.h>
@@ -185,7 +186,8 @@ namespace gum {
     /// Fills the bucket with all the potentials in pool containing id and
     /// insert it in pool as a Potential after removing all the potentials
     /// already in it. If you don't understand, read the code...
-    void __eliminateNode( NodeId id, Set<Potential<GUM_SCALAR>*>& pool,
+    void __eliminateNode( NodeId id,
+                          Set<Potential<GUM_SCALAR>*>& pool,
                           Set<Potential<GUM_SCALAR>*>& trash );
   };
 

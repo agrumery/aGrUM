@@ -41,11 +41,11 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <agrum/BN/BayesNetFactory.h>
 
 #undef TRY
-#define TRY( inst )                                                            \
-  try {                                                                        \
-    inst;                                                                      \
-  } catch ( gum::Exception & e ) {                                             \
-    SemErr( e.errorType() );                                                   \
+#define TRY( inst )                \
+  try {                            \
+    inst;                          \
+  } catch ( gum::Exception & e ) { \
+    SemErr( e.errorType() );       \
   }
 
 #include <iostream>
@@ -86,8 +86,7 @@ namespace gum {
       void setFactory( gum::IBayesNetFactory* f ) { __factory = f; }
 
       gum::IBayesNetFactory& factory( void ) {
-        if ( __factory )
-          return *__factory;
+        if ( __factory ) return *__factory;
         GUM_ERROR( gum::OperationNotAllowed,
                    "Please set a factory for scanning DSL file..." );
       }

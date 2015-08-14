@@ -32,7 +32,8 @@ namespace gum {
   namespace aggregator {
     template <typename GUM_SCALAR>
     INLINE Count<GUM_SCALAR>::Count( Idx value )
-        : MultiDimAggregator<GUM_SCALAR>(), __value( value ) {
+        : MultiDimAggregator<GUM_SCALAR>()
+        , __value( value ) {
       GUM_CONSTRUCTOR( Count )
     }
 
@@ -43,7 +44,8 @@ namespace gum {
       GUM_CONS_CPY( Count );
     }
 
-    template <typename GUM_SCALAR> INLINE Count<GUM_SCALAR>::~Count() {
+    template <typename GUM_SCALAR>
+    INLINE Count<GUM_SCALAR>::~Count() {
       GUM_DESTRUCTOR( Count );
     }
 
@@ -53,9 +55,10 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Idx
-    Count<GUM_SCALAR>::_folder( const DiscreteVariable& v, Idx i1, Idx i2,
-                                bool& stop_iteration ) const {
+    INLINE Idx Count<GUM_SCALAR>::_folder( const DiscreteVariable& v,
+                                           Idx i1,
+                                           Idx i2,
+                                           bool& stop_iteration ) const {
       return ( i1 == __value ) ? 1 + i2 : i2;
     }
 

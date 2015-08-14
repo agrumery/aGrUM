@@ -41,7 +41,8 @@ namespace gum_tests {
     void testClassesWithSystem() {
       gum::BayesNet<double> bn;
       gum::O3prmBNReader<double> reader(
-          &bn, GET_PATH_STR( "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" ),
+          &bn,
+          GET_PATH_STR( "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" ),
           "Asia" );
       int res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
@@ -58,7 +59,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( res, 1 );                         // file not found
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)1 );  // file not found
       TS_ASSERT_EQUALS( bn.size(), (gum::Size)0 );
-
 
       gum::O3prmBNReader<double> reader2(
           &bn, GET_PATH_STR( "o3prm/AsiaWithError.o3prm" ), "Asia" );

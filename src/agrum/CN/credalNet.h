@@ -65,7 +65,8 @@ namespace gum {
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      */
-    template <typename GUM_SCALAR> class CredalNet {
+    template <typename GUM_SCALAR>
+    class CredalNet {
       public:
       /** @brief NodeType to speed-up computations in some algorithms */
       enum class NodeType : char { Precise, Credal, Vacuous, Indic };
@@ -183,7 +184,8 @@ namespace gum {
        *credal net
        *!
        */
-      void setCPT( const NodeId& id, unsigned long int& entry,
+      void setCPT( const NodeId& id,
+                   unsigned long int& entry,
                    const std::vector<std::vector<GUM_SCALAR>>& cpt );
 
       /**
@@ -207,7 +209,8 @@ namespace gum {
        * @note we forget the master ref of \c ins to check variable order in the
        *instantiation ( to get index ), therefor we pass it by value
        */
-      void setCPT( const NodeId& id, Instantiation ins,
+      void setCPT( const NodeId& id,
+                   Instantiation ins,
                    const std::vector<std::vector<GUM_SCALAR>>& cpt );
 
       /**
@@ -247,7 +250,8 @@ namespace gum {
        * @note we forget the master ref of \c ins to check variable order in the
        *instantiation ( to get index ), therefor we pass it by value
        */
-      void fillConstraint( const NodeId& id, unsigned long int& entry,
+      void fillConstraint( const NodeId& id,
+                           unsigned long int& entry,
                            const std::vector<GUM_SCALAR>& lower,
                            const std::vector<GUM_SCALAR>& upper );
 
@@ -267,7 +271,8 @@ namespace gum {
        * @note we forget the master ref of \c ins to check variable order in the
        *instantiation ( to get index ), therefor we pass it by value
        */
-      void fillConstraint( const NodeId& id, Instantiation ins,
+      void fillConstraint( const NodeId& id,
+                           Instantiation ins,
                            const std::vector<GUM_SCALAR>& lower,
                            const std::vector<GUM_SCALAR>& upper );
 
@@ -327,7 +332,8 @@ namespace gum {
        *zeroes
        *are not kept.
        */
-      void bnToCredal( const GUM_SCALAR beta, const bool oneNet,
+      void bnToCredal( const GUM_SCALAR beta,
+                       const bool oneNet,
                        const bool keepZeroes = false );
 
       /**

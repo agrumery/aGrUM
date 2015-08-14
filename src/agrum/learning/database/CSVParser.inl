@@ -28,17 +28,14 @@ namespace gum {
       while ( getline( __in, __line ) ) {
         __noLine++;
 
-        if ( __line.size() == 0 )
-          continue;
+        if ( __line.size() == 0 ) continue;
 
         // fast recognition of commented or empty lines lines
         Size lastPos = __line.find_first_not_of( __spaces, 0 );
 
-        if ( lastPos == std::string::npos )
-          continue;
+        if ( lastPos == std::string::npos ) continue;
 
-        if ( __line.at( lastPos ) == __commentMarker )
-          continue;
+        if ( __line.at( lastPos ) == __commentMarker ) continue;
 
         __tokenize( __line );
         return true;
@@ -55,8 +52,7 @@ namespace gum {
       while ( true ) {
         res = str.find_first_of( __quoteMarker, res + 1 );
 
-        if ( res == std::string::npos )
-          return res;  // no quote found
+        if ( res == std::string::npos ) return res;  // no quote found
 
         before = str.find_last_not_of( '\\', res - 1 );
 
@@ -70,15 +66,13 @@ namespace gum {
     }
 
     INLINE const std::vector<std::string>& CSVParser::current() const {
-      if ( __emptyData )
-        GUM_ERROR( NullElement, "No parsed data" );
+      if ( __emptyData ) GUM_ERROR( NullElement, "No parsed data" );
 
       return __data;
     }
 
     INLINE const Size CSVParser::noLine() const {
-      if ( __noLine == 0 )
-        GUM_ERROR( NullElement, "No parsed data" );
+      if ( __noLine == 0 ) GUM_ERROR( NullElement, "No parsed data" );
 
       return __noLine;
     }

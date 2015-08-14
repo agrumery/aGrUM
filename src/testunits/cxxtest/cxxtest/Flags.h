@@ -17,7 +17,7 @@
 #define _CXXTEST_HAVE_STD
 #endif  // CXXTEST_HAVE_STD
 
-#if defined( CXXTEST_OLD_TEMPLATE_SYNTAX ) &&                                  \
+#if defined( CXXTEST_OLD_TEMPLATE_SYNTAX ) && \
     !defined( _CXXTEST_OLD_TEMPLATE_SYNTAX )
 #define _CXXTEST_OLD_TEMPLATE_SYNTAX
 #endif  // CXXTEST_OLD_TEMPLATE_SYNTAX
@@ -26,7 +26,7 @@
 #define _CXXTEST_OLD_STD
 #endif  // CXXTEST_OLD_STD
 
-#if defined( CXXTEST_ABORT_TEST_ON_FAIL ) &&                                   \
+#if defined( CXXTEST_ABORT_TEST_ON_FAIL ) && \
     !defined( _CXXTEST_ABORT_TEST_ON_FAIL )
 #define _CXXTEST_ABORT_TEST_ON_FAIL
 #endif  // CXXTEST_ABORT_TEST_ON_FAIL
@@ -39,7 +39,7 @@
 #define _CXXTEST_FACTOR
 #endif  // CXXTEST_FACTOR
 
-#if defined( CXXTEST_PARTIAL_TEMPLATE_SPECIALIZATION ) &&                      \
+#if defined( CXXTEST_PARTIAL_TEMPLATE_SPECIALIZATION ) && \
     !defined( _CXXTEST_PARTIAL_TEMPLATE_SPECIALIZATION )
 #define _CXXTEST_PARTIAL_TEMPLATE_SPECIALIZATION
 #endif  // CXXTEST_PARTIAL_TEMPLATE_SPECIALIZATION

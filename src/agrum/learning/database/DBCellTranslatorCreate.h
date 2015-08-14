@@ -68,7 +68,8 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
     /// the helper for Create that packs only 1 translator
-    template <class Translator, typename Cols> class CreateOnce {
+    template <class Translator, typename Cols>
+    class CreateOnce {
       public:
       /// the number of columns written by the execution of the translator
       static constexpr int output_size =
@@ -228,11 +229,15 @@ namespace gum {
      * as input pairs of columns (10,11),(11,13), (12,15) and (13,17)
      *respectively.
      */
-    template <typename Translator, typename Cols, int nb_times = 1,
+    template <typename Translator,
+              typename Cols,
+              int nb_times = 1,
               typename ColsIncr = typename Make_Default_Incr<Cols>::type>
     class Create : CreateOnce<Translator, Cols>,
-                   Create<Translator, typename AddCols<Cols, ColsIncr>::type,
-                          nb_times - 1, ColsIncr> {
+                   Create<Translator,
+                          typename AddCols<Cols, ColsIncr>::type,
+                          nb_times - 1,
+                          ColsIncr> {
       public:
       /// the number of columns written by the execution of the translator
       static constexpr int output_size =
@@ -242,9 +247,10 @@ namespace gum {
       using CurrentTranslator = CreateOnce<Translator, Cols>;
 
       /// the type of the wrapper for the next applications of the translator
-      using NextTranslators =
-          Create<Translator, typename AddCols<Cols, ColsIncr>::type,
-                 nb_times - 1, ColsIncr>;
+      using NextTranslators = Create<Translator,
+                                     typename AddCols<Cols, ColsIncr>::type,
+                                     nb_times - 1,
+                                     ColsIncr>;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -358,8 +364,9 @@ namespace gum {
       bool requiresInitialization() const noexcept { return false; }
       void modalities( std::vector<unsigned int>& ) const {}
       std::string translateBack( unsigned int, unsigned int ) const {
-        GUM_ERROR( UndefinedElement, "the set of translators does not contain "
-                                     "the column to be translated back" );
+        GUM_ERROR( UndefinedElement,
+                   "the set of translators does not contain "
+                   "the column to be translated back" );
       }
     };
 

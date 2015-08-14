@@ -117,7 +117,8 @@ namespace gum {
 
     void Parser::BIF() {
       NETWORK();
-      while ( la->kind == 9 /* "variable" */ ||
+      while ( la->kind == 9 /* "variable" */
+              ||
               la->kind == 16 /* "probability" */ ) {
         if ( la->kind == 9 /* "variable" */ ) {
           while ( !( la->kind == _EOF || la->kind == 9 /* "variable" */ ) ) {
@@ -370,8 +371,7 @@ namespace gum {
 
       } else if ( la->kind == 21 /* "default" */ ) {
         Get();
-        if ( !is_first )
-          SemErr( "'default' assignation has to be the first." );
+        if ( !is_first ) SemErr( "'default' assignation has to be the first." );
         LISTE_FLOAT( v );
         TRY( factory().startFactorizedEntry() );
         __checkSizeOfProbabilityAssignation( v, var );
@@ -427,7 +427,8 @@ namespace gum {
     // The following templates are used to recognize if the user declared
     // the methods Init and Destroy.
 
-    template <typename T> struct ParserInitExistsRecognizer {
+    template <typename T>
+    struct ParserInitExistsRecognizer {
       template <typename U, void ( U::* )() = &U::Init>
       struct ExistsIfInitIsDefinedMarker {};
 
@@ -441,7 +442,8 @@ namespace gum {
       };
 
       // exists always
-      template <typename U> static InitIsMissingType is_here( ... );
+      template <typename U>
+      static InitIsMissingType is_here( ... );
 
       // exist only if ExistsIfInitIsDefinedMarker is defined
       template <typename U>
@@ -453,7 +455,8 @@ namespace gum {
       };
     };
 
-    template <typename T> struct ParserDestroyExistsRecognizer {
+    template <typename T>
+    struct ParserDestroyExistsRecognizer {
       template <typename U, void ( U::* )() = &U::Destroy>
       struct ExistsIfDestroyIsDefinedMarker {};
 
@@ -467,7 +470,8 @@ namespace gum {
       };
 
       // exists always
-      template <typename U> static DestroyIsMissingType is_here( ... );
+      template <typename U>
+      static DestroyIsMissingType is_here( ... );
 
       // exist only if ExistsIfDestroyIsDefinedMarker is defined
       template <typename U>
@@ -492,7 +496,8 @@ namespace gum {
     };
 
     // True case of the ParserInitCaller, gets used if the Init method exists
-    template <typename T> struct ParserInitCaller<T, true> {
+    template <typename T>
+    struct ParserInitCaller<T, true> {
       static void CallInit( T* t ) { t->Init(); }
     };
 
@@ -508,7 +513,8 @@ namespace gum {
 
     // True case of the ParserDestroyCaller, gets used if the Destroy method
     // exists
-    template <typename T> struct ParserDestroyCaller<T, true> {
+    template <typename T>
+    struct ParserDestroyCaller<T, true> {
       static void CallDestroy( T* t ) { t->Destroy(); }
     };
     void Parser::Parse() {
@@ -535,16 +541,141 @@ namespace gum {
       const bool T = true;
       const bool x = false;
 
-      static bool set[5][27] = {{T, x, x, x, x, x, x, x, x, T, x, x, x, x, x, x,
-                                 T, x, x, x, x, x, x, x, x, x, x},
-                                {T, T, T, x, x, x, x, x, x, T, x, x, x, x, x, x,
-                                 T, x, x, x, x, x, x, x, x, x, x},
-                                {T, T, x, x, x, x, x, x, x, T, x, x, x, x, x, x,
-                                 T, x, x, x, x, x, x, x, x, x, x},
-                                {x, x, T, T, x, x, x, x, x, x, x, x, x, x, x, T,
-                                 x, x, T, x, x, x, x, x, x, x, x},
-                                {T, T, T, x, x, x, x, x, x, T, x, x, x, x, x, x,
-                                 T, x, x, x, x, x, T, x, x, x, x}};
+      static bool set[5][27] = {{T,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 T,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 T,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x},
+                                {T,
+                                 T,
+                                 T,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 T,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 T,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x},
+                                {T,
+                                 T,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 T,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 T,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x},
+                                {x,
+                                 x,
+                                 T,
+                                 T,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 T,
+                                 x,
+                                 x,
+                                 T,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x},
+                                {T,
+                                 T,
+                                 T,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 T,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 T,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 x,
+                                 T,
+                                 x,
+                                 x,
+                                 x,
+                                 x}};
 
 
       return set[s][la->kind];
@@ -565,8 +696,8 @@ namespace gum {
       __errors.Warning( scanner->filename(), t->line, t->col, msg );
     }
 
-    void Parser::SynErr( const std::wstring& filename, int line, int col,
-                         int n ) {
+    void
+    Parser::SynErr( const std::wstring& filename, int line, int col, int n ) {
       wchar_t* s;
 
       switch ( n ) {

@@ -88,7 +88,8 @@ namespace gum {
 
   // WARNING: during its deletion, the bucket does not take care of properly
   // rechaining the chained list. This should be done by the Lists themselves
-  template <typename Val> INLINE ListBucket<Val>::~ListBucket() {
+  template <typename Val>
+  INLINE ListBucket<Val>::~ListBucket() {
     // for debugging purposes
     GUM_DESTRUCTOR( ListBucket );
   }
@@ -112,7 +113,8 @@ namespace gum {
   }
 
   // dereferencing operator
-  template <typename Val> INLINE Val& ListBucket<Val>::operator*() noexcept {
+  template <typename Val>
+  INLINE Val& ListBucket<Val>::operator*() noexcept {
     return __val;
   }
 
@@ -197,7 +199,8 @@ namespace gum {
       // find the element we shall point to src the end of the list
       for ( __bucket = theList.__end_list,
             ind_elt = theList.__nb_elements - ind_elt - 1;
-            ind_elt; --ind_elt, __bucket = __bucket->__prev ) {
+            ind_elt;
+            --ind_elt, __bucket = __bucket->__prev ) {
       }
     }
   }
@@ -237,7 +240,8 @@ namespace gum {
   }
 
   /// Makes the iterator point toward nothing
-  template <typename Val> INLINE void ListConstIterator<Val>::clear() noexcept {
+  template <typename Val>
+  INLINE void ListConstIterator<Val>::clear() noexcept {
     __bucket = nullptr;
   }
 
@@ -437,7 +441,8 @@ namespace gum {
   }
 
   /// Destructor
-  template <typename Val> INLINE ListIterator<Val>::~ListIterator() noexcept {
+  template <typename Val>
+  INLINE ListIterator<Val>::~ListIterator() noexcept {
     GUM_DESTRUCTOR( ListIterator );
   }
 
@@ -486,12 +491,14 @@ namespace gum {
   }
 
   /// dereferences the value pointed to by the iterator
-  template <typename Val> INLINE Val* ListIterator<Val>::operator->() {
+  template <typename Val>
+  INLINE Val* ListIterator<Val>::operator->() {
     return const_cast<Val*>( ListConstIterator<Val>::operator->() );
   }
 
   /// gives access to the content of the iterator
-  template <typename Val> INLINE Val& ListIterator<Val>::operator*() {
+  template <typename Val>
+  INLINE Val& ListIterator<Val>::operator*() {
     return const_cast<Val&>( ListConstIterator<Val>::operator*() );
   }
 
@@ -519,8 +526,8 @@ namespace gum {
   INLINE ListConstIteratorSafe<Val>::ListConstIteratorSafe(
       const List<Val, Alloc>& theList )
       : __list{reinterpret_cast<const List<Val, std::allocator<Val>>*>(
-            &theList )},
-        __bucket{theList.__deb_list} {
+            &theList )}
+      , __bucket{theList.__deb_list} {
     // for debugging purposes
     GUM_CONSTRUCTOR( ListConstIteratorSafe );
 
@@ -532,16 +539,16 @@ namespace gum {
   template <typename Val>
   INLINE ListConstIteratorSafe<Val>::ListConstIteratorSafe(
       const ListConstIteratorSafe<Val>& src )
-      : __list{src.__list}, __bucket{src.__bucket},
-        __next_current_bucket{src.__next_current_bucket},
-        __prev_current_bucket{src.__prev_current_bucket},
-        __null_pointing{src.__null_pointing} {
+      : __list{src.__list}
+      , __bucket{src.__bucket}
+      , __next_current_bucket{src.__next_current_bucket}
+      , __prev_current_bucket{src.__prev_current_bucket}
+      , __null_pointing{src.__null_pointing} {
     // for debugging purposes
     GUM_CONS_CPY( ListConstIteratorSafe );
 
     // add the iterator to the list of safe iterators
-    if ( __list != nullptr )
-      __list->__safe_iterators.push_back( this );
+    if ( __list != nullptr ) __list->__safe_iterators.push_back( this );
   }
 
   /// Constructor for an iterator pointing to the \e ind_eltth element of a
@@ -571,7 +578,8 @@ namespace gum {
       // find the element we shall point to src the end of the list
       for ( __bucket = __list->__end_list,
             ind_elt = __list->__nb_elements - ind_elt - 1;
-            ind_elt; --ind_elt, __bucket = __bucket->__prev ) {
+            ind_elt;
+            --ind_elt, __bucket = __bucket->__prev ) {
       }
     }
 
@@ -583,10 +591,11 @@ namespace gum {
   template <typename Val>
   INLINE ListConstIteratorSafe<Val>::ListConstIteratorSafe(
       ListConstIteratorSafe<Val>&& src )
-      : __list{src.__list}, __bucket{src.__bucket},
-        __next_current_bucket{src.__next_current_bucket},
-        __prev_current_bucket{src.__prev_current_bucket},
-        __null_pointing{src.__null_pointing} {
+      : __list{src.__list}
+      , __bucket{src.__bucket}
+      , __next_current_bucket{src.__next_current_bucket}
+      , __prev_current_bucket{src.__prev_current_bucket}
+      , __null_pointing{src.__null_pointing} {
     // for debugging purposes
     GUM_CONS_MOV( ListConstIteratorSafe );
 
@@ -716,8 +725,7 @@ namespace gum {
     GUM_DESTRUCTOR( ListConstIteratorSafe );
 
     // remove the iterator src the table's iterator list
-    if ( __list )
-      __removeFromSafeList();
+    if ( __list ) __removeFromSafeList();
   }
 
   /// returns the bucket the iterator is pointing to
@@ -728,10 +736,10 @@ namespace gum {
   }
 
   /// Makes the iterator point toward nothing
-  template <typename Val> INLINE void ListConstIteratorSafe<Val>::clear() {
+  template <typename Val>
+  INLINE void ListConstIteratorSafe<Val>::clear() {
     // remove the iterator src the list's iterator list
-    if ( __list )
-      __removeFromSafeList();
+    if ( __list ) __removeFromSafeList();
 
     // set its list as well as the element it points to to nullptr
     __list = nullptr;
@@ -740,7 +748,8 @@ namespace gum {
   }
 
   /// positions the iterator to the end of the list
-  template <typename Val> INLINE void ListConstIteratorSafe<Val>::setToEnd() {
+  template <typename Val>
+  INLINE void ListConstIteratorSafe<Val>::setToEnd() {
     clear();
   }
 
@@ -881,8 +890,7 @@ namespace gum {
   template <typename Val>
   INLINE ListConstIteratorSafe<Val>& ListConstIteratorSafe<Val>::operator+=(
       typename ListConstIteratorSafe<Val>::difference_type i ) noexcept {
-    if ( !i )
-      return *this;
+    if ( !i ) return *this;
 
     if ( i < 0 )
       return __opMinus( -i );
@@ -933,8 +941,7 @@ namespace gum {
   template <typename Val>
   INLINE ListConstIteratorSafe<Val>& ListConstIteratorSafe<Val>::operator-=(
       typename ListConstIteratorSafe<Val>::difference_type i ) noexcept {
-    if ( !i )
-      return *this;
+    if ( !i ) return *this;
 
     if ( i < 0 )
       return __opPlus( -i );
@@ -1084,7 +1091,8 @@ namespace gum {
   }
 
   /// Destructor
-  template <typename Val> INLINE ListIteratorSafe<Val>::~ListIteratorSafe() {
+  template <typename Val>
+  INLINE ListIteratorSafe<Val>::~ListIteratorSafe() {
     GUM_DESTRUCTOR( ListIteratorSafe );
   }
 
@@ -1133,12 +1141,14 @@ namespace gum {
   }
 
   /// dereferences the value pointed to by the iterator
-  template <typename Val> INLINE Val* ListIteratorSafe<Val>::operator->() {
+  template <typename Val>
+  INLINE Val* ListIteratorSafe<Val>::operator->() {
     return const_cast<Val*>( ListConstIteratorSafe<Val>::operator->() );
   }
 
   /// gives access to the content of the iterator
-  template <typename Val> INLINE Val& ListIteratorSafe<Val>::operator*() {
+  template <typename Val>
+  INLINE Val& ListIteratorSafe<Val>::operator*() {
     return const_cast<Val&>( ListConstIteratorSafe<Val>::operator*() );
   }
 
@@ -1205,7 +1215,8 @@ namespace gum {
   }
 
   /// deletes all the elements of a chained list.
-  template <typename Val, typename Alloc> void List<Val, Alloc>::clear() {
+  template <typename Val, typename Alloc>
+  void List<Val, Alloc>::clear() {
     // first we update all the safe iterators of the list : they should now
     // point to end/rend
     for ( const auto ptr_iter : __safe_iterators ) {
@@ -1214,7 +1225,8 @@ namespace gum {
 
     // clear all the values
     for ( ListBucket<Val>* ptr = __deb_list, * next_ptr = nullptr;
-          ptr != nullptr; ptr = next_ptr ) {
+          ptr != nullptr;
+          ptr = next_ptr ) {
       next_ptr = ptr->__next;
       __alloc_bucket.destroy( ptr );
       __alloc_bucket.deallocate( ptr, 1 );
@@ -1226,7 +1238,8 @@ namespace gum {
   }
 
   /// A basic constructor that creates an empty list
-  template <typename Val, typename Alloc> INLINE List<Val, Alloc>::List() {
+  template <typename Val, typename Alloc>
+  INLINE List<Val, Alloc>::List() {
     // for debugging purposes
     GUM_CONSTRUCTOR( List );
 
@@ -1264,11 +1277,11 @@ namespace gum {
   /// move constructor
   template <typename Val, typename Alloc>
   INLINE List<Val, Alloc>::List( List<Val, Alloc>&& src )
-      : __deb_list{std::move( src.__deb_list )},
-        __end_list{std::move( src.__end_list )},
-        __nb_elements{std::move( src.__nb_elements )},
-        __safe_iterators{std::move( src.__safe_iterators )},
-        __alloc_bucket{std::move( src.__alloc_bucket )} {
+      : __deb_list{std::move( src.__deb_list )}
+      , __end_list{std::move( src.__end_list )}
+      , __nb_elements{std::move( src.__nb_elements )}
+      , __safe_iterators{std::move( src.__safe_iterators )}
+      , __alloc_bucket{std::move( src.__alloc_bucket )} {
     // for debugging purposes
     GUM_CONS_MOV( List );
 
@@ -1294,7 +1307,8 @@ namespace gum {
   }
 
   /// Destructor
-  template <typename Val, typename Alloc> INLINE List<Val, Alloc>::~List() {
+  template <typename Val, typename Alloc>
+  INLINE List<Val, Alloc>::~List() {
     // for debugging (although this program is bug-free)
     GUM_DESTRUCTOR( List );
 
@@ -1554,7 +1568,8 @@ namespace gum {
     ListBucket<Val>* new_elt = __alloc_bucket.allocate( 1 );
 
     try {
-      __alloc_bucket.construct( new_elt, ListBucket<Val>::Emplace::EMPLACE,
+      __alloc_bucket.construct( new_elt,
+                                ListBucket<Val>::Emplace::EMPLACE,
                                 std::forward<Args>( args )... );
     } catch ( ... ) {
       __alloc_bucket.deallocate( new_elt, 1 );
@@ -1818,7 +1833,8 @@ namespace gum {
   /// iterator
   template <typename Val, typename Alloc>
   INLINE Val& List<Val, Alloc>::insert( const const_iterator_safe& iter,
-                                        const Val& val, location place ) {
+                                        const Val& val,
+                                        location place ) {
     // if the iterator does not point to the list, raise an exception
     if ( iter.__list != this ) {
       GUM_ERROR( InvalidArgument,
@@ -1832,7 +1848,8 @@ namespace gum {
   /// iterator
   template <typename Val, typename Alloc>
   INLINE Val& List<Val, Alloc>::insert( const const_iterator_safe& iter,
-                                        Val&& val, location place ) {
+                                        Val&& val,
+                                        location place ) {
     // if the iterator does not point to the list, raise an exception
     if ( iter.__list != this ) {
       GUM_ERROR( InvalidArgument,
@@ -1846,14 +1863,16 @@ namespace gum {
   /// iterator
   template <typename Val, typename Alloc>
   INLINE Val& List<Val, Alloc>::insert( const const_iterator& iter,
-                                        const Val& val, location place ) {
+                                        const Val& val,
+                                        location place ) {
     return __insert( iter, __createBucket( val ), place );
   }
 
   /// inserts a new element before or after the location pointed to by an
   /// iterator
   template <typename Val, typename Alloc>
-  INLINE Val& List<Val, Alloc>::insert( const const_iterator& iter, Val&& val,
+  INLINE Val& List<Val, Alloc>::insert( const const_iterator& iter,
+                                        Val&& val,
                                         location place ) {
     return __insert( iter, __createBucket( std::move( val ) ), place );
   }
@@ -1908,8 +1927,7 @@ namespace gum {
   template <typename Val, typename Alloc>
   INLINE bool List<Val, Alloc>::exists( const Val& val ) const {
     for ( ListBucket<Val>* ptr = __deb_list; ptr != nullptr; ptr = ptr->__next )
-      if ( ptr->__val == val )
-        return true;
+      if ( ptr->__val == val ) return true;
 
     return false;
   }
@@ -1960,8 +1978,7 @@ namespace gum {
   /// erases the ith element of the List (the first one is in position 0)
   template <typename Val, typename Alloc>
   INLINE void List<Val, Alloc>::erase( unsigned int i ) {
-    if ( i >= __nb_elements )
-      return;
+    if ( i >= __nb_elements ) return;
 
     // erase the ith bucket
     __erase( __getIthBucket( i ) );
@@ -1984,8 +2001,7 @@ namespace gum {
   INLINE ListBucket<Val>* List<Val, Alloc>::__getBucket( const Val& val ) const
       noexcept {
     for ( ListBucket<Val>* ptr = __deb_list; ptr != nullptr; ptr = ptr->__next )
-      if ( ptr->__val == val )
-        return ptr;
+      if ( ptr->__val == val ) return ptr;
 
     return nullptr;
   }
@@ -2000,11 +2016,11 @@ namespace gum {
   template <typename Val, typename Alloc>
   INLINE void List<Val, Alloc>::eraseAllVal( const Val& val ) {
     for ( ListBucket<Val>* iter = __deb_list, * next_bucket = nullptr;
-          iter != nullptr; iter = next_bucket ) {
+          iter != nullptr;
+          iter = next_bucket ) {
       next_bucket = iter->__next;
 
-      if ( val == iter->__val )
-        __erase( iter );
+      if ( val == iter->__val ) __erase( iter );
     }
   }
 
@@ -2035,8 +2051,7 @@ namespace gum {
 
     for ( ListBucket<Val>* ptr = __deb_list; ptr != nullptr;
           ptr = ptr->__next, deja = true ) {
-      if ( deja )
-        stream << " --> ";
+      if ( deja ) stream << " --> ";
 
       stream << ptr->__val;
     }
@@ -2126,14 +2141,13 @@ namespace gum {
   INLINE bool List<Val, Alloc>::
   operator==( const List<Val, OtherAlloc>& src ) const {
     // check if the two lists have at least the same number of elements
-    if ( __nb_elements != src.__nb_elements )
-      return false;
+    if ( __nb_elements != src.__nb_elements ) return false;
 
     // parse the two lists
     for ( ListBucket<Val>* iter1 = __deb_list, * iter2 = src.__deb_list;
-          iter1 != nullptr; iter1 = iter1->__next, iter2 = iter2->__next )
-      if ( *iter1 != *iter2 )
-        return false;
+          iter1 != nullptr;
+          iter1 = iter1->__next, iter2 = iter2->__next )
+      if ( *iter1 != *iter2 ) return false;
 
     return true;
   }

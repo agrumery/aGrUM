@@ -184,7 +184,8 @@ namespace gum {
 
       for ( BijectionIterator<NodeId, GUM_SCALAR> valIter =
                 deltaV->valuesMap().begin();
-            valIter != deltaV->valuesMap().end(); ++valIter )
+            valIter != deltaV->valuesMap().end();
+            ++valIter )
         if ( gap < std::fabs( valIter.second() ) )
           gap = std::fabs( valIter.second() );
 
@@ -223,8 +224,8 @@ namespace gum {
         new MultiDimDecisionDiagramFactory<Idx>();
     factory->setVariablesSequence( Vamnew->variablesSequence() );
     HashTable<NodeId, NodeId> explorationTable;
-    __makeOptimalPolicyDecisionDiagram( Vamnew, Vamnew->root(), factory,
-                                        explorationTable );
+    __makeOptimalPolicyDecisionDiagram(
+        Vamnew, Vamnew->root(), factory, explorationTable );
     delete Vamnew;
 
     MultiDimDecisionDiagramBase<Idx>* optimalPolicy =
@@ -262,7 +263,8 @@ namespace gum {
     //     while ( __fmdp->hasVariable() ) {
     for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
               elVarSeq.rbeginSafe();
-          varIter != elVarSeq.rendSafe(); --varIter ) {
+          varIter != elVarSeq.rendSafe();
+          --varIter ) {
       // ***************************************************************************************
       // Multiplication of Vaction by current variable's CPT
       Vtemp = Vaction;
@@ -435,7 +437,8 @@ namespace gum {
 
     for ( BijectionIterator<NodeId, GUM_SCALAR> valueIter =
               Vaction->valuesMap().begin();
-          valueIter != Vaction->valuesMap().end(); ++valueIter ) {
+          valueIter != Vaction->valuesMap().end();
+          ++valueIter ) {
       std::pair<double, long> amv( (double)valueIter.second(), (long)actionId );
       amvm.insert( valueIter.first(), amv );
     }
@@ -473,7 +476,8 @@ namespace gum {
 
     for ( std::vector<NodeId>::const_iterator sonIter =
               V->unsafeNodeSons( currentNode )->begin();
-          sonIter != V->unsafeNodeSons( currentNode )->end(); ++sonIter ) {
+          sonIter != V->unsafeNodeSons( currentNode )->end();
+          ++sonIter ) {
       NodeId sonId = 0;
 
       if ( *sonIter != 0 ) {
@@ -484,8 +488,8 @@ namespace gum {
             sonId = factory->addTerminalNode(
                 V->unsafeNodeValue( *sonIter ).second );
           else
-            sonId = __makeOptimalPolicyDecisionDiagram( V, *sonIter, factory,
-                                                        explorationTable );
+            sonId = __makeOptimalPolicyDecisionDiagram(
+                V, *sonIter, factory, explorationTable );
 
           explorationTable.insert( *sonIter, sonId );
         }
@@ -518,9 +522,9 @@ namespace gum {
       Idx nbDefault = 0;
 
       for ( std::vector<NodeId>::iterator iterArcMap = sonsMap.begin();
-            iterArcMap != sonsMap.end(); ++iterArcMap ) {
-        if ( *iterArcMap == 0 )
-          ++nbDefault;
+            iterArcMap != sonsMap.end();
+            ++iterArcMap ) {
+        if ( *iterArcMap == 0 ) ++nbDefault;
 
         if ( *iterArcMap == defaultSonId ) {
           ++nbDefault;
@@ -530,7 +534,8 @@ namespace gum {
 
       if ( nbDefault == 1 )
         for ( std::vector<NodeId>::iterator iterArcMap = sonsMap.begin();
-              iterArcMap != sonsMap.end(); ++iterArcMap )
+              iterArcMap != sonsMap.end();
+              ++iterArcMap )
           if ( *iterArcMap == 0 ) {
             sonsMap[std::distance( sonsMap.begin(), iterArcMap )] =
                 defaultSonId;
@@ -704,8 +709,9 @@ namespace gum {
                                 std::ios::out | std::ios::app );
 
       if ( !__traceAlgoSaveFile ) {
-        GUM_ERROR( IOError, "log file" << traceFileName.str()
-                                       << " does not open correctly" );
+        GUM_ERROR( IOError,
+                   "log file" << traceFileName.str()
+                              << " does not open correctly" );
       }
 
       for ( const auto& Vaction : VactionCollector ) {
@@ -734,8 +740,7 @@ namespace gum {
             break;
 
           case 3:
-            if ( nbRetroVarDirect > nbRetroVarIndirect )
-              sensDirect = false;
+            if ( nbRetroVarDirect > nbRetroVarIndirect ) sensDirect = false;
 
             break;
 
@@ -813,7 +818,8 @@ namespace gum {
 
       for ( BijectionIterator<NodeId, GUM_SCALAR> valIter =
                 deltaV->valuesMap().begin();
-            valIter != deltaV->valuesMap().end(); ++valIter )
+            valIter != deltaV->valuesMap().end();
+            ++valIter )
         if ( gap < std::fabs( valIter.second() ) )
           gap = std::fabs( valIter.second() );
 
@@ -841,7 +847,8 @@ namespace gum {
   MultiDimDecisionDiagramBase<GUM_SCALAR>*
   SPUDDPlanning<GUM_SCALAR>::__evalActionValueAlgoEvaluation(
       const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold,
-      const std::string saveFilesName, Idx mode ) {
+      const std::string saveFilesName,
+      Idx mode ) {
 
     __fmdp->resetVariablesIterator();
 
@@ -910,8 +917,7 @@ namespace gum {
           break;
 
         case 3:
-          if ( nbRetroVarDirect > nbRetroVarIndirect )
-            sensDirect = false;
+          if ( nbRetroVarDirect > nbRetroVarIndirect ) sensDirect = false;
 
           break;
 
@@ -992,7 +998,8 @@ namespace gum {
   MultiDimDecisionDiagramBase<GUM_SCALAR>*
   SPUDDPlanning<GUM_SCALAR>::__addRewardAlgoEvaluation(
       const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold,
-      const std::string saveFilesName, Idx mode ) {
+      const std::string saveFilesName,
+      Idx mode ) {
 
     // *****************************************************************************************
     // ... we multiply the result by the discount factor, ...
@@ -1058,8 +1065,7 @@ namespace gum {
         break;
 
       case 3:
-        if ( nbRetroVarDirect > nbRetroVarIndirect )
-          sensDirect = false;
+        if ( nbRetroVarDirect > nbRetroVarIndirect ) sensDirect = false;
 
         break;
 
@@ -1148,16 +1154,13 @@ namespace gum {
     while ( iterS1 != dD1VarSeq.end() || iterS2 != dD2VarSeq.end() ) {
       if ( iterS1 == dD1VarSeq.end() ) {
         for ( ; iterS2 != dD2VarSeq.end(); ++iterS2 )
-          if ( !fusVarSeq.exists( *iterS2 ) )
-            fusVarSeq.insert( *iterS2 );
+          if ( !fusVarSeq.exists( *iterS2 ) ) fusVarSeq.insert( *iterS2 );
       } else if ( iterS2 == dD2VarSeq.end() ) {
         for ( ; iterS1 != dD1VarSeq.end(); ++iterS1 )
-          if ( !fusVarSeq.exists( *iterS1 ) )
-            fusVarSeq.insert( *iterS1 );
+          if ( !fusVarSeq.exists( *iterS1 ) ) fusVarSeq.insert( *iterS1 );
       } else {
         if ( *iterS1 == *iterS2 ) {
-          if ( !fusVarSeq.exists( *iterS1 ) )
-            fusVarSeq.insert( *iterS1 );
+          if ( !fusVarSeq.exists( *iterS1 ) ) fusVarSeq.insert( *iterS1 );
 
           ++iterS1;
           ++iterS2;
@@ -1166,14 +1169,12 @@ namespace gum {
 
         if ( dD1VarSeq.pos( *iterS1 ) <= dD2VarSeq.pos( *iterS2 ) ||
              dD1VarSeq.exists( *iterS2 ) ) {
-          if ( !fusVarSeq.exists( *iterS1 ) )
-            fusVarSeq.insert( *iterS1 );
+          if ( !fusVarSeq.exists( *iterS1 ) ) fusVarSeq.insert( *iterS1 );
 
           ++iterS1;
           continue;
         } else {
-          if ( !fusVarSeq.exists( *iterS2 ) )
-            fusVarSeq.insert( *iterS2 );
+          if ( !fusVarSeq.exists( *iterS2 ) ) fusVarSeq.insert( *iterS2 );
 
           ++iterS2;
           continue;
@@ -1205,12 +1206,12 @@ namespace gum {
 // ===========================================================================
 
 #define GUM_MULTI_DIM_OPERATOR( x, y ) x.first > y.first ? x : y
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION                          \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION \
   DecisionDiagramRecur4argMax
 
 #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
 #ifdef O4DDWITHORDER
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION                        \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION \
   DecisionDiagramGoDown4argMax
 #ifdef O4DDDEBUG
 #include <agrum/multidim/patterns/DDUtility/o4DDWithOrderRecursionFunctionsDebug.h>
@@ -1219,9 +1220,9 @@ namespace gum {
 #endif
 #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION
 #else
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION              \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION \
   DecisionDiagramGoDownOnLeader4argMax
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION            \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION \
   DecisionDiagramGoDownOnFollower4argMax
 #ifdef O4DDDEBUG
 #include <agrum/multidim/patterns/DDUtility/o4DDWithoutOrderRecursionFunctionsDebug.h>
@@ -1283,14 +1284,14 @@ gum::SPUDDPlanning<GUM_SCALAR>::__argMaxOn2MultiDimDecisionDiagrams(
 // Computed the difference of two policy to find out if it's the same or not.
 // ===========================================================================
 
-#define GUM_MULTI_DIM_OPERATOR( x, y )                                         \
+#define GUM_MULTI_DIM_OPERATOR( x, y ) \
   T( x.first - y.first, x.second - y.second )
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION                          \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION \
   DecisionDiagramRecur4difPol
 
 #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
 #ifdef O4DDWITHORDER
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION                        \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION \
   DecisionDiagramGoDown4difPol
 #ifdef O4DDDEBUG
 #include <agrum/multidim/patterns/DDUtility/o4DDWithOrderRecursionFunctionsDebug.h>
@@ -1299,9 +1300,9 @@ gum::SPUDDPlanning<GUM_SCALAR>::__argMaxOn2MultiDimDecisionDiagrams(
 #endif
 #undef GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_FUNCTION
 #else
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION              \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION \
   DecisionDiagramGoDownOnLeader4difPol
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION            \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION \
   DecisionDiagramGoDownOnFollower4difPol
 #ifdef O4DDDEBUG
 #include <agrum/multidim/patterns/DDUtility/o4DDWithoutOrderRecursionFunctionsDebug.h>

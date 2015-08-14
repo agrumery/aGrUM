@@ -80,12 +80,14 @@ namespace gum {
        * are "node X", where X is the number of the column, the first column
        * having
        * number 0). */
-      DatabaseFromCSV(
-          const std::string filename, bool fileContainsNames = true,
-          const DBTransform& transform = DBTransformIdentity(),
-          const std::string delimiter = ",", const char commentmarker = '#',
-          const char quoteMarker = '"',
-          const std::vector<std::string> missingVal = {"?", "N/A", "n/a"} );
+      DatabaseFromCSV( const std::string filename,
+                       bool fileContainsNames = true,
+                       const DBTransform& transform = DBTransformIdentity(),
+                       const std::string delimiter = ",",
+                       const char commentmarker = '#',
+                       const char quoteMarker = '"',
+                       const std::vector<std::string> missingVal = {
+                           "?", "N/A", "n/a"} );
 
       /// copy constructor
       DatabaseFromCSV( const DatabaseFromCSV& from );

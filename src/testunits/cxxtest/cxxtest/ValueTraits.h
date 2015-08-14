@@ -39,8 +39,10 @@ namespace CxxTest {
   // Convert byte values to string
   // Returns one past the copied data
   //
-  char* bytesToString( const unsigned char* bytes, unsigned numBytes,
-                       unsigned maxBytes, char* s );
+  char* bytesToString( const unsigned char* bytes,
+                       unsigned numBytes,
+                       unsigned maxBytes,
+                       char* s );
 
   //
   // Copy a string.
@@ -70,15 +72,16 @@ namespace CxxTest {
   //
   // The default ValueTraits class dumps up to 8 bytes as hex values
   //
-  template <class T> class ValueTraits {
+  template <class T>
+  class ValueTraits {
     enum { MAX_BYTES = 8 };
     char _asString[sizeof( "{ " ) + sizeof( "XX " ) * MAX_BYTES +
                    sizeof( "... }" )];
 
     public:
     ValueTraits( const T& t ) {
-      bytesToString( (const unsigned char*)&t, sizeof( T ), MAX_BYTES,
-                     _asString );
+      bytesToString(
+          (const unsigned char*)&t, sizeof( T ), MAX_BYTES, _asString );
     }
     const char* asString( void ) const { return _asString; }
   };
@@ -87,20 +90,22 @@ namespace CxxTest {
   // traits( T t )
   // Creates an object of type ValueTraits<T>
   //
-  template <class T> inline ValueTraits<T> traits( T t ) {
+  template <class T>
+  inline ValueTraits<T> traits( T t ) {
     return ValueTraits<T>( t );
   }
 
 //
 // You can duplicate the implementation of an existing ValueTraits
 //
-#define CXXTEST_COPY_TRAITS( CXXTEST_NEW_CLASS, CXXTEST_OLD_CLASS )            \
-  CXXTEST_TEMPLATE_INSTANTIATION class ValueTraits<CXXTEST_NEW_CLASS> {        \
-    ValueTraits<CXXTEST_OLD_CLASS> _old;                                       \
-                                                                               \
-    public:                                                                    \
-    ValueTraits( CXXTEST_NEW_CLASS n ) : _old( (CXXTEST_OLD_CLASS)n ) {}       \
-    const char* asString( void ) const { return _old.asString(); }             \
+#define CXXTEST_COPY_TRAITS( CXXTEST_NEW_CLASS, CXXTEST_OLD_CLASS )     \
+  CXXTEST_TEMPLATE_INSTANTIATION class ValueTraits<CXXTEST_NEW_CLASS> { \
+    ValueTraits<CXXTEST_OLD_CLASS> _old;                                \
+                                                                        \
+    public:                                                             \
+    ValueTraits( CXXTEST_NEW_CLASS n )                                  \
+        : _old( (CXXTEST_OLD_CLASS)n ) {}                               \
+    const char* asString( void ) const { return _old.asString(); }      \
   }
 
 //
@@ -109,22 +114,28 @@ namespace CxxTest {
 #ifdef _CXXTEST_NO_COPY_CONST
 #define CXXTEST_COPY_CONST_TRAITS( CXXTEST_CLASS )
 #else  // !_CXXTEST_NO_COPY_CONST
-#define CXXTEST_COPY_CONST_TRAITS( CXXTEST_CLASS )                             \
+#define CXXTEST_COPY_CONST_TRAITS( CXXTEST_CLASS ) \
   CXXTEST_COPY_TRAITS( CXXTEST_CLASS, const CXXTEST_CLASS )
 #endif  // _CXXTEST_NO_COPY_CONST
 
   //
   // Avoid compiler warnings about unsigned types always >= 0
   //
-  template <class N> inline bool negative( N n ) { return n < 0; }
-  template <class N> inline N abs( N n ) { return negative( n ) ? -n : n; }
+  template <class N>
+  inline bool negative( N n ) {
+    return n < 0;
+  }
+  template <class N>
+  inline N abs( N n ) {
+    return negative( n ) ? -n : n;
+  }
 
-#define CXXTEST_NON_NEGATIVE( Type )                                           \
-  CXXTEST_TEMPLATE_INSTANTIATION inline bool negative<Type>( Type ) {          \
-    return false;                                                              \
-  }                                                                            \
-  CXXTEST_TEMPLATE_INSTANTIATION inline Type abs<Type>( Type value ) {         \
-    return value;                                                              \
+#define CXXTEST_NON_NEGATIVE( Type )                                   \
+  CXXTEST_TEMPLATE_INSTANTIATION inline bool negative<Type>( Type ) {  \
+    return false;                                                      \
+  }                                                                    \
+  CXXTEST_TEMPLATE_INSTANTIATION inline Type abs<Type>( Type value ) { \
+    return value;                                                      \
   }
 
   CXXTEST_NON_NEGATIVE( bool )
@@ -142,7 +153,10 @@ namespace CxxTest {
   // Remember -- we can't use the standard library!
   //
   template <class N>
-  char* numberToString( N n, char* s, N base = 10, unsigned skipDigits = 0,
+  char* numberToString( N n,
+                        char* s,
+                        N base = 10,
+                        unsigned skipDigits = 0,
                         unsigned maxDigits = (unsigned)-1 ) {
     if ( negative( n ) ) {
       *s++ = '-';
@@ -184,8 +198,10 @@ namespace CxxTest {
     const char* _asString;
 
     public:
-    ValueTraits( const char* const& value ) : _asString( value ) {}
-    ValueTraits( const ValueTraits& other ) : _asString( other._asString ) {}
+    ValueTraits( const char* const& value )
+        : _asString( value ) {}
+    ValueTraits( const ValueTraits& other )
+        : _asString( other._asString ) {}
     const char* asString( void ) const { return _asString; }
   };
 
@@ -200,7 +216,8 @@ namespace CxxTest {
     bool _value;
 
     public:
-    ValueTraits( const bool value ) : _value( value ) {}
+    ValueTraits( const bool value )
+        : _value( value ) {}
     const char* asString( void ) const { return _value ? "true" : "false"; }
   };
 
@@ -329,7 +346,9 @@ namespace CxxTest {
     char* doNegative( double& t );
     void hugeNumber( double t );
     void normalNumber( double t );
-    char* doubleToString( double t, char* s, unsigned skip = 0,
+    char* doubleToString( double t,
+                          char* s,
+                          unsigned skip = 0,
                           unsigned max = (unsigned)-1 );
   };
 
@@ -350,26 +369,26 @@ namespace CxxTest {
 //
 // CXXTEST_ENUM_TRAITS
 //
-#define CXXTEST_ENUM_TRAITS( TYPE, VALUES )                                    \
-  namespace CxxTest {                                                          \
-    CXXTEST_TEMPLATE_INSTANTIATION class ValueTraits<TYPE> {                   \
-      TYPE _value;                                                             \
-      char _fallback[sizeof( "(" #TYPE ")" ) + 3 * sizeof( TYPE )];            \
-                                                                               \
-      public:                                                                  \
-      ValueTraits( TYPE value ) {                                              \
-        _value = value;                                                        \
-        numberToString<unsigned long int>(                                     \
-            _value, copyString( _fallback, "(" #TYPE ")" ) );                  \
-      }                                                                        \
-      const char* asString( void ) const {                                     \
-        switch ( _value ) { VALUES default : return _fallback; }               \
-      }                                                                        \
-    };                                                                         \
+#define CXXTEST_ENUM_TRAITS( TYPE, VALUES )                         \
+  namespace CxxTest {                                               \
+    CXXTEST_TEMPLATE_INSTANTIATION class ValueTraits<TYPE> {        \
+      TYPE _value;                                                  \
+      char _fallback[sizeof( "(" #TYPE ")" ) + 3 * sizeof( TYPE )]; \
+                                                                    \
+      public:                                                       \
+      ValueTraits( TYPE value ) {                                   \
+        _value = value;                                             \
+        numberToString<unsigned long int>(                          \
+            _value, copyString( _fallback, "(" #TYPE ")" ) );       \
+      }                                                             \
+      const char* asString( void ) const {                          \
+        switch ( _value ) { VALUES default : return _fallback; }    \
+      }                                                             \
+    };                                                              \
   }
 
-#define CXXTEST_ENUM_MEMBER( MEMBER )                                          \
-  case MEMBER:                                                                 \
+#define CXXTEST_ENUM_MEMBER( MEMBER ) \
+  case MEMBER:                        \
     return #MEMBER;
 
 #endif  // __cxxtest__ValueTraits_h__

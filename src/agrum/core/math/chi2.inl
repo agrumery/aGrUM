@@ -89,8 +89,7 @@ namespace gum {
   /// modifies the confidence proba
   INLINE void Chi2::setConfidenceProba( float new_proba ) {
     // if we did not change the confidence proba, do nothing
-    if ( __confidence_proba == new_proba )
-      return;
+    if ( __confidence_proba == new_proba ) return;
 
     __confidence_proba = new_proba;
 

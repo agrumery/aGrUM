@@ -1,4 +1,5 @@
 *.pyc
+*.kate-swp
 .kdev4
 CMakeCache.txt
 CMakeFiles

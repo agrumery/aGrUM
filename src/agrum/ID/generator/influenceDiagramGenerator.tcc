@@ -113,14 +113,17 @@ namespace gum {
       float d = (float)rand();
 
       if ( d < cnd )
-        map.insert( i, influenceDiagram->addChanceNode(
-                           LabelizedVariable( strBuff.str(), "", nb_mod ) ) );
+        map.insert( i,
+                    influenceDiagram->addChanceNode(
+                        LabelizedVariable( strBuff.str(), "", nb_mod ) ) );
       else if ( d < ( cnd + und ) )
-        map.insert( i, influenceDiagram->addUtilityNode(
-                           LabelizedVariable( strBuff.str(), "", 1 ) ) );
+        map.insert( i,
+                    influenceDiagram->addUtilityNode(
+                        LabelizedVariable( strBuff.str(), "", 1 ) ) );
       else
-        map.insert( i, influenceDiagram->addDecisionNode(
-                           LabelizedVariable( strBuff.str(), "", nb_mod ) ) );
+        map.insert( i,
+                    influenceDiagram->addDecisionNode(
+                        LabelizedVariable( strBuff.str(), "", nb_mod ) ) );
 
       strBuff.str( "" );
     }
@@ -163,8 +166,7 @@ namespace gum {
               ( !infdiag->isDecisionNode( *orderIter ) ) )
         ++orderIter;
 
-      if ( orderIter == order.end() )
-        return;
+      if ( orderIter == order.end() ) return;
 
       NodeId parentDecision = ( *orderIter );
 

@@ -44,14 +44,17 @@ namespace gum {
       static bool first_time = true;
       if ( first_time ) {
         first_time = false;
-        __debug__::__dec_creation( "Bijection", "__strings", 0,
-                                   "BCell string bijection", 0 );
-        __debug__::__dec_creation( "BijectionImplementation", "__strings", 0,
-                                   "BCell string bijection", 0 );
-        __debug__::__dec_creation( "HashTable", "__strings", 0,
-                                   "BCell string bijection", 0 );
-        __debug__::__dec_creation( "HashTable", "__strings", 0,
-                                   "BCell string bijection", 0 );
+        __debug__::__dec_creation(
+            "Bijection", "__strings", 0, "BCell string bijection", 0 );
+        __debug__::__dec_creation( "BijectionImplementation",
+                                   "__strings",
+                                   0,
+                                   "BCell string bijection",
+                                   0 );
+        __debug__::__dec_creation(
+            "HashTable", "__strings", 0, "BCell string bijection", 0 );
+        __debug__::__dec_creation(
+            "HashTable", "__strings", 0, "BCell string bijection", 0 );
       }
 #endif
       static Bijection<std::string, int> strings;

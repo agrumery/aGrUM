@@ -73,8 +73,11 @@ namespace gum {
       return s.erase( 0, s.rfind( "/" ) + 1 );
     }
 
-    void __show_trace( const char* zeKey, const char* zeFile, long zeLine,
-                       const char* zeMsg, const void* zePtr ) {
+    void __show_trace( const char* zeKey,
+                       const char* zeFile,
+                       long zeLine,
+                       const char* zeMsg,
+                       const void* zePtr ) {
 #ifdef GUM_DEEP_TRACE_ON
       std::cerr << std::setw( 40 ) << std::setfill( ' ' ) << __getFile( zeFile )
                 << "#" << std::setfill( '0' ) << std::setw( 5 ) << std::dec
@@ -83,8 +86,12 @@ namespace gum {
 #endif  // TRACE_CONSTRUCTION_ON
     }
 
-    void __inc_creation( const char* zeKey, const char* zeFile, long zeLine,
-                         const char* zeMsg, const void* zePtr, int zeSize ) {
+    void __inc_creation( const char* zeKey,
+                         const char* zeFile,
+                         long zeLine,
+                         const char* zeMsg,
+                         const void* zePtr,
+                         int zeSize ) {
       __show_trace( zeKey, zeFile, zeLine, zeMsg, zePtr );
 
       __creation()[zeKey]++;
@@ -92,14 +99,20 @@ namespace gum {
     }
 
     // to handle static element of agrum library
-    void __dec_creation( const char* zeKey, const char* zeFile, long zeLine,
-                         const char* zeMsg, const void* zePtr ) {
+    void __dec_creation( const char* zeKey,
+                         const char* zeFile,
+                         long zeLine,
+                         const char* zeMsg,
+                         const void* zePtr ) {
       __show_trace( zeKey, zeFile, zeLine, zeMsg, zePtr );
       __creation()[zeKey]--;
     }
 
-    void __inc_deletion( const char* zeKey, const char* zeFile, long zeLine,
-                         const char* zeMsg, const void* zePtr ) {
+    void __inc_deletion( const char* zeKey,
+                         const char* zeFile,
+                         long zeLine,
+                         const char* zeMsg,
+                         const void* zePtr ) {
       __show_trace( zeKey, zeFile, zeLine, zeMsg, zePtr );
       __deletion()[zeKey]++;
     }
@@ -135,7 +148,8 @@ namespace gum {
       std::map<std::string, std::string> res;
 
       for ( DEBUG_MAP::const_iterator xx = __creation().begin();
-            xx != __creation().end(); ++xx ) {
+            xx != __creation().end();
+            ++xx ) {
         std::stringstream stream;
         int zeCreatedObjs = xx->second;
         int zeDeletedObjts = -1;
@@ -147,8 +161,7 @@ namespace gum {
                << " o | " << std::setw( widthColItemsNumber ) << zeCreatedObjs
                << " | ";
 
-        if ( size > 0 )
-          total_size += zeCreatedObjs * (size/1024.0);
+        if ( size > 0 ) total_size += zeCreatedObjs * ( size / 1024.0 );
 
         try {
           zeDeletedObjts = __deletion()[xx->first];
@@ -173,7 +186,8 @@ namespace gum {
 
       // list of deleted objects, but not created (?)
       for ( DEBUG_MAP::const_iterator xx = __deletion().begin();
-            xx != __deletion().end(); ++xx ) {
+            xx != __deletion().end();
+            ++xx ) {
         try {
           __creation()[xx->first];
         } catch ( NotFound& ) {
@@ -224,9 +238,9 @@ namespace gum {
       }
 
       std::cout << "| " << std::setw( widthColLibelle ) << "total "
-                << " | "
-                << std::fixed  <<std::setw( widthColSizeOf + widthColItemsNumber * 2 - 4 )<< std::setprecision( 2 )
-                << total_size << " Ko          "
+                << " | " << std::fixed
+                << std::setw( widthColSizeOf + widthColItemsNumber * 2 - 4 )
+                << std::setprecision( 2 ) << total_size << " Ko          "
                 << "|" << std::endl;
 
       std::cout << std::setfill( '=' ) << "|"

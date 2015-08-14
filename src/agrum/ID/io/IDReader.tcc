@@ -43,7 +43,8 @@ namespace gum {
   /*
    * Default destructor.
    */
-  template <typename GUM_SCALAR> INLINE IDReader<GUM_SCALAR>::~IDReader() {
+  template <typename GUM_SCALAR>
+  INLINE IDReader<GUM_SCALAR>::~IDReader() {
     GUM_DESTRUCTOR( IDReader );
   }
 

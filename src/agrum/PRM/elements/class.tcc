@@ -37,16 +37,19 @@ namespace gum {
   namespace prm {
     template <typename GUM_SCALAR>
     Class<GUM_SCALAR>::Class( const std::string& name )
-        : ClassElementContainer<GUM_SCALAR>( name ), __super( 0 ),
-          __implements( 0 ) {
+        : ClassElementContainer<GUM_SCALAR>( name )
+        , __super( 0 )
+        , __implements( 0 ) {
       GUM_CONSTRUCTOR( Class );
     }
 
     template <typename GUM_SCALAR>
     Class<GUM_SCALAR>::Class( const std::string& name,
                               Class<GUM_SCALAR>& super )
-        : ClassElementContainer<GUM_SCALAR>( name ), __dag( super.dag() ),
-          __super( &super ), __implements( 0 ) {
+        : ClassElementContainer<GUM_SCALAR>( name )
+        , __dag( super.dag() )
+        , __super( &super )
+        , __implements( 0 ) {
       GUM_CONSTRUCTOR( Class );
       super.__addExtension( this );
       __inheritClass( super );
@@ -55,8 +58,9 @@ namespace gum {
     template <typename GUM_SCALAR>
     Class<GUM_SCALAR>::Class( const std::string& name,
                               const Set<Interface<GUM_SCALAR>*>& set )
-        : ClassElementContainer<GUM_SCALAR>( name ), __super( 0 ),
-          __implements( new Set<Interface<GUM_SCALAR>*>( set ) ) {
+        : ClassElementContainer<GUM_SCALAR>( name )
+        , __super( 0 )
+        , __implements( new Set<Interface<GUM_SCALAR>*>( set ) ) {
       GUM_CONSTRUCTOR( Class );
 
       for ( const auto impl : *__implements )
@@ -64,10 +68,13 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    Class<GUM_SCALAR>::Class( const std::string& name, Class<GUM_SCALAR>& super,
+    Class<GUM_SCALAR>::Class( const std::string& name,
+                              Class<GUM_SCALAR>& super,
                               const Set<Interface<GUM_SCALAR>*>& set )
-        : ClassElementContainer<GUM_SCALAR>( name ), __dag( super.dag() ),
-          __super( &super ), __implements( nullptr ) {
+        : ClassElementContainer<GUM_SCALAR>( name )
+        , __dag( super.dag() )
+        , __super( &super )
+        , __implements( nullptr ) {
       GUM_CONSTRUCTOR( Class );
       super.__addExtension( this );
       __inheritClass( super );
@@ -87,13 +94,16 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     Class<GUM_SCALAR>::Class( const Class<GUM_SCALAR>& source )
-        : ClassElementContainer<GUM_SCALAR>( source.name() ),
-          __dag( source.dag() ), __super( source.__super ), __implements( 0 ) {
+        : ClassElementContainer<GUM_SCALAR>( source.name() )
+        , __dag( source.dag() )
+        , __super( source.__super )
+        , __implements( 0 ) {
       GUM_CONS_CPY( Class );
       GUM_ERROR( FatalError, "don't copy classes" );
     }
 
-    template <typename GUM_SCALAR> Class<GUM_SCALAR>::~Class() {
+    template <typename GUM_SCALAR>
+    Class<GUM_SCALAR>::~Class() {
       GUM_DESTRUCTOR( Class );
 
       for ( const auto& elt : __nodeIdMap ) {
@@ -154,11 +164,11 @@ namespace gum {
         Aggregate<GUM_SCALAR>* agg = nullptr;
 
         try {
-          agg = new Aggregate<GUM_SCALAR>( c_agg->name(), c_agg->agg_type(),
-                                           c_agg->type(), c_agg->label() );
+          agg = new Aggregate<GUM_SCALAR>(
+              c_agg->name(), c_agg->agg_type(), c_agg->type(), c_agg->label() );
         } catch ( OperationNotAllowed& ) {
-          agg = new Aggregate<GUM_SCALAR>( c_agg->name(), c_agg->agg_type(),
-                                           c_agg->type() );
+          agg = new Aggregate<GUM_SCALAR>(
+              c_agg->name(), c_agg->agg_type(), c_agg->type() );
         }
 
         bij.insert( &( c_agg->type().variable() ),
@@ -176,8 +186,9 @@ namespace gum {
       // Copying reference slots
       for ( const auto c_refslot : c.__referenceSlots ) {
         ReferenceSlot<GUM_SCALAR>* ref = new ReferenceSlot<GUM_SCALAR>(
-            c_refslot->name(), const_cast<ClassElementContainer<GUM_SCALAR>&>(
-                                   c_refslot->slotType() ),
+            c_refslot->name(),
+            const_cast<ClassElementContainer<GUM_SCALAR>&>(
+                c_refslot->slotType() ),
             c_refslot->isArray() );
 
         ref->setId( c_refslot->id() );
@@ -236,8 +247,7 @@ namespace gum {
           const Class<GUM_SCALAR>* current = this;
 
           while ( current != 0 ) {
-            if ( current == &( cec ) )
-              return true;
+            if ( current == &( cec ) ) return true;
 
             current = current->__super;
           }
@@ -255,8 +265,7 @@ namespace gum {
               return true;
 
             for ( const auto impl : *__implements )
-              if ( impl->isSubTypeOf( i ) )
-                return true;
+              if ( impl->isSubTypeOf( i ) ) return true;
           }
 
           return false;
@@ -679,7 +688,8 @@ namespace gum {
       return __dag;
     }
 
-    template <typename GUM_SCALAR> INLINE DAG& Class<GUM_SCALAR>::_dag() {
+    template <typename GUM_SCALAR>
+    INLINE DAG& Class<GUM_SCALAR>::_dag() {
       return __dag;
     }
 
@@ -739,7 +749,8 @@ namespace gum {
     }
 
     // Private struct for retrieving all params in scope
-    template <typename GUM_SCALAR> struct ParamScopeData {
+    template <typename GUM_SCALAR>
+    struct ParamScopeData {
       std::string prefix;
       const Class<GUM_SCALAR>* c;
 

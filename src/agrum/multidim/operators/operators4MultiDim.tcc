@@ -29,15 +29,15 @@
 
 #include <agrum/multidim/operators/operatorRegister4MultiDim.h>
 
-#define GUM_MULTI_DIM_DECORATOR_OP( NAME, OP )                                 \
-  namespace gum {                                                              \
-    template <typename T>                                                      \
-    MultiDimImplementation<T>* NAME( const MultiDimDecorator<T>& t1,           \
-                                     const MultiDimDecorator<T>& t2 ) {        \
-      const MultiDimImplementation<T>* impl1 = t1.content();                   \
-      const MultiDimImplementation<T>* impl2 = t2.content();                   \
-      return ( *impl1 OP * impl2 );                                            \
-    }                                                                          \
+#define GUM_MULTI_DIM_DECORATOR_OP( NAME, OP )                          \
+  namespace gum {                                                       \
+    template <typename T>                                               \
+    MultiDimImplementation<T>* NAME( const MultiDimDecorator<T>& t1,    \
+                                     const MultiDimDecorator<T>& t2 ) { \
+      const MultiDimImplementation<T>* impl1 = t1.content();            \
+      const MultiDimImplementation<T>* impl2 = t2.content();            \
+      return ( *impl1 OP * impl2 );                                     \
+    }                                                                   \
   }
 
 /* *******************************************************************************************
@@ -69,7 +69,7 @@
 #undef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
 #undef GUM_MULTI_DIM_OPERATOR
 
-#define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME                         \
+#define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME \
   add2MultiDimArrays4Pointers
 #define GUM_MULTI_DIM_OPERATOR( x, y ) new T( ( *x ) + ( *y ) )
 #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
@@ -96,7 +96,7 @@
 #undef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
 #undef GUM_MULTI_DIM_OPERATOR
 
-#define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME                         \
+#define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME \
   subtract2MultiDimArrays4Pointers
 #define GUM_MULTI_DIM_OPERATOR( x, y ) new T( ( *x ) - ( *y ) )
 #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
@@ -123,7 +123,7 @@
 #undef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
 #undef GUM_MULTI_DIM_OPERATOR
 
-#define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME                         \
+#define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME \
   multiply2MultiDimArrays4Pointers
 #define GUM_MULTI_DIM_OPERATOR( x, y ) new T( ( *x ) * ( *y ) )
 #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
@@ -150,7 +150,7 @@
 #undef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
 #undef GUM_MULTI_DIM_OPERATOR
 
-#define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME                         \
+#define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME \
   divide2MultiDimArrays4Pointers
 #define GUM_MULTI_DIM_OPERATOR( x, y ) new T( ( *x ) / ( *y ) )
 #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
@@ -172,14 +172,14 @@
 // addition taking in argument 2 multiDimDecisionDiagram
 
 #define GUM_MULTI_DIM_OPERATOR( x, y ) ( x ) + ( y )
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION                          \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION \
   DecisionDiagramRecur4Addition
 
 #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
 #define GUM_APPROXIMATION_COMBINE_FUNCTION combineAdd
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION              \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION \
   DecisionDiagramGoDownOnLeader4Addition
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION            \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION \
   DecisionDiagramGoDownOnFollower4Addition
 #ifdef O4DDDEBUG
 #include <agrum/multidim/patterns/DDUtility/o4DDWithoutOrderRecursionFunctionsDebug.h>
@@ -195,7 +195,7 @@
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionDiagram.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME                      \
+#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME \
   add2MultiDimDecisionDiagrams
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionDiagram.h>
 #undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME
@@ -206,14 +206,14 @@
 /// a specialized function for subtracting two multiDimDecisionDiagrams
 
 #define GUM_MULTI_DIM_OPERATOR( x, y ) ( x ) - ( y )
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION                          \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION \
   DecisionDiagramRecur4Subtraction
 
 #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
 #define GUM_APPROXIMATION_COMBINE_FUNCTION combineSub
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION              \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION \
   DecisionDiagramGoDownOnLeader4Subtraction
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION            \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION \
   DecisionDiagramGoDownOnFollower4Subtraction
 #ifdef O4DDDEBUG
 #include <agrum/multidim/patterns/DDUtility/o4DDWithoutOrderRecursionFunctionsDebug.h>
@@ -229,7 +229,7 @@
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionDiagram.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME                      \
+#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME \
   subtract2MultiDimDecisionDiagrams
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionDiagram.h>
 #undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME
@@ -240,14 +240,14 @@
 /// a specialized function for multiplying two multiDimDecisionDiagrams
 
 #define GUM_MULTI_DIM_OPERATOR( x, y ) ( x ) * ( y )
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION                          \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION \
   DecisionDiagramRecur4Multiplication
 
 #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
 #define GUM_APPROXIMATION_COMBINE_FUNCTION combineMult
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION              \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION \
   DecisionDiagramGoDownOnLeader4Multiplication
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION            \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION \
   DecisionDiagramGoDownOnFollower4Multiplication
 #ifdef O4DDDEBUG
 #include <agrum/multidim/patterns/DDUtility/o4DDWithoutOrderRecursionFunctionsDebug.h>
@@ -263,7 +263,7 @@
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionDiagram.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME                      \
+#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME \
   multiply2MultiDimDecisionDiagrams
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionDiagram.h>
 #undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME
@@ -274,14 +274,14 @@
 /// a specialized function for dividing two multiDimDecisionDiagrams
 
 #define GUM_MULTI_DIM_OPERATOR( x, y ) ( x ) / ( y )
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION                          \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION \
   DecisionDiagramRecur4Division
 
 #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
 #define GUM_APPROXIMATION_COMBINE_FUNCTION combineDiv
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION              \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION \
   DecisionDiagramGoDownOnLeader4Division
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION            \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION \
   DecisionDiagramGoDownOnFollower4Division
 #ifdef O4DDDEBUG
 #include <agrum/multidim/patterns/DDUtility/o4DDWithoutOrderRecursionFunctionsDebug.h>
@@ -297,7 +297,7 @@
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionDiagram.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME                      \
+#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME \
   divide2MultiDimDecisionDiagrams
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionDiagram.h>
 #undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME
@@ -308,14 +308,14 @@
 /// a specialized function for finding max of two multiDimDecisionDiagrams
 
 #define GUM_MULTI_DIM_OPERATOR( x, y ) ( x >= y ? x : y )
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION                          \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION \
   DecisionDiagramRecur4Maximization
 
 #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
 #define GUM_APPROXIMATION_COMBINE_FUNCTION combineMax
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION              \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION \
   DecisionDiagramGoDownOnLeader4Maximization
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION            \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION \
   DecisionDiagramGoDownOnFollower4Maximization
 #ifdef O4DDDEBUG
 #include <agrum/multidim/patterns/DDUtility/o4DDWithoutOrderRecursionFunctionsDebug.h>
@@ -331,7 +331,7 @@
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionDiagram.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME                      \
+#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME \
   maximize2MultiDimDecisionDiagrams
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionDiagram.h>
 #undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME
@@ -342,14 +342,14 @@
 /// a specialized function for finding min of two multiDimDecisionDiagrams
 
 #define GUM_MULTI_DIM_OPERATOR( x, y ) ( x <= y ? x : y )
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION                          \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION \
   DecisionDiagramRecur4Minimization
 
 #define GUM_DECISION_DIAGRAM_OPERATOR_FUNCTION_DEFINITION
 #define GUM_APPROXIMATION_COMBINE_FUNCTION combineMin
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION              \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION \
   DecisionDiagramGoDownOnLeader4Minimization
-#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION            \
+#define GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION \
   DecisionDiagramGoDownOnFollower4Minimization
 #ifdef O4DDDEBUG
 #include <agrum/multidim/patterns/DDUtility/o4DDWithoutOrderRecursionFunctionsDebug.h>
@@ -365,7 +365,7 @@
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionDiagram.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME                      \
+#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME \
   minimize2MultiDimDecisionDiagrams
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionDiagram.h>
 #undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_DIAGRAM_NAME
@@ -461,7 +461,8 @@ GUM_MULTI_DIM_DECORATOR_OP( operator/, /)
 namespace gum {
 
   /// the function used to register all the above functions
-  template <typename GUM_SCALAR> void operators4MultiDimInit() {
+  template <typename GUM_SCALAR>
+  void operators4MultiDimInit() {
     static bool first_init = true;
 
     if ( first_init ) {
@@ -472,46 +473,60 @@ namespace gum {
       std::string BaseNameString( "MultiDimImplementation" );
 
       // register base functions for multiDimArrays
-      registerOperator<GUM_SCALAR>( "+", MultiDimArrayString,
-                                    MultiDimArrayString, &add2MultiDimArrays );
-      registerOperator<GUM_SCALAR>( "-", MultiDimArrayString,
+      registerOperator<GUM_SCALAR>(
+          "+", MultiDimArrayString, MultiDimArrayString, &add2MultiDimArrays );
+      registerOperator<GUM_SCALAR>( "-",
+                                    MultiDimArrayString,
                                     MultiDimArrayString,
                                     &subtract2MultiDimArrays );
-      registerOperator<GUM_SCALAR>( "*", MultiDimArrayString,
+      registerOperator<GUM_SCALAR>( "*",
+                                    MultiDimArrayString,
                                     MultiDimArrayString,
                                     &multiply2MultiDimArrays );
-      registerOperator<GUM_SCALAR>( "/", MultiDimArrayString,
+      registerOperator<GUM_SCALAR>( "/",
+                                    MultiDimArrayString,
                                     MultiDimArrayString,
                                     &divide2MultiDimArrays );
 
       // register base functions for multiDimDecisionDiagrams
-      registerOperator<GUM_SCALAR>( "+", MultiDimDecisionDiagramString,
+      registerOperator<GUM_SCALAR>( "+",
+                                    MultiDimDecisionDiagramString,
                                     MultiDimDecisionDiagramString,
                                     &add2MultiDimDecisionDiagrams );
-      registerOperator<GUM_SCALAR>( "-", MultiDimDecisionDiagramString,
+      registerOperator<GUM_SCALAR>( "-",
+                                    MultiDimDecisionDiagramString,
                                     MultiDimDecisionDiagramString,
                                     &subtract2MultiDimDecisionDiagrams );
-      registerOperator<GUM_SCALAR>( "*", MultiDimDecisionDiagramString,
+      registerOperator<GUM_SCALAR>( "*",
+                                    MultiDimDecisionDiagramString,
                                     MultiDimDecisionDiagramString,
                                     &multiply2MultiDimDecisionDiagrams );
-      registerOperator<GUM_SCALAR>( "/", MultiDimDecisionDiagramString,
+      registerOperator<GUM_SCALAR>( "/",
+                                    MultiDimDecisionDiagramString,
                                     MultiDimDecisionDiagramString,
                                     &divide2MultiDimDecisionDiagrams );
 
       // register default basename functions
-      registerOperator<GUM_SCALAR>( "+", BaseNameString, BaseNameString,
-                                    &add2MultiDimImplementations );
-      registerOperator<GUM_SCALAR>( "-", BaseNameString, BaseNameString,
+      registerOperator<GUM_SCALAR>(
+          "+", BaseNameString, BaseNameString, &add2MultiDimImplementations );
+      registerOperator<GUM_SCALAR>( "-",
+                                    BaseNameString,
+                                    BaseNameString,
                                     &subtract2MultiDimImplementations );
-      registerOperator<GUM_SCALAR>( "*", BaseNameString, BaseNameString,
+      registerOperator<GUM_SCALAR>( "*",
+                                    BaseNameString,
+                                    BaseNameString,
                                     &multiply2MultiDimImplementations );
-      registerOperator<GUM_SCALAR>( "/", BaseNameString, BaseNameString,
+      registerOperator<GUM_SCALAR>( "/",
+                                    BaseNameString,
+                                    BaseNameString,
                                     &divide2MultiDimImplementations );
     }
   }
 
   /// the function used to register all the above functions
-  template <typename GUM_SCALAR> void pointerOperators4MultiDimInit() {
+  template <typename GUM_SCALAR>
+  void pointerOperators4MultiDimInit() {
     static bool first_init = true;
 
     if ( first_init ) {
@@ -521,16 +536,20 @@ namespace gum {
       std::string BaseNameString( "MultiDimImplementation" );
 
       // register base functions for multiDimArrays
-      registerOperator<GUM_SCALAR*>( "+", MultiDimArrayString,
+      registerOperator<GUM_SCALAR*>( "+",
+                                     MultiDimArrayString,
                                      MultiDimArrayString,
                                      &add2MultiDimArrays4Pointers );
-      registerOperator<GUM_SCALAR*>( "-", MultiDimArrayString,
+      registerOperator<GUM_SCALAR*>( "-",
+                                     MultiDimArrayString,
                                      MultiDimArrayString,
                                      &subtract2MultiDimArrays4Pointers );
-      registerOperator<GUM_SCALAR*>( "*", MultiDimArrayString,
+      registerOperator<GUM_SCALAR*>( "*",
+                                     MultiDimArrayString,
                                      MultiDimArrayString,
                                      &multiply2MultiDimArrays4Pointers );
-      registerOperator<GUM_SCALAR*>( "/", MultiDimArrayString,
+      registerOperator<GUM_SCALAR*>( "/",
+                                     MultiDimArrayString,
                                      MultiDimArrayString,
                                      &divide2MultiDimArrays4Pointers );
     }

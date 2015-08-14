@@ -68,7 +68,8 @@ namespace gum {
      * @ingroup prm_group
      */
     // ==========================================================================
-    template <typename GUM_SCALAR> class PRMFactory : public IPRMFactory {
+    template <typename GUM_SCALAR>
+    class PRMFactory : public IPRMFactory {
       public:
       // ======================================================================
       /// @name Constructors & destructor
@@ -297,7 +298,8 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void
-      startClass( const std::string& c, const std::string& extends = "",
+      startClass( const std::string& c,
+                  const std::string& extends = "",
                   const Set<std::string>* implements = nullptr ) override;
 
       /**
@@ -471,7 +473,8 @@ namespace gum {
        * @param name The name of this parameter.
        * @param value The label used as default value for this parameter.
        */
-      void addParameter( const std::string& type, const std::string& name,
+      void addParameter( const std::string& type,
+                         const std::string& name,
                          double value ) override;
       /// @}
       // ======================================================================
@@ -503,7 +506,8 @@ namespace gum {
        *                  are not of the good type.
        */
       virtual void
-      addAggregator( const std::string& name, const std::string& agg_type,
+      addAggregator( const std::string& name,
+                     const std::string& agg_type,
                      const std::vector<std::string>& chains,
                      const std::vector<std::string>& params ) override;
 
@@ -533,7 +537,8 @@ namespace gum {
       virtual void
       addNoisyOrCompound( const std::string& name,
                           const std::vector<std::string>& chains,
-                          const std::vector<float>& numbers, float leak,
+                          const std::vector<float>& numbers,
+                          float leak,
                           const std::vector<std::string>& label ) override;
       /// @}
       // ======================================================================
@@ -576,7 +581,8 @@ namespace gum {
       /**
        * Add an instance with params as values of type's parameters.
        */
-      void addInstance( const std::string& type, const std::string& name,
+      void addInstance( const std::string& type,
+                        const std::string& name,
                         const HashTable<std::string, double>& params ) override;
 
       /**
@@ -585,7 +591,8 @@ namespace gum {
        * suffix "[i]",
        * with "i" being the position of the instance in the array.
        */
-      virtual void addArray( const std::string& type, const std::string& name,
+      virtual void addArray( const std::string& type,
+                             const std::string& name,
                              Size size ) override;
 
       /**
@@ -872,7 +879,8 @@ namespace gum {
                                    SlotChain<GUM_SCALAR>* sc );
 
       void __incrementByColumn( Attribute<GUM_SCALAR>* a,
-                                std::vector<Size>& pos, Instantiation& inst );
+                                std::vector<Size>& pos,
+                                Instantiation& inst );
 
       /// Fill seq with the sequence of instance build using inst as the
       /// instantiation of sc->__class and seeking each instantiation of

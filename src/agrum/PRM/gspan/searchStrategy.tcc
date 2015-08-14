@@ -87,8 +87,9 @@ namespace gum {
             // Children existing in the instance type's DAG
             for ( const auto chld :
                   inst->type().dag().children( elt.second->id() ) ) {
-              data.graph.addEdge( node, data.node2attr.first( __str(
-                                            inst, inst->get( chld ) ) ) );
+              data.graph.addEdge(
+                  node,
+                  data.node2attr.first( __str( inst, inst->get( chld ) ) ) );
             }
 
             // Parents existing in the instance type's DAG
@@ -97,8 +98,9 @@ namespace gum {
               switch ( inst->type().get( par ).elt_type() ) {
                 case ClassElement<GUM_SCALAR>::prm_attribute:
                 case ClassElement<GUM_SCALAR>::prm_aggregate: {
-                  data.graph.addEdge( node, data.node2attr.first( __str(
-                                                inst, inst->get( par ) ) ) );
+                  data.graph.addEdge(
+                      node,
+                      data.node2attr.first( __str( inst, inst->get( par ) ) ) );
                   break;
                 }
 
@@ -107,8 +109,9 @@ namespace gum {
                     if ( match.exists( inst2 ) )
                       data.graph.addEdge(
                           node,
-                          data.node2attr.first( __str(
-                              inst2, static_cast<const SlotChain<GUM_SCALAR>&>(
+                          data.node2attr.first(
+                              __str( inst2,
+                                     static_cast<const SlotChain<GUM_SCALAR>&>(
                                          inst->type().get( par ) ) ) ) );
 
                   break;
@@ -132,8 +135,9 @@ namespace gum {
                   for ( const auto child :
                         pair->first->type().dag().children( id ) )
                     data.graph.addEdge(
-                        node, data.node2attr.first( __str(
-                                  pair->first, pair->first->get( child ) ) ) );
+                        node,
+                        data.node2attr.first(
+                            __str( pair->first, pair->first->get( child ) ) ) );
                 } else {
                   found = true;
                 }
@@ -153,14 +157,12 @@ namespace gum {
           Set<Potential<GUM_SCALAR>*>& pool ) {
         List<NodeSet> partial_order;
 
-        if ( data.inners.size() )
-          partial_order.insert( data.inners );
+        if ( data.inners.size() ) partial_order.insert( data.inners );
 
-        if ( data.outputs.size() )
-          partial_order.insert( data.outputs );
+        if ( data.outputs.size() ) partial_order.insert( data.outputs );
 
-        PartialOrderedTriangulation t( &( data.graph ), &( data.mod ),
-                                       &partial_order );
+        PartialOrderedTriangulation t(
+            &( data.graph ), &( data.mod ), &partial_order );
         const std::vector<NodeId>& elim_order = t.eliminationOrder();
         Size max( 0 ), max_count( 1 );
         Set<Potential<GUM_SCALAR>*> trash;
@@ -176,7 +178,8 @@ namespace gum {
           for ( const auto p : pool )
             if ( p->contains( *( data.vars.second( elim_order[idx] ) ) ) ) {
               for ( auto var = p->variablesSequence().begin();
-                    var != p->variablesSequence().end(); ++var ) {
+                    var != p->variablesSequence().end();
+                    ++var ) {
                 try {
                   pot->add( **var );
                 } catch ( DuplicateElement& ) {
@@ -242,14 +245,16 @@ namespace gum {
       // The FrequenceSearch class
       template <typename GUM_SCALAR>
       INLINE FrequenceSearch<GUM_SCALAR>::FrequenceSearch( Size freq )
-          : SearchStrategy<GUM_SCALAR>(), __freq( freq ) {
+          : SearchStrategy<GUM_SCALAR>()
+          , __freq( freq ) {
         GUM_CONSTRUCTOR( FrequenceSearch );
       }
 
       template <typename GUM_SCALAR>
       INLINE FrequenceSearch<GUM_SCALAR>::FrequenceSearch(
           const FrequenceSearch<GUM_SCALAR>& from )
-          : SearchStrategy<GUM_SCALAR>( from ), __freq( from.__freq ) {
+          : SearchStrategy<GUM_SCALAR>( from )
+          , __freq( from.__freq ) {
         GUM_CONS_CPY( FrequenceSearch );
       }
 
@@ -272,7 +277,8 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool FrequenceSearch<GUM_SCALAR>::accept_growth(
-          const Pattern* parent, const Pattern* child,
+          const Pattern* parent,
+          const Pattern* child,
           const EdgeGrowth<GUM_SCALAR>& growh ) {
         return this->_tree->frequency( *child ) >= __freq;
       }
@@ -296,14 +302,17 @@ namespace gum {
       // The StrictSearch class
       template <typename GUM_SCALAR>
       INLINE StrictSearch<GUM_SCALAR>::StrictSearch( Size freq )
-          : SearchStrategy<GUM_SCALAR>(), __freq( freq ), __dot( "." ) {
+          : SearchStrategy<GUM_SCALAR>()
+          , __freq( freq )
+          , __dot( "." ) {
         GUM_CONSTRUCTOR( StrictSearch );
       }
 
       template <typename GUM_SCALAR>
       INLINE StrictSearch<GUM_SCALAR>::StrictSearch(
           const StrictSearch<GUM_SCALAR>& from )
-          : SearchStrategy<GUM_SCALAR>( from ), __freq( from.__freq ) {
+          : SearchStrategy<GUM_SCALAR>( from )
+          , __freq( from.__freq ) {
         GUM_CONS_CPY( StrictSearch );
       }
 
@@ -326,7 +335,8 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool StrictSearch<GUM_SCALAR>::accept_growth(
-          const Pattern* parent, const Pattern* child,
+          const Pattern* parent,
+          const Pattern* child,
           const EdgeGrowth<GUM_SCALAR>& growth ) {
         return __inner_cost( child ) +
                    this->_tree->frequency( *child ) * __outer_cost( child ) <
@@ -450,7 +460,8 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE bool TreeWidthSearch<GUM_SCALAR>::accept_growth(
-          const Pattern* parent, const Pattern* child,
+          const Pattern* parent,
+          const Pattern* child,
           const EdgeGrowth<GUM_SCALAR>& growth ) {
         return cost( *parent ) >= cost( *child );
       }

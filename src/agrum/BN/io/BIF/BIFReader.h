@@ -117,7 +117,8 @@ namespace gum {
    *
    * @author Pierre-Henri WUILLEMIN
    */
-  template <typename GUM_SCALAR> class BIFReader : public BNReader<GUM_SCALAR> {
+  template <typename GUM_SCALAR>
+  class BIFReader : public BNReader<GUM_SCALAR> {
     public:
     BIFReader( BayesNet<GUM_SCALAR>* bn, const std::string& filename );
     ~BIFReader();

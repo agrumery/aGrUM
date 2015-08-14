@@ -56,8 +56,9 @@ namespace gum {
 #ifdef _OPENMP
     omp_set_num_threads( number );
 #else
-    GUM_ERROR( OperationNotAllowed, "openMP was not enabled at compilation (or "
-                                    "you asked for 0 threads !)" );
+    GUM_ERROR( OperationNotAllowed,
+               "openMP was not enabled at compilation (or "
+               "you asked for 0 threads !)" );
 #endif
   }
 

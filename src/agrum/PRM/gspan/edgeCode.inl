@@ -29,10 +29,13 @@ namespace gum {
     namespace gspan {
 
       INLINE
-      EdgeCode::EdgeCode( Size my_i, Size my_j, Size my_l_i, Size my_l_ij,
-                          Size my_l_j )
-          : i( my_i ), j( my_j ), l_i( my_l_i ), l_ij( my_l_ij ),
-            l_j( my_l_j ) {
+      EdgeCode::EdgeCode(
+          Size my_i, Size my_j, Size my_l_i, Size my_l_ij, Size my_l_j )
+          : i( my_i )
+          , j( my_j )
+          , l_i( my_l_i )
+          , l_ij( my_l_ij )
+          , l_j( my_l_j ) {
         GUM_CONSTRUCTOR( EdgeCode );
         std::stringstream sBuff;
         sBuff << i << j << l_i << l_ij << l_j;
@@ -41,8 +44,12 @@ namespace gum {
 
       INLINE
       EdgeCode::EdgeCode( const EdgeCode& source )
-          : i( source.i ), j( source.j ), l_i( source.l_i ),
-            l_ij( source.l_ij ), l_j( source.l_j ), name( source.name ) {
+          : i( source.i )
+          , j( source.j )
+          , l_i( source.l_i )
+          , l_ij( source.l_ij )
+          , l_j( source.l_j )
+          , name( source.name ) {
         GUM_CONS_CPY( EdgeCode );
       }
 

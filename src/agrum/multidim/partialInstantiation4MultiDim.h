@@ -89,7 +89,8 @@ namespace gum {
 
   /** @brief the function used to register all the instantiation operators on
    * multidimImplementations over non-pointers types */
-  template <typename GUM_SCALAR> void partialInstantiation4MultiDimInit();
+  template <typename GUM_SCALAR>
+  void partialInstantiation4MultiDimInit();
 
   /** @brief the function used to register all the instantiations on
    * multidimImplementations over pointers types */

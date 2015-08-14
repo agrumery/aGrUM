@@ -36,13 +36,14 @@ namespace gum_tests {
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>() );
+                                gum::learning::Col<0>,
+                                8>() );
 
       auto generators = gum::learning::make_generators(
           gum::learning::RowGeneratorIdentity() );
 
-      auto filter = gum::learning::make_DB_row_filter( database, translators,
-                                                       generators );
+      auto filter = gum::learning::make_DB_row_filter(
+          database, translators, generators );
 
       std::vector<unsigned int> modalities( 8, 2 );
 
@@ -161,13 +162,14 @@ namespace gum_tests {
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>() );
+                                gum::learning::Col<0>,
+                                8>() );
 
       auto generators = gum::learning::make_generators(
           gum::learning::RowGeneratorIdentity() );
 
-      auto filter = gum::learning::make_DB_row_filter( database, translators,
-                                                       generators );
+      auto filter = gum::learning::make_DB_row_filter(
+          database, translators, generators );
 
       std::vector<unsigned int> modalities( 8, 2 );
 
@@ -289,8 +291,7 @@ namespace gum_tests {
             index1 = i * ( 1 << ( order[0] - 1 ) ) +
                      j * ( 1 << ( order[1] - 1 ) ) +
                      k * ( 1 << ( order[2] - 1 ) );
-            if ( v1[index1] != v2[index2] )
-              return false;
+            if ( v1[index1] != v2[index2] ) return false;
           }
         }
       }
@@ -307,8 +308,7 @@ namespace gum_tests {
           index2 = i + j * 2;
           index1 =
               i * ( 1 << ( order[0] - 1 ) ) + j * ( 1 << ( order[1] - 1 ) );
-          if ( v1[index1] != v2[index2] )
-            return false;
+          if ( v1[index1] != v2[index2] ) return false;
         }
       }
 

@@ -701,8 +701,7 @@ namespace gum_tests {
       gum::BIFXMLBNReader<float> reader( net, file );
       TS_ASSERT_THROWS( reader.proceed(), gum::IOError );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void Carpo() {  // Carpo is not correct as a xmlbif file
@@ -712,8 +711,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testDiabetes() {
@@ -723,8 +721,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testHailfinder() {
@@ -734,8 +731,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testInsurance() {
@@ -745,8 +741,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testLink() {
@@ -756,8 +751,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testMildew() {
@@ -767,8 +761,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testMunin1() {
@@ -778,8 +771,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testPigs() {
@@ -789,8 +781,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testWater() {
@@ -800,8 +791,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
   };
 }

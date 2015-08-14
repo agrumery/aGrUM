@@ -24,23 +24,20 @@
 #include <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.h>
 
 namespace gum {
-
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   /* ===                           GUM_BN_WRITER === */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   // Default constructor.
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
-  INLINE ContextualDependenciesCNFWriter<
-      GUM_SCALAR, IApproximationPolicy>::ContextualDependenciesCNFWriter() {
+  INLINE ContextualDependenciesCNFWriter<GUM_SCALAR, IApproximationPolicy>::
+      ContextualDependenciesCNFWriter() {
     GUM_CONSTRUCTOR( ContextualDependenciesCNFWriter );
   }
 
   // Default destructor.
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
-  INLINE ContextualDependenciesCNFWriter<
-      GUM_SCALAR, IApproximationPolicy>::~ContextualDependenciesCNFWriter() {
+  INLINE ContextualDependenciesCNFWriter<GUM_SCALAR, IApproximationPolicy>::
+      ~ContextualDependenciesCNFWriter() {
     GUM_DESTRUCTOR( ContextualDependenciesCNFWriter );
   }
 
@@ -102,9 +99,10 @@ namespace gum {
       inst.forgetMaster();
       inst.reorder( Order );
       cptparamval.insert(
-          var, new gum::HashTable<
-                   std::string,
-                   gum::Sequence<gum::Sequence<gum::Instantiation*>*>*>() );
+          var,
+          new gum::HashTable<
+              std::string,
+              gum::Sequence<gum::Sequence<gum::Instantiation*>*>*>() );
 
       for ( inst.setFirst(); !inst.end(); ++inst ) {
         if ( this->fromExact( cpt[inst] ) != 1 ) {
@@ -144,8 +142,9 @@ namespace gum {
     while ( !cptparamval.empty() ) {
       gum::HashTable<
           const DiscreteVariable*,
-          gum::HashTable<std::string, gum::Sequence<gum::Sequence<
-                                          gum::Instantiation*>*>*>*>::iterator
+          gum::HashTable<
+              std::string,
+              gum::Sequence<gum::Sequence<gum::Instantiation*>*>*>*>::iterator
           itvar = cptparamval.begin();
 
       while ( !( itvar.val() )->empty() ) {
@@ -155,10 +154,10 @@ namespace gum {
 
         for ( auto pv : *itpvall.val() ) {
           gum::Idx linecount = 0;
-          gum::HashTable<
-              std::string,
-              gum::HashTable<const gum::DiscreteVariable*,
-                             std::pair<gum::Set<Idx>*, gum::Set<Idx>*>*>*>
+          gum::HashTable<std::string,
+                         gum::HashTable<const gum::DiscreteVariable*,
+                                        std::pair<gum::Set<Idx>*,
+                                                  gum::Set<Idx>*>*>*>
               orderStruct;  // set sizeof Hashtable
 
           for ( auto seqv : *pv ) {
@@ -367,9 +366,10 @@ namespace gum {
       inst.forgetMaster();
       inst.reorder( Order );
       cptparamval.insert(
-          var, new gum::HashTable<
-                   std::string,
-                   gum::Sequence<gum::Sequence<gum::Instantiation*>*>*>() );
+          var,
+          new gum::HashTable<
+              std::string,
+              gum::Sequence<gum::Sequence<gum::Instantiation*>*>*>() );
 
       for ( inst.setFirst(); !inst.end(); ++inst ) {
         if ( this->fromExact( cpt[inst] ) != 1 ) {
@@ -379,10 +379,12 @@ namespace gum {
 
           if ( !( cptparamval[var] )->exists( valp ) ) {
             ( cptparamval[var] )
-                ->insert( valp,
-                          new gum::Sequence<gum::Sequence<
-                              gum::Instantiation*>*>() );  // remember to
-                                                           // verify
+                ->insert(
+                    valp,
+                    new gum::Sequence<
+                        gum::Sequence<gum::Instantiation*>*>() );  // remember
+                                                                   // to
+            // verify
             // protocole for
             // param = to 1
 
@@ -412,8 +414,9 @@ namespace gum {
     while ( !cptparamval.empty() ) {
       gum::HashTable<
           const DiscreteVariable*,
-          gum::HashTable<std::string, gum::Sequence<gum::Sequence<
-                                          gum::Instantiation*>*>*>*>::iterator
+          gum::HashTable<
+              std::string,
+              gum::Sequence<gum::Sequence<gum::Instantiation*>*>*>*>::iterator
           itvar = cptparamval.begin();
 
       while ( !( itvar.val() )->empty() ) {
@@ -423,10 +426,10 @@ namespace gum {
 
         for ( auto pv : *itpvall.val() ) {
           gum::Idx linecount = 0;
-          gum::HashTable<
-              std::string,
-              gum::HashTable<const gum::DiscreteVariable*,
-                             std::pair<gum::Set<Idx>*, gum::Set<Idx>*>*>*>
+          gum::HashTable<std::string,
+                         gum::HashTable<const gum::DiscreteVariable*,
+                                        std::pair<gum::Set<Idx>*,
+                                                  gum::Set<Idx>*>*>*>
               orderStruct;  // set sizeof Hashtable
 
           gum::Set<gum::Idx> elimination;
@@ -520,10 +523,9 @@ namespace gum {
               delete orderStruct.begin().val()->begin().val()->first;
               delete orderStruct.begin().val()->begin().val()->second;
               ( orderStruct.begin().val() )
-                  ->erase(
-                      orderStruct.begin().val()->beginSafe() );  // safe
-                                                                 // iterator
-                                                                 // needed here
+                  ->erase( orderStruct.begin().val()->beginSafe() );  // safe
+              // iterator
+              // needed here
             }
 
             delete orderStruct.begin().val();

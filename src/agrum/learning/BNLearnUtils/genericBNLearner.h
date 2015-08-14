@@ -161,7 +161,8 @@ namespace gum {
          * if modalities = { 1 -> {True, False, Big} }, then the node of id 1
          * in the BN will have 3 modalities, the first one being True, the
          * second one being False, and the third bein Big. */
-        Database( std::string filename, Database& score_database,
+        Database( std::string filename,
+                  Database& score_database,
                   const NodeProperty<Sequence<std::string>>& modalities );
 
         /// copy constructor
@@ -596,7 +597,9 @@ namespace gum {
 
       INLINE void
       distributeProgress( const ApproximationScheme* approximationScheme,
-                          Size pourcent, double error, double time ) {
+                          Size pourcent,
+                          double error,
+                          double time ) {
         setCurrentApproximationScheme( approximationScheme );
 
         if ( onProgress.hasListener() )
@@ -609,8 +612,7 @@ namespace gum {
                       std::string message ) {
         setCurrentApproximationScheme( approximationScheme );
 
-        if ( onStop.hasListener() )
-          GUM_EMIT1( onStop, message );
+        if ( onStop.hasListener() ) GUM_EMIT1( onStop, message );
       };
       /// @}
 

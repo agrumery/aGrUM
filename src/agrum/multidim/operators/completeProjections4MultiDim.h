@@ -213,11 +213,13 @@ namespace gum {
 
   /** @brief the function used to register all the complete projection
    * operators on multidimImplementations over non-pointers types */
-  template <typename GUM_SCALAR> void completeProjections4MultiDimInit();
+  template <typename GUM_SCALAR>
+  void completeProjections4MultiDimInit();
 
   /** @brief the function used to register all the complete projections on
    * multidimImplementations over pointers types */
-  template <typename GUM_SCALAR> void pointerCompleteProjections4MultiDimInit();
+  template <typename GUM_SCALAR>
+  void pointerCompleteProjections4MultiDimInit();
 
   /// a class used to register complete projections over non-pointers types
   /** This class is of course completely redundant with function
@@ -230,7 +232,8 @@ namespace gum {
    * of which is to run function completeProjections4MultiDimInit, we allow this
    * partial specialization. This is most effective to produce different codes
    * for pointer types and non-pointer types. */
-  template <typename GUM_SCALAR> struct CompleteProjections4MultiDimInitialize {
+  template <typename GUM_SCALAR>
+  struct CompleteProjections4MultiDimInitialize {
     void init() { completeProjections4MultiDimInit<GUM_SCALAR>(); };
   };
 

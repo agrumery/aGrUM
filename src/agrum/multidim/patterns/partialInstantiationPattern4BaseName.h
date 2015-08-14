@@ -94,8 +94,7 @@ namespace gum {
           result_domain_size *= var->domainSize();
           result_varSeq << var;
 
-          if ( found_inst_var )
-            has_before_incr = false;
+          if ( found_inst_var ) has_before_incr = false;
         } else {
           found_inst_var = true;
         }

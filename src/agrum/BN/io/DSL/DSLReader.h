@@ -33,11 +33,9 @@
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   /* ===                               READERS === */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   /**
    * @class DSLReader
    * @brief Pure virtual class for reading a BN from a file.
@@ -45,7 +43,8 @@ namespace gum {
    * Every class used to read the content of a Bayesian Network from a stream,
    * or a file must be a subclass of DSLReader.
    */
-  template <typename GUM_SCALAR> class DSLReader : public BNReader<GUM_SCALAR> {
+  template <typename GUM_SCALAR>
+  class DSLReader : public BNReader<GUM_SCALAR> {
 
     public:
     /**

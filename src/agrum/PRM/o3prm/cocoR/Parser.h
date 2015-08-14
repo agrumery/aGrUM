@@ -46,26 +46,26 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 #undef TRY
 // Redefine try / catch to add a semantic error when errors are raised.
-#define TRY( inst )                                                            \
-  try {                                                                        \
-    inst;                                                                      \
-  } catch ( gum::Exception & e ) {                                             \
-    SemErr( e.errorContent() );                                                \
+#define TRY( inst )                \
+  try {                            \
+    inst;                          \
+  } catch ( gum::Exception & e ) { \
+    SemErr( e.errorContent() );    \
   }
-#define TRY2( inst, msg )                                                      \
-  try {                                                                        \
-    inst;                                                                      \
-  } catch ( gum::Exception & e ) {                                             \
-    SemErr( msg + " (" + e.errorContent() + ")." );                            \
+#define TRY2( inst, msg )                           \
+  try {                                             \
+    inst;                                           \
+  } catch ( gum::Exception & e ) {                  \
+    SemErr( msg + " (" + e.errorContent() + ")." ); \
   }
-#define TRY3( inst, msg, error )                                               \
-  try {                                                                        \
-    if ( !error ) {                                                            \
-      inst;                                                                    \
-    }                                                                          \
-  } catch ( gum::Exception & e ) {                                             \
-    SemErr( msg + " (" + e.errorContent() + ")." );                            \
-    error = true;                                                              \
+#define TRY3( inst, msg, error )                    \
+  try {                                             \
+    if ( !error ) {                                 \
+      inst;                                         \
+    }                                               \
+  } catch ( gum::Exception & e ) {                  \
+    SemErr( msg + " (" + e.errorContent() + ")." ); \
+    error = true;                                   \
   }
 
 #include <iostream>
@@ -205,8 +205,8 @@ namespace gum {
           __current_directory = Directory( dirpath );
 
           for ( const auto& entry : __current_directory.entries() ) {
-            if ( entry[0] ==
-                 '.' ) {  //"." or ".." or ".svn" or any hidden directories...
+            if ( entry[0] == '.' ) {  //"." or ".." or ".svn" or any hidden
+              // directories...
               continue;
             }
 

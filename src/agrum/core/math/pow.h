@@ -82,7 +82,8 @@ namespace gum {
    *the
    *maximum number those bits can represent, i.e. \f$ 2^{num\_bits} \f$.
    */
-  inline void superiorPow( const unsigned long& card, unsigned long& num_bits,
+  inline void superiorPow( const unsigned long& card,
+                           unsigned long& num_bits,
                            unsigned long& new_card ) {
     if ( card <= 0 ) {
       num_bits = 0;

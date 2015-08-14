@@ -31,7 +31,7 @@
 #define ARITH "lrslong.h" /* lrs long integer arithmetic package */
 #else
 #ifdef GMP
-#define ARITH                                                                  \
+#define ARITH \
   "lrsgmp.h" /* lrs wrapper for gmp multiple precsion arithmetic    */
 #else
 #define ARITH "lrsmp.h" /* lrs multiple precsion arithmetic    */
@@ -44,10 +44,10 @@
 #ifdef SIGNALS
 #include <signal.h>
 #include <unistd.h>
-#define errcheck( s, e )                                                       \
-  if ( (long)( e ) == -1L ) {                                                  \
-    perror( s );                                                               \
-    exit( 1 );                                                                 \
+#define errcheck( s, e )      \
+  if ( (long)( e ) == -1L ) { \
+    perror( s );              \
+    exit( 1 );                \
   }
 #endif
 
@@ -241,7 +241,8 @@ lrs_alloc_dic( lrs_dat* Q ); /* allocate for lrs_dic structure corr. to Q   */
 
 void lrs_estimate( lrs_dic* P, lrs_dat* Q ); /* get estimates only */
 
-long lrs_read_dat( lrs_dat* Q, int argc,
+long lrs_read_dat( lrs_dat* Q,
+                   int argc,
                    char* argv[] ); /* read header and set up lrs_dat */
 long lrs_read_dic( lrs_dic* P,
                    lrs_dat* Q ); /* read input and set up problem and lrs_dic */
@@ -250,23 +251,26 @@ long lrs_checkbound(
     lrs_dic* P,
     lrs_dat* Q ); /* TRUE if current objective value exceeds specified bound */
 
-long lrs_getfirstbasis( lrs_dic** P_p, lrs_dat* Q, lrs_mp_matrix* Lin,
+long lrs_getfirstbasis( lrs_dic** P_p,
+                        lrs_dat* Q,
+                        lrs_mp_matrix* Lin,
                         long no_output );
 /* gets first basis, FALSE if none,P may get changed if lin. space Lin found */
 /* no_output is TRUE supresses output headers   */
 
 /* P may get changed if lin. space Lin found    */
-void lrs_getinput( lrs_dic* P, lrs_dat* Q, long* num, long* den, long m,
-                   long d );
+void lrs_getinput(
+    lrs_dic* P, lrs_dat* Q, long* num, long* den, long m, long d );
 /* reads input matrix b A in lrs/cdd format */
 long lrs_getnextbasis(
-    lrs_dic** dict_p, lrs_dat* Q,
+    lrs_dic** dict_p,
+    lrs_dat* Q,
     long prune ); /* gets next lrs tree basis, FALSE if none */
 /* backtrack if prune is TRUE                   */
 
 long lrs_getsolution( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output, long col );
-long lrs_getray( lrs_dic* P, lrs_dat* Q, long col, long comment,
-                 lrs_mp_vector output );
+long lrs_getray(
+    lrs_dic* P, lrs_dat* Q, long col, long comment, lrs_mp_vector output );
 long lrs_getvertex( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output );
 
 void lrs_close( char* name ); /* close lrs lib program "name"                 */
@@ -274,23 +278,28 @@ long lrs_init(
     char* name ); /* initialize lrslib and arithmetic package for prog "name" */
 
 void lrs_lpoutput(
-    lrs_dic* P, lrs_dat* Q,
+    lrs_dic* P,
+    lrs_dat* Q,
     lrs_mp_vector output ); /* print LP primal and dual solutions */
 void lrs_printcobasis(
-    lrs_dic* P, lrs_dat* Q,
+    lrs_dic* P,
+    lrs_dat* Q,
     long col ); /* print cobasis for column col(verted or ray)  */
 void lrs_printoutput( lrs_dat* Q,
                       lrs_mp_vector output ); /* print output array */
 void lrs_printrow( char name[], lrs_dat* Q, lrs_mp_vector output, long rowd );
 /*print row of A matrix in output[0..rowd]      */
-void lrs_printsol( lrs_dic* P, lrs_dat* Q, long col,
+void lrs_printsol( lrs_dic* P,
+                   lrs_dat* Q,
+                   long col,
                    long comment ); /* print out solution from col, comment= */
 /* 0=normal,-1=geometric ray,1..inputd=linearity */
 void lrs_printtotals( lrs_dic* P, lrs_dat* Q ); /* print final totals for lrs */
 long lrs_set_digits(
     long dec_digits ); /* set lrsmp digits to equiv. of decimal dec_digits */
 long lrs_solvelp(
-    lrs_dic* P, lrs_dat* Q,
+    lrs_dic* P,
+    lrs_dat* Q,
     long maximize ); /* solve primal feas LP:TRUE bounded else FALSE */
 
 /*******************************/
@@ -299,31 +308,49 @@ long lrs_solvelp(
 /* basic dictionary functions  */
 /*******************************/
 
-long getabasis( lrs_dic* P, lrs_dat* Q,
+long getabasis( lrs_dic* P,
+                lrs_dat* Q,
                 long order[] ); /* Try to find a starting basis */
-void getnextoutput( lrs_dic* P, lrs_dat* Q, long i, long col,
+void getnextoutput( lrs_dic* P,
+                    lrs_dat* Q,
+                    long i,
+                    long col,
                     lrs_mp out ); /* get A[B[i][col] and copy to out */
-long ismin( lrs_dic* P, lrs_dat* Q, long r,
+long ismin( lrs_dic* P,
+            lrs_dat* Q,
+            long r,
             long s ); /* test if A[r][s] is a min ratio for col s       */
-long lexmin( lrs_dic* P, lrs_dat* Q,
+long lexmin( lrs_dic* P,
+             lrs_dat* Q,
              long col ); /* test A to see if current basis is lexmin       */
-void pivot( lrs_dic* P, lrs_dat* Q, long bas,
+void pivot( lrs_dic* P,
+            lrs_dat* Q,
+            long bas,
             long cob ); /* Qpivot routine for array A                     */
 long primalfeasible(
     lrs_dic* P, lrs_dat* Q ); /* Do dual pivots to get primal feasibility */
 long ratio( lrs_dic* P, lrs_dat* Q, long col ); /* find lex min. ratio */
-long removecobasicindex( lrs_dic* P, lrs_dat* Q,
+long removecobasicindex( lrs_dic* P,
+                         lrs_dat* Q,
                          long k ); /* remove C[k] from problem */
 long restartpivots( lrs_dic* P,
                     lrs_dat* Q ); /* restart problem from given cobasis */
-long reverse( lrs_dic* P, lrs_dat* Q, long* r,
+long reverse( lrs_dic* P,
+              lrs_dat* Q,
+              long* r,
               long s ); /* TRUE if B[*r] C[s] is a reverse lex-pos pivot  */
-long selectpivot( lrs_dic* P, lrs_dat* Q, long* r,
+long selectpivot( lrs_dic* P,
+                  lrs_dat* Q,
+                  long* r,
                   long* s ); /* select pivot indices using lexicographic rule */
 long dan_selectpivot(
-    lrs_dic* P, lrs_dat* Q, long* r,
+    lrs_dic* P,
+    lrs_dat* Q,
+    long* r,
     long* s ); /* select pivot indices using dantzig-lex rule */
-void update( lrs_dic* P, lrs_dat* Q, long* i,
+void update( lrs_dic* P,
+             lrs_dat* Q,
+             long* i,
              long* j ); /* update the B,C, LOC arrays after a pivot       */
 void updatevolume( lrs_dic* P,
                    lrs_dat* Q ); /* rescale determinant and update the volume */
@@ -338,14 +365,21 @@ long lrs_degenerate(
 void print_basis( FILE* fp, lrs_dat* Q );
 void printA( lrs_dic* P,
              lrs_dat* Q ); /* raw print of dictionary, bases for debugging   */
-void pimat( lrs_dic* P, long r, long s, lrs_mp Nt,
+void pimat( lrs_dic* P,
+            long r,
+            long s,
+            lrs_mp Nt,
             char name[] ); /* print the row r col s of A                     */
 
 long readfacets( lrs_dat* Q, long facet[] ); /* read and check facet list */
 long readlinearity( lrs_dat* Q );            /* read and check linearity list */
-void rescaledet( lrs_dic* P, lrs_dat* Q, lrs_mp Vnum,
+void rescaledet( lrs_dic* P,
+                 lrs_dat* Q,
+                 lrs_mp Vnum,
                  lrs_mp Vden ); /* rescale determinant to get its volume */
-void rescalevolume( lrs_dic* P, lrs_dat* Q, lrs_mp Vnum,
+void rescalevolume( lrs_dic* P,
+                    lrs_dat* Q,
+                    lrs_mp Vnum,
                     lrs_mp Vden ); /* adjust volume for dimension          */
 
 /***************************************************/
@@ -357,11 +391,13 @@ long checkredund(
 /* returns TRUE if redundant, else FALSE          */
 
 long checkcobasic(
-    lrs_dic* P, lrs_dat* Q,
+    lrs_dic* P,
+    lrs_dat* Q,
     long index ); /* TRUE if index is cobasic and nondegenerate */
 /* FALSE if basic, or degen. cobasic, where it will get pivoted out  */
 
-long checkindex( lrs_dic* P, lrs_dat* Q,
+long checkindex( lrs_dic* P,
+                 lrs_dat* Q,
                  long index ); /* index=0 non-red.,1 red., 2 input linearity */
 /* NOTE: row is returned all zero if redundant!!  */
 
@@ -394,7 +430,8 @@ void timecheck();
 /*******************************/
 /* utilities                   */
 /*******************************/
-void lprat( const char* name, long Num,
+void lprat( const char* name,
+            long Num,
             long Den ); /* Print Num/Den without reducing  */
 long lreadrat(
     long* Num,
@@ -411,17 +448,21 @@ void reorder1( long a[], long b[], long newone, long range );
 long lrs_solve_lp( lrs_dic* P,
                    lrs_dat* Q ); /* solve lp only for given dictionary */
 
-void lrs_set_row( lrs_dic* P, lrs_dat* Q, long row, long num[], long den[],
-                  long ineq );
+void lrs_set_row(
+    lrs_dic* P, lrs_dat* Q, long row, long num[], long den[], long ineq );
 /* load row i of dictionary from num[]/den[] ineq=GE       */
-void lrs_set_row_mp( lrs_dic* P, lrs_dat* Q, long row, lrs_mp_vector num,
-                     lrs_mp_vector den, long ineq );
+void lrs_set_row_mp( lrs_dic* P,
+                     lrs_dat* Q,
+                     long row,
+                     lrs_mp_vector num,
+                     lrs_mp_vector den,
+                     long ineq );
 /* same as lrs_set_row except num/den is lrs_mp type       */
 
 void lrs_set_obj( lrs_dic* P, lrs_dat* Q, long num[], long den[], long max );
 /* set up objective function with coeffs num[]/den[] max=MAXIMIZE or MINIMIZE */
-void lrs_set_obj_mp( lrs_dic* P, lrs_dat* Q, lrs_mp_vector num,
-                     lrs_mp_vector den, long max );
+void lrs_set_obj_mp(
+    lrs_dic* P, lrs_dat* Q, lrs_mp_vector num, lrs_mp_vector den, long max );
 /* same as lrs_set_obj but num/den has lrs_mp type */
 
 /* end of  lrslib.h (vertex enumeration using lexicographic reverse search) */
