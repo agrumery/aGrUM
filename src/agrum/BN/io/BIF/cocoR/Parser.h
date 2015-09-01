@@ -32,7 +32,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined( gum_BIF_COCO_PARSER_H__ )
+#if !defined(gum_BIF_COCO_PARSER_H__)
 #define gum_BIF_COCO_PARSER_H__
 
 #include <agrum/core/cast_unicode.h>
@@ -41,12 +41,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <agrum/BN/BayesNetFactory.h>
 
 #undef TRY
-#define TRY( inst )                \
-  try {                            \
-    inst;                          \
-  } catch ( gum::Exception & e ) { \
-    SemErr( e.errorType() );       \
-  }
+#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.errorType());}
 
 #include <iostream>
 #include <string>
@@ -54,108 +49,106 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include "Scanner.h"
 
 namespace gum {
-  namespace BIF {
+namespace BIF {
 
 
-    class Parser {
-      private:
-      enum {
-        _EOF = 0,
-        _ident = 1,
-        _integer = 2,
-        _number = 3,
-        _string = 4,
-        _largestring = 5
-      };
-      int maxT;
 
-      Token* dummyToken;
-      int errDist;
-      int minErrDist;
+class Parser {
+  private:
+    	enum {
+		_EOF=0,
+		_ident=1,
+		_integer=2,
+		_number=3,
+		_string=4,
+		_largestring=5
+	};
+	int maxT;
 
-      void SynErr( int n );
-      void Get();
-      void Expect( int n );
-      bool StartOf( int s );
-      void ExpectWeak( int n, int follow );
-      bool WeakSeparator( int n, int syFol, int repFol );
+    Token* dummyToken;
+    int errDist;
+    int minErrDist;
 
-      ErrorsContainer __errors;
+    void SynErr( int n );
+    void Get();
+    void Expect( int n );
+    bool StartOf( int s );
+    void ExpectWeak( int n, int follow );
+    bool WeakSeparator( int n, int syFol, int repFol );
 
-      public:
-      Scanner* scanner;
+    ErrorsContainer  __errors;
 
-      Token* t;   // last recognized token
-      Token* la;  // lookahead token
+  public:
+    Scanner* scanner;
 
-      gum::IBayesNetFactory* __factory;
+    Token* t;     // last recognized token
+    Token* la;      // lookahead token
 
-      void setFactory( gum::IBayesNetFactory* f ) { __factory = f; }
+    gum::IBayesNetFactory* __factory;
 
-      gum::IBayesNetFactory& factory( void ) {
-        if ( __factory ) return *__factory;
-        GUM_ERROR( gum::OperationNotAllowed,
-                   "Please set a factory for scanning BIF file..." );
-      }
+void setFactory(gum::IBayesNetFactory* f) {
+  __factory=f;
+}
 
-      void SemErr( std::string s ) { SemErr( widen( s ).c_str() ); }
+gum::IBayesNetFactory& factory(void) {
+  if (__factory) return *__factory;
+  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
+}
 
-      void Warning( std::string s ) {
-        Warning( widen( "Warning : " + s ).c_str() );
-      }
+void SemErr(std::string s) {
+  SemErr(widen(s).c_str());
+}
 
-      void __checkSizeOfProbabilityAssignation( const std::vector<float>& v,
-                                                const std::string& var ) {
-        gum::Size s = (gum::Size)0;
-        TRY(
-            s = factory().varInBN( factory().variableId( var ) ).domainSize() );
-        if ( v.size() < s )
-          Warning( "Not enough data in probability assignation for node " +
-                   var );
-        if ( v.size() > s )
-          Warning( "Too many data in probability assignation for node " + var );
-      }
+void Warning(std::string s) {
+  Warning(widen("Warning : "+s).c_str());
+}
 
-
-      //=====================
-
-      Parser( Scanner* scanner );
-      ~Parser();
-      void SemErr( const wchar_t* msg );
-      void SynErr( const std::wstring& filename, int line, int col, int n );
-      void Warning( const wchar_t* msg );
-      const ErrorsContainer& errors() const;
-
-      void BIF();
-      void NETWORK();
-      void VARIABLE();
-      void PROBA();
-      void IDENT( std::string& name );
-      void STRING( std::string& str );
-      void PROPERTY();
-      void LABELIZE_VAR( int& nbrMod );
-      void NBR( int& val );
-      void MODALITY_LIST();
-      void IDENT_OR_INTEGER( std::string& name );
-      void LISTE_PARENTS( std::vector<std::string>& parents );
-      void RAW_PROBA( std::vector<float>& v );
-      void FACTORIZED_PROBA( std::string& var,
-                             const std::vector<std::string>& parents );
-      void LISTE_FLOAT( std::vector<float>& v );
-      void ASSIGNATION( const std::string& var,
-                        const std::vector<std::string>& parents,
-                        bool is_first );
-      void LISTE_LABELS( const std::vector<std::string>& parents,
-                         std::vector<std::string>& labels,
-                         unsigned int num_label );
-      void FLOAT( float& val );
-
-      void Parse();
-
-    };  // end Parser
-
-  }  // namespace
-}  // namespace
+void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::string& var) {
+  gum::Size s=(gum::Size)0;
+  TRY(s=factory().varInBN(factory().variableId(var)).domainSize());
+  if (v.size()<s)
+    Warning("Not enough data in probability assignation for node "+var);
+  if (v.size()>s)
+    Warning("Too many data in probability assignation for node "+var);
+}
 
 
-#endif  // !defined(COCO_PARSER_H__)
+
+//=====================
+
+    Parser( Scanner* scanner );
+    ~Parser();
+    void SemErr( const wchar_t* msg );
+    void SynErr( const std::wstring& filename,int line, int col, int n );
+    void Warning( const wchar_t* msg );
+    const ErrorsContainer& errors() const;
+
+    	void BIF();
+	void NETWORK();
+	void VARIABLE();
+	void PROBA();
+	void IDENT(std::string& name);
+	void STRING(std::string& str);
+	void PROPERTY();
+	void LABELIZE_VAR(int& nbrMod);
+	void NBR(int& val);
+	void MODALITY_LIST();
+	void IDENT_OR_INTEGER(std::string& name);
+	void LISTE_PARENTS(std::vector<std::string>& parents );
+	void RAW_PROBA(std::vector<float>& v );
+	void FACTORIZED_PROBA(std::string& var,const std::vector<std::string>& parents );
+	void LISTE_FLOAT(std::vector<float>& v );
+	void ASSIGNATION(const std::string& var,const std::vector<std::string>& parents,bool is_first );
+	void LISTE_LABELS(const std::vector<std::string>& parents,std::vector<std::string>& labels, unsigned int num_label );
+	void FLOAT(float& val);
+
+    void Parse();
+
+}; // end Parser
+
+} // namespace
+} // namespace
+
+
+#endif // !defined(COCO_PARSER_H__)
+
