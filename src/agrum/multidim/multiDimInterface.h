@@ -29,13 +29,6 @@
  *<{prenom.nom}_at_lip6.fr>
  */
 
-/*!
-  @ingroup multidim_group
-  \page multidim_page How to use the MultiDim hierarchy.
-
-  \section multidim_sec_1 Why the MultiDim hierarchy?
-*/
-
 #ifndef GUM_MULTIDIM_INTERFACE_H
 #define GUM_MULTIDIM_INTERFACE_H
 

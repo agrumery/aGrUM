@@ -356,11 +356,8 @@ namespace gum {
 
   // Tells the factory that we've finished declaring parents for some
   // variable. When parents exist, endParentsDeclaration creates some arcs.
-  // These
-  // arcs
-  // are created in the inverse order of the order of the parent specification.
-  // @throw UndefinedElement Raised if the variable isn't defined (or not
-  //                         enough defined).
+  // These arcs are created in the inverse order of the order of the parent
+  // specification.
   template <typename GUM_SCALAR>
   INLINE void BayesNetFactory<GUM_SCALAR>::endParentsDeclaration() {
     if ( state() != factory_state::PARENTS ) {
