@@ -18,6 +18,178 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+/*!
+  \ingroup graph_group
+
+  \page graph_page How to use the graph classes?
+
+  The basic idea of the implementation of graphs in aGrUM is to leave it "as
+  pure as possible". Hence graphs consist of integers (@ref gum::NodeId) and
+  binary
+  relations between them (Edge, Arc).
+
+  \section graph_sec_1 graph hierarchy
+  Precisely a graph contains a compact representation of a set of
+  @ref gum::NodeId, and can contain a set of @ref gum::Arc and a set of
+  @ref gum::Edge.
+
+  In aGrUM,
+  - 3 classes wrap these 3 sets : @ref gum::NodeGraphPart, @ref
+  gum::ArcGraphPart
+  and @ref gum::EdgeGraphPart
+  (resp. wrapping @ref gum::NodeSet, @ref gum::ArcSet and @ref gum::EdgeSet,
+  3 typedefs of Set),
+  - @ref gum::UndiGraph inherits from @ref gum::EdgeGraphPart and
+  @ref gum::NodeGraphPart,
+  - @ref gum::DiGraph inherits from @ref gum::ArcGraphPart and
+  @ref gum::NodeGraphPart and
+  - @ref gum::MixedGraph inherits from @ref gum::DiGraph and
+  @ref gum::UndiGraph.
+
+  (as shown in the inheritance diagram for @ref gum::MixedGraph, the class
+  hierarchy for graphs in aGrUM uses multiple inheritance.)
+
+  This pattern of inheritance allows aGrUM to have a quite standardized API for
+  all basic operations in graphs: manipulating and iterating over nodes, edges
+  and arcs.
+
+  \section graph_sec_2 IDs, iterators and properties
+  Such representation of graphs has two major drawbacks that aGrUM has to face:
+  - how to certify that all node ids are unique in a graph?
+  - how to iterate on nodes, arcs, edges in a graph ?
+  - how to put properties (name/position/integer/flag) on nodes, edges and arcs?
+
+  <h4>ID factory</h4>
+  For aGrUM, each node has (is) an id. IDs begin from 1 (id>0).
+
+  For the uniqueness of ids, addNode() in NodeGraphPart contains an internal
+  idFactory which guarantees this property.
+
+  There are two ways to bypass the idFactory :
+
+  - use the copy constructor or the @ref gum::NodeGraphPart::populateNodes().
+  These very two methods copy a set of
+  nodes and ensure that the ids are the same as those of their argument
+  (@ref gum::NodeGraphPart::populateNodes() clears
+  the @ref gum::NodeGraphPart before copying).
+
+  - use @ref gum::NodeGraphPart::addNode(gum::NodeId id) which allow the user
+  to give a specific id to a new node. <i> This method
+  should be used very carefully !! It may throw exception (id=0 or id already
+  used) and it may deteriorate the compacity of
+  the @ref gum::NodeGraphPart. </i>
+
+  Good programmers should treat with respect the idFactory.
+
+  <h4>Iterators</h4>
+
+  @ref gum::NodeSet, @ref gum::EdgeSet and @ref gum::ArcSet have their own
+  iterators (see @ref gum::NodeSetIterator etc.). However aGrUM gives
+  specialized
+  iterators for graphs. These iterators are herited from the different 3 graphs
+  part and may be (or not) a <i>typedef</i> for set iterators. We encourage to
+  use these iterators when iterating on a graph.
+
+  For a graph <tt>gr</tt> of type <tt>G</tt> (<tt>G</tt> is @ref gum::DiGraph,
+  @ref gum::DAG, @ref gum::UndiGraph or @ref gum::MixedGraph, etc.) :
+
+  @code
+  G gr;
+
+  // iterate on nodes
+  for(const auto node : gr.nodes()) {
+    ... // node is a gum::NodeId
+  }
+
+  // iterate on edges (if possible)
+  for(const auto & edge : gr.edges()) {
+    ... // edge is a const gum::Edge&
+  }
+
+  // iterate on arcs (if possible)
+  for(const auto & arc =gr.arcs()) {
+    ... // arc is a const gum::Arc&
+  }
+  @endcode
+
+  <h4>Properties</h4>
+
+  Properties are the way to put (dynamic) informations within nodes, edges and
+  arcs. Properties are just HashTable in which keys are @ref gum::NodeId, Edge
+  or Arc. NodeProperty, ArcProperty and EdgeProperty are the names of these
+  classes.
+  @code
+  gum::UndiGraph g;
+  gum::NodeProperty<bool> is_id_odd=g.nodesProperty( false );
+
+  g.addNode();
+  g.addNode();
+  g.addNode();
+
+  for ( auto nodeId : g.nodes()) {
+    is_id_odd.set( nodeId, nodeId % 2 == 0 );
+  }
+
+  std::cout<<is_id_odd<<std::cout<<std::endl;
+
+  for ( auto i : is_id_odd)
+    std::cout<<i.first()<<" : "<<i.second()<<std::endl;
+  @endcode
+
+  Equivalently, you could have written :
+  @code
+  bool is_it_odd(const gum::NodeId& i) {
+    return i%2==0;
+  }
+
+  gum::UndiGraph g;
+  g.addNode();
+  g.addNode();
+  g.addNode();
+
+  gum::NodeProperty<bool> is_id_odd=g.nodesProperty(is_it_odd);
+
+  std::cout<<is_id_odd<<std::endl<<std::endl;
+
+  for (const auto & elt :is_id_odd) {
+    std::cout<<i.first<<" : "<<i.second<<std::endl;
+  }
+  @endcode
+
+  Here is a code for \subpage exemple_recherche_chemin "searching directed path
+  in a DiGraph" g from \ref gum::NodeId n1 to \ref gum::NodeId n2.
+
+  \page exemple_recherche_chemin Example: Search of a directed path in a DiGraph
+  g from n1 to n2
+  \ingroup graph_group
+
+  @code
+
+  gum::List<gum::NodeId> nodeFIFO;
+  // mark[node] contains 0 if not visited
+  // mark[node]=predecessor if visited
+  gum::NodeProperty<gum::NodeId> mark=g.nodesProperty((gum::NodeId) 0 );
+  gum::NodeId current;
+
+  mark[n1]=n1;
+  nodeFIFO.pushBack( n1 );
+  while ( ! nodeFIFO.empty() ) {
+    current=nodeFIFO.front();nodeFIFO.popFront();
+
+    const gum::NodeSet& set=;
+    for ( const auto new_one : g.children( current )) {
+        if ( mark[new_one]!=0 ) continue; // if this node is already marked,
+  continue
+        mark[new_one]=current;
+        if ( new_one==n2 ) break; // if we reach n2, stop.
+
+        nodeFIFO.pushBack( new_one );
+    }
+  }
+
+  if ( mark[n2] ==0 ) GUM_ERROR( gum::NotFound,"no path found" );
+  @endcode
+*/
 
 /** @file
  * @brief some utils for topology : NodeId, Edge, Arc and consorts ...

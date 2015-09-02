@@ -184,8 +184,8 @@ namespace gum {
 
     /// Tells the factory that we're out of a variable declaration.
     /// @return The Node id of the created variable.
-    /// @throw gum::OperationNotAllowed Raised if the variable isn't defined (or not
-    ///                            enough defined).
+    /// @throw UndefinedElement Raised if the variable isn't defined (or not
+    ///                         enough defined).
     NodeId endVariableDeclaration();
 
     /// @}
@@ -212,6 +212,8 @@ namespace gum {
     /// in BIF file for probability specification, these arcs are created in the
     /// inverse order of
     /// the order of the parent specifications.
+    /// @throw UndefinedElement Raised if the variable isn't defined (or not
+    ///                         enough defined).
     void endParentsDeclaration();
 
     /// @}
@@ -231,13 +233,13 @@ namespace gum {
      * Parse the parents in the same order in variables
      *
      * Given a sequence [var, p_1, p_2, ...,p_n-1, p_n] of parents, modalities
-     * are parsed in the given order (if all p_i are binary):
-     * \verbatim
+     *are
+     *parsed
+     * in the given order (if all p_i are binary):
      * [0, 0, ..., 0, 0], [0, 0, ..., 0, 1],
      * [0, 0, ..., 1, 0], [0, 0, ..., 1, 1],
      * ...,
      * [1, 1, ..., 1, 0], [1, 1, ..., 1, 1].
-     * \endverbatim
      *
      * @param variables the vector giving the order of parents
      * @param rawTable The raw table.
@@ -260,8 +262,7 @@ namespace gum {
 
     /// @}
     // ==========================================================================
-    /// \name Factorized probability table declaration methods
-    // (NONE -> RAW_CPT)
+    /// @name factorized probability table declaration methods (NONE -> RAW_CPT)
     // ==========================================================================
     /// @{
 
@@ -326,8 +327,7 @@ namespace gum {
 
     /// @}
     // ==========================================================================
-    /// \name Delegated CPT definitions methods
-    /// (NONE, NETWORK)
+    /// @name Delegated CPT definitions methods (NONE, NETWORK)
     // ==========================================================================
     /// @{
 
