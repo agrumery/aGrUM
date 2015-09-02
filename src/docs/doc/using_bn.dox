@@ -1,0 +1,226 @@
+/*!
+ * \page using_bn How to use Bayesian Networks
+ * \tableofcontents
+ * 
+ * Bayesian Networks are a probabilistic graphical model in which nodes are
+ * random variables and the probability distribution is defined by the product:
+ * 
+ * <center>\f$P(X_1, \ldots, X_2) = \prod_{i=1}^{n} P(X_i | \pi(X_i))\f$,</center>
+ *
+ * where \f$\pi(X_i)\f$ is the parent of \f$X_i\f$.
+ *
+ * The Bayesian Network module in aGrUM can help you do the following operations:
+ *  - Model Bayesian Networks, from graph to local distributions.
+ *  - Execute probabilistic inference from a wide range of algorithms.
+ *  - Load and save Bayesian Networks in different file formats.
+ *
+ * \section bn_model Using the BayesNetFactory class
+ * Creating a Bayesian Network can be easily done using the \ref
+ * gum::BayesNetFactory.  We will use the classe Asia network to illustrate how
+ * the \ref gum::BayesNetFactory class works.
+ *
+ * \dot
+ * digraph Asia {
+ *  bgcolor = "#EEF1F7";
+ *  VtA [ label="Visit to Asia" URL="\ref VtA"];
+ *  S [ label="Smoker" URL="\ref S"];
+ *  HT [ label="Has Tuberculosis" URL="\ref HT"];
+ *  HLC [ label="Has Lung Cancer" URL="\ref HLC"];
+ *  HB [ label="Has Bronchitis" URL="\ref HB"];
+ *  ToC [ label="Tuberculosis or Cancer" URL="\ref ToC"];
+ *  XR [ label="XRay Result" URL="\ref XR"];
+ *  D [ label="Dyspnea" URL="\ref D"];
+ *  VtA -> HT [ arrowhead="open" ];
+ *  S -> HLC [ arrowhead="open" ];
+ *  S -> HB [ arrowhead="open" ];
+ *  HT -> ToC [ arrowhead="open" ];
+ *  HLC -> ToC [ arrowhead="open" ];
+ *  HB -> D [ arrowhead="open" ];
+ *  ToC -> XR [ arrowhead="open" ];
+ *  ToC -> D [ arrowhead="open" ];
+ * }
+ * \enddot
+ *
+ * \subsection bn_factory_creation Instantiating the factory
+ * The gum::BayesNetFactory expects a pointer toward a gum::BayesNet. The
+ * factory will not release this pointer, so you should be carefull to release
+ * it yourself.
+ *
+ * \code{.cpp}
+ * auto asia = new gum::BayesNet<double>();
+ * gum::BayesNetFactory<double> factory(asia);
+ * \endcode
+ *
+ * Most methods follow a start / end pattern . 
+ * Until the end method is called, there is no garantee that the element is
+ * added or partially added to the gum::BayesNet.
+ *
+ * \subsection bn_factory_add_nodes Adding nodes
+ * To add a node, you must use the
+ * gum::BayesNetFactory::startVariableDeclaration() and
+ * gum::BayesNetFactory::endVariableDeclaration() methods. You must provide
+ * several informations to correctly add a node to the gum::BayesNet, otherwise
+ * a gum::OperationNotAllowed will be raised.
+ *
+ * When declaring a variable you must:
+ *  - Have finished any previous declaration using the respective end method.
+ *  - Give it a name using gum::BayesNetFactory::variableName(std::string).
+ *  - Add at least two modalities using gum::BayesNetFactory::addModality(std::string).
+ *
+ * Here is a list of legal method calls while declaring a variable:
+ *  - gum::BayesNetFactory::variableName( const std::string& ).
+ *  - gum::BayesNetFactory::variableDescription( const std::string& ).
+ *  - gum::BayesNetFactory::addModality( const std::string& ).
+ *  - gum::BayesNetFactory::setVariableCPTImplementation( MultiDimImplementation* ).
+ *
+ * Here is an code sample where we declare the "VisitToAsia" variable in the Asia Network
+ * example:
+ * \code{.cpp}
+ * factory.startVariableDeclaration();
+ * factory.variableName("VisitToAsia");
+ * factory.variableDescription("True if patient visited Asia in the past months");
+ * factory.addModality("True");
+ * factory.addModality("False");
+ * auto id = factory.endVariableDeclaration();
+ * \endcode
+ *
+ * The gum::BayesNetFactory::endVariableDeclaration() method returns the variable's id
+ * in the gum::BayesNet.
+ *
+ * \subsection bn_factory_add_parent Adding arcs
+ * To add an arc you must use the gum::BayesNetFactory::startParentsDeclaration(std::string)
+ * and gum::BayesNetFactory::endParentsDeclaration() methods.
+ *
+ * Here is a list of legal method calls while declaring parents:
+ *  - gum::BayesNetFactory::addParent( const std::string& ).
+ *
+ * Note that you must not add all parents in one shot and that calling both
+ * start end methods without adding any parent will not result in an error.
+ *
+ * \code{.cpp}
+ * factory.startParentsDeclaration("Tuberculosis or Cancer");
+ * factory.addParent( "Has Tuberculosis" );
+ * factory.addParent( "Has Lung Cancer" );
+ * factory.endParentsDeclaration();
+ * \endcode
+ *
+ * \subsection bn_factory_add_cpt Defining Conditional Probability Tables
+ *
+ * The gum::BayesNetFactory class offers three ways to define conditional
+ * probability tables (CPT): raw, factorized and delegated.
+ *
+ * \subsubsection bn_cpt_raw Raw CPT definition
+ *
+ * From a user perspective, raw definitions are useful to define small CPT,
+ * like root nodes but do not scale well if the CPT dimension is too high. On
+ * the other hand, raw definitions are very usefull when automatically filling
+ * CPT from some source (file, database, another cpt, ...).
+ *
+ * Two methods can be used to define raw CPT:
+ *  - gum::BayesNetFactory::rawConditionalTable(const
+ *    std::vector<std::string>&, const std::vector<float>&).
+ *  - gum::BayesNetFactory::rawConditionalTable(const std::vector<float>&).
+ *
+ * Defining the conditionnal probability table for the root node "VisitToAsia"
+ * in the Asia Network example can be achieved as follow:
+ * \code{.cpp}
+ * factory.startRawProbabilityDeclaration("VisitToAsia");
+ * std::vector<std::string> variables { "VisitToAsia" };
+ * std::vector<double> values { 0.01, 0.99 };
+ * factory.rawConditionalTable(variables, values);
+ * factory.endRawProbabilityDeclaration();
+ * \endcode
+ *
+ * Defining the conditionnal probability table for a node with parents:
+ * \code{.cpp}
+ * factory.startRawProbabilityDeclaration("Tuberculosis or Cancer");
+ *
+ * std::vector<std::string> variables;
+ * variables.push_back("Tuberculosis or Cancer");
+ * variables.push_back("Has Tuberculosis");
+ * variables.push_back("Has Lung Cancer");
+ *
+ * std::vector<double> values
+ * //      True     ||    False        => Has Lung Cancer
+ * //  True | False || True | False    => Has Tuberculosis
+ * {     0.00, 0.00,     0.00, 1.00,   // False
+ *       1.00, 1.00,     1.00, 0.00 }; // True
+ *
+ * factory.rawConditionalTable(variables, values);
+ * factory.endRawProbabilityDeclaration();
+ * \endcode
+ *
+ * \subsubsection bn_cpt_fac Factorized CPT definition
+ * Factorized definitions are useful when dealing with sparse CPT. It can also
+ * be used when writing the raw CPT is error prone. The
+ * gum::BayesNetFactory::startFactorizedProbabilityDeclaration(const
+ * std::string&) is used to start a definition and
+ * gum::BayesNetFactory::endFactorizedProbabilityDeclaration(const
+ * std::string&) to end it.
+ *
+ * A factorized definition is made of consecutive factorize entries. Each entry
+ * set parents modalities and defines a distribution given those modalities. If
+ * some parents are left undefined, then the distribution will be assigned to
+ * each possible outcome.
+ *
+ * To start a defining a factorized entry call the
+ * gum::BayesNetFactory::startFactorizedEntry() and to end it call
+ * gum::BayesNetFactory::endFactorizedEntry().
+ *
+ * In the following example, we define the CPT for the Dyspnea variable in the
+ * Asia Network:
+ * \code{.cpp}
+ * factory.startFactorizedProbabilityDeclaration("Tuberculosis or Cancer");
+ *
+ * // Setting P(True| 0.00, 1.00 ] as the default distribution
+ * factory.startFactorizedEntry();
+ *
+ * // Tuberculosis or Cancer -> False | True
+ * std::vector<double> values = { 0.00, 1.00 };
+ * factor.setVariableValues( value );
+ *
+ * factory.endFactorizedEntry();
+ *
+ * factory.startFactorizedEntry();
+ * factory.setParentModality( "Has Lung Cancer", "False" );
+ * factory.setParentModality( "Has Tuberculosis", "False" );
+ *
+ * // Tuberculosis or Cancer -> False | True
+ * std::vector<double> values { 1.00  , 0.00 };
+ * factory.setVariableValues( values );
+ *
+ * factory.endFactorizedEntry();
+ * factor.endFactorizedProbabilityDeclaration();
+ * \endcode
+ *
+ * While adding values in a factorized definition, two methods are available:
+ *  - gum::BayesNetFactory::setVariableValues( const std::vector<float>& ).
+ *  - gum::BayesNetFactory::setVariableValuesUnchecked( const std::vector<float>& ).
+ *
+ * The unchecked version will not check if the vector matches the variable's domain
+ * size. The checked version will raise a gum::OperationNotAllowed if such situation.
+ *
+ * \subsubsection bn_cpt_del Delegated CPT definition
+ * Delegated definitions let the user define himself the gum::DiscreteVariable
+ * and gum::MultiDimAdressable added to the gum::BayesNet. You should only use
+ * such method if you familiar with \ref using_multidims
+ * "the multidim hierarchy" and require specific multidimensional arrays, like
+ * gum::MultiDimNoisyORCompound, gum::aggregator::Count, etc.
+ *
+ * \section bn_inf Probabilistic Inference
+ *
+ * All inference algorithms implement the gum::BayesNetInference class.
+ *
+ * \subsection bn_inf_class The gum::BayesNetInference class
+ * 
+ * \subsection bn_inf_algo The different inference algorithms
+ *
+ * \subsubsection bn_inf_algo_ex Exact inference
+ *
+ * \subsubsection bn_inf_algo_ap Approximate inference
+ *
+ * \section bn_io Serialization
+ * bla bla
+ *
+ */
+

@@ -1,0 +1,12 @@
+/*! \page howtos How To
+ * # How to #
+ * Here is a list of howtos about some classes of aGrUM :
+ *   - \subpage installing_agrum 
+ *   - \subpage using_agrum 
+ *   - \subpage using_graphs 
+ *   - \subpage using_multidims 
+ *   - \subpage using_instantiations 
+ *   - \subpage using_signals 
+ *   - \subpage using_prm 
+ *   - \subpage using_bn 
+ */

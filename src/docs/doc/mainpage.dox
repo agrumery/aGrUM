@@ -1,0 +1,25 @@
+/*!
+ * \mainpage aGrUM a GRaphical Universal Model
+ *
+ * # Presentation #
+ *
+ * Foo Bar aGrUM is a C++ library designed for easily building applications using
+ * graphical models such as Bayesian networks, influence diagrams, decision trees,
+ * GAI networks or Markov decision processes. It is written to provide the basic
+ * building blocks to perform the following tasks :
+ *   - graphical model learning / elicitation,
+ *   - inference within the graphical model,
+ *   - planification.
+ *
+ *
+ * 
+ *   \defgroup basicstruct_group Basic data structures
+ *   \defgroup graph_group Graph representation
+ *   \defgroup multidim_group Multidimensional data
+ *   \defgroup bn_group Bayesian Networks
+ *   \defgroup learning_group Tools for learning
+ *   \defgroup signal_group Signaler and Listener
+ *   \defgroup prm_group Probabilistic Relational Models
+ *   \defgroup fmdp_group Factored Markov Decision Process
+ *   \defgroup cn_group Credal Networks
+ */

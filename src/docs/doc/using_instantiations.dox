@@ -1,0 +1,111 @@
+/*!
+ * \page using_instantiations How to use Instatiations
+ * @todo check this (near-automatically translated) english.
+
+ * # Basic principles #
+
+ * MultiDims (see also gum::MultiDimInterface, gum::Potential, gum::CPF, etc ...)
+ * are
+ * aGrUM's
+ * multidimensional tables and instantiations (@ref gum::Instantiation) are smart
+ * iterators
+ * over these tables. Since MultDims are containers over random discrete variables
+ * (see gum::DiscreteVariable) we need when iterating over a MultiDim to indicate
+ * which
+ * variable and which label of this variable we are on. Instantiations does
+ * exactly
+ * that:
+ * when you change the value of variable in an instantiation you change the label
+ * you're
+ * looking at in the MultiDim.
+
+ * If you look at the MultiDim class hierarchy you will see that instantiation are
+ * a
+ * subclass of gum::MultiDimInterface, this is because instantiations behaves as
+ * one-dimension
+ * multidimensional table with one value per variable, the value being the index
+ * of the
+ * instantiated label. This imply that you can use an instantiation independently
+ * of a
+ * MultiDim.
+
+ * When a instantiation is meant to be used on a MultiDim it is better to register
+ * it
+ * to
+ * the MultiDim but there is one restriction: an instantiation can be registered
+ * in one
+ * (and only one) MultiDim if they share the same variables than the
+ * instantiation.
+ * Be careful: in the multidim hierarchy two variables are equal if they are their
+ * memory address are equal.
+
+ * For registering an instantiation to a MultiDim see the following functions:
+ * gum::Instantiation::Instantiation(MultiDimAdressable& aMD) or
+ * gum::Instantiation::actAsSlave(MultiDimAdressable& aMD).
+
+ * When an instantiation is registered to a MutliDim, the MultiDim is called "the
+ * master" and the instantiation it's "slave".
+
+ * When registered to a MultiDim finding a value in a table and other computation
+ * are optimized. For example, the complexity of iterating over a MultiDim with a
+ * registered instantiation will be in O(k), if it is not registered the
+ * complexity
+ * will be in O(n*k). With n being the number of variables in the MultiDim, and k
+ * the
+ * Cartesian product of the variables domain's.
+
+ * Why should you use non-registered instantiation? Because they allow to iterate
+ * over a different set of the MultiDim variable's. The only restriction is the
+ * instantiation having all the variables present in the MultiDim.
+
+ * # Advanced features #
+
+ * Some methods can be used to perform algebraic operations on instantiations, for
+ * example if you have two instantiations i1 and i2, with i1 being a subset of
+ * i2 variables, makink a projection of i2 on all variables of i1 will be done by
+ * i1.chgValIn (i2).
+
+ * When incrementing a Instantiation, one does not know the variables order used
+ * for
+ * this incrementation. Typically assuming that two hypermatrices
+ * t1 and t2 are defined on the same set of variables, and that there are two
+ * instantiations i1 (registered on t1) and i2 (on t2), then write
+ * @code for (i1.setFirst (), i2.setFirst ();! i1.end (); i1 ++, i2 ++) t1 [i1] =
+ * t2
+ * [i2]; @endcode
+ * will not create a copy of t2 in t1, because the variables may not be
+ * incremented
+ * in the same order
+
+ * There is a way to force the increment: i1.incIn(i2) allows you to increase i1
+ * in
+ * the same order as i2. Hence make a copy of the table is:
+ * @code for (i1 . setFirst (), i2.setFirst ();! i1.end (); i1.incIn (i2), i2 ++)
+ * t1
+ * [i1] = t2 [i2]; @endcode
+
+ * There are other cases where it may be intersting to force the order of
+ * operations,
+ * the only thing to remember is that the methods that ends with In
+ * do not use the same order as their version without In.
+
+ * # Code samples #
+ * T is a hypermatrice of integers defined on a superset of variables T1, we would
+ * like to add achieve such an operation T += T1 :
+
+ * @code
+ * Instantiation i(T);
+ * Instantiation i1(T1);
+ * for(i.setFirstIn(i1), i1.setFirst();
+ * ! i1.end();
+ * ++i1, i.incIn(i1)) {
+ * int content = T1[i1];
+ * for(i.setFirstOut(i1);
+ * ! i.end();
+ * i.incOut(i1)) {
+ * T[i] += content;
+ * }
+ * i.unsetOverflow();
+ * }
+ * @endcode
+*/
