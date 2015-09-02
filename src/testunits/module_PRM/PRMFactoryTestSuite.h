@@ -25,7 +25,6 @@
 #include <agrum/PRM/elements/classElement.h>
 #include <agrum/PRM/elements/parameter.h>
 
-
 namespace gum_tests {
   class PRMFactoryTestSuite : public CxxTest::TestSuite {
     public:
@@ -149,7 +148,6 @@ namespace gum_tests {
         f.startClass( "MyClass" );
         f.addParameter( "real", "lambda", 0.001 );
         f.endClass();
-
 
         f.startSystem( "MySystem" );
         gum::HashTable<std::string, double> params;

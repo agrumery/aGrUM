@@ -5,7 +5,8 @@
 namespace gum {
   namespace credal {
 
-    template <typename GUM_SCALAR> LRSWrapper<GUM_SCALAR>::LRSWrapper() {
+    template <typename GUM_SCALAR>
+    LRSWrapper<GUM_SCALAR>::LRSWrapper() {
       __state = __states::none;
 
       __vertices = 0;
@@ -20,7 +21,8 @@ namespace gum {
       GUM_CONSTRUCTOR( LRSWrapper );
     }
 
-    template <typename GUM_SCALAR> LRSWrapper<GUM_SCALAR>::~LRSWrapper() {
+    template <typename GUM_SCALAR>
+    LRSWrapper<GUM_SCALAR>::~LRSWrapper() {
       GUM_DESTRUCTOR( LRSWrapper );
     }
 
@@ -54,8 +56,9 @@ namespace gum {
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::setUpH( const unsigned int& card ) {
       if ( card < 2 )
-        GUM_ERROR( OperationNotAllowed, "LRSWrapper< GUM_SCALAR >::setUpH : "
-                                        "cardinality must be at least 2" );
+        GUM_ERROR( OperationNotAllowed,
+                   "LRSWrapper< GUM_SCALAR >::setUpH : "
+                   "cardinality must be at least 2" );
 
       tearDown();
 
@@ -81,8 +84,9 @@ namespace gum {
     void LRSWrapper<GUM_SCALAR>::setUpV( const unsigned int& card,
                                          const unsigned int& vertices ) {
       if ( card < 2 )
-        GUM_ERROR( OperationNotAllowed, "LRSWrapper< GUM_SCALAR >::setUpV : "
-                                        "cardinality must be at least 2" );
+        GUM_ERROR( OperationNotAllowed,
+                   "LRSWrapper< GUM_SCALAR >::setUpV : "
+                   "cardinality must be at least 2" );
 
       if ( vertices < 2 )
         GUM_ERROR( OperationNotAllowed,
@@ -102,7 +106,8 @@ namespace gum {
       __vertices = vertices;
     }
 
-    template <typename GUM_SCALAR> void LRSWrapper<GUM_SCALAR>::tearDown() {
+    template <typename GUM_SCALAR>
+    void LRSWrapper<GUM_SCALAR>::tearDown() {
       __input.clear();
       __output.clear();
       __vertex.clear();
@@ -121,7 +126,8 @@ namespace gum {
       __polytope = false;
     }
 
-    template <typename GUM_SCALAR> void LRSWrapper<GUM_SCALAR>::nextHInput() {
+    template <typename GUM_SCALAR>
+    void LRSWrapper<GUM_SCALAR>::nextHInput() {
       __insertedModals.clear();
       __insertedVertices.clear();
       __output.clear();
@@ -164,9 +170,10 @@ namespace gum {
                 << __setUpStateNames[static_cast<int>( __state )] );
 
       if ( modal >= __card )
-        GUM_ERROR( OutOfBounds, "LRSWrapper< GUM_SCALAR >::fillH : modality is "
-                                "greater or equal than cardinality : "
-                                    << modal << " >= " << __card );
+        GUM_ERROR( OutOfBounds,
+                   "LRSWrapper< GUM_SCALAR >::fillH : modality is "
+                   "greater or equal than cardinality : "
+                       << modal << " >= " << __card );
 
       __input[modal * 2][0] = -min;
       __input[modal * 2][modal + 1] = 1;
@@ -178,8 +185,7 @@ namespace gum {
 
       __insertedModals.insert( modal );
 
-      if ( __insertedModals.size() == __card )
-        __state = __states::H2Vready;
+      if ( __insertedModals.size() == __card ) __state = __states::H2Vready;
     }
 
     template <typename GUM_SCALAR>
@@ -254,7 +260,8 @@ namespace gum {
         __state = __states::V2Hready;
     }
 
-    template <typename GUM_SCALAR> void LRSWrapper<GUM_SCALAR>::H2V() {
+    template <typename GUM_SCALAR>
+    void LRSWrapper<GUM_SCALAR>::H2V() {
       if ( __state != __states::H2Vready )
         GUM_ERROR(
             OperationNotAllowed,
@@ -306,8 +313,8 @@ namespace gum {
                          "Q-hull computation or not reading a vertex !" );
             } else
               for ( decltype( __dat->n ) i = 1, end = __dat->n; i < end; i++ )
-                __getLRSWrapperOutput( __lrsOutput[i], __lrsOutput[0], Num,
-                                       Den );
+                __getLRSWrapperOutput(
+                    __lrsOutput[i], __lrsOutput[0], Num, Den );
           }
       } while ( lrs_getnextbasis( &__dic, __dat, 0L ) );
 
@@ -328,7 +335,8 @@ namespace gum {
       __coutOn();
     }
 
-    template <typename GUM_SCALAR> void LRSWrapper<GUM_SCALAR>::V2H() {
+    template <typename GUM_SCALAR>
+    void LRSWrapper<GUM_SCALAR>::V2H() {
       if ( !__state == __states::V2Hready )
         GUM_ERROR( OperationNotAllowed,
                    "LRSWrapper< GUM_SCALAR >::V2H : fillV has "
@@ -441,8 +449,9 @@ namespace gum {
 
       /* linearities */
       if ( nlinearity > 0 )
-        GUM_ERROR( FatalError, "LRSWrapper< GUM_SCALAR >::elimRedundVrep : not "
-                               "reading a vertex but a linearity !" );
+        GUM_ERROR( FatalError,
+                   "LRSWrapper< GUM_SCALAR >::elimRedundVrep : not "
+                   "reading a vertex but a linearity !" );
 
       /* count number of non-redundant inequalities */
       /*
@@ -471,7 +480,9 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::__getLRSWrapperOutput(
-        lrs_mp Nin, lrs_mp Din, std::vector<long int>& Num,
+        lrs_mp Nin,
+        lrs_mp Din,
+        std::vector<long int>& Num,
         std::vector<long int>& Den ) const {
 
       long int Nsize = ( Nin[0] > 0 ) ? Nin[0] : -Nin[0];
@@ -507,8 +518,7 @@ namespace gum {
       long int Nsign = ( ( Nin[0] < 0 ) ? -1L : 1L );
       long int Dsign = ( ( Din[0] < 0 ) ? -1L : 1L );
 
-      if ( ( Nsign * Dsign ) == -1L )
-        num = -num;
+      if ( ( Nsign * Dsign ) == -1L ) num = -num;
 
       Num.push_back( num );
       Den.push_back( den );
@@ -528,7 +538,8 @@ namespace gum {
          fprintf (lrs_ofp, " ");
     }*/
 
-    template <typename GUM_SCALAR> void LRSWrapper<GUM_SCALAR>::__fill() const {
+    template <typename GUM_SCALAR>
+    void LRSWrapper<GUM_SCALAR>::__fill() const {
       auto cols = __input[0].size();
 
       long int* num =
@@ -542,8 +553,8 @@ namespace gum {
 
       for ( decltype( rows ) row = 0; row < rows; row++ ) {
         for ( decltype( cols ) col = 0; col < cols; col++ ) {
-          Rational<GUM_SCALAR>::continuedFracFirst( numerator, denominator,
-                                                    __input[row][col] );
+          Rational<GUM_SCALAR>::continuedFracFirst(
+              numerator, denominator, __input[row][col] );
 
           num[col] = numerator;
           den[col] = denominator;
@@ -551,7 +562,11 @@ namespace gum {
 
         /* GE is inequality, EQ is equation */
         /* 1L, 0L respectively */
-        lrs_set_row( __dic, __dat, row + 1, num, den,
+        lrs_set_row( __dic,
+                     __dat,
+                     row + 1,
+                     num,
+                     den,
                      1L );  // do NOT forget this + 1 on row
       }
 
@@ -559,7 +574,8 @@ namespace gum {
       delete[] den;
     }
 
-    template <typename GUM_SCALAR> void LRSWrapper<GUM_SCALAR>::__initLrs() {
+    template <typename GUM_SCALAR>
+    void LRSWrapper<GUM_SCALAR>::__initLrs() {
       if ( __state != __states::H2Vready && __state != __states::V2Hready )
         GUM_ERROR(
             OperationNotAllowed,
@@ -629,7 +645,8 @@ namespace gum {
         __coutOn();
 
         for ( decltype( __dat->nredundcol ) col = 0, end = __dat->nredundcol;
-              col < end; col++ )
+              col < end;
+              col++ )
           lrs_printoutput( __dat, __Lin[col] );
 
         GUM_ERROR(
@@ -638,7 +655,8 @@ namespace gum {
       }
     }
 
-    template <typename GUM_SCALAR> void LRSWrapper<GUM_SCALAR>::__freeLrs() {
+    template <typename GUM_SCALAR>
+    void LRSWrapper<GUM_SCALAR>::__freeLrs() {
       /* free space : do not change order of next 3 lines! */
 
       lrs_clear_mp_vector_wrapper( __lrsOutput, __dat->n );

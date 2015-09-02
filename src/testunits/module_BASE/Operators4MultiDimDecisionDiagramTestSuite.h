@@ -131,8 +131,7 @@ namespace gum_tests {
 
       ret = facto->getMultiDimDecisionDiagram();
 
-      if ( factoryCreatedHere )
-        delete facto;
+      if ( factoryCreatedHere ) delete facto;
 
       return ret;
     }
@@ -168,8 +167,7 @@ namespace gum_tests {
 
       ret = facto->getMultiDimDecisionDiagram();
 
-      if ( factoryCreatedHere )
-        delete facto;
+      if ( factoryCreatedHere ) delete facto;
 
       return ret;
     }
@@ -178,9 +176,11 @@ namespace gum_tests {
 
     gum::MultiDimDecisionDiagramBase<double>*
     __generateRandomdoubleDecisionDiagram(
-        const gum::Sequence<const gum::DiscreteVariable*>* varList, int i,
+        const gum::Sequence<const gum::DiscreteVariable*>* varList,
+        int i,
         gum::MultiDimDecisionDiagramFactoryBase<double>* f = nullptr,
-        double lowLimit = -100, double highLimit = 100 ) {
+        double lowLimit = -100,
+        double highLimit = 100 ) {
 
       gum::MultiDimDecisionDiagramBase<double>* ret = nullptr;
       bool factoryCreatedHere = false;
@@ -188,8 +188,7 @@ namespace gum_tests {
       while ( ret == nullptr || ( ret->diagramVarSize() < minNbVarInDiagram ) ||
               ( ret->diagramVarSize() > maxNbVarInDiagram ) ) {
 
-        if ( ret != nullptr )
-          delete ret;
+        if ( ret != nullptr ) delete ret;
 
         if ( f == nullptr ) {
           factoryCreatedHere = true;
@@ -307,8 +306,7 @@ namespace gum_tests {
         ret = f->getMultiDimDecisionDiagram( true, 0, true );
       }
 
-      if ( factoryCreatedHere )
-        delete f;
+      if ( factoryCreatedHere ) delete f;
 
       return ret;
     }
@@ -364,7 +362,8 @@ namespace gum_tests {
     bool __evalOperation( gum::Idx operationId,
                           gum::MultiDimDecisionDiagramBase<double>* a1,
                           gum::MultiDimDecisionDiagramBase<double>* a2,
-                          double& tempsCalcul, double& tempsEval,
+                          double& tempsCalcul,
+                          double& tempsEval,
                           double delta = 0.01 ) {
 
       bool hasNoError = true;
@@ -417,8 +416,8 @@ namespace gum_tests {
 
           switch ( operationId ) {
             case 1:  // Test addition
-              TS_ASSERT_DELTA( a3->get( inst ),
-                               a1->get( inst ) + a2->get( inst ), delta );
+              TS_ASSERT_DELTA(
+                  a3->get( inst ), a1->get( inst ) + a2->get( inst ), delta );
 
               if ( a3->get( inst ) != a1->get( inst ) + a2->get( inst ) ) {
                 std::cout << "Instantiation : " << inst.toString() << std::endl;
@@ -428,8 +427,8 @@ namespace gum_tests {
               break;
 
             case 2:  // Test Substraction
-              TS_ASSERT_DELTA( a3->get( inst ),
-                               a1->get( inst ) - a2->get( inst ), delta );
+              TS_ASSERT_DELTA(
+                  a3->get( inst ), a1->get( inst ) - a2->get( inst ), delta );
 
               if ( a3->get( inst ) != a1->get( inst ) - a2->get( inst ) )
                 hasNoError = false;
@@ -437,8 +436,8 @@ namespace gum_tests {
               break;
 
             case 3:  // Test Multiplication
-              TS_ASSERT_DELTA( a3->get( inst ),
-                               a1->get( inst ) * a2->get( inst ), delta );
+              TS_ASSERT_DELTA(
+                  a3->get( inst ), a1->get( inst ) * a2->get( inst ), delta );
 
               if ( a3->get( inst ) != a1->get( inst ) * a2->get( inst ) )
                 hasNoError = false;
@@ -464,8 +463,7 @@ namespace gum_tests {
           }
         }
 
-        if ( !hasNoError )
-          __saveDiagrams( a1, a2, a3 );
+        if ( !hasNoError ) __saveDiagrams( a1, a2, a3 );
 
         delete a3;
       } else {
@@ -629,29 +627,25 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
           a3 = (gum::MultiDimDecisionDiagramBase<double>*)( a1 + a2 ) );
 
-      if ( a3 != nullptr )
-        delete a3;
+      if ( a3 != nullptr ) delete a3;
 
       // Test subtraction
       TS_GUM_ASSERT_THROWS_NOTHING(
           a3 = (gum::MultiDimDecisionDiagramBase<double>*)( a1 - a2 ) );
 
-      if ( a3 != nullptr )
-        delete a3;
+      if ( a3 != nullptr ) delete a3;
 
       // Test multiplication
       TS_GUM_ASSERT_THROWS_NOTHING(
           a3 = (gum::MultiDimDecisionDiagramBase<double>*)( a1 * a2 ) );
 
-      if ( a3 != nullptr )
-        delete a3;
+      if ( a3 != nullptr ) delete a3;
 
       // Test division
       TS_GUM_ASSERT_THROWS_NOTHING(
           a3 = (gum::MultiDimDecisionDiagramBase<double>*)( a1 / a2 ) );
 
-      if ( a3 != nullptr )
-        delete a3;
+      if ( a3 != nullptr ) delete a3;
     }
 
     //

@@ -46,8 +46,8 @@ namespace gum {
     return coco_string_create( value, startIndex, len );
   }
 
-  wchar_t* coco_string_create( const wchar_t* value, int startIndex,
-                               int length ) {
+  wchar_t*
+  coco_string_create( const wchar_t* value, int startIndex, int length ) {
     int len = 0;
     wchar_t* data;
 
@@ -96,8 +96,8 @@ namespace gum {
     return coco_string_create_lower( data, 0, dataLen );
   }
 
-  wchar_t* coco_string_create_lower( const wchar_t* data, int startIndex,
-                                     int dataLen ) {
+  wchar_t*
+  coco_string_create_lower( const wchar_t* data, int startIndex, int dataLen ) {
     if ( !data ) {
       return nullptr;
     }

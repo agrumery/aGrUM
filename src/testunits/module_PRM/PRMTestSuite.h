@@ -35,7 +35,7 @@
 
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
-#define GET_PATH_STR_O3PRM( x )                                                \
+#define GET_PATH_STR_O3PRM( x ) \
   xstrfy( GUM_SRC_PATH ) "/testunits/ressources/o3prm/" #x
 namespace gum_tests {
 
@@ -130,7 +130,8 @@ namespace gum_tests {
 
       for ( auto iter = sys.begin(); iter != sys.end(); ++iter ) {
         for ( auto jter = ( *( iter.val() ) ).begin();
-              jter != ( *( iter.val() ) ).end(); ++jter ) {
+              jter != ( *( iter.val() ) ).end();
+              ++jter ) {
           ++count;
         }
       }
@@ -168,10 +169,12 @@ namespace gum_tests {
       gum::prm::System<double>& sys = prm->system( "aSys" );
 
       for ( gum::prm::System<double>::iterator iter = sys.begin();
-            iter != sys.end(); ++iter ) {
+            iter != sys.end();
+            ++iter ) {
         for ( gum::prm::Instance<double>::iterator jter =
                   ( *( iter.val() ) ).begin();
-              jter != ( *( iter.val() ) ).end(); ++jter ) {
+              jter != ( *( iter.val() ) ).end();
+              ++jter ) {
           gum::Instantiation i( ( *( jter.val() ) ).cpf() ), var;
           var.add( ( *( jter.val() ) ).type().variable() );
 

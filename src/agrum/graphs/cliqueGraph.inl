@@ -41,10 +41,6 @@ namespace gum {
     return *this;
   }
 
-  INLINE void CliqueGraph::insertEdge( const NodeId first,
-                                       const NodeId second ) {
-    addEdge( first, second );
-  }
   INLINE void CliqueGraph::addEdge( const NodeId first, const NodeId second ) {
     Edge edge( first, second );
 
@@ -68,9 +64,6 @@ namespace gum {
 
   /// adds a new clique to the graph
 
-  INLINE NodeId CliqueGraph::insertNode( const NodeSet& clique ) {
-    return addNode( clique );
-  }
   INLINE NodeId CliqueGraph::addNode( const NodeSet& clique ) {
     // create the new node in the graph
     NodeId new_node = UndiGraph::addNode();
@@ -80,15 +73,10 @@ namespace gum {
     return new_node;
   }
 
-  INLINE NodeId CliqueGraph::insertNode() { return addNode(); }
   INLINE NodeId CliqueGraph::addNode() { return addNode( NodeSet() ); }
 
   /// adds a new clique to the graph
 
-  INLINE void CliqueGraph::insertNode( const NodeId id,
-                                       const NodeSet& clique ) {
-    addNode( id, clique );
-  }
   INLINE void CliqueGraph::addNode( const NodeId id, const NodeSet& clique ) {
     // create the new node in the graph
     UndiGraph::addNode( id );
@@ -97,7 +85,6 @@ namespace gum {
     __cliques.insert( id, clique );
   }
 
-  INLINE void CliqueGraph::insertNode( const NodeId id ) { addNode( id ); }
   INLINE void CliqueGraph::addNode( const NodeId id ) {
     addNode( id, NodeSet() );
   }
@@ -106,8 +93,7 @@ namespace gum {
 
   INLINE void CliqueGraph::eraseNode( const NodeId id ) {
     // check if the node belongs to the graph
-    if ( !exists( id ) )
-      return;
+    if ( !exists( id ) ) return;
 
     // remove the separators
     auto nei = neighbours( id );
@@ -133,8 +119,7 @@ namespace gum {
 
   INLINE NodeId CliqueGraph::container( const NodeId id ) const {
     for ( const auto& elt : __cliques )
-      if ( elt.second.contains( id ) )
-        return elt.first;
+      if ( elt.second.contains( id ) ) return elt.first;
 
     GUM_ERROR( NotFound, "This node belongs to no clique" );
   }

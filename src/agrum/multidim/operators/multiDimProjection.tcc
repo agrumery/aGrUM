@@ -76,7 +76,8 @@ namespace gum {
   /// creates and returns the projection of the table over a subset of its vars
   template <typename GUM_SCALAR, template <typename> class TABLE>
   INLINE void MultiDimProjection<GUM_SCALAR, TABLE>::project(
-      TABLE<GUM_SCALAR>& container, const TABLE<GUM_SCALAR>& table,
+      TABLE<GUM_SCALAR>& container,
+      const TABLE<GUM_SCALAR>& table,
       const Set<const TABLE<GUM_SCALAR>*>& del_vars ) {
     TABLE<GUM_SCALAR>* res = project( table, del_vars );
     container = *res;
@@ -118,7 +119,8 @@ namespace gum {
 
     for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe iter =
               vars.beginSafe();
-          iter != vars.endSafe(); ++iter ) {
+          iter != vars.endSafe();
+          ++iter ) {
       res *= ( *iter )->domainSize();
     }
 
@@ -134,7 +136,8 @@ namespace gum {
 
     for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe iter =
               vars.beginSafe();
-          iter != vars.endSafe(); ++iter ) {
+          iter != vars.endSafe();
+          ++iter ) {
       if ( !del_vars.contains( *iter ) ) {
         if ( std::numeric_limits<long>::max() / (long)( *iter )->domainSize() <
              res ) {

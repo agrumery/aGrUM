@@ -111,30 +111,9 @@ namespace gum {
     Size sizeArcs() const;
 
     /**
-     * Returns the number of arcs in this Directed Graphical Model.
-     *
-     * @deprecated Please use sizeArcs
-     */
-    GUM_DEPRECATED( Size nbrArcs() const );
-
-    /**
      * Retursn true if this Directed Graphical Model is empty.
      */
     bool empty() const;
-
-    /**
-     * Shortcut for this->dag().beginNodes()
-     *
-     * @deprecated use for(auto node:obj.nodes()) instead
-     */
-    GUM_DEPRECATED( const DAG::NodeIterator beginNodes() const );
-
-    /**
-     * Shortcut for this->dag().endNodes()
-     *
-     * @deprecated use for(auto node:obj.nodes()) instead
-     */
-    GUM_DEPRECATED( const DAG::NodeIterator endNodes() const );
 
     const NodeGraphPart& nodes() const;
 
@@ -165,21 +144,6 @@ namespace gum {
 
     /// @name Arc manipulation methods.
     /// @{
-
-    /**
-     * Shortcut for this->dag().beginArcs().
-     *
-     * @deprecated Use for(auto arc : obj.arcs()) instead
-     */
-    GUM_DEPRECATED( const DAG::ArcIterator beginArcs() const );
-
-    /**
-     * Shortcut for this->dag().endArcs().
-     *
-     * @deprecated Use for(auto arc : obj.arcs()) instead
-     */
-    GUM_DEPRECATED( const DAG::ArcIterator& endArcs() const );
-
     const ArcSet& arcs( void ) const;
     /// @}
 

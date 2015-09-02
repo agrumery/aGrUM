@@ -63,12 +63,17 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-  template <typename Key> class SetIteratorSafe;
-  template <typename Key> class SetIterator;
-  template <typename Key, typename Alloc> class Set;
+  template <typename Key>
+  class SetIteratorSafe;
+  template <typename Key>
+  class SetIterator;
+  template <typename Key, typename Alloc>
+  class Set;
 
-  template <typename Key> using SetConstIterator = SetIterator<Key>;
-  template <typename Key> using SetConstIteratorSafe = SetIteratorSafe<Key>;
+  template <typename Key>
+  using SetConstIterator = SetIterator<Key>;
+  template <typename Key>
+  using SetConstIteratorSafe = SetIteratorSafe<Key>;
 
   // a class used to create the static iterator used by Sets. The aim of
   // using this class rather than just creating __SetIterEnd as a global
@@ -94,7 +99,8 @@ namespace gum {
     static const SetIterator<int>* constEnd4Statics();
 
     // friends that have access to the iterator
-    template <typename Key, typename Alloc> friend class Set;
+    template <typename Key, typename Alloc>
+    friend class Set;
   };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
@@ -149,7 +155,8 @@ namespace gum {
    * @endcode
    *
    */
-  template <typename Key, typename Alloc = std::allocator<Key>> class Set {
+  template <typename Key, typename Alloc = std::allocator<Key>>
+  class Set {
     public:
     /// types for STL compliance
     /// @{
@@ -190,7 +197,8 @@ namespace gum {
     Set( const Set<Key, Alloc>& aHT );
 
     /// generalized copy constructor
-    template <typename OtherAlloc> Set( const Set<Key, OtherAlloc>& aHT );
+    template <typename OtherAlloc>
+    Set( const Set<Key, OtherAlloc>& aHT );
 
     /// move constructor
     Set( Set<Key, Alloc>&& aHT );
@@ -271,7 +279,8 @@ namespace gum {
      * @param args the arguments passed to the constructor
      * @warning if the set already contains the element, nothing is done.
      * In particular, it is not added to the set and no exception is thrown. */
-    template <typename... Args> void emplace( Args&&... args );
+    template <typename... Args>
+    void emplace( Args&&... args );
 
     /// erases an element from the set
     /** @warning if the set does not contain the element, nothing is done.
@@ -573,7 +582,8 @@ namespace gum {
     // friends
     friend class SetIterator<Key>;
     friend class SetIteratorSafe<Key>;
-    template <typename K, typename A> friend class Set;
+    template <typename K, typename A>
+    friend class Set;
 
     /// a set of X's is actually a hashtable whose keys are the X's
     HashTable<Key, bool, Alloc> __inside;
@@ -615,7 +625,8 @@ namespace gum {
    *
    * @endcode
    */
-  template <typename Key> class SetIteratorSafe {
+  template <typename Key>
+  class SetIteratorSafe {
     public:
     /// types for STL compliance
     /// @{
@@ -720,7 +731,8 @@ namespace gum {
 
     private:
     /// for efficiency, Set should be able to modify the hashtable iterator
-    template <typename K, typename A> friend class Set;
+    template <typename K, typename A>
+    friend class Set;
 
     /// the underlying iterator for the set's hashtable containing the data
     HashTableConstIteratorSafe<Key, bool> __ht_iter;
@@ -763,7 +775,8 @@ namespace gum {
    *
    * @endcode
    */
-  template <typename Key> class SetIterator {
+  template <typename Key>
+  class SetIterator {
     public:
     /// types for STL compliance
     /// @{
@@ -862,7 +875,8 @@ namespace gum {
 
     private:
     /// for efficiency, Set should be able to modify the hashtable iterator
-    template <typename K, typename A> friend class Set;
+    template <typename K, typename A>
+    friend class Set;
     friend class SetIteratorSafe<Key>;
 
     /// the underlying iterator for the set's hashtable containing the data

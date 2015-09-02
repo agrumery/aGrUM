@@ -32,7 +32,8 @@ namespace gum {
 
   /// default constructor
   DefaultJunctionTreeStrategy::DefaultJunctionTreeStrategy()
-      : __triangulation( 0 ), __has_junction_tree( true ) {
+      : __triangulation( 0 )
+      , __has_junction_tree( true ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( DefaultJunctionTreeStrategy );
   }
@@ -64,8 +65,7 @@ namespace gum {
   /// returns, for each node, the clique which was created by its deletion
   const NodeProperty<NodeId>& DefaultJunctionTreeStrategy::createdCliques() {
     // compute the junction tree only if it does not already exist
-    if ( !__has_junction_tree )
-      __computeJunctionTree();
+    if ( !__has_junction_tree ) __computeJunctionTree();
 
     return __node_2_junction_clique;
   }
@@ -74,8 +74,7 @@ namespace gum {
    * elimination of a given node during the triangulation process */
   NodeId DefaultJunctionTreeStrategy::createdClique( const NodeId id ) {
     // compute the junction tree only if it does not already exist
-    if ( !__has_junction_tree )
-      __computeJunctionTree();
+    if ( !__has_junction_tree ) __computeJunctionTree();
 
     return __node_2_junction_clique[id];
   }
@@ -83,8 +82,7 @@ namespace gum {
   /// returns the junction tree asked by the triangulation
   const CliqueGraph& DefaultJunctionTreeStrategy::junctionTree() {
     // compute the junction tree only if it does not already exist
-    if ( !__has_junction_tree )
-      __computeJunctionTree();
+    if ( !__has_junction_tree ) __computeJunctionTree();
 
     return __junction_tree;
   }
@@ -92,8 +90,7 @@ namespace gum {
   /// computes a junction tree from an elimination tree
   void DefaultJunctionTreeStrategy::__computeJunctionTree() {
     // if no triangulation is assigned to the strategy, do nothing
-    if ( !__triangulation )
-      return;
+    if ( !__triangulation ) return;
 
     // get the elimination tree
     const CliqueGraph& elim_tree = __triangulation->eliminationTree();

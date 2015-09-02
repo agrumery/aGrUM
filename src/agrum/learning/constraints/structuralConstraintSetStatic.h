@@ -61,7 +61,8 @@ namespace gum {
 
     // a structure to concatenate __ConstraintSets or simply constraints and
     // produce as a result a new __ConstraintSet
-    template <typename SET1, typename SET2> struct __ConcatConstraintSet;
+    template <typename SET1, typename SET2>
+    struct __ConcatConstraintSet;
 
     // a helper function to create minimum structural constraint sets and the
     // methods actually used on all these constraints. This is a helper for
@@ -72,7 +73,8 @@ namespace gum {
     // ============================================================================
     // checks whether a given structural constraint belongs to a given set of
     // structural constraints
-    template <typename CONSTRAINT, typename SET> struct __IsInConstraintSet;
+    template <typename CONSTRAINT, typename SET>
+    struct __IsInConstraintSet;
 
     template <typename CONSTRAINT, typename SET>
     struct __IsInConstraintSet<CONSTRAINT, __ConstraintSet<SET>> {
@@ -104,13 +106,15 @@ namespace gum {
                               __ConstraintSet<OTHER_CONSTRAINTS...>>::value,
           typename __ConstraintSet<OTHER_CONSTRAINTS...>::minset,
           typename __ConcatConstraintSet<
-              FIRST_CONSTRAINT, typename __ConstraintSet<
-                                    OTHER_CONSTRAINTS...>::minset>::type>::type;
+              FIRST_CONSTRAINT,
+              typename __ConstraintSet<OTHER_CONSTRAINTS...>::minset>::type>::
+          type;
       using set = __StructuralConstraintSetStatic<FIRST_CONSTRAINT,
                                                   OTHER_CONSTRAINTS...>;
     };
 
-    template <typename CONSTRAINT> struct __ConstraintSet<CONSTRAINT> {
+    template <typename CONSTRAINT>
+    struct __ConstraintSet<CONSTRAINT> {
       using minset = __ConstraintSet<CONSTRAINT>;
       using set = __StructuralConstraintSetStatic<CONSTRAINT>;
     };
@@ -118,7 +122,8 @@ namespace gum {
     // ============================================================================
     // a structure to concatenate __ConstraintSets or simply constraints and
     // produce as a result a new __ConstraintSet
-    template <typename SET1, typename SET2> struct __ConcatConstraintSet;
+    template <typename SET1, typename SET2>
+    struct __ConcatConstraintSet;
 
     template <typename CONSTRAINT1, typename CONSTRAINT2>
     struct __ConcatConstraintSet<CONSTRAINT1, __ConstraintSet<CONSTRAINT2>> {
@@ -131,15 +136,18 @@ namespace gum {
       using type = __ConstraintSet<CONSTRAINT1, CONSTRAINT2>;
     };
 
-    template <typename CONSTRAINT1, typename CONSTRAINT2,
+    template <typename CONSTRAINT1,
+              typename CONSTRAINT2,
               typename... OTHER_CONSTRAINT2>
     struct __ConcatConstraintSet<
-        CONSTRAINT1, __ConstraintSet<CONSTRAINT2, OTHER_CONSTRAINT2...>> {
+        CONSTRAINT1,
+        __ConstraintSet<CONSTRAINT2, OTHER_CONSTRAINT2...>> {
       using type =
           __ConstraintSet<CONSTRAINT1, CONSTRAINT2, OTHER_CONSTRAINT2...>;
     };
 
-    template <typename CONSTRAINT1, typename CONSTRAINT2,
+    template <typename CONSTRAINT1,
+              typename CONSTRAINT2,
               typename... OTHER_CONSTRAINT1>
     struct __ConcatConstraintSet<
         __ConstraintSet<CONSTRAINT1, OTHER_CONSTRAINT1...>,
@@ -148,12 +156,16 @@ namespace gum {
           __ConstraintSet<CONSTRAINT1, OTHER_CONSTRAINT1..., CONSTRAINT2>;
     };
 
-    template <typename CONSTRAINT1, typename CONSTRAINT2,
-              typename... OTHER_CONSTR1, typename... OTHER_CONSTR2>
+    template <typename CONSTRAINT1,
+              typename CONSTRAINT2,
+              typename... OTHER_CONSTR1,
+              typename... OTHER_CONSTR2>
     struct __ConcatConstraintSet<
         __ConstraintSet<CONSTRAINT1, OTHER_CONSTR1...>,
         __ConstraintSet<CONSTRAINT2, OTHER_CONSTR2...>> {
-      using type = __ConstraintSet<CONSTRAINT1, OTHER_CONSTR1..., CONSTRAINT2,
+      using type = __ConstraintSet<CONSTRAINT1,
+                                   OTHER_CONSTR1...,
+                                   CONSTRAINT2,
                                    OTHER_CONSTR2...>;
     };
 
@@ -179,7 +191,8 @@ namespace gum {
           typename std::conditional<
               std::is_base_of<__StructuralRoot, CONSTRAINT1>::value,
               typename __ConcatConstraintSet<
-                  CONSTRAINT1, typename CONSTRAINT1::allConstraints>::type,
+                  CONSTRAINT1,
+                  typename CONSTRAINT1::allConstraints>::type,
               __ConstraintSet<CONSTRAINT1>>::type,
           typename next_constraints::allConstraints>::type;
 
@@ -202,8 +215,9 @@ namespace gum {
       __StructuralConstraintSetStatic();
 
       /// copy constructor
-      __StructuralConstraintSetStatic( const __StructuralConstraintSetStatic<
-          CONSTRAINT1, OTHER_CONSTRAINTS...>& );
+      __StructuralConstraintSetStatic(
+          const __StructuralConstraintSetStatic<CONSTRAINT1,
+                                                OTHER_CONSTRAINTS...>& );
 
       /// destructor
       ~__StructuralConstraintSetStatic();
@@ -286,7 +300,8 @@ namespace gum {
       using allConstraints = typename std::conditional<
           std::is_base_of<__StructuralRoot, CONSTRAINT>::value,
           typename __ConcatConstraintSet<
-              CONSTRAINT, typename CONSTRAINT::allConstraints>::type,
+              CONSTRAINT,
+              typename CONSTRAINT::allConstraints>::type,
           __ConstraintSet<CONSTRAINT>>::type;
 
       /** @brief determines the minimal set of constraints included in the set
@@ -406,10 +421,12 @@ namespace gum {
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     class StructuralConstraintSetStatic
         : public virtual __StructuralConstraintSetStatic<
-              CONSTRAINT1, OTHER_CONSTRAINTS...>::minConstraints {
+              CONSTRAINT1,
+              OTHER_CONSTRAINTS...>::minConstraints {
       public:
       using constraints = typename __StructuralConstraintSetStatic<
-          CONSTRAINT1, OTHER_CONSTRAINTS...>::minConstraints;
+          CONSTRAINT1,
+          OTHER_CONSTRAINTS...>::minConstraints;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -420,8 +437,9 @@ namespace gum {
       StructuralConstraintSetStatic();
 
       /// copy constructor
-      StructuralConstraintSetStatic( const StructuralConstraintSetStatic<
-          CONSTRAINT1, OTHER_CONSTRAINTS...>& );
+      StructuralConstraintSetStatic(
+          const StructuralConstraintSetStatic<CONSTRAINT1,
+                                              OTHER_CONSTRAINTS...>& );
 
       /// destructor
       ~StructuralConstraintSetStatic();

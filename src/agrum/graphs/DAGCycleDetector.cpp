@@ -52,14 +52,12 @@ namespace gum {
       unsigned int nb_ch = dag.children( node ).size();
       nb_children.insert( node, nb_ch );
 
-      if ( !nb_ch )
-        leaves.insert( node );
+      if ( !nb_ch ) leaves.insert( node );
 
       unsigned int nb_pa = dag.parents( node ).size();
       nb_parents.insert( node, nb_pa );
 
-      if ( !nb_pa )
-        roots.insert( node );
+      if ( !nb_pa ) roots.insert( node );
     }
 
     // recompute the set of ancestors
@@ -137,8 +135,7 @@ namespace gum {
           break;
 
         case ChangeType::ARC_ADDITION:
-          if ( modif.tail() == modif.head() )
-            return true;
+          if ( modif.tail() == modif.head() ) return true;
 
           if ( additions.exists( arc ) )
             ++additions[arc];
@@ -168,7 +165,8 @@ namespace gum {
     }
 
     for ( auto iter = additions.beginSafe();  // safe iterator needed here
-          iter != additions.endSafe(); ++iter ) {
+          iter != additions.endSafe();
+          ++iter ) {
       if ( deletions.exists( iter.key() ) ) {
         unsigned int& nb_del = deletions[iter.key()];
         unsigned int& nb_add = iter.val();
@@ -249,7 +247,8 @@ namespace gum {
       __delWeightedSet( descendants[tail], set_to_del, 1 );
 
       for ( auto iter = anc_tail.cbegin(); iter != anc_tail.cend(); ++iter ) {
-        __delWeightedSet( descendants[iter.key()], set_to_del,
+        __delWeightedSet( descendants[iter.key()],
+                          set_to_del,
                           descendants[iter.key()][tail] );
       }
 
@@ -259,8 +258,8 @@ namespace gum {
       __delWeightedSet( ancestors[head], set_to_del, 1 );
 
       for ( auto iter = desc_head.cbegin(); iter != desc_head.cend(); ++iter ) {
-        __delWeightedSet( ancestors[iter.key()], set_to_del,
-                          ancestors[iter.key()][head] );
+        __delWeightedSet(
+            ancestors[iter.key()], set_to_del, ancestors[iter.key()][head] );
       }
     }
 
@@ -294,8 +293,8 @@ namespace gum {
       __addWeightedSet( ancestors[head], set_to_add, 1 );
 
       for ( auto iter = desc_head.cbegin(); iter != desc_head.cend(); ++iter ) {
-        __addWeightedSet( ancestors[iter.key()], set_to_add,
-                          ancestors[iter.key()][head] );
+        __addWeightedSet(
+            ancestors[iter.key()], set_to_add, ancestors[iter.key()][head] );
       }
 
       // update the set of descendants
@@ -304,7 +303,8 @@ namespace gum {
       __addWeightedSet( descendants[tail], set_to_add, 1 );
 
       for ( auto iter = anc_tail.cbegin(); iter != anc_tail.cend(); ++iter ) {
-        __addWeightedSet( descendants[iter.key()], set_to_add,
+        __addWeightedSet( descendants[iter.key()],
+                          set_to_add,
                           descendants[iter.key()][tail] );
       }
     }
@@ -313,14 +313,9 @@ namespace gum {
   }
 
   /// adds a new arc to the current DAG
-  void DAGCycleDetector::insertArc( NodeId tail, NodeId head ) {
-    addArc( tail, head );
-  }
-  /// adds a new arc to the current DAG
   void DAGCycleDetector::addArc( NodeId tail, NodeId head ) {
     // check that the arc does not already exist
-    if ( __dag.existsArc( tail, head ) )
-      return;
+    if ( __dag.existsArc( tail, head ) ) return;
 
     // check that the arc would not create a cycle
     if ( hasCycleFromAddition( tail, head ) ) {
@@ -341,8 +336,8 @@ namespace gum {
     __addWeightedSet( __ancestors[head], set_to_add, 1 );
 
     for ( auto iter = desc_head.cbegin(); iter != desc_head.cend(); ++iter ) {
-      __addWeightedSet( __ancestors[iter.key()], set_to_add,
-                        __ancestors[iter.key()][head] );
+      __addWeightedSet(
+          __ancestors[iter.key()], set_to_add, __ancestors[iter.key()][head] );
     }
 
     // update the set of descendants
@@ -351,7 +346,8 @@ namespace gum {
     __addWeightedSet( __descendants[tail], set_to_add, 1 );
 
     for ( auto iter = anc_tail.cbegin(); iter != anc_tail.cend(); ++iter ) {
-      __addWeightedSet( __descendants[iter.key()], set_to_add,
+      __addWeightedSet( __descendants[iter.key()],
+                        set_to_add,
                         __descendants[iter.key()][tail] );
     }
   }
@@ -359,8 +355,7 @@ namespace gum {
   /// removes an arc from the current DAG
   void DAGCycleDetector::eraseArc( NodeId tail, NodeId head ) {
     // check that the arc exists
-    if ( !__dag.existsArc( tail, head ) )
-      return;
+    if ( !__dag.existsArc( tail, head ) ) return;
 
     __dag.eraseArc( Arc( tail, head ) );
 
@@ -375,7 +370,8 @@ namespace gum {
     __delWeightedSet( __descendants[tail], set_to_del, 1 );
 
     for ( auto iter = anc_tail.cbegin(); iter != anc_tail.cend(); ++iter ) {
-      __delWeightedSet( __descendants[iter.key()], set_to_del,
+      __delWeightedSet( __descendants[iter.key()],
+                        set_to_del,
                         __descendants[iter.key()][tail] );
     }
 
@@ -385,8 +381,8 @@ namespace gum {
     __delWeightedSet( __ancestors[head], set_to_del, 1 );
 
     for ( auto iter = desc_head.cbegin(); iter != desc_head.cend(); ++iter ) {
-      __delWeightedSet( __ancestors[iter.key()], set_to_del,
-                        __ancestors[iter.key()][head] );
+      __delWeightedSet(
+          __ancestors[iter.key()], set_to_del, __ancestors[iter.key()][head] );
     }
   }
 

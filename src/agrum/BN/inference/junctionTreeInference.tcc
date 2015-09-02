@@ -55,7 +55,8 @@ namespace gum {
   // initialization function
   template <typename GUM_SCALAR>
   INLINE void JunctionTreeInference<GUM_SCALAR>::__initialize(
-      const IBayesNet<GUM_SCALAR>& BN, StaticTriangulation& triangulation,
+      const IBayesNet<GUM_SCALAR>& BN,
+      StaticTriangulation& triangulation,
       const NodeProperty<Size>& modalities ) {
     const JunctionTree& triang_jt = triangulation.junctionTree();
     BinaryJoinTreeConverterDefault bon_converter;
@@ -91,8 +92,9 @@ namespace gum {
       // parents)
       // eliminated => the clique created during its elmination contains iter
       // and all of its parents => it can contain iter's potential
-      __node_to_clique.insert( node, triangulation.createdJunctionTreeClique(
-                                         first_eliminated_node ) );
+      __node_to_clique.insert(
+          node,
+          triangulation.createdJunctionTreeClique( first_eliminated_node ) );
     }
 
     // create empty potential lists into the cliques of the joint tree as well
@@ -169,8 +171,8 @@ namespace gum {
     }
 
     // initialize the __triangulation algorithm
-    OrderedTriangulation triangulation( &( this->bn().moralGraph() ),
-                                        &modalities, &elim_order );
+    OrderedTriangulation triangulation(
+        &( this->bn().moralGraph() ), &modalities, &elim_order );
 
     __initialize( this->bn(), triangulation, modalities );
   }
@@ -241,8 +243,7 @@ namespace gum {
     this->_invalidatePosteriors();
     // if the evidence does not exist, do nothing
 
-    if ( !__evidences.contains( pot ) )
-      return;
+    if ( !__evidences.contains( pot ) ) return;
 
     // remove the potential from the list of evidence of the cliques
     // @todo : elle n'est pas que dans une seule clique ?
@@ -422,8 +423,7 @@ namespace gum {
       List<const Potential<GUM_SCALAR>*>& pot_to_mult = pot_per_var[del_var];
       // if there is no poential to multiply, do nothing
 
-      if ( pot_to_mult.size() == 0 )
-        continue;
+      if ( pot_to_mult.size() == 0 ) continue;
 
       // compute the product of all the potentials
       Potential<GUM_SCALAR>* joint;
@@ -471,8 +471,7 @@ namespace gum {
 
       // posterior->marginalize( *joint );
 
-      if ( joint_to_delete )
-        delete joint;
+      if ( joint_to_delete ) delete joint;
 
       // update pot_vars_per_var : remove the variables of the potential we
       // multiplied from this table
@@ -583,7 +582,8 @@ namespace gum {
 
     for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter =
               evidence_list.cbeginSafe();
-          iter != evidence_list.cendSafe(); ++iter )
+          iter != evidence_list.cendSafe();
+          ++iter )
       pot_list.insert( *iter );
 
     // add the messages sent by adjacent nodes to from_id
@@ -615,8 +615,7 @@ namespace gum {
     __collected_cliques[id] = true;
 
     for ( const auto other : __JT->neighbours( id ) )
-      if ( other != from )
-        __collect( other, id );
+      if ( other != from ) __collect( other, id );
 
     if ( id != from ) {
       __produceMessage( id, from );
@@ -631,8 +630,7 @@ namespace gum {
     NodeId clique = __node_to_clique[id];
     // check if we really need to perform an inference
 
-    if ( !force_collect && __collected_cliques[clique] )
-      return;
+    if ( !force_collect && __collected_cliques[clique] ) return;
 
     // clean-up the area that will receive the __collect
     __setRequiredInference( clique, clique );
@@ -673,8 +671,7 @@ namespace gum {
     } else if ( __diffused_cliques[clique] )
       return;
 
-    if ( !__collected_cliques[clique] )
-      __collect( clique, false );
+    if ( !__collected_cliques[clique] ) __collect( clique, false );
 
     __diffusion( clique, clique );
   }
@@ -715,13 +712,11 @@ namespace gum {
 
     // perform the __collect in all connected components of the junction tree
     for ( const auto& elt : __collected_cliques )
-      if ( !elt.second )
-        __collect( elt.first, elt.first );
+      if ( !elt.second ) __collect( elt.first, elt.first );
 
     // perform the __diffusion in all connected components of the junction tree
     for ( const auto& elt : __diffused_cliques )
-      if ( !elt.second )
-        __diffusion( elt.first, elt.first );
+      if ( !elt.second ) __diffusion( elt.first, elt.first );
 
     // indicate that we performed the inference with root =
     // __collected_cliques.begin()
@@ -784,8 +779,7 @@ namespace gum {
     Set<const DiscreteVariable*> del_vars( nodes.size() );
 
     for ( const auto node : nodes )
-      if ( node != id )
-        del_vars.insert( &( this->bn().variable( node ) ) );
+      if ( node != id ) del_vars.insert( &( this->bn().variable( node ) ) );
 
     // pot_list now contains all the potentials to multiply and marginalize
     // => combine the messages
@@ -858,7 +852,8 @@ namespace gum {
 
     for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter =
               clique_pot.cbeginSafe();
-          iter != clique_pot.cendSafe(); ++iter ) {
+          iter != clique_pot.cendSafe();
+          ++iter ) {
       pot_list.insert( *iter );
     }
 
@@ -868,7 +863,8 @@ namespace gum {
 
     for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter =
               evidence_list.cbeginSafe();
-          iter != evidence_list.cendSafe(); ++iter ) {
+          iter != evidence_list.cendSafe();
+          ++iter ) {
       pot_list.insert( *iter );
     }
 

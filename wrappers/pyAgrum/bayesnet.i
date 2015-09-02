@@ -174,6 +174,27 @@
         return false;
     }
 
+
+    bool loadPRM(std::string name, PyObject *l=(PyObject*)0)
+    {
+        std::vector<PythonLoadListener> py_listener;
+        std::stringstream stream;
+  
+        try {
+            gum::O3prmBNReader<double> reader(self,name);
+            if (reader.proceed()>0) {
+                reader.showElegantErrorsAndWarnings(stream);
+                reader.showErrorCounts(stream);
+                return (reader.errors()==0);
+            } else {
+                return true;
+            }
+        } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
+
+        GUM_ERROR(gum::IOError,stream.str());
+        return false;
+    }
+
    void saveNET(std::string name) {
         gum::NetWriter<GUM_SCALAR> writer;
         writer.write( name, *self );

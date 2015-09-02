@@ -73,7 +73,8 @@ namespace gum {
                              std::string extends = "" ) = 0;
       virtual void endDiscreteType() = 0;
       virtual void
-      startClass( const std::string& c, const std::string& extends = "",
+      startClass( const std::string& c,
+                  const std::string& extends = "",
                   const Set<std::string>* implements = nullptr ) = 0;
       virtual void endClass() = 0;
       virtual void startInterface( const std::string& i,
@@ -96,7 +97,8 @@ namespace gum {
       setRawCPFByLines( const std::vector<std::string>& array ) = 0;
       virtual void endAttribute() = 0;
       virtual void addParameter( const std::string& type,
-                                 const std::string& name, double value ) = 0;
+                                 const std::string& name,
+                                 double value ) = 0;
       virtual void addAggregator( const std::string& name,
                                   const std::string& agg_type,
                                   const std::vector<std::string>& chains,
@@ -104,7 +106,8 @@ namespace gum {
       virtual void
       addNoisyOrCompound( const std::string& name,
                           const std::vector<std::string>& chains,
-                          const std::vector<float>& numbers, float leak,
+                          const std::vector<float>& numbers,
+                          float leak,
                           const std::vector<std::string>& label ) = 0;
       virtual void addReferenceSlot( const std::string& type,
                                      const std::string& name,
@@ -114,9 +117,11 @@ namespace gum {
       virtual void addInstance( const std::string& type,
                                 const std::string& name ) = 0;
       virtual void
-      addInstance( const std::string& type, const std::string& name,
+      addInstance( const std::string& type,
+                   const std::string& name,
                    const HashTable<std::string, double>& params ) = 0;
-      virtual void addArray( const std::string& type, const std::string& name,
+      virtual void addArray( const std::string& type,
+                             const std::string& name,
                              Size size ) = 0;
       virtual void incArray( const std::string& l_i,
                              const std::string& r_i ) = 0;

@@ -194,17 +194,28 @@ namespace gum {
     std::ostream& operator<<( std::ostream& out, PRMObject::PRMType obj_type );
 
     // list of declarations of PRMObjects
-    template <typename GUM_SCALAR> class Type;
-    template <typename GUM_SCALAR> class ClassElement;
-    template <typename GUM_SCALAR> class ClassElementContainer;
-    template <typename GUM_SCALAR> class Aggregate;
-    template <typename GUM_SCALAR> class Interface;
-    template <typename GUM_SCALAR> class Attribute;
-    template <typename GUM_SCALAR> class SlotChain;
-    template <typename GUM_SCALAR> class ReferenceSlot;
-    template <typename GUM_SCALAR> class Class;
-    template <typename GUM_SCALAR> class Instance;
-    template <typename GUM_SCALAR> class System;
+    template <typename GUM_SCALAR>
+    class Type;
+    template <typename GUM_SCALAR>
+    class ClassElement;
+    template <typename GUM_SCALAR>
+    class ClassElementContainer;
+    template <typename GUM_SCALAR>
+    class Aggregate;
+    template <typename GUM_SCALAR>
+    class Interface;
+    template <typename GUM_SCALAR>
+    class Attribute;
+    template <typename GUM_SCALAR>
+    class SlotChain;
+    template <typename GUM_SCALAR>
+    class ReferenceSlot;
+    template <typename GUM_SCALAR>
+    class Class;
+    template <typename GUM_SCALAR>
+    class Instance;
+    template <typename GUM_SCALAR>
+    class System;
 
   } /* namespace prm */
 } /* namespace gum */

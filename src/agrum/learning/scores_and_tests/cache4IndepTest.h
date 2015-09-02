@@ -99,7 +99,8 @@ namespace gum {
       /// insert a new score into the cache
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
-      void insert( unsigned int var1, unsigned int var2,
+      void insert( unsigned int var1,
+                   unsigned int var2,
                    const std::vector<unsigned int>& conditioning_set,
                    float score );
 
@@ -107,29 +108,35 @@ namespace gum {
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
       template <typename Alloc>
-      void insert( unsigned int var1, unsigned int var2,
-                   IdSet<Alloc>& conditioning_set, float score );
+      void insert( unsigned int var1,
+                   unsigned int var2,
+                   IdSet<Alloc>& conditioning_set,
+                   float score );
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
-      void erase( unsigned int var1, unsigned int var2,
+      void erase( unsigned int var1,
+                  unsigned int var2,
                   const std::vector<unsigned int>& conditioning_set );
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
       template <typename Alloc>
-      void erase( unsigned int var1, unsigned int var2,
+      void erase( unsigned int var1,
+                  unsigned int var2,
                   const IdSet<Alloc>& conditioning_set );
 
       /// indicates whether a given score exists
-      bool exists( unsigned int var1, unsigned int var2,
+      bool exists( unsigned int var1,
+                   unsigned int var2,
                    const std::vector<unsigned int>& conditioning_set );
 
       /// returns a given score
       /** @throws NotFound is raised if the score is not cached */
-      float score( unsigned int var1, unsigned int var2,
+      float score( unsigned int var1,
+                   unsigned int var2,
                    const std::vector<unsigned int>& conditioning_set );
 
       /// removes all the stored scores

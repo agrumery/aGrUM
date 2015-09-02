@@ -30,7 +30,8 @@
 namespace gum {
 
   /// default constructor
-  template <typename GUM_SCALAR> Scheduler<GUM_SCALAR>::Scheduler() {
+  template <typename GUM_SCALAR>
+  Scheduler<GUM_SCALAR>::Scheduler() {
     // for debugging purposes
     GUM_CONSTRUCTOR( Scheduler );
   }
@@ -43,7 +44,8 @@ namespace gum {
   }
 
   /// destructor
-  template <typename GUM_SCALAR> Scheduler<GUM_SCALAR>::~Scheduler() {
+  template <typename GUM_SCALAR>
+  Scheduler<GUM_SCALAR>::~Scheduler() {
     // for debugging purposes
     GUM_DESTRUCTOR( Scheduler );
   }

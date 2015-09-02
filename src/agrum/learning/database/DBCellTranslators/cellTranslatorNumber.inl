@@ -32,8 +32,10 @@ namespace gum {
     INLINE
     CellTranslatorNumber::CellTranslatorNumber(
         const CellTranslatorNumber& from )
-        : DBCellTranslator<1, 1>( from ), __max_value( from.__max_value ),
-          __values( from.__values ), __check_database( from.__check_database ) {
+        : DBCellTranslator<1, 1>( from )
+        , __max_value( from.__max_value )
+        , __values( from.__values )
+        , __check_database( from.__check_database ) {
       if ( from.__user_values != nullptr ) {
         __user_values = new Sequence<float>( *from.__user_values );
       }
@@ -42,10 +44,10 @@ namespace gum {
     /// move constructor
     INLINE
     CellTranslatorNumber::CellTranslatorNumber( CellTranslatorNumber&& from )
-        : DBCellTranslator<1, 1>( std::move( from ) ),
-          __max_value( std::move( from.__max_value ) ),
-          __values( std::move( from.__values ) ),
-          __check_database( std::move( from.__check_database ) ) {
+        : DBCellTranslator<1, 1>( std::move( from ) )
+        , __max_value( std::move( from.__max_value ) )
+        , __values( std::move( from.__values ) )
+        , __check_database( std::move( from.__check_database ) ) {
       if ( from.__user_values != nullptr ) {
         __user_values = new Sequence<float>( std::move( *from.__user_values ) );
       }

@@ -46,20 +46,18 @@ namespace gum {
     }
   }
 
-  template <typename GUM_SCALAR> DSLReader<GUM_SCALAR>::~DSLReader() {
+  template <typename GUM_SCALAR>
+  DSLReader<GUM_SCALAR>::~DSLReader() {
     GUM_DESTRUCTOR( DSLReader );
 
     if ( !__ioerror ) {
       // this could lead to memory leak !!
-      if ( __parser )
-        delete ( __parser );
+      if ( __parser ) delete ( __parser );
 
-      if ( __scanner )
-        delete ( __scanner );
+      if ( __scanner ) delete ( __scanner );
     }
 
-    if ( __factory )
-      delete ( __factory );
+    if ( __factory ) delete ( __factory );
   }
 
   template <typename GUM_SCALAR>
@@ -87,7 +85,8 @@ namespace gum {
     scanner().setTrace( b );
   }
 
-  template <typename GUM_SCALAR> int DSLReader<GUM_SCALAR>::proceed( void ) {
+  template <typename GUM_SCALAR>
+  int DSLReader<GUM_SCALAR>::proceed( void ) {
     // FILE* tmpfile();
 
     if ( __ioerror ) {
@@ -183,11 +182,13 @@ namespace gum {
     }
   }
 
-  template <typename GUM_SCALAR> INLINE Size DSLReader<GUM_SCALAR>::errors() {
+  template <typename GUM_SCALAR>
+  INLINE Size DSLReader<GUM_SCALAR>::errors() {
     return ( !__parseDone ) ? (Size)0 : __parser->errors().error_count;
   }
 
-  template <typename GUM_SCALAR> INLINE Size DSLReader<GUM_SCALAR>::warnings() {
+  template <typename GUM_SCALAR>
+  INLINE Size DSLReader<GUM_SCALAR>::warnings() {
     return ( !__parseDone ) ? (Size)0 : __parser->errors().warning_count;
   }
 

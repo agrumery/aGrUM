@@ -136,7 +136,8 @@ namespace gum {
       __stack.push_back( c );
     }
 
-    template <typename GUM_SCALAR> void PRMFactory<GUM_SCALAR>::endClass() {
+    template <typename GUM_SCALAR>
+    void PRMFactory<GUM_SCALAR>::endClass() {
       Class<GUM_SCALAR>* c = static_cast<Class<GUM_SCALAR>*>(
           __checkStack( 1, PRMObject::PRMType::CLASS ) );
 
@@ -531,11 +532,13 @@ namespace gum {
       Parameter<GUM_SCALAR>* p = 0;
       if ( type == "int" ) {
         p = new Parameter<GUM_SCALAR>(
-            name, Parameter<GUM_SCALAR>::ParameterType::INT,
+            name,
+            Parameter<GUM_SCALAR>::ParameterType::INT,
             (GUM_SCALAR)value );
       } else if ( type == "real" ) {
         p = new Parameter<GUM_SCALAR>(
-            name, Parameter<GUM_SCALAR>::ParameterType::REAL,
+            name,
+            Parameter<GUM_SCALAR>::ParameterType::REAL,
             (GUM_SCALAR)value );
       }
 
@@ -548,7 +551,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void PRMFactory<GUM_SCALAR>::addAggregator(
-        const std::string& name, const std::string& agg_type,
+        const std::string& name,
+        const std::string& agg_type,
         const std::vector<std::string>& chains,
         const std::vector<std::string>& params ) {
       Class<GUM_SCALAR>* c = static_cast<Class<GUM_SCALAR>*>(
@@ -596,7 +600,8 @@ namespace gum {
           }
 
           agg = new Aggregate<GUM_SCALAR>(
-              name, Aggregate<GUM_SCALAR>::str2enum( agg_type ),
+              name,
+              Aggregate<GUM_SCALAR>::str2enum( agg_type ),
               inputs.front()->type() );
 
           break;
@@ -625,8 +630,10 @@ namespace gum {
 
           // Creating and adding the Aggregate<GUM_SCALAR>
           agg = new Aggregate<GUM_SCALAR>(
-              name, Aggregate<GUM_SCALAR>::str2enum( agg_type ),
-              *( __retrieveType( "boolean" ) ), label_idx );
+              name,
+              Aggregate<GUM_SCALAR>::str2enum( agg_type ),
+              *( __retrieveType( "boolean" ) ),
+              label_idx );
 
           break;
         }
@@ -655,7 +662,9 @@ namespace gum {
 
           // Creating and adding the Aggregate<GUM_SCALAR>
           agg = new Aggregate<GUM_SCALAR>(
-              name, Aggregate<GUM_SCALAR>::str2enum( agg_type ), *output_type,
+              name,
+              Aggregate<GUM_SCALAR>::str2enum( agg_type ),
+              *output_type,
               label_idx );
 
           break;
@@ -675,8 +684,8 @@ namespace gum {
           }
         } else {
           // Inner aggregators can be directly used as attributes
-          auto attr = new ScalarAttribute<GUM_SCALAR>( agg->name(), agg->type(),
-                                                       agg->buildImpl() );
+          auto attr = new ScalarAttribute<GUM_SCALAR>(
+              agg->name(), agg->type(), agg->buildImpl() );
 
           try {
             c->add( attr );
@@ -854,7 +863,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     bool PRMFactory<GUM_SCALAR>::__retrieveInputs(
-        Class<GUM_SCALAR>* c, const std::vector<std::string>& chains,
+        Class<GUM_SCALAR>* c,
+        const std::vector<std::string>& chains,
         std::vector<ClassElement<GUM_SCALAR>*>& inputs ) {
       bool retVal = false;
 
@@ -970,8 +980,10 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void PRMFactory<GUM_SCALAR>::addNoisyOrCompound(
-        const std::string& name, const std::vector<std::string>& chains,
-        const std::vector<float>& numbers, float leak,
+        const std::string& name,
+        const std::vector<std::string>& chains,
+        const std::vector<float>& numbers,
+        float leak,
         const std::vector<std::string>& labels ) {
       if ( currentType() != PRMObject::PRMType::CLASS ) {
         GUM_ERROR( gum::FactoryInvalidState,
@@ -1100,8 +1112,8 @@ namespace gum {
       }
 
       if ( type == 0 ) {
-        GUM_ERROR( NotFound, "Type '" << name
-                                      << "' not found, check imports." );
+        GUM_ERROR( NotFound,
+                   "Type '" << name << "' not found, check imports." );
       }
 
       return type;
@@ -1153,8 +1165,8 @@ namespace gum {
       }
 
       if ( a_class == 0 ) {
-        GUM_ERROR( NotFound, "Class '" << name
-                                       << "' not found, check imports." );
+        GUM_ERROR( NotFound,
+                   "Class '" << name << "' not found, check imports." );
       }
 
       return a_class;
@@ -1208,14 +1220,15 @@ namespace gum {
       }
 
       if ( interface == 0 ) {
-        GUM_ERROR( NotFound, "Interface '" << name
-                                           << "' not found, check imports." );
+        GUM_ERROR( NotFound,
+                   "Interface '" << name << "' not found, check imports." );
       }
 
       return interface;
     }
 
-    template <typename GUM_SCALAR> INLINE PRMFactory<GUM_SCALAR>::PRMFactory() {
+    template <typename GUM_SCALAR>
+    INLINE PRMFactory<GUM_SCALAR>::PRMFactory() {
       GUM_CONSTRUCTOR( PRMFactory );
       __prm = new PRM<GUM_SCALAR>();
     }
@@ -1341,7 +1354,8 @@ namespace gum {
 
       if ( PRMObject::isClass( *c ) ) {
         a = new FormAttribute<GUM_SCALAR>(
-            static_cast<Class<GUM_SCALAR>&>( *c ), name,
+            static_cast<Class<GUM_SCALAR>&>( *c ),
+            name,
             *__retrieveType( type ) );
       } else {
         a = new ScalarAttribute<GUM_SCALAR>( name, *__retrieveType( type ) );
@@ -1411,7 +1425,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE void PRMFactory<GUM_SCALAR>::addInstance(
-        const std::string& type, const std::string& name,
+        const std::string& type,
+        const std::string& name,
         const HashTable<std::string, double>& params ) {
 
       auto c = __retrieveClass( type );

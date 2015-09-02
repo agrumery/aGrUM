@@ -101,7 +101,8 @@ void Attribute::operator=( const Attribute& copy ) {
   this->m_impRC->IncRef();
 }
 
-Attribute::Attribute( const Attribute& copy ) : Base() {
+Attribute::Attribute( const Attribute& copy )
+    : Base() {
   // Dropping the reference to the old object
   this->m_impRC->DecRef();
 
@@ -181,7 +182,8 @@ void Attribute::SetTiXmlPointer( TiXmlAttribute* newPointer ) {
 
 //*****************************************************************************
 
-Node* Node::NodeFactory( TiXmlNode* tiXmlNode, bool throwIfNull,
+Node* Node::NodeFactory( TiXmlNode* tiXmlNode,
+                         bool throwIfNull,
                          bool rememberSpawnedWrapper ) const {
   if ( 0 == tiXmlNode ) {
     if ( throwIfNull ) {
@@ -631,14 +633,14 @@ StylesheetReference* Node::ToStylesheetReference() const {
   return temp;
 }
 
-std::auto_ptr<Node> Node::Clone() const {
+std::unique_ptr<Node> Node::Clone() const {
   TiXmlNode* node = GetTiXmlPointer()->Clone();
 
   if ( 0 == node ) {
     TICPPTHROW( "Node could not be cloned" );
   }
 
-  std::auto_ptr<Node> temp( NodeFactory( node, false, false ) );
+  std::unique_ptr<Node> temp( NodeFactory( node, false, false ) );
 
   // Take ownership of the memory from TiXml
   temp->m_impRC->InitRef();
@@ -652,11 +654,13 @@ bool Node::Accept( TiXmlVisitor* visitor ) const {
 
 //*****************************************************************************
 
-Comment::Comment() : NodeImp<TiXmlComment>( new TiXmlComment() ) {
+Comment::Comment()
+    : NodeImp<TiXmlComment>( new TiXmlComment() ) {
   m_impRC->InitRef();
 }
 
-Comment::Comment( TiXmlComment* comment ) : NodeImp<TiXmlComment>( comment ) {}
+Comment::Comment( TiXmlComment* comment )
+    : NodeImp<TiXmlComment>( comment ) {}
 
 Comment::Comment( const std::string& comment )
     : NodeImp<TiXmlComment>( new TiXmlComment() ) {
@@ -666,18 +670,23 @@ Comment::Comment( const std::string& comment )
 
 //*****************************************************************************
 
-Text::Text() : NodeImp<TiXmlText>( new TiXmlText( "" ) ) { m_impRC->InitRef(); }
+Text::Text()
+    : NodeImp<TiXmlText>( new TiXmlText( "" ) ) {
+  m_impRC->InitRef();
+}
 
 Text::Text( const std::string& value )
     : NodeImp<TiXmlText>( new TiXmlText( value ) ) {
   m_impRC->InitRef();
 }
 
-Text::Text( TiXmlText* text ) : NodeImp<TiXmlText>( text ) {}
+Text::Text( TiXmlText* text )
+    : NodeImp<TiXmlText>( text ) {}
 
 //*****************************************************************************
 
-Document::Document() : NodeImp<TiXmlDocument>( new TiXmlDocument() ) {
+Document::Document()
+    : NodeImp<TiXmlDocument>( new TiXmlDocument() ) {
   m_impRC->InitRef();
 }
 
@@ -724,7 +733,8 @@ void Document::SaveFile( const std::string& filename ) const {
   }
 }
 
-void Document::Parse( const std::string& xml, bool throwIfParseError,
+void Document::Parse( const std::string& xml,
+                      bool throwIfParseError,
                       TiXmlEncoding encoding ) {
   m_tiXmlPointer->Parse( xml.c_str(), 0, encoding );
 
@@ -751,7 +761,8 @@ Element::Element( const char* value )
   m_impRC->InitRef();
 }
 
-Element::Element( TiXmlElement* element ) : NodeImp<TiXmlElement>( element ) {}
+Element::Element( TiXmlElement* element )
+    : NodeImp<TiXmlElement>( element ) {}
 
 Attribute* Element::FirstAttribute( bool throwIfNoAttributes ) const {
   ValidatePointer();
@@ -904,7 +915,8 @@ std::string StylesheetReference::Href() const { return m_tiXmlPointer->Href(); }
 
 //*****************************************************************************
 
-Exception::Exception( const std::string& details ) : m_details( details ) {}
+Exception::Exception( const std::string& details )
+    : m_details( details ) {}
 
 Exception::~Exception() throw() {}
 
@@ -921,7 +933,8 @@ void TiCppRC::DeleteSpawnedWrappers() {
   std::vector<Base*>::reverse_iterator wrapper;
 
   for ( wrapper = m_spawnedWrappers.rbegin();
-        wrapper != m_spawnedWrappers.rend(); ++wrapper ) {
+        wrapper != m_spawnedWrappers.rend();
+        ++wrapper ) {
     delete *wrapper;
   }
 
@@ -941,7 +954,8 @@ TiCppRC::~TiCppRC() {
 //*****************************************************************************
 
 TiCppRCImp::TiCppRCImp( TiCppRC* tiCppRC )
-    : m_count( 1 ), m_tiCppRC( tiCppRC ) {}
+    : m_count( 1 )
+    , m_tiCppRC( tiCppRC ) {}
 
 void TiCppRCImp::IncRef() { m_count++; }
 

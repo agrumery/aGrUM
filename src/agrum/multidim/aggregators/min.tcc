@@ -50,7 +50,8 @@ namespace gum {
 
     /// destructor
 
-    template <typename GUM_SCALAR> INLINE Min<GUM_SCALAR>::~Min() {
+    template <typename GUM_SCALAR>
+    INLINE Min<GUM_SCALAR>::~Min() {
       GUM_DESTRUCTOR( Min );
     }
 
@@ -60,8 +61,10 @@ namespace gum {
     }  // clearly arbitrary choosen
 
     template <typename GUM_SCALAR>
-    INLINE Idx Min<GUM_SCALAR>::_folder( const DiscreteVariable& v, Idx i1,
-                                         Idx i2, bool& stop_iteration ) const {
+    INLINE Idx Min<GUM_SCALAR>::_folder( const DiscreteVariable& v,
+                                         Idx i1,
+                                         Idx i2,
+                                         bool& stop_iteration ) const {
       return ( i1 < i2 ) ? i1 : i2;
     }
 

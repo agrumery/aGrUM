@@ -376,7 +376,8 @@ namespace gum_tests {
           std::string foo = instance.name() + dot + attribute.safeName();
 
           for ( inst.setFirst(), jnst.setFirst();
-                not( inst.end() or jnst.end() ); inst.inc(), jnst.inc() ) {
+                not( inst.end() or jnst.end() );
+                inst.inc(), jnst.inc() ) {
             TS_ASSERT_EQUALS( m_ve.nbrDim(), m_ss.nbrDim() );
             TS_ASSERT_EQUALS( m_ve.nbrDim(), m_sve.nbrDim() );
             TS_ASSERT_EQUALS( m_ve.nbrDim(), m_sved.nbrDim() );

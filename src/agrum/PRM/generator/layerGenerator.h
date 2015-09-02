@@ -144,7 +144,8 @@ namespace gum {
                               const std::string& type,
                               std::vector<LayerGenerator::MyData>& l );
 
-      void __generateClassDag( Size lvl, DAG& dag,
+      void __generateClassDag( Size lvl,
+                               DAG& dag,
                                Bijection<std::string, NodeId>& names,
                                std::vector<LayerGenerator::MyData>& l );
 

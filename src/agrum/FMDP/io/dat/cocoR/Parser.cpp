@@ -306,7 +306,7 @@ void Parser::SUB_TRANSITION_DECISION_DIAGRAM() {
 		IDENT(name_of_var);
 		var_id = __factory->addNonTerminalNode( name_of_var );
 		               if( !__parentNode.empty() )
-		                   __factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); 
+		                   __factory->addArc( __parentNode.back(), var_id, __parentModality.back() ); 
 		while (la->kind == _lpar) {
 			Get();
 			IDENT_OR_INTEGER(modality_of_var);
@@ -332,15 +332,15 @@ void Parser::TRANSITION_LEAF() {
 		            gum::Idx i = 0;
 		            NodeId var_id = __factory->addNonTerminalNode( __currentDecisionDiagramVar );
 		            if( !__parentNode.empty() )
-		                __factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); 
+		                __factory->addArc( __parentNode.back(), var_id, __parentModality.back() ); 
 		FLOAT(value);
 		NodeId val_id = __factory->addTerminalNode( value );
-		          __factory->insertArc( var_id, val_id, i ); 
+		          __factory->addArc( var_id, val_id, i ); 
 		while (la->kind == _integer || la->kind == _number) {
 			FLOAT(value);
 			++i;
 			          val_id = __factory->addTerminalNode( value );
-			         __factory->insertArc( var_id, val_id, i ); 
+			         __factory->addArc( var_id, val_id, i ); 
 		}
 }
 
@@ -351,7 +351,7 @@ void Parser::SUB_DECISION_DIAGRAM() {
 		IDENT(name_of_var);
 		var_id = __factory->addNonTerminalNode( name_of_var );
 		               if( !__parentNode.empty() )
-		                   __factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); 
+		                   __factory->addArc( __parentNode.back(), var_id, __parentModality.back() ); 
 		while (la->kind == _lpar) {
 			Get();
 			IDENT_OR_INTEGER(modality_of_var);
@@ -376,11 +376,11 @@ void Parser::LEAF() {
 		float value; 
 		FLOAT(value);
 		NodeId val_id = __factory->addTerminalNode( value );
-		         __factory->insertArc( __parentNode.back(), val_id, __parentModality.back() ); 
+		         __factory->addArc( __parentNode.back(), val_id, __parentModality.back() ); 
 		while (la->kind == _integer || la->kind == _number) {
 			FLOAT(value);
 			NodeId val_id = __factory->addTerminalNode( value );
-			          __factory->insertArc( __parentNode.back(), val_id, __parentModality.back() ); 
+			          __factory->addArc( __parentNode.back(), val_id, __parentModality.back() ); 
 		}
 }
 

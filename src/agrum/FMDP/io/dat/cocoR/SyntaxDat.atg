@@ -191,7 +191,7 @@ PRODUCTIONS
                                                                                                 NodeId var_id; .)
                 IDENT<name_of_var>                                           (. var_id = __factory->addNonTerminalNode( name_of_var );
                                                                                                 if( !__parentNode.empty() )
-                                                                                                    __factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); .)
+                                                                                                    __factory->addArc( __parentNode.back(), var_id, __parentModality.back() ); .)
                 {'('
                 IDENT_OR_INTEGER<modality_of_var>                  (. __parentNode.push_back( var_id );
                                                                                                __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] ); .)
@@ -208,13 +208,13 @@ PRODUCTIONS
                                                           gum::Idx i = 0;
                                                           NodeId var_id = __factory->addNonTerminalNode( __currentDecisionDiagramVar );
                                                           if( !__parentNode.empty() )
-                                                              __factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); .)
+                                                              __factory->addArc( __parentNode.back(), var_id, __parentModality.back() ); .)
                 FLOAT<value>                (. NodeId val_id = __factory->addTerminalNode( value );
-                                                          __factory->insertArc( var_id, val_id, i ); .)
+                                                          __factory->addArc( var_id, val_id, i ); .)
                 { 
                 FLOAT<value>                 (. ++i;
                                                            val_id = __factory->addTerminalNode( value );
-                                                          __factory->insertArc( var_id, val_id, i ); .)
+                                                          __factory->addArc( var_id, val_id, i ); .)
                 }
                 .
   
@@ -268,7 +268,7 @@ PRODUCTIONS
                                                                                              NodeId var_id;.)
                 IDENT<name_of_var>                                        (. var_id = __factory->addNonTerminalNode( name_of_var );
                                                                                              if( !__parentNode.empty() )
-                                                                                                 __factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); .)
+                                                                                                 __factory->addArc( __parentNode.back(), var_id, __parentModality.back() ); .)
                 {'('
                 IDENT_OR_INTEGER<modality_of_var>                (. __parentNode.push_back( var_id );
                                                                                              __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] );  .)
@@ -283,10 +283,10 @@ PRODUCTIONS
         /// *************************************************************************************
         LEAF =                            (. float value; .)
                 FLOAT<value>         (. NodeId val_id = __factory->addTerminalNode( value );
-                                                  __factory->insertArc( __parentNode.back(), val_id, __parentModality.back() ); .)
+                                                  __factory->addArc( __parentNode.back(), val_id, __parentModality.back() ); .)
                         { 
                 FLOAT<value>         (. NodeId val_id = __factory->addTerminalNode( value );
-                                                   __factory->insertArc( __parentNode.back(), val_id, __parentModality.back() ); .)
+                                                   __factory->addArc( __parentNode.back(), val_id, __parentModality.back() ); .)
                 }
                 .
 

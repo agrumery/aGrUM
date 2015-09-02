@@ -51,8 +51,8 @@ linuxreleasedoc:
 	cat build/linux/release/warning.txt
 
 clang-format:
-	for i in `find src -name "*.h"` ; do $(CLANGFORMAT) -i $$i; done
-	for i in `find src -name "*.cpp"` ; do $(CLANGFORMAT) -i $$i; done
-	for i in `find src -name "*.tcc"` ; do $(CLANGFORMAT) -i $$i; done
-	for i in `find src -name "*.inl"` ; do $(CLANGFORMAT) -i $$i; done
+	for i in `find src -name "*.h"`   ; do echo "formatting $$i";$(CLANGFORMAT) -i $$i; done
+	for i in `find src -name "*.cpp"` ; do echo "formatting $$i";$(CLANGFORMAT) -i $$i; done
+	for i in `find src -name "*.tcc"` ; do echo "formatting $$i";$(CLANGFORMAT) -i $$i; done
+	for i in `find src -name "*.inl"` ; do echo "formatting $$i";$(CLANGFORMAT) -i $$i; done
 

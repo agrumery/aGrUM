@@ -49,7 +49,8 @@ namespace gum {
    * the proportion of chance node and the proportion of utility node (the
    * proportion of decision node is deduce from thos two)
    */
-  template <typename GUM_SCALAR> class InfluenceDiagramGenerator {
+  template <typename GUM_SCALAR>
+  class InfluenceDiagramGenerator {
     public:
     // ############################################################################
     /// @name Constructors / Destructor
@@ -108,7 +109,8 @@ namespace gum {
      * @param max_modality Each DRV has from 2 to max_modality modalities
      * @return A IDs randomly generated.
      */
-    InfluenceDiagram<GUM_SCALAR>* generateID( Size nbrNodes, float arcDensity,
+    InfluenceDiagram<GUM_SCALAR>* generateID( Size nbrNodes,
+                                              float arcDensity,
                                               float chanceNodeDensity,
                                               float utilityNodeDensity,
                                               int max_modality = 2 );

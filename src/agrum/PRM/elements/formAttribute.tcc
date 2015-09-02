@@ -35,18 +35,23 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     FormAttribute<GUM_SCALAR>::FormAttribute(
-        const Class<GUM_SCALAR>& c, const std::string& name,
+        const Class<GUM_SCALAR>& c,
+        const std::string& name,
         const Type<GUM_SCALAR>& type,
         MultiDimImplementation<std::string>* impl )
-        : Attribute<GUM_SCALAR>( name ), __type( new Type<GUM_SCALAR>( type ) ),
-          __cpf( 0 ), __formulas( impl ), __class( &c ) {
+        : Attribute<GUM_SCALAR>( name )
+        , __type( new Type<GUM_SCALAR>( type ) )
+        , __cpf( 0 )
+        , __formulas( impl )
+        , __class( &c ) {
       GUM_CONSTRUCTOR( FormAttribute );
       __formulas->add( __type->variable() );
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
                         PRMObject::RIGHT_CAST() + name;
     }
 
-    template <typename GUM_SCALAR> FormAttribute<GUM_SCALAR>::~FormAttribute() {
+    template <typename GUM_SCALAR>
+    FormAttribute<GUM_SCALAR>::~FormAttribute() {
       GUM_DESTRUCTOR( FormAttribute );
       delete __type;
       delete __cpf;

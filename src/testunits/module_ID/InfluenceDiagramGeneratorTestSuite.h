@@ -84,8 +84,7 @@ namespace gum_tests {
 
       TS_ASSERT( id->decisionOrderExists() );
 
-      if ( id != 0 )
-        delete id;
+      if ( id != 0 ) delete id;
     }
 
     void testGenerationFloat_2() {
@@ -101,8 +100,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS( dag.directedPath( node, node ), gum::NotFound );
       }
 
-      if ( id != 0 )
-        delete id;
+      if ( id != 0 ) delete id;
     }
 
     void testGenerationDouble_1() {
@@ -114,8 +112,7 @@ namespace gum_tests {
 
       TS_ASSERT( id->decisionOrderExists() );
 
-      if ( id != 0 )
-        delete id;
+      if ( id != 0 ) delete id;
     }
 
     void testGenerationDouble_2() {
@@ -132,8 +129,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS( dag.directedPath( node, node ), gum::NotFound );
       }
 
-      if ( id != 0 )
-        delete id;
+      if ( id != 0 ) delete id;
     }
   };
 }

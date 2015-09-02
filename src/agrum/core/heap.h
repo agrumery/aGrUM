@@ -90,7 +90,8 @@ namespace gum {
 
   // templates provided by this file
 
-  template <typename Val, typename Cmp, typename Alloc> class Heap;
+  template <typename Val, typename Cmp, typename Alloc>
+  class Heap;
   template <typename Val, typename Cmp, typename Alloc>
   std::ostream& operator<<( std::ostream&, const Heap<Val, Cmp, Alloc>& );
 
@@ -163,7 +164,8 @@ namespace gum {
   /* ===========================================================================
    */
 
-  template <typename Val, typename Cmp = std::less<Val>,
+  template <typename Val,
+            typename Cmp = std::less<Val>,
             typename Alloc = std::allocator<Val>>
   class Heap {
     public:
@@ -304,7 +306,8 @@ namespace gum {
     Size insert( Val&& val );
 
     /// emplace a new element in the heap and returns its index
-    template <typename... Args> Size emplace( Args&&... args );
+    template <typename... Args>
+    Size emplace( Args&&... args );
 
     /// returns the number of elements in the heap
     Size size() const noexcept;

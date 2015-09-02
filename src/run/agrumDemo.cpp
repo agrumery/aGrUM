@@ -14,7 +14,7 @@
 #define strfy( x ) #x
 
 #define GET_PATH_STR( x ) xstrfy( GUM_SRC_PATH ) "/testunits/ressources/" x
-#define GET_PATH_XSTR( x )                                                     \
+#define GET_PATH_XSTR( x ) \
   xstrfy( GUM_SRC_PATH ) "/testunits/ressources/" xstrfy( x )
 
 // namespace gum {
@@ -28,7 +28,7 @@
 
 gum::BayesNet<double> buildBN() {
   gum::BayesNet<double> bn;
-#define createBoolVar( s )                                                     \
+#define createBoolVar( s ) \
   gum::LabelizedVariable( s, s, 0 ).addLabel( "false" ).addLabel( "true" );
   auto s = createBoolVar( "smoking?" );
   auto l = createBoolVar( "lung_cancer?" );

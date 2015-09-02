@@ -31,8 +31,10 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     Type<GUM_SCALAR>::Type( const DiscreteVariable& var )
-        : PRMObject( var.name() ), __var( var.clone() ), __super( 0 ),
-          __label_map( 0 ) {
+        : PRMObject( var.name() )
+        , __var( var.clone() )
+        , __super( 0 )
+        , __label_map( 0 ) {
       GUM_CONSTRUCTOR( Type );
     }
 
@@ -40,8 +42,10 @@ namespace gum {
     Type<GUM_SCALAR>::Type( Type<GUM_SCALAR>& super_type,
                             const std::vector<Idx>& label_map,
                             const DiscreteVariable& var )
-        : PRMObject( var.name() ), __var( var.clone() ), __super( &super_type ),
-          __label_map( new std::vector<Idx>( label_map ) ) {
+        : PRMObject( var.name() )
+        , __var( var.clone() )
+        , __super( &super_type )
+        , __label_map( new std::vector<Idx>( label_map ) ) {
       GUM_CONSTRUCTOR( Type );
 
       if ( not __isValid() ) {
@@ -53,8 +57,10 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     Type<GUM_SCALAR>::Type( const Type<GUM_SCALAR>& from )
-        : PRMObject( from ), __var( from.__var->clone() ),
-          __super( from.__super ), __label_map( 0 ) {
+        : PRMObject( from )
+        , __var( from.__var->clone() )
+        , __super( from.__super )
+        , __label_map( 0 ) {
       GUM_CONS_CPY( Type );
 
       if ( __super ) {
@@ -62,7 +68,8 @@ namespace gum {
       }
     }
 
-    template <typename GUM_SCALAR> Type<GUM_SCALAR>::~Type() {
+    template <typename GUM_SCALAR>
+    Type<GUM_SCALAR>::~Type() {
       GUM_DESTRUCTOR( Type );
       delete __var;
       if ( __label_map ) {
@@ -81,7 +88,8 @@ namespace gum {
       }
     }
 
-    template <typename GUM_SCALAR> bool Type<GUM_SCALAR>::__isValid() const {
+    template <typename GUM_SCALAR>
+    bool Type<GUM_SCALAR>::__isValid() const {
       if ( not __super ) {
         return __var->domainSize() > 1;
       }

@@ -30,7 +30,8 @@
 namespace gum {
   namespace prm {
     namespace gspan {
-      template <typename GUM_SCALAR> DFSTree<GUM_SCALAR>::~DFSTree() {
+      template <typename GUM_SCALAR>
+      DFSTree<GUM_SCALAR>::~DFSTree() {
         GUM_DESTRUCTOR( DFSTree );
 
         for ( const auto& elt : __data ) {
@@ -157,9 +158,8 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void
-      DFSTree<GUM_SCALAR>::__addChild( Pattern& p, Pattern* child,
-                                       EdgeGrowth<GUM_SCALAR>& edge_growth ) {
+      void DFSTree<GUM_SCALAR>::__addChild(
+          Pattern& p, Pattern* child, EdgeGrowth<GUM_SCALAR>& edge_growth ) {
         // Adding child to the tree
         NodeId node = DiGraph::addNode();
         __node_map.insert( node, child );
@@ -172,7 +172,8 @@ namespace gum {
           size_t size = children.size();
 
           for ( std::list<NodeId>::iterator iter = children.begin();
-                iter != children.end(); ++iter ) {
+                iter != children.end();
+                ++iter ) {
             if ( child->code() < pattern( *iter ).code() ) {
               children.insert( iter, node );
               break;
@@ -210,7 +211,8 @@ namespace gum {
           typedef std::vector<EdgeCode*>::iterator EdgeIter;
 
           for ( EdgeIter iter = child->code().codes.begin();
-                ( iter + 1 ) != child->code().codes.end(); ++iter ) {
+                ( iter + 1 ) != child->code().codes.end();
+                ++iter ) {
             if ( ( ( ( **iter ).i == v ) or ( ( **iter ).j == v ) ) and
                  edge < ( **iter ) ) {
               GUM_ERROR(
@@ -245,9 +247,9 @@ namespace gum {
         std::vector<NodeId> degree_list;
         NodeProperty<Sequence<Instance<GUM_SCALAR>*>*>& p_iso_map =
             __data[&p]->iso_map;
-        typename Property<
-            std::pair<Instance<GUM_SCALAR>*,
-                      Instance<GUM_SCALAR>*>>::onNodes::iterator_safe match;
+        typename NodeProperty<std::pair<Instance<GUM_SCALAR>*,
+                                        Instance<GUM_SCALAR>*>>::iterator_safe
+            match;
         // Using p information to build child's isomorphism graph
         NodeId id = 0;
 
@@ -404,8 +406,7 @@ namespace gum {
 
         try {
           for ( const auto& elt : x )
-            if ( y[elt.first] != elt.second )
-              return false;
+            if ( y[elt.first] != elt.second ) return false;
         } catch ( NotFound& ) {
           return false;
         }
@@ -416,9 +417,12 @@ namespace gum {
       // PatternData
       template <typename GUM_SCALAR>
       DFSTree<GUM_SCALAR>::PatternData::PatternData( const PatternData& from )
-          : pattern( from.pattern ), children( from.children ),
-            iso_graph( from.iso_graph ), max_indep_set( from.max_indep_set ),
-            cost( from.cost ), gain( from.gain ) {
+          : pattern( from.pattern )
+          , children( from.children )
+          , iso_graph( from.iso_graph )
+          , max_indep_set( from.max_indep_set )
+          , cost( from.cost )
+          , gain( from.gain ) {
         GUM_CONS_CPY( DFSTree<GUM_SCALAR>::PatternData );
 
         for ( const auto& elt : from.iso_map )
@@ -438,11 +442,11 @@ namespace gum {
       INLINE DFSTree<GUM_SCALAR>::DFSTree(
           const InterfaceGraph<GUM_SCALAR>& graph,
           gspan::SearchStrategy<GUM_SCALAR>* strategy )
-          : __graph( &graph ), __strategy( strategy ) {
+          : __graph( &graph )
+          , __strategy( strategy ) {
         GUM_CONSTRUCTOR( DFSTree );
 
-        if ( not __strategy )
-          __strategy = new FrequenceSearch<GUM_SCALAR>( 2 );
+        if ( not __strategy ) __strategy = new FrequenceSearch<GUM_SCALAR>( 2 );
 
         __strategy->setTree( this );
       }
@@ -651,7 +655,9 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE DFSTree<GUM_SCALAR>::PatternData::PatternData( Pattern* p )
-          : pattern( p ), cost( 0 ), gain( 0 ) {
+          : pattern( p )
+          , cost( 0 )
+          , gain( 0 ) {
         GUM_CONSTRUCTOR( DFSTree<GUM_SCALAR>::PatternData );
       }
 

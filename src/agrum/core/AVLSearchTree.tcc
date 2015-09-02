@@ -45,7 +45,8 @@ namespace gum {
 
   template <typename Val>
   INLINE BinTreeNode4AVL<Val>::BinTreeNode4AVL( const Val& val )
-      : BinTreeNode<Val>( val ), __height( 1 ) {
+      : BinTreeNode<Val>( val )
+      , __height( 1 ) {
     GUM_CONSTRUCTOR( BinTreeNode4AVL );
   }
 
@@ -55,13 +56,15 @@ namespace gum {
   template <typename Val>
   INLINE
   BinTreeNode4AVL<Val>::BinTreeNode4AVL( const BinTreeNode4AVL<Val>& from )
-      : BinTreeNode<Val>( from ), __height( from.__height ) {
+      : BinTreeNode<Val>( from )
+      , __height( from.__height ) {
     GUM_CONS_CPY( BinTreeNode4AVL );
   }
 
   /// destructor
 
-  template <typename Val> INLINE BinTreeNode4AVL<Val>::~BinTreeNode4AVL() {
+  template <typename Val>
+  INLINE BinTreeNode4AVL<Val>::~BinTreeNode4AVL() {
     GUM_DESTRUCTOR( BinTreeNode4AVL );
   }
 
@@ -78,13 +81,15 @@ namespace gum {
 
   /// alias for method value
 
-  template <typename Val> INLINE Val& BinTreeNode4AVL<Val>::operator*() {
+  template <typename Val>
+  INLINE Val& BinTreeNode4AVL<Val>::operator*() {
     return BinTreeNode<Val>::operator*();
   }
 
   /// returns the value stored in a node of the binary search tree
 
-  template <typename Val> INLINE Val& BinTreeNode4AVL<Val>::value() {
+  template <typename Val>
+  INLINE Val& BinTreeNode4AVL<Val>::value() {
     return BinTreeNode<Val>::value();
   }
 
@@ -214,8 +219,7 @@ namespace gum {
         right_height =
             left_child->rightChild() ? left_child->rightChild()->__height : 0;
 
-        if ( left_height < right_height )
-          left_child->__leftRotation();
+        if ( left_height < right_height ) left_child->__leftRotation();
 
         node = node->__rightRotation();
       } else if ( right_height - left_height == 2 ) {
@@ -225,8 +229,7 @@ namespace gum {
         right_height =
             right_child->rightChild() ? right_child->rightChild()->__height : 0;
 
-        if ( right_height < left_height )
-          right_child->__rightRotation();
+        if ( right_height < left_height ) right_child->__rightRotation();
 
         node = node->__leftRotation();
       }
@@ -304,13 +307,15 @@ namespace gum {
 
   /// remove the link between the current node and its left child
 
-  template <typename Val> INLINE void BinTreeNode4AVL<Val>::eraseLeftLink() {
+  template <typename Val>
+  INLINE void BinTreeNode4AVL<Val>::eraseLeftLink() {
     BinTreeNode<Val>::eraseLeftLink();
   }
 
   /// remove the link between the current node and its right child
 
-  template <typename Val> INLINE void BinTreeNode4AVL<Val>::eraseRightLink() {
+  template <typename Val>
+  INLINE void BinTreeNode4AVL<Val>::eraseRightLink() {
     BinTreeNode<Val>::eraseRightLink();
   }
 
@@ -393,8 +398,7 @@ namespace gum {
 
   template <typename Val, class Cmp>
   void AVLSearchTree<Val, Cmp>::_erase( BinTreeNode4AVL<Val>* node ) {
-    if ( !node )
-      return;
+    if ( !node ) return;
 
     // update all the iterators pointing to node that they should point
     // elsewhere
@@ -419,8 +423,7 @@ namespace gum {
         delete node;
         Node* new_root = parent->__balance();
 
-        if ( new_root )
-          BinSearchTree<Val, Cmp, Node>::_root = new_root;
+        if ( new_root ) BinSearchTree<Val, Cmp, Node>::_root = new_root;
       }
     }
     // if there is just a right child
@@ -441,8 +444,7 @@ namespace gum {
         delete node;
         Node* new_root = parent->__balance();
 
-        if ( new_root )
-          BinSearchTree<Val, Cmp, Node>::_root = new_root;
+        if ( new_root ) BinSearchTree<Val, Cmp, Node>::_root = new_root;
       }
     }
     // if there is just a left child
@@ -463,8 +465,7 @@ namespace gum {
         delete node;
         Node* new_root = parent->__balance();
 
-        if ( new_root )
-          BinSearchTree<Val, Cmp, Node>::_root = new_root;
+        if ( new_root ) BinSearchTree<Val, Cmp, Node>::_root = new_root;
       }
     }
     // ok, here there are two children
@@ -577,8 +578,7 @@ namespace gum {
     if ( new_node->parent() ) {
       Node* new_root = new_node->parent()->__balance();
 
-      if ( new_root )
-        BinSearchTree<Val, Cmp, Node>::_root = new_root;
+      if ( new_root ) BinSearchTree<Val, Cmp, Node>::_root = new_root;
     } else {
       BinSearchTree<Val, Cmp, Node>::_root = new_node;
     }

@@ -34,15 +34,11 @@ namespace gum {
   class MultiDimAdressable;
 
   class Instantiation;
-  /* ============================================================================
-   */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
+  /* =========================================================================*/
   /* ===                            GUM_SetInst === */
-  /* ============================================================================
-   */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
+  /* =========================================================================*/
   /**
    * @class SetInst setInst.h agrum/multidim/SetInst.h
    * @brief Class for assigning/browsing values to tuples of discrete variables.
@@ -547,7 +543,8 @@ namespace gum {
      */
     static void assign_values(
         Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-        const SetInst& i, SetInst& j ) {
+        const SetInst& i,
+        SetInst& j ) {
       try {
         for ( const auto var : i.variablesSequence() )
           j.chgVal( bij.second( var ), i.val( var ) );

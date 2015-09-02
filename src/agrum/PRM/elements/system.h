@@ -49,7 +49,8 @@ namespace gum {
      * @brief A System is a container of Instance and describe a relational
      *        skeleton.
      */
-    template <typename GUM_SCALAR> class System : public PRMObject {
+    template <typename GUM_SCALAR>
+    class System : public PRMObject {
       public:
       // ========================================================================
       /// @name Constructors & destructor.
@@ -87,32 +88,8 @@ namespace gum {
 
       NodeId get( const Instance<GUM_SCALAR>& i ) const;
 
-      /**
-       * @brief Insert an edge between between u and v using the ReferenceSlot
-       *      ref of u.
-       *
-       * Either u or v can be arrays:
-       *   - if u is an array and not v then an arc is added between each
-       *     Instance in u and v;
-       *   - if v is an array and not u then an arc is added between u and
-       *     each Instance in v;
-       *   - if u and v are arrays then an arc is added between each pair
-       *     of Instance in u and v.
-       *
-       * @param u A name of an Instance in this System.
-       * @param v A name of an Instance in this System.
-       * @param ref A ReferenceSlot of u which range type matches v's.
-       *
-       * @throw OutOfUpperBound Raised if ref can not receive another Instance.
-       * @throw NotFound Raised either if u, v or ref could not be found.
-       * @throw WrongClassElement<GUM_SCALAR> Raised if ref does not name a
-       *ReferenceSlot.
-       * @throw TypeError Raised if v's type does not match ref range type.
-       */
-      GUM_DEPRECATED( void insertArc( const std::string& u,
-                                      const std::string& v,
-                                      const std::string& ref ) );
-      void addArc( const std::string& u, const std::string& v,
+      void addArc( const std::string& u,
+                   const std::string& v,
                    const std::string& ref );
 
       /// @}

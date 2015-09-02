@@ -54,7 +54,8 @@ namespace gum {
   INLINE FMDPFactory<GUM_SCALAR>::FMDPFactory(
       FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp,
       MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* ddFactory )
-      : __fmdp( fmdp ), __decisionDiagramFactory( ddFactory ) {
+      : __fmdp( fmdp )
+      , __decisionDiagramFactory( ddFactory ) {
 
     GUM_CONSTRUCTOR( FMDPFactory );
 
@@ -111,8 +112,7 @@ namespace gum {
   FMDPFactory<GUM_SCALAR>::variable( const std::string& name ) const {
 
     for ( const auto& elt : __varNameMap )
-      if ( elt.first.compare( name ) == 0 )
-        return elt.second;
+      if ( elt.first.compare( name ) == 0 ) return elt.second;
 
     GUM_ERROR( NotFound, name );
 
@@ -246,8 +246,7 @@ namespace gum {
   FMDPFactory<GUM_SCALAR>::__checkModalityInBag( const std::string& mod ) {
 
     for ( size_t i = 2; i < __stringBag.size(); ++i )
-      if ( mod == __stringBag[i] )
-        GUM_ERROR( DuplicateElement, mod );
+      if ( mod == __stringBag[i] ) GUM_ERROR( DuplicateElement, mod );
   }
 
   // Tells the factory that we're out of a variable declaration.
@@ -617,8 +616,7 @@ namespace gum {
 
           delete elt;
 
-          if ( temp != nullptr )
-            delete temp;
+          if ( temp != nullptr ) delete temp;
         }
 
         __fmdp->addReward( res );
@@ -701,17 +699,9 @@ namespace gum {
     return __decisionDiagramFactory->addTerminalNode( (GUM_SCALAR)value );
   }
 
-  // Insert an arc in diagram
-
   template <typename GUM_SCALAR>
-  INLINE void FMDPFactory<GUM_SCALAR>::insertArc( NodeId from, NodeId to,
-                                                  Idx modality ) {
-    addArc( from, to, modality );
-  }
-
-  template <typename GUM_SCALAR>
-  INLINE void FMDPFactory<GUM_SCALAR>::addArc( NodeId from, NodeId to,
-                                               Idx modality ) {
+  INLINE void
+  FMDPFactory<GUM_SCALAR>::addArc( NodeId from, NodeId to, Idx modality ) {
 
     __decisionDiagramFactory->addArc( from, to, modality );
   }

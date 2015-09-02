@@ -39,9 +39,12 @@ namespace gum {
           const MultiDimImplementation<GUM_SCALAR>&,
           const Set<const DiscreteVariable*>& ) )
       : ScheduleOperation<GUM_SCALAR>(
-            ScheduleOperation<GUM_SCALAR>::Type::PROJECT_MULTIDIM ),
-        __table( table ), __del_vars( del_vars ), __args( 0 ), __results( 0 ),
-        __project( project ) {
+            ScheduleOperation<GUM_SCALAR>::Type::PROJECT_MULTIDIM )
+      , __table( table )
+      , __del_vars( del_vars )
+      , __args( 0 )
+      , __results( 0 )
+      , __project( project ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( ScheduleProject );
 
@@ -60,10 +63,13 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleProject<GUM_SCALAR>::ScheduleProject(
       const ScheduleProject<GUM_SCALAR>& f )
-      : ScheduleOperation<GUM_SCALAR>( f ), __table( f.__table ),
-        __del_vars( f.__del_vars ),
-        __result( new ScheduleMultiDim<GUM_SCALAR>( *( f.__result ) ) ),
-        __args( 0 ), __results( 0 ), __project( f.__project ) {
+      : ScheduleOperation<GUM_SCALAR>( f )
+      , __table( f.__table )
+      , __del_vars( f.__del_vars )
+      , __result( new ScheduleMultiDim<GUM_SCALAR>( *( f.__result ) ) )
+      , __args( 0 )
+      , __results( 0 )
+      , __project( f.__project ) {
     // for debugging purposes
     GUM_CONS_CPY( ScheduleProject );
   }
@@ -81,11 +87,9 @@ namespace gum {
     GUM_DESTRUCTOR( ScheduleProject );
     delete __result;
 
-    if ( __args )
-      delete __args;
+    if ( __args ) delete __args;
 
-    if ( __results )
-      delete __results;
+    if ( __results ) delete __results;
   }
 
   /// copy operator
@@ -119,8 +123,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   bool ScheduleProject<GUM_SCALAR>::
   operator==( const ScheduleOperation<GUM_SCALAR>& op ) const {
-    if ( this->type() != op.type() )
-      return false;
+    if ( this->type() != op.type() ) return false;
 
     const ScheduleProject<GUM_SCALAR>& real_op =
         static_cast<const ScheduleProject<GUM_SCALAR>&>( op );
@@ -133,8 +136,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   bool ScheduleProject<GUM_SCALAR>::
   operator!=( const ScheduleOperation<GUM_SCALAR>& op ) const {
-    if ( this->type() != op.type() )
-      return true;
+    if ( this->type() != op.type() ) return true;
 
     const ScheduleProject<GUM_SCALAR>& real_op =
         static_cast<const ScheduleProject<GUM_SCALAR>&>( op );
@@ -144,7 +146,8 @@ namespace gum {
   }
 
   /// executes the operation
-  template <typename GUM_SCALAR> void ScheduleProject<GUM_SCALAR>::execute() {
+  template <typename GUM_SCALAR>
+  void ScheduleProject<GUM_SCALAR>::execute() {
     if ( __result->isAbstract() ) {
       const MultiDimImplementation<GUM_SCALAR>& t = __table.multiDim();
       MultiDimImplementation<GUM_SCALAR>* res = __project( t, __del_vars );

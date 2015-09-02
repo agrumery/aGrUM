@@ -29,7 +29,8 @@
 namespace gum {
 
   /// default constructor (construct an empty sequence)
-  template <typename GUM_SCALAR> Schedule<GUM_SCALAR>::Schedule() {
+  template <typename GUM_SCALAR>
+  Schedule<GUM_SCALAR>::Schedule() {
     // for debugging purposes
     GUM_CONSTRUCTOR( Schedule );
   }
@@ -37,10 +38,11 @@ namespace gum {
   /// copy constructor
   template <typename GUM_SCALAR>
   Schedule<GUM_SCALAR>::Schedule( const Schedule<GUM_SCALAR>& from )
-      : __dag( from.__dag ), __operation2node( from.__operation2node ),
-        __created_multidims( from.__created_multidims ),
-        __operations_with_wrong_parents( from.__operations_with_wrong_parents ),
-        __operations_available( from.__operations_available ) {
+      : __dag( from.__dag )
+      , __operation2node( from.__operation2node )
+      , __created_multidims( from.__created_multidims )
+      , __operations_with_wrong_parents( from.__operations_with_wrong_parents )
+      , __operations_available( from.__operations_available ) {
     // for debugging purposes
     GUM_CONS_CPY( Schedule );
 
@@ -54,7 +56,8 @@ namespace gum {
   }
 
   /// destructor
-  template <typename GUM_SCALAR> Schedule<GUM_SCALAR>::~Schedule() {
+  template <typename GUM_SCALAR>
+  Schedule<GUM_SCALAR>::~Schedule() {
     // for debugging purposes
     GUM_DESTRUCTOR( Schedule );
 
@@ -141,8 +144,7 @@ namespace gum {
     }
 
     // if the operation is available to be processed, mark it as such
-    if ( operation_available )
-      __operations_available.insert( node_id );
+    if ( operation_available ) __operations_available.insert( node_id );
 
     // now we shall find whether, upon executing the operation, new multidim
     // tables are created
@@ -151,8 +153,7 @@ namespace gum {
     for ( const auto tab : operation->multiDimResults() ) {
       MultiDimId table_id = tab->id();
 
-      if ( tab->isAbstract() )
-        __created_multidims.insert( table_id, node_id );
+      if ( tab->isAbstract() ) __created_multidims.insert( table_id, node_id );
 
       if ( !__multidim2operations.exists( table_id ) ) {
         involved_ops =
@@ -257,8 +258,7 @@ namespace gum {
   void Schedule<GUM_SCALAR>::forceAfter( NodeId op_to_force,
                                          const NodeSet& ops_before ) {
     for ( const auto op : ops_before )
-      if ( op != op_to_force )
-        forceAfter( op_to_force, op );
+      if ( op != op_to_force ) forceAfter( op_to_force, op );
   }
 
   /** @brief adds a constraint indicating that an operation cannot be performed
@@ -268,8 +268,7 @@ namespace gum {
       const ScheduleOperation<GUM_SCALAR>& op_to_force,
       const Set<const ScheduleOperation<GUM_SCALAR>*>& ops_before ) {
     for ( const auto op : ops_before )
-      if ( *op != op_to_force )
-        forceAfter( op_to_force, *op );
+      if ( *op != op_to_force ) forceAfter( op_to_force, *op );
   }
 
   /** @brief adds a constraint indicating that an operation must be performed
@@ -300,8 +299,7 @@ namespace gum {
   void Schedule<GUM_SCALAR>::forceBefore( NodeId op_to_force,
                                           const NodeSet& ops_after ) {
     for ( const auto op : ops_after )
-      if ( op != op_to_force )
-        forceBefore( op_to_force, op );
+      if ( op != op_to_force ) forceBefore( op_to_force, op );
   }
 
   /** @brief adds a constraint indicating that an operation must be performed
@@ -312,7 +310,8 @@ namespace gum {
       const Set<const ScheduleOperation<GUM_SCALAR>*>& ops_after ) {
     for ( typename Set<const ScheduleOperation<GUM_SCALAR>*>::const_iterator
               iter = ops_after.begin();
-          iter != ops_after.end(); ++iter ) {
+          iter != ops_after.end();
+          ++iter ) {
       if ( **iter != op_to_force ) {
         forceBefore( op_to_force, **iter );
       }

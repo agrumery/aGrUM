@@ -69,6 +69,7 @@
 #include <agrum/BN/io/net/netWriter.h>
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
+#include <agrum/PRM/o3prm/O3prmBNReader.h>
 
 #include <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
 #include <agrum/core/algorithms/approximationScheme/approximationScheme.h>

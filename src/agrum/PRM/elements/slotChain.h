@@ -38,8 +38,10 @@
 namespace gum {
   namespace prm {
 
-    template <typename GUM_SCALAR> class Class;
-    template <typename GUM_SCALAR> class Attribute;
+    template <typename GUM_SCALAR>
+    class Class;
+    template <typename GUM_SCALAR>
+    class Attribute;
 
     /**
      * @class SlotChain slotChain.h <agrum/PRM/slotChain.h>

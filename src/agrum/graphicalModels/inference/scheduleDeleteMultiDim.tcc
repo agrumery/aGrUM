@@ -38,8 +38,9 @@ namespace gum {
   ScheduleDeleteMultiDim<GUM_SCALAR>::ScheduleDeleteMultiDim(
       const ScheduleMultiDim<GUM_SCALAR>& table )
       : ScheduleOperation<GUM_SCALAR>(
-            ScheduleOperation<GUM_SCALAR>::Type::DELETE_MULTIDIM ),
-        __table( table ), __args( 0 ) {
+            ScheduleOperation<GUM_SCALAR>::Type::DELETE_MULTIDIM )
+      , __table( table )
+      , __args( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( ScheduleDeleteMultiDim );
   }
@@ -48,8 +49,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleDeleteMultiDim<GUM_SCALAR>::ScheduleDeleteMultiDim(
       const ScheduleDeleteMultiDim<GUM_SCALAR>& from )
-      : ScheduleOperation<GUM_SCALAR>( from ), __table( from.__table ),
-        __args( 0 ) {
+      : ScheduleOperation<GUM_SCALAR>( from )
+      , __table( from.__table )
+      , __args( 0 ) {
     // for debugging purposes
     GUM_CONS_CPY( ScheduleDeleteMultiDim );
   }
@@ -67,8 +69,7 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR( ScheduleDeleteMultiDim );
 
-    if ( __args )
-      delete __args;
+    if ( __args ) delete __args;
   }
 
   /// copy operator
@@ -93,8 +94,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   bool ScheduleDeleteMultiDim<GUM_SCALAR>::
   operator==( const ScheduleOperation<GUM_SCALAR>& op ) const {
-    if ( this->type() != op.type() )
-      return false;
+    if ( this->type() != op.type() ) return false;
 
     const ScheduleDeleteMultiDim<GUM_SCALAR>& real_op =
         static_cast<const ScheduleDeleteMultiDim<GUM_SCALAR>&>( op );
@@ -105,8 +105,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   bool ScheduleDeleteMultiDim<GUM_SCALAR>::
   operator!=( const ScheduleOperation<GUM_SCALAR>& op ) const {
-    if ( this->type() != op.type() )
-      return true;
+    if ( this->type() != op.type() ) return true;
 
     const ScheduleDeleteMultiDim<GUM_SCALAR>& real_op =
         static_cast<const ScheduleDeleteMultiDim<GUM_SCALAR>&>( op );
@@ -167,16 +166,25 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      __debug__::__inc_deletion( "Sequence", __FILE__, __LINE__,
-                                 "destructor of", (void*)&empty_seq );
-      __debug__::__inc_deletion( "SequenceImplementation", __FILE__, __LINE__,
-                                 "destructor of", (void*)&empty_seq );
-      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__,
-                                 "destructor of", (void*)&empty_seq );
-      __debug__::__inc_deletion( "SequenceIteratorSafe", __FILE__, __LINE__,
-                                 "destructor of", (void*)&empty_seq );
-      __debug__::__inc_deletion( "SequenceIteratorSafe", __FILE__, __LINE__,
-                                 "destructor of", (void*)&empty_seq );
+      __debug__::__inc_deletion(
+          "Sequence", __FILE__, __LINE__, "destructor of", (void*)&empty_seq );
+      __debug__::__inc_deletion( "SequenceImplementation",
+                                 __FILE__,
+                                 __LINE__,
+                                 "destructor of",
+                                 (void*)&empty_seq );
+      __debug__::__inc_deletion(
+          "HashTable", __FILE__, __LINE__, "destructor of", (void*)&empty_seq );
+      __debug__::__inc_deletion( "SequenceIteratorSafe",
+                                 __FILE__,
+                                 __LINE__,
+                                 "destructor of",
+                                 (void*)&empty_seq );
+      __debug__::__inc_deletion( "SequenceIteratorSafe",
+                                 __FILE__,
+                                 __LINE__,
+                                 "destructor of",
+                                 (void*)&empty_seq );
     }
 
 #endif /* NDEBUG */

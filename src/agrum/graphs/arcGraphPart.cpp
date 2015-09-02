@@ -38,7 +38,8 @@ namespace gum {
     GUM_CONSTRUCTOR( ArcGraphPart );
   }
 
-  ArcGraphPart::ArcGraphPart( const ArcGraphPart& s ) : __arcs( s.__arcs ) {
+  ArcGraphPart::ArcGraphPart( const ArcGraphPart& s )
+      : __arcs( s.__arcs ) {
     GUM_CONS_CPY( ArcGraphPart );
 
     // copy the sets of parents

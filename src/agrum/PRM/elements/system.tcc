@@ -41,7 +41,8 @@ namespace gum {
       GUM_CONSTRUCTOR( System );
     }
 
-    template <typename GUM_SCALAR> System<GUM_SCALAR>::~System() {
+    template <typename GUM_SCALAR>
+    System<GUM_SCALAR>::~System() {
       GUM_DESTRUCTOR( System );
 
       for ( const auto& elt : *this )
@@ -54,12 +55,6 @@ namespace gum {
         delete elt.second.second;
     }
 
-    template <typename GUM_SCALAR>
-    void System<GUM_SCALAR>::insertArc( const std::string& u_name,
-                                        const std::string& v_name,
-                                        const std::string& ref_name ) {
-      addArc( u_name, v_name, ref_name );
-    }
     template <typename GUM_SCALAR>
     void System<GUM_SCALAR>::addArc( const std::string& u_name,
                                      const std::string& v_name,
@@ -176,7 +171,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void System<GUM_SCALAR>::__groundAgg(
-        const ClassElement<GUM_SCALAR>& elt, const std::string& name,
+        const ClassElement<GUM_SCALAR>& elt,
+        const std::string& name,
         BayesNetFactory<GUM_SCALAR>& factory ) const {
       factory.startVariableDeclaration();
       factory.variableName( name );
@@ -279,7 +275,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void System<GUM_SCALAR>::__groundPotential(
-        const Instance<GUM_SCALAR>& instance, const Attribute<GUM_SCALAR>& attr,
+        const Instance<GUM_SCALAR>& instance,
+        const Attribute<GUM_SCALAR>& attr,
         BayesNetFactory<GUM_SCALAR>& factory ) const {
       Bijection<const DiscreteVariable*, const DiscreteVariable*> bijection;
       std::stringstream var_name;

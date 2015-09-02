@@ -45,8 +45,8 @@ namespace gum {
 
     /// Database default constructor
     genericBNLearner::Database::Database( std::string filename )
-        : __database( genericBNLearner::__readFile( filename ) ),
-          __generators( RowGeneratorIdentity() ) {
+        : __database( genericBNLearner::__readFile( filename ) )
+        , __generators( RowGeneratorIdentity() ) {
       // create the RowFilter used for learning: we first generate a universal
       // filter that can parse any database. Then, we parse once the DB to
       // convert it into a compact int (an interval 0..N-1) so that we can
@@ -64,7 +64,8 @@ namespace gum {
       raw2fast_transfo.transform( raw_filter );
 
       __translators.insertTranslator( CellTranslatorCompactIntId( false ),
-                                      Col<0>(), __database.nbVariables() );
+                                      Col<0>(),
+                                      __database.nbVariables() );
 
       // create the row filter using the fast translators
       __row_filter =
@@ -89,8 +90,8 @@ namespace gum {
         std::string filename,
         const NodeProperty<Sequence<std::string>>& modalities,
         bool check_database )
-        : __database( genericBNLearner::__readFile( filename ) ),
-          __generators( RowGeneratorIdentity() ) {
+        : __database( genericBNLearner::__readFile( filename ) )
+        , __generators( RowGeneratorIdentity() ) {
       // create the RowFilter used for learning: we first generate a universal
       // filter that can parse any database. Then, we parse once the DB to
       // convert it into a compact int (an interval 0..N-1) so that we can
@@ -98,8 +99,8 @@ namespace gum {
       CellTranslatorUniversal dummy_translator(
           Sequence<std::string>(),
           true );  // by default, check the database
-      __raw_translators.insertTranslator( dummy_translator, Col<0>(),
-                                          __database.nbVariables() );
+      __raw_translators.insertTranslator(
+          dummy_translator, Col<0>(), __database.nbVariables() );
 
       // assign the user values to the raw translators
       for ( auto iter = modalities.cbegin(); iter != modalities.cend();
@@ -121,8 +122,9 @@ namespace gum {
 
         // determine the number of threads to use for the parsing
         unsigned int max_nb_threads =
-            std::max( 1UL, std::min( db_size / __min_nb_rows_per_thread,
-                                     (unsigned long)__max_threads_number ) );
+            std::max( 1UL,
+                      std::min( db_size / __min_nb_rows_per_thread,
+                                (unsigned long)__max_threads_number ) );
 
         const unsigned long max_size_per_thread =
             ( db_size + max_nb_threads - 1 ) / max_nb_threads;
@@ -225,7 +227,8 @@ namespace gum {
       raw2fast_transfo.transform( raw_filter );
 
       __translators.insertTranslator( CellTranslatorCompactIntId( false ),
-                                      Col<0>(), __database.nbVariables() );
+                                      Col<0>(),
+                                      __database.nbVariables() );
 
       // create the row filter using the fast translators
       __row_filter =
@@ -248,8 +251,8 @@ namespace gum {
     /// Database default constructor
     genericBNLearner::Database::Database( std::string filename,
                                           Database& score_database )
-        : __database( genericBNLearner::__readFile( filename ) ),
-          __generators( RowGeneratorIdentity() ) {
+        : __database( genericBNLearner::__readFile( filename ) )
+        , __generators( RowGeneratorIdentity() ) {
       // check that there are at least as many variables in the a priori
       // database as those in the score_database
       if ( __database.nbVariables() <
@@ -308,10 +311,11 @@ namespace gum {
 
     /// Database default constructor
     genericBNLearner::Database::Database(
-        std::string filename, Database& score_database,
+        std::string filename,
+        Database& score_database,
         const NodeProperty<Sequence<std::string>>& modalities )
-        : __database( genericBNLearner::__readFile( filename ) ),
-          __generators( RowGeneratorIdentity() ) {
+        : __database( genericBNLearner::__readFile( filename ) )
+        , __generators( RowGeneratorIdentity() ) {
       GUM_ERROR( OperationNotAllowed,
                  "Learners with both Dirichlet apriori and "
                  "variables' modalities specified are not implemented yet" );
@@ -319,11 +323,12 @@ namespace gum {
 
     /// prevent copy constructor
     genericBNLearner::Database::Database( const Database& from )
-        : __database( from.__database ),
-          __raw_translators( from.__raw_translators ),
-          __translators( from.__translators ),
-          __generators( from.__generators ), __modalities( from.__modalities ),
-          __name2nodeId( from.__name2nodeId ) {
+        : __database( from.__database )
+        , __raw_translators( from.__raw_translators )
+        , __translators( from.__translators )
+        , __generators( from.__generators )
+        , __modalities( from.__modalities )
+        , __name2nodeId( from.__name2nodeId ) {
       // create the row filter for the __database
       __row_filter =
           new DBRowFilter<DatabaseVectInRAM::Handler,
@@ -334,12 +339,12 @@ namespace gum {
 
     /// prevent move constructor
     genericBNLearner::Database::Database( Database&& from )
-        : __database( std::move( from.__database ) ),
-          __raw_translators( std::move( from.__raw_translators ) ),
-          __translators( std::move( from.__translators ) ),
-          __generators( std::move( from.__generators ) ),
-          __modalities( std::move( from.__modalities ) ),
-          __name2nodeId( std::move( from.__name2nodeId ) ) {
+        : __database( std::move( from.__database ) )
+        , __raw_translators( std::move( from.__raw_translators ) )
+        , __translators( std::move( from.__translators ) )
+        , __generators( std::move( from.__generators ) )
+        , __modalities( std::move( from.__modalities ) )
+        , __name2nodeId( std::move( from.__name2nodeId ) ) {
       // create the row filter for the __database
       __row_filter =
           new DBRowFilter<DatabaseVectInRAM::Handler,
@@ -413,76 +418,73 @@ namespace gum {
         const std::string& filename,
         const NodeProperty<Sequence<std::string>>& modalities,
         bool parse_database )
-        : __score_database( filename, modalities, parse_database ),
-          __user_modalities( modalities ),
-          __modalities_parse_db( parse_database ) {
+        : __score_database( filename, modalities, parse_database )
+        , __user_modalities( modalities )
+        , __modalities_parse_db( parse_database ) {
       // for debugging purposes
       GUM_CONSTRUCTOR( genericBNLearner );
     }
 
     /// copy constructor
     genericBNLearner::genericBNLearner( const genericBNLearner& from )
-        : __score_type( from.__score_type ),
-          __param_estimator_type( from.__param_estimator_type ),
-          __apriori_type( from.__apriori_type ),
-          __apriori_weight( from.__apriori_weight ),
-          __constraint_SliceOrder( from.__constraint_SliceOrder ),
-          __constraint_Indegree( from.__constraint_Indegree ),
-          __constraint_TabuList( from.__constraint_TabuList ),
-          __constraint_ForbiddenArcs( from.__constraint_ForbiddenArcs ),
-          __constraint_MandatoryArcs( from.__constraint_MandatoryArcs ),
-          __selected_algo( from.__selected_algo ), __K2( from.__K2 ),
-          __greedy_hill_climbing( from.__greedy_hill_climbing ),
-          __local_search_with_tabu_list( from.__local_search_with_tabu_list ),
-          __score_database( from.__score_database ),
-          __user_modalities( from.__user_modalities ),
-          __modalities_parse_db( from.__modalities_parse_db ),
-          __apriori_dbname( from.__apriori_dbname ),
-          __initial_dag( from.__initial_dag ) {
+        : __score_type( from.__score_type )
+        , __param_estimator_type( from.__param_estimator_type )
+        , __apriori_type( from.__apriori_type )
+        , __apriori_weight( from.__apriori_weight )
+        , __constraint_SliceOrder( from.__constraint_SliceOrder )
+        , __constraint_Indegree( from.__constraint_Indegree )
+        , __constraint_TabuList( from.__constraint_TabuList )
+        , __constraint_ForbiddenArcs( from.__constraint_ForbiddenArcs )
+        , __constraint_MandatoryArcs( from.__constraint_MandatoryArcs )
+        , __selected_algo( from.__selected_algo )
+        , __K2( from.__K2 )
+        , __greedy_hill_climbing( from.__greedy_hill_climbing )
+        , __local_search_with_tabu_list( from.__local_search_with_tabu_list )
+        , __score_database( from.__score_database )
+        , __user_modalities( from.__user_modalities )
+        , __modalities_parse_db( from.__modalities_parse_db )
+        , __apriori_dbname( from.__apriori_dbname )
+        , __initial_dag( from.__initial_dag ) {
       // for debugging purposes
       GUM_CONS_CPY( genericBNLearner );
     }
 
     /// move constructor
     genericBNLearner::genericBNLearner( genericBNLearner&& from )
-        : __score_type( from.__score_type ),
-          __param_estimator_type( from.__param_estimator_type ),
-          __apriori_type( from.__apriori_type ),
-          __apriori_weight( from.__apriori_weight ),
-          __constraint_SliceOrder( std::move( from.__constraint_SliceOrder ) ),
-          __constraint_Indegree( std::move( from.__constraint_Indegree ) ),
-          __constraint_TabuList( std::move( from.__constraint_TabuList ) ),
-          __constraint_ForbiddenArcs(
-              std::move( from.__constraint_ForbiddenArcs ) ),
-          __constraint_MandatoryArcs(
-              std::move( from.__constraint_MandatoryArcs ) ),
-          __selected_algo( from.__selected_algo ),
-          __K2( std::move( from.__K2 ) ),
-          __greedy_hill_climbing( std::move( from.__greedy_hill_climbing ) ),
-          __local_search_with_tabu_list(
-              std::move( from.__local_search_with_tabu_list ) ),
-          __score_database( std::move( from.__score_database ) ),
-          __user_modalities( std::move( from.__user_modalities ) ),
-          __modalities_parse_db( from.__modalities_parse_db ),
-          __apriori_dbname( std::move( from.__apriori_dbname ) ),
-          __initial_dag( std::move( from.__initial_dag ) ) {
+        : __score_type( from.__score_type )
+        , __param_estimator_type( from.__param_estimator_type )
+        , __apriori_type( from.__apriori_type )
+        , __apriori_weight( from.__apriori_weight )
+        , __constraint_SliceOrder( std::move( from.__constraint_SliceOrder ) )
+        , __constraint_Indegree( std::move( from.__constraint_Indegree ) )
+        , __constraint_TabuList( std::move( from.__constraint_TabuList ) )
+        , __constraint_ForbiddenArcs(
+              std::move( from.__constraint_ForbiddenArcs ) )
+        , __constraint_MandatoryArcs(
+              std::move( from.__constraint_MandatoryArcs ) )
+        , __selected_algo( from.__selected_algo )
+        , __K2( std::move( from.__K2 ) )
+        , __greedy_hill_climbing( std::move( from.__greedy_hill_climbing ) )
+        , __local_search_with_tabu_list(
+              std::move( from.__local_search_with_tabu_list ) )
+        , __score_database( std::move( from.__score_database ) )
+        , __user_modalities( std::move( from.__user_modalities ) )
+        , __modalities_parse_db( from.__modalities_parse_db )
+        , __apriori_dbname( std::move( from.__apriori_dbname ) )
+        , __initial_dag( std::move( from.__initial_dag ) ) {
       // for debugging purposes
       GUM_CONS_MOV( genericBNLearner );
     }
 
     /// destructor
     genericBNLearner::~genericBNLearner() {
-      if ( __score )
-        delete __score;
+      if ( __score ) delete __score;
 
-      if ( __param_estimator )
-        delete __param_estimator;
+      if ( __param_estimator ) delete __param_estimator;
 
-      if ( __apriori )
-        delete __apriori;
+      if ( __apriori ) delete __apriori;
 
-      if ( __apriori_database )
-        delete __apriori_database;
+      if ( __apriori_database ) delete __apriori_database;
 
       GUM_DESTRUCTOR( genericBNLearner );
     }
@@ -592,13 +594,14 @@ namespace gum {
       int filename_size = filename.size();
 
       if ( filename_size < 4 ) {
-        GUM_ERROR( FormatNotFound, "genericBNLearner could not determine the "
-                                   "file type of the database" );
+        GUM_ERROR( FormatNotFound,
+                   "genericBNLearner could not determine the "
+                   "file type of the database" );
       }
 
       std::string extension = filename.substr( filename.size() - 4 );
-      std::transform( extension.begin(), extension.end(), extension.begin(),
-                      ::tolower );
+      std::transform(
+          extension.begin(), extension.end(), extension.begin(), ::tolower );
 
       if ( extension == ".csv" ) {
         return DatabaseFromCSV( filename );
@@ -652,8 +655,7 @@ namespace gum {
       __apriori->setWeight( __apriori_weight );
 
       // remove the old apriori, if any
-      if ( old_apriori != nullptr )
-        delete old_apriori;
+      if ( old_apriori != nullptr ) delete old_apriori;
     }
 
     /// create the score used for learning
@@ -665,28 +667,32 @@ namespace gum {
       switch ( __score_type ) {
         case ScoreType::AIC:
           __score = new ScoreAIC<>( __score_database.rowFilter(),
-                                    __score_database.modalities(), *__apriori );
+                                    __score_database.modalities(),
+                                    *__apriori );
           break;
 
         case ScoreType::BD:
           __score = new ScoreBD<>( __score_database.rowFilter(),
-                                   __score_database.modalities(), *__apriori );
+                                   __score_database.modalities(),
+                                   *__apriori );
           break;
 
         case ScoreType::BDeu:
-          __score =
-              new ScoreBDeu<>( __score_database.rowFilter(),
-                               __score_database.modalities(), *__apriori );
+          __score = new ScoreBDeu<>( __score_database.rowFilter(),
+                                     __score_database.modalities(),
+                                     *__apriori );
           break;
 
         case ScoreType::BIC:
           __score = new ScoreBIC<>( __score_database.rowFilter(),
-                                    __score_database.modalities(), *__apriori );
+                                    __score_database.modalities(),
+                                    *__apriori );
           break;
 
         case ScoreType::K2:
           __score = new ScoreK2<>( __score_database.rowFilter(),
-                                   __score_database.modalities(), *__apriori );
+                                   __score_database.modalities(),
+                                   *__apriori );
           break;
 
         case ScoreType::LOG2LIKELIHOOD:
@@ -701,8 +707,7 @@ namespace gum {
       }
 
       // remove the old score, if any
-      if ( old_score != nullptr )
-        delete old_score;
+      if ( old_score != nullptr ) delete old_score;
     }
 
     /// create the parameter estimator used for learning
@@ -715,25 +720,28 @@ namespace gum {
       switch ( __param_estimator_type ) {
         case ParamEstimatorType::ML:
           if ( take_into_account_score && ( __score != nullptr ) ) {
-            __param_estimator = new ParamEstimatorML<>(
-                __score_database.rowFilter(), __score_database.modalities(),
-                *__apriori, __score->internalApriori() );
+            __param_estimator =
+                new ParamEstimatorML<>( __score_database.rowFilter(),
+                                        __score_database.modalities(),
+                                        *__apriori,
+                                        __score->internalApriori() );
           } else {
-            __param_estimator = new ParamEstimatorML<>(
-                __score_database.rowFilter(), __score_database.modalities(),
-                *__apriori );
+            __param_estimator =
+                new ParamEstimatorML<>( __score_database.rowFilter(),
+                                        __score_database.modalities(),
+                                        *__apriori );
           }
 
           break;
 
         default:
-          GUM_ERROR( OperationNotAllowed, "genericBNLearner does not support "
-                                          "yet this parameter estimator" );
+          GUM_ERROR( OperationNotAllowed,
+                     "genericBNLearner does not support "
+                     "yet this parameter estimator" );
       }
 
       // remove the old estimator, if any
-      if ( old_estimator != nullptr )
-        delete old_estimator;
+      if ( old_estimator != nullptr ) delete old_estimator;
     }
 
     /// learn a structure from a file
@@ -792,7 +800,8 @@ namespace gum {
           static_cast<StructuralConstraintIndegree&>( sel_constraint ) =
               __constraint_Indegree;
 
-          GraphChangesSelector4DiGraph<Score<>, decltype( sel_constraint ),
+          GraphChangesSelector4DiGraph<Score<>,
+                                       decltype( sel_constraint ),
                                        decltype( op_set )>
               selector( *__score, sel_constraint, op_set );
 
@@ -825,7 +834,8 @@ namespace gum {
           static_cast<StructuralConstraintIndegree&>( sel_constraint ) =
               __constraint_Indegree;
 
-          GraphChangesSelector4DiGraph<Score<>, decltype( sel_constraint ),
+          GraphChangesSelector4DiGraph<Score<>,
+                                       decltype( sel_constraint ),
                                        decltype( op_set )>
               selector( *__score, sel_constraint, op_set );
 
@@ -869,12 +879,13 @@ namespace gum {
             static_cast<StructuralConstraintIndegree&>( sel_constraint ) =
                 __constraint_Indegree;
 
-            GraphChangesSelector4DiGraph<Score<>, decltype( sel_constraint ),
+            GraphChangesSelector4DiGraph<Score<>,
+                                         decltype( sel_constraint ),
                                          decltype( op_set )>
                 selector( *__score, sel_constraint, op_set );
 
-            return __K2.learnStructure( selector, __score_database.modalities(),
-                                        init_graph );
+            return __K2.learnStructure(
+                selector, __score_database.modalities(), init_graph );
           } else {
             StructuralConstraintSetStatic<StructuralConstraintIndegree,
                                           StructuralConstraintDAG>
@@ -882,12 +893,13 @@ namespace gum {
             static_cast<StructuralConstraintIndegree&>( sel_constraint ) =
                 __constraint_Indegree;
 
-            GraphChangesSelector4DiGraph<Score<>, decltype( sel_constraint ),
+            GraphChangesSelector4DiGraph<Score<>,
+                                         decltype( sel_constraint ),
                                          decltype( op_set )>
                 selector( *__score, sel_constraint, op_set );
 
-            return __K2.learnStructure( selector, __score_database.modalities(),
-                                        init_graph );
+            return __K2.learnStructure(
+                selector, __score_database.modalities(), init_graph );
           }
         }
 

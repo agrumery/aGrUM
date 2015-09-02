@@ -125,14 +125,6 @@ namespace gum {
      * @param n2 the id of the other extremity of the new edge to be inserted
      * @warning if the edge already exists, nothing is done. In particular, no
      * exception is raised. */
-    GUM_DEPRECATED( virtual void insertEdge( const NodeId n1,
-                                             const NodeId n2 ) );
-
-    /// insert a new edge into the EdgeGraphPart
-    /** @param n1 the id of one extremity of the new edge to be inserted
-     * @param n2 the id of the other extremity of the new edge to be inserted
-     * @warning if the edge already exists, nothing is done. In particular, no
-     * exception is raised. */
     virtual void addEdge( const NodeId n1, const NodeId n2 );
 
     /// removes an edge from the EdgeGraphPart
@@ -184,16 +176,6 @@ namespace gum {
     /// erase
     /** @param id the node whose ingoing arcs will be removed */
     void unvirtualizedEraseNeighbours( const NodeId id );
-
-    /// returns an iterator to parse the set of edges of the EdgeGraphPart
-    /// @deprecated Please use edges().begin() or better :
-    /// @code for(const auto& edge : graph.edges()) @endcode
-    GUM_DEPRECATED( const EdgeGraphPart::EdgeIterator beginEdges() const );
-
-    /// returns the end iterator to parse the set of edges
-    /// @deprecated Please use edges().end() or better :
-    /// @code for(const auto& edge : graph.edges()) @endcode
-    GUM_DEPRECATED( const EdgeGraphPart::EdgeIterator& endEdges() const );
 
     /// to friendly display the content of the EdgeGraphPart
     const std::string toString() const;

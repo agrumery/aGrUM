@@ -79,7 +79,8 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-    template <int Idx, int... NextIdx> class DBCellTranslator;
+    template <int Idx, int... NextIdx>
+    class DBCellTranslator;
 
     // This empty class is used to test whether a given filter is a cell
     // translator

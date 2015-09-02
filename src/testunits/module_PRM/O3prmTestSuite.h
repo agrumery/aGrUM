@@ -1125,7 +1125,8 @@ namespace gum_tests {
           ++count;
 
           for ( auto jter = ( *( iter.val() ) ).begin();
-                jter != ( *( iter.val() ) ).end(); ++jter ) {
+                jter != ( *( iter.val() ) ).end();
+                ++jter ) {
             if ( ( *( jter.val() ) ).cpf().nbrDim() == 0 ) {
               std::stringstream sBuff;
               sBuff << ( *( iter.val() ) ).name() << "."
@@ -1170,10 +1171,12 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( sys = &( prm->system( "aSys" ) ) );
 
         for ( gum::prm::System<double>::iterator iter = sys->begin();
-              iter != sys->end(); ++iter ) {
+              iter != sys->end();
+              ++iter ) {
           for ( gum::prm::Instance<double>::iterator jter =
                     ( *( iter.val() ) ).begin();
-                jter != ( *( iter.val() ) ).end(); ++jter ) {
+                jter != ( *( iter.val() ) ).end();
+                ++jter ) {
             gum::Instantiation i( ( *( jter.val() ) ).cpf() ), var;
             var.add( ( *( jter.val() ) ).type().variable() );
 
@@ -1190,8 +1193,7 @@ namespace gum_tests {
           }
         }
 
-        if ( prm )
-          delete prm;
+        if ( prm ) delete prm;
       } catch ( gum::Exception ) {
         TS_ASSERT( false );
       }
@@ -1221,8 +1223,7 @@ namespace gum_tests {
             sys = &( prm->system( "systems.MySystem" ) ) );
         TS_ASSERT_EQUALS( sys->size(), (gum::Size)16 );
 
-        if ( prm )
-          delete prm;
+        if ( prm ) delete prm;
       } catch ( gum::Exception ) {
         TS_ASSERT( false );
       }

@@ -141,14 +141,18 @@ namespace gum {
       void __generateCluster( PRMFactory<GUM_SCALAR>& f,
                               const std::string& type,
                               std::vector<ClusteredLayerGenerator::MyData>& l,
-                              Size lvl, Set<std::string>& i );
+                              Size lvl,
+                              Set<std::string>& i );
 
-      void __generateClass( PRMFactory<GUM_SCALAR>& f, const std::string& type,
+      void __generateClass( PRMFactory<GUM_SCALAR>& f,
+                            const std::string& type,
                             std::vector<ClusteredLayerGenerator::MyData>& l,
-                            Size lvl, Set<std::string>& i );
+                            Size lvl,
+                            Set<std::string>& i );
 
       void
-      __generateClassDag( Size lvl, DAG& dag,
+      __generateClassDag( Size lvl,
+                          DAG& dag,
                           Bijection<std::string, NodeId>& names,
                           std::vector<ClusteredLayerGenerator::MyData>& l );
 

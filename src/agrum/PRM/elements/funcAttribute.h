@@ -62,7 +62,8 @@ namespace gum {
        *of this FuncAttribute.
        *             it will be deleted after the call of ~FuncAttribute.
        */
-      FuncAttribute( const std::string& name, const Type<GUM_SCALAR>& type,
+      FuncAttribute( const std::string& name,
+                     const Type<GUM_SCALAR>& type,
                      MultiDimImplementation<GUM_SCALAR>* impl =
                          new MultiDimArray<GUM_SCALAR>() );
 

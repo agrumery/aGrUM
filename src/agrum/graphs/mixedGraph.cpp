@@ -31,22 +31,26 @@
 
 namespace gum {
 
-  MixedGraph::MixedGraph( Size nodes_size, bool nodes_resize_policy,
-                          Size arcs_size, bool arcs_resize_policy,
+  MixedGraph::MixedGraph( Size nodes_size,
+                          bool nodes_resize_policy,
+                          Size arcs_size,
+                          bool arcs_resize_policy,
                           Size edges_size,
                           bool edges_resize_policy )
       :  // Note that we need to initialize the NodeGraphPart by ourselves
          // because
-        // it is a virtual inherited class (see C++ FAQ Lite #25.12 for details)
-        NodeGraphPart( nodes_size, nodes_resize_policy ),
-        UndiGraph( edges_size, edges_resize_policy ),
-        DiGraph( arcs_size, arcs_resize_policy ) {
+      // it is a virtual inherited class (see C++ FAQ Lite #25.12 for details)
+      NodeGraphPart( nodes_size, nodes_resize_policy )
+      , UndiGraph( edges_size, edges_resize_policy )
+      , DiGraph( arcs_size, arcs_resize_policy ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( MixedGraph );
   }
 
   MixedGraph::MixedGraph( const MixedGraph& g )
-      : NodeGraphPart( g ), UndiGraph( g ), DiGraph( g ) {
+      : NodeGraphPart( g )
+      , UndiGraph( g )
+      , DiGraph( g ) {
     // for debugging purposes
     GUM_CONS_CPY( MixedGraph );
   }

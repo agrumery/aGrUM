@@ -51,12 +51,12 @@ namespace gum_tests {
 
       gum::ArcProperty<gum::Set<const gum::MultiDimImplementation<float>*>> set;
       TS_ASSERT( set.size() == 0 );
-      gum::ScheduleSeparatorStoreMultiDim<float> store1( f1, set,
-                                                         gum::Arc( 3, 2 ) );
-      gum::ScheduleSeparatorStoreMultiDim<float> store2( f2, set,
-                                                         gum::Arc( 3, 2 ) );
-      gum::ScheduleSeparatorStoreMultiDim<float> store3( f2, set,
-                                                         gum::Arc( 2, 3 ) );
+      gum::ScheduleSeparatorStoreMultiDim<float> store1(
+          f1, set, gum::Arc( 3, 2 ) );
+      gum::ScheduleSeparatorStoreMultiDim<float> store2(
+          f2, set, gum::Arc( 3, 2 ) );
+      gum::ScheduleSeparatorStoreMultiDim<float> store3(
+          f2, set, gum::Arc( 2, 3 ) );
       TS_ASSERT( store1 != store2 );
       TS_ASSERT( store2 != store3 );
       TS_ASSERT( !( store2 == store3 ) );

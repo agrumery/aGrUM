@@ -31,7 +31,9 @@ namespace gum {
 
   template <typename Val>
   INLINE BinTreeNode<Val>::BinTreeNode( const Val& v )
-      : _val( v ), _parent( 0 ), _parent_dir( BinTreeDir::NO_PARENT ) {
+      : _val( v )
+      , _parent( 0 )
+      , _parent_dir( BinTreeDir::NO_PARENT ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( BinTreeNode );
 
@@ -44,7 +46,9 @@ namespace gum {
 
   template <typename Val>
   INLINE BinTreeNode<Val>::BinTreeNode( const BinTreeNode<Val>& from )
-      : _val( from._val ), _parent( 0 ), _parent_dir( BinTreeDir::NO_PARENT ) {
+      : _val( from._val )
+      , _parent( 0 )
+      , _parent_dir( BinTreeDir::NO_PARENT ) {
     // for debugging purposes
     GUM_CONS_CPY( BinTreeNode );
 
@@ -55,7 +59,8 @@ namespace gum {
 
   /// destructor
 
-  template <typename Val> INLINE BinTreeNode<Val>::~BinTreeNode() {
+  template <typename Val>
+  INLINE BinTreeNode<Val>::~BinTreeNode() {
     // for debugging purposes
     GUM_DESTRUCTOR( BinTreeNode );
 
@@ -92,11 +97,15 @@ namespace gum {
 
   /// returns the value stored in a node of the binary search tree
 
-  template <typename Val> INLINE Val& BinTreeNode<Val>::value() { return _val; }
+  template <typename Val>
+  INLINE Val& BinTreeNode<Val>::value() {
+    return _val;
+  }
 
   /// alias for method value
 
-  template <typename Val> INLINE Val& BinTreeNode<Val>::operator*() {
+  template <typename Val>
+  INLINE Val& BinTreeNode<Val>::operator*() {
     return _val;
   }
 
@@ -252,7 +261,8 @@ namespace gum {
 
   /// remove the link between the current node and its left child
 
-  template <typename Val> INLINE void BinTreeNode<Val>::eraseLeftLink() {
+  template <typename Val>
+  INLINE void BinTreeNode<Val>::eraseLeftLink() {
     if ( _children[static_cast<int>( BinTreeDir::LEFT_CHILD )] ) {
       _children[static_cast<int>( BinTreeDir::LEFT_CHILD )]->_parent = nullptr;
       _children[static_cast<int>( BinTreeDir::LEFT_CHILD )]->_parent_dir =
@@ -263,7 +273,8 @@ namespace gum {
 
   /// remove the link between the current node and its right child
 
-  template <typename Val> INLINE void BinTreeNode<Val>::eraseRightLink() {
+  template <typename Val>
+  INLINE void BinTreeNode<Val>::eraseRightLink() {
     if ( _children[static_cast<int>( BinTreeDir::RIGHT_CHILD )] ) {
       _children[static_cast<int>( BinTreeDir::RIGHT_CHILD )]->_parent = nullptr;
       _children[static_cast<int>( BinTreeDir::RIGHT_CHILD )]->_parent_dir =

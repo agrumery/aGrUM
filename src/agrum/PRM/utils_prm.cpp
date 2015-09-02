@@ -37,7 +37,8 @@ namespace gum {
                 impl->newFactory() );
 
             for ( MultiDimInterface::iterator iter = impl->begin();
-                  iter != impl->end(); ++iter )
+                  iter != impl->end();
+                  ++iter )
               p->add( *( bij.second( *iter ) ) );
           } else {
             GUM_ERROR( FatalError,
@@ -66,8 +67,7 @@ namespace gum {
 
         return p;
       } catch ( Exception& e ) {
-        if ( p )
-          delete p;
+        if ( p ) delete p;
 
         throw;
       }

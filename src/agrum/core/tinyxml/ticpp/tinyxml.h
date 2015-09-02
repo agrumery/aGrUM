@@ -216,7 +216,8 @@ class TiXmlBase
   friend class TiXmlDocument;
 
   public:
-  TiXmlBase() : userData( 0 ) {}
+  TiXmlBase()
+      : userData( 0 ) {}
   virtual ~TiXmlBase() {}
 
   /** All TinyXml classes can print themselves to a filestream
@@ -287,7 +288,8 @@ class TiXmlBase
   static const int utf8ByteTable[256];
 
   virtual const char*
-  Parse( const char* p, TiXmlParsingData* data,
+  Parse( const char* p,
+         TiXmlParsingData* data,
          TiXmlEncoding encoding /*= TIXML_ENCODING_UNKNOWN */ ) = 0;
 
   /** Expands entities in a string. Note this should not contian the tag's '<',
@@ -325,8 +327,7 @@ class TiXmlBase
     return ( isspace( (unsigned char)c ) || c == '\n' || c == '\r' );
   }
   inline static bool IsWhiteSpace( int c ) {
-    if ( c < 256 )
-      return IsWhiteSpace( (char)c );
+    if ( c < 256 ) return IsWhiteSpace( (char)c );
 
     return false;  // Again, only truly correct for English/Latin...but usually
                    // works.
@@ -341,8 +342,8 @@ class TiXmlBase
     a pointer just past the last character of the name,
     or 0 if the function has an error.
   */
-  static const char* ReadName( const char* p, TIXML_STRING* name,
-                               TiXmlEncoding encoding );
+  static const char*
+  ReadName( const char* p, TIXML_STRING* name, TiXmlEncoding encoding );
 
   /*  Reads text. Returns a pointer past the given end tag.
     Wickedly complex options, but it keeps the (sensitive) code in one place.
@@ -356,13 +357,13 @@ class TiXmlBase
             TiXmlEncoding encoding );  // the current encoding
 
   // If an entity has been found, transform it into a character.
-  static const char* GetEntity( const char* in, char* value, int* length,
-                                TiXmlEncoding encoding );
+  static const char*
+  GetEntity( const char* in, char* value, int* length, TiXmlEncoding encoding );
 
   // Get a character, while interpreting entities.
   // The length can be from 0 to 4 bytes.
-  inline static const char* GetChar( const char* p, char* _value, int* length,
-                                     TiXmlEncoding encoding ) {
+  inline static const char*
+  GetChar( const char* p, char* _value, int* length, TiXmlEncoding encoding ) {
     assert( p );
 
     if ( encoding == TIXML_ENCODING_UTF8 ) {
@@ -373,8 +374,7 @@ class TiXmlBase
     }
 
     if ( *length == 1 ) {
-      if ( *p == '&' )
-        return GetEntity( p, _value, length, encoding );
+      if ( *p == '&' ) return GetEntity( p, _value, length, encoding );
 
       *_value = *p;
       return p + 1;
@@ -398,7 +398,9 @@ class TiXmlBase
   // Ignore case only works for english, and should only be relied on when
   // comparing
   // to English words: StringEqual( p, "version", true ) is fine.
-  static bool StringEqual( const char* p, const char* endTag, bool ignoreCase,
+  static bool StringEqual( const char* p,
+                           const char* endTag,
+                           bool ignoreCase,
                            TiXmlEncoding encoding );
 
   static const char* errorString[TIXML_ERROR_STRING_COUNT];
@@ -414,16 +416,15 @@ class TiXmlBase
   static int IsAlphaNum( unsigned char anyByte, TiXmlEncoding encoding );
   inline static int ToLower( int v, TiXmlEncoding encoding ) {
     if ( encoding == TIXML_ENCODING_UTF8 ) {
-      if ( v < 128 )
-        return tolower( v );
+      if ( v < 128 ) return tolower( v );
 
       return v;
     } else {
       return tolower( v );
     }
   }
-  static void ConvertUTF32ToUTF8( unsigned long input, char* output,
-                                  int* length );
+  static void
+  ConvertUTF32ToUTF8( unsigned long input, char* output, int* length );
 
   private:
   TiXmlBase( const TiXmlBase& );            // not implemented.
@@ -837,7 +838,7 @@ class TiXmlNode : public TiXmlBase {
   virtual TiXmlStylesheetReference* ToStylesheetReference() {
     return 0;
   }  ///< Cast to a more defined type. Will return null if not of the requested
-  /// type.
+     /// type.
 
   /** Create an exact duplicate of this node and return it. The memory must be
     deleted
@@ -917,7 +918,8 @@ class TiXmlAttribute : public TiXmlBase {
 
   public:
   /// Construct an empty attribute.
-  TiXmlAttribute() : TiXmlBase() {
+  TiXmlAttribute()
+      : TiXmlBase() {
     document = 0;
     prev = next = 0;
   }
@@ -1010,8 +1012,8 @@ class TiXmlAttribute : public TiXmlBase {
   /*  Attribute parsing starts: first letter of the name
              returns: the next char after the value end quote
   */
-  virtual const char* Parse( const char* p, TiXmlParsingData* data,
-                             TiXmlEncoding encoding );
+  virtual const char*
+  Parse( const char* p, TiXmlParsingData* data, TiXmlEncoding encoding );
 
   // Prints this Attribute to a FILE stream.
   virtual void Print( FILE* cfile, int depth ) const {
@@ -1169,14 +1171,12 @@ class TiXmlElement : public TiXmlNode {
   int QueryValueAttribute( const std::string& name, T* outValue ) const {
     const TiXmlAttribute* node = attributeSet.Find( name );
 
-    if ( !node )
-      return TIXML_NO_ATTRIBUTE;
+    if ( !node ) return TIXML_NO_ATTRIBUTE;
 
     std::stringstream sstream( node->ValueStr() );
     sstream >> *outValue;
 
-    if ( !sstream.fail() )
-      return TIXML_SUCCESS;
+    if ( !sstream.fail() ) return TIXML_SUCCESS;
 
     return TIXML_WRONG_TYPE;
   }
@@ -1297,8 +1297,8 @@ const
   /*  Attribtue parsing starts: next char past '<'
              returns: next char past '>'
   */
-  virtual const char* Parse( const char* p, TiXmlParsingData* data,
-                             TiXmlEncoding encoding );
+  virtual const char*
+  Parse( const char* p, TiXmlParsingData* data, TiXmlEncoding encoding );
 
   virtual const TiXmlElement* ToElement() const {
     return this;
@@ -1325,7 +1325,8 @@ const
     Reads the "value" of the element -- another element, or text.
     This should terminate with the current end tag.
   */
-  const char* ReadValue( const char* in, TiXmlParsingData* prevData,
+  const char* ReadValue( const char* in,
+                         TiXmlParsingData* prevData,
                          TiXmlEncoding encoding );
 
   private:
@@ -1337,9 +1338,11 @@ const
 class TiXmlComment : public TiXmlNode {
   public:
   /// Constructs an empty comment.
-  TiXmlComment() : TiXmlNode( TiXmlNode::COMMENT ) {}
+  TiXmlComment()
+      : TiXmlNode( TiXmlNode::COMMENT ) {}
   /// Construct a comment from text.
-  TiXmlComment( const char* _value ) : TiXmlNode( TiXmlNode::COMMENT ) {
+  TiXmlComment( const char* _value )
+      : TiXmlNode( TiXmlNode::COMMENT ) {
     SetValue( _value );
   }
   TiXmlComment( const TiXmlComment& );
@@ -1355,8 +1358,8 @@ class TiXmlComment : public TiXmlNode {
   /*  Attribtue parsing starts: at the ! of the !--
              returns: next char past '>'
   */
-  virtual const char* Parse( const char* p, TiXmlParsingData* data,
-                             TiXmlEncoding encoding );
+  virtual const char*
+  Parse( const char* p, TiXmlParsingData* data, TiXmlEncoding encoding );
 
   virtual const TiXmlComment* ToComment() const {
     return this;
@@ -1396,7 +1399,8 @@ class TiXmlText : public TiXmlNode {
     normal, encoded text. If you want it be output as a CDATA text
     element, set the parameter _cdata to 'true'
   */
-  TiXmlText( const char* initValue ) : TiXmlNode( TiXmlNode::TEXT ) {
+  TiXmlText( const char* initValue )
+      : TiXmlNode( TiXmlNode::TEXT ) {
     SetValue( initValue );
     cdata = false;
   }
@@ -1404,13 +1408,15 @@ class TiXmlText : public TiXmlNode {
 
 #ifdef TIXML_USE_STL
   /// Constructor.
-  TiXmlText( const std::string& initValue ) : TiXmlNode( TiXmlNode::TEXT ) {
+  TiXmlText( const std::string& initValue )
+      : TiXmlNode( TiXmlNode::TEXT ) {
     SetValue( initValue );
     cdata = false;
   }
 #endif
 
-  TiXmlText( const TiXmlText& copy ) : TiXmlNode( TiXmlNode::TEXT ) {
+  TiXmlText( const TiXmlText& copy )
+      : TiXmlNode( TiXmlNode::TEXT ) {
     copy.CopyTo( this );
   }
   void operator=( const TiXmlText& base ) { base.CopyTo( this ); }
@@ -1423,8 +1429,8 @@ class TiXmlText : public TiXmlNode {
   /// Turns on or off a CDATA representation of text.
   void SetCDATA( bool _cdata ) { cdata = _cdata; }
 
-  virtual const char* Parse( const char* p, TiXmlParsingData* data,
-                             TiXmlEncoding encoding );
+  virtual const char*
+  Parse( const char* p, TiXmlParsingData* data, TiXmlEncoding encoding );
 
   virtual const TiXmlText* ToText() const {
     return this;
@@ -1471,16 +1477,19 @@ class TiXmlText : public TiXmlNode {
 class TiXmlDeclaration : public TiXmlNode {
   public:
   /// Construct an empty declaration.
-  TiXmlDeclaration() : TiXmlNode( TiXmlNode::DECLARATION ) {}
+  TiXmlDeclaration()
+      : TiXmlNode( TiXmlNode::DECLARATION ) {}
 
 #ifdef TIXML_USE_STL
   /// Constructor.
-  TiXmlDeclaration( const std::string& _version, const std::string& _encoding,
+  TiXmlDeclaration( const std::string& _version,
+                    const std::string& _encoding,
                     const std::string& _standalone );
 #endif
 
   /// Construct.
-  TiXmlDeclaration( const char* _version, const char* _encoding,
+  TiXmlDeclaration( const char* _version,
+                    const char* _encoding,
                     const char* _standalone );
 
   TiXmlDeclaration( const TiXmlDeclaration& copy );
@@ -1503,8 +1512,8 @@ class TiXmlDeclaration : public TiXmlNode {
     Print( cfile, depth, 0 );
   }
 
-  virtual const char* Parse( const char* p, TiXmlParsingData* data,
-                             TiXmlEncoding encoding );
+  virtual const char*
+  Parse( const char* p, TiXmlParsingData* data, TiXmlEncoding encoding );
 
   virtual const TiXmlDeclaration* ToDeclaration() const {
     return this;
@@ -1544,7 +1553,8 @@ class TiXmlDeclaration : public TiXmlNode {
 class TiXmlStylesheetReference : public TiXmlNode {
   public:
   /// Construct an empty declaration.
-  TiXmlStylesheetReference() : TiXmlNode( TiXmlNode::STYLESHEETREFERENCE ) {}
+  TiXmlStylesheetReference()
+      : TiXmlNode( TiXmlNode::STYLESHEETREFERENCE ) {}
 
 #ifdef TIXML_USE_STL
   /// Constructor.
@@ -1573,8 +1583,8 @@ class TiXmlStylesheetReference : public TiXmlNode {
     Print( cfile, depth, 0 );
   }
 
-  virtual const char* Parse( const char* p, TiXmlParsingData* data,
-                             TiXmlEncoding encoding );
+  virtual const char*
+  Parse( const char* p, TiXmlParsingData* data, TiXmlEncoding encoding );
 
   virtual const TiXmlStylesheetReference* ToStylesheetReference() const {
     return this;
@@ -1610,10 +1620,12 @@ class TiXmlStylesheetReference : public TiXmlNode {
 */
 class TiXmlUnknown : public TiXmlNode {
   public:
-  TiXmlUnknown() : TiXmlNode( TiXmlNode::UNKNOWN ) {}
+  TiXmlUnknown()
+      : TiXmlNode( TiXmlNode::UNKNOWN ) {}
   virtual ~TiXmlUnknown() {}
 
-  TiXmlUnknown( const TiXmlUnknown& copy ) : TiXmlNode( TiXmlNode::UNKNOWN ) {
+  TiXmlUnknown( const TiXmlUnknown& copy )
+      : TiXmlNode( TiXmlNode::UNKNOWN ) {
     copy.CopyTo( this );
   }
   void operator=( const TiXmlUnknown& copy ) { copy.CopyTo( this ); }
@@ -1623,8 +1635,8 @@ class TiXmlUnknown : public TiXmlNode {
   // Print this Unknown to a FILE stream.
   virtual void Print( FILE* cfile, int depth ) const;
 
-  virtual const char* Parse( const char* p, TiXmlParsingData* data,
-                             TiXmlEncoding encoding );
+  virtual const char*
+  Parse( const char* p, TiXmlParsingData* data, TiXmlEncoding encoding );
 
   virtual const TiXmlUnknown* ToUnknown() const {
     return this;
@@ -1720,7 +1732,8 @@ class TiXmlDocument : public TiXmlNode {
     to use that encoding, regardless of what TinyXml might otherwise try to
     detect.
   */
-  virtual const char* Parse( const char* p, TiXmlParsingData* data = 0,
+  virtual const char* Parse( const char* p,
+                             TiXmlParsingData* data = 0,
                              TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );
 
   /** Get the root element -- the only top level element -- of the document.
@@ -1820,7 +1833,9 @@ class TiXmlDocument : public TiXmlNode {
   /// Print this Document to a FILE stream.
   virtual void Print( FILE* cfile, int depth = 0 ) const;
   // [internal use]
-  void SetError( int err, const char* errorLocation, TiXmlParsingData* prevData,
+  void SetError( int err,
+                 const char* errorLocation,
+                 TiXmlParsingData* prevData,
                  TiXmlEncoding encoding );
 
   virtual const TiXmlDocument* ToDocument() const {
@@ -2069,8 +2084,11 @@ class TiXmlHandle {
 class TiXmlPrinter : public TiXmlVisitor {
   public:
   TiXmlPrinter()
-      : depth( 0 ), simpleTextPrint( false ), buffer(), indent( "    " ),
-        lineBreak( "\n" ) {}
+      : depth( 0 )
+      , simpleTextPrint( false )
+      , buffer()
+      , indent( "    " )
+      , lineBreak( "\n" ) {}
 
   virtual bool VisitEnter( const TiXmlDocument& doc );
   virtual bool VisitExit( const TiXmlDocument& doc );

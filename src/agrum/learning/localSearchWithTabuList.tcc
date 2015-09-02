@@ -35,7 +35,8 @@ namespace gum {
     template <typename GRAPH_CHANGES_SELECTOR>
     DAG LocalSearchWithTabuList::learnStructure(
         GRAPH_CHANGES_SELECTOR& selector,
-        const std::vector<unsigned int>& modal, DAG dag ) {
+        const std::vector<unsigned int>& modal,
+        DAG dag ) {
       selector.setGraph( dag, modal );
 
       unsigned int nb_changes_applied;
@@ -142,8 +143,9 @@ namespace gum {
                   break;
 
                 default:
-                  GUM_ERROR( OperationNotAllowed, "edge modifications are not "
-                                                  "supported by local search" );
+                  GUM_ERROR( OperationNotAllowed,
+                             "edge modifications are not "
+                             "supported by local search" );
               }
             }
           }
@@ -152,7 +154,8 @@ namespace gum {
 
           // reset the impacted queue and applied changes structures
           for ( auto iter = impacted_queues.begin();
-                iter != impacted_queues.end(); ++iter ) {
+                iter != impacted_queues.end();
+                ++iter ) {
             *iter = false;
           }
 
@@ -183,17 +186,25 @@ namespace gum {
     }
 
     /// learns the structure and the parameters of a BN
-    template <typename GUM_SCALAR, typename GRAPH_CHANGES_SELECTOR,
-              typename PARAM_ESTIMATOR, typename CELL_TRANSLATORS>
-    BayesNet<GUM_SCALAR> LocalSearchWithTabuList::learnBN(
-        GRAPH_CHANGES_SELECTOR& selector, PARAM_ESTIMATOR& estimator,
-        const std::vector<std::string>& names,
-        const std::vector<unsigned int>& modal,
-        const CELL_TRANSLATORS& translator, DAG initial_dag ) {
-      return DAG2BNLearner::createBN<GUM_SCALAR, PARAM_ESTIMATOR,
+    template <typename GUM_SCALAR,
+              typename GRAPH_CHANGES_SELECTOR,
+              typename PARAM_ESTIMATOR,
+              typename CELL_TRANSLATORS>
+    BayesNet<GUM_SCALAR>
+    LocalSearchWithTabuList::learnBN( GRAPH_CHANGES_SELECTOR& selector,
+                                      PARAM_ESTIMATOR& estimator,
+                                      const std::vector<std::string>& names,
+                                      const std::vector<unsigned int>& modal,
+                                      const CELL_TRANSLATORS& translator,
+                                      DAG initial_dag ) {
+      return DAG2BNLearner::createBN<GUM_SCALAR,
+                                     PARAM_ESTIMATOR,
                                      CELL_TRANSLATORS>(
-          estimator, learnStructure( selector, modal, initial_dag ), names,
-          modal, translator );
+          estimator,
+          learnStructure( selector, modal, initial_dag ),
+          names,
+          modal,
+          translator );
     }
 
   } /* namespace learning */

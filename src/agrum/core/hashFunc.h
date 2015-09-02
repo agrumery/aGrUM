@@ -126,7 +126,8 @@ namespace gum {
    *ensure
    * that the hashed key actually belongs to [0,_hash_size). This is used in
    * particular in the hash function for hashing strings. */
-  template <typename Key> class HashFuncBase {
+  template <typename Key>
+  class HashFuncBase {
     public:
     /// update the hash function to take into account a resize of the hash table
     /**
@@ -169,7 +170,8 @@ namespace gum {
    */
 
   /// generic hash functions for keys smaller than or equal to long integers
-  template <typename Key> class HashFuncSmallKey : private HashFuncBase<Key> {
+  template <typename Key>
+  class HashFuncSmallKey : private HashFuncBase<Key> {
     public:
     /// update the hash function to take into account a resize of the hash table
     /** @throw HashSize */
@@ -260,9 +262,11 @@ namespace gum {
   /** generic hash functions for keys castable as unsigned longs whose size
    * is either smaller than unsigned long, or equal to that of one or two
    * unsigned longs */
-  template <typename T> struct HashFuncCastKey {
+  template <typename T>
+  struct HashFuncCastKey {
     using type = typename std::conditional<
-        sizeof( T ) < sizeof( long ), HashFuncSmallCastKey<T>,
+        sizeof( T ) < sizeof( long ),
+        HashFuncSmallCastKey<T>,
         typename std::conditional<sizeof( T ) == 2 * sizeof( long ),
                                   HashFuncLargeCastKey<T>,
                                   HashFuncMediumCastKey<T>>::type>::type;
@@ -310,7 +314,8 @@ namespace gum {
   /** generic hash functions for keys castable as unsigned longs whose size
    * is either smaller than unsigned long, or equal to that of one or two
    * unsigned longs */
-  template <typename T1, typename T2> struct HashFuncCastKeyPair {
+  template <typename T1, typename T2>
+  struct HashFuncCastKeyPair {
     using Func1 = typename HashFuncCastKey<T1>::type;
     using Func2 = typename HashFuncCastKey<T2>::type;
     using type = HashFuncAllCastKeyPair<T1, T2, Func1, Func2>;
@@ -326,23 +331,29 @@ namespace gum {
    * However it prevents to create hash functions on key types that are not yet
    * supported. */
 
-  template <typename key> class HashFunc {};
+  template <typename key>
+  class HashFunc {};
 
-  template <> class HashFunc<bool> : public HashFuncSmallKey<bool> {};
+  template <>
+  class HashFunc<bool> : public HashFuncSmallKey<bool> {};
 
-  template <> class HashFunc<int> : public HashFuncSmallKey<int> {};
+  template <>
+  class HashFunc<int> : public HashFuncSmallKey<int> {};
 
   template <>
   class HashFunc<unsigned int> : public HashFuncSmallKey<unsigned int> {};
 
-  template <> class HashFunc<long> : public HashFuncSmallKey<long> {};
+  template <>
+  class HashFunc<long> : public HashFuncSmallKey<long> {};
 
   template <>
   class HashFunc<unsigned long> : public HashFuncSmallKey<unsigned long> {};
 
-  template <> class HashFunc<float> : public HashFuncCastKey<float>::type {};
+  template <>
+  class HashFunc<float> : public HashFuncCastKey<float>::type {};
 
-  template <> class HashFunc<double> : public HashFuncCastKey<double>::type {};
+  template <>
+  class HashFunc<double> : public HashFuncCastKey<double>::type {};
 
   template <typename Type>
   class HashFunc<Type*> : public HashFuncCastKey<Type*>::type {};
@@ -386,7 +397,8 @@ namespace gum {
     Size operator()( const RefPtr<Type>& key ) const;
   };
 
-  template <> class HashFunc<std::string> : public HashFuncBase<std::string> {
+  template <>
+  class HashFunc<std::string> : public HashFuncBase<std::string> {
     public:
     /// computes the hashed value of a key
     Size operator()( const std::string& key ) const;
@@ -407,7 +419,8 @@ namespace gum {
     Size operator()( const std::vector<Idx>& key ) const;
   };
 
-  template <> class HashFunc<Debug> : public HashFuncBase<Debug> {
+  template <>
+  class HashFunc<Debug> : public HashFuncBase<Debug> {
     public:
     /// computes the hashed value of a key
     Size operator()( const Debug& key ) const;

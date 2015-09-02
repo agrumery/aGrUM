@@ -88,7 +88,8 @@ namespace gum {
     instantiate( const TABLE<GUM_SCALAR>& table,
                  const HashTable<const DiscreteVariable*, Idx>& inst_vars );
     void
-    instantiate( TABLE<GUM_SCALAR>& container, const TABLE<GUM_SCALAR>& table,
+    instantiate( TABLE<GUM_SCALAR>& container,
+                 const TABLE<GUM_SCALAR>& table,
                  const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
     /// @}

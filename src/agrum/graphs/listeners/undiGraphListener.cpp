@@ -52,13 +52,17 @@ namespace gum {
     GUM_CONSTRUCTOR( UndiGraphListener );
     _graph = g;
 
-    GUM_CONNECT( ( *_graph ), onNodeAdded, ( *this ),
-                 UndiGraphListener::whenNodeAdded );
-    GUM_CONNECT( ( *_graph ), onNodeDeleted, ( *this ),
+    GUM_CONNECT(
+        ( *_graph ), onNodeAdded, ( *this ), UndiGraphListener::whenNodeAdded );
+    GUM_CONNECT( ( *_graph ),
+                 onNodeDeleted,
+                 ( *this ),
                  UndiGraphListener::whenNodeDeleted );
-    GUM_CONNECT( ( *_graph ), onEdgeAdded, ( *this ),
-                 UndiGraphListener::whenEdgeAdded );
-    GUM_CONNECT( ( *_graph ), onEdgeDeleted, ( *this ),
+    GUM_CONNECT(
+        ( *_graph ), onEdgeAdded, ( *this ), UndiGraphListener::whenEdgeAdded );
+    GUM_CONNECT( ( *_graph ),
+                 onEdgeDeleted,
+                 ( *this ),
                  UndiGraphListener::whenEdgeDeleted );
   }
 

@@ -34,14 +34,15 @@ namespace gum {
 
     /// copy constructor
     INLINE K2::K2( const K2& from )
-        : GreedyHillClimbing( from ), __order( from.__order ) {
+        : GreedyHillClimbing( from )
+        , __order( from.__order ) {
       GUM_CONS_CPY( K2 );
     }
 
     /// move constructor
     INLINE K2::K2( K2&& from )
-        : GreedyHillClimbing( std::move( from ) ),
-          __order( std::move( from.__order ) ) {
+        : GreedyHillClimbing( std::move( from ) )
+        , __order( std::move( from.__order ) ) {
       GUM_CONS_MOV( K2 );
     }
 

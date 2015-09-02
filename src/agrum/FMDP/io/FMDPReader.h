@@ -36,11 +36,9 @@
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 
 namespace gum {
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   /* ===                               READERS === */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   /**
    * @class FMDPReader
    * @brief Pure virtual class for reading a FMDP from a file.
@@ -50,7 +48,8 @@ namespace gum {
    * a stream,
    * or a file must be a subclass of FMDPReader.
    */
-  template <typename GUM_SCALAR> class FMDPReader {
+  template <typename GUM_SCALAR>
+  class FMDPReader {
     public:
     /**
      * Constructor

@@ -762,8 +762,7 @@ namespace gum_tests {
       gum::BIFReader<float> reader( net, file );
       TS_ASSERT_THROWS( reader.proceed(), gum::IOError );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testBarley() {
@@ -778,8 +777,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)96 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)107 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testCarpo() {
@@ -794,8 +792,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)361 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testDiabetes() {
@@ -810,8 +807,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)826 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testHailfinder() {
@@ -826,8 +822,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testInsurance() {
@@ -842,8 +837,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testLink() {
@@ -858,8 +852,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)724 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testMildew() {
@@ -874,8 +867,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)70 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testMunin1() {
@@ -890,8 +882,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)372 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void testPigs() {
@@ -906,8 +897,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)441 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     void dBN_INRA_regression_testing() {
@@ -939,8 +929,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)64 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     private:

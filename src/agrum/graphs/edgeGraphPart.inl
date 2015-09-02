@@ -51,11 +51,6 @@ namespace gum {
     }
   }
 
-  INLINE void EdgeGraphPart::insertEdge( const NodeId first,
-                                         const NodeId second ) {
-    addEdge( first, second );
-  }
-
   INLINE void EdgeGraphPart::addEdge( const NodeId first,
                                       const NodeId second ) {
     Edge edge( first, second );
@@ -108,14 +103,6 @@ namespace gum {
         EdgeGraphPart::eraseEdge( Edge( *iter, id ) );
       }
     }
-  }
-
-  INLINE const EdgeGraphPart::EdgeIterator EdgeGraphPart::beginEdges() const {
-    return __edges.begin();
-  }
-
-  INLINE const EdgeGraphPart::EdgeIterator& EdgeGraphPart::endEdges() const {
-    return __edges.end();
   }
 
   INLINE bool EdgeGraphPart::operator==( const EdgeGraphPart& p ) const {

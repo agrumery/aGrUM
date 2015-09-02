@@ -51,7 +51,8 @@ namespace gum {
    * of class
    * @return Returns the number of error during the parsing (0 if none).
    */
-  template <typename GUM_SCALAR> int BIFXMLBNReader<GUM_SCALAR>::proceed() {
+  template <typename GUM_SCALAR>
+  int BIFXMLBNReader<GUM_SCALAR>::proceed() {
     try {
       // Loading file
       std::string status = "Loading File ...";
@@ -136,7 +137,8 @@ namespace gum {
       ticpp::Iterator<ticpp::Element> varOutComesIte( "OUTCOME" );
 
       for ( varOutComesIte = varOutComesIte.begin( currentVar );
-            varOutComesIte != varOutComesIte.end(); ++varOutComesIte )
+            varOutComesIte != varOutComesIte.end();
+            ++varOutComesIte )
         newVar->addLabel( varOutComesIte->GetTextOrDefault( "" ) );
 
       // Getting variable type
@@ -163,14 +165,16 @@ namespace gum {
     ticpp::Iterator<ticpp::Element> definitionIte( "DEFINITION" );
 
     for ( definitionIte = definitionIte.begin( parentNetwork );
-          definitionIte != definitionIte.end(); ++definitionIte )
+          definitionIte != definitionIte.end();
+          ++definitionIte )
       nbDef++;
 
     // Iterating on definition nodes
     int nbIte = 0;
 
     for ( definitionIte = definitionIte.begin( parentNetwork );
-          definitionIte != definitionIte.end(); ++definitionIte ) {
+          definitionIte != definitionIte.end();
+          ++definitionIte ) {
       ticpp::Element* currentVar = definitionIte.Get();
 
       // Considered Node
@@ -190,7 +194,8 @@ namespace gum {
       }
 
       for ( List<NodeId>::iterator_safe parentListIte = parentList.rbeginSafe();
-            parentListIte != parentList.rendSafe(); --parentListIte )
+            parentListIte != parentList.rendSafe();
+            --parentListIte )
         __bn->addArc( *parentListIte, currentVarId );
 
       // Recuperating tables values

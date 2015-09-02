@@ -29,12 +29,14 @@
 namespace gum {
 
   // Default constructor.
-  template <typename GUM_SCALAR> ICPTDisturber<GUM_SCALAR>::ICPTDisturber() {
+  template <typename GUM_SCALAR>
+  ICPTDisturber<GUM_SCALAR>::ICPTDisturber() {
     GUM_CONSTRUCTOR( ICPTDisturber );
   }
 
   // Destructor.
-  template <typename GUM_SCALAR> ICPTDisturber<GUM_SCALAR>::~ICPTDisturber() {
+  template <typename GUM_SCALAR>
+  ICPTDisturber<GUM_SCALAR>::~ICPTDisturber() {
     GUM_DESTRUCTOR( ICPTDisturber );
   }
 

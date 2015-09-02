@@ -32,7 +32,8 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    template <typename Alloc> INLINE IdSet<Alloc>::IdSet() {
+    template <typename Alloc>
+    INLINE IdSet<Alloc>::IdSet() {
       GUM_CONSTRUCTOR( IdSet );
     }
 
@@ -42,8 +43,7 @@ namespace gum {
     IdSet<Alloc>::IdSet( const std::initializer_list<unsigned int> list ) {
       GUM_CONSTRUCTOR( IdSet );
 
-      if ( list.size() )
-        __size = 1;
+      if ( list.size() ) __size = 1;
 
       __ids.reserve( list.size() );
 
@@ -61,7 +61,8 @@ namespace gum {
     INLINE
     IdSet<Alloc>::IdSet( const std::vector<unsigned int, OtherAlloc>& ids,
                          unsigned int sz )
-        : __ids( ids ), __size( sz ) {
+        : __ids( ids )
+        , __size( sz ) {
       GUM_CONSTRUCTOR( IdSet );
       std::sort( __ids.begin(), __ids.end() );
     }
@@ -69,7 +70,8 @@ namespace gum {
     /// copy constructor
     template <typename Alloc>
     INLINE IdSet<Alloc>::IdSet( const IdSet<Alloc>& from )
-        : __ids( from.__ids ), __size( from.__size ) {
+        : __ids( from.__ids )
+        , __size( from.__size ) {
       GUM_CONS_CPY( IdSet );
     }
 
@@ -90,12 +92,14 @@ namespace gum {
     /// move constructor
     template <typename Alloc>
     INLINE IdSet<Alloc>::IdSet( IdSet<Alloc>&& from )
-        : __ids( std::move( from.__ids ) ), __size( from.__size ) {
+        : __ids( std::move( from.__ids ) )
+        , __size( from.__size ) {
       GUM_CONS_MOV( IdSet );
     }
 
     /// destructor
-    template <typename Alloc> INLINE IdSet<Alloc>::~IdSet() {
+    template <typename Alloc>
+    INLINE IdSet<Alloc>::~IdSet() {
       GUM_DESTRUCTOR( IdSet );
     }
 
@@ -154,8 +158,7 @@ namespace gum {
       while ( max_index > min_index ) {
         middle = ( max_index + min_index ) / 2;
 
-        if ( __ids[middle] == id )
-          return *this;
+        if ( __ids[middle] == id ) return *this;
 
         if ( __ids[middle] < id )
           min_index = middle + 1;
@@ -180,12 +183,10 @@ namespace gum {
         noexcept {
       unsigned int sz = __ids.size();
 
-      if ( sz != from.__ids.size() )
-        return false;
+      if ( sz != from.__ids.size() ) return false;
 
       for ( unsigned int i = 0; i < sz; ++i ) {
-        if ( __ids[i] != from.__ids[i] )
-          return false;
+        if ( __ids[i] != from.__ids[i] ) return false;
       }
 
       return true;
@@ -267,8 +268,7 @@ namespace gum {
         }
 
         // check if we found nb
-        if ( tmp_max_index <= min_index )
-          return false;
+        if ( tmp_max_index <= min_index ) return false;
       }
 
       return true;
@@ -316,8 +316,9 @@ namespace gum {
   template <typename Alloc>
   Size
       HashFunc<std::tuple<learning::IdSet<Alloc>, unsigned int, unsigned int>>::
-      operator()( const std::tuple<learning::IdSet<Alloc>, unsigned int,
-                                   unsigned int>& key ) const {
+      operator()(
+          const std::tuple<learning::IdSet<Alloc>, unsigned int, unsigned int>&
+              key ) const {
     Size h = 0;
     size_t i;
     const std::vector<unsigned int, Alloc>& vect = std::get<0>( key ).ids();

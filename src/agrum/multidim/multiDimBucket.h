@@ -222,7 +222,8 @@ namespace gum {
     /// See gum::MultiDimAdressable::changeNotification().
     virtual void changeNotification( Instantiation& i,
                                      const DiscreteVariable* const var,
-                                     const Idx& oldval, const Idx& newval );
+                                     const Idx& oldval,
+                                     const Idx& newval );
 
     /// See gum::MultiDimAdressable::setFirstNotification().
     virtual void setFirstNotification( Instantiation& i );

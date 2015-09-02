@@ -33,8 +33,7 @@ namespace gum {
     GroundedInference<GUM_SCALAR>::~GroundedInference() {
       GUM_DESTRUCTOR( GroundedInference );
 
-      if ( __inf != nullptr )
-        delete __inf;
+      if ( __inf != nullptr ) delete __inf;
 
       if ( not __obs.empty() )
         for ( const auto pot : __obs )
@@ -86,14 +85,16 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE GroundedInference<GUM_SCALAR>::GroundedInference(
         const PRM<GUM_SCALAR>& prm, const System<GUM_SCALAR>& system )
-        : PRMInference<GUM_SCALAR>( prm, system ), __inf( 0 ) {
+        : PRMInference<GUM_SCALAR>( prm, system )
+        , __inf( 0 ) {
       GUM_CONSTRUCTOR( GroundedInference );
     }
 
     template <typename GUM_SCALAR>
     INLINE GroundedInference<GUM_SCALAR>::GroundedInference(
         const GroundedInference<GUM_SCALAR>& source )
-        : PRMInference<GUM_SCALAR>( source ), __inf( 0 ) {
+        : PRMInference<GUM_SCALAR>( source )
+        , __inf( 0 ) {
       GUM_CONS_CPY( GroundedInference );
       GUM_ERROR( FatalError, "illegal to copy constructor" );
     }

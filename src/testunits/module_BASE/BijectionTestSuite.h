@@ -364,7 +364,8 @@ namespace gum_tests {
       unsigned int nb = 0;
 
       for ( gum::Bijection<int, int>::iterator iter = bijection.begin();
-            iter != bijection.end(); ++iter, ++nb ) {
+            iter != bijection.end();
+            ++iter, ++nb ) {
       }
 
       TS_ASSERT( nb == 8 );
@@ -463,7 +464,8 @@ namespace gum_tests {
 
       for ( gum::Bijection<std::string, std::string>::iterator
                 iter = bijection.begin();
-            iter != bijection.end(); ++iter, ++nb ) {
+            iter != bijection.end();
+            ++iter, ++nb ) {
       }
 
       TS_ASSERT( nb == 8 );

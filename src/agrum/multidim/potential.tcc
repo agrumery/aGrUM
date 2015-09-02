@@ -90,7 +90,8 @@ namespace gum {
 
   /// destructor
 
-  template <typename GUM_SCALAR> Potential<GUM_SCALAR>::~Potential() {
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR>::~Potential() {
     // for debugging purposes
     GUM_DESTRUCTOR( Potential );
   }
@@ -107,7 +108,8 @@ namespace gum {
 
     for ( Sequence<const DiscreteVariable*>::iterator_safe iter =
               seq.beginSafe();
-          iter != seq.endSafe(); ++iter ) {
+          iter != seq.endSafe();
+          ++iter ) {
       if ( !p.contains( **iter ) ) {
         GUM_ERROR( OperationNotAllowed, "Impossible to marginalize" );
       }
@@ -167,7 +169,8 @@ namespace gum {
 
     for ( Sequence<const DiscreteVariable*>::iterator_safe iter =
               seq0.beginSafe();
-          iter != seq0.endSafe(); ++iter ) {
+          iter != seq0.endSafe();
+          ++iter ) {
       this->erase( **iter );
     }
 
@@ -176,7 +179,8 @@ namespace gum {
 
     for ( Sequence<const DiscreteVariable*>::iterator_safe iter =
               seq1.beginSafe();
-          iter != seq1.endSafe(); ++iter ) {
+          iter != seq1.endSafe();
+          ++iter ) {
       this->add( **iter );
     }
 
@@ -185,7 +189,8 @@ namespace gum {
 
     for ( Sequence<const DiscreteVariable*>::iterator_safe iter =
               seq2.beginSafe();
-          iter != seq2.endSafe(); ++iter ) {
+          iter != seq2.endSafe();
+          ++iter ) {
       if ( !this->contains( **iter ) ) {
         this->add( **iter );
       }

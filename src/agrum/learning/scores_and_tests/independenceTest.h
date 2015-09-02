@@ -142,7 +142,8 @@ namespace gum {
        * countings of (conditioning_ids, var2, var1) [in this order] and
        * (conditioning_ids, var2) [in this order] respectively. */
       unsigned int
-      addNodeSet( unsigned int var1, unsigned int var2,
+      addNodeSet( unsigned int var1,
+                  unsigned int var2,
                   const std::vector<unsigned int>& conditioning_ids );
 
       /// add a target conditioned by other variables to be counted
@@ -163,7 +164,8 @@ namespace gum {
        * argument to methods _getAllCounts and _getConditioningCounts to get the
        * countings of (conditioning_ids, var2, var1) [in this order] and
        * (conditioning_ids, var2) [in this order] respectively. */
-      unsigned int addNodeSet( unsigned int var1, unsigned int var2,
+      unsigned int addNodeSet( unsigned int var1,
+                               unsigned int var2,
                                std::vector<unsigned int>&& conditioning_ids );
 
       /// add a target conditioned by other variables to be counted

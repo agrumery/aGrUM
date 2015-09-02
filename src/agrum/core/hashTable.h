@@ -195,13 +195,20 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
   // the templates defined by this file
-  template <typename Key, typename Val, typename Alloc> class HashTable;
-  template <typename Key, typename Val, typename Alloc> class HashTableList;
-  template <typename Key, typename Val> class HashTableIterator;
-  template <typename Key, typename Val> class HashTableConstIterator;
-  template <typename Key, typename Val> class HashTableIteratorSafe;
-  template <typename Key, typename Val> class HashTableConstIteratorSafe;
-  template <typename T1, typename T2, typename Alloc> class Bijection;
+  template <typename Key, typename Val, typename Alloc>
+  class HashTable;
+  template <typename Key, typename Val, typename Alloc>
+  class HashTableList;
+  template <typename Key, typename Val>
+  class HashTableIterator;
+  template <typename Key, typename Val>
+  class HashTableConstIterator;
+  template <typename Key, typename Val>
+  class HashTableIteratorSafe;
+  template <typename Key, typename Val>
+  class HashTableConstIteratorSafe;
+  template <typename T1, typename T2, typename Alloc>
+  class Bijection;
 
   /// a << operator for HashTableList
   template <typename Key, typename Val, typename Alloc>
@@ -267,7 +274,8 @@ namespace gum {
    * begin/end iterators and efficient insert/erase operations. */
   /* ===========================================================================
    */
-  template <typename Key, typename Val> struct HashTableBucket {
+  template <typename Key, typename Val>
+  struct HashTableBucket {
     std::pair<const Key, Val> pair;
     HashTableBucket<Key, Val>* prev{nullptr};
     HashTableBucket<Key, Val>* next{nullptr};
@@ -279,15 +287,18 @@ namespace gum {
     HashTableBucket() {}
     HashTableBucket( const HashTableBucket<Key, Val>& from )
         : pair{from.pair} {}
-    HashTableBucket( const Key& k, const Val& v ) : pair{k, v} {}
+    HashTableBucket( const Key& k, const Val& v )
+        : pair{k, v} {}
     HashTableBucket( Key&& k, Val&& v )
         : pair{std::move( k ), std::move( v )} {}
-    HashTableBucket( const std::pair<const Key, Val>& p ) : pair( p ) {}
-    HashTableBucket( std::pair<const Key, Val>&& p ) : pair( std::move( p ) ) {}
+    HashTableBucket( const std::pair<const Key, Val>& p )
+        : pair( p ) {}
+    HashTableBucket( std::pair<const Key, Val>&& p )
+        : pair( std::move( p ) ) {}
     template <typename... Args>
     HashTableBucket( Emplace, Args&&... args )
         :  // emplace (universal) constructor
-          pair( std::forward<Args>( args )... ) {}
+        pair( std::forward<Args>( args )... ) {}
     ~HashTableBucket() {}
 
     std::pair<const Key, Val>& elt() { return pair; }
@@ -301,7 +312,8 @@ namespace gum {
    */
   /* ===========================================================================
    */
-  template <typename Key, typename Val, typename Alloc> class HashTableList {
+  template <typename Key, typename Val, typename Alloc>
+  class HashTableList {
     public:
     /// types for STL compliance
     /// @{
@@ -442,7 +454,8 @@ namespace gum {
 
     private:
     // friends
-    template <typename K, typename V, typename A> friend class HashTableList;
+    template <typename K, typename V, typename A>
+    friend class HashTableList;
     friend class HashTable<Key, Val, Alloc>;
     friend class HashTableIterator<Key, Val>;
     friend class HashTableConstIterator<Key, Val>;
@@ -604,7 +617,8 @@ namespace gum {
    *   table1.eraseByVal ( *iter );
    * @endcode
    */
-  template <typename Key, typename Val,
+  template <typename Key,
+            typename Val,
             typename Alloc = std::allocator<std::pair<Key, Val>>>
   class HashTable {
     public:
@@ -1154,7 +1168,8 @@ namespace gum {
      * @throw DuplicateElement is thrown when attempting to insert a pair
      * (key,val) in a hash table containing already a pair with the same key and
      * when the hash table's uniqueness policy is set. */
-    template <typename... Args> value_type& emplace( Args&&... args );
+    template <typename... Args>
+    value_type& emplace( Args&&... args );
 
     /// returns a reference on the element the key of which is passed in
     /// argument
@@ -1287,7 +1302,8 @@ namespace gum {
               typename OtherAlloc =
                   typename Alloc::template rebind<std::pair<Key, Mount>>::other>
     HashTable<Key, Mount, OtherAlloc>
-    map( Mount ( *f )( Val ), Size size = 0,
+    map( Mount ( *f )( Val ),
+         Size size = 0,
          bool resize_pol = HashTableConst::default_resize_policy,
          bool key_uniqueness_pol =
              HashTableConst::default_uniqueness_policy ) const;
@@ -1313,7 +1329,8 @@ namespace gum {
               typename OtherAlloc =
                   typename Alloc::template rebind<std::pair<Key, Mount>>::other>
     HashTable<Key, Mount, OtherAlloc>
-    map( Mount ( *f )( Val& ), Size size = 0,
+    map( Mount ( *f )( Val& ),
+         Size size = 0,
          bool resize_pol = HashTableConst::default_resize_policy,
          bool key_uniqueness_pol =
              HashTableConst::default_uniqueness_policy ) const;
@@ -1339,7 +1356,8 @@ namespace gum {
               typename OtherAlloc =
                   typename Alloc::template rebind<std::pair<Key, Mount>>::other>
     HashTable<Key, Mount, OtherAlloc>
-    map( Mount ( *f )( const Val& ), Size size = 0,
+    map( Mount ( *f )( const Val& ),
+         Size size = 0,
          bool resize_pol = HashTableConst::default_resize_policy,
          bool key_uniqueness_pol =
              HashTableConst::default_uniqueness_policy ) const;
@@ -1367,7 +1385,8 @@ namespace gum {
               typename OtherAlloc =
                   typename Alloc::template rebind<std::pair<Key, Mount>>::other>
     HashTable<Key, Mount, OtherAlloc>
-    map( const Mount& val, Size size = 0,
+    map( const Mount& val,
+         Size size = 0,
          bool resize_pol = HashTableConst::default_resize_policy,
          bool key_uniqueness_pol =
              HashTableConst::default_uniqueness_policy ) const;
@@ -1377,7 +1396,8 @@ namespace gum {
     private:
     // friends
     /// to optimize the access to data, iterators must be friends
-    template <typename K, typename V, typename A> friend class HashTable;
+    template <typename K, typename V, typename A>
+    friend class HashTable;
     friend class HashTableIterator<Key, Val>;
     friend class HashTableConstIterator<Key, Val>;
     friend class HashTableIteratorSafe<Key, Val>;
@@ -1390,7 +1410,8 @@ namespace gum {
                                        const HashTable<Key*, Val, Alloc>& );
 
     /// for bijections to quickly access data
-    template <typename T1, typename T2, typename A> friend class Bijection;
+    template <typename T1, typename T2, typename A>
+    friend class Bijection;
 
     /** @brief the hash table is represented as a vector of chained lists.
      * '__nodes' is this very vector. */
@@ -1521,7 +1542,8 @@ namespace gum {
    * iter1.clear ();
    * @endcode
    */
-  template <typename Key, typename Val> class HashTableConstIteratorSafe {
+  template <typename Key, typename Val>
+  class HashTableConstIteratorSafe {
     public:
     /// types for STL compliance
     /// @{
@@ -1656,7 +1678,8 @@ namespace gum {
      * and this can be properly initialized only when the hashtable has been
      * fully allocated. Thus, proper initialization can only take place within
      * the constructor's code of the hashtable. */
-    template <typename K, typename V, typename A> friend class HashTable;
+    template <typename K, typename V, typename A>
+    friend class HashTable;
 
     /// the hash table the iterator is pointing to
     const HashTable<Key, Val>* __table{nullptr};
@@ -1915,7 +1938,8 @@ namespace gum {
    * iter1.clear ();
    * @endcode
    */
-  template <typename Key, typename Val> class HashTableConstIterator {
+  template <typename Key, typename Val>
+  class HashTableConstIterator {
     public:
     /// types for STL compliance
     /// @{
@@ -2037,7 +2061,8 @@ namespace gum {
      * and this one can be properly initialized only when the hashtable has been
      * fully allocated. Thus, proper initialization can only take place within
      * the constructor's code of the hashtable. */
-    template <typename K, typename V, typename A> friend class HashTable;
+    template <typename K, typename V, typename A>
+    friend class HashTable;
 
     /// for the safe copy constructor and operator
     friend class HashTableConstIteratorSafe<Key, Val>;

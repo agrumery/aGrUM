@@ -167,7 +167,8 @@ namespace gum {
 
       private:
       using Float = typename std::conditional<sizeof( float ) >= sizeof( int ),
-                                              float, double>::type;
+                                              float,
+                                              double>::type;
 
       /// the real type of the last element read from the database
       EltType __type{EltType::FLOAT};

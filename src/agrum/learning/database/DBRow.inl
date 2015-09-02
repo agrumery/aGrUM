@@ -33,28 +33,34 @@ namespace gum {
     INLINE DBRow::DBRow() {}
 
     /// constructor with a given size for the row
-    INLINE DBRow::DBRow( unsigned int size, const DBCell& default_cell,
-                         float weight )
-        : _row( size, default_cell ), _weight( weight ) {}
+    INLINE
+    DBRow::DBRow( unsigned int size, const DBCell& default_cell, float weight )
+        : _row( size, default_cell )
+        , _weight( weight ) {}
 
     /// initializer list constructor
-    INLINE DBRow::DBRow( std::initializer_list<DBCell>& list ) : _row( list ) {}
+    INLINE DBRow::DBRow( std::initializer_list<DBCell>& list )
+        : _row( list ) {}
 
     /// initializer from a vector of cells
     INLINE DBRow::DBRow( const std::vector<DBCell>& cells, float weight )
-        : _row( cells ), _weight( weight ) {}
+        : _row( cells )
+        , _weight( weight ) {}
 
     /// initializer from a vector of cells
     INLINE DBRow::DBRow( std::vector<DBCell>&& cells, float weight )
-        : _row( std::move( cells ) ), _weight( weight ) {}
+        : _row( std::move( cells ) )
+        , _weight( weight ) {}
 
     /// copy operator
     INLINE DBRow::DBRow( const DBRow& from )
-        : _row( from._row ), _weight( from._weight ) {}
+        : _row( from._row )
+        , _weight( from._weight ) {}
 
     /// move operator
     INLINE DBRow::DBRow( DBRow&& from )
-        : _row( std::move( from._row ) ), _weight( from._weight ) {}
+        : _row( std::move( from._row ) )
+        , _weight( from._weight ) {}
 
     /// destructor
     INLINE DBRow::~DBRow() {}

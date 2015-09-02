@@ -190,9 +190,12 @@ namespace gum {
        * @param den_max The reference to the previously computed upper
        * denominator.
        */
-      void _compute_ext( GUM_SCALAR& msg_l_min, GUM_SCALAR& msg_l_max,
-                         std::vector<GUM_SCALAR>& lx, GUM_SCALAR& num_min,
-                         GUM_SCALAR& num_max, GUM_SCALAR& den_min,
+      void _compute_ext( GUM_SCALAR& msg_l_min,
+                         GUM_SCALAR& msg_l_max,
+                         std::vector<GUM_SCALAR>& lx,
+                         GUM_SCALAR& num_min,
+                         GUM_SCALAR& num_max,
+                         GUM_SCALAR& den_min,
                          GUM_SCALAR& den_max );
 
       /**
@@ -213,8 +216,10 @@ namespace gum {
        * of the one sending the message ( first parent, second ... ).
        */
       void _compute_ext( std::vector<std::vector<GUM_SCALAR>>& combi_msg_p,
-                         const NodeId& id, GUM_SCALAR& msg_l_min,
-                         GUM_SCALAR& msg_l_max, std::vector<GUM_SCALAR>& lx,
+                         const NodeId& id,
+                         GUM_SCALAR& msg_l_min,
+                         GUM_SCALAR& msg_l_max,
+                         std::vector<GUM_SCALAR>& lx,
                          const Idx& pos );
 
       /**
@@ -235,8 +240,10 @@ namespace gum {
        */
       void
       _enum_combi( std::vector<std::vector<std::vector<GUM_SCALAR>>>& msgs_p,
-                   const NodeId& id, GUM_SCALAR& msg_l_min,
-                   GUM_SCALAR& msg_l_max, std::vector<GUM_SCALAR>& lx,
+                   const NodeId& id,
+                   GUM_SCALAR& msg_l_min,
+                   GUM_SCALAR& msg_l_max,
+                   std::vector<GUM_SCALAR>& lx,
                    const Idx& pos );
 
       /**
@@ -262,7 +269,8 @@ namespace gum {
        */
       void
       _enum_combi( std::vector<std::vector<std::vector<GUM_SCALAR>>>& msgs_p,
-                   const NodeId& id, GUM_SCALAR& msg_p_min,
+                   const NodeId& id,
+                   GUM_SCALAR& msg_p_min,
                    GUM_SCALAR& msg_p_max );
 
       /**
@@ -277,7 +285,8 @@ namespace gum {
        * be sent.
        */
       void _compute_ext( std::vector<std::vector<GUM_SCALAR>>& combi_msg_p,
-                         const NodeId& id, GUM_SCALAR& msg_p_min,
+                         const NodeId& id,
+                         GUM_SCALAR& msg_p_min,
                          GUM_SCALAR& msg_p_max );
 
       /** Get the last messages from one's parents and children. */

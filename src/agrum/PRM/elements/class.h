@@ -92,7 +92,8 @@ namespace gum {
        * @param super The super Class<GUM_SCALAR> of this.
        * @param set The Set of implemented interfaces.
        */
-      Class( const std::string& name, Class<GUM_SCALAR>& super,
+      Class( const std::string& name,
+             Class<GUM_SCALAR>& super,
              const Set<Interface<GUM_SCALAR>*>& set );
 
       /// Copy constructor.

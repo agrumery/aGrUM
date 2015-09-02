@@ -280,10 +280,6 @@ namespace gum {
     /// Insert in diagram a terminal node
     NodeId addTerminalNode( float value );
 
-    /// Insert in diagram an arc
-    /// @deprecated use addArc instead
-    GUM_DEPRECATED( void insertArc( NodeId from, NodeId to, Idx modality ) );
-
     /// add an arc in diagram
     void addArc( NodeId from, NodeId to, Idx modality );
 

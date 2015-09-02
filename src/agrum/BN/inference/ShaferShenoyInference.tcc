@@ -34,7 +34,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   ShaferShenoyInference<GUM_SCALAR>::ShaferShenoyInference(
       const IBayesNet<GUM_SCALAR>& bayesNet )
-      : BayesNetInference<GUM_SCALAR>( bayesNet ), __triangulation( 0 ) {
+      : BayesNetInference<GUM_SCALAR>( bayesNet )
+      , __triangulation( 0 ) {
     GUM_CONSTRUCTOR( ShaferShenoyInference );
 
     NodeProperty<Size> __modalitiesMap;
@@ -259,8 +260,7 @@ namespace gum {
 
     for ( const auto nei : __getNeighbours( current ) )
       if ( nei != source )
-        if ( __collect( current, nei ) )
-          newMsg = true;
+        if ( __collect( current, nei ) ) newMsg = true;
 
     if ( newMsg ) {
       // I need to recompute current's message, so no need to check for new
@@ -338,10 +338,10 @@ namespace gum {
         try {
           message->add( __messagesMap[Arc( nei, tail )] );
         } catch ( NotFound& ) {
-          GUM_ERROR( FatalError, ": missing message ("
-                                     << nei << ", " << tail
-                                     << ") to compute message (" << tail << ", "
-                                     << head << ")" );
+          GUM_ERROR( FatalError,
+                     ": missing message (" << nei << ", " << tail
+                                           << ") to compute message (" << tail
+                                           << ", " << head << ")" );
         }
       }
 
@@ -393,8 +393,10 @@ namespace gum {
   // @param id the id of this clique on which this properties holds.
   template <typename GUM_SCALAR>
   CliqueProp<GUM_SCALAR>::CliqueProp( NodeId id )
-      : isCollected( false ), __potential( new MultiDimBucket<GUM_SCALAR>() ),
-        __varsPotential( 0 ), __name( "" ) {
+      : isCollected( false )
+      , __potential( new MultiDimBucket<GUM_SCALAR>() )
+      , __varsPotential( 0 )
+      , __name( "" ) {
     GUM_CONSTRUCTOR( CliqueProp );
     std::stringstream name;
     name << id;
@@ -402,7 +404,8 @@ namespace gum {
   }
 
   // Destructor.
-  template <typename GUM_SCALAR> CliqueProp<GUM_SCALAR>::~CliqueProp() {
+  template <typename GUM_SCALAR>
+  CliqueProp<GUM_SCALAR>::~CliqueProp() {
     GUM_DESTRUCTOR( CliqueProp );
     delete __potential;
 

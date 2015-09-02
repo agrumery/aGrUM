@@ -178,8 +178,7 @@ namespace gum_tests {
       std::string file2 = GET_PATH_STR( "DSL/DSLWriter_TestFile3.txt" );
       TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file2, *net ) );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
     void testRead_file_completeDSL() {
       std::string file = GET_PATH_STR( "DSL/Ling.dsl" );
@@ -198,8 +197,7 @@ namespace gum_tests {
       std::string file2 = GET_PATH_STR( "DSL/DSLWriter_Ling.txt" );
       TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file2, *net ) );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
     void testAlarm() {
       std::string file = GET_PATH_STR( "DSL/alarm.dsl" );
@@ -353,8 +351,7 @@ namespace gum_tests {
       gum::DSLReader<float> reader( net, file );
       TS_ASSERT_THROWS( reader.proceed(), gum::IOError );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
     void testBarley() {
       std::string file = GET_PATH_STR( "DSL/Barley.dsl" );
@@ -366,8 +363,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
     void testCarpo() {
       std::string file = GET_PATH_STR( "DSL/carpo.dsl" );
@@ -379,8 +375,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
     void testDiabetes() {
       std::string file = GET_PATH_STR( "DSL/Diabetes.dsl" );
@@ -392,8 +387,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
     void testHailfinder() {
       std::string file = GET_PATH_STR( "DSL/hailfinder.dsl" );
@@ -405,8 +399,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
     void testInsurance() {
       std::string file = GET_PATH_STR( "DSL/insurance.dsl" );
@@ -418,8 +411,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
     void testLink() {
       std::string file = GET_PATH_STR( "DSL/Link.dsl" );
@@ -431,8 +423,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
     // Mildew is not readable (because of the VERY LARGE FLOAT_LIST in foto_4
     // (at
@@ -447,8 +438,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
     void testMunin1() {
       std::string file = GET_PATH_STR( "DSL/Munin1.dsl" );
@@ -460,8 +450,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
     void testPigs() {
       std::string file = GET_PATH_STR( "DSL/Pigs.dsl" );
@@ -473,8 +462,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
     void testWater() {
       std::string file = GET_PATH_STR( "DSL/Water.dsl" );
@@ -486,14 +474,12 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
       TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
 
-      if ( net )
-        delete net;
+      if ( net ) delete net;
     }
 
     private:
     float abs( float d ) {
-      if ( d < 0 )
-        return ( d * (float)-1 );
+      if ( d < 0 ) return ( d * (float)-1 );
 
       return d;
     }

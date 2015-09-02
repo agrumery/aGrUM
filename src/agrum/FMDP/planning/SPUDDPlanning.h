@@ -49,7 +49,8 @@ namespace gum {
    *
    */
 
-  template <typename GUM_SCALAR> class SPUDDPlanning {
+  template <typename GUM_SCALAR>
+  class SPUDDPlanning {
 
     public:
     // ==========================================================================
@@ -118,7 +119,8 @@ namespace gum {
      */
     MultiDimDecisionDiagramBase<GUM_SCALAR>* __evalActionValueAlgoEvaluation(
         const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold,
-        const std::string saveFilesName, Idx mode );
+        const std::string saveFilesName,
+        Idx mode );
 
     /**
      * Method to eval addition the multiplication by discount reward and the
@@ -127,7 +129,8 @@ namespace gum {
      */
     MultiDimDecisionDiagramBase<GUM_SCALAR>* __addRewardAlgoEvaluation(
         const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vold,
-        const std::string saveFilesName, Idx mode );
+        const std::string saveFilesName,
+        Idx mode );
 
     /**
      * Evals the policy corresponding to the given value function

@@ -69,16 +69,16 @@ namespace gum {
       bool stop_iteration = false;
 
       for ( Idx j = 1; j < this->nbrDim(); j++ ) {
-        current = _folder( this->variable( j ), i.val( this->variable( j ) ),
-                           current, stop_iteration );
+        current = _folder( this->variable( j ),
+                           i.val( this->variable( j ) ),
+                           current,
+                           stop_iteration );
 
-        if ( stop_iteration )
-          break;
+        if ( stop_iteration ) break;
       }
 
       // truncate to fit in aggreegator domain size
-      if ( current >= agg.domainSize() )
-        current = agg.domainSize() - 1;
+      if ( current >= agg.domainSize() ) current = agg.domainSize() - 1;
 
       return ( i.val( agg ) == current ) ? (GUM_SCALAR)1 : (GUM_SCALAR)0;
     }
@@ -90,8 +90,7 @@ namespace gum {
         << aggregatorName() << "(";
 
       for ( Idx i = 1; i < MultiDimImplementation<GUM_SCALAR>::nbrDim(); i++ ) {
-        if ( i > 1 )
-          s << ",";
+        if ( i > 1 ) s << ",";
 
         s << MultiDimImplementation<GUM_SCALAR>::variable( i );
       }

@@ -146,7 +146,8 @@ namespace gum {
    */
   /* ===========================================================================
    */
-  template <typename Val> class BinTreeNode {
+  template <typename Val>
+  class BinTreeNode {
     public:
     // ############################################################################
     // constructors / destructors

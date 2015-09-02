@@ -57,8 +57,9 @@ namespace gum {
   /// copy constructor
   template <typename Val, typename Cmp, typename Alloc>
   Heap<Val, Cmp, Alloc>::Heap( const Heap<Val, Cmp, Alloc>& from )
-      : __heap( from.__heap ), __nb_elements( from.__nb_elements ),
-        __cmp( from.__cmp ) {
+      : __heap( from.__heap )
+      , __nb_elements( from.__nb_elements )
+      , __cmp( from.__cmp ) {
     // for debugging purposes
     GUM_CONS_CPY( Heap );
   }
@@ -67,7 +68,8 @@ namespace gum {
   template <typename Val, typename Cmp, typename Alloc>
   template <typename OtherAlloc>
   Heap<Val, Cmp, Alloc>::Heap( const Heap<Val, Cmp, OtherAlloc>& from )
-      : __nb_elements( from.__nb_elements ), __cmp( from.__cmp ) {
+      : __nb_elements( from.__nb_elements )
+      , __cmp( from.__cmp ) {
     __heap.reserve( __nb_elements );
 
     // copy the elements of from.__heap
@@ -192,23 +194,20 @@ namespace gum {
   /// changes the size of the array storing the heap
   template <typename Val, typename Cmp, typename Alloc>
   INLINE void Heap<Val, Cmp, Alloc>::resize( Size new_size ) {
-    if ( new_size > __nb_elements )
-      __heap.reserve( new_size );
+    if ( new_size > __nb_elements ) __heap.reserve( new_size );
   }
 
   /// removes the element at position 'index' from the heap
   template <typename Val, typename Cmp, typename Alloc>
   void Heap<Val, Cmp, Alloc>::eraseByPos( Size index ) {
-    if ( index >= __nb_elements )
-      return;
+    if ( index >= __nb_elements ) return;
 
     // remove the element and put the last element in its place
     Val last = std::move( __heap[__nb_elements - 1] );
     __heap.pop_back();
     --__nb_elements;
 
-    if ( !__nb_elements || ( index == __nb_elements ) )
-      return;
+    if ( !__nb_elements || ( index == __nb_elements ) ) return;
 
     // restore the heap property
     Size i = index;
@@ -216,12 +215,10 @@ namespace gum {
     for ( Size j = ( index << 1 ) + 1; j < __nb_elements;
           i = j, j = ( j << 1 ) + 1 ) {
       // let j be the max child
-      if ( ( j + 1 < __nb_elements ) && __cmp( __heap[j + 1], __heap[j] ) )
-        ++j;
+      if ( ( j + 1 < __nb_elements ) && __cmp( __heap[j + 1], __heap[j] ) ) ++j;
 
       // if "last" is smaller than __heap[j], "last" must be stored at index i
-      if ( __cmp( last, __heap[j] ) )
-        break;
+      if ( __cmp( last, __heap[j] ) ) break;
 
       __heap[i] = std::move( __heap[j] );
     }
@@ -244,8 +241,7 @@ namespace gum {
   template <typename Val, typename Cmp, typename Alloc>
   INLINE void Heap<Val, Cmp, Alloc>::eraseTop() {
     // if the heap is empty, do nothing
-    if ( !__nb_elements )
-      return;
+    if ( !__nb_elements ) return;
     eraseByPos( 0 );
   }
 
@@ -316,8 +312,7 @@ namespace gum {
   template <typename Val, typename Cmp, typename Alloc>
   INLINE bool Heap<Val, Cmp, Alloc>::contains( const Val& val ) const {
     for ( Size i = 0; i < __nb_elements; ++i )
-      if ( __heap[i] == val )
-        return true;
+      if ( __heap[i] == val ) return true;
 
     return false;
   }
@@ -341,8 +336,7 @@ namespace gum {
     stream << "[";
 
     for ( Size i = 0; i != __nb_elements; ++i, deja = true ) {
-      if ( deja )
-        stream << " , ";
+      if ( deja ) stream << " , ";
 
       stream << __heap[i];
     }

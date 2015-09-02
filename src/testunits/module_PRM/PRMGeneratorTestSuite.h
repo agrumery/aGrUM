@@ -89,7 +89,8 @@ namespace gum_tests {
 
         for ( gum::Set<gum::prm::Attribute<double>*>::const_iterator a =
                   attr.begin();
-              a != attr.end(); ++a ) {
+              a != attr.end();
+              ++a ) {
           if ( ( **a ).type()->domainSize() == (gum::Size)6 ) {
             ++six;
           } else if ( ( **a ).type()->domainSize() == 2 ) {
@@ -111,12 +112,14 @@ namespace gum_tests {
 
       for ( gum::Set<gum::prm::Class<double>*>::const_iterator c =
                 c_set.begin();
-            c != c_set.end(); ++c ) {
+            c != c_set.end();
+            ++c ) {
         TS_ASSERT_EQUALS( ( **c ).attributes().size(), (gum::Size)30 );
 
         for ( gum::Set<gum::prm::Attribute<double>*>::const_iterator a =
                   ( **c ).attributes().begin();
-              a != ( **c ).attributes().end(); ++a ) {
+              a != ( **c ).attributes().end();
+              ++a ) {
           TS_ASSERT( ( **c ).dag().parents( ( **a ).id() ).size() < 6 );
         }
       }
@@ -125,8 +128,7 @@ namespace gum_tests {
       const gum::prm::System<double>& sys = **( prm->systems().begin() );
       TS_ASSERT_EQUALS( sys.size(), (gum::Size)100 );
 
-      if ( prm )
-        delete prm;
+      if ( prm ) delete prm;
 
       if ( gen ) {
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
@@ -151,7 +153,8 @@ namespace gum_tests {
 
       for ( gum::Set<gum::prm::Interface<double>*>::const_iterator iter =
                 i_set.begin();
-            iter != i_set.end(); ++iter ) {
+            iter != i_set.end();
+            ++iter ) {
         const gum::prm::Interface<double>& i = **iter;
 
         if ( i.referenceSlots().size() ) {
@@ -168,7 +171,8 @@ namespace gum_tests {
 
         for ( gum::Set<gum::prm::Attribute<double>*>::const_iterator a =
                   attr.begin();
-              a != attr.end(); ++a ) {
+              a != attr.end();
+              ++a ) {
           if ( ( **a ).type()->domainSize() == (gum::Size)6 ) {
             ++six;
           } else if ( ( **a ).type()->domainSize() == 2 ) {
@@ -190,12 +194,14 @@ namespace gum_tests {
 
       for ( gum::Set<gum::prm::Class<double>*>::const_iterator c =
                 c_set.begin();
-            c != c_set.end(); ++c ) {
+            c != c_set.end();
+            ++c ) {
         TS_ASSERT_EQUALS( ( **c ).attributes().size(), (gum::Size)30 );
 
         for ( gum::Set<gum::prm::Attribute<double>*>::const_iterator a =
                   ( **c ).attributes().begin();
-              a != ( **c ).attributes().end(); ++a ) {
+              a != ( **c ).attributes().end();
+              ++a ) {
           TS_ASSERT( ( **c ).dag().parents( ( **a ).id() ).size() < 6 );
         }
       }
@@ -204,8 +210,7 @@ namespace gum_tests {
       const gum::prm::System<double>& sys = **( prm->systems().begin() );
       TS_ASSERT( sys.size() > (gum::Size)100 );
 
-      if ( prm )
-        delete prm;
+      if ( prm ) delete prm;
 
       if ( gen ) {
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );

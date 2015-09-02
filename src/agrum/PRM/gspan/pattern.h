@@ -93,7 +93,6 @@ namespace gum {
          * @brief Insert a node with the given LabelData.
          * @returns The NodeId assigned to the inserted node.
          */
-        GUM_DEPRECATED( NodeId insertNode( LabelData& l ) );
         NodeId addNode( LabelData& l );
 
         /// Returns the LabelData assigned to node.
@@ -133,7 +132,6 @@ namespace gum {
          * @throw OperationNotAllowed Raised if the neighborhood restriction
          *                            is not respected.
          */
-        GUM_DEPRECATED( void insertArc( NodeId i, NodeId j, LabelData& l ) );
         void addArc( NodeId i, NodeId j, LabelData& l );
 
         /// Returns true if id is a node in this Pattern.
@@ -232,12 +230,16 @@ namespace gum {
         /// @param u A node in this Pattern.
         /// @param v A node in this Pattern.
         /// @return true if the expansion is minimal.
-        bool __rec( Pattern& p, Bijection<NodeId, NodeId>& node_map, NodeId u,
+        bool __rec( Pattern& p,
+                    Bijection<NodeId, NodeId>& node_map,
+                    NodeId u,
                     NodeId v );
 
         /// A non recursive bugged version of __rec.
-        bool __not_rec( Pattern& p, Bijection<NodeId, NodeId>& node_map,
-                        NodeId u, NodeId v );
+        bool __not_rec( Pattern& p,
+                        Bijection<NodeId, NodeId>& node_map,
+                        NodeId u,
+                        NodeId v );
 
         // to avoid clang++ warnings
         using DiGraph::addNode;

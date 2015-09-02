@@ -38,7 +38,8 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR> class BayesNetFactory;
+  template <typename GUM_SCALAR>
+  class BayesNetFactory;
 
   /**
    * @class IBayesNet IBayesNet.h <agrum/BN/IBayesNet.h>
@@ -53,7 +54,8 @@ namespace gum {
    *instance) may use this
    * class when a simple BN is needed.
    */
-  template <typename GUM_SCALAR> class IBayesNet : public DAGmodel {
+  template <typename GUM_SCALAR>
+  class IBayesNet : public DAGmodel {
 
     public:
     // ===========================================================================

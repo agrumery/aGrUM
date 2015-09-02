@@ -120,7 +120,8 @@ namespace gum {
        * @param rvType The random variable type of this aggregate, which is
        * copied.
        */
-      Aggregate( const std::string& name, AggregateType aggType,
+      Aggregate( const std::string& name,
+                 AggregateType aggType,
                  const Type<GUM_SCALAR>& rvType );
 
       /**
@@ -131,8 +132,10 @@ namespace gum {
        * copied.
        * @param label The index of the label on which this aggregate applies.
        */
-      Aggregate( const std::string& name, AggregateType aggType,
-                 const Type<GUM_SCALAR>& rvType, Idx label );
+      Aggregate( const std::string& name,
+                 AggregateType aggType,
+                 const Type<GUM_SCALAR>& rvType,
+                 Idx label );
 
       /// Destructor.
       virtual ~Aggregate();

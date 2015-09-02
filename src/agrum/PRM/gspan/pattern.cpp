@@ -34,7 +34,9 @@ namespace gum {
   namespace prm {
     namespace gspan {
 
-      Pattern::Pattern( const Pattern& source ) : DiGraph(), __last( 0 ) {
+      Pattern::Pattern( const Pattern& source )
+          : DiGraph()
+          , __last( 0 ) {
         GUM_CONS_CPY( Pattern );
         NodeProperty<NodeId> node_map;
 
@@ -44,7 +46,8 @@ namespace gum {
         }
 
         for ( const auto edge : source.code().codes )
-          addArc( node_map[edge->i], node_map[edge->j],
+          addArc( node_map[edge->i],
+                  node_map[edge->j],
                   const_cast<LabelData&>(
                       source.label( node_map[edge->i], node_map[edge->j] ) ) );
       }
@@ -110,29 +113,27 @@ namespace gum {
 
         for ( const auto nei : children( u ) )
           if ( nei != v )
-            if ( __rec( p, node_map, u, nei ) )
-              return true;
+            if ( __rec( p, node_map, u, nei ) ) return true;
 
         for ( const auto nei : parents( u ) )
           if ( nei != v )
-            if ( __rec( p, node_map, u, nei ) )
-              return true;
+            if ( __rec( p, node_map, u, nei ) ) return true;
 
         for ( const auto nei : children( v ) )
           if ( nei != u )
-            if ( __rec( p, node_map, v, nei ) )
-              return true;
+            if ( __rec( p, node_map, v, nei ) ) return true;
 
         for ( const auto nei : parents( v ) )
           if ( nei != u )
-            if ( __rec( p, node_map, v, nei ) )
-              return true;
+            if ( __rec( p, node_map, v, nei ) ) return true;
 
         return false;
       }
 
-      bool Pattern::__rec( Pattern& p, Bijection<NodeId, NodeId>& node_map,
-                           NodeId u, NodeId v ) {
+      bool Pattern::__rec( Pattern& p,
+                           Bijection<NodeId, NodeId>& node_map,
+                           NodeId u,
+                           NodeId v ) {
         if ( node_map.existsFirst( v ) ) {
           if ( node_map.second( u ) < node_map.second( v ) ) {
             // Invalid forward edge
@@ -190,15 +191,16 @@ namespace gum {
           }
         }
 
-        if ( p.code().codes.back()->isForward() )
-          node_map.eraseFirst( v );
+        if ( p.code().codes.back()->isForward() ) node_map.eraseFirst( v );
 
         p.pop_back();
         return false;
       }
 
-      bool Pattern::__not_rec( Pattern& p, Bijection<NodeId, NodeId>& node_map,
-                               NodeId a_u, NodeId a_v ) {
+      bool Pattern::__not_rec( Pattern& p,
+                               Bijection<NodeId, NodeId>& node_map,
+                               NodeId a_u,
+                               NodeId a_v ) {
         std::vector<std::pair<NodeId, NodeId>> stack;
         std::vector<size_t> rec_call;
         stack.push_back( std::make_pair( a_u, a_v ) );

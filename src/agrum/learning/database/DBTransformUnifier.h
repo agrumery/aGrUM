@@ -93,8 +93,9 @@ namespace gum {
 
       /// transforms a vector of DBrows to unify the types of its columns
       /** @return true if the unification could be performed successfully. */
-      bool transform( std::vector<DBRow>& db, std::vector<std::string> miss = {
-                                                  "?", "N/A", "n/a"} ) const;
+      bool transform( std::vector<DBRow>& db,
+                      std::vector<std::string> miss = {
+                          "?", "N/A", "n/a"} ) const;
 
       /// @}
     };

@@ -26,10 +26,9 @@
 
 #include <agrum/BN/BayesNetFactory.h>
 
-#define VERBOSITY( x )                                                         \
-  {                                                                            \
-    if ( isVerbose() )                                                         \
-      std::cerr << "[BN factory] " << x << std::endl;                          \
+#define VERBOSITY( x )                                                 \
+  {                                                                    \
+    if ( isVerbose() ) std::cerr << "[BN factory] " << x << std::endl; \
   }
 
 namespace gum {
@@ -41,7 +40,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE
   BayesNetFactory<GUM_SCALAR>::BayesNetFactory( BayesNet<GUM_SCALAR>* bn )
-      : __parents( 0 ), __impl( 0 ), __bn( bn ) {
+      : __parents( 0 )
+      , __impl( 0 )
+      , __bn( bn ) {
     GUM_CONSTRUCTOR( BayesNetFactory );
     __states.push_back( factory_state::NONE );
 
@@ -60,7 +61,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE BayesNetFactory<GUM_SCALAR>::BayesNetFactory(
       const BayesNetFactory<GUM_SCALAR>& source )
-      : __parents( 0 ), __impl( 0 ), __bn( 0 ) {
+      : __parents( 0 )
+      , __impl( 0 )
+      , __bn( 0 ) {
     GUM_CONS_CPY( BayesNetFactory );
 
     if ( source.state() != factory_state::NONE ) {
@@ -76,8 +79,7 @@ namespace gum {
   INLINE BayesNetFactory<GUM_SCALAR>::~BayesNetFactory() {
     GUM_DESTRUCTOR( BayesNetFactory );
 
-    if ( __parents != 0 )
-      delete __parents;
+    if ( __parents != 0 ) delete __parents;
 
     if ( __impl != 0 ) {
       GUM_ERROR( FatalError,
@@ -490,8 +492,9 @@ namespace gum {
           cptInst.incVar( first ) ) {
       for ( cptInst.setFirstNotVar( first ); !cptInst.end();
             cptInst.incNotVar( first ) )
-        table.set( cptInst, ( j < rawTable.size() ) ? (GUM_SCALAR)rawTable[j++]
-                                                    : (GUM_SCALAR)0 );
+        table.set( cptInst,
+                   ( j < rawTable.size() ) ? (GUM_SCALAR)rawTable[j++]
+                                           : (GUM_SCALAR)0 );
 
       cptInst.unsetEnd();
     }
@@ -506,8 +509,7 @@ namespace gum {
     for ( unsigned int j = 0; j < modCounter.size(); j++ ) {
       last = ( modCounter[j] == ( varList[j]->domainSize() - 1 ) ) && last;
 
-      if ( !last )
-        break;
+      if ( !last ) break;
     }
 
     if ( last ) {
@@ -657,9 +659,10 @@ namespace gum {
         for ( inst.setFirstIn( inst_default ); !inst.end();
               inst.incIn( inst_default ) ) {
           ( __bn->cpt( varId ) )
-              .set( inst, inst.val( var ) < values.size()
-                              ? (GUM_SCALAR)values[inst.val( var )]
-                              : (GUM_SCALAR)0 );
+              .set( inst,
+                    inst.val( var ) < values.size()
+                        ? (GUM_SCALAR)values[inst.val( var )]
+                        : (GUM_SCALAR)0 );
         }
       } else {
         Instantiation inst( __bn->cpt( __varNameMap[var.name()] ) );
@@ -672,9 +675,10 @@ namespace gum {
           for ( inst.setFirstOut( var_inst ); !inst.end();
                 inst.incOut( var_inst ) ) {
             ( __bn->cpt( varId ) )
-                .set( inst, inst.val( var ) < values.size()
-                                ? (GUM_SCALAR)values[inst.val( var )]
-                                : (GUM_SCALAR)0 );
+                .set( inst,
+                      inst.val( var ) < values.size()
+                          ? (GUM_SCALAR)values[inst.val( var )]
+                          : (GUM_SCALAR)0 );
           }
         }
       }

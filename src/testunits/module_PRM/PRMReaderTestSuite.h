@@ -33,8 +33,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
           res = reader.readFile( GET_PATH_STR( "o3prm/inference.o3prm" ) ) );
 
-      if ( res != 0 )
-        reader.showElegantErrors();
+      if ( res != 0 ) reader.showElegantErrors();
 
       TS_ASSERT_EQUALS( res, 0 );
 
@@ -53,8 +52,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( res = reader.readFile( GET_PATH_STR(
                                         "o3prm/withinterfaces.o3prm" ) ) );
 
-      if ( res != 0 )
-        reader.showElegantErrors();
+      if ( res != 0 ) reader.showElegantErrors();
 
       TS_ASSERT_EQUALS( res, 0 );
 

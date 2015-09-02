@@ -37,11 +37,13 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     ClassElement<GUM_SCALAR>::ClassElement( const ClassElement& source )
-        : PRMObject( source.name() ), __id( source.id() ) {
+        : PRMObject( source.name() )
+        , __id( source.id() ) {
       GUM_CONS_CPY( ClassElement );
     }
 
-    template <typename GUM_SCALAR> ClassElement<GUM_SCALAR>::~ClassElement() {
+    template <typename GUM_SCALAR>
+    ClassElement<GUM_SCALAR>::~ClassElement() {
       GUM_DESTRUCTOR( ClassElement );
     }
 

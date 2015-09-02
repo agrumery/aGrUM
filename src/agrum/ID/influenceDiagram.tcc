@@ -58,7 +58,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   InfluenceDiagram<GUM_SCALAR>::InfluenceDiagram(
       const InfluenceDiagram<GUM_SCALAR>& source )
-      : DAGmodel( source ), __variableMap( source.__variableMap ) {
+      : DAGmodel( source )
+      , __variableMap( source.__variableMap ) {
     GUM_CONS_CPY( InfluenceDiagram );
     _copyTables( source );
   }
@@ -277,8 +278,7 @@ namespace gum {
   InfluenceDiagram<GUM_SCALAR>::isDecisionNode( NodeId varId ) const {
     bool ret = true;
 
-    if ( isUtilityNode( varId ) || isChanceNode( varId ) )
-      ret = false;
+    if ( isUtilityNode( varId ) || isChanceNode( varId ) ) ret = false;
 
     return ret;
   }
@@ -427,7 +427,8 @@ namespace gum {
   */
   template <typename GUM_SCALAR>
   NodeId InfluenceDiagram<GUM_SCALAR>::addChanceNode(
-      const DiscreteVariable& var, MultiDimImplementation<GUM_SCALAR>* aContent,
+      const DiscreteVariable& var,
+      MultiDimImplementation<GUM_SCALAR>* aContent,
       NodeId DesiredId ) {
     NodeId proposedId = _addNode( var, DesiredId );
 
@@ -445,7 +446,8 @@ namespace gum {
   */
   template <typename GUM_SCALAR>
   NodeId InfluenceDiagram<GUM_SCALAR>::addUtilityNode(
-      const DiscreteVariable& var, MultiDimImplementation<GUM_SCALAR>* aContent,
+      const DiscreteVariable& var,
+      MultiDimImplementation<GUM_SCALAR>* aContent,
       NodeId DesiredId ) {
     if ( var.domainSize() != 1 ) {
       GUM_ERROR( InvalidArgument,
@@ -541,15 +543,6 @@ namespace gum {
   * Add an arc in the ID, and update diagram's chance nodes cpt if necessary.
   */
   template <typename GUM_SCALAR>
-  INLINE void InfluenceDiagram<GUM_SCALAR>::insertArc( NodeId tail,
-                                                       NodeId head ) {
-    addArc( tail, head );
-  }
-
-  /*
-  * Add an arc in the ID, and update diagram's chance nodes cpt if necessary.
-  */
-  template <typename GUM_SCALAR>
   INLINE void InfluenceDiagram<GUM_SCALAR>::addArc( NodeId tail, NodeId head ) {
     if ( isUtilityNode( tail ) ) {
       GUM_ERROR( InvalidArc, "Tail cannot be a utility node" );
@@ -606,18 +599,15 @@ namespace gum {
   template <typename GUM_SCALAR>
   void InfluenceDiagram<GUM_SCALAR>::_moralGraph( UndiGraph& graph ) const {
     for ( const auto node : _dag.nodes() )
-      if ( !isUtilityNode( node ) )
-        graph.addNode( node );
+      if ( !isUtilityNode( node ) ) graph.addNode( node );
 
     for ( const auto node : _dag.nodes() ) {
       if ( !isDecisionNode( node ) )
         for ( const auto par : _dag.parents( node ) ) {
-          if ( isChanceNode( node ) )
-            graph.addEdge( node, par );
+          if ( isChanceNode( node ) ) graph.addEdge( node, par );
 
           for ( const auto par2 : _dag.parents( node ) )
-            if ( par != par2 )
-              graph.addEdge( par, par2 );
+            if ( par != par2 ) graph.addEdge( par, par2 );
         }
     }
   }
@@ -635,8 +625,7 @@ namespace gum {
     while ( ( orderIter != order.end() ) && ( !isDecisionNode( *orderIter ) ) )
       ++orderIter;
 
-    if ( orderIter == order.end() )
-      return true;
+    if ( orderIter == order.end() ) return true;
 
     NodeId parentDecision = ( *orderIter );
     ++orderIter;
@@ -644,8 +633,7 @@ namespace gum {
     // Checking path between decisions nodes
     while ( orderIter != order.end() ) {
       if ( isDecisionNode( *orderIter ) ) {
-        if ( !existsPathBetween( parentDecision, *orderIter ) )
-          return false;
+        if ( !existsPathBetween( parentDecision, *orderIter ) ) return false;
 
         parentDecision = *orderIter;
       }
@@ -681,15 +669,13 @@ namespace gum {
 
         mark[new_one] = (int)current;
 
-        if ( new_one == dest )
-          break;  // if we reach *orderIter, stop.
+        if ( new_one == dest ) break;  // if we reach *orderIter, stop.
 
         nodeFIFO.pushBack( new_one );
       }
     }
 
-    if ( mark[dest] == -1 )
-      return false;
+    if ( mark[dest] == -1 ) return false;
 
     return true;
   }
@@ -770,8 +756,7 @@ namespace gum {
     std::vector<NodeId>* decisionSequence = new std::vector<NodeId>();
 
     for ( const auto elt : topologicalOrder( false ) )
-      if ( isDecisionNode( elt ) )
-        decisionSequence->push_back( elt );
+      if ( isDecisionNode( elt ) ) decisionSequence->push_back( elt );
 
     return decisionSequence;
   }
@@ -812,11 +797,9 @@ namespace gum {
       NodeSet lastSet;  //= new gum::NodeSet();
 
       for ( const auto node : nodeList )
-        if ( isChanceNode( node ) )
-          lastSet.insert( node );
+        if ( isChanceNode( node ) ) lastSet.insert( node );
 
-      if ( !lastSet.empty() )
-        __temporalOrder.pushFront( lastSet );
+      if ( !lastSet.empty() ) __temporalOrder.pushFront( lastSet );
     }
 
     return __temporalOrder;

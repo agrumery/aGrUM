@@ -3,7 +3,8 @@
 namespace gum {
   namespace credal {
 
-    template <typename GUM_SCALAR> VarMod2BNsMap<GUM_SCALAR>::VarMod2BNsMap() {
+    template <typename GUM_SCALAR>
+    VarMod2BNsMap<GUM_SCALAR>::VarMod2BNsMap() {
       cnet = nullptr;
 
       GUM_CONSTRUCTOR( VarMod2BNsMap );
@@ -17,15 +18,14 @@ namespace gum {
       GUM_CONSTRUCTOR( VarMod2BNsMap );
     }
 
-    template <typename GUM_SCALAR> VarMod2BNsMap<GUM_SCALAR>::~VarMod2BNsMap() {
+    template <typename GUM_SCALAR>
+    VarMod2BNsMap<GUM_SCALAR>::~VarMod2BNsMap() {
       GUM_DESTRUCTOR( VarMod2BNsMap );
     }
 
     template <typename GUM_SCALAR>
     void VarMod2BNsMap<GUM_SCALAR>::setCNet( const CredalNet<GUM_SCALAR>& cn ) {
-      const typename Property<
-          std::vector<std::vector<std::vector<GUM_SCALAR>>>>::onNodes* cpt =
-          &cn.credalNet_currentCpt();
+      auto* cpt = &cn.credalNet_currentCpt();
       auto nNodes = cpt->size();
       _sampleDef.resize( nNodes );
 
@@ -54,8 +54,7 @@ namespace gum {
 
       for ( std::list<Size>::iterator it = nets.begin(); it != nets.end();
             ++it ) {
-        if ( *it == _currentHash )
-          return false;
+        if ( *it == _currentHash ) return false;
       }
 
       // add it
@@ -80,7 +79,8 @@ namespace gum {
 
         // for each one
         for ( std::list<Size>::iterator it = old_nets.begin();
-              it != old_nets.end(); ++it ) {
+              it != old_nets.end();
+              ++it ) {
           // get all keys associated to this net
           std::list<varKey>& netKeys = _myHashVars.getWithDefault(
               *it, std::list<varKey>() );  //[ *it ];
@@ -92,7 +92,8 @@ namespace gum {
           // other keys use the net, delete our key from list
           else {
             for ( std::list<varKey>::iterator it2 = netKeys.begin();
-                  it2 != netKeys.end(); ++it2 ) {
+                  it2 != netKeys.end();
+                  ++it2 ) {
               if ( *it2 == key ) {
                 netKeys.erase( it2 );
                 break;
@@ -123,8 +124,7 @@ namespace gum {
 
         for ( std::list<Size>::iterator it = nets.begin(); it != nets.end();
               ++it ) {
-          if ( *it == _currentHash )
-            return false;
+          if ( *it == _currentHash ) return false;
         }
 
         // add it

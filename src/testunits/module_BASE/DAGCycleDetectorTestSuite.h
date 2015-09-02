@@ -56,7 +56,8 @@ namespace gum_tests {
     }
 
     void __createChanges(
-        const gum::DAG& g, std::vector<gum::DAGCycleDetector::Change>& changes,
+        const gum::DAG& g,
+        std::vector<gum::DAGCycleDetector::Change>& changes,
         std::vector<gum::DAGCycleDetector::Change>& del_add_changes,
         unsigned int length ) {
       std::uniform_int_distribution<int> distrib_type( 0, 2 );
@@ -80,8 +81,7 @@ namespace gum_tests {
             }
             nb_arcs /= g.size() * g.size();
             unsigned int nb_del_arc = distrib_arc( generator ) * nb_arcs;
-            if ( nb_del_arc >= gg.sizeArcs() )
-              nb_del_arc = gg.sizeArcs() - 1;
+            if ( nb_del_arc >= gg.sizeArcs() ) nb_del_arc = gg.sizeArcs() - 1;
             for ( auto iter = gg.arcs().begin(); iter != gg.arcs().end();
                   ++iter, --nb_del_arc ) {
               if ( !nb_del_arc ) {
@@ -116,8 +116,7 @@ namespace gum_tests {
             }
             nb_arcs /= g.size() * g.size();
             unsigned int nb_del_arc = distrib_arc( generator ) * nb_arcs;
-            if ( nb_del_arc >= gg.sizeArcs() )
-              nb_del_arc = gg.sizeArcs() - 1;
+            if ( nb_del_arc >= gg.sizeArcs() ) nb_del_arc = gg.sizeArcs() - 1;
             for ( auto iter = gg.arcs().begin(); iter != gg.arcs().end();
                   ++iter, --nb_del_arc ) {
               if ( !nb_del_arc ) {
@@ -171,7 +170,8 @@ namespace gum_tests {
       }
 
       for ( auto iter = additions.beginSafe();  // safe iterator needed here
-            iter != additions.endSafe(); ++iter ) {
+            iter != additions.endSafe();
+            ++iter ) {
         if ( deletions.exists( iter.key() ) ) {
           unsigned int& nb_del = deletions[iter.key()];
           unsigned int& nb_add = iter.val();

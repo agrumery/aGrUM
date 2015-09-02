@@ -52,7 +52,8 @@ namespace gum {
                     impl->newFactory() ) );
 
             for ( MultiDimInterface::iterator iter = impl->begin();
-                  iter != impl->end(); ++iter )
+                  iter != impl->end();
+                  ++iter )
               p->add( *( bij.second( *iter ) ) );
           } else if ( dynamic_cast<const MultiDimBucket<GUM_SCALAR>*>(
                           impl ) ) {
@@ -63,8 +64,9 @@ namespace gum {
 
             try {
               p = new Potential<GUM_SCALAR>( new MultiDimBijArray<GUM_SCALAR>(
-                  bij, static_cast<const MultiDimBucket<GUM_SCALAR>*>( impl )
-                           ->bucket() ) );
+                  bij,
+                  static_cast<const MultiDimBucket<GUM_SCALAR>*>( impl )
+                      ->bucket() ) );
             } catch ( OperationNotAllowed& e ) {
               // This is an empty bucket, it happens if all variables were
               // eliminated
@@ -97,8 +99,7 @@ namespace gum {
 
         return p;
       } catch ( Exception& e ) {
-        if ( p )
-          delete p;
+        if ( p ) delete p;
 
         throw;
       }
@@ -123,8 +124,7 @@ namespace gum {
       Set<const Potential<GUM_SCALAR>*> pots;
 
       for ( const auto p : pool )
-        if ( p->contains( *var ) )
-          pots.insert( p );
+        if ( p->contains( *var ) ) pots.insert( p );
 
       if ( pots.size() == 0 ) {
         return;

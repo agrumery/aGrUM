@@ -29,7 +29,9 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE MultiDimImplementation<GUM_SCALAR>::MultiDimImplementation()
-      : MultiDimContainer<GUM_SCALAR>(), __vars(), __slaveInstantiations() {
+      : MultiDimContainer<GUM_SCALAR>()
+      , __vars()
+      , __slaveInstantiations() {
     GUM_CONSTRUCTOR( MultiDimImplementation );
     __internalChangeMethod = __InternalChangeMethod::DIRECT_CHANGE;
     __internalChangeState = __InternalChangeState::NO_CHANGE;
@@ -41,10 +43,11 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE MultiDimImplementation<GUM_SCALAR>::MultiDimImplementation(
       const MultiDimImplementation<GUM_SCALAR>& from )
-      : MultiDimContainer<GUM_SCALAR>( from ), __vars( from.__vars ),
-        __internalChangeMethod( from.__internalChangeMethod ),
-        __internalChangeState( from.__internalChangeState ),
-        __domainSize( from.__domainSize ) {
+      : MultiDimContainer<GUM_SCALAR>( from )
+      , __vars( from.__vars )
+      , __internalChangeMethod( from.__internalChangeMethod )
+      , __internalChangeState( from.__internalChangeState )
+      , __domainSize( from.__domainSize ) {
     GUM_CONS_CPY( MultiDimImplementation );
     GUM_ASSERT( !this->_isCommitNeeded() );
   }
@@ -58,7 +61,8 @@ namespace gum {
 
     for ( List<Instantiation*>::iterator_safe iter =
               __slaveInstantiations.beginSafe();
-          iter != __slaveInstantiations.endSafe(); ++iter )
+          iter != __slaveInstantiations.endSafe();
+          ++iter )
       ( *iter )->forgetMaster();
   }
 
@@ -81,12 +85,12 @@ namespace gum {
     // informs all the slaves that they have to update themselves
     for ( List<Instantiation*>::iterator_safe iter =
               __slaveInstantiations.beginSafe();
-          iter != __slaveInstantiations.endSafe(); ++iter ) {
+          iter != __slaveInstantiations.endSafe();
+          ++iter ) {
       ( *iter )->addWithMaster( this, v );
     }
 
-    if ( _isInMultipleChangeMethod() )
-      __setNotCommitedChange();
+    if ( _isInMultipleChangeMethod() ) __setNotCommitedChange();
   }
 
   /// removes a var from the variables of the multidimensional matrix
@@ -107,12 +111,12 @@ namespace gum {
     // informs all the slaves that they have to update themselves
     for ( List<Instantiation*>::iterator_safe iter =
               __slaveInstantiations.beginSafe();
-          iter != __slaveInstantiations.endSafe(); ++iter ) {
+          iter != __slaveInstantiations.endSafe();
+          ++iter ) {
       ( *iter )->eraseWithMaster( this, v );
     }
 
-    if ( _isInMultipleChangeMethod() )
-      __setNotCommitedChange();
+    if ( _isInMultipleChangeMethod() ) __setNotCommitedChange();
   }
 
   /// adds a new var to the sequence of __vars
@@ -132,14 +136,13 @@ namespace gum {
   INLINE bool
   MultiDimImplementation<GUM_SCALAR>::registerSlave( Instantiation& i ) {
     // check that the Instantiation has the same variables as this
-    if ( i.nbrDim() != __vars.size() )
-      return false;
+    if ( i.nbrDim() != __vars.size() ) return false;
 
     for ( Sequence<const DiscreteVariable*>::iterator_safe iter =
               __vars.beginSafe();
-          iter != __vars.endSafe(); ++iter )
-      if ( !i.contains( *iter ) )
-        return false;
+          iter != __vars.endSafe();
+          ++iter )
+      if ( !i.contains( *iter ) ) return false;
 
     i.synchronizeWithMaster( this );
 
@@ -302,7 +305,8 @@ namespace gum {
 
     for ( List<Instantiation*>::iterator_safe iter =
               __slaveInstantiations.beginSafe();
-          iter != __slaveInstantiations.endSafe(); ++iter ) {
+          iter != __slaveInstantiations.endSafe();
+          ++iter ) {
       ( **iter ).swap( *x, *y );
     }
   }

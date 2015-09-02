@@ -26,6 +26,7 @@ tools for BN analysis in ipython qtconsole and notebook
 
 (but can be used every where)
 """
+from __future__ import print_function
 from base64 import encodestring
 import numpy as np
 import time

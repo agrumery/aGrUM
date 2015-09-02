@@ -52,7 +52,8 @@ namespace gum {
      * variables and they subsequently deduce from these counts those for the
      * included sets.
      */
-    template <typename Alloc = std::allocator<unsigned int>> class IdSet {
+    template <typename Alloc = std::allocator<unsigned int>>
+    class IdSet {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -74,7 +75,8 @@ namespace gum {
       IdSet( const IdSet<Alloc>& from );
 
       /// generalized copy constructor
-      template <typename OtherAlloc> IdSet( const IdSet<OtherAlloc>& from );
+      template <typename OtherAlloc>
+      IdSet( const IdSet<OtherAlloc>& from );
 
       /// move constructor
       IdSet( IdSet<Alloc>&& from );
@@ -178,8 +180,9 @@ namespace gum {
             std::tuple<learning::IdSet<Alloc>, unsigned int, unsigned int>> {
     public:
     /// computes the hashed value of a key
-    Size operator()( const std::tuple<learning::IdSet<Alloc>, unsigned int,
-                                      unsigned int>& key ) const;
+    Size operator()(
+        const std::tuple<learning::IdSet<Alloc>, unsigned int, unsigned int>&
+            key ) const;
   };
 
 } /* namespace gum */

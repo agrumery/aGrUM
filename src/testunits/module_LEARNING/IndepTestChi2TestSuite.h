@@ -36,13 +36,14 @@ namespace gum_tests {
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>() );
+                                gum::learning::Col<0>,
+                                8>() );
 
       auto generators = gum::learning::make_generators(
           gum::learning::RowGeneratorIdentity() );
 
-      auto filter = gum::learning::make_DB_row_filter( database, translators,
-                                                       generators );
+      auto filter = gum::learning::make_DB_row_filter(
+          database, translators, generators );
 
       std::vector<unsigned int> modalities = filter.modalities();
 
@@ -91,11 +92,12 @@ namespace gum_tests {
       gum::learning::DatabaseFromCSV database( GET_PATH_STR( "asia.csv" ) );
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>() );
+                                gum::learning::Col<0>,
+                                8>() );
       auto generators = gum::learning::make_generators(
           gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter( database, translators,
-                                                       generators );
+      auto filter = gum::learning::make_DB_row_filter(
+          database, translators, generators );
       std::vector<unsigned int> modalities = filter.modalities();
       gum::learning::IndepTestChi2<> score( filter, modalities );
       // score.useCache ( false );
@@ -124,11 +126,12 @@ namespace gum_tests {
       gum::learning::DatabaseFromCSV database( GET_PATH_STR( "asia.csv" ) );
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>() );
+                                gum::learning::Col<0>,
+                                8>() );
       auto generators = gum::learning::make_generators(
           gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter( database, translators,
-                                                       generators );
+      auto filter = gum::learning::make_DB_row_filter(
+          database, translators, generators );
       std::vector<unsigned int> modalities = filter.modalities();
       gum::learning::IndepTestChi2<> score( filter, modalities );
       // score.useCache ( false );

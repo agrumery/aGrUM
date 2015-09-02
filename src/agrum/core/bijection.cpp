@@ -43,11 +43,15 @@ namespace gum {
       __BijectionIterEndSafe = new BijectionIteratorSafe<int, int>;
 #ifndef NDEBUG
       __debug__::__dec_creation( "BijectionIteratorSafe",
-                                 "__bijection_static_end", 0,
-                                 "static variable correction", 0 );
+                                 "__bijection_static_end",
+                                 0,
+                                 "static variable correction",
+                                 0 );
       __debug__::__dec_creation( "HashTableConstIteratorSafe",
-                                 "__bijection_static_end", 0,
-                                 "static variable correction", 0 );
+                                 "__bijection_static_end",
+                                 0,
+                                 "static variable correction",
+                                 0 );
 #endif
     }
 
@@ -62,11 +66,16 @@ namespace gum {
       first_time = false;
       __BijectionIterEnd = new BijectionIterator<int, int>;
 #ifndef NDEBUG
-      __debug__::__dec_creation( "BijectionIterator", "__bijection_static_end",
-                                 0, "static variable correction", 0 );
+      __debug__::__dec_creation( "BijectionIterator",
+                                 "__bijection_static_end",
+                                 0,
+                                 "static variable correction",
+                                 0 );
       __debug__::__dec_creation( "HashTableConstIterator",
-                                 "__bijection_static_end", 0,
-                                 "static variable correction", 0 );
+                                 "__bijection_static_end",
+                                 0,
+                                 "static variable correction",
+                                 0 );
 #endif
     }
 

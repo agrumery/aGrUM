@@ -45,7 +45,8 @@ namespace gum {
    *number.
    * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
    */
-  template <typename GUM_SCALAR> class Rational {
+  template <typename GUM_SCALAR>
+  class Rational {
     public:
     /**
      * Test the algorithms iters times with random doubles.
@@ -81,7 +82,8 @@ namespace gum {
      *1e-6
      *by default.
      */
-    static void farey( long int& numerator, long int& denominator,
+    static void farey( long int& numerator,
+                       long int& denominator,
                        const GUM_SCALAR& number,
                        const long int& den_max = 1000000,
                        const double& zero = 1e-6 );
@@ -110,7 +112,8 @@ namespace gum {
      *1e-6
      *by default.
      */
-    static void continuedFracFirst( long int& numerator, long int& denominator,
+    static void continuedFracFirst( long int& numerator,
+                                    long int& denominator,
                                     const GUM_SCALAR& number,
                                     const double& zero = 1e-6 );
 
@@ -131,7 +134,8 @@ namespace gum {
      * @param den_max The constant highest authorized denominator. 1000000 by
      *default.
      */
-    static void continuedFracBest( long int& numerator, long int& denominator,
+    static void continuedFracBest( long int& numerator,
+                                   long int& denominator,
                                    const GUM_SCALAR& number,
                                    const long int& den_max = 1000000 );
 

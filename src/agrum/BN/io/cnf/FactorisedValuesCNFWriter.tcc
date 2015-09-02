@@ -25,11 +25,9 @@
 
 namespace gum {
 
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   /* ===                           GUM_BN_WRITER === */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   // Default constructor.
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
   INLINE
@@ -40,8 +38,8 @@ namespace gum {
 
   // Default destructor.
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
-  INLINE FactorisedValuesCNFWriter<
-      GUM_SCALAR, IApproximationPolicy>::~FactorisedValuesCNFWriter() {
+  INLINE FactorisedValuesCNFWriter<GUM_SCALAR, IApproximationPolicy>::
+      ~FactorisedValuesCNFWriter() {
     GUM_DESTRUCTOR( FactorisedValuesCNFWriter );
   }
 

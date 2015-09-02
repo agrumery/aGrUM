@@ -102,8 +102,7 @@ namespace gum {
       //__senders.eraseByVal ( sender );
       auto del = std::remove( __senders.begin(), __senders.end(), sender );
 
-      if ( del != __senders.end() )
-        __senders.erase( del, __senders.end() );
+      if ( del != __senders.end() ) __senders.erase( del, __senders.end() );
     };
 
     private:
@@ -111,7 +110,7 @@ namespace gum {
   };
 }  // namespace gum
 
-#define GUM_CONNECT( sender, signal, receiver, target )                        \
+#define GUM_CONNECT( sender, signal, receiver, target ) \
   ( sender ).signal.attach( &( receiver ), &target )
 
 #endif  // GUM_LISTENER_H__

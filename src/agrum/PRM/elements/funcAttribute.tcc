@@ -31,7 +31,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE FuncAttribute<GUM_SCALAR>::FuncAttribute(
-        const std::string& name, const Type<GUM_SCALAR>& type,
+        const std::string& name,
+        const Type<GUM_SCALAR>& type,
         MultiDimImplementation<GUM_SCALAR>* impl )
         : ScalarAttribute<GUM_SCALAR>( name, type, impl ) {
       std::stringstream str;

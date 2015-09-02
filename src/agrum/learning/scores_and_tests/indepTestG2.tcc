@@ -35,8 +35,8 @@ namespace gum {
     INLINE IndepTestG2<IdSetAlloc, CountAlloc>::IndepTestG2(
         const RowFilter& filter,
         const std::vector<unsigned int>& var_modalities )
-        : IndependenceTest<IdSetAlloc, CountAlloc>( filter, var_modalities ),
-          __chi2( var_modalities ) {
+        : IndependenceTest<IdSetAlloc, CountAlloc>( filter, var_modalities )
+        , __chi2( var_modalities ) {
       // for debugging purposes
       GUM_CONSTRUCTOR( IndepTestG2 );
     }

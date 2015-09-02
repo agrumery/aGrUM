@@ -34,16 +34,11 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
-
-  /* ============================================================================
-   */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
+  /* =========================================================================*/
   /* ===                 Implementation of gumSplayBinaryNode === */
-  /* ============================================================================
-   */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
+  /* =========================================================================*/
 
   /// a function used to perform copies of HashTableLists
 
@@ -81,9 +76,16 @@ namespace gum {
 
   template <class Element>
   INLINE SplayBinaryNode<Element>::SplayBinaryNode(
-      const Element& e, HashTable<Element, SplayBinaryNode<Element>*>& addr,
-      SplayBinaryNode* g, SplayBinaryNode* d, SplayBinaryNode* p )
-      : elt( e ), size( 1 ), fg( g ), fd( d ), pere( p ) {
+      const Element& e,
+      HashTable<Element, SplayBinaryNode<Element>*>& addr,
+      SplayBinaryNode* g,
+      SplayBinaryNode* d,
+      SplayBinaryNode* p )
+      : elt( e )
+      , size( 1 )
+      , fg( g )
+      , fd( d )
+      , pere( p ) {
     if ( addr.exists( elt ) )
       addr[elt] = this;
     else
@@ -106,16 +108,15 @@ namespace gum {
 
   /// destructor
 
-  template <class Element> INLINE SplayBinaryNode<Element>::~SplayBinaryNode() {
+  template <class Element>
+  INLINE SplayBinaryNode<Element>::~SplayBinaryNode() {
     // for debugging purposes
     GUM_DESTRUCTOR( SplayBinaryNode );
     // remove the subtrees
 
-    if ( fg )
-      delete fg;
+    if ( fg ) delete fg;
 
-    if ( fd )
-      delete fd;
+    if ( fd ) delete fd;
   }
 
   /// Perform a right rotation, returns the node
@@ -128,8 +129,7 @@ namespace gum {
     // We chain childs
     pere->fg = fd;
 
-    if ( fd )
-      fd->pere = pere;
+    if ( fd ) fd->pere = pere;
 
     fd = pere;
 
@@ -140,17 +140,14 @@ namespace gum {
     // We compute the size of rigth child
     size_ = 1;
 
-    if ( fd->fg )
-      size_ += fd->fg->size;
+    if ( fd->fg ) size_ += fd->fg->size;
 
-    if ( fd->fd )
-      size_ += fd->fd->size;
+    if ( fd->fd ) size_ += fd->fd->size;
 
     fd->size = size_;
 
     // size_ == fd->size
-    if ( fg )
-      size_ += fg->size;
+    if ( fg ) size_ += fg->size;
 
     ++size_;
 
@@ -183,8 +180,7 @@ namespace gum {
     // We chain childs
     pere->fd = fg;
 
-    if ( fg )
-      fg->pere = pere;
+    if ( fg ) fg->pere = pere;
 
     fg = pere;
 
@@ -195,16 +191,13 @@ namespace gum {
     // We compute the size of rigth child
     size_ = 1;
 
-    if ( fg->fg )
-      size_ += fg->fg->size;
+    if ( fg->fg ) size_ += fg->fg->size;
 
-    if ( fg->fd )
-      size_ += fg->fd->size;
+    if ( fg->fd ) size_ += fg->fd->size;
 
     fg->size = size_;
 
-    if ( fd )
-      size_ += fd->size;
+    if ( fd ) size_ += fd->size;
 
     ++size_;
 
@@ -295,8 +288,7 @@ namespace gum {
 
     act->size = 1;
 
-    if ( act->fg )
-      act->size += act->fg->size;
+    if ( act->fg ) act->size += act->fg->size;
 
     act->size += act->fd->size;
 
@@ -317,16 +309,14 @@ namespace gum {
       // I'm the left child of my father
       int pos = pere->position() - 1;
 
-      if ( fd )
-        pos -= fd->size;
+      if ( fd ) pos -= fd->size;
 
       return pos;
     } else {
       // I'm the right child of my father
       int pos = pere->position() + 1;
 
-      if ( fg )
-        pos += fg->size;
+      if ( fg ) pos += fg->size;
 
       return pos;
     }
@@ -361,15 +351,11 @@ namespace gum {
     return fd;
   }
 
-  /* ============================================================================
-   */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
+  /* =========================================================================*/
   /* ===                     Implementation of SplayTree === */
-  /* ============================================================================
-   */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
+  /* =========================================================================*/
 
   /// a function used to perform copies
 
@@ -386,7 +372,8 @@ namespace gum {
 
   template <class Element>
   INLINE SplayTree<Element>::SplayTree()
-      : root( 0 ), addr() {
+      : root( 0 )
+      , addr() {
     // for debugging purposes
     GUM_CONSTRUCTOR( SplayTree );
   }
@@ -398,7 +385,8 @@ namespace gum {
 
   template <class Element>
   INLINE SplayTree<Element>::SplayTree( const Element& e )
-      : root( 0 ), addr() {
+      : root( 0 )
+      , addr() {
     root = new SplayBinaryNode<Element>( e, addr );
     // for debugging purposes
     GUM_CONSTRUCTOR( SplayTree );
@@ -425,8 +413,7 @@ namespace gum {
       GUM_OP_CPY( SplayTree );
       // delete the old contents
 
-      if ( root )
-        delete root;
+      if ( root ) delete root;
 
       addr.clear();
 
@@ -438,12 +425,12 @@ namespace gum {
 
   /// Destructor
 
-  template <class Element> INLINE SplayTree<Element>::~SplayTree() {
+  template <class Element>
+  INLINE SplayTree<Element>::~SplayTree() {
     // for debugging purposes
     GUM_DESTRUCTOR( SplayTree );
 
-    if ( root )
-      delete ( root );
+    if ( root ) delete ( root );
   }
 
   /// Get the element at the position n
@@ -524,7 +511,8 @@ namespace gum {
 
   /// Get the first element
 
-  template <class Element> INLINE Element& SplayTree<Element>::front() {
+  template <class Element>
+  INLINE Element& SplayTree<Element>::front() {
     SplayBinaryNode<Element>* act = root;
 
     if ( !root ) {
@@ -542,7 +530,8 @@ namespace gum {
 
   /// Get the last element
 
-  template <class Element> INLINE Element& SplayTree<Element>::back() {
+  template <class Element>
+  INLINE Element& SplayTree<Element>::back() {
     SplayBinaryNode<Element>* act = root;
 
     if ( !root ) {
@@ -560,7 +549,8 @@ namespace gum {
 
   /// Remove the first element
 
-  template <class Element> INLINE void SplayTree<Element>::popFront() {
+  template <class Element>
+  INLINE void SplayTree<Element>::popFront() {
     SplayBinaryNode<Element>* act = root;
 
     if ( root ) {
@@ -572,8 +562,7 @@ namespace gum {
 
       root = act->fd;
 
-      if ( root )
-        root->pere = 0;
+      if ( root ) root->pere = 0;
 
       act->fd = 0;
 
@@ -583,7 +572,8 @@ namespace gum {
 
   /// Remove the last element
 
-  template <class Element> INLINE void SplayTree<Element>::popBack() {
+  template <class Element>
+  INLINE void SplayTree<Element>::popBack() {
     SplayBinaryNode<Element>* act = root;
 
     if ( root ) {
@@ -595,8 +585,7 @@ namespace gum {
 
       root = act->fg;
 
-      if ( root )
-        root->pere = 0;
+      if ( root ) root->pere = 0;
 
       act->fg = 0;
 
@@ -690,11 +679,9 @@ namespace gum {
     GUM_ASSERT( addr.exists( e->getElement() ) );
     addr.erase( e->getElement() );
 
-    if ( e->getFg() )
-      removeInfo( e->getFg(), addr );
+    if ( e->getFg() ) removeInfo( e->getFg(), addr );
 
-    if ( e->getFd() )
-      removeInfo( e->getFd(), addr );
+    if ( e->getFd() ) removeInfo( e->getFd(), addr );
   }
 
   /// Split the tree at the element
@@ -738,8 +725,7 @@ namespace gum {
       // We take the first part
       root = act->fg;
 
-      if ( root )
-        root->pere = 0;
+      if ( root ) root->pere = 0;
 
       // We take the second part
       SplayTree<Element> s;
@@ -750,8 +736,7 @@ namespace gum {
 
       Size _size = 1;
 
-      if ( s.root->fd )
-        _size += s.root->fd->size;
+      if ( s.root->fd ) _size += s.root->fd->size;
 
       s.root->size = _size;
 
@@ -791,8 +776,7 @@ namespace gum {
 
     root = act->fg;
 
-    if ( root )
-      root->pere = 0;
+    if ( root ) root->pere = 0;
 
     act->fg = 0;
 
@@ -809,7 +793,8 @@ namespace gum {
 
   /// The number of elements in the tree
 
-  template <class Element> INLINE Size SplayTree<Element>::size() const {
+  template <class Element>
+  INLINE Size SplayTree<Element>::size() const {
     if ( root )
       return root->size;
     else
@@ -828,13 +813,11 @@ namespace gum {
   template <typename Element>
   std::ostream& operator<<( std::ostream& out,
                             const SplayBinaryNode<Element>& e ) {
-    if ( e.fg )
-      out << *e.fg << ",";
+    if ( e.fg ) out << *e.fg << ",";
 
     out << e.elt;
 
-    if ( e.fd )
-      out << "," << *e.fd;
+    if ( e.fd ) out << "," << *e.fd;
 
     return out;
   }
@@ -846,8 +829,7 @@ namespace gum {
                                    const SplayTree<Element>& s ) {
     out << "|[";
 
-    if ( s.root )
-      out << *s.root;
+    if ( s.root ) out << *s.root;
 
     out << "]|";
 

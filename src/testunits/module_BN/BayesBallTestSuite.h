@@ -66,8 +66,7 @@ namespace gum_tests {
 
       TS_ASSERT( requisite.size() >= 5 );
 
-      if ( bn != 0 )
-        delete bn;
+      if ( bn != 0 ) delete bn;
     }
   };
 }

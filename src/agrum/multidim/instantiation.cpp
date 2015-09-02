@@ -34,21 +34,22 @@ namespace gum {
     for ( const auto var : v )
       __add( *var );
 
-    if ( master )
-      actAsSlave( master->getMasterRef() );
+    if ( master ) actAsSlave( master->getMasterRef() );
   }
 
   /// constructor for a Instantiation contained into a MultiDimInterface
 
   Instantiation::Instantiation( MultiDimAdressable& d )
-      : __master( 0 ), __overflow( false ) {
+      : __master( 0 )
+      , __overflow( false ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Instantiation );
     __init( &d );
   }
 
   Instantiation::Instantiation( const MultiDimAdressable& d )
-      : __master( 0 ), __overflow( false ) {
+      : __master( 0 )
+      , __overflow( false ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Instantiation );
     __init( const_cast<MultiDimAdressable*>( &d ) );
@@ -57,12 +58,12 @@ namespace gum {
   /// constructor for a Instantiation contained into a MultiDimInterface
 
   Instantiation::Instantiation( MultiDimAdressable* d )
-      : __master( 0 ), __overflow( false ) {
+      : __master( 0 )
+      , __overflow( false ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Instantiation );
 
-    if ( d )
-      __init( d );
+    if ( d ) __init( d );
   }
 
   /// constructor for a Instantiation contained into a MultiDimInterface
@@ -71,19 +72,21 @@ namespace gum {
    * in MultiDimAdressable and below */
 
   Instantiation::Instantiation( const MultiDimAdressable* const_d )
-      : __master( 0 ), __overflow( false ) {
+      : __master( 0 )
+      , __overflow( false ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Instantiation );
 
-    if ( const_d )
-      __init( const_cast<MultiDimAdressable*>( const_d ) );
+    if ( const_d ) __init( const_cast<MultiDimAdressable*>( const_d ) );
   }
 
   /// copy constructor
 
   Instantiation::Instantiation( const Instantiation& aI,
                                 const bool notifyMaster )
-      : MultiDimInterface(), __master( 0 ), __overflow( false ) {
+      : MultiDimInterface()
+      , __master( 0 )
+      , __overflow( false ) {
     // for debugging purposes
     GUM_CONS_CPY( Instantiation );
     // copy the content of aI
@@ -91,8 +94,7 @@ namespace gum {
     __vals = aI.__vals;
     __overflow = aI.__overflow;
 
-    if ( aI.__master && notifyMaster )
-      actAsSlave( *aI.__master );
+    if ( aI.__master && notifyMaster ) actAsSlave( *aI.__master );
   }
 
   // operator=
@@ -118,8 +120,7 @@ namespace gum {
       __vals = aI.__vals;
       __overflow = aI.__overflow;
 
-      if ( aI.__master )
-        actAsSlave( *aI.__master );
+      if ( aI.__master ) actAsSlave( *aI.__master );
     }
 
     return *this;
@@ -139,8 +140,7 @@ namespace gum {
     bool first = true;
 
     for ( const auto var : __vars ) {
-      if ( !first )
-        sstr << "|";
+      if ( !first ) sstr << "|";
 
       first = false;
       sstr << var->name() << ":" << var->label( val( *var ) );
@@ -173,8 +173,8 @@ namespace gum {
         try {
           chgVal( var, val );
         } catch ( NotFound& ) {
-          GUM_ERROR( NotFound, var.name()
-                                   << " : missing variable in instantiation" );
+          GUM_ERROR( NotFound,
+                     var.name() << " : missing variable in instantiation" );
         }
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound,

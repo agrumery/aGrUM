@@ -54,9 +54,9 @@ namespace gum {
     INLINE
     RecordCounterThreadBase<IdSetAlloc, CountAlloc>::RecordCounterThreadBase(
         RecordCounterThreadBase<IdSetAlloc, CountAlloc>&& from )
-        : _modalities( from._modalities ),
-          _nodesets( std::move( from._nodesets ) ),
-          _countings( std::move( from._countings ) ) {
+        : _modalities( from._modalities )
+        , _nodesets( std::move( from._nodesets ) )
+        , _countings( std::move( from._countings ) ) {
       GUM_CONS_MOV( RecordCounterThreadBase );
     }
 
@@ -113,7 +113,8 @@ namespace gum {
     RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc>::RecordCounterThread(
         const RowFilter& filter,
         const std::vector<unsigned int>& var_modalities )
-        : Base( var_modalities ), __filter( filter ) {
+        : Base( var_modalities )
+        , __filter( filter ) {
       GUM_CONSTRUCTOR( RecordCounterThread );
     }
 
@@ -122,7 +123,8 @@ namespace gum {
     INLINE
     RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc>::RecordCounterThread(
         const RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc>& from )
-        : Base( from ), __filter( from.__filter ) {
+        : Base( from )
+        , __filter( from.__filter ) {
       GUM_CONS_CPY( RecordCounterThread );
     }
 
@@ -131,7 +133,8 @@ namespace gum {
     INLINE
     RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc>::RecordCounterThread(
         RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc>&& from )
-        : Base( std::move( from ) ), __filter( std::move( from.__filter ) ) {
+        : Base( std::move( from ) )
+        , __filter( std::move( from.__filter ) ) {
       GUM_CONS_MOV( RecordCounterThread );
     }
 
@@ -146,7 +149,8 @@ namespace gum {
 
     /// destructor
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    INLINE RecordCounterThread<RowFilter, IdSetAlloc,
+    INLINE RecordCounterThread<RowFilter,
+                               IdSetAlloc,
                                CountAlloc>::~RecordCounterThread() {
       GUM_DESTRUCTOR( RecordCounterThread );
     }
@@ -231,17 +235,20 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE RecordCounter<IdSetAlloc, CountAlloc>::RecordCounter(
         const RecordCounter<IdSetAlloc, CountAlloc>& from )
-        : __modalities( from.__modalities ), __idsets( from.__idsets ),
-          __nodesets( from.__nodesets ), __set_state( from.__set_state ),
-          __countings( from.__countings ),
-          __subset_lattice( from.__subset_lattice ),
-          __nb_thread_counters( from.__nb_thread_counters ) {
+        : __modalities( from.__modalities )
+        , __idsets( from.__idsets )
+        , __nodesets( from.__nodesets )
+        , __set_state( from.__set_state )
+        , __countings( from.__countings )
+        , __subset_lattice( from.__subset_lattice )
+        , __nb_thread_counters( from.__nb_thread_counters ) {
       // create the thread counters
       __thread_counters.reserve( from.__thread_counters.size() );
 
       try {
         for ( unsigned int i = 0, size = from.__thread_counters.size();
-              i < size; ++i ) {
+              i < size;
+              ++i ) {
           __thread_counters.push_back(
               from.__thread_counters[i]->copyFactory() );
         }
@@ -291,16 +298,17 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE RecordCounter<IdSetAlloc, CountAlloc>::RecordCounter(
         RecordCounter<IdSetAlloc, CountAlloc>&& from )
-        : __modalities( from.__modalities ), __idsets( from.__idsets ),
-          __nodesets( std::move( from.__nodesets ) ),
-          __var2idsets( std::move( from.__var2idsets ) ),
-          __set_state( std::move( from.__set_state ) ),
-          __countings( std::move( from.__countings ) ),
-          __idset2index( std::move( from.__idset2index ) ),
-          __set2thread_id( std::move( from.__set2thread_id ) ),
-          __subset_lattice( std::move( from.__subset_lattice ) ),
-          __thread_counters( std::move( from.__thread_counters ) ),
-          __nb_thread_counters( from.__nb_thread_counters ) {
+        : __modalities( from.__modalities )
+        , __idsets( from.__idsets )
+        , __nodesets( std::move( from.__nodesets ) )
+        , __var2idsets( std::move( from.__var2idsets ) )
+        , __set_state( std::move( from.__set_state ) )
+        , __countings( std::move( from.__countings ) )
+        , __idset2index( std::move( from.__idset2index ) )
+        , __set2thread_id( std::move( from.__set2thread_id ) )
+        , __subset_lattice( std::move( from.__subset_lattice ) )
+        , __thread_counters( std::move( from.__thread_counters ) )
+        , __nb_thread_counters( from.__nb_thread_counters ) {
       GUM_CONS_MOV( RecordCounter );
     }
 
@@ -620,7 +628,8 @@ namespace gum {
         const NodeSet& children = __subset_lattice.children( new_set );
 
         for ( typename NodeSet::const_iterator iter = children.begin();
-              iter != children.end(); ++iter ) {
+              iter != children.end();
+              ++iter ) {
           if ( __subset_lattice.parents( *iter ).size() == 1 ) {
             setFIFO.pushBack( *iter );
           } else {
@@ -686,7 +695,8 @@ namespace gum {
       for ( auto iter = __var2idsets.begin(); iter != __var2idsets.end();
             ++iter ) {
         std::sort(
-            iter.val().begin(), iter.val().end(),
+            iter.val().begin(),
+            iter.val().end(),
             []( const IdSet<IdSetAlloc>* set1, const IdSet<IdSetAlloc>* set2 )
                 -> bool { return set1->ids().size() < set2->ids().size(); } );
       }
@@ -755,8 +765,7 @@ namespace gum {
     INLINE void RecordCounter<IdSetAlloc, CountAlloc>::setMaxNbThreads(
         unsigned int nb ) noexcept {
 #if defined( _OPENMP ) && defined( NDEBUG )
-      if ( nb == 0 )
-        nb = getMaxNumberOfThreads();
+      if ( nb == 0 ) nb = getMaxNumberOfThreads();
 
       __max_threads_number = nb;
 #else

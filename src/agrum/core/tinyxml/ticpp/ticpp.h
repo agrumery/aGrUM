@@ -89,14 +89,14 @@ namespace ticpp {
 This allows you to stream your exceptions in.
 It will take care of the conversion and throwing the exception.
 */
-#define TICPPTHROW( message )                                                  \
-  {                                                                            \
-    std::ostringstream full_message;                                           \
-    std::string file( __FILE__ );                                              \
-    file = file.substr( file.find_last_of( "\\/" ) + 1 );                      \
-    full_message << message << " <" << file << "@" << __LINE__ << ">";         \
-    full_message << BuildDetailedErrorString();                                \
-    throw Exception( full_message.str() );                                     \
+#define TICPPTHROW( message )                                          \
+  {                                                                    \
+    std::ostringstream full_message;                                   \
+    std::string file( __FILE__ );                                      \
+    file = file.substr( file.find_last_of( "\\/" ) + 1 );              \
+    full_message << message << " <" << file << "@" << __LINE__ << ">"; \
+    full_message << BuildDetailedErrorString();                        \
+    throw Exception( full_message.str() );                             \
   }
 
   // Forward Declarations for Visitor, and others.
@@ -167,7 +167,8 @@ It will take care of the conversion and throwing the exception.
     @param value The value to be converted
     @throws Exception When value cannot be converted to a std::string
     */
-    template <class T> std::string ToString( const T& value ) const {
+    template <class T>
+    std::string ToString( const T& value ) const {
       std::stringstream convert;
       convert << value;
 
@@ -334,7 +335,8 @@ It will take care of the conversion and throwing the exception.
 
     @param value [OUT] A pointer to fill with the value
     */
-    template <class T> void GetValue( T* value ) const {
+    template <class T>
+    void GetValue( T* value ) const {
       ValidatePointer();
       FromString( m_tiXmlPointer->ValueStr(), value );
     }
@@ -354,7 +356,8 @@ It will take care of the conversion and throwing the exception.
 
     @param value The value to set
     */
-    template <class T> void SetValue( const T& value ) {
+    template <class T>
+    void SetValue( const T& value ) {
       ValidatePointer();
       m_tiXmlPointer->SetValue( ToString( value ) );
     }
@@ -366,7 +369,8 @@ It will take care of the conversion and throwing the exception.
 
     @param name [OUT] A pointer to fill with the name
     */
-    template <class T> void GetName( T* name ) const {
+    template <class T>
+    void GetName( T* name ) const {
       ValidatePointer();
       FromString( m_tiXmlPointer->Name(), name );
     }
@@ -386,7 +390,8 @@ It will take care of the conversion and throwing the exception.
 
     @param name The name to set
     */
-    template <class T> void SetName( const T& name ) {
+    template <class T>
+    void SetName( const T& name ) {
       ValidatePointer();
       m_tiXmlPointer->SetName( ToString( name ) );
     }
@@ -464,7 +469,8 @@ It will take care of the conversion and throwing the exception.
 
     @param value [OUT] A pointer to fill with the value
     */
-    template <class T> void GetValue( T* value ) const {
+    template <class T>
+    void GetValue( T* value ) const {
       FromString( GetTiXmlPointer()->ValueStr(), value );
     }
 
@@ -483,7 +489,8 @@ It will take care of the conversion and throwing the exception.
 
     @param value The value to set
     */
-    template <class T> void SetValue( const T& value ) {
+    template <class T>
+    void SetValue( const T& value ) {
       GetTiXmlPointer()->SetValue( ToString( value ) );
     }
 
@@ -955,7 +962,8 @@ It will take care of the conversion and throwing the exception.
     member
     template arguments, which this depends on ( e.g. VC6 ).
     */
-    template <class T> T* To() const {
+    template <class T>
+    T* To() const {
       T* pointer = dynamic_cast<T*>( this );
 
       if ( 0 == pointer ) {
@@ -1035,7 +1043,7 @@ It will take care of the conversion and throwing the exception.
     @endcode
     @return Pointer the duplicate node.
     */
-    std::auto_ptr<Node> Clone() const;
+    std::unique_ptr<Node> Clone() const;
 
     /**
     Accept a hierchical visit the nodes in the TinyXML DOM.
@@ -1072,7 +1080,8 @@ It will take care of the conversion and throwing the exception.
     @internal
     Constructs the correct child of Node, based on the Type of the TiXmlNode*.
     */
-    Node* NodeFactory( TiXmlNode* tiXmlNode, bool throwIfNull = true,
+    Node* NodeFactory( TiXmlNode* tiXmlNode,
+                       bool throwIfNull = true,
                        bool rememberSpawnedWrapper = true ) const;
   };
 
@@ -1103,7 +1112,8 @@ It will take care of the conversion and throwing the exception.
   attribute++ )
   @endcode
   */
-  template <class T = Node> class Iterator {
+  template <class T = Node>
+  class Iterator {
     private:
     T* m_p;              /**< Internal Pointer */
     std::string m_value; /**< Value for NextSibling  calls */
@@ -1143,14 +1153,19 @@ It will take care of the conversion and throwing the exception.
     for ( child = child.begin( parent ); child != child.end(); child++ )
     @endcode
     */
-    Iterator( const std::string& value = "" ) : m_p( 0 ), m_value( value ) {}
+    Iterator( const std::string& value = "" )
+        : m_p( 0 )
+        , m_value( value ) {}
 
     /// Constructor
     Iterator( T* node, const std::string& value = "" )
-        : m_p( node ), m_value( value ) {}
+        : m_p( node )
+        , m_value( value ) {}
 
     /// Constructor
-    Iterator( const Iterator& it ) : m_p( it.m_p ), m_value( it.m_value ) {}
+    Iterator( const Iterator& it )
+        : m_p( it.m_p )
+        , m_value( it.m_value ) {}
 
     /**
     Gets internal pointer.
@@ -1245,7 +1260,8 @@ It will take care of the conversion and throwing the exception.
   };
 
   /** Implementation of Node wrapper */
-  template <class T> class NodeImp : public Node {
+  template <class T>
+  class NodeImp : public Node {
     protected:
     T* m_tiXmlPointer; /**< Internal pointer to the TiXml Class which is being
                           wrapped */
@@ -1316,7 +1332,8 @@ It will take care of the conversion and throwing the exception.
     object is
     loaded in
     */
-    NodeImp( const NodeImp<T>& copy ) : Node( copy ) {
+    NodeImp( const NodeImp<T>& copy )
+        : Node( copy ) {
       // Pointing to the new Object
       SetTiXmlPointer( copy.m_tiXmlPointer );
 
@@ -1471,7 +1488,8 @@ It will take care of the conversion and throwing the exception.
     @param encoding Sets the documents encoding.
     @throws Exception
     */
-    void Parse( const std::string& xml, bool throwIfParseError = true,
+    void Parse( const std::string& xml,
+                bool throwIfParseError = true,
                 TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );
   };
 
@@ -1696,7 +1714,8 @@ It will take care of the conversion and throwing the exception.
 
     @param value The text to set.
     */
-    template <class T> void SetText( const T& value ) {
+    template <class T>
+    void SetText( const T& value ) {
       ValidatePointer();
       std::string temp = ToString( value );
 
@@ -1728,7 +1747,8 @@ It will take care of the conversion and throwing the exception.
     @see GetAttribute
     */
     template <class T, class DefaulT>
-    void GetAttributeOrDefault( const std::string& name, T* value,
+    void GetAttributeOrDefault( const std::string& name,
+                                T* value,
                                 const DefaulT& defaultValue ) const {
       // Get the attribute's value as a std::string
       std::string temp;
@@ -1805,7 +1825,8 @@ It will take care of the conversion and throwing the exception.
     @see GetAttributeOrDefault
     */
     template <class T>
-    void GetAttribute( const std::string& name, T* value,
+    void GetAttribute( const std::string& name,
+                       T* value,
                        bool throwIfNotFound = true ) const {
       // Get the attribute's value as a std::string
       std::string temp;
@@ -1882,7 +1903,8 @@ It will take care of the conversion and throwing the exception.
     /**
     Constructor.
     */
-    Declaration( const std::string& version, const std::string& encoding,
+    Declaration( const std::string& version,
+                 const std::string& encoding,
                  const std::string& standalone );
 
     /**

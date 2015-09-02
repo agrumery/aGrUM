@@ -33,7 +33,8 @@
 
 namespace gum {
 
-  template <typename Val, class Cmp> class AVLSearchTree;
+  template <typename Val, class Cmp>
+  class AVLSearchTree;
 
   /* ===========================================================================
    */
@@ -109,7 +110,8 @@ namespace gum {
   /* ===========================================================================
    */
 
-  template <typename Val> class BinTreeNode4AVL : private BinTreeNode<Val> {
+  template <typename Val>
+  class BinTreeNode4AVL : private BinTreeNode<Val> {
     public:
     // ############################################################################
     // constructors / destructors
@@ -275,7 +277,8 @@ namespace gum {
 
     /// let the AVL binary search tree access the _height field
 
-    template <typename V, typename Cmp> friend class AVLSearchTree;
+    template <typename V, typename Cmp>
+    friend class AVLSearchTree;
 
     /// right rotation
     /** the rotation is performed assuming that the current node is the root

@@ -47,13 +47,17 @@
 namespace gum {
   namespace prm {
     namespace gspan {
-      template <typename GUM_SCALAR> class DFSTree;
+      template <typename GUM_SCALAR>
+      class DFSTree;
 
-      template <typename GUM_SCALAR> class EdgeGrowth {
+      template <typename GUM_SCALAR>
+      class EdgeGrowth {
         public:
         friend class DFSTree<GUM_SCALAR>;
         /// Constructor.
-        EdgeGrowth( NodeId a_u, LabelData* an_edge, LabelData* a_l_v,
+        EdgeGrowth( NodeId a_u,
+                    LabelData* an_edge,
+                    LabelData* a_l_v,
                     NodeId a_v = 0 );
         /// Copy constructor.
         EdgeGrowth( const EdgeGrowth& from );

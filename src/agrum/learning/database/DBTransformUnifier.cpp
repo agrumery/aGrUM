@@ -68,12 +68,10 @@ namespace gum {
     DBTransformUnifier::isMissing( const DBCell& cell,
                                    const std::vector<std::string>& miss ) const
         noexcept {
-      if ( cell.type() == DBCell::EltType::MISSING )
-        return true;
+      if ( cell.type() == DBCell::EltType::MISSING ) return true;
       if ( cell.type() == DBCell::EltType::STRING ) {
         for ( const auto& str : miss ) {
-          if ( cell.getString() == str )
-            return true;
+          if ( cell.getString() == str ) return true;
         }
       }
       return false;
@@ -82,8 +80,7 @@ namespace gum {
     /// transforms a vector of DBrows to unify the types of its columns
     bool DBTransformUnifier::transform( std::vector<DBRow>& db,
                                         std::vector<std::string> miss ) const {
-      if ( !db.size() )
-        return true;
+      if ( !db.size() ) return true;
 
       // transform each column
       bool conversion_ok = true;

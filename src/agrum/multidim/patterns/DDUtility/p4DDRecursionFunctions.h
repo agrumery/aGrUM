@@ -40,9 +40,11 @@ namespace gum {
   NodeId GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
       const MultiDimDecisionDiagramBase<GUM_SCALAR>* oldDiagram,
       MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* factory,
-      NodeId currentNode, bool delVarAscendant,
+      NodeId currentNode,
+      bool delVarAscendant,
       HashTable<NodeId, NodeId>& explorationTable,
-      const Set<const DiscreteVariable*>& delVars, Idx nbOperation ) {
+      const Set<const DiscreteVariable*>& delVars,
+      Idx nbOperation ) {
 
     if ( oldDiagram->isTerminalNode( currentNode ) ) {
       GUM_SCALAR resValue = oldDiagram->unsafeNodeValue( currentNode );
@@ -73,8 +75,13 @@ namespace gum {
         if ( *sonIter != 0 ) {
           NodeId sonValueNode =
               GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-                  oldDiagram, factory, *sonIter, true, explorationTable,
-                  delVars, nbOperation );
+                  oldDiagram,
+                  factory,
+                  *sonIter,
+                  true,
+                  explorationTable,
+                  delVars,
+                  nbOperation );
           resValue = GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(
               resValue, factory->nodeValue( sonValueNode ) );
           nbExploredModalities++;
@@ -86,9 +93,13 @@ namespace gum {
       if ( oldDiagram->unsafeHasNodeDefaultSon( currentNode ) ) {
         NodeId defaultSonValueNode =
             GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-                oldDiagram, factory,
-                oldDiagram->unsafeNodeDefaultSon( currentNode ), true,
-                explorationTable, delVars, nbOperation );
+                oldDiagram,
+                factory,
+                oldDiagram->unsafeNodeDefaultSon( currentNode ),
+                true,
+                explorationTable,
+                delVars,
+                nbOperation );
 
         for ( Idx i = 0;
               i < oldDiagram->unsafeNodeVariable( currentNode )->domainSize() -
@@ -103,8 +114,7 @@ namespace gum {
 
       NodeId resNode = factory->addTerminalNode( resValue );
 
-      if ( !delVarAscendant )
-        explorationTable.insert( currentNode, resNode );
+      if ( !delVarAscendant ) explorationTable.insert( currentNode, resNode );
 
       return resNode;
 
@@ -123,8 +133,13 @@ namespace gum {
         if ( *sonIter != 0 ) {
           NodeId sonValueNode =
               GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-                  oldDiagram, factory, *sonIter, false, explorationTable,
-                  delVars, nbOperation );
+                  oldDiagram,
+                  factory,
+                  *sonIter,
+                  false,
+                  explorationTable,
+                  delVars,
+                  nbOperation );
           sonsMap[std::distance(
               oldDiagram->unsafeNodeSons( currentNode )->begin(), sonIter )] =
               sonValueNode;
@@ -135,18 +150,22 @@ namespace gum {
 
       if ( oldDiagram->unsafeHasNodeDefaultSon( currentNode ) ) {
         defaultSon = GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-            oldDiagram, factory,
-            oldDiagram->unsafeNodeDefaultSon( currentNode ), false,
-            explorationTable, delVars, nbOperation );
+            oldDiagram,
+            factory,
+            oldDiagram->unsafeNodeDefaultSon( currentNode ),
+            false,
+            explorationTable,
+            delVars,
+            nbOperation );
       }
 
       if ( defaultSon != 0 ) {
         Idx nbDefault = 0;
 
         for ( std::vector<NodeId>::iterator iterArcMap = sonsMap.begin();
-              iterArcMap != sonsMap.end(); ++iterArcMap ) {
-          if ( *iterArcMap == 0 )
-            ++nbDefault;
+              iterArcMap != sonsMap.end();
+              ++iterArcMap ) {
+          if ( *iterArcMap == 0 ) ++nbDefault;
 
           if ( *iterArcMap == defaultSon ) {
             ++nbDefault;
@@ -156,7 +175,8 @@ namespace gum {
 
         if ( nbDefault == 1 )
           for ( std::vector<NodeId>::iterator iterArcMap = sonsMap.begin();
-                iterArcMap != sonsMap.end(); ++iterArcMap )
+                iterArcMap != sonsMap.end();
+                ++iterArcMap )
             if ( *iterArcMap == 0 ) {
               sonsMap[std::distance( sonsMap.begin(), iterArcMap )] =
                   defaultSon;

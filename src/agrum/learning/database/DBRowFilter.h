@@ -226,16 +226,20 @@ namespace gum {
      * @endcode
      */
     template <typename Database, typename TranslatorSet, typename GeneratorSet>
-    constexpr DBRowFilter<typename Database::Handler, TranslatorSet,
+    constexpr DBRowFilter<typename Database::Handler,
+                          TranslatorSet,
                           GeneratorSet>
     make_DB_row_filter( const Database& database,
                         const TranslatorSet& translator_set,
                         const GeneratorSet& generator_set,
                         unsigned long initialization_range =
                             std::numeric_limits<unsigned long>::max() ) {
-      return DBRowFilter<typename Database::Handler, TranslatorSet,
-                         GeneratorSet>( database.handler(), translator_set,
-                                        generator_set, initialization_range );
+      return DBRowFilter<typename Database::Handler,
+                         TranslatorSet,
+                         GeneratorSet>( database.handler(),
+                                        translator_set,
+                                        generator_set,
+                                        initialization_range );
     }
 
   } /* namespace learning */

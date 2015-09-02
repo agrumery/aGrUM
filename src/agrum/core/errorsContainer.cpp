@@ -36,19 +36,37 @@
 namespace gum {
 
   ParseError::ParseError( bool is_error, const std::string& msg, int line )
-      : is_error( is_error ), line( line ), column( -1 ), msg( msg ),
-        filename( "" ), code( "" ) {}
+      : is_error( is_error )
+      , line( line )
+      , column( -1 )
+      , msg( msg )
+      , filename( "" )
+      , code( "" ) {}
 
-  ParseError::ParseError( bool is_error, const std::string& msg,
-                          const std::string& filename, int line, int col )
-      : is_error( is_error ), line( line ), column( col ), msg( msg ),
-        filename( filename ), code( "" ) {}
+  ParseError::ParseError( bool is_error,
+                          const std::string& msg,
+                          const std::string& filename,
+                          int line,
+                          int col )
+      : is_error( is_error )
+      , line( line )
+      , column( col )
+      , msg( msg )
+      , filename( filename )
+      , code( "" ) {}
 
-  ParseError::ParseError( bool is_error, const std::string& msg,
-                          const std::string& filename, const std::string& code,
-                          int line, int col )
-      : is_error( is_error ), line( line ), column( col ), msg( msg ),
-        filename( filename ), code( code ) {}
+  ParseError::ParseError( bool is_error,
+                          const std::string& msg,
+                          const std::string& filename,
+                          const std::string& code,
+                          int line,
+                          int col )
+      : is_error( is_error )
+      , line( line )
+      , column( col )
+      , msg( msg )
+      , filename( filename )
+      , code( code ) {}
 
   ParseError::ParseError( const ParseError& err ) {
     is_error = err.is_error;
@@ -76,14 +94,11 @@ namespace gum {
   std::string ParseError::toString() const {
     std::ostringstream s;
 
-    if ( !filename.empty() )
-      s << filename << ":";
+    if ( !filename.empty() ) s << filename << ":";
 
-    if ( line > 0 )
-      s << line << ": ";
+    if ( line > 0 ) s << line << ": ";
 
-    if ( column > 0 )
-      s << column << " : ";
+    if ( column > 0 ) s << column << " : ";
 
     s << ( is_error ? "error" : "warning" ) << " : " << msg;
 
@@ -105,8 +120,7 @@ namespace gum {
 
     s << code << "\n";
 
-    if ( column > 0 )
-      s << std::string( column - 1, ' ' ) << "^";
+    if ( column > 0 ) s << std::string( column - 1, ' ' ) << "^";
 
     return s.str();
   }
@@ -150,8 +164,8 @@ namespace gum {
 
     newCont.error_count = this->error_count + cont.error_count;
     newCont.warning_count = this->warning_count + cont.warning_count;
-    std::copy( this->errors.begin(), this->errors.end(),
-               newCont.errors.begin() );
+    std::copy(
+        this->errors.begin(), this->errors.end(), newCont.errors.begin() );
     std::copy( cont.errors.begin(), cont.errors.end(), newCont.errors.end() );
 
     return newCont;
@@ -177,26 +191,22 @@ namespace gum {
   }
 
   void ErrorsContainer::simpleErrors( std::ostream& o ) const {
-    if ( count() == 0 )
-      return;
+    if ( count() == 0 ) return;
 
     for ( int i = 0; i < count(); i++ ) {
-      if ( error( i ).is_error )
-        o << error( i ).toString() << std::endl;
+      if ( error( i ).is_error ) o << error( i ).toString() << std::endl;
     }
   }
 
   void ErrorsContainer::simpleErrorsAndWarnings( std::ostream& o ) const {
-    if ( count() == 0 )
-      return;
+    if ( count() == 0 ) return;
 
     for ( int i = 0; i < count(); i++ )
       o << error( i ).toString() << std::endl;
   }
 
   void ErrorsContainer::elegantErrors( std::ostream& o ) const {
-    if ( count() == 0 )
-      return;
+    if ( count() == 0 ) return;
 
     for ( int i = 0; i < count(); i++ ) {
       if ( error( i ).is_error ) {
@@ -207,8 +217,7 @@ namespace gum {
   }
 
   void ErrorsContainer::elegantErrorsAndWarnings( std::ostream& o ) const {
-    if ( count() == 0 )
-      return;
+    if ( count() == 0 ) return;
 
     for ( int i = 0; i < count(); i++ ) {
       o << error( i ).toElegantString();

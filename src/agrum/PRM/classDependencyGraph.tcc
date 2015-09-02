@@ -71,7 +71,8 @@ namespace gum {
     // Add arcs in __graph.
     template <typename GUM_SCALAR>
     void ClassDependencyGraph<GUM_SCALAR>::__addArcs(
-        const ClassElementContainer<GUM_SCALAR>& c, NodeId node,
+        const ClassElementContainer<GUM_SCALAR>& c,
+        NodeId node,
         HashTable<const ClassElement<GUM_SCALAR>*, NodeId>& map ) {
       switch ( c.get( node ).elt_type() ) {
         case ClassElement<GUM_SCALAR>::prm_slotchain: {
@@ -110,14 +111,16 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE ClassDependencyGraph<GUM_SCALAR>::ClassDependencyGraph(
         const ClassDependencyGraph<GUM_SCALAR>& source )
-        : __graph( source.__graph ), __modalitites( source.__modalitites ),
-          __elt_map( source.__elt_map ) {
+        : __graph( source.__graph )
+        , __modalitites( source.__modalitites )
+        , __elt_map( source.__elt_map ) {
       GUM_CONS_CPY( ClassDependencyGraph );
 
       for ( const auto elt : source.__node_map ) {
         __node_map.insert(
-            elt.first, new HashTable<const ClassElement<GUM_SCALAR>*, NodeId>(
-                           *elt.second ) );
+            elt.first,
+            new HashTable<const ClassElement<GUM_SCALAR>*, NodeId>(
+                *elt.second ) );
       }
     }
 

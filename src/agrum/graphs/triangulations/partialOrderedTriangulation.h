@@ -87,7 +87,8 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph and the modalities are not
      * copied but only referenced by the elimination sequence algorithm. */
     PartialOrderedTriangulation(
-        const UndiGraph* graph, const NodeProperty<Size>* dom,
+        const UndiGraph* graph,
+        const NodeProperty<Size>* dom,
         const List<NodeSet>* partial_order,
         const PartialOrderedEliminationSequenceStrategy& elimSeq =
             DefaultPartialOrderedEliminationSequenceStrategy(),

@@ -31,8 +31,7 @@ namespace gum {
 
   INLINE
   const std::vector<NodeId>& StaticTriangulation::eliminationOrder() {
-    if ( !__has_triangulation )
-      __triangulate();
+    if ( !__has_triangulation ) __triangulate();
 
     return __elim_order;
   }
@@ -42,8 +41,7 @@ namespace gum {
 
   INLINE
   unsigned int StaticTriangulation::eliminationOrder( const NodeId id ) {
-    if ( !__has_triangulation )
-      __triangulate();
+    if ( !__has_triangulation ) __triangulate();
 
     return __reverse_elim_order[id];
   }
@@ -54,8 +52,7 @@ namespace gum {
   INLINE
   const NodeProperty<unsigned int>&
   StaticTriangulation::reverseEliminationOrder() {
-    if ( !__has_triangulation )
-      __triangulate();
+    if ( !__has_triangulation ) __triangulate();
 
     return __reverse_elim_order;
   }
@@ -64,8 +61,7 @@ namespace gum {
 
   INLINE
   const CliqueGraph& StaticTriangulation::eliminationTree() {
-    if ( !__has_elimination_tree )
-      __computeEliminationTree();
+    if ( !__has_elimination_tree ) __computeEliminationTree();
 
     return __elim_tree;
   }
@@ -87,8 +83,7 @@ namespace gum {
 
   INLINE
   const CliqueGraph& StaticTriangulation::maxPrimeSubgraphTree() {
-    if ( !__has_max_prime_junction_tree )
-      __computeMaxPrimeJunctionTree();
+    if ( !__has_max_prime_junction_tree ) __computeMaxPrimeJunctionTree();
 
     return __max_prime_junction_tree;
   }
@@ -98,8 +93,7 @@ namespace gum {
 
   INLINE
   NodeId StaticTriangulation::createdMaxPrimeSubgraph( const NodeId id ) {
-    if ( !__has_max_prime_junction_tree )
-      __computeMaxPrimeJunctionTree();
+    if ( !__has_max_prime_junction_tree ) __computeMaxPrimeJunctionTree();
 
     return __node_2_max_prime_clique[id];
   }

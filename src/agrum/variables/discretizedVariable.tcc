@@ -40,7 +40,8 @@ namespace gum {
   }
 
   template <typename T_TICKS>
-  Idx DiscretizedVariable<T_TICKS>::_dichotomy( const T_TICKS& target, Idx min,
+  Idx DiscretizedVariable<T_TICKS>::_dichotomy( const T_TICKS& target,
+                                                Idx min,
                                                 Idx max ) const {
     Idx res;
     Idx mid = 0;
@@ -89,15 +90,17 @@ namespace gum {
   INLINE
   DiscretizedVariable<T_TICKS>::DiscretizedVariable( const std::string& aName,
                                                      const std::string& aDesc )
-      : DiscreteVariable( aName, aDesc ), __ticks( INC_TICKS_ARRAY ),
-        __ticks_size( (Size)0 ) {
+      : DiscreteVariable( aName, aDesc )
+      , __ticks( INC_TICKS_ARRAY )
+      , __ticks_size( (Size)0 ) {
     GUM_CONSTRUCTOR( DiscretizedVariable );
   }
 
   template <typename T_TICKS>
   DiscretizedVariable<T_TICKS>::DiscretizedVariable(
       const DiscretizedVariable<T_TICKS>& aDRV )
-      : DiscreteVariable( aDRV ), __ticks( INC_TICKS_ARRAY ) {
+      : DiscreteVariable( aDRV )
+      , __ticks( INC_TICKS_ARRAY ) {
     GUM_CONS_CPY( DiscretizedVariable );
     _copy( aDRV );
   }
@@ -125,11 +128,9 @@ namespace gum {
   template <typename T_TICKS>
   INLINE bool
   DiscretizedVariable<T_TICKS>::isTick( const T_TICKS& aTick ) const {
-    if ( __ticks_size == 0 )
-      return false;
+    if ( __ticks_size == 0 ) return false;
 
-    if ( __ticks_size == 1 )
-      return ( __ticks[0] == aTick );
+    if ( __ticks_size == 1 ) return ( __ticks[0] == aTick );
 
     try {
       Idx zeIdx = _pos( aTick );
@@ -248,8 +249,7 @@ namespace gum {
   INLINE Idx
   DiscretizedVariable<T_TICKS>::index( const std::string& aLabel ) const {
     for ( Idx i = 0; i < domainSize(); ++i ) {
-      if ( aLabel.compare( label( i ) ) == 0 )
-        return i;
+      if ( aLabel.compare( label( i ) ) == 0 ) return i;
     }
 
     GUM_ERROR( NotFound, "label " + aLabel + " not found in " + toString() );

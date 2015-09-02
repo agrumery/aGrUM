@@ -204,25 +204,6 @@ namespace gum {
                                        const std::vector<GUM_SCALAR>& vertex );
 
       /**
-       * @deprecated Use _updateCredalSets ( LrsWrapper without intput/output
-       *files
-       *needed ).
-       *
-       * Given a node id and one of it's possible vertex, update it's credal
-       *set.
-       * To maximise efficiency, don't pass a vertex we know is inside the
-       *polytope
-       *(i.e. not at an extreme value for any modality)
-       *
-       * @param id The id of the node to be updated
-       * @param vertex A (potential) vertex of the node credal set
-       * @param elimRedund remove redundant vertex (inside a facet)
-       */
-      GUM_DEPRECATED( inline void _updateCredalSetsWithFiles(
-          const NodeId& id, const std::vector<GUM_SCALAR>& vertex,
-          const bool& elimRedund = false ) );
-
-      /**
        * Given a node id and one of it's possible vertex, update it's credal
        *set.
        * To maximise efficiency, don't pass a vertex we know is inside the

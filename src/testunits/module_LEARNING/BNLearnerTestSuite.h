@@ -37,7 +37,9 @@ namespace gum_tests {
 
     public:
     aSimpleBNLeanerListener( gum::IApproximationSchemeConfiguration& sch )
-        : gum::ApproximationSchemeListener( sch ), __nbr( 0 ), __mess( "" ){};
+        : gum::ApproximationSchemeListener( sch )
+        , __nbr( 0 )
+        , __mess( "" ){};
     void whenProgress( const void* buffer, gum::Size a, double b, double c ) {
       __nbr++;
     }
@@ -167,8 +169,8 @@ namespace gum_tests {
       modals[2].insert( "bigbigbig" );
       modals[2].insert( "false" );
 
-      gum::learning::BNLearner<float> learner( GET_PATH_STR( "asia3.csv" ),
-                                               modals, true );
+      gum::learning::BNLearner<float> learner(
+          GET_PATH_STR( "asia3.csv" ), modals, true );
 
       learner.useGreedyHillClimbing();
       learner.setMaxIndegree( 10 );
@@ -370,7 +372,7 @@ namespace gum_tests {
     }
 
     void test_asia_param_bn() {
-#define createBoolVar( s )                                                     \
+#define createBoolVar( s ) \
   gum::LabelizedVariable( s, s, 0 ).addLabel( "false" ).addLabel( "true" );
       // smoking?,lung_cancer?,bronchitis?,visit_to_Asia?,tuberculosis?,tuberculos_or_cancer?,dyspnoea?,positive_XraY?
       auto s = createBoolVar( "smoking?" );
@@ -424,7 +426,7 @@ namespace gum_tests {
     }
 
     void test_asia_param_bn_with_not_matching_variable() {
-#define createBoolVar( s )                                                     \
+#define createBoolVar( s ) \
   gum::LabelizedVariable( s, s, 0 ).addLabel( "false" ).addLabel( "true" );
       auto s = createBoolVar( "smoking?" );
       auto l = createBoolVar( "lung_cancer?" );
@@ -460,7 +462,7 @@ namespace gum_tests {
     }
 
     void test_asia_param_bn_with_subset_of_variables_in_base() {
-#define createBoolVar( s )                                                     \
+#define createBoolVar( s ) \
   gum::LabelizedVariable( s, s, 0 ).addLabel( "false" ).addLabel( "true" );
       auto s = createBoolVar( "smoking?" );
       auto t = createBoolVar( "tuberculosis?" );
@@ -488,7 +490,7 @@ namespace gum_tests {
     }
 
     void test_asia_param_bn_with_unknow_modality() {
-#define createBoolVar( s )                                                     \
+#define createBoolVar( s ) \
   gum::LabelizedVariable( s, s, 0 ).addLabel( "false" ).addLabel( "true" );
       auto s = createBoolVar( "smoking?" );
       auto t = createBoolVar( "tuberculosis?" );

@@ -41,7 +41,8 @@ namespace gum {
      *
      * @ingroup prm_group
      */
-    template <typename GUM_SCALAR> class PRMGenerator {
+    template <typename GUM_SCALAR>
+    class PRMGenerator {
       public:
       // ========================================================================
       /// @name Constructors and destructor.

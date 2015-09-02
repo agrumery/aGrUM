@@ -60,20 +60,18 @@ namespace gum {
     }
   }
 
-  template <typename GUM_SCALAR> FMDPDatReader<GUM_SCALAR>::~FMDPDatReader() {
+  template <typename GUM_SCALAR>
+  FMDPDatReader<GUM_SCALAR>::~FMDPDatReader() {
     GUM_DESTRUCTOR( FMDPDatReader );
 
     if ( !__ioerror ) {
       // this could lead to memory leak !!
-      if ( __parser )
-        delete ( __parser );
+      if ( __parser ) delete ( __parser );
 
-      if ( __scanner )
-        delete ( __scanner );
+      if ( __scanner ) delete ( __scanner );
     }
 
-    if ( __factory )
-      delete ( __factory );
+    if ( __factory ) delete ( __factory );
   }
 
   template <typename GUM_SCALAR>

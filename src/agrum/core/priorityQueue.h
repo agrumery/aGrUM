@@ -114,7 +114,10 @@ namespace gum {
    * use directly the implementation but rather use the PriorityQueue class. The
    * latter will be assigned the best implementation at compile time.
    */
-  template <typename Val, typename Priority, typename Cmp, typename Alloc,
+  template <typename Val,
+            typename Priority,
+            typename Cmp,
+            typename Alloc,
             bool Gen>
   class PriorityQueueImplementation {
 
@@ -166,13 +169,15 @@ namespace gum {
         std::initializer_list<std::pair<Val, Priority>> list );
 
     /// copy constructor
-    PriorityQueueImplementation( const PriorityQueueImplementation<
-        Val, Priority, Cmp, Alloc, Gen>& from );
+    PriorityQueueImplementation(
+        const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>&
+            from );
 
     /// generalized copy constructor
     template <typename OtherAlloc>
-    PriorityQueueImplementation( const PriorityQueueImplementation<
-        Val, Priority, Cmp, OtherAlloc, Gen>& from );
+    PriorityQueueImplementation(
+        const PriorityQueueImplementation<Val, Priority, Cmp, OtherAlloc, Gen>&
+            from );
 
     /// move constructor
     PriorityQueueImplementation(
@@ -195,9 +200,9 @@ namespace gum {
      * is available), the operator guarantees that the heap stays in a coherent
      * state. Actually, the priority queue becomes empty. An exception is then
      * thrown. */
-    PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>&
-    operator=( const PriorityQueueImplementation<Val, Priority, Cmp, Alloc,
-                                                 Gen>& from );
+    PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>& operator=(
+        const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>&
+            from );
 
     /// generalized copy operator
     /** When a problem occurs during the copy (for instance when not enough
@@ -206,9 +211,9 @@ namespace gum {
      * state. Actually, the priority queue becomes empty. An exception is then
      * thrown. */
     template <typename OtherAlloc>
-    PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>&
-    operator=( const PriorityQueueImplementation<Val, Priority, Cmp, OtherAlloc,
-                                                 Gen>& from );
+    PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>& operator=(
+        const PriorityQueueImplementation<Val, Priority, Cmp, OtherAlloc, Gen>&
+            from );
 
     /// move operator
     PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>& operator=(
@@ -265,7 +270,8 @@ namespace gum {
      * method eraseByPos for more details about the index)
      * @throw DuplicateElement exception is thrown if the element already exists
      */
-    template <typename... Args> Size emplace( Args&&... args );
+    template <typename... Args>
+    Size emplace( Args&&... args );
 
     /// removes the top of the priority queue (but does not return it)
     /** If the heap is empty, it does nothing (in particular, it does not throw
@@ -355,8 +361,8 @@ namespace gum {
     std::vector<std::pair<Priority, const Val*>, HeapAllocator> __heap;
 
     /// a hashtable for quickly finding the elements by their value
-    HashTable<Val, Size, IndexAllocator> __indices{HashTableConst::default_size,
-                                                   true, true};
+    HashTable<Val, Size, IndexAllocator> __indices{
+        HashTableConst::default_size, true, true};
 
     /// the number of elements in the heap
     Size __nb_elements{0};
@@ -434,13 +440,15 @@ namespace gum {
         std::initializer_list<std::pair<Val, Priority>> list );
 
     /// copy constructor
-    PriorityQueueImplementation( const PriorityQueueImplementation<
-        Val, Priority, Cmp, Alloc, true>& from );
+    PriorityQueueImplementation(
+        const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>&
+            from );
 
     /// generalized copy constructor
     template <typename OtherAlloc>
-    PriorityQueueImplementation( const PriorityQueueImplementation<
-        Val, Priority, Cmp, OtherAlloc, true>& from );
+    PriorityQueueImplementation(
+        const PriorityQueueImplementation<Val, Priority, Cmp, OtherAlloc, true>&
+            from );
 
     /// move constructor
     PriorityQueueImplementation(
@@ -463,9 +471,9 @@ namespace gum {
      * is available), the operator guarantees that the heap stays in a coherent
      * state. Actually, the priority queue becomes empty. An exception is then
      * thrown. */
-    PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>&
-    operator=( const PriorityQueueImplementation<Val, Priority, Cmp, Alloc,
-                                                 true>& from );
+    PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>& operator=(
+        const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>&
+            from );
 
     /// generalized copy operator
     /** When a problem occurs during the copy (for instance when not enough
@@ -474,9 +482,9 @@ namespace gum {
      * state. Actually, the priority queue becomes empty. An exception is then
      * thrown. */
     template <typename OtherAlloc>
-    PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>&
-    operator=( const PriorityQueueImplementation<Val, Priority, Cmp, OtherAlloc,
-                                                 true>& from );
+    PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>& operator=(
+        const PriorityQueueImplementation<Val, Priority, Cmp, OtherAlloc, true>&
+            from );
 
     /// move operator
     PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>& operator=(
@@ -535,7 +543,8 @@ namespace gum {
      * method eraseByPos for more details about the index)
      * @throw DuplicateElement exception is thrown if the element already exists
      */
-    template <typename... Args> Size emplace( Args&&... args );
+    template <typename... Args>
+    Size emplace( Args&&... args );
 
     /// removes the top of the priority queue (but does not return it)
     /** If the heap is empty, it does nothing (in particular, it does not throw
@@ -625,8 +634,8 @@ namespace gum {
     std::vector<std::pair<Priority, Val>, HeapAllocator> __heap;
 
     /// a hashtable for quickly finding the elements by their value
-    HashTable<Val, Size, IndexAllocator> __indices{HashTableConst::default_size,
-                                                   true, true};
+    HashTable<Val, Size, IndexAllocator> __indices{
+        HashTableConst::default_size, true, true};
 
     /// the number of elements in the heap
     Size __nb_elements{0};
@@ -702,11 +711,15 @@ namespace gum {
    */
   /* ===========================================================================
    */
-  template <typename Val, typename Priority = int,
+  template <typename Val,
+            typename Priority = int,
             typename Cmp = std::less<Priority>,
             typename Alloc = std::allocator<Val>>
   class PriorityQueue
-      : public PriorityQueueImplementation<Val, Priority, Cmp, Alloc,
+      : public PriorityQueueImplementation<Val,
+                                           Priority,
+                                           Cmp,
+                                           Alloc,
                                            std::is_scalar<Val>::value> {
     public:
     /// types for STL compliance
@@ -721,7 +734,10 @@ namespace gum {
     /// @}
 
     using Implementation =
-        PriorityQueueImplementation<Val, Priority, Cmp, Alloc,
+        PriorityQueueImplementation<Val,
+                                    Priority,
+                                    Cmp,
+                                    Alloc,
                                     std::is_scalar<Val>::value>;
 
     // ############################################################################

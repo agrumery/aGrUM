@@ -153,8 +153,7 @@ namespace gum_tests {
 
     private:
     float abs( float d ) {
-      if ( d < 0 )
-        return ( d * (float)-1 );
+      if ( d < 0 ) return ( d * (float)-1 );
 
       return d;
     }

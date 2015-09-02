@@ -43,7 +43,8 @@ namespace gum {
 
       class LpCol;
       class LpRow;
-      template <typename GUM_SCALAR> class LpInterface;
+      template <typename GUM_SCALAR>
+      class LpInterface;
       class LpExpr;
 
       /**
@@ -196,7 +197,8 @@ namespace gum {
       */
       class LpExpr {
         friend class LpRow;
-        template <typename GUM_SCALAR> friend class LpInterface;
+        template <typename GUM_SCALAR>
+        friend class LpInterface;
 
         public:
         /// @name Constructors / Destructors
@@ -224,7 +226,9 @@ namespace gum {
         * False
         * otherwise.
         */
-        LpExpr( const LpExpr& expr, bool copyLeft, bool copyMiddle,
+        LpExpr( const LpExpr& expr,
+                bool copyLeft,
+                bool copyMiddle,
                 bool copyRight );
 
         /**
@@ -296,7 +300,8 @@ namespace gum {
         * with.
         * @return The address of the calling expression.
         */
-        template <typename SCALAR> LpExpr& operator=( const SCALAR& rhs );
+        template <typename SCALAR>
+        LpExpr& operator=( const SCALAR& rhs );
 
         /// @}
 
@@ -336,7 +341,8 @@ namespace gum {
         * expression.
         * @return The reference of the calling expression.
         */
-        template <typename T> LpExpr& operator+=( const T& rhs );
+        template <typename T>
+        LpExpr& operator+=( const T& rhs );
 
         /// @}
 
@@ -368,7 +374,8 @@ namespace gum {
         * calling expression.
         * @return The reference of the calling expression.
         */
-        template <typename T> LpExpr& operator-=( const T& rhs );
+        template <typename T>
+        LpExpr& operator-=( const T& rhs );
 
         /// @}
 
@@ -469,7 +476,8 @@ namespace gum {
         * on the
         * first empty side met, starting at left.
         */
-        template <typename SCALAR> inline void __addSide( const SCALAR& from );
+        template <typename SCALAR>
+        inline void __addSide( const SCALAR& from );
 
         /// @}
       };
@@ -481,7 +489,8 @@ namespace gum {
       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
       */
       class LpRow {
-        template <typename GUM_SCALAR> friend class LpInterface;
+        template <typename GUM_SCALAR>
+        friend class LpInterface;
 
         public:
         /// @name Constructors / Destructors
@@ -580,7 +589,8 @@ namespace gum {
       * @brief Class representing a linear program.
       * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
       */
-      template <typename GUM_SCALAR> class LpInterface {
+      template <typename GUM_SCALAR>
+      class LpInterface {
         public:
         /// @name Constructor / Destructor
         /// @{
@@ -780,8 +790,10 @@ namespace gum {
       *or a \c LpExpr.
       * @return An expression which yields the result of \c lhs \c + \c rhs.
       */
-      template <typename T2> LpExpr operator+( LpExpr&& lhs, const T2& rhs );
-      template <typename T2> LpExpr operator+( LpExpr& lhs, const T2& rhs );
+      template <typename T2>
+      LpExpr operator+( LpExpr&& lhs, const T2& rhs );
+      template <typename T2>
+      LpExpr operator+( LpExpr& lhs, const T2& rhs );
 
       /**
       * @brief Overload of operator \c + between anything ( a scalar, a variable
@@ -832,7 +844,8 @@ namespace gum {
       /**
        * operator+ between neither LpExpr nor LpCol lhs and LpCol rhs
        */
-      template <typename T1, forbidden_type<T1, LpExpr> = 0,
+      template <typename T1,
+                forbidden_type<T1, LpExpr> = 0,
                 forbidden_type<T1, LpCol> = 0>
       LpExpr operator+( const T1& lhs, const LpCol& rhs );
       /// @}
@@ -861,8 +874,10 @@ namespace gum {
       *or a \c LpExpr.
       * @return An expression which yields the result of \c lhs \c -\c rhs.
       */
-      template <typename T2> LpExpr operator-( LpExpr&& lhs, const T2& rhs );
-      template <typename T2> LpExpr operator-( LpExpr& lhs, const T2& rhs );
+      template <typename T2>
+      LpExpr operator-( LpExpr&& lhs, const T2& rhs );
+      template <typename T2>
+      LpExpr operator-( LpExpr& lhs, const T2& rhs );
 
       /**
       * @brief Overload of operator \c - between anything ( a scalar, a variable
@@ -913,7 +928,8 @@ namespace gum {
       /**
        * operator- between neither LpExpr nor LpCol lhs and LpCol rhs
        */
-      template <typename T1, forbidden_type<T1, LpExpr> = 0,
+      template <typename T1,
+                forbidden_type<T1, LpExpr> = 0,
                 forbidden_type<T1, LpCol> = 0>
       LpExpr operator-( const T1& lhs, const LpCol& rhs );
       /// @}
@@ -985,21 +1001,29 @@ namespace gum {
       * @return An expression which yields the result of \c lhs \c <= \c rhs.
       */
 
-      template <typename T2> LpExpr operator<=( const LpExpr& lhs, T2&& rhs );
-      template <typename T2> LpExpr operator<=( const LpCol& lhs, T2&& rhs );
-      template <typename T1, forbidden_type<T1, LpExpr&> = 0,
+      template <typename T2>
+      LpExpr operator<=( const LpExpr& lhs, T2&& rhs );
+      template <typename T2>
+      LpExpr operator<=( const LpCol& lhs, T2&& rhs );
+      template <typename T1,
+                forbidden_type<T1, LpExpr&> = 0,
                 forbidden_type<T1, LpCol&> = 0>
       LpExpr operator<=( T1&& lhs, const LpExpr& rhs );
-      template <typename T1, forbidden_type<T1, LpExpr&> = 0,
+      template <typename T1,
+                forbidden_type<T1, LpExpr&> = 0,
                 forbidden_type<T1, LpCol&> = 0>
       LpExpr operator<=( T1&& lhs, const LpCol& rhs );
 
-      template <typename T2> LpExpr operator<=( LpExpr&& lhs, T2&& rhs );
-      template <typename T2> LpExpr operator<=( LpCol&& lhs, T2&& rhs );
-      template <typename T1, forbidden_type<T1, LpExpr> = 0,
+      template <typename T2>
+      LpExpr operator<=( LpExpr&& lhs, T2&& rhs );
+      template <typename T2>
+      LpExpr operator<=( LpCol&& lhs, T2&& rhs );
+      template <typename T1,
+                forbidden_type<T1, LpExpr> = 0,
                 forbidden_type<T1, LpCol> = 0>
       LpExpr operator<=( T1&& lhs, LpExpr&& rhs );
-      template <typename T1, forbidden_type<T1, LpExpr> = 0,
+      template <typename T1,
+                forbidden_type<T1, LpExpr> = 0,
                 forbidden_type<T1, LpCol> = 0>
       LpExpr operator<=( T1&& lhs, LpCol&& rhs );
 

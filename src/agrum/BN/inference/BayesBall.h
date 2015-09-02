@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Header of the BayesBall class.
+ * @brief The BayesBall algorithm (as described by Schachter).
  *
  * @author Lionel TORTI and Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -46,15 +46,30 @@ namespace gum {
    */
   class BayesBall {
     public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+
     /// Default constructor.
     BayesBall();
 
     /// Destructor.
     ~BayesBall();
 
-    /**
-     * Fill requisite with the requisite nodes in dag given a query and hard
-     * evidences.
+    /// @}
+
+
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
+
+    /** @brief Fill the 'requisite' nodeset with the requisite nodes in dag
+     * given a query and evidence.
+     *
+     * Requisite nodes are those that are d-connected to at least one of the
+     * query nodes given a set of hard and soft evidence
      */
     void requisiteNodes( const DAG& dag,
                          const NodeSet& query,
@@ -62,8 +77,8 @@ namespace gum {
                          const NodeSet& softEvidence,
                          NodeSet& requisite );
 
-    /// update a set of potentials, keeping only those d-connected with query
-    /// variables
+    /** @brief update a set of potentials, keeping only those d-connected with
+     * query variables given evidence */
     template <typename GUM_SCALAR, template <typename> class TABLE>
     void relevantPotentials( const IBayesNet<GUM_SCALAR>& bn,
                              const NodeSet& query,
@@ -71,6 +86,7 @@ namespace gum {
                              const NodeSet& softEvidence,
                              Set<const TABLE<GUM_SCALAR>*>& potentials );
 
+    /// @}
   };
 
 } /* namespace gum */

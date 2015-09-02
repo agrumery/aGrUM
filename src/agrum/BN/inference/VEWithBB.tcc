@@ -30,12 +30,14 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE VEWithBB<GUM_SCALAR>::VEWithBB( const IBayesNet<GUM_SCALAR>& bn )
-      : BayesNetInference<GUM_SCALAR>( bn ), __ve( bn ) {
+      : BayesNetInference<GUM_SCALAR>( bn )
+      , __ve( bn ) {
     GUM_CONSTRUCTOR( VEWithBB );
     __ve.makeInference();
   }
 
-  template <typename GUM_SCALAR> INLINE VEWithBB<GUM_SCALAR>::~VEWithBB() {
+  template <typename GUM_SCALAR>
+  INLINE VEWithBB<GUM_SCALAR>::~VEWithBB() {
     GUM_DESTRUCTOR( VEWithBB );
   }
   /*
@@ -122,8 +124,8 @@ namespace gum {
       hardEvidence.insert( elt.first );
 
     BayesBall bb;
-    bb.requisiteNodes( this->bn().dag(), query, hardEvidence, softEvidence,
-                       requisite_nodes );
+    bb.requisiteNodes(
+        this->bn().dag(), query, hardEvidence, softEvidence, requisite_nodes );
   }
 
   template <typename GUM_SCALAR>
@@ -141,8 +143,7 @@ namespace gum {
       elim_set.insert( node );
 
       for ( const auto parent : this->bn().dag().parents( node ) )
-        if ( __hardEvidence.exists( parent ) )
-          elim_set.insert( parent );
+        if ( __hardEvidence.exists( parent ) ) elim_set.insert( parent );
     }
 
     elim_set.erase( id );

@@ -29,24 +29,31 @@
 namespace gum {
 
   INLINE
-  void ErrorsContainer::Error( const std::wstring& filename, int line, int col,
+  void ErrorsContainer::Error( const std::wstring& filename,
+                               int line,
+                               int col,
                                const wchar_t* msg ) {
-    add( ParseError( true, narrow( std::wstring( msg ) ), narrow( filename ),
-                     line, col ) );
+    add( ParseError(
+        true, narrow( std::wstring( msg ) ), narrow( filename ), line, col ) );
   }
 
   INLINE
-  void ErrorsContainer::Warning( const std::wstring& filename, int line,
-                                 int col, const wchar_t* msg ) {
-    add( ParseError( false, narrow( std::wstring( msg ) ), narrow( filename ),
-                     line, col ) );
+  void ErrorsContainer::Warning( const std::wstring& filename,
+                                 int line,
+                                 int col,
+                                 const wchar_t* msg ) {
+    add( ParseError(
+        false, narrow( std::wstring( msg ) ), narrow( filename ), line, col ) );
   }
 
   INLINE
   void ErrorsContainer::Exception( const std::wstring& filename,
                                    const wchar_t* msg ) {
-    add( ParseError( true, "Exception : " + narrow( std::wstring( msg ) ),
-                     narrow( filename ), 0, 0 ) );
+    add( ParseError( true,
+                     "Exception : " + narrow( std::wstring( msg ) ),
+                     narrow( filename ),
+                     0,
+                     0 ) );
   }
 
   INLINE
@@ -61,14 +68,16 @@ namespace gum {
 
   INLINE
   void ErrorsContainer::addError( const std::string& msg,
-                                  const std::string& filename, int line,
+                                  const std::string& filename,
+                                  int line,
                                   int col ) {
     add( ParseError( true, msg, filename, line, col ) );
   }
 
   INLINE
   void ErrorsContainer::addWarning( const std::string& msg,
-                                    const std::string& filename, int line,
+                                    const std::string& filename,
+                                    int line,
                                     int col ) {
     add( ParseError( false, msg, filename, line, col ) );
   }

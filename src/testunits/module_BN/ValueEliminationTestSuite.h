@@ -198,36 +198,31 @@ namespace gum_tests {
         const gum::Potential<float>* posterior_1 = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( posterior_1 = &( inf->posterior( i1 ) ) );
 
-        if ( posterior_1 != 0 )
-          printProba( *posterior_1 );
+        if ( posterior_1 != 0 ) printProba( *posterior_1 );
 
         const gum::Potential<float>* posterior_2 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING( posterior_2 = &( inf->posterior( i2 ) ) );
 
-        if ( posterior_2 != 0 )
-          printProba( *posterior_2 );
+        if ( posterior_2 != 0 ) printProba( *posterior_2 );
 
         const gum::Potential<float>* posterior_3 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING( posterior_3 = &( inf->posterior( i3 ) ) );
 
-        if ( posterior_3 != 0 )
-          printProba( *posterior_3 );
+        if ( posterior_3 != 0 ) printProba( *posterior_3 );
 
         const gum::Potential<float>* posterior_4 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING( posterior_4 = &( inf->posterior( i4 ) ) );
 
-        if ( posterior_4 != 0 )
-          printProba( *posterior_4 );
+        if ( posterior_4 != 0 ) printProba( *posterior_4 );
 
         const gum::Potential<float>* posterior_5 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING( posterior_5 = &( inf->posterior( i5 ) ) );
 
-        if ( posterior_5 != 0 )
-          printProba( *posterior_5 );
+        if ( posterior_5 != 0 ) printProba( *posterior_5 );
 
         TS_GUM_ASSERT_THROWS_NOTHING( delete inf );
       }
@@ -249,36 +244,31 @@ namespace gum_tests {
         const gum::Potential<float>* posterior_1 = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( posterior_1 = &( inf->posterior( i1 ) ) );
 
-        if ( posterior_1 != 0 )
-          printProba( *posterior_1 );
+        if ( posterior_1 != 0 ) printProba( *posterior_1 );
 
         const gum::Potential<float>* posterior_2 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING( posterior_2 = &( inf->posterior( i2 ) ) );
 
-        if ( posterior_2 != 0 )
-          printProba( *posterior_2 );
+        if ( posterior_2 != 0 ) printProba( *posterior_2 );
 
         const gum::Potential<float>* posterior_3 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING( posterior_3 = &( inf->posterior( i3 ) ) );
 
-        if ( posterior_3 != 0 )
-          printProba( *posterior_3 );
+        if ( posterior_3 != 0 ) printProba( *posterior_3 );
 
         const gum::Potential<float>* posterior_4 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING( posterior_4 = &( inf->posterior( i4 ) ) );
 
-        if ( posterior_4 != 0 )
-          printProba( *posterior_4 );
+        if ( posterior_4 != 0 ) printProba( *posterior_4 );
 
         const gum::Potential<float>* posterior_5 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING( posterior_5 = &( inf->posterior( i5 ) ) );
 
-        if ( posterior_5 != 0 )
-          printProba( *posterior_5 );
+        if ( posterior_5 != 0 ) printProba( *posterior_5 );
 
         TS_GUM_ASSERT_THROWS_NOTHING( delete inf );
       }

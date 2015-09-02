@@ -34,15 +34,18 @@
 
 namespace gum {
 
-  UndiGraph::UndiGraph( Size nodes_size, bool nodes_resize_policy,
-                        Size edges_size, bool edges_resize_policy )
-      : NodeGraphPart( nodes_size, nodes_resize_policy ),
-        EdgeGraphPart( edges_size, edges_resize_policy ) {
+  UndiGraph::UndiGraph( Size nodes_size,
+                        bool nodes_resize_policy,
+                        Size edges_size,
+                        bool edges_resize_policy )
+      : NodeGraphPart( nodes_size, nodes_resize_policy )
+      , EdgeGraphPart( edges_size, edges_resize_policy ) {
     GUM_CONSTRUCTOR( UndiGraph );
   }
 
   UndiGraph::UndiGraph( const UndiGraph& g )
-      : NodeGraphPart( g ), EdgeGraphPart( g ) {
+      : NodeGraphPart( g )
+      , EdgeGraphPart( g ) {
     GUM_CONS_CPY( UndiGraph );
   }
 

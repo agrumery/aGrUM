@@ -186,7 +186,9 @@ namespace gum {
 
   /// Default constructor
 
-  INLINE Instantiation::Instantiation() : __master( 0 ), __overflow( false ) {
+  INLINE Instantiation::Instantiation()
+      : __master( 0 )
+      , __overflow( false ) {
     GUM_CONSTRUCTOR( Instantiation );
   }
 
@@ -196,8 +198,7 @@ namespace gum {
     GUM_DESTRUCTOR( Instantiation );
     // unregister the Instantiation from its __master
 
-    if ( __master )
-      __master->unregisterSlave( *this );
+    if ( __master ) __master->unregisterSlave( *this );
   }
 
   /// returns the number of vars in the sequence
@@ -260,8 +261,7 @@ namespace gum {
     Idx cpt = 0;
     // if we are in overflow, do nothing
 
-    if ( __overflow )
-      return;
+    if ( __overflow ) return;
 
     // perform the increment
     while ( true ) {
@@ -273,8 +273,7 @@ namespace gum {
         if ( cpt == p ) {
           __overflow = true;
 
-          if ( __master )
-            __master->setFirstNotification( *this );
+          if ( __master ) __master->setFirstNotification( *this );
 
           return;
         } else
@@ -285,8 +284,7 @@ namespace gum {
       }
     }
 
-    if ( __master )
-      __master->setIncNotification( *this );
+    if ( __master ) __master->setIncNotification( *this );
   }
 
   /// operator --
@@ -296,8 +294,7 @@ namespace gum {
     Idx cpt = 0;
     // if we are in overflow, do nothing
 
-    if ( __overflow )
-      return;
+    if ( __overflow ) return;
 
     // perform the increment
     while ( true ) {
@@ -309,8 +306,7 @@ namespace gum {
         if ( cpt == p ) {
           __overflow = true;
 
-          if ( __master )
-            __master->setLastNotification( *this );
+          if ( __master ) __master->setLastNotification( *this );
 
           return;
         } else
@@ -321,8 +317,7 @@ namespace gum {
       }
     }
 
-    if ( __master )
-      __master->setDecNotification( *this );
+    if ( __master ) __master->setDecNotification( *this );
   }
 
   /// operator ++
@@ -368,8 +363,7 @@ namespace gum {
     for ( Size p = 0; p < s; ++p )
       __vals[p] = 0;
 
-    if ( __master )
-      __master->setFirstNotification( *this );
+    if ( __master ) __master->setFirstNotification( *this );
   }
 
   /// put the (D1-1,D2-1,...) last value in the Instantiation
@@ -381,8 +375,7 @@ namespace gum {
     for ( Size p = 0; p < s; ++p )
       __vals[p] = __vars[p]->domainSize() - 1;
 
-    if ( __master )
-      __master->setLastNotification( *this );
+    if ( __master ) __master->setLastNotification( *this );
   }
 
   /// operator ++ limited only to the variables in i
@@ -395,8 +388,7 @@ namespace gum {
     }
 
     // if we are in overflow, do nothing
-    if ( __overflow )
-      return;
+    if ( __overflow ) return;
 
     Size p = i.nbrDim() - 1;
 
@@ -439,8 +431,7 @@ namespace gum {
     Idx i_cpt = 0;
     // if we are in overflow, do nothing
 
-    if ( __overflow )
-      return;
+    if ( __overflow ) return;
 
     while ( true ) {
       // verify that __vars[cpt] belongs to i before incrementing its value
@@ -484,8 +475,7 @@ namespace gum {
     Idx s = nbrDim();
 
     for ( Size p = 0; p < s; ++p )
-      if ( i.contains( __vars[p] ) )
-        __chgVal( p, 0 );
+      if ( i.contains( __vars[p] ) ) __chgVal( p, 0 );
   }
 
   /// change values with those in i
@@ -508,8 +498,7 @@ namespace gum {
     Idx s = nbrDim();
 
     for ( Size p = 0; p < s; ++p )
-      if ( i.contains( __vars[p] ) )
-        __chgVal( p, __vars[p]->domainSize() - 1 );
+      if ( i.contains( __vars[p] ) ) __chgVal( p, __vars[p]->domainSize() - 1 );
   }
 
   /// operator ++ for the variables not in i
@@ -519,8 +508,7 @@ namespace gum {
     Idx cpt = 0;
     // if we are in overflow, do nothing
 
-    if ( __overflow )
-      return;
+    if ( __overflow ) return;
 
     while ( true ) {
       if ( i.contains( __vars[cpt] ) ) {
@@ -555,8 +543,7 @@ namespace gum {
     Idx cpt = 0;
     // if we are in overflow, do nothing
 
-    if ( __overflow )
-      return;
+    if ( __overflow ) return;
 
     while ( true ) {
       if ( i.contains( __vars[cpt] ) ) {
@@ -592,8 +579,7 @@ namespace gum {
     Idx s = nbrDim();
 
     for ( Size p = 0; p < s; ++p )
-      if ( !i.contains( __vars[p] ) )
-        __chgVal( p, 0 );
+      if ( !i.contains( __vars[p] ) ) __chgVal( p, 0 );
   }
 
   /// put the (D1-1,D2-1,...) lastvalue in the Instantiation for vars not in i
@@ -614,8 +600,7 @@ namespace gum {
     Idx cpt = 0;
     // if we are in overflow, do nothing
 
-    if ( __overflow )
-      return;
+    if ( __overflow ) return;
 
     while ( true ) {
       if ( __vars[cpt] == &v ) {
@@ -650,8 +635,7 @@ namespace gum {
     Idx cpt = 0;
     // if we are in overflow, do nothing
 
-    if ( __overflow )
-      return;
+    if ( __overflow ) return;
 
     while ( true ) {
       if ( __vars[cpt] == &v ) {
@@ -722,8 +706,7 @@ namespace gum {
     Idx cpt = __vars.pos( &v );
     // if we are in overflow, do nothing
 
-    if ( __overflow )
-      return;
+    if ( __overflow ) return;
 
     Idx p = __vals[cpt];
 
@@ -742,8 +725,7 @@ namespace gum {
     Idx cpt = __vars.pos( &v );
     // if we are in overflow, do nothing
 
-    if ( __overflow )
-      return;
+    if ( __overflow ) return;
 
     Idx p = __vals[cpt];
 
@@ -805,8 +787,7 @@ namespace gum {
 
   /// swap 2 vars in the Instantiation
   INLINE void Instantiation::__swap( Idx i, Idx j ) {
-    if ( i == j )
-      return;
+    if ( i == j ) return;
 
     __vars.swap( i, j );
 
@@ -876,8 +857,7 @@ namespace gum {
 
     __erase( v );
 
-    if ( __master )
-      __master->setChangeNotification( *this );
+    if ( __master ) __master->setChangeNotification( *this );
   }
 
   /// tries to register the Instantiation to a MultiDimAdressable

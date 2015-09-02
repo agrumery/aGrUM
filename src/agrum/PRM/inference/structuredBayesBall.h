@@ -44,7 +44,8 @@ namespace gum {
      * <agrum/PRM/structuredBayesBall.h>
      * @brief This class represent the BayesBall algorithm applied on PRMs.
      */
-    template <typename GUM_SCALAR> class StructuredBayesBall {
+    template <typename GUM_SCALAR>
+    class StructuredBayesBall {
       public:
       // ========================================================================
       /// @name Constructors & destructor.
@@ -129,11 +130,13 @@ namespace gum {
       void __compute( const Instance<GUM_SCALAR>* i, NodeId n );
 
       /// When the ball is received on i->get(n) from a child.
-      void __fromChild( const Instance<GUM_SCALAR>* i, NodeId n,
+      void __fromChild( const Instance<GUM_SCALAR>* i,
+                        NodeId n,
                         InstanceMap& marks );
 
       /// When the ball is receive on i->get(n) from a parent.
-      void __fromParent( const Instance<GUM_SCALAR>* i, NodeId n,
+      void __fromParent( const Instance<GUM_SCALAR>* i,
+                         NodeId n,
                          InstanceMap& marks );
 
       /// Fill __keyMap and __reqMap.

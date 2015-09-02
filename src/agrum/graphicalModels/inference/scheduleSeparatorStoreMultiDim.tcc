@@ -38,9 +38,11 @@ namespace gum {
           separator_tables,
       Arc separator )
       : ScheduleOperation<GUM_SCALAR>(
-            ScheduleOperation<GUM_SCALAR>::Type::SEPARATOR_STORE_MULTIDIM ),
-        __table( table ), __tableSet( &separator_tables ),
-        __separator( separator ), __args( 0 ) {
+            ScheduleOperation<GUM_SCALAR>::Type::SEPARATOR_STORE_MULTIDIM )
+      , __table( table )
+      , __tableSet( &separator_tables )
+      , __separator( separator )
+      , __args( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( ScheduleSeparatorStoreMultiDim );
   }
@@ -49,9 +51,11 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::ScheduleSeparatorStoreMultiDim(
       const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>& from )
-      : ScheduleOperation<GUM_SCALAR>( from ), __table( from.__table ),
-        __tableSet( from.__tableSet ), __separator( from.__separator ),
-        __args( 0 ) {
+      : ScheduleOperation<GUM_SCALAR>( from )
+      , __table( from.__table )
+      , __tableSet( from.__tableSet )
+      , __separator( from.__separator )
+      , __args( 0 ) {
     // for debugging purposes
     GUM_CONS_CPY( ScheduleSeparatorStoreMultiDim );
   }
@@ -70,8 +74,7 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR( ScheduleSeparatorStoreMultiDim );
 
-    if ( __args )
-      delete __args;
+    if ( __args ) delete __args;
   }
 
   /// copy operator
@@ -99,8 +102,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   bool ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::
   operator==( const ScheduleOperation<GUM_SCALAR>& op ) const {
-    if ( this->type() != op.type() )
-      return false;
+    if ( this->type() != op.type() ) return false;
 
     const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>& real_op =
         static_cast<const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>&>( op );
@@ -113,8 +115,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   bool ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::
   operator!=( const ScheduleOperation<GUM_SCALAR>& op ) const {
-    if ( this->type() != op.type() )
-      return true;
+    if ( this->type() != op.type() ) return true;
 
     const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>& real_op =
         static_cast<const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>&>( op );
@@ -176,10 +177,13 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      __debug__::__inc_deletion( "Sequence", __FILE__, __LINE__,
-                                 "destructor of", (void*)&empty_seq );
-      __debug__::__inc_deletion( "SequenceImplementation", __FILE__, __LINE__,
-                                 "destructor of", (void*)&empty_seq );
+      __debug__::__inc_deletion(
+          "Sequence", __FILE__, __LINE__, "destructor of", (void*)&empty_seq );
+      __debug__::__inc_deletion( "SequenceImplementation",
+                                 __FILE__,
+                                 __LINE__,
+                                 "destructor of",
+                                 (void*)&empty_seq );
     }
 
 #endif /* NDEBUG */

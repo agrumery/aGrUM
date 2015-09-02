@@ -47,8 +47,10 @@
 namespace gum {
   namespace prm {
 
-    template <typename GUM_SCALAR> class System;
-    template <typename GUM_SCALAR> class PRMFactory;
+    template <typename GUM_SCALAR>
+    class System;
+    template <typename GUM_SCALAR>
+    class PRMFactory;
     /**
      * @class PRM PRM.h <agrum/PRM/PRM.h>
      * @brief This class represents a Probabilistic Relational
@@ -56,7 +58,8 @@ namespace gum {
      *
      * @ingroup prm_group
      */
-    template <typename GUM_SCALAR> class PRM {
+    template <typename GUM_SCALAR>
+    class PRM {
       public:
       friend class PRMFactory<GUM_SCALAR>;
 

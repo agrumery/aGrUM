@@ -78,7 +78,8 @@ namespace gum {
     }
 
     /// destructor
-    template <typename GUM_SCALAR> BNLearner<GUM_SCALAR>::~BNLearner() {
+    template <typename GUM_SCALAR>
+    BNLearner<GUM_SCALAR>::~BNLearner() {
       GUM_DESTRUCTOR( BNLearner );
     }
 
@@ -116,10 +117,14 @@ namespace gum {
       __createParamEstimator();
 
       return DAG2BNLearner::createBN<
-          GUM_SCALAR, ParamEstimator<>,
+          GUM_SCALAR,
+          ParamEstimator<>,
           DBRowTranslatorSetDynamic<CellTranslatorUniversal>>(
-          *__param_estimator, __learnDAG(), __score_database.names(),
-          __score_database.modalities(), __score_database.rawTranslators() );
+          *__param_estimator,
+          __learnDAG(),
+          __score_database.names(),
+          __score_database.modalities(),
+          __score_database.rawTranslators() );
     }
 
     /// learns a BN (its parameters) when its structure is known
@@ -132,10 +137,14 @@ namespace gum {
       __createParamEstimator( take_into_account_score );
 
       return DAG2BNLearner::createBN<
-          GUM_SCALAR, ParamEstimator<>,
+          GUM_SCALAR,
+          ParamEstimator<>,
           DBRowTranslatorSetDynamic<CellTranslatorUniversal>>(
-          *__param_estimator, dag, __score_database.names(),
-          __score_database.modalities(), __score_database.rawTranslators() );
+          *__param_estimator,
+          dag,
+          __score_database.names(),
+          __score_database.modalities(),
+          __score_database.rawTranslators() );
     }
 
     /// learns a BN (its parameters) when its structure is known
@@ -169,10 +178,14 @@ namespace gum {
       }
 
       return DAG2BNLearner::createBN<
-          GUM_SCALAR, ParamEstimator<>,
+          GUM_SCALAR,
+          ParamEstimator<>,
           DBRowTranslatorSetDynamic<CellTranslatorUniversal>>(
-          *__param_estimator, newDAG, __score_database.names(),
-          __score_database.modalities(), __score_database.rawTranslators() );
+          *__param_estimator,
+          newDAG,
+          __score_database.names(),
+          __score_database.modalities(),
+          __score_database.rawTranslators() );
     }
 
     template <typename GUM_SCALAR>

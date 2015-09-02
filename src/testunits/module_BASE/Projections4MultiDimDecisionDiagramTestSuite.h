@@ -122,17 +122,18 @@ namespace gum_tests {
     // ************************************************************************************************
     gum::MultiDimDecisionDiagramBase<double>*
     __generateRandomdoubleDecisionDiagram(
-        const gum::Sequence<const gum::DiscreteVariable*>* varList, int i,
+        const gum::Sequence<const gum::DiscreteVariable*>* varList,
+        int i,
         gum::MultiDimDecisionDiagramFactoryBase<double>* f = nullptr,
-        double lowLimit = -100, double highLimit = 100 ) {
+        double lowLimit = -100,
+        double highLimit = 100 ) {
       gum::MultiDimDecisionDiagramBase<double>* ret = nullptr;
       bool factoryCreatedHere = false;
 
       while ( ret == nullptr || ( ret->diagramVarSize() < 7 ) ||
               ( ret->diagramVarSize() > 10 ) ) {
 
-        if ( ret != nullptr )
-          delete ret;
+        if ( ret != nullptr ) delete ret;
 
         if ( f == nullptr ) {
           factoryCreatedHere = true;
@@ -229,8 +230,8 @@ namespace gum_tests {
                   // then we add an arc between our current var associated node
                   // id
                   // and the considered var random node id
-                  f->unsafeAddArc( node, ( *var2NodeIdMap[toVar] )[desiredNode],
-                                   label );
+                  f->unsafeAddArc(
+                      node, ( *var2NodeIdMap[toVar] )[desiredNode], label );
 
                 } else {
 
@@ -250,8 +251,7 @@ namespace gum_tests {
         ret = f->getMultiDimDecisionDiagram();
       }
 
-      if ( factoryCreatedHere )
-        delete f;
+      if ( factoryCreatedHere ) delete f;
 
       return ret;
     }
@@ -313,7 +313,8 @@ namespace gum_tests {
     bool __evalOperation( int operationId,
                           gum::MultiDimDecisionDiagramBase<double>* a1,
                           gum::Set<const gum::DiscreteVariable*> del_vars,
-                          double& tempsCalcul, double& tempsEval,
+                          double& tempsCalcul,
+                          double& tempsEval,
                           double delta = 0.01 ) {
 
       bool hasNoError = true;
@@ -363,7 +364,8 @@ namespace gum_tests {
         gum::Instantiation instRemainingVar( a3 );
 
         for ( instRemainingVar.setFirst();
-              !instRemainingVar.end() && hasNoError; ++instRemainingVar ) {
+              !instRemainingVar.end() && hasNoError;
+              ++instRemainingVar ) {
 
           switch ( operationId ) {
 
@@ -377,8 +379,7 @@ namespace gum_tests {
 
               TS_ASSERT_DELTA( a3->get( instRemainingVar ), sum, delta );
 
-              if ( a3->get( instRemainingVar ) != sum )
-                hasNoError = false;
+              if ( a3->get( instRemainingVar ) != sum ) hasNoError = false;
             }
 
             break;
@@ -393,8 +394,7 @@ namespace gum_tests {
 
               TS_ASSERT_DELTA( a3->get( instRemainingVar ), product, delta );
 
-              if ( a3->get( instRemainingVar ) != product )
-                hasNoError = false;
+              if ( a3->get( instRemainingVar ) != product ) hasNoError = false;
             }
 
             break;
@@ -411,8 +411,7 @@ namespace gum_tests {
 
               TS_ASSERT_DELTA( a3->get( instRemainingVar ), min, delta );
 
-              if ( a3->get( instRemainingVar ) != min )
-                hasNoError = false;
+              if ( a3->get( instRemainingVar ) != min ) hasNoError = false;
             }
 
             break;
@@ -441,8 +440,7 @@ namespace gum_tests {
           }
         }
 
-        if ( !hasNoError )
-          __saveDiagrams( a1, a3, del_vars );
+        if ( !hasNoError ) __saveDiagrams( a1, a3, del_vars );
 
         delete a3;
       } else {
@@ -491,8 +489,8 @@ namespace gum_tests {
       bool evalRes = true;
 
       for ( int operationId = 1; operationId < 5 && evalRes; operationId++ )
-        evalRes = __evalOperation( operationId, a1, del_vars, tempsCalcul,
-                                   tempsEval );
+        evalRes = __evalOperation(
+            operationId, a1, del_vars, tempsCalcul, tempsEval );
 
       delete a1;
 
@@ -503,8 +501,7 @@ namespace gum_tests {
 
       delete varList;
 
-      if ( !evalRes )
-        return;
+      if ( !evalRes ) return;
 
       // *************************************************************************************
       // Then we try with random structure
@@ -553,8 +550,7 @@ namespace gum_tests {
           return;
         }
 
-        if ( nbLoop % 5 == 0 )
-          test_waiting( nbLoop / 5 );
+        if ( nbLoop % 5 == 0 ) test_waiting( nbLoop / 5 );
       }
 
       end_test_waiting();

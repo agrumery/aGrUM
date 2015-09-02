@@ -376,7 +376,8 @@ namespace gum {
      *state
      *                            of the BayesNet.
      */
-    void setVariableCPT( const std::string& varName, MultiDimAdressable* table,
+    void setVariableCPT( const std::string& varName,
+                         MultiDimAdressable* table,
                          bool redefineParents = false );
 
     /// @}

@@ -793,10 +793,11 @@ namespace gum_tests {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
-      gum::MultiDimDecisionDiagramFactory<
-          float, gum::LinearApproximationPolicy>* factory =
-          new gum::MultiDimDecisionDiagramFactory<
-              float, gum::LinearApproximationPolicy>();
+      gum::MultiDimDecisionDiagramFactory<float,
+                                          gum::LinearApproximationPolicy>*
+          factory = new gum::MultiDimDecisionDiagramFactory<
+              float,
+              gum::LinearApproximationPolicy>();
 
       factory->setLowLimit( 0 );
       factory->setHighLimit( 10 );

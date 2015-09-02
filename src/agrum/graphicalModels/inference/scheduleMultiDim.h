@@ -42,7 +42,8 @@ namespace gum {
   // containing the MultiDimImplementation: thus, when ScheduleDeleteMultiDim
   // deletes an implementation, it can remove it from the hashtable and, thus,
   // the ScheduleMultiDims pointing to it will become abstract.
-  template <typename GUM_SCALAR> class ScheduleDeleteMultiDim;
+  template <typename GUM_SCALAR>
+  class ScheduleDeleteMultiDim;
 #endif
 
   /**
@@ -99,7 +100,8 @@ namespace gum {
    * as argument to these operations. But nothing is actually computed until
    * the execute() methods of the scheduled operations are executed.
    */
-  template <typename GUM_SCALAR> class ScheduleMultiDim {
+  template <typename GUM_SCALAR>
+  class ScheduleMultiDim {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

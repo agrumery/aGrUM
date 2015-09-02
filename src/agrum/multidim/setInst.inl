@@ -59,8 +59,7 @@ namespace gum {
       Idx varPos =
           __vars.pos( &v );  // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= v.domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+      if ( newVal >= v.domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
@@ -81,8 +80,7 @@ namespace gum {
       Idx varPos =
           __vars.pos( v );  // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= v->domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+      if ( newVal >= v->domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
@@ -101,11 +99,9 @@ namespace gum {
   INLINE SetInst& SetInst::chgVal( Idx varPos, Idx newVal ) {
     // check that the variable does belong to the SetInst and that the new
     // value is possible.
-    if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+    if ( __vals.size() <= varPos ) GUM_ERROR( NotFound, "" );
 
-    if ( newVal >= __vars[varPos]->domainSize() )
-      GUM_ERROR( OutOfBounds, "" );
+    if ( newVal >= __vars[varPos]->domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
     // if we were in overflow, indicate that we are not anymore
     __overflow = false;
@@ -138,8 +134,7 @@ namespace gum {
       Idx varPos =
           __vars.pos( &v );  // throws NotFound if v doesn't belong to this
 
-      if ( newVals >= (Size)1 << v.domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+      if ( newVals >= (Size)1 << v.domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
@@ -161,8 +156,7 @@ namespace gum {
       Idx varPos =
           __vars.pos( v );  // throws NotFound if v doesn't belong to this
 
-      if ( newVals >= (Size)1 << v->domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+      if ( newVals >= (Size)1 << v->domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
@@ -181,8 +175,7 @@ namespace gum {
   INLINE SetInst& SetInst::chgVals( Idx varPos, const Size newVal ) {
     // check that the variable does belong to the SetInst and that the new
     // value is possible.
-    if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+    if ( __vals.size() <= varPos ) GUM_ERROR( NotFound, "" );
 
     if ( newVal >= (Size)1 << __vars[varPos]->domainSize() )
 
@@ -197,11 +190,9 @@ namespace gum {
   }
 
   INLINE SetInst& SetInst::addVal( Idx varPos, Idx newVal ) {
-    if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+    if ( __vals.size() <= varPos ) GUM_ERROR( NotFound, "" );
 
-    if ( newVal >= __vars[varPos]->domainSize() )
-      GUM_ERROR( OutOfBounds, "" );
+    if ( newVal >= __vars[varPos]->domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
     __chgVals( varPos, ( 1 << newVal ) | __vals[varPos] );
     return *this;
@@ -214,8 +205,7 @@ namespace gum {
       Idx varPos =
           __vars.pos( v );  // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= v->domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+      if ( newVal >= v->domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
@@ -236,8 +226,7 @@ namespace gum {
       Idx varPos =
           __vars.pos( &v );  // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= v.domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+      if ( newVal >= v.domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
@@ -252,8 +241,7 @@ namespace gum {
   }
 
   INLINE SetInst& SetInst::addVals( Idx varPos, const Size newVal ) {
-    if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+    if ( __vals.size() <= varPos ) GUM_ERROR( NotFound, "" );
 
     if ( newVal >= ( 1UL << __vars[varPos]->domainSize() ) )
       GUM_ERROR( OutOfBounds, "" );
@@ -310,11 +298,9 @@ namespace gum {
   }
 
   INLINE SetInst& SetInst::remVal( Idx varPos, Idx newVal ) {
-    if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+    if ( __vals.size() <= varPos ) GUM_ERROR( NotFound, "" );
 
-    if ( newVal >= __vars[varPos]->domainSize() )
-      GUM_ERROR( OutOfBounds, "" );
+    if ( newVal >= __vars[varPos]->domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
     __chgVals( varPos, ~( 1 << newVal ) & __vals[varPos] );
     return *this;
@@ -327,8 +313,7 @@ namespace gum {
       Idx varPos =
           __vars.pos( v );  // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= v->domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+      if ( newVal >= v->domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
 
@@ -348,8 +333,7 @@ namespace gum {
       Idx varPos =
           __vars.pos( &v );  // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= v.domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+      if ( newVal >= v.domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
@@ -364,8 +348,7 @@ namespace gum {
   }
 
   INLINE SetInst& SetInst::remVals( Idx varPos, const Size newVal ) {
-    if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+    if ( __vals.size() <= varPos ) GUM_ERROR( NotFound, "" );
 
     if ( newVal >= ( 1UL << __vars[varPos]->domainSize() ) )
       GUM_ERROR( OutOfBounds, "" );
@@ -422,19 +405,16 @@ namespace gum {
   }
 
   INLINE SetInst& SetInst::chgDifVal( Idx varPos, const Size newVal ) {
-    if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+    if ( __vals.size() <= varPos ) GUM_ERROR( NotFound, "" );
 
-    if ( newVal >= __vars[varPos]->domainSize() )
-      GUM_ERROR( OutOfBounds, "" );
+    if ( newVal >= __vars[varPos]->domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
     __chgVals( varPos, newVal ^ __vals[varPos] );
     return *this;
   }
 
   INLINE SetInst& SetInst::interVals( Idx varPos, const Size newVal ) {
-    if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+    if ( __vals.size() <= varPos ) GUM_ERROR( NotFound, "" );
 
     if ( newVal >= ( 1UL << __vars[varPos]->domainSize() ) )
       GUM_ERROR( OutOfBounds, "" );
@@ -491,11 +471,9 @@ namespace gum {
   }
 
   INLINE SetInst& SetInst::interVal( Idx varPos, Idx newVal ) {
-    if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+    if ( __vals.size() <= varPos ) GUM_ERROR( NotFound, "" );
 
-    if ( newVal >= __vars[varPos]->domainSize() )
-      GUM_ERROR( OutOfBounds, "" );
+    if ( newVal >= __vars[varPos]->domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
     __chgVals( varPos, ( 1 << newVal ) & __vals[varPos] );
     return *this;
@@ -508,8 +486,7 @@ namespace gum {
       Idx varPos =
           __vars.pos( v );  // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= v->domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+      if ( newVal >= v->domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
 
@@ -529,8 +506,7 @@ namespace gum {
       Idx varPos =
           __vars.pos( &v );  // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= v.domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+      if ( newVal >= v.domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
@@ -602,7 +578,8 @@ namespace gum {
 
   /// Default constructor
 
-  INLINE SetInst::SetInst() : /*__master( 0 ),*/ __overflow( false ) {
+  INLINE SetInst::SetInst()
+      : /*__master( 0 ),*/ __overflow( false ) {
     GUM_CONSTRUCTOR( SetInst );
   }
 
@@ -622,8 +599,7 @@ namespace gum {
   /// returns the current value of a given variable
 
   INLINE Size SetInst::vals( Idx i ) const {
-    if ( i >= __vals.size() )
-      GUM_ERROR( NotFound, "" );
+    if ( i >= __vals.size() ) GUM_ERROR( NotFound, "" );
 
     return __vals[i];
   }
@@ -739,8 +715,7 @@ namespace gum {
   /// swap 2 vars in the SetInst
 
   INLINE void SetInst::__swap( Idx i, Idx j ) {
-    if ( i == j )
-      return;
+    if ( i == j ) return;
 
     __vars.swap( i, j );
 

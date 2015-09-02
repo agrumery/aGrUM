@@ -43,11 +43,13 @@ namespace gum {
     GUM_CONSTRUCTOR( BruteForceKL );
   }
 
-  template <typename GUM_SCALAR> BruteForceKL<GUM_SCALAR>::~BruteForceKL() {
+  template <typename GUM_SCALAR>
+  BruteForceKL<GUM_SCALAR>::~BruteForceKL() {
     GUM_DESTRUCTOR( BruteForceKL );
   }
 
-  template <typename GUM_SCALAR> void BruteForceKL<GUM_SCALAR>::_computeKL() {
+  template <typename GUM_SCALAR>
+  void BruteForceKL<GUM_SCALAR>::_computeKL() {
     _klPQ = _klQP = _hellinger = _bhattacharya = (GUM_SCALAR)0.0;
     _errorPQ = _errorQP = 0;
 

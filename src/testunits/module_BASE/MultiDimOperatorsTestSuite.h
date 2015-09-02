@@ -841,7 +841,8 @@ namespace gum_tests {
     private:
     // ==========================================================================
     // ==========================================================================
-    template <typename T> void mydelete( gum::MultiDimImplementation<T*>* t ) {
+    template <typename T>
+    void mydelete( gum::MultiDimImplementation<T*>* t ) {
       gum::Instantiation inst( *t );
 
       for ( inst.setFirst(); !inst.end(); ++inst ) {
@@ -853,7 +854,8 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    template <typename T> void mydelete( gum::Potential<T*>* t ) {
+    template <typename T>
+    void mydelete( gum::Potential<T*>* t ) {
       gum::Instantiation inst( *t );
 
       for ( inst.setFirst(); !inst.end(); ++inst ) {
@@ -871,8 +873,7 @@ namespace gum_tests {
       if ( ( t1.nbrDim() == t2.nbrDim() ) &&
            ( t1.domainSize() == t2.domainSize() ) ) {
         for ( const auto var : t1.variablesSequence() )
-          if ( !t2.variablesSequence().exists( var ) )
-            return false;
+          if ( !t2.variablesSequence().exists( var ) ) return false;
 
         gum::Instantiation i( t1 );
 
@@ -895,8 +896,7 @@ namespace gum_tests {
       if ( ( t1.nbrDim() == t2.nbrDim() ) &&
            ( t1.domainSize() == t2.domainSize() ) ) {
         for ( const auto var : t1.variablesSequence() )
-          if ( !t2.variablesSequence().exists( var ) )
-            return false;
+          if ( !t2.variablesSequence().exists( var ) ) return false;
 
         gum::Instantiation i( t1 );
 
@@ -964,8 +964,7 @@ namespace gum_tests {
           t2->variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::MultiDimArray<float>* result = new gum::MultiDimArray<float>;
@@ -999,8 +998,7 @@ namespace gum_tests {
           t2->variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::MultiDimArray<float>* result = new gum::MultiDimArray<float>;
@@ -1034,8 +1032,7 @@ namespace gum_tests {
           t2->variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::MultiDimArray<float>* result = new gum::MultiDimArray<float>;
@@ -1069,8 +1066,7 @@ namespace gum_tests {
           t2->variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::MultiDimArray<float>* result = new gum::MultiDimArray<float>;
@@ -1104,8 +1100,7 @@ namespace gum_tests {
           t2->variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::MultiDimArray<float*>* result = new gum::MultiDimArray<float*>;
@@ -1140,8 +1135,7 @@ namespace gum_tests {
           t2->variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::MultiDimArray<float*>* result = new gum::MultiDimArray<float*>;
@@ -1176,8 +1170,7 @@ namespace gum_tests {
           t2->variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::MultiDimArray<float*>* result = new gum::MultiDimArray<float*>;
@@ -1212,8 +1205,7 @@ namespace gum_tests {
           t2->variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::MultiDimArray<float*>* result = new gum::MultiDimArray<float*>;
@@ -1248,8 +1240,7 @@ namespace gum_tests {
           t2.variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::Potential<double>* result = new gum::Potential<double>;
@@ -1283,8 +1274,7 @@ namespace gum_tests {
           t2.variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::Potential<double>* result = new gum::Potential<double>;
@@ -1318,8 +1308,7 @@ namespace gum_tests {
           t2.variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::Potential<double>* result = new gum::Potential<double>;
@@ -1353,8 +1342,7 @@ namespace gum_tests {
           t2.variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::Potential<double>* result = new gum::Potential<double>;
@@ -1388,8 +1376,7 @@ namespace gum_tests {
           t2.variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::Potential<double*>* result = new gum::Potential<double*>;
@@ -1423,8 +1410,7 @@ namespace gum_tests {
           t2.variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::Potential<double*>* result = new gum::Potential<double*>;
@@ -1458,8 +1444,7 @@ namespace gum_tests {
           t2.variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::Potential<double*>* result = new gum::Potential<double*>;
@@ -1493,8 +1478,7 @@ namespace gum_tests {
           t2.variablesSequence();
 
       for ( const auto var : seq2 )
-        if ( !seq.exists( var ) )
-          seq << var;
+        if ( !seq.exists( var ) ) seq << var;
 
       // creation of the resulting table
       gum::Potential<double*>* result = new gum::Potential<double*>;

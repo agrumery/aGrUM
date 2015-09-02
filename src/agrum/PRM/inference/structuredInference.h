@@ -292,7 +292,8 @@ namespace gum {
       /// Add edges in the reduced graph.
       void __addEdgesInReducedGraph( RGData& data );
 
-      void __removeNode( StructuredInference::PData& data, NodeId id,
+      void __removeNode( StructuredInference::PData& data,
+                         NodeId id,
                          Set<Potential<GUM_SCALAR>*>& pool );
 
       /// Add the reduced potentials of instances not in any used patterns.
@@ -310,14 +311,16 @@ namespace gum {
       /// all the Potentials of all variables in data.pattern. The first match
       /// of
       /// data.pattern (aka data.match) is used.
-      void __buildPatternGraph( PData& data, Set<Potential<GUM_SCALAR>*>& pool,
+      void __buildPatternGraph( PData& data,
+                                Set<Potential<GUM_SCALAR>*>& pool,
                                 const Sequence<Instance<GUM_SCALAR>*>& match );
 
       void
       __insertNodeInElimLists( StructuredInference::PData& data,
                                const Sequence<Instance<GUM_SCALAR>*>& match,
                                Instance<GUM_SCALAR>* inst,
-                               Attribute<GUM_SCALAR>* attr, NodeId id,
+                               Attribute<GUM_SCALAR>* attr,
+                               NodeId id,
                                std::pair<Idx, std::string>& v );
 
       bool __allInstanceNoRefAttr( StructuredInference::PData& data,

@@ -24,10 +24,12 @@ namespace gum {
       : __sch( sch ) {
     GUM_CONSTRUCTOR( ApproximationSchemeListener );
 
-    GUM_CONNECT( ( __sch ), onProgress, ( *this ),
+    GUM_CONNECT( ( __sch ),
+                 onProgress,
+                 ( *this ),
                  ApproximationSchemeListener::whenProgress );
-    GUM_CONNECT( ( __sch ), onStop, ( *this ),
-                 ApproximationSchemeListener::whenStop );
+    GUM_CONNECT(
+        ( __sch ), onStop, ( *this ), ApproximationSchemeListener::whenStop );
   }
 
   ApproximationSchemeListener::ApproximationSchemeListener(

@@ -38,7 +38,8 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR> class BayesNetFactory;
+  template <typename GUM_SCALAR>
+  class BayesNetFactory;
 
   /**
    * @class BayesNet BayesNet.h <agrum/BN/BayesNet.h>
@@ -53,7 +54,8 @@ namespace gum {
    * Don't forget that you can print a BayesNet using
    * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
    */
-  template <typename GUM_SCALAR> class BayesNet : public IBayesNet<GUM_SCALAR> {
+  template <typename GUM_SCALAR>
+  class BayesNet : public IBayesNet<GUM_SCALAR> {
 
     friend class BayesNetFactory<GUM_SCALAR>;
 
@@ -151,7 +153,8 @@ namespace gum {
      * @throws DuplicateElement if id is already used
      */
     NodeId add( const DiscreteVariable& variable,
-                MultiDimImplementation<GUM_SCALAR>* aContent, NodeId id );
+                MultiDimImplementation<GUM_SCALAR>* aContent,
+                NodeId id );
 
     /**
      * Erase a Variable from the network and remove the variable from
@@ -203,17 +206,6 @@ namespace gum {
     /// @name Arc manipulation methods.
     // ===========================================================================
     /// @{
-
-    /**
-     * Add an arc in the BN, and update arc.head's CPT.
-     *
-     * @param head and
-     * @param tail as NodeId
-     * @throw InvalidEdge If arc.tail and/or arc.head are not in the BN.
-     * @deprecated This function is now deprecated. Please use BayesNet::addArc
-     *instead
-     */
-    GUM_DEPRECATED( void insertArc( NodeId tail, NodeId head ) );
 
     /**
      * Add an arc in the BN, and update arc.head's CPT.
@@ -320,11 +312,14 @@ namespace gum {
      * @{
      */
     NodeId addNoisyOR( const DiscreteVariable& variable,
-                       GUM_SCALAR externalWeight, NodeId id );
+                       GUM_SCALAR externalWeight,
+                       NodeId id );
     NodeId addNoisyORNet( const DiscreteVariable& variable,
-                          GUM_SCALAR externalWeight, NodeId id );
+                          GUM_SCALAR externalWeight,
+                          NodeId id );
     NodeId addNoisyORCompound( const DiscreteVariable& variable,
-                               GUM_SCALAR externalWeight, NodeId id );
+                               GUM_SCALAR externalWeight,
+                               NodeId id );
     /** @} */
 
     /**
@@ -338,7 +333,8 @@ namespace gum {
      * @return the id of the added variable.
      */
     NodeId addNoisyAND( const DiscreteVariable& variable,
-                        GUM_SCALAR externalWeight, NodeId id );
+                        GUM_SCALAR externalWeight,
+                        NodeId id );
 
     /**
      * Add a variable, its associate node and a noisyAND implementation. The id
@@ -364,7 +360,8 @@ namespace gum {
      * @return the id of the added variable.
      */
     NodeId addLogit( const DiscreteVariable& variable,
-                     GUM_SCALAR externalWeight, NodeId id );
+                     GUM_SCALAR externalWeight,
+                     NodeId id );
 
     /**
      * Add a variable, its associate node and a Logit implementation. The id of
@@ -417,50 +414,8 @@ namespace gum {
      * @param causalWeight see gum::MultiDimICIModel
      * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
      * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
-     *
-     * @deprecated This function is now deprecated. Please use
-     *BayesNet::addWeightedArc instead
-     */
-    GUM_DEPRECATED( void insertWeightedArc( NodeId tail, NodeId head,
-                                            GUM_SCALAR causalWeight ) );
-
-    /**
-     * Add an arc in the BN, and update arc.head's CPT.
-     *
-     * @param head and
-     * @param tail as NodeId
-     * @param causalWeight see gum::MultiDimICIModel
-     * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
-     * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
      */
     void addWeightedArc( NodeId tail, NodeId head, GUM_SCALAR causalWeight );
-
-    /// @}
-    // ===========================================================================
-    /// @name Deprecated methods
-    // ===========================================================================
-    /// @{
-
-    /**
-     * @deprecated: This function is now deprecated. Please use BayesNet::add
-     * instead.
-     */
-    GUM_DEPRECATED( NodeId addVariable( const DiscreteVariable& variable ) );
-
-    /**
-     * @deprecated: This function is now deprecated. Please use
-     * BayesNet::add(const
-     * DiscreteVariable&, MultiDimImplementation*)
-     */
-    GUM_DEPRECATED(
-        NodeId addVariable( const DiscreteVariable& variable,
-                            MultiDimImplementation<GUM_SCALAR>* aContent ) );
-
-    /**
-     * @deprecated: This function is now deprecated. Please use
-     * BayesNet::erase(NodeId) instead.
-     */
-    GUM_DEPRECATED( void eraseVariable( NodeId id ) );
 
     /// @}
 

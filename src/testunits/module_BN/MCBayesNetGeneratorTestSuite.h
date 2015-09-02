@@ -78,8 +78,7 @@ namespace gum_tests {
       gum::BayesNet<float>* bn = new gum::BayesNet<float>();
       TS_GUM_ASSERT_THROWS_NOTHING( gen.generateBN( *bn ) );
 
-      if ( bn != 0 )
-        delete bn;
+      if ( bn != 0 ) delete bn;
     }
 
     void testGenerationBNDouble() {
@@ -88,8 +87,7 @@ namespace gum_tests {
       gum::BayesNet<double>* bn = new gum::BayesNet<double>();
       TS_GUM_ASSERT_THROWS_NOTHING( gen.generateBN( *bn ) );
 
-      if ( bn != 0 )
-        delete bn;
+      if ( bn != 0 ) delete bn;
     }
 
     void testGenerationfromBNFloat() {
@@ -100,8 +98,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
           gum::MCBayesNetGenerator<float> gen2( *bn, 30, 40, 50 ) );
 
-      if ( bn != 0 )
-        delete bn;
+      if ( bn != 0 ) delete bn;
     }
 
     void testGenerationfromBNDouble() {
@@ -112,8 +109,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
           gum::MCBayesNetGenerator<double> gen2( *bn, 30, 40, 50 ) );
 
-      if ( bn != 0 )
-        delete bn;
+      if ( bn != 0 ) delete bn;
     }
 
     void testDisturbBNFloatCPT() {
@@ -123,8 +119,7 @@ namespace gum_tests {
       gen.generateBN( *bn );
       TS_GUM_ASSERT_THROWS_NOTHING( gen.disturbBN( *bn ) );
 
-      if ( bn != 0 )
-        delete bn;
+      if ( bn != 0 ) delete bn;
     }
 
     void testGenerationBNDoubleCPT() {
@@ -134,8 +129,7 @@ namespace gum_tests {
       gen.generateBN( *bn );
       TS_GUM_ASSERT_THROWS_NOTHING( gen.disturbBN( *bn ) );
 
-      if ( bn != 0 )
-        delete bn;
+      if ( bn != 0 ) delete bn;
     }
 
     void testInferenceFloat() {
@@ -147,8 +141,7 @@ namespace gum_tests {
       gum::LazyPropagation<float> lazyInf( *bn );
       TS_GUM_ASSERT_THROWS_NOTHING( lazyInf.makeInference() );
 
-      if ( bn != 0 )
-        delete bn;
+      if ( bn != 0 ) delete bn;
     }
 
     void testInferenceDouble() {
@@ -160,8 +153,7 @@ namespace gum_tests {
       gum::LazyPropagation<double> lazyInf( *bn );
       TS_GUM_ASSERT_THROWS_NOTHING( lazyInf.makeInference() );
 
-      if ( bn != 0 )
-        delete bn;
+      if ( bn != 0 ) delete bn;
     }
   };
 }

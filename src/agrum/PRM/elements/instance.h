@@ -57,7 +57,8 @@ namespace gum {
      *
      * @see Class<GUM_SCALAR> PRM ClassElement @ingroup prm_group
      */
-    template <typename GUM_SCALAR> class Instance : public PRMObject {
+    template <typename GUM_SCALAR>
+    class Instance : public PRMObject {
 
       public:
       // ========================================================================

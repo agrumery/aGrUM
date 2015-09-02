@@ -33,22 +33,23 @@ namespace gum {
 
   ///////////////////// NodeGraphPart
   NodeGraphPart::NodeGraphPart( Size holes_size, bool holes_resize_policy )
-      : __holes_size( holes_size ),
-        __holes_resize_policy( holes_resize_policy ),
-        __endIteratorSafe( *this ), __bound( 0 ) {
+      : __holes_size( holes_size )
+      , __holes_resize_policy( holes_resize_policy )
+      , __endIteratorSafe( *this )
+      , __bound( 0 ) {
     __holes = 0;
     GUM_CONSTRUCTOR( NodeGraphPart );
     __updateEndIteratorSafe();
   }
 
   NodeGraphPart::NodeGraphPart( const NodeGraphPart& s )
-      : __holes_size( s.__holes_size ),
-        __holes_resize_policy( s.__holes_resize_policy ),
-        __endIteratorSafe( *this ), __bound( s.__bound ) {
+      : __holes_size( s.__holes_size )
+      , __holes_resize_policy( s.__holes_resize_policy )
+      , __endIteratorSafe( *this )
+      , __bound( s.__bound ) {
     __holes = 0;
 
-    if ( s.__holes )
-      __holes = new NodeSet( *s.__holes );
+    if ( s.__holes ) __holes = new NodeSet( *s.__holes );
 
     __updateEndIteratorSafe();
 
@@ -56,8 +57,7 @@ namespace gum {
   }
 
   NodeGraphPart::~NodeGraphPart() {
-    if ( __holes )
-      delete __holes;
+    if ( __holes ) delete __holes;
 
     GUM_DESTRUCTOR( NodeGraphPart );
   }
@@ -67,8 +67,7 @@ namespace gum {
     __holes_size = s.__holes_size;
     __holes_resize_policy = s.__holes_resize_policy;
 
-    if ( s.__holes )
-      __holes = new NodeSet( *s.__holes );
+    if ( s.__holes ) __holes = new NodeSet( *s.__holes );
 
     __bound = s.__bound;
 
@@ -111,8 +110,7 @@ namespace gum {
     s << "{";
 
     for ( NodeId id = 0; id < __bound; ++id ) {
-      if ( __inHoles( id ) )
-        continue;
+      if ( __inHoles( id ) ) continue;
 
       if ( first ) {
         first = false;
@@ -133,12 +131,10 @@ namespace gum {
     return stream;
   }
 
-  void NodeGraphPart::insertNode( const NodeId id ) { addNode( id ); }
   void NodeGraphPart::addNode( const NodeId id ) {
     if ( id >= __bound ) {
       if ( id > __bound ) {  // we have to add holes
-        if ( !__holes )
-          __holes = new NodeSet();
+        if ( !__holes ) __holes = new NodeSet();
 
         for ( NodeId i = __bound; i < id; ++i )
           __holes->insert( i );
@@ -164,8 +160,7 @@ namespace gum {
 
     if ( onNodeDeleted.hasListener() ) {
       for ( NodeId n = 0; n < bound; ++n ) {
-        if ( !__inHoles( n ) )
-          GUM_EMIT1( onNodeDeleted, n );
+        if ( !__inHoles( n ) ) GUM_EMIT1( onNodeDeleted, n );
       }
     }
 

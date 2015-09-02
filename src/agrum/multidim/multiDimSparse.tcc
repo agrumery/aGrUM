@@ -24,7 +24,8 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   MultiDimSparse<GUM_SCALAR>::MultiDimSparse( const GUM_SCALAR& default_value )
-      : MultiDimWithOffset<GUM_SCALAR>(), _default( default_value ) {
+      : MultiDimWithOffset<GUM_SCALAR>()
+      , _default( default_value ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( MultiDimSparse );
   }
@@ -34,15 +35,17 @@ namespace gum {
   template <typename GUM_SCALAR>
   MultiDimSparse<GUM_SCALAR>::MultiDimSparse(
       const MultiDimSparse<GUM_SCALAR>& from )
-      : MultiDimWithOffset<GUM_SCALAR>( from ), _params( from._params ),
-        _default( from._default ) {
+      : MultiDimWithOffset<GUM_SCALAR>( from )
+      , _params( from._params )
+      , _default( from._default ) {
     // for debugging purposes
     GUM_CONS_CPY( MultiDimSparse );
   }
 
   /// destructor
 
-  template <typename GUM_SCALAR> MultiDimSparse<GUM_SCALAR>::~MultiDimSparse() {
+  template <typename GUM_SCALAR>
+  MultiDimSparse<GUM_SCALAR>::~MultiDimSparse() {
     // for debugging purposes
     GUM_DESTRUCTOR( MultiDimSparse );
     // no need to unregister all slaves as it will be done by MultiDimWithOffset

@@ -37,7 +37,7 @@ namespace gum {
 #define GCC_DIAG_DO_PRAGMA( x ) _Pragma( #x )
 #define GCC_DIAG_PRAGMA( x ) GCC_DIAG_DO_PRAGMA( GCC diagnostic x )
 #if ( ( __GNUC__ * 100 ) + __GNUC_MINOR__ ) >= 406
-#define GCC_DIAG_OFF( x )                                                      \
+#define GCC_DIAG_OFF( x ) \
   GCC_DIAG_PRAGMA( push ) GCC_DIAG_PRAGMA( ignored GCC_JOINSTR( -W, x ) )
 #define GCC_DIAG_ON( x ) GCC_DIAG_PRAGMA( pop )
 #else
@@ -53,16 +53,20 @@ namespace gum {
   // GCC_DIAG_ON(strict-aliasing)
 
   /// Destructor for end/rend
-  template <> ListConstIteratorSafe<Debug>::~ListConstIteratorSafe() {}
+  template <>
+  ListConstIteratorSafe<Debug>::~ListConstIteratorSafe() {}
 
   /// constructor for end/rend
-  template <> ListConstIteratorSafe<Debug>::ListConstIteratorSafe() noexcept {}
+  template <>
+  ListConstIteratorSafe<Debug>::ListConstIteratorSafe() noexcept {}
 
   /// Destructor for end/rend
-  template <> ListConstIterator<Debug>::~ListConstIterator() noexcept {}
+  template <>
+  ListConstIterator<Debug>::~ListConstIterator() noexcept {}
 
   /// constructor for end/rend
-  template <> ListConstIterator<Debug>::ListConstIterator() noexcept {}
+  template <>
+  ListConstIterator<Debug>::ListConstIterator() noexcept {}
 
   // an iterator that represents both end and rend for all the Lists
   // (whatever their type). This is mainly what stroustrup suggests

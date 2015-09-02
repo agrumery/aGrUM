@@ -205,7 +205,6 @@ namespace gum_tests {
     }
     /// @}
 
-
     /// Methods
     /// @{
     void testIsMultiple() {

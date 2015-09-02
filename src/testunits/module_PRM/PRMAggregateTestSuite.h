@@ -59,9 +59,14 @@ namespace gum_tests {
       map.push_back( 1 );
       map.push_back( 0 );
       __state = new gum::prm::Type<double>{*__boolean, map, state};
-      __types = new std::vector<AggType>{
-          AggType::MIN,    AggType::MAX,    AggType::MEAN, AggType::COUNT,
-          AggType::EXISTS, AggType::FORALL, AggType::OR,   AggType::AND};
+      __types = new std::vector<AggType>{AggType::MIN,
+                                         AggType::MAX,
+                                         AggType::MEAN,
+                                         AggType::COUNT,
+                                         AggType::EXISTS,
+                                         AggType::FORALL,
+                                         AggType::OR,
+                                         AggType::AND};
       __class = new gum::prm::Class<double>( "dummy" );
     }
 
@@ -159,8 +164,8 @@ namespace gum_tests {
 
     void testCast() {
       // Arrange
-      gum::LabelizedVariable boolean_var{"boolean",
-                                         "A boolean discrete variable", 0};
+      gum::LabelizedVariable boolean_var{
+          "boolean", "A boolean discrete variable", 0};
       boolean_var.addLabel( "False" );
       boolean_var.addLabel( "True" );
 
@@ -181,7 +186,6 @@ namespace gum_tests {
       __classEltTestSuite->testCast( agg, boolean );
     }
     /// @}
-
 
     /// Constructors & destructors
     /// @{

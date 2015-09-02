@@ -31,7 +31,8 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR> class Scheduler {
+  template <typename GUM_SCALAR>
+  class Scheduler {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

@@ -29,15 +29,14 @@ namespace gum {
     namespace gspan {
 
       INLINE
-      Pattern::Pattern() : DiGraph(), __last( 0 ) {
+      Pattern::Pattern()
+          : DiGraph()
+          , __last( 0 ) {
         GUM_CONSTRUCTOR( Pattern );
       }
 
       INLINE
       Pattern::~Pattern() { GUM_DESTRUCTOR( Pattern ); }
-
-      INLINE
-      NodeId Pattern::insertNode( LabelData& l ) { return addNode( l ); }
 
       INLINE
       NodeId Pattern::addNode( LabelData& l ) {
@@ -67,16 +66,14 @@ namespace gum {
 
       INLINE
       LabelData& Pattern::lastAdded() {
-        if ( __last )
-          return *__last;
+        if ( __last ) return *__last;
 
         GUM_ERROR( OperationNotAllowed, "there are no LabelData yet" );
       }
 
       INLINE
       const LabelData& Pattern::lastAdded() const {
-        if ( __last )
-          return *__last;
+        if ( __last ) return *__last;
 
         GUM_ERROR( OperationNotAllowed, "there are no LabelData yet" );
       }
@@ -115,11 +112,6 @@ namespace gum {
         } catch ( NotFound& ) {
           GUM_ERROR( NotFound, "arc not found in this Pattern" );
         }
-      }
-
-      INLINE
-      void Pattern::insertArc( NodeId i, NodeId j, LabelData& l ) {
-        addArc( i, j, l );
       }
 
       INLINE

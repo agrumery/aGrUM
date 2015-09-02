@@ -21,6 +21,7 @@
 #ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 #OR PERFORMANCE OF THIS SOFTWARE!
 
+from __future__ import print_function
 import sys,os,csv
 
 from .utils.progress_bar import ProgressBar
@@ -81,13 +82,20 @@ def computeROCpoints(bn,csv_name,target,label,visible=False):
 
     nbr_lines=lines_count(csv_name)-1
 
-    csvfile = open(csv_name, "r") # python2 = "rb"
-    dialect = csv.Sniffer().sniff(csvfile.read(1024))
-    csvfile.seek(0)
 
-    batchReader = csv.reader(open(csv_name,'r'),dialect) # python2 = "rb"
 
-    titre = batchReader.__next__() # python2 = .next()
+    if (sys.version_info >= (3, 0)): # python 3
+      csvfile = open(csv_name, "r")
+      dialect = csv.Sniffer().sniff(csvfile.read(1024))
+      csvfile.seek(0)
+      batchReader = csv.reader(open(csv_name,'r'),dialect)
+      titre = batchReader.__next__()
+    else: # python2
+      csvfile = open(csv_name, "rb")
+      dialect = csv.Sniffer().sniff(csvfile.read(1024))
+      csvfile.seek(0)
+      batchReader = csv.reader(open(csv_name,'rb'),dialect)
+      titre = batchReader.next()
     fields = {}
     for i,nom in enumerate(titre):
         fields[nom]=i
@@ -249,7 +257,7 @@ def showROC(bn,csv_name,variable,label,visible=True,show_fig=False):
     shortname=os.path.basename(bn.property("name"))
   except IndexError:
     shortname="unnamed"
-    
+
   title=shortname+" vs "+csv_name+ " - "+variable+"="+str(label)
 
   figname='roc_'+shortname+"-"+csv_name+ "-"+variable+"-"+str(label)+'.png'

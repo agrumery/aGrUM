@@ -40,9 +40,11 @@ namespace gum {
   NodeId GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
       const MultiDimDecisionDiagramBase<GUM_SCALAR>* oldDiagram,
       MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* factory,
-      NodeId currentNode, bool delVarAscendant,
+      NodeId currentNode,
+      bool delVarAscendant,
       HashTable<NodeId, NodeId>& explorationTable,
-      const Set<const DiscreteVariable*>& delVars, Idx nbOperation,
+      const Set<const DiscreteVariable*>& delVars,
+      Idx nbOperation,
       std::string tabu ) {
     tabu += "\t";
 
@@ -91,8 +93,14 @@ namespace gum {
           std::cout << tabu << "Descente sur fils : " << *sonIter << std::endl;
           NodeId sonValueNode =
               GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-                  oldDiagram, factory, *sonIter, true, explorationTable,
-                  delVars, nbOperation, tabu );
+                  oldDiagram,
+                  factory,
+                  *sonIter,
+                  true,
+                  explorationTable,
+                  delVars,
+                  nbOperation,
+                  tabu );
           resValue = GUM_DECISION_DIAGRAM_PROJECTION_OPERATOR(
               resValue, factory->nodeValue( sonValueNode ) );
           nbExploredModalities++;
@@ -107,8 +115,14 @@ namespace gum {
         std::cout << tabu << "Descente sur fils par défaut" << std::endl;
         NodeId defaultSonValueNode =
             GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-                oldDiagram, factory, oldDiagram->nodeDefaultSon( currentNode ),
-                true, explorationTable, delVars, nbOperation, tabu );
+                oldDiagram,
+                factory,
+                oldDiagram->nodeDefaultSon( currentNode ),
+                true,
+                explorationTable,
+                delVars,
+                nbOperation,
+                tabu );
 
         for ( Idx i = 0;
               i < oldDiagram->nodeVariable( currentNode )->domainSize() -
@@ -124,8 +138,7 @@ namespace gum {
 
       NodeId resNode = factory->addTerminalNode( resValue );
 
-      if ( !delVarAscendant )
-        explorationTable.insert( currentNode, resNode );
+      if ( !delVarAscendant ) explorationTable.insert( currentNode, resNode );
 
       std::cout << tabu << "Creation Noeud Terminal => Valeur : " << resValue
                 << " | Noeud : " << resNode << std::endl;
@@ -149,13 +162,20 @@ namespace gum {
 
       for ( std::vector<NodeId>::const_iterator sonIter =
                 oldDiagram->nodeSons( currentNode )->begin();
-            sonIter != oldDiagram->nodeSons( currentNode )->end(); ++sonIter ) {
+            sonIter != oldDiagram->nodeSons( currentNode )->end();
+            ++sonIter ) {
         if ( *sonIter != 0 ) {
           std::cout << tabu << "Descente sur fils : " << *sonIter << std::endl;
           NodeId sonValueNode =
               GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-                  oldDiagram, factory, *sonIter, false, explorationTable,
-                  delVars, nbOperation, tabu );
+                  oldDiagram,
+                  factory,
+                  *sonIter,
+                  false,
+                  explorationTable,
+                  delVars,
+                  nbOperation,
+                  tabu );
           sonsMap[std::distance( oldDiagram->nodeSons( currentNode )->begin(),
                                  sonIter )] = sonValueNode;
           std::cout << tabu << "Fin descente sur fils : " << *sonIter
@@ -168,8 +188,14 @@ namespace gum {
       if ( oldDiagram->hasNodeDefaultSon( currentNode ) ) {
         std::cout << tabu << "Descente sur fils par défaut" << std::endl;
         defaultSon = GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION(
-            oldDiagram, factory, oldDiagram->nodeDefaultSon( currentNode ),
-            false, explorationTable, delVars, nbOperation, tabu );
+            oldDiagram,
+            factory,
+            oldDiagram->nodeDefaultSon( currentNode ),
+            false,
+            explorationTable,
+            delVars,
+            nbOperation,
+            tabu );
         std::cout << tabu << "Fin descente sur fils par défaut" << std::endl;
       }
 
@@ -177,9 +203,9 @@ namespace gum {
         Idx nbDefault = 0;
 
         for ( std::vector<NodeId>::iterator iterArcMap = sonsMap.begin();
-              iterArcMap != sonsMap.end(); ++iterArcMap ) {
-          if ( *iterArcMap == 0 )
-            ++nbDefault;
+              iterArcMap != sonsMap.end();
+              ++iterArcMap ) {
+          if ( *iterArcMap == 0 ) ++nbDefault;
 
           if ( *iterArcMap == defaultSon ) {
             ++nbDefault;
@@ -189,7 +215,8 @@ namespace gum {
 
         if ( nbDefault == 1 )
           for ( std::vector<NodeId>::iterator iterArcMap = sonsMap.begin();
-                iterArcMap != sonsMap.end(); ++iterArcMap )
+                iterArcMap != sonsMap.end();
+                ++iterArcMap )
             if ( *iterArcMap == 0 ) {
               sonsMap[std::distance( sonsMap.begin(), iterArcMap )] =
                   defaultSon;

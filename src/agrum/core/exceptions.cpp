@@ -34,7 +34,8 @@
 
 namespace gum {
   const std::string __createMsg( const std::string& filename,
-                                 const std::string& function, const int line,
+                                 const std::string& function,
+                                 const int line,
                                  const std::string& msg ) {
     std::stringstream stream;
     stream << std::endl
@@ -47,7 +48,8 @@ namespace gum {
   }
 
   Exception::Exception( const std::string aMsg, const std::string aType )
-      : _msg( aMsg ), _type( aType ) {
+      : _msg( aMsg )
+      , _type( aType ) {
 #ifndef NDEBUG
 #ifndef __MINGW32__
 #define callStackDepth 20

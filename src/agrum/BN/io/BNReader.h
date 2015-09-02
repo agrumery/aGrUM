@@ -36,11 +36,9 @@
 #include <agrum/BN/BayesNet.h>
 
 namespace gum {
-  /* ============================================================================
-   */
-  /* ===                               READERS === */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
+  /* ===                               READERS                            === */
+  /* =========================================================================*/
   /**
    * @class BNReader
    * @brief Pure virtual class for reading a BN from a file.
@@ -48,7 +46,8 @@ namespace gum {
    * Every class used to read the content of a Bayesian Network from a stream,
    * or a file must be a subclass of BNReader.
    */
-  template <typename GUM_SCALAR> class BNReader {
+  template <typename GUM_SCALAR>
+  class BNReader {
     public:
     /**
      * Constructor

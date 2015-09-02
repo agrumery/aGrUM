@@ -73,8 +73,10 @@
 
 namespace gum {
 
-  template <class Element> class SplayBinaryNode;
-  template <class Element> class SplayTree;
+  template <class Element>
+  class SplayBinaryNode;
+  template <class Element>
+  class SplayTree;
 
   /// Display the node
 
@@ -88,16 +90,15 @@ namespace gum {
   INLINE std::ostream& operator<<( std::ostream& out,
                                    const SplayTree<Element>& s );
 
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   /* ===                                   NODE === */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   /** @class SplayBinaryNode
    * @brief the nodes of splay trees
    * @ingroup basicstruct_group
    */
-  template <class Element> class SplayBinaryNode {
+  template <class Element>
+  class SplayBinaryNode {
     public:
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -151,7 +152,8 @@ namespace gum {
 
     SplayBinaryNode( const Element& e,
                      HashTable<Element, SplayBinaryNode<Element>*>& addr,
-                     SplayBinaryNode* g = 0, SplayBinaryNode* d = 0,
+                     SplayBinaryNode* g = 0,
+                     SplayBinaryNode* d = 0,
                      SplayBinaryNode* p = 0 );
 
     /// copy constructor
@@ -265,7 +267,8 @@ namespace gum {
    * @warning an Element must be in just one Splay Tree,
    * the behavior is unspecified else.
    */
-  template <class Element> class SplayTree {
+  template <class Element>
+  class SplayTree {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

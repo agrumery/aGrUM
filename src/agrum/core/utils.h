@@ -71,24 +71,28 @@ namespace gum {
 
   /// Implements a stream with the same behaviour as /dev/null
   struct NullStream : std::ostream {
-    NullStream() : std::ios( 0 ), std::ostream( 0 ) {}
+    NullStream()
+        : std::ios( 0 )
+        , std::ostream( 0 ) {}
   };
 
   /// cross-platform replacement for memcmp. returns true if OK
-  bool Memcmp( const void* const _in, const void* const _out,
-               unsigned long size );
+  bool
+  Memcmp( const void* const _in, const void* const _out, unsigned long size );
 
   /// for debug purpose
   void __atexit( void );
 
   /// indicate whether two elements are (almost) different or not
-  template <typename T> struct AlmostDifferent {
+  template <typename T>
+  struct AlmostDifferent {
     bool operator()( const T& t1, const T& t2 ) {
       return ( ( t1 > t2 + (T)0.000001 ) || ( t2 > t1 + (T)0.000001 ) );
     }
   };
 
-  template <typename T> struct AlmostDifferent<T*> {
+  template <typename T>
+  struct AlmostDifferent<T*> {
     bool operator()( const T* t1, const T* t2 ) { return ( t1 != t2 ); }
   };
 

@@ -52,7 +52,8 @@ namespace gum {
    * for information on this format.
    *
    */
-  template <typename GUM_SCALAR> class BIFWriter : public BNWriter<GUM_SCALAR> {
+  template <typename GUM_SCALAR>
+  class BIFWriter : public BNWriter<GUM_SCALAR> {
     public:
     // ==========================================================================
     /// @name Constructor & destructor

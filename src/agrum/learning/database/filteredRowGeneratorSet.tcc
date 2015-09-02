@@ -45,15 +45,17 @@ namespace gum {
     INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>::
         FilteredRowGeneratorSet(
             const FilteredRowGeneratorSet<Generator, OtherGenerators...>& from )
-        : NextGenerators( from ), __first_generator( from.__first_generator ) {
+        : NextGenerators( from )
+        , __first_generator( from.__first_generator ) {
       GUM_CONS_CPY( FilteredRowGeneratorSet );
     }
 
     /// move constructor
     template <typename Generator, typename... OtherGenerators>
     INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>::
-        FilteredRowGeneratorSet( FilteredRowGeneratorSet<
-            Generator, OtherGenerators...>&& from ) noexcept
+        FilteredRowGeneratorSet(
+            FilteredRowGeneratorSet<Generator, OtherGenerators...>&&
+                from ) noexcept
         : NextGenerators( std::move( from ) ),
           __first_generator( std::move( from.__first_generator ) ) {
       GUM_CONS_MOV( FilteredRowGeneratorSet );
@@ -61,8 +63,8 @@ namespace gum {
 
     /// destructor
     template <typename Generator, typename... OtherGenerators>
-    INLINE FilteredRowGeneratorSet<
-        Generator, OtherGenerators...>::~FilteredRowGeneratorSet() noexcept {
+    INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>::
+        ~FilteredRowGeneratorSet() noexcept {
       GUM_DESTRUCTOR( FilteredRowGeneratorSet );
     }
 
@@ -96,8 +98,7 @@ namespace gum {
     template <typename Generator, typename... OtherGenerators>
     INLINE bool
     FilteredRowGeneratorSet<Generator, OtherGenerators...>::hasRows() noexcept {
-      if ( NextGenerators::hasRows() )
-        return true;
+      if ( NextGenerators::hasRows() ) return true;
       while ( __first_generator.hasRows() ) {
         if ( NextGenerators::setInputRow( __first_generator.generate() ) ) {
           return true;

@@ -51,7 +51,8 @@ namespace gum {
   }
 
   /// update the hash function to take into account a resize of the hash table
-  template <typename Key> INLINE Size HashFuncBase<Key>::size() const noexcept {
+  template <typename Key>
+  INLINE Size HashFuncBase<Key>::size() const noexcept {
     return _hash_size;
   }
 

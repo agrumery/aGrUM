@@ -40,7 +40,8 @@
 namespace gum {
   namespace prm {
 
-    template <typename GUM_SCALAR> class PRMFactory;
+    template <typename GUM_SCALAR>
+    class PRMFactory;
 
     /**
      * @class Type
@@ -53,7 +54,8 @@ namespace gum {
      * Since MultiDim use pointers to handle DiscreteVariables, it is necessary
      * to create a new instance of a type for each Attribute.
      */
-    template <typename GUM_SCALAR> class Type : public PRMObject {
+    template <typename GUM_SCALAR>
+    class Type : public PRMObject {
 
       public:
       // ==========================================================================
@@ -94,7 +96,8 @@ namespace gum {
        * A copy is made of var.
        * @throw OperationNotAllowed Raised if label_map is invalid.
        */
-      Type( Type& super_type, const std::vector<Idx>& label_map,
+      Type( Type& super_type,
+            const std::vector<Idx>& label_map,
             const DiscreteVariable& var );
 
       /**

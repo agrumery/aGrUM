@@ -33,8 +33,7 @@ namespace gum {
     INLINE
     void
     StructuralConstraintTabuList::setTabuListSize( unsigned int new_size ) {
-      if ( new_size == _TabuList__changes.size() )
-        return;
+      if ( new_size == _TabuList__changes.size() ) return;
 
       if ( _TabuList__changes.size() > new_size ) {
         // remove the oldest elements, so that only newsize elements remain
@@ -123,8 +122,8 @@ namespace gum {
         const ArcAddition& change ) {
       _TabuList__changes.eraseSecond( _TabuList__offset );
       ++_TabuList__offset;
-      _TabuList__changes.insert( change, _TabuList__offset +
-                                             _TabuList__changes.size() );
+      _TabuList__changes.insert(
+          change, _TabuList__offset + _TabuList__changes.size() );
     }
 
     /// notify the constraint of a modification of the graph
@@ -132,8 +131,8 @@ namespace gum {
         const ArcDeletion& change ) {
       _TabuList__changes.eraseSecond( _TabuList__offset );
       ++_TabuList__offset;
-      _TabuList__changes.insert( change, _TabuList__offset +
-                                             _TabuList__changes.size() );
+      _TabuList__changes.insert(
+          change, _TabuList__offset + _TabuList__changes.size() );
     }
 
     /// notify the constraint of a modification of the graph
@@ -141,8 +140,8 @@ namespace gum {
         const ArcReversal& change ) {
       _TabuList__changes.eraseSecond( _TabuList__offset );
       ++_TabuList__offset;
-      _TabuList__changes.insert( change, _TabuList__offset +
-                                             _TabuList__changes.size() );
+      _TabuList__changes.insert(
+          change, _TabuList__offset + _TabuList__changes.size() );
     }
 
     /// notify the constraint of a modification of the graph

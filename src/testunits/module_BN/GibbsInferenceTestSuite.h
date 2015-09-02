@@ -47,7 +47,9 @@ namespace gum_tests {
 
     public:
     aSimpleGibbsListener( gum::ApproximationScheme& sch )
-        : gum::ApproximationSchemeListener( sch ), __nbr( 0 ), __mess( "" ){};
+        : gum::ApproximationSchemeListener( sch )
+        , __nbr( 0 )
+        , __mess( "" ){};
     void whenProgress( const void* buffer, gum::Size a, double b, double c ) {
       __nbr++;
     }

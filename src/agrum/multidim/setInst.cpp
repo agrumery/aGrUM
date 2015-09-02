@@ -65,8 +65,7 @@ namespace gum {
     // for debugging purposes
     GUM_CONSTRUCTOR( SetInst );
 
-    if ( d )
-      __init( d );
+    if ( d ) __init( d );
   }
 
   /// constructor for a SetInst contained into a MultiDimInterface
@@ -78,8 +77,7 @@ namespace gum {
     // for debugging purposes
     GUM_CONSTRUCTOR( SetInst );
 
-    if ( const_d )
-      __init( const_cast<MultiDimAdressable*>( const_d ) );
+    if ( const_d ) __init( const_cast<MultiDimAdressable*>( const_d ) );
   }
 
   /// copy constructor

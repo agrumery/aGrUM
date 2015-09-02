@@ -45,10 +45,14 @@
 
 namespace gum {
 
-  template <typename Key, typename Alloc, bool> class SequenceImplementation;
-  template <typename Key, typename Alloc> class Sequence;
-  template <typename Key> class SequenceIteratorSafe;
-  template <typename Key> using SequenceIterator = SequenceIteratorSafe<Key>;
+  template <typename Key, typename Alloc, bool>
+  class SequenceImplementation;
+  template <typename Key, typename Alloc>
+  class Sequence;
+  template <typename Key>
+  class SequenceIteratorSafe;
+  template <typename Key>
+  using SequenceIterator = SequenceIteratorSafe<Key>;
   template <typename Key>
   using SequenceConstIterator = SequenceIteratorSafe<Key>;
 
@@ -90,7 +94,8 @@ namespace gum {
   template <typename Key, typename Alloc, bool Gen>
   class SequenceImplementation {
 
-    template <typename K, typename A, bool> friend class SequenceImplementation;
+    template <typename K, typename A, bool>
+    friend class SequenceImplementation;
     friend class SequenceIteratorSafe<Key>;
     friend class Sequence<Key, Alloc>;
 
@@ -276,7 +281,8 @@ namespace gum {
      * type Key by passing to its constructor all the arguments it needs
      * @param args the arguments passed to the constructor
      * @throw DuplicateElement is thrown if the sequence contains already k */
-    template <typename... Args> void emplace( Args&&... args );
+    template <typename... Args>
+    void emplace( Args&&... args );
 
     /// remove an element from the sequence
     /** If the element cannot be found, the function does nothing. In
@@ -401,7 +407,8 @@ namespace gum {
   template <typename Key, typename Alloc>
   class SequenceImplementation<Key, Alloc, true> {
 
-    template <typename K, typename A, bool> friend class SequenceImplementation;
+    template <typename K, typename A, bool>
+    friend class SequenceImplementation;
     friend class SequenceIteratorSafe<Key>;
     friend class Sequence<Key, Alloc>;
 
@@ -571,7 +578,8 @@ namespace gum {
      * type Key by passing to its constructor all the arguments it needs
      * @param args the arguments passed to the constructor
      * @throw DuplicateElement is thrown if the sequence contains already k */
-    template <typename... Args> void emplace( Args&&... args );
+    template <typename... Args>
+    void emplace( Args&&... args );
 
     /// remove an element from the sequence
     /** If the element cannot be found, the function does nothing. In
@@ -801,20 +809,26 @@ namespace gum {
 
   // dummy classes that will enable discriminate without overhead between
   // scalars and non-scalars operators * and ->
-  template <bool gen> struct SequenceIteratorGet {
-    template <typename Key> INLINE static const Key& op_star( const Key* x ) {
+  template <bool gen>
+  struct SequenceIteratorGet {
+    template <typename Key>
+    INLINE static const Key& op_star( const Key* x ) {
       return *x;
     }
-    template <typename Key> INLINE static const Key* op_arrow( const Key* x ) {
+    template <typename Key>
+    INLINE static const Key* op_arrow( const Key* x ) {
       return x;
     }
   };
 
-  template <> struct SequenceIteratorGet<true> {
-    template <typename Key> INLINE static const Key& op_star( const Key& x ) {
+  template <>
+  struct SequenceIteratorGet<true> {
+    template <typename Key>
+    INLINE static const Key& op_star( const Key& x ) {
       return x;
     }
-    template <typename Key> INLINE static const Key* op_arrow( const Key& x ) {
+    template <typename Key>
+    INLINE static const Key* op_arrow( const Key& x ) {
       return &x;
     }
   };
@@ -858,9 +872,11 @@ namespace gum {
    *   std::cout << iter->size () << std::endl;
    * @endcode
    */
-  template <typename Key> class SequenceIteratorSafe {
+  template <typename Key>
+  class SequenceIteratorSafe {
 
-    template <typename K, typename A, bool> friend class SequenceImplementation;
+    template <typename K, typename A, bool>
+    friend class SequenceImplementation;
 
     public:
     /// types for STL compliance
@@ -997,7 +1013,8 @@ namespace gum {
     Idx __iterator;
 
     /// the sequence pointed to by the iterator (by default, key is a scalar)
-    const SequenceImplementation<Key, std::allocator<Key>,
+    const SequenceImplementation<Key,
+                                 std::allocator<Key>,
                                  std::is_scalar<Key>::value>* __seq;
 
     /// the iterator points to the posth element (0 = beginning of the

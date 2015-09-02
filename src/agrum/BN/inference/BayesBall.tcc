@@ -31,14 +31,14 @@ namespace gum {
   // update a set of potentials, keeping only those d-connected with
   // query variables
   template <typename GUM_SCALAR, template <typename> class TABLE>
-  void BayesBall::relevantPotentials(
-      const IBayesNet<GUM_SCALAR>& bn,
-      const NodeSet& query,
-      const NodeSet& hardEvidence,
-      const NodeSet& softEvidence,
-      Set<const TABLE<GUM_SCALAR>*>& potentials ) {
-    const DAG& dag = bn.dag (); 
-    
+  void
+  BayesBall::relevantPotentials( const IBayesNet<GUM_SCALAR>& bn,
+                                 const NodeSet& query,
+                                 const NodeSet& hardEvidence,
+                                 const NodeSet& softEvidence,
+                                 Set<const TABLE<GUM_SCALAR>*>& potentials ) {
+    const DAG& dag = bn.dag();
+
     // create the marks (top = first and bottom = second)
     NodeProperty<std::pair<bool, bool>> marks;
     marks.resize( dag.size() );
@@ -51,7 +51,7 @@ namespace gum {
       const Sequence<const DiscreteVariable*>& vars = pot->variablesSequence();
       for ( const auto var : vars ) {
         const NodeId id = bn.nodeId( *var );
-        if ( ! node2potentials.exists( id ) ) {
+        if ( !node2potentials.exists( id ) ) {
           node2potentials.insert( id, Set<const TABLE<GUM_SCALAR>*>() );
         }
         node2potentials[id].insert( pot );
@@ -71,13 +71,12 @@ namespace gum {
     // means that we have reached all the potentials and, therefore, those
     // are d-connected to query) or until there is no node in the graph to send
     // the ball to
-    while ( ! nodes_to_visit.empty() && ! node2potentials.empty() ) {
+    while ( !nodes_to_visit.empty() && !node2potentials.empty() ) {
       // get the next node to visit
       NodeId node = nodes_to_visit.front().first;
 
       // if the marks of the node do not exist, create them
-      if ( ! marks.exists( node ) )
-        marks.insert( node, empty_mark );
+      if ( !marks.exists( node ) ) marks.insert( node, empty_mark );
 
       // if the node belongs to the query, update __node2potentials: remove all
       // the potentials containing the node
@@ -99,8 +98,7 @@ namespace gum {
 
         // if __node2potentials is empty, no need to go on: all the potentials
         // are d-connected to the query
-        if ( node2potentials.empty() )
-          return;
+        if ( node2potentials.empty() ) return;
       }
 
 
@@ -125,14 +123,14 @@ namespace gum {
             nodes_to_visit.insert( std::pair<NodeId, bool>( chi, false ) );
           }
         }
-      }
-      else {  // visit from a parent
+      } else {  // visit from a parent
         nodes_to_visit.popFront();
 
         const bool is_hard_evidence = hardEvidence.exists( node );
-        const bool is_evidence = is_hard_evidence or softEvidence.exists( node );
+        const bool is_evidence =
+            is_hard_evidence or softEvidence.exists( node );
 
-        if ( is_evidence && ! marks[node].first ) {
+        if ( is_evidence && !marks[node].first ) {
           marks[node].first = true;
 
           for ( const auto par : dag.parents( node ) ) {
@@ -140,7 +138,7 @@ namespace gum {
           }
         }
 
-        if ( ! is_hard_evidence && ! marks[node].second ) {
+        if ( !is_hard_evidence && !marks[node].second ) {
           marks[node].second = true;
 
           for ( const auto chi : dag.children( node ) ) {

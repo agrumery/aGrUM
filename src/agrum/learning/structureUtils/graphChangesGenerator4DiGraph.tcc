@@ -42,9 +42,10 @@ namespace gum {
     GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>::
         GraphChangesGenerator4DiGraph(
             const GraphChangesGenerator4DiGraph& from )
-        : _graph( from._graph ), _constraint( from._constraint ),
-          _legal_changes( from._legal_changes ),
-          __max_threads_number( from.__max_threads_number ) {
+        : _graph( from._graph )
+        , _constraint( from._constraint )
+        , _legal_changes( from._legal_changes )
+        , __max_threads_number( from.__max_threads_number ) {
       GUM_CONS_CPY( GraphChangesGenerator4DiGraph );
     }
 
@@ -52,9 +53,10 @@ namespace gum {
     template <typename STRUCT_CONSTRAINT>
     GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>::
         GraphChangesGenerator4DiGraph( GraphChangesGenerator4DiGraph&& from )
-        : _graph( std::move( from._graph ) ), _constraint( from._constraint ),
-          _legal_changes( std::move( from._legal_changes ) ),
-          __max_threads_number( from.__max_threads_number ) {
+        : _graph( std::move( from._graph ) )
+        , _constraint( from._constraint )
+        , _legal_changes( std::move( from._legal_changes ) )
+        , __max_threads_number( from.__max_threads_number ) {
       GUM_CONS_MOV( GraphChangesGenerator4DiGraph );
     }
 
@@ -210,8 +212,7 @@ namespace gum {
     template <typename STRUCT_CONSTRAINT>
     INLINE void
     GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>::notifyGetCompleted() {
-      if ( _legal_changes.size() )
-        _legal_changes.clear();
+      if ( _legal_changes.size() ) _legal_changes.clear();
     }
 
     /// sets the maximum number of threads used to perform countings
@@ -220,8 +221,7 @@ namespace gum {
     GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>::setMaxNbThreads(
         unsigned int nb ) noexcept {
 #if defined( _OPENMP ) && defined( NDEBUG )
-      if ( nb == 0 )
-        nb = getMaxNumberOfThreads();
+      if ( nb == 0 ) nb = getMaxNumberOfThreads();
       __max_threads_number = nb;
 #else
       __max_threads_number = 1;

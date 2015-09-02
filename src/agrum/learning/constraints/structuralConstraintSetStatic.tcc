@@ -33,29 +33,30 @@ namespace gum {
 
     /// default constructor
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE __StructuralConstraintSetStatic<
-        CONSTRAINT1, OTHER_CONSTRAINTS...>::__StructuralConstraintSetStatic() {}
+    INLINE __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
+        __StructuralConstraintSetStatic() {}
 
     /// copy constructor
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
-        __StructuralConstraintSetStatic( const __StructuralConstraintSetStatic<
-            CONSTRAINT1, OTHER_CONSTRAINTS...>& from )
-        : CONSTRAINT1( from ),
-          __StructuralConstraintSetStatic<OTHER_CONSTRAINTS...>( from ) {}
+        __StructuralConstraintSetStatic(
+            const __StructuralConstraintSetStatic<CONSTRAINT1,
+                                                  OTHER_CONSTRAINTS...>& from )
+        : CONSTRAINT1( from )
+        , __StructuralConstraintSetStatic<OTHER_CONSTRAINTS...>( from ) {}
 
     /// destructor
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE __StructuralConstraintSetStatic<
-        CONSTRAINT1, OTHER_CONSTRAINTS...>::~__StructuralConstraintSetStatic() {
-    }
+    INLINE __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
+        ~__StructuralConstraintSetStatic() {}
 
     /// copy operator
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>&
         __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
-        operator=( const __StructuralConstraintSetStatic<
-            CONSTRAINT1, OTHER_CONSTRAINTS...>& from ) {
+        operator=( const __StructuralConstraintSetStatic<CONSTRAINT1,
+                                                         OTHER_CONSTRAINTS...>&
+                       from ) {
       if ( this != &from ) {
         next_constraints::operator=( from );
         first_constraint::operator=( from );
@@ -67,7 +68,8 @@ namespace gum {
     /// sets a new graph from which we will perform checkings
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE void __StructuralConstraintSetStatic<
-        CONSTRAINT1, OTHER_CONSTRAINTS...>::setGraph( const DiGraph& graph ) {
+        CONSTRAINT1,
+        OTHER_CONSTRAINTS...>::setGraph( const DiGraph& graph ) {
       next_constraints::setGraph( graph );
       first_constraint::setGraphAlone( graph );
     }
@@ -120,8 +122,8 @@ namespace gum {
     /// checks whether the constraints enable to add arc (x,y)
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE bool __StructuralConstraintSetStatic<
-        CONSTRAINT1, OTHER_CONSTRAINTS...>::checkArcAddition( NodeId x,
-                                                              NodeId y ) const
+        CONSTRAINT1,
+        OTHER_CONSTRAINTS...>::checkArcAddition( NodeId x, NodeId y ) const
         noexcept {
       return next_constraints::checkArcAddition( x, y ) &&
              first_constraint::checkArcAdditionAlone( x, y );
@@ -130,8 +132,8 @@ namespace gum {
     /// checks whether the constraints enable to remove arc (x,y)
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE bool __StructuralConstraintSetStatic<
-        CONSTRAINT1, OTHER_CONSTRAINTS...>::checkArcDeletion( NodeId x,
-                                                              NodeId y ) const
+        CONSTRAINT1,
+        OTHER_CONSTRAINTS...>::checkArcDeletion( NodeId x, NodeId y ) const
         noexcept {
       return next_constraints::checkArcDeletion( x, y ) &&
              first_constraint::checkArcDeletionAlone( x, y );
@@ -140,8 +142,8 @@ namespace gum {
     /// checks whether the constraints enable to reverse arc (x,y)
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE bool __StructuralConstraintSetStatic<
-        CONSTRAINT1, OTHER_CONSTRAINTS...>::checkArcReversal( NodeId x,
-                                                              NodeId y ) const
+        CONSTRAINT1,
+        OTHER_CONSTRAINTS...>::checkArcReversal( NodeId x, NodeId y ) const
         noexcept {
       return next_constraints::checkArcReversal( x, y ) &&
              first_constraint::checkArcReversalAlone( x, y );
@@ -309,24 +311,25 @@ namespace gum {
 
     /// default constructor
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE StructuralConstraintSetStatic<
-        CONSTRAINT1, OTHER_CONSTRAINTS...>::StructuralConstraintSetStatic() {
+    INLINE StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
+        StructuralConstraintSetStatic() {
       GUM_CONSTRUCTOR( StructuralConstraintSetStatic );
     }
 
     /// copy constructor
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
-        StructuralConstraintSetStatic( const StructuralConstraintSetStatic<
-            CONSTRAINT1, OTHER_CONSTRAINTS...>& from )
+        StructuralConstraintSetStatic(
+            const StructuralConstraintSetStatic<CONSTRAINT1,
+                                                OTHER_CONSTRAINTS...>& from )
         : constraints( from ) {
       GUM_CONS_CPY( StructuralConstraintSetStatic );
     }
 
     /// destructor
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE StructuralConstraintSetStatic<
-        CONSTRAINT1, OTHER_CONSTRAINTS...>::~StructuralConstraintSetStatic() {
+    INLINE StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
+        ~StructuralConstraintSetStatic() {
       GUM_DESTRUCTOR( StructuralConstraintSetStatic );
     }
 
@@ -334,8 +337,9 @@ namespace gum {
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>&
         StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
-        operator=( const StructuralConstraintSetStatic<
-            CONSTRAINT1, OTHER_CONSTRAINTS...>& from ) {
+        operator=(
+            const StructuralConstraintSetStatic<CONSTRAINT1,
+                                                OTHER_CONSTRAINTS...>& from ) {
       if ( this != &from ) {
         constraints::operator=( from );
       }
@@ -354,8 +358,8 @@ namespace gum {
     /// checks whether the constraints enable to add arc (x,y)
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE bool StructuralConstraintSetStatic<
-        CONSTRAINT1, OTHER_CONSTRAINTS...>::checkArcAddition( NodeId x,
-                                                              NodeId y ) const
+        CONSTRAINT1,
+        OTHER_CONSTRAINTS...>::checkArcAddition( NodeId x, NodeId y ) const
         noexcept {
       return constraints::checkArcAddition( x, y );
     }
@@ -363,8 +367,8 @@ namespace gum {
     /// checks whether the constraints enable to remove arc (x,y)
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE bool StructuralConstraintSetStatic<
-        CONSTRAINT1, OTHER_CONSTRAINTS...>::checkArcDeletion( NodeId x,
-                                                              NodeId y ) const
+        CONSTRAINT1,
+        OTHER_CONSTRAINTS...>::checkArcDeletion( NodeId x, NodeId y ) const
         noexcept {
       return constraints::checkArcDeletion( x, y );
     }
@@ -372,8 +376,8 @@ namespace gum {
     /// checks whether the constraints enable to reverse arc (x,y)
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE bool StructuralConstraintSetStatic<
-        CONSTRAINT1, OTHER_CONSTRAINTS...>::checkArcReversal( NodeId x,
-                                                              NodeId y ) const
+        CONSTRAINT1,
+        OTHER_CONSTRAINTS...>::checkArcReversal( NodeId x, NodeId y ) const
         noexcept {
       return constraints::checkArcReversal( x, y );
     }

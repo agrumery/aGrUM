@@ -43,7 +43,8 @@ namespace gum {
   /// OperatorData contains all data structure needed to compute the outcoming
   /// diagram.
   //========================================================================================================================================
-  template <typename T> class OperatorData {
+  template <typename T>
+  class OperatorData {
 
     public:
     /// The factory that build up resulting diagram
@@ -135,7 +136,8 @@ namespace gum {
   /// seamingly
   /// ordered decision diagram.
   //========================================================================================================================================
-  template <typename T> class OrderedOperatorData : public OperatorData<T> {
+  template <typename T>
+  class OrderedOperatorData : public OperatorData<T> {
 
     public:
     /**
@@ -144,7 +146,8 @@ namespace gum {
       **
       ***********************************************************************************************
       ***/
-    OrderedOperatorData() : OperatorData<T>(){};
+    OrderedOperatorData()
+        : OperatorData<T>(){};
 
     protected:
     /**
@@ -168,7 +171,8 @@ namespace gum {
   /// OperatorData contains all is needed to perform an operation beteween non
   /// seamingly ordered decision diagram.
   //========================================================================================================================================
-  template <typename T> class NonOrderedOperatorData : public OperatorData<T> {
+  template <typename T>
+  class NonOrderedOperatorData : public OperatorData<T> {
 
     public:
     /// Table giving for each node of second diagram, the list of variables
@@ -182,7 +186,8 @@ namespace gum {
       **
       ***********************************************************************************************
       ***/
-    NonOrderedOperatorData() : OperatorData<T>(){};
+    NonOrderedOperatorData()
+        : OperatorData<T>(){};
 
     virtual void initialize( const MultiDimDecisionDiagramBase<T>* dD1,
                              const MultiDimDecisionDiagramBase<T>* dD2 ) {
@@ -231,11 +236,11 @@ namespace gum {
       //         follower = dD2;
       // #else
       Sequence<const DiscreteVariable*> mergedVarSeq1;
-      __makeMergedVariableSequence( dD1->variablesSequence(),
-                                    dD2->variablesSequence(), mergedVarSeq1 );
+      __makeMergedVariableSequence(
+          dD1->variablesSequence(), dD2->variablesSequence(), mergedVarSeq1 );
       Sequence<const DiscreteVariable*> mergedVarSeq2;
-      __makeMergedVariableSequence( dD2->variablesSequence(),
-                                    dD1->variablesSequence(), mergedVarSeq2 );
+      __makeMergedVariableSequence(
+          dD2->variablesSequence(), dD1->variablesSequence(), mergedVarSeq2 );
 
       if ( __evalRetrogradeVarSpaceSize( mergedVarSeq1,
                                          dD2->variablesSequence() ) <=
@@ -327,7 +332,8 @@ namespace gum {
       Idx sizeRetro = 1;
 
       for ( iterSfol = followingVarSeq.begin();
-            iterSfol != followingVarSeq.end(); ++iterSfol )
+            iterSfol != followingVarSeq.end();
+            ++iterSfol )
         for ( iterSfin = iterSfol; iterSfin != followingVarSeq.rend();
               --iterSfin )
           if ( leadingVarSeq.pos( *iterSfin ) > leadingVarSeq.pos( *iterSfol ) )
@@ -342,7 +348,8 @@ namespace gum {
   template <typename T>
   NodeId insertNonTerminalNode( OperatorData<T>& opData,
                                 const DiscreteVariable* associatedVariable,
-                                std::vector<NodeId>& sonsMap, NodeId defaultSon,
+                                std::vector<NodeId>& sonsMap,
+                                NodeId defaultSon,
                                 const HashTable<NodeId, Idx>& countTable ) {
 
     auto ctIter = countTable.begin();
@@ -359,8 +366,7 @@ namespace gum {
 
         for ( auto iterArcMap = sonsMap.begin(); iterArcMap != sonsMap.end();
               ++iterArcMap ) {
-          if ( *iterArcMap == 0 )
-            ++nbDefault;
+          if ( *iterArcMap == 0 ) ++nbDefault;
 
           if ( *iterArcMap == defaultSon ) {
             ++nbDefault;
@@ -397,7 +403,8 @@ namespace gum {
       if ( max == 1 ) {
         if ( defaultSon != 0 ) {
           for ( std::vector<NodeId>::iterator iterArcMap = sonsMap.begin();
-                iterArcMap != sonsMap.end(); ++iterArcMap )
+                iterArcMap != sonsMap.end();
+                ++iterArcMap )
             if ( *iterArcMap == 0 ) {
               sonsMap[std::distance( sonsMap.begin(), iterArcMap )] =
                   defaultSon;
@@ -408,7 +415,8 @@ namespace gum {
       } else {
         if ( maxNode != defaultSon ) {
           for ( std::vector<NodeId>::iterator iterArcMap = sonsMap.begin();
-                iterArcMap != sonsMap.end(); ++iterArcMap ) {
+                iterArcMap != sonsMap.end();
+                ++iterArcMap ) {
             if ( *iterArcMap == 0 )
               sonsMap[std::distance( sonsMap.begin(), iterArcMap )] =
                   defaultSon;
@@ -420,7 +428,8 @@ namespace gum {
           defaultSon = maxNode;
         } else {
           for ( std::vector<NodeId>::iterator iterArcMap = sonsMap.begin();
-                iterArcMap != sonsMap.end(); ++iterArcMap )
+                iterArcMap != sonsMap.end();
+                ++iterArcMap )
             if ( *iterArcMap == maxNode )
               sonsMap[std::distance( sonsMap.begin(), iterArcMap )] = 0;
         }
@@ -428,8 +437,8 @@ namespace gum {
     }
 
 #ifdef O4DDDEBUG
-    return opData.factory->addNonTerminalNodeWithArcs( associatedVariable,
-                                                       sonsMap, defaultSon );
+    return opData.factory->addNonTerminalNodeWithArcs(
+        associatedVariable, sonsMap, defaultSon );
 #else
     return opData.factory->unsafeAddNonTerminalNodeWithArcs(
         associatedVariable, sonsMap, defaultSon );

@@ -110,7 +110,9 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE void MultiDimDecorator<GUM_SCALAR>::changeNotification(
-      Instantiation& i, const DiscreteVariable* const var, const Idx& oldval,
+      Instantiation& i,
+      const DiscreteVariable* const var,
+      const Idx& oldval,
       const Idx& newval ) {
     ( (MultiDimContainer<GUM_SCALAR>*)_content )
         ->changeNotification( i, var, oldval, newval );

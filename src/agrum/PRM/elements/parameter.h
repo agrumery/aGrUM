@@ -56,7 +56,8 @@ namespace gum {
        * @param type
        * @param impl value
        */
-      Parameter( const std::string& name, ParameterType type,
+      Parameter( const std::string& name,
+                 ParameterType type,
                  GUM_SCALAR value );
 
       /// Destructor.

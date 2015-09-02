@@ -44,7 +44,8 @@ namespace gum {
      * The main purpose of this class is to give a common interface between all
      * inference algorithms and to handle evidences.
      */
-    template <typename GUM_SCALAR> class PRMInference {
+    template <typename GUM_SCALAR>
+    class PRMInference {
       public:
       /// Code alias.
       typedef std::pair<const Instance<GUM_SCALAR>*,

@@ -151,8 +151,7 @@ namespace gum {
             unsigned int nb_t1_t2_vars = 0;
 
             for ( const auto var : t1_vars ) {
-              if ( var != t1_and_t2_var[nb_t1_t2_vars] )
-                break;
+              if ( var != t1_and_t2_var[nb_t1_t2_vars] ) break;
               nb_t1_t2_vars += 1;
             }
 
@@ -162,8 +161,7 @@ namespace gum {
               for ( auto iter = t2_vars.begin();
                     nb_t1_t2_vars != t1_and_t2_var.size();
                     ++iter, ++nb_t1_t2_vars )
-                if ( *iter != t1_and_t2_var[nb_t1_t2_vars] )
-                  break;
+                if ( *iter != t1_and_t2_var[nb_t1_t2_vars] ) break;
 
               if ( nb_t1_t2_vars == t1_and_t2_var.size() )
                 t1_and_t2_begin_vars = true;
@@ -203,16 +201,13 @@ namespace gum {
           result->beginMultipleChanges();
 
           for ( const auto var : t1_vars )
-            if ( t2_vars.exists( var ) )
-              *result << *var;
+            if ( t2_vars.exists( var ) ) *result << *var;
 
           for ( const auto var : t2_vars )
-            if ( !t1_vars.exists( var ) )
-              *result << *var;
+            if ( !t1_vars.exists( var ) ) *result << *var;
 
           for ( const auto var : t1_vars )
-            if ( !t2_vars.exists( var ) )
-              *result << *var;
+            if ( !t2_vars.exists( var ) ) *result << *var;
 
           result->endMultipleChanges();
 
@@ -241,9 +236,10 @@ namespace gum {
                 t1_inst = t1_alone_begin_inst;
 
                 for ( Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
-                  result->unsafeSet( result_offset, GUM_MULTI_DIM_OPERATOR(
-                                                        t1->get( t1_inst ),
-                                                        t2->get( t2_inst ) ) );
+                  result->unsafeSet(
+                      result_offset,
+                      GUM_MULTI_DIM_OPERATOR( t1->get( t1_inst ),
+                                              t2->get( t2_inst ) ) );
 
                   ++result_offset;
 
@@ -262,9 +258,10 @@ namespace gum {
                 t1_inst = t1_alone_begin_inst;
 
                 for ( Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
-                  result->unsafeSet( result_offset, GUM_MULTI_DIM_OPERATOR(
-                                                        t1->get( t1_inst ),
-                                                        t2->get( t2_inst ) ) );
+                  result->unsafeSet(
+                      result_offset,
+                      GUM_MULTI_DIM_OPERATOR( t1->get( t1_inst ),
+                                              t2->get( t2_inst ) ) );
 
                   ++result_offset;
 

@@ -39,16 +39,11 @@
 #include <agrum/multidim/instantiation.h>
 
 namespace gum {
-
-  /* ============================================================================
-   */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
+  /* =========================================================================*/
   /* ===                             GUM_MULTI_DIM_ADRESSABLE === */
-  /* ============================================================================
-   */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
+  /* =========================================================================*/
   /**
    * @class MultiDimAdressable
    * @brief Abstract base class for all multi dimensionnal addressable.
@@ -58,8 +53,7 @@ namespace gum {
    * adressable. Its purpose is to deal with slave Instantiation and
    *notification.
    */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
 
   class MultiDimAdressable : public MultiDimInterface {
     public:
@@ -112,7 +106,8 @@ namespace gum {
 
     virtual void changeNotification( Instantiation& i,
                                      const DiscreteVariable* const var,
-                                     const Idx& oldval, const Idx& newval ) = 0;
+                                     const Idx& oldval,
+                                     const Idx& newval ) = 0;
 
     /**
      * Listen to setFirst in a given Instantiation.

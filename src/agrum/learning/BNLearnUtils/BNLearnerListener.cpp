@@ -23,7 +23,8 @@ namespace gum {
   namespace learning {
     BNLearnerListener::BNLearnerListener( genericBNLearner* bnl,
                                           ApproximationScheme& sch )
-        : ApproximationSchemeListener( sch ), __bnlearner( bnl ) {
+        : ApproximationSchemeListener( sch )
+        , __bnlearner( bnl ) {
       bnl->setCurrentApproximationScheme( &sch );
       GUM_CONSTRUCTOR( BNLearnerListener );
     }
@@ -46,10 +47,14 @@ namespace gum {
                  "No copy constructor for BNLearnerListener" );
     }
 
-    void BNLearnerListener::whenProgress( const void* src, Size pourcent,
-                                          double error, double time ) {
+    void BNLearnerListener::whenProgress( const void* src,
+                                          Size pourcent,
+                                          double error,
+                                          double time ) {
       __bnlearner->distributeProgress(
-          static_cast<const ApproximationScheme*>( src ), pourcent, error,
+          static_cast<const ApproximationScheme*>( src ),
+          pourcent,
+          error,
           time );
     }
     void BNLearnerListener::whenStop( const void* src, std::string message ) {

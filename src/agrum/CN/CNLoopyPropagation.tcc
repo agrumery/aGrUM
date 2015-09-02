@@ -157,10 +157,14 @@ namespace gum {
      * une fois les cpts marginalises sur X et Ui, on calcul le min/max,
      */
     template <typename GUM_SCALAR>
-    void CNLoopyPropagation<GUM_SCALAR>::_compute_ext(
-        GUM_SCALAR& msg_l_min, GUM_SCALAR& msg_l_max,
-        std::vector<GUM_SCALAR>& lx, GUM_SCALAR& num_min, GUM_SCALAR& num_max,
-        GUM_SCALAR& den_min, GUM_SCALAR& den_max ) {
+    void
+    CNLoopyPropagation<GUM_SCALAR>::_compute_ext( GUM_SCALAR& msg_l_min,
+                                                  GUM_SCALAR& msg_l_max,
+                                                  std::vector<GUM_SCALAR>& lx,
+                                                  GUM_SCALAR& num_min,
+                                                  GUM_SCALAR& num_max,
+                                                  GUM_SCALAR& den_min,
+                                                  GUM_SCALAR& den_max ) {
       GUM_SCALAR old_msg_min = msg_l_min;
       GUM_SCALAR old_msg_max = msg_l_max;
 
@@ -255,9 +259,12 @@ namespace gum {
      */
     template <typename GUM_SCALAR>
     void CNLoopyPropagation<GUM_SCALAR>::_compute_ext(
-        std::vector<std::vector<GUM_SCALAR>>& combi_msg_p, const NodeId& id,
-        GUM_SCALAR& msg_l_min, GUM_SCALAR& msg_l_max,
-        std::vector<GUM_SCALAR>& lx, const Idx& pos ) {
+        std::vector<std::vector<GUM_SCALAR>>& combi_msg_p,
+        const NodeId& id,
+        GUM_SCALAR& msg_l_min,
+        GUM_SCALAR& msg_l_max,
+        std::vector<GUM_SCALAR>& lx,
+        const Idx& pos ) {
       GUM_SCALAR num_min = 0.;
       GUM_SCALAR num_max = 0.;
       GUM_SCALAR den_min = 0.;
@@ -305,14 +312,15 @@ namespace gum {
         ++it[0];
 
         for ( decltype( taille ) i = 0;
-              ( i < taille - 1 ) && ( it[i] == combi_msg_p[i].end() ); ++i ) {
+              ( i < taille - 1 ) && ( it[i] == combi_msg_p[i].end() );
+              ++i ) {
           it[i] = combi_msg_p[i].begin();
           ++it[i + 1];
         }
       }  // end of : marginalisation
 
-      _compute_ext( msg_l_min, msg_l_max, lx, num_min, num_max, den_min,
-                    den_max );
+      _compute_ext(
+          msg_l_min, msg_l_max, lx, num_min, num_max, den_min, den_max );
     }
 
     /**
@@ -321,8 +329,10 @@ namespace gum {
      */
     template <typename GUM_SCALAR>
     void CNLoopyPropagation<GUM_SCALAR>::_compute_ext(
-        std::vector<std::vector<GUM_SCALAR>>& combi_msg_p, const NodeId& id,
-        GUM_SCALAR& msg_p_min, GUM_SCALAR& msg_p_max ) {
+        std::vector<std::vector<GUM_SCALAR>>& combi_msg_p,
+        const NodeId& id,
+        GUM_SCALAR& msg_p_min,
+        GUM_SCALAR& msg_p_max ) {
       GUM_SCALAR min = 0.;
       GUM_SCALAR max = 0.;
 
@@ -353,7 +363,8 @@ namespace gum {
         ++it[0];
 
         for ( decltype( taille ) i = 0;
-              ( i < taille - 1 ) && ( it[i] == combi_msg_p[i].end() ); ++i ) {
+              ( i < taille - 1 ) && ( it[i] == combi_msg_p[i].end() );
+              ++i ) {
           it[i] = combi_msg_p[i].begin();
           ++it[i + 1];
         }
@@ -374,7 +385,9 @@ namespace gum {
     template <typename GUM_SCALAR>
     void CNLoopyPropagation<GUM_SCALAR>::_enum_combi(
         std::vector<std::vector<std::vector<GUM_SCALAR>>>& msgs_p,
-        const NodeId& id, GUM_SCALAR& msg_p_min, GUM_SCALAR& msg_p_max ) {
+        const NodeId& id,
+        GUM_SCALAR& msg_p_min,
+        GUM_SCALAR& msg_p_max ) {
       auto taille = msgs_p.size();
 
       // source node
@@ -471,7 +484,8 @@ namespace gum {
         ++it[taille - 1];
 
         for ( decltype( taille ) i = taille - 1;
-              ( i > 0 ) && ( it[i] == msgs_p[i].end() ); --i ) {
+              ( i > 0 ) && ( it[i] == msgs_p[i].end() );
+              --i ) {
           it[i] = msgs_p[i].begin();
           ++it[i - 1];
         }
@@ -485,8 +499,11 @@ namespace gum {
     template <typename GUM_SCALAR>
     void CNLoopyPropagation<GUM_SCALAR>::_enum_combi(
         std::vector<std::vector<std::vector<GUM_SCALAR>>>& msgs_p,
-        const NodeId& id, GUM_SCALAR& msg_l_min, GUM_SCALAR& msg_l_max,
-        std::vector<GUM_SCALAR>& lx, const Idx& pos ) {
+        const NodeId& id,
+        GUM_SCALAR& msg_l_min,
+        GUM_SCALAR& msg_l_max,
+        std::vector<GUM_SCALAR>& lx,
+        const Idx& pos ) {
       auto taille = msgs_p.size();
 
       // one parent node, the one receiving the message
@@ -496,8 +513,8 @@ namespace gum {
         GUM_SCALAR den_min = __cn->get_CPT_min()[id][0];
         GUM_SCALAR den_max = __cn->get_CPT_max()[id][0];
 
-        _compute_ext( msg_l_min, msg_l_max, lx, num_min, num_max, den_min,
-                      den_max );
+        _compute_ext(
+            msg_l_min, msg_l_max, lx, num_min, num_max, den_min, den_max );
 
         return;
       }
@@ -589,7 +606,8 @@ namespace gum {
         ++it[taille - 1];
 
         for ( decltype( taille ) i = taille - 1;
-              ( i > 0 ) && ( it[i] == msgs_p[i].end() ); --i ) {
+              ( i > 0 ) && ( it[i] == msgs_p[i].end() );
+              --i ) {
           it[i] = msgs_p[i].begin();
           ++it[i - 1];
         }
@@ -726,7 +744,8 @@ namespace gum {
         // +1 from start to avoid counting itself
         // use const iterators when available with cbegin
         for ( auto jt = ++parents->begin(), theEnd = parents->end();
-              jt != theEnd; ++jt ) {
+              jt != theEnd;
+              ++jt ) {
           // compute probability distribution to avoid doing it multiple times
           // (at
           // each combination of messages)
@@ -1031,7 +1050,8 @@ namespace gum {
         // +1 from start to avoid counting itself
         // use const iterators with cbegin when available
         for ( auto jt = ++parents->begin(), theEnd = parents->end();
-              jt != theEnd; ++jt ) {
+              jt != theEnd;
+              ++jt ) {
           if ( __bnet->nodeId( **jt ) == X ) {
             pos = parents->pos( **jt ) -
                   1;  // retirer la variable courante de la taille
@@ -1203,7 +1223,8 @@ namespace gum {
         // +1 from start to avoid counting itself
         // use const_iterators if available
         for ( auto jt = ++parents->begin(), theEnd = parents->end();
-              jt != theEnd; ++jt ) {
+              jt != theEnd;
+              ++jt ) {
           // compute probability distribution to avoid doing it multiple times
           // (at
           // each combination of messages)
@@ -1417,7 +1438,8 @@ namespace gum {
             // +1 from start to avoid counting itself
             // cbegin
             for ( auto jt = ++parents->begin(), theEnd = parents->end();
-                  jt != theEnd; ++jt ) {
+                  jt != theEnd;
+                  ++jt ) {
               // compute probability distribution to avoid doing it multiple
               // times
               // (at each combination of messages)
@@ -1622,8 +1644,9 @@ namespace gum {
         const CredalNet<GUM_SCALAR>& cnet )
         : InferenceEngine<GUM_SCALAR>::InferenceEngine( cnet ) {
       if ( !cnet.isSeparatelySpecified() ) {
-        GUM_ERROR( OperationNotAllowed, "CNLoopyPropagation is only available "
-                                        "with separately specified nets" );
+        GUM_ERROR( OperationNotAllowed,
+                   "CNLoopyPropagation is only available "
+                   "with separately specified nets" );
       }
 
       // test for binary cn

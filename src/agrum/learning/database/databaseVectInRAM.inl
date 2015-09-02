@@ -55,8 +55,9 @@ namespace gum {
 
     /// default constructor
     INLINE DatabaseVectInRAM::Handler::Handler( const DatabaseVectInRAM& db )
-        : __db( &db ), __row( &( db.content() ) ),
-          __end_index( __row->size() ) {
+        : __db( &db )
+        , __row( &( db.content() ) )
+        , __end_index( __row->size() ) {
       __attachHandler();
       GUM_CONSTRUCTOR( DatabaseVectInRAM::Handler );
     }
@@ -64,8 +65,11 @@ namespace gum {
     /// copy constructor
     INLINE
     DatabaseVectInRAM::Handler::Handler( const DatabaseVectInRAM::Handler& h )
-        : __db( h.__db ), __row( h.__row ), __index( h.__index ),
-          __begin_index( h.__begin_index ), __end_index( h.__end_index ) {
+        : __db( h.__db )
+        , __row( h.__row )
+        , __index( h.__index )
+        , __begin_index( h.__begin_index )
+        , __end_index( h.__end_index ) {
       __attachHandler();
       GUM_CONS_CPY( DatabaseVectInRAM::Handler );
     }
@@ -73,8 +77,11 @@ namespace gum {
     /// move constructor
     INLINE
     DatabaseVectInRAM::Handler::Handler( DatabaseVectInRAM::Handler&& h )
-        : __db( h.__db ), __row( h.__row ), __index( h.__index ),
-          __begin_index( h.__begin_index ), __end_index( h.__end_index ) {
+        : __db( h.__db )
+        , __row( h.__row )
+        , __index( h.__index )
+        , __begin_index( h.__begin_index )
+        , __end_index( h.__end_index ) {
       __attachHandler();
       GUM_CONS_MOV( DatabaseVectInRAM::Handler );
     }
@@ -179,8 +186,7 @@ namespace gum {
     INLINE void
     DatabaseVectInRAM::Handler::setRange( unsigned long begin,
                                           unsigned long end ) noexcept {
-      if ( begin > end )
-        std::swap( begin, end );
+      if ( begin > end ) std::swap( begin, end );
 
       // check that the end belongs to the database, else raise an exception
       if ( end > __row->size() ) {
@@ -224,14 +230,15 @@ namespace gum {
 
     /// copy constructor
     INLINE DatabaseVectInRAM::DatabaseVectInRAM( const DatabaseVectInRAM& from )
-        : __data( from.__data ), __variable_names( from.__variable_names ) {
+        : __data( from.__data )
+        , __variable_names( from.__variable_names ) {
       GUM_CONS_CPY( DatabaseVectInRAM );
     }
 
     /// move constructor
     INLINE DatabaseVectInRAM::DatabaseVectInRAM( DatabaseVectInRAM&& from )
-        : __data( std::move( from.__data ) ),
-          __variable_names( std::move( from.__variable_names ) ) {
+        : __data( std::move( from.__data ) )
+        , __variable_names( std::move( from.__variable_names ) ) {
       GUM_CONS_MOV( DatabaseVectInRAM );
     }
 
@@ -355,15 +362,17 @@ namespace gum {
       const unsigned long db_size = __data.size();
 
       if ( db_size && ( new_row.size() != __data[0].size() ) ) {
-        GUM_ERROR( SizeError, "the new row has not the same size as the "
-                              "rest of the database" );
+        GUM_ERROR( SizeError,
+                   "the new row has not the same size as the "
+                   "rest of the database" );
       }
 
       const unsigned int nb_cols = __variable_names.size();
 
       if ( nb_cols && ( new_row.size() != nb_cols ) ) {
-        GUM_ERROR( SizeError, "the new row has not the same size as the "
-                              "rest of the database" );
+        GUM_ERROR( SizeError,
+                   "the new row has not the same size as the "
+                   "rest of the database" );
       }
 
       __updateHandlers( db_size + 1 );
@@ -376,15 +385,17 @@ namespace gum {
       const unsigned long db_size = __data.size();
 
       if ( db_size && ( new_row.size() != __data[0].size() ) ) {
-        GUM_ERROR( SizeError, "the new row has not the same size as the "
-                              "rest of the database" );
+        GUM_ERROR( SizeError,
+                   "the new row has not the same size as the "
+                   "rest of the database" );
       }
 
       const unsigned int nb_cols = __variable_names.size();
 
       if ( nb_cols && ( new_row.size() != nb_cols ) ) {
-        GUM_ERROR( SizeError, "the new row has not the same size as the "
-                              "rest of the database" );
+        GUM_ERROR( SizeError,
+                   "the new row has not the same size as the "
+                   "rest of the database" );
       }
 
       __updateHandlers( db_size + 1 );
@@ -394,16 +405,16 @@ namespace gum {
     /// insert a set of new DBRow at the end of the database
     INLINE void
     DatabaseVectInRAM::insertDBRows( const std::vector<DBRow>& new_rows ) {
-      if ( new_rows.empty() )
-        return;
+      if ( new_rows.empty() ) return;
 
       // check that all the rows have the same size
       const unsigned int new_size = new_rows[0].size();
 
       for ( const auto& row : new_rows ) {
         if ( row.size() != new_size ) {
-          GUM_ERROR( SizeError, "all the new rows do not have the same "
-                                "nunber of columns" );
+          GUM_ERROR( SizeError,
+                     "all the new rows do not have the same "
+                     "nunber of columns" );
         }
       }
 
@@ -413,13 +424,15 @@ namespace gum {
       const unsigned int nb_cols = __variable_names.size();
 
       if ( db_size && ( __data[0].size() != new_size ) ) {
-        GUM_ERROR( SizeError, "the new rows have not the same size as the "
-                              "rest of the database" );
+        GUM_ERROR( SizeError,
+                   "the new rows have not the same size as the "
+                   "rest of the database" );
       }
 
       if ( nb_cols && ( new_size != nb_cols ) ) {
-        GUM_ERROR( SizeError, "the new rows have not the same size as the "
-                              "number of columns in the database" );
+        GUM_ERROR( SizeError,
+                   "the new rows have not the same size as the "
+                   "number of columns in the database" );
       }
 
       __updateHandlers( db_size + new_rows.size() );
@@ -432,16 +445,16 @@ namespace gum {
     /// insert a set of new DBRow at the end of the database
     INLINE void
     DatabaseVectInRAM::insertDBRows( std::vector<DBRow>&& new_rows ) {
-      if ( new_rows.empty() )
-        return;
+      if ( new_rows.empty() ) return;
 
       // check that all the rows have the same size
       const unsigned int new_size = new_rows[0].size();
 
       for ( const auto& row : new_rows ) {
         if ( row.size() != new_size ) {
-          GUM_ERROR( SizeError, "all the new rows do not have the same "
-                                "nunber of columns" );
+          GUM_ERROR( SizeError,
+                     "all the new rows do not have the same "
+                     "nunber of columns" );
         }
       }
 
@@ -451,13 +464,15 @@ namespace gum {
       const unsigned int nb_cols = __variable_names.size();
 
       if ( db_size && ( __data[0].size() != new_size ) ) {
-        GUM_ERROR( SizeError, "the new rows have not the same size as the "
-                              "rest of the database" );
+        GUM_ERROR( SizeError,
+                   "the new rows have not the same size as the "
+                   "rest of the database" );
       }
 
       if ( nb_cols && ( new_size != nb_cols ) ) {
-        GUM_ERROR( SizeError, "the new rows have not the same size as the "
-                              "number of columns in the database" );
+        GUM_ERROR( SizeError,
+                   "the new rows have not the same size as the "
+                   "number of columns in the database" );
       }
 
       __updateHandlers( db_size + new_rows.size() );
@@ -531,8 +546,7 @@ namespace gum {
     /// erase the rows from the debth to the endth (not included)
     INLINE void DatabaseVectInRAM::eraseDBRows( unsigned long deb,
                                                 unsigned long end ) {
-      if ( deb > end )
-        std::swap( deb, end );
+      if ( deb > end ) std::swap( deb, end );
 
       unsigned long db_size = __data.size();
 

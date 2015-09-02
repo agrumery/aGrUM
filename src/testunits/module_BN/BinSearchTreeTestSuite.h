@@ -143,7 +143,8 @@ namespace gum_tests {
       unsigned int i = 0;
 
       for ( gum::BinSearchTree<int>::iterator iter = tree.begin();
-            iter != tree.end(); ++iter, ++i ) {
+            iter != tree.end();
+            ++iter, ++i ) {
         switch ( i ) {
           case 0:
             TS_ASSERT( *iter == 1 );
@@ -174,7 +175,8 @@ namespace gum_tests {
       i = 5;
 
       for ( gum::BinSearchTree<int>::iterator iter = tree.rbegin();
-            iter != tree.rend(); --iter, --i ) {
+            iter != tree.rend();
+            --iter, --i ) {
         switch ( i ) {
           case 0:
             TS_ASSERT( *iter == 1 );

@@ -35,7 +35,8 @@
 namespace gum {
 
   /// returns a new distinct ID for each abtract scheduleMultiDim
-  template <typename GUM_SCALAR> Id ScheduleMultiDim<GUM_SCALAR>::__newId() {
+  template <typename GUM_SCALAR>
+  Id ScheduleMultiDim<GUM_SCALAR>::__newId() {
     static Id __abstract_id = 0;
     return ++__abstract_id;
   }
@@ -53,8 +54,11 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__,
-                                 "destructor of", (void*)&__multidims );
+      __debug__::__inc_deletion( "HashTable",
+                                 __FILE__,
+                                 __LINE__,
+                                 "destructor of",
+                                 (void*)&__multidims );
     }
 
 #endif /* NDEBUG */
@@ -75,8 +79,11 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__,
-                                 "destructor of", (void*)&__multidim_ids );
+      __debug__::__inc_deletion( "HashTable",
+                                 __FILE__,
+                                 __LINE__,
+                                 "destructor of",
+                                 (void*)&__multidim_ids );
     }
 
 #endif /* NDEBUG */
@@ -95,8 +102,8 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__,
-                                 "destructor of", (void*)&__ids );
+      __debug__::__inc_deletion(
+          "HashTable", __FILE__, __LINE__, "destructor of", (void*)&__ids );
     }
 
 #endif /* NDEBUG */
@@ -116,8 +123,8 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__,
-                                 "destructor of", (void*)&__vars );
+      __debug__::__inc_deletion(
+          "HashTable", __FILE__, __LINE__, "destructor of", (void*)&__vars );
     }
 
 #endif /* NDEBUG */
@@ -136,8 +143,8 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__,
-                                 "destructor of", (void*)&__size );
+      __debug__::__inc_deletion(
+          "HashTable", __FILE__, __LINE__, "destructor of", (void*)&__size );
     }
 
 #endif /* NDEBUG */
@@ -388,8 +395,7 @@ namespace gum {
         const MultiDimImplementation<GUM_SCALAR>* impl =
             __id2multidim().operator[]( __id );
 
-        if ( impl == &m )
-          return;
+        if ( impl == &m ) return;
 
         __multidim2id().erase( impl );
 

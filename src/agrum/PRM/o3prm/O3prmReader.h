@@ -40,7 +40,8 @@
 namespace gum {
   namespace prm {
     namespace o3prm {
-      template <typename GUM_SCALAR> class O3prmReader {
+      template <typename GUM_SCALAR>
+      class O3prmReader {
         public:
         O3prmReader();
 

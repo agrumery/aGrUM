@@ -76,7 +76,8 @@ namespace gum {
     __entityName = entityName == "" ? __getEntityName( filename ) : entityName;
   }
 
-  template <typename GUM_SCALAR> O3prmBNReader<GUM_SCALAR>::~O3prmBNReader() {
+  template <typename GUM_SCALAR>
+  O3prmBNReader<GUM_SCALAR>::~O3prmBNReader() {
     GUM_DESTRUCTOR( O3prmBNReader );
   }
 
@@ -98,7 +99,8 @@ namespace gum {
           ParseError warn( false,
                            "No instance " + __entityName +
                                " found but class found. Generating instance.",
-                           __filename, 0 );
+                           __filename,
+                           0 );
           __errors.add( warn );
           gum::prm::System<double> s( "S_" + __entityName );
           auto i =
@@ -109,7 +111,8 @@ namespace gum {
         } else {
           ParseError err( true,
                           "Neither instance nor class " + __entityName + ".",
-                          __filename, 0 );
+                          __filename,
+                          0 );
           __errors.add( err );
         }
       }
@@ -127,8 +130,8 @@ namespace gum {
         // trying to simplify the name
         if ( std::regex_search( nn, match, re ) ) {
           if ( match.size() != 4 ) {
-            ParseError warn( false, "Name " + nn + " cannot be simplified.",
-                             __filename, 0 );
+            ParseError warn(
+                false, "Name " + nn + " cannot be simplified.", __filename, 0 );
             __errors.add( warn );
           } else {
             std::string newNameRadical = __getVariableName(

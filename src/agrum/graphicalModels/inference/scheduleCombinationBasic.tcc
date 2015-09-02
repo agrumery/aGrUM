@@ -38,7 +38,8 @@ namespace gum {
       MultiDimImplementation<GUM_SCALAR>* ( *combine )(
           const MultiDimImplementation<GUM_SCALAR>&,
           const MultiDimImplementation<GUM_SCALAR>& ) )
-      : ScheduleCombination<GUM_SCALAR>(), _combine( combine ) {
+      : ScheduleCombination<GUM_SCALAR>()
+      , _combine( combine ) {
     /// for debugging purposes
     GUM_CONSTRUCTOR( ScheduleCombinationBasic );
   }
@@ -47,7 +48,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleCombinationBasic<GUM_SCALAR>::ScheduleCombinationBasic(
       const ScheduleCombinationBasic<GUM_SCALAR>& from )
-      : ScheduleCombination<GUM_SCALAR>( from ), _combine( from._combine ) {
+      : ScheduleCombination<GUM_SCALAR>( from )
+      , _combine( from._combine ) {
     /// for debugging purposes
     GUM_CONS_CPY( ScheduleCombinationBasic );
   }
@@ -90,8 +92,7 @@ namespace gum {
   Size ScheduleCombinationBasic<GUM_SCALAR>::_combinedSize(
       const Sequence<const DiscreteVariable*>& seq1,
       const Sequence<const DiscreteVariable*>& seq2 ) const {
-    if ( seq1.empty() && seq2.empty() )
-      return 0;
+    if ( seq1.empty() && seq2.empty() ) return 0;
 
     Size size = 1;
 
@@ -99,8 +100,7 @@ namespace gum {
       size *= var->domainSize();
 
     for ( const auto var : seq2 )
-      if ( !seq1.exists( var ) )
-        size *= var->domainSize();
+      if ( !seq1.exists( var ) ) size *= var->domainSize();
 
     return size;
   }
@@ -168,8 +168,8 @@ namespace gum {
 
       // create the combination that will be performed later on and put it into
       // the schedule
-      ScheduleCombine<GUM_SCALAR> comb( *( tables[ti] ), *( tables[tj] ),
-                                        _combine );
+      ScheduleCombine<GUM_SCALAR> comb(
+          *( tables[ti] ), *( tables[tj] ), _combine );
       NodeId comb_id = schedule.insert( comb );
 
       // substitute tables[pair.first] by the result and delete the temporary
@@ -275,8 +275,7 @@ namespace gum {
       const Set<const ScheduleMultiDim<GUM_SCALAR>*>& set,
       const Schedule<GUM_SCALAR>& schedule ) {
     // check if the set passed in argument is empty.
-    if ( set.size() < 2 )
-      return 0.0f;
+    if ( set.size() < 2 ) return 0.0f;
 
     float result = 0.0f;
 
@@ -348,11 +347,9 @@ namespace gum {
 
       // substitute tables[pair.first] by the result
 
-      if ( tables[ti] && is_t_new[ti] )
-        delete tables[ti];
+      if ( tables[ti] && is_t_new[ti] ) delete tables[ti];
 
-      if ( tables[tj] && is_t_new[tj] )
-        delete tables[tj];
+      if ( tables[tj] && is_t_new[tj] ) delete tables[tj];
 
       tables[ti] = new_seq;
 
@@ -437,8 +434,7 @@ namespace gum {
       const Set<const ScheduleMultiDim<GUM_SCALAR>*>& set,
       const Schedule<GUM_SCALAR>& schedule ) {
     // check if the set passed in argument is empty.
-    if ( set.size() < 2 )
-      return std::pair<long, long>( 0, 0 );
+    if ( set.size() < 2 ) return std::pair<long, long>( 0, 0 );
 
     long max_memory = 0;
     long current_memory = 0;

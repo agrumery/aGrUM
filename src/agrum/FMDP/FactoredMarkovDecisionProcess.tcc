@@ -72,23 +72,21 @@ namespace gum {
       delete action.second;
     }
 
-    if ( __defaultCostTable != nullptr )
-      delete __defaultCostTable;
+    if ( __defaultCostTable != nullptr ) delete __defaultCostTable;
 
     for ( const auto& action : __actionCostTable )
       delete action.second;
 
     for ( BijectionIterator<Idx, const std::string*> actIter =
               __actionMap.begin();
-          actIter != __actionMap.end(); ++actIter )
+          actIter != __actionMap.end();
+          ++actIter )
       delete actIter.second();
 
-    if ( __defaultRewardTable != nullptr )
-      delete __defaultRewardTable;
+    if ( __defaultRewardTable != nullptr ) delete __defaultRewardTable;
 
     for ( const auto& elt : __defaultTransitionTable ) {
-      if ( elt.second != nullptr )
-        delete elt.second;
+      if ( elt.second != nullptr ) delete elt.second;
 
       delete elt.first;
     }
@@ -150,7 +148,8 @@ namespace gum {
 
     for ( BijectionIterator<Idx, const std::string*> actIter =
               __actionMap.begin();
-          actIter != __actionMap.end(); ++actIter )
+          actIter != __actionMap.end();
+          ++actIter )
       if ( *( actIter.second() ) == action ) {
         GUM_ERROR( DuplicateElement,
                    " Action " << action
@@ -183,14 +182,15 @@ namespace gum {
     Idx actionId = __actionId( action );
 
     if ( !__defaultTransitionTable.exists( var ) )
-      GUM_ERROR( NotFound, " Variable " << var->name()
-                                        << " has not been declared before." );
+      GUM_ERROR( NotFound,
+                 " Variable " << var->name()
+                              << " has not been declared before." );
 
     if ( __actionTransitionTable[actionId]->exists( var ) )
-      GUM_ERROR( DuplicateElement, " Variable "
-                                       << var->name()
-                                       << " already has a transition table in "
-                                       << actionId << " table." );
+      GUM_ERROR( DuplicateElement,
+                 " Variable " << var->name()
+                              << " already has a transition table in "
+                              << actionId << " table." );
 
     __actionTransitionTable[actionId]->insert( var, transition );
   }
@@ -206,8 +206,9 @@ namespace gum {
       const MultiDimImplementation<GUM_SCALAR>* transition ) {
 
     if ( !__defaultTransitionTable.exists( var ) )
-      GUM_ERROR( NotFound, " Variable " << var->name()
-                                        << " has not been declared before." );
+      GUM_ERROR( NotFound,
+                 " Variable " << var->name()
+                              << " has not been declared before." );
 
     if ( __defaultTransitionTable[var] != nullptr )
       GUM_ERROR( DuplicateElement,
@@ -230,8 +231,8 @@ namespace gum {
     Idx actionId = __actionId( action );
 
     if ( __actionCostTable[actionId] != nullptr )
-      GUM_ERROR( DuplicateElement, " Action " << action
-                                              << " already has a cost table" );
+      GUM_ERROR( DuplicateElement,
+                 " Action " << action << " already has a cost table" );
 
     __actionCostTable.insert( actionId, cost );
   }
@@ -340,8 +341,8 @@ namespace gum {
   FactoredMarkovDecisionProcess<GUM_SCALAR>::actionName( Idx actionId ) const {
 
     if ( !__actionMap.existsFirst( actionId ) )
-      GUM_ERROR( NotFound, "No action with " << actionId
-                                             << " as identifiant." );
+      GUM_ERROR( NotFound,
+                 "No action with " << actionId << " as identifiant." );
 
     const std::string* ret = __actionMap.second( actionId );
     return *ret;
@@ -471,12 +472,13 @@ namespace gum {
 
     for ( BijectionIterator<Idx, const std::string*> actIter =
               __actionMap.begin();
-          actIter != __actionMap.end(); ++actIter )
+          actIter != __actionMap.end();
+          ++actIter )
       if ( *( actIter.second() ) == action ) {
         return actIter.first();
       }
 
-    GUM_ERROR( NotFound, " Action " << action
-                                    << " has not been declared before." );
+    GUM_ERROR( NotFound,
+               " Action " << action << " has not been declared before." );
   }
 }

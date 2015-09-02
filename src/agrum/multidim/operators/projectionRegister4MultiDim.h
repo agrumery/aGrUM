@@ -38,7 +38,8 @@
 namespace gum {
 
   // the base object used by the projections
-  template <typename GUM_SCALAR> class MultiDimImplementation;
+  template <typename GUM_SCALAR>
+  class MultiDimImplementation;
 
   /* ===========================================================================
    */
@@ -54,7 +55,8 @@ namespace gum {
    * @ingroup multidim_group */
   /* ===========================================================================
    */
-  template <typename GUM_SCALAR> class ProjectionRegister4MultiDim {
+  template <typename GUM_SCALAR>
+  class ProjectionRegister4MultiDim {
     public:
     /// the type of functions used by the register
     typedef MultiDimImplementation<GUM_SCALAR>* ( *ProjectionPtr )(
@@ -86,7 +88,8 @@ namespace gum {
      * two MultiDimImplementations. This constraint is imposed by the C++ typing
      * system */
     void insert( const std::string& projection_name,
-                 const std::string& type_multidim, ProjectionPtr newFunction );
+                 const std::string& type_multidim,
+                 ProjectionPtr newFunction );
 
     /// removes a given entry from the register
     /** removes the function, if any, that performs the projection described by
@@ -180,10 +183,10 @@ namespace gum {
   /// a function to more easily register new projection functions in MultiDims
 
   template <typename GUM_SCALAR>
-  void registerProjection(
-      const std::string& projection_name, const std::string& type_multidim,
-      typename ProjectionRegister4MultiDim<GUM_SCALAR>::ProjectionPtr
-          function );
+  void registerProjection( const std::string& projection_name,
+                           const std::string& type_multidim,
+                           typename ProjectionRegister4MultiDim<
+                               GUM_SCALAR>::ProjectionPtr function );
 
   // a display operator for ProjectionPtrs
 

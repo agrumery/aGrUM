@@ -36,9 +36,13 @@ namespace gum {
   DefaultPartialOrderedEliminationSequenceStrategy::
       DefaultPartialOrderedEliminationSequenceStrategy( float theRatio,
                                                         float theThreshold )
-      : __graph( 0 ), __modalities( 0 ), __subsets( 0 ), __simplicial_set( 0 ),
-        __simplicial_ratio( theRatio ), __simplicial_threshold( theThreshold ),
-        __provide_fill_ins( false ) {
+      : __graph( 0 )
+      , __modalities( 0 )
+      , __subsets( 0 )
+      , __simplicial_set( 0 )
+      , __simplicial_ratio( theRatio )
+      , __simplicial_threshold( theThreshold )
+      , __provide_fill_ins( false ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( DefaultPartialOrderedEliminationSequenceStrategy );
   }
@@ -46,11 +50,18 @@ namespace gum {
   /// constructor for an a priori non empty graph
   DefaultPartialOrderedEliminationSequenceStrategy::
       DefaultPartialOrderedEliminationSequenceStrategy(
-          UndiGraph* graph, const NodeProperty<Size>* modal,
-          const List<NodeSet>* subsets, float ratio, float threshold )
-      : __graph( 0 ), __modalities( 0 ), __subsets( 0 ), __simplicial_set( 0 ),
-        __simplicial_ratio( ratio ), __simplicial_threshold( threshold ),
-        __provide_fill_ins( false ) {
+          UndiGraph* graph,
+          const NodeProperty<Size>* modal,
+          const List<NodeSet>* subsets,
+          float ratio,
+          float threshold )
+      : __graph( 0 )
+      , __modalities( 0 )
+      , __subsets( 0 )
+      , __simplicial_set( 0 )
+      , __simplicial_ratio( ratio )
+      , __simplicial_threshold( threshold )
+      , __provide_fill_ins( false ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( DefaultPartialOrderedEliminationSequenceStrategy );
     setGraph( graph, modal, subsets );
@@ -60,10 +71,13 @@ namespace gum {
   DefaultPartialOrderedEliminationSequenceStrategy::
       DefaultPartialOrderedEliminationSequenceStrategy(
           const DefaultPartialOrderedEliminationSequenceStrategy& from )
-      : __graph( 0 ), __modalities( 0 ), __subsets( 0 ), __simplicial_set( 0 ),
-        __simplicial_ratio( from.__simplicial_ratio ),
-        __simplicial_threshold( from.__simplicial_threshold ),
-        __provide_fill_ins( from.__provide_fill_ins ) {
+      : __graph( 0 )
+      , __modalities( 0 )
+      , __subsets( 0 )
+      , __simplicial_set( 0 )
+      , __simplicial_ratio( from.__simplicial_ratio )
+      , __simplicial_threshold( from.__simplicial_threshold )
+      , __provide_fill_ins( from.__provide_fill_ins ) {
     GUM_CONS_CPY( DefaultPartialOrderedEliminationSequenceStrategy );
 
     if ( __graph ) {
@@ -79,26 +93,23 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR( DefaultPartialOrderedEliminationSequenceStrategy );
 
-    if ( __simplicial_set )
-      delete __simplicial_set;
+    if ( __simplicial_set ) delete __simplicial_set;
   }
 
   /// sets a new graph to be triangulated
   void DefaultPartialOrderedEliminationSequenceStrategy::setGraph(
-      UndiGraph* graph, const NodeProperty<Size>* modal,
+      UndiGraph* graph,
+      const NodeProperty<Size>* modal,
       const List<NodeSet>* subsets ) {
     // check that both the graph, the modalities and the subsets are different
     // from 0 or else that both are equal to 0
     unsigned char nb = 0;
 
-    if ( graph )
-      ++nb;
+    if ( graph ) ++nb;
 
-    if ( modal )
-      ++nb;
+    if ( modal ) ++nb;
 
-    if ( subsets )
-      ++nb;
+    if ( subsets ) ++nb;
 
     if ( nb && ( nb != 3 ) )
       GUM_ERROR( GraphError,
@@ -131,9 +142,11 @@ namespace gum {
           __log_modalities.insert( node, std::log( ( *modal )[node] ) );
 
         // creation du simplicial set
-        __simplicial_set =
-            new SimplicialSet( __graph, &__log_modalities, &__log_weights,
-                               __simplicial_ratio, __simplicial_threshold );
+        __simplicial_set = new SimplicialSet( __graph,
+                                              &__log_modalities,
+                                              &__log_weights,
+                                              __simplicial_ratio,
+                                              __simplicial_threshold );
 
         __simplicial_set->setFillIns( __provide_fill_ins );
 
@@ -155,8 +168,7 @@ namespace gum {
     __subset_iter.clear();
     __nodeset.clear();
 
-    if ( __simplicial_set )
-      delete __simplicial_set;
+    if ( __simplicial_set ) delete __simplicial_set;
 
     __simplicial_set = 0;
   }
@@ -191,8 +203,7 @@ namespace gum {
   NodeId
   DefaultPartialOrderedEliminationSequenceStrategy::nextNodeToEliminate() {
     // if there is no simplicial set, send an exception
-    if ( !__graph )
-      GUM_ERROR( NotFound, "the graph is empty" );
+    if ( !__graph ) GUM_ERROR( NotFound, "the graph is empty" );
 
     if ( __nodeset.empty() ) {
       GUM_ERROR( NotFound, "no node is admissible" );
@@ -240,8 +251,7 @@ namespace gum {
   DefaultPartialOrderedEliminationSequenceStrategy::askFillIns( bool do_it ) {
     __provide_fill_ins = do_it;
 
-    if ( __simplicial_set )
-      __simplicial_set->setFillIns( __provide_fill_ins );
+    if ( __simplicial_set ) __simplicial_set->setFillIns( __provide_fill_ins );
   }
 
   /** @brief indicates whether the new fill-ins generated by a new eliminated
@@ -273,8 +283,7 @@ namespace gum {
       if ( __nodeset.empty() ) {
         ++__subset_iter;
 
-        if ( __subset_iter != __subsets->cend() )
-          __nodeset = *__subset_iter;
+        if ( __subset_iter != __subsets->cend() ) __nodeset = *__subset_iter;
       }
     }
   }

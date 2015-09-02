@@ -48,9 +48,9 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     ScoreBD<IdSetAlloc, CountAlloc>::ScoreBD(
         const ScoreBD<IdSetAlloc, CountAlloc>& from )
-        : Score<IdSetAlloc, CountAlloc>( from ),
-          __gammalog2( from.__gammalog2 ),
-          __internal_apriori( from.__internal_apriori ) {
+        : Score<IdSetAlloc, CountAlloc>( from )
+        , __gammalog2( from.__gammalog2 )
+        , __internal_apriori( from.__internal_apriori ) {
       // for debugging purposes
       GUM_CONS_CPY( ScoreBD );
     }
@@ -59,9 +59,9 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     ScoreBD<IdSetAlloc, CountAlloc>::ScoreBD(
         ScoreBD<IdSetAlloc, CountAlloc>&& from )
-        : Score<IdSetAlloc, CountAlloc>( std::move( from ) ),
-          __gammalog2( std::move( from.__gammalog2 ) ),
-          __internal_apriori( std::move( from.__internal_apriori ) ) {
+        : Score<IdSetAlloc, CountAlloc>( std::move( from ) )
+        , __gammalog2( std::move( from.__gammalog2 ) )
+        , __internal_apriori( std::move( from.__internal_apriori ) ) {
       // for debugging purposes
       GUM_CONS_MOV( ScoreBD );
     }

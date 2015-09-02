@@ -95,8 +95,9 @@ namespace gum_tests {
     }
 
     void testWriter_ostream_With_Approximation() {
-      gum::ContextualDependenciesCNFWriter<
-          double, gum::LinearApproximationPolicy> writer;
+      gum::ContextualDependenciesCNFWriter<double,
+                                           gum::LinearApproximationPolicy>
+          writer;
       writer.setEpsilon( 0.2 );
       writer.setLowLimit( 0 );
       writer.setHighLimit( 1 );
@@ -122,8 +123,9 @@ namespace gum_tests {
     }
 
     void testWriter_string_With_Approximation() {
-      gum::ContextualDependenciesCNFWriter<
-          double, gum::LinearApproximationPolicy> writer;
+      gum::ContextualDependenciesCNFWriter<double,
+                                           gum::LinearApproximationPolicy>
+          writer;
 
       writer.setEpsilon( 0.2 );
       writer.setLowLimit( 0 );
@@ -186,8 +188,22 @@ namespace gum_tests {
       const gum::Potential<double>& p5 = bn.cpt( i5 );
       {
         // FILLING PARAMS
-        const double t[16] = {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0,
-                              0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0};
+        const double t[16] = {1.0,
+                              0.0,
+                              0.0,
+                              1.0,
+                              0.0,
+                              1.0,
+                              0.0,
+                              1.0,
+                              0.0,
+                              1.0,
+                              0.0,
+                              1.0,
+                              0.0,
+                              1.0,
+                              0.0,
+                              1.0};
         int n = 16;
         const std::vector<double> v( t, t + n );
         p5.fillWith( v );

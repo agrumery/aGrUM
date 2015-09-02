@@ -82,7 +82,8 @@ namespace gum {
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      */
-    template <typename GUM_SCALAR> class LRSWrapper {
+    template <typename GUM_SCALAR>
+    class LRSWrapper {
       private:
       /** @brief Shortcut for dynamic matrix using vectors. */
       typedef typename std::vector<std::vector<GUM_SCALAR>> matrix;
@@ -223,7 +224,8 @@ namespace gum {
        * @param Num Output integer numerators.
        * @param Den Output integer denominators.
        */
-      void __getLRSWrapperOutput( lrs_mp Nin, lrs_mp Din,
+      void __getLRSWrapperOutput( lrs_mp Nin,
+                                  lrs_mp Din,
                                   std::vector<long int>& Num,
                                   std::vector<long int>& Den ) const;
 
@@ -349,7 +351,8 @@ namespace gum {
        * @param max The upper value of p(X=modal | .).
        * @param modal The modality on which we put constraints.
        */
-      void fillH( const GUM_SCALAR& min, const GUM_SCALAR& max,
+      void fillH( const GUM_SCALAR& min,
+                  const GUM_SCALAR& max,
                   const unsigned int& modal );
 
       /**

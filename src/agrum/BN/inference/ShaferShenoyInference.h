@@ -43,7 +43,8 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR> class CliqueProp;
+  template <typename GUM_SCALAR>
+  class CliqueProp;
 
   /**
    * @class ShaferShenoyInference ShaferShenoyInference.h

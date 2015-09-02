@@ -50,7 +50,8 @@ namespace gum {
 
     for ( Sequence<const DiscreteVariable*>::iterator_safe iter =
               varSeq.beginSafe();
-          iter != varSeq.endSafe(); ++iter ) {
+          iter != varSeq.endSafe();
+          ++iter ) {
       this->add( **iter );
     }
 
@@ -92,7 +93,8 @@ namespace gum {
 
     for ( Sequence<const DiscreteVariable*>::iterator_safe iter =
               seq0.beginSafe();
-          iter != seq0.endSafe(); ++iter ) {
+          iter != seq0.endSafe();
+          ++iter ) {
       this->erase( **iter );
     }
 
@@ -101,7 +103,8 @@ namespace gum {
 
     for ( Sequence<const DiscreteVariable*>::iterator_safe iter =
               seq1.beginSafe();
-          iter != seq1.endSafe(); ++iter ) {
+          iter != seq1.endSafe();
+          ++iter ) {
       this->add( **iter );
     }
 
@@ -110,7 +113,8 @@ namespace gum {
 
     for ( Sequence<const DiscreteVariable*>::iterator_safe iter =
               seq2.beginSafe();
-          iter != seq2.endSafe(); ++iter ) {
+          iter != seq2.endSafe();
+          ++iter ) {
       if ( !this->contains( **iter ) ) {
         this->add( **iter );
       }
@@ -148,14 +152,16 @@ namespace gum {
 
       for ( typename List<UtilityTable<GUM_SCALAR>*>::const_iterator iter =
                 utilitiesList.cbegin();
-            iter != utilitiesList.cend(); ++iter ) {
+            iter != utilitiesList.cend();
+            ++iter ) {
         const Sequence<const DiscreteVariable*>& varSeq =
             ( *iter )->variablesSequence();
 
         for (
             typename Sequence<const DiscreteVariable*>::iterator_safe varIter =
                 varSeq.beginSafe();
-            varIter != varSeq.endSafe(); ++varIter ) {
+            varIter != varSeq.endSafe();
+            ++varIter ) {
           try {
             partialInst.add( **varIter );
           } catch ( DuplicateElement& ) {
@@ -174,7 +180,8 @@ namespace gum {
 
           for ( typename List<UtilityTable<GUM_SCALAR>*>::const_iterator iter =
                     utilitiesList.cbegin();
-                iter != utilitiesList.cend(); ++iter ) {
+                iter != utilitiesList.cend();
+                ++iter ) {
             sumData += ( **iter )[partialInst];
           }
 
@@ -192,7 +199,8 @@ namespace gum {
 
           for ( typename List<UtilityTable<GUM_SCALAR>*>::const_iterator iter =
                     utilitiesList.cbegin();
-                iter != utilitiesList.cend(); ++iter ) {
+                iter != utilitiesList.cend();
+                ++iter ) {
             sumData += ( *iter )->get( globalInst );
           }
 
@@ -215,7 +223,8 @@ namespace gum {
 
     for ( List<const DiscreteVariable*>::const_iterator_safe iter =
               varList.cbeginSafe();
-          iter != varList.cendSafe(); ++iter ) {
+          iter != varList.cendSafe();
+          ++iter ) {
       const DiscreteVariable& var = **iter;
 
       if ( this->contains( var ) ) {

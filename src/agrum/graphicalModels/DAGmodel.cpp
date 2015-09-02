@@ -26,14 +26,17 @@
 
 namespace gum {
   DAGmodel::DAGmodel()
-      : __mutableMoralGraph( nullptr ), __mutableTopologicalOrder( nullptr ),
-        __propertiesMap( nullptr ) {
+      : __mutableMoralGraph( nullptr )
+      , __mutableTopologicalOrder( nullptr )
+      , __propertiesMap( nullptr ) {
     GUM_CONSTRUCTOR( DAGmodel );
   }
 
   DAGmodel::DAGmodel( const DAGmodel& from )
-      : _dag( from._dag ), __mutableMoralGraph( nullptr ),
-        __mutableTopologicalOrder( nullptr ), __propertiesMap( nullptr ) {
+      : _dag( from._dag )
+      , __mutableMoralGraph( nullptr )
+      , __mutableTopologicalOrder( nullptr )
+      , __propertiesMap( nullptr ) {
     GUM_CONS_CPY( DAGmodel );
 
     if ( from.__propertiesMap ) {
@@ -64,8 +67,7 @@ namespace gum {
     std::vector<NodeId> roots;
 
     for ( const auto node : dag.nodes() )
-      if ( dag.parents( node ).empty() )
-        roots.push_back( node );
+      if ( dag.parents( node ).empty() ) roots.push_back( node );
 
     while ( roots.size() ) {
       __mutableTopologicalOrder->insert( roots.back() );
@@ -76,8 +78,7 @@ namespace gum {
             *( dag.children( __mutableTopologicalOrder->back() ).begin() );
         dag.eraseArc( Arc( __mutableTopologicalOrder->back(), child ) );
 
-        if ( dag.parents( child ).empty() )
-          roots.push_back( child );
+        if ( dag.parents( child ).empty() ) roots.push_back( child );
       }
     }
 

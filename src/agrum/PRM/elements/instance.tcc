@@ -33,7 +33,9 @@ namespace gum {
     template <typename GUM_SCALAR>
     Instance<GUM_SCALAR>::Instance( const std::string& name,
                                     Class<GUM_SCALAR>& type )
-        : PRMObject( name ), __instantiated( false ), __type( &type ) {
+        : PRMObject( name )
+        , __instantiated( false )
+        , __type( &type ) {
       GUM_CONSTRUCTOR( Instance );
 
       // First we create attributes for each aggregate in type
@@ -46,7 +48,8 @@ namespace gum {
         __copyAttribute( attr );
     }
 
-    template <typename GUM_SCALAR> Instance<GUM_SCALAR>::~Instance() {
+    template <typename GUM_SCALAR>
+    Instance<GUM_SCALAR>::~Instance() {
       GUM_DESTRUCTOR( Instance );
 
       for ( const auto& elt : __nodeIdMap )
@@ -59,14 +62,16 @@ namespace gum {
         delete elt.second;
     }
 
-    template <typename GUM_SCALAR> void Instance<GUM_SCALAR>::instantiate() {
+    template <typename GUM_SCALAR>
+    void Instance<GUM_SCALAR>::instantiate() {
       if ( not __instantiated ) {
         __instantiated = true;
         __instantiate();
       }
     }
 
-    template <typename GUM_SCALAR> void Instance<GUM_SCALAR>::__instantiate() {
+    template <typename GUM_SCALAR>
+    void Instance<GUM_SCALAR>::__instantiate() {
 
       // First retrieving any referenced instance
       for ( const auto chain : type().slotChains() ) {
@@ -262,7 +267,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Instance<GUM_SCALAR>::Instance( const Instance<GUM_SCALAR>& source )
-        : PRMObject( source ), __type( source.__type ) {
+        : PRMObject( source )
+        , __type( source.__type ) {
       GUM_CONS_CPY( Instance );
       GUM_ERROR( FatalError, "do not copy Instance" );
     }
@@ -441,15 +447,16 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE Instance<GUM_SCALAR>::RefIterator::RefIterator(
         Set<Instance<GUM_SCALAR>*>& set )
-        : __set( set ), __iter( set.begin() ) {
+        : __set( set )
+        , __iter( set.begin() ) {
       GUM_CONSTRUCTOR( Instance<GUM_SCALAR>::RefIterator );
     }
 
     template <typename GUM_SCALAR>
     INLINE
     Instance<GUM_SCALAR>::RefIterator::RefIterator( const RefIterator& from )
-        : __set( const_cast<Set<Instance<GUM_SCALAR>*>&>( from.__set ) ),
-          __iter( from.__iter ) {
+        : __set( const_cast<Set<Instance<GUM_SCALAR>*>&>( from.__set ) )
+        , __iter( from.__iter ) {
       GUM_CONS_CPY( Instance<GUM_SCALAR>::RefIterator );
     }
 
@@ -506,14 +513,16 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE Instance<GUM_SCALAR>::RefConstIterator::RefConstIterator(
         const Set<Instance<GUM_SCALAR>*>& set )
-        : __set( set ), __iter( set.begin() ) {
+        : __set( set )
+        , __iter( set.begin() ) {
       GUM_CONSTRUCTOR( Instance<GUM_SCALAR>::RefConstIterator );
     }
 
     template <typename GUM_SCALAR>
     INLINE Instance<GUM_SCALAR>::RefConstIterator::RefConstIterator(
         const RefConstIterator& from )
-        : __set( from.__set ), __iter( from.__iter ) {
+        : __set( from.__set )
+        , __iter( from.__iter ) {
       GUM_CONS_CPY( Instance<GUM_SCALAR>::RefConstIterator );
     }
 

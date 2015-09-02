@@ -146,9 +146,11 @@ namespace gum {
      * @throws OperationNotAllowed exception is thrown if the graph, the
      * log_modalities or the log_weights are null pointers, or if these data are
      * different from those stored into simplicial_from */
-    SimplicialSet( const SimplicialSet& simplicial_from, UndiGraph* graph,
+    SimplicialSet( const SimplicialSet& simplicial_from,
+                   UndiGraph* graph,
                    const NodeProperty<float>* log_modalities,
-                   NodeProperty<float>* log_weights, bool avoid_check = false );
+                   NodeProperty<float>* log_weights,
+                   bool avoid_check = false );
 
     /// destructor
     ~SimplicialSet();
@@ -193,7 +195,6 @@ namespace gum {
      * exception is raised.
      * @throw InvalidNode if first and/or second do not belong to the
      * graph nodes */
-    GUM_DEPRECATED( void insertEdge( NodeId first, NodeId second ) );
     void addEdge( NodeId first, NodeId second );
 
     /// indicates whether a given node is a simplicial node
@@ -275,7 +276,8 @@ namespace gum {
      * that an argument is passed as a pointer means that it is not copied
      * within
      * the SimplicialSet, but rather it is only referenced within it. */
-    void setGraph( UndiGraph* graph, const NodeProperty<float>* log_modalities,
+    void setGraph( UndiGraph* graph,
+                   const NodeProperty<float>* log_modalities,
                    NodeProperty<float>* log_weights,
                    float theRatio = GUM_QUASI_RATIO,
                    float theThreshold = GUM_WEIGHT_THRESHOLD );

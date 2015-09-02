@@ -62,8 +62,11 @@ namespace gum {
   template <typename Alloc, bool Gen>
   INLINE SequenceIteratorSafe<Key>::SequenceIteratorSafe(
       const SequenceImplementation<Key, Alloc, Gen>& seq, Idx pos ) noexcept
-      : __seq{reinterpret_cast<const SequenceImplementation<
-            Key, std::allocator<Key>, std::is_scalar<Key>::value>*>( &seq )} {
+      : __seq{reinterpret_cast<
+            const SequenceImplementation<Key,
+                                         std::allocator<Key>,
+                                         std::is_scalar<Key>::value>*>(
+            &seq )} {
     GUM_CONSTRUCTOR( SequenceIteratorSafe );
 
     if ( pos > __seq->size() )
@@ -77,8 +80,11 @@ namespace gum {
   template <typename Alloc>
   INLINE SequenceIteratorSafe<Key>::SequenceIteratorSafe(
       const Sequence<Key, Alloc>& seq, Idx pos ) noexcept
-      : __seq{reinterpret_cast<const SequenceImplementation<
-            Key, std::allocator<Key>, std::is_scalar<Key>::value>*>( &seq )} {
+      : __seq{reinterpret_cast<
+            const SequenceImplementation<Key,
+                                         std::allocator<Key>,
+                                         std::is_scalar<Key>::value>*>(
+            &seq )} {
     GUM_CONSTRUCTOR( SequenceIteratorSafe );
 
     if ( pos > __seq->size() )
@@ -145,8 +151,7 @@ namespace gum {
   template <typename Key>
   INLINE SequenceIteratorSafe<Key>& SequenceIteratorSafe<Key>::
   operator--() noexcept {
-    if ( __iterator != std::numeric_limits<Idx>::max() )
-      --__iterator;
+    if ( __iterator != std::numeric_limits<Idx>::max() ) --__iterator;
 
     return *this;
   }
@@ -155,11 +160,9 @@ namespace gum {
   template <typename Key>
   INLINE SequenceIteratorSafe<Key>& SequenceIteratorSafe<Key>::
   operator+=( unsigned int nb ) noexcept {
-    if ( __iterator == std::numeric_limits<Idx>::max() )
-      return *this;
+    if ( __iterator == std::numeric_limits<Idx>::max() ) return *this;
     __iterator += nb;
-    if ( __iterator > __seq->size() )
-      __iterator = __seq->size();
+    if ( __iterator > __seq->size() ) __iterator = __seq->size();
 
     return *this;
   }
@@ -168,8 +171,7 @@ namespace gum {
   template <typename Key>
   INLINE SequenceIteratorSafe<Key>& SequenceIteratorSafe<Key>::
   operator-=( unsigned int nb ) noexcept {
-    if ( __iterator == std::numeric_limits<Idx>::max() )
-      return *this;
+    if ( __iterator == std::numeric_limits<Idx>::max() ) return *this;
     __iterator -= nb;
     if ( __iterator > __seq->size() )
       __iterator = std::numeric_limits<Idx>::max();
@@ -212,7 +214,8 @@ namespace gum {
   }
 
   /// returns the position of the iterator in the sequence
-  template <typename Key> INLINE Idx SequenceIteratorSafe<Key>::pos() const {
+  template <typename Key>
+  INLINE Idx SequenceIteratorSafe<Key>::pos() const {
     if ( __iterator >= __seq->size() ) {
       GUM_ERROR( UndefinedIteratorValue, "iterator is end() or rend()" );
     }
@@ -294,7 +297,9 @@ namespace gum {
   template <typename Key, typename Alloc, bool Gen>
   INLINE SequenceImplementation<Key, Alloc, Gen>::SequenceImplementation(
       Size size_param )
-      : __h( size_param ), __end_safe{*this}, __rend_safe{*this} {
+      : __h( size_param )
+      , __end_safe{*this}
+      , __rend_safe{*this} {
     // for debugging purposes
     GUM_CONSTRUCTOR( SequenceImplementation );
     __rend_safe.__setAtRend();
@@ -305,7 +310,8 @@ namespace gum {
   template <typename Key, typename Alloc, bool Gen>
   INLINE SequenceImplementation<Key, Alloc, Gen>::SequenceImplementation(
       std::initializer_list<Key> list )
-      : __end_safe{*this}, __rend_safe{*this} {
+      : __end_safe{*this}
+      , __rend_safe{*this} {
     GUM_CONSTRUCTOR( SequenceImplementation );
     __rend_safe.__setAtRend();
     for ( const auto& elt : list ) {
@@ -317,7 +323,8 @@ namespace gum {
   template <typename Key, typename Alloc, bool Gen>
   INLINE SequenceImplementation<Key, Alloc, Gen>::SequenceImplementation(
       const SequenceImplementation<Key, Alloc, Gen>& aSeq )
-      : __end_safe{*this}, __rend_safe{*this} {
+      : __end_safe{*this}
+      , __rend_safe{*this} {
     // for debugging purposes
     GUM_CONS_CPY( SequenceImplementation );
     __rend_safe.__setAtRend();
@@ -329,7 +336,8 @@ namespace gum {
   template <typename OtherAlloc>
   INLINE SequenceImplementation<Key, Alloc, Gen>::SequenceImplementation(
       const SequenceImplementation<Key, OtherAlloc, Gen>& aSeq )
-      : __end_safe{*this}, __rend_safe{*this} {
+      : __end_safe{*this}
+      , __rend_safe{*this} {
     // for debugging purposes
     GUM_CONS_CPY( SequenceImplementation );
     __rend_safe.__setAtRend();
@@ -340,8 +348,10 @@ namespace gum {
   template <typename Key, typename Alloc, bool Gen>
   INLINE SequenceImplementation<Key, Alloc, Gen>::SequenceImplementation(
       SequenceImplementation<Key, Alloc, Gen>&& aSeq )
-      : __h( std::move( aSeq.__h ) ), __v( std::move( aSeq.__v ) ),
-        __end_safe{*this}, __rend_safe{*this} {
+      : __h( std::move( aSeq.__h ) )
+      , __v( std::move( aSeq.__v ) )
+      , __end_safe{*this}
+      , __rend_safe{*this} {
     // for debugging purposes
     GUM_CONS_MOV( SequenceImplementation );
     __rend_safe.__setAtRend();
@@ -350,7 +360,8 @@ namespace gum {
 
   /// destructor
   template <typename Key, typename Alloc, bool Gen>
-  INLINE SequenceImplementation<Key, Alloc,
+  INLINE SequenceImplementation<Key,
+                                Alloc,
                                 Gen>::~SequenceImplementation() noexcept {
     GUM_DESTRUCTOR( SequenceImplementation );
   }
@@ -475,8 +486,7 @@ namespace gum {
   template <typename Key, typename Alloc, bool Gen>
   INLINE void
   SequenceImplementation<Key, Alloc, Gen>::erase( const iterator_safe& iter ) {
-    if ( iter.pos() >= size() )
-      return;
+    if ( iter.pos() >= size() ) return;
 
     // erase the element
     Idx pos = iter.pos();
@@ -505,8 +515,8 @@ namespace gum {
   INLINE const Key&
   SequenceImplementation<Key, Alloc, Gen>::atPos( Idx i ) const {
     if ( i >= __h.size() ) {
-      GUM_ERROR( OutOfBounds, "index " << i << " for a sequence of size"
-                                       << __h.size() );
+      GUM_ERROR( OutOfBounds,
+                 "index " << i << " for a sequence of size" << __h.size() );
     }
 
     return *( __v[i] );
@@ -557,8 +567,7 @@ namespace gum {
   /// swap two elements in the sequence
   template <typename Key, typename Alloc, bool Gen>
   INLINE void SequenceImplementation<Key, Alloc, Gen>::swap( Idx i, Idx j ) {
-    if ( i == j )
-      return;
+    if ( i == j ) return;
 
     Key& ki = const_cast<Key&>( atPos( i ) );
     Key& kj = const_cast<Key&>( atPos( j ) );
@@ -611,8 +620,7 @@ namespace gum {
       return false;
     else {
       for ( Idx i = 0; i < size(); ++i )
-        if ( *__v[i] != *( k.__v[i] ) )
-          return false;
+        if ( *__v[i] != *( k.__v[i] ) ) return false;
     }
 
     return true;
@@ -699,8 +707,7 @@ namespace gum {
   template <typename Key, typename Alloc, bool Gen>
   INLINE void
   SequenceImplementation<Key, Alloc, Gen>::resize( unsigned int new_size ) {
-    if ( new_size < __h.size() )
-      return;
+    if ( new_size < __h.size() ) return;
 
     __h.resize( new_size );
     __v.reserve( new_size );
@@ -747,7 +754,9 @@ namespace gum {
   template <typename Key, typename Alloc>
   INLINE SequenceImplementation<Key, Alloc, true>::SequenceImplementation(
       Size size_param )
-      : __h( size_param ), __end_safe{*this}, __rend_safe{*this} {
+      : __h( size_param )
+      , __end_safe{*this}
+      , __rend_safe{*this} {
     // for debugging purposes
     GUM_CONSTRUCTOR( SequenceImplementation );
     __rend_safe.__setAtRend();
@@ -758,7 +767,8 @@ namespace gum {
   template <typename Key, typename Alloc>
   INLINE SequenceImplementation<Key, Alloc, true>::SequenceImplementation(
       std::initializer_list<Key> list )
-      : __end_safe{*this}, __rend_safe{*this} {
+      : __end_safe{*this}
+      , __rend_safe{*this} {
     GUM_CONSTRUCTOR( SequenceImplementation );
     __rend_safe.__setAtRend();
     for ( const auto& elt : list ) {
@@ -770,8 +780,10 @@ namespace gum {
   template <typename Key, typename Alloc>
   SequenceImplementation<Key, Alloc, true>::SequenceImplementation(
       const SequenceImplementation<Key, Alloc, true>& aSeq )
-      : __h( aSeq.__h ), __v( aSeq.__v ), __end_safe{*this},
-        __rend_safe{*this} {
+      : __h( aSeq.__h )
+      , __v( aSeq.__v )
+      , __end_safe{*this}
+      , __rend_safe{*this} {
     // for debugging purposes
     GUM_CONS_CPY( SequenceImplementation );
     __rend_safe.__setAtRend();
@@ -783,7 +795,9 @@ namespace gum {
   template <typename OtherAlloc>
   SequenceImplementation<Key, Alloc, true>::SequenceImplementation(
       const SequenceImplementation<Key, OtherAlloc, true>& aSeq )
-      : __h( aSeq.size() / 2 ), __end_safe{*this}, __rend_safe{*this} {
+      : __h( aSeq.size() / 2 )
+      , __end_safe{*this}
+      , __rend_safe{*this} {
     // for debugging purposes
     GUM_CONS_CPY( SequenceImplementation );
     __rend_safe.__setAtRend();
@@ -794,8 +808,10 @@ namespace gum {
   template <typename Key, typename Alloc>
   INLINE SequenceImplementation<Key, Alloc, true>::SequenceImplementation(
       SequenceImplementation<Key, Alloc, true>&& aSeq )
-      : __h( std::move( aSeq.__h ) ), __v( std::move( aSeq.__v ) ),
-        __end_safe{*this}, __rend_safe{*this} {
+      : __h( std::move( aSeq.__h ) )
+      , __v( std::move( aSeq.__v ) )
+      , __end_safe{*this}
+      , __rend_safe{*this} {
     // for debugging purposes
     GUM_CONS_MOV( SequenceImplementation );
     __rend_safe.__setAtRend();
@@ -907,8 +923,7 @@ namespace gum {
   template <typename Key, typename Alloc>
   INLINE void
   SequenceImplementation<Key, Alloc, true>::erase( const iterator_safe& iter ) {
-    if ( iter.pos() >= size() )
-      return;
+    if ( iter.pos() >= size() ) return;
 
     // erase the element
     Idx pos = iter.pos();
@@ -972,8 +987,7 @@ namespace gum {
   /// swap two elements in the sequence
   template <typename Key, typename Alloc>
   INLINE void SequenceImplementation<Key, Alloc, true>::swap( Idx i, Idx j ) {
-    if ( i == j )
-      return;
+    if ( i == j ) return;
 
     Key ki = atPos( i );
     Key kj = atPos( j );
@@ -1026,8 +1040,7 @@ namespace gum {
       return false;
     else {
       for ( Idx i = 0; i < size(); ++i )
-        if ( __v[i] != k.__v[i] )
-          return false;
+        if ( __v[i] != k.__v[i] ) return false;
     }
 
     return true;
@@ -1114,8 +1127,7 @@ namespace gum {
   template <typename Key, typename Alloc>
   INLINE void
   SequenceImplementation<Key, Alloc, true>::resize( unsigned int new_size ) {
-    if ( new_size < __h.size() )
-      return;
+    if ( new_size < __h.size() ) return;
 
     __h.resize( new_size );
     __v.reserve( new_size );
@@ -1210,8 +1222,7 @@ namespace gum {
     Set<Key, Alloc> res;
 
     for ( iterator iter = this->begin(); iter != this->end(); ++iter ) {
-      if ( !seq.exists( *iter ) )
-        res << *iter;
+      if ( !seq.exists( *iter ) ) res << *iter;
     }
 
     return res;

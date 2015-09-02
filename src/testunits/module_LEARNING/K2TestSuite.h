@@ -56,13 +56,14 @@ namespace gum_tests {
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>() );
+                                gum::learning::Col<0>,
+                                8>() );
 
       auto generators = gum::learning::make_generators(
           gum::learning::RowGeneratorIdentity() );
 
-      auto filter = gum::learning::make_DB_row_filter( database, translators,
-                                                       generators );
+      auto filter = gum::learning::make_DB_row_filter(
+          database, translators, generators );
 
       std::vector<unsigned int> modalities = filter.modalities();
 
@@ -72,8 +73,8 @@ namespace gum_tests {
       gum::learning::StructuralConstraintDAG struct_constraint(
           modalities.size() );
 
-      gum::learning::ParamEstimatorML<> estimator( filter, modalities,
-                                                   apriori );
+      gum::learning::ParamEstimatorML<> estimator(
+          filter, modalities, apriori );
 
       std::vector<unsigned int> order( filter.modalities().size() );
       for ( unsigned int i = 0; i < order.size(); ++i ) {
@@ -83,8 +84,9 @@ namespace gum_tests {
       gum::learning::GraphChangesGenerator4K2<decltype( struct_constraint )>
           op_set( struct_constraint );
 
-      gum::learning::GraphChangesSelector4DiGraph<
-          decltype( score ), decltype( struct_constraint ), decltype( op_set )>
+      gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
+                                                  decltype( struct_constraint ),
+                                                  decltype( op_set )>
           selector( score, struct_constraint, op_set );
 
       gum::learning::K2 k2;
@@ -92,13 +94,18 @@ namespace gum_tests {
       k2.approximationScheme().setEpsilon( 1000 );
 
       try {
-        gum::BayesNet<float> bn =
-            k2.learnBN( selector, estimator, database.variableNames(),
-                        modalities, filter.translatorSet() );
+        gum::BayesNet<float> bn = k2.learnBN( selector,
+                                              estimator,
+                                              database.variableNames(),
+                                              modalities,
+                                              filter.translatorSet() );
 
         gum::BayesNet<double> bn2 =
-            k2.learnBN<double>( selector, estimator, database.variableNames(),
-                                modalities, filter.translatorSet() );
+            k2.learnBN<double>( selector,
+                                estimator,
+                                database.variableNames(),
+                                modalities,
+                                filter.translatorSet() );
         TS_ASSERT( bn.dag().arcs().size() == 8 );
         TS_ASSERT( bn2.dag().arcs().size() == 8 );
       } catch ( gum::Exception& e ) {

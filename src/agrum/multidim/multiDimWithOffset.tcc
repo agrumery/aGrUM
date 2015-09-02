@@ -38,7 +38,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   MultiDimWithOffset<GUM_SCALAR>::MultiDimWithOffset(
       const MultiDimWithOffset<GUM_SCALAR>& from )
-      : MultiDimImplementation<GUM_SCALAR>( from ), _gaps( from._gaps ) {
+      : MultiDimImplementation<GUM_SCALAR>( from )
+      , _gaps( from._gaps ) {
     // for debugging purposes
     GUM_CONS_CPY( MultiDimWithOffset );
   }
@@ -94,7 +95,9 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE void MultiDimWithOffset<GUM_SCALAR>::changeNotification(
-      Instantiation& i, const DiscreteVariable* const var, const Idx& oldval,
+      Instantiation& i,
+      const DiscreteVariable* const var,
+      const Idx& oldval,
       const Idx& newval ) {
     GUM_ASSERT( _offsets.exists( &i ) );
     GUM_ASSERT( _offsets[&i] < this->domainSize() );
@@ -196,7 +199,8 @@ namespace gum {
 
     for ( HashTableConstIteratorSafe<const DiscreteVariable*, Size> iter =
               _gaps.beginSafe();
-          iter != _gaps.endSafe(); ++iter )
+          iter != _gaps.endSafe();
+          ++iter )
       if ( i.contains( iter.key() ) )
         off += iter.val() * i.valFromPtr( iter.key() );
 

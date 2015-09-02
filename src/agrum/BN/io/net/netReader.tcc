@@ -46,20 +46,18 @@ namespace gum {
     }
   }
 
-  template <typename GUM_SCALAR> NetReader<GUM_SCALAR>::~NetReader() {
+  template <typename GUM_SCALAR>
+  NetReader<GUM_SCALAR>::~NetReader() {
     GUM_DESTRUCTOR( NetReader );
 
     if ( !__ioerror ) {
       // this could lead to memory leak !!
-      if ( __parser )
-        delete ( __parser );
+      if ( __parser ) delete ( __parser );
 
-      if ( __scanner )
-        delete ( __scanner );
+      if ( __scanner ) delete ( __scanner );
     }
 
-    if ( __factory )
-      delete ( __factory );
+    if ( __factory ) delete ( __factory );
   }
 
   template <typename GUM_SCALAR>
@@ -87,7 +85,8 @@ namespace gum {
     scanner().setTrace( b );
   }
 
-  template <typename GUM_SCALAR> int NetReader<GUM_SCALAR>::proceed( void ) {
+  template <typename GUM_SCALAR>
+  int NetReader<GUM_SCALAR>::proceed( void ) {
     // FILE* tmpfile();
 
     if ( __ioerror ) {
@@ -183,11 +182,13 @@ namespace gum {
     }
   }
 
-  template <typename GUM_SCALAR> INLINE Size NetReader<GUM_SCALAR>::errors() {
+  template <typename GUM_SCALAR>
+  INLINE Size NetReader<GUM_SCALAR>::errors() {
     return ( !__parseDone ) ? (Size)0 : __parser->errors().error_count;
   }
 
-  template <typename GUM_SCALAR> INLINE Size NetReader<GUM_SCALAR>::warnings() {
+  template <typename GUM_SCALAR>
+  INLINE Size NetReader<GUM_SCALAR>::warnings() {
     return ( !__parseDone ) ? (Size)0 : __parser->errors().warning_count;
   }
 

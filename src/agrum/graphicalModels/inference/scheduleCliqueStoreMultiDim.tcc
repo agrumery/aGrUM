@@ -38,9 +38,11 @@ namespace gum {
           clique_tables,
       NodeId clique )
       : ScheduleOperation<GUM_SCALAR>(
-            ScheduleOperation<GUM_SCALAR>::Type::CLIQUE_STORE_MULTIDIM ),
-        __table( table ), __tableSet( &clique_tables ), __clique( clique ),
-        __args( 0 ) {
+            ScheduleOperation<GUM_SCALAR>::Type::CLIQUE_STORE_MULTIDIM )
+      , __table( table )
+      , __tableSet( &clique_tables )
+      , __clique( clique )
+      , __args( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( ScheduleCliqueStoreMultiDim );
   }
@@ -49,8 +51,11 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleCliqueStoreMultiDim<GUM_SCALAR>::ScheduleCliqueStoreMultiDim(
       const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& from )
-      : ScheduleOperation<GUM_SCALAR>( from ), __table( from.__table ),
-        __tableSet( from.__tableSet ), __clique( from.__clique ), __args( 0 ) {
+      : ScheduleOperation<GUM_SCALAR>( from )
+      , __table( from.__table )
+      , __tableSet( from.__tableSet )
+      , __clique( from.__clique )
+      , __args( 0 ) {
     // for debugging purposes
     GUM_CONS_CPY( ScheduleCliqueStoreMultiDim );
   }
@@ -68,8 +73,7 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR( ScheduleCliqueStoreMultiDim );
 
-    if ( __args )
-      delete __args;
+    if ( __args ) delete __args;
   }
 
   /// copy operator
@@ -97,8 +101,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   bool ScheduleCliqueStoreMultiDim<GUM_SCALAR>::
   operator==( const ScheduleOperation<GUM_SCALAR>& op ) const {
-    if ( this->type() != op.type() )
-      return false;
+    if ( this->type() != op.type() ) return false;
 
     const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& real_op =
         static_cast<const ScheduleCliqueStoreMultiDim<GUM_SCALAR>&>( op );
@@ -111,8 +114,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   bool ScheduleCliqueStoreMultiDim<GUM_SCALAR>::
   operator!=( const ScheduleOperation<GUM_SCALAR>& op ) const {
-    if ( this->type() != op.type() )
-      return true;
+    if ( this->type() != op.type() ) return true;
 
     const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& real_op =
         static_cast<const ScheduleCliqueStoreMultiDim<GUM_SCALAR>&>( op );
@@ -173,10 +175,13 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      __debug__::__inc_deletion( "Sequence", __FILE__, __LINE__,
-                                 "destructor of", (void*)&empty_seq );
-      __debug__::__inc_deletion( "SequenceImplementation", __FILE__, __LINE__,
-                                 "destructor of", (void*)&empty_seq );
+      __debug__::__inc_deletion(
+          "Sequence", __FILE__, __LINE__, "destructor of", (void*)&empty_seq );
+      __debug__::__inc_deletion( "SequenceImplementation",
+                                 __FILE__,
+                                 __LINE__,
+                                 "destructor of",
+                                 (void*)&empty_seq );
     }
 
 #endif /* NDEBUG */

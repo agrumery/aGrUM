@@ -85,7 +85,8 @@ namespace gum {
       const List<const Potential<GUM_SCALAR>*>& pot_list ) {
     for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter =
               pot_list.cbeginSafe();
-          iter != pot_list.cendSafe(); ++iter ) {
+          iter != pot_list.cendSafe();
+          ++iter ) {
       if ( ( *iter )->nbrDim() != 1 ) {
         GUM_ERROR( OperationNotAllowed,
                    "Evidence can only be giben w.r.t. one random variable" );
@@ -123,7 +124,8 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   void VariableElimination<GUM_SCALAR>::eliminateNodes(
-      const std::vector<NodeId>& elim_order, Set<Potential<GUM_SCALAR>*>& pool,
+      const std::vector<NodeId>& elim_order,
+      Set<Potential<GUM_SCALAR>*>& pool,
       Set<Potential<GUM_SCALAR>*>& trash ) {
     for ( size_t i = 0; i < elim_order.size(); ++i ) {
       __eliminateNode( elim_order[i], pool, trash );
@@ -202,7 +204,8 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   void VariableElimination<GUM_SCALAR>::__eliminateNode(
-      NodeId id, Set<Potential<GUM_SCALAR>*>& pool,
+      NodeId id,
+      Set<Potential<GUM_SCALAR>*>& pool,
       Set<Potential<GUM_SCALAR>*>& trash ) {
     // THIS IS A (TEMPLATIZED) COPY OF prm::eliminateNode
     {
@@ -215,8 +218,7 @@ namespace gum {
       Set<const Potential<GUM_SCALAR>*> pots;
 
       for ( auto pot : pool )
-        if ( pot->contains( *var ) )
-          pots.insert( pot );
+        if ( pot->contains( *var ) ) pots.insert( pot );
 
       if ( pots.size() == 0 ) {
         return;

@@ -38,15 +38,16 @@ namespace gum {
     /// copy constructor
     INLINE CellTranslatorCompactIntId::CellTranslatorCompactIntId(
         const CellTranslatorCompactIntId& from )
-        : DBCellTranslator<1, 1>( from ), __values( from.__values ),
-          __check_database( from.__check_database ) {}
+        : DBCellTranslator<1, 1>( from )
+        , __values( from.__values )
+        , __check_database( from.__check_database ) {}
 
     /// move constructor
     INLINE CellTranslatorCompactIntId::CellTranslatorCompactIntId(
         CellTranslatorCompactIntId&& from )
-        : DBCellTranslator<1, 1>( std::move( from ) ),
-          __values( std::move( from.__values ) ),
-          __check_database( std::move( from.__check_database ) ) {}
+        : DBCellTranslator<1, 1>( std::move( from ) )
+        , __values( std::move( from.__values ) )
+        , __check_database( std::move( from.__check_database ) ) {}
 
     /// virtual copy constructor
     INLINE CellTranslatorCompactIntId*
@@ -89,11 +90,11 @@ namespace gum {
       if ( __check_database ) {
         const int nb = in( 0 ).getFloat();
         if ( nb < 0 ) {
-          GUM_ERROR( WrongType, "the CellTranslatorCompactIntId has read "
-                                "a negative value" );
+          GUM_ERROR( WrongType,
+                     "the CellTranslatorCompactIntId has read "
+                     "a negative value" );
         }
-        if ( !__values.exists( nb ) )
-          __values.insert( nb );
+        if ( !__values.exists( nb ) ) __values.insert( nb );
       }
     }
 
@@ -103,8 +104,7 @@ namespace gum {
         // check that the values form a compact
         unsigned int max_val = 0;
         for ( const auto& val : __values ) {
-          if ( val > max_val )
-            max_val = val;
+          if ( val > max_val ) max_val = val;
         }
         if ( max_val >= __values.size() ) {
           GUM_ERROR( WrongType,

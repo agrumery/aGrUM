@@ -32,8 +32,11 @@ namespace gum {
   /// Default constructor
   SpanningForestPrim::SpanningForestPrim( const UndiGraph* graph,
                                           const EdgeProperty<float>* cost )
-      : SpanningForest(), __graph( *graph ), __costTable( *cost ),
-        __spanning_tree_cost( 0 ), __require_computation( true ) {
+      : SpanningForest()
+      , __graph( *graph )
+      , __costTable( *cost )
+      , __spanning_tree_cost( 0 )
+      , __require_computation( true ) {
     if ( !graph || !cost ) {
       GUM_ERROR( GraphError, "invalid null graph or edge cost pointer" );
     }
@@ -44,12 +47,13 @@ namespace gum {
 
   // copy constructor
   SpanningForestPrim::SpanningForestPrim( const SpanningForestPrim& from )
-      : SpanningForest(), __graph( from.__graph ),
-        __costTable( from.__costTable ),
-        __edgesToExplore( from.__edgesToExplore ),
-        __spanning_tree( from.__spanning_tree ),
-        __spanning_tree_cost( from.__spanning_tree_cost ),
-        __require_computation( from.__require_computation ) {
+      : SpanningForest()
+      , __graph( from.__graph )
+      , __costTable( from.__costTable )
+      , __edgesToExplore( from.__edgesToExplore )
+      , __spanning_tree( from.__spanning_tree )
+      , __spanning_tree_cost( from.__spanning_tree_cost )
+      , __require_computation( from.__require_computation ) {
     // for debugging purposes
     GUM_CONS_CPY( SpanningForestPrim );
   }
@@ -62,24 +66,21 @@ namespace gum {
 
   /// Returns the cost of the spanning forest
   float SpanningForestPrim::costOfSpanningForest() {
-    if ( __require_computation )
-      __compute();
+    if ( __require_computation ) __compute();
 
     return __spanning_tree_cost;
   }
 
   /// Returns the edges in a min cost spanning forest
   const EdgeSet& SpanningForestPrim::edgesInSpanningForest() {
-    if ( __require_computation )
-      __compute();
+    if ( __require_computation ) __compute();
 
     return __spanning_tree.edges();
   }
 
   /// Construct the spanning forest
   const UndiGraph& SpanningForestPrim::spanningForest() {
-    if ( __require_computation )
-      __compute();
+    if ( __require_computation ) __compute();
 
     return __spanning_tree;
   }

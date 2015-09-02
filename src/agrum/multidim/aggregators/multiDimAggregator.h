@@ -111,7 +111,8 @@ namespace gum {
 
       virtual void changeNotification( gum::Instantiation&,
                                        const gum::DiscreteVariable*,
-                                       const gum::Idx&, const gum::Idx& ){};
+                                       const gum::Idx&,
+                                       const gum::Idx& ){};
 
       virtual void setFirstNotification( gum::Instantiation& ){};
 
@@ -155,7 +156,9 @@ namespace gum {
       /// _folder is applied on value i1 for variable v. the actual result for
       /// precedent applications is i2.
       /// @return the new result for applications up to v.
-      virtual Idx _folder( const DiscreteVariable& v, Idx i1, Idx i2,
+      virtual Idx _folder( const DiscreteVariable& v,
+                           Idx i1,
+                           Idx i2,
                            bool& stop_iteration ) const = 0;
 
       virtual void _swap( const DiscreteVariable* x,

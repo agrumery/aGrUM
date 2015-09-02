@@ -49,8 +49,7 @@ namespace gum {
   INLINE
   bool SimplicialSet::isSimplicial( const NodeId id ) {
     // update the list to which the node belongs if needed
-    if ( __changed_status.contains( id ) )
-      __updateList( id );
+    if ( __changed_status.contains( id ) ) __updateList( id );
 
     // check if the node belongs to the simplicial list
     return __simplicial_nodes.contains( id );
@@ -94,9 +93,10 @@ namespace gum {
   INLINE
   void SimplicialSet::__updateAllNodes() {
     // check if a node can enter the simplicial list
-    for (
-        auto iter = __changed_status.beginSafe();  // safe iterator needed here
-        iter != __changed_status.endSafe(); ++iter ) {
+    for ( auto iter =
+              __changed_status.beginSafe();  // safe iterator needed here
+          iter != __changed_status.endSafe();
+          ++iter ) {
       __updateList( *iter );
     }
   }

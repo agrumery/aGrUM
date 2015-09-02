@@ -163,8 +163,6 @@ namespace gum {
      * exception is raised.
      * @throw InvalidNode if first and/or second do not belong to the
      * graph nodes */
-    GUM_DEPRECATED( virtual void insertEdge( const NodeId first,
-                                             const NodeId second ) );
     virtual void addEdge( const NodeId first, const NodeId second );
 
     /// remove a node and its adjacent edges from the graph

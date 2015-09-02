@@ -60,8 +60,10 @@ namespace gum {
     LinearApproximationPolicy( GUM_SCALAR low = (GUM_SCALAR)0.0,
                                GUM_SCALAR high = (GUM_SCALAR)1.0,
                                GUM_SCALAR eps = (GUM_SCALAR)0.1 )
-        : ApproximationPolicy<GUM_SCALAR>(), _lowLimit( low ),
-          _highLimit( high ), _epsilon( eps ) {
+        : ApproximationPolicy<GUM_SCALAR>()
+        , _lowLimit( low )
+        , _highLimit( high )
+        , _epsilon( eps ) {
       if ( eps <= 0 ) {
         GUM_ERROR( OutOfBounds, "Epsilon must be >0" );
       }
@@ -73,8 +75,9 @@ namespace gum {
      * Copy constructor.
      */
     LinearApproximationPolicy( const LinearApproximationPolicy<GUM_SCALAR>* md )
-        : ApproximationPolicy<GUM_SCALAR>( md ), _epsilon( md->_epsilon ),
-          _nbInterval( md->_nbInterval ){};
+        : ApproximationPolicy<GUM_SCALAR>( md )
+        , _epsilon( md->_epsilon )
+        , _nbInterval( md->_nbInterval ){};
 
     /// @}
 
@@ -99,27 +102,21 @@ namespace gum {
 
         GUM_SCALAR newVal = _lowLimit + lap->highLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
 
         newVal = _highLimit + lap->lowLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
 
         newVal = _highLimit + lap->highLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
       } catch ( const std::bad_cast& e ) {
       }
     };
@@ -135,27 +132,21 @@ namespace gum {
 
         GUM_SCALAR newVal = _lowLimit - lap->highLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
 
         newVal = _highLimit - lap->lowLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
 
         newVal = _highLimit - lap->highLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
       } catch ( const std::bad_cast& e ) {
       }
     };
@@ -171,27 +162,21 @@ namespace gum {
 
         GUM_SCALAR newVal = _lowLimit * lap->highLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
 
         newVal = _highLimit * lap->lowLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
 
         newVal = _highLimit * lap->highLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
       } catch ( const std::bad_cast& e ) {
       }
     };
@@ -207,27 +192,21 @@ namespace gum {
 
         GUM_SCALAR newVal = _lowLimit / lap->highLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
 
         newVal = _highLimit / lap->lowLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
 
         newVal = _highLimit / lap->highLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
       } catch ( const std::bad_cast& e ) {
       }
     };
@@ -246,27 +225,21 @@ namespace gum {
         GUM_SCALAR newVal =
             _lowLimit > lap->highLimit() ? _lowLimit : lap->highLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
 
         newVal = _highLimit > lap->lowLimit() ? _highLimit : lap->lowLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
 
         newVal = _highLimit > lap->highLimit() ? _highLimit : lap->highLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
       } catch ( const std::bad_cast& e ) {
       }
     };
@@ -285,27 +258,21 @@ namespace gum {
         GUM_SCALAR newVal =
             _lowLimit < lap->highLimit() ? _lowLimit : lap->highLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
 
         newVal = _highLimit < lap->lowLimit() ? _highLimit : lap->lowLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
 
         newVal = _highLimit < lap->highLimit() ? _highLimit : lap->highLimit();
 
-        if ( newHighLimit < newVal )
-          newHighLimit = newVal;
+        if ( newHighLimit < newVal ) newHighLimit = newVal;
 
-        if ( newLowLimit > newVal )
-          newLowLimit = newVal;
+        if ( newLowLimit > newVal ) newLowLimit = newVal;
       } catch ( const std::bad_cast& e ) {
       }
     };
@@ -426,11 +393,9 @@ namespace gum {
     /// ApproximationPolicy::safeFromExact
     INLINE Idx __encode( const GUM_SCALAR& value ) const {
 
-      if ( value <= this->_lowLimit )
-        return 0;
+      if ( value <= this->_lowLimit ) return 0;
 
-      if ( value >= this->_highLimit )
-        return _nbInterval;
+      if ( value >= this->_highLimit ) return _nbInterval;
 
       //~ std::cout << "Original value : " << value << " - Low Limit : " <<
       // this->_lowLimit << " - epsilon : "<< this->_epsilon << " - Encoded
@@ -444,11 +409,9 @@ namespace gum {
     /// Concretely computes the approximate value from representation
     INLINE GUM_SCALAR __decode( const GUM_SCALAR& representation ) const {
 
-      if ( representation == 0 )
-        return this->_lowLimit;
+      if ( representation == 0 ) return this->_lowLimit;
 
-      if ( representation == _nbInterval )
-        return this->_highLimit;
+      if ( representation == _nbInterval ) return this->_highLimit;
 
       //~ std::cout << "Rep value : " << representation << " - Low Limit : " <<
       // this->_lowLimit << " - epsilon : "<< this->_epsilon << " - DecodedValue

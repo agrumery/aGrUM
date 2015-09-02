@@ -319,7 +319,8 @@ namespace gum_tests {
       gum::Size s = 0;
 
       for ( gum::List<gum::Size>::iterator iter = list.begin();
-            iter != list.end(); ++iter ) {
+            iter != list.end();
+            ++iter ) {
         s += *iter;
       }
 
@@ -373,7 +374,8 @@ namespace gum_tests {
       gum::Size s = 0;
 
       for ( gum::List<gum::Size>::iterator iter = list.begin();
-            iter != list.end(); ++iter ) {
+            iter != list.end();
+            ++iter ) {
         s += *iter;
       }
 
@@ -414,7 +416,8 @@ namespace gum_tests {
       gum::Size s = 0;
 
       for ( gum::List<gum::Size>::iterator iter = list.begin();
-            iter != list.end(); ++iter ) {
+            iter != list.end();
+            ++iter ) {
         s += *iter;
       }
 

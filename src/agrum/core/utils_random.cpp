@@ -29,8 +29,7 @@ namespace gum {
   unsigned int& randomGeneratorSeed( unsigned int seed ) {
     static unsigned int gum_seed =
         std::chrono::system_clock::now().time_since_epoch().count();
-    if ( seed )
-      gum_seed = seed;
+    if ( seed ) gum_seed = seed;
     return gum_seed;
   }
 

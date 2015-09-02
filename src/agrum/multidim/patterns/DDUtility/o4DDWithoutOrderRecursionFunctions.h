@@ -59,7 +59,8 @@ namespace gum {
   template <typename T>
   NodeId GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION(
       NonOrderedOperatorData<T>& opData,
-      const DiscreteVariable* leaderParentVar, std::string tabu ) {
+      const DiscreteVariable* leaderParentVar,
+      std::string tabu ) {
 
     if ( opData.explorationTable->exists( opData.conti.contextKey() ) )
       return ( *( opData.explorationTable ) )[opData.conti.contextKey()];
@@ -114,8 +115,7 @@ namespace gum {
               const std::vector<Idx>* usedModalities =
                   opData.DD2->variableUsedModalities( preneededVar );
 
-              if ( usedModalities == nullptr )
-                continue;
+              if ( usedModalities == nullptr ) continue;
 
               std::vector<NodeId> sonsIds( preneededVar->domainSize(), 0 );
 
@@ -153,8 +153,8 @@ namespace gum {
                   nodeCount[defaultSon] += nbUnexploredModalities;
               }
 
-              newNode = insertNonTerminalNode( opData, preneededVar, sonsIds,
-                                               defaultSon, nodeCount );
+              newNode = insertNonTerminalNode(
+                  opData, preneededVar, sonsIds, defaultSon, nodeCount );
 
               opData.conti.chgVarModality( preneededVar, 0 );
               opData.explorationTable->insert( opData.conti.contextKey(),
@@ -262,7 +262,8 @@ namespace gum {
             opData.conti.setDD2Node( ( *followerSonsMap )[modality] );
 
           sonsIds[modality] = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION(
-              opData, opData.DD1->unsafeNodeVariable( leaderCurrentNode ),
+              opData,
+              opData.DD1->unsafeNodeVariable( leaderCurrentNode ),
               tabu );
 
           --nbUnexploredModalities;
@@ -282,7 +283,8 @@ namespace gum {
           opData.conti.setDD2Node(
               opData.DD2->unsafeNodeDefaultSon( followerCurrentNode ) );
           defaultSon = GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION(
-              opData, opData.DD1->unsafeNodeVariable( leaderCurrentNode ),
+              opData,
+              opData.DD1->unsafeNodeVariable( leaderCurrentNode ),
               tabu );
 
           if ( !nodeCount.exists( defaultSon ) )
@@ -292,8 +294,11 @@ namespace gum {
         }
 
         newNode = insertNonTerminalNode(
-            opData, opData.DD1->unsafeNodeVariable( leaderCurrentNode ),
-            sonsIds, defaultSon, nodeCount );
+            opData,
+            opData.DD1->unsafeNodeVariable( leaderCurrentNode ),
+            sonsIds,
+            defaultSon,
+            nodeCount );
 
         opData.conti.setDD1Node( leaderCurrentNode );
         opData.conti.setDD2Node( followerCurrentNode );
@@ -311,7 +316,8 @@ namespace gum {
   template <typename T>
   NodeId GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_LEADER_FUNCTION(
       NonOrderedOperatorData<T>& opData,
-      const DiscreteVariable* leaderParentVar, std::string tabu ) {
+      const DiscreteVariable* leaderParentVar,
+      std::string tabu ) {
 
     NodeId newNode = 0;
 
@@ -397,8 +403,11 @@ namespace gum {
     // ********************************************************************************************************
     // And we finally add this node to our resulting graph
     newNode = insertNonTerminalNode(
-        opData, opData.DD1->unsafeNodeVariable( leaderCurrentNode ), sonsIds,
-        defaultSon, nodeCount );
+        opData,
+        opData.DD1->unsafeNodeVariable( leaderCurrentNode ),
+        sonsIds,
+        defaultSon,
+        nodeCount );
 
     opData.conti.setDD1Node( leaderCurrentNode );
 
@@ -415,7 +424,8 @@ namespace gum {
   template <typename T>
   NodeId GUM_MULTI_DIM_DECISION_DIAGRAM_GO_DOWN_ON_FOLLOWER_FUNCTION(
       NonOrderedOperatorData<T>& opData,
-      const DiscreteVariable* leaderParentVar, std::string tabu ) {
+      const DiscreteVariable* leaderParentVar,
+      std::string tabu ) {
 
     NodeId newNode = 0;
 
@@ -506,8 +516,8 @@ namespace gum {
       }
 
       // And we had this node to our graph
-      newNode = insertNonTerminalNode( opData, followerCurrentVar, sonsIds,
-                                       defaultSon, nodeCount );
+      newNode = insertNonTerminalNode(
+          opData, followerCurrentVar, sonsIds, defaultSon, nodeCount );
 
       opData.conti.setDD2Node( followerCurrentNode );
       opData.explorationTable->insert( opData.conti.contextKey(), newNode );

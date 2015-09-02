@@ -39,7 +39,8 @@ namespace gum {
    * @ingroup bn_group
    *
    */
-  template <typename GUM_SCALAR> class BayesNetInference {
+  template <typename GUM_SCALAR>
+  class BayesNetInference {
     public:
     /**
      * Default constructor

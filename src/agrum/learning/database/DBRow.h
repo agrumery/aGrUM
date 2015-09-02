@@ -49,7 +49,8 @@ namespace gum {
       DBRow();
 
       /// constructor with a given size for the row
-      DBRow( unsigned int size, const DBCell& default_cell = DBCell(),
+      DBRow( unsigned int size,
+             const DBCell& default_cell = DBCell(),
              float weight = 1.0f );
 
       /// initializer list constructor

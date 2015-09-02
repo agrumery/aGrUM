@@ -29,15 +29,17 @@ namespace gum {
   namespace prm {
 
     // Destructor.
-    template <typename GUM_SCALAR> ReferenceSlot<GUM_SCALAR>::~ReferenceSlot() {
+    template <typename GUM_SCALAR>
+    ReferenceSlot<GUM_SCALAR>::~ReferenceSlot() {
       GUM_DESTRUCTOR( ReferenceSlot );
     }
 
     template <typename GUM_SCALAR>
     ReferenceSlot<GUM_SCALAR>::ReferenceSlot(
         const ReferenceSlot<GUM_SCALAR>& source )
-        : ClassElement<GUM_SCALAR>( source ), __slotType( source.__slotType ),
-          __isArray( source.__isArray ) {
+        : ClassElement<GUM_SCALAR>( source )
+        , __slotType( source.__slotType )
+        , __isArray( source.__isArray ) {
       GUM_CONS_CPY( ReferenceSlot );
       GUM_ERROR( FatalError,
                  "illegal call to gum::ReferenceSlot copy constructor." );

@@ -293,8 +293,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
           g = new gum::prm::gspan::InterfaceGraph<double>( sys ) );
 
-      if ( g != nullptr )
-        delete g;
+      if ( g != nullptr ) delete g;
 
       delete prm;
     }

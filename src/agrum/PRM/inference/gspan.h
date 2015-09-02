@@ -63,7 +63,8 @@ namespace gum {
      * methods GSpan::__sortNodesAndEdges(), GSpan::__subgraph_mining() and
      * GSpan::__sortPatterns().
      */
-    template <typename GUM_SCALAR> class GSpan {
+    template <typename GUM_SCALAR>
+    class GSpan {
 
       public:
       // ========================================================================
@@ -79,7 +80,8 @@ namespace gum {
        * @param strategy The search strategy used for pattern mining, the
        *                 default strategy is gspan::FrequenceSearch.
        */
-      GSpan( const PRM<GUM_SCALAR>& prm, const System<GUM_SCALAR>& sys,
+      GSpan( const PRM<GUM_SCALAR>& prm,
+             const System<GUM_SCALAR>& sys,
              gspan::SearchStrategy<GUM_SCALAR>* strategy = 0 );
 
       /// Destructor.

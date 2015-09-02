@@ -276,7 +276,7 @@ namespace gum {
     virtual NodeId addTerminalNode( float value ) = 0;
 
     /// Insert in diagram an arc
-    virtual void insertArc( NodeId from, NodeId to, Idx modality ) = 0;
+    virtual void addArc( NodeId from, NodeId to, Idx modality ) = 0;
 
     /// @}
 

@@ -132,7 +132,8 @@ namespace gum_tests {
                 bb->compute( i.val(), ( *( a.val() ) ).id() ) );
 
             for ( gum::prm::System<double>::iterator j = small_sys->begin();
-                  j != small_sys->end(); ++j ) {
+                  j != small_sys->end();
+                  ++j ) {
               if ( ( j.val() ) != ( i.val() ) ) {
                 TS_ASSERT( not bb->exists( j.val() ) );
               } else if ( bb->exists( j.val() ) ) {

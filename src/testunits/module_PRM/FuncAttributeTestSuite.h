@@ -146,8 +146,8 @@ namespace gum_tests {
 
     void testCast() {
       // Arrange
-      gum::LabelizedVariable boolean_var{"boolean",
-                                         "A boolean discrete variable", 0};
+      gum::LabelizedVariable boolean_var{
+          "boolean", "A boolean discrete variable", 0};
       boolean_var.addLabel( "False" );
       boolean_var.addLabel( "True" );
 

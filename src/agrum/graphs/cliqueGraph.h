@@ -94,8 +94,6 @@ namespace gum {
      * exception is raised.
      * @throw InvalidNode if first and/or second do not belong to the
      * graph nodes */
-    GUM_DEPRECATED( virtual void insertEdge( const NodeId first,
-                                             const NodeId second ) );
     virtual void addEdge( const NodeId first, const NodeId second );
 
     /// removes an edge (and its separator) from the clique graph
@@ -112,8 +110,6 @@ namespace gum {
     /// adds a new clique to the graph
     /** @return the id chosen for the new clique */
 
-    GUM_DEPRECATED( NodeId insertNode( const NodeSet& clique ) );
-    GUM_DEPRECATED( NodeId insertNode() );
     NodeId addNode( const NodeSet& clique );
     virtual NodeId addNode();
 
@@ -121,9 +117,6 @@ namespace gum {
     /** @throws DuplicateElement exception is thrown if the id of the clique
      * already exists within the clique graph */
 
-    GUM_DEPRECATED( virtual void insertNode( const NodeId id,
-                                             const NodeSet& clique ) );
-    GUM_DEPRECATED( virtual void insertNode( const NodeId id ) );
     virtual void addNode( const NodeId id, const NodeSet& clique );
     virtual void addNode( const NodeId id );
 
@@ -290,7 +283,8 @@ namespace gum {
 
     /// function used for the computation of the running intersection property
 
-    bool __runningIntersectionDFS( const NodeId clique, const NodeId from,
+    bool __runningIntersectionDFS( const NodeId clique,
+                                   const NodeId from,
                                    __RunningIntersect& infos_DFS ) const;
   };
 

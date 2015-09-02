@@ -78,7 +78,8 @@ namespace gum_tests {
         t.set( i, new float( (int)( gum::randomProba() * 100000 ) ) );
     }
 
-    template <typename T> void pointerDelete( gum::MultiDimArray<T*>* t ) {
+    template <typename T>
+    void pointerDelete( gum::MultiDimArray<T*>* t ) {
       if ( t->variablesSequence().size() ) {
         gum::Instantiation i( t );
 
@@ -103,7 +104,8 @@ namespace gum_tests {
       delete t;
     }
 
-    template <typename T> void pointerDelete( gum::Potential<T*>* t ) {
+    template <typename T>
+    void pointerDelete( gum::Potential<T*>* t ) {
       if ( t->variablesSequence().size() ) {
         gum::Instantiation i( t );
 
@@ -123,8 +125,7 @@ namespace gum_tests {
       if ( ( t1.nbrDim() == t2.nbrDim() ) &&
            ( t1.domainSize() == t2.domainSize() ) ) {
         for ( const auto var : t1 )
-          if ( !t2.variablesSequence().exists( var ) )
-            return false;
+          if ( !t2.variablesSequence().exists( var ) ) return false;
 
         gum::Instantiation i( t1 );
 
@@ -147,8 +148,7 @@ namespace gum_tests {
       if ( ( t1.nbrDim() == t2.nbrDim() ) &&
            ( t1.domainSize() == t2.domainSize() ) ) {
         for ( const auto var : t1 )
-          if ( !t2.variablesSequence().exists( var ) )
-            return false;
+          if ( !t2.variablesSequence().exists( var ) ) return false;
 
         gum::Instantiation i( t1 );
 
@@ -189,8 +189,7 @@ namespace gum_tests {
       result->beginMultipleChanges();
 
       for ( const auto var : vars )
-        if ( !del_vars.exists( var ) )
-          *result << *var;
+        if ( !del_vars.exists( var ) ) *result << *var;
 
       result->endMultipleChanges();
 
@@ -218,8 +217,7 @@ namespace gum_tests {
       result->beginMultipleChanges();
 
       for ( const auto var : vars )
-        if ( !del_vars.exists( var ) )
-          *result << *var;
+        if ( !del_vars.exists( var ) ) *result << *var;
 
       result->endMultipleChanges();
 
@@ -235,8 +233,7 @@ namespace gum_tests {
         float* xxx = result->get( inst2 );
         float* yyy = table[inst2];
 
-        if ( *xxx < *yyy )
-          *xxx = *yyy;
+        if ( *xxx < *yyy ) *xxx = *yyy;
       }
 
       return result;
@@ -253,8 +250,7 @@ namespace gum_tests {
       result->beginMultipleChanges();
 
       for ( const auto var : vars )
-        if ( !del_vars.exists( var ) )
-          *result << *var;
+        if ( !del_vars.exists( var ) ) *result << *var;
 
       result->endMultipleChanges();
 
@@ -282,8 +278,7 @@ namespace gum_tests {
       result->beginMultipleChanges();
 
       for ( const auto var : vars )
-        if ( !del_vars.exists( var ) )
-          *result << *var;
+        if ( !del_vars.exists( var ) ) *result << *var;
 
       result->endMultipleChanges();
 
@@ -299,8 +294,7 @@ namespace gum_tests {
         float* xxx = result->get( inst2 );
         float* yyy = table[inst2];
 
-        if ( *xxx < *yyy )
-          *xxx = *yyy;
+        if ( *xxx < *yyy ) *xxx = *yyy;
       }
 
       return result;

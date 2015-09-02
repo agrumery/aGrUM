@@ -53,7 +53,8 @@ namespace gum_tests {
     int __nbr;
 
     public:
-    aSimpleListener() : __nbr( 0 ){};
+    aSimpleListener()
+        : __nbr( 0 ){};
     void whenProceeding( const void* buffer, int percent, std::string status ) {
       __nbr = percent;
       // std::cout << "Progress : " << percent << "%" << " Status : " << status

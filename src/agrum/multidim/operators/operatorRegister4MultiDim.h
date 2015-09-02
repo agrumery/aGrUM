@@ -36,7 +36,8 @@
 namespace gum {
 
   // the base object used by combinations
-  template <typename GUM_SCALAR> class MultiDimImplementation;
+  template <typename GUM_SCALAR>
+  class MultiDimImplementation;
 
   /* ===========================================================================
    */
@@ -51,7 +52,8 @@ namespace gum {
    * @ingroup multidim_group */
   /* ===========================================================================
    */
-  template <typename GUM_SCALAR> class OperatorRegister4MultiDim {
+  template <typename GUM_SCALAR>
+  class OperatorRegister4MultiDim {
     public:
     /// the type of functions used by the register
     typedef MultiDimImplementation<GUM_SCALAR>* ( *OperatorPtr )(
@@ -82,8 +84,10 @@ namespace gum {
      * types \e type1 and \e type2, it should be declared as taking in argument
      * two MultiDimImplementations. This constraint is imposed by the C++ typing
      * system */
-    void insert( const std::string& operation_name, const std::string& type1,
-                 const std::string& type2, OperatorPtr newFunction );
+    void insert( const std::string& operation_name,
+                 const std::string& type1,
+                 const std::string& type2,
+                 OperatorPtr newFunction );
 
     /// removes a given entry from the register
     /** removes the function, if any, that performs the operation described by
@@ -96,7 +100,8 @@ namespace gum {
      * the function to remove
      * @param type2 the \e real type of the second multiDim taken in argument by
      * the function to remove */
-    void erase( const std::string& operation_name, const std::string& type1,
+    void erase( const std::string& operation_name,
+                const std::string& type1,
                 const std::string& type2 );
 
     /// indicates whether a given entry exists in the register
@@ -111,7 +116,8 @@ namespace gum {
      * the function we look for
      * @param type2 the \e real type of the second multiDim taken in argument by
      * the function we look for */
-    bool exists( const std::string& operation_name, const std::string& type1,
+    bool exists( const std::string& operation_name,
+                 const std::string& type1,
                  const std::string& type2 ) const;
 
     /** @brief returns the specialized operator assigned to a given pair of
@@ -130,7 +136,8 @@ namespace gum {
      * @throws NotFound exception is thrown if the operator we look for does not
      * exist within this register. */
     OperatorPtr get( const std::string& operation_name,
-                     const std::string& type1, const std::string& type2 ) const;
+                     const std::string& type1,
+                     const std::string& type2 ) const;
 
     /// @}
 
@@ -181,7 +188,8 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   void registerOperator(
-      const std::string& operation_name, const std::string& type1,
+      const std::string& operation_name,
+      const std::string& type1,
       const std::string& type2,
       typename OperatorRegister4MultiDim<GUM_SCALAR>::OperatorPtr function );
 

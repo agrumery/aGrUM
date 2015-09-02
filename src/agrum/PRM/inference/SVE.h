@@ -56,7 +56,8 @@ namespace gum {
      *        algorithm on PRM<GUM_SCALAR>.
      *
      */
-    template <typename GUM_SCALAR> class SVE : public PRMInference<GUM_SCALAR> {
+    template <typename GUM_SCALAR>
+    class SVE : public PRMInference<GUM_SCALAR> {
       public:
       // ========================================================================
       /// @name Constructors & destructor.
@@ -134,36 +135,44 @@ namespace gum {
 
       /// @{
 
-      void __eliminateNodes( const Instance<GUM_SCALAR>* query, NodeId id,
-                             BucketSet& pool, BucketSet& trash );
+      void __eliminateNodes( const Instance<GUM_SCALAR>* query,
+                             NodeId id,
+                             BucketSet& pool,
+                             BucketSet& trash );
 
       void
       __eliminateNodesDownward( const Instance<GUM_SCALAR>* from,
-                                const Instance<GUM_SCALAR>* i, BucketSet& pool,
+                                const Instance<GUM_SCALAR>* i,
+                                BucketSet& pool,
                                 BucketSet& trash,
                                 List<const Instance<GUM_SCALAR>*>& elim_list,
                                 Set<const Instance<GUM_SCALAR>*>& ignore,
                                 Set<const Instance<GUM_SCALAR>*>& eliminated );
 
       void
-      __eliminateNodesUpward( const Instance<GUM_SCALAR>* i, BucketSet& pool,
+      __eliminateNodesUpward( const Instance<GUM_SCALAR>* i,
+                              BucketSet& pool,
                               BucketSet& trash,
                               List<const Instance<GUM_SCALAR>*>& elim_list,
                               Set<const Instance<GUM_SCALAR>*>& ignore,
                               Set<const Instance<GUM_SCALAR>*>& eliminated );
 
       void __eliminateNodesWithEvidence( const Instance<GUM_SCALAR>* i,
-                                         BucketSet& pool, BucketSet& trash,
+                                         BucketSet& pool,
+                                         BucketSet& trash,
                                          Set<NodeId>* delayedVars = 0 );
 
       void __eliminateDelayedVariables( const Instance<GUM_SCALAR>* i,
-                                        BucketSet& pool, BucketSet& trash );
+                                        BucketSet& pool,
+                                        BucketSet& trash );
 
-      void __insertLiftedNodes( const Instance<GUM_SCALAR>* i, BucketSet& pool,
+      void __insertLiftedNodes( const Instance<GUM_SCALAR>* i,
+                                BucketSet& pool,
                                 BucketSet& trash );
 
       void __variableElimination( const Instance<GUM_SCALAR>* i,
-                                  BucketSet& pool, BucketSet& trash,
+                                  BucketSet& pool,
+                                  BucketSet& trash,
                                   Set<NodeId>* delayedVars = 0 );
 
       /// Returns true if second can be eliminated before first.
@@ -181,7 +190,8 @@ namespace gum {
       /// @param j The Instance<GUM_SCALAR> with the delayed variable.
       /// @param id The NodeId of the delayed variable.
       void __addDelayedVariable( const Instance<GUM_SCALAR>* i,
-                                 const Instance<GUM_SCALAR>* j, NodeId id );
+                                 const Instance<GUM_SCALAR>* j,
+                                 NodeId id );
 
       std::vector<NodeId>& __getElimOrder( const Class<GUM_SCALAR>& c );
 

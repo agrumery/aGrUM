@@ -33,7 +33,8 @@ namespace gum {
    */
 
   // default constructor
-  INLINE DAGCycleDetector::Change::Change( ChangeType type, NodeId tail,
+  INLINE DAGCycleDetector::Change::Change( ChangeType type,
+                                           NodeId tail,
                                            NodeId head ) noexcept
       : __type{type},
         __tail{tail},
@@ -107,7 +108,8 @@ namespace gum {
   /// default constructor
   INLINE DAGCycleDetector::ArcAdd::ArcAdd( NodeId tail, NodeId head ) noexcept
       : DAGCycleDetector::Change( DAGCycleDetector::ChangeType::ARC_ADDITION,
-                                  tail, head ) {
+                                  tail,
+                                  head ) {
     GUM_CONSTRUCTOR( DAGCycleDetector::ArcAdd );
   }
 
@@ -156,7 +158,8 @@ namespace gum {
   /// default constructor
   INLINE DAGCycleDetector::ArcDel::ArcDel( NodeId tail, NodeId head ) noexcept
       : DAGCycleDetector::Change( DAGCycleDetector::ChangeType::ARC_DELETION,
-                                  tail, head ) {
+                                  tail,
+                                  head ) {
     GUM_CONSTRUCTOR( DAGCycleDetector::ArcDel );
   }
 
@@ -206,7 +209,8 @@ namespace gum {
   INLINE DAGCycleDetector::ArcReverse::ArcReverse( NodeId tail,
                                                    NodeId head ) noexcept
       : DAGCycleDetector::Change( DAGCycleDetector::ChangeType::ARC_REVERSAL,
-                                  tail, head ) {
+                                  tail,
+                                  head ) {
     GUM_CONSTRUCTOR( DAGCycleDetector::ArcReverse );
   }
 
@@ -258,16 +262,17 @@ namespace gum {
 
   /// copy constructor
   INLINE DAGCycleDetector::DAGCycleDetector( const DAGCycleDetector& from )
-      : __dag( from.__dag ), __ancestors( from.__ancestors ),
-        __descendants( from.__descendants ) {
+      : __dag( from.__dag )
+      , __ancestors( from.__ancestors )
+      , __descendants( from.__descendants ) {
     GUM_CONS_CPY( DAGCycleDetector );
   }
 
   /// move constructor
   INLINE DAGCycleDetector::DAGCycleDetector( DAGCycleDetector&& from )
-      : __dag( std::move( from.__dag ) ),
-        __ancestors( std::move( from.__ancestors ) ),
-        __descendants( std::move( from.__descendants ) ) {
+      : __dag( std::move( from.__dag ) )
+      , __ancestors( std::move( from.__ancestors ) )
+      , __descendants( std::move( from.__descendants ) ) {
     GUM_CONS_MOV( DAGCycleDetector );
   }
 

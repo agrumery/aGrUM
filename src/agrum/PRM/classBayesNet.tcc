@@ -57,7 +57,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE
     ClassBayesNet<GUM_SCALAR>::ClassBayesNet( const Class<GUM_SCALAR>& c )
-        : IBayesNet<GUM_SCALAR>(), __class( &c ) {
+        : IBayesNet<GUM_SCALAR>()
+        , __class( &c ) {
       GUM_CONSTRUCTOR( ClassBayesNet );
       __init( c );
     }
@@ -65,7 +66,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE ClassBayesNet<GUM_SCALAR>::ClassBayesNet(
         const ClassBayesNet<GUM_SCALAR>& from )
-        : IBayesNet<GUM_SCALAR>( from ), __class( from.__class ) {
+        : IBayesNet<GUM_SCALAR>( from )
+        , __class( from.__class ) {
       GUM_CONS_CPY( ClassBayesNet );
     }
 

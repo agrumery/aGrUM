@@ -36,7 +36,10 @@ namespace gum {
   }
 
   //! Contructor
-  Directory::Directory() : m_dirPtr( nullptr ) { GUM_CONSTRUCTOR( Directory ); }
+  Directory::Directory()
+      : m_dirPtr( nullptr ) {
+    GUM_CONSTRUCTOR( Directory );
+  }
 
   //! Contructor
   Directory::Directory( const std::string& directory )
@@ -46,7 +49,8 @@ namespace gum {
   }
 
   //! Contructor
-  Directory::Directory( const Directory& dir ) : m_dirName( dir.m_dirName ) {
+  Directory::Directory( const Directory& dir )
+      : m_dirName( dir.m_dirName ) {
     GUM_CONSTRUCTOR( Directory );
     m_dirPtr = opendir( m_dirName.c_str() );
   }
@@ -55,8 +59,7 @@ namespace gum {
   Directory::~Directory() {
     GUM_DESTRUCTOR( Directory );
 
-    if ( m_dirPtr != nullptr )
-      closedir( m_dirPtr );
+    if ( m_dirPtr != nullptr ) closedir( m_dirPtr );
   }
 
   //! Return true if directory has been opened, false otherwise.
@@ -66,8 +69,7 @@ namespace gum {
   std::vector<std::string> Directory::entries() const {
     std::vector<std::string> result;
 
-    if ( !isValid() )
-      return result;
+    if ( !isValid() ) return result;
 
     rewinddir( m_dirPtr );
 
@@ -81,8 +83,7 @@ namespace gum {
 
   //! Return directory parent.
   Directory Directory::parent() const {
-    if ( !isValid() )
-      return Directory();
+    if ( !isValid() ) return Directory();
 
     return Directory( m_dirName + "../" );
   }
@@ -94,16 +95,13 @@ namespace gum {
   std::string Directory::absolutePath() const {
     std::string result;
 
-    if ( !isValid() )
-      return result;
+    if ( !isValid() ) return result;
 
     char oldWD[255];
 
-    if ( getcwd( oldWD, 255 ) == nullptr )
-      return result;
+    if ( getcwd( oldWD, 255 ) == nullptr ) return result;
 
-    if ( chdir( m_dirName.c_str() ) != 0 )
-      return result;
+    if ( chdir( m_dirName.c_str() ) != 0 ) return result;
 
     char absPath[255];
 
@@ -118,8 +116,7 @@ namespace gum {
   }
 
   Directory& Directory::operator=( const Directory& d ) {
-    if ( m_dirPtr != nullptr )
-      closedir( m_dirPtr );
+    if ( m_dirPtr != nullptr ) closedir( m_dirPtr );
 
     m_dirName = d.m_dirName;
 

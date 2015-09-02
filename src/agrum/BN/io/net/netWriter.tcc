@@ -24,19 +24,18 @@
 #include <agrum/BN/io/net/netWriter.h>
 
 namespace gum {
-
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   /* ===                           GUM_BN_WRITER === */
-  /* ============================================================================
-   */
+  /* =========================================================================*/
   // Default constructor.
-  template <typename GUM_SCALAR> INLINE NetWriter<GUM_SCALAR>::NetWriter() {
+  template <typename GUM_SCALAR>
+  INLINE NetWriter<GUM_SCALAR>::NetWriter() {
     GUM_CONSTRUCTOR( NetWriter );
   }
 
   // Default destructor.
-  template <typename GUM_SCALAR> INLINE NetWriter<GUM_SCALAR>::~NetWriter() {
+  template <typename GUM_SCALAR>
+  INLINE NetWriter<GUM_SCALAR>::~NetWriter() {
     GUM_DESTRUCTOR( NetWriter );
   }
 
@@ -129,8 +128,7 @@ namespace gum {
       str << "potential ( " << ( varsSeq[(Idx)0] )->name() << " | ";
 
       for ( Idx i = 0; i < varsSeq.size(); i++ ) {
-        if ( i != 0 )
-          str << varsSeq[i]->name() << "   ";
+        if ( i != 0 ) str << varsSeq[i]->name() << "   ";
 
         condVars << *( varsSeq[i] );
       }

@@ -63,16 +63,16 @@ namespace gum {
     /// copy constructor
     StructuralConstraintDAG::StructuralConstraintDAG(
         const StructuralConstraintDAG& from )
-        : StructuralConstraintDiGraph( from ),
-          _DAG__cycle_detector( from._DAG__cycle_detector ) {
+        : StructuralConstraintDiGraph( from )
+        , _DAG__cycle_detector( from._DAG__cycle_detector ) {
       GUM_CONS_CPY( StructuralConstraintDAG );
     }
 
     /// move constructor
     StructuralConstraintDAG::StructuralConstraintDAG(
         StructuralConstraintDAG&& from )
-        : StructuralConstraintDiGraph( std::move( from ) ),
-          _DAG__cycle_detector( std::move( from._DAG__cycle_detector ) ) {
+        : StructuralConstraintDiGraph( std::move( from ) )
+        , _DAG__cycle_detector( std::move( from._DAG__cycle_detector ) ) {
       GUM_CONS_MOV( StructuralConstraintDAG );
     }
 

@@ -50,10 +50,12 @@
 namespace gum {
   namespace prm {
 
-    template <typename GUM_SCALAR> class GSpan;
+    template <typename GUM_SCALAR>
+    class GSpan;
 
     namespace gspan {
-      template <typename GUM_SCALAR> class SearchStrategy;
+      template <typename GUM_SCALAR>
+      class SearchStrategy;
 
       /**
        * @class DFSTree DFSTree.h <agrum/PRM/gspan/DFSTree.h>
@@ -62,7 +64,8 @@ namespace gum {
        *discovered
        * in an interface graph.
        */
-      template <typename GUM_SCALAR> class DFSTree : private DiGraph {
+      template <typename GUM_SCALAR>
+      class DFSTree : private DiGraph {
 
         public:
         // =========================================================================
@@ -169,7 +172,8 @@ namespace gum {
          * @throw OperationNotAllowed Raised if the grow is found to be not
          *minimal.
          */
-        Pattern& growPattern( Pattern& p, EdgeGrowth<GUM_SCALAR>& edge_growth,
+        Pattern& growPattern( Pattern& p,
+                              EdgeGrowth<GUM_SCALAR>& edge_growth,
                               Size min_freq );
 
         /// @}
@@ -283,11 +287,13 @@ namespace gum {
         SearchStrategy<GUM_SCALAR>* __strategy;
 
         /// Raise different exceptions if child is invalid or illegal
-        void __checkGrowth( Pattern& p, Pattern* child,
+        void __checkGrowth( Pattern& p,
+                            Pattern* child,
                             EdgeGrowth<GUM_SCALAR>& edge_growth );
 
         /// Add a child to this DFSTree.
-        void __addChild( Pattern& p, Pattern* child,
+        void __addChild( Pattern& p,
+                         Pattern* child,
                          EdgeGrowth<GUM_SCALAR>& edge_growth );
 
         /// Check if an instance match is redundant.

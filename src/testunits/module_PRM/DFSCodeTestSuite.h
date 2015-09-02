@@ -125,7 +125,8 @@ namespace gum_tests {
 
     void testAlphaNeighbors() {
       for ( gum::prm::gspan::DFSCode::iterator iter = alpha->codes.begin() + 1;
-            iter != alpha->codes.end(); ++iter ) {
+            iter != alpha->codes.end();
+            ++iter ) {
         TS_ASSERT(
             gum::prm::gspan::DFSCode::validNeighbors( *( iter - 1 ), *iter ) );
       }
@@ -133,7 +134,8 @@ namespace gum_tests {
 
     void testBetaNeighbors() {
       for ( gum::prm::gspan::DFSCode::iterator iter = beta->codes.begin() + 1;
-            iter != beta->codes.end(); ++iter ) {
+            iter != beta->codes.end();
+            ++iter ) {
         TS_ASSERT(
             gum::prm::gspan::DFSCode::validNeighbors( *( iter - 1 ), *iter ) );
       }
@@ -141,7 +143,8 @@ namespace gum_tests {
 
     void testGammaNeighbors() {
       for ( gum::prm::gspan::DFSCode::iterator iter = gamma->codes.begin() + 1;
-            iter != gamma->codes.end(); ++iter ) {
+            iter != gamma->codes.end();
+            ++iter ) {
         TS_ASSERT(
             gum::prm::gspan::DFSCode::validNeighbors( *( iter - 1 ), *iter ) );
       }

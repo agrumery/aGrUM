@@ -28,12 +28,20 @@ namespace gum {
 
   namespace learning {
 
-    CSVParser::CSVParser( std::istream& in, const std::string& delimiter,
-                          const char commentmarker, const char quoteMarker )
-        : __line(), __delimiter( delimiter ), __spaces( " \t\r" ),
-          __delimiterPlusSpaces( __delimiter + __spaces ), __noLine( (Size)0 ),
-          __commentMarker( commentmarker ), __quoteMarker( quoteMarker ),
-          __in( in ), __data(), __emptyData( true ) {
+    CSVParser::CSVParser( std::istream& in,
+                          const std::string& delimiter,
+                          const char commentmarker,
+                          const char quoteMarker )
+        : __line()
+        , __delimiter( delimiter )
+        , __spaces( " \t\r" )
+        , __delimiterPlusSpaces( __delimiter + __spaces )
+        , __noLine( (Size)0 )
+        , __commentMarker( commentmarker )
+        , __quoteMarker( quoteMarker )
+        , __in( in )
+        , __data()
+        , __emptyData( true ) {
       GUM_CONSTRUCTOR( CSVParser );
     }
 
@@ -48,7 +56,8 @@ namespace gum {
 
     void CSVParser::__getNextTriplet( const std::string& str,
                                       Size& first_letter_token,
-                                      Size& next_token, Size& last_letter_token,
+                                      Size& next_token,
+                                      Size& last_letter_token,
                                       Size from ) const {
       first_letter_token = str.find_first_not_of( __spaces, from );
 
@@ -62,8 +71,8 @@ namespace gum {
             __correspondingQuoteMarker( str, first_letter_token );
 
         if ( last_letter_token == std::string::npos )
-          GUM_SYNTAX_ERROR( "String quote missing", noLine(),
-                            first_letter_token );
+          GUM_SYNTAX_ERROR(
+              "String quote missing", noLine(), first_letter_token );
 
         next_token = str.find_first_of( __delimiter, last_letter_token + 1 );
         Size next_char =
@@ -110,13 +119,12 @@ namespace gum {
 
       Size counter = 0, first_letter_token, next_token, last_letter_token;
 
-      __getNextTriplet( str, first_letter_token, next_token, last_letter_token,
-                        0 );
+      __getNextTriplet(
+          str, first_letter_token, next_token, last_letter_token, 0 );
 
       while ( std::string::npos != first_letter_token &&
               std::string::npos != last_letter_token ) {
-        if ( __data.size() <= counter )
-          __data.resize( counter + 1 );
+        if ( __data.size() <= counter ) __data.resize( counter + 1 );
 
         if ( first_letter_token == next_token ) {
           __data[counter] = "";
@@ -130,11 +138,13 @@ namespace gum {
 
         counter++;
 
-        if ( next_token == std::string::npos )
-          break;
+        if ( next_token == std::string::npos ) break;
 
-        __getNextTriplet( str, first_letter_token, next_token,
-                          last_letter_token, next_token + 1 );
+        __getNextTriplet( str,
+                          first_letter_token,
+                          next_token,
+                          last_letter_token,
+                          next_token + 1 );
       }
 
       // case where we end up with an empty field ...

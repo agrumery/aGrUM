@@ -43,13 +43,14 @@ namespace gum_tests {
 
       auto translators1 = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>() );
+                                gum::learning::Col<0>,
+                                8>() );
 
       auto generators1 = gum::learning::make_generators(
           gum::learning::RowGeneratorIdentity() );
 
-      auto filter1 = gum::learning::make_DB_row_filter( database, translators1,
-                                                        generators1 );
+      auto filter1 = gum::learning::make_DB_row_filter(
+          database, translators1, generators1 );
 
       gum::learning::DBRowTranslatorSetDynamic<
           gum::learning::CellTranslatorCompactIntId> translators2;
@@ -58,8 +59,8 @@ namespace gum_tests {
       auto generators2 = gum::learning::make_generators(
           gum::learning::RowGeneratorIdentity() );
 
-      auto filter2 = gum::learning::make_DB_row_filter( database, translators2,
-                                                        generators2 );
+      auto filter2 = gum::learning::make_DB_row_filter(
+          database, translators2, generators2 );
 
       unsigned nb1 = 0;
       while ( filter1.hasRows() ) {
@@ -93,11 +94,13 @@ namespace gum_tests {
 
       auto translators1 = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>() );
+                                gum::learning::Col<0>,
+                                8>() );
 
       auto translators2 = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8>() );
+                                gum::learning::Col<0>,
+                                8>() );
 
       auto translators3 = translators2;
 
@@ -117,11 +120,11 @@ namespace gum_tests {
       generators1 = std::move( generators2 );
       generators2 = std::move( generators3 );
 
-      auto filter1 = gum::learning::make_DB_row_filter( database, translators1,
-                                                        generators1 );
+      auto filter1 = gum::learning::make_DB_row_filter(
+          database, translators1, generators1 );
 
-      auto filter2 = gum::learning::make_DB_row_filter( database, translators2,
-                                                        generators2 );
+      auto filter2 = gum::learning::make_DB_row_filter(
+          database, translators2, generators2 );
 
       unsigned nb1 = 0;
       while ( filter1.hasRows() ) {
@@ -180,11 +183,11 @@ namespace gum_tests {
       generators1 = std::move( generators2 );
       generators2 = std::move( generators3 );
 
-      auto filter1 = gum::learning::make_DB_row_filter( database, translators1,
-                                                        generators1 );
+      auto filter1 = gum::learning::make_DB_row_filter(
+          database, translators1, generators1 );
 
-      auto filter2 = gum::learning::make_DB_row_filter( database, translators2,
-                                                        generators2 );
+      auto filter2 = gum::learning::make_DB_row_filter(
+          database, translators2, generators2 );
 
       unsigned nb1 = 0;
       while ( filter1.hasRows() ) {

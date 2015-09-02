@@ -271,7 +271,6 @@ namespace gum {
     /** worst case complexity: O(h^2) where h is the height of the DAG
      * @throws InvalidDirectedCycle if the arc would create a cycle in the dag
      */
-    GUM_DEPRECATED( void insertArc( NodeId x, NodeId y ) );
     void addArc( NodeId x, NodeId y );
 
     /// removes an arc from the current DAG

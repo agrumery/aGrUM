@@ -73,8 +73,7 @@ namespace gum {
       std::string
       O3prmrContext<GUM_SCALAR>::aliasToImport( const std::string& alias ) {
         for ( int i = m_imports.size() - 1; i >= 0; i-- )
-          if ( m_imports[i]->alias == alias )
-            return m_imports[i]->value;
+          if ( m_imports[i]->alias == alias ) return m_imports[i]->value;
 
         return std::string();
       }
@@ -90,8 +89,7 @@ namespace gum {
                                                  const std::string& alias ) {
         m_imports.push_back( new ImportCommand( line, import, alias ) );
 
-        if ( alias == "default" )
-          m_mainImport = m_imports.back();
+        if ( alias == "default" ) m_mainImport = m_imports.back();
       }
 
       template <typename GUM_SCALAR>
@@ -100,8 +98,7 @@ namespace gum {
                                                  bool ismain ) {
         m_imports.push_back( new ImportCommand( line, import, import ) );
 
-        if ( ismain )
-          m_mainImport = m_imports.back();
+        if ( ismain ) m_mainImport = m_imports.back();
       }
 
       template <typename GUM_SCALAR>
@@ -142,7 +139,8 @@ namespace gum {
         const std::vector<ImportCommand*>& imports = c.imports();
 
         for ( std::vector<ImportCommand*>::const_iterator i = imports.begin();
-              i != imports.end(); i++ )
+              i != imports.end();
+              i++ )
           addImport( **i );
 
         const std::vector<O3prmrSession<GUM_SCALAR>*>& sessions = c.sessions();
@@ -266,7 +264,8 @@ namespace gum {
 
         for ( std::vector<O3prmrCommand*>::const_iterator i =
                   m_commands.begin();
-              i < m_commands.end(); i++ )
+              i < m_commands.end();
+              i++ )
           output += "\t" + ( *i )->toString() + "\n";
 
         output += "}\n";
@@ -279,7 +278,8 @@ namespace gum {
       operator+=( const O3prmrSession<GUM_SCALAR>& c ) {
         for ( std::vector<O3prmrCommand*>::const_iterator i =
                   c.m_commands.begin();
-              i < c.m_commands.end(); i++ )
+              i < c.m_commands.end();
+              i++ )
           addCommand( *i );
 
         return *this;

@@ -41,8 +41,8 @@ namespace gum {
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
   MultiDimDecisionDiagram<GUM_SCALAR,
                           IApproximationPolicy>::MultiDimDecisionDiagram()
-      : MultiDimDecisionDiagramBase<GUM_SCALAR>(),
-        IApproximationPolicy<GUM_SCALAR>() {
+      : MultiDimDecisionDiagramBase<GUM_SCALAR>()
+      , IApproximationPolicy<GUM_SCALAR>() {
 
     GUM_CONSTRUCTOR( MultiDimDecisionDiagram );
   }
@@ -51,10 +51,11 @@ namespace gum {
 
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
   MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy>::
-      MultiDimDecisionDiagram( const MultiDimDecisionDiagram<
-          GUM_SCALAR, IApproximationPolicy>& source )
-      : MultiDimDecisionDiagramBase<GUM_SCALAR>(),
-        IApproximationPolicy<GUM_SCALAR>( source ) {
+      MultiDimDecisionDiagram(
+          const MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy>&
+              source )
+      : MultiDimDecisionDiagramBase<GUM_SCALAR>()
+      , IApproximationPolicy<GUM_SCALAR>( source ) {
 
     GUM_CONSTRUCTOR( MultiDimDecisionDiagram );
   }
@@ -64,8 +65,8 @@ namespace gum {
   template <typename GUM_SCALAR, template <class> class IApproximationPolicy>
   MultiDimDecisionDiagram<GUM_SCALAR, IApproximationPolicy>::
       MultiDimDecisionDiagram( const IApproximationPolicy<GUM_SCALAR>& source )
-      : MultiDimDecisionDiagramBase<GUM_SCALAR>(),
-        IApproximationPolicy<GUM_SCALAR>( source ) {
+      : MultiDimDecisionDiagramBase<GUM_SCALAR>()
+      , IApproximationPolicy<GUM_SCALAR>( source ) {
 
     GUM_CONSTRUCTOR( MultiDimDecisionDiagram );
   }

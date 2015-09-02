@@ -287,11 +287,13 @@ namespace gum {
 
   /** @brief the function used to register all the operators on
    * multidimImplementations over non-pointers types */
-  template <typename GUM_SCALAR> void operators4MultiDimInit();
+  template <typename GUM_SCALAR>
+  void operators4MultiDimInit();
 
   /** @brief the function used to register all the operators on
    * multidimImplementations over pointers types */
-  template <typename GUM_SCALAR> void pointerOperators4MultiDimInit();
+  template <typename GUM_SCALAR>
+  void pointerOperators4MultiDimInit();
 
   /// a class used to register operators over non-pointers types
   /** This class is of course completely redundant with function
@@ -303,7 +305,8 @@ namespace gum {
    * operators4MultiDimInit, we allow this partial specialization. This is
    * most effective to produce different codes for pointer types and non-pointer
    * types. */
-  template <typename GUM_SCALAR> struct Operators4MultiDimInitialize {
+  template <typename GUM_SCALAR>
+  struct Operators4MultiDimInitialize {
     void init() { operators4MultiDimInit<GUM_SCALAR>(); };
   };
 

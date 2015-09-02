@@ -151,7 +151,9 @@ namespace gum {
   NodeGraphPartIteratorSafe::NodeGraphPartIteratorSafe(
       const NodeGraphPart& nodes )
       : NodeGraphPartIterator( nodes ) {
-    GUM_CONNECT( *const_cast<NodeGraphPart*>( &nodes ), onNodeDeleted, *this,
+    GUM_CONNECT( *const_cast<NodeGraphPart*>( &nodes ),
+                 onNodeDeleted,
+                 *this,
                  NodeGraphPartIteratorSafe::whenNodeDeleted );
     GUM_CONSTRUCTOR( NodeGraphPartIteratorSafe );
   }
@@ -161,7 +163,9 @@ namespace gum {
   NodeGraphPartIteratorSafe::NodeGraphPartIteratorSafe(
       const NodeGraphPartIteratorSafe& it )
       : NodeGraphPartIterator( it ) {
-    GUM_CONNECT( *const_cast<NodeGraphPart*>( _nodes ), onNodeDeleted, *this,
+    GUM_CONNECT( *const_cast<NodeGraphPart*>( _nodes ),
+                 onNodeDeleted,
+                 *this,
                  NodeGraphPartIteratorSafe::whenNodeDeleted );
     GUM_CONS_CPY( NodeGraphPartIteratorSafe );
   }
@@ -171,7 +175,9 @@ namespace gum {
   NodeGraphPartIteratorSafe::NodeGraphPartIteratorSafe(
       NodeGraphPartIteratorSafe&& it )
       : NodeGraphPartIterator( std::move( it ) ) {
-    GUM_CONNECT( *const_cast<NodeGraphPart*>( _nodes ), onNodeDeleted, *this,
+    GUM_CONNECT( *const_cast<NodeGraphPart*>( _nodes ),
+                 onNodeDeleted,
+                 *this,
                  NodeGraphPartIteratorSafe::whenNodeDeleted );
     GUM_CONS_MOV( NodeGraphPartIteratorSafe );
   }
@@ -244,7 +250,6 @@ namespace gum {
   // bugs within the graphs hierarchy (i.e., virtual functions calling
   // recursively
   // each other along the hierarchy) that are not easy to debug.
-  INLINE NodeId NodeGraphPart::insertNode() { return addNode(); }
   INLINE NodeId NodeGraphPart::addNode() {
     NodeId newNode;
 
@@ -270,8 +275,7 @@ namespace gum {
   INLINE Size NodeGraphPart::size() const { return sizeNodes(); }
 
   INLINE bool NodeGraphPart::existsNode( const NodeId node ) const {
-    if ( node >= __bound )
-      return false;
+    if ( node >= __bound ) return false;
 
     return ( !__inHoles( node ) );
   }
@@ -281,8 +285,7 @@ namespace gum {
   }
 
   INLINE void NodeGraphPart::eraseNode( const NodeId node ) {
-    if ( !existsNode( node ) )
-      return;
+    if ( !existsNode( node ) ) return;
 
     __addHole( node );
 
@@ -330,8 +333,7 @@ namespace gum {
   }
 
   INLINE bool NodeGraphPart::operator==( const NodeGraphPart& p ) const {
-    if ( __bound != p.__bound )
-      return false;
+    if ( __bound != p.__bound ) return false;
 
     if ( __holes )
       if ( p.__holes )
@@ -353,8 +355,7 @@ namespace gum {
 
     if ( !empty() ) {
       for ( NodeId n = 0; n < __bound; ++n ) {
-        if ( !__inHoles( n ) )
-          son.insert( n );
+        if ( !__inHoles( n ) ) son.insert( n );
       }
     }
 

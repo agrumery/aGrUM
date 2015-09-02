@@ -124,36 +124,31 @@ namespace gum_tests {
       triang.addNode( 0, 10 );
       triang.updateTriangulation();
 
-      if ( !triang.__check() )
-        return;
+      if ( !triang.__check() ) return;
 
       triang.addNode( 1, 10 );
 
       triang.updateTriangulation();
 
-      if ( !triang.__check() )
-        return;
+      if ( !triang.__check() ) return;
 
       triang.addEdge( 0, 1 );
 
       triang.updateTriangulation();
 
-      if ( !triang.__check() )
-        return;
+      if ( !triang.__check() ) return;
 
       triang.addNode( 2, 10 );
 
       triang.updateTriangulation();
 
-      if ( !triang.__check() )
-        return;
+      if ( !triang.__check() ) return;
 
       triang.addEdge( 0, 2 );
 
       triang.updateTriangulation();
 
-      if ( !triang.__check() )
-        return;
+      if ( !triang.__check() ) return;
 
       triang.addEdge( 2, 1 );
 
@@ -161,8 +156,7 @@ namespace gum_tests {
 
       triang.updateTriangulation();
 
-      if ( !triang.__check() )
-        return;
+      if ( !triang.__check() ) return;
     }
 
     void testRandom() {

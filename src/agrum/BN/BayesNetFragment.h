@@ -49,34 +49,22 @@ namespace gum {
    *different.
    *
    * BayesNetFragment is a DiGraphListener in order to be synchronized
-   *(especiallay
-   *when
-   * removing nodes or arcs).
+   *(especially when removing nodes or arcs).
    *
    * In a BayesNetFragment, one can install or remove nodes. An arc can be in
-   *the
-   *fragment if
-   * and only if its head and tail are installed in the fragment. When
-   *installing a
-   *node, all
-   * the arcs that can be added in the fragment are effectively installed (resp.
-   *when
-   * uninstalling a node, etc.).
+   *the fragment if and only if its head and tail are installed in the fragment.
+   *When installing a node, all the arcs that can be added in the fragment are
+   *effectively installed (resp.
+   *when uninstalling a node, etc.).
    *
    * A BayesNetFragment can redefine potential for node. The main reason is to
-   *be
-   *able to
-   * install a node without installing all its parents (and its ascendants). So
-   *local
-   *CPT to the
-   * node can be installed. However, it is not done automatically.
+   *be able to install a node without installing all its parents (and its
+   *ascendants). So local CPT to the node can be installed. However, it is not
+   *done automatically.
    *
    * If a cpt is not locally defined, the fragment uses the cpt defined in the
-   *referred BN.
-   * The checkConsistency() method verifies that, for all installed nodes,
-   *either all
-   *the parents are installed or a local CPT is
-   * defined.
+   *referred BN. The checkConsistency() method verifies that, for all installed
+   *nodes, either all the parents are installed or a local CPT is defined.
    */
 
   template <typename GUM_SCALAR>
@@ -118,15 +106,15 @@ namespace gum {
     /** @param src the object that sent the signal
      * @param from the id of tail of the new arc inserted into the graph
      * @param to the id of head of the new arc inserted into the graph */
-    virtual void whenArcAdded( const void* src, NodeId from,
-                               NodeId to ) noexcept override;
+    virtual void
+    whenArcAdded( const void* src, NodeId from, NodeId to ) noexcept override;
 
     /// the action to take when an arc has just been removed from the graph
     /** @param src the object that sent the signal
      * @param from the id of tail of the arc removed from the graph
      * @param to the id of head of the arc removed from the graph */
-    virtual void whenArcDeleted( const void* src, NodeId from,
-                                 NodeId to ) noexcept override;
+    virtual void
+    whenArcDeleted( const void* src, NodeId from, NodeId to ) noexcept override;
     /// @}
 
     /// @name IBayesNet interface

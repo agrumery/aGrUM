@@ -28,7 +28,8 @@
 namespace gum {
   namespace prm {
     INLINE
-    NameGenerator::NameGenerator() : __counters( 3, 1 ) {
+    NameGenerator::NameGenerator()
+        : __counters( 3, 1 ) {
       GUM_CONSTRUCTOR( NameGenerator );
     }
 

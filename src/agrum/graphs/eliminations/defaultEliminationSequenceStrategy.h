@@ -100,8 +100,10 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph and the modalities are not
      * copied but only referenced by the elimination sequence algorithm. */
     DefaultEliminationSequenceStrategy(
-        UndiGraph* graph, const NodeProperty<Size>* dom,
-        float ratio = GUM_QUASI_RATIO, float threshold = GUM_WEIGHT_THRESHOLD );
+        UndiGraph* graph,
+        const NodeProperty<Size>* dom,
+        float ratio = GUM_QUASI_RATIO,
+        float threshold = GUM_WEIGHT_THRESHOLD );
 
     /// copy constructor
     DefaultEliminationSequenceStrategy(

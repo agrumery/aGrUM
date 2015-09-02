@@ -39,8 +39,9 @@ namespace gum {
   INLINE
   MultiDimICIModel<GUM_SCALAR>::MultiDimICIModel( GUM_SCALAR external_weight,
                                                   GUM_SCALAR default_weight )
-      : MultiDimReadOnly<GUM_SCALAR>(), __external_weight( external_weight ),
-        __default_weight( default_weight ) {
+      : MultiDimReadOnly<GUM_SCALAR>()
+      , __external_weight( external_weight )
+      , __default_weight( default_weight ) {
     GUM_CONSTRUCTOR( MultiDimICIModel );
   }
 
@@ -69,7 +70,8 @@ namespace gum {
 
     for ( HashTableConstIteratorSafe<const DiscreteVariable*, GUM_SCALAR> iter =
               from.__causal_weights.beginSafe();
-          iter != from.__causal_weights.endSafe(); ++iter ) {
+          iter != from.__causal_weights.endSafe();
+          ++iter ) {
       try {
         causalWeight( *( bij.first( iter.key() ) ), iter.val() );
       } catch ( NotFound& ) {
@@ -97,8 +99,8 @@ namespace gum {
   MultiDimICIModel<GUM_SCALAR>::causalWeight( const DiscreteVariable& v,
                                               GUM_SCALAR w ) const {
     if ( !this->contains( v ) ) {
-      GUM_ERROR( InvalidArgument, v.name()
-                                      << " is not a cause for this CI Model" );
+      GUM_ERROR( InvalidArgument,
+                 v.name() << " is not a cause for this CI Model" );
     }
 
     if ( w == (GUM_SCALAR)0 ) {

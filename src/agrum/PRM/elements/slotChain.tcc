@@ -35,9 +35,9 @@ namespace gum {
     SlotChain<GUM_SCALAR>::SlotChain(
         const std::string& name,
         const Sequence<ClassElement<GUM_SCALAR>*>& chain )
-        : ClassElement<GUM_SCALAR>( name ),
-          __chain( new Sequence<ClassElement<GUM_SCALAR>*>( chain ) ),
-          __isMultiple( false ) {
+        : ClassElement<GUM_SCALAR>( name )
+        , __chain( new Sequence<ClassElement<GUM_SCALAR>*>( chain ) )
+        , __isMultiple( false ) {
       GUM_CONSTRUCTOR( SlotChain );
 
       if ( __chain->size() < 2 ) {
@@ -93,7 +93,8 @@ namespace gum {
       // PRMObject::RIGHT_CAST() + name;
     }
 
-    template <typename GUM_SCALAR> void SlotChain<GUM_SCALAR>::__copyLastElt() {
+    template <typename GUM_SCALAR>
+    void SlotChain<GUM_SCALAR>::__copyLastElt() {
       ClassElement<GUM_SCALAR>* new_elt = 0;
 
       switch ( __chain->back()->elt_type() ) {
@@ -103,7 +104,8 @@ namespace gum {
 
           Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
           for ( auto iter = old_attr->cpf().begin();
-                iter != old_attr->cpf().end(); ++iter ) {
+                iter != old_attr->cpf().end();
+                ++iter ) {
             if ( ( *iter ) != &( old_attr->type().variable() ) ) {
 
               bij.insert( *iter, *iter );
@@ -132,7 +134,8 @@ namespace gum {
       __chain->setAtPos( __chain->size() - 1, new_elt );
     }
 
-    template <typename GUM_SCALAR> SlotChain<GUM_SCALAR>::~SlotChain() {
+    template <typename GUM_SCALAR>
+    SlotChain<GUM_SCALAR>::~SlotChain() {
       GUM_DESTRUCTOR( SlotChain );
       delete __chain->back();
       delete __chain;
@@ -140,9 +143,9 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     SlotChain<GUM_SCALAR>::SlotChain( const SlotChain<GUM_SCALAR>& source )
-        : ClassElement<GUM_SCALAR>( source.name() ),
-          __chain( new Sequence<ClassElement<GUM_SCALAR>*>( source.chain() ) ),
-          __isMultiple( source.isMultiple() ) {
+        : ClassElement<GUM_SCALAR>( source.name() )
+        , __chain( new Sequence<ClassElement<GUM_SCALAR>*>( source.chain() ) )
+        , __isMultiple( source.isMultiple() ) {
       GUM_CONS_CPY( SlotChain );
       __copyLastElt();
     }

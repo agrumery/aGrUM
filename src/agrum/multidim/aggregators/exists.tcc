@@ -32,7 +32,8 @@ namespace gum {
   namespace aggregator {
     template <typename GUM_SCALAR>
     INLINE Exists<GUM_SCALAR>::Exists( Idx value )
-        : MultiDimAggregator<GUM_SCALAR>(), __value( value ) {
+        : MultiDimAggregator<GUM_SCALAR>()
+        , __value( value ) {
       GUM_CONSTRUCTOR( Exists )
     }
 
@@ -43,7 +44,8 @@ namespace gum {
       GUM_CONS_CPY( Exists );
     }
 
-    template <typename GUM_SCALAR> INLINE Exists<GUM_SCALAR>::~Exists() {
+    template <typename GUM_SCALAR>
+    INLINE Exists<GUM_SCALAR>::~Exists() {
       GUM_DESTRUCTOR( Exists );
     }
 
@@ -53,9 +55,10 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE Idx
-    Exists<GUM_SCALAR>::_folder( const DiscreteVariable& v, Idx i1, Idx i2,
-                                 bool& stop_iteration ) const {
+    INLINE Idx Exists<GUM_SCALAR>::_folder( const DiscreteVariable& v,
+                                            Idx i1,
+                                            Idx i2,
+                                            bool& stop_iteration ) const {
       if ( i1 != __value ) {
         return (Idx)0;
       } else {

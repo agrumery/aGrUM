@@ -161,8 +161,7 @@ namespace gum_tests {
       gum::Potential<float>* pot = 0;
       TS_ASSERT_THROWS_NOTHING( pot = inf.joint( nodeset ) );
 
-      if ( pot )
-        delete pot;
+      if ( pot ) delete pot;
     }
 
     // testing information methods
