@@ -25,7 +25,7 @@
 #include <agrum/PRM/elements/formAttribute.h>
 #include <agrum/PRM/elements/class.h>
 
-#include <module_PRM/ClassElementTestSuite.h>
+#include <module_PRM/ClassElementTestSuiteAbstract.h>
 
 /**
  * This class is used to test gum::prm::ClassElement, since it is an abstrac
@@ -37,14 +37,14 @@ namespace gum_tests {
   class FormAttributeTestSuite : public CxxTest::TestSuite {
     private:
     typedef gum::prm::FormAttribute<double> Attribute;
-    ClassElementTestSuite* __classEltTestSuite;
+    ClassElementTestSuiteAbstract* __classEltTestSuite;
     gum::prm::Type<double>* __boolean;
     gum::prm::Type<double>* __state;
     gum::prm::Class<double>* __class;
 
     public:
     void setUp() {
-      __classEltTestSuite = new ClassElementTestSuite;
+      __classEltTestSuite = new ClassElementTestSuiteAbstract;
       __boolean = gum::prm::Type<double>::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel( "OK" );

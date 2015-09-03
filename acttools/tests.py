@@ -23,9 +23,8 @@
 from __future__ import print_function
 from datetime import datetime
 import glob,os,sys
-
 from configuration import cfg
-from utils import warn,error,notif,critic,setifyString
+from utils import warn,error,notif,critic,setifyString,CrossPlatformRelPath
 
 def check_tests(current):
   cde=current['tests']
@@ -49,7 +48,8 @@ def checkTestList(current,alltests):
         name=tryfile
         break
     if name=="":
-      error('Test "src/testunits/[module]/'+ss+'TestSuite.h" does not exists for the selected modules')
+      if ss!="show":
+        error('Test "src/testunits/[module]/'+ss+'TestSuite.h" does not exist for the selected modules')
       afficheTests(current)
       sys.exit(0)
     else:
@@ -77,9 +77,6 @@ def writeTestList(l):
 
 
 def allTests(moduleset):
-  def CrossPlatformRelPath(x,y):
-    return os.path.relpath(x,"src/testunits").replace("\\","/")
-
   s=[]
 
   for x in moduleset:
@@ -87,6 +84,9 @@ def allTests(moduleset):
         for x in glob.glob('src/testunits/module_'+x.upper()+'/*TestSuite.h')]
 
   return sorted(s)
+
+def allTestNames(moduleset):
+  return [s.split('/')[-1].split("TestSuite")[0] for s in allTests(moduleset)]
 
 def checkTestListCmake(current):
     if not os.path.exists('src/testunits/testList.cmake'):
@@ -113,9 +113,8 @@ def afficheTestsForModule(m):
   print(" "+m+" ")
   print("="*(2+len(m)))
 
-  l=allTests(set([m]))
-  prefix="module_"+m.upper()+"/"
-  l=[s[len(prefix):-11] for s in l if s.startswith(prefix)]
+  l=allTestNames(set([m]))
+
   w=max([len(x) for x in l])
   nbr=80/w
   i=0

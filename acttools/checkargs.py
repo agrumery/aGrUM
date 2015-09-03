@@ -33,7 +33,6 @@ from tests import check_tests
 def parseCommandLine(current):
     return cfg.parser.parse_args()
 
-
 def getCurrent():
   current={}
   shlv=shelve.open(cfg.configFile,writeback=True)
@@ -51,7 +50,7 @@ def setCurrent(current):
     if not key in cfg.non_persistent:
       shlv[key]=current[key]
 
-def checkCurrent(current,options,args):  
+def checkCurrent(current,options,args):
   #helper
   def update(current,key,val,test):
     if test:
@@ -92,7 +91,7 @@ def checkCurrent(current,options,args):
 
   checkConsistency(current)
   checkPython(current)
-    
+
   setCurrent(current)
   showInvocation(current)
 
@@ -103,8 +102,9 @@ def checkConsistency(current):
   def check_aGrumTest(option,current):
     if current[option] :
       prefix="Option [{0}] acts only".format(option)
-      if current['targets']!=['aGrUM']:
+      if current['targets']!=set(['aGrUM']):
         has_notif=True
+        print(current['targets'])
         notif(prefix+" on target [aGrUM].")
       if current['action']!='test':
         critic(prefix+" on action [test] (not on [{0}]).".format(current['action']))

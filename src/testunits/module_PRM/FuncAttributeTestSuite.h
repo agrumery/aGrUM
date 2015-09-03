@@ -25,7 +25,7 @@
 #include <agrum/PRM/elements/funcAttribute.h>
 #include <agrum/PRM/elements/class.h>
 
-#include <module_PRM/ClassElementTestSuite.h>
+#include <module_PRM/ClassElementTestSuiteAbstract.h>
 
 /**
  * This class is used to test gum::prm::ClassElement, since it is an abstrac
@@ -37,13 +37,13 @@ namespace gum_tests {
   class FuncAttributeTestSuite : public CxxTest::TestSuite {
     private:
     typedef gum::prm::FuncAttribute<double> Attribute;
-    ClassElementTestSuite* __classEltTestSuite;
+    ClassElementTestSuiteAbstract* __classEltTestSuite;
     gum::prm::Type<double>* __boolean;
     gum::prm::Type<double>* __state;
 
     public:
     void setUp() {
-      __classEltTestSuite = new ClassElementTestSuite;
+      __classEltTestSuite = new ClassElementTestSuiteAbstract;
       __boolean = gum::prm::Type<double>::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel( "OK" );

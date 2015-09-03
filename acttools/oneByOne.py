@@ -21,63 +21,45 @@
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
 import sys
-import os
-import glob
-
 from configuration import cfg
+from utils import notif,warn,trace,setifyString
+import glob
+from subprocess import PIPE, Popen, STDOUT,call
+from tests import allTestNames
 
-def about():
-  print(cfg.C_END+cfg.C_WARNING+"aGrUM"+cfg.C_END+" compilation tool "+cfg.C_VALUE+cfg.numversion+cfg.C_END)
-  print("(c) 2010-15 "+cfg.C_MSG+"aGrUM Team"+cfg.C_END)
-  print("")
+def checkAgrumMemoryLeak(x):
+  commande='act test debug -t {0}'.format(x)
 
-def setifyString(s):
-  return set(filter(None,s.split("+"))) # filter to setify "a++b+c" into set(['a','b','c'])
+  first=cfg.C_WARNING+x+cfg.C_END+" : "
+  flag=0
 
-def safe_cd(current,folder):
-  trace(current,"cd "+folder)
-  if not current['dry_run']:
-    if folder!="..":
-      if not os.path.exists(folder):
-        os.mkdir(folder)
-    os.chdir(folder)
+  sys.stdout.write(first)
+  sys.stdout.flush()
 
-def colFormat(v,col):
-  s=str(v)
-  return col+s.replace("[",cfg.C_VALUE).replace("]",col)
+  proc=Popen(commande+" --no-fun",shell=True,stdout=PIPE,stderr=STDOUT)
+  out=proc.stdout.readlines()
+  for line in out:
+    if "NO MEMORY LEAK" in line:
+      last=cfg.C_VALUE+"ok"+cfg.C_END
+      flag=1
+    elif "Memory leaks found" in line:
+      last=cfg.C_ERROR+line.split("|")[2].strip()+cfg.C_END
+      flag=2
 
-def trace(current,cde):
-  if current['dry_run'] or current['verbose']:
-    notif(cde,cfg.prefixe_trace)
+  if flag==0:
+    last=cfg.C_ERROR+"?"+cfg.C_END
 
-def notif(s,pref=None):
-  if pref is None:
-    pref=cfg.prefixe_line
+  print(last)
+  return (first+last,flag==1)
 
-  print(pref+colFormat(s,cfg.C_MSG)+cfg.C_END)
+def checkAgrumMemoryLeaks(current):
+  notif("Searching leaks test by test (may be a bit long).\n")
+  res=[]
+  for x in allTestNames(setifyString(current['modules'])):
+#  for x in sorted([CrossPlatformRelPath(x,"src/testunits").split('/')[1].split('TestSuite')[0]
+#                   for x in glob.glob('src/testunits/module_*/*TestSuite.h')]):
+    (msg,testOK)=checkAgrumMemoryLeak(x)
+    if not testOK:
+      res.append(msg)
 
-def warn(s,pref=None):
-  if pref is None:
-    pref=cfg.prefixe_line
-
-  if cfg.verbosity:
-    print(pref+colFormat(s,cfg.C_WARNING)+cfg.C_END)
-
-def error(s,pref=None):
-  if pref is None:
-    pref=cfg.prefixe_line
-
-  print(pref+colFormat(s,cfg.C_ERROR)+cfg.C_END)
-
-def critic(s,pref=None):
-  if pref is None:
-    pref=cfg.prefixe_line
-
-  error(s,pref)
-  print(pref+colFormat("Stopped.",cfg.C_MSG)+cfg.C_END+"\n")
-
-  sys.exit(1)
-
-
-def CrossPlatformRelPath(x,y):
-  return os.path.relpath(x,"src/testunits").replace("\\","/")
+  warn("\n"+cfg.C_WARNING+"Test(s) with problem(s) :\n -{0}\n".format("\n -".join(res) if len(res)>0 else cfg.C_VALUE+"none")+cfg.C_END)
