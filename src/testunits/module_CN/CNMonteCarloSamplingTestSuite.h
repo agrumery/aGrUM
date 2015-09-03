@@ -30,7 +30,7 @@
 #include <agrum/core/OMPThreads.h>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #define GET_CN_PATH_STR( x ) \
   xstrfy( GUM_SRC_PATH ) "/testunits/ressources/cn/" #x

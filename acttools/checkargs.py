@@ -51,7 +51,7 @@ def setCurrent(current):
     if not key in cfg.non_persistent:
       shlv[key]=current[key]
 
-def checkCurrent(current,options,args):
+def checkCurrent(current,options,args):  
   #helper
   def update(current,key,val,test):
     if test:
@@ -92,7 +92,7 @@ def checkCurrent(current,options,args):
 
   checkConsistency(current)
   checkPython(current)
-
+    
   setCurrent(current)
   showInvocation(current)
 

@@ -79,7 +79,7 @@ def buildMake(current,target):
       line+=" doc"
     else:
       critic("Action '"+current["action"]+"' not treated for now")
-      
+
     line+=" -j "+str(current["jobs"])
 
     if target=="pyAgrum":
@@ -93,7 +93,7 @@ def buildPost(current,target):
     if current["action"]=="test":
         if target=="aGrUM":
             safe_cd(current,"src")
-            execFromLine(current,"gumTest")
+            rc=execFromLine(current,"./gumTest",checkRC=False)
             safe_cd(current,"..")
         elif target=="pyAgrum":
             run_cde="PYTHONPATH=wrappers "
@@ -101,10 +101,13 @@ def buildPost(current,target):
                 run_cde+=cfg.python+" ..\\..\\..\\wrappers\\pyAgrum\\testunits\\TestSuite.py"
             else:
                 run_cde+=cfg.python+" ../wrappers/pyAgrum/testunits/TestSuite.py"
-            execFromLine(current,run_cde)
+            execFromLine(current,run_cde,checkRC=False)
 
 
-def execFromLine(current,line):
+def execFromLine(current,line,checkRC=True):
     trace(current,line)
     if not current['dry_run']:
-        return execCde(line,current)
+        rc=execCde(line,current)
+	if checkRC:
+          if rc>0:
+            critic("Received error {0}".format(rc))

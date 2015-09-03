@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/inference/VEWithBB.h>
 
@@ -38,7 +38,6 @@ namespace gum_tests {
   class StructuredInferenceTestSuite : public CxxTest::TestSuite {
     public:
     void setUp() {
-      // std::cerr << std::endl;
     }
 
     void generateLayer1(

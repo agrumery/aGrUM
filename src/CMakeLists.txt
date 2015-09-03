@@ -23,7 +23,7 @@ if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
      CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF BN)
      CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL BN)
      CocoRTarget(BN/io/net/cocoR SyntaxNet gum:net BN)
-     CocoRTarget(PRM/o3prm/cocoR SyntaxO3PRM gum:prm:o3prm PRM) 
+     CocoRTarget(PRM/o3prm/cocoR SyntaxO3PRM gum:prm:o3prm PRM)
      CocoRTarget(PRM/o3prmr/cocoR SyntaxO3PRMR gum:prm:o3prmr PRM)
      CocoRTarget(FMDP/io/dat/cocoR SyntaxDat gum:MDPDAT FMDP)
 endif(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
@@ -36,18 +36,16 @@ link_directories(${AGRUM_BINARY_DIR}/lib)
 set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INCLUDES} ${AGRUM_TEMPLATES})
 
 ####################################################################
-## target library
-
+## TARGET library
 add_library(${LIBAGRUM} ${AGRUM_FILES})
 set_target_properties (${LIBAGRUM} PROPERTIES DEBUG_POSTFIX "-dbg")
-
-
 set_target_properties(${LIBAGRUM} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
 
 ####################################################################
-## target docs
+## TARGET docs
 include(Doxygen.agrum)
 
+####################################################################
 ## TARGET run
 file(GLOB_RECURSE RUN_AGRUM_SOURCES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/run/*.cpp)
 file(GLOB_RECURSE RUN_AGRUM_INCLUDES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/run/*.h)
@@ -59,11 +57,16 @@ target_link_libraries(run ${LIBAGRUM})
 ## TARGET test
 include(CxxTest.agrum)
 
+####################################################################
+## TARGET install
 include(Install.agrum)
+
+####################################################################
+## TARGET pack
 include(Pack.agrum)
 
 ####################################################################
-# uninstall target
+# TARGET uninstall
 configure_file (
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake

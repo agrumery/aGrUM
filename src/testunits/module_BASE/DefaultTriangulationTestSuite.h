@@ -22,7 +22,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/graphs/triangulations/defaultTriangulation.h>
@@ -118,57 +118,57 @@ namespace gum_tests {
 
     void xxtestBIFtriangulation1( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(
-          __triangulate_bif( GET_PATH_STR( "Barley.bif" ) ) );
+          __triangulate_bif( GET_RESSOURCES_PATH( "Barley.bif" ) ) );
     };
 
     void xxtestBIFtriangulation1bis( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(
-          __triangulate_bif( GET_PATH_STR( "alarm.bif" ) ) );
+          __triangulate_bif( GET_RESSOURCES_PATH( "alarm.bif" ) ) );
     };
 
     void xxtestBIFtriangulation2( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(
-          __triangulate_bif( GET_PATH_STR( "carpo.bif" ) ) );
+          __triangulate_bif( GET_RESSOURCES_PATH( "carpo.bif" ) ) );
     };
 
     void xxtestBIFtriangulation3( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(
-          __triangulate_bif( GET_PATH_STR( "Pigs.bif" ) ) );
+          __triangulate_bif( GET_RESSOURCES_PATH( "Pigs.bif" ) ) );
     };
 
     void xxtestBIFtriangulation4( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(
-          __triangulate_bif( GET_PATH_STR( "Water.bif" ) ) );
+          __triangulate_bif( GET_RESSOURCES_PATH( "Water.bif" ) ) );
     };
 
     void xxtestBIFtriangulation5( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(
-          __triangulate_bif( GET_PATH_STR( "Link.bif" ) ) );
+          __triangulate_bif( GET_RESSOURCES_PATH( "Link.bif" ) ) );
     };
 
     void xxtestBIFtriangulation6( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(
-          __triangulate_bif( GET_PATH_STR( "Mildew.bif" ) ) );
+          __triangulate_bif( GET_RESSOURCES_PATH( "Mildew.bif" ) ) );
     };
 
     void xxtestBIFtriangulation7( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(
-          __triangulate_bif( GET_PATH_STR( "Munin1.bif" ) ) );
+          __triangulate_bif( GET_RESSOURCES_PATH( "Munin1.bif" ) ) );
     };
 
     void xxtestBIFtriangulation8( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(
-          __triangulate_bif( GET_PATH_STR( "hailfinder.bif" ) ) );
+          __triangulate_bif( GET_RESSOURCES_PATH( "hailfinder.bif" ) ) );
     };
 
     void xxtestBIFtriangulation9( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(
-          __triangulate_bif( GET_PATH_STR( "Diabetes.bif" ) ) );
+          __triangulate_bif( GET_RESSOURCES_PATH( "Diabetes.bif" ) ) );
     };
 
     void xxtestBIFtriangulation10( void ) {
       TS_GUM_ASSERT_THROWS_NOTHING(
-          __triangulate_bif( GET_PATH_STR( "insurance.bif" ) ) );
+          __triangulate_bif( GET_RESSOURCES_PATH( "insurance.bif" ) ) );
     };
 
     void testTriangulatedGraph1() {

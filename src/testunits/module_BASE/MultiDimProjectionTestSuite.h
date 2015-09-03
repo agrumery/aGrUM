@@ -24,7 +24,7 @@
 #include <sstream>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/core/set.h>
 #include <agrum/core/utils_random.h>

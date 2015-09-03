@@ -22,7 +22,7 @@
 #include <fstream>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/core/timer.h>
 
@@ -265,7 +265,7 @@ namespace gum_tests {
                          gum::MultiDimDecisionDiagramBase<double>* a3,
                          gum::Set<const gum::DiscreteVariable*> delVars ) {
 
-      std::string dotfile = GET_PATH_STR( "DecisionDiagramError.log" );
+      std::string dotfile = GET_RESSOURCES_PATH( "DecisionDiagramError.log" );
       std::ofstream output( dotfile.c_str(), std::ios::out );
 
       if ( !output.good() )

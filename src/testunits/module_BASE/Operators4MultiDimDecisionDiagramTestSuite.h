@@ -26,10 +26,11 @@
 #include <string>
 #include <sstream>
 #include <time.h>
-#include "../../agrum/core/sequence.h"
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
+
+#include <agrum/core/sequence.h>
 
 #include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
 #include <agrum/core/algorithms/approximationPolicy/linearApproximationPolicy.h>
@@ -317,7 +318,7 @@ namespace gum_tests {
                          gum::MultiDimDecisionDiagramBase<double>* a2,
                          gum::MultiDimDecisionDiagramBase<double>* a3 ) {
 
-      std::string dotfile = GET_PATH_STR( "DecisionDiagramError.log" );
+      std::string dotfile = GET_RESSOURCES_PATH( "DecisionDiagramError.log" );
       std::ofstream output( dotfile.c_str(), std::ios::out );
 
       if ( !output.good() )

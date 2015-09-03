@@ -2296,8 +2296,6 @@ class DiscreteVariable(Variable):
         return _pyAgrum.DiscreteVariable___str__(self)
 
 
-<<<<<<< HEAD
-=======
     def toStringWithDescription(self):
         """toStringWithDescription(DiscreteVariable self) -> std::string const"""
         return _pyAgrum.DiscreteVariable_toStringWithDescription(self)
@@ -2308,7 +2306,6 @@ class DiscreteVariable(Variable):
         return _pyAgrum.DiscreteVariable_domain(self)
 
 
->>>>>>> master
     def __getitem__(self,label):   # adding the y() function here
         return self.index(label)
 

@@ -68,7 +68,7 @@ def initParams():
     cfg.default['tests']='all'
     cfg.default['python']="3"
     cfg.default['dry_run']=False
-
+    
     cfg.actions=set("lib test install doc clean show uninstall package autoindent".split())
     cfg.modes=set("debug release".split())
     cfg.targets=set("aGrUM pyAgrum jAgrum".split())

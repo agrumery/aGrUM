@@ -23,7 +23,7 @@
 #include <vector>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
@@ -48,7 +48,7 @@ namespace gum_tests {
       gum::BayesNet<float> net1;
       {
         gum::BIFReader<float> reader( &net1,
-                                      GET_PATH_STR( "BIFReader_file2.bif" ) );
+                                      GET_RESSOURCES_PATH( "BIFReader_file2.bif" ) );
         reader.trace( false );
         reader.proceed();
       }
@@ -56,7 +56,7 @@ namespace gum_tests {
       gum::BayesNet<float> net2;
       {
         gum::BIFReader<float> reader( &net2,
-                                      GET_PATH_STR( "BIFReader_file3.bif" ) );
+                                      GET_RESSOURCES_PATH( "BIFReader_file3.bif" ) );
         reader.trace( false );
         reader.proceed();
       }
@@ -64,7 +64,7 @@ namespace gum_tests {
       gum::BayesNet<float> net3;
       {
         gum::BIFReader<float> reader( &net3,
-                                      GET_PATH_STR( "BIFReader_file4.bif" ) );
+                                      GET_RESSOURCES_PATH( "BIFReader_file4.bif" ) );
         reader.trace( false );
         reader.proceed();
       }
@@ -79,7 +79,7 @@ namespace gum_tests {
       gum::BayesNet<float> net2;
       {
         gum::BIFReader<float> reader( &net2,
-                                      GET_PATH_STR( "BIFReader_file3.bif" ) );
+                                      GET_RESSOURCES_PATH( "BIFReader_file3.bif" ) );
         reader.trace( false );
         reader.proceed();
       }
@@ -89,7 +89,7 @@ namespace gum_tests {
 
       gum::BayesNet<float> net;
       {
-        gum::BIFReader<float> reader( &net, GET_PATH_STR( "hailfinder.bif" ) );
+        gum::BIFReader<float> reader( &net, GET_RESSOURCES_PATH( "hailfinder.bif" ) );
         reader.trace( false );
         reader.proceed();
       }
@@ -102,7 +102,7 @@ namespace gum_tests {
       gum::BayesNet<float> net3;
       {
         gum::BIFReader<float> reader( &net3,
-                                      GET_PATH_STR( "BIFReader_file3.bif" ) );
+                                      GET_RESSOURCES_PATH( "BIFReader_file3.bif" ) );
         reader.trace( false );
         reader.proceed();
       }
@@ -118,7 +118,7 @@ namespace gum_tests {
       gum::BayesNet<float> net4;
       {
         gum::BIFReader<float> reader( &net4,
-                                      GET_PATH_STR( "BIFReader_file4.bif" ) );
+                                      GET_RESSOURCES_PATH( "BIFReader_file4.bif" ) );
         reader.trace( false );
         reader.proceed();
       }
@@ -144,14 +144,14 @@ namespace gum_tests {
     void testBruteForceValues() {
       gum::BayesNet<float> netP;
       {
-        gum::BIFReader<float> reader( &netP, GET_PATH_STR( "bnP.bif" ) );
+        gum::BIFReader<float> reader( &netP, GET_RESSOURCES_PATH( "bnP.bif" ) );
         reader.trace( false );
         reader.proceed();
       }
 
       gum::BayesNet<float> netQ;
       {
-        gum::BIFReader<float> reader( &netQ, GET_PATH_STR( "bnQ.bif" ) );
+        gum::BIFReader<float> reader( &netQ, GET_RESSOURCES_PATH( "bnQ.bif" ) );
         reader.trace( false );
         reader.proceed();
       }
@@ -168,14 +168,14 @@ namespace gum_tests {
     void testGibbsValues() {
       gum::BayesNet<float> netP;
       {
-        gum::BIFReader<float> reader( &netP, GET_PATH_STR( "bnP.bif" ) );
+        gum::BIFReader<float> reader( &netP, GET_RESSOURCES_PATH( "bnP.bif" ) );
         reader.trace( false );
         reader.proceed();
       }
 
       gum::BayesNet<float> netQ;
       {
-        gum::BIFReader<float> reader( &netQ, GET_PATH_STR( "bnQ.bif" ) );
+        gum::BIFReader<float> reader( &netQ, GET_RESSOURCES_PATH( "bnQ.bif" ) );
         reader.trace( false );
         reader.proceed();
       }

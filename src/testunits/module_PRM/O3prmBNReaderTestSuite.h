@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/PRM/o3prm/O3prmBNReader.h>
@@ -31,7 +31,7 @@ namespace gum_tests {
     void testClassWithoutSystem() {
       gum::BayesNet<double> bn;
       gum::O3prmBNReader<double> reader( &bn,
-                                         GET_PATH_STR( "o3prm/Asia.o3prm" ) );
+                                         GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" ) );
       int res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
       TS_ASSERT_EQUALS( res, 1 );  // no system
@@ -42,7 +42,7 @@ namespace gum_tests {
       gum::BayesNet<double> bn;
       gum::O3prmBNReader<double> reader(
           &bn,
-          GET_PATH_STR( "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" ),
+          GET_RESSOURCES_PATH( "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" ),
           "Asia" );
       int res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
@@ -53,7 +53,7 @@ namespace gum_tests {
     void testWithError() {
       gum::BayesNet<double> bn;
       gum::O3prmBNReader<double> reader(
-          &bn, GET_PATH_STR( "o3prm/DoesNotExists.o3prm" ), "Asia" );
+          &bn, GET_RESSOURCES_PATH( "o3prm/DoesNotExists.o3prm" ), "Asia" );
       int res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
       TS_ASSERT_EQUALS( res, 1 );                         // file not found
@@ -61,7 +61,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( bn.size(), (gum::Size)0 );
 
       gum::O3prmBNReader<double> reader2(
-          &bn, GET_PATH_STR( "o3prm/AsiaWithError.o3prm" ), "Asia" );
+          &bn, GET_RESSOURCES_PATH( "o3prm/AsiaWithError.o3prm" ), "Asia" );
       res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
           res = reader2.proceed() )  // class plop not existing
@@ -73,7 +73,7 @@ namespace gum_tests {
     void testWithCplxFile() {
       gum::BayesNet<double> bn;
       gum::O3prmBNReader<double> reader(
-          &bn, GET_PATH_STR( "o3prm/inference.o3prm" ), "aSys" );
+          &bn, GET_RESSOURCES_PATH( "o3prm/inference.o3prm" ), "aSys" );
       int res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
       TS_ASSERT_EQUALS( res, 0 );

@@ -85,13 +85,13 @@ set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files${PYTHON_VERSIO
 set(_PYAGRUMLIB "_pyAgrum")
 
 
-message("================================")
-message("version : ${PYTHONLIBS_VERSION_STRING}")
-message("installation : ${PYTHON_INSTALL}")
-message("include : ${PYTHON_INCLUDE_DIR}")
-message("library : ${PYTHON_LIBRARIES}")
-message("libragrum : ${LIBAGRUM}")
-message("================================")
+message(STATUS "================================")
+message(STATUS "python version : ${PYTHONLIBS_VERSION_STRING}")
+message(STATUS "python installation : ${PYTHON_INSTALL}")
+message(STATUS "python include : ${PYTHON_INCLUDE_DIR}")
+message(STATUS "python library : ${PYTHON_LIBRARIES}")
+message(STATUS "libragrum : ${LIBAGRUM}")
+message(STATUS "================================")
 
 
 #== Initializing aGrUM

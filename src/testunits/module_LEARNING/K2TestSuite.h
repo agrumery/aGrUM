@@ -20,7 +20,7 @@
 
 #include <iostream>
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/graphs/DAG.h>
 #include <agrum/variables/labelizedVariable.h>
@@ -52,7 +52,7 @@ namespace gum_tests {
   class K2TestSuite : public CxxTest::TestSuite {
     public:
     void test_k2_asia() {
-      gum::learning::DatabaseFromCSV database( GET_PATH_STR( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
@@ -115,7 +115,7 @@ namespace gum_tests {
 
     /*
     void xtest_k2_asia_bis () {
-      gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
@@ -166,11 +166,11 @@ namespace gum_tests {
       std::vector<unsigned int> order { 3,2 };
 
       gum::BayesNet<float> bn =
-        k2.learnBNFromCSV ( GET_PATH_STR( "asia.csv" ), order );
+        k2.learnBNFromCSV ( GET_RESSOURCES_PATH( "asia.csv" ), order );
       std::cout << bn << std::endl << bn.dag () << std::endl;
 
       gum::BayesNet<double> bn2 =
-        k2.learnBNFromCSV<double> ( GET_PATH_STR( "asia.csv" ), order );
+        k2.learnBNFromCSV<double> ( GET_RESSOURCES_PATH( "asia.csv" ), order );
       std::cout << bn2 << std::endl << bn2.dag () << std::endl;
     }
 
@@ -178,7 +178,7 @@ namespace gum_tests {
     void xxtest_k2_asia_constraint_DAG () {
       K2 k2;
 
-      gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
@@ -217,7 +217,7 @@ namespace gum_tests {
     void xxtest_k2_asia_constraint_SliceOrder () {
       K2 k2;
 
-      gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
@@ -266,7 +266,7 @@ namespace gum_tests {
     void xxtest_k2 () {
       K2 k2;
 
-      gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "alarm.csv" ) );
+      gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "alarm.csv" ) );
 
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,

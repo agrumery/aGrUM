@@ -20,7 +20,7 @@
 
 #include <iostream>
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
@@ -54,8 +54,8 @@
 #include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
 #include <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
 
-#define MY_ALARM GET_PATH_STR( "alarm.csv" )
-#define MY_ASIA GET_PATH_STR( "asia.csv" )
+#define MY_ALARM GET_RESSOURCES_PATH( "alarm.csv" )
+#define MY_ASIA GET_RESSOURCES_PATH( "asia.csv" )
 
 namespace gum_tests {
 

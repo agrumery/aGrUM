@@ -13,7 +13,7 @@
 #define xstrfy( s ) strfy( s )
 #define strfy( x ) #x
 
-#define GET_PATH_STR( x ) xstrfy( GUM_SRC_PATH ) "/testunits/ressources/" x
+#define GET_RESSOURCES_PATH( x ) xstrfy( GUM_SRC_PATH ) "/testunits/ressources/" x
 #define GET_PATH_XSTR( x ) \
   xstrfy( GUM_SRC_PATH ) "/testunits/ressources/" xstrfy( x )
 
@@ -70,7 +70,7 @@ std::vector<std::string> loadNames( std::string filename ) {
 gum::BayesNet<double> learnParameters( std::string filename,
                                        const gum::BayesNet<double>& src,
                                        double smoothing = 1.0 ) {
-  auto names = loadNames( GET_PATH_STR( "asia.csv" ) );
+  auto names = loadNames( GET_RESSOURCES_PATH( "asia.csv" ) );
 
   gum::NodeProperty<gum::Sequence<std::string>> modals;
 
@@ -97,7 +97,7 @@ gum::BayesNet<double> learnParameters( std::string filename,
 int main( int argc, char* argv[] ) {
   try {
     auto bn = buildBN();
-    auto bn2 = learnParameters( GET_PATH_STR( "asia3.csv" ), bn, 1.0 );
+    auto bn2 = learnParameters( GET_RESSOURCES_PATH( "asia3.csv" ), bn, 1.0 );
   } catch ( const gum::Exception& e ) {
     GUM_SHOWERROR( e );
   }

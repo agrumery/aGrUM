@@ -25,7 +25,7 @@ import sys
 import os
 import io
 # for timeout in popen (cross-platform)
-from subprocess import PIPE, Popen, STDOUT
+from subprocess import PIPE, Popen, STDOUT,call
 from threading  import Thread
 
 from configuration import cfg

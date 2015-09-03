@@ -22,7 +22,7 @@
 #define GUM_CLASSELEMENT_TEST_SUITE_H
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/core/exceptions.h>
 #include <agrum/PRM/elements/classElement.h>

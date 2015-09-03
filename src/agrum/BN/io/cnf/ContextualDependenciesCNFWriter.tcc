@@ -59,12 +59,7 @@ namespace gum {
     if ( !output.good() )
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
 
-    std::ofstream outputvar( "provisoire.var", std::ios_base::trunc );
-
     std::stringstream strfile, strfile2;
-
-    if ( !outputvar.good() )
-      GUM_ERROR( IOError, "Stream states flags are not all unset." );
 
     Idx num = 0;
     Idx numvar = 0;
@@ -297,12 +292,6 @@ namespace gum {
     output << "p cnf " << num << " " << clause << "\neclauses " << numvar
            << "\n" << clausstr.str() << clausstr2.str() << std::endl;
     output.flush();
-    outputvar << strfile.str();
-    outputvar.flush();
-    outputvar.close();
-
-    if ( outputvar.fail() )
-      GUM_ERROR( IOError, "Writting in the ostream failed." );
   }
 
   // Writes a Bayesian Network in the referenced file using the BN format.

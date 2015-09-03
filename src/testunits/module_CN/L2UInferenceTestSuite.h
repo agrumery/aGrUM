@@ -22,7 +22,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/CN/credalNet.h>
 #include <agrum/CN/CNLoopyPropagation.h>
@@ -82,11 +82,11 @@ namespace gum_tests {
       gum::setNumberOfThreads( 1 );
 #endif
       gum::BayesNet<double> monBNa;
-      gum::BIFReader<double> readera( &monBNa, GET_PATH_STR( "cn/2Umin.bif" ) );
+      gum::BIFReader<double> readera( &monBNa, GET_RESSOURCES_PATH( "cn/2Umin.bif" ) );
       readera.proceed();
 
       gum::BayesNet<double> monBNb;
-      gum::BIFReader<double> readerb( &monBNb, GET_PATH_STR( "cn/2Umax.bif" ) );
+      gum::BIFReader<double> readerb( &monBNb, GET_RESSOURCES_PATH( "cn/2Umax.bif" ) );
       readerb.proceed();
 
       cn = new gum::credal::CredalNet<double>( monBNa, monBNb );
@@ -102,12 +102,12 @@ namespace gum_tests {
 #endif
       gum::BayesNet<double> monBNa;
       gum::BIFReader<double> readera( &monBNa,
-                                      GET_PATH_STR( "cn/dbn_bin_min.bif" ) );
+                                      GET_RESSOURCES_PATH( "cn/dbn_bin_min.bif" ) );
       readera.proceed();
 
       gum::BayesNet<double> monBNb;
       gum::BIFReader<double> readerb( &monBNb,
-                                      GET_PATH_STR( "cn/dbn_bin_max.bif" ) );
+                                      GET_RESSOURCES_PATH( "cn/dbn_bin_max.bif" ) );
       readerb.proceed();
 
       cn = new gum::credal::CredalNet<double>( monBNa, monBNb );
@@ -127,7 +127,7 @@ namespace gum_tests {
 
       // evidence from file
       try {
-        lp.insertEvidenceFile( GET_PATH_STR( "cn/L2U.evi" ) );
+        lp.insertEvidenceFile( GET_RESSOURCES_PATH( "cn/L2U.evi" ) );
       } catch ( gum::Exception& e ) {
         TS_ASSERT( false );
       }
@@ -217,14 +217,14 @@ namespace gum_tests {
 
       // evidence from file
       try {
-        lp.insertEvidenceFile( GET_PATH_STR( "cn/dbn_bin_evi.evi" ) );
+        lp.insertEvidenceFile( GET_RESSOURCES_PATH( "cn/dbn_bin_evi.evi" ) );
       } catch ( gum::Exception& e ) {
         TS_ASSERT( false );
       }
 
       // modalities from file
       /*try {
-        lp.insertModalsFile( GET_PATH_STR ( modalities.modal ) );
+        lp.insertModalsFile( GET_RESSOURCES_PATH ( modalities.modal ) );
       } catch ( gum::Exception & e ) {
         TS_ASSERT ( false );
       }*/
@@ -283,7 +283,7 @@ namespace gum_tests {
 
       // evidence from file
       try {
-        lp.insertEvidenceFile( GET_PATH_STR( "cn/dbn_bin_evi.evi" ) );
+        lp.insertEvidenceFile( GET_RESSOURCES_PATH( "cn/dbn_bin_evi.evi" ) );
       } catch ( gum::Exception& e ) {
         TS_ASSERT( false );
       }

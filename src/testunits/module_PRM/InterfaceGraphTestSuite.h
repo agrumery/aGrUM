@@ -20,7 +20,7 @@
 #include <iostream>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/PRM/gspan/interfaceGraph.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
@@ -39,8 +39,7 @@ namespace gum_tests {
     public:
     void setUp() {
       gum::prm::o3prm::O3prmReader<double> reader;
-      reader.readFile(
-          "../../../src/testunits/ressources/o3prm/printers_systems.o3prm" );
+      reader.readFile(GET_RESSOURCES_PATH("o3prm/printers_systems.o3prm") );
       __prm = reader.prm();
     }
 

@@ -25,7 +25,7 @@
 #include <fstream>
 // =========================================================================
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 // =========================================================================
 #include <agrum/multidim/multiDimDecisionDiagram.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactory.h>
@@ -767,7 +767,7 @@ namespace gum_tests {
                                         factory->getMultiDimDecisionDiagram() );
 
       // For comparison with what readers will return
-      std::string dotfile = GET_PATH_STR( "DecisionDiagram.dot" );
+      std::string dotfile = GET_RESSOURCES_PATH( "DecisionDiagram.dot" );
       std::ofstream output( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
       if ( !output.good() ) {

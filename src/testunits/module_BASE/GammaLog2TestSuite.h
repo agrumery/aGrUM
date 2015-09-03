@@ -22,7 +22,7 @@
 #include <cmath>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 #include <ressources/myalloc.h>
 
 #include <agrum/core/math/gammaLog2.h>

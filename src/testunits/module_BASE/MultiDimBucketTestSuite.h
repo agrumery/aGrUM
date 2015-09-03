@@ -20,7 +20,7 @@
 #include <sstream>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/BayesNet.h>

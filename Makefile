@@ -3,8 +3,10 @@
 #
 CLANGFORMAT=clang-format-3.6
 
-ACT=./act --no-fun 
-JOBS=7
+ACT=./act --no-fun
+
+# JOBS=2
+JOBS=
 
 library:
 	$(ACT) agrum release -p linux -j $(JOBS)

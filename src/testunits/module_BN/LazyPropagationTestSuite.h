@@ -22,7 +22,7 @@
 #include <cmath>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
@@ -240,7 +240,7 @@ namespace gum_tests {
     }
 
     void testAsia() {
-      std::string file = GET_PATH_STR( "asia.bif" );
+      std::string file = GET_RESSOURCES_PATH( "asia.bif" );
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader( &bn, file );
       int nbrErr = 0;
@@ -275,7 +275,7 @@ namespace gum_tests {
     }
 
     void testAlarm() {
-      std::string file = GET_PATH_STR( "alarm.bif" );
+      std::string file = GET_RESSOURCES_PATH( "alarm.bif" );
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader( &bn, file );
       int nbrErr = 0;
@@ -363,7 +363,7 @@ namespace gum_tests {
     }
 
     void testAsia2() {
-      std::string file = GET_PATH_STR( "asia3.bif" );
+      std::string file = GET_RESSOURCES_PATH( "asia3.bif" );
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader( &bn, file );
       int nbrErr = 0;
@@ -423,7 +423,7 @@ namespace gum_tests {
     }
 
     void testAsia3() {
-      std::string file = GET_PATH_STR( "asia3.bif" );
+      std::string file = GET_RESSOURCES_PATH( "asia3.bif" );
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader( &bn, file );
       int nbrErr = 0;
@@ -486,7 +486,7 @@ namespace gum_tests {
     }
 
     void testAsia4() {
-      std::string file = GET_PATH_STR( "asia.bif" );
+      std::string file = GET_RESSOURCES_PATH( "asia.bif" );
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader( &bn, file );
       int nbrErr = 0;

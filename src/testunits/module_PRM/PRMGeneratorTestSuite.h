@@ -20,7 +20,7 @@
 #include <fstream>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/PRM/generator/layerGenerator.h>
 #include <agrum/PRM/generator/clusteredLayerGenerator.h>
