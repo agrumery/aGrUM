@@ -45,10 +45,9 @@
 namespace gum {
 
   /**
-   * @class IBayesNetGenerator abstractBayesNetGenerator.h
-   *<agrum/BN/generator/abstractBayesNetGenerator.h>
+   * @class IBayesNetGenerator IBayesNetGenerator <agrum/BN/generator/IBayesNetGenerator.h>
    * @brief Class for generating bayesian networks.
-   * @ingroup bn_group
+   * @ingroup bn_generator
    *
    * This class is the abstract class for randomly generating a bayesian network
    *given three parameters:

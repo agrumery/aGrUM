@@ -35,7 +35,7 @@ namespace gum {
    * <agrum/BN/inference/lazyPropagation.h>
    * @brief Implementation of lazy propagation for inference in Bayesian
    * Networks
-   * @ingroup bn_group
+   * @ingroup bn_inference
    */
   template <typename GUM_SCALAR>
 

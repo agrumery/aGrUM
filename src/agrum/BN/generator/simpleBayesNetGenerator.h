@@ -38,10 +38,9 @@
 namespace gum {
 
   /**
-   * @class IBayesNetGenerator simpleBayesNetGenerator.h
-   *<agrum/BN/generator/simpleBayesNetGenerator.h>
+   * @class SimpleBayesNetGenerator simpleBayesNetGenerator.h <agrum/BN/generator/simpleBayesNetGenerator.h>
    * @brief Class for generating bayesian networks.
-   * @ingroup bn_group
+   * @ingroup bn_generator
    *
    * This class randomly generates a bayesian network given three parameters:
    * the number of nodes and the max number of arcs and the number of maximum

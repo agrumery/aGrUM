@@ -35,7 +35,7 @@ namespace gum {
    * @class GibbsInference GibbsInference.h
    *<agrum/BN/inference/GibbsInference.h>
    * @brief class for making Gibbs sampling inference in bayesian networks.
-   * @ingroup bn_group
+   * @ingroup bn_inference
    *
    */
   template <typename GUM_SCALAR>

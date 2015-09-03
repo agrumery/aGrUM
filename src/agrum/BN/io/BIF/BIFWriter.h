@@ -42,9 +42,9 @@
 namespace gum {
 
   /**
-   * @class BIFWriter
+   * @class BIFWriter BIFWriter.h <agrum/BN/io/BIF/BIFWriter.h>
+   * @ingroup bn_io
    * @brief Writes a IBayesNet in the BIF format.
-   * @ingroup bn_group
    *
    * This class servers to write the content of a Bayesian Network in
    * the BIF format. See

@@ -49,10 +49,9 @@
 
 namespace gum {
   /**
-   * @class MCBayesNetGenerator MCBayesNetGenerator.h
-  <agrum/BN/generator/MCayesNetGenerator.h>
+   * @class MCBayesNetGenerator MCBayesNetGenerator.h <agrum/BN/generator/MCayesNetGenerator.h>
    * @brief Class for generating bayesian networks with Markov chains.
-   * @ingroup bn_group
+   * @ingroup bn_generator
    *
    * This class randomly generates a bayesian network given 6 parameters:
    * the number of nodes, the maximum number of arcs the and of iterations the

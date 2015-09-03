@@ -42,9 +42,9 @@
 namespace gum {
 
   /**
-   * @class BNWriter
+   * @class NetWriter NetWriter.h <agrum/BN/io/net/NetWriter.h>
    * @brief Writes a IBayesNet in the BN format.
-   * @ingroup bn_group
+   * @ingroup bn_io
    *
    * This class servers to write the content of a Bayesian Network in
    * the BN format. See
@@ -53,7 +53,6 @@ namespace gum {
    *
    */
   template <typename GUM_SCALAR>
-
   class NetWriter : public BNWriter<GUM_SCALAR> {
     public:
     // ==========================================================================

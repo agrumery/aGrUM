@@ -42,14 +42,13 @@ namespace gum {
    * @brief Implementation of the state of the art Value Elimination algorithm
    *        using the BayesBall algorithm to prune the IBayesNet.
    *
-   * @ingroup bn_group
+   * @ingroup bn_inference
    *
    */
   template <typename GUM_SCALAR>
   class VEWithBB : public BayesNetInference<GUM_SCALAR> {
     public:
     /// @name Constructor & destructor
-
     /// @{
 
     /**

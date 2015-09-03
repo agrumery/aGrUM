@@ -37,7 +37,8 @@ namespace gum {
   /* ===                               READERS === */
   /* =========================================================================*/
   /**
-   * @class DSLReader
+   * @class DSLReader DSLReader.h <agrum/BN/io/DSL/DSLReader.h>
+   * @ingroup bn_io
    * @brief Pure virtual class for reading a BN from a file.
    *
    * Every class used to read the content of a Bayesian Network from a stream,

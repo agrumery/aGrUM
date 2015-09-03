@@ -42,9 +42,9 @@
 namespace gum {
 
   /**
-   * @class BIFXMLBNWriter
+   * @class BIFXMLBNWriter BIFXMLBNWriter.h <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
+   * @ingroup bn_io
    * @brief Writes an bayes net in a XML file with BIF format
-   * @ingroup bn_group
    *
    * This class export a bayes net into an XML files, using BIF format
    * See

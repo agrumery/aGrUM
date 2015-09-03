@@ -46,10 +46,9 @@
 
 namespace gum {
   /**
-   * @class MaxParentsMCBayesNetGenerator maxParentsMCBayesNetGenerator.h
-   *<agrum/BN/generator/SimpleMCayesNetGenerator.h>
+   * @class MaxParentsMCBayesNetGenerator maxParentsMCBayesNetGenerator.h <agrum/BN/generator/SimpleMCayesNetGenerator.h>
    * @brief Class for generating bayesian networks with Markov chains.
-   * @ingroup bn_group
+   * @ingroup bn_generator
    *
    * This class is inherited from MCBayesNetGenerator and is an example of
    *Markov

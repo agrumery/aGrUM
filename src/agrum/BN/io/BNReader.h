@@ -40,7 +40,8 @@ namespace gum {
   /* ===                               READERS                            === */
   /* =========================================================================*/
   /**
-   * @class BNReader
+   * @class BNReader BNReader.h <agrum/BN/io/BNReader.h>
+   * @ingroup bn_io
    * @brief Pure virtual class for reading a BN from a file.
    *
    * Every class used to read the content of a Bayesian Network from a stream,
@@ -54,9 +55,7 @@ namespace gum {
      * A reader is defined for reading a defined file. Hence the 2 args of the
      * constructor.
      * Note that the BN has to be built outside the reader. There is no
-     * delegation to
-     * create/destroy
-     * the BN from inside the reader.
+     * delegation to create/destroy the BN from inside the reader.
      */
     BNReader( BayesNet<GUM_SCALAR>* bn, const std::string& filename );
 

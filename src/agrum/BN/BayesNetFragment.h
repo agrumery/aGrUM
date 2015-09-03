@@ -37,36 +37,34 @@
 namespace gum {
   /**
    * @class BayesNetFragment BayesNetFragment.h <agrum/BN/BayesNetFragment.h>
-   * @brief portion of a BN identified by the list of nodes inserted and an
-   *BayesNet
-   *source.
+   * @brief Portion of a BN identified by the list of nodes and a BayesNet.
+   * @ingroup bn_group
    *
    * @author Pierre-Henri WUILLEMIN
    *
    * This class is a decorator of a BayesNet implementing the IBayesNet
-   *interface.
-   * CPTs can be shared with the BN or can be specific to the Fragment if
-   *different.
+   * interface. CPTs can be shared with the BN or can be specific to the
+   * Fragment if different.
    *
    * BayesNetFragment is a DiGraphListener in order to be synchronized
-   *(especially when removing nodes or arcs).
+   * (especially when removing nodes or arcs).
    *
    * In a BayesNetFragment, one can install or remove nodes. An arc can be in
-   *the fragment if and only if its head and tail are installed in the fragment.
-   *When installing a node, all the arcs that can be added in the fragment are
-   *effectively installed (resp.
-   *when uninstalling a node, etc.).
+   * the fragment if and only if its head and tail are installed in the
+   * fragment.  *When installing a node, all the arcs that can be added in the
+   * fragment are *effectively installed (resp.  *when uninstalling a node,
+   * etc.).
    *
    * A BayesNetFragment can redefine potential for node. The main reason is to
-   *be able to install a node without installing all its parents (and its
-   *ascendants). So local CPT to the node can be installed. However, it is not
-   *done automatically.
+   * be able to install a node without installing all its parents (and its
+   * ascendants). So local CPT to the node can be installed. However, it is not
+   * done automatically.
    *
    * If a cpt is not locally defined, the fragment uses the cpt defined in the
-   *referred BN. The checkConsistency() method verifies that, for all installed
-   *nodes, either all the parents are installed or a local CPT is defined.
+   * referred BN. The checkConsistency() method verifies that, for all
+   * installed nodes, either all the parents are installed or a local CPT is
+   * defined.
    */
-
   template <typename GUM_SCALAR>
   class BayesNetFragment : public IBayesNet<GUM_SCALAR>,
                            public gum::DiGraphListener {

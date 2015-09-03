@@ -31,9 +31,9 @@
 namespace gum {
 
   /**
-     * @class DSLWriter
+     * @class DSLWriter DSLWriter.h <agrum/BN/io/DSL/DSLWriter.h>
+     * @ingroup bn_io
      * @brief Writes a IBayesNet in the DSL format.
-     * @ingroup bn_group
      *
      * This class servers to write the content of a Bayesian Network in
      * the DSL format. See

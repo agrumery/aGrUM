@@ -35,9 +35,9 @@
 
 namespace gum {
 
-  /** @class SimpleCPTDisturber
+  /** @class SimpleCPTDisturber simpleCPTDisturber.h <agrum/BN/generator/simpleCPTDisturber.h>
    * @brief Class for disturbing Conditional Probability Tables.
-   * @ingroup bn_group
+   * @ingroup bn_generator
    *
    * This class implements a CPTGenerator CPT generation algorithm.
    */

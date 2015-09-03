@@ -36,7 +36,7 @@ namespace gum {
 
   /** @class dSeparation
    * @brief the d-separation algorithm as described in Koller & Friedman (2009)
-   * @ingroup bn_group
+   * @ingroup bn_inference
    */
   class dSeparation {
     public:

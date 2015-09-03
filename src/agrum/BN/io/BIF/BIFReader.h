@@ -77,7 +77,8 @@ between 0 and 100
 
 namespace gum {
   /**
-   * @class BIFReader
+   * @class BIFReader BIFReader <agrum/BN/io/BIF/BIFReader.h>
+   * @ingroup bn_io
    * @brief Definition of templatized reader of BIF files for Bayesian Networks.
    *
    * how to use it :

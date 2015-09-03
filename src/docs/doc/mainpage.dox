@@ -10,16 +10,20 @@
  *   - graphical model learning / elicitation,
  *   - inference within the graphical model,
  *   - planification.
- *
- *
- * 
- *   \defgroup basicstruct_group Basic data structures
- *   \defgroup graph_group Graph representation
- *   \defgroup multidim_group Multidimensional data
- *   \defgroup bn_group Bayesian Networks
- *   \defgroup learning_group Tools for learning
- *   \defgroup signal_group Signaler and Listener
- *   \defgroup prm_group Probabilistic Relational Models
- *   \defgroup fmdp_group Factored Markov Decision Process
- *   \defgroup cn_group Credal Networks
  */
+
+ /// \defgroup basicstruct_group Basic data structures
+ /// \defgroup graph_group Graph representation
+ /// \defgroup multidim_group Multidimensional data
+ /// \defgroup bn_group Bayesian Networks
+ /// @{
+ /// \defgroup bn_inference Inference Algorithms
+ /// \defgroup bn_io Serialization
+ /// \defgroup bn_generator Generators
+ /// \defgroup bn_particles Particles Algorithms
+ /// @}
+ /// \defgroup learning_group Tools for learning
+ /// \defgroup signal_group Signaler and Listener
+ /// \defgroup prm_group Probabilistic Relational Models
+ /// \defgroup fmdp_group Factored Markov Decision Process
+ /// \defgroup cn_group Credal Networks

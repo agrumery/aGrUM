@@ -39,6 +39,7 @@ namespace gum {
   /**
    * @class BarrenNodesFinder
    * @brief Detect barren nodes for inference in Bayesian networks
+   * @ingroup bn_inference
    */
   class BarrenNodesFinder {
     public:

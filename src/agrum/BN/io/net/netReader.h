@@ -38,14 +38,14 @@ namespace gum {
   /* ===                               READERS === */
   /* =========================================================================*/
   /**
-   * @class NetReader
+   * @class NetReader NetReader.h <agrum/BN/io/net/NetReader.h>
+   * @ingroup bn_io
    * @brief Pure virtual class for reading a BN from a file.
    *
    * Every class used to read the content of a Bayesian Network from a stream,
    * or a file must be a subclass of NetReader.
    */
   template <typename GUM_SCALAR>
-
   class NetReader : public BNReader<GUM_SCALAR> {
 
     public:

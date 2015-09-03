@@ -32,9 +32,9 @@
 #include <agrum/BN/BayesNet.h>
 
 namespace gum {
-  /** @class ICPTDisturber *
+  /** @class ICPTDisturber ICPTDisturber.h <agrum/BN/generator/ICPTDisturber.h>
    * @brief Abstract class for Modifying Conditional Probability Tables.
-   * @ingroup bn_group
+   * @ingroup bn_generator
    *
    * This abstract class is an implementation of the strategy pattern to
    * help changing CPT generation policies for the BayesNetGenerator class.

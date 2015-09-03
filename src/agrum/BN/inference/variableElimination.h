@@ -49,7 +49,7 @@ namespace gum {
    * when the makeInference() or marginal() method is called, so you can
    * give an other order without any unnecessary computation.
    *
-   * @ingroup bn_group
+   * @ingroup bn_inference
    *
    */
   template <typename GUM_SCALAR>

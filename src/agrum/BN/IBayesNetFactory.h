@@ -35,13 +35,12 @@
 
 namespace gum {
   /**
-   * @class IBayesNetFactory
+   * @class IBayesNetFactory IBayesNetFactory.h <agrum/BN/IBayesNetFactory.h>
+   * @ingroup bn_group
+   *
    * IBayesNetFactory is the non-template interface for @ref BayesNetFactory :
-   * many
-   * ways to build a BN do not depend
-   * on the specification of the GUM_SCALAR template argument (for instance for
-   * BN
-   * readers).
+   * many ways to build a BN do not depend on the specification of the
+   * GUM_SCALAR template argument (for instance for BN readers).
    */
   class IBayesNetFactory {
 

@@ -43,9 +43,9 @@
 namespace gum {
 
   /**
-   * @class BNWriter
+   * @class ContextualDependenciesCNFWriter ContextualDependenciesCNFWriter.h <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.h>
+   * @ingroup bn_io
    * @brief Writes a IBayesNet in the BN format.
-   * @ingroup bn_group
    *
    * This class servers to write the content of a Bayesian Network in
    * the BN format. See
@@ -55,7 +55,6 @@ namespace gum {
    */
   template <typename GUM_SCALAR,
             template <class> class IApproximationPolicy = ExactPolicy>
-
   class ContextualDependenciesCNFWriter
       : public CNFWriter<GUM_SCALAR, IApproximationPolicy> {
     public:

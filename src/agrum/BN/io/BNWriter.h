@@ -41,9 +41,9 @@ namespace gum {
   /* ===                              WRITTERS === */
   /* =========================================================================*/
   /**
-   * @class BNWriter
+   * @class BNWriter BNWriter.h <agrum/BN/io/BNWriter.h>
    * @brief Pure virtual class for writting a BN to a file.
-   * @ingroup bn_group
+   * @ingroup bn_io
    *
    * Every class used to write the content of a Bayesian Network in a stream, or
    * a file must be a subclass of BNWriter.

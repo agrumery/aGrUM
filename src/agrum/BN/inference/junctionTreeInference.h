@@ -36,7 +36,7 @@ namespace gum {
    * <agrum/BN/inference/junctionTreeInference.h>
    * @brief Implementation of basic junction tree propagation for inference in
    * Bayesian Networks
-   * @ingroup bn_group
+   * @ingroup bn_inference
    */
   template <typename GUM_SCALAR>
 

@@ -42,9 +42,9 @@
 namespace gum {
 
   /**
-   * @class BNWriter
+   * @class FactorisedValuesCNFWriter FactorisedValuesCNFWriter.h <agrum/BN/io/cnf/FactorisedValuesCNFWriter.h>
    * @brief Writes a IBayesNet in the BN format.
-   * @ingroup bn_group
+   * @ingroup bn_io
    *
    * This class servers to write the content of a Bayesian Network in
    * the BN format. See
@@ -54,7 +54,6 @@ namespace gum {
    */
   template <typename GUM_SCALAR,
             template <class> class IApproximationPolicy = ExactPolicy>
-
   class FactorisedValuesCNFWriter
       : public CNFWriter<GUM_SCALAR, IApproximationPolicy> {
     public:

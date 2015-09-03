@@ -30,9 +30,9 @@
 #include <agrum/multidim/potential.h>
 
 namespace gum {
-  /** @class ICPTGenerator *
+  /** @class ICPTGenerator ICPTGenerator.h <agrum/BN/generator/ICPTGenerator.h>
    * @brief Abstract class for generating Conditional Probability Tables.
-   * @ingroup bn_group
+   * @ingroup bn_generator
    *
    * This abstract class is an implementation of the strategy pattern to
    * help changing CPT generation policies for the BayesNetGenerator class.

@@ -36,7 +36,7 @@ namespace gum {
     /**
      * @class Gibbs Gibbs.h <agrum/BN/particle/Gibbs.h>
      * @brief class for particle using GIBBS sampling
-     * @ingroup bn_group
+     * @ingroup bn_particles
      *
      */
     template <typename GUM_SCALAR>

@@ -34,9 +34,9 @@
 namespace gum {
   /**
    * @class BayesNetInference BayesNetInference.h
-   *<agrum/BN/inference/BayesNetInference.h>
+   * <agrum/BN/inference/BayesNetInference.h>
    * @brief Abstract class for making inference in bayesian networks.
-   * @ingroup bn_group
+   * @ingroup bn_inference
    *
    */
   template <typename GUM_SCALAR>
@@ -87,6 +87,7 @@ namespace gum {
      * Insert a new hard evidence in the inference
      *
      * @throw OutOfBound if val is not in the domainSize of node id
+     * TODO remove the const modifier on both arguments
      */
     void addHardEvidence( const NodeId id, const Idx val );
 
