@@ -133,7 +133,8 @@ namespace gum_tests {
         TS_ASSERT( false );
       }
 
-      TS_ASSERT( __compareFile( file, GET_RESSOURCES_PATH( "BIFWriter_Model.txt" ) ) )
+      TS_ASSERT(
+          __compareFile( file, GET_RESSOURCES_PATH( "BIFWriter_Model.txt" ) ) )
     }
 
     private:

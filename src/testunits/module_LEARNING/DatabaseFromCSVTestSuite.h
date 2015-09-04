@@ -29,7 +29,8 @@ namespace gum_tests {
   class DatabaseFromCSVTestSuite : public CxxTest::TestSuite {
     public:
     void test_db1() {
-      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database(
+          GET_RESSOURCES_PATH( "asia.csv" ) );
 
       TS_ASSERT( database.content().size() == 10000 );
       TS_ASSERT( database.variableNames().size() == 8 );

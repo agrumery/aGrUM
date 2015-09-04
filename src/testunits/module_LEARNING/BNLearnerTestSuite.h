@@ -52,7 +52,8 @@ namespace gum_tests {
   class BNLearnerTestSuite : public CxxTest::TestSuite {
     public:
     void test_asia() {
-      gum::learning::BNLearner<float> learner( GET_RESSOURCES_PATH( "asia3.csv" ) );
+      gum::learning::BNLearner<float> learner(
+          GET_RESSOURCES_PATH( "asia3.csv" ) );
 
       learner.useLocalSearchWithTabuList( 100, 1 );
       learner.setMaxIndegree( 10 );
@@ -108,8 +109,8 @@ namespace gum_tests {
       modals[2].insert( "bigbigbig" );
       modals[2].insert( "false" );
 
-      gum::learning::BNLearner<float> learner( GET_RESSOURCES_PATH( "asia3.csv" ),
-                                               modals );
+      gum::learning::BNLearner<float> learner(
+          GET_RESSOURCES_PATH( "asia3.csv" ), modals );
 
       learner.useGreedyHillClimbing();
       learner.setMaxIndegree( 10 );
@@ -232,8 +233,8 @@ namespace gum_tests {
       bool except = false;
 
       try {
-        gum::learning::BNLearner<float> learner( GET_RESSOURCES_PATH( "asia3.csv" ),
-                                                 modals );
+        gum::learning::BNLearner<float> learner(
+            GET_RESSOURCES_PATH( "asia3.csv" ), modals );
         learner.useAprioriSmoothing();
       } catch ( gum::UnknownLabelInDatabase& e ) {
         except = true;
@@ -256,8 +257,8 @@ namespace gum_tests {
       modals[2].insert( "bigbigbig" );
       modals[2].insert( "0" );
 
-      gum::learning::BNLearner<float> learner( GET_RESSOURCES_PATH( "asia.csv" ),
-                                               modals );
+      gum::learning::BNLearner<float> learner(
+          GET_RESSOURCES_PATH( "asia.csv" ), modals );
       learner.useGreedyHillClimbing();
       learner.setMaxIndegree( 10 );
       learner.useScoreLog2Likelihood();
@@ -319,8 +320,8 @@ namespace gum_tests {
       bool except = false;
 
       try {
-        gum::learning::BNLearner<float> learner( GET_RESSOURCES_PATH( "asia.csv" ),
-                                                 modals );
+        gum::learning::BNLearner<float> learner(
+            GET_RESSOURCES_PATH( "asia.csv" ), modals );
         learner.useAprioriSmoothing();
       } catch ( gum::UnknownLabelInDatabase& e ) {
         except = true;
@@ -330,7 +331,8 @@ namespace gum_tests {
     }
 
     void test_asia_param() {
-      gum::learning::BNLearner<float> learner( GET_RESSOURCES_PATH( "asia3.csv" ) );
+      gum::learning::BNLearner<float> learner(
+          GET_RESSOURCES_PATH( "asia3.csv" ) );
 
       gum::DAG dag;
 
@@ -358,7 +360,8 @@ namespace gum_tests {
     }
 
     void test_asia_param_from_bn() {
-      gum::learning::BNLearner<float> learner( GET_RESSOURCES_PATH( "asia3.csv" ) );
+      gum::learning::BNLearner<float> learner(
+          GET_RESSOURCES_PATH( "asia3.csv" ) );
 
       learner.useK2( std::vector<gum::NodeId>{1, 5, 2, 6, 0, 3, 4, 7} );
       gum::BayesNet<float> bn = learner.learnBN();
@@ -404,8 +407,8 @@ namespace gum_tests {
       bn.addArc( no, nd );
       bn.addArc( no, np );
 
-      gum::learning::BNLearner<float> learner( GET_RESSOURCES_PATH( "asia3.csv" ),
-                                               bn );
+      gum::learning::BNLearner<float> learner(
+          GET_RESSOURCES_PATH( "asia3.csv" ), bn );
 
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
@@ -450,8 +453,8 @@ namespace gum_tests {
       bn.add( d );
       bn.add( p );
 
-      gum::learning::BNLearner<float> learner( GET_RESSOURCES_PATH( "asia3.csv" ),
-                                               bn );
+      gum::learning::BNLearner<float> learner(
+          GET_RESSOURCES_PATH( "asia3.csv" ), bn );
 
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
@@ -480,8 +483,8 @@ namespace gum_tests {
       bn.addArc( nt, no );
       bn.addArc( no, nd );
 
-      gum::learning::BNLearner<float> learner( GET_RESSOURCES_PATH( "asia3.csv" ),
-                                               bn );
+      gum::learning::BNLearner<float> learner(
+          GET_RESSOURCES_PATH( "asia3.csv" ), bn );
 
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
@@ -518,7 +521,8 @@ namespace gum_tests {
 
     void test_listener() {
       {
-        gum::learning::BNLearner<double> learner( GET_RESSOURCES_PATH( "asia.csv" ) );
+        gum::learning::BNLearner<double> learner(
+            GET_RESSOURCES_PATH( "asia.csv" ) );
         aSimpleBNLeanerListener listen( learner );
 
         learner.setVerbosity( true );
@@ -534,7 +538,8 @@ namespace gum_tests {
                           "stopped on request" );
       }
       {
-        gum::learning::BNLearner<double> learner( GET_RESSOURCES_PATH( "asia2.csv" ) );
+        gum::learning::BNLearner<double> learner(
+            GET_RESSOURCES_PATH( "asia2.csv" ) );
         aSimpleBNLeanerListener listen( learner );
 
         learner.setVerbosity( true );
@@ -550,7 +555,8 @@ namespace gum_tests {
                           "stopped on request" );
       }
       {
-        gum::learning::BNLearner<double> learner( GET_RESSOURCES_PATH( "asia.csv" ) );
+        gum::learning::BNLearner<double> learner(
+            GET_RESSOURCES_PATH( "asia.csv" ) );
         aSimpleBNLeanerListener listen( learner );
 
         learner.setVerbosity( true );
@@ -565,7 +571,8 @@ namespace gum_tests {
                           "stopped on request" );
       }
       {
-        gum::learning::BNLearner<double> learner( GET_RESSOURCES_PATH( "asia.csv" ) );
+        gum::learning::BNLearner<double> learner(
+            GET_RESSOURCES_PATH( "asia.csv" ) );
         aSimpleBNLeanerListener listen( learner );
 
         learner.setVerbosity( true );

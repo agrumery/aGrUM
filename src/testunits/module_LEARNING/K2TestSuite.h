@@ -52,7 +52,8 @@ namespace gum_tests {
   class K2TestSuite : public CxxTest::TestSuite {
     public:
     void test_k2_asia() {
-      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database(
+          GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
@@ -115,7 +116,8 @@ namespace gum_tests {
 
     /*
     void xtest_k2_asia_bis () {
-      gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "asia.csv"
+    ) );
 
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
@@ -178,7 +180,8 @@ namespace gum_tests {
     void xxtest_k2_asia_constraint_DAG () {
       K2 k2;
 
-      gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "asia.csv"
+    ) );
 
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
@@ -217,7 +220,8 @@ namespace gum_tests {
     void xxtest_k2_asia_constraint_SliceOrder () {
       K2 k2;
 
-      gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "asia.csv"
+    ) );
 
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
@@ -266,7 +270,8 @@ namespace gum_tests {
     void xxtest_k2 () {
       K2 k2;
 
-      gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "alarm.csv" ) );
+      gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "alarm.csv"
+    ) );
 
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,

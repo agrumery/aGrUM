@@ -55,7 +55,8 @@ namespace gum_tests {
   class LocalSearchWithTabuListTestSuite : public CxxTest::TestSuite {
     public:
     void test_asia() {
-      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database(
+          GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators1 = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,

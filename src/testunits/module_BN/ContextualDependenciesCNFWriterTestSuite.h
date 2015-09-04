@@ -112,7 +112,8 @@ namespace gum_tests {
           GET_RESSOURCES_PATH( "ContextualDependenciesCNFWriter_TestFile.cnf" );
       TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
 
-      file = GET_RESSOURCES_PATH( "ContextualDependenciesCNFWriter_RO_TestFile.cnf" );
+      file = GET_RESSOURCES_PATH(
+          "ContextualDependenciesCNFWriter_RO_TestFile.cnf" );
 
       try {
         writer.write( file, *bn );

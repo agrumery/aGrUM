@@ -82,11 +82,13 @@ namespace gum_tests {
       gum::setNumberOfThreads( 1 );
 #endif
       gum::BayesNet<double> monBNa;
-      gum::BIFReader<double> readera( &monBNa, GET_RESSOURCES_PATH( "cn/2Umin.bif" ) );
+      gum::BIFReader<double> readera( &monBNa,
+                                      GET_RESSOURCES_PATH( "cn/2Umin.bif" ) );
       readera.proceed();
 
       gum::BayesNet<double> monBNb;
-      gum::BIFReader<double> readerb( &monBNb, GET_RESSOURCES_PATH( "cn/2Umax.bif" ) );
+      gum::BIFReader<double> readerb( &monBNb,
+                                      GET_RESSOURCES_PATH( "cn/2Umax.bif" ) );
       readerb.proceed();
 
       cn = new gum::credal::CredalNet<double>( monBNa, monBNb );
@@ -101,13 +103,13 @@ namespace gum_tests {
       gum::setNumberOfThreads( 1 );
 #endif
       gum::BayesNet<double> monBNa;
-      gum::BIFReader<double> readera( &monBNa,
-                                      GET_RESSOURCES_PATH( "cn/dbn_bin_min.bif" ) );
+      gum::BIFReader<double> readera(
+          &monBNa, GET_RESSOURCES_PATH( "cn/dbn_bin_min.bif" ) );
       readera.proceed();
 
       gum::BayesNet<double> monBNb;
-      gum::BIFReader<double> readerb( &monBNb,
-                                      GET_RESSOURCES_PATH( "cn/dbn_bin_max.bif" ) );
+      gum::BIFReader<double> readerb(
+          &monBNb, GET_RESSOURCES_PATH( "cn/dbn_bin_max.bif" ) );
       readerb.proceed();
 
       cn = new gum::credal::CredalNet<double>( monBNa, monBNb );

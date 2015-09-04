@@ -467,4 +467,3 @@ namespace gum {
 #include <agrum/BN/BayesNet.tcc>
 
 #endif /* GUM_BAYES_NET_H */
-

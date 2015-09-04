@@ -37,8 +37,7 @@ namespace gum_tests {
 
   class StructuredInferenceTestSuite : public CxxTest::TestSuite {
     public:
-    void setUp() {
-    }
+    void setUp() {}
 
     void generateLayer1(
         gum::Size nb_class,

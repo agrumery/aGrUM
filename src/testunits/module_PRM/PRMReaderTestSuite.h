@@ -30,8 +30,8 @@ namespace gum_tests {
     void testBasicRead() {
       gum::prm::o3prm::O3prmReader<double> reader;
       int res;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          res = reader.readFile( GET_RESSOURCES_PATH( "o3prm/inference.o3prm" ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( res = reader.readFile( GET_RESSOURCES_PATH(
+                                        "o3prm/inference.o3prm" ) ) );
 
       if ( res != 0 ) reader.showElegantErrors();
 

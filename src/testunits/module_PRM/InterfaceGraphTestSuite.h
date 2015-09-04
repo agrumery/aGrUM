@@ -39,7 +39,7 @@ namespace gum_tests {
     public:
     void setUp() {
       gum::prm::o3prm::O3prmReader<double> reader;
-      reader.readFile(GET_RESSOURCES_PATH("o3prm/printers_systems.o3prm") );
+      reader.readFile( GET_RESSOURCES_PATH( "o3prm/printers_systems.o3prm" ) );
       __prm = reader.prm();
     }
 
