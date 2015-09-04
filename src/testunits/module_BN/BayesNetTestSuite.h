@@ -159,7 +159,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( topology->dim(), (gum::Idx)0 );
 
       TS_ASSERT_THROWS( topology->addArc( 1, 2 ), gum::InvalidNode );
-
       gum::List<gum::NodeId> idList;
       TS_GUM_ASSERT_THROWS_NOTHING( fill( *topology, idList ) );
 

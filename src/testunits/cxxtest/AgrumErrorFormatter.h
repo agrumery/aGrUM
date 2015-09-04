@@ -14,6 +14,7 @@
 #ifdef NDEBUG
 #define GUM_TRACE_ON
 #endif
+#include <cstdlib>
 
 #include <agrum/config.h>
 #include <agrum/core/timer.h>

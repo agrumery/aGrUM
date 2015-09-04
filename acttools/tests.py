@@ -51,7 +51,7 @@ def checkTestList(current,alltests):
       if ss!="show":
         error('Test "src/testunits/[module]/'+ss+'TestSuite.h" does not exist for the selected modules')
       afficheTests(current)
-      sys.exit(0)
+      sys.exit(1)
     else:
       res.append(name)
   return res

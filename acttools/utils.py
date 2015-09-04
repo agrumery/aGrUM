@@ -69,14 +69,14 @@ def error(s,pref=None):
 
   print(pref+colFormat(s,cfg.C_ERROR)+cfg.C_END)
 
-def critic(s,pref=None):
+def critic(s,pref=None,rc=1):
   if pref is None:
     pref=cfg.prefixe_line
 
   error(s,pref)
   print(pref+colFormat("Stopped.",cfg.C_MSG)+cfg.C_END+"\n")
 
-  sys.exit(1)
+  sys.exit(rc)
 
 
 def CrossPlatformRelPath(x,y):

@@ -43,7 +43,7 @@ def parseModulesTxt():
 def check_modules(current):
   setM=setifyString(current['modules'])
 
-  if 'ALL' in setM:
+  if 'ALL' in setM or 'all' in setM:
     cde='ALL'
   else:
     if not setM.issubset(set(cfg.modules)):
@@ -58,6 +58,6 @@ def check_modules(current):
     print("    - ALL")
     for x in sorted(cfg.modules):
       print("    - "+x+" ("+cfg.moduleLabels[x]+")")
-    sys.exit(0)
+    sys.exit(1)
   else:
     current['modules']=cde

@@ -67,6 +67,7 @@ if __name__ == "__main__":
       main()
     except KeyboardInterrupt:
       print("\n Shutdown requested...exiting \n")
+      sys.exit(1)
     except Exception:
       traceback.print_exc(file=sys.stdout)
-    sys.exit(0)
+      sys.exit(1)

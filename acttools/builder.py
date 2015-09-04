@@ -93,7 +93,7 @@ def buildPost(current,target):
     if current["action"]=="test":
         if target=="aGrUM":
             safe_cd(current,"src")
-            rc=execFromLine(current,"./gumTest",checkRC=False)
+            rc=execFromLine(current,"./gumTest")
             safe_cd(current,"..")
         elif target=="pyAgrum":
             run_cde="PYTHONPATH=wrappers "
@@ -110,4 +110,4 @@ def execFromLine(current,line,checkRC=True):
         rc=execCde(line,current)
 	if checkRC:
           if rc>0:
-            critic("Received error {0}".format(rc))
+            critic("Received error {0}".format(rc),rc=rc)
