@@ -21,12 +21,12 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/core/exceptions.h>
 #include <agrum/PRM/elements/type.h>
 
-#include <module_PRM/ClassElementTestSuite.h>
+#include <module_PRM/ClassElementTestSuiteAbstract.h>
 
 /**
  * This class is used to test gum::prm::ClassElement, since it is an abstrac

@@ -16,8 +16,7 @@
 
 #include <cxxtest/StdValueTraits.h>
 
-// configured from testunits/cmake/AgrumErrorFormatter.h.in
-#include "AgrumErrorFormatter.h"
+#include <cxxtest/AgrumErrorFormatter.h>
 
 #ifdef _CXXTEST_OLD_STD
 #include <iostream.h>

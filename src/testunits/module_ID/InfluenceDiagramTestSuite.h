@@ -21,7 +21,7 @@
 #include <vector>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
@@ -29,7 +29,7 @@
 #include <agrum/graphs/graphElements.h>
 #include <agrum/variables/labelizedVariable.h>
 
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 // The graph used for the tests:
 //           D1
@@ -261,7 +261,7 @@ namespace gum_tests {
       fill( id, idList );
 
       // For comparison with what readers will return
-      std::string dotfile = GET_PATH_STR( "IDToDotWriter.dot" );
+      std::string dotfile = GET_RESSOURCES_PATH( "IDToDotWriter.dot" );
       std::ofstream output( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
       if ( !output.good() ) {
@@ -866,7 +866,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING( moralGraph = id.moralGraph( true ) );
 
       // For comparison with what readers will return
-      std::string dotfile = GET_PATH_STR( "IDBeforeMoralisation.dot" );
+      std::string dotfile = GET_RESSOURCES_PATH( "IDBeforeMoralisation.dot" );
       std::ofstream idOutput( dotfile.c_str(),
                               std::ios::out | std::ios::trunc );
 
@@ -885,7 +885,7 @@ namespace gum_tests {
       }
 
       // For comparison with what readers will return
-      dotfile = GET_PATH_STR( "IDAfterMoralisation.dot" );
+      dotfile = GET_RESSOURCES_PATH( "IDAfterMoralisation.dot" );
 
       std::ofstream moralOutput( dotfile.c_str(),
                                  std::ios::out | std::ios::trunc );

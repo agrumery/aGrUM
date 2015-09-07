@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/lazyPropagation.h>
@@ -35,7 +35,7 @@
 
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
-#define GET_PATH_STR_O3PRM( x ) \
+#define GET_RESSOURCES_PATH_O3PRM( x ) \
   xstrfy( GUM_SRC_PATH ) "/testunits/ressources/o3prm/" #x
 namespace gum_tests {
 
@@ -48,12 +48,12 @@ namespace gum_tests {
     void setUp() {
       {
         gum::prm::o3prm::O3prmReader<double> reader;
-        reader.readFile( GET_PATH_STR_O3PRM( inference.o3prm ) );
+        reader.readFile( GET_RESSOURCES_PATH_O3PRM( inference.o3prm ) );
         prm = reader.prm();
       }
       {
         gum::prm::o3prm::O3prmReader<double> reader;
-        reader.readFile( GET_PATH_STR_O3PRM( printers_systems.o3prm ) );
+        reader.readFile( GET_RESSOURCES_PATH_O3PRM( printers_systems.o3prm ) );
         small = reader.prm();
       }
     }

@@ -17,14 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   (gumSize) 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.   *
  ***************************************************************************/
-#define GUM_TRACE_ON
-
 #include <iostream>
 #include <string>
 #include <vector>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
@@ -161,7 +159,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( topology->dim(), (gum::Idx)0 );
 
       TS_ASSERT_THROWS( topology->addArc( 1, 2 ), gum::InvalidNode );
-
       gum::List<gum::NodeId> idList;
       TS_GUM_ASSERT_THROWS_NOTHING( fill( *topology, idList ) );
 

@@ -19,13 +19,13 @@
  ***************************************************************************/
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/PRM/elements/formAttribute.h>
 #include <agrum/PRM/elements/referenceSlot.h>
 #include <agrum/PRM/elements/class.h>
 
-#include <module_PRM/ClassElementTestSuite.h>
+#include <module_PRM/ClassElementTestSuiteAbstract.h>
 
 /**
  * This class is used to test gum::prm::ClassElement, since it is an abstrac
@@ -37,14 +37,14 @@ namespace gum_tests {
   class ReferenceSlotTestSuite : public CxxTest::TestSuite {
     private:
     typedef gum::prm::ReferenceSlot<double> ReferenceSlot;
-    ClassElementTestSuite* __classEltTestSuite;
+    ClassElementTestSuiteAbstract* __classEltTestSuite;
     gum::prm::Class<double>* __A;
     gum::prm::Class<double>* __B;
     gum::prm::Type<double>* __boolean;
 
     public:
     void setUp() {
-      __classEltTestSuite = new ClassElementTestSuite();
+      __classEltTestSuite = new ClassElementTestSuiteAbstract();
       __A = new gum::prm::Class<double>( "A" );
       __B = new gum::prm::Class<double>( "B" );
       __boolean = gum::prm::Type<double>::boolean();

@@ -22,7 +22,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
@@ -46,7 +46,6 @@ namespace gum_tests {
     gum::BayesNet<float>* bn;
     gum::Id i1, i2, i3, i4, i5;
     gum::Potential<float>* e_i1, *e_i4;
-    std::string base_dir;
 
     void setUp() {
       bn = new gum::BayesNet<float>();
@@ -81,8 +80,6 @@ namespace gum_tests {
       gum::Instantiation inst_4( *e_i4 );
       inst_4.chgVal( bn->variable( i4 ), 1 );
       e_i4->set( inst_4, (float)1 );
-
-      base_dir = "../../../";
     }
 
     void tearDown() {
@@ -275,7 +272,7 @@ namespace gum_tests {
     }
 
     // void testAlarm() {
-    //   std::string file_name = "src/testunits/ressources/alarm.bif";
+    //   std::string file_name = "/ressources/alarm.bif";
     //   std::string file_path = base_dir + file_name;
     //   gum::BayesNet<float> alarm;
     //   gum::BIFReader<float> reader(&alarm, file_path);

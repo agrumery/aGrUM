@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/PRM/inference/gspan.h>
 
@@ -35,7 +35,8 @@ namespace gum_tests {
 
     void local__setUp() {
       __driver = new gum::prm::o3prm::O3prmReader<double>();
-      __driver->readFile( GET_PATH_STR( "o3prm/specialprinters.o3prm" ) );
+      __driver->readFile(
+          GET_RESSOURCES_PATH( "o3prm/specialprinters.o3prm" ) );
 
       if ( __driver->prm() != nullptr )
         ig = new gum::prm::gspan::InterfaceGraph<double>(
@@ -57,7 +58,7 @@ namespace gum_tests {
     public:
     void testInit() {
       gum::prm::o3prm::O3prmReader<double> driver;
-      driver.readFile( GET_PATH_STR( "o3prm/specialprinters.o3prm" ) );
+      driver.readFile( GET_RESSOURCES_PATH( "o3prm/specialprinters.o3prm" ) );
       TS_ASSERT( driver.prm() != nullptr );
 
       if ( driver.prm() != nullptr ) delete driver.prm();

@@ -17,9 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
-
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/BayesBall.h>
 
@@ -27,6 +24,8 @@
 #include <agrum/PRM/inference/structuredBayesBall.h>
 
 #include <agrum/PRM/o3prm/O3prmReader.h>
+
+#include <cxxtest/AgrumTestSuite.h>
 
 namespace gum_tests {
   class StructuredBayesBallTestSuite : public CxxTest::TestSuite {
@@ -42,8 +41,7 @@ namespace gum_tests {
     void setUp() {
       {
         gum::prm::o3prm::O3prmReader<double> reader;
-        reader.readFile(
-            "../../../src/testunits/ressources/o3prm/inference.o3prm" );
+        reader.readFile( GET_RESSOURCES_PATH( "o3prm/inference.o3prm" ) );
         prm = reader.prm();
         sys = &( prm->system( "aSys" ) );
         prm_inf = new gum::prm::SVE<double>( *prm, *sys );
@@ -51,12 +49,11 @@ namespace gum_tests {
       {
         gum::prm::o3prm::O3prmReader<double> reader;
         reader.readFile(
-            "../../../src/testunits/ressources/o3prm/printers_systems.o3prm" );
+            GET_RESSOURCES_PATH( "o3prm/printers_systems.o3prm" ) );
         small = reader.prm();
         small_sys = &( small->system( "smallSys" ) );
         small_inf = new gum::prm::SVE<double>( *small, *small_sys );
       }
-      // std::cerr << std::endl;
     }
 
     void tearDown() {

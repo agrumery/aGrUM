@@ -22,7 +22,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
@@ -421,7 +421,7 @@ namespace gum_tests {
     // compare only Lazy and ShaferShenoy on alarm BN
     void testAlarmInference() {
 
-      std::string file = GET_PATH_STR( "alarm.bif" );
+      std::string file = GET_RESSOURCES_PATH( "alarm.bif" );
 
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
 

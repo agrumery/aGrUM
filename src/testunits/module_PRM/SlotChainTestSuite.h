@@ -19,14 +19,14 @@
  ***************************************************************************/
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/PRM/elements/slotChain.h>
 #include <agrum/PRM/elements/formAttribute.h>
 #include <agrum/PRM/elements/referenceSlot.h>
 #include <agrum/PRM/elements/class.h>
 
-#include <module_PRM/ClassElementTestSuite.h>
+#include <module_PRM/ClassElementTestSuiteAbstract.h>
 
 /**
  * This class is used to test gum::prm::ClassElement, since it is an abstrac
@@ -38,7 +38,7 @@ namespace gum_tests {
   class SlotChainTestSuite : public CxxTest::TestSuite {
     private:
     typedef gum::prm::SlotChain<double> SlotChain;
-    ClassElementTestSuite* __classEltTestSuite;
+    ClassElementTestSuiteAbstract* __classEltTestSuite;
     gum::prm::Class<double>* __A;
     gum::prm::Class<double>* __B;
     gum::prm::Class<double>* __C;
@@ -56,7 +56,7 @@ namespace gum_tests {
 
     public:
     void setUp() {
-      __classEltTestSuite = new ClassElementTestSuite();
+      __classEltTestSuite = new ClassElementTestSuiteAbstract();
       __A = new gum::prm::Class<double>( "A" );
       __B = new gum::prm::Class<double>( "B" );
       __C = new gum::prm::Class<double>( "C" );

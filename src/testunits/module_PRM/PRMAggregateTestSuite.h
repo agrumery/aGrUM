@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/aggregators/or.h>
@@ -29,7 +29,7 @@
 #include <agrum/PRM/elements/formAttribute.h>
 #include <agrum/PRM/elements/aggregate.h>
 
-#include <module_PRM/ClassElementTestSuite.h>
+#include <module_PRM/ClassElementTestSuiteAbstract.h>
 
 /**
  * This class is used to test gum::prm::ClassElement, since it is an abstrac
@@ -42,7 +42,7 @@ namespace gum_tests {
     private:
     typedef gum::prm::Aggregate<double> Aggregate;
     typedef gum::prm::Aggregate<double>::AggregateType AggType;
-    ClassElementTestSuite* __classEltTestSuite;
+    ClassElementTestSuiteAbstract* __classEltTestSuite;
     gum::prm::Type<double>* __boolean;
     gum::prm::Type<double>* __state;
     std::vector<AggType>* __types;
@@ -50,7 +50,7 @@ namespace gum_tests {
 
     public:
     void setUp() {
-      __classEltTestSuite = new ClassElementTestSuite;
+      __classEltTestSuite = new ClassElementTestSuiteAbstract;
       __boolean = gum::prm::Type<double>::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel( "OK" );

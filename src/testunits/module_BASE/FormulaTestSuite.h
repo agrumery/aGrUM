@@ -20,7 +20,7 @@
 #include <iostream>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/core/exceptions.h>
 #include <agrum/core/math/formula.h>

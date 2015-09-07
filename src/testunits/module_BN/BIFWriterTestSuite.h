@@ -24,7 +24,7 @@
 #include <string.h>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
@@ -123,7 +123,7 @@ namespace gum_tests {
 
     void testWriter_string() {
       gum::BIFWriter<double> writer;
-      std::string file = GET_PATH_STR( "BIFWriter_TestFile.txt" );
+      std::string file = GET_RESSOURCES_PATH( "BIFWriter_TestFile.txt" );
       TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
 
       try {
@@ -133,7 +133,8 @@ namespace gum_tests {
         TS_ASSERT( false );
       }
 
-      TS_ASSERT( __compareFile( file, GET_PATH_STR( "BIFWriter_Model.txt" ) ) )
+      TS_ASSERT(
+          __compareFile( file, GET_RESSOURCES_PATH( "BIFWriter_Model.txt" ) ) )
     }
 
     private:

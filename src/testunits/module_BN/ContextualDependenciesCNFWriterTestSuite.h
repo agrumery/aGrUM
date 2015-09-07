@@ -21,7 +21,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
@@ -109,10 +109,11 @@ namespace gum_tests {
     void testWriter_string() {
       gum::ContextualDependenciesCNFWriter<double> writer;
       std::string file =
-          GET_PATH_STR( "ContextualDependenciesCNFWriter_TestFile.cnf" );
+          GET_RESSOURCES_PATH( "ContextualDependenciesCNFWriter_TestFile.cnf" );
       TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
 
-      file = GET_PATH_STR( "ContextualDependenciesCNFWriter_RO_TestFile.cnf" );
+      file = GET_RESSOURCES_PATH(
+          "ContextualDependenciesCNFWriter_RO_TestFile.cnf" );
 
       try {
         writer.write( file, *bn );
@@ -130,12 +131,12 @@ namespace gum_tests {
       writer.setEpsilon( 0.2 );
       writer.setLowLimit( 0 );
       writer.setHighLimit( 1 );
-      std::string file = GET_PATH_STR(
+      std::string file = GET_RESSOURCES_PATH(
           "ContextualDependenciesCNFWriter_TestFile_Approximation.cnf" );
 
       TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
 
-      file = GET_PATH_STR(
+      file = GET_RESSOURCES_PATH(
           "ContextualDependenciesCNFWriter_RO_TestFile_Approximation.cnf" );
 
       try {

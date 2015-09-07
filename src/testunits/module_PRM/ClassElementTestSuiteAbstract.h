@@ -22,19 +22,19 @@
 #define GUM_CLASSELEMENT_TEST_SUITE_H
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/core/exceptions.h>
 #include <agrum/PRM/elements/classElement.h>
 
-/**
- * This class is used to test gum::prm::ClassElement, since it is an abstrac
+/*
+ * This class is used to test gum::prm::ClassElement, since it is an abstract
  * class, tests defined here should be called by each sub class of
  * gum::prm::ClassElement.
  */
 namespace gum_tests {
 
-  class ClassElementTestSuite {
+  class ClassElementTestSuiteAbstract {
     typedef gum::prm::ClassElement<double> ClassElt;
 
     public:

@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <iostream>
 #include <string>
@@ -40,8 +40,8 @@ namespace gum_tests {
         oldWorkingDir = std::string( oldWD );
 
       // Change working directory
-      if ( chdir( GET_PATH_XSTR( dir ) ) != 0 ) {
-        GUM_TRACE( "Error : Can not go to " << GET_PATH_XSTR( dir ) );
+      if ( chdir( XGET_RESSOURCES_PATH( dir ) ) != 0 ) {
+        GUM_TRACE( "Error : Can not go to " << XGET_RESSOURCES_PATH( dir ) );
         TS_ASSERT( false );
       }
     }

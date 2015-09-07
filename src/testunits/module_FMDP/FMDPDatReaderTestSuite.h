@@ -23,7 +23,7 @@
 #include <string>
 // =====================================================================
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
@@ -35,7 +35,7 @@ namespace gum_tests {
   class FMDPDatReaderTestSuite : public CxxTest::TestSuite {
     public:
     void testConstuctor() {
-      std::string file = GET_PATH_STR( "FMDP/coffee/coffee.dat" );
+      std::string file = GET_RESSOURCES_PATH( "FMDP/coffee/coffee.dat" );
 
       gum::FactoredMarkovDecisionProcess<float> fmdp;
       gum::MultiDimDecisionDiagramFactory<float> ddf;
@@ -49,7 +49,7 @@ namespace gum_tests {
     }
 
     void testRead_file1() {
-      std::string file = GET_PATH_STR( "FMDP/factory/factoryB.dat" );
+      std::string file = GET_RESSOURCES_PATH( "FMDP/factory/factoryB.dat" );
 
       gum::FactoredMarkovDecisionProcess<float> fmdp;
       gum::MultiDimDecisionDiagramFactory<float> ddf;
@@ -69,7 +69,7 @@ namespace gum_tests {
     }
 
     //~ void estRead_file2_float() {
-    //~ std::string file = GET_PATH_STR( "FMDPDatReader_file2.dat" );
+    //~ std::string file = GET_RESSOURCES_PATH( "FMDPDatReader_file2.dat" );
     //~
     //~ gum::BayesNet<float> *net = new gum::BayesNet<float>();
     //~

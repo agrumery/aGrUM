@@ -21,14 +21,14 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/net/netWriter.h>
 #include <agrum/BN/io/net/netReader.h>
 
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -84,10 +84,10 @@ namespace gum_tests {
 
     void testWriter_string() {
       gum::NetWriter<double> writer;
-      std::string file = GET_PATH_STR( "NetWriter_TestFile.net" );
+      std::string file = GET_RESSOURCES_PATH( "NetWriter_TestFile.net" );
       TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
 
-      file = GET_PATH_STR( "NetWriter_RO_TestFile.net" );
+      file = GET_RESSOURCES_PATH( "NetWriter_RO_TestFile.net" );
 
       try {
         writer.write( file, *bn );
@@ -98,7 +98,7 @@ namespace gum_tests {
     }
 
     void test_isreadable() {
-      std::string file = GET_PATH_STR( "NetWriter_RO_TestFile.net" );
+      std::string file = GET_RESSOURCES_PATH( "NetWriter_RO_TestFile.net" );
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
 
       gum::NetReader<float> reader( net, file );

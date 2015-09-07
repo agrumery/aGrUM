@@ -23,7 +23,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/core/list.h>
 #include <agrum/variables/discretizedVariable.h>

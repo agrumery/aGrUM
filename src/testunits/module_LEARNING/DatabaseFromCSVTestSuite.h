@@ -20,7 +20,7 @@
 
 #include <iostream>
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/learning/database/databaseFromCSV.h>
 
@@ -29,7 +29,8 @@ namespace gum_tests {
   class DatabaseFromCSVTestSuite : public CxxTest::TestSuite {
     public:
     void test_db1() {
-      gum::learning::DatabaseFromCSV database( GET_PATH_STR( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database(
+          GET_RESSOURCES_PATH( "asia.csv" ) );
 
       TS_ASSERT( database.content().size() == 10000 );
       TS_ASSERT( database.variableNames().size() == 8 );
@@ -112,7 +113,7 @@ namespace gum_tests {
     void testOnError() {
       try {
         gum::learning::DatabaseFromCSV database(
-            GET_PATH_STR( "notExistingDummyDatabse.csv" ) );
+            GET_RESSOURCES_PATH( "notExistingDummyDatabse.csv" ) );
       } catch ( gum::IOError& e ) {
         TS_ASSERT( true );
         return;

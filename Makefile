@@ -1,10 +1,10 @@
 #since some IDEs need a Makefile
 #here is a simple wrapper to act embedded in Makefile
 #
-CLANGFORMAT=clang-format-3.6
-
 ACT=./act --no-fun
-JOBS=7
+
+# JOBS=2
+JOBS=
 
 library:
 	$(ACT) agrum release -p linux -j $(JOBS)
@@ -51,8 +51,5 @@ linuxreleasedoc:
 	cat build/linux/release/warning.txt
 
 clang-format:
-	for i in `find src -name "*.h"`   ; do echo "formatting $$i";$(CLANGFORMAT) -i $$i; done
-	for i in `find src -name "*.cpp"` ; do echo "formatting $$i";$(CLANGFORMAT) -i $$i; done
-	for i in `find src -name "*.tcc"` ; do echo "formatting $$i";$(CLANGFORMAT) -i $$i; done
-	for i in `find src -name "*.inl"` ; do echo "formatting $$i";$(CLANGFORMAT) -i $$i; done
+	$(ACT) autoindent
 

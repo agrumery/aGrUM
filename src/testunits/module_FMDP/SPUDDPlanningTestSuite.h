@@ -22,7 +22,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
 #include <agrum/core/algorithms/approximationPolicy/linearApproximationPolicy.h>
@@ -53,7 +53,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
 
       std::ofstream __traceAlgoSaveFile;
-      __traceAlgoSaveFile.open( GET_PATH_STR( "test.dot" ),
+      __traceAlgoSaveFile.open( GET_RESSOURCES_PATH( "test.dot" ),
                                 std::ios::out | std::ios::trunc );
 
       if ( !__traceAlgoSaveFile ) {
@@ -71,77 +71,77 @@ namespace gum_tests {
 
     public:
     void test_Coffee() {
-      file = GET_PATH_STR( "FMDP/coffee/coffee.dat" );
+      file = GET_RESSOURCES_PATH( "FMDP/coffee/coffee.dat" );
       run( "Coffee", 1 );
     }
 
     void est_FactoryS() {
-      file = GET_PATH_STR( "FMDP/factory/tiny-factory.dat" );
+      file = GET_RESSOURCES_PATH( "FMDP/factory/tiny-factory.dat" );
       run( "TinyFactory", 1 );
     }
 
     void est_Elev2() {
-      file = GET_PATH_STR( "FMDP/elev/elev2.dat" );
+      file = GET_RESSOURCES_PATH( "FMDP/elev/elev2.dat" );
       run( "Elev2", 1 );
     }
 
     void est_Maze() {
-      file = GET_PATH_STR( "FMDP/labyrinth/maze.dat" );
+      file = GET_RESSOURCES_PATH( "FMDP/labyrinth/maze.dat" );
       run( "maze", 1 );
     }
 
     void est_MazeB() {
-      file = GET_PATH_STR( "FMDP/labyrinth/mazeb.dat" );
+      file = GET_RESSOURCES_PATH( "FMDP/labyrinth/mazeb.dat" );
       run( "mazeb", 1 );
     }
 
     void est_Factory() {
-      file = GET_PATH_STR( "FMDP/factory/factory.dat" );
+      file = GET_RESSOURCES_PATH( "FMDP/factory/factory.dat" );
       run( "Factory", 1 );
     }
 
     void est_FactoryB() {
-      file = GET_PATH_STR( "FMDP/factory/factoryB.dat" );
+      file = GET_RESSOURCES_PATH( "FMDP/factory/factoryB.dat" );
       run( "FactoryB", 1 );
     }
 
     void est_Factory0() {
-      file = GET_PATH_STR( "FMDP/factory/factory0.dat" );
+      file = GET_RESSOURCES_PATH( "FMDP/factory/factory0.dat" );
       run( "Factory0", 1 );
     }
 
     void est_Factory0B() {
-      file = GET_PATH_STR( "FMDP/factory/factory0B.dat" );
+      file = GET_RESSOURCES_PATH( "FMDP/factory/factory0B.dat" );
       run( "Factory0B", 1 );
     }
 
     void est_Factory1() {
-      file = GET_PATH_STR( "FMDP/factory/factory1.dat" );
+      file = GET_RESSOURCES_PATH( "FMDP/factory/factory1.dat" );
       run( "Factory1", 1 );
     }
 
     void est_Factory1B() {
-      file = GET_PATH_STR( "FMDP/factory/factory1B.dat" );
+      file = GET_RESSOURCES_PATH( "FMDP/factory/factory1B.dat" );
       run( "Factory1B", 1 );
     }
 
     void est_Factory2() {
-      file = GET_PATH_STR( "FMDP/factory/factory2.dat" );
+      file = GET_RESSOURCES_PATH( "FMDP/factory/factory2.dat" );
       run( "Factory2", 1 );
     }
 
     void est_Factory2B() {
-      file = GET_PATH_STR( "FMDP/factory/factory2B.dat" );
+      file = GET_RESSOURCES_PATH( "FMDP/factory/factory2B.dat" );
       run( "Factory2B", 1 );
     }
 
     void est_Factory3() {
-      file = GET_PATH_STR( "FMDP/factory/factory3.dat" );
+      file = GET_RESSOURCES_PATH( "FMDP/factory/factory3.dat" );
       run( "Factory3", 1 );
     }
 
     void est_Factory3B() {
-      file = GET_PATH_STR( "FMDP/factory/factory3B.dat" );
+      file = GET_RESSOURCES_PATH( "FMDP/factory/factory3B.dat" );
       run( "Factory3B", 1 );
     }
   };

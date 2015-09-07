@@ -21,7 +21,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/PRM/o3prmr/O3prmrInterpreter.h>
 
@@ -40,11 +40,10 @@ namespace gum_tests {
         gum::prm::o3prmr::O3prmrInterpreter* si =
             new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode( true );
-        si->addPath( "../../../src/testunits/ressources/o3prmr/" );
+        si->addPath( GET_RESSOURCES_PATH( "o3prmr/" ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
-            si->interpretFile( "../../../src/testunits/ressources/o3prmr/"
-                               "requests/query1.o3prmr" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile(
+            GET_RESSOURCES_PATH( "o3prmr/requests/query1.o3prmr" ) ) );
 
         TS_ASSERT_EQUALS( si->errors(), 0 );
         if ( si->errors() > 0 ) {
@@ -63,11 +62,10 @@ namespace gum_tests {
         gum::prm::o3prmr::O3prmrInterpreter* si =
             new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode( true );
-        si->addPath( "../../../src/testunits/ressources/o3prmr/" );
+        si->addPath( GET_RESSOURCES_PATH( "o3prmr/" ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
-            si->interpretFile( "../../../src/testunits/ressources/o3prmr/"
-                               "requests/query2.o3prmr" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile(
+            GET_RESSOURCES_PATH( "o3prmr/requests/query2.o3prmr" ) ) );
 
         TS_ASSERT_EQUALS( si->errors(), 1 );
         TS_ASSERT_EQUALS( si->warnings(), 0 );
@@ -83,11 +81,10 @@ namespace gum_tests {
         gum::prm::o3prmr::O3prmrInterpreter* si =
             new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode( false );
-        si->addPath( "../../../src/testunits/ressources/o3prmr/" );
+        si->addPath( GET_RESSOURCES_PATH( "o3prmr/" ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
-            si->interpretFile( "../../../src/testunits/ressources/o3prmr/"
-                               "requests/query1.o3prmr" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile(
+            GET_RESSOURCES_PATH( "o3prmr/requests/query1.o3prmr" ) ) );
 
         TS_ASSERT_EQUALS( si->errors(), 0 );
         TS_ASSERT_EQUALS( si->warnings(), 0 );
@@ -103,11 +100,10 @@ namespace gum_tests {
         gum::prm::o3prmr::O3prmrInterpreter* si =
             new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode( false );
-        si->addPath( "../../../src/testunits/ressources/o3prmr/" );
+        si->addPath( GET_RESSOURCES_PATH( "o3prmr/" ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
-            si->interpretFile( "../../../src/testunits/ressources/o3prmr/"
-                               "requests/queryObserveTest.o3prmr" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile( GET_RESSOURCES_PATH(
+            "o3prmr/requests/queryObserveTest.o3prmr" ) ) );
 
         TS_ASSERT_EQUALS( si->errors(), 0 );
         TS_ASSERT_EQUALS( si->warnings(), 0 );
@@ -157,11 +153,10 @@ namespace gum_tests {
         gum::prm::o3prmr::O3prmrInterpreter* si =
             new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode( false );
-        si->addPath( "../../../src/testunits/ressources/o3prmr/" );
+        si->addPath( GET_RESSOURCES_PATH( "o3prmr/" ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
-            si->interpretFile( "../../../src/testunits/ressources/o3prmr/"
-                               "requests/queryUnobserveTest.o3prmr" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile( GET_RESSOURCES_PATH(
+            "o3prmr/requests/queryUnobserveTest.o3prmr" ) ) );
 
         TS_ASSERT_EQUALS( si->errors(), 0 );
         TS_ASSERT_EQUALS( si->warnings(), 0 );
@@ -196,11 +191,10 @@ namespace gum_tests {
         gum::prm::o3prmr::O3prmrInterpreter* si =
             new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode( false );
-        si->addPath( "../../../src/testunits/ressources/o3prmr/" );
+        si->addPath( GET_RESSOURCES_PATH( "o3prmr/" ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
-            si->interpretFile( "../../../src/testunits/ressources/o3prmr/"
-                               "requests/query1.o3prmr" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile(
+            GET_RESSOURCES_PATH( "o3prmr/requests/query1.o3prmr" ) ) );
 
         si->showElegantErrorsAndWarnings();
         TS_ASSERT_EQUALS( si->errors(), 0 );
@@ -255,9 +249,9 @@ namespace gum_tests {
         // Arrange
         auto si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode( false );
-        si->addPath( "../../../src/testunits/ressources/o3prmr/Asia/" );
+        si->addPath( GET_RESSOURCES_PATH( "o3prmr/Asia/" ) );
         si->interpretFile(
-            "../../../src/testunits/ressources/o3prmr/Asia/myRequest.o3prmr" );
+            GET_RESSOURCES_PATH( "o3prmr/Asia/myRequest.o3prmr" ) );
         auto prm = si->prm();
         gum::prm::Class<double> const* asia = nullptr;
         // Act
@@ -276,9 +270,9 @@ namespace gum_tests {
         // Arrange
         auto si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode( false );
-        si->addPath( "../../../src/testunits/ressources/o3prmr/Asia/" );
+        si->addPath( GET_RESSOURCES_PATH( "o3prmr/Asia/" ) );
         si->interpretFile(
-            "../../../src/testunits/ressources/o3prmr/Asia/myRequest.o3prmr" );
+            GET_RESSOURCES_PATH( "o3prmr/Asia/myRequest.o3prmr" ) );
         auto prm = si->prm();
         const auto& sys = prm->system( "system.Asia" );
         auto bn = new gum::BayesNet<double>( "plop" );
@@ -301,9 +295,9 @@ namespace gum_tests {
         // Arrange
         auto si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode( false );
-        si->addPath( "../../../src/testunits/ressources/o3prmr/AsiaOneFile/" );
-        si->interpretFile( "../../../src/testunits/ressources/o3prmr/"
-                           "AsiaOneFile/myRequest.o3prmr" );
+        si->addPath( GET_RESSOURCES_PATH( "o3prmr/AsiaOneFile/" ) );
+        si->interpretFile(
+            GET_RESSOURCES_PATH( "o3prmr/AsiaOneFile/myRequest.o3prmr" ) );
         // si->showElegantErrorsAndWarnings();
         TS_ASSERT_EQUALS( si->count(), 0 );
         if ( not si->count() ) {
@@ -330,10 +324,9 @@ namespace gum_tests {
         // Arrange
         auto si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode( false );
-        si->addPath(
-            "../../../src/testunits/ressources/o3prmr/ComplexPrinters/" );
-        si->interpretFile( "../../../src/testunits/ressources/o3prmr/"
-                           "ComplexPrinters/fr/lip6/printers/request.o3prmr" );
+        si->addPath( GET_RESSOURCES_PATH( "o3prmr/ComplexPrinters/" ) );
+        si->interpretFile( GET_RESSOURCES_PATH(
+            "o3prmr/ComplexPrinters/fr/lip6/printers/request.o3prmr" ) );
         auto prm = si->prm();
         const auto& sys = prm->system( "fr.lip6.printers.system.Work" );
         auto bn = new gum::BayesNet<double>( "plop" );
@@ -355,10 +348,10 @@ namespace gum_tests {
       try {
         gum::prm::o3prmr::O3prmrInterpreter si;
         si.setSyntaxMode( false );
-        si.addPath( "../../../src/testunits/ressources/o3prmr/ADD" );
+        si.addPath( GET_RESSOURCES_PATH( "o3prmr/ADD" ) );
 
         TS_GUM_ASSERT_THROWS_NOTHING( si.interpretFile(
-            "../../../src/testunits/ressources/o3prmr/ADD/Request.o3prmr" ) );
+            GET_RESSOURCES_PATH( "o3prmr/ADD/Request.o3prmr" ) ) );
 
         si.showElegantErrorsAndWarnings();
         TS_ASSERT_EQUALS( si.errors(), 0 );
@@ -375,10 +368,10 @@ namespace gum_tests {
       try {
         gum::prm::o3prmr::O3prmrInterpreter si;
         si.setSyntaxMode( false );
-        si.addPath( "../../../src/testunits/ressources/o3prmr/ADD/" );
+        si.addPath( GET_RESSOURCES_PATH( "o3prmr/ADD/" ) );
 
         TS_GUM_ASSERT_THROWS_NOTHING( si.interpretFile(
-            "../../../src/testunits/ressources/o3prmr/ADD/Request.o3prmr" ) );
+            GET_RESSOURCES_PATH( "o3prmr/ADD/Request.o3prmr" ) ) );
 
         si.showElegantErrorsAndWarnings();
         TS_ASSERT_EQUALS( si.errors(), 0 );

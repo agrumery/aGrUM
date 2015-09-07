@@ -20,7 +20,7 @@
 
 #include <iostream>
 #include <cxxtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+#include <cxxtest/testsuite_utils.h>
 
 #include <agrum/graphs/DAG.h>
 #include <agrum/variables/labelizedVariable.h>
@@ -48,14 +48,15 @@
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/learning/localSearchWithTabuList.h>
 
-#define MY_ALARM GET_PATH_STR( "alarm.csv" )
+#define MY_ALARM GET_RESSOURCES_PATH( "alarm.csv" )
 
 namespace gum_tests {
 
   class LocalSearchWithTabuListTestSuite : public CxxTest::TestSuite {
     public:
     void test_asia() {
-      gum::learning::DatabaseFromCSV database( GET_PATH_STR( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database(
+          GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators1 = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
