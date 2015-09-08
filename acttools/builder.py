@@ -58,8 +58,12 @@ def buildCmake(current,target):
     else:
         line+=" -DGUM_RANDOMSEED=0"
 
-    execFromLine(current,line)
+    if target != "pyAgrum":
+      line+=" -DBUILD_PYTHON=OFF"
+    else:
+      line+=" -DBUILD_PYTHON=ON"
 
+    execFromLine(current,line)
 
 def buildMake(current,target):
     line=cfg.make
