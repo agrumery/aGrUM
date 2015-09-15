@@ -25,7 +25,7 @@ from configuration import cfg
 from utils import notif,warn,trace,setifyString
 import glob
 from subprocess import PIPE, Popen, STDOUT,call
-from tests import allTestNames
+from tests import checkTests,testNames
 
 def checkAgrumMemoryLeak(x):
   commande='act test debug -t {0}'.format(x)
@@ -54,10 +54,9 @@ def checkAgrumMemoryLeak(x):
 
 def checkAgrumMemoryLeaks(current):
   notif("Searching leaks test by test (may be a bit long).\n")
+
   res=[]
-  for x in allTestNames(setifyString(current['modules'])):
-#  for x in sorted([CrossPlatformRelPath(x,"src/testunits").split('/')[1].split('TestSuite')[0]
-#                   for x in glob.glob('src/testunits/module_*/*TestSuite.h')]):
+  for x in testNames(checkTests(current)):
     (msg,testOK)=checkAgrumMemoryLeak(x)
     if not testOK:
       res.append(msg)

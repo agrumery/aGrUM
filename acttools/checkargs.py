@@ -28,7 +28,7 @@ from configuration import cfg
 from utils import warn,error,notif,critic,setifyString
 from invocation import showInvocation
 from modules import check_modules,parseModulesTxt
-from tests import check_tests
+from tests import checkAndWriteTests
 
 def parseCommandLine(current):
     return cfg.parser.parse_args()
@@ -87,7 +87,7 @@ def checkCurrent(current,options,args):
       bM=True
       continue
 
-    error("arg [{0}] unknown".format(arg))
+    critic("arg [{0}] unknown".format(arg))
 
   checkConsistency(current)
   checkPython(current)
@@ -124,7 +124,7 @@ def checkConsistency(current):
 
   # check -t and -m
   check_modules(current)
-  check_tests(current)
+  checkAndWriteTests(current)
 
   check_aGrumTest('stats',current)
   check_aGrumTest('oneByOne',current)
