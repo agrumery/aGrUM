@@ -104,7 +104,6 @@ def checkConsistency(current):
       prefix="Option [{0}] acts only".format(option)
       if current['targets']!=set(['aGrUM']):
         has_notif=True
-        print(current['targets'])
         notif(prefix+" on target [aGrUM].")
       if current['action']!='test':
         critic(prefix+" on action [test] (not on [{0}]).".format(current['action']))
