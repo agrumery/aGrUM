@@ -128,6 +128,9 @@ def checkConsistency(current):
 
   check_aGrumTest('stats',current)
   check_aGrumTest('oneByOne',current)
+  if current['coverage'] and current['mode'] != "debug":
+    error("Option [coverage] can only be used with [debug] builds.")
+    current['coverage'] = False
 
   if current['action']=='package':
     critic("Action [package] is not implemented yed")
