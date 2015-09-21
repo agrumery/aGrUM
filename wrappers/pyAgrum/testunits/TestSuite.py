@@ -17,7 +17,7 @@ import LazyPropagationTestSuite
 import JunctionTreeTestSuite
 import GibbsTestSuite
 import ICIModelsForBNTestSuite
-import BNLearnerTestSuite   
+import BNLearnerTestSuite
 
 import time
 
@@ -26,8 +26,8 @@ tests = unittest.TestSuite([
                             BayesNetTestSuite.ts,
                             PythonBNListenerTestSuite.ts,
                             PotentialTestSuite.ts,
-                            LazyPropagationTestSuite.ts, 
-                            JunctionTreeTestSuite.ts, 
+                            LazyPropagationTestSuite.ts,
+                            JunctionTreeTestSuite.ts,
                             GibbsTestSuite.ts,
                             ICIModelsForBNTestSuite.ts,
                             BNLearnerTestSuite.ts
@@ -50,10 +50,10 @@ startTime=time.time()
 tests(result)
 duration=time.time()-startTime
 
-result.printErrors() 
-runner.stream.writeln(result.separator2) 
+result.printErrors()
+runner.stream.writeln(result.separator2)
 
-failed, errored = map(len, (result.failures, result.errors)) 
+failed, errored = map(len, (result.failures, result.errors))
 errs=failed+errored
 
 import platform
