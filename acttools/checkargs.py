@@ -28,7 +28,7 @@ from configuration import cfg
 from utils import warn,error,notif,critic,setifyString
 from invocation import showInvocation
 from modules import check_modules,parseModulesTxt
-from tests import check_tests
+from tests import checkAndWriteTests
 
 def parseCommandLine(current):
     return cfg.parser.parse_args()
@@ -87,7 +87,7 @@ def checkCurrent(current,options,args):
       bM=True
       continue
 
-    error("arg [{0}] unknown".format(arg))
+    critic("arg [{0}] unknown".format(arg))
 
   checkConsistency(current)
   checkPython(current)
@@ -124,10 +124,13 @@ def checkConsistency(current):
 
   # check -t and -m
   check_modules(current)
-  check_tests(current)
+  checkAndWriteTests(current)
 
   check_aGrumTest('stats',current)
   check_aGrumTest('oneByOne',current)
+  if current['coverage'] and current['mode'] != "debug":
+    error("Option [coverage] can only be used with [debug] builds.")
+    current['coverage'] = False
 
   if current['action']=='package':
     critic("Action [package] is not implemented yed")

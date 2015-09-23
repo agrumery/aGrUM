@@ -68,6 +68,7 @@ def initParams():
     cfg.default['tests']='all'
     cfg.default['python']="3"
     cfg.default['dry_run']=False
+    cfg.default['coverage']=False
     
     cfg.actions=set("lib test install doc clean show uninstall package autoindent".split())
     cfg.modes=set("debug release".split())
@@ -147,7 +148,10 @@ def configureOptions(current):
                                         action="store_true",
                                         dest="dry_run",
                                         default=False)
-
+    cfg.parser.add_option("", "--coverage",  help="build with code coverage options enable (debug only)",
+                                        action="store_true",
+                                        dest="coverage",
+                                        default=False)
 
 def configureColors(no_fun=False):
   if no_fun or not cfg.withColour:

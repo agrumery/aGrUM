@@ -26,17 +26,21 @@ import glob,os,sys
 from configuration import cfg
 from utils import warn,error,notif,critic,setifyString,CrossPlatformRelPath
 
-def check_tests(current):
+def checkTests(current):
   cde=current['tests']
   alltests=allTests(setifyString(current['modules']))
 
   if cde=="all":
-    writeTestList(alltests)
+    return alltests
   elif cde=='list':
     afficheTests(current)
     sys.exit(0)
   else:
-    writeTestList(checkTestList(current,alltests))
+    return checkTestList(current,alltests)
+
+def checkAndWriteTests(current):
+  writeTestList(checkTests(current))
+
 
 def checkTestList(current,alltests):
   res=[]
@@ -85,8 +89,8 @@ def allTests(moduleset):
 
   return sorted(s)
 
-def allTestNames(moduleset):
-  return [s.split('/')[-1].split("TestSuite")[0] for s in allTests(moduleset)]
+def testNames(testsList):
+  return [s.split('/')[-1].split("TestSuite")[0] for s in testsList]
 
 def checkTestListCmake(current):
     if not os.path.exists('src/testunits/testList.cmake'):
@@ -113,7 +117,7 @@ def afficheTestsForModule(m):
   print(" "+m+" ")
   print("="*(2+len(m)))
 
-  l=allTestNames(set([m]))
+  l=testNames(allTests(set([m])))
 
   w=max([len(x) for x in l])
   nbr=80/w

@@ -49,6 +49,11 @@ def buildCmake(current,target):
     else:
         line+=" -DBUILD_SHARED_LIBS=ON"
 
+    if current["coverage"]:
+      line+=" -DGUM_COVERAGE=ON"
+    else:
+      line+=" -DGUM_COVERAGE=OFF"
+
     line+=" -DBUILD_ALL=OFF"
     for module in setifyString(current["modules"]):
         line+=" -DBUILD_"+module+"=ON"
