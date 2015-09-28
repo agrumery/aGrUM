@@ -1,0 +1,44 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/**
+ * @file
+ * @brief This file contains definition for a Junction Tree Generator
+ *
+ * @author Pierre-Henri WUILLEMIN
+ */
+#include <agrum/config.h>
+
+#include <agrum/graphs/undiGraph.h>
+#include <agrum/graphs/graphElements.h>
+#include <agrum/graphs/defaultJunctionTreeStrategy.h>
+#include <agrum/graphs/triangulations/defaultTriangulation.h>
+
+class JTGenerator {
+public:
+  gum::JunctionTree generate(const gum::UndiGraph& g) {
+    gum::NodeProperty<gum::Size> mods=g.nodesProperty(static_cast<gum::Size>(2)); // we create a default binary modalities for nodes
+    
+    gum::DefaultTriangulation triangulation(&g,&mods);
+    gum::DefaultJunctionTreeStrategy strategy;
+    strategy.setTriangulation(&triangulation);
+    
+    return strategy.junctionTree();
+  }
+};

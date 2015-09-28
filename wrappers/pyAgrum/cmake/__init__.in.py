@@ -43,7 +43,7 @@ from @PYAGRUM_MODULE@ import BruteForceKL,GibbsKL
 from @PYAGRUM_MODULE@ import GibbsInference,LazyPropagation
 from @PYAGRUM_MODULE@ import PythonApproximationListener,PythonBNListener,PythonLoadListener
 
-from @PYAGRUM_MODULE@ import BNGenerator,IDGenerator
+from @PYAGRUM_MODULE@ import BNGenerator,IDGenerator,JTGenerator
 from @PYAGRUM_MODULE@ import BNLearner
 
 from @PYAGRUM_MODULE@ import InfluenceDiagram,InfluenceDiagramInference

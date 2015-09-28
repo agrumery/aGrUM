@@ -103,17 +103,17 @@ def loadID(s):
 
 
 # OBSOLETE FUNCTIONS FOR 0.9.1
-def DiscretizedVar(*args):
-  from .pyAgrum import DiscretizedVariable
-  print("** Notification pyAgrum : <DiscretizedVar> obsolete. Please use <DiscretizedVariable> now.")
-  return DiscretizedVariable(*args)
+#def DiscretizedVar(*args):
+  #from .pyAgrum import DiscretizedVariable
+  #print("** Notification pyAgrum : <DiscretizedVar> obsolete. Please use <DiscretizedVariable> now.")
+  #return DiscretizedVariable(*args)
 
-def LabelizedVar(*args):
-  from .pyAgrum import LabelizedVariable
-  print("** Notification pyAgrum : <LabelizedVar> obsolete. Please use <LabelizedVariable> now.")
-  return LabelizedVariable(*args)
+#def LabelizedVar(*args):
+  #from .pyAgrum import LabelizedVariable
+  #print("** Notification pyAgrum : <LabelizedVar> obsolete. Please use <LabelizedVariable> now.")
+  #return LabelizedVariable(*args)
 
-def RangeVar(*args):
-  from .pyAgrum import RangeVariable
-  print("** Notification pyAgrum : <RangeVar> obsolet. Please use <RangeVariable> now.")
-  return RangeVariable(*args)
+#def RangeVar(*args):
+  #from .pyAgrum import RangeVariable
+  #print("** Notification pyAgrum : <RangeVar> obsolet. Please use <RangeVariable> now.")
+  #return RangeVariable(*args)
