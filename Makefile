@@ -3,42 +3,40 @@
 #
 ACT=./act --no-fun
 
-# JOBS=2
-JOBS=
+JOBS=2
 
 library:
-	$(ACT) agrum release -p linux -j $(JOBS)
+	$(ACT) lib release aGrUM -j $(JOBS)
+
+librarydebug:
+	$(ACT) lib debug aGrUM -j $(JOBS)
 
 install:
-	$(ACT) release install -p linux -j $(JOBS)
+	$(ACT) install release aGrUM -j $(JOBS)
 
-debug:
-	$(ACT) agrum debug -p linux -j $(JOBS)
+installdebug:
+	$(ACT) install debug aGrUM -j $(JOBS)
 
 test:
-	$(ACT) test release -p linux -j $(JOBS)
+	$(ACT) test release -j $(JOBS)
 
 testdebug:
-	$(ACT) test debug  -p linux -j $(JOBS)
+	$(ACT) test debug -j $(JOBS)
 
 testall:
-	$(ACT) test release -t all -p linux -j $(JOBS)
+	$(ACT) test release -t all -m all -j $(JOBS)
 
 testalldebug:
-	$(ACT) test debug -t all -p linux -j $(JOBS)
+	$(ACT) test debug -t all -m all -j $(JOBS)
 
 run:
-	$(ACT) run release -p linux -j $(JOBS)
+	$(ACT) run release -j $(JOBS)
 
 rundebug:
-	$(ACT) run debug -p linux -j $(JOBS)
-
-windows:
-	$(ACT) agrum release -p windows -j $(JOBS)
+	$(ACT) run debug -j $(JOBS)
 
 pyAgrum:
-	$(ACT) wrapper pyAgrum -p linux -j $(JOBS)
-
+	$(ACT) wrapper pyAgrum -j $(JOBS)
 
 clean:
 	$(ACT) clean
@@ -46,9 +44,12 @@ clean:
 last:
 	$(ACT)
 
-linuxreleasedoc:
-	$(ACT) release doc -p linux
-	cat build/linux/release/warning.txt
+doc:
+	$(ACT) doc release aGrUM 
+	cat build/src/warning.txt
+doc:
+	$(ACT) doc debug aGrUM 
+	cat build/src/warning.txt
 
 clang-format:
 	$(ACT) autoindent
