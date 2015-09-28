@@ -107,6 +107,32 @@ except:
 
 import numpy
 
+class JTGenerator(_object):
+    """Proxy of C++ JTGenerator class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, JTGenerator, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, JTGenerator, name)
+    __repr__ = _swig_repr
+
+    def generate(self, g):
+        """generate(JTGenerator self, UndiGraph g) -> CliqueGraph"""
+        return _pyAgrum.JTGenerator_generate(self, g)
+
+
+    def __init__(self):
+        """__init__(JTGenerator self) -> JTGenerator"""
+        this = _pyAgrum.new_JTGenerator()
+        try:
+            self.this.append(this)
+        except:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_JTGenerator
+    __del__ = lambda self: None
+JTGenerator_swigregister = _pyAgrum.JTGenerator_swigregister
+JTGenerator_swigregister(JTGenerator)
+
 class PythonBNListener(_object):
     """Proxy of C++ PythonBNListener class."""
 

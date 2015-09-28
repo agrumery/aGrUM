@@ -60,14 +60,20 @@ ADD_IDS_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
 %extend gum::CliqueGraph {
   PyObject *clique(const gum::NodeId clique) const {
     PyObject* q=PySet_New(0);
-    
+
     for(auto node : self->clique(clique)) {
           PySet_Add(q,PyInt_FromLong(node));
         }
-        
+
     return q;
   };
 };
 %ignore gum::CliqueGraph::clique;
 %ignore gum::CliqueGraph::addNode;
 %ignore gum::CliqueGraph::addEdge(const gum::NodeId,const gum::NodeId);
+
+%include "extensions/JTGenerator.h"
+
+%{
+#include "extensions/JTGenerator.h"
+%}
