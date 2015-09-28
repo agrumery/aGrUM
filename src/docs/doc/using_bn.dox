@@ -18,9 +18,13 @@
  * aGrUM.
  *
  * \section bn_model Using the BayesNetFactory class
- * Creating a Bayesian Network can be easily done using the \ref
- * gum::BayesNetFactory.  We will use the classic Asia network to illustrate how
- * the \ref gum::BayesNetFactory class works.
+ * The gum::ByesNetFactory class is usefull when writing serializers and
+ * deserailizers for the gum::BayesNet class. You can also use it to create
+ * gum:BayesNet directly in C++, you may however find that using directly the
+ * gum::BayesNet class simpler.
+ * 
+ * We will use the classic Asia network to illustrate how the 
+ * gum::BayesNetFactory class works.
  *
  * \dot
  * digraph Asia {
