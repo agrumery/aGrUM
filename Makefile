@@ -47,7 +47,8 @@ last:
 doc:
 	$(ACT) doc release aGrUM 
 	cat build/src/warning.txt
-doc:
+
+docdebug:
 	$(ACT) doc debug aGrUM 
 	cat build/src/warning.txt
 
