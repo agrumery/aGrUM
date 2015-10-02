@@ -81,6 +81,11 @@ namespace gum {
        */
       PRMFactory();
 
+      /**
+       * This constructor let you set on which PRM instance the factory works.
+       */
+      PRMFactory(PRM<GUM_SCALAR>* prm);
+
       /// Copy constructor. Don't use it.
       PRMFactory( const PRMFactory& from ) = delete;
 
