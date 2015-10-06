@@ -102,7 +102,10 @@ def buildPost(current,target):
     if current["action"]=="test":
         if target=="aGrUM":
             safe_cd(current,"src")
-            rc=execFromLine(current,"./gumTest")
+            if cfg.os_platform=="win32":
+              rc=execFromLine(current,"gumTest.exe")
+            else:
+              rc=execFromLine(current,"./gumTest")
             safe_cd(current,"..")
         elif target=="pyAgrum":
             run_cde="PYTHONPATH=wrappers "

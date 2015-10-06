@@ -1234,6 +1234,13 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
+    INLINE PRMFactory<GUM_SCALAR>::PRMFactory(PRM<GUM_SCALAR>* prm):
+      IPRMFactory(), __prm(prm) 
+    {
+      GUM_CONSTRUCTOR( PRMFactory );
+    }
+
+    template <typename GUM_SCALAR>
     INLINE PRMFactory<GUM_SCALAR>::~PRMFactory() {
       GUM_DESTRUCTOR( PRMFactory );
       while ( not __namespaces.empty() ) {
