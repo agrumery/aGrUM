@@ -20,12 +20,12 @@
 
 /**
  * @file
- * @brief wrapper for OMP
+ * @brief Wrappers for OpenMP.
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
 
-#ifndef __OMPTHREADS__H__
-#define __OMPTHREADS__H__
+#ifndef GUM_OPEM_MP_THREADS_H
+#define GUM_OPEM_MP_THREADS_H
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -34,152 +34,111 @@
 namespace gum {
 
   /**
-   * Is OMP active ?
+   * @brief Is OMP active ?
+   * @ingroup basicstruct_group
    * @return \c True if OMP has been set at compilation, \c False otherwise.
    */
-  inline bool isOMP() {
-#ifdef _OPENMP
-    return true;
-#else
-    return false;
-#endif
-  }
+  bool isOMP();
 
   /**
-   * Set the number of threads to be used.
+   * @brief Set the number of threads to be used.
+   * @ingroup basicstruct_group
    *
    * To avoid spare cycles (less then 100% CPU occupied), use more threads than
-   *logical processors (x2 is a good all-around value).
+   * logical processors (x2 is a good all-around value).
    * @param number The number of threads to be used.
    */
-  inline void setNumberOfThreads( unsigned int number ) {
-#ifdef _OPENMP
-    omp_set_num_threads( number );
-#else
-    GUM_ERROR( OperationNotAllowed,
-               "openMP was not enabled at compilation (or "
-               "you asked for 0 threads !)" );
-#endif
-  }
+  void setNumberOfThreads( unsigned int number );
 
   /**
+   * @brief Returns the maximum number of threads at any time.
+   * @ingroup basicstruct_group
+   *
    * Call this from anywhere (parallel region or not). By default, it is the
-   *number
-   *of threads launched in any parallel region.
-   *
+   * number of threads launched in any parallel region.
+   * 
    * It should return the number of logical processors by default, i.e.
-   *omp_get_num_procs(). If setNumberOfThreads(number) was called, it will
-   *return the
-   *choosen number.
+   * omp_get_num_procs(). If setNumberOfThreads(number) was called, it will
+   * return the choosen number.
    *
-   * @return The maximum number of threads at any time.
+   * @return Returns the maximum number of threads at any time.
    */
-  inline unsigned int getMaxNumberOfThreads() {
-#ifdef _OPENMP
-    return omp_get_max_threads();
-#else
-    return 1;
-#endif
-  }
+  unsigned int getMaxNumberOfThreads();
 
   /**
-   * Get the calling thread id.
+   * @brief Get the calling thread id.
+   * @ingroup basicstruct_group
    *
    * Call this from a parallel region.
    * @return The calling thread id.
    */
-  inline unsigned int getThreadNumber() {
-#ifdef _OPENMP
-    return omp_get_thread_num();
-#else
-    return 0;
-#endif
-  }
+  unsigned int getThreadNumber();
 
   /**
-   * Get the current number of running threads.
+   * @brief Get the current number of running threads.
+   * @ingroup basicstruct_group
    *
    * Call this from a parallel region.
    * @return The current number of running threads.
    */
-  inline unsigned int getNumberOfRunningThreads() {
-#ifdef _OPENMP
-    return omp_get_num_threads();
-#else
-    return 1;
-#endif
-  }
+  unsigned int getNumberOfRunningThreads();
 
   /**
-   * Get the number of logical processors.
+   * @brief Get the number of logical processors.
+   * @ingroup basicstruct_group
    * @return The number of logical processors.
    */
-  inline unsigned int getNumberOfLogicalProcessors() {
-#ifdef _OPENMP
-    return omp_get_num_procs();
-#else
-    return 1;
-#endif
-  }
+  unsigned int getNumberOfLogicalProcessors();
 
   /**
-   * Nested parallelism, i.e. parallel activity within another parallel activity
-   * :
-   * threads creating more threads. Off by default.
+   * @brief Set nested parallelism (false bu default).
+   * @ingroup basicstruct_group
+   *
+   * Nested parallelism, i.e. parallel activity within another parallel
+   * activity : threads creating more threads.
+   *
+   * Off by default.
+   *
    * @param value \c True if nested parallelism should be activated, \c False
    * otherwise.
    */
-  inline void setNestedParallelism( bool value ) {
-#ifdef _OPENMP
-    omp_set_nested( ( ( value == true ) ? 1 : 0 ) );
-#else
-    GUM_ERROR( OperationNotAllowed,
-               "openMP was not enabled at compilation (and you "
-               "asked for nested parallelism !)" );
-#endif
-  }
+  void setNestedParallelism( bool value );
 
   /**
-   * Get nested parallelism status.
+   * @brief Get nested parallelism status.
+   * @ingroup basicstruct_group
    * @return \c True if nested parallelism is enabled, \c False otherwise.
    */
-  inline bool getNestedParallelism() {
-#ifdef _OPENMP
-    return ( ( omp_get_nested() == 0 ) ? false : true );
-#else
-    return false;
-#endif
-  }
+  bool getNestedParallelism();
 
   /**
+   * @brief Set the dynamic threads number (false by default).
+   * @ingroup basicstruct_group
+   *
    * Automatically adjust the number of running threads within a parallel
    * region.
+   *
    * Desactivated by default.
+   *
    * @param value \c True if dynamic thread number should be used, \c False
    * otherwise.
    */
-  inline void setDynamicThreadsNumber( bool value ) {
-#ifdef _OPENMP
-    omp_set_dynamic( ( ( value == true ) ? 1 : 0 ) );
-#else
-    GUM_ERROR( OperationNotAllowed,
-               "openMP was not enabled at compilation (and you "
-               "asked for dynamic adjustment of the number of "
-               "threads !)" );
-#endif
-  }
+  void setDynamicThreadsNumber( bool value );
 
   /**
-   * Get the dynamic thread number adjustment status.
+   * @brief Get the dynamic thread number adjustment status.
+   * @ingroup basicstruct_group
+   * @ingroup basicstruct_group
    * @return \c True if dynamic adjustment is enabled, \c False otherwise.
    */
-  inline bool getDynamicThreadsNumber() {
-#ifdef _OPENMP
-    return ( ( omp_get_dynamic() == 0 ) ? false : true );
-#else
-    return false;
-#endif
-  }
+  bool getDynamicThreadsNumber();
+
 }
 
-#endif
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/core/OMPThreads.inl>
+#endif /* GUM_NO_INLINE */
+
+#endif // GUM_OPEM_MP_THREADS_H
+
