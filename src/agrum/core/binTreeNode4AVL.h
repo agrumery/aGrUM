@@ -42,7 +42,7 @@ namespace gum {
   // ===                  NODES FOR AVL BINARY SEARCH TREES                  ===
   // ===========================================================================
   /**
-   * @class BinTreeNode4AVL AVLSearchTree.h <agrum/core/AVLSearchTree.h>
+   * @class BinTreeNode4AVL BinTreeNode4AVL.h <agrum/core/binTreeNode4AVL.h>
    * @brief Binary tree nodes with additional fields for use in AVL binary
    *        search trees.
    * @ingroup basicstruct_group
@@ -62,6 +62,8 @@ namespace gum {
    * Hence, balancing is delegated to the AVLSearchTree class. For the same
    * reason, the __height field of the nodes MUST be computed by the
    * AVLSearchTree class.
+   *
+   * @tparam Val The type of values stored in BinTreeNode4AVL.
    *
    * @par Usage example:
    * @code
@@ -153,7 +155,7 @@ namespace gum {
     BinTreeNode4AVL<Val>& operator=( const BinTreeNode4AVL<Val>& from );
 
     /**
-     * @biref Alias for the gum::BinTreeNode4AVL::value() method.
+     * @brief Alias for the gum::BinTreeNode4AVL::value() method.
      */
     Val& operator*();
 
