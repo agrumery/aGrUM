@@ -17,12 +17,14 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief Set of pairs of elements with fast search for both elements
+
+/**
+ * @file
+ * @brief Set of pairs of elements with fast search for both elements.
  *
- * Bijections are some kind of sets of pairs (T1,T2) with the additional feature
- * as compared to Sets: we can search very quickly T2's elements when knowing T1
- * and T1's elements when knowing T2.
+ * Bijections are some kind of sets of pairs (T1,T2) with the additional
+ * feature as compared to Sets: we can search very quickly T2's elements when
+ * knowing T1 and T1's elements when knowing T2.
  *
  * @author Christophe GONZALES and Jean-Philippe DUBUS
  */
@@ -50,41 +52,78 @@ namespace gum {
   template <typename T1, typename T2, typename Alloc>
   class Bijection;
 
-  // a class used to create the static iterator used by Bijections. The aim of
-  // using this class rather than just creating __BijectionIterEnd as a global
-  // variable is to prevent other classes to access and modify
-  // __BijectionIterEnd
+  /**
+   * @class BijectionIteratorStaticEnd bijection.h <agrum/core/bijection.h>
+   * @brief A class which creates the static iterator used by gim::Bijections.
+   *
+   * The aim of using this class rather than just creating __BijectionIterEnd
+   * as a global variable is to prevent other classes to access and modify
+   * __BijectionIterEnd.
+   */
   class BijectionIteratorStaticEnd {
-    private:
-    // the safe iterator used by everyone
-    static const BijectionIteratorSafe<int, int>* __BijectionIterEndSafe;
 
-    // creates (if needed) and returns the iterator __BijectionIterEnd
-    static const BijectionIteratorSafe<int, int>* endSafe4Statics();
-
-    // the unsafe iterator used by everyone
-    static const BijectionIterator<int, int>* __BijectionIterEnd;
-
-    // creates (if needed) and returns the iterator __BijectionIterEnd
-    static const BijectionIterator<int, int>* end4Statics();
-
-    // friends that have access to the iterator
+    /// Friends that have access to the iterator
     template <typename T1, typename T2, typename Alloc, bool>
     friend class BijectionImplementation;
+
+    private:
+    /// The safe iterator used by everyone
+    static const BijectionIteratorSafe<int, int>* __BijectionIterEndSafe;
+ 
+    /// The unsafe iterator used by everyone.
+    static const BijectionIterator<int, int>* __BijectionIterEnd;
+
+    /**
+     * @brief Creates (if needed) and returns the iterator __BijectionIterEndSafe
+     * @return Returns __BijectionIterEndSafe.
+     */
+    static const BijectionIteratorSafe<int, int>* endSafe4Statics();
+
+    /**
+     * @brief Creates (if needed) and returns the iterator __BijectionIterEnd.
+     * @return Returns __BijectionIterEnd;
+     */
+    static const BijectionIterator<int, int>* end4Statics();
+
   };
 
-  // dummy classes that will enable discriminate without overhead between
-  // scalars and non-scalars operators * and ->
+  /**
+   * @class BijectionIteratorGet bijection.h <agrum/core/bijection.h>
+   * @brief Dummy classes for discriminating scalars and non-scalars operators
+   * * and -> wihtout any overhead.
+   *
+   * This will be used for scalar types.
+   */
   template <bool gen>
   struct BijectionIteratorGet {
+
+    /**
+     * @brief Returns a refeence over a pointer.
+     * @param x The pointer for which a reference is returned.
+     * @return Returns a reference over x.
+     */
     template <typename T>
     INLINE static const T& op_second( const T* x ) {
       return *x;
     }
+
   };
 
+  /**
+   * @class BijectionIteratorGet bijection.h <agrum/core/bijection.h>
+   * @brief Dummy classes for discriminating scalars and non-scalars operators
+   * * and -> wihtout any overhead.
+   *
+   * This will be used for non-scala types.
+   */
   template <>
   struct BijectionIteratorGet<true> {
+
+    /**
+     * @brief Returns a reference.
+     * @param x A reference.
+     * @return Returns the reference x.
+     */
     template <typename T>
     INLINE static const T& op_second( const T& x ) {
       return x;
@@ -93,26 +132,34 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-  /* ===========================================================================
-   */
-  /* ===                NON SCALAR BIJECTION IMPLEMENTATION                  ===
-   */
-  /* ===========================================================================
-   */
+  // ===========================================================================
+  // ===                NON SCALAR BIJECTION IMPLEMENTATION                  ===
+  // ===========================================================================
+
   /**
+   * @class BijectionImplementation bijection.h <agrum/core/bijection.h>
+   * @brief A non scalar implementation of a Bijection.
+   * @ingroup basicstruct_group
+   *
    * This class is designed for modeling a bijection between two sets, the idea
-   * is
-   * following :
-   * - we want to create a bijection relation between type T1 and type T2
-   * - for x in T1, there exists only one y in T2 associated to x
-   * - for y in T2, there exists only one x in T1 associated to y
-   * - the user inserts all the (x, y) associations and can search efficiently
-   * the
-   * values thus associated
+   * is following :
+   *  - We want to create a bijection relation between type T1 and type T2,
+   *  - For x in T1, there exists only one y in T2 associated to x,
+   *  - For y in T2, there exists only one x in T1 associated to y,
+   *  - The user inserts all the (x, y) associations and can search efficiently
+   *  the values thus associated.
+   *
+   * @tparam T1 The first type of elements in the bijection.
+   * @tparam T2 The second type of elements in the bijection.
+   * @tparam Alloc The allocator used for allocating memory.
+   * @tparam Gen If true, this will be replaced by a implementation omptimized
+   * for non-scalar types.
    */
   template <typename T1, typename T2, typename Alloc, bool Gen>
   class BijectionImplementation {
+
     public:
+
     /// types for STL compliance
     /// @{
     using type1_type = T1;
@@ -132,7 +179,6 @@ namespace gum {
     using const_iterator = BijectionIterator<T1, T2>;
     using iterator_safe = BijectionIteratorSafe<T1, T2>;
     using const_iterator_safe = BijectionIteratorSafe<T1, T2>;
-
     using allocator12_type =
         typename Alloc::template rebind<std::pair<T1, T2*>>::other;
     using allocator21_type =
@@ -140,62 +186,95 @@ namespace gum {
     /// @}
 
     private:
-    /// Default constructor: creates a bijection without any association
+
+    /**
+     * @brief Default constructor: creates a bijection without any association.
+     * @param size The Bijection starting size.
+     * @param resize_policy If true, the bijection will resize itself
+     * automatically.
+     */
     BijectionImplementation( Size size, bool resize_policy );
 
-    /// initializer list constructor
+    /**
+     * @brief Initializer list constructor.
+     * @param list The initialize list.
+     */
     BijectionImplementation( std::initializer_list<std::pair<T1, T2>> list );
 
-    /// Copy constructor
-    /** @param toCopy Bijection to copy */
+    /**
+     * @brief Copy constructor.
+     * @param toCopy Bijection to copy.
+     */
     BijectionImplementation(
         const BijectionImplementation<T1, T2, Alloc, Gen>& toCopy );
 
-    /// generalized copy constructor
+    /**
+     * @brief Generalized copy constructor.
+     * @param toCopy Bijection to copy.
+     */
     template <typename OtherAlloc>
     BijectionImplementation(
         const BijectionImplementation<T1, T2, OtherAlloc, Gen>& toCopy );
 
-    /// move constructor
+    /**
+     * @brief Move constructor.
+     * @param from Bijection to move.
+     */
     BijectionImplementation(
         BijectionImplementation<T1, T2, Alloc, Gen>&& from ) noexcept;
 
     public:
-    // ############################################################################
+ 
+    // ============================================================================
     /// @name Constructors/destructors
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// destructor
+    /**
+     * @brief Destructor.
+     */
     ~BijectionImplementation();
 
     /// @}
 
     private:
-    /// Copy operator
-    /** @param toCopy Bijection to copy */
+
+    /**
+     * @brief Copy operator.
+     * @param toCopy Bijection to copy.
+     * @return Returns the bijection in which the copy was made.
+     */
     BijectionImplementation<T1, T2, Alloc, Gen>&
     operator=( const BijectionImplementation<T1, T2, Alloc, Gen>& toCopy );
 
-    /// generalized copy operator
-    /** @param toCopy Bijection to copy */
+    /**
+     * @brief Generalized copy operator.
+     * @param toCopy Bijection to copy.
+     * @return Returns the bijection in which the copy was made.
+     */
     template <typename OtherAlloc>
     BijectionImplementation<T1, T2, Alloc, Gen>&
     operator=( const BijectionImplementation<T1, T2, OtherAlloc, Gen>& toCopy );
 
-    /// move operator
-    /** @param toCopy Bijection to move */
+    /**
+     * @brief Move operator.
+     * @param toCopy Bijection to move
+     * @return Returns the moved bijection in which the move was made.
+     */
     BijectionImplementation<T1, T2, Alloc, Gen>&
     operator=( BijectionImplementation<T1, T2, Alloc, Gen>&& toCopy );
 
     public:
-    // ############################################################################
+
+    // ============================================================================
     /// @name Iterators
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// returns the unsafe iterator at the beginning of the bijection
-    /** Unsafe iterators are a little bit faster than safe ones. But this speed
+    /** 
+     * @brief Returns the unsafe iterator at the beginning of the bijection.
+     *
+     * Unsafe iterators are a little bit faster than safe ones. But this speed
      * is at the expense of safety: if you point to an element that is deleted,
      * then try to access it or trying to operate a ++ will most certainly
      * result in a segfault. So, Unsafe iterators should only be used to parse
@@ -203,14 +282,21 @@ namespace gum {
      * safe iterators.
      *
      * Note that the notion of a beginning/end of a bijection is rather fuzzy.
-     * What is important here is that
-     * for(iterator iter = begin(); iter != end; ++iter) loops will parse all
-     *the
-     * associations */
+     * What is important here is that for an instance bij of this class:
+     *
+     * @code
+     * for(iterator iter = bij.begin(); iter != bij.end(); ++iter) {
+     *   // will parse all the associations.
+     * }
+     * @endcode
+     */
     iterator begin() const;
-
-    /// returns the unsafe iterator at the beginning of the bijection
-    /** Unsafe iterators are a little bit faster than safe ones. But this speed
+    
+    /**
+     * @brief Returns the constant unsafe iterator at the beginning of the
+     * bijection.
+     *
+     * Unsafe iterators are a little bit faster than safe ones. But this speed
      * is at the expense of safety: if you point to an element that is deleted,
      * then try to access it or trying to operate a ++ will most certainly
      * result in a segfault. So, Unsafe iterators should only be used to parse
@@ -218,14 +304,20 @@ namespace gum {
      * safe iterators.
      *
      * Note that the notion of a beginning/end of a bijection is rather fuzzy.
-     * What is important here is that
-     * for(iterator iter = begin(); iter != end; ++iter) loops will parse all
-     *the
-     * associations */
+     * What is important here is that for an instance bij of this class:
+     *
+     * @code
+     * for (iterator iter = bij.cbegin(); iter != bij.cend(); ++iter) {
+     *   // will parse all the association
+     * }
+     * @endcode
+     */
     const_iterator cbegin() const;
 
-    /// returns the unsafe iterator to the end of the bijection
-    /** Unsafe iterators are a little bit faster than safe ones. But this speed
+    /** 
+     * @brief Returns the unsafe iterator at the end of the bijection.
+     *
+     * Unsafe iterators are a little bit faster than safe ones. But this speed
      * is at the expense of safety: if you point to an element that is deleted,
      * then try to access it or trying to operate a ++ will most certainly
      * result in a segfault. So, Unsafe iterators should only be used to parse
@@ -233,14 +325,20 @@ namespace gum {
      * safe iterators.
      *
      * Note that the notion of a beginning/end of a bijection is rather fuzzy.
-     * What is important here is that
-     * for(iterator iter = begin(); iter != end; ++iter) loops will parse all
-     *the
-     * associations */
+     * What is important here is that for an instance bij of this class:
+     *
+     * @code
+     * for(iterator iter = bij.begin(); iter != bij.end(); ++iter) {
+     *   // loops will parse all the associations 
+     * }
+     * @endcode
+     */
     const iterator& end() const noexcept;
 
-    /// returns the iterator to the end of the bijection
-    /** Unsafe iterators are a little bit faster than safe ones. But this speed
+    /** 
+     * @brief Returns the constant iterator at the end of the bijection.
+     *
+     * Unsafe iterators are a little bit faster than safe ones. But this speed
      * is at the expense of safety: if you point to an element that is deleted,
      * then try to access it or trying to operate a ++ will most certainly
      * result in a segfault. So, Unsafe iterators should only be used to parse
@@ -248,231 +346,324 @@ namespace gum {
      * safe iterators.
      *
      * Note that the notion of a beginning/end of a bijection is rather fuzzy.
-     * What is important here is that
-     * for(iterator iter = begin(); iter != end; ++iter) loops will parse all
-     *the
-     * associations */
+     * What is important here is that for an instance bij of this class:
+     *
+     * @code
+     * for (iterator iter = bij.cbegin(); iter != bij.cend(); ++iter) {
+     *   // loops will parse all the associations
+     * }
+     * @endcode
+     */
     const const_iterator& cend() const noexcept;
 
-    /// returns the safe iterator at the beginning of the bijection
-    /** Safe iterators are slightly slower than unsafe iterators. However, they
-     * guarantee that no segmentation fault can ever occur when trying to access
-     * the element they point to or when applying a ++ operator. When no element
-     * of the bijection is to be deleted during the parsing of the bijection
-     * (as for instance when you parse the bijection to display its content),
-     * prefer using the unsafe iterators, which are a little bit faster and
-     *cannot,
-     * in this case, produce segfaults.
+    /**
+     * @brief Returns the safe iterator at the beginning of the bijection.
+     *
+     * Safe iterators are slightly slower than unsafe iterators. However, they
+     * guarantee that no segmentation fault can ever occur when trying to
+     * access the element they point to or when applying a ++ operator. When no
+     * element of the bijection is to be deleted during the parsing of the
+     * bijection (as for instance when you parse the bijection to display its
+     * content), prefer using the unsafe iterators, which are a little bit
+     * faster and cannot, in this case, produce segfaults.
      *
      * Note that the notion of a beginning/end of a bijection is rather fuzzy.
-     * What is important here is that
-     * for(iterator iter = beginSafe (); iter != endSafe (); ++iter) loops will
-     * parse all the associations */
+     * What is important here is that for an instance bij of this class:
+     *
+     * @code
+     * for (iterator iter = bij.beginSafe(); iter != bij.endSafe(); ++iter) {
+     *   // loops will parse all the associations
+     * }
+     * @endcode
+     */
     iterator_safe beginSafe() const;
 
-    /// returns the iterator at the beginning of the bijection
-    /** Safe iterators are slightly slower than unsafe iterators. However, they
-     * guarantee that no segmentation fault can ever occur when trying to access
-     * the element they point to or when applying a ++ operator. When no element
-     * of the bijection is to be deleted during the parsing of the bijection
-     * (as for instance when you parse the bijection to display its content),
-     * prefer using the unsafe iterators, which are a little bit faster and
-     *cannot,
-     * in this case, produce segfaults.
+    /**
+     * @brief Returns the constant safe iterator at the begining of the
+     * bijection.
+     *
+     * Safe iterators are slightly slower than unsafe iterators. However, they
+     * guarantee that no segmentation fault can ever occur when trying to
+     * access the element they point to or when applying a ++ operator. When no
+     * element of the bijection is to be deleted during the parsing of the
+     * bijection (as for instance when you parse the bijection to display its
+     * content), prefer using the unsafe iterators, which are a little bit
+     * faster and cannot, in this case, produce segfaults.
      *
      * Note that the notion of a beginning/end of a bijection is rather fuzzy.
-     * What is important here is that
-     * for(iterator iter = beginSafe (); iter != endSafe (); ++iter) loops will
-     * parse all the associations */
+     * What is important here is that for an instance bij of this class:
+     *
+     * @code
+     * for (iterator iter = bij.cbeginSafe(); iter != bij.cendSafe(); ++iter) {
+     *   // loops will parse all the associations 
+     * }
+     * @encode
+     */
     const_iterator_safe cbeginSafe() const;
 
-    /// returns the safe iterator to the end of the bijection
-    /** Safe iterators are slightly slower than unsafe iterators. However, they
-     * guarantee that no segmentation fault can ever occur when trying to access
-     * the element they point to or when applying a ++ operator. When no element
-     * of the bijection is to be deleted during the parsing of the bijection
-     * (as for instance when you parse the bijection to display its content),
-     * prefer using the unsafe iterators, which are a little bit faster and
-     *cannot,
-     * in this case, produce segfaults.
+    /** 
+     * @brief Returns the safe iterator at the end of the bijection.
+     *
+     * Safe iterators are slightly slower than unsafe iterators. However, they
+     * guarantee that no segmentation fault can ever occur when trying to
+     * access the element they point to or when applying a ++ operator. When no
+     * element of the bijection is to be deleted during the parsing of the
+     * bijection (as for instance when you parse the bijection to display its
+     * content), prefer using the unsafe iterators, which are a little bit
+     * faster and cannot, in this case, produce segfaults.
      *
      * Note that the notion of a beginning/end of a bijection is rather fuzzy.
-     * What is important here is that
-     * for(iterator iter = begin(); iter != end; ++iter) loops will parse all
-     *the
-     * associations */
+     * What is important here is that for an instance bij of this class:
+     *
+     * @code
+     * for (iterator iter = bij.beginSafe(); iter != bij.endSafe(); ++iter) {
+     *   // loops will parse all the associations 
+     * }
+     * @endcode
+     */
     const iterator_safe& endSafe() const noexcept;
 
-    /// returns the safe iterator to the end of the bijection
-    /** Safe iterators are slightly slower than unsafe iterators. However, they
-     * guarantee that no segmentation fault can ever occur when trying to access
-     * the element they point to or when applying a ++ operator. When no element
-     * of the bijection is to be deleted during the parsing of the bijection
-     * (as for instance when you parse the bijection to display its content),
-     * prefer using the unsafe iterators, which are a little bit faster and
-     *cannot,
-     * in this case, produce segfaults.
+    /**
+     * @brief Returns the constant safe iterator at the end of the
+     * bijection.
+     *
+     * Safe iterators are slightly slower than unsafe iterators. However, they
+     * guarantee that no segmentation fault can ever occur when trying to
+     * access the element they point to or when applying a ++ operator. When no
+     * element of the bijection is to be deleted during the parsing of the
+     * bijection (as for instance when you parse the bijection to display its
+     * content), prefer using the unsafe iterators, which are a little bit
+     * faster and cannot, in this case, produce segfaults.
      *
      * Note that the notion of a beginning/end of a bijection is rather fuzzy.
-     * What is important here is that
-     * for(iterator iter = begin(); iter != end; ++iter) loops will parse all
-     *the
-     * associations */
+     * What is important here is that for an instance bij of this class:
+     *
+     * @code
+     * for (iterator iter = bij.cbeginSafe(); iter != bij.cendSafe(); ++iter) {
+     *   // loops will parse all the associations 
+     * }
+     * @endcode
+     */
     const const_iterator_safe& cendSafe() const noexcept;
 
-    /** @brief returns the safe end iterator for other classes' statics (read
-     *the
-     * detailed description of this method)
+    /**
+     * @brief Returns the safe end iterator for other classes' statics.
      *
      * To reduce the Bijections memory consumption (which are heavily used in
-     * aGrUM) while allowing fast for(iter=begin(); iter!=end();++iter) loops,
-     *end
-     * iterators are created just once as a static member of a non-template
-     * Bijection. While this scheme is efficient and it works quite effectively
-     * when manipulating bijections, it has a drawback: other classes with
-     *static
-     * members using the Bijection's end() iterator may fail to work due to the
-     * well known "static initialization order fiasco" (see Marshall Cline's C++
-     * FAQ for more details about this C++ feature). OK, so what is the problem?
-     * Consider a class, say X, containing a Bijection that stores all its
-     *elements
-     * in a convenient way. To reduce memory consumption, X::end iterator is a
-     * static member that is initialized with a Bijection::end iterator. If the
-     * compiler decides to initialize X::end before initializing Bijection::end,
-     * then X::end will be in an incoherent state. Unfortunately, we cannot know
-     * for sure in which order static members will be initialized (the order is
-     *a
-     * compiler's decision). Hence, we shall enfore the fact that Bijection::end
-     * is initialized before X::end. Using method Bijection::end4Statics will
-     * ensure this fact: it uses the C++ "construct on first use" idiom (see the
-     * C++ FAQ) that ensures that the order fiasco is avoided. More precisely,
-     * end4Statics uses a global variable that is the very end iterator used by
-     * all Bijections. Now, this induces a small overhead. So, we also provide a
+     * aGrUM) while allowing fast for loops, end iterators are created just
+     * once as a static member of a non-template Bijection. While this scheme
+     * is efficient and it works quite effectively, it has a drawback: other
+     * classes with static members using the BijectionImplementation::end()
+     * iterator may fail to work due to the well known "static initialization
+     * order fiasco" (see Marshall Cline's C++ FAQ for more details about this
+     * C++ feature).
+     *
+     * So what is the problem?  Consider a class, say X, containing a Bijection
+     * that stores all its elements in a convenient way. To reduce memory
+     * consumption, X::end iterator is a static member that is initialized with
+     * a Bijection::end iterator. If the compiler decides to initialize X::end
+     * before initializing Bijection::end, then X::end will be in an incoherent
+     * state.
+     *
+     * Unfortunately, we cannot know for sure in which order static
+     * members will be initialized (the order is a compiler's decision). Hence,
+     * we shall enfore the fact that Bijection::end is initialized before
+     * X::end. Using method Bijection::end4Statics will ensure this fact: it
+     * uses the C++ "construct on first use" idiom (see the C++ FAQ) that
+     * ensures that the order fiasco is avoided. More precisely, end4Statics
+     * uses a global variable that is the very end iterator used by all
+     * Bijections. Now, this induces a small overhead. So, we also provide a
      * Bijection::end() method that returns the Bijection::end iterator without
      * this small overhead, but assuming that function end4Statics has already
      * been called once (which is always the case) when a Bijection has been
      * created.
      *
-     * So, to summarize: when initializing static members, use endSafe4Statics()
-     * rather than endSafe (). In all the other cases, use simply the usual
-     * method endSafe (). */
+     * So, to summarize: when initializing static members use endSafe4Statics()
+     * and in all the other cases, use endSafe().
+     */
     static const iterator_safe& endSafe4Statics();
 
-    /** @brief returns the unsafe end iterator for other classes' statics (read
-     *the
-     * detailed description of this method)
+    /**
+     * @brief Returns the unsafe end iterator for other classes' statics.
      *
      * To reduce the Bijections memory consumption (which are heavily used in
-     * aGrUM) while allowing fast for(iter=begin(); iter!=end();++iter) loops,
-     *end
-     * iterators are created just once as a static member of a non-template
-     * Bijection. While this scheme is efficient and it works quite effectively
-     * when manipulating bijections, it has a drawback: other classes with
-     *static
-     * members using the Bijection's end() iterator may fail to work due to the
-     * well known "static initialization order fiasco" (see Marshall Cline's C++
-     * FAQ for more details about this C++ feature). OK, so what is the problem?
-     * Consider a class, say X, containing a Bijection that stores all its
-     *elements
-     * in a convenient way. To reduce memory consumption, X::end iterator is a
-     * static member that is initialized with a Bijection::end iterator. If the
-     * compiler decides to initialize X::end before initializing Bijection::end,
-     * then X::end will be in an incoherent state. Unfortunately, we cannot know
-     * for sure in which order static members will be initialized (the order is
-     *a
-     * compiler's decision). Hence, we shall enfore the fact that Bijection::end
-     * is initialized before X::end. Using method Bijection::end4Statics will
-     * ensure this fact: it uses the C++ "construct on first use" idiom (see the
-     * C++ FAQ) that ensures that the order fiasco is avoided. More precisely,
-     * end4Statics uses a global variable that is the very end iterator used by
-     * all Bijections. Now, this induces a small overhead. So, we also provide a
+     * aGrUM) while allowing fast for loops, end iterators are created just
+     * once as a static member of a non-template Bijection. While this scheme
+     * is efficient and it works quite effectively, it has a drawback: other
+     * classes with static members using the BijectionImplementation::end()
+     * iterator may fail to work due to the well known "static initialization
+     * order fiasco" (see Marshall Cline's C++ FAQ for more details about this
+     * C++ feature).
+     *
+     * So what is the problem?  Consider a class, say X, containing a Bijection
+     * that stores all its elements in a convenient way. To reduce memory
+     * consumption, X::end iterator is a static member that is initialized with
+     * a Bijection::end iterator. If the compiler decides to initialize X::end
+     * before initializing Bijection::end, then X::end will be in an incoherent
+     * state.
+     *
+     * Unfortunately, we cannot know for sure in which order static
+     * members will be initialized (the order is a compiler's decision). Hence,
+     * we shall enfore the fact that Bijection::end is initialized before
+     * X::end. Using method Bijection::end4Statics will ensure this fact: it
+     * uses the C++ "construct on first use" idiom (see the C++ FAQ) that
+     * ensures that the order fiasco is avoided. More precisely, end4Statics
+     * uses a global variable that is the very end iterator used by all
+     * Bijections. Now, this induces a small overhead. So, we also provide a
      * Bijection::end() method that returns the Bijection::end iterator without
      * this small overhead, but assuming that function end4Statics has already
      * been called once (which is always the case) when a Bijection has been
      * created.
      *
-     * So, to summarize: when initializing static members, use end4Statics()
-     *rather
-     * than end(). In all the other cases, use simply the usual method end(). */
+     * So, to summarize: when initializing static members use end4Statics()
+     * and in all the other cases, use end().
+     */
     static const iterator& end4Statics();
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Accessors / Modifiers
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// returns the value associated to the element passed in argument
-    /** @throws NotFound exception is thrown if the element cannot be found. */
+    /**
+     * @brief Returns the first value of a pair given its second value.
+     * @param second The second value of a pair in the bijection.
+     * @return Returns the first value of a pair given its second value.
+     * @throws NotFound Raised if the element cannot be found.
+     */
     const T1& first( const T2& second ) const;
 
-    /** @brief Same method as first, but if the value is not found, a default
-     * value is inserted into the bijection */
+    /**
+     * @brief Returns the first value of a pair given its second value or
+     * default_val if second is unfound. 
+     * @param second The second value of a pair in the bijection.
+     * @param default_val The default value returned if second is not in the
+     * bijection.
+     * @return Returns the first value of a pair given its second value or
+     * default_val if second is not in the bjection.
+     */
     const T1& firstWithDefault( const T2& second, const T1& default_val ) const;
 
-    /// returns the value associated to the element passed in argument
-    /** @throws NotFound exception is thrown if the element cannot be found. */
+    /**
+     * @brief Returns the second value of a pair given its first value.
+     * @param first The first value of a pair in the bijection.
+     * @return Returns the second value of a pair given its first value.
+     * @throws NotFound Raised if the element cannot be found.
+     */
     const T2& second( const T1& first ) const;
 
-    /** @brief Same method as second, but if the value is not found, a default
-     * value is inserted into the bijection */
+    /**
+     * @brief Returns the second value of a pair given its first value or
+     * default_val if first is unfound.
+     * @param second The second value of a pair in the bijection.
+     * @param default_val The default value returned if first is not in the
+     * bijection.
+     * @return Returns the second value of a pair given its first value or
+     * default_val if first is not in the bjection.
+     */
     const T2& secondWithDefault( const T1& first, const T2& default_val ) const;
 
-    /// Test whether the bijection contains the "first" value
+    /**
+     * @brief Returns true if first is in the first element in a pair in the
+     * bijection.
+     * @param first The element tested for existence.
+     * @return Returns true if first is in the first element in a pair in the
+     * bijection.
+     */
     bool existsFirst( const T1& first ) const;
 
-    /// Test whether the bijection contains the "second" value
+    /**
+     * @brief Returns true if second is in the second element in a pair in the
+     * bijection.
+     * @param first The element tested for existence.
+     * @return Returns true if second is in the second element in a pair in the
+     * bijection.
+     */
     bool existsSecond( const T2& second ) const;
 
-    /// inserts a new association in the bijection
-    /** Note that what is actually inserted into the bijection is a copy of
-     * the pair (first,second)
-     * @throws DuplicateElement exception is thrown if the association
-     * already exists */
+    /** 
+     * @brief Inserts a new association in the bijection.
+     *
+     * The values are added by copy.
+     *
+     * @param first The first element of the pair to insert.
+     * @param second The second element of the pair to insert.
+     * @throws DuplicateElement Raised if the association already exists.
+     */
     void insert( const T1& first, const T2& second );
 
-    /// inserts a new association in the bijection
-    /** @throws DuplicateElement exception is thrown if the association
-     * already exists */
+    /** 
+     * @brief Inserts a new association in the bijection.
+     *
+     * The values are moved in the bijection.
+     *
+     * @param first The first element of the pair to insert.
+     * @param second The second element of the pair to insert.
+     * @throws DuplicateElement Raised if the association already exists.
+     */
     void insert( T1&& first, T2&& second );
 
-    /// emplace a new element in the bijection
-    /** emplace is a method that allows to construct directly an element of
-     * type Key by passing to its constructor all the arguments it needs
+    /**
+     * @brief Emplace a new element in the bijection.
+     *
+     * The emplace method allows to construct directly an element of type Key
+     * by passing to its constructor all the arguments it needs.
+     *
      * @param args the arguments passed to the constructor
-     * @throws DuplicateElement exception is thrown if the association
-     * already exists  */
+     * @throws DuplicateElement exception is thrown if the association already
+     * exists 
+     */
     template <typename... Args>
     void emplace( Args&&... args );
 
-    /// removes all the associations from the bijection
+    /**
+     * @brief Removes all the associations from the bijection.
+     */
     void clear();
 
-    /// returns true if the bijection doesn't contain any association
+    /**
+     * @brief Returns true if the bijection doesn't contain any association.
+     * @return Returns true if the bijection doesn't contain any association.
+     */
     bool empty() const noexcept;
 
-    /// returns the number of associations stored within the bijection
+    /**
+     * @brief Returns the number of associations stored within the bijection.
+     * @return Returns the number of associations stored within the bijection.
+     */
     Size size() const noexcept;
 
-    /// erases an association containing the given first element
-    /** If the element cannot be found, nothing is done. In particular, no
-     * exception is raised. */
+    /** 
+     * @brief Erases an association containing the given first element.
+     *
+     * If the element cannot be found, nothing is done. In particular, no
+     * exception is raised. 
+     *
+     * @param first The first element of a pair in the bijection.
+     */
     void eraseFirst( const T1& first );
 
-    /// erase an association containing the given second element
-    /** If the element cannot be found, nothing is done. In particular, no
-     * exception is raised. */
+    /** 
+     * @brief Erases an association containing the given second element.
+     *
+     * If the element cannot be found, nothing is done. In particular, no
+     * exception is raised. 
+     *
+     * @param first The second element of a pair in the bijection.
+     */
     void eraseSecond( const T2& second );
 
-    /// friendly displays the content of the CliqueGraph
+    /**
+     * @brief Returns a friendly representatin of the bijection.
+     * @return Returns a friendly representatin of the bijection.
+     */
     std::string toString() const;
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Fine tuning
-    // ############################################################################
+    // ============================================================================
     /// @{
 
     /// returns the number of hashtables' slots used (@sa hashTable's capacity)
@@ -757,9 +948,7 @@ namespace gum {
      * associations */
     const const_iterator_safe& cendSafe() const noexcept;
 
-    /** @brief returns the safe end iterator for other classes' statics (read
-     *the
-     * detailed description of this method)
+    /** @brief PAZEAZEAZEAZEAZE
      *
      * To reduce the Bijections memory consumption (which are heavily used in
      * aGrUM) while allowing fast for(iter=begin(); iter!=end();++iter) loops,
