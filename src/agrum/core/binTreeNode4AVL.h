@@ -232,7 +232,7 @@ namespace gum {
      * @warning The new child is created on the C++ heap (i.e., using a dynamic
      * memory allocation)
      */
-    BinTreeNode4AVL<Val>* insertRightChild( const Val& );
+    BinTreeNode4AVL<Val>* insertRightChild( const Val& v);
 
     /**
      * @brief Adds a new right child to the current node.
