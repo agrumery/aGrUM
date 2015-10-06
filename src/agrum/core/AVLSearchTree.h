@@ -40,65 +40,77 @@ namespace gum {
   // ===                        AVL BINARY SEARCH TREE                       ===
   // ===========================================================================
   // ===========================================================================
+
   /**
-   * @class AVLSearchTree <AVLSearchTree.h> <agrum/core/AVLSearchTree.h>
+   * @class AVLSearchTree AVLSearchTree.h <agrum/core/AVLSearchTree.h>
+   * @brief A generic binary search tree.
    * @ingroup basicstruct_group
-   * @brief generic binary search trees
+   *
+   * @tparam Val The type of the values stored in the AVLSearchTree.
+   * @tparam Cmp The comparator used to balance the AVLSearchTree.
    */
   template <typename Val, class Cmp = std::less<Val>>
   class AVLSearchTree : public BinSearchTree<Val, Cmp, BinTreeNode4AVL<Val>> {
+
     public:
     typedef BinTreeNode4AVL<Val> Node;
     typedef BinSearchTreeIterator<Val, Cmp, Node> iterator;
 
-    // ############################################################################
-    /// @name constructors / destructors
-    // ############################################################################
-    ///@{
+    // ============================================================================
+    /// @name Constructors and Destructor
+    // ============================================================================
+    /// @{
 
-    /// basic constructor: returns an empty binary search tree
-    /** @param uniqueness_policy allows (false) or disables (true) the
-     * possibility
-     * for the binary tree to have multiple instances of the same value within
-     * the tree. */
-
+    
+    /** 
+     * @brief Basic constructor: returns an empty binary search tree.
+     * @param uniqueness_policy Enable (false) or disables (true) multiple instances
+     * of the same value within the tree.
+     */
     explicit AVLSearchTree( bool uniqueness_policy = false );
 
-    /// copy constructor
-
+    /**
+     * @brief Copy constructor.
+     * @param from The AVLSearchTree from which the copy is made.
+     */
     AVLSearchTree( const AVLSearchTree<Val, Cmp>& from );
 
-    /// destructor
-
+    /**
+     * @brief Destructor.
+     */
     ~AVLSearchTree();
 
     ///@}
-
-    // ############################################################################
-    /// @name operators
-    // ############################################################################
+    // ============================================================================
+    /// @name Operators
+    // ============================================================================
     ///@{
 
-    /// copy operator
-
+    /**
+     * @brief Copy operator.
+     * @param from The AVLSearchTree from which the copy is made.
+     * @return Returns the AVLSearchTree in which from was copied.
+     */
     AVLSearchTree<Val, Cmp>& operator=( const AVLSearchTree<Val, Cmp>& from );
 
     ///@}
-
-    // ############################################################################
+    // ============================================================================
     /// @name iterators
-    // ############################################################################
+    // ============================================================================
     ///@{
+
     using BinSearchTree<Val, Cmp, Node>::begin;
     using BinSearchTree<Val, Cmp, Node>::rbegin;
     using BinSearchTree<Val, Cmp, Node>::end;
     using BinSearchTree<Val, Cmp, Node>::rend;
+
     ///@}
 
-    // ############################################################################
+    // ============================================================================
     /// @name Accessors / Modifiers
-    // ############################################################################
+    // ============================================================================
     /// @{
+ 
     using BinSearchTree<Val, Cmp, Node>::rootValue;
     using BinSearchTree<Val, Cmp, Node>::minValue;
     using BinSearchTree<Val, Cmp, Node>::maxValue;
@@ -110,47 +122,65 @@ namespace gum {
     using BinSearchTree<Val, Cmp, Node>::insert;
     using BinSearchTree<Val, Cmp, Node>::erase;
 
-    /// check the tree to determine whether it is actually AVL balanced
-
+    /**
+     * @brief Check the tree to determine whether it is actually AVL balanced.
+     * @return Returnes true if the tree is balanced.
+     */
     bool checkAVLStructure() const;
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Fine tuning
-    // ############################################################################
+    // ============================================================================
     /// @{
+
     using BinSearchTree<Val, Cmp, Node>::uniquenessPolicy;
     using BinSearchTree<Val, Cmp, Node>::setUniquenessPolicy;
+
     /// @}
 
-    /// friendly displays the content of the CliqueGraph
-
+    /**
+     * @brief Friendly display of the AVLSearchTree.
+     * @return Returns a representation of the AVLSearchTree.
+     */
     const std::string toString() const;
 
     protected:
-    /// erase the node passed in argument
 
+    /**
+     * @brief Erase the node passed in argument.
+     * @param node The node to be removed.
+     */
     void _erase( Node* node );
 
-    /** @brief creates a copy of the value, insert it in the tree and returns
-     * the copy value
+    /**
+     * @brief Creates a copy of the value, insert it in the tree and returns
+     * the node holding it in the tree.
      *
-     * When elements are inserted into binary search trees, this is actually
-     *copies
-     * that are inserted. Thus, the method returns the node containing the newly
-     * created copy, so that the user may reference the new copy.
-     * @warning this method is actually the implementation of method insert. It
-     * is used to speed-up insertions in terminal classes such as AVL trees.
+     * Elements are inserted by copy in the binary search tree.  Thus, the
+     * method returns the node containing the newly created copy, so that the
+     * user may reference it.
+     *
+     * @param val The value inserted by copy in the AVLSearchTree.
+     * @return Returns a pointer over the node holding a copy of val in the
+     * AVLSearchTree.
+     * @warning This method is actually the implementation of the inster
+     * method. It is used to speed-up insertions in terminal classes such as
+     * AVL trees.
      * @throw DuplicateElement exception is raised if the binary tree already
-     * contains the value and the uniqueness property is set to true */
-
+     * contains the value and the uniqueness property is set to true 
+     */
     Node* _insert( const Val& val );
   };
 
-  /// for friendly displaying the content of AVLSearchTree
+  /**
+   * @brief For friendly displaying of AVLSearchTree content.
+   * @param stream The stream in which to print the AVLSearchTree content.
+   * @param avl The AVLSearchTree to print.
+   * @return Returns stream.
+   */
   template <typename Val, class Cmp>
-  std::ostream& operator<<( std::ostream&, const AVLSearchTree<Val, Cmp>& );
+  std::ostream& operator<<( std::ostream& stream, const AVLSearchTree<Val, Cmp>& avl);
 
 } /* namespace gum */
 
@@ -158,3 +188,4 @@ namespace gum {
 #include <agrum/core/AVLSearchTree.tcc>
 
 #endif /* GUM_AVL_SEARCH_TREE_H */
+

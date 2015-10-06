@@ -24,28 +24,16 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
 // to ease IDE parsers
 #include <agrum/core/AVLSearchTree.h>
 
 namespace gum {
-
-  // ===========================================================================
-  // ===========================================================================
-  // ===                        AVL BINARY SEARCH TREE                       ===
-  // ===========================================================================
-  // ===========================================================================
-
-  /// basic constructor: returns an empty binary search tree
 
   template <typename Val, class Cmp>
   INLINE AVLSearchTree<Val, Cmp>::AVLSearchTree( bool uniqueness_policy )
       : BinSearchTree<Val, Cmp, Node>( uniqueness_policy ) {
     GUM_CONSTRUCTOR( AVLSearchTree );
   }
-
-  /// copy constructor
 
   template <typename Val, class Cmp>
   INLINE
@@ -54,14 +42,10 @@ namespace gum {
     GUM_CONS_CPY( AVLSearchTree );
   }
 
-  /// destructor
-
   template <typename Val, class Cmp>
   INLINE AVLSearchTree<Val, Cmp>::~AVLSearchTree() {
     GUM_DESTRUCTOR( AVLSearchTree );
   }
-
-  /// copy operator
 
   template <typename Val, class Cmp>
   INLINE AVLSearchTree<Val, Cmp>& AVLSearchTree<Val, Cmp>::
@@ -70,8 +54,6 @@ namespace gum {
     BinSearchTree<Val, Cmp, Node>::operator=( from );
     return *this;
   }
-
-  /// erase the node passed in argument
 
   template <typename Val, class Cmp>
   void AVLSearchTree<Val, Cmp>::_erase( BinTreeNode4AVL<Val>* node ) {
@@ -222,8 +204,6 @@ namespace gum {
     }
   }
 
-  /// check the tree to determine whether it is actually AVL balanced
-
   template <typename Val, class Cmp>
   bool AVLSearchTree<Val, Cmp>::checkAVLStructure() const {
     for ( iterator iter = begin(); iter != end(); ++iter ) {
@@ -241,9 +221,6 @@ namespace gum {
 
     return true;
   }
-
-  /** @brief creates a copy of the value, insert it in the tree and returns
-   * the copy value */
 
   template <typename Val, class Cmp>
   INLINE BinTreeNode4AVL<Val>*
@@ -282,8 +259,6 @@ namespace gum {
     return stream.str();
   }
 
-  /// for friendly displaying the content of AVLSearchTree
-
   template <typename Val, class Cmp>
   std::ostream& operator<<( std::ostream& stream,
                             const AVLSearchTree<Val, Cmp>& avl ) {
@@ -292,4 +267,3 @@ namespace gum {
   }
 } /* namespace gum */
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
