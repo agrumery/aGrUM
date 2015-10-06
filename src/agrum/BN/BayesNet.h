@@ -282,9 +282,8 @@ namespace gum {
      * @return Returns the gum::DiscreteVariable named name in the gum::BayesNet.
      * @throw NotFound Raised if name does not match a variable in the gum::BayesNet.
      */
-    const DiscreteVariable& variableFromName( const std::string& name ) const
+    const DiscreteVariable& variableFromName( const std::string& name ) const;
     /// @}
-    //n j'a
 
     // ===========================================================================
     /// @name Arc manipulation methods.
@@ -379,10 +378,9 @@ namespace gum {
     /** @} */
 
     /**
-     * Add a variable, its associate node and a noisyOR implementation.
-     * Since it seems that the 'classical' noisyOR is the Compound noisyOR, we
-     *keep
-     * the addNoisyOR as an alias for addNoisyORCompound
+     * Add a variable, its associate node and a noisyOR implementation. Since
+     * it seems that the 'classical' noisyOR is the Compound noisyOR, we keep
+     * the addNoisyOR as an alias for addNoisyORCompound.
      *
      * @param variable The variable added by copy.
      * @param externalWeight see gum::MultiDimNoisyORNet,
