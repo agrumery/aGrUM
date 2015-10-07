@@ -30,7 +30,8 @@ execute_process(
 )
 
 execute_process(
-  COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_config_var('LIBDIR'))"
+  #COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_config_var('LIBDIR'))"
+  COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_config_var('LIBDIR')+'/'+distutils.sysconfig.get_config_var('LDLIBRARY'))"
   OUTPUT_VARIABLE PYTHON_LIBRARY
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
@@ -66,7 +67,7 @@ execute_process(
      OUTPUT_STRIP_TRAILING_WHITESPACE
    )
    #todo : test if PYTHON_VERSION>3.2
-  set(PYTHON_LIBRARIES "${PYTHON_LIBPATH}/libPython${PYTHON_COMPLETE_VERSION}.dylib")
+  set(PYTHON_LIBRARY "${PYTHON_LIBPATH}/libPython${PYTHON_COMPLETE_VERSION}.dylib")
  else()
    find_package(PythonLibs ${PYTHON_VERSION} REQUIRED)
 endif()
@@ -89,7 +90,7 @@ message(STATUS "================================")
 message(STATUS "python version : ${PYTHONLIBS_VERSION_STRING}")
 message(STATUS "python installation : ${PYTHON_INSTALL}")
 message(STATUS "python include : ${PYTHON_INCLUDE_DIR}")
-message(STATUS "python library : ${PYTHON_LIBRARIES}")
+message(STATUS "python library : ${PYTHON_LIBRARY}")
 message(STATUS "libragrum : ${LIBAGRUM}")
 message(STATUS "================================")
 
@@ -139,12 +140,12 @@ set(CMAKE_SWIG_OUTDIR ${GENERATED_PYTHON})
 if (SWIG_FOUND)
   gum_swig_add_module(pyAgrum python ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
   swig_link_libraries(pyAgrum ${LIBAGRUM})
-  #swig_link_libraries(pyAgrum ${PYTHON_LIBRARIES})
+  #swig_link_libraries(pyAgrum ${PYTHON_LIBRARY})
 else (SWIG_FOUND)
   file(GLOB SWIG_GENERATED_FILES "${GENERATED_PYTHON}/*.cxx")
   add_library (${_PYAGRUMLIB} MODULE ${SWIG_GENERATED_FILES})
   target_link_libraries (${_PYAGRUMLIB} ${LIBAGRUM})
-  target_link_libraries (${_PYAGRUMLIB} ${PYTHON_LIBRARIES})
+  target_link_libraries (${_PYAGRUMLIB} ${PYTHON_LIBRARY})
   set_target_properties(${_PYAGRUMLIB} PROPERTIES PREFIX "")
   if (WIN32)
     set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".pyd")
