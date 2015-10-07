@@ -22,24 +22,31 @@
 #***************************************************************************
 
 import re
+import dbm
+from os import remove
 import shelve
 
-from configuration import cfg
-from utils import warn,error,notif,critic,setifyString
-from invocation import showInvocation
-from modules import check_modules,parseModulesTxt
-from tests import checkAndWriteTests
+from .configuration import cfg
+from .utils import warn,error,notif,critic,setifyString
+from .invocation import showInvocation
+from .modules import check_modules,parseModulesTxt
+from .tests import checkAndWriteTests
 
 def parseCommandLine(current):
     return cfg.parser.parse_args()
 
 def getCurrent():
   current={}
-  shlv=shelve.open(cfg.configFile,writeback=True)
-  for key in cfg.default.iterkeys():
+  try:
+    shlv=shelve.open(cfg.configFile,writeback=True)
+  except :
+    remove(cfg.configFile)
+    shlv=shelve.open(cfg.configFile,writeback=True)
+
+  for key in cfg.default: #.iterkeys():
     current[key]=cfg.default[key]
     if not key in cfg.non_persistent:
-      if shlv.has_key(key):
+      if key in shlv:
         current[key]=shlv[key]
 
   return current

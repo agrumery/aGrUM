@@ -22,8 +22,8 @@
 #***************************************************************************
 from __future__ import print_function
 
-from configuration import cfg,configureOptions,configureOutputs,initParams,configureTools
-from checkargs import getCurrent,parseCommandLine,checkCurrent
-from utils import safe_cd,about
-from builder import buildCmake,buildMake,buildPost
-from specials import specialActions
+from .configuration import cfg,configureOptions,configureOutputs,initParams,configureTools
+from .checkargs import getCurrent,parseCommandLine,checkCurrent
+from .utils import safe_cd,about
+from .builder import buildCmake,buildMake,buildPost
+from .specials import specialActions

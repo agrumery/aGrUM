@@ -21,6 +21,11 @@
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
 import os
+import platform
+from sys import platform as os_platform
+
+from .utils import critic
+
 #################################################################################################
 # find make, python2, python3
 def is_tool(prog):
@@ -32,11 +37,6 @@ def is_tool(prog):
             return os.path.join(dir, progw)
     return None
 
-
-import platform
-from sys import platform as os_platform
-
-from utils import critic
 
 def check_tools():
     exe_python2=is_tool('python2')
