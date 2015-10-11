@@ -162,6 +162,14 @@ namespace gum {
       }
     }
 
+    
+    /// sets the range of records taken into account by the counter
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE void ParamEstimator<IdSetAlloc, CountAlloc>::setRange
+    ( unsigned long min_range, unsigned long max_range ) {
+      Counter<IdSetAlloc, CountAlloc>::setRange ( min_range, max_range );
+    }
+
   } /* namespace learning */
 
 } /* namespace gum */

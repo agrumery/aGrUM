@@ -85,7 +85,9 @@ namespace gum {
       template <typename RowFilter>
       Score( const RowFilter& filter,
              const std::vector<unsigned int>& var_modalities,
-             Apriori<IdSetAlloc, CountAlloc>& apriori );
+             Apriori<IdSetAlloc, CountAlloc>& apriori,
+             unsigned long min_range = 0,
+             unsigned long max_range = std::numeric_limits<unsigned int>::max () );
 
       /// virtual copy factory
       virtual Score<IdSetAlloc, CountAlloc>* copyFactory() const = 0;
@@ -182,6 +184,13 @@ namespace gum {
        * learning. */
       virtual const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
       internalApriori() const noexcept = 0;
+
+      /// sets the range of records taken into account by the counter
+      /** @param min_range he number of the first record to be taken into
+       * account during learning
+       * @param max_range the number of the record after the last one taken
+       * into account*/
+      void setRange ( unsigned long min_range, unsigned long max_range );
 
       /// @}
 

@@ -68,7 +68,7 @@ namespace gum {
       // of 5 observations per parameter in the database, the independence
       // test will be incorrect)
       if ( this->_modalities[var1] * this->_modalities[var2] * 5 >
-           this->_record_counter.DBSize() ) {
+           this->_record_counter.DBParsedSize() ) {
         __is_cached_score.push_back( true );
         __cached_score.push_back( std::numeric_limits<float>::max() );
         return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
@@ -117,7 +117,7 @@ namespace gum {
       for ( auto node : conditioning_ids ) {
         cpt_size *= this->_modalities[node];
       }
-      if ( cpt_size > this->_record_counter.DBSize() ) {
+      if ( cpt_size > this->_record_counter.DBParsedSize() ) {
         __is_cached_score.push_back( true );
         __cached_score.push_back( std::numeric_limits<float>::max() );
         return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
@@ -167,7 +167,7 @@ namespace gum {
       for ( auto node : conditioning_ids ) {
         cpt_size *= this->_modalities[node];
       }
-      if ( cpt_size > this->_record_counter.DBSize() ) {
+      if ( cpt_size > this->_record_counter.DBParsedSize() ) {
         __is_cached_score.push_back( true );
         __cached_score.push_back( std::numeric_limits<float>::max() );
         return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();

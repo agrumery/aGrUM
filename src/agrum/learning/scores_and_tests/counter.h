@@ -130,8 +130,9 @@ namespace gum {
        */
       template <typename RowFilter>
       Counter( const RowFilter& filter,
-               const std::vector<unsigned int>& var_modalities );
-
+               const std::vector<unsigned int>& var_modalities,
+               unsigned long min_range = 0,
+               unsigned long max_range = std::numeric_limits<unsigned int>::max () );
       /// copy constructor
       Counter( const Counter<IdSetAlloc, CountAlloc>& );
 
@@ -346,6 +347,13 @@ namespace gum {
       /// sets the maximum number of threads used to perform countings
       void setMaxNbThreads( unsigned int nb ) noexcept;
 
+      /// sets the range of records taken into account by the counter
+      /** @param min_range he number of the first record to be taken into
+       * account during learning
+       * @param max_range the number of the record after the last one taken
+       * into account*/
+      void setRange ( unsigned long min_range, unsigned long max_range );
+
       /// @}
 
       protected:
@@ -370,6 +378,8 @@ namespace gum {
       /// counter
       std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
                             unsigned int>*> _conditioning_nodesets;
+
+
 
       /// perform the computation of the countings
       void _count();

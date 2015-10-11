@@ -154,6 +154,13 @@ namespace gum {
        * are assumed to be identical */
       void setParameters( unsigned int nodeset_index, Potential<float>& pot );
 
+      /// sets the range of records taken into account by the counter
+      /** @param min_range he number of the first record to be taken into
+       * account during learning
+       * @param max_range the number of the record after the last one taken
+       * into account*/
+      void setRange ( unsigned long min_range, unsigned long max_range );
+
       /// @}
 
       protected:
