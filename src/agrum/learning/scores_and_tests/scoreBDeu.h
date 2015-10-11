@@ -99,7 +99,9 @@ namespace gum {
       template <typename RowFilter>
       ScoreBDeu( const RowFilter& filter,
                  const std::vector<unsigned int>& var_modalities,
-                 Apriori<IdSetAlloc, CountAlloc>& apriori );
+                 Apriori<IdSetAlloc, CountAlloc>& apriori ,
+                 unsigned long min_range = 0,
+                 unsigned long max_range = std::numeric_limits<unsigned int>::max ());
 
       /// copy constructor
       ScoreBDeu( const ScoreBDeu<IdSetAlloc, CountAlloc>& );

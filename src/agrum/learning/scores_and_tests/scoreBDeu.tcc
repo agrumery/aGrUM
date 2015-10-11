@@ -38,8 +38,11 @@ namespace gum {
     INLINE ScoreBDeu<IdSetAlloc, CountAlloc>::ScoreBDeu(
         const RowFilter& filter,
         const std::vector<unsigned int>& var_modalities,
-        Apriori<IdSetAlloc, CountAlloc>& apriori )
-        : Score<IdSetAlloc, CountAlloc>( filter, var_modalities, apriori ) {
+        Apriori<IdSetAlloc, CountAlloc>& apriori,
+        unsigned long min_range,
+        unsigned long max_range )
+        : Score<IdSetAlloc, CountAlloc>( filter, var_modalities, apriori,
+                                         min_range, max_range ) {
       __internal_apriori.setEffectiveSampleSize( __ess );
       // for debugging purposes
       GUM_CONSTRUCTOR( ScoreBDeu );

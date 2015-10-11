@@ -23,8 +23,9 @@
 from __future__ import print_function
 from datetime import datetime
 import glob,os,sys
-from configuration import cfg
-from utils import warn,error,notif,critic,setifyString,CrossPlatformRelPath
+
+from .configuration import cfg
+from .utils import warn,error,notif,critic,setifyString,CrossPlatformRelPath
 
 def checkTests(current):
   cde=current['tests']

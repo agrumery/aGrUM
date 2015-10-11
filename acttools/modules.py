@@ -23,8 +23,8 @@
 import sys
 import re
 
-from configuration import cfg
-from utils import setifyString,notif
+from .configuration import cfg
+from .utils import setifyString,notif
 
 def parseModulesTxt():
   modules={}

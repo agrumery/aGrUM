@@ -36,9 +36,11 @@ namespace gum {
     template <typename RowFilter>
     INLINE Counter<IdSetAlloc, CountAlloc>::Counter(
         const RowFilter& filter,
-        const std::vector<unsigned int>& var_modalities )
+        const std::vector<unsigned int>& var_modalities,
+        unsigned long min_range,
+        unsigned long max_range  )
         : _modalities( var_modalities )
-        , _record_counter( filter, var_modalities ) {
+        , _record_counter( filter, var_modalities, min_range, max_range ) {
       // for debugging purposes
       GUM_CONSTRUCTOR( Counter );
     }
@@ -509,6 +511,16 @@ namespace gum {
     Counter<IdSetAlloc, CountAlloc>::_getConditioningNodes() const noexcept {
       return _conditioning_nodesets;
     }
+
+
+    /// sets the range of records taken into account by the counter
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE void
+    Counter<IdSetAlloc, CountAlloc>::setRange ( unsigned long min_range,
+                                                unsigned long max_range ) {
+      return _record_counter.setRange ( min_range, max_range );
+    }
+    
 
   } /* namespace learning */
 

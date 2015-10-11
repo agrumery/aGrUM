@@ -216,18 +216,32 @@ namespace gum {
     /// default constructor
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
-    INLINE RecordCounter<IdSetAlloc, CountAlloc>::RecordCounter(
-        const RowFilter& filter,
-        const std::vector<unsigned int>& var_modalities )
-        : __modalities( &var_modalities ) {
+    INLINE RecordCounter<IdSetAlloc, CountAlloc>::RecordCounter
+    ( const RowFilter& filter,
+      const std::vector<unsigned int>& var_modalities,
+      unsigned long min_range,
+      unsigned long max_range ) :
+      __modalities( &var_modalities ),
+      __min_range ( min_range ),
+      __max_range ( max_range ) {
+      
       // create a first recordCounter so that we can store the row filter
       // and apply subsequently virtual copy constructors to create other
       // thread counters
       __thread_counters.reserve( __max_threads_number );
-      __thread_counters.push_back(
-          new RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc>(
-              filter, var_modalities ) );
+      auto counter = new RecordCounterThread<RowFilter, IdSetAlloc, CountAlloc>
+        ( filter, var_modalities );
+      __thread_counters.push_back( counter );
 
+      // set the range of the counter
+      const unsigned long db_size = counter->DBSize();
+      if ( __max_range > db_size ) {
+        __max_range = db_size;
+      }
+      if ( __min_range >= __max_range ) {
+        GUM_ERROR ( OutOfBounds, "min/max database range incorrects" );
+      }
+      
       GUM_CONSTRUCTOR( RecordCounter );
     }
 
@@ -241,7 +255,9 @@ namespace gum {
         , __set_state( from.__set_state )
         , __countings( from.__countings )
         , __subset_lattice( from.__subset_lattice )
-        , __nb_thread_counters( from.__nb_thread_counters ) {
+        , __nb_thread_counters( from.__nb_thread_counters )
+        , __min_range ( from.__min_range )
+        , __max_range ( from.__max_range ) {
       // create the thread counters
       __thread_counters.reserve( from.__thread_counters.size() );
 
@@ -308,7 +324,9 @@ namespace gum {
         , __set2thread_id( std::move( from.__set2thread_id ) )
         , __subset_lattice( std::move( from.__subset_lattice ) )
         , __thread_counters( std::move( from.__thread_counters ) )
-        , __nb_thread_counters( from.__nb_thread_counters ) {
+        , __nb_thread_counters( from.__nb_thread_counters )
+        , __min_range ( from.__min_range )
+        , __max_range ( from.__max_range ) {
       GUM_CONS_MOV( RecordCounter );
     }
 
@@ -388,17 +406,24 @@ namespace gum {
     void RecordCounter<IdSetAlloc, CountAlloc>::countOnSubDatabase() {
       // now, for all the non-subsets, compute their countings
       // start parallel ThreadCounters
-      const unsigned long db_size = __thread_counters[0]->DBSize();
+      const unsigned long parsed_db_size = __max_range - __min_range;
 
       // compute the max number of threads to use to parse the database, so that
       // each thread has at least NB elements to parse. This proves useful for
       // small databases and large numbers of processors
       unsigned int max_nb_threads =
-          std::min( db_size / __min_nb_rows_per_thread,
+          std::min( parsed_db_size / __min_nb_rows_per_thread,
                     (unsigned long)__max_threads_number );
-      const unsigned long max_size_per_thread =
-          ( db_size + max_nb_threads - 1 ) / max_nb_threads;
-      max_nb_threads = db_size / max_size_per_thread;
+      unsigned long max_size_per_thread;
+      if ( max_nb_threads == 0 ) {
+        max_nb_threads = 1;
+        max_size_per_thread = parsed_db_size;
+      }
+      else {
+        max_size_per_thread =
+          ( parsed_db_size + max_nb_threads - 1 ) / max_nb_threads;
+        max_nb_threads = parsed_db_size / max_size_per_thread;
+      }
 
 #pragma omp parallel num_threads( max_nb_threads )
       {
@@ -413,7 +438,7 @@ namespace gum {
 
           __nb_thread_counters = num_threads;
         }
-
+        
         // initialize the thread counters
         const int this_thread = getThreadNumber();
         RecordCounterThreadBase<IdSetAlloc, CountAlloc>& thread_counter =
@@ -427,11 +452,15 @@ namespace gum {
         }
 
         // indicate to the filter which part of the database it must parse
-        const unsigned long size_per_thread =
-            ( db_size + num_threads - 1 ) / num_threads;
-        const unsigned long min_range = size_per_thread * this_thread;
+        unsigned long size_per_thread =
+            ( parsed_db_size + num_threads - 1 ) / num_threads;
+        if ( size_per_thread == 0 )
+          size_per_thread = parsed_db_size;
+        const unsigned long min_range =
+          __min_range + size_per_thread * this_thread;
         const unsigned long max_range =
-            std::min( min_range + size_per_thread, db_size );
+          std::min( min_range + size_per_thread, __max_range );
+         
         if ( min_range < max_range ) {
           thread_counter.setRange( min_range, max_range );
 
@@ -783,9 +812,28 @@ namespace gum {
     /// returns the size of the database
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE unsigned long
-    RecordCounter<IdSetAlloc, CountAlloc>::DBSize() noexcept {
-      return __thread_counters[0]->DBSize();
+    RecordCounter<IdSetAlloc, CountAlloc>::DBParsedSize() noexcept {
+      return __max_range - __min_range;
     }
+
+
+    /// returns the size of the database
+    template <typename IdSetAlloc, typename CountAlloc>
+    INLINE void
+    RecordCounter<IdSetAlloc, CountAlloc>::setRange
+    ( unsigned long min_range,
+      unsigned long max_range )  {
+      const unsigned long db_size = __thread_counters[0]->DBSize();
+      if ( max_range > db_size ) {
+        max_range = db_size;
+      }
+      if ( min_range >= max_range ) {
+        GUM_ERROR ( OutOfBounds, "min/max database range incorrects" );
+      }
+      __min_range = min_range;
+      __max_range = max_range;
+    }
+    
 
   } /* namespace learning */
 

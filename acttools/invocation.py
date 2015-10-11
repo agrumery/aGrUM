@@ -20,7 +20,7 @@
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
-from configuration import cfg
+from .configuration import cfg
 
 def _getParam(name):
   return cfg.C_END+'--'+cfg.C_ERROR+name

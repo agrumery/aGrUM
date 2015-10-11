@@ -24,7 +24,7 @@ import sys
 import os
 import glob
 
-from configuration import cfg
+from .configuration import cfg
 
 def about():
   print(cfg.C_END+cfg.C_WARNING+"aGrUM"+cfg.C_END+" compilation tool "+cfg.C_VALUE+cfg.numversion+cfg.C_END)

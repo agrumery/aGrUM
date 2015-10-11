@@ -21,11 +21,12 @@
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
 import sys
-from configuration import cfg
-from utils import notif,warn,trace,setifyString
 import glob
 from subprocess import PIPE, Popen, STDOUT,call
-from tests import checkTests,testNames
+
+from .configuration import cfg
+from .utils import notif,warn,trace,setifyString
+from .tests import checkTests,testNames
 
 def checkAgrumMemoryLeak(x):
   commande='act test debug -t {0}'.format(x)

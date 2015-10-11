@@ -37,8 +37,11 @@ namespace gum {
     INLINE ScoreLog2Likelihood<IdSetAlloc, CountAlloc>::ScoreLog2Likelihood(
         const RowFilter& filter,
         const std::vector<unsigned int>& var_modalities,
-        Apriori<IdSetAlloc, CountAlloc>& apriori )
-        : Score<IdSetAlloc, CountAlloc>( filter, var_modalities, apriori ) {
+        Apriori<IdSetAlloc, CountAlloc>& apriori,
+        unsigned long min_range,
+        unsigned long max_range )
+        : Score<IdSetAlloc, CountAlloc>( filter, var_modalities, apriori,
+                                         min_range, max_range ) {
       // for debugging purposes
       GUM_CONSTRUCTOR( ScoreLog2Likelihood );
     }
