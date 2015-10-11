@@ -27,9 +27,9 @@ import shutil
 import glob
 from subprocess import call
 
-from configuration import cfg
-from utils import trace,notif,critic
-from oneByOne import checkAgrumMemoryLeaks
+from .configuration import cfg
+from .utils import trace,notif,critic
+from .oneByOne import checkAgrumMemoryLeaks
 
 def specialActions(current):
   if current["action"]=="clean":

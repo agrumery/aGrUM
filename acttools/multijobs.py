@@ -28,8 +28,8 @@ import io
 from subprocess import PIPE, Popen, STDOUT,call
 from threading  import Thread
 
-from configuration import cfg
-from utils import notif,error,critic
+from .configuration import cfg
+from .utils import notif,error,critic
 
 try:
     from Queue import Queue, Empty
@@ -155,7 +155,7 @@ def threaded_execution(cde,verbose):
   def readerLoop(lastline):
     chan,lines = inp.get( True,timeout = 0.1)
     if chan=='stdout' and lines is not None:
-      lines=(lastline+lines).split("\n")
+      lines=(lastline+lines.decode('utf-8')).split("\n")
       for i in range(len(lines)-1):
         if lines[i]!="":
           print("\r"+prettifying(lines[i]).rstrip())
@@ -164,7 +164,7 @@ def threaded_execution(cde,verbose):
         print("\r"+prettifying(lastline).rstrip(),end="")
       sys.stdout.flush()
     elif chan=='stderr' and lines is not None:
-      lines=lines.split("\n")
+      lines=lines.decode('utf-8').split("\n")
       for line in lines:
         if line!="":
           if line[0]=="/":

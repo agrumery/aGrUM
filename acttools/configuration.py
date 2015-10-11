@@ -20,11 +20,12 @@
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
-import const as cfg
 from optparse import OptionParser
 from sys import platform
 
-from modules import parseModulesTxt
+from . import const as cfg
+from .modules import parseModulesTxt
+from .tools import check_tools
 
 try:
   import colorama
@@ -69,7 +70,7 @@ def initParams():
     cfg.default['python']="3"
     cfg.default['dry_run']=False
     cfg.default['coverage']=False
-    
+
     cfg.actions=set("lib test install doc clean show uninstall package autoindent".split())
     cfg.modes=set("debug release".split())
     cfg.targets=set("aGrUM pyAgrum jAgrum".split())
@@ -171,6 +172,5 @@ def configureOutputs(options):
   cfg.verbosity=options.verbose
   configureColors(options.no_fun)
 
-from tools import check_tools
 def configureTools():
     (cfg.python2,cfg.python3,cfg.cmake,cfg.make,cfg.clangformat)=check_tools()

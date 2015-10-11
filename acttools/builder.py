@@ -20,9 +20,9 @@
 #*   Free Software Foundation, Inc.,                                       *
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
-from configuration import cfg
-from utils import trace,setifyString,safe_cd,critic
-from multijobs import execCde
+from .configuration import cfg
+from .utils import trace,setifyString,safe_cd,critic
+from .multijobs import execCde
 
 def buildCmake(current,target):
     line=cfg.cmake+" .."
@@ -120,6 +120,6 @@ def execFromLine(current,line,checkRC=True):
     trace(current,line)
     if not current['dry_run']:
         rc=execCde(line,current)
-	if checkRC:
+        if checkRC:
           if rc>0:
             critic("Received error {0}".format(rc),rc=rc)
