@@ -1182,7 +1182,7 @@ namespace gum {
      * @return Returns the first value of a pair given its second value.
      * @throws NotFound Raised if the element cannot be found.
      */
-    const T1& first( const T2& second ) const;
+    const T1& first( T2 second ) const;
 
     /**
      * @brief Returns the first value of a pair given its second value or
@@ -1193,7 +1193,7 @@ namespace gum {
      * @return Returns the first value of a pair given its second value or
      * default_val if second is not in the bjection.
      */
-    const T1& firstWithDefault( const T2& second, const T1& default_val ) const;
+    const T1& firstWithDefault( T2 second, T1 default_val ) const;
 
     /**
      * @brief Returns the second value of a pair given its first value.
@@ -1201,7 +1201,7 @@ namespace gum {
      * @return Returns the second value of a pair given its first value.
      * @throws NotFound Raised if the element cannot be found.
      */
-    const T2& second( const T1& first ) const;
+    const T2& second( T1 first ) const;
 
     /**
      * @brief Returns the second value of a pair given its first value or
@@ -1212,7 +1212,7 @@ namespace gum {
      * @return Returns the second value of a pair given its first value or
      * default_val if first is not in the bjection.
      */
-    const T2& secondWithDefault( const T1& first, const T2& default_val ) const;
+    const T2& secondWithDefault( T1 first, T2 default_val ) const;
 
     /**
      * @brief Returns true if first is in the first element in a pair in the
@@ -1221,7 +1221,7 @@ namespace gum {
      * @return Returns true if first is in the first element in a pair in the
      * gum::Bijection.
      */
-    bool existsFirst( const T1& first ) const;
+    bool existsFirst( T1 first ) const;
 
     /**
      * @brief Returns true if second is in the second element in a pair in the
@@ -1230,7 +1230,7 @@ namespace gum {
      * @return Returns true if second is in the second element in a pair in the
      * gum::Bijection.
      */
-    bool existsSecond( const T2& second ) const;
+    bool existsSecond( T2 second ) const;
 
     /** 
      * @brief Inserts a new association in the gum::Bijection.
@@ -1241,18 +1241,7 @@ namespace gum {
      * @param second The second element of the pair to insert.
      * @throws DuplicateElement Raised if the association already exists.
      */
-    void insert( const T1& first, const T2& second );
-
-    /** 
-     * @brief Inserts a new association in the gum::Bijection.
-     *
-     * The values are moved in the gum::Bijection.
-     *
-     * @param first The first element of the pair to insert.
-     * @param second The second element of the pair to insert.
-     * @throws DuplicateElement Raised if the association already exists.
-     */
-    void insert( T1&& first, T2&& second );
+    void insert( T1 first, T2 second );
 
     /**
      * @brief Emplace a new element in the gum::Bijection.
@@ -1296,7 +1285,7 @@ namespace gum {
      *
      * @param first The first element of a pair in the gum::Bijection.
      */
-    void eraseFirst( const T1& first );
+    void eraseFirst( T1 first );
 
     /** 
      * @brief Erases an association containing the given second element.
@@ -1306,7 +1295,7 @@ namespace gum {
      *
      * @param first The second element of a pair in the gum::Bijection.
      */
-    void eraseSecond( const T2& second );
+    void eraseSecond( T2 second );
 
     /**
      * @brief Returns a friendly representatin of the gum::Bijection.
