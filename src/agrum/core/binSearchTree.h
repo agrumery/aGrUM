@@ -59,6 +59,7 @@ namespace gum {
    * @tparam Cmp The compatator for sorting the binary search tree.
    * @tparam Node The nodes type used to store values in the binary search
    * tree.
+   *
    */
   template <typename Val,
             class Cmp = std::less<Val>,
