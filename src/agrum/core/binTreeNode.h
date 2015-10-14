@@ -19,60 +19,6 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Node class for various binary trees
- *
- * BinTreeNode is the base class for nodes of binary trees. It is equipped with
- * the material to add nodes to or remove them from the tree. The class ensures
- * that trees are always a coherent structure, that is, it is not possible to
- * have a node X having, say, a left child, and this child having no parent or
- * a parent different from X.
- *
- * @par Usage example:
- *
- * @code
- * // create a node containing an integer
- * BinTreeNode<int> node1 (33);
- *
- * // get the integer contained in the node
- * std::cerr << node1.value () << std::endl;
- * std::cerr << *node1 << std::endl;
- *
- * // create a disconnected node containing the same value as node1
- * BinTreeNode<int> node2 = node1;
- * BinTreeNode<int> node3 (3); node3 = node1;
- *
- * // insert left and right children
- * node1.insertLeftChild ( node2 );
- * node1.insertRightChild ( node 3 );
- *
- * BinTreeNode<int>* node4 = node2.insertLeftChild ( 3 );
- * BinTreeNode<int>* node5 = node2.insertRightChild (4 );
- *
- * BinTreeNode<int>* node6 = node4.insertChild ( 5, GUM_BIN_TREE_LEFT_CHILD );
- * BinTreeNode<int>* node7 = node4.insertChild ( 6, GUM_BIN_TREE_RIGHT_CHILD );
- *
- * BinTreeNode<int> node8 (55), node9(44);
- * node3.insertChild ( node8, GUM_BIN_TREE_LEFT_CHILD );
- * node3.insertChild ( node9, GUM_BIN_TREE_RIGHT_CHILD );
- *
- * // get the parents and children
- * BinTreeNode<int>* node8 = node.parent();
- * node8 = node1.leftChild();
- * node8 = node1.rightChild();
- * node8 = node1.child(gum::GUM_BIN_TREE_LEFT_CHILD);
- * node8 = node1.child(gum::GUM_BIN_TREE_RIGHT_CHILD);
- *
- * // remove links between parents and children
- *
- * // there is no more connection between node1 and node2
- * node1.eraseLeftLink ();
- * // there is no more connection between node1 and node3
- * node1.eraseRightLink ();  
- * // erase (node2,node4)
- * node2.eraseLink ( gum::GUM_BIN_TREE_LEFT_CHILD);  
- * // erase (node2;node5)
- * node2.eraseLink ( gum::GUM_BIN_TREE_RIGHT_CHILD); 
- * @endcode
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
