@@ -55,6 +55,7 @@ namespace gum {
   /**
    * @class BijectionIteratorStaticEnd bijection.h <agrum/core/bijection.h>
    * @brief A class which creates the static iterator used by gim::Bijections.
+   * @ingroup basicstruct_group
    *
    * The aim of using this class rather than just creating __BijectionIterEnd
    * as a global variable is to prevent other classes to access and modify
@@ -90,7 +91,8 @@ namespace gum {
   /**
    * @class BijectionIteratorGet bijection.h <agrum/core/bijection.h>
    * @brief Dummy classes for discriminating scalars and non-scalars operators
-   * * and -> wihtout any overhead.
+   * and -> wihtout any overhead.
+   * @ingroup basicstruct_group
    *
    * This will be used for scalar types.
    */
@@ -112,7 +114,8 @@ namespace gum {
   /**
    * @class BijectionIteratorGet bijection.h <agrum/core/bijection.h>
    * @brief Dummy classes for discriminating scalars and non-scalars operators
-   * * and -> wihtout any overhead.
+   * and -> wihtout any overhead.
+   * @ingroup basicstruct_group
    *
    * This will be used for non-scala types.
    */
