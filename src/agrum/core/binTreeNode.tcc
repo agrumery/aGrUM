@@ -17,7 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+
+/**
+ * @file
  * @brief Node class for various binary search trees
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
@@ -26,8 +28,6 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
-
-  /// basic constructor
 
   template <typename Val>
   INLINE BinTreeNode<Val>::BinTreeNode( const Val& v )
@@ -42,8 +42,6 @@ namespace gum {
     _children[1] = nullptr;
   }
 
-  /// creates a new disconnected node with the same value as "from"
-
   template <typename Val>
   INLINE BinTreeNode<Val>::BinTreeNode( const BinTreeNode<Val>& from )
       : _val( from._val )
@@ -56,8 +54,6 @@ namespace gum {
     _children[0] = nullptr;
     _children[1] = nullptr;
   }
-
-  /// destructor
 
   template <typename Val>
   INLINE BinTreeNode<Val>::~BinTreeNode() {
@@ -95,59 +91,40 @@ namespace gum {
     return *this;
   }
 
-  /// returns the value stored in a node of the binary search tree
-
   template <typename Val>
   INLINE Val& BinTreeNode<Val>::value() {
     return _val;
   }
-
-  /// alias for method value
 
   template <typename Val>
   INLINE Val& BinTreeNode<Val>::operator*() {
     return _val;
   }
 
-  /// returns the given child of a node
-  /** @warning if the child does not exists, the method returns a 0 pointer. */
   template <typename Val>
   INLINE BinTreeNode<Val>* BinTreeNode<Val>::child( BinTreeDir dir ) const {
     return _children[static_cast<int>( dir )];
   }
-
-  /// returns the given child of a node
-  /** @warning if the child does not exists, the method returns a 0 pointer. */
 
   template <typename Val>
   INLINE BinTreeNode<Val>* BinTreeNode<Val>::leftChild() const {
     return _children[static_cast<int>( BinTreeDir::LEFT_CHILD )];
   }
 
-  /// returns the given child of a node
-  /** @warning if the child does not exists, the method returns a 0 pointer. */
-
   template <typename Val>
   INLINE BinTreeNode<Val>* BinTreeNode<Val>::rightChild() const {
     return _children[static_cast<int>( BinTreeDir::RIGHT_CHILD )];
   }
-
-  /// returns the parent of a node
-  /** @warning if the parent does not exists, the method returns a 0 pointer. */
 
   template <typename Val>
   INLINE BinTreeNode<Val>* BinTreeNode<Val>::parent() const {
     return _parent;
   }
 
-  /// returns the direction of the edge parent->current node
-
   template <typename Val>
   INLINE BinTreeDir BinTreeNode<Val>::parentDir() const {
     return _parent_dir;
   }
-
-  /// adds a new left child to the current node
 
   template <typename Val>
   INLINE void BinTreeNode<Val>::insertLeftChild( BinTreeNode<Val>& new_child ) {
@@ -165,8 +142,6 @@ namespace gum {
     _children[static_cast<int>( BinTreeDir::LEFT_CHILD )] = &new_child;
   }
 
-  /// adds a new left child to the current node
-
   template <typename Val>
   INLINE BinTreeNode<Val>* BinTreeNode<Val>::insertLeftChild( const Val& val ) {
     if ( _children[static_cast<int>( BinTreeDir::LEFT_CHILD )] ) {
@@ -182,8 +157,6 @@ namespace gum {
 
     return new_child;
   }
-
-  /// adds a new right child to the current node
 
   template <typename Val>
   INLINE void
@@ -202,8 +175,6 @@ namespace gum {
     _children[static_cast<int>( BinTreeDir::RIGHT_CHILD )] = &new_child;
   }
 
-  /// adds a new right child to the current node
-
   template <typename Val>
   INLINE BinTreeNode<Val>*
   BinTreeNode<Val>::insertRightChild( const Val& val ) {
@@ -220,8 +191,6 @@ namespace gum {
 
     return new_child;
   }
-
-  /// adds a new child to the current node
 
   template <typename Val>
   INLINE void BinTreeNode<Val>::insertChild( BinTreeNode<Val>& new_child,
@@ -240,8 +209,6 @@ namespace gum {
     _children[static_cast<int>( child_dir )] = &new_child;
   }
 
-  /// adds a new child to the current node
-
   template <typename Val>
   INLINE BinTreeNode<Val>*
   BinTreeNode<Val>::insertChild( const Val& val, BinTreeDir child_dir ) {
@@ -259,8 +226,6 @@ namespace gum {
     return new_child;
   }
 
-  /// remove the link between the current node and its left child
-
   template <typename Val>
   INLINE void BinTreeNode<Val>::eraseLeftLink() {
     if ( _children[static_cast<int>( BinTreeDir::LEFT_CHILD )] ) {
@@ -270,8 +235,6 @@ namespace gum {
       _children[static_cast<int>( BinTreeDir::LEFT_CHILD )] = nullptr;
     }
   }
-
-  /// remove the link between the current node and its right child
 
   template <typename Val>
   INLINE void BinTreeNode<Val>::eraseRightLink() {
@@ -283,8 +246,6 @@ namespace gum {
     }
   }
 
-  /// remove the link between the current node and one of its children
-
   template <typename Val>
   INLINE void BinTreeNode<Val>::eraseLink( BinTreeDir tree_dir ) {
     if ( _children[static_cast<int>( tree_dir )] ) {
@@ -294,8 +255,6 @@ namespace gum {
       _children[static_cast<int>( tree_dir )] = nullptr;
     }
   }
-
-  /// returns the leftmost node of the current tree
 
   template <typename Val>
   INLINE BinTreeNode<Val>* BinTreeNode<Val>::leftmostNode() const {
@@ -307,8 +266,6 @@ namespace gum {
     return node;
   }
 
-  /// returns the rightmost node of the current tree
-
   template <typename Val>
   INLINE BinTreeNode<Val>* BinTreeNode<Val>::rightmostNode() const {
     BinTreeNode<Val>* node = const_cast<BinTreeNode<Val>*>( this );
@@ -318,8 +275,6 @@ namespace gum {
 
     return node;
   }
-
-  /// returns the top ancestor
 
   template <typename Val>
   INLINE BinTreeNode<Val>* BinTreeNode<Val>::root() const {
@@ -331,6 +286,6 @@ namespace gum {
     return node;
   }
 
-} /* namespace gum */
+} // namespace gum 
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+#endif // DOXYGEN_SHOULD_SKIP_THIS
