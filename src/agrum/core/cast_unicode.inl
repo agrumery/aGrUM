@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 /**
  * @file 
  * @brief Unicode helper functions. 
@@ -32,23 +33,30 @@
 #include <string>
 #include <sstream>
 
-/**
- * @brief Cast a std::string into a std::wstring.
- * @param str The std::string to cast.
- * @return Returns the std::wstring of str.
- */
-std::wstring widen( const std::string& str );
-
-/**
- * @brief Cast a std::wstring into a std::string.
- * @param str The std::wstring to cast.
- * @return Returns the std::string of str.
- */
-std::string narrow( const std::wstring& str );
-
-#ifndef GUM_NO_INLINE
 #include <agrum/core/cast_unicode.h>
-#endif
+
+INLINE std::wstring widen( const std::string& str ) {
+  std::wostringstream wstm;
+  const std::ctype<wchar_t>& ctfacet =
+      std::use_facet<std::ctype<wchar_t>>( wstm.getloc() );
+
+  for ( size_t i = 0; i < str.size(); ++i ) {
+    wstm << ctfacet.widen( str[i] );
+  }
+
+  return wstm.str();
+}
+
+INLINE std::string narrow( const std::wstring& str ) {
+  std::ostringstream stm;
+  const std::ctype<char>& ctfacet =
+      std::use_facet<std::ctype<char>>( stm.getloc() );
+
+  for ( std::size_t i = 0; i < str.size(); ++i ) {
+    stm << ctfacet.narrow( str[i], 0 );
+  }
+
+  return stm.str();
+}
 
 #endif  // CAST_UNICODE_H
-

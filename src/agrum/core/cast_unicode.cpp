@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 /**
  * @file 
  * @brief Unicode helper functions. 
@@ -24,31 +25,10 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef CAST_UNICODE_H
-#define CAST_UNICODE_H
-
-#include <locale>
-#include <iostream>
-#include <string>
-#include <sstream>
-
-/**
- * @brief Cast a std::string into a std::wstring.
- * @param str The std::string to cast.
- * @return Returns the std::wstring of str.
- */
-std::wstring widen( const std::string& str );
-
-/**
- * @brief Cast a std::wstring into a std::string.
- * @param str The std::wstring to cast.
- * @return Returns the std::string of str.
- */
-std::string narrow( const std::wstring& str );
-
-#ifndef GUM_NO_INLINE
 #include <agrum/core/cast_unicode.h>
-#endif
 
-#endif  // CAST_UNICODE_H
+// include the inlined functions if necessary
+#ifdef GUM_NO_INLINE
+#include <agrum/core/cast_unicode.inl>
+#endif /* GUM_NO_INLINE */
 
