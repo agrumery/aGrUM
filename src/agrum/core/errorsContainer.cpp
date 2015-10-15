@@ -125,8 +125,6 @@ namespace gum {
     return s.str();
   }
 
-  /// Return the i-th error.
-  /// May throw an exception if i >= count().
   ParseError ErrorsContainer::error( int i ) const {
     if ( count() > i )
       return errors[i];  // May throw an error if i >= count().
@@ -142,9 +140,6 @@ namespace gum {
       GUM_ERROR( OutOfBounds, "Index out of bound." );
     }
   }
-
-  /* **************************************************************************
-   */
 
   ErrorsContainer::ErrorsContainer() {
     error_count = 0;

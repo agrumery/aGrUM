@@ -17,8 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief Errors container (at least) for parser
+
+/**
+ * @file
+ * @brief Errors container (at least) for parser.
  *
  * @author Pierre-Henri WUILLEMIN
  */
@@ -36,92 +38,283 @@
 namespace gum {
 
   /**
+   * @class ParseError errorsContainer.h <agrum/core/errorsContainer.h>
+   * @brief This class is used to represent parsing errors for the different
+   * parser implemented in aGrUM.
+   * @ingroup basicstruct_group
    *
    */
   class ParseError {
     public:
+    // ============================================================================
+    /// @name Class constructors and destructors
+    // ============================================================================
+    /// @{
+
+    /**
+     * @brief Class constructor.
+     * @param is_error True if this is an error.
+     * @param msg The parsing error message.
+     * @param line The line where the parsing error occured.
+     */
     ParseError( bool is_error, const std::string& msg, int line );
+
+    /**
+     * @brief Class constructor.
+     * @param is_error If false, then this ParseError is a warning.
+     * @param msg The parsing error message.
+     * @param filename The file where the parsing error occured.
+     * @param line The line where the parsing error occured.
+     * @param col The column where the parsing error occured.
+     */
     ParseError( bool is_error,
                 const std::string& msg,
                 const std::string& filename,
                 int line,
                 int col = 0 );
+
+    /**
+     * @brief Class constructor.
+     * @param is_error If false, then this ParseError is a warning.
+     * @param msg The parsing error message.
+     * @param filename The file where the parsing error occured.
+     * @param code The code of the parsing error.
+     * @param line The line where the parsing error occured.
+     * @param col The column where the parsing error occured.
+     */
     ParseError( bool is_error,
                 const std::string& msg,
                 const std::string& filename,
                 const std::string& code,
                 int line,
                 int col = 0 );
+
+    /**
+     * @brief Copy constructor.
+     * @param cont The gum::ParseError to copy.
+     */
     ParseError( const ParseError& cont );
 
+    /// @}
+    // ============================================================================
+    /// @name Class operator
+    // ============================================================================
+    /// @{
+
+    /**
+     * @brief Copy operator.
+     * @param cont The gum::ParseError to copy.
+     * @return Returns this gum::ParseError.
+     */
     ParseError operator=( const ParseError& cont );
 
+    /// @}
+    // ============================================================================
+    /// @name Class operator
+    // ============================================================================
+    /// @{
+
+    /// If false, this gum::ParseError is a warning.
     bool is_error;
+
+    /// The line of this gum::ParseError.
     int line;
-    int column;  // default 0
+
+    /// The column of this gum::ParseError, default is 0.
+    int column;
+
+    /// The gum::ParseError message.
     std::string msg;
-    std::string filename;      // default ""
+
+    /// The file of this gum::ParseError, default is "".
+    std::string filename;
+
+    /// The code of this gum::ParseError, default is "".
     mutable std::string code;  // default ""
 
-    ///
+    /**
+     * @brief Return a std::string representation of this gum::ParseError.
+     * @return Return a std::string representation of this gum::ParseError.
+     */
     std::string toString() const;
-    ///
+
+    /**
+     * @brief Return an elegant std::string representation of this
+     * gum::ParseError.
+     * @return Return an elegant std::string representation of this
+     * gum::ParseError.
+     */
     std::string toElegantString() const;
+
+    /// @}
   };
 
+  /**
+   * @class ErrorsContainer errorsContainer.h <agrum/core/errorsContainer.h>
+   * @brief This class is used contain and manipulate gum::ParseError.
+   * @ingroup basicstruct_group
+   */
   class ErrorsContainer {
 
+    /// The list of gum::ParseError contained in this gum::ErrorsContainer.
     mutable std::vector<ParseError> errors;
 
     public:
-    int error_count;    // number of errors detected
-    int warning_count;  // number of warnings detected
+ 
+    /// Number of errors detected.
+    int error_count;    
+ 
+    // Number of warnings detected.
+    int warning_count;  
 
+    // ============================================================================
+    /// @name Class Constructor
+    // ============================================================================
+    /// @{
+ 
+    /**
+     * @brief Class Constructor.
+     */
     ErrorsContainer();
+
+    /**
+     * @brief Copy constructor.
+     * @param cont The ErrorsContainer to copy.
+     */
     ErrorsContainer( const ErrorsContainer& cont );
 
-    /// Add an error object to container.
+    /// @}
+    // ============================================================================
+    /// @name Accessors / Modifiers
+    // ============================================================================
+    /// @{
+
+    /**
+     * @brief Add an error object to the container.
+     * @param error The gum::ParseError to add.
+     */
     void add( ParseError error );
 
-    /// Return the i-th error.
-    /// May throw an exception if i >= count().
+    /**
+     * @brief Returns the i-th error.
+     * @param i The error to return.
+     * @return Returns the i-th error.
+     * @throw OutOfBounds Raised if there is less than i errors.
+     */
     ParseError error( int i ) const;
+
+    /**
+     * @brief Returns the last added error.
+     * @return Returns the last added error.
+     * @throw OutOfBounds Raised if is no error to return.
+     */
     ParseError last() const;
 
-    /// Add an error.
+    /**
+     * @brief Adds an error.
+     * @param msg The error's message.
+     * @param filename The error's file.
+     * @param line The error's line.
+     * @param col The error's column.
+     */
     void addError( const std::string& msg,
                    const std::string& filename,
                    int line,
                    int col );
-    /// Add a warning.
+
+    /**
+     * @brief Adds a warning.
+     * @param msg The warning's message.
+     * @param filename The warning's file.
+     * @param line The warning's line.
+     * @param col The warning's column.
+     */
     void addWarning( const std::string& msg,
                      const std::string& filename,
                      int line,
                      int col );
-    /// Add an exception.
+
+    /**
+     * @brief Add an exception.
+     * @param msg The exception's message.
+     * @param filename The exception's file.
+     */
     void addException( const std::string& msg, const std::string& filename );
 
-    /// Return the number of errors and warnings
-    int count( void ) const;
+    /**
+     * @brief Returns the number of errors and warnings.
+     * @return Returns the number of errors and warnings.
+     */
+    int count() const;
 
-    /// Print errors on output stream.
+    /**
+     * @brief Print errors on output stream.
+     * @param o The output strem to send results.
+     */
     void syntheticResults( std::ostream& o ) const;
+
+    /**
+     * @brief Print errors on output stream.
+     * @param o The output strem to send results.
+     */
     void simpleErrors( std::ostream& o ) const;
+
+    /**
+     * @brief Print errors on output stream.
+     * @param o The output strem to send results.
+     */
     void simpleErrorsAndWarnings( std::ostream& o ) const;
+
+    /**
+     * @brief Print errors on output stream.
+     * @param o The output strem to send results.
+     */
     void elegantErrors( std::ostream& o ) const;
+
+    /**
+     * @brief Print errors on output stream.
+     * @param o The output strem to send results.
+     */
     void elegantErrorsAndWarnings( std::ostream& o ) const;
 
-    // Use by coco/R
+    /// @}
+    // ============================================================================
+    /// @name Coco/R helpers
+    // ============================================================================
+    /// @{
+
+    /**
+     * @brief For adding errors.
+     * @param filename The error's file.
+     * @param line The error's line.
+     * @param col The error's column.
+     * @param msg The error's message.
+     */
     void Error( const std::wstring& filename,
                 int line,
                 int col,
                 const wchar_t* msg );
+
+    /**
+     * @brief For adding warnings.
+     * @param filename The warning's file.
+     * @param line The warning's line.
+     * @param col The warning's column.
+     * @param msg The warning's message.
+     */
     void Warning( const std::wstring& filename,
                   int line,
                   int col,
                   const wchar_t* msg );
+
+    /**
+     * @brief For adding exceptions.
+     * @param filename The exception's file.
+     * @param msg The exception's message.
+     */
     void Exception( const std::wstring& filename, const wchar_t* msg );
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     // Deprecated.
     // Use error(i)->method().
     bool is_error( int i ) const;
@@ -129,10 +322,37 @@ namespace gum {
     int col( int i ) const;
     std::wstring msg( int i ) const;
     std::wstring filename( int i ) const;
+#endif
 
+    /// @}
+    // ============================================================================
+    /// @name Class operators
+    // ============================================================================
+    /// @{
+
+    /**
+     * @brief Return the sum of two gum::ErrorsContainer.
+     * @param cont The gum::ErrorsContainer to add.
+     * @return Return the sum of two gum::ErrorsContainer.
+     */
     ErrorsContainer operator+( const ErrorsContainer& cont ) const;
+
+    /**
+     * @brief Copy Operator.
+     * @param cont The gum::ErrorsContainer to copy.
+     * @return Returns this gum::ErrorsContainer.
+     */
     ErrorsContainer operator=( const ErrorsContainer& cont );
+
+    /**
+     * @brief Add the content of a gum::ErrorsContainer to this
+     * gum::ErrorsContainer.
+     * @param cont The gum::ErrorsContainer to add to this.
+     * @return Returns this gum::ErrorsContainer.
+     */
     ErrorsContainer operator+=( const ErrorsContainer& cont );
+
+    /// @}
 
   };  // ErrorsContainer
 
@@ -144,4 +364,4 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif  // GUM_ERRORS_CONTAINERS_H
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
+
