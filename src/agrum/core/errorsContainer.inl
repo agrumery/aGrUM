@@ -99,25 +99,4 @@ namespace gum {
     o << "Warnings : " << warning_count << std::endl;
   }
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-  INLINE
-  bool ErrorsContainer::is_error( int i ) const { return errors[i].is_error; }
-
-  INLINE
-  int ErrorsContainer::line( int i ) const { return errors[i].line; }
-
-  INLINE
-  int ErrorsContainer::col( int i ) const { return errors[i].column; }
-
-  INLINE
-  std::wstring ErrorsContainer::msg( int i ) const {
-    return widen( errors[i].msg );
-  }
-
-  INLINE
-  std::wstring ErrorsContainer::filename( int i ) const {
-    return widen( errors[i].filename );
-  }
-#endif
-
 }  // namespace gum

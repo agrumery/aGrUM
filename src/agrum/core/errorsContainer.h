@@ -314,16 +314,6 @@ namespace gum {
      */
     void Exception( const std::wstring& filename, const wchar_t* msg );
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-    // Deprecated.
-    // Use error(i)->method().
-    bool is_error( int i ) const;
-    int line( int i ) const;
-    int col( int i ) const;
-    std::wstring msg( int i ) const;
-    std::wstring filename( int i ) const;
-#endif
-
     /// @}
     // ============================================================================
     /// @name Class operators

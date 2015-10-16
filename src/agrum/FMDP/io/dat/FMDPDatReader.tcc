@@ -48,7 +48,6 @@ namespace gum {
     __parseDone = false;
     ddf->putOnNoVariableCheckMode();
     __factory = new FMDPFactory<GUM_SCALAR>( __fmdp, ddf );
-    //~ __factory->setVerbose();
     __ioerror = false;
 
     try {
@@ -124,7 +123,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE unsigned int FMDPDatReader<GUM_SCALAR>::errLine( unsigned int i ) {
     if ( __parseDone )
-      return __parser->errors().line( i );
+      return __parser->errors().error(i).line;
     else
       GUM_ERROR( OperationNotAllowed, "FMDPDat file not parsed yet" );
   }
@@ -132,7 +131,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE unsigned int FMDPDatReader<GUM_SCALAR>::errCol( unsigned int i ) {
     if ( __parseDone )
-      return __parser->errors().col( i );
+      return __parser->errors().error(i).column;
     else
       GUM_ERROR( OperationNotAllowed, "FMDPDat file not parsed yet" );
   }
@@ -140,7 +139,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE bool FMDPDatReader<GUM_SCALAR>::errIsError( unsigned int i ) {
     if ( __parseDone )
-      return __parser->errors().is_error( i );
+      return __parser->errors().error(i).is_error;
     else
       GUM_ERROR( OperationNotAllowed, "FMDPDat file not parsed yet" );
   }
@@ -148,7 +147,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE std::string FMDPDatReader<GUM_SCALAR>::errMsg( unsigned int i ) {
     if ( __parseDone )
-      return std::string( narrow( __parser->errors().msg( i ) ) );
+      return __parser->errors().error(i).msg;
     else
       GUM_ERROR( OperationNotAllowed, "FMDPDat file not parsed yet" );
   }

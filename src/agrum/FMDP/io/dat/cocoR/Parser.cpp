@@ -40,623 +40,539 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 
 namespace gum {
-  namespace MDPDAT {
+namespace MDPDAT {
 
 
-    void Parser::SynErr( int n ) {
-      if ( errDist >= minErrDist )
-        SynErr( scanner->filename(), la->line, la->col, n );
+void Parser::SynErr( int n ) {
+  if ( errDist >= minErrDist ) SynErr( scanner->filename(),la->line, la->col, n );
 
-      errDist = 0;
+  errDist = 0;
+}
+
+
+const ErrorsContainer& Parser::errors( void ) const {
+  return __errors;
+}
+
+void Parser::Get() {
+  for ( ;; ) {
+    t = la;
+    la = scanner->Scan();
+
+    if ( la->kind <= maxT ) { ++errDist; break; }
+
+    
+
+    if ( dummyToken != t ) {
+      dummyToken->kind = t->kind;
+      dummyToken->pos = t->pos;
+      dummyToken->col = t->col;
+      dummyToken->line = t->line;
+      dummyToken->next = NULL;
+      coco_string_delete( dummyToken->val );
+      dummyToken->val = coco_string_create( t->val );
+      t = dummyToken;
     }
 
+    la = t;
+  }
+}
 
-    const ErrorsContainer& Parser::errors( void ) const { return __errors; }
+void Parser::Expect( int n ) {
+  if ( la->kind==n ) Get(); else { SynErr( n ); }
+}
 
-    void Parser::Get() {
-      for ( ;; ) {
-        t = la;
-        la = scanner->Scan();
+void Parser::ExpectWeak( int n, int follow ) {
+  if ( la->kind == n ) Get();
+  else {
+    SynErr( n );
 
-        if ( la->kind <= maxT ) {
-          ++errDist;
-          break;
-        }
+    while ( !StartOf( follow ) ) Get();
+  }
+}
 
+bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
+  if ( la->kind == n ) {Get(); return true;}
+  else if ( StartOf( repFol ) ) {return false;}
+  else {
+    SynErr( n );
 
-        if ( dummyToken != t ) {
-          dummyToken->kind = t->kind;
-          dummyToken->pos = t->pos;
-          dummyToken->col = t->col;
-          dummyToken->line = t->line;
-          dummyToken->next = NULL;
-          coco_string_delete( dummyToken->val );
-          dummyToken->val = coco_string_create( t->val );
-          t = dummyToken;
-        }
-
-        la = t;
-      }
-    }
-
-    void Parser::Expect( int n ) {
-      if ( la->kind == n )
-        Get();
-      else {
-        SynErr( n );
-      }
-    }
-
-    void Parser::ExpectWeak( int n, int follow ) {
-      if ( la->kind == n )
-        Get();
-      else {
-        SynErr( n );
-
-        while ( !StartOf( follow ) )
-          Get();
-      }
-    }
-
-    bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
-      if ( la->kind == n ) {
-        Get();
-        return true;
-      } else if ( StartOf( repFol ) ) {
-        return false;
-      } else {
-        SynErr( n );
-
-        while ( !( StartOf( syFol ) || StartOf( repFol ) || StartOf( 0 ) ) ) {
-          Get();
-        }
-
-        return StartOf( syFol );
-      }
-    }
-
-    void Parser::MDPDAT() {
-      VARIABLES_DECLARATION();
-      while ( la->kind == 10 /* "action" */ ) {
-        ACTION();
-      }
-      REWARD_DECISION_DIAGRAM();
-      DISCOUNT();
-      TOLERANCE();
-    }
-
-    void Parser::VARIABLES_DECLARATION() {
-      Expect( _lpar );
-      Expect( 8 /* "variables" */ );
-      while ( la->kind == _lpar ) {
-        VARIABLE();
-      }
-      Expect( 9 /* ")" */ );
-    }
-
-    void Parser::ACTION() {
-      std::string name_of_action;
-      float tolerance;
-      Expect( 10 /* "action" */ );
-      __factory->startActionDeclaration();
-      if ( la->kind == _ident ) {
-        IDENT( name_of_action );
-      } else if ( la->kind == _string ) {
-        STRING( name_of_action );
-      } else
-        SynErr( 19 );
-      TRY( __factory->addAction( name_of_action ) );
-      if ( la->kind == _integer || la->kind == _number ) {
-        FLOAT( tolerance );
-      }
-      while ( la->kind == _ident ) {
-        TRANSITION_DECISION_DIAGRAM();
-      }
-      if ( la->kind == 12 /* "cost" */ ) {
-        COST_DECISION_DIAGRAM();
-      }
-      Expect( 11 /* "endaction" */ );
-      TRY( __factory->endActionDeclaration() );
-    }
-
-    void Parser::REWARD_DECISION_DIAGRAM() {
-      std::string name_of_var;
-      __factory->startRewardDeclaration();
-      Expect( 13 /* "reward" */ );
-      if ( la->kind == _lpar ) {
-        if ( IsFollowedByIdent() ) {
-          Expect( _lpar );
-          SUB_DECISION_DIAGRAM();
-          Expect( 9 /* ")" */ );
-        } else {
-          Get();
-          LEAF();
-          Expect( 9 /* ")" */ );
-        }
-        TRY( __factory->addReward() );
-        __parentModality.clear();
-        __parentNode.clear();
-      } else if ( la->kind == 14 /* "[" */ ) {
-        Get();
-        std::string operand_type;
-        OPERAND( operand_type );
-        __factory->setOperationModeOn( operand_type );
-        if ( IsFollowedByIdent() ) {
-          Expect( _lpar );
-          SUB_DECISION_DIAGRAM();
-          Expect( 9 /* ")" */ );
-        } else if ( la->kind == _lpar ) {
-          Get();
-          LEAF();
-          Expect( 9 /* ")" */ );
-        } else
-          SynErr( 20 );
-        TRY( __factory->addReward() );
-        __parentModality.clear();
-        __parentNode.clear();
-        while ( la->kind == _lpar ) {
-          if ( IsFollowedByIdent() ) {
-            Expect( _lpar );
-            SUB_DECISION_DIAGRAM();
-            Expect( 9 /* ")" */ );
-          } else {
-            Get();
-            LEAF();
-            Expect( 9 /* ")" */ );
-          }
-          TRY( __factory->addReward() );
-          __parentModality.clear();
-          __parentNode.clear();
-        }
-        Expect( 15 /* "]" */ );
-      } else
-        SynErr( 21 );
-      __factory->endRewardDeclaration();
-    }
-
-    void Parser::DISCOUNT() {
-      float value;
-      __factory->startDiscountDeclaration();
-      Expect( 16 /* "discount" */ );
-      FLOAT( value );
-      __factory->addDiscount( value );
-      __factory->endDiscountDeclaration();
-    }
-
-    void Parser::TOLERANCE() {
-      float value;
-      Expect( 17 /* "tolerance" */ );
-      FLOAT( value );
-    }
-
-    void Parser::VARIABLE() {
-      std::string name_of_var;
-      Expect( _lpar );
-      __factory->startVariableDeclaration();
-      IDENT( name_of_var );
-      TRY( __factory->variableName( name_of_var ) );
-      MODALITY_LIST();
-      Expect( 9 /* ")" */ );
-      TRY( __factory->endVariableDeclaration() );
-    }
-
-    void Parser::IDENT( std::string& name ) {
-      Expect( _ident );
-      name = narrow( t->val );
-    }
-
-    void Parser::MODALITY_LIST() {
-      std::string label;
-      IDENT_OR_INTEGER( label );
-      TRY( __factory->addModality( label ) );
-      if ( la->kind == _ident || la->kind == _integer ) {
-        MODALITY_LIST();
-      }
-    }
-
-    void Parser::IDENT_OR_INTEGER( std::string& name ) {
-      if ( la->kind == _ident ) {
-        IDENT( name );
-      } else if ( la->kind == _integer ) {
-        Get();
-        name = narrow( t->val );
-      } else
-        SynErr( 22 );
-    }
-
-    void Parser::STRING( std::string& str ) {
-      Expect( _string );
-      str = narrow( t->val );
-    }
-
-    void Parser::FLOAT( float& val ) {
-      if ( la->kind == _number ) {
-        Get();
-        val = coco_atof( t->val );
-      } else if ( la->kind == _integer ) {
-        Get();
-        val = coco_atoi( t->val );
-      } else
-        SynErr( 23 );
-    }
-
-    void Parser::TRANSITION_DECISION_DIAGRAM() {
-      std::string name_of_var;
-      __factory->startTransitionDeclaration();
-      IDENT( name_of_var );
-      std::string prime_name_of_var = name_of_var + "'";
-      __currentDecisionDiagramVar = prime_name_of_var;
-      if ( IsFollowedByIdent() ) {
-        Expect( _lpar );
-        SUB_TRANSITION_DECISION_DIAGRAM();
-        Expect( 9 /* ")" */ );
-      } else if ( la->kind == _lpar ) {
-        Get();
-        TRANSITION_LEAF();
-        Expect( 9 /* ")" */ );
-      } else
-        SynErr( 24 );
-      TRY( __factory->addTransition( name_of_var ) );
-      __factory->endTransitionDeclaration();
-      __parentModality.clear();
-      __parentNode.clear();
-    }
-
-    void Parser::COST_DECISION_DIAGRAM() {
-      std::string name_of_var;
-      __factory->startCostDeclaration();
-      Expect( 12 /* "cost" */ );
-      Expect( _lpar );
-      SUB_DECISION_DIAGRAM();
-      Expect( 9 /* ")" */ );
-      TRY( __factory->addCost() );
-      __factory->endCostDeclaration();
-      __parentModality.clear();
-      __parentNode.clear();
-    }
-
-    void Parser::SUB_TRANSITION_DECISION_DIAGRAM() {
-      std::string name_of_var;
-      std::string modality_of_var;
-      NodeId var_id;
-      IDENT( name_of_var );
-      var_id = __factory->addNonTerminalNode( name_of_var );
-      if ( !__parentNode.empty() )
-        __factory->addArc(
-            __parentNode.back(), var_id, __parentModality.back() );
-      while ( la->kind == _lpar ) {
-        Get();
-        IDENT_OR_INTEGER( modality_of_var );
-        __parentNode.push_back( var_id );
-        __parentModality.push_back(
-            ( *( __factory->variable( name_of_var ) ) )[modality_of_var] );
-        if ( IsFollowedByIdent() ) {
-          Expect( _lpar );
-          SUB_TRANSITION_DECISION_DIAGRAM();
-          Expect( 9 /* ")" */ );
-        } else if ( la->kind == _lpar ) {
-          Get();
-          TRANSITION_LEAF();
-          Expect( 9 /* ")" */ );
-        } else
-          SynErr( 25 );
-        __parentModality.pop_back();
-        Expect( 9 /* ")" */ );
-      }
-      __parentNode.pop_back();
-    }
-
-    void Parser::TRANSITION_LEAF() {
-      float value;
-      gum::Idx i = 0;
-      NodeId var_id =
-          __factory->addNonTerminalNode( __currentDecisionDiagramVar );
-      if ( !__parentNode.empty() )
-        __factory->addArc(
-            __parentNode.back(), var_id, __parentModality.back() );
-      FLOAT( value );
-      NodeId val_id = __factory->addTerminalNode( value );
-      __factory->addArc( var_id, val_id, i );
-      while ( la->kind == _integer || la->kind == _number ) {
-        FLOAT( value );
-        ++i;
-        val_id = __factory->addTerminalNode( value );
-        __factory->addArc( var_id, val_id, i );
-      }
-    }
-
-    void Parser::SUB_DECISION_DIAGRAM() {
-      std::string name_of_var;
-      std::string modality_of_var;
-      NodeId var_id;
-      IDENT( name_of_var );
-      var_id = __factory->addNonTerminalNode( name_of_var );
-      if ( !__parentNode.empty() )
-        __factory->addArc(
-            __parentNode.back(), var_id, __parentModality.back() );
-      while ( la->kind == _lpar ) {
-        Get();
-        IDENT_OR_INTEGER( modality_of_var );
-        __parentNode.push_back( var_id );
-        __parentModality.push_back(
-            ( *( __factory->variable( name_of_var ) ) )[modality_of_var] );
-        if ( IsFollowedByIdent() ) {
-          Expect( _lpar );
-          SUB_DECISION_DIAGRAM();
-          Expect( 9 /* ")" */ );
-        } else if ( la->kind == _lpar ) {
-          Get();
-          LEAF();
-          Expect( 9 /* ")" */ );
-        } else
-          SynErr( 26 );
-        __parentModality.pop_back();
-        Expect( 9 /* ")" */ );
-      }
-      __parentNode.pop_back();
-    }
-
-    void Parser::LEAF() {
-      float value;
-      FLOAT( value );
-      NodeId val_id = __factory->addTerminalNode( value );
-      __factory->addArc( __parentNode.back(), val_id, __parentModality.back() );
-      while ( la->kind == _integer || la->kind == _number ) {
-        FLOAT( value );
-        NodeId val_id = __factory->addTerminalNode( value );
-        __factory->addArc(
-            __parentNode.back(), val_id, __parentModality.back() );
-      }
-    }
-
-    void Parser::OPERAND( std::string& op ) {
-      Expect( _operand );
-      op = narrow( t->val );
-    }
-
-
-    // If the user declared a method Init and a mehtod Destroy they should
-    // be called in the contructur and the destructor respctively.
-    //
-    // The following templates are used to recognize if the user declared
-    // the methods Init and Destroy.
-
-    template <typename T>
-    struct ParserInitExistsRecognizer {
-      template <typename U, void ( U::* )() = &U::Init>
-      struct ExistsIfInitIsDefinedMarker {};
-
-      struct InitIsMissingType {
-        char dummy1;
-      };
-
-      struct InitExistsType {
-        char dummy1;
-        char dummy2;
-      };
-
-      // exists always
-      template <typename U>
-      static InitIsMissingType is_here( ... );
-
-      // exist only if ExistsIfInitIsDefinedMarker is defined
-      template <typename U>
-      static InitExistsType is_here( ExistsIfInitIsDefinedMarker<U>* );
-
-      enum {
-        InitExists =
-            ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) )
-      };
-    };
-
-    template <typename T>
-    struct ParserDestroyExistsRecognizer {
-      template <typename U, void ( U::* )() = &U::Destroy>
-      struct ExistsIfDestroyIsDefinedMarker {};
-
-      struct DestroyIsMissingType {
-        char dummy1;
-      };
-
-      struct DestroyExistsType {
-        char dummy1;
-        char dummy2;
-      };
-
-      // exists always
-      template <typename U>
-      static DestroyIsMissingType is_here( ... );
-
-      // exist only if ExistsIfDestroyIsDefinedMarker is defined
-      template <typename U>
-      static DestroyExistsType is_here( ExistsIfDestroyIsDefinedMarker<U>* );
-
-      enum {
-        DestroyExists =
-            ( sizeof( is_here<T>( NULL ) ) == sizeof( DestroyExistsType ) )
-      };
-    };
-
-    // The folloing templates are used to call the Init and Destroy methods if
-    // they exist.
-
-    // Generic case of the ParserInitCaller, gets used if the Init method is
-    // missing
-    template <typename T, bool = ParserInitExistsRecognizer<T>::InitExists>
-    struct ParserInitCaller {
-      static void CallInit( T* t ) {
-        // nothing to do
-      }
-    };
-
-    // True case of the ParserInitCaller, gets used if the Init method exists
-    template <typename T>
-    struct ParserInitCaller<T, true> {
-      static void CallInit( T* t ) { t->Init(); }
-    };
-
-    // Generic case of the ParserDestroyCaller, gets used if the Destroy method
-    // is missing
-    template <typename T,
-              bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
-    struct ParserDestroyCaller {
-      static void CallDestroy( T* t ) {
-        // nothing to do
-      }
-    };
-
-    // True case of the ParserDestroyCaller, gets used if the Destroy method
-    // exists
-    template <typename T>
-    struct ParserDestroyCaller<T, true> {
-      static void CallDestroy( T* t ) { t->Destroy(); }
-    };
-    void Parser::Parse() {
-      t = NULL;
-      la = dummyToken = new Token();
-      la->val = coco_string_create( L"Dummy Token" );
+    while ( !( StartOf( syFol ) || StartOf( repFol ) || StartOf( 0 ) ) ) {
       Get();
-      MDPDAT();
-      Expect( 0 );
     }
 
-    Parser::Parser( Scanner* scanner ) {
-      maxT = 18;
+    return StartOf( syFol );
+  }
+}
 
-      ParserInitCaller<Parser>::CallInit( this );
-      dummyToken = NULL;
-      t = la = NULL;
-      minErrDist = 2;
-      errDist = minErrDist;
-      this->scanner = scanner;
+void Parser::MDPDAT() {
+		VARIABLES_DECLARATION();
+		while (la->kind == 10 /* "action" */) {
+			ACTION();
+		}
+		REWARD_DECISION_DIAGRAM();
+		DISCOUNT();
+		TOLERANCE();
+}
+
+void Parser::VARIABLES_DECLARATION() {
+		Expect(_lpar);
+		Expect(8 /* "variables" */);
+		while (la->kind == _lpar) {
+			VARIABLE();
+		}
+		Expect(9 /* ")" */);
+}
+
+void Parser::ACTION() {
+		std::string name_of_action;
+		      float tolerance; 
+		Expect(10 /* "action" */);
+		__factory->startActionDeclaration(); 
+		if (la->kind == _ident) {
+			IDENT(name_of_action);
+		} else if (la->kind == _string) {
+			STRING(name_of_action);
+		} else SynErr(19);
+		TRY( __factory->addAction( name_of_action ) ); 
+		if (la->kind == _integer || la->kind == _number) {
+			FLOAT(tolerance);
+		}
+		while (la->kind == _ident) {
+			TRANSITION_DECISION_DIAGRAM();
+		}
+		if (la->kind == 12 /* "cost" */) {
+			COST_DECISION_DIAGRAM();
+		}
+		Expect(11 /* "endaction" */);
+		TRY( __factory->endActionDeclaration() ); 
+}
+
+void Parser::REWARD_DECISION_DIAGRAM() {
+		std::string name_of_var;
+		                      __factory->startRewardDeclaration(); 
+		Expect(13 /* "reward" */);
+		if (la->kind == _lpar) {
+			if (IsFollowedByIdent() ) {
+				Expect(_lpar);
+				SUB_DECISION_DIAGRAM();
+				Expect(9 /* ")" */);
+			} else {
+				Get();
+				LEAF();
+				Expect(9 /* ")" */);
+			}
+			TRY( __factory->addReward( ) );
+			                 __parentModality.clear();
+			                 __parentNode.clear(); 
+		} else if (la->kind == 14 /* "[" */) {
+			Get();
+			std::string operand_type; 
+			OPERAND(operand_type);
+			__factory->setOperationModeOn( operand_type );
+			if (IsFollowedByIdent() ) {
+				Expect(_lpar);
+				SUB_DECISION_DIAGRAM();
+				Expect(9 /* ")" */);
+			} else if (la->kind == _lpar) {
+				Get();
+				LEAF();
+				Expect(9 /* ")" */);
+			} else SynErr(20);
+			TRY( __factory->addReward( ) );
+			                   __parentModality.clear();
+			                   __parentNode.clear(); 
+			while (la->kind == _lpar) {
+				if (IsFollowedByIdent() ) {
+					Expect(_lpar);
+					SUB_DECISION_DIAGRAM();
+					Expect(9 /* ")" */);
+				} else {
+					Get();
+					LEAF();
+					Expect(9 /* ")" */);
+				}
+				TRY( __factory->addReward( ) );
+				                   __parentModality.clear();
+				                   __parentNode.clear(); 
+			}
+			Expect(15 /* "]" */);
+		} else SynErr(21);
+		__factory->endRewardDeclaration(); 
+}
+
+void Parser::DISCOUNT() {
+		float value;
+		        __factory->startDiscountDeclaration( ); 
+		Expect(16 /* "discount" */);
+		FLOAT(value);
+		__factory->addDiscount( value );
+		          __factory->endDiscountDeclaration( ); 
+}
+
+void Parser::TOLERANCE() {
+		float value; 
+		Expect(17 /* "tolerance" */);
+		FLOAT(value);
+}
+
+void Parser::VARIABLE() {
+		std::string name_of_var; 
+		Expect(_lpar);
+		__factory->startVariableDeclaration(); 
+		IDENT(name_of_var);
+		TRY( __factory->variableName( name_of_var ) ); 
+		MODALITY_LIST();
+		Expect(9 /* ")" */);
+		TRY( __factory->endVariableDeclaration() ); 
+}
+
+void Parser::IDENT(std::string& name) {
+		Expect(_ident);
+		name=narrow(t->val);  
+}
+
+void Parser::MODALITY_LIST() {
+		std::string label; 
+		IDENT_OR_INTEGER(label);
+		TRY( __factory->addModality( label ) ); 
+		if (la->kind == _ident || la->kind == _integer) {
+			MODALITY_LIST();
+		}
+}
+
+void Parser::IDENT_OR_INTEGER(std::string& name) {
+		if (la->kind == _ident) {
+			IDENT(name);
+		} else if (la->kind == _integer) {
+			Get();
+			name=narrow(t->val);  
+		} else SynErr(22);
+}
+
+void Parser::STRING(std::string& str) {
+		Expect(_string);
+		str=narrow(t->val); 
+}
+
+void Parser::FLOAT(float& val) {
+		if (la->kind == _number) {
+			Get();
+			val=coco_atof(t->val); 
+		} else if (la->kind == _integer) {
+			Get();
+			val=coco_atoi(t->val); 
+		} else SynErr(23);
+}
+
+void Parser::TRANSITION_DECISION_DIAGRAM() {
+		std::string name_of_var;
+		                       __factory->startTransitionDeclaration(); 
+		IDENT(name_of_var);
+		std::string prime_name_of_var = name_of_var + "'";
+		               __currentDecisionDiagramVar = prime_name_of_var; 
+		if (IsFollowedByIdent() ) {
+			Expect(_lpar);
+			SUB_TRANSITION_DECISION_DIAGRAM();
+			Expect(9 /* ")" */);
+		} else if (la->kind == _lpar) {
+			Get();
+			TRANSITION_LEAF();
+			Expect(9 /* ")" */);
+		} else SynErr(24);
+		TRY( __factory->addTransition( name_of_var ) );
+		__factory->endTransitionDeclaration();
+		__parentModality.clear();
+		__parentNode.clear(); 
+}
+
+void Parser::COST_DECISION_DIAGRAM() {
+		std::string name_of_var;
+		                   __factory->startCostDeclaration(); 
+		Expect(12 /* "cost" */);
+		Expect(_lpar);
+		SUB_DECISION_DIAGRAM();
+		Expect(9 /* ")" */);
+		TRY( __factory->addCost( ) );
+		__factory->endCostDeclaration();
+		__parentModality.clear();
+		__parentNode.clear(); 
+}
+
+void Parser::SUB_TRANSITION_DECISION_DIAGRAM() {
+		std::string name_of_var;
+		                          std::string modality_of_var;
+		                          NodeId var_id; 
+		IDENT(name_of_var);
+		var_id = __factory->addNonTerminalNode( name_of_var );
+		               if( !__parentNode.empty() )
+		                   __factory->addArc( __parentNode.back(), var_id, __parentModality.back() ); 
+		while (la->kind == _lpar) {
+			Get();
+			IDENT_OR_INTEGER(modality_of_var);
+			__parentNode.push_back( var_id );
+			                        __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] ); 
+			if (IsFollowedByIdent() ) {
+				Expect(_lpar);
+				SUB_TRANSITION_DECISION_DIAGRAM();
+				Expect(9 /* ")" */);
+			} else if (la->kind == _lpar) {
+				Get();
+				TRANSITION_LEAF();
+				Expect(9 /* ")" */);
+			} else SynErr(25);
+			__parentModality.pop_back(); 
+			Expect(9 /* ")" */);
+		}
+		__parentNode.pop_back(); 
+}
+
+void Parser::TRANSITION_LEAF() {
+		float value;
+		            gum::Idx i = 0;
+		            NodeId var_id = __factory->addNonTerminalNode( __currentDecisionDiagramVar );
+		            if( !__parentNode.empty() )
+		                __factory->addArc( __parentNode.back(), var_id, __parentModality.back() ); 
+		FLOAT(value);
+		NodeId val_id = __factory->addTerminalNode( value );
+		          __factory->addArc( var_id, val_id, i ); 
+		while (la->kind == _integer || la->kind == _number) {
+			FLOAT(value);
+			++i;
+			          val_id = __factory->addTerminalNode( value );
+			         __factory->addArc( var_id, val_id, i ); 
+		}
+}
+
+void Parser::SUB_DECISION_DIAGRAM() {
+		std::string name_of_var;
+		                  std::string modality_of_var;
+		                  NodeId var_id;
+		IDENT(name_of_var);
+		var_id = __factory->addNonTerminalNode( name_of_var );
+		               if( !__parentNode.empty() )
+		                   __factory->addArc( __parentNode.back(), var_id, __parentModality.back() ); 
+		while (la->kind == _lpar) {
+			Get();
+			IDENT_OR_INTEGER(modality_of_var);
+			__parentNode.push_back( var_id );
+			                        __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] );  
+			if (IsFollowedByIdent() ) {
+				Expect(_lpar);
+				SUB_DECISION_DIAGRAM();
+				Expect(9 /* ")" */);
+			} else if (la->kind == _lpar) {
+				Get();
+				LEAF();
+				Expect(9 /* ")" */);
+			} else SynErr(26);
+			__parentModality.pop_back(); 
+			Expect(9 /* ")" */);
+		}
+		__parentNode.pop_back(); 
+}
+
+void Parser::LEAF() {
+		float value; 
+		FLOAT(value);
+		NodeId val_id = __factory->addTerminalNode( value );
+		         __factory->addArc( __parentNode.back(), val_id, __parentModality.back() ); 
+		while (la->kind == _integer || la->kind == _number) {
+			FLOAT(value);
+			NodeId val_id = __factory->addTerminalNode( value );
+			          __factory->addArc( __parentNode.back(), val_id, __parentModality.back() ); 
+		}
+}
+
+void Parser::OPERAND(std::string& op) {
+		Expect(_operand);
+		op=narrow(t->val); 
+}
+
+
+
+// If the user declared a method Init and a mehtod Destroy they should
+// be called in the contructur and the destructor respctively.
+//
+// The following templates are used to recognize if the user declared
+// the methods Init and Destroy.
+
+template<typename T>
+struct ParserInitExistsRecognizer {
+  template<typename U, void ( U::* )() = &U::Init>
+  struct ExistsIfInitIsDefinedMarker {};
+
+  struct InitIsMissingType {
+    char dummy1;
+  };
+
+  struct InitExistsType {
+    char dummy1; char dummy2;
+  };
+
+  // exists always
+  template<typename U>
+  static InitIsMissingType is_here( ... );
+
+  // exist only if ExistsIfInitIsDefinedMarker is defined
+  template<typename U>
+  static InitExistsType is_here( ExistsIfInitIsDefinedMarker<U>* );
+
+  enum { InitExists = ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) ) };
+};
+
+template<typename T>
+struct ParserDestroyExistsRecognizer {
+  template<typename U, void ( U::* )() = &U::Destroy>
+  struct ExistsIfDestroyIsDefinedMarker {};
+
+  struct DestroyIsMissingType {
+    char dummy1;
+  };
+
+  struct DestroyExistsType {
+    char dummy1; char dummy2;
+  };
+
+  // exists always
+  template<typename U>
+  static DestroyIsMissingType is_here( ... );
+
+  // exist only if ExistsIfDestroyIsDefinedMarker is defined
+  template<typename U>
+  static DestroyExistsType is_here( ExistsIfDestroyIsDefinedMarker<U>* );
+
+  enum { DestroyExists = ( sizeof( is_here<T>( NULL ) ) == sizeof( DestroyExistsType ) ) };
+};
+
+// The folloing templates are used to call the Init and Destroy methods if they exist.
+
+// Generic case of the ParserInitCaller, gets used if the Init method is missing
+template<typename T, bool = ParserInitExistsRecognizer<T>::InitExists>
+struct ParserInitCaller {
+  static void CallInit( T* t ) {
+    // nothing to do
+  }
+};
+
+// True case of the ParserInitCaller, gets used if the Init method exists
+template<typename T>
+struct ParserInitCaller<T, true> {
+  static void CallInit( T* t ) {
+    t->Init();
+  }
+};
+
+// Generic case of the ParserDestroyCaller, gets used if the Destroy method is missing
+template<typename T, bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
+struct ParserDestroyCaller {
+  static void CallDestroy( T* t ) {
+    // nothing to do
+  }
+};
+
+// True case of the ParserDestroyCaller, gets used if the Destroy method exists
+template<typename T>
+struct ParserDestroyCaller<T, true> {
+  static void CallDestroy( T* t ) {
+    t->Destroy();
+  }
+};
+void Parser::Parse() {
+  t = NULL;
+  la = dummyToken = new Token();
+  la->val = coco_string_create( L"Dummy Token" );
+  Get();
+  	MDPDAT();
+	Expect(0);
+}
+
+Parser::Parser( Scanner* scanner ) {
+  	maxT = 18;
+
+  ParserInitCaller<Parser>::CallInit( this );
+  dummyToken = NULL;
+  t = la = NULL;
+  minErrDist = 2;
+  errDist = minErrDist;
+  this->scanner = scanner;
+}
+
+bool Parser::StartOf( int s ) {
+  const bool T = true;
+  const bool x = false;
+
+  	static bool set[1][20] = {
+		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x}
+	};
+
+
+
+  return set[s][la->kind];
+}
+
+Parser::~Parser() {
+  ParserDestroyCaller<Parser>::CallDestroy( this );
+  delete dummyToken;
+}
+void Parser::SemErr( const wchar_t* msg ) {
+  if ( errDist >= minErrDist ) __errors.Error( scanner->filename(),t->line, t->col, msg );
+
+  errDist = 0;
+}
+
+void Parser::Warning( const wchar_t* msg ) {
+  __errors.Warning( scanner->filename(),t->line, t->col, msg );
+}
+
+void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
+  wchar_t* s;
+
+  switch ( n ) {
+      			case 0: s = coco_string_create(L"EOF expected"); break;
+			case 1: s = coco_string_create(L"operand expected"); break;
+			case 2: s = coco_string_create(L"ident expected"); break;
+			case 3: s = coco_string_create(L"integer expected"); break;
+			case 4: s = coco_string_create(L"number expected"); break;
+			case 5: s = coco_string_create(L"string expected"); break;
+			case 6: s = coco_string_create(L"largestring expected"); break;
+			case 7: s = coco_string_create(L"lpar expected"); break;
+			case 8: s = coco_string_create(L"\"variables\" expected"); break;
+			case 9: s = coco_string_create(L"\")\" expected"); break;
+			case 10: s = coco_string_create(L"\"action\" expected"); break;
+			case 11: s = coco_string_create(L"\"endaction\" expected"); break;
+			case 12: s = coco_string_create(L"\"cost\" expected"); break;
+			case 13: s = coco_string_create(L"\"reward\" expected"); break;
+			case 14: s = coco_string_create(L"\"[\" expected"); break;
+			case 15: s = coco_string_create(L"\"]\" expected"); break;
+			case 16: s = coco_string_create(L"\"discount\" expected"); break;
+			case 17: s = coco_string_create(L"\"tolerance\" expected"); break;
+			case 18: s = coco_string_create(L"??? expected"); break;
+			case 19: s = coco_string_create(L"invalid ACTION"); break;
+			case 20: s = coco_string_create(L"invalid REWARD_DECISION_DIAGRAM"); break;
+			case 21: s = coco_string_create(L"invalid REWARD_DECISION_DIAGRAM"); break;
+			case 22: s = coco_string_create(L"invalid IDENT_OR_INTEGER"); break;
+			case 23: s = coco_string_create(L"invalid FLOAT"); break;
+			case 24: s = coco_string_create(L"invalid TRANSITION_DECISION_DIAGRAM"); break;
+			case 25: s = coco_string_create(L"invalid SUB_TRANSITION_DECISION_DIAGRAM"); break;
+			case 26: s = coco_string_create(L"invalid SUB_DECISION_DIAGRAM"); break;
+
+
+    default: {
+      wchar_t format[20];
+      coco_swprintf( format, 20, L"error %d", n );
+      s = coco_string_create( format );
     }
+    break;
+  }
 
-    bool Parser::StartOf( int s ) {
-      const bool T = true;
-      const bool x = false;
+  //wprintf(L"-- line %d col %d: %ls\n", line, col, s);
+  std::wstring ss=L"Syntax error : "+std::wstring( s );
+  __errors.Error( filename,line,col,ss.c_str() );
+  coco_string_delete( s );
+}
 
-      static bool set[1][20] = {
-          {T, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x}};
-
-
-      return set[s][la->kind];
-    }
-
-    Parser::~Parser() {
-      ParserDestroyCaller<Parser>::CallDestroy( this );
-      delete dummyToken;
-    }
-    void Parser::SemErr( const wchar_t* msg ) {
-      if ( errDist >= minErrDist )
-        __errors.Error( scanner->filename(), t->line, t->col, msg );
-
-      errDist = 0;
-    }
-
-    void Parser::Warning( const wchar_t* msg ) {
-      __errors.Warning( scanner->filename(), t->line, t->col, msg );
-    }
-
-    void
-    Parser::SynErr( const std::wstring& filename, int line, int col, int n ) {
-      wchar_t* s;
-
-      switch ( n ) {
-        case 0:
-          s = coco_string_create( L"EOF expected" );
-          break;
-        case 1:
-          s = coco_string_create( L"operand expected" );
-          break;
-        case 2:
-          s = coco_string_create( L"ident expected" );
-          break;
-        case 3:
-          s = coco_string_create( L"integer expected" );
-          break;
-        case 4:
-          s = coco_string_create( L"number expected" );
-          break;
-        case 5:
-          s = coco_string_create( L"string expected" );
-          break;
-        case 6:
-          s = coco_string_create( L"largestring expected" );
-          break;
-        case 7:
-          s = coco_string_create( L"lpar expected" );
-          break;
-        case 8:
-          s = coco_string_create( L"\"variables\" expected" );
-          break;
-        case 9:
-          s = coco_string_create( L"\")\" expected" );
-          break;
-        case 10:
-          s = coco_string_create( L"\"action\" expected" );
-          break;
-        case 11:
-          s = coco_string_create( L"\"endaction\" expected" );
-          break;
-        case 12:
-          s = coco_string_create( L"\"cost\" expected" );
-          break;
-        case 13:
-          s = coco_string_create( L"\"reward\" expected" );
-          break;
-        case 14:
-          s = coco_string_create( L"\"[\" expected" );
-          break;
-        case 15:
-          s = coco_string_create( L"\"]\" expected" );
-          break;
-        case 16:
-          s = coco_string_create( L"\"discount\" expected" );
-          break;
-        case 17:
-          s = coco_string_create( L"\"tolerance\" expected" );
-          break;
-        case 18:
-          s = coco_string_create( L"??? expected" );
-          break;
-        case 19:
-          s = coco_string_create( L"invalid ACTION" );
-          break;
-        case 20:
-          s = coco_string_create( L"invalid REWARD_DECISION_DIAGRAM" );
-          break;
-        case 21:
-          s = coco_string_create( L"invalid REWARD_DECISION_DIAGRAM" );
-          break;
-        case 22:
-          s = coco_string_create( L"invalid IDENT_OR_INTEGER" );
-          break;
-        case 23:
-          s = coco_string_create( L"invalid FLOAT" );
-          break;
-        case 24:
-          s = coco_string_create( L"invalid TRANSITION_DECISION_DIAGRAM" );
-          break;
-        case 25:
-          s = coco_string_create( L"invalid SUB_TRANSITION_DECISION_DIAGRAM" );
-          break;
-        case 26:
-          s = coco_string_create( L"invalid SUB_DECISION_DIAGRAM" );
-          break;
+} // namespace
+} // namespace
 
 
-        default: {
-          wchar_t format[20];
-          coco_swprintf( format, 20, L"error %d", n );
-          s = coco_string_create( format );
-        } break;
-      }
-
-      // wprintf(L"-- line %d col %d: %ls\n", line, col, s);
-      std::wstring ss = L"Syntax error : " + std::wstring( s );
-      __errors.Error( filename, line, col, ss.c_str() );
-      coco_string_delete( s );
-    }
-
-  }  // namespace
-}  // namespace
