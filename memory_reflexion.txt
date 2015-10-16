@@ -1,0 +1,30 @@
+
+Need:
+  - Simple memory management for users.
+  - No segfault if deallocation happens in the wrong order, because users may
+    not be aware of such an order.
+  - Performance is an issue and must be considered in the memory management
+    plan.
+
+Use cases:
+  - The main use case concerns gum::BayesNet class and the
+    gum::DiscreteVariable it uses in its CPT.
+  - gum::DiscreteVariable are added by copy to gym::BayesNet.
+  - gum::DiscreteVariable are exposed aither as const references through
+    getters in the gum::BayesNet class.
+  - gum::DiscreteVariabe are exposed as pointers in the gum::Potentiels used to
+    reprenset the gum::BayesNet's CPT.
+
+Solutions:
+  - Only expose gum::DiscreteVariable by copy.
+    - This is an issue with containers that are optimized for holding pointers.
+    - This can cause performances issues as copies are made when accesssing
+      gum::DiscreteVariable.
+  - Only expose gum::DiscreteVariable wrapped in std::shared_ptr.
+    - Methods signature become horribly long and unreadable.
+    - There seems to be an important overhead when using std::shared_ptr.
+
+
+  ? Introduce a Hashable class wich enable copy and move operations and use an internal
+    shared pointer for generating a hash value and equality.
+    
