@@ -3,8 +3,10 @@
  *
  * # Presentation #
  *
- * Foo Bar aGrUM is a C++ library designed for easily building applications using
- * graphical models such as Bayesian networks, influence diagrams, decision trees,
+ * Foo Bar aGrUM is a C++ library designed for easily building applications
+ * using
+ * graphical models such as Bayesian networks, influence diagrams, decision
+ * trees,
  * GAI networks or Markov decision processes. It is written to provide the basic
  * building blocks to perform the following tasks :
  *   - graphical model learning / elicitation,
@@ -12,18 +14,73 @@
  *   - planification.
  */
 
- /// \defgroup basicstruct_group Basic data structures
- /// \defgroup graph_group Graph representation
- /// \defgroup multidim_group Multidimensional data
- /// \defgroup bn_group Bayesian Networks
- /// @{
- /// \defgroup bn_inference Inference Algorithms
- /// \defgroup bn_io Serialization
- /// \defgroup bn_generator Generators
- /// \defgroup bn_particles Particles Algorithms
- /// @}
- /// \defgroup learning_group Tools for learning
- /// \defgroup signal_group Signaler and Listener
- /// \defgroup prm_group Probabilistic Relational Models
- /// \defgroup fmdp_group Factored Markov Decision Process
- /// \defgroup cn_group Credal Networks
+/** \defgroup basicstruct_group Basic data structures
+ * @{
+ * \defgroup hashfunctions_group Hash functions
+ * @brief This module lists all hash functions provided by aGrUM.
+ *
+ * Whenever you create a new hash function you must inherit from this class.
+ * Otherwise, your hash function will not compile because gum::HashTable will
+ * refer directly to this class.
+ *
+ * The way gum::HashTable work, you do not need to define constructors,
+ * destructors and assignment operators: the defaults created by C++ will
+ * work correctly. However, if your hash function contains new attributes,
+ * you must override the resize function to properly set these attributes.
+ * You may even have to redefine the default constructor and/or the
+ * assignment operator, but this should not occur very often.
+ *
+ * In fact, usually, when you create a new hash function, you will only need
+ * to write something like:
+ * 
+ * @code
+ * template <> class HashFunc<MyObject> : public HashFuncBase<MyObject> {
+ * public:
+ *   Size operator() (const MyObject& key) const  {
+ *      // here write the code using
+ *      // HashFuncBase<MyObject>::_hash_size and/or
+ *      // HashFuncBase<MyObject>::_hash_log2_size and/or
+ *      // HashFuncBase<MyObject>::_hash_mask
+ * };
+ * @endcode
+ *
+ * For instance, here is how HashFunc<string> is implemented:
+ *
+ * @code
+ * template <> class HashFunc<std::string>: public HashFuncBase<std::string> {
+ * public:
+ *   Size operator() (const std::string& key) const  {
+ *     Size h = 0;
+ *     for (size_t i = 0, j = key.size(); i < j; ++i) {
+ *       h = 19 * h + key[i];
+ *     }
+ *     return ((h * GUM_HASHTABLE_INT_GOLD) & _hash_mask);
+ *   }
+ * };
+ * @endcode
+ *
+ * The gum::HashFunc::_hash_size attribute corresponds to the number of slots
+ * in the gum::HashTable. Your function should always return a number in
+ * [0,_hash_size). As the number of slots in a gum::HashTable is always a
+ * power of 2, it may be convenient to know the number of bits used by the
+ * hashed keys, this is precisely the information contained in
+ * gum::HashFunc::_hash_log2_size. Finally, gum::HashFunc::_hash_mask is a
+ * mask that can be used to ensure that the hashed key actually belongs to
+ * [0,_hash_size). This is used in particular in the hash function for
+ * hashing strings. 
+ * @}
+ * \defgroup graph_group Graph representation
+ * \defgroup multidim_group Multidimensional data
+ * \defgroup bn_group Bayesian Networks
+ * @{
+ * \defgroup bn_inference Inference Algorithms
+ * \defgroup bn_io Serialization
+ * \defgroup bn_generator Generators
+ * \defgroup bn_particles Particles Algorithms
+ * @}
+ * \defgroup learning_group Tools for learning
+ * \defgroup signal_group Signaler and Listener
+ * \defgroup prm_group Probabilistic Relational Models
+ * \defgroup fmdp_group Factored Markov Decision Process
+ * \defgroup cn_group Credal Networks
+ */
