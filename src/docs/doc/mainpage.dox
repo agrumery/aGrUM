@@ -16,6 +16,118 @@
 
 /** \defgroup basicstruct_group Basic data structures
  * @{
+ * \defgroup hashtable_group Hash Tables
+ *
+ * This file provides class HashTable. This class is both efficient and
+ * flexible: efficient because the access to elements is usually computed using
+ * a small amount of processor instructions, and flexible because several
+ * methods allow to fine tune the behavior of each hash table. For instance, a
+ * hashtable can allow or forbid different elements to have the same key. This
+ * behavior can be modified at any time during the execution of the program.
+ * Functions for hashing keys are defined in file HashFunc.h. Here again, these
+ * functions are quite flexible as they can be overloaded by the user to
+ * support new kind of keys.  In addition to HashTable, the current file
+ * provides classes HashTableIteratorSafe and HashTableConstIteratorSafe
+ * (a.k.a.  HashTable<>::iterator_safe and HashTable<>::const_iterator_safe)
+ * that allow safe parsing of the hash tables.  By safe, we mean that whenever
+ * the element pointed to by such an iterator is removed from the hashtable,
+ * accessing it through the iterator (*iter) does not result in a segmentation
+ * fault but rather in an exception being thrown. This safety is ensured at a
+ * very low cost (actually, our experiments show that our HashTables and
+ * HashTable's safe iterators significantly outperform the standard library
+ * unordered_maps). Of course, if there is no possibility for an iterator to
+ * point to a deleted element, the user can use the "unsafe" iterators
+ * HashTableIterator and HashTableConstIterator (a.k.a. HashTable<>::iterator
+ * and HashTable<>::const_iterator). These iterators are slightly faster than
+ * their safe counterparts. However, as in the standard library, accessing
+ * through them a deleted element usually results in a mess (most probably a
+ * segfault).
+ *
+ * @warning HashTables @b guarantee that any element stored within them will
+ * have the @b same @b location in memory until it is removed from the
+ * hashtable (and this holds whatever operation is performed on the hashtable
+ * like new insertions, deletions, resizing, etc.).
+ *
+ * @par Usage example:
+ * @code
+ * // creation of an empty hash table
+ * HashTable<int,string> table1;
+ *
+ * // insert two elements into the hash table
+ * table1.insert (10,"xxx");
+ * table1.insert (20,"yyy");
+ * table1.emplace (30,"zzz");
+ *
+ * // creation of a nonempty hashtable using initializer lists
+ * HashTable<int,bool> table { std::make_pair (3,true), std::make_pair(2,false) };
+ *
+ * // display the content of the hash table
+ * cerr << table1;
+ *
+ * // get the number of elements stored into the hash table
+ * cerr << "number of elements in table1 = " << table1.size () << endl;
+ *
+ * // create two copies of the hash table
+ * HashTable<int,string> table2, table3 = table1;
+ * table2 = table3;
+ *
+ * // get the element whose key is 10
+ * cerr << table1[10] << " = xxx" << endl;
+ *
+ * // check whether there exists an element with key 20
+ * if (table1.exists (20)) cerr << "element found" << endl;
+ *
+ * // transform the hashtable of string into a hashtable of int assuming f is
+ * // defined as: int f (const string& str) { return str.size (); }
+ * HashTable<int,int> table = table1.map (f);
+ *
+ * // remove two elements from table1 and table2
+ * table1.erase (10);         // key = 10
+ * table1.eraseByVal ("yyy"); // val = "yyy"
+ * table2.clear ();
+ *
+ * // check whether the hash table is empty
+ * if (!table1.empty ()) cerr << "table not empty" << endl;
+ *
+ * // check wether hashtables contain the same elements
+ * if ((table1 == table2) && (table1 != table3))
+ *   cerr << "check for equality/inequality" << endl;
+ *
+ * // parse the content of a hashtable using an unsafe iterator
+ * for (HashTable<int,string>::const_iterator iter = table1.cbegin();
+ *       iter != table1.cend(); ++iter)
+ *   cerr << *iter;
+ * HashTable<int,string>::iterator iter = table1.begin();
+ * iter += 2;
+ * cerr << iter.key () << " " << iter.val ();
+ *
+ * // use an iterator to point the element we wish to erase
+ * HashTable<int,string>::iterator_safe iterS = table1.beginSafe ();
+ * table1.erase ( table1.beginSafe () + 4 );
+ * table1.erase ( iterS ); // this is safe because the iterator is safe
+ *
+ * // check for iterator's safety
+ * for (HashTable<int,string>::iterator_safe iter = table1.beginSafe ();
+ *       iter != table1.endSafe (); ++iter )
+ *   table1.eraseByVal ( *iter );
+ * @endcode
+ *
+ * @warning @b agrum/core/set.tcc To speed-up accessors in sets, we rely on the
+ * fact (which holds currently) that hashTable's iterators end are never
+ * modified by insertions or deletions of elements in hash tables. If this
+ * property were to be changed, set.tcc should be updated accordingly.
+ *
+ * @warning @b agrum/core/bijection.tcc Same as set.tcc but, in addition,
+ * bijections assume that once a pair (key,val) has been created in the
+ * hashtable, its location in memory will never change, even if the hashtable
+ * is resized.
+ *
+ * @warning @b agrum/core/sequence.tcc Same as bijection.tcc.
+ *
+ * @warning @b agrum/core/priorityQueue.tcc Same as bijection.tcc.
+ *
+ * @warning @b agrum/core/heap.tcc Same as bijection.tcc.
+ *
  * \defgroup hashfunctions_group Hash functions
  * @brief This module lists all hash functions provided by aGrUM.
  *
