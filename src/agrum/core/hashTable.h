@@ -1846,27 +1846,24 @@ namespace gum {
     void __insert( Bucket* bucket );
   };
 
-  /* ===========================================================================
-   */
-  /* ===                   SAFE HASH TABLES CONST ITERATORS                  ===
-   */
-  /* ===========================================================================
-   */
-  /** @class HashTableConstIteratorSafe
-   * @brief Safe Const Iterators for hashtables
-   * @ingroup basicstruct_group
+  // ===========================================================================
+  // ===                   SAFE HASH TABLES CONST ITERATORS                  ===
+  // ===========================================================================
+  /**
+   * @class HashTableConstIteratorSafe hashTable.h <agrum/core/hashTable.h>
+   * @brief Safe Const Iterators for hashtables.
+   * @ingroup hashtable_group
    *
    * HashTableConstIteratorSafe provides a safe way to parse HashTables. They
-   *are
-   * safe because they are kept informed by the hashtable they belong to of the
-   * elements deleted by the user. Hence, even if the user removes an element
-   * pointed to by a HashTableConstIteratorSafe, using the latter to access this
-   * element will never crash the application. Instead it will properly throw a
-   * UndefinedIteratorValue exception.
+   * are safe because they are kept informed by the hashtable they belong to of
+   * the elements deleted by the user. Hence, even if the user removes an
+   * element pointed to by a HashTableConstIteratorSafe, using the latter to
+   * access this element will never crash the application. Instead it will
+   * properly throw a UndefinedIteratorValue exception.
    *
    * Developers may consider using HashTable<x,y>::const_iterator_safe instead
-   *of
-   * HashTableConstIteratorSafe<x,y>.
+   * of HashTableConstIteratorSafe<x,y>.
+   * 
    * @par Usage example:
    * @code
    * // creation of a hash table with 10 elements
@@ -1886,8 +1883,9 @@ namespace gum {
    * // check whether two iterators point toward the same element
    * HashTable<int,string>::const_iterator_safe iter1 = table1.cbeginSafe ();
    * HashTable<int,string>::const_iterator_safe iter2 = table1.cendSafe ();
-   * if (iter1 != iter) cerr << "iter1 and iter2 point toward different
-   *elements";
+   * if (iter1 != iter) {
+   *   cerr << "iter1 and iter2 point toward different elements";
+   * }
    *
    * // make iter1 point toward nothing
    * iter1.clear ();
@@ -1896,7 +1894,7 @@ namespace gum {
   template <typename Key, typename Val>
   class HashTableConstIteratorSafe {
     public:
-    /// types for STL compliance
+    /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
     using key_type = Key;
@@ -1909,184 +1907,262 @@ namespace gum {
     using difference_type = std::ptrdiff_t;
     /// @}
 
-    // ############################################################################
+    // ============================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// basic constructor: creates an iterator pointing to nothing
+    /**
+     * @brief Basic constructor: creates an iterator pointing to nothing.
+     */
     HashTableConstIteratorSafe();
 
-    /// constructor for an iterator pointing to the first element of a hashtable
+    /**
+     * @brief Constructor for an iterator pointing to the first element of a
+     * hashtable.
+     * @tparam Alloc The gum::HashTable allocator.
+     * @param tab A gum::HashTable to iterate over.
+     */
     template <typename Alloc>
     HashTableConstIteratorSafe( const HashTable<Key, Val, Alloc>& tab );
 
-    /// constructor for an iterator pointing to the nth element of a hashtable
-    /** The method runs in time linear to ind_elt.
+    /// 
+    /** 
+     * @brief Constructor for an iterator pointing to the nth element of a
+     * hashtable.
+     *
+     * The method runs in time linear to ind_elt.
+     *
+     * @tparam Alloc The gum::HashTable allocator.
      * @param tab the hash table to which the so-called element belongs
-     * @param ind_elt the position of the element in the hash table (0 means the
-     * first element).
-     * @throw UndefinedIteratorValue exception is thrown if the element cannot
-     * be found */
+     * @param ind_elt the position of the element in the hash table (0 means
+     * the first element).
+     * @throw UndefinedIteratorValue Raised if the element cannot be found.
+     */
     template <typename Alloc>
     HashTableConstIteratorSafe( const HashTable<Key, Val, Alloc>& tab,
                                 Size ind_elt );
 
-    /// copy constructor
+    /**
+     * @brief Copy constructor.
+     * @param from The gum::HashTableConstIteratorSafe to copy.
+     */
     HashTableConstIteratorSafe(
         const HashTableConstIteratorSafe<Key, Val>& from );
 
-    /// copy constructor
+    /**
+     * @brief Copy constructor.
+     * @param from The gum::HashTableConstIterator to copy.
+     */
     explicit HashTableConstIteratorSafe(
         const HashTableConstIterator<Key, Val>& from );
 
-    /// move constructor
+    /**
+     * @brief Move constructor.
+     * @param from The gum::HashTableConstIteratorSafe to move.
+     */
     HashTableConstIteratorSafe( HashTableConstIteratorSafe<Key, Val>&& from );
 
-    /// destructor
+    /**
+     * @brief Destructor.
+     */
     ~HashTableConstIteratorSafe() noexcept;
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Accessors / Modifiers
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// returns the key pointed to by the iterator
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator
-     * does
-     * not point to a valid hash table element
-     * @throw UndefinedIteratorValue */
+    /** 
+     * @brief Returns the key pointed to by the iterator.
+     * @return Returns the key pointed to by the iterator.
+     * @throws UndefinedIteratorValue Raised when the iterator does not point
+     * to a valid hash table element
+     */
     const key_type& key() const;
 
-    /// returns the mapped value pointed to by the iterator
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator
-     * does
-     * not point to a valid hash table element
-     * @throw UndefinedIteratorValue */
+    /// 
+    /** 
+     * @brief Returns the mapped value pointed to by the iterator.
+     * @return Returns the mapped value pointed to by the iterator.
+     * @throws UndefinedIteratorValue Raised when the iterator does not point
+     * to a valid hash table element.
+     */
     const mapped_type& val() const;
 
-    /** @brief makes the iterator point toward nothing (in particular, it is not
-     * related anymore to its current hash table)
+    /** 
+     * @brief Makes the iterator point toward nothing (in particular, it is not
+     * related anymore to its current hash table).
      *
      * It is mainly used by the hashtable when the latter is deleted while the
-     * iterator is still alive. */
+     * iterator is still alive. 
+     */
     void clear() noexcept;
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Operators
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// copy operator
+    /**
+     * @brief Copy operator.
+     * @param from The gum::HashTableConstIteratorSafe to copy.
+     * @return Returns this gum::HashTableConstIteratorSafe.
+     */
     HashTableConstIteratorSafe<Key, Val>&
     operator=( const HashTableConstIteratorSafe<Key, Val>& from );
 
-    /// copy operator
+    /**
+     * @brief Copy operator.
+     * @param from The gum::HashTableConstIterator to copy.
+     * @return Returns this gum::HashTableConstIteratorSafe.
+     */
     HashTableConstIteratorSafe<Key, Val>&
     operator=( const HashTableConstIterator<Key, Val>& from );
 
-    /// move operator
+    /**
+     * @brief Move operator.
+     * @param from The gum::HashTableConstIteratorSafe to move.
+     * @return Returns this gum::HashTableConstIteratorSafe.
+     */
     HashTableConstIteratorSafe<Key, Val>&
     operator=( HashTableConstIteratorSafe<Key, Val>&& from ) noexcept;
 
-    /// makes the iterator point to the next element in the hash table
-    /** for (iter = cbeginSafe(); iter != cendSafe (); ++iter) loops are
-     * guaranteed to parse the whole hash table as long as no element is added
-     * to
-     * or deleted from the hash table while being in the loop. Deleting elements
-     * during the loop is guaranteed to never produce a segmentation fault. */
+    /** 
+     * @brief Makes the iterator point to the next element in the hash table.
+     *
+     * @code
+     * for (iter = hash.beginSafe(); iter != hash.endSafe (); ++iter) { }
+     * @encode
+     *
+     * The above loop is guaranteed to parse the whole hash table as long as no
+     * element is added to or deleted from the hash table while being in the
+     * loop. Deleting elements during the loop is guaranteed to never produce a
+     * segmentation fault.
+     *
+     * @return Returns this gum::HashTableConstIteratorSafe pointing to the
+     * next element in the gum::HashTable it's iterating over.
+     */
     HashTableConstIteratorSafe<Key, Val>& operator++() noexcept;
 
-    /// makes the iterator point to i elements further in the hashtable
-    HashTableConstIteratorSafe<Key, Val>& operator+=( unsigned int ) noexcept;
+    /**
+     * @brief Makes the iterator point to i elements further in the hashtable.
+     * @param i The number of steps to increment the
+     * gum::HashTableConstIteratorSafe.
+     * @return Returns this gum::HashTableConstIteratorSafe.
+     */
+    HashTableConstIteratorSafe<Key, Val>& operator+=( unsigned int i) noexcept;
 
-    /// returns a new iterator
-    HashTableConstIteratorSafe<Key, Val> operator+( unsigned int ) const;
+    /**
+     * @brief Returns a new iterator poiting to i elements further in the hashtable.
+     * @param i The number of steps to increment the
+     * gum::HashTableConstIteratorSafe.
+     * @return Returns a new gum::HashTableConstIteratorSafe.
+     */
+    HashTableConstIteratorSafe<Key, Val> operator+( unsigned int i) const;
 
-    /// checks whether two iterators are pointing toward different elements
+    /**
+     * @brief Checks whether two iterators are not equal.
+     * @param from from The iterator to test for inequality.
+     * @return Returns true if from and this iterator are inequal.
+     */
     bool operator!=( const HashTableConstIteratorSafe<Key, Val>& from ) const
         noexcept;
 
-    /// checks whether two iterators are pointing toward the same element
+    /**
+     * @brief Checks whether two iterators are equal.
+     * @param from from The iterator to test for equality.
+     * @return Returns true if from and this iterator are equal.
+     */
     bool operator==( const HashTableConstIteratorSafe<Key, Val>& from ) const
         noexcept;
 
-    /// returns the element pointed to by the iterator
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator
-     * does
-     * not point to a valid hash table element
-     * @throw UndefinedIteratorValue */
+    /** 
+     * @brief Returns the element pointed to by the iterator.
+     * @return Returns the element pointed to by the iterator.
+     * @throws UndefinedIteratorValue Raised when the iterator does not point
+     * to a valid hash table element.
+     */
     const value_type& operator*() const;
 
     /// @}
 
     protected:
-    /** class HashTable must be a friend because it stores iterator end
-     * and this can be properly initialized only when the hashtable has been
-     * fully allocated. Thus, proper initialization can only take place within
-     * the constructor's code of the hashtable. */
+
+    /**
+     * Class HashTable must be a friend because it stores iterator end and this
+     * can be properly initialized only when the hashtable has been fully
+     * allocated. Thus, proper initialization can only take place within the
+     * constructor's code of the hashtable. 
+     */
     template <typename K, typename V, typename A>
     friend class HashTable;
 
-    /// the hash table the iterator is pointing to
+    /// The hash table the iterator is pointing to.
     const HashTable<Key, Val>* __table{nullptr};
 
-    /** @brief the index of the chained list pointed to by the iterator in the
-     * array __nodes of the hash table */
+    /**
+     * @brief the index of the chained list pointed to by the iterator in the
+     * array __nodes of the hash table.
+     */
     Size __index{0};
 
-    /// the bucket in the chained list pointed to by the iterator
+    /// The bucket in the chained list pointed to by the iterator.
     HashTableBucket<Key, Val>* __bucket{nullptr};
 
-    /** @brief the bucket we should start from when we decide to do a ++.
-     * Usually
-     * it should be equal to nullptr. However, if the user has deleted the
-     * object
-     * pointed to by bucket, this will point to another bucket. When it is equal
-     * to
-     * nullptr, it means that the bucket reached after a ++ belongs to another
-     * slot of the hash table's '__node' vector. */
+    /**
+     * @brief the bucket we should start from when we decide to do a ++.
+     *
+     * Usually it should be equal to nullptr. However, if the user has deleted
+     * the object pointed to by bucket, this will point to another bucket. When
+     * it is equal to nullptr, it means that the bucket reached after a ++
+     * belongs to another slot of the hash table's '__node' vector. 
+     */
     HashTableBucket<Key, Val>* __next_bucket{nullptr};
 
-    /// returns the current iterator's bucket
+    /// Returns the current iterator's bucket.
     HashTableBucket<Key, Val>* __getBucket() const noexcept;
 
-    /// returns the index in the hashtable's node vector pointed to by the
-    /// iterator
+    /**
+     * @brief  Returns the index in the hashtable's node vector pointed to by
+     * the iterator.
+     * @return  Returns the index in the hashtable's node vector pointed to by
+     * the iterator.
+     */
     Size __getIndex() const noexcept;
 
-    /// remove the iterator from its hashtable' safe iterators list
+    /**
+     * @brief Removes the iterator from its hashtable' safe iterators list.
+     */
     void __removeFromSafeList() const noexcept;
 
-    /// insert the iterator into the hashtable's list of safe iterators
+    /**
+     * @brief Insert the iterator into the hashtable's list of safe iterators.
+     */
     void __insertIntoSafeList() const;
   };
 
-  /* ===========================================================================
-   */
-  /* ===                         HASH TABLES ITERATORS                       ===
-   */
-  /* ===========================================================================
-   */
-  /** @class HashTableIteratorSafe
-   * @brief Safe Iterators for hashtables
-   * @ingroup basicstruct_group
+  // ===========================================================================
+  // ===                         HASH TABLES ITERATORS                       ===
+  // ===========================================================================
+
+  /**
+   * @class HashTableIteratorSafe hashTable.h <agrum/core/hashTable.h>
+   * @brief Safe Iterators for hashtables.
+   * @ingroup hashtable_group
    *
    * HashTableIteratorSafe provides a safe way to parse HashTables. They are
-   *safe
-   * because they are kept informed by the hashtable they belong to of the
+   * safe because they are kept informed by the hashtable they belong to of the
    * elements deleted by the user. Hence, even if the user removes an element
    * pointed to by a HashTableIteratorSafe, using the latter to access this
-   *element
-   * will never crash the application. Instead it will properly throw an
-   * UndefinedIteratorValue exception.
+   * element will never crash the application. Instead it will properly throw
+   * an UndefinedIteratorValue exception.
    *
    * Developers may consider using HashTable<x,y>::iterator_safe instead of
    * HashTableIteratorSafe<x,y>.
+   *
    * @par Usage example:
    * @code
    * // creation of a hash table with 10 elements
@@ -2106,17 +2182,21 @@ namespace gum {
    * // check whether two iterators point toward the same element
    * HashTable<int,string>::iterator_safe iter1 = table1.beginSafe ();
    * HashTable<int,string>::iterator_safe iter2 = table1.endSafe ();
-   * if (iter1 != iter) cerr << "iter1 and iter2 point toward different
-   *elements";
+   * if (iter1 != iter) {
+   *   cerr << "iter1 and iter2 point toward different elements";
+   * }
    *
    * // make iter1 point toward nothing
    * iter1.clear ();
    * @endcode
+   *
+   * @tparam Key The gum::HashTable key.
+   * @tparam Val The gum::HashTable Value.
    */
   template <typename Key, typename Val>
   class HashTableIteratorSafe : public HashTableConstIteratorSafe<Key, Val> {
     public:
-    /// types for STL compliance
+    /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
     using key_type = Key;
@@ -2129,140 +2209,207 @@ namespace gum {
     using difference_type = std::ptrdiff_t;
     /// @}
 
-    // ############################################################################
+    // ============================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// basic constructor: creates an iterator pointing to nothing
+    /**
+     * @brief Basic constructor: creates an iterator pointing to nothing.
+     */
     HashTableIteratorSafe();
 
-    /// constructor for an iterator pointing to the first element of a hashtable
+    /**
+     * @brief Constructor for an iterator pointing to the first element of a
+     * hashtable.
+     * @tparam Alloc The gum::HashTable allocator.
+     */
     template <typename Alloc>
     HashTableIteratorSafe( const HashTable<Key, Val, Alloc>& tab );
 
-    /// constructor for an iterator pointing to the nth element of a hashtable
-    /** The method runs in time linear to ind_elt.
+    /** 
+     * @brief Constructor for an iterator pointing to the nth element of a
+     * hashtable.
+     *
+     * The method runs in time linear to ind_elt.
+     *
      * @param tab the hash table to which the so-called element belongs
-     * @param ind_elt the position of the element in the hash table (0 means the
-     * first element).
-     * @throw UndefinedIteratorValue exception is thrown if the element cannot
-     * be found */
+     * @param ind_elt the position of the element in the hash table (0 means
+     * the first element).
+     * @tparam Alloc The gum::HashTable allocator.
+     * @throw UndefinedIteratorValue Raised if the element cannot be found
+     */
     template <typename Alloc>
     HashTableIteratorSafe( const HashTable<Key, Val, Alloc>& tab,
                            Size ind_elt );
 
-    /// copy constructor
+    /**
+     * @brief Copy constructor.
+     * @param from the gum::HashTableIteratorSafe to copy.
+     * @return This gum::HashTableIteratorSafe.
+     */
     HashTableIteratorSafe( const HashTableIteratorSafe<Key, Val>& from );
 
-    /// copy constructor
+    /**
+     * @brief Copy constructor.
+     * @param from the gum::HashTableIterator to copy.
+     * @return This gum::HashTableIteratorSafe.
+     */
     explicit HashTableIteratorSafe( const HashTableIterator<Key, Val>& from );
 
-    /// move constructor
+    /**
+     * @brief Move constructor.
+     * @param from The gum::HashTableIteratorSafe to move.
+     * @return Returns this gum::HashTableIteratorSafe.
+     */
     HashTableIteratorSafe( HashTableIteratorSafe<Key, Val>&& from ) noexcept;
 
-    /// destructor
+    /**
+     * @brief Class destructor.
+     */
     ~HashTableIteratorSafe() noexcept;
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Accessors / Modifiers
-    // ############################################################################
+    // ============================================================================
     /// @{
 
+    /// Usefull Alias
+    /// @{
     using HashTableConstIteratorSafe<Key, Val>::key;
     using HashTableConstIteratorSafe<Key, Val>::val;
     using HashTableConstIteratorSafe<Key, Val>::clear;
+    /// @}
 
-    /// returns the mapped value pointed to by the iterator
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator
-     * does
-     * not point to a valid hash table element
-     * @throw UndefinedIteratorValue */
+    /** 
+     * @brief Returns the mapped value pointed to by the iterator.
+     * @return Returns the mapped value pointed to by the iterator.
+     * @throws UndefinedIteratorValue Raised when the iterator does not point
+     * to a valid hash table element.
+     */
     mapped_type& val();
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Operators
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// copy operator
+    /**
+     * @brief Copy operator.
+     * @param from The gum::HashTableIteratorSafe to copy.
+     * @return Returns this gum::HashTableIterator.
+     */
     HashTableIteratorSafe<Key, Val>&
     operator=( const HashTableIteratorSafe<Key, Val>& from );
 
-    /// copy operator
+    /**
+     * @brief Copy operator.
+     * @param from The gum::HashTableIterator to copy.
+     * @return Returns this gum::HashTableIterator.
+     */
     HashTableIteratorSafe<Key, Val>&
     operator=( const HashTableIterator<Key, Val>& from );
 
-    /// move operator
+    /**
+     * @brief Move operator.
+     * @param from The gum::HashTableIteratorSafe to move.
+     * @return Returns this gum::HashTableIterator.
+     */
     HashTableIteratorSafe<Key, Val>&
     operator=( HashTableIteratorSafe<Key, Val>&& from ) noexcept;
 
-    /// makes the iterator point to the next element in the hash table
-    /** for (iter = beginSafe (); iter != endSafe (); ++iter) loops are
-     * guaranteed
-     * to parse the whole hash table as long as no element is added to or
-     * deleted
-     * from the hash table while being in the loop. Deleting elements during the
-     * loop is guaranteed to never produce a segmentation fault. */
+    /** 
+     * @brief Makes the iterator point to the next element in the hash table.
+     *
+     * @code
+     * for (iter = hash.beginSafe (); iter != hash.endSafe (); ++iter) { }
+     * @encode
+     * 
+     * The above loop is guaranteed to parse the whole hash table as long as no
+     * element is added to or deleted from the hash table while being in the
+     * loop. Deleting elements during the loop is guaranteed to never produce a
+     * segmentation fault. 
+     *
+     * @return This gum::HashTableIteratorSafe.
+     */
     HashTableIteratorSafe<Key, Val>& operator++() noexcept;
 
-    /// makes the iterator point to i elements further in the hashtable
-    HashTableIteratorSafe<Key, Val>& operator+=( unsigned int ) noexcept;
+    /**
+     * @brief Makes the iterator point to i elements further in the hashtable.
+     * @param i The number of increments.
+     * @return Return this gum::HashTableIteratorSafe.
+     */
+    HashTableIteratorSafe<Key, Val>& operator+=( unsigned int i) noexcept;
 
-    /// returns a new iterator
+    /**
+     * @brief Returns a new iterator pointing to i elements further in the
+     * hashtable.
+     * @param i The number of increments.
+     * @return Returns this gum::HashTableIteratorSafe.
+     */
     HashTableIteratorSafe<Key, Val> operator+( unsigned int ) const;
 
-    /// checks whether two iterators are pointing toward different elements
+    /**
+     * @brief Checks whether two iterators are pointing toward different
+     * elements.
+     * @param from The gum::HashTableIteratorSafe to test for inequality.
+     * @return Returns true if this and from are not equal.
+     */
     bool operator!=( const HashTableIteratorSafe<Key, Val>& from ) const
         noexcept;
 
-    /// checks whether two iterators are pointing toward the same element
+    /**
+     * @brief Checks whether two iterators are pointing toward equal
+     * elements.
+     * @param from The gum::HashTableIteratorSafe to test for equality.
+     * @return Returns true if this and from are equal.
+     */
     bool operator==( const HashTableIteratorSafe<Key, Val>& from ) const
         noexcept;
 
-    /// returns the value pointed to by the iterator
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator
-     * does
-     * not point to a valid hash table element
-     * @throw UndefinedIteratorValue */
+    /**
+     * @brief Returns the value pointed to by the iterator.
+     * @return Returns the value pointed to by the iterator.
+     * @throws UndefinedIteratorValue Raised when the iterator does not point
+     * to a valid hash table element
+     */
     value_type& operator*();
 
-    /// returns the value pointed to by the iterator
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator
-     * does
-     * not point to a valid hash table element
-     * @throw UndefinedIteratorValue */
+    /** 
+     * @brief Returns the value pointed to by the iterator.
+     * @return Returns the value pointed to by the iterator.
+     *
+     * @throws UndefinedIteratorValue Raised when the iterator
+     * does not point to a valid hash table element.
+     */
     const value_type& operator*() const;
 
     /// @}
   };
 
-  /* ===========================================================================
-   */
-  /* ===                  UNSAFE HASH TABLES CONST ITERATORS                 ===
-   */
-  /* ===========================================================================
-   */
-  /** @class HashTableConstIterator
+  // ===========================================================================
+  // ===                  UNSAFE HASH TABLES CONST ITERATORS                 ===
+  // ===========================================================================
+
+  /**
+   * @class HashTableConstIterator hashTable.h <agrum/core/hashtable.h>
    * @brief Unsafe Const Iterators for hashtables
-   * @ingroup basicstruct_group
+   * @ingroup hashtable_group
    *
    * HashTableConstIterator provides a fast but unsafe way to parse HashTables.
    * They should @b only be used when parsing hashtables in which no element is
    * removed from the hashtable. Removing an element where the iterator points
-   *to
-   * will mess the iterator as it will most certainly point to an unallocated
-   * memory. So, this kind of iterator should only be used when parsing "(key)
-   * constant" hash tables, e.g., when we wish to display the content of a hash
-   * table or when we wish to update the mapped values of some elements of the
-   * hash table without ever modifying their keys.
+   * to will mess the iterator as it will most certainly point to an
+   * unallocated memory. So, this kind of iterator should only be used when
+   * parsing "(key) constant" hash tables, e.g., when we wish to display the
+   * content of a hash table or when we wish to update the mapped values of
+   * some elements of the hash table without ever modifying their keys.
    *
    * Developers may consider using HashTable<x,y>::const_iterator instead of
    * HashTableConstIterator<x,y>.
+   *
    * @par Usage example:
    * @code
    * // creation of a hash table with 10 elements
@@ -2282,17 +2429,21 @@ namespace gum {
    * // check whether two iterators point toward the same element
    * HashTable<int,string>::const_iterator iter1 = table1.cbegin();
    * HashTable<int,string>::const_iterator iter2 = table1.cend();
-   * if (iter1 != iter) cerr << "iter1 and iter2 point toward different
-   *elements";
+   * if (iter1 != iter) {
+   *   cerr << "iter1 and iter2 point toward different elements";
+   * }
    *
    * // make iter1 point toward nothing
    * iter1.clear ();
    * @endcode
+   *
+   * @tparam Key The gum::HashTable key.
+   * @tparam Val The gum::HashTable Value.
    */
   template <typename Key, typename Val>
   class HashTableConstIterator {
     public:
-    /// types for STL compliance
+    /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
     using key_type = Key;
@@ -2305,156 +2456,245 @@ namespace gum {
     using difference_type = std::ptrdiff_t;
     /// @}
 
-    // ############################################################################
+    // ============================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// basic constructor: creates an iterator pointing to nothing
+    /**
+     * @brief Basic constructor: creates an iterator pointing to nothing.
+     */
     HashTableConstIterator() noexcept;
 
-    /// constructor for an iterator pointing to the first element of a hashtable
+    /**
+     * @brief Constructor for an iterator pointing to the first element of a
+     * hashtable.
+     * @param tab The gum::HashTable to iterate over.
+     * @tparam Alloc The gum::HashTable allocator.
+     */
     template <typename Alloc>
     HashTableConstIterator( const HashTable<Key, Val, Alloc>& tab ) noexcept;
 
-    /// constructor for an iterator pointing to the nth element of a hashtable
-    /** The method runs in time linear to ind_elt.
-     * @param tab the hash table to which the so-called element belongs
-     * @param ind_elt the position of the element in the hash table (0 means the
-     * first element).
-     * @throw UndefinedIteratorValue exception is thrown if the element cannot
-     * be found */
+    /** 
+     * @brief Constructor for an iterator pointing to the nth element of a
+     * hashtable.
+     *
+     * The method runs in time linear to ind_elt.
+     *
+     * @param tab The hash table to which the so-called element belongs.
+     * @param ind_elt The position of the element in the hash table (0 means
+     * the first element).
+     * @throw UndefinedIteratorValue Raised if the element cannot be found.
+     */
     template <typename Alloc>
     HashTableConstIterator( const HashTable<Key, Val, Alloc>& tab,
                             Size ind_elt );
 
-    /// copy constructor
+    /**
+     * @brief Copy constructor.
+     * @param from The gum::HashTableConstIterator to copy.
+     */
     HashTableConstIterator(
         const HashTableConstIterator<Key, Val>& from ) noexcept;
 
-    /// move constructor
+    /**
+     * @brief Move constructor.
+     * @param from The gum::HashTableConstIterator to move.
+     */
     HashTableConstIterator( HashTableConstIterator<Key, Val>&& from ) noexcept;
 
-    /// destructor
+    /**
+     * @brief Class destructor.
+     */
     ~HashTableConstIterator() noexcept;
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Accessors / Modifiers
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// returns the key corresponding to the element pointed to by the iterator
-    /** @warning using this method on an iterator that points to an element that
-     * has been deleted will most certainly result in a segfault. If unsure, use
-     * a safe iterator instead of an unsafe one. */
+    /** 
+     * @brief Returns the key corresponding to the element pointed to by the
+     * iterator.
+     *
+     * @warning Using this method on an iterator that points to an element that
+     * has been deleted will most certainly result in a segfault. If unsure,
+     * use a safe iterator instead of an unsafe one.
+     *
+     * @return Returns the key corresponding to the element pointed to by the
+     * iterator.
+     */
     const key_type& key() const;
 
-    /// returns the mapped value pointed to by the iterator
-    /** @warning using this method on an iterator that points to an element that
+    /** 
+     * @brief Returns the mapped value pointed to by the iterator.
+     *
+     * @warning Using this method on an iterator that points to an element that
      * has been deleted will most certainly result in a segfault. If unsure, use
-     * a safe iterator instead of an unsafe one. */
+     * a safe iterator instead of an unsafe one. 
+     *
+     * @return Returns the mapped value pointed to by the iterator.
+     */
     const mapped_type& val() const;
 
-    /** @brief makes the iterator point toward nothing (in particular, it is not
-     * related anymore to its current hash table) */
+    /**
+     * @brief Makes the iterator point toward nothing (in particular, it is not
+     * related anymore to its current hash table).
+     */
     void clear() noexcept;
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Operators
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// copy operator
+    /**
+     * @brief Copy operator.
+     * @param from The gum::HashTableConstIterator to copy.
+     * @return Returns this gum::HashTableConstIterator.
+     */
     HashTableConstIterator<Key, Val>&
     operator=( const HashTableConstIterator<Key, Val>& from ) noexcept;
 
-    /// move operator
+    /**
+     * @brief Move operator.
+     * @param from The gum::HashTableConstIterator to move.
+     * @return Returns this gum::HashTableConstIterator.
+     */
     HashTableConstIterator<Key, Val>&
     operator=( HashTableConstIterator<Key, Val>&& from ) noexcept;
 
-    /// makes the iterator point to the next element in the hash table
-    /** for (iter = cbegin (); iter != cend(); ++iter ) loops are guaranteed to
-     * parse the whole hash table as long as no element is added to or deleted
-     * from the hash table while being in the loop.
+    /// 
+    /** 
+     * @brief Makes the iterator point to the next element in the hash table.
+     *
+     * @code
+     * for (iter = cbegin (); iter != cend(); ++iter ) { }
+     * @endcode
+     *
+     * The above loop is guaranteed to parse the whole hash table as long as no
+     * element is added to or deleted from the hash table while being in the
+     * loop.
+     *
      * @warning performing a ++ on an iterator that points to an element that
-     * has
-     * been deleted will most certainly result in a segfault. */
+     * has been deleted will most certainly result in a segfault. 
+     *
+     * @return Returns this gum::HashTableConstIterator.
+     */
     HashTableConstIterator<Key, Val>& operator++() noexcept;
 
-    /// makes the iterator point to i elements further in the hashtable
-    HashTableConstIterator<Key, Val>& operator+=( unsigned int ) noexcept;
+    /**
+     * @brief Makes the iterator point to i elements further in the hashtable.
+     * @param i The number of increments.
+     * @return Returns this gum::HashTableConstIterator.
+     */
+    HashTableConstIterator<Key, Val>& operator+=( unsigned int i ) noexcept;
 
-    /// returns a new iterator
+    /**
+     * @brief Returns a new iterator pointing to i elements further in the
+     * hashtable.
+     * @param i The number of increments.
+     * @return Returns a new iterator pointing to i elements further in the
+     * hashtable.
+     */
     HashTableConstIterator<Key, Val> operator+( unsigned int ) const noexcept;
 
-    /// checks whether two iterators are pointing toward different elements
+    /**
+     * @brief Checks whether two iterators are pointing toward different
+     * elements.
+     * @param from The gum::HashTableConstIterator to test for inequality.
+     * @return Returns true if this and from are not equal.
+     */
     bool operator!=( const HashTableConstIterator<Key, Val>& from ) const
         noexcept;
 
-    /// checks whether two iterators are pointing toward the same element
+    /**
+     * @brief Checks whether two iterators are pointing toward equal
+     * elements.
+     * @param from The gum::HashTableConstIterator to test for equality.
+     * @return Returns true if this and from are equal.
+     */
     bool operator==( const HashTableConstIterator<Key, Val>& from ) const
         noexcept;
 
-    /// returns the value pointed to by the iterator
-    /** @warning using this method on an iterator that points to an element that
-     * has been deleted will most certainly result in a segfault. If unsure, use
-     * a safe iterator instead of an unsafe one. */
+    
+    /**
+     * @brief Returns the value pointed to by the iterator.
+     *
+     * @warning using this method on an iterator that points to an element that
+     * has been deleted will most certainly result in a segfault. If unsure,
+     * use a safe iterator instead of an unsafe one.
+     *
+     * @return Returns the value pointed to by the iterator.
+     */
     const value_type& operator*() const;
 
     /// @}
 
     protected:
-    /** class HashTable must be a friend because it stores iterator end
-     * and this one can be properly initialized only when the hashtable has been
-     * fully allocated. Thus, proper initialization can only take place within
-     * the constructor's code of the hashtable. */
+
+    /**
+     * Class HashTable must be a friend because it stores iterator end and this
+     * one can be properly initialized only when the hashtable has been fully
+     * allocated. Thus, proper initialization can only take place within the
+     * constructor's code of the hashtable. 
+     *
+     * @tparam K The gum::HashTable keys type.
+     * @tparam V The gum::HashTable values type.
+     * @tparam A The gum::HashTable allocator.
+     */
     template <typename K, typename V, typename A>
     friend class HashTable;
 
-    /// for the safe copy constructor and operator
+    /// For the safe copy constructor and operator.
     friend class HashTableConstIteratorSafe<Key, Val>;
 
-    /// the hash table the iterator is pointing to
+    /// The hash table the iterator is pointing to.
     const HashTable<Key, Val>* __table{nullptr};
 
-    /** @brief the index of the chained list pointed by the iterator in the
-     * array of nodes of the hash table */
+    /**
+     * @brief The index of the chained list pointed by the iterator in the
+     * array of nodes of the hash table.
+     */
     Size __index{0};
 
-    /// the bucket in the chained list pointed to by the iterator
+    /// The bucket in the chained list pointed to by the iterator.
     typename HashTable<Key, Val>::Bucket* __bucket{nullptr};
 
-    /// returns the current iterator's bucket
+    /**
+     * @brief Returns the current iterator's bucket.
+     * @return Returns the current iterator's bucket.
+     */
     typename HashTable<Key, Val>::Bucket* __getBucket() const noexcept;
 
-    /// returns the index in the hashtable's node vector pointed to by the
-    /// iterator
+    /**
+     * @brief Returns the index in the hashtable's node vector pointed to by
+     * the iterator.
+     * @return Returns the index in the hashtable's node vector pointed to by
+     * the iterator.
+     */
     Size __getIndex() const noexcept;
   };
 
-  /* ===========================================================================
-   */
-  /* ===                      UNSAFE HASH TABLES ITERATORS                   ===
-   */
-  /* ===========================================================================
-   */
-  /** @class HashTableIterator
+  // ===========================================================================
+  // ===                      UNSAFE HASH TABLES ITERATORS                   ===
+  // ===========================================================================
+
+  /**
+   * @class HashTableIterator hashTable.h <agrum/core/hashTable.h>
    * @brief Unsafe Iterators for hashtables
-   * @ingroup basicstruct_group
+   * @ingroup hashtable_group
    *
    * HashTableIterator provides a fast but unsafe way to parse HashTables.
    * They should @b only be used when parsing hashtables in which no element is
    * removed from the hashtable. Removing an element where the iterator points
-   *to
-   * will mess the iterator as it will most certainly point to an unallocated
-   * memory. So, this kind of iterator should only be used when parsing "(key)
-   * constant" hash tables, e.g., when we wish to display the content of a hash
-   * table or when we wish to update the mapped values of some elements of the
-   * hash table without ever modifying their keys.
+   * to will mess the iterator as it will most certainly point to an
+   * unallocated memory. So, this kind of iterator should only be used when
+   * parsing "(key) constant" hash tables, e.g., when we wish to display the
+   * content of a hash table or when we wish to update the mapped values of
+   * some elements of the hash table without ever modifying their keys.
    *
    * Developers may consider using HashTable<x,y>::iterator instead of
    * HashTableIterator<x,y>.
@@ -2477,12 +2717,16 @@ namespace gum {
    * // check whether two iterators point toward the same element
    * HashTable<int,string>::iterator iter1 = table1.begin();
    * HashTable<int,string>::iterator iter2 = table1.end();
-   * if (iter1 != iter) cerr << "iter1 and iter2 point toward different
-   *elements";
+   * if (iter1 != iter) {
+   *   cerr << "iter1 and iter2 point toward different elements";
+   * }
    *
    * // make iter1 point toward nothing
    * iter1.clear ();
    * @endcode
+   *
+   * @tparam Key The gum::HashTable key.
+   * @tparam Val The gum::HashTable Value.
    */
   template <typename Key, typename Val>
   class HashTableIterator : public HashTableConstIterator<Key, Val> {
@@ -2505,97 +2749,169 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// basic constructor: creates an iterator pointing to nothing
+    /**
+     * @brief Basic constructor: creates an iterator pointing to nothing.
+     */
     HashTableIterator() noexcept;
 
-    /// constructor for an iterator pointing to the first element of a hashtable
+    /**
+     * @brief Constructor for an iterator pointing to the first element of a
+     * hashtable.
+     * @tparam Alloc The gum::HashTable allocator.
+     * @param tab The gum::HashTable to iterate over.
+     */
     template <typename Alloc>
     HashTableIterator( const HashTable<Key, Val, Alloc>& tab ) noexcept;
 
-    /// constructor for an iterator pointing to the nth element of a hashtable
-    /** The method runs in time linear to ind_elt.
-     * @param tab the hash table to which the so-called element belongs
-     * @param ind_elt the position of the element in the hash table (0 means the
-     * first element).
-     * @throw UndefinedIteratorValue exception is thrown if the element cannot
-     * be found */
+    /// 
+    /** 
+     * @brief Constructor for an iterator pointing to the nth element of a
+     * hashtable.
+     *
+     * The method runs in time linear to ind_elt.
+     *
+     * @tparam Alloc The gum::HashTable allocator.
+     * @param tab The hash table to which the so-called element belongs.
+     * @param ind_elt The position of the element in the hash table (0 means
+     * the first element).
+     * @throw UndefinedIteratorValue Raised if the element cannot be found.
+     */
     template <typename Alloc>
     HashTableIterator( const HashTable<Key, Val, Alloc>& tab, Size ind_elt );
 
-    /// copy constructor
+    /**
+     * @brief Copy constructor.
+     * @param from The gum::HashTableIterator to copy.
+     */
     HashTableIterator( const HashTableIterator<Key, Val>& from ) noexcept;
 
-    /// move constructor
+    /**
+     * @brief Move constructor.
+     * @param from The gum::HashTableIterator to move.
+     */
     HashTableIterator( HashTableIterator<Key, Val>&& from ) noexcept;
 
-    /// destructor
+    /**
+     * @brief Class destructor.
+     */
     ~HashTableIterator() noexcept;
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Accessors / Modifiers
-    // ############################################################################
+    // ============================================================================
     /// @{
 
+    /// Usefull alias.
+    /// @{
     using HashTableConstIterator<Key, Val>::key;
     using HashTableConstIterator<Key, Val>::val;
     using HashTableConstIterator<Key, Val>::clear;
+    /// @}
 
-    /// returns the mapped value pointed to by the iterator
-    /** @warning using this method on an iterator that points to an element that
-     * has been deleted will most certainly result in a segfault. If unsure, use
-     * a safe iterator instead of an unsafe one. */
+    /** 
+     * @brief Returns the mapped value pointed to by the iterator.
+     *
+     * @warning using this method on an iterator that points to an element that
+     * has been deleted will most certainly result in a segfault. If unsure,
+     * use a safe iterator instead of an unsafe one. 
+     *
+     * @return Returns the mapped value pointed to by the iterator.
+     */
     mapped_type& val();
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Operators
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// copy operator
+    /**
+     * @brief Copy operator.
+     * @param from The gum::HashTableIterator to copy.
+     * @return Returns this gum::HashTableIterator.
+     */
     HashTableIterator<Key, Val>&
     operator=( const HashTableIterator<Key, Val>& from ) noexcept;
 
-    /// move operator
+    /**
+     * @brief Move operator.
+     * @param from The gum::HashTableIterator to move.
+     * @return Returns this gum::HashTableIterator.
+     */
     HashTableIterator<Key, Val>&
     operator=( HashTableIterator<Key, Val>&& from ) noexcept;
 
-    /// makes the iterator point to the next element in the hash table
-    /** for (iter = begin(); iter != end(); ++iter) loops are guaranteed to
-     * parse
-     * the whole hash table as long as no element is added to or deleted from
-     * the
-     * hash table while being in the loop.
+    /// 
+    /** 
+     * @brief Makes the iterator point to the next element in the hash table.
+     *
+     * @code
+     * for (iter = begin(); iter != end(); ++iter) { }
+     * @endcode
+     *
+     * The above loop is guaranteed to parse the whole hash table as long as no
+     * element is added to or deleted from the hash table while being in the
+     * loop.
+     *
      * @warning performing a ++ on an iterator that points to an element that
-     * has
-     * been deleted will most certainly result in a segfault. */
+     * has been deleted will most certainly result in a segfault. 
+     *
+     * @return Returns this gum::HashTableIterator.
+     */
     HashTableIterator<Key, Val>& operator++() noexcept;
 
-    /// makes the iterator point to i elements further in the hashtable
-    HashTableIterator<Key, Val>& operator+=( unsigned int ) noexcept;
+    /**
+     * @brief Makes the iterator point to i elements further in the hashtable.
+     * @param i The number of increments.
+     * @return Returns this gum::HashTableIterator.
+     */
+    HashTableIterator<Key, Val>& operator+=( unsigned int i ) noexcept;
 
-    /// returns a new iterator
-    HashTableIterator<Key, Val> operator+( unsigned int ) const noexcept;
+    /**
+     * @brief Returns a new iterator.
+     * @param i The number of increments.
+     * @return Returns this gum::HashTableIterator.
+     */
+    HashTableIterator<Key, Val> operator+( unsigned int i ) const noexcept;
 
-    /// checks whether two iterators are pointing toward different elements
+    /**
+     * @brief Checks whether two iterators are pointing toward different
+     * elements.
+     * @param from The gum::HashTableIterator to test for inequality.
+     * @return Returns true if this and from are not equal.
+     */
     bool operator!=( const HashTableIterator<Key, Val>& from ) const noexcept;
 
-    /// checks whether two iterators are pointing toward the same element
+    /**
+     * @brief Checks whether two iterators are pointing toward equal
+     * elements.
+     * @param from The gum::HashTableIterator to test for equality.
+     * @return Returns true if this and from are equal.
+     */
     bool operator==( const HashTableIterator<Key, Val>& from ) const noexcept;
 
-    /// returns the value pointed to by the iterator
-    /** @warning using this method on an iterator that points to an element that
-     * has been deleted will most certainly result in a segfault. If unsure, use
-     * a safe iterator instead of an unsafe one. */
+    /// 
+    /** 
+     * @brief Returns the value pointed to by the iterator.
+     *
+     * @warning using this method on an iterator that points to an element that
+     * has been deleted will most certainly result in a segfault. If unsure,
+     * use a safe iterator instead of an unsafe one. 
+     *
+     * @return Returns the value pointed to by the iterator.
+     */
     value_type& operator*();
 
-    /// returns the value pointed to by the iterator
-    /** @warning using this method on an iterator that points to an element that
-     * has been deleted will most certainly result in a segfault. If unsure, use
-     * a safe iterator instead of an unsafe one. */
+    /** 
+     * @brief Returns the value pointed to by the iterator.
+     *
+     * @warning using this method on an iterator that points to an element that
+     * has been deleted will most certainly result in a segfault. If unsure,
+     * use a safe iterator instead of an unsafe one. 
+     *
+     * @return Returns the value pointed to by the iterator.
+     */
     const value_type& operator*() const;
 
     /// @}
