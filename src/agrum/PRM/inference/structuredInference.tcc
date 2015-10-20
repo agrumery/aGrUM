@@ -901,6 +901,8 @@ namespace gum {
           case ClassElement<GUM_SCALAR>::prm_attribute: {
             pool.insert( &( const_cast<Potential<GUM_SCALAR>&>(
                 c.get( node ).cpf() ) ) );
+            // break omited : We want to execute the next block
+            // for attributes
           }
 
           case ClassElement<GUM_SCALAR>::prm_aggregate: {
@@ -945,8 +947,7 @@ namespace gum {
               aggregators().insert( node );
 
             // If the aggregators is not an output and have parents which are
-            // not
-            // outputs, we must eliminate the parents after adding the
+            // not outputs, we must eliminate the parents after adding the
             // aggregator's CPT
             for ( const auto par : c.dag().parents( node ) ) {
               const auto& prnt = c.get( par );
