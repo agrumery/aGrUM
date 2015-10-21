@@ -78,10 +78,14 @@ namespace gum {
       /// @{
 
       /// default constructor
-      /** @param filter the row filter that will be used to read the database
+      /**
+       * @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database
        * @param apriori the a priori that is taken into account in the
-       * score/countings */
+       * score/countings
+       * @param min_range The minimal range.
+       * @param max_range The maximal range.
+       */
       template <typename RowFilter>
       Score( const RowFilter& filter,
              const std::vector<unsigned int>& var_modalities,

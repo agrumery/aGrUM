@@ -102,11 +102,10 @@ namespace gum {
       void setMaxNbDecreasingChanges( unsigned int nb );
 
       /// learns the structure of a Bayes net
-      /** @param A selector class that computes the best changes that can be
-       * applied and that enables the user to get them very easily. Typically,
-       * the selector is a GraphChangesSelector4DiGraph<SCORE,
-       * STRUCT_CONSTRAINT,
-       * GRAPH_CHANGES_GENERATOR>.
+      /** @param selector A selector class that computes the best changes that
+       * can be applied and that enables the user to get them very easily.
+       * Typically, the selector is a GraphChangesSelector4DiGraph<SCORE,
+       * STRUCT_CONSTRAINT, GRAPH_CHANGES_GENERATOR>.
        * @param modal the domain sizes of the random variables observed in the
        * database
        * @param initial_dag the DAG we start from for our learning */

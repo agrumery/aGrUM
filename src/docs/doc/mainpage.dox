@@ -14,7 +14,8 @@
  *   - planification.
  */
 
-/** \defgroup basicstruct_group Basic data structures
+/**
+ * \defgroup basicstruct_group Basic data structures
  * @{
  * \defgroup hashtable_group Hash Tables
  *

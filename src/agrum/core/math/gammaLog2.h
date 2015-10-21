@@ -66,7 +66,7 @@ namespace gum {
     /// @{
 
     /// returns log2 ( gamma (x) ) for x > 0
-    /** @hrows OutOfBounds exception is raised if x <= 0 */
+    /** @throws OutOfBounds exception is raised if x <= 0 */
     float operator()( float x ) const;
 
     /// sets whether we need more precision for small values
@@ -80,7 +80,7 @@ namespace gum {
     /// @{
 
     /// returns log2 ( gamma (x) ) for x >= 0
-    /** @hrows OutOfBounds exception is raised if x <= 0 */
+    /** @throws OutOfBounds exception is raised if x <= 0 */
     float gammaLog2( float x ) const;
 
     /// @}

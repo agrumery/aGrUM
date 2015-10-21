@@ -77,7 +77,9 @@ namespace gum {
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database
        * @param apriori the a priori that is taken into account in the
-       * score/countings */
+       * score/countings
+       * @param score_internal_apriori The score internal apriori.
+       * */
       template <typename RowFilter>
       ParamEstimator( const RowFilter& filter,
                       const std::vector<unsigned int>& var_modalities,

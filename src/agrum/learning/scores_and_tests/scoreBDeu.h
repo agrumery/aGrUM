@@ -84,18 +84,21 @@ namespace gum {
       /// @{
 
       /// default constructor
-      /** @param filter the row filter that will be used to read the database
+      /**
+       * @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database
        * @param apriori the apriori we add to the score. As BDeu already
-       * includes
-       * an implicit ESS / (ri * qi) apriori on all the cells of contingency
-       * tables, the apriori passed in argument should be a NoApriori. But aGrUM
-       * will let you use another (certainly incompatible) apriori with the
-       * score.
-       * In this case, this apriori will be included in addition to the implicit
-       * BDeu apriori in a BD fashion, i.e., we will ressort to the Bayesian
-       * Dirichlet (BD) formula to include the sum of the two aprioris into the
-       * score. */
+       * includes an implicit ESS / (ri * qi) apriori on all the cells of
+       * contingency tables, the apriori passed in argument should be a
+       * NoApriori. But aGrUM will let you use another (certainly incompatible)
+       * apriori with the score.
+       * In this case, this apriori will be included in addition to the
+       * implicit BDeu apriori in a BD fashion, i.e., we will ressort to the
+       * Bayesian Dirichlet (BD) formula to include the sum of the two aprioris
+       * into the score. 
+       * @param min_range The minimal range.
+       * @param max_range The maximal range.
+       */
       template <typename RowFilter>
       ScoreBDeu( const RowFilter& filter,
                  const std::vector<unsigned int>& var_modalities,

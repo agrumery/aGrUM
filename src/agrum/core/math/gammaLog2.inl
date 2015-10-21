@@ -25,7 +25,6 @@
 
 namespace gum {
 
-  /// returns log2 ( gamma (x) ) for x >= 0
   ALWAYS_INLINE float GammaLog2::gammaLog2( float x ) const {
     if ( x <= 0 )
       GUM_ERROR( OutOfBounds,
@@ -50,12 +49,10 @@ namespace gum {
            __1log2;
   }
 
-  /// returns log2 ( gamma (x) ) for x >= 0
   ALWAYS_INLINE float GammaLog2::operator()( float x ) const {
     return gammaLog2( x );
   }
 
-  /// sets whether we need more precision for small values
   INLINE void GammaLog2::setPrecision( bool prec ) {
     __requires_precision = prec;
   }

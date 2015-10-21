@@ -2842,7 +2842,6 @@ namespace gum {
     HashTableIterator<Key, Val>&
     operator=( HashTableIterator<Key, Val>&& from ) noexcept;
 
-    /// 
     /** 
      * @brief Makes the iterator point to the next element in the hash table.
      *
@@ -2891,7 +2890,6 @@ namespace gum {
      */
     bool operator==( const HashTableIterator<Key, Val>& from ) const noexcept;
 
-    /// 
     /** 
      * @brief Returns the value pointed to by the iterator.
      *
@@ -2919,7 +2917,8 @@ namespace gum {
 
 } /* namespace gum */
 
-/// always include the implementation of the templates
+// always include the implementation of the templates
 #include <agrum/core/hashTable.tcc>
 
 #endif  // GUM_HASHTABLE_H
+

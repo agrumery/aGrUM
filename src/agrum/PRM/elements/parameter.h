@@ -54,7 +54,7 @@ namespace gum {
        *
        * @param name
        * @param type
-       * @param impl value
+       * @param value
        */
       Parameter( const std::string& name,
                  ParameterType type,

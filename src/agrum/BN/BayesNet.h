@@ -123,7 +123,7 @@ namespace gum {
     /// @{
 
     /**
-     * @biref Returns the CPT of a variable.
+     * @brief Returns the CPT of a variable.
      *
      * @param varId A variable's id in the gum::BayesNet.
      * @return The variable's CPT.

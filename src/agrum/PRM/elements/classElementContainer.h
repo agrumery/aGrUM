@@ -123,15 +123,12 @@ namespace gum {
        * previous value.
        *
        * If you want to overload an inherited ClassElement<GUM_SCALAR> call
-       *Class::overload().
+       * Class::overload().
        *
        * When adding an Attribute or an Aggregate its type safe name is
-       *automatically
-       * added, the syntax is \<type\>name. So you can either use its type safe
-       *name
-       *or
-       * its real name. See the \ref prm_typ_inh "type inheritance section" for
-       * further details.
+       * automatically added, the syntax is \<type\>name. So you can either use
+       * its type safe name or its real name. See the ref prm_typ_inh "type
+       * inheritance section" for further details.
        *
        * @param elt The ClassElement<GUM_SCALAR> added to this Class.
        * @return Returns the NodeId assigned to elt.

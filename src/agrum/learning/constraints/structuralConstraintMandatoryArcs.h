@@ -182,12 +182,14 @@ namespace gum {
 
 /// @}
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 // include the set of methods that enable the structural constraint to
 // be standalone, i.e., that it needs not be included into a
 // StructuralConstraintSetStatic to be used by learning algorithms
 #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintMandatoryArcs
 #include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
 #undef GUM_CONSTRAINT_CLASS_NAME
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
       protected:
       /// the MandatoryArcs on which we perform checks

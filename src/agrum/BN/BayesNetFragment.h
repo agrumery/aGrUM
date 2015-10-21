@@ -167,7 +167,7 @@ namespace gum {
 
     /// @}
 
-    /// @specific API for Fragment
+    /// @name API for Fragment
     /// @{
 
     /**

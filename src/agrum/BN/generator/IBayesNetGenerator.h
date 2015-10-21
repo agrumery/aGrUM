@@ -45,19 +45,18 @@
 namespace gum {
 
   /**
-   * @class IBayesNetGenerator IBayesNetGenerator <agrum/BN/generator/IBayesNetGenerator.h>
+   * @class IBayesNetGenerator
+   * @headerfile IBayesNetGenerator.h <agrum/BN/generator/IBayesNetGenerator.h>
    * @brief Class for generating bayesian networks.
    * @ingroup bn_generator
    *
-   * This class is the abstract class for randomly generating a bayesian network
-   *given three parameters:
-   * the number of nodes the wanted maximum number of arcs and the maximum
-   *number of
-   *modality for each node.
+   * This class is the abstract class for randomly generating a bayesian
+   * network given three parameters: the number of nodes the wanted maximum
+   * number of arcs and the maximum number of modality for each node.
+   *
    * @warning  Be Careful when entering the parameters, high Values may cause
-   *the
-   *density of the Bayesian Network to be too high
-   * resulting in the failure of most of the inference Methods.
+   * the density of the Bayesian Network to be too high resulting in the
+   * failure of most of the inference Methods.
    */
   template <typename GUM_SCALAR, template <class> class ICPTGenerator>
   class IBayesNetGenerator : public ICPTGenerator<GUM_SCALAR> {

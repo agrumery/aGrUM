@@ -86,7 +86,6 @@ namespace gum {
 
     /// copy operator
     /** @param aLDRV the labelized discrete random variable we copy */
-
     const LabelizedVariable& operator=( const LabelizedVariable& aLDRV );
 
     /// returns the index of a given label
@@ -94,6 +93,11 @@ namespace gum {
      * @return the index of this label
      * @throw NotFound */
     Idx operator[]( const std::string& aLabel ) const;
+
+    /// returns the index of a given label
+    /** @param label searched label
+     * @return the index of this label
+     * @throw NotFound */
     virtual Idx index( const std::string& label ) const;
 
     /// @}
@@ -103,8 +107,9 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// indicates whether the variable already has the label passed in argument
-    /** @param aLabel
+    /**
+     * @brief indicates whether the variable already has the label passed in argument
+     * @param aLabel The label
      * @return true if the label already exists */
     bool isLabel( const std::string& aLabel ) const;
 
@@ -150,6 +155,7 @@ namespace gum {
     /// returns the type of variable
     virtual VarType varType( void ) const;
 
+    /// Returns the domain
     virtual const std::string domain( void ) const;
 
     /// @}

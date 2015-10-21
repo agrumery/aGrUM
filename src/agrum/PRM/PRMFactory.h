@@ -254,20 +254,17 @@ namespace gum {
        * Add a label to the current discrete type.
        *
        * @param l The label value.
-       * @param extends The super type label for which l is an extension.
+       * @param ext The super type label for which l is an extension.
        *
        * @throw OperationNotAllowed Raised if the current type does not have a
-       *super
-       *                            type, see PRMFactory::addLabel(const
-       *std::string&).
-       * @throw DuplicateElement Raised if a label with the same value
-       *                         already exists.
-       * @throw NotFound Raised if extends does not match any label in the
-       *current
-       *                 type's super type.
+       * super type, see PRMFactory::addLabel(const std::string&).
+       * @throw DuplicateElement Raised if a label with the same value already
+       * exists.
+       * @throw NotFound Raised if ext does not match any label in the
+       * current type's super type.
        */
       virtual void addLabel( const std::string& l,
-                             std::string extends = "" ) override;
+                             std::string ext = "" ) override;
 
       /**
        * End the current discrete type declaration.
@@ -297,14 +294,14 @@ namespace gum {
        * implement interfaces.
        *
        * @param c The class name.
-       * @param extends The name of the super class of c.
+       * @param ext The name of the super class of c.
        * @param implements The list of interface implemented by c.
        *
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void
       startClass( const std::string& c,
-                  const std::string& extends = "",
+                  const std::string& ext = "",
                   const Set<std::string>* implements = nullptr ) override;
 
       /**
@@ -329,13 +326,13 @@ namespace gum {
        * implement interfaces.
        *
        * @param i The interface name.
-       * @param extends The name of the super interface of i.
+       * @param ext The name of the super interface of i.
        *
-       * @throw NotFound Raised if extends does not match any declared
+       * @throw NotFound Raised if ext does not match any declared
        *                 Interface<GUM_SCALAR>.
        */
       virtual void startInterface( const std::string& i,
-                                   const std::string& extends = "" ) override;
+                                   const std::string& ext = "" ) override;
 
       /**
        * @brief Add an attribute to an interface.

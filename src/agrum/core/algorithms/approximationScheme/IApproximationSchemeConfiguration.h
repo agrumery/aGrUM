@@ -41,7 +41,6 @@ namespace gum {
   /// Approximation Scheme
   /**
    * An interface for configuration of approximation scheme
-   @endcode
    */
   class IApproximationSchemeConfiguration {
     public:

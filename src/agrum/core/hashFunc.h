@@ -38,9 +38,8 @@
 
 namespace gum {
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
   /**
+   * @ingroup hashfunctions_group
    * @brief Returns the size in bits - 1 necessary to store the smallest power
    * of 2 greater or equal to nb.
    *
@@ -57,6 +56,8 @@ namespace gum {
   unsigned int __hashTableLog2( const Size& nb );
 
   /**
+   * @class HashFuncConst hashFunc.h <agrum/core/hashFunc.h>
+   * @ingroup hashfunctions_group
    * @brief Constants for hash functions.
    *
    * Hash functions are of the form [M * ((k * A) mod 1)], where [] stands for
@@ -81,8 +82,6 @@ namespace gum {
     static constexpr size_t offset = 64;
 #endif /* unsigned long = 32 bits */
   };
-
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
   // ===========================================================================
   // ===             BASE CLASS SHARED BY ALL THE HASH FUNCTIONS             ===
@@ -207,9 +206,32 @@ namespace gum {
   class HashFuncSmallKey : private HashFuncBase<Key> {
     public:
 
-    void resize( Size );
-    Size operator()( const Key& ) const;
+    /// This class use the HashFuncBase::size.
     using HashFuncBase<Key>::size;
+
+    /**
+     * @brief Update the hash function to take into account a resize of the
+     * hash table.
+     *
+     * When the user wishes to resize the gum::HashTable so that the array is
+     * of size s, the gum::HashTable resizes itself to the smallest power of 2
+     * greater than or equal to s. This new size is computed by function
+     * gum::HashFuncBase::resize(gum::Size). Hence, s should be the size of the
+     * array of lists, not the number of elements stored into the
+     * gum::HashTable.
+     *
+     * @param s The hashtable's size wished by the user. Actually, a hashtable
+     * of size n is an array of n lists.
+     * @throw HashSize Raised if s is too small.
+     */
+    void resize( Size s );
+
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
+    Size operator()( const Key& key) const;
 
     protected:
 
@@ -232,7 +254,22 @@ namespace gum {
      */
     HashFuncSmallCastKey();
 
-    void resize( Size );
+    /**
+     * @brief Update the hash function to take into account a resize of the
+     * hash table.
+     *
+     * When the user wishes to resize the gum::HashTable so that the array is
+     * of size s, the gum::HashTable resizes itself to the smallest power of 2
+     * greater than or equal to s. This new size is computed by function
+     * gum::HashFuncBase::resize(gum::Size). Hence, s should be the size of the
+     * array of lists, not the number of elements stored into the
+     * gum::HashTable.
+     *
+     * @param s The hashtable's size wished by the user. Actually, a hashtable
+     * of size n is an array of n lists.
+     * @throw HashSize Raised if s is too small.
+     */
+    void resize( Size s );
 
     /**
      * @brief Returns the value of a key as an unsigned long.
@@ -241,7 +278,12 @@ namespace gum {
      */
     Size castToSize( const Key& key) const;
 
-    Size operator()( const Key& ) const;
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
+    Size operator()( const Key& key) const;
 
     protected:
     /// The number of right shift to perform to get correct hashed values.
@@ -264,9 +306,33 @@ namespace gum {
   template <typename Key>
   class HashFuncMediumCastKey : private HashFuncBase<Key> {
     public:
-    void resize( Size );
 
-    Size operator()( const Key& ) const;
+    /// This class use the HashFuncBase::size.
+    using HashFuncBase<Key>::size;
+
+    /**
+     * @brief Update the hash function to take into account a resize of the
+     * hash table.
+     *
+     * When the user wishes to resize the gum::HashTable so that the array is
+     * of size s, the gum::HashTable resizes itself to the smallest power of 2
+     * greater than or equal to s. This new size is computed by function
+     * gum::HashFuncBase::resize(gum::Size). Hence, s should be the size of the
+     * array of lists, not the number of elements stored into the
+     * gum::HashTable.
+     *
+     * @param s The hashtable's size wished by the user. Actually, a hashtable
+     * of size n is an array of n lists.
+     * @throw HashSize Raised if s is too small.
+     */
+    void resize( Size s );
+
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
+    Size operator()( const Key& key) const;
 
     /**
      * @brief Returns the value of a key as an unsigned long.
@@ -275,7 +341,6 @@ namespace gum {
      */
     Size castToSize( const Key& key) const;
 
-    using HashFuncBase<Key>::size;
 
     protected:
     /// The number of right shift to perform to get correct hashed values.
@@ -293,13 +358,42 @@ namespace gum {
   class HashFuncLargeCastKey : private HashFuncBase<Key> {
     public:
 
-    void resize( Size );
-    Size castToSize( const Key& ) const;
-    Size operator()( const Key& ) const;
-
+    /// This class use the HashFuncBase::size.
     using HashFuncBase<Key>::size;
 
+    /**
+     * @brief Update the hash function to take into account a resize of the
+     * hash table.
+     *
+     * When the user wishes to resize the gum::HashTable so that the array is
+     * of size s, the gum::HashTable resizes itself to the smallest power of 2
+     * greater than or equal to s. This new size is computed by function
+     * gum::HashFuncBase::resize(gum::Size). Hence, s should be the size of the
+     * array of lists, not the number of elements stored into the
+     * gum::HashTable.
+     *
+     * @param s The hashtable's size wished by the user. Actually, a hashtable
+     * of size n is an array of n lists.
+     * @throw HashSize Raised if s is too small.
+     */
+    void resize( Size s );
+
+    /**
+     * @brief Cast key to the exepcted type.
+     * @param key The key to cast.
+     * @return Returns the cast key to the exepcted type.
+     */
+    Size castToSize( const Key& key) const;
+
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
+    Size operator()( const Key& key) const;
+
     protected:
+
     /// The number of right shift to perform to get correct hashed values.
     unsigned int _right_shift;
   };
@@ -314,6 +408,8 @@ namespace gum {
    */
   template <typename T>
   struct HashFuncCastKey {
+
+    /// The type used by this class.
     using type = typename std::conditional<
         sizeof( T ) < sizeof( long ),
         HashFuncSmallCastKey<T>,
@@ -333,10 +429,33 @@ namespace gum {
   template <typename Key1, typename Key2>
   class HashFuncSmallKeyPair : public HashFuncBase<std::pair<Key1, Key2>> {
     public:
-    void resize( Size );
-    Size operator()( const std::pair<Key1, Key2>& ) const;
+
+    /**
+     * @brief Update the hash function to take into account a resize of the
+     * hash table.
+     *
+     * When the user wishes to resize the gum::HashTable so that the array is
+     * of size s, the gum::HashTable resizes itself to the smallest power of 2
+     * greater than or equal to s. This new size is computed by function
+     * gum::HashFuncBase::resize(gum::Size). Hence, s should be the size of the
+     * array of lists, not the number of elements stored into the
+     * gum::HashTable.
+     *
+     * @param s The hashtable's size wished by the user. Actually, a hashtable
+     * of size n is an array of n lists.
+     * @throw HashSize Raised if s is too small.
+     */
+    void resize( Size s );
+
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
+    Size operator()( const std::pair<Key1, Key2>& key) const;
 
     protected:
+
     /// The number of right shift to perform to get correct hashed values.
     unsigned int _right_shift;
   };
@@ -354,14 +473,38 @@ namespace gum {
   template <typename Key1, typename Key2, typename Func1, typename Func2>
   class HashFuncAllCastKeyPair : public HashFuncBase<std::pair<Key1, Key2>> {
     public:
-    void resize( Size );
-    Size operator()( const std::pair<Key1, Key2>& ) const;
+
+    /**
+     * @brief Update the hash function to take into account a resize of the
+     * hash table.
+     *
+     * When the user wishes to resize the gum::HashTable so that the array is
+     * of size s, the gum::HashTable resizes itself to the smallest power of 2
+     * greater than or equal to s. This new size is computed by function
+     * gum::HashFuncBase::resize(gum::Size). Hence, s should be the size of the
+     * array of lists, not the number of elements stored into the
+     * gum::HashTable.
+     *
+     * @param s The hashtable's size wished by the user. Actually, a hashtable
+     * of size n is an array of n lists.
+     * @throw HashSize Raised if s is too small.
+     */
+    void resize( Size s );
+
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
+    Size operator()( const std::pair<Key1, Key2>& key) const;
 
     protected:
+
     /// The number of right shift to perform to get correct hashed values.
     unsigned int _right_shift;
 
     private:
+
     /// The functions used to hash Key1.
     Func1 __func1;
     /// The functions used to hash Key2.
@@ -378,8 +521,13 @@ namespace gum {
    */
   template <typename T1, typename T2>
   struct HashFuncCastKeyPair {
+    /// The casting function for T1.
     using Func1 = typename HashFuncCastKey<T1>::type;
+
+    /// The casting function for T2.
     using Func2 = typename HashFuncCastKey<T2>::type;
+
+    /// The expected type of this class.
     using type = HashFuncAllCastKeyPair<T1, T2, Func1, Func2>;
   };
 
@@ -542,7 +690,11 @@ namespace gum {
   template <typename Type>
   class HashFunc<RefPtr<Type>> : public HashFunc<unsigned int*> {
     public:
-    /// computes the hashed value of a key
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
     Size operator()( const RefPtr<Type>& key ) const;
   };
 
@@ -554,7 +706,11 @@ namespace gum {
   template <>
   class HashFunc<std::string> : public HashFuncBase<std::string> {
     public:
-    /// computes the hashed value of a key
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
     Size operator()( const std::string& key ) const;
   };
 
@@ -567,7 +723,11 @@ namespace gum {
   class HashFunc<std::pair<std::string, std::string>>
       : public HashFuncBase<std::pair<std::string, std::string>> {
     public:
-    /// computes the hashed value of a key
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
     Size operator()( const std::pair<std::string, std::string>& key ) const;
   };
 
@@ -579,7 +739,11 @@ namespace gum {
   template <>
   class HashFunc<std::vector<Idx>> : public HashFuncBase<std::vector<Idx>> {
     public:
-    /// computes the hashed value of a key
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
     Size operator()( const std::vector<Idx>& key ) const;
   };
 
@@ -591,7 +755,11 @@ namespace gum {
   template <>
   class HashFunc<Debug> : public HashFuncBase<Debug> {
     public:
-    /// computes the hashed value of a key
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
     Size operator()( const Debug& key ) const;
   };
 

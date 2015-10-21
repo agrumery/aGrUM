@@ -29,14 +29,14 @@
  * \dot
  * digraph Asia {
  *  bgcolor = "#EEF1F7";
- *  VtA [ label="Visit to Asia" URL="\ref VtA"];
- *  S [ label="Smoker" URL="\ref S"];
- *  HT [ label="Has Tuberculosis" URL="\ref HT"];
- *  HLC [ label="Has Lung Cancer" URL="\ref HLC"];
- *  HB [ label="Has Bronchitis" URL="\ref HB"];
- *  ToC [ label="Tuberculosis or Cancer" URL="\ref ToC"];
- *  XR [ label="XRay Result" URL="\ref XR"];
- *  D [ label="Dyspnea" URL="\ref D"];
+ *  VtA [ label="Visit to Asia"];
+ *  S [ label="Smoker"];
+ *  HT [ label="Has Tuberculosis"];
+ *  HLC [ label="Has Lung Cancer"];
+ *  HB [ label="Has Bronchitis"];
+ *  ToC [ label="Tuberculosis or Cancer"];
+ *  XR [ label="XRay Result"];
+ *  D [ label="Dyspnea"];
  *  VtA -> HT [ arrowhead="open" ];
  *  S -> HLC [ arrowhead="open" ];
  *  S -> HB [ arrowhead="open" ];
