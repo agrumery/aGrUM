@@ -42,8 +42,8 @@ namespace gum {
 
   /**
    * @class HashTableConst hashTable.h <agrum/core/hashTable.h>
-   * @ingroup hashtable_group
    * @brief Parameters specifying the default behavior of the hashtables.
+   * @ingroup hashtable_group
    */
   struct HashTableConst {
  
@@ -98,8 +98,8 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
   /**
-   * @ingroup hashtable_group
    * @brief Prints the content of a gum::HashTableList in the stream.
+   * @ingroup hashtable_group
    * @param stream The s used to print the gum::HashTableList.
    * @param list The gum::HashTableList to print.
    * @return Returns the std::ostream s.
@@ -112,9 +112,9 @@ namespace gum {
                             const HashTableList<Key, Val, Alloc>& list);
 
   /**
-   * @ingroup hashtable_group
    * @brief Prints the content of a gum::HashTableList with pointers key in the
    * stream.
+   * @ingroup hashtable_group
    * @param stream The s used to print the gum::HashTableList.
    * @param list The gum::HashTableList to print.
    * @return Returns the std::ostream s.
@@ -127,8 +127,8 @@ namespace gum {
                             const HashTableList<Key*, Val, Alloc>& list);
 
   /**
-   * @ingroup hashtable_group
    * @brief Prints the content of a gum::HashTable in the stream.
+   * @ingroup hashtable_group
    * @param stream The s used to print the gum::HashTable.
    * @param list The gum::HashTable to print.
    * @return Returns the std::ostream s.
@@ -140,8 +140,8 @@ namespace gum {
   std::ostream& operator<<( std::ostream&, const HashTable<Key, Val, Alloc>& );
 
   /**
-   * @ingroup hashtable_group
    * @brief Prints the content of a gum::HashTable with pointers key in the
+   * @ingroup hashtable_group
    * stream.
    * @param stream The s used to print the gum::HashTable.
    * @param list The gum::HashTable to print.
@@ -155,8 +155,8 @@ namespace gum {
 
   /**
    * @class HashTableIteratorStaticEnd hashTable.h <agrum/core/hashTable.h>
-   * @ingroup hashtable_group
    * @brief A class used to create the static iterator used by HashTables.
+   * @ingroup hashtable_group
    *
    * The aim of using this class rather than just creating __HashTableIterEnd
    * as a global variable is to prevent other classes to access and modify
@@ -207,8 +207,8 @@ namespace gum {
 
   /**
    * @class HashTableBucket hashTable.h <agrum/core/hashTable.h>
-   * @ingroup hashtable_group
    * @brief A recipient for a pair of key value in a gum::HashTableList.
+   * @ingroup hashtable_group
    *
    * In aGrUM, hashtables are vectors of chained lists. Each list corresponds
    * to the pairs (key,val) the keys of which have the same hashed value. Each
@@ -320,8 +320,8 @@ namespace gum {
 
   /**
    * @class HashTableList hashTable.h <agrum/core/hashTable.h>
-   * @ingroup hashtable_group
    * @brief A chained list used by gum::HashTable.
+   * @ingroup hashtable_group
    *
    * @tparam Key The type for keys in a gum::HashTable.
    * @tparam Val The type for values in a gum::HashTable.
@@ -2917,10 +2917,8 @@ namespace gum {
 
 } /* namespace gum */
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-// always include the implementation of the templates
+/// always include the implementation of the templates
 #include <agrum/core/hashTable.tcc>
-#endif
 
 #endif  // GUM_HASHTABLE_H
 
