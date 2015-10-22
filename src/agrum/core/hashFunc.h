@@ -113,6 +113,7 @@ namespace gum {
    *      // HashFuncBase<MyObject>::_hash_size and/or
    *      // HashFuncBase<MyObject>::_hash_log2_size and/or
    *      // HashFuncBase<MyObject>::_hash_mask
+   *   }
    * };
    * @endcode
    *
