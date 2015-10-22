@@ -41,7 +41,7 @@ namespace gum {
   namespace credal {
 
     /**
-     * @class VarMod2BNsMap VarMod2BNsMap.h <agrum/CN/VarMod2BNsMap.h>
+     * @class VarMod2BNsMap varMod2BNsMap.h <agrum/CN/varMod2BNsMap.h>
      * @brief Class used to store optimum IBayesNet during some inference
      * algorithms.
      * @ingroup cn_group

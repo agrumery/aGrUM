@@ -2917,8 +2917,10 @@ namespace gum {
 
 } /* namespace gum */
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 // always include the implementation of the templates
 #include <agrum/core/hashTable.tcc>
+#endif
 
 #endif  // GUM_HASHTABLE_H
 

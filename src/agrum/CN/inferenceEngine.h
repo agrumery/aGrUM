@@ -44,7 +44,7 @@ namespace gum {
   namespace credal {
 
     /**
-     * @class InferenceEngine InferenceEngine.h <agrum/CN/InferenceEngine.h>
+     * @class InferenceEngine inferenceEngine.h <agrum/CN/inferenceEngine.h>
      * @brief Abstract class template representing a CredalNet inference engine.
      * Used
      * by credal network inference algorithms such as CNLoopyPropagation (inner

@@ -42,7 +42,7 @@ namespace gum {
   // ===                  NODES FOR AVL BINARY SEARCH TREES                  ===
   // ===========================================================================
   /**
-   * @class BinTreeNode4AVL BinTreeNode4AVL.h <agrum/core/binTreeNode4AVL.h>
+   * @class BinTreeNode4AVL binTreeNode4AVL.h <agrum/core/binTreeNode4AVL.h>
    * @brief Binary tree nodes with additional fields for use in AVL binary
    *        search trees.
    * @ingroup basicstruct_group

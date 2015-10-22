@@ -42,7 +42,7 @@
 namespace gum {
 
   /**
-   * @class NetWriter NetWriter.h <agrum/BN/io/net/NetWriter.h>
+   * @class NetWriter netWriter.h <agrum/BN/io/net/netWriter.h>
    * @brief Writes a IBayesNet in the BN format.
    * @ingroup bn_io
    *

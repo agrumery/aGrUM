@@ -59,7 +59,7 @@ namespace gum {
   namespace credal {
 
     /**
-     * @class CredalNet CredalNet.h <agrum/CN/CredalNet.h>
+     * @class CredalNet credalNet.h <agrum/CN/credalNet.h>
      * @brief Class template representing a Credal Network.
      * @ingroup cn_group
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).

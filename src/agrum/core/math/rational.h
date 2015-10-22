@@ -37,7 +37,7 @@
 namespace gum {
 
   /**
-   * @class Rational Rational.h <agrum/core/Rational.h>
+   * @class Rational rational.h <agrum/core/rational.h>
    * @brief Class template used to approximate decimal numbers by rationals
    *
    * @tparam GUM_SCALAR The floating type ( float, double, long double ... ) of
