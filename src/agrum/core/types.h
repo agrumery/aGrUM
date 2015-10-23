@@ -45,4 +45,4 @@ namespace gum {
 } /* namespace gum */
 
 #endif /* GUM_TYPES_H */
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
+

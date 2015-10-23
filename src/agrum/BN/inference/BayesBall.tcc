@@ -21,9 +21,6 @@
  * @file
  * @brief Implementation of the BayesBall class.
  */
-#include <agrum/core/list.h>
-#include <agrum/core/hashTable.h>
-
 
 namespace gum {
 

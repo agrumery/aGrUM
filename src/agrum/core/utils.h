@@ -98,6 +98,7 @@ namespace gum {
 
 } /* namespace gum */
 
+// always include the template implementations
 #include <agrum/core/utils.tcc>
 
 #endif /* GUM_UTILS_H */

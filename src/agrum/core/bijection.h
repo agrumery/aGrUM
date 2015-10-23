@@ -1919,6 +1919,7 @@ namespace gum {
 
 } /* namespace gum */
 
+// always include the template implementations
 #include <agrum/core/bijection.tcc>
 
 #endif /* GUM_BIJECTION_H */

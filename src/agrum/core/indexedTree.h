@@ -146,7 +146,7 @@ namespace gum {
 
 } /* namespace gum */
 
-/// always include the templated implementations
+// always include the templated implementations
 #include <agrum/core/indexedTree.tcc>
 
 #endif /* GUM_INDEXED_TREE_H */

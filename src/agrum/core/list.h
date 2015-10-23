@@ -1845,10 +1845,10 @@ namespace gum {
 
 } /* namespace gum */
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
 /// always include the implementation of the templates
 #include <agrum/core/list.tcc>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to optimize compile-link time, provide the usual lists
 namespace gum {
@@ -1860,4 +1860,4 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 #endif /* GUM_LIST_H */
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
+

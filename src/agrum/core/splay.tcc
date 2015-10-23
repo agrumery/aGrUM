@@ -28,7 +28,6 @@
 
 #include <agrum/config.h>
 
-#include <agrum/core/hashTable.h>
 #include <agrum/core/splay.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

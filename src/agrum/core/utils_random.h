@@ -48,6 +48,7 @@ namespace gum {
 #include <agrum/core/utils_random.inl>
 #endif  // GUM_NO_INLINE
 
+// always include the template implementations
 #include <agrum/core/utils_random.tcc>
 
 #endif /* GUM_UTILS_RANDOM_H */
