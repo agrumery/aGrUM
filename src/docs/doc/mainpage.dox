@@ -17,6 +17,7 @@
 /**
  * \defgroup basicstruct_group Basic data structures
  * @{
+ *
  * \defgroup hashtable_group Hash Tables
  *
  * This file provides class HashTable. This class is both efficient and
@@ -60,7 +61,8 @@
  * table1.emplace (30,"zzz");
  *
  * // creation of a nonempty hashtable using initializer lists
- * HashTable<int,bool> table { std::make_pair (3,true), std::make_pair(2,false) };
+ * HashTable<int,bool> table { std::make_pair (3,true), std::make_pair(2,false)
+ * };
  *
  * // display the content of the hash table
  * cerr << table1;
@@ -109,7 +111,7 @@
  *
  * // check for iterator's safety
  * for (HashTable<int,string>::iterator_safe iter = table1.beginSafe ();
- *       iter != table1.endSafe (); ++iter )
+     *       iter != table1.endSafe (); ++iter )
  *   table1.eraseByVal ( *iter );
  * @endcode
  *
@@ -145,7 +147,7 @@
  *
  * In fact, usually, when you create a new hash function, you will only need
  * to write something like:
- * 
+ *
  * @code
  * template <> class HashFunc<MyObject> : public HashFuncBase<MyObject> {
  * public:
@@ -154,6 +156,7 @@
  *      // HashFuncBase<MyObject>::_hash_size and/or
  *      // HashFuncBase<MyObject>::_hash_log2_size and/or
  *      // HashFuncBase<MyObject>::_hash_mask
+ *   }
  * };
  * @endcode
  *
@@ -180,8 +183,20 @@
  * gum::HashFunc::_hash_log2_size. Finally, gum::HashFunc::_hash_mask is a
  * mask that can be used to ensure that the hashed key actually belongs to
  * [0,_hash_size). This is used in particular in the hash function for
- * hashing strings. 
+ * hashing strings.
+ *
+ * \defgroup bijection_group Bijections
+ * @brief Set of pairs of elements with fast search for both elements.
+ * The gum::Bijection class is designed for modeling a gum::Bijection between
+ * two sets, the idea is following :
+ *  - We want to create a gum::Bjection relation between type T1 and type T2,
+ *  - For x in T1, there exists only one y in T2 associated to x,
+ *  - For y in T2, there exists only one x in T1 associated to y,
+ *  - The user inserts all the (x, y) associations and can search efficiently
+ *  the values thus associated.
+ *
  * @}
+ *
  * \defgroup graph_group Graph representation
  * \defgroup multidim_group Multidimensional data
  * \defgroup bn_group Bayesian Networks
@@ -196,4 +211,5 @@
  * \defgroup prm_group Probabilistic Relational Models
  * \defgroup fmdp_group Factored Markov Decision Process
  * \defgroup cn_group Credal Networks
+ *
  */

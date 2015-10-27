@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Class providing generic hash tables
+ * @brief Class hash tables iterators
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -35,10 +35,29 @@
 #include <initializer_list>
 
 #include <agrum/config.h>
-
 #include <agrum/core/hashFunc.h>
 
 namespace gum {
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+  // the templates used by this file
+  template <typename Key, typename Val, typename Alloc>
+  class HashTable;
+  template <typename Key, typename Val, typename Alloc>
+  class HashTableList;
+  template <typename Key, typename Val>
+  class HashTableIterator;
+  template <typename Key, typename Val>
+  class HashTableConstIterator;
+  template <typename Key, typename Val>
+  class HashTableIteratorSafe;
+  template <typename Key, typename Val>
+  class HashTableConstIteratorSafe;
+  template <typename T1, typename T2, typename Alloc>
+  class Bijection;
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
   /**
    * @class HashTableConst hashTable.h <agrum/core/hashTable.h>
@@ -78,128 +97,81 @@ namespace gum {
     static constexpr bool default_uniqueness_policy{true};
   };
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-  // the templates defined by this file
-  template <typename Key, typename Val, typename Alloc>
-  class HashTable;
-  template <typename Key, typename Val, typename Alloc>
-  class HashTableList;
-  template <typename Key, typename Val>
-  class HashTableIterator;
-  template <typename Key, typename Val>
-  class HashTableConstIterator;
-  template <typename Key, typename Val>
-  class HashTableIteratorSafe;
-  template <typename Key, typename Val>
-  class HashTableConstIteratorSafe;
-  template <typename T1, typename T2, typename Alloc>
-  class Bijection;
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
-  /**
+  /* Doxygen raises warning with following comment bloc
    * @brief Prints the content of a gum::HashTableList in the stream.
    * @ingroup hashtable_group
-   * @param stream The s used to print the gum::HashTableList.
+   * @param s The s used to print the gum::HashTableList.
    * @param list The gum::HashTableList to print.
    * @return Returns the std::ostream s.
    * @tparam Key The type of keys in the gum::HashTableList.
    * @tparam Val The type of values in the gum::HashTableList.
    * @tparam Alloc The gum::HashTableList allocator.
+   */
+  /**
+   * @brief Prints the content of a gum::HashTableList in the stream.
+   * @ingroup hashtable_group
    */
   template <typename Key, typename Val, typename Alloc>
   std::ostream& operator<<( std::ostream& s,
                             const HashTableList<Key, Val, Alloc>& list);
 
-  /**
+  /* Doxygen raises warning with following comment bloc
    * @brief Prints the content of a gum::HashTableList with pointers key in the
    * stream.
    * @ingroup hashtable_group
-   * @param stream The s used to print the gum::HashTableList.
+   * @param s The s used to print the gum::HashTableList.
    * @param list The gum::HashTableList to print.
    * @return Returns the std::ostream s.
    * @tparam Key The type of keys in the gum::HashTableList.
    * @tparam Val The type of values in the gum::HashTableList.
    * @tparam Alloc The gum::HashTableList allocator.
    */
+  /**
+   * @brief Prints the content of a gum::HashTableList with pointers key in
+   * the stream.
+   * @ingroup hashtable_group
+   */
   template <typename Key, typename Val, typename Alloc>
   std::ostream& operator<<( std::ostream& s,
                             const HashTableList<Key*, Val, Alloc>& list);
 
+  /* Doxygen raises warning with following comment bloc
+   * @brief Prints the content of a gum::HashTable in the stream.
+   * @ingroup hashtable_group
+   * @param s The stream used to print the gum::HashTable.
+   * @param table The gum::HashTable to print.
+   * @return Returns the std::ostream s.
+   * @tparam Key The type of keys in the gum::HashTable.
+   * @tparam Val The type of values in the gum::HashTable.
+   * @tparam Alloc The gum::HashTable allocator.
+   */
   /**
    * @brief Prints the content of a gum::HashTable in the stream.
    * @ingroup hashtable_group
-   * @param stream The s used to print the gum::HashTable.
-   * @param list The gum::HashTable to print.
+   */
+  template <typename Key, typename Val, typename Alloc>
+  std::ostream& operator<<( std::ostream& s,
+                            const HashTable<Key, Val, Alloc>& table );
+
+  /* Doxygen raises warning with following comment bloc
+   * @brief Prints the content of a gum::HashTable with pointers key in the
+   * stream.
+   * @ingroup hashtable_group
+   * @param s The stream used to print the gum::HashTable.
+   * @param table The gum::HashTable to print.
    * @return Returns the std::ostream s.
    * @tparam Key The type of keys in the gum::HashTable.
    * @tparam Val The type of values in the gum::HashTable.
    * @tparam Alloc The gum::HashTable allocator.
    */
-  template <typename Key, typename Val, typename Alloc>
-  std::ostream& operator<<( std::ostream&, const HashTable<Key, Val, Alloc>& );
-
   /**
    * @brief Prints the content of a gum::HashTable with pointers key in the
-   * @ingroup hashtable_group
    * stream.
-   * @param stream The s used to print the gum::HashTable.
-   * @param list The gum::HashTable to print.
-   * @return Returns the std::ostream s.
-   * @tparam Key The type of keys in the gum::HashTable.
-   * @tparam Val The type of values in the gum::HashTable.
-   * @tparam Alloc The gum::HashTable allocator.
+   * @ingroup hashtable_group
    */
   template <typename Key, typename Val, typename Alloc>
-  std::ostream& operator<<( std::ostream&, const HashTable<Key*, Val, Alloc>& );
-
-  /**
-   * @class HashTableIteratorStaticEnd hashTable.h <agrum/core/hashTable.h>
-   * @brief A class used to create the static iterator used by HashTables.
-   * @ingroup hashtable_group
-   *
-   * The aim of using this class rather than just creating __HashTableIterEnd
-   * as a global variable is to prevent other classes to access and modify
-   * __HashTableIterEnd.
-   */
-  class HashTableIteratorStaticEnd {
-    private:
-    /// The unsafe iterator used by everyone.
-    static const HashTableIterator<int, int>* __HashTableIterEnd;
-
-    /// The safe iterator used by everyone.
-    static const HashTableIteratorSafe<int, int>* __HashTableIterEndSafe;
-
-    /**
-     * @brief Creates (if needed) and returns the iterator __HashTableIterEnd.
-     * @return Returns the iterator __HashTableIterEnd.
-     */
-    static const HashTableIterator<int, int>* end4Statics();
-
-    /**
-     * @brief Creates (if needed) and returns the iterator __HashTableIterEnd.
-     * @return Returns the iterator __HashTableIterEnd.
-     */
-    static const HashTableConstIterator<int, int>* constEnd4Statics();
-
-    /**
-     * @brief Creates (if needed) and returns the iterator
-     * __HashTableIterEndSafe.
-     * @return Returns the iterator __HashTableIterEndSafe.
-     */
-    static const HashTableIteratorSafe<int, int>* endSafe4Statics();
-
-    /**
-     * @brief Creates (if needed) and returns the iterator
-     * __HashTableIterEndSafe.
-     * @return Returns the iterator __HashTableIterEndSafe.
-     */
-    static const HashTableConstIteratorSafe<int, int>* constEndSafe4Statics();
-
-    /// Friends that have access to the iterator.
-    template <typename Key, typename Val, typename Alloc>
-    friend class HashTable;
-  };
+  std::ostream& operator<<( std::ostream& s,
+                            const HashTable<Key*, Val, Alloc>& table );
 
   // ===========================================================================
   // ===          LISTS SPECIFIC FOR SAVING ELEMENTS IN HASHTABLES           ===
@@ -530,7 +502,7 @@ namespace gum {
 
     /**
      * @brief Sets a new allocator.
-     * @param allo The new allocator.
+     * @param alloc The new allocator.
      */
     void setAllocator( BucketAllocator& alloc );
 
@@ -588,6 +560,7 @@ namespace gum {
   /**
    * @class HashTable hashTable.h <agrum/core/hashTable.h>
    * @brief The class for generic Hash Tables.
+   * @ingroup basicstruct_group
    * @ingroup hashtable_group
    *
    * In aGrUM, a hashtable is a vector of chained lists (collision problems are
@@ -1693,7 +1666,8 @@ namespace gum {
              HashTableConst::default_uniqueness_policy ) const;
 
     /** 
-     * @brief Transforms a hashtable of vals into a hashtable of mountains.
+     * @brief Creates a hashtable of mounts with a given value from a hashtable
+     * of vals.
      *
      * @warning Although the resulting hashtable has the same number of
      * elements as the original hashtable, by default, the size of the former
@@ -1703,7 +1677,8 @@ namespace gum {
      * size (and thus have the elements in the same order), set the @e size
      * argument to the size of the original hashtable. 
      *
-     * @param f A function that maps any Val element into a Mount.
+     * @param val The value taken by all the elements of the resulting
+     * hashtable.
      * @param size The size of the resulting hashtable.  When equal to 0, a
      * default size is computed that is a good trade-off between space
      * consumption and efficiency of new elements insertions
@@ -1734,13 +1709,12 @@ namespace gum {
     friend class HashTableIteratorSafe<Key, Val>;
     friend class HashTableConstIteratorSafe<Key, Val>;
 
-    /// for friendly displaying the content of the hashtable
     friend std::ostream& operator<<<>( std::ostream&,
                                        const HashTable<Key, Val, Alloc>& );
-    friend std::ostream& operator<<<>( std::ostream&,
-                                       const HashTable<Key*, Val, Alloc>& );
+    friend std::ostream& operator<<<>( std::ostream& s,
+                                       const HashTable<Key*, Val, Alloc>& table);
 
-    /// for bijections to quickly access data
+    /// For bijections to quickly access data.
     template <typename T1, typename T2, typename A>
     friend class Bijection;
     /// @}
@@ -1846,11 +1820,67 @@ namespace gum {
     void __insert( Bucket* bucket );
   };
 
+
+  // ===========================================================================
+  // ===                   SAFE HASH TABLES CONST ITERATORS                  ===
+  // ===========================================================================
+
+  /**
+   * @class HashTableIteratorStaticEnd
+   * @headefile hashTableIterator.h <agrum/core/hashTableIterator.h>
+   * @brief A class used to create the static iterator used by HashTables.
+   * @ingroup hashtable_group
+   *
+   * The aim of using this class rather than just creating __HashTableIterEnd
+   * as a global variable is to prevent other classes to access and modify
+   * __HashTableIterEnd.
+   */
+  class HashTableIteratorStaticEnd {
+    private:
+    /// The unsafe iterator used by everyone.
+    static const HashTableIterator<int, int>* __HashTableIterEnd;
+
+    /// The safe iterator used by everyone.
+    static const HashTableIteratorSafe<int, int>* __HashTableIterEndSafe;
+
+    /**
+     * @brief Creates (if needed) and returns the iterator __HashTableIterEnd.
+     * @return Returns the iterator __HashTableIterEnd.
+     */
+    static const HashTableIterator<int, int>* end4Statics();
+
+    /**
+     * @brief Creates (if needed) and returns the iterator __HashTableIterEnd.
+     * @return Returns the iterator __HashTableIterEnd.
+     */
+    static const HashTableConstIterator<int, int>* constEnd4Statics();
+
+    /**
+     * @brief Creates (if needed) and returns the iterator
+     * __HashTableIterEndSafe.
+     * @return Returns the iterator __HashTableIterEndSafe.
+     */
+    static const HashTableIteratorSafe<int, int>* endSafe4Statics();
+
+    /**
+     * @brief Creates (if needed) and returns the iterator
+     * __HashTableIterEndSafe.
+     * @return Returns the iterator __HashTableIterEndSafe.
+     */
+    static const HashTableConstIteratorSafe<int, int>* constEndSafe4Statics();
+
+    /// Friends that have access to the iterator.
+    template <typename Key, typename Val, typename Alloc>
+    friend class HashTable;
+  };
+
+
   // ===========================================================================
   // ===                   SAFE HASH TABLES CONST ITERATORS                  ===
   // ===========================================================================
   /**
-   * @class HashTableConstIteratorSafe hashTable.h <agrum/core/hashTable.h>
+   * @class HashTableConstIteratorSafe
+   * @headefile hashTableIterator.h <agrum/core/hashTableIterator.h>
    * @brief Safe Const Iterators for hashtables.
    * @ingroup hashtable_group
    *
@@ -2149,7 +2179,8 @@ namespace gum {
   // ===========================================================================
 
   /**
-   * @class HashTableIteratorSafe hashTable.h <agrum/core/hashTable.h>
+   * @class HashTableIteratorSafe
+   * @headefile hashTableIterator.h <agrum/core/hashTableIterator.h>
    * @brief Safe Iterators for hashtables.
    * @ingroup hashtable_group
    *
@@ -2394,7 +2425,8 @@ namespace gum {
   // ===========================================================================
 
   /**
-   * @class HashTableConstIterator hashTable.h <agrum/core/hashtable.h>
+   * @class HashTableConstIterator
+   * @headefile hashTableIterator.h <agrum/core/hashTableIterator.h>
    * @brief Unsafe Const Iterators for hashtables
    * @ingroup hashtable_group
    *
@@ -2683,7 +2715,8 @@ namespace gum {
   // ===========================================================================
 
   /**
-   * @class HashTableIterator hashTable.h <agrum/core/hashTable.h>
+   * @class HashTableIterator
+   * @headefile hashTableIterator.h <agrum/core/hashTableIterator.h>
    * @brief Unsafe Iterators for hashtables
    * @ingroup hashtable_group
    *
@@ -2915,9 +2948,9 @@ namespace gum {
     /// @}
   };
 
-} /* namespace gum */
+} // namespace gum
 
-/// always include the implementation of the templates
+// always include the implementation of the templates
 #include <agrum/core/hashTable.tcc>
 
 #endif  // GUM_HASHTABLE_H

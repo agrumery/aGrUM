@@ -19,7 +19,7 @@
  ***************************************************************************/
 /** 
  * @file
- * @brief Outlined implementation of the hash tables
+ * @brief Outlined implementation of hash tables.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -30,9 +30,9 @@
 #include <agrum/core/debug.h>
 #endif
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
 namespace gum {
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
   const HashTableIterator<int, int>* HashTableIteratorStaticEnd::end4Statics() {
     static bool first_time = true;
@@ -101,6 +101,12 @@ namespace gum {
       HashTableIteratorStaticEnd::__HashTableIterEndSafe =
           HashTableIteratorStaticEnd::endSafe4Statics();
 
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+
 } /* namespace gum */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+//template class gum::HashTable<int, int>;
+//template class gum::HashTable<int, std::string>;
+//template class gum::HashTable<std::string, std::string>;
+//template class gum::HashTable<std::string, int>;
+

@@ -32,1035 +32,6 @@
 
 namespace gum {
 
-  // ===========================================================================
-  // ===                SAFE HASH TABLE ITERATORS IMPLEMENTATION             ===
-  // ===========================================================================
-
-  template <typename Key, typename Val>
-  INLINE void
-  HashTableConstIteratorSafe<Key, Val>::__insertIntoSafeList() const {
-    __table->__safe_iterators.push_back(
-        const_cast<HashTableConstIteratorSafe<Key, Val>*>( this ) );
-  }
-
-  template <typename Key, typename Val>
-  INLINE void HashTableConstIteratorSafe<Key, Val>::__removeFromSafeList() const
-      noexcept {
-    if ( __table == nullptr ) return;
-
-    // find where the iterator is
-    std::vector<HashTableConstIteratorSafe<Key, Val>*>& iter_vect =
-        __table->__safe_iterators;
-
-    for ( int i = iter_vect.size() - 1; i >= 0; --i ) {
-      if ( iter_vect[i] == this ) {
-        iter_vect.erase( iter_vect.begin() + i );
-        break;
-      }
-    }
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableConstIteratorSafe<Key, Val>::HashTableConstIteratorSafe() {
-    // for debugging purposes
-    GUM_CONSTRUCTOR( HashTableConstIteratorSafe );
-  }
-
-  template <typename Key, typename Val>
-  template <typename Alloc>
-  INLINE HashTableConstIteratorSafe<Key, Val>::HashTableConstIteratorSafe(
-      const HashTable<Key, Val, Alloc>& tab )
-      : __table{reinterpret_cast<const HashTable<Key, Val>*>( &tab )} {
-    // for debugging purposes
-    GUM_CONSTRUCTOR( HashTableConstIteratorSafe );
-
-    // make the hashtable keep track of this iterator
-    __insertIntoSafeList();
-
-    if ( __table->__nb_elements ) {
-      if ( __table->__begin_index != std::numeric_limits<Size>::max() ) {
-        __index = __table->__begin_index;
-        __bucket = __table->__nodes[__index].__end_list;
-      } else {
-        // find the element we shall point to from the start of the hashtable
-        for ( unsigned int i = __table->__size - 1;;
-              --i ) {  // no test on i since
-          // __nb_elements != 0
-          if ( __table->__nodes[i].__nb_elements ) {
-            __index = i;
-            __bucket = __table->__nodes[__index].__end_list;
-            __table->__begin_index = __index;
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  template <typename Key, typename Val>
-  template <typename Alloc>
-  HashTableConstIteratorSafe<Key, Val>::HashTableConstIteratorSafe(
-      const HashTable<Key, Val, Alloc>& tab, Size ind_elt )
-      : __table{reinterpret_cast<const HashTable<Key, Val>*>( &tab )} {
-    Size i;
-
-    // check if we are looking for a begin() and we know for sure its index
-    if ( ( ind_elt == 0 ) &&
-         ( __table->__begin_index != std::numeric_limits<Size>::max() ) ) {
-      __index = __table->__begin_index;
-      __bucket = __table->__nodes[__index].__end_list;
-    } else {
-      // check if it is faster to find the ind_eltth element from the start or
-      // from the end of the hashtable
-      if ( ind_elt < ( __table->__nb_elements >> 1 ) ) {
-        // find the element we shall point to from the start of the hashtable
-        for ( i = __table->__size - 1;; --i ) {  // no test on i since
-          // ind_elt < _table->__nb_elements
-          if ( __table->__nodes[i].__nb_elements ) {
-            if ( ind_elt >= __table->__nodes[i].__nb_elements )
-              ind_elt -= __table->__nodes[i].__nb_elements;
-            else {
-              for ( __bucket = __table->__nodes[i].__end_list; ind_elt;
-                    --ind_elt, __bucket = __bucket->prev ) {
-              }
-
-              __index = i;
-              break;
-            }
-          }
-        }
-      } else {
-        // ind_elt = the index of the element we should point to
-        // check if the index passed as parameter is valid
-        if ( ind_elt >= __table->__nb_elements ) {
-          GUM_ERROR( UndefinedIteratorValue,
-                     "Not enough elements in the hashtable" );
-        }
-
-        // find the element we shall point to from the end of the hashtable
-        for ( i = 0, ind_elt = __table->__nb_elements - ind_elt - 1;; ++i ) {
-          if ( __table->__nodes[i].__nb_elements ) {
-            if ( ind_elt >= __table->__nodes[i].__nb_elements )
-              ind_elt -= __table->__nodes[i].__nb_elements;
-            else {
-              for ( __bucket = __table->__nodes[i].__deb_list; ind_elt;
-                    --ind_elt, __bucket = __bucket->next ) {
-              }
-
-              __index = i;
-              break;
-            }
-          }
-        }
-      }
-    }
-
-    // for debugging purposes
-    GUM_CONSTRUCTOR( HashTableConstIteratorSafe );
-
-    // make the hashtable keep track of this iterator
-    __insertIntoSafeList();
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableConstIteratorSafe<Key, Val>::HashTableConstIteratorSafe(
-      const HashTableConstIteratorSafe<Key, Val>& from )
-      : __table{from.__table}
-      , __index{from.__index}
-      , __bucket{from.__bucket}
-      , __next_bucket{from.__next_bucket} {
-    // make the hashtable keep track of this iterator
-    if ( __table != nullptr ) {
-      __insertIntoSafeList();
-    }
-
-    // for debugging purposes
-    GUM_CONS_CPY( HashTableConstIteratorSafe );
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableConstIteratorSafe<Key, Val>::HashTableConstIteratorSafe(
-      const HashTableConstIterator<Key, Val>& from )
-      : __table{from.__table}
-      , __index{from.__index}
-      , __bucket{from.__bucket} {
-    // make the hashtable keep track of this iterator
-    if ( __table != nullptr ) {
-      __insertIntoSafeList();
-    }
-
-    // for debugging purposes
-    GUM_CONS_CPY( HashTableConstIteratorSafe );
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableConstIteratorSafe<Key, Val>::HashTableConstIteratorSafe(
-      HashTableConstIteratorSafe<Key, Val>&& from )
-      : __table{from.__table}
-      , __index{from.__index}
-      , __bucket{from.__bucket}
-      , __next_bucket{from.__next_bucket} {
-    GUM_CONS_MOV( HashTableConstIteratorSafe );
-
-    // find "from" in the hashtable's list of safe iterators and substitute
-    // it by this
-    if ( __table != nullptr ) {
-      std::vector<HashTableConstIteratorSafe<Key, Val>*>& vect =
-          __table->__safe_iterators;
-
-      for ( auto ptr = vect.rbegin(); ptr != vect.rend(); ++ptr ) {
-        if ( *ptr == &from ) {
-          *ptr = this;
-          from.__table = nullptr;
-          break;
-        }
-      }
-    }
-  }
-
-  template <typename Key, typename Val>
-  INLINE
-      HashTableConstIteratorSafe<Key,
-                                 Val>::~HashTableConstIteratorSafe() noexcept {
-    // for debugging purposes
-    GUM_DESTRUCTOR( HashTableConstIteratorSafe );
-
-    // remove the iterator from the table's iterator list
-    __removeFromSafeList();
-  }
-
-  template <typename Key, typename Val>
-  HashTableConstIteratorSafe<Key, Val>& HashTableConstIteratorSafe<Key, Val>::
-  operator=( const HashTableConstIteratorSafe<Key, Val>& from ) {
-    // here, no need to avoid self assignment: this would slow down normal
-    // assignments and, in any case, this would not result in an iterator in
-    // an incoherent state
-    // check if the current hashtable is different from that of "from". In such
-    // a case, we shall remove the iterator from its current hashtable
-    // iterator's
-    // list and add it to the new hashtable iterator's list
-    if ( __table != from.__table ) {
-      // remove the iterator from its hashtable iterator's list'
-      __removeFromSafeList();
-
-      __table = from.__table;
-
-      // add to the new table
-      if ( __table ) {
-        __insertIntoSafeList();
-      }
-    }
-
-    __index = from.__index;
-    __bucket = from.__bucket;
-    __next_bucket = from.__next_bucket;
-
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  HashTableConstIteratorSafe<Key, Val>& HashTableConstIteratorSafe<Key, Val>::
-  operator=( const HashTableConstIterator<Key, Val>& from ) {
-    // here, no need to avoid self assignment: this would slow down normal
-    // assignments and, in any case, this would not result in an iterator in
-    // an incoherent state
-    // check if the current hashtable is different from that of "from". In such
-    // a case, we shall remove the iterator from its current hashtable
-    // iterator's
-    // list and add it to the new hashtable iterator's list
-    if ( __table != from.__table ) {
-      // remove the iterator from its hashtable iterator's list'
-      __removeFromSafeList();
-
-      __table = from.__table;
-
-      // add to the new table
-      if ( __table ) {
-        __insertIntoSafeList();
-      }
-    }
-
-    __index = from.__index;
-    __bucket = from.__bucket;
-    __next_bucket = nullptr;
-
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableConstIteratorSafe<Key, Val>&
-      HashTableConstIteratorSafe<Key, Val>::
-      operator=( HashTableConstIteratorSafe<Key, Val>&& from ) noexcept {
-    // here, no need to avoid self assignment: this would slow down normal
-    // assignments and, in any case, this would not result in an iterator in
-    // an incoherent state
-    // check if the current hashtable is different from that of "from". In such
-    // a case, we shall remove the iterator from its current hashtable
-    // iterator's
-    // list and add it to the new hashtable iterator's list
-    if ( __table != from.__table ) {
-      // remove the iterator from its hashtable iterator's list'
-      __removeFromSafeList();
-
-      if ( from.__table != nullptr ) {
-        // substitute from by this in the list of safe iterators
-        std::vector<HashTableConstIteratorSafe<Key, Val>*>& vect =
-            from.__table->__safe_iterators;
-
-        for ( auto ptr = vect.rbegin(); ptr != vect.rend(); ++ptr ) {
-          if ( *ptr == &from ) {
-            *ptr = this;
-            break;
-          }
-        }
-      }
-
-      __table = from.__table;
-      from.__table = nullptr;
-    }
-
-    __index = from.__index;
-    __bucket = from.__bucket;
-    __next_bucket = from.__next_bucket;
-
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  INLINE const typename HashTableConstIteratorSafe<Key, Val>::key_type&
-  HashTableConstIteratorSafe<Key, Val>::key() const {
-    if ( __bucket )
-      return __bucket->key();
-    else {
-      GUM_ERROR( UndefinedIteratorValue, "Accessing a nullptr object" );
-    }
-  }
-
-  template <typename Key, typename Val>
-  INLINE const typename HashTableConstIteratorSafe<Key, Val>::mapped_type&
-  HashTableConstIteratorSafe<Key, Val>::val() const {
-    if ( __bucket )
-      return __bucket->val();
-    else {
-      GUM_ERROR( UndefinedIteratorValue, "Accessing a nullptr object" );
-    }
-  }
-
-  template <typename Key, typename Val>
-  INLINE void HashTableConstIteratorSafe<Key, Val>::clear() noexcept {
-    // remove the iterator from the table's iterator list
-    __removeFromSafeList();
-
-    // set its table as well as the element it points to to 0
-    __table = nullptr;
-    __bucket = nullptr;
-    __next_bucket = nullptr;
-    __index = 0;
-  }
-
-  // WARNING: never inline this function: this result in g++4.3.3 producing a
-  // code that segfaults.
-  template <typename Key, typename Val>
-  HashTableConstIteratorSafe<Key, Val>& HashTableConstIteratorSafe<Key, Val>::
-  operator++() noexcept {
-    // if __bucket != nullptr then use it, else use next_bucket
-    if ( __bucket == nullptr ) {
-      // note that this case only happens when the iterator pointed to an
-      // element
-      // that has just been erased. Fortunately, in this case, the Hashtable's
-      // erase functions update appropriately the __next_bucket and __index
-      // fields.
-      __bucket = __next_bucket;
-      __next_bucket = nullptr;
-    } else {
-      // ok, here we can use __bucket as a starting point
-
-      // if we are not pointing on the first element of the chained list, just
-      // point to the preceding bucket in this list
-      if ( __bucket->prev ) {
-        __bucket = __bucket->prev;
-        // here, no need to update __next_bucket, which is compulsorily
-        // equal to nullptr, nor __index which has not changed.
-      } else {
-        // ok, here we are on the beginning of a chained list,
-        // so 2 cases can obtain:
-        // 1/ index = 0 : then we have reached the end of the hashtable
-        // 2/ index != 0 => we must search for a new slot containing elements
-
-        // case 1:
-        if ( !__index ) {
-          __bucket = nullptr;
-          // we are thus at the end() of the hashTable
-        }
-
-        // case 2:
-        else {
-          // arrived here, we need to parse the hash table until we find a new
-          // bucket because we are pointing on a chained list with no more
-          // element
-          // to the left of the current element
-          for ( Size i = __index - 1UL; i; --i ) {
-            if ( __table->__nodes[i].__nb_elements ) {
-              __index = i;
-              __bucket = __table->__nodes[i].__end_list;
-              return *this;
-            }
-          }
-
-          if ( __table->__nodes[0].__nb_elements )
-            __bucket = __table->__nodes[0].__end_list;
-          else
-            __bucket = nullptr;
-
-          __index = 0;
-        }
-      }
-    }
-
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  HashTableConstIteratorSafe<Key, Val>& HashTableConstIteratorSafe<Key, Val>::
-  operator+=( unsigned int nb ) noexcept {
-    if ( ( nb == 0 ) || ( __table == nullptr ) ) return *this;
-
-    // if __bucket != nullptr then use it, else use next_bucket
-    if ( __bucket == nullptr ) {
-      // note that this case only happens when the iterator pointed to an
-      // element
-      // that has just been erased. Fortunately, in this case, the Hashtable's
-      // erase functions update appropriately the __next_bucket and __index
-      // fields.
-      __bucket = __next_bucket;
-      __next_bucket = nullptr;
-      --nb;
-    }
-
-    // ok, here we can use __bucket as a starting point: parse all the elements
-    // of the current chained list
-    for ( ; nb && __bucket != nullptr; --nb, __bucket = __bucket->prev ) {
-    }
-
-    if ( __bucket != nullptr ) return *this;
-
-    // here, we shall skip all the chained list that have not sufficiently
-    // many elements
-    --__index;
-
-    for ( ; __index < __table->__size &&
-                nb >= __table->__nodes[__index].__nb_elements;
-          nb -= __table->__nodes[__index].__nb_elements, --__index ) {
-    }
-
-    // here: either __index >= __table->__size, which means that we did not find
-    // the element we looked for, i.e., we are at the end of the hashtable, or
-    // nb < __table->__nodes[__index].__nb_elements, and we should parse the
-    // chained list to get the element (which, we know for sure, exists)
-    if ( __index >= __table->__size ) {
-      __index = 0;
-      return *this;
-    }
-
-    for ( __bucket = __table->__nodes[__index].__end_list; nb;
-          --nb, __bucket = __bucket->prev ) {
-    }
-
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableConstIteratorSafe<Key, Val>
-      HashTableConstIteratorSafe<Key, Val>::operator+( unsigned int nb ) const {
-    return HashTableConstIteratorSafe<Key, Val>{* this} += nb;
-  }
-
-  template <typename Key, typename Val>
-  INLINE bool HashTableConstIteratorSafe<Key, Val>::
-  operator!=( const HashTableConstIteratorSafe<Key, Val>& from ) const
-      noexcept {
-    return ( ( __bucket != from.__bucket ) || ( __index != from.__index ) );
-  }
-
-  template <typename Key, typename Val>
-  INLINE bool HashTableConstIteratorSafe<Key, Val>::
-  operator==( const HashTableConstIteratorSafe<Key, Val>& from ) const
-      noexcept {
-    return ( ( __bucket == from.__bucket ) && ( __index == from.__index ) );
-  }
-
-  template <typename Key, typename Val>
-  INLINE const typename HashTableConstIteratorSafe<Key, Val>::value_type&
-      HashTableConstIteratorSafe<Key, Val>::
-      operator*() const {
-    if ( __bucket )
-      return __bucket->elt();
-    else {
-      GUM_ERROR( UndefinedIteratorValue, "Accessing a nullptr object" );
-    }
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableBucket<Key, Val>*
-  HashTableConstIteratorSafe<Key, Val>::__getBucket() const noexcept {
-    return __bucket;
-  }
-
-  template <typename Key, typename Val>
-  INLINE Size HashTableConstIteratorSafe<Key, Val>::__getIndex() const
-      noexcept {
-    return __index;
-  }
-
-  // ===========================================================================
-  // ===                SAFE HASH TABLE ITERATORS IMPLEMENTATION             ===
-  // ===========================================================================
-
-  template <typename Key, typename Val>
-  INLINE HashTableIteratorSafe<Key, Val>::HashTableIteratorSafe()
-      : HashTableConstIteratorSafe<Key, Val>() {
-    GUM_CONSTRUCTOR( HashTableIteratorSafe );
-  }
-
-  template <typename Key, typename Val>
-  template <typename Alloc>
-  INLINE HashTableIteratorSafe<Key, Val>::HashTableIteratorSafe(
-      const HashTable<Key, Val, Alloc>& tab )
-      : HashTableConstIteratorSafe<Key, Val>( tab ) {
-    GUM_CONSTRUCTOR( HashTableIteratorSafe );
-  }
-
-  template <typename Key, typename Val>
-  template <typename Alloc>
-  INLINE HashTableIteratorSafe<Key, Val>::HashTableIteratorSafe(
-      const HashTable<Key, Val, Alloc>& tab, Size ind_elt )
-      : HashTableConstIteratorSafe<Key, Val>( tab, ind_elt ) {
-    GUM_CONSTRUCTOR( HashTableIteratorSafe );
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIteratorSafe<Key, Val>::HashTableIteratorSafe(
-      const HashTableIteratorSafe<Key, Val>& from )
-      : HashTableConstIteratorSafe<Key, Val>( from ) {
-    GUM_CONS_CPY( HashTableIteratorSafe );
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIteratorSafe<Key, Val>::HashTableIteratorSafe(
-      const HashTableIterator<Key, Val>& from )
-      : HashTableConstIteratorSafe<Key, Val>( from ) {
-    GUM_CONS_CPY( HashTableIteratorSafe );
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIteratorSafe<Key, Val>::HashTableIteratorSafe(
-      HashTableIteratorSafe<Key, Val>&& from ) noexcept
-      : HashTableConstIteratorSafe<Key, Val>( std::move( from ) ) {
-    GUM_CONS_MOV( HashTableIteratorSafe );
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIteratorSafe<Key, Val>::~HashTableIteratorSafe() noexcept {
-    GUM_DESTRUCTOR( HashTableIteratorSafe );
-  }
-
-  template <typename Key, typename Val>
-  INLINE typename HashTableIteratorSafe<Key, Val>::mapped_type&
-  HashTableIteratorSafe<Key, Val>::val() {
-    return const_cast<Val&>( HashTableConstIteratorSafe<Key, Val>::val() );
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIteratorSafe<Key, Val>& HashTableIteratorSafe<Key, Val>::
-  operator=( const HashTableIteratorSafe<Key, Val>& from ) {
-    GUM_OP_CPY( HashTableIteratorSafe );
-    HashTableConstIteratorSafe<Key, Val>::operator=( from );
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIteratorSafe<Key, Val>& HashTableIteratorSafe<Key, Val>::
-  operator=( const HashTableIterator<Key, Val>& from ) {
-    GUM_OP_CPY( HashTableIteratorSafe );
-    HashTableConstIteratorSafe<Key, Val>::operator=( from );
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIteratorSafe<Key, Val>& HashTableIteratorSafe<Key, Val>::
-  operator=( HashTableIteratorSafe<Key, Val>&& from ) noexcept {
-    HashTableConstIteratorSafe<Key, Val>::operator=( std::move( from ) );
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIteratorSafe<Key, Val>& HashTableIteratorSafe<Key, Val>::
-  operator++() noexcept {
-    HashTableConstIteratorSafe<Key, Val>::operator++();
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIteratorSafe<Key, Val>& HashTableIteratorSafe<Key, Val>::
-  operator+=( unsigned int nb ) noexcept {
-    HashTableConstIteratorSafe<Key, Val>::operator+=( nb );
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIteratorSafe<Key, Val> HashTableIteratorSafe<Key, Val>::
-  operator+( unsigned int nb ) const {
-    HashTableIteratorSafe<Key, Val> iter{*this};
-    iter += nb;
-    return iter;
-  }
-
-  template <typename Key, typename Val>
-  INLINE bool HashTableIteratorSafe<Key, Val>::
-  operator!=( const HashTableIteratorSafe<Key, Val>& from ) const noexcept {
-    return HashTableConstIteratorSafe<Key, Val>::operator!=( from );
-  }
-
-  template <typename Key, typename Val>
-  INLINE bool HashTableIteratorSafe<Key, Val>::
-  operator==( const HashTableIteratorSafe<Key, Val>& from ) const noexcept {
-    return HashTableConstIteratorSafe<Key, Val>::operator==( from );
-  }
-
-  template <typename Key, typename Val>
-  INLINE typename HashTableIteratorSafe<Key, Val>::value_type&
-      HashTableIteratorSafe<Key, Val>::
-      operator*() {
-    return const_cast<Val&>(
-        HashTableConstIteratorSafe<Key, Val>::operator*() );
-  }
-
-  template <typename Key, typename Val>
-  INLINE const typename HashTableIteratorSafe<Key, Val>::value_type&
-      HashTableIteratorSafe<Key, Val>::
-      operator*() const {
-    return HashTableConstIteratorSafe<Key, Val>::operator*();
-  }
-
-  // ===========================================================================
-  // ===            UNSAFE HASH TABLE CONST ITERATORS IMPLEMENTATION         ===
-  // ===========================================================================
-
-  template <typename Key, typename Val>
-  INLINE HashTableConstIterator<Key, Val>::HashTableConstIterator() noexcept {
-    GUM_CONSTRUCTOR( HashTableConstIterator );
-  }
-
-  template <typename Key, typename Val>
-  template <typename Alloc>
-  INLINE HashTableConstIterator<Key, Val>::HashTableConstIterator(
-      const HashTable<Key, Val, Alloc>& tab ) noexcept
-      : __table{reinterpret_cast<const HashTable<Key, Val>*>( &tab )} {
-    // for debugging purposes
-    GUM_CONSTRUCTOR( HashTableConstIterator );
-
-    if ( __table->__nb_elements ) {
-      if ( __table->__begin_index != std::numeric_limits<Size>::max() ) {
-        __index = __table->__begin_index;
-        __bucket = __table->__nodes[__index].__end_list;
-      } else {
-        // find the element we shall point to from the start of the hashtable
-        for ( unsigned int i = __table->__size - 1;;
-              --i ) {  // no test on i since
-          // __nb_elements != 0
-          if ( __table->__nodes[i].__nb_elements ) {
-            __index = i;
-            __bucket = __table->__nodes[__index].__end_list;
-            __table->__begin_index = __index;
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  template <typename Key, typename Val>
-  template <typename Alloc>
-  HashTableConstIterator<Key, Val>::HashTableConstIterator(
-      const HashTable<Key, Val, Alloc>& tab, Size ind_elt )
-      : __table{reinterpret_cast<const HashTable<Key, Val>*>( &tab )} {
-    Size i;
-
-    // check if we are looking for a begin() and we know for sure its index
-    if ( ( ind_elt == 0 ) &&
-         ( __table->__begin_index != std::numeric_limits<Size>::max() ) ) {
-      __index = __table->__begin_index;
-      __bucket = __table->__nodes[__index].__end_list;
-    } else {
-      // check if it is faster to find the ind_eltth element from the start or
-      // from the end of the hashtable
-      if ( ind_elt < ( __table->__nb_elements >> 1 ) ) {
-        // find the element we shall point to from the start of the hashtable
-        for ( i = __table->__size - 1;; --i ) {  // no test on i since
-          // ind_elt < _table->__nb_elements
-          if ( __table->__nodes[i].__nb_elements ) {
-            if ( ind_elt >= __table->__nodes[i].__nb_elements )
-              ind_elt -= __table->__nodes[i].__nb_elements;
-            else {
-              for ( __bucket = __table->__nodes[i].__end_list; ind_elt;
-                    --ind_elt, __bucket = __bucket->prev ) {
-              }
-
-              __index = i;
-              break;
-            }
-          }
-        }
-      } else {
-        // ind_elt = the index of the element we should point to
-        // check if the index passed as parameter is valid
-        if ( ind_elt >= __table->__nb_elements ) {
-          GUM_ERROR( UndefinedIteratorValue,
-                     "Not enough elements in the hashtable" );
-        }
-
-        // find the element we shall point to from the end of the hashtable
-        for ( i = 0, ind_elt = __table->__nb_elements - ind_elt - 1;; ++i ) {
-          if ( __table->__nodes[i].__nb_elements ) {
-            if ( ind_elt >= __table->__nodes[i].__nb_elements )
-              ind_elt -= __table->__nodes[i].__nb_elements;
-            else {
-              for ( __bucket = __table->__nodes[i].__deb_list; ind_elt;
-                    --ind_elt, __bucket = __bucket->next ) {
-              }
-
-              __index = i;
-              break;
-            }
-          }
-        }
-      }
-    }
-
-    // for debugging purposes
-    GUM_CONSTRUCTOR( HashTableConstIterator );
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableConstIterator<Key, Val>::HashTableConstIterator(
-      const HashTableConstIterator<Key, Val>& from ) noexcept
-      : __table{from.__table},
-        __index{from.__index},
-        __bucket{from.__bucket} {
-    GUM_CONS_CPY( HashTableConstIterator );
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableConstIterator<Key, Val>::HashTableConstIterator(
-      HashTableConstIterator<Key, Val>&& from ) noexcept
-      : __table{from.__table},
-        __index{from.__index},
-        __bucket{from.__bucket} {
-    GUM_CONS_MOV( HashTableConstIterator );
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableConstIterator<Key, Val>::~HashTableConstIterator() noexcept {
-    // for debugging purposes
-    GUM_DESTRUCTOR( HashTableConstIterator );
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableConstIterator<Key, Val>& HashTableConstIterator<Key, Val>::
-  operator=( const HashTableConstIterator<Key, Val>& from ) noexcept {
-    // here, no need to avoid self assignment: this would slow down normal
-    // assignments and, in any case, this would not result in an iterator in
-    // an incoherent state
-    __table = from.__table;
-    __index = from.__index;
-    __bucket = from.__bucket;
-
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableConstIterator<Key, Val>& HashTableConstIterator<Key, Val>::
-  operator=( HashTableConstIterator<Key, Val>&& from ) noexcept {
-    // here, no need to avoid self assignment: this would slow down normal
-    // assignments and, in any case, this would not result in an iterator in
-    // an incoherent state
-    __table = from.__table;
-    __index = from.__index;
-    __bucket = from.__bucket;
-
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  INLINE const typename HashTableConstIterator<Key, Val>::key_type&
-  HashTableConstIterator<Key, Val>::key() const {
-    if ( __bucket )
-      return __bucket->pair.first;
-    else {
-      GUM_ERROR( UndefinedIteratorValue, "Accessing a nullptr object" );
-    }
-  }
-
-  template <typename Key, typename Val>
-  INLINE const typename HashTableConstIterator<Key, Val>::mapped_type&
-  HashTableConstIterator<Key, Val>::val() const {
-    if ( __bucket )
-      return __bucket->val();
-    else {
-      GUM_ERROR( UndefinedIteratorValue, "Accessing a nullptr object" );
-    }
-  }
-
-  template <typename Key, typename Val>
-  INLINE void HashTableConstIterator<Key, Val>::clear() noexcept {
-    __table = nullptr;
-    __bucket = nullptr;
-    __index = 0;
-  }
-
-  template <typename Key, typename Val>
-  HashTableConstIterator<Key, Val>& HashTableConstIterator<Key, Val>::
-  operator++() noexcept {
-    // if __bucket == nullptr then we are at the end of the hashtable
-    if ( __bucket == nullptr ) return *this;
-
-    // if we are not pointing on the first element of the chained list, just
-    // point to the next bucket in this list
-    if ( __bucket->prev ) {
-      __bucket = __bucket->prev;
-      // here, no need to update __index which has not changed.
-    } else {
-      // ok, here we are on the end of a chained list,
-      // so 2 cases can obtain:
-      // 1/ index = 0 : then we have reached the end of the hashtable
-      // 2/ index != 0 => we must search for a new slot containing elements
-
-      // case 1:
-      if ( !__index ) {
-        __bucket = nullptr;
-        // we are thus at the end() of the hashTable
-      }
-
-      // case 2:
-      else {
-        // arrived here, we need to parse the hash table until we find a new
-        // bucket because we are pointing on a chained list with no more element
-        // to the right of the current element
-        for ( Size i = __index - 1UL; i; --i ) {
-          if ( __table->__nodes[i].__nb_elements ) {
-            __index = i;
-            __bucket = __table->__nodes[i].__end_list;
-            return *this;
-          }
-        }
-
-        if ( __table->__nodes[0].__nb_elements )
-          __bucket = __table->__nodes[0].__end_list;
-        else
-          __bucket = nullptr;
-
-        __index = 0;
-      }
-    }
-
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  HashTableConstIterator<Key, Val>& HashTableConstIterator<Key, Val>::
-  operator+=( unsigned int nb ) noexcept {
-    if ( ( nb == 0 ) || ( __table == nullptr ) || ( __bucket == nullptr ) )
-      return *this;
-
-    // ok, here we can use __bucket as a starting point: parse all the elements
-    // of the current chained list
-    for ( ; nb && __bucket != nullptr; --nb, __bucket = __bucket->prev ) {
-    }
-
-    if ( __bucket != nullptr ) return *this;
-
-    // here, we shall skip all the chained list that have not sufficiently
-    // many elements
-    --__index;
-
-    for ( ; __index < __table->__size &&
-                nb >= __table->__nodes[__index].__nb_elements;
-          nb -= __table->__nodes[__index].__nb_elements, --__index ) {
-    }
-
-    // here: either __index >= __table->__size, which means that we did not find
-    // the element we looked for, i.e., we are at the end of the hashtable, or
-    // nb < __table->__nodes[__index].__nb_elements, and we should parse the
-    // chained list to get the element (which, we know for sure, exists)
-    if ( __index >= __table->__size ) {
-      __index = 0;
-      return *this;
-    }
-
-    for ( __bucket = __table->__nodes[__index].__end_list; nb;
-          --nb, __bucket = __bucket->prev ) {
-    }
-
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableConstIterator<Key, Val> HashTableConstIterator<Key, Val>::
-  operator+( unsigned int nb ) const noexcept {
-    return HashTableConstIterator<Key, Val>{* this} += nb;
-  }
-
-  template <typename Key, typename Val>
-  INLINE bool HashTableConstIterator<Key, Val>::
-  operator!=( const HashTableConstIterator<Key, Val>& from ) const noexcept {
-    return ( __bucket != from.__bucket );
-  }
-
-  template <typename Key, typename Val>
-  INLINE bool HashTableConstIterator<Key, Val>::
-  operator==( const HashTableConstIterator<Key, Val>& from ) const noexcept {
-    return ( __bucket == from.__bucket );
-  }
-
-  template <typename Key, typename Val>
-  INLINE const typename HashTableConstIterator<Key, Val>::value_type&
-      HashTableConstIterator<Key, Val>::
-      operator*() const {
-    if ( __bucket )
-      return __bucket->elt();
-    else {
-      GUM_ERROR( UndefinedIteratorValue, "Accessing a nullptr object" );
-    }
-  }
-
-  template <typename Key, typename Val>
-  INLINE typename HashTable<Key, Val>::Bucket*
-  HashTableConstIterator<Key, Val>::__getBucket() const noexcept {
-    return __bucket;
-  }
-
-  template <typename Key, typename Val>
-  INLINE Size HashTableConstIterator<Key, Val>::__getIndex() const noexcept {
-    return __index;
-  }
-
-  // ===========================================================================
-  // ===               UNSAFE HASH TABLE ITERATORS IMPLEMENTATION            ===
-  // ===========================================================================
-
-  template <typename Key, typename Val>
-  INLINE HashTableIterator<Key, Val>::HashTableIterator() noexcept
-      : HashTableConstIterator<Key, Val>() {
-    GUM_CONSTRUCTOR( HashTableIterator );
-  }
-
-  template <typename Key, typename Val>
-  template <typename Alloc>
-  INLINE HashTableIterator<Key, Val>::HashTableIterator(
-      const HashTable<Key, Val, Alloc>& tab ) noexcept
-      : HashTableConstIterator<Key, Val>{tab} {
-    GUM_CONSTRUCTOR( HashTableIterator );
-  }
-
-  template <typename Key, typename Val>
-  template <typename Alloc>
-  INLINE HashTableIterator<Key, Val>::HashTableIterator(
-      const HashTable<Key, Val, Alloc>& tab, Size ind_elt )
-      : HashTableConstIterator<Key, Val>( tab, ind_elt ) {
-    GUM_CONSTRUCTOR( HashTableIterator );
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIterator<Key, Val>::HashTableIterator(
-      const HashTableIterator<Key, Val>& from ) noexcept
-      : HashTableConstIterator<Key, Val>( from ) {
-    GUM_CONS_CPY( HashTableIterator );
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIterator<Key, Val>::HashTableIterator(
-      HashTableIterator<Key, Val>&& from ) noexcept
-      : HashTableConstIterator<Key, Val>( std::move( from ) ) {
-    GUM_CONS_MOV( HashTableIterator );
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIterator<Key, Val>::~HashTableIterator() noexcept {
-    GUM_DESTRUCTOR( HashTableIterator );
-  }
-
-  template <typename Key, typename Val>
-  INLINE typename HashTableIterator<Key, Val>::mapped_type&
-  HashTableIterator<Key, Val>::val() {
-    if ( this->__bucket )
-      return this->__bucket->val();
-    else {
-      GUM_ERROR( UndefinedIteratorValue, "Accessing a nullptr object" );
-    }
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIterator<Key, Val>& HashTableIterator<Key, Val>::
-  operator=( const HashTableIterator<Key, Val>& from ) noexcept {
-    HashTableConstIterator<Key, Val>::operator=( from );
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIterator<Key, Val>& HashTableIterator<Key, Val>::
-  operator=( HashTableIterator<Key, Val>&& from ) noexcept {
-    HashTableConstIterator<Key, Val>::operator=( std::move( from ) );
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIterator<Key, Val>& HashTableIterator<Key, Val>::
-  operator++() noexcept {
-    HashTableConstIterator<Key, Val>::operator++();
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIterator<Key, Val>& HashTableIterator<Key, Val>::
-  operator+=( unsigned int nb ) noexcept {
-    HashTableConstIterator<Key, Val>::operator+=( nb );
-    return *this;
-  }
-
-  template <typename Key, typename Val>
-  INLINE HashTableIterator<Key, Val> HashTableIterator<Key, Val>::
-  operator+( unsigned int nb ) const noexcept {
-    HashTableIterator<Key, Val> iter{*this};
-    iter += nb;
-    return iter;
-  }
-
-  template <typename Key, typename Val>
-  INLINE bool HashTableIterator<Key, Val>::
-  operator!=( const HashTableIterator<Key, Val>& from ) const noexcept {
-    return HashTableConstIterator<Key, Val>::operator!=( from );
-  }
-
-  template <typename Key, typename Val>
-  INLINE bool HashTableIterator<Key, Val>::
-  operator==( const HashTableIterator<Key, Val>& from ) const noexcept {
-    return HashTableConstIterator<Key, Val>::operator==( from );
-  }
-
-  template <typename Key, typename Val>
-  INLINE typename HashTableIterator<Key, Val>::value_type&
-      HashTableIterator<Key, Val>::
-      operator*() {
-    return const_cast<value_type&>(
-        HashTableConstIterator<Key, Val>::operator*() );
-  }
-
-  template <typename Key, typename Val>
-  INLINE const typename HashTableIterator<Key, Val>::value_type&
-      HashTableIterator<Key, Val>::
-      operator*() const {
-    return HashTableConstIterator<Key, Val>::operator*();
-  }
 
   // ===========================================================================
   // ===     IMPLEMENTATION OF THE CHAINED LISTS USED IN THE HASH TABLES     ===
@@ -2329,6 +1300,1036 @@ namespace gum {
     stream << "}";
 
     return stream;
+  }
+
+  // ===========================================================================
+  // ===                SAFE HASH TABLE ITERATORS IMPLEMENTATION             ===
+  // ===========================================================================
+
+  template <typename Key, typename Val>
+  INLINE void
+  HashTableConstIteratorSafe<Key, Val>::__insertIntoSafeList() const {
+    __table->__safe_iterators.push_back(
+        const_cast<HashTableConstIteratorSafe<Key, Val>*>( this ) );
+  }
+
+  template <typename Key, typename Val>
+  INLINE void HashTableConstIteratorSafe<Key, Val>::__removeFromSafeList() const
+      noexcept {
+    if ( __table == nullptr ) return;
+
+    // find where the iterator is
+    std::vector<HashTableConstIteratorSafe<Key, Val>*>& iter_vect =
+        __table->__safe_iterators;
+
+    for ( int i = iter_vect.size() - 1; i >= 0; --i ) {
+      if ( iter_vect[i] == this ) {
+        iter_vect.erase( iter_vect.begin() + i );
+        break;
+      }
+    }
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableConstIteratorSafe<Key, Val>::HashTableConstIteratorSafe() {
+    // for debugging purposes
+    GUM_CONSTRUCTOR( HashTableConstIteratorSafe );
+  }
+
+  template <typename Key, typename Val>
+  template <typename Alloc>
+  INLINE HashTableConstIteratorSafe<Key, Val>::HashTableConstIteratorSafe(
+      const HashTable<Key, Val, Alloc>& tab )
+      : __table{reinterpret_cast<const HashTable<Key, Val>*>( &tab )} {
+    // for debugging purposes
+    GUM_CONSTRUCTOR( HashTableConstIteratorSafe );
+
+    // make the hashtable keep track of this iterator
+    __insertIntoSafeList();
+
+    if ( __table->__nb_elements ) {
+      if ( __table->__begin_index != std::numeric_limits<Size>::max() ) {
+        __index = __table->__begin_index;
+        __bucket = __table->__nodes[__index].__end_list;
+      } else {
+        // find the element we shall point to from the start of the hashtable
+        for ( unsigned int i = __table->__size - 1;;
+              --i ) {  // no test on i since
+          // __nb_elements != 0
+          if ( __table->__nodes[i].__nb_elements ) {
+            __index = i;
+            __bucket = __table->__nodes[__index].__end_list;
+            __table->__begin_index = __index;
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  template <typename Key, typename Val>
+  template <typename Alloc>
+  HashTableConstIteratorSafe<Key, Val>::HashTableConstIteratorSafe(
+      const HashTable<Key, Val, Alloc>& tab, Size ind_elt )
+      : __table{reinterpret_cast<const HashTable<Key, Val>*>( &tab )} {
+    Size i;
+
+    // check if we are looking for a begin() and we know for sure its index
+    if ( ( ind_elt == 0 ) &&
+         ( __table->__begin_index != std::numeric_limits<Size>::max() ) ) {
+      __index = __table->__begin_index;
+      __bucket = __table->__nodes[__index].__end_list;
+    } else {
+      // check if it is faster to find the ind_eltth element from the start or
+      // from the end of the hashtable
+      if ( ind_elt < ( __table->__nb_elements >> 1 ) ) {
+        // find the element we shall point to from the start of the hashtable
+        for ( i = __table->__size - 1;; --i ) {  // no test on i since
+          // ind_elt < _table->__nb_elements
+          if ( __table->__nodes[i].__nb_elements ) {
+            if ( ind_elt >= __table->__nodes[i].__nb_elements )
+              ind_elt -= __table->__nodes[i].__nb_elements;
+            else {
+              for ( __bucket = __table->__nodes[i].__end_list; ind_elt;
+                    --ind_elt, __bucket = __bucket->prev ) {
+              }
+
+              __index = i;
+              break;
+            }
+          }
+        }
+      } else {
+        // ind_elt = the index of the element we should point to
+        // check if the index passed as parameter is valid
+        if ( ind_elt >= __table->__nb_elements ) {
+          GUM_ERROR( UndefinedIteratorValue,
+                     "Not enough elements in the hashtable" );
+        }
+
+        // find the element we shall point to from the end of the hashtable
+        for ( i = 0, ind_elt = __table->__nb_elements - ind_elt - 1;; ++i ) {
+          if ( __table->__nodes[i].__nb_elements ) {
+            if ( ind_elt >= __table->__nodes[i].__nb_elements )
+              ind_elt -= __table->__nodes[i].__nb_elements;
+            else {
+              for ( __bucket = __table->__nodes[i].__deb_list; ind_elt;
+                    --ind_elt, __bucket = __bucket->next ) {
+              }
+
+              __index = i;
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    // for debugging purposes
+    GUM_CONSTRUCTOR( HashTableConstIteratorSafe );
+
+    // make the hashtable keep track of this iterator
+    __insertIntoSafeList();
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableConstIteratorSafe<Key, Val>::HashTableConstIteratorSafe(
+      const HashTableConstIteratorSafe<Key, Val>& from )
+      : __table{from.__table}
+      , __index{from.__index}
+      , __bucket{from.__bucket}
+      , __next_bucket{from.__next_bucket} {
+    // make the hashtable keep track of this iterator
+    if ( __table != nullptr ) {
+      __insertIntoSafeList();
+    }
+
+    // for debugging purposes
+    GUM_CONS_CPY( HashTableConstIteratorSafe );
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableConstIteratorSafe<Key, Val>::HashTableConstIteratorSafe(
+      const HashTableConstIterator<Key, Val>& from )
+      : __table{from.__table}
+      , __index{from.__index}
+      , __bucket{from.__bucket} {
+    // make the hashtable keep track of this iterator
+    if ( __table != nullptr ) {
+      __insertIntoSafeList();
+    }
+
+    // for debugging purposes
+    GUM_CONS_CPY( HashTableConstIteratorSafe );
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableConstIteratorSafe<Key, Val>::HashTableConstIteratorSafe(
+      HashTableConstIteratorSafe<Key, Val>&& from )
+      : __table{from.__table}
+      , __index{from.__index}
+      , __bucket{from.__bucket}
+      , __next_bucket{from.__next_bucket} {
+    GUM_CONS_MOV( HashTableConstIteratorSafe );
+
+    // find "from" in the hashtable's list of safe iterators and substitute
+    // it by this
+    if ( __table != nullptr ) {
+      std::vector<HashTableConstIteratorSafe<Key, Val>*>& vect =
+          __table->__safe_iterators;
+
+      for ( auto ptr = vect.rbegin(); ptr != vect.rend(); ++ptr ) {
+        if ( *ptr == &from ) {
+          *ptr = this;
+          from.__table = nullptr;
+          break;
+        }
+      }
+    }
+  }
+
+  template <typename Key, typename Val>
+  INLINE
+      HashTableConstIteratorSafe<Key,
+                                 Val>::~HashTableConstIteratorSafe() noexcept {
+    // for debugging purposes
+    GUM_DESTRUCTOR( HashTableConstIteratorSafe );
+
+    // remove the iterator from the table's iterator list
+    __removeFromSafeList();
+  }
+
+  template <typename Key, typename Val>
+  HashTableConstIteratorSafe<Key, Val>& HashTableConstIteratorSafe<Key, Val>::
+  operator=( const HashTableConstIteratorSafe<Key, Val>& from ) {
+    // here, no need to avoid self assignment: this would slow down normal
+    // assignments and, in any case, this would not result in an iterator in
+    // an incoherent state
+    // check if the current hashtable is different from that of "from". In such
+    // a case, we shall remove the iterator from its current hashtable
+    // iterator's
+    // list and add it to the new hashtable iterator's list
+    if ( __table != from.__table ) {
+      // remove the iterator from its hashtable iterator's list'
+      __removeFromSafeList();
+
+      __table = from.__table;
+
+      // add to the new table
+      if ( __table ) {
+        __insertIntoSafeList();
+      }
+    }
+
+    __index = from.__index;
+    __bucket = from.__bucket;
+    __next_bucket = from.__next_bucket;
+
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  HashTableConstIteratorSafe<Key, Val>& HashTableConstIteratorSafe<Key, Val>::
+  operator=( const HashTableConstIterator<Key, Val>& from ) {
+    // here, no need to avoid self assignment: this would slow down normal
+    // assignments and, in any case, this would not result in an iterator in
+    // an incoherent state
+    // check if the current hashtable is different from that of "from". In such
+    // a case, we shall remove the iterator from its current hashtable
+    // iterator's
+    // list and add it to the new hashtable iterator's list
+    if ( __table != from.__table ) {
+      // remove the iterator from its hashtable iterator's list'
+      __removeFromSafeList();
+
+      __table = from.__table;
+
+      // add to the new table
+      if ( __table ) {
+        __insertIntoSafeList();
+      }
+    }
+
+    __index = from.__index;
+    __bucket = from.__bucket;
+    __next_bucket = nullptr;
+
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableConstIteratorSafe<Key, Val>&
+      HashTableConstIteratorSafe<Key, Val>::
+      operator=( HashTableConstIteratorSafe<Key, Val>&& from ) noexcept {
+    // here, no need to avoid self assignment: this would slow down normal
+    // assignments and, in any case, this would not result in an iterator in
+    // an incoherent state
+    // check if the current hashtable is different from that of "from". In such
+    // a case, we shall remove the iterator from its current hashtable
+    // iterator's
+    // list and add it to the new hashtable iterator's list
+    if ( __table != from.__table ) {
+      // remove the iterator from its hashtable iterator's list'
+      __removeFromSafeList();
+
+      if ( from.__table != nullptr ) {
+        // substitute from by this in the list of safe iterators
+        std::vector<HashTableConstIteratorSafe<Key, Val>*>& vect =
+            from.__table->__safe_iterators;
+
+        for ( auto ptr = vect.rbegin(); ptr != vect.rend(); ++ptr ) {
+          if ( *ptr == &from ) {
+            *ptr = this;
+            break;
+          }
+        }
+      }
+
+      __table = from.__table;
+      from.__table = nullptr;
+    }
+
+    __index = from.__index;
+    __bucket = from.__bucket;
+    __next_bucket = from.__next_bucket;
+
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  INLINE const typename HashTableConstIteratorSafe<Key, Val>::key_type&
+  HashTableConstIteratorSafe<Key, Val>::key() const {
+    if ( __bucket )
+      return __bucket->key();
+    else {
+      GUM_ERROR( UndefinedIteratorValue, "Accessing a nullptr object" );
+    }
+  }
+
+  template <typename Key, typename Val>
+  INLINE const typename HashTableConstIteratorSafe<Key, Val>::mapped_type&
+  HashTableConstIteratorSafe<Key, Val>::val() const {
+    if ( __bucket )
+      return __bucket->val();
+    else {
+      GUM_ERROR( UndefinedIteratorValue, "Accessing a nullptr object" );
+    }
+  }
+
+  template <typename Key, typename Val>
+  INLINE void HashTableConstIteratorSafe<Key, Val>::clear() noexcept {
+    // remove the iterator from the table's iterator list
+    __removeFromSafeList();
+
+    // set its table as well as the element it points to to 0
+    __table = nullptr;
+    __bucket = nullptr;
+    __next_bucket = nullptr;
+    __index = 0;
+  }
+
+  // WARNING: never inline this function: this result in g++4.3.3 producing a
+  // code that segfaults.
+  template <typename Key, typename Val>
+  HashTableConstIteratorSafe<Key, Val>& HashTableConstIteratorSafe<Key, Val>::
+  operator++() noexcept {
+    // if __bucket != nullptr then use it, else use next_bucket
+    if ( __bucket == nullptr ) {
+      // note that this case only happens when the iterator pointed to an
+      // element
+      // that has just been erased. Fortunately, in this case, the Hashtable's
+      // erase functions update appropriately the __next_bucket and __index
+      // fields.
+      __bucket = __next_bucket;
+      __next_bucket = nullptr;
+    } else {
+      // ok, here we can use __bucket as a starting point
+
+      // if we are not pointing on the first element of the chained list, just
+      // point to the preceding bucket in this list
+      if ( __bucket->prev ) {
+        __bucket = __bucket->prev;
+        // here, no need to update __next_bucket, which is compulsorily
+        // equal to nullptr, nor __index which has not changed.
+      } else {
+        // ok, here we are on the beginning of a chained list,
+        // so 2 cases can obtain:
+        // 1/ index = 0 : then we have reached the end of the hashtable
+        // 2/ index != 0 => we must search for a new slot containing elements
+
+        // case 1:
+        if ( !__index ) {
+          __bucket = nullptr;
+          // we are thus at the end() of the hashTable
+        }
+
+        // case 2:
+        else {
+          // arrived here, we need to parse the hash table until we find a new
+          // bucket because we are pointing on a chained list with no more
+          // element
+          // to the left of the current element
+          for ( Size i = __index - 1UL; i; --i ) {
+            if ( __table->__nodes[i].__nb_elements ) {
+              __index = i;
+              __bucket = __table->__nodes[i].__end_list;
+              return *this;
+            }
+          }
+
+          if ( __table->__nodes[0].__nb_elements )
+            __bucket = __table->__nodes[0].__end_list;
+          else
+            __bucket = nullptr;
+
+          __index = 0;
+        }
+      }
+    }
+
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  HashTableConstIteratorSafe<Key, Val>& HashTableConstIteratorSafe<Key, Val>::
+  operator+=( unsigned int nb ) noexcept {
+    if ( ( nb == 0 ) || ( __table == nullptr ) ) return *this;
+
+    // if __bucket != nullptr then use it, else use next_bucket
+    if ( __bucket == nullptr ) {
+      // note that this case only happens when the iterator pointed to an
+      // element
+      // that has just been erased. Fortunately, in this case, the Hashtable's
+      // erase functions update appropriately the __next_bucket and __index
+      // fields.
+      __bucket = __next_bucket;
+      __next_bucket = nullptr;
+      --nb;
+    }
+
+    // ok, here we can use __bucket as a starting point: parse all the elements
+    // of the current chained list
+    for ( ; nb && __bucket != nullptr; --nb, __bucket = __bucket->prev ) {
+    }
+
+    if ( __bucket != nullptr ) return *this;
+
+    // here, we shall skip all the chained list that have not sufficiently
+    // many elements
+    --__index;
+
+    for ( ; __index < __table->__size &&
+                nb >= __table->__nodes[__index].__nb_elements;
+          nb -= __table->__nodes[__index].__nb_elements, --__index ) {
+    }
+
+    // here: either __index >= __table->__size, which means that we did not find
+    // the element we looked for, i.e., we are at the end of the hashtable, or
+    // nb < __table->__nodes[__index].__nb_elements, and we should parse the
+    // chained list to get the element (which, we know for sure, exists)
+    if ( __index >= __table->__size ) {
+      __index = 0;
+      return *this;
+    }
+
+    for ( __bucket = __table->__nodes[__index].__end_list; nb;
+          --nb, __bucket = __bucket->prev ) {
+    }
+
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableConstIteratorSafe<Key, Val>
+      HashTableConstIteratorSafe<Key, Val>::operator+( unsigned int nb ) const {
+    return HashTableConstIteratorSafe<Key, Val>{* this} += nb;
+  }
+
+  template <typename Key, typename Val>
+  INLINE bool HashTableConstIteratorSafe<Key, Val>::
+  operator!=( const HashTableConstIteratorSafe<Key, Val>& from ) const
+      noexcept {
+    return ( ( __bucket != from.__bucket ) || ( __index != from.__index ) );
+  }
+
+  template <typename Key, typename Val>
+  INLINE bool HashTableConstIteratorSafe<Key, Val>::
+  operator==( const HashTableConstIteratorSafe<Key, Val>& from ) const
+      noexcept {
+    return ( ( __bucket == from.__bucket ) && ( __index == from.__index ) );
+  }
+
+  template <typename Key, typename Val>
+  INLINE const typename HashTableConstIteratorSafe<Key, Val>::value_type&
+      HashTableConstIteratorSafe<Key, Val>::
+      operator*() const {
+    if ( __bucket )
+      return __bucket->elt();
+    else {
+      GUM_ERROR( UndefinedIteratorValue, "Accessing a nullptr object" );
+    }
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableBucket<Key, Val>*
+  HashTableConstIteratorSafe<Key, Val>::__getBucket() const noexcept {
+    return __bucket;
+  }
+
+  template <typename Key, typename Val>
+  INLINE Size HashTableConstIteratorSafe<Key, Val>::__getIndex() const
+      noexcept {
+    return __index;
+  }
+
+  // ===========================================================================
+  // ===                SAFE HASH TABLE ITERATORS IMPLEMENTATION             ===
+  // ===========================================================================
+
+  template <typename Key, typename Val>
+  INLINE HashTableIteratorSafe<Key, Val>::HashTableIteratorSafe()
+      : HashTableConstIteratorSafe<Key, Val>() {
+    GUM_CONSTRUCTOR( HashTableIteratorSafe );
+  }
+
+  template <typename Key, typename Val>
+  template <typename Alloc>
+  INLINE HashTableIteratorSafe<Key, Val>::HashTableIteratorSafe(
+      const HashTable<Key, Val, Alloc>& tab )
+      : HashTableConstIteratorSafe<Key, Val>( tab ) {
+    GUM_CONSTRUCTOR( HashTableIteratorSafe );
+  }
+
+  template <typename Key, typename Val>
+  template <typename Alloc>
+  INLINE HashTableIteratorSafe<Key, Val>::HashTableIteratorSafe(
+      const HashTable<Key, Val, Alloc>& tab, Size ind_elt )
+      : HashTableConstIteratorSafe<Key, Val>( tab, ind_elt ) {
+    GUM_CONSTRUCTOR( HashTableIteratorSafe );
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIteratorSafe<Key, Val>::HashTableIteratorSafe(
+      const HashTableIteratorSafe<Key, Val>& from )
+      : HashTableConstIteratorSafe<Key, Val>( from ) {
+    GUM_CONS_CPY( HashTableIteratorSafe );
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIteratorSafe<Key, Val>::HashTableIteratorSafe(
+      const HashTableIterator<Key, Val>& from )
+      : HashTableConstIteratorSafe<Key, Val>( from ) {
+    GUM_CONS_CPY( HashTableIteratorSafe );
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIteratorSafe<Key, Val>::HashTableIteratorSafe(
+      HashTableIteratorSafe<Key, Val>&& from ) noexcept
+      : HashTableConstIteratorSafe<Key, Val>( std::move( from ) ) {
+    GUM_CONS_MOV( HashTableIteratorSafe );
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIteratorSafe<Key, Val>::~HashTableIteratorSafe() noexcept {
+    GUM_DESTRUCTOR( HashTableIteratorSafe );
+  }
+
+  template <typename Key, typename Val>
+  INLINE typename HashTableIteratorSafe<Key, Val>::mapped_type&
+  HashTableIteratorSafe<Key, Val>::val() {
+    return const_cast<Val&>( HashTableConstIteratorSafe<Key, Val>::val() );
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIteratorSafe<Key, Val>& HashTableIteratorSafe<Key, Val>::
+  operator=( const HashTableIteratorSafe<Key, Val>& from ) {
+    GUM_OP_CPY( HashTableIteratorSafe );
+    HashTableConstIteratorSafe<Key, Val>::operator=( from );
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIteratorSafe<Key, Val>& HashTableIteratorSafe<Key, Val>::
+  operator=( const HashTableIterator<Key, Val>& from ) {
+    GUM_OP_CPY( HashTableIteratorSafe );
+    HashTableConstIteratorSafe<Key, Val>::operator=( from );
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIteratorSafe<Key, Val>& HashTableIteratorSafe<Key, Val>::
+  operator=( HashTableIteratorSafe<Key, Val>&& from ) noexcept {
+    HashTableConstIteratorSafe<Key, Val>::operator=( std::move( from ) );
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIteratorSafe<Key, Val>& HashTableIteratorSafe<Key, Val>::
+  operator++() noexcept {
+    HashTableConstIteratorSafe<Key, Val>::operator++();
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIteratorSafe<Key, Val>& HashTableIteratorSafe<Key, Val>::
+  operator+=( unsigned int nb ) noexcept {
+    HashTableConstIteratorSafe<Key, Val>::operator+=( nb );
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIteratorSafe<Key, Val> HashTableIteratorSafe<Key, Val>::
+  operator+( unsigned int nb ) const {
+    HashTableIteratorSafe<Key, Val> iter{*this};
+    iter += nb;
+    return iter;
+  }
+
+  template <typename Key, typename Val>
+  INLINE bool HashTableIteratorSafe<Key, Val>::
+  operator!=( const HashTableIteratorSafe<Key, Val>& from ) const noexcept {
+    return HashTableConstIteratorSafe<Key, Val>::operator!=( from );
+  }
+
+  template <typename Key, typename Val>
+  INLINE bool HashTableIteratorSafe<Key, Val>::
+  operator==( const HashTableIteratorSafe<Key, Val>& from ) const noexcept {
+    return HashTableConstIteratorSafe<Key, Val>::operator==( from );
+  }
+
+  template <typename Key, typename Val>
+  INLINE typename HashTableIteratorSafe<Key, Val>::value_type&
+      HashTableIteratorSafe<Key, Val>::
+      operator*() {
+    return const_cast<Val&>(
+        HashTableConstIteratorSafe<Key, Val>::operator*() );
+  }
+
+  template <typename Key, typename Val>
+  INLINE const typename HashTableIteratorSafe<Key, Val>::value_type&
+      HashTableIteratorSafe<Key, Val>::
+      operator*() const {
+    return HashTableConstIteratorSafe<Key, Val>::operator*();
+  }
+
+  // ===========================================================================
+  // ===            UNSAFE HASH TABLE CONST ITERATORS IMPLEMENTATION         ===
+  // ===========================================================================
+
+  template <typename Key, typename Val>
+  INLINE HashTableConstIterator<Key, Val>::HashTableConstIterator() noexcept {
+    GUM_CONSTRUCTOR( HashTableConstIterator );
+  }
+
+  template <typename Key, typename Val>
+  template <typename Alloc>
+  INLINE HashTableConstIterator<Key, Val>::HashTableConstIterator(
+      const HashTable<Key, Val, Alloc>& tab ) noexcept
+      : __table{reinterpret_cast<const HashTable<Key, Val>*>( &tab )} {
+    // for debugging purposes
+    GUM_CONSTRUCTOR( HashTableConstIterator );
+
+    if ( __table->__nb_elements ) {
+      if ( __table->__begin_index != std::numeric_limits<Size>::max() ) {
+        __index = __table->__begin_index;
+        __bucket = __table->__nodes[__index].__end_list;
+      } else {
+        // find the element we shall point to from the start of the hashtable
+        for ( unsigned int i = __table->__size - 1;;
+              --i ) {  // no test on i since
+          // __nb_elements != 0
+          if ( __table->__nodes[i].__nb_elements ) {
+            __index = i;
+            __bucket = __table->__nodes[__index].__end_list;
+            __table->__begin_index = __index;
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  template <typename Key, typename Val>
+  template <typename Alloc>
+  HashTableConstIterator<Key, Val>::HashTableConstIterator(
+      const HashTable<Key, Val, Alloc>& tab, Size ind_elt )
+      : __table{reinterpret_cast<const HashTable<Key, Val>*>( &tab )} {
+    Size i;
+
+    // check if we are looking for a begin() and we know for sure its index
+    if ( ( ind_elt == 0 ) &&
+         ( __table->__begin_index != std::numeric_limits<Size>::max() ) ) {
+      __index = __table->__begin_index;
+      __bucket = __table->__nodes[__index].__end_list;
+    } else {
+      // check if it is faster to find the ind_eltth element from the start or
+      // from the end of the hashtable
+      if ( ind_elt < ( __table->__nb_elements >> 1 ) ) {
+        // find the element we shall point to from the start of the hashtable
+        for ( i = __table->__size - 1;; --i ) {  // no test on i since
+          // ind_elt < _table->__nb_elements
+          if ( __table->__nodes[i].__nb_elements ) {
+            if ( ind_elt >= __table->__nodes[i].__nb_elements )
+              ind_elt -= __table->__nodes[i].__nb_elements;
+            else {
+              for ( __bucket = __table->__nodes[i].__end_list; ind_elt;
+                    --ind_elt, __bucket = __bucket->prev ) {
+              }
+
+              __index = i;
+              break;
+            }
+          }
+        }
+      } else {
+        // ind_elt = the index of the element we should point to
+        // check if the index passed as parameter is valid
+        if ( ind_elt >= __table->__nb_elements ) {
+          GUM_ERROR( UndefinedIteratorValue,
+                     "Not enough elements in the hashtable" );
+        }
+
+        // find the element we shall point to from the end of the hashtable
+        for ( i = 0, ind_elt = __table->__nb_elements - ind_elt - 1;; ++i ) {
+          if ( __table->__nodes[i].__nb_elements ) {
+            if ( ind_elt >= __table->__nodes[i].__nb_elements )
+              ind_elt -= __table->__nodes[i].__nb_elements;
+            else {
+              for ( __bucket = __table->__nodes[i].__deb_list; ind_elt;
+                    --ind_elt, __bucket = __bucket->next ) {
+              }
+
+              __index = i;
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    // for debugging purposes
+    GUM_CONSTRUCTOR( HashTableConstIterator );
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableConstIterator<Key, Val>::HashTableConstIterator(
+      const HashTableConstIterator<Key, Val>& from ) noexcept
+      : __table{from.__table},
+        __index{from.__index},
+        __bucket{from.__bucket} {
+    GUM_CONS_CPY( HashTableConstIterator );
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableConstIterator<Key, Val>::HashTableConstIterator(
+      HashTableConstIterator<Key, Val>&& from ) noexcept
+      : __table{from.__table},
+        __index{from.__index},
+        __bucket{from.__bucket} {
+    GUM_CONS_MOV( HashTableConstIterator );
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableConstIterator<Key, Val>::~HashTableConstIterator() noexcept {
+    // for debugging purposes
+    GUM_DESTRUCTOR( HashTableConstIterator );
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableConstIterator<Key, Val>& HashTableConstIterator<Key, Val>::
+  operator=( const HashTableConstIterator<Key, Val>& from ) noexcept {
+    // here, no need to avoid self assignment: this would slow down normal
+    // assignments and, in any case, this would not result in an iterator in
+    // an incoherent state
+    __table = from.__table;
+    __index = from.__index;
+    __bucket = from.__bucket;
+
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableConstIterator<Key, Val>& HashTableConstIterator<Key, Val>::
+  operator=( HashTableConstIterator<Key, Val>&& from ) noexcept {
+    // here, no need to avoid self assignment: this would slow down normal
+    // assignments and, in any case, this would not result in an iterator in
+    // an incoherent state
+    __table = from.__table;
+    __index = from.__index;
+    __bucket = from.__bucket;
+
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  INLINE const typename HashTableConstIterator<Key, Val>::key_type&
+  HashTableConstIterator<Key, Val>::key() const {
+    if ( __bucket )
+      return __bucket->pair.first;
+    else {
+      GUM_ERROR( UndefinedIteratorValue, "Accessing a nullptr object" );
+    }
+  }
+
+  template <typename Key, typename Val>
+  INLINE const typename HashTableConstIterator<Key, Val>::mapped_type&
+  HashTableConstIterator<Key, Val>::val() const {
+    if ( __bucket )
+      return __bucket->val();
+    else {
+      GUM_ERROR( UndefinedIteratorValue, "Accessing a nullptr object" );
+    }
+  }
+
+  template <typename Key, typename Val>
+  INLINE void HashTableConstIterator<Key, Val>::clear() noexcept {
+    __table = nullptr;
+    __bucket = nullptr;
+    __index = 0;
+  }
+
+  template <typename Key, typename Val>
+  HashTableConstIterator<Key, Val>& HashTableConstIterator<Key, Val>::
+  operator++() noexcept {
+    // if __bucket == nullptr then we are at the end of the hashtable
+    if ( __bucket == nullptr ) return *this;
+
+    // if we are not pointing on the first element of the chained list, just
+    // point to the next bucket in this list
+    if ( __bucket->prev ) {
+      __bucket = __bucket->prev;
+      // here, no need to update __index which has not changed.
+    } else {
+      // ok, here we are on the end of a chained list,
+      // so 2 cases can obtain:
+      // 1/ index = 0 : then we have reached the end of the hashtable
+      // 2/ index != 0 => we must search for a new slot containing elements
+
+      // case 1:
+      if ( !__index ) {
+        __bucket = nullptr;
+        // we are thus at the end() of the hashTable
+      }
+
+      // case 2:
+      else {
+        // arrived here, we need to parse the hash table until we find a new
+        // bucket because we are pointing on a chained list with no more element
+        // to the right of the current element
+        for ( Size i = __index - 1UL; i; --i ) {
+          if ( __table->__nodes[i].__nb_elements ) {
+            __index = i;
+            __bucket = __table->__nodes[i].__end_list;
+            return *this;
+          }
+        }
+
+        if ( __table->__nodes[0].__nb_elements )
+          __bucket = __table->__nodes[0].__end_list;
+        else
+          __bucket = nullptr;
+
+        __index = 0;
+      }
+    }
+
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  HashTableConstIterator<Key, Val>& HashTableConstIterator<Key, Val>::
+  operator+=( unsigned int nb ) noexcept {
+    if ( ( nb == 0 ) || ( __table == nullptr ) || ( __bucket == nullptr ) )
+      return *this;
+
+    // ok, here we can use __bucket as a starting point: parse all the elements
+    // of the current chained list
+    for ( ; nb && __bucket != nullptr; --nb, __bucket = __bucket->prev ) {
+    }
+
+    if ( __bucket != nullptr ) return *this;
+
+    // here, we shall skip all the chained list that have not sufficiently
+    // many elements
+    --__index;
+
+    for ( ; __index < __table->__size &&
+                nb >= __table->__nodes[__index].__nb_elements;
+          nb -= __table->__nodes[__index].__nb_elements, --__index ) {
+    }
+
+    // here: either __index >= __table->__size, which means that we did not find
+    // the element we looked for, i.e., we are at the end of the hashtable, or
+    // nb < __table->__nodes[__index].__nb_elements, and we should parse the
+    // chained list to get the element (which, we know for sure, exists)
+    if ( __index >= __table->__size ) {
+      __index = 0;
+      return *this;
+    }
+
+    for ( __bucket = __table->__nodes[__index].__end_list; nb;
+          --nb, __bucket = __bucket->prev ) {
+    }
+
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableConstIterator<Key, Val> HashTableConstIterator<Key, Val>::
+  operator+( unsigned int nb ) const noexcept {
+    return HashTableConstIterator<Key, Val>{* this} += nb;
+  }
+
+  template <typename Key, typename Val>
+  INLINE bool HashTableConstIterator<Key, Val>::
+  operator!=( const HashTableConstIterator<Key, Val>& from ) const noexcept {
+    return ( __bucket != from.__bucket );
+  }
+
+  template <typename Key, typename Val>
+  INLINE bool HashTableConstIterator<Key, Val>::
+  operator==( const HashTableConstIterator<Key, Val>& from ) const noexcept {
+    return ( __bucket == from.__bucket );
+  }
+
+  template <typename Key, typename Val>
+  INLINE const typename HashTableConstIterator<Key, Val>::value_type&
+      HashTableConstIterator<Key, Val>::
+      operator*() const {
+    if ( __bucket )
+      return __bucket->elt();
+    else {
+      GUM_ERROR( UndefinedIteratorValue, "Accessing a nullptr object" );
+    }
+  }
+
+  template <typename Key, typename Val>
+  INLINE typename HashTable<Key, Val>::Bucket*
+  HashTableConstIterator<Key, Val>::__getBucket() const noexcept {
+    return __bucket;
+  }
+
+  template <typename Key, typename Val>
+  INLINE Size HashTableConstIterator<Key, Val>::__getIndex() const noexcept {
+    return __index;
+  }
+
+  // ===========================================================================
+  // ===               UNSAFE HASH TABLE ITERATORS IMPLEMENTATION            ===
+  // ===========================================================================
+
+  template <typename Key, typename Val>
+  INLINE HashTableIterator<Key, Val>::HashTableIterator() noexcept
+      : HashTableConstIterator<Key, Val>() {
+    GUM_CONSTRUCTOR( HashTableIterator );
+  }
+
+  template <typename Key, typename Val>
+  template <typename Alloc>
+  INLINE HashTableIterator<Key, Val>::HashTableIterator(
+      const HashTable<Key, Val, Alloc>& tab ) noexcept
+      : HashTableConstIterator<Key, Val>{tab} {
+    GUM_CONSTRUCTOR( HashTableIterator );
+  }
+
+  template <typename Key, typename Val>
+  template <typename Alloc>
+  INLINE HashTableIterator<Key, Val>::HashTableIterator(
+      const HashTable<Key, Val, Alloc>& tab, Size ind_elt )
+      : HashTableConstIterator<Key, Val>( tab, ind_elt ) {
+    GUM_CONSTRUCTOR( HashTableIterator );
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIterator<Key, Val>::HashTableIterator(
+      const HashTableIterator<Key, Val>& from ) noexcept
+      : HashTableConstIterator<Key, Val>( from ) {
+    GUM_CONS_CPY( HashTableIterator );
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIterator<Key, Val>::HashTableIterator(
+      HashTableIterator<Key, Val>&& from ) noexcept
+      : HashTableConstIterator<Key, Val>( std::move( from ) ) {
+    GUM_CONS_MOV( HashTableIterator );
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIterator<Key, Val>::~HashTableIterator() noexcept {
+    GUM_DESTRUCTOR( HashTableIterator );
+  }
+
+  template <typename Key, typename Val>
+  INLINE typename HashTableIterator<Key, Val>::mapped_type&
+  HashTableIterator<Key, Val>::val() {
+    if ( this->__bucket )
+      return this->__bucket->val();
+    else {
+      GUM_ERROR( UndefinedIteratorValue, "Accessing a nullptr object" );
+    }
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIterator<Key, Val>& HashTableIterator<Key, Val>::
+  operator=( const HashTableIterator<Key, Val>& from ) noexcept {
+    HashTableConstIterator<Key, Val>::operator=( from );
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIterator<Key, Val>& HashTableIterator<Key, Val>::
+  operator=( HashTableIterator<Key, Val>&& from ) noexcept {
+    HashTableConstIterator<Key, Val>::operator=( std::move( from ) );
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIterator<Key, Val>& HashTableIterator<Key, Val>::
+  operator++() noexcept {
+    HashTableConstIterator<Key, Val>::operator++();
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIterator<Key, Val>& HashTableIterator<Key, Val>::
+  operator+=( unsigned int nb ) noexcept {
+    HashTableConstIterator<Key, Val>::operator+=( nb );
+    return *this;
+  }
+
+  template <typename Key, typename Val>
+  INLINE HashTableIterator<Key, Val> HashTableIterator<Key, Val>::
+  operator+( unsigned int nb ) const noexcept {
+    HashTableIterator<Key, Val> iter{*this};
+    iter += nb;
+    return iter;
+  }
+
+  template <typename Key, typename Val>
+  INLINE bool HashTableIterator<Key, Val>::
+  operator!=( const HashTableIterator<Key, Val>& from ) const noexcept {
+    return HashTableConstIterator<Key, Val>::operator!=( from );
+  }
+
+  template <typename Key, typename Val>
+  INLINE bool HashTableIterator<Key, Val>::
+  operator==( const HashTableIterator<Key, Val>& from ) const noexcept {
+    return HashTableConstIterator<Key, Val>::operator==( from );
+  }
+
+  template <typename Key, typename Val>
+  INLINE typename HashTableIterator<Key, Val>::value_type&
+      HashTableIterator<Key, Val>::
+      operator*() {
+    return const_cast<value_type&>(
+        HashTableConstIterator<Key, Val>::operator*() );
+  }
+
+  template <typename Key, typename Val>
+  INLINE const typename HashTableIterator<Key, Val>::value_type&
+      HashTableIterator<Key, Val>::
+      operator*() const {
+    return HashTableConstIterator<Key, Val>::operator*();
   }
 
 } /* namespace gum */
