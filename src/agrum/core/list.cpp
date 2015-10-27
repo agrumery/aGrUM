@@ -17,7 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief outlined implementations for the chained lists
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
@@ -25,8 +26,6 @@
 #include <agrum/config.h>
 
 #include <agrum/core/list.h>
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
 
@@ -49,22 +48,20 @@ namespace gum {
 #define GCC_DIAG_ON( x )
 #endif
 
-  // GCC_DIAG_OFF(strict-aliasing)
-  // GCC_DIAG_ON(strict-aliasing)
-
-  /// Destructor for end/rend
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  // Destructor for end/rend
   template <>
   ListConstIteratorSafe<Debug>::~ListConstIteratorSafe() {}
 
-  /// constructor for end/rend
+  // constructor for end/rend
   template <>
   ListConstIteratorSafe<Debug>::ListConstIteratorSafe() noexcept {}
 
-  /// Destructor for end/rend
+  // Destructor for end/rend
   template <>
   ListConstIterator<Debug>::~ListConstIterator() noexcept {}
 
-  /// constructor for end/rend
+  // constructor for end/rend
   template <>
   ListConstIterator<Debug>::ListConstIterator() noexcept {}
 
@@ -81,6 +78,7 @@ namespace gum {
 
   const void* const __list_end_safe = __get_list_end_safe();
   const void* const __list_end = __get_list_end();
+#endif //DOXYGEN_SHOULD_SKIP_THIS
 
   // to optimize compile-link time, provide the usual lists
   template class List<bool>;
@@ -88,5 +86,3 @@ namespace gum {
   template class List<unsigned int>;
 
 } /* namespace gum */
-
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */

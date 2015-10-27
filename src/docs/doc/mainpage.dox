@@ -262,6 +262,114 @@
  *
  * @}
  *
+ * \defgroup list_group Lists
+ * @{
+ *
+ * This file provides class List for manipulating generic lists as well as
+ * List<>::iterator, List<>::const_iterator, List<>::iterator_safe and
+ * List<>::const_iterator_safe for parsing lists. The List and their (safe)
+ * iterators provided here differ from those of the C++ standard library in
+ * that they are "safe", i.e., deleting elements which are pointed to by
+ * iterators does never produce any segmentation fault nor unexpected results
+ * when the iterators are incremented or decremented. Tests performed on a
+ * Fedora Core 3 with programs compiled with g++ 3.4 show that List and their
+ * iterators are as fast as their counterparts in the standard library. If
+ * computation times are an issue, the "_unsafe" iterators provide fast access
+ * (but at the expense of safety: dereferencing an unsafe iterator pointing to
+ * an erased element will most certainly induce a segfault (like the STL).
+ *
+ * @warning Developers should keep in mind that whenever a value is inserted
+ * into a List, unless it is an R-value, it is actually a copy of this value
+ * that is inserted into the List (much like what happens in C++ standard
+ * library).  However, when inserting rvalues, move insertions are provided.
+ *
+ * @par Usage example:
+ * @code
+ * // creation of an empty list
+ * List<int> list1;
+ * List<int> list2 { 3, 4, 5 }; // initializer list
+ *
+ * // adding elements to the list
+ * list1.pushFront (23);
+ * list1.pushBack (10);
+ * list1 += 25;
+ * list1.insert (12);
+ * list.emplaceBack (22);
+ * list.emplaceFront (10);
+ *
+ * // getting the second element of the list
+ * cerr << "10 = " << list1[2] << endl;
+ *
+ * // getting the first and last elements
+ * cerr << "first = " << list1.front() << " last = " << list1.back() << endl;
+ *
+ * // get the number of elements in the list
+ * cerr << "number of elements = " << list1.size () << endl;
+ *
+ * // display the content of the list
+ * cerr << list1 << endl;
+ *
+ * // copy the list
+ * List<int> list2 = list1, list3;
+ * list3 = list1;
+ *
+ * // delete the second element from the list
+ * list1.erase (1);
+ *
+ * // delete the first and last elements
+ * list1.popFront ();
+ * list1.popBack ();
+ *
+ * // delete element whose value is 25
+ * list1.eraseByVal (25);
+ *
+ * // check whether the list is empty
+ * if (list1.empty()) cerr << "empty list" << endl;
+ *
+ * // remove all elements from the list
+ * list1.clear ();
+ *
+ * // parse all the elements of a list with unsafe iterators
+ * for (List<int>::iterator iter = list2.begin();
+ *      iter != list2.end(); ++iter)
+ *   cerr << *iter << endl;
+ * for (List<int>::iterator iter = list2.rbegin();
+ *      iter != list2.rend(); --iter)
+ *   cerr << *iter << endl;
+ * for (List<int>::const_iterator iter = list2.cbegin();
+ *      iter != list2.cend(); ++iter)
+ *   cerr << *iter << endl;
+ * for (List<int>::const_iterator iter = list2.crbegin();
+ *      iter != list2.crend(); --iter)
+ *   cerr << *iter << endl;
+ *
+ * // parse all the elements of a list with safe iterators
+ * for (List<int>::iterator_safe iter = list2.beginSafe();
+ *      iter != list2.endSafe(); ++iter)
+ *   cerr << *iter << endl;
+ * for (List<int>::iterator_safe iter = list2.rbeginSafe();
+ *      iter != list2.rendSafe(); --iter)
+ *   cerr << *iter << endl;
+ * for (List<int>::const_iterator_safe iter = list2.cbeginSafe();
+ *      iter != list2.cendSafe(); ++iter)
+ *   cerr << *iter << endl;
+ * for (List<int>::const_iterator_safe iter = list2.crbeginSafe();
+ *      iter != list2.crendSafe(); --iter)
+ *   cerr << *iter << endl;
+ *
+ * // use an iterator to point the element we wish to erase
+ * List<int>::iterator_safe iter = list2.beginSafe ();
+ * List2.erase ( iter );
+ * List<int>::iterator iter2 = list2.begin() + 4; // 5th element of the list
+ * iter2 = iter + 4;
+ *
+ * // map a list into another list (assuming function f is defined as
+ * // float f (int x) { return (2.5 * x); } )
+ * List<float> flist = list2.map (f);
+ * @endcode
+ *
+ * @}
+ *
  * @}
  *
  * \defgroup graph_group Graph representation
