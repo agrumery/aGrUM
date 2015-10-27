@@ -19,6 +19,8 @@
  * @{
  *
  * \defgroup hashtable_group Hash Tables
+ * @{
+ * \brief A efficient and flexible implementation of hash tables.
  *
  * This file provides class HashTable. This class is both efficient and
  * flexible: efficient because the access to elements is usually computed using
@@ -131,7 +133,10 @@
  *
  * @warning @b agrum/core/heap.tcc Same as bijection.tcc.
  *
+ * @}
+ *
  * \defgroup hashfunctions_group Hash functions
+ * @{
  * @brief This module lists all hash functions provided by aGrUM.
  *
  * Whenever you create a new hash function you must inherit from this class.
@@ -185,8 +190,12 @@
  * [0,_hash_size). This is used in particular in the hash function for
  * hashing strings.
  *
+ * @}
+ *
  * \defgroup bijection_group Bijections
+ * @{
  * @brief Set of pairs of elements with fast search for both elements.
+ *
  * The gum::Bijection class is designed for modeling a gum::Bijection between
  * two sets, the idea is following :
  *  - We want to create a gum::Bjection relation between type T1 and type T2,
@@ -194,6 +203,64 @@
  *  - For y in T2, there exists only one x in T1 associated to y,
  *  - The user inserts all the (x, y) associations and can search efficiently
  *  the values thus associated.
+ *
+ * @}
+ *
+ * \defgroup heap_group Heaps
+ * @{
+ * @brief An implementation of heaps.
+ *
+ * This file provides class Heap that implements a classic heap. Elements are
+ * sorted according to a weak order which is < by default, i.e., the top
+ * element of the heap is the smallest element and the more to the bottom the
+ * greater the element.
+ * @par Usage example:
+ * @code
+ * // create a heap of integers, the top element is the smallest element
+ * Heap<int> heap1;
+ *
+ * // create a heap of floats, the top element is the greatest
+ * Heap< float,std::greater<float> > heap2;
+ *
+ * // insert elements into the heap
+ * heap1.insert (8);
+ * heap1.insert (10);
+ * heap1.insert (2);
+ * heap1.insert (23);
+ * heap1.insert (24);
+ * heap1.insert (10);
+ * heap1.insert (10);
+ *
+ * // copy a heap into another heap
+ * Heap<int> heap2 = heap1;
+ *
+ * // get the number of elements of the heap
+ * std::cerr << heap2.size() << std::endl;
+ *
+ * // get the top element but do not remove it
+ * std::cerr << heap2.top() << std::endl;
+ *
+ * // get and remove the top element of the heap
+ * std::cerr << heap2.pop() << std::endl;
+ *
+ * // remove the top element but do not return it (faster than above)
+ * heap2.eraseTop();
+ *
+ * // erase in heap1 value 8
+ * heap1.eraseByVal (8);
+ *
+ * // erase element at position 3 (see function erase for the meaning of
+ * // position 3)
+ * heap1.erase (3);
+ *
+ * // get the element at position 3
+ * heap1[3];
+ *
+ * // check whether element 24 belongs to the heap
+ * heap1.contains (24);
+ * @endcode
+ *
+ * @}
  *
  * @}
  *
