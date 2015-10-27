@@ -59,7 +59,7 @@ namespace gum {
      * If data equals the nullptr, then tree is created with one node without
      * data.
      *
-     * @param Adds data as the root of the tree.
+     * @param data Adds data as the root of the tree.
      */
     IndexedTree( Data* data = nullptr );
 
