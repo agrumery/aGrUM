@@ -309,7 +309,6 @@ namespace gum {
      * @param priority The value priority.
      * @return Returns the index of the element inserted into the priority
      * queue.
-     * @throw DuplicateElement Raised if the element already exists.
      */
     Size insert( const Val& val, const Priority& priority );
 
@@ -323,7 +322,6 @@ namespace gum {
      * @param priority The value priority.
      * @return Returns the index of the element inserted into the priority
      * queue.
-     * @throw DuplicateElement Raised if the element already exists.
      */
     Size insert( Val&& val, Priority&& priority );
 
@@ -336,7 +334,6 @@ namespace gum {
      * @tparam Args The emplace arguments types.
      * @param args The emplace arguments.
      * @return the index of the element inserted into the priority queue.
-     * @throw DuplicateElement Raised if the element already exists.
      */
     template <typename... Args>
     Size emplace( Args&&... args );
