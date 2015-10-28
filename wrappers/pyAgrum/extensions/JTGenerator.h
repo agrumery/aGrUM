@@ -29,16 +29,59 @@
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/defaultJunctionTreeStrategy.h>
 #include <agrum/graphs/triangulations/defaultTriangulation.h>
+#include <agrum/graphs/binaryJoinTreeConverterDefault.h>
+#include <agrum/BN/BayesNet.h>
 
 class JTGenerator {
 public:
-  gum::JunctionTree generate(const gum::UndiGraph& g) {
-    gum::NodeProperty<gum::Size> mods=g.nodesProperty(static_cast<gum::Size>(2)); // we create a default binary modalities for nodes
-    
+  gum::JunctionTree junctionTree(const gum::UndiGraph& g) {
+    // creating a default binary modalities for nodes
+    gum::NodeProperty<gum::Size> mods=g.nodesProperty(static_cast<gum::Size>(2));
+
     gum::DefaultTriangulation triangulation(&g,&mods);
     gum::DefaultJunctionTreeStrategy strategy;
     strategy.setTriangulation(&triangulation);
-    
+
     return strategy.junctionTree();
+  }
+
+  gum::JunctionTree junctionTree(const gum::BayesNet<double>& bn) {
+
+    gum::NodeProperty<gum::Size> mods;
+    for ( const auto node : bn.dag().nodes() )
+      mods.insert( node, bn.variable( node ).domainSize() );
+    gum::DefaultTriangulation triangulation(&bn.moralGraph(),&mods);
+    gum::DefaultJunctionTreeStrategy strategy;
+    strategy.setTriangulation(&triangulation);
+
+    return strategy.junctionTree();
+  }
+
+  gum::JunctionTree binaryJoinTree(const gum::UndiGraph& g) {
+    // creating a default binary modalities for nodes
+    gum::NodeProperty<gum::Size> mods=g.nodesProperty(static_cast<gum::Size>(2));
+
+    gum::DefaultTriangulation triangulation(&g,&mods);
+    gum::DefaultJunctionTreeStrategy strategy;
+    strategy.setTriangulation(&triangulation);
+
+    gum::BinaryJoinTreeConverterDefault bjtc;
+    gum::NodeSet emptyset;
+
+    return bjtc.convert(strategy.junctionTree(),mods,emptyset);
+  }
+
+  gum::JunctionTree binaryJoinTree(const gum::BayesNet<double>& bn) {
+    gum::NodeProperty<gum::Size> mods;
+    for ( const auto node : bn.dag().nodes() )
+      mods.insert( node, bn.variable( node ).domainSize() );
+    gum::DefaultTriangulation triangulation(&bn.moralGraph(),&mods);
+    gum::DefaultJunctionTreeStrategy strategy;
+    strategy.setTriangulation(&triangulation);
+
+    gum::BinaryJoinTreeConverterDefault bjtc;
+    gum::NodeSet emptyset;
+
+    return bjtc.convert(strategy.junctionTree(),mods,emptyset);
   }
 };

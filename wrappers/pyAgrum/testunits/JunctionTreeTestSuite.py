@@ -51,18 +51,42 @@ class TopologyFeatureTestCase(JunctionTreeTestCase):
 
 class JTGeneratorTestCase(pyAgrumTestCase):
 
-  def testSimple(self):
+  def testSimpleGraph(self):
     g=gum.UndiGraph();
     g.addNode()
     g.addNode()
     g.addEdge(0,1)
 
     jtg=gum.JTGenerator()
-    jt=jtg.generate(g)
+    jt=jtg.junctionTree(g)
 
     self.assertEqual(jt.size(),1)
     self.assertEqual(jt.clique(0),{0,1})
 
+    jtg=gum.JTGenerator()
+    bjt=jtg.binaryJoinTree(g)
+
+    self.assertEqual(bjt.size(),1)
+    self.assertEqual(bjt.clique(0),{0,1})
+
+  def testSimpleBN(self):
+    bn=gum.BayesNet();
+    c, r = [bn.add(gum.LabelizedVariable(name, name, 2)) for name in 'c r'.split()]
+    bn.addArc(c,r)
+
+    jtg=gum.JTGenerator()
+    jt=jtg.junctionTree(bn)
+
+    self.assertEqual(jt.size(),1)
+    self.assertEqual(jt.clique(0),{0,1})
+
+    jtg=gum.JTGenerator()
+    bjt=jtg.binaryJoinTree(bn)
+
+    self.assertEqual(bjt.size(),1)
+    self.assertEqual(bjt.clique(0),{0,1})
+
 ts = unittest.TestSuite()
 ts.addTest(TopologyFeatureTestCase('testSimple'))
-ts.addTest(JTGeneratorTestCase('testSimple'))
+ts.addTest(JTGeneratorTestCase('testSimpleGraph'))
+ts.addTest(JTGeneratorTestCase('testSimpleBN'))
