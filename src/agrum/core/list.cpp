@@ -23,9 +23,10 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <agrum/config.h>
 
 #include <agrum/core/list.h>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
 
@@ -48,7 +49,6 @@ namespace gum {
 #define GCC_DIAG_ON( x )
 #endif
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
   // Destructor for end/rend
   template <>
   ListConstIteratorSafe<Debug>::~ListConstIteratorSafe() {}
@@ -78,7 +78,6 @@ namespace gum {
 
   const void* const __list_end_safe = __get_list_end_safe();
   const void* const __list_end = __get_list_end();
-#endif //DOXYGEN_SHOULD_SKIP_THIS
 
   // to optimize compile-link time, provide the usual lists
   template class List<bool>;
@@ -86,3 +85,5 @@ namespace gum {
   template class List<unsigned int>;
 
 } /* namespace gum */
+
+#endif //DOXYGEN_SHOULD_SKIP_THIS

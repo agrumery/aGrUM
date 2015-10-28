@@ -27,10 +27,11 @@
 #ifndef GUM_LIST_H
 #define GUM_LIST_H
 
-#include <iostream>
 #include <cstddef>
-#include <vector>
 #include <initializer_list>
+#include <iostream>
+#include <sstream>
+#include <vector>
 
 #include <agrum/config.h>
 #include <agrum/core/refPtr.h>
@@ -68,7 +69,6 @@ namespace gum {
 #endif  // SWIG
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-
   // __list_end is a 'pseudo static' iterator that represents both end and rend
   // iterators for all Lists (whatever their type). This global variable
   // avoids creating the same iterators whithin every List instance (this would
@@ -79,8 +79,8 @@ namespace gum {
   // the weird strict-aliasing rule warning
   extern const void* const __list_end_safe;
   extern const void* const __list_end;
-
 #endif // DOXYGEN_SHOULD_SKIP_THIS
+
 
   // ===========================================================================
   // ===             BUCKETS: SINGLE ELEMENTS OF A CHAINED LIST              ===
@@ -1952,7 +1952,7 @@ namespace gum {
     using ListConstIterator<Val>::operator!=;
     using ListConstIterator<Val>::operator*;
     using ListConstIterator<Val>::operator->;
-    ///
+    /// @}
 
     /**
      * @brief Gives access to the iterator's content.

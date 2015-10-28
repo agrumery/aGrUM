@@ -23,7 +23,6 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <sstream>
 
 // to ease parser
 #include <agrum/core/list.h>
