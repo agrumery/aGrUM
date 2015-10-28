@@ -2,7 +2,7 @@
 option (USE_SWIG "use swig to generate bindings" ON)
 
 if (USE_SWIG)
-  find_package(SWIG 2)
+  find_package(SWIG 3)
   if (SWIG_FOUND)
     message(STATUS "** aGrUM notification : Swig 3 found")
     include(${SWIG_USE_FILE})
