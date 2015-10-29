@@ -512,6 +512,18 @@
  *
  * @}
  *
+ * \defgroup sequence_group Sequences
+ * @{
+ *
+ * A Sequence<Key> is quite similar to a vector<Key> in that it stores an
+ * ordered set of elements. The main difference between these two data
+ * structures lies in the fact that, given a key, it is possible to retrieve
+ * from a Sequence<Key> the index in the vector where the key lies in O(1). As
+ * a result, it is not possible to insert a given element twice in the
+ * sequence, that is, all the Keys must be different.
+ *
+ * @}
+ *
  * @}
  *
  * \defgroup graph_group Graph representation
