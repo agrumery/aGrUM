@@ -714,7 +714,7 @@ namespace gum {
      * hashtable is automatically multiplied by 2. But the user may pass false
      * as argument to resize_pol to disable this feature.
      *
-     * @param size_param The size of the vector of chained lists.
+     * @param size_param The initial size of the gum::HashTable.
      * @param resize_pol The policy for resizing the hashtable when new
      * elements are added (possible values: true = automatic resize and false =
      * manual resize).
