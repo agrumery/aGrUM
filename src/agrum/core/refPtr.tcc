@@ -17,20 +17,17 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief Implementation of aGrUM's "smart" pointers
+/**
+ * @file
+ * @brief Implementation of aGrUM's "smart" pointers.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <agrum/config.h>
-
 #include <agrum/core/refPtr.h>
 
 namespace gum {
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-  /// default constructor
+  // default constructor
 
   template <typename Val>
   INLINE RefPtr<Val>::RefPtr( Val* v )
@@ -40,7 +37,7 @@ namespace gum {
     GUM_CONSTRUCTOR( RefPtr );
   }
 
-  /// copy constructor
+  // copy constructor
 
   template <typename Val>
   INLINE RefPtr<Val>::RefPtr( const RefPtr<Val>& from )
@@ -52,7 +49,7 @@ namespace gum {
     if ( __refcount ) ++*__refcount;
   }
 
-  /// copy constructor for castable pointers
+  // copy constructor for castable pointers
 
   template <typename Val>
   template <typename DownVal>
@@ -65,7 +62,7 @@ namespace gum {
     if ( __refcount ) ++*__refcount;
   }
 
-  /// removes the current content of the smart pointer
+  // removes the current content of the smart pointer
 
   template <typename Val>
   INLINE void RefPtr<Val>::__destroy( unsigned int* count, Val* v ) {
@@ -81,7 +78,7 @@ namespace gum {
     }
   }
 
-  /// copy operator
+  // copy operator
 
   template <typename Val>
   INLINE RefPtr<Val>& RefPtr<Val>::operator=( const RefPtr<Val>& from ) {
@@ -107,7 +104,7 @@ namespace gum {
     return *this;
   }
 
-  /// copy operator
+  // copy operator
 
   template <typename Val>
   INLINE RefPtr<Val>& RefPtr<Val>::operator=( Val* from ) {
@@ -147,7 +144,7 @@ namespace gum {
     return *this;
   }
 
-  /// copy operator for downcastable pointers
+  // copy operator for downcastable pointers
 
   template <typename Val>
   template <typename DownVal>
@@ -170,7 +167,7 @@ namespace gum {
     return *this;
   }
 
-  /// destructor: it decrements the Val's reference count
+  // destructor: it decrements the Val's reference count
 
   template <typename Val>
   INLINE RefPtr<Val>::~RefPtr() {
@@ -179,21 +176,21 @@ namespace gum {
     __destroy( __refcount, __val );
   }
 
-  /// checks whether two RefPtr<Val> are smart pointers for the same element
+  // checks whether two RefPtr<Val> are smart pointers for the same element
 
   template <typename Val>
   INLINE bool RefPtr<Val>::operator==( const RefPtr<Val>& from ) const {
     return from.__refcount == __refcount;
   }
 
-  /// checks whether two RefPtr<Val> are smart pointers for differen elements
+  // checks whether two RefPtr<Val> are smart pointers for differen elements
 
   template <typename Val>
   INLINE bool RefPtr<Val>::operator!=( const RefPtr<Val>& from ) const {
     return from.__refcount != __refcount;
   }
 
-  /// dereferencing operator
+  // dereferencing operator
 
   template <typename Val>
   INLINE Val& RefPtr<Val>::operator*() {
@@ -204,7 +201,7 @@ namespace gum {
     return *__val;
   }
 
-  /// dereferencing operator
+  // dereferencing operator
 
   template <typename Val>
   INLINE const Val& RefPtr<Val>::operator*() const {
@@ -215,7 +212,7 @@ namespace gum {
     return *__val;
   }
 
-  /// dereferencing operator
+  // dereferencing operator
 
   template <typename Val>
   INLINE Val* RefPtr<Val>::operator->() const {
@@ -226,14 +223,14 @@ namespace gum {
     return __val;
   }
 
-  /// checks whether a RefPtr points toward something
+  // checks whether a RefPtr points toward something
 
   template <typename Val>
   INLINE RefPtr<Val>::operator bool() const {
     return ( __val != 0 );
   }
 
-  /// dereference what was referenced by the smart pointer
+  // dereference what was referenced by the smart pointer
 
   template <typename Val>
   INLINE void RefPtr<Val>::clear() {
@@ -247,7 +244,7 @@ namespace gum {
     __destroy( old_refcount, old_val );
   }
 
-  /// returns the number of references on the contained pointer
+  // returns the number of references on the contained pointer
 
   template <typename Val>
   INLINE unsigned int RefPtr<Val>::refCount() const {
@@ -256,19 +253,14 @@ namespace gum {
     return *__refcount;
   }
 
-  /// returns the refcount pointer
+  // returns the refcount pointer
 
   template <typename Val>
   INLINE unsigned int* RefPtr<Val>::__refCountPtr() const {
     return __refcount;
   }
 
-  /// swap the contents of two RefPtr
-  /** @param ptr1 the smart pointer the content of which we swap with that of
-   * ptr2
-   * @param ptr2 the smart pointer the content of which we swap with that of
-   * ptr1
-   */
+  // swap the contents of two RefPtr
 
   template <typename Val>
   void swap( RefPtr<Val>& ptr1, RefPtr<Val>& ptr2 ) {
@@ -282,7 +274,5 @@ namespace gum {
     ptr1.__val = tmp_val;
     ptr1.__refcount = tmp_refcount;
   }
-
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 } /* namespace gum */
