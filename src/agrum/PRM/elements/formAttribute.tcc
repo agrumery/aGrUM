@@ -30,6 +30,9 @@
 #include <agrum/PRM/elements/type.h>
 #include <agrum/PRM/elements/scalarAttribute.h>
 
+// to ease IDE parser
+#include <agrum/PRM/elements/formAttribute.h>
+
 namespace gum {
   namespace prm {
 

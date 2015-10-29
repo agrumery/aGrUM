@@ -41,8 +41,6 @@
 
 namespace gum {
   namespace prm {
-    class SystemIterator;
-    class SystemConstIterator;
 
     /**
      * @class System system.h <agrum/PRM/system.h>

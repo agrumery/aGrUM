@@ -43,8 +43,8 @@ def safe_cd(current,folder):
     os.chdir(folder)
 
 def colFormat(v,col):
-  s=str(v)
-  return col+s.replace("[",cfg.C_VALUE).replace("]",col)
+  #s=str(v) # why should I need to stringify v ? If yes, warning with encoding : sometimes encode('utf-8') is needed
+  return col+v.replace("[",cfg.C_VALUE).replace("]",col)
 
 def trace(current,cde):
   if current['dry_run'] or current['verbose']:

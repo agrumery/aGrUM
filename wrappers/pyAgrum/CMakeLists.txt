@@ -30,18 +30,10 @@ execute_process(
 )
 
 execute_process(
-  #COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_config_var('LIBDIR'))"
-  COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_config_var('LIBDIR')+'/'+distutils.sysconfig.get_config_var('LDLIBRARY'))"
-  OUTPUT_VARIABLE PYTHON_LIBRARY
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
-execute_process(
   COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('VERSION')[0])[0:1])"
   OUTPUT_VARIABLE PYTHON_VERSION
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-
 
 execute_process(
   COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
@@ -49,13 +41,14 @@ execute_process(
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
+execute_process(
+  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_config_vars('VERSION')[0])"
+  OUTPUT_VARIABLE PYTHON_COMPLETE_VERSION
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
 # maybe something to do for MAC ???
  if (APPLE) # let's assume that PYTHON is there
-   execute_process(
-     COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_config_vars('VERSION')[0])"
-     OUTPUT_VARIABLE PYTHON_COMPLETE_VERSION
-     OUTPUT_STRIP_TRAILING_WHITESPACE
-   )
    execute_process(
      COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('prefix'))[0])"
      OUTPUT_VARIABLE PYTHON_LOCAL_PATH
@@ -91,7 +84,7 @@ message(STATUS "python version : ${PYTHONLIBS_VERSION_STRING}")
 message(STATUS "python installation : ${PYTHON_INSTALL}")
 message(STATUS "python include : ${PYTHON_INCLUDE_DIR}")
 message(STATUS "python library : ${PYTHON_LIBRARY}")
-message(STATUS "libragrum : ${LIBAGRUM}")
+message(STATUS "libagrum : ${LIBAGRUM}")
 message(STATUS "================================")
 
 
