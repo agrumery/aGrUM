@@ -544,7 +544,7 @@ namespace gum_tests {
       // Then we try with random structure
 
       //
-
+      begin_test_waiting();
       for ( int i = 0; i < nbIter; i++ ) {
 
         time.reset();

@@ -506,6 +506,7 @@ namespace gum_tests {
       // *************************************************************************************
       // Then we try with random structure
       // *************************************************************************************
+      begin_test_waiting();
       for ( int nbLoop = 0; nbLoop < 1000; nbLoop++ ) {
 
         time.reset();

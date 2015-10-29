@@ -11,14 +11,21 @@
 #define XGET_RESSOURCES_PATH( x ) xstrfy( GUM_SRC_PATH ) "/testunits/ressources/" xstrfy( x )
 
 namespace gum_tests {
+  const std::string waiter[] {"[*  ]","[ * ]","[  *]","[ * ]"};
+  const std::string backst="\b\b\b\b\b";
+
+  void begin_test_waiting() {
+    std::cout << waiter[0];
+    std::flush( std::cout );
+  }
+
   void test_waiting( int s ) {
-    const char waiter[] = "|/-\\";
-    std::cout << '\b' << waiter[s % 4];
+    std::cout << backst << waiter[s % 4];
     std::flush( std::cout );
   }
 
   void end_test_waiting() {
-    std::cout << '\b';
+    std::cout << backst;
     std::flush( std::cout );
   }
 

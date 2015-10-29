@@ -50,6 +50,12 @@ def prettifying(line):
   if line=="":
     return ""
 
+  for eop in ['done','works','Success','found']:
+    leop=len(eop)
+    if line[-leop:]==eop:
+      line=line[:-leop]+cfg.C_VALUE+eop+cfg.C_END
+      break
+
   # prettifying compilation
   s=line.split("%]")
 
@@ -155,15 +161,17 @@ def threaded_execution(cde,verbose):
   def readerLoop(lastline):
     chan,lines = inp.get( True,timeout = 0.1)
     if chan=='stdout' and lines is not None:
-      lines=(lastline+lines.decode('utf-8')).split("\n")
+      #if len(lastline)>1:
+      #  print(" ")
+      lines=(lines.decode('utf-8')).split("\n")
       for i in range(len(lines)-1):
         if lines[i]!="":
-          print("\r"+prettifying(lines[i]).rstrip())
+          print(prettifying(lines[i]).rstrip())
       lastline=lines[-1]
-      if lastline!="":
-        print("\r"+prettifying(lastline).rstrip(),end="")
+      print(prettifying(lastline).rstrip(),end="")
       sys.stdout.flush()
     elif chan=='stderr' and lines is not None:
+      lastline=""
       lines=lines.decode('utf-8').split("\n")
       for line in lines:
         if line!="":
