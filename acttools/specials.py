@@ -33,28 +33,28 @@ from .oneByOne import checkAgrumMemoryLeaks
 
 def specialActions(current):
   if current["action"]=="clean":
-    trace(current,"Special action [clean]")
+    #trace(current,"Special action [clean]")
     if not current["dry_run"]:
       cleanAll()
     print("")
     return True
 
   if current["action"]=="show":
-    trace(current,"Special action [show]")
+    #trace(current,"Special action [show]")
     # action=show is the only action still performed even if dry_run=True
     showAct2Config(current)
     print("")
     return True
 
   if current["action"]=="autoindent":
-    trace(current,"Special action [autoindent]")
+    #trace(current,"Special action [autoindent]")
     # action=show is the only action still performed even if dry_run=True
     autoindent(current)
     print("")
     return True
 
   if current["oneByOne"]==True:
-    trace(current,"Special action [oneByOne]")
+    #trace(current,"Special action [oneByOne]")
     # action=show is the only action still performed even if dry_run=True
     checkAgrumMemoryLeaks(current)
     return True
@@ -63,7 +63,7 @@ def specialActions(current):
 
 
 def cleanAll():
-    print(cfg.C_WARNING+" cleaning"+cfg.C_END+" ... ",end="")
+    print(cfg.C_WARNING+"cleaning"+cfg.C_END+" ... ",end="")
     sys.stdout.flush()
     if os.path.isdir("build"):
       shutil.rmtree("build")

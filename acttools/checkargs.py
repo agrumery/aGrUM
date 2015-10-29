@@ -62,7 +62,7 @@ def checkCurrent(current,options,args):
   def update(current,key,val,test):
     if test:
       if current[key]!=val:
-        warn("{0} changed : {1} -> {2}".format(key,current[key],val))
+        #warn("{0} changed : {1} -> {2}".format(key,current[key],val))
         current[key]=val
     return test
   #end of helper
