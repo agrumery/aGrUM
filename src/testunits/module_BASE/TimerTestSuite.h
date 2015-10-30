@@ -58,7 +58,8 @@ namespace gum_tests {
       gum::Timer t;
       gum::Timer tt;
       int w = 0;
-
+      
+      begin_test_waiting();
       t.reset();
       double t1 = t.step();
       test_waiting( ++w );
