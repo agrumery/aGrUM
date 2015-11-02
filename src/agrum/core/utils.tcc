@@ -17,11 +17,15 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Template implementation for utilities for aGrUM.
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-#include <vector>
-#include <numeric>
+// to help IDE parser
+#include <agrum/core/utils.h>
 
 namespace std {
 
@@ -51,4 +55,3 @@ namespace std {
 
 } /* namespace std */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS

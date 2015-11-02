@@ -17,20 +17,15 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief utilities for manipulating strings
+/**
+ * @file
+ * @brief Utilities for manipulating strings.
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  *
  */
-#include <cstdlib>
 
 #include <agrum/core/utils_string.h>
-
-#ifndef HAVE_MKSTEMP  // mainly windows
-#warning "No mkstemp"
-#include <io.h>
-#endif
 
 namespace gum {
 

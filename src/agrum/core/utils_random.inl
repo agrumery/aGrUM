@@ -17,7 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <ctime>
+/**
+ * @file
+ * @brief Contains usefull methods for random stuff.
+ *
+ * @author Vincent RENAUDINEAU and Pierre-Henri WUILLEMIN
+ */
 
 namespace gum {
 

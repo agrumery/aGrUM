@@ -33,6 +33,9 @@
 
 namespace gum {
 
+  /// @ingroup configuration_group
+  /// @{
+
   /**
    * How copies should be performed (usual or shallow copies)
    *
@@ -57,7 +60,10 @@ namespace gum {
    */
   typedef unsigned long Size;
 
+/// Maximum sized used in aGrUM.
 #define GUM_MAX_SIZE ULONG_MAX
+
+  /// @}
 
 } /* namespace gum */
 

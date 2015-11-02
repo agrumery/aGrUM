@@ -17,13 +17,17 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Outlined implementation for utilities for aGrUM.
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 
-#include <agrum/config.h>
 #include <agrum/core/utils.h>
 
 namespace gum {
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
   bool
   Memcmp( const void* const _in, const void* const _out, unsigned long size ) {
     unsigned char* in = (unsigned char*)_in;
@@ -40,7 +44,5 @@ namespace gum {
     gum::__debug__::__atexit();
 #endif
   }
-
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace gum */

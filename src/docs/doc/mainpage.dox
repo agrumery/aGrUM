@@ -15,8 +15,19 @@
  */
 
 /**
+ * \defgroup configuration_group Configuration
+ * @{
+ * About aGrUM configuration.
+ * @}
+ *
+ * \defgroup utilities_group Utilities
+ * @{
+ * About aGrUM utilities.
+ * @}
+ *
  * \defgroup basicstruct_group Basic data structures
  * @{
+ *
  *
  * \defgroup hashtable_group Hash Tables
  * @{

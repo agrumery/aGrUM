@@ -17,14 +17,17 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#include <vector>
-#include <numeric>
+/**
+ * @file
+ * @brief Contains usefull methods for random stuff.
+ *
+ * @author Vincent RENAUDINEAU and Pierre-Henri WUILLEMIN
+ */
 
 namespace gum {
 
-  /// return a random discrete distribution
-  /// @param n is the number of modalities for the ditribution
+  // return a random discrete distribution
+  // @param n is the number of modalities for the ditribution
   template <typename GUM_SCALAR>
   std::vector<GUM_SCALAR> randomDistribution( Size n ) {
     if ( n < 2 ) n = 2;
