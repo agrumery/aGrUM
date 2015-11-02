@@ -524,6 +524,16 @@
  *
  * @}
  *
+ * \defgroup set_group Sets
+ * @{
+ * 
+ * @}
+ *
+ * \defgroup splaytree_group Splay Trees
+ * @{
+ * 
+ * @}
+ *
  * @}
  *
  * \defgroup graph_group Graph representation

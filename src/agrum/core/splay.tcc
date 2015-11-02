@@ -17,20 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief Template implementation of splay trees
  *
  * @author Karim Tekkal
  */
-#include <stdlib.h>
-#include <iostream>
-#include <cassert>
-
-#include <agrum/config.h>
-
 #include <agrum/core/splay.h>
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
   /* =========================================================================*/
@@ -39,7 +32,7 @@ namespace gum {
   /* =========================================================================*/
   /* =========================================================================*/
 
-  /// a function used to perform copies of HashTableLists
+  // a function used to perform copies of HashTableLists
 
   template <class Element>
   INLINE void SplayBinaryNode<Element>::_copy(
@@ -71,7 +64,7 @@ namespace gum {
     }
   }
 
-  /// constructor
+  // constructor
 
   template <class Element>
   INLINE SplayBinaryNode<Element>::SplayBinaryNode(
@@ -94,7 +87,7 @@ namespace gum {
     GUM_CONSTRUCTOR( SplayBinaryNode );
   }
 
-  /// copy operator
+  // copy operator
 
   template <class Element>
   INLINE SplayBinaryNode<Element>::SplayBinaryNode(
@@ -105,7 +98,7 @@ namespace gum {
     GUM_CONSTRUCTOR( SplayBinaryNode );
   }
 
-  /// destructor
+  // destructor
 
   template <class Element>
   INLINE SplayBinaryNode<Element>::~SplayBinaryNode() {
@@ -118,7 +111,7 @@ namespace gum {
     if ( fd ) delete fd;
   }
 
-  /// Perform a right rotation, returns the node
+  // Perform a right rotation, returns the node
 
   template <class Element>
   INLINE SplayBinaryNode<Element>* SplayBinaryNode<Element>::zig() {
@@ -169,7 +162,7 @@ namespace gum {
     return this;
   }
 
-  /// Perform a left rotation, returns the node
+  // Perform a left rotation, returns the node
 
   template <class Element>
   INLINE SplayBinaryNode<Element>* SplayBinaryNode<Element>::zag() {
@@ -219,7 +212,7 @@ namespace gum {
     return this;
   }
 
-  /// Perform a splay rotation, the node return is the root
+  // Perform a splay rotation, the node return is the root
 
   template <class Element>
   INLINE SplayBinaryNode<Element>* SplayBinaryNode<Element>::splay() {
@@ -264,7 +257,7 @@ namespace gum {
     return this;  // for compiler satisfaction
   }
 
-  /// Concatenation of two threes
+  // Concatenation of two threes
 
   template <class Element>
   INLINE SplayBinaryNode<Element>* SplayBinaryNode<Element>::join(
@@ -294,7 +287,7 @@ namespace gum {
     return act;
   }
 
-  /// Get the position of the node
+  // Get the position of the node
 
   template <class Element>
   INLINE int SplayBinaryNode<Element>::position() const {
@@ -321,7 +314,7 @@ namespace gum {
     }
   }
 
-  /// Get the element in the node
+  // Get the element in the node
 
   template <class Element>
   INLINE const Element& SplayBinaryNode<Element>::getElement() const {
@@ -356,7 +349,7 @@ namespace gum {
   /* =========================================================================*/
   /* =========================================================================*/
 
-  /// a function used to perform copies
+  // a function used to perform copies
 
   template <class Element>
   INLINE void SplayTree<Element>::_copy( const SplayTree<Element>& from ) {
@@ -367,7 +360,7 @@ namespace gum {
     }
   }
 
-  /// basic constructor, make an empty splay tree
+  // basic constructor, make an empty splay tree
 
   template <class Element>
   INLINE SplayTree<Element>::SplayTree()
@@ -377,7 +370,7 @@ namespace gum {
     GUM_CONSTRUCTOR( SplayTree );
   }
 
-  /// basic constructor, make a splay tree with one element
+  // basic constructor, make a splay tree with one element
   /*
    * @param e the element of the tree
    */
@@ -391,7 +384,7 @@ namespace gum {
     GUM_CONSTRUCTOR( SplayTree );
   }
 
-  /// copy constructor
+  // copy constructor
 
   template <class Element>
   INLINE SplayTree<Element>::SplayTree( const SplayTree& from )
@@ -401,7 +394,7 @@ namespace gum {
     GUM_CONS_CPY( SplayTree );
   }
 
-  /// Assignment operator
+  // Assignment operator
 
   template <class Element>
   INLINE SplayTree<Element>& SplayTree<Element>::
@@ -422,7 +415,7 @@ namespace gum {
     return *this;
   }
 
-  /// Destructor
+  // Destructor
 
   template <class Element>
   INLINE SplayTree<Element>::~SplayTree() {
@@ -432,7 +425,7 @@ namespace gum {
     if ( root ) delete ( root );
   }
 
-  /// Get the element at the position n
+  // Get the element at the position n
 
   template <class Element>
   Element& SplayTree<Element>::operator[]( const unsigned int i ) {
@@ -508,7 +501,7 @@ namespace gum {
     }
   }
 
-  /// Get the first element
+  // Get the first element
 
   template <class Element>
   INLINE Element& SplayTree<Element>::front() {
@@ -527,7 +520,7 @@ namespace gum {
     return root->elt;
   }
 
-  /// Get the last element
+  // Get the last element
 
   template <class Element>
   INLINE Element& SplayTree<Element>::back() {
@@ -546,7 +539,7 @@ namespace gum {
     return root->elt;
   }
 
-  /// Remove the first element
+  // Remove the first element
 
   template <class Element>
   INLINE void SplayTree<Element>::popFront() {
@@ -569,7 +562,7 @@ namespace gum {
     }
   }
 
-  /// Remove the last element
+  // Remove the last element
 
   template <class Element>
   INLINE void SplayTree<Element>::popBack() {
@@ -592,7 +585,7 @@ namespace gum {
     }
   }
 
-  /// Add an element in the first position
+  // Add an element in the first position
 
   template <class Element>
   INLINE void SplayTree<Element>::pushFront( const Element& e ) {
@@ -611,7 +604,7 @@ namespace gum {
     }
   }
 
-  /// Add an element in the last position
+  // Add an element in the last position
 
   template <class Element>
   INLINE void SplayTree<Element>::pushBack( const Element& e ) {
@@ -630,7 +623,7 @@ namespace gum {
     }
   }
 
-  /// Add an element to the tree
+  // Add an element to the tree
 
   template <class Element>
   INLINE void SplayTree<Element>::insert( const Element& e ) {
@@ -653,7 +646,7 @@ namespace gum {
     }
   }
 
-  /// Concatenation of two trees
+  // Concatenation of two trees
   /*
    * @param s the tree to add
    */
@@ -669,7 +662,7 @@ namespace gum {
     }
   }
 
-  /// removeInfo removes all the information about the nodes contains by e
+  // removeInfo removes all the information about the nodes contains by e
 
   template <class Element>
   INLINE static void
@@ -683,7 +676,7 @@ namespace gum {
     if ( e->getFd() ) removeInfo( e->getFd(), addr );
   }
 
-  /// Split the tree at the element
+  // Split the tree at the element
 
   template <class Element>
   INLINE SplayTree<Element> SplayTree<Element>::split( const int i ) {
@@ -747,7 +740,7 @@ namespace gum {
     }
   }
 
-  /// Split the tree at the element
+  // Split the tree at the element
 
   template <typename Element>
   INLINE SplayTree<Element>
@@ -790,7 +783,7 @@ namespace gum {
     return s;
   }
 
-  /// The number of elements in the tree
+  // The number of elements in the tree
 
   template <class Element>
   INLINE Size SplayTree<Element>::size() const {
@@ -800,14 +793,14 @@ namespace gum {
       return 0;
   }
 
-  /// Test if the tree contains the element
+  // Test if the tree contains the element
 
   template <class Element>
   INLINE bool SplayTree<Element>::contains( const Element& e ) const {
     return addr.exists( e );
   }
 
-  /// Display the node
+  // Display the node
 
   template <typename Element>
   std::ostream& operator<<( std::ostream& out,
@@ -821,7 +814,7 @@ namespace gum {
     return out;
   }
 
-  /// Display the tree
+  // Display the tree
 
   template <typename Element>
   INLINE std::ostream& operator<<( std::ostream& out,
@@ -837,4 +830,3 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -17,29 +17,46 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Provides basic types used in aGrUM.
+ *
+ * @warning Do not include this file directlty : instead include
+ * <agrum/config.h>.
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 #include <climits>
-// WARNING : Do not include this file directlty : instead include
-// <agrum/config.h>
 
 #ifndef GUM_TYPES_H
 #define GUM_TYPES_H
 
 namespace gum {
 
-  /// how copies should be performed (usual or shallow copies)
-  /// @todo default is ?
+  /**
+   * How copies should be performed (usual or shallow copies)
+   *
+   * @todo default is ?
+   */
   enum class CopyType : char { DEEP_COPY, SHALLOW_COPY };
 
-  /// type for indexes
+  /**
+   * Type for indexes.
+   */
   typedef unsigned int Idx;
 
-  /// type for ids
+  /**
+   * Type for ids.
+   */
   typedef unsigned int Id;
 
-  /** in aGrUM, hashed values are unsigned long int. This is sufficient to deal
-   * with Bayes nets and other graphs already big enough to be unmanageable from
-   * a computational point of view. */
+  /**
+   * In aGrUM, hashed values are unsigned long int. This is sufficient to deal
+   * with Bayes nets and other graphs already big enough to be unmanageable
+   * from a computational point of view.
+   */
   typedef unsigned long Size;
+
 #define GUM_MAX_SIZE ULONG_MAX
 
 } /* namespace gum */
