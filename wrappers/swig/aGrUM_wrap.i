@@ -232,8 +232,9 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
   using gum::learning::genericBNLearner::addMandatoryArc;
   using gum::learning::genericBNLearner::addMandatoryArc;
   using gum::learning::genericBNLearner::eraseMandatoryArc;
-}
 
+  /*using gum::learning::genericBNLearner::setInitialDAG;*/
+}
 
 %include "forUsing.i"
 

@@ -39,8 +39,6 @@ import pydotplus as dot
 
 import IPython.display
 from IPython.core.pylabtools import print_figure
-from IPython.core.display import Image,display_png
-from IPython.display import display,HTML,SVG
 
 import pyAgrum as gum
 
@@ -68,6 +66,9 @@ def configuration():
 
 
 def showGraph(gr,size="4",format="png"):
+  from IPython.core.display import Image,display_png
+  from IPython.display import display,HTML,SVG
+
   gr.set_size(size)
   if format=="svg":
     gsvg=SVG(gr.create_svg())
@@ -211,15 +212,11 @@ def getBN(bn,size="4",vals=None,cmap=INFOcmap):
         edge=dot.Edge(bn.variable(a[0]).name(),bn.variable(a[1]).name())
         graph.add_edge(edge)
     graph.set_size(size)
-    return graph
+    return IPython.display.SVG(graph.create_svg())
 
-def getBNasSVG(bn,size="4"):
-  return SVG(getBN(bn,size).create_svg())
-
-def showBN(bn,size="4",vals=None,cmap=INFOcmap,format="png"):
+def showBN(bn,size="4",vals=None,cmap=INFOcmap):
   gr=getBN(bn,size,vals,cmap)
-  showGraph(gr,size,format)
-  #IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
+  IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
 
 
 def _normalizeVals(vals,hilightExtrema=False):
@@ -266,11 +263,29 @@ def showInference(bn,ie,size="4",cmap=INFOcmap):
   png=print_figure(canvas.figure,"png") # from IPython.core.pylabtools
   png_legend="<img style='vertical-align:middle' src='data:image/png;base64,%s'>"%encodestring(png).decode('ascii')
 
-  gsvg=SVG(gr.create_svg())
   IPython.display.display(IPython.display.HTML("<div align='center'>"+
-                              gsvg.data+
+                              gr.data+
                               "</div><div align='center'>"+
                               "<font color='"+_proba2bgcolor(0.01,cmap)+"'>"+str(mi)+"</font>"
                               +png_legend+
                               "<font color='"+_proba2bgcolor(0.99,cmap)+"'>"+str(ma)+"</font>"
                               "</div>"))
+
+def getJunctionTree(bn,size="4"):
+  ie=gum.LazyPropagation(bn)
+  graph=dot.graph_from_dot_data(ie.junctionTreeToDot())
+  graph.set_size(size)
+  return IPython.display.SVG(graph.create_svg())
+
+def showJunctionTree(bn,size="4"):
+  gr=getJunctionTree(bn,size)
+  IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
+
+def getInfluenceDiagram(diag,size="4"):
+  graph=dot.graph_from_dot_data(diag.toDot())
+  graph.set_size(size)
+  return IPython.display.SVG(graph.create_svg())
+
+def showInfluenceDiagram(diag,size="4"):
+  gr=getInfluenceDiagram(diag,size)
+  IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
