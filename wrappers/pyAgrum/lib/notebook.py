@@ -64,6 +64,29 @@ def configuration():
 
   return IPython.display.HTML(res)
 
+
+def showGraph(gr,size="4",format="png"):
+  from IPython.core.display import Image,display_png
+  from IPython.display import display,HTML,SVG
+
+  gr.set_size(size)
+  if format=="svg":
+    gsvg=SVG(gr.create_svg())
+    display(HTML("<div align='center'>"+gsvg.data+"</div>"))
+  else:
+    display_png(Image(format="png",data=gr.create_png()))
+
+def showDot(dotstring,size="4",format="png"):
+  showGraph(dot.graph_from_dot_data(dotstring),size,format)
+
+def showJunctionTree(bn,size="4",format="png"):
+  ie=gum.LazyPropagation(bn)
+  showDot(ie.junctionTreeToDot(),size,format)
+
+def showInfluenceDiagram(diag,size="4",format="png"):
+  showDot(diag.toDot(),size,format)
+
+
 def getPosterior(bn,ev,target):
     """
     Compute the posterior of a single target (variable) in a BN given evidence using Lazy Propagation (for now).
@@ -147,9 +170,9 @@ def _proba2rgb(p=0.99,cmap=INFOcmap):
         r,g,b="AA","FF","FF"
     else:
       (r,g,b,_)=cmap(p)
-      r="%02x"%(r*256)
-      g="%02x"%(g*256)
-      b="%02x"%(b*256)
+      r="%02x"%int(r*256)
+      g="%02x"%int(g*256)
+      b="%02x"%int(b*256)
 
     return r,g,b
 
@@ -247,22 +270,3 @@ def showInference(bn,ie,size="4",cmap=INFOcmap):
                               +png_legend+
                               "<font color='"+_proba2bgcolor(0.99,cmap)+"'>"+str(ma)+"</font>"
                               "</div>"))
-
-def getJunctionTree(bn,size="4"):
-  ie=gum.LazyPropagation(bn)
-  graph=dot.graph_from_dot_data(ie.junctionTreeToDot())
-  graph.set_size(size)
-  return IPython.display.SVG(graph.create_svg())
-
-def showJunctionTree(bn,size="4"):
-  gr=getJunctionTree(bn,size)
-  IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
-
-def getInfluenceDiagram(diag,size="4"):
-  graph=dot.graph_from_dot_data(diag.toDot())
-  graph.set_size(size)
-  return IPython.display.SVG(graph.create_svg())
-
-def showInfluenceDiagram(diag,size="4"):
-  gr=getInfluenceDiagram(diag,size)
-  IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))

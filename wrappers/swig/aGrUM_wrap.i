@@ -171,39 +171,38 @@ ADD_ARCGRAPHPART_API(gum::MixedGraph);
 
 
 
-%define ADD_APPROXIMATIONSCHEME_API(classname)
+%define ADD_APPROXIMATIONSCHEME_API(parent,classname)
 %extend classname {
-  using gum::ApproximationScheme::setVerbosity;
-  using gum::ApproximationScheme::setEpsilon;
-  using gum::ApproximationScheme::setMinEpsilonRate;
-  using gum::ApproximationScheme::setMaxIter;
-  using gum::ApproximationScheme::setMaxTime;
-  using gum::ApproximationScheme::setPeriodSize;
-  using gum::ApproximationScheme::setBurnIn;
+  using parent::setVerbosity;
+  using parent::setEpsilon;
+  using parent::setMinEpsilonRate;
+  using parent::setMaxIter;
+  using parent::setMaxTime;
+  using parent::setPeriodSize;
+  using parent::setBurnIn;
 
-  using gum::ApproximationScheme::verbosity;
-  using gum::ApproximationScheme::epsilon;
-  using gum::ApproximationScheme::minEpsilonRate;
-  using gum::ApproximationScheme::maxIter;
-  using gum::ApproximationScheme::maxTime;
-  using gum::ApproximationScheme::periodSize;
-  using gum::ApproximationScheme::burnIn;
+  using parent::verbosity;
+  using parent::epsilon;
+  using parent::minEpsilonRate;
+  using parent::maxIter;
+  using parent::maxTime;
+  using parent::periodSize;
+  using parent::burnIn;
 
-  using gum::ApproximationScheme::nbrIterations;
-  using gum::ApproximationScheme::currentTime;
+  using parent::nbrIterations;
+  using parent::currentTime;
 
-  using gum::ApproximationScheme::messageApproximationScheme;
-  using gum::ApproximationScheme::history;
+  using parent::messageApproximationScheme;
+  using parent::history;
 }
 %enddef
-ADD_APPROXIMATIONSCHEME_API(gum::GibbsInference<double>)
-ADD_APPROXIMATIONSCHEME_API(gum::GibbsKL<double>)
-ADD_APPROXIMATIONSCHEME_API(%arg(gum::credal::CNMonteCarloSampling<double,gum::LazyPropagation<double> >))
-ADD_APPROXIMATIONSCHEME_API(gum::credal::CNLoopyPropagation<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsInference<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsKL<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,%arg(gum::credal::CNMonteCarloSampling<double,gum::LazyPropagation<double> >))
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNLoopyPropagation<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLearner<double>)
 
 %extend gum::learning::BNLearner {
-  using gum::IApproximationSchemeConfiguration::messageApproximationScheme;
-
   using gum::learning::genericBNLearner::setMaxTime;
   using gum::learning::genericBNLearner::maxTime;
   using gum::learning::genericBNLearner::currentTime;
