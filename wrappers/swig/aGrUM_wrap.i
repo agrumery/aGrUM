@@ -202,7 +202,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,%arg(gum::credal::CNMonteCa
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNLoopyPropagation<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLearner<double>)
 
-%extend gum::learning::BNLearner {
+%extend gum::learning::BNLearner<double> {
   using gum::learning::genericBNLearner::setMaxTime;
   using gum::learning::genericBNLearner::maxTime;
   using gum::learning::genericBNLearner::currentTime;

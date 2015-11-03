@@ -50,8 +50,8 @@
   }
 }
 %enddef
-ADD_MULTIDIMDECORATOR_API(gum::Potential<double>) 
-ADD_MULTIDIMDECORATOR_API(gum::UtilityTable<double>) 
+ADD_MULTIDIMDECORATOR_API(gum::Potential<double>)
+ADD_MULTIDIMDECORATOR_API(gum::UtilityTable<double>)
 
 
 %define ADD_CREDALINFERENCEENGINCE_API(classname)
