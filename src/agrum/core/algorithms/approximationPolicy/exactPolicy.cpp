@@ -18,37 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /**
- * @file 
- * @brief Unicode helper functions. 
+ * @file
+ * @brief Outlined implementation of gum::ExactPolicy.
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Pierre-Henri WUILLEMIN & Jean-Christophe Magnan
+ *
  */
 
-#ifndef CAST_UNICODE_H
-#define CAST_UNICODE_H
+#include <agrum/core/algorithms/approximationPolicy/exactPolicy.h>
 
-#include <locale>
-#include <iostream>
-#include <string>
-#include <sstream>
-
-/**
- * @brief Cast a std::string into a std::wstring.
- * @param str The std::string to cast.
- * @return Returns the std::wstring of str.
- */
-std::wstring widen( const std::string& str );
-
-/**
- * @brief Cast a std::wstring into a std::string.
- * @param str The std::wstring to cast.
- * @return Returns the std::string of str.
- */
-std::string narrow( const std::wstring& str );
-
-#ifndef GUM_NO_INLINE
-#include <agrum/core/cast_unicode.inl>
-#endif
-
-#endif  // CAST_UNICODE_H
-
+template class gum::ExactPolicy<float>;
+template class gum::ExactPolicy<double>;

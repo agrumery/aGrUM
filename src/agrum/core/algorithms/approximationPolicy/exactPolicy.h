@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
@@ -27,20 +26,20 @@
  */
 #ifndef GUM_EXACT_POLICY_H
 #define GUM_EXACT_POLICY_H
-//**********************************************************************
 #include <agrum/config.h>
 
 #include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
-//**********************************************************************
 
 namespace gum {
 
   /**
-   * @class ExactPolicy approximationPolicy.h
-   * <agrum/multidim/approximationPolicy.h>
+   * @class ExactPolicy
+   * @headerfile exactPolicy.h <agrum/core/algorithms/approximationPolicy/exactPolicy.h>
    * @brief Class implementing exact approximation policy (meaning a value is
-   * approximate to itself)
-   * @ingroup multidim_group
+   * approximate to itself).
+   * @ingroup approximation_group
+   *
+   * @tparam GUM_SCALAR The type used for computations.
    */
   template <typename GUM_SCALAR>
   class ExactPolicy : public virtual ApproximationPolicy<GUM_SCALAR> {
@@ -53,7 +52,7 @@ namespace gum {
     /**
      * Default constructor.
      */
-    ExactPolicy(){};
+    ExactPolicy();
 
     /// @}
 
@@ -62,25 +61,56 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    /// Convert value to approximation representation
-    INLINE GUM_SCALAR fromExact( const GUM_SCALAR& value ) const {
-      return value;
-    };
+    /**
+     * @brief Convert value to approximation representation.
+     * @param value The converted value.
+     * @return The value approximation representation.
+     */
+    INLINE GUM_SCALAR fromExact( const GUM_SCALAR& value ) const;
 
-    void combineAdd( const ApproximationPolicy<GUM_SCALAR>* ap ){};
+    /**
+     * @brief Combine using addition with the given gum::ApproximationPolicy.
+     * @param ap The policy to combine with.
+     */
+    void combineAdd( const ApproximationPolicy<GUM_SCALAR>* ap );
 
-    void combineSub( const ApproximationPolicy<GUM_SCALAR>* ap ){};
+    /**
+     * @brief Combine using substraction with the given
+     * gum::ApproximationPolicy.
+     * @param ap The policy to combine with.
+     */
+    void combineSub( const ApproximationPolicy<GUM_SCALAR>* ap );
 
-    void combineMult( const ApproximationPolicy<GUM_SCALAR>* ap ){};
+    /**
+     * @brief Combine using multiplication with the given
+     * gum::ApproximationPolicy.
+     * @param ap The policy to combine with.
+     */
+    void combineMult( const ApproximationPolicy<GUM_SCALAR>* ap );
 
-    void combineDiv( const ApproximationPolicy<GUM_SCALAR>* ap ){};
+    /**
+     * @brief Combine using division with the given gum::ApproximationPolicy.
+     * @param ap The policy to combine with.
+     */
+    void combineDiv( const ApproximationPolicy<GUM_SCALAR>* ap );
 
-    void combineMax( const ApproximationPolicy<GUM_SCALAR>* ap ){};
+    /**
+     * @brief Combine using max with the given gum::ApproximationPolicy.
+     * @param ap The policy to combine with.
+     */
+    void combineMax( const ApproximationPolicy<GUM_SCALAR>* ap );
 
-    void combineMin( const ApproximationPolicy<GUM_SCALAR>* ap ){};
+    /**
+     * @brief Combine using min with the given gum::ApproximationPolicy.
+     * @param ap The policy to combine with.
+     */
+    void combineMin( const ApproximationPolicy<GUM_SCALAR>* ap );
 
     /// @}
   };
 }
+
+// Always include inlined implementation of template class
+#include <agrum/core/algorithms/approximationPolicy/exactPolicy.tcc>
 
 #endif /* GUM_EXACT_POLICY_H */

@@ -25,6 +25,11 @@
  * About aGrUM utilities.
  * @}
  *
+ * \defgroup approximation_group Approximation algorithms
+ * @{
+ * About aGrUM approximation algorithms.
+ * @}
+ *
  * \defgroup basicstruct_group Basic data structures
  * @{
  *
