@@ -38,7 +38,7 @@ namespace gum {
    * @headerfile linearApproximationPolicy.h <agrum/core/algorithms/approximationPolicy/linearApproximationPolicy.h>
    * @brief Class implementing linear approximation policy (meaning possible
    * value are split out in interval).
-   * @ingroup approximation_group
+   * @ingroup approximationpolicy_group
    *
    * @tparam GUM_SCALAR The type used for computations.
    */

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,47 +17,45 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 /**
  * @file
- * @brief gum::ApproximationSchemeListener header file.
+ * @brief Outlined implementatioh of gum::ApproximationSettings.
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * ApproximationSettings provides as well 2 signals :
+ *   - onProgress(int pourcent,double error)
+ *   - onStop(std::string message)
+ * @see gum::ApproximationListener for dedicated listener.
+ *
+ * @author Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
+#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
 
 namespace gum {
-  
-  ApproximationSchemeListener::ApproximationSchemeListener(
-      IApproximationSchemeConfiguration& sch )
-      : __sch( sch ) {
-    GUM_CONSTRUCTOR( ApproximationSchemeListener );
 
-    GUM_CONNECT( ( __sch ),
-                 onProgress,
-                 ( *this ),
-                 ApproximationSchemeListener::whenProgress );
-    GUM_CONNECT(
-        ( __sch ), onStop, ( *this ), ApproximationSchemeListener::whenStop );
+  ApproximationScheme::ApproximationScheme( bool v )
+      : _current_state( ApproximationSchemeSTATE::Undefined )
+      , _eps( 5e-2 )
+      , _enabled_eps( true )
+      , _min_rate_eps( 1e-2 )
+      , _enabled_min_rate_eps( true )
+      , _max_time( 1. )
+      , _enabled_max_time( false )
+      , _max_iter( (Size)10000 )
+      , _enabled_max_iter( true )
+      , _burn_in( (Size)0 )
+      , _period_size( (Size)1 )
+      , _verbosity( v ) {
+    GUM_CONSTRUCTOR( ApproximationScheme );
   }
 
-  ApproximationSchemeListener::ApproximationSchemeListener(
-      const ApproximationSchemeListener& other )
-      : __sch( other.__sch ) {
-    GUM_CONS_CPY( ApproximationSchemeListener );
-    GUM_ERROR( OperationNotAllowed,
-               "No copy constructor for ApproximationSchemeListener" );
+  ApproximationScheme::~ApproximationScheme() {
+    GUM_DESTRUCTOR( ApproximationScheme );
   }
 
-  ApproximationSchemeListener::~ApproximationSchemeListener() {
-    GUM_DESTRUCTOR( ApproximationSchemeListener );
-  }
+} // namespace gum
 
-  ApproximationSchemeListener& ApproximationSchemeListener::
-  operator=( const ApproximationSchemeListener& other ) {
-    GUM_CONS_CPY( ApproximationSchemeListener );
-    GUM_ERROR( OperationNotAllowed,
-               "No copy constructor for ApproximationSchemeListener" );
-  }
-
-} // namespace
+#ifdef GUM_NO_INLINE
+#include <agrum/core/algorithms/approximationScheme/approximationScheme.inl>
+#endif

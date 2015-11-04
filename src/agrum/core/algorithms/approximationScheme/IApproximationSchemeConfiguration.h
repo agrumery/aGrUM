@@ -21,9 +21,9 @@
 /**
  * @file
  * @brief This file contains getters and setters defintion for
- *ApproximationSchem
- *settings
-  * @see ApproximationScheme
+ * ApproximationSchem settings
+ *
+ * @see ApproximationScheme
  *
  * @author Pierre-Henri WUILLEMIN
  */
@@ -38,15 +38,24 @@
 
 namespace gum {
 
-  /// Approximation Scheme
   /**
-   * An interface for configuration of approximation scheme
+   * @class IApproximationSchemeConfiguration
+   * @headerfile IApproximationSchemeConfiguration.h
+   * <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
+   * @brief Approximation Scheme.
+   * @ingroup approximationpolicy_group
+   *
+   * An interface for configuration of approximation scheme.
    */
   class IApproximationSchemeConfiguration {
     public:
-    Signaler3<Size, double, double> onProgress;  // progression,error,time
-    Signaler1<std::string> onStop;  // criteria messageApproximationScheme
+    /// Progression, error and time.
+    Signaler3<Size, double, double> onProgress;
 
+    /// Criteria messageApproximationScheme
+    Signaler1<std::string> onStop;
+
+    /// The different state of an approximation scheme.
     enum class ApproximationSchemeSTATE : char {
       Undefined,
       Continue,
@@ -57,172 +66,246 @@ namespace gum {
       Stopped
     };
 
-    /// Constructors and Destructors
+    // ======================================================================
+    /// @name Constructor and destructor
+    // ======================================================================
     /// @{
-    IApproximationSchemeConfiguration() {
-      GUM_CONSTRUCTOR( IApproximationSchemeConfiguration );
-    };
+    /**
+     * @brief Class constructors.
+     */
+    IApproximationSchemeConfiguration();
 
-    ~IApproximationSchemeConfiguration() {
-      GUM_DESTRUCTOR( IApproximationSchemeConfiguration );
-    };
+    /**
+     * @brief Class destructor.
+     */
+    ~IApproximationSchemeConfiguration();
     /// @}
 
-    std::string messageApproximationScheme() const {
-      std::stringstream s;
-
-      switch ( stateApproximationScheme() ) {
-        case ApproximationSchemeSTATE::Continue:
-          s << "in progress";
-          break;
-
-        case ApproximationSchemeSTATE::Epsilon:
-          s << "stopped with epsilon=" << epsilon();
-          break;
-
-        case ApproximationSchemeSTATE::Rate:
-          s << "stopped with rate=" << minEpsilonRate();
-          break;
-
-        case ApproximationSchemeSTATE::Limit:
-          s << "stopped with max iteration=" << maxIter();
-          break;
-
-        case ApproximationSchemeSTATE::TimeLimit:
-          s << "stopped with timeout=" << maxTime();
-          break;
-
-        case ApproximationSchemeSTATE::Stopped:
-          s << "stopped on request";
-          break;
-
-        case ApproximationSchemeSTATE::Undefined:
-          s << "undefined state";
-          break;
-      };
-
-      return s.str();
-    }
-
-    /// Given that we approximate f(t), stopping criterion on |f(t+1)-f(t)|
-    /// If the criterion was disabled it will be enabled
+    // ======================================================================
+    /// @name Getters and setters
+    // ======================================================================
     /// @{
-    /// @throw OutOfLowerBound if eps<0
-    virtual void setEpsilon( double eps ) = 0;
 
-    /// Get the value of epsilon
-    virtual double epsilon( void ) const = 0;
+    /**
+     * @brief Returns the approximation scheme message.
+     * @return Returns the approximation scheme message.
+     */
+    std::string messageApproximationScheme() const;
 
-    /// Disable stopping criterion on epsilon
-    virtual void disableEpsilon() = 0;
-    /// Enable stopping criterion on epsilon
-    virtual void enableEpsilon() = 0;
-    /// @return true if stopping criterion on epsilon is enabled, false
-    /// otherwise
-    virtual bool isEnabledEpsilon() const = 0;
-    /// @}
+    /**
+     * @brief Given that we approximate f(t), stopping criterion on
+     * |f(t+1)-f(t)|.
+     *
+     * If the criterion was disabled it will be enabled.
+     *
+     * @param eps The new epsilon value.
+     * @throw OutOfLowerBound Raised if eps < 0.
+     */
+    virtual void setEpsilon( double eps ) =0;
 
-    /// Given that we approximate f(t), stopping criterion on
-    /// d/dt(|f(t+1)-f(t)|)
-    /// If the criterion was disabled it will be enabled
-    /// @{
-    /// @throw OutOfLowerBound if rate<0
-    virtual void setMinEpsilonRate( double rate ) = 0;
+    /**
+     * @brief Returns the value of epsilon.
+     * @return Returns the value of epsilon.
+     */
+    virtual double epsilon( void ) const =0;
 
-    /// Get the value of the minimal epsilon rate
-    virtual double minEpsilonRate( void ) const = 0;
+    /**
+     * @brief Disable stopping criterion on epsilon.
+     */
+    virtual void disableEpsilon() =0;
 
-    /// Disable stopping criterion on epsilon rate
-    virtual void disableMinEpsilonRate() = 0;
-    /// Enable stopping criterion on epsilon rate
-    virtual void enableMinEpsilonRate() = 0;
-    /// @return true if stopping criterion on epsilon rate is enabled, false
-    /// otherwise
-    virtual bool isEnabledMinEpsilonRate() const = 0;
-    /// @}
+    /**
+     * @brief Enable stopping criterion on epsilon.
+     */
+    virtual void enableEpsilon() =0;
 
-    /// stopping criterion on number of iterations
-    /// @{
-    /// If the criterion was disabled it will be enabled
-    /// @param max The maximum number of iterations
-    /// @throw OutOfLowerBound if max<=1
-    virtual void setMaxIter( Size max ) = 0;
+    /**
+     * @brief Returns true if stopping criterion on epsilon is enabled, false
+     * otherwise.
+     * @return Returns true if stopping criterion on epsilon is enabled, false
+     * otherwise.
+     */
+    virtual bool isEnabledEpsilon() const =0;
 
-    /// @return the criterion on number of iterations
-    virtual Size maxIter( void ) const = 0;
+    /**
+     * @brief Given that we approximate f(t), stopping criterion on
+     * d/dt(|f(t+1)-f(t)|).
+     *
+     * If the criterion was disabled it will be enabled
+     *
+     * @param rate The minimal epsilon rate.
+     * @throw OutOfLowerBound if rate<0
+     */
+    virtual void setMinEpsilonRate( double rate ) =0;
 
-    /// Disable stopping criterion on max iterations
-    virtual void disableMaxIter() = 0;
-    /// Enable stopping criterion on max iterations
-    virtual void enableMaxIter() = 0;
-    /// @return true if stopping criterion on max iterations is enabled, false
-    /// otherwise
-    virtual bool isEnabledMaxIter() const = 0;
-    /// @}
+    /**
+     * @brief Returns the value of the minimal epsilon rate.
+     * @return Returns the value of the minimal epsilon rate.
+     */
+    virtual double minEpsilonRate( void ) const =0;
 
-    /// stopping criterion on timeout
-    /// If the criterion was disabled it will be enabled
-    /// @{
-    /// @throw OutOfLowerBound if timeout<=0.0
-    /** timeout is time in second (double).
+    /**
+     * @brief Disable stopping criterion on epsilon rate.
+     */
+    virtual void disableMinEpsilonRate() =0;
+
+    /**
+     * @brief Enable stopping criterion on epsilon rate.
+     */
+    virtual void enableMinEpsilonRate() =0;
+
+    /**
+     * @brief Returns true if stopping criterion on epsilon rate is enabled,
+     * false otherwise.
+     * @return Returns true if stopping criterion on epsilon rate is enabled,
+     * false otherwise.
+     */
+    virtual bool isEnabledMinEpsilonRate() const =0;
+
+    /**
+     * @brief Stopping criterion on number of iterations.
+     *
+     * If the criterion was disabled it will be enabled.
+     *
+     * @param max The maximum number of iterations.
+     * @throw OutOfLowerBound Raised if max <= 1.
+     */
+    virtual void setMaxIter( Size max ) =0;
+
+    /**
+     * @brief Returns the criterion on number of iterations.
+     * @return Returns the criterion on number of iterations.
+     */
+    virtual Size maxIter( void ) const =0;
+
+    /**
+     * @brief Disable stopping criterion on max iterations.
+     */
+    virtual void disableMaxIter() =0;
+
+    /**
+     * @brief Enable stopping criterion on max iterations.
+     */
+    virtual void enableMaxIter() =0;
+
+    /**
+     * @brief Returns true if stopping criterion on max iterations is enabled,
+     * false otherwise.
+     * @return Returns true if stopping criterion on max iterations is enabled,
+     * false otherwise.
+     */
+    virtual bool isEnabledMaxIter() const =0;
+
+    /**
+     * @brief Stopping criterion on timeout.
+     *
+     * If the criterion was disabled it will be enabled.
+     *
+     * @param timeout The timeout value in seconds.
+     * @throw OutOfLowerBound Raised if timeout <= 0.0.
+     */
+    virtual void setMaxTime( double timeout ) =0;
+
+    /**
+     * @brief Returns the timeout (in seconds).
+     * @return Returns the timeout (in seconds).
+     */
+    virtual double maxTime( void ) const =0;
+
+    /**
+     * @brief Returns the current running time in second.
+     * @return Returns the current running time in second.
+     */
+    virtual double currentTime( void ) const =0;
+
+    /**
+     * @brief Disable stopping criterion on timeout.
+     * @return Disable stopping criterion on timeout.
+     */
+    virtual void disableMaxTime() =0;
+
+    /**
+     * @brief Enable stopping criterion on timeout.
+     */
+    virtual void enableMaxTime() =0;
+
+    /**
+    * @brief Returns true if stopping criterion on timeout is enabled, false
+    * otherwise.
+    * @return Returns true if stopping criterion on timeout is enabled, false
+    * otherwise.
     */
-    virtual void setMaxTime( double timeout ) = 0;
+    virtual bool isEnabledMaxTime() const =0;
 
-    /// returns the timeout (in seconds)
-    virtual double maxTime( void ) const = 0;
+    /**
+     * @brief How many samples between two stopping is enable.
+     * @param p The new period value.
+     * @throw OutOfLowerBound Raised if p < 1.
+     */
+    virtual void setPeriodSize( Size p ) =0;
 
-    /// get the current running time in second (double)
-    virtual double currentTime( void ) const = 0;
+    /**
+     * @brief Returns the period size.
+     * @return Returns the period size.
+     */
+    virtual Size periodSize( void ) const =0; 
 
-    /// Disable stopping criterion on timeout
-    virtual void disableMaxTime() = 0;
-    /// Enable stopping criterion on timeout
-    virtual void enableMaxTime() = 0;
-    /// @return true if stopping criterion on timeout is enabled, false
-    /// otherwise
-    virtual bool isEnabledMaxTime() const = 0;
-    /// @}
+    /**
+     * @brief Number of burn in for one iteration.
+     * @param b The number of burn in.
+     * @throw OutOfLowerBound Raised if b < 1.
+     */
+    virtual void setBurnIn( Size b ) =0;
 
-    /// how many samples between 2 stopping isEnableds
-    /// @{
-    /// @throw OutOfLowerBound if p<1
-    virtual void setPeriodSize( Size p ) = 0;
+    /**
+     * @brief Returns the number of burn in.
+     * @return Returns the number of burn in.
+     */
+    virtual Size burnIn( void ) const =0;
 
-    virtual Size periodSize( void ) const = 0;
-    /// @}
+    /**
+     * @brief Set the verbosity on (true) or off (false).
+     * @param v If true, then verbosity is turned on.
+     */
+    virtual void setVerbosity( bool v ) =0;
 
-    /// size of burn in on number of iteration
-    /// @{
+    /**
+     * @brief Returns true if verbosity is enabled.
+     * @return Returns true if verbosity is enabled.
+     */
+    virtual bool verbosity( void ) const =0;
 
-    /// @throw OutOfLowerBound if b<1
-    virtual void setBurnIn( Size b ) = 0;
+    /**
+     * @brief Returns the approximation scheme state.
+     * @return Returns the approximation scheme state.
+     */
+    virtual ApproximationSchemeSTATE stateApproximationScheme() const =0;
 
-    virtual Size burnIn( void ) const = 0;
-    /// @}
+    /**
+     * @brief Returns the number of iterations.
+     * @return Returns the number of iterations.
+     * @throw OperationNotAllowed Raised if the scheme did not perform.
+     */
+    virtual Size nbrIterations() const =0;
 
-    /// verbosity
-    /// @{
-    virtual void setVerbosity( bool v ) = 0;
+    /**
+     * @brief Returns the scheme history.
+     * @return Returns the scheme history.
+     * @throw OperationNotAllowed Raised if the scheme did not performed or
+     * if verbosity is set to false.
+     */
+    virtual const std::vector<double>& history() const =0;
 
-    virtual bool verbosity( void ) const = 0;
-    /// @}
-
-    /// history
-    /// @{
-
-    virtual ApproximationSchemeSTATE stateApproximationScheme() const = 0;
-
-    /// @throw OperationNotAllowed if scheme not performed
-    virtual Size nbrIterations() const = 0;
-
-    /// @throw OperationNotAllowed if scheme not performed or verbosity=false
-    virtual const std::vector<double>& history() const = 0;
-    /// @}
-
-    // @name transmission of configuration
-    void copyConfiguration( const IApproximationSchemeConfiguration& cfg ) {
-      GUM_TRACE( "COPYING CONFIGURATION" );
-    }
+    /**
+     * @brief Configuration transmission.
+     * @param cfg The configuration to copy.
+     */
+    void copyConfiguration( const IApproximationSchemeConfiguration& cfg );
   };
 }  // namespace gum
+
+#ifndef GUM_NO_INLINE
+#include <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.inl>
+#endif
+
 #endif  // GUM_APPROXIMATION_SCHEME_CONFIGURATION_H

@@ -37,7 +37,7 @@ namespace gum {
    * @headerfile exactPolicy.h <agrum/core/algorithms/approximationPolicy/exactPolicy.h>
    * @brief Class implementing exact approximation policy (meaning a value is
    * approximate to itself).
-   * @ingroup approximation_group
+   * @ingroup approximationpolicy_group
    *
    * @tparam GUM_SCALAR The type used for computations.
    */

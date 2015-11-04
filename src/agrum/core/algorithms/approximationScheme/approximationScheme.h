@@ -21,11 +21,12 @@
 /**
  * @file
  * @brief This file contains general scheme for iteratively convergent
- *algorithms
+ * algorithms.
+ *
  * ApproximationSettings provides as well 2 signals :
  *   - onProgress(int pourcent,double error)
  *   - onStop(std::string message)
-  * @see ApproximationListener for dedicated listener.
+ * @see gum::ApproximationListener for dedicated listener.
  *
  * @author Pierre-Henri WUILLEMIN
  */
@@ -41,442 +42,393 @@
 
 namespace gum {
 
-  /// Approximation Scheme
-  /** The approximation scheme is assumed to be used like this
-   *      @code
-   *      initApproximationScheme();
+  /** 
+   * @class ApproximationScheme
+   * @headerfile approximationScheme.h <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+   * @brief Approximation Scheme.
+   * @ingroup approximationscheme_group
    *
-   *      // this loop can stop with ApproximationSchemeSTATE::Epsilon,
-   ApproximationSchemeSTATE::Rate, ApproximationSchemeSTATE::Limit
-   *      do {
-   *      // compute new values and a GUM_SCALAR error representing the progress
-   in
-   this step.
-   *        updateApproximationScheme();
-   *        compute state of the approximation
-   *        if (startOfPeriod()) w.r.t to the state of approximation
-   *      compute epsilon
-   } while ( continueApproximationScheme( epsilon ));
-   // end of loop
-
-   if ( verbosity() ) {
-     switch ( stateApproximationScheme() ) {
-       case ApproximationSchemeSTATE::Continue: // should not be possible
-      break;
-       case ApproximationSchemeSTATE::Epsilon: GUM_TRACE( "stop with
-   epsilon="<<epsilon() );
-       break;
-       case ApproximationSchemeSTATE::Rate: GUM_TRACE( "stop with
-   rate="<<minEpsilonRate() );
-       break;
-       case ApproximationSchemeSTATE::Limit: GUM_TRACE( "stop with max
-   iteration="<<maxIter() );
-       break;
-       case ApproximationSchemeSTATE::TimeLimit: GUM_TRACE( "stop with
-   timemout="<<currentTime() );
-       break;
-     }
-   }
-   // equivalent to
-   if (verbosity()) GUM_TRACE(messageApproximationScheme());
-   @endcode
+   * The approximation scheme is assumed to be used like this:
+   * @code
+   * initApproximationScheme();
+   * 
+   * // this loop can stop with ApproximationSchemeSTATE::Epsilon,
+   * // ApproximationSchemeSTATE::Rate and ApproximationSchemeSTATE::Limit
+   * do {
+   * // compute new values and a GUM_SCALAR error representing the progress
+   * // in this step.
+   *   updateApproximationScheme();
+   *   // compute state of the approximation
+   *   if (startOfPeriod()) {
+   *      // w.r.t to the state of approximation compute epsilon
+   *   }
+   * } while ( continueApproximationScheme( epsilon ));
+   * // end of loop
+   * 
+   * if ( verbosity() ) {
+   *   switch ( stateApproximationScheme() ) {
+   *     case ApproximationSchemeSTATE::Continue:  // should not be possible
+   *       break;
+   *     case ApproximationSchemeSTATE::Epsilon: {
+   *         GUM_TRACE( "stop with
+   *             epsilon="<<epsilon() );
+   *         break;
+   *     }
+   *     case ApproximationSchemeSTATE::Rate: {
+   *         GUM_TRACE( "stop with
+   *             rate="<<minEpsilonRate() );
+   *         break;
+   *     }
+   *     case ApproximationSchemeSTATE::Limit: {
+   *         GUM_TRACE( "stop with max
+   *             iteration="<<maxIter() );
+   *         break;
+   *     }
+   *     case ApproximationSchemeSTATE::TimeLimit: {
+   *         GUM_TRACE( "stop with
+   *             timemout="<<currentTime() );
+   *         break;
+   *     }
+   *   }
+   * }
+   * // equivalent to
+   * if (verbosity()) {
+   *   GUM_TRACE(messageApproximationScheme());
+   * }
+   * @endcode
    */
   class ApproximationScheme : public IApproximationSchemeConfiguration {
     public:
-    /// Constructors and Destructors
+
+    // ========================================================================
+    /// @name Constructors and Destructors
+    // ========================================================================
     /// @{
-    ApproximationScheme( bool v = false )
-        : _current_state( ApproximationSchemeSTATE::Undefined )
-        ,
 
-        _eps( 5e-2 )
-        , _enabled_eps( true )
-        ,
+    ApproximationScheme( bool v = false );
 
-        _min_rate_eps( 1e-2 )
-        , _enabled_min_rate_eps( true )
-        ,
+    ~ApproximationScheme();
 
-        _max_time( 1. )
-        , _enabled_max_time( false )
-        ,
-
-        _max_iter( (Size)10000 )
-        , _enabled_max_iter( true )
-        ,
-
-        _burn_in( (Size)0 )
-        , _period_size( (Size)1 )
-        , _verbosity( v ) {
-      GUM_CONSTRUCTOR( ApproximationScheme );
-    };
-
-    ~ApproximationScheme() { GUM_DESTRUCTOR( ApproximationScheme ); };
     /// @}
-
-    /// Given that we approximate f(t), stopping criterion on |f(t+1)-f(t)|
-    /// If the criterion was disabled it will be enabled
+    // ========================================================================
+    /// @name Getters and setters
+    // ========================================================================
     /// @{
-    /// @throw OutOfLowerBound if eps<0
-    void setEpsilon( double eps ) {
-      if ( eps < 0. ) {
-        GUM_ERROR( OutOfLowerBound, "eps should be >=0" );
-      }
 
-      _eps = eps;
-      _enabled_eps = true;
-    };
+    /**
+     * @brief Given that we approximate f(t), stopping criterion on
+     * |f(t+1)-f(t)|.
+     *
+     * If the criterion was disabled it will be enabled.
+     *
+     * @param eps The new epsilon value.
+     * @throw OutOfLowerBound Raised if eps < 0.
+     */
+    void setEpsilon( double eps );
 
-    /// Get the value of epsilon
-    double epsilon( void ) const { return _eps; }
+    /**
+     * @brief Returns the value of epsilon.
+     * @return Returns the value of epsilon.
+     */
+    double epsilon( void ) const;
 
-    /// Disable stopping criterion on epsilon
-    void disableEpsilon() { _enabled_eps = false; }
-    /// Enable stopping criterion on epsilon
-    void enableEpsilon() { _enabled_eps = true; }
-    /// @return true if stopping criterion on epsilon is enabled, false
-    /// otherwise
-    bool isEnabledEpsilon() const { return _enabled_eps; }
-    /// @}
+    /**
+     * @brief Disable stopping criterion on epsilon.
+     */
+    void disableEpsilon();
 
-    /// Given that we approximate f(t), stopping criterion on
-    /// d/dt(|f(t+1)-f(t)|)
-    /// If the criterion was disabled it will be enabled
-    /// @{
-    /// @throw OutOfLowerBound if rate<0
-    void setMinEpsilonRate( double rate ) {
-      if ( rate < 0 ) {
-        GUM_ERROR( OutOfLowerBound, "rate should be >=0" );
-      }
+    /**
+     * @brief Enable stopping criterion on epsilon.
+     */
+    void enableEpsilon();
 
-      _min_rate_eps = rate;
-      _enabled_min_rate_eps = true;
-    };
+    /**
+     * @brief Returns true if stopping criterion on epsilon is enabled, false
+     * otherwise.
+     * @return Returns true if stopping criterion on epsilon is enabled, false
+     * otherwise.
+     */
+    bool isEnabledEpsilon() const;
 
-    /// Get the value of the minimal epsilon rate
-    double minEpsilonRate( void ) const { return _min_rate_eps; };
+    /**
+     * @brief Given that we approximate f(t), stopping criterion on
+     * d/dt(|f(t+1)-f(t)|).
+     *
+     * If the criterion was disabled it will be enabled
+     *
+     * @param rate The minimal epsilon rate.
+     * @throw OutOfLowerBound if rate<0
+     */
+    void setMinEpsilonRate( double rate );
 
-    /// Disable stopping criterion on epsilon rate
-    void disableMinEpsilonRate() { _enabled_min_rate_eps = false; }
-    /// Enable stopping criterion on epsilon rate
-    void enableMinEpsilonRate() { _enabled_min_rate_eps = true; }
-    /// @return true if stopping criterion on epsilon rate is enabled, false
-    /// otherwise
-    bool isEnabledMinEpsilonRate() const { return _enabled_min_rate_eps; }
-    /// @}
+    /**
+     * @brief Returns the value of the minimal epsilon rate.
+     * @return Returns the value of the minimal epsilon rate.
+     */
+    double minEpsilonRate( void ) const;
 
-    /// stopping criterion on number of iterations
-    /// @{
-    /// If the criterion was disabled it will be enabled
-    /// @param max The maximum number of iterations
-    /// @throw OutOfLowerBound if max<=1
-    void setMaxIter( Size max ) {
-      if ( max < 1 ) {
-        GUM_ERROR( OutOfLowerBound, "max should be >=1" );
-      }
+    /**
+     * @brief Disable stopping criterion on epsilon rate.
+     */
+    void disableMinEpsilonRate();
 
-      _max_iter = max;
-      _enabled_max_iter = true;
-    };
+    /**
+     * @brief Enable stopping criterion on epsilon rate.
+     */
+    void enableMinEpsilonRate();
 
-    /// @return the criterion on number of iterations
-    Size maxIter( void ) const { return _max_iter; };
+    /**
+     * @brief Returns true if stopping criterion on epsilon rate is enabled,
+     * false otherwise.
+     * @return Returns true if stopping criterion on epsilon rate is enabled,
+     * false otherwise.
+     */
+    bool isEnabledMinEpsilonRate() const;
 
-    /// Disable stopping criterion on max iterations
-    void disableMaxIter() { _enabled_max_iter = false; }
-    /// Enable stopping criterion on max iterations
-    void enableMaxIter() { _enabled_max_iter = true; }
-    /// @return true if stopping criterion on max iterations is enabled, false
-    /// otherwise
-    bool isEnabledMaxIter() const { return _enabled_max_iter; }
-    /// @}
+    /**
+     * @brief Stopping criterion on number of iterations.
+     *
+     * If the criterion was disabled it will be enabled.
+     *
+     * @param max The maximum number of iterations.
+     * @throw OutOfLowerBound Raised if max <= 1.
+     */
+    void setMaxIter( Size max );
 
-    /// stopping criterion on timeout
-    /// If the criterion was disabled it will be enabled
-    /// @{
-    /// @throw OutOfLowerBound if timeout<=0.0
-    /** timeout is time in second (double).
+    /**
+     * @brief Returns the criterion on number of iterations.
+     * @return Returns the criterion on number of iterations.
+     */
+    Size maxIter( void ) const;
+
+    /**
+     * @brief Disable stopping criterion on max iterations.
+     */
+    void disableMaxIter();
+
+    /**
+     * @brief Enable stopping criterion on max iterations.
+     */
+    void enableMaxIter();
+
+    /**
+     * @brief Returns true if stopping criterion on max iterations is enabled,
+     * false otherwise.
+     * @return Returns true if stopping criterion on max iterations is enabled,
+     * false otherwise.
+     */
+    bool isEnabledMaxIter() const;
+
+    /**
+     * @brief Stopping criterion on timeout.
+     *
+     * If the criterion was disabled it will be enabled.
+     *
+     * @param timeout The timeout value in seconds.
+     * @throw OutOfLowerBound Raised if timeout <= 0.0.
+     */
+    void setMaxTime( double timeout );
+
+    /**
+     * @brief Returns the timeout (in seconds).
+     * @return Returns the timeout (in seconds).
+     */
+    double maxTime( void ) const;
+
+    /**
+     * @brief Returns the current running time in second.
+     * @return Returns the current running time in second.
+     */
+    double currentTime( void ) const;
+
+    /**
+     * @brief Disable stopping criterion on timeout.
+     * @return Disable stopping criterion on timeout.
+     */
+    void disableMaxTime();
+
+    /**
+     * @brief Enable stopping criterion on timeout.
+     */
+    void enableMaxTime();
+
+    /**
+    * @brief Returns true if stopping criterion on timeout is enabled, false
+    * otherwise.
+    * @return Returns true if stopping criterion on timeout is enabled, false
+    * otherwise.
     */
-    void setMaxTime( double timeout ) {
-      if ( timeout <= 0. ) {
-        GUM_ERROR( OutOfLowerBound, "timeout should be >0." );
-      }
+    bool isEnabledMaxTime() const;
 
-      _max_time = timeout;
-      _enabled_max_time = true;
-    };
+    /**
+     * @brief How many samples between two stopping is enable.
+     * @param p The new period value.
+     * @throw OutOfLowerBound Raised if p < 1.
+     */
+    void setPeriodSize( Size p );
 
-    /// returns the timeout (in seconds)
-    double maxTime( void ) const { return _max_time; };
+    /**
+     * @brief Returns the period size.
+     * @return Returns the period size.
+     */
+    Size periodSize( void ) const; 
 
-    /// get the current running time in second (double)
-    double currentTime( void ) const { return _timer.step(); }
+    /**
+     * @brief Number of burn in for one iteration.
+     * @param b The number of burn in.
+     * @throw OutOfLowerBound Raised if b < 1.
+     */
+    void setBurnIn( Size b );
 
-    /// Disable stopping criterion on timeout
-    void disableMaxTime() { _enabled_max_time = false; }
-    /// Enable stopping criterion on timeout
-    void enableMaxTime() { _enabled_max_time = true; }
-    /// @return true if stopping criterion on timeout is enabled, false
-    /// otherwise
-    bool isEnabledMaxTime() const { return _enabled_max_time; }
-    /// @}
+    /**
+     * @brief Returns the number of burn in.
+     * @return Returns the number of burn in.
+     */
+    Size burnIn( void ) const;
 
-    /// how many samples between 2 stopping isEnableds
-    /// @{
-    /// @throw OutOfLowerBound if p<1
-    void setPeriodSize( Size p ) {
-      if ( p < 1 ) {
-        GUM_ERROR( OutOfLowerBound, "p should be >=1" );
-      }
+    /**
+     * @brief Set the verbosity on (true) or off (false).
+     * @param v If true, then verbosity is turned on.
+     */
+    void setVerbosity( bool v );
 
-      _period_size = p;
-    };
+    /**
+     * @brief Returns true if verbosity is enabled.
+     * @return Returns true if verbosity is enabled.
+     */
+    bool verbosity( void ) const;
 
-    Size periodSize( void ) const { return _period_size; };
-    /// @}
+    /**
+     * @brief Returns the approximation scheme state.
+     * @return Returns the approximation scheme state.
+     */
+    ApproximationSchemeSTATE stateApproximationScheme() const;
 
-    /// size of burn in on number of iteration
-    /// @{
+    /**
+     * @brief Returns the number of iterations.
+     * @return Returns the number of iterations.
+     * @throw OperationNotAllowed Raised if the scheme did not perform.
+     */
+    Size nbrIterations() const;
 
-    /// @throw OutOfLowerBound if b<1
-    void setBurnIn( Size b ) {
-      if ( b < 1 ) {
-        GUM_ERROR( OutOfLowerBound, "b should be >=1" );
-      }
+    /**
+     * @brief Returns the scheme history.
+     * @return Returns the scheme history.
+     * @throw OperationNotAllowed Raised if the scheme did not performed or
+     * if verbosity is set to false.
+     */
+    const std::vector<double>& history() const; 
+ 
+    /**
+     * @brief Initialise the scheme.
+     */
+    void initApproximationScheme();
 
-      _burn_in = b;
-    };
+    /**
+     * @brief Returns true if we are at the beginning of a period (compute
+     * error is mandatory).
+     * @return Returns true if we are at the beginning of a period (compute
+     * error is mandatory).
+     */
+    bool startOfPeriod();
 
-    Size burnIn( void ) const { return _burn_in; };
-    /// @}
+    /**
+     * @brief Update the scheme w.r.t the new error and increment steps.
+     * @param incr The new increment steps.
+     */
+    void updateApproximationScheme( unsigned int incr = 1 );
 
-    /// verbosity
-    /// @{
-    void setVerbosity( bool v ) { _verbosity = v; };
+    /**
+     * @brief Returns the remaining burn in.
+     * @return Returns the remaining burn in.
+     */
+    Size remainingBurnIn();
 
-    bool verbosity( void ) const { return _verbosity; };
-    /// @}
+    /**
+     * @brief Stop the approximation scheme.
+     */
+    void stopApproximationScheme();
 
-    /// history
-    /// @{
-
-    ApproximationSchemeSTATE stateApproximationScheme() const {
-      return _current_state;
-    }
-
-    /// @throw OperationNotAllowed if scheme not performed
-    Size nbrIterations() const {
-      if ( stateApproximationScheme() == ApproximationSchemeSTATE::Undefined ) {
-        GUM_ERROR( OperationNotAllowed,
-                   "state of the approximation scheme is undefined" );
-      }
-
-      return _current_step;
-    };
-
-    /// @throw OperationNotAllowed if scheme not performed or verbosity=false
-    const std::vector<double>& history() const {
-      if ( stateApproximationScheme() == ApproximationSchemeSTATE::Undefined ) {
-        GUM_ERROR( OperationNotAllowed,
-                   "state of the approximation scheme is udefined" );
-      }
-
-      if ( verbosity() == false ) {
-        GUM_ERROR( OperationNotAllowed, "No history when verbosity=false" );
-      }
-
-      return _history;
-    }
-    /// @}
-    /// @{
-
-    /// initialise the scheme
-    void initApproximationScheme() {
-      _current_state = ApproximationSchemeSTATE::Continue;
-      _current_step = 0;
-      _current_epsilon = _current_rate = -1.0;
-      _history.clear();
-      _timer.reset();
-    };
-
-    /// @return true if we are at the beginning of a period (compute error is
-    /// mandatory)
-    bool startOfPeriod() {
-      if ( _current_step < _burn_in ) {
-        return false;
-      }
-
-      if ( _period_size == 1 ) {
-        return true;
-      }
-
-      return ( ( _current_step - _burn_in ) % _period_size == 0 );
-    }
-
-    /// update the scheme w.r.t the new error and incr steps
-    void updateApproximationScheme( unsigned int incr = 1 ) {
-      _current_step += incr;
-    }
-
-    Size remainingBurnIn() {
-      if ( _burn_in > _current_step ) {
-        return _burn_in - _current_step;
-      } else {
-        return 0;
-      }
-    }
-
-    /// stop approximation scheme by user request.
-    void stopApproximationScheme() {
-      if ( _current_state == ApproximationSchemeSTATE::Continue ) {
-        _stopScheme( ApproximationSchemeSTATE::Stopped );
-      }
-    }
-
-    /// update the scheme w.r.t the new error. Test the stopping criterions that
-    /// are
-    /// enabled
-    /// @throw OperationNotAllowed if stat!=ApproximationSchemeSTATE::Continue
-    /// @return false if state become != ApproximationSchemeSTATE::Continue
-    bool continueApproximationScheme( double error ) {
-      // For coherence, we fix the time used in the method
-
-      double timer_step = _timer.step();
-
-      if ( _enabled_max_time ) {
-        if ( timer_step > _max_time ) {
-          _stopScheme( ApproximationSchemeSTATE::TimeLimit );
-          return false;
-        }
-      }
-
-      if ( !startOfPeriod() ) {
-        return true;
-      }
-
-      if ( _current_state != ApproximationSchemeSTATE::Continue ) {
-        GUM_ERROR( OperationNotAllowed,
-                   "state of the approximation scheme is not correct : " +
-                       messageApproximationScheme() );
-      }
-
-      if ( verbosity() ) {
-        _history.push_back( error );
-      }
-
-      if ( _enabled_max_iter ) {
-        if ( _current_step > _max_iter ) {
-          _stopScheme( ApproximationSchemeSTATE::Limit );
-          return false;
-        }
-      }
-
-      _last_epsilon = _current_epsilon;
-      _current_epsilon =
-          error;  // eps rate isEnabled needs it so affectation was
-                  // moved from eps isEnabled below
-
-      if ( _enabled_eps ) {
-        if ( _current_epsilon <= _eps ) {
-          _stopScheme( ApproximationSchemeSTATE::Epsilon );
-          return false;
-        }
-      }
-
-      if ( _last_epsilon >= 0. ) {
-        if ( _current_epsilon >
-             .0 ) {  // ! _current_epsilon can be 0. AND epsilon
-                     // isEnabled can be disabled !
-          _current_rate = std::fabs( ( _current_epsilon - _last_epsilon ) /
-                                     _current_epsilon );
-        }
-        // limit with current eps ---> 0 is | 1 - ( last_eps / 0 ) | --->
-        // infinity
-        // the else means a return false if we isEnabled the rate below, as we
-        // would
-        // have returned false if epsilon isEnabled was enabled
-        else {
-          _current_rate = _min_rate_eps;
-        }
-
-        if ( _enabled_min_rate_eps ) {
-          if ( _current_rate <= _min_rate_eps ) {
-            _stopScheme( ApproximationSchemeSTATE::Rate );
-            return false;
-          }
-        }
-      }
-
-      if ( stateApproximationScheme() == ApproximationSchemeSTATE::Continue ) {
-        if ( onProgress.hasListener() ) {
-          GUM_EMIT3( onProgress,
-                     ( _current_step * 100 ) / _max_iter,
-                     _current_epsilon,
-                     timer_step );
-        }
-
-        return true;
-      } else {
-        return false;
-      }
-    };
+    /**
+     * @brief Update the scheme w.r.t the new error.
+     *
+     * Test the stopping criterion that are enabled.
+     *
+     * @param error The new error value.
+     * @return false if state become != ApproximationSchemeSTATE::Continue
+     * @throw OperationNotAllowed Raised if state !=
+     * ApproximationSchemeSTATE::Continue.
+     */
+    bool continueApproximationScheme( double error );
 
     ///  @}
+
     private:
-    void _stopScheme( ApproximationSchemeSTATE new_state ) {
-      if ( new_state == ApproximationSchemeSTATE::Continue ) {
-        return;
-      }
-
-      if ( new_state == ApproximationSchemeSTATE::Undefined ) {
-        return;
-      }
-
-      _current_state = new_state;
-      _timer.pause();
-
-      if ( onStop.hasListener() ) {
-        GUM_EMIT1( onStop, messageApproximationScheme() );
-      }
-    }
+    /**
+     * @brief Stop the scheme given a new state.
+     * @param new_state The scheme new state.
+     */
+    void _stopScheme( ApproximationSchemeSTATE new_state );
 
     protected:
-    /// current state of approximationScheme
-    double _current_epsilon, _last_epsilon, _current_rate;
+    /// Current epsilon.
+    double _current_epsilon;
+
+    /// Last epsilon value.
+    double _last_epsilon;
+
+    /// Current rate.
+    double _current_rate;
+
+    /// The current step.
     Size _current_step;
+
+    /// The timer.
     Timer _timer;
+
+    /// The current state.
     ApproximationSchemeSTATE _current_state;
 
-    /// history for trace (if verbosity=true)
+    /// The scheme history, used only if verbosity == true.
     std::vector<double> _history;
 
-    /// Threshold for convergence
+    /// Threshold for convergence.
     double _eps;
-    /// boolean for threshold convergence isEnabled
+
+    /// If true, the threshold convergence is enabled.
     bool _enabled_eps;
 
-    /// Threshold for rate of epsilon
+    /// Threshold for the epsilon rate.
     double _min_rate_eps;
-    /// boolean for threshold rate of epsilon isEnabled
+
+    /// If true, the minimal threshold for epsilon rate is enabled.
     bool _enabled_min_rate_eps;
 
-    // timeout
+    /// The timeout.
     double _max_time;
-    // boolean for timeout isEnabled
+
+    /// If true, the timeout is enabled.
     bool _enabled_max_time;
 
-    /// max iterations as a stopping criterion
+    /// The maximum iterations.
     Size _max_iter;
-    // boolean for max iterations stopping criterion isEnabled
+
+    /// If true, the maximum iterations stopping criterion is enabled.
     bool _enabled_max_iter;
 
-    /// nbr of iterations before checking stopping criteria
+    /// Number of iterations before checking stopping criteria.
     Size _burn_in;
 
-    /// checking criteria every _period_size iterations
+    /// Checking criteria frequency.
     Size _period_size;
 
+    /// If true, verbosity is enabled.
     bool _verbosity;
   };
 }  // namespace gum
+
+#ifndef GUM_NO_INLINE
+#include <agrum/core/algorithms/approximationScheme/approximationScheme.inl>
+#endif
+
 #endif  // GUM_APPROXIMATION_SCHEME_H

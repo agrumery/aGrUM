@@ -34,7 +34,7 @@ namespace gum {
    * @class ApproximationPolicy
    * @headerfile approximationPolicy.h <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
    * @brief Mother class for all approximation policy classes.
-   * @ingroup approximation_group
+   * @ingroup approximationpolicy_group
    */
   template <typename GUM_SCALAR>
   class ApproximationPolicy {
