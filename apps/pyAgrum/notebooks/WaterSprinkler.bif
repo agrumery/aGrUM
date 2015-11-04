@@ -1,6 +1,6 @@
 
 network WaterSprinkler{
-   property software aGrUM;
+   property software aGrUM..;
 }
 
 variable c {
