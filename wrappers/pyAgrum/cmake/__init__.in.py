@@ -54,7 +54,7 @@ from @PYAGRUM_MODULE@ import isOMP,setNumberOfThreads,getNumberOfLogicalProcesso
 
 from @PYAGRUM_MODULE@ import CredalNet,CNMonteCarloSampling,CNLoopyPropagation
 
-from @PYAGRUM_MODULE@ import DefaultInLabel,DuplicateElement,DuplicateLabel,EmptyBSTree,EmptySet,Exception,FatalError,FormatNotFound,GraphError,IOError,IdError,InvalidArc,InvalidArgument,InvalidArgumentsNumber,InvalidDirectedCycle,InvalidEdge,InvalidNode,NoChild,NoNeighbour,NoParent,NotFound,NullElement,OperationNotAllowed,OutOfBounds,OutOfLowerBound,OutOfUpperBound,ReferenceError,SizeError,SyntaxError,UndefinedElement,UndefinedIteratorKey,UndefinedIteratorValue,UnknownLabelInDatabase
+from @PYAGRUM_MODULE@ import DefaultInLabel,DuplicateElement,DuplicateLabel,EmptyBSTree,EmptySet,GumException,FatalError,FormatNotFound,GraphError,IOError,IdError,InvalidArc,InvalidArgument,InvalidArgumentsNumber,InvalidDirectedCycle,InvalidEdge,InvalidNode,NoChild,NoNeighbour,NoParent,NotFound,NullElement,OperationNotAllowed,OutOfBounds,OutOfLowerBound,OutOfUpperBound,ReferenceError,SizeError,SyntaxError,UndefinedElement,UndefinedIteratorKey,UndefinedIteratorValue,UnknownLabelInDatabase
 
 # seed is chosen randomly :)
 initRandom(0)

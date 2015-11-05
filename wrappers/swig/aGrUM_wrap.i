@@ -266,7 +266,7 @@ namespace std {
 %exceptionclass gum::IOError;
 %exceptionclass std::exception;
 
-
+%rename Exception GumException;
 
 /* WRAPPED HEADERS (pyAgrum API) */
 %import <agrum/config.h>
