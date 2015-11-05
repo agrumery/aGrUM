@@ -22,20 +22,17 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-#include <agrum/core/utils_random.h>
 
 namespace gum {
 
-  /// default constructor
+  // default constructor
   INLINE Dirichlet::Dirichlet( const param_type& params, unsigned int seed )
       : __generator( seed ? seed : gum::randomGeneratorSeed() )
       , __params( params ) {
     GUM_CONSTRUCTOR( Dirichlet );
   }
 
-  /// copy constructor
+  // copy constructor
   INLINE Dirichlet::Dirichlet( const Dirichlet& from )
       : __generator( from.__generator )
       , __gamma( from.__gamma )
@@ -43,7 +40,7 @@ namespace gum {
     GUM_CONS_CPY( Dirichlet );
   }
 
-  /// move constructor
+  // move constructor
   INLINE Dirichlet::Dirichlet( Dirichlet&& from )
       : __generator( std::move( from.__generator ) )
       , __gamma( std::move( from.__gamma ) )
@@ -51,10 +48,10 @@ namespace gum {
     GUM_CONS_MOV( Dirichlet );
   }
 
-  /// destructor
+  // destructor
   INLINE Dirichlet::~Dirichlet() { GUM_DESTRUCTOR( Dirichlet ); }
 
-  /// copy operator
+  // copy operator
   INLINE Dirichlet& Dirichlet::operator=( const Dirichlet& from ) {
     if ( &from != this ) {
       __generator = from.__generator;
@@ -64,7 +61,7 @@ namespace gum {
     return *this;
   }
 
-  /// move operator
+  // move operator
   INLINE Dirichlet& Dirichlet::operator=( Dirichlet&& from ) {
     if ( &from != this ) {
       __generator = std::move( from.__generator );
@@ -74,7 +71,7 @@ namespace gum {
     return *this;
   }
 
-  /// returns a sample from the Dirichlet distribution
+  // returns a sample from the Dirichlet distribution
   INLINE Dirichlet::result_type Dirichlet::operator()() {
     unsigned int size = __params.size();
     result_type res( size );
@@ -93,7 +90,7 @@ namespace gum {
     return res;
   }
 
-  /// returns a sample from the Dirichlet distribution
+  // returns a sample from the Dirichlet distribution
   INLINE Dirichlet::result_type Dirichlet::
   operator()( const Dirichlet::param_type& parm ) {
     unsigned int size = parm.size();
@@ -113,12 +110,12 @@ namespace gum {
     return res;
   }
 
-  /// returns the parameters of the distribution
+  // returns the parameters of the distribution
   INLINE const Dirichlet::param_type& Dirichlet::param() const noexcept {
     return __params;
   }
 
-  /// sets the parameters of the distribution
+  // sets the parameters of the distribution
   INLINE void Dirichlet::param( const Dirichlet::param_type& parm ) {
     __params = parm;
   }
@@ -131,4 +128,3 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
