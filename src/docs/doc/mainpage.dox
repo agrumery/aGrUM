@@ -20,6 +20,11 @@
  * About aGrUM configuration.
  * @}
  *
+ * \defgroup math_group Math
+ * @{
+ * All the maths you'll need.
+ * @}
+ *
  * \defgroup utilities_group Utilities
  * @{
  * About aGrUM utilities.

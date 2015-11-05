@@ -17,19 +17,20 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief The class that represents the chi2 distribution
  *
  * The Chi2 class allows to easily compute critical values for the Chi2
- * distribution
+ * distribution.
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
 
-  /// sets the conditioning nodes (useful for computing degrees of freedom)
+  // sets the conditioning nodes (useful for computing degrees of freedom)
   INLINE void Chi2::setConditioningNodes(
       const std::vector<unsigned int>& db_conditioning_ids ) {
     __conditioning_size = 1;
@@ -38,21 +39,21 @@ namespace gum {
     }
   }
 
-  /// returns the number of degrees of freedom
+  // returns the number of degrees of freedom
   INLINE unsigned long
   Chi2::degreesOfFreedom( const std::pair<unsigned int, unsigned int>& pair ) {
     return ( __conditioning_size * ( __modalities[pair.first] - 1 ) *
              ( __modalities[pair.second] - 1 ) );
   }
 
-  /// returns the number of degrees of freedom
+  // returns the number of degrees of freedom
   INLINE unsigned long Chi2::degreesOfFreedom( unsigned int var1,
                                                unsigned int var2 ) {
     return ( __conditioning_size * ( __modalities[var1] - 1 ) *
              ( __modalities[var2] - 1 ) );
   }
 
-  /// computes the critical value according to the number of degrees of freedom
+  // computes the critical value according to the number of degrees of freedom
   ALWAYS_INLINE float
   Chi2::criticalValue( const std::pair<unsigned int, unsigned int>& pair ) {
     unsigned long DF = degreesOfFreedom( pair );
@@ -69,7 +70,7 @@ namespace gum {
     }
   }
 
-  /// computes the critical value according to the number of degrees of freedom
+  // computes the critical value according to the number of degrees of freedom
   ALWAYS_INLINE float Chi2::criticalValue( unsigned int var1,
                                            unsigned int var2 ) {
     unsigned long DF = degreesOfFreedom( var1, var2 );
@@ -86,7 +87,7 @@ namespace gum {
     }
   }
 
-  /// modifies the confidence proba
+  // modifies the confidence proba
   INLINE void Chi2::setConfidenceProba( float new_proba ) {
     // if we did not change the confidence proba, do nothing
     if ( __confidence_proba == new_proba ) return;
@@ -99,4 +100,3 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -17,18 +17,19 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief The class that represents the chi2 distribution
  *
  * The Chi2 class allows to easily compute critical values for the Chi2
- * distribution
+ * distribution.
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-#include <agrum/config.h>
 #include <agrum/core/math/chi2.h>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // constants used by Gary Perlman for his code for computing chi2 critical
 // values
@@ -41,14 +42,16 @@
 #define GUM_BIGX 20.0  // max value to represent exp (x)
 #define gum__ex( x ) ( ( ( x ) < -GUM_BIGX ) ? 0.0 : std::exp( x ) )
 
-/// include the inlined functions if necessary
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
 #include <agrum/core/math/chi2.inl>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
 
-  /// default constructor
+  // default constructor
   Chi2::Chi2( const std::vector<unsigned int>& var_modalities,
               float confidence_proba )
       : __modalities( var_modalities )
@@ -57,13 +60,13 @@ namespace gum {
     GUM_CONSTRUCTOR( Chi2 );
   }
 
-  /// destructor
+  // destructor
   Chi2::~Chi2() {
     // for debugging purposes
     GUM_DESTRUCTOR( Chi2 );
   }
 
-  /// computes the probability of normal z value (used by the cache)
+  // computes the probability of normal z value (used by the cache)
   double Chi2::__probaZValue( double z ) {
     double y, x, w;
 
@@ -126,7 +129,7 @@ namespace gum {
     return ( z > 0.0 ? ( ( x + 1.0 ) * 0.5 ) : ( ( 1.0 - x ) * 0.5 ) );
   }
 
-  /// computes the probability of chi2 value (used by the cache)
+  // computes the probability of chi2 value (used by the cache)
   double Chi2::__probaChi2( double x, unsigned long df ) {
     double a, y = 0, s;
     double e, c, z;
@@ -173,7 +176,7 @@ namespace gum {
       return ( s );
   }
 
-  /// computes the critical value of a given chi2 test (used by the cache)
+  // computes the critical value of a given chi2 test (used by the cache)
   double Chi2::__criticalValue( double proba, unsigned long df ) {
     double minchisq = 0.0;
     double maxchisq = GUM_CHI_MAX;
@@ -200,4 +203,3 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
