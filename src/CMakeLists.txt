@@ -20,6 +20,7 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.h.in" "${AGRUM_BINARY_D
 ### CONDITIONAL RULES (if COCO/R has been found, we add rules) ####
 include(CocoR.agrum)
 if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
+     CocoRTarget(core/math/cocoR SyntaxFormula gum:formula BASE)
      CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF BN)
      CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL BN)
      CocoRTarget(BN/io/net/cocoR SyntaxNet gum:net BN)
