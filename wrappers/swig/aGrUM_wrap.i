@@ -227,14 +227,13 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
   using gum::learning::genericBNLearner::useK2;
   using gum::learning::genericBNLearner::setMaxIndegree;
   using gum::learning::genericBNLearner::setSliceOrder;
-  using gum::learning::genericBNLearner::addForbiddenAr;
+  using gum::learning::genericBNLearner::addForbiddenArc;
   using gum::learning::genericBNLearner::eraseForbiddenArc;
   using gum::learning::genericBNLearner::addMandatoryArc;
   using gum::learning::genericBNLearner::addMandatoryArc;
   using gum::learning::genericBNLearner::eraseMandatoryArc;
-
-  /*using gum::learning::genericBNLearner::setInitialDAG;*/
 }
+
 
 %include "forUsing.i"
 

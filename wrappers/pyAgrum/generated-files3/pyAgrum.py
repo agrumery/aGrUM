@@ -6432,6 +6432,15 @@ class BNLearner_double(_object):
         return _pyAgrum.BNLearner_double_setSliceOrder(self, *args)
 
 
+    def addForbiddenArc(self, *args) -> "void":
+        """
+        addForbiddenArc(BNLearner_double self, Arc arc)
+        addForbiddenArc(BNLearner_double self, gum::NodeId const tail, gum::NodeId const head)
+        addForbiddenArc(BNLearner_double self, std::string const & tail, std::string const & head)
+        """
+        return _pyAgrum.BNLearner_double_addForbiddenArc(self, *args)
+
+
     def eraseForbiddenArc(self, *args) -> "void":
         """
         eraseForbiddenArc(BNLearner_double self, Arc arc)
@@ -6457,6 +6466,11 @@ class BNLearner_double(_object):
         eraseMandatoryArc(BNLearner_double self, std::string const & tail, std::string const & head)
         """
         return _pyAgrum.BNLearner_double_eraseMandatoryArc(self, *args)
+
+
+    def setInitialDAG(self, g: 'DAG') -> "void":
+        """setInitialDAG(BNLearner_double self, DAG g)"""
+        return _pyAgrum.BNLearner_double_setInitialDAG(self, g)
 
 BNLearner_double_swigregister = _pyAgrum.BNLearner_double_swigregister
 BNLearner_double_swigregister(BNLearner_double)

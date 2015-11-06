@@ -6228,9 +6228,59 @@ class BNLearner_double(_object):
         return _pyAgrum.BNLearner_double_learnParameters(self, *args)
 
 
+    def setVerbosity(self, v):
+        """setVerbosity(BNLearner_double self, bool v)"""
+        return _pyAgrum.BNLearner_double_setVerbosity(self, v)
+
+
+    def setEpsilon(self, eps):
+        """setEpsilon(BNLearner_double self, double eps)"""
+        return _pyAgrum.BNLearner_double_setEpsilon(self, eps)
+
+
+    def setMinEpsilonRate(self, rate):
+        """setMinEpsilonRate(BNLearner_double self, double rate)"""
+        return _pyAgrum.BNLearner_double_setMinEpsilonRate(self, rate)
+
+
+    def setMaxIter(self, max):
+        """setMaxIter(BNLearner_double self, gum::Size max)"""
+        return _pyAgrum.BNLearner_double_setMaxIter(self, max)
+
+
     def setMaxTime(self, timeout):
         """setMaxTime(BNLearner_double self, double timeout)"""
         return _pyAgrum.BNLearner_double_setMaxTime(self, timeout)
+
+
+    def setPeriodSize(self, p):
+        """setPeriodSize(BNLearner_double self, gum::Size p)"""
+        return _pyAgrum.BNLearner_double_setPeriodSize(self, p)
+
+
+    def setBurnIn(self, b):
+        """setBurnIn(BNLearner_double self, gum::Size b)"""
+        return _pyAgrum.BNLearner_double_setBurnIn(self, b)
+
+
+    def verbosity(self):
+        """verbosity(BNLearner_double self) -> bool"""
+        return _pyAgrum.BNLearner_double_verbosity(self)
+
+
+    def epsilon(self):
+        """epsilon(BNLearner_double self) -> double"""
+        return _pyAgrum.BNLearner_double_epsilon(self)
+
+
+    def minEpsilonRate(self):
+        """minEpsilonRate(BNLearner_double self) -> double"""
+        return _pyAgrum.BNLearner_double_minEpsilonRate(self)
+
+
+    def maxIter(self):
+        """maxIter(BNLearner_double self) -> gum::Size"""
+        return _pyAgrum.BNLearner_double_maxIter(self)
 
 
     def maxTime(self):
@@ -6238,9 +6288,34 @@ class BNLearner_double(_object):
         return _pyAgrum.BNLearner_double_maxTime(self)
 
 
+    def periodSize(self):
+        """periodSize(BNLearner_double self) -> gum::Size"""
+        return _pyAgrum.BNLearner_double_periodSize(self)
+
+
+    def burnIn(self):
+        """burnIn(BNLearner_double self) -> gum::Size"""
+        return _pyAgrum.BNLearner_double_burnIn(self)
+
+
+    def nbrIterations(self):
+        """nbrIterations(BNLearner_double self) -> gum::Size"""
+        return _pyAgrum.BNLearner_double_nbrIterations(self)
+
+
     def currentTime(self):
         """currentTime(BNLearner_double self) -> double"""
         return _pyAgrum.BNLearner_double_currentTime(self)
+
+
+    def messageApproximationScheme(self):
+        """messageApproximationScheme(BNLearner_double self) -> std::string"""
+        return _pyAgrum.BNLearner_double_messageApproximationScheme(self)
+
+
+    def history(self):
+        """history(BNLearner_double self) -> Vector_double"""
+        return _pyAgrum.BNLearner_double_history(self)
 
 
     def learnDAG(self):
@@ -6335,9 +6410,35 @@ class BNLearner_double(_object):
         return _pyAgrum.BNLearner_double_useLocalSearchWithTabuList(self, *args)
 
 
+    def useK2(self, *args):
+        """
+        useK2(BNLearner_double self, PyObject * l)
+        useK2(BNLearner_double self, gum::Sequence< gum::NodeId > const & order)
+        useK2(BNLearner_double self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & order)
+        """
+        return _pyAgrum.BNLearner_double_useK2(self, *args)
+
+
     def setMaxIndegree(self, max_indegree):
         """setMaxIndegree(BNLearner_double self, unsigned int max_indegree)"""
         return _pyAgrum.BNLearner_double_setMaxIndegree(self, max_indegree)
+
+
+    def setSliceOrder(self, *args):
+        """
+        setSliceOrder(BNLearner_double self, PyObject * l)
+        setSliceOrder(BNLearner_double self, NodeProperty< unsigned int > const & slice_order)
+        """
+        return _pyAgrum.BNLearner_double_setSliceOrder(self, *args)
+
+
+    def addForbiddenArc(self, *args):
+        """
+        addForbiddenArc(BNLearner_double self, Arc arc)
+        addForbiddenArc(BNLearner_double self, gum::NodeId const tail, gum::NodeId const head)
+        addForbiddenArc(BNLearner_double self, std::string const & tail, std::string const & head)
+        """
+        return _pyAgrum.BNLearner_double_addForbiddenArc(self, *args)
 
 
     def eraseForbiddenArc(self, *args):
@@ -6367,96 +6468,9 @@ class BNLearner_double(_object):
         return _pyAgrum.BNLearner_double_eraseMandatoryArc(self, *args)
 
 
-    def setSliceOrder(self, *args):
-        """
-        setSliceOrder(BNLearner_double self, NodeProperty< unsigned int > const & slice_order)
-        setSliceOrder(BNLearner_double self, PyObject * l)
-        """
-        return _pyAgrum.BNLearner_double_setSliceOrder(self, *args)
-
-
-    def useK2(self, *args):
-        """
-        useK2(BNLearner_double self, gum::Sequence< gum::NodeId > const & order)
-        useK2(BNLearner_double self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & order)
-        useK2(BNLearner_double self, PyObject * l)
-        """
-        return _pyAgrum.BNLearner_double_useK2(self, *args)
-
-
-    def setVerbosity(self, v):
-        """setVerbosity(BNLearner_double self, bool v)"""
-        return _pyAgrum.BNLearner_double_setVerbosity(self, v)
-
-
-    def setEpsilon(self, eps):
-        """setEpsilon(BNLearner_double self, double eps)"""
-        return _pyAgrum.BNLearner_double_setEpsilon(self, eps)
-
-
-    def setMinEpsilonRate(self, rate):
-        """setMinEpsilonRate(BNLearner_double self, double rate)"""
-        return _pyAgrum.BNLearner_double_setMinEpsilonRate(self, rate)
-
-
-    def setMaxIter(self, max):
-        """setMaxIter(BNLearner_double self, gum::Size max)"""
-        return _pyAgrum.BNLearner_double_setMaxIter(self, max)
-
-
-    def setPeriodSize(self, p):
-        """setPeriodSize(BNLearner_double self, gum::Size p)"""
-        return _pyAgrum.BNLearner_double_setPeriodSize(self, p)
-
-
-    def setBurnIn(self, b):
-        """setBurnIn(BNLearner_double self, gum::Size b)"""
-        return _pyAgrum.BNLearner_double_setBurnIn(self, b)
-
-
-    def verbosity(self):
-        """verbosity(BNLearner_double self) -> bool"""
-        return _pyAgrum.BNLearner_double_verbosity(self)
-
-
-    def epsilon(self):
-        """epsilon(BNLearner_double self) -> double"""
-        return _pyAgrum.BNLearner_double_epsilon(self)
-
-
-    def minEpsilonRate(self):
-        """minEpsilonRate(BNLearner_double self) -> double"""
-        return _pyAgrum.BNLearner_double_minEpsilonRate(self)
-
-
-    def maxIter(self):
-        """maxIter(BNLearner_double self) -> gum::Size"""
-        return _pyAgrum.BNLearner_double_maxIter(self)
-
-
-    def periodSize(self):
-        """periodSize(BNLearner_double self) -> gum::Size"""
-        return _pyAgrum.BNLearner_double_periodSize(self)
-
-
-    def burnIn(self):
-        """burnIn(BNLearner_double self) -> gum::Size"""
-        return _pyAgrum.BNLearner_double_burnIn(self)
-
-
-    def nbrIterations(self):
-        """nbrIterations(BNLearner_double self) -> gum::Size"""
-        return _pyAgrum.BNLearner_double_nbrIterations(self)
-
-
-    def messageApproximationScheme(self):
-        """messageApproximationScheme(BNLearner_double self) -> std::string"""
-        return _pyAgrum.BNLearner_double_messageApproximationScheme(self)
-
-
-    def history(self):
-        """history(BNLearner_double self) -> Vector_double"""
-        return _pyAgrum.BNLearner_double_history(self)
+    def setInitialDAG(self, g):
+        """setInitialDAG(BNLearner_double self, DAG g)"""
+        return _pyAgrum.BNLearner_double_setInitialDAG(self, g)
 
 BNLearner_double_swigregister = _pyAgrum.BNLearner_double_swigregister
 BNLearner_double_swigregister(BNLearner_double)

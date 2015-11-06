@@ -19,6 +19,8 @@
  ***************************************************************************/
 #include <ctime>
 
+//to ease IDE parser
+#include <agrum/core/utils_random.h>
 namespace gum {
 
   INLINE
