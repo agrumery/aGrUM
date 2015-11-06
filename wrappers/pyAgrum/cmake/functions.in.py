@@ -25,7 +25,7 @@ from @PYAGRUM_MODULE@ import InfluenceDiagram
 
 def about():
   print("pyAgrum version {0}".format('@PYAGRUM_VERSION@'))
-  print("(c) Pierre-Henri Wuillemin and others")
+  print("(c) Pierre-Henri Wuillemin, Christophe Gonzales, Lionel Torti")
   print("    UPMC 2015")
   print("""
     This is free software; see the source code for copying conditions.

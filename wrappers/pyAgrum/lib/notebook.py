@@ -39,6 +39,8 @@ import pydotplus as dot
 
 import IPython.display
 from IPython.core.pylabtools import print_figure
+from IPython.core.display import Image,display_png
+from IPython.display import display,HTML,SVG
 
 import pyAgrum as gum
 
@@ -63,6 +65,26 @@ def configuration():
       '%a %b %d %H:%M:%S %Y %Z')
 
   return IPython.display.HTML(res)
+
+
+def showGraph(gr,size="4",format="png"):
+  gr.set_size(size)
+  if format=="svg":
+    gsvg=SVG(gr.create_svg())
+    display(HTML("<div align='center'>"+gsvg.data+"</div>"))
+  else:
+    display_png(Image(format="png",data=gr.create_png()))
+
+def showDot(dotstring,size="4",format="png"):
+  showGraph(dot.graph_from_dot_data(dotstring),size,format)
+
+def showJunctionTree(bn,size="4",format="png"):
+  ie=gum.LazyPropagation(bn)
+  showDot(ie.junctionTreeToDot(),size,format)
+
+def showInfluenceDiagram(diag,size="4",format="png"):
+  showDot(diag.toDot(),size,format)
+
 
 def getPosterior(bn,ev,target):
     """
@@ -147,9 +169,9 @@ def _proba2rgb(p=0.99,cmap=INFOcmap):
         r,g,b="AA","FF","FF"
     else:
       (r,g,b,_)=cmap(p)
-      r="%02x"%(r*256)
-      g="%02x"%(g*256)
-      b="%02x"%(b*256)
+      r="%02x"%int(r*256)
+      g="%02x"%int(g*256)
+      b="%02x"%int(b*256)
 
     return r,g,b
 
@@ -189,11 +211,12 @@ def getBN(bn,size="4",vals=None,cmap=INFOcmap):
         edge=dot.Edge(bn.variable(a[0]).name(),bn.variable(a[1]).name())
         graph.add_edge(edge)
     graph.set_size(size)
-    return IPython.display.SVG(graph.create_svg())
+    return graph
 
-def showBN(bn,size="4",vals=None,cmap=INFOcmap):
+def showBN(bn,size="4",vals=None,cmap=INFOcmap,format="png"):
   gr=getBN(bn,size,vals,cmap)
-  IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
+  showGraph(gr,size,format)
+  #IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
 
 
 def _normalizeVals(vals,hilightExtrema=False):
@@ -240,29 +263,11 @@ def showInference(bn,ie,size="4",cmap=INFOcmap):
   png=print_figure(canvas.figure,"png") # from IPython.core.pylabtools
   png_legend="<img style='vertical-align:middle' src='data:image/png;base64,%s'>"%encodestring(png).decode('ascii')
 
+  gsvg=SVG(gr.create_svg())
   IPython.display.display(IPython.display.HTML("<div align='center'>"+
-                              gr.data+
+                              gsvg.data+
                               "</div><div align='center'>"+
                               "<font color='"+_proba2bgcolor(0.01,cmap)+"'>"+str(mi)+"</font>"
                               +png_legend+
                               "<font color='"+_proba2bgcolor(0.99,cmap)+"'>"+str(ma)+"</font>"
                               "</div>"))
-
-def getJunctionTree(bn,size="4"):
-  ie=gum.LazyPropagation(bn)
-  graph=dot.graph_from_dot_data(ie.junctionTreeToDot())
-  graph.set_size(size)
-  return IPython.display.SVG(graph.create_svg())
-
-def showJunctionTree(bn,size="4"):
-  gr=getJunctionTree(bn,size)
-  IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
-
-def getInfluenceDiagram(diag,size="4"):
-  graph=dot.graph_from_dot_data(diag.toDot())
-  graph.set_size(size)
-  return IPython.display.SVG(graph.create_svg())
-
-def showInfluenceDiagram(diag,size="4"):
-  gr=getInfluenceDiagram(diag,size)
-  IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
