@@ -39,6 +39,8 @@ import pydotplus as dot
 
 import IPython.display
 from IPython.core.pylabtools import print_figure
+from IPython.core.display import Image,display_png
+from IPython.display import display,HTML,SVG
 
 import pyAgrum as gum
 
@@ -66,9 +68,6 @@ def configuration():
 
 
 def showGraph(gr,size="4",format="png"):
-  from IPython.core.display import Image,display_png
-  from IPython.display import display,HTML,SVG
-
   gr.set_size(size)
   if format=="svg":
     gsvg=SVG(gr.create_svg())
@@ -212,11 +211,12 @@ def getBN(bn,size="4",vals=None,cmap=INFOcmap):
         edge=dot.Edge(bn.variable(a[0]).name(),bn.variable(a[1]).name())
         graph.add_edge(edge)
     graph.set_size(size)
-    return IPython.display.SVG(graph.create_svg())
+    return graph
 
-def showBN(bn,size="4",vals=None,cmap=INFOcmap):
+def showBN(bn,size="4",vals=None,cmap=INFOcmap,format="png"):
   gr=getBN(bn,size,vals,cmap)
-  IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
+  showGraph(gr,size,format)
+  #IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
 
 
 def _normalizeVals(vals,hilightExtrema=False):
@@ -263,8 +263,9 @@ def showInference(bn,ie,size="4",cmap=INFOcmap):
   png=print_figure(canvas.figure,"png") # from IPython.core.pylabtools
   png_legend="<img style='vertical-align:middle' src='data:image/png;base64,%s'>"%encodestring(png).decode('ascii')
 
+  gsvg=SVG(gr.create_svg())
   IPython.display.display(IPython.display.HTML("<div align='center'>"+
-                              gr.data+
+                              gsvg.data+
                               "</div><div align='center'>"+
                               "<font color='"+_proba2bgcolor(0.01,cmap)+"'>"+str(mi)+"</font>"
                               +png_legend+
