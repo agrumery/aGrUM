@@ -52,7 +52,6 @@ namespace gum {
 namespace BIF {
 
 
-
 class Parser {
   private:
     	enum {

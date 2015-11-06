@@ -28,6 +28,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 #include <agrum/core/cocoR/common.h>
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 namespace gum {
 
   wchar_t* coco_string_create( const wchar_t* value ) {
@@ -270,3 +272,5 @@ namespace gum {
   }
 
 }  // namespace gum
+
+#endif // DOXYGEN_SHOULD_SKIP_THIS

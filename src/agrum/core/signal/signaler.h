@@ -17,14 +17,17 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief Classes of signaler. For more documentation, @see signaler0.h
+/**
+ * @file
+ * @brief Classes of signaler.
+ *
+ * For more documentation, @see signaler0.h
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  *
  */
-#ifndef __SIGNALER_H
-#define __SIGNALER_H
+#ifndef GUM_SIGNALER_H
+#define GUM_SIGNALER_H
 #include <functional>
 
 #include <agrum/core/signal/listener.h>
@@ -37,6 +40,6 @@
 #include <agrum/core/signal/signaler5.h>
 #include <agrum/core/signal/signaler6.h>
 #include <agrum/core/signal/signaler7.h>
-#endif  // __SIGNALER_H
 
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
+#endif  // GUM_SIGNALER_H
+

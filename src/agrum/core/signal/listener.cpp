@@ -17,34 +17,43 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
 /**
  * @file
- * @brief Class of gum::Signaler7.
+ * @brief Class of listener.
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  *
  */
 
-#ifndef GUM_SIGNALER7_H
-#define GUM_SIGNALER7_H
+#include <agrum/core/signal/listener.h>
 
-#include <agrum/core/signal/signaler.h>
+namespace gum {
 
-#define MAKE_NAME( nom ) nom##7
-#define LIST_DECL_CLASSES                                          \
-  class type1, class type2, class type3, class type4, class type5, \
-      class type6, class type7
-#define LIST_CLASSES type1, type2, type3, type4, type5, type6, type7
-#define LIST_DECL_ARGS                                                    \
-  type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5, type6 arg6, \
-      type7 arg7
-#define LIST_ARGS arg1, arg2, arg3, arg4, arg5, arg6, arg7
+  Listener::Listener() {
+    GUM_CONSTRUCTOR( Listener ); 
+  }
 
-#define GUM_EMIT7( signal, arg1, arg2, arg3, arg4, arg5, arg6, arg7 ) \
-  this->signal( this, arg1, arg2, arg3, arg4, arg5, arg6, arg7 )
+  Listener::Listener( const Listener& l ) {
+    GUM_CONS_CPY( Listener );
 
-#define SIGNALER_PATRON_ACCEPTED
-#include <agrum/core/signal/signaler_with_args.pattern.h>
+    for ( const auto el : __senders ) {
+      el->duplicateTarget( &l, this );
+    };
+  }
 
-#endif  // GUM_SIGNALER7_H
+  Listener::~Listener() {
+    GUM_DESTRUCTOR( Listener );
+
+    for ( const auto el : __senders ) {
+      el->detachFromTarget( this );
+    }
+
+    __senders.clear();
+  }
+
+} // namespace gum
+
+#ifdef GUM_NO_INLINE
+#include <agrum/core/signal/listener.inl>
+#endif // GUM_NO_INLINE
+

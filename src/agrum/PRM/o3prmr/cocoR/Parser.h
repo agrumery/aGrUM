@@ -54,7 +54,6 @@ namespace prm {
 namespace o3prmr {
 
 
-
 class Parser {
   private:
     	enum {

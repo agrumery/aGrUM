@@ -18,13 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+/**
+ * @file
+ * @brief Meta classes for signalers.
+ *
+ * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
+ *
+ */
+
 #ifndef SIGNALER_PATRON_ACCEPTED
 #error "This file should not be included directly. Please use signaler{x}.h"
 #endif  // SIGNALER_PATRON_ACCEPTED
 
-namespace gum {
+#include <agrum/core/list.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+namespace gum {
 
   namespace __sig__ {
 
@@ -208,9 +218,9 @@ namespace gum {
     }
   };
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
-
 }  // namespace gum
+
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 #undef MAKE_NAME
 #undef LIST_DECL_CLASSES
@@ -218,3 +228,4 @@ namespace gum {
 #undef LIST_DECL_ARGS
 #undef LIST_ARGS
 #undef SIGNALER_PATRON_ACCEPTED
+

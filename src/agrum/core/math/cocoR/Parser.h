@@ -56,7 +56,6 @@ namespace gum {
 namespace formula {
 
 
-
 class Parser {
   private:
     	enum {

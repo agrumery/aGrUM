@@ -20,31 +20,49 @@
 
 /**
  * @file
- * @brief Class of gum::Signaler7.
+ * @brief Class of signalers.
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  *
  */
 
-#ifndef GUM_SIGNALER7_H
-#define GUM_SIGNALER7_H
+#include <agrum/core/signal/signaler0.h>
 
-#include <agrum/core/signal/signaler.h>
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#define MAKE_NAME( nom ) nom##7
-#define LIST_DECL_CLASSES                                          \
-  class type1, class type2, class type3, class type4, class type5, \
-      class type6, class type7
-#define LIST_CLASSES type1, type2, type3, type4, type5, type6, type7
-#define LIST_DECL_ARGS                                                    \
-  type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5, type6 arg6, \
-      type7 arg7
-#define LIST_ARGS arg1, arg2, arg3, arg4, arg5, arg6, arg7
+namespace gum {
+  namespace __sig__ {
 
-#define GUM_EMIT7( signal, arg1, arg2, arg3, arg4, arg5, arg6, arg7 ) \
-  this->signal( this, arg1, arg2, arg3, arg4, arg5, arg6, arg7 )
+    BasicSignaler0::BasicSignaler0() { GUM_CONSTRUCTOR( BasicSignaler0 ); }
 
-#define SIGNALER_PATRON_ACCEPTED
-#include <agrum/core/signal/signaler_with_args.pattern.h>
+    BasicSignaler0::BasicSignaler0( const BasicSignaler0& s )
+        : ISignaler( s ) {
+      GUM_CONS_CPY( BasicSignaler0 );
 
-#endif  // GUM_SIGNALER7_H
+      for ( const auto el : _connectors ) {
+        el->target()->attachSignal__( this );
+        _connectors.push_back( el->clone() );
+      }
+    }
+
+    BasicSignaler0::~BasicSignaler0() {
+      GUM_DESTRUCTOR( BasicSignaler0 );
+
+      for ( const auto el : _connectors ) {
+        el->target()->detachSignal__( this );
+        delete el;
+      }
+
+      _connectors.clear();
+    }
+
+  }  // namespace __sig__
+
+}  // namespace gum
+
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
+
+#ifdef GUM_NO_INLINE
+#include <agrum/core/signal/signaler0.inl>
+#endif  // GUM_NO_INLINE
+

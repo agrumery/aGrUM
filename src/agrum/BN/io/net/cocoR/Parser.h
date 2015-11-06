@@ -52,7 +52,6 @@ namespace gum {
 namespace net {
 
 
-
 class Parser {
   private:
     	enum {

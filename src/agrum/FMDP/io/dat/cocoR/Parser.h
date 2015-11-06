@@ -51,7 +51,6 @@ namespace gum {
 namespace MDPDAT {
 
 
-
 class Parser {
   private:
     	enum {

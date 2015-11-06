@@ -1,7 +1,35 @@
-#ifndef SIGNALER5_H__
-#define SIGNALER5_H__
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
-#include "signaler.h"
+/**
+ * @file
+ * @brief Class of gum::Signaler5.
+ *
+ * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
+ *
+ */
+
+#ifndef GUM_SIGNALER5_H
+#define GUM_SIGNALER5_H
+
+#include <agrum/core/signal/signaler.h>
 
 #define MAKE_NAME( nom ) nom##5
 #define LIST_DECL_CLASSES \
@@ -15,6 +43,6 @@
   this->signal( this, arg1, arg2, arg3, arg4, arg5 )
 
 #define SIGNALER_PATRON_ACCEPTED
-#include "signaler_with_args.pattern.h"
+#include <agrum/core/signal/signaler_with_args.pattern.h>
 
-#endif  // SIGNALER5_H__
+#endif  // GUM_SIGNALER5_H

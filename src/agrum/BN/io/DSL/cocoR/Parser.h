@@ -52,7 +52,6 @@ namespace gum {
 namespace DSL {
 
 
-
 class Parser {
   private:
     	enum {

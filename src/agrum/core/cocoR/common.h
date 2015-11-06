@@ -29,6 +29,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 #ifndef COCO_R_COMMON_H
 #define COCO_R_COMMON_H
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 #include <iostream>
 #include <cstring>
 #include <climits>
@@ -137,5 +139,7 @@ namespace gum {
   }
 
 }  // namespace gum
+
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 #endif  // COCO_R_COMMON_H

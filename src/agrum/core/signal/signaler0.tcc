@@ -20,31 +20,60 @@
 
 /**
  * @file
- * @brief Class of gum::Signaler7.
+ * @brief Class of listener.
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  *
  */
 
-#ifndef GUM_SIGNALER7_H
-#define GUM_SIGNALER7_H
+// To help IDE parsers
+#include <agrum/core/signal/signaler0.h>
 
-#include <agrum/core/signal/signaler.h>
+namespace gum {
+  namespace __sig__ {
 
-#define MAKE_NAME( nom ) nom##7
-#define LIST_DECL_CLASSES                                          \
-  class type1, class type2, class type3, class type4, class type5, \
-      class type6, class type7
-#define LIST_CLASSES type1, type2, type3, type4, type5, type6, type7
-#define LIST_DECL_ARGS                                                    \
-  type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5, type6 arg6, \
-      type7 arg7
-#define LIST_ARGS arg1, arg2, arg3, arg4, arg5, arg6, arg7
+    template <class TargetClass>
+    Connector0<TargetClass>::Connector0() {
+      GUM_CONSTRUCTOR( Connector0 );
+      __target = nullptr;
+      __action = nullptr;
+    }
 
-#define GUM_EMIT7( signal, arg1, arg2, arg3, arg4, arg5, arg6, arg7 ) \
-  this->signal( this, arg1, arg2, arg3, arg4, arg5, arg6, arg7 )
+    template <class TargetClass>
+    Connector0<TargetClass>::Connector0( TargetClass* target,
+                            void ( TargetClass::*action )( const void* ) ) {
+      GUM_CONSTRUCTOR( Connector0 );
+      __target = target;
+      __action = action;
+    }
 
-#define SIGNALER_PATRON_ACCEPTED
-#include <agrum/core/signal/signaler_with_args.pattern.h>
+    template <class TargetClass>
+    Connector0<TargetClass>::Connector0( const Connector0<TargetClass>* src )
+        : IConnector0( src ) {
+      GUM_CONS_CPY( Connector0 );
+    }
 
-#endif  // GUM_SIGNALER7_H
+    template <class TargetClass>
+    Connector0<TargetClass>::~Connector0() { GUM_DESTRUCTOR( Connector0 ); }
+
+    template <class TargetClass>
+    IConnector0* Connector0<TargetClass>::clone() {
+      return new Connector0<TargetClass>( *this );
+    }
+
+    template <class TargetClass>
+    IConnector0* Connector0<TargetClass>::duplicate( Listener* target ) {
+      return new Connector0<TargetClass>( (TargetClass*)target, __action );
+    }
+
+    template <class TargetClass>
+    void Connector0<TargetClass>::notify( const void* src ) {
+      ( __target->*__action )( src );
+    }
+
+    template <class TargetClass>
+    Listener* Connector0<TargetClass>::target() const { return __target; }
+
+  }  // namespace __sig__
+
+}  // namespace gum
