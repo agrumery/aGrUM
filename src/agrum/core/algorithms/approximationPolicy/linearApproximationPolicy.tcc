@@ -30,6 +30,30 @@
 
 namespace gum {
 
+  // Class constructor
+  template <typename GUM_SCALAR>
+  LinearApproximationPolicy<GUM_SCALAR>::LinearApproximationPolicy(
+      GUM_SCALAR low, GUM_SCALAR high, GUM_SCALAR eps )
+      : ApproximationPolicy<GUM_SCALAR>()
+      , _lowLimit( low )
+      , _highLimit( high )
+      , _epsilon( eps ) {
+    if ( eps <= 0 ) {
+      GUM_ERROR( OutOfBounds, "Epsilon must be >0" );
+    }
+
+    _computeNbInterval();
+  }
+
+  // Copy constructor.
+  template <typename GUM_SCALAR>
+  LinearApproximationPolicy<GUM_SCALAR>::LinearApproximationPolicy(
+      const LinearApproximationPolicy<GUM_SCALAR>* md )
+      : ApproximationPolicy<GUM_SCALAR>( md )
+      , _epsilon( md->_epsilon )
+      , _nbInterval( md->_nbInterval ){}
+
+
   // @brief Convert value to his approximation.
   template <typename GUM_SCALAR>
   INLINE GUM_SCALAR LinearApproximationPolicy<GUM_SCALAR>::fromExact(
