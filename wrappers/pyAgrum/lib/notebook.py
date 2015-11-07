@@ -213,6 +213,9 @@ def getBN(bn,size="4",vals=None,cmap=INFOcmap):
     graph.set_size(size)
     return graph
 
+def getBNasSVG(bn,size="4"):
+  return SVG(getBN(bn,size).create_svg())
+
 def showBN(bn,size="4",vals=None,cmap=INFOcmap,format="png"):
   gr=getBN(bn,size,vals,cmap)
   showGraph(gr,size,format)
