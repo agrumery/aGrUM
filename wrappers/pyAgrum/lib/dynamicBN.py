@@ -34,6 +34,8 @@ from matplotlib.patches import Rectangle
 import pydotplus as dot
 from .notebook import showGraph
 
+noTimeCluster="void"
+
 def splitName(name):
   """
   By convention, name of dyna:ic variable "X" in dBN may be
@@ -42,17 +44,17 @@ def splitName(name):
     - "X"+str(i) for timelice i with integer i>0 in unrolled BN
     - other naes are not in a timeslice
   @argument name : str (name of the dynamic variable)
-  @return static_name,timeslice with timeslice ="?","t" or str(i)
+  @return static_name,timeslice with timeslice =noTimeCluster,"t" or str(i)
   """
   if name[-1]=="t":
     return name[:-1],"t"
   i=len(name)-1
   if  not name[i].isdigit():
-    return name,"?"
+    return name,noTimeCluster
 
   while name[i].isdigit():
     if i==0:
-      return name,"?"
+      return name,noTimeCluster
     i-=1
 
   return name[:i+1],name[i+1:]
@@ -69,11 +71,14 @@ def isInSecondTimeSlice(name):
   """
   return name[-1]=="t"
 
+def isInNoTimeSlice(name):
+  return name[-1] not in ["0","t"]
+
 def realNameFrom2TBNname(name,ts):
   """
   @return dynamic name from static name and timeslice (no check)
   """
-  return "{0}{1}".format(name[:-1],ts)
+  return "{0}{1}".format(name[:-1],ts) if not isInNoTimeSlice(name) else name
 
 def getTimeSlices(dbn):
   """
@@ -105,24 +110,29 @@ def showTimeSlices(dbn,size="6",format="png"):
   g.set_rankdir("TD")
   g.set_splines("ortho")
 
-  for k in sorted(timeslices.keys(),key=lambda x:-1 if x=='?' else 1e8 if x=='t' else int(x)):
-    cluster=dot.Cluster(k,label="Time slice {}".format(k),bgcolor="#DDDDDD",rankdir="TD")
+  for k in sorted(timeslices.keys(),key=lambda x:-1 if x==noTimeCluster else 1e8 if x=='t' else int(x)):
+    if k!=noTimeCluster:
+      cluster=dot.Cluster(k,label="Time slice {}".format(k) ,bgcolor="#DDDDDD",rankdir="TD")
+      g.add_subgraph(cluster)
+    else:
+      cluster=g # small trick to add in graph variable in no timeslice
     for (n,label) in sorted(timeslices[k]):
       cluster.add_node(dot.Node(n,label=label,style='filled',color='#000000',fillcolor='white'))
-    g.add_subgraph(cluster)
 
   for tail,head in dbn.arcs():
-    n_head=dbn.variable(head).name()
-    n_tail=dbn.variable(tail).name()
+    g.add_edge(dot.Edge(dbn.variable(tail).name(),
+                        dbn.variable(head).name(),
+                        constraint=False,color="blue"))
 
-    g.add_edge(dot.Edge(n_tail,n_head,constraint=False,color="blue"))
-
-  for k in sorted(timeslices.keys(),key=lambda x:-1 if x=='?' else 1e8 if x=='t' else int(x)):
-    prec=None
-    for (n,label) in sorted(timeslices[k]):
-      if prec is not None:
-        g.add_edge(dot.Edge(prec,n,style="invis"))
-      prec=n
+  for k in sorted(timeslices.keys(),key=lambda x:-1 if x==noTimeCluster else 1e8 if x=='t' else int(x)):
+    if k!=noTimeCluster:
+      prec=None
+      for (n,label) in sorted(timeslices[k]):
+        if prec is not None:
+          g.add_edge(dot.Edge(prec,
+                              n,
+                              style="invis"))
+        prec=n
 
   showGraph(g,size,format)
 
@@ -132,7 +142,7 @@ def unroll2TBN(dbn,nbr):
   @return an unrolled BN from a 2TBN and the nbr of timeslices
   """
   ts=getTimeSlices(dbn)
-  if set(ts.keys())!=set(["0","t"]):
+  if set(ts.keys())!=set([noTimeCluster,"0","t"]):
     raise TypeError("unroll2TBN needs a 2-TimeSlice BN")
 
   bn=gum.BayesNet()
@@ -140,7 +150,9 @@ def unroll2TBN(dbn,nbr):
   # variable creation
   for dbn_id in dbn.ids():
     name=dbn.variable(dbn_id).name()
-    if isInFirstTimeSlice(name):
+    if isInNoTimeSlice(name):
+      bn.add(dbn.variable(dbn_id))
+    elif isInFirstTimeSlice(name):
       bn.add(dbn.variable(dbn_id)) # create a clone of the variable in the new bn
     else:
       for ts in range(1,nbr):
@@ -151,15 +163,22 @@ def unroll2TBN(dbn,nbr):
   # the main pb : to have the same order for parents w.r.t the order in 2TBN
   for dbn_id in dbn.ids():
     name=dbn.variable(dbn_id).name()
-
     #right order for parents
     l=dbn.cpt(dbn_id).var_names
     l.pop()
     l.reverse()
 
     for name_parent in l:
-      if isInFirstTimeSlice(name):
-        bn.addArc(bn.idFromName(name_parent),bn.idFromName(name))
+      if not isInSecondTimeSlice(name):
+        if not isInSecondTimeSlice(name_parent):
+          bn.addArc(bn.idFromName(name_parent),bn.idFromName(name))
+        else:
+          if isInFirstTimeSlice(name):
+            raise TypeError("An arc from timeslice t to timeslice is impossible in dBN")
+          else:
+            for ts in range(1,nbr):
+              new_name_parent=realNameFrom2TBNname(name_parent,ts) # current TimeSlice
+              bn.addArc(bn.idFromName(new_name_parent),bn.idFromName(name))
       else:
         for ts in range(1,nbr):
           if isInFirstTimeSlice(name_parent):
@@ -172,7 +191,7 @@ def unroll2TBN(dbn,nbr):
   #potential creation
   for dbn_id in dbn.ids():
     name=dbn.variable(dbn_id).name()
-    if isInFirstTimeSlice(name):
+    if not isInSecondTimeSlice(name):
       bn.cpt(bn.idFromName(name))[:]=dbn.cpt(dbn_id)[:]
     else:
       for ts in range(1,nbr):
