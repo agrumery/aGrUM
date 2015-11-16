@@ -82,7 +82,6 @@ namespace gum {
   class BijectionImplementation {
 
     public:
-
     /// types for STL compliance
     /// @{
     using type1_type = T1;
@@ -109,7 +108,6 @@ namespace gum {
     /// @}
 
     private:
-
     /**
      * @brief Default constructor: creates a gum::Bijection without any
      * association.
@@ -148,7 +146,6 @@ namespace gum {
         BijectionImplementation<T1, T2, Alloc, Gen>&& from ) noexcept;
 
     public:
- 
     // ============================================================================
     /// @name Constructors/destructors
     // ============================================================================
@@ -162,7 +159,6 @@ namespace gum {
     /// @}
 
     private:
-
     /**
      * @brief Copy operator.
      * @param toCopy Bijection to copy.
@@ -189,13 +185,12 @@ namespace gum {
     operator=( BijectionImplementation<T1, T2, Alloc, Gen>&& toCopy );
 
     public:
-
     // ============================================================================
     /// @name Iterators
     // ============================================================================
     /// @{
 
-    /** 
+    /**
      * @brief Returns the unsafe iterator at the beginning of the
      * gum::Bijection.
      *
@@ -206,7 +201,8 @@ namespace gum {
      * gum::Bjection where no element is ever deleted. If unsure, prefer using
      * safe iterators.
      *
-     * Note that the notion of a beginning/end of a gum::Bjection is rather fuzzy.
+     * Note that the notion of a beginning/end of a gum::Bjection is rather
+     * fuzzy.
      * What is important here is that for an instance bij of this class:
      *
      * @code
@@ -216,7 +212,7 @@ namespace gum {
      * @endcode
      */
     iterator begin() const;
-    
+
     /**
      * @brief Returns the constant unsafe iterator at the beginning of the
      * gum::Bjection.
@@ -240,7 +236,7 @@ namespace gum {
      */
     const_iterator cbegin() const;
 
-    /** 
+    /**
      * @brief Returns the unsafe iterator at the end of the gum::Bijection.
      *
      * Unsafe iterators are a little bit faster than safe ones. But this speed
@@ -256,13 +252,13 @@ namespace gum {
      *
      * @code
      * for(iterator iter = bij.begin(); iter != bij.end(); ++iter) {
-     *   // loops will parse all the associations 
+     *   // loops will parse all the associations
      * }
      * @endcode
      */
     const iterator& end() const noexcept;
 
-    /** 
+    /**
      * @brief Returns the constant iterator at the end of the gum::Bijection.
      *
      * Unsafe iterators are a little bit faster than safe ones. But this speed
@@ -272,7 +268,8 @@ namespace gum {
      * gum::Bijection where no element is ever deleted. If unsure, prefer using
      * safe iterators.
      *
-     * Note that the notion of a beginning/end of a gum::Bijection is rather fuzzy.
+     * Note that the notion of a beginning/end of a gum::Bijection is rather
+     * fuzzy.
      * What is important here is that for an instance bij of this class:
      *
      * @code
@@ -324,13 +321,13 @@ namespace gum {
      *
      * @code
      * for (iterator iter = bij.cbeginSafe(); iter != bij.cendSafe(); ++iter) {
-     *   // loops will parse all the associations 
+     *   // loops will parse all the associations
      * }
      * @encode
      */
     const_iterator_safe cbeginSafe() const;
 
-    /** 
+    /**
      * @brief Returns the safe iterator at the end of the gum::Bijection.
      *
      * Safe iterators are slightly slower than unsafe iterators. However, they
@@ -341,12 +338,13 @@ namespace gum {
      * display its content), prefer using the unsafe iterators, which are a
      * little bit faster and cannot, in this case, produce segfaults.
      *
-     * Note that the notion of a beginning/end of a gum::Bijection is rather fuzzy.
+     * Note that the notion of a beginning/end of a gum::Bijection is rather
+     * fuzzy.
      * What is important here is that for an instance bij of this class:
      *
      * @code
      * for (iterator iter = bij.beginSafe(); iter != bij.endSafe(); ++iter) {
-     *   // loops will parse all the associations 
+     *   // loops will parse all the associations
      * }
      * @endcode
      */
@@ -370,7 +368,7 @@ namespace gum {
      *
      * @code
      * for (iterator iter = bij.cbeginSafe(); iter != bij.cendSafe(); ++iter) {
-     *   // loops will parse all the associations 
+     *   // loops will parse all the associations
      * }
      * @endcode
      */
@@ -466,7 +464,7 @@ namespace gum {
 
     /**
      * @brief Returns the first value of a pair given its second value or
-     * default_val if second is unfound. 
+     * default_val if second is unfound.
      * @param second The second value of a pair in the gum::Bijection.
      * @param default_val The default value returned if second is not in the
      * gum::Bijection.
@@ -492,7 +490,8 @@ namespace gum {
      * @return Returns the second value of a pair given its first value or
      * default_val if first is not in the bjection.
      */
-    const T2& secondWithDefault( const T1& second, const T2& default_val ) const;
+    const T2& secondWithDefault( const T1& second,
+                                 const T2& default_val ) const;
 
     /**
      * @brief Returns true if first is the first element in a pair in the
@@ -512,7 +511,7 @@ namespace gum {
      */
     bool existsSecond( const T2& second ) const;
 
-    /** 
+    /**
      * @brief Inserts a new association in the gum::Bijection.
      *
      * The values are added by copy.
@@ -523,7 +522,7 @@ namespace gum {
      */
     void insert( const T1& first, const T2& second );
 
-    /** 
+    /**
      * @brief Inserts a new association in the gum::Bijection.
      *
      * The values are moved in the gum::Bijection.
@@ -542,7 +541,7 @@ namespace gum {
      *
      * @param args the arguments passed to the constructor
      * @throws DuplicateElement exception is thrown if the association already
-     * exists 
+     * exists
      */
     template <typename... Args>
     void emplace( Args&&... args );
@@ -568,21 +567,21 @@ namespace gum {
      */
     Size size() const noexcept;
 
-    /** 
+    /**
      * @brief Erases an association containing the given first element.
      *
      * If the element cannot be found, nothing is done. In particular, no
-     * exception is raised. 
+     * exception is raised.
      *
      * @param first The first element of a pair in the gum::Bijection.
      */
     void eraseFirst( const T1& first );
 
-    /** 
+    /**
      * @brief Erases an association containing the given second element.
      *
      * If the element cannot be found, nothing is done. In particular, no
-     * exception is raised. 
+     * exception is raised.
      *
      * @param second The second element of a pair in the gum::Bijection.
      */
@@ -636,7 +635,6 @@ namespace gum {
     /// @}
 
     private:
- 
     /// Alias for more readable code
     /// @{
     using HashTable12 = HashTable<T1, T2*, allocator12_type>;
@@ -664,9 +662,10 @@ namespace gum {
     HashTable21 __secondToFirst;
 
     /**
-     * @brief A function that performs a complete copy of another gum::Bijection.
+     * @brief A function that performs a complete copy of another
+     * gum::Bijection.
      * @warning this function assumes that "this" is an empty gum::Bijection.
-     * If it is not the case, use function clear() before calling __copy. 
+     * If it is not the case, use function clear() before calling __copy.
      *
      * @param source The source from copied into this gum::Bijection.
      * @tparam OtherAlloc The allocator used by source.
@@ -724,7 +723,6 @@ namespace gum {
   class BijectionImplementation<T1, T2, Alloc, true> {
 
     public:
-
     /// types for STL compliance
     /// @{
     using type1_type = T1;
@@ -752,7 +750,6 @@ namespace gum {
     /// @}
 
     private:
- 
     /**
      * @brief Default constructor: creates a gum::Bijection without any
      * association.
@@ -791,7 +788,6 @@ namespace gum {
         BijectionImplementation<T1, T2, Alloc, true>&& from ) noexcept;
 
     public:
- 
     // ============================================================================
     /// @name Constructors/destructors
     // ============================================================================
@@ -805,7 +801,6 @@ namespace gum {
     /// @}
 
     private:
-
     /**
      * @brief Copy operator.
      * @param toCopy Bijection to copy.
@@ -832,13 +827,12 @@ namespace gum {
     operator=( BijectionImplementation<T1, T2, Alloc, true>&& from );
 
     public:
-
     // ============================================================================
     /// @name Iterators
     // ============================================================================
     /// @{
 
-    /** 
+    /**
      * @brief Returns the unsafe iterator at the beginning of the
      * gum::Bijection.
      *
@@ -849,7 +843,8 @@ namespace gum {
      * gum::Bjection where no element is ever deleted. If unsure, prefer using
      * safe iterators.
      *
-     * Note that the notion of a beginning/end of a gum::Bjection is rather fuzzy.
+     * Note that the notion of a beginning/end of a gum::Bjection is rather
+     * fuzzy.
      * What is important here is that for an instance bij of this class:
      *
      * @code
@@ -859,7 +854,7 @@ namespace gum {
      * @endcode
      */
     iterator begin() const;
-    
+
     /**
      * @brief Returns the constant unsafe iterator at the beginning of the
      * gum::Bjection.
@@ -883,7 +878,7 @@ namespace gum {
      */
     const_iterator cbegin() const;
 
-    /** 
+    /**
      * @brief Returns the unsafe iterator at the end of the gum::Bijection.
      *
      * Unsafe iterators are a little bit faster than safe ones. But this speed
@@ -899,13 +894,13 @@ namespace gum {
      *
      * @code
      * for(iterator iter = bij.begin(); iter != bij.end(); ++iter) {
-     *   // loops will parse all the associations 
+     *   // loops will parse all the associations
      * }
      * @endcode
      */
     const iterator& end() const noexcept;
 
-    /** 
+    /**
      * @brief Returns the constant iterator at the end of the gum::Bijection.
      *
      * Unsafe iterators are a little bit faster than safe ones. But this speed
@@ -915,7 +910,8 @@ namespace gum {
      * gum::Bijection where no element is ever deleted. If unsure, prefer using
      * safe iterators.
      *
-     * Note that the notion of a beginning/end of a gum::Bijection is rather fuzzy.
+     * Note that the notion of a beginning/end of a gum::Bijection is rather
+     * fuzzy.
      * What is important here is that for an instance bij of this class:
      *
      * @code
@@ -967,13 +963,13 @@ namespace gum {
      *
      * @code
      * for (iterator iter = bij.cbeginSafe(); iter != bij.cendSafe(); ++iter) {
-     *   // loops will parse all the associations 
+     *   // loops will parse all the associations
      * }
      * @encode
      */
     const_iterator_safe cbeginSafe() const;
 
-    /** 
+    /**
      * @brief Returns the safe iterator at the end of the gum::Bijection.
      *
      * Safe iterators are slightly slower than unsafe iterators. However, they
@@ -984,12 +980,13 @@ namespace gum {
      * display its content), prefer using the unsafe iterators, which are a
      * little bit faster and cannot, in this case, produce segfaults.
      *
-     * Note that the notion of a beginning/end of a gum::Bijection is rather fuzzy.
+     * Note that the notion of a beginning/end of a gum::Bijection is rather
+     * fuzzy.
      * What is important here is that for an instance bij of this class:
      *
      * @code
      * for (iterator iter = bij.beginSafe(); iter != bij.endSafe(); ++iter) {
-     *   // loops will parse all the associations 
+     *   // loops will parse all the associations
      * }
      * @endcode
      */
@@ -1013,7 +1010,7 @@ namespace gum {
      *
      * @code
      * for (iterator iter = bij.cbeginSafe(); iter != bij.cendSafe(); ++iter) {
-     *   // loops will parse all the associations 
+     *   // loops will parse all the associations
      * }
      * @endcode
      */
@@ -1109,7 +1106,7 @@ namespace gum {
 
     /**
      * @brief Returns the first value of a pair given its second value or
-     * default_val if second is unfound. 
+     * default_val if second is unfound.
      * @param second The second value of a pair in the gum::Bijection.
      * @param default_val The default value returned if second is not in the
      * gum::Bijection.
@@ -1155,7 +1152,7 @@ namespace gum {
      */
     bool existsSecond( T2 second ) const;
 
-    /** 
+    /**
      * @brief Inserts a new association in the gum::Bijection.
      *
      * The values are added by copy.
@@ -1174,7 +1171,7 @@ namespace gum {
      *
      * @param args the arguments passed to the constructor
      * @throws DuplicateElement exception is thrown if the association already
-     * exists 
+     * exists
      */
     template <typename... Args>
     void emplace( Args&&... args );
@@ -1200,21 +1197,21 @@ namespace gum {
      */
     Size size() const noexcept;
 
-    /** 
+    /**
      * @brief Erases an association containing the given first element.
      *
      * If the element cannot be found, nothing is done. In particular, no
-     * exception is raised. 
+     * exception is raised.
      *
      * @param first The first element of a pair in the gum::Bijection.
      */
     void eraseFirst( T1 first );
 
-    /** 
+    /**
      * @brief Erases an association containing the given second element.
      *
      * If the element cannot be found, nothing is done. In particular, no
-     * exception is raised. 
+     * exception is raised.
      *
      * @param first The second element of a pair in the gum::Bijection.
      */
@@ -1268,7 +1265,6 @@ namespace gum {
     /// @}
 
     private:
-
     /// Alias for more readable code
     /// @{
     using HashTable12 = HashTable<T1, T2, allocator12_type>;
@@ -1296,9 +1292,10 @@ namespace gum {
     HashTable21 __secondToFirst;
 
     /**
-     * @brief A function that performs a complete copy of another gum::Bijection.
+     * @brief A function that performs a complete copy of another
+     * gum::Bijection.
      * @warning this function assumes that "this" is an empty gum::Bijection.
-     * If it is not the case, use function clear() before calling __copy. 
+     * If it is not the case, use function clear() before calling __copy.
      *
      * @param source The source from copied into this gum::Bijection.
      * @tparam OtherAlloc The allocator used by source.
@@ -1316,6 +1313,479 @@ namespace gum {
   };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+  /**
+   * @class BijectionIteratorStaticEnd
+   * @headerfile bijection.h <agrum/core/bijection.h>
+   * @brief A class which creates the static iterator used by gim::Bijections.
+   * @ingroup bijection_group
+   *
+   * The aim of using this class rather than just creating __BijectionIterEnd
+   * as a global variable is to prevent other classes to access and modify
+   * __BijectionIterEnd.
+   */
+  class BijectionIteratorStaticEnd {
+
+    /// Friends that have access to the iterator
+    template <typename T1, typename T2, typename Alloc, bool>
+    friend class BijectionImplementation;
+
+    private:
+    /// The safe iterator used by everyone
+    static const BijectionIteratorSafe<int, int>* __BijectionIterEndSafe;
+
+    /// The unsafe iterator used by everyone.
+    static const BijectionIterator<int, int>* __BijectionIterEnd;
+
+    /**
+     * @brief Creates (if needed) and returns the iterator
+     * __BijectionIterEndSafe
+     * @return Returns __BijectionIterEndSafe.
+     */
+    static const BijectionIteratorSafe<int, int>* endSafe4Statics();
+
+    /**
+     * @brief Creates (if needed) and returns the iterator __BijectionIterEnd.
+     * @return Returns __BijectionIterEnd;
+     */
+    static const BijectionIterator<int, int>* end4Statics();
+  };
+
+  /**
+   * @class BijectionIteratorGet
+   * @headerfile bijection.h <agrum/core/bijection.h>
+   * @brief Dummy classes for discriminating scalars and non-scalars operators
+   * and -> wihtout any overhead.
+   * @ingroup bijection_group
+   *
+   * This will be used for scalar types.
+   */
+  template <bool gen>
+  struct BijectionIteratorGet {
+
+    /**
+     * @brief Returns a refeence over a pointer.
+     * @param x The pointer for which a reference is returned.
+     * @return Returns a reference over x.
+     */
+    template <typename T>
+    INLINE static const T& op_second( const T* x ) {
+      return *x;
+    }
+  };
+
+  /**
+   * @class BijectionIteratorGet bijection.h <agrum/core/bijection.h>
+   * @brief Dummy classes for discriminating scalars and non-scalars operators
+   * and -> wihtout any overhead.
+   * @ingroup bijection_group
+   *
+   * This will be used for non-scala types.
+   */
+  template <>
+  struct BijectionIteratorGet<true> {
+
+    /**
+     * @brief Returns a reference.
+     * @param x A reference.
+     * @return Returns the reference x.
+     */
+    template <typename T>
+    INLINE static const T& op_second( const T& x ) {
+      return x;
+    }
+  };
+
+  // ===========================================================================
+  // ===                      BIJECTION SAFE ITERATORS                       ===
+  // ===========================================================================
+
+  /**
+   * @class BijectionIteratorSafe bijection.h <agrum/core/bijection.h>
+   * @brief Safe iterators for bijectionIterator.
+   * @ingroup bijection_group
+   *
+   * @tparam T1 The first type of elements in the gum::Bjection.
+   * @tparam T2 The second type of elements in the gum::Bjection.
+   */
+  template <typename T1, typename T2>
+  class BijectionIteratorSafe {
+
+    template <typename TT1, typename TT2, typename Alloc, bool>
+    friend class BijectionImplementation;
+
+    public:
+    /// types for STL compliance
+    /// @{
+    using iterator_category = std::forward_iterator_tag;
+    using type1_type = T1;
+    using type1_reference = T1&;
+    using type1_const_reference = const T1&;
+    using type1_pointer = T1*;
+    using type1_const_pointer = const T1*;
+    using type2_type = T2;
+    using type2_reference = T2&;
+    using type2_const_reference = const T2&;
+    using type2_pointer = T2*;
+    using type2_const_pointer = const T2*;
+    using difference_type = std::ptrdiff_t;
+    /// @}
+
+    private:
+    /**
+     * Dummy classes that will enable discriminate without overhead between
+     * scalars and non-scalars functions second in iterators
+     */
+    using Getter = BijectionIteratorGet<std::is_scalar<T1>::value &&
+                                        std::is_scalar<T2>::value>;
+
+    /**
+     * @brief Begin constructor.
+     * By default, the iterator points to the starting point of the
+     * gum::Bijection.
+     * @param bijection The gum::Bijection to iterate onto.
+     */
+    template <typename Alloc, bool Gen>
+    BijectionIteratorSafe(
+        const BijectionImplementation<T1, T2, Alloc, Gen>& bijection );
+
+    public:
+    // ============================================================================
+    /// @name Constructors and destructors
+    // ============================================================================
+    /// @{
+
+    /**
+     * @brief Default constructor.
+     */
+    BijectionIteratorSafe() noexcept;
+
+    /**
+     * @brief Genereliazed default constructor.
+     * @tparam Alloc The gum::Bijection allocator's type.
+     */
+    template <typename Alloc>
+    BijectionIteratorSafe( const Bijection<T1, T2, Alloc>& bijection );
+
+    /**
+     * @brief Copy constructor.
+     * @param from The gum::BijectionIteratorSafe to copy.
+     */
+    BijectionIteratorSafe( const BijectionIteratorSafe<T1, T2>& from );
+
+    /**
+     * @brief Move constructor.
+     * @param from The gum::BijectionIteratorSafe to move.
+     */
+    BijectionIteratorSafe( BijectionIteratorSafe<T1, T2>&& from ) noexcept;
+
+    /**
+     * @brief Class destructor.
+     */
+    ~BijectionIteratorSafe() noexcept;
+
+    /// @}
+    // ============================================================================
+    /// @name Operators
+    // ============================================================================
+    /// @{
+
+    /**
+     * @brief Copy operator.
+     * @param toCopy The gum::BijectionIteratorSafe to copy.
+     * @return Returns this gum::BijectionIteratorSafe.
+     */
+    BijectionIteratorSafe<T1, T2>&
+    operator=( const BijectionIteratorSafe<T1, T2>& toCopy );
+
+    /**
+     * @brief Move operator.
+     * @param toMove The gum::BijectionIteratorSafe to move.
+     * @return Returns this gum::BijectionIteratorSafe.
+     */
+    BijectionIteratorSafe<T1, T2>&
+    operator=( BijectionIteratorSafe<T1, T2>&& toMove ) noexcept;
+
+    /**
+     * @brief Go to the next association, if it exists.
+     *
+     * If the iterator points to end(), nothing happens.
+     * @return Returns this gum::BijectionIteratorSafe.
+     */
+    BijectionIteratorSafe<T1, T2>& operator++() noexcept;
+
+    /**
+     * @brief Moves the iterator by nb elements.
+     *
+     * If the iterator points to end(), nothing is done. If there are
+     * nb or fewer elements to parse to reach the end of the bijection, then
+     * this method makes the iterator point to
+     * gum::BijectionIteratorSafe::end().
+     *
+     * @param nb The number of steps by wich the iterator moves.
+     * @return Returns this gum::BijectionIteratorSafe.
+     */
+    BijectionIteratorSafe<T1, T2>& operator+=( unsigned int nb ) noexcept;
+
+    /**
+     * @brief Returns a new iterator.
+     *
+     * If the iterator points to end(), the resulting iterator also points to
+     * end (). If there are nb or fewer elements to parse to reach the end of
+     * the bijection, then the resulting iterator points to
+     * gum::BijectionIteratorSafe::end().
+     *
+     * @param nb The number of steps by wich the iterator moves.
+     * @return Returns this gum::BijectionIteratorSafe.
+     */
+    BijectionIteratorSafe<T1, T2> operator+( unsigned int nb ) noexcept;
+
+    /**
+     * @brief Inequality operator.
+     * @param toCompare The gum::BijectionIteratorSafe to compare.
+     * @return Returns true if they differ.
+     */
+    bool operator!=( const BijectionIteratorSafe<T1, T2>& toCompare ) const
+        noexcept;
+
+    /**
+     * @brief Equality operator.
+     * @param toCompare The gum::BijectionIteratorSafe to compare.
+     * @return Returns true if they are equal.
+     */
+    bool operator==( const BijectionIteratorSafe<T1, T2>& toCompare ) const
+        noexcept;
+
+    /// @}
+    // ============================================================================
+    /// @name Accessors/Modifiers
+    // ============================================================================
+    /// @{
+
+    /**
+     * @brief Returns the first element of the current association.
+     * @return Returns the first element of the current association.
+     * @throws UndefinedIteratorValue Raised when the iterator does not point
+     * to a valid element of the bijection.
+     */
+    const T1& first() const;
+
+    /**
+     * @brief Returns the second element of the current association.
+     * @return Returns the second element of the current association.
+     * @throws UndefinedIteratorValue Raised when the iterator does not point
+     * to a valid element of the bijection.
+     */
+    const T2& second() const;
+
+    /// @}
+
+    private:
+    /// Alias for one of the internal gum::HashTable of the gum::Bijection.
+    using HashTable12 = typename std::conditional<
+        std::is_scalar<T1>::value && std::is_scalar<T2>::value,
+        HashTable<T1, T2, std::allocator<std::pair<T1, T2>>>,
+        HashTable<T1, T2*, std::allocator<std::pair<T1, T2*>>>>::type;
+
+    /// Alias for one of the internal gum::HastTableIterator of the
+    /// gum::Bijection.
+    using HashIter = typename HashTable12::const_iterator_safe;
+
+    /// The hashTable iterator that actually does all the job.
+    HashIter __iter;
+  };
+
+  // ===========================================================================
+  // ===                     BIJECTION UNSAFE ITERATORS                      ===
+  // ===========================================================================
+  /**
+   * @class BijectionIterator
+   * @headerfile bijection.h <agrum/core/bijection.h>
+   * @brief Unsafe iterators for bijection.
+   * @ingroup bijection_group
+   *
+   * @tparam T1 The first type of elements in the gum::Bjection.
+   * @tparam T2 The second type of elements in the gum::Bjection.
+   */
+  template <typename T1, typename T2>
+  class BijectionIterator {
+
+    template <typename TT1, typename TT2, typename Alloc, bool>
+    friend class BijectionImplementation;
+
+    public:
+    /// types for STL compliance
+    /// @{
+    using iterator_category = std::forward_iterator_tag;
+    using type1_type = T1;
+    using type1_reference = T1&;
+    using type1_const_reference = const T1&;
+    using type1_pointer = T1*;
+    using type1_const_pointer = const T1*;
+    using type2_type = T2;
+    using type2_reference = T2&;
+    using type2_const_reference = const T2&;
+    using type2_pointer = T2*;
+    using type2_const_pointer = const T2*;
+    using difference_type = std::ptrdiff_t;
+    /// @}
+
+    private:
+    /**
+     * Dummy classes that will enable discriminate without overhead between
+     * scalars and non-scalars functions second in iterators
+     */
+    using Getter = BijectionIteratorGet<std::is_scalar<T1>::value &&
+                                        std::is_scalar<T2>::value>;
+
+    /**
+     * @brief Begin constructor.
+     * By default, the iterator points to the starting point of the bijection.
+     */
+    template <typename Alloc, bool Gen>
+    BijectionIterator(
+        const BijectionImplementation<T1, T2, Alloc, Gen>& bijection );
+
+    public:
+    // ============================================================================
+    /// @name Constructors/destructors
+    // ============================================================================
+    /// @{
+
+    /**
+     * @brief Default constructor.
+     */
+    BijectionIterator() noexcept;
+
+    /**
+     * @brief Default constructor.
+     * @param bijection The gum::Bijection to iterate onto.
+     */
+    template <typename Alloc>
+    BijectionIterator( const Bijection<T1, T2, Alloc>& bijection );
+
+    /**
+     * @brief Copy constructor.
+     * @param from The gum::BijectionIterator to copy.
+     */
+    BijectionIterator( const BijectionIterator<T1, T2>& from );
+
+    /**
+     * @brief Move constructor.
+     * @param from The gum::BijectionIterator to move.
+     */
+    BijectionIterator( BijectionIterator<T1, T2>&& from ) noexcept;
+
+    /**
+     * Class destructor.
+     */
+    ~BijectionIterator() noexcept;
+
+    /// @}
+    // ============================================================================
+    /// @name Operators
+    // ============================================================================
+    /// @{
+
+    /**
+     * @brief Copy operator.
+     * @param toCopy The gum::BijectionIterator to copy.
+     * @return Returns this gum::BijectionIterator.
+     */
+    BijectionIterator<T1, T2>&
+    operator=( const BijectionIterator<T1, T2>& toCopy );
+
+    /**
+     * @brief Move operator.
+     * @param toMove The gum::BijectionIterator to move.
+     * @return Returns this gum::BijectionIterator.
+     */
+    BijectionIterator<T1, T2>&
+    operator=( BijectionIterator<T1, T2>&& toMove ) noexcept;
+
+    /**
+     * @brief Go to the next association, if it exists.
+     *
+     * If the iterator points to gum::Bijection::end(), nothing is done.
+     *
+     * @return Return sthis gum::BijectionIterator.
+     */
+    BijectionIterator<T1, T2>& operator++() noexcept;
+
+    /**
+     * @brief Moves the iterator by nb elements.
+     *
+     * If the iterator points to gum::Bijection::end(), nothing is done. If
+     * there are nb or
+     * fewer elements to parse to reach the end of the bijection, then this
+     * method makes the iterator point to gum::Bijection::end().
+     *
+     * @param nb The number of steps by wich the iterator moves.
+     * @return Returns this gum::BijectionIterator.
+     */
+    BijectionIterator<T1, T2>& operator+=( unsigned int nb ) noexcept;
+
+    /**
+     * @brief Return a new iterator.
+     *
+     * If the iterator points to gum::Bijection::end(), the resulting iterator
+     * also points to gum::Bijection::end(). If there are nb or fewer elements
+     * to parse to reach the end of the gum::Bijection, then the resulting
+     * iterator points to gum::Bijection::end().
+     */
+    BijectionIterator<T1, T2> operator+( unsigned int nb ) noexcept;
+
+    /**
+     * @brief Inequality operator.
+     * @param toCompare The gum::BijectionIteratorSafe to compare.
+     * @return Returns true if they differ.
+     */
+    bool operator!=( const BijectionIterator<T1, T2>& toCompare ) const
+        noexcept;
+
+    /**
+     * @brief Equality operator.
+     * @param toCompare The gum::BijectionIteratorSafe to compare.
+     * @return Returns true if they are equal.
+     */
+    bool operator==( const BijectionIterator<T1, T2>& toCompare ) const
+        noexcept;
+
+    /// @}
+    // ============================================================================
+    /// @name Accessors/Modifiers
+    // ============================================================================
+    /// @{
+
+    /**
+     * @brief Returns the first element of the current association.
+     * @return Returns the first element of the current association.
+     * @throws UndefinedIteratorValue Raised when the iterator does not point
+     * to a valid element of the bijection.
+     */
+    const T1& first() const;
+
+    /**
+     * @brief Returns the second element of the current association.
+     * @return Returns the second element of the current association.
+     * @throws UndefinedIteratorValue Raised when the iterator does not point
+     * to a valid element of the bijection.
+     */
+    const T2& second() const;
+
+    /// @}
+
+    private:
+    /// Alias for one of the internal gum::HashTable of the gum::Bijection.
+    using HashTable12 = typename std::conditional<
+        std::is_scalar<T1>::value && std::is_scalar<T2>::value,
+        HashTable<T1, T2, std::allocator<std::pair<T1, T2>>>,
+        HashTable<T1, T2*, std::allocator<std::pair<T1, T2*>>>>::type;
+    using HashIter = typename HashTable12::const_iterator;
+
+    /// The hashTable iterator that actually does all the job.
+    HashIter __iter;
+  };
 
   /**
    * @class Bijection bijection.h <agrum/core/bijection.h>
@@ -1463,7 +1933,8 @@ namespace gum {
    * @return The stream in which the gum::Bijection is displayed.
    */
   template <typename T1, typename T2, typename Alloc>
-  std::ostream& operator<<( std::ostream&, const Bijection<T1, T2, Alloc>& bijection);
+  std::ostream& operator<<( std::ostream&,
+                            const Bijection<T1, T2, Alloc>& bijection );
 
 } /* namespace gum */
 
