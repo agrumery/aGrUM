@@ -15,20 +15,64 @@
  */
 
 /**
- * \defgroup configuration_group Configuration
+ * \defgroup utilities_group Utilities
  * @{
- * About aGrUM configuration.
- * @}
+ * About aGrUM utilities.
  *
  * \defgroup math_group Math
  * @{
  * All the maths you'll need.
  * @}
  *
- * \defgroup utilities_group Utilities
+ * \defgroup configuration_group Configuration
  * @{
- * About aGrUM utilities.
+ * About aGrUM configuration.
  * @}
+ *
+ * \defgroup refptr_group Smart Pointers
+ * @{
+ * RefPtr are a replacement for the usual pointers: they keep track of the
+ * number of "smart" pointers pointing to a given element. When an element is
+ * no more referenced by any smart pointer, it is deleted. Hence using RefPtr,
+ * developers do not have to worry anymore about memory leaks. The correct way
+ * to use RefPtr is by creating unnamed temporaries like: @code RefPtr ( new
+ * myObject ) @endcode In any case, if you decide to pass a named pointer as
+ * argument to a RefPtr, make sure you will do it only once, that it is
+ * allocated on the heap and that you never try to deallocate it yourself, else
+ * your program will crash.
+ *
+ * @par Usage example:
+ * @code
+ * // creation of smart pointer
+ * RefPtr<int> ptr1 (new int (4));
+ *
+ * // copying (and sharing) this pointer into new smart pointers
+ * RefPtr<int> ptr2 = ptr1, ptr3;
+ * ptr3 = ptr1;
+ *
+ * // make ptr2 point toward nothing (this does not deallocate int (4) as it is
+ * // pointed to by ptr1 and ptr3)
+ * ptr2.clear ();
+ *
+ * // modifying the value pointed to by the dumb pointer contained in ptr1
+ * *ptr1 = 5;
+ *
+ * // print the content of ptr3
+ * cerr << *ptr3 << " = 5" << endl;
+ *
+ * // check whether ptr1 and ptr3 reference the same dumb pointer
+ * if (ptr1 == ptr2) cerr << "reference the same dumb pointer" << endl;
+ *
+ * // check whether ptr1 and ptr2 contain a dumb pointer
+ * if (ptr1 && !ptr2) cerr << "check containers" << endl;
+ * @endcode
+ *
+ * @}
+ *
+ * @}
+ *
+ * \defgroup algorithms_group Generic algorithms
+ * @{
  *
  * \defgroup approximationscheme_group Approximation Scheme algorithms
  * @{
@@ -39,9 +83,10 @@
  * About aGrUM approximation policies.
  * @}
  *
+ * @}
+ *
  * \defgroup basicstruct_group Basic data structures
  * @{
- *
  *
  * \defgroup hashtable_group Hash Tables
  * @{
@@ -497,45 +542,7 @@
  * @endcode
  *
  * @}
- * \defgroup refptr_group Smart Pointers
- * @{
- * RefPtr are a replacement for the usual pointers: they keep track of the
- * number of "smart" pointers pointing to a given element. When an element is
- * no more referenced by any smart pointer, it is deleted. Hence using RefPtr,
- * developers do not have to worry anymore about memory leaks. The correct way
- * to use RefPtr is by creating unnamed temporaries like: @code RefPtr ( new
- * myObject ) @endcode In any case, if you decide to pass a named pointer as
- * argument to a RefPtr, make sure you will do it only once, that it is
- * allocated on the heap and that you never try to deallocate it yourself, else
- * your program will crash.
  *
- * @par Usage example:
- * @code
- * // creation of smart pointer
- * RefPtr<int> ptr1 (new int (4));
- *
- * // copying (and sharing) this pointer into new smart pointers
- * RefPtr<int> ptr2 = ptr1, ptr3;
- * ptr3 = ptr1;
- *
- * // make ptr2 point toward nothing (this does not deallocate int (4) as it is
- * // pointed to by ptr1 and ptr3)
- * ptr2.clear ();
- *
- * // modifying the value pointed to by the dumb pointer contained in ptr1
- * *ptr1 = 5;
- *
- * // print the content of ptr3
- * cerr << *ptr3 << " = 5" << endl;
- *
- * // check whether ptr1 and ptr3 reference the same dumb pointer
- * if (ptr1 == ptr2) cerr << "reference the same dumb pointer" << endl;
- *
- * // check whether ptr1 and ptr2 contain a dumb pointer
- * if (ptr1 && !ptr2) cerr << "check containers" << endl;
- * @endcode
- *
- * @}
  *
  * \defgroup sequence_group Sequences
  * @{
@@ -551,12 +558,51 @@
  *
  * \defgroup set_group Sets
  * @{
+ *
+ * \brief A Set is a structure that contains arbitrary elements.
+ *
+ * Note that, as in mathematics, an element cannot appear twice in a given set.
+ * Sets have unsafe and safe iterators. The safe iterators (SetIteratorSafe<>
+ * a.k.a.  Set<>::iterator_safe are slightly slower than the unsafe ones
+ * (SetIterator<> a.k.a. Set<>::iterator) but they guarantee that even if they
+ * point to a deleted element, using their operators ++ or * cannot produce a
+ * segfault. In such cases, they simply raise an exception. On the contrary,
+ * unsafe iterators should @b never be used on elements that can be deleted
+ * because, as in the STL, they will most probably produce a segfault.
+ *
+ * @par Usage example:
+ * @code
+ * // creation of a set with 10 elements
+ * Set<int> set;
+ * for (int i = 0; i< 10; ++i)
+ *   set<<i;
+ * Set<int> set2 { 1, 2, 3 };
+ *
+ * // parse the set
+ * for (auto iter = set.begin (); iter != set.end (); ++iter) {
+ *   // display the values
+ *   cerr <<  *iter << endl;
+ * }
+ *
+ * // use an iterator to point the element we wish to erase
+ * Set<int>::iterator iter = set.begin ();
+ * set.erase ( iter );
+ *
+ * // check whether two iterators point toward the same element
+ * Set<int>::iterator iter1 = set.begin();
+ * Set<int>::iterator iter2 = set.end();
+ * if (iter1 != iter2)
+ *   cerr << "iter1 and iter2 point toward different elements";
+ *
+ * @endcode
  * 
  * @}
  *
  * \defgroup splaytree_group Splay Trees
  * @{
  * 
+ * \brief A splay tree is a self-balancing binary search tree.
+ *
  * @}
  *
  * @}
