@@ -31,6 +31,7 @@
 
 namespace gum {
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   namespace __sig__ {
 
     INLINE
@@ -86,5 +87,6 @@ namespace gum {
     }
 
   }  // namespace __sig__
+#endif
 
 }  // namespace gum
