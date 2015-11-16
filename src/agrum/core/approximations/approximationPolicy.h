@@ -32,9 +32,15 @@ namespace gum {
 
   /**
    * @class ApproximationPolicy
-   * @headerfile approximationPolicy.h <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
    * @brief Mother class for all approximation policy classes.
    * @ingroup approximationpolicy_group
+   *
+   * @warning Doxygen does not like spanning command on multiple line, so we
+   * could not configure it with the correct include directive. Use the
+   * following code snippet to include this file.
+   * @code
+   * #include <agrum/core/approximations/approximationPolicy.h>
+   * @endcode
    */
   template <typename GUM_SCALAR>
   class ApproximationPolicy {

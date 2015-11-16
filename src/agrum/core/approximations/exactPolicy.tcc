@@ -26,7 +26,7 @@
  */
 
 // To help IDE Parsers
-#include <agrum/core/algorithms/approximationPolicy/exactPolicy.h>
+#include <agrum/core/approximations/exactPolicy.h>
 
 namespace gum {
 

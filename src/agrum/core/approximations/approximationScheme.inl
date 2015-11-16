@@ -31,7 +31,7 @@
  */
 
 // To help IDE parser
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+#include <agrum/core/approximations/approximationScheme.h>
 
 namespace gum {
 

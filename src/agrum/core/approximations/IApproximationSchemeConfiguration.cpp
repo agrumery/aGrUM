@@ -29,7 +29,7 @@
  */
 
 // To help IDE parsers
-#include <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
+#include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 
 namespace gum {
   IApproximationSchemeConfiguration::IApproximationSchemeConfiguration() {
@@ -43,6 +43,6 @@ namespace gum {
 }  // namespace gum
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.inl>
+#include <agrum/core/approximations/IApproximationSchemeConfiguration.inl>
 #endif
 

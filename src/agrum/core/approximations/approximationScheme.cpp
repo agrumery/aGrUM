@@ -30,7 +30,7 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+#include <agrum/core/approximations/approximationScheme.h>
 
 namespace gum {
 
@@ -57,5 +57,5 @@ namespace gum {
 } // namespace gum
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.inl>
+#include <agrum/core/approximations/approximationScheme.inl>
 #endif

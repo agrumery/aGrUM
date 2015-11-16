@@ -38,15 +38,21 @@
 #include <agrum/config.h>
 #include <agrum/core/signal/signaler.h>
 #include <agrum/core/timer.h>
-#include <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
+#include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 
 namespace gum {
 
   /** 
    * @class ApproximationScheme
-   * @headerfile approximationScheme.h <agrum/core/algorithms/approximationScheme/approximationScheme.h>
    * @brief Approximation Scheme.
    * @ingroup approximationscheme_group
+   *
+   * @warning Doxygen does not like spanning command on multiple line, so we
+   * could not configure it with the correct include directive. Use the
+   * following code snippet to include this file.
+   * @code
+   * #include <agrum/core/approximations/approximationScheme.h>
+   * @endcode
    *
    * The approximation scheme is assumed to be used like this:
    * @code
@@ -428,7 +434,7 @@ namespace gum {
 }  // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.inl>
+#include <agrum/core/approximations/approximationScheme.inl>
 #endif
 
 #endif  // GUM_APPROXIMATION_SCHEME_H

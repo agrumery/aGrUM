@@ -40,10 +40,15 @@ namespace gum {
 
   /**
    * @class IApproximationSchemeConfiguration
-   * @headerfile IApproximationSchemeConfiguration.h
-   * <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
    * @brief Approximation Scheme.
    * @ingroup approximationpolicy_group
+   *
+   * @warning Doxygen does not like spanning command on multiple line, so we
+   * could not configure it with the correct include directive. Use the
+   * following code snippet to include this file.
+   * @code
+   * #include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
+   * @endcode
    *
    * An interface for configuration of approximation scheme.
    */
@@ -305,7 +310,7 @@ namespace gum {
 }  // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.inl>
+#include <agrum/core/approximations/IApproximationSchemeConfiguration.inl>
 #endif
 
 #endif  // GUM_APPROXIMATION_SCHEME_CONFIGURATION_H

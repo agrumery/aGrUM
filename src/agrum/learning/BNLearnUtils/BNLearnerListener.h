@@ -16,9 +16,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/** @file
+/**
+ * @file
  * @brief A listener that allows BNLearner to be used as a proxy for its inner
- *algorithms
+ * algorithms
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
@@ -26,9 +27,8 @@
 #define BNLEARNERLISTENER_H
 
 #include <agrum/config.h>
-#include <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
-
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+#include <agrum/core/approximations/approximationSchemeListener.h>
+#include <agrum/core/approximations/approximationScheme.h>
 
 namespace gum {
   namespace learning {

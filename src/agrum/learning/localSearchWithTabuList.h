@@ -17,15 +17,15 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief The local search learning with tabu list algorithm (for directed
- *graphs)
+ * graphs)
  *
  * The LocalSearchWithTabuList class implements a greedy search in which we
- *allow
- * applying at most N consecutive graph changes that decrease the score. To
- * prevent infinite loops, when using local search, you should use a structural
- * constraint that includes a tabu list of at least N elements.
+ * allow applying at most N consecutive graph changes that decrease the score.
+ * To prevent infinite loops, when using local search, you should use a
+ * structural constraint that includes a tabu list of at least N elements.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -37,7 +37,7 @@
 
 #include <agrum/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+#include <agrum/core/approximations/approximationScheme.h>
 
 namespace gum {
 

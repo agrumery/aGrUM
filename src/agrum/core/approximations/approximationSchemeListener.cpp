@@ -24,7 +24,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
+#include <agrum/core/approximations/approximationSchemeListener.h>
 
 namespace gum {
   
@@ -61,3 +61,4 @@ namespace gum {
   }
 
 } // namespace
+

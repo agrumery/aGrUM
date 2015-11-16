@@ -30,15 +30,14 @@
 /// @todo virtual for all functions that MAY be one day redefined in any derived
 /// class
 
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
-#include <agrum/CN/varMod2BNsMap.h>
-#include <agrum/core/exceptions.h>
 #include <map>
 
-#include <agrum/core/math/rational.h>
-#include <agrum/core/math/pow.h>
-
 #include <agrum/CN/LrsWrapper.h>
+#include <agrum/CN/varMod2BNsMap.h>
+#include <agrum/core/approximations/approximationScheme.h>
+#include <agrum/core/exceptions.h>
+#include <agrum/core/math/pow.h>
+#include <agrum/core/math/rational.h>
 
 namespace gum {
   namespace credal {

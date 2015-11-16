@@ -17,13 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief A class for generic framework of learning algorithms that can easily
- *be
- *used
+ * be used.
  *
  * The pack currently contains K2, GreedyHillClimbing and
- *LocalSearchWithTabuList
+ * LocalSearchWithTabuList
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -73,8 +73,8 @@
 #include <agrum/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
 
-#include <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
-#include <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
+#include <agrum/core/approximations/approximationSchemeListener.h>
+#include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 
 #include <agrum/learning/K2.h>
 #include <agrum/learning/greedyHillClimbing.h>

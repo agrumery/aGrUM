@@ -28,7 +28,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/GibbsInference.h>
 
-#include <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
+#include <agrum/core/approximations/approximationSchemeListener.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

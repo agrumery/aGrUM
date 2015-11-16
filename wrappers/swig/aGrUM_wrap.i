@@ -71,8 +71,8 @@
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
 #include <agrum/PRM/o3prm/O3prmBNReader.h>
 
-#include <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+#include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
+#include <agrum/core/approximations/approximationScheme.h>
 
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
@@ -318,8 +318,8 @@ namespace std {
 %include <agrum/BN/IBayesNet.h>
 %include <agrum/BN/BayesNet.h>
 
-%import <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
-%import <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+%import <agrum/core/approximations/IApproximationSchemeConfiguration.h>
+%import <agrum/core/approximations/approximationScheme.h>
 
 %include <agrum/BN/inference/BayesNetInference.h>
 %include <agrum/BN/inference/lazyPropagation.h>

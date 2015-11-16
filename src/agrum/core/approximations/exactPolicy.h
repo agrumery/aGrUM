@@ -28,13 +28,13 @@
 #define GUM_EXACT_POLICY_H
 #include <agrum/config.h>
 
-#include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
+#include <agrum/core/approximations/approximationPolicy.h>
 
 namespace gum {
 
   /**
    * @class ExactPolicy
-   * @headerfile exactPolicy.h <agrum/core/algorithms/approximationPolicy/exactPolicy.h>
+   * @headerfile exactPolicy.h <agrum/core/approximations/exactPolicy.h>
    * @brief Class implementing exact approximation policy (meaning a value is
    * approximate to itself).
    * @ingroup approximationpolicy_group
@@ -111,6 +111,6 @@ namespace gum {
 }
 
 // Always include inlined implementation of template class
-#include <agrum/core/algorithms/approximationPolicy/exactPolicy.tcc>
+#include <agrum/core/approximations/exactPolicy.tcc>
 
 #endif /* GUM_EXACT_POLICY_H */

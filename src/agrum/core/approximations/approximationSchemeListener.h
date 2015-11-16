@@ -30,14 +30,20 @@
 #include <agrum/config.h>
 #include <agrum/core/signal/listener.h>
 
-#include <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
+#include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 
 namespace gum {
 
   /**
    * @class ApproximationSchemeListener
-   * @headerfile approximationSchemeListener.h <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
    * @brief The ApproximationSchemeListener class.
+   *
+   * @warning Doxygen does not like spanning command on multiple line, so we
+   * could not configure it with the correct include directive. Use the
+   * following code snippet to include this file.
+   * @code
+   * #include <agrum/core/approximations/approximationSchemeListener.h>
+   * @endcode
    */
   class ApproximationSchemeListener : public Listener {
 

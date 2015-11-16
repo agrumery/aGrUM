@@ -29,16 +29,22 @@
 
 #include <typeinfo>
 #include <agrum/config.h>
-#include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
+#include <agrum/core/approximations/approximationPolicy.h>
 
 namespace gum {
 
   /**
    * @class LinearApproximationPolicy
-   * @headerfile linearApproximationPolicy.h <agrum/core/algorithms/approximationPolicy/linearApproximationPolicy.h>
    * @brief Class implementing linear approximation policy (meaning possible
    * value are split out in interval).
    * @ingroup approximationpolicy_group
+   *
+   * @warning Doxygen does not like spanning command on multiple line, so we
+   * could not configure it with the correct include directive. Use the
+   * following code snippet to include this file.
+   * @code
+   * #include <agrum/core/approximations/linearApproximationPolicy.h>
+   * @endcode
    *
    * @tparam GUM_SCALAR The type used for computations.
    */
@@ -230,6 +236,6 @@ namespace gum {
 }
 
 // Always inline template classes implementation. 
-#include <agrum/core/algorithms/approximationPolicy/linearApproximationPolicy.tcc>
+#include <agrum/core/approximations/linearApproximationPolicy.tcc>
 
 #endif /* GUM_LINEAR_APPROXIMATION_POLICY_H */

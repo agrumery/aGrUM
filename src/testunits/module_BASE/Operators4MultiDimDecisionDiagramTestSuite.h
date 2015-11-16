@@ -1,4 +1,3 @@
-
 /********************************************************************************
 *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES *
 *   {prenom.nom}_at_lip6.fr           *
@@ -32,8 +31,8 @@
 
 #include <agrum/core/sequence.h>
 
-#include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
-#include <agrum/core/algorithms/approximationPolicy/linearApproximationPolicy.h>
+#include <agrum/core/approximations/approximationPolicy.h>
+#include <agrum/core/approximations/linearApproximationPolicy.h>
 
 #include <agrum/multidim/potential.h>
 #include <agrum/variables/labelizedVariable.h>
