@@ -1630,10 +1630,10 @@ namespace gum {
 
     /**
      * @brief Makes the iterator point to i elements further in the List.
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListConstIterator.
      */
-    ListConstIterator<Val>& operator+=( difference_type ) noexcept;
+    ListConstIterator<Val>& operator+=( difference_type i ) noexcept;
 
     /**
      * @brief Makes the iterator point to the preceding element in the List.
@@ -1653,26 +1653,26 @@ namespace gum {
     /**
      * @brief Makes the iterator point to i elements befor in the List.
      *
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListConstIterator.
      */
-    ListConstIterator<Val>& operator-=( difference_type ) noexcept;
+    ListConstIterator<Val>& operator-=( difference_type i ) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i further elements in the
      * gum::List.
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListConstIterator.
      */
-    ListConstIterator<Val> operator+( difference_type ) noexcept;
+    ListConstIterator<Val> operator+( difference_type i ) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i preceding elements in the
      * gum::List.
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListConstIterator.
      */
-    ListConstIterator<Val> operator-( difference_type ) noexcept;
+    ListConstIterator<Val> operator-( difference_type i ) noexcept;
 
     /**
      * @brief Checks whether two iterators point toward different elements.
@@ -1902,17 +1902,17 @@ namespace gum {
 
     /**
      * @brief Makes the iterator point to i elements further in the List.
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListIterator.
      */
-    ListIterator<Val>& operator+=( difference_type ) noexcept;
+    ListIterator<Val>& operator+=( difference_type i ) noexcept;
 
     /**
      * @brief Makes the iterator point to the preceding element in the List.
      *
      * @code
      * for (iter = list.rbegin(); iter != list.rend(); --iter) { }
-     * @encode
+     * @endcode
      *
      * The above loop is guaranteed to parse the whole List as long as no
      * element is added to or deleted from the List while being in the loop.
@@ -1925,26 +1925,26 @@ namespace gum {
     /**
      * @brief Makes the iterator point to i elements befor in the List.
      *
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListIterator.
      */
-    ListIterator<Val>& operator-=( difference_type ) noexcept;
+    ListIterator<Val>& operator-=( difference_type i ) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i further elements in the
      * gum::List.
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListIterator.
      */
-    ListIterator<Val> operator+( difference_type ) noexcept;
+    ListIterator<Val> operator+( difference_type i ) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i preceding elements in the
      * gum::List.
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListIterator.
      */
-    ListIterator<Val> operator-( difference_type ) noexcept;
+    ListIterator<Val> operator-( difference_type i ) noexcept;
 
     /// Adding gum::ListConstIterator operator support.
     /// @{
@@ -2153,10 +2153,10 @@ namespace gum {
 
     /**
      * @brief Makes the iterator point to i elements further in the List.
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListConstIterator.
      */
-    ListConstIteratorSafe<Val>& operator+=( difference_type ) noexcept;
+    ListConstIteratorSafe<Val>& operator+=( difference_type i ) noexcept;
 
     /**
      * @brief Makes the iterator point to the preceding element in the List.
@@ -2176,26 +2176,26 @@ namespace gum {
     /**
      * @brief Makes the iterator point to i elements befor in the List.
      *
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListConstIteratorSafe.
      */
-    ListConstIteratorSafe<Val>& operator-=( difference_type ) noexcept;
+    ListConstIteratorSafe<Val>& operator-=( difference_type i ) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i further elements in the
      * gum::List.
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListConstIteratoSafe.
      */
-    ListConstIteratorSafe<Val> operator+( difference_type ) noexcept;
+    ListConstIteratorSafe<Val> operator+( difference_type i ) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i preceding elements in the
      * gum::List.
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListConstIteratorSafe.
      */
-    ListConstIteratorSafe<Val> operator-( difference_type ) noexcept;
+    ListConstIteratorSafe<Val> operator-( difference_type i ) noexcept;
 
     /**
      * @brief Checks whether two iterators point toward different elements.
@@ -2446,10 +2446,10 @@ namespace gum {
 
     /**
      * @brief Makes the iterator point to i elements further in the List.
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListIterator.
      */
-    ListIteratorSafe<Val>& operator+=( difference_type ) noexcept;
+    ListIteratorSafe<Val>& operator+=( difference_type i ) noexcept;
 
     /**
      * @brief Makes the iterator point to the preceding element in the List.
@@ -2469,26 +2469,26 @@ namespace gum {
     /**
      * @brief Makes the iterator point to i elements befor in the List.
      *
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListIteratorSafe.
      */
-    ListIteratorSafe<Val>& operator-=( difference_type ) noexcept;
+    ListIteratorSafe<Val>& operator-=( difference_type i ) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i further elements in the
      * gum::List.
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListConstIteratoSafe.
      */
-    ListIteratorSafe<Val> operator+( difference_type ) noexcept;
+    ListIteratorSafe<Val> operator+( difference_type i ) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i preceding elements in the
      * gum::List.
-     * @param difference_type The number of steps to move the iterator.
+     * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListIteratorSafe.
      */
-    ListIteratorSafe<Val> operator-( difference_type ) noexcept;
+    ListIteratorSafe<Val> operator-( difference_type i ) noexcept;
 
     /**
      * @brief Gives access to the content of the iterator.

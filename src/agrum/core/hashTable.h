@@ -24,8 +24,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef GUM_HASH_TABLE_H
-#define GUM_HASH_TABLE_H
+#ifndef GUM_HASHTABLE_H
+#define GUM_HASHTABLE_H
 
 #include <iostream>
 #include <utility>
@@ -97,16 +97,16 @@ namespace gum {
     static constexpr bool default_uniqueness_policy{true};
   };
 
-  /* Doxygen raises warning with following comment bloc
-   * @brief Prints the content of a gum::HashTableList in the stream.
-   * @ingroup hashtable_group
-   * @param s The s used to print the gum::HashTableList.
-   * @param list The gum::HashTableList to print.
-   * @return Returns the std::ostream s.
-   * @tparam Key The type of keys in the gum::HashTableList.
-   * @tparam Val The type of values in the gum::HashTableList.
-   * @tparam Alloc The gum::HashTableList allocator.
-   */
+  // Doxygen raises warning with following comment bloc
+  // @brief Prints the content of a gum::HashTableList in the stream.
+  // @ingroup hashtable_group
+  // @param s The s used to print the gum::HashTableList.
+  // @param list The gum::HashTableList to print.
+  // @return Returns the std::ostream s.
+  // @tparam Key The type of keys in the gum::HashTableList.
+  // @tparam Val The type of values in the gum::HashTableList.
+  // @tparam Alloc The gum::HashTableList allocator.
+   
   /**
    * @brief Prints the content of a gum::HashTableList in the stream.
    * @ingroup hashtable_group
@@ -115,17 +115,18 @@ namespace gum {
   std::ostream& operator<<( std::ostream& s,
                             const HashTableList<Key, Val, Alloc>& list);
 
-  /* Doxygen raises warning with following comment bloc
-   * @brief Prints the content of a gum::HashTableList with pointers key in the
-   * stream.
-   * @ingroup hashtable_group
-   * @param s The s used to print the gum::HashTableList.
-   * @param list The gum::HashTableList to print.
-   * @return Returns the std::ostream s.
-   * @tparam Key The type of keys in the gum::HashTableList.
-   * @tparam Val The type of values in the gum::HashTableList.
-   * @tparam Alloc The gum::HashTableList allocator.
-   */
+  // Doxygen raises warning with following comment bloc
+  // @brief Prints the content of a gum::HashTableList with pointers key in the
+  // stream.
+  // @ingroup hashtable_group
+  // @param s The s used to print the gum::HashTableList.
+  // @param list The gum::HashTableList to print.
+  // @return Returns the std::ostream s.
+  // @tparam Key The type of keys in the gum::HashTableList.
+  // @tparam Val The type of values in the gum::HashTableList.
+  // @tparam Alloc The gum::HashTableList allocator.
+  //
+ 
   /**
    * @brief Prints the content of a gum::HashTableList with pointers key in
    * the stream.
@@ -135,16 +136,16 @@ namespace gum {
   std::ostream& operator<<( std::ostream& s,
                             const HashTableList<Key*, Val, Alloc>& list);
 
-  /* Doxygen raises warning with following comment bloc
-   * @brief Prints the content of a gum::HashTable in the stream.
-   * @ingroup hashtable_group
-   * @param s The stream used to print the gum::HashTable.
-   * @param table The gum::HashTable to print.
-   * @return Returns the std::ostream s.
-   * @tparam Key The type of keys in the gum::HashTable.
-   * @tparam Val The type of values in the gum::HashTable.
-   * @tparam Alloc The gum::HashTable allocator.
-   */
+  // Doxygen raises warning with following comment bloc
+  // @brief Prints the content of a gum::HashTable in the stream.
+  // @ingroup hashtable_group
+  // @param s The stream used to print the gum::HashTable.
+  // @param table The gum::HashTable to print.
+  // @return Returns the std::ostream s.
+  // @tparam Key The type of keys in the gum::HashTable.
+  // @tparam Val The type of values in the gum::HashTable.
+  // @tparam Alloc The gum::HashTable allocator.
+
   /**
    * @brief Prints the content of a gum::HashTable in the stream.
    * @ingroup hashtable_group
@@ -153,17 +154,17 @@ namespace gum {
   std::ostream& operator<<( std::ostream& s,
                             const HashTable<Key, Val, Alloc>& table );
 
-  /* Doxygen raises warning with following comment bloc
-   * @brief Prints the content of a gum::HashTable with pointers key in the
-   * stream.
-   * @ingroup hashtable_group
-   * @param s The stream used to print the gum::HashTable.
-   * @param table The gum::HashTable to print.
-   * @return Returns the std::ostream s.
-   * @tparam Key The type of keys in the gum::HashTable.
-   * @tparam Val The type of values in the gum::HashTable.
-   * @tparam Alloc The gum::HashTable allocator.
-   */
+  // Doxygen raises warning with following comment bloc
+  // @brief Prints the content of a gum::HashTable with pointers key in the
+  // stream.
+  // @ingroup hashtable_group
+  // @param s The stream used to print the gum::HashTable.
+  // @param table The gum::HashTable to print.
+  // @return Returns the std::ostream s.
+  // @tparam Key The type of keys in the gum::HashTable.
+  // @tparam Val The type of values in the gum::HashTable.
+  // @tparam Alloc The gum::HashTable allocator.
+
   /**
    * @brief Prints the content of a gum::HashTable with pointers key in the
    * stream.
@@ -1827,7 +1828,7 @@ namespace gum {
 
   /**
    * @class HashTableIteratorStaticEnd
-   * @headefile hashTableIterator.h <agrum/core/hashTableIterator.h>
+   * @headerfile hashTable.h <agrum/core/hashTable.h>
    * @brief A class used to create the static iterator used by HashTables.
    * @ingroup hashtable_group
    *
@@ -1880,7 +1881,7 @@ namespace gum {
   // ===========================================================================
   /**
    * @class HashTableConstIteratorSafe
-   * @headefile hashTableIterator.h <agrum/core/hashTableIterator.h>
+   * @headerfile hashTable.h <agrum/core/hashTable.h>
    * @brief Safe Const Iterators for hashtables.
    * @ingroup hashtable_group
    *
@@ -2065,7 +2066,7 @@ namespace gum {
      *
      * @code
      * for (iter = hash.beginSafe(); iter != hash.endSafe (); ++iter) { }
-     * @encode
+     * @endcode
      *
      * The above loop is guaranteed to parse the whole hash table as long as no
      * element is added to or deleted from the hash table while being in the
@@ -2180,7 +2181,7 @@ namespace gum {
 
   /**
    * @class HashTableIteratorSafe
-   * @headefile hashTableIterator.h <agrum/core/hashTableIterator.h>
+   * @headerfile hashTable.h <agrum/core/hashTable.h>
    * @brief Safe Iterators for hashtables.
    * @ingroup hashtable_group
    *
@@ -2356,7 +2357,7 @@ namespace gum {
      *
      * @code
      * for (iter = hash.beginSafe (); iter != hash.endSafe (); ++iter) { }
-     * @encode
+     * @endcode
      * 
      * The above loop is guaranteed to parse the whole hash table as long as no
      * element is added to or deleted from the hash table while being in the
@@ -2380,7 +2381,7 @@ namespace gum {
      * @param i The number of increments.
      * @return Returns this gum::HashTableIteratorSafe.
      */
-    HashTableIteratorSafe<Key, Val> operator+( unsigned int ) const;
+    HashTableIteratorSafe<Key, Val> operator+( unsigned int i ) const;
 
     /**
      * @brief Checks whether two iterators are pointing toward different
@@ -2426,7 +2427,7 @@ namespace gum {
 
   /**
    * @class HashTableConstIterator
-   * @headefile hashTableIterator.h <agrum/core/hashTableIterator.h>
+   * @headerfile hashTable.h <agrum/core/hashTable.h>
    * @brief Unsafe Const Iterators for hashtables
    * @ingroup hashtable_group
    *
@@ -2631,7 +2632,7 @@ namespace gum {
      * @return Returns a new iterator pointing to i elements further in the
      * hashtable.
      */
-    HashTableConstIterator<Key, Val> operator+( unsigned int ) const noexcept;
+    HashTableConstIterator<Key, Val> operator+( unsigned int i ) const noexcept;
 
     /**
      * @brief Checks whether two iterators are pointing toward different
@@ -2716,7 +2717,7 @@ namespace gum {
 
   /**
    * @class HashTableIterator
-   * @headefile hashTableIterator.h <agrum/core/hashTableIterator.h>
+   * @headerfile hashTable.h <agrum/core/hashTable.h>
    * @brief Unsafe Iterators for hashtables
    * @ingroup hashtable_group
    *
