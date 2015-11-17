@@ -1,6 +1,7 @@
 #include <string.h>
 
-#include "LrsWrapper.h"
+#include <agrum/core/debug.h>
+#include <agrum/CN/LrsWrapper.h>
 
 namespace gum {
   namespace credal {
