@@ -142,7 +142,8 @@ def unroll2TBN(dbn,nbr):
   @return an unrolled BN from a 2TBN and the nbr of timeslices
   """
   ts=getTimeSlices(dbn)
-  if set(ts.keys())!=set([noTimeCluster,"0","t"]):
+  if not (set([noTimeCluster,"0","t"]).issuperset(ts.keys())
+          and set(["0","t"]).issubset(ts.keys())):
     raise TypeError("unroll2TBN needs a 2-TimeSlice BN")
 
   bn=gum.BayesNet()
