@@ -133,6 +133,7 @@ def getFigProba(p):
     ax.set_xlim(0,1)
     ax.set_yticks(ra)
     ax.set_yticklabels(vx)
+    ax.set_xlabel('Probability')
     ax.set_title(var.name())
     ax.get_xaxis().grid(True)
     return fig
