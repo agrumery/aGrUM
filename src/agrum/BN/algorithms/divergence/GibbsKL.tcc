@@ -24,7 +24,7 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
-#include <math.h>
+#include <cmath>
 
 #include <agrum/core/hashTable.h>
 #include <agrum/BN/IBayesNet.h>

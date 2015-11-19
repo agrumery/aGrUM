@@ -30,7 +30,7 @@
 #ifndef GUM_APPROXIMATION_SCHEME_CONFIGURATION_H
 #define GUM_APPROXIMATION_SCHEME_CONFIGURATION_H
 
-#include <math.h>
+#include <cmath>
 
 #include <agrum/config.h>
 #include <agrum/core/signal/signaler.h>

@@ -30,7 +30,7 @@
 
 #include <list>
 
-#include <tr1/functional>
+//#include <tr1/functional>
 
 #include <agrum/core/math/pow.h>
 #include <agrum/core/hashTable.h>

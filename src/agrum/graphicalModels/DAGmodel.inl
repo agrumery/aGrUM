@@ -25,7 +25,7 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
-#include <math.h>
+#include <cmath>
 
 #include <agrum/graphicalModels/DAGmodel.h>
 

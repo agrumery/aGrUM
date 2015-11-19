@@ -22,7 +22,7 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <math.h>
+#include <cmath>
 
 #include <agrum/config.h>
 #include <agrum/graphs/triangulations/triangulation.h>

@@ -26,7 +26,7 @@
 */
 
 #include <sstream>
-#include <math.h>
+#include <cmath>
 
 #include <agrum/core/priorityQueue.h>
 

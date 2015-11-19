@@ -24,7 +24,7 @@
 #ifndef GUM_LAZY_PROPAGATION_H
 #define GUM_LAZY_PROPAGATION_H
 
-#include <math.h>
+#include <cmath>
 
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/graphs/triangulations/defaultTriangulation.h>

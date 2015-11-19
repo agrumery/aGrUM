@@ -25,7 +25,7 @@
 #ifndef JUNCTION_TREE_INFERENCE_H
 #define JUNCTION_TREE_INFERENCE_H
 
-#include <math.h>
+#include <cmath>
 
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/graphs/triangulations/defaultTriangulation.h>

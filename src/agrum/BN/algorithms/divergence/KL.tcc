@@ -24,10 +24,11 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
-#include <math.h>
+#include <cmath>
+#include <complex>
+
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/IBayesNet.h>
-#include <complex>
 
 namespace gum {
   template <typename GUM_SCALAR>
