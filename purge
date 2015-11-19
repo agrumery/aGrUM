@@ -2,9 +2,6 @@
 echo "Purge tool - aGrUM 2011-13"
 echo "cleans aGrum and prepare re-generation of generated files."
 echo
-echo "WARNING: DO NOT COMMIT AFTER A PURGE UNLESS YOU ARE CERTAIN"
-echo "         THAT ALL PURGED FILE HAVE BEEN REGENERATED"
-echo
 read -p "Press any key to proceed ..." -n 1 -s
 echo
 
