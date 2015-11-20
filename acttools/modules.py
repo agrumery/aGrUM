@@ -43,7 +43,10 @@ def parseModulesTxt():
 def check_modules(current):
   setM=setifyString(current['modules'])
 
-  if 'ALL' in setM or 'all' in setM:
+  if 'pyAgrum' in current['targets']:
+    notif('Forcing the compilation of all modules for wrappers')
+    cde='ALL'
+  elif 'ALL' in setM or 'all' in setM:
     cde='ALL'
   else:
     if not setM.issubset(set(cfg.modules)):
@@ -51,8 +54,8 @@ def check_modules(current):
     else:
       cde='+'.join(setM)
 
-  if cde=="ALL":
-      current['modules']='+'.join(sorted(cfg.modules))
+  if cde=='ALL':
+    current['modules']='+'.join(sorted(cfg.modules))
   elif cde=='LIST':
     print("Modules is in")
     print("    - ALL")
@@ -61,3 +64,5 @@ def check_modules(current):
     sys.exit(1)
   else:
     current['modules']=cde
+
+  print(current['modules'])

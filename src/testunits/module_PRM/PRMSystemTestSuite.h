@@ -169,7 +169,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( sys.size(), (gum::Size)1 );
     }
 
-    void testInstatiate() {
+    void testInstantiate() {
       // Arrange
       System sys( "asia" );
       auto inst = new Instance( "asia", *__asia );

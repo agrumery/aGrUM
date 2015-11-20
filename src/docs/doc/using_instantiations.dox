@@ -1,5 +1,5 @@
 /*!
- * \page using_instantiations How to use Instatiations
+ * \page using_instantiations How to use Instantiations
  * @todo check this (near-automatically translated) english.
 
  * # Basic principles #
@@ -70,9 +70,10 @@
  * this incrementation. Typically assuming that two hypermatrices
  * t1 and t2 are defined on the same set of variables, and that there are two
  * instantiations i1 (registered on t1) and i2 (on t2), then write
- * @code for (i1.setFirst (), i2.setFirst ();! i1.end (); i1 ++, i2 ++) t1 [i1] =
- * t2
- * [i2]; @endcode
+ * @code
+ * for (i1.setFirst (), i2.setFirst ();! i1.end (); i1 ++, i2 ++)
+ *    t1 [i1] = t2[i2];
+ * @endcode
  * will not create a copy of t2 in t1, because the variables may not be
  * incremented
  * in the same order
@@ -80,9 +81,10 @@
  * There is a way to force the increment: i1.incIn(i2) allows you to increase i1
  * in
  * the same order as i2. Hence make a copy of the table is:
- * @code for (i1 . setFirst (), i2.setFirst ();! i1.end (); i1.incIn (i2), i2 ++)
- * t1
- * [i1] = t2 [i2]; @endcode
+ * @code
+ * for (i1 . setFirst (), i2.setFirst ();! i1.end (); i1.incIn (i2), i2 ++)
+ *   t1[i1] = t2 [i2];
+ * @endcode
 
  * There are other cases where it may be intersting to force the order of
  * operations,
@@ -96,16 +98,13 @@
  * @code
  * Instantiation i(T);
  * Instantiation i1(T1);
- * for(i.setFirstIn(i1), i1.setFirst();
- * ! i1.end();
- * ++i1, i.incIn(i1)) {
- * int content = T1[i1];
- * for(i.setFirstOut(i1);
- * ! i.end();
- * i.incOut(i1)) {
- * T[i] += content;
- * }
- * i.unsetOverflow();
+ * for(i.setFirstIn(i1), i1.setFirst();! i1.end();
+ *     ++i1, i.incIn(i1)) {
+ *   int content = T1[i1];
+ *   for(i.setFirstOut(i1);! i.end();i.incOut(i1)) {
+ *     T[i] += content;
+ *   }
+ *   i.unsetOverflow();
  * }
  * @endcode
 */
