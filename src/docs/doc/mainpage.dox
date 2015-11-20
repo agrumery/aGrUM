@@ -3,7 +3,7 @@
  *
  * # Presentation #
  *
- * Foo Bar aGrUM is a C++ library designed for easily building applications
+ * aGrUM is a C++ library designed for easily building applications
  * using
  * graphical models such as Bayesian networks, influence diagrams, decision
  * trees,
@@ -595,12 +595,12 @@
  *   cerr << "iter1 and iter2 point toward different elements";
  *
  * @endcode
- * 
+ *
  * @}
  *
  * \defgroup splaytree_group Splay Trees
  * @{
- * 
+ *
  * \brief A splay tree is a self-balancing binary search tree.
  *
  * @}

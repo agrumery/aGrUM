@@ -107,7 +107,7 @@ def checkConsistency(current):
   has_notif=False
   # helper
   def check_aGrumTest(option,current):
-    if current[option] :
+    if current[option]:
       prefix="Option [{0}] acts only".format(option)
       if current['targets']!=set(['aGrUM']):
         has_notif=True
@@ -115,6 +115,11 @@ def checkConsistency(current):
       if current['action']!='test':
         critic(prefix+" on action [test] (not on [{0}]).".format(current['action']))
   #end of helper
+
+  if current['action']=='doc':
+    if current['targets']!=set(['aGrUM']):
+       notif("Action [doc] only on target [aGrUM] (for now).")
+       current['targets']=set(['aGrUM'])
 
   # test for only one target
   if current['action']=='test':
