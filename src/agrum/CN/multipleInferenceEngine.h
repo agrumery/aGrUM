@@ -37,11 +37,10 @@ namespace gum {
   namespace credal {
 
     /**
-     * @class MultipleInferenceEngine MultipleInferenceEngine.h
-     * <agrum/CN/MultipleInferenceEngine.h>
-     * @brief Class template representing a CredalNet inference engine using one
-     * or
-     * more IBayesNet inference engines such as LazyPropagation. Extends
+     * @class MultipleInferenceEngine
+     * @headerfile <agrum/CN/multipleInferenceEngine.h>
+     * @brief Class template representing a CredalNet inference engine using
+     * one or more IBayesNet inference engines such as LazyPropagation. Extends
      * InferenceEngine< GUM_SCALAR >. Used for outer multi-threading such as
      * CNMonteCarloSampling.
      * @ingroup cn_group

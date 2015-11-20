@@ -30,8 +30,6 @@
 
 namespace gum {
 
-  /// default constructor
-
   UnconstrainedTriangulation::UnconstrainedTriangulation(
       const UndiGraph* theGraph,
       const NodeProperty<Size>* modal,
@@ -44,8 +42,6 @@ namespace gum {
     GUM_CONSTRUCTOR( UnconstrainedTriangulation );
   }
 
-  /// default constructor
-
   UnconstrainedTriangulation::UnconstrainedTriangulation(
       const UnconstrainedEliminationSequenceStrategy& elimSeq,
       const JunctionTreeStrategy& JTStrategy,
@@ -55,21 +51,15 @@ namespace gum {
     GUM_CONSTRUCTOR( UnconstrainedTriangulation );
   }
 
-  /// destructor
-
   UnconstrainedTriangulation::~UnconstrainedTriangulation() {
     // for debugging purposes
     GUM_DESTRUCTOR( UnconstrainedTriangulation );
   }
 
-  /// initialize the triangulation algorithm for a new graph
-
   void UnconstrainedTriangulation::setGraph( const UndiGraph* theGraph,
                                              const NodeProperty<Size>* modal ) {
     StaticTriangulation::_setGraph( theGraph, modal );
   }
-
-  /// the function called to initialize the triangulation process
 
   void UnconstrainedTriangulation::_initTriangulation( UndiGraph& graph ) {
     UnconstrainedEliminationSequenceStrategy* elim =

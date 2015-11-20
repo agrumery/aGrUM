@@ -17,13 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief Implementation of tree data structures
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 // to ease IDE parser
 #include <agrum/core/indexedTree.h>
 
@@ -34,7 +34,7 @@ namespace gum {
   /* =========================================================================*/
   /* =========================================================================*/
 
-  /// creates a tree with one node (with or without data)
+  // creates a tree with one node (with or without data)
 
   template <typename Key, typename Data>
   IndexedTree<Key, Data>::IndexedTree( const Key& theKey, Data* theData )
@@ -45,7 +45,7 @@ namespace gum {
     GUM_CONSTRUCTOR( IndexedTree );
   }
 
-  /// creates a tree with one node (with or without data)
+  // creates a tree with one node (with or without data)
 
   template <typename Key, typename Data>
   IndexedTree<Key, Data>::IndexedTree( Data* theData )
@@ -55,7 +55,7 @@ namespace gum {
     GUM_CONSTRUCTOR( IndexedTree );
   }
 
-  /// creates a tree with one node with data
+  // creates a tree with one node with data
 
   template <typename Key, typename Data>
   IndexedTree<Key, Data>::IndexedTree( const Key& theKey, const Data& theData )
@@ -66,7 +66,7 @@ namespace gum {
     GUM_CONSTRUCTOR( IndexedTree );
   }
 
-  /// copy constructor
+  // copy constructor
 
   template <typename Key, typename Data>
   IndexedTree<Key, Data>::IndexedTree( const IndexedTree<Key, Data>& from )
@@ -97,7 +97,7 @@ namespace gum {
     }
   }
 
-  /// copy operator
+  // copy operator
 
   template <typename Key, typename Data>
   IndexedTree<Key, Data>& IndexedTree<Key, Data>::
@@ -136,7 +136,7 @@ namespace gum {
     return *this;
   }
 
-  /// destructor
+  // destructor
 
   template <typename Key, typename Data>
   IndexedTree<Key, Data>::~IndexedTree() {
@@ -146,7 +146,7 @@ namespace gum {
     if ( data ) delete data;
   }
 
-  /// adds a new node into the tree
+  // adds a new node into the tree
 
   template <typename Key, typename Data>
   void IndexedTree<Key, Data>::insertNode( const std::vector<Key>& index,
@@ -200,7 +200,7 @@ namespace gum {
     }
   }
 
-  /// adds a new node into the tree
+  // adds a new node into the tree
 
   template <typename Key, typename Data>
   void IndexedTree<Key, Data>::insertNode( const std::vector<Key>& index,
@@ -254,7 +254,7 @@ namespace gum {
     }
   }
 
-  /// updates the value of a node (or adds it if it does not already exist)
+  // updates the value of a node (or adds it if it does not already exist)
 
   template <typename Key, typename Data>
   void IndexedTree<Key, Data>::setNode( const std::vector<Key>& index,
@@ -310,7 +310,7 @@ namespace gum {
     }
   }
 
-  /// updates the value of a node (or adds it if it does not already exist)
+  // updates the value of a node (or adds it if it does not already exist)
 
   template <typename Key, typename Data>
   void IndexedTree<Key, Data>::setNode( const std::vector<Key>& index,
@@ -366,7 +366,7 @@ namespace gum {
     }
   }
 
-  /// returns the value of a given test from the cache
+  // returns the value of a given test from the cache
 
   template <typename Key, typename Data>
   INLINE Data&
@@ -384,7 +384,7 @@ namespace gum {
     return *( current_node->data );
   }
 
-  /// returns a given node of the tree
+  // returns a given node of the tree
 
   template <typename Key, typename Data>
   INLINE IndexedTree<Key, Data>&
@@ -400,4 +400,3 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS

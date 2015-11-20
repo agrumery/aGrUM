@@ -33,8 +33,8 @@
 // =========================================================================
 #include <agrum/variables/labelizedVariable.h>
 
-#include <agrum/core/algorithms/approximationPolicy/exactPolicy.h>
-#include <agrum/core/algorithms/approximationPolicy/linearApproximationPolicy.h>
+#include <agrum/core/approximations/exactPolicy.h>
+#include <agrum/core/approximations/linearApproximationPolicy.h>
 // =========================================================================
 
 namespace gum_tests {

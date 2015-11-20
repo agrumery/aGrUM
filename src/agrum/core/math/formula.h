@@ -17,20 +17,24 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief Headers of Formula.
+/**
+ * @file
+ * @brief Headers files for the gum::FormulaPart and gum::Formula classes.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_MATH_FORMULA_H
 #define GUM_MATH_FORMULA_H
 
-#include <vector>
+#include <iostream>
+#include <list>
+#include <random>
+#include <sstream>
 #include <stack>
 #include <string>
-#include <sstream>
-#include <iostream>
+#include <vector>
 
+#include <agrum/config.h>
 #include <agrum/core/hashTable.h>
 
 namespace gum {
@@ -40,118 +44,404 @@ namespace gum {
     class Parser;
   }
 
+  /**
+   * @class FormulaPart formula.h <agrum/core/math/formula.h>
+   * @brief Represents part of a formula.
+   * @ingroup math_group
+   *
+   * This class is used by the gum::Formula class to store intermediate results
+   * when solving the formula using the Shuntin-yard algorithm.
+   */
   class FormulaPart {
     public:
+    /// The tokens constituting a formula.
     enum token_type { NUMBER, OPERATOR, PARENTHESIS, NIL, FUNCTION, ARG_SEP };
+
+    /// The functions allowed in a formula.
     enum token_function { exp, log, ln, pow, sqrt, nil };
 
+    /// The token_type stored by this gum::FormulaPart.
     token_type type;
+
+    /**
+     * @brief The value stored by this gum::FormulaPart
+     *
+     * @warning Only one of these three members will hold the value, given the
+     * type of this gum::FormulaPart.
+     */
+    /// @{
     double number;
     char character;
     token_function function;
+    /// @}
 
+    // ========================================================================
+    /// @name Constructors and destructor
+    // ========================================================================
+    /// @{
+
+    /**
+     * @brief Class constructor.
+     */
     FormulaPart();
+    
+    /**
+     * @brief Constructor for doubles.
+     * @param t The token_type of this gum::FormulaPart.
+     * @param n The value of this gum::FormulaPart.
+     */
     FormulaPart( token_type t, double n );
-    FormulaPart( token_type t, char c );
-    FormulaPart( token_type t, token_function );
 
+    /**
+     * @brief Constructor for chars.
+     * @param t The token_type of this gum::FormulaPart.
+     * @param c The value of this gum::FormulaPart.
+     */
+    FormulaPart( token_type t, char c );
+
+    /**
+     * @brief Constructor for functions.
+     * @param t The token_type of this gum::FormulaPart.
+     * @param func The value of this gum::FormulaPart.
+     */
+    FormulaPart( token_type t, token_function func );
+
+    /**
+     * @brief Copy constructor.
+     * @param source The gum::FormulaPart to copy.
+     */
     FormulaPart( const FormulaPart& source );
 
+    /**
+     * @brief Class destuctor.
+     */
     ~FormulaPart();
 
+    /// @}
+    // ========================================================================
+    /// @name Operators
+    // ========================================================================
+    /// @{
+
+    /**
+     * @brief Copy operator.
+     * @name source The gum::FormulaPart to copy.
+     * @return Returns this gum::FormulaPart.
+     */
     FormulaPart& operator=( const FormulaPart& source );
 
+    /// @}
+    // ========================================================================
+    /// @name Getters and setters
+    // ========================================================================
+    /// @{
+
+    /**
+     * @brief Returns a string representation of this gum::FormulaPart value.
+     * @return Returns a string representation of this gum::FormulaPart value.
+     */
     std::string str() const;
 
+    /**
+     * @brief Returns true if this gum::FormulaPart is left associative.
+     * @return Returns true if this gum::FormulaPart is left associative.
+     * @throw OperationNotAllowed Raised if the value stored is not an
+     * operator.
+     */
     bool isLeftAssociative() const;
 
+    /**
+     * @brief Returns true if this gum::FormulaPart is right associative.
+     * @return Returns true if this gum::FormulaPart is right associative.
+     * @throw OperationNotAllowed Raised if the value stored is not an
+     * operator.
+     */
     bool isRightAssociative() const;
 
+    /**
+     * @brief Returns the precedence priority of the value stored in this
+     * gum::FormulaPart.
+     * @return Returns the precedence priority of the value stored in this
+     * gum::FormulaPart.
+     * @throw OperationNotAllowed Raised if the value stored is not an
+     * operator.
+     */
     int precedence() const;
 
+    /**
+     * @brief Returns the number of argument of the function stored in this
+     * gum::FormulaPart.
+     * @return Returns the number of argument of the function stored in this
+     * gum::FormulaPart.
+     * @throw OperationNotAllowed Raised if the value stored is not a function.
+     */
     size_t argc() const;
 
-    /// Args are backwards !
+    /**
+     * @brief Returns the evaluation of the vector of gum::FormulaPart as
+     * arguments of the value stored in this gum::FormulaPart.
+     *
+     * @warning Args must be backwards !
+     *
+     * @param args The arguments, in backards, passed to the value stored in
+     * this gum::FormulaPart.
+     * @return Returns the evaluation of the vector of gum::FormulaPart as
+     * arguments of the value stored in this gum::FormulaPart.
+     * @throw OperationNotAllowed Raised if the value stored is neither a
+     * function nor an operator.
+     */
     FormulaPart eval( const std::vector<FormulaPart>& args ) const;
 
+    /// @}
+
     private:
-    /// Args are backwards !
+    /**
+     * @brief Returns the evaluation of the vector of gum::FormulaPart as
+     * arguments of the value stored in this gum::FormulaPart.
+     *
+     * @warning Args must be backwards !
+     *
+     * @param args The arguments, in backards, passed to the value stored in
+     * this gum::FormulaPart.
+     * @return Returns the evaluation of the vector of gum::FormulaPart as
+     * arguments of the value stored in this gum::FormulaPart.
+     * @throw OperationNotAllowed Raised if the value stored is not an
+     * operator.
+     */
     double __operator_eval( const std::vector<FormulaPart>& args ) const;
+
+    /**
+     * @brief Returns the evaluation of the vector of gum::FormulaPart as
+     * arguments of the value stored in this gum::FormulaPart.
+     *
+     * @warning Args must be backwards !
+     *
+     * @param args The arguments, in backards, passed to the value stored in
+     * this gum::FormulaPart.
+     * @return Returns the evaluation of the vector of gum::FormulaPart as
+     * arguments of the value stored in this gum::FormulaPart.
+     * @throw OperationNotAllowed Raised if the value stored is not a
+     * function.
+     */
     double __function_eval( const std::vector<FormulaPart>& args ) const;
 
+    /**
+     * @brief Returns the number of arguments expected by the operator stored
+     * in this gum::FormulaPart.
+     * @return Returns the number of arguments expected by the operator stored
+     * in this gum::FormulaPart.
+     */
     size_t __operator_argc() const;
+
+    /**
+     * @brief Returns the number of arguments expected by the function stored
+     * in this gum::FormulaPart.
+     * @return Returns the number of arguments expected by the function stored
+     * in this gum::FormulaPart.
+     */
     size_t __function_argc() const;
   };
 
-  /// Implementation of the Shunting-yard algorithm to convert infix notation
-  /// to RPN.
-  /// The result() method implements the postfix aglorithm to compute the
-  /// formula result.
+  /**
+  * @brief Evaluates a string as a algebraic formula.
+  *
+  * Implementation of the Shunting-yard algorithm to convert infix notation to
+  * RPN. The gum::Formula::result() method implements the postfix algorithm to
+  * compute the formula result.
+  *
+  * @warning Checking is only done when evaluating the formula !
+  */
   class Formula {
 
     public:
+    // ========================================================================
+    /// @name Constructors and destructor
+    // ========================================================================
+    /// @{
+
+    /**
+     * @brief Class constructor.
+     * @param f An algebraic formula.
+     */
     Formula( const std::string& f );
+
+    /**
+     * @brief Copy constructor.
+     * @param source The gum::Formula to copy.
+     */
     Formula( const Formula& source );
+
+    /**
+     * @brief Class destructor.
+     */
     ~Formula();
 
+    /// @}
+    // ========================================================================
+    /// @name Operators 
+    // ========================================================================
+    /// @{
+
+    /**
+     * @brief Copy operator.
+     * @param source The gum::Formula to copy.
+     * @return Returns this gum::Formula.
+     */
     Formula& operator=( const Formula& source );
 
+    /**
+     * @brief Returns the variables used by this gum::Formula.
+     * @return Returns the variables used by this gum::Formula.
+     */
     HashTable<std::string, double>& variables();
 
+    /**
+     * @brief Returns the variables used by this gum::Formula.
+     * @return Returns the variables used by this gum::Formula.
+     */
     const HashTable<std::string, double>& variables() const;
 
+    /**
+     * @brief Returns the result of this gum::Formula.
+     * @return Returns the result of this gum::Formula.
+     */
     double result() const;
 
+    /**
+     * @brief Push a number in the formula.
+     * @param v The number to push.
+     */
     void push_number( const double& v );
 
+    /**
+     * @brief Push an operator in the formula.
+     * @param o The operator to push.
+     */
     void push_operator( char o );
 
+    /**
+     * @brief Push a left parenthesis in the formula.
+     */
     void push_leftParenthesis();
 
+    /**
+     * @brief Push a right parenthesis in the formula.
+     */
     void push_rightParenthesis();
 
+    /**
+     * @brief Push a function in the formula.
+     * @param func The function to push.
+     */
     void push_function( const std::string& func );
 
+    /**
+     * @brief Push a variable in the formula.
+     */
     void push_variable( const std::string& var );
 
-    /// Use this if you don't know is ident is a function or a variable.
+    /**
+     * @brief Use this if you don't know if ident is a function or a variable.
+     */
     void push_identifier( const std::string& ident );
 
+    /**
+     * @brief Push a comma in the formula.
+     */
     void push_comma();
 
+    /**
+     * @brief Finalize the formula and prepare it for evaluation.
+     */
     void finalize();
 
     private:
+
+    /// The formula to evaluate.
     std::string __formula;
+
+    /// The scanner used by the formula.
     gum::formula::Scanner* __scanner;
+ 
+    /// The parser used by the formula.
     gum::formula::Parser* __parser;
 
+    /// The last token added to the formula.
     FormulaPart __last_token;
 
+    /// The output stack, will contain one value after evaluation.
     std::vector<FormulaPart> __output;
+ 
+    /// A stack used during evaluation.
     std::stack<FormulaPart> __stack;
 
+    /// The variables available in this formula.
     HashTable<std::string, double> __variables;
 
+    /**
+     * @brief Returns the output vector.
+     * @return Returns the output vector.
+     */
+    /// @{
     std::vector<FormulaPart>& output();
     const std::vector<FormulaPart>& output() const;
+    /// @}
 
+    /**
+     * @brief Returns the formula's inner stack.
+     * @return Returns the formula's inner stack.
+     */
     std::stack<FormulaPart>& stack();
+
+    /**
+     * @brief Returns the formula's inner stack.
+     * @return Returns the formula's inner stack.
+     */
     const std::stack<FormulaPart>& stack() const;
 
+    /**
+     * @brief Pop the operator in the inner formula's stack.
+     * @param o The operator to pop.
+     * @return Returns true if the operator was popped.
+     */
     bool __popOperator( FormulaPart o );
 
+    /**
+     * @brief Evaluate an operator or function and push its result.
+     * @param item The operator or function to reduce.
+     * @param stack The stack to evaluate.
+     */
     void __reduceOperatorOrFunction( FormulaPart item,
                                      std::stack<FormulaPart>& stack ) const;
 
+    /**
+     * @brief Push an unary operator.
+     * @param o The unary operator to push.
+     */
     void __push_unaryOperator( char o );
 
+    /**
+     * @brief Push an operator.
+     * @param t The operator to push.
+     */
     void __push_operator( FormulaPart t );
 
+    /**
+     * @brief Returns true if o is an unary operator.
+     * @return Returns true if o is an unary operator.
+     */
     bool __isUnaryOperator( char o );
 
+    /**
+     * @brief Push the gum::FormulaPart in the output vector.
+     * @param t The gum::FormulaPart to push.
+     */
     void __push_output( FormulaPart t );
 
+    /**
+     * @brief Push the gum::FormulaPart in the stack.
+     * @param t The gum::FormulaPart to push.
+     */
     void __push_stack( FormulaPart t );
   };
 

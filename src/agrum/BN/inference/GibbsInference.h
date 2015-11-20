@@ -27,7 +27,7 @@
 
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/particles/Gibbs.h>
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+#include <agrum/core/approximations/approximationScheme.h>
 
 namespace gum {
 

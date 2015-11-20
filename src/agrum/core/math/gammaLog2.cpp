@@ -17,13 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief The class for computing Log2 (Gamma(x))
+/**
+ * @file
+ * @brief The class for computing Log2 (Gamma(x)).
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-
-#include <limits>
 
 #include <agrum/core/math/gammaLog2.h>
 
@@ -32,6 +31,28 @@
 #endif  // GUM_NO_INLINE
 
 namespace gum {
+
+  // @brief Default constructor.
+  GammaLog2::GammaLog2( bool requires_precision )
+      : __requires_precision{requires_precision} {
+    GUM_CONSTRUCTOR( GammaLog2 );
+  }
+
+  // @brief Copy constructor.
+  GammaLog2::GammaLog2( const GammaLog2& from )
+      : __requires_precision{from.__requires_precision} {
+    GUM_CONS_CPY( GammaLog2 );
+  }
+
+  // @brief Move constructor.
+  GammaLog2::GammaLog2( GammaLog2&& from )
+      : __requires_precision{from.__requires_precision} {
+    GUM_CONS_MOV( GammaLog2 );
+  }
+
+  // @brief Class destructor.
+  GammaLog2::~GammaLog2() { GUM_DESTRUCTOR( GammaLog2 ); }
+
 
   // the Log2 (gamma (x)) for x varying from 0 to 50 by step of 1/100
   const std::vector<float> GammaLog2::__small_values{

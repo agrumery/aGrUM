@@ -17,6 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Contains usefull methods for random stuff.
+ *
+ * @author Vincent RENAUDINEAU and Pierre-Henri WUILLEMIN
+ */
 #include <agrum/core/utils.h>
 
 #ifdef GUM_NO_INLINE
@@ -25,7 +31,7 @@
 
 namespace gum {
 
-  /// returns the aGrUM's seed used by the std::generators
+  // returns the aGrUM's seed used by the std::generators
   unsigned int& randomGeneratorSeed( unsigned int seed ) {
     static unsigned int gum_seed =
         std::chrono::system_clock::now().time_since_epoch().count();

@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
@@ -28,8 +27,8 @@
 #ifndef GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H
 #define GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H
 
-#include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
-#include <agrum/core/algorithms/approximationPolicy/exactPolicy.h>
+#include <agrum/core/approximations/approximationPolicy.h>
+#include <agrum/core/approximations/exactPolicy.h>
 
 #include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
 #include <agrum/multidim/multiDimDecisionDiagram.h>

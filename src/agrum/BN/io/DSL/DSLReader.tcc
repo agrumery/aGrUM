@@ -87,8 +87,6 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   int DSLReader<GUM_SCALAR>::proceed( void ) {
-    // FILE* tmpfile();
-
     if ( __ioerror ) {
       GUM_ERROR( gum::IOError, "No such file " + streamName() );
     }
@@ -112,7 +110,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE unsigned int DSLReader<GUM_SCALAR>::errLine( unsigned int i ) {
     if ( __parseDone )
-      return __parser->errors().line( i );
+      return __parser->errors().error(i).line;
     else {
       GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
     }
@@ -121,7 +119,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE unsigned int DSLReader<GUM_SCALAR>::errCol( unsigned int i ) {
     if ( __parseDone )
-      return __parser->errors().col( i );
+      return __parser->errors().error(i).column;
     else {
       GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
     }
@@ -130,7 +128,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE bool DSLReader<GUM_SCALAR>::errIsError( unsigned int i ) {
     if ( __parseDone )
-      return __parser->errors().is_error( i );
+      return __parser->errors().error(i).is_error;
     else {
       GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
     }
@@ -139,7 +137,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE std::string DSLReader<GUM_SCALAR>::errMsg( unsigned int i ) {
     if ( __parseDone )
-      return std::string( narrow( __parser->errors().msg( i ) ) );
+      return __parser->errors().error(i).msg;
     else {
       GUM_ERROR( OperationNotAllowed, "DSL file not parsed yet" );
     }

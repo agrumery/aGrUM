@@ -73,11 +73,9 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// default constructor
-    /** @warning a NodeGraphPartIterator is built with __valid=false:
-     * don't forget to @ref __validate it (@see NodeGraphPart::beginNodes()
-     *code)
-     **/
+    /** 
+     * @brief Default constructor.
+     */
     NodeGraphPartIterator( const NodeGraphPart& nodes ) noexcept;
 
     /// copy constructor
@@ -118,8 +116,7 @@ namespace gum {
     /// @}
 
     protected:
-    /** @brief this function is used by @ref NodeGraphPart to update
-     * @ref NodeGraphPart::__endIterator */
+    /// @brief this function is used by @ref NodeGraphPart to update
     void _setPos( NodeId id ) noexcept;
 
     /// ensure that the nodeId is either end() either a valid NodeId
@@ -162,10 +159,6 @@ namespace gum {
     /// @{
 
     /// default constructor
-    /** @warning a NodeGraphPartIteratorSafe is built with __valid=false:
-     * don't forget to @ref __validate it (@see NodeGraphPart::beginNodes()
-     *code)
-     **/
     NodeGraphPartIteratorSafe( const NodeGraphPart& nodes );
 
     /// copy constructor

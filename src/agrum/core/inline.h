@@ -17,7 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief aGrUM's inline/outline selection
  *
  * aGrUM's INLINE is a substitute to the usual C++ inline. It enables compiling
@@ -43,11 +44,9 @@
 
 #define ENFORCED_INLINE inline
 // ENFORCED_INLINE is a stronger version of the inline, using __forceinline on
-// MSVC,
-// but it still doesn't use GCC's always_inline. This is useful in (common)
-// situations where MSVC needs forceinline
-// but GCC is still doing fine with just inline.
-// (from eigen library)
+// MSVC, but it still doesn't use GCC's always_inline. This is useful in
+// (common) situations where MSVC needs forceinline but GCC is still doing fine
+// with just inline.  (from eigen library)
 #if ( defined _MSC_VER ) || ( defined __INTEL_COMPILER )
 #define ENFORCED_INLINE __forceinline
 #else
@@ -55,20 +54,14 @@
 #endif
 
 // ALWAYS_INLINE is the strongest, it has the effect of making the function
-// inline
-// and adding every possible
-// attribute to maximize inlining. This should only be used when really
-// necessary: in
-// particular,
-// it uses __attribute__((always_inline)) on GCC, which most of the time is
-// useless
-// and can severely harm compile times.
-// FIXME with the always_inline attribute,
-// gcc 3.4.x reports the following compilation error:
+// inline and adding every possible attribute to maximize inlining. This should
+// only be used when really necessary: in particular, it uses
+// __attribute__((always_inline)) on GCC, which most of the time is useless and
+// can severely harm compile times.
+// FIXME with the always_inline attribute, gcc 3.4.x reports the following
+// compilation error:
 //   Eval.h:91: sorry, unimplemented: inlining failed in call to '...' :
-//   function
-//   body not available
-// (from eigen library)
+//   function body not available (from eigen library)
 #if GNUC_AT_LEAST( 4, 0 )
 #define ALWAYS_INLINE __attribute__( ( always_inline ) ) inline
 #else

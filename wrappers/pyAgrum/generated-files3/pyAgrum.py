@@ -862,10 +862,6 @@ class Vector_string(_object):
 Vector_string_swigregister = _pyAgrum.Vector_string_swigregister
 Vector_string_swigregister(Vector_string)
 
-
-def __createMsg(filename: 'std::string const &', function: 'std::string const &', line: 'int const', msg: 'std::string const &') -> "std::string const":
-    """__createMsg(std::string const & filename, std::string const & function, int const line, std::string const & msg) -> std::string const"""
-    return _pyAgrum.__createMsg(filename, function, line, msg)
 class GumException(Exception):
     """Proxy of C++ gum::Exception class."""
 
@@ -911,6 +907,10 @@ class GumException(Exception):
 GumException_swigregister = _pyAgrum.GumException_swigregister
 GumException_swigregister(GumException)
 
+
+def __createMsg(filename: 'std::string const &', function: 'std::string const &', line: 'int const', msg: 'std::string const &') -> "std::string const":
+    """__createMsg(std::string const & filename, std::string const & function, int const line, std::string const & msg) -> std::string const"""
+    return _pyAgrum.__createMsg(filename, function, line, msg)
 class IdError(GumException):
     """Proxy of C++ gum::IdError class."""
 

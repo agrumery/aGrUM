@@ -38,7 +38,7 @@ namespace gum {
   /* ===                               READERS === */
   /* =========================================================================*/
   /**
-   * @class NetReader NetReader.h <agrum/BN/io/net/NetReader.h>
+   * @class NetReader netReader.h <agrum/BN/io/net/netReader.h>
    * @ingroup bn_io
    * @brief Pure virtual class for reading a BN from a file.
    *

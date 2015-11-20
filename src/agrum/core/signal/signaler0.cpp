@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,7 +18,51 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/BN/inference/junctionTreeInference.h>
+/**
+ * @file
+ * @brief Class of signalers.
+ *
+ * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
+ *
+ */
 
-template class gum::JunctionTreeInference<float>;
-template class gum::JunctionTreeInference<double>;
+#include <agrum/core/signal/signaler0.h>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+namespace gum {
+  namespace __sig__ {
+
+    BasicSignaler0::BasicSignaler0() { GUM_CONSTRUCTOR( BasicSignaler0 ); }
+
+    BasicSignaler0::BasicSignaler0( const BasicSignaler0& s )
+        : ISignaler( s ) {
+      GUM_CONS_CPY( BasicSignaler0 );
+
+      for ( const auto el : _connectors ) {
+        el->target()->attachSignal__( this );
+        _connectors.push_back( el->clone() );
+      }
+    }
+
+    BasicSignaler0::~BasicSignaler0() {
+      GUM_DESTRUCTOR( BasicSignaler0 );
+
+      for ( const auto el : _connectors ) {
+        el->target()->detachSignal__( this );
+        delete el;
+      }
+
+      _connectors.clear();
+    }
+
+  }  // namespace __sig__
+
+}  // namespace gum
+
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
+
+#ifdef GUM_NO_INLINE
+#include <agrum/core/signal/signaler0.inl>
+#endif  // GUM_NO_INLINE
+

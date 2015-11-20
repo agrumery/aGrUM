@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr                                               *
@@ -39,7 +38,7 @@
 #include <agrum/BN/io/BNWriter.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/config.h>
-#include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
+#include <agrum/core/approximations/approximationPolicy.h>
 
 namespace gum {
 

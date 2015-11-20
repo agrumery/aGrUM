@@ -1,104 +1,33 @@
-#include "rational.h"
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN and Christophe GONZALES  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+/**
+ * @file
+ * @brief Class template used to approximate decimal numbers by rationals.
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
+ */
+
+// To help IDE Parsers
+#include <agrum/core/math/rational.h>
 
 namespace gum {
-
-  template <typename GUM_SCALAR>
-  void
-  Rational<GUM_SCALAR>::testRationalAlgorithms( const unsigned int& iters ) {
-    std::cout << " TESTING RATIONAL ALGORITHMS " << std::endl;
-    std::cout.precision( 10 );
-
-    std::cout << std::setw( 10 ) << std::left << "iter" << std::setw( 20 )
-              << std::left << "number" << std::setw( 35 ) << std::left
-              << "farey" << std::setw( 35 ) << std::left << "continued"
-              << std::endl;
-
-    double zero = 1e-6;
-    double PRECISION = 1000000;
-    double DECI = 6;
-    double den_max = 1000000000;
-
-    long int num, den;
-    GUM_SCALAR number;
-    std::stringstream ss;
-
-    for ( unsigned int i = 0; i < iters; i++ ) {
-      std::cout << std::setw( 10 ) << std::left << i;
-      number = (GUM_SCALAR)rand() / (GUM_SCALAR)RAND_MAX;
-      std::cout << std::setw( 20 ) << std::left << number;
-
-      farey( num, den, number, den_max, zero );
-      ss << num << "/" << den << " : ";
-      ss.precision( 10 );
-      ss << (double)num / den;
-      std::cout << std::setw( 35 ) << std::left << ss.str();
-      ss.str( std::string() );
-
-      continuedFracFirst( num, den, number, zero );
-      ss << num << "/" << den << " : ";
-      ss.precision( 10 );
-      ss << (double)num / den;
-      std::cout << std::setw( 35 ) << std::left << ss.str() << std::endl;
-      ss.str( std::string() );
-    }
-
-    std::cout << std::endl;
-
-    // test 0 and 1 !
-
-    std::cout << std::setw( 10 ) << std::left << iters;
-    number = 0;
-    std::cout << std::setw( 20 ) << std::left << number;
-
-    farey( num, den, number, den_max, zero );
-    ss << num << "/" << den << " : " << (double)num / den;
-    std::cout << std::setw( 35 ) << std::left << ss.str();
-    ss.str( std::string() );
-
-    continuedFracFirst( num, den, number, zero );
-    ss << num << "/" << den << " : " << (double)num / den;
-    std::cout << std::setw( 35 ) << std::left << ss.str() << std::endl;
-    ss.str( std::string() );
-    //////////////////////////////////////////////////////////////////
-
-    std::cout << std::setw( 10 ) << std::left << iters + 1;
-    number = 1;
-    std::cout << std::setw( 20 ) << std::left << number;
-
-    farey( num, den, number, den_max, zero );
-    ss << num << "/" << den << " : " << (double)num / den;
-    std::cout << std::setw( 35 ) << std::left << ss.str();
-    ss.str( std::string() );
-
-    continuedFracFirst( num, den, number, zero );
-    ss << num << "/" << den << " : " << (double)num / den;
-    std::cout << std::setw( 35 ) << std::left << ss.str() << std::endl;
-    ss.str( std::string() );
-
-    std::cout << std::endl;
-
-    /////////////////////////////////////////////////////////////////////////
-
-    // 1 <= number <= 100 ( don't call farey, it will go through all farey
-    // rationals
-    // until den_max is met, which is 1000000 )
-    double fmin = 1.0, fmax = 100.0;
-
-    for ( unsigned int i = iters + 2; i < iters * 2 + 2; i++ ) {
-      std::cout << std::setw( 10 ) << std::left << i;
-      number = (GUM_SCALAR)rand() / RAND_MAX;
-      number = fmin + number * ( fmax - fmin );
-      std::cout << std::setw( 20 ) << std::left << number;
-
-      // farey
-      std::cout << std::setw( 35 ) << std::left << "1/1, number > 1 !";
-
-      continuedFracFirst( num, den, number, zero );
-      ss << num << "/" << den << " : " << (double)num / den;
-      std::cout << std::setw( 35 ) << std::left << ss.str() << std::endl;
-      ss.str( std::string() );
-    }
-  }
 
   template <typename GUM_SCALAR>
   void Rational<GUM_SCALAR>::farey( long int& numerator,

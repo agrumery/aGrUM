@@ -17,11 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief The class that represents the chi2 distribution
  *
  * The Chi2 class allows to easily compute critical values for the Chi2
- * distribution
+ * distribution.
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
@@ -37,98 +39,159 @@
 
 namespace gum {
 
-  /* =========================================================================
-   */
-  /* ===                             CHI2 CLASS                            ===
-   */
-  /* =========================================================================
+  // =========================================================================
+  // ===                             CHI2 CLASS                            ===
+  // =========================================================================
+
+  /**
+   * @class Chi2 chi2.h <agrum/core/math/chi2.h>
+   * @brief Represent the chi2 distribution.
+   * @ingroup math_group
+   *
+   * The class constructor receives a std::vector of unsigned integers. This
+   * std::vector represents the variables modalities. The variables indexes in
+   * the std::vector will be used as the variables identifiers.
    */
   class Chi2 {
     public:
-    // ##########################################################################
+    // ==========================================================================
     /// @name Constructors / Destructors
-    // ##########################################################################
+    // ==========================================================================
     /// @{
 
-    /// default constructor
+    /**
+     * @brief Default constructor.
+     * @param var_modalities The variables modalities.
+     * @param confidence_proba The confidence probability.
+     */
     Chi2( const std::vector<unsigned int>& var_modalities,
           float confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA );
 
-    /// destructor
+    /**
+     * @brief Class destructor.
+     */
     ~Chi2();
 
     /// @}
-
-    // ##########################################################################
+    // ==========================================================================
     /// @name Accessors / Modifiers
-    // ##########################################################################
+    // ==========================================================================
     /// @{
 
-    /// sets the conditioning nodes (useful for computing degrees of freedom)
+    /**
+     * @brief Sets the conditioning nodes (useful for computing degrees of
+     * freedom).
+     *
+     * @param db_conditioning_ids The conditioning nodes id.
+     */
     void setConditioningNodes(
         const std::vector<unsigned int>& db_conditioning_ids );
 
-    /// computes the critical value according to the number of degrees of
-    /// freedom
+    /**
+    * @brief Computes the critical value according to the number of degrees of
+    * freedom.
+    * @param pair A pair of variables ids.
+    * @return Returns the critical values.
+    */
     float criticalValue( const std::pair<unsigned int, unsigned int>& pair );
 
-    /// computes the critical value according to the number of degrees of
-    /// freedom
+    /**
+     * @brief Computes the critical value according to the number of degrees of
+     * freedom.
+     * @param var1 The first variable id.
+     * @param var2 The second variable id.
+     * @return Returns the critical value.
+     */
     float criticalValue( unsigned int var1, unsigned int var2 );
 
-    /// returns the number of degrees of freedom
+    /**
+     * @brief Returns the number of degrees of freedom.
+     * @param pair A pair of variables ids.
+     * @return Returns the number of degrees of freedom.
+     */
     unsigned long
     degreesOfFreedom( const std::pair<unsigned int, unsigned int>& pair );
 
-    /// returns the number of degrees of freedom
+    /**
+     * @brief Returns the number of degrees of freedom.
+     * @param var1 The first variable id.
+     * @param var2 The second variable id.
+     * @return Returns the number of degrees of freedom.
+     */
     unsigned long degreesOfFreedom( unsigned int var1, unsigned int var2 );
 
-    /// modifies the confidence proba
+    /**
+     * @brief Modifies the confidence probability.
+     * @param new_proba The new confidence probability
+     */
     void setConfidenceProba( float new_proba );
 
     /// @}
 
     private:
-    /// the modalities of the random variables
+    /// The modalities of the random variables.
     const std::vector<unsigned int>& __modalities;
 
-    /// the confidence probability used for critical values
+    /// The confidence probability used for critical values.
     float __confidence_proba;
 
-    /// the domain size of the conditioning nodes
+    /// The domain size of the conditioning nodes.
     unsigned long __conditioning_size;
 
-    /// a set of already computed critical values
+    /// A set of already computed critical values.
     HashTable<unsigned int, float> __critical_values;
 
-    /// computes the critical value of a given chi2 test (used by the cache)
-    /** This code has been written by Gary Perlman */
+    /** 
+     * @brief Computes the critical value of a given chi2 test (used by the
+     * cache).
+     *
+     * This code has been written by Gary Perlman.
+     *
+     * @param proba The probability value.
+     * @param df The number of degrees of freedom.
+     * @return Returns the critical value of a given chi2 test.
+     */
     static double __criticalValue( double proba, unsigned long df );
-
-    /// computes the probability of chi2 value
-    /** This code has been written by Gary Perlman.
+    
+    /** 
+     * @brief Computes the probability of chi2 value.
+     *
+     * This code has been written by Gary Perlman.
+     *
      * ALGORITHM Compute probability of chi square value.
      * Adapted from:
      * Hill, I. D. and Pike, M. C.  Algorithm 299
      * Collected Algorithms for the CACM 1967 p. 243
      * Updated for rounding errors based on remark in
-     * ACM TOMS June 1985, page 185 */
+     * ACM TOMS June 1985, page 185
+     *
+     * @param x The chi2 value.
+     * @param df The number of degrees of freedom.
+     * @return The probability of x given df degrees of freedom.
+     */
     static double __probaChi2( double x, unsigned long df );
 
-    /// computes the probability of normal z value
-    /** This code has been written by Gary Perlman.
+    /** 
+     * @brief Computes the probability of normal z value.
+     *
+     * This code has been written by Gary Perlman.
+     *
      * ALGORITHM Adapted from a polynomial approximation in:
      * Ibbetson D, Algorithm 209
      * Collected Algorithms of the CACM 1963 p. 616
-     * Note:
-     * This routine has six digit accuracy, so it is only useful for absolute
-     * z values < 6.  For z values >= to 6.0, __probaZValue() returns 0.0. */
+     *
+     * This routine has six digit accuracy, so it is only useful for absolute z
+     * values < 6.  For z values >= to 6.0, __probaZValue() returns 0.0. 
+     *
+     * @param z A value.
+     * @return The probability of z.
+     */
     static double __probaZValue( double z );
 
-    /// prevent copy constructor
+    /// Forbid use of the copy constructor.
     Chi2( const Chi2& ) = delete;
 
-    /// prevent copy operator
+    /// Forbid used of the copy operator.
     Chi2& operator=( const Chi2& ) = delete;
   };
 
@@ -140,3 +203,4 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_CHI2_H */
+

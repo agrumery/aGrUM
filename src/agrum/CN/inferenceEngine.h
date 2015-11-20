@@ -30,21 +30,20 @@
 /// @todo virtual for all functions that MAY be one day redefined in any derived
 /// class
 
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
-#include <agrum/CN/varMod2BNsMap.h>
-#include <agrum/core/exceptions.h>
 #include <map>
 
-#include <agrum/core/math/rational.h>
-#include <agrum/core/math/pow.h>
-
 #include <agrum/CN/LrsWrapper.h>
+#include <agrum/CN/varMod2BNsMap.h>
+#include <agrum/core/approximations/approximationScheme.h>
+#include <agrum/core/exceptions.h>
+#include <agrum/core/math/pow.h>
+#include <agrum/core/math/rational.h>
 
 namespace gum {
   namespace credal {
 
     /**
-     * @class InferenceEngine InferenceEngine.h <agrum/CN/InferenceEngine.h>
+     * @class InferenceEngine inferenceEngine.h <agrum/CN/inferenceEngine.h>
      * @brief Abstract class template representing a CredalNet inference engine.
      * Used
      * by credal network inference algorithms such as CNLoopyPropagation (inner

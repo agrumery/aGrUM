@@ -75,6 +75,9 @@ namespace gum {
       /// default constructor
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database
+       * @param apriori The score apriori.
+       * @param min_range The minimal range.
+       * @param max_range The maximal range.
        */
       template <typename RowFilter>
       ScoreLog2Likelihood( const RowFilter& filter,

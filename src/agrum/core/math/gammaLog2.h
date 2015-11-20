@@ -17,85 +17,104 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief The class for computing Log2 (Gamma(x))
+/**
+ * @file
+ * @brief The class for computing Log2 (Gamma(x)).
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_GAMMA_LOG2_H
 #define GUM_GAMMA_LOG2_H
 
-#include <vector>
 #include <cmath>
+#include <limits>
+#include <vector>
 
 #include <agrum/config.h>
 #include <agrum/core/math/math.h>
 
 namespace gum {
 
-  /** @class GammaLog2
+  /**
+   * @class GammaLog2 gammaLog2.h <agrum/core/math/gammaLog2.h>
    * @brief The class for computing Log2 (Gamma(x))
+   * @ingroup math_group
    */
   class GammaLog2 {
     public:
-    // ############################################################################
+    // ============================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // ============================================================================
     ///@{
 
-    /// default constructor
-    GammaLog2( bool requires_precision = false )
-        : __requires_precision{requires_precision} {}
+    /**
+     * @brief Default constructor.
+     * @param requires_precision Set if precision is required or not.
+     */
+    GammaLog2( bool requires_precision = false );
 
-    /// copy constructor
-    GammaLog2( const GammaLog2& from )
-        : __requires_precision{from.__requires_precision} {}
+    /**
+     * @brief Copy constructor.
+     * @param from The gum::GammaLog2 to copy.
+     */
+    GammaLog2( const GammaLog2& from );
 
-    /// move constructor
-    GammaLog2( GammaLog2&& from )
-        : __requires_precision{from.__requires_precision} {}
+    /**
+     * @brief Move constructor.
+     * @param from The gum::GammaLog2 to move.
+     */
+    GammaLog2( GammaLog2&& from );
 
-    /// destructor
-    ~GammaLog2() {}
+    /**
+     * @brief Class destructor.
+     */
+    ~GammaLog2();
 
     ///@}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Operators
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// returns log2 ( gamma (x) ) for x > 0
-    /** @hrows OutOfBounds exception is raised if x <= 0 */
+    /** 
+     * @brief Returns log2 ( gamma (x) ) for x > 0.
+     * @throws OutOfBounds Raised if raised if x <= 0.
+     */
     float operator()( float x ) const;
 
-    /// sets whether we need more precision for small values
-    void setPrecision( bool );
+    /**
+     * @brief Sets whether we need more precision for small values.
+     * @param p If true, precision is enable.
+     */
+    void setPrecision( bool p);
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Operators
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// returns log2 ( gamma (x) ) for x >= 0
-    /** @hrows OutOfBounds exception is raised if x <= 0 */
+    /** 
+     * @brief Returns log2 ( gamma (x) ) for x >= 0.
+     * @param x A positive float.
+     * @return Returns log2 ( gamma (x) ) for x >= 0.
+     * @throws OutOfBounds Raised if x <= 0.
+     */
     float gammaLog2( float x ) const;
 
     /// @}
 
     private:
-    /// indicates whether we need more precision for small values
+    /// Indicates whether we need more precision for small values.
     bool __requires_precision{false};
 
-    /// 1 / std::log(2)
+    /// The value of 1 / std::log(2).
     static constexpr float __1log2{M_LOG2E};
 
-    /// std::log ( std::sqrt(2pi) )
+    /// The value of std::log ( std::sqrt(2pi) ).
     static constexpr float __log_sqrt_2pi{GUM_LOG_SQRT_2PI};
 
-    /// the 5000 values from 0 to 50 by step of 1/100
+    /// The 5000 values from 0 to 50 by step of 1/100.
     static const std::vector<float> __small_values;
   };
 

@@ -19,6 +19,9 @@
  ***************************************************************************/
 #ifndef GUM_DEBUG_H
 #define GUM_DEBUG_H
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 // WARNING : Do not include this file directlty : instead include
 // <agrum/config.h>
 
@@ -30,7 +33,9 @@
 #include <algorithm>
 #include <cassert>
 
+
 #ifndef NDEBUG
+
 
 #ifndef GUM_TRACE_ON
 #define GUM_TRACE_ON  // in DEBUG MODE we force TRACE to be ON
@@ -160,7 +165,6 @@ namespace gum {
 
     std::string __getFile( const char* f );
 
-    /////////////////////////////////////////////////////////////
     void __show_trace( const char* zeKey,
                        const char* zeFile,
                        long zeLine,
@@ -189,12 +193,9 @@ namespace gum {
 
 #endif  // NDEBUG
 
-  /* ===========================================================================
-   */
-  /* ===         A CLASS USED FOR MAKING VALGRIND HAPPY IN DEBUG MODE        ===
-   */
-  /* ===========================================================================
-   */
+  // ===========================================================================
+  // ===         A CLASS USED FOR MAKING VALGRIND HAPPY IN DEBUG MODE        ===
+  // ===========================================================================
 
   class Debug : public std::string {
     public:
@@ -207,4 +208,7 @@ namespace gum {
 
 } /* namespace gum */
 
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
+
 #endif  // GUM_DEBUG_H
+

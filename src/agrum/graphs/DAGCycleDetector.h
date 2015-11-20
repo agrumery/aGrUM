@@ -61,8 +61,6 @@ namespace gum {
     // the type of modification that can be applied to the graph
     enum class ChangeType { ARC_ADDITION, ARC_DELETION, ARC_REVERSAL };
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
     /// the base class indicating the possible changes
     class Change {
       public:
@@ -103,7 +101,8 @@ namespace gum {
       NodeId __head;
     };
 
-    /** @class DAGCycleDetector::ArcAdd
+    /**
+     * @class ArcAdd DAGCycleDetector.h <agrum/graphs/DAGCycleDetector.h>
      * @brief the class to indicate that we wish to add a new arc
      * @ingroup graph_group
      */
@@ -141,7 +140,8 @@ namespace gum {
       /// @}
     };
 
-    /** @class DAGCycleDetector::ArcDel
+    /**
+     * @class ArcDel DAGCycleDetector.h <agrum/core/DAGCycleDetector.h>
      * @brief the class to indicate that we wish to remove an arc
      * @ingroup graph_group
      */
@@ -179,7 +179,7 @@ namespace gum {
       /// @}
     };
 
-    /** @class DAGCycleDetector::ArcReverse
+    /** @class ArcReverse DAGCycleDetector.h <agrum/graphs/DAGCycleDetector.h>
      * @brief the class to indicate that we wish to reverse an arc
      * @ingroup graph_group
      */
@@ -216,8 +216,6 @@ namespace gum {
 
       /// @}
     };
-
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
     // ############################################################################
     /// @name Constructors / Destructors

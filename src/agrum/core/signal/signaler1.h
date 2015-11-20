@@ -18,10 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SIGNALER1_H__
-#define SIGNALER1_H__
+/**
+ * @file
+ * @brief Class of gum::Signaler1.
+ *
+ * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
+ *
+ */
 
-#include "signaler.h"
+#ifndef GUM_SIGNALER1_H
+#define GUM_SIGNALER1_H
+
+#include <agrum/core/signal/signaler.h>
 
 #define MAKE_NAME( nom ) nom##1
 #define LIST_DECL_CLASSES class type1
@@ -32,6 +40,6 @@
 #define GUM_EMIT1( signal, arg1 ) this->signal( this, arg1 )
 
 #define SIGNALER_PATRON_ACCEPTED
-#include "signaler_with_args.pattern.h"
+#include <agrum/core/signal/signaler_with_args.pattern.h>
 
-#endif  // SIGNALER1_H__
+#endif  // GUM_SIGNALER1_H

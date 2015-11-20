@@ -17,13 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief template implementations of heaps
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
 #include <string>
 #include <sstream>
 
@@ -32,7 +31,7 @@
 
 namespace gum {
 
-  /// basic constructor. Creates an empty heap
+  // basic constructor. Creates an empty heap
   template <typename Val, typename Cmp, typename Alloc>
   Heap<Val, Cmp, Alloc>::Heap( Cmp compare, Size capacity )
       : __cmp( compare ) {
@@ -42,7 +41,7 @@ namespace gum {
     GUM_CONSTRUCTOR( Heap );
   }
 
-  /// initializer list constructor
+  // initializer list constructor
   template <typename Val, typename Cmp, typename Alloc>
   Heap<Val, Cmp, Alloc>::Heap( std::initializer_list<Val> list ) {
     __heap.reserve( list.size() );
@@ -54,7 +53,7 @@ namespace gum {
     GUM_CONSTRUCTOR( Heap );
   }
 
-  /// copy constructor
+  // copy constructor
   template <typename Val, typename Cmp, typename Alloc>
   Heap<Val, Cmp, Alloc>::Heap( const Heap<Val, Cmp, Alloc>& from )
       : __heap( from.__heap )
@@ -64,7 +63,7 @@ namespace gum {
     GUM_CONS_CPY( Heap );
   }
 
-  /// generalized copy constructor
+  // generalized copy constructor
   template <typename Val, typename Cmp, typename Alloc>
   template <typename OtherAlloc>
   Heap<Val, Cmp, Alloc>::Heap( const Heap<Val, Cmp, OtherAlloc>& from )
@@ -80,7 +79,7 @@ namespace gum {
     GUM_CONS_CPY( Heap );
   }
 
-  /// move constructor
+  // move constructor
   template <typename Val, typename Cmp, typename Alloc>
   Heap<Val, Cmp, Alloc>::Heap( Heap<Val, Cmp, Alloc>&& from ) noexcept
       : __heap( std::move( from.__heap ) ),
@@ -90,14 +89,14 @@ namespace gum {
     GUM_CONS_MOV( Heap );
   }
 
-  /// destructor
+  // destructor
   template <typename Val, typename Cmp, typename Alloc>
   Heap<Val, Cmp, Alloc>::~Heap() {
     // for debugging purposes
     GUM_DESTRUCTOR( Heap );
   }
 
-  /// copy operator
+  // copy operator
   template <typename Val, typename Cmp, typename Alloc>
   Heap<Val, Cmp, Alloc>& Heap<Val, Cmp, Alloc>::
   operator=( const Heap<Val, Cmp, Alloc>& from ) {
@@ -123,7 +122,7 @@ namespace gum {
     return *this;
   }
 
-  /// generalized copy operator
+  // generalized copy operator
   template <typename Val, typename Cmp, typename Alloc>
   template <typename OtherAlloc>
   Heap<Val, Cmp, Alloc>& Heap<Val, Cmp, Alloc>::
@@ -155,7 +154,7 @@ namespace gum {
     return *this;
   }
 
-  /// move operator
+  // move operator
   template <typename Val, typename Cmp, typename Alloc>
   Heap<Val, Cmp, Alloc>& Heap<Val, Cmp, Alloc>::
   operator=( Heap<Val, Cmp, Alloc>&& from ) noexcept {
@@ -169,7 +168,7 @@ namespace gum {
     return *this;
   }
 
-  /// returns the element at the top of the heap
+  // returns the element at the top of the heap
   template <typename Val, typename Cmp, typename Alloc>
   INLINE const Val& Heap<Val, Cmp, Alloc>::top() const {
     if ( !__nb_elements ) {
@@ -179,25 +178,25 @@ namespace gum {
     return __heap[0];
   }
 
-  /// returns the number of elements in the heap
+  // returns the number of elements in the heap
   template <typename Val, typename Cmp, typename Alloc>
   INLINE Size Heap<Val, Cmp, Alloc>::size() const noexcept {
     return __nb_elements;
   }
 
-  /// return the size of the array storing the heap
+  // return the size of the array storing the heap
   template <typename Val, typename Cmp, typename Alloc>
   INLINE Size Heap<Val, Cmp, Alloc>::capacity() const noexcept {
     return __heap.size();
   }
 
-  /// changes the size of the array storing the heap
+  // changes the size of the array storing the heap
   template <typename Val, typename Cmp, typename Alloc>
   INLINE void Heap<Val, Cmp, Alloc>::resize( Size new_size ) {
     if ( new_size > __nb_elements ) __heap.reserve( new_size );
   }
 
-  /// removes the element at position 'index' from the heap
+  // removes the element at position 'index' from the heap
   template <typename Val, typename Cmp, typename Alloc>
   void Heap<Val, Cmp, Alloc>::eraseByPos( Size index ) {
     if ( index >= __nb_elements ) return;
@@ -226,7 +225,7 @@ namespace gum {
     __heap[i] = std::move( last );
   }
 
-  /// removes a given element from the heap (but does not return it)
+  // removes a given element from the heap (but does not return it)
   template <typename Val, typename Cmp, typename Alloc>
   INLINE void Heap<Val, Cmp, Alloc>::erase( const Val& val ) {
     // find val in the heap
@@ -237,7 +236,7 @@ namespace gum {
       }
   }
 
-  /// removes the top of the heap (but does not return it)
+  // removes the top of the heap (but does not return it)
   template <typename Val, typename Cmp, typename Alloc>
   INLINE void Heap<Val, Cmp, Alloc>::eraseTop() {
     // if the heap is empty, do nothing
@@ -245,7 +244,7 @@ namespace gum {
     eraseByPos( 0 );
   }
 
-  /// removes the top element from the heap and return it
+  // removes the top element from the heap and return it
   template <typename Val, typename Cmp, typename Alloc>
   INLINE Val Heap<Val, Cmp, Alloc>::pop() {
     if ( !__nb_elements ) {
@@ -257,7 +256,7 @@ namespace gum {
     return v;
   }
 
-  /// after inserting an element at the end of the heap, restore heap property
+  // after inserting an element at the end of the heap, restore heap property
   template <typename Val, typename Cmp, typename Alloc>
   Size Heap<Val, Cmp, Alloc>::__restoreHeap() {
     // get the element at the end of the heap
@@ -274,7 +273,7 @@ namespace gum {
     return i;
   }
 
-  /// inserts a new (a copy) element in the heap
+  // inserts a new (a copy) element in the heap
   template <typename Val, typename Cmp, typename Alloc>
   INLINE Size Heap<Val, Cmp, Alloc>::insert( const Val& val ) {
     // create a new element at the end of the heap
@@ -283,7 +282,7 @@ namespace gum {
     return __restoreHeap();
   }
 
-  /// inserts a new (a copy) element in the heap
+  // inserts a new (a copy) element in the heap
   template <typename Val, typename Cmp, typename Alloc>
   Size Heap<Val, Cmp, Alloc>::insert( Val&& val ) {
     // create a new element at the end of the heap
@@ -292,7 +291,7 @@ namespace gum {
     return __restoreHeap();
   }
 
-  /// emplace a new element in the heap
+  // emplace a new element in the heap
   template <typename Val, typename Cmp, typename Alloc>
   template <typename... Args>
   Size Heap<Val, Cmp, Alloc>::emplace( Args&&... args ) {
@@ -302,13 +301,13 @@ namespace gum {
     return __restoreHeap();
   }
 
-  /// indicates whether the heap is empty
+  // indicates whether the heap is empty
   template <typename Val, typename Cmp, typename Alloc>
   INLINE bool Heap<Val, Cmp, Alloc>::empty() const noexcept {
     return ( __nb_elements == 0 );
   }
 
-  /// indicates whether the heap contains a given value
+  // indicates whether the heap contains a given value
   template <typename Val, typename Cmp, typename Alloc>
   INLINE bool Heap<Val, Cmp, Alloc>::contains( const Val& val ) const {
     for ( Size i = 0; i < __nb_elements; ++i )
@@ -317,7 +316,7 @@ namespace gum {
     return false;
   }
 
-  /// returns the element at index elt from the heap
+  // returns the element at index elt from the heap
   template <typename Val, typename Cmp, typename Alloc>
   INLINE const Val& Heap<Val, Cmp, Alloc>::operator[]( Size index ) const {
     // check if the element exists
@@ -328,7 +327,7 @@ namespace gum {
     return __heap[index];
   }
 
-  /// displays the content of the heap
+  // displays the content of the heap
   template <typename Val, typename Cmp, typename Alloc>
   std::string Heap<Val, Cmp, Alloc>::toString() const {
     bool deja = false;
@@ -346,7 +345,7 @@ namespace gum {
     return stream.str();
   }
 
-  /// A \c << operator for Heap
+  // A \c << operator for Heap
   template <typename Val, typename Cmp, typename Alloc>
   INLINE std::ostream& operator<<( std::ostream& stream,
                                    const Heap<Val, Cmp, Alloc>& heap ) {
@@ -356,4 +355,3 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS

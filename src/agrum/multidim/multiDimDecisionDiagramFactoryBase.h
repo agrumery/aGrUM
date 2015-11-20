@@ -30,7 +30,7 @@
 
 #include <agrum/core/hashTable.h>
 #include <agrum/core/bijection.h>
-#include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
+#include <agrum/core/approximations/approximationPolicy.h>
 
 #include <agrum/multidim/multiDimDecisionDiagramBase.h>
 

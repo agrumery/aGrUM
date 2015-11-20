@@ -238,8 +238,8 @@ namespace gum {
        */
       const Set<Interface<GUM_SCALAR>*>& implements() const;
 
-      /// Returns the set of Class<GUM_SCALAR> which are direct
-      /// sub-Class<GUM_SCALAR> of this Class<GUM_SCALAR>.
+      /// Returns the set of Class@<GUM_SCALAR@> which are direct
+      /// sub-Class@<GUM_SCALAR@> of this Class@<GUM_SCALAR@>.
       const Set<Class<GUM_SCALAR>*>& extensions() const;
 
       /// @}
@@ -359,11 +359,11 @@ namespace gum {
       /// are updated.
       void __addIOInterfaceFlags( ClassElement<GUM_SCALAR>* elt );
 
-      /// This method is called when a sub-Class<GUM_SCALAR> of this
-      /// Class<GUM_SCALAR> is created.
-      /// @param c The Class<GUM_SCALAR> added as a direct sub-Class<GUM_SCALAR>
+      /// This method is called when a sub-Class@<GUM_SCALAR@> of this
+      /// Class@<GUM_SCALAR@> is created.
+      /// @param c The Class@<GUM_SCALAR@> added as a direct sub-Class@<GUM_SCALAR@>
       /// of this.
-      /// @throw DuplicateElement Raised if c is already a sub-Class<GUM_SCALAR>
+      /// @throw DuplicateElement Raised if c is already a sub-Class@<GUM_SCALAR@>
       /// of this.
       void __addExtension( Class<GUM_SCALAR>* c );
 

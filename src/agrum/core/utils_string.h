@@ -17,8 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief utilities for manipulating strings
+/**
+ * @file
+ * @brief Utilities for manipulating strings.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  *
@@ -28,11 +29,26 @@
 
 #include <vector>
 #include <string>
+#include <cstdlib>
 
 #include <agrum/config.h>
 
+#ifndef HAVE_MKSTEMP  // mainly windows
+#warning "No mkstemp"
+#include <io.h>
+#endif
+
 namespace gum {
+  /// @ingroup utilities_group
+  /// @{
+
+  /**
+   * @brief Returns a path to a unique file name.
+   * @return Returns a path to a unique file name.
+   */
   std::string getUniqueFileName();
+
+  /// @}
 } /* namespace gum */
 
 #endif /* GUM_UTILS_STRING_H */

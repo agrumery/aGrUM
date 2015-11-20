@@ -30,7 +30,8 @@
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/inference/junctionTreeInference.h>
+#include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/inference/variableElimination.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -127,7 +128,7 @@ namespace gum_tests {
     void testMarginal() {
       fill( *bn );
       gum::LazyPropagation<float> inf( *bn );
-      gum::JunctionTreeInference<float> inf2( *bn );
+      gum::ShaferShenoyInference<float> inf2( *bn );
 
       TS_ASSERT_THROWS_NOTHING( inf.makeInference() );
       TS_ASSERT_THROWS_NOTHING( inf.posterior( i1 ) );
@@ -153,7 +154,7 @@ namespace gum_tests {
       e_list.insert( e_i4 );
 
       gum::LazyPropagation<float> inf( *bn );
-      gum::JunctionTreeInference<float> infX( *bn );
+      gum::ShaferShenoyInference<float> infX( *bn );
 
       TS_ASSERT_THROWS_NOTHING( inf.insertEvidence( e_list ) );
       TS_ASSERT_THROWS_NOTHING( infX.insertEvidence( e_list ) );
@@ -173,7 +174,7 @@ namespace gum_tests {
       TS_ASSERT( equalPotentials( inf.posterior( i5 ), infX.posterior( i5 ) ) );
 
       gum::LazyPropagation<float> inf2( *bn );
-      gum::JunctionTreeInference<float> inf2X( *bn );
+      gum::ShaferShenoyInference<float> inf2X( *bn );
 
       /* addHardEvidece : memore leak */
       TS_ASSERT_THROWS_NOTHING( inf2.addHardEvidence( i1, 0 ) );
@@ -260,7 +261,7 @@ namespace gum_tests {
         for ( inst.setFirst(); !inst.end(); ++inst ) {
           ev_pot.set( inst, (float)1 );
           gum::LazyPropagation<float> inf1( bn );
-          gum::JunctionTreeInference<float> inf2( bn );
+          gum::ShaferShenoyInference<float> inf2( bn );
           TS_ASSERT_THROWS_NOTHING( inf1.insertEvidence( evidences ) );
           TS_ASSERT_THROWS_NOTHING( inf2.insertEvidence( evidences ) );
           TS_ASSERT_THROWS_NOTHING( inf1.makeInference() );
@@ -284,7 +285,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
 
       gum::LazyPropagation<float> inf1( bn );
-      gum::JunctionTreeInference<float> inf2( bn );
+      gum::VariableElimination<float> inf2( bn );
 
       TS_ASSERT_THROWS_NOTHING( inf1.makeInference() );
       TS_ASSERT_THROWS_NOTHING( inf2.makeInference() );
@@ -316,7 +317,7 @@ namespace gum_tests {
       }
 
       gum::LazyPropagation<float> inf3( bn );
-      gum::JunctionTreeInference<float> inf4( bn );
+      gum::ShaferShenoyInference<float> inf4( bn );
       TS_ASSERT_THROWS_NOTHING( inf1.insertEvidence( evidences ) );
       TS_ASSERT_THROWS_NOTHING( inf2.insertEvidence( evidences ) );
       TS_ASSERT_THROWS_NOTHING( inf3.insertEvidence( evidences ) );
@@ -398,7 +399,7 @@ namespace gum_tests {
                 ev_pot2.set( inst2, (float)1 );
 
                 gum::LazyPropagation<float> inf1( bn );
-                gum::JunctionTreeInference<float> inf2( bn );
+                gum::ShaferShenoyInference<float> inf2( bn );
                 TS_ASSERT_THROWS_NOTHING( inf1.insertEvidence( evidences ) );
                 TS_ASSERT_THROWS_NOTHING( inf2.insertEvidence( evidences ) );
                 TS_ASSERT_THROWS_NOTHING( inf1.makeInference() );
@@ -461,7 +462,7 @@ namespace gum_tests {
                 inf1.setFindRelevantPotentialsType(
                     gum::LazyPropagation<float>::FindRelevantPotentialsType::
                         FIND_RELEVANT_D_SEPARATION );
-                gum::JunctionTreeInference<float> inf2( bn );
+                gum::ShaferShenoyInference<float> inf2( bn );
                 TS_ASSERT_THROWS_NOTHING( inf1.insertEvidence( evidences ) );
                 TS_ASSERT_THROWS_NOTHING( inf2.insertEvidence( evidences ) );
                 TS_ASSERT_THROWS_NOTHING( inf1.makeInference() );

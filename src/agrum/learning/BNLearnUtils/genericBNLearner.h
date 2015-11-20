@@ -17,13 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief A class for generic framework of learning algorithms that can easily
- *be
- *used
+ * be used.
  *
  * The pack currently contains K2, GreedyHillClimbing and
- *LocalSearchWithTabuList
+ * LocalSearchWithTabuList
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -73,8 +73,8 @@
 #include <agrum/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
 
-#include <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
-#include <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
+#include <agrum/core/approximations/approximationSchemeListener.h>
+#include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 
 #include <agrum/learning/K2.h>
 #include <agrum/learning/greedyHillClimbing.h>
@@ -115,8 +115,6 @@ namespace gum {
         LOCAL_SEARCH_WITH_TABU_LIST
       };
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
       /// a helper to easily read databases
       class Database {
         public:
@@ -129,12 +127,17 @@ namespace gum {
         Database( std::string filename );
 
         /// default constructor with defined modalities for some variables
-        /** @param modalities indicate for some nodes (not necessarily all the
+        /**
+         * @param filename The file to read.
+         * @param modalities indicate for some nodes (not necessarily all the
          * nodes of the BN) which modalities they should have and in which
          * order these modalities should be stored into the nodes. For instance,
          * if modalities = { 1 -> {True, False, Big} }, then the node of id 1
          * in the BN will have 3 modalities, the first one being True, the
-         * second one being False, and the third bein Big. */
+         * second one being False, and the third bein Big. 
+         * @param check_database If true, the database will be checked.
+         *
+         */
         Database( std::string filename,
                   const NodeProperty<Sequence<std::string>>& modalities,
                   bool check_database = false );
@@ -150,17 +153,21 @@ namespace gum {
 
         /// default constructor for the aprioris
         /** We must ensure that, when reading the apriori database, if the
-         * "apriori" rowFilter says that a given variable has value i
-         * (given by its fast translator), the corresponding "raw" value in the
-         * apriori database is the same as in the score/parameter database
-         * read before creating the apriori. This is compulsory to have
-         * aprioris that make sense.
+         * "apriori" rowFilter says that a given variable has value i (given by
+         * its fast translator), the corresponding "raw" value in the apriori
+         * database is the same as in the score/parameter database read before
+         * creating the apriori. This is compulsory to have aprioris that make
+         * sense.
+         *
+         * @param filename The fila to read.
+         * @param score_database The score database.
          * @param modalities indicate for some nodes (not necessarily all the
          * nodes of the BN) which modalities they should have and in which
-         * order these modalities should be stored into the nodes. For instance,
-         * if modalities = { 1 -> {True, False, Big} }, then the node of id 1
-         * in the BN will have 3 modalities, the first one being True, the
-         * second one being False, and the third bein Big. */
+         * order these modalities should be stored into the nodes. For
+         * instance, if modalities = { 1 -> {True, False, Big} }, then the node
+         * of id 1 in the BN will have 3 modalities, the first one being True,
+         * the second one being False, and the third bein Big. 
+         */
         Database( std::string filename,
                   Database& score_database,
                   const NodeProperty<Sequence<std::string>>& modalities );
@@ -259,8 +266,6 @@ namespace gum {
         unsigned int __min_nb_rows_per_thread{100};
       };
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -277,21 +282,21 @@ namespace gum {
       /**
        * read the database file for the score / parameter estimation and var
        * names
+       * @param filename The file to learn from.
        * @param modalities indicate for some nodes (not necessarily all the
-       * nodes of the BN) which modalities they should have and in which
-       * order these modalities should be stored into the nodes. For instance,
-       * if modalities = { 1 -> {True, False, Big} }, then the node of id 1
-       * in the BN will have 3 modalities, the first one being True, the
-       * second one being False, and the third bein Big.
+       * nodes of the BN) which modalities they should have and in which order
+       * these modalities should be stored into the nodes. For instance, if
+       * modalities = { 1 -> {True, False, Big} }, then the node of id 1 in the
+       * BN will have 3 modalities, the first one being True, the second one
+       * being False, and the third bein Big.
        * @param parse_database if true, the modalities specified by the user
        * will be considered as a superset of the modalities of the variables. A
        * parsing of the database will allow to determine which ones are really
        * necessary and will keep them in the order specified by the user
        * (NodeProperty modalities). If parse_database is set to false (the
        * default), then the modalities specified by the user will be considered
-       * as
-       * being exactly those of the variables of the BN (as a consequence, if we
-       * find other values in the database, an exception will be raised
+       * as being exactly those of the variables of the BN (as a consequence,
+       * if we find other values in the database, an exception will be raised
        * during learning). */
       genericBNLearner( const std::string& filename,
                         const NodeProperty<Sequence<std::string>>& modalities,

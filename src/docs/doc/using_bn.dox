@@ -18,21 +18,25 @@
  * aGrUM.
  *
  * \section bn_model Using the BayesNetFactory class
- * Creating a Bayesian Network can be easily done using the \ref
- * gum::BayesNetFactory.  We will use the classic Asia network to illustrate how
- * the \ref gum::BayesNetFactory class works.
+ * The gum::ByesNetFactory class is usefull when writing serializers and
+ * deserailizers for the gum::BayesNet class. You can also use it to create
+ * gum:BayesNet directly in C++, you may however find that using directly the
+ * gum::BayesNet class simpler.
+ * 
+ * We will use the classic Asia network to illustrate how the 
+ * gum::BayesNetFactory class works.
  *
  * \dot
  * digraph Asia {
  *  bgcolor = "#EEF1F7";
- *  VtA [ label="Visit to Asia" URL="\ref VtA"];
- *  S [ label="Smoker" URL="\ref S"];
- *  HT [ label="Has Tuberculosis" URL="\ref HT"];
- *  HLC [ label="Has Lung Cancer" URL="\ref HLC"];
- *  HB [ label="Has Bronchitis" URL="\ref HB"];
- *  ToC [ label="Tuberculosis or Cancer" URL="\ref ToC"];
- *  XR [ label="XRay Result" URL="\ref XR"];
- *  D [ label="Dyspnea" URL="\ref D"];
+ *  VtA [ label="Visit to Asia"];
+ *  S [ label="Smoker"];
+ *  HT [ label="Has Tuberculosis"];
+ *  HLC [ label="Has Lung Cancer"];
+ *  HB [ label="Has Bronchitis"];
+ *  ToC [ label="Tuberculosis or Cancer"];
+ *  XR [ label="XRay Result"];
+ *  D [ label="Dyspnea"];
  *  VtA -> HT [ arrowhead="open" ];
  *  S -> HLC [ arrowhead="open" ];
  *  S -> HB [ arrowhead="open" ];

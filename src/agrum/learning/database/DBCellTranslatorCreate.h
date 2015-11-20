@@ -191,7 +191,8 @@ namespace gum {
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
-    /** @class Create
+    /**
+     * @class Create
      * @ingroup learning_group
      * @brief The helper used to create packs of translators within row filters.
      *
@@ -229,6 +230,8 @@ namespace gum {
      * as input pairs of columns (10,11),(11,13), (12,15) and (13,17)
      *respectively.
      */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    // This is the REAL definition of class gum::learning::Create
     template <typename Translator,
               typename Cols,
               int nb_times = 1,
@@ -238,6 +241,16 @@ namespace gum {
                           typename AddCols<Cols, ColsIncr>::type,
                           nb_times - 1,
                           ColsIncr> {
+#else
+    // This is the FALSE declaration of gum::learning::Create
+    // This is for Doxygen which does not deal well with recursive inheritance
+    template <typename Translator,
+              typename Cols,
+              int nb_times = 1,
+              typename ColsIncr = typename Make_Default_Incr<Cols>::type>
+    class Create : CreateOnce<Translator, Cols> {
+#endif
+
       public:
       /// the number of columns written by the execution of the translator
       static constexpr int output_size =

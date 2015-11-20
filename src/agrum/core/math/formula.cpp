@@ -20,13 +20,9 @@
 
 #include <agrum/core/math/formula.h>
 
-#include <list>
-#include <random>
-
-#include <agrum/config.h>
-
-#include <agrum/core/math/cocoR/Scanner.h>
+// Keep this here because of cyclic dependencies 
 #include <agrum/core/math/cocoR/Parser.h>
+#include <agrum/core/math/cocoR/Scanner.h>
 
 namespace gum {
 

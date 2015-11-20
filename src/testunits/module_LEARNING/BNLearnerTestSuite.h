@@ -26,7 +26,7 @@
 
 #include <agrum/learning/BNLearner.h>
 
-#include <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
+#include <agrum/core/approximations/approximationSchemeListener.h>
 
 namespace gum_tests {
 

@@ -32,7 +32,7 @@
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 #include <agrum/BN/particles/Gibbs.h>
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+#include <agrum/core/approximations/approximationScheme.h>
 
 #define KL_DEFAULT_MAXITER 10000000
 #define KL_DEFAULT_EPSILON 1e-10

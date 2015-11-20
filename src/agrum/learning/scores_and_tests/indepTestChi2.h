@@ -88,14 +88,14 @@ namespace gum {
       /// @{
 
       /// returns the score corresponding to a given nodeset
-      /** This method computes sum_X sum_Y sum_Z ( #XYZ - (#XZ * #YZ) / #Z )^2 /
-       * (( #XZ * #YZ) / #Z ), where #XYZ, #XZ, #YZ, #Z correspond to the number
-       * of occurences of (X,Y,Z), (X,Z), (Y,Z) and Z respectively in the
-       * database. Then, it computes the critical value alpha for the chi2 test
-       * and returns ( #sum - alpha ) / alpha, where #sum corresponds to the
-       * summations mentioned above. Therefore, any positive result should
-       * reflect a dependence whereas negative results should reflect
-       * independences. */
+      /** This method computes sum_X sum_Y sum_Z ( @#XYZ - (@#XZ * @#YZ) / @#Z
+       * )^2 / (( @#XZ * @#YZ) / @#Z ), where @#XYZ, @#XZ, @#YZ, @#Z correspond
+       * to the number of occurences of (X,Y,Z), (X,Z), (Y,Z) and Z
+       * respectively in the database. Then, it computes the critical value
+       * alpha for the chi2 test and returns ( @#sum - alpha ) / alpha, where
+       * @#sum corresponds to the summations mentioned above. Therefore, any
+       * positive result should reflect a dependence whereas negative results
+       * should reflect independences. */
       float score( unsigned int nodeset_index );
 
       /// @}

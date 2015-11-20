@@ -47,12 +47,26 @@ namespace gum {
    * @brief Class representing a Bayesian Network.
    * @ingroup bn_group
    *
+   * Bayesian Networks are a probabilistic graphical model in which nodes are
+   * random variables and the probability distribution is defined by the product:
+   * 
+   * <center>\f$P(X_1, \ldots, X_2) = \prod_{i=1}^{n} P(X_i | \pi(X_i))\f$,</center>
+   *
+   * where \f$\pi(X_i)\f$ is the parent of \f$X_i\f$.
+   *
+   * The probability distribution can be represented as a directed acyclic
+   * graph (DAG) where:
+   *  - Nodes are discrete random variables.
+   *  - An arc A -> B represent a dependency between variables A and B, i.e. B
+   *    conditional probability distribution is defined as \f$P(B| \pi(B)\f$.
+   *
    * After a variable is added to the BN, if it's domain size changes, then the
    * data in it's CPT is lost.
    *
-   * We recommend you to use the gum::BayesNetFactory class to build a BayesNet.
+   * You should look a the gum::BayesNetFactory class which can help build
+   * Bayesian Networks.
    *
-   * Don't forget that you can print a BayesNet using
+   * You can print a BayesNet using 
    * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
    */
   template <typename GUM_SCALAR>
@@ -62,145 +76,213 @@ namespace gum {
 
     public:
     // ===========================================================================
-    /// @name Constructors / Destructors
+    /// @name Constructors and Destructor
     // ===========================================================================
     /// @{
 
     /**
-     * Default constructor.
+     * @brief Default constructor.
      */
     BayesNet();
+
+    /**
+     * @brief Default constructor.
+     *
+     * @param name The BayesNet's name.
+     */
     BayesNet( std::string name );
 
     /**
-     * Destructor.
+     * @brief Destructor.
      */
     ~BayesNet();
 
     /**
-     * Copy constructor.
+     * @brief Copy constructor.
      */
     BayesNet( const BayesNet<GUM_SCALAR>& source );
 
+    /// @}
+    // ===========================================================================
+    /// @name Operators
+    // ===========================================================================
+    /// @{
+
     /**
-     * Copy operator.
+     * @brief Copy operator.
+     *
+     * @param source The copied BayesNet.
+     * @return The copy of source. 
      */
     BayesNet<GUM_SCALAR>& operator=( const BayesNet<GUM_SCALAR>& source );
 
     /// @}
     // ===========================================================================
-    /// @name Variable manipulation methods.
+    /// @name Variable manipulation methods
     // ===========================================================================
     /// @{
 
     /**
-     * Returns the CPT of a variable.
+     * @brief Returns the CPT of a variable.
+     *
+     * @param varId A variable's id in the gum::BayesNet.
+     * @return The variable's CPT.
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const
-        /* override*/;
+    virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
 
     /**
-     * Returns a constant reference to the VariableNodeMap of thisBN
-     */
-    virtual const VariableNodeMap& variableNodeMap() const /* override */;
-
-    /**
-     * Add a variable, it's associate node and it's CPT. The id of the new
-     * variable is automatically generated.
+     * @brief Returns a map bewtenn variables and nodes of this gum::BayesNet.
      *
-     * The implementation of the Potential is by default a MultiDimArray.
+     * @return Returns a constant reference to the gum::VariableNodeMap.
+     */
+    virtual const VariableNodeMap& variableNodeMap() const;
+
+    /**
+     * @brief Add a variable to the gum::BayesNet.
+     *
+     * Add a gum::DiscreteVariable, it's associated gum::NodeId and it's
+     * gum::Potential.
+     *
+     * The variable is added by copy to the gum::BayesNet.
+     * The variable's gum::Potential implementation will be a gum::MultiDimArray.
      *
      * @param variable The variable added by copy.
-     * @return the id of the added variable.
+     * @return Returns the variable's id in the gum::BayesNet.
+     * @throws DuplicateLabel Raised if variable.name() is already used in this
+     *                        gum::BayesNet.
      */
     NodeId add( const DiscreteVariable& variable );
 
     /**
-     * Add a variable, it's associate node and it's CPT. The id of the new
-     * variable is automatically generated.
+     * @brief Add a variable to the gum::BayesNet.
+     *
+     * Add a gum::DiscreteVariable, it's associated gum::NodeId and it's
+     * gum::Potential.
+     *
+     * The variable is added by copy to the gum::BayesNet.
      *
      * @param variable The variable added by copy.
-     * @param aContent The content used for the variable potential.
+     * @param aContent The gum::MultiDimImplementation to use for this
+     *                 varable's gum::Potential implementation.
+     * @return Returns the variable's id in the gum::BayesNet.
+     * @throws DuplicateLabel Raised if variable.name() is already used in this
+     *                        gum::BayesNet.
      */
     NodeId add( const DiscreteVariable& variable,
                 MultiDimImplementation<GUM_SCALAR>* aContent );
 
     /**
-     * Add a variable, it's associate node and it's CPT. The id of the new
-     * variable is automatically generated.
+     * @brief Add a variable to the gum::BayesNet.
      *
-     * The implementation of the Potential is by default a MultiDimArray.
+     * Add a gum::DiscreteVariable, it's associated gum::NodeId and it's
+     * gum::Potential.
+     *
+     * The variable is added by copy to the gum::BayesNet.
+     * The variable's gum::Potential implementation will be a gum::MultiDimArray.
      *
      * @param variable The variable added by copy.
-     * @param id The chosen id.
-     * @warning give an id  should be reserved for rare and specific situations
-     *!!!
-     * @return the id of the added variable.
-     * @throws DuplicateElement if id is already used
+     * @param id The variable's forced gum::NodeId in the gum::BayesNet.
+     * @return Returns the variable's id in the gum::BayesNet.
+     * @throws DuplicateElement Raised id is already used.
+     * @throws DuplicateLabel Raised if variable.name() is already used in this
+     *                        gum::BayesNet.
      */
     NodeId add( const DiscreteVariable& variable, NodeId id );
 
     /**
-     * Add a variable, it's associate node and it's CPT. The id of the new
-     * variable is automatically generated.
+     * @brief Add a variable to the gum::BayesNet.
+     *
+     * Add a gum::DiscreteVariable, it's associated gum::NodeId and it's
+     * gum::Potential.
      *
      * @param variable The variable added by copy.
-     * @param aContent The content used for the variable potential.
-     * @param id The chosen id.
-     * @warning give an id should be reserved for rare and specific situations
-     *!!!
-     * @return the id of the added variable.
-     * @throws DuplicateElement if id is already used
+     * @param aContent The gum::MultiDimImplementation to use for this
+     *                 varable's gum::Potential implementation.
+     * @param id The variable's forced gum::NodeId in the gum::BayesNet.
+     * @return Returns the variable's id in the gum::BayesNet.
+     * @throws DuplicateElement Raised id is already used.
+     * @throws DuplicateLabel Raised if variable.name() is already used in this
+     *                        gum::BayesNet.
      */
     NodeId add( const DiscreteVariable& variable,
                 MultiDimImplementation<GUM_SCALAR>* aContent,
                 NodeId id );
 
     /**
-     * Erase a Variable from the network and remove the variable from
-     * all childs of id.
-     * If no variable matches the id, then nothing is done.
+     * @brief Remove a variable from the gum::BayesNet.
      *
-     * @param id The id of the variable to erase.
+     * Removes the corresponding variable from the gum::BayesNet and from
+     * all of it's children gum::Potential. 
+     *
+     * If no variable matches the given id, then nothing is done.
+     *
+     * @param id The variable's id to remove.
      */
     void erase( NodeId id );
 
     /**
-     * Erase a Variable from the network and remove the variable from
-     * all childs of var.
-     * If no variable matches, then nothing is done.
+     * @brief Remove a variable from the gum::BayesNet.
      *
-     * @param var The reference on the variable to remove.
+     * Removes the corresponding variable from the gum::BayesNet and from
+     * all of it's children gum::Potential. 
+     *
+     * If no variable matches the given variable, then nothing is done.
+     *
+     * @param var A reference on the variable to remove.
      */
     void erase( const DiscreteVariable& var );
 
     /**
-     * Returns a constant reference over a variabe given it's node id.
-     * @throw NotFound If no variable's id matches varId.
+     * @brief Returns a gum::DiscreteVariable given its gum::NodeId in the
+     *        gum::BayesNet.
+     *
+     * @param id The variable's id to return.
+     * @returns Returns a constant reference of the gum::DiscreteVariable
+     *          correspondin to id in the gum::BayesNet.
+     * @throw NotFound Raised if id does not match a a variable in the
+     *                 gum::BayesNet.
      */
-    const DiscreteVariable& variable( NodeId id ) const /*override*/;
+    const DiscreteVariable& variable( NodeId id ) const;
 
-    /** we allow the user to change the name of a variable
-     * @throws DuplicateLabel if this name already exists
-     * @throws NotFound Raised if no nodes matches id.
+    /**
+     * @brief Changes a variable's name in the gum::BayesNet.
+     *
+     * This will change the gum::DiscreteVariable names in the gum::BayesNet.
+     *
+     * @throws DuplicateLabel Raised if newName is already used in this
+     *                        gum::BayesNet.
+     * @throws NotFound Raised if no variable matches id.
      */
     void changeVariableName( NodeId id, const std::string& new_name );
 
     /**
-     * Return id node from discrete var pointer.
-     * @throw NotFound If no variable matches var.
+     * @brief Returns a variable's id in the gum::BayesNet.
+     *
+     * @param var The variable from which the gum::NodeId is returned.
+     * @return Returns the gum::DiscreteVariable gum::NodeId in the
+     *         gum::BayesNet.
+     * @throw NotFound If var is not in the gum::BayesNet.
      */
-    NodeId nodeId( const DiscreteVariable& var ) const /*override*/;
+    NodeId nodeId( const DiscreteVariable& var ) const;
 
-    /// Getter by name
-    /// @throw NotFound if no such name exists in the graph.
-    NodeId idFromName( const std::string& name ) const /*override*/;
+    /**
+     * @brief Returns a variable's id given its name in the gum::BayesNet.
+     *
+     * @param name The variable's name from which the gum::NodeId is returned.
+     * @return Returns the variable gum::NodeId in the gum::BayesNet.
+     * @throw NotFound Raised if name does not match a variable in the gum::BayesNet.
+     */
+    NodeId idFromName( const std::string& name ) const;
 
-    /// Getter by name
-    /// @throw NotFound if no such name exists in the graph.
-    const DiscreteVariable& variableFromName( const std::string& name ) const
-        /*override*/;
+    /**
+     * @brief Returns a variable given its name in the gum::BayesNet.
+     *
+     * @param name The variable's name in the gum::BayesNet.
+     * @return Returns the gum::DiscreteVariable named name in the gum::BayesNet.
+     * @throw NotFound Raised if name does not match a variable in the gum::BayesNet.
+     */
+    const DiscreteVariable& variableFromName( const std::string& name ) const;
     /// @}
 
     // ===========================================================================
@@ -296,10 +378,9 @@ namespace gum {
     /** @} */
 
     /**
-     * Add a variable, its associate node and a noisyOR implementation.
-     * Since it seems that the 'classical' noisyOR is the Compound noisyOR, we
-     *keep
-     * the addNoisyOR as an alias for addNoisyORCompound
+     * Add a variable, its associate node and a noisyOR implementation. Since
+     * it seems that the 'classical' noisyOR is the Compound noisyOR, we keep
+     * the addNoisyOR as an alias for addNoisyORCompound.
      *
      * @param variable The variable added by copy.
      * @param externalWeight see gum::MultiDimNoisyORNet,

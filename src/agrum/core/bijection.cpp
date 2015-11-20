@@ -17,19 +17,22 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief Outlined implementation of Bijections
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include <string>
+
+#include <agrum/core/bijection.h>
 
 #ifndef NDEBUG
 #include <agrum/core/debug.h>
 #endif
 
-#include <agrum/core/bijection.h>
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
 
@@ -95,3 +98,7 @@ namespace gum {
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+template class gum::Bijection<int, int>;
+template class gum::Bijection<std::string, std::string>;
+

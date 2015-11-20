@@ -17,7 +17,12 @@
 *   Free Software Foundation, Inc.,                                       *
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
-#include <agrum/config.h>
+/**
+ * @file
+ * @brief Class used to compute response times for benchmark purposes.
+ *
+ * @author Pierre-Henri WUILLEMIN & Jean-Philippe Dubus
+ */
 
 #include <agrum/core/timer.h>
 
@@ -48,4 +53,11 @@ namespace gum {
     _sleeping = from._sleeping;
     return *this;
   }
+
+  long Timer::get_clock() {
+    struct timeval tv;
+    gettimeofday( &tv, nullptr );
+    return ( tv.tv_sec * 1000000 ) + tv.tv_usec;
+  }
+
 } /* namespace gum */

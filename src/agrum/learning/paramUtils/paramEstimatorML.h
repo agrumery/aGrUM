@@ -70,8 +70,11 @@ namespace gum {
       /// @{
 
       /// default constructor
-      /** @param filter the row filter that will be used to read the database
+      /**
+       * @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database
+       * @param apriori The parameter apriori.
+       * @param score_internal_apriori The score internal apriori.
        */
       template <typename RowFilter>
       ParamEstimatorML(

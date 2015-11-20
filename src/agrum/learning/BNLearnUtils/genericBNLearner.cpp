@@ -34,7 +34,7 @@
 
 #include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
 
-/// include the inlined functions if necessary
+// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
 #include <agrum/learning/BNLearnUtils/genericBNLearner.inl>
 #endif /* GUM_NO_INLINE */
@@ -43,7 +43,6 @@ namespace gum {
 
   namespace learning {
 
-    /// Database default constructor
     genericBNLearner::Database::Database( std::string filename )
         : __database( genericBNLearner::__readFile( filename ) )
         , __generators( RowGeneratorIdentity() ) {
@@ -85,7 +84,6 @@ namespace gum {
       }
     }
 
-    /// Database default constructor
     genericBNLearner::Database::Database(
         std::string filename,
         const NodeProperty<Sequence<std::string>>& modalities,
@@ -248,7 +246,6 @@ namespace gum {
       }
     }
 
-    /// Database default constructor
     genericBNLearner::Database::Database( std::string filename,
                                           Database& score_database )
         : __database( genericBNLearner::__readFile( filename ) )
@@ -309,7 +306,6 @@ namespace gum {
       __name2nodeId = score_database.__name2nodeId;
     }
 
-    /// Database default constructor
     genericBNLearner::Database::Database(
         std::string filename,
         Database& score_database,
@@ -321,7 +317,6 @@ namespace gum {
                  "variables' modalities specified are not implemented yet" );
     }
 
-    /// prevent copy constructor
     genericBNLearner::Database::Database( const Database& from )
         : __database( from.__database )
         , __raw_translators( from.__raw_translators )
@@ -337,7 +332,6 @@ namespace gum {
               __database.handler(), __translators, __generators );
     }
 
-    /// prevent move constructor
     genericBNLearner::Database::Database( Database&& from )
         : __database( std::move( from.__database ) )
         , __raw_translators( std::move( from.__raw_translators ) )
@@ -353,12 +347,10 @@ namespace gum {
               __database.handler(), __translators, __generators );
     }
 
-    /// destructor
     genericBNLearner::Database::~Database() { delete __row_filter; }
 
-    /// copy operator
-    genericBNLearner::Database& genericBNLearner::Database::
-    operator=( const Database& from ) {
+    genericBNLearner::Database&
+    genericBNLearner::Database::operator=( const Database& from ) {
       if ( this != &from ) {
         delete __row_filter;
         __row_filter = nullptr;
@@ -380,9 +372,8 @@ namespace gum {
       return *this;
     }
 
-    /// move operator
-    genericBNLearner::Database& genericBNLearner::Database::
-    operator=( Database&& from ) {
+    genericBNLearner::Database&
+    genericBNLearner::Database::operator=( Database&& from ) {
       if ( this != &from ) {
         delete __row_filter;
         __row_filter = nullptr;
@@ -406,14 +397,12 @@ namespace gum {
 
     // ===========================================================================
 
-    /// default constructor
     genericBNLearner::genericBNLearner( const std::string& filename )
         : __score_database( filename ) {
       // for debugging purposes
       GUM_CONSTRUCTOR( genericBNLearner );
     }
 
-    /// default constructor
     genericBNLearner::genericBNLearner(
         const std::string& filename,
         const NodeProperty<Sequence<std::string>>& modalities,
@@ -425,7 +414,6 @@ namespace gum {
       GUM_CONSTRUCTOR( genericBNLearner );
     }
 
-    /// copy constructor
     genericBNLearner::genericBNLearner( const genericBNLearner& from )
         : __score_type( from.__score_type )
         , __param_estimator_type( from.__param_estimator_type )
@@ -449,7 +437,6 @@ namespace gum {
       GUM_CONS_CPY( genericBNLearner );
     }
 
-    /// move constructor
     genericBNLearner::genericBNLearner( genericBNLearner&& from )
         : __score_type( from.__score_type )
         , __param_estimator_type( from.__param_estimator_type )
@@ -476,7 +463,6 @@ namespace gum {
       GUM_CONS_MOV( genericBNLearner );
     }
 
-    /// destructor
     genericBNLearner::~genericBNLearner() {
       if ( __score ) delete __score;
 
@@ -489,7 +475,6 @@ namespace gum {
       GUM_DESTRUCTOR( genericBNLearner );
     }
 
-    /// copy operator
     genericBNLearner& genericBNLearner::
     operator=( const genericBNLearner& from ) {
       if ( this != &from ) {
@@ -537,7 +522,6 @@ namespace gum {
       return *this;
     }
 
-    /// move operator
     genericBNLearner& genericBNLearner::operator=( genericBNLearner&& from ) {
       if ( this != &from ) {
         if ( __score ) {
@@ -587,7 +571,6 @@ namespace gum {
       return *this;
     }
 
-    /// reads a file and returns a databaseVectInRam
     DatabaseVectInRAM
     genericBNLearner::__readFile( const std::string& filename ) {
       // get the extension of the file
@@ -612,7 +595,6 @@ namespace gum {
           "genericBNLearner does not support yet this type of database file" );
     }
 
-    /// create the apriori used for learning
     void genericBNLearner::__createApriori() {
       // first, save the old apriori, to be delete if everything is ok
       Apriori<>* old_apriori = __apriori;
@@ -658,7 +640,6 @@ namespace gum {
       if ( old_apriori != nullptr ) delete old_apriori;
     }
 
-    /// create the score used for learning
     void genericBNLearner::__createScore() {
       // first, save the old score, to be delete if everything is ok
       Score<>* old_score = __score;
@@ -710,7 +691,6 @@ namespace gum {
       if ( old_score != nullptr ) delete old_score;
     }
 
-    /// create the parameter estimator used for learning
     void
     genericBNLearner::__createParamEstimator( bool take_into_account_score ) {
       // first, save the old estimator, to be delete if everything is ok
@@ -744,7 +724,6 @@ namespace gum {
       if ( old_estimator != nullptr ) delete old_estimator;
     }
 
-    /// learn a structure from a file
     DAG genericBNLearner::learnDAG() {
       // create the score and the apriori
       __createApriori();
@@ -753,7 +732,6 @@ namespace gum {
       return __learnDAG();
     }
 
-    /// learn a structure from a file
     DAG genericBNLearner::__learnDAG() {
       // add the mandatory arcs to the initial dag and remove the forbidden ones
       // from the initial graph
@@ -911,7 +889,6 @@ namespace gum {
       }
     }
 
-    /// checks whether the current score and apriori are compatible
     bool genericBNLearner::__checkScoreAprioriCompatibility() {
       const std::string& apriori = __getAprioriType();
 

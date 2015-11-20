@@ -62,9 +62,8 @@ namespace gum {
       };
 
       /**
-       * Permet de manipuler un contexte o3prmr
-       * et d'interpréter celui-ci.
-       * O3prmr use the <double> version of the O3PRM templatized ecosystem
+       * @brief Represents a O3PRMR context.
+       * O3prmr use the @<double@> version of the O3PRM templatized ecosystem
        */
       class O3prmrInterpreter {
 

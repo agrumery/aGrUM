@@ -83,8 +83,16 @@ namespace gum {
      * will be applied on Col<1,7,4>. Col<>s can have an arbitrary number of
      * column numbers in argument.
      */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    // The REAL definition of class gum::learning::Col
     template <int Idx, int... NextIdx>
     struct Col : public Col<NextIdx...> {
+#else
+    // The FAKE definition of class gum::learning::Col as Doxygen does not like
+    // recursive inheritance
+    template <int Idx, int... NextIdx>
+    struct Col {
+#endif
       /// the number of columns specified by this class
       static constexpr unsigned int size = 1 + sizeof...( NextIdx );
 
@@ -138,8 +146,8 @@ namespace gum {
      * AddCols takes as template parameters two Cols<> of the same size and adds
      * pointwise their values. For instance, AddCols<Col<1,3>,Cols<2,4>> will
      * produce a new Col<3,7>, since 3 = 1 + 2 and 7 = 3 + 4. The result of the
-     * addition is available through a "type" typedef, i.e., trhough
-     * AddCols<Col<1,3>,Cols<2,4>>::type
+     * addition is available through a "type" typedef, i.e., through
+     * AddCols::type
      */
     template <int Idx1, int Idx2, int... NextIdx1, int... NextIdx2>
     struct AddCols<Col<Idx1, NextIdx1...>, Col<Idx2, NextIdx2...>> {
@@ -174,7 +182,7 @@ namespace gum {
      * result from an addition by 1 to each of its columns. For instance,
      * Make_Default_Incr< Col<1,8,2> > will produce a Col<2,9,3>. The result is
      * accessible through a "type" typedef, i.e., through
-     * Make_Default_Incr< Col<1,8,2> >::type.
+     * Make_Default_Incr::type.
      */
     template <int Idx, int... NextIdx>
     struct Make_Default_Incr<Col<Idx, NextIdx...>>

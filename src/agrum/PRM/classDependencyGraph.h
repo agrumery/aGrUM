@@ -33,9 +33,8 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class ClassDependencyGraph<GUM_SCALAR>
-     *ClassDependencyGraph<GUM_SCALAR>.h
-     *<agrum/PRM/ClassDependencyGraph<GUM_SCALAR>.h>
+     * @class ClassDependencyGraph
+     * @headerfile classDependencyGraph.h <agrum/PRM/classDependencyGraph.h>
      * @brief This class represent the dependencies of all classes in a
      *PRM<GUM_SCALAR>.
      *

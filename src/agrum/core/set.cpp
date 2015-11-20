@@ -25,8 +25,6 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/core/debug.h>
-
 #include <agrum/core/set.h>
 
 namespace gum {
@@ -100,3 +98,10 @@ namespace gum {
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+template class gum::Set<int>;
+template class gum::Set<long>;
+template class gum::Set<float>;
+template class gum::Set<double>;
+template class gum::Set<std::string>;
+

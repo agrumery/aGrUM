@@ -17,12 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief outlined implementations for the chained lists
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <agrum/config.h>
 
 #include <agrum/core/list.h>
 
@@ -49,22 +49,19 @@ namespace gum {
 #define GCC_DIAG_ON( x )
 #endif
 
-  // GCC_DIAG_OFF(strict-aliasing)
-  // GCC_DIAG_ON(strict-aliasing)
-
-  /// Destructor for end/rend
+  // Destructor for end/rend
   template <>
   ListConstIteratorSafe<Debug>::~ListConstIteratorSafe() {}
 
-  /// constructor for end/rend
+  // constructor for end/rend
   template <>
   ListConstIteratorSafe<Debug>::ListConstIteratorSafe() noexcept {}
 
-  /// Destructor for end/rend
+  // Destructor for end/rend
   template <>
   ListConstIterator<Debug>::~ListConstIterator() noexcept {}
 
-  /// constructor for end/rend
+  // constructor for end/rend
   template <>
   ListConstIterator<Debug>::ListConstIterator() noexcept {}
 
@@ -89,4 +86,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+#endif //DOXYGEN_SHOULD_SKIP_THIS

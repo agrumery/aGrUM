@@ -277,7 +277,7 @@ namespace gum_tests {
     }
     /// @}
 
-    /// Instatiation methods
+    /// Instantiation methods
     /// @{
     void testInstiate() {
       // Arrange

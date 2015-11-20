@@ -28,15 +28,15 @@
 #ifndef __CN_LOOPY_PROPAGATION__H__
 #define __CN_LOOPY_PROPAGATION__H__
 
-#include <agrum/CN/credalNet.h>
-#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
-#include <agrum/core/sequence.h>
 #include <cstdlib>
 #include <ctime>
 #include <limits>
-#include <agrum/CN/inferenceEngine.h>
 
+#include <agrum/CN/credalNet.h>
+#include <agrum/CN/inferenceEngine.h>
+#include <agrum/core/approximations/approximationScheme.h>
 #include <agrum/core/math/pow.h>
+#include <agrum/core/sequence.h>
 
 #define _INF std::numeric_limits<GUM_SCALAR>::infinity()
 

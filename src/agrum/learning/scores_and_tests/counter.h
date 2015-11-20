@@ -17,41 +17,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
+/**
+ * @file
  * @brief the base class for all the countings used for learning (BIC, BDeu,
- *etc)
- * as well as all the independence tests.
+ * etc) as well as all the independence tests.
  *
- * This class contains all the methods that enable to add (possibly conditioned)
- * nodesets to be subsequently counted to produce a score or the result of an
- * independence test. The class considers both symmetric and asymmetric scores
- *or
- * tests. Basically, a symmetric test involves two variables X and Y and,
- *possibly
- * a conditioning set of variables Z. The test usually relies on an equation
- * involving quantities #XYZ, #XZ, #YZ and #Z, where "#" refer to observation
- * counts or frequencies. For instance, the Chi2 independence test uses the
- * following formula: (#XYZ - (#XZ * #YZ) / #Z )^2 / ( (#XZ * #YZ) / #Z ). An
- * asymmetric score, like BIC for instance, involves only one variable X and
- * a conditioning set Z. Basically, this score will involve only #XZ and #Z.
- * As such, the current class offers different methods to compute all these
- * quantities.
+ * This class contains all the methods that enable to add (possibly
+ * conditioned) nodesets to be subsequently counted to produce a score or the
+ * result of an independence test. The class considers both symmetric and
+ * asymmetric scores or tests. Basically, a symmetric test involves two
+ * variables X and Y and, possibly a conditioning set of variables Z. The test
+ * usually relies on an equation involving quantities @#XYZ, @#XZ, @#YZ and @#Z,
+ * where "@#" refer to observation counts or frequencies. For instance, the Chi2
+ * independence test uses the following formula: (@#XYZ - (@#XZ * @#YZ) / @#Z )^2 /
+ * ( (@#XZ * @#YZ) / @#Z ). An asymmetric score, like BIC for instance, involves
+ * only one variable X and a conditioning set Z. Basically, this score will
+ * involve only @#XZ and @#Z.  As such, the current class offers different
+ * methods to compute all these quantities.
  *
  * The class should be used as follows: first, to speed-up computations, you
  * should consider computing all the scores or tests you need in one pass
- *because
- * this enables parsing the database once in order to fill many counting
- *vectors.
- * To do so, use the appropriate addNodeSet methods. These will compute
- *everything
- * you need. The addNodeSet methods where you do not specify a set of
- *conditioning
- * nodes assume that this set is empty. Once the computations have been
- *performed,
- * use methods _getAllCounts and _getConditioningCounts to get the countings
- *that
- * have been performed. Note that this class is not intended to be used as is,
- * but is rather a basis for classes Score and IndependenceTest
+ * because this enables parsing the database once in order to fill many
+ * counting vectors.  To do so, use the appropriate addNodeSet methods. These
+ * will compute everything you need. The addNodeSet methods where you do not
+ * specify a set of conditioning nodes assume that this set is empty. Once the
+ * computations have been performed, use methods _getAllCounts and
+ * _getConditioningCounts to get the countings that have been performed. Note
+ * that this class is not intended to be used as is, but is rather a basis for
+ * classes Score and IndependenceTest
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -74,46 +67,40 @@ namespace gum {
      */
     /* =========================================================================
      */
-    /** @class Counter
-     * @brief The counting class for all the scores used for learning
-     * (BIC, BDeu, etc) as well as for all the independence tests.
+    /**
+     * @class Counter
+     * @brief The counting class for all the scores used for learning (BIC,
+     * BDeu, etc) as well as for all the independence tests.
      * @ingroup learning_group
      *
      * This class contains all the methods that enable to add (possibly
      * conditioned) nodesets to be subsequently counted to produce a score or
-     *the
-     * result of an independence test. The class considers both symmetric and
-     * asymmetric scores or tests. Basically, a symmetric test involves two
+     * the result of an independence test. The class considers both symmetric
+     * and asymmetric scores or tests. Basically, a symmetric test involves two
      * variables X and Y and, possibly a conditioning set of variables Z. The
-     *test
-     * usually relies on an equation involving quantities #XYZ, #XZ, #YZ and #Z,
-     * where "#" refer to observation counts or frequencies. For instance, the
-     * Chi2 independence test uses the following formula:
-     * (#XYZ - (#XZ * #YZ) / #Z )^2 / ( (#XZ * #YZ) / #Z ). An asymmetric score,
-     * like BIC for instance, involves only one variable X and a conditioning
-     *set
-     * Z. Basically, this score will involve only #XZ and #Z. As such, the
-     *current
-     * class offers different methods to compute all these quantities. Note
-     *that,
-     * counting vectors are actually multidimensional arrays and the order of
-     *the
-     * variables in the dimensions of the arrays is always the same: the
-     * conditioning nodes (in the order in which they are specified) always come
-     * first and the target variable is always the last one.
+     * test usually relies on an equation involving quantities @#XYZ, @#XZ,
+     * @#YZ and @#Z, where "@#" refer to observation counts or frequencies. For
+     * instance, the Chi2 independence test uses the following formula: (@#XYZ
+     * - (@#XZ * @#YZ) / @#Z )^2 / ( (@#XZ * @#YZ) / @#Z ). An asymmetric
+     * score, like BIC for instance, involves only one variable X and a
+     * conditioning set Z.  Basically, this score will involve only @#XZ and
+     * @#Z. As such, the current class offers different methods to compute all
+     * these quantities. Note that, counting vectors are actually
+     * multidimensional arrays and the order of the variables in the dimensions
+     * of the arrays is always the same: the conditioning nodes (in the order
+     * in which they are specified) always come first and the target variable
+     * is always the last one.
      *
-     * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the scores or tests you need in one pass
-     * because this enables parsing the database once in order to fill many
-     * counting vectors. To do so, use the appropriate addNodeSet methods. These
-     * will compute everything you need. The addNodeSet methods where you do not
-     * specify a set of conditioning nodes assume that this set is empty. Once
-     *the
-     * computations have been performed, use methods _getAllCounts and
-     * _getConditioningCounts to get the countings that have been performed.
-     *Note
-     * that this class is not intended to be used as is, but is rather a basis
-     * for classes Score and IndependenceTest.
+     * The class should be used as follows: first, to speed-up computations,
+     * you should consider computing all the scores or tests you need in one
+     * pass because this enables parsing the database once in order to fill
+     * many counting vectors. To do so, use the appropriate addNodeSet methods.
+     * These will compute everything you need. The addNodeSet methods where you
+     * do not specify a set of conditioning nodes assume that this set is
+     * empty. Once the computations have been performed, use methods
+     * _getAllCounts and _getConditioningCounts to get the countings that have
+     * been performed.  Note that this class is not intended to be used as is,
+     * but is rather a basis for classes Score and IndependenceTest.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float>>
@@ -125,8 +112,11 @@ namespace gum {
       /// @{
 
       /// default constructor
-      /** @param filter the row filter that will be used to read the database
+      /**
+       * @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database
+       * @param min_range The minimal range
+       * @param max_range The maximal range
        */
       template <typename RowFilter>
       Counter( const RowFilter& filter,
