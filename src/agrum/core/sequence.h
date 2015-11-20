@@ -502,7 +502,7 @@ namespace gum {
     HashTable<Key, Idx, Alloc> __h;
 
     /// The set of the elements stored into the sequence.
-    std::vector<Key*, Alloc> __v;
+    std::vector<Key*, typename Alloc::template rebind<Key*>::other > __v;
 
     // Note that, using Key* in __v, we actually store the Key only once in the
     // sequence (that is, within __h). This enables storing big objects within

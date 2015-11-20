@@ -27,7 +27,7 @@
 #ifndef O4DDCONTEXTDD_H
 #define O4DDCONTEXTDD_H
 
-#include <math.h>
+#include <cmath>
 
 #include <agrum/config.h>
 

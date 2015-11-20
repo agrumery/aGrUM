@@ -106,7 +106,7 @@ namespace gum {
 
     // The allocator for the heap.
     using HeapAllocator =
-        typename Alloc::template rebind<std::pair<Priority, Val*>>::other;
+        typename Alloc::template rebind<std::pair<Priority, const Val*>>::other;
 
     private:
     // ============================================================================

@@ -24,7 +24,7 @@
 * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
 
-#include <math.h>
+#include <cmath>
 #include <fstream>
 
 #include <agrum/core/timer.h>

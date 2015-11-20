@@ -30,6 +30,8 @@
 #ifndef GUM_LEARNING_CHI2_H
 #define GUM_LEARNING_CHI2_H
 
+#include <cmath>
+
 #include <agrum/config.h>
 #include <agrum/core/hashTable.h>
 

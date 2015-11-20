@@ -163,7 +163,7 @@ namespace gum {
      * creates a dot representing the whole referred BN hilighting the fragment.
      * @return Returns a dot representation of this fragment
      */
-    virtual std::string toDot( void ) const;
+    virtual std::string toDot( void ) const override;
 
     /// @}
 

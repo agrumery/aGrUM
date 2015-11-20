@@ -24,7 +24,7 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
-#include <math.h>
+#include <cmath>
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
