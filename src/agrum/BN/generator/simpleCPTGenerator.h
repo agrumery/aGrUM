@@ -32,7 +32,8 @@
 
 namespace gum {
 
-  /** @class SimpleCPTGenerator simpleCPTGenerator.h <agrum/BN/generator/simpleCPTGenerator.h>
+  /** @class SimpleCPTGenerator simpleCPTGenerator.h
+   * <agrum/BN/generator/simpleCPTGenerator.h>
    * @brief Class for generating Conditional Probability Tables.
    * @ingroup bn_generator
    *

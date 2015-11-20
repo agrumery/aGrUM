@@ -137,8 +137,7 @@ namespace gum {
     str << "]>" << std::endl;*/
 
     // BIF version Tag
-    str << std::endl
-        << "<BIF VERSION=\"0.3\">" << std::endl;
+    str << std::endl << "<BIF VERSION=\"0.3\">" << std::endl;
 
     // Network declaration
     str << "<NETWORK>" << std::endl;
@@ -222,16 +221,14 @@ namespace gum {
 
     for ( inst.setFirst(); !inst.end(); inst.inc() ) {
       if ( inst.val( 0 ) == 0 )
-        str << std::endl
-            << "\t\t";
+        str << std::endl << "\t\t";
       else
         str << " ";
 
       str << cpt[inst];  //"<!-- "<<inst<<" -->"<<std::endl;
     }
 
-    str << std::endl
-        << "\t</TABLE>" << std::endl;
+    str << std::endl << "\t</TABLE>" << std::endl;
 
     // Closing tag
     str << "</DEFINITION>" << std::endl;

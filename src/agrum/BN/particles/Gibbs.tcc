@@ -149,7 +149,8 @@ namespace gum {
       if ( s == (GUM_SCALAR)0 ) {
         GUM_ERROR( FatalError,
                    "A normalisation factor is 0 in node " << id << " (" << v
-                                                          << ") : " << proba );
+                                                          << ") : "
+                                                          << proba );
       }
 
       // draw value
@@ -196,8 +197,8 @@ namespace gum {
 
         if ( __evidences.exists( id ) ) {
           posterior.set( posterior_idx,
-                         posterior[posterior_idx]*(
-                             value = ( *__evidences[id] )[posterior_idx] ) );
+                         posterior[posterior_idx] *
+                             ( value = ( *__evidences[id] )[posterior_idx] ) );
 
           if ( value == (GUM_SCALAR)0 ) {
             continue;
@@ -211,8 +212,8 @@ namespace gum {
           tmp->chgVal( v, current_mod_id );
           // posterior[posterior_idx]*=( value=this->bn().cpt( *iter )[*tmp] );
           posterior.set( posterior_idx,
-                         posterior[posterior_idx]*(
-                             value = this->bn().cpt( *iter )[*tmp] ) );
+                         posterior[posterior_idx] *
+                             ( value = this->bn().cpt( *iter )[*tmp] ) );
 
           if ( value == (GUM_SCALAR)0 ) {
             continue;

@@ -118,8 +118,7 @@ namespace gum {
         str << " " << cpt[inst];
       }
 
-      str << ");" << std::endl
-          << "}" << std::endl;
+      str << ");" << std::endl << "}" << std::endl;
     } else if ( cpt.domainSize() > 1 ) {
       // Instantiation inst( cpt );
       Instantiation condVars;  // Instantiation on the conditioning variables
@@ -134,8 +133,7 @@ namespace gum {
       }
 
       // condVars << *( varsSeq[(Idx)0] );
-      str << ") {" << std::endl
-          << tab << "data = ";
+      str << ") {" << std::endl << tab << "data = ";
 
       for ( condVars.setFirst(); !condVars.end(); ++condVars ) {
 
@@ -183,8 +181,7 @@ namespace gum {
   NetWriter<GUM_SCALAR>::__header( const IBayesNet<GUM_SCALAR>& bn ) {
     std::stringstream str;
     std::string tab = "   ";  // poor tabulation
-    str << std::endl
-        << "net {" << std::endl;
+    str << std::endl << "net {" << std::endl;
     str << "  name = " << bn.propertyWithDefault( "name", "unnamedBN" ) << ";"
         << std::endl;
     str << "  software = \"aGrUM " << GUM_VERSION << "\";" << std::endl;

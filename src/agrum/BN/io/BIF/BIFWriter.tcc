@@ -126,8 +126,7 @@ namespace gum {
         str << " " << cpt[inst];
       }
 
-      str << ";" << std::endl
-          << "}" << std::endl;
+      str << ";" << std::endl << "}" << std::endl;
     } else if ( cpt.domainSize() > 1 ) {
       Instantiation inst( cpt );
       Instantiation condVars;  // Instantiation on the conditioning variables

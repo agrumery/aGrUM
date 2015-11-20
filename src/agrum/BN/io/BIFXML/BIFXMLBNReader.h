@@ -84,7 +84,8 @@ between 0 and 100
 namespace gum {
 
   /**
-   * @class BIFXMLBNReader BIFXMLBNReader.h <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
+   * @class BIFXMLBNReader BIFXMLBNReader.h
+   *<agrum/BN/io/BIFXML/BIFXMLBNReader.h>
    * @ingroup bn_io
    * @brief Read an bayes net from an XML file with BIF format.
    *

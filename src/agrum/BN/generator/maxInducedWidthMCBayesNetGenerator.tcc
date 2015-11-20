@@ -107,7 +107,7 @@ namespace gum {
       __modalitiesMap.insert(
           node,
           IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.variable(
-                                                                       node )
+                                                                      node )
               .domainSize() );
 
     DefaultTriangulation tri( &( this->_bayesNet.moralGraph() ),

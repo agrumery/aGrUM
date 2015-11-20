@@ -116,7 +116,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE unsigned int BIFReader<GUM_SCALAR>::errLine( unsigned int i ) {
     if ( __parseDone )
-      return __parser->errors().error(i).line;
+      return __parser->errors().error( i ).line;
     else {
       GUM_ERROR( OperationNotAllowed, "BIF file not parsed yet" );
     }
@@ -125,7 +125,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE unsigned int BIFReader<GUM_SCALAR>::errCol( unsigned int i ) {
     if ( __parseDone )
-      return __parser->errors().error(i).column;
+      return __parser->errors().error( i ).column;
     else {
       GUM_ERROR( OperationNotAllowed, "BIF file not parsed yet" );
     }
@@ -134,7 +134,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE bool BIFReader<GUM_SCALAR>::errIsError( unsigned int i ) {
     if ( __parseDone )
-      return __parser->errors().error(i).is_error;
+      return __parser->errors().error( i ).is_error;
     else {
       GUM_ERROR( OperationNotAllowed, "BIF file not parsed yet" );
     }
@@ -143,7 +143,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE std::string BIFReader<GUM_SCALAR>::errMsg( unsigned int i ) {
     if ( __parseDone )
-      return __parser->errors().error(i).msg;
+      return __parser->errors().error( i ).msg;
     else {
       GUM_ERROR( OperationNotAllowed, "BIF file not parsed yet" );
     }

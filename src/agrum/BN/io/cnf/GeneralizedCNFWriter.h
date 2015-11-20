@@ -43,7 +43,8 @@
 namespace gum {
 
   /**
-   * @class GeneralizedCNFWriter GeneralizedCNFWriter.h <agrum/BN/io/cnf/GeneralizedCNFWriter.h>
+   * @class GeneralizedCNFWriter GeneralizedCNFWriter.h
+   * <agrum/BN/io/cnf/GeneralizedCNFWriter.h>
    * @brief Writes a IBayesNet in the BN format.
    * @ingroup bn_io
    *

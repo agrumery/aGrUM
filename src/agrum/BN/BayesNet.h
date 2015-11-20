@@ -48,9 +48,11 @@ namespace gum {
    * @ingroup bn_group
    *
    * Bayesian Networks are a probabilistic graphical model in which nodes are
-   * random variables and the probability distribution is defined by the product:
-   * 
-   * <center>\f$P(X_1, \ldots, X_2) = \prod_{i=1}^{n} P(X_i | \pi(X_i))\f$,</center>
+   * random variables and the probability distribution is defined by the
+   * product:
+   *
+   * <center>\f$P(X_1, \ldots, X_2) = \prod_{i=1}^{n} P(X_i |
+   * \pi(X_i))\f$,</center>
    *
    * where \f$\pi(X_i)\f$ is the parent of \f$X_i\f$.
    *
@@ -66,7 +68,7 @@ namespace gum {
    * You should look a the gum::BayesNetFactory class which can help build
    * Bayesian Networks.
    *
-   * You can print a BayesNet using 
+   * You can print a BayesNet using
    * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
    */
   template <typename GUM_SCALAR>
@@ -112,7 +114,7 @@ namespace gum {
      * @brief Copy operator.
      *
      * @param source The copied BayesNet.
-     * @return The copy of source. 
+     * @return The copy of source.
      */
     BayesNet<GUM_SCALAR>& operator=( const BayesNet<GUM_SCALAR>& source );
 
@@ -145,7 +147,8 @@ namespace gum {
      * gum::Potential.
      *
      * The variable is added by copy to the gum::BayesNet.
-     * The variable's gum::Potential implementation will be a gum::MultiDimArray.
+     * The variable's gum::Potential implementation will be a
+     * gum::MultiDimArray.
      *
      * @param variable The variable added by copy.
      * @return Returns the variable's id in the gum::BayesNet.
@@ -179,7 +182,8 @@ namespace gum {
      * gum::Potential.
      *
      * The variable is added by copy to the gum::BayesNet.
-     * The variable's gum::Potential implementation will be a gum::MultiDimArray.
+     * The variable's gum::Potential implementation will be a
+     * gum::MultiDimArray.
      *
      * @param variable The variable added by copy.
      * @param id The variable's forced gum::NodeId in the gum::BayesNet.
@@ -213,7 +217,7 @@ namespace gum {
      * @brief Remove a variable from the gum::BayesNet.
      *
      * Removes the corresponding variable from the gum::BayesNet and from
-     * all of it's children gum::Potential. 
+     * all of it's children gum::Potential.
      *
      * If no variable matches the given id, then nothing is done.
      *
@@ -225,7 +229,7 @@ namespace gum {
      * @brief Remove a variable from the gum::BayesNet.
      *
      * Removes the corresponding variable from the gum::BayesNet and from
-     * all of it's children gum::Potential. 
+     * all of it's children gum::Potential.
      *
      * If no variable matches the given variable, then nothing is done.
      *
@@ -271,7 +275,8 @@ namespace gum {
      *
      * @param name The variable's name from which the gum::NodeId is returned.
      * @return Returns the variable gum::NodeId in the gum::BayesNet.
-     * @throw NotFound Raised if name does not match a variable in the gum::BayesNet.
+     * @throw NotFound Raised if name does not match a variable in the
+     * gum::BayesNet.
      */
     NodeId idFromName( const std::string& name ) const;
 
@@ -279,8 +284,10 @@ namespace gum {
      * @brief Returns a variable given its name in the gum::BayesNet.
      *
      * @param name The variable's name in the gum::BayesNet.
-     * @return Returns the gum::DiscreteVariable named name in the gum::BayesNet.
-     * @throw NotFound Raised if name does not match a variable in the gum::BayesNet.
+     * @return Returns the gum::DiscreteVariable named name in the
+     * gum::BayesNet.
+     * @throw NotFound Raised if name does not match a variable in the
+     * gum::BayesNet.
      */
     const DiscreteVariable& variableFromName( const std::string& name ) const;
     /// @}

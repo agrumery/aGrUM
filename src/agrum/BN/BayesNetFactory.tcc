@@ -695,7 +695,8 @@ namespace gum {
       if ( values.size() != var.domainSize() ) {
         GUM_ERROR( OperationNotAllowed,
                    var.name() << " : invalid number of modalities: found "
-                              << values.size() << " while needed "
+                              << values.size()
+                              << " while needed "
                               << var.domainSize() );
       }
 

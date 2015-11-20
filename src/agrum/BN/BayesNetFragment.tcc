@@ -225,7 +225,8 @@ namespace gum {
     if ( &( pot->variable( 0 ) ) != &( variable( id ) ) ) {
       GUM_ERROR( OperationNotAllowed,
                  "The potential is not a marginal for __bn.variable <"
-                     << variable( id ).name() << ">" );
+                     << variable( id ).name()
+                     << ">" );
     }
 
     const NodeSet& parents = __bn.dag().parents( id );
@@ -234,7 +235,8 @@ namespace gum {
       if ( !parents.contains( __bn.idFromName( pot->variable( i ).name() ) ) )
         GUM_ERROR( OperationNotAllowed,
                    "Variable <" << pot->variable( i ).name()
-                                << "> is not in the parents of node " << id );
+                                << "> is not in the parents of node "
+                                << id );
     }
 
     _installCPT( id, pot );
@@ -279,7 +281,8 @@ namespace gum {
     if ( &( pot->variable( 0 ) ) != &( __bn.variable( id ) ) ) {
       GUM_ERROR( OperationNotAllowed,
                  "The potential is not a marginal for __bn.variable <"
-                     << __bn.variable( id ).name() << ">" );
+                     << __bn.variable( id ).name()
+                     << ">" );
     }
 
     _installCPT( id, pot );
@@ -341,8 +344,7 @@ namespace gum {
     output << bn_name << "\" {" << std::endl;
     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];"
            << std::endl;
-    output << "  node [style=filled];" << std::endl
-           << std::endl;
+    output << "  node [style=filled];" << std::endl << std::endl;
 
     for ( auto node : __bn.nodes() ) {
       output << "\"" << __bn.variable( node ).name() << "\" [comment=\"" << node

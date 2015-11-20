@@ -47,7 +47,8 @@ namespace gum {
   class CliqueProp;
 
   /**
-   * @class ShaferShenoyInference ShaferShenoyInference.h <agrum/BN/inference/ShaferShenoyInference.h>
+   * @class ShaferShenoyInference ShaferShenoyInference.h
+   * <agrum/BN/inference/ShaferShenoyInference.h>
    * @brief This class implements the Shafer-Shenoy alogorithm for inference
    * in Bayesian Networks.
    * @ingroup bn_inference
@@ -202,7 +203,8 @@ namespace gum {
   };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  /// @class CliqueProp ShaferShenoyInference.h <agrum/BN/inference/ShaferShenoyInference.h>
+  /// @class CliqueProp ShaferShenoyInference.h
+  /// <agrum/BN/inference/ShaferShenoyInference.h>
   /// @ingroup bn_inference
   /// Private class to keep clique's properties.
   /// It used MultiDimBucket to compute the cliques potentials.

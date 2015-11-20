@@ -42,7 +42,8 @@
 namespace gum {
 
   /**
-   * @class FactorisedValuesCNFWriter FactorisedValuesCNFWriter.h <agrum/BN/io/cnf/FactorisedValuesCNFWriter.h>
+   * @class FactorisedValuesCNFWriter FactorisedValuesCNFWriter.h
+   * <agrum/BN/io/cnf/FactorisedValuesCNFWriter.h>
    * @brief Writes a IBayesNet in the BN format.
    * @ingroup bn_io
    *

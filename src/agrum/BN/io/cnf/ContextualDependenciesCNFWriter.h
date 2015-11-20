@@ -43,7 +43,8 @@
 namespace gum {
 
   /**
-   * @class ContextualDependenciesCNFWriter ContextualDependenciesCNFWriter.h <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.h>
+   * @class ContextualDependenciesCNFWriter ContextualDependenciesCNFWriter.h
+   * <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.h>
    * @ingroup bn_io
    * @brief Writes a IBayesNet in the BN format.
    *

@@ -38,7 +38,8 @@
 namespace gum {
 
   /**
-   * @class SimpleBayesNetGenerator simpleBayesNetGenerator.h <agrum/BN/generator/simpleBayesNetGenerator.h>
+   * @class SimpleBayesNetGenerator simpleBayesNetGenerator.h
+   *<agrum/BN/generator/simpleBayesNetGenerator.h>
    * @brief Class for generating bayesian networks.
    * @ingroup bn_generator
    *

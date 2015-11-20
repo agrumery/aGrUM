@@ -49,22 +49,23 @@
 
 namespace gum {
   /**
-   * @class MCBayesNetGenerator MCBayesNetGenerator.h <agrum/BN/generator/MCayesNetGenerator.h>
+   * @class MCBayesNetGenerator
+   * @headerfile MCBayesNetGenerator.h
+   * <agrum/BN/generator/MCayesNetGenerator.h>
    * @brief Class for generating bayesian networks with Markov chains.
    * @ingroup bn_generator
    *
-   * This class randomly generates a bayesian network given 6 parameters:
-   * the number of nodes, the maximum number of arcs the and of iterations the
-  maximum modality.
+   * This class randomly generates a bayesian network given 6 parameters: the
+   * number of nodes, the maximum number of arcs the and of iterations the
+   * maximum modality.
    * @warning  Be Careful when entering the parameters, high Values may cause
-  the
-  density of the Bayesian Network to be too high
-   * resulting in the failure of most of the inference Methods.\n
+   * the density of the Bayesian Network to be too high resulting in the
+   * failure of most of the inference Methods.
    *
    * \anchor probability_p_q
    *
    * This Generation method require the use of two probability parameters(p, q)
-  defining the choice of processes that will provoke the change of state.
+   * defining the choice of processes that will provoke the change of state.
    * You can see in the graph below how the probabilities are used.
    *
    * \dot

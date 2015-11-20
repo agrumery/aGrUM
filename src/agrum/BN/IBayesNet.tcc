@@ -99,7 +99,8 @@ namespace gum {
 
     for ( auto node : nodes() ) {
       param += ( (const MultiDimImplementation<GUM_SCALAR>&)cpt( node )
-                     .getMasterRef() ).realSize();
+                     .getMasterRef() )
+                   .realSize();
     }
 
     double compressionRatio = log10( 1.0 * param ) - dSize;

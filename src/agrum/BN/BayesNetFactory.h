@@ -44,17 +44,14 @@ namespace gum {
    * BayesNet.
    *
    * The only exception of this behaviour is when you create a copy of the
-   *factory,
-   * it will create a copy of it's BayesNet. This is useful if you want to
-   *create
-   * two BayesNet sharing a common base.
+   * factory, it will create a copy of it's BayesNet. This is useful if you
+   * want to create two BayesNet sharing a common base.
    *
    * However be very careful because the copy will not delete it's BayesNet.
    *
    * Each method will raise an OperationNotAllowed if you call it when the
-   *factory
-   * is not in a valid state for that call. The error message is "Illegal
-   *state.".
+   * factory is not in a valid state for that call. The error message is
+   * "Illegal state.".
    *
    */
   template <typename GUM_SCALAR>
@@ -169,23 +166,24 @@ namespace gum {
      * @warning The implementation must be empty.
      *
      * @warning The pointer is always delegated to var's Potential! No copy of
-     *it
-     *          is made.
+     * it is made.
+     *
      * @todo When copy of a MultiDimImplementation is available use a copy
      *       behaviour for this method.
      *
      * @throw NotFound Raised if no variable matches var.
      * @throw OperationNotAllowed Raised if impl is not empty.
      * @throw OperationNotAllowed If an implementation is already defined for
-     *the
-     *                            current variable.
+     * the current variable.
      */
     void setVariableCPTImplementation( MultiDimAdressable* impl );
 
-    /// Tells the factory that we're out of a variable declaration.
-    /// @return The Node id of the created variable.
-    /// @throw gum::OperationNotAllowed Raised if the variable isn't defined (or not
-    ///                            enough defined).
+    /**
+     * Tells the factory that we're out of a variable declaration.
+     * @return The Node id of the created variable.
+     * @throw gum::OperationNotAllowed Raised if the variable isn't defined
+     * (or / not enough defined).
+     */
     NodeId endVariableDeclaration();
 
     /// @}
@@ -344,10 +342,7 @@ namespace gum {
      * @throw DuplicateElement Raised if a variable with the same name already
      *                         exists.
      * @throw OperationNotAllowed Raised if redefineParents == false and if
-     *table
-     *                            is not a valid CPT for var in the current
-     *state
-     *                            of the BayesNet.
+     * table is not a valid CPT for var in the current state of the BayesNet.
      */
     void setVariable( const DiscreteVariable& var );
 
@@ -371,10 +366,7 @@ namespace gum {
      *
      * @throw NotFound Raised if no variable matches var.
      * @throw OperationNotAllowed Raised if redefineParents == false and if
-     *table
-     *                            is not a valid CPT for var in the current
-     *state
-     *                            of the BayesNet.
+     * table is not a valid CPT for var in the current state of the BayesNet.
      */
     void setVariableCPT( const std::string& varName,
                          MultiDimAdressable* table,

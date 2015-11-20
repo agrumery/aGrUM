@@ -415,21 +415,18 @@ namespace gum {
       FindRelevantPotentialsType type ) {
     switch ( type ) {
       case FIND_RELEVANT_D_SEPARATION2:
-        __findRelevantPotentials =
-            &LazyPropagation<
-                GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
+        __findRelevantPotentials = &LazyPropagation<
+            GUM_SCALAR>::__findRelevantPotentialsWithdSeparation2;
         break;
 
       case FIND_RELEVANT_D_SEPARATION:
-        __findRelevantPotentials =
-            &LazyPropagation<
-                GUM_SCALAR>::__findRelevantPotentialsWithdSeparation;
+        __findRelevantPotentials = &LazyPropagation<
+            GUM_SCALAR>::__findRelevantPotentialsWithdSeparation;
         break;
 
       case FIND_RELEVANT_D_SEPARATION3:
-        __findRelevantPotentials =
-            &LazyPropagation<
-                GUM_SCALAR>::__findRelevantPotentialsWithdSeparation3;
+        __findRelevantPotentials = &LazyPropagation<
+            GUM_SCALAR>::__findRelevantPotentialsWithdSeparation3;
         break;
 
       case FIND_RELEVANT_ALL:

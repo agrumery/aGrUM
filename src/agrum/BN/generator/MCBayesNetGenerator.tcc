@@ -343,8 +343,8 @@ namespace gum {
 
         if ( __connect( node, i, excluded ) ) {
           std::string nameit =
-              IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet
-                  .variable( node )
+              IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.variable(
+                                                                          node )
                   .name();
           IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.eraseArc(
               node, j );  // TODO reflect
@@ -360,8 +360,8 @@ namespace gum {
 
         if ( __connect( node, i, excluded ) ) {
           std::string nameit =
-              IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet
-                  .variable( node )
+              IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.variable(
+                                                                          node )
                   .name();
           IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.eraseArc(
               j, node );

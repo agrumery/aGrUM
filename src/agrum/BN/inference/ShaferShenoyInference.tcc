@@ -340,8 +340,11 @@ namespace gum {
         } catch ( NotFound& ) {
           GUM_ERROR( FatalError,
                      ": missing message (" << nei << ", " << tail
-                                           << ") to compute message (" << tail
-                                           << ", " << head << ")" );
+                                           << ") to compute message ("
+                                           << tail
+                                           << ", "
+                                           << head
+                                           << ")" );
         }
       }
 
