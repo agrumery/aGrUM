@@ -59,7 +59,7 @@ namespace gum {
     };
   }  // namespace __sig__
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
   /**
    * @class Listener listener.h <agrum/core/signal/listener.h>
@@ -96,6 +96,6 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/signal/listener.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
 #endif  // GUM_LISTENER_H

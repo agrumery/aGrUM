@@ -42,4 +42,3 @@
 #include <agrum/core/signal/signaler7.h>
 
 #endif  // GUM_SIGNALER_H
-

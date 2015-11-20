@@ -106,7 +106,7 @@ namespace gum {
 
   }  // namespace __sig__
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
   /**
    * @class Signaler0
@@ -152,7 +152,6 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/signal/signaler0.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
 #endif  // GUM_SIGNALER0_H
-

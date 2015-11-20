@@ -124,7 +124,6 @@ namespace gum {
                                    const long int& den_max = 1000000 );
 
     /// @}
-
   };
 
 }  // end of gum namespace
@@ -132,4 +131,4 @@ namespace gum {
 // Always include template implementation in header file
 #include <agrum/core/math/rational.tcc>
 
-#endif // GUM_RATIONAL_H
+#endif  // GUM_RATIONAL_H

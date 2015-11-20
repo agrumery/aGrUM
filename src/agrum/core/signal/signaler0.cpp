@@ -65,4 +65,3 @@ namespace gum {
 #ifdef GUM_NO_INLINE
 #include <agrum/core/signal/signaler0.inl>
 #endif  // GUM_NO_INLINE
-

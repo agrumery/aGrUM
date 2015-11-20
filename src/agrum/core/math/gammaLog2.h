@@ -76,7 +76,7 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    /** 
+    /**
      * @brief Returns log2 ( gamma (x) ) for x > 0.
      * @throws OutOfBounds Raised if raised if x <= 0.
      */
@@ -86,7 +86,7 @@ namespace gum {
      * @brief Sets whether we need more precision for small values.
      * @param p If true, precision is enable.
      */
-    void setPrecision( bool p);
+    void setPrecision( bool p );
 
     /// @}
     // ============================================================================
@@ -94,7 +94,7 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    /** 
+    /**
      * @brief Returns log2 ( gamma (x) ) for x >= 0.
      * @param x A positive float.
      * @return Returns log2 ( gamma (x) ) for x >= 0.

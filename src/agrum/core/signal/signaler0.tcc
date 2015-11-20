@@ -40,8 +40,8 @@ namespace gum {
     }
 
     template <class TargetClass>
-    Connector0<TargetClass>::Connector0( TargetClass* target,
-                            void ( TargetClass::*action )( const void* ) ) {
+    Connector0<TargetClass>::Connector0(
+        TargetClass* target, void ( TargetClass::*action )( const void* ) ) {
       GUM_CONSTRUCTOR( Connector0 );
       __target = target;
       __action = action;
@@ -54,7 +54,9 @@ namespace gum {
     }
 
     template <class TargetClass>
-    Connector0<TargetClass>::~Connector0() { GUM_DESTRUCTOR( Connector0 ); }
+    Connector0<TargetClass>::~Connector0() {
+      GUM_DESTRUCTOR( Connector0 );
+    }
 
     template <class TargetClass>
     IConnector0* Connector0<TargetClass>::clone() {
@@ -72,7 +74,9 @@ namespace gum {
     }
 
     template <class TargetClass>
-    Listener* Connector0<TargetClass>::target() const { return __target; }
+    Listener* Connector0<TargetClass>::target() const {
+      return __target;
+    }
 
   }  // namespace __sig__
 

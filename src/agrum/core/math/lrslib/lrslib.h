@@ -109,9 +109,9 @@ typedef struct lrs_dic_struct {/* dynamic dictionary data */
   lrs_mp det;    /* current determinant of basis                 */
   lrs_mp objnum; /* objective numerator value                    */
   lrs_mp objden; /* objective denominator value                  */
-  long* B, *Row; /* basis, row location indices                  */
-  long* C, *Col; /* cobasis, column location indices             */
-  struct lrs_dic_struct* prev, *next;
+  long *B, *Row; /* basis, row location indices                  */
+  long *C, *Col; /* cobasis, column location indices             */
+  struct lrs_dic_struct *prev, *next;
 } lrs_dic;
 
 typedef struct lrs_dat {/* global problem data   */
@@ -134,7 +134,7 @@ typedef struct lrs_dat {/* global problem data   */
   long* linearity;     /* holds cobasic indices of input linearities   */
   long* minratio;      /* used for lexicographic ratio test            */
   long* temparray;     /* for sorting indices, dimensioned to d        */
-  long* isave, *jsave; /* arrays for estimator, malloc'ed at start     */
+  long *isave, *jsave; /* arrays for estimator, malloc'ed at start     */
   long inputd;         /* input dimension: n-1 for H-rep, n for V-rep  */
 
   long m;      /* number of rows in input file                 */
@@ -194,7 +194,7 @@ typedef struct lrs_dat {/* global problem data   */
   long saved_flag; /* There is something in the saved cobasis */
 
   /* Variables for cacheing dictionaries, db */
-  lrs_dic* Qhead, *Qtail;
+  lrs_dic *Qhead, *Qtail;
 
 } lrs_dat, lrs_dat_p;
 

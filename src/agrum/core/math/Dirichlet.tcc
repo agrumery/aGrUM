@@ -48,4 +48,3 @@ namespace gum {
   }
 
 } /* namespace gum */
-

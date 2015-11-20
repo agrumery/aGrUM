@@ -84,7 +84,7 @@ namespace gum {
      * @brief Class constructor.
      */
     FormulaPart();
-    
+
     /**
      * @brief Constructor for doubles.
      * @param t The token_type of this gum::FormulaPart.
@@ -278,7 +278,7 @@ namespace gum {
 
     /// @}
     // ========================================================================
-    /// @name Operators 
+    /// @name Operators
     // ========================================================================
     /// @{
 
@@ -356,13 +356,12 @@ namespace gum {
     void finalize();
 
     private:
-
     /// The formula to evaluate.
     std::string __formula;
 
     /// The scanner used by the formula.
     gum::formula::Scanner* __scanner;
- 
+
     /// The parser used by the formula.
     gum::formula::Parser* __parser;
 
@@ -371,7 +370,7 @@ namespace gum {
 
     /// The output stack, will contain one value after evaluation.
     std::vector<FormulaPart> __output;
- 
+
     /// A stack used during evaluation.
     std::stack<FormulaPart> __stack;
 

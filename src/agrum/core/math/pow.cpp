@@ -28,5 +28,4 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/core/math/pow.inl>
-#endif // GUM_NO_INLINE
-
+#endif  // GUM_NO_INLINE

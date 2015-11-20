@@ -106,14 +106,14 @@ namespace gum {
      */
     result_type operator()();
 
-    /** 
+    /**
      * @brief Returns a sample from the Dirichlet distribution.
      * @param p An object representing the distribution's parameters,
      * obtained by a call to gum::Dirichlet::param(const param_type&).
      */
     result_type operator()( const param_type& p );
-    
-    /** 
+
+    /**
      * @brief Returns a sample from the Dirichlet distribution.
      *
      * @param generator A uniform random number generator object, used as the
@@ -137,7 +137,7 @@ namespace gum {
      */
     const param_type& param() const noexcept;
 
-    /** 
+    /**
      * @brief Sets the parameters of the distribution.
      * @param p An object representing the distribution's parameters, obtained
      * by a call to member function param.

@@ -29,9 +29,7 @@
 
 namespace gum {
 
-  Listener::Listener() {
-    GUM_CONSTRUCTOR( Listener ); 
-  }
+  Listener::Listener() { GUM_CONSTRUCTOR( Listener ); }
 
   Listener::Listener( const Listener& l ) {
     GUM_CONS_CPY( Listener );
@@ -51,9 +49,8 @@ namespace gum {
     __senders.clear();
   }
 
-} // namespace gum
+}  // namespace gum
 
 #ifdef GUM_NO_INLINE
 #include <agrum/core/signal/listener.inl>
-#endif // GUM_NO_INLINE
-
+#endif  // GUM_NO_INLINE

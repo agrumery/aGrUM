@@ -408,7 +408,8 @@ void Node::RemoveChild( Node* removeThis ) {
   if ( !GetTiXmlPointer()->RemoveChild( removeThis->GetTiXmlPointer() ) ) {
     TICPPTHROW( "Node to remove (" << removeThis->Value()
                                    << ") is not a child of this Node ("
-                                   << Value() << ")" )
+                                   << Value()
+                                   << ")" )
   }
 }
 
@@ -431,8 +432,10 @@ Node* Node::PreviousSibling( const char* value, bool throwIfNoSiblings ) const {
   }
 
   if ( ( 0 == sibling ) && throwIfNoSiblings ) {
-    TICPPTHROW( "No Siblings found with value, '"
-                << value << "', Prior to this Node (" << Value() << ")" )
+    TICPPTHROW( "No Siblings found with value, '" << value
+                                                  << "', Prior to this Node ("
+                                                  << Value()
+                                                  << ")" )
   }
 
   return NodeFactory( sibling, false );
@@ -457,8 +460,10 @@ Node* Node::NextSibling( const char* value, bool throwIfNoSiblings ) const {
   }
 
   if ( ( 0 == sibling ) && throwIfNoSiblings ) {
-    TICPPTHROW( "No Siblings found with value, '"
-                << value << "', After this Node (" << Value() << ")" )
+    TICPPTHROW( "No Siblings found with value, '" << value
+                                                  << "', After this Node ("
+                                                  << Value()
+                                                  << ")" )
   }
 
   return NodeFactory( sibling, false );
@@ -486,7 +491,10 @@ Element* Node::NextSiblingElement( const char* value,
   if ( 0 == sibling ) {
     if ( throwIfNoSiblings ) {
       TICPPTHROW( "No Element Siblings found with value, '"
-                  << value << "', After this Node (" << Value() << ")" )
+                  << value
+                  << "', After this Node ("
+                  << Value()
+                  << ")" )
     } else {
       return 0;
     }
@@ -520,8 +528,10 @@ Element* Node::FirstChildElement( const char* value,
   if ( 0 == element ) {
     if ( throwIfNoChildren ) {
       TICPPTHROW( "Element ("
-                  << Value() << ") does NOT contain a child with the value of '"
-                  << value << "'" )
+                  << Value()
+                  << ") does NOT contain a child with the value of '"
+                  << value
+                  << "'" )
     } else {
       return 0;
     }

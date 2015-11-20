@@ -210,7 +210,7 @@ class TiXmlBase : public TiCppRC
 #else
 class TiXmlBase
 #endif
-                  {
+{
   friend class TiXmlNode;
   friend class TiXmlElement;
   friend class TiXmlDocument;

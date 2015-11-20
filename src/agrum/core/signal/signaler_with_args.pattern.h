@@ -45,8 +45,8 @@ namespace gum {
 
       virtual Listener* target() const = 0;
       virtual void notify( const void*, LIST_DECL_ARGS ) = 0;
-      virtual MAKE_NAME( IConnector ) <LIST_CLASSES>* clone() = 0;
-      virtual MAKE_NAME( IConnector ) <LIST_CLASSES>* duplicate(
+      virtual MAKE_NAME( IConnector )<LIST_CLASSES>* clone() = 0;
+      virtual MAKE_NAME( IConnector )<LIST_CLASSES>* duplicate(
           Listener* target ) = 0;
     };
 
@@ -131,7 +131,7 @@ namespace gum {
 
     template <class TargetClass, LIST_DECL_CLASSES>
     class MAKE_NAME( Connector )
-        : public MAKE_NAME( IConnector ) <LIST_CLASSES> {
+        : public MAKE_NAME( IConnector )<LIST_CLASSES> {
       public:
       MAKE_NAME( Connector )() {
         GUM_CONSTRUCTOR( MAKE_NAME( Connector ) );
@@ -149,7 +149,7 @@ namespace gum {
 
       MAKE_NAME( Connector )
       ( const MAKE_NAME( Connector ) < TargetClass, LIST_CLASSES > *src )
-          : MAKE_NAME( IConnector ) <LIST_CLASSES>( src ) {
+          : MAKE_NAME( IConnector )<LIST_CLASSES>( src ) {
         GUM_CONS_CPY( MAKE_NAME( Connector ) );
       }
 
@@ -157,13 +157,13 @@ namespace gum {
         GUM_DESTRUCTOR( MAKE_NAME( Connector ) );
       }
 
-      INLINE virtual MAKE_NAME( IConnector ) <LIST_CLASSES>* clone() {
-        return new MAKE_NAME( Connector ) <TargetClass, LIST_CLASSES>( *this );
+      INLINE virtual MAKE_NAME( IConnector )<LIST_CLASSES>* clone() {
+        return new MAKE_NAME( Connector )<TargetClass, LIST_CLASSES>( *this );
       }
 
-      INLINE virtual MAKE_NAME( IConnector ) <LIST_CLASSES>* duplicate(
+      INLINE virtual MAKE_NAME( IConnector )<LIST_CLASSES>* duplicate(
           Listener* target ) {
-        return new MAKE_NAME( Connector ) <TargetClass, LIST_CLASSES>(
+        return new MAKE_NAME( Connector )<TargetClass, LIST_CLASSES>(
             (TargetClass*)target, __action );
       }
 
@@ -182,13 +182,13 @@ namespace gum {
 
   template <LIST_DECL_CLASSES>
   class MAKE_NAME( Signaler )
-      : public __sig__::MAKE_NAME( BasicSignaler ) <LIST_CLASSES> {
+      : public __sig__::MAKE_NAME( BasicSignaler )<LIST_CLASSES> {
 
     typedef typename __sig__::MAKE_NAME(
-        BasicSignaler ) <LIST_CLASSES>::ConnectorIterator ConnectorIterator;
+        BasicSignaler )<LIST_CLASSES>::ConnectorIterator ConnectorIterator;
 
     public:
-    using BasicSignaler = __sig__::MAKE_NAME( BasicSignaler ) <LIST_CLASSES>;
+    using BasicSignaler = __sig__::MAKE_NAME( BasicSignaler )<LIST_CLASSES>;
 
     MAKE_NAME( Signaler )() { GUM_CONSTRUCTOR( MAKE_NAME( Signaler ) ); }
 
@@ -204,8 +204,8 @@ namespace gum {
     template <class TargetClass>
     void attach( TargetClass* target,
                  void ( TargetClass::*action )( const void*, LIST_CLASSES ) ) {
-      __sig__::MAKE_NAME( Connector ) <TargetClass, LIST_CLASSES>* conn =
-          new __sig__::MAKE_NAME( Connector ) <TargetClass, LIST_CLASSES>(
+      __sig__::MAKE_NAME( Connector )<TargetClass, LIST_CLASSES>* conn =
+          new __sig__::MAKE_NAME( Connector )<TargetClass, LIST_CLASSES>(
               target, action );
       this->_connectors.pushBack( conn );
       target->attachSignal__( this );
@@ -228,4 +228,3 @@ namespace gum {
 #undef LIST_DECL_ARGS
 #undef LIST_ARGS
 #undef SIGNALER_PATRON_ACCEPTED
-

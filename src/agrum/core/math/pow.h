@@ -70,8 +70,8 @@ namespace gum {
    * the maximum number those bits can represent, i.e. \f$ 2^{num\_bits} \f$.
    */
   void superiorPow( const unsigned long& card,
-                           unsigned long& num_bits,
-                           unsigned long& new_card );
+                    unsigned long& num_bits,
+                    unsigned long& new_card );
 
   /// @}
 
@@ -79,6 +79,6 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/math/pow.inl>
-#endif // GUM_NO_INLINE
+#endif  // GUM_NO_INLINE
 
-#endif // GUM_MATH_POW_H
+#endif  // GUM_MATH_POW_H

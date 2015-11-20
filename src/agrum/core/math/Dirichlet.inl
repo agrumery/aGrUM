@@ -127,4 +127,3 @@ namespace gum {
   INLINE float Dirichlet::max() const noexcept { return 1.0f; }
 
 } /* namespace gum */
-

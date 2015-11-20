@@ -141,7 +141,7 @@ namespace gum {
     /// A set of already computed critical values.
     HashTable<unsigned int, float> __critical_values;
 
-    /** 
+    /**
      * @brief Computes the critical value of a given chi2 test (used by the
      * cache).
      *
@@ -152,8 +152,8 @@ namespace gum {
      * @return Returns the critical value of a given chi2 test.
      */
     static double __criticalValue( double proba, unsigned long df );
-    
-    /** 
+
+    /**
      * @brief Computes the probability of chi2 value.
      *
      * This code has been written by Gary Perlman.
@@ -171,7 +171,7 @@ namespace gum {
      */
     static double __probaChi2( double x, unsigned long df );
 
-    /** 
+    /**
      * @brief Computes the probability of normal z value.
      *
      * This code has been written by Gary Perlman.
@@ -181,7 +181,7 @@ namespace gum {
      * Collected Algorithms of the CACM 1963 p. 616
      *
      * This routine has six digit accuracy, so it is only useful for absolute z
-     * values < 6.  For z values >= to 6.0, __probaZValue() returns 0.0. 
+     * values < 6.  For z values >= to 6.0, __probaZValue() returns 0.0.
      *
      * @param z A value.
      * @return The probability of z.
@@ -203,4 +203,3 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_CHI2_H */
-

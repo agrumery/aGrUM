@@ -202,4 +202,3 @@ namespace gum {
   }
 
 } /* namespace gum */
-

@@ -140,6 +140,6 @@ namespace gum {
 
 }  // namespace gum
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 #endif  // COCO_R_COMMON_H

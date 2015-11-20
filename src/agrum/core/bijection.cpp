@@ -101,4 +101,3 @@ namespace gum {
 
 template class gum::Bijection<int, int>;
 template class gum::Bijection<std::string, std::string>;
-

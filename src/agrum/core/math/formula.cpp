@@ -20,7 +20,7 @@
 
 #include <agrum/core/math/formula.h>
 
-// Keep this here because of cyclic dependencies 
+// Keep this here because of cyclic dependencies
 #include <agrum/core/math/cocoR/Parser.h>
 #include <agrum/core/math/cocoR/Scanner.h>
 

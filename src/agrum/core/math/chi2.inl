@@ -99,4 +99,3 @@ namespace gum {
   }
 
 } /* namespace gum */
-

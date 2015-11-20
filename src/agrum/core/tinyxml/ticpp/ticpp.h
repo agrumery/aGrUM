@@ -974,8 +974,10 @@ It will take care of the conversion and throwing the exception.
                            << " could not be casted to a "
                            << targetType.substr( 6 )
                            << " *, because the target object is not a "
-                           << targetType.substr( 6 ) << ". (It is a "
-                           << thatType.substr( 6 ) << ")" );
+                           << targetType.substr( 6 )
+                           << ". (It is a "
+                           << thatType.substr( 6 )
+                           << ")" );
       }
 
       return pointer;
