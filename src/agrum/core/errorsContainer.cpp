@@ -74,7 +74,7 @@ namespace gum {
     column = err.column;  // default 0
     msg = err.msg;
     filename = err.filename;  // default ""
-    code = err.code;         // default ""
+    code = err.code;          // default ""
   }
 
   ParseError ParseError::operator=( const ParseError& err ) {
@@ -84,7 +84,7 @@ namespace gum {
       column = err.column;  // default 0
       msg = err.msg;
       filename = err.filename;  // default ""
-      code = err.code;         // default ""
+      code = err.code;          // default ""
     }
 
     return *this;

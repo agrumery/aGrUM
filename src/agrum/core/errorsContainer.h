@@ -160,18 +160,17 @@ namespace gum {
     mutable std::vector<ParseError> errors;
 
     public:
- 
     /// Number of errors detected.
-    int error_count;    
- 
+    int error_count;
+
     // Number of warnings detected.
-    int warning_count;  
+    int warning_count;
 
     // ============================================================================
     /// @name Class Constructor
     // ============================================================================
     /// @{
- 
+
     /**
      * @brief Class Constructor.
      */
@@ -354,4 +353,3 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif  // GUM_ERRORS_CONTAINERS_H
-

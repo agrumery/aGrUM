@@ -92,7 +92,7 @@ namespace gum {
   template <typename Val, class Cmp, class Node>
   INLINE void BinSearchTreeIterator<Val, Cmp, Node>::_detachFromTree() {
     if ( _tree ) {
-      BinSearchTreeIterator<Val, Cmp, Node>* iter, * prev_iter = 0;
+      BinSearchTreeIterator<Val, Cmp, Node> *iter, *prev_iter = 0;
 
       for ( iter = _tree->_iterator_list; iter != this && iter;
             prev_iter = iter, iter = iter->_next_iter ) {
@@ -133,8 +133,8 @@ namespace gum {
 
   template <typename Val, class Cmp, class Node>
   INLINE BinSearchTreeIterator<Val, Cmp, Node>&
-      BinSearchTreeIterator<Val, Cmp, Node>::
-      operator=( const BinSearchTreeIterator<Val, Cmp, Node>& from ) {
+  BinSearchTreeIterator<Val, Cmp, Node>::
+  operator=( const BinSearchTreeIterator<Val, Cmp, Node>& from ) {
     // avoid self assignment
     if ( this != &from ) {
       GUM_OP_CPY( BinSearchTreeIterator );
@@ -226,8 +226,7 @@ namespace gum {
 
   template <typename Val, class Cmp, class Node>
   INLINE BinSearchTreeIterator<Val, Cmp, Node>&
-      BinSearchTreeIterator<Val, Cmp, Node>::
-      operator++() {
+      BinSearchTreeIterator<Val, Cmp, Node>::operator++() {
     // if there is a current node, use it to compute the next node, else use
     // directly _next_node (this case obtains when the iterator was pointing
     // toward a node that has been deleted before we use operator++)
@@ -246,8 +245,7 @@ namespace gum {
 
   template <typename Val, class Cmp, class Node>
   INLINE BinSearchTreeIterator<Val, Cmp, Node>&
-      BinSearchTreeIterator<Val, Cmp, Node>::
-      operator--() {
+      BinSearchTreeIterator<Val, Cmp, Node>::operator--() {
     // if there is a current node, use it to compute the preceding node, else
     // use
     // directly _prev_node (this case obtains when the iterator was pointing
@@ -386,7 +384,7 @@ namespace gum {
   template <typename Val, class Cmp, class Node>
   INLINE void BinSearchTree<Val, Cmp, Node>::clear() {
     // first we clear all the iterators, i.e., we detach them from the tree
-    for ( iterator* iter = _iterator_list, * next_iter = 0; iter;
+    for ( iterator *iter = _iterator_list, *next_iter = 0; iter;
           iter = next_iter ) {
       next_iter = iter->_next_iter;
       iter->clear();
@@ -711,7 +709,7 @@ namespace gum {
         // this will be taken care of by the destructor of "node"
         _root = node->rightChild();
       } else {
-        Node* parent = node->parent(), * child = node->rightChild();
+        Node *parent = node->parent(), *child = node->rightChild();
         BinTreeDir dir = node->parentDir();
         parent->eraseLink( dir );
         node->eraseRightLink();
@@ -727,7 +725,7 @@ namespace gum {
         // this will be taken care of by the destructor of "node"
         _root = node->leftChild();
       } else {
-        Node* parent = node->parent(), * child = node->leftChild();
+        Node *parent = node->parent(), *child = node->leftChild();
         BinTreeDir dir = node->parentDir();
         parent->eraseLink( dir );
         node->eraseLeftLink();
@@ -736,7 +734,7 @@ namespace gum {
     }
     // ok, here there are two children
     else {
-      __eraseWithTwoChildren(node);
+      __eraseWithTwoChildren( node );
     }
 
     // now we shall physically remove node from memory
@@ -744,7 +742,8 @@ namespace gum {
   }
 
   template <typename Val, class Cmp, class Node>
-  INLINE void BinSearchTree<Val, Cmp, Node>::__eraseWithTwoChildren(Node* node) {
+  INLINE void
+  BinSearchTree<Val, Cmp, Node>::__eraseWithTwoChildren( Node* node ) {
     // the idea is to get the successor of "node" and substitute "node" by
     // it.  As "node" has two children, we are sure that the successor is one
     // of node's descendants. Moreover, by its very definition, this
@@ -788,7 +787,7 @@ namespace gum {
         parent->insertLeftChild( *succ_child );
       }
 
-      Node* left = node->leftChild(), * right = node->rightChild();
+      Node *left = node->leftChild(), *right = node->rightChild();
       node->eraseLeftLink();
       node->eraseRightLink();
       successor->insertLeftChild( *left );
@@ -848,7 +847,6 @@ namespace gum {
     }
   }
 
-} // namespace gum 
+}  // namespace gum
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
-
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

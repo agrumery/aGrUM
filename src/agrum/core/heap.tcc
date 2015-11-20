@@ -354,4 +354,3 @@ namespace gum {
   }
 
 } /* namespace gum */
-

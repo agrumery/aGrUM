@@ -66,7 +66,6 @@ namespace gum {
             class Node = BinTreeNode<Val>>
   class BinSearchTree {
     public:
-
     /// @brief Alias for gum::BinSearchTree iterators
     /// @{
     typedef BinSearchTreeIterator<Val, Cmp, Node> iterator;
@@ -84,7 +83,7 @@ namespace gum {
      * tree uniqueness.
      *
      * It is possible for the binary tree to have multiple instances of the
-     * same value within the tree. 
+     * same value within the tree.
      */
     explicit BinSearchTree( bool uniqueness_policy = false );
 
@@ -223,7 +222,7 @@ namespace gum {
      * @brief Erase the node pointed to by the iterator.
      *
      * If we could not find the node, then nothing happens. In particular, no
-     * exception is raised. 
+     * exception is raised.
      *
      * @param iter The iterator pointing toward the valeu to remove.
      */
@@ -234,7 +233,7 @@ namespace gum {
      * @param val The value tested for existence.
      * @return Returns true if the gum::BinSearchTree contains the value.
      */
-    bool contains( const Val& val) const;
+    bool contains( const Val& val ) const;
 
     /**
      * @brief Removes all the elements from the gum::BinSearchTree.
@@ -292,7 +291,6 @@ namespace gum {
     /// @}
 
     protected:
-
     /// The root node of the tree.
     Node* _root;
 
@@ -325,7 +323,7 @@ namespace gum {
     friend class AVLSearchTree<Val, Cmp>;
     /// @}
 
-    /** 
+    /**
      * @brief A method for recursively copying the contents of a BinSearchTree.
      *
      * @warning This function produces a tree with precisely the same structure
@@ -378,8 +376,8 @@ namespace gum {
      */
     Node* _getNode( const Val& val ) const;
 
-    /// 
-    /** 
+    ///
+    /**
      * @brief A method for recursively deleting a subtree of the
      * gum::BinSearchTree.
      *
@@ -392,22 +390,20 @@ namespace gum {
 
     /**
      * @brief Erase the node passed in argument.
-     * @param node The Node to erase. 
+     * @param node The Node to erase.
      */
     virtual void _erase( Node* node );
 
     private:
-
     /**
      * @brief Erase a node with two children.
      *
      * This is used by gum::BinSearchTree::_erase(Node*).
      * @param node The node to erase.
      */
-    void __eraseWithTwoChildren(Node* node);
+    void __eraseWithTwoChildren( Node* node );
 
     protected:
-
     /**
      * @brief Creates a copy of the value, insert it in the gum::BinSearchTree
      * and returns the copy value.
@@ -427,7 +423,6 @@ namespace gum {
     virtual Node* _insert( const Val& val );
 
     private:
-
     /**
      * @brief Update all iterators when a given node is deleted.
      * @param node The node that is erased.
@@ -527,7 +522,7 @@ namespace gum {
      * Loops are guaranteed to parse the whole binary search tree as long as no
      * element is added to or deleted from the tree while being in the loop.
      * Deleting elements during the loop is guaranteed to never produce a
-     * segmentation fault. 
+     * segmentation fault.
      *
      * @code
      * for (iter = tre.rbegin(); iter != tree.rend(); --iter) {
@@ -589,14 +584,14 @@ namespace gum {
     ///@}
 
     protected:
-
     /// The current node pointed to by the iterator.
     Node* _node;
 
     /// The next node to be used when _node=0 (if a ++ operator is applied).
     Node* _next_node;
 
-    /// The preceding node to be used when _node=0 (if a -- operator is applied).
+    /// The preceding node to be used when _node=0 (if a -- operator is
+    /// applied).
     Node* _prev_node;
 
     /// The parent to be used when _node=0 (if operation up is applied).
@@ -615,7 +610,6 @@ namespace gum {
     BinSearchTreeIterator<Val, Cmp, Node>* _next_iter;
 
     private:
-
     /// To speed-up accesses.
     /// @{
     friend class BinSearchTree<Val, Cmp, Node>;
@@ -650,5 +644,4 @@ namespace gum {
 // always include the template implementations
 #include <agrum/core/binSearchTree.tcc>
 
-#endif // GUM_BIN_SEARCH_TREE_H
-
+#endif  // GUM_BIN_SEARCH_TREE_H

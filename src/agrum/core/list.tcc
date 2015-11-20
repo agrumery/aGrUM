@@ -1193,7 +1193,7 @@ namespace gum {
     }
 
     // clear all the values
-    for ( ListBucket<Val>* ptr = __deb_list, * next_ptr = nullptr;
+    for ( ListBucket<Val> *ptr = __deb_list, *next_ptr = nullptr;
           ptr != nullptr;
           ptr = next_ptr ) {
       next_ptr = ptr->__next;
@@ -1364,8 +1364,8 @@ namespace gum {
   // the iterator pointing to the end of the List
   template <typename Val, typename Alloc>
   INLINE const ListIteratorSafe<Val>& List<Val, Alloc>::endSafe() noexcept {
-    return *( reinterpret_cast<const ListIteratorSafe<Val>*>(
-        __list_end_safe ) );
+    return *(
+        reinterpret_cast<const ListIteratorSafe<Val>*>( __list_end_safe ) );
   }
 
   // the iterator pointing to the end of the List
@@ -1397,8 +1397,8 @@ namespace gum {
   // the iterator pointing to the rend (just before the beginning) of the List
   template <typename Val, typename Alloc>
   INLINE const ListIteratorSafe<Val>& List<Val, Alloc>::rendSafe() noexcept {
-    return *( reinterpret_cast<const ListIteratorSafe<Val>*>(
-        __list_end_safe ) );
+    return *(
+        reinterpret_cast<const ListIteratorSafe<Val>*>( __list_end_safe ) );
   }
 
   // the iterator pointing to the rend (just before the beginning) of the List
@@ -1984,7 +1984,7 @@ namespace gum {
   // erases all the elements encountered with a given value
   template <typename Val, typename Alloc>
   INLINE void List<Val, Alloc>::eraseAllVal( const Val& val ) {
-    for ( ListBucket<Val>* iter = __deb_list, * next_bucket = nullptr;
+    for ( ListBucket<Val> *iter = __deb_list, *next_bucket = nullptr;
           iter != nullptr;
           iter = next_bucket ) {
       next_bucket = iter->__next;
@@ -2018,7 +2018,7 @@ namespace gum {
     std::stringstream stream;
     stream << "[";
 
-    for ( ListBucket<Val>* ptr = __deb_list; ptr != nullptr;
+    for ( ListBucket<Val> *ptr = __deb_list; ptr != nullptr;
           ptr = ptr->__next, deja = true ) {
       if ( deja ) stream << " --> ";
 
@@ -2113,7 +2113,7 @@ namespace gum {
     if ( __nb_elements != src.__nb_elements ) return false;
 
     // parse the two lists
-    for ( ListBucket<Val>* iter1 = __deb_list, * iter2 = src.__deb_list;
+    for ( ListBucket<Val> *iter1 = __deb_list, *iter2 = src.__deb_list;
           iter1 != nullptr;
           iter1 = iter1->__next, iter2 = iter2->__next )
       if ( *iter1 != *iter2 ) return false;
@@ -2169,4 +2169,3 @@ namespace gum {
   }
 
 } /* namespace gum */
-

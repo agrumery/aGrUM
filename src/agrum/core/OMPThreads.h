@@ -56,7 +56,7 @@ namespace gum {
    *
    * Call this from anywhere (parallel region or not). By default, it is the
    * number of threads launched in any parallel region.
-   * 
+   *
    * It should return the number of logical processors by default, i.e.
    * omp_get_num_procs(). If setNumberOfThreads(number) was called, it will
    * return the choosen number.
@@ -132,7 +132,6 @@ namespace gum {
    * @return \c True if dynamic adjustment is enabled, \c False otherwise.
    */
   bool getDynamicThreadsNumber();
-
 }
 
 // include the inlined functions if necessary
@@ -140,5 +139,4 @@ namespace gum {
 #include <agrum/core/OMPThreads.inl>
 #endif /* GUM_NO_INLINE */
 
-#endif // GUM_OPEM_MP_THREADS_H
-
+#endif  // GUM_OPEM_MP_THREADS_H

@@ -104,7 +104,7 @@ namespace gum {
    *
    * In fact, usually, when you create a new hash function, you will only need
    * to write something like:
-   * 
+   *
    * @code
    * template <> class HashFunc<MyObject> : public HashFuncBase<MyObject> {
    * public:
@@ -140,7 +140,7 @@ namespace gum {
    * gum::HashFunc::_hash_log2_size. Finally, gum::HashFunc::_hash_mask is a
    * mask that can be used to ensure that the hashed key actually belongs to
    * [0,_hash_size). This is used in particular in the hash function for
-   * hashing strings. 
+   * hashing strings.
    *
    * @tparam Key The type hashed by this hash function.
    */
@@ -178,7 +178,6 @@ namespace gum {
     Size size() const noexcept;
 
     protected:
- 
     /// The size of the hash table.
     Size _hash_size{0};
 
@@ -206,7 +205,6 @@ namespace gum {
   template <typename Key>
   class HashFuncSmallKey : private HashFuncBase<Key> {
     public:
-
     /// This class use the HashFuncBase::size.
     using HashFuncBase<Key>::size;
 
@@ -232,10 +230,9 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const Key& key) const;
+    Size operator()( const Key& key ) const;
 
     protected:
-
     /// The number of right shift to perform to get correct hashed values.
     unsigned int _right_shift;
   };
@@ -277,14 +274,14 @@ namespace gum {
      * @param key The value to return as an unsigned long.
      * @return Returns the value of a key as an unsigned long.
      */
-    Size castToSize( const Key& key) const;
+    Size castToSize( const Key& key ) const;
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const Key& key) const;
+    Size operator()( const Key& key ) const;
 
     protected:
     /// The number of right shift to perform to get correct hashed values.
@@ -307,7 +304,6 @@ namespace gum {
   template <typename Key>
   class HashFuncMediumCastKey : private HashFuncBase<Key> {
     public:
-
     /// This class use the HashFuncBase::size.
     using HashFuncBase<Key>::size;
 
@@ -333,14 +329,14 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const Key& key) const;
+    Size operator()( const Key& key ) const;
 
     /**
      * @brief Returns the value of a key as an unsigned long.
      * @param key The value to return as an unsigned long.
      * @return Returns the value of a key as an unsigned long.
      */
-    Size castToSize( const Key& key) const;
+    Size castToSize( const Key& key ) const;
 
 
     protected:
@@ -358,7 +354,6 @@ namespace gum {
   template <typename Key>
   class HashFuncLargeCastKey : private HashFuncBase<Key> {
     public:
-
     /// This class use the HashFuncBase::size.
     using HashFuncBase<Key>::size;
 
@@ -384,17 +379,16 @@ namespace gum {
      * @param key The key to cast.
      * @return Returns the cast key to the exepcted type.
      */
-    Size castToSize( const Key& key) const;
+    Size castToSize( const Key& key ) const;
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const Key& key) const;
+    Size operator()( const Key& key ) const;
 
     protected:
-
     /// The number of right shift to perform to get correct hashed values.
     unsigned int _right_shift;
   };
@@ -430,7 +424,6 @@ namespace gum {
   template <typename Key1, typename Key2>
   class HashFuncSmallKeyPair : public HashFuncBase<std::pair<Key1, Key2>> {
     public:
-
     /**
      * @brief Update the hash function to take into account a resize of the
      * hash table.
@@ -453,10 +446,9 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const std::pair<Key1, Key2>& key) const;
+    Size operator()( const std::pair<Key1, Key2>& key ) const;
 
     protected:
-
     /// The number of right shift to perform to get correct hashed values.
     unsigned int _right_shift;
   };
@@ -474,7 +466,6 @@ namespace gum {
   template <typename Key1, typename Key2, typename Func1, typename Func2>
   class HashFuncAllCastKeyPair : public HashFuncBase<std::pair<Key1, Key2>> {
     public:
-
     /**
      * @brief Update the hash function to take into account a resize of the
      * hash table.
@@ -497,15 +488,13 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const std::pair<Key1, Key2>& key) const;
+    Size operator()( const std::pair<Key1, Key2>& key ) const;
 
     protected:
-
     /// The number of right shift to perform to get correct hashed values.
     unsigned int _right_shift;
 
     private:
-
     /// The functions used to hash Key1.
     Func1 __func1;
     /// The functions used to hash Key2.
@@ -538,9 +527,12 @@ namespace gum {
 
   /**
    * @class HashFunc hashFunc.h <agrum/core/hashFunc.h>
-   * @brief This class should be useless as only its specializations should be used.
+   * @brief This class should be useless as only its specializations should be
+   * used.
+   *
    * However it prevents to create hash functions on key types that are not yet
    * supported.
+   *
    * @ingroup hashfunctions_group
    */
   template <typename key>

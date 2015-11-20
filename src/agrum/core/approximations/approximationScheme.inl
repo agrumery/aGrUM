@@ -110,9 +110,7 @@ namespace gum {
   }
 
   // Enable stopping criterion on max iterations
-  INLINE void ApproximationScheme::enableMaxIter() {
-    _enabled_max_iter = true;
-  }
+  INLINE void ApproximationScheme::enableMaxIter() { _enabled_max_iter = true; }
 
   // @return true if stopping criterion on max iterations is enabled, false
   // otherwise
@@ -131,9 +129,7 @@ namespace gum {
   }
 
   // returns the timeout (in seconds)
-  INLINE double ApproximationScheme::maxTime( void ) const {
-    return _max_time;
-  }
+  INLINE double ApproximationScheme::maxTime( void ) const { return _max_time; }
 
   // get the current running time in second (double)
   INLINE double ApproximationScheme::currentTime( void ) const {
@@ -146,9 +142,7 @@ namespace gum {
   }
 
   // Enable stopping criterion on timeout
-  INLINE void ApproximationScheme::enableMaxTime() {
-    _enabled_max_time = true;
-  }
+  INLINE void ApproximationScheme::enableMaxTime() { _enabled_max_time = true; }
 
   // @return true if stopping criterion on timeout is enabled, false
   // otherwise
@@ -263,8 +257,7 @@ namespace gum {
 
   // update the scheme w.r.t the new error. Test the stopping criterions that
   // are enabled
-  INLINE bool
-  ApproximationScheme::continueApproximationScheme( double error ) {
+  INLINE bool ApproximationScheme::continueApproximationScheme( double error ) {
     // For coherence, we fix the time used in the method
 
     double timer_step = _timer.step();

@@ -24,7 +24,7 @@
  * @author Vincent RENAUDINEAU and Pierre-Henri WUILLEMIN
  */
 
-//to ease IDE parser
+// to ease IDE parser
 #include <agrum/core/utils_random.h>
 namespace gum {
 

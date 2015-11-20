@@ -211,4 +211,3 @@ namespace gum {
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 #endif  // GUM_DEBUG_H
-

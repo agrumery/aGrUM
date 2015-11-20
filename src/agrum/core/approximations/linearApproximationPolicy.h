@@ -73,7 +73,8 @@ namespace gum {
      * @brief Copy constructor.
      * @param md The gum::LinearApproximationPolicy to copy.
      */
-    LinearApproximationPolicy( const LinearApproximationPolicy<GUM_SCALAR>* md );
+    LinearApproximationPolicy(
+        const LinearApproximationPolicy<GUM_SCALAR>* md );
 
     /// @}
 
@@ -137,7 +138,7 @@ namespace gum {
      * @throw OutOfUpperBound Raised if value is out of bounds.
      */
     GUM_SCALAR safeFromExact( const GUM_SCALAR& value );
- 
+
     /**
      * @brief Encode a given value into its approximation representation.
      * @param value The to encode.
@@ -235,7 +236,7 @@ namespace gum {
   };
 }
 
-// Always inline template classes implementation. 
+// Always inline template classes implementation.
 #include <agrum/core/approximations/linearApproximationPolicy.tcc>
 
 #endif /* GUM_LINEAR_APPROXIMATION_POLICY_H */

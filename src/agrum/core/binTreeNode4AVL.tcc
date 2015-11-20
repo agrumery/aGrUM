@@ -163,7 +163,7 @@ namespace gum {
 
   template <typename Val>
   INLINE BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::__balance() {
-    BinTreeNode4AVL<Val>* node = this, * root = this;
+    BinTreeNode4AVL<Val> *node = this, *root = this;
 
     while ( node ) {
       // compute the heights of the left and right trees
@@ -289,5 +289,4 @@ namespace gum {
     return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::root() );
   }
 
-} // namespace gum
-
+}  // namespace gum

@@ -29,4 +29,3 @@
 
 template class gum::PriorityQueue<std::string>;
 template class gum::PriorityQueue<int, int>;
-

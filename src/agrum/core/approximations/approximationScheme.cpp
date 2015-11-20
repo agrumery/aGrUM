@@ -54,7 +54,7 @@ namespace gum {
     GUM_DESTRUCTOR( ApproximationScheme );
   }
 
-} // namespace gum
+}  // namespace gum
 
 #ifdef GUM_NO_INLINE
 #include <agrum/core/approximations/approximationScheme.inl>

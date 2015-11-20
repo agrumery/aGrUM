@@ -95,7 +95,7 @@ namespace gum {
         BinSearchTree<Val, Cmp, Node>::_root = node->rightChild();
         delete node;
       } else {
-        Node* parent = node->parent(), * child = node->rightChild();
+        Node *parent = node->parent(), *child = node->rightChild();
         BinTreeDir dir = node->parentDir();
         parent->eraseLink( dir );
         node->eraseRightLink();
@@ -116,7 +116,7 @@ namespace gum {
         BinSearchTree<Val, Cmp, Node>::_root = node->leftChild();
         delete node;
       } else {
-        Node* parent = node->parent(), * child = node->leftChild();
+        Node *parent = node->parent(), *child = node->leftChild();
         BinTreeDir dir = node->parentDir();
         parent->eraseLink( dir );
         node->eraseLeftLink();
@@ -176,7 +176,7 @@ namespace gum {
           parent->insertLeftChild( *succ_child );
         }
 
-        Node* left = node->leftChild(), * right = node->rightChild();
+        Node *left = node->leftChild(), *right = node->rightChild();
         successor->__height = node->__height;
         node->eraseLeftLink();
         node->eraseRightLink();
@@ -266,4 +266,3 @@ namespace gum {
     return stream;
   }
 } /* namespace gum */
-

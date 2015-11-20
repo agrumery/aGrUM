@@ -25,4 +25,3 @@
  */
 
 #include <agrum/core/splay.h>
-

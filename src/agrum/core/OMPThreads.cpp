@@ -32,4 +32,3 @@
 #ifdef GUM_NO_INLINE
 #include <agrum/core/OMPThreads.inl>
 #endif /* GUM_NO_INLINE */
-

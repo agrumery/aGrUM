@@ -111,9 +111,8 @@ namespace gum {
     /// @}
 
     private:
-
     // ============================================================================
-    /// @name Constructors 
+    /// @name Constructors
     // ============================================================================
     /// @{
     /**
@@ -160,7 +159,7 @@ namespace gum {
 
     public:
     // ============================================================================
-    /// @name Destructor 
+    /// @name Destructor
     // ============================================================================
     /// @{
 
@@ -226,13 +225,12 @@ namespace gum {
     /// @}
 
     private:
- 
     // ============================================================================
     /// @name Private Operators
     // ============================================================================
     /// @{
-    
-    /** 
+
+    /**
      * @brief Copy operator.
      * @param aSeq The sequence to copy.
      * @return Returns a ref to this.
@@ -240,7 +238,7 @@ namespace gum {
     SequenceImplementation<Key, Alloc, Gen>&
     operator=( const SequenceImplementation<Key, Alloc, Gen>& aSeq );
 
-    /** 
+    /**
      * @brief Generalized opy operator.
      * @tparam OtherAlloc The other gum::SequenceImplementation allocator.
      * @param aSeq The sequence to copy.
@@ -250,7 +248,7 @@ namespace gum {
     SequenceImplementation<Key, Alloc, Gen>&
     operator=( const SequenceImplementation<Key, OtherAlloc, Gen>& aSeq );
 
-    /** 
+    /**
      * @brief Move operator.
      * @param aSeq The sequence to move.
      * @return Returns a ref to this.
@@ -266,23 +264,23 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    /** 
+    /**
      * @brief Insert k at the end of the sequence (synonym for insert).
      * @param k The key we wish to insert in the sequence.
      * @return Returns this gum::SequenceImplementation.
      * @throw DuplicateElement Raised if the sequence contains already k.
      */
     SequenceImplementation<Key, Alloc, Gen>& operator<<( const Key& k );
-    
-    /** 
+
+    /**
      * @brief Insert k at the end of the sequence (synonym for insert).
      * @param k The key we wish to insert in the sequence.
      * @return Returns this gum::SequenceImplementation.
      * @throw DuplicateElement Raised if the sequence contains already k.
      */
     SequenceImplementation<Key, Alloc, Gen>& operator<<( Key&& k );
-    
-    /** 
+
+    /**
      * @brief Remove k in the sequence (synonym for erase).
      *
      * If the element cannot be found, the function does nothing. In
@@ -292,16 +290,16 @@ namespace gum {
      * @return Returns this gum::SequenceImplementation.
      */
     SequenceImplementation<Key, Alloc, Gen>& operator>>( const Key& k );
-    
-    /** 
+
+    /**
      * @brief Returns the element at position i (synonym for atPos).
      * @param i The position of the element to return.
      * @return Returns the element at position i.
      * @throw OutOfBounds Raised if the element does not exist.
      */
     const Key& operator[]( Idx i ) const;
-    
-    /** 
+
+    /**
      * @brief Returns true if the content of k equals that of *this.
      *
      * Note that two sequences are equal if and only if they contain the same
@@ -314,8 +312,8 @@ namespace gum {
     template <typename OtherAlloc>
     bool
     operator==( const SequenceImplementation<Key, OtherAlloc, Gen>& k ) const;
-    
-    /** 
+
+    /**
      * @brief Returns true if the content of k is different from that of *this.
      *
      * Note that two sequences are equal if and only if they contain the same
@@ -351,8 +349,8 @@ namespace gum {
      * @return Return true if empty.
      */
     bool empty() const noexcept;
-    
-    /** 
+
+    /**
      * @brief Check the existence of k in the sequence.
      *
      * The complexity is \f$o(1)\f$.
@@ -361,18 +359,18 @@ namespace gum {
      * @return Returns true if k is in the gum::SequenceImplementation.
      */
     bool exists( const Key& k ) const;
-    
-    /** 
+
+    /**
      * @brief Insert an element at the end of the sequence.
-     * 
+     *
      * The complexity is \f$o(1)\f$.
      *
      * @param k The element to insert.
      * @throw DuplicateElement Raised if the sequence contains already k.
      */
     void insert( const Key& k );
-    
-    /** 
+
+    /**
      * @brief Move an element at the end of the sequence.
      *
      * The complexity is \f$o(1)\f$.
@@ -381,8 +379,8 @@ namespace gum {
      * @throw DuplicateElement Raised if the sequence contains already k.
      */
     void insert( Key&& k );
-    
-    /** 
+
+    /**
      * @brief Emplace a new element in the sequence.
      *
      * The emplace is a method that allows to construct directly an element of
@@ -394,8 +392,8 @@ namespace gum {
      */
     template <typename... Args>
     void emplace( Args&&... args );
-    
-    /** 
+
+    /**
      * @brief Remove an element from the sequence.
      *
      * If the element cannot be found, the function does nothing. In
@@ -405,8 +403,8 @@ namespace gum {
      * @param k The element to remove.
      */
     void erase( const Key& k );
-    
-    /** 
+
+    /**
      * @brief Remove from the sequence the element pointed to by the iterator.
      *
      * If the element cannot be found, the function does nothing. In
@@ -416,16 +414,16 @@ namespace gum {
      * @param k The iterator poiting to the element to remove.
      */
     void erase( const iterator_safe& k );
-    
-    /** 
+
+    /**
      * @brief Returns the object at the pos i.
      * @param i The position of the element to return.
      * @return Returns the object at the pos i.
      * @throw NotFound Raised if the element does not exist.
      */
     const Key& atPos( Idx i ) const;
-    
-    /** 
+
+    /**
      * @brief Returns the position of the object passed in argument (if it
      * exists).
      * @param key The element for which the positon is returned.
@@ -433,8 +431,8 @@ namespace gum {
      * @throw NotFound Raised if the element does not exist.
      */
     Idx pos( const Key& key ) const;
-    
-    /** 
+
+    /**
      * @brief Change the value.
      *
      * @param i The element's position.
@@ -443,8 +441,8 @@ namespace gum {
      * @throw DuplicateElement Raised if newKey alreay exists.
      */
     void setAtPos( Idx i, const Key& newKey );
-    
-    /** 
+
+    /**
      * @brief Change the value.
      *
      * @param i The element's position.
@@ -453,21 +451,21 @@ namespace gum {
      * @throw DuplicateElement Raised if newKey alreay exists.
      */
     void setAtPos( Idx i, Key&& newKey );
-    
+
     /**
      * @brief Swap index.
      * @param i The index of the first elt to swap.
      * @param j The index of the other elt to swap.
      */
     void swap( Idx i, Idx j );
-    
-    /** 
+
+    /**
      * @brief Returns the first element of the element.
      * @return Returns the first element of the element.
      * @throw NotFound Raised if the sequence is empty.
      */
     const Key& front() const;
-    
+
     /**
      * @brief Returns the last element of the sequence.
      * @return Returns the last element of the sequence.
@@ -480,8 +478,8 @@ namespace gum {
      * @return The content of the sequence.
      */
     std::string toString() const;
-    
-    /** 
+
+    /**
      * @brief Modifies the size of the internal structures of the sequence.
      *
      * This function is provided for optimization issues. When you know you
@@ -502,7 +500,7 @@ namespace gum {
     HashTable<Key, Idx, Alloc> __h;
 
     /// The set of the elements stored into the sequence.
-    std::vector<Key*, typename Alloc::template rebind<Key*>::other > __v;
+    std::vector<Key*, typename Alloc::template rebind<Key*>::other> __v;
 
     // Note that, using Key* in __v, we actually store the Key only once in the
     // sequence (that is, within __h). This enables storing big objects within
@@ -584,7 +582,7 @@ namespace gum {
 
     private:
     // ============================================================================
-    /// @name Constructors 
+    /// @name Constructors
     // ============================================================================
     /// @{
     /**
@@ -630,7 +628,7 @@ namespace gum {
     /// @}
     public:
     // ============================================================================
-    /// @name Destructor 
+    /// @name Destructor
     // ============================================================================
     /// @{
 
@@ -696,13 +694,12 @@ namespace gum {
     /// @}
 
     private:
-
     // ============================================================================
     /// @name Private Operators
     // ============================================================================
     /// @{
-    
-    /** 
+
+    /**
      * @brief Copy operator.
      * @param aSeq The sequence to copy.
      * @return Returns a ref to this.
@@ -710,7 +707,7 @@ namespace gum {
     SequenceImplementation<Key, Alloc, true>&
     operator=( const SequenceImplementation<Key, Alloc, true>& aSeq );
 
-    /** 
+    /**
      * @brief generalized opy operator.
      * @tparam otheralloc the other gum::sequenceimplementation allocator.
      * @param aseq the sequence to copy.
@@ -720,7 +717,7 @@ namespace gum {
     SequenceImplementation<Key, Alloc, true>&
     operator=( const SequenceImplementation<Key, OtherAlloc, true>& aSeq );
 
-    /** 
+    /**
      * @brief Move operator.
      * @param aSeq The sequence to move.
      * @return Returns a ref to this.
@@ -736,7 +733,7 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    /** 
+    /**
      * @brief Insert k at the end of the sequence (synonym for insert).
      * @param k The key we wish to insert in the sequence.
      * @return Returns this gum::SequenceImplementation.
@@ -744,7 +741,7 @@ namespace gum {
      */
     SequenceImplementation<Key, Alloc, true>& operator<<( Key k );
 
-    /** 
+    /**
      * @brief Remove k in the sequence (synonym for erase).
      *
      * If the element cannot be found, the function does nothing. In
@@ -754,16 +751,16 @@ namespace gum {
      * @return Returns this gum::SequenceImplementation.
      */
     SequenceImplementation<Key, Alloc, true>& operator>>( Key k );
-    
-    /** 
+
+    /**
      * @brief Returns the element at position i (synonym for atPos).
      * @param i The position of the element to return.
      * @return Returns the element at position i.
      * @throw OutOfBounds Raised if the element does not exist.
      */
     const Key& operator[]( Idx i ) const;
-    
-    /** 
+
+    /**
      * @brief Returns true if the content of k equals that of *this.
      *
      * Note that two sequences are equal if and only if they contain the same
@@ -776,8 +773,8 @@ namespace gum {
     template <typename OtherAlloc>
     bool
     operator==( const SequenceImplementation<Key, OtherAlloc, true>& k ) const;
-    
-    /** 
+
+    /**
      * @brief Returns true if the content of k is different from that of *this.
      *
      * Note that two sequences are equal if and only if they contain the same
@@ -813,8 +810,8 @@ namespace gum {
      * @return Return true if empty.
      */
     bool empty() const noexcept;
-    
-    /** 
+
+    /**
      * @brief Check the existence of k in the sequence.
      *
      * The complexity is \f$o(1)\f$.
@@ -823,18 +820,18 @@ namespace gum {
      * @return Returns true if k is in the gum::SequenceImplementation.
      */
     bool exists( Key k ) const;
-    
-    /** 
+
+    /**
      * @brief Insert an element at the end of the sequence.
-     * 
+     *
      * The complexity is \f$o(1)\f$.
      *
      * @param k The element to insert.
      * @throw DuplicateElement Raised if the sequence contains already k.
      */
     void insert( Key k );
-    
-    /** 
+
+    /**
      * @brief Emplace a new element in the sequence.
      *
      * The emplace is a method that allows to construct directly an element of
@@ -846,8 +843,8 @@ namespace gum {
      */
     template <typename... Args>
     void emplace( Args&&... args );
-    
-    /** 
+
+    /**
      * @brief Remove an element from the sequence.
      *
      * If the element cannot be found, the function does nothing. In
@@ -857,8 +854,8 @@ namespace gum {
      * @param k The element to remove.
      */
     void erase( Key k );
-    
-    /** 
+
+    /**
      * @brief Remove from the sequence the element pointed to by the iterator.
      *
      * If the element cannot be found, the function does nothing. In
@@ -868,16 +865,16 @@ namespace gum {
      * @param k The iterator poiting to the element to remove.
      */
     void erase( const iterator_safe& k );
-    
-    /** 
+
+    /**
      * @brief Returns the object at the pos i.
      * @param i The position of the element to return.
      * @return Returns the object at the pos i.
      * @throw NotFound Raised if the element does not exist.
      */
     const Key& atPos( Idx i ) const;
-    
-    /** 
+
+    /**
      * @brief Returns the position of the object passed in argument (if it
      * exists).
      * @param key The element for which the positon is returned.
@@ -885,8 +882,8 @@ namespace gum {
      * @throw NotFound Raised if the element does not exist.
      */
     Idx pos( Key key ) const;
-    
-    /** 
+
+    /**
      * @brief Change the value.
      *
      * @param i The element's position.
@@ -903,13 +900,13 @@ namespace gum {
      */
     void swap( Idx i, Idx j );
 
-    /** 
+    /**
      * @brief Returns the first element of the element.
      * @return Returns the first element of the element.
      * @throw NotFound Raised if the sequence is empty.
      */
     const Key& front() const;
-    
+
     /**
      * @brief Returns the last element of the sequence.
      * @return Returns the last element of the sequence.
@@ -922,8 +919,8 @@ namespace gum {
      * @return The content of the sequence.
      */
     std::string toString() const;
-    
-    /** 
+
+    /**
      * @brief Modifies the size of the internal structures of the sequence.
      *
      * This function is provided for optimization issues. When you know you
@@ -1099,14 +1096,14 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    /** 
+    /**
      * @brief Copy operator.
      * @param aSeq The sequence to copy.
      * @return Returns a ref to this.
      */
     Sequence<Key, Alloc>& operator=( const Sequence<Key, Alloc>& aSeq );
 
-    /** 
+    /**
      * @brief Generalized opy operator.
      * @tparam otheralloc The other gum::sequenceimplementation allocator.
      * @param aSeq The sequence to copy.
@@ -1115,7 +1112,7 @@ namespace gum {
     template <typename OtherAlloc>
     Sequence<Key, Alloc>& operator=( const Sequence<Key, OtherAlloc>& aSeq );
 
-    /** 
+    /**
      * @brief Move operator.
      * @param aSeq The sequence to move.
      * @return Returns a ref to this.
@@ -1127,7 +1124,7 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ============================================================================
     /// @{
-    
+
     /**
      * @brief Difference between two sequences as a Set<Key> = this \ seq.
      *
@@ -1224,11 +1221,10 @@ namespace gum {
     /// @}
 
     private:
-
     /// The Getter used by this iterator.
     using Getter = SequenceIteratorGet<std::is_scalar<Key>::value>;
 
-    
+
     /**
      * @brief Constructor, always give a valid iterator (even if pos too
      * large).
@@ -1252,7 +1248,7 @@ namespace gum {
     // ============================================================================
     ///@{
 
-    
+
     /**
      * @brief Constructor, always give a valid iterator (even if pos too
      * large).
@@ -1308,7 +1304,7 @@ namespace gum {
     SequenceIteratorSafe<Key>&
     operator=( SequenceIteratorSafe<Key>&& source ) noexcept;
 
-    /** 
+    /**
      * @brief Point the iterator to the next value in the sequence.
      *
      * @warning if the iterator already points to end(), it is unaltered.
@@ -1316,7 +1312,7 @@ namespace gum {
      */
     SequenceIteratorSafe<Key>& operator++() noexcept;
 
-    /** 
+    /**
      * @brief Point the iterator to the preceding value in the sequence.
      *
      * @warning If the iterator already points to rend(), it is unaltered.
@@ -1324,8 +1320,8 @@ namespace gum {
      * @return Returns this iterator.
      */
     SequenceIteratorSafe<Key>& operator--() noexcept;
-    
-    /** 
+
+    /**
      * @brief Makes the iterator point to i elements further in the sequence.
      *
      * @warning If moving the iterator nb would make it point outside the
@@ -1336,8 +1332,8 @@ namespace gum {
      * @return Returns this iterator.
      */
     SequenceIteratorSafe<Key>& operator+=( unsigned int nb ) noexcept;
-    
-    /** 
+
+    /**
      * @brief Makes the iterator point to i elements further in the sequence.
      *
      * @warning If moving the iterator nb would make it point outside the
@@ -1349,7 +1345,7 @@ namespace gum {
      */
     SequenceIteratorSafe<Key>& operator-=( unsigned int nb ) noexcept;
 
-    /** 
+    /**
      * @brief Returns a new iterator.
      *
      * @warning The created iterator should point outside the Sequence, then it
@@ -1360,7 +1356,7 @@ namespace gum {
      */
     SequenceIteratorSafe<Key> operator+( unsigned int nb ) noexcept;
 
-    /** 
+    /**
      * @brief Returns a new iterator.
      *
      * @warning The created iterator should point outside the Sequence, then it
@@ -1373,7 +1369,7 @@ namespace gum {
 
     /**
      * @brief Checks whether two iterators are pointing to different elements.
-     * 
+     *
      * @param source The iterator to test for inequality.
      * @return Returns true if both iterators are not equal.
      */
@@ -1381,7 +1377,7 @@ namespace gum {
 
     /**
      * @brief Checks whether two iterators are pointing to the same elements.
-     * 
+     *
      * @param source The iterator to test for equality.
      * @return Returns true if both iterators are equal.
      */
@@ -1408,7 +1404,7 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    /** 
+    /**
      * @brief Returns the position of the iterator in the sequence.
      * @return Returns the position of the iterator in the sequence.
      * @throw UndefinedIteratorValue Raised on end() or rend().
@@ -1447,4 +1443,4 @@ namespace gum {
 // always include the implementation of the templates
 #include <agrum/core/sequence.tcc>
 
-#endif // GUM_SEQUENCE_H
+#endif  // GUM_SEQUENCE_H

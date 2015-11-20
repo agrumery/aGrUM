@@ -141,7 +141,7 @@ namespace gum {
    * Exception : iterator does not point to any valid value
    */
   class UndefinedIteratorValue;
-  
+
 
   /**
    * @class gum::UndefinedIteratorKey agrum/core/exceptions.h
@@ -548,7 +548,7 @@ namespace gum {
     Size col() const { return _noCol; };
     Size line() const { return _noLine; };
   };
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 } /* namespace gum */
 
 #endif /* GUM_EXCEPTIONS_H */

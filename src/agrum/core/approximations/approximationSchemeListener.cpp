@@ -27,7 +27,7 @@
 #include <agrum/core/approximations/approximationSchemeListener.h>
 
 namespace gum {
-  
+
   ApproximationSchemeListener::ApproximationSchemeListener(
       IApproximationSchemeConfiguration& sch )
       : __sch( sch ) {
@@ -60,5 +60,4 @@ namespace gum {
                "No copy constructor for ApproximationSchemeListener" );
   }
 
-} // namespace
-
+}  // namespace

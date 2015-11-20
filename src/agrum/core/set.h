@@ -106,7 +106,6 @@ namespace gum {
   };
 
 
-
   // ===========================================================================
   // ===                               GUM_SET                               ===
   // ===========================================================================
@@ -181,8 +180,8 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    
-    /** 
+
+    /**
      * @brief Default constructor.
      *
      * Sets rely on hashtables to store their items. The optional parameters of
@@ -274,8 +273,8 @@ namespace gum {
      */
     template <typename OtherAlloc>
     bool operator!=( const Set<Key, OtherAlloc>& s2 ) const;
-    
-    /** 
+
+    /**
      * @brief Intersection operator.
      * @tparam OtherAlloc The other gum::Set allocator.
      * @param s2 The gum::Set to intersect.
@@ -285,8 +284,8 @@ namespace gum {
     template <typename OtherAlloc>
     Set<Key, Alloc> operator*( const Set<Key, OtherAlloc>& s2 ) const;
 
-    
-    /** 
+
+    /**
      * @brief Union operator.
      * @tparam OtherAlloc The other gum::Set allocator.
      * @param s2 The gum::Set to union.
@@ -296,8 +295,8 @@ namespace gum {
     template <typename OtherAlloc>
     Set<Key, Alloc> operator+( const Set<Key, OtherAlloc>& s2 ) const;
 
-    
-    /** 
+
+    /**
      * @brief Disjunction operator.
      * @tparam OtherAlloc The other gum::Set allocator.
      * @param s2 The gum::Set to disjunct.
@@ -334,7 +333,7 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    /** 
+    /**
      * @brief Inserts a new element into the set.
      * @param k The new element to insert.
      * @warning if the set already contains the element, nothing is done. In
@@ -342,15 +341,15 @@ namespace gum {
      */
     void insert( const Key& k );
 
-    /** 
+    /**
      * @brief Inserts a new element into the set.
      * @param k The new element to insert.
      * @warning if the set already contains the element, nothing is done.  In
      * particular, it is not added to the set and no exception is thrown.
      */
     void insert( Key&& k );
-    
-    /** 
+
+    /**
      * @brief Emplace a new element in the set.
      *
      * Emplace is a method that allows to construct directly an element of type
@@ -362,8 +361,8 @@ namespace gum {
      */
     template <typename... Args>
     void emplace( Args&&... args );
-    
-    /** 
+
+    /**
      * @brief Erases an element from the set.
      *
      * @param k The element to remove.
@@ -372,7 +371,7 @@ namespace gum {
      */
     void erase( const Key& k );
 
-    /** 
+    /**
      * @brief Erases an element from the set.
      * @param k The iterator pointing to the element to remove.
      * @warning if the set does not contain the element, nothing is done.  In
@@ -499,7 +498,7 @@ namespace gum {
      *
      * So, to summarize: when initializing static members, use end4Statics()
      * rather than end(). In all the other cases, use simply the usual method
-     * end(). 
+     * end().
      *
      * @return Returns the end iterator for other classes' statics (read the
      * detailed description of this method).
@@ -536,7 +535,7 @@ namespace gum {
      *
      * So, to summarize: when initializing static members, use
      * constEnd4Statics() rather than cend(). In all the other cases, use
-     * simply the usual method cend(). 
+     * simply the usual method cend().
      *
      * @return Returns the end iterator for other classes' statics (read the
      * detailed description of this method).
@@ -573,7 +572,7 @@ namespace gum {
      *
      * So, to summarize: when initializing static members, use
      * endSafe4Statics() rather than endSafe (). In all the other cases, use
-     * simply the usual method endSafe (). 
+     * simply the usual method endSafe ().
      *
      * @return Returns the end iterator for other classes' statics (read the
      * detailed description of this method).
@@ -623,7 +622,7 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    /** 
+    /**
      * @brief Returns the capacity of the underlying hash table containing the
      * set.
      *
@@ -634,7 +633,7 @@ namespace gum {
      */
     Size capacity() const;
 
-    /** 
+    /**
      * @brief Changes the size of the underlying hash table containing the set.
      *
      * See gum::HashTable::resize(Size) method resize for more details.
@@ -667,8 +666,8 @@ namespace gum {
     /// @name Mapper
     // ============================================================================
     /// @{
-    
-    /** 
+
+    /**
      * @brief Creates a hashtable of NewKey from the set.
      *
      * @warning The order in the resulting hashtable may not be similar to that
@@ -685,8 +684,8 @@ namespace gum {
         typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
     HashTable<Key, NewKey, NewAlloc> hashMap( NewKey ( *f )( const Key& ),
                                               Size capacity = 0 ) const;
-    
-    /** 
+
+    /**
      * @brief Creates a hash table of NewKey from the set.
      *
      * @warning The order in the resulting hash table may not be similar to
@@ -704,8 +703,8 @@ namespace gum {
         typename NewAlloc = typename Alloc::template rebind<NewKey>::other>
     HashTable<Key, NewKey, NewAlloc> hashMap( const NewKey& val,
                                               Size size = 0 ) const;
-    
-    /** 
+
+    /**
      * @brief A method to create a List of NewKey from the set.
      *
      * @warning The order of the NewKey elements in the resulting list is
@@ -801,7 +800,7 @@ namespace gum {
      */
     SetIteratorSafe();
 
-    /** 
+    /**
      * @brief Creates an iterator for a given set.
      *
      * By default, the iterator points to the beginning of the set, but, using
@@ -899,8 +898,8 @@ namespace gum {
      * @return Returns true if both iterator are equal.
      */
     bool operator==( const SetIteratorSafe<Key>& from ) const noexcept;
-    
-    /** 
+
+    /**
      * @brief Returns the element pointed to by the iterator.
      *
      * @throws UndefinedIteratorValue Raised if the iterator does not point
@@ -910,8 +909,8 @@ namespace gum {
      * @return Returns the element pointed to by the iterator.
      */
     const Key& operator*() const;
-    
-    /** 
+
+    /**
      * @brief Returns a pointer to the element pointed to by the iterator.
      *
      * @throws UndefinedIteratorValue Raised if the iterator does not point
@@ -937,7 +936,6 @@ namespace gum {
     /// @}
 
     private:
-
     /// For efficiency, Set should be able to modify the hash table iterator.
     template <typename K, typename A>
     friend class Set;
@@ -1015,7 +1013,7 @@ namespace gum {
      */
     SetIterator() noexcept;
 
-    /** 
+    /**
      * @brief Creates an iterator for a given set.
      *
      * By default, the iterator points to the beginning of the set, but, using
@@ -1101,7 +1099,7 @@ namespace gum {
      */
     bool operator==( const SetIterator<Key>& from ) const noexcept;
 
-    /** 
+    /**
      * @brief Returns the element pointed to by the iterator.
      *
      * @throws UndefinedIteratorValue Raised if the iterator does not point
@@ -1112,7 +1110,7 @@ namespace gum {
      */
     const Key& operator*() const;
 
-  /** 
+    /**
      * @brief Returns a pointer to the element pointed to by the iterator.
      *
      * @throws UndefinedIteratorValue Raised if the iterator does not point
@@ -1138,7 +1136,6 @@ namespace gum {
     /// @}
 
     private:
-  
     /// For efficiency, Set should be able to modify the hash table iterator.
     template <typename K, typename A>
     friend class Set;

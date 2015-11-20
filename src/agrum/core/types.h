@@ -68,4 +68,3 @@ namespace gum {
 } /* namespace gum */
 
 #endif /* GUM_TYPES_H */
-

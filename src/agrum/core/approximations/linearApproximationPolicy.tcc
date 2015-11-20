@@ -51,7 +51,7 @@ namespace gum {
       const LinearApproximationPolicy<GUM_SCALAR>* md )
       : ApproximationPolicy<GUM_SCALAR>( md )
       , _epsilon( md->_epsilon )
-      , _nbInterval( md->_nbInterval ){}
+      , _nbInterval( md->_nbInterval ) {}
 
 
   // @brief Convert value to his approximation.
@@ -409,4 +409,3 @@ namespace gum {
         ( ( Idx )( this->_highLimit - this->_lowLimit ) / this->_epsilon ) + 1;
   }
 }
-

@@ -79,7 +79,6 @@ namespace gum {
     virtual void whenStop( const void* src, std::string message ) = 0;
 
     protected:
-
     /**
      * Copy constructor.
      */
@@ -95,7 +94,6 @@ namespace gum {
     /// The scheme configuration.
     IApproximationSchemeConfiguration& __sch;
   };
-
 }
 
 #endif  // APPROXIMATIONSCHEMELISTENER_H

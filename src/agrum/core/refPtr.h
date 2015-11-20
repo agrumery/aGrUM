@@ -55,7 +55,7 @@ namespace gum {
   /// @brief Swap the contents of two RefPtr.
   /// @ingroup refptr_group
   template <typename Val>
-  void swap( RefPtr<Val>& ptr1, RefPtr<Val>& ptr2);
+  void swap( RefPtr<Val>& ptr1, RefPtr<Val>& ptr2 );
 
   // ===========================================================================
   // ===                           SMART POINTERS                            ===
@@ -112,7 +112,6 @@ namespace gum {
   template <typename Val>
   class RefPtr {
     public:
- 
     /// The swap function must access to gum::RefPtr private parts.
     friend void swap<>( RefPtr<Val>&, RefPtr<Val>& );
 
@@ -253,7 +252,8 @@ namespace gum {
     RefPtr<Val>& operator=( const RefPtr<DownVal>& from );
 
     /**
-     * @brief Checks whether two RefPtr<Val> are smart pointers for the same element.
+     * @brief Checks whether two RefPtr<Val> are smart pointers for the same
+     * element.
      *
      * "Pointing toward the same element" is a little ambiguous: it does not
      * mean that the smart pointers are pointing toward the same Val instance
@@ -270,7 +270,8 @@ namespace gum {
     bool operator==( const RefPtr<Val>& from ) const;
 
     /**
-     * @brief Checks whether two RefPtr<Val> are smart pointers for different elements.
+     * @brief Checks whether two RefPtr<Val> are smart pointers for different
+     * elements.
      *
      * Returns true if either the dumb pointers the smart pointers encapsulate
      * are different or the reference counters are different (i.e., the smart
@@ -321,7 +322,6 @@ namespace gum {
     /// @name Internals
     // ============================================================================
     private:
- 
     /// A friend to allow downcastings.
     template <typename T>
     friend class RefPtr;

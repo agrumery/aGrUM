@@ -61,11 +61,11 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    
-    /** 
+
+    /**
      * @brief Basic constructor: returns an empty binary search tree.
-     * @param uniqueness_policy Enable (false) or disables (true) multiple instances
-     * of the same value within the tree.
+     * @param uniqueness_policy Enable (false) or disables (true) multiple
+     * instances of the same value within the tree.
      */
     explicit AVLSearchTree( bool uniqueness_policy = false );
 
@@ -110,7 +110,7 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ============================================================================
     /// @{
- 
+
     using BinSearchTree<Val, Cmp, Node>::rootValue;
     using BinSearchTree<Val, Cmp, Node>::minValue;
     using BinSearchTree<Val, Cmp, Node>::maxValue;
@@ -146,7 +146,6 @@ namespace gum {
     const std::string toString() const;
 
     protected:
-
     /**
      * @brief Erase the node passed in argument.
      * @param node The node to be removed.
@@ -168,7 +167,7 @@ namespace gum {
      * method. It is used to speed-up insertions in terminal classes such as
      * AVL trees.
      * @throw DuplicateElement exception is raised if the binary tree already
-     * contains the value and the uniqueness property is set to true 
+     * contains the value and the uniqueness property is set to true
      */
     Node* _insert( const Val& val );
   };
@@ -180,7 +179,8 @@ namespace gum {
    * @return Returns stream.
    */
   template <typename Val, class Cmp>
-  std::ostream& operator<<( std::ostream& stream, const AVLSearchTree<Val, Cmp>& avl);
+  std::ostream& operator<<( std::ostream& stream,
+                            const AVLSearchTree<Val, Cmp>& avl );
 
 } /* namespace gum */
 
@@ -188,4 +188,3 @@ namespace gum {
 #include <agrum/core/AVLSearchTree.tcc>
 
 #endif /* GUM_AVL_SEARCH_TREE_H */
-

@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 /**
- * @file 
- * @brief Unicode helper functions. 
+ * @file
+ * @brief Unicode helper functions.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -31,4 +31,3 @@
 #ifdef GUM_NO_INLINE
 #include <agrum/core/cast_unicode.inl>
 #endif /* GUM_NO_INLINE */
-

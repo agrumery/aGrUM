@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** 
+/**
  * @file
  * @brief Outlined implementation of hash tables.
  *
@@ -101,12 +101,11 @@ namespace gum {
       HashTableIteratorStaticEnd::__HashTableIterEndSafe =
           HashTableIteratorStaticEnd::endSafe4Statics();
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace gum */
 
-//template class gum::HashTable<int, int>;
-//template class gum::HashTable<int, std::string>;
-//template class gum::HashTable<std::string, std::string>;
-//template class gum::HashTable<std::string, int>;
-
+template class gum::HashTable<int, int>;
+template class gum::HashTable<int, std::string>;
+template class gum::HashTable<std::string, std::string>;
+template class gum::HashTable<std::string, int>;

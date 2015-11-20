@@ -54,7 +54,7 @@ namespace gum {
                                    const SplayTree<Element>& s );
 
   // =========================================================================
-  // ===                                   NODE                            === 
+  // ===                                   NODE                            ===
   // =========================================================================
   /**
    * @class SplayBinaryNode splay.h <agrum/core/splay.h>
@@ -73,7 +73,7 @@ namespace gum {
     /// @name Accessors / Modifiers
     // ============================================================================
     /// @{
-    
+
     /**
      * @brief Position of the node.
      * @return The position of the node into the tree.
@@ -130,7 +130,7 @@ namespace gum {
      */
     SplayBinaryNode( const SplayBinaryNode<Element>& from,
                      HashTable<Element, SplayBinaryNode<Element>*>& addr );
-    
+
     /**
      * @brief A function used to perform copies.
      * @param from the src SplayBinaryNode
@@ -155,7 +155,7 @@ namespace gum {
      * @return Returns a pointer to the root of the sub-tree after rotation.
      */
     SplayBinaryNode<Element>* zig();
-    
+
     /**
      * @brief A left rotation, the node must hava a father.
      * @return Returns a pointer to the root of the sub-tree after rotation.
@@ -210,7 +210,7 @@ namespace gum {
   };
 
   // ============================================================================
-  // ===                                SPLAY TREE                            ===
+  // ===                                SPLAY TREE ===
   // ============================================================================
   /**
    * @class SplayTree splay.h <agrum/core/splay.h>
@@ -266,7 +266,7 @@ namespace gum {
      * @brief Basic constructor, make an empty splay tree.
      */
     SplayTree();
-    
+
     /**
      * @brief Basic constructor, make a splay tree with one element.
      * @param e The element of the tree.
@@ -319,7 +319,7 @@ namespace gum {
      */
     const Element& operator[]( const unsigned int i ) const;
 
-    
+
     /**
      * @brief Get the first element.
      * @throw NotFound Raised if the splay tree is empty.
@@ -366,7 +366,7 @@ namespace gum {
      */
     void join( const SplayTree<Element>& s );
 
-    
+
     /**
      * @brief Divide the tree at the position.
      *
@@ -378,7 +378,7 @@ namespace gum {
      */
     SplayTree<Element> split( const int i );
 
-    
+
     /**
      * @brief Divide the tree at the position.
      * @param e the element for split

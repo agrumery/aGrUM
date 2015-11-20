@@ -42,7 +42,7 @@
 
 namespace gum {
 
-  /** 
+  /**
    * @class ApproximationScheme
    * @brief Approximation Scheme.
    * @ingroup approximationscheme_group
@@ -57,7 +57,7 @@ namespace gum {
    * The approximation scheme is assumed to be used like this:
    * @code
    * initApproximationScheme();
-   * 
+   *
    * // this loop can stop with ApproximationSchemeSTATE::Epsilon,
    * // ApproximationSchemeSTATE::Rate and ApproximationSchemeSTATE::Limit
    * do {
@@ -70,7 +70,7 @@ namespace gum {
    *   }
    * } while ( continueApproximationScheme( epsilon ));
    * // end of loop
-   * 
+   *
    * if ( verbosity() ) {
    *   switch ( stateApproximationScheme() ) {
    *     case ApproximationSchemeSTATE::Continue:  // should not be possible
@@ -105,7 +105,6 @@ namespace gum {
    */
   class ApproximationScheme : public IApproximationSchemeConfiguration {
     public:
-
     // ========================================================================
     /// @name Constructors and Destructors
     // ========================================================================
@@ -277,7 +276,7 @@ namespace gum {
      * @brief Returns the period size.
      * @return Returns the period size.
      */
-    Size periodSize( void ) const; 
+    Size periodSize( void ) const;
 
     /**
      * @brief Number of burn in for one iteration.
@@ -323,8 +322,8 @@ namespace gum {
      * @throw OperationNotAllowed Raised if the scheme did not performed or
      * if verbosity is set to false.
      */
-    const std::vector<double>& history() const; 
- 
+    const std::vector<double>& history() const;
+
     /**
      * @brief Initialise the scheme.
      */

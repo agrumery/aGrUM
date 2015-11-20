@@ -844,4 +844,3 @@ namespace gum {
   }
 
 } /* namespace gum */
-

@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /**
- * @file 
- * @brief Unicode helper functions. 
+ * @file
+ * @brief Unicode helper functions.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -51,4 +51,3 @@ std::string narrow( const std::wstring& str );
 #endif
 
 #endif  // CAST_UNICODE_H
-

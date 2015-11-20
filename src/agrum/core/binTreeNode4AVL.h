@@ -32,11 +32,11 @@
 #include <agrum/core/binTreeNode.h>
 
 namespace gum {
-  
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <typename Val, class Cmp>
   class AVLSearchTree;
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
   // ===========================================================================
   // ===                  NODES FOR AVL BINARY SEARCH TREES                  ===
@@ -132,10 +132,10 @@ namespace gum {
      * @brief Destructor.
      *
      * In addition to removing the node, this method updates appropriately
-     * its parent and children 
+     * its parent and children
      */
     ~BinTreeNode4AVL();
- 
+
     /// @}
 
     // ============================================================================
@@ -205,16 +205,16 @@ namespace gum {
      * @return Returns the direction of the edge parent->current node, if any.
      */
     BinTreeDir parentDir() const;
-    
-    /** 
+
+    /**
      * @brief Adds a new left child to the current node.
      * @param v The value added to the new left child.
      * @return Returns a pointer on the new created child.
-     * @throw DuplicateElement Raised if the current node has a left child 
+     * @throw DuplicateElement Raised if the current node has a left child
      * @warning The new child is created on the C++ heap (i.e., using a dynamic
      * memory allocation)
      */
-    BinTreeNode4AVL<Val>* insertLeftChild( const Val& v);
+    BinTreeNode4AVL<Val>* insertLeftChild( const Val& v );
 
     /**
      * @brief Adds a new left child to the current node.
@@ -228,11 +228,11 @@ namespace gum {
      * @brief Adds a new right child to the current node.
      * @param v The value added to the new right child.
      * @return Returns a pointer on the new created child.
-     * @throw DuplicateElement Raised if the current node has a right child 
+     * @throw DuplicateElement Raised if the current node has a right child
      * @warning The new child is created on the C++ heap (i.e., using a dynamic
      * memory allocation)
      */
-    BinTreeNode4AVL<Val>* insertRightChild( const Val& v);
+    BinTreeNode4AVL<Val>* insertRightChild( const Val& v );
 
     /**
      * @brief Adds a new right child to the current node.
@@ -268,7 +268,7 @@ namespace gum {
      * itself nor, a fortiori, the left subtree of the current node.
      *
      * If there is no left child, the method does nothing. In particular, it
-     * does not raise any exception. 
+     * does not raise any exception.
      */
     void eraseLeftLink();
 
@@ -279,7 +279,7 @@ namespace gum {
      * itself nor, a fortiori, the right subtree of the current node.
      *
      * If there is no right child, the method does nothing. In particular, it
-     * does not raise any exception. 
+     * does not raise any exception.
      */
     void eraseRightLink();
 
@@ -317,7 +317,6 @@ namespace gum {
     /// @}
 
     private:
-
     /// The node's height.
     unsigned int __height;
 
@@ -339,7 +338,7 @@ namespace gum {
      * @brief Left rotation.
      *
      * The rotation is performed assuming that the current node is the root
-     * of the tree to be rotated 
+     * of the tree to be rotated
      *
      * @returns Returns the rotated tree.
      */
@@ -364,10 +363,9 @@ namespace gum {
     BinTreeNode4AVL<Val>* __balance();
   };
 
-} // namespace gum
+}  // namespace gum
 
 // always include the template implementations
 #include <agrum/core/binTreeNode4AVL.tcc>
 
-#endif // GUM_BIN_TREE_NODE_4_AVL_H
-
+#endif  // GUM_BIN_TREE_NODE_4_AVL_H

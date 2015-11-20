@@ -82,7 +82,7 @@ namespace gum {
      * @brief Creates a tree with one node with data.
      *
      * The key and data are copied into the tree. If you do not want any copy,
-     * use the constructor with the pointers parameters. 
+     * use the constructor with the pointers parameters.
      *
      * @param theKey The data's key.
      * @param data The data added to the tree.
@@ -168,7 +168,7 @@ namespace gum {
      * @param index The node's index.
      * @return Returns a given node of the tree.
      * @throw NotFound exception is thrown if the node we look for cannot
-     * be found in the tree. 
+     * be found in the tree.
      */
     IndexedTree<Key, Data>& getNode( const std::vector<Key>& index ) const;
 

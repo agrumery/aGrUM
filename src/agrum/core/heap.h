@@ -119,7 +119,6 @@ namespace gum {
             typename Alloc = std::allocator<Val>>
   class Heap {
     public:
-
     /// Types for STL compliance
     /// @{
     using value_type = Val;
@@ -191,7 +190,7 @@ namespace gum {
      * When a problem occurs during the copy (for instance when not enough
      * memory is available), the operator guarantees that the heap stays in a
      * coherent state. Actually, the heap becomes empty. An exception is then
-     * thrown. 
+     * thrown.
      *
      * @param from The gum::Heap to copy.
      */
@@ -217,7 +216,7 @@ namespace gum {
      * When a problem occurs during the copy (for instance when not enough
      * memory is available), the operator guarantees that the heap stays in a
      * coherent state. Actually, the heap becomes empty. An exception is then
-     * thrown. 
+     * thrown.
      *
      * @param from The gum::Heap to move.
      */
@@ -274,7 +273,7 @@ namespace gum {
      * assigning index 0 to the root of the tree and, incrementing the index by
      * 1 each time we jump to another node, we get a unique index for each
      * element. This is precisely what the index passed in argument of the
-     * function represents. 
+     * function represents.
      *
      * @param index The index of the element to remove
      */
@@ -287,7 +286,7 @@ namespace gum {
      * any exception.
      *
      * @param val The element we wish to remove. If the heap contains several
-     * times this element, then the one with the smallest index is removed. 
+     * times this element, then the one with the smallest index is removed.
      */
     void erase( const Val& val );
 
@@ -359,7 +358,7 @@ namespace gum {
      * @brief Changes the size of the the internal structure storing the heap.
      *
      * If the new size does not enable the heap to contain the elements it
-     * currently contains, then the resizing does not occur. 
+     * currently contains, then the resizing does not occur.
      *
      * @param new_size The gum::Heap new size.
      */

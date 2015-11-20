@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 /**
- * @file 
- * @brief Unicode helper functions. 
+ * @file
+ * @brief Unicode helper functions.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */

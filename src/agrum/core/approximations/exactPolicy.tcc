@@ -74,4 +74,3 @@ namespace gum {
       const ApproximationPolicy<GUM_SCALAR>* ap ) {}
 
 }  // namespace gum
-

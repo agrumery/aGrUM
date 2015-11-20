@@ -196,7 +196,7 @@ namespace gum {
      * memory is available), the operator guarantees that the heap stays in a
      * coherent state. Actually, the priority queue becomes empty. An exception
      * is then thrown.
-     * 
+     *
      * @tparam OtherAlloc The other gum::PriorityQueueImplementation allocator.
      * @param from The gum::PriorityQueueImplementation to copy.
      * @return Returns this gum::PriorityQueueImplementation.
@@ -269,7 +269,7 @@ namespace gum {
 
     /**
      * @brief Inserts a new (a copy) element in the priority queue.
-     * 
+     *
      * See gum::PriorityQueueImplementation::eraseByPos(Size) for more details
      * about the index.
      *
@@ -334,7 +334,7 @@ namespace gum {
      * node. Doing so, we get a unique index for each element. This is
      * precisely what the index passed in argument of the function represents.
      *
-     * @param index represents the position of the element to be removed.     
+     * @param index represents the position of the element to be removed.
      */
     void eraseByPos( Size index );
 
@@ -344,11 +344,11 @@ namespace gum {
      *
      * If the element cannot be found, the function returns without throwing
      * any exception.
-     * 
+     *
      * If the queue contains several times this element, then the one with the
      * smallest index is removed.
      *
-     * @param val the element we wish to remove. 
+     * @param val the element we wish to remove.
      */
     void erase( const Val& val );
 
@@ -614,7 +614,7 @@ namespace gum {
      * memory is available), the operator guarantees that the heap stays in a
      * coherent state. Actually, the priority queue becomes empty. An exception
      * is then thrown.
-     * 
+     *
      * @tparam OtherAlloc The other gum::PriorityQueueImplementation allocator.
      * @param from The gum::PriorityQueueImplementation to copy.
      * @return Returns this gum::PriorityQueueImplementation.
@@ -687,7 +687,7 @@ namespace gum {
 
     /**
      * @brief Inserts a new (a copy) element in the priority queue.
-     * 
+     *
      * See gum::PriorityQueueImplementation::eraseByPos(Size) for more details
      * about the index.
      *
@@ -752,7 +752,7 @@ namespace gum {
      * node. Doing so, we get a unique index for each element. This is
      * precisely what the index passed in argument of the function represents.
      *
-     * @param index represents the position of the element to be removed.     
+     * @param index represents the position of the element to be removed.
      */
     void eraseByPos( Size index );
 
@@ -762,11 +762,11 @@ namespace gum {
      *
      * If the element cannot be found, the function returns without throwing
      * any exception.
-     * 
+     *
      * If the queue contains several times this element, then the one with the
      * smallest index is removed.
      *
-     * @param val the element we wish to remove. 
+     * @param val the element we wish to remove.
      */
     void erase( Val val );
 

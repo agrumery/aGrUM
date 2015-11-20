@@ -51,7 +51,7 @@ namespace gum {
   operator<<( std::ostream&,
               const MultiPriorityQueue<Val, Priority, Cmp, Alloc>& );
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
   // ===========================================================================
   // ===                           PRIORITY QUEUES                           ===
@@ -170,7 +170,7 @@ namespace gum {
      * @brief Initializer list constructor.
      *
      * The elements of the initializer list are pairs <Val,Priority>.
-     * The comparison function is the default one, i.e., std::less<Priority>. 
+     * The comparison function is the default one, i.e., std::less<Priority>.
      *
      * @param list The initializer list.
      */
@@ -181,7 +181,8 @@ namespace gum {
      * @brief Copy constructor.
      * @param from The gum::MultiPriorityQueue to copy.
      */
-    MultiPriorityQueue( const MultiPriorityQueue<Val, Priority, Cmp, Alloc>& from);
+    MultiPriorityQueue(
+        const MultiPriorityQueue<Val, Priority, Cmp, Alloc>& from );
 
     /// generalized copy constructor
     /**
@@ -229,7 +230,7 @@ namespace gum {
      * When a problem occurs during the copy (for instance when not enough
      * memory is available), the operator guarantees that the heap stays in a
      * coherent state. Actually, the priority queue becomes empty. An exception
-     * is then thrown. 
+     * is then thrown.
      *
      * @param from The gum::MultiPriorityQueue to copy.
      * @tparam OtherAlloc The other gum::MultiPriorityQueue allocator.
@@ -362,7 +363,7 @@ namespace gum {
      * node. Doing so, we get a unique index for each element. This is
      * precisely what the index passed in argument of the function represents.
      *
-     * @param index represents the position of the element to be removed.     
+     * @param index represents the position of the element to be removed.
      */
     void eraseByPos( Size index );
 
@@ -372,11 +373,11 @@ namespace gum {
      *
      * If the element cannot be found, the function returns without throwing
      * any exception.
-     * 
+     *
      * If the queue contains several times this element, then the one with the
      * smallest index is removed.
      *
-     * @param val the element we wish to remove. 
+     * @param val the element we wish to remove.
      */
     void erase( const Val& val );
 

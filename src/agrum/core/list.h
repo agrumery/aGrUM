@@ -40,9 +40,9 @@
 
 namespace gum {
 
-  // ==============================================================================
-  // templates provided by this header
-  // ==============================================================================
+// ==============================================================================
+// templates provided by this header
+// ==============================================================================
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -59,7 +59,7 @@ namespace gum {
   template <typename Val, typename Alloc>
   class List;
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 #ifndef SWIG  // SWIG cannot read these lines
   /// an << operator for List
@@ -79,7 +79,7 @@ namespace gum {
   // the weird strict-aliasing rule warning
   extern const void* const __list_end_safe;
   extern const void* const __list_end;
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 
   // ===========================================================================
@@ -94,7 +94,7 @@ namespace gum {
    * In aGrUM, each box of a chained list is called a bucket. Lists are doubly
    * linked bucket lists so as to enable efficient rbegin/rend iterators.
    *
-   * @warning Values stored in buckets are ALWAYS COPIES. 
+   * @warning Values stored in buckets are ALWAYS COPIES.
    *
    * @tparam Val The values type stored in the gum::ListBucket.
    */
@@ -227,7 +227,6 @@ namespace gum {
     /// @}
 
     private:
-
     /// All the list containers and iterators should be able to access the
     /// buckets.
     template <typename T, typename A>
@@ -416,7 +415,7 @@ namespace gum {
 
     /**
      * @brief Ceneralized copy constructor.
-     *  
+     *
      * The new list and that which is copied do not share their elements: the
      * new list contains new instances of the values stored in the list to be
      * copied.  Of course if these values are pointers, the new values point
@@ -457,7 +456,7 @@ namespace gum {
      * Safe const iterators are const iterators whose state is updated by the
      * list when the element they point to is erased. As such, in this case,
      * they can throw an exception when we try to derefence them and they are
-     * able to perform a valid ++ or -- step 
+     * able to perform a valid ++ or -- step
      *
      * @brief Returns a safe const iterator pointing to the end of the List.
      */
@@ -640,7 +639,7 @@ namespace gum {
      * erased, their dereference or their increment/decrement will produce a
      * mess, probably a segfault. You should use them only when performance is
      * an issue and if you are sure that they will never point to an element
-     * erased. 
+     * erased.
      *
      * @return Returns an unsafe const iterator pointing just before the
      * beginning of the List.
@@ -679,7 +678,8 @@ namespace gum {
     iterator begin();
 
     /**
-     * @brief Returns an unsafe const iterator pointing to the beginning of the List.
+     * @brief Returns an unsafe const iterator pointing to the beginning of the
+     * List.
      *
      * Unsafe const iterators are a little bit faster than safe const iterators
      * and they consume less memory. However, if the element they point to is
@@ -807,7 +807,7 @@ namespace gum {
      * @param val The value pushed back.
      * @return Returns a reference on the copy inserted into the list.
      * @warning Note that \e val is not actually inserted into the list.
-     * Rather, it is a copy of val that is inserted. 
+     * Rather, it is a copy of val that is inserted.
      */
     Val& pushBack( const Val& val );
 
@@ -821,7 +821,7 @@ namespace gum {
      * @param val The value pushed back.
      * @return Returns a reference on the copy inserted into the list.
      * @warning Note that \e val is not actually inserted into the list.
-     * Rather, it is a copy of val that is inserted. 
+     * Rather, it is a copy of val that is inserted.
      */
     Val& pushBack( Val&& val );
 
@@ -998,7 +998,7 @@ namespace gum {
      * @throw NotFound exception is thrown if the list is empty.
      */
     Val& back() const;
-    
+
     /**
      * @brief Returns the number of elements in the list.
      * This method runs in constant time.
@@ -1016,7 +1016,7 @@ namespace gum {
      * @return Returns true if val is in the gum::List.
      */
     bool exists( const Val& val ) const;
-    
+
     /**
      * @brief Erases the ith element of the List (the first one is in position
      * 0).
@@ -1038,7 +1038,7 @@ namespace gum {
      * @param iter An iterator pointing to the element to remove.
      */
     void erase( const iterator_safe& iter );
-    
+
     /**
      * @brief Erases the element of the List pointed to by the safe const
      * iterator.
@@ -1050,7 +1050,7 @@ namespace gum {
      * @param iter An iterator pointing to the element to remove.
      */
     void erase( const const_iterator_safe& iter );
-    
+
     /**
      * @brief erases the first element encountered with a given value.
      *
@@ -1071,7 +1071,7 @@ namespace gum {
      *
      * Comparisons between Val instances are performed through == operators.
      *
-     * @param val the value of the element we wish to remove. 
+     * @param val the value of the element we wish to remove.
      */
     void eraseAllVal( const Val& val );
 
@@ -1377,7 +1377,7 @@ namespace gum {
     /**
      * Create an emplace bucket.
      * @tparam Args The emplace arguments types.
-     * @param args The emplace arguments. 
+     * @param args The emplace arguments.
      * @return Returns the bucket holding the new value.
      */
     template <typename... Args>
@@ -1619,7 +1619,7 @@ namespace gum {
      * @code
      * for (iter = list.begin(); iter != list.end(); ++iter) { }
      * @endcode
-     * 
+     *
      * The above loop is guaranteed to parse the whole List as long as no
      * element is added to or deleted from the List while being in the loop.
      * Runs in constant time.
@@ -1638,7 +1638,7 @@ namespace gum {
     /**
      * @brief Makes the iterator point to the preceding element in the List.
      *
-     * @code 
+     * @code
      * for (iter = list.rbegin(); iter != list.rend(); --iter) { }
      * @endcode
      *
@@ -1678,7 +1678,7 @@ namespace gum {
      * @brief Checks whether two iterators point toward different elements.
      *
      * @warning the end and rend iterators are always equal, whatever the list
-     * they belong to, i.e., \c list1.end() == \c list2.rend(). 
+     * they belong to, i.e., \c list1.end() == \c list2.rend().
      *
      * @param src The gum::ListConstIterator to test for inequality.
      * @return Returns true if src and this are equal.
@@ -2142,7 +2142,7 @@ namespace gum {
      * @code
      * for (iter = list.begin(); iter != list.end(); ++iter) { }
      * @endcode
-     * 
+     *
      * The above loop is guaranteed to parse the whole List as long as no
      * element is added to or deleted from the List while being in the loop.
      * Runs in constant time.
@@ -2161,7 +2161,7 @@ namespace gum {
     /**
      * @brief Makes the iterator point to the preceding element in the List.
      *
-     * @code 
+     * @code
      * for (iter = list.rbegin(); iter != list.rend(); --iter) { }
      * @endcode
      *
@@ -2201,7 +2201,7 @@ namespace gum {
      * @brief Checks whether two iterators point toward different elements.
      *
      * @warning the end and rend iterators are always equal, whatever the list
-     * they belong to, i.e., \c list1.end() == \c list2.rend(). 
+     * they belong to, i.e., \c list1.end() == \c list2.rend().
      *
      * @param src The gum::ListConstIteratorSafe to test for inequality.
      * @return Returns true if src and this are equal.
@@ -2236,7 +2236,6 @@ namespace gum {
     /// @}
 
     private:
-
     /// class List must be a friend because it uses the getBucket method to
     /// speed up some processes.
     /// @{
@@ -2418,8 +2417,7 @@ namespace gum {
      * @param src The gum::ListIteratorSafe to copy.
      * @return Returns this gum::ListIteratorSafe.
      */
-    ListIteratorSafe<Val>&
-    operator=( const ListIteratorSafe<Val>& src );
+    ListIteratorSafe<Val>& operator=( const ListIteratorSafe<Val>& src );
 
     /**
      * @brief Move operator.
@@ -2435,7 +2433,7 @@ namespace gum {
      * @code
      * for (iter = list.begin(); iter != list.end(); ++iter) { }
      * @endcode
-     * 
+     *
      * The above loop is guaranteed to parse the whole List as long as no
      * element is added to or deleted from the List while being in the loop.
      * Runs in constant time.
@@ -2454,7 +2452,7 @@ namespace gum {
     /**
      * @brief Makes the iterator point to the preceding element in the List.
      *
-     * @code 
+     * @code
      * for (iter = list.rbegin(); iter != list.rend(); --iter) { }
      * @endcode
      *

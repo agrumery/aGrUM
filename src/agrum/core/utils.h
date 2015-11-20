@@ -99,15 +99,15 @@ namespace gum {
    * @param T2 The expected type.
    */
   template <typename T1, typename T2>
-    using forbidden_type =
-    typename std::enable_if<!std::is_same<T1, T2>::value, int>::type;
+  using forbidden_type =
+      typename std::enable_if<!std::is_same<T1, T2>::value, int>::type;
 
   /**
    * @brief Implements a stream with the same behaviour as /dev/null.
    */
   struct NullStream : std::ostream {
     NullStream()
-      : std::ios( 0 )
+        : std::ios( 0 )
         , std::ostream( 0 ) {}
   };
 
@@ -131,20 +131,20 @@ namespace gum {
    * @tparam T The type of the elements to compare.
    */
   template <typename T>
-    struct AlmostDifferent {
-      bool operator()( const T& t1, const T& t2 ) {
-        return ( ( t1 > t2 + (T)0.000001 ) || ( t2 > t1 + (T)0.000001 ) );
-      }
-    };
+  struct AlmostDifferent {
+    bool operator()( const T& t1, const T& t2 ) {
+      return ( ( t1 > t2 + (T)0.000001 ) || ( t2 > t1 + (T)0.000001 ) );
+    }
+  };
 
   /**
    * @brief Indicate whether two elements are (almost) different or not.
    * @tparam T The type of the elements to compare.
    */
   template <typename T>
-    struct AlmostDifferent<T*> {
-      bool operator()( const T* t1, const T* t2 ) { return ( t1 != t2 ); }
-    };
+  struct AlmostDifferent<T*> {
+    bool operator()( const T* t1, const T* t2 ) { return ( t1 != t2 ); }
+  };
 
   /// @}
 

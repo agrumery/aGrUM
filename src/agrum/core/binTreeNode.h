@@ -115,7 +115,7 @@ namespace gum {
      * value as "from".
      *
      * @warning Although the new node contains the same value as from, it has
-     * no parent, nor any children, even if from has some. 
+     * no parent, nor any children, even if from has some.
      *
      * @param from The node to copy.
      */
@@ -205,9 +205,9 @@ namespace gum {
      * dynamic memory allocation)
      * @param val The value to store in the new child.
      * @return a pointer on the new created child
-     * @throw DuplicateElement if the current node had already a left child 
+     * @throw DuplicateElement if the current node had already a left child
      */
-    BinTreeNode<Val>* insertLeftChild( const Val& val);
+    BinTreeNode<Val>* insertLeftChild( const Val& val );
 
     /**
      * @brief Adds a new left child to the current node.
@@ -223,9 +223,9 @@ namespace gum {
      * dynamic memory allocation)
      * @param val The value to store in the new child.
      * @return a pointer on the new created child
-     * @throw DuplicateElement if the current node had already a left child 
+     * @throw DuplicateElement if the current node had already a left child
      */
-    BinTreeNode<Val>* insertRightChild( const Val& val);
+    BinTreeNode<Val>* insertRightChild( const Val& val );
 
     /**
      * @brief Adds a new right child to the current node.
@@ -260,7 +260,7 @@ namespace gum {
      * Note that only the link is removed, i.e., the left child is not removed
      * itself nor, a fortiori, the left subtree of the current node. If there
      * is no left child, the method does nothing. In particular, it does not
-     * raise any exception. 
+     * raise any exception.
      */
     void eraseLeftLink();
 
@@ -270,7 +270,7 @@ namespace gum {
      * Note that only the link is removed, i.e., the right child is not removed
      * itself nor, a fortiori, the right subtree of the current node. If there
      * is no right child, the method does nothing. In particular, it does not
-     * raise any exception. 
+     * raise any exception.
      */
     void eraseRightLink();
 
@@ -279,7 +279,7 @@ namespace gum {
      *
      * Note that only the link is removed, i.e., the child is not removed
      * itself nor, a fortiori, its subtree. If the child does not exist, the
-     * method does nothing. In particular, it does not raise any exception. 
+     * method does nothing. In particular, it does not raise any exception.
      *
      * @param tree_dir The direction where to remove the link.
      */
@@ -333,5 +333,4 @@ namespace gum {
 // always include the implementation of the templates
 #include <agrum/core/binTreeNode.tcc>
 
-#endif // GUM_BIN_TREE_NODE_H
-
+#endif  // GUM_BIN_TREE_NODE_H

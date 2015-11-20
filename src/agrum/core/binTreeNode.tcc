@@ -286,6 +286,6 @@ namespace gum {
     return node;
   }
 
-} // namespace gum 
+}  // namespace gum
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
