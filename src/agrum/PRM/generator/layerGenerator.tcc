@@ -96,7 +96,6 @@ namespace gum {
         PRMFactory<GUM_SCALAR>& f,
         const std::string& type,
         std::vector<LayerGenerator<GUM_SCALAR>::MyData>& l ) {
-      const Set<NodeId>* parents = 0;
       Size size = 0;
       GUM_SCALAR sum = 0.0;
       Set<std::string> i;

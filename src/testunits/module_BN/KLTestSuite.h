@@ -191,8 +191,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( kl.errorPQ(), (gum::Size)0 );
       TS_ASSERT_EQUALS( kl.errorQP(), (gum::Size)0 );
       TS_ASSERT_DELTA( kl.hellinger(), 0.321089688, 1e-1 );
-      TS_ASSERT( abs( kl.history().size() -
-                      ( kl.nbrIterations() - kl.burnIn() ) / kl.periodSize() ) <
+      TS_ASSERT( kl.history().size() -
+                 ( kl.nbrIterations() - kl.burnIn() ) / kl.periodSize() <
                  2 );
       // GUM_TRACE_VAR( kl.history() );
     }
