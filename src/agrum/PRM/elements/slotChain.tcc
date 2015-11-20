@@ -50,9 +50,10 @@ namespace gum {
              ClassElement<GUM_SCALAR>::prm_refslot ) {
           GUM_ERROR( WrongClassElement, "illegal ClassElement in chain" );
         } else {
-          __isMultiple = __isMultiple or
-                         static_cast<ReferenceSlot<GUM_SCALAR>*>(
-                             __chain->atPos( i ) )->isArray();
+          __isMultiple =
+              __isMultiple or
+              static_cast<ReferenceSlot<GUM_SCALAR>*>( __chain->atPos( i ) )
+                  ->isArray();
         }
       }
 
@@ -182,14 +183,16 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE ClassElementContainer<GUM_SCALAR>& SlotChain<GUM_SCALAR>::end() {
       return static_cast<ReferenceSlot<GUM_SCALAR>*>(
-                 __chain->atPos( __chain->size() - 2 ) )->slotType();
+                 __chain->atPos( __chain->size() - 2 ) )
+          ->slotType();
     }
 
     template <typename GUM_SCALAR>
     INLINE const ClassElementContainer<GUM_SCALAR>&
     SlotChain<GUM_SCALAR>::end() const {
       return static_cast<ReferenceSlot<GUM_SCALAR>*>(
-                 __chain->atPos( __chain->size() - 2 ) )->slotType();
+                 __chain->atPos( __chain->size() - 2 ) )
+          ->slotType();
     }
 
     template <typename GUM_SCALAR>

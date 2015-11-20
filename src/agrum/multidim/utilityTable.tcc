@@ -157,11 +157,10 @@ namespace gum {
         const Sequence<const DiscreteVariable*>& varSeq =
             ( *iter )->variablesSequence();
 
-        for (
-            typename Sequence<const DiscreteVariable*>::iterator_safe varIter =
-                varSeq.beginSafe();
-            varIter != varSeq.endSafe();
-            ++varIter ) {
+        for ( typename Sequence<const DiscreteVariable*>::iterator_safe
+                  varIter = varSeq.beginSafe();
+              varIter != varSeq.endSafe();
+              ++varIter ) {
           try {
             partialInst.add( **varIter );
           } catch ( DuplicateElement& ) {

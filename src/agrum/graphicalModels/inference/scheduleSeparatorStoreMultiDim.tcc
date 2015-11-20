@@ -80,8 +80,8 @@ namespace gum {
   /// copy operator
   template <typename GUM_SCALAR>
   ScheduleSeparatorStoreMultiDim<GUM_SCALAR>&
-      ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::
-      operator=( const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>& from ) {
+  ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::
+  operator=( const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>& from ) {
     // avoid self assignment
     if ( &from != this ) {
       ScheduleOperation<GUM_SCALAR>::operator=( from );

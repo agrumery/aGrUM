@@ -273,8 +273,7 @@ namespace gum {
     stream << "list of nodes:" << std::endl;
 
     for ( const auto node : nodes() ) {
-      stream << " -- node: " << node << std::endl
-             << "    clique:";
+      stream << " -- node: " << node << std::endl << "    clique:";
 
       for ( const auto cliq : clique( node ) )
         stream << "  " << cliq;
@@ -341,7 +340,8 @@ namespace gum {
                                         clique( edge.second() ) )
           << "\" [label=\"" << expandCliqueContent( separator( edge ) ) << "\""
           << ",shape=box,fillcolor=\"palegreen\",style=\"filled\",fontsize=8,"
-             "width=0,height=0];" << std::endl;
+             "width=0,height=0];"
+          << std::endl;
     }
 
     stream << std::endl;

@@ -68,8 +68,7 @@ namespace gum {
     for ( const auto& arc : arcs() )
       strBuff << tab << arc.tail() << " -> " << arc.head() << ";" << std::endl;
 
-    strBuff << "}" << std::endl
-            << std::endl;
+    strBuff << "}" << std::endl << std::endl;
     return strBuff.str();
   }
 

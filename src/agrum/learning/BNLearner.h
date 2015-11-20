@@ -81,8 +81,8 @@ namespace gum {
        * default), then the modalities specified by the user will be considered
        * as being exactly those of the variables of the BN (as a consequence,
        * if we find other values in the database, an exception will be raised
-       * during learning). 
-       * 
+       * during learning).
+       *
        * @param filename The file to learn from.
        * @param modalities indicate for some nodes (not necessarily all the
        * nodes of the BN) which modalities they should have and in which order
@@ -145,7 +145,7 @@ namespace gum {
       learnParameters( const DAG& dag, bool take_into_account_score = true );
 
       /// learns a BN (its parameters) when its structure is known
-      /** 
+      /**
        * @param bn the structure of the Bayesian network
        * @param take_into_account_score The dag passed in argument may have
        * been learnt from a structure learning. In this case, if the score used

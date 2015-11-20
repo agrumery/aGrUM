@@ -89,8 +89,8 @@ namespace gum {
     /// copy operator
     template <typename Translator>
     DBRowTranslatorSetDynamic<Translator>&
-        DBRowTranslatorSetDynamic<Translator>::
-        operator=( const DBRowTranslatorSetDynamic<Translator>& from ) {
+    DBRowTranslatorSetDynamic<Translator>::
+    operator=( const DBRowTranslatorSetDynamic<Translator>& from ) {
       if ( this != &from ) {
         clear();
 
@@ -111,8 +111,8 @@ namespace gum {
     /// move operator
     template <typename Translator>
     DBRowTranslatorSetDynamic<Translator>&
-        DBRowTranslatorSetDynamic<Translator>::
-        operator=( DBRowTranslatorSetDynamic<Translator>&& from ) {
+    DBRowTranslatorSetDynamic<Translator>::
+    operator=( DBRowTranslatorSetDynamic<Translator>&& from ) {
       if ( this != &from ) {
         clear();
 

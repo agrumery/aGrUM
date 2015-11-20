@@ -87,11 +87,12 @@ namespace gum {
        * @param max_range The maximal range.
        */
       template <typename RowFilter>
-      Score( const RowFilter& filter,
-             const std::vector<unsigned int>& var_modalities,
-             Apriori<IdSetAlloc, CountAlloc>& apriori,
-             unsigned long min_range = 0,
-             unsigned long max_range = std::numeric_limits<unsigned int>::max () );
+      Score(
+          const RowFilter& filter,
+          const std::vector<unsigned int>& var_modalities,
+          Apriori<IdSetAlloc, CountAlloc>& apriori,
+          unsigned long min_range = 0,
+          unsigned long max_range = std::numeric_limits<unsigned int>::max() );
 
       /// virtual copy factory
       virtual Score<IdSetAlloc, CountAlloc>* copyFactory() const = 0;
@@ -194,7 +195,7 @@ namespace gum {
        * account during learning
        * @param max_range the number of the record after the last one taken
        * into account*/
-      void setRange ( unsigned long min_range, unsigned long max_range );
+      void setRange( unsigned long min_range, unsigned long max_range );
 
       /// @}
 

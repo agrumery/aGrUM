@@ -315,10 +315,10 @@ namespace gum {
   /// the hash function for pairs (idSet,unsigned int)
   template <typename Alloc>
   Size
-      HashFunc<std::tuple<learning::IdSet<Alloc>, unsigned int, unsigned int>>::
-      operator()(
-          const std::tuple<learning::IdSet<Alloc>, unsigned int, unsigned int>&
-              key ) const {
+  HashFunc<std::tuple<learning::IdSet<Alloc>, unsigned int, unsigned int>>::
+  operator()(
+      const std::tuple<learning::IdSet<Alloc>, unsigned int, unsigned int>&
+          key ) const {
     Size h = 0;
     size_t i;
     const std::vector<unsigned int, Alloc>& vect = std::get<0>( key ).ids();

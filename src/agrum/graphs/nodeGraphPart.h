@@ -73,7 +73,7 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /** 
+    /**
      * @brief Default constructor.
      */
     NodeGraphPartIterator( const NodeGraphPart& nodes ) noexcept;

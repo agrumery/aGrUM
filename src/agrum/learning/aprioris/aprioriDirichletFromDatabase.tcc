@@ -89,14 +89,15 @@ namespace gum {
                  operator[]( i ) != nullptr ) {
               Counter<IdSetAlloc, CountAlloc>::addNodeSet(
                   Apriori<IdSetAlloc, CountAlloc>::_target_nodesets->operator[](
-                                                                         i )
+                                                                       i )
                       ->first.back(),
                   Apriori<IdSetAlloc, CountAlloc>::_conditioning_nodesets->
-                  operator[]( i )->first );
+                  operator[]( i )
+                      ->first );
             } else {
               Counter<IdSetAlloc, CountAlloc>::addNodeSet(
                   Apriori<IdSetAlloc, CountAlloc>::_target_nodesets->operator[](
-                                                                         i )
+                                                                       i )
                       ->first.back() );
             }
           } else {

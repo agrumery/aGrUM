@@ -899,8 +899,8 @@ namespace gum {
       for ( const auto node : c.dag().nodes() ) {
         switch ( c.get( node ).elt_type() ) {
           case ClassElement<GUM_SCALAR>::prm_attribute: {
-            pool.insert( &( const_cast<Potential<GUM_SCALAR>&>(
-                c.get( node ).cpf() ) ) );
+            pool.insert( &(
+                const_cast<Potential<GUM_SCALAR>&>( c.get( node ).cpf() ) ) );
             // break omited : We want to execute the next block
             // for attributes
           }

@@ -43,8 +43,9 @@ namespace gum {
     PartialInstantiationSet* theset;
 
     if ( !__set.exists( instantiation_func_name ) ) {
-      theset = __set.insert( instantiation_func_name,
-                             new PartialInstantiationSet ).second;
+      theset =
+          __set.insert( instantiation_func_name, new PartialInstantiationSet )
+              .second;
 #ifndef NDEBUG
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the

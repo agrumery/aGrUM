@@ -29,7 +29,8 @@
  * variables X and Y and, possibly a conditioning set of variables Z. The test
  * usually relies on an equation involving quantities @#XYZ, @#XZ, @#YZ and @#Z,
  * where "@#" refer to observation counts or frequencies. For instance, the Chi2
- * independence test uses the following formula: (@#XYZ - (@#XZ * @#YZ) / @#Z )^2 /
+ * independence test uses the following formula: (@#XYZ - (@#XZ * @#YZ) / @#Z
+ * )^2 /
  * ( (@#XZ * @#YZ) / @#Z ). An asymmetric score, like BIC for instance, involves
  * only one variable X and a conditioning set Z. Basically, this score will
  * involve only @#XZ and @#Z.  As such, the current class offers different
@@ -119,10 +120,11 @@ namespace gum {
        * @param max_range The maximal range
        */
       template <typename RowFilter>
-      Counter( const RowFilter& filter,
-               const std::vector<unsigned int>& var_modalities,
-               unsigned long min_range = 0,
-               unsigned long max_range = std::numeric_limits<unsigned int>::max () );
+      Counter(
+          const RowFilter& filter,
+          const std::vector<unsigned int>& var_modalities,
+          unsigned long min_range = 0,
+          unsigned long max_range = std::numeric_limits<unsigned int>::max() );
       /// copy constructor
       Counter( const Counter<IdSetAlloc, CountAlloc>& );
 
@@ -342,7 +344,7 @@ namespace gum {
        * account during learning
        * @param max_range the number of the record after the last one taken
        * into account*/
-      void setRange ( unsigned long min_range, unsigned long max_range );
+      void setRange( unsigned long min_range, unsigned long max_range );
 
       /// @}
 
@@ -368,7 +370,6 @@ namespace gum {
       /// counter
       std::vector<std::pair<std::vector<unsigned int, IdSetAlloc>,
                             unsigned int>*> _conditioning_nodesets;
-
 
 
       /// perform the computation of the countings

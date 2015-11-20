@@ -1105,7 +1105,8 @@ namespace gum {
             } else if ( full_name != ns_name ) {
               GUM_ERROR( DuplicateElement,
                          "Type name '"
-                             << name << "' is ambiguous: specify full name." );
+                             << name
+                             << "' is ambiguous: specify full name." );
             }
           }
         }
@@ -1158,7 +1159,8 @@ namespace gum {
             } else if ( full_name != ns_name ) {
               GUM_ERROR( DuplicateElement,
                          "Class name '"
-                             << name << "' is ambiguous: specify full name." );
+                             << name
+                             << "' is ambiguous: specify full name." );
             }
           }
         }
@@ -1194,7 +1196,8 @@ namespace gum {
         } else if ( full_name != prefixed ) {
           GUM_ERROR( DuplicateElement,
                      "Interface name '"
-                         << name << "' is ambiguous: specify full name." );
+                         << name
+                         << "' is ambiguous: specify full name." );
         }
       }
 
@@ -1213,7 +1216,8 @@ namespace gum {
             } else if ( full_name != ns_name ) {
               GUM_ERROR( DuplicateElement,
                          "Interface name '"
-                             << name << "' is ambiguous: specify full name." );
+                             << name
+                             << "' is ambiguous: specify full name." );
             }
           }
         }
@@ -1234,9 +1238,9 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE PRMFactory<GUM_SCALAR>::PRMFactory(PRM<GUM_SCALAR>* prm):
-      IPRMFactory(), __prm(prm) 
-    {
+    INLINE PRMFactory<GUM_SCALAR>::PRMFactory( PRM<GUM_SCALAR>* prm )
+        : IPRMFactory()
+        , __prm( prm ) {
       GUM_CONSTRUCTOR( PRMFactory );
     }
 

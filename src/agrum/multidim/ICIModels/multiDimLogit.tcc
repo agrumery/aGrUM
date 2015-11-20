@@ -101,8 +101,8 @@ namespace gum {
         if ( c > 0 ) s << "+";
 
         s << this->causalWeight(
-                 MultiDimImplementation<GUM_SCALAR>::variable( i ) ) << "*"
-          << MultiDimImplementation<GUM_SCALAR>::variable( i );
+                 MultiDimImplementation<GUM_SCALAR>::variable( i ) )
+          << "*" << MultiDimImplementation<GUM_SCALAR>::variable( i );
       }
     }
 

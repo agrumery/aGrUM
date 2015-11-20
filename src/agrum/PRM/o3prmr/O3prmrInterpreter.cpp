@@ -248,8 +248,7 @@ namespace gum {
        * */
       bool O3prmrInterpreter::interpret( O3prmrContext<double>* c ) {
         if ( isVerboseMode() )
-          m_log << "## Start interpretation." << std::endl
-                << std::flush;
+          m_log << "## Start interpretation." << std::endl << std::flush;
 
         // Don't parse if any syntax errors.
         if ( errors() > 0 ) return false;
@@ -303,8 +302,7 @@ namespace gum {
           }
 
         if ( isVerboseMode() )
-          m_log << "## End interpretation." << std::endl
-                << std::flush;
+          m_log << "## End interpretation." << std::endl << std::flush;
 
         return errors() == 0;
       }
@@ -567,8 +565,7 @@ namespace gum {
           import_name += ".o3prm";
 
           if ( m_verbose ) {
-            m_log << import_name << "' ... " << std::endl
-                  << std::flush;
+            m_log << import_name << "' ... " << std::endl << std::flush;
           }
 
           std::ifstream file_test;
@@ -594,15 +591,13 @@ namespace gum {
 
               if ( file_test.is_open() ) {
                 if ( m_verbose ) {
-                  m_log << "found !" << std::endl
-                        << std::flush;
+                  m_log << "found !" << std::endl << std::flush;
                 }
 
                 file_test.close();
                 found = true;
               } else if ( m_verbose ) {
-                m_log << "not found." << std::endl
-                      << std::flush;
+                m_log << "not found." << std::endl << std::flush;
               }
             }
           }
@@ -643,15 +638,13 @@ namespace gum {
 
             if ( file_test.is_open() ) {
               if ( m_verbose ) {
-                m_log << "found !" << std::endl
-                      << std::flush;
+                m_log << "found !" << std::endl << std::flush;
               }
 
               file_test.close();
               found = true;
             } else if ( m_verbose ) {
-              m_log << "not found." << std::endl
-                    << std::flush;
+              m_log << "not found." << std::endl << std::flush;
             }
           }
 
@@ -668,16 +661,14 @@ namespace gum {
 
             if ( file_test.is_open() ) {
               if ( m_verbose ) {
-                m_log << " found !" << std::endl
-                      << std::flush;
+                m_log << " found !" << std::endl << std::flush;
               }
 
               file_test.close();
               found = true;
               break;
             } else if ( m_verbose ) {
-              m_log << " not found." << std::endl
-                    << std::flush;
+              m_log << " not found." << std::endl << std::flush;
             }
           }
 

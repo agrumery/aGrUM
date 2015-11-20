@@ -102,7 +102,7 @@ namespace gum {
        * @param v A vector describing each layer.
        */
       void setLayers( const std::vector<
-          typename LayerGenerator<GUM_SCALAR>::LayerData>& v );
+                      typename LayerGenerator<GUM_SCALAR>::LayerData>& v );
 
       std::vector<typename LayerGenerator<GUM_SCALAR>::LayerData>& getLayer();
       const std::vector<typename LayerGenerator<GUM_SCALAR>::LayerData>&

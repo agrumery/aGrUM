@@ -79,7 +79,7 @@ namespace gum_tests {
       randomInitP( t2 );
       randomInitP( t3 );
 
-      gum::Potential<float>* t4, *t5, *t6;
+      gum::Potential<float> *t4, *t5, *t6;
       t4 = new gum::Potential<float>( t1 + t2 );
       t5 = new gum::Potential<float>( t3 + *t4 );
 

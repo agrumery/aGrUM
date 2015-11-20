@@ -209,7 +209,7 @@ namespace gum {
     MultiDimImplementation<GUM_SCALAR>::erase( v );
 
     if ( ( not MultiDimImplementation<
-               GUM_SCALAR>::_isInMultipleChangeMethod() ) and
+             GUM_SCALAR>::_isInMultipleChangeMethod() ) and
          ( this->domainSize() <= __bufferSize ) ) {
       if ( __bucket ) {
         __bucket->erase( v );
@@ -553,8 +553,7 @@ namespace gum {
 
       return sum;
     } catch ( NotFound& e ) {
-      std::cerr << std::endl
-                << e.errorContent() << std::endl;
+      std::cerr << std::endl << e.errorContent() << std::endl;
       // This happens if the bucket is empty.
       GUM_ERROR( SizeError, "This MultiDimBucket is empty." );
     }

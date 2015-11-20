@@ -43,7 +43,7 @@ namespace gum_tests {
 
   class DefaultTriangulationTestSuite : public CxxTest::TestSuite {
     public:
-    gum::LabelizedVariable* var1, *var2, *var3, *var4, *var5;
+    gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
 
     void setUp() {
       var1 = new gum::LabelizedVariable( "var1", "1" );

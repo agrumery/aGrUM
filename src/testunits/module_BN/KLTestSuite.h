@@ -192,7 +192,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( kl.errorQP(), (gum::Size)0 );
       TS_ASSERT_DELTA( kl.hellinger(), 0.321089688, 1e-1 );
       TS_ASSERT( kl.history().size() -
-                 ( kl.nbrIterations() - kl.burnIn() ) / kl.periodSize() <
+                     ( kl.nbrIterations() - kl.burnIn() ) / kl.periodSize() <
                  2 );
       // GUM_TRACE_VAR( kl.history() );
     }

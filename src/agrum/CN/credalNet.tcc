@@ -27,8 +27,10 @@ namespace gum {
 
       if ( a != b || a != c /*|| b != c*/ )
         GUM_ERROR( OperationNotAllowed,
-                   "addNode : not the same id over all networks : "
-                       << a << ", " << b << ", " << c );
+                   "addNode : not the same id over all networks : " << a << ", "
+                                                                    << b
+                                                                    << ", "
+                                                                    << c );
 
       return a;
     }
@@ -53,22 +55,32 @@ namespace gum {
       if ( cpt.size() != entry_size )
         GUM_ERROR( SizeError,
                    "setCPTs : entry sizes of cpts does not match for node id : "
-                       << id << " : " << cpt.size() << " != " << entry_size );
+                       << id
+                       << " : "
+                       << cpt.size()
+                       << " != "
+                       << entry_size );
 
       for ( const auto& cset : cpt ) {
         if ( cset.size() == 0 )
           GUM_ERROR(
               SizeError,
               "setCPTs : vertices in credal set does not match for node id : "
-                  << id << " with 0 vertices" );
+                  << id
+                  << " with 0 vertices" );
 
         for ( const auto& vertex : cset ) {
           if ( vertex.size() != var_dSize )
             GUM_ERROR( SizeError,
                        "setCPTs : variable modalities in cpts does "
                        "not match for node id : "
-                           << id << " with vertex " << vertex << " : "
-                           << vertex.size() << " != " << var_dSize );
+                           << id
+                           << " with vertex "
+                           << vertex
+                           << " : "
+                           << vertex.size()
+                           << " != "
+                           << var_dSize );
 
           GUM_SCALAR sum = 0;
 
@@ -80,7 +92,9 @@ namespace gum {
             GUM_ERROR( CPTNoSumTo1,
                        "setCPTs : a vertex coordinates does not "
                        "sum to one for node id : "
-                           << id << " with vertex " << vertex );
+                           << id
+                           << " with vertex "
+                           << vertex );
         }
       }
 
@@ -101,7 +115,9 @@ namespace gum {
         GUM_ERROR( SizeError,
                    "setCPT : entry is greater or equal than entry size "
                    "(entries start at 0 up to entry_size - 1) : "
-                       << entry << " >= " << entry_size );
+                       << entry
+                       << " >= "
+                       << entry_size );
 
       if ( cpt.size() == 0 )
         GUM_ERROR( SizeError,
@@ -112,9 +128,15 @@ namespace gum {
           GUM_ERROR( SizeError,
                      "setCPT : variable modalities in cpts does not "
                      "match for node id : "
-                         << id << " with vertex " << vertex << " at entry "
-                         << entry << " : " << vertex.size()
-                         << " != " << var_dSize );
+                         << id
+                         << " with vertex "
+                         << vertex
+                         << " at entry "
+                         << entry
+                         << " : "
+                         << vertex.size()
+                         << " != "
+                         << var_dSize );
 
         GUM_SCALAR sum = 0;
 
@@ -126,7 +148,11 @@ namespace gum {
           GUM_ERROR(
               CPTNoSumTo1,
               "setCPT : a vertex coordinates does not sum to one for node id : "
-                  << id << " at entry " << entry << " with vertex " << vertex );
+                  << id
+                  << " at entry "
+                  << entry
+                  << " with vertex "
+                  << vertex );
       }
 
       // !! auto does NOT use adress (if available) unless explicitly asked !!
@@ -135,9 +161,11 @@ namespace gum {
 
       if ( node_cpt[entry].size() != 0 )
         GUM_ERROR( DuplicateElement,
-                   "setCPT : vertices of entry id "
-                       << entry << " already set to : " << node_cpt[entry]
-                       << ", cannot insert : " << cpt );
+                   "setCPT : vertices of entry id " << entry
+                                                    << " already set to : "
+                                                    << node_cpt[entry]
+                                                    << ", cannot insert : "
+                                                    << cpt );
 
       node_cpt[entry] = cpt;
 
@@ -175,9 +203,12 @@ namespace gum {
           GUM_ERROR(
               OperationNotAllowed,
               "setCPT : instantiation : "
-                  << ins << " is not valid for node id " << id
+                  << ins
+                  << " is not valid for node id "
+                  << id
                   << " which accepts instantiations such as (order is not "
-                     "important) : " << ref );
+                     "important) : "
+                  << ref );
       }
 
       unsigned long int entry = 0, jump = 1;
@@ -194,7 +225,9 @@ namespace gum {
         GUM_ERROR( SizeError,
                    "setCPT : entry is greater or equal than entry size "
                    "(entries start at 0 up to entry_size - 1) : "
-                       << entry << " >= " << entry_size );
+                       << entry
+                       << " >= "
+                       << entry_size );
 
       if ( cpt.size() == 0 )
         GUM_ERROR( SizeError,
@@ -205,9 +238,15 @@ namespace gum {
           GUM_ERROR( SizeError,
                      "setCPT : variable modalities in cpts does not "
                      "match for node id : "
-                         << id << " with vertex " << vertex << " at entry "
-                         << entry << " : " << vertex.size()
-                         << " != " << var_dSize );
+                         << id
+                         << " with vertex "
+                         << vertex
+                         << " at entry "
+                         << entry
+                         << " : "
+                         << vertex.size()
+                         << " != "
+                         << var_dSize );
 
         GUM_SCALAR sum = 0;
 
@@ -219,7 +258,11 @@ namespace gum {
           GUM_ERROR(
               CPTNoSumTo1,
               "setCPT : a vertex coordinates does not sum to one for node id : "
-                  << id << " at entry " << entry << " with vertex " << vertex );
+                  << id
+                  << " at entry "
+                  << entry
+                  << " with vertex "
+                  << vertex );
       }
 
       auto& node_cpt = __credalNet_src_cpt.getWithDefault(
@@ -227,9 +270,11 @@ namespace gum {
 
       if ( node_cpt[entry].size() != 0 )
         GUM_ERROR( DuplicateElement,
-                   "setCPT : vertices of entry : "
-                       << ins << " id " << entry << " already set to : "
-                       << node_cpt[entry] << ", cannot insert : " << cpt );
+                   "setCPT : vertices of entry : " << ins << " id " << entry
+                                                   << " already set to : "
+                                                   << node_cpt[entry]
+                                                   << ", cannot insert : "
+                                                   << cpt );
 
       node_cpt[entry] = cpt;
 
@@ -269,8 +314,13 @@ namespace gum {
         GUM_ERROR(
             SizeError,
             "setCPT : variable modalities in cpts does not match for node id : "
-                << id << " with sizes of constraints : ( " << lower.size()
-                << " || " << upper.size() << " ) != " << var_dSize );
+                << id
+                << " with sizes of constraints : ( "
+                << lower.size()
+                << " || "
+                << upper.size()
+                << " ) != "
+                << var_dSize );
 
       auto entry_size = potential_min->domainSize() / var_dSize;
 
@@ -278,7 +328,9 @@ namespace gum {
         GUM_ERROR( SizeError,
                    "setCPT : entry is greater or equal than entry size "
                    "(entries start at 0 up to entry_size - 1) : "
-                       << entry << " >= " << entry_size );
+                       << entry
+                       << " >= "
+                       << entry_size );
 
       Instantiation min( potential_min );
       Instantiation max( potential_max );
@@ -333,9 +385,12 @@ namespace gum {
           GUM_ERROR(
               OperationNotAllowed,
               "setCPT : instantiation : "
-                  << ins << " is not valid for node id " << id
+                  << ins
+                  << " is not valid for node id "
+                  << id
                   << " which accepts instantiations such as (order is not "
-                     "important) : " << ref );
+                     "important) : "
+                  << ref );
       }
 
       unsigned long int entry = 0, jump = 1;
@@ -496,11 +551,15 @@ namespace gum {
 
             if ( std::fabs( 1. - sum ) > __epsRedund ) {
               GUM_ERROR( CPTNoSumTo1,
-                         __src_bn.variable( node ).name()
-                             << "(" << __epsRedund << ")"
-                             << " " << entry << std::endl
-                             << vertex << std::endl
-                             << ins << std::endl );
+                         __src_bn.variable( node ).name() << "(" << __epsRedund
+                                                          << ")"
+                                                          << " "
+                                                          << entry
+                                                          << std::endl
+                                                          << vertex
+                                                          << std::endl
+                                                          << ins
+                                                          << std::endl );
             }
           }
 
@@ -746,9 +805,10 @@ namespace gum {
 
             if ( std::fabs( total - 1. ) > 1e-6 )
               GUM_ERROR( CPTNoSumTo1,
-                         __src_bn.variable( node ).name()
-                             << " " << entry << std::endl
-                             << vertex << std::endl );
+                         __src_bn.variable( node ).name() << " " << entry
+                                                          << std::endl
+                                                          << vertex
+                                                          << std::endl );
 
             vertices.push_back( vertex );
           }
@@ -768,9 +828,10 @@ namespace gum {
 
             if ( std::fabs( total - 1. ) > 1e-6 )
               GUM_ERROR( CPTNoSumTo1,
-                         __src_bn.variable( node ).name()
-                             << " " << entry << std::endl
-                             << vertex << std::endl );
+                         __src_bn.variable( node ).name() << " " << entry
+                                                          << std::endl
+                                                          << vertex
+                                                          << std::endl );
 
             vertices.push_back( vertex );
           }
@@ -1712,7 +1773,7 @@ namespace gum {
         GUM_ERROR( IOError, "__H2Vlrs : could not open lrs ouput file : " );
 
       std::string line, tmp;
-      char* cstr, *p;
+      char *cstr, *p;
       GUM_SCALAR probability;
 
       std::string::size_type pos, end_pos;

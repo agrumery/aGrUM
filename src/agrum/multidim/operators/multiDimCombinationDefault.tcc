@@ -141,7 +141,7 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe
+      for ( typename Set<const TABLE<GUM_SCALAR> *>::const_iterator_safe
                 iter = set.beginSafe();
             iter != set.endSafe();
             ++iter, ++i ) {
@@ -269,7 +269,7 @@ namespace gum {
       unsigned int i = 0;
 
       for ( typename Set<
-                const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+                const Sequence<const DiscreteVariable *> *>::const_iterator_safe
                 iter = set.beginSafe();
             iter != set.endSafe();
             ++iter, ++i ) {
@@ -445,7 +445,7 @@ namespace gum {
       unsigned int i = 0;
 
       for ( typename Set<
-                const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+                const Sequence<const DiscreteVariable *> *>::const_iterator_safe
                 iter = set.beginSafe();
             iter != set.endSafe();
             ++iter, ++i ) {

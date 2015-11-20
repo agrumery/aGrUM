@@ -172,7 +172,8 @@ namespace gum {
 
     for ( const auto ev : evidenceList )
       __cliquePropertiesMap[__nodeToCliqueMap[this->influenceDiagram().nodeId(
-                                ( ev )->variable( 0 ) )]]->addEvidence( *ev );
+                                ( ev )->variable( 0 ) )]]
+          ->addEvidence( *ev );
   }
 
   // eraseEvidence : removes a given evidence from the graph
@@ -378,8 +379,8 @@ namespace gum {
                   eliminationOrderIter =
                       __triangulation->eliminationOrder().begin();
               eliminationOrderIter !=
-                      __triangulation->eliminationOrder().end() &&
-                  *eliminationOrderIter != *cliqueNodesIter;
+                  __triangulation->eliminationOrder().end() &&
+              *eliminationOrderIter != *cliqueNodesIter;
               ++eliminationOrderIter, ++index )
           ;
 
@@ -419,8 +420,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   void InfluenceDiagramInference<GUM_SCALAR>::displayStrongJunctionTree(
       std::ostream& stream ) {
-    stream << std::endl
-           << "Strong junction tree map : " << std::endl;
+    stream << std::endl << "Strong junction tree map : " << std::endl;
 
     for ( const auto& elt : __cliqueEliminationMap )
       stream << "Clique  : "

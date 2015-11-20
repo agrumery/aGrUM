@@ -63,8 +63,8 @@ namespace gum {
       nets.push_back( _currentHash );
       // insert out key in the hash key list
       _myHashVars.getWithDefault(
-                      _currentHash,
-                      std::list<varKey>() ) /*[_currentHash]*/.push_back( key );
+                     _currentHash,
+                     std::list<varKey>() ) /*[_currentHash]*/.push_back( key );
       return true;
     }
 

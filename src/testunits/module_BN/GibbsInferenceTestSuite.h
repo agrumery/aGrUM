@@ -63,7 +63,7 @@ namespace gum_tests {
     public:
     gum::BayesNet<float>* bn;
     gum::Id i1, i2, i3, i4, i5;
-    gum::Potential<float>* e_i1, *e_i4;
+    gum::Potential<float> *e_i1, *e_i4;
 
     void setUp() {
       bn = new gum::BayesNet<float>();
@@ -263,8 +263,7 @@ namespace gum_tests {
       try {
         inf.insertEvidence( e_list );
       } catch ( gum::Exception e ) {
-        std::cerr << std::endl
-                  << e.errorContent() << std::endl;
+        std::cerr << std::endl << e.errorContent() << std::endl;
         TS_ASSERT( false );
       }
 

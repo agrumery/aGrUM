@@ -191,7 +191,8 @@ namespace gum {
 
       tables[ti] = &( static_cast<const ScheduleCombine<GUM_SCALAR>&>
 
-                      ( schedule.operation( comb_id ) ).result() );
+                      ( schedule.operation( comb_id ) )
+                          .result() );
       is_t_new[ti] = true;
       tables[tj] = 0;
 

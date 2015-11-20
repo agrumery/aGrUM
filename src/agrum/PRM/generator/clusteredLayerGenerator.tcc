@@ -569,8 +569,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE ClusteredLayerGenerator<GUM_SCALAR>&
-        ClusteredLayerGenerator<GUM_SCALAR>::
-        operator=( const ClusteredLayerGenerator<GUM_SCALAR>& source ) {
+    ClusteredLayerGenerator<GUM_SCALAR>::
+    operator=( const ClusteredLayerGenerator<GUM_SCALAR>& source ) {
       __layers = source.__layers;
       __domain_size = source.__domain_size;
       __max_parents = source.__max_parents;

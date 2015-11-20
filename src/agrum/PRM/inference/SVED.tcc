@@ -74,8 +74,8 @@ namespace gum {
       if ( this->hasEvidence( query ) ) __insertEvidence( query, pool );
 
       for ( const auto attr : attr_set )
-        pool.insert( &( const_cast<Potential<GUM_SCALAR>&>(
-            query->get( attr ).cpf() ) ) );
+        pool.insert( &(
+            const_cast<Potential<GUM_SCALAR>&>( query->get( attr ).cpf() ) ) );
 
       for ( size_t idx = 0; idx < t.eliminationOrder().size(); ++idx )
         if ( t.eliminationOrder()[idx] != node )
@@ -522,8 +522,8 @@ namespace gum {
                             << ( __bb.requisiteNodes( jter.val() )
                                      .exists( ( *( a.val() ) ).id() ) );
                 } catch ( NotFound& ) {
-                  std::cerr
-                      << "Attribute<GUM_SCALAR> is required:        " << none;
+                  std::cerr << "Attribute<GUM_SCALAR> is required:        "
+                            << none;
                 }
 
                 std::cerr << std::endl;
@@ -535,13 +535,15 @@ namespace gum {
                                    .type()
                                    .dag()
                                    .parents( ( *( a.val() ) ).id() )
-                                   .size() ) << std::endl;
+                                   .size() )
+                          << std::endl;
                 std::cerr << "Attribute<GUM_SCALAR> children number:    "
                           << ( ( *( jter.val() ) )
                                    .type()
                                    .dag()
                                    .children( ( *( a.val() ) ).id() )
-                                   .size() ) << std::endl;
+                                   .size() )
+                          << std::endl;
               }
             }
           }

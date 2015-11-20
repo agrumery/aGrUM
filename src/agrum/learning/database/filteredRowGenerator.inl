@@ -36,7 +36,7 @@ namespace gum {
 
     /// copy constructor
     INLINE FilteredRowGenerator::FilteredRowGenerator(
-        const FilteredRowGenerator& from ) noexcept
+        const FilteredRowGenerator &from ) noexcept
         : _input_row( from._input_row ),
           _nb_remaining_output_rows{from._nb_remaining_output_rows} {
       GUM_CONS_CPY( FilteredRowGenerator );

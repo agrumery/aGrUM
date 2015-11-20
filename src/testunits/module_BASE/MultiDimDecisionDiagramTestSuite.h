@@ -113,7 +113,7 @@ namespace gum_tests {
     }
 
     public:
-    gum::LabelizedVariable* Cvar, *PLvar, *APUvar, *BPUvar, *ADRvar, *BDRvar,
+    gum::LabelizedVariable *Cvar, *PLvar, *APUvar, *BPUvar, *ADRvar, *BDRvar,
         *BOvar, *Cprimevar;
 
     void setUp() {

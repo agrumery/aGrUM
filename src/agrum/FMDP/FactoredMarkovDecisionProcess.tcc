@@ -190,7 +190,8 @@ namespace gum {
       GUM_ERROR( DuplicateElement,
                  " Variable " << var->name()
                               << " already has a transition table in "
-                              << actionId << " table." );
+                              << actionId
+                              << " table." );
 
     __actionTransitionTable[actionId]->insert( var, transition );
   }
@@ -444,14 +445,16 @@ namespace gum {
         fmdpCore
             << std::endl
             << reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
-                   elt.second )->toDot( graphName.str() );
+                   elt.second )
+                   ->toDot( graphName.str() );
       }
     }
 
     fmdpCore
         << std::endl
         << reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>(
-               __defaultRewardTable )->toDot( "REWARD" );
+               __defaultRewardTable )
+               ->toDot( "REWARD" );
     return fmdpCore.str();
   }
 

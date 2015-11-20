@@ -130,7 +130,7 @@ namespace gum {
       if ( !_modal.empty() ) _modal.clear();
 
       std::string line, tmp;
-      char* cstr, *p;
+      char *cstr, *p;
 
       while ( mod_stream.good() ) {
         getline( mod_stream, line );
@@ -256,7 +256,7 @@ namespace gum {
       if ( !_evidence.empty() ) _evidence.clear();
 
       std::string line, tmp;
-      char* cstr, *p;
+      char *cstr, *p;
 
       while ( evi_stream.good() &&
               std::strcmp( line.c_str(), "[EVIDENCE]" ) != 0 ) {
@@ -335,7 +335,7 @@ namespace gum {
       if ( !_query.empty() ) _query.clear();
 
       std::string line, tmp;
-      char* cstr, *p;
+      char *cstr, *p;
 
       while ( evi_stream.good() &&
               std::strcmp( line.c_str(), "[QUERY]" ) != 0 ) {
@@ -488,8 +488,9 @@ namespace gum {
                    errTxt +
                        "_dynamicExpectations() needs to be called before" );
 
-      if ( !_dynamicExpMin.exists(
-               varName ) /*_dynamicExpMin.find(varName) == _dynamicExpMin.end()*/ )
+      if (
+          !_dynamicExpMin.exists(
+              varName ) /*_dynamicExpMin.find(varName) == _dynamicExpMin.end()*/ )
         GUM_ERROR( NotFound, errTxt + "variable name not found : " << varName );
 
       return _dynamicExpMin[varName];
@@ -507,8 +508,9 @@ namespace gum {
                    errTxt +
                        "_dynamicExpectations() needs to be called before" );
 
-      if ( !_dynamicExpMax.exists(
-               varName ) /*_dynamicExpMin.find(varName) == _dynamicExpMin.end()*/ )
+      if (
+          !_dynamicExpMax.exists(
+              varName ) /*_dynamicExpMin.find(varName) == _dynamicExpMin.end()*/ )
         GUM_ERROR( NotFound, errTxt + "variable name not found : " << varName );
 
       return _dynamicExpMax[varName];

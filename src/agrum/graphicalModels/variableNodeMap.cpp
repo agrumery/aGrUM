@@ -73,8 +73,7 @@ namespace gum {
     std::stringstream stream;
 
     stream << "list of associations:" << std::endl;
-    stream << __nodes2vars << std::endl
-           << std::endl;
+    stream << __nodes2vars << std::endl << std::endl;
     stream << "list of variable names:" << std::endl;
     stream << __names2nodes << std::endl;
 

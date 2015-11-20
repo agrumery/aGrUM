@@ -191,45 +191,45 @@ namespace gum {
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
-    /**
-     * @class Create
-     * @ingroup learning_group
-     * @brief The helper used to create packs of translators within row filters.
-     *
-     * The row filters used to transform database rows (DBRows) into
-     *FilteredRows
-     * use translators to convert each database row into a FilteredRow and,
-     *then,
-     * they use generators to convert the FilteredRow into one or several other
-     * FilteredRows (for instance, EM generates several lines). To make it easy
-     *for
-     * the user to pack CellTranslators into the row filter, helper Create shall
-     *be
-     * used. Combined with helper "make_translators", the user can
-     * easily specify which CellTranslators to use on which columns of the
-     *DBRow.
-     * As an example, consider the following code:
-     * @code
-     * auto translators = make_translators
-     *   ( Create<CellTranslator1, Col<0> > (),
-     *     Create<CellTranslator1, Col<1>, 4 > (),
-     *     Create<CellTranslator2, Col<0,5>, 4 > (),
-     *     Create<CellTranslator2, Col<10,11>, 4, Incr<1,2> > ()
-     *   );
-     * @endcode
-     * This code packs 13 translators (1 + 4 + 4 + 4). The first translator is
-     *of
-     * type CellTranslator1 and will be applied on column 0 of the DBRow, the
-     *next
-     * 4 translators are also of type CellTranslator1 and will be applied on
-     * columns 1, 2, 3, 4, respectively. The next 4 translators are of type
-     * CellTranslator2. The first of them will be take columns 0 and 5 as input
-     * and will generate one output column in the FilteredRow, the next one will
-     * take columns 1 and 6 as input and will generate one output column, etc.
-     * Finally, the last 4 translators are of type CellTranslator2 and will take
-     * as input pairs of columns (10,11),(11,13), (12,15) and (13,17)
-     *respectively.
-     */
+/**
+ * @class Create
+ * @ingroup learning_group
+ * @brief The helper used to create packs of translators within row filters.
+ *
+ * The row filters used to transform database rows (DBRows) into
+ *FilteredRows
+ * use translators to convert each database row into a FilteredRow and,
+ *then,
+ * they use generators to convert the FilteredRow into one or several other
+ * FilteredRows (for instance, EM generates several lines). To make it easy
+ *for
+ * the user to pack CellTranslators into the row filter, helper Create shall
+ *be
+ * used. Combined with helper "make_translators", the user can
+ * easily specify which CellTranslators to use on which columns of the
+ *DBRow.
+ * As an example, consider the following code:
+ * @code
+ * auto translators = make_translators
+ *   ( Create<CellTranslator1, Col<0> > (),
+ *     Create<CellTranslator1, Col<1>, 4 > (),
+ *     Create<CellTranslator2, Col<0,5>, 4 > (),
+ *     Create<CellTranslator2, Col<10,11>, 4, Incr<1,2> > ()
+ *   );
+ * @endcode
+ * This code packs 13 translators (1 + 4 + 4 + 4). The first translator is
+ *of
+ * type CellTranslator1 and will be applied on column 0 of the DBRow, the
+ *next
+ * 4 translators are also of type CellTranslator1 and will be applied on
+ * columns 1, 2, 3, 4, respectively. The next 4 translators are of type
+ * CellTranslator2. The first of them will be take columns 0 and 5 as input
+ * and will generate one output column in the FilteredRow, the next one will
+ * take columns 1 and 6 as input and will generate one output column, etc.
+ * Finally, the last 4 translators are of type CellTranslator2 and will take
+ * as input pairs of columns (10,11),(11,13), (12,15) and (13,17)
+ *respectively.
+ */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // This is the REAL definition of class gum::learning::Create
     template <typename Translator,

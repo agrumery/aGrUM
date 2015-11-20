@@ -247,17 +247,20 @@ namespace gum_tests {
       int edge_count = 0;
       TS_ASSERT_EQUALS(
           ig->size( ig->edge( ig->id( m.get( "pow" ) ),
-                              ig->id( m.get( "another_printer" ) ) ).l ),
+                              ig->id( m.get( "another_printer" ) ) )
+                        .l ),
           (gum::Size)3 );
       edge_count += 3;
       TS_ASSERT_EQUALS(
           ig->size( ig->edge( ig->id( m.get( "pow" ) ),
-                              ig->id( m.get( "another_computer" ) ) ).l ),
+                              ig->id( m.get( "another_computer" ) ) )
+                        .l ),
           (gum::Size)5 );
       edge_count += 5;
       TS_ASSERT_EQUALS(
           ig->size( ig->edge( ig->id( m.get( "another_printer" ) ),
-                              ig->id( m.get( "another_computer" ) ) ).l ),
+                              ig->id( m.get( "another_computer" ) ) )
+                        .l ),
           (gum::Size)15 );
       edge_count += 15;
       TS_ASSERT_EQUALS( ig->graph().sizeEdges(), (gum::Size)edge_count );

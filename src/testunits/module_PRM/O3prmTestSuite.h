@@ -622,13 +622,14 @@ namespace gum_tests {
         TS_ASSERT( false );
       }
     }
- 
+
     /// @TODO Make this test past for IO flags optimisation
     // Testing class BWPrinter
     // void testComplexPrinters_8() {
     //   try {
     //     gum::prm::o3prm::O3prmReader<double> reader;
-    //     std::string file = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm" );
+    //     std::string file = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm"
+    //     );
     //     std::string package = "fr.lip6.printers";
     //     TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
     //     gum::prm::PRM<double>* prm = reader.prm();
@@ -670,10 +671,12 @@ namespace gum_tests {
     //     gum::NodeId bool_hp = BWPrinter["(boolean)hasPaper"].id();
     //     gum::NodeId st_hp =
     //         BWPrinter["(fr.lip6.printers.t_state)hasPaper"].id();
-    //     gum::NodeId p_hp = BWPrinter["(fr.lip6.printers.t_paper)hasPaper"].id();
+    //     gum::NodeId p_hp =
+    //     BWPrinter["(fr.lip6.printers.t_paper)hasPaper"].id();
     //     gum::NodeId hi = BWPrinter["hasInk"].id();
     //     gum::NodeId bool_hi = BWPrinter["(boolean)hasInk"].id();
-    //     gum::NodeId st_hi = BWPrinter["(fr.lip6.printers.t_state)hasInk"].id();
+    //     gum::NodeId st_hi =
+    //     BWPrinter["(fr.lip6.printers.t_state)hasInk"].id();
     //     gum::NodeId i_hi = BWPrinter["(fr.lip6.printers.t_ink)hasInk"].id();
     //     TS_ASSERT_EQUALS( st, deg_st );
     //     TS_ASSERT_DIFFERS( st, st_st );
@@ -704,7 +707,8 @@ namespace gum_tests {
     //         not BWPrinter.isOutputNode( BWPrinter["(boolean)equipState"] ) );
     //     TS_ASSERT(
     //         not BWPrinter.isInputNode( BWPrinter["(boolean)equipState"] ) );
-    //     TS_ASSERT( BWPrinter.isInnerNode( BWPrinter["(boolean)equipState"] ) );
+    //     TS_ASSERT( BWPrinter.isInnerNode( BWPrinter["(boolean)equipState"] )
+    //     );
     //     // t_paper hasPaper
     //     TS_ASSERT( not BWPrinter.isOutputNode(
     //         BWPrinter["(fr.lip6.printers.t_paper)hasPaper"] ) );
@@ -726,8 +730,10 @@ namespace gum_tests {
     //         not BWPrinter.isInputNode( BWPrinter["(boolean)hasPaper"] ) );
     //     TS_ASSERT( BWPrinter.isInnerNode( BWPrinter["(boolean)hasPaper"] ) );
     //     // Boolean hasInk
-    //     TS_ASSERT( not BWPrinter.isOutputNode( BWPrinter["(boolean)hasInk"] ) );
-    //     TS_ASSERT( not BWPrinter.isInputNode( BWPrinter["(boolean)hasInk"] ) );
+    //     TS_ASSERT( not BWPrinter.isOutputNode( BWPrinter["(boolean)hasInk"] )
+    //     );
+    //     TS_ASSERT( not BWPrinter.isInputNode( BWPrinter["(boolean)hasInk"] )
+    //     );
     //     TS_ASSERT( BWPrinter.isInnerNode( BWPrinter["hasInk"] ) );
     //     delete prm;
     //   } catch ( gum::Exception ) {
@@ -737,10 +743,11 @@ namespace gum_tests {
 
     /// @TODO Make this test pass for IO Flags optimisation
     // Testing class ColorPrinter
-    //void testComplexPrinters_9() {
+    // void testComplexPrinters_9() {
     //  try {
     //    gum::prm::o3prm::O3prmReader<double> reader;
-    //    std::string file = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm" );
+    //    std::string file = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm"
+    //    );
     //    std::string package = "fr.lip6.printers";
     //    TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
     //    gum::prm::PRM<double>* prm = reader.prm();
@@ -748,7 +755,8 @@ namespace gum_tests {
     //        prm->getClass( "fr.lip6.printers.ColorPrinter" ) );
     //    gum::prm::Class<double>& ColorPrinter =
     //        prm->getClass( "fr.lip6.printers.ColorPrinter" );
-    //    TS_ASSERT_EQUALS( ColorPrinter.referenceSlots().size(), (gum::Size)1 );
+    //    TS_ASSERT_EQUALS( ColorPrinter.referenceSlots().size(), (gum::Size)1
+    //    );
     //    TS_ASSERT_EQUALS( ColorPrinter.attributes().size(), (gum::Size)19 );
     //    TS_ASSERT_EQUALS( ColorPrinter.aggregates().size(), (gum::Size)0 );
     //    TS_ASSERT_EQUALS( ColorPrinter.slotChains().size(), (gum::Size)1 );
@@ -814,15 +822,18 @@ namespace gum_tests {
     //    gum::NodeId bool_ma = ColorPrinter["(boolean)magenta"].id();
     //    gum::NodeId st_ma =
     //        ColorPrinter["(fr.lip6.printers.t_state)magenta"].id();
-    //    gum::NodeId i_ma = ColorPrinter["(fr.lip6.printers.t_ink)magenta"].id();
+    //    gum::NodeId i_ma =
+    //    ColorPrinter["(fr.lip6.printers.t_ink)magenta"].id();
     //    gum::NodeId ye = ColorPrinter["yellow"].id();
     //    gum::NodeId bool_ye = ColorPrinter["(boolean)yellow"].id();
     //    gum::NodeId st_ye =
     //        ColorPrinter["(fr.lip6.printers.t_state)yellow"].id();
-    //    gum::NodeId i_ye = ColorPrinter["(fr.lip6.printers.t_ink)yellow"].id();
+    //    gum::NodeId i_ye =
+    //    ColorPrinter["(fr.lip6.printers.t_ink)yellow"].id();
     //    gum::NodeId ce = ColorPrinter["cyan"].id();
     //    gum::NodeId bool_ce = ColorPrinter["(boolean)cyan"].id();
-    //    gum::NodeId st_ce = ColorPrinter["(fr.lip6.printers.t_state)cyan"].id();
+    //    gum::NodeId st_ce =
+    //    ColorPrinter["(fr.lip6.printers.t_state)cyan"].id();
     //    gum::NodeId i_ce = ColorPrinter["(fr.lip6.printers.t_ink)cyan"].id();
     //    TS_ASSERT_EQUALS( st, deg_st );
     //    TS_ASSERT_DIFFERS( st, st_st );
@@ -880,12 +891,14 @@ namespace gum_tests {
     //    TS_ASSERT( not ColorPrinter.isOutputNode(
     //        ColorPrinter["(boolean)hasPaper"] ) );
     //    TS_ASSERT(
-    //        not ColorPrinter.isInputNode( ColorPrinter["(boolean)hasPaper"] ) );
+    //        not ColorPrinter.isInputNode( ColorPrinter["(boolean)hasPaper"] )
+    //        );
     //    TS_ASSERT(
     //        ColorPrinter.isInnerNode( ColorPrinter["(boolean)hasPaper"] ) );
     //    // Boolean hasInk
     //    TS_ASSERT(
-    //        not ColorPrinter.isOutputNode( ColorPrinter["(boolean)hasInk"] ) );
+    //        not ColorPrinter.isOutputNode( ColorPrinter["(boolean)hasInk"] )
+    //        );
     //    TS_ASSERT(
     //        not ColorPrinter.isInputNode( ColorPrinter["(boolean)hasInk"] ) );
     //    TS_ASSERT(
@@ -909,7 +922,8 @@ namespace gum_tests {
     //        not ColorPrinter.isOutputNode( ColorPrinter["(boolean)black"] ) );
     //    TS_ASSERT(
     //        not ColorPrinter.isInputNode( ColorPrinter["(boolean)black"] ) );
-    //    TS_ASSERT( ColorPrinter.isInnerNode( ColorPrinter["(boolean)black"] ) );
+    //    TS_ASSERT( ColorPrinter.isInnerNode( ColorPrinter["(boolean)black"] )
+    //    );
     //    // t_ink magenta
     //    TS_ASSERT( not ColorPrinter.isOutputNode(
     //        ColorPrinter["(fr.lip6.printers.t_ink)magenta"] ) );
@@ -926,9 +940,11 @@ namespace gum_tests {
     //        ColorPrinter["(fr.lip6.printers.t_state)magenta"] ) );
     //    // boolean magenta
     //    TS_ASSERT(
-    //        not ColorPrinter.isOutputNode( ColorPrinter["(boolean)magenta"] ) );
+    //        not ColorPrinter.isOutputNode( ColorPrinter["(boolean)magenta"] )
+    //        );
     //    TS_ASSERT(
-    //        not ColorPrinter.isInputNode( ColorPrinter["(boolean)magenta"] ) );
+    //        not ColorPrinter.isInputNode( ColorPrinter["(boolean)magenta"] )
+    //        );
     //    TS_ASSERT(
     //        ColorPrinter.isInnerNode( ColorPrinter["(boolean)magenta"] ) );
     //    // t_ink yellow
@@ -947,7 +963,8 @@ namespace gum_tests {
     //        ColorPrinter["(fr.lip6.printers.t_state)yellow"] ) );
     //    // boolean yellow
     //    TS_ASSERT(
-    //        not ColorPrinter.isOutputNode( ColorPrinter["(boolean)yellow"] ) );
+    //        not ColorPrinter.isOutputNode( ColorPrinter["(boolean)yellow"] )
+    //        );
     //    TS_ASSERT(
     //        not ColorPrinter.isInputNode( ColorPrinter["(boolean)yellow"] ) );
     //    TS_ASSERT(
@@ -971,7 +988,8 @@ namespace gum_tests {
     //        not ColorPrinter.isOutputNode( ColorPrinter["(boolean)cyan"] ) );
     //    TS_ASSERT(
     //        not ColorPrinter.isInputNode( ColorPrinter["(boolean)cyan"] ) );
-    //    TS_ASSERT( ColorPrinter.isInnerNode( ColorPrinter["(boolean)cyan"] ) );
+    //    TS_ASSERT( ColorPrinter.isInnerNode( ColorPrinter["(boolean)cyan"] )
+    //    );
     //    delete prm;
     //  } catch ( gum::Exception ) {
     //    TS_ASSERT( false );

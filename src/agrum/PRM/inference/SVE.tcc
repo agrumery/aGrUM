@@ -51,8 +51,7 @@ namespace gum {
         s << __print_attribute__( i, *( a.second ) );
       }
       if ( i.type().slotChains().size() ) {
-        s << std::endl
-          << "SlotChains: " << std::endl;
+        s << std::endl << "SlotChains: " << std::endl;
         for ( auto sc : i.type().slotChains() ) {
           s << sc->name() << " ";
         }
@@ -123,7 +122,7 @@ namespace gum {
                                             NodeId node,
                                             BucketSet& pool,
                                             BucketSet& trash ) {
-      Set<const Instance<GUM_SCALAR>*> ignore, eliminated;
+      Set<const Instance<GUM_SCALAR> *> ignore, eliminated;
       Set<NodeId> delayedVars;
       // Downward elimination
       List<const Instance<GUM_SCALAR>*> elim_list;
@@ -160,8 +159,8 @@ namespace gum {
       }
 
       for ( auto attr = query->begin(); attr != query->end(); ++attr ) {
-        pool.insert( &( const_cast<Potential<GUM_SCALAR>&>(
-            ( *( attr.val() ) ).cpf() ) ) );
+        pool.insert( &(
+            const_cast<Potential<GUM_SCALAR>&>( ( *( attr.val() ) ).cpf() ) ) );
       }
 
       for ( size_t idx = 0; idx < t.eliminationOrder().size(); ++idx ) {
@@ -675,8 +674,8 @@ namespace gum {
     INLINE Potential<GUM_SCALAR>*
     SVE<GUM_SCALAR>::__getAggPotential( const Instance<GUM_SCALAR>* i,
                                         const Aggregate<GUM_SCALAR>* agg ) {
-      return &( const_cast<Potential<GUM_SCALAR>&>(
-          i->get( agg->id() ).cpf() ) );
+      return &(
+          const_cast<Potential<GUM_SCALAR>&>( i->get( agg->id() ).cpf() ) );
     }
 
     template <typename GUM_SCALAR>

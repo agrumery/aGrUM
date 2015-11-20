@@ -108,7 +108,8 @@ namespace gum {
     /// @{
 
     /**
-     * @brief indicates whether the variable already has the label passed in argument
+     * @brief indicates whether the variable already has the label passed in
+     * argument
      * @param aLabel The label
      * @return true if the label already exists */
     bool isLabel( const std::string& aLabel ) const;

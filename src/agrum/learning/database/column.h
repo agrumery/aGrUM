@@ -68,21 +68,21 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-    /** @class Col
-     * @brief A generic class to specify columns in a database
-     * @ingroup learning_group
-     *
-     * Learning algorithms use row filters to read the content of tabular
-     *databases
-     * (like CSVs or MySQL databases). These row filters use translators and
-     * generators. The former translate the "generic" content of the columns of
-     * the database into integer-encoded contents. To specify on which columns
-     * each translator will work, you should use class Col. For instance, if you
-     * wish to express that a translator should be applied on columns 1, 7, 4 in
-     * order to produce one translated column, you just need to indicate that it
-     * will be applied on Col<1,7,4>. Col<>s can have an arbitrary number of
-     * column numbers in argument.
-     */
+/** @class Col
+ * @brief A generic class to specify columns in a database
+ * @ingroup learning_group
+ *
+ * Learning algorithms use row filters to read the content of tabular
+ *databases
+ * (like CSVs or MySQL databases). These row filters use translators and
+ * generators. The former translate the "generic" content of the columns of
+ * the database into integer-encoded contents. To specify on which columns
+ * each translator will work, you should use class Col. For instance, if you
+ * wish to express that a translator should be applied on columns 1, 7, 4 in
+ * order to produce one translated column, you just need to indicate that it
+ * will be applied on Col<1,7,4>. Col<>s can have an arbitrary number of
+ * column numbers in argument.
+ */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // The REAL definition of class gum::learning::Col
     template <int Idx, int... NextIdx>

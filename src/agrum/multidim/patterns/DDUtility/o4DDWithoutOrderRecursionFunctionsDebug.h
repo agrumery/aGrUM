@@ -65,8 +65,8 @@ namespace gum {
       std::string tabu ) {
 
     GUM_TRACE( tabu << std::setprecision( 20 ) << "PRUNNING EVALUATION : " );
-    GUM_TRACE( tabu << std::setprecision( 20 )
-                    << "KEY : " << opData.conti.contextKey() );
+    GUM_TRACE( tabu << std::setprecision( 20 ) << "KEY : "
+                    << opData.conti.contextKey() );
     // GUM_TRACE( tabu << std::setprecision( 20 )  << "RECUR EXPLORATION STATUS
     // : "
     // << *(opData.explorationTable) );
@@ -85,8 +85,10 @@ namespace gum {
     if ( opData.DD1->isTerminalNode( opData.conti.getDD1Node() ) &&
          opData.DD2->isTerminalNode( opData.conti.getDD2Node() ) ) {
       GUM_TRACE( tabu << std::setprecision( 20 ) << "Ajout noeud terminal "
-                      << " | Noeud leader : " << opData.conti.getDD1Node()
-                      << " | Noeud follower : " << opData.conti.getDD2Node() );
+                      << " | Noeud leader : "
+                      << opData.conti.getDD1Node()
+                      << " | Noeud follower : "
+                      << opData.conti.getDD2Node() );
 
       // We have to compute new valueand we insert a new node in diagram with
       // this
@@ -96,16 +98,22 @@ namespace gum {
       T newVal = GUM_MULTI_DIM_OPERATOR( leaderValue, followerValue );
       newNode = opData.factory->addTerminalNode( newVal );
       GUM_TRACE( tabu << std::setprecision( 20 ) << "Leader value : "
-                      << leaderValue << " - Follower Value : " << followerValue
-                      << " | Resulting value : " << newVal
-                      << " - Resulting node : " << newNode );
+                      << leaderValue
+                      << " - Follower Value : "
+                      << followerValue
+                      << " | Resulting value : "
+                      << newVal
+                      << " - Resulting node : "
+                      << newNode );
 
       // And ensure that if we get back to those node we won't explore them
       // again
       GUM_TRACE( tabu << std::setprecision( 20 ) << "KEY INSERTION : " );
-      GUM_TRACE( tabu << std::setprecision( 20 )
-                      << "Context : " << opData.conti.toString()
-                      << "Ajout de : " << opData.conti.contextKey() << " -> "
+      GUM_TRACE( tabu << std::setprecision( 20 ) << "Context : "
+                      << opData.conti.toString()
+                      << "Ajout de : "
+                      << opData.conti.contextKey()
+                      << " -> "
                       << newNode );
       opData.explorationTable->insert( opData.conti.contextKey(), newNode );
       // GUM_TRACE( tabu << std::setprecision( 20 )  <<  "LEAF EXPLORATION
@@ -154,13 +162,13 @@ namespace gum {
 
               if ( usedModalities == nullptr ) continue;
 
-              GUM_TRACE( tabu
-                         << std::setprecision( 20 )
-                         << " Action Taken! - Noeud leader : "
-                         << opData.conti.getDD1Node()
-                         << " - Noeud follower : " << opData.conti.getDD2Node()
-                         << " - Instantiated Variable : "
-                         << preneededVar->toString() );
+              GUM_TRACE( tabu << std::setprecision( 20 )
+                              << " Action Taken! - Noeud leader : "
+                              << opData.conti.getDD1Node()
+                              << " - Noeud follower : "
+                              << opData.conti.getDD2Node()
+                              << " - Instantiated Variable : "
+                              << preneededVar->toString() );
 
               std::vector<NodeId> sonsIds( preneededVar->domainSize(), 0 );
 
@@ -170,9 +178,9 @@ namespace gum {
               for ( Idx modality = 0; modality < preneededVar->domainSize();
                     modality++ ) {
                 if ( ( *usedModalities )[modality] ) {
-                  GUM_TRACE( tabu
-                             << std::setprecision( 20 )
-                             << " Exploration sur fils numéro : " << modality );
+                  GUM_TRACE( tabu << std::setprecision( 20 )
+                                  << " Exploration sur fils numéro : "
+                                  << modality );
                   opData.conti.chgVarModality( preneededVar, modality + 1 );
                   sonsIds[modality] =
                       GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION(
@@ -212,10 +220,12 @@ namespace gum {
               GUM_TRACE( tabu << std::setprecision( 20 )
                               << "KEY INSERTION : " );
               opData.conti.chgVarModality( preneededVar, 0 );
-              GUM_TRACE( tabu << std::setprecision( 20 )
-                              << "Context : " << opData.conti.toString()
-                              << "Ajout de : " << opData.conti.contextKey()
-                              << " -> " << newNode );
+              GUM_TRACE( tabu << std::setprecision( 20 ) << "Context : "
+                              << opData.conti.toString()
+                              << "Ajout de : "
+                              << opData.conti.contextKey()
+                              << " -> "
+                              << newNode );
               opData.explorationTable->insert( opData.conti.contextKey(),
                                                newNode );
               // GUM_TRACE( tabu << std::setprecision( 20 )  << "RETROGRADE
@@ -224,7 +234,8 @@ namespace gum {
               GUM_TRACE( tabu << std::setprecision( 20 )
                               << "Fin Action Taken! - Instantiated Variable : "
                               << preneededVar->toString()
-                              << " - Resulting Node : " << newNode );
+                              << " - Resulting Node : "
+                              << newNode );
 
               return newNode;
             }
@@ -293,7 +304,8 @@ namespace gum {
       // down on both
       if ( indexLeader == indexFollower ) {
         GUM_TRACE( tabu << std::setprecision( 20 ) << "Recur - Noeud leader : "
-                        << opData.conti.getDD1Node() << " - Noeud follower : "
+                        << opData.conti.getDD1Node()
+                        << " - Noeud follower : "
                         << opData.conti.getDD2Node() );
 
         const std::vector<NodeId>* leaderSonsMap =
@@ -310,7 +322,7 @@ namespace gum {
 
         for ( Idx modality = 0;
               modality <
-                  opData.DD1->nodeVariable( leaderCurrentNode )->domainSize();
+              opData.DD1->nodeVariable( leaderCurrentNode )->domainSize();
               modality++ ) {
           GUM_TRACE( tabu << std::setprecision( 20 )
                           << "Recur - Descente sur fils numéro : "
@@ -376,9 +388,11 @@ namespace gum {
         GUM_TRACE( tabu << std::setprecision( 20 ) << "KEY INSERTION : " );
         opData.conti.setDD1Node( leaderCurrentNode );
         opData.conti.setDD2Node( followerCurrentNode );
-        GUM_TRACE( tabu << std::setprecision( 20 )
-                        << "Context : " << opData.conti.toString()
-                        << "Ajout de : " << opData.conti.contextKey() << " -> "
+        GUM_TRACE( tabu << std::setprecision( 20 ) << "Context : "
+                        << opData.conti.toString()
+                        << "Ajout de : "
+                        << opData.conti.contextKey()
+                        << " -> "
                         << newNode );
         opData.explorationTable->insert( opData.conti.contextKey(), newNode );
         // GUM_TRACE( tabu << std::setprecision( 20 )  << "EQUALS EXPLORATION
@@ -387,8 +401,10 @@ namespace gum {
         GUM_TRACE( tabu << std::setprecision( 20 )
                         << "Fin Recur - Noeud leader : "
                         << opData.conti.getDD1Node()
-                        << " - Noeud follower : " << opData.conti.getDD2Node()
-                        << " - Resulting Node : " << newNode );
+                        << " - Noeud follower : "
+                        << opData.conti.getDD2Node()
+                        << " - Resulting Node : "
+                        << newNode );
       }
     }
 
@@ -409,7 +425,8 @@ namespace gum {
     GUM_TRACE( tabu << std::setprecision( 20 )
                     << "GoDownLeader  - Noeud Leader : "
                     << opData.conti.getDD1Node()
-                    << " - Noeud Follower : " << opData.conti.getDD2Node()
+                    << " - Noeud Follower : "
+                    << opData.conti.getDD2Node()
                     << " - Instantiated Variable : "
                     << opData.DD1->nodeVariable( opData.conti.getDD1Node() )
                            ->toString() );
@@ -516,9 +533,12 @@ namespace gum {
     if ( isIndeedRetorgrade )
       opData.conti.chgVarModality( leaderCurrentVar, 0 );
 
-    GUM_TRACE( tabu << std::setprecision( 20 )
-                    << "Context : " << opData.conti.toString() << "Ajout de : "
-                    << opData.conti.contextKey() << " -> " << newNode );
+    GUM_TRACE( tabu << std::setprecision( 20 ) << "Context : "
+                    << opData.conti.toString()
+                    << "Ajout de : "
+                    << opData.conti.contextKey()
+                    << " -> "
+                    << newNode );
     opData.explorationTable->insert( opData.conti.contextKey(), newNode );
     // GUM_TRACE( tabu << std::setprecision( 20 )  << "GODOWNLEADER EXPLORATION
     // STATUS : " << *(opData.explorationTable) );
@@ -526,8 +546,10 @@ namespace gum {
     GUM_TRACE( tabu << std::setprecision( 20 )
                     << "GoDownLeader  - Fin GoDownLeader  - Noeud Leader : "
                     << opData.conti.getDD1Node()
-                    << " - Noeud Follower : " << opData.conti.getDD2Node()
-                    << " - Resulting Node : " << newNode );
+                    << " - Noeud Follower : "
+                    << opData.conti.getDD2Node()
+                    << " - Resulting Node : "
+                    << newNode );
 
     return newNode;
   }
@@ -543,7 +565,8 @@ namespace gum {
     GUM_TRACE( tabu << std::setprecision( 20 )
                     << "GoDownFollower - Noeud leader : "
                     << opData.conti.getDD1Node()
-                    << " - Noeud follower : " << opData.conti.getDD2Node()
+                    << " - Noeud follower : "
+                    << opData.conti.getDD2Node()
                     << " - Instantiated Variable : "
                     << opData.DD2->nodeVariable( opData.conti.getDD2Node() )
                            ->toString() );
@@ -659,9 +682,11 @@ namespace gum {
 
       GUM_TRACE( tabu << std::setprecision( 20 ) << "KEY INSERTION : " );
       opData.conti.setDD2Node( followerCurrentNode );
-      GUM_TRACE( tabu << std::setprecision( 20 )
-                      << "Context : " << opData.conti.toString()
-                      << "Ajout de : " << opData.conti.contextKey() << " -> "
+      GUM_TRACE( tabu << std::setprecision( 20 ) << "Context : "
+                      << opData.conti.toString()
+                      << "Ajout de : "
+                      << opData.conti.contextKey()
+                      << " -> "
                       << newNode );
       opData.explorationTable->insert( opData.conti.contextKey(), newNode );
       // GUM_TRACE( tabu << std::setprecision( 20 )  << "GODOWNFOLLOWER
@@ -673,8 +698,10 @@ namespace gum {
     GUM_TRACE( tabu << std::setprecision( 20 )
                     << "Fin GoDownFollower - Noeud leader : "
                     << opData.conti.getDD1Node()
-                    << " - Noeud follower : " << opData.conti.getDD2Node()
-                    << " - Resulting Node : " << newNode );
+                    << " - Noeud follower : "
+                    << opData.conti.getDD2Node()
+                    << " - Resulting Node : "
+                    << newNode );
 
     return newNode;
   }

@@ -95,16 +95,17 @@ namespace gum {
        * In this case, this apriori will be included in addition to the
        * implicit BDeu apriori in a BD fashion, i.e., we will ressort to the
        * Bayesian Dirichlet (BD) formula to include the sum of the two aprioris
-       * into the score. 
+       * into the score.
        * @param min_range The minimal range.
        * @param max_range The maximal range.
        */
       template <typename RowFilter>
-      ScoreBDeu( const RowFilter& filter,
-                 const std::vector<unsigned int>& var_modalities,
-                 Apriori<IdSetAlloc, CountAlloc>& apriori ,
-                 unsigned long min_range = 0,
-                 unsigned long max_range = std::numeric_limits<unsigned int>::max ());
+      ScoreBDeu(
+          const RowFilter& filter,
+          const std::vector<unsigned int>& var_modalities,
+          Apriori<IdSetAlloc, CountAlloc>& apriori,
+          unsigned long min_range = 0,
+          unsigned long max_range = std::numeric_limits<unsigned int>::max() );
 
       /// copy constructor
       ScoreBDeu( const ScoreBDeu<IdSetAlloc, CountAlloc>& );

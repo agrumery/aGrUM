@@ -53,10 +53,10 @@ namespace gum {
     /// copy operator
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>&
-        __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
-        operator=( const __StructuralConstraintSetStatic<CONSTRAINT1,
-                                                         OTHER_CONSTRAINTS...>&
-                       from ) {
+    __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
+    operator=(
+        const __StructuralConstraintSetStatic<CONSTRAINT1,
+                                              OTHER_CONSTRAINTS...>& from ) {
       if ( this != &from ) {
         next_constraints::operator=( from );
         first_constraint::operator=( from );
@@ -207,8 +207,8 @@ namespace gum {
     /// copy operator
     template <typename CONSTRAINT>
     INLINE __StructuralConstraintSetStatic<CONSTRAINT>&
-        __StructuralConstraintSetStatic<CONSTRAINT>::
-        operator=( const __StructuralConstraintSetStatic<CONSTRAINT>& from ) {
+    __StructuralConstraintSetStatic<CONSTRAINT>::
+    operator=( const __StructuralConstraintSetStatic<CONSTRAINT>& from ) {
       if ( this != &from ) {
         CONSTRAINT::operator=( from );
       }
@@ -336,10 +336,9 @@ namespace gum {
     /// copy operator
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>&
-        StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
-        operator=(
-            const StructuralConstraintSetStatic<CONSTRAINT1,
-                                                OTHER_CONSTRAINTS...>& from ) {
+    StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::operator=(
+        const StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>&
+            from ) {
       if ( this != &from ) {
         constraints::operator=( from );
       }
@@ -514,8 +513,8 @@ namespace gum {
     /// copy operator
     template <typename CONSTRAINT>
     INLINE StructuralConstraintSetStatic<CONSTRAINT>&
-        StructuralConstraintSetStatic<CONSTRAINT>::
-        operator=( const StructuralConstraintSetStatic<CONSTRAINT>& from ) {
+    StructuralConstraintSetStatic<CONSTRAINT>::
+    operator=( const StructuralConstraintSetStatic<CONSTRAINT>& from ) {
       if ( this != &from ) {
         constraints::operator=( from );
       }

@@ -140,8 +140,7 @@ namespace gum {
     str << "]>" << std::endl;*/
 
     // BIF version Tag
-    str << std::endl
-        << "<BIF VERSION=\"0.3\">" << std::endl;
+    str << std::endl << "<BIF VERSION=\"0.3\">" << std::endl;
 
     // Network declaration
     str << "<NETWORK>" << std::endl;

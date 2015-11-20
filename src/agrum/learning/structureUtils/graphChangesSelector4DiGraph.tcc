@@ -121,13 +121,13 @@ namespace gum {
     GraphChangesSelector4DiGraph<SCORE,
                                  STRUCTURAL_CONSTRAINT,
                                  GRAPH_CHANGES_GENERATOR>&
-        GraphChangesSelector4DiGraph<SCORE,
-                                     STRUCTURAL_CONSTRAINT,
-                                     GRAPH_CHANGES_GENERATOR>::
-        operator=( const GraphChangesSelector4DiGraph<SCORE,
-                                                      STRUCTURAL_CONSTRAINT,
-                                                      GRAPH_CHANGES_GENERATOR>&
-                       from ) {
+    GraphChangesSelector4DiGraph<SCORE,
+                                 STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
+    operator=(
+        const GraphChangesSelector4DiGraph<SCORE,
+                                           STRUCTURAL_CONSTRAINT,
+                                           GRAPH_CHANGES_GENERATOR>& from ) {
       if ( this != &from ) {
         __score = from.__score;
         __constraint = from.__constraint;
@@ -153,13 +153,12 @@ namespace gum {
     GraphChangesSelector4DiGraph<SCORE,
                                  STRUCTURAL_CONSTRAINT,
                                  GRAPH_CHANGES_GENERATOR>&
-        GraphChangesSelector4DiGraph<SCORE,
-                                     STRUCTURAL_CONSTRAINT,
-                                     GRAPH_CHANGES_GENERATOR>::
-        operator=(
-            GraphChangesSelector4DiGraph<SCORE,
-                                         STRUCTURAL_CONSTRAINT,
-                                         GRAPH_CHANGES_GENERATOR>&& from ) {
+    GraphChangesSelector4DiGraph<SCORE,
+                                 STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
+    operator=( GraphChangesSelector4DiGraph<SCORE,
+                                            STRUCTURAL_CONSTRAINT,
+                                            GRAPH_CHANGES_GENERATOR>&& from ) {
       if ( this != &from ) {
         __score = std::move( from.__score );
         __constraint = std::move( from.__constraint );
@@ -992,8 +991,9 @@ namespace gum {
       std::sort( result.begin(),
                  result.end(),
                  []( const std::pair<unsigned int, float>& a,
-                     const std::pair<unsigned int, float>& b )
-                     -> bool { return a.second > b.second; } );
+                     const std::pair<unsigned int, float>& b ) -> bool {
+                   return a.second > b.second;
+                 } );
 
       return result;
     }

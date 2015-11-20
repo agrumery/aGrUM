@@ -47,7 +47,7 @@ namespace gum_tests {
     public:
     gum::BayesNet<float>* bn;
     gum::Id i1, i2, i3, i4, i5;
-    gum::Potential<float>* e_i1, *e_i4;
+    gum::Potential<float> *e_i1, *e_i4;
 
     float __epsilon{1e-6};
 
@@ -342,8 +342,9 @@ namespace gum_tests {
       }
 
       gum::LazyPropagation<float> inf5( bn );
-      inf5.setFindRelevantPotentialsType( gum::LazyPropagation<
-          float>::FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION );
+      inf5.setFindRelevantPotentialsType(
+          gum::LazyPropagation<
+              float>::FindRelevantPotentialsType::FIND_RELEVANT_D_SEPARATION );
       TS_ASSERT_THROWS_NOTHING( inf5.insertEvidence( evidences ) );
       TS_ASSERT_THROWS_NOTHING( inf5.makeInference() );
       for ( auto node : bn.dag() ) {

@@ -413,8 +413,7 @@ namespace gum_tests {
             else
               outBucket++;
         } catch ( gum::Exception& e ) {
-          std::cerr << std::endl
-                    << e.errorContent() << std::endl;
+          std::cerr << std::endl << e.errorContent() << std::endl;
           TS_ASSERT( false );
         }
 

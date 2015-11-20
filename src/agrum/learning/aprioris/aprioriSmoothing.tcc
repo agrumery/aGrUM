@@ -86,8 +86,9 @@ namespace gum {
                 ( *( this->_modalities ) )[( *( this->_target_nodesets ) )[i]
                                                ->first.back()];
             std::vector<float, CountAlloc>& apriori =
-                this->_apriori_counts[this->_conditioning_nodesets->
-                                      operator[]( i )->second];
+                this->_apriori_counts[this->_conditioning_nodesets->operator[](
+                                                                      i )
+                                          ->second];
             for ( auto& count : apriori ) {
               count = weight;
             }

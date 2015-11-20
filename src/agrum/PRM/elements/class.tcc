@@ -512,7 +512,7 @@ namespace gum {
       SlotChain<GUM_SCALAR>* sc = 0;
       ReferenceSlot<GUM_SCALAR>* ref = 0;
       ClassElement<GUM_SCALAR>* next = 0;
-      std::vector<SlotChain<GUM_SCALAR>*> toRemove, toAdd;
+      std::vector<SlotChain<GUM_SCALAR> *> toRemove, toAdd;
 
       // Updating SlotChain<GUM_SCALAR> which started with overloaded
       for ( const auto slotchain : __slotChains ) {

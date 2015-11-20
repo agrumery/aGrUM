@@ -80,8 +80,8 @@ namespace gum {
               static_cast<const SlotChain<GUM_SCALAR>&>( c.get( node ) );
 
           for ( const auto chi : c.dag().children( node ) )
-            __graph.addArc( ( *( __node_map[&( sc.end() )] ) )[&( sc.end().get(
-                                sc.lastElt().safeName() ) )],
+            __graph.addArc( ( *( __node_map[&( sc.end() )] ) )[&(
+                                sc.end().get( sc.lastElt().safeName() ) )],
                             map[&( c.get( chi ) )] );
 
           break;

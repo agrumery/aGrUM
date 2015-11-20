@@ -60,7 +60,7 @@ namespace gum {
       /// @{
 
       /// default constructor
-      /** 
+      /**
        * @param check_database By default, CellTranslatorCompactIntId parses
        * the database at initialization to check that its values actually form
        * an interval { 0 ,..., n }. If this is not the case, it raises an

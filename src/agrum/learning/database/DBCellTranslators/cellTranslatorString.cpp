@@ -79,11 +79,13 @@ namespace gum {
         }
 
         // reorder user_vals in increasing order of the second argument
-        std::sort( user_vals.begin(),
-                   user_vals.end(),
-                   []( const std::pair<unsigned int, unsigned int>& elt1,
-                       const std::pair<unsigned int, unsigned int>& elt2 )
-                       -> bool { return elt1.second < elt2.second; } );
+        std::sort(
+            user_vals.begin(),
+            user_vals.end(),
+            []( const std::pair<unsigned int, unsigned int>& elt1,
+                const std::pair<unsigned int, unsigned int>& elt2 ) -> bool {
+              return elt1.second < elt2.second;
+            } );
 
         // restore in the appropriate order the element of __strings
         __strings.clear();

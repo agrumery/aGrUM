@@ -161,7 +161,7 @@ namespace gum {
        * account during learning
        * @param max_range the number of the record after the last one taken
        * into account*/
-      void setRange ( unsigned long min_range, unsigned long max_range );
+      void setRange( unsigned long min_range, unsigned long max_range );
 
       /// @}
 

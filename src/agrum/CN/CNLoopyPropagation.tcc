@@ -988,7 +988,8 @@ namespace gum {
 
           if ( lmax != lmax && lmin != lmin ) {
             std::cout << "no likelihood defined [lmin, lmax] (incompatibles "
-                         "evidence ?)" << std::endl;
+                         "evidence ?)"
+                      << std::endl;
           }
 
           if ( lmin < 0. ) {
@@ -1199,7 +1200,8 @@ namespace gum {
 
       if ( lmax != lmax && lmin != lmin ) {
         std::cout << "pas de vraisemblance definie [lmin, lmax] (observations "
-                     "incompatibles ?)" << std::endl;
+                     "incompatibles ?)"
+                  << std::endl;
         return;
       }
 
@@ -1405,7 +1407,8 @@ namespace gum {
             if ( lmax != lmax && lmin != lmin ) {
               std::cout
                   << "pas de vraisemblance definie [lmin, lmax] (observations "
-                     "incompatibles ?)" << std::endl;
+                     "incompatibles ?)"
+                  << std::endl;
               return;
             }
 

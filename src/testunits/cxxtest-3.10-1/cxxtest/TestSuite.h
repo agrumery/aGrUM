@@ -546,8 +546,8 @@ namespace CxxTest {
     _TS_TRY { e; }                                           \
     _TS_CATCH_TYPE( ( t ),                                   \
                     {                                        \
-      a;                                                     \
-      _ts_threw_expected = true;                             \
+                      a;                                     \
+                      _ts_threw_expected = true;             \
                     } )                                      \
     _TS_CATCH_ABORT( { throw; } )                            \
     _TS_LAST_CATCH( { _ts_threw_else = true; } )             \

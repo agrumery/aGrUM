@@ -125,7 +125,7 @@ namespace gum_tests {
 
       gum::MultiDimArray<float> tt1, tt2, tt3;
 
-      gum::MultiDimImplementation<float>* t4, *t5, *t6, *t7;
+      gum::MultiDimImplementation<float> *t4, *t5, *t6, *t7;
       tt1 << *( vars[0] ) << *( vars[1] ) << *( vars[2] );
       tt2 << *( vars[0] ) << *( vars[1] ) << *( vars[5] );
       tt3 << *( vars[6] ) << *( vars[4] ) << *( vars[3] );
@@ -211,7 +211,7 @@ namespace gum_tests {
 
       gum::MultiDimArray<float> t1, t2, t3;
 
-      gum::MultiDimImplementation<float>* t4, *t5;
+      gum::MultiDimImplementation<float> *t4, *t5;
       t1 << *( vars[0] ) << *( vars[1] ) << *( vars[2] );
       t2 << *( vars[0] ) << *( vars[1] ) << *( vars[5] );
       t3 << *( vars[6] ) << *( vars[4] ) << *( vars[3] );
@@ -257,8 +257,8 @@ namespace gum_tests {
       randomInitP( t2 );
       randomInitP( t3 );
 
-      gum::Potential<double>* t4, *t6;
-      gum::Potential<double>* t5, *t7;
+      gum::Potential<double> *t4, *t6;
+      gum::Potential<double> *t5, *t7;
 
       t4 = new gum::Potential<double>( t1 + t2 );
       t5 = add_test_potentials( t1, t2 );
@@ -328,7 +328,7 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable( s, s, 4 );
       }
 
-      gum::MultiDimArray<float*> t1, t2, t3, *t4, *t5, *t6, *t7;
+      gum::MultiDimArray<float *> t1, t2, t3, *t4, *t5, *t6, *t7;
 
       t1 << *( vars[0] ) << *( vars[1] ) << *( vars[2] );
       t2 << *( vars[0] ) << *( vars[1] ) << *( vars[5] );
@@ -405,9 +405,9 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable( s, s, 4 );
       }
 
-      gum::MultiDimArray<float*> tt1, tt2, tt3;
+      gum::MultiDimArray<float *> tt1, tt2, tt3;
 
-      gum::MultiDimImplementation<float*>* t4, *t5, *t6, *t7;
+      gum::MultiDimImplementation<float *> *t4, *t5, *t6, *t7;
       tt1 << *( vars[0] ) << *( vars[1] ) << *( vars[2] );
       tt2 << *( vars[0] ) << *( vars[1] ) << *( vars[5] );
       tt3 << *( vars[6] ) << *( vars[4] ) << *( vars[3] );
@@ -491,9 +491,9 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable( s, s, 4 );
       }
 
-      gum::MultiDimArray<float*> t1, t2, t3;
+      gum::MultiDimArray<float *> t1, t2, t3;
 
-      gum::MultiDimImplementation<float*>* t4, *t5;
+      gum::MultiDimImplementation<float *> *t4, *t5;
       t1 << *( vars[0] ) << *( vars[1] ) << *( vars[2] );
       t2 << *( vars[0] ) << *( vars[1] ) << *( vars[5] );
       t3 << *( vars[6] ) << *( vars[4] ) << *( vars[3] );
@@ -529,7 +529,7 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable( s, s, 4 );
       }
 
-      gum::Potential<double*> t1, t2, t3;
+      gum::Potential<double *> t1, t2, t3;
 
       t1 << *( vars[0] ) << *( vars[1] ) << *( vars[2] );
       t2 << *( vars[0] ) << *( vars[1] ) << *( vars[5] );
@@ -539,8 +539,8 @@ namespace gum_tests {
       randomInitPPointer( t2 );
       randomInitPPointer( t3 );
 
-      gum::Potential<double*>* t4, *t6;
-      gum::Potential<double*>* t5, *t7;
+      gum::Potential<double *> *t4, *t6;
+      gum::Potential<double *> *t5, *t7;
 
       t4 = new gum::Potential<double*>( t1 + t2 );
       t5 = add_test_potentials4Pointers( t1, t2 );
@@ -725,7 +725,7 @@ namespace gum_tests {
 
       gum::MultiDimArray<float> tt1, tt2, tt3, tt4;
 
-      gum::MultiDimImplementation<float>* t5, *t6;
+      gum::MultiDimImplementation<float> *t5, *t6;
       tt1 << *( vars[0] ) << *( vars[2] ) << *( vars[1] );
       tt2 << *( vars[0] ) << *( vars[1] ) << *( vars[2] );
       tt3 << *( vars[6] ) << *( vars[0] ) << *( vars[2] );

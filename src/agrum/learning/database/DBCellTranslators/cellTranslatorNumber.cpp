@@ -79,8 +79,9 @@ namespace gum {
         std::sort( user_vals.begin(),
                    user_vals.end(),
                    []( const std::pair<float, unsigned int>& elt1,
-                       const std::pair<float, unsigned int>& elt2 )
-                       -> bool { return elt1.second < elt2.second; } );
+                       const std::pair<float, unsigned int>& elt2 ) -> bool {
+                     return elt1.second < elt2.second;
+                   } );
 
         // restore in the appropriate order the element of __strings
         __values.clear();

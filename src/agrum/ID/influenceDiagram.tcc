@@ -233,8 +233,7 @@ namespace gum {
     else
       output << "  domainSize: " << std::round( std::pow( 10.0, dSize ) );
 
-    output << std::endl
-           << "}";
+    output << std::endl << "}";
 
     return output.str();
   }

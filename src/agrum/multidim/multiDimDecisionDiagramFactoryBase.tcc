@@ -399,9 +399,14 @@ namespace gum {
         GUM_ERROR(
             OperationNotAllowed,
             " This arc does not respect the variable order property. Variable "
-                << _varMap[from]->name() << " tied to node " << from
-                << " is after Variable " << _varMap[to]->name()
-                << " tied to node " << to << " in variable order." );
+                << _varMap[from]->name()
+                << " tied to node "
+                << from
+                << " is after Variable "
+                << _varMap[to]->name()
+                << " tied to node "
+                << to
+                << " in variable order." );
       }
     }
 
@@ -412,8 +417,12 @@ namespace gum {
            (gum::Idx)std::distance( _arcMap[from]->begin(), iter ) == value ) {
         GUM_ERROR( DuplicateElement,
                    " A same (meaning with same value "
-                       << value << " ) arc linking those two nodes " << from
-                       << " -> " << to << " already exist." );
+                       << value
+                       << " ) arc linking those two nodes "
+                       << from
+                       << " -> "
+                       << to
+                       << " already exist." );
         break;
       }
 
@@ -445,16 +454,22 @@ namespace gum {
         GUM_ERROR(
             OperationNotAllowed,
             " This arc does not respect the variable order property. Variable "
-                << _varMap[from]->name() << " tied to node " << from
-                << " is after Variable " << _varMap[to]->name()
-                << " tied to node " << to << " in variable order." );
+                << _varMap[from]->name()
+                << " tied to node "
+                << from
+                << " is after Variable "
+                << _varMap[to]->name()
+                << " tied to node "
+                << to
+                << " in variable order." );
       }
     }
 
     if ( _defaultArcMap.exists( from ) && _defaultArcMap[from] != to )
       GUM_ERROR( DuplicateElement,
                  "A default arc starting from this node "
-                     << from << " already exist." );
+                     << from
+                     << " already exist." );
 
     unsafeAddDefaultArc( from, to );
   }
@@ -527,8 +542,7 @@ namespace gum {
     std::stringstream nonTerminalStream;
     std::stringstream arcstream;
     std::stringstream defaultarcstream;
-    output << std::endl
-           << "digraph \"no_name\" {" << std::endl;
+    output << std::endl << "digraph \"no_name\" {" << std::endl;
 
     terminalStream << "node [shape = box];" << std::endl;
     nonTerminalStream << "node [shape = ellipse];" << std::endl;
@@ -660,8 +674,12 @@ namespace gum {
     if ( _varsSeq.pos( y ) != _varsSeq.pos( x ) + 1 ) {
       GUM_ERROR( OperationNotAllowed,
                  "Swap must be between two adjacent var. Var "
-                     << y->name() << " is at pos " << _varsSeq.pos( y )
-                     << " and var " << x->name() << " at pos "
+                     << y->name()
+                     << " is at pos "
+                     << _varsSeq.pos( y )
+                     << " and var "
+                     << x->name()
+                     << " at pos "
                      << _varsSeq.pos( x ) );
     }
 
@@ -669,7 +687,7 @@ namespace gum {
 
     if ( !_var2NodeIdMap.exists( x ) || !_var2NodeIdMap.exists( y ) ) return;
 
-    List<NodeId>* yNodes = new List<NodeId>(), * xNodes = new List<NodeId>();
+    List<NodeId> *yNodes = new List<NodeId>(), *xNodes = new List<NodeId>();
 
     for ( ListIteratorSafe<NodeId> nodeIter = _var2NodeIdMap[x]->beginSafe();
           nodeIter != _var2NodeIdMap[x]->endSafe();
@@ -926,11 +944,10 @@ namespace gum {
 
     _var2NodeIdMap.clear();
 
-    for (
-        HashTableIteratorSafe<const DiscreteVariable*, std::vector<Idx>*> iter =
-            _varUsedModalitiesMap.beginSafe();
-        iter != _varUsedModalitiesMap.endSafe();
-        ++iter )
+    for ( HashTableIteratorSafe<const DiscreteVariable*, std::vector<Idx>*>
+              iter = _varUsedModalitiesMap.beginSafe();
+          iter != _varUsedModalitiesMap.endSafe();
+          ++iter )
       delete iter.val();
 
     _varUsedModalitiesMap.clear();

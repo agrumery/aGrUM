@@ -584,22 +584,19 @@ namespace gum {
       std::string LpExpr::toString() const {
         std::ostringstream s;
 
-        s << std::endl
-          << "left side : " << std::endl;
+        s << std::endl << "left side : " << std::endl;
 
         if ( __lCoeffs != nullptr )
           for ( const auto& elt : *__lCoeffs )
             s << elt.first.toString() << " " << elt.second << " | ";
 
-        s << std::endl
-          << "middle side : " << std::endl;
+        s << std::endl << "middle side : " << std::endl;
 
         if ( __mCoeffs != nullptr )
           for ( const auto& elt : *__mCoeffs )
             s << elt.first.toString() << " " << elt.second << " | ";
 
-        s << std::endl
-          << "right side : " << std::endl;
+        s << std::endl << "right side : " << std::endl;
 
         if ( __rCoeffs != nullptr )
           for ( const auto& elt : *__rCoeffs )
@@ -871,7 +868,8 @@ namespace gum {
           GUM_ERROR( OperationNotAllowed,
                      "LpInterface::addCols ( cols ) : cols "
                      "needs must be equal or greater than 1 : "
-                         << cols << " < 1" );
+                         << cols
+                         << " < 1" );
 
         for ( unsigned int i = 0; i < cols; i++ ) {
           __cols.push_back( LpCol( __cols.size() ) );
@@ -885,7 +883,8 @@ namespace gum {
         if ( !expr.__ileft && !expr.__iright )
           GUM_ERROR( OperationNotAllowed,
                      "addRow ( const LpExpr & expr ) : expr : "
-                         << expr.toString() << "is not an inequality." );
+                         << expr.toString()
+                         << "is not an inequality." );
 
         if ( ( expr.__ileft && !expr.__iright ) ||
              ( !expr.__ileft && expr.__iright ) ) {
@@ -908,7 +907,8 @@ namespace gum {
         if ( !expr.__ileft && !expr.__iright )
           GUM_ERROR( OperationNotAllowed,
                      "addRow ( const LpExpr & expr ) : expr : "
-                         << expr.toString() << "is not an inequality." );
+                         << expr.toString()
+                         << "is not an inequality." );
 
         if ( ( expr.__ileft && !expr.__iright ) ||
              ( !expr.__ileft && expr.__iright ) ) {
@@ -1021,9 +1021,7 @@ namespace gum {
       std::string LpInterface<GUM_SCALAR>::toString() const {
         std::ostringstream s;
 
-        s << std::endl
-          << std::endl
-          << "Variables : " << std::endl;
+        s << std::endl << std::endl << "Variables : " << std::endl;
 
         for ( const auto& col : __cols )
           s << " " << col.toString();
@@ -1031,11 +1029,9 @@ namespace gum {
         s << std::endl;
 
         for ( const auto& row : __rows )
-          s << std::endl
-            << row->toString();
+          s << std::endl << row->toString();
 
-        s << std::endl
-          << std::endl;
+        s << std::endl << std::endl;
 
         return s.str();
       }

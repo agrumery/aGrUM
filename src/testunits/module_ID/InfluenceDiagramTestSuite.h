@@ -80,8 +80,7 @@ namespace gum_tests {
         id.addArc( idList[3], idList[10] );
 
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl
-                  << e.errorContent() << std::endl;
+        std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
     }
@@ -154,18 +153,17 @@ namespace gum_tests {
           u2.fillWith( v );
         }
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl
-                  << e.errorContent() << std::endl;
+        std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
     }
 
     public:
-    gum::LabelizedVariable* decisionVar1, *decisionVar2, *decisionVar3,
+    gum::LabelizedVariable *decisionVar1, *decisionVar2, *decisionVar3,
         *decisionVar4;
-    gum::LabelizedVariable* chanceVar1, *chanceVar2, *chanceVar3, *chanceVar4,
+    gum::LabelizedVariable *chanceVar1, *chanceVar2, *chanceVar3, *chanceVar4,
         *chanceVar5;
-    gum::LabelizedVariable* utilityVar1, *utilityVar2;
+    gum::LabelizedVariable *utilityVar1, *utilityVar2;
 
     void setUp() {
       decisionVar1 = new gum::LabelizedVariable( "decisionVar1", "D1", 2 );

@@ -41,7 +41,7 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE GraphChange::GraphChange( const GraphChange& from ) noexcept
+    INLINE GraphChange::GraphChange( const GraphChange &from ) noexcept
         : __type{from.__type},
           __node1{from.__node1},
           __node2{from.__node2} {
@@ -49,7 +49,7 @@ namespace gum {
     }
 
     /// move constructor
-    INLINE GraphChange::GraphChange( GraphChange&& from ) noexcept
+    INLINE GraphChange::GraphChange( GraphChange &&from ) noexcept
         : __type{from.__type},
           __node1{from.__node1},
           __node2{from.__node2} {

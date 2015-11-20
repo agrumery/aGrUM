@@ -38,7 +38,7 @@ namespace gum {
         const RowFilter& filter,
         const std::vector<unsigned int>& var_modalities,
         unsigned long min_range,
-        unsigned long max_range  )
+        unsigned long max_range )
         : _modalities( var_modalities )
         , _record_counter( filter, var_modalities, min_range, max_range ) {
       // for debugging purposes
@@ -92,10 +92,11 @@ namespace gum {
           nodesets[j] = &( _target_nodesets[i]->first );
         }
       }
-      for (
-          unsigned int i = 0, j = 0, size = from._conditioning_nodesets.size();
-          i < size;
-          ++i ) {
+      for ( unsigned int i = 0,
+                         j = 0,
+                         size = from._conditioning_nodesets.size();
+            i < size;
+            ++i ) {
         if ( from._conditioning_nodesets[i] != nullptr ) {
           while ( from_nodesets[j] !=
                   &( from._conditioning_nodesets[i]->first ) ) {
@@ -516,11 +517,11 @@ namespace gum {
     /// sets the range of records taken into account by the counter
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE void
-    Counter<IdSetAlloc, CountAlloc>::setRange ( unsigned long min_range,
-                                                unsigned long max_range ) {
-      return _record_counter.setRange ( min_range, max_range );
+    Counter<IdSetAlloc, CountAlloc>::setRange( unsigned long min_range,
+                                               unsigned long max_range ) {
+      return _record_counter.setRange( min_range, max_range );
     }
-    
+
 
   } /* namespace learning */
 

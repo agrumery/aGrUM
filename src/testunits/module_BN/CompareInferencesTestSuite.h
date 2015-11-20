@@ -227,7 +227,7 @@ namespace gum_tests {
       bn->addArc( s, w );
       bn->addArc( r, w );
 
-      gum::Potential<float>* e_i1, *e_i4;
+      gum::Potential<float> *e_i1, *e_i4;
       e_i1 = new gum::Potential<float>();
       ( *e_i1 ) << bn->variable( c );
       e_i1->fill( (float)0 );

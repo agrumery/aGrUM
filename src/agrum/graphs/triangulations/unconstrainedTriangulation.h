@@ -50,7 +50,8 @@ namespace gum {
     /// @{
 
     /// initialize the triangulation data structures for a new graph
-    /** @param theGraph the graph to be triangulated, i.e., the nodes of which will
+    /** @param theGraph the graph to be triangulated, i.e., the nodes of which
+     * will
      * be eliminated
      * @param modal the domain sizes of the nodes to be eliminated
      * @warning note that, by aGrUM's rule, the graph and the modalities are not

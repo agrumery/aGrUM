@@ -70,8 +70,7 @@ namespace gum_tests {
         id.addArc( idList[3], idList[5] );
 
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl
-                  << e.errorContent() << std::endl;
+        std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
     }
@@ -120,8 +119,7 @@ namespace gum_tests {
         }
 
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl
-                  << e.errorContent() << std::endl;
+        std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
     }
@@ -166,8 +164,7 @@ namespace gum_tests {
         id.addArc( idList[9], idList[8] );
 
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl
-                  << e.errorCallStack() << std::endl;
+        std::cerr << std::endl << e.errorCallStack() << std::endl;
         throw;
       }
     }
@@ -268,24 +265,23 @@ namespace gum_tests {
         }
 
       } catch ( gum::Exception& e ) {
-        std::cerr << std::endl
-                  << e.errorContent() << std::endl;
+        std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
     }
 
     public:
     // OilWildcater test variable
-    gum::LabelizedVariable* TestVar, *DrillVar;
-    gum::LabelizedVariable* ResultTestVar, *OilAmountVar;
-    gum::LabelizedVariable* TestUtilityVar, *DrillingUtilityVar;
+    gum::LabelizedVariable *TestVar, *DrillVar;
+    gum::LabelizedVariable *ResultTestVar, *OilAmountVar;
+    gum::LabelizedVariable *TestUtilityVar, *DrillingUtilityVar;
 
     // Dec-Asia test variable
-    gum::LabelizedVariable* HospitalizeVar, *TakeXRayVar;
-    gum::LabelizedVariable* SmokingVar, *BronchitisVar, *LungCancerVar,
+    gum::LabelizedVariable *HospitalizeVar, *TakeXRayVar;
+    gum::LabelizedVariable *SmokingVar, *BronchitisVar, *LungCancerVar,
         *EitherVar, *DyspnoeaVar, *PositiveXRayVar, *TubercolisisVar,
         *VisitAsiaVar;
-    gum::LabelizedVariable* HospitalizationUtilityVar, *TakingXRayUtilityVar;
+    gum::LabelizedVariable *HospitalizationUtilityVar, *TakingXRayUtilityVar;
 
     void setUp() {
       TestVar = new gum::LabelizedVariable( "T", "Test", 2 );

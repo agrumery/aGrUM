@@ -106,7 +106,8 @@ namespace gum {
     for ( Idx i = 1; i < MultiDimImplementation<GUM_SCALAR>::nbrDim(); i++ ) {
       s << MultiDimImplementation<GUM_SCALAR>::variable( i ) << "["
         << this->causalWeight(
-               MultiDimImplementation<GUM_SCALAR>::variable( i ) ) << "]";
+               MultiDimImplementation<GUM_SCALAR>::variable( i ) )
+        << "]";
     }
 
     s << ")";

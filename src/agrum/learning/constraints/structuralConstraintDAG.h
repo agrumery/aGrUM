@@ -199,7 +199,7 @@ namespace gum {
 #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintDAG
 #include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
 #undef GUM_CONSTRAINT_CLASS_NAME
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
       protected:
       /// the cycle detector used to check quickly graph modifications

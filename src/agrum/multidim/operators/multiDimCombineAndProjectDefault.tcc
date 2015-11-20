@@ -106,11 +106,10 @@ namespace gum {
         const Sequence<const DiscreteVariable*>& iter_vars =
             ( *iter )->variablesSequence();
 
-        for (
-            typename Sequence<const DiscreteVariable*>::const_iterator_safe it =
-                iter_vars.beginSafe();
-            it != iter_vars.endSafe();
-            ++it ) {
+        for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+                  it = iter_vars.beginSafe();
+              it != iter_vars.endSafe();
+              ++it ) {
           all_vars.insert( *it );
         }
       }
@@ -419,11 +418,10 @@ namespace gum {
             ++iter ) {
         const Sequence<const DiscreteVariable*>& iter_vars = **iter;
 
-        for (
-            typename Sequence<const DiscreteVariable*>::const_iterator_safe it =
-                iter_vars.beginSafe();
-            it != iter_vars.endSafe();
-            ++it ) {
+        for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+                  it = iter_vars.beginSafe();
+              it != iter_vars.endSafe();
+              ++it ) {
           all_vars.insert( *it );
         }
       }
@@ -731,11 +729,10 @@ namespace gum {
             ++iter ) {
         const Sequence<const DiscreteVariable*>& iter_vars = **iter;
 
-        for (
-            typename Sequence<const DiscreteVariable*>::const_iterator_safe it =
-                iter_vars.beginSafe();
-            it != iter_vars.endSafe();
-            ++it ) {
+        for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+                  it = iter_vars.beginSafe();
+              it != iter_vars.endSafe();
+              ++it ) {
           all_vars.insert( *it );
         }
       }

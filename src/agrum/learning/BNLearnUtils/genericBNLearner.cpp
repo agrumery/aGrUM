@@ -171,7 +171,8 @@ namespace gum {
                       str << "Column " << 1 + iter.key()
                           << " contains modality '" << row[i].getString()
                           << "' which has not been specified by the user in "
-                             "line " << the_handler.numRow();
+                             "line "
+                          << the_handler.numRow();
                       errors[this_thread].first = i;
                       errors[this_thread].second = str.str();
                       has_errors = true;
@@ -191,7 +192,8 @@ namespace gum {
                       str2 << "Column " << 1 + iter.key()
                            << " contains modality '" << str.str()
                            << "' which has not been specified by the user in "
-                              "line " << the_handler.numRow();
+                              "line "
+                           << the_handler.numRow();
                       errors[this_thread].first = i;
                       errors[this_thread].second = str2.str();
                       has_errors = true;
@@ -349,8 +351,8 @@ namespace gum {
 
     genericBNLearner::Database::~Database() { delete __row_filter; }
 
-    genericBNLearner::Database&
-    genericBNLearner::Database::operator=( const Database& from ) {
+    genericBNLearner::Database& genericBNLearner::Database::
+    operator=( const Database& from ) {
       if ( this != &from ) {
         delete __row_filter;
         __row_filter = nullptr;
@@ -372,8 +374,8 @@ namespace gum {
       return *this;
     }
 
-    genericBNLearner::Database&
-    genericBNLearner::Database::operator=( Database&& from ) {
+    genericBNLearner::Database& genericBNLearner::Database::
+    operator=( Database&& from ) {
       if ( this != &from ) {
         delete __row_filter;
         __row_filter = nullptr;

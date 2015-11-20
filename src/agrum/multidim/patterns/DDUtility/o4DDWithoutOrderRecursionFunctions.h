@@ -241,8 +241,8 @@ namespace gum {
             opData.DD1->unsafeNodeVariable( leaderCurrentNode )->domainSize();
 
         for ( Idx modality = 0;
-              modality < opData.DD1->unsafeNodeVariable( leaderCurrentNode )
-                             ->domainSize();
+              modality <
+              opData.DD1->unsafeNodeVariable( leaderCurrentNode )->domainSize();
               modality++ ) {
 
           if ( ( *leaderSonsMap )[modality] == 0 &&

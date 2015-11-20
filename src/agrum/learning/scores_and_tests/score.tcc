@@ -38,8 +38,8 @@ namespace gum {
         Apriori<IdSetAlloc, CountAlloc>& apriori,
         unsigned long min_range,
         unsigned long max_range )
-      : Counter<IdSetAlloc, CountAlloc>( filter, var_modalities,
-                                         min_range, max_range )
+        : Counter<IdSetAlloc, CountAlloc>(
+              filter, var_modalities, min_range, max_range )
         , _apriori( &apriori ) {
       GUM_CONSTRUCTOR( Score );
     }
@@ -220,16 +220,16 @@ namespace gum {
       return _apriori->getConditioningApriori( index );
     }
 
-    
+
     /// sets the range of records taken into account by the counter
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE void
-    Score<IdSetAlloc, CountAlloc>::setRange ( unsigned long min_range,
-                                              unsigned long max_range ) {
-      Counter<IdSetAlloc, CountAlloc>::setRange ( min_range, max_range );
+    Score<IdSetAlloc, CountAlloc>::setRange( unsigned long min_range,
+                                             unsigned long max_range ) {
+      Counter<IdSetAlloc, CountAlloc>::setRange( min_range, max_range );
     }
 
-    
+
   } /* namespace learning */
 
 } /* namespace gum */

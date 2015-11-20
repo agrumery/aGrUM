@@ -91,11 +91,10 @@ namespace gum {
           ++iter )
       delete iter.val();
 
-    for (
-        HashTableIteratorSafe<const DiscreteVariable*, std::vector<Idx>*> iter =
-            __varUsedModalitiesMap.beginSafe();
-        iter != __varUsedModalitiesMap.endSafe();
-        ++iter )
+    for ( HashTableIteratorSafe<const DiscreteVariable*, std::vector<Idx>*>
+              iter = __varUsedModalitiesMap.beginSafe();
+          iter != __varUsedModalitiesMap.endSafe();
+          ++iter )
       delete iter.val();
   }
 
@@ -446,8 +445,7 @@ namespace gum {
     std::stringstream nonTerminalStream;
     std::stringstream arcstream;
     std::stringstream defaultarcstream;
-    output << std::endl
-           << "digraph \"" << graphName << "\" {" << std::endl;
+    output << std::endl << "digraph \"" << graphName << "\" {" << std::endl;
 
     terminalStream << "node [shape = box];" << std::endl;
     nonTerminalStream << "node [shape = ellipse];" << std::endl;
@@ -1215,7 +1213,7 @@ namespace gum {
     for ( SetIteratorSafe<const DiscreteVariable*> nodeParentsVarIter =
               ( *preceedingVariablesTable )[currentNode]->beginSafe();
           nodeParentsVarIter !=
-              ( *preceedingVariablesTable )[currentNode]->endSafe();
+          ( *preceedingVariablesTable )[currentNode]->endSafe();
           ++nodeParentsVarIter )
       if ( varsSeq->pos( *nodeParentsVarIter ) >
            varsSeq->pos( this->nodeVariable( currentNode ) ) ) {

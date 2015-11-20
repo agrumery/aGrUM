@@ -189,7 +189,7 @@ namespace gum {
 #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintForbiddenArcs
 #include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
 #undef GUM_CONSTRAINT_CLASS_NAME
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
       protected:
       /// the ForbiddenArcs on which we perform checks

@@ -174,7 +174,9 @@ namespace gum {
         GUM_ERROR( OutOfBounds,
                    "LRSWrapper< GUM_SCALAR >::fillH : modality is "
                    "greater or equal than cardinality : "
-                       << modal << " >= " << __card );
+                       << modal
+                       << " >= "
+                       << __card );
 
       __input[modal * 2][0] = -min;
       __input[modal * 2][modal + 1] = 1;
@@ -203,7 +205,9 @@ namespace gum {
         GUM_ERROR( OutOfBounds,
                    "LRSWrapper< GUM_SCALAR >::fillMatrix : size is "
                    "different than cardinality : "
-                       << ( matrix[0].size() - 1 ) << " != " << __card );
+                       << ( matrix[0].size() - 1 )
+                       << " != "
+                       << __card );
 
       __input = matrix;
 
@@ -228,7 +232,8 @@ namespace gum {
         GUM_ERROR(
             OutOfBounds,
             "LRSWrapper< GUM_SCALAR >::fillV : input is already full with "
-                << __vertices << " vertices." );
+                << __vertices
+                << " vertices." );
 
       bool eq = true;
 

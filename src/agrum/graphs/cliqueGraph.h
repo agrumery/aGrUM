@@ -87,7 +87,7 @@ namespace gum {
     /// @{
 
     /// inserts a new edge between two cliques
-    /** 
+    /**
      * @param first the id of one extremity of the new edge to be inserted
      * @param second the id of the other extremity of the new edge to be
      * inserted

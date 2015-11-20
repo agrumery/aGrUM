@@ -134,7 +134,7 @@ namespace gum {
          * order these modalities should be stored into the nodes. For instance,
          * if modalities = { 1 -> {True, False, Big} }, then the node of id 1
          * in the BN will have 3 modalities, the first one being True, the
-         * second one being False, and the third bein Big. 
+         * second one being False, and the third bein Big.
          * @param check_database If true, the database will be checked.
          *
          */
@@ -166,7 +166,7 @@ namespace gum {
          * order these modalities should be stored into the nodes. For
          * instance, if modalities = { 1 -> {True, False, Big} }, then the node
          * of id 1 in the BN will have 3 modalities, the first one being True,
-         * the second one being False, and the third bein Big. 
+         * the second one being False, and the third bein Big.
          */
         Database( std::string filename,
                   Database& score_database,
