@@ -308,7 +308,8 @@ def showEntropy(bn,evs,size="4",cmap=INFOcmap):
                               "</div>"))
 
 
-def showInference(bn,evs,size="7"):
+def showInference(bn,evs={},targets={},size="7"):
+    # targets={} => each node is a target    
     format='png'
     ie=gum.LazyPropagation(bn)
     ie.setEvidence(evs)
@@ -316,14 +317,18 @@ def showInference(bn,evs,size="7"):
     from tempfile import TemporaryDirectory
     with TemporaryDirectory() as temp_dir:
         dotstr ="digraph structs {\n"
-        dotstr+="  node [shape=rectangle,fillcolor=floralwhite, style=filled,color=grey];\n"
+        dotstr+="  node [fillcolor=floralwhite, style=filled,color=grey];\n"
 
         for i in bn.ids():
             name=bn.variable(i).name()
-            filename=temp_dir+name+"."+format
-            saveFigProba(ie.posterior(i),filename)
-            fill=" ,fillcolor=sandybrown" if name in evs else ""
-            dotstr+=' "{0}" [image="{1}", label=""{2}];\n'.format(name,filename,fill)
+            if len(targets)==0 or name in targets:
+              filename=temp_dir+name+"."+format
+              saveFigProba(ie.posterior(i),filename)
+              fill=" ,fillcolor=sandybrown" if name in evs else ""
+              dotstr+=' "{0}" [shape=rectangle,image="{1}", label=""{2}];\n'.format(name,filename,fill)
+            else:
+              fill=" [fillcolor=sandybrown]" if name in evs else ""
+              dotstr+=' "{0}" {1}'.format(name,fill)
         for (i,j) in bn.arcs():
             dotstr+=' "{0}"->"{1}";'.format(bn.variable(i).name(),bn.variable(j).name())
         dotstr+='}'
