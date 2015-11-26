@@ -20,6 +20,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#include <agrum/config.h>
+
 // to ease parsing in IDE
 #include <agrum/BN/io/BIF/BIFWriter.h>
 
@@ -170,7 +172,7 @@ namespace gum {
     std::stringstream str;
     std::string tab = "   ";  // poor tabulation
     str << std::endl
-        << "network " << bn.propertyWithDefault( "name", "unnamedBN" ) << "{"
+        << "network \"" << bn.propertyWithDefault( "name", "unnamedBN" ) << "\" {"
         << std::endl;
     str << tab << "property"
         << " software aGrUM" << GUM_VERSION << ";" << std::endl;
