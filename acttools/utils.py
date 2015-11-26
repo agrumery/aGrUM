@@ -32,7 +32,8 @@ def about():
   print("")
 
 def setifyString(s):
-  return set(filter(None,s.split("+"))) # filter to setify "a++b+c" into set(['a','b','c'])
+  # special case for accepting agrum instead of 'aGrUM'
+  return set(map(lambda x:'aGrUM' if x=='agrum' else x,filter(None,s.split("+")))) # filter to setify "a++b+c" into set(['a','b','c'])
 
 def safe_cd(current,folder):
   trace(current,"cd "+folder)

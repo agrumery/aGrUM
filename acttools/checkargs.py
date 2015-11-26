@@ -76,8 +76,9 @@ def checkCurrent(current,options,args):
 
   bT=bA=bM=False
   # fixing args
-  for arg in args:
-    t=setifyString(arg)
+  for ar in args:
+    t=setifyString(ar)
+    arg="+".join(t)
     if update(current,'targets',t,t.issubset(cfg.targets)):
       if bT:
         error("Targets overwritten by [{0}]".format("+".join(t)))
