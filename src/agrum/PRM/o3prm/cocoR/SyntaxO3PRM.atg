@@ -500,8 +500,11 @@ CPTRuleValue<. std::string& s .> =
 Aggregate<std::string type, std::string name> =
                     (. std::string func, s; std::vector<std::string> chains, labels; .)
     '=' word        (. func = narrow(t->val); .)
-    '(' AggChains<chains> WEAK ',' AggLabels<labels> { ',' AggLabels<labels> }
-    ')'             (. TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) .)
+    '(' AggChains<chains> (
+          ')' (. TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) .) 
+        | WEAK ',' AggLabels<labels> { ',' AggLabels<labels> } ')' 
+          (. TRY2(factory().addAggregator(name, func, chains, labels), "Can not create aggregator "+name) .)
+        )
     SYNC ';'
     .
 
