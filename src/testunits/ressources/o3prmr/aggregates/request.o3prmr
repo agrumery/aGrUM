@@ -1,0 +1,9 @@
+import aggregates;
+
+request MyRequest {
+
+  engine SVE;
+  ? aggregates.aSys.happy.happy;
+
+}
+
