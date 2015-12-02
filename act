@@ -51,6 +51,7 @@ def main():
   # from now, current contains the specification
 
   # looking at special commands (clean/show/etc.)
+  t0=t1=t2=t3=0
   if not specialActions(current):
     # creating "classical" compilation from cmake/make/postprocess
     safe_cd(current,"build")
@@ -67,6 +68,7 @@ def main():
 
     safe_cd(current,"..")
     safe_cd(current,"..")
+
   return (t1-t0,t2-t1,t3-t2)
 
 import traceback
@@ -74,7 +76,8 @@ import sys
 if __name__ == "__main__":
     try:
       tc,tm,tp=main()
-      notif("Time spent in cmake : [{0:0.2f}] ms , make : [{1:0.2f}] ms and post : [{2:0.2f}] ms ".format(tc*1000,tm*1000,tp*1000))
+      if tc+tm+tp!=0:
+        notif("Time spent in cmake : [{0:0.2f}] ms , make : [{1:0.2f}] ms and post : [{2:0.2f}] ms ".format(tc*1000,tm*1000,tp*1000))
     except KeyboardInterrupt:
       print("\n Shutdown requested...exiting \n")
       sys.exit(1)
