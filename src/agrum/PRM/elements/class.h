@@ -122,6 +122,8 @@ namespace gum {
       // ========================================================================
       /// @{
 
+      virtual bool isOutputNode( const ClassElement<GUM_SCALAR>& elt ) const;
+
       /**
        * @brief Return true if the attribute named safe_name is a cast
        * descendant.

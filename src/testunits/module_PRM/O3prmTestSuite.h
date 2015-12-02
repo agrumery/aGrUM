@@ -1555,6 +1555,28 @@ namespace gum_tests {
         GUM_TRACE( e.errorCallStack() );
       }
     }
+
+    void testStrangeBug() {
+      try {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH( "o3prm/acteurs.o3prm" );
+        std::string package = "";
+        // Act
+        TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+        // Assert
+        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+        if ( reader.errors() ) {
+          reader.showElegantErrorsAndWarnings();
+        }
+        TS_ASSERT_DIFFERS( reader.prm(), nullptr );
+        delete reader.prm();
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+        GUM_TRACE( e.errorContent() );
+        GUM_TRACE( e.errorCallStack() );
+      }
+    }
   };
 
 }  // namespace gum_tests
