@@ -83,7 +83,7 @@ namespace gum {
           break;
         }
       Idx maxR = maxVal;
-      for ( Idx j = maxVal - 1, sumcum = 0; j >= 0; j-- )
+      for ( Idx j = maxVal - 1, jj = 0, sumcum = 0; jj < maxVal; jj++, j-- )
         if ( ( sumcum += cum[j] ) >= half ) {
           maxR = j;
           break;

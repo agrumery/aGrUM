@@ -21,8 +21,10 @@
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
 from __future__ import print_function
+import time
 
 from acttools import *
+from acttools.utils import notif
 
 def main():
   ##
@@ -55,18 +57,24 @@ def main():
     safe_cd(current,current["mode"])
 
     for target in current["targets"]:
-        buildCmake(current,target)
-        buildMake(current,target)
-        buildPost(current,target)
+      t0 = time.time()
+      buildCmake(current,target)
+      t1 = time.time()
+      buildMake(current,target)
+      t2 = time.time()
+      buildPost(current,target)
+      t3 = time.time()
 
     safe_cd(current,"..")
     safe_cd(current,"..")
+  return (t1-t0,t2-t1,t3-t2)
 
 import traceback
 import sys
 if __name__ == "__main__":
     try:
-      main()
+      tc,tm,tp=main()
+      notif("Time spent in cmake : [{0:0.2f}] ms , make : [{1:0.2f}] ms and post : [{2:0.2f}] ms ".format(tc*1000,tm*1000,tp*1000))
     except KeyboardInterrupt:
       print("\n Shutdown requested...exiting \n")
       sys.exit(1)
