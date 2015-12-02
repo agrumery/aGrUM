@@ -5,6 +5,9 @@ ACT=./act --no-fun
 
 JOBS=2
 
+last:
+	$(ACT)
+	
 library:
 	$(ACT) lib release aGrUM -j $(JOBS)
 
@@ -40,9 +43,6 @@ pyAgrum:
 
 clean:
 	$(ACT) clean
-
-last:
-	$(ACT)
 
 doc:
 	$(ACT) doc release aGrUM
