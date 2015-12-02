@@ -97,7 +97,7 @@ namespace gum {
     static constexpr bool default_uniqueness_policy{true};
   };
 
-  // Doxygen raises warning with following comment bloc
+  // Doxygen raises warning with the following comment bloc
   // @brief Prints the content of a gum::HashTableList in the stream.
   // @ingroup hashtable_group
   // @param s The s used to print the gum::HashTableList.
@@ -115,7 +115,7 @@ namespace gum {
   std::ostream& operator<<( std::ostream& s,
                             const HashTableList<Key, Val, Alloc>& list );
 
-  // Doxygen raises warning with following comment bloc
+  // Doxygen raises warning with the following comment bloc
   // @brief Prints the content of a gum::HashTableList with pointers key in the
   // stream.
   // @ingroup hashtable_group
@@ -136,7 +136,7 @@ namespace gum {
   std::ostream& operator<<( std::ostream& s,
                             const HashTableList<Key*, Val, Alloc>& list );
 
-  // Doxygen raises warning with following comment bloc
+  // Doxygen raises warning with the following comment bloc
   // @brief Prints the content of a gum::HashTable in the stream.
   // @ingroup hashtable_group
   // @param s The stream used to print the gum::HashTable.
@@ -154,7 +154,7 @@ namespace gum {
   std::ostream& operator<<( std::ostream& s,
                             const HashTable<Key, Val, Alloc>& table );
 
-  // Doxygen raises warning with following comment bloc
+  // Doxygen raises warning with the following comment bloc
   // @brief Prints the content of a gum::HashTable with pointers key in the
   // stream.
   // @ingroup hashtable_group
@@ -705,7 +705,6 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    /// Default constructor
     /**
      * @brief Default constructor.
      *
@@ -734,7 +733,6 @@ namespace gum {
      */
     explicit HashTable( std::initializer_list<std::pair<Key, Val>> list );
 
-    /// copy constructor
     /**
      * @brief Copy constructor.
      *
@@ -749,9 +747,8 @@ namespace gum {
      */
     HashTable( const HashTable<Key, Val, Alloc>& from );
 
-    /// generalized copy constructor
     /**
-     * @brief generalized copy constructor.
+     * @brief Generalized copy constructor.
      *
      * This creates a new hashtable the content of which is similar to that of
      * the table passed in argument. Beware: similar does not mean that both
@@ -808,7 +805,6 @@ namespace gum {
      */
     const const_iterator& end() const noexcept;
 
-    ///
     /**
      * @brief Returns the unsafe const_iterator pointing to the end of the
      * hashtable.
@@ -1344,7 +1340,6 @@ namespace gum {
      */
     value_type& insert( Key&& key, Val&& val );
 
-    ///
     /**
      * @brief Adds a new element (actually a copy of this element) into the
      * hash table.
@@ -1366,7 +1361,6 @@ namespace gum {
      */
     value_type& insert( const std::pair<Key, Val>& elt );
 
-    ///
     /**
      * @brief Moves a new element in the hash table.
      *
@@ -1477,7 +1471,6 @@ namespace gum {
      */
     void erase( const Key& key );
 
-    ///
     /**
      * @brief Removes a given element from the hash table.
      *
@@ -1546,7 +1539,6 @@ namespace gum {
      */
     const Key& key( const Key& key ) const;
 
-    ///
     /**
      * @brief Removes all the elements having a certain value from the hash
      * table.
@@ -1560,7 +1552,6 @@ namespace gum {
      *
      */
     void eraseAllVal( const Val& val );
-
 
     /**
      * @brief Removes all the elements in the hash table.

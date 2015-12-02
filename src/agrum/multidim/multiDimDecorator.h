@@ -37,37 +37,32 @@
 
 namespace gum {
 
-  /* ===========================================================================
-   */
-  /* ===========================================================================
-   */
-  /* ===                         GUM_ALGEBRAIC_ELEMENT                       ===
-   */
-  /* ===========================================================================
-   */
-  /* ===========================================================================
-   */
-  /** @class MultiDimDecorator
-   * @brief decorator design pattern in order to separate implementations
-   * (array,tree,etc.) for MultiDim concept (potential, CPF, utility Table,
-   *etc.)
+  // ===========================================================================
+  // ===========================================================================
+  // ===                         GUM_ALGEBRAIC_ELEMENT                       ===
+  // ===========================================================================
+  // ===========================================================================
+
+  /**
+   * @class MultiDimDecorator
+   * @headerfile multiDimDecorator.h <agrum/multidim/multiDimDecorator.h>
    * @ingroup multidim_group
    *
+   * @brief decorator design pattern in order to separate implementations
+   * (array,tree,etc.) for MultiDim concept (potential, CPF, utility Table,
+   * etc.)
+   *
    * A MultiDimDecorator is a virtual class for all encapsulation of
-   * MultiDimImplementation * (for instance probability, utility, etc.).
-   * It implements a decorator design pattern in order to have a
-   *array/tree/sparse
+   * MultiDimImplementation * (for instance probability, utility, etc.).  It
+   * implements a decorator design pattern in order to have a array/tree/sparse
    * matrix/... implementation for multiDim<*GUM_SCALAR*>
    */
-  /* ===========================================================================
-   */
   template <typename GUM_SCALAR>
-
   class MultiDimDecorator : public MultiDimContainer<GUM_SCALAR> {
     public:
-    // ############################################################################
+    // ============================================================================
     /// @name Constructors / Destructors
-    // ############################################################################
+    // ============================================================================
     /// @{
 
     /// Constructor.
@@ -79,19 +74,21 @@ namespace gum {
     ~MultiDimDecorator();
 
     /// @}
-
-    // ############################################################################
+    // ============================================================================
     /// @name Accessors / Modifiers
-    // ############################################################################
+    // ============================================================================
     /// @{
 
-    /// Get the size of domains - final method.
-    virtual Size domainSize() const /* final */;
+    /**
+     * @brief Get the size of domains - final method.
+     * @return Return the domains size.
+     */
+    virtual Size domainSize() const;
 
     /**
-     * Add a new var to the sequence of vars.
+     * @brief Add a new var to the sequence of vars.
      * @param v The new var.
-     * @throw DuplicateElement
+     * @throw DuplicateElement Raised when v is already in the MultiDimDecorator.
      */
     virtual void add( const DiscreteVariable& v );
 
@@ -169,8 +166,10 @@ namespace gum {
      * that the generated object has the same type than the object containing
      * the called newFactory()
      * For example :
+     * @code
      *   MultiDimArray<double> y;
      *   MultiDimContainer<double>* x = y.newFactory();
+     * @endcode
      * Then x is a MultiDimArray<double>*
      *
      * @warning you must desallocate by yourself the memory
