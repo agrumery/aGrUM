@@ -96,16 +96,6 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE bool ClassElementContainer<GUM_SCALAR>::isOutputNode(
-        const ClassElement<GUM_SCALAR>& elt ) const {
-      try {
-        return _getIOFlag( elt ).second;
-      } catch ( NotFound& ) {
-        return false;
-      }
-    }
-
-    template <typename GUM_SCALAR>
     INLINE void ClassElementContainer<GUM_SCALAR>::setOutputNode(
         const ClassElement<GUM_SCALAR>& elt, bool b ) {
       if ( not exists( elt.safeName() ) ) {

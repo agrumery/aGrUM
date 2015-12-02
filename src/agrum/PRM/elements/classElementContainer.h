@@ -218,7 +218,7 @@ namespace gum {
        * @param elt A ClassElement<GUM_SCALAR>.
        * @return Returns true if id is an input node.
        */
-      virtual bool isOutputNode( const ClassElement<GUM_SCALAR>& elt ) const;
+      virtual bool isOutputNode( const ClassElement<GUM_SCALAR>& elt ) const =0;
 
       /**
        * @brief Set the output flag value of id at b.

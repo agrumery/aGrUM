@@ -316,16 +316,16 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Interface<GUM_SCALAR>::_updateDescendants(
         const ClassElement<GUM_SCALAR>& elt ) {
-      for ( const auto ext : __extensions )
-        if ( !ext->isOutputNode( elt ) ) ext->setOutputNode( elt, true );
+      //for ( const auto ext : __extensions )
+      //  if ( !ext->isOutputNode( elt ) ) ext->setOutputNode( elt, true );
 
-      for ( const auto impl : __implementations ) {
-        // Because of cyclic dependencies we must use a reinterpret cast.
-        ClassElementContainer<GUM_SCALAR>* c =
-            reinterpret_cast<ClassElementContainer<GUM_SCALAR>*>( impl );
+      //for ( const auto impl : __implementations ) {
+      //  // Because of cyclic dependencies we must use a reinterpret cast.
+      //  ClassElementContainer<GUM_SCALAR>* c =
+      //      reinterpret_cast<ClassElementContainer<GUM_SCALAR>*>( impl );
 
-        if ( not c->isOutputNode( elt ) ) c->setOutputNode( elt, true );
-      }
+      //  if ( not c->isOutputNode( elt ) ) c->setOutputNode( elt, true );
+      //}
     }
 
     template <typename GUM_SCALAR>
@@ -502,6 +502,30 @@ namespace gum {
         set.insert( ext );
         ext->_findAllSubtypes( set );
       }
+    }
+
+    template <typename GUM_SCALAR>
+    INLINE bool Interface<GUM_SCALAR>::isOutputNode(
+        const ClassElement<GUM_SCALAR>& elt ) const {
+      try {
+        if ( not this->_getIOFlag( elt ).second ) {
+
+          for ( auto i : __implementations ) {
+            if ( i->isOutputNode( elt ) ) {
+              return true;
+            }
+          }
+
+          if ( __super and __super->isOutputNode( elt ) ) {
+            return true;
+          }
+
+        } else {
+          return true;
+        }
+      } catch ( NotFound& ) {
+      }
+      return false;
     }
   } /* namespace prm */
 } /* namespace gum */

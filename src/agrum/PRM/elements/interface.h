@@ -109,6 +109,8 @@ namespace gum {
       // ========================================================================
       /// @{
 
+      virtual bool isOutputNode( const ClassElement<GUM_SCALAR>& elt ) const;
+
       /// See gum::prm::ClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
       virtual ClassElement<GUM_SCALAR>& get( const std::string& name );

@@ -670,12 +670,12 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::_updateDescendants(
         const ClassElement<GUM_SCALAR>& elt ) {
-      for ( const auto ext : __extensions ) {
-        // We test to prevent unnecessary recursive call from iter
-        if ( !ext->isOutputNode( elt ) ) {
-          ext->setOutputNode( elt, true );
-        }
-      }
+      //for ( const auto ext : __extensions ) {
+      //  // We test to prevent unnecessary recursive call from iter
+      //  if ( !ext->isOutputNode( elt ) ) {
+      //    ext->setOutputNode( elt, true );
+      //  }
+      //}
     }
 
     template <typename GUM_SCALAR>
@@ -944,6 +944,33 @@ namespace gum {
         GUM_ERROR( NotFound, "no attribute with the given name" );
       }
     }
+
+    template <typename GUM_SCALAR>
+    INLINE bool Class<GUM_SCALAR>::isOutputNode(
+        const ClassElement<GUM_SCALAR>& elt ) const {
+      try {
+        if ( not this->_getIOFlag( elt ).second ) {
+
+          if ( __implements ) {
+            for ( auto i : *__implements ) {
+              if ( i->isOutputNode( elt ) ) {
+                return true;
+              }
+            }
+          }
+
+          if ( __super and __super->isOutputNode( elt ) ) {
+            return true;
+          }
+
+        } else {
+          return true;
+        }
+      } catch ( NotFound& ) {
+      }
+      return false;
+    }
+
 
   } /* namespace prm */
 } /* namespace gum */
