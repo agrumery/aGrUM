@@ -64,5 +64,3 @@ def check_modules(current):
     sys.exit(1)
   else:
     current['modules']=cde
-
-  print(current['modules'])

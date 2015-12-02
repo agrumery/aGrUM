@@ -18,43 +18,48 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief count aggregator
+ * @brief median aggregator
  *
 * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
 *<{prenom.nom}_at_lip6.fr>
  */
-#ifndef GUM_OR_AGGREGATOR_H
-#define GUM_OR_AGGREGATOR_H
+#ifndef GUM_MEDIAN_AGGREGATOR_H
+#define GUM_MEDIAN_AGGREGATOR_H
 
 #include <agrum/multidim/aggregators/multiDimAggregator.h>
 
 namespace gum {
 
   namespace aggregator {
+    /* =========================================================================*/
+    /* =========================================================================*/
+    /* ===                     GUM_MEDIAN_AGGREGATOR                     === */
+    /* =========================================================================*/
+    /* =========================================================================*/
 
-    /* =========================================================================*/
-    /* =========================================================================*/
-    /* ===                     GUM_MAX_AGGREGATOR                     === */
-    /* =========================================================================*/
-    /* =========================================================================*/
-    /** @class Or
-    * @brief or aggregator
+    /** @class Median
+    * @brief median aggregator
     * @ingroup multidim_group
     *
     * @see MultiDimAggregator for more details of implementations
     *
-    * Note that a <tt>Or(i)</tt> aggregator should have a binary aggregator
-    *variable
-    *since only 0 and 1 indexes are adressed...
+    * Median needs to have the same domain than its parent.
+    *
+    * @warning if the number of parent is even, the median (with the same type as its parents)
+    * is not well defined : the median of [1,1,3,3] is 2. But what is the median of [1,1,2,2] ?
+    * The mathematical response is 1.5 which is not in the range of the variables. In that case,
+    * we choose (arbitrarilly by excess) the value 2.
     */
     /* =========================================================================*/
 
     template <typename GUM_SCALAR>
-    class Or : public MultiDimAggregator<GUM_SCALAR> {
+    class Median : public MultiDimAggregator<GUM_SCALAR> {
       public:
-      Or();
-      Or( const Or<GUM_SCALAR>& from );
-      virtual ~Or();
+      Median();
+      Median( const Median<GUM_SCALAR>& from );
+      virtual ~Median();
+
+      virtual std::string aggregatorName( void ) const;
 
       /**
        * This method creates a clone of this object, withouth its content
@@ -71,24 +76,27 @@ namespace gum {
        */
       virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
-      virtual std::string aggregatorName( void ) const;
-
       protected:
-      virtual Idx _neutralElt( void ) const;
+      virtual Idx _buildValue( const gum::Instantiation& i ) const;
+
+      // fold scheme is not used, these methods are neutralized
+      virtual Idx _neutralElt( void ) const { return 0; };
       virtual Idx _fold( const DiscreteVariable& v,
-                           Idx i1,
-                           Idx i2,
-                           bool& stop_iteration ) const;
+                         Idx i1,
+                         Idx i2,
+                         bool& stop_iteration ) const {
+        return 0;
+      };
 
       private:
       Idx __value;
     };
 
-    extern template class Or<float>;
-    extern template class Or<double>;
+    extern template class Median<float>;
+    extern template class Median<double>;
   }  // aggregator
 }  // gum
 
-#include <agrum/multidim/aggregators/or.tcc>
+#include <agrum/multidim/aggregators/median.tcc>
 
-#endif  // GUM_OR_AGGREGATOR_H
+#endif  // GUM_MEDIAN_AGGREGATOR_H

@@ -54,6 +54,10 @@
       return q;
     };
 
+    PyObject *nodes() {
+      return ids();
+    }
+
     PyObject *arcs() {
       PyObject* q=PyList_New(0);
 
@@ -88,7 +92,7 @@
     return q;
   };
 
-    bool loadBIF(std::string name, PyObject *l=(PyObject*)0)
+    std::string loadBIF(std::string name, PyObject *l=(PyObject*)0)
     {
         std::stringstream stream;
         std::vector<PythonLoadListener> py_listener;
@@ -103,15 +107,15 @@
             if (reader.proceed()>0) {
                 reader.showElegantErrorsAndWarnings(stream);
                 reader.showErrorCounts(stream);
+                return stream.str();
             } else {
-                return true;
+                return "";
             }
         } catch (gum::IOError& e) {
           throw(e);
         }
 
-        GUM_ERROR(gum::IOError,stream.str());
-        return false;
+        return stream.str();
     }
 
     void saveBIF(std::string name) {
@@ -119,7 +123,7 @@
         writer.write( name, *self );
     }
 
-    bool loadDSL(std::string name, PyObject *l=(PyObject*)0)
+    std::string loadDSL(std::string name, PyObject *l=(PyObject*)0)
     {
       std::vector<PythonLoadListener> py_listener;
       std::stringstream stream;
@@ -134,14 +138,13 @@
             if (reader.proceed()>0) {
                 reader.showElegantErrorsAndWarnings(stream);
                 reader.showErrorCounts(stream);
-                return false;
+                return stream.str();
             } else {
-                return true;
+                return "";
             }
         } catch (gum::IOError& e) {throw (e);}
 
-        GUM_ERROR(gum::IOError,stream.str());
-        return false;
+        return stream.str();
     }
 
     void saveDSL(std::string name) {
@@ -149,11 +152,11 @@
         writer.write( name, *self );
     }
 
-    bool loadNET(std::string name, PyObject *l=(PyObject*)0)
+    std::string loadNET(std::string name, PyObject *l=(PyObject*)0)
     {
         std::vector<PythonLoadListener> py_listener;
         std::stringstream stream;
-  
+
         try {
             gum::NetReader<GUM_SCALAR> reader(self,name);
             int l_size=__fillLoadListeners(py_listener,l);
@@ -164,35 +167,33 @@
             if (reader.proceed()>0) {
                 reader.showElegantErrorsAndWarnings(stream);
                 reader.showErrorCounts(stream);
-                return false;
+                return stream.str();
             } else {
-                return true;
+                return "";
             }
-        } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
+        } catch (gum::IOError& e) {throw(e);}
 
-        GUM_ERROR(gum::IOError,stream.str());
-        return false;
+        return stream.str();
     }
 
 
-    bool loadPRM(std::string name, PyObject *l=(PyObject*)0)
+    std::string loadPRM(std::string name, PyObject *l=(PyObject*)0)
     {
         std::vector<PythonLoadListener> py_listener;
         std::stringstream stream;
-  
+
         try {
             gum::O3prmBNReader<double> reader(self,name);
             if (reader.proceed()>0) {
                 reader.showElegantErrorsAndWarnings(stream);
                 reader.showErrorCounts(stream);
-                return (reader.errors()==0);
+                return stream.str();
             } else {
-                return true;
+                return "";
             }
-        } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
+        } catch   (gum::IOError& e) {throw(e);}
 
-        GUM_ERROR(gum::IOError,stream.str());
-        return false;
+        return stream.str();
     }
 
    void saveNET(std::string name) {
