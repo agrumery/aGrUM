@@ -1,6 +1,9 @@
 #ifndef AGRUM_TEST_SUITE_H
 #define AGRUM_TEST_SUITE_H
 
+// TRACE for AGRUM are ON
+#define GUM_TRACE_ON
+
 #include <agrum/config.h>
 #include <cxxtest/testsuite_utils.h>
 
@@ -13,3 +16,4 @@
   } )
 
 #endif  // AGRUM_TEST_SUITE_H
+  

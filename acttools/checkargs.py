@@ -31,6 +31,7 @@ from .utils import warn,error,notif,critic,setifyString
 from .invocation import showInvocation
 from .modules import check_modules,parseModulesTxt
 from .tests import checkAndWriteTests
+from .specials import isSpecialAction
 
 def parseCommandLine(current):
     return cfg.parser.parse_args()
@@ -135,8 +136,9 @@ def checkConsistency(current):
     notif("Options [stats] and [oneByOne] are mutually exclusive")
 
   # check -t and -m
-  check_modules(current)
-  checkAndWriteTests(current)
+  if not isSpecialAction(current):
+    check_modules(current)
+    checkAndWriteTests(current)
 
   check_aGrumTest('stats',current)
   check_aGrumTest('oneByOne',current)

@@ -31,6 +31,9 @@ from .configuration import cfg
 from .utils import trace,notif,critic
 from .oneByOne import checkAgrumMemoryLeaks
 
+def isSpecialAction(current):
+  return current["action"] in set(["clean","show","autoindent","oneByone"])
+
 def specialActions(current):
   if current["action"]=="clean":
     #trace(current,"Special action [clean]")

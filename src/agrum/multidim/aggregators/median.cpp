@@ -18,65 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief min aggregator
+ * @brief median aggregator
  *
 * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
 *<{prenom.nom}_at_lip6.fr>
  */
+#include <agrum/multidim/aggregators/median.h>
 
-// to ease parser in IDEs
-#include <agrum/multidim/aggregators/multiDimAggregator.h>
-#include <agrum/multidim/aggregators/min.h>
-
-namespace gum {
-
-  namespace aggregator {
-
-    /// Default constructor
-
-    template <typename GUM_SCALAR>
-    INLINE Min<GUM_SCALAR>::Min()
-        : MultiDimAggregator<GUM_SCALAR>() {
-      GUM_CONSTRUCTOR( Min )
-    }
-
-    /// Default constructor
-
-    template <typename GUM_SCALAR>
-    INLINE Min<GUM_SCALAR>::Min( const Min<GUM_SCALAR>& from )
-        : MultiDimAggregator<GUM_SCALAR>( from ) {
-      GUM_CONS_CPY( Min );
-    }
-
-    /// destructor
-
-    template <typename GUM_SCALAR>
-    INLINE Min<GUM_SCALAR>::~Min() {
-      GUM_DESTRUCTOR( Min );
-    }
-
-    template <typename GUM_SCALAR>
-    INLINE Idx Min<GUM_SCALAR>::_neutralElt() const {
-      return (Idx)100000;
-    }  // clearly arbitrary choosen
-
-    template <typename GUM_SCALAR>
-    INLINE Idx Min<GUM_SCALAR>::_fold( const DiscreteVariable& v,
-                                         Idx i1,
-                                         Idx i2,
-                                         bool& stop_iteration ) const {
-      return ( i1 < i2 ) ? i1 : i2;
-    }
-
-    template <typename GUM_SCALAR>
-    INLINE std::string Min<GUM_SCALAR>::aggregatorName( void ) const {
-      return "min";
-    }
-
-    template <typename GUM_SCALAR>
-    INLINE MultiDimContainer<GUM_SCALAR>* Min<GUM_SCALAR>::newFactory() const {
-      return new Min<GUM_SCALAR>;
-    }
-
-  }  // aggregator
-}  // namespace gum
+template class gum::aggregator::Median<float>;
+template class gum::aggregator::Median<double>;

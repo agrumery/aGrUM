@@ -18,43 +18,43 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief count aggregator
+ * @brief median aggregator
  *
 * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
 *<{prenom.nom}_at_lip6.fr>
  */
-#ifndef GUM_OR_AGGREGATOR_H
-#define GUM_OR_AGGREGATOR_H
+#ifndef GUM_AMPLITUDE_AGGREGATOR_H
+#define GUM_AMPLITUDE_AGGREGATOR_H
 
 #include <agrum/multidim/aggregators/multiDimAggregator.h>
 
 namespace gum {
 
   namespace aggregator {
+    /* =========================================================================*/
+    /* =========================================================================*/
+    /* ===                     GUM_AMPLITUDE_AGGREGATOR                     === */
+    /* =========================================================================*/
+    /* =========================================================================*/
 
-    /* =========================================================================*/
-    /* =========================================================================*/
-    /* ===                     GUM_MAX_AGGREGATOR                     === */
-    /* =========================================================================*/
-    /* =========================================================================*/
-    /** @class Or
-    * @brief or aggregator
+    /** @class Amplitude
+    * @brief amplitude aggregator
     * @ingroup multidim_group
     *
     * @see MultiDimAggregator for more details of implementations
     *
-    * Note that a <tt>Or(i)</tt> aggregator should have a binary aggregator
-    *variable
-    *since only 0 and 1 indexes are adressed...
+    * Amplitude may be truncated since the amplitude has not the same type as its parents.
     */
     /* =========================================================================*/
 
     template <typename GUM_SCALAR>
-    class Or : public MultiDimAggregator<GUM_SCALAR> {
+    class Amplitude : public MultiDimAggregator<GUM_SCALAR> {
       public:
-      Or();
-      Or( const Or<GUM_SCALAR>& from );
-      virtual ~Or();
+      Amplitude();
+      Amplitude( const Amplitude<GUM_SCALAR>& from );
+      virtual ~Amplitude();
+
+      virtual std::string aggregatorName( void ) const;
 
       /**
        * This method creates a clone of this object, withouth its content
@@ -71,24 +71,27 @@ namespace gum {
        */
       virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
-      virtual std::string aggregatorName( void ) const;
-
       protected:
-      virtual Idx _neutralElt( void ) const;
+      virtual Idx _buildValue( const gum::Instantiation& i ) const;
+
+      // fold scheme is not used, these methods are neutralized
+      virtual Idx _neutralElt( void ) const { return 0; };
       virtual Idx _fold( const DiscreteVariable& v,
-                           Idx i1,
-                           Idx i2,
-                           bool& stop_iteration ) const;
+                         Idx i1,
+                         Idx i2,
+                         bool& stop_iteration ) const {
+        return 0;
+      };
 
       private:
       Idx __value;
     };
 
-    extern template class Or<float>;
-    extern template class Or<double>;
+    extern template class Amplitude<float>;
+    extern template class Amplitude<double>;
   }  // aggregator
 }  // gum
 
-#include <agrum/multidim/aggregators/or.tcc>
+#include <agrum/multidim/aggregators/amplitude.tcc>
 
-#endif  // GUM_OR_AGGREGATOR_H
+#endif  // GUM_AMPLITUDE_AGGREGATOR_H

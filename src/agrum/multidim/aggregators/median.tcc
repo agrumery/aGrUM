@@ -18,64 +18,79 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief min aggregator
+ * @brief median aggregator
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
-*<{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ * <{prenom.nom}_at_lip6.fr>
  */
+#include <sstream>
+
+#include <vector>
 
 // to ease parser in IDEs
 #include <agrum/multidim/aggregators/multiDimAggregator.h>
-#include <agrum/multidim/aggregators/min.h>
+#include <agrum/multidim/aggregators/median.h>
 
 namespace gum {
 
   namespace aggregator {
-
-    /// Default constructor
-
     template <typename GUM_SCALAR>
-    INLINE Min<GUM_SCALAR>::Min()
+    INLINE Median<GUM_SCALAR>::Median()
         : MultiDimAggregator<GUM_SCALAR>() {
-      GUM_CONSTRUCTOR( Min )
+      GUM_CONSTRUCTOR( Median )
     }
 
-    /// Default constructor
-
     template <typename GUM_SCALAR>
-    INLINE Min<GUM_SCALAR>::Min( const Min<GUM_SCALAR>& from )
+    INLINE Median<GUM_SCALAR>::Median( const Median<GUM_SCALAR>& from )
         : MultiDimAggregator<GUM_SCALAR>( from ) {
-      GUM_CONS_CPY( Min );
-    }
-
-    /// destructor
-
-    template <typename GUM_SCALAR>
-    INLINE Min<GUM_SCALAR>::~Min() {
-      GUM_DESTRUCTOR( Min );
+      GUM_CONS_CPY( Median );
     }
 
     template <typename GUM_SCALAR>
-    INLINE Idx Min<GUM_SCALAR>::_neutralElt() const {
-      return (Idx)100000;
-    }  // clearly arbitrary choosen
-
-    template <typename GUM_SCALAR>
-    INLINE Idx Min<GUM_SCALAR>::_fold( const DiscreteVariable& v,
-                                         Idx i1,
-                                         Idx i2,
-                                         bool& stop_iteration ) const {
-      return ( i1 < i2 ) ? i1 : i2;
+    INLINE Median<GUM_SCALAR>::~Median() {
+      GUM_DESTRUCTOR( Median );
     }
 
     template <typename GUM_SCALAR>
-    INLINE std::string Min<GUM_SCALAR>::aggregatorName( void ) const {
-      return "min";
+    INLINE std::string Median<GUM_SCALAR>::aggregatorName( void ) const {
+      std::stringstream ss;
+      ss << "median";
+      return ss.str();
     }
 
     template <typename GUM_SCALAR>
-    INLINE MultiDimContainer<GUM_SCALAR>* Min<GUM_SCALAR>::newFactory() const {
-      return new Min<GUM_SCALAR>;
+    INLINE MultiDimContainer<GUM_SCALAR>*
+    Median<GUM_SCALAR>::newFactory() const {
+      return new Median<GUM_SCALAR>();
+    }
+
+    template <typename GUM_SCALAR>
+    Idx Median<GUM_SCALAR>::_buildValue( const gum::Instantiation& i ) const {
+      // we assume that every (parent) variable has the same domainSize
+      Idx maxVal = i.variable( 1 ).domainSize();
+
+      std::vector<Idx> cum( maxVal, 0 );
+
+      for ( Idx j = 1; j < this->nbrDim(); j++ )
+        cum[i.val( j )]++;
+
+      Idx half = ( this->nbrDim() + 1 ) / 2;  // 50% of the population
+
+      Idx max = maxVal;
+      for ( Idx j = 0, sumcum = 0; j < maxVal; j++ )
+        if ( ( sumcum += cum[j] ) >= half ) {
+          max = j;
+          break;
+        }
+      Idx maxR = maxVal;
+      for ( Idx j = maxVal - 1, jj = 0, sumcum = 0; jj < maxVal; jj++, j-- )
+        if ( ( sumcum += cum[j] ) >= half ) {
+          maxR = j;
+          break;
+        }
+
+      // multiDimAggregator::get will truncate if needed.
+      return ( maxR + max ) / 2;
     }
 
   }  // aggregator

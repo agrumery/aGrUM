@@ -37,14 +37,15 @@
 #include <agrum/multidim/aggregators/exists.h>
 #include <agrum/multidim/aggregators/or.h>
 #include <agrum/multidim/aggregators/and.h>
+#include <agrum/multidim/aggregators/median.h>
+#include <agrum/multidim/aggregators/amplitude.h>
 
 namespace gum_tests {
 
   class MultiDimAggregratorsTestSuite : public CxxTest::TestSuite {
     private:
     float __is_min( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
-      gum::Idx tmp;
-      tmp = b;
+      gum::Idx tmp = b;
 
       if ( tmp > c ) tmp = c;
 
@@ -63,6 +64,128 @@ namespace gum_tests {
 
       return ( tmp == a ) ? (float)1 : (float)0;
     }
+
+    float __is_median3( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
+      gum::Idx tmp = 0;
+
+      if ( b <= c ) {
+        if ( c <= d ) {
+          tmp = c;  // b<=c<=d
+        } else {
+          if ( b <= d ) {
+            tmp = d;  // b<=d<c
+          } else {
+            tmp = b;  // d<b<c
+          }
+        }
+      } else {  // b>c
+        if ( c >= d ) {
+          tmp = c;  // b>c>=d
+        } else {    // d>b
+          if ( b >= d ) {
+            tmp = d;  // b>=d>c
+          } else {
+            tmp = b;  // c<b<d
+          }
+        }
+      }
+
+      return ( tmp == a ) ? (float)1 : (float)0;
+    }
+
+    float
+    __is_median4( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e ) {
+      gum::Idx tmp = 0;
+      gum::Idx l1, h1, l2, h2, m1, m2;
+      // gum::Idx hh, ll;
+
+      if ( b < c ) {
+        l1 = b;
+        h1 = c;
+      } else {
+        l1 = c;
+        h1 = b;
+      }
+
+      if ( d < e ) {
+        l2 = d;
+        h2 = e;
+      } else {
+        l2 = e;
+        h2 = d;
+      }
+
+      if ( l1 < l2 ) {  // we do not keep ll : lowest value
+        // ll = l1;
+        m1 = l2;
+      } else {
+        // ll = l2;
+        m1 = l1;
+      }
+
+      if ( h1 > h2 ) {  // we do not keep hh : highest value
+        // hh = h1;
+        m2 = h2;
+      } else {
+        // hh = h2;
+        m2 = h1;
+      }
+
+      if ( m1 > m2 ) {  // (ll,m2,m1,hh)
+        tmp = m2;
+        m2 = m1;
+        m1 = tmp;
+      }
+
+      // the order is now ll<=m1<=m2<=hh
+      tmp = ( m2 + m1 ) / 2;
+      return ( tmp == a ) ? (float)1 : (float)0;
+    }
+
+    float __is_amplitude(
+        gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e ) {
+      gum::Idx tmp = 0;
+      gum::Idx l1, h1, l2, h2;
+      // gum::Idx m1, m2;
+      gum::Idx hh, ll;
+
+      if ( b < c ) {
+        l1 = b;
+        h1 = c;
+      } else {
+        l1 = c;
+        h1 = b;
+      }
+
+      if ( d < e ) {
+        l2 = d;
+        h2 = e;
+      } else {
+        l2 = e;
+        h2 = d;
+      }
+
+      if ( l1 < l2 ) {  // we do not keep median values
+        ll = l1;
+        // m1 = l2;
+      } else {
+        ll = l2;
+        // m1 = l1;
+      }
+
+      if ( h1 > h2 ) {  // we do not keep median valeus
+        hh = h1;
+        // m2 = h2;
+      } else {
+        hh = h2;
+        // m2 = h1;
+      }
+
+      // the order is now ll<=(m1<=m2)<=hh
+      tmp = hh - ll;
+      return ( tmp == a ) ? (float)1 : (float)0;
+    }
+
 
     float __is_count_2( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
       gum::Idx tmp;
@@ -229,6 +352,59 @@ namespace gum_tests {
       for ( i.setFirst(); !i.end(); ++i ) {
         TS_ASSERT_EQUALS(
             p[i], __is_and( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
+      }
+    }
+
+    void testCreationMedian3() {
+      gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 4 ), c( "c", "", 4 ),
+          d( "d", "", 4 );
+      gum::aggregator::Median<float> p;
+      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
+      TS_ASSERT_EQUALS( p.toString(),
+                        "a<0,1,2,3>=median(b<0,1,2,3>,c<0,1,2,3>,d<0,1,2,3>)" );
+
+      gum::Instantiation i( p );
+
+      for ( i.setFirst(); !i.end(); ++i ) {
+        TS_ASSERT_EQUALS(
+            __is_median3( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ),
+            p[i] );
+      }
+    }
+    void testCreationMedian4() {
+      gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 4 ), c( "c", "", 4 ),
+          d( "d", "", 4 ), e( "e", "", 4 );
+      gum::aggregator::Median<float> p;
+      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d << e );
+      TS_ASSERT_EQUALS(
+          p.toString(),
+          "a<0,1,2,3>=median(b<0,1,2,3>,c<0,1,2,3>,d<0,1,2,3>,e<0,1,2,3>)" );
+
+      gum::Instantiation i( p );
+
+      for ( i.setFirst(); !i.end(); ++i ) {
+        TS_ASSERT_EQUALS(
+            __is_median4(
+                i.val( a ), i.val( b ), i.val( c ), i.val( d ), i.val( e ) ),
+            p[i] );
+      }
+    }
+    void testCreationAmplitude() {
+      gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 4 ), c( "c", "", 4 ),
+          d( "d", "", 4 ), e( "e", "", 4 );
+      gum::aggregator::Amplitude<float> p;
+      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d << e );
+      TS_ASSERT_EQUALS(
+          p.toString(),
+          "a<0,1,2,3>=amplitude(b<0,1,2,3>,c<0,1,2,3>,d<0,1,2,3>,e<0,1,2,3>)" );
+
+      gum::Instantiation i( p );
+
+      for ( i.setFirst(); !i.end(); ++i ) {
+        TS_ASSERT_EQUALS(
+            __is_amplitude(
+                i.val( a ), i.val( b ), i.val( c ), i.val( d ), i.val( e ) ),
+            p[i] );
       }
     }
 

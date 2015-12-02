@@ -150,13 +150,18 @@ namespace gum {
 
       /// @}
       protected:
-      /// _neutralElt() is the result value for the first application of _folder
+      /// by default, _buildValue uses a "fold" scheme and the user has to implement _neutralElt and _fold
+      /// but if necessary (as for @ref Median), _buildValue can be reimplemented.
+      virtual Idx _buildValue(const gum::Instantiation& i) const;
+      
+      
+      /// _neutralElt() is the result value for the first application of _fold
       virtual Idx _neutralElt( void ) const = 0;
 
-      /// _folder is applied on value i1 for variable v. the actual result for
+      /// _fold is applied on value i1 for variable v. the actual result for
       /// precedent applications is i2.
       /// @return the new result for applications up to v.
-      virtual Idx _folder( const DiscreteVariable& v,
+      virtual Idx _fold( const DiscreteVariable& v,
                            Idx i1,
                            Idx i2,
                            bool& stop_iteration ) const = 0;

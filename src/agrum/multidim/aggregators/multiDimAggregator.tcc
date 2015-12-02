@@ -54,6 +54,26 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
+    Idx
+    MultiDimAggregator<GUM_SCALAR>::_buildValue( const Instantiation& i ) const {
+      // is i equal to f(f(f(f...(j_,,neutral_elt))))
+      Idx current = _neutralElt();
+
+      bool stop_iteration = false;
+
+      for ( Idx j = 1; j < this->nbrDim(); j++ ) {
+        current = _fold( this->variable( j ),
+                           i.val( this->variable( j ) ),
+                           current,
+                           stop_iteration );
+
+        if ( stop_iteration ) break;
+      }
+      
+      return current;
+    }
+
+    template <typename GUM_SCALAR>
     GUM_SCALAR
     MultiDimAggregator<GUM_SCALAR>::get( const Instantiation& i ) const {
       if ( this->nbrDim() < 2 ) {
@@ -62,20 +82,7 @@ namespace gum {
       }
 
       const DiscreteVariable& agg = this->variable( (Idx)0 );
-
-      // is i equal to f(f(f(f...(j_,,neutral_elt))))
-      Idx current = _neutralElt();
-
-      bool stop_iteration = false;
-
-      for ( Idx j = 1; j < this->nbrDim(); j++ ) {
-        current = _folder( this->variable( j ),
-                           i.val( this->variable( j ) ),
-                           current,
-                           stop_iteration );
-
-        if ( stop_iteration ) break;
-      }
+      auto current = _buildValue( i );
 
       // truncate to fit in aggreegator domain size
       if ( current >= agg.domainSize() ) current = agg.domainSize() - 1;

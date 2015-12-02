@@ -59,6 +59,7 @@ def loadBN(s,listeners=None):
     else:
         raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
 
+    print(res)
     if not res:
       raise Exception("Error(s) in "+s)
 

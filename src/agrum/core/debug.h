@@ -35,8 +35,6 @@
 
 
 #ifndef NDEBUG
-
-
 #ifndef GUM_TRACE_ON
 #define GUM_TRACE_ON  // in DEBUG MODE we force TRACE to be ON
 #else                 // GUM_TRACE_ON on mode debug add  TRACE_CONSTRUCTION_ON (tracing
@@ -130,26 +128,26 @@
 #ifdef GUM_TRACE_ON
 #define GUM_CHECKPOINT                                                         \
   {                                                                            \
-    std::cerr << std::endl                                                     \
+    std::cout << std::endl                                                     \
               << __FILE__ << ":" << __LINE__ << ": warning : aGrUM checkpoint" \
               << std::endl;                                                    \
   }
 
 #define GUM_TRACE( x )                                            \
   {                                                               \
-    std::cerr << std::endl                                        \
+    std::cout << std::endl                                        \
               << __FILE__ << ":" << __LINE__ << ": trace : " << x \
               << std::endl;                                       \
   }
 #define GUM_TRACE_VAR( x )                                                    \
   {                                                                           \
-    std::cerr << std::endl                                                    \
+    std::cout << std::endl                                                    \
               << __FILE__ << ":" << __LINE__ << ": trace " << #x << ": " << x \
               << std::endl;                                                   \
   }
 
 #define GUM_TRACE_NEWLINE \
-  { std::cerr << std::endl; }
+  { std::cout << std::endl; }
 #else  // GUM_TRACE_ON
 #define GUM_CHECKPOINT
 #define GUM_TRACE( x )
