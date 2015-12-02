@@ -25,7 +25,7 @@ from .utils import trace,setifyString,safe_cd,critic
 from .multijobs import execCde
 
 def buildCmake(current,target):
-    line=cfg.cmake+" .."
+    line=cfg.cmake+" ../.." # we are in build/[release|target]
 
     if current["mode"]=="release":
         line+=" -DCMAKE_BUILD_TYPE=RELEASE"
@@ -110,9 +110,9 @@ def buildPost(current,target):
         elif target=="pyAgrum":
             run_cde="PYTHONPATH=wrappers "
             if cfg.os_platform=="win32":
-                run_cde+=cfg.python+" ..\\..\\..\\wrappers\\pyAgrum\\testunits\\TestSuite.py"
+                run_cde+=cfg.python+" ..\\..\\wrappers\\pyAgrum\\testunits\\TestSuite.py"
             else:
-                run_cde+=cfg.python+" ../wrappers/pyAgrum/testunits/TestSuite.py"
+                run_cde+=cfg.python+" ../../wrappers/pyAgrum/testunits/TestSuite.py"
             execFromLine(current,run_cde,checkRC=False)
 
 

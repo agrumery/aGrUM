@@ -52,12 +52,14 @@ def main():
   if not specialActions(current):
     # creating "classical" compilation from cmake/make/postprocess
     safe_cd(current,"build")
+    safe_cd(current,current["mode"])
 
     for target in current["targets"]:
         buildCmake(current,target)
         buildMake(current,target)
         buildPost(current,target)
 
+    safe_cd(current,"..")
     safe_cd(current,"..")
 
 import traceback
