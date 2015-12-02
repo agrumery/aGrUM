@@ -4680,10 +4680,10 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_children(self, id)
 
 
-    def loadBIF(self, *args) -> "bool":
+    def loadBIF(self, *args) -> "std::string":
         """
-        loadBIF(BayesNet_double self, std::string name, PyObject * l) -> bool
-        loadBIF(BayesNet_double self, std::string name) -> bool
+        loadBIF(BayesNet_double self, std::string name, PyObject * l) -> std::string
+        loadBIF(BayesNet_double self, std::string name) -> std::string
         """
         return _pyAgrum.BayesNet_double_loadBIF(self, *args)
 
@@ -4693,10 +4693,10 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_saveBIF(self, name)
 
 
-    def loadDSL(self, *args) -> "bool":
+    def loadDSL(self, *args) -> "std::string":
         """
-        loadDSL(BayesNet_double self, std::string name, PyObject * l) -> bool
-        loadDSL(BayesNet_double self, std::string name) -> bool
+        loadDSL(BayesNet_double self, std::string name, PyObject * l) -> std::string
+        loadDSL(BayesNet_double self, std::string name) -> std::string
         """
         return _pyAgrum.BayesNet_double_loadDSL(self, *args)
 
@@ -4706,18 +4706,18 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_saveDSL(self, name)
 
 
-    def loadNET(self, *args) -> "bool":
+    def loadNET(self, *args) -> "std::string":
         """
-        loadNET(BayesNet_double self, std::string name, PyObject * l) -> bool
-        loadNET(BayesNet_double self, std::string name) -> bool
+        loadNET(BayesNet_double self, std::string name, PyObject * l) -> std::string
+        loadNET(BayesNet_double self, std::string name) -> std::string
         """
         return _pyAgrum.BayesNet_double_loadNET(self, *args)
 
 
-    def loadPRM(self, *args) -> "bool":
+    def loadPRM(self, *args) -> "std::string":
         """
-        loadPRM(BayesNet_double self, std::string name, PyObject * l) -> bool
-        loadPRM(BayesNet_double self, std::string name) -> bool
+        loadPRM(BayesNet_double self, std::string name, PyObject * l) -> std::string
+        loadPRM(BayesNet_double self, std::string name) -> std::string
         """
         return _pyAgrum.BayesNet_double_loadPRM(self, *args)
 
