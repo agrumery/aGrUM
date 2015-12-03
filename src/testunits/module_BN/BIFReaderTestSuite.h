@@ -752,7 +752,7 @@ namespace gum_tests {
 
       delete net;
     }
-
+    
     void testUnexisting() {
       std::string file = "Schmurtz";
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
