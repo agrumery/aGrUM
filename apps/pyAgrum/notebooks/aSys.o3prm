@@ -8,7 +8,7 @@ interface IActor {
 }
 
 class Actor0 implements IActor{
-   val Productivity {[ "0,5", "0,5"]};
+   val Productivity {[ 0.5, 0.5]};
    val Capacity { [ 0.5,0.5]};
    val Cost dependson Productivity, Capacity {[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]};
 }
@@ -26,24 +26,16 @@ class Actor implements IActor{
      0.5,0.5
     ]};
 
-
-
     val Cost dependson Productivity, Capacity {[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]};
-
 }
 
 system aSys {
-Actor0 A0;
+    Actor0 A0;
+    Actor0 A1;
 
-Actor0 A1;
+    Actor A2;
 
-Actor A2;
-
-A2.IA+=A0;
-
-A2.IA+=A1;
-
-
-
+    A2.IA+=A0;
+    A2.IA+=A1;
 }
 
