@@ -51,7 +51,7 @@ namespace gum {
   O3prmBNReader<GUM_SCALAR>::__getEntityName( const std::string& filename ) {
     auto b = filename.find_last_of( "/\\" );
     auto e = filename.find_last_of( "." ) - 1;
-    GUM_ASSERT( e > b );  // we are waiting ../../basnemae.o3prm
+    GUM_ASSERT( e > b );  // we are waiting ../../basename.o3prm
     return filename.substr( b + 1, e - b );
   }
 
@@ -97,8 +97,8 @@ namespace gum {
       } else {
         if ( prm->isClass( __entityName ) ) {
           ParseError warn( false,
-                           "No instance " + __entityName +
-                               " found but class found. Generating instance.",
+                           "No instance '" + __entityName +
+                               "' found but class found. Generating instance.",
                            __filename,
                            0 );
           __errors.add( warn );
@@ -110,7 +110,7 @@ namespace gum {
           __generateBN( s );
         } else {
           ParseError err( true,
-                          "Neither instance nor class " + __entityName + ".",
+                          "Neither instance nor class '" + __entityName + "'.",
                           __filename,
                           0 );
           __errors.add( err );
