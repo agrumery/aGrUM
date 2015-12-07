@@ -38,6 +38,18 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( bn.size(), (gum::Size)8 );
     }
 
+    void testClassWithoutSystemAfterDeletingReader() {
+      gum::BayesNet<double> bn;
+      {
+        gum::O3prmBNReader<double> reader(
+            &bn, GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" ) );
+        int res = 0;
+        TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
+        TS_ASSERT_EQUALS( res, 1 );  // no system
+        TS_ASSERT_EQUALS( bn.size(), (gum::Size)8 );
+      }
+    }
+
     void testClassesWithSystem() {
       gum::BayesNet<double> bn;
       gum::O3prmBNReader<double> reader(

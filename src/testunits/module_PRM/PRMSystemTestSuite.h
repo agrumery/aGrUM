@@ -184,17 +184,26 @@ namespace gum_tests {
 
     void testGroundBN() {
       // Arrange
-      System sys( "asia" );
-      auto inst = new Instance( "asia", *__asia );
-      sys.add( inst );
-      sys.instantiate();
+      std::string x0, y0, x1, y1;
       auto bn = new gum::BayesNet<double>( "asia" );
-      gum::BayesNetFactory<double> factory( bn );
-      // Act
-      TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
+      {
+        System sys( "asia" );
+        auto inst = new Instance( "asia", *__asia );
+        sys.add( inst );
+        sys.instantiate();
+        gum::BayesNetFactory<double> factory( bn );
+        // Act
+        TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
+        x0 = bn->cpt( 0 ).toString();
+        y0 = bn->cpt( 1 ).toString();
+      }
       // Assert
       TS_ASSERT_EQUALS( bn->size(), (gum::Size)8 );
       TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size)8 );
+      x1 = bn->cpt( 0 ).toString();
+      y1 = bn->cpt( 1 ).toString();
+      TS_ASSERT_EQUALS( x0, x1 );
+      TS_ASSERT_EQUALS( y0, y1 );
       delete bn;
     }
 
