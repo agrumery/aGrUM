@@ -1,5 +1,10 @@
-set(AGRUM_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
-include("${AGRUM_SOURCE_DIR}/version.txt")
+if (POLICY CMP0018)
+  # ignore the POSITION_INDEPENDENT_CODE property for all targets and
+  # use the modified value of CMAKE_SHARED_LIBRARY_<Lang>_FLAGS for
+  # SHARED and MODULE libraries.
+  cmake_policy(SET CMP0018 OLD)
+endif ()
+
 option(FOR_PYTHON2 "ON if pyAgrum will be compiler agains python2. Python3 is uses by default" "OFF")
 
 # PYTHON 2 OR 3
@@ -91,7 +96,8 @@ message(STATUS "================================")
 
 #== Initializing aGrUM
 set(AGRUM_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
-include("${AGRUM_SOURCE_DIR}/version.txt")
+set(AGRUM_FILE_VERSION "${CMAKE_CURRENT_SOURCE_DIR}/../../VERSION.txt")
+include(${AGRUM_FILE_VERSION})
 include("${AGRUM_SOURCE_DIR}/cmake/Config.agrum.cmake")
 configure_file("${AGRUM_SOURCE_DIR}/cmake/config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/agrum/config.h")
 
@@ -157,7 +163,7 @@ add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E 
 file(GLOB GUMLIB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/*.py")
 file(GLOB GUMLIB_UTILS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/utils/*.py")
 
-include("${CMAKE_CURRENT_SOURCE_DIR}/../../src/version.txt")
+#include("${CMAKE_CURRENT_SOURCE_DIR}/../../VERSION.txt")
 set(PYAGRUM_VERSION "${AGRUM_VERSION_MAJOR}.${AGRUM_VERSION_MINOR}.${AGRUM_VERSION_PATCH}")
 set(PYAGRUM_EGGFILE "pyAgrum-${PYAGRUM_VERSION}-py${PYTHON_VERSION}.egg-info")
 
