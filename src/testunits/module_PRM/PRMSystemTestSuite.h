@@ -198,6 +198,31 @@ namespace gum_tests {
       delete bn;
     }
 
+    void testGroundBNAfterDelete() {
+      // Arrange
+      System *sys = new System( "asia" );
+      auto inst = new Instance( "asia", *__asia );
+      sys->add( inst );
+      sys->instantiate();
+      auto bn = new gum::BayesNet<double>( "asia" );
+      gum::BayesNetFactory<double> factory( bn );
+      sys->groundedBN( factory );
+      // Act
+      TS_ASSERT_THROWS_NOTHING( delete sys );
+      // Assert
+      TS_ASSERT_EQUALS( bn->size(), (gum::Size)8 );
+      TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size)8 );
+      for (auto node: bn->dag()) {
+        const gum::Potential<double> * cpt = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING( cpt = &(bn->cpt(node)) );
+        gum::Instantiation inst(*cpt);
+        for (inst.begin(); not inst.end(); inst.inc()) {
+          TS_GUM_ASSERT_THROWS_NOTHING( cpt->get(inst) );
+        }
+      }
+      delete bn;
+    }
+
     void testVisitToAsiaId() {
       // Arrange
       System sys( "asia" );

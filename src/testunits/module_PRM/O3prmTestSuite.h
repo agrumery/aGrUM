@@ -1556,7 +1556,7 @@ namespace gum_tests {
       }
     }
 
-    void testStrangeBug() {
+    void testActors() {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader<double> reader;
@@ -1571,6 +1571,44 @@ namespace gum_tests {
         }
         TS_ASSERT_DIFFERS( reader.prm(), nullptr );
         delete reader.prm();
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+        GUM_TRACE( e.errorContent() );
+        GUM_TRACE( e.errorCallStack() );
+      }
+    }
+
+    void testGrndBayesNetAfterDelete() {
+      try {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file = GET_RESSOURCES_PATH( "o3prm/acteurs.o3prm" );
+        std::string package = "";
+        reader.readFile( file, package );
+        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+
+        if ( reader.errors() ) {
+          reader.showElegantErrorsAndWarnings();
+        }
+        TS_ASSERT_DIFFERS( reader.prm(), nullptr );
+        gum::BayesNet<double> bn( "asia" );
+        gum::BayesNetFactory<double> factory( &bn );
+        TS_ASSERT( prm->isSystem( "aSys" ) );
+        gum::prm::System<double> sys = prm->("aSys");
+        // Act
+        TS_GUM_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
+        delete reader.prm();
+        // Assert
+        for (auto node: bn.dag()) {
+          double total = 0.0;
+          const auto &cpt = bn.cpt(node);
+          gum::Instantiation inst(cpt);
+          for (ints.begin(); not inst.end(); inst.inc()) {
+            TS_GUM_ASSERT_THROWS_NOTHING( double += cpt[inst] );
+          }
+          TS_ASSERT_DELTA( total, cpt.nbrDim() - 1, 1e-6 );
+          GUM_TRACE_VAR(total);
+        }
       } catch ( gum::Exception& e ) {
         TS_ASSERT( false );
         GUM_TRACE( e.errorContent() );
