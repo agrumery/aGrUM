@@ -1,0 +1,33 @@
+import fr.lip6.University.registration;
+
+type gradation 
+    high,
+    medium,
+    low;
+
+type intelligence extends boolean
+	high: true,
+    low:  false;
+
+interface Person {
+}
+
+class Professor implements Person  {
+    gradation teachingAbility { [ 0.6, 0.3, 0.1] };
+    gradation popularity dependson teachingAbility {
+        high   :     0.90, 0.10, 0.00;
+        medium :     0.60, 0.20, 0.20;
+        low    :     0.40, 0.20, 0.40;   
+    };
+}
+
+class Student implements Person  {
+    intelligence intelligent{ [ 0.5, 0.5 ] };
+    Registration[] registrations
+    note averageGrade = max(registrations.grade);
+    gradation ranking dependson averageGrade{
+        A :     0.90, 0.10, 0.00;
+        B :     0.70, 0.20, 0.10;
+        C :     0.40, 0.20, 0.40;
+    };
+}

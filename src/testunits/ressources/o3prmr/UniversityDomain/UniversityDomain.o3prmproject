@@ -1,0 +1,16 @@
+<!DOCTYPE UniversityDomain>
+<o3prmproject name="UniversityDomain">
+ <project name="UniversityDomain">
+  <package name="fr">
+   <package name="lip6">
+    <package name="University">
+     <file name="persons.o3prm"/>
+     <file name="course.o3prm"/>
+     <file name="registration.o3prm"/>
+     <file name="system.o3prm"/>
+     <request name="request.o3prmr"/>
+    </package>
+   </package>
+  </package>
+ </project>
+</o3prmproject>

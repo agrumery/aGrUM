@@ -1,0 +1,58 @@
+import fr.lip6.University.persons;
+import fr.lip6.University.registration;
+import fr.lip6.University.course;
+
+system MyUniversity {
+    Professor ProfGump;
+    
+    Student JaneDoe;
+    Student JhonDoe;
+
+    Course Phi101;
+    Course Math202;
+
+    Registration r1;
+    Registration r2;
+    Registration r3;
+
+    //ProfGump.teachingAbility = medium;
+    //ProfGump.popularity = high;
+
+    //JaneDoe.intelligent = high;
+    //JaneDoe.ranking = medium;
+    JaneDoe.registrations += r1;
+    JaneDoe.registrations += r2; 
+
+    //JhonDoe.intelligent = medium;
+    //JhonDoe.ranking = low;
+    JhonDoe.registrations += r3; 
+
+    //Phi101.difficulty = low;
+    //Phi101.rating = high;
+    Phi101.registrations += r1;
+    Phi101.instructor = ProfGump;
+
+    //Math202.difficulty = medium;
+    //Math202.rating = high;
+    Math202.registrations += r2;
+    Math202.registrations += r3;
+    Math202.instructor = ProfGump;
+
+    r1.course = Phi101;
+    r1.student = JaneDoe;
+    //r1.grade = A;
+    //r1.satisfaction = high;
+
+    r2.course = Math202;
+    r2.student = JaneDoe;
+    //r2.grade = B;
+    //r2.satisfaction = low;
+
+    r3.course = Math202;
+    r3.student = JhonDoe;
+    //r3.grade = B;
+    //r3.satisfaction = medium;
+    
+
+}
+

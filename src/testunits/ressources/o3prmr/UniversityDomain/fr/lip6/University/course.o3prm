@@ -1,0 +1,18 @@
+import fr.lip6.University.persons;
+import fr.lip6.University.registration;
+
+type difficult extends boolean
+	YES: true,
+    NO: false;
+
+class Course {
+    Professor instructor;
+    Registration[] registrations
+    gradation averageSatisfaction = max( registrations.satisfaction);
+    difficult difficulty { [ 0.6, 0.4 ] };
+    gradation rating dependson averageSatisfaction {
+        high : 0.90, 0.10, 0.00;
+        medium : 0.70, 0.20, 0.10;
+        low : 0.40, 0.20, 0.40;
+    };
+}
