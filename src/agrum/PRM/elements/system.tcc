@@ -273,6 +273,58 @@ namespace gum {
       }
     }
 
+//    template <typename GUM_SCALAR>
+//    void System<GUM_SCALAR>::__groundPotential(
+//        const Instance<GUM_SCALAR>& instance,
+//        const Attribute<GUM_SCALAR>& attr,
+//        BayesNetFactory<GUM_SCALAR>& factory ) const {
+//      Bijection<const DiscreteVariable*, const DiscreteVariable*> bijection;
+//      std::stringstream var_name;
+//      var_name << instance.name() << "." << attr.safeName();
+//      bijection.insert( &( attr.type().variable() ),
+//                        &( factory.variable( var_name.str() ) ) );
+//
+//      for ( const auto parent : instance.type().dag().parents( attr.id() ) ) {
+//        switch ( instance.type().get( parent ).elt_type() ) {
+//          case ClassElement<GUM_SCALAR>::prm_aggregate:
+//          case ClassElement<GUM_SCALAR>::prm_attribute: {
+//            std::stringstream parent_name;
+//            parent_name << instance.name() << "."
+//                        << instance.get( parent ).safeName();
+//            bijection.insert( &( instance.get( parent ).type().variable() ),
+//                              &( factory.variable( parent_name.str() ) ) );
+//            break;
+//          }
+//
+//          case ClassElement<GUM_SCALAR>::prm_slotchain: {
+//            std::stringstream parent_name;
+//            const SlotChain<GUM_SCALAR>& sc =
+//                static_cast<const SlotChain<GUM_SCALAR>&>(
+//                    instance.type().get( parent ) );
+//            parent_name << instance.getInstance( sc.id() ).name() << "."
+//                        << sc.lastElt().safeName();
+//            bijection.insert( &( instance.getInstance( sc.id() )
+//                                     .get( sc.lastElt().safeName() )
+//                                     .type()
+//                                     .variable() ),
+//                              &( factory.variable( parent_name.str() ) ) );
+//            break;
+//          }
+//
+//          default: {
+//            GUM_ERROR( FatalError,
+//                       "invalid ClassElement<GUM_SCALAR> type as parent." );
+//            break;
+//          }
+//        }
+//      }
+//
+//      // This should be optimized (using MultiDimBijArray and by handling
+//      // noisy-or)
+//      Potential<GUM_SCALAR>* p = copyPotential( bijection, attr.cpf() );
+//      factory.setVariableCPT( var_name.str(), p, false );
+//    }
+
     template <typename GUM_SCALAR>
     void System<GUM_SCALAR>::__groundPotential(
         const Instance<GUM_SCALAR>& instance,
@@ -319,9 +371,19 @@ namespace gum {
         }
       }
 
-      // This should be optimized (using MultiDimBijArray and by handling
-      // noisy-or)
-      Potential<GUM_SCALAR>* p = copyPotential( bijection, attr.cpf() );
+      // Copy Potential
+      // DO NOT USE MultiDimBijArray as they will wreck havok if you delete
+      // the prm begor its grounded BN (happens a lot in pyAgrum)
+      Potential<GUM_SCALAR>* p = new Potential<GUM_SCALAR>();
+      for ( auto var : attr.cpf().variablesSequence() ) {
+        p->add( *( bijection.second( var ) ) );
+      }
+      Instantiation inst( attr.cpf() ), jnst( *p );
+      for ( inst.begin(), jnst.begin(); not( inst.end() or jnst.end() );
+            inst.inc(), jnst.inc() ) {
+        p->set( jnst, attr.cpf().get( inst ) );
+      }
+      GUM_ASSERT( inst.end() and jnst.end() );
       factory.setVariableCPT( var_name.str(), p, false );
     }
 
