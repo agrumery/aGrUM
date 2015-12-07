@@ -29,7 +29,7 @@
 
 // to ease parser in IDEs
 #include <agrum/multidim/aggregators/multiDimAggregator.h>
-#include <agrum/multidim/aggregators/median.h>
+#include <agrum/multidim/aggregators/amplitude.h>
 
 namespace gum {
 

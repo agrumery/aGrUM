@@ -15,7 +15,6 @@ src/agrum/config.h
 
 # generated files by testunits
 src/testunits/testList.all
-src/testunits/ressources/BNBIFXMLIO_RO_file.txt
 src/testunits/ressources/BNBIFXMLIO_file.txt
 src/testunits/ressources/ContextualDependenciesCNFWriter_RO_TestFile.cnf
 src/testunits/ressources/ContextualDependenciesCNFWriter_RO_TestFile.cnf.var

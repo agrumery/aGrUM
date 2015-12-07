@@ -107,8 +107,6 @@ namespace gum {
 
   ///
   std::string ParseError::toElegantString() const {
-    std::cout << toString() << std::endl;
-
     if ( code.empty() ) {
       std::ifstream ifs( filename.c_str() );
 
@@ -118,7 +116,8 @@ namespace gum {
 
     std::ostringstream s;
 
-    s << code << "\n";
+    s << toString() << std::endl
+      << code << std::endl;
 
     if ( column > 0 ) s << std::string( column - 1, ' ' ) << "^";
 
