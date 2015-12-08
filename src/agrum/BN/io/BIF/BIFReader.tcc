@@ -24,9 +24,10 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#include <agrum/BN/io/BNReader.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
 
