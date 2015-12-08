@@ -4714,6 +4714,11 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_loadNET(self, *args)
 
 
+    def saveNET(self, name: 'std::string') -> "void":
+        """saveNET(BayesNet_double self, std::string name)"""
+        return _pyAgrum.BayesNet_double_saveNET(self, name)
+
+
     def loadPRM(self, *args) -> "std::string":
         """
         loadPRM(BayesNet_double self, std::string name, PyObject * l) -> std::string
@@ -4722,15 +4727,10 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_loadPRM(self, *args)
 
 
-    def saveNET(self, name: 'std::string') -> "void":
-        """saveNET(BayesNet_double self, std::string name)"""
-        return _pyAgrum.BayesNet_double_saveNET(self, name)
-
-
-    def loadBIFXML(self, *args) -> "bool":
+    def loadBIFXML(self, *args) -> "std::string":
         """
-        loadBIFXML(BayesNet_double self, std::string name, PyObject * l) -> bool
-        loadBIFXML(BayesNet_double self, std::string name) -> bool
+        loadBIFXML(BayesNet_double self, std::string name, PyObject * l) -> std::string
+        loadBIFXML(BayesNet_double self, std::string name) -> std::string
         """
         return _pyAgrum.BayesNet_double_loadBIFXML(self, *args)
 

@@ -139,14 +139,12 @@ class TestFeatures(BayesNetTestCase):
 
     def testChangeLabel(self):
         bn = gum.BayesNet()
+
         res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'))
 
         self.assertEqual(str(bn.variable(0)),"HISTORY<TRUE,FALSE>")
         bn.variable(0).toLabelizedVar().changeLabel(0,"toto")
         self.assertEqual(str(bn.variable(0)),"HISTORY<toto,FALSE>")
-
-
-
 
 class TestLoadBN(BayesNetTestCase):
 
@@ -268,7 +266,7 @@ class TestLoadBN(BayesNetTestCase):
         self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(),[[0.05, 0.9, 0.05], [0.01, 0.09, 0.9]],places=4)
 
     def testO3PRMLoad(self):
-        bn=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/o3prm/Asia.o3prm'),[])
+        bn=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/o3prm/Asia.o3prm'),[],verbose=False) # verbose=False : don't want to see the warnings
         self.assertEqual(bn.size(),8)
 
 

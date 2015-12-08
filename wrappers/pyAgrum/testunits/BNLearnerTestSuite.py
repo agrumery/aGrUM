@@ -47,7 +47,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       learner.useGreedyHillClimbing()
       bn=learner.learnBN()
 
-      ref=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia2.bif'))
+      ref=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia2.bif'),verbose=False)
 
       f=gum.BruteForceKL(bn,ref)
       res=f.compute()
@@ -71,7 +71,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
       bn=learner.learnBN()
 
-      ref=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia2.bif'))
+      ref=gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia2.bif'),verbose=False)
 
       f=gum.BruteForceKL(bn,ref)
       res=f.compute()
