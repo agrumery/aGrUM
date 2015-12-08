@@ -670,7 +670,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::_updateDescendants(
         const ClassElement<GUM_SCALAR>& elt ) {
-      //for ( const auto ext : __extensions ) {
+      // for ( const auto ext : __extensions ) {
       //  // We test to prevent unnecessary recursive call from iter
       //  if ( !ext->isOutputNode( elt ) ) {
       //    ext->setOutputNode( elt, true );
