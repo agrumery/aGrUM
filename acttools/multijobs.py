@@ -95,7 +95,8 @@ def prettifying(line):
 
   s=line.split(" ... ")
   if len(s)==2:
-      return cfg.C_WARNING+s[0]+cfg.C_END+" ... "+cfg.C_MSG+"OK   "+cfg.C_END
+      ss=s[0].split('(')
+      return cfg.C_WARNING+ss[0]+cfg.C_VALUE+'('+ss[1]+cfg.C_END+" ... "+s[1]
 
   # end of test execution
   s=line.split("##")

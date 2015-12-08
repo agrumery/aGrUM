@@ -142,9 +142,9 @@ def showProba(p):
     fig=getFigProba(p)
     plt.show()
 
-def saveFigProba(p,filename):
+def saveFigProba(p,filename,format="svg"):
     fig=getFigProba(p)
-    fig.savefig(filename, bbox_inches='tight',transparent=True,pad_inches=0)
+    fig.savefig(filename, bbox_inches='tight',transparent=True,pad_inches=0, dpi=fig.dpi, format=format)
     plt.close(fig)
 
 
@@ -308,9 +308,8 @@ def showEntropy(bn,evs,size="4",cmap=INFOcmap):
                               "</div>"))
 
 
-def showInference(bn,evs={},targets={},size="7"):
-    # targets={} => each node is a target    
-    format='png'
+def showInference(bn,evs={},targets={},size="7",format='png'):
+    # targets={} => each node is a target
     ie=gum.LazyPropagation(bn)
     ie.setEvidence(evs)
     ie.makeInference()
@@ -321,14 +320,13 @@ def showInference(bn,evs={},targets={},size="7"):
 
         for i in bn.ids():
             name=bn.variable(i).name()
+            fill="fillcolor=sandybrown" if name in evs else ""
             if len(targets)==0 or name in targets:
               filename=temp_dir+name+"."+format
-              saveFigProba(ie.posterior(i),filename)
-              fill=" ,fillcolor=sandybrown" if name in evs else ""
-              dotstr+=' "{0}" [shape=rectangle,image="{1}", label=""{2}];\n'.format(name,filename,fill)
+              saveFigProba(ie.posterior(i),filename,format=format)
+              dotstr+=' "{0}" [shape=rectangle,image="{1}", label="", {2}];\n'.format(name,filename,fill)
             else:
-              fill=" [fillcolor=sandybrown]" if name in evs else ""
-              dotstr+=' "{0}" {1}'.format(name,fill)
+              dotstr+=' "{0}" [{1}]'.format(name,fill)
         for (i,j) in bn.arcs():
             dotstr+=' "{0}"->"{1}";'.format(bn.variable(i).name(),bn.variable(j).name())
         dotstr+='}'
