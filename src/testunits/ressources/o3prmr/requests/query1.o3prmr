@@ -1,7 +1,7 @@
 import systems.MySystem;
 
 request MyQuerry {
-  engine SVED;
+  engine SVE;
 
   systems.MySystem.MySystem.c1.can_print = true;
   ? systems.MySystem.MySystem.c2.can_print;

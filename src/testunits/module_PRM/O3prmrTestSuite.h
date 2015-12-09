@@ -407,6 +407,28 @@ namespace gum_tests {
         TS_ASSERT( false );
       }
     }
+
+    void testStudents() {
+      try {
+        gum::prm::o3prmr::O3prmrInterpreter si;
+        si.setSyntaxMode( false );
+        si.addPath( GET_RESSOURCES_PATH( "o3prmr/University/" ) );
+
+        TS_GUM_ASSERT_THROWS_NOTHING( si.interpretFile(
+            GET_RESSOURCES_PATH( "o3prmr/University/fr/request.o3prmr" ) ) );
+
+        si.showElegantErrorsAndWarnings();
+        TS_ASSERT_EQUALS( si.errors(), 0 );
+        TS_ASSERT_EQUALS( si.warnings(), 0 );
+
+        TS_ASSERT_EQUALS( si.results().size(), (gum::Size)1 );
+
+        auto result = si.results()[0];
+
+      } catch ( gum::Exception& ) {
+        TS_ASSERT( false );
+      }
+    }
   };
 
 }  // namespace gum_tests

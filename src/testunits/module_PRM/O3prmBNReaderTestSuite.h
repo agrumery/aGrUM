@@ -34,7 +34,8 @@ namespace gum_tests {
           &bn, GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" ) );
       int res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
-      TS_ASSERT_EQUALS( res, 1 );  // no system
+      TS_ASSERT_EQUALS( res, 0 );
+      TS_ASSERT_EQUALS( reader.warnings(), 1 );  // no system
       TS_ASSERT_EQUALS( bn.size(), (gum::Size)8 );
     }
 
@@ -45,7 +46,8 @@ namespace gum_tests {
             &bn, GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" ) );
         int res = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
-        TS_ASSERT_EQUALS( res, 1 );  // no system
+        TS_ASSERT_EQUALS( res, 0 );
+        TS_ASSERT_EQUALS( reader.warnings(), 1 );  // no system
         TS_ASSERT_EQUALS( bn.size(), (gum::Size)8 );
       }
     }

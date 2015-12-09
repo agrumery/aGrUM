@@ -63,8 +63,13 @@ namespace gum {
         , __implements( new Set<Interface<GUM_SCALAR>*>( set ) ) {
       GUM_CONSTRUCTOR( Class );
 
-      for ( const auto impl : *__implements )
+      for ( const auto impl : *__implements ) {
         impl->__addImplementation( this );
+        // Reserve reference id in DAG
+        for (auto ref: impl->referenceSlots()) {
+          __dag.addNode(ref->id());
+        }
+      }
     }
 
     template <typename GUM_SCALAR>
@@ -88,8 +93,13 @@ namespace gum {
         }
       }
 
-      for ( const auto impl : *__implements )
+      for ( const auto impl : *__implements ) {
         impl->__addImplementation( this );
+        // Reserve reference id in DAG
+        for (auto ref: impl->referenceSlots()) {
+          __dag.addNode(ref->id());
+        }
+      }
     }
 
     template <typename GUM_SCALAR>
@@ -360,6 +370,32 @@ namespace gum {
           ReferenceSlot<GUM_SCALAR>* ref =
               static_cast<ReferenceSlot<GUM_SCALAR>*>( elt );
           __referenceSlots.insert( ref );
+          // Updating ref's id if ref implements an interface
+          try {
+            for (auto i: implements()) {
+              if (i->exists(ref->name())) {
+                auto &i_elt = i->get(ref->name());
+                if (i_elt.elt_type() != ref->elt_type()) {
+                  GUM_ERROR(OperationNotAllowed, "Class does not respect it's interface");
+                }
+                auto &i_ref = static_cast<ReferenceSlot<GUM_SCALAR>&>(i_elt);
+                if (not ref->slotType().isSubTypeOf( i_ref.slotType() )) {
+                  GUM_ERROR(
+                      OperationNotAllowed,
+                      "ReferenceSlot type does not respect class interface" );
+                }
+                // Node must be reserved by constructor
+                GUM_ASSERT(__dag.exists(i_ref.id()));
+                // Removing unused node and changin to propoer node
+                __dag.eraseNode(ref->id());
+                __nodeIdMap.erase(ref->id());
+                ref->setId(i_ref.id());
+                __nodeIdMap.insert(ref->id(), ref);
+              }
+            }
+          } catch (NotFound &e) {
+            // No interface to check
+          }
           break;
         }
 

@@ -141,7 +141,7 @@ namespace gum {
         // We should have only one instance
         // Less ugly way to get the single instance in set
         for ( auto instance : *set ) {
-          auto& attr = instance->get( sc->lastElt().name() );
+          auto& attr = instance->get( sc->lastElt().safeName() );
           __bijection.insert( &( sc->type().variable() ),
                               &( attr.type().variable() ) );
         }

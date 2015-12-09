@@ -160,19 +160,31 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( sve = new gum::prm::SVE<double>(
                                         *small, small->system( "microSys" ) ) );
       {
+        gum::BayesNet<double> bn;
+        gum::BayesNetFactory<double> bn_factory( &bn );
+        small->system( "microSys" ).groundedBN( bn_factory );
+        auto ve = new gum::VariableElimination<double>( bn );
+        gum::prm::GroundedInference<double> g_ve( *small,
+                                                  small->system( "microSys" ) );
+        g_ve.setBNInference( ve );
+
         const gum::prm::Instance<double>& instance =
             small->system( "microSys" ).get( "c" );
         const gum::prm::Attribute<double>& attribute =
             instance.get( "can_print" );
         gum::prm::PRMInference<double>::Chain chain =
             std::make_pair( &instance, &attribute );
-        gum::Potential<double> m;
+
+        gum::Potential<double> m, n;
         TS_GUM_ASSERT_THROWS_NOTHING( sve->marginal( chain, m ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( g_ve.marginal( chain, n ) );
         gum::Instantiation i( m );
         i.setFirst();
         TS_ASSERT_DELTA( m.get( i ), 0.600832, 1e-6 );
+        TS_ASSERT_DELTA( m.get( i ), n.get( i ), 1e-6 );
         i.inc();
         TS_ASSERT_DELTA( m.get( i ), 0.399168, 1e-6 );
+        TS_ASSERT_DELTA( m.get( i ), n.get( i ), 1e-6 );
       }
       {
         const gum::prm::Instance<double>& instance =
@@ -584,6 +596,7 @@ namespace gum_tests {
             std::make_pair( &q_i, &q_a );
         gum::Potential<double> m;
         g_ve->marginal( q_chain, m );
+        TS_ASSERT_EQUALS( m.nbrDim(), (gum::Size)1 );
         gum::Instantiation inst( m );
         inst.setFirst();
         TS_ASSERT_DELTA( m.get( inst ), 1.0, 1e-6 );
