@@ -133,7 +133,8 @@ def getFigProba(p):
     ax.set_xlim(0,1)
     ax.set_yticks(ra)
     ax.set_yticklabels(vx)
-    ax.set_xlabel('Probability')
+    ax.set_xticklabels([])
+    #ax.set_xlabel('Probability')
     ax.set_title(var.name())
     ax.get_xaxis().grid(True)
     return fig
@@ -234,13 +235,13 @@ def getBN(bn,size="4",vals=None,cmap=INFOcmap):
           fgcol=_proba2fgcolor(vals[n],cmap)
           res=" : {0:2.5f}".format(vals[n])
 
-        node=dot.Node(n,style="filled",
+        node=dot.Node('"'+n+'"',style="filled",
                           fillcolor=bgcol,
                           fontcolor=fgcol,
                           tooltip='"({0}) {1}{2}"'.format(bn.idFromName(n),n,res))
         graph.add_node(node)
     for a in bn.arcs():
-        edge=dot.Edge(bn.variable(a[0]).name(),bn.variable(a[1]).name())
+        edge=dot.Edge('"'+bn.variable(a[0]).name()+'"','"'+bn.variable(a[1]).name()+'"')
         graph.add_edge(edge)
     graph.set_size(size)
     return graph
@@ -320,18 +321,17 @@ def showInference(bn,evs={},targets={},size="7",format='png'):
 
         for i in bn.ids():
             name=bn.variable(i).name()
-            fill="fillcolor=sandybrown" if name in evs else ""
             if len(targets)==0 or name in targets:
+              fill=", fillcolor=sandybrown" if name in evs else ""
               filename=temp_dir+name+"."+format
               saveFigProba(ie.posterior(i),filename,format=format)
-              dotstr+=' "{0}" [shape=rectangle,image="{1}", label="", {2}];\n'.format(name,filename,fill)
+              dotstr+=' "{0}" [shape=rectangle,image="{1}",label="" {2}];\n'.format(name,filename,fill)
             else:
-              dotstr+=' "{0}" [{1}]'.format(name,fill)
+              fill="[fillcolor=sandybrown]" if name in evs else ""
+              dotstr+=' "{0}" {1}'.format(name,fill)
         for (i,j) in bn.arcs():
             dotstr+=' "{0}"->"{1}";'.format(bn.variable(i).name(),bn.variable(j).name())
         dotstr+='}'
 
         g=dot.graph_from_dot_data(dotstr)
         showGraph(g,size=size,format=format)
-
-
