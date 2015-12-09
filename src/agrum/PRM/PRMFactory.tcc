@@ -1412,6 +1412,9 @@ namespace gum {
         __prm->__systems.insert( model );
 
       } catch ( Exception& e ) {
+        GUM_TRACE_VAR(e.errorType());
+        GUM_TRACE_VAR(e.errorContent());
+        GUM_TRACE_VAR(e.errorCallStack());
         GUM_ERROR( FatalError, "could not create system" );
       }
     }

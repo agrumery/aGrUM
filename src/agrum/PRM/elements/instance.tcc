@@ -64,9 +64,14 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void Instance<GUM_SCALAR>::instantiate() {
-      if ( not __instantiated ) {
-        __instantiated = true;
-        __instantiate();
+      try {
+        if ( not __instantiated ) {
+          __instantiated = true;
+          __instantiate();
+        }
+      } catch ( Exception& e ) {
+        GUM_TRACE_VAR( this->name() );
+        throw e;
       }
     }
 
@@ -107,50 +112,38 @@ namespace gum {
     template <typename GUM_SCALAR>
     void
     Instance<GUM_SCALAR>::__instantiateSlotChain( SlotChain<GUM_SCALAR>* sc ) {
-      __referenceMap.insert( sc->id(), new Set<Instance<GUM_SCALAR>*>() );
-      // An instantiated slot chain is a tree, to find all leaves we proceed
-      // with a
-      // deep run
-      std::vector<std::pair<Instance<GUM_SCALAR>*, Size>> stack;
-      stack.push_back( std::pair<Instance<GUM_SCALAR>*, Size>( this, 0 ) );
-      Set<Instance<GUM_SCALAR>*> visited;
-      // Last element is an attribute, and we only want the instance containing
-      // it
-      Size depth_stop = sc->chain().size() - 1;
-
-      // Let's go!
-      while ( not stack.empty() ) {
-        Instance<GUM_SCALAR>* current = stack.back().first;
-        Size depth = stack.back().second;
-        stack.pop_back();
-
-        if ( not visited.exists( current ) ) {
-          visited.insert( current );
-
-          if ( depth < depth_stop ) {
-            try {
-              NodeId refId = sc->chain().atPos( depth )->id();
-
-              for ( const auto inst : *current->__referenceMap[refId] )
-                stack.push_back( std::make_pair( inst, depth + 1 ) );
-            } catch ( NotFound& ) {
-              GUM_ERROR( NotFound, "found an uninstantiated reference" );
-            }
-          } else {
-            __referenceMap[sc->id()]->insert( current );
-            __addReferingInstance( sc, current );
-
-            // If slot chain is single, it could be used by an attribute so we
-            // add
-            // the corresponding DiscreteVariable
-            // to __bijection for CPF initialisation
-            if ( not sc->isMultiple() ) {
-              __bijection.insert( &( sc->type().variable() ),
-                                  &( current->get( sc->lastElt().safeName() )
-                                         .type()
-                                         .variable() ) );
-            }
+      auto first_id = sc->chain()[0]->id();
+      auto set =
+          new Set<Instance<GUM_SCALAR>*>( *( __referenceMap[first_id] ) );
+      // We proceed with a width-first run of the slot chain
+      for ( Size idx = 1; idx < sc->chain().size() - 1; ++idx ) {
+        auto temp = new Set<Instance<GUM_SCALAR>*>();
+        for ( auto current : *set ) {
+          auto& ref = current->type().get( sc->chain()[idx]->name() );
+          for ( auto next : *( current->__referenceMap[ref.id()] ) ) {
+            temp->insert( next );
           }
+        }
+        delete set;
+        set = temp;
+      }
+      GUM_ASSERT( set->size() > 0 );
+      // set contains all the instances references by sc
+      if ( __referenceMap.exists( sc->id() ) ) {
+        delete __referenceMap[sc->id()];
+        __referenceMap[sc->id()] = set;
+      } else {
+        __referenceMap.insert( sc->id(), set );
+      }
+
+      // If sc is not multiple so it can be added as a parent of an attribute
+      if ( not sc->isMultiple() ) {
+        // We should have only one instance
+        // Less ugly way to get the single instance in set
+        for ( auto instance : *set ) {
+          auto& attr = instance->get( sc->lastElt().name() );
+          __bijection.insert( &( sc->type().variable() ),
+                              &( attr.type().variable() ) );
         }
       }
     }
@@ -212,8 +205,6 @@ namespace gum {
                        "SlotChain<GUM_SCALAR> size limit reached" );
           }
 
-          // We need to plug this to the referred instance.
-          GUM_CHECKPOINT;
           break;
         }
 
@@ -263,6 +254,7 @@ namespace gum {
       __bijection.insert( &( source->type().variable() ),
                           &( attr->type().variable() ) );
       __nodeIdMap.insert( attr->id(), attr );
+
     }
 
     template <typename GUM_SCALAR>
@@ -637,6 +629,11 @@ namespace gum {
         for ( const auto node : type().dag().parents( attr->id() ) )
           GUM_TRACE_VAR( type().get( node ).safeName() );
 
+        auto &elt = type().get("course.prof.teachingAbility");
+        GUM_TRACE_VAR(elt.name());
+        GUM_TRACE_VAR( ClassElement<GUM_SCALAR>::enum2str( elt.elt_type() ) );
+        bool is_in_bij = bijection().existsFirst(&(elt.type().variable()));
+        GUM_TRACE_VAR(is_in_bij);
 #endif
         throw( e );
       }
