@@ -209,27 +209,6 @@ namespace gum {
         bool go = true;
 
         while ( not stack.empty() ) {
-          ///////////////////////////////////
-          std::stringstream stack_str;
-          stack_str << "(";
-
-          for ( size_t idx = 0; idx < stack.size(); ++idx ) {
-            stack_str << stack[idx] << ", ";
-          }
-
-          GUM_TRACE_VAR( stack_str.str() );
-          GUM_TRACE_VAR( code() );
-          GUM_TRACE_VAR( p.code() );
-          GUM_TRACE_VAR( node_map.size() );
-          std::stringstream sBuff;
-
-          for ( auto iter = node_map.begin(); iter != node_map.end(); ++iter )
-            sBuff << "(" << iter.first() << ", " << iter.second() << ") ";
-
-          GUM_TRACE( sBuff.str() );
-          GUM_TRACE_VAR( stack.back().first );
-          GUM_TRACE_VAR( stack.back().second );
-          ///////////////////////////////////
           go = true;
           u = stack.back().first;
           v = stack.back().second;

@@ -97,7 +97,16 @@ namespace gum {
              const Set<Interface<GUM_SCALAR>*>& set );
 
       /// Copy constructor.
-      Class( const Class<GUM_SCALAR>& source );
+      Class( const Class<GUM_SCALAR>& source ) =delete;
+
+      /// Move constructor.
+      Class( const Class<GUM_SCALAR>&& source ) =delete;
+
+      /// Copy operator. Don't use it.
+      Class<GUM_SCALAR>& operator=( const Class<GUM_SCALAR>& source ) =delete;
+
+      /// Move operator. Don't use it.
+      Class<GUM_SCALAR>& operator=( const Class<GUM_SCALAR>&& source ) =delete;
 
       /// Destructor.
       virtual ~Class();
@@ -282,8 +291,6 @@ namespace gum {
       void _updateDescendants( const ClassElement<GUM_SCALAR>& elt );
 
       private:
-      /// Copy operator. Don't use it.
-      Class<GUM_SCALAR>& operator=( const Class<GUM_SCALAR>& source );
 
       /// Proceed with the copy of c in this.
       // void __copyClass<GUM_SCALAR>(const Class<GUM_SCALAR>& c);
@@ -327,7 +334,7 @@ namespace gum {
       Set<Parameter<GUM_SCALAR>*> __parameters;
 
       /// Recursively adds cast descendant of attr in this Class<GUM_SCALAR>.
-      void __addCastDescendants( Attribute<GUM_SCALAR>* attr );
+      void __addCastDescendants( ClassElement<GUM_SCALAR>* attr );
 
       /// Recursively adds cast descendant from start to end in this
       /// Class<GUM_SCALAR>.

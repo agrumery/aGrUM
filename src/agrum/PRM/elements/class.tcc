@@ -69,6 +69,10 @@ namespace gum {
         for (auto ref: impl->referenceSlots()) {
           __dag.addNode(ref->id());
         }
+        // Reserve attribute id in DAG
+        for (auto attr: impl->attributes()) {
+          __dag.addNode(attr->id());
+        }
       }
     }
 
@@ -95,21 +99,17 @@ namespace gum {
 
       for ( const auto impl : *__implements ) {
         impl->__addImplementation( this );
-        // Reserve reference id in DAG
-        for (auto ref: impl->referenceSlots()) {
-          __dag.addNode(ref->id());
+        if (not super.isSubTypeOf(*impl)) {
+          // Reserve reference id in DAG
+          for (auto ref: impl->referenceSlots()) {
+            __dag.addNode(ref->id());
+          }
+          // Reserve attribute id in DAG
+          for (auto attr: impl->attributes()) {
+            __dag.addNode(attr->id());
+          }
         }
       }
-    }
-
-    template <typename GUM_SCALAR>
-    Class<GUM_SCALAR>::Class( const Class<GUM_SCALAR>& source )
-        : ClassElementContainer<GUM_SCALAR>( source.name() )
-        , __dag( source.dag() )
-        , __super( source.__super )
-        , __implements( 0 ) {
-      GUM_CONS_CPY( Class );
-      GUM_ERROR( FatalError, "don't copy classes" );
     }
 
     template <typename GUM_SCALAR>
@@ -128,10 +128,16 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Class<GUM_SCALAR>::__inheritClass( const Class<GUM_SCALAR>& c ) {
       // Adding implemented interfaces of c, if any
-      __implements =
-          ( c.__implements )
-              ? new Set<Interface<GUM_SCALAR>*>( *( c.__implements ) )
-              : 0;
+      if (c.__implements) {
+        if (not __implements) {
+          __implements = new Set<Interface<GUM_SCALAR>*>( *( c.__implements ) );
+        } else {
+          for (auto i : *(c.__implements)) {
+            __implements->insert(i);
+          }
+        }
+      }
+ 
       // Copying attributes, the bijection's firsts are attributes in this and
       // its
       // seconds are attributes
@@ -356,12 +362,92 @@ namespace gum {
         case ClassElement<GUM_SCALAR>::prm_attribute: {
           __attributes.insert( static_cast<Attribute<GUM_SCALAR>*>( elt ) );
           __addCastDescendants( static_cast<Attribute<GUM_SCALAR>*>( elt ) );
+
+          // Update attribute or cast descendant id to respect implemented interface
+          try {
+            for (auto i: implements()) {
+              if ( i->exists( elt->name() ) ) {
+                if ( not ClassElement<GUM_SCALAR>::isAttribute(
+                         i->get( elt->name() ) ) ) {
+                  GUM_ERROR( OperationNotAllowed,
+                             "Class does not respect it's interface" );
+                }
+                auto attr = static_cast<Attribute<GUM_SCALAR>*>( elt );
+                auto &i_attr = static_cast<Attribute<GUM_SCALAR>&>(
+                    i->get( attr->name() ) );
+                if ( not attr->type().isSubTypeOf( i_attr.type() ) ) {
+                  GUM_ERROR(
+                      OperationNotAllowed,
+                      "Attribute type does not respect class interface" );
+                }
+                if ( attr->type() != i_attr.type() ) {
+                  if ( not this->exists( i_attr.safeName() ) ) {
+                    GUM_ERROR(
+                        OperationNotAllowed,
+                        "Attribute type does not respect class interface" );
+                  }
+                  attr = static_cast<Attribute<GUM_SCALAR>*>(
+                      &( this->get( i_attr.safeName() ) ) );
+                }
+                // Node must be reserved by constructor
+                GUM_ASSERT( __dag.existsNode( i_attr.id() ) );
+                // Removing unused node and changin to propoer node
+                if (attr->id() != i_attr.id()) {
+                  // Update cast descendants
+                  for (auto child: __dag.children( attr->id() )) {
+                    __dag.addArc( i_attr.id(), child );
+                  }
+                  __dag.eraseNode( attr->id() );
+                }
+                __nodeIdMap.erase( attr->id() );
+                attr->setId( i_attr.id() );
+                GUM_ASSERT(attr->id() == i_attr.id());
+                __nodeIdMap.insert( attr->id(), attr );
+              }
+            }
+          } catch (NotFound &e) {
+            // No interface
+          }
           __addIOInterfaceFlags( elt );
           break;
         }
 
         case ClassElement<GUM_SCALAR>::prm_aggregate: {
           __aggregates.insert( static_cast<Aggregate<GUM_SCALAR>*>( elt ) );
+          __addCastDescendants( static_cast<Attribute<GUM_SCALAR>*>( elt ) );
+          try {
+            for (auto i: implements()) {
+              if ( i->exists( elt->name() ) ) {
+                if ( not ClassElement<GUM_SCALAR>::isAttribute(
+                         i->get( elt->name() ) ) ) {
+                  GUM_ERROR( OperationNotAllowed,
+                             "Class does not respect it's interface" );
+                }
+                auto &i_attr = static_cast<Attribute<GUM_SCALAR>&>(
+                    i->get( elt->name() ) );
+                if ( not elt->type().isSubTypeOf( i_attr.type() ) ) {
+                  GUM_ERROR(
+                      OperationNotAllowed,
+                      "Attribute type does not respect class interface" );
+                }
+                if ( elt->type() != i_attr.type() ) {
+                  elt = static_cast<ClassElement<GUM_SCALAR>*>(
+                      &( this->get( i_attr.safeName() ) ) );
+                }
+                // Node must be reserved by constructor
+                GUM_ASSERT( __dag.existsNode( i_attr.id() ) );
+                // Removing unused node and changin to propoer node
+                if (elt->id() != i_attr.id()) {
+                  __dag.eraseNode( elt->id() );
+                }
+                __nodeIdMap.erase( elt->id() );
+                elt->setId( i_attr.id() );
+                __nodeIdMap.insert( elt->id(), elt );
+              }
+            }
+          } catch (NotFound &e) {
+            // No interface
+          }
           __addIOInterfaceFlags( elt );
           break;
         }
@@ -387,7 +473,9 @@ namespace gum {
                 // Node must be reserved by constructor
                 GUM_ASSERT(__dag.exists(i_ref.id()));
                 // Removing unused node and changin to propoer node
-                __dag.eraseNode(ref->id());
+                if (ref->id() != i_ref.id()) {
+                  __dag.eraseNode(ref->id());
+                }
                 __nodeIdMap.erase(ref->id());
                 ref->setId(i_ref.id());
                 __nodeIdMap.insert(ref->id(), ref);
@@ -419,13 +507,30 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void
-    Class<GUM_SCALAR>::__addCastDescendants( Attribute<GUM_SCALAR>* attr ) {
-      Attribute<GUM_SCALAR>* parent = attr;
+    Class<GUM_SCALAR>::__addCastDescendants( ClassElement<GUM_SCALAR>* attr ) {
+
+      auto parent = attr;
       Attribute<GUM_SCALAR>* child = 0;
 
       while ( parent->type().isSubType() ) {
         child = parent->getCastDescendant();
-        child->setId( __dag.addNode() );
+
+        // Check if id was reserved by one of the class interfaces
+        bool found = false;
+        try {
+          for ( auto i : implements() ) {
+            if ( i->exists( child->safeName() ) ) {
+              child->setId( i->get( child->safeName() ).id() );
+              found = true;
+              break;
+            }
+          }
+        } catch ( NotFound& e ) {
+          // No interface
+        }
+        if ( not found ) {
+          child->setId( __dag.addNode() );
+        }
         __nodeIdMap.insert( child->id(), child );
         // Only use child's safe name when adding to the name map!
         __nameMap.insert( child->safeName(), child );
@@ -433,6 +538,7 @@ namespace gum {
         // Do not use Class<GUM_SCALAR>::insertArc(), child's CPF is already
         // initialized properly
         __dag.addArc( parent->id(), child->id() );
+
         parent = child;
       }
     }

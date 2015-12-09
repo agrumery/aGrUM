@@ -38,6 +38,9 @@
 
 namespace gum {
   namespace prm {
+    template <typename GUM_SCALAR>
+    class Attribute;
+
     /**
      * @class ClassElement classElement.h <agrum/PRM/classElement.h>
      * @brief Abstract class representing an element of PRM class.
@@ -191,6 +194,23 @@ namespace gum {
        */
       virtual const Type<GUM_SCALAR>& type() const = 0;
 
+      /**
+       * @brief Returns a proper cast descendant of this Attribute.
+       *
+       * A cast descendant is an Attribute depending on this one which
+       * cast it in this->type().super().
+       *
+       * The pointer is not deleted by this Attribute, so delete it yourself
+       * after use.
+       *
+       * A new cast descendant is created for each call of this method.
+       *
+       * @return The cast descendant of this Attribute.
+       *
+       * @throw OperationNotAllowed Raised if it is not possible to create a
+       *                            cast descendant for this Attribute.
+       */
+      virtual Attribute<GUM_SCALAR>* getCastDescendant() const = 0;
 
       /**
        * @brief Returns the safe name of this ClassElement, if any.

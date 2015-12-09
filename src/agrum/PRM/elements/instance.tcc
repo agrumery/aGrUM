@@ -64,14 +64,9 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void Instance<GUM_SCALAR>::instantiate() {
-      try {
-        if ( not __instantiated ) {
-          __instantiated = true;
-          __instantiate();
-        }
-      } catch ( Exception& e ) {
-        GUM_TRACE_VAR( this->name() );
-        throw e;
+      if ( not __instantiated ) {
+        __instantiated = true;
+        __instantiate();
       }
     }
 
@@ -134,6 +129,11 @@ namespace gum {
         __referenceMap[sc->id()] = set;
       } else {
         __referenceMap.insert( sc->id(), set );
+      }
+
+      // Add refering instances
+      for (auto i: *set) {
+        __addReferingInstance(sc, i);
       }
 
       // If sc is not multiple so it can be added as a parent of an attribute
@@ -254,7 +254,6 @@ namespace gum {
       __bijection.insert( &( source->type().variable() ),
                           &( attr->type().variable() ) );
       __nodeIdMap.insert( attr->id(), attr );
-
     }
 
     template <typename GUM_SCALAR>
@@ -609,34 +608,10 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void
     Instance<GUM_SCALAR>::__copyAttributeCPF( Attribute<GUM_SCALAR>* attr ) {
-      // try {
-      try {
-
-        const auto& type_attr = static_cast<const Attribute<GUM_SCALAR>&>(
-            type().get( attr->safeName() ) );
-        attr->copyCpf( bijection(), type_attr );
-        GUM_ASSERT( attr->cpf().contains( attr->type().variable() ) );
-
-      } catch ( Exception& e ) {
-#ifndef NDEBUG
-        GUM_TRACE_VAR( e.errorType() );
-        GUM_TRACE_VAR( e.errorContent() );
-        GUM_TRACE_VAR( e.errorCallStack() );
-
-        GUM_TRACE_VAR( name() );
-        GUM_TRACE_VAR( attr->safeName() );
-
-        for ( const auto node : type().dag().parents( attr->id() ) )
-          GUM_TRACE_VAR( type().get( node ).safeName() );
-
-        auto &elt = type().get("course.prof.teachingAbility");
-        GUM_TRACE_VAR(elt.name());
-        GUM_TRACE_VAR( ClassElement<GUM_SCALAR>::enum2str( elt.elt_type() ) );
-        bool is_in_bij = bijection().existsFirst(&(elt.type().variable()));
-        GUM_TRACE_VAR(is_in_bij);
-#endif
-        throw( e );
-      }
+      const auto& type_attr = static_cast<const Attribute<GUM_SCALAR>&>(
+          type().get( attr->safeName() ) );
+      attr->copyCpf( bijection(), type_attr );
+      GUM_ASSERT( attr->cpf().contains( attr->type().variable() ) );
     }
 
   } /* namespace prm */

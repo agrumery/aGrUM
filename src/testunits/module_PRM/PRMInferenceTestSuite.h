@@ -178,13 +178,13 @@ namespace gum_tests {
         gum::Potential<double> m, n;
         TS_GUM_ASSERT_THROWS_NOTHING( sve->marginal( chain, m ) );
         TS_GUM_ASSERT_THROWS_NOTHING( g_ve.marginal( chain, n ) );
-        gum::Instantiation i( m );
-        i.setFirst();
+        gum::Instantiation i( m ), j( n );
+        i.setFirst(), j.setFirst();
         TS_ASSERT_DELTA( m.get( i ), 0.600832, 1e-6 );
-        TS_ASSERT_DELTA( m.get( i ), n.get( i ), 1e-6 );
-        i.inc();
+        TS_ASSERT_DELTA( m.get( i ), n.get( j ), 1e-6 );
+        i.inc(), j.inc();
         TS_ASSERT_DELTA( m.get( i ), 0.399168, 1e-6 );
-        TS_ASSERT_DELTA( m.get( i ), n.get( i ), 1e-6 );
+        TS_ASSERT_DELTA( m.get( i ), n.get( j ), 1e-6 );
       }
       {
         const gum::prm::Instance<double>& instance =

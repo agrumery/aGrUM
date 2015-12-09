@@ -24,6 +24,7 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #include <agrum/PRM/elements/aggregate.h>
+#include <agrum/PRM/elements/scalarAttribute.h>
 #include <agrum/PRM/elements/type.h>
 
 #include <agrum/multidim/aggregators/min.h>
@@ -163,6 +164,34 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void
     Aggregate<GUM_SCALAR>::addChild( const ClassElement<GUM_SCALAR>& elt ) {}
+
+    template <typename GUM_SCALAR>
+    Attribute<GUM_SCALAR>*
+    Aggregate<GUM_SCALAR>::getCastDescendant() const {
+      ScalarAttribute<GUM_SCALAR>* cast = 0;
+
+      try {
+        cast = new ScalarAttribute<GUM_SCALAR>( this->name(), type().super() );
+      } catch ( NotFound& ) {
+        GUM_ERROR( OperationNotAllowed,
+                   "this Aggregate can not have cast descendant" );
+      }
+
+      cast->addParent( *this );
+      const DiscreteVariable& my_var = type().variable();
+      DiscreteVariable& cast_var = cast->type().variable();
+      Instantiation inst( cast->cpf() );
+
+      for ( inst.setFirst(); not inst.end(); inst.inc() ) {
+        if ( type().label_map()[inst.val( my_var )] == inst.val( cast_var ) ) {
+          cast->cpf().set( inst, 1 );
+        } else {
+          cast->cpf().set( inst, 0 );
+        }
+      }
+
+      return cast;
+    }
 
   } /* namespace prm */
 } /* namespace gum */

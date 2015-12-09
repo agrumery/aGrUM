@@ -1620,19 +1620,68 @@ namespace gum_tests {
 
         auto prm = reader.prm();
         for (auto c: prm->classes()) {
-          for (auto i: c->implements()) {
-            for (auto r: i->referenceSlots()) {
-              TS_ASSERT_EQUALS( r->name(), c->get(r->id()).name() );
-              TS_ASSERT_EQUALS( r->safeName(), c->get(r->id()).safeName() );
-              TS_ASSERT_EQUALS( r->id(), c->get(r->name()).id() );
-            }
-            for (auto r: c->referenceSlots()) {
-              if ( i->exists(r->name()) ) {
-                TS_ASSERT_EQUALS( r->name(), i->get(r->id()).name() );
-                TS_ASSERT_EQUALS( r->safeName(), i->get(r->id()).safeName() );
-                TS_ASSERT_EQUALS( r->id(), i->get(r->name()).id() );
+          try {
+            for ( auto i : c->implements() ) {
+              for ( auto r : i->referenceSlots() ) {
+                TS_ASSERT_EQUALS( r->name(), c->get( r->id() ).name() );
+                TS_ASSERT_EQUALS( r->safeName(), c->get( r->id() ).safeName() );
+                TS_ASSERT_EQUALS( r->id(), c->get( r->name() ).id() );
+              }
+              for ( auto r : c->referenceSlots() ) {
+                if ( i->exists( r->name() ) ) {
+                  TS_ASSERT_EQUALS( r->name(), i->get( r->id() ).name() );
+                  TS_ASSERT_EQUALS( r->safeName(),
+                                    i->get( r->id() ).safeName() );
+                  TS_ASSERT_EQUALS( r->id(), i->get( r->name() ).id() );
+                }
               }
             }
+          } catch ( gum::NotFound& e ) {
+              // No Interface
+            }
+          }
+
+        delete prm;
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+        GUM_TRACE( e.errorContent() );
+        GUM_TRACE( e.errorCallStack() );
+      }
+    }
+
+    void testAttributeID() {
+      try {
+        // Arrange
+        gum::prm::o3prm::O3prmReader<double> reader;
+        std::string file =
+            GET_RESSOURCES_PATH( "o3prmr/University/fr/base.o3prm" );
+        std::string package = "";
+        // Act
+        TS_ASSERT_THROWS_NOTHING( reader.readFile( file, package ) );
+        // Assert
+        TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+        if ( reader.errors() ) {
+          reader.showElegantErrorsAndWarnings();
+        }
+
+        TS_ASSERT_DIFFERS( reader.prm(), nullptr );
+
+        auto prm = reader.prm();
+        for ( auto c : prm->classes() ) {
+          try {
+            for ( auto i : c->implements() ) {
+
+              for (auto a: i->attributes()) {
+                TS_ASSERT( c->exists( a->name() ) );
+                TS_ASSERT( c->exists( a->safeName() ) );
+                TS_ASSERT( c->exists( a->id() ) );
+                TS_ASSERT_EQUALS( a->safeName(), c->get( a->id() ).safeName() );
+                TS_ASSERT_EQUALS( a->id(), c->get( a->id() ).id() );
+              }
+
+            }
+          } catch ( gum::NotFound& e ) {
+            // No interface
           }
         }
 

@@ -151,6 +151,12 @@ namespace gum {
       const std::string& name() const;
 
       /**
+       * @brief Change the name of the PRM Object.
+       * @warning Don't do this unless you know wath you are doing !
+       */
+      void name(const std::string& name);
+
+      /**
        * Returns the type of this object.
        */
       virtual PRMType obj_type() const = 0;

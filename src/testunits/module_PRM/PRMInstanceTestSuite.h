@@ -111,9 +111,9 @@ namespace gum_tests {
     void testType() {
       // Arrange
       Instance i( "i", *__classA );
-      auto& expected = *__classA;
+      auto expected = __classA;
       // Act
-      auto& actual = i.type();
+      auto actual = &(i.type());
       // Assert
       TS_ASSERT_EQUALS( actual, expected );
     }
@@ -122,9 +122,9 @@ namespace gum_tests {
       // Arrange
       Instance i( "i", *__classA );
       const auto& const_i = i;
-      const auto& expected = *__classA;
+      const auto expected = __classA;
       // Act
-      const auto& actual = const_i.type();
+      const auto actual = &(const_i.type());
       // Assert
       TS_ASSERT_EQUALS( actual, expected );
     }

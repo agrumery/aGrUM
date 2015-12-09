@@ -491,7 +491,6 @@ namespace gum {
               }
 
               default: {
-                GUM_TRACE_VAR( v->size() );
                 GUM_ERROR( OperationNotAllowed, "unexpected vector size" );
               }
             }

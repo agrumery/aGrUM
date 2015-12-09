@@ -97,6 +97,13 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
+    INLINE Attribute<GUM_SCALAR>*
+    ReferenceSlot<GUM_SCALAR>::getCastDescendant() const {
+      GUM_ERROR( OperationNotAllowed, "This is a ReferenceSlot." );
+    }
+
+
+    template <typename GUM_SCALAR>
     INLINE void ReferenceSlot<GUM_SCALAR>::addParent(
         const ClassElement<GUM_SCALAR>& elt ) {}
 

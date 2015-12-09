@@ -24,9 +24,9 @@ interface IStudent {
 
 interface ICourse {
   IProfessor prof;
+  hl difficulty;
   hl avgsatisfaction;
   hml rating;
-  hl difficulty;
 }
 
 class Registration implements IRegistration {

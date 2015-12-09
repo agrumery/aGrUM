@@ -110,49 +110,5 @@ namespace gum {
       v.push_back( path.substr( prev, std::string::npos ) );
     }
 
-    // void
-    // eliminateNode(const DiscreteVariable* var,
-    //               Set<Potential<GUM_SCALAR>*>& pool,
-    //               Set<Potential<GUM_SCALAR>*>& trash)
-    // {
-    //   MultiDimBucket<GUM_SCALAR>* bucket = new MultiDimBucket<GUM_SCALAR>();
-    //   Set< Potential<GUM_SCALAR>* > toRemove;
-    //   for (SetIterator<Potential<GUM_SCALAR>*> iter = pool.begin();
-    //        iter != pool.end(); ++iter )
-    //   {
-    //     if ((*iter)->contains(*var)) {
-    //       bucket->add(**iter);
-    //       toRemove.insert(*iter);
-    //     }
-    //   }
-    //   if (toRemove.empty()) {
-    //     delete bucket;
-    //   } else {
-    //     for (SetIterator<Potential<GUM_SCALAR>*> iter = toRemove.begin();
-    //          iter != toRemove.end(); ++iter)
-    //       pool.erase( *iter );
-    //     for (Set<const DiscreteVariable*>::iterator jter =
-    //          bucket->allVariables().begin(); jter !=
-    //          bucket->allVariables().end();
-    //          ++jter )
-    //     {
-    //       try {
-    //         if ((*jter) != var) bucket->add( **jter );
-    //       } catch (NotFound&) {
-    //         // This can happen if since some DiscreteVariable are not
-    //         represented
-    //         // as nodes in the undigraph (parents of input nodes)
-    //         bucket->add(**jter);
-    //       }
-    //     }
-    //     Potential<GUM_SCALAR>* bucket_pot = new Potential<GUM_SCALAR>( bucket
-    //     );
-    //     trash.insert( bucket_pot );
-    //     pool.insert( bucket_pot );
-    //   }
-    //   if (bucket->domainSize() > INT_MAX)
-    //     GUM_TRACE_VAR(bucket->domainSize());
-    // }
-
   } /* namespace prm */
 }

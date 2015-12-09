@@ -505,8 +505,7 @@ namespace gum {
       void __copyAttributeCPF( Attribute<GUM_SCALAR>* attr );
 
       /// @brief Add this as a referring instance over the attribute pointed by
-      /// sc
-      ///        in i.
+      /// sc in i.
       /// @param sc A slot chain pointing over an attribute in i.
       /// @param i An instance holding an attribute pointed by sc.
       void __addReferingInstance( SlotChain<GUM_SCALAR>* sc,

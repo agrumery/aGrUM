@@ -177,6 +177,9 @@ namespace gum {
       /// See gum::ClassElement<GUM_SCALAR>::_addChild().
       virtual void addChild( const ClassElement<GUM_SCALAR>& elt );
 
+      /// @brief Raise a gum::OperationNotAllowed exception
+      /// See gum::ClassElement<GUM_SCALAR>::getCastDescendant()
+      virtual Attribute<GUM_SCALAR>* getCastDescendant() const;
       /// @}
       private:
       /// Copy operator. Don't use it.

@@ -111,8 +111,6 @@ namespace gum {
 
         for ( inst.begin(), jnst.begin(); not( inst.end() or jnst.end() );
               inst.inc(), jnst.inc() ) {
-          // std::cout << inst <<  ", " << jnst << " -> " <<
-          // src.__formulas->get( jnst ) << std::endl;
           __formulas->set( inst, src.__formulas->get( jnst ) );
         }
 
@@ -211,19 +209,12 @@ namespace gum {
       DiscreteVariable& cast_var = cast->type().variable();
       Instantiation inst( cast->cpf() );
 
-      try {
-        for ( inst.setFirst(); not inst.end(); inst.inc() ) {
-          if ( type().label_map()[inst.val( my_var )] ==
-               inst.val( cast_var ) ) {
-            cast->cpf().set( inst, 1 );
-          } else {
-            cast->cpf().set( inst, 0 );
-          }
+      for ( inst.setFirst(); not inst.end(); inst.inc() ) {
+        if ( type().label_map()[inst.val( my_var )] == inst.val( cast_var ) ) {
+          cast->cpf().set( inst, 1 );
+        } else {
+          cast->cpf().set( inst, 0 );
         }
-      } catch ( Exception& e ) {
-        std::cout << e.errorType() << std::endl;
-        std::cout << e.errorContent() << std::endl;
-        std::cout << e.errorCallStack() << std::endl;
       }
 
       GUM_ASSERT( __formulas->contains( __type->variable() ) );

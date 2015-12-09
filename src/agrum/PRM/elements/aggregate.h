@@ -196,6 +196,7 @@ namespace gum {
        */
       MultiDimImplementation<GUM_SCALAR>* buildImpl() const;
 
+      virtual Attribute<GUM_SCALAR>* getCastDescendant() const;
       /// @}
       private:
       // ========================================================================

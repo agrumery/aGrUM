@@ -332,7 +332,7 @@ namespace gum_tests {
         auto bn = new gum::BayesNet<double>( "plop" );
         gum::BayesNetFactory<double> factory( bn );
         // Act
-        TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
         // Assert
         TS_ASSERT_EQUALS( bn->size(), (gum::Size)144 );
         TS_ASSERT_EQUALS( bn->sizeArcs(), (gum::Size)193 );

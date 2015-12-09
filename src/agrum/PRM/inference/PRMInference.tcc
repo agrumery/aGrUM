@@ -225,7 +225,6 @@ namespace gum {
         }
       } catch ( NotFound& ) {
         // Ok, we are only removing
-        GUM_CHECKPOINT;
       }
     }
 

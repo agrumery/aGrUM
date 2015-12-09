@@ -92,10 +92,6 @@ namespace gum {
     template <typename GUM_SCALAR>
     void StructuredBayesBall<GUM_SCALAR>::__fromChild(
         const Instance<GUM_SCALAR>* i, NodeId n, InstanceMap& marks ) {
-      // std::stringstream sBuff;
-      // sBuff << i->name() << "." << i->type().get(n).safeName();
-      // std::string in = "in __fromChild ";
-      // GUM_TRACE(in + sBuff.str());
       if ( not marks.exists( i ) ) {
         marks.insert( i, new StructuredBayesBall<GUM_SCALAR>::MarkMap() );
       }
@@ -172,10 +168,6 @@ namespace gum {
     template <typename GUM_SCALAR>
     void StructuredBayesBall<GUM_SCALAR>::__fromParent(
         const Instance<GUM_SCALAR>* i, NodeId n, InstanceMap& marks ) {
-      // std::stringstream sBuff;
-      // sBuff << i->name() << "." << i->type().get(n).safeName();
-      // std::string in = "in __fromParent ";
-      // GUM_TRACE(in + sBuff.str());
       if ( not marks.exists( i ) ) {
         marks.insert( i, new StructuredBayesBall<GUM_SCALAR>::MarkMap() );
       }
@@ -210,9 +202,6 @@ namespace gum {
           // Not an inverse sc
         }
       }
-
-      // std::string out = "out of __fromParent ";
-      // GUM_TRACE(out + sBuff.str());
     }
 
     template <typename GUM_SCALAR>

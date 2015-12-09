@@ -103,23 +103,7 @@ namespace gum {
       __cpf = new Potential<double>();
 
       for ( auto var : source.cpf().variablesSequence() ) {
-        try {
-          __cpf->add( *( bij.second( var ) ) );
-        } catch ( Exception& e ) {
-          GUM_TRACE_VAR( bij.size() );
-          GUM_TRACE_VAR( source.name() );
-          for ( auto var : source.cpf().variablesSequence() ) {
-            GUM_TRACE_VAR( var );
-            GUM_TRACE_VAR( var->name() );
-          }
-          for ( auto pair = bij.begin(); pair != bij.end(); ++pair ) {
-            GUM_TRACE_VAR( pair.first() );
-            GUM_TRACE_VAR( pair.first()->name() );
-            GUM_TRACE_VAR( pair.second() );
-            GUM_TRACE_VAR( pair.second()->name() );
-          }
-          throw e;
-        }
+        __cpf->add( *( bij.second( var ) ) );
       }
 
       Instantiation inst( *__cpf ), jnst( source.cpf() );

@@ -132,6 +132,10 @@ namespace gum {
       /// See gum::ClassElement::cpf().
       virtual const Potential<GUM_SCALAR>& cpf() const;
 
+      /// @brief Raise an OperationNotAllowed.
+      /// See gum::ClassElement::getCastDescendant().
+      virtual Attribute<GUM_SCALAR>* getCastDescendant() const;
+
       /// @}
       private:
       // ========================================================================

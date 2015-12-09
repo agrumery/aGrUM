@@ -97,6 +97,10 @@ namespace gum {
       /// See gum::ClassElement::addChild().
       void addChild( const gum::prm::ClassElement<GUM_SCALAR>& );
 
+      /// @brief Raise a gum::OperationNotAllowed
+      /// See gum::ClassElement::getCastDescendant()
+      virtual Attribute<GUM_SCALAR>* getCastDescendant() const;
+
       /// @}
       protected:
       /// Copy constructor. Don't use it.

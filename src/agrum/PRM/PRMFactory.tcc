@@ -501,20 +501,12 @@ namespace gum {
           form_seq << var << " ";
         }
 
-        try {
-          for ( Size i = 0; i < form->type()->domainSize(); ++i ) {
-            inst.chgVal( form->type().variable(), i );
+        for ( Size i = 0; i < form->type()->domainSize(); ++i ) {
+          inst.chgVal( form->type().variable(), i );
 
-            for ( inst.setFirstIn( knst ); not inst.end();
-                  inst.incIn( knst ) ) {
-              form->formulas().set( inst, std::to_string( values[i] ) );
-            }
+          for ( inst.setFirstIn( knst ); not inst.end(); inst.incIn( knst ) ) {
+            form->formulas().set( inst, std::to_string( values[i] ) );
           }
-        } catch ( Exception& e ) {
-          std::cout << e.errorType() << std::endl;
-          std::cout << e.errorContent() << std::endl;
-          std::cout << e.errorCallStack() << std::endl;
-          throw e;
         }
 
       } else {
@@ -1412,9 +1404,6 @@ namespace gum {
         __prm->__systems.insert( model );
 
       } catch ( Exception& e ) {
-        GUM_TRACE_VAR(e.errorType());
-        GUM_TRACE_VAR(e.errorContent());
-        GUM_TRACE_VAR(e.errorCallStack());
         GUM_ERROR( FatalError, "could not create system" );
       }
     }
