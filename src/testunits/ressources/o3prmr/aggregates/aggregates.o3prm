@@ -1,7 +1,7 @@
 type t_color red, blue, green, yellow;
 
 class SomeClass {
-   t_color color { [ "0.25", "0.25", "0.25", "0.25" ] };
+   t_color color { [ 0.1, 0.2, 0.3, 0.4 ] };
 
 }
 
@@ -18,14 +18,9 @@ class HappyClass {
   t_color median = median( [ has_red, has_blue, has_green, has_yellow ], t_color );  
   t_color amp = amplitude( [ has_red, has_blue, has_green, has_yellow ], t_color );  
 
-  //boolean yolo dependson infrared, ultra_violet, median, amp {
-  //  *, *, *, *: 0.99, 0.01;
-  //  green, green, green, green : 0.01, 0.99;
-  //};
-
-  boolean yolo dependson median, amp {
-    *, *: 0.99, 0.01;
-    green, green : 0.01, 0.99;
+  boolean yolo dependson infrared, ultra_violet, median, amp {
+    *, *, *, *: 0.99, 0.01;
+    green, green, green, green : 0.01, 0.99;
   };
 
   boolean happy dependson all_colors, any_colors, yolo {
@@ -40,3 +35,4 @@ system aSys {
  HappyClass happy;
  happy.A += some_classes;
 }
+

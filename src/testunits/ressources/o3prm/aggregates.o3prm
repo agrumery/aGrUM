@@ -1,16 +1,16 @@
 type t_color red, blue, green, yellow;
 
 class SomeClass {
-   t_color color { [ "0.25", "0.25", "0.25", "0.25" ] };
+   t_color color { [ 0.1, 0.2, 0.3, 0.4 ] };
 
 }
 
 class HappyClass {
   SomeClass[] A;
-  boolean has_red = exists (A.color, red);
-  boolean has_blue = exists (A.color, blue);
-  boolean has_green = exists (A.color, green);
-  boolean has_yellow = exists (A.color, yellow);
+  boolean has_red = exists ([A.color], red);
+  boolean has_blue = exists ([A.color], blue);
+  boolean has_green = forall ([A.color], green);
+  boolean has_yellow = forall ([A.color], yellow);
   boolean all_colors = and( [ has_red, has_blue, has_green, has_yellow ] );
   boolean any_colors = or( [ has_red, has_blue, has_green, has_yellow ] );
   t_color infrared = min( [ has_red, has_blue, has_green, has_yellow ], t_color);  
@@ -35,3 +35,4 @@ system aSys {
  HappyClass happy;
  happy.A += some_classes;
 }
+

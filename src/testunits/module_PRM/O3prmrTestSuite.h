@@ -399,7 +399,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( si.errors(), 0 );
         TS_ASSERT_EQUALS( si.warnings(), 0 );
 
-        TS_ASSERT_EQUALS( si.results().size(), (gum::Size)1 );
+        TS_ASSERT_EQUALS( si.results().size(), (gum::Size)6 );
 
         auto result = si.results()[0];
 
