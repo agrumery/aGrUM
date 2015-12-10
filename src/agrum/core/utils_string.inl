@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
- *   {prenom.nom}_at_lip6.fr                                               *
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -19,32 +19,21 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Utilities for manipulating strings.
+ * @brief Contains usefull methods for random stuff.
  *
- * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
- *
+ * @author Vincent RENAUDINEAU and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/core/utils_string.h>
+#include <algorithm>
 
+// to ease IDE parser
+#include <agrum/core/utils_string.h>
 namespace gum {
 
-  std::string getUniqueFileName() {
-#ifdef HAVE_MKSTEMP
-    char _tmpFileName[] = "fileXXXXXX";
-    int fd = mkstemp( _tmpFileName );
-    close( fd );
-#else  // mainly Windows
-    char _tmpFileName[] = "fileXXXXXX";
-    _mktemp_s( _tmpFileName, strlen( _tmpFileName ) );
-#endif
-
-    return std::string( _tmpFileName );
+  INLINE
+  std::string toLower(std::string str) {
+    std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+    return std::move(str);
   }
 
 } /* namespace gum */
-
-#ifdef GUM_NO_INLINE
-#include <agrum/core/utils_string.inl>
-#endif // GUM_NO_INLINE
-

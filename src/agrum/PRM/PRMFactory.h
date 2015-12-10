@@ -488,12 +488,10 @@ namespace gum {
        * @brief Add an aggregator in the current declared class.
        *
        * If at least one parent of an aggregator is a SlotChain<GUM_SCALAR>,
-       *then all of
-       * it's parents must be SlotChain<GUM_SCALAR>. When an aggregator parents
-       *are only
-       * composed of Attribute<GUM_SCALAR> and Aggregate, then it is directly
-       *added as an
-       * Attribute<GUM_SCALAR> to it's Class<GUM_SCALAR>.
+       * then all of it's parents must be SlotChain<GUM_SCALAR>. When an
+       * aggregator parents are only composed of Attribute<GUM_SCALAR> and
+       * Aggregate, then it is directly added as an Attribute<GUM_SCALAR> to
+       * it's Class<GUM_SCALAR>.
        *
        * @param name The name of this aggregator.
        * @param agg_type The name of the aggregator type of this aggregator.
@@ -501,11 +499,9 @@ namespace gum {
        * @param params The list of parameters for this aggregator.
        *
        * @throw OperationNotAllowed Raised if one or more parameters misses or
-       *are not
-       *                            correct.
+       * are not correct.
        * @throw WrongType Raised if the aggregator's type or one or more of the
-       *chains
-       *                  are not of the good type.
+       * chains are not of the good type.
        */
       virtual void
       addAggregator( const std::string& name,

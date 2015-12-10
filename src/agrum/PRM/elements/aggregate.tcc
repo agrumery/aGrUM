@@ -34,6 +34,8 @@
 #include <agrum/multidim/aggregators/count.h>
 #include <agrum/multidim/aggregators/or.h>
 #include <agrum/multidim/aggregators/and.h>
+#include <agrum/multidim/aggregators/amplitude.h>
+#include <agrum/multidim/aggregators/median.h>
 
 namespace gum {
   namespace prm {
@@ -146,9 +148,10 @@ namespace gum {
           return new aggregator::Or<GUM_SCALAR>();
         case AggregateType::AND:
           return new aggregator::And<GUM_SCALAR>();
-        case AggregateType::MEAN:
-          GUM_ERROR( OperationNotAllowed, "Aggregator not implemented yet." );
-          break;
+        case AggregateType::AMPLITUDE:
+          return new aggregator::Amplitude<GUM_SCALAR>();
+        case AggregateType::MEDIAN:
+          return new aggregator::Median<GUM_SCALAR>();
         default:
           GUM_ERROR( OperationNotAllowed, "Unknown aggregator." );
       }
