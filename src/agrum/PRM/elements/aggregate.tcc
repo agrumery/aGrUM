@@ -47,7 +47,7 @@ namespace gum {
         : ClassElement<GUM_SCALAR>( name )
         , __agg_type( aggType )
         , __type( new Type<GUM_SCALAR>( rvType ) )
-        , __label( __type->variable().domainSize() + 1 ) {
+        , __label( nullptr ) {
       GUM_CONSTRUCTOR( Aggregate );
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
                         PRMObject::RIGHT_CAST() + name;
@@ -61,7 +61,7 @@ namespace gum {
         : ClassElement<GUM_SCALAR>( name )
         , __agg_type( aggType )
         , __type( new Type<GUM_SCALAR>( rvType ) )
-        , __label( label ) {
+        , __label( new Idx(label) ) {
       GUM_CONSTRUCTOR( Aggregate );
       this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
                         PRMObject::RIGHT_CAST() + name;
@@ -71,6 +71,8 @@ namespace gum {
     Aggregate<GUM_SCALAR>::~Aggregate() {
       GUM_DESTRUCTOR( Aggregate );
       delete __type;
+      if (__label)
+        delete __label;
     }
 
     template <typename GUM_SCALAR>
@@ -104,10 +106,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Idx Aggregate<GUM_SCALAR>::label() const {
-      if ( __label == __type->variable().domainSize() + 1 ) {
-        GUM_ERROR( OperationNotAllowed, "no label defined for this aggregate" );
-      }
-      return __label;
+      if (__label) return *__label;
+      GUM_ERROR( OperationNotAllowed, "no label defined for this aggregate" );
     }
 
     template <typename GUM_SCALAR>
@@ -138,12 +138,6 @@ namespace gum {
           return new aggregator::Min<GUM_SCALAR>();
         case AggregateType::MAX:
           return new aggregator::Max<GUM_SCALAR>();
-        case AggregateType::EXISTS:
-          return new aggregator::Exists<GUM_SCALAR>( __label );
-        case AggregateType::FORALL:
-          return new aggregator::Forall<GUM_SCALAR>( __label );
-        case AggregateType::COUNT:
-          return new aggregator::Count<GUM_SCALAR>( __label );
         case AggregateType::OR:
           return new aggregator::Or<GUM_SCALAR>();
         case AggregateType::AND:
@@ -152,6 +146,12 @@ namespace gum {
           return new aggregator::Amplitude<GUM_SCALAR>();
         case AggregateType::MEDIAN:
           return new aggregator::Median<GUM_SCALAR>();
+        case AggregateType::EXISTS:
+          return new aggregator::Exists<GUM_SCALAR>( label() );
+        case AggregateType::FORALL:
+          return new aggregator::Forall<GUM_SCALAR>( label() );
+        case AggregateType::COUNT:
+          return new aggregator::Count<GUM_SCALAR>( label() );
         default:
           GUM_ERROR( OperationNotAllowed, "Unknown aggregator." );
       }

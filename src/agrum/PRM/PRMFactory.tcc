@@ -595,22 +595,6 @@ namespace gum {
           break;
         }
 
-        //case Aggregate<GUM_SCALAR>::AggregateType::MEDIAN:
-        //case Aggregate<GUM_SCALAR>::AggregateType::AMPLITUDE:
-        //case Aggregate<GUM_SCALAR>::AggregateType::MIN:
-        //case Aggregate<GUM_SCALAR>::AggregateType::MAX: {
-        //  if ( params.size() != 0 ) {
-        //    GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
-        //  }
-
-        //  agg = new Aggregate<GUM_SCALAR>(
-        //      name,
-        //      Aggregate<GUM_SCALAR>::str2enum( agg_type ),
-        //      inputs.front()->type() );
-
-        //  break;
-        //}
-
         case Aggregate<GUM_SCALAR>::AggregateType::EXISTS:
         case Aggregate<GUM_SCALAR>::AggregateType::FORALL: {
           if ( params.size() != 1 ) {
@@ -638,6 +622,7 @@ namespace gum {
               Aggregate<GUM_SCALAR>::str2enum( agg_type ),
               *( __retrieveType( "boolean" ) ),
               label_idx );
+          agg->label();
 
           break;
         }

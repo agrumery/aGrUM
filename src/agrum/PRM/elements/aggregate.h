@@ -229,7 +229,7 @@ namespace gum {
       /// Some aggregators applies only on a given label. This attribute must
       /// have the concerned Idx. If not initialized the pointer equals 0.
       /// It is deleted with the aggregate.
-      Idx __label;
+      Idx *__label;
 
       /// @}
     };

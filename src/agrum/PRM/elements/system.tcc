@@ -186,34 +186,52 @@ namespace gum {
           static_cast<const Aggregate<GUM_SCALAR>&>( elt );
 
       switch ( agg.agg_type() ) {
-        case Aggregate<GUM_SCALAR>::AggregateType::MIN:
+        case Aggregate<GUM_SCALAR>::AggregateType::MIN: {
           factory.setVariableCPTImplementation(
               new aggregator::Min<GUM_SCALAR>() );
           break;
+        }
 
-        case Aggregate<GUM_SCALAR>::AggregateType::MAX:
+        case Aggregate<GUM_SCALAR>::AggregateType::MAX: {
           factory.setVariableCPTImplementation(
               new aggregator::Max<GUM_SCALAR>() );
           break;
+        }
 
-        case Aggregate<GUM_SCALAR>::AggregateType::EXISTS:
+        case Aggregate<GUM_SCALAR>::AggregateType::EXISTS: {
           factory.setVariableCPTImplementation(
               new aggregator::Exists<GUM_SCALAR>( agg.label() ) );
           break;
+        }
 
-        case Aggregate<GUM_SCALAR>::AggregateType::FORALL:
+        case Aggregate<GUM_SCALAR>::AggregateType::FORALL: {
           factory.setVariableCPTImplementation(
               new aggregator::Forall<GUM_SCALAR>( agg.label() ) );
           break;
+        }
 
-        case Aggregate<GUM_SCALAR>::AggregateType::COUNT:
+        case Aggregate<GUM_SCALAR>::AggregateType::COUNT: {
           factory.setVariableCPTImplementation(
               new aggregator::Count<GUM_SCALAR>( agg.label() ) );
           break;
+        }
 
-        default:
+        case Aggregate<GUM_SCALAR>::AggregateType::MEDIAN: {
+          factory.setVariableCPTImplementation(
+              new aggregator::Median<GUM_SCALAR>() );
+          break;
+        }
+
+        case Aggregate<GUM_SCALAR>::AggregateType::AMPLITUDE: {
+          factory.setVariableCPTImplementation(
+              new aggregator::Amplitude<GUM_SCALAR>() );
+          break;
+        }
+
+        default: {
           GUM_ERROR( OperationNotAllowed, "Aggregator not handled yet" );
           break;
+        }
       }
 
       factory.endVariableDeclaration();
