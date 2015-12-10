@@ -61,7 +61,6 @@ namespace gum_tests {
       __state = new gum::prm::Type<double>{*__boolean, map, state};
       __types = new std::vector<AggType>{AggType::MIN,
                                          AggType::MAX,
-                                         AggType::MEAN,
                                          AggType::COUNT,
                                          AggType::EXISTS,
                                          AggType::FORALL,
@@ -339,16 +338,6 @@ namespace gum_tests {
       // Assert
       TS_ASSERT( dynamic_cast<gum::aggregator::Count<double>*>( impl ) );
       TS_ASSERT_THROWS_NOTHING( delete impl );
-    }
-
-    void testBuildImplMean() {
-      // Arrange
-      Aggregate agg( "my_agg", AggType::MEAN, *__boolean, 0 );
-      gum::MultiDimImplementation<double>* impl = nullptr;
-      // Act
-      TS_ASSERT_THROWS( impl = agg.buildImpl(), gum::OperationNotAllowed );
-      // Assert
-      TS_ASSERT_EQUALS( impl, nullptr );
     }
 
     void testBuildImplOr() {

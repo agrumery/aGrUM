@@ -510,7 +510,7 @@ namespace gum {
         }
 
       } else {
-        GUM_ERROR( OperationNotAllowed, "invaldie attribute type" );
+        GUM_ERROR( OperationNotAllowed, "invalide attribute type" );
       }
     }
 
@@ -583,10 +583,6 @@ namespace gum {
           if ( inputs.front()->type() != *( __retrieveType( "boolean" ) ) ) {
             GUM_ERROR( WrongType, "expected booleans" );
           }
-        }
-
-        case Aggregate<GUM_SCALAR>::AggregateType::MIN:
-        case Aggregate<GUM_SCALAR>::AggregateType::MAX: {
           if ( params.size() != 0 ) {
             GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
           }
@@ -598,6 +594,22 @@ namespace gum {
 
           break;
         }
+
+        //case Aggregate<GUM_SCALAR>::AggregateType::MEDIAN:
+        //case Aggregate<GUM_SCALAR>::AggregateType::AMPLITUDE:
+        //case Aggregate<GUM_SCALAR>::AggregateType::MIN:
+        //case Aggregate<GUM_SCALAR>::AggregateType::MAX: {
+        //  if ( params.size() != 0 ) {
+        //    GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
+        //  }
+
+        //  agg = new Aggregate<GUM_SCALAR>(
+        //      name,
+        //      Aggregate<GUM_SCALAR>::str2enum( agg_type ),
+        //      inputs.front()->type() );
+
+        //  break;
+        //}
 
         case Aggregate<GUM_SCALAR>::AggregateType::EXISTS:
         case Aggregate<GUM_SCALAR>::AggregateType::FORALL: {
@@ -626,6 +638,25 @@ namespace gum {
               Aggregate<GUM_SCALAR>::str2enum( agg_type ),
               *( __retrieveType( "boolean" ) ),
               label_idx );
+
+          break;
+        }
+
+        case Aggregate<GUM_SCALAR>::AggregateType::MEDIAN:
+        case Aggregate<GUM_SCALAR>::AggregateType::AMPLITUDE:
+        case Aggregate<GUM_SCALAR>::AggregateType::MIN:
+        case Aggregate<GUM_SCALAR>::AggregateType::MAX: {
+          if ( params.size() != 1 ) {
+            GUM_ERROR( OperationNotAllowed, "invalid number of parameters" );
+          }
+
+          auto output_type = __retrieveType( params[0] );
+
+          // Creating and adding the Aggregate<GUM_SCALAR>
+          agg = new Aggregate<GUM_SCALAR>(
+              name,
+              Aggregate<GUM_SCALAR>::str2enum( agg_type ),
+              *output_type);
 
           break;
         }

@@ -67,12 +67,13 @@ namespace gum {
       enum class AggregateType : char {
         MIN,
         MAX,
-        MEAN,
         COUNT,
         EXISTS,
         FORALL,
         OR,
-        AND
+        AND,
+        AMPLITUDE,
+        MEDIAN
       };
 
       /**
@@ -84,22 +85,24 @@ namespace gum {
        * @throw Raise NotFound exception if no matches is found.
        */
       static AggregateType str2enum( const std::string& str ) {
-        if ( str == "min" || str == "MIN" || str == "Min" ) {
+        if ( toLower(str) == "min" ) {
           return AggregateType::MIN;
-        } else if ( str == "max" || str == "MAX" || str == "Max" ) {
+        } else if ( toLower(str) == "max" ) {
           return AggregateType::MAX;
-        } else if ( str == "mean" || str == "MEAN" || str == "Mean" ) {
-          return AggregateType::MEAN;
-        } else if ( str == "count" || str == "COUNT" || str == "Count" ) {
+        } else if ( toLower(str) == "count" ) {
           return AggregateType::COUNT;
-        } else if ( str == "exists" || str == "EXISTS" || str == "Exists" ) {
+        } else if ( toLower(str) == "exists" ) {
           return AggregateType::EXISTS;
-        } else if ( str == "or" || str == "OR" || str == "Or" ) {
+        } else if ( toLower(str) == "or" ) {
           return AggregateType::OR;
-        } else if ( str == "and" || str == "AND" || str == "And" ) {
+        } else if ( toLower(str) == "and" ) {
           return AggregateType::AND;
-        } else if ( str == "forall" || str == "FORALL" || str == "ForAll" ) {
+        } else if ( toLower(str) == "forall" ) {
           return AggregateType::FORALL;
+        } else if ( toLower(str) == "amplitude" ) {
+          return AggregateType::AMPLITUDE;
+        } else if ( toLower(str) == "median" ) {
+          return AggregateType::MEDIAN;
         } else {
           std::string msg = "Unknown aggregate: ";
           msg.append( str );
