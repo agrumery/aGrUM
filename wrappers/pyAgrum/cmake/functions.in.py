@@ -39,7 +39,7 @@ def availableBNExts():
     """
     return "bif|dsl|net|bifxml|o3prm"
 
-def loadBN(s,listeners=None,verbose=True):
+def loadBN(s,listeners=None,verbose=True,**opts):
     """
     returns a BN from a file using one of the availableBNExts() suffixes.
     """
@@ -55,7 +55,7 @@ def loadBN(s,listeners=None,verbose=True):
     elif extension=="NET":
         warns=bn.loadNET(s,listeners)
     elif extension=="O3PRM":
-        warns=bn.loadPRM(s,listeners)
+        warns=bn.loadPRM(s,opts.get('system',''),opts.get('classpath',''),listeners)
     else:
         raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
 

@@ -185,14 +185,14 @@
       writer.write( name, *self );
   };
 
-  std::string loadPRM(std::string name, PyObject *l=(PyObject*)0)
+  std::string loadPRM(std::string name, std::string system="",std::string classpath="",PyObject *l=(PyObject*)0)
   {
       std::stringstream stream;
       std::vector<PythonLoadListener> py_listener;
 
       try {
-          gum::O3prmBNReader<GUM_SCALAR> reader(self,name);
-
+          gum::O3prmBNReader<GUM_SCALAR> reader(self,name,system,classpath);
+          
           auto nbErr=reader.proceed();
           reader.showElegantErrorsAndWarnings(stream);
           if (nbErr>0) {

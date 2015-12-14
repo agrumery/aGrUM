@@ -35,7 +35,7 @@ namespace gum_tests {
       int res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
       TS_ASSERT_EQUALS( res, 0 );
-      TS_ASSERT_EQUALS( reader.warnings(), 1 );  // no system
+      TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)1 );  // no system
       TS_ASSERT_EQUALS( bn.size(), (gum::Size)8 );
     }
 
@@ -47,7 +47,7 @@ namespace gum_tests {
         int res = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
         TS_ASSERT_EQUALS( res, 0 );
-        TS_ASSERT_EQUALS( reader.warnings(), 1 );  // no system
+        TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)1 );  // no system
         TS_ASSERT_EQUALS( bn.size(), (gum::Size)8 );
       }
     }
@@ -92,6 +92,18 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
       TS_ASSERT_EQUALS( res, 0 );
       TS_ASSERT_EQUALS( bn.size(), (gum::Size)72 );
+    }
+
+
+    void testWithClassPathAndSystem() {
+      gum::BayesNet<double> bn;
+      gum::O3prmBNReader<double> reader(
+          &bn, GET_RESSOURCES_PATH( "/o3prmr/UniversityDomain/fr/lip6/University/system.o3prm" ), "MyUniversity",GET_RESSOURCES_PATH("o3prmr/UniversityDomain") );
+      int res = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
+      TS_ASSERT_EQUALS( res, 0 );
+      TS_ASSERT_EQUALS( bn.size(), (gum::Size)72 );
+      reader.showElegantErrorsAndWarnings();
     }
   };
 }  // namespace gum_tests
