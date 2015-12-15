@@ -27,7 +27,7 @@ class Asia {
         [    0.70, 0.40,  // False
              0.30, 0.60 ] // True
     };
-    
+
     boolean tubOrCancer dependson tuberculosis, lungCancer {
         //      False    ||     True      => tuberculosis
         //  False | True || False | True  => lungCancer

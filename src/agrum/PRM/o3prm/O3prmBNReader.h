@@ -44,12 +44,11 @@ namespace gum {
     public:
     O3prmBNReader( BayesNet<GUM_SCALAR>* bn,
                    const std::string& filename,
-                   const std::string& entityName="",
-		   const std::string& classPath=""
- 		);
+                   const std::string& entityName = "",
+                   const std::string& classPath = "" );
 
     ~O3prmBNReader();
-        
+
     /// parse the file
     /// @return the number of detected errors and warnings
     /// @throws IOError if file not exists
@@ -90,8 +89,8 @@ namespace gum {
 
     private:
     std::string __filename;
-    
-    std::string __classpath;    
+
+    std::string __classpath;
     std::string __entityName;
 
     BayesNet<GUM_SCALAR>* __bn;

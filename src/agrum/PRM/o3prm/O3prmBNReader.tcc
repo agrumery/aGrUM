@@ -34,8 +34,7 @@ namespace gum {
   INLINE std::string
   O3prmBNReader<GUM_SCALAR>::__getVariableName( const std::string& path,
                                                 const std::string& type,
-                                                const std::string& name
-					      ) {
+                                                const std::string& name ) {
     return path + name;  // path ends up with a "."
   }
 
@@ -60,13 +59,13 @@ namespace gum {
   O3prmBNReader<GUM_SCALAR>::O3prmBNReader( BayesNet<GUM_SCALAR>* bn,
                                             const std::string& filename,
                                             const std::string& entityName,
-					    const std::string& classpath )
+                                            const std::string& classpath )
       : BNReader<GUM_SCALAR>( bn, filename ) {
     GUM_CONSTRUCTOR( O3prmBNReader );
     __bn = bn;
     __filename = filename;
     __entityName = entityName == "" ? __getEntityName( filename ) : entityName;
-    __classpath=classpath;
+    __classpath = classpath;
   }
 
   template <typename GUM_SCALAR>
@@ -79,9 +78,9 @@ namespace gum {
   /// @throws IOError if file not exists
   template <typename GUM_SCALAR>
   int O3prmBNReader<GUM_SCALAR>::proceed( void ) {
-    prm::o3prm::O3prmReader<GUM_SCALAR> reader;    
-    if (__classpath!=""){
-      reader.addClassPath(__classpath);
+    prm::o3prm::O3prmReader<GUM_SCALAR> reader;
+    if ( __classpath != "" ) {
+      reader.addClassPath( __classpath );
     }
     reader.readFile( __filename );
     gum::prm::PRM<GUM_SCALAR>* prm = reader.prm();
@@ -99,9 +98,9 @@ namespace gum {
                            0 );
           __errors.add( warn );
           gum::prm::System<GUM_SCALAR> s( "S_" + __entityName );
-          auto i =
-              new gum::prm::Instance<GUM_SCALAR>( __getInstanceName( __entityName ),
-                                              prm->getClass( __entityName ) );
+          auto i = new gum::prm::Instance<GUM_SCALAR>(
+              __getInstanceName( __entityName ),
+              prm->getClass( __entityName ) );
           s.add( i );
           __generateBN( s );
         } else {

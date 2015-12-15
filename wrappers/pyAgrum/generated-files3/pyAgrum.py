@@ -4721,7 +4721,9 @@ class BayesNet_double(IBayesNet_double):
 
     def loadPRM(self, *args) -> "std::string":
         """
-        loadPRM(BayesNet_double self, std::string name, PyObject * l) -> std::string
+        loadPRM(BayesNet_double self, std::string name, std::string system, std::string classpath, PyObject * l) -> std::string
+        loadPRM(BayesNet_double self, std::string name, std::string system, std::string classpath) -> std::string
+        loadPRM(BayesNet_double self, std::string name, std::string system) -> std::string
         loadPRM(BayesNet_double self, std::string name) -> std::string
         """
         return _pyAgrum.BayesNet_double_loadPRM(self, *args)

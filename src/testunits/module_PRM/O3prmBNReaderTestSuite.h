@@ -38,6 +38,26 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)1 );  // no system
       TS_ASSERT_EQUALS( bn.size(), (gum::Size)8 );
     }
+    void testDoublingClassWithoutSystem() {
+      gum::BayesNet<double> bn;
+      gum::O3prmBNReader<double> reader(
+          &bn, GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" ) );
+      int res = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
+      TS_ASSERT_EQUALS( res, 0 );
+      TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)1 );  // no system
+      TS_ASSERT_EQUALS( bn.size(), (gum::Size)8 );
+
+
+      gum::BayesNet<double> bn2;
+      gum::O3prmBNReader<double> reader2(
+          &bn2, GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" ) );
+      int res2 = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING( res2 = reader2.proceed() );
+      TS_ASSERT_EQUALS( res2, 0 );
+      TS_ASSERT_EQUALS( reader2.warnings(), (gum::Size)1 );  // no system
+      TS_ASSERT_EQUALS( bn2.size(), (gum::Size)8 );
+    }
 
     void testClassWithoutSystemAfterDeletingReader() {
       gum::BayesNet<double> bn;
@@ -98,11 +118,15 @@ namespace gum_tests {
     void testWithClassPathAndSystem() {
       gum::BayesNet<double> bn;
       gum::O3prmBNReader<double> reader(
-          &bn, GET_RESSOURCES_PATH( "/o3prmr/UniversityDomain/fr/lip6/University/system.o3prm" ), "MyUniversity",GET_RESSOURCES_PATH("o3prmr/UniversityDomain") );
+          &bn,
+          GET_RESSOURCES_PATH(
+              "/o3prmr/ComplexPrinters/fr/lip6/printers/system.o3prm" ),
+          "Work",
+          GET_RESSOURCES_PATH( "o3prmr/ComplexPrinters" ) );
       int res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
       TS_ASSERT_EQUALS( res, 0 );
-      TS_ASSERT_EQUALS( bn.size(), (gum::Size)72 );
+      TS_ASSERT_EQUALS( bn.size(), (gum::Size)144 );
       reader.showElegantErrorsAndWarnings();
     }
   };
