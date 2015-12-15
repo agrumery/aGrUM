@@ -1,0 +1,35 @@
+import fr.lip6.printers.base;
+
+type t_ink extends t_state
+	NotEmpty: OK,
+	Empty:    NOK;
+
+type t_paper extends t_state
+	Ready:    OK,
+	Jammed:   NOK,
+	Empty:    NOK;
+
+class BWPrinter implements Printer {
+    Room room;
+    t_ink hasInk { [0.8, 0.2] };
+    t_paper hasPaper { [0.7, 0.2, 0.1] };
+    t_degraded equipState dependson room.power.state, hasInk, hasPaper {
+      *, *, *:             0.0, 1.0, 0.0;
+      OK, NotEmpty, Ready: 1.0, 0.0, 0.0;
+    };
+}
+
+class ColorPrinter implements Printer {
+    Room room;
+    t_ink black   { [0.8, 0.2] };
+    t_ink magenta { [0.8, 0.2] };
+    t_ink yellow  { [0.8, 0.2] };
+    t_ink cyan    { [0.8, 0.2] };
+    boolean hasInk = forall ( [black, magenta, yellow, cyan], NotEmpty );
+    t_paper hasPaper { [0.7, 0.2, 0.1] };
+    t_degraded equipState dependson room.power.state, hasPaper, hasInk, black {
+      *, *, *, *:             0.00, 1.00, 0.00;
+      *, *, false, NotEmpty:  0.00, 0.00, 1.00;
+      OK, Ready, true, *:     0.99, 0.01, 0.00;
+    };
+}
