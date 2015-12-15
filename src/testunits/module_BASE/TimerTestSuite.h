@@ -58,7 +58,7 @@ namespace gum_tests {
       bool test_pass = false;
       // The test randomly fails for reasons, it have to fails three times in 
       // a row to be considered trully as failed
-      for ( (int i = 0; i < 3) and not test_pass; ++i ) {
+      for ( int i = 0; (i < 3) and not test_pass; ++i ) {
         gum::Timer t;
         gum::Timer tt;
         int w = 0;
