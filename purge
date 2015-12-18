@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 echo "Purge tool - aGrUM 2011-13"
 echo "cleans aGrum and prepare re-generation of generated files."
 echo
@@ -7,7 +7,7 @@ echo
 
 python act clean
 
-echo "Force cocoR files to be generated" 
+echo "Force cocoR files to be generated"
 find . -name *.atg -print | xargs touch
 
 echo "Force swig files to be generated"
